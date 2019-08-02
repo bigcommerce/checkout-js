@@ -1,6 +1,7 @@
 const { join } = require('path');
 
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = function (options, argv) {
     const mode = argv.mode || 'development';
@@ -38,11 +39,15 @@ module.exports = function (options, argv) {
             jsonpFunction: 'checkout',
         },
         plugins: [
+            isProduction && new MiniCssExtractPlugin({
+                filename: `[name]${isProduction ? '-[contenthash:8]' : ''}.css`,
+                chunkFilename: `[name]${isProduction ? '-[contenthash:8]' : ''}.css`,
+            }),
             new ForkTsCheckerWebpackPlugin({
                 async: !isProduction,
                 tslint: true,
             }),
-        ],
+        ].filter(Boolean),
         module: {
             rules: [
                 {
@@ -57,6 +62,15 @@ module.exports = function (options, argv) {
                             },
                         },
                     ],
+                },
+                {
+                    test: /\.scss$/,
+                    use: [
+                        isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+                        'css-loader',
+                        'sass-loader',
+                    ],
+                    sideEffects: true,
                 },
             ],
         },
