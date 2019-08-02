@@ -35,5 +35,21 @@ module.exports = function (options, argv) {
             chunkFilename: `[name]${isProduction ? '-[contenthash:8]' : ''}.js`,
             jsonpFunction: 'checkout',
         },
+        module: {
+            rules: [
+                {
+                    test: /\.tsx?$/,
+                    include: join(__dirname, 'src'),
+                    use: [
+                        {
+                            loader: 'ts-loader',
+                            options: {
+                                onlyCompileBundledFiles: true,
+                            },
+                        },
+                    ],
+                },
+            ],
+        },
     };
 };

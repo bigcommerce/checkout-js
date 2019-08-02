@@ -13,6 +13,9 @@
   },
   "homepage": "https://github.com/bigcommerce/checkout-js#readme",
   "devDependencies": {
+    "@types/node": "^12.6.9",
+    "ts-loader": "^6.0.4",
+    "typescript": "^3.5.3",
     "webpack": "^4.39.0",
     "webpack-cli": "^3.3.6"
   }
