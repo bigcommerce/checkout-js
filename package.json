@@ -1,0 +1,19 @@
+{
+  "name": "checkout-js",
+  "version": "0.0.0",
+  "description": "Browser-based application providing a seamless UI for BigCommerce shoppers to complete their checkout. ",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bigcommerce/checkout-js.git"
+  },
+  "author": "BigCommerce",
+  "bugs": {
+    "url": "https://github.com/bigcommerce/checkout-js/issues"
+  },
+  "homepage": "https://github.com/bigcommerce/checkout-js#readme",
+  "devDependencies": {
+    "webpack": "^4.39.0",
+    "webpack-cli": "^3.3.6"
+  }
+}
