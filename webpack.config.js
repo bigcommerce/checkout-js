@@ -1,5 +1,7 @@
 const { join } = require('path');
 
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+
 module.exports = function (options, argv) {
     const mode = argv.mode || 'development';
     const isProduction = mode !== 'development';
@@ -35,6 +37,11 @@ module.exports = function (options, argv) {
             chunkFilename: `[name]${isProduction ? '-[contenthash:8]' : ''}.js`,
             jsonpFunction: 'checkout',
         },
+        plugins: [
+            new ForkTsCheckerWebpackPlugin({
+                async: !isProduction,
+            }),
+        ],
         module: {
             rules: [
                 {
@@ -45,6 +52,7 @@ module.exports = function (options, argv) {
                             loader: 'ts-loader',
                             options: {
                                 onlyCompileBundledFiles: true,
+                                transpileOnly: true,
                             },
                         },
                     ],
