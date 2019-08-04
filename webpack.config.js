@@ -40,6 +40,7 @@ module.exports = function (options, argv) {
         plugins: [
             new ForkTsCheckerWebpackPlugin({
                 async: !isProduction,
+                tslint: true,
             }),
         ],
         module: {
