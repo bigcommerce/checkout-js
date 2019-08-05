@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "webpack --mode development --watch",
     "build": "webpack --mode production",
-    "prerelease": "rm -rf dist && npm run build",
+    "prerelease": "npm run test -- --coverage && rm -rf dist && npm run build",
     "test": "jest",
     "test:watch": "jest --watch",
     "release": "standard-version -a"

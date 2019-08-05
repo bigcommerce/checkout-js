@@ -1,0 +1,28 @@
+version: 2.1
+
+orbs:
+  ci: bigcommerce/internal@volatile
+  node: bigcommerce/internal-node@volatile
+
+jobs:
+  build:
+    executor:
+      name: node/node
+      node-version: "10"
+    steps:
+      - ci/pre-setup
+      - restore_cache:
+          keys:
+              - checkout-js
+      - run: npm ci
+      - save_cache:
+          key: checkout-js
+          paths:
+            - ~/.npm
+      - run:
+          name: 'Build'
+          command:  'npm run build'
+      - run:
+          name: 'Unit Tests'
+          command:  'npm run test -- --coverage --runInBand'
+          when: always
