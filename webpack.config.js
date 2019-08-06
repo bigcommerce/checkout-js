@@ -55,6 +55,31 @@ module.exports = function (options, argv) {
                     include: join(__dirname, 'src'),
                     use: [
                         {
+                            loader: 'babel-loader',
+                            options: {
+                                cacheDirectory: true,
+                                plugins: [
+                                    '@babel/plugin-syntax-dynamic-import',
+                                ],
+                                presets: [
+                                    ['@babel/preset-env', {
+                                        corejs: '3',
+                                        targets: {
+                                            browsers: [
+                                                'last 2 versions',
+                                                'not ie < 11',
+                                                'not Baidu > 0',
+                                                'not QQAndroid > 0',
+                                                'not Android < 62',
+                                            ],
+                                        },
+                                        useBuiltIns: 'usage',
+                                        modules: false,
+                                    }],
+                                ],
+                            },
+                        },
+                        {
                             loader: 'ts-loader',
                             options: {
                                 onlyCompileBundledFiles: true,
