@@ -97,6 +97,24 @@ module.exports = function (options, argv) {
                     ],
                     sideEffects: true,
                 },
+                {
+                    test: /\.(gif|png|jpe?g|svg)$/i,
+                    use: [
+                        {
+                            loader: 'file-loader',
+                            options: {
+                                name: `[name]${isProduction ? '-[contenthash:8]' : ''}.[ext]`,
+                                outputPath: 'static',
+                            },
+                        },
+                        {
+                            loader: 'image-webpack-loader',
+                            options: {
+                                disable: true,
+                            },
+                        },
+                    ],
+                },
             ],
         },
     };
