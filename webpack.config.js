@@ -1,8 +1,10 @@
+const { omitBy } = require('lodash');
 const { join } = require('path');
 
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
+const WebpackAssetsManifest = require('webpack-assets-manifest');
 
 module.exports = function (options, argv) {
     const mode = argv.mode || 'development';
@@ -49,6 +51,10 @@ module.exports = function (options, argv) {
             isProduction && new MiniCssExtractPlugin({
                 filename: `[name]${isProduction ? '-[contenthash:8]' : ''}.css`,
                 chunkFilename: `[name]${isProduction ? '-[contenthash:8]' : ''}.css`,
+            }),
+            new WebpackAssetsManifest({
+                entrypoints: true,
+                transform: assets => transformManifest(assets, options),
             }),
             new ForkTsCheckerWebpackPlugin({
                 async: !isProduction,
@@ -126,3 +132,14 @@ module.exports = function (options, argv) {
         },
     };
 };
+
+function transformManifest(assets, options) {
+    const [entries] = Object.values(assets.entrypoints);
+    const entrypoints = omitBy(entries, (_val, key) => key.toLowerCase().endsWith('.map'));
+
+    return {
+        version: 2,
+        appVersion: 'dev',
+        ...entrypoints,
+    };
+}
