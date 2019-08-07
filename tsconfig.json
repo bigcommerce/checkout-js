@@ -27,5 +27,8 @@
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
         "resolveJsonModule": true
-    }
+    },
+    "files": [
+        "types/supported-files.d.ts",
+    ],
 }
