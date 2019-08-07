@@ -2,6 +2,7 @@ const { join } = require('path');
 
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const StyleLintPlugin = require('stylelint-webpack-plugin');
 
 module.exports = function (options, argv) {
     const mode = argv.mode || 'development';
@@ -39,6 +40,12 @@ module.exports = function (options, argv) {
             jsonpFunction: 'checkout',
         },
         plugins: [
+            new StyleLintPlugin({
+                fix: !isProduction,
+                cache: true,
+                cacheLocation: join(process.cwd(), 'node_modules/.cache/'),
+                emitErrors: isProduction,
+            }),
             isProduction && new MiniCssExtractPlugin({
                 filename: `[name]${isProduction ? '-[contenthash:8]' : ''}.css`,
                 chunkFilename: `[name]${isProduction ? '-[contenthash:8]' : ''}.css`,
