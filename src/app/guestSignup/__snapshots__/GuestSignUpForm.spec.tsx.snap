@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GuestSignUpForm matches snapshot 1`] = `
+<div>
+  <form
+    class="guest-signup form"
+    novalidate=""
+  >
+    <fieldset
+      class="form-fieldset"
+    >
+      <legend
+        class="form-legend optimizedCheckout-headingSecondary"
+      >
+        Create an account for a faster checkout in the future
+      </legend>
+      <div
+        class="form-body"
+      >
+        <div
+          class="form-field"
+        >
+          <label
+            class="form-label optimizedCheckout-form-label"
+            for="password"
+          >
+            Password 
+            <small>
+              5-character minimum, case sensitive
+            </small>
+          </label>
+          <input
+            class="form-input optimizedCheckout-form-input"
+            id="password"
+            name="password"
+            type="password"
+            value=""
+          />
+        </div>
+        <div
+          class="form-field"
+        >
+          <label
+            class="form-label optimizedCheckout-form-label"
+            for="confirmPassword"
+          >
+            Confirm Password
+          </label>
+          <input
+            class="form-input optimizedCheckout-form-input"
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            value=""
+          />
+        </div>
+        <div
+          class="form-actions"
+        >
+          <button
+            class="button button--primary optimizedCheckout-buttonPrimary"
+            id="createAccountButton"
+            type="submit"
+          >
+            Create Account
+          </button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>
+`;
