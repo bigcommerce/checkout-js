@@ -1,5 +1,13 @@
 {
     "scopes": [
-        "common"
+        "billing",
+        "cart",
+        "checkout",
+        "common",
+        "customer",
+        "embedded-checkout",
+        "order",
+        "payment",
+        "shipping"
     ]
 }
