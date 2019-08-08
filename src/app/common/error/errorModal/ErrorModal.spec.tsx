@@ -82,7 +82,10 @@ describe('ErrorModal', () => {
 
         describe('when the error is updated', () => {
             beforeEach(() => {
-                errorModal.setProps({ error: new AccountCreationFailedError(new Error()) });
+                errorModal.setProps({
+                    error: new AccountCreationFailedError(new Error()),
+                    shouldShowErrorCode: false,
+                });
                 errorModal.update();
             });
 
@@ -98,7 +101,7 @@ describe('ErrorModal', () => {
                     .toBeFalsy();
             });
 
-            it('does not render error code (ignored error)', () => {
+            it('does not render error code', () => {
                 expect(errorModal.find(ErrorCode).length).toEqual(0);
             });
         });

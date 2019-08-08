@@ -1,7 +1,6 @@
-import { noop, some } from 'lodash';
+import { noop } from 'lodash';
 import React, { Component, Fragment, ReactNode } from 'react';
 
-import { AccountCreationFailedError, AccountCreationRequirementsError } from '../../../guestSignup/errors';
 import { TranslatedString } from '../../../language';
 import { Button, ButtonSize } from '../../../ui/button';
 import { IconError, IconSize } from '../../../ui/icon';
@@ -14,19 +13,13 @@ export interface ErrorModalProps {
     error?: Error;
     message?: ReactNode;
     title?: ReactNode;
+    shouldShowErrorCode?: boolean;
     onClose?(event: Event, props: ErrorModalOnCloseProps): void;
 }
 
 export interface ErrorModalOnCloseProps {
     error: Error;
 }
-
-// todo: properly check if the error should report or not
-// for now, hard code errors that should not report.
-const IGNORED_ERRORS = [
-    AccountCreationFailedError,
-    AccountCreationRequirementsError,
-];
 
 class ErrorModal extends Component<ErrorModalProps> {
     render(): ReactNode {
@@ -36,7 +29,7 @@ class ErrorModal extends Component<ErrorModalProps> {
             <Modal
                 isOpen={ !!error }
                 additionalModalClassName="modal--error"
-                onRequestClose={ this.handleOnRequestClose }
+                onRequestClose={ event => this.handleOnRequestClose(event.nativeEvent) }
                 header={ this.renderHeader() }
                 footer={ this.renderFooter() }
             >
@@ -88,9 +81,12 @@ class ErrorModal extends Component<ErrorModalProps> {
     }
 
     private renderErrorCode(): ReactNode {
-        const { error } = this.props;
+        const {
+            error,
+            shouldShowErrorCode = true,
+        } = this.props;
 
-        if (!error || some(IGNORED_ERRORS, ignoredError => error instanceof ignoredError)) {
+        if (!error || !shouldShowErrorCode) {
             return;
         }
 
