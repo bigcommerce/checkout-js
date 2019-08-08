@@ -11,6 +11,10 @@ module.exports = {
     setupFilesAfterEnv: [
         '<rootDir>/jest-setup.ts',
     ],
+    transform: {
+        '\\.(gif|png|jpe?g|svg)$': '<rootDir>/scripts/jest/file-transformer',
+        '\\.scss$': '<rootDir>/scripts/jest/style-transformer',
+    },
     snapshotSerializers: [
         'enzyme-to-json/serializer',
     ],
