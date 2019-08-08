@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CustomerInfo matches snapshot 1`] = `
+<div
+  class="customerView"
+  data-test="checkout-customer-info"
+>
+  <div
+    class="customerView-body optimizedCheckout-contentPrimary"
+    data-test="customer-info"
+  >
+    test@bigcommerce.com
+  </div>
+  <div
+    class="customerView-actions"
+  />
+</div>
+`;

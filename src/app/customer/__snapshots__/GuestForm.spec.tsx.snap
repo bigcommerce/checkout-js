@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GuestForm matches snapshot 1`] = `
+<div>
+  <form
+    class="checkout-form"
+    data-test="checkout-customer-guest"
+    id="checkout-customer-guest"
+    novalidate=""
+  >
+    <fieldset
+      class="form-fieldset"
+    >
+      <legend
+        class="form-legend is-srOnly"
+      >
+        Guest Customer
+      </legend>
+      <div
+        class="form-body"
+      >
+        <p>
+          <span>
+            Checking out as a 
+            <strong>
+              Guest
+            </strong>
+            ? You'll be able to save your details to create an account with us later.
+          </span>
+        </p>
+        <div
+          class="customerEmail-container"
+        >
+          <div
+            class="customerEmail-body"
+          >
+            <div
+              class="form-field"
+            >
+              <label
+                class="form-label optimizedCheckout-form-label"
+                for="email"
+              >
+                Email Address
+              </label>
+              <input
+                autocomplete="email"
+                class="form-input optimizedCheckout-form-input"
+                id="email"
+                name="email"
+                type="email"
+                value=""
+              />
+            </div>
+            <div
+              class="form-field"
+            >
+              <input
+                class="form-checkbox"
+                id="shouldSubscribe"
+                name="shouldSubscribe"
+                type="checkbox"
+                value="false"
+              />
+              <label
+                class="form-label optimizedCheckout-form-label"
+                for="shouldSubscribe"
+              >
+                Subscribe to our newsletter.
+              </label>
+            </div>
+          </div>
+          <div
+            class="form-actions customerEmail-action"
+          >
+            <button
+              class="button customerEmail-button button--primary optimizedCheckout-buttonPrimary"
+              data-test="customer-continue-as-guest-button"
+              id="checkout-customer-continue"
+              type="submit"
+            >
+              Continue as guest
+            </button>
+          </div>
+        </div>
+        <p>
+          Already have an account? 
+          <a
+            data-test="customer-continue-button"
+            id="checkout-customer-login"
+          >
+            Sign in now
+          </a>
+        </p>
+      </div>
+    </fieldset>
+  </form>
+</div>
+`;
