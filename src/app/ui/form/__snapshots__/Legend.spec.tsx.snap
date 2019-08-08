@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Legend matches snapshot 1`] = `
+<legend
+  className="form-legend optimizedCheckout-headingSecondary"
+>
+  Hello world
+</legend>
+`;

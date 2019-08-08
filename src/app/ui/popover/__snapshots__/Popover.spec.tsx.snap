@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Popover Component renders with whatever child is passed 1`] = `
+<div
+  className="popover"
+>
+  <h1 />
+</div>
+`;

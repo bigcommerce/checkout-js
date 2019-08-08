@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AccordionItem renders component that matches snapshot 1`] = `
+<AccordionItem
+  headerContent={[Function]}
+  itemId="foobar"
+>
+  <li
+    className="accordion-item"
+  >
+    <div
+      className="accordion-item-header"
+    >
+      Foobar
+    </div>
+    <CSSTransition
+      addEndListener={[Function]}
+      classNames="accordion-item-body"
+      in={false}
+      mountOnEnter={true}
+      timeout={Object {}}
+      unmountOnExit={true}
+    >
+      <Transition
+        addEndListener={[Function]}
+        appear={false}
+        enter={true}
+        exit={true}
+        in={false}
+        mountOnEnter={true}
+        onEnter={[Function]}
+        onEntered={[Function]}
+        onEntering={[Function]}
+        onExit={[Function]}
+        onExited={[Function]}
+        onExiting={[Function]}
+        timeout={Object {}}
+        unmountOnExit={true}
+      />
+    </CSSTransition>
+  </li>
+</AccordionItem>
+`;
