@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TranslatedString Component renders translated string 1`] = `"Address"`;
