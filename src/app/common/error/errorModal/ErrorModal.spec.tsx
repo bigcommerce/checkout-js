@@ -1,0 +1,106 @@
+import { mount, ReactWrapper } from 'enzyme';
+import React from 'react';
+
+import { getStoreConfig } from '../../../config/config.mock';
+import { AccountCreationFailedError } from '../../../guestSignup/errors';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '../../../locale';
+import { Button } from '../../../ui/button';
+import { Modal } from '../../../ui/modal';
+import ErrorCode from '../errorCode/ErrorCode';
+
+import ErrorModal, { ErrorModalProps } from './ErrorModal';
+
+describe('ErrorModal', () => {
+    let errorModal: ReactWrapper;
+    let localeContext: LocaleContextType;
+    let error: Error;
+    const onClose = jest.fn();
+
+    const ErrorModalContainer = (props: ErrorModalProps) => (
+        <LocaleContext.Provider value={ localeContext }>
+            <ErrorModal
+                onClose={ onClose }
+                { ...props }
+            />
+        </LocaleContext.Provider>
+    );
+
+    beforeEach(() => {
+        error = new Error('Foo');
+
+        localeContext = createLocaleContext(getStoreConfig());
+        errorModal = mount(<ErrorModalContainer error={ error }/>);
+    });
+
+    it('renders error modal', () => {
+        expect(errorModal.find(Modal).prop('isOpen')).toBeTruthy();
+        expect(errorModal.find(ErrorModal).html()).toMatchSnapshot();
+    });
+
+    it('hides error modal if there is no error', () => {
+        errorModal = mount(<ErrorModalContainer />);
+
+        expect(errorModal.find(Modal).prop('isOpen'))
+            .toBeFalsy();
+    });
+
+    it('renders error code', () => {
+        expect(errorModal.find(ErrorCode).length).toEqual(1);
+    });
+
+    it('overrides error message', () => {
+        errorModal = mount(<ErrorModalContainer
+            error={ error }
+            message="Hello world"
+        />);
+
+        expect(errorModal.find('[data-test="modal-body"]').text())
+            .toContain('Hello world');
+    });
+
+    it('overrides error title', () => {
+        errorModal = mount(<ErrorModalContainer
+            error={ error }
+            title="Hello world"
+        />);
+
+        expect(errorModal.find('[data-test="modal-heading"]').text())
+            .toContain('Hello world');
+    });
+
+    describe('when modal is closed', () => {
+        beforeEach(() => {
+            errorModal.find(Button).simulate('click');
+        });
+
+        it('calls `onAfterClose` callback with event and error object', async () => {
+            await new Promise(resolve => process.nextTick(resolve));
+
+            expect(onClose)
+                .toHaveBeenCalledWith(expect.objectContaining({ type: 'click' }), { error });
+        });
+
+        describe('when the error is updated', () => {
+            beforeEach(() => {
+                errorModal.setProps({ error: new AccountCreationFailedError(new Error()) });
+                errorModal.update();
+            });
+
+            it('reopens modal', () => {
+                expect(errorModal.find(Modal).prop('isOpen')).toBeTruthy();
+            });
+
+            it('closes modal when error is cleared', () => {
+                errorModal.setProps({ error: null });
+                errorModal.update();
+
+                expect(errorModal.find(Modal).prop('isOpen'))
+                    .toBeFalsy();
+            });
+
+            it('does not render error code (ignored error)', () => {
+                expect(errorModal.find(ErrorCode).length).toEqual(0);
+            });
+        });
+    });
+});

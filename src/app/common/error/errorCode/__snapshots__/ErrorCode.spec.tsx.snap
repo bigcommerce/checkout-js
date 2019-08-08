@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ErrorCode Component renders error code component with provided code 1`] = `
+<div
+  className="errorCode"
+>
+  <span
+    className="errorCode-label"
+  >
+    <WithLanguage(TranslatedString)
+      id="common.error_code"
+    />
+  </span>
+   
+  <span
+    className="errorCode-value"
+  >
+    foo
+  </span>
+</div>
+`;
