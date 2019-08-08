@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LoadingNotification renders markup that matches snapshot 1`] = `
+<div
+  className="loadingNotification"
+>
+  <div
+    className="loadingNotification-label optimizedCheckout-loadingToaster"
+  >
+    <div
+      className="spinner"
+    />
+    <span
+      className="label"
+    >
+      <WithLanguage(TranslatedString)
+        id="common.loading_text"
+      />
+    </span>
+  </div>
+</div>
+`;
