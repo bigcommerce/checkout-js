@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AppliedGiftCertificate renders markup that matches snapshot 1`] = `
+<div
+  className="redeemable-column redeemable-info"
+  data-test="redeemable-item--giftCertificate"
+>
+  <span
+    className="redeemable-info-header"
+  >
+    <span
+      className="redeemable-info-header--highlight"
+      data-test="giftCertificate-amount"
+    >
+      <WithCurrency(ShopperCurrency)
+        amount={80}
+      />
+    </span>
+    <WithLanguage(TranslatedString)
+      id="redeemable.gift_certificate_text"
+    />
+  </span>
+  <span
+    className="redeemable-info-subHeader"
+  >
+    <span
+      className="redeemable-info-subHeader--remaining"
+    >
+      <WithLanguage(TranslatedString)
+        id="redeemable.gift_certificate_remaining_text"
+      />
+      <span
+        data-test="giftCertificate-remaining"
+      >
+        <WithCurrency(ShopperCurrency)
+          amount={20}
+        />
+      </span>
+    </span>
+    <span
+      data-test="giftCertificate-code"
+    >
+      savebig2015
+    </span>
+  </span>
+</div>
+`;
