@@ -7,3 +7,4 @@ export type CheckoutProviderState = CheckoutProviderState;
 
 export { default as CheckoutContext } from './CheckoutContext';
 export { default as CheckoutProvider } from './CheckoutProvider';
+export { default as withCheckout } from './withCheckout';
