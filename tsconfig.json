@@ -30,5 +30,6 @@
     },
     "files": [
         "types/supported-files.d.ts",
+        "types/ungap.d.ts",
     ],
 }
