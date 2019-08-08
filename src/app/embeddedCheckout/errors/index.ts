@@ -1,0 +1,1 @@
+export { EmbeddedCheckoutUnsupportedError } from './EmbeddedCheckoutUnsupportedError';
