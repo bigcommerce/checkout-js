@@ -1,0 +1,32 @@
+// =============================================================================
+// ORDER CONFIRMATION (Component)
+// =============================================================================
+
+.orderConfirmation {
+    padding: spacing("double") 0 0;
+}
+
+.orderConfirmation-section {
+    border-bottom: container("border");
+    margin-bottom: (spacing("single") + spacing("base"));
+    padding: 0 0 (spacing("single") + spacing("base"));
+
+    *:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.continueButtonContainer {
+    margin-top: spacing("double");
+}
+
+.trackingCodeIframe {
+    left: -5000px;
+    position: absolute;
+}
+
+@media print {
+    .guest-signup {
+        display: none;
+    }
+}

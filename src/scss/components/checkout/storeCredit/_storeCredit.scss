@@ -1,0 +1,21 @@
+// =============================================================================
+// STORE CREDIT (Component)
+// =============================================================================
+
+.storeCreditOverlay {
+    align-items: center;
+    background-color: $overlay-fill;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: zIndex("higher");
+}
+
+.storeCreditOverlay-text {
+    margin: 0;
+    text-align: center;
+}

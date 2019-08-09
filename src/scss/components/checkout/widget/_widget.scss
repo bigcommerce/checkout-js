@@ -1,0 +1,55 @@
+// =============================================================================
+// WIDGET (Component)
+// =============================================================================
+
+.widget {
+    outline: 0;
+    padding-bottom: spacing("half");
+    width: 100%;
+}
+
+.widget--paymentMethod {
+    background-color: container("fill", "dark");
+    border: container("border", "dark");
+    border-radius: $global-radius;
+    list-style: none;
+    margin-left: 0;
+    padding-bottom: 0;
+}
+
+.widget--amazon {
+    height: 260px;
+}
+
+.widget--braintree {
+    .cardDetails {
+        margin-bottom: 0;
+    }
+}
+
+.widget-header {
+    display: block;
+    padding: $checklist-spacing $checklist-spacingRight $checklist-spacing $checklist-spacingLeft--small;
+}
+
+.widget-body {
+    @include collapse($max-height: remCalc(350px));
+
+    margin-left: $checklist-spacingLeft--small;
+    margin-right: $checklist-spacingRight;
+}
+
+.widget-container {
+    padding: ($checklist-spacing / 1.5) 0;
+}
+
+.widget-bodyCard {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.widget-header-googlepay {
+    text-align: center;
+}

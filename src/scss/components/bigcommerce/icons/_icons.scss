@@ -1,0 +1,32 @@
+// =============================================================================
+// ICONS
+// =============================================================================
+
+// BCApp Icon component extensions and additons
+// -----------------------------------------------------------------------------
+//
+// Purpose: Provide Control Panel specific icon control for specific icon sets
+//
+// 1. We want some icons to be displayed at a certain sizes in the Control Panel UI
+// Sometimes larger than the standard icon, especially for "design icons" like payment
+// types
+//
+// -----------------------------------------------------------------------------
+
+@if $exportCSS--icons {
+    .icon--small {
+        @include square($icon-size * 1.5);
+    }
+
+    .icon--medium {
+        @include square($icon-size * 2);
+    }
+
+    .icon--large {
+        @include square($icon-size * 3);
+    }
+
+    .icon--error svg {
+        fill: color("error");
+    }
+}

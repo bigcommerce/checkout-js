@@ -1,0 +1,10 @@
+// ============================================================================
+// ANIMATION SETTINGS
+// =============================================================================
+
+$animation-collapse-maxHeight: remCalc(1200px);
+$animation-collapse-minHeight: 0;
+$animation-collapse-transitionCurve: cubic-bezier(0.77, 0, 0.175, 1);
+$animation-collapse-transitionProperty: max-height;
+$animation-collapse-transitionSpeed: 600ms;
+$animation-collapse-transition: $animation-collapse-transitionProperty $animation-collapse-transitionSpeed $animation-collapse-transitionCurve;

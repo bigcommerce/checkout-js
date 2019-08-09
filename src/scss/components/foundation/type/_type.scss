@@ -1,0 +1,48 @@
+// =============================================================================
+// TYPE (CSS)
+// =============================================================================
+
+// BCApp Type specifics
+// -----------------------------------------------------------------------------
+//
+// 1. If set to false, there is no outputted CSS for this component.
+//
+// -----------------------------------------------------------------------------
+
+@if $exportCSS--type {
+    h1 {
+        @include headingStyle("h1");
+    }
+
+    h2 {
+        @include headingStyle("h2");
+    }
+
+    h3 {
+        @include headingStyle("h3");
+    }
+
+    h4 {
+        @include headingStyle("h4");
+    }
+
+    h5 {
+        @include headingStyle("h5");
+    }
+
+    h6 {
+        @include headingStyle("h6");
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        a,
+        a:hover {
+            color: currentcolor;
+        }
+    }
+}

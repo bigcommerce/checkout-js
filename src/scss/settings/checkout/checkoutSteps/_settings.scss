@@ -1,0 +1,18 @@
+// =============================================================================
+// CHECKOUT STEPS (Settings)
+// =============================================================================
+
+// Checkout Step
+// -----------------------------------------------------------------------------
+$checkoutStep-margin: spacing("single");
+$checkoutStep-header-actions-margin: $checkoutStep-margin;
+$checkoutStep-header-body-margin: $checkoutStep-margin;
+$checkoutStep-header-figure-margin: $checkoutStep-margin;
+
+// Checkout Step Counter
+// -----------------------------------------------------------------------------
+$checkoutStep-counter: li-counter;
+$checkoutStep-counter-color: color("whites", "bright");
+$checkoutStep-counter-padding: 0;
+$checkoutStep-counter-padding--small: spacing("sixth");
+$checkoutStep-counter-size: 35;

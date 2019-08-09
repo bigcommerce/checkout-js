@@ -1,0 +1,87 @@
+// ProductList
+// -----------------------------------------------------------------------------
+//
+// Purpose: Styling of the product list
+//
+//
+// -----------------------------------------------------------------------------
+
+.productList {
+    @include u-listBullets("none");
+
+    margin: 0;
+}
+
+.productList-item {
+    margin-bottom: spacing("double");
+
+    @include breakpoint("small") {
+        margin-bottom: spacing("single");
+    }
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    &:nth-child(n+5) {
+        display: none;
+    }
+
+    &.is-visible:nth-child(n+5) {
+        display: list-item;
+    }
+}
+
+.product {
+    display: flex;
+    flex-wrap: wrap;
+
+    @include breakpoint("small") {
+        flex-wrap: nowrap;
+    }
+}
+
+.product-figure {
+    margin: 0;
+    padding-right: 1.5rem;
+    width: 25%;
+}
+
+.product-body {
+    order: 2;
+    padding-right: 0;
+    width: 100%;
+    word-wrap: break-word;
+
+    @include breakpoint("small") {
+        padding-right: spacing("quarter");
+        width: 50%;
+    }
+}
+
+.product-title {
+    margin-bottom: spacing("eighth");
+}
+
+.product-options {
+    color: color("greys");
+    font-size: fontSize("tiny");
+    margin: 0;
+}
+
+.product-actions {
+    align-self: center;
+    margin-left: auto;
+
+    @include breakpoint("small") {
+        align-self: flex-start;
+        order: 3;
+        text-align: right;
+        width: 25%;
+        word-wrap: break-word; // 1
+    }
+}
+
+.product-price--beforeDiscount {
+    text-decoration: line-through;
+}

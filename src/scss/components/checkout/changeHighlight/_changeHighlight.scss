@@ -1,0 +1,25 @@
+// =============================================================================
+// ChangeHighlight
+// =============================================================================
+
+// ChangeHighlight
+// -----------------------------------------------------------------------------
+//
+// Highlight parts of the UI when a change has occurred to alert the user to it
+//
+// -----------------------------------------------------------------------------
+
+.changeHighlight-enter-active,
+.changeHighlight {
+    animation: highlightFade 1000ms ease-out;
+}
+
+@keyframes highlightFade {
+    0% {
+        background: rgba(color("highlight"), 0.6);
+    }
+
+    100% {
+        background: rgba(color("highlight"), 0);
+    }
+}

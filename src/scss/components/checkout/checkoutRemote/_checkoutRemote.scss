@@ -1,0 +1,16 @@
+// =============================================================================
+// CHECKOUT CUSTOMER REMOTE (Component)
+// =============================================================================
+
+.checkoutRemote {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -(spacing("third"));
+    margin-right: -(spacing("third"));
+}
+
+.checkoutRemote-button {
+    margin-bottom: spacing("base");
+    margin-left: spacing("third");
+    margin-right: spacing("third");
+}

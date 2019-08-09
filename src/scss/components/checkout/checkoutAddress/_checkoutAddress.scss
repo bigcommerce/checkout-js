@@ -1,0 +1,62 @@
+// =============================================================================
+// CHECKOUT ADDRESS (Component)
+//
+// 1. Custom elements take components out of the the document flow; even though
+// it contains a form-field, have to reset the flex and display property to get
+// layout
+// =============================================================================
+
+.form-addressState {
+    display: block; // 1
+    flex: 1; // 1
+}
+
+.checkout-address {
+    display: flex;
+    flex-flow: row wrap;
+    margin-left: -1 * spacing("half");
+    margin-right: -1 * spacing("half");
+
+    .dynamic-form-addressState,
+    .dynamic-form-field {
+        display: block;
+        flex: 1;
+        flex-basis: 100%;
+        max-width: 100%;
+        padding: 0 spacing("half");
+    }
+
+    .dynamic-form-field--province,
+    .dynamic-form-field--provinceCode,
+    .dynamic-form-field--firstName,
+    .dynamic-form-field--lastName,
+    .dynamic-form-field--phone,
+    .dynamic-form-field--city {
+        @include breakpoint("small") {
+            flex-basis: 50%;
+        }
+    }
+
+    .dynamic-form-field--postCode {
+        @include breakpoint("small") {
+            flex-basis: 30%;
+        }
+    }
+}
+
+.shipping-address {
+    .address-line {
+        margin-bottom: 0;
+    }
+}
+
+.multiCheckbox--controls {
+    list-style: none;
+    margin: 0 0 spacing("half");
+    padding: 0;
+}
+
+.multiCheckbox--control {
+    display: inline-block;
+    margin-right: spacing("quarter");
+}

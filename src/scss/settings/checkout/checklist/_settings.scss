@@ -1,0 +1,17 @@
+// =============================================================================
+// CHECKLIST
+// =============================================================================
+
+$checklist-spacing:                     spacing("base");
+$checklist-spacingLeft:                 spacing("double") + spacing("single");
+$checklist-spacingLeft--small:          spacing("double") + spacing("half");
+$checklist-spacingRight:                $checklist-spacingLeft / 2;
+$checklist-label-height:                remCalc(60px);
+$checklist-label-color:                 $header-font-color;
+$checklist-label-fontSize:              fontSize("smaller");
+$checklist-label-selected-fontWeight:   fontWeight("bold");
+$checklist-focus-boxShadow:             inset 0 0 0 1px color("highlight");
+$checklist-pip-backgroundImage:         url("data:image/svg+xml;utf8, %3Csvg%20width%3D%2718%27%20height%3D%2714%27%20viewBox%3D%270%200%2018%2014%27%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%3E%3Ctitle%3EFill%201%20Copy%208%3C%2Ftitle%3E%3Cpath%20d%3D%27M15.919414%201.21444c.565648-.63879%201.466634.29225.900986.93104-3.141611%203.67166-6.306905%207.28906-9.473915%2010.9327-.154112.18586-.308223.34653-.463708.53203-.232025.26601-.669304.23976-.900986%200-1.59569-1.56947-3.19241-3.16554-4.7881-4.73536-.59242-.58487.308567-1.54357.900987-.93104%201.441578%201.41022%202.857414%202.81937%204.298649%204.25618%203.193782-3.67024%206.359077-7.31389%209.526087-10.98555z%27%20stroke%3D%27%234C9E4C%27%20stroke-width%3D%27.2%27%20fill%3D%27%234C9E4C%27%20fill-rule%3D%27evenodd%27%2F%3E%3C%2Fsvg%3E");
+$checklist-pip-spacing:                 spacing("base") + spacing("third");
+$checklist-pip-spacing--small:          $checklist-pip-spacing / 1.5;
+$checklist-pip-spacingVertical:         remCalc(20px);

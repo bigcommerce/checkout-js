@@ -1,0 +1,39 @@
+// =============================================================================
+// TYPE (Tools)
+// =============================================================================
+
+// Heading Style
+// -----------------------------------------------------------------------------
+//
+// 1. Include the base heading styles based on foundation variables (Sass Lib)
+//    (Reference the argument "includeBase" when including this mixin).
+//
+// -----------------------------------------------------------------------------
+
+@mixin headingStyle($h, $base: null) {
+
+    @if $base == "includeBase" {
+        @include headingBase; // 1
+    }
+
+    @if $h == "h1" {
+        font-size: $h1-font-size;
+    }
+    @else if $h == "h2" {
+        font-size: $h2-font-size;
+    }
+    @else if $h == "h3" {
+        font-size: $h3-font-size;
+        font-weight: fontWeight("bold");
+    }
+    @else if $h == "h4" {
+        font-size: $h4-font-size;
+    }
+    @else if $h == "h5" {
+        font-size: $h5-font-size;
+        font-weight: fontWeight("semibold");
+    }
+    @else if $h == "h6" {
+        font-size: $h6-font-size;
+    }
+}

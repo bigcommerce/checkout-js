@@ -1,0 +1,77 @@
+// =============================================================================
+// INSTRUMENT SELECT (Component)
+// =============================================================================
+
+.instrumentSelect {
+    position: relative;
+    width: 100%;
+}
+
+.instrumentSelect-button {
+    height: auto;
+}
+
+.instrumentSelect-dropdownMenu {
+    max-height: remCalc(185px);
+    max-width: none;
+    overflow: scroll;
+}
+
+.dropdownMenu .instrumentSelect-dropdownMenu {
+    display: block;
+    left: auto;
+    position: static;
+}
+
+.instrumentSelect-option {
+    padding: 0;
+
+    > button {
+        display: block;
+        padding: spacing("half") spacing("base");
+        width: 100%;
+    }
+}
+
+.instrumentSelect-option--addNew {
+    > button {
+        color: $color-highlight;
+    }
+}
+
+.instrumentSelect-option--selected {
+    background-color: $color-highlight;
+
+    > button {
+        color: $color-white;
+    }
+
+    &:hover {
+        background-color: $color-highlight;
+    }
+}
+
+.instrumentSelect-details {
+    align-items: center;
+    display: flex;
+}
+
+.instrumentSelect-card {
+    flex-grow: 2;
+    margin-left: spacing("half");
+    margin-right: spacing("half");
+    text-align: left;
+}
+
+.instrumentSelect-expiry {
+    margin-right: remCalc(20px);
+    text-align: right;
+}
+
+.instrumentSelect-expiry--expired {
+    color: color("error");
+}
+
+.instrumentSelect-details--expired {
+    cursor: not-allowed;
+}

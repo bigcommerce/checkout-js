@@ -1,0 +1,63 @@
+// =============================================================================
+// CHECKOUT LAYOUTS
+//
+// 1. Needed to overwrite the element-level styles applied by sticky directive
+// =============================================================================
+
+.layout {
+    @include grid-row;
+
+    min-height: remCalc(200px);
+    padding: 0 spacing("single") 5 * spacing("single");
+
+    @include breakpoint("large") {
+        padding-bottom: spacing("single");
+    }
+}
+
+.layout-cart {
+    @include grid-column($columns: 12);
+
+    @include breakpoint("large") {
+        width: grid-calc(5, $total-columns);
+    }
+
+    @include breakpoint("xlarge") {
+        width: grid-calc(4, $total-columns);
+    }
+
+    &.is-sticky {
+        position: sticky;
+        top: 0;
+    }
+}
+
+.layout-main {
+    @include grid-column(12);
+
+    @include breakpoint("large") {
+        width: grid-calc(7, $total-columns);
+    }
+
+    @include breakpoint("xlarge") {
+        width: grid-calc(8, $total-columns);
+    }
+
+    @include breakpoint("xlarge") {
+        padding-right: spacing("double") * 2;
+    }
+}
+
+@media print {
+    .layout-cart {
+        float: none;
+        page-break-before: always;
+        // scss-lint:disable ImportantRule
+        position: static !important; // 1
+        // scss-lint:enable ImportantRule
+    }
+
+    .layout-main {
+        float: none;
+    }
+}

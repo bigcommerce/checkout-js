@@ -1,0 +1,8 @@
+html,
+body {
+    height: auto;
+
+    @include breakpoint("large") {
+        scroll-behavior: smooth;
+    }
+}

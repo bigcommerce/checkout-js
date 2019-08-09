@@ -1,0 +1,144 @@
+// =============================================================================
+// FORMS (Settings)
+// =============================================================================
+
+// Foundation Variables
+// -----------------------------------------------------------------------------
+//
+// These variables come directly from:
+// /vendor/foundation/foundation/components/*
+// Declaring the variables here, you can adjust them all to your design,
+// leaving the vendor framework untouched.
+//
+// -----------------------------------------------------------------------------
+
+$include-html-form-classes:          $include-html-classes;
+
+// We use this to set the base for lots of form spacing and positioning styles
+$form-spacing:                       spacing("single");
+
+// We use these to style the labels in different ways
+$form-label-pointer:                 pointer;
+$form-label-font-size:               fontSize("base");
+$form-label-font-weight:             fontWeight("medium");
+$form-label-line-height:             lineHeight("base");
+$form-label-font-color:              color("greys", "dark");
+$form-label-bottom-margin:           ($form-spacing / 4);
+
+// $input-font-family:               inherit;
+$input-font-color:                   $body-font-color;
+$input-font-size:                    fontSize("base");
+$input-bg-color:                     color("whites", "bright");
+$input-focus-bg-color:               color("whites", "bright");
+$input-border-color:                 container("borderColor", "dark");
+$input-focus-border-color:           color("highlight");
+$input-border-style:                 solid;
+$input-border-width:                 1px;
+$input-border-radius:                $global-radius;
+$input-disabled-bg:                  color("greys", "lighter");
+$input-disabled-borderColor:         container("borderColor", "dark");
+$input-disabled-color:               color("greys", "darker");
+$input-disabled-cursor:              not-allowed;
+$input-box-shadow:                   inset 0 1px 1px color("greys", "light");
+$input-include-glowing-effect:       true;
+
+// We use these to style the fieldset border and spacing.
+$fieldset-border-style:              solid;
+$fieldset-border-width:              0;
+$fieldset-border-color:              container("borderColor", "dark");
+$fieldset-padding:                   0;
+$fieldset-margin:                    0;
+
+// We use these to style the legends when you use them
+$legend-bg:                          transparent;
+$legend-font-weight:                 fontWeight("bold");
+$legend-padding:                     0 0 (spacing("single") + spacing("third"));
+
+// We use these to style the prefix and postfix input elements
+$input-prefix-bg:                    null;
+$input-prefix-border-color:          null;
+$input-prefix-border-size:           null;
+$input-prefix-border-type:           null;
+$input-prefix-overflow:              null;
+$input-prefix-font-color:            null;
+$input-prefix-font-color-alt:        null;
+
+// We use this setting to turn on/off HTML5 number spinners (the up/down arrows)
+$input-number-spinners:              true;
+
+// We use these to style the error states for inputs and labels
+$input-error-message-padding:        null;
+$input-error-message-top:            null;
+$input-error-message-font-size:      null;
+$input-error-message-font-weight:    null;
+$input-error-message-font-style:     null;
+$input-error-message-font-color:     null;
+$input-error-message-font-color-alt: null;
+
+// We use this to style the glowing effect of inputs when focused
+$glowing-effect-fade-time:           null;
+$glowing-effect-color:               null;
+
+// Select variables
+$select-bg-color:                    color("whites", "bright");
+$select-hover-bg-color:              color("whites", "bright");
+
+// Bigcommerce Variables
+// -----------------------------------------------------------------------------
+//
+// These scoped variables are created by Bigcommerce.
+// All variables that are not from Foundation should be placed here.
+//
+// 1. Choose whether to include the Bigcommerce class names
+//
+// -----------------------------------------------------------------------------
+
+$exportCSS--forms:                   true; // 1
+
+$form-verticalSpacing:               spacing("base");
+
+$form-margin:                        0;
+
+$legend-border-style:                null;
+$legend-border-width:                null;
+$legend-border-color:                null;
+$legend-display:                     block;
+$legend-fontFamily:                  fontFamily("headingSans");
+$legend-fontSize:                    $h5-font-size;
+$legend-lineHeight:                  lineHeight("base");
+$legend-marginBottom:                0;
+$legend-width:                       100%;
+
+$form-label-small-color:             null;
+$form-label-small-fontSize:          fontSize("base");
+$form-label-small-fontWeight:        fontWeight("normal");
+$form-label-small-transform:         none;
+
+$input-boxShadow:                    none;
+$input-display:                      block;
+$input-fontSmoothing:                true;
+$input-height:                       $form-spacing * 2.3;
+$input-horizontalPadding:            ($form-spacing / 1.5);
+$input-margin:                       0;
+$input-placeholder-color:            color("greys", "medium");
+$input-transition:                   all 100ms ease-out;
+$input-verticalPadding:              ($form-spacing / 2);
+$input-padding:                      $input-verticalPadding $input-horizontalPadding;
+$input-width:                        100%;
+
+$input-readonly-bg:                  $input-disabled-bg;
+$input-readonly-borderColor:         $input-disabled-borderColor;
+$input-readonly-color:               $input-disabled-color;
+$input-readonly-cursor:              text;
+
+$input-focus-boxShadow:              0 0 3px rgba(color("highlight"), 0.4);
+$input-formIcon-width:               remCalc(18px);
+
+$select-boxShadow:                   $input-boxShadow;
+$select-height:                      $input-height;
+$select-margin:                      0;
+$select-maxWidth:                    none;
+$select-outline:                     0;
+$select-paddingRight:                spacing("single");
+$select-focus-borderColor:           $input-focus-border-color;
+$select-focus-boxShadow:             $input-focus-boxShadow;

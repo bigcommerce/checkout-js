@@ -1,0 +1,209 @@
+// =============================================================================
+// BUTTONS (Settings)
+// =============================================================================
+
+// Bigcommerce Variables
+// -----------------------------------------------------------------------------
+//
+// These scoped variables are created by Bigcommerce.
+// All variables that are not from Foundation should be placed here.
+//
+// 1. Choose whether to include the Bigcommerce class names
+//
+// -----------------------------------------------------------------------------
+
+$exportCSS--buttons:                    true; // 1
+
+//
+// Button Style variables
+// -----------------------------------------------------------------------------
+
+$buttonStyle-default-color:                  color("greys", "dark");
+$buttonStyle-default-colorHover:             color("greys", "darker");
+$buttonStyle-default-colorActive:            color("greys", "darkest");
+$buttonStyle-default-backgroundColor:        color("secondary");
+$buttonStyle-default-backgroundColorHover:   color("secondary");
+$buttonStyle-default-backgroundColorActive:  color("secondary");
+$buttonStyle-default-borderColor:            color("greys", "medium");
+$buttonStyle-default-borderColorHover:       color("greys");
+$buttonStyle-default-borderColorActive:      color("greys", "dark");
+
+$buttonStyle-primary-color:                  color("whites", "bright");
+$buttonStyle-primary-colorHover:             color("whites", "bright");
+$buttonStyle-primary-colorActive:            color("whites", "bright");
+$buttonStyle-primary-backgroundColor:        color("primary");
+$buttonStyle-primary-backgroundColorHover:   color("primary", "dark");
+$buttonStyle-primary-backgroundColorActive:  color("primary", "darker");
+$buttonStyle-primary-borderColor:            color("primary");
+$buttonStyle-primary-borderColorHover:       color("primary", "dark");
+$buttonStyle-primary-borderColorActive:      color("primary", "darker");
+
+$buttonStyle-tertiary-color:                 color("highlight");
+$buttonStyle-tertiary-colorHover:            color("highlight", "dark");
+$buttonStyle-tertiary-colorActive:           color("highlight", "dark");
+$buttonStyle-tertiary-backgroundColor:       color("secondary");
+$buttonStyle-tertiary-backgroundColorHover:  color("secondary");
+$buttonStyle-tertiary-backgroundColorActive: color("secondary");
+$buttonStyle-tertiary-borderColor:           color("greys", "light");
+$buttonStyle-tertiary-borderColorHover:      color("greys", "medium");
+$buttonStyle-tertiary-borderColorActive:     color("greys", "medium");
+
+$buttonStyle-action-color:                   color("whites", "bright");
+$buttonStyle-action-colorHover:              color("whites", "bright");
+$buttonStyle-action-colorActive:             color("whites", "bright");
+$buttonStyle-action-backgroundColor:         color("highlight");
+$buttonStyle-action-backgroundColorHover:    color("highlight", "dark");
+$buttonStyle-action-backgroundColorActive:   color("highlight", "darker");
+$buttonStyle-action-borderColor:             color("highlight");
+$buttonStyle-action-borderColorHover:        color("highlight", "dark");
+$buttonStyle-action-borderColorActive:       color("highlight", "darker");
+
+$buttonStyle-disabled-color:                 color("greys", "medium");
+$buttonStyle-disabled-colorHover:            color("greys", "medium");
+$buttonStyle-disabled-colorActive:           color("greys", "medium");
+$buttonStyle-disabled-backgroundColor:       color("greys", "lightest");
+$buttonStyle-disabled-backgroundColorHover:  color("greys", "lightest");
+$buttonStyle-disabled-backgroundColorActive: color("greys", "lightest");
+$buttonStyle-disabled-borderColor:           color("greys", "light");
+$buttonStyle-disabled-borderColorHover:      color("greys", "light");
+$buttonStyle-disabled-borderColorActive:     color("greys", "light");
+
+// Color/State Modifiers
+// -----------------------------------------------------------------------------
+$buttonStyleMap: (
+    default: (
+        color:                          $buttonStyle-default-color,
+        colorHover:                     $buttonStyle-default-colorHover,
+        colorActive:                    $buttonStyle-default-colorActive,
+        backgroundColor:                $buttonStyle-default-backgroundColor,
+        backgroundColorHover:           $buttonStyle-default-backgroundColorHover,
+        backgroundColorActive:          $buttonStyle-default-backgroundColorActive,
+        borderColor:                    $buttonStyle-default-borderColor,
+        borderColorHover:               $buttonStyle-default-borderColorHover,
+        borderColorActive:              $buttonStyle-default-borderColorActive
+    ),
+    primary: (
+        color:                          $buttonStyle-primary-color,
+        colorHover:                     $buttonStyle-primary-colorHover,
+        colorActive:                    $buttonStyle-primary-colorActive,
+        backgroundColor:                $buttonStyle-primary-backgroundColor,
+        backgroundColorHover:           $buttonStyle-primary-backgroundColorHover,
+        backgroundColorActive:          $buttonStyle-primary-backgroundColorActive,
+        borderColor:                    $buttonStyle-primary-borderColor,
+        borderColorHover:               $buttonStyle-primary-borderColorHover,
+        borderColorActive:              $buttonStyle-primary-borderColorActive
+    ),
+    tertiary: (
+        color:                          $buttonStyle-tertiary-color,
+        colorHover:                     $buttonStyle-tertiary-colorHover,
+        colorActive:                    $buttonStyle-tertiary-colorActive,
+        backgroundColor:                $buttonStyle-tertiary-backgroundColor,
+        backgroundColorHover:           $buttonStyle-tertiary-backgroundColorHover,
+        backgroundColorActive:          $buttonStyle-tertiary-backgroundColorActive,
+        borderColor:                    $buttonStyle-tertiary-borderColor,
+        borderColorHover:               $buttonStyle-tertiary-borderColorHover,
+        borderColorActive:              $buttonStyle-tertiary-borderColorActive
+    ),
+    action: (
+        color:                          $buttonStyle-action-color,
+        colorHover:                     $buttonStyle-action-colorHover,
+        colorActive:                    $buttonStyle-action-colorActive,
+        backgroundColor:                $buttonStyle-action-backgroundColor,
+        backgroundColorHover:           $buttonStyle-action-backgroundColorHover,
+        backgroundColorActive:          $buttonStyle-action-backgroundColorActive,
+        borderColor:                    $buttonStyle-action-borderColor,
+        borderColorHover:               $buttonStyle-action-borderColorHover,
+        borderColorActive:              $buttonStyle-action-borderColorActive
+    ),
+    disabled: (
+        color:                          $buttonStyle-disabled-color,
+        colorHover:                     $buttonStyle-disabled-colorHover,
+        colorActive:                    $buttonStyle-disabled-colorActive,
+        backgroundColor:                $buttonStyle-disabled-backgroundColor,
+        backgroundColorHover:           $buttonStyle-disabled-backgroundColorHover,
+        backgroundColorActive:          $buttonStyle-disabled-backgroundColorActive,
+        borderColor:                    $buttonStyle-disabled-borderColor,
+        borderColorHover:               $buttonStyle-disabled-borderColorHover,
+        borderColorActive:              $buttonStyle-disabled-borderColorActive
+    )
+);
+
+// Size Modifiers
+// -----------------------------------------------------------------------------
+
+$buttonSize-default-fontSize:           fontSize("base");
+$buttonSize-default-horizontalPadding:  spacing("single") + spacing("half");
+$buttonSize-default-verticalPadding:    spacing("third") + spacing("third");
+
+$buttonSize-large-fontSize:             fontSize("small");
+$buttonSize-large-horizontalPadding:    spacing("double") + spacing("single");
+$buttonSize-large-verticalPadding:      spacing("base") + spacing("eighth");
+
+$buttonSize-small-fontSize:             fontSize("base");
+$buttonSize-small-horizontalPadding:    spacing("single") + spacing("quarter");
+$buttonSize-small-verticalPadding:      spacing("half") + spacing("eighth");
+
+$buttonSize-tiny-fontSize:              fontSize("base");
+$buttonSize-tiny-horizontalPadding:     spacing("base") + spacing("eighth");
+$buttonSize-tiny-verticalPadding:       spacing("third");
+
+$buttonSize-square-fontSize:            fontSize("base");
+$buttonSize-square-horizontalPadding:   spacing("half");
+$buttonSize-square-verticalPadding:     spacing("half");
+
+$button-vAlign:                         middle;
+$button-focus-boxShadow:                0 0 2px rgba(color("primary"), 0.6);
+
+$button-adjacentButton-marginLeft:      spacing("half");
+
+$buttonSizeMap: (
+    default: (
+        fontSize:                       $buttonSize-default-fontSize,
+        horizontalPadding:              $buttonSize-default-horizontalPadding,
+        verticalPadding:                $buttonSize-default-verticalPadding
+    ),
+    large: (
+        fontSize:                       $buttonSize-large-fontSize,
+        horizontalPadding:              $buttonSize-large-horizontalPadding,
+        verticalPadding:                $buttonSize-large-verticalPadding
+    ),
+    small: (
+        fontSize:                       $buttonSize-small-fontSize,
+        horizontalPadding:              $buttonSize-small-horizontalPadding,
+        verticalPadding:                $buttonSize-small-verticalPadding
+    ),
+    tiny: (
+        fontSize:                       $buttonSize-tiny-fontSize,
+        horizontalPadding:              $buttonSize-tiny-horizontalPadding,
+        verticalPadding:                $buttonSize-tiny-verticalPadding
+    ),
+    square: (
+        fontSize:                       $buttonSize-square-fontSize,
+        horizontalPadding:              $buttonSize-square-horizontalPadding,
+        verticalPadding:                $buttonSize-square-verticalPadding
+    )
+);
+
+// Foundation Variables
+// -----------------------------------------------------------------------------
+//
+// These variables come directly from:
+// /vendor/foundation/foundation/components/*
+// Declaring the variables here, you can adjust them all to your design,
+// leaving the vendor framework untouched.
+//
+// -----------------------------------------------------------------------------
+
+$include-html-button-classes:           $include-html-classes;
+
+$button-display:                        inline-block;
+$button-margin-bottom:                  spacing("single");
+
+$button-font-family:                    $body-font-family;
+$button-font-weight:                    $font-weight-normal;
+$button-font-align:                     center;
+
+$button-border-width:                   1px;
+$button-border-style:                   solid;
+
+$button-radius:                         3px;

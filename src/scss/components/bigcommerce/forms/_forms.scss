@@ -1,0 +1,35 @@
+// =============================================================================
+// FORMS
+// =============================================================================
+
+// Bigcommerce forms
+// -----------------------------------------------------------------------------
+//
+// Purpose: Provide any additional styling to Bigcommerce form components
+// that citadel does not provide out of the box
+//
+// -----------------------------------------------------------------------------
+
+//
+// Check radios
+// -----------------------------------------------------------------------------
+
+.form-checkbox + .form-label,
+.form-radio + .form-label {
+    color: inherit;
+}
+
+.form-checkbox:checked + .form-label::before,
+.form-radio:checked + .form-label::before {
+    background-color: color("highlight");
+    border-color: color("highlight");
+}
+
+.form-radio:checked + .form-label::after {
+    border: none;
+    transform: scale(0.5);
+}
+
+.formField--helpText {
+    color: color("greys");
+}

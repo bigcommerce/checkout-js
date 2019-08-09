@@ -1,0 +1,46 @@
+// =============================================================================
+// LOADING INDICATORS
+// =============================================================================
+
+.loadingNotification-label {
+    align-items: center;
+    display: flex;
+    padding: spacing("half") spacing("double");
+
+    .label {
+        margin-left: spacing("half");
+    }
+}
+
+.spinner {
+    animation: lds-dual-ring 1.2s linear infinite;
+    border-color: $loadingNotification-label-spinnerColor;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 1px;
+    display: inline-block;
+    height: remCalc(15px);
+    width: remCalc(15px);
+}
+
+@keyframes lds-dual-ring {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.layout {
+    > .loadingOverlay::before {
+        position: fixed;
+        top: $loadingOverlay-spinner-top--main;
+    }
+}
+
+.loadingOverlay {
+    opacity: 0.9;
+    z-index: zIndex("low");
+}
