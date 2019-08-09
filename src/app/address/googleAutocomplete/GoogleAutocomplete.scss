@@ -1,0 +1,16 @@
+@import '../../../../node_modules/@bigcommerce/citadel/src/settings/global/global';
+
+$googleLogoHeight: 18px;
+
+.co-googleAutocomplete-footer {
+    background-color: color("greys", "lightest");
+    background-image: url("../../../static/img/powered_by_google_on_white.png");
+    background-position-x: spacing("half");
+    background-position-y: center;
+    background-repeat: no-repeat;
+    border-top: container("border");
+    box-sizing: content-box;
+    color: color("greys", "dark");
+    height: $googleLogoHeight;
+    padding: spacing("half");
+}
