@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import OrderConfirmationApp from './OrderConfirmationApp';
 
-export default function renderOrderConfirmationNext(
+export default function renderOrderConfirmation(
     containerId: string,
     orderId: number
 ) {

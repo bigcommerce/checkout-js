@@ -7,4 +7,4 @@ export { default as OrderStatus } from './OrderStatus';
 export { default as OrderSummary } from './OrderSummary';
 export { default as OrderSummaryDrawer } from './OrderSummaryDrawer';
 export { default as getPaymentInstructions } from './getPaymentInstructions';
-export { default as renderOrderConfirmationNext } from './renderOrderConfirmationNext';
+export { default as renderOrderConfirmation } from './renderOrderConfirmation';

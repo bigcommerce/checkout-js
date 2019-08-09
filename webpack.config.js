@@ -40,7 +40,9 @@ module.exports = function (options, argv) {
             path: isProduction ? join(__dirname, 'dist') : join(__dirname, 'build'),
             filename: `[name]${isProduction ? '-[contenthash:8]' : ''}.js`,
             chunkFilename: `[name]${isProduction ? '-[contenthash:8]' : ''}.js`,
-            jsonpFunction: 'checkout',
+            jsonpFunction: 'webpackJsonpCheckout',
+            library: 'checkout',
+            libraryTarget: 'umd',
         },
         plugins: [
             new StyleLintPlugin({
