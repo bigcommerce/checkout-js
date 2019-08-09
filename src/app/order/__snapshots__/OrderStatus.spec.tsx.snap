@@ -1,0 +1,149 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OrderStatus when order has digital items and does not have downloadable items renders status without downloadable items text 1`] = `
+<OrderConfirmationSection>
+  <p
+    data-test="order-confirmation-order-number-text"
+  >
+    <WithLanguage(TranslatedHtml)
+      data={
+        Object {
+          "orderNumber": 295,
+        }
+      }
+      id="order_confirmation.order_number_text"
+    />
+  </p>
+  <p>
+    <WithLanguage(TranslatedHtml)
+      data={
+        Object {
+          "orderNumber": 295,
+          "supportEmail": undefined,
+          "supportPhoneNumber": undefined,
+        }
+      }
+      id="order_confirmation.order_without_support_number_text"
+    />
+  </p>
+  <p>
+    <WithLanguage(TranslatedHtml)
+      id="order_confirmation.order_without_downloadable_digital_items_text"
+    />
+  </p>
+</OrderConfirmationSection>
+`;
+
+exports[`OrderStatus when order has digital items and has downloadable items renders status with downloadable items text 1`] = `
+<OrderConfirmationSection>
+  <p
+    data-test="order-confirmation-order-number-text"
+  >
+    <WithLanguage(TranslatedHtml)
+      data={
+        Object {
+          "orderNumber": 295,
+        }
+      }
+      id="order_confirmation.order_number_text"
+    />
+  </p>
+  <p>
+    <WithLanguage(TranslatedHtml)
+      data={
+        Object {
+          "orderNumber": 295,
+          "supportEmail": undefined,
+          "supportPhoneNumber": undefined,
+        }
+      }
+      id="order_confirmation.order_without_support_number_text"
+    />
+  </p>
+  <p>
+    <WithLanguage(TranslatedHtml)
+      id="order_confirmation.order_with_downloadable_digital_items_text"
+    />
+  </p>
+</OrderConfirmationSection>
+`;
+
+exports[`OrderStatus when order is not waiting manual verification and has no support data renders status 1`] = `
+<OrderConfirmationSection>
+  <p
+    data-test="order-confirmation-order-number-text"
+  >
+    <WithLanguage(TranslatedHtml)
+      data={
+        Object {
+          "orderNumber": 295,
+        }
+      }
+      id="order_confirmation.order_number_text"
+    />
+  </p>
+  <p>
+    <WithLanguage(TranslatedHtml)
+      data={
+        Object {
+          "orderNumber": 295,
+          "supportEmail": undefined,
+          "supportPhoneNumber": undefined,
+        }
+      }
+      id="order_confirmation.order_without_support_number_text"
+    />
+  </p>
+</OrderConfirmationSection>
+`;
+
+exports[`OrderStatus when order is not waiting manual verification and has support data renders status with contact information 1`] = `
+<OrderConfirmationSection>
+  <p
+    data-test="order-confirmation-order-number-text"
+  >
+    <WithLanguage(TranslatedHtml)
+      data={
+        Object {
+          "orderNumber": 295,
+        }
+      }
+      id="order_confirmation.order_number_text"
+    />
+  </p>
+  <p>
+    <WithLanguage(TranslatedHtml)
+      data={
+        Object {
+          "orderNumber": 295,
+          "supportEmail": "test@example.com",
+          "supportPhoneNumber": "990",
+        }
+      }
+      id="order_confirmation.order_with_support_number_text"
+    />
+  </p>
+</OrderConfirmationSection>
+`;
+
+exports[`OrderStatus when order is waiting manual verification renders status with special text 1`] = `
+<OrderConfirmationSection>
+  <p
+    data-test="order-confirmation-order-number-text"
+  >
+    <WithLanguage(TranslatedHtml)
+      data={
+        Object {
+          "orderNumber": 295,
+        }
+      }
+      id="order_confirmation.order_number_text"
+    />
+  </p>
+  <p>
+    <WithLanguage(TranslatedString)
+      id="order_confirmation.order_pending_review_text"
+    />
+  </p>
+</OrderConfirmationSection>
+`;

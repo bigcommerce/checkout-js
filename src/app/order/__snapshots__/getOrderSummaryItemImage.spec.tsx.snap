@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getOrderSummaryItemImage() when item has image returns image 1`] = `
+<img
+  alt="Canvas Laundry Cart"
+  data-test="cart-item-image"
+  src="/images/canvas-laundry-cart.jpg"
+/>
+`;

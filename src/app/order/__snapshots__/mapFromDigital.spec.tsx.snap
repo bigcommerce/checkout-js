@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mapFromDigital() returns digital related properties when it has no download URL 1`] = `
+<WithLanguage(TranslatedString)
+  id="cart.digital_item_text"
+/>
+`;
+
+exports[`mapFromDigital() returns downloadable related properties when it has a download URL 1`] = `
+<a
+  href="url.php"
+  target="_blank"
+>
+  <WithLanguage(TranslatedString)
+    id="cart.downloads_action"
+  />
+</a>
+`;

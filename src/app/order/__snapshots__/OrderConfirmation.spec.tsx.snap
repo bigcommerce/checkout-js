@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OrderConfirmation renders confirmation page once loading is finished 1`] = `
+<div
+  dangerouslySetInnerHTML={
+    Object {
+      "__html": "<strong>295</strong> something",
+    }
+  }
+  data-test="payment-instructions"
+/>
+`;

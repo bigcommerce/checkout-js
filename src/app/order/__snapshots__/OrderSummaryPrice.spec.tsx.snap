@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OrderSummaryPrice when has non-zero amount and has only required props renders component 1`] = `
+<div>
+  <CSSTransition
+    addEndListener={[Function]}
+    classNames="changeHighlight"
+    in={true}
+    timeout={Object {}}
+  >
+    <div
+      aria-live="polite"
+      className="cart-priceItem optimizedCheckout-contentPrimary"
+    >
+      <span
+        className="cart-priceItem-label"
+      >
+        <span
+          data-test="cart-price-label"
+        >
+          Label
+           
+           
+        </span>
+      </span>
+      <span
+        className="cart-priceItem-value"
+      >
+        <span
+          data-test="cart-price-value"
+        >
+          <WithCurrency(ShopperCurrency)
+            amount={10}
+          />
+        </span>
+      </span>
+      Foo Children
+    </div>
+  </CSSTransition>
+</div>
+`;
