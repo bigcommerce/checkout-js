@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OrderSummaryItems when it has 4 line items or less renders product list 1`] = `
+<ul
+  aria-live="polite"
+  className="productList"
+>
+   
+  <li
+    className="productList-item is-visible"
+    key="666"
+  >
+    <OrderSummaryItem
+      amount={200}
+      amountAfterDiscount={200}
+      id="666"
+      image={
+        <img
+          alt="Canvas Laundry Cart"
+          data-test="cart-item-image"
+          src="/images/canvas-laundry-cart.jpg"
+        />
+      }
+      name="Canvas Laundry Cart"
+      productOptions={
+        Array [
+          Object {
+            "content": "n v",
+            "testId": "cart-item-product-option",
+          },
+        ]
+      }
+      quantity={1}
+    />
+  </li>
+  <li
+    className="productList-item is-visible"
+    key="bd391ead-8c58-4105-b00e-d75d233b429a"
+  >
+    <OrderSummaryItem
+      amount={100}
+      id="bd391ead-8c58-4105-b00e-d75d233b429a"
+      image={
+        <span
+          className="productImage-giftCertificate"
+          data-test="cart-item-gift-certificate"
+        >
+          <IconGiftCertificate />
+        </span>
+      }
+      name="$100 Gift Certificate"
+      quantity={1}
+    />
+  </li>
+  <li
+    className="productList-item is-visible"
+    key="667"
+  >
+    <OrderSummaryItem
+      amount={200}
+      amountAfterDiscount={200}
+      id="667"
+      image={
+        <img
+          alt="Digital Book"
+          data-test="cart-item-image"
+          src="/images/digital-book.jpg"
+        />
+      }
+      name="Digital Book"
+      productOptions={
+        Array [
+          Object {
+            "content": "m l",
+            "testId": "cart-item-product-option",
+          },
+          Object {
+            "content": <a
+              href="url.php"
+              target="_blank"
+            >
+              <WithLanguage(TranslatedString)
+                id="cart.downloads_action"
+              />
+            </a>,
+            "testId": "cart-item-digital-product-download",
+          },
+        ]
+      }
+      quantity={1}
+    />
+  </li>
+  <li
+    className="productList-item is-visible"
+    key="55e11c8f-7dce-4da3-9413-b649533f8bad"
+  >
+    <OrderSummaryItem
+      amount={20}
+      id="55e11c8f-7dce-4da3-9413-b649533f8bad"
+      name="Custom item"
+      quantity={2}
+    />
+  </li>
+   
+</ul>
+`;

@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OrderSummarySubtotals renders component 1`] = `
+<Fragment>
+  <OrderSummaryPrice
+    amount={190}
+    className="cart-priceItem--subtotal"
+    label={
+      <WithLanguage(TranslatedString)
+        id="cart.subtotal_text"
+      />
+    }
+    testId="cart-subtotal"
+  />
+  <OrderSummaryDiscount
+    amount={5}
+    code="savebig2015"
+    key="0"
+    label="20% off each item"
+    testId="cart-coupon"
+  />
+  <OrderSummaryDiscount
+    amount={5}
+    code="279F507D817E3E7"
+    key="1"
+    label="$5.00 off the shipping total"
+    testId="cart-coupon"
+  />
+  <OrderSummaryDiscount
+    amount={10}
+    label={
+      <WithLanguage(TranslatedString)
+        id="cart.discount_text"
+      />
+    }
+    testId="cart-discount"
+  />
+  <OrderSummaryDiscount
+    amount={7}
+    code="gc"
+    key="0"
+    label={
+      <WithLanguage(TranslatedString)
+        id="cart.gift_certificate_text"
+      />
+    }
+    remaining={3}
+    testId="cart-gift-certificate"
+  />
+  <OrderSummaryPrice
+    amount={15}
+    label={
+      <WithLanguage(TranslatedString)
+        id="cart.shipping_text"
+      />
+    }
+    testId="cart-shipping"
+    zeroLabel={
+      <WithLanguage(TranslatedString)
+        id="cart.free_text"
+      />
+    }
+  />
+  <OrderSummaryPrice
+    amount={8}
+    label={
+      <WithLanguage(TranslatedString)
+        id="cart.handling_text"
+      />
+    }
+    testId="cart-handling"
+  />
+  <OrderSummaryPrice
+    amount={3}
+    key="0"
+    label="Tax"
+    testId="cart-taxes"
+  />
+</Fragment>
+`;
