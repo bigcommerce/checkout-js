@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'development') {
     whyDidYouRender(React);
 }
 
-export default function renderCheckoutNext(
+export default function renderCheckout(
     props: CheckoutAppProps
 ) {
     ReactDOM.render(

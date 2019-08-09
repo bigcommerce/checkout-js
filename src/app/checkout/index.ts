@@ -14,4 +14,4 @@ export { default as Checkout } from './Checkout';
 export { default as CheckoutApp } from './CheckoutApp';
 export { default as CheckoutSupport } from './CheckoutSupport';
 export { default as NoopCheckoutSupport } from './NoopCheckoutSupport';
-export { default as renderCheckoutNext } from './renderCheckoutNext';
+export { default as renderCheckout } from './renderCheckout';
