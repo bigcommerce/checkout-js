@@ -1,0 +1,64 @@
+@import '../../../../node_modules/@bigcommerce/citadel/src/tools/toolkit';
+@import '../../../../node_modules/@bigcommerce/citadel/src/settings/global/global';
+
+// Static Shipping Option
+// ---------------------------------------------------
+.shippingOption {
+    display: inline-block;
+    min-height: 0;
+    width: 100%;
+}
+
+.shippingOption-figure,
+.shippingOption-desc,
+.shippingOption-price {
+    display: inline-block;
+    font-size: fontSize("base");
+}
+
+.shippingOption-img {
+    padding-right: spacing("half");
+}
+
+.shippingOption-price {
+    font-weight: fontWeight("bold");
+    max-width: none;
+    min-width: 0;
+    padding-left: spacing("half");
+}
+
+.shippingOption-transitTime {
+    display: block;
+    font-size: fontSize("base");
+    font-weight: fontWeight("normal");
+}
+
+// ShippingOption Label
+// ---------------------------------------------------
+.shippingOptionLabel {
+    .shippingOption {
+        align-items: center;
+        display: flex;
+        min-height: remCalc(35px);
+    }
+
+    .shippingOption-price {
+        max-width: remCalc(55px);
+        min-width: remCalc(55px);
+        text-align: right;
+    }
+
+    .shippingOption-figure,
+    .shippingOption-desc,
+    .shippingOption-price {
+        flex: 1;
+        font-size: inherit;
+        line-height: lineHeight("base");
+        vertical-align: middle;
+    }
+
+    .shippingOption-figure {
+        max-width: remCalc(50px);
+        min-width: remCalc(50px);
+    }
+}

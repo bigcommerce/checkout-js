@@ -36,7 +36,7 @@ export default function createMappableInjectHoc<TContextProps>(
                 </ContextComponent.Consumer>
             );
 
-            if (options && options.displayNamePrefix) {
+            if (options && options.displayNamePrefix && OriginalComponent) {
                 DecoratedComponent.displayName = `${options.displayNamePrefix}(${OriginalComponent.displayName || OriginalComponent.name})`;
             }
 

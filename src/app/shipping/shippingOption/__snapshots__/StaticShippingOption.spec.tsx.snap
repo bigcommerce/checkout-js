@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StaticShippingOption Component renders static shipping option with minimum information 1`] = `
+<div
+  className="shippingOption shippingOption--alt"
+>
+  <span
+    className="shippingOption-desc"
+  >
+    Flat Rate
+  </span>
+  <span
+    className="shippingOption-price"
+  >
+    <WithCurrency(ShopperCurrency)
+      amount={0}
+    />
+  </span>
+</div>
+`;
+
+exports[`StaticShippingOption Component renders static shipping option with optional information 1`] = `
+<div
+  className="shippingOption shippingOption--alt"
+>
+  <span
+    className="shippingOption-desc"
+  >
+    Flat Rate
+  </span>
+  <span
+    className="shippingOption-price"
+  >
+    <WithCurrency(ShopperCurrency)
+      amount={0}
+    />
+  </span>
+</div>
+`;

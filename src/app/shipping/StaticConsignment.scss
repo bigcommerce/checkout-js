@@ -1,0 +1,18 @@
+@import '../../../node_modules/@bigcommerce/citadel/src/settings/global/global';
+
+.staticConsignmentContainer {
+    ul {
+        list-style: none;
+        margin: 0;
+    }
+
+    & + .staticConsignmentContainer {
+        border-top: container("border");
+        margin-top: spacing("single");
+        padding-top: spacing("single");
+    }
+}
+
+.staticConsignment-items {
+    margin: spacing("quarter") 0;
+}
