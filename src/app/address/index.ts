@@ -4,6 +4,7 @@ export type AddressFormValues = AddressFormValues;
 
 export { default as mapAddressToFormValues } from './mapAddressToFormValues';
 export { default as mapAddressFromFormValues } from './mapAddressFromFormValues';
+export { default as AddressForm } from './AddressForm';
 export { default as AddressSelect } from './AddressSelect';
 export { default as getAddressValidationSchema } from './getAddressValidationSchema';
 export { default as StaticAddress } from './staticAddress/StaticAddress';
