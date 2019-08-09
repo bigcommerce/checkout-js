@@ -1,0 +1,293 @@
+import { CheckoutSelectors, CustomerRequestOptions, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
+import { number } from 'card-validator';
+import { noop, some } from 'lodash';
+import React, { Component, Fragment, ReactNode } from 'react';
+
+import { withCheckout, CheckoutContextProps } from '../../checkout';
+import { TranslatedString } from '../../language';
+import { withLanguage, WithLanguageProps } from '../../locale';
+import { LoadingOverlay } from '../../ui/loading';
+import withPayment, { WithPaymentProps } from '../withPayment';
+import SignOutLink from '../SignOutLink';
+
+import getPaymentMethodName from './getPaymentMethodName';
+import { PaymentMethodProps } from './PaymentMethod';
+
+export interface WalletButtonPaymentMethodProps {
+    buttonId: string;
+    editButtonClassName?: string;
+    editButtonLabel?: ReactNode;
+    isInitializing?: boolean;
+    method: PaymentMethod;
+    shouldShowEditButton?: boolean;
+    signInButtonClassName?: string;
+    signInButtonLabel?: ReactNode;
+    deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
+    initializePayment(options: PaymentInitializeOptions): Promise<CheckoutSelectors>;
+    onSignOut?(): void;
+    onSignOutError?(error: Error): void;
+    onUnhandledError?(error: Error): void;
+}
+
+interface WithCheckoutWalletButtonPaymentMethodProps {
+    accountMask?: string;
+    cardName?: string;
+    cardType?: string;
+    expiryMonth?: string;
+    expiryYear?: string;
+    isPaymentSelected: boolean;
+    signOut(options: CustomerRequestOptions): void;
+}
+
+class WalletButtonPaymentMethod extends Component<
+    WalletButtonPaymentMethodProps &
+    WithCheckoutWalletButtonPaymentMethodProps &
+    WithLanguageProps &
+    WithPaymentProps
+> {
+    async componentDidMount(): Promise<void> {
+        const {
+            initializePayment,
+            method,
+            onUnhandledError = noop,
+        } = this.props;
+
+        this.toggleSubmit();
+
+        try {
+            await initializePayment({
+                gatewayId: method.gateway,
+                methodId: method.id,
+            });
+        } catch (error) {
+            onUnhandledError(error);
+        }
+    }
+
+    async componentWillUnmount(): Promise<void> {
+        const {
+            deinitializePayment,
+            disableSubmit,
+            method,
+            onUnhandledError = noop,
+        } = this.props;
+
+        disableSubmit(method, false);
+
+        try {
+            await deinitializePayment({
+                gatewayId: method.gateway,
+                methodId: method.id,
+            });
+        } catch (error) {
+            onUnhandledError(error);
+        }
+    }
+
+    componentDidUpdate(prevProps: Readonly<PaymentMethodProps & WalletButtonPaymentMethodProps & WithCheckoutWalletButtonPaymentMethodProps & WithLanguageProps>): void {
+        const { method } = this.props;
+        const { method: prevMethod } = prevProps;
+
+        if (method.initializationData !== prevMethod.initializationData) {
+            this.toggleSubmit();
+        }
+    }
+
+    render(): ReactNode {
+        const {
+            isInitializing = false,
+            isPaymentSelected,
+        } = this.props;
+
+        return (
+            <LoadingOverlay
+                hideContentWhenLoading
+                isLoading={ isInitializing }
+            >
+                <div className="paymentMethod paymentMethod--walletButton">
+                    { isPaymentSelected ?
+                        this.renderPaymentView() :
+                        this.renderSignInView() }
+                </div>
+            </LoadingOverlay>
+        );
+    }
+
+    private renderSignInView(): ReactNode {
+        const {
+            buttonId,
+            language,
+            signInButtonClassName,
+            signInButtonLabel,
+            method,
+        } = this.props;
+
+        return (
+            <a
+                className={ signInButtonClassName }
+                id={ buttonId }
+                href="#"
+            >
+                { signInButtonLabel || <TranslatedString
+                    id="remote.sign_in_action"
+                    data={ { providerName: getPaymentMethodName(language)(method) } }
+                /> }
+            </a>
+        );
+    }
+
+    private renderPaymentView(): ReactNode {
+        const {
+            accountMask,
+            buttonId,
+            cardName,
+            cardType,
+            editButtonClassName,
+            editButtonLabel,
+            expiryMonth,
+            expiryYear,
+            shouldShowEditButton,
+            method,
+        } = this.props;
+
+        return (
+            <Fragment>
+                { cardName && <p data-test="payment-method-wallet-card-name">
+                    <strong><TranslatedString id="payment.credit_card_name_label" />:</strong>
+                    { ' ' }
+                    { cardName }
+                </p> }
+
+                { accountMask && <p data-test="payment-method-wallet-card-type">
+                    <strong>{ cardType }:</strong>
+                    { ' ' }
+                    { accountMask }
+                </p> }
+
+                { expiryMonth && expiryYear && <p data-test="payment-method-wallet-card-expiry">
+                    <strong><TranslatedString id="payment.credit_card_expiration_date_label" />:</strong>
+                    { ' ' }
+                    { `${expiryMonth}/${expiryYear}` }
+                </p> }
+
+                { shouldShowEditButton && <p>
+                    <a
+                        className={ editButtonClassName }
+                        href="#"
+                        id={ buttonId }
+                    >
+                        { editButtonLabel || <TranslatedString id="remote.select_different_card_action" /> }
+                    </a>
+                </p> }
+
+                <SignOutLink
+                    method={ method }
+                    onSignOut={ this.handleSignOut }
+                />
+            </Fragment>
+        );
+    }
+
+    private toggleSubmit(): void {
+        const {
+            disableSubmit,
+            method,
+        } = this.props;
+
+        if (normalizeWalletPaymentData(method.initializationData)) {
+            disableSubmit(method, false);
+        } else {
+            disableSubmit(method, true);
+        }
+    }
+
+    private handleSignOut: () => void = async () => {
+        const {
+            method,
+            signOut,
+            onSignOut = noop,
+            onSignOutError = noop,
+        } = this.props;
+
+        try {
+            await signOut({ methodId: method.id });
+            onSignOut();
+            window.location.reload();
+        } catch (error) {
+            onSignOutError(error);
+        }
+    };
+}
+
+interface WalletPaymentData {
+    accountMask: string;
+    cardType: string;
+    expiryMonth?: string;
+    expiryYear?: string;
+}
+
+// For some odd reason, `initializationData` is a schema-less object. So in
+// order to use it safely, we have to normalize it first.
+function normalizeWalletPaymentData(data: any): WalletPaymentData | undefined {
+    if (!data) {
+        return;
+    }
+
+    if (data.card_information) {
+        return {
+            accountMask: formatAccountMask(data.card_information.number),
+            cardType: data.card_information.type,
+        };
+    }
+
+    if (data.cardData) {
+        return {
+            accountMask: formatAccountMask(data.cardData.accountMask),
+            cardType: data.cardData.cardType,
+            expiryMonth: data.cardData.expMonth,
+            expiryYear: data.cardData.expYear,
+        };
+    }
+
+    if (data.accountNum) {
+        const { card } = number(data.accountNum);
+
+        return {
+            accountMask: formatAccountMask(data.accountMask),
+            expiryMonth: data.expDate && `${data.expDate}`.substr(0, 2),
+            expiryYear: data.expDate && `${data.expDate}`.substr(2, 2),
+            cardType: card ? card.niceType : '',
+        };
+    }
+}
+
+function formatAccountMask(accountMask: string = '', padding: string = '****'): string {
+    return accountMask.indexOf('*') > -1
+        ? accountMask
+        : `${padding} ${accountMask}`;
+}
+
+function mapFromCheckoutProps(
+    { checkoutService, checkoutState }: CheckoutContextProps,
+    { method }: WalletButtonPaymentMethodProps
+): WithCheckoutWalletButtonPaymentMethodProps | null {
+    const { data: { getBillingAddress, getCheckout } } = checkoutState;
+    const billingAddress = getBillingAddress();
+    const checkout = getCheckout();
+
+    if (!billingAddress || !checkout) {
+        return null;
+    }
+
+    const walletPaymentData = normalizeWalletPaymentData(method.initializationData);
+
+    return {
+        ...walletPaymentData,
+        // FIXME: I'm not sure how this would work for non-English names.
+        cardName: walletPaymentData && [billingAddress.firstName, billingAddress.lastName].join(' '),
+        isPaymentSelected: some(checkout.payments, { providerId: method.id }),
+        signOut: checkoutService.signOutCustomer,
+    };
+}
+
+export default withLanguage(withPayment(withCheckout(mapFromCheckoutProps)(WalletButtonPaymentMethod)));
