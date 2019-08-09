@@ -41,6 +41,8 @@ export { default as FormFieldContainer } from './FormFieldContainer';
 export { default as Input } from './Input';
 export { default as TextArea } from './TextArea';
 export { default as TextInput } from './TextInput';
+export { default as RadioInput } from './RadioInput';
+export { default as CheckboxInput } from './CheckboxInput';
 export { default as Label } from './Label';
 export { default as Legend } from './Legend';
 export { default as ChecklistItemInput } from './ChecklistItemInput';
