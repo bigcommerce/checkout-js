@@ -1,0 +1,56 @@
+import { mount, ReactWrapper } from 'enzyme';
+import React from 'react';
+
+import { getStoreConfig } from '../../config/config.mock';
+import { createLocaleContext, LocaleContext } from '../../locale';
+
+import AppliedRedeemable from './AppliedRedeemable';
+
+describe('AppliedGiftCertificate', () => {
+    let component: ReactWrapper;
+    const onRemove = jest.fn();
+
+    beforeEach(() => {
+        const localeContext = createLocaleContext(getStoreConfig());
+        const AppliedRedeembleContainer = ({ isRemoving }: { isRemoving: boolean }) => (
+            <LocaleContext.Provider value={ localeContext }>
+                <AppliedRedeemable
+                    onRemove={ onRemove() }
+                    isRemoving={ isRemoving }
+                >
+                    foo
+                </AppliedRedeemable>
+            </LocaleContext.Provider>
+        );
+
+        component = mount(<AppliedRedeembleContainer isRemoving={ false } />);
+    });
+
+    it('renders children', () => {
+        expect(component.find('.redeemable').text())
+            .toEqual('foo');
+    });
+
+    it('renders children', () => {
+        component.find('button').simulate('click');
+
+        expect(onRemove).toHaveBeenCalled();
+    });
+
+    it('does not disabled button', () => {
+        const button = component.find('[data-test="redeemable-remove"]');
+
+        expect(button.prop('disabled')).toBeFalsy();
+        expect(button.hasClass('is-loading')).toBeFalsy();
+    });
+
+    it('does disabled button when isRemoving is true', () => {
+        component.setProps({ isRemoving: true });
+        component.update();
+
+        const button = component.find('[data-test="redeemable-remove"]');
+
+        expect(button.prop('disabled')).toBeTruthy();
+        expect(button.hasClass('is-loading')).toBeTruthy();
+    });
+});

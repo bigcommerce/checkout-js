@@ -1,0 +1,165 @@
+import { RequestError } from '@bigcommerce/checkout-sdk';
+import { mount, ReactWrapper } from 'enzyme';
+import React from 'react';
+
+import { getStoreConfig } from '../config/config.mock';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { Alert } from '../ui/alert';
+
+import Redeemable from './Redeemable';
+
+describe('CartSummary Component', () => {
+    let localeContext: LocaleContextType;
+    let component: ReactWrapper;
+    const applyCoupon = jest.fn();
+    const applyGiftCertificate = jest.fn();
+    const clearError = jest.fn();
+    const onRemovedCoupon = jest.fn();
+    const onRemovedGiftCertificate = jest.fn();
+    const appliedError = {
+        errors: [ {} ],
+    } as RequestError;
+
+    describe('when coupon code is not collapsed', () => {
+        beforeEach(() => {
+            localeContext = createLocaleContext(getStoreConfig());
+
+            component = mount(
+                <LocaleContext.Provider value={ localeContext }>
+                    <Redeemable
+                        appliedRedeemableError={ appliedError }
+                        applyCoupon={ applyCoupon }
+                        applyGiftCertificate={ applyGiftCertificate }
+                        clearError={ clearError }
+                        isApplyingRedeemable={ true }
+                        onRemovedCoupon={ onRemovedCoupon }
+                        onRemovedGiftCertificate={ onRemovedGiftCertificate }
+                        shouldCollapseCouponCode={ false }
+                    />
+                </LocaleContext.Provider>
+            );
+        });
+
+        it('does not render toggle link', () => {
+            expect(component.find('[data-test="redeemable-label"]').length)
+                .toEqual(0);
+        });
+
+        it('renders redeemable form', () => {
+            expect(component.find('.redeemable-entry').length)
+                .toEqual(1);
+        });
+
+        it('adds disabled and loading state to input', () => {
+            const submit = component.find('[data-test="redeemableEntry-submit"]');
+
+            expect(submit.hasClass('is-loading'))
+                .toEqual(true);
+
+            expect(submit.prop('disabled'))
+                .toEqual(true);
+        });
+    });
+
+    describe('when coupon code is collapsed', () => {
+        beforeEach(() => {
+            localeContext = createLocaleContext(getStoreConfig());
+
+            component = mount(
+                <LocaleContext.Provider value={ localeContext }>
+                    <Redeemable
+                        appliedRedeemableError={ appliedError }
+                        applyCoupon={ applyCoupon }
+                        applyGiftCertificate={ applyGiftCertificate }
+                        clearError={ clearError }
+                        onRemovedCoupon={ onRemovedCoupon }
+                        onRemovedGiftCertificate={ onRemovedGiftCertificate }
+                        shouldCollapseCouponCode={ true }
+                    />
+                </LocaleContext.Provider>
+            );
+        });
+
+        it('renders redeemable toggle link', () => {
+            expect(component.find('[data-test="redeemable-label"]').length).toEqual(1);
+            expect(component.find('.redeemable-entry').length).toEqual(0);
+        });
+
+        describe('when redeemable is clicked', () => {
+            beforeEach(async () => {
+                component.find('[data-test="redeemable-label"]').simulate('click');
+
+                await new Promise(resolve => process.nextTick(resolve));
+            });
+
+            it('renders error', () => {
+                expect(component.find(Alert).length).toEqual(1);
+                expect(component.find(Alert).text()).toEqual(
+                    localeContext.language.translate('redeemable.code_invalid_error')
+                );
+            });
+
+            it('renders redeemable form', () => {
+                expect(component.find('.redeemable-entry').length).toEqual(1);
+
+                const input = component.find('[data-test="redeemableEntry-input"]');
+                expect(input.length).toEqual(1);
+
+                const submit = component.find('[data-test="redeemableEntry-submit"]');
+                expect(submit.length).toEqual(1);
+                expect(submit.hasClass('is-loading')).toEqual(false);
+                expect(submit.prop('disabled')).toBeFalsy();
+            });
+
+            it('renders form error when button is clicked', async () => {
+                component.find('[data-test="redeemableEntry-submit"]')
+                    .simulate('click');
+
+                await new Promise(resolve => process.nextTick(resolve));
+
+                component.update();
+
+                expect(component.find('[data-test="redeemable-code-field-error-message"]').length)
+                    .toEqual(1);
+            });
+
+            describe('when input is entered', () => {
+                beforeEach(async () => {
+                    applyGiftCertificate.mockRejectedValue(new Error());
+
+                    component.find('[data-test="redeemableEntry-input"]')
+                        .simulate('change', { target: { value: ' foo ', name: 'redeemableCode' } });
+
+                    component.find('[data-test="redeemableEntry-input"]')
+                        .simulate('keyDown', { key: 'f', keyCode: 70, which: 70 });
+
+                    await new Promise(resolve => process.nextTick(resolve));
+                });
+
+                it('calls clear error', () => {
+                    expect(clearError).toHaveBeenCalledWith(appliedError);
+                });
+
+                it('calls applyCoupon when enter is hit inside input', async () => {
+                    component.find('[data-test="redeemableEntry-input"]')
+                        .simulate('keyDown', { key: 'Enter', keyCode: 13, which: 13 });
+
+                    await new Promise(resolve => process.nextTick(resolve));
+
+                    expect(applyCoupon)
+                        .toHaveBeenCalledWith('foo');
+                });
+
+                it('calls applyCoupon when button is clicked', async () => {
+                    component.find('[data-test="redeemableEntry-submit"]')
+                        .simulate('click');
+
+                    await new Promise(resolve => process.nextTick(resolve));
+
+                    expect(applyGiftCertificate)
+                        .toHaveBeenCalledWith('foo');
+                });
+            });
+        });
+    });
+});
