@@ -1,0 +1,134 @@
+// =============================================================================
+// FORMS
+// =============================================================================
+
+// BCApp Form specifics
+// -----------------------------------------------------------------------------
+//
+// 1. If set to false, there is no outputted CSS for this component.
+// 2. Select boxes, Foundation, and Chrome autofill styling. Basically undo Foundation
+// so autofilled select boxes don't look broken when the backgrounds are highjacked.
+// The important combats Foundations important too.
+//
+// -----------------------------------------------------------------------------
+
+@if $exportCSS--forms { // 1
+
+    .form {
+        @include breakpoint("large") {
+            max-width: remCalc(540px);
+        }
+    }
+
+    .form-fieldset {
+        margin-bottom: spacing("single");
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .dynamic-form-field {
+        margin-bottom: spacing("half");
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .form-field {
+        position: relative;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .form-input {
+        &:focus {
+            box-shadow: $input-focus-boxShadow, $input-box-shadow;
+        }
+
+        &.form-input--withIcon {
+            padding-right: #{$input-formIcon-width + spacing("single")};
+        }
+    }
+
+    .form-input-icon {
+        height: $input-formIcon-width;
+        position: absolute;
+        right: spacing("half");
+        top: 50%;
+        transform: translateY(-50%);
+        width: $input-formIcon-width;
+    }
+
+    .form-actions {
+        margin: #{spacing("single") + spacing("half")} 0;
+        padding: 0;
+
+        .button:first-child {
+            margin-left: 0;
+        }
+    }
+
+    .form-body {
+        background-color: $formBody-backgroundColor;
+        margin: 0;
+        position: relative;
+    }
+
+    .form-field--error {
+        .form-input,
+        .form-select {
+            background-color: $color-errorLighter;
+            transition: background-color 0.8s ease-out;
+        }
+
+        .form-label {
+            color: color("error");
+        }
+    }
+
+    .form-legend-container {
+        align-items: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .form-legend {
+        @include headingStyle("h3");
+
+        background-color: $legend-bg;
+        color: $header-font-color;
+        font-weight: $legend-font-weight;
+        padding: spacing("half") 0;
+        width: auto;
+    }
+
+    .form-toggle {
+        background-color: $legend-bg;
+        color: $header-font-color;
+        font-weight: $legend-font-weight;
+    }
+
+    .form-toggle-password {
+        @include breakpoint("large") {
+            display: none;
+        }
+    }
+
+    .form-field-password {
+        position: relative;
+    }
+
+    // scss-lint:disable ImportantRule
+    .form-select {
+        -webkit-appearance: menulist !important; // 2
+        background-image: none;
+        border-radius: $input-border-radius;
+        padding: $input-verticalPadding $select-paddingRight $input-verticalPadding $input-horizontalPadding;
+    }
+    // scss-lint:enable ImportantRule
+}

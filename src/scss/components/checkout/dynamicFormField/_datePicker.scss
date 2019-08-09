@@ -1,0 +1,106 @@
+.datepicker {
+    background-color: $color-white;
+    box-shadow: container("dropShadow");
+    color: $color-greyDark;
+    font-size: fontSize("base");
+    padding: spacing("single") 0;
+    text-align: center;
+    z-index: zIndex("highest");
+}
+
+.datepicker-attachment {
+    position: absolute;
+}
+
+.datepicker-month {
+    font-size: fontSize("smaller");
+    margin: 0;
+}
+
+.datepicker-back,
+.datepicker-next {
+    color: $color-grey;
+    cursor: default;
+    font-weight: fontWeight("bold");
+    padding: 0;
+}
+
+.datepicker-back {
+    float: left;
+    margin-left: spacing("single");
+}
+
+.datepicker-back::before {
+    content: "<";
+    display: block;
+}
+
+.datepicker-next {
+    float: right;
+    margin-right: spacing("single");
+}
+
+.datepicker-next::before {
+    content: ">";
+    display: block;
+}
+
+.datepicker-days {
+    border-collapse: separate;
+    font-size: fontSize("base");
+    margin: spacing("single") spacing("single") 0;
+    table-layout: fixed;
+}
+
+.datepicker-days-head {
+    line-height: lineHeight("small");
+}
+
+.datepicker-day-name {
+    color: $color-grey;
+    font-size: fontSize("tiny");
+    font-weight: fontWeight("semibold");
+    text-transform: uppercase;
+}
+
+.datepicker-day {
+    cursor: pointer;
+    height: spacing("single") + spacing("half");
+    line-height: 1;
+    margin: remCalc(5px);
+    position: relative;
+    text-align: center;
+    width: spacing("single") + spacing("half");
+    z-index: 5;
+}
+
+.datepicker-day:hover::before {
+    background-color: $color-greyLight;
+}
+
+.datepicker-day.is-selected {
+    color: $color-white;
+    cursor: pointer;
+}
+
+.datepicker-day.is-selected::before,
+.datepicker-day.is-selected:hover::before {
+    background-color: $color-highlight;
+}
+
+.datepicker-day::before,
+.datepicker-day.is-selected::before {
+    border-radius: 50%;
+    bottom: remCalc(2px);
+    content: "";
+    left: remCalc(2px);
+    position: absolute;
+    right: remCalc(2px);
+    top: remCalc(2px);
+    z-index: -1;
+}
+
+.datepicker-day.is-disabled {
+    color: $color-grey;
+    cursor: default;
+}

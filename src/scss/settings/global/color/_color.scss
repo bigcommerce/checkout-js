@@ -1,0 +1,84 @@
+// =============================================================================
+// COLORS
+// =============================================================================
+
+// Basics
+// -----------------------------------------------------------------------------
+
+$color-black:                       #000;
+$color-white:                       #fff;
+
+$color-whitesBase:                  #fff;
+
+$color-grey:                        #999;
+$color-greyDarkest:                 #292929;
+$color-greyDarker:                  #333;
+$color-greyDark:                    #5f5f5f;
+$color-greyMedium:                  #d9d9d9;
+$color-greyLight:                   #ebebeb;
+$color-greyLighter:                 #f5f5f5;
+$color-greyLightest:                #fafafa;
+
+// Branding
+// -----------------------------------------------------------------------------
+
+$color-primary:                     #333;
+$color-primaryLight:                lighten($color-primary, 15%);
+$color-primaryDark:                 darken($color-primary, 15%);
+$color-primaryDarker:               #000;
+
+$color-secondary:                   #fff;
+$color-secondaryDark:               $color-greyLightest;
+$color-secondaryDarker:             $color-greyLighter;
+
+$color-highlight:                   #4496f6;
+$color-highlightDark:               darken($color-highlight, 15%);
+$color-highlightDarker:             darken($color-highlight, 25%);
+
+// States
+// -----------------------------------------------------------------------------
+
+$color-error:                       #ed6a6a;
+$color-errorLight:                  #fbeeee;
+
+$color-info:                        #5f5f5f;
+$color-infoLight:                   #f5f5f5;
+
+$color-success:                     #51a551;
+$color-successLight:                #dfefdc;
+
+$color-warning:                     #d1a162;
+$color-warningLight:                #fbf7ee;
+
+// Text
+// -----------------------------------------------------------------------------
+
+$color-textBase:                    $color-highlight;
+$color-textBase-hover:              $color-highlightDark;
+$color-textBase-active:             $color-highlightDarker;
+
+// Order status
+// -----------------------------------------------------------------------------
+
+$color-orderAwaitingFulfilment:     #6eccfc;
+$color-orderAwaitingPayment:        #f80;
+$color-orderAwaitingPickup:         #b186cb;
+$color-orderAwaitingShipment:       #ca2f3a;
+$color-orderCancelled:              #3c4043;
+$color-orderCompleted:              #95db89;
+$color-orderDeclined:               #955831;
+$color-orderDisputed:               #9960ff;
+$color-orderPartiallyShipped:       #3e62a1;
+$color-orderPending:                #acb4be;
+$color-orderShipped:                #95db89;
+$color-orderRefunded:               #ffb800;
+$color-orderVerificationRequired:   #e89fae;
+
+// Checkout specific extras to the colour map
+// -----------------------------------------------------------------------------
+//
+// Purpose: Sometimes there's just not enough colours
+//
+// -----------------------------------------------------------------------------
+
+$color-errorLighter:                #fffafa;

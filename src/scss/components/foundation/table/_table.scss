@@ -1,0 +1,49 @@
+// =============================================================================
+// Foundation Table Extensions
+// =============================================================================
+
+.table {
+    @include table;
+
+    margin-bottom: spacing("base");
+    table-layout: auto;
+    width: 100%;
+}
+
+.table-thead {
+    border-bottom: container("border", "dark");
+
+    a {
+        color: $table-head-font-color;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    tr:hover {
+        background-color: palette("grey", 50);
+    }
+}
+
+.table-tbody {
+    tr {
+        border-bottom: $table-row-border;
+    }
+
+    tr:hover {
+        background-color: palette("white");
+    }
+}
+
+.table-tfoot {
+    border-top: container("border", "dark");
+
+    tr:hover {
+        background-color: palette("white");
+    }
+}
+
+.table-actionButton {
+    margin-bottom: 0;
+}

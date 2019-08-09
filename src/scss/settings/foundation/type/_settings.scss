@@ -1,0 +1,171 @@
+// =============================================================================
+// TYPE (Settings)
+// =============================================================================
+
+// Foundation Variables
+// -----------------------------------------------------------------------------
+//
+// These variables come directly from:
+// /vendor/foundation/foundation/components/*
+// Declaring the variables here, you can adjust them all to your design,
+// leaving the vendor framework untouched.
+//
+// -----------------------------------------------------------------------------
+
+// We use these to define default font stacks
+$font-family-sans-serif:               fontFamily("sans");
+$font-family-serif:                    fontFamily("serif");
+$font-family-monospace:                fontFamily("mono");
+
+// We use these to define default font weights
+$font-weight-normal:                   fontWeight("normal");
+$font-weight-bold:                     fontWeight("semibold");
+
+// We use these to control various global styles
+$body-bg:                              color("whites");
+$body-font-color:                      color("greys", "darker");
+$body-font-family:                     $font-family-sans-serif;
+$body-font-weight:                     $font-weight-normal;
+$body-font-style:                      normal;
+
+// We use this to control font-smoothing
+$font-smoothing:                       antialiased;
+
+// We use these to control header font styles
+$header-font-family:                   fontFamily("headingSans");
+$header-font-weight:                   $font-weight-normal;
+$header-font-style:                    normal;
+$header-font-color:                    color("greys", "darkest");
+$header-line-height:                   lineHeight("small");
+$header-top-margin:                    0;
+$header-bottom-margin:                 spacing("double");
+$header-text-rendering:                optimizeLegibility;
+$header-letter-spacing:                0;
+
+// We use these to control header font sizes
+$h1-font-size:                         fontSize("largest");
+$h2-font-size:                         fontSize("large");
+$h3-font-size:                         fontSize("smaller");
+$h4-font-size:                         fontSize("small");
+$h5-font-size:                         fontSize("smallest");
+$h6-font-size:                         fontSize("smallest");
+
+// These control how subheaders are styled.
+$subheader-line-height:                lineHeight(small);
+$subheader-font-color:                 color("greys");
+$subheader-font-weight:                fontWeight("normal");
+$subheader-bottom-margin:              spacing("half");
+
+// A general <small> styling
+$small-font-size:                      80%;
+$small-font-color:                     color("greys");
+
+// We use these to style paragraphs
+$paragraph-font-family:                inherit;
+$paragraph-font-weight:                $font-weight-normal;
+$paragraph-font-size:                  fontSize("base");
+$paragraph-line-height:                lineHeight("base");
+$paragraph-margin-bottom:              spacing("single");
+$paragraph-aside-font-size:            fontSize("base");
+$paragraph-aside-line-height:          lineHeight("base");
+$paragraph-aside-font-style:           italic;
+$paragraph-text-rendering:             optimizeLegibility;
+
+// We use these to style <code> tags
+$code-color:                           color("error");
+$code-font-family:                     Consolas, Monaco, "Andale Mono", monospace;
+$code-font-weight:                     $font-weight-normal;
+$code-background-color:                color("whites", "bright");
+$code-border-size:                     1px;
+$code-border-style:                    solid;
+$code-border-color:                    container("borderColor");
+$code-padding:                         spacing("quarter") spacing("third");
+
+// We use these to style anchors
+$anchor-text-decoration:               none;
+$anchor-text-decoration-hover:         none;
+$anchor-font-color:                    color("highlight");
+$anchor-font-color-hover:              color("highlight", "dark");
+
+// We use these to style the <hr> element
+$hr-border-width:                      1px;
+$hr-border-style:                      solid;
+$hr-border-color:                      container("borderColor", "dark");
+$hr-margin:                            spacing("base");
+
+// We use these to style lists
+$list-font-family:                     $paragraph-font-family;
+$list-font-size:                       $paragraph-font-size;
+$list-line-height:                     $paragraph-line-height;
+$list-margin-bottom:                   $paragraph-margin-bottom;
+$list-style-position:                  outside;
+$list-side-margin:                     1.1rem;
+$list-ordered-side-margin:             1.4rem;
+$list-side-margin-no-bullet:           0;
+$list-nested-margin:                   remCalc(20);
+$definition-list-header-weight:        $font-weight-bold;
+$definition-list-header-margin-bottom: 0.3rem;
+$definition-list-margin-bottom:        spacing("single");
+
+// We use these to style blockquotes
+$blockquote-font-color:                $body-font-color;
+$blockquote-padding:                   spacing("half") spacing("single");
+$blockquote-border:                    null;
+$blockquote-cite-font-size:            fontSize("base");
+$blockquote-cite-font-color:           color("greys");
+$blockquote-cite-link-color:           $blockquote-cite-font-color;
+
+// Acronym styles
+$acronym-underline:                    1px dotted container("borderColor", "dark");
+
+// We use these to control padding and margin
+$microformat-padding:                  spacing("single");
+$microformat-margin:                   0 0 spacing("single");
+
+// We use these to control the border styles
+$microformat-border-width:             1px;
+$microformat-border-style:             solid;
+$microformat-border-color:             container("borderColor", "dark");
+
+// We use these to control full name font styles
+$microformat-fullname-font-weight:     $font-weight-bold;
+$microformat-fullname-font-size:       fontSize("base");
+
+// We use this to control the summary font styles
+$microformat-summary-font-weight:      $font-weight-bold;
+
+// We use this to control abbr padding
+$microformat-abbr-padding:             remCalc(0 1);
+
+// We use this to control abbr font styles
+$microformat-abbr-font-weight:         $font-weight-bold;
+$microformat-abbr-font-decoration:     none;
+
+// Bigcommerce Variables
+// -----------------------------------------------------------------------------
+//
+// These scoped variables are created by Bigcommerce.
+// All variables that are not from Foundation should be placed here.
+//
+// 1. Choose whether to include the Bigcommerce class names
+//
+// -----------------------------------------------------------------------------
+
+$exportCSS--type:                      true; // 1
+
+$html-fontSize:                        $fontSize-root;
+$html-fontSize--smallUp:               $fontSize-root;
+$html-fontSize--mediumUp:              $fontSize-root;
+$html-fontSize--largeUp:               $fontSize-root;
+
+$code-font-size:                       fontSize("smallest");
+
+$blockquote-borderColor:               container("borderColor", "dark");
+$blockquote-borderStyle:               container("borderStyle");
+$blockquote-borderWidth:               0 0 0 1px;
+$blockquote-fontSize:                  $paragraph-font-size;
+$blockquote-fontWeight:                $paragraph-font-weight;
+$blockquote-lineHeight:                $paragraph-line-height;
+$blockquote-margin:                    0 0 $paragraph-margin-bottom;
+
+$blockquote-cite-content:              "\2014 \0020";

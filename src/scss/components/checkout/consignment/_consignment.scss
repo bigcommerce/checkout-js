@@ -1,0 +1,29 @@
+.consignment {
+    display: flex;
+    flex-direction: row;
+    margin: spacing("half") 0 spacing("single");
+    width: 100%;
+}
+
+.consignment-product-figure {
+    padding: 0 spacing("single") 0;
+    width: 25%;
+}
+
+.consignmentList {
+    @include u-listBullets("none");
+}
+
+.consignment-product-body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    h5 {
+        margin-bottom: spacing("eighth");
+    }
+
+    .form-field {
+        margin-top: spacing("quarter");
+    }
+}

@@ -1,3 +1,76 @@
-body {
-    background: red;
-}
+////////////////////////////////////////////////////////////////////////////////
+//
+// Checkout App Style
+//
+// Purpose: Import tools and styles from Citadel, along with checkout app specific
+// style.
+//
+// $exportCSS is set to false by default to prevent importing everything. Any
+// components needed will be selectively set to true in their setting files as
+// `$exportCSS--componentName: true`.
+//
+////////////////////////////////////////////////////////////////////////////////
+
+// Tools
+// -----------------------------------------------------------------------------
+//
+// 1. Import Citadel's toolkit for use.
+//
+// -----------------------------------------------------------------------------
+
+@import "../../node_modules/@bigcommerce/citadel/dist/tools/toolkit"; // 1
+@import "../../node_modules/react-datepicker/dist/react-datepicker";
+
+// Settings
+// -----------------------------------------------------------------------------
+//
+// 1. Checkout global settings get imported first.
+// 2. Import all Citadel and Foundation settings.
+// 3. Import Citadel's version of foundation.
+//      - This enables the ability to "null" variables in the Stencil settings.
+// 4. Import Checkout's component settings overrides.
+//
+// -----------------------------------------------------------------------------
+
+// global app defined settings must be set first
+@import "settings/global/global"; // 1
+
+@import "../../node_modules/@bigcommerce/citadel/dist/settings/global/global"; // 2
+@import "../../node_modules/@bigcommerce/citadel/dist/settings/normalize/normalize"; // 2
+@import "../../node_modules/@bigcommerce/citadel/dist/settings/foundation/foundation"; // 2
+@import "../../node_modules/@bigcommerce/citadel/dist/settings/bigcommerce/bigcommerce"; // 2
+@import "settings/foundation/foundation"; // 2
+
+@import "../../node_modules/@bigcommerce/citadel/dist/vendor/foundation/foundation"; // 3
+
+@import "settings/normalize/normalize"; // 4
+@import "settings/utilities/utilities"; // 4
+@import "settings/bigcommerce/bigcommerce"; // 4
+@import "settings/checkout/checkout"; // 4
+
+// Utilities
+// -----------------------------------------------------------------------------
+
+@import "../../node_modules/@bigcommerce/citadel/dist/utilities/utilities";
+
+@import "tools/toolkit";
+
+// Components
+// -----------------------------------------------------------------------------
+//
+// 1. Import Citadel's normalize dependency.
+// 2. Import Citadel's components.
+// 2. Import Stencil's component additions and custom components.
+//
+// -----------------------------------------------------------------------------
+
+@import "../../node_modules/@bigcommerce/citadel/dist/vendor/normalize/normalize"; // 1
+@import "../../node_modules/@bigcommerce/citadel/dist/components/components"; // 2
+
+@import "components/components";
+
+// =============================================================================
+// LAYOUTS
+// =============================================================================
+
+@import "layouts/layouts";

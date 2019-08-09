@@ -1,0 +1,77 @@
+// =============================================================================
+// TABLES (Settings)
+// =============================================================================
+
+// Bigcommerce Variables
+// -----------------------------------------------------------------------------
+//
+// These scoped variables are created by Bigcommerce.
+// All variables that are not from Foundation should be placed here.
+//
+// 1. Choose whether to include the Bigcommerce class names
+//
+// -----------------------------------------------------------------------------
+
+$exportCSS--tables:           $exportCSS; // 1
+
+$table-width:                 100%;
+
+//These control the table header and footer border styles
+$table-head-border:           container("border", "dark");
+$table-foot-border:           $table-head-border;
+$table-row-border:            container("border");
+$table-row-hover:             container("fill", "dark");
+
+$table-numericData-textAlign: right;
+
+// Foundation Variables
+// -----------------------------------------------------------------------------
+//
+// These variables come directly from:
+// /vendor/foundation/foundation/components/*
+// Declaring the variables here, you can adjust them all to your design,
+// leaving the vendor framework untouched.
+//
+// -----------------------------------------------------------------------------
+
+$include-html-table-classes:  $include-html-classes;
+
+// These control the background color for the table and even rows
+$table-bg:                    $body-bg;
+$table-even-row-bg:           $table-bg;
+
+// These control the table border style
+$table-border-style:          container("borderStyle");
+$table-border-size:           container("borderSize");
+$table-border-color:          container("borderColor");
+
+// These control the table head styles
+$table-head-bg:               container("fill", "dark");
+$table-head-font-size:        fontSize("base");
+$table-head-font-color:       $body-font-color;
+$table-head-font-weight:      $font-weight-bold;
+$table-head-padding:          spacing("single");
+
+// These control the table foot styles
+$table-foot-bg:               $table-head-bg;
+$table-foot-font-size:        $table-head-font-size;
+$table-foot-font-color:       $table-head-font-color;
+$table-foot-font-weight:      $table-head-font-weight;
+$table-foot-padding:          $table-head-padding;
+
+// These control the caption
+$table-caption-bg:            transparent;
+$table-caption-font-color:    $table-head-font-color;
+$table-caption-font-size:     fontSize("base");
+$table-caption-font-weight:   bold;
+
+// These control the row padding and font styles
+$table-row-padding:           $table-head-padding;
+$table-row-font-size:         fontSize("base");
+$table-row-font-color:        $body-font-color;
+$table-line-height:           lineHeight("base");
+
+// These are for controlling the layout, display and margin of tables
+$table-layout:                auto;
+$table-display:               table-cell;
+$table-margin-bottom:         spacing("double");

@@ -1,0 +1,96 @@
+// =============================================================================
+// SOCIAL BADGE (Component)
+// =============================================================================
+
+.socialBadges {
+    text-align: center;
+}
+
+.socialBadges-header {
+    margin-bottom: spacing("single");
+}
+
+//
+// Social badge
+// -----------------------------------------------------------------------------
+//
+.socialBadge {
+    border-radius: $global-radius;
+    color: $socialBadge-font-color;
+    display: inline-block;
+    font-size: 0;
+    font-weight: fontWeight("bold");
+    height: remCalc($socialBadge-height);
+    margin: 0 spacing("eighth") spacing("half");
+    text-align: left;
+
+    &:focus,
+    &:hover {
+        color: $socialBadge-font-color;
+    }
+}
+
+.socialBadge--facebook {
+    background-color: $socialBadge-facebook-color;
+
+    &:hover {
+        background-color: $socialBadge-facebook-color--hover;
+    }
+}
+
+.socialBadge--googlePlus {
+    background-color: $socialBadge-googlePlus-color;
+
+    &:hover {
+        background-color: $socialBadge-googlePlus-color--hover;
+    }
+}
+
+.socialBadge--twitter {
+    background-color: $socialBadge-twitter-color;
+
+    &:hover {
+        background-color: $socialBadge-twitter-color--hover;
+    }
+}
+
+//
+// Social badge content
+// -----------------------------------------------------------------------------
+
+.socialBadge-text,
+.socialBadge-icon {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+.socialBadge-icon {
+    width: remCalc(40px);
+
+    @include breakpoint("xsmall") {
+        border-right: $container-border-global-size $container-border-global-style $socialBadge-border-color;
+    }
+}
+
+.socialBadge-icon--facebook {
+    background: url("../static/svg/facebook.svg") no-repeat 9px 9px;
+}
+
+.socialBadge-icon--googlePlus {
+    background: url("../static/svg/gplus.svg") no-repeat 13px 12px;
+}
+
+.socialBadge-icon--twitter {
+    background: url("../static/svg/twitter.svg") no-repeat 11px 11px;
+}
+
+.socialBadge-text {
+    display: none;
+    font-size: fontSize("base");
+    padding: spacing("third") spacing("base");
+
+    @include breakpoint("xsmall") {
+        display: inline-block;
+    }
+}

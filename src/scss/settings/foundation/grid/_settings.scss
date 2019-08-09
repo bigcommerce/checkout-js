@@ -1,0 +1,34 @@
+// =============================================================================
+// GRID (Settings)
+// =============================================================================
+
+// Bigcommerce Variables
+// -----------------------------------------------------------------------------
+//
+// These scoped variables are created by Bigcommerce.
+// All variables that are not from Foundation should be placed here.
+//
+// 1. Choose whether to include the Bigcommerce class names
+//
+// -----------------------------------------------------------------------------
+
+$exportCSS--grid:              true; // 1
+
+// Foundation Variables
+// -----------------------------------------------------------------------------
+//
+// These variables come directly from:
+// /vendor/foundation/foundation/components/*
+// Declaring the variables here, you can adjust them all to your design,
+// leaving the vendor framework untouched.
+//
+// -----------------------------------------------------------------------------
+//
+$include-html-grid-classes:    $include-html-classes;
+$include-xl-html-grid-classes: false;
+
+$row-width:                    remCalc(1200px);
+$total-columns:                12;
+$column-gutter:                remCalc(30px);
+
+$last-child-float:             $opposite-direction;

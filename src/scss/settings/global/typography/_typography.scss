@@ -1,0 +1,72 @@
+// =============================================================================
+// TYPOGRAPHY
+// =============================================================================
+
+// Global Type Vars
+// -----------------------------------------------------------------------------
+//
+// IMPORTANT: These variables are NOT to be consumed in components/apps.
+//            Instead use the maps and functions outlined below.
+//
+// 1. Set up the REM units for the rest of the framework (pixel value).
+// 2. Your base font size should always start at 1rem;
+// 3. Your <body> line-height. This value is used for spacing calculations,
+//    where spacing is = $fontSize-root * $lineHeight-base.
+//
+// -----------------------------------------------------------------------------
+
+// Font families
+// -----------------------------------------------------------------------------
+
+$fontFamily-sans:               ("Open Sans", "Helvetica Neue", Arial, sans-serif);
+$fontFamily-serif:              (Georgia, "Times New Roman", serif);
+$fontFamily-mono:               (Menlo, Monaco, Consolas, monospace);
+$fontFamily-headings:           ("Open Sans", "Helvetica Neue", Arial, sans-serif);
+
+// Font sizes
+// -----------------------------------------------------------------------------
+
+$fontSize-root:                 13px; // 1
+$fontSize-base:                 1rem; // 2
+$fontSize-hero:                 remCalc(46px);
+$fontSize-largest:              remCalc(36px);
+$fontSize-larger:               remCalc(30px);
+$fontSize-large:                remCalc(25px);
+$fontSize-small:                remCalc(18px);
+$fontSize-smaller:              remCalc(15px);
+$fontSize-smallest:             remCalc(13px);
+$fontSize-tiny:                 remCalc(11px);
+
+// Line heights
+// -----------------------------------------------------------------------------
+
+$lineHeight-base:               1.5; // 3
+$lineHeight-hero:               2.5;
+$lineHeight-largest:            2.25;
+$lineHeight-larger:             2;
+$lineHeight-large:              1.75;
+$lineHeight-small:              1.25;
+$lineHeight-smaller:            1.125;
+$lineHeight-smallest:           1;
+$lineHeight-tiny:               0.9;
+
+// Font weights
+// -----------------------------------------------------------------------------
+
+$fontWeight-thin:               300;
+$fontWeight-normal:             400;
+$fontWeight-medium:             500;
+$fontWeight-semibold:           600;
+$fontWeight-bold:               700;
+$fontWeight-black:              900;
+
+// Letter spacing
+// -----------------------------------------------------------------------------
+
+$letterSpacing-base:            0;
+$letterSpacing-largest:         remCalc(3px);
+$letterSpacing-larger:          remCalc(2px);
+$letterSpacing-large:           remCalc(1px);
+$letterSpacing-small:           remCalc(-1px);
+$letterSpacing-smaller:         remCalc(-2px);
+$letterSpacing-smallest:        remCalc(-3px);

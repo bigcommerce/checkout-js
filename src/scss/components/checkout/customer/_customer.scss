@@ -1,0 +1,76 @@
+// =============================================================================
+// CUSTOMER (Component)
+// =============================================================================
+
+// Customer email
+//
+// -----------------------------------------------------------------------------
+.customerEmail-container {
+    @include grid-row;
+
+    margin-bottom: spacing("single");
+}
+
+.customerEmail-action {
+    @include grid-column($collapse: true, $columns: $total-columns);
+
+    margin-bottom: spacing("single");
+    padding: 0;
+
+    @include breakpoint("small") {
+        margin: $customerEmail-action-margin;
+        padding-left: spacing("single");
+        width: grid-calc(5, $total-columns);
+    }
+}
+
+.customerEmail-body {
+    @include grid-column($collapse: true, $columns: $total-columns);
+
+    @include breakpoint("small") {
+        width: grid-calc(7, $total-columns);
+    }
+}
+
+.customerEmail-button {
+    padding: $customerEmail-button-padding;
+    width: 100%;
+}
+
+// Customer header
+//
+// -----------------------------------------------------------------------------
+.customerHeader,
+.checkout-step--customer {
+    .stepHeader-body {
+        overflow: visible;
+    }
+}
+
+// Customer view
+//
+// -----------------------------------------------------------------------------
+.customerView {
+    align-items: top;
+    display: flex;
+}
+
+.customerView-actions {
+    margin-top: $customerView-actions-marginTop--large;
+    white-space: nowrap;
+
+    @include breakpoint("small") {
+        margin-top: $customerView-actions-marginTop;
+    }
+
+    .button {
+        margin-bottom: 0;
+    }
+}
+
+.customerView-body {
+    @include textTruncateMultiline;
+
+    margin-right: spacing("single");
+    width: 100%;
+}

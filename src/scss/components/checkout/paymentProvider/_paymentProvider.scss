@@ -1,0 +1,87 @@
+// =============================================================================
+// PAYMENT PROVIDER (Component)
+// =============================================================================
+
+.paymentProviderHeader-img {
+    height: fontSize("large");
+
+    + .paymentProviderHeader-name {
+        margin-left: spacing("half");
+    }
+}
+
+.googlePay-logo {
+    height: remCalc(40px);
+}
+
+.paymentProviderHeader-cc {
+    @include breakpoint("small") {
+        float: right;
+    }
+}
+
+.paymentMethod--creditCard,
+.paymentMethod--hosted,
+.paymentMethod--walletButton {
+    clear: both;
+    padding: (spacing("base") / 1.5) 0;
+}
+
+.chasePay--container {
+    margin-top: remCalc(5px);
+}
+
+%button-masterpass-base {
+    background-color: color("greys", "lightest");
+    background-image: url(https://masterpass.com/dyn/img/btn/global/mp_chk_btn_180x042px.svg);
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    border-color: color("greys", "lightest");
+    border-radius: remCalc(5px);
+    height: remCalc(42px);
+    padding: 0;
+    width: remCalc(180px);
+}
+
+/* Masterpass accordion button */
+.button-masterpass {
+    @extend %button-masterpass-base;
+
+    cursor: pointer;
+    display: none;
+}
+
+/* Masterpass widget button */
+.button-masterpass-mark {
+    @extend %button-masterpass-base;
+
+    cursor: default;
+    margin: auto;
+}
+
+#stripe-card-field {
+    background-color: white;
+    border: remCalc(1px) solid transparent;
+    border-radius: remCalc(4px);
+    box-shadow: 0 remCalc(1px) remCalc(3px) 0 #e6ebf1;
+    box-sizing: border-box;
+    height: remCalc(40px);
+    margin-bottom: remCalc(20px);
+    margin-top: remCalc(20px);
+    padding: remCalc(10px) remCalc(12px);
+    -webkit-transition: box-shadow 150ms ease;
+    transition: box-shadow 150ms ease;
+}
+
+#stripe-card-field--focus {
+    box-shadow: 0 1px (3px) 0 #cfd7df;
+}
+
+#stripe-card-field--invalid {
+    border-color: #fa755a;
+}
+
+#stripe-card-field--webkit-autofill {
+    background-color: #fefde5 !important;
+}

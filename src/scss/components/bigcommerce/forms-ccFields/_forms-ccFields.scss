@@ -1,0 +1,45 @@
+// =============================================================================
+// FORM CREDIT CARD FIELDS
+// =============================================================================
+
+.form-ccFields {
+    margin: 0 -1 * spacing("half");
+}
+
+.form-ccFields > .form-field,
+.form-ccFields > .form-ccFields-field {
+    display: block;
+    flex-grow: 1;
+    margin-bottom: spacing("base");
+    max-width: none !important;
+    padding: 0 spacing("half");
+}
+
+.form-field--ccNumber,
+.form-field--ccName {
+    flex-basis: 65%;
+}
+
+.form-ccFields-field--ccCvv,
+.form-field--ccExpiry {
+    flex-basis: 1%;
+    min-width: remCalc(100px);
+}
+
+.form-ccFields-field--ccCvv {
+    order: 4;
+}
+
+.form-field--postCode {
+    flex-basis: 100%;
+    order: 5;
+}
+
+.form-field--ccAdditionalField {
+    flex: 100%;
+    order: 99;
+}
+
+.form-field--saveInstrument {
+    order: 6;
+}

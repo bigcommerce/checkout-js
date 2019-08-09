@@ -1,0 +1,22 @@
+// =============================================================================
+// SHIPPING OPTIONS (Component)
+// =============================================================================
+
+// Shipping options panel
+// -----------------------------------------------------------------------------
+
+.shippingOptions-panel {
+    background-color: container("fill");
+    border: container("border");
+    border-radius: $global-radius;
+    display: flex;
+    min-height: 10rem;
+    padding: $shippingOptions-spacing;
+    text-align: center;
+}
+
+.shippingOptions-panel-message {
+    align-self: center;
+    flex: 1;
+    margin: 0;
+}

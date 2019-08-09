@@ -1,0 +1,63 @@
+// =============================================================================
+// BUTTONS (CSS)
+// =============================================================================
+
+// BCApp Buttons specifics
+// -----------------------------------------------------------------------------
+//
+// 1. If set to false, there is no outputted CSS for this component.
+//
+// -----------------------------------------------------------------------------
+
+@if $exportCSS--buttons { // 1
+
+    .button {
+        text-transform: uppercase;
+        transition: all 100ms ease-out;
+
+        &:focus {
+            border-color: color("highlight");
+            box-shadow: 0 0 3px 1px rgba(color("highlight"), 0.6);
+        }
+
+        // scss-lint:disable NestingDepth
+        &.is-loading {
+            color: color("whites");
+
+            &.button--primary {
+                color: color("greys", "darker");
+            }
+
+            &[disabled] {
+                color: color("greys", "light");
+            }
+
+            &::before {
+                @include loadingOverlay-spinner();
+                @include square(30px);
+
+                animation: spin $loadingOverlay-spinner-duration infinite $loadingOverlay-spinner-easing;
+                border-color: color("whites") color("whites") color("greys") color("greys");
+            }
+        }
+        // scss-lint:enable NestingDepth
+    }
+
+    .button--primary,
+    .button--action {
+        font-weight: fontWeight("semibold");
+    }
+
+    .button--small,
+    .button--tiny {
+        text-transform: none;
+    }
+
+    .button--small {
+        line-height: 1;
+    }
+
+    .button--slab {
+        width: 100%;
+    }
+}

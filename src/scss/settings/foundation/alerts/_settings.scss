@@ -1,0 +1,101 @@
+// =============================================================================
+// ALERTS (Settings)
+// =============================================================================
+
+// Bigcommerce Variables
+// -----------------------------------------------------------------------------
+//
+// These scoped variables are created by Bigcommerce.
+// All variables that are not from Foundation should be placed here.
+//
+// 1. Choose whether to include the Bigcommerce class names
+//
+// -----------------------------------------------------------------------------
+
+$exportCSS--alerts:                true; // 1
+
+// Color/State Modifiers
+// -----------------------------------------------------------------------------
+
+$alert-generic-bgColor:            color("greys", "light");
+$alert-generic-iconColor:          color("greys");
+
+$alert-info-bgColor:               color("info", "light");
+$alert-info-iconColor:             color("info");
+
+$alert-success-bgColor:            color("success", "light");
+$alert-success-iconColor:          color("success");
+
+$alert-warning-bgColor:            color("warning", "light");
+$alert-warning-iconColor:          color("warning");
+
+$alert-error-bgColor:              color("error", "light");
+$alert-error-iconColor:            color("error");
+
+//
+// Alert content settings
+// -----------------------------------------------------------------------------
+
+// Icon control
+$alert-iconSize:                   20px;
+// Buttons
+$alert-button-margin:              0 0 0 spacing("half");
+// Alert Column
+$alert-column-textAlign:           center;
+// Alert Message
+$alert-message-textAlign:          left;
+$alert-message-margin:             0;
+// Alert Heading
+$alert-heading-margin:             0;
+// ALert Close
+$alert-close-cursor:               $cursor-pointer-value;
+$alert-close-iconSize:             20px;
+
+// Foundation Variables
+// -----------------------------------------------------------------------------
+//
+// These variables come directly from:
+// /vendor/foundation/foundation/components/*
+// Declaring the variables here, you can adjust them all to your design,
+// leaving the vendor framework untouched.
+//
+// -----------------------------------------------------------------------------
+
+$include-html-alert-classes:       $include-html-classes;
+
+// We use this to control alert padding.
+$alert-padding-top:                spacing("base");
+$alert-padding-default-float:      spacing("single");
+$alert-padding-opposite-direction: $alert-padding-default-float;
+$alert-padding-bottom:             $alert-padding-top;
+
+// We use these to control text style.
+$alert-font-weight:                $font-weight-normal;
+$alert-font-size:                  fontSize("base");
+$alert-font-color:                 $body-font-color;
+$alert-font-color-alt:             $body-font-color;
+
+// We use this for close hover effect.
+$alert-function-factor:            0%;
+
+// We use these to control border styles.
+$alert-border-style:               none;
+$alert-border-width:               null;
+$alert-border-color:               null;
+$alert-bottom-margin:              spacing("half");
+
+// We use these to style the close buttons
+$alert-close-color:                color("greys");
+$alert-close-top:                  null;
+$alert-close-position:             null;
+$alert-close-font-size:            null;
+$alert-close-opacity:              null;
+$alert-close-opacity-hover:        null;
+$alert-close-padding:              null;
+$alert-close-background:           null;
+
+// We use this to control border radius
+$alert-radius:                     $global-radius;
+
+$alert-transition-speed:           300ms;
+$alert-transition-ease:            ease-out;

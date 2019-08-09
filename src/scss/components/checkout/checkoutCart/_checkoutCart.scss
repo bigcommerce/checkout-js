@@ -1,0 +1,141 @@
+// =============================================================================
+// CHECKOUT CART (Component)
+// =============================================================================
+
+.cart {
+    border: container("border");
+    border-radius: $checkoutCart-borderRadius;
+    box-shadow: container("dropShadow");
+    display: none;
+    margin: spacing("double") 0 spacing("single");
+    min-height: $checkoutCart-minHeight;
+
+    @include breakpoint("large") {
+        display: block;
+    }
+}
+
+.cart-note {
+    color: color("greys");
+    font-size: fontSize("smallest");
+    padding-left: $checkoutCart-padding;
+}
+
+// Cart Header
+// -----------------------------------------------------------------------------
+//
+// Purpose: Styling of the cart header
+//
+// -----------------------------------------------------------------------------
+
+.cart-header {
+    display: table;
+    padding: $checkoutCart-padding;
+    width: 100%;
+}
+
+.cart-title {
+    display: table-cell;
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+.cart-header-link {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+
+    .icon {
+        margin: -2px 3px 0 0;
+    }
+
+    svg {
+        fill: currentColor;
+    }
+}
+
+//
+// Cart section styling
+// -----------------------------------------------------------------------------
+
+.cart-section {
+    border-top: container("border");
+    padding: $checkoutCart-padding;
+}
+
+.cart-section-heading {
+    @include headingStyle("h5");
+
+    margin-bottom: spacing("single");
+}
+
+.cart-actions {
+    margin-top: spacing("half");
+    text-align: center;
+
+    .button {
+        margin-bottom: 0;
+    }
+}
+
+// Cart Price Item
+// -----------------------------------------------------------------------------
+//
+// Purpose: Styling of the cart price
+//
+// -----------------------------------------------------------------------------
+
+.cart-priceItem {
+    display: table;
+    margin-bottom: spacing("half");
+    width: 100%;
+}
+
+.cart-priceItem-label,
+.cart-priceItem-value {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.cart-priceItem-value {
+    text-align: right;
+}
+
+.cart-priceItem-postFix {
+    color: color("greys");
+    display: table-row;
+    font-size: fontSize("smallest");
+}
+
+.cart-priceItem--total {
+    margin-bottom: 0;
+
+    .cart-priceItem-label {
+        font-size: fontSize("smaller");
+    }
+
+    .cart-priceItem-value {
+        font-size: fontSize("larger");
+        font-weight: fontWeight("bold");
+        line-height: 1.2;
+    }
+}
+
+.cart-priceItem--subtotal {
+    font-weight: fontWeight("semibold");
+}
+
+@media print {
+    .cart {
+        background-color: color("whites", "bright");
+    }
+
+    .cart-header-link {
+        display: none;
+    }
+}
+
+.cart-priceItem--totalNote {
+    margin-bottom: 0;
+    margin-top: spacing("half");
+}

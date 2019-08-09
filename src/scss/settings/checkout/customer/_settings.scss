@@ -1,0 +1,8 @@
+// =============================================================================
+// CUSTOMER (Settings)
+// =============================================================================
+
+$customerEmail-action-margin: spacing("single") + spacing("fifth") 0 0 0;
+$customerEmail-button-padding: spacing("half") + spacing("sixth") spacing("third");
+$customerView-actions-marginTop: remCalc(-5px);
+$customerView-actions-marginTop--large: remCalc(-40px);

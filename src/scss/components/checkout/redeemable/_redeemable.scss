@@ -1,0 +1,93 @@
+// REDEEMABLE
+// -----------------------------------------------------------------------------
+//
+// Purpose: Styling of the redeemable items
+//
+//
+//
+// -----------------------------------------------------------------------------
+
+.form-checklist-checkbox ~ .form-label-redeemable {
+    &:hover {
+        cursor: default;
+    }
+
+    &::before,
+    &::after {
+        content: none;
+    }
+}
+
+.redeemable {
+    @include media("table");
+
+    padding: 0;
+    width: 100%;
+}
+
+.redeemable-actions {
+    vertical-align: middle;
+}
+
+.redeemable-action,
+.redeemable-info {
+    line-height: lineHeight("base");
+}
+
+.redeemable-entry {
+    margin-top: spacing("half");
+}
+
+.redeemable-info-header {
+    @include u-display("block");
+
+    margin-bottom: spacing("sixth");
+}
+
+.redeemable-info-header--highlight {
+    font-weight: fontWeight("semibold");
+}
+
+.redeemable-info-subHeader {
+    color: color("greys");
+    font-size: fontSize("smallest");
+    line-height: lineHeight("smallest");
+}
+
+.redeemable-info-subHeader--remaining {
+    @include u-display("block");
+}
+
+.redeemable-remove.is-loading {
+    position: relative;
+
+    &::before {
+        @include loadingOverlay-spinner();
+        @include square(22px);
+
+        animation: spin $loadingOverlay-spinner-duration infinite $loadingOverlay-spinner-easing;
+        border-color: color("whites") color("whites") color("greys") color("greys");
+    }
+
+    svg {
+        display: none;
+    }
+}
+
+.redeemable-remove-action {
+    @include square(22px);
+
+    &:hover svg {
+        fill: color("primary");
+    }
+}
+
+.redeemable-label {
+    margin-top: spacing("base");
+}
+
+.redeemable-payments {
+    @include breakpoint("large") {
+        display: none;
+    }
+}

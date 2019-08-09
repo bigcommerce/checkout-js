@@ -1,0 +1,48 @@
+// =============================================================================
+// TOOLTIPS (Settings)
+// =============================================================================
+
+// Bigcommerce Variables
+// -----------------------------------------------------------------------------
+//
+// These scoped variables are created by Bigcommerce.
+// All variables that are not from Foundation should be placed here.
+//
+// 1. Choose whether to include the Bigcommerce class names
+//
+// -----------------------------------------------------------------------------
+
+$exportCSS--tooltips:          true;
+
+// Foundation Variables
+// -----------------------------------------------------------------------------
+//
+// 2. As Tooltips don't have a Foundation mixin, we need to set the Foundation
+// include classes variable to our export variable, so it selectively exports css
+// for the pattern labs. This outputs Foundations scss, when we state to do so.
+//
+// -----------------------------------------------------------------------------
+
+$include-html-tooltip-classes: $exportCSS--tooltips; // 2
+
+$has-tip-border-bottom:        dotted 1px color("greys", "medium");
+$has-tip-font-weight:          $font-weight-bold;
+$has-tip-font-color:           color("greys", "darkest");
+$has-tip-border-bottom-hover:  dotted 1px scale-color(color("primary", "base"), $lightness: -55%);
+$has-tip-font-color-hover:     color("primary", "base");
+$has-tip-cursor-type:          help;
+
+$tooltip-padding:              spacing("quarter") spacing("third") (spacing("quarter") - remCalc(1px));
+$tooltip-bg:                   color("greys", "darkest");
+$tooltip-font-size:            fontSize("smallest");
+$tooltip-font-weight:          $font-weight-normal;
+$tooltip-font-color:           color("whites", "bright");
+$tooltip-line-height:          lineHeight("small");
+$tooltip-close-font-size:      fontSize("smallest");
+$tooltip-close-font-weight:    null;
+$tooltip-close-font-color:     color("greys", "lighter");
+$tooltip-font-size-sml:        fontSize("base");
+$tooltip-radius:               2px;
+$tooltip-rounded:              null;
+$tooltip-pip-size:             5px;
+$tooltip-max-width:            300px;

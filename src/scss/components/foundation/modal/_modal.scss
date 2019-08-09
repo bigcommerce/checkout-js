@@ -1,0 +1,123 @@
+// =============================================================================
+// MODALS
+// =============================================================================
+
+// BCApp Modal specifics
+// -----------------------------------------------------------------------------
+//
+// 1. If set to false, there is no outputted CSS for this component.
+//
+// -----------------------------------------------------------------------------
+
+@if $exportCSS--modal { // 1
+
+    .modal-background {
+        opacity: 0;
+        transition: opacity 400ms ease-out;
+
+        &.is-active,
+        &.modal--afterOpen {
+            opacity: 1;
+        }
+    }
+
+    .modal {
+        border: 0;
+        border-radius: 6px;
+        box-shadow: 0 2px 12px rgba(color("greys"), 0.4);
+        opacity: 0;
+        outline: none;
+        transition: opacity 200ms ease-out, transform 200ms ease-out;
+
+        @include breakpoint("small") {
+            transform: scale(0.95) translateY($modal-transformY);
+        }
+
+        &.is-active,
+        &.modal--afterOpen {
+            bottom: 2%;
+            left: 2%;
+            max-width: 96%;
+            min-height: 96vh;
+            opacity: 1;
+            right: 2%;
+            top: 2%;
+
+            @include breakpoint("small") {
+                bottom: auto;
+                left: 0;
+                max-width: 80%;
+                min-height: 0;
+                right: 0;
+                top: 50%;
+                transform: scale(1) translateY($modal-transformY);
+            }
+        }
+
+        &.modal--error {
+            padding-bottom: spacing("half");
+            padding-left: #{spacing("half") + spacing("double")};
+            padding-right: spacing("double");
+            padding-top: spacing("single");
+
+            .modal-body {
+                padding-bottom: spacing("half");
+                padding-top: 0;
+            }
+
+            .modal-header-title {
+                position: relative;
+            }
+
+            .modal-header-icon {
+                left: -#{spacing("double")};
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+        }
+    }
+
+    .modal-header {
+        border-bottom: 0;
+    }
+
+    .modal-header-title {
+        @include headingStyle("h4");
+    }
+
+    .modal-footer {
+        border-top: 0;
+    }
+
+    .modal-body--center {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+// Specific styles for React modal
+.modalOverlay {
+    background: $reveal-overlay-bg;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    transition: opacity 200ms ease-out;
+    z-index: zIndex("highest");
+}
+
+.modalOverlay--afterOpen {
+    opacity: 1;
+}
+
+.modalOverlay--beforeClose {
+    opacity: 0;
+}
+
+.modal--afterOpen {
+    display: block;
+    visibility: visible;
+}

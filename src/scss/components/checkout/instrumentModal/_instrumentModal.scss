@@ -1,0 +1,19 @@
+// =============================================================================
+// INSTRUMENT MODAL (Component)
+// =============================================================================
+
+.instrumentModal-trigger {
+    color: color("highlight");
+    display: block;
+    margin-bottom: spacing("half");
+    margin-left: auto;
+    margin-right: 0;
+}
+
+.instrumentModal-instrumentCardType {
+    margin-left: spacing("half");
+}
+
+.instrumentModal-instrumentExpiry--expired {
+    color: color("error");
+}

@@ -1,0 +1,93 @@
+// ============================================================================
+// CHECKOUT CART DRAWER
+// =============================================================================
+
+.cartDrawer {
+    align-items: center;
+    background-color: color("whites");
+    border: container("border");
+    border-radius: $cartDrawer-borderRadius;
+    bottom: 0;
+    box-shadow: container("dropShadow");
+    display: flex;
+    left: 0;
+    margin: spacing("single");
+    padding: spacing("half");
+    position: fixed;
+    right: 0;
+    z-index: zIndex("low");
+
+    @include breakpoint("large") {
+        display: none;
+    }
+
+    // Making the cartDrawer static when the height of the screen is really small
+    @media (max-height: remCalc($cartDrawer-min-height)) {
+        position: static;
+
+        .is-embedded & {
+            position: fixed;
+        }
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.cartDrawer-actions {
+    flex: 1;
+    text-align: right;
+    vertical-align: middle;
+}
+
+.cartDrawer-body {
+    flex: 1;
+    padding-left: spacing("single");
+}
+
+.cartDrawer-figure {
+    border: 1px solid color("greys", "light");
+    height: $cartDrawer-figure-size;
+    margin: 0;
+    min-width: $cartDrawer-figure-size;
+    position: relative;
+    width: $cartDrawer-figure-size;
+}
+
+.cartDrawer-figure--stack::after {
+    border: 1px solid color("greys", "light");
+    bottom: -$cartDrawer-figure-offset;
+    content: "";
+    left: $cartDrawer-figure-offset;
+    position: absolute;
+    right: -$cartDrawer-figure-offset;
+    top: $cartDrawer-figure-offset;
+    z-index: -1;
+}
+
+.cartDrawer-items {
+    @include headingStyle("h4");
+}
+
+.cartDrawer-total {
+    @include headingStyle("h2");
+}
+
+.cartDrawer-items,
+.cartDrawer-total {
+    margin-bottom: 0;
+}
+
+.cartDrawer-imageWrapper {
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+}
+
+.productImage-giftCertificate {
+    background: color("whites");
+    height: 100%;
+    padding: 15%;
+    width: 100%;
+}

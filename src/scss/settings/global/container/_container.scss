@@ -1,0 +1,40 @@
+// =============================================================================
+// CONTAINERS
+// =============================================================================
+//
+// Purpose:
+// The centralised place to control container settings like borders and fill.
+//
+// -----------------------------------------------------------------------------
+
+// Borders
+// -----------------------------------------------------------------------------
+
+$container-border-global-size:          1px;
+$container-border-global-style:         solid;
+$container-border-global-color-base:    $color-greyLight;
+$container-border-global-color-dark:    $color-greyMedium;
+$container-border-global-base:          $container-border-global-size $container-border-global-style $container-border-global-color-base;
+$container-border-global-dark:          $container-border-global-size $container-border-global-style $container-border-global-color-dark;
+
+// Drop shadows
+// -----------------------------------------------------------------------------
+
+$container-drop-shadow-base:             0 1px 4px rgba($color-greyDark, 0.14);
+
+// Backgrounds
+// -----------------------------------------------------------------------------
+
+$container-fill-base:                   $color-white;
+$container-fill-dark:                   $color-greyLightest;
+
+// Padding
+// -----------------------------------------------------------------------------
+
+$container-padding-base:                $spacing-single;
+$container-padding-large:               $spacing-double;
+
+// Margin
+// -----------------------------------------------------------------------------
+
+$container-margin-base:                 $spacing-single;

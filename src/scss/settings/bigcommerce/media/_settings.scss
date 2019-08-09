@@ -1,0 +1,33 @@
+// =============================================================================
+// MEDIA Object (Settings)
+// =============================================================================
+
+// Bigcommerce Variables
+// -----------------------------------------------------------------------------
+//
+// These scoped variables are created by Bigcommerce.
+//
+// 1. Choose whether to include the Bigcommerce class names
+//
+// -----------------------------------------------------------------------------
+
+$exportCSS--media:                        true; // 1
+
+//Media Object
+
+$media-gutter:                            spacing("half");
+
+//Media Table
+
+$mediaTable-gutter:                       spacing("single");
+$mediaTable-verticalAlignment:            middle;
+
+$mediaTable-image-textAlignment:          center;
+$mediaTable-image-verticalAlignment:      $mediaTable-verticalAlignment;
+$mediaTable-image-width:                  15%;
+
+$mediaTable-actions-textAlign:            right;
+$mediaTable-actions-verticalAlignment:    top;
+$mediaTable-actions-width:                30%;
+
+$mediaTable-body-width:                   100% - $mediaTable-image-width - $mediaTable-actions-width;

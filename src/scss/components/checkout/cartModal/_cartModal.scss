@@ -1,0 +1,39 @@
+// =============================================================================
+// CHECKOUT CART MODAL (Component)
+// =============================================================================
+
+.cart-modal-body {
+    padding: 0 (spacing("single") + spacing("quarter"));
+}
+
+.cart-modal-header {
+    border-bottom: 0;
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.cart-modal-close,
+.cart-modal-link,
+.cart-modal-title {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.cart-modal-title {
+    padding-right: 0;
+    text-align: center;
+    width: 50%;
+}
+
+.cart-modal-close {
+    text-align: left;
+}
+
+.cart-modal-link {
+    text-align: right;
+
+    svg {
+        fill: currentColor;
+    }
+}

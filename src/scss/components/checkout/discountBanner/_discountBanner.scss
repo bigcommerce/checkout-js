@@ -1,0 +1,21 @@
+// DiscountBanner
+// -----------------------------------------------------------------------------
+//
+// Purpose: Styling of the discount banner
+//
+//
+// -----------------------------------------------------------------------------
+
+.discountBanner {
+    margin-top: spacing("single");
+
+    .alertBox {
+        border-radius: $global-radius;
+    }
+}
+
+.discountBannerList {
+    @include u-listBullets("none");
+
+    margin: 0;
+}

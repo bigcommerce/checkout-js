@@ -1,0 +1,167 @@
+// =============================================================================
+// CHECKOUT STEPS (Component)
+// =============================================================================
+
+// Checkout Step
+//
+// 1. Very specific visual problem which can't be solved by generic breakpoints
+// The form just gets too squashed between large and before xlarge when in 2 column
+// -----------------------------------------------------------------------------
+.checkout-steps {
+    counter-reset: $checkoutStep-counter;
+    list-style-type: none;
+    margin: 0;
+
+    @include breakpoint("medium") {
+        padding-right: (spacing("double") + spacing("double"));
+    }
+}
+
+.checkout-step {
+    border-bottom: container("border");
+    padding: spacing("single") 0;
+
+    &:last-child {
+        border: 0;
+    }
+}
+
+.checkout-view-content {
+    @include breakpoint("large") {
+        @include collapse;
+    }
+}
+
+.checkout-step-info {
+    margin-bottom: spacing("single");
+}
+
+.checkout-form {
+    margin: 0;
+
+    @include breakpoint("small") {
+        margin-left: remCalc($checkoutStep-counter-size) + $checkoutStep-header-figure-margin;
+    }
+
+    @include breakpoint("large") {
+        margin-left: 0;
+    }
+
+    @include breakpoint(1080px) { // 1
+        margin-left: remCalc($checkoutStep-counter-size) + $checkoutStep-header-figure-margin;
+    }
+}
+
+// Checkout Step Counter
+// -----------------------------------------------------------------------------
+.stepHeader-counter {
+    @include square($checkoutStep-counter-size);
+
+    background-color: color("primary");
+    border-radius: 50%;
+    text-align: center;
+    transition: transform 250ms ease;
+
+    &::before {
+        @include square($checkoutStep-counter-size);
+
+        color: $checkoutStep-counter-color;
+        content: counter($checkoutStep-counter);
+        counter-increment: $checkoutStep-counter;
+        display: inline-block;
+        font-size: fontSize("small");
+        line-height: #{$checkoutStep-counter-size}px;
+        text-align: center;
+    }
+
+    svg {
+        display: none;
+        fill: $checkoutStep-counter-color;
+        padding: $checkoutStep-counter-padding;
+    }
+}
+
+.stepHeader-counter--complete {
+    transform: scale(0.8);
+
+    &::before {
+        @include square(0);
+
+        content: "";
+    }
+
+    svg {
+        display: inline-block;
+        padding: $checkoutStep-counter-padding--small;
+    }
+}
+
+// Checkout Step Header
+// -----------------------------------------------------------------------------
+.stepHeader {
+    align-items: top;
+    display: flex;
+    flex-wrap: wrap;
+    padding: spacing("single") 0;
+
+    @include breakpoint("small") {
+        flex-wrap: nowrap;
+    }
+
+    @include breakpoint("large") {
+        flex-wrap: nowrap;
+    }
+
+    &.is-readonly {
+        cursor: default;
+    }
+}
+
+.stepHeader-figure {
+    align-items: center;
+    display: flex;
+    height: remCalc($checkoutStep-counter-size);
+    margin-right: $checkoutStep-header-body-margin;
+}
+
+.stepHeader-title {
+    margin: 0 0 0 $checkoutStep-header-figure-margin;
+    min-width: 9rem;
+}
+
+.stepHeader-body {
+    @include textTruncateMultiline;
+
+    color: color("primary");
+    margin-left: remCalc($checkoutStep-counter-size) + $checkoutStep-header-figure-margin;
+    margin-top: remCalc(10px);
+    order: 3;
+    width: 100%;
+
+    @include breakpoint("small") {
+        margin-left: 0;
+        order: inherit;
+    }
+
+    @include breakpoint("medium") {
+        margin-left: remCalc($checkoutStep-counter-size) + $checkoutStep-header-figure-margin;
+    }
+
+    @include breakpoint("large") {
+        margin-left: 0;
+    }
+}
+
+.stepHeader-actions {
+    align-self: flex-start;
+    margin-left: auto;
+    margin-top: remCalc(5px);
+
+    @include breakpoint("small") {
+        margin-left: $checkoutStep-header-actions-margin;
+    }
+
+    .button {
+        margin-bottom: 0;
+    }
+}
