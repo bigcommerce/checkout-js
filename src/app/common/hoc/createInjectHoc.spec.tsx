@@ -32,7 +32,7 @@ describe('createInjectHoc()', () => {
 
     it('creates HOC that injects additional props picked from context', () => {
         const withFoo = createInjectHoc(FooContext, {
-            pickProps: (value, key) => key === 'count',
+            pickProps: (_, key) => key === 'count',
         });
         const Inner = () => <div />;
         const Outer = withFoo(Inner);

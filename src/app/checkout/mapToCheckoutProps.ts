@@ -3,7 +3,7 @@ import { CustomError } from '@bigcommerce/checkout-sdk';
 import { EMPTY_ARRAY } from '../common/utility';
 
 import getCheckoutStepStatuses from './getCheckoutStepStatuses';
-import { CheckoutProps, WithCheckoutProps } from './Checkout';
+import { WithCheckoutProps } from './Checkout';
 import { CheckoutContextProps } from './CheckoutContext';
 
 export default function mapToCheckoutProps(

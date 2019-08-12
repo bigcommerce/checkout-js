@@ -9,11 +9,11 @@ export default class NoopStepTracker implements StepTracker {
         return;
     }
 
-    trackStepViewed(step: string): void {
+    trackStepViewed(): void {
         return;
     }
 
-    trackStepCompleted(step: string): void {
+    trackStepCompleted(): void {
         return;
     }
 }

@@ -26,7 +26,9 @@
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "noUnusedParameters": true,
+        "noUnusedLocals": true
     },
     "files": [
         "types/supported-files.d.ts",

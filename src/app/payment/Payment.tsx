@@ -259,7 +259,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
     private handleCloseModal: (
         event: Event,
         props: ErrorModalOnCloseProps
-    ) => void = (event, { error }) => {
+    ) => void = (_, { error }) => {
         if (!error) {
             return;
         }
