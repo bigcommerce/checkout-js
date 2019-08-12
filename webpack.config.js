@@ -63,6 +63,10 @@ module.exports = function (options, argv) {
                 async: !isProduction,
                 tslint: true,
             }),
+            new ForkTsCheckerWebpackPlugin({
+                async: !isProduction,
+                eslint: true,
+            }),
             !isProduction && new BuildHooks(),
         ].filter(Boolean),
         module: {

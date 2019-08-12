@@ -1,0 +1,22 @@
+{
+    "env": {
+        "browser": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "modules": true,
+            "jsx": true
+        },
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "useJSXTextNode": true
+    },
+    "plugins": [
+        "react-hooks"
+    ],
+    "rules": {
+        "react-hooks/exhaustive-deps": "error",
+        "react-hooks/rules-of-hooks": "error"
+    }
+}
