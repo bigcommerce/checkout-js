@@ -175,6 +175,19 @@ class HostedWidgetPaymentMethod extends Component<
                     method={ method }
                     onSignOut={ this.handleSignOut }
                 /> }
+
+                { shouldShowCreditCardFieldset && <div
+                    id={ containerId + '-3ds' }
+                    className={ classNames(
+                        'widget',
+                        `widget--${method.id}`,
+                        'payment-widget'
+                    ) }
+                    style={ {
+                        display: hideContentWhenSignedOut && isSignInRequired && !isSignedIn ? 'none' : undefined,
+                    } }
+                    tabIndex={ -1 }
+                /> }
             </LoadingOverlay>
         );
     }

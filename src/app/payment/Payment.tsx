@@ -159,6 +159,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
                     { !isEmpty(methods) && defaultMethod && <PaymentForm
                         { ...rest }
                         defaultMethodId={ defaultMethod.id }
+                        defaultGatewayId={ defaultMethod.gateway }
                         methods={ methods }
                         isUsingMultiShipping={ isUsingMultiShipping }
                         onMethodSelect={ this.setSelectedMethod }
