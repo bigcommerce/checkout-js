@@ -22,7 +22,7 @@ export interface CheckoutAppProps {
 export default class CheckoutApp extends Component<CheckoutAppProps> {
     private checkoutService = createCheckoutService({
         locale: getLanguageService().getLocale(),
-        shouldWarnMutation: false,
+        shouldWarnMutation: process.env.NODE_ENV === 'development',
     });
     private embeddedSupport = createEmbeddedCheckoutSupport(getLanguageService());
     private embeddedStylesheet = createEmbeddedCheckoutStylesheet();

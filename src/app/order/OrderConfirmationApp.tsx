@@ -21,7 +21,7 @@ class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
     private accountService = new AccountService();
     private checkoutService = createCheckoutService({
         locale: getLanguageService().getLocale(),
-        shouldWarnMutation: false,
+        shouldWarnMutation: process.env.NODE_ENV === 'development',
     });
     private embeddedStylesheet = createEmbeddedCheckoutStylesheet();
     private errorLogger = new ErrorLoggerFactory().getLogger();
