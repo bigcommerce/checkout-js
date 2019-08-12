@@ -44,7 +44,7 @@ const BraintreeCreditCardPaymentMethod: FunctionComponent<BraintreeCreditCardPay
                 },
             },
         });
-    }, [onUnhandledError]);
+    }, [initializePayment, onUnhandledError]);
 
     const appendThreeDSecureContent = useCallback(() => {
         if (ref.current.threeDSecureContentRef.current && threeDSecureContent) {
