@@ -233,13 +233,6 @@ const deleteConsignmentsSelector = createSelector(
     }
 );
 
-const updateOrderCommentSelector = createSelector(
-    ({ checkoutService: { updateCheckout } }: CheckoutContextProps) => updateCheckout,
-    updateCheckout => (comment: string) => {
-        return updateCheckout({ customerMessage: comment });
-    }
-);
-
 export function mapToShippingProps({
     checkoutService,
     checkoutState,

@@ -1,5 +1,4 @@
 import { Address, CustomerAddress } from '@bigcommerce/checkout-sdk';
-import { some } from 'lodash';
 import React, { Component, FunctionComponent, ReactNode } from 'react';
 
 import { preventDefault } from '../common/dom';
@@ -89,7 +88,6 @@ type AddressSelectButtonProps = Pick<AddressSelectProps, 'selectedAddress' | 'ad
 
 const AddressSelectButton: FunctionComponent<AddressSelectButtonProps> = ({
     selectedAddress,
-    addresses,
 }) => (
     <a
         className="button dropdown-button dropdown-toggle--select"
