@@ -1,5 +1,5 @@
 import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
+import { mount, render } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
 import { CheckoutProvider } from '../checkout';
@@ -41,13 +41,13 @@ describe('StaticAddress Component', () => {
     });
 
     it('renders component with supplied props', () => {
-        const tree = mount(<StaticAddressTest { ...defaultProps } />);
+        const tree = render(<StaticAddressTest { ...defaultProps } />);
 
-        expect(tree.find(StaticAddress).getDOMNode()).toMatchSnapshot();
+        expect(tree).toMatchSnapshot();
     });
 
     it('renders component when props are missing', () => {
-        const tree = mount(<StaticAddressTest
+        const tree = render(<StaticAddressTest
             { ...defaultProps }
             address={ {
                 ...defaultProps.address,
@@ -56,7 +56,7 @@ describe('StaticAddress Component', () => {
             } }
         />);
 
-        expect(tree.find(StaticAddress).getDOMNode()).toMatchSnapshot();
+        expect(tree).toMatchSnapshot();
     });
 
     it('renders component if required fields for billing address are not missing', () => {

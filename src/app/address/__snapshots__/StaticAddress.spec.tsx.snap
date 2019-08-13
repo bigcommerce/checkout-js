@@ -10,8 +10,7 @@ exports[`StaticAddress Component renders component when props are missing 1`] = 
     <span
       class="first-name"
     >
-      Test
-       
+      Test 
     </span>
     <span
       class="family-name"
@@ -25,8 +24,7 @@ exports[`StaticAddress Component renders component when props are missing 1`] = 
     <span
       class="company-name"
     >
-      Bigcommerce
-       
+      Bigcommerce 
     </span>
     <span
       class="tel"
@@ -41,10 +39,8 @@ exports[`StaticAddress Component renders component when props are missing 1`] = 
       <span
         class="address-line-1"
       >
-        12345 Testing Way
-         
+        12345 Testing Way 
       </span>
-      
     </p>
     <p
       class="address-entry"
@@ -52,26 +48,22 @@ exports[`StaticAddress Component renders component when props are missing 1`] = 
       <span
         class="locality"
       >
-        Some City
-        , 
+        Some City, 
       </span>
       <span
         class="region"
       >
-        California
-        , 
+        California, 
       </span>
       <span
         class="postal-code"
       >
-        95555
-         / 
+        95555 / 
       </span>
       <span
         class="country-name"
       >
-        United States
-         
+        United States 
       </span>
     </p>
   </div>
@@ -88,8 +80,7 @@ exports[`StaticAddress Component renders component with supplied props 1`] = `
     <span
       class="first-name"
     >
-      Test
-       
+      Test 
     </span>
     <span
       class="family-name"
@@ -103,8 +94,7 @@ exports[`StaticAddress Component renders component with supplied props 1`] = `
     <span
       class="company-name"
     >
-      Bigcommerce
-       
+      Bigcommerce 
     </span>
     <span
       class="tel"
@@ -121,10 +111,8 @@ exports[`StaticAddress Component renders component with supplied props 1`] = `
       <span
         class="address-line-1"
       >
-        12345 Testing Way
-         
+        12345 Testing Way 
       </span>
-      
     </p>
     <p
       class="address-entry"
@@ -132,26 +120,22 @@ exports[`StaticAddress Component renders component with supplied props 1`] = `
       <span
         class="locality"
       >
-        Some City
-        , 
+        Some City, 
       </span>
       <span
         class="region"
       >
-        California
-        , 
+        California, 
       </span>
       <span
         class="postal-code"
       >
-        95555
-         / 
+        95555 / 
       </span>
       <span
         class="country-name"
       >
-        United States
-         
+        United States 
       </span>
     </p>
   </div>
