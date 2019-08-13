@@ -8,6 +8,7 @@ import { AccordionItem } from '../accordion';
 import Checklist from './Checklist';
 import ChecklistItem from './ChecklistItem';
 
+/* eslint-disable react/jsx-no-bind */
 describe('ChecklistItem', () => {
     it('sets the expected class names', () => {
         const component = mount(

@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import React, { useCallback, useMemo, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
 import { withLanguage, WithLanguageProps } from '../../locale';
@@ -11,22 +12,28 @@ const MasterpassPaymentMethod: FunctionComponent<MasterpassPaymentMethodProps & 
     initializePayment,
     language,
     ...rest
-}) => (
-    <WalletButtonPaymentMethod
-        { ...rest }
-        buttonId="walletButton"
-        initializePayment={ options => initializePayment({
-            ...options,
-            masterpass: {
-                walletButton: 'walletButton',
-            },
-        }) }
-        signInButtonLabel={ <img
+}) => {
+    const initializeMasterpassPayment = useCallback((options: PaymentInitializeOptions) => initializePayment({
+        ...options,
+        masterpass: {
+            walletButton: 'walletButton',
+        },
+    }), [initializePayment]);
+
+    const signInButtonLabel = useMemo(() => (
+        <img
             id="mpbutton"
             alt={ language.translate('payment.masterpass_name_text') }
             src="https://masterpass.com/dyn/img/btn/global/mp_chk_btn_126x030px.svg"
-        /> }
-    />
-);
+        />
+    ), [language]);
+
+    return <WalletButtonPaymentMethod
+        { ...rest }
+        buttonId="walletButton"
+        initializePayment={ initializeMasterpassPayment }
+        signInButtonLabel={ signInButtonLabel }
+    />;
+};
 
 export default withLanguage(MasterpassPaymentMethod);

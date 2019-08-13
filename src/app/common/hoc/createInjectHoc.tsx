@@ -1,6 +1,6 @@
 
 import { isEmpty, pickBy } from 'lodash';
-import React, { useContext, ComponentType, Context } from 'react';
+import React, { memo, useContext, ComponentType, Context, FunctionComponent } from 'react';
 
 import InjectHoc from './InjectHoc';
 
@@ -24,6 +24,10 @@ export default function createInjectHoc<
             pickProps = () => true,
         } = options || {};
 
+        const InnerDecoratedComponent: FunctionComponent<TProps> = memo(props =>
+            <OriginalComponent { ...props } />
+        );
+
         const DecoratedComponent = (props: Omit<TProps, keyof NonNullable<TPickedProps>>) => {
             const context = useContext(ContextComponent);
             const injectedProps = pickBy(context, (value, key) => pickProps(value, key as keyof TInjectedProps));
@@ -34,7 +38,7 @@ export default function createInjectHoc<
 
             const mergedProps = { ...injectedProps, ...props } as unknown as TProps;
 
-            return <OriginalComponent { ...mergedProps } />;
+            return <InnerDecoratedComponent { ...mergedProps } />;
         };
 
         if (displayNamePrefix) {

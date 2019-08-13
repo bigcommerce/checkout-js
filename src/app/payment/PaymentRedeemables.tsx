@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import { mapToRedeemableProps, Redeemable, RedeemableProps } from '../cart';
 import { withCheckout } from '../checkout';
@@ -13,4 +13,4 @@ const PaymentRedeemables: FunctionComponent<RedeemableProps> = redeemableProps =
     </Fieldset>
 );
 
-export default withCheckout(mapToRedeemableProps)(PaymentRedeemables);
+export default withCheckout(mapToRedeemableProps)(memo(PaymentRedeemables));

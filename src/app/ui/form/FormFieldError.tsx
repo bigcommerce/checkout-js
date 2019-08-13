@@ -1,5 +1,5 @@
 import { ErrorMessage } from 'formik';
-import React, { FunctionComponent } from 'react';
+import React, { memo, useCallback, FunctionComponent } from 'react';
 
 import { FormContext } from './FormProvider';
 
@@ -11,27 +11,32 @@ export interface FormFieldErrorProps {
 const FormFieldError: FunctionComponent<FormFieldErrorProps> = ({
     name,
     testId,
-}) => (
-    <FormContext.Consumer>
+}) => {
+    const renderMessage = useCallback((message: string) => (
+        <ul
+            className="form-field-errors"
+            data-test={ testId }>
+            <li className="form-field-error">
+                <label
+                    className="form-inlineMessage"
+                    htmlFor={ name }>
+                    { message }
+                </label>
+            </li>
+        </ul>
+    ), [
+        name,
+        testId,
+    ]);
+
+    return <FormContext.Consumer>
         { ({ isSubmitted }) => isSubmitted &&
             <ErrorMessage
                 name={ name }
-                render={ message => (
-                    <ul
-                        className="form-field-errors"
-                        data-test={ testId }>
-                        <li className="form-field-error">
-                            <label
-                                className="form-inlineMessage"
-                                htmlFor={ name }>
-                                { message }
-                            </label>
-                        </li>
-                    </ul>
-                ) }
+                render={ renderMessage }
             />
         }
-    </FormContext.Consumer>
-);
+    </FormContext.Consumer>;
+};
 
-export default FormFieldError;
+export default memo(FormFieldError);

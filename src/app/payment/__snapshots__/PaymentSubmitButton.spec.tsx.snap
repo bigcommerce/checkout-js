@@ -8,6 +8,6 @@ exports[`PaymentSubmitButton matches snapshot with rendered output 1`] = `
   type="submit"
   variant="action"
 >
-  <PaymentSubmitButtonText />
+  <Memo() />
 </Button>
 `;

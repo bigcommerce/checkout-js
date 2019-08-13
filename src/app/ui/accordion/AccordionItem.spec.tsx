@@ -3,6 +3,7 @@ import React from 'react';
 
 import AccordionItem from './AccordionItem';
 
+/* eslint-disable react/jsx-no-bind */
 describe('AccordionItem', () => {
     it('renders component that matches snapshot', () => {
         const component = mount(

@@ -1,6 +1,7 @@
 import { createCheckoutService, createEmbeddedCheckoutMessenger, CheckoutSelectors, CheckoutService, EmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
-import { noop } from 'lodash';
+import { EventEmitter } from 'events';
+import { merge, noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { NoopStepTracker, StepTracker } from '../analytics';
@@ -39,12 +40,14 @@ describe('Checkout', () => {
     let defaultProps: CheckoutProps;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
     let stepTracker: StepTracker;
+    let subscribeEventEmitter: EventEmitter;
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         embeddedMessengerMock = createEmbeddedCheckoutMessenger({ parentOrigin: getStoreConfig().links.siteLink });
         stepTracker = new NoopStepTracker();
+        subscribeEventEmitter = new EventEmitter();
 
         defaultProps = {
             checkoutId: getCheckout().id,
@@ -66,7 +69,8 @@ describe('Checkout', () => {
 
         jest.spyOn(checkoutService, 'subscribe')
             .mockImplementation(subscriber => {
-                subscriber(checkoutService.getState());
+                subscribeEventEmitter.on('change', () => subscriber(checkoutService.getState()));
+                subscribeEventEmitter.emit('change');
 
                 return noop;
             });
@@ -668,17 +672,22 @@ describe('Checkout', () => {
         });
 
         it('shows store credit amount in cart summary if store credit is applied', () => {
-            jest.spyOn(checkoutState.data, 'getCustomer')
-                .mockReturnValue({
-                    ...getCustomer(),
-                    storeCredit: 10,
-                });
+            checkoutState = merge({}, checkoutState, {
+                data: {
+                    getCustomer: jest.fn(() => ({
+                        ...getCustomer(),
+                        storeCredit: 10,
+                    })),
+                },
+            });
 
-            container.setProps({});
+            subscribeEventEmitter.emit('change');
 
             // tslint:disable-next-line:no-non-null-assertion
             (container.find(Payment).at(0) as ReactWrapper<PaymentProps>)
                 .prop('onStoreCreditChange')!(true);
+
+            container.update();
 
             expect((container.find(CartSummary).at(0) as ReactWrapper<CartSummaryProps>).prop('storeCreditAmount'))
                 .toEqual(10);

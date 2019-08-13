@@ -17,7 +17,7 @@ exports[`OrderSummaryModal renders order summary 1`] = `
             id="common.close_action"
           />
         </span>
-        <Unknown />
+        <Memo />
       </a>
       <ModalHeader
         additionalClassName="cart-modal-title"

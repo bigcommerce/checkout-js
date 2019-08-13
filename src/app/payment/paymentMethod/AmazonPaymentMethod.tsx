@@ -1,5 +1,5 @@
-import { CheckoutSelectors, CustomerInitializeOptions } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import { CheckoutSelectors, CustomerInitializeOptions, PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import React, { useCallback, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
@@ -21,28 +21,32 @@ const AmazonPaymentMethod: FunctionComponent<AmazonPaymentMethodProps> = ({
     initializePayment,
     onUnhandledError,
     ...rest
-}) => (
-    <HostedWidgetPaymentMethod
+}) => {
+    const initializeAmazonCustomer = useCallback((options: CustomerInitializeOptions) => initializeCustomer({
+        ...options,
+        amazon: {
+            container: 'paymentWidget',
+            onError: onUnhandledError,
+        },
+    }), [initializeCustomer, onUnhandledError]);
+
+    const initializeAmazonPayment = useCallback((options: PaymentInitializeOptions) => initializePayment({
+        ...options,
+        amazon: {
+            container: 'paymentWidget',
+            onError: onUnhandledError,
+        },
+    }), [initializePayment, onUnhandledError]);
+
+    return <HostedWidgetPaymentMethod
         { ...rest }
         containerId="paymentWidget"
         hideContentWhenSignedOut
-        initializeCustomer={ options => initializeCustomer({
-            ...options,
-            amazon: {
-                container: 'paymentWidget',
-                onError: onUnhandledError,
-            },
-        }) }
-        initializePayment={ options => initializePayment({
-            ...options,
-            amazon: {
-                container: 'paymentWidget',
-                onError: onUnhandledError,
-            },
-        }) }
+        initializeCustomer={ initializeAmazonCustomer }
+        initializePayment={ initializeAmazonPayment }
         isSignInRequired={ true }
         signInCustomer={ signInAmazon }
-    />
-);
+    />;
+};
 
 export default AmazonPaymentMethod;

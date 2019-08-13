@@ -1,6 +1,6 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps, WithFormikConfig } from 'formik';
-import { noop, pick } from 'lodash';
+import { noop } from 'lodash';
 import React, { memo, useCallback, useContext, useMemo, Fragment, FunctionComponent } from 'react';
 import { ObjectSchema } from 'yup';
 
@@ -101,7 +101,10 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
     values,
 }) => {
     const { setSubmitted } = useContext(FormContext);
-    const commonValues = useMemo(() => pick(values, ['terms', 'useStoreCredit']), [values]);
+    const commonValues = useMemo(
+        () => ({ terms: values.terms, useStoreCredit: values.useStoreCredit }),
+        [values.terms, values.useStoreCredit]
+    );
 
     const handlePaymentMethodSelect = useCallback((method: PaymentMethod) => {
         resetForm({

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { ComponentType } from 'react';
+import React, { memo, ComponentType } from 'react';
 
 export enum IconSize {
     Regular = 'regular',
@@ -17,7 +17,7 @@ export interface IconProps {
 export default function withIconContainer<TProps>(
     OriginalComponent: ComponentType<TProps>
 ): ComponentType<TProps & IconProps> {
-    return ({
+    return memo(({
         additionalClassName,
         size,
         testId,
@@ -35,5 +35,5 @@ export default function withIconContainer<TProps>(
         >
             <OriginalComponent { ...rest as TProps } />
         </div>
-    );
+    ));
 }

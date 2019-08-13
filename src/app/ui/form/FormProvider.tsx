@@ -1,5 +1,5 @@
 import { isFunction, noop } from 'lodash';
-import React, { createContext, useMemo, useState, FunctionComponent, ReactNode } from 'react';
+import React, { createContext, memo, useMemo, useState, FunctionComponent, ReactNode } from 'react';
 
 export interface FormContextType {
     isSubmitted: boolean;
@@ -35,4 +35,4 @@ const FormProvider: FunctionComponent<FormProviderProps> = ({
     );
 };
 
-export default FormProvider;
+export default memo(FormProvider);

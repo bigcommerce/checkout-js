@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../locale';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
@@ -10,7 +10,7 @@ interface PaymentSubmitButtonTextProps {
     methodType?: string;
 }
 
-const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> = ({ methodId, methodType }) => {
+const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> = memo(({ methodId, methodType }) => {
     if (methodId === PaymentMethodId.Amazon) {
         return <TranslatedString id="payment.amazon_continue_action" />;
     }
@@ -32,7 +32,7 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
     }
 
     return <TranslatedString id="payment.place_order_action" />;
-};
+});
 
 interface PaymentSubmitButtonProps {
     isDisabled?: boolean;
@@ -63,4 +63,4 @@ const PaymentSubmitButton: FunctionComponent<PaymentSubmitButtonProps> = ({
     </Button>
 );
 
-export default PaymentSubmitButton;
+export default memo(PaymentSubmitButton);

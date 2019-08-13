@@ -1,5 +1,6 @@
+import { FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
-import React, { Fragment, FunctionComponent, ReactNode } from 'react';
+import React, { useCallback, Fragment, FunctionComponent, ReactNode } from 'react';
 
 import BasicFormField from './BasicFormField';
 import CheckboxInput from './CheckboxInput';
@@ -19,27 +20,33 @@ const CheckboxFormField: FunctionComponent<CheckboxFormFieldProps> = ({
     onChange,
     name,
     id,
-}) => (
-    <BasicFormField
+}) => {
+    const renderField = useCallback(({ field }: FieldProps) => (
+        <Fragment>
+            { <CheckboxInput
+                { ...field }
+                checked={ !!field.value }
+                id={ id || field.name }
+                label={ labelContent }
+            /> }
+
+            <FormFieldError
+                name={ name }
+                testId={ `${kebabCase(name)}-field-error-message` }
+            />
+        </Fragment>
+    ), [
+        id,
+        labelContent,
+        name,
+    ]);
+
+    return <BasicFormField
         additionalClassName={ additionalClassName }
         name={ name }
         onChange={ onChange }
-        render={ ({ field }) =>
-            <Fragment>
-                { <CheckboxInput
-                    { ...field }
-                    checked={ !!field.value }
-                    id={ id || field.name }
-                    label={ labelContent }
-                /> }
-
-                <FormFieldError
-                    name={ name }
-                    testId={ `${kebabCase(name)}-field-error-message` }
-                />
-            </Fragment>
-        }
-    />
-);
+        render={ renderField }
+    />;
+};
 
 export default CheckboxFormField;

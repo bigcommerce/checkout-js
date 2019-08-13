@@ -1,6 +1,8 @@
+import { FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
 import React, { memo, useCallback, useContext, FunctionComponent, ReactNode } from 'react';
 
+import { memoize } from '../../common/utility';
 import { AccordionItem, AccordionItemHeaderProps } from '../accordion';
 
 import BasicFormField from './BasicFormField';
@@ -23,36 +25,43 @@ const ChecklistItem: FunctionComponent<ChecklistItemProps> = ({
 }) => {
     const { name = '' } = useContext(ChecklistContext) || {};
 
+    const renderInput = useCallback((isSelected: boolean) => ({ field }: FieldProps) => (
+        <ChecklistItemInput
+            { ...field }
+            isSelected={ field.value === value }
+            id={ htmlId }
+            value={ value }
+        >
+            { label instanceof Function ?
+                label(isSelected) :
+                label }
+        </ChecklistItemInput>
+    ), [
+        htmlId,
+        label,
+        value,
+    ]);
+
+    const handleChange = useCallback(memoize((onToggle: (id: string) => void) => (selectedValue: string) => {
+        if (value === selectedValue) {
+            onToggle(value);
+        }
+    }), []);
+
     const renderHeaderContent = useCallback(({
         isSelected,
         onToggle,
-    }: AccordionItemHeaderProps) => {
-        return <BasicFormField
+    }: AccordionItemHeaderProps) => (
+        <BasicFormField
             className="form-checklist-option"
             name={ name }
-            onChange={ selectedValue => {
-                if (value === selectedValue) {
-                    onToggle(value);
-                }
-            } }
-            render={ ({ field }) => (
-                <ChecklistItemInput
-                    { ...field }
-                    isSelected={ field.value === value }
-                    id={ htmlId }
-                    value={ value }
-                >
-                    { label instanceof Function ?
-                        label(isSelected) :
-                        label }
-                </ChecklistItemInput>
-            ) }
-        />;
-    }, [
-        htmlId,
-        label,
+            onChange={ handleChange(onToggle) }
+            render={ renderInput(isSelected) }
+        />
+    ), [
+        handleChange,
         name,
-        value,
+        renderInput,
     ]);
 
     return (

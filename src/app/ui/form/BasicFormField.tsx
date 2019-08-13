@@ -1,6 +1,7 @@
 import { getIn, Field, FieldConfig, FieldProps } from 'formik';
 import { isDate, noop } from 'lodash';
-import React, { createElement, Component, FunctionComponent } from 'react';
+import React, { createElement, memo, useCallback, useMemo, Component, FunctionComponent } from 'react';
+import shallowEqual from 'shallowequal';
 
 import FormFieldContainer from './FormFieldContainer';
 
@@ -19,37 +20,81 @@ const BasicFormField: FunctionComponent<BasicFormFieldProps> = ({
     testId,
     onChange,
     ...rest
-}) => <Field
-    { ...rest }
-    render={ (props: FieldProps) => {
-        const {
-            field,
-            form: { errors },
-        } = props;
+}) => {
+    const renderInnerField = useCallback((props: FieldProps) => (
+        <InnerField
+            { ...props }
+            additionalClassName={ additionalClassName }
+            className={ className }
+            component={ component }
+            render={ render }
+            testId={ testId }
+            onChange={ onChange }
+        />
+    ), [
+        additionalClassName,
+        className,
+        component,
+        render,
+        testId,
+        onChange,
+    ]);
 
-        return (
-            <FormFieldContainer
-                additionalClassName={ additionalClassName }
-                testId={ testId }
-                hasError={ getIn(errors, field.name) }
-            >
-                <FieldInput
-                    { ...props }
-                    onChange={ onChange }
-                    component={ component }
-                    render={ render }
-                />
-            </FormFieldContainer>
-        );
-    } }
-/>;
+    return <Field
+        { ...rest }
+        render={ renderInnerField }
+    />;
+};
 
-type FieldInputProps = FieldProps & Pick<FieldConfig, 'component' | 'render'> & {
+type InnerFieldProps = Omit<BasicFormFieldProps, keyof FieldConfig> & InnerFieldInputProps;
+
+const InnerField: FunctionComponent<InnerFieldProps> = memo(({
+    additionalClassName,
+    component,
+    field,
+    form,
+    onChange,
+    render,
+    testId,
+}) => {
+    const input = useMemo(() => <InnerFieldInput
+        field={ field }
+        form={ form }
+        onChange={ onChange }
+        component={ component }
+        render={ render }
+    />, [
+        field,
+        form,
+        onChange,
+        component,
+        render,
+    ]);
+
+    return (
+        <FormFieldContainer
+            additionalClassName={ additionalClassName }
+            testId={ testId }
+            hasError={ getIn(form.errors, field.name) }
+        >
+            { input }
+        </FormFieldContainer>
+    );
+}, (
+    { form: prevForm, field: prevField, ...prevProps },
+    { form: nextForm, field: nextField, ...nextProps }
+) => (
+    shallowEqual(prevProps, nextProps) &&
+    shallowEqual(prevForm, nextForm) &&
+    shallowEqual(prevField, nextField)
+));
+
+type InnerFieldInputProps = FieldProps & Pick<FieldConfig, 'component' | 'render'> & {
     onChange?(value: string): void;
 };
 
-class FieldInput extends Component<FieldInputProps> {
-    componentDidUpdate({ field: prevField }: FieldInputProps) {
+class InnerFieldInput extends Component<InnerFieldInputProps> {
+    componentDidUpdate({ field: prevField }: InnerFieldInputProps) {
         const { field: { value }, onChange = noop } = this.props;
         const comparableValue = isDate(value) ? value.getTime() : value;
         const comparablePrevValue = isDate(prevField.value) ? prevField.value.getTime() : prevField.value;

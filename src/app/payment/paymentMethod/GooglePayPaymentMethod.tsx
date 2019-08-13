@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { useCallback, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
 import WalletButtonPaymentMethod, { WalletButtonPaymentMethodProps } from './WalletButtonPaymentMethod';
@@ -9,23 +9,25 @@ const GooglePayPaymentMethod: FunctionComponent<GooglePayPaymentMethodProps> = (
     initializePayment,
     onUnhandledError,
     ...rest
-}) => (
-    <WalletButtonPaymentMethod
+}) => {
+    const initializeGooglePayPayment = useCallback(options => initializePayment({
+        ...options,
+        googlepaybraintree: {
+            walletButton: 'walletButton',
+            onError: onUnhandledError,
+        },
+        googlepaystripe: {
+            walletButton: 'walletButton',
+            onError: onUnhandledError,
+        },
+    }), [initializePayment, onUnhandledError]);
+
+    return <WalletButtonPaymentMethod
         { ...rest }
         buttonId="walletButton"
-        initializePayment={ options => initializePayment({
-            ...options,
-            googlepaybraintree: {
-                walletButton: 'walletButton',
-                onError: onUnhandledError,
-            },
-            googlepaystripe: {
-                walletButton: 'walletButton',
-                onError: onUnhandledError,
-            },
-        }) }
+        initializePayment={ initializeGooglePayPayment }
         shouldShowEditButton
-    />
-);
+    />;
+};
 
 export default GooglePayPaymentMethod;

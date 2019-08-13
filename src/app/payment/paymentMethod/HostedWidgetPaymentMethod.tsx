@@ -1,19 +1,15 @@
 import { CheckoutSelectors, CustomerInitializeOptions, CustomerRequestOptions, Instrument, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import { find, noop, some } from 'lodash';
-import React, { Component, ReactNode } from 'react';
+import { find, memoize, noop, some } from 'lodash';
+import React, { PureComponent, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
+import { MapToProps } from '../../common/hoc';
 import { EMPTY_ARRAY } from '../../common/utility';
 import { LoadingOverlay } from '../../ui/loading';
 import { CreditCardStorageField } from '../creditCard';
-import {
-    isInstrumentCardCodeRequired,
-    isInstrumentCardNumberRequiredSelector,
-    isInstrumentFeatureAvailable,
-    InstrumentFieldset
-} from '../storedInstrument';
+import { isInstrumentCardCodeRequired, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, InstrumentFieldset } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
 
@@ -54,7 +50,7 @@ interface HostedWidgetPaymentMethodState {
     selectedInstrumentId?: string;
 }
 
-class HostedWidgetPaymentMethod extends Component<
+class HostedWidgetPaymentMethod extends PureComponent<
     HostedWidgetPaymentMethodProps &
     WithCheckoutHostedWidgetPaymentMethodProps &
     ConnectFormikProps<PaymentFormValues> &
@@ -279,60 +275,68 @@ class HostedWidgetPaymentMethod extends Component<
     };
 }
 
-function mapToWithCheckoutHostedWidgetPaymentMethodProps(
-    { checkoutService, checkoutState }: CheckoutContextProps,
-    props: HostedWidgetPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
-): WithCheckoutHostedWidgetPaymentMethodProps | null {
-    const {
-        formik: { values },
-        isUsingMultiShipping = false,
-        method,
-    } = props;
+function mapFromCheckoutProps(): MapToProps<
+    CheckoutContextProps,
+    WithCheckoutHostedWidgetPaymentMethodProps,
+    HostedWidgetPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
+> {
+    const filterInstruments = memoize((instruments: Instrument[] = EMPTY_ARRAY, method: PaymentMethod) =>
+        instruments.filter(({ provider }) => provider === method.id)
+    );
 
-    const {
-        data: {
-            getCart,
-            getCheckout,
-            getConfig,
-            getCustomer,
-            getInstruments,
-            isPaymentDataRequired,
-        },
-        statuses: {
-            isLoadingInstruments,
-        },
-    } = checkoutState;
+    return (context, props) => {
+        const {
+            formik: { values },
+            isUsingMultiShipping = false,
+            method,
+        } = props;
 
-    const cart = getCart();
-    const checkout = getCheckout();
-    const config = getConfig();
-    const customer = getCustomer();
-    const instruments = getInstruments() || EMPTY_ARRAY;
+        const { checkoutService, checkoutState } = context;
 
-    if (!checkout || !config || !cart || !customer || !method) {
-        return null;
-    }
+        const {
+            data: {
+                getCart,
+                getCheckout,
+                getConfig,
+                getCustomer,
+                getInstruments,
+                isPaymentDataRequired,
+            },
+            statuses: {
+                isLoadingInstruments,
+            },
+        } = checkoutState;
 
-    return {
-        instruments: instruments.filter(({ provider }) => provider === method.id),
-        isLoadingInstruments: isLoadingInstruments(),
-        isPaymentDataRequired: isPaymentDataRequired(values.useStoreCredit),
-        isSignedIn: some(checkout.payments, { providerId: method.id }),
-        isInstrumentCardCodeRequired: isInstrumentCardCodeRequired({
-            config,
-            lineItems: cart.lineItems,
-            paymentMethod: method,
-        }),
-        isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredSelector(checkoutState),
-        isInstrumentFeatureAvailable: isInstrumentFeatureAvailable({
-            config,
-            customer,
-            isUsingMultiShipping,
-            paymentMethod: method,
-        }),
-        loadInstruments: checkoutService.loadInstruments,
-        signOut: checkoutService.signOutCustomer,
+        const cart = getCart();
+        const checkout = getCheckout();
+        const config = getConfig();
+        const customer = getCustomer();
+
+        if (!checkout || !config || !cart || !customer || !method) {
+            return null;
+        }
+
+        return {
+            instruments: filterInstruments(getInstruments(), method),
+            isLoadingInstruments: isLoadingInstruments(),
+            isPaymentDataRequired: isPaymentDataRequired(values.useStoreCredit),
+            isSignedIn: some(checkout.payments, { providerId: method.id }),
+            isInstrumentCardCodeRequired: isInstrumentCardCodeRequired({
+                config,
+                lineItems: cart.lineItems,
+                paymentMethod: method,
+            }),
+            isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredSelector(checkoutState),
+            isInstrumentFeatureAvailable: isInstrumentFeatureAvailable({
+                config,
+                customer,
+                isUsingMultiShipping,
+                paymentMethod: method,
+            }),
+            loadInstruments: checkoutService.loadInstruments,
+            signOut: checkoutService.signOutCustomer,
+        };
     };
 }
 
-export default connectFormik(withPayment(withCheckout(mapToWithCheckoutHostedWidgetPaymentMethodProps)(HostedWidgetPaymentMethod)));
+export default connectFormik(withPayment(withCheckout(mapFromCheckoutProps)(HostedWidgetPaymentMethod)));

@@ -5,6 +5,7 @@ import React from 'react';
 
 import CheckboxFormField from './CheckboxFormField';
 
+/* eslint-disable react/jsx-no-bind */
 describe('CheckboxFormField', () => {
     it('matches snapshot with rendered output', () => {
         const component = mount(

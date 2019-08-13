@@ -63,7 +63,7 @@ const Modal: FunctionComponent<ModalProps> = ({
                 className="modal-close"
                 data-test="modal-close-button"
                 onClick={ event => {
-                    onRequestClose(event.nativeEvent);
+                    onRequestClose(event);
                 } }
                 href="javascript:void(0);"
             >
