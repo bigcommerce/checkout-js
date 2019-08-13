@@ -1,6 +1,8 @@
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
+import { memoize } from '../../common/utility';
+
 import AccordionContext from './AccordionContext';
 
 export interface AccordionProps {
@@ -17,6 +19,13 @@ export interface AccordionState {
 export default class Accordion extends Component<AccordionProps, AccordionState> {
     state: AccordionState = {};
 
+    private getContextValue = memoize(selectedItemId => {
+        return {
+            onToggle: this.handleToggleItem,
+            selectedItemId,
+        };
+    });
+
     render(): ReactNode {
         const {
             children,
@@ -27,10 +36,7 @@ export default class Accordion extends Component<AccordionProps, AccordionState>
         const { selectedItemId = defaultSelectedItemId } = this.state;
 
         return (
-            <AccordionContext.Provider value={ {
-                onToggle: this.handleToggleItem,
-                selectedItemId,
-            } }>
+            <AccordionContext.Provider value={ this.getContextValue(selectedItemId) }>
                 <ul className={ className }>
                     { children }
                 </ul>

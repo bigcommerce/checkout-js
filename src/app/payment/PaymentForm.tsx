@@ -1,7 +1,7 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps, WithFormikConfig } from 'formik';
-import { noop } from 'lodash';
-import React, { Fragment, FunctionComponent } from 'react';
+import { noop, pick } from 'lodash';
+import React, { memo, useCallback, useContext, useMemo, Fragment, FunctionComponent } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
@@ -99,8 +99,33 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
     termsConditionsUrl,
     usableStoreCredit = 0,
     values,
-}) => (
-    <Form
+}) => {
+    const { setSubmitted } = useContext(FormContext);
+    const commonValues = useMemo(() => pick(values, ['terms', 'useStoreCredit']), [values]);
+
+    const handlePaymentMethodSelect = useCallback((method: PaymentMethod) => {
+        resetForm({
+            ...commonValues,
+            ccCustomerCode: '',
+            ccCvv: '',
+            ccExpiry: '',
+            ccName: '',
+            ccNumber: '',
+            instrumentId: '',
+            paymentProviderRadio: getUniquePaymentMethodId(method.id, method.gateway),
+            shouldSaveInstrument: false,
+        });
+
+        setSubmitted(false);
+        onMethodSelect(method);
+    }, [
+        commonValues,
+        onMethodSelect,
+        resetForm,
+        setSubmitted,
+    ]);
+
+    return <Form
         className="checkout-form"
         testId="payment-form"
     >
@@ -118,31 +143,13 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
         }>
             { !isPaymentDataRequired(values.useStoreCredit) && <StoreCreditOverlay /> }
 
-            <FormContext.Consumer>
-                { ({ setSubmitted }) =>
-                    <PaymentMethodList
-                        isEmbedded={ isEmbedded }
-                        isUsingMultiShipping={ isUsingMultiShipping }
-                        methods={ methods }
-                        onSelect={ method => {
-                            resetForm({
-                                ...values,
-                                ccCustomerCode: '',
-                                ccCvv: '',
-                                ccExpiry: '',
-                                ccName: '',
-                                ccNumber: '',
-                                instrumentId: '',
-                                shouldSaveInstrument: false,
-                            });
-
-                            setSubmitted(false);
-                            onMethodSelect(method);
-                        } }
-                        onUnhandledError={ onUnhandledError }
-                    />
-                }
-            </FormContext.Consumer>
+            <PaymentMethodList
+                isEmbedded={ isEmbedded }
+                isUsingMultiShipping={ isUsingMultiShipping }
+                methods={ methods }
+                onSelect={ handlePaymentMethodSelect }
+                onUnhandledError={ onUnhandledError }
+            />
         </Fieldset>
 
         <PaymentRedeemables />
@@ -176,8 +183,8 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
                 methodType={ selectedMethod && selectedMethod.method }
             />
         </div>
-    </Form>
-);
+    </Form>;
+};
 
 const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, PaymentFormValues> = {
     mapPropsToValues: ({
@@ -190,8 +197,6 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
         ccExpiry: '',
         ccName: '',
         ccNumber: '',
-        gatewayId: defaultGatewayId,
-        methodId: defaultMethodId,
         paymentProviderRadio: getUniquePaymentMethodId(defaultMethodId, defaultGatewayId),
         instrumentId: '',
         shouldSaveInstrument: false,
@@ -248,4 +253,4 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
     ),
 };
 
-export default withLanguage(withFormik(paymentFormConfig)(PaymentForm));
+export default withLanguage(withFormik(paymentFormConfig)(memo(PaymentForm)));

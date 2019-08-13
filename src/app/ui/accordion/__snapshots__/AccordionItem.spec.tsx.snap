@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AccordionItem renders component that matches snapshot 1`] = `
-<AccordionItem
+<Memo(AccordionItem)
   headerContent={[Function]}
   itemId="foobar"
 >
@@ -39,5 +39,5 @@ exports[`AccordionItem renders component that matches snapshot 1`] = `
       />
     </CSSTransition>
   </li>
-</AccordionItem>
+</Memo(AccordionItem)>
 `;

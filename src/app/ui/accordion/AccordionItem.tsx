@@ -1,11 +1,12 @@
 import classNames from 'classnames';
-import React, { FunctionComponent, ReactNode } from 'react';
+import React, { memo, useCallback, useContext, FunctionComponent, ReactNode } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 import AccordionContext from './AccordionContext';
 
 export interface AccordionItemProps {
     bodyClassName?: string;
+    children?: ReactNode;
     className?: string;
     classNameSelected?: string;
     headerClassName?: string;
@@ -28,45 +29,44 @@ const AccordionItem: FunctionComponent<AccordionItemProps> = ({
     headerClassNameSelected = 'accordion-item-header--selected',
     headerContent,
     itemId,
-}) => (
-    <AccordionContext.Consumer>
-        { ({ onToggle, selectedItemId }) => {
-            const isSelected = selectedItemId === itemId;
+}) => {
+    const { onToggle, selectedItemId } = useContext(AccordionContext);
+    const isSelected = selectedItemId === itemId;
 
-            return (
-                <li className={ classNames(
-                    className,
-                    { [classNameSelected]: isSelected }
-                ) }>
-                    <div className={ classNames(
-                        headerClassName,
-                        { [headerClassNameSelected]: isSelected }
-                    ) }>
-                        { headerContent({ isSelected, onToggle }) }
-                    </div>
+    const transitionEndListener = useCallback((node, done) => {
+        node.addEventListener('transitionend', ({ target }: Event) => {
+            if (target === node) {
+                done();
+            }
+        });
+    }, []);
 
-                    { children && <CSSTransition
-                        addEndListener={ (node, done) => {
-                            node.addEventListener('transitionend', ({ target }) => {
-                                if (target === node) {
-                                    done();
-                                }
-                            });
-                        } }
-                        classNames={ bodyClassName }
-                        timeout={ {} }
-                        in={ isSelected }
-                        unmountOnExit
-                        mountOnEnter
-                    >
-                        <div className={ bodyClassName }>
-                            { children }
-                        </div>
-                    </CSSTransition> }
-                </li>
-            );
-        } }
-    </AccordionContext.Consumer>
-);
+    return (
+        <li className={ classNames(
+            className,
+            { [classNameSelected]: isSelected }
+        ) }>
+            <div className={ classNames(
+                headerClassName,
+                { [headerClassNameSelected]: isSelected }
+            ) }>
+                { headerContent({ isSelected, onToggle }) }
+            </div>
 
-export default AccordionItem;
+            { children && <CSSTransition
+                addEndListener={ transitionEndListener }
+                classNames={ bodyClassName }
+                timeout={ {} }
+                in={ isSelected }
+                unmountOnExit
+                mountOnEnter
+            >
+                <div className={ bodyClassName }>
+                    { children }
+                </div>
+            </CSSTransition> }
+        </li>
+    );
+};
+
+export default memo(AccordionItem);
