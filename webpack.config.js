@@ -36,7 +36,7 @@ module.exports = function (options, argv) {
 
     return {
         entry: {
-            'checkout': join(__dirname, 'src', 'app', 'App.ts'),
+            'checkout': join(__dirname, 'src', 'app', 'index.ts'),
         },
         mode,
         devtool: isProduction ? 'source-map' : 'eval-source-map',
