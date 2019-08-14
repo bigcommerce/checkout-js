@@ -5,6 +5,7 @@ import React, { Component, Fragment, ReactNode } from 'react';
 import { withCheckout, CheckoutContextProps } from '../checkout';
 
 import CheckoutButtonList from './CheckoutButtonList';
+import CustomerViewType from './CustomerViewType';
 import GuestForm, { GuestFormValues } from './GuestForm';
 import LoginForm from './LoginForm';
 
@@ -19,11 +20,6 @@ export interface CustomerProps {
     onSignInError?(error: Error): void;
     onUnhandledError?(error: Error): void;
     subscribeToNewsletter?(data: { email: string; firstName?: string }): void;
-}
-
-export enum CustomerViewType {
-    Guest = 'guest',
-    Login = 'login',
 }
 
 interface WithCheckoutCustomerProps {

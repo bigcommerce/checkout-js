@@ -32,13 +32,22 @@
         ],
         "react-hooks/exhaustive-deps": "error",
         "react-hooks/rules-of-hooks": "error",
+        "import/dynamic-import-chunkname": "error",
         "import/no-internal-modules": [
             "error",
             {
                 "allow": [
                     "react-dom/test-utils",
                     "**/*.{mock,scss}",
-                    "**/index.ts"
+                    "**/index.ts",
+                    "**/billing/Billing.tsx",
+                    "**/cart/CartSummary.tsx",
+                    "**/cart/CartSummaryDrawer.tsx",
+                    "**/customer/Customer.tsx",
+                    "**/order/OrderSummary.tsx",
+                    "**/order/OrderSummaryDrawer.tsx",
+                    "**/payment/Payment.tsx",
+                    "**/shipping/Shipping.tsx"
                 ]
             }
         ]

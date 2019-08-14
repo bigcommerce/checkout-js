@@ -1,7 +1,7 @@
 import { CheckoutSelectors, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, Order, ShopperConfig, ShopperCurrency, StoreConfig, StoreCurrency } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';
-import React, { Component, Fragment, ReactNode } from 'react';
+import React, { lazy, Component, Fragment, ReactNode, Suspense } from 'react';
 
 import { StepTracker } from '../analytics';
 import { withCheckout, CheckoutContextProps } from '../checkout';
@@ -17,10 +17,18 @@ import getPaymentInstructions from './getPaymentInstructions';
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
 import OrderConfirmationSection from './OrderConfirmationSection';
 import OrderStatus from './OrderStatus';
-import OrderSummary from './OrderSummary';
-import OrderSummaryDrawer from './OrderSummaryDrawer';
 import PrintLink from './PrintLink';
 import ThankYouHeader from './ThankYouHeader';
+
+const OrderSummary = lazy(() => import(
+    /* webpackChunkName: "order-summary" */
+    './OrderSummary'
+));
+
+const OrderSummaryDrawer = lazy(() => import(
+    /* webpackChunkName: "order-summary-drawer" */
+    './OrderSummaryDrawer'
+));
 
 export interface OrderConfirmationState {
     error?: Error;
@@ -176,23 +184,28 @@ class OrderConfirmation extends Component<
         return (
             <Fragment>
                 <aside className="layout-cart">
-                    <OrderSummary
-                        headerLink={ <PrintLink /> }
+                    <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                        <OrderSummary
+                            headerLink={ <PrintLink /> }
+                            { ...mapToOrderSummarySubtotalsProps(order) }
+                            lineItems={ order.lineItems }
+                            total={ order.orderAmount }
+                            storeCurrency={ currency }
+                            shopperCurrency={ shopperCurrency }
+                        />
+                    </Suspense>
+                </aside>
+
+                <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                    <OrderSummaryDrawer
                         { ...mapToOrderSummarySubtotalsProps(order) }
+                        headerLink={ <PrintLink className="modal-header-link cart-modal-link" /> }
                         lineItems={ order.lineItems }
                         total={ order.orderAmount }
                         storeCurrency={ currency }
                         shopperCurrency={ shopperCurrency }
                     />
-                </aside>
-                <OrderSummaryDrawer
-                    { ...mapToOrderSummarySubtotalsProps(order) }
-                    headerLink={ <PrintLink className="modal-header-link cart-modal-link" /> }
-                    lineItems={ order.lineItems }
-                    total={ order.orderAmount }
-                    storeCurrency={ currency }
-                    shopperCurrency={ shopperCurrency }
-                />
+                </Suspense>
             </Fragment>
         );
     }

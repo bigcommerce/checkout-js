@@ -6,7 +6,7 @@ import { CheckoutProvider } from '../checkout';
 import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
-import { OrderSummary } from '../order';
+import OrderSummary from '../order/OrderSummary';
 
 import CartSummary from './CartSummary';
 

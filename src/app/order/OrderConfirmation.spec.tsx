@@ -114,11 +114,15 @@ describe('OrderConfirmation', () => {
             .toHaveBeenCalledWith(styles);
     });
 
-    it('renders confirmation page once loading is finished', () => {
+    it('renders confirmation page once loading is finished', async () => {
         jest.spyOn(checkoutState.statuses, 'isLoadingOrder')
             .mockReturnValue(false);
 
         orderConfirmation = mount(<ComponentTest { ...defaultProps } />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        orderConfirmation.update();
 
         expect(orderConfirmation.find(LoadingSpinner).length).toEqual(0);
         expect(orderConfirmation.find('.orderConfirmation').length).toEqual(1);

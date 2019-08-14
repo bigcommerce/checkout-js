@@ -1,21 +1,19 @@
 import { Address, Cart, CheckoutParams, CheckoutSelectors, Consignment, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, Promotion, RequestOptions } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
-import React, { Component, ReactNode } from 'react';
+import React, { lazy, Component, ReactNode, Suspense } from 'react';
 
 import { StaticAddress } from '../address';
 import { NoopStepTracker, StepTracker } from '../analytics';
-import { Billing } from '../billing';
-import { CartSummary, CartSummaryDrawer, EmptyCartMessage } from '../cart';
+import { EmptyCartMessage } from '../cart';
 import { ErrorLogger, ErrorModal } from '../common/error';
-import { Customer, CustomerInfo, CustomerSignOutEvent, CustomerViewType } from '../customer';
+import { CustomerInfo, CustomerSignOutEvent, CustomerViewType } from '../customer';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
-import { Payment } from '../payment';
 import { PromotionBannerList } from '../promotion';
-import { isUsingMultiShipping, Shipping, StaticConsignment } from '../shipping';
+import { isUsingMultiShipping, StaticConsignment } from '../shipping';
 import { FlashMessage } from '../ui/alert';
-import { LoadingNotification, LoadingOverlay } from '../ui/loading';
+import { LoadingNotification, LoadingOverlay, LoadingSpinner } from '../ui/loading';
 
 import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
@@ -24,6 +22,36 @@ import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
+
+const Billing = lazy(() => import(
+    /* webpackChunkName: "billing" */
+    '../billing/Billing'
+));
+
+const CartSummary = lazy(() => import(
+    /* webpackChunkName: "cart-summary" */
+    '../cart/CartSummary'
+));
+
+const CartSummaryDrawer = lazy(() => import(
+    /* webpackChunkName: "cart-summary-drawer" */
+    '../cart/CartSummaryDrawer'
+));
+
+const Customer = lazy(() => import(
+    /* webpackChunkName: "customer" */
+    '../customer/Customer'
+));
+
+const Payment = lazy(() => import(
+    /* webpackChunkName: "payment" */
+    '../payment/Payment'
+));
+
+const Shipping = lazy(() => import(
+    /* webpackChunkName: "shipping" */
+    '../shipping/Shipping'
+));
 
 export interface CheckoutProps {
     checkoutId: string;
@@ -185,10 +213,14 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 </div>
 
                 <aside className="layout-cart">
-                    <CartSummary storeCreditAmount={ useStoreCredit ? usableStoreCredit : 0 } />
+                    <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                        <CartSummary storeCreditAmount={ useStoreCredit ? usableStoreCredit : 0 } />
+                    </Suspense>
                 </aside>
 
-                <CartSummaryDrawer storeCreditAmount={ useStoreCredit ? usableStoreCredit : 0 } />
+                <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                    <CartSummaryDrawer storeCreditAmount={ useStoreCredit ? usableStoreCredit : 0 } />
+                </Suspense>
             </LoadingOverlay>
         );
     }
@@ -236,18 +268,20 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                     />
                 }
             >
-                <Customer
-                    viewType={ customerViewType }
-                    checkEmbeddedSupport={ this.checkEmbeddedSupport }
-                    onChangeViewType={ this.handleChangeCustomerViewType }
-                    onContinueAsGuest={ this.navigateToNextIncompleteStep }
-                    onContinueAsGuestError={ this.handleError }
-                    onReady={ this.handleReady }
-                    onSignIn={ this.navigateToNextIncompleteStep }
-                    onSignInError={ this.handleError }
-                    onUnhandledError={ this.handleUnhandledError }
-                    subscribeToNewsletter={ subscribeToNewsletter }
-                />
+                <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                    <Customer
+                        viewType={ customerViewType }
+                        checkEmbeddedSupport={ this.checkEmbeddedSupport }
+                        onChangeViewType={ this.handleChangeCustomerViewType }
+                        onContinueAsGuest={ this.navigateToNextIncompleteStep }
+                        onContinueAsGuestError={ this.handleError }
+                        onReady={ this.handleReady }
+                        onSignIn={ this.navigateToNextIncompleteStep }
+                        onSignInError={ this.handleError }
+                        onUnhandledError={ this.handleUnhandledError }
+                        subscribeToNewsletter={ subscribeToNewsletter }
+                    />
+                </Suspense>
             </CheckoutStep>
         );
     }
@@ -282,15 +316,17 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                     </div>)
                 }
             >
-                <Shipping
-                    cartHasChanged={ hasCartChanged }
-                    onReady={ this.handleReady }
-                    isMultiShippingMode={ isMultiShippingMode }
-                    onToggleMultiShipping={ this.handleToggleMultiShipping }
-                    onSignIn={ this.handleShippingSignIn }
-                    onUnhandledError={ this.handleUnhandledError }
-                    navigateNextStep={ this.handleShippingNextStep }
-                />
+                <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                    <Shipping
+                        cartHasChanged={ hasCartChanged }
+                        onReady={ this.handleReady }
+                        isMultiShippingMode={ isMultiShippingMode }
+                        onToggleMultiShipping={ this.handleToggleMultiShipping }
+                        onSignIn={ this.handleShippingSignIn }
+                        onUnhandledError={ this.handleUnhandledError }
+                        navigateNextStep={ this.handleShippingNextStep }
+                    />
+                </Suspense>
             </CheckoutStep>
         );
     }
@@ -307,11 +343,13 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 onExpanded={ this.handleExpanded }
                 summary={ billingAddress && <StaticAddress address={ billingAddress } /> }
             >
-                <Billing
-                    navigateNextStep={ this.navigateToNextIncompleteStep }
-                    onReady={ this.handleReady }
-                    onUnhandledError={ this.handleUnhandledError }
-                />
+                <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                    <Billing
+                        navigateNextStep={ this.navigateToNextIncompleteStep }
+                        onReady={ this.handleReady }
+                        onUnhandledError={ this.handleUnhandledError }
+                    />
+                </Suspense>
             </CheckoutStep>
         );
     }
@@ -331,19 +369,21 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 onEdit={ this.handleEditStep }
                 onExpanded={ this.handleExpanded }
             >
-                <Payment
-                    checkEmbeddedSupport={ this.checkEmbeddedSupport }
-                    flashMessages={ flashMessages }
-                    isEmbedded={ isEmbedded() }
-                    isUsingMultiShipping={ cart && consignments ? isUsingMultiShipping(consignments, cart.lineItems) : false }
-                    onFinalize={ this.navigateToOrderConfirmation }
-                    onCartChangedError={ this.handleCartChangedError }
-                    onReady={ this.handleReady }
-                    onStoreCreditChange={ this.handleStoreCreditChange }
-                    onSubmit={ this.navigateToOrderConfirmation }
-                    onSubmitError={ this.handleError }
-                    onUnhandledError={ this.handleUnhandledError }
-                />
+                <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                    <Payment
+                        checkEmbeddedSupport={ this.checkEmbeddedSupport }
+                        flashMessages={ flashMessages }
+                        isEmbedded={ isEmbedded() }
+                        isUsingMultiShipping={ cart && consignments ? isUsingMultiShipping(consignments, cart.lineItems) : false }
+                        onFinalize={ this.navigateToOrderConfirmation }
+                        onCartChangedError={ this.handleCartChangedError }
+                        onReady={ this.handleReady }
+                        onStoreCreditChange={ this.handleStoreCreditChange }
+                        onSubmit={ this.navigateToOrderConfirmation }
+                        onSubmitError={ this.handleError }
+                        onUnhandledError={ this.handleUnhandledError }
+                    />
+                </Suspense>
             </CheckoutStep>
         );
     }

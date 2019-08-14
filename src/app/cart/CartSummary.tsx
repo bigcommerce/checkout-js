@@ -6,7 +6,7 @@ import {
 import React, { FunctionComponent } from 'react';
 
 import { withCheckout } from '../checkout';
-import { OrderSummary } from '../order';
+import OrderSummary from '../order/OrderSummary';
 
 import mapToCartSummaryProps from './mapToCartSummaryProps';
 import withRedeemable from './withRedeemable';
