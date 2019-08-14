@@ -7,6 +7,29 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 
+const babelOptions = {
+    cacheDirectory: true,
+    plugins: [
+        '@babel/plugin-syntax-dynamic-import',
+    ],
+    presets: [
+        ['@babel/preset-env', {
+            corejs: '3',
+            targets: {
+                browsers: [
+                    'last 2 versions',
+                    'not ie < 11',
+                    'not Baidu > 0',
+                    'not QQAndroid > 0',
+                    'not Android < 62',
+                ],
+            },
+            useBuiltIns: 'usage',
+            modules: false,
+        }],
+    ],
+};
+
 module.exports = function (options, argv) {
     const mode = argv.mode || 'development';
     const isProduction = mode !== 'development';
@@ -77,28 +100,7 @@ module.exports = function (options, argv) {
                     use: [
                         {
                             loader: 'babel-loader',
-                            options: {
-                                cacheDirectory: true,
-                                plugins: [
-                                    '@babel/plugin-syntax-dynamic-import',
-                                ],
-                                presets: [
-                                    ['@babel/preset-env', {
-                                        corejs: '3',
-                                        targets: {
-                                            browsers: [
-                                                'last 2 versions',
-                                                'not ie < 11',
-                                                'not Baidu > 0',
-                                                'not QQAndroid > 0',
-                                                'not Android < 62',
-                                            ],
-                                        },
-                                        useBuiltIns: 'usage',
-                                        modules: false,
-                                    }],
-                                ],
-                            },
+                            options: babelOptions,
                         },
                         {
                             loader: 'ts-loader',
@@ -136,7 +138,23 @@ module.exports = function (options, argv) {
                         },
                     ],
                 },
-            ],
+                isProduction && {
+                    test: /\.js$/,
+                    loader: 'babel-loader',
+                    include: join(__dirname, 'node_modules'),
+                    exclude: [
+                        // These two need to be exclued:
+                        // core-js: contains the polyfills
+                        // webpack: prevents loaders and other file types (scss) from being processed
+                        /\/node_modules\/core-js\//,
+                        /\/node_modules\/webpack\//,
+                    ],
+                    options: {
+                        ...babelOptions,
+                        sourceType: 'unambiguous',
+                    }
+               },
+            ].filter(Boolean),
         },
     };
 };
