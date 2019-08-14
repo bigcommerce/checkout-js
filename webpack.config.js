@@ -28,7 +28,7 @@ const babelOptions = {
 };
 
 module.exports = function (options, argv) {
-    const mode = argv.mode || 'development';
+    const mode = argv.mode || 'production';
     const isProduction = mode !== 'development';
 
     return {
