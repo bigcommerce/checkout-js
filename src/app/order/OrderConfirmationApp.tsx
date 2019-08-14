@@ -1,14 +1,14 @@
-import { createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
 import React, { Component, ReactNode } from 'react';
 import ReactModal from 'react-modal';
 
 import { StepTrackerFactory } from '../analytics';
-import { getCheckoutService, CheckoutProvider } from '../checkout';
+import { CheckoutProvider } from '../checkout';
 import { ErrorLoggerFactory, ErrorLoggingBoundary } from '../common/error';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { AccountService, CreatedCustomer } from '../guestSignup';
 import { SignUpFormValues } from '../guestSignup/GuestSignUpForm';
-import { LocaleProvider } from '../locale';
+import { getLanguageService, LocaleProvider } from '../locale';
 
 import OrderConfirmation from './OrderConfirmation';
 
@@ -19,7 +19,10 @@ export interface OrderConfirmationAppProps {
 
 class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
     private accountService = new AccountService();
-    private checkoutService = getCheckoutService();
+    private checkoutService = createCheckoutService({
+        locale: getLanguageService().getLocale(),
+        shouldWarnMutation: process.env.NODE_ENV === 'development',
+    });
     private embeddedStylesheet = createEmbeddedCheckoutStylesheet();
     private errorLogger = new ErrorLoggerFactory().getLogger();
     private stepTrackerFactory = new StepTrackerFactory(this.checkoutService);

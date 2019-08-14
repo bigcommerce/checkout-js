@@ -1,4 +1,4 @@
-import { createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
 import { createRequestSender } from '@bigcommerce/request-sender';
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
@@ -10,7 +10,6 @@ import { createEmbeddedCheckoutStylesheet, createEmbeddedCheckoutSupport } from 
 import { getLanguageService, LocaleProvider } from '../locale';
 import { FlashMessage } from '../ui/alert';
 
-import getCheckoutService from './getCheckoutService';
 import Checkout from './Checkout';
 import CheckoutProvider from './CheckoutProvider';
 
@@ -21,7 +20,10 @@ export interface CheckoutAppProps {
 }
 
 export default class CheckoutApp extends Component<CheckoutAppProps> {
-    private checkoutService = getCheckoutService();
+    private checkoutService = createCheckoutService({
+        locale: getLanguageService().getLocale(),
+        shouldWarnMutation: process.env.NODE_ENV === 'development',
+    });
     private embeddedSupport = createEmbeddedCheckoutSupport(getLanguageService());
     private embeddedStylesheet = createEmbeddedCheckoutStylesheet();
     private errorLogger = new ErrorLoggerFactory().getLogger();
