@@ -73,6 +73,8 @@
     "@types/node": "^12.6.9",
     "@types/object-hash": "^1.2.0",
     "@types/react-test-renderer": "^16.8.3",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/eslint-plugin-tslint": "^2.0.0",
     "@typescript-eslint/parser": "^1.13.0",
     "babel-loader": "^8.0.6",
     "core-js": "^3.1.4",
