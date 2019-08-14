@@ -8,6 +8,8 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 
+const PublicPathPlugin = require('./scripts/webpack/public-path');
+
 const babelOptions = {
     cacheDirectory: true,
     presets: [
@@ -78,6 +80,7 @@ module.exports = function (options, argv) {
                 exclude: /.*\.spec\.tsx?/,
                 include: /src\/app/,
             }),
+            new PublicPathPlugin(),
             new WebpackAssetsManifest({
                 entrypoints: true,
                 transform: assets => transformManifest(assets, options),

@@ -2,7 +2,7 @@
   "name": "@bigcommerce/checkout",
   "version": "1.0.0",
   "private": true,
-  "description": "Browser-based application providing a seamless UI for BigCommerce shoppers to complete their checkout. ",
+  "description": "Browser-based application providing a seamless UI for BigCommerce shoppers to complete their checkout.",
   "scripts": {
     "dev": "webpack --mode development --watch",
     "build": "webpack --mode production",
@@ -106,8 +106,10 @@
     "typescript": "^3.5.3",
     "webpack": "^4.39.0",
     "webpack-assets-manifest": "^3.1.1",
-    "webpack-cli": "^3.3.6"
+    "webpack-cli": "^3.3.6",
+    "webpack-inject-plugin": "^1.5.3"
   },
+  "sideEffects": false,
   "standard-version": {
     "scripts": {
       "precommit": "node scripts/update-manifest-version.js && git add dist"
