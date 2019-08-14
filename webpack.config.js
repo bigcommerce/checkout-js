@@ -9,9 +9,6 @@ const WebpackAssetsManifest = require('webpack-assets-manifest');
 
 const babelOptions = {
     cacheDirectory: true,
-    plugins: [
-        '@babel/plugin-syntax-dynamic-import',
-    ],
     presets: [
         ['@babel/preset-env', {
             corejs: '3',
