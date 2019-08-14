@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="22px" height="20px" viewBox="0 0 22 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.3 (12081) - http://www.bohemiancoding.com/sketch -->
+    <title>Rectangle 205 Copy + Shape Copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="UI-Kit" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Buttons-&amp;-Links" sketch:type="MSArtboardGroup" transform="translate(-51.000000, -2588.000000)" fill="#FFFFFF">
+            <g id="Rectangle-205-Copy-+-Shape-Copy" sketch:type="MSLayerGroup" transform="translate(51.000000, 2589.000000)">
+                <path d="M0,13 L22,13 L22,18 L0,18 L0,13 Z" id="Rectangle-205-Copy" opacity="0.184701493" sketch:type="MSShapeGroup"></path>
+                <path d="M13.219,3.105 C12.826,3.105 12.429,3.516 12.429,3.821 L12.429,5.861 L15.199,5.861 C15.088,7.425 14.86,8.856 14.86,8.856 L12.416,8.856 L12.416,17.723 L8.772,17.723 L8.772,8.856 L7,8.856 L7,5.873 L8.772,5.873 L8.772,3.433 C8.772,2.986 8.682,0 12.504,0 L15.202,0 L15.202,3.105 L13.219,3.105 Z" id="Shape-Copy" stroke="#12408E" opacity="0.9" sketch:type="MSShapeGroup"></path>
+            </g>
+        </g>
+    </g>
+</svg>
