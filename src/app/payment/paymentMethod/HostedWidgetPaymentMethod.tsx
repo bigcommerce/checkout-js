@@ -156,7 +156,7 @@ class HostedWidgetPaymentMethod extends Component<
                     onUseNewCard={ this.handleUseNewCard }
                 /> }
 
-                { shouldShowCreditCardFieldset && <div
+                <div
                     id={ containerId }
                     className={ classNames(
                         'widget',
@@ -164,10 +164,10 @@ class HostedWidgetPaymentMethod extends Component<
                         'payment-widget'
                     ) }
                     style={ {
-                        display: hideContentWhenSignedOut && isSignInRequired && !isSignedIn ? 'none' : undefined,
+                        display: (hideContentWhenSignedOut && isSignInRequired && !isSignedIn) || !shouldShowCreditCardFieldset ? 'none' : undefined,
                     } }
                     tabIndex={ -1 }
-                /> }
+                />
 
                 { shouldShowCreditCardFieldset && isInstrumentFeatureAvailableProp && <CreditCardStorageField name="shouldSaveInstrument" /> }
 
