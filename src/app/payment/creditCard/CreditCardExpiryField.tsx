@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
-import { TranslatedString } from '../../language';
+import { TranslatedString } from '../../locale';
 import { FormField, TextInput } from '../../ui/form';
 
 import formatCreditCardExpiryDate from './formatCreditCardExpiryDate';

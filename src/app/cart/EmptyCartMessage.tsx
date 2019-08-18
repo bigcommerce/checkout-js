@@ -1,6 +1,6 @@
 import React, { Component, ReactNode } from 'react';
 
-import { TranslatedHtml } from '../language';
+import { TranslatedHtml } from '../locale';
 import { LoadingOverlay } from '../ui/loading';
 
 export interface EmptyCartMessageProps {

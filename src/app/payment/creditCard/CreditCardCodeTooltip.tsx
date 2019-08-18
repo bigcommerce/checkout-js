@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
-import { TranslatedString } from '../../language';
+import { TranslatedString } from '../../locale';
 import { IconCardCodeAmex, IconCardCodeVisa, IconSize } from '../../ui/icon';
 
 import './CreditCardCodeTooltip.scss';

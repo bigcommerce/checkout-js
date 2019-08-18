@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme';
 import { Formik } from 'formik';
 import React from 'react';
 
-import { TranslatedString } from '../language';
+import { TranslatedString } from '../locale';
 import { FormField } from '../ui/form';
 
 import { getFormFields } from './formField.mock';

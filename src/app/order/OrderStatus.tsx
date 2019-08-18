@@ -1,7 +1,7 @@
 import { Order } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
-import { TranslatedHtml, TranslatedString } from '../language';
+import { TranslatedHtml, TranslatedString } from '../locale';
 
 import OrderConfirmationSection from './OrderConfirmationSection';
 

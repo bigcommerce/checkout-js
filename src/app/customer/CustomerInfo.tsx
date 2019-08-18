@@ -3,7 +3,7 @@ import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
-import { TranslatedString } from '../language';
+import { TranslatedString } from '../locale';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 
 import canSignOut from './canSignOut';

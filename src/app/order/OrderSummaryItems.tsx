@@ -1,7 +1,7 @@
 import { LineItemMap } from '@bigcommerce/checkout-sdk';
 import React, { Fragment, ReactNode } from 'react';
 
-import { TranslatedString } from '../language';
+import { TranslatedString } from '../locale';
 import { IconChevronDown, IconChevronUp } from '../ui/icon';
 
 import getItemsCount from './getItemsCount';

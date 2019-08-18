@@ -7,10 +7,9 @@ import { StepTracker } from '../analytics';
 import { withCheckout, CheckoutContextProps } from '../checkout';
 import { ErrorLogger, ErrorModal } from '../common/error';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
-import { CreatedCustomer, GuestSignUpForm, SignedUpSuccessAlert } from '../guestSignup';
+import { CreatedCustomer, GuestSignUpForm, SignedUpSuccessAlert, SignUpFormValues } from '../guestSignup';
 import { AccountCreationFailedError, AccountCreationRequirementsError } from '../guestSignup/errors';
-import { SignUpFormValues } from '../guestSignup/GuestSignUpForm';
-import { TranslatedString } from '../language';
+import { TranslatedString } from '../locale';
 import { Button, ButtonVariant } from '../ui/button';
 import { LoadingSpinner } from '../ui/loading';
 

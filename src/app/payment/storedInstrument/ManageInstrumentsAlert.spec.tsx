@@ -1,7 +1,7 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import React from 'react';
 
-import { TranslatedString, TranslatedStringProps } from '../../language';
+import { TranslatedString, TranslatedStringProps } from '../../locale';
 
 import ManageInstrumentsAlert from './ManageInstrumentsAlert';
 

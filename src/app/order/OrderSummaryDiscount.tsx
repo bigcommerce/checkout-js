@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 
 import { ShopperCurrency } from '../currency';
-import { TranslatedString } from '../language';
+import { TranslatedString } from '../locale';
 
 import OrderSummaryPrice, { OrderSummaryPriceProps } from './OrderSummaryPrice';
 

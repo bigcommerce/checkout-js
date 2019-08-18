@@ -2,44 +2,24 @@
 
 exports[`StaticConsignment Component renders compact view of static consignment 1`] = `
 <div
-  className="staticConsignment"
+  class="staticConsignment"
 >
-  <WithCheckout(StaticAddress)
-    address={
-      Object {
-        "address1": "12345 Testing Way",
-        "address2": "",
-        "city": "Some City",
-        "company": "Bigcommerce",
-        "country": "United States",
-        "countryCode": "US",
-        "customFields": Array [],
-        "firstName": "Test",
-        "lastName": "Tester",
-        "phone": "555-555-5555",
-        "postalCode": "95555",
-        "stateOrProvince": "California",
-        "stateOrProvinceCode": "CA",
-      }
-    }
-  />
   <div>
     <div
-      className="shippingOption shippingOption--alt"
+      class="shippingOption shippingOption--alt"
     >
-      <StaticShippingOption
-        method={
-          Object {
-            "cost": 0,
-            "description": "Flat Rate",
-            "id": "0:61d4bb52f746477e1d4fb411221318c3",
-            "imageUrl": "",
-            "isRecommended": true,
-            "transitTime": "",
-            "type": "shipping_flatrate",
-          }
-        }
-      />
+      <div
+        class="shippingOption shippingOption--alt"
+      >
+        <span
+          class="shippingOption-desc"
+        >
+          Flat Rate
+        </span>
+        <span
+          class="shippingOption-price"
+        />
+      </div>
     </div>
   </div>
 </div>
@@ -47,116 +27,33 @@ exports[`StaticConsignment Component renders compact view of static consignment 
 
 exports[`StaticConsignment Component renders static consignment with shipping method 1`] = `
 <div
-  className="staticConsignment"
+  class="staticConsignment"
 >
-  <strong>
-    <WithLanguage(TranslatedString)
-      id="shipping.shipping_address_heading"
-    />
-  </strong>
-  <WithCheckout(StaticAddress)
-    address={
-      Object {
-        "address1": "12345 Testing Way",
-        "address2": "",
-        "city": "Some City",
-        "company": "Bigcommerce",
-        "country": "United States",
-        "countryCode": "US",
-        "customFields": Array [],
-        "firstName": "Test",
-        "lastName": "Tester",
-        "phone": "555-555-5555",
-        "postalCode": "95555",
-        "stateOrProvince": "California",
-        "stateOrProvinceCode": "CA",
-      }
-    }
-  />
+  <strong />
   <div
-    className="staticConsignment-items"
+    class="staticConsignment-items"
   >
-    <strong>
-      <WithLanguage(TranslatedString)
-        data={
-          Object {
-            "count": 0,
-          }
-        }
-        id="cart.item_count_text"
-      />
-    </strong>
+    <strong />
     <ul />
   </div>
   <div>
-    <strong>
-      <WithLanguage(TranslatedString)
-        id="shipping.shipping_method_label"
-      />
-    </strong>
+    <strong />
     <div
-      className="shippingOption shippingOption--alt"
+      class="shippingOption shippingOption--alt"
     >
-      <StaticShippingOption
-        method={
-          Object {
-            "cost": 0,
-            "description": "Flat Rate",
-            "id": "0:61d4bb52f746477e1d4fb411221318c3",
-            "imageUrl": "",
-            "isRecommended": true,
-            "transitTime": "",
-            "type": "shipping_flatrate",
-          }
-        }
-      />
+      <div
+        class="shippingOption shippingOption--alt"
+      >
+        <span
+          class="shippingOption-desc"
+        >
+          Flat Rate
+        </span>
+        <span
+          class="shippingOption-price"
+        />
+      </div>
     </div>
-  </div>
-</div>
-`;
-
-exports[`StaticConsignment Component renders static consignment without shipping method 1`] = `
-<div
-  className="staticConsignment"
->
-  <strong>
-    <WithLanguage(TranslatedString)
-      id="shipping.shipping_address_heading"
-    />
-  </strong>
-  <WithCheckout(StaticAddress)
-    address={
-      Object {
-        "address1": "12345 Testing Way",
-        "address2": "",
-        "city": "Some City",
-        "company": "Bigcommerce",
-        "country": "United States",
-        "countryCode": "US",
-        "customFields": Array [],
-        "firstName": "Test",
-        "lastName": "Tester",
-        "phone": "555-555-5555",
-        "postalCode": "95555",
-        "stateOrProvince": "California",
-        "stateOrProvinceCode": "CA",
-      }
-    }
-  />
-  <div
-    className="staticConsignment-items"
-  >
-    <strong>
-      <WithLanguage(TranslatedString)
-        data={
-          Object {
-            "count": 0,
-          }
-        }
-        id="cart.item_count_text"
-      />
-    </strong>
-    <ul />
   </div>
 </div>
 `;

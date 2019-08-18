@@ -10,8 +10,7 @@ import { CartSummary, CartSummaryDrawer, EmptyCartMessage } from '../cart';
 import { ErrorLogger, ErrorModal } from '../common/error';
 import { Customer, CustomerInfo, CustomerSignOutEvent, CustomerViewType } from '../customer';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
-import { TranslatedString } from '../language';
-import { withLanguage, WithLanguageProps } from '../locale';
+import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { Payment } from '../payment';
 import { PromotionBannerList } from '../promotion';
 import { isUsingMultiShipping, Shipping, StaticConsignment } from '../shipping';
@@ -276,7 +275,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 summary={ consignments.map(consignment =>
                     <div key={ consignment.id } className="staticConsignmentContainer">
                         <StaticConsignment
-                            showShippingMethod
                             cart={ cart }
                             consignment={ consignment }
                             compactView={ consignments.length < 2 }

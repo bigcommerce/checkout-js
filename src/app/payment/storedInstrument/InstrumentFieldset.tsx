@@ -1,7 +1,7 @@
 import { Instrument, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import React, { Fragment, FunctionComponent } from 'react';
 
-import { TranslatedString } from '../../language';
+import { TranslatedString } from '../../locale';
 import { BasicFormField, Fieldset, Legend } from '../../ui/form';
 import { ModalTrigger } from '../../ui/modal';
 import { CreditCardCodeField, CreditCardNumberField } from '../creditCard';

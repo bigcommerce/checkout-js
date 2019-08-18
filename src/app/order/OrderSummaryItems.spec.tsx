@@ -3,8 +3,7 @@ import React from 'react';
 
 import { getCustomItem, getDigitalItem, getGiftCertificateItem, getPhysicalItem } from '../cart/lineItem.mock';
 import { getStoreConfig } from '../config/config.mock';
-import { TranslatedString } from '../language';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '../locale';
 
 import OrderSummaryItems from './OrderSummaryItems';
 

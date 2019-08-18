@@ -2,8 +2,7 @@ import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
 import { isNumber, noop } from 'lodash';
 import React, { Component, Fragment, ReactChild, ReactNode } from 'react';
 
-import Popover from '../popover/Popover';
-import PopoverList, { PopoverListItem } from '../popover/PopoverList';
+import { Popover, PopoverList, PopoverListItem } from '../popover';
 
 import AutocompleteItem from './autocomplete-item';
 

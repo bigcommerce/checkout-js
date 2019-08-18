@@ -1,10 +1,10 @@
 import { FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
-import { TranslatedString } from '../language';
+import { TranslatedString } from '../locale';
 import { FormField, Label } from '../ui/form';
 
-import { getFormFieldInputId, getFormFieldLegacyName } from './util/getFormFieldInputId';
+import { getFormFieldInputId, getFormFieldLegacyName } from './getFormFieldInputId';
 import CheckboxGroupFormField from './CheckboxGroupFormField';
 import DynamicFormFieldType from './DynamicFormFieldType';
 import DynamicInput from './DynamicInput';

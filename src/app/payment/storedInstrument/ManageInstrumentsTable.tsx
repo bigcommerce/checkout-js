@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import creditCardType from 'credit-card-type';
 import React, { FunctionComponent } from 'react';
 
-import { TranslatedString } from '../../language';
+import { TranslatedString } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
 import { CreditCardIcon } from '../creditCard';
 

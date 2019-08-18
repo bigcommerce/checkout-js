@@ -1,2 +1,2 @@
-export { AccountCreationFailedError } from './AccountCreationFailedError';
-export { AccountCreationRequirementsError } from './AccountCreationRequirementsError';
+export { default as AccountCreationFailedError } from './AccountCreationFailedError';
+export { default as AccountCreationRequirementsError } from './AccountCreationRequirementsError';

@@ -1,12 +1,12 @@
 import React, { Component, ReactNode } from 'react';
 
-import { TranslatedString } from '../language';
+import { TranslatedString } from '../locale';
 import { OrderComments } from '../orderComments';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Legend } from '../ui/form';
 
-import ShippingOptions from './shippingOption/ShippingOptions';
+import { ShippingOptions } from './shippingOption';
 
 export interface ShippingFormFooterProps {
     cartHasChanged: boolean;

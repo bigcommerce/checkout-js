@@ -3,8 +3,7 @@ import React, { FunctionComponent } from 'react';
 import { object, string } from 'yup';
 
 import { preventDefault } from '../common/dom';
-import { TranslatedHtml, TranslatedString } from '../language';
-import { withLanguage, WithLanguageProps } from '../locale';
+import { withLanguage, TranslatedHtml, TranslatedString, WithLanguageProps } from '../locale';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form, Legend } from '../ui/form';

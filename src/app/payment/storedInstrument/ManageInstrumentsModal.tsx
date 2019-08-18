@@ -4,7 +4,7 @@ import React, { Component, Fragment, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { EMPTY_ARRAY } from '../../common/utility';
-import { TranslatedString } from '../../language';
+import { TranslatedString } from '../../locale';
 import { Button, ButtonSize, ButtonVariant } from '../../ui/button';
 import { Modal, ModalHeader } from '../../ui/modal';
 

@@ -16,3 +16,4 @@ export { default as CustomerInfo } from './CustomerInfo';
 export { default as GuestForm } from './GuestForm';
 export { default as LoginForm } from './LoginForm';
 export { default as NewsletterService } from './NewsletterService';
+export { SUPPORTED_METHODS } from './CheckoutButtonList';

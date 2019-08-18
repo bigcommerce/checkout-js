@@ -7,7 +7,7 @@ import classNames from 'classnames';
 import React, { FunctionComponent, ReactNode } from 'react';
 
 import { ShopperCurrency } from '../currency';
-import { TranslatedString } from '../language';
+import { TranslatedString } from '../locale';
 import { IconGiftCertificate } from '../ui/icon';
 import { ModalTrigger } from '../ui/modal';
 

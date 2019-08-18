@@ -1,7 +1,7 @@
 import { getCountries } from '../../geography/countries.mock';
 
+import { getGoogleAutocompletePlaceMock } from './googleAutocompleteResult.mock';
 import mapToAddress from './mapToAddress';
-import { getGoogleAutocompletePlaceMock } from './__mocks__/googleAutocompleteResult';
 
 describe('mapToAddress()', () => {
     it('returns a partial address with hydrated province', () => {

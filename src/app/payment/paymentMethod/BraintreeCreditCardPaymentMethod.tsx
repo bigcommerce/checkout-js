@@ -2,7 +2,7 @@ import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { createRef, useCallback, useRef, useState, FunctionComponent, RefObject } from 'react';
 
-import { TranslatedString } from '../../language';
+import { TranslatedString } from '../../locale';
 import { Modal } from '../../ui/modal';
 
 import CreditCardPaymentMethod, { CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';

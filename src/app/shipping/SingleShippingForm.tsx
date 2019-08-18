@@ -8,8 +8,8 @@ import { getAddressValidationSchema, isEqualAddress, mapAddressFromFormValues, m
 import { withLanguage, WithLanguageProps } from '../locale';
 import { Fieldset, Form } from '../ui/form';
 
-import BillingSameAsShippingField from './shippingOption/BillingSameAsShippingField';
-import hasSelectedShippingOptions from './util/hasSelectedShippingOptions';
+import hasSelectedShippingOptions from './hasSelectedShippingOptions';
+import BillingSameAsShippingField from './BillingSameAsShippingField';
 import ShippingAddress from './ShippingAddress';
 import { SHIPPING_ADDRESS_FIELDS } from './ShippingAddressFields';
 import ShippingFormFooter from './ShippingFormFooter';

@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 
 import { preventDefault } from '../common/dom';
-import { TranslatedString } from '../language';
+import { TranslatedString } from '../locale';
 import { Legend } from '../ui/form';
 
 interface ShippingHeaderProps {

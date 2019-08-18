@@ -3,7 +3,7 @@ import { noop } from 'lodash';
 import React, { FunctionComponent, ReactNode } from 'react';
 
 import { preventDefault } from '../common/dom';
-import { TranslatedString } from '../language';
+import { TranslatedString } from '../locale';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 import { IconCheck } from '../ui/icon';
 

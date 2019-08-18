@@ -1,28 +1,24 @@
 import { Cart, Consignment } from '@bigcommerce/checkout-sdk';
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
 import { StaticAddress } from '../address';
-import { TranslatedString } from '../language';
+import { TranslatedString } from '../locale';
 
-import StaticShippingOption from './shippingOption/StaticShippingOption';
-import findLineItems from './util/findLineItems';
-import getLineItemsCount from './util/getLineItemsCount';
+import { StaticShippingOption } from './shippingOption';
 import './StaticConsignment.scss';
+import StaticConsignmentItemList from './StaticConsignmentItemList';
 
 interface StaticConsignmentProps {
     consignment: Consignment;
     cart: Cart;
     compactView?: boolean;
-    showShippingMethod?: boolean;
 }
 
-const StaticConsignment: React.SFC<StaticConsignmentProps> = ({
+const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
     consignment,
     cart,
-    showShippingMethod,
     compactView,
 }) => {
-    const lineItems = findLineItems(cart, consignment);
     const {
         shippingAddress: address,
         selectedShippingOption,
@@ -35,24 +31,17 @@ const StaticConsignment: React.SFC<StaticConsignmentProps> = ({
                     <TranslatedString id="shipping.shipping_address_heading" />
                 </strong>
             }
+
             <StaticAddress address={ address } />
+
             { !compactView &&
-                <div className="staticConsignment-items">
-                    <strong>
-                        <TranslatedString id="cart.item_count_text"
-                            data={ { count: getLineItemsCount(lineItems) } } />
-                    </strong>
-                    <ul>
-                        { lineItems.map(item =>
-                            <li key={ item.id }>
-                                { item.quantity } x { item.name }
-                            </li>
-                        ) }
-                    </ul>
-                </div>
+                <StaticConsignmentItemList
+                    cart={ cart }
+                    consignment={ consignment }
+                />
             }
 
-            { showShippingMethod && selectedShippingOption &&
+            { selectedShippingOption &&
                 <div>
                     { !compactView &&
                         <strong>

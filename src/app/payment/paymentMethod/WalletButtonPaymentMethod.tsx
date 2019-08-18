@@ -4,8 +4,7 @@ import { noop, some } from 'lodash';
 import React, { Component, Fragment, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
-import { TranslatedString } from '../../language';
-import { withLanguage, WithLanguageProps } from '../../locale';
+import { withLanguage, TranslatedString, WithLanguageProps } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
 import withPayment, { WithPaymentProps } from '../withPayment';
 

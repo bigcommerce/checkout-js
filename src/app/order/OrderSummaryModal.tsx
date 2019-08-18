@@ -1,7 +1,7 @@
 import { LineItemMap, ShopperCurrency as ShopperCurrencyType, StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { Fragment, FunctionComponent, ReactNode } from 'react';
 
-import { TranslatedString } from '../language';
+import { TranslatedString } from '../locale';
 import { IconClose } from '../ui/icon';
 import { Modal, ModalHeader } from '../ui/modal';
 

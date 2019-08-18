@@ -4,8 +4,7 @@ import { noop } from 'lodash';
 import React from 'react';
 
 import { getStoreConfig } from '../config/config.mock';
-import { TranslatedHtml } from '../language';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedHtml } from '../locale';
 import { TextArea } from '../ui/form';
 
 import TermsConditionsField, { TermsConditionsType } from './TermsConditionsField';

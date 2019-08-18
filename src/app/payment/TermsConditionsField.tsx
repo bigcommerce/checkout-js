@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
-import { TranslatedHtml, TranslatedString } from '../language';
+import { TranslatedHtml, TranslatedString } from '../locale';
 import { CheckboxFormField, Fieldset, FormField, Legend, TextArea } from '../ui/form';
 
 export enum TermsConditionsType {

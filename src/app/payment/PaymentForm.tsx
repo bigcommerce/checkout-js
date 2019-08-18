@@ -4,16 +4,15 @@ import { noop } from 'lodash';
 import React, { Fragment, FunctionComponent } from 'react';
 import { ObjectSchema } from 'yup';
 
-import { TranslatedString } from '../language';
-import { withLanguage, WithLanguageProps } from '../locale';
+import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { Fieldset, Form, FormContext, Legend } from '../ui/form';
 
 import { CreditCardFieldsetValues } from './creditCard';
 import getPaymentValidationSchema from './getPaymentValidationSchema';
 import { getUniquePaymentMethodId, PaymentMethodList } from './paymentMethod';
-import { PaymentRedeemables } from './redeemable';
 import { InstrumentFieldsetValues } from './storedInstrument';
 import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
+import PaymentRedeemables from './PaymentRedeemables';
 import PaymentSubmitButton from './PaymentSubmitButton';
 import SpamProtectionField from './SpamProtectionField';
 import TermsConditionsField, { TermsConditionsType } from './TermsConditionsField';

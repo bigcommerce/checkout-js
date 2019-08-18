@@ -1,7 +1,6 @@
 import React, { ComponentType, FunctionComponent } from 'react';
 
-import { OrderSummarySubtotalsProps } from '../order';
-import { OrderSummaryProps } from '../order/OrderSummary';
+import { OrderSummaryProps, OrderSummarySubtotalsProps } from '../order';
 
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
 import { CartSummaryProps, WithCheckoutCartSummaryProps } from './CartSummary';

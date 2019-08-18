@@ -3,7 +3,7 @@ import { FieldProps } from 'formik';
 import { max } from 'lodash';
 import React, { createRef, ChangeEventHandler, Component, Fragment, FunctionComponent, ReactNode, RefObject } from 'react';
 
-import { TranslatedString } from '../../language';
+import { TranslatedString } from '../../locale';
 import { FormField, TextInput } from '../../ui/form';
 import { IconLock } from '../../ui/icon';
 

@@ -10,8 +10,7 @@ import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
-import { Modal } from '../../ui/modal';
-import { ModalProps } from '../../ui/modal/Modal';
+import { Modal, ModalProps } from '../../ui/modal';
 import { getPaymentMethod } from '../payment-methods.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
