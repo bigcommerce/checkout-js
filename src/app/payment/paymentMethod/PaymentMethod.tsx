@@ -26,6 +26,7 @@ import VisaCheckoutPaymentMethod from './VisaCheckoutPaymentMethod';
 export interface PaymentMethodProps {
     method: PaymentMethod;
     isEmbedded?: boolean;
+    isUsingMultiShipping?: boolean;
     onUnhandledError?(error: Error): void;
 }
 

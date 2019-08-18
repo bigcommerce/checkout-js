@@ -8,10 +8,10 @@ import { TranslatedString } from '../../language';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
 import withPayment, { WithPaymentProps } from '../withPayment';
-import SignOutLink from '../SignOutLink';
 
 import getPaymentMethodName from './getPaymentMethodName';
 import { PaymentMethodProps } from './PaymentMethod';
+import SignOutLink from './SignOutLink';
 
 export interface WalletButtonPaymentMethodProps {
     buttonId: string;

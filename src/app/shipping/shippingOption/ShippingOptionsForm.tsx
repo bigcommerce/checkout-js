@@ -3,13 +3,13 @@ import { withFormik, FormikProps } from 'formik';
 import { noop } from 'lodash';
 import React, { Component, Fragment, ReactNode } from 'react';
 
-import { ShippingOptionsList } from '..';
 import { TranslatedString } from '../../language';
 import { LoadingOverlay } from '../../ui/loading';
 import getRecommendedShippingOption from '../util/getRecommendedShippingOption';
 import StaticConsignment from '../StaticConsignment';
 
 import { ShippingOptionsProps, WithCheckoutShippingOptionsProps } from './ShippingOptions';
+import ShippingOptionsList from './ShippingOptionsList';
 
 export type ShippingOptionsFormProps = ShippingOptionsProps & WithCheckoutShippingOptionsProps;
 

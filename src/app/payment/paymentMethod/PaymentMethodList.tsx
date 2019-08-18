@@ -11,6 +11,7 @@ import PaymentMethodTitle from './PaymentMethodTitle';
 
 export interface PaymentMethodListProps {
     isEmbedded?: boolean;
+    isUsingMultiShipping?: boolean;
     methods: PaymentMethod[];
     onSelect?(method: PaymentMethod): void;
     onUnhandledError?(error: Error): void;
@@ -30,6 +31,7 @@ function getPaymentMethodFromListValue(methods: PaymentMethod[], value: string):
 const PaymentMethodList: FunctionComponent<PaymentMethodListProps & ConnectFormikProps<{ paymentProviderRadio?: string }>> = ({
     formik: { values },
     isEmbedded,
+    isUsingMultiShipping,
     methods,
     onSelect = noop,
     onUnhandledError,
@@ -47,6 +49,7 @@ const PaymentMethodList: FunctionComponent<PaymentMethodListProps & ConnectFormi
                     content={
                         <PaymentMethodComponent
                             isEmbedded={ isEmbedded }
+                            isUsingMultiShipping={ isUsingMultiShipping }
                             method={ method }
                             onUnhandledError={ onUnhandledError }
                         />

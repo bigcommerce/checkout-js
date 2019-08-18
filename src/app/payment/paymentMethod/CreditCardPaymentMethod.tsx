@@ -15,6 +15,7 @@ import { PaymentFormValues } from '../PaymentForm';
 
 export interface CreditCardPaymentMethodProps {
     isInitializing?: boolean;
+    isUsingMultiShipping?: boolean;
     method: PaymentMethod;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
     initializePayment(options: PaymentInitializeOptions): Promise<CheckoutSelectors>;
@@ -214,13 +215,18 @@ class CreditCardPaymentMethod extends Component<
 
 function mapFromCheckoutProps(
     { checkoutService, checkoutState }: CheckoutContextProps,
-    { method, formik: { values } }: CreditCardPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
+    props: CreditCardPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
 ): WithCheckoutCreditCardPaymentMethodProps | null {
+    const {
+        formik: { values },
+        isUsingMultiShipping = false,
+        method,
+    } = props;
+
     const {
         data: {
             getCart,
             getConfig,
-            getConsignments,
             getCustomer,
             getInstruments,
             isPaymentDataRequired,
@@ -232,7 +238,6 @@ function mapFromCheckoutProps(
 
     const cart = getCart();
     const config = getConfig();
-    const consignments = getConsignments() || EMPTY_ARRAY;
     const customer = getCustomer();
     const instruments = getInstruments() || EMPTY_ARRAY;
 
@@ -250,9 +255,8 @@ function mapFromCheckoutProps(
         isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredSelector(checkoutState),
         isInstrumentFeatureAvailable: isInstrumentFeatureAvailable({
             config,
-            consignments,
             customer,
-            lineItems: cart.lineItems,
+            isUsingMultiShipping,
             paymentMethod: method,
         }),
         isLoadingInstruments: isLoadingInstruments(),

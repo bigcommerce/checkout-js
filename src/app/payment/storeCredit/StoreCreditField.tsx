@@ -1,10 +1,10 @@
 import React, { Fragment, FunctionComponent } from 'react';
 
-import { preventDefault } from '../common/dom';
-import { TranslatedString } from '../language';
-import { withCurrency, WithCurrencyProps } from '../locale';
-import { CheckboxFormField } from '../ui/form';
-import { Tooltip, TooltipTrigger } from '../ui/tooltip';
+import { preventDefault } from '../../common/dom';
+import { TranslatedString } from '../../language';
+import { withCurrency, WithCurrencyProps } from '../../locale';
+import { CheckboxFormField } from '../../ui/form';
+import { Tooltip, TooltipTrigger } from '../../ui/tooltip';
 
 export interface StoreCreditFieldProps {
     availableStoreCredit: number;

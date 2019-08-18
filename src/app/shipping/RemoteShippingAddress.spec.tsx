@@ -1,7 +1,7 @@
 import { mount, shallow } from 'enzyme';
 import React from 'react';
 
-import { SignOutLink } from '../payment';
+import { SignOutLink } from '../payment/paymentMethod';
 
 import RemoteShippingAddress, { RemoteShippingAddressProps } from './RemoteShippingAddress';
 

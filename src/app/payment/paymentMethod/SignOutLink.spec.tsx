@@ -2,10 +2,10 @@ import { mount } from 'enzyme';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { getStoreConfig } from '../../config/config.mock';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
+import { getPaymentMethod } from '../payment-methods.mock';
 
-import { getPaymentMethod } from './payment-methods.mock';
 import SignOutLink from './SignOutLink';
 
 describe('SignOutLink', () => {

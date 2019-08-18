@@ -1,6 +1,7 @@
 import { GatewayOrderPayment, Order, OrderPayment } from '@bigcommerce/checkout-sdk';
 
-import { isGiftCertificatePayment, isStoreCreditPayment } from '../payment';
+import { isGiftCertificatePayment } from '../giftCertificate';
+import { isStoreCreditPayment } from '../payment/storeCredit';
 
 export interface PaymentInstructionsProps {
     order: Order;

@@ -4,8 +4,8 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { getStoreConfig } from '../../config/config.mock';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 
 import StoreCreditField, { StoreCreditFieldProps } from './StoreCreditField';
 

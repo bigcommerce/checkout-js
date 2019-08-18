@@ -1,11 +1,11 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
-import { preventDefault } from '../common/dom';
-import { TranslatedString } from '../language';
-import { withLanguage, WithLanguageProps } from '../locale';
+import { preventDefault } from '../../common/dom';
+import { TranslatedString } from '../../language';
+import { withLanguage, WithLanguageProps } from '../../locale';
 
-import { getPaymentMethodName } from './paymentMethod';
+import getPaymentMethodName from './getPaymentMethodName';
 
 export interface SignOutLinkProps {
     method: Partial<PaymentMethod> & Pick<PaymentMethod, 'id'>;

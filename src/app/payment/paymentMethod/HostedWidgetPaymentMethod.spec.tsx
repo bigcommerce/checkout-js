@@ -16,9 +16,9 @@ import { getPaymentMethod } from '../payment-methods.mock';
 import * as storedInstrumentModule from '../storedInstrument';
 import { getInstruments } from '../storedInstrument/instruments.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
-import SignOutLink, { SignOutLinkProps } from '../SignOutLink';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
+import SignOutLink, { SignOutLinkProps } from './SignOutLink';
 
 describe('HostedWidgetPaymentMethod', () => {
     let HostedWidgetPaymentMethodTest: FunctionComponent<HostedWidgetPaymentMethodProps>;

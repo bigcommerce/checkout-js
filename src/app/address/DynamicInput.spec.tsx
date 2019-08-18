@@ -4,7 +4,7 @@ import ReactDatePicker from 'react-datepicker';
 
 import { CheckboxInput, RadioInput, TextArea, TextInput } from '../ui/form';
 
-import { DynamicFormFieldType } from './DynamicFormField';
+import DynamicFormFieldType from './DynamicFormFieldType';
 import DynamicInput from './DynamicInput';
 
 describe('DynamicInput', () => {

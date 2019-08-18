@@ -6,7 +6,8 @@ import { withLanguage, WithLanguageProps } from '../locale';
 import { AutocompleteItem } from '../ui/autocomplete';
 
 import { mapToAddress, GoogleAutocompleteFormField } from './googleAutocomplete';
-import DynamicFormField, { AddressKeyMap, DynamicFormFieldType } from './DynamicFormField';
+import DynamicFormField, { AddressKeyMap } from './DynamicFormField';
+import DynamicFormFieldType from './DynamicFormFieldType';
 
 export interface AddressFormProps {
     fieldName?: string;

@@ -8,7 +8,8 @@ import { FormField } from '../ui/form';
 
 import { getFormFields } from './formField.mock';
 import CheckboxGroupFormField from './CheckboxGroupFormField';
-import DynamicFormField, { DynamicFormFieldType } from './DynamicFormField';
+import DynamicFormField from './DynamicFormField';
+import DynamicFormFieldType from './DynamicFormFieldType';
 import DynamicInput from './DynamicInput';
 
 describe('DynamicFormField Component', () => {

@@ -13,10 +13,9 @@ import getPaymentValidationSchema from './getPaymentValidationSchema';
 import { getUniquePaymentMethodId, PaymentMethodList } from './paymentMethod';
 import { PaymentRedeemables } from './redeemable';
 import { InstrumentFieldsetValues } from './storedInstrument';
+import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
 import PaymentSubmitButton from './PaymentSubmitButton';
 import SpamProtectionField from './SpamProtectionField';
-import StoreCreditField from './StoreCreditField';
-import StoreCreditOverlay from './StoreCreditOverlay';
 import TermsConditionsField, { TermsConditionsType } from './TermsConditionsField';
 
 export interface PaymentFormProps {
@@ -29,6 +28,7 @@ export interface PaymentFormProps {
     isSpamProtectionEnabled?: boolean;
     isSubmittingOrder?: boolean;
     isTermsConditionsRequired?: boolean;
+    isUsingMultiShipping?: boolean;
     methods: PaymentMethod[];
     selectedMethod?: PaymentMethod;
     shouldShowStoreCredit?: boolean;
@@ -88,6 +88,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
     isSubmittingOrder,
     isSpamProtectionEnabled,
     isTermsConditionsRequired,
+    isUsingMultiShipping,
     methods,
     onMethodSelect = noop,
     onStoreCreditChange,
@@ -122,6 +123,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
                 { ({ setSubmitted }) =>
                     <PaymentMethodList
                         isEmbedded={ isEmbedded }
+                        isUsingMultiShipping={ isUsingMultiShipping }
                         methods={ methods }
                         onSelect={ method => {
                             resetForm({

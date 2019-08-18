@@ -110,7 +110,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
             const consignments = data.getConsignments();
             const cart = data.getCart();
-
             const isMultiShippingMode = !!cart && !!consignments && isUsingMultiShipping(consignments, cart.lineItems);
 
             if (isMultiShippingMode) {
@@ -320,7 +319,11 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     }
 
     private renderPaymentStep(step: CheckoutStepStatus): ReactNode {
-        const { flashMessages } = this.props;
+        const {
+            consignments,
+            cart,
+            flashMessages,
+        } = this.props;
 
         return (
             <CheckoutStep
@@ -334,6 +337,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                     checkEmbeddedSupport={ this.checkEmbeddedSupport }
                     flashMessages={ flashMessages }
                     isEmbedded={ isEmbedded() }
+                    isUsingMultiShipping={ cart && consignments ? isUsingMultiShipping(consignments, cart.lineItems) : false }
                     onFinalize={ this.navigateToOrderConfirmation }
                     onCartChangedError={ this.handleCartChangedError }
                     onReady={ this.handleReady }

@@ -3,7 +3,7 @@ import { memoize } from 'lodash';
 import { array, date, number, object, string, ArraySchema, NumberSchema, ObjectSchema, Schema, StringSchema } from 'yup';
 
 import { AddressFormValues } from './mapAddressToFormValues';
-import { DynamicFormFieldType } from './DynamicFormField';
+import DynamicFormFieldType from './DynamicFormFieldType';
 
 export interface AddressValidationSchemaOptions {
     formFields: FormField[];

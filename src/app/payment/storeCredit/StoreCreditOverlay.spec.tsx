@@ -2,8 +2,8 @@ import { LanguageService } from '@bigcommerce/checkout-sdk';
 import { mount, shallow } from 'enzyme';
 import React from 'react';
 
-import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { getStoreConfig } from '../../config/config.mock';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 
 import StoreCreditOverlay from './StoreCreditOverlay';
 
