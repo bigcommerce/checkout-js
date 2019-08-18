@@ -1,4 +1,9 @@
 {
+    "extends": [
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript"
+    ],
     "env": {
         "browser": true
     },
@@ -18,8 +23,13 @@
         "react-hooks"
     ],
     "rules": {
+        "@typescript-eslint/tslint/config": [
+            "error",
+            {
+                "lintFile": "./tslint.json"
+            }
+        ],
         "react-hooks/exhaustive-deps": "error",
-        "react-hooks/rules-of-hooks": "error",
-        "@typescript-eslint/tslint/config": ["error", { "lintFile": "./tslint.json" }]
+        "react-hooks/rules-of-hooks": "error"
     }
 }

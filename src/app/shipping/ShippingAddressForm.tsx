@@ -1,5 +1,4 @@
-import { Address, Consignment, Country, FormField } from '@bigcommerce/checkout-sdk';
-import { CustomerAddress } from '@bigcommerce/checkout-sdk/dist/internal-mappers';
+import { Address, Consignment, Country, CustomerAddress, FormField } from '@bigcommerce/checkout-sdk';
 import React, { Component, ReactNode } from 'react';
 
 import {  isValidCustomerAddress, AddressForm, AddressSelect } from '../address';

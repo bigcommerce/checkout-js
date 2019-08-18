@@ -1,5 +1,4 @@
-import { Address, Cart, CheckoutSelectors, CheckoutStoreSelector, Consignment, ConsignmentAssignmentRequestBody, FormField } from '@bigcommerce/checkout-sdk';
-import { CustomerAddress } from '@bigcommerce/checkout-sdk/dist/internal-mappers';
+import { Address, Cart, CheckoutSelectors, CheckoutStoreSelector, Consignment, ConsignmentAssignmentRequestBody, CustomerAddress, FormField } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps } from 'formik';
 import React, { Component, ReactNode } from 'react';
 

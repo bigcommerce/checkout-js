@@ -5,11 +5,11 @@ import { FormField, TextInput } from '../ui/form';
 import { IconEye, IconEyeSlash } from '../ui/icon';
 import { Toggle } from '../ui/toggle';
 
-export interface PasswordField {
+export interface PasswordFieldProps {
     forgotPasswordUrl: string;
 }
 
-const PasswordField: FunctionComponent<PasswordField> = ({
+const PasswordField: FunctionComponent<PasswordFieldProps> = ({
     forgotPasswordUrl,
 }) => (
     <FormField

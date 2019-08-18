@@ -84,6 +84,7 @@
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.3.5",
     "eslint": "^6.1.0",
+    "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-react-hooks": "^1.7.0",
     "file-loader": "^4.1.0",
     "fork-ts-checker-webpack-plugin": "^1.4.3",
