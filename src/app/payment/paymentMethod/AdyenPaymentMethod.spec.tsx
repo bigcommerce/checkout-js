@@ -89,8 +89,6 @@ describe('when using Adyen V2 payment', () => {
                     containerId: 'adyen-component-field',
                     options: {
                         hasHolderName: true,
-                        styles: {},
-                        placeholders: {},
                     },
                     threeDS2ChallengeWidgetSize: '01',
                 },

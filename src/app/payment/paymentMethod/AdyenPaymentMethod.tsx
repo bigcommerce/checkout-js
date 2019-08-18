@@ -19,8 +19,6 @@ const AdyenPaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
                 containerId: 'adyen-component-field',
                 options: {
                     hasHolderName: true,
-                    styles: {},
-                    placeholders: {},
                 },
                 threeDS2ChallengeWidgetSize: '01',
             },
