@@ -11,30 +11,18 @@ export interface CheckoutStepProps {
     isActive?: boolean;
     isComplete?: boolean;
     isEditable?: boolean;
-    shouldRenderEmptyContainer?: false; // TODO: Remove this once we are fully transitioned to React
     summary?: ReactNode;
     type: CheckoutStepType;
     onExpanded?(step: CheckoutStepType): void;
     onEdit?(step: CheckoutStepType): void;
 }
 
-// TODO: Remove this once we are fully transitioned to React
-export interface EmptyCheckoutStepProps {
-    isActive?: boolean;
-    isComplete?: boolean;
-    shouldRenderEmptyContainer: true;
-}
-
 const LARGE_SCREEN_BREAKPOINT = 968;
 const LARGE_SCREEN_ANIMATION_DELAY = 610;
 
-// TODO: Remove this once we are fully transitioned to React
-function isEmptyCheckoutStepProps(props: CheckoutStepProps | EmptyCheckoutStepProps): props is EmptyCheckoutStepProps {
-    return (props as EmptyCheckoutStepProps).shouldRenderEmptyContainer === true;
-}
-
-export default class CheckoutStep extends Component<CheckoutStepProps | EmptyCheckoutStepProps> {
-    private containerRef: RefObject<HTMLElement> = createRef();
+export default class CheckoutStep extends Component<CheckoutStepProps> {
+    private containerRef = createRef<HTMLElement>();
+    private mobileQuery = window.matchMedia(`(max-width: ${LARGE_SCREEN_BREAKPOINT}px)`);
     private timeoutRef?: number;
 
     componentDidMount(): void {
@@ -62,17 +50,6 @@ export default class CheckoutStep extends Component<CheckoutStepProps | EmptyChe
     }
 
     render(): ReactNode {
-        const { children } = this.props;
-
-        // TODO: Remove this once we are fully transitioned to React
-        if (isEmptyCheckoutStepProps(this.props)) {
-            return (
-                <div ref={ this.containerRef as RefObject<HTMLDivElement> }>
-                    { children }
-                </div>
-            );
-        }
-
         const {
             heading,
             isActive,
@@ -104,34 +81,55 @@ export default class CheckoutStep extends Component<CheckoutStepProps | EmptyChe
                     />
                 </div>
 
-                <CSSTransition
-                    addEndListener={ (node, done) => {
-                        node.addEventListener('transitionend', ({ target }) => {
-                            if (target === node) {
-                                done();
-                            }
-                        });
-                    } }
-                    classNames="checkout-view-content"
-                    timeout={ {} }
-                    in={ isActive }
-                    unmountOnExit
-                    mountOnEnter
-                >
-                    <div className="checkout-view-content">
-                        { children }
-                    </div>
-                </CSSTransition>
+                { this.renderContent() }
             </li>
         );
     }
 
+    private renderContent(): ReactNode {
+        const { children, isActive } = this.props;
+
+        if (this.mobileQuery.matches) {
+            if (!isActive) {
+                return null;
+            }
+
+            return (
+                <div className="checkout-view-content">
+                    { children }
+                </div>
+            );
+        }
+
+        return (
+            <CSSTransition
+                addEndListener={ (node, done) => {
+                    node.addEventListener('transitionend', ({ target }) => {
+                        if (target === node) {
+                            done();
+                        }
+                    });
+                } }
+                classNames="checkout-view-content"
+                timeout={ {} }
+                in={ isActive }
+                unmountOnExit
+                mountOnEnter
+            >
+                <div className="checkout-view-content">
+                    { children }
+                </div>
+            </CSSTransition>
+        );
+    }
+
     private focusStep(): void {
-        const delay = window.innerWidth > LARGE_SCREEN_BREAKPOINT ? LARGE_SCREEN_ANIMATION_DELAY : 0;
+        const delay = this.mobileQuery.matches ? 0 : LARGE_SCREEN_ANIMATION_DELAY;
 
         this.timeoutRef = window.setTimeout(() => {
             const input = this.getChildInput();
             const position = this.getScrollPosition();
+            const { type, onExpanded = noop } = this.props;
 
             if (input) {
                 input.focus();
@@ -141,11 +139,7 @@ export default class CheckoutStep extends Component<CheckoutStepProps | EmptyChe
                 window.scrollTo(0, position);
             }
 
-            if (!isEmptyCheckoutStepProps(this.props)) {
-                const { type, onExpanded = noop } = this.props;
-
-                onExpanded(type);
-            }
+            onExpanded(type);
 
             this.timeoutRef = undefined;
         }, delay);

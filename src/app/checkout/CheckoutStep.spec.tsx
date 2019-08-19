@@ -1,5 +1,6 @@
 import { mount } from 'enzyme';
 import React from 'react';
+import { CSSTransition } from 'react-transition-group';
 
 import CheckoutStep, { CheckoutStepProps } from './CheckoutStep';
 import CheckoutStepHeader from './CheckoutStepHeader';
@@ -9,6 +10,7 @@ jest.useFakeTimers();
 
 describe('CheckoutStep', () => {
     let defaultProps: CheckoutStepProps;
+    let isMobile: boolean;
 
     beforeEach(() => {
         defaultProps = {
@@ -17,12 +19,18 @@ describe('CheckoutStep', () => {
             onExpanded: jest.fn(),
         };
 
+        isMobile = false;
+
         // JSDOM does not support `scrollTo`
         window.scrollTo = jest.fn();
+
+        // Mock `matchMedia` to detect mobile viewport
+        window.matchMedia = jest.fn(query => ({ matches: query === '(max-width: 968px)' ? isMobile : false }) as MediaQueryList);
     });
 
     afterEach(() => {
         delete window.scrollTo;
+        delete window.matchMedia;
 
         // Reset the focused element after each test
         if (document.activeElement) {
@@ -148,5 +156,21 @@ describe('CheckoutStep', () => {
 
         expect(component.exists('.checkout-view-content'))
             .toEqual(false);
+    });
+
+    it('animates using CSS transition in desktop view', () => {
+        const component = mount(<CheckoutStep { ...defaultProps } />);
+
+        expect(component.find(CSSTransition))
+            .toHaveLength(1);
+    });
+
+    it('does not animate using CSS transition in mobile view', () => {
+        isMobile = true;
+
+        const component = mount(<CheckoutStep { ...defaultProps } />);
+
+        expect(component.find(CSSTransition))
+            .toHaveLength(0);
     });
 });
