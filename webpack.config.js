@@ -43,8 +43,6 @@ module.exports = function (options, argv) {
             mainFields: ['module', 'browser', 'main'],
         },
         optimization: {
-            // Can cause issues with circular dependencies
-            concatenateModules: false,
             runtimeChunk: 'single',
             splitChunks: {
                 chunks: 'all',
