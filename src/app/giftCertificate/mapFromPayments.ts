@@ -1,6 +1,6 @@
 import { GiftCertificate, OrderPayments } from '@bigcommerce/checkout-sdk';
 
-import { isGiftCertificatePayment } from '../payment';
+import isGiftCertificatePayment from './isGiftCertificatePayment';
 
 export default function mapFromPayments(payments: OrderPayments): GiftCertificate[] {
     return payments

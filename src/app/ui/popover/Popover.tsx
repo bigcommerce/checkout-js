@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
 import './Popover.scss';
 
-interface PopoverProps {
+export interface PopoverProps {
     children: React.ReactNode;
 }
 
-const Popover: React.SFC<PopoverProps> = ({ children }) => {
+const Popover: FunctionComponent<PopoverProps> = ({ children }) => {
     return (
         <div className="popover">
             { children }

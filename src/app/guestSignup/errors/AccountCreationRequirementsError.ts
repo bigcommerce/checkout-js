@@ -1,7 +1,7 @@
 import { setPrototypeOf, CustomError } from '../../common/error';
 import { getLanguageService } from '../../locale';
 
-export class AccountCreationRequirementsError extends CustomError {
+export default class AccountCreationRequirementsError extends CustomError {
     constructor(data: Error, requirements: string) {
         super({
             name: 'ACCOUNT_CREATION_REQUIREMENTS_ERROR',

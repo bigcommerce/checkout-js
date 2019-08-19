@@ -3,6 +3,7 @@ import { merge } from 'lodash';
 import { getCart } from '../../cart/carts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer, getGuestCustomer } from '../../customer/customers.mock';
+import { isUsingMultiShipping } from '../../shipping';
 import { getConsignment } from '../../shipping/consignment.mock';
 import { getPaymentMethod } from '../payment-methods.mock';
 
@@ -18,11 +19,11 @@ describe('isInstrumentFeatureAvailable()', () => {
                     isCardVaultingEnabled: true,
                 },
             }),
-            consignments: [
-                getConsignment(),
-            ],
             customer: getCustomer(),
-            lineItems: getCart().lineItems,
+            isUsingMultiShipping: isUsingMultiShipping(
+                [getConsignment()],
+                getCart().lineItems
+            ),
             paymentMethod: merge({}, getPaymentMethod(), {
                 config: {
                     isVaultingEnabled: true,
@@ -64,10 +65,10 @@ describe('isInstrumentFeatureAvailable()', () => {
     it('returns false if shopper is checking out with multiple shipping address', () => {
         expect(isInstrumentFeatureAvailable({
             ...state,
-            consignments: [
-                getConsignment(),
-                getConsignment(),
-            ],
+            isUsingMultiShipping: isUsingMultiShipping(
+                [getConsignment(), getConsignment()],
+                getCart().lineItems
+            ),
         }))
             .toEqual(false);
     });

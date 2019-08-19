@@ -536,7 +536,6 @@ describe('Checkout', () => {
                 .toMatchObject({
                     cart: getCart(),
                     compactView: true,
-                    showShippingMethod: true,
                     consignment,
                 });
         });

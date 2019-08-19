@@ -2,8 +2,7 @@ import { withFormik, FormikProps } from 'formik';
 import React, { FunctionComponent, ReactNode } from 'react';
 import { object, string } from 'yup';
 
-import { TranslatedHtml, TranslatedString } from '../language';
-import { withLanguage, WithLanguageProps } from '../locale';
+import { withLanguage, TranslatedHtml, TranslatedString, WithLanguageProps } from '../locale';
 import { Button, ButtonVariant } from '../ui/button';
 import { BasicFormField, Fieldset, Form, Legend  } from '../ui/form';
 

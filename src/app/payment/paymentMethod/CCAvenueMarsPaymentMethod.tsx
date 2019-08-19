@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
-import { TranslatedString } from '../../language';
+import { TranslatedString } from '../../locale';
 
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
 

@@ -2,7 +2,7 @@ import { GiftCertificate } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
 import { ShopperCurrency } from '../currency';
-import { TranslatedString } from '../language';
+import { TranslatedString } from '../locale';
 
 export interface AppliedGiftCertificateProps {
     giftCertificate: GiftCertificate;

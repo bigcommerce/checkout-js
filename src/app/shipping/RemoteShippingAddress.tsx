@@ -2,7 +2,7 @@ import { CheckoutSelectors, ShippingInitializeOptions, ShippingRequestOptions } 
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
-import { SignOutLink } from '../payment';
+import { SignOutLink } from '../payment/paymentMethod';
 
 export interface RemoteShippingAddressProps {
     containerId: string;

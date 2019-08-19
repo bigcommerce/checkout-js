@@ -2,11 +2,11 @@ import { Address, CustomerAddress } from '@bigcommerce/checkout-sdk';
 import React, { Component, FunctionComponent, ReactNode } from 'react';
 
 import { preventDefault } from '../common/dom';
-import { TranslatedString } from '../language';
+import { TranslatedString } from '../locale';
 import { DropdownTrigger } from '../ui/dropdown';
 
-import StaticAddress from './staticAddress/StaticAddress';
-import isEqualAddress from './util/isEqualAddress';
+import isEqualAddress from './isEqualAddress';
+import StaticAddress from './StaticAddress';
 
 export interface AddressSelectProps {
     addresses: CustomerAddress[];

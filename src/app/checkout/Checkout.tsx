@@ -10,8 +10,7 @@ import { CartSummary, CartSummaryDrawer, EmptyCartMessage } from '../cart';
 import { ErrorLogger, ErrorModal } from '../common/error';
 import { Customer, CustomerInfo, CustomerSignOutEvent, CustomerViewType } from '../customer';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
-import { TranslatedString } from '../language';
-import { withLanguage, WithLanguageProps } from '../locale';
+import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { Payment } from '../payment';
 import { PromotionBannerList } from '../promotion';
 import { isUsingMultiShipping, Shipping, StaticConsignment } from '../shipping';
@@ -110,7 +109,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
             const consignments = data.getConsignments();
             const cart = data.getCart();
-
             const isMultiShippingMode = !!cart && !!consignments && isUsingMultiShipping(consignments, cart.lineItems);
 
             if (isMultiShippingMode) {
@@ -277,7 +275,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 summary={ consignments.map(consignment =>
                     <div key={ consignment.id } className="staticConsignmentContainer">
                         <StaticConsignment
-                            showShippingMethod
                             cart={ cart }
                             consignment={ consignment }
                             compactView={ consignments.length < 2 }
@@ -320,7 +317,11 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     }
 
     private renderPaymentStep(step: CheckoutStepStatus): ReactNode {
-        const { flashMessages } = this.props;
+        const {
+            consignments,
+            cart,
+            flashMessages,
+        } = this.props;
 
         return (
             <CheckoutStep
@@ -334,6 +335,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                     checkEmbeddedSupport={ this.checkEmbeddedSupport }
                     flashMessages={ flashMessages }
                     isEmbedded={ isEmbedded() }
+                    isUsingMultiShipping={ cart && consignments ? isUsingMultiShipping(consignments, cart.lineItems) : false }
                     onFinalize={ this.navigateToOrderConfirmation }
                     onCartChangedError={ this.handleCartChangedError }
                     onReady={ this.handleReady }

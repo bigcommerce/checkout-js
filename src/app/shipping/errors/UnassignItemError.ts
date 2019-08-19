@@ -1,7 +1,7 @@
 import { setPrototypeOf, CustomError } from '../../common/error';
 import { getLanguageService } from '../../locale';
 
-export class UnassignItemError extends CustomError {
+export default class UnassignItemError extends CustomError {
     constructor(data: Error) {
         super({
             name: 'UNASSIGN_ITEM_FAILED',

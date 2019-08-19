@@ -5,7 +5,7 @@ import React, { FunctionComponent, ReactNode } from 'react';
 
 import { FormFieldContainer, FormFieldError } from '../ui/form';
 
-import { DynamicFormFieldType } from './DynamicFormField';
+import DynamicFormFieldType from './DynamicFormFieldType';
 import DynamicInput from './DynamicInput';
 import MultiCheckboxControl from './MultiCheckboxControl';
 

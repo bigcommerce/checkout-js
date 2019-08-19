@@ -1,9 +1,9 @@
 import React, { Fragment, FunctionComponent } from 'react';
 
-import { TranslatedString } from '../../language';
+import { TranslatedString } from '../../locale';
 import { FormField, TextInput } from '../../ui/form';
 import { IconHelp, IconLock } from '../../ui/icon';
-import TooltipTrigger from '../../ui/tooltip/TooltipTrigger';
+import { TooltipTrigger } from '../../ui/tooltip';
 
 import CreditCardCodeTooltip from './CreditCardCodeTooltip';
 

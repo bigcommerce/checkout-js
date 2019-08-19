@@ -5,7 +5,7 @@ import React, { Component, ReactNode } from 'react';
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
 import { withCheckout, CheckoutContextProps } from '../checkout';
 import { EMPTY_ARRAY } from '../common/utility';
-import { TranslatedString } from '../language';
+import { TranslatedString } from '../locale';
 import { getShippableItemsCount } from '../shipping';
 import { Legend } from '../ui/form';
 import { LoadingOverlay } from '../ui/loading';

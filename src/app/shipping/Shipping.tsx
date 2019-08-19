@@ -8,9 +8,9 @@ import { withCheckout, CheckoutContextProps } from '../checkout';
 import { EMPTY_ARRAY } from '../common/utility';
 import { LoadingOverlay } from '../ui/loading';
 
-import { UnassignItemError } from './errors/UnassignItemError';
+import { UnassignItemError } from './errors';
+import getShippableItemsCount from './getShippableItemsCount';
 import getShippingMethodId from './getShippingMethodId';
-import getShippableItemsCount from './util/getShippableItemsCount';
 import { MultiShippingFormValues } from './MultiShippingForm';
 import ShippingForm from './ShippingForm';
 import ShippingHeader from './ShippingHeader';

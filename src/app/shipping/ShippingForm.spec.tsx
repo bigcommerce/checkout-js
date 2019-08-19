@@ -11,8 +11,8 @@ import { OrderComments } from '../orderComments';
 
 import { getConsignment } from './consignment.mock';
 import { getShippingAddress } from './shipping-addresses.mock';
-import BillingSameAsShippingField from './shippingOption/BillingSameAsShippingField';
-import ShippingOptions from './shippingOption/ShippingOptions';
+import { ShippingOptions } from './shippingOption';
+import BillingSameAsShippingField from './BillingSameAsShippingField';
 import MultiShippingForm from './MultiShippingForm';
 import ShippingAddress from './ShippingAddress';
 import ShippingForm, { ShippingFormProps } from './ShippingForm';

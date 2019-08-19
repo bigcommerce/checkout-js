@@ -4,8 +4,7 @@ import React, { createRef, Component, ReactNode, RefObject } from 'react';
 import { lazy } from 'yup';
 
 import { getAddressValidationSchema, isValidCustomerAddress, mapAddressToFormValues, AddressForm, AddressFormValues, AddressSelect } from '../address';
-import { TranslatedString } from '../language';
-import { withLanguage, WithLanguageProps } from '../locale';
+import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { OrderComments } from '../orderComments';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form } from '../ui/form';

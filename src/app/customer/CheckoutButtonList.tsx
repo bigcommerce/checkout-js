@@ -1,7 +1,7 @@
 import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
 import React, { Fragment, FunctionComponent } from 'react';
 
-import { TranslatedString } from '../language';
+import { TranslatedString } from '../locale';
 
 import CheckoutButton from './CheckoutButton';
 

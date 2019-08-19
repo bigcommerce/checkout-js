@@ -1,6 +1,6 @@
 import React, { Fragment, FunctionComponent } from 'react';
 
-import { TranslatedString } from '../../language';
+import { TranslatedString } from '../../locale';
 import { FormField, TextInput } from '../../ui/form';
 
 export interface CreditCardCustomerCodeFieldProps {

@@ -11,14 +11,14 @@ import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
 import { getConsignment } from '../../shipping/consignment.mock';
 import { LoadingOverlay } from '../../ui/loading';
-import CreditCardStorageField from '../creditCard/CreditCardStorageField';
+import { CreditCardStorageField } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
 import * as storedInstrumentModule from '../storedInstrument';
 import { getInstruments } from '../storedInstrument/instruments.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
-import SignOutLink, { SignOutLinkProps } from '../SignOutLink';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
+import SignOutLink, { SignOutLinkProps } from './SignOutLink';
 
 describe('HostedWidgetPaymentMethod', () => {
     let HostedWidgetPaymentMethodTest: FunctionComponent<HostedWidgetPaymentMethodProps>;

@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
-import { TranslatedString } from '../language';
+import { TranslatedString } from '../locale';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 
 import { PaymentMethodId, PaymentMethodType } from './paymentMethod';

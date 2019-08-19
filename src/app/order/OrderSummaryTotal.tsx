@@ -1,7 +1,6 @@
 import React, { Fragment, FunctionComponent } from 'react';
 
-import { TranslatedString } from '../language';
-import { withCurrency, WithCurrencyProps } from '../locale';
+import { withCurrency, TranslatedString, WithCurrencyProps } from '../locale';
 
 import OrderSummaryPrice from './OrderSummaryPrice';
 

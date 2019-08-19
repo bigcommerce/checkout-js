@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 
 import { isValidAddress } from '../address';
 import { EMPTY_ARRAY } from '../common/utility';
-import { SUPPORTED_METHODS } from '../customer/CheckoutButtonList';
+import { SUPPORTED_METHODS } from '../customer';
 import { hasSelectedShippingOptions, hasUnassignedLineItems } from '../shipping';
 
 import CheckoutStepType from './CheckoutStepType';

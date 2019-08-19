@@ -4,8 +4,7 @@ import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
-import { ErrorModal } from '../common/error';
-import { ErrorModalOnCloseProps } from '../common/error/errorModal/ErrorModal';
+import { ErrorModal, ErrorModalOnCloseProps } from '../common/error';
 import { EMPTY_ARRAY } from '../common/utility';
 import { withLanguage, WithLanguageProps } from '../locale';
 import { FlashAlert, FlashMessage } from '../ui/alert';
@@ -20,6 +19,7 @@ import { TermsConditionsType } from './TermsConditionsField';
 
 export interface PaymentProps {
     isEmbedded?: boolean;
+    isUsingMultiShipping?: boolean;
     flashMessages?: FlashMessage[]; // TODO: Remove once we can read flash messages from SDK
     checkEmbeddedSupport?(methodIds: string[]): void; // TODO: We're currently doing this check in multiple places, perhaps we should move it up so this check get be done in a single place instead.
     onCartChangedError?(error: Error): void;
@@ -118,6 +118,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             defaultMethod,
             finalizeOrderError,
             flashMessages = [],
+            isUsingMultiShipping,
             methods,
             onStoreCreditChange,
             ...rest
@@ -153,6 +154,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
                         { ...rest }
                         defaultMethodId={ defaultMethod.id }
                         methods={ methods }
+                        isUsingMultiShipping={ isUsingMultiShipping }
                         onMethodSelect={ this.setSelectedMethod }
                         onStoreCreditChange={ onStoreCreditChange }
                         onSubmit={ this.handleSubmit }

@@ -1,21 +1,18 @@
-import { Address, Cart, CheckoutSelectors, CheckoutStoreSelector, Consignment, ConsignmentAssignmentRequestBody, FormField } from '@bigcommerce/checkout-sdk';
-import { CustomerAddress } from '@bigcommerce/checkout-sdk/dist/internal-mappers';
+import { Address, Cart, CheckoutSelectors, CheckoutStoreSelector, Consignment, ConsignmentAssignmentRequestBody, CustomerAddress, FormField } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps } from 'formik';
 import React, { Component, ReactNode } from 'react';
 
 import { isValidAddress } from '../address';
 import { preventDefault } from '../common/dom';
-import { TranslatedHtml, TranslatedString } from '../language';
-import withLanguage, { WithLanguageProps } from '../locale/withLanguage';
+import { withLanguage, TranslatedHtml, TranslatedString, WithLanguageProps } from '../locale';
 import { Form } from '../ui/form';
 
-import { AssignItemFailedError } from './errors/AssignItemFailedError';
-import { AssignItemInvalidAddressError } from './errors/AssignItemInvalidAddressError';
-import getShippableItemsCount from './util/getShippableItemsCount';
-import getShippableLineItems from './util/getShippableLineItems';
-import hasSelectedShippingOptions from './util/hasSelectedShippingOptions';
-import hasUnassignedLineItems from './util/hasUnassignedLineItems';
-import updateShippableItems from './util/updateShippableItems';
+import { AssignItemFailedError, AssignItemInvalidAddressError } from './errors';
+import getShippableItemsCount from './getShippableItemsCount';
+import getShippableLineItems from './getShippableLineItems';
+import hasSelectedShippingOptions from './hasSelectedShippingOptions';
+import hasUnassignedLineItems from './hasUnassignedLineItems';
+import updateShippableItems from './updateShippableItems';
 import ItemAddressSelect from './ItemAddressSelect';
 import ShippableItem from './ShippableItem';
 import ShippingFormFooter from './ShippingFormFooter';

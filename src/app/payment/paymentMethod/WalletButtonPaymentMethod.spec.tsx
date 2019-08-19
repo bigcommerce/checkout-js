@@ -12,8 +12,8 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../../loc
 import { LoadingOverlay } from '../../ui/loading';
 import { getPaymentMethod } from '../payment-methods.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
-import SignOutLink, { SignOutLinkProps } from '../SignOutLink';
 
+import SignOutLink, { SignOutLinkProps } from './SignOutLink';
 import WalletButtonPaymentMethod, { WalletButtonPaymentMethodProps } from './WalletButtonPaymentMethod';
 
 describe('WalletButtonPaymentMethod', () => {

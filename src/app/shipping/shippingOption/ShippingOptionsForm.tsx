@@ -1,15 +1,16 @@
-import { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, Consignment } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps } from 'formik';
 import { noop } from 'lodash';
 import React, { Component, Fragment, ReactNode } from 'react';
 
-import { ShippingOptionsList } from '..';
-import { TranslatedString } from '../../language';
+import { StaticAddress } from '../../address';
+import { TranslatedString } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
-import getRecommendedShippingOption from '../util/getRecommendedShippingOption';
-import StaticConsignment from '../StaticConsignment';
+import getRecommendedShippingOption from '../getRecommendedShippingOption';
+import StaticConsignmentItemList from '../StaticConsignmentItemList';
 
 import { ShippingOptionsProps, WithCheckoutShippingOptionsProps } from './ShippingOptions';
+import ShippingOptionsList from './ShippingOptionsList';
 
 export type ShippingOptionsFormProps = ShippingOptionsProps & WithCheckoutShippingOptionsProps;
 
@@ -31,7 +32,6 @@ class ShippingOptionsForm extends Component<ShippingOptionsFormProps & FormikPro
 
     render(): ReactNode {
         const {
-            cart,
             consignments,
             isMultiShippingMode,
             selectShippingOption,
@@ -65,9 +65,7 @@ class ShippingOptionsForm extends Component<ShippingOptionsFormProps & FormikPro
                 .sort((a, b) => (a.id > b.id ? -1 : 1))
                 .map(consignment => (
                     <div className="shippingOptions-container form-fieldset" key={ consignment.id }>
-                        { isMultiShippingMode &&
-                            <StaticConsignment cart={ cart } consignment={ consignment } />
-                        }
+                        { isMultiShippingMode && this.renderConsignment(consignment) }
 
                         <ShippingOptionsList
                             inputName={ getRadioInputName(consignment.id) }
@@ -127,6 +125,25 @@ class ShippingOptionsForm extends Component<ShippingOptionsFormProps & FormikPro
                 <p className="shippingOptions-panel-message optimizedCheckout-primaryContent">
                     { message }
                 </p>
+            </div>
+        );
+    }
+
+    private renderConsignment(consignment: Consignment): ReactNode {
+        const { cart } = this.props;
+
+        return (
+            <div className="staticConsignment">
+                <strong>
+                    <TranslatedString id="shipping.shipping_address_heading" />
+                </strong>
+
+                <StaticAddress address={ consignment.shippingAddress } />
+
+                <StaticConsignmentItemList
+                    cart={ cart }
+                    consignment={ consignment }
+                />
             </div>
         );
     }

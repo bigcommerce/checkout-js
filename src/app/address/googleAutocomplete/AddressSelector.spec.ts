@@ -1,4 +1,4 @@
-import { getGoogleAutocompletePlaceMock } from './__mocks__/googleAutocompleteResult';
+import { getGoogleAutocompletePlaceMock } from './googleAutocompleteResult.mock';
 import AddressSelector from './AddressSelector';
 
 describe('AddressSelector', () => {

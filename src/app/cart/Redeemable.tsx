@@ -5,14 +5,13 @@ import React, { Fragment, FunctionComponent } from 'react';
 import { object, string } from 'yup';
 
 import { preventDefault } from '../common/dom';
-import { TranslatedString } from '../language';
-import { withLanguage, WithLanguageProps } from '../locale';
-import AppliedRedeemables, { AppliedRedeemablesProps } from '../payment/redeemable/AppliedRedeemables';
+import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
-import { FormField, Label, TextInput } from '../ui/form';
-import FormProvider from '../ui/form/FormProvider';
+import { FormField, FormProvider, Label, TextInput } from '../ui/form';
 import { Toggle } from '../ui/toggle';
+
+import AppliedRedeemables, { AppliedRedeemablesProps } from './AppliedRedeemables';
 
 export interface RedeemableFormValues {
     redeemableCode: string;

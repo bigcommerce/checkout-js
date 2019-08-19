@@ -1,6 +1,6 @@
 import { Address, AddressKey, FormField } from '@bigcommerce/checkout-sdk';
 
-import { DynamicFormFieldType } from './DynamicFormField';
+import DynamicFormFieldType from './DynamicFormFieldType';
 
 export type AddressFormValues = Pick<Address, Exclude<AddressKey, 'customFields'>> & {
     customFields: { [id: string]: any };

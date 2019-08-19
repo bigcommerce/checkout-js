@@ -5,6 +5,7 @@ import React, { Component, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
+import { EMPTY_ARRAY } from '../../common/utility';
 import { LoadingOverlay } from '../../ui/loading';
 import { CreditCardStorageField } from '../creditCard';
 import {
@@ -15,12 +16,14 @@ import {
 } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
-import SignOutLink from '../SignOutLink';
+
+import SignOutLink from './SignOutLink';
 
 export interface HostedWidgetPaymentMethodProps {
     containerId: string;
     hideContentWhenSignedOut?: boolean;
     isInitializing?: boolean;
+    isUsingMultiShipping?: boolean;
     isSignInRequired?: boolean;
     method: PaymentMethod;
     deinitializeCustomer?(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
@@ -278,14 +281,19 @@ class HostedWidgetPaymentMethod extends Component<
 
 function mapToWithCheckoutHostedWidgetPaymentMethodProps(
     { checkoutService, checkoutState }: CheckoutContextProps,
-    { formik: { values }, method }: HostedWidgetPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
+    props: HostedWidgetPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
 ): WithCheckoutHostedWidgetPaymentMethodProps | null {
+    const {
+        formik: { values },
+        isUsingMultiShipping = false,
+        method,
+    } = props;
+
     const {
         data: {
             getCart,
             getCheckout,
             getConfig,
-            getConsignments,
             getCustomer,
             getInstruments,
             isPaymentDataRequired,
@@ -298,9 +306,8 @@ function mapToWithCheckoutHostedWidgetPaymentMethodProps(
     const cart = getCart();
     const checkout = getCheckout();
     const config = getConfig();
-    const consignments = getConsignments() || [];
     const customer = getCustomer();
-    const instruments = getInstruments() || [];
+    const instruments = getInstruments() || EMPTY_ARRAY;
 
     if (!checkout || !config || !cart || !customer || !method) {
         return null;
@@ -319,9 +326,8 @@ function mapToWithCheckoutHostedWidgetPaymentMethodProps(
         isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredSelector(checkoutState),
         isInstrumentFeatureAvailable: isInstrumentFeatureAvailable({
             config,
-            consignments,
             customer,
-            lineItems: cart.lineItems,
+            isUsingMultiShipping,
             paymentMethod: method,
         }),
         loadInstruments: checkoutService.loadInstruments,

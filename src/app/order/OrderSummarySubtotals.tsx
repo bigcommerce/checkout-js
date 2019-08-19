@@ -1,7 +1,7 @@
 import { Coupon, GiftCertificate, Tax } from '@bigcommerce/checkout-sdk';
 import React, { Fragment, FunctionComponent } from 'react';
 
-import { TranslatedString } from '../language';
+import { TranslatedString } from '../locale';
 
 import OrderSummaryDiscount from './OrderSummaryDiscount';
 import OrderSummaryPrice from './OrderSummaryPrice';

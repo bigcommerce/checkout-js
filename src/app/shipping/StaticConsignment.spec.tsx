@@ -1,5 +1,4 @@
-import { shallow } from 'enzyme';
-import toJson from 'enzyme-to-json';
+import { render } from 'enzyme';
 import React from 'react';
 
 import { getCart } from '../cart/carts.mock';
@@ -11,24 +10,26 @@ describe('StaticConsignment Component', () => {
     const consignment = getConsignment();
     const cart = getCart();
 
-    it('renders static consignment without shipping method', () => {
-        const tree = shallow(
-            <StaticConsignment cart={ cart } consignment={ consignment }/>);
-
-        expect(toJson(tree)).toMatchSnapshot();
-    });
-
     it('renders static consignment with shipping method', () => {
-        const tree = shallow(
-            <StaticConsignment cart={ cart } consignment={ consignment } showShippingMethod={ true }/>);
+        const tree = render(
+            <StaticConsignment
+                cart={ cart }
+                consignment={ consignment }
+            />
+        );
 
-        expect(toJson(tree)).toMatchSnapshot();
+        expect(tree).toMatchSnapshot();
     });
 
     it('renders compact view of static consignment', () => {
-        const tree = shallow(
-            <StaticConsignment cart={ cart } compactView={ true } consignment={ consignment } showShippingMethod={ true }/>);
+        const tree = render(
+            <StaticConsignment
+                cart={ cart }
+                consignment={ consignment }
+                compactView
+            />
+        );
 
-        expect(toJson(tree)).toMatchSnapshot();
+        expect(tree).toMatchSnapshot();
     });
 });

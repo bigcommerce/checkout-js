@@ -1,7 +1,7 @@
 import { Coupon } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
-import { TranslatedString } from '../language';
+import { TranslatedString } from '../locale';
 
 export interface AppliedCouponProps {
     coupon: Coupon;

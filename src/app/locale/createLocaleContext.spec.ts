@@ -1,7 +1,7 @@
 import { getStoreConfig } from '../config/config.mock';
 
 import createLocaleContext from './createLocaleContext';
-import { LocaleContextType } from './LocaleContext.js';
+import { LocaleContextType } from './LocaleContext';
 
 describe('createLocaleContext', () => {
     let localeContext: LocaleContextType;

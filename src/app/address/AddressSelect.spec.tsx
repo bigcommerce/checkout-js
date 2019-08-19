@@ -10,8 +10,8 @@ import { getCustomer } from '../customer/customers.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 
 import { getAddress } from './address.mock';
-import StaticAddress from './staticAddress/StaticAddress';
 import AddressSelect from './AddressSelect';
+import StaticAddress from './StaticAddress';
 
 describe('AddressSelect Component', () => {
     let checkoutService: CheckoutService;

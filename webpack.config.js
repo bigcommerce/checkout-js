@@ -6,6 +6,7 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
+const CircularDependencyPlugin = require('circular-dependency-plugin');
 
 const babelOptions = {
     cacheDirectory: true,
@@ -42,8 +43,6 @@ module.exports = function (options, argv) {
             mainFields: ['module', 'browser', 'main'],
         },
         optimization: {
-            // Can cause issues with circular dependencies
-            concatenateModules: false,
             runtimeChunk: 'single',
             splitChunks: {
                 chunks: 'all',
@@ -74,6 +73,10 @@ module.exports = function (options, argv) {
             isProduction && new MiniCssExtractPlugin({
                 filename: `[name]${isProduction ? '-[contenthash:8]' : ''}.css`,
                 chunkFilename: `[name]${isProduction ? '-[contenthash:8]' : ''}.css`,
+            }),
+            new CircularDependencyPlugin({
+                exclude: /.*\.spec\.tsx?/,
+                include: /src\/app/,
             }),
             new WebpackAssetsManifest({
                 entrypoints: true,

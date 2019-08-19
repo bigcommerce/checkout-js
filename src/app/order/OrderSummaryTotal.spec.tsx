@@ -2,8 +2,7 @@ import { mount } from 'enzyme';
 import React from 'react';
 
 import { getStoreConfig } from '../config/config.mock';
-import { TranslatedString } from '../language';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '../locale';
 
 import OrderSummaryPrice from './OrderSummaryPrice';
 import OrderSummaryTotal from './OrderSummaryTotal';

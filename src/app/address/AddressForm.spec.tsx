@@ -10,7 +10,8 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale
 
 import { getFormFields } from './formField.mock';
 import AddressForm from './AddressForm';
-import DynamicFormField, { DynamicFormFieldType } from './DynamicFormField';
+import DynamicFormField from './DynamicFormField';
+import DynamicFormFieldType from './DynamicFormFieldType';
 
 describe('AddressForm Component', () => {
     let checkoutService: CheckoutService;

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
 import './PopoverList.scss';
 
-interface PopoverListProps {
+export interface PopoverListProps {
     menuProps?: any;
     highlightedIndex?: number;
     getItemProps?: any;
@@ -15,7 +15,7 @@ export interface PopoverListItem {
     content: React.ReactChild[] | React.ReactChild;
 }
 
-const PopoverList: React.SFC<PopoverListProps> = ({
+const PopoverList: FunctionComponent<PopoverListProps> = ({
     highlightedIndex = -1,
     testId,
     getItemProps = (props: any) => props,

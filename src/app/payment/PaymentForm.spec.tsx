@@ -11,11 +11,10 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale
 import { getCreditCardValidationSchema } from './creditCard';
 import { getPaymentMethod } from './payment-methods.mock';
 import { PaymentMethodList, PaymentMethodListProps } from './paymentMethod';
+import { StoreCreditField, StoreCreditFieldProps, StoreCreditOverlay } from './storeCredit';
 import PaymentContext, { PaymentContextProps } from './PaymentContext';
 import PaymentForm, { PaymentFormProps } from './PaymentForm';
 import SpamProtectionField, { SpamProtectionProps } from './SpamProtectionField';
-import StoreCreditField, { StoreCreditFieldProps } from './StoreCreditField';
-import StoreCreditOverlay from './StoreCreditOverlay';
 import TermsConditionsField, { TermsConditionsFieldProps, TermsConditionsType } from './TermsConditionsField';
 
 describe('PaymentForm', () => {

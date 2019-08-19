@@ -1,10 +1,10 @@
 import { FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
-import { TranslatedString } from '../../language';
+import { TranslatedString } from '../../locale';
 import { AutocompleteItem } from '../../ui/autocomplete';
 import { FormField } from '../../ui/form';
-import { getFormFieldInputId } from '../util/getFormFieldInputId';
+import { getFormFieldInputId } from '../getFormFieldInputId';
 
 import GoogleAutocomplete from './GoogleAutocomplete';
 

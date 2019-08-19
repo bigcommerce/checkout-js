@@ -2,7 +2,7 @@ import { CheckoutSelectors, PaymentInitializeOptions, PaymentMethod, PaymentRequ
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
-import { TranslatedString } from '../../language';
+import { TranslatedString } from '../../locale';
 import { FormFieldContainer, Label } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
 

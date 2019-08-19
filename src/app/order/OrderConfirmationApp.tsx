@@ -6,8 +6,7 @@ import { StepTrackerFactory } from '../analytics';
 import { CheckoutProvider } from '../checkout';
 import { ErrorLoggerFactory, ErrorLoggingBoundary } from '../common/error';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
-import { AccountService, CreatedCustomer } from '../guestSignup';
-import { SignUpFormValues } from '../guestSignup/GuestSignUpForm';
+import { AccountService, CreatedCustomer, SignUpFormValues } from '../guestSignup';
 import { getLanguageService, LocaleProvider } from '../locale';
 
 import OrderConfirmation from './OrderConfirmation';

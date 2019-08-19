@@ -11,5 +11,5 @@ if (process.env.NODE_ENV === 'development') {
     whyDidYouRender(React);
 }
 
-export { renderCheckout } from '../app/checkout';
-export { renderOrderConfirmation } from '../app/order';
+export { default as renderCheckout } from '../app/checkout/renderCheckout';
+export { default as renderOrderConfirmation } from '../app/order/renderOrderConfirmation';

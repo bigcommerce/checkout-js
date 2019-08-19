@@ -1,12 +1,13 @@
 import { createLanguageService, LanguageService } from '@bigcommerce/checkout-sdk';
 
 import { memoize } from '../common/utility';
-import defaultTranslations from '../language/en.json';
+
+import { DEFAULT_TRANSLATIONS } from './translations';
 
 function getLanguageService(): LanguageService {
     return createLanguageService({
         ...(window as any).language,
-        defaultTranslations,
+        defaultTranslations: DEFAULT_TRANSLATIONS,
     });
 }
 
