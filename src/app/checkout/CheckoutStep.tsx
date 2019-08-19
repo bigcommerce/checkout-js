@@ -21,7 +21,8 @@ const LARGE_SCREEN_BREAKPOINT = 968;
 const LARGE_SCREEN_ANIMATION_DELAY = 610;
 
 export default class CheckoutStep extends Component<CheckoutStepProps> {
-    private containerRef: RefObject<HTMLElement> = createRef();
+    private containerRef = createRef<HTMLElement>();
+    private mobileQuery = window.matchMedia(`(max-width: ${LARGE_SCREEN_BREAKPOINT}px)`);
     private timeoutRef?: number;
 
     componentDidMount(): void {
@@ -49,8 +50,6 @@ export default class CheckoutStep extends Component<CheckoutStepProps> {
     }
 
     render(): ReactNode {
-        const { children } = this.props;
-
         const {
             heading,
             isActive,
@@ -82,30 +81,50 @@ export default class CheckoutStep extends Component<CheckoutStepProps> {
                     />
                 </div>
 
-                <CSSTransition
-                    addEndListener={ (node, done) => {
-                        node.addEventListener('transitionend', ({ target }) => {
-                            if (target === node) {
-                                done();
-                            }
-                        });
-                    } }
-                    classNames="checkout-view-content"
-                    timeout={ {} }
-                    in={ isActive }
-                    unmountOnExit
-                    mountOnEnter
-                >
-                    <div className="checkout-view-content">
-                        { children }
-                    </div>
-                </CSSTransition>
+                { this.renderContent() }
             </li>
         );
     }
 
+    private renderContent(): ReactNode {
+        const { children, isActive } = this.props;
+
+        if (this.mobileQuery.matches) {
+            if (!isActive) {
+                return null;
+            }
+
+            return (
+                <div className="checkout-view-content">
+                    { children }
+                </div>
+            );
+        }
+
+        return (
+            <CSSTransition
+                addEndListener={ (node, done) => {
+                    node.addEventListener('transitionend', ({ target }) => {
+                        if (target === node) {
+                            done();
+                        }
+                    });
+                } }
+                classNames="checkout-view-content"
+                timeout={ {} }
+                in={ isActive }
+                unmountOnExit
+                mountOnEnter
+            >
+                <div className="checkout-view-content">
+                    { children }
+                </div>
+            </CSSTransition>
+        );
+    }
+
     private focusStep(): void {
-        const delay = window.innerWidth > LARGE_SCREEN_BREAKPOINT ? LARGE_SCREEN_ANIMATION_DELAY : 0;
+        const delay = this.mobileQuery.matches ? 0 : LARGE_SCREEN_ANIMATION_DELAY;
 
         this.timeoutRef = window.setTimeout(() => {
             const input = this.getChildInput();
