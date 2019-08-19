@@ -11,29 +11,16 @@ export interface CheckoutStepProps {
     isActive?: boolean;
     isComplete?: boolean;
     isEditable?: boolean;
-    shouldRenderEmptyContainer?: false; // TODO: Remove this once we are fully transitioned to React
     summary?: ReactNode;
     type: CheckoutStepType;
     onExpanded?(step: CheckoutStepType): void;
     onEdit?(step: CheckoutStepType): void;
 }
 
-// TODO: Remove this once we are fully transitioned to React
-export interface EmptyCheckoutStepProps {
-    isActive?: boolean;
-    isComplete?: boolean;
-    shouldRenderEmptyContainer: true;
-}
-
 const LARGE_SCREEN_BREAKPOINT = 968;
 const LARGE_SCREEN_ANIMATION_DELAY = 610;
 
-// TODO: Remove this once we are fully transitioned to React
-function isEmptyCheckoutStepProps(props: CheckoutStepProps | EmptyCheckoutStepProps): props is EmptyCheckoutStepProps {
-    return (props as EmptyCheckoutStepProps).shouldRenderEmptyContainer === true;
-}
-
-export default class CheckoutStep extends Component<CheckoutStepProps | EmptyCheckoutStepProps> {
+export default class CheckoutStep extends Component<CheckoutStepProps> {
     private containerRef: RefObject<HTMLElement> = createRef();
     private timeoutRef?: number;
 
@@ -63,15 +50,6 @@ export default class CheckoutStep extends Component<CheckoutStepProps | EmptyChe
 
     render(): ReactNode {
         const { children } = this.props;
-
-        // TODO: Remove this once we are fully transitioned to React
-        if (isEmptyCheckoutStepProps(this.props)) {
-            return (
-                <div ref={ this.containerRef as RefObject<HTMLDivElement> }>
-                    { children }
-                </div>
-            );
-        }
 
         const {
             heading,
@@ -132,6 +110,7 @@ export default class CheckoutStep extends Component<CheckoutStepProps | EmptyChe
         this.timeoutRef = window.setTimeout(() => {
             const input = this.getChildInput();
             const position = this.getScrollPosition();
+            const { type, onExpanded = noop } = this.props;
 
             if (input) {
                 input.focus();
@@ -141,11 +120,7 @@ export default class CheckoutStep extends Component<CheckoutStepProps | EmptyChe
                 window.scrollTo(0, position);
             }
 
-            if (!isEmptyCheckoutStepProps(this.props)) {
-                const { type, onExpanded = noop } = this.props;
-
-                onExpanded(type);
-            }
+            onExpanded(type);
 
             this.timeoutRef = undefined;
         }, delay);
