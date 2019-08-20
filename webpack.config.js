@@ -1,6 +1,7 @@
 const { exec } = require('child_process');
 const { omitBy } = require('lodash');
 const { join } = require('path');
+const { createHash } = require('crypto');
 
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -9,6 +10,7 @@ const WebpackAssetsManifest = require('webpack-assets-manifest');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 
 const PublicPathPlugin = require('./scripts/webpack/public-path');
+const packageInfo = require('./package.json');
 
 const babelOptions = {
     cacheDirectory: true,
@@ -33,6 +35,7 @@ const babelOptions = {
 module.exports = function (options, argv) {
     const mode = argv.mode || 'production';
     const isProduction = mode !== 'development';
+    const outputFilename = `[name]-${getPublicPathHash()}${isProduction ? '-[contenthash:8]' : ''}`;
 
     return {
         entry: {
@@ -59,8 +62,8 @@ module.exports = function (options, argv) {
         },
         output: {
             path: isProduction ? join(__dirname, 'dist') : join(__dirname, 'build'),
-            filename: `[name]${isProduction ? '-[contenthash:8]' : ''}.js`,
-            chunkFilename: `[name]${isProduction ? '-[contenthash:8]' : ''}.js`,
+            filename: `${outputFilename}.js`,
+            chunkFilename: `${outputFilename}.js`,
             jsonpFunction: 'webpackJsonpCheckout',
             library: 'checkout',
             libraryTarget: 'umd',
@@ -73,14 +76,14 @@ module.exports = function (options, argv) {
                 emitErrors: isProduction,
             }),
             isProduction && new MiniCssExtractPlugin({
-                filename: `[name]${isProduction ? '-[contenthash:8]' : ''}.css`,
-                chunkFilename: `[name]${isProduction ? '-[contenthash:8]' : ''}.css`,
+                filename: `${outputFilename}.css`,
+                chunkFilename: `${outputFilename}.css`,
             }),
             new CircularDependencyPlugin({
                 exclude: /.*\.spec\.tsx?/,
                 include: /src\/app/,
             }),
-            new PublicPathPlugin(),
+            new PublicPathPlugin(getPublicPathHash()),
             new WebpackAssetsManifest({
                 entrypoints: true,
                 transform: assets => transformManifest(assets, options),
@@ -125,7 +128,7 @@ module.exports = function (options, argv) {
                         {
                             loader: 'file-loader',
                             options: {
-                                name: `[name]${isProduction ? '-[contenthash:8]' : ''}.[ext]`,
+                                name: `${outputFilename}.[ext]`,
                                 outputPath: 'static',
                             },
                         },
@@ -167,6 +170,13 @@ function transformManifest(assets, options) {
         appVersion: 'dev',
         ...entrypoints,
     };
+}
+
+function getPublicPathHash() {
+    return createHash('md4')
+        .update(packageInfo.name)
+        .digest('hex')
+        .substr(0, 8);
 }
 
 class BuildHooks {
