@@ -14,6 +14,7 @@ import { PromotionBannerList } from '../promotion';
 import { isUsingMultiShipping, StaticConsignment } from '../shipping';
 import { FlashMessage } from '../ui/alert';
 import { LoadingNotification, LoadingOverlay, LoadingSpinner } from '../ui/loading';
+import { MobileView } from '../ui/responsive';
 
 import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
@@ -172,7 +173,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             loginUrl,
             promotions = [],
             steps,
-            usableStoreCredit,
         } = this.props;
 
         const {
@@ -180,7 +180,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             defaultStepType,
             isCartEmpty,
             isRedirecting,
-            useStoreCredit,
         } = this.state;
 
         if (isCartEmpty) {
@@ -212,15 +211,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                     </ol>
                 </div>
 
-                <aside className="layout-cart">
-                    <Suspense fallback={ <LoadingSpinner isLoading /> }>
-                        <CartSummary storeCreditAmount={ useStoreCredit ? usableStoreCredit : 0 } />
-                    </Suspense>
-                </aside>
-
-                <Suspense fallback={ <LoadingSpinner isLoading /> }>
-                    <CartSummaryDrawer storeCreditAmount={ useStoreCredit ? usableStoreCredit : 0 } />
-                </Suspense>
+                { this.renderCartSummary() }
             </LoadingOverlay>
         );
     }
@@ -385,6 +376,29 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                     />
                 </Suspense>
             </CheckoutStep>
+        );
+    }
+
+    private renderCartSummary(): ReactNode {
+        const { usableStoreCredit } = this.props;
+        const { useStoreCredit } = this.state;
+
+        return (
+            <MobileView>
+                { matched => {
+                    if (matched) {
+                        return <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                            <CartSummaryDrawer storeCreditAmount={ useStoreCredit ? usableStoreCredit : 0 } />
+                        </Suspense>;
+                    }
+
+                    return <aside className="layout-cart">
+                        <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                            <CartSummary storeCreditAmount={ useStoreCredit ? usableStoreCredit : 0 } />
+                        </Suspense>
+                    </aside>;
+                } }
+            </MobileView>
         );
     }
 

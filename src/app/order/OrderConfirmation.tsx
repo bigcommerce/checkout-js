@@ -1,4 +1,4 @@
-import { CheckoutSelectors, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, Order, ShopperConfig, ShopperCurrency, StoreConfig, StoreCurrency } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, Order, ShopperConfig, StoreConfig } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';
 import React, { lazy, Component, Fragment, ReactNode, Suspense } from 'react';
@@ -12,6 +12,7 @@ import { AccountCreationFailedError, AccountCreationRequirementsError } from '..
 import { TranslatedString } from '../locale';
 import { Button, ButtonVariant } from '../ui/button';
 import { LoadingSpinner } from '../ui/loading';
+import { MobileView } from '../ui/responsive';
 
 import getPaymentInstructions from './getPaymentInstructions';
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
@@ -103,8 +104,6 @@ class OrderConfirmation extends Component<
                 orderEmail,
                 storePhoneNumber,
             },
-            currency,
-            shopperCurrency,
             shopperConfig,
             links: {
                 siteLink,
@@ -150,7 +149,7 @@ class OrderConfirmation extends Component<
                     </div>
                 </div>
 
-                { this.renderOrderSummary({ order, currency, shopperCurrency }) }
+                { this.renderOrderSummary() }
                 { this.renderErrorModal() }
             </div>
         );
@@ -176,38 +175,52 @@ class OrderConfirmation extends Component<
         </Fragment>;
     }
 
-    private renderOrderSummary({ order, currency, shopperCurrency }: {
-        order: Order;
-        currency: StoreCurrency;
-        shopperCurrency: ShopperCurrency;
-    }): ReactNode {
-        return (
-            <Fragment>
-                <aside className="layout-cart">
-                    <Suspense fallback={ <LoadingSpinner isLoading /> }>
-                        <OrderSummary
-                            headerLink={ <PrintLink /> }
-                            { ...mapToOrderSummarySubtotalsProps(order) }
-                            lineItems={ order.lineItems }
-                            total={ order.orderAmount }
-                            storeCurrency={ currency }
-                            shopperCurrency={ shopperCurrency }
-                        />
-                    </Suspense>
-                </aside>
+    private renderOrderSummary(): ReactNode {
+        const {
+            order,
+            config,
+        } = this.props;
 
-                <Suspense fallback={ <LoadingSpinner isLoading /> }>
-                    <OrderSummaryDrawer
-                        { ...mapToOrderSummarySubtotalsProps(order) }
-                        headerLink={ <PrintLink className="modal-header-link cart-modal-link" /> }
-                        lineItems={ order.lineItems }
-                        total={ order.orderAmount }
-                        storeCurrency={ currency }
-                        shopperCurrency={ shopperCurrency }
-                    />
-                </Suspense>
-            </Fragment>
-        );
+        if (!order || !config) {
+            return null;
+        }
+
+        const {
+            currency,
+            shopperCurrency,
+        } = config;
+
+        return <>
+            <MobileView>
+                { matched => {
+                    if (matched) {
+                        return <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                            <OrderSummaryDrawer
+                                { ...mapToOrderSummarySubtotalsProps(order) }
+                                headerLink={ <PrintLink className="modal-header-link cart-modal-link" /> }
+                                lineItems={ order.lineItems }
+                                total={ order.orderAmount }
+                                storeCurrency={ currency }
+                                shopperCurrency={ shopperCurrency }
+                            />
+                        </Suspense>;
+                    }
+
+                    return <aside className="layout-cart">
+                        <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                            <OrderSummary
+                                headerLink={ <PrintLink /> }
+                                { ...mapToOrderSummarySubtotalsProps(order) }
+                                lineItems={ order.lineItems }
+                                total={ order.orderAmount }
+                                storeCurrency={ currency }
+                                shopperCurrency={ shopperCurrency }
+                            />
+                        </Suspense>
+                    </aside>;
+                } }
+            </MobileView>
+        </>;
     }
 
     private renderErrorModal(): ReactNode {

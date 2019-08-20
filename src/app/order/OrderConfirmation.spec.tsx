@@ -14,7 +14,6 @@ import { getOrder } from './orders.mock';
 import OrderConfirmation, { OrderConfirmationProps } from './OrderConfirmation';
 import OrderStatus from './OrderStatus';
 import OrderSummary from './OrderSummary';
-import OrderSummaryDrawer from './OrderSummaryDrawer';
 import ThankYouHeader from './ThankYouHeader';
 
 describe('OrderConfirmation', () => {
@@ -128,7 +127,6 @@ describe('OrderConfirmation', () => {
         expect(orderConfirmation.find('.orderConfirmation').length).toEqual(1);
         expect(orderConfirmation.find(OrderStatus).length).toEqual(1);
         expect(orderConfirmation.find(ThankYouHeader).length).toEqual(1);
-        expect(orderConfirmation.find(OrderSummaryDrawer).length).toEqual(1);
         expect(orderConfirmation.find(OrderSummary).length).toEqual(1);
         expect(orderConfirmation.find('[data-test="payment-instructions"]')).toMatchSnapshot();
     });
