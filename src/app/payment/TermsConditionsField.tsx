@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import { FieldProps } from 'formik';
+import React, { useCallback, FunctionComponent } from 'react';
 
 import { TranslatedHtml, TranslatedString } from '../locale';
 import { CheckboxFormField, Fieldset, FormField, Legend, TextArea } from '../ui/form';
@@ -22,6 +23,26 @@ interface TermsConditionsTextAreaFieldProps {
     type: TermsConditionsType.TextArea;
 }
 
+const TermsConditionsTextField: FunctionComponent<TermsConditionsTextAreaFieldProps> = ({
+    name,
+    terms,
+}) => {
+    const renderInput = useCallback(({ field }: FieldProps) => (
+        <TextArea
+            defaultValue={ terms }
+            name={ field.name }
+            readOnly
+        />
+    ), [terms]);
+
+    return (
+        <FormField
+            name={ `${name}Text` }
+            input={ renderInput }
+        />
+    );
+};
+
 const TermsConditionsField: FunctionComponent<TermsConditionsFieldProps> = props => {
     return (
         <Fieldset
@@ -30,16 +51,7 @@ const TermsConditionsField: FunctionComponent<TermsConditionsFieldProps> = props
                 <TranslatedString id="terms_and_conditions.terms_and_conditions_heading" />
             </Legend> }
         >
-            { props.type === TermsConditionsType.TextArea && <FormField
-                name={ `${props.name}Text` }
-                input={ ({ field }) => (
-                    <TextArea
-                        defaultValue={ props.terms }
-                        name={ field.name }
-                        readOnly
-                    />
-                ) }
-            /> }
+            { props.type === TermsConditionsType.TextArea && <TermsConditionsTextField { ...props } /> }
 
             <CheckboxFormField
                 name={ props.name }
