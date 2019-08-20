@@ -1,7 +1,9 @@
 import classNames from 'classnames';
 import { noop } from 'lodash';
-import React, { createRef, Component, ReactNode, RefObject } from 'react';
+import React, { createRef, Component, ReactNode } from 'react';
 import { CSSTransition } from 'react-transition-group';
+
+import { isMobileView, MobileView } from '../ui/responsive';
 
 import CheckoutStepHeader from './CheckoutStepHeader';
 import CheckoutStepType from './CheckoutStepType';
@@ -17,13 +19,11 @@ export interface CheckoutStepProps {
     onEdit?(step: CheckoutStepType): void;
 }
 
-const LARGE_SCREEN_BREAKPOINT = 968;
-const LARGE_SCREEN_ANIMATION_DELAY = 610;
-
 export default class CheckoutStep extends Component<CheckoutStepProps> {
-    private containerRef = createRef<HTMLElement>();
-    private mobileQuery = window.matchMedia(`(max-width: ${LARGE_SCREEN_BREAKPOINT}px)`);
+    private containerRef = createRef<HTMLLIElement>();
+    private contentRef = createRef<HTMLDivElement>();
     private timeoutRef?: number;
+    private timeoutDelay?: number;
 
     componentDidMount(): void {
         const { isActive } = this.props;
@@ -67,7 +67,7 @@ export default class CheckoutStep extends Component<CheckoutStepProps> {
                     'optimizedCheckout-checkoutStep',
                     { [`checkout-step--${type}`]: !!type }
                 ) }
-                ref={ this.containerRef as RefObject<HTMLLIElement> }
+                ref={ this.containerRef }
             >
                 <div className="checkout-view-header">
                     <CheckoutStepHeader
@@ -89,42 +89,43 @@ export default class CheckoutStep extends Component<CheckoutStepProps> {
     private renderContent(): ReactNode {
         const { children, isActive } = this.props;
 
-        if (this.mobileQuery.matches) {
-            if (!isActive) {
-                return null;
-            }
+        return <>
+            <MobileView>
+                { matched => {
+                    if (matched) {
+                        return !isActive ? null : <div className="checkout-view-content">
+                            { children }
+                        </div>;
+                    }
 
-            return (
-                <div className="checkout-view-content">
-                    { children }
-                </div>
-            );
-        }
-
-        return (
-            <CSSTransition
-                addEndListener={ (node, done) => {
-                    node.addEventListener('transitionend', ({ target }) => {
-                        if (target === node) {
-                            done();
-                        }
-                    });
+                    return <CSSTransition
+                        addEndListener={ (node, done) => {
+                            node.addEventListener('transitionend', ({ target }) => {
+                                if (target === node) {
+                                    done();
+                                }
+                            });
+                        } }
+                        classNames="checkout-view-content"
+                        timeout={ {} }
+                        in={ isActive }
+                        unmountOnExit
+                        mountOnEnter
+                    >
+                        <div
+                            className="checkout-view-content"
+                            ref={ this.contentRef }
+                        >
+                            { children }
+                        </div>
+                    </CSSTransition>;
                 } }
-                classNames="checkout-view-content"
-                timeout={ {} }
-                in={ isActive }
-                unmountOnExit
-                mountOnEnter
-            >
-                <div className="checkout-view-content">
-                    { children }
-                </div>
-            </CSSTransition>
-        );
+            </MobileView>
+        </>;
     }
 
     private focusStep(): void {
-        const delay = this.mobileQuery.matches ? 0 : LARGE_SCREEN_ANIMATION_DELAY;
+        const delay = isMobileView() ? 0 : this.getTransitionDelay();
 
         this.timeoutRef = window.setTimeout(() => {
             const input = this.getChildInput();
@@ -186,5 +187,16 @@ export default class CheckoutStep extends Component<CheckoutStepProps> {
         }
 
         return this.containerRef.current ? this.containerRef.current : undefined;
+    }
+
+    private getTransitionDelay(): number {
+        if (this.timeoutDelay !== undefined) {
+            return this.timeoutDelay;
+        }
+
+        // Cache the result to avoid unnecessary reflow
+        this.timeoutDelay = parseFloat(this.contentRef.current ? getComputedStyle(this.contentRef.current).transitionDuration : '0s') * 1000;
+
+        return this.timeoutDelay;
     }
 }

@@ -1,6 +1,9 @@
 import { mount } from 'enzyme';
+import { noop } from 'lodash';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
+
+import { MOBILE_MAX_WIDTH } from '../ui/responsive';
 
 import CheckoutStep, { CheckoutStepProps } from './CheckoutStep';
 import CheckoutStepHeader from './CheckoutStepHeader';
@@ -25,7 +28,13 @@ describe('CheckoutStep', () => {
         window.scrollTo = jest.fn();
 
         // Mock `matchMedia` to detect mobile viewport
-        window.matchMedia = jest.fn(query => ({ matches: query === '(max-width: 968px)' ? isMobile : false }) as MediaQueryList);
+        window.matchMedia = jest.fn(query => ({
+            matches: query === `(max-width: ${MOBILE_MAX_WIDTH}px)` ? isMobile : false,
+            addListener: noop,
+            addEventListener: noop,
+            removeListener: noop,
+            removeEventListener: noop,
+        }) as MediaQueryList);
     });
 
     afterEach(() => {
