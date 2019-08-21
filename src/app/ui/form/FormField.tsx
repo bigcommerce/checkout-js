@@ -1,6 +1,6 @@
 import { FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
-import React, { useCallback, Fragment, FunctionComponent, ReactNode } from 'react';
+import React, { memo, useCallback, Fragment, FunctionComponent, ReactNode } from 'react';
 
 import BasicFormField from './BasicFormField';
 import FormFieldError from './FormFieldError';
@@ -57,4 +57,4 @@ const FormField: FunctionComponent<FormFieldProps> = ({
     />;
 };
 
-export default FormField;
+export default memo(FormField);

@@ -1,5 +1,7 @@
-import React, { FunctionComponent } from 'react';
+import { FieldProps } from 'formik';
+import React, { useCallback, useMemo, ChangeEvent, FunctionComponent } from 'react';
 
+import { memoize } from '../../common/utility';
 import { TranslatedString } from '../../locale';
 import { FormField, TextInput } from '../../ui/form';
 
@@ -9,26 +11,34 @@ export interface CreditCardExpiryFieldProps {
     name: string;
 }
 
-const CreditCardExpiryField: FunctionComponent<CreditCardExpiryFieldProps> = ({ name }) => (
-    <FormField
+const CreditCardExpiryField: FunctionComponent<CreditCardExpiryFieldProps> = ({ name }) => {
+    const handleChange = useCallback(memoize((field: FieldProps['field'], form: FieldProps['form']) => {
+        return (event: ChangeEvent<any>) => {
+            form.setFieldValue(field.name, formatCreditCardExpiryDate(event.target.value));
+        };
+    }), []);
+
+    const renderInput = useCallback(({ field, form }: FieldProps) => (
+        <TextInput
+            { ...field }
+            autoComplete="cc-exp"
+            id={ field.name }
+            onChange={ handleChange(field, form) }
+            placeholder="MM / YY"
+            type="tel"
+        />
+    ), [handleChange]);
+
+    const labelContent = useMemo(() => (
+        <TranslatedString id="payment.credit_card_expiration_label" />
+    ), []);
+
+    return <FormField
         additionalClassName="form-field--ccExpiry"
-        labelContent={
-            <TranslatedString id="payment.credit_card_expiration_label" />
-        }
-        input={ ({ field, form }) => (
-            <TextInput
-                { ...field }
-                autoComplete="cc-exp"
-                id={ field.name }
-                onChange={ event => {
-                    form.setFieldValue(field.name, formatCreditCardExpiryDate(event.target.value));
-                } }
-                placeholder="MM / YY"
-                type="tel"
-            />
-        ) }
+        labelContent={ labelContent }
+        input={ renderInput }
         name={ name }
-    />
-);
+    />;
+};
 
 export default CreditCardExpiryField;

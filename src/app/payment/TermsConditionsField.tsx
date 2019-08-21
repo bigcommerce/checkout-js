@@ -1,5 +1,5 @@
 import { FieldProps } from 'formik';
-import React, { useCallback, FunctionComponent } from 'react';
+import React, { useCallback, useMemo, FunctionComponent } from 'react';
 
 import { TranslatedHtml, TranslatedString } from '../locale';
 import { CheckboxFormField, Fieldset, FormField, Legend, TextArea } from '../ui/form';
@@ -23,7 +23,7 @@ interface TermsConditionsTextAreaFieldProps {
     type: TermsConditionsType.TextArea;
 }
 
-const TermsConditionsTextField: FunctionComponent<TermsConditionsTextAreaFieldProps> = ({
+const TermsConditionsTextField: FunctionComponent<{ name: string; terms: string }> = ({
     name,
     terms,
 }) => {
@@ -42,6 +42,23 @@ const TermsConditionsTextField: FunctionComponent<TermsConditionsTextAreaFieldPr
         />
     );
 };
+const TermsConditionsCheckboxField: FunctionComponent<{ name: string; url?: string }> = ({
+    name,
+    url,
+}) => {
+    const labelContent = useMemo(() => (
+        url ?
+            <TranslatedHtml id="terms_and_conditions.agreement_with_link_text" data={ { url } } /> :
+            <TranslatedString id="terms_and_conditions.agreement_text" />
+    ), [url]);
+
+    return (
+        <CheckboxFormField
+            name={ name }
+            labelContent={ labelContent }
+        />
+    );
+};
 
 const TermsConditionsField: FunctionComponent<TermsConditionsFieldProps> = props => {
     return (
@@ -53,14 +70,7 @@ const TermsConditionsField: FunctionComponent<TermsConditionsFieldProps> = props
         >
             { props.type === TermsConditionsType.TextArea && <TermsConditionsTextField { ...props } /> }
 
-            <CheckboxFormField
-                name={ props.name }
-                labelContent={
-                    props.type === TermsConditionsType.Link ?
-                        <TranslatedHtml id="terms_and_conditions.agreement_with_link_text" data={ { url: props.url } } /> :
-                        <TranslatedString id="terms_and_conditions.agreement_text" />
-                }
-            />
+            <TermsConditionsCheckboxField { ...props } />
         </Fieldset>
     );
 };

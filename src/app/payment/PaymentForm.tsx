@@ -128,6 +128,12 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
         setSubmitted,
     ]);
 
+    const legend = useMemo(() => (
+        <Legend>
+            <TranslatedString id="payment.payment_method_label" />
+        </Legend>
+    ), []);
+
     return <Form
         className="checkout-form"
         testId="payment-form"
@@ -139,11 +145,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
             usableStoreCredit={ usableStoreCredit }
         /> }
 
-        <Fieldset legend={
-            <Legend>
-                <TranslatedString id="payment.payment_method_label" />
-            </Legend>
-        }>
+        <Fieldset legend={ legend }>
             { !isPaymentDataRequired(values.useStoreCredit) && <StoreCreditOverlay /> }
 
             <PaymentMethodList

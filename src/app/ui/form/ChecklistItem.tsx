@@ -25,7 +25,7 @@ const ChecklistItem: FunctionComponent<ChecklistItemProps> = ({
 }) => {
     const { name = '' } = useContext(ChecklistContext) || {};
 
-    const renderInput = useCallback((isSelected: boolean) => ({ field }: FieldProps) => (
+    const renderInput = useCallback(memoize((isSelected: boolean) => ({ field }: FieldProps) => (
         <ChecklistItemInput
             { ...field }
             isSelected={ field.value === value }
@@ -36,7 +36,7 @@ const ChecklistItem: FunctionComponent<ChecklistItemProps> = ({
                 label(isSelected) :
                 label }
         </ChecklistItemInput>
-    ), [
+    )), [
         htmlId,
         label,
         value,

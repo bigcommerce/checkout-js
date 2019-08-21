@@ -369,12 +369,10 @@ class Payment extends PureComponent<PaymentProps & WithCheckoutPaymentProps & Wi
     };
 }
 
-export function mapToPaymentProps(
-    {
-        checkoutService,
-        checkoutState,
-    }: CheckoutContextProps
-): WithCheckoutPaymentProps | null {
+export function mapToPaymentProps({
+    checkoutService,
+    checkoutState,
+}: CheckoutContextProps): WithCheckoutPaymentProps | null {
     const {
         data: {
             getCheckout,

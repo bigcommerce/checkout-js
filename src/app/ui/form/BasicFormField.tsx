@@ -126,4 +126,4 @@ class InnerFieldInput extends Component<InnerFieldInputProps> {
     }
 }
 
-export default BasicFormField;
+export default memo(BasicFormField);

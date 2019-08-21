@@ -1,7 +1,7 @@
 import creditCardType from 'credit-card-type';
 import { FieldProps } from 'formik';
 import { max } from 'lodash';
-import React, { createRef, ChangeEventHandler, Component, Fragment, FunctionComponent, ReactNode, RefObject } from 'react';
+import React, { createRef, useCallback, useMemo, ChangeEventHandler, Component, Fragment, FunctionComponent, ReactNode, RefObject } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { FormField, TextInput } from '../../ui/form';
@@ -13,21 +13,25 @@ export interface CreditCardNumberFieldProps {
     name: string;
 }
 
-const CreditCardNumberField: FunctionComponent<CreditCardNumberFieldProps> = ({ name }) => (
-    <FormField
+const CreditCardNumberField: FunctionComponent<CreditCardNumberFieldProps> = ({ name }) => {
+    const renderInput = useCallback(({ field, form }: FieldProps) => (
+        <CreditCardNumberInput
+            field={ field }
+            form={ form }
+        />
+    ), []);
+
+    const labelContent = useMemo(() => (
+        <TranslatedString id="payment.credit_card_number_label" />
+    ), []);
+
+    return <FormField
         additionalClassName="form-field--ccNumber"
-        labelContent={
-            <TranslatedString id="payment.credit_card_number_label" />
-        }
-        input={ ({ field, form }) => (
-            <CreditCardNumberInput
-                field={ field }
-                form={ form }
-            />
-        ) }
+        labelContent={ labelContent }
+        input={ renderInput }
         name={ name }
-    />
-);
+    />;
+};
 
 class CreditCardNumberInput extends Component<FieldProps<string>> {
     private inputRef: RefObject<HTMLInputElement> = createRef();
