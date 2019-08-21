@@ -97,6 +97,11 @@ module.exports = function (options, argv) {
         module: {
             rules: [
                 {
+                    test: /\.[tj]sx?$/,
+                    enforce: 'pre',
+                    loader: require.resolve('source-map-loader'),
+                },
+                {
                     test: /\.tsx?$/,
                     include: join(__dirname, 'src'),
                     use: [
