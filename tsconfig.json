@@ -31,7 +31,6 @@
         "noUnusedLocals": true
     },
     "files": [
-        "types/supported-files.d.ts",
-        "types/ungap.d.ts",
+        "types/supported-files.d.ts"
     ],
 }
