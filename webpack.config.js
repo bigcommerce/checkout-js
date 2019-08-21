@@ -1,4 +1,3 @@
-const { exec } = require('child_process');
 const { omitBy } = require('lodash');
 const { join } = require('path');
 const { createHash } = require('crypto');
@@ -9,6 +8,7 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 
+const BuildHooks = require('./scripts/webpack/build-hooks');
 const PublicPathPlugin = require('./scripts/webpack/public-path');
 const packageInfo = require('./package.json');
 
@@ -178,33 +178,3 @@ function getPublicPathHash() {
         .digest('hex')
         .substr(0, 8);
 }
-
-class BuildHooks {
-    apply(compiler) {
-        if (process.env.WEBPACK_DONE) {
-            compiler.hooks.done.tapPromise('BuildHooks', this.process(process.env.WEBPACK_DONE));
-        }
-    }
-
-    process(command) {
-        return () => new Promise((resolve, reject) => {
-            exec(command, (err, stdout, stderr) => {
-                if (err) {
-                    reject(err);
-                }
-
-                if (stderr) {
-                    reject(new Error(stderr));
-                }
-
-                const cleanOutput = stdout.trim();
-
-                if (cleanOutput) {
-                    console.log(cleanOutput.replace(/^/gm, '❯ '));
-                }
-
-                resolve();
-            });
-        });
-    }
-};
