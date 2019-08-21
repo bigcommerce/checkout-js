@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { noop } from 'lodash';
-import React, { FunctionComponent, ReactNode } from 'react';
+import React, { useCallback, FunctionComponent, KeyboardEvent, MouseEvent, ReactNode } from 'react';
 import ReactModal from 'react-modal';
 import { Omit } from 'utility-types';
 
@@ -31,8 +31,12 @@ const Modal: FunctionComponent<ModalProps> = ({
     onRequestClose = noop,
     shouldShowCloseButton = false,
     ...rest
-}) => (
-    <ReactModal
+}) => {
+    const handleClose = useCallback((event: MouseEvent | KeyboardEvent) => {
+        onRequestClose(event);
+    }, [onRequestClose]);
+
+    return <ReactModal
         { ...rest }
         ariaHideApp={ process.env.NODE_ENV !== 'test' }
         bodyOpenClassName="has-activeModal"
@@ -62,9 +66,7 @@ const Modal: FunctionComponent<ModalProps> = ({
             { shouldShowCloseButton && <a
                 className="modal-close"
                 data-test="modal-close-button"
-                onClick={ event => {
-                    onRequestClose(event);
-                } }
+                onClick={ handleClose }
                 href="javascript:void(0);"
             >
                 { closeButtonLabel && <span className="is-srOnly">
@@ -91,7 +93,7 @@ const Modal: FunctionComponent<ModalProps> = ({
         >
             { footer }
         </div> }
-    </ReactModal>
-);
+    </ReactModal>;
+};
 
 export default Modal;

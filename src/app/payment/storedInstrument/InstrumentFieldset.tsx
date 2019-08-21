@@ -1,9 +1,10 @@
 import { Instrument, PaymentMethod } from '@bigcommerce/checkout-sdk';
-import React, { Fragment, FunctionComponent } from 'react';
+import { FieldProps } from 'formik';
+import React, { useCallback, Fragment, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { BasicFormField, Fieldset, Legend } from '../../ui/form';
-import { ModalTrigger } from '../../ui/modal';
+import { ModalTrigger, ModalTriggerModalProps } from '../../ui/modal';
 import { CreditCardCodeField, CreditCardNumberField } from '../creditCard';
 
 import InstrumentSelect from './InstrumentSelect';
@@ -33,8 +34,30 @@ const InstrumentFieldset: FunctionComponent<InstrumentFieldsetProps> = ({
     selectedInstrumentId,
     shouldShowCardCodeField,
     shouldShowNumberField,
-}) => (
-    <Fieldset
+}) => {
+    const renderInput = useCallback((field: FieldProps) => (
+        <InstrumentSelect
+            { ...field }
+            instruments={ instruments }
+            onSelectInstrument={ onSelectInstrument }
+            onUseNewCard={ onUseNewCard }
+            selectedInstrumentId={ selectedInstrumentId }
+        />
+    ), [
+        instruments,
+        onSelectInstrument,
+        onUseNewCard,
+        selectedInstrumentId,
+    ]);
+
+    const renderModal = useCallback((props: ModalTriggerModalProps) => (
+        <ManageInstrumentsModal
+            methodId={ method.id }
+            { ...props }
+        />
+    ), [method]);
+
+    return <Fieldset
         additionalClassName="instrumentFieldset"
         legend={
             <Legend hidden>
@@ -42,12 +65,7 @@ const InstrumentFieldset: FunctionComponent<InstrumentFieldsetProps> = ({
             </Legend>
         }
     >
-        <ModalTrigger modal={ props => (
-            <ManageInstrumentsModal
-                methodId={ method.id }
-                { ...props }
-            />
-        ) }>
+        <ModalTrigger modal={ renderModal }>
             { ({ onClick }) => <button
                 className="instrumentModal-trigger"
                 onClick={ onClick }
@@ -59,15 +77,7 @@ const InstrumentFieldset: FunctionComponent<InstrumentFieldsetProps> = ({
 
         <BasicFormField
             name="instrumentId"
-            render={ field => (
-                <InstrumentSelect
-                    { ...field }
-                    instruments={ instruments }
-                    onSelectInstrument={ onSelectInstrument }
-                    onUseNewCard={ onUseNewCard }
-                    selectedInstrumentId={ selectedInstrumentId }
-                />
-            ) }
+            render={ renderInput }
         />
 
         { selectedInstrumentId && <Fragment>
@@ -87,7 +97,7 @@ const InstrumentFieldset: FunctionComponent<InstrumentFieldsetProps> = ({
                 { shouldShowCardCodeField && <CreditCardCodeField name="ccCvv" /> }
             </div>
         </Fragment> }
-    </Fieldset>
-);
+    </Fieldset>;
+};
 
 export default InstrumentFieldset;

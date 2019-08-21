@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import creditCardType from 'credit-card-type';
 import { FieldProps } from 'formik';
 import { find, noop } from 'lodash';
-import React, { Component, FunctionComponent, ReactNode } from 'react';
+import React, { useCallback, Component, FunctionComponent, ReactNode } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { DropdownTrigger } from '../../ui/dropdown';
@@ -95,8 +95,8 @@ const InstrumentMenu: FunctionComponent<InstrumentMenuProps> = ({
     selectedInstrumentId,
     onSelectInstrument,
     onUseNewCard,
-}) => (
-    <ul
+}) => {
+    return <ul
         className="instrumentSelect-dropdownMenu instrumentSelect-dropdownMenuNext dropdown-menu"
         data-test="instrument-select-menu"
     >
@@ -108,10 +108,10 @@ const InstrumentMenu: FunctionComponent<InstrumentMenuProps> = ({
                 ) }
                 key={ instrument.bigpayToken }
             >
-                <InstrumentMenuItem
+                <InstrumentOption
                     instrument={ instrument }
+                    onClick={ onSelectInstrument }
                     testId="instrument-select-option"
-                    onClick={ () => onSelectInstrument(instrument.bigpayToken) }
                 />
             </li>
         )) }
@@ -122,8 +122,8 @@ const InstrumentMenu: FunctionComponent<InstrumentMenuProps> = ({
                 testId="instrument-select-option-use-new"
             />
         </li>
-    </ul>
-);
+    </ul>;
+};
 
 interface InstrumentSelectButtonProps {
     instrument?: Instrument;
@@ -151,6 +151,32 @@ const InstrumentSelectButton: FunctionComponent<InstrumentSelectButtonProps> = (
             instrument={ instrument }
             testId={ testId }
             onClick={ onClick }
+        />
+    );
+};
+
+interface InstrumentOptionProps {
+    instrument: Instrument;
+    testId?: string;
+    onClick?(token: string): void;
+}
+
+const InstrumentOption: FunctionComponent<InstrumentOptionProps> = ({
+    instrument,
+    onClick = noop,
+}) => {
+    const handleClick = useCallback(() => {
+        onClick(instrument.bigpayToken);
+    }, [
+        onClick,
+        instrument,
+    ]);
+
+    return (
+        <InstrumentMenuItem
+            instrument={ instrument }
+            testId="instrument-select-option"
+            onClick={ handleClick }
         />
     );
 };
