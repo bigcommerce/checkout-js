@@ -9,7 +9,8 @@ import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 
 import { getGuestCustomer } from './customers.mock';
-import Customer, { CustomerProps, CustomerViewType } from './Customer';
+import Customer, { CustomerProps } from './Customer';
+import CustomerViewType from './CustomerViewType';
 import GuestForm, { GuestFormProps } from './GuestForm';
 import LoginForm, { LoginFormProps } from './LoginForm';
 

@@ -18,7 +18,9 @@ if (window.document) {
 
 window.matchMedia = jest.fn(() => ({
     matches: false,
+    addListener: noop,
     addEventListener: noop,
+    removeListener: noop,
     removeEventListener: noop,
 } as MediaQueryList));
 

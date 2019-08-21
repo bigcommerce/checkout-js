@@ -1,12 +1,16 @@
-const { exec } = require('child_process');
 const { omitBy } = require('lodash');
 const { join } = require('path');
+const { createHash } = require('crypto');
 
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
+
+const BuildHooks = require('./scripts/webpack/build-hooks');
+const PublicPathPlugin = require('./scripts/webpack/public-path');
+const packageInfo = require('./package.json');
 
 const babelOptions = {
     cacheDirectory: true,
@@ -31,6 +35,7 @@ const babelOptions = {
 module.exports = function (options, argv) {
     const mode = argv.mode || 'production';
     const isProduction = mode !== 'development';
+    const outputFilename = `[name]-${getPublicPathHash()}${isProduction ? '-[contenthash:8]' : ''}`;
 
     return {
         entry: {
@@ -57,8 +62,8 @@ module.exports = function (options, argv) {
         },
         output: {
             path: isProduction ? join(__dirname, 'dist') : join(__dirname, 'build'),
-            filename: `[name]${isProduction ? '-[contenthash:8]' : ''}.js`,
-            chunkFilename: `[name]${isProduction ? '-[contenthash:8]' : ''}.js`,
+            filename: `${outputFilename}.js`,
+            chunkFilename: `${outputFilename}.js`,
             jsonpFunction: 'webpackJsonpCheckout',
             library: 'checkout',
             libraryTarget: 'umd',
@@ -71,13 +76,14 @@ module.exports = function (options, argv) {
                 emitErrors: isProduction,
             }),
             isProduction && new MiniCssExtractPlugin({
-                filename: `[name]${isProduction ? '-[contenthash:8]' : ''}.css`,
-                chunkFilename: `[name]${isProduction ? '-[contenthash:8]' : ''}.css`,
+                filename: `${outputFilename}.css`,
+                chunkFilename: `${outputFilename}.css`,
             }),
             new CircularDependencyPlugin({
                 exclude: /.*\.spec\.tsx?/,
                 include: /src\/app/,
             }),
+            new PublicPathPlugin(getPublicPathHash()),
             new WebpackAssetsManifest({
                 entrypoints: true,
                 transform: assets => transformManifest(assets, options),
@@ -122,7 +128,7 @@ module.exports = function (options, argv) {
                         {
                             loader: 'file-loader',
                             options: {
-                                name: `[name]${isProduction ? '-[contenthash:8]' : ''}.[ext]`,
+                                name: `${outputFilename}.[ext]`,
                                 outputPath: 'static',
                             },
                         },
@@ -166,32 +172,9 @@ function transformManifest(assets, options) {
     };
 }
 
-class BuildHooks {
-    apply(compiler) {
-        if (process.env.WEBPACK_DONE) {
-            compiler.hooks.done.tapPromise('BuildHooks', this.process(process.env.WEBPACK_DONE));
-        }
-    }
-
-    process(command) {
-        return () => new Promise((resolve, reject) => {
-            exec(command, (err, stdout, stderr) => {
-                if (err) {
-                    reject(err);
-                }
-
-                if (stderr) {
-                    reject(new Error(stderr));
-                }
-
-                const cleanOutput = stdout.trim();
-
-                if (cleanOutput) {
-                    console.log(cleanOutput.replace(/^/gm, '❯ '));
-                }
-
-                resolve();
-            });
-        });
-    }
-};
+function getPublicPathHash() {
+    return createHash('md4')
+        .update(packageInfo.name)
+        .digest('hex')
+        .substr(0, 8);
+}

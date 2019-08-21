@@ -14,7 +14,6 @@ import { getOrder } from './orders.mock';
 import OrderConfirmation, { OrderConfirmationProps } from './OrderConfirmation';
 import OrderStatus from './OrderStatus';
 import OrderSummary from './OrderSummary';
-import OrderSummaryDrawer from './OrderSummaryDrawer';
 import ThankYouHeader from './ThankYouHeader';
 
 describe('OrderConfirmation', () => {
@@ -114,17 +113,20 @@ describe('OrderConfirmation', () => {
             .toHaveBeenCalledWith(styles);
     });
 
-    it('renders confirmation page once loading is finished', () => {
+    it('renders confirmation page once loading is finished', async () => {
         jest.spyOn(checkoutState.statuses, 'isLoadingOrder')
             .mockReturnValue(false);
 
         orderConfirmation = mount(<ComponentTest { ...defaultProps } />);
 
+        await new Promise(resolve => process.nextTick(resolve));
+
+        orderConfirmation.update();
+
         expect(orderConfirmation.find(LoadingSpinner).length).toEqual(0);
         expect(orderConfirmation.find('.orderConfirmation').length).toEqual(1);
         expect(orderConfirmation.find(OrderStatus).length).toEqual(1);
         expect(orderConfirmation.find(ThankYouHeader).length).toEqual(1);
-        expect(orderConfirmation.find(OrderSummaryDrawer).length).toEqual(1);
         expect(orderConfirmation.find(OrderSummary).length).toEqual(1);
         expect(orderConfirmation.find('[data-test="payment-instructions"]')).toMatchSnapshot();
     });

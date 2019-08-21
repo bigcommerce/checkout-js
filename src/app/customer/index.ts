@@ -11,7 +11,7 @@ export type GuestFormValues = GuestFormValues;
 export type LoginFormProps = LoginFormProps;
 export type LoginFormValues = LoginFormValues;
 
-export { default as Customer, CustomerViewType } from './Customer';
+export { default as CustomerViewType } from './CustomerViewType';
 export { default as CustomerInfo } from './CustomerInfo';
 export { default as GuestForm } from './GuestForm';
 export { default as LoginForm } from './LoginForm';

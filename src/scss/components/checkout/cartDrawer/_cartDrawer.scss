@@ -17,10 +17,6 @@
     right: 0;
     z-index: zIndex("low");
 
-    @include breakpoint("large") {
-        display: none;
-    }
-
     // Making the cartDrawer static when the height of the screen is really small
     @media (max-height: remCalc($cartDrawer-min-height)) {
         position: static;
