@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { lazy, Component, ReactNode, Suspense } from 'react';
 
-import { AddressType, StaticAddress } from '../address';
 import { NoopStepTracker, StepTracker } from '../analytics';
+import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
 import { ErrorLogger, ErrorModal } from '../common/error';
 import { CustomerInfo, CustomerSignOutEvent, CustomerViewType } from '../customer';
@@ -332,10 +332,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 key={ step.type }
                 onEdit={ this.handleEditStep }
                 onExpanded={ this.handleExpanded }
-                summary={ billingAddress && <StaticAddress
-                    address={ billingAddress }
-                    type={ AddressType.Billing }
-                /> }
+                summary={ billingAddress && <StaticBillingAddress address={ billingAddress } /> }
             >
                 <Suspense fallback={ <LoadingSpinner isLoading /> }>
                     <Billing
