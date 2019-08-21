@@ -60,6 +60,13 @@
     margin: auto;
 }
 
+// KLUDGE: We need this override when Klarna modal is open because
+// `scroll-behavior: smooth` conflicts with the styles injected by Klarna JS,
+// cropping the content of the modal in Firefox as a result.
+body.klarna-payments-fso-open {
+    scroll-behavior: auto;
+}
+
 #stripe-card-field {
     background-color: white;
     border: remCalc(1px) solid transparent;
