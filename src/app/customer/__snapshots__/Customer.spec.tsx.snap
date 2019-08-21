@@ -187,6 +187,7 @@ exports[`Customer when view type is "login" matches snapshot 1`] = `
           <a
             data-test="forgot-password-link"
             href="https://store-k1drp8k8.bcapp.dev/login.php?action=reset_password"
+            rel="noopener noreferrer"
             target="_blank"
           >
             Forgot password?

@@ -89,6 +89,7 @@ exports[`LoginForm matches snapshot 1`] = `
           <a
             data-test="forgot-password-link"
             href="/forgot-password"
+            rel="noopener noreferrer"
             target="_blank"
           >
             Forgot password?

@@ -37,6 +37,7 @@ function getDigitalItemDescription(item: DigitalItem): OrderSummaryItemOption {
         content:
             <a
                 href={ item.downloadPageUrl }
+                rel="noopener noreferrer"
                 target="_blank"
             >
                 <TranslatedString id="cart.downloads_action" />

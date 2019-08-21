@@ -147,7 +147,10 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
                     unmountContentWhenLoading
                 >
                     { flashMessages.map(message =>
-                        <FlashAlert message={ message } />
+                        <FlashAlert
+                            key={ message.message }
+                            message={ message }
+                        />
                     ) }
 
                     { !isEmpty(methods) && defaultMethod && <PaymentForm

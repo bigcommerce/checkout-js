@@ -3,7 +3,8 @@
         "plugin:import/errors",
         "plugin:import/react",
         "plugin:import/typescript",
-        "plugin:import/warnings"
+        "plugin:import/warnings",
+        "plugin:react/recommended"
     ],
     "env": {
         "browser": true
@@ -21,6 +22,7 @@
     },
     "plugins": [
         "@typescript-eslint/tslint",
+        "react",
         "react-hooks"
     ],
     "rules": {
@@ -30,6 +32,8 @@
                 "lintFile": "./tslint.json"
             }
         ],
+        "react/display-name": "off",
+        "react/prop-types": "off",
         "react-hooks/exhaustive-deps": "error",
         "react-hooks/rules-of-hooks": "error",
         "import/dynamic-import-chunkname": "error",
@@ -51,5 +55,10 @@
                 ]
             }
         ]
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }

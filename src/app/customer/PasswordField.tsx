@@ -19,6 +19,7 @@ const PasswordField: FunctionComponent<PasswordFieldProps> = ({
             <a
                 data-test="forgot-password-link"
                 href={ forgotPasswordUrl }
+                rel="noopener noreferrer"
                 target="_blank"
             >
                 <TranslatedString id="customer.forgot_password_action" />

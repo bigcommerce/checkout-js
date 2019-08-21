@@ -9,6 +9,7 @@ exports[`mapFromDigital() returns digital related properties when it has no down
 exports[`mapFromDigital() returns downloadable related properties when it has a download URL 1`] = `
 <a
   href="url.php"
+  rel="noopener noreferrer"
   target="_blank"
 >
   <WithLanguage(TranslatedString)
