@@ -37,8 +37,6 @@ interface WithCheckoutPaymentProps {
     cartUrl: string;
     defaultMethod?: PaymentMethod;
     finalizeOrderError?: Error;
-    isInitializingCustomer: boolean;
-    isInitializingPayment: boolean;
     isSpamProtectionEnabled: boolean;
     isSubmittingOrder: boolean;
     isTermsConditionsRequired: boolean;
@@ -386,11 +384,7 @@ export function mapToPaymentProps({
             getFinalizeOrderError,
             getSubmitOrderError,
         },
-        statuses: {
-            isInitializingCustomer,
-            isInitializingPayment,
-            isSubmittingOrder,
-        },
+        statuses: { isSubmittingOrder },
     } = checkoutState;
 
     const checkout = getCheckout();
@@ -421,8 +415,6 @@ export function mapToPaymentProps({
         defaultMethod: selectedPaymentMethod ? selectedPaymentMethod : filteredMethods[0],
         finalizeOrderError: getFinalizeOrderError(),
         finalizeOrderIfNeeded: checkoutService.finalizeOrderIfNeeded,
-        isInitializingCustomer: isInitializingCustomer(),
-        isInitializingPayment: isInitializingPayment(),
         isPaymentDataRequired,
         isSubmittingOrder: isSubmittingOrder(),
         isSpamProtectionEnabled,

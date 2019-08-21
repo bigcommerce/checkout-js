@@ -1,49 +1,57 @@
-import { LanguageService } from '@bigcommerce/checkout-sdk';
-import { mount, shallow } from 'enzyme';
-import React from 'react';
+import { createCheckoutService, CheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
+import { mount, render } from 'enzyme';
+import React, { FunctionComponent } from 'react';
 
+import { CheckoutProvider } from '../checkout';
 import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 import { Button } from '../ui/button';
 
-import PaymentSubmitButton from './PaymentSubmitButton';
+import PaymentSubmitButton, { PaymentSubmitButtonProps } from './PaymentSubmitButton';
 
 describe('PaymentSubmitButton', () => {
-    let localeContext: LocaleContextType;
+    let PaymentSubmitButtonTest: FunctionComponent<PaymentSubmitButtonProps>;
+    let checkoutService: CheckoutService;
     let languageService: LanguageService;
+    let localeContext: LocaleContextType;
 
     beforeEach(() => {
+        checkoutService = createCheckoutService();
         localeContext = createLocaleContext(getStoreConfig());
         languageService = localeContext.language;
+
+        PaymentSubmitButtonTest = props => (
+            <CheckoutProvider checkoutService={ checkoutService }>
+                <LocaleContext.Provider value={ localeContext }>
+                    <PaymentSubmitButton { ...props } />
+                </LocaleContext.Provider>
+            </CheckoutProvider>
+        );
     });
 
     it('matches snapshot with rendered output', () => {
-        const component = shallow(<PaymentSubmitButton />);
+        const component = render(
+            <PaymentSubmitButtonTest />
+        );
 
         expect(component)
             .toMatchSnapshot();
     });
 
     it('forwards props to button', () => {
-        const component = shallow(
-            <PaymentSubmitButton
-                isDisabled
-                isLoading
-            />
+        const component = mount(
+            <PaymentSubmitButtonTest isDisabled />
         );
 
         expect(component.find(Button).props())
             .toEqual(expect.objectContaining({
                 disabled: true,
-                isLoading: true,
             }));
     });
 
     it('renders button with default label', () => {
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <PaymentSubmitButton />
-            </LocaleContext.Provider>
+            <PaymentSubmitButtonTest />
         );
 
         expect(component.text())
@@ -52,9 +60,7 @@ describe('PaymentSubmitButton', () => {
 
     it('renders button with special label for Amazon', () => {
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <PaymentSubmitButton methodId="amazon" />
-            </LocaleContext.Provider>
+            <PaymentSubmitButtonTest methodId="amazon" />
         );
 
         expect(component.text())
@@ -63,9 +69,7 @@ describe('PaymentSubmitButton', () => {
 
     it('renders button with special label for Visa Checkout provided by Braintree', () => {
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <PaymentSubmitButton methodType="visa-checkout" />
-            </LocaleContext.Provider>
+            <PaymentSubmitButtonTest methodType="visa-checkout" />
         );
 
         expect(component.text())
@@ -74,9 +78,7 @@ describe('PaymentSubmitButton', () => {
 
     it('renders button with special label for ChasePay', () => {
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <PaymentSubmitButton methodType="chasepay" />
-            </LocaleContext.Provider>
+            <PaymentSubmitButtonTest methodType="chasepay" />
         );
 
         expect(component.text())
@@ -85,9 +87,7 @@ describe('PaymentSubmitButton', () => {
 
     it('renders button with special label for PayPal', () => {
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <PaymentSubmitButton methodType="paypal" />
-            </LocaleContext.Provider>
+            <PaymentSubmitButtonTest methodType="paypal" />
         );
 
         expect(component.text())
@@ -96,9 +96,7 @@ describe('PaymentSubmitButton', () => {
 
     it('renders button with special label for PayPal Credit', () => {
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <PaymentSubmitButton methodType="paypal-credit" />
-            </LocaleContext.Provider>
+            <PaymentSubmitButtonTest methodType="paypal-credit" />
         );
 
         expect(component.text())

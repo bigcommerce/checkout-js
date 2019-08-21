@@ -22,10 +22,7 @@ export interface PaymentFormProps {
     defaultGatewayId?: string;
     defaultMethodId: string;
     isEmbedded?: boolean;
-    isInitializingCustomer?: boolean;
-    isInitializingPayment?: boolean;
     isSpamProtectionEnabled?: boolean;
-    isSubmittingOrder?: boolean;
     isTermsConditionsRequired?: boolean;
     isUsingMultiShipping?: boolean;
     methods: PaymentMethod[];
@@ -81,10 +78,7 @@ export function isHostedWidgetValues(values: PaymentFormValues): values is Hoste
 const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormValues> & WithLanguageProps> = ({
     availableStoreCredit = 0,
     isEmbedded,
-    isInitializingCustomer,
-    isInitializingPayment,
     isPaymentDataRequired,
-    isSubmittingOrder,
     isSpamProtectionEnabled,
     isTermsConditionsRequired,
     isUsingMultiShipping,
@@ -177,13 +171,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
 
         <div className="form-actions">
             <PaymentSubmitButton
-                isDisabled={
-                    isInitializingCustomer ||
-                    isInitializingPayment ||
-                    isSubmittingOrder ||
-                    shouldDisableSubmit
-                }
-                isLoading={ isSubmittingOrder }
+                isDisabled={ shouldDisableSubmit }
                 methodId={ selectedMethod && selectedMethod.id }
                 methodType={ selectedMethod && selectedMethod.method }
             />
