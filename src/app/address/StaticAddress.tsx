@@ -1,26 +1,37 @@
 import { Address } from '@bigcommerce/checkout-sdk';
-import React from 'react';
+import { isEmpty } from 'lodash';
+import React, { FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
 import { LocalizedGeography } from '../geography';
 
+import isValidAddress from './isValidAddress';
 import localizeAddress from './localizeAddress';
+import AddressType from './AddressType';
 import './StaticAddress.scss';
 
-interface StaticAddressProps {
+export interface StaticAddressProps {
     address: Address;
+    type?: AddressType;
 }
 
 interface WithCheckoutStaticAddressProps {
+    isValid: boolean;
     localizedAddress: Address & LocalizedGeography;
 }
 
-const StaticAddress: React.FunctionComponent<StaticAddressProps & WithCheckoutStaticAddressProps> = ({ localizedAddress: address }) => (
-    <div className="vcard checkout-address--static">
-        <p className="fn address-entry">
-            <span className="first-name">{ address.firstName } </span>
-            <span className="family-name">{ address.lastName }</span>
-        </p>
+const StaticAddress: FunctionComponent<StaticAddressProps & WithCheckoutStaticAddressProps> = ({
+    isValid,
+    localizedAddress: address,
+}) => (
+    !isValid ? null : <div className="vcard checkout-address--static">
+        {
+            (address.firstName || address.lastName) &&
+            <p className="fn address-entry">
+                <span className="first-name">{ address.firstName } </span>
+                <span className="family-name">{ address.lastName }</span>
+            </p>
+        }
 
         {
             (address.phone || address.company) &&
@@ -40,14 +51,24 @@ const StaticAddress: React.FunctionComponent<StaticAddressProps & WithCheckoutSt
                     </span>
                 }
             </p>
+
             <p className="address-entry">
-                <span className="locality">{ address.city }, </span>
+                {
+                    address.city &&
+                    <span className="locality">{ address.city }, </span>
+                }
                 {
                     address.localizedProvince &&
                     <span className="region">{ address.localizedProvince }, </span>
                 }
-                <span className="postal-code">{ address.postalCode } / </span>
-                <span className="country-name">{ address.localizedCountry } </span>
+                {
+                    address.postalCode &&
+                    <span className="postal-code">{ address.postalCode } / </span>
+                }
+                {
+                    address.localizedCountry &&
+                    <span className="country-name">{ address.localizedCountry } </span>
+                }
             </p>
         </div>
     </div>
@@ -55,17 +76,38 @@ const StaticAddress: React.FunctionComponent<StaticAddressProps & WithCheckoutSt
 
 export function mapToStaticAddressProps(
     context: CheckoutContextProps,
-    { address }: StaticAddressProps
+    { address, type }: StaticAddressProps
 ): WithCheckoutStaticAddressProps | null {
     const {
         checkoutState: {
             data: {
                 getBillingCountries,
+                getBillingAddressFields,
+                getShippingAddressFields,
             },
         },
     } = context;
 
+    let isValid: boolean;
+
+    if (type === AddressType.Billing) {
+        isValid = isValidAddress(
+            address,
+            getBillingAddressFields(address.countryCode)
+                .filter(field => !field.custom)
+        );
+    } else if (type === AddressType.Shipping) {
+        isValid = isValidAddress(
+            address,
+            getShippingAddressFields(address.countryCode)
+                .filter(field => !field.custom)
+        );
+    } else {
+        isValid = !isEmpty(address);
+    }
+
     return {
+        isValid,
         localizedAddress: localizeAddress(
             address,
             getBillingCountries()

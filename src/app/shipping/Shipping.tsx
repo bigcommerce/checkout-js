@@ -255,6 +255,8 @@ export function mapToShippingProps({
             isUpdatingConsignment,
             isCreatingConsignments,
             isLoadingShippingCountries,
+            isUpdatingBillingAddress,
+            isUpdatingCheckout,
         },
     } = checkoutState;
 
@@ -284,7 +286,9 @@ export function mapToShippingProps({
         isLoadingShippingOptions() ||
         isSelectingShippingOption() ||
         isUpdatingConsignment() ||
-        isCreatingConsignments()
+        isCreatingConsignments() ||
+        isUpdatingBillingAddress() ||
+        isUpdatingCheckout()
     );
     const shouldShowMultiShipping = (
         hasMultiShippingEnabled &&

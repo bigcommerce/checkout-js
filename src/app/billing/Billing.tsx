@@ -26,6 +26,7 @@ export interface WithCheckoutBillingProps {
     customerMessage: string;
     googleMapsApiKey: string;
     isInitializing: boolean;
+    isUpdating: boolean;
     shouldShowOrderComments: boolean;
     getFields(countryCode?: string): FormField[];
     initialize(): Promise<CheckoutSelectors>;
@@ -128,6 +129,8 @@ function mapToBillingProps({
         },
         statuses: {
             isLoadingBillingCountries,
+            isUpdatingBillingAddress,
+            isUpdatingCheckout,
         },
     } = checkoutState;
 
@@ -162,6 +165,7 @@ function mapToBillingProps({
         googleMapsApiKey,
         initialize: checkoutService.loadBillingAddressFields,
         isInitializing: isLoadingBillingCountries(),
+        isUpdating: isUpdatingBillingAddress() || isUpdatingCheckout(),
         shouldShowOrderComments: enableOrderComments && getShippableItemsCount(cart) < 1,
         updateAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,

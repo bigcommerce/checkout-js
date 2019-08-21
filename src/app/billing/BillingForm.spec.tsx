@@ -25,6 +25,7 @@ describe('BillingForm Component', () => {
         defaultProps = {
             billingAddress,
             countriesWithAutocomplete: [],
+            isUpdating: false,
             shouldShowOrderComments: false,
             customerMessage: '',
             customer: getCustomer(),

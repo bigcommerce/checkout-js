@@ -19,6 +19,7 @@ export interface BillingFormProps {
     countries: Country[];
     countriesWithAutocomplete: string[];
     googleMapsApiKey: string;
+    isUpdating: boolean;
     shouldShowOrderComments: boolean;
     getFields(countryCode?: string): FormField[];
     onUnhandledError(error: Error): void;
@@ -45,6 +46,7 @@ class BillingForm extends Component<BillingFormProps & WithLanguageProps & Formi
             customer: { addresses },
             getFields,
             countries,
+            isUpdating,
             setFieldValue,
             shouldShowOrderComments,
             values,
@@ -92,8 +94,8 @@ class BillingForm extends Component<BillingFormProps & WithLanguageProps & Formi
                 <div className="form-actions">
                     <Button
                         variant={ ButtonVariant.Primary }
-                        isLoading={ isResettingAddress }
-                        disabled={ isResettingAddress }
+                        isLoading={ isUpdating || isResettingAddress }
+                        disabled={ isUpdating || isResettingAddress }
                         id="checkout-billing-continue"
                         type="submit"
                     >
