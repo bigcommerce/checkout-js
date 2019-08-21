@@ -1,8 +1,4 @@
-// tslint:disable-next-line:no-reference
-// <reference path="../../common/cardValidator/index.d.ts" />
 import { creditCardType } from 'card-validator';
-
-import '../../common/cardValidator';
 
 export default function configureCardValidator(): void {
     const discoverInfo = creditCardType.getTypeInfo('discover');
