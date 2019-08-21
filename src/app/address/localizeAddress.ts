@@ -1,7 +1,6 @@
 import { Address } from '@bigcommerce/checkout-sdk';
 import { find, isEmpty } from 'lodash';
 
-import { memoize } from '../common/utility';
 import { Country, LocalizedGeography } from '../geography';
 
 const localizeAddress = <T1 extends Address>(
@@ -19,4 +18,4 @@ const localizeAddress = <T1 extends Address>(
     };
 };
 
-export default memoize(localizeAddress);
+export default localizeAddress;
