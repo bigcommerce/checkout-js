@@ -1,2 +1,0 @@
-import './CustomEvent';
-import './EventTarget';
