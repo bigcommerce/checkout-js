@@ -1,9 +1,8 @@
-import { Address } from '@bigcommerce/checkout-sdk';
+import { Address, Country, FormField } from '@bigcommerce/checkout-sdk';
 import { isEmpty } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
-import { LocalizedGeography } from '../geography';
 
 import isValidAddress from './isValidAddress';
 import localizeAddress from './localizeAddress';
@@ -16,15 +15,22 @@ export interface StaticAddressProps {
 }
 
 interface WithCheckoutStaticAddressProps {
-    isValid: boolean;
-    localizedAddress: Address & LocalizedGeography;
+    countries?: Country[];
+    fields?: FormField[];
 }
 
 const StaticAddress: FunctionComponent<StaticAddressProps & WithCheckoutStaticAddressProps> = ({
-    isValid,
-    localizedAddress: address,
-}) => (
-    !isValid ? null : <div className="vcard checkout-address--static">
+    countries,
+    fields,
+    address: addressWithoutLocalization,
+}) => {
+    const address = localizeAddress(addressWithoutLocalization, countries);
+    const isValid = !fields ? !isEmpty(address) : isValidAddress(
+        address,
+        fields.filter(field => !field.custom)
+    );
+
+    return !isValid ? null : <div className="vcard checkout-address--static">
         {
             (address.firstName || address.lastName) &&
             <p className="fn address-entry">
@@ -71,8 +77,8 @@ const StaticAddress: FunctionComponent<StaticAddressProps & WithCheckoutStaticAd
                 }
             </p>
         </div>
-    </div>
-);
+    </div>;
+};
 
 export function mapToStaticAddressProps(
     context: CheckoutContextProps,
@@ -88,31 +94,14 @@ export function mapToStaticAddressProps(
         },
     } = context;
 
-    let isValid: boolean;
-
-    if (type === AddressType.Billing) {
-        isValid = isValidAddress(
-            address,
-            getBillingAddressFields(address.countryCode)
-                .filter(field => !field.custom)
-        );
-    } else if (type === AddressType.Shipping) {
-        isValid = isValidAddress(
-            address,
-            getShippingAddressFields(address.countryCode)
-                .filter(field => !field.custom)
-        );
-    } else {
-        isValid = !isEmpty(address);
-    }
-
     return {
-        isValid,
-        localizedAddress: localizeAddress(
-            address,
-            getBillingCountries()
-        ),
+        countries: getBillingCountries(),
+        fields: type === AddressType.Billing ?
+            getBillingAddressFields(address.countryCode) :
+            type === AddressType.Shipping ?
+            getShippingAddressFields(address.countryCode) :
+            undefined,
     };
 }
 
-export default withCheckout(mapToStaticAddressProps)(StaticAddress);
+export default withCheckout(mapToStaticAddressProps)(memo(StaticAddress));

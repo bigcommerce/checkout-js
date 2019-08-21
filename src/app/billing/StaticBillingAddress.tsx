@@ -1,24 +1,33 @@
-import { Address } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import { Address, CheckoutPayment, FormField } from '@bigcommerce/checkout-sdk';
+import React, { memo, FunctionComponent } from 'react';
 
 import { isValidAddress, AddressType, StaticAddress } from '../address';
 import { withCheckout, CheckoutContextProps } from '../checkout';
-import { withLanguage, WithLanguageProps } from '../locale';
+import { EMPTY_ARRAY } from '../common/utility';
+import { TranslatedString } from '../locale';
 
 export interface StaticBillingAddressProps {
     address: Address;
 }
 
 interface WithCheckoutStaticBillingAddressProps {
-    message?: string;
+    fields: FormField[];
+    payments?: CheckoutPayment[];
 }
 
-const StaticBillingAddress: FunctionComponent<StaticBillingAddressProps & WithCheckoutStaticBillingAddressProps> = ({
+const StaticBillingAddress: FunctionComponent<
+    StaticBillingAddressProps &
+    WithCheckoutStaticBillingAddressProps
+> = ({
     address,
-    message,
+    fields,
+    payments = EMPTY_ARRAY,
 }) => {
-    if (message) {
-        return <p>{ message }</p>;
+    if (isValidAddress(address, fields.filter(field => !field.custom)) &&
+        payments.find(payment => payment.providerId === 'amazon')) {
+        return (
+            <p><TranslatedString id="billing.billing_address_amazon" /></p>
+        );
     }
 
     return (
@@ -31,7 +40,7 @@ const StaticBillingAddress: FunctionComponent<StaticBillingAddressProps & WithCh
 
 export function mapToStaticBillingAddressProps(
     { checkoutState }: CheckoutContextProps,
-    { address, language }: StaticBillingAddressProps & WithLanguageProps
+    { address }: StaticBillingAddressProps
 ): WithCheckoutStaticBillingAddressProps | null {
     const {
         data: {
@@ -40,19 +49,12 @@ export function mapToStaticBillingAddressProps(
         },
     } = checkoutState;
 
-    let message: string | undefined;
-
-    if (isValidAddress(address, getBillingAddressFields(address.countryCode).filter(field => !field.custom))) {
-        const { payments = [] } = getCheckout() || {};
-
-        if (payments.find(payment => payment.providerId === 'amazon')) {
-            message = language.translate('billing.billing_address_amazon');
-        }
-    }
+    const checkout = getCheckout();
 
     return {
-        message,
+        fields: getBillingAddressFields(address.countryCode),
+        payments: checkout && checkout.payments,
     };
 }
 
-export default withLanguage(withCheckout(mapToStaticBillingAddressProps)(StaticBillingAddress));
+export default withCheckout(mapToStaticBillingAddressProps)(memo(StaticBillingAddress));
