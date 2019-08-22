@@ -1,10 +1,70 @@
 import { Coupon, GiftCertificate } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import React, { useCallback, FunctionComponent } from 'react';
 
 import { AppliedCoupon } from '../coupon';
 import { AppliedGiftCertificate } from '../giftCertificate';
 
 import AppliedRedeemable from './AppliedRedeemable';
+
+interface AppliedCouponProps {
+    coupon: Coupon;
+    isRemoving?: boolean;
+    onRemoved(code: string): void;
+}
+
+const AppliedCouponChecklistItem: FunctionComponent<AppliedCouponProps> = ({
+    coupon,
+    onRemoved,
+    isRemoving = false,
+}) => {
+    const handleRemove = useCallback(() => {
+        onRemoved(coupon.code);
+    }, [
+        coupon,
+        onRemoved,
+    ]);
+
+    return (
+        <li className="form-checklist-item optimizedCheckout-form-checklist-item">
+            <AppliedRedeemable
+                onRemove={ handleRemove }
+                isRemoving={ isRemoving }
+            >
+                <AppliedCoupon coupon={ coupon } />
+            </AppliedRedeemable>
+        </li>
+    );
+};
+
+interface AppliedGiftCertificateProps {
+    giftCertificate: GiftCertificate;
+    isRemoving?: boolean;
+    onRemoved(code: string): void;
+}
+
+const AppliedGiftCertificateChecklistItem: FunctionComponent<AppliedGiftCertificateProps> = ({
+    giftCertificate,
+    onRemoved,
+    isRemoving = false,
+}) => {
+    const handleRemove = useCallback(() => {
+        onRemoved(giftCertificate.code);
+    }, [
+        giftCertificate,
+        onRemoved,
+    ]);
+
+    return (
+        <li className="form-checklist-item optimizedCheckout-form-checklist-item">
+            <AppliedRedeemable
+                onRemove={ handleRemove }
+                isRemoving={ isRemoving }
+            >
+                <AppliedGiftCertificate giftCertificate={ giftCertificate } />
+            </AppliedRedeemable>
+        </li>
+    );
+};
 
 export interface AppliedRedeemablesProps {
     coupons?: Coupon[];
@@ -30,24 +90,21 @@ const AppliedRedeemables: FunctionComponent<AppliedRedeemablesProps> = ({
     return (
         <ul data-test="redeemables-list" className="form-checklist optimizedCheckout-form-checklist">
             { coupons.map(coupon => (
-                <li key={ coupon.code } className="form-checklist-item optimizedCheckout-form-checklist-item">
-                    <AppliedRedeemable
-                        onRemove={ () => onRemovedCoupon(coupon.code) }
-                        isRemoving={ isRemovingCoupon }
-                    >
-                        <AppliedCoupon coupon={ coupon } />
-                    </AppliedRedeemable>
-                </li>
+                <AppliedCouponChecklistItem
+                    coupon={ coupon }
+                    isRemoving={ isRemovingCoupon }
+                    key={ coupon.code }
+                    onRemoved={ onRemovedCoupon }
+                />
             )) }
+
             { giftCertificates.map(giftCertificate => (
-                <li key={ giftCertificate.code } className="form-checklist-item optimizedCheckout-form-checklist-item">
-                    <AppliedRedeemable
-                        onRemove={ () => onRemovedGiftCertificate(giftCertificate.code) }
-                        isRemoving={ isRemovingGiftCertificate }
-                    >
-                        <AppliedGiftCertificate giftCertificate={ giftCertificate } />
-                    </AppliedRedeemable>
-                </li>
+                <AppliedGiftCertificateChecklistItem
+                    giftCertificate={ giftCertificate }
+                    isRemoving={ isRemovingGiftCertificate }
+                    key={ giftCertificate.code }
+                    onRemoved={ onRemovedGiftCertificate }
+                />
             )) }
         </ul>
     );
