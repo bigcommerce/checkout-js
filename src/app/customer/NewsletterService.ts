@@ -1,11 +1,16 @@
 import { RequestSender, Response } from '@bigcommerce/request-sender';
 
+export interface NewsletterSubscribeData {
+    email: string;
+    firstName?: string;
+}
+
 export default class NewsletterService {
     constructor(
         private requestSender: RequestSender
     ) {}
 
-    subscribe(data: { email: string; firstName?: string }): Promise<Response> {
+    subscribe(data: NewsletterSubscribeData): Promise<Response> {
         return this.requestSender.post('/subscribe.php', {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

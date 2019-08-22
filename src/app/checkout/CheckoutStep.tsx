@@ -99,13 +99,7 @@ export default class CheckoutStep extends Component<CheckoutStepProps> {
                     }
 
                     return <CSSTransition
-                        addEndListener={ (node, done) => {
-                            node.addEventListener('transitionend', ({ target }) => {
-                                if (target === node) {
-                                    done();
-                                }
-                            });
-                        } }
+                        addEndListener={ this.handleTransitionEnd }
                         classNames="checkout-view-content"
                         timeout={ {} }
                         in={ isActive }
@@ -199,4 +193,12 @@ export default class CheckoutStep extends Component<CheckoutStepProps> {
 
         return this.timeoutDelay;
     }
+
+    private handleTransitionEnd: (node: HTMLElement, done: () => void) => void = (node, done) => {
+        node.addEventListener('transitionend', ({ target }) => {
+            if (target === node) {
+                done();
+            }
+        });
+    };
 }

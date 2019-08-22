@@ -1,11 +1,11 @@
 import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
-import { createRequestSender } from '@bigcommerce/request-sender';
+import { createRequestSender, Response } from '@bigcommerce/request-sender';
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 
-import { StepTrackerFactory } from '../analytics';
+import { StepTracker, StepTrackerFactory } from '../analytics';
 import { ErrorLoggerFactory, ErrorLoggingBoundary } from '../common/error';
-import { NewsletterService } from '../customer';
+import { NewsletterService, NewsletterSubscribeData } from '../customer';
 import { createEmbeddedCheckoutStylesheet, createEmbeddedCheckoutSupport } from '../embeddedCheckout';
 import { getLanguageService, LocaleProvider } from '../locale';
 import { FlashMessage } from '../ui/alert';
@@ -44,15 +44,23 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
                         <Checkout
                             { ...this.props }
                             createEmbeddedMessenger={ createEmbeddedCheckoutMessenger }
-                            createStepTracker={ () => this.stepTrackerFactory.createTracker() }
+                            createStepTracker={ this.createStepTracker }
                             embeddedStylesheet={ this.embeddedStylesheet }
                             embeddedSupport={ this.embeddedSupport }
                             errorLogger={ this.errorLogger }
-                            subscribeToNewsletter={ data => this.newsletterService.subscribe(data) }
+                            subscribeToNewsletter={ this.subscribeToNewsletter }
                         />
                     </CheckoutProvider>
                 </LocaleProvider>
             </ErrorLoggingBoundary>
         );
     }
+
+    private createStepTracker: () => StepTracker = () => {
+        return this.stepTrackerFactory.createTracker();
+    };
+
+    private subscribeToNewsletter: (data: NewsletterSubscribeData) => Promise<Response> = data => {
+        return this.newsletterService.subscribe(data);
+    };
 }
