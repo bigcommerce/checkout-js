@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { useCallback, FunctionComponent, MouseEvent } from 'react';
 
 import { TranslatedString } from '../locale';
 
@@ -12,20 +12,28 @@ const MultiCheckboxControl: FunctionComponent<MultiCheckboxControlProps> = ({
     testId,
     onSelectedAll,
     onSelectedNone,
-}) => (
-    <ul className="multiCheckbox--controls">
+}) => {
+    const handleSelectAllClick = useCallback((event: MouseEvent) => {
+        event.preventDefault();
+        onSelectedAll();
+    }, [onSelectedAll]);
+
+    const handleSelectNoneClick = useCallback((event: MouseEvent) => {
+        event.preventDefault();
+        onSelectedNone();
+    }, [onSelectedNone]);
+
+    return <ul className="multiCheckbox--controls">
         <li className="multiCheckbox--control">
             <TranslatedString id="address.select" />
         </li>
+
         <li className="multiCheckbox--control">
             <a
                 data-test={ `${testId}Checkbox-all-button` }
                 href="#"
-                onClick={ e => {
-                    e.preventDefault();
-                    onSelectedAll();
-                }
-            }>
+                onClick={ handleSelectAllClick }
+            >
                 <TranslatedString id="address.select_all" />
             </a>
         </li>
@@ -34,15 +42,11 @@ const MultiCheckboxControl: FunctionComponent<MultiCheckboxControlProps> = ({
             <a
                 data-test={ `${testId}Checkbox-none-button` }
                 href="#"
-                onClick={ e => {
-                    e.preventDefault();
-                    onSelectedNone();
-                }
-            }>
+                onClick={ handleSelectNoneClick }>
                 <TranslatedString id="address.select_none" />
             </a>
         </li>
-    </ul>
-);
+    </ul>;
+};
 
 export default MultiCheckboxControl;

@@ -2,6 +2,7 @@ import { Address, Country, FormField } from '@bigcommerce/checkout-sdk';
 import { forIn, noop } from 'lodash';
 import React, { createRef, Component, ReactNode, RefObject } from 'react';
 
+import { memoize } from '../common/utility';
 import { withLanguage, WithLanguageProps } from '../locale';
 import { AutocompleteItem } from '../ui/autocomplete';
 
@@ -33,6 +34,10 @@ const AUTOCOMPLETE_FIELD_NAME = 'address1';
 class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
     private containerRef: RefObject<HTMLElement> = createRef();
     private nextElement?: HTMLElement | null;
+
+    private handleDynamicFormFieldChange: (name: string) => (value: string | string[]) => void = memoize(name => value => {
+        this.syncNonFormikValue(name, value);
+    }, { maxSize: 0 });
 
     componentDidMount(): void {
         const { current } = this.containerRef;
@@ -67,13 +72,9 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                                 countryCode={ countryCode }
                                 supportedCountries={ countriesWithAutocomplete }
                                 field={ field }
-                                onSelect={ this.onAutocompleteSelect }
+                                onSelect={ this.handleAutocompleteSelect }
                                 onToggleOpen={ onAutocompleteToggle }
-                                onChange={ (value, isOpen) => {
-                                    if (!isOpen) {
-                                        this.syncNonFormikValue(AUTOCOMPLETE_FIELD_NAME, value);
-                                    }
-                                } }
+                                onChange={ this.handleAutocompleteChange }
                                 apiKey={ googleMapsApiKey }
                                 nextElement={ this.nextElement || undefined }
                             />
@@ -82,7 +83,7 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
 
                     return (
                         <DynamicFormField
-                            onChange={ value => this.syncNonFormikValue(addressFieldName, value) }
+                            onChange={ this.handleDynamicFormFieldChange(addressFieldName) }
                             // stateOrProvince can sometimes be a dropdown or input, so relying on id is not sufficient
                             key={ `${field.id}-${field.name}` }
                             parentFieldName={ field.custom ?
@@ -129,7 +130,13 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
         return fieldType as DynamicFormFieldType;
     }
 
-    private onAutocompleteSelect: (
+    private handleAutocompleteChange: (value: string, isOpen: boolean) => void = (value, isOpen) => {
+        if (!isOpen) {
+            this.syncNonFormikValue(AUTOCOMPLETE_FIELD_NAME, value);
+        }
+    };
+
+    private handleAutocompleteSelect: (
         place: google.maps.places.PlaceResult,
         item: AutocompleteItem
     ) => void = (place, { value: autocompleteValue }) => {

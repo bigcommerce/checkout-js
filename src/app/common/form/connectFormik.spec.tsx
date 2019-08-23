@@ -6,6 +6,7 @@ import React, { FunctionComponent } from 'react';
 import connectFormik from './connectFormik';
 import ConnectFormikProps from './ConnectFormikProps';
 
+/* eslint-disable react/jsx-no-bind */
 describe('connectFormik()', () => {
     it('only re-renders connected component if Formik props have changed', () => {
         const TestComponent: FunctionComponent = jest.fn(() => <div />);

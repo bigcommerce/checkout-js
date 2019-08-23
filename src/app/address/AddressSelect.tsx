@@ -20,7 +20,6 @@ class AddressSelect extends Component<AddressSelectProps> {
         const {
             addresses,
             selectedAddress,
-            onUseNewAddress,
         } = this.props;
 
         return (
@@ -29,8 +28,8 @@ class AddressSelect extends Component<AddressSelectProps> {
                     <DropdownTrigger dropdown={
                         <AddressSelectMenu
                             addresses={ addresses }
-                            onSelectAddress={ this.onSelectAddress }
-                            onUseNewAddress={ () => onUseNewAddress(selectedAddress) }
+                            onSelectAddress={ this.handleSelectAddress }
+                            onUseNewAddress={ this.handleUseNewAddress }
                             selectedAddress={ selectedAddress }
                         />
                     }>
@@ -44,7 +43,7 @@ class AddressSelect extends Component<AddressSelectProps> {
         );
     }
 
-    private onSelectAddress: (newAddress: Address) => void = (newAddress: Address) => {
+    private handleSelectAddress: (newAddress: Address) => void = (newAddress: Address) => {
         const {
             onSelectAddress,
             selectedAddress,
@@ -53,6 +52,15 @@ class AddressSelect extends Component<AddressSelectProps> {
         if (!isEqualAddress(selectedAddress, newAddress)) {
             onSelectAddress(newAddress);
         }
+    };
+
+    private handleUseNewAddress: () => void = () => {
+        const {
+            selectedAddress,
+            onUseNewAddress,
+        } = this.props;
+
+        onUseNewAddress(selectedAddress);
     };
 }
 

@@ -1,5 +1,6 @@
 import { FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import { FieldProps } from 'formik';
+import React, { useCallback, useMemo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { AutocompleteItem } from '../../ui/autocomplete';
@@ -35,33 +36,50 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
 }) => {
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
 
+    const labelContent = useMemo(() => (
+        <TranslatedString id="address.address_line_1_label" />
+    ), []);
+
+    const inputProps = useMemo(() => ({
+        className: 'form-input optimizedCheckout-form-input',
+        id: getFormFieldInputId(name),
+    }), [name]);
+
+    const renderInput = useCallback(({ field }: FieldProps) => (
+        <GoogleAutocomplete
+            apiKey={ apiKey }
+            onSelect={ onSelect }
+            onChange={ onChange }
+            initialValue={ field.value }
+            nextElement={ nextElement }
+            onToggleOpen={ onToggleOpen }
+            isAutocompleteEnabled={ countryCode ?
+                supportedCountries.indexOf(countryCode) > -1 :
+                false
+            }
+            inputProps={ inputProps }
+            componentRestrictions={ countryCode ?
+                { country: countryCode } :
+                undefined
+            }
+        />
+    ), [
+        apiKey,
+        countryCode,
+        inputProps,
+        nextElement,
+        onChange,
+        onSelect,
+        onToggleOpen,
+        supportedCountries,
+    ]);
+
     return (
         <div className={ `dynamic-form-field dynamic-form-field--addressLineAutocomplete` }>
             <FormField
                 name={ fieldName }
-                labelContent={ <TranslatedString id="address.address_line_1_label" />}
-                input={ ({ field }) =>
-                    <GoogleAutocomplete
-                        apiKey={ apiKey }
-                        onSelect={ onSelect }
-                        onChange={ onChange }
-                        initialValue={ field.value }
-                        nextElement={ nextElement }
-                        onToggleOpen={ onToggleOpen }
-                        isAutocompleteEnabled={ countryCode ?
-                            supportedCountries.indexOf(countryCode) > -1 :
-                            false
-                        }
-                        inputProps={ {
-                            className: 'form-input optimizedCheckout-form-input',
-                            id: getFormFieldInputId(name),
-                        } }
-                        componentRestrictions={ countryCode ?
-                            { country: countryCode } :
-                            undefined
-                        }
-                    />
-                }
+                labelContent={ labelContent }
+                input={ renderInput }
             />
         </div>
     );

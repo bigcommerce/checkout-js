@@ -66,8 +66,8 @@ class BillingForm extends Component<BillingFormProps & WithLanguageProps & Formi
                                 <AddressSelect
                                     addresses={ addresses }
                                     selectedAddress={ hasValidCustomerAddress ? billingAddress : undefined }
-                                    onUseNewAddress={ () => this.onSelectAddress({}) }
-                                    onSelectAddress={ this.onSelectAddress }
+                                    onUseNewAddress={ this.handleUseNewAddress }
+                                    onSelectAddress={ this.handleSelectAddress }
                                 />
                             </LoadingOverlay>
                         </Fieldset>
@@ -106,7 +106,7 @@ class BillingForm extends Component<BillingFormProps & WithLanguageProps & Formi
         );
     }
 
-    private onSelectAddress: (address: Partial<Address>) => void = async address => {
+    private handleSelectAddress: (address: Partial<Address>) => void = async address => {
         const {
             updateAddress,
             onUnhandledError,
@@ -121,6 +121,10 @@ class BillingForm extends Component<BillingFormProps & WithLanguageProps & Formi
         } finally {
             this.setState({ isResettingAddress: false });
         }
+    };
+
+    private handleUseNewAddress: () => void = () => {
+        this.handleSelectAddress({});
     };
 }
 
