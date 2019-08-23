@@ -21,7 +21,7 @@ const AdyenPaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
     method,
     ...rest
 }) => {
-    const containerId = method.id + '-adyen-component-field';
+    const containerId = `${method.id}-adyen-component-field`;
     const component: AdyenMethodType = AdyenMethodType[method.method as keyof typeof AdyenMethodType];
 
     const adyenOptions: AdyenOptions = {
