@@ -1,0 +1,41 @@
+.co-googleAutocomplete-footer {
+  background-color: #f7f8f9;
+  background-image: url(static/powered_by_google_on_white-cc5d01f8-f127e368.png);
+  background-position-x: 0.75rem;
+  background-position-y: center;
+  background-repeat: no-repeat;
+  border-top: 1px solid #e1e6eb;
+  box-sizing: content-box;
+  color: #556273;
+  height: 18px;
+  padding: 0.75rem; }
+
+.popover {
+  background: #fff;
+  border: 1px solid #e1e6eb;
+  border-radius: 4px;
+  box-shadow: 0 2px 0 rgba(225, 230, 235, 0.6);
+  left: 0;
+  position: absolute;
+  right: 0;
+  z-index: 20; }
+
+.popoverList {
+  list-style: none;
+  margin: 0.5rem 0; }
+
+.popoverList-item {
+  cursor: pointer;
+  padding: 0.5rem 0.75rem; }
+  .popoverList-item.is-active:hover, .popoverList-item.is-active {
+    background-color: #e1e6eb; }
+  .popoverList-item:hover {
+    background-color: #f7f8f9; }
+  .popoverList-item strong,
+  .popoverList-item span {
+    display: inline-block; }
+  .popoverList-item .highlight {
+    font-weight: bold; }
+
+
+/*# sourceMappingURL=billing~shipping-cc5d01f8-8277e5d5.css.map*/

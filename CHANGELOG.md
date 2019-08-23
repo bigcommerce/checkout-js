@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/bigcommerce/checkout-js/compare/v1.0.0...v1.0.1) (2019-08-23)
+
+
+### Bug Fixes
+
+* **billing:** CHECKOUT-4352 Display special message in billing section when using Amazon Pay ([424b9c0](https://github.com/bigcommerce/checkout-js/commit/424b9c0))
+* **billing:** CHECKOUT-4352 Fix billing address not displaying properly when it is partially complete ([7ac4b42](https://github.com/bigcommerce/checkout-js/commit/7ac4b42))
+* **billing:** CHECKOUT-4352 Keep the loading spinner spinning when updating order comment and billing address ([f1f161e](https://github.com/bigcommerce/checkout-js/commit/f1f161e))
+* **checkout:** CHECKOUT-4344 Fix checkout steps not collapsing in mobile view ([a81a67a](https://github.com/bigcommerce/checkout-js/commit/a81a67a))
+* **payment:** INT-1837 Fix conflicting styles injected by Klarna causing modal to be cropped in Firefox ([4b4b1fc](https://github.com/bigcommerce/checkout-js/commit/4b4b1fc))
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-4338 Use media query component to conditionally render checkout step ([d352673](https://github.com/bigcommerce/checkout-js/commit/d352673))
+* **checkout:** CHECKOUT-4344 Remove temporary code required for transition period ([99388b3](https://github.com/bigcommerce/checkout-js/commit/99388b3))
+* **common:** CHECKOUT-4338 Fix circular dependencies of ES modules ([e28f98d](https://github.com/bigcommerce/checkout-js/commit/e28f98d))
+* **common:** CHECKOUT-4338 Include hash in file name so we can determine public path for IE11 more reliably ([e5a9c57](https://github.com/bigcommerce/checkout-js/commit/e5a9c57))
+* **common:** CHECKOUT-4338 Move `BuildHooks` Webpack plugin to `scripts` folder ([54de46c](https://github.com/bigcommerce/checkout-js/commit/54de46c))
+* **common:** CHECKOUT-4338 Re-enable modules concatenation ([1b79f2b](https://github.com/bigcommerce/checkout-js/commit/1b79f2b))
+* **common:** CHECKOUT-4338 Stop importing internal modules ([ef9d34c](https://github.com/bigcommerce/checkout-js/commit/ef9d34c))
+* **common:** CHECKOUT-4338 Use ESLint to help fix import / export issues ([a27769e](https://github.com/bigcommerce/checkout-js/commit/a27769e))
+* **common:** CHECKOUT-4351 Enable React-specific ESLint rules ([ce56dd1](https://github.com/bigcommerce/checkout-js/commit/ce56dd1))
+
+
+### Performance Improvements
+
+* **billing:** CHECKOUT-4352 Optimize rendering of static address ([dab9d1c](https://github.com/bigcommerce/checkout-js/commit/dab9d1c))
+* **checkout:** CHECKOUT-4338 Lazy load checkout steps using dynamic imports ([42522ab](https://github.com/bigcommerce/checkout-js/commit/42522ab))
+* **checkout:** CHECKOUT-4338 Only load cart and order summary drawer when in mobile view ([35a0560](https://github.com/bigcommerce/checkout-js/commit/35a0560))
+
 ## 1.0.0 (2019-08-14)
 
 
