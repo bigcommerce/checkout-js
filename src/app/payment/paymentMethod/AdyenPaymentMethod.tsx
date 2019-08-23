@@ -23,13 +23,12 @@ const AdyenPaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
 }) => {
     const containerId = `${method.id}-adyen-component-field`;
     const component: AdyenMethodType = AdyenMethodType[method.method as keyof typeof AdyenMethodType];
-
     const adyenOptions: AdyenOptions = {
         [AdyenMethodType.scheme]: {
             hasHolderName: true,
         },
         [AdyenMethodType.bcmc]: {
-            hasHolderName: true,
+            hasHolderName: false,
         },
     };
 

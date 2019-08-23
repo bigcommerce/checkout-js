@@ -34,7 +34,7 @@ describe('when using Adyen V2 payment', () => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
-        method = { ...getPaymentMethod(), id: 'scheme', gateway: 'adyenv2' };
+        method = { ...getPaymentMethod(), id: 'scheme', gateway: 'adyenv2', method: 'scheme' };
 
         jest.spyOn(checkoutState.data, 'getConfig')
             .mockReturnValue(getStoreConfig());
@@ -65,7 +65,7 @@ describe('when using Adyen V2 payment', () => {
 
         expect(component.props())
             .toEqual(expect.objectContaining({
-                containerId: 'adyen-component-field',
+                containerId: 'scheme-adyen-component-field',
                 deinitializePayment: expect.any(Function),
                 initializePayment: expect.any(Function),
                 method,
@@ -86,7 +86,7 @@ describe('when using Adyen V2 payment', () => {
                 methodId: method.id,
                 gatewayId: method.gateway,
                 adyenv2: {
-                    containerId: 'adyen-component-field',
+                    containerId: 'scheme-adyen-component-field',
                     options: {
                         hasHolderName: true,
                     },
