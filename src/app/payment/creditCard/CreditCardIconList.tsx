@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import CreditCardIcon from './CreditCardIcon';
 
@@ -50,4 +50,4 @@ const CreditCardIconList: FunctionComponent<CreditCardIconListProps> = ({
     );
 };
 
-export default CreditCardIconList;
+export default memo(CreditCardIconList);

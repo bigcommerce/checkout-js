@@ -1,7 +1,7 @@
 import { CheckoutSelectors, CustomerInitializeOptions, CustomerRequestOptions, Instrument, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, memoize, noop, some } from 'lodash';
-import React, { PureComponent, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
@@ -50,7 +50,7 @@ interface HostedWidgetPaymentMethodState {
     selectedInstrumentId?: string;
 }
 
-class HostedWidgetPaymentMethod extends PureComponent<
+class HostedWidgetPaymentMethod extends Component<
     HostedWidgetPaymentMethodProps &
     WithCheckoutHostedWidgetPaymentMethodProps &
     ConnectFormikProps<PaymentFormValues> &

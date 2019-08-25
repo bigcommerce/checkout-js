@@ -1,6 +1,6 @@
 import { CheckoutSelectors, Instrument, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
 import { find, noop } from 'lodash';
-import React, { PureComponent, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
@@ -40,7 +40,7 @@ interface CreditCardPaymentMethodState {
     selectedInstrumentId?: string;
 }
 
-class CreditCardPaymentMethod extends PureComponent<
+class CreditCardPaymentMethod extends Component<
     CreditCardPaymentMethodProps &
         WithCheckoutCreditCardPaymentMethodProps &
         WithPaymentProps &

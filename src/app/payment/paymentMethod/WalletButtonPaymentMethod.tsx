@@ -1,7 +1,7 @@
 import { CheckoutSelectors, CustomerRequestOptions, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
 import { number } from 'card-validator';
 import { noop, some } from 'lodash';
-import React, { Fragment, PureComponent, ReactNode } from 'react';
+import React, { Component, Fragment, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { withLanguage, TranslatedString, WithLanguageProps } from '../../locale';
@@ -38,7 +38,7 @@ interface WithCheckoutWalletButtonPaymentMethodProps {
     signOut(options: CustomerRequestOptions): void;
 }
 
-class WalletButtonPaymentMethod extends PureComponent<
+class WalletButtonPaymentMethod extends Component<
     WalletButtonPaymentMethodProps &
     WithCheckoutWalletButtonPaymentMethodProps &
     WithLanguageProps &

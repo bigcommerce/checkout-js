@@ -1,6 +1,6 @@
 import { Instrument, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { FieldProps } from 'formik';
-import React, { useCallback, Fragment, FunctionComponent } from 'react';
+import React, { memo, useCallback, Fragment, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { BasicFormField, Fieldset, Legend } from '../../ui/form';
@@ -100,4 +100,4 @@ const InstrumentFieldset: FunctionComponent<InstrumentFieldsetProps> = ({
     </Fieldset>;
 };
 
-export default InstrumentFieldset;
+export default memo(InstrumentFieldset);

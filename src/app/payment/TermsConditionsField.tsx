@@ -1,5 +1,5 @@
 import { FieldProps } from 'formik';
-import React, { useCallback, useMemo, FunctionComponent } from 'react';
+import React, { memo, useCallback, useMemo, FunctionComponent } from 'react';
 
 import { TranslatedHtml, TranslatedString } from '../locale';
 import { CheckboxFormField, Fieldset, FormField, Legend, TextArea } from '../ui/form';
@@ -75,4 +75,4 @@ const TermsConditionsField: FunctionComponent<TermsConditionsFieldProps> = props
     );
 };
 
-export default TermsConditionsField;
+export default memo(TermsConditionsField);

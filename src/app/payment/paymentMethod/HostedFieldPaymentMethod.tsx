@@ -1,6 +1,6 @@
 import { CheckoutSelectors, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { PureComponent, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { FormFieldContainer, Label } from '../../ui/form';
@@ -19,7 +19,7 @@ export interface HostedFieldPaymentMethodProps {
     onUnhandledError?(error: Error): void;
 }
 
-export default class HostedFieldPaymentMethod extends PureComponent<HostedFieldPaymentMethodProps> {
+export default class HostedFieldPaymentMethod extends Component<HostedFieldPaymentMethodProps> {
     async componentDidMount(): Promise<void> {
         const {
             initializePayment,

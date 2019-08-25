@@ -1,7 +1,7 @@
 import creditCardType from 'credit-card-type';
 import { FieldProps } from 'formik';
 import { max } from 'lodash';
-import React, { createRef, useCallback, useMemo, ChangeEventHandler, Component, Fragment, FunctionComponent, ReactNode, RefObject } from 'react';
+import React, { createRef, memo, useCallback, useMemo, ChangeEventHandler, Fragment, FunctionComponent, PureComponent, ReactNode, RefObject } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { FormField, TextInput } from '../../ui/form';
@@ -33,7 +33,7 @@ const CreditCardNumberField: FunctionComponent<CreditCardNumberFieldProps> = ({ 
     />;
 };
 
-class CreditCardNumberInput extends Component<FieldProps<string>> {
+class CreditCardNumberInput extends PureComponent<FieldProps<string>> {
     private inputRef: RefObject<HTMLInputElement> = createRef();
     private nextSelectionEnd: number = 0;
 
@@ -95,4 +95,4 @@ class CreditCardNumberInput extends Component<FieldProps<string>> {
     };
 }
 
-export default CreditCardNumberField;
+export default memo(CreditCardNumberField);

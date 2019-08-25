@@ -2,7 +2,7 @@ import { Instrument } from '@bigcommerce/checkout-sdk';
 import { expirationDate } from 'card-validator';
 import classNames from 'classnames';
 import creditCardType from 'credit-card-type';
-import React, { useCallback, FunctionComponent } from 'react';
+import React, { memo, useCallback, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
@@ -108,4 +108,4 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
     );
 };
 
-export default ManageInstrumentsTable;
+export default memo(ManageInstrumentsTable);

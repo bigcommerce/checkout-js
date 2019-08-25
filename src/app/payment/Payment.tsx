@@ -1,6 +1,6 @@
 import { CheckoutSelectors, OrderRequestBody, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { compact, find, isEmpty, noop } from 'lodash';
-import React, { PureComponent, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
@@ -60,7 +60,7 @@ interface PaymentState {
     validationSchemas: { [key: string]: ObjectSchema<Partial<PaymentFormValues>> | null };
 }
 
-class Payment extends PureComponent<PaymentProps & WithCheckoutPaymentProps & WithLanguageProps, PaymentState> {
+class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLanguageProps, PaymentState> {
     state: PaymentState = {
         isReady: false,
         shouldDisableSubmit: {},

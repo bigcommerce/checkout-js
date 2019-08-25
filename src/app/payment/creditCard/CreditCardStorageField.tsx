@@ -1,4 +1,4 @@
-import React, { useMemo, FunctionComponent } from 'react';
+import React, { memo, useMemo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { CheckboxFormField } from '../../ui/form';
@@ -19,4 +19,4 @@ const CreditCardStorageField: FunctionComponent<CreditCardStorageFieldProps> = (
     />;
 };
 
-export default CreditCardStorageField;
+export default memo(CreditCardStorageField);

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import {
     IconCardAmex,
@@ -55,4 +55,4 @@ const CreditCardIcon: FunctionComponent<CreditCardIconProps> = ({
     }
 };
 
-export default CreditCardIcon;
+export default memo(CreditCardIcon);

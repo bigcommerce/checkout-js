@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, FunctionComponent } from 'react';
+import React, { memo, useCallback, useMemo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { FormField, TextInput } from '../../ui/form';
@@ -28,4 +28,4 @@ const CreditCardNameField: FunctionComponent<CreditCardNameFieldProps> = ({ name
     />;
 };
 
-export default CreditCardNameField;
+export default memo(CreditCardNameField);

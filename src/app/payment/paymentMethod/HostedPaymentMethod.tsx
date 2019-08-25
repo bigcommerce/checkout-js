@@ -1,6 +1,6 @@
 import { CheckoutSelectors, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { PureComponent, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 
 import { LoadingOverlay } from '../../ui/loading';
 
@@ -13,7 +13,7 @@ export interface HostedPaymentMethodProps {
     onUnhandledError?(error: Error): void;
 }
 
-export default class HostedPaymentMethod extends PureComponent<HostedPaymentMethodProps> {
+export default class HostedPaymentMethod extends Component<HostedPaymentMethodProps> {
     async componentDidMount(): Promise<void> {
         const {
             initializePayment,

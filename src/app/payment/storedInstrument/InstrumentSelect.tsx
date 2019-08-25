@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import creditCardType from 'credit-card-type';
 import { FieldProps } from 'formik';
 import { find, noop } from 'lodash';
-import React, { useCallback, Component, FunctionComponent, ReactNode } from 'react';
+import React, { useCallback, FunctionComponent, PureComponent, ReactNode } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { DropdownTrigger } from '../../ui/dropdown';
@@ -23,7 +23,7 @@ export interface InstrumentSelectValues {
     instrumentId: string;
 }
 
-class InstrumentSelect extends Component<InstrumentSelectProps> {
+class InstrumentSelect extends PureComponent<InstrumentSelectProps> {
     componentDidMount() {
         this.updateFieldValue();
     }

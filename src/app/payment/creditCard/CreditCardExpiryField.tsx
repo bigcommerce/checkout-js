@@ -1,5 +1,5 @@
 import { FieldProps } from 'formik';
-import React, { useCallback, useMemo, ChangeEvent, FunctionComponent } from 'react';
+import React, { memo, useCallback, useMemo, ChangeEvent, FunctionComponent } from 'react';
 
 import { memoize } from '../../common/utility';
 import { TranslatedString } from '../../locale';
@@ -41,4 +41,4 @@ const CreditCardExpiryField: FunctionComponent<CreditCardExpiryFieldProps> = ({ 
     />;
 };
 
-export default CreditCardExpiryField;
+export default memo(CreditCardExpiryField);

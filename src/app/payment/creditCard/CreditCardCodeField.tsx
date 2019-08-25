@@ -1,5 +1,5 @@
 import { FieldProps } from 'formik';
-import React, { useCallback, useMemo, Fragment, FunctionComponent } from 'react';
+import React, { memo, useCallback, useMemo, Fragment, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { FormField, TextInput } from '../../ui/form';
@@ -50,4 +50,4 @@ const CreditCardCodeField: FunctionComponent<CreditCardCodeFieldProps> = ({ name
     />;
 };
 
-export default CreditCardCodeField;
+export default memo(CreditCardCodeField);

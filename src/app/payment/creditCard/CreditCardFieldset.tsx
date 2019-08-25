@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { Fieldset, Legend } from '../../ui/form';
@@ -54,4 +54,4 @@ const CreditCardFieldset: FunctionComponent<CreditCardFieldsetProps> = ({
     </Fieldset>
 );
 
-export default CreditCardFieldset;
+export default memo(CreditCardFieldset);
