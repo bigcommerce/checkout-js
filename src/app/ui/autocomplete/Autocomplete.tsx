@@ -1,6 +1,6 @@
 import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
 import { isNumber, noop } from 'lodash';
-import React, { Component, Fragment, ReactChild, ReactNode } from 'react';
+import React, { Fragment, PureComponent, ReactChild, ReactNode } from 'react';
 
 import { Popover, PopoverList, PopoverListItem } from '../popover';
 
@@ -18,7 +18,7 @@ export interface AutocompleteProps {
     onChange?(value: string, isOpen: boolean): void;
 }
 
-class Autocomplete extends Component<AutocompleteProps> {
+class Autocomplete extends PureComponent<AutocompleteProps> {
     render(): ReactNode {
         const {
             inputProps,

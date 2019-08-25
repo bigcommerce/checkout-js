@@ -1,4 +1,4 @@
-import React, { useCallback, FunctionComponent, MouseEvent } from 'react';
+import React, { memo, useCallback, FunctionComponent, MouseEvent } from 'react';
 
 import { TranslatedString } from '../locale';
 
@@ -49,4 +49,4 @@ const MultiCheckboxControl: FunctionComponent<MultiCheckboxControlProps> = ({
     </ul>;
 };
 
-export default MultiCheckboxControl;
+export default memo(MultiCheckboxControl);

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import './PopoverList.scss';
 
@@ -59,4 +59,4 @@ function getItemClassName(highlightedIndex: number, index: number): string {
     return classes.join(' ');
 }
 
-export default PopoverList;
+export default memo(PopoverList);

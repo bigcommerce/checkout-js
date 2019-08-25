@@ -1,6 +1,6 @@
 import { FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
 import { FieldProps } from 'formik';
-import React, { useCallback, useMemo, FunctionComponent } from 'react';
+import React, { memo, useCallback, useMemo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../locale';
 import { FormField, Label } from '../ui/form';
@@ -143,4 +143,4 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
     );
 };
 
-export default DynamicFormField;
+export default memo(DynamicFormField);

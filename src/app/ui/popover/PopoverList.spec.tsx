@@ -1,5 +1,4 @@
-import { shallow } from 'enzyme';
-import toJson from 'enzyme-to-json';
+import { mount } from 'enzyme';
 import React from 'react';
 
 import PopoverList from './PopoverList';
@@ -12,19 +11,19 @@ describe('Popover Component', () => {
     ];
 
     it('renders list with passed items', () => {
-        const tree = shallow(<PopoverList items={ items }></PopoverList>);
+        const tree = mount(<PopoverList items={ items }></PopoverList>);
 
-        expect(toJson(tree)).toMatchSnapshot();
+        expect(tree).toMatchSnapshot();
     });
 
     it('renders empty list when empty array is passed', () => {
-        const tree = shallow(<PopoverList items={ [] }></PopoverList>);
+        const tree = mount(<PopoverList items={ [] }></PopoverList>);
 
-        expect(toJson(tree)).toMatchSnapshot();
+        expect(tree).toMatchSnapshot();
     });
 
     it('renders list with highlighted item', () => {
-        const tree = shallow(<PopoverList items={ items } highlightedIndex={ 1 }></PopoverList>);
+        const tree = mount(<PopoverList items={ items } highlightedIndex={ 1 }></PopoverList>);
 
         expect(tree.find('.popoverList-item').at(0).hasClass('is-active')).toBeFalsy();
         expect(tree.find('.popoverList-item').at(1).hasClass('is-active')).toBeTruthy();
@@ -37,12 +36,12 @@ describe('Popover Component', () => {
             <React.Fragment key="2">um</React.Fragment>,
         ];
 
-        const tree = shallow(<PopoverList items={[
+        const tree = mount(<PopoverList items={[
             items[0],
             { content: highlightedContent, id: 'y' },
             items[1],
         ]}></PopoverList>);
 
-        expect(toJson(tree.find('.popoverList-item').at(1))).toMatchSnapshot();
+        expect(tree.find('.popoverList-item').at(1)).toMatchSnapshot();
     });
 });

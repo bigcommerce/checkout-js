@@ -1,7 +1,7 @@
 import { FormFieldItem } from '@bigcommerce/checkout-sdk';
 import { getIn, FieldArray, FieldArrayRenderProps } from 'formik';
 import { difference, kebabCase, noop, pick } from 'lodash';
-import React, { useCallback, ChangeEvent, FunctionComponent, ReactNode } from 'react';
+import React, { memo, useCallback, ChangeEvent, FunctionComponent, ReactNode } from 'react';
 
 import { FormFieldContainer, FormFieldError } from '../ui/form';
 
@@ -140,4 +140,4 @@ const CheckboxGroupFormField: FunctionComponent<CheckboxGroupFormFieldProps> = (
     />;
 };
 
-export default CheckboxGroupFormField;
+export default memo(CheckboxGroupFormField);

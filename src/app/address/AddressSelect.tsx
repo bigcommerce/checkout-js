@@ -1,5 +1,5 @@
 import { Address, CustomerAddress } from '@bigcommerce/checkout-sdk';
-import React, { Component, FunctionComponent, ReactNode } from 'react';
+import React, { memo, FunctionComponent, PureComponent, ReactNode } from 'react';
 
 import { preventDefault } from '../common/dom';
 import { TranslatedString } from '../locale';
@@ -15,7 +15,7 @@ export interface AddressSelectProps {
     onUseNewAddress(currentAddress?: Address): void;
 }
 
-class AddressSelect extends Component<AddressSelectProps> {
+class AddressSelect extends PureComponent<AddressSelectProps> {
     render(): ReactNode {
         const {
             addresses,
@@ -110,4 +110,4 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps> = ({
     </a>
 );
 
-export default AddressSelect;
+export default memo(AddressSelect);

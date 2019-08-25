@@ -1,6 +1,6 @@
 import { FormFieldItem } from '@bigcommerce/checkout-sdk';
 import { isDate, noop } from 'lodash';
-import React, { useCallback, FunctionComponent } from 'react';
+import React, { memo, useCallback, FunctionComponent } from 'react';
 import ReactDatePicker from 'react-datepicker';
 
 import { CheckboxInput, InputProps, RadioInput, TextArea, TextInput } from '../ui/form';
@@ -153,4 +153,4 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
     }
 };
 
-export default DynamicInput;
+export default memo(DynamicInput);

@@ -1,6 +1,6 @@
 import { FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
-import React, { useCallback, Fragment, FunctionComponent, ReactNode } from 'react';
+import React, { memo, useCallback, Fragment, FunctionComponent, ReactNode } from 'react';
 
 import BasicFormField from './BasicFormField';
 import CheckboxInput from './CheckboxInput';
@@ -49,4 +49,4 @@ const CheckboxFormField: FunctionComponent<CheckboxFormFieldProps> = ({
     />;
 };
 
-export default CheckboxFormField;
+export default memo(CheckboxFormField);

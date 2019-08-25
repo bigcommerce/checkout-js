@@ -1,6 +1,6 @@
 import { FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
 import { FieldProps } from 'formik';
-import React, { useCallback, useMemo, FunctionComponent } from 'react';
+import React, { memo, useCallback, useMemo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { AutocompleteItem } from '../../ui/autocomplete';
@@ -85,4 +85,4 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
     );
 };
 
-export default GoogleAutocompleteFormField;
+export default memo(GoogleAutocompleteFormField);

@@ -1,5 +1,5 @@
 import { noop } from 'lodash';
-import React, { Component, Fragment, ReactNode } from 'react';
+import React, { Fragment, PureComponent, ReactNode } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { Button, ButtonSize } from '../../ui/button';
@@ -22,7 +22,7 @@ export interface ErrorModalOnCloseProps {
     error: Error;
 }
 
-class ErrorModal extends Component<ErrorModalProps> {
+class ErrorModal extends PureComponent<ErrorModalProps> {
     render(): ReactNode {
         const { error } = this.props;
 

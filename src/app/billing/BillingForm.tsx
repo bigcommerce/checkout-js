@@ -1,6 +1,6 @@
 import { Address, CheckoutSelectors, Country, Customer, FormField } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps } from 'formik';
-import React, { createRef, Component, ReactNode, RefObject } from 'react';
+import React, { createRef, PureComponent, ReactNode, RefObject } from 'react';
 import { lazy } from 'yup';
 
 import { getAddressValidationSchema, isValidCustomerAddress, mapAddressToFormValues, AddressForm, AddressFormValues, AddressSelect } from '../address';
@@ -31,7 +31,7 @@ interface BillingFormState {
     isResettingAddress: boolean;
 }
 
-class BillingForm extends Component<BillingFormProps & WithLanguageProps & FormikProps<BillingFormValues>, BillingFormState> {
+class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & FormikProps<BillingFormValues>, BillingFormState> {
     state: BillingFormState = {
         isResettingAddress: false,
     };
