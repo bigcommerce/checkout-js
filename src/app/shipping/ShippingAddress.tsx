@@ -1,6 +1,6 @@
 import { Address, CheckoutSelectors, Consignment, Country, CustomerAddress, CustomerRequestOptions, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { useCallback, FunctionComponent } from 'react';
+import React, { memo, useCallback, FunctionComponent } from 'react';
 
 import { memoize } from '../common/utility';
 
@@ -107,4 +107,4 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
     );
 };
 
-export default ShippingAddress;
+export default memo(ShippingAddress);

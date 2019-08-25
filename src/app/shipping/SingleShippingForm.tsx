@@ -1,7 +1,7 @@
 import { Address, CheckoutSelectors, Consignment, Country, CustomerAddress, CustomerRequestOptions, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps } from 'formik';
 import { debounce, noop } from 'lodash';
-import React, { Component, ReactNode } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import { lazy, object } from 'yup';
 
 import { getAddressValidationSchema, isEqualAddress, mapAddressFromFormValues, mapAddressToFormValues, AddressFormValues } from '../address';
@@ -50,7 +50,7 @@ interface SingleShippingFormState {
 
 export const SHIPPING_AUTOSAVE_DELAY = 1000;
 
-class SingleShippingForm extends Component<SingleShippingFormProps & WithLanguageProps & FormikProps<SingleShippingFormValues>> {
+class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLanguageProps & FormikProps<SingleShippingFormValues>> {
     state: SingleShippingFormState = {
         isResettingAddress: false,
         isUpdatingShippingData: false,

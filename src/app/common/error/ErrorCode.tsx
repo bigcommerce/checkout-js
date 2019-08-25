@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
 
@@ -16,4 +16,4 @@ const ErrorCode: FunctionComponent<{code: string}> = ({ code }) => {
     );
 };
 
-export default ErrorCode;
+export default memo(ErrorCode);

@@ -1,5 +1,5 @@
 import { Address, CustomerAddress } from '@bigcommerce/checkout-sdk';
-import React, { useCallback, FunctionComponent } from 'react';
+import React, { memo, useCallback, FunctionComponent } from 'react';
 
 import { AddressSelect } from '../address';
 
@@ -75,4 +75,4 @@ const ItemAddressSelect: FunctionComponent<ItemAddressSelectProps> = ({
     </div>;
 };
 
-export default ItemAddressSelect;
+export default memo(ItemAddressSelect);

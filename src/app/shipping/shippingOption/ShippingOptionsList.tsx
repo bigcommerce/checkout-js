@@ -1,5 +1,5 @@
 import { ShippingOption } from '@bigcommerce/checkout-sdk';
-import React, { useCallback, FunctionComponent } from 'react';
+import React, { memo, useCallback, FunctionComponent } from 'react';
 
 import { EMPTY_ARRAY } from '../../common/utility';
 import { Checklist, ChecklistItem } from '../../ui/form';
@@ -77,4 +77,4 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
     );
 };
 
-export default ShippingOptionsList;
+export default memo(ShippingOptionsList);

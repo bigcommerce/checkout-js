@@ -1,6 +1,6 @@
 import { Address, Cart, CheckoutSelectors, CheckoutStoreSelector, Consignment, ConsignmentAssignmentRequestBody, CustomerAddress, FormField } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps } from 'formik';
-import React, { Component, ReactNode } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 
 import { isValidAddress } from '../address';
 import { preventDefault } from '../common/dom';
@@ -39,7 +39,7 @@ export interface MultiShippingFormState {
     items: ShippableItem[];
 }
 
-class MultiShippingForm extends Component<MultiShippingFormProps & WithLanguageProps & FormikProps<MultiShippingFormValues>, MultiShippingFormState> {
+class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLanguageProps & FormikProps<MultiShippingFormValues>, MultiShippingFormState> {
     static getDerivedStateFromProps(
         { cart, consignments }: MultiShippingFormProps,
         state: MultiShippingFormState
