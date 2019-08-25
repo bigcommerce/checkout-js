@@ -1,5 +1,5 @@
 import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 
 export interface CheckoutButtonProps {
     containerId: string;
@@ -9,7 +9,7 @@ export interface CheckoutButtonProps {
     onError?(error: Error): void;
 }
 
-export default class CheckoutButton extends Component<CheckoutButtonProps> {
+export default class CheckoutButton extends PureComponent<CheckoutButtonProps> {
     componentDidMount() {
         const {
             containerId,

@@ -1,5 +1,5 @@
 import { FieldProps } from 'formik';
-import React, { useCallback, FunctionComponent } from 'react';
+import React, { memo, useCallback, useMemo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../locale';
 import { FormField, TextInput } from '../ui/form';
@@ -20,12 +20,16 @@ const EmailField: FunctionComponent<EmailFieldProps>  = ({
         />
     ), []);
 
+    const labelContent = useMemo(() => (
+        <TranslatedString id="customer.email_label" />
+    ), []);
+
     return <FormField
         name="email"
-        labelContent={ <TranslatedString id="customer.email_label" /> }
+        labelContent={ labelContent }
         onChange={ onChange }
         input={ renderInput }
     />;
 };
 
-export default EmailField;
+export default memo(EmailField);

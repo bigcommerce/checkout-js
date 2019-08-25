@@ -1,5 +1,5 @@
 import { FieldProps } from 'formik';
-import React, { useCallback, useMemo, FunctionComponent } from 'react';
+import React, { memo, useCallback, useMemo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../locale';
 import { FormField, TextInput } from '../ui/form';
@@ -54,4 +54,4 @@ const PasswordField: FunctionComponent<PasswordFieldProps> = ({
     />;
 };
 
-export default PasswordField;
+export default memo(PasswordField);

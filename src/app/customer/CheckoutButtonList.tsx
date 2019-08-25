@@ -1,5 +1,5 @@
 import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
-import React, { Fragment, FunctionComponent } from 'react';
+import React, { memo, Fragment, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../locale';
 
@@ -69,4 +69,4 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
     );
 };
 
-export default CheckoutButtonList;
+export default memo(CheckoutButtonList);

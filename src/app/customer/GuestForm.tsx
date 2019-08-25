@@ -1,5 +1,5 @@
 import { withFormik, FormikProps } from 'formik';
-import React, { FunctionComponent, ReactNode } from 'react';
+import React, { memo, FunctionComponent, ReactNode } from 'react';
 import { object, string } from 'yup';
 
 import { withLanguage, TranslatedHtml, TranslatedString, WithLanguageProps } from '../locale';
@@ -105,4 +105,4 @@ export default withLanguage(withFormik<GuestFormProps & WithLanguageProps, Guest
 
         return object({ email });
     },
-})(GuestForm));
+})(memo(GuestForm)));

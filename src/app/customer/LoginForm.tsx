@@ -1,5 +1,5 @@
 import { withFormik, FormikProps } from 'formik';
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 import { object, string } from 'yup';
 
 import { preventDefault } from '../common/dom';
@@ -111,4 +111,4 @@ export default withLanguage(withFormik<LoginFormProps & WithLanguageProps, Login
         password: string()
             .required(language.translate('customer.password_required_error')),
     }),
-})(LoginForm));
+})(memo(LoginForm)));

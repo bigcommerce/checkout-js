@@ -57,7 +57,7 @@ describe('CheckoutButtonList', () => {
         );
 
         expect(component.html())
-            .toEqual(null);
+            .toBeFalsy();
     });
 
     it('passes data to every checkout button', () => {
