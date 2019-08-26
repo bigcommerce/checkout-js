@@ -10,7 +10,7 @@ exports[`OrderSummaryItems when it has 4 line items or less renders product list
     className="productList-item is-visible"
     key="666"
   >
-    <OrderSummaryItem
+    <Memo(OrderSummaryItem)
       amount={200}
       amountAfterDiscount={200}
       id="666"
@@ -37,7 +37,7 @@ exports[`OrderSummaryItems when it has 4 line items or less renders product list
     className="productList-item is-visible"
     key="bd391ead-8c58-4105-b00e-d75d233b429a"
   >
-    <OrderSummaryItem
+    <Memo(OrderSummaryItem)
       amount={100}
       id="bd391ead-8c58-4105-b00e-d75d233b429a"
       image={
@@ -56,7 +56,7 @@ exports[`OrderSummaryItems when it has 4 line items or less renders product list
     className="productList-item is-visible"
     key="667"
   >
-    <OrderSummaryItem
+    <Memo(OrderSummaryItem)
       amount={200}
       amountAfterDiscount={200}
       id="667"
@@ -95,7 +95,7 @@ exports[`OrderSummaryItems when it has 4 line items or less renders product list
     className="productList-item is-visible"
     key="55e11c8f-7dce-4da3-9413-b649533f8bad"
   >
-    <OrderSummaryItem
+    <Memo(OrderSummaryItem)
       amount={20}
       id="55e11c8f-7dce-4da3-9413-b649533f8bad"
       name="Custom item"

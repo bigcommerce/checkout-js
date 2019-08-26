@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { FunctionComponent, ReactNode } from 'react';
+import React, { memo, FunctionComponent, ReactNode } from 'react';
 
 import { ShopperCurrency } from '../currency';
 
@@ -77,4 +77,4 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
     </div>
 );
 
-export default OrderSummaryItem;
+export default memo(OrderSummaryItem);

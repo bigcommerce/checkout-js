@@ -1,4 +1,4 @@
-import React, { useCallback, FunctionComponent } from 'react';
+import React, { memo, useCallback, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../locale';
 import { IconPrint } from '../ui/icon';
@@ -28,4 +28,4 @@ const PrintLink: FunctionComponent<PrintLinkProps> = ({ className }) => {
     );
 };
 
-export default PrintLink;
+export default memo(PrintLink);

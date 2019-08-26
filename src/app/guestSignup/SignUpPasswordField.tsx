@@ -1,5 +1,5 @@
 import { FieldProps } from 'formik';
-import React, { useCallback, useMemo, Fragment, FunctionComponent } from 'react';
+import React, { memo, useCallback, useMemo, Fragment, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../locale';
 import { FormField, TextInput } from '../ui/form';
@@ -27,7 +27,7 @@ const SignUpPasswordField: FunctionComponent<PasswordField> = ({
         />
     ), []);
 
-    const labelContent = useMemo(() => (
+    const passwordLabelContent = useMemo(() => (
         <Fragment>
             <TranslatedString id={ 'customer.password_label' } />&nbsp;
             <small>
@@ -36,19 +36,23 @@ const SignUpPasswordField: FunctionComponent<PasswordField> = ({
         </Fragment>
     ), [minLength]);
 
+    const passwordConfirmationLabelContent = useMemo(() => (
+        <TranslatedString id={ 'customer.password_confirmation_label' } />
+    ), []);
+
     return <Fragment>
         <FormField
             name="password"
-            labelContent={ labelContent }
+            labelContent={ passwordLabelContent }
             input={ renderPasswordInput }
         />
 
         <FormField
             name="confirmPassword"
-            labelContent={ <TranslatedString id={'customer.password_confirmation_label' } /> }
+            labelContent={ passwordConfirmationLabelContent }
             input={ renderPasswordConfirmationInput }
         />
     </Fragment>;
 };
 
-export default SignUpPasswordField;
+export default memo(SignUpPasswordField);

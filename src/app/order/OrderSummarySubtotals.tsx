@@ -1,5 +1,5 @@
 import { Coupon, GiftCertificate, Tax } from '@bigcommerce/checkout-sdk';
-import React, { Fragment, FunctionComponent } from 'react';
+import React, { memo, Fragment, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../locale';
 
@@ -101,4 +101,4 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
     </Fragment>);
 };
 
-export default OrderSummarySubtotals;
+export default memo(OrderSummarySubtotals);

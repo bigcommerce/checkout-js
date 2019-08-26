@@ -12,21 +12,21 @@ exports[`OrderSummarySubtotals renders component 1`] = `
     }
     testId="cart-subtotal"
   />
-  <OrderSummaryDiscount
+  <Memo(OrderSummaryDiscount)
     amount={5}
     code="savebig2015"
     key="0"
     label="20% off each item"
     testId="cart-coupon"
   />
-  <OrderSummaryDiscount
+  <Memo(OrderSummaryDiscount)
     amount={5}
     code="279F507D817E3E7"
     key="1"
     label="$5.00 off the shipping total"
     testId="cart-coupon"
   />
-  <OrderSummaryDiscount
+  <Memo(OrderSummaryDiscount)
     amount={10}
     label={
       <WithLanguage(TranslatedString)
@@ -35,7 +35,7 @@ exports[`OrderSummarySubtotals renders component 1`] = `
     }
     testId="cart-discount"
   />
-  <OrderSummaryDiscount
+  <Memo(OrderSummaryDiscount)
     amount={7}
     code="gc"
     key="0"

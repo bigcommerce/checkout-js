@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import { ShopperCurrency } from '../currency';
 import { TranslatedString } from '../locale';
@@ -41,4 +41,4 @@ const OrderSummaryDiscount: FunctionComponent<OrderSummaryDiscountProps> = ({
     </OrderSummaryPrice>
 );
 
-export default OrderSummaryDiscount;
+export default memo(OrderSummaryDiscount);

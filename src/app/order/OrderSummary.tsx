@@ -1,9 +1,5 @@
-import {
-    LineItemMap,
-    ShopperCurrency,
-    StoreCurrency,
-} from '@bigcommerce/checkout-sdk';
-import React, { Fragment, FunctionComponent, ReactNode } from 'react';
+import { LineItemMap, ShopperCurrency, StoreCurrency } from '@bigcommerce/checkout-sdk';
+import React, { useMemo, FunctionComponent, ReactNode } from 'react';
 
 import removeBundledItems from './removeBundledItems';
 import OrderSummaryHeader from './OrderSummaryHeader';
@@ -29,20 +25,27 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     lineItems,
     total,
     ...orderSummarySubtotalsProps
-}) => (<Fragment>
-    <article className="cart optimizedCheckout-orderSummary" data-test="cart">
+}) => {
+    const nonBundledLineItems = useMemo(() => (
+        removeBundledItems(lineItems)
+    ), [lineItems]);
+
+    return <article className="cart optimizedCheckout-orderSummary" data-test="cart">
         <OrderSummaryHeader>
             { headerLink }
         </OrderSummaryHeader>
+
         <OrderSummarySection>
-            <OrderSummaryItems items={ removeBundledItems(lineItems) } />
+            <OrderSummaryItems items={ nonBundledLineItems } />
         </OrderSummarySection>
+
         <OrderSummarySection>
             <OrderSummarySubtotals
                 { ...orderSummarySubtotalsProps }
             />
             { additionalLineItems }
         </OrderSummarySection>
+
         <OrderSummarySection>
             <OrderSummaryTotal
                 orderAmount={ total }
@@ -50,7 +53,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                 storeCurrencyCode={ storeCurrency.code }
             />
         </OrderSummarySection>
-    </article>
-</Fragment>);
+    </article>;
+};
 
 export default OrderSummary;

@@ -4,7 +4,7 @@ import {
     StoreCurrency
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { useCallback, FunctionComponent, ReactNode } from 'react';
+import React, { memo, useCallback, FunctionComponent, ReactNode } from 'react';
 
 import { ShopperCurrency } from '../currency';
 import { TranslatedString } from '../locale';
@@ -133,4 +133,4 @@ function getImage(lineItems: LineItemMap): ReactNode {
     }
 }
 
-export default OrderSummaryDrawer;
+export default memo(OrderSummaryDrawer);

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../locale';
 import { PrimaryHeader } from '../ui/header';
@@ -20,4 +20,4 @@ const ThankYouHeader: FunctionComponent<HeaderProps> = ({
     </PrimaryHeader>
 );
 
-export default ThankYouHeader;
+export default memo(ThankYouHeader);
