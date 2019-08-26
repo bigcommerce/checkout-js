@@ -1,4 +1,5 @@
-import React, { Fragment, FunctionComponent } from 'react';
+import { FieldProps } from 'formik';
+import React, { useCallback, useMemo, Fragment, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../locale';
 import { FormField, TextInput } from '../ui/form';
@@ -9,33 +10,45 @@ export interface PasswordField {
 
 const SignUpPasswordField: FunctionComponent<PasswordField> = ({
     minLength,
-}) => (<Fragment>
-     <FormField
-        name="password"
-        labelContent={ <Fragment>
-            <TranslatedString id={'customer.password_label' } />&nbsp;
+}) => {
+    const renderPasswordInput = useCallback(({ field }: FieldProps<string>) => (
+        <TextInput
+            { ...field }
+            id={ field.name }
+            type="password"
+        />
+    ), []);
+
+    const renderPasswordConfirmationInput = useCallback(({ field }: FieldProps<string>) => (
+        <TextInput
+            { ...field }
+            id={ field.name }
+            type="password"
+        />
+    ), []);
+
+    const labelContent = useMemo(() => (
+        <Fragment>
+            <TranslatedString id={ 'customer.password_label' } />&nbsp;
             <small>
-                { minLength }-<TranslatedString id={'customer.password_minimum_character_label'} />
+                { minLength }-<TranslatedString id={ 'customer.password_minimum_character_label' } />
             </small>
-        </Fragment>}
-        input={ props =>
-            <TextInput
-                { ...props.field }
-                id={ props.field.name }
-                type="password"
-            />}
-    />
-    <FormField
-        name="confirmPassword"
-        labelContent={ <TranslatedString id={'customer.password_confirmation_label' } /> }
-        input={ ({ field }) =>
-            <TextInput
-                { ...field }
-                id={ field.name }
-                type="password"
-            />
-        }
-    />
-</Fragment>);
+        </Fragment>
+    ), [minLength]);
+
+    return <Fragment>
+        <FormField
+            name="password"
+            labelContent={ labelContent }
+            input={ renderPasswordInput }
+        />
+
+        <FormField
+            name="confirmPassword"
+            labelContent={ <TranslatedString id={'customer.password_confirmation_label' } /> }
+            input={ renderPasswordConfirmationInput }
+        />
+    </Fragment>;
+};
 
 export default SignUpPasswordField;

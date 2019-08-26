@@ -229,12 +229,14 @@ class OrderConfirmation extends Component<
         return (
             <ErrorModal
                 error={ error }
-                onClose={ () => {
-                    this.setState({ error: undefined });
-                } }
+                onClose={ this.handleErrorModalClose }
             />
         );
     }
+
+    private handleErrorModalClose: () => void = () => {
+        this.setState({ error: undefined });
+    };
 
     private handleSignUp: (values: SignUpFormValues) => void = ({ password, confirmPassword }) => {
         const { createAccount, config } = this.props;
