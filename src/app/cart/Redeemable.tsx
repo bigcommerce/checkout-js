@@ -1,7 +1,7 @@
 import { CheckoutSelectors, RequestError } from '@bigcommerce/checkout-sdk';
 import { withFormik, FieldProps, FormikProps } from 'formik';
 import { noop } from 'lodash';
-import React, { useCallback, Fragment, FunctionComponent, KeyboardEvent } from 'react';
+import React, { memo, useCallback, Fragment, FunctionComponent, KeyboardEvent } from 'react';
 import { object, string } from 'yup';
 
 import { preventDefault } from '../common/dom';
@@ -186,4 +186,4 @@ export default withLanguage(withFormik<RedeemableProps & WithLanguageProps, Rede
                 .required(language.translate('redeemable.code_required_error')),
         });
     },
-})(Redeemable));
+})(memo(Redeemable)));

@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 
 import { TranslatedHtml } from '../locale';
 import { LoadingOverlay } from '../ui/loading';
@@ -12,7 +12,7 @@ interface EmptyCartMessageState {
     isWaiting: boolean;
 }
 
-export default class EmptyCartMessage extends Component<EmptyCartMessageProps, EmptyCartMessageState> {
+export default class EmptyCartMessage extends PureComponent<EmptyCartMessageProps, EmptyCartMessageState> {
     state: EmptyCartMessageState = {
         isWaiting: true,
     };

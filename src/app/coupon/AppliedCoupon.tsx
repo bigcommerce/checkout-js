@@ -1,5 +1,5 @@
 import { Coupon } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../locale';
 
@@ -27,4 +27,4 @@ const AppliedCoupon: FunctionComponent<AppliedCouponProps> = ({ coupon }) => (
     </div>
 );
 
-export default AppliedCoupon;
+export default memo(AppliedCoupon);

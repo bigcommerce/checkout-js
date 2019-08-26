@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import { withCheckout } from '../checkout';
 import OrderSummaryDrawer from '../order/OrderSummaryDrawer';
@@ -24,4 +24,4 @@ const CartSummaryDrawer: FunctionComponent<CartSummaryProps & WithCheckoutCartSu
     })
 );
 
-export default withCheckout(mapToCartSummaryProps)(CartSummaryDrawer);
+export default withCheckout(mapToCartSummaryProps)(memo(CartSummaryDrawer));

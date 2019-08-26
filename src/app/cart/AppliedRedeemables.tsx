@@ -1,5 +1,5 @@
 import { Coupon, GiftCertificate } from '@bigcommerce/checkout-sdk';
-import React, { useCallback, FunctionComponent } from 'react';
+import React, { memo, useCallback, FunctionComponent } from 'react';
 
 import { AppliedCoupon } from '../coupon';
 import { AppliedGiftCertificate } from '../giftCertificate';
@@ -110,4 +110,4 @@ const AppliedRedeemables: FunctionComponent<AppliedRedeemablesProps> = ({
     );
 };
 
-export default AppliedRedeemables;
+export default memo(AppliedRedeemables);

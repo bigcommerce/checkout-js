@@ -1,5 +1,5 @@
 import { GiftCertificate } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import { ShopperCurrency } from '../currency';
 import { TranslatedString } from '../locale';
@@ -33,4 +33,4 @@ const AppliedGiftCertificate: FunctionComponent<AppliedGiftCertificateProps> = (
     </div>
 );
 
-export default AppliedGiftCertificate;
+export default memo(AppliedGiftCertificate);

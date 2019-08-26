@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CartSummary Component renders OrderSummaryDrawer with Edit Cart link 1`] = `
-<EditLink
+<Memo(EditLink)
   className="modal-header-link cart-modal-link"
   url="https://store-k1drp8k8.bcapp.dev/cart.php"
 />
