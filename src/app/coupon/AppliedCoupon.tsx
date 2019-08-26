@@ -19,8 +19,12 @@ const AppliedCoupon: FunctionComponent<AppliedCouponProps> = ({ coupon }) => (
             >
                 { coupon.displayName }
             </span>
+
+            { ' ' }
+
             <TranslatedString id="redeemable.coupon_text" />
         </span>
+
         <span className="redeemable-info-subHeader" data-test="coupon-code">
             { coupon.code }
         </span>
