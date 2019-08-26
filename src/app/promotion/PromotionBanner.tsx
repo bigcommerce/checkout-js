@@ -1,5 +1,5 @@
 import DOMPurify from 'dompurify';
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import { Alert, AlertType } from '../ui/alert';
 import { IconTag } from '../ui/icon';
@@ -25,4 +25,4 @@ const PromotionBanner: FunctionComponent<PromotionBannerProps> = ({
     </Alert>
 );
 
-export default PromotionBanner;
+export default memo(PromotionBanner);

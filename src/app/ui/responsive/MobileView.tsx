@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 import Media, { MediaProps } from 'react-media';
 
 import { MOBILE_MAX_WIDTH } from './breakpoints';
@@ -11,4 +11,4 @@ const MobileView: FunctionComponent<Pick<MediaProps, 'children'>> = ({ children 
     );
 };
 
-export default MobileView;
+export default memo(MobileView);

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
 
@@ -26,4 +26,4 @@ const LoadingNotification: FunctionComponent<LoadingNotificationProps> = ({
     );
 };
 
-export default LoadingNotification;
+export default memo(LoadingNotification);

@@ -1,5 +1,5 @@
 import { Banner, Promotion } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import PromotionBanner from './PromotionBanner';
 
@@ -33,4 +33,4 @@ const PromotionBannerList: FunctionComponent<PromotionBannerListProps> = ({
     );
 };
 
-export default PromotionBannerList;
+export default memo(PromotionBannerList);
