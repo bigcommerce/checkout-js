@@ -1,12 +1,35 @@
 import { ShippingOption } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import React, { useCallback, FunctionComponent } from 'react';
 
+import { EMPTY_ARRAY } from '../../common/utility';
 import { Checklist, ChecklistItem } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
 
 import StaticShippingOption from './StaticShippingOption';
 
-interface ShippingOptionListProps {
+interface ShippingOptionListItemProps {
+    consignmentId: string;
+    shippingOption: ShippingOption;
+}
+
+const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = ({
+    consignmentId,
+    shippingOption,
+}) => {
+    const renderLabel = useCallback(() => (
+        <div className="shippingOptionLabel">
+            <StaticShippingOption method={ shippingOption } />
+        </div>
+    ), [shippingOption]);
+
+    return <ChecklistItem
+        htmlId={ `shippingOptionRadio-${consignmentId}-${shippingOption.id}` }
+        label={ renderLabel }
+        value={ shippingOption.id }
+    />;
+};
+
+export interface ShippingOptionListProps {
     consignmentId: string;
     inputName: string;
     isLoading: boolean;
@@ -19,11 +42,18 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
     consignmentId,
     inputName,
     isLoading,
-    shippingOptions,
+    shippingOptions = EMPTY_ARRAY,
     selectedShippingOptionId,
     onSelectedOption,
  }) => {
-    if (!shippingOptions || !shippingOptions.length) {
+    const handleSelect = useCallback((value: string) => {
+        onSelectedOption(consignmentId, value);
+    }, [
+        consignmentId,
+        onSelectedOption,
+    ]);
+
+    if (!shippingOptions.length) {
         return null;
     }
 
@@ -33,18 +63,13 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
                 aria-live="polite"
                 defaultSelectedItemId={ selectedShippingOptionId }
                 name={ inputName }
-                onSelect={ value => onSelectedOption(consignmentId, value) }
+                onSelect={ handleSelect }
             >
                 { shippingOptions.map(shippingOption => (
-                    <ChecklistItem
-                        htmlId={ `shippingOptionRadio-${consignmentId}-${shippingOption.id}` }
+                    <ShippingOptionListItem
+                        consignmentId={ consignmentId }
                         key={ shippingOption.id }
-                        label={ () =>
-                            <div className="shippingOptionLabel">
-                                <StaticShippingOption method={ shippingOption } />
-                            </div>
-                        }
-                        value={ shippingOption.id }
+                        shippingOption={ shippingOption }
                     />
                 )) }
             </Checklist>

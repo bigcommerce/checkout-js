@@ -36,7 +36,6 @@ class ShippingAddressForm extends Component<ShippingAddressFormProps & ConnectFo
             formFields,
             isLoading,
             googleMapsApiKey,
-            onFieldChange,
             formik: {
                 values: {
                     shippingAddress: formAddress,
@@ -56,7 +55,7 @@ class ShippingAddressForm extends Component<ShippingAddressFormProps & ConnectFo
                                 addresses={ addresses }
                                 onUseNewAddress={ onUseNewAddress }
                                 selectedAddress={ hasValidCustomerAddress ? shippingAddress : undefined }
-                                onSelectAddress={ address => onAddressSelect(address) }
+                                onSelectAddress={ onAddressSelect }
                             />
                         </LoadingOverlay>
                     </Fieldset>
@@ -70,12 +69,8 @@ class ShippingAddressForm extends Component<ShippingAddressFormProps & ConnectFo
                             setFieldValue={ this.setFieldValue }
                             googleMapsApiKey={ googleMapsApiKey }
                             countryCode={ formAddress && formAddress.countryCode }
-                            onChange={ this.onChange }
-                            onAutocompleteToggle={ ({ isOpen, inputValue }) => {
-                                if (!isOpen) {
-                                    onFieldChange('address1', inputValue);
-                                }
-                            } }
+                            onChange={ this.handleChange }
+                            onAutocompleteToggle={ this.handleAutocompleteToggle }
                             fieldName={ addressFieldName }
                             formFields={ formFields }
                         />
@@ -102,12 +97,20 @@ class ShippingAddressForm extends Component<ShippingAddressFormProps & ConnectFo
         setFieldValue(`${addressFieldName}.${formFieldName}`, fieldValue);
     };
 
-    private onChange: (fieldName: string, value: string) => void = (fieldName, value) => {
+    private handleChange: (fieldName: string, value: string) => void = (fieldName, value) => {
         const {
             onFieldChange,
         } = this.props;
 
         onFieldChange(fieldName, value);
+    };
+
+    private handleAutocompleteToggle: (state: { inputValue: string; isOpen: boolean }) => void = ({ isOpen, inputValue }) => {
+        const { onFieldChange } = this.props;
+
+        if (!isOpen) {
+            onFieldChange('address1', inputValue);
+        }
     };
 }
 

@@ -94,7 +94,7 @@ class MultiShippingForm extends Component<MultiShippingFormProps & WithLanguageP
                             <ItemAddressSelect
                                 item={ item }
                                 addresses={ addresses }
-                                onSelectAddress={ (address, itemId) => this.handleSelectAddress(address, itemId, item.key)}
+                                onSelectAddress={ this.handleSelectAddress }
                                 onUseNewAddress={ onUseNewAddress }
                             />
                         </li>

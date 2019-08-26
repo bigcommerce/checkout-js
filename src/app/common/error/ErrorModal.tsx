@@ -1,5 +1,5 @@
 import { noop } from 'lodash';
-import React, { Fragment, PureComponent, ReactNode } from 'react';
+import React, { Fragment, PureComponent, ReactNode, SyntheticEvent } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { Button, ButtonSize } from '../../ui/button';
@@ -22,7 +22,7 @@ export interface ErrorModalOnCloseProps {
     error: Error;
 }
 
-class ErrorModal extends PureComponent<ErrorModalProps> {
+export default class ErrorModal extends PureComponent<ErrorModalProps> {
     render(): ReactNode {
         const { error } = this.props;
 
@@ -30,7 +30,7 @@ class ErrorModal extends PureComponent<ErrorModalProps> {
             <Modal
                 isOpen={ !!error }
                 additionalModalClassName="modal--error"
-                onRequestClose={ event => this.handleOnRequestClose(event.nativeEvent) }
+                onRequestClose={ this.handleOnRequestClose }
                 header={ this.renderHeader() }
                 footer={ this.renderFooter() }
             >
@@ -73,7 +73,7 @@ class ErrorModal extends PureComponent<ErrorModalProps> {
     private renderFooter(): ReactNode {
         return (
             <Button
-                onClick={ event => this.handleOnRequestClose(event.nativeEvent) }
+                onClick={ this.handleOnRequestClose }
                 size={ ButtonSize.Small }
             >
                 <TranslatedString id="common.ok_action" />
@@ -100,16 +100,14 @@ class ErrorModal extends PureComponent<ErrorModalProps> {
         return <ErrorCode code={ errorCode } />;
     }
 
-    private handleOnRequestClose: (event: Event) => void = event => {
+    private handleOnRequestClose: (event: SyntheticEvent) => void = event => {
         const {
             error,
             onClose = noop,
         } = this.props;
 
         if (error) {
-            onClose(event, { error });
+            onClose(event.nativeEvent, { error });
         }
     };
 }
-
-export default ErrorModal;

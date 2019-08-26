@@ -1,5 +1,5 @@
 import { Address, CustomerAddress } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import React, { useCallback, FunctionComponent } from 'react';
 
 import { AddressSelect } from '../address';
 
@@ -8,13 +8,14 @@ import ShippableItem from './ShippableItem';
 export interface ItemAddressSelectProps {
     item: ShippableItem;
     addresses: CustomerAddress[];
-    onSelectAddress(address: Address, itemId: string): void;
+    onSelectAddress(address: Address, itemId: string, itemKey: string): void;
     onUseNewAddress(address: Address | undefined, itemId: string): void;
 }
 
 const ItemAddressSelect: FunctionComponent<ItemAddressSelectProps> = ({
     item: {
         id,
+        key,
         imageUrl,
         quantity,
         name,
@@ -24,8 +25,23 @@ const ItemAddressSelect: FunctionComponent<ItemAddressSelectProps> = ({
     addresses,
     onSelectAddress,
     onUseNewAddress,
-}) => (
-    <div className="consignment">
+}) => {
+    const handleUseNewAddress = useCallback((address: Address) => {
+        onUseNewAddress(address, id as string);
+    }, [
+        id,
+        onUseNewAddress,
+    ]);
+
+    const handleSelectAddress = useCallback((address: Address) => {
+        onSelectAddress(address, id as string, key);
+    }, [
+        id,
+        key,
+        onSelectAddress,
+    ]);
+
+    return <div className="consignment">
         <figure className="consignment-product-figure">
             { imageUrl &&
                 <img src={ imageUrl } alt={ name } />
@@ -52,11 +68,11 @@ const ItemAddressSelect: FunctionComponent<ItemAddressSelectProps> = ({
             <AddressSelect
                 addresses={ addresses }
                 selectedAddress={ consignment && consignment.shippingAddress }
-                onUseNewAddress={ address => onUseNewAddress(address, id as string) }
-                onSelectAddress={ address => onSelectAddress(address, id as string) }
+                onUseNewAddress={ handleUseNewAddress }
+                onSelectAddress={ handleSelectAddress }
             />
         </div>
-    </div>
-);
+    </div>;
+};
 
 export default ItemAddressSelect;

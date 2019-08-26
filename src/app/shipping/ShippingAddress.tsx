@@ -1,6 +1,8 @@
 import { Address, CheckoutSelectors, Consignment, Country, CustomerAddress, CustomerRequestOptions, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { useCallback, FunctionComponent } from 'react';
+
+import { memoize } from '../common/utility';
 
 import RemoteShippingAddress from './RemoteShippingAddress';
 import ShippingAddressForm from './ShippingAddressForm';
@@ -44,9 +46,29 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
         onUnhandledError = noop,
     } = props;
 
+    const handleSignOutRequest = useCallback(async () => {
+        try {
+            await signOut({ methodId });
+            window.location.reload();
+        } catch (error) {
+            onUnhandledError(error);
+        }
+    }, [
+        methodId,
+        onUnhandledError,
+        signOut,
+    ]);
+
+    const initializeShipping = useCallback(memoize((defaultOptions: ShippingInitializeOptions) => (
+        (options?: ShippingInitializeOptions) => initialize({
+            ...defaultOptions,
+            ...options,
+        })
+    )), []);
+
     if (methodId) {
         const containerId = 'addressWidget';
-        let options: ShippingInitializeOptions;
+        let options: ShippingInitializeOptions = {};
 
         if (methodId === 'amazon') {
             options = {
@@ -61,19 +83,9 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
             <RemoteShippingAddress
                 containerId={ containerId }
                 methodId={ methodId }
-                onSignOut={ async () => {
-                    try {
-                        await signOut({ methodId });
-                        window.location.reload();
-                    } catch (error) {
-                        onUnhandledError(error);
-                    }
-                } }
+                onSignOut={ handleSignOutRequest }
                 deinitialize={ deinitialize }
-                initialize={ defaultOptions => initialize({
-                    ...defaultOptions,
-                    ...options,
-                }) }
+                initialize={ initializeShipping(options) }
             />
         );
     }
