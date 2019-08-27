@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 export interface LoadingSpinnerProps {
     isLoading: boolean;
@@ -20,4 +20,4 @@ const LoadingSpinner: FunctionComponent<LoadingSpinnerProps> = ({
     );
 };
 
-export default LoadingSpinner;
+export default memo(LoadingSpinner);

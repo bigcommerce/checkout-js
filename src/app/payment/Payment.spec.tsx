@@ -1,6 +1,7 @@
 import { createCheckoutService, CheckoutSelectors, CheckoutService, CustomError, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
-import { find } from 'lodash';
+import { EventEmitter } from 'events';
+import { find, merge, noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { getCart } from '../cart/carts.mock';
@@ -23,6 +24,7 @@ describe('Payment', () => {
     let localeContext: LocaleContextType;
     let paymentMethods: PaymentMethod[];
     let selectedPaymentMethod: PaymentMethod;
+    let subscribeEventEmitter: EventEmitter;
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
@@ -32,6 +34,18 @@ describe('Payment', () => {
             { ...getPaymentMethod(), id: 'sagepay' },
         ];
         selectedPaymentMethod = paymentMethods[0];
+        subscribeEventEmitter = new EventEmitter();
+
+        jest.spyOn(checkoutService, 'getState')
+            .mockImplementation(() => checkoutState);
+
+        jest.spyOn(checkoutService, 'subscribe')
+            .mockImplementation(subscriber => {
+                subscribeEventEmitter.on('change', () => subscriber(checkoutService.getState()));
+                subscribeEventEmitter.emit('change');
+
+                return noop;
+            });
 
         jest.spyOn(checkoutService, 'loadPaymentMethods')
             .mockResolvedValue(checkoutState);
@@ -177,10 +191,13 @@ describe('Payment', () => {
             .toEqual(paymentMethods[0]);
 
         // Update the list of payment methods so that its order is reversed
-        jest.spyOn(checkoutState.data, 'getPaymentMethods')
-            .mockReturnValue([paymentMethods[1], paymentMethods[0]]);
+        checkoutState = merge({}, checkoutState, {
+            data: {
+                getPaymentMethods: jest.fn(() => ([paymentMethods[1], paymentMethods[0]])),
+            },
+        });
 
-        container.setProps({});
+        subscribeEventEmitter.emit('change');
         container.update();
 
         expect(container.find(PaymentForm).prop('selectedMethod'))

@@ -5,7 +5,8 @@ import { ObjectSchema } from 'yup';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
-import { EMPTY_ARRAY } from '../../common/utility';
+import { MapToProps } from '../../common/hoc';
+import { memoize, EMPTY_ARRAY } from '../../common/utility';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
 import { configureCardValidator, getCreditCardValidationSchema, CreditCardFieldset, CreditCardFieldsetValues } from '../creditCard';
@@ -40,7 +41,11 @@ interface CreditCardPaymentMethodState {
 }
 
 class CreditCardPaymentMethod extends Component<
-    CreditCardPaymentMethodProps & WithCheckoutCreditCardPaymentMethodProps & WithPaymentProps & WithLanguageProps & ConnectFormikProps<PaymentFormValues>,
+    CreditCardPaymentMethodProps &
+        WithCheckoutCreditCardPaymentMethodProps &
+        WithPaymentProps &
+        WithLanguageProps &
+        ConnectFormikProps<PaymentFormValues>,
     CreditCardPaymentMethodState
 > {
     state: CreditCardPaymentMethodState = {
@@ -213,55 +218,63 @@ class CreditCardPaymentMethod extends Component<
     };
 }
 
-function mapFromCheckoutProps(
-    { checkoutService, checkoutState }: CheckoutContextProps,
-    props: CreditCardPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
-): WithCheckoutCreditCardPaymentMethodProps | null {
-    const {
-        formik: { values },
-        isUsingMultiShipping = false,
-        method,
-    } = props;
+function mapFromCheckoutProps(): MapToProps<
+    CheckoutContextProps,
+    WithCheckoutCreditCardPaymentMethodProps,
+    CreditCardPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
+> {
+    const filterInstruments = memoize((instruments: Instrument[] = EMPTY_ARRAY, method: PaymentMethod) =>
+        instruments.filter(({ provider }) => provider === method.id)
+    );
 
-    const {
-        data: {
-            getCart,
-            getConfig,
-            getCustomer,
-            getInstruments,
-            isPaymentDataRequired,
-        },
-        statuses: {
-            isLoadingInstruments,
-        },
-    } = checkoutState;
+    return (context, props) => {
+        const {
+            formik: { values },
+            isUsingMultiShipping = false,
+            method,
+        } = props;
 
-    const cart = getCart();
-    const config = getConfig();
-    const customer = getCustomer();
-    const instruments = getInstruments() || EMPTY_ARRAY;
+        const { checkoutService, checkoutState } = context;
 
-    if (!config || !cart || !customer || !method) {
-        return null;
-    }
+        const {
+            data: {
+                getCart,
+                getConfig,
+                getCustomer,
+                getInstruments,
+                isPaymentDataRequired,
+            },
+            statuses: {
+                isLoadingInstruments,
+            },
+        } = checkoutState;
 
-    return {
-        instruments: instruments.filter(({ provider }) => provider === method.id),
-        isInstrumentCardCodeRequired: isInstrumentCardCodeRequired({
-            config,
-            lineItems: cart.lineItems,
-            paymentMethod: method,
-        }),
-        isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredSelector(checkoutState),
-        isInstrumentFeatureAvailable: isInstrumentFeatureAvailable({
-            config,
-            customer,
-            isUsingMultiShipping,
-            paymentMethod: method,
-        }),
-        isLoadingInstruments: isLoadingInstruments(),
-        isPaymentDataRequired: isPaymentDataRequired(values.useStoreCredit),
-        loadInstruments: checkoutService.loadInstruments,
+        const cart = getCart();
+        const config = getConfig();
+        const customer = getCustomer();
+
+        if (!config || !cart || !customer || !method) {
+            return null;
+        }
+
+        return {
+            instruments: filterInstruments(getInstruments(), method),
+            isInstrumentCardCodeRequired: isInstrumentCardCodeRequired({
+                config,
+                lineItems: cart.lineItems,
+                paymentMethod: method,
+            }),
+            isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredSelector(checkoutState),
+            isInstrumentFeatureAvailable: isInstrumentFeatureAvailable({
+                config,
+                customer,
+                isUsingMultiShipping,
+                paymentMethod: method,
+            }),
+            isLoadingInstruments: isLoadingInstruments(),
+            isPaymentDataRequired: isPaymentDataRequired(values.useStoreCredit),
+            loadInstruments: checkoutService.loadInstruments,
+        };
     };
 }
 

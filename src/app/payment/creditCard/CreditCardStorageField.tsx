@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { memo, useMemo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { CheckboxFormField } from '../../ui/form';
@@ -7,12 +7,16 @@ export interface CreditCardStorageFieldProps {
     name: string;
 }
 
-const CreditCardStorageField: FunctionComponent<CreditCardStorageFieldProps> = ({ name }) => (
-    <CheckboxFormField
+const CreditCardStorageField: FunctionComponent<CreditCardStorageFieldProps> = ({ name }) => {
+    const labelContent = useMemo(() => (
+        <TranslatedString id="payment.instrument_save_payment_method_label" />
+    ), []);
+
+    return <CheckboxFormField
         additionalClassName="form-field--saveInstrument"
         name={ name }
-        labelContent={ <TranslatedString id="payment.instrument_save_payment_method_label" /> }
-    />
-);
+        labelContent={ labelContent }
+    />;
+};
 
-export default CreditCardStorageField;
+export default memo(CreditCardStorageField);

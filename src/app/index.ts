@@ -8,7 +8,9 @@ if (process.env.NODE_ENV === 'development') {
     // tslint:disable-next-line
     const { default: whyDidYouRender } = require('@welldone-software/why-did-you-render');
 
-    whyDidYouRender(React);
+    whyDidYouRender(React, {
+        collapseGroups: true,
+    });
 }
 
 export { default as renderCheckout } from '../app/checkout/renderCheckout';

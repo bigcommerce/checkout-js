@@ -7,6 +7,7 @@ import BasicFormField from './BasicFormField';
 import FormFieldError from './FormFieldError';
 import FormProvider from './FormProvider';
 
+/* eslint-disable react/jsx-no-bind */
 describe('FormFieldError', () => {
     it('renders component with test ID', async () => {
         const component = mount(

@@ -10,6 +10,7 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../../loc
 import { getInstrument, getInstruments } from './instruments.mock';
 import InstrumentSelect, { InstrumentSelectProps } from './InstrumentSelect';
 
+/* eslint-disable react/jsx-no-bind */
 describe('InstrumentSelect', () => {
     let defaultProps: Omit<InstrumentSelectProps, keyof FieldProps<string>>;
     let localeContext: LocaleContextType;

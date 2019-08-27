@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { Alert, AlertType } from '../../ui/alert';
@@ -35,4 +35,4 @@ const ManageInstrumentsAlert: FunctionComponent<ManageInstrumentsAlertProps> = (
     );
 };
 
-export default ManageInstrumentsAlert;
+export default memo(ManageInstrumentsAlert);

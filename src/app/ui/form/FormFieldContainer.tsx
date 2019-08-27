@@ -1,10 +1,11 @@
 import classNames from 'classnames';
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent, ReactNode } from 'react';
 
 import { FormContext } from './FormProvider';
 
 export interface FormFieldContainerProps {
     additionalClassName?: string;
+    children: ReactNode;
     className?: string;
     hasError?: boolean;
     testId?: string;
@@ -33,4 +34,4 @@ const FormFieldContainer: FunctionComponent<FormFieldContainerProps> = ({
     </FormContext.Consumer>
 );
 
-export default FormFieldContainer;
+export default memo(FormFieldContainer);

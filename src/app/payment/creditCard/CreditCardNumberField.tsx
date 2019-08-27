@@ -1,7 +1,7 @@
 import creditCardType from 'credit-card-type';
 import { FieldProps } from 'formik';
 import { max } from 'lodash';
-import React, { createRef, ChangeEventHandler, Component, Fragment, FunctionComponent, ReactNode, RefObject } from 'react';
+import React, { createRef, memo, useCallback, useMemo, ChangeEventHandler, Fragment, FunctionComponent, PureComponent, ReactNode, RefObject } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { FormField, TextInput } from '../../ui/form';
@@ -13,23 +13,27 @@ export interface CreditCardNumberFieldProps {
     name: string;
 }
 
-const CreditCardNumberField: FunctionComponent<CreditCardNumberFieldProps> = ({ name }) => (
-    <FormField
-        additionalClassName="form-field--ccNumber"
-        labelContent={
-            <TranslatedString id="payment.credit_card_number_label" />
-        }
-        input={ ({ field, form }) => (
-            <CreditCardNumberInput
-                field={ field }
-                form={ form }
-            />
-        ) }
-        name={ name }
-    />
-);
+const CreditCardNumberField: FunctionComponent<CreditCardNumberFieldProps> = ({ name }) => {
+    const renderInput = useCallback(({ field, form }: FieldProps) => (
+        <CreditCardNumberInput
+            field={ field }
+            form={ form }
+        />
+    ), []);
 
-class CreditCardNumberInput extends Component<FieldProps<string>> {
+    const labelContent = useMemo(() => (
+        <TranslatedString id="payment.credit_card_number_label" />
+    ), []);
+
+    return <FormField
+        additionalClassName="form-field--ccNumber"
+        labelContent={ labelContent }
+        input={ renderInput }
+        name={ name }
+    />;
+};
+
+class CreditCardNumberInput extends PureComponent<FieldProps<string>> {
     private inputRef: RefObject<HTMLInputElement> = createRef();
     private nextSelectionEnd: number = 0;
 
@@ -91,4 +95,4 @@ class CreditCardNumberInput extends Component<FieldProps<string>> {
     };
 }
 
-export default CreditCardNumberField;
+export default memo(CreditCardNumberField);

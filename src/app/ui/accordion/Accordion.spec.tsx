@@ -4,6 +4,7 @@ import React from 'react';
 import Accordion from './Accordion';
 import AccordionItem from './AccordionItem';
 
+/* eslint-disable react/jsx-no-bind */
 describe('Accordion', () => {
     let items: Array<{ label: string; id: string }>;
 

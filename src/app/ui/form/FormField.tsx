@@ -1,6 +1,6 @@
 import { FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
-import React, { Fragment, FunctionComponent, ReactNode } from 'react';
+import React, { memo, useCallback, Fragment, FunctionComponent, ReactNode } from 'react';
 
 import BasicFormField from './BasicFormField';
 import FormFieldError from './FormFieldError';
@@ -24,29 +24,37 @@ const FormField: FunctionComponent<FormFieldProps> = ({
     footer,
     input,
     name,
-}) => (
-    <BasicFormField
+}) => {
+    const renderField = useCallback(props => (
+        <Fragment>
+            { label && label(name) }
+            { labelContent && !label && <Label htmlFor={ name }>
+                { labelContent }
+            </Label> }
+
+            { input(props) }
+
+            <FormFieldError
+                name={ name }
+                testId={ `${kebabCase(name)}-field-error-message` }
+            />
+
+            { footer }
+        </Fragment>
+    ), [
+        label,
+        labelContent,
+        input,
+        name,
+        footer,
+    ]);
+
+    return <BasicFormField
         additionalClassName={ additionalClassName }
         name={ name }
         onChange={ onChange }
-        render={ props =>
-            <Fragment>
-                { label && label(name) }
-                { labelContent && !label && <Label htmlFor={ name }>
-                    { labelContent }
-                </Label> }
+        render={ renderField }
+    />;
+};
 
-                { input(props) }
-
-                <FormFieldError
-                    name={ name }
-                    testId={ `${kebabCase(name)}-field-error-message` }
-                />
-
-                { footer }
-            </Fragment>
-        }
-    />
-);
-
-export default FormField;
+export default memo(FormField);

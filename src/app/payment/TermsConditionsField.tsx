@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import { FieldProps } from 'formik';
+import React, { memo, useCallback, useMemo, FunctionComponent } from 'react';
 
 import { TranslatedHtml, TranslatedString } from '../locale';
 import { CheckboxFormField, Fieldset, FormField, Legend, TextArea } from '../ui/form';
@@ -22,6 +23,43 @@ interface TermsConditionsTextAreaFieldProps {
     type: TermsConditionsType.TextArea;
 }
 
+const TermsConditionsTextField: FunctionComponent<{ name: string; terms: string }> = ({
+    name,
+    terms,
+}) => {
+    const renderInput = useCallback(({ field }: FieldProps) => (
+        <TextArea
+            defaultValue={ terms }
+            name={ field.name }
+            readOnly
+        />
+    ), [terms]);
+
+    return (
+        <FormField
+            name={ `${name}Text` }
+            input={ renderInput }
+        />
+    );
+};
+const TermsConditionsCheckboxField: FunctionComponent<{ name: string; url?: string }> = ({
+    name,
+    url,
+}) => {
+    const labelContent = useMemo(() => (
+        url ?
+            <TranslatedHtml id="terms_and_conditions.agreement_with_link_text" data={ { url } } /> :
+            <TranslatedString id="terms_and_conditions.agreement_text" />
+    ), [url]);
+
+    return (
+        <CheckboxFormField
+            name={ name }
+            labelContent={ labelContent }
+        />
+    );
+};
+
 const TermsConditionsField: FunctionComponent<TermsConditionsFieldProps> = props => {
     return (
         <Fieldset
@@ -30,27 +68,11 @@ const TermsConditionsField: FunctionComponent<TermsConditionsFieldProps> = props
                 <TranslatedString id="terms_and_conditions.terms_and_conditions_heading" />
             </Legend> }
         >
-            { props.type === TermsConditionsType.TextArea && <FormField
-                name={ `${props.name}Text` }
-                input={ ({ field }) => (
-                    <TextArea
-                        defaultValue={ props.terms }
-                        name={ field.name }
-                        readOnly
-                    />
-                ) }
-            /> }
+            { props.type === TermsConditionsType.TextArea && <TermsConditionsTextField { ...props } /> }
 
-            <CheckboxFormField
-                name={ props.name }
-                labelContent={
-                    props.type === TermsConditionsType.Link ?
-                        <TranslatedHtml id="terms_and_conditions.agreement_with_link_text" data={ { url: props.url } } /> :
-                        <TranslatedString id="terms_and_conditions.agreement_text" />
-                }
-            />
+            <TermsConditionsCheckboxField { ...props } />
         </Fieldset>
     );
 };
 
-export default TermsConditionsField;
+export default memo(TermsConditionsField);

@@ -1,5 +1,5 @@
 import { CheckoutSelectors, CustomerInitializeOptions, CustomerRequestOptions, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 
@@ -144,4 +144,4 @@ function mapToWithCheckoutPaymentMethodProps(
     };
 }
 
-export default withCheckout(mapToWithCheckoutPaymentMethodProps)(PaymentMethodComponent);
+export default withCheckout(mapToWithCheckoutPaymentMethodProps)(memo(PaymentMethodComponent));

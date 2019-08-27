@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { useCallback, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
@@ -7,19 +7,20 @@ export type KlarnaPaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'con
 
 const KlarnaPaymentMethod: FunctionComponent<KlarnaPaymentMethodProps> = ({
     initializePayment,
-    onUnhandledError,
     ...rest
-}) => (
-    <HostedWidgetPaymentMethod
+}) => {
+    const initializeKlarnaPayment = useCallback(options => initializePayment({
+        ...options,
+        klarna: {
+            container: '#paymentWidget',
+        },
+    }), [initializePayment]);
+
+    return <HostedWidgetPaymentMethod
         { ...rest }
         containerId="paymentWidget"
-        initializePayment={ options => initializePayment({
-            ...options,
-            klarna: {
-                container: '#paymentWidget',
-            },
-        }) }
-    />
-);
+        initializePayment={ initializeKlarnaPayment }
+    />;
+};
 
 export default KlarnaPaymentMethod;

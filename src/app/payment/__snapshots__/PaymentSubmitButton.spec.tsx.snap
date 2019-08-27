@@ -1,13 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`PaymentSubmitButton matches snapshot with rendered output 1`] = `
-<Button
+<button
+  class="button button--action button--large button--slab optimizedCheckout-buttonPrimary"
   id="checkout-payment-continue"
-  isFullWidth={true}
-  size="large"
   type="submit"
-  variant="action"
 >
-  <PaymentSubmitButtonText />
-</Button>
+  Place Order
+</button>
 `;

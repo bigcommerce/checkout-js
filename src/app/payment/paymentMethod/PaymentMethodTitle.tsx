@@ -1,7 +1,7 @@
 import { LanguageService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { number } from 'card-validator';
 import { compact } from 'lodash';
-import React, { Fragment, FunctionComponent } from 'react';
+import React, { memo, Fragment, FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
@@ -148,4 +148,4 @@ function mapToCdnPathProps({ checkoutState }: CheckoutContextProps): WithCdnPath
     };
 }
 
-export default connectFormik(withLanguage(withCheckout(mapToCdnPathProps)(PaymentMethodTitle)));
+export default connectFormik(withLanguage(withCheckout(mapToCdnPathProps)(memo(PaymentMethodTitle))));

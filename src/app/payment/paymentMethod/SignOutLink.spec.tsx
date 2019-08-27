@@ -1,4 +1,4 @@
-import { mount } from 'enzyme';
+import { mount, render } from 'enzyme';
 import { noop } from 'lodash';
 import React from 'react';
 
@@ -16,7 +16,7 @@ describe('SignOutLink', () => {
     });
 
     it('renders output that matches snapshot', () => {
-        const component = mount(
+        const component = render(
             <LocaleContext.Provider value={ localeContext }>
                 <SignOutLink
                     onSignOut={ noop }
@@ -25,7 +25,7 @@ describe('SignOutLink', () => {
             </LocaleContext.Provider>
         );
 
-        expect(component.find(SignOutLink).getDOMNode())
+        expect(component)
             .toMatchSnapshot();
     });
 

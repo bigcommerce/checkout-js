@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import Alert, { AlertType } from './Alert';
 
@@ -40,4 +40,4 @@ function mapAlertType(type: number): AlertType | undefined {
     }
 }
 
-export default FlashAlert;
+export default memo(FlashAlert);

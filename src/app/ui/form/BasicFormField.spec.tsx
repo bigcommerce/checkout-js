@@ -6,6 +6,7 @@ import React from 'react';
 import BasicFormField from './BasicFormField';
 import FormProvider from './FormProvider';
 
+/* eslint-disable react/jsx-no-bind */
 describe('BasicFormField', () => {
     it('matches snapshot', () => {
         expect(shallow(<BasicFormField name="foobar" />))

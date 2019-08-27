@@ -1,5 +1,7 @@
-import { createCurrencyService, CheckoutService, LanguageService, StoreConfig } from '@bigcommerce/checkout-sdk';
+import { createCurrencyService, CheckoutService, StoreConfig } from '@bigcommerce/checkout-sdk';
 import React, { Component, ReactNode } from 'react';
+
+import { memoize } from '../common/utility';
 
 import getLanguageService from './getLanguageService';
 import LocaleContext from './LocaleContext';
@@ -13,17 +15,17 @@ export interface LocaleProviderState {
 }
 
 class LocaleProvider extends Component<LocaleProviderProps> {
-    state: Readonly<LocaleProviderState>;
+    state: Readonly<LocaleProviderState> = {};
 
-    private languageService: LanguageService;
+    private languageService = getLanguageService();
     private unsubscribe?: () => void;
 
-    constructor(props: Readonly<LocaleProviderProps>) {
-        super(props);
-
-        this.state = {};
-        this.languageService = getLanguageService();
-    }
+    private getContextValue = memoize((config?: StoreConfig) => {
+        return {
+            currency: config ? createCurrencyService(config) : undefined,
+            language: this.languageService,
+        };
+    });
 
     componentDidMount(): void {
         const { checkoutService } = this.props;
@@ -46,13 +48,9 @@ class LocaleProvider extends Component<LocaleProviderProps> {
     render(): ReactNode {
         const { children } = this.props;
         const { config } = this.state;
-        const context = {
-            currency: config ? createCurrencyService(config) : undefined,
-            language: this.languageService,
-        };
 
         return (
-            <LocaleContext.Provider value={ context }>
+            <LocaleContext.Provider value={ this.getContextValue(config) }>
                 { children }
             </LocaleContext.Provider>
         );

@@ -1,7 +1,9 @@
+import { FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
-import React, { FunctionComponent, ReactNode } from 'react';
+import React, { memo, useCallback, useContext, FunctionComponent, ReactNode } from 'react';
 
-import { AccordionItem } from '../accordion';
+import { memoize } from '../../common/utility';
+import { AccordionItem, AccordionItemHeaderProps } from '../accordion';
 
 import BasicFormField from './BasicFormField';
 import { ChecklistContext } from './Checklist';
@@ -20,49 +22,62 @@ const ChecklistItem: FunctionComponent<ChecklistItemProps> = ({
     htmlId = kebabCase(value),
     label,
     ...rest
-}) => (
-    <ChecklistContext.Consumer>
-        { context => {
-            if (!context) {
-                throw new Error('`Checklist` component should provide `name` prop.');
-            }
+}) => {
+    const { name = '' } = useContext(ChecklistContext) || {};
 
-            return (
-                <AccordionItem
-                    { ...rest }
-                    bodyClassName="form-checklist-body"
-                    className="form-checklist-item optimizedCheckout-form-checklist-item"
-                    classNameSelected="form-checklist-item--selected optimizedCheckout-form-checklist-item--selected"
-                    headerClassName="form-checklist-header"
-                    headerClassNameSelected="form-checklist-header--selected"
-                    headerContent={ ({ onToggle, isSelected }) => (
-                        <BasicFormField
-                            className="form-checklist-option"
-                            name={ context.name }
-                            onChange={ selectedValue => {
-                                if (value === selectedValue) {
-                                    onToggle(value);
-                                }
-                            } }
-                            render={ ({ field }) => (
-                                <ChecklistItemInput
-                                    { ...field }
-                                    isSelected={ field.value === value }
-                                    id={ htmlId }
-                                    value={ value }
-                                >
-                                    { label instanceof Function ? label(isSelected) : label }
-                                </ChecklistItemInput>
-                            ) }
-                        />
-                    ) }
-                    itemId={ value }
-                >
-                    { content }
-                </AccordionItem>
-            );
-        } }
-    </ChecklistContext.Consumer>
-);
+    const renderInput = useCallback(memoize((isSelected: boolean) => ({ field }: FieldProps) => (
+        <ChecklistItemInput
+            { ...field }
+            isSelected={ field.value === value }
+            id={ htmlId }
+            value={ value }
+        >
+            { label instanceof Function ?
+                label(isSelected) :
+                label }
+        </ChecklistItemInput>
+    )), [
+        htmlId,
+        label,
+        value,
+    ]);
 
-export default ChecklistItem;
+    const handleChange = useCallback(memoize((onToggle: (id: string) => void) => (selectedValue: string) => {
+        if (value === selectedValue) {
+            onToggle(value);
+        }
+    }), []);
+
+    const renderHeaderContent = useCallback(({
+        isSelected,
+        onToggle,
+    }: AccordionItemHeaderProps) => (
+        <BasicFormField
+            className="form-checklist-option"
+            name={ name }
+            onChange={ handleChange(onToggle) }
+            render={ renderInput(isSelected) }
+        />
+    ), [
+        handleChange,
+        name,
+        renderInput,
+    ]);
+
+    return (
+        <AccordionItem
+            { ...rest }
+            bodyClassName="form-checklist-body"
+            className="form-checklist-item optimizedCheckout-form-checklist-item"
+            classNameSelected="form-checklist-item--selected optimizedCheckout-form-checklist-item--selected"
+            headerClassName="form-checklist-header"
+            headerClassNameSelected="form-checklist-header--selected"
+            headerContent={ renderHeaderContent }
+            itemId={ value }
+        >
+            { content }
+        </AccordionItem>
+    );
+};
+
+export default memo(ChecklistItem);

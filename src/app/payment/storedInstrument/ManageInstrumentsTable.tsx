@@ -2,7 +2,7 @@ import { Instrument } from '@bigcommerce/checkout-sdk';
 import { expirationDate } from 'card-validator';
 import classNames from 'classnames';
 import creditCardType from 'credit-card-type';
-import React, { FunctionComponent } from 'react';
+import React, { memo, useCallback, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
@@ -69,6 +69,13 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
         year: instrument.expiryYear,
     }).isValid === false;
 
+    const handleDelete = useCallback(() => {
+        onDeleteInstrument(instrument.bigpayToken);
+    }, [
+        instrument,
+        onDeleteInstrument,
+    ]);
+
     return (
         <tr>
             <td data-test="manage-instrument-cardType">
@@ -91,7 +98,7 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
                 <button
                     className="button button--tiny table-actionButton optimizedCheckout-buttonSecondary"
                     data-test="manage-instrument-delete-button"
-                    onClick={ () => onDeleteInstrument(instrument.bigpayToken) }
+                    onClick={ handleDelete }
                     type="button"
                 >
                     <TranslatedString id="common.delete_action" />
@@ -101,4 +108,4 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
     );
 };
 
-export default ManageInstrumentsTable;
+export default memo(ManageInstrumentsTable);

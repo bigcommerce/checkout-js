@@ -5,7 +5,7 @@ import { ObjectSchema } from 'yup';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
 import { ErrorModal, ErrorModalOnCloseProps } from '../common/error';
-import { EMPTY_ARRAY } from '../common/utility';
+import { memoize, EMPTY_ARRAY } from '../common/utility';
 import { withLanguage, WithLanguageProps } from '../locale';
 import { FlashAlert, FlashMessage } from '../ui/alert';
 import { LoadingOverlay } from '../ui/loading';
@@ -37,8 +37,6 @@ interface WithCheckoutPaymentProps {
     cartUrl: string;
     defaultMethod?: PaymentMethod;
     finalizeOrderError?: Error;
-    isInitializingCustomer: boolean;
-    isInitializingPayment: boolean;
     isSpamProtectionEnabled: boolean;
     isSubmittingOrder: boolean;
     isTermsConditionsRequired: boolean;
@@ -69,6 +67,14 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         validationSchemas: {},
         submitFunctions: {},
     };
+
+    private getContextValue = memoize(() => {
+        return {
+            disableSubmit: this.disableSubmit,
+            setSubmit: this.setSubmit,
+            setValidationSchema: this.setValidationSchema,
+        };
+    });
 
     async componentDidMount(): Promise<void> {
         const {
@@ -137,11 +143,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         );
 
         return (
-            <PaymentContext.Provider value={ {
-                disableSubmit: this.disableSubmit,
-                setSubmit: this.setSubmit,
-                setValidationSchema: this.setValidationSchema,
-            } }>
+            <PaymentContext.Provider value={ this.getContextValue() }>
                 <LoadingOverlay
                     isLoading={ !isReady }
                     unmountContentWhenLoading
@@ -365,12 +367,10 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
     };
 }
 
-export function mapToPaymentProps(
-    {
-        checkoutService,
-        checkoutState,
-    }: CheckoutContextProps
-): WithCheckoutPaymentProps | null {
+export function mapToPaymentProps({
+    checkoutService,
+    checkoutState,
+}: CheckoutContextProps): WithCheckoutPaymentProps | null {
     const {
         data: {
             getCheckout,
@@ -384,11 +384,7 @@ export function mapToPaymentProps(
             getFinalizeOrderError,
             getSubmitOrderError,
         },
-        statuses: {
-            isInitializingCustomer,
-            isInitializingPayment,
-            isSubmittingOrder,
-        },
+        statuses: { isSubmittingOrder },
     } = checkoutState;
 
     const checkout = getCheckout();
@@ -419,8 +415,6 @@ export function mapToPaymentProps(
         defaultMethod: selectedPaymentMethod ? selectedPaymentMethod : filteredMethods[0],
         finalizeOrderError: getFinalizeOrderError(),
         finalizeOrderIfNeeded: checkoutService.finalizeOrderIfNeeded,
-        isInitializingCustomer: isInitializingCustomer(),
-        isInitializingPayment: isInitializingPayment(),
         isPaymentDataRequired,
         isSubmittingOrder: isSubmittingOrder(),
         isSpamProtectionEnabled,

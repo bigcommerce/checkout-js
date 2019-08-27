@@ -7,7 +7,7 @@ exports[`Alert matches snapshot 1`] = `
   <div
     className="alertBox-column alertBox-icon"
   >
-    <Component />
+    <Memo() />
   </div>
   <div
     className="alertBox-column alertBox-message"

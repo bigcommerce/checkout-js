@@ -1,7 +1,7 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps, WithFormikConfig } from 'formik';
 import { noop } from 'lodash';
-import React, { Fragment, FunctionComponent } from 'react';
+import React, { memo, useCallback, useContext, useMemo, Fragment, FunctionComponent } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
@@ -22,10 +22,7 @@ export interface PaymentFormProps {
     defaultGatewayId?: string;
     defaultMethodId: string;
     isEmbedded?: boolean;
-    isInitializingCustomer?: boolean;
-    isInitializingPayment?: boolean;
     isSpamProtectionEnabled?: boolean;
-    isSubmittingOrder?: boolean;
     isTermsConditionsRequired?: boolean;
     isUsingMultiShipping?: boolean;
     methods: PaymentMethod[];
@@ -81,10 +78,7 @@ export function isHostedWidgetValues(values: PaymentFormValues): values is Hoste
 const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormValues> & WithLanguageProps> = ({
     availableStoreCredit = 0,
     isEmbedded,
-    isInitializingCustomer,
-    isInitializingPayment,
     isPaymentDataRequired,
-    isSubmittingOrder,
     isSpamProtectionEnabled,
     isTermsConditionsRequired,
     isUsingMultiShipping,
@@ -99,8 +93,42 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
     termsConditionsUrl,
     usableStoreCredit = 0,
     values,
-}) => (
-    <Form
+}) => {
+    const { setSubmitted } = useContext(FormContext);
+    const commonValues = useMemo(
+        () => ({ terms: values.terms, useStoreCredit: values.useStoreCredit }),
+        [values.terms, values.useStoreCredit]
+    );
+
+    const handlePaymentMethodSelect = useCallback((method: PaymentMethod) => {
+        resetForm({
+            ...commonValues,
+            ccCustomerCode: '',
+            ccCvv: '',
+            ccExpiry: '',
+            ccName: '',
+            ccNumber: '',
+            instrumentId: '',
+            paymentProviderRadio: getUniquePaymentMethodId(method.id, method.gateway),
+            shouldSaveInstrument: false,
+        });
+
+        setSubmitted(false);
+        onMethodSelect(method);
+    }, [
+        commonValues,
+        onMethodSelect,
+        resetForm,
+        setSubmitted,
+    ]);
+
+    const legend = useMemo(() => (
+        <Legend>
+            <TranslatedString id="payment.payment_method_label" />
+        </Legend>
+    ), []);
+
+    return <Form
         className="checkout-form"
         testId="payment-form"
     >
@@ -111,38 +139,16 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
             usableStoreCredit={ usableStoreCredit }
         /> }
 
-        <Fieldset legend={
-            <Legend>
-                <TranslatedString id="payment.payment_method_label" />
-            </Legend>
-        }>
+        <Fieldset legend={ legend }>
             { !isPaymentDataRequired(values.useStoreCredit) && <StoreCreditOverlay /> }
 
-            <FormContext.Consumer>
-                { ({ setSubmitted }) =>
-                    <PaymentMethodList
-                        isEmbedded={ isEmbedded }
-                        isUsingMultiShipping={ isUsingMultiShipping }
-                        methods={ methods }
-                        onSelect={ method => {
-                            resetForm({
-                                ...values,
-                                ccCustomerCode: '',
-                                ccCvv: '',
-                                ccExpiry: '',
-                                ccName: '',
-                                ccNumber: '',
-                                instrumentId: '',
-                                shouldSaveInstrument: false,
-                            });
-
-                            setSubmitted(false);
-                            onMethodSelect(method);
-                        } }
-                        onUnhandledError={ onUnhandledError }
-                    />
-                }
-            </FormContext.Consumer>
+            <PaymentMethodList
+                isEmbedded={ isEmbedded }
+                isUsingMultiShipping={ isUsingMultiShipping }
+                methods={ methods }
+                onSelect={ handlePaymentMethodSelect }
+                onUnhandledError={ onUnhandledError }
+            />
         </Fieldset>
 
         <PaymentRedeemables />
@@ -165,19 +171,13 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
 
         <div className="form-actions">
             <PaymentSubmitButton
-                isDisabled={
-                    isInitializingCustomer ||
-                    isInitializingPayment ||
-                    isSubmittingOrder ||
-                    shouldDisableSubmit
-                }
-                isLoading={ isSubmittingOrder }
+                isDisabled={ shouldDisableSubmit }
                 methodId={ selectedMethod && selectedMethod.id }
                 methodType={ selectedMethod && selectedMethod.method }
             />
         </div>
-    </Form>
-);
+    </Form>;
+};
 
 const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, PaymentFormValues> = {
     mapPropsToValues: ({
@@ -190,8 +190,6 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
         ccExpiry: '',
         ccName: '',
         ccNumber: '',
-        gatewayId: defaultGatewayId,
-        methodId: defaultMethodId,
         paymentProviderRadio: getUniquePaymentMethodId(defaultMethodId, defaultGatewayId),
         instrumentId: '',
         shouldSaveInstrument: false,
@@ -248,4 +246,4 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
     ),
 };
 
-export default withLanguage(withFormik(paymentFormConfig)(PaymentForm));
+export default withLanguage(withFormik(paymentFormConfig)(memo(PaymentForm)));
