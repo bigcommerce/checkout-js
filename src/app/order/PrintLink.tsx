@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { memo, useCallback, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../locale';
 import { IconPrint } from '../ui/icon';
@@ -8,6 +8,10 @@ export interface PrintLinkProps {
 }
 
 const PrintLink: FunctionComponent<PrintLinkProps> = ({ className }) => {
+    const handleClick = useCallback(() => {
+        window.print();
+    }, []);
+
     if (typeof window.print !== 'function') {
         return null;
     }
@@ -15,13 +19,13 @@ const PrintLink: FunctionComponent<PrintLinkProps> = ({ className }) => {
     return (
         <a
             className={ className || 'cart-header-link' }
-            onClick={ () => window.print() }
+            onClick={ handleClick }
             id="cart-print-link"
         >
             <IconPrint />&nbsp;
-        <TranslatedString id="cart.print_action" />
+            <TranslatedString id="cart.print_action" />
         </a>
     );
 };
 
-export default PrintLink;
+export default memo(PrintLink);

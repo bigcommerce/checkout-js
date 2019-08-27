@@ -1,5 +1,5 @@
 import { withFormik, FormikProps } from 'formik';
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 import { object, ref, string } from 'yup';
 
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
@@ -75,4 +75,4 @@ export default withLanguage(withFormik<SignUpFormProps & WithLanguageProps, Sign
             .required(language.translate('customer.password_confirmation_required_error'))
             .oneOf([ref('password')], language.translate('customer.password_confirmation_error')),
     }),
-})(GuestSignUpForm));
+})(memo(GuestSignUpForm)));

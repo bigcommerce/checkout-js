@@ -2,7 +2,7 @@ import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcomm
 import React, { Component, ReactNode } from 'react';
 import ReactModal from 'react-modal';
 
-import { StepTrackerFactory } from '../analytics';
+import { StepTracker, StepTrackerFactory } from '../analytics';
 import { CheckoutProvider } from '../checkout';
 import { ErrorLoggerFactory, ErrorLoggingBoundary } from '../common/error';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
@@ -39,9 +39,9 @@ class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
                     <CheckoutProvider checkoutService={ this.checkoutService }>
                         <OrderConfirmation
                             { ...this.props }
-                            createAccount={ values => this.createAccount(values) }
+                            createAccount={ this.createAccount }
                             createEmbeddedMessenger={ createEmbeddedCheckoutMessenger }
-                            createStepTracker={ () => this.stepTrackerFactory.createTracker() }
+                            createStepTracker={ this.createStepTracker }
                             embeddedStylesheet={ this.embeddedStylesheet }
                             errorLogger={ this.errorLogger }
                         />
@@ -51,10 +51,10 @@ class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
         );
     }
 
-    private createAccount({
+    private createAccount: (values: SignUpFormValues) => Promise<CreatedCustomer> = ({
         password,
         confirmPassword,
-    }: SignUpFormValues): Promise<CreatedCustomer> {
+    }) => {
         const { orderId } = this.props;
 
         return this.accountService.create({
@@ -63,7 +63,11 @@ class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
             password,
             confirmPassword,
         });
-    }
+    };
+
+    private createStepTracker: () => StepTracker = () => {
+        return this.stepTrackerFactory.createTracker();
+    };
 }
 
 export default OrderConfirmationApp;

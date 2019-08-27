@@ -1,5 +1,5 @@
 import { Order } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import { TranslatedHtml, TranslatedString } from '../locale';
 
@@ -56,4 +56,4 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
     </OrderConfirmationSection>;
 };
 
-export default OrderStatus;
+export default memo(OrderStatus);

@@ -4,7 +4,7 @@ import {
     StoreCurrency
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { FunctionComponent, ReactNode } from 'react';
+import React, { memo, useCallback, FunctionComponent, ReactNode } from 'react';
 
 import { ShopperCurrency } from '../currency';
 import { TranslatedString } from '../locale';
@@ -26,26 +26,63 @@ export interface OrderSummaryDrawerProps {
 }
 
 const OrderSummaryDrawer: FunctionComponent<OrderSummaryDrawerProps & OrderSummarySubtotalsProps> = ({
-    storeCurrency,
-    shopperCurrency,
-    lineItems,
-    total,
     additionalLineItems,
+    coupons,
+    discountAmount,
+    giftCertificates,
+    handlingAmount,
     headerLink,
-    ...orderSummarySubtotalsProps
-}) => (
-    <ModalTrigger modal={ props => (
+    lineItems,
+    onRemovedCoupon,
+    onRemovedGiftCertificate,
+    shippingAmount,
+    shopperCurrency,
+    storeCreditAmount,
+    storeCurrency,
+    subtotalAmount,
+    taxes,
+    total,
+}) => {
+    const renderModal = useCallback(props => (
         <OrderSummaryModal
             { ...props }
-            { ...orderSummarySubtotalsProps }
-            total={ total }
-            lineItems={ lineItems }
-            headerLink={ headerLink }
-            storeCurrency={ storeCurrency }
-            shopperCurrency={ shopperCurrency }
+            coupons={ coupons }
+            discountAmount={ discountAmount }
+            giftCertificates={ giftCertificates }
+            handlingAmount={ handlingAmount }
+            onRemovedCoupon={ onRemovedCoupon }
+            onRemovedGiftCertificate={ onRemovedGiftCertificate }
+            shippingAmount={ shippingAmount }
+            storeCreditAmount={ storeCreditAmount }
+            subtotalAmount={ subtotalAmount }
+            taxes={ taxes }
             additionalLineItems={ additionalLineItems }
+            headerLink={ headerLink }
+            lineItems={ lineItems }
+            shopperCurrency={ shopperCurrency }
+            storeCurrency={ storeCurrency }
+            total={ total }
         />
-    ) }>
+    ), [
+        additionalLineItems,
+        coupons,
+        discountAmount,
+        giftCertificates,
+        handlingAmount,
+        headerLink,
+        lineItems,
+        onRemovedCoupon,
+        onRemovedGiftCertificate,
+        shippingAmount,
+        shopperCurrency,
+        storeCreditAmount,
+        storeCurrency,
+        subtotalAmount,
+        taxes,
+        total,
+    ]);
+
+    return <ModalTrigger modal={ renderModal }>
         { ({ onClick }) => <div
             className="cartDrawer optimizedCheckout-orderSummary"
             onClick={ onClick }
@@ -77,8 +114,8 @@ const OrderSummaryDrawer: FunctionComponent<OrderSummaryDrawerProps & OrderSumma
                 </h3>
             </div>
         </div> }
-    </ModalTrigger>
-);
+    </ModalTrigger>;
+};
 
 function getImage(lineItems: LineItemMap): ReactNode {
     const productWithImage = lineItems.physicalItems[0] || lineItems.digitalItems[0];
@@ -96,4 +133,4 @@ function getImage(lineItems: LineItemMap): ReactNode {
     }
 }
 
-export default OrderSummaryDrawer;
+export default memo(OrderSummaryDrawer);

@@ -93,7 +93,7 @@ exports[`OrderSummaryModal renders order summary 1`] = `
     />
   </OrderSummarySection>
   <OrderSummarySection>
-    <OrderSummarySubtotals
+    <Memo(OrderSummarySubtotals)
       coupons={
         Array [
           Object {

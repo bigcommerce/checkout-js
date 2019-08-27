@@ -87,7 +87,7 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
             <div className="cart-actions">
                 <button
                     className="button button--tertiary button--tiny optimizedCheckout-buttonSecondary"
-                    onClick={ this.toggle.bind(this) }
+                    onClick={ this.handleToggle }
                     type="button"
                 >
                         { isExpanded ?
@@ -114,9 +114,9 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
             items.giftCertificates.length;
     }
 
-    private toggle(): void {
+    private handleToggle: () => void = () => {
         this.setState({ isExpanded: !this.state.isExpanded });
-    }
+    };
 }
 
 export default OrderSummaryItems;

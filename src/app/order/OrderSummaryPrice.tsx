@@ -67,24 +67,13 @@ class OrderSummaryPrice extends Component<OrderSummaryPriceProps, OrderSummaryPr
             zeroLabel,
         } = this.props;
 
-        const { highlight, previousAmount } = this.state;
-
+        const { highlight } = this.state;
         const displayValue = getDisplayValue(amount, zeroLabel);
 
         return (
             <div data-test={ testId }>
                 <CSSTransition
-                    addEndListener={ (node, done) => {
-                        node.addEventListener('animationend', ({ target }) => {
-                            if (target === node) {
-                                this.setState({
-                                    highlight: false,
-                                    previousAmount,
-                                });
-                                done();
-                            }
-                        });
-                    } }
+                    addEndListener={ this.handleTransitionEnd }
                     classNames="changeHighlight"
                     in={ highlight }
                     timeout={ {} }
@@ -134,6 +123,20 @@ class OrderSummaryPrice extends Component<OrderSummaryPriceProps, OrderSummaryPr
             </div>
         );
     }
+
+    private handleTransitionEnd: (node: HTMLElement, done: () => void) => void = (node, done) => {
+        const { previousAmount } = this.state;
+
+        node.addEventListener('animationend', ({ target }) => {
+            if (target === node) {
+                this.setState({
+                    highlight: false,
+                    previousAmount,
+                });
+                done();
+            }
+        });
+    };
 }
 
 export default OrderSummaryPrice;
