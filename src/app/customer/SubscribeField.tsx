@@ -1,5 +1,5 @@
 import { FieldProps } from 'formik';
-import React, { Fragment, FunctionComponent } from 'react';
+import React, { memo, Fragment, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../locale';
 import { Input, Label } from '../ui/form';
@@ -22,4 +22,4 @@ const SubscribeField: FunctionComponent<SubscribeFieldProps> = ({ field }) => (
     </Fragment>
 );
 
-export default SubscribeField;
+export default memo(SubscribeField);

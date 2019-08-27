@@ -71,7 +71,6 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
             email,
             initializeCustomer,
             isContinuingAsGuest = false,
-            onChangeViewType = noop,
             onUnhandledError = noop,
         } = this.props;
 
@@ -92,9 +91,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
                 isContinuingAsGuest={ isContinuingAsGuest }
                 onChangeEmail={ this.handleChangeEmail }
                 onContinueAsGuest={ this.handleContinueAsGuest }
-                onShowLogin={ () => {
-                    onChangeViewType(CustomerViewType.Login);
-                } }
+                onShowLogin={ this.handleShowLogin }
             />
         );
     }
@@ -181,6 +178,12 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
 
     private handleChangeEmail: (email: string) => void = email => {
         this.draftEmail = email;
+    };
+
+    private handleShowLogin: () => void = () => {
+        const { onChangeViewType = noop } = this.props;
+
+        onChangeViewType(CustomerViewType.Login);
     };
 }
 

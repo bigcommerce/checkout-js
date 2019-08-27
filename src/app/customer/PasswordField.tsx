@@ -1,4 +1,5 @@
-import React, { FunctionComponent } from 'react';
+import { FieldProps } from 'formik';
+import React, { memo, useCallback, useMemo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../locale';
 import { FormField, TextInput } from '../ui/form';
@@ -11,38 +12,46 @@ export interface PasswordFieldProps {
 
 const PasswordField: FunctionComponent<PasswordFieldProps> = ({
     forgotPasswordUrl,
-}) => (
-    <FormField
-        labelContent={ <TranslatedString id={'customer.password_label' } /> }
-        name="password"
-        footer={
-            <a
-                data-test="forgot-password-link"
-                href={ forgotPasswordUrl }
-                rel="noopener noreferrer"
-                target="_blank"
-            >
-                <TranslatedString id="customer.forgot_password_action" />
-            </a>
-        }
-        input={ props =>
-            <Toggle openByDefault={ false }>
-                { ({ isOpen, toggle }) => (
-                    <div className="form-field-password">
-                        <TextInput
-                            { ...props.field }
-                            id={ props.field.name }
-                            additionalClassName="form-input--withIcon"
-                            type={ isOpen ? 'text' : 'password' }
-                        />
-                        <a href="#" className="form-toggle-password form-input-icon" onClick={ toggle } >
-                            { isOpen ? <IconEye /> : <IconEyeSlash /> }
-                        </a>
-                    </div>
-                ) }
-            </Toggle>
-        }
-    />
-);
+}) => {
+    const renderInput = useCallback((props: FieldProps) => (
+        <Toggle openByDefault={ false }>
+            { ({ isOpen, toggle }) => (
+                <div className="form-field-password">
+                    <TextInput
+                        { ...props.field }
+                        id={ props.field.name }
+                        additionalClassName="form-input--withIcon"
+                        type={ isOpen ? 'text' : 'password' }
+                    />
+                    <a href="#" className="form-toggle-password form-input-icon" onClick={ toggle } >
+                        { isOpen ? <IconEye /> : <IconEyeSlash /> }
+                    </a>
+                </div>
+            ) }
+        </Toggle>
+    ), []);
 
-export default PasswordField;
+    const labelContent = useMemo(() => (
+        <TranslatedString id={ 'customer.password_label' } />
+    ), []);
+
+    const footer = useMemo(() => (
+        <a
+            data-test="forgot-password-link"
+            href={ forgotPasswordUrl }
+            rel="noopener noreferrer"
+            target="_blank"
+        >
+            <TranslatedString id="customer.forgot_password_action" />
+        </a>
+    ), [forgotPasswordUrl]);
+
+    return <FormField
+        labelContent={ labelContent }
+        name="password"
+        footer={ footer }
+        input={ renderInput }
+    />;
+};
+
+export default memo(PasswordField);
