@@ -9,11 +9,11 @@ import Label from './Label';
 export interface FormFieldProps {
     additionalClassName?: string;
     name: string;
+    label?: ReactNode | ((fieldName: string) => ReactNode);
     labelContent?: ReactNode;
     footer?: ReactNode;
     input(field: FieldProps<string>): ReactNode;
     onChange?(value: string): void;
-    label?(fieldName: string): ReactNode;
 }
 
 const FormField: FunctionComponent<FormFieldProps> = ({
@@ -27,7 +27,7 @@ const FormField: FunctionComponent<FormFieldProps> = ({
 }) => {
     const renderField = useCallback(props => (
         <Fragment>
-            { label && label(name) }
+            { label && (typeof label === 'function' ? label(name) : label) }
             { labelContent && !label && <Label htmlFor={ name }>
                 { labelContent }
             </Label> }

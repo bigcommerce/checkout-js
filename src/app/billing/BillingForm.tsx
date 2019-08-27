@@ -1,6 +1,6 @@
 import { Address, CheckoutSelectors, Country, Customer, FormField } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps } from 'formik';
-import React, { createRef, Component, ReactNode, RefObject } from 'react';
+import React, { createRef, PureComponent, ReactNode, RefObject } from 'react';
 import { lazy } from 'yup';
 
 import { getAddressValidationSchema, isValidCustomerAddress, mapAddressToFormValues, AddressForm, AddressFormValues, AddressSelect } from '../address';
@@ -31,7 +31,7 @@ interface BillingFormState {
     isResettingAddress: boolean;
 }
 
-class BillingForm extends Component<BillingFormProps & WithLanguageProps & FormikProps<BillingFormValues>, BillingFormState> {
+class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & FormikProps<BillingFormValues>, BillingFormState> {
     state: BillingFormState = {
         isResettingAddress: false,
     };
@@ -66,8 +66,8 @@ class BillingForm extends Component<BillingFormProps & WithLanguageProps & Formi
                                 <AddressSelect
                                     addresses={ addresses }
                                     selectedAddress={ hasValidCustomerAddress ? billingAddress : undefined }
-                                    onUseNewAddress={ () => this.onSelectAddress({}) }
-                                    onSelectAddress={ this.onSelectAddress }
+                                    onUseNewAddress={ this.handleUseNewAddress }
+                                    onSelectAddress={ this.handleSelectAddress }
                                 />
                             </LoadingOverlay>
                         </Fieldset>
@@ -106,7 +106,7 @@ class BillingForm extends Component<BillingFormProps & WithLanguageProps & Formi
         );
     }
 
-    private onSelectAddress: (address: Partial<Address>) => void = async address => {
+    private handleSelectAddress: (address: Partial<Address>) => void = async address => {
         const {
             updateAddress,
             onUnhandledError,
@@ -121,6 +121,10 @@ class BillingForm extends Component<BillingFormProps & WithLanguageProps & Formi
         } finally {
             this.setState({ isResettingAddress: false });
         }
+    };
+
+    private handleUseNewAddress: () => void = () => {
+        this.handleSelectAddress({});
     };
 }
 

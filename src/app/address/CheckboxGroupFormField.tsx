@@ -1,7 +1,7 @@
 import { FormFieldItem } from '@bigcommerce/checkout-sdk';
-import { getIn, FieldArray } from 'formik';
-import { difference, kebabCase, noop } from 'lodash';
-import React, { FunctionComponent, ReactNode } from 'react';
+import { getIn, FieldArray, FieldArrayRenderProps } from 'formik';
+import { difference, kebabCase, noop, pick } from 'lodash';
+import React, { memo, useCallback, ChangeEvent, FunctionComponent, ReactNode } from 'react';
 
 import { FormFieldContainer, FormFieldError } from '../ui/form';
 
@@ -10,66 +10,134 @@ import DynamicInput from './DynamicInput';
 import MultiCheckboxControl from './MultiCheckboxControl';
 
 export interface CheckboxGroupFormFieldProps {
-    name: string;
     id: string;
     label: ReactNode;
+    name: string;
     options: FormFieldItem[];
     onChange?(values: string[]): void;
 }
 
-const CheckboxGroupFormField: FunctionComponent<CheckboxGroupFormFieldProps> = ({
-    label,
-    name,
-    id,
-    options,
-    onChange = noop,
-}) => (
-    <FieldArray
-        name={ name }
-        render={ ({ push, remove, pop, form: { values, errors } }) => (
-            <FormFieldContainer hasError={ getIn(errors, name) && getIn(errors, name).length }>
-                { label }
-                <MultiCheckboxControl
-                    testId={ id }
-                    onSelectedAll={ () => {
-                        const checkedValues: string[] = getIn(values, name) || [];
-                        difference(options.map(({ value }) => value), checkedValues)
-                            .forEach(val => push(val));
-
-                        onChange(getIn(values, name));
-                    }}
-                    onSelectedNone={ () => {
-                        const checkedValues: string[] = getIn(values, name) || [];
-                        checkedValues.forEach(() => pop());
-                        onChange(getIn(values, name));
-                    }}
-                />
-                <DynamicInput
-                    name={ name }
-                    value={ getIn(values, name) || [] }
-                    onChange={e => {
-                        const checkedValues: string[] = getIn(values, name) || [];
-                        const { value, checked } = e.target;
-
-                        if (checked) {
-                            push(value);
-                        } else {
-                            remove(checkedValues.indexOf(value));
-                        }
-
-                        onChange(getIn(values, name));
-                    } }
-                    fieldType={ DynamicFormFieldType.checkbox }
-                    options={ options }
-                    id={ id }
-                />
-                <FormFieldError
-                    name={ name }
-                    testId={ `${kebabCase(name)}-field-error-message` }
-                />
-            </FormFieldContainer>
-        )}
-    />
+type MultiCheckboxFormFieldProps = (
+    CheckboxGroupFormFieldProps &
+    Pick<FieldArrayRenderProps, 'push' | 'remove' | 'pop' | 'form'>
 );
 
-export default CheckboxGroupFormField;
+const MultiCheckboxFormField: FunctionComponent<MultiCheckboxFormFieldProps> = ({
+    form: { values, errors },
+    id,
+    label,
+    name,
+    onChange = noop,
+    options,
+    pop,
+    push,
+    remove,
+}) => {
+    const handleSelectAll = useCallback(() => {
+        const checkedValues: string[] = getIn(values, name) || [];
+
+        difference(options.map(({ value }) => value), checkedValues)
+            .forEach(val => push(val));
+
+        onChange(getIn(values, name));
+    }, [
+        name,
+        onChange,
+        options,
+        push,
+        values,
+    ]);
+
+    const handleSelectNone = useCallback(() => {
+        const checkedValues: string[] = getIn(values, name) || [];
+
+        checkedValues.forEach(() => pop());
+
+        onChange(getIn(values, name));
+    }, [
+        name,
+        onChange,
+        pop,
+        values,
+    ]);
+
+    const handleInputChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+        const checkedValues: string[] = getIn(values, name) || [];
+        const { value, checked } = event.target;
+
+        if (checked) {
+            push(value);
+        } else {
+            remove(checkedValues.indexOf(value));
+        }
+
+        onChange(getIn(values, name));
+    }, [
+        name,
+        onChange,
+        push,
+        remove,
+        values,
+    ]);
+
+    return <FormFieldContainer hasError={ getIn(errors, name) && getIn(errors, name).length }>
+        { label }
+
+        <MultiCheckboxControl
+            testId={ id }
+            onSelectedAll={ handleSelectAll }
+            onSelectedNone={ handleSelectNone }
+        />
+
+        <DynamicInput
+            name={ name }
+            value={ getIn(values, name) || [] }
+            onChange={ handleInputChange }
+            fieldType={ DynamicFormFieldType.checkbox }
+            options={ options }
+            id={ id }
+        />
+
+        <FormFieldError
+            name={ name }
+            testId={ `${kebabCase(name)}-field-error-message` }
+        />
+    </FormFieldContainer>;
+};
+
+const CheckboxGroupFormField: FunctionComponent<CheckboxGroupFormFieldProps> = ({
+    id,
+    label,
+    name,
+    onChange,
+    options,
+}) => {
+    const renderField = useCallback((renderProps: FieldArrayRenderProps) => (
+        <MultiCheckboxFormField
+            id={ id }
+            label={ label }
+            name={ name }
+            onChange={ onChange }
+            options={ options }
+            { ...pick(renderProps, [
+                'form',
+                'pop',
+                'push',
+                'remove',
+            ]) }
+        />
+    ), [
+        id,
+        label,
+        name,
+        onChange,
+        options,
+    ]);
+
+    return <FieldArray
+        name={ name }
+        render={ renderField }
+    />;
+};
+
+export default memo(CheckboxGroupFormField);

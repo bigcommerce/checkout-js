@@ -1,6 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Popover Component renders empty list when empty array is passed 1`] = `""`;
+exports[`Popover Component renders empty list when empty array is passed 1`] = `
+<Memo(PopoverList)
+  items={Array []}
+/>
+`;
 
 exports[`Popover Component renders list with highlighted text 1`] = `
 <li
@@ -31,47 +35,66 @@ exports[`Popover Component renders list with highlighted text 1`] = `
 `;
 
 exports[`Popover Component renders list with passed items 1`] = `
-<ul
-  className="popoverList"
->
-  <li
-    className="popoverList-item"
-    index={0}
-    item={
+<Memo(PopoverList)
+  items={
+    Array [
       Object {
         "content": "Lorem",
         "id": "x",
-      }
-    }
-    key="0"
-  >
-    Lorem
-  </li>
-  <li
-    className="popoverList-item"
-    index={1}
-    item={
+      },
       Object {
         "content": "Ipsum",
         "id": "y",
-      }
-    }
-    key="1"
-  >
-    Ipsum
-  </li>
-  <li
-    className="popoverList-item"
-    index={2}
-    item={
+      },
       Object {
         "content": "Foo",
         "id": "z",
-      }
-    }
-    key="2"
+      },
+    ]
+  }
+>
+  <ul
+    className="popoverList"
   >
-    Foo
-  </li>
-</ul>
+    <li
+      className="popoverList-item"
+      index={0}
+      item={
+        Object {
+          "content": "Lorem",
+          "id": "x",
+        }
+      }
+      key="0"
+    >
+      Lorem
+    </li>
+    <li
+      className="popoverList-item"
+      index={1}
+      item={
+        Object {
+          "content": "Ipsum",
+          "id": "y",
+        }
+      }
+      key="1"
+    >
+      Ipsum
+    </li>
+    <li
+      className="popoverList-item"
+      index={2}
+      item={
+        Object {
+          "content": "Foo",
+          "id": "z",
+        }
+      }
+      key="2"
+    >
+      Foo
+    </li>
+  </ul>
+</Memo(PopoverList)>
 `;

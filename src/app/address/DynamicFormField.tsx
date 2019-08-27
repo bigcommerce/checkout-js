@@ -1,5 +1,6 @@
 import { FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import { FieldProps } from 'formik';
+import React, { memo, useCallback, useMemo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../locale';
 import { FormField, Label } from '../ui/form';
@@ -74,7 +75,8 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
     const fieldInputId = getFormFieldInputId(addressFieldName);
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
     const translatedLabelString = LABEL[name];
-    const label = (
+
+    const label = useMemo(() => (
         <Label htmlFor={ fieldInputId }>
             { custom ?
                 fieldLabel :
@@ -88,7 +90,37 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
                 </>
             }
         </Label>
-    );
+    ), [
+        custom,
+        fieldInputId,
+        fieldLabel,
+        required,
+        translatedLabelString,
+    ]);
+
+    const renderInput = useCallback(({ field }: FieldProps<string>) => (
+        <DynamicInput
+            { ...field }
+            maxLength={ maxLength || undefined }
+            max={ max }
+            min={ min }
+            placeholder={ placeholder || (options && options.helperLabel) }
+            fieldType={ fieldType }
+            rows={ options && (options as any).rows }
+            options={ options && options.items }
+            autoComplete={ AUTOCOMPLETE[addressFieldName] }
+            id={ fieldInputId }
+        />
+    ), [
+        addressFieldName,
+        fieldInputId,
+        fieldType,
+        max,
+        maxLength,
+        min,
+        options,
+        placeholder,
+    ]);
 
     return (
         <div className={ `dynamic-form-field dynamic-form-field--${getFormFieldLegacyName(addressFieldName)}` }>
@@ -103,25 +135,12 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
                 <FormField
                     name={ fieldName }
                     onChange={ onChange }
-                    label={ () => label }
-                    input={ props =>
-                        <DynamicInput
-                            { ...props.field }
-                            maxLength={ maxLength || undefined }
-                            max={ max }
-                            min={ min }
-                            placeholder={ placeholder || (options && options.helperLabel) }
-                            fieldType={ fieldType }
-                            rows={ options && (options as any).rows }
-                            options={ options && options.items }
-                            autoComplete={ AUTOCOMPLETE[addressFieldName] }
-                            id={ fieldInputId }
-                        />
-                    }
+                    label={ label }
+                    input={ renderInput }
                 />
             }
         </div>
     );
 };
 
-export default DynamicFormField;
+export default memo(DynamicFormField);

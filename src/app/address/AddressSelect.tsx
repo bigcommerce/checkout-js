@@ -1,5 +1,5 @@
 import { Address, CustomerAddress } from '@bigcommerce/checkout-sdk';
-import React, { Component, FunctionComponent, ReactNode } from 'react';
+import React, { memo, FunctionComponent, PureComponent, ReactNode } from 'react';
 
 import { preventDefault } from '../common/dom';
 import { TranslatedString } from '../locale';
@@ -15,12 +15,11 @@ export interface AddressSelectProps {
     onUseNewAddress(currentAddress?: Address): void;
 }
 
-class AddressSelect extends Component<AddressSelectProps> {
+class AddressSelect extends PureComponent<AddressSelectProps> {
     render(): ReactNode {
         const {
             addresses,
             selectedAddress,
-            onUseNewAddress,
         } = this.props;
 
         return (
@@ -29,8 +28,8 @@ class AddressSelect extends Component<AddressSelectProps> {
                     <DropdownTrigger dropdown={
                         <AddressSelectMenu
                             addresses={ addresses }
-                            onSelectAddress={ this.onSelectAddress }
-                            onUseNewAddress={ () => onUseNewAddress(selectedAddress) }
+                            onSelectAddress={ this.handleSelectAddress }
+                            onUseNewAddress={ this.handleUseNewAddress }
                             selectedAddress={ selectedAddress }
                         />
                     }>
@@ -44,7 +43,7 @@ class AddressSelect extends Component<AddressSelectProps> {
         );
     }
 
-    private onSelectAddress: (newAddress: Address) => void = (newAddress: Address) => {
+    private handleSelectAddress: (newAddress: Address) => void = (newAddress: Address) => {
         const {
             onSelectAddress,
             selectedAddress,
@@ -53,6 +52,15 @@ class AddressSelect extends Component<AddressSelectProps> {
         if (!isEqualAddress(selectedAddress, newAddress)) {
             onSelectAddress(newAddress);
         }
+    };
+
+    private handleUseNewAddress: () => void = () => {
+        const {
+            selectedAddress,
+            onUseNewAddress,
+        } = this.props;
+
+        onUseNewAddress(selectedAddress);
     };
 }
 
@@ -102,4 +110,4 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps> = ({
     </a>
 );
 
-export default AddressSelect;
+export default memo(AddressSelect);

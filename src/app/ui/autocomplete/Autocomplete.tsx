@@ -1,6 +1,6 @@
 import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
 import { isNumber, noop } from 'lodash';
-import React, { Component, Fragment, ReactChild, ReactNode } from 'react';
+import React, { Fragment, PureComponent, ReactChild, ReactNode } from 'react';
 
 import { Popover, PopoverList, PopoverListItem } from '../popover';
 
@@ -18,7 +18,7 @@ export interface AutocompleteProps {
     onChange?(value: string, isOpen: boolean): void;
 }
 
-class Autocomplete extends Component<AutocompleteProps> {
+class Autocomplete extends PureComponent<AutocompleteProps> {
     render(): ReactNode {
         const {
             inputProps,
@@ -28,7 +28,6 @@ class Autocomplete extends Component<AutocompleteProps> {
             children,
             onSelect,
             listTestId,
-            onToggleOpen = noop,
         } = this.props;
 
         return (
@@ -36,14 +35,10 @@ class Autocomplete extends Component<AutocompleteProps> {
                 initialInputValue={ initialValue }
                 defaultHighlightedIndex={ 0 }
                 initialHighlightedIndex={ initialHighlightedIndex }
-                onStateChange={ ({ isOpen, inputValue }) => {
-                    if (isOpen !== undefined) {
-                        onToggleOpen({ isOpen, inputValue: inputValue || ''  });
-                    }
-                }}
-                stateReducer={ (state, changes) => this._stateReducer(state, changes) }
+                onStateChange={ this.handleStateChange }
+                stateReducer={ this.stateReducer }
                 onChange={ onSelect }
-                itemToString={ this._itemToString }
+                itemToString={ this.itemToString }
             >
                 {({
                     isOpen,
@@ -62,7 +57,7 @@ class Autocomplete extends Component<AutocompleteProps> {
                                 <PopoverList
                                     testId={ listTestId }
                                     menuProps={ getMenuProps() }
-                                    items={ items.map(item => this._toPopoverItem(item)) }
+                                    items={ items.map(item => this.toPopoverItem(item)) }
                                     highlightedIndex={ isNumber(highlightedIndex) ? highlightedIndex : -1 }
                                     getItemProps={ getItemProps }
                                 />
@@ -75,14 +70,14 @@ class Autocomplete extends Component<AutocompleteProps> {
         );
     }
 
-    private _toPopoverItem(item: AutocompleteItem): PopoverListItem {
+    private toPopoverItem(item: AutocompleteItem): PopoverListItem {
         return {
             ...item,
-            content: this._highlightItem(item),
+            content: this.highlightItem(item),
         };
     }
 
-    private _highlightItem(item: AutocompleteItem): ReactChild[] | ReactChild {
+    private highlightItem(item: AutocompleteItem): ReactChild[] | ReactChild {
         if (!item.highlightedSlices || !item.highlightedSlices.length) {
             return item.label;
         }
@@ -118,11 +113,11 @@ class Autocomplete extends Component<AutocompleteProps> {
         }, [] as ReactChild[]);
     }
 
-    private _itemToString(item?: AutocompleteItem): string {
+    private itemToString(item?: AutocompleteItem): string {
         return item && item.value || '';
     }
 
-    private _stateReducer: (
+    private stateReducer: (
         state: DownshiftState<AutocompleteItem>,
         changes: StateChangeOptions<AutocompleteItem>
     ) => Partial<StateChangeOptions<AutocompleteItem>> = (state, changes) => {
@@ -150,6 +145,14 @@ class Autocomplete extends Component<AutocompleteProps> {
 
         default:
             return changes;
+        }
+        };
+
+    private handleStateChange = ({ isOpen, inputValue }: StateChangeOptions<string>) => {
+        const { onToggleOpen = noop } = this.props;
+
+        if (isOpen !== undefined) {
+            onToggleOpen({ isOpen, inputValue: inputValue || '' });
         }
     };
 }

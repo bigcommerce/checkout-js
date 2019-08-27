@@ -1,6 +1,6 @@
 import { FormFieldItem } from '@bigcommerce/checkout-sdk';
-import { isDate } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import { isDate, noop } from 'lodash';
+import React, { memo, useCallback, FunctionComponent } from 'react';
 import ReactDatePicker from 'react-datepicker';
 
 import { CheckboxInput, InputProps, RadioInput, TextArea, TextInput } from '../ui/form';
@@ -19,17 +19,32 @@ export interface DynamicInputProps extends InputProps {
 const DynamicInput: FunctionComponent<DynamicInputProps> = ({
     additionalClassName,
     fieldType,
+    id,
+    name,
+    onChange = noop,
     options,
     placeholder,
     value,
-    id,
     ...rest
 }) => {
+    const handleDateChange = useCallback((date, event) => onChange({
+        ...event,
+        target: {
+            name,
+            value: date,
+        },
+    }), [
+        onChange,
+        name,
+    ]);
+
     switch (fieldType) {
     case DynamicFormFieldType.dropdown:
         return (
             <select
                 { ...rest as any }
+                name={ name }
+                onChange={ onChange }
                 id={ id }
                 data-test={ `${id}-select` }
                 className="form-select optimizedCheckout-form-select"
@@ -59,6 +74,8 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
         return <>{ options.map(({ label, value: optionValue }) =>
             <RadioInput
                 { ...rest }
+                name={ name }
+                onChange={ onChange }
                 id={ `${id}-${optionValue}` }
                 testId={ `${id}-${optionValue}-radio` }
                 key={ optionValue }
@@ -75,6 +92,8 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
         return <>{ options.map(({ label, value: optionValue }) =>
             <CheckboxInput
                 { ...rest }
+                name={ name }
+                onChange={ onChange }
                 id={ `${id}-${optionValue}` }
                 testId={ `${id}-${optionValue}-checkbox` }
                 key={ optionValue }
@@ -87,18 +106,11 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
         return (
             <ReactDatePicker
                 { ...rest as any }
+                name={ name }
                 // FIXME: we can avoid this by simply using onChangeRaw, but it's not being triggered properly
                 // https://github.com/Hacker0x01/react-datepicker/issues/1357
                 // onChangeRaw={ rest.onChange }
-                onChange={
-                    (date, event) => rest.onChange && rest.onChange({
-                        ...event,
-                        target: {
-                            name: rest.name,
-                            value: date,
-                        },
-                    } as any)
-                }
+                onChange={ handleDateChange }
                 autoComplete="off"
                 placeholderText="MM/DD/YYYY"
                 minDate={ rest.min ? new Date(rest.min) : undefined }
@@ -114,6 +126,8 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
         return (
             <TextArea
                 { ...rest as any }
+                name={ name }
+                onChange={ onChange }
                 id={ id }
                 testId={ `${id}-text` }
                 type={ fieldType }
@@ -125,6 +139,8 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
         return (
             <TextInput
                 { ...rest }
+                name={ name }
+                onChange={ onChange }
                 id={ id }
                 testId={ `${id}-${ fieldType === DynamicFormFieldType.password ?
                     'password' :
@@ -137,4 +153,4 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
     }
 };
 
-export default DynamicInput;
+export default memo(DynamicInput);

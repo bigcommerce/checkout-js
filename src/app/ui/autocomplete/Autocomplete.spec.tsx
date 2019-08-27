@@ -2,6 +2,8 @@ import { mount, render, ReactWrapper } from 'enzyme';
 import toJson from 'enzyme-to-json';
 import React from 'react';
 
+import { Popover, PopoverList } from '../popover';
+
 import AutocompleteItem from './autocomplete-item';
 import Autocomplete from './Autocomplete';
 
@@ -33,6 +35,7 @@ describe('Autocomplete Component', () => {
             onChange = jest.fn();
             tree = mount(<Autocomplete onChange={ onChange } items={ items }><h1>Bob</h1></Autocomplete>);
             tree.find('input').simulate('change', { target: { value: 'zo' }});
+            tree.render();
         });
 
         it('triggers onChange function', () => {
@@ -40,17 +43,17 @@ describe('Autocomplete Component', () => {
         });
 
         it('renders a PopoverList with the passed items', () => {
-            expect(tree.find('PopoverList').length).toEqual(1);
-            expect(tree.find('PopoverList').find('li').length).toEqual(3);
-            expect(tree.find('PopoverList').find('strong').html()).toEqual('<strong>zo</strong>');
+            expect(tree.find(PopoverList).length).toEqual(1);
+            expect(tree.find(PopoverList).find('li').length).toEqual(3);
+            expect(tree.find(PopoverList).find('strong').html()).toEqual('<strong>zo</strong>');
         });
 
         it('renders a PopoverList with the new value as highlighted text', () => {
-            expect(tree.find('PopoverList').find('strong').html()).toEqual('<strong>zo</strong>');
+            expect(tree.find(PopoverList).find('strong').html()).toEqual('<strong>zo</strong>');
         });
 
         it('renders passed child inside Popover', () => {
-            expect(tree.find('Popover').find('h1').html()).toMatchSnapshot();
+            expect(tree.find(Popover).find('h1').html()).toMatchSnapshot();
         });
     });
 
@@ -75,7 +78,7 @@ describe('Autocomplete Component', () => {
         });
 
         it('closes popover', () => {
-            expect(tree.find('PopoverList').length).toEqual(0);
+            expect(tree.find(PopoverList).length).toEqual(0);
         });
 
         it('populates input field with selected item', () => {
@@ -104,7 +107,7 @@ describe('Autocomplete Component', () => {
         });
 
         it('closes popover', () => {
-            expect(tree.find('PopoverList').length).toEqual(0);
+            expect(tree.find(PopoverList).length).toEqual(0);
         });
 
         it('populates input field with selected item', () => {

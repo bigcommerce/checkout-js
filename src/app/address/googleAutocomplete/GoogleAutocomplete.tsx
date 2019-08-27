@@ -1,5 +1,5 @@
 import { noop } from 'lodash';
-import React, { Component, ReactNode } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 
 import { Autocomplete, AutocompleteItem } from '../../ui/autocomplete';
 
@@ -26,7 +26,7 @@ interface GoogleAutocompleteState {
     autoComplete: string;
 }
 
-class GoogleAutocomplete extends Component<GoogleAutocompleteProps, GoogleAutocompleteState> {
+class GoogleAutocomplete extends PureComponent<GoogleAutocompleteProps, GoogleAutocompleteState> {
     googleAutocompleteService: GoogleAutocompleteService;
 
     constructor(props: GoogleAutocompleteProps) {
