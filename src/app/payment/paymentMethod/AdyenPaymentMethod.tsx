@@ -1,5 +1,5 @@
-import { CardComponentOptions } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import { CardComponentOptions, PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import React, { useCallback, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
@@ -32,19 +32,23 @@ const AdyenPaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
         },
     };
 
-    return <HostedWidgetPaymentMethod
-        {...rest}
-        containerId= { containerId }
-        hideContentWhenSignedOut
-        method={ method }
-        initializePayment={ options => initializePayment({
+    const initializeAdyenPayment = useCallback((options: PaymentInitializeOptions) => {
+        return initializePayment({
             ...options,
             adyenv2: {
                 containerId,
                 options: adyenOptions[component],
                 threeDS2ChallengeWidgetSize: '01',
             },
-        })}
+        });
+    }, [initializePayment, containerId, component, adyenOptions]);
+
+    return <HostedWidgetPaymentMethod
+        {...rest}
+        containerId= { containerId }
+        hideContentWhenSignedOut
+        method={ method }
+        initializePayment={ initializeAdyenPayment }
     />;
 };
 
