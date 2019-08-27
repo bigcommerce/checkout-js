@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import { preventDefault } from '../common/dom';
 import { TranslatedString } from '../locale';
@@ -41,4 +41,4 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
     </div>
 );
 
-export default ShippingHeader;
+export default memo(ShippingHeader);

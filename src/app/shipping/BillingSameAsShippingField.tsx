@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { memo, useMemo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../locale';
 import { CheckboxFormField } from '../ui/form';
@@ -9,13 +9,17 @@ export interface BillingSameAsShippingFieldProps {
 
 const BillingSameAsShippingField: FunctionComponent<BillingSameAsShippingFieldProps>  = ({
     onChange,
-}) => (
-    <CheckboxFormField
+}) => {
+    const labelContent = useMemo(() => (
+        <TranslatedString id="billing.use_shipping_address_label" />
+    ), []);
+
+    return <CheckboxFormField
         name="billingSameAsShipping"
         id="sameAsBilling"
-        labelContent={ <TranslatedString id="billing.use_shipping_address_label" /> }
+        labelContent={ labelContent }
         onChange={ onChange }
-    />
-);
+    />;
+};
 
-export default BillingSameAsShippingField;
+export default memo(BillingSameAsShippingField);

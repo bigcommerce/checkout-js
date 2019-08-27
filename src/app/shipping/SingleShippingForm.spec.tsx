@@ -8,6 +8,7 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale
 import { getShippingAddress } from './shipping-addresses.mock';
 import SingleShippingForm, { SingleShippingFormProps, SHIPPING_AUTOSAVE_DELAY } from './SingleShippingForm';
 
+/* eslint-disable react/jsx-no-bind */
 describe('SingleShippingForm', () => {
     const addressFormFields = getAddressFormFields().filter(({ custom }) => !custom );
     let localeContext: LocaleContextType;

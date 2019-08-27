@@ -11,6 +11,7 @@ import StaticConsignmentItemList from '../StaticConsignmentItemList';
 import ShippingOptionsForm, { ShippingOptionsFormProps } from './ShippingOptionsForm';
 import ShippingOptionsList from './ShippingOptionsList';
 
+/* eslint-disable react/jsx-no-bind */
 describe('ShippingOptions Component', () => {
     const consignments = [
         {

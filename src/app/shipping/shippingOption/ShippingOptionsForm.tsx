@@ -1,7 +1,7 @@
 import { CheckoutSelectors, Consignment } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps } from 'formik';
 import { noop } from 'lodash';
-import React, { Component, Fragment, ReactNode } from 'react';
+import React, { Fragment, PureComponent, ReactNode } from 'react';
 
 import { StaticAddress } from '../../address';
 import { TranslatedString } from '../../locale';
@@ -14,7 +14,7 @@ import ShippingOptionsList from './ShippingOptionsList';
 
 export type ShippingOptionsFormProps = ShippingOptionsProps & WithCheckoutShippingOptionsProps;
 
-class ShippingOptionsForm extends Component<ShippingOptionsFormProps & FormikProps<ShippingOptionsFormValues>> {
+class ShippingOptionsForm extends PureComponent<ShippingOptionsFormProps & FormikProps<ShippingOptionsFormValues>> {
     private unsubscribe?: () => void;
 
     componentDidMount(): void {

@@ -1,6 +1,6 @@
 import { CheckoutSelectors, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { Component, ReactNode } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 
 import { SignOutLink } from '../payment/paymentMethod';
 
@@ -13,7 +13,7 @@ export interface RemoteShippingAddressProps {
     onUnhandledError?(error: Error): void;
 }
 
-class RemoteShippingAddress extends Component<RemoteShippingAddressProps> {
+class RemoteShippingAddress extends PureComponent<RemoteShippingAddressProps> {
     async componentDidMount(): Promise<void> {
         const {
             initialize,

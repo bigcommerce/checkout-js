@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 
 import { TranslatedString } from '../locale';
 import { OrderComments } from '../orderComments';
@@ -17,7 +17,7 @@ export interface ShippingFormFooterProps {
     isLoading: boolean;
 }
 
-class ShippingFormFooter extends Component<ShippingFormFooterProps> {
+class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
     render(): ReactNode {
         const {
             cartHasChanged,

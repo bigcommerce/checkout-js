@@ -1,5 +1,5 @@
 import { Cart, Consignment } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import { AddressType, StaticAddress } from '../address';
 import { TranslatedString } from '../locale';
@@ -60,4 +60,4 @@ const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
     );
 };
 
-export default StaticConsignment;
+export default memo(StaticConsignment);
