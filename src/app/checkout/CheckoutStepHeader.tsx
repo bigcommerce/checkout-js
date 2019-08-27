@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { noop } from 'lodash';
-import React, { FunctionComponent, ReactNode } from 'react';
+import React, { memo, FunctionComponent, ReactNode } from 'react';
 
 import { preventDefault } from '../common/dom';
 import { TranslatedString } from '../locale';
@@ -68,4 +68,4 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
     );
 };
 
-export default CheckoutStepHeader;
+export default memo(CheckoutStepHeader);

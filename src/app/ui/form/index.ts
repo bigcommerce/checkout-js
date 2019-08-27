@@ -23,6 +23,7 @@ export type ChecklistProps = ChecklistProps;
 export type ChecklistItemProps = ChecklistItemProps;
 export type FormContextType = FormContextType;
 export type FormFieldErrorProps = FormFieldErrorProps;
+export type FormContextType = FormContextType;
 export type InputProps = InputProps;
 export type TextAreaProps = TextAreaProps;
 export type TextInputProps = TextInputProps;

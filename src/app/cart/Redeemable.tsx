@@ -1,14 +1,15 @@
 import { CheckoutSelectors, RequestError } from '@bigcommerce/checkout-sdk';
-import { withFormik, FormikProps } from 'formik';
+import { withFormik, FieldProps, FormikProps } from 'formik';
 import { noop } from 'lodash';
-import React, { Fragment, FunctionComponent } from 'react';
+import React, { memo, useCallback, Fragment, FunctionComponent, KeyboardEvent } from 'react';
 import { object, string } from 'yup';
 
 import { preventDefault } from '../common/dom';
+import { memoize } from '../common/utility';
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
-import { FormField, FormProvider, Label, TextInput } from '../ui/form';
+import { FormContextType, FormField, FormProvider, Label, TextInput } from '../ui/form';
 import { Toggle } from '../ui/toggle';
 
 import AppliedRedeemables, { AppliedRedeemablesProps } from './AppliedRedeemables';
@@ -73,65 +74,93 @@ const RedeemableForm: FunctionComponent<Partial<RedeemableProps> & FormikProps<R
     isApplyingRedeemable,
     clearError = noop,
     submitForm,
-}) => (
-    <fieldset className="form-fieldset redeemable-entry">
-        <FormProvider>
-            { ({ setSubmitted }) => (
-                <FormField
-                    name="redeemableCode"
-                    label={ name => (
-                        <Label hidden htmlFor={ name }>
-                            <TranslatedString id="redeemable.code_label" />
-                        </Label>
-                    ) }
-                    input={ ({ field }) => (
-                        <Fragment>
-                            { appliedRedeemableError && <Alert type={ AlertType.Error}>
-                                { appliedRedeemableError.errors[0].code === 'not_applicable' ?
-                                    <TranslatedString id="redeemable.coupon_location_error" /> :
-                                    <TranslatedString id="redeemable.code_invalid_error" />
-                                }
-                            </Alert> }
-                            <div className="form-prefixPostfix">
-                                <TextInput
-                                    { ...field }
-                                    onKeyDown={ (event: React.KeyboardEvent) => {
-                                        if (appliedRedeemableError) {
-                                            clearError(appliedRedeemableError);
-                                        }
+}) => {
+    const handleKeyDown = useCallback(memoize((setSubmitted: FormContextType['setSubmitted']) => (
+        (event: KeyboardEvent) => {
+            if (appliedRedeemableError) {
+                clearError(appliedRedeemableError);
+            }
 
-                                        // note: to prevent submitting main form, we manually intercept
-                                        // the enter key event and submit the "subform".
-                                        if (event.keyCode === 13) {
-                                            setSubmitted(true);
-                                            submitForm();
-                                            event.preventDefault();
-                                        }
-                                    } }
-                                    className="form-input optimizedCheckout-form-input"
-                                    testId="redeemableEntry-input"
-                                />
-                                <Button
-                                    className="form-prefixPostfix-button--postfix"
-                                    testId="redeemableEntry-submit"
-                                    id="applyRedeemableButton"
-                                    variant={ ButtonVariant.Secondary }
-                                    isLoading={ isApplyingRedeemable }
-                                    onClick={ () => {
-                                        setSubmitted(true);
-                                        submitForm();
-                                    } }
-                                >
-                                    <TranslatedString id="redeemable.apply_action" />
-                                </Button>
-                            </div>
-                        </Fragment>
-                    ) }
+            // note: to prevent submitting main form, we manually intercept
+            // the enter key event and submit the "subform".
+            if (event.keyCode === 13) {
+                setSubmitted(true);
+                submitForm();
+                event.preventDefault();
+            }
+        }
+    )), [
+        appliedRedeemableError,
+        clearError,
+        submitForm,
+    ]);
+
+    const handleSubmit = useCallback(memoize((setSubmitted: FormContextType['setSubmitted']) => (
+        () => {
+            setSubmitted(true);
+            submitForm();
+        }
+    )), []);
+
+    const renderLabel = useCallback((name: string) => (
+        <Label hidden htmlFor={ name }>
+            <TranslatedString id="redeemable.code_label" />
+        </Label>
+    ), []);
+
+    const renderInput = useCallback((setSubmitted: FormContextType['setSubmitted']) => ({ field }: FieldProps) => (
+        <Fragment>
+            { appliedRedeemableError && <Alert type={ AlertType.Error }>
+                { appliedRedeemableError.errors[0].code === 'not_applicable' ?
+                    <TranslatedString id="redeemable.coupon_location_error" /> :
+                    <TranslatedString id="redeemable.code_invalid_error" />
+                }
+            </Alert> }
+
+            <div className="form-prefixPostfix">
+                <TextInput
+                    { ...field }
+                    onKeyDown={ handleKeyDown(setSubmitted) }
+                    className="form-input optimizedCheckout-form-input"
+                    testId="redeemableEntry-input"
                 />
-            ) }
+
+                <Button
+                    className="form-prefixPostfix-button--postfix"
+                    testId="redeemableEntry-submit"
+                    id="applyRedeemableButton"
+                    variant={ ButtonVariant.Secondary }
+                    isLoading={ isApplyingRedeemable }
+                    onClick={ handleSubmit(setSubmitted) }
+                >
+                    <TranslatedString id="redeemable.apply_action" />
+                </Button>
+            </div>
+        </Fragment>
+    ), [
+        appliedRedeemableError,
+        handleKeyDown,
+        handleSubmit,
+        isApplyingRedeemable,
+    ]);
+
+    const renderContent = useCallback(memoize(({ setSubmitted }: FormContextType) => (
+        <FormField
+            name="redeemableCode"
+            label={ renderLabel }
+            input={ renderInput(setSubmitted) }
+        />
+    )), [
+        renderLabel,
+        renderInput,
+    ]);
+
+    return <fieldset className="form-fieldset redeemable-entry">
+        <FormProvider>
+            { renderContent }
         </FormProvider>
-    </fieldset>
-);
+    </fieldset>;
+};
 
 export default withLanguage(withFormik<RedeemableProps & WithLanguageProps, RedeemableFormValues>({
     mapPropsToValues() {
@@ -157,4 +186,4 @@ export default withLanguage(withFormik<RedeemableProps & WithLanguageProps, Rede
                 .required(language.translate('redeemable.code_required_error')),
         });
     },
-})(Redeemable));
+})(memo(Redeemable)));
