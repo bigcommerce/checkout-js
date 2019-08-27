@@ -1,17 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import OrderConfirmationApp from './OrderConfirmationApp';
+import OrderConfirmationApp, { OrderConfirmationAppProps } from './OrderConfirmationApp';
 
-export default function renderOrderConfirmation(
-    containerId: string,
-    orderId: number
-) {
+function renderOrderConfirmation(props: OrderConfirmationAppProps): void {
     ReactDOM.render(
-        <OrderConfirmationApp
-            orderId={ orderId }
-            containerId={ containerId }
-        />,
-        document.getElementById(containerId)
+        <OrderConfirmationApp { ...props } />,
+        document.getElementById(props.containerId)
     );
 }
+
+export default renderOrderConfirmation;

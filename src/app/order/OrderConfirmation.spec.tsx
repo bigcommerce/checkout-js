@@ -4,7 +4,7 @@ import React, { FunctionComponent } from 'react';
 
 import { NoopStepTracker, StepTracker } from '../analytics';
 import { CheckoutProvider } from '../checkout';
-import { ErrorLoggerFactory } from '../common/error';
+import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { CreatedCustomer } from '../guestSignup';
@@ -51,7 +51,7 @@ describe('OrderConfirmation', () => {
             createEmbeddedMessenger: () => embeddedMessengerMock,
             createStepTracker: () => stepTracker,
             embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
-            errorLogger: new ErrorLoggerFactory().getLogger(),
+            errorLogger: createErrorLogger(),
             orderId: 105,
         };
 

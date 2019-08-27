@@ -11,7 +11,7 @@ import { CartSummaryProps } from '../cart';
 import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';
 import CartSummary from '../cart/CartSummary';
-import { ErrorLoggerFactory } from '../common/error';
+import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { CustomerInfo, CustomerInfoProps, CustomerProps, CustomerViewType } from '../customer';
 import { getCustomer } from '../customer/customers.mock';
@@ -55,7 +55,7 @@ describe('Checkout', () => {
             createEmbeddedMessenger: () => embeddedMessengerMock,
             embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
             embeddedSupport: createEmbeddedCheckoutSupport(getLanguageService()),
-            errorLogger: new ErrorLoggerFactory().getLogger(),
+            errorLogger: createErrorLogger(),
             flashMessages: [],
             subscribeToNewsletter: jest.fn(),
             createStepTracker: () => stepTracker,
