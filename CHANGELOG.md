@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.2](https://github.com/bigcommerce/checkout-js/compare/v1.0.1...v1.0.2) (2019-08-28)
+
+
+### Bug Fixes
+
+* **cart:** CHECKOUT-4272 Fix spacing issue in cart summary panel ([51be22b](https://github.com/bigcommerce/checkout-js/commit/51be22b))
+* **checkout:** INT-1829 INT-1836 CHECKOUT-4272 Bump checkout-sdk version to v1.34.1 ([4c8f395](https://github.com/bigcommerce/checkout-js/commit/4c8f395))
+* **payment:** INT-1831 widget is now loaded when vaulted instruments exists ([69ba28c](https://github.com/bigcommerce/checkout-js/commit/69ba28c))
+
+
+### Code Refactoring
+
+* **common:** CHECKOUT-4272 Add ability to pass mapper factory to injector HOC so it is possible to call memoized function inside mapper for each component instance ([cfc7a8f](https://github.com/bigcommerce/checkout-js/commit/cfc7a8f))
+* **common:** CHECKOUT-4352 Turn on `react/jsx-no-bind` rule ([ae10fdb](https://github.com/bigcommerce/checkout-js/commit/ae10fdb))
+
+
+### Performance Improvements
+
+* **billing:** CHECKOUT-4272 Check if props are different before calling render method of billing components ([dcb3965](https://github.com/bigcommerce/checkout-js/commit/dcb3965))
+* **billing:** CHECKOUT-4272 Stop passing arrow functions into components in billing address components ([6658efe](https://github.com/bigcommerce/checkout-js/commit/6658efe))
+* **billing:** CHECKOUT-4352 Optimize rendering of static address ([5ecdd35](https://github.com/bigcommerce/checkout-js/commit/5ecdd35))
+* **cart:** CHECKOUT-4272 Avoid passing arrow function to cart components ([0036c08](https://github.com/bigcommerce/checkout-js/commit/0036c08))
+* **cart:** CHECKOUT-4272 Check if props are different before calling render method of cart components ([d396b54](https://github.com/bigcommerce/checkout-js/commit/d396b54))
+* **checkout:** CHECKOUT-4272 Avoid passing arrow function to checkout components ([6e037c0](https://github.com/bigcommerce/checkout-js/commit/6e037c0))
+* **checkout:** CHECKOUT-4272 Check if props are different before calling render method of cart components ([587ed2a](https://github.com/bigcommerce/checkout-js/commit/587ed2a))
+* **customer:** CHECKOUT-4272 Check if props are different before calling render method of customer components ([01e2ad7](https://github.com/bigcommerce/checkout-js/commit/01e2ad7))
+* **customer:** CHECKOUT-4272 Stop passing arrow functions into components in customer section ([caf3a83](https://github.com/bigcommerce/checkout-js/commit/caf3a83))
+* **order:** CHECKOUT-4272 Check if props are different before calling render method of order components ([534da6f](https://github.com/bigcommerce/checkout-js/commit/534da6f))
+* **order:** CHECKOUT-4272 Stop passing arrow functions into components on order confirmation page ([76e7ea3](https://github.com/bigcommerce/checkout-js/commit/76e7ea3))
+* **payment:** CHECKOUT-4272 Avoid passing arrow function to credit card fields ([787bfd3](https://github.com/bigcommerce/checkout-js/commit/787bfd3))
+* **payment:** CHECKOUT-4272 Avoid passing arrow function to instrument fields ([33ee337](https://github.com/bigcommerce/checkout-js/commit/33ee337))
+* **payment:** CHECKOUT-4272 Avoid passing arrow function to terms and condition field ([e455c06](https://github.com/bigcommerce/checkout-js/commit/e455c06))
+* **payment:** CHECKOUT-4272 Avoid re-rendering list of payment methods unless there are relevant changes ([624fe81](https://github.com/bigcommerce/checkout-js/commit/624fe81))
+* **payment:** CHECKOUT-4272 Avoid re-rendering payment method component unless there are relevant changes ([74803ff](https://github.com/bigcommerce/checkout-js/commit/74803ff))
+* **payment:** CHECKOUT-4272 Check if props are different before calling render method of payment components ([e656647](https://github.com/bigcommerce/checkout-js/commit/e656647))
+* **payment:** CHECKOUT-4272 Stop passing initialisation state to submit button of payment form ([39a83ec](https://github.com/bigcommerce/checkout-js/commit/39a83ec))
+* **shipping:** CHECKOUT-4272 Check if props are different before calling render method of shipping components ([2af27c8](https://github.com/bigcommerce/checkout-js/commit/2af27c8))
+* **shipping:** CHECKOUT-4272 Stop passing arrow functions into components in shipping components ([4d163d9](https://github.com/bigcommerce/checkout-js/commit/4d163d9))
+
 ### [1.0.1](https://github.com/bigcommerce/checkout-js/compare/v1.0.0...v1.0.1) (2019-08-23)
 
 
