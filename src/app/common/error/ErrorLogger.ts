@@ -1,11 +1,6 @@
-export default interface ErrorLogger {
-    /**
-     * Sets a tags context that allows to look up errors by the provided tags.
-     *
-     * @param tags The tags to be set
-     */
-    setTags(tags: ErrorTags): void;
+import { BrowserOptions } from '@sentry/browser';
 
+export default interface ErrorLogger {
     /**
      * Logs an error in, tagging it with an error code.
      *
@@ -24,6 +19,10 @@ export interface ErrorLoggerOptions {
     errorTypes?: string[];
 }
 
+export interface ErrorLoggerServiceConfig {
+    sentry?: BrowserOptions;
+}
+
 export interface ErrorTags {
     /**
      * A code that identifies uniquely each error type
@@ -32,7 +31,7 @@ export interface ErrorTags {
 }
 
 export enum ErrorLevelType {
-    INFO = 'info',
-    WARNING = 'warning',
-    ERROR = 'error',
+    Info = 'info',
+    Warning = 'warning',
+    Error = 'error',
 }

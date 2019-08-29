@@ -1,10 +1,11 @@
 import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
+import { BrowserOptions } from '@sentry/browser';
 import React, { Component, ReactNode } from 'react';
 import ReactModal from 'react-modal';
 
 import { StepTracker, StepTrackerFactory } from '../analytics';
 import { CheckoutProvider } from '../checkout';
-import { ErrorLoggerFactory, ErrorLoggingBoundary } from '../common/error';
+import { createErrorLogger, ErrorLogger, ErrorLoggingBoundary } from '../common/error';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { AccountService, CreatedCustomer, SignUpFormValues } from '../guestSignup';
 import { getLanguageService, LocaleProvider } from '../locale';
@@ -12,8 +13,9 @@ import { getLanguageService, LocaleProvider } from '../locale';
 import OrderConfirmation from './OrderConfirmation';
 
 export interface OrderConfirmationAppProps {
-    orderId: number;
     containerId: string;
+    orderId: number;
+    sentryConfig?: BrowserOptions;
 }
 
 class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
@@ -23,8 +25,17 @@ class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
         shouldWarnMutation: process.env.NODE_ENV === 'development',
     });
     private embeddedStylesheet = createEmbeddedCheckoutStylesheet();
-    private errorLogger = new ErrorLoggerFactory().getLogger();
+    private errorLogger: ErrorLogger;
     private stepTrackerFactory = new StepTrackerFactory(this.checkoutService);
+
+    constructor(props: Readonly<OrderConfirmationAppProps>) {
+        super(props);
+
+        this.errorLogger = createErrorLogger(
+            { sentry: props.sentryConfig },
+            { errorTypes: ['UnrecoverableError'] }
+        );
+    }
 
     componentDidMount(): void {
         const { containerId } = this.props;

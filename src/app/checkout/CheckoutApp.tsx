@@ -1,10 +1,11 @@
 import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
 import { createRequestSender, Response } from '@bigcommerce/request-sender';
+import { BrowserOptions } from '@sentry/browser';
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 
 import { StepTracker, StepTrackerFactory } from '../analytics';
-import { ErrorLoggerFactory, ErrorLoggingBoundary } from '../common/error';
+import { createErrorLogger, ErrorLogger, ErrorLoggingBoundary } from '../common/error';
 import { NewsletterService, NewsletterSubscribeData } from '../customer';
 import { createEmbeddedCheckoutStylesheet, createEmbeddedCheckoutSupport } from '../embeddedCheckout';
 import { getLanguageService, LocaleProvider } from '../locale';
@@ -17,6 +18,7 @@ export interface CheckoutAppProps {
     checkoutId: string;
     containerId: string;
     flashMessages: FlashMessage[]; // TODO: Expose flash messages from SDK
+    sentryConfig?: BrowserOptions;
 }
 
 export default class CheckoutApp extends Component<CheckoutAppProps> {
@@ -24,11 +26,20 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
         locale: getLanguageService().getLocale(),
         shouldWarnMutation: process.env.NODE_ENV === 'development',
     });
-    private embeddedSupport = createEmbeddedCheckoutSupport(getLanguageService());
     private embeddedStylesheet = createEmbeddedCheckoutStylesheet();
-    private errorLogger = new ErrorLoggerFactory().getLogger();
+    private embeddedSupport = createEmbeddedCheckoutSupport(getLanguageService());
+    private errorLogger: ErrorLogger;
     private newsletterService = new NewsletterService(createRequestSender());
     private stepTrackerFactory = new StepTrackerFactory(this.checkoutService);
+
+    constructor(props: Readonly<CheckoutAppProps>) {
+        super(props);
+
+        this.errorLogger = createErrorLogger(
+            { sentry: props.sentryConfig },
+            { errorTypes: ['UnrecoverableError'] }
+        );
+    }
 
     componentDidMount(): void {
         const { containerId } = this.props;
