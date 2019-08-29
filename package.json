@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/bigcommerce/checkout-js#readme",
   "dependencies": {
-    "@bigcommerce/checkout-sdk": "^1.34.1",
+    "@bigcommerce/checkout-sdk": "^1.34.2",
     "@bigcommerce/citadel": "^2.15.1",
     "@bigcommerce/form-poster": "^1.2.2",
     "@bigcommerce/request-sender": "^0.3.0",
