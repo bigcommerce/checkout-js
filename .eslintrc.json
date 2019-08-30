@@ -44,6 +44,10 @@
                 "when": "always"
             }
         ],
+        "react/jsx-first-prop-new-line": [
+            "error",
+            "multiline-multiprop"
+        ],
         "react/jsx-no-bind": "error",
         "react/prop-types": "off",
         "react/self-closing-comp": "error",

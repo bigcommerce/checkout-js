@@ -116,7 +116,8 @@ describe('ShippingAddressForm Component', () => {
         beforeEach(() => {
             component = mount(
                 <Formik initialValues={ {} } onSubmit={ noop }>
-                    <ShippingAddressForm { ...defaultProps }
+                    <ShippingAddressForm
+                        { ...defaultProps }
                         addresses={ [] }
                     />
                 </Formik>
@@ -150,7 +151,8 @@ describe('ShippingAddressForm Component', () => {
                         } }
                         onSubmit={ noop }
                     >
-                        <ShippingAddressForm { ...defaultProps }
+                        <ShippingAddressForm
+                            { ...defaultProps }
                             address={ getShippingAddress() }
                             addresses={ [] }
                         />

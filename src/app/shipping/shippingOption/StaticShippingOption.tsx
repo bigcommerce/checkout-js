@@ -13,7 +13,8 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
     <div className="shippingOption shippingOption--alt">
         { method.imageUrl &&
             <span className="shippingOption-figure">
-                <img alt={ method.description }
+                <img
+                    alt={ method.description }
                     className="shippingOption-img"
                     src={ method.imageUrl }
                 />
