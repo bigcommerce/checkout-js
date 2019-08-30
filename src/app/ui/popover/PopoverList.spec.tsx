@@ -11,19 +11,19 @@ describe('Popover Component', () => {
     ];
 
     it('renders list with passed items', () => {
-        const tree = mount(<PopoverList items={ items }></PopoverList>);
+        const tree = mount(<PopoverList items={ items } />);
 
         expect(tree).toMatchSnapshot();
     });
 
     it('renders empty list when empty array is passed', () => {
-        const tree = mount(<PopoverList items={ [] }></PopoverList>);
+        const tree = mount(<PopoverList items={ [] } />);
 
         expect(tree).toMatchSnapshot();
     });
 
     it('renders list with highlighted item', () => {
-        const tree = mount(<PopoverList items={ items } highlightedIndex={ 1 }></PopoverList>);
+        const tree = mount(<PopoverList items={ items } highlightedIndex={ 1 } />);
 
         expect(tree.find('.popoverList-item').at(0).hasClass('is-active')).toBeFalsy();
         expect(tree.find('.popoverList-item').at(1).hasClass('is-active')).toBeTruthy();

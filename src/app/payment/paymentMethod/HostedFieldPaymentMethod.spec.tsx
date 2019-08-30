@@ -111,7 +111,7 @@ describe('HostedFieldPaymentMethod', () => {
     it('renders wallet button placeholder if required', () => {
         const component = mount(<HostedFieldPaymentMethodTest
             { ...defaultProps }
-            walletButtons={ <div id="wallet-button"></div> }
+            walletButtons={ <div id="wallet-button" /> }
         />);
 
         expect(component.exists('#wallet-button'))

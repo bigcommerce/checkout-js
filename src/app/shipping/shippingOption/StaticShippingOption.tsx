@@ -28,8 +28,7 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
             }
         </span>
         <span className="shippingOption-price">
-            <ShopperCurrency amount={ method.cost }>
-            </ShopperCurrency>
+            <ShopperCurrency amount={ method.cost } />
         </span>
     </div>
 );

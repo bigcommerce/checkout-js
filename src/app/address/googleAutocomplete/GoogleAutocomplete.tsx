@@ -60,7 +60,7 @@ class GoogleAutocomplete extends PureComponent<GoogleAutocompleteProps, GoogleAu
                 onChange={ this.onChange }
                 onToggleOpen={ onToggleOpen }
             >
-                <div className="co-googleAutocomplete-footer"></div>
+                <div className="co-googleAutocomplete-footer" />
             </Autocomplete>
         );
     }

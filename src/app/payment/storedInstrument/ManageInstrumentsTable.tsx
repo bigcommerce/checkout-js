@@ -35,7 +35,7 @@ const ManageInstrumentsTable: FunctionComponent<ManageInstrumentsTableProps> = (
                         <th><TranslatedString id="payment.instrument_manage_table_header_payment_method_text" /></th>
                         <th><TranslatedString id="payment.instrument_manage_table_header_ending_in_text" /></th>
                         <th><TranslatedString id="payment.instrument_manage_table_header_expiry_date_text" /></th>
-                        <th></th>
+                        <th />
                     </tr>
                 </thead>
 

@@ -79,7 +79,7 @@ export default class HostedFieldPaymentMethod extends Component<HostedFieldPayme
                             <TranslatedString id="payment.credit_card_number_label" />
                         </Label>
 
-                        <div id={ cardNumberId }></div>
+                        <div id={ cardNumberId } />
                     </FormFieldContainer>
 
                     <FormFieldContainer additionalClassName="form-field--ccExpiry">
@@ -87,7 +87,7 @@ export default class HostedFieldPaymentMethod extends Component<HostedFieldPayme
                             <TranslatedString id="payment.credit_card_expiration_label" />
                         </Label>
 
-                        <div id={ cardExpiryId }></div>
+                        <div id={ cardExpiryId } />
                     </FormFieldContainer>
 
                     { cardCodeId && <FormFieldContainer additionalClassName="form-field--ccCvv">
@@ -95,7 +95,7 @@ export default class HostedFieldPaymentMethod extends Component<HostedFieldPayme
                             <TranslatedString id="payment.credit_card_cvv_label" />
                         </Label>
 
-                        <div id={ cardCodeId }></div>
+                        <div id={ cardCodeId } />
                     </FormFieldContainer> }
 
                     { postalCodeId && <FormFieldContainer additionalClassName="form-field--postCode">
@@ -103,7 +103,7 @@ export default class HostedFieldPaymentMethod extends Component<HostedFieldPayme
                             <TranslatedString id="payment.postal_code_label" />
                         </Label>
 
-                        <div id={ postalCodeId }></div>
+                        <div id={ postalCodeId } />
                     </FormFieldContainer> }
                 </div>
             </LoadingOverlay>

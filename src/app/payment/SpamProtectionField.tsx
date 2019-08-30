@@ -39,7 +39,7 @@ class SpamProtectionField extends Component<SpamProtectionProps & WithCheckoutSp
     render() {
         const { containerId } = this.props;
 
-        return <div id={ containerId }></div>;
+        return <div id={ containerId } />;
     }
 }
 
