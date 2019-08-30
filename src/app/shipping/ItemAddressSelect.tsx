@@ -63,7 +63,7 @@ const ItemAddressSelect: FunctionComponent<ItemAddressSelectProps> = ({
                         { optionName } { value }
                     </li>
                 </ul>
-            )}
+            ) }
 
             <AddressSelect
                 addresses={ addresses }

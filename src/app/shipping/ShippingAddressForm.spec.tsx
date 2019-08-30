@@ -86,7 +86,7 @@ describe('ShippingAddressForm Component', () => {
                                 name: 'newRequiredField',
                                 required: true,
                             },
-                        ]}
+                        ] }
                     />
                 </Formik>
             );

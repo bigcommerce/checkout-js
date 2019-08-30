@@ -108,8 +108,7 @@ class OrderSummaryPrice extends Component<OrderSummaryPriceProps, OrderSummaryPr
                             <span data-test="cart-price-value">
                                 { isNumberValue(displayValue) ?
                                     <ShopperCurrency amount={ displayValue } /> :
-                                    displayValue
-                                }
+                                    displayValue }
                             </span>
 
                             { superscript && <sup data-test="cart-price-value-superscript">

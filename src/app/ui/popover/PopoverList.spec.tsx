@@ -37,11 +37,11 @@ describe('Popover Component', () => {
         ];
 
         const tree = mount(<PopoverList
-            items={[
+            items={ [
                 items[0],
                 { content: highlightedContent, id: 'y' },
                 items[1],
-            ]}
+            ] }
         />);
 
         expect(tree.find('.popoverList-item').at(1)).toMatchSnapshot();

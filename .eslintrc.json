@@ -37,6 +37,13 @@
             "error", 
             "line-aligned"
         ],
+        "react/jsx-curly-spacing": [
+            "error",
+            {
+                "children": true,
+                "when": "always"
+            }
+        ],
         "react/jsx-no-bind": "error",
         "react/prop-types": "off",
         "react/self-closing-comp": "error",

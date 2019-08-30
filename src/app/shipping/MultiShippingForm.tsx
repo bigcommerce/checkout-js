@@ -98,7 +98,7 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
                                 onUseNewAddress={ onUseNewAddress }
                             />
                         </li>
-                    ))}
+                    )) }
                 </ul>
 
                 <ShippingFormFooter

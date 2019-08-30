@@ -62,7 +62,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
                     >
                         { label }
                     </option>
-                )}
+                ) }
             </select>
         );
 

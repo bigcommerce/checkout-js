@@ -41,7 +41,7 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
             >
                 <TranslatedString
                     id="cart.item_count_text"
-                    data={ { count: getItemsCount(items) }}
+                    data={ { count: getItemsCount(items) } }
                 />
             </h3>
 

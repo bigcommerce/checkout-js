@@ -91,7 +91,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                     label={ tax.name }
                     amount={ tax.amount }
                 />
-         )}
+         ) }
 
         { !!storeCreditAmount && <OrderSummaryDiscount
             testId="cart-store-credit"

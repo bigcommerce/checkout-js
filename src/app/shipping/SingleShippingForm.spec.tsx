@@ -69,7 +69,7 @@ describe('SingleShippingForm', () => {
                     { ...defaultProps }
                     getFields={ () => [
                         ...addressFormFields.map(field => ({ ...field, required: true })),
-                    ]}
+                    ] }
                 />
             </LocaleContext.Provider>
         );
