@@ -49,7 +49,8 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
             <Legend hidden>
                 <TranslatedString id="customer.returning_customer_text" />
             </Legend>
-        }>
+        }
+        >
             { signInError && <Alert
                 testId="customer-login-error-message"
                 type={ AlertType.Error }

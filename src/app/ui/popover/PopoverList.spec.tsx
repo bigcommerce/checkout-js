@@ -36,11 +36,13 @@ describe('Popover Component', () => {
             <React.Fragment key="2">um</React.Fragment>,
         ];
 
-        const tree = mount(<PopoverList items={[
-            items[0],
-            { content: highlightedContent, id: 'y' },
-            items[1],
-        ]}></PopoverList>);
+        const tree = mount(<PopoverList
+            items={[
+                items[0],
+                { content: highlightedContent, id: 'y' },
+                items[1],
+            ]}
+        />);
 
         expect(tree.find('.popoverList-item').at(1)).toMatchSnapshot();
     });

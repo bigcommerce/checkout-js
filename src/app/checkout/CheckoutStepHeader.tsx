@@ -37,11 +37,13 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
             onClick={ preventDefault(isEditable && onEdit ? () => onEdit(type) : noop) }
         >
             <div className="stepHeader-figure stepHeader-column">
-                <IconCheck additionalClassName={ classNames(
-                    'stepHeader-counter',
-                    'optimizedCheckout-step',
-                    { 'stepHeader-counter--complete': isComplete }
-                ) } />
+                <IconCheck
+                    additionalClassName={ classNames(
+                        'stepHeader-counter',
+                        'optimizedCheckout-step',
+                        { 'stepHeader-counter--complete': isComplete }
+                    ) }
+                />
 
                 <h2 className="stepHeader-title optimizedCheckout-headingPrimary">
                     { heading }

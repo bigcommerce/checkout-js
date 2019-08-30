@@ -42,7 +42,8 @@ const MultiCheckboxControl: FunctionComponent<MultiCheckboxControlProps> = ({
             <a
                 data-test={ `${testId}Checkbox-none-button` }
                 href="#"
-                onClick={ handleSelectNoneClick }>
+                onClick={ handleSelectNoneClick }
+            >
                 <TranslatedString id="address.select_none" />
             </a>
         </li>

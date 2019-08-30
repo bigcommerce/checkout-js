@@ -31,11 +31,13 @@ const GuestSignUpForm: FunctionComponent<SignUpFormProps & WithLanguageProps & F
     passwordRequirements: { minLength },
 }) => (
     <Form className="guest-signup form">
-        <Fieldset legend={
-            <Legend>
-                <TranslatedString id="customer.create_account_text" />
-            </Legend>
-        }>
+        <Fieldset
+            legend={
+                <Legend>
+                    <TranslatedString id="customer.create_account_text" />
+                </Legend>
+            }
+        >
             <SignUpPasswordField minLength={ minLength } />
 
             <div className="form-actions">

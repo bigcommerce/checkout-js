@@ -15,7 +15,8 @@ const TranslatedHtml: FunctionComponent<TranslatedHtmlProps & WithLanguageProps>
 }) => (
     <span dangerouslySetInnerHTML={ {
         __html: DOMPurify.sanitize(language.translate(id, data), { ADD_ATTR: ['target'] }),
-    } } />
+    } }
+    />
 );
 
 export default withLanguage(TranslatedHtml);

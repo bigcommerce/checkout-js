@@ -50,14 +50,16 @@ class InstrumentSelect extends PureComponent<InstrumentSelectProps> {
 
         return (
             <div className="instrumentSelect">
-                <DropdownTrigger dropdown={
-                    <InstrumentMenu
-                        instruments={ instruments }
-                        selectedInstrumentId={ selectedInstrumentId }
-                        onSelectInstrument={ onSelectInstrument }
-                        onUseNewCard={ onUseNewCard }
-                    />
-                }>
+                <DropdownTrigger
+                    dropdown={
+                        <InstrumentMenu
+                            instruments={ instruments }
+                            selectedInstrumentId={ selectedInstrumentId }
+                            onSelectInstrument={ onSelectInstrument }
+                            onUseNewCard={ onUseNewCard }
+                        />
+                    }
+                >
                     <InstrumentSelectButton
                         instrument={ selectedInstrument }
                         testId="instrument-select"
@@ -211,7 +213,8 @@ const InstrumentMenuItem: FunctionComponent<InstrumentMenuItemProps> = ({
             <div className={ classNames(
                 'instrumentSelect-details',
                 { 'instrumentSelect-details--expired': isExpired }
-            ) }>
+            ) }
+            >
                 <CreditCardIcon cardType={ cardType } />
 
                 <div

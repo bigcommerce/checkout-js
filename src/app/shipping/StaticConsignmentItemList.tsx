@@ -21,7 +21,8 @@ const StaticConsignmentItemList: FunctionComponent<StaticConsignmentItemListProp
         <div className="staticConsignment-items">
             <strong>
                 <TranslatedString id="cart.item_count_text"
-                    data={ { count: getLineItemsCount(lineItems) } } />
+                    data={ { count: getLineItemsCount(lineItems) } }
+                />
             </strong>
 
             <ul>

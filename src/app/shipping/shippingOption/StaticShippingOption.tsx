@@ -15,7 +15,8 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
             <span className="shippingOption-figure">
                 <img alt={ method.description }
                     className="shippingOption-img"
-                    src={ method.imageUrl } />
+                    src={ method.imageUrl }
+                />
             </span>
         }
         <span className="shippingOption-desc">

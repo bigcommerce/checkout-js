@@ -33,6 +33,10 @@
             }
         ],
         "react/display-name": "off",
+        "react/jsx-closing-bracket-location": [
+            "error", 
+            "line-aligned"
+        ],
         "react/jsx-no-bind": "error",
         "react/prop-types": "off",
         "react-hooks/exhaustive-deps": "error",

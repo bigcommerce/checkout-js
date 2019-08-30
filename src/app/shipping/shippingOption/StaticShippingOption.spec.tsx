@@ -16,11 +16,13 @@ describe('StaticShippingOption Component', () => {
 
     it( 'renders static shipping option with minimum information', () => {
         const tree = shallow(
-            <StaticShippingOption method={ {
-                ...method,
-                imageUrl: '',
-                transitTime: '',
-            } } />
+            <StaticShippingOption
+                method={ {
+                    ...method,
+                    imageUrl: '',
+                    transitTime: '',
+                } }
+            />
         );
 
         expect(toJson(tree)).toMatchSnapshot();

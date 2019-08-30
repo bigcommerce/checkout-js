@@ -37,11 +37,13 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
         testId="checkout-customer-guest"
         id="checkout-customer-guest"
     >
-        <Fieldset legend={
-            <Legend hidden>
-                <TranslatedString id="customer.guest_customer_text" />
-            </Legend>
-        }>
+        <Fieldset
+            legend={
+                <Legend hidden>
+                    <TranslatedString id="customer.guest_customer_text" />
+                </Legend>
+            }
+        >
             <p>
                 <TranslatedHtml id="customer.checkout_as_guest_text" />
             </p>
@@ -76,7 +78,8 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
                 <a
                     data-test="customer-continue-button"
                     id="checkout-customer-login"
-                    onClick={ onShowLogin }>
+                    onClick={ onShowLogin }
+                >
                     <TranslatedString id="customer.login_action" />
                 </a>
             </p>

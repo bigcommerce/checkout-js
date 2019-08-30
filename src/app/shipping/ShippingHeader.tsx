@@ -19,23 +19,27 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
 }) => (
     <div className="form-legend-container">
         <Legend testId="shipping-address-heading">
-            <TranslatedString id={ isMultiShippingMode ?
-                (isGuest ?
-                    'shipping.multishipping_address_heading_guest' :
-                    'shipping.multishipping_address_heading') :
-                'shipping.shipping_address_heading'
-            } />
+            <TranslatedString
+                id={ isMultiShippingMode ?
+                    (isGuest ?
+                        'shipping.multishipping_address_heading_guest' :
+                        'shipping.multishipping_address_heading') :
+                    'shipping.shipping_address_heading'
+                }
+            />
         </Legend>
 
         { shouldShowMultiShipping &&
             <a
                 href="#"
                 data-test="shipping-mode-toggle"
-                onClick={ preventDefault(onMultiShippingChange) }>
+                onClick={ preventDefault(onMultiShippingChange) }
+            >
                 <TranslatedString id={ isMultiShippingMode ?
                     'shipping.ship_to_single' :
                     'shipping.ship_to_multi'
-                } />
+                }
+                />
             </a>
         }
     </div>

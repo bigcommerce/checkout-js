@@ -15,11 +15,13 @@ const FormFieldError: FunctionComponent<FormFieldErrorProps> = ({
     const renderMessage = useCallback((message: string) => (
         <ul
             className="form-field-errors"
-            data-test={ testId }>
+            data-test={ testId }
+        >
             <li className="form-field-error">
                 <label
                     className="form-inlineMessage"
-                    htmlFor={ name }>
+                    htmlFor={ name }
+                >
                     { message }
                 </label>
             </li>

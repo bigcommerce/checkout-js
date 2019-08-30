@@ -57,10 +57,12 @@ const Modal: FunctionComponent<ModalProps> = ({
         } }
         shouldCloseOnOverlayClick={ false }
     >
-        <div className={ classNames(
-            'modal-header',
-            additionalHeaderClassName
-        ) }>
+        <div
+            className={ classNames(
+                'modal-header',
+                additionalHeaderClassName
+            ) }
+        >
             { header }
 
             { shouldShowCloseButton && <a

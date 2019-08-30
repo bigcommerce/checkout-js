@@ -9,7 +9,8 @@ describe('ChecklistItemInput', () => {
         const component = shallow(<ChecklistItemInput
             isSelected={ false }
             value="foobar_val"
-            name="foobar">
+            name="foobar"
+        >
             children text
         </ChecklistItemInput>);
 
@@ -21,7 +22,8 @@ describe('ChecklistItemInput', () => {
         const component = shallow(<ChecklistItemInput
             isSelected={ true }
             value="foobar_val"
-            name="foobar" />);
+            name="foobar"
+        />);
 
         expect(component.find('.form-checklist-checkbox').prop('checked'))
             .toBeTruthy();
@@ -31,7 +33,8 @@ describe('ChecklistItemInput', () => {
         const component = shallow(<ChecklistItemInput
             isSelected={ false }
             value="foobar_val"
-            name="foobar" />);
+            name="foobar"
+        />);
 
         expect(component.find('.form-checklist-checkbox').prop('checked'))
             .toBeFalsy();
@@ -43,7 +46,8 @@ describe('ChecklistItemInput', () => {
             isSelected={ true }
             value="foobar_val"
             onChange={ onChange }
-            name="foobar" />);
+            name="foobar"
+        />);
 
         component.find('.form-checklist-checkbox').at(0)
             .simulate('change', { target: { value: 'foo', name: 'option' } });

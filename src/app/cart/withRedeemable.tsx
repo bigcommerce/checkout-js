@@ -41,7 +41,8 @@ export default function withRedeemable(
                         ...redeemableProps,
                         onRemovedCoupon,
                         onRemovedGiftCertificate,
-                    } } />
+                    } }
+                    />
                 }
             />
         );

@@ -45,11 +45,13 @@ const AccordionItem: FunctionComponent<AccordionItemProps> = ({
         <li className={ classNames(
             className,
             { [classNameSelected]: isSelected }
-        ) }>
+        ) }
+        >
             <div className={ classNames(
                 headerClassName,
                 { [headerClassNameSelected]: isSelected }
-            ) }>
+            ) }
+            >
                 { headerContent({ isSelected, onToggle }) }
             </div>
 
