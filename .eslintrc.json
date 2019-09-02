@@ -54,6 +54,7 @@
         ],
         "react/jsx-key": "error",
         "react/jsx-no-bind": "error",
+        "react/jsx-pascal-case": "error",
         "react/prop-types": "off",
         "react/self-closing-comp": "error",
         "react-hooks/exhaustive-deps": "error",
