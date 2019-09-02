@@ -32,6 +32,7 @@
     },
     "files": [
         "types/card-validator.d.ts",
-        "types/supported-files.d.ts"
+        "types/supported-files.d.ts",
+        "types/webpack.d.ts"
     ],
 }

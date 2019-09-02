@@ -1,6 +1,5 @@
 const { omitBy } = require('lodash');
 const { join } = require('path');
-const { createHash } = require('crypto');
 
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -9,8 +8,6 @@ const WebpackAssetsManifest = require('webpack-assets-manifest');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 
 const BuildHooks = require('./scripts/webpack/build-hooks');
-const PublicPathPlugin = require('./scripts/webpack/public-path');
-const packageInfo = require('./package.json');
 
 const babelOptions = {
     cacheDirectory: true,
@@ -35,7 +32,7 @@ const babelOptions = {
 module.exports = function (options, argv) {
     const mode = argv.mode || 'production';
     const isProduction = mode !== 'development';
-    const outputFilename = `[name]-${getPublicPathHash()}${isProduction ? '-[contenthash:8]' : ''}`;
+    const outputFilename = `[name]${isProduction ? '-[contenthash:8]' : ''}`;
 
     return {
         entry: {
@@ -83,7 +80,6 @@ module.exports = function (options, argv) {
                 exclude: /.*\.spec\.tsx?/,
                 include: /src\/app/,
             }),
-            new PublicPathPlugin(getPublicPathHash()),
             new WebpackAssetsManifest({
                 entrypoints: true,
                 transform: assets => transformManifest(assets, options),
@@ -175,11 +171,4 @@ function transformManifest(assets, options) {
         appVersion: 'dev',
         ...entrypoints,
     };
-}
-
-function getPublicPathHash() {
-    return createHash('md4')
-        .update(packageInfo.name)
-        .digest('hex')
-        .substr(0, 8);
 }

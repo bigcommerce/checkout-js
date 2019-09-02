@@ -5,6 +5,7 @@ import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 
 import { StepTracker, StepTrackerFactory } from '../analytics';
+import { configurePublicPath } from '../common/bundler';
 import { createErrorLogger, ErrorLogger, ErrorLoggingBoundary } from '../common/error';
 import { NewsletterService, NewsletterSubscribeData } from '../customer';
 import { createEmbeddedCheckoutStylesheet, createEmbeddedCheckoutSupport } from '../embeddedCheckout';
@@ -18,6 +19,7 @@ export interface CheckoutAppProps {
     checkoutId: string;
     containerId: string;
     flashMessages: FlashMessage[]; // TODO: Expose flash messages from SDK
+    publicPath?: string;
     sentryConfig?: BrowserOptions;
 }
 
@@ -34,6 +36,8 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
 
     constructor(props: Readonly<CheckoutAppProps>) {
         super(props);
+
+        configurePublicPath(props.publicPath);
 
         this.errorLogger = createErrorLogger(
             { sentry: props.sentryConfig },

@@ -24,6 +24,8 @@ window.matchMedia = jest.fn(() => ({
     removeEventListener: noop,
 } as MediaQueryList));
 
+(global as any).__webpack_public_path__ = undefined;
+
 beforeAll(() => {
     expect.hasAssertions();
 });
