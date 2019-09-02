@@ -55,6 +55,7 @@
         "react/jsx-key": "error",
         "react/jsx-no-bind": "error",
         "react/jsx-pascal-case": "error",
+        "react/jsx-props-no-multi-spaces": "error",
         "react/jsx-tag-spacing": [
             "error",
             {

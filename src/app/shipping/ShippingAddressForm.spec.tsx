@@ -101,7 +101,7 @@ describe('ShippingAddressForm Component', () => {
         it('renders address form when there is no selected address', () => {
             component = mount(
                 <Formik initialValues={ {} } onSubmit={ noop }>
-                    <ShippingAddressForm { ...defaultProps }  address={ undefined } />
+                    <ShippingAddressForm { ...defaultProps } address={ undefined } />
                 </Formik>
             );
 
