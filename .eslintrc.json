@@ -48,6 +48,10 @@
             "error",
             "multiline-multiprop"
         ],
+        "react/jsx-indent-props": [
+            "error",
+            4
+        ],
         "react/jsx-no-bind": "error",
         "react/prop-types": "off",
         "react/self-closing-comp": "error",
