@@ -21,8 +21,7 @@ const OrderSummaryTotal: FunctionComponent<OrderSummaryTotalProps & WithCurrency
     const label = <Fragment>
         { hasDifferentCurrency ?
             <TranslatedString id="cart.estimated_total_text" /> :
-            <TranslatedString id="cart.total_text" />
-        }
+            <TranslatedString id="cart.total_text" /> }
         { ` (${shopperCurrencyCode})` }
     </Fragment>;
 

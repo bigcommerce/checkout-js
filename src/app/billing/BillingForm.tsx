@@ -70,8 +70,7 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
                                     onSelectAddress={ this.handleSelectAddress }
                                 />
                             </LoadingOverlay>
-                        </Fieldset>
-                    }
+                        </Fieldset> }
 
                     { !hasValidCustomerAddress &&
                         <LoadingOverlay isLoading={ isResettingAddress }>
@@ -83,13 +82,11 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
                                 countryCode={ values.countryCode }
                                 formFields={ getFields(values.countryCode) }
                             />
-                        </LoadingOverlay>
-                    }
+                        </LoadingOverlay> }
                 </Fieldset>
 
                 { shouldShowOrderComments &&
-                    <OrderComments />
-                }
+                    <OrderComments /> }
 
                 <div className="form-actions">
                     <Button

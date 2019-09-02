@@ -55,13 +55,11 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
             onToggleOpen={ onToggleOpen }
             isAutocompleteEnabled={ countryCode ?
                 supportedCountries.indexOf(countryCode) > -1 :
-                false
-            }
+                false }
             inputProps={ inputProps }
             componentRestrictions={ countryCode ?
                 { country: countryCode } :
-                undefined
-            }
+                undefined }
         />
     ), [
         apiKey,

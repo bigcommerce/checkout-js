@@ -29,8 +29,7 @@ const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
             { !compactView &&
                 <strong>
                     <TranslatedString id="shipping.shipping_address_heading" />
-                </strong>
-            }
+                </strong> }
 
             <StaticAddress
                 address={ address }
@@ -41,21 +40,18 @@ const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
                 <StaticConsignmentItemList
                     cart={ cart }
                     consignment={ consignment }
-                />
-            }
+                /> }
 
             { selectedShippingOption &&
                 <div>
                     { !compactView &&
                         <strong>
                             <TranslatedString id="shipping.shipping_method_label" />
-                        </strong>
-                    }
+                        </strong> }
                     <div className="shippingOption shippingOption--alt">
                         <StaticShippingOption method={ selectedShippingOption } />
                     </div>
-                </div>
-            }
+                </div> }
         </div>
     );
 };

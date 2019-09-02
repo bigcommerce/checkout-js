@@ -27,8 +27,7 @@ const LoadingOverlay: FunctionComponent<LoadingOverlayProps> = ({
                         } }
                     >
                         { children }
-                    </div>
-                }
+                    </div> }
             </Fragment>
         );
     }

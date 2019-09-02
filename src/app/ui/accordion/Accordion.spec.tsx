@@ -38,8 +38,7 @@ describe('Accordion', () => {
                 { items.map(({ label, id }) => (
                     <AccordionItem
                         headerContent={ ({ onToggle }) =>
-                            <div id={ id } onClick={ () => onToggle(id) }>{ label }</div>
-                        }
+                            <div id={ id } onClick={ () => onToggle(id) }>{ label }</div> }
                         itemId={ id }
                         key={ id }
                     />
@@ -62,8 +61,7 @@ describe('Accordion', () => {
                 { items.map(({ label, id }) => (
                     <AccordionItem
                         headerContent={ ({ onToggle }) =>
-                            <div id={ id } onClick={ () => onToggle(id) }>{ label }</div>
-                        }
+                            <div id={ id } onClick={ () => onToggle(id) }>{ label }</div> }
                         itemId={ id }
                         key={ id }
                     />

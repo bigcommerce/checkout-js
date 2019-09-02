@@ -62,8 +62,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
                                     getItemProps={ getItemProps }
                                 />
                                 { children }
-                            </Popover>
-                        }
+                            </Popover> }
                     </div>
                 ) }
             </Downshift>

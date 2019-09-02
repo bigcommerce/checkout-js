@@ -18,15 +18,13 @@ const StaticShippingOption: React.FunctionComponent<StaticShippingOptionProps> =
                     className="shippingOption-img"
                     src={ method.imageUrl }
                 />
-            </span>
-        }
+            </span> }
         <span className="shippingOption-desc">
             { method.description }
             { method.transitTime &&
                 <span className="shippingOption-transitTime">
                     { method.transitTime }
-                </span>
-            }
+                </span> }
         </span>
         <span className="shippingOption-price">
             <ShopperCurrency amount={ method.cost } />

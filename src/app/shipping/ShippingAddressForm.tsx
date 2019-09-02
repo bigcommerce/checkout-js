@@ -58,8 +58,7 @@ class ShippingAddressForm extends Component<ShippingAddressFormProps & ConnectFo
                                 onSelectAddress={ onAddressSelect }
                             />
                         </LoadingOverlay>
-                    </Fieldset>
-                }
+                    </Fieldset> }
 
                 { !hasValidCustomerAddress &&
                     <LoadingOverlay isLoading={ isLoading } unmountContentWhenLoading>
@@ -74,8 +73,7 @@ class ShippingAddressForm extends Component<ShippingAddressFormProps & ConnectFo
                             fieldName={ addressFieldName }
                             formFields={ formFields }
                         />
-                    </LoadingOverlay>
-                }
+                    </LoadingOverlay> }
             </Fieldset>
         );
     }

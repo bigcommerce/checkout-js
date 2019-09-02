@@ -24,8 +24,7 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
                     (isGuest ?
                         'shipping.multishipping_address_heading_guest' :
                         'shipping.multishipping_address_heading') :
-                    'shipping.shipping_address_heading'
-                }
+                    'shipping.shipping_address_heading' }
             />
         </Legend>
 
@@ -37,11 +36,9 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
             >
                 <TranslatedString id={ isMultiShippingMode ?
                     'shipping.ship_to_single' :
-                    'shipping.ship_to_multi'
-                }
+                    'shipping.ship_to_multi' }
                 />
-            </a>
-        }
+            </a> }
     </div>
 );
 

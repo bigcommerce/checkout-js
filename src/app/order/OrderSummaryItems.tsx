@@ -98,8 +98,7 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
                             <Fragment>
                                 <TranslatedString id="cart.see_all_action" />
                                 <IconChevronDown />
-                            </Fragment>
-                        }
+                            </Fragment> }
                 </button>
             </div>
         );

@@ -36,8 +36,7 @@ const FormFieldError: FunctionComponent<FormFieldErrorProps> = ({
             <ErrorMessage
                 name={ name }
                 render={ renderMessage }
-            />
-        }
+            /> }
     </FormContext.Consumer>;
 };
 

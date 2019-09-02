@@ -37,6 +37,13 @@
             "error", 
             "line-aligned"
         ],
+        "react/jsx-curly-newline": [
+            "error",
+            {
+                "multiline": "consistent",
+                "singleline": "consistent"
+            }
+        ],
         "react/jsx-curly-spacing": [
             "error",
             {

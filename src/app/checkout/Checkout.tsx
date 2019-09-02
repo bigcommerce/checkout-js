@@ -304,8 +304,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                             consignment={ consignment }
                             compactView={ consignments.length < 2 }
                         />
-                    </div>)
-                }
+                    </div>) }
             >
                 <Suspense fallback={ <LoadingSpinner isLoading /> }>
                     <Shipping

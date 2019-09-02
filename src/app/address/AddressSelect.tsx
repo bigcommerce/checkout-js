@@ -107,8 +107,7 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps> = ({
     >
         { selectedAddress ?
             <StaticAddress address={ selectedAddress } /> :
-            <TranslatedString id="address.enter_address_action" />
-        }
+            <TranslatedString id="address.enter_address_action" /> }
     </a>
 );
 

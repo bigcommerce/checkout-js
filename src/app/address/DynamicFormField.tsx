@@ -80,15 +80,13 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
         <Label htmlFor={ fieldInputId }>
             { custom ?
                 fieldLabel :
-                translatedLabelString && <TranslatedString id={ translatedLabelString } />
-            }
+                translatedLabelString && <TranslatedString id={ translatedLabelString } /> }
             { !required &&
                 <> { '' }
                     <small className="optimizedCheckout-contentSecondary">
                         <TranslatedString id="common.optional_text" />
                     </small>
-                </>
-            }
+                </> }
         </Label>
     ), [
         custom,
@@ -137,8 +135,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
                     onChange={ onChange }
                     label={ label }
                     input={ renderInput }
-                />
-            }
+                /> }
         </div>
     );
 };

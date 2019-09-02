@@ -42,8 +42,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
                                 <strong>
                                     <TranslatedString id="shipping.cart_change_error" />
                                 </strong>
-                            </Alert>
-                        }
+                            </Alert> }
                     </>
                 }
             >
@@ -55,8 +54,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
             </Fieldset>
 
             { shouldShowOrderComments &&
-                <OrderComments />
-            }
+                <OrderComments /> }
 
             <div className="form-actions">
                 <Button
