@@ -52,6 +52,7 @@
             "error",
             4
         ],
+        "react/jsx-key": "error",
         "react/jsx-no-bind": "error",
         "react/prop-types": "off",
         "react/self-closing-comp": "error",
