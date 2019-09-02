@@ -65,6 +65,7 @@
                 "beforeClosing": "never"
             }
         ],
+        "react/no-this-in-sfc": "error",
         "react/prop-types": "off",
         "react/self-closing-comp": "error",
         "react-hooks/exhaustive-deps": "error",
