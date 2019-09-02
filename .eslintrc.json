@@ -69,6 +69,7 @@
         "react/no-is-mounted": "error",
         "react/no-this-in-sfc": "error",
         "react/no-unused-state": "error",
+        "react/prefer-read-only-props": "error",
         "react/prop-types": "off",
         "react/self-closing-comp": "error",
         "react-hooks/exhaustive-deps": "error",
