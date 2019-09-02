@@ -12,8 +12,10 @@
         "declaration": false,
         "strict": true,
         "lib": [
-            "es2017",
-            "dom"
+            "esnext",
+            "dom",
+            "dom.iterable",
+            "scripthost"
         ],
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
@@ -21,7 +23,7 @@
         "importHelpers": false,
         "sourceMap": true,
         "jsx": "react",
-        "target": "esnext",
+        "target": "es5",
         "module": "esnext",
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
