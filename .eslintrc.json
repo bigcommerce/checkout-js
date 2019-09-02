@@ -81,6 +81,7 @@
         "react/prefer-read-only-props": "error",
         "react/prop-types": "off",
         "react/self-closing-comp": "error",
+        "react/style-prop-object": "error",
         "react-hooks/exhaustive-deps": "error",
         "react-hooks/rules-of-hooks": "error",
         "import/dynamic-import-chunkname": "error",
