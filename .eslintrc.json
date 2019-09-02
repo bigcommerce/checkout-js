@@ -66,6 +66,7 @@
             }
         ],
         "react/no-direct-mutation-state": "error",
+        "react/no-is-mounted": "error",
         "react/no-this-in-sfc": "error",
         "react/no-unused-state": "error",
         "react/prop-types": "off",
