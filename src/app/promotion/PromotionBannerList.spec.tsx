@@ -46,7 +46,7 @@ describe('PromotionBannerList', () => {
 
     it('renders nothing if there are no banners', () => {
         const component = shallow(
-            <PromotionBannerList promotions={ [] }/>
+            <PromotionBannerList promotions={ [] } />
         );
 
         expect(component.html())

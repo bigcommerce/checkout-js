@@ -55,6 +55,15 @@
         "react/jsx-key": "error",
         "react/jsx-no-bind": "error",
         "react/jsx-pascal-case": "error",
+        "react/jsx-tag-spacing": [
+            "error",
+            {
+                "closingSlash": "never",
+                "beforeSelfClosing": "always",
+                "afterOpening": "never",
+                "beforeClosing": "never"
+            }
+        ],
         "react/prop-types": "off",
         "react/self-closing-comp": "error",
         "react-hooks/exhaustive-deps": "error",

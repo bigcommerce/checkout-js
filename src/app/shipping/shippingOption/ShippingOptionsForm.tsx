@@ -46,7 +46,7 @@ class ShippingOptionsForm extends PureComponent<ShippingOptionsFormProps & Formi
             !shouldShowShippingOptions
         ) {
             return (
-                <LoadingOverlay isLoading={ isLoading() } >
+                <LoadingOverlay isLoading={ isLoading() }>
                     { this.renderNoShippingOptions(
                         <TranslatedString
                             id={ methodId || isMultiShippingMode ?

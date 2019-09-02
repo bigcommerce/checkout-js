@@ -71,7 +71,7 @@ describe('OrderStatus', () => {
             });
 
             it('renders status with downloadable items text', () => {
-                expect(shallow(<OrderStatus order={ order }/>)).toMatchSnapshot();
+                expect(shallow(<OrderStatus order={ order } />)).toMatchSnapshot();
             });
         });
 
@@ -81,7 +81,7 @@ describe('OrderStatus', () => {
             });
 
             it('renders status without downloadable items text', () => {
-                expect(shallow(<OrderStatus order={ order }/>)).toMatchSnapshot();
+                expect(shallow(<OrderStatus order={ order } />)).toMatchSnapshot();
             });
         });
     });
