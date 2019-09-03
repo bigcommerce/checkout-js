@@ -35,7 +35,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
         <OrderSummaryPrice
             testId="cart-subtotal"
             className="cart-priceItem--subtotal"
-            label={ <TranslatedString id="cart.subtotal_text"/> }
+            label={ <TranslatedString id="cart.subtotal_text" /> }
             amount={ subtotalAmount }
         />
 
@@ -53,7 +53,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
 
         { !!discountAmount && <OrderSummaryDiscount
             testId="cart-discount"
-            label={ <TranslatedString id="cart.discount_text"/> }
+            label={ <TranslatedString id="cart.discount_text" /> }
             amount={ discountAmount }
         /> }
 
@@ -63,7 +63,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                     onRemoved={ onRemovedGiftCertificate }
                     key={ index }
                     testId="cart-gift-certificate"
-                    label={ <TranslatedString id="cart.gift_certificate_text"/> }
+                    label={ <TranslatedString id="cart.gift_certificate_text" /> }
                     code={ giftCertificate.code }
                     amount={ giftCertificate.used }
                     remaining={ giftCertificate.remaining }
@@ -72,14 +72,14 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
 
         <OrderSummaryPrice
             testId="cart-shipping"
-            label={ <TranslatedString id="cart.shipping_text"/> }
-            zeroLabel={ <TranslatedString id="cart.free_text"/> }
+            label={ <TranslatedString id="cart.shipping_text" /> }
+            zeroLabel={ <TranslatedString id="cart.free_text" /> }
             amount={ shippingAmount }
         />
 
         { !!handlingAmount && <OrderSummaryPrice
             testId="cart-handling"
-            label={ <TranslatedString id="cart.handling_text"/> }
+            label={ <TranslatedString id="cart.handling_text" /> }
             amount={ handlingAmount }
         /> }
 
@@ -91,11 +91,11 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                     label={ tax.name }
                     amount={ tax.amount }
                 />
-         )}
+         ) }
 
         { !!storeCreditAmount && <OrderSummaryDiscount
             testId="cart-store-credit"
-            label={ <TranslatedString id="cart.store_credit_text"/> }
+            label={ <TranslatedString id="cart.store_credit_text" /> }
             amount={ storeCreditAmount }
         /> }
     </Fragment>);

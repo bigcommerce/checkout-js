@@ -88,8 +88,7 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                             key={ `${field.id}-${field.name}` }
                             parentFieldName={ field.custom ?
                                 (fieldName ? `${fieldName}.customFields` : 'customFields') :
-                                fieldName
-                            }
+                                fieldName }
                             field={ field }
                             placeholder={ translatedPlaceholderId && language.translate(translatedPlaceholderId) }
                             fieldType={ this.getDynamicFormFieldType(field) }

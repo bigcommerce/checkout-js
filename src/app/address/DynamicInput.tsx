@@ -53,8 +53,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
                 { placeholder &&
                     <option value="">
                         { placeholder }
-                    </option>
-                }
+                    </option> }
                 { options && options.map(({ label, value: optionValue }) =>
                     <option
                         key={ optionValue }
@@ -62,7 +61,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
                     >
                         { label }
                     </option>
-                )}
+                ) }
             </select>
         );
 
@@ -144,8 +143,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
                 id={ id }
                 testId={ `${id}-${ fieldType === DynamicFormFieldType.password ?
                     'password' :
-                    'text' }`
-                }
+                    'text' }` }
                 type={ fieldType }
                 value={ value }
             />

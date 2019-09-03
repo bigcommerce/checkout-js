@@ -65,7 +65,7 @@ describe('Billing Component', () => {
         jest.spyOn(checkoutService, 'loadBillingAddressFields').mockResolvedValue({} as CheckoutSelectors);
 
         ComponentTest = props => (
-            <CheckoutProvider checkoutService={ checkoutService } >
+            <CheckoutProvider checkoutService={ checkoutService }>
                 <LocaleContext.Provider value={ localeContext }>
                     <Billing { ...props } />
                 </LocaleContext.Provider>

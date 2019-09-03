@@ -61,8 +61,7 @@ const Redeemable: FunctionComponent<RedeemableProps & WithLanguageProps & Formik
                 { (isOpen || !shouldCollapseCouponCode) && <div data-test="redeemable-collapsable">
                     <RedeemableForm { ...formProps } />
                     { showAppliedRedeemables &&
-                        <AppliedRedeemables { ...formProps } />
-                    }
+                        <AppliedRedeemables { ...formProps } /> }
                 </div> }
             </Fragment>
         ) }
@@ -113,8 +112,7 @@ const RedeemableForm: FunctionComponent<Partial<RedeemableProps> & FormikProps<R
             { appliedRedeemableError && <Alert type={ AlertType.Error }>
                 { appliedRedeemableError.errors[0].code === 'not_applicable' ?
                     <TranslatedString id="redeemable.coupon_location_error" /> :
-                    <TranslatedString id="redeemable.code_invalid_error" />
-                }
+                    <TranslatedString id="redeemable.code_invalid_error" /> }
             </Alert> }
 
             <div className="form-prefixPostfix">

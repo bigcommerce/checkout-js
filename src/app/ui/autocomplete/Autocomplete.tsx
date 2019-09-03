@@ -40,7 +40,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
                 onChange={ onSelect }
                 itemToString={ this.itemToString }
             >
-                {({
+                { ({
                     isOpen,
                     getInputProps,
                     getMenuProps,
@@ -62,10 +62,9 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
                                     getItemProps={ getItemProps }
                                 />
                                 { children }
-                            </Popover>
-                        }
+                            </Popover> }
                     </div>
-                )}
+                ) }
             </Downshift>
         );
     }
@@ -99,7 +98,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
 
             lastIndex  = offset + length;
 
-            node.push(<strong key={ key }>{label.substr(offset, length)}</strong>);
+            node.push(<strong key={ key }>{ label.substr(offset, length) }</strong>);
             key += 1;
 
             if (i === (item.highlightedSlices || []).length - 1) {

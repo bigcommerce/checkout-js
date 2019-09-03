@@ -13,10 +13,12 @@ const ThankYouHeader: FunctionComponent<HeaderProps> = ({
     <PrimaryHeader testId="order-confirmation-heading">
         { name && <TranslatedString
             id="order_confirmation.thank_you_customer_heading"
-            data={ { name } }/> }
+            data={ { name } }
+        /> }
 
         { !name && <TranslatedString
-            id="order_confirmation.thank_you_heading" /> }
+            id="order_confirmation.thank_you_heading"
+        /> }
     </PrimaryHeader>
 );
 

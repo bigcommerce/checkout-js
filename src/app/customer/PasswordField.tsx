@@ -23,7 +23,7 @@ const PasswordField: FunctionComponent<PasswordFieldProps> = ({
                         additionalClassName="form-input--withIcon"
                         type={ isOpen ? 'text' : 'password' }
                     />
-                    <a href="#" className="form-toggle-password form-input-icon" onClick={ toggle } >
+                    <a href="#" className="form-toggle-password form-input-icon" onClick={ toggle }>
                         { isOpen ? <IconEye /> : <IconEyeSlash /> }
                     </a>
                 </div>

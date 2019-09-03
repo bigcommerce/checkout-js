@@ -6,7 +6,7 @@ import { IconCardCodeAmex, IconCardCodeVisa, IconSize } from '../../ui/icon';
 import './CreditCardCodeTooltip.scss';
 
 const CreditCardCodeTooltip: FunctionComponent = () => (
-    <div className="dropdown-menu dropdown-menu--content dropdown-menu--card-code" >
+    <div className="dropdown-menu dropdown-menu--content dropdown-menu--card-code">
         <div className="form-ccFields-cvvExample">
             <div className="form-ccFields-cvvExampleDescription">
                 <p>

@@ -39,12 +39,12 @@ const PopoverList: FunctionComponent<PopoverListProps> = ({
                         key: item.id,
                         index,
                         item,
-                    })}
+                    }) }
                     key={ index }
                 >
                     { item.content }
                 </li>
-            ))}
+            )) }
         </ul>
     );
 };

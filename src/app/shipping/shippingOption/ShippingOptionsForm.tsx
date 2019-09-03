@@ -46,15 +46,14 @@ class ShippingOptionsForm extends PureComponent<ShippingOptionsFormProps & Formi
             !shouldShowShippingOptions
         ) {
             return (
-                <LoadingOverlay isLoading={ isLoading() } >
+                <LoadingOverlay isLoading={ isLoading() }>
                     { this.renderNoShippingOptions(
                         <TranslatedString
                             id={ methodId || isMultiShippingMode ?
                                 'shipping.select_shipping_address_text' :
-                                'shipping.enter_shipping_address_text'
-                            }
-                        />)
-                    }
+                                'shipping.enter_shipping_address_text' }
+                        />
+                    ) }
                 </LoadingOverlay>
             );
         }
@@ -79,11 +78,10 @@ class ShippingOptionsForm extends PureComponent<ShippingOptionsFormProps & Formi
                         { (!consignment.availableShippingOptions || !consignment.availableShippingOptions.length) &&
                             <LoadingOverlay isLoading={ isLoading(consignment.id) } hideContentWhenLoading>
                                 { this.renderNoShippingOptions(invalidShippingMessage) }
-                            </LoadingOverlay>
-                        }
+                            </LoadingOverlay> }
                     </div>
-                ))
-            } </Fragment>
+                )) }
+            </Fragment>
         );
     }
 

@@ -25,14 +25,17 @@ const StoreCreditField: FunctionComponent<StoreCreditFieldProps & WithCurrencyPr
 
             { ' ' }
 
-            <TooltipTrigger placement="top-start" tooltip={
-                <Tooltip testId="payment-store-credit-tooltip">
-                    <TranslatedString
-                        id="redeemable.store_credit_available_text"
-                        data={ { storeCredit: currency.toCustomerCurrency(availableStoreCredit) } }
-                    />
-                </Tooltip>
-            }>
+            <TooltipTrigger
+                placement="top-start"
+                tooltip={
+                    <Tooltip testId="payment-store-credit-tooltip">
+                        <TranslatedString
+                            id="redeemable.store_credit_available_text"
+                            data={ { storeCredit: currency.toCustomerCurrency(availableStoreCredit) } }
+                        />
+                    </Tooltip>
+                }
+            >
                 <a href="#" onClick={ preventDefault() }>
                     { currency.toCustomerCurrency(usableStoreCredit) }
                 </a>

@@ -51,7 +51,8 @@ class ManageInstrumentsModal extends Component<ManageInstrumentsModalProps & Wit
                 header={
                     <ModalHeader>
                         <TranslatedString id="payment.instrument_manage_modal_title_text" />
-                    </ModalHeader> }
+                    </ModalHeader>
+                }
                 isOpen={ isOpen }
                 onAfterOpen={ this.handleAfterOpen }
                 onRequestClose={ onRequestClose }

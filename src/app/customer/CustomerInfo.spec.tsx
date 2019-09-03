@@ -137,7 +137,7 @@ describe('CustomerInfo', () => {
 
             const handleError = jest.fn();
             const component = mount(
-                <CustomerInfoTest onSignOutError={ handleError }/>
+                <CustomerInfoTest onSignOutError={ handleError } />
             );
 
             component.find('[data-test="sign-out-link"]')

@@ -33,8 +33,60 @@
             }
         ],
         "react/display-name": "off",
+        "react/jsx-closing-bracket-location": [
+            "error", 
+            "line-aligned"
+        ],
+        "react/jsx-curly-newline": [
+            "error",
+            {
+                "multiline": "consistent",
+                "singleline": "consistent"
+            }
+        ],
+        "react/jsx-curly-spacing": [
+            "error",
+            {
+                "children": true,
+                "when": "always"
+            }
+        ],
+        "react/jsx-first-prop-new-line": [
+            "error",
+            "multiline-multiprop"
+        ],
+        "react/jsx-indent-props": [
+            "error",
+            4
+        ],
+        "react/jsx-key": "error",
         "react/jsx-no-bind": "error",
+        "react/jsx-pascal-case": "error",
+        "react/jsx-props-no-multi-spaces": "error",
+        "react/jsx-tag-spacing": [
+            "error",
+            {
+                "closingSlash": "never",
+                "beforeSelfClosing": "always",
+                "afterOpening": "never",
+                "beforeClosing": "never"
+            }
+        ],
+        "react/no-children-prop": "error",
+        "react/no-danger-with-children": "error",
+        "react/no-direct-mutation-state": "error",
+        "react/no-find-dom-node": "error",
+        "react/no-is-mounted": "error",
+        "react/no-redundant-should-component-update": "error",
+        "react/no-string-refs": "error",
+        "react/no-this-in-sfc": "error",
+        "react/no-unsafe": "error",
+        "react/no-unused-state": "error",
+        "react/prefer-es6-class": "error",
+        "react/prefer-read-only-props": "error",
         "react/prop-types": "off",
+        "react/self-closing-comp": "error",
+        "react/style-prop-object": "error",
         "react-hooks/exhaustive-deps": "error",
         "react-hooks/rules-of-hooks": "error",
         "import/dynamic-import-chunkname": "error",

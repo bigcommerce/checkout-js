@@ -16,7 +16,7 @@ const LoadingNotification: FunctionComponent<LoadingNotificationProps> = ({
     return (
         <div className="loadingNotification">
             <div className="loadingNotification-label optimizedCheckout-loadingToaster">
-                <div className="spinner"></div>
+                <div className="spinner" />
 
                 <span className="label">
                     <TranslatedString id="common.loading_text" />

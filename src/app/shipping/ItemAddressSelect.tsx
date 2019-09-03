@@ -44,8 +44,7 @@ const ItemAddressSelect: FunctionComponent<ItemAddressSelectProps> = ({
     return <div className="consignment">
         <figure className="consignment-product-figure">
             { imageUrl &&
-                <img src={ imageUrl } alt={ name } />
-            }
+                <img src={ imageUrl } alt={ name } /> }
         </figure>
 
         <div className="consignment-product-body">
@@ -63,7 +62,7 @@ const ItemAddressSelect: FunctionComponent<ItemAddressSelectProps> = ({
                         { optionName } { value }
                     </li>
                 </ul>
-            )}
+            ) }
 
             <AddressSelect
                 addresses={ addresses }

@@ -9,7 +9,7 @@ const IconCardDiscover: FunctionComponent = () => (
         </defs>
         <g fill="none" fillRule="evenodd">
             <mask id="b" fill="#fff">
-                <use xlinkHref="#a"/>
+                <use xlinkHref="#a" />
             </mask>
             <use fill="#F4F4F4" xlinkHref="#a" />
             <rect fill="#F4F4F4" mask="url(#b)" x="1" width="152" height="104" rx="12" />

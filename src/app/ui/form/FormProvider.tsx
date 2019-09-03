@@ -29,8 +29,7 @@ const FormProvider: FunctionComponent<FormProviderProps> = ({
         <FormContext.Provider value={ contextValue }>
             { isFunction(children) ?
                 children({ isSubmitted, setSubmitted }) :
-                children
-            }
+                children }
         </FormContext.Provider>
     );
 };

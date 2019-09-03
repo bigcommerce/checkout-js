@@ -14,7 +14,8 @@ const LoadingSpinner: FunctionComponent<LoadingSpinnerProps> = ({
     return (
         <div
             className="loadingSpinner loadingOverlay-container"
-            style={ { height: 100 } }>
+            style={ { height: 100 } }
+        >
             <div className="loadingOverlay optimizedCheckout-overlay" />
         </div>
     );

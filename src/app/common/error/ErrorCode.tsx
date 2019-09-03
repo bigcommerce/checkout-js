@@ -10,7 +10,7 @@ const ErrorCode: FunctionComponent<{code: string}> = ({ code }) => {
             <span className="errorCode-label">
                 <TranslatedString id="common.error_code" />
             </span>
-            {' '}
+            { ' ' }
             <span className="errorCode-value">{ code }</span>
         </div>
     );

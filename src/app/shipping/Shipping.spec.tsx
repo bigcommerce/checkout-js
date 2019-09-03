@@ -82,7 +82,7 @@ describe('Shipping Component', () => {
         jest.spyOn(checkoutService, 'updateShippingAddress').mockResolvedValue({} as CheckoutSelectors);
 
         ComponentTest = props => (
-            <CheckoutProvider checkoutService={ checkoutService } >
+            <CheckoutProvider checkoutService={ checkoutService }>
                 <LocaleContext.Provider value={ localeContext }>
                     <Shipping { ...props } />
                 </LocaleContext.Provider>

@@ -114,7 +114,8 @@ class OrderConfirmation extends Component<
             <div className={ classNames(
                 'layout optimizedCheckout-contentPrimary',
                 { 'is-embedded': isEmbedded() }
-            ) }>
+            ) }
+            >
                 <div className="layout-main">
                     <div className="orderConfirmation">
                         <ThankYouHeader name={ order.billingAddress.firstName } />

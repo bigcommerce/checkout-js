@@ -29,7 +29,7 @@ describe('ErrorModal', () => {
         error = new Error('Foo');
 
         localeContext = createLocaleContext(getStoreConfig());
-        errorModal = mount(<ErrorModalContainer error={ error }/>);
+        errorModal = mount(<ErrorModalContainer error={ error } />);
     });
 
     it('renders error modal', () => {

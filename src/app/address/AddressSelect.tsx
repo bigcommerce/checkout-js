@@ -25,14 +25,16 @@ class AddressSelect extends PureComponent<AddressSelectProps> {
         return (
             <div className="form-field">
                 <div className="dropdown--select" role="combobox">
-                    <DropdownTrigger dropdown={
-                        <AddressSelectMenu
-                            addresses={ addresses }
-                            onSelectAddress={ this.handleSelectAddress }
-                            onUseNewAddress={ this.handleUseNewAddress }
-                            selectedAddress={ selectedAddress }
-                        />
-                    }>
+                    <DropdownTrigger
+                        dropdown={
+                            <AddressSelectMenu
+                                addresses={ addresses }
+                                onSelectAddress={ this.handleSelectAddress }
+                                onUseNewAddress={ this.handleUseNewAddress }
+                                selectedAddress={ selectedAddress }
+                            />
+                        }
+                    >
                         <AddressSelectButton
                             addresses={ addresses }
                             selectedAddress={ selectedAddress }
@@ -105,8 +107,7 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps> = ({
     >
         { selectedAddress ?
             <StaticAddress address={ selectedAddress } /> :
-            <TranslatedString id="address.enter_address_action" />
-        }
+            <TranslatedString id="address.enter_address_action" /> }
     </a>
 );
 

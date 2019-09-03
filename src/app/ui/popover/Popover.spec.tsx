@@ -6,7 +6,7 @@ import Popover from './Popover';
 
 describe('Popover Component', () => {
     it('renders with whatever child is passed', () => {
-        const tree = shallow(<Popover><h1></h1></Popover>);
+        const tree = shallow(<Popover><h1 /></Popover>);
 
         expect(toJson(tree)).toMatchSnapshot();
     });

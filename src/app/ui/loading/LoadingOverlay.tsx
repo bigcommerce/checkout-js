@@ -19,14 +19,15 @@ const LoadingOverlay: FunctionComponent<LoadingOverlayProps> = ({
             <Fragment>
                 <LoadingSpinner isLoading={ isLoading } />
                 { unmountContentWhenLoading && isLoading ? null :
-                    <div style={ {
-                        display: hideContentWhenLoading && isLoading ?
-                            'none' :
-                            undefined,
-                    } }>
+                    <div
+                        style={ {
+                            display: hideContentWhenLoading && isLoading ?
+                                'none' :
+                                undefined,
+                        } }
+                    >
                         { children }
-                    </div>
-                }
+                    </div> }
             </Fragment>
         );
     }

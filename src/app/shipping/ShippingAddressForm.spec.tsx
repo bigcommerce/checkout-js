@@ -86,7 +86,7 @@ describe('ShippingAddressForm Component', () => {
                                 name: 'newRequiredField',
                                 required: true,
                             },
-                        ]}
+                        ] }
                     />
                 </Formik>
             );
@@ -101,7 +101,7 @@ describe('ShippingAddressForm Component', () => {
         it('renders address form when there is no selected address', () => {
             component = mount(
                 <Formik initialValues={ {} } onSubmit={ noop }>
-                    <ShippingAddressForm { ...defaultProps }  address={ undefined } />
+                    <ShippingAddressForm { ...defaultProps } address={ undefined } />
                 </Formik>
             );
 
@@ -116,7 +116,8 @@ describe('ShippingAddressForm Component', () => {
         beforeEach(() => {
             component = mount(
                 <Formik initialValues={ {} } onSubmit={ noop }>
-                    <ShippingAddressForm { ...defaultProps }
+                    <ShippingAddressForm
+                        { ...defaultProps }
                         addresses={ [] }
                     />
                 </Formik>
@@ -150,7 +151,8 @@ describe('ShippingAddressForm Component', () => {
                         } }
                         onSubmit={ noop }
                     >
-                        <ShippingAddressForm { ...defaultProps }
+                        <ShippingAddressForm
+                            { ...defaultProps }
                             address={ getShippingAddress() }
                             addresses={ [] }
                         />
