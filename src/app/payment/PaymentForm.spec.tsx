@@ -1,6 +1,7 @@
 import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React, { FunctionComponent } from 'react';
+import { act } from 'react-dom/test-utils';
 
 import { getCart } from '../cart/carts.mock';
 import { CheckoutProvider } from '../checkout';
@@ -17,6 +18,8 @@ import PaymentForm, { PaymentFormProps } from './PaymentForm';
 import SpamProtectionField, { SpamProtectionProps } from './SpamProtectionField';
 import TermsConditionsField, { TermsConditionsFieldProps, TermsConditionsType } from './TermsConditionsField';
 
+jest.useFakeTimers();
+
 describe('PaymentForm', () => {
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
@@ -29,7 +32,10 @@ describe('PaymentForm', () => {
         defaultProps = {
             defaultMethodId: getPaymentMethod().id,
             isPaymentDataRequired: jest.fn(() => true),
-            methods: [getPaymentMethod()],
+            methods: [
+                getPaymentMethod(),
+                { ...getPaymentMethod(), id: 'cybersource' },
+            ],
             onSubmit: jest.fn(),
         };
 
@@ -245,5 +251,41 @@ describe('PaymentForm', () => {
 
         expect(handleSubmit)
             .not.toHaveBeenCalled();
+    });
+
+    it('resets form validation message when switching to new payment method', async () => {
+        const container = mount(<PaymentFormTest
+            { ...defaultProps }
+            validationSchema={ getCreditCardValidationSchema({
+                isCardCodeRequired: true,
+                language: localeContext.language,
+            }) }
+        />);
+
+        // Submitting a blank form should display some error messages based on the provided validation schema
+        container.find('form')
+            .simulate('submit');
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        container.update();
+
+        expect(container.exists('[data-test="cc-number-field-error-message"]'))
+            .toEqual(true);
+
+        // Selecting a new payment method should clear the error messages
+        act(() => {
+            const methodList: ReactWrapper<PaymentMethodListProps> = container.find(PaymentMethodList);
+
+            // tslint:disable-next-line:no-non-null-assertion
+            methodList.prop('onSelect')!(defaultProps.methods[1]);
+        });
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        container.update();
+
+        expect(container.exists('[data-test="cc-number-field-error-message"]'))
+            .toEqual(false);
     });
 });

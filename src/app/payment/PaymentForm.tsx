@@ -83,7 +83,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
     isTermsConditionsRequired,
     isUsingMultiShipping,
     methods,
-    onMethodSelect = noop,
+    onMethodSelect,
     onStoreCreditChange,
     onUnhandledError,
     resetForm,
@@ -94,7 +94,81 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
     usableStoreCredit = 0,
     values,
 }) => {
+    return (
+        <Form
+            className="checkout-form"
+            testId="payment-form"
+        >
+            { usableStoreCredit > 0 && isPaymentDataRequired() && <StoreCreditField
+                availableStoreCredit={ availableStoreCredit }
+                name="useStoreCredit"
+                onChange={ onStoreCreditChange }
+                usableStoreCredit={ usableStoreCredit }
+            /> }
+
+            <PaymentMethodListFieldset
+                isEmbedded={ isEmbedded }
+                isPaymentDataRequired={ isPaymentDataRequired }
+                isUsingMultiShipping={ isUsingMultiShipping }
+                methods={ methods }
+                onMethodSelect={ onMethodSelect }
+                onUnhandledError={ onUnhandledError }
+                resetForm={ resetForm }
+                values={ values }
+            />
+
+            <PaymentRedeemables />
+
+            { isTermsConditionsRequired && <Fragment>
+                { termsConditionsUrl ?
+                    <TermsConditionsField
+                        name="terms"
+                        type={ TermsConditionsType.Link }
+                        url={ termsConditionsUrl }
+                    /> :
+                    <TermsConditionsField
+                        name="terms"
+                        type={ TermsConditionsType.TextArea }
+                        terms={ termsConditionsText }
+                    /> }
+            </Fragment> }
+
+            { isSpamProtectionEnabled && <SpamProtectionField containerId="spamProtection" /> }
+
+            <div className="form-actions">
+                <PaymentSubmitButton
+                    isDisabled={ shouldDisableSubmit }
+                    methodId={ selectedMethod && selectedMethod.id }
+                    methodType={ selectedMethod && selectedMethod.method }
+                />
+            </div>
+        </Form>
+    );
+};
+
+interface PaymentMethodListFieldsetProps {
+    isEmbedded?: boolean;
+    isUsingMultiShipping?: boolean;
+    methods: PaymentMethod[];
+    values: PaymentFormValues;
+    isPaymentDataRequired(useStoreCredit?: boolean): boolean;
+    onMethodSelect?(method: PaymentMethod): void;
+    onUnhandledError?(error: Error): void;
+    resetForm(nextValues?: PaymentFormValues): void;
+}
+
+const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProps> = ({
+    isEmbedded,
+    isPaymentDataRequired,
+    isUsingMultiShipping,
+    methods,
+    onMethodSelect = noop,
+    onUnhandledError,
+    resetForm,
+    values,
+}) => {
     const { setSubmitted } = useContext(FormContext);
+
     const commonValues = useMemo(
         () => ({ terms: values.terms, useStoreCredit: values.useStoreCredit }),
         [values.terms, values.useStoreCredit]
@@ -128,17 +202,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
         </Legend>
     ), []);
 
-    return <Form
-        className="checkout-form"
-        testId="payment-form"
-    >
-        { usableStoreCredit > 0 && isPaymentDataRequired() && <StoreCreditField
-            availableStoreCredit={ availableStoreCredit }
-            name="useStoreCredit"
-            onChange={ onStoreCreditChange }
-            usableStoreCredit={ usableStoreCredit }
-        /> }
-
+    return (
         <Fieldset legend={ legend }>
             { !isPaymentDataRequired(values.useStoreCredit) && <StoreCreditOverlay /> }
 
@@ -150,33 +214,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
                 onUnhandledError={ onUnhandledError }
             />
         </Fieldset>
-
-        <PaymentRedeemables />
-
-        { isTermsConditionsRequired && <Fragment>
-            { termsConditionsUrl ?
-                <TermsConditionsField
-                    name="terms"
-                    type={ TermsConditionsType.Link }
-                    url={ termsConditionsUrl }
-                /> :
-                <TermsConditionsField
-                    name="terms"
-                    type={ TermsConditionsType.TextArea }
-                    terms={ termsConditionsText }
-                /> }
-        </Fragment> }
-
-        { isSpamProtectionEnabled && <SpamProtectionField containerId="spamProtection" /> }
-
-        <div className="form-actions">
-            <PaymentSubmitButton
-                isDisabled={ shouldDisableSubmit }
-                methodId={ selectedMethod && selectedMethod.id }
-                methodType={ selectedMethod && selectedMethod.method }
-            />
-        </div>
-    </Form>;
+    );
 };
 
 const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, PaymentFormValues> = {
