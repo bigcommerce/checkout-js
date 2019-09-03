@@ -47,6 +47,7 @@ export default class Accordion extends Component<AccordionProps, AccordionState>
     private handleToggleItem: (id: string) => void = id => {
         const { onSelect = noop } = this.props;
 
-        this.setState({ selectedItemId: id }, () => onSelect(id));
+        this.setState({ selectedItemId: id });
+        onSelect(id);
     };
 }
