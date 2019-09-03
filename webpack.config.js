@@ -1,6 +1,5 @@
 const { omitBy } = require('lodash');
 const { join } = require('path');
-const { createHash } = require('crypto');
 
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -9,8 +8,6 @@ const WebpackAssetsManifest = require('webpack-assets-manifest');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 
 const BuildHooks = require('./scripts/webpack/build-hooks');
-const PublicPathPlugin = require('./scripts/webpack/public-path');
-const packageInfo = require('./package.json');
 
 const babelOptions = {
     cacheDirectory: true,
@@ -26,7 +23,7 @@ const babelOptions = {
                     'not Android < 62',
                 ],
             },
-            useBuiltIns: 'usage',
+            useBuiltIns: 'entry',
             modules: false,
         }],
     ],
@@ -35,11 +32,14 @@ const babelOptions = {
 module.exports = function (options, argv) {
     const mode = argv.mode || 'production';
     const isProduction = mode !== 'development';
-    const outputFilename = `[name]-${getPublicPathHash()}${isProduction ? '-[contenthash:8]' : ''}`;
+    const outputFilename = `[name]${isProduction ? '-[contenthash:8]' : ''}`;
 
     return {
         entry: {
-            'checkout': join(__dirname, 'src', 'app', 'index.ts'),
+            'checkout': [
+                join(__dirname, 'src', 'app', 'polyfill.ts'),
+                join(__dirname, 'src', 'app', 'index.ts'),
+            ],
         },
         mode,
         devtool: isProduction ? 'source-map' : 'eval-source-map',
@@ -52,8 +52,19 @@ module.exports = function (options, argv) {
             splitChunks: {
                 chunks: 'all',
                 cacheGroups: {
+                    vendors: {
+                        test: /\/node_modules\//,
+                        reuseExistingChunk: true,
+                        enforce: true,
+                        priority: -10,
+                    },
+                    polyfill: {
+                        test: /\/node_modules\/core-js/,
+                        reuseExistingChunk: true,
+                        enforce: true,
+                    },
                     transients: {
-                        test: ({ resource }) => /\/node_modules\/@bigcommerce/.test(resource),
+                        test: /\/node_modules\/@bigcommerce/,
                         reuseExistingChunk: true,
                         enforce: true,
                     },
@@ -83,7 +94,6 @@ module.exports = function (options, argv) {
                 exclude: /.*\.spec\.tsx?/,
                 include: /src\/app/,
             }),
-            new PublicPathPlugin(getPublicPathHash()),
             new WebpackAssetsManifest({
                 entrypoints: true,
                 transform: assets => transformManifest(assets, options),
@@ -106,15 +116,21 @@ module.exports = function (options, argv) {
                     include: join(__dirname, 'src'),
                     use: [
                         {
-                            loader: 'babel-loader',
-                            options: babelOptions,
-                        },
-                        {
                             loader: 'ts-loader',
                             options: {
                                 onlyCompileBundledFiles: true,
                                 transpileOnly: true,
                             },
+                        },
+                    ],
+                },
+                {
+                    test: /app\/polyfill\.ts$/,
+                    include: join(__dirname, 'src'),
+                    use: [
+                        {
+                            loader: 'babel-loader',
+                            options: babelOptions,
                         },
                     ],
                 },
@@ -145,22 +161,6 @@ module.exports = function (options, argv) {
                         },
                     ],
                 },
-                isProduction && {
-                    test: /\.js$/,
-                    loader: 'babel-loader',
-                    include: join(__dirname, 'node_modules'),
-                    exclude: [
-                        // These two need to be exclued:
-                        // core-js: contains the polyfills
-                        // webpack: prevents loaders and other file types (scss) from being processed
-                        /\/node_modules\/core-js\//,
-                        /\/node_modules\/webpack\//,
-                    ],
-                    options: {
-                        ...babelOptions,
-                        sourceType: 'unambiguous',
-                    }
-               },
             ].filter(Boolean),
         },
     };
@@ -175,11 +175,4 @@ function transformManifest(assets, options) {
         appVersion: 'dev',
         ...entrypoints,
     };
-}
-
-function getPublicPathHash() {
-    return createHash('md4')
-        .update(packageInfo.name)
-        .digest('hex')
-        .substr(0, 8);
 }
