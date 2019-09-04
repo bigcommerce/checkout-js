@@ -1,28 +1,121 @@
+aliases:
+  - &node_executor
+      executor:
+        name: node/node
+        node-version: '10'
+
+  - &release_branch_filter
+      branches:
+        only:
+          - test_circleci
+          # - master
+          # - /^release_.*/
+
+  - &non_release_branch_filter
+      branches:
+        ignore:
+          - test_circleci
+          # - master
+          # - /^release_.*/
+
 version: 2.1
 
 orbs:
   ci: bigcommerce/internal@volatile
   node: bigcommerce/internal-node@volatile
+  checkout-js:
+    commands:
+      install_dependencies:
+        steps:
+          - restore_cache:
+              keys:
+                - checkout-js
+          - run:
+              name: 'Install NPM dependencies'
+              command: 'npm ci'
+          - save_cache:
+              key: checkout-js
+              paths:
+                - ~/.npm
 
 jobs:
-  build:
-    executor:
-      name: node/node
-      node-version: "10"
+  test:
+    <<: *node_executor
     steps:
       - ci/pre-setup
-      - restore_cache:
-          keys:
-              - checkout-js
-      - run: npm ci
-      - save_cache:
-          key: checkout-js
-          paths:
-            - ~/.npm
+      - checkout-js/install_dependencies
       - run:
-          name: 'Build'
-          command:  'npm run build'
+          name: 'Run unit tests'
+          command: 'npm run test -- --coverage --runInBand'
+
+  build:
+    <<: *node_executor
+    steps:
+      - ci/pre-setup
+      - checkout-js/install_dependencies
       - run:
-          name: 'Unit Tests'
-          command:  'npm run test -- --coverage --runInBand'
-          when: always
+          name: 'Test build'
+          command: 'npm run build'
+
+  release:
+    <<: *node_executor
+    steps:
+      - ci/pre-setup
+      - checkout-js/install_dependencies
+      - run:
+          name: 'Create and tag new release'
+          command: 'npm run release -- --prerelease alpha'
+          # command: 'npm run release'
+      - run:
+          name: 'Push commits and tag to GitHub'
+          command: 'git push --follow-tags'
+
+  upload_to_sentry:
+    <<: *node_executor
+    steps:
+      - ci/pre-setup
+      - run:
+          name: 'Install Sentry cli'
+          command: curl -sL https://sentry.io/get-cli/ | bash
+      - run:
+          name: 'Upload source maps to Sentry'
+          command: |
+            sentry-cli releases -p checkout-js new 'checkout-js@$(git describe --abbrev=0)'
+            sentry-cli releases -p checkout-js upload-sourcemaps dist
+            sentry-cli releases -p checkout-js finalize ${CIRCLE_SHA1}
+
+workflows:
+  version: 2
+
+  integrate:
+    jobs:
+      - test:
+          filters:
+            <<: *non_release_branch_filter
+      - build:
+          filters:
+            <<: *non_release_branch_filter
+
+  release:
+    jobs:
+      - approval:
+          filters:
+            <<: *release_branch_filter
+          type: approval
+      - test:
+          filters:
+            <<: *non_release_branch_filter
+          requires:
+            - approval
+      - release:
+          filters:
+            <<: *release_branch_filter
+          requires:
+            - approval
+            - test
+      - upload_to_sentry:
+          filters:
+            <<: *release_branch_filter
+          requires:
+            - approval
+            - release
