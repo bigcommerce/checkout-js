@@ -1,6 +1,6 @@
 import { LanguageService } from '@bigcommerce/checkout-sdk';
+import { memoize } from '@bigcommerce/memoize';
 import { cvv, expirationDate, number } from 'card-validator';
-import { memoize } from 'lodash';
 import { object, string, ObjectSchema } from 'yup';
 
 import { CreditCardFieldsetValues } from './CreditCardFieldset';
@@ -48,4 +48,4 @@ export default memoize(function getCreditCardValidationSchema({
     }
 
     return object(schema);
-}, (...args) => JSON.stringify(args));
+});

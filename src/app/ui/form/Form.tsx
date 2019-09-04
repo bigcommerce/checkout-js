@@ -1,8 +1,7 @@
+import { memoizeOne } from '@bigcommerce/memoize';
 import { Form as FormikForm, FormikFormProps } from 'formik';
 import { values } from 'lodash';
 import React, { createRef, memo, useCallback, useRef, FunctionComponent } from 'react';
-
-import { memoize } from '../../common/utility';
 
 import FormProvider, { FormContextType } from './FormProvider';
 
@@ -37,7 +36,7 @@ const Form: FunctionComponent<FormProps> = ({
         }
     };
 
-    const handleSubmitCapture = useCallback(memoize((setSubmitted: FormContextType['setSubmitted']) => {
+    const handleSubmitCapture = useCallback(memoizeOne((setSubmitted: FormContextType['setSubmitted']) => {
         return () => {
             setSubmitted(true);
 
@@ -46,7 +45,7 @@ const Form: FunctionComponent<FormProps> = ({
         };
     }), [focusOnError]);
 
-    const renderContent = useCallback(memoize(({ setSubmitted }: FormContextType) => {
+    const renderContent = useCallback(memoizeOne(({ setSubmitted }: FormContextType) => {
         return (
             <div ref={ ref.current.containerRef }>
                 <FormikForm

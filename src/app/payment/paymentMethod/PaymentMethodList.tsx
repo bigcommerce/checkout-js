@@ -1,9 +1,9 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { memoize } from '@bigcommerce/memoize';
 import { find, noop } from 'lodash';
 import React, { memo, useCallback, FunctionComponent } from 'react';
 
 import { connectFormik, ConnectFormikProps } from '../../common/form';
-import { memoize } from '../../common/utility';
 import { Checklist, ChecklistItem } from '../../ui/form';
 
 import getUniquePaymentMethodId, { parseUniquePaymentMethodId } from './getUniquePaymentMethodId';

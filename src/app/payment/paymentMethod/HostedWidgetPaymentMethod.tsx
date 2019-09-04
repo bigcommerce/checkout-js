@@ -1,6 +1,7 @@
 import { CheckoutSelectors, CustomerInitializeOptions, CustomerRequestOptions, Instrument, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
+import { memoizeOne } from '@bigcommerce/memoize';
 import classNames from 'classnames';
-import { find, memoize, noop, some } from 'lodash';
+import { find, noop, some } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
@@ -280,7 +281,7 @@ function mapFromCheckoutProps(): MapToProps<
     WithCheckoutHostedWidgetPaymentMethodProps,
     HostedWidgetPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
 > {
-    const filterInstruments = memoize((instruments: Instrument[] = EMPTY_ARRAY, method: PaymentMethod) =>
+    const filterInstruments = memoizeOne((instruments: Instrument[] = EMPTY_ARRAY, method: PaymentMethod) =>
         instruments.filter(({ provider }) => provider === method.id)
     );
 

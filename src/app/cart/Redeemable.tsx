@@ -1,11 +1,11 @@
 import { CheckoutSelectors, RequestError } from '@bigcommerce/checkout-sdk';
+import { memoizeOne } from '@bigcommerce/memoize';
 import { withFormik, FieldProps, FormikProps } from 'formik';
 import { noop } from 'lodash';
 import React, { memo, useCallback, Fragment, FunctionComponent, KeyboardEvent } from 'react';
 import { object, string } from 'yup';
 
 import { preventDefault } from '../common/dom';
-import { memoize } from '../common/utility';
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
@@ -74,7 +74,7 @@ const RedeemableForm: FunctionComponent<Partial<RedeemableProps> & FormikProps<R
     clearError = noop,
     submitForm,
 }) => {
-    const handleKeyDown = useCallback(memoize((setSubmitted: FormContextType['setSubmitted']) => (
+    const handleKeyDown = useCallback(memoizeOne((setSubmitted: FormContextType['setSubmitted']) => (
         (event: KeyboardEvent) => {
             if (appliedRedeemableError) {
                 clearError(appliedRedeemableError);
@@ -94,7 +94,7 @@ const RedeemableForm: FunctionComponent<Partial<RedeemableProps> & FormikProps<R
         submitForm,
     ]);
 
-    const handleSubmit = useCallback(memoize((setSubmitted: FormContextType['setSubmitted']) => (
+    const handleSubmit = useCallback(memoizeOne((setSubmitted: FormContextType['setSubmitted']) => (
         () => {
             setSubmitted(true);
             submitForm();
@@ -142,7 +142,7 @@ const RedeemableForm: FunctionComponent<Partial<RedeemableProps> & FormikProps<R
         isApplyingRedeemable,
     ]);
 
-    const renderContent = useCallback(memoize(({ setSubmitted }: FormContextType) => (
+    const renderContent = useCallback(memoizeOne(({ setSubmitted }: FormContextType) => (
         <FormField
             name="redeemableCode"
             label={ renderLabel }

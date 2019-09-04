@@ -1,11 +1,12 @@
 import { CheckoutSelectors, OrderRequestBody, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { memoizeOne } from '@bigcommerce/memoize';
 import { compact, find, isEmpty, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
 import { ErrorModal, ErrorModalOnCloseProps } from '../common/error';
-import { memoize, EMPTY_ARRAY } from '../common/utility';
+import { EMPTY_ARRAY } from '../common/utility';
 import { withLanguage, WithLanguageProps } from '../locale';
 import { FlashAlert, FlashMessage } from '../ui/alert';
 import { LoadingOverlay } from '../ui/loading';
@@ -68,7 +69,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         submitFunctions: {},
     };
 
-    private getContextValue = memoize(() => {
+    private getContextValue = memoizeOne(() => {
         return {
             disableSubmit: this.disableSubmit,
             setSubmit: this.setSubmit,

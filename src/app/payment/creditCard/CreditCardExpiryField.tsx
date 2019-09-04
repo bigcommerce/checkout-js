@@ -1,7 +1,7 @@
+import { memoizeOne } from '@bigcommerce/memoize';
 import { FieldProps } from 'formik';
 import React, { memo, useCallback, useMemo, ChangeEvent, FunctionComponent } from 'react';
 
-import { memoize } from '../../common/utility';
 import { TranslatedString } from '../../locale';
 import { FormField, TextInput } from '../../ui/form';
 
@@ -12,7 +12,7 @@ export interface CreditCardExpiryFieldProps {
 }
 
 const CreditCardExpiryField: FunctionComponent<CreditCardExpiryFieldProps> = ({ name }) => {
-    const handleChange = useCallback(memoize((field: FieldProps['field'], form: FieldProps['form']) => {
+    const handleChange = useCallback(memoizeOne((field: FieldProps['field'], form: FieldProps['form']) => {
         return (event: ChangeEvent<any>) => {
             form.setFieldValue(field.name, formatCreditCardExpiryDate(event.target.value));
         };

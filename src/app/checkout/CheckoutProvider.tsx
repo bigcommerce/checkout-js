@@ -1,7 +1,6 @@
 import { CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
+import { memoizeOne } from '@bigcommerce/memoize';
 import React, { Component, ReactNode } from 'react';
-
-import { memoize } from '../common/utility';
 
 import CheckoutContext from './CheckoutContext';
 
@@ -18,7 +17,7 @@ export default class CheckoutProvider extends Component<CheckoutProviderProps, C
 
     private unsubscribe?: () => void;
 
-    private getContextValue = memoize((checkoutService, checkoutState) => {
+    private getContextValue = memoizeOne((checkoutService, checkoutState) => {
         return {
             checkoutService,
             checkoutState,

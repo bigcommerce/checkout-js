@@ -1,5 +1,5 @@
 import { FormField, LanguageService } from '@bigcommerce/checkout-sdk';
-import { memoize } from 'lodash';
+import { memoize } from '@bigcommerce/memoize';
 import { array, date, number, object, string, ArraySchema, NumberSchema, ObjectSchema, Schema, StringSchema } from 'yup';
 
 import { AddressFormValues } from './mapAddressToFormValues';
@@ -103,4 +103,4 @@ export default memoize(function getAddressValidationSchema({
             )
         ).nullable(true),
     }) as ObjectSchema<Partial<AddressFormValues>> ;
-}, (...args) => JSON.stringify(args));
+});
