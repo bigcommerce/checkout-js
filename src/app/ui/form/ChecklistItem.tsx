@@ -1,8 +1,8 @@
+import { memoizeOne } from '@bigcommerce/memoize';
 import { FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
 import React, { memo, useCallback, useContext, FunctionComponent, ReactNode } from 'react';
 
-import { memoize } from '../../common/utility';
 import { AccordionItem, AccordionItemHeaderProps } from '../accordion';
 
 import BasicFormField from './BasicFormField';
@@ -25,7 +25,7 @@ const ChecklistItem: FunctionComponent<ChecklistItemProps> = ({
 }) => {
     const { name = '' } = useContext(ChecklistContext) || {};
 
-    const renderInput = useCallback(memoize((isSelected: boolean) => ({ field }: FieldProps) => (
+    const renderInput = useCallback(memoizeOne((isSelected: boolean) => ({ field }: FieldProps) => (
         <ChecklistItemInput
             { ...field }
             isSelected={ field.value === value }
@@ -42,7 +42,7 @@ const ChecklistItem: FunctionComponent<ChecklistItemProps> = ({
         value,
     ]);
 
-    const handleChange = useCallback(memoize((onToggle: (id: string) => void) => (selectedValue: string) => {
+    const handleChange = useCallback(memoizeOne((onToggle: (id: string) => void) => (selectedValue: string) => {
         if (value === selectedValue) {
             onToggle(value);
         }

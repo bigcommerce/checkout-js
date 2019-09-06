@@ -1,7 +1,6 @@
 import { createCurrencyService, CheckoutService, StoreConfig } from '@bigcommerce/checkout-sdk';
+import { memoizeOne } from '@bigcommerce/memoize';
 import React, { Component, ReactNode } from 'react';
-
-import { memoize } from '../common/utility';
 
 import getLanguageService from './getLanguageService';
 import LocaleContext from './LocaleContext';
@@ -20,7 +19,7 @@ class LocaleProvider extends Component<LocaleProviderProps> {
     private languageService = getLanguageService();
     private unsubscribe?: () => void;
 
-    private getContextValue = memoize((config?: StoreConfig) => {
+    private getContextValue = memoizeOne((config?: StoreConfig) => {
         return {
             currency: config ? createCurrencyService(config) : undefined,
             language: this.languageService,

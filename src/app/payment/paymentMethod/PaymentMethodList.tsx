@@ -1,9 +1,8 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { find, noop } from 'lodash';
-import React, { memo, useCallback, FunctionComponent } from 'react';
+import React, { memo, useCallback, useMemo, FunctionComponent } from 'react';
 
 import { connectFormik, ConnectFormikProps } from '../../common/form';
-import { memoize } from '../../common/utility';
 import { Checklist, ChecklistItem } from '../../ui/form';
 
 import getUniquePaymentMethodId, { parseUniquePaymentMethodId } from './getUniquePaymentMethodId';
@@ -47,33 +46,6 @@ const PaymentMethodList: FunctionComponent<
         onSelect,
     ]);
 
-    const renderPaymentMethod = useCallback(memoize((method: PaymentMethod) => {
-        return (
-            <PaymentMethodComponent
-                isEmbedded={ isEmbedded }
-                isUsingMultiShipping={ isUsingMultiShipping }
-                method={ method }
-                onUnhandledError={ onUnhandledError }
-            />
-        );
-    }, { maxSize: methods.length }), [
-        isEmbedded,
-        isUsingMultiShipping,
-        methods.length,
-        onUnhandledError,
-    ]);
-
-    const renderPaymentMethodTitle = useCallback(memoize((method: PaymentMethod) => (isSelected: boolean) => {
-        return (
-            <PaymentMethodTitle
-                method={ method }
-                isSelected={ isSelected }
-            />
-        );
-    }, { maxSize: methods.length }), [
-        methods.length,
-    ]);
-
     return <Checklist
         defaultSelectedItemId={ values.paymentProviderRadio }
         name="paymentProviderRadio"
@@ -83,16 +55,63 @@ const PaymentMethodList: FunctionComponent<
             const value = getUniquePaymentMethodId(method.id, method.gateway);
 
             return (
-                <ChecklistItem
-                    content={ renderPaymentMethod(method) }
-                    htmlId={ `radio-${value}` }
+                <PaymentMethodListItem
+                    isEmbedded={ isEmbedded }
+                    isUsingMultiShipping={ isUsingMultiShipping }
                     key={ value }
-                    label={ renderPaymentMethodTitle(method) }
+                    method={ method }
+                    onUnhandledError={ onUnhandledError }
                     value={ value }
                 />
             );
         }) }
     </Checklist>;
+};
+
+interface PaymentMethodListItemProps {
+    isEmbedded?: boolean;
+    isUsingMultiShipping?: boolean;
+    method: PaymentMethod;
+    value: string;
+    onUnhandledError?(error: Error): void;
+}
+
+const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
+    isEmbedded,
+    isUsingMultiShipping,
+    method,
+    onUnhandledError,
+    value,
+}) => {
+    const renderPaymentMethod = useMemo(() => (
+        <PaymentMethodComponent
+            isEmbedded={ isEmbedded }
+            isUsingMultiShipping={ isUsingMultiShipping }
+            method={ method }
+            onUnhandledError={ onUnhandledError }
+        />
+    ), [
+        isEmbedded,
+        isUsingMultiShipping,
+        method,
+        onUnhandledError,
+    ]);
+
+    const renderPaymentMethodTitle = useCallback((isSelected: boolean) => (
+        <PaymentMethodTitle
+            method={ method }
+            isSelected={ isSelected }
+        />
+    ), [method]);
+
+    return (
+        <ChecklistItem
+            content={ renderPaymentMethod }
+            htmlId={ `radio-${value}` }
+            label={ renderPaymentMethodTitle }
+            value={ value }
+        />
+    );
 };
 
 export default connectFormik(memo(PaymentMethodList));

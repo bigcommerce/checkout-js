@@ -1,6 +1,5 @@
 import { createLanguageService, LanguageService } from '@bigcommerce/checkout-sdk';
-
-import { memoize } from '../common/utility';
+import { memoize } from '@bigcommerce/memoize';
 
 import { DEFAULT_TRANSLATIONS } from './translations';
 
@@ -11,4 +10,4 @@ function getLanguageService(): LanguageService {
     });
 }
 
-export default memoize(getLanguageService, { maxSize: 0 });
+export default memoize(getLanguageService);

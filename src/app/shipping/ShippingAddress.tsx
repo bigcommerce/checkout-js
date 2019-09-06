@@ -1,8 +1,7 @@
 import { Address, CheckoutSelectors, Consignment, Country, CustomerAddress, CustomerRequestOptions, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import { memoizeOne } from '@bigcommerce/memoize';
 import { noop } from 'lodash';
 import React, { memo, useCallback, FunctionComponent } from 'react';
-
-import { memoize } from '../common/utility';
 
 import RemoteShippingAddress from './RemoteShippingAddress';
 import ShippingAddressForm from './ShippingAddressForm';
@@ -59,7 +58,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
         signOut,
     ]);
 
-    const initializeShipping = useCallback(memoize((defaultOptions: ShippingInitializeOptions) => (
+    const initializeShipping = useCallback(memoizeOne((defaultOptions: ShippingInitializeOptions) => (
         (options?: ShippingInitializeOptions) => initialize({
             ...defaultOptions,
             ...options,

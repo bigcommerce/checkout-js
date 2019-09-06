@@ -1,7 +1,6 @@
+import { memoizeOne } from '@bigcommerce/memoize';
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
-
-import { memoize } from '../../common/utility';
 
 import AccordionContext from './AccordionContext';
 
@@ -19,7 +18,7 @@ export interface AccordionState {
 export default class Accordion extends Component<AccordionProps, AccordionState> {
     state: AccordionState = {};
 
-    private getContextValue = memoize(selectedItemId => {
+    private getContextValue = memoizeOne(selectedItemId => {
         return {
             onToggle: this.handleToggleItem,
             selectedItemId,

@@ -1,4 +1,5 @@
 import { CheckoutSelectors, Instrument, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
+import { memoizeOne } from '@bigcommerce/memoize';
 import { find, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
@@ -6,7 +7,7 @@ import { ObjectSchema } from 'yup';
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { MapToProps } from '../../common/hoc';
-import { memoize, EMPTY_ARRAY } from '../../common/utility';
+import { EMPTY_ARRAY } from '../../common/utility';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
 import { configureCardValidator, getCreditCardValidationSchema, CreditCardFieldset, CreditCardFieldsetValues } from '../creditCard';
@@ -223,7 +224,7 @@ function mapFromCheckoutProps(): MapToProps<
     WithCheckoutCreditCardPaymentMethodProps,
     CreditCardPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
 > {
-    const filterInstruments = memoize((instruments: Instrument[] = EMPTY_ARRAY, method: PaymentMethod) =>
+    const filterInstruments = memoizeOne((instruments: Instrument[] = EMPTY_ARRAY, method: PaymentMethod) =>
         instruments.filter(({ provider }) => provider === method.id)
     );
 

@@ -1,8 +1,8 @@
 import { Address, Country, FormField } from '@bigcommerce/checkout-sdk';
+import { memoize } from '@bigcommerce/memoize';
 import { forIn, noop } from 'lodash';
 import React, { createRef, Component, ReactNode, RefObject } from 'react';
 
-import { memoize } from '../common/utility';
 import { withLanguage, WithLanguageProps } from '../locale';
 import { AutocompleteItem } from '../ui/autocomplete';
 
@@ -37,7 +37,7 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
 
     private handleDynamicFormFieldChange: (name: string) => (value: string | string[]) => void = memoize(name => value => {
         this.syncNonFormikValue(name, value);
-    }, { maxSize: 0 });
+    });
 
     componentDidMount(): void {
         const { current } = this.containerRef;
