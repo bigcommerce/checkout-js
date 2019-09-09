@@ -1,28 +1,152 @@
+aliases:
+  - &node_executor
+      executor:
+        name: node/node
+        node-version: "10"
+
+  - &release_filter
+      branches:
+        only:
+          - master
+
+  - &pull_request_filter
+      branches:
+        ignore:
+          - master
+
 version: 2.1
 
 orbs:
   ci: bigcommerce/internal@volatile
   node: bigcommerce/internal-node@volatile
+  checkout-js:
+    commands:
+      install_dependencies:
+        steps:
+          - restore_cache:
+              keys:
+                - checkout-js
+          - run:
+              name: "Install NPM dependencies"
+              command: npm ci
+          - save_cache:
+              key: checkout-js
+              paths:
+                - ~/.npm
 
 jobs:
-  build:
-    executor:
-      name: node/node
-      node-version: "10"
+  test:
+    <<: *node_executor
     steps:
       - ci/pre-setup
-      - restore_cache:
-          keys:
-              - checkout-js
-      - run: npm ci
-      - save_cache:
-          key: checkout-js
+      - checkout-js/install_dependencies
+      - run:
+          name: "Run unit tests"
+          command: npm run test -- --coverage --runInBand
+      - store_artifacts:
+          path: coverage
+          destination: coverage
+
+  build:
+    <<: *node_executor
+    steps:
+      - ci/pre-setup
+      - checkout-js/install_dependencies
+      - run:
+          name: "Test build"
+          command: npm run build
+      - persist_to_workspace:
+          root: .
           paths:
-            - ~/.npm
+            - dist
+
+  release:
+    <<: *node_executor
+    steps:
+      - ci/pre-setup
+      - checkout-js/install_dependencies
       - run:
-          name: 'Build'
-          command:  'npm run build'
+          name: "Configure Git user"
+          command: |
+            git config user.email $GIT_USER_EMAIL
+            git config user.name $GIT_USER_NAME
       - run:
-          name: 'Unit Tests'
-          command:  'npm run test -- --coverage --runInBand'
-          when: always
+          name: "Remove old release files"
+          command: rm -rf dist
+      - attach_workspace:
+          at: .
+      - run:
+          name: "Create and tag new release"
+          command: npm run release:version
+      - run:
+          name: "Push commits and tag to GitHub"
+          command: |
+            git push --follow-tags origin $CIRCLE_BRANCH
+      - run:
+          name: "Export release version to file"
+          command: |
+            echo "export RELEASE_VERSION=$(git describe --abbrev=0)" > /tmp/release_version.txt
+            echo "export RELEASE_REVISION=$(git rev-parse HEAD)" >> /tmp/release_version.txt
+      - persist_to_workspace:
+          root: /tmp
+          paths:
+            - release_version.txt
+
+  upload_to_sentry:
+    <<: *node_executor
+    steps:
+      - ci/pre-setup
+      - run:
+          name: "Install Sentry cli"
+          command: curl -sL https://sentry.io/get-cli/ | bash
+      - attach_workspace:
+          at: /tmp
+      - run:
+          name: "Upload source maps to Sentry"
+          command: |
+            source /tmp/release_version.txt
+            SENTRY_RELEASE=$SENTRY_PROJECT@$RELEASE_VERSION
+            SENTRY_COMMIT=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME@$RELEASE_REVISION
+            sentry-cli releases --project $SENTRY_PROJECT --org $SENTRY_ORG new $SENTRY_RELEASE
+            sentry-cli releases --project $SENTRY_PROJECT --org $SENTRY_ORG set-commits $SENTRY_RELEASE --commit $SENTRY_COMMIT
+            sentry-cli releases --project $SENTRY_PROJECT --org $SENTRY_ORG files $SENTRY_RELEASE upload-sourcemaps dist
+            sentry-cli releases --project $SENTRY_PROJECT --org $SENTRY_ORG finalize $SENTRY_RELEASE
+
+workflows:
+  version: 2
+
+  pull_request:
+    jobs:
+      - test:
+          filters:
+            <<: *pull_request_filter
+      - build:
+          filters:
+            <<: *pull_request_filter
+
+  release:
+    jobs:
+      - test:
+          filters:
+            <<: *release_filter
+      - build:
+          filters:
+            <<: *release_filter
+      - approve:
+          filters:
+            <<: *release_filter
+          type: approval
+          requires:
+            - test
+            - build
+      - release:
+          filters:
+            <<: *release_filter
+          requires:
+            - approve
+      - upload_to_sentry:
+          filters:
+            <<: *release_filter
+          requires:
+            - approve
+            - release

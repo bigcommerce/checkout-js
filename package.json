@@ -4,12 +4,12 @@
   "private": true,
   "description": "Browser-based application providing a seamless UI for BigCommerce shoppers to complete their checkout.",
   "scripts": {
+    "build": "rm -rf dist && webpack --mode production",
     "dev": "webpack --mode development --watch",
-    "build": "webpack --mode production",
-    "prerelease": "npm run test -- --coverage && rm -rf dist && npm run build",
+    "release": "npm run test -- --coverage && npm run build && standard-version -a",
+    "release:version": "standard-version -a",
     "test": "jest",
-    "test:watch": "jest --watch",
-    "release": "standard-version -a"
+    "test:watch": "jest --watch"
   },
   "repository": {
     "type": "git",
