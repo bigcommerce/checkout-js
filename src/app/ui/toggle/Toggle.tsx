@@ -17,17 +17,18 @@ export default class Toggle extends Component<ToggleProps, ToggleState> {
     }
 
     render(): ReactNode {
-        const {
-            children,
-        } = this.props;
+        const { children } = this.props;
+        const { isOpen } = this.state;
 
         return children({
-            ...this.state,
+            isOpen,
             toggle: this.toggle,
         });
     }
 
     private toggle: () => void = () => {
-        this.setState({ isOpen: !this.state.isOpen });
+        const { isOpen } = this.state;
+
+        this.setState({ isOpen: !isOpen });
     };
 }

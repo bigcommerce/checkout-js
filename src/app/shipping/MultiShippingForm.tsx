@@ -150,10 +150,11 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
         address: Address,
         data: CheckoutStoreSelector
     ) => void = (key, address, data) => {
+        const { items: currentItems } = this.state;
         const items = updateShippableItems(
-            this.state.items,
+            currentItems,
             {
-                updatedItemIndex: this.state.items.findIndex(item => item.key === key),
+                updatedItemIndex: currentItems.findIndex(item => item.key === key),
                 address,
             },
             {

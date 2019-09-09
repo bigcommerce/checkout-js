@@ -8,6 +8,7 @@ export interface ChecklistItemInputProps extends InputHTMLAttributes<HTMLInputEl
 }
 
 const ChecklistItemInput: FunctionComponent<ChecklistItemInputProps> = ({
+    id,
     isSelected,
     children,
     ...props
@@ -17,10 +18,11 @@ const ChecklistItemInput: FunctionComponent<ChecklistItemInputProps> = ({
             { ...props }
             checked={ isSelected }
             className="form-checklist-checkbox optimizedCheckout-form-checklist-checkbox"
+            id={ id }
             type="radio"
         />
 
-        <Label htmlFor={ props.id }>
+        <Label htmlFor={ id }>
             { children }
         </Label>
     </>
