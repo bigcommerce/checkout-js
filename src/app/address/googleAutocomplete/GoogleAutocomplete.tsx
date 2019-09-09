@@ -44,7 +44,11 @@ class GoogleAutocomplete extends PureComponent<GoogleAutocompleteProps, GoogleAu
             onToggleOpen = noop,
             inputProps = {},
         } = this.props;
-        const { items } = this.state;
+
+        const {
+            autoComplete,
+            items,
+        } = this.state;
 
         return (
             <Autocomplete
@@ -53,7 +57,7 @@ class GoogleAutocomplete extends PureComponent<GoogleAutocompleteProps, GoogleAu
                 initialHighlightedIndex={ 0 }
                 inputProps={ {
                     ...inputProps,
-                    autoComplete: this.state.autoComplete,
+                    autoComplete,
                 } }
                 initialValue={ initialValue }
                 onSelect={ this.onSelect }
@@ -67,6 +71,7 @@ class GoogleAutocomplete extends PureComponent<GoogleAutocompleteProps, GoogleAu
 
     private onSelect: (item: AutocompleteItem) => void = item => {
         const {
+            fields,
             onSelect = noop,
             nextElement,
         } = this.props;
@@ -74,7 +79,7 @@ class GoogleAutocomplete extends PureComponent<GoogleAutocompleteProps, GoogleAu
         this.googleAutocompleteService.getPlacesServices().then(service => {
             service.getDetails({
                 placeId: item.id,
-                fields: this.props.fields || ['address_components', 'name'],
+                fields: fields || ['address_components', 'name'],
             }, result => {
                 if (nextElement) {
                     nextElement.focus();
@@ -91,7 +96,7 @@ class GoogleAutocomplete extends PureComponent<GoogleAutocompleteProps, GoogleAu
             onChange = noop,
         } = this.props;
 
-        onChange(input);
+        onChange(input, false);
 
         if (!isAutocompleteEnabled) {
             return this.resetAutocomplete();
@@ -108,11 +113,16 @@ class GoogleAutocomplete extends PureComponent<GoogleAutocompleteProps, GoogleAu
             return;
         }
 
+        const {
+            componentRestrictions,
+            types,
+        } = this.props;
+
         this.googleAutocompleteService.getAutocompleteService().then(service => {
             service.getPlacePredictions({
                 input,
-                types: this.props.types || ['geocode'],
-                componentRestrictions: this.props.componentRestrictions,
+                types: types || ['geocode'],
+                componentRestrictions,
             }, results =>
                 this.setState({ items: this.toAutocompleteItems(results) })
             );

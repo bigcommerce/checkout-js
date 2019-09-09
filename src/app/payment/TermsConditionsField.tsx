@@ -23,7 +23,12 @@ interface TermsConditionsTextAreaFieldProps {
     type: TermsConditionsType.TextArea;
 }
 
-const TermsConditionsTextField: FunctionComponent<{ name: string; terms: string }> = ({
+interface TermsConditionsTextFieldProps {
+    name: string;
+    terms: string;
+}
+
+const TermsConditionsTextField: FunctionComponent<TermsConditionsTextFieldProps> = ({
     name,
     terms,
 }) => {
@@ -42,7 +47,13 @@ const TermsConditionsTextField: FunctionComponent<{ name: string; terms: string 
         />
     );
 };
-const TermsConditionsCheckboxField: FunctionComponent<{ name: string; url?: string }> = ({
+
+interface TermsConditionsCheckboxFieldProps {
+    name: string;
+    url?: string;
+}
+
+const TermsConditionsCheckboxField: FunctionComponent<TermsConditionsCheckboxFieldProps> = ({
     name,
     url,
 }) => {
@@ -68,11 +79,15 @@ const TermsConditionsField: FunctionComponent<TermsConditionsFieldProps> = props
                 <TranslatedString id="terms_and_conditions.terms_and_conditions_heading" />
             </Legend> }
         >
-            { props.type === TermsConditionsType.TextArea && <TermsConditionsTextField { ...props } /> }
+            { areTermsConditionsTextFieldProps(props) && <TermsConditionsTextField { ...props } /> }
 
             <TermsConditionsCheckboxField { ...props } />
         </Fieldset>
     );
 };
+
+function areTermsConditionsTextFieldProps(props: any): props is TermsConditionsTextFieldProps {
+    return props.type === TermsConditionsType.TextArea;
+}
 
 export default memo(TermsConditionsField);

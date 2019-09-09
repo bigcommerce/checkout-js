@@ -228,14 +228,15 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         disabled?: boolean
     ) => void = (method, disabled = true) => {
         const uniqueId = getUniquePaymentMethodId(method.id, method.gateway);
+        const { shouldDisableSubmit } = this.state;
 
-        if (this.state.shouldDisableSubmit[uniqueId] === disabled) {
+        if (shouldDisableSubmit[uniqueId] === disabled) {
             return;
         }
 
         this.setState({
             shouldDisableSubmit: {
-                ...this.state.shouldDisableSubmit,
+                ...shouldDisableSubmit,
                 [uniqueId]: disabled,
             },
         });
@@ -324,7 +325,9 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
     };
 
     private setSelectedMethod: (method?: PaymentMethod) => void = method => {
-        if (this.state.selectedMethod === method) {
+        const { selectedMethod } = this.state;
+
+        if (selectedMethod === method) {
             return;
         }
 
@@ -336,14 +339,15 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         fn: (values: PaymentFormValues) => void | null
     ) => void = (method, fn) => {
         const uniqueId = getUniquePaymentMethodId(method.id, method.gateway);
+        const { submitFunctions } = this.state;
 
-        if (this.state.submitFunctions[uniqueId] === fn) {
+        if (submitFunctions[uniqueId] === fn) {
             return;
         }
 
         this.setState({
             submitFunctions: {
-                ...this.state.submitFunctions,
+                ...submitFunctions,
                 [uniqueId]: fn,
             },
         });
@@ -354,14 +358,15 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         schema: ObjectSchema<Partial<PaymentFormValues>> | null
     ) => void = (method, schema) => {
         const uniqueId = getUniquePaymentMethodId(method.id, method.gateway);
+        const { validationSchemas } = this.state;
 
-        if (this.state.validationSchemas[uniqueId] === schema) {
+        if (validationSchemas[uniqueId] === schema) {
             return;
         }
 
         this.setState({
             validationSchemas: {
-                ...this.state.validationSchemas,
+                ...validationSchemas,
                 [uniqueId]: schema,
             },
         });

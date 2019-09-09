@@ -32,6 +32,7 @@
                 "lintFile": "./tslint.json"
             }
         ],
+        "react/destructuring-assignment": "error",
         "react/display-name": "off",
         "react/jsx-closing-bracket-location": [
             "error", 

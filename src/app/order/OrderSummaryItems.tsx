@@ -114,7 +114,9 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
     }
 
     private handleToggle: () => void = () => {
-        this.setState({ isExpanded: !this.state.isExpanded });
+        const { isExpanded } = this.state;
+
+        this.setState({ isExpanded: !isExpanded });
     };
 }
 
