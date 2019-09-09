@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/bigcommerce/checkout-js/compare/v1.0.2...v1.1.0) (2019-09-09)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-4364 Upgrade checkout-sdk version to v1.34.2 ([81303ea](https://github.com/bigcommerce/checkout-js/commit/81303ea))
+* **common:** CHECKOUT-4374 Output polyfill as separate chunk ([3cc12ea](https://github.com/bigcommerce/checkout-js/commit/3cc12ea))
+* **common:** CHECKOUT-4374 Pass public path from host page ([6608bf0](https://github.com/bigcommerce/checkout-js/commit/6608bf0))
+* **embedded-checkout:** CHECKOUT-4388 Upgrade checkout-sdk version to v1.34.3 ([cac71db](https://github.com/bigcommerce/checkout-js/commit/cac71db))
+* **payment:** CHECKOUT-4384 Fix payment form not hiding previous validation result when switching to new payment method ([1c5691f](https://github.com/bigcommerce/checkout-js/commit/1c5691f))
+* **payment:** CHECKOUT-4384 Reset payment form before mounting new payment method component ([03aa684](https://github.com/bigcommerce/checkout-js/commit/03aa684))
+
+
+### Code Refactoring
+
+* **common:** CHECKOUT-4272 Use bigcommerce/memoize package ([337b719](https://github.com/bigcommerce/checkout-js/commit/337b719))
+* **payment:** CHECKOUT-4272 Use nested component instead of memoize ([a95cc2d](https://github.com/bigcommerce/checkout-js/commit/a95cc2d))
+
+
+### Features
+
+* **common:** CHECKOUT-4364 Upgrade Sentry client ([c20985c](https://github.com/bigcommerce/checkout-js/commit/c20985c))
+
 ### [1.0.2](https://github.com/bigcommerce/checkout-js/compare/v1.0.1...v1.0.2) (2019-08-28)
 
 
