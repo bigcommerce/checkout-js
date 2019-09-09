@@ -90,7 +90,7 @@ describe('when using Adyen V2 payment', () => {
                     options: {
                         hasHolderName: true,
                     },
-                    threeDS2ChallengeWidgetSize: '01',
+                    threeDS2Options: { threeDS2ChallengeWidgetSize: '01' },
                 },
             }));
     });
