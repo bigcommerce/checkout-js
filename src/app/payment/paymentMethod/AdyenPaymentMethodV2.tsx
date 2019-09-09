@@ -16,7 +16,7 @@ export enum AdyenMethodType {
     bcmc = 'bcmc',
 }
 
-const AdyenPaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
+const AdyenPaymentMethodV2: FunctionComponent<AdyenPaymentMethodProps> = ({
     initializePayment,
     method,
     ...rest
@@ -52,4 +52,4 @@ const AdyenPaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
     />;
 };
 
-export default AdyenPaymentMethod;
+export default AdyenPaymentMethodV2;

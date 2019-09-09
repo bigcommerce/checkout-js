@@ -3,7 +3,7 @@ import React, { memo, FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 
-import AdyenPaymentMethod from './AdyenPaymentMethod';
+import AdyenPaymentMethodV2 from './AdyenPaymentMethodV2';
 import AffirmPaymentMethod from './AffirmPaymentMethod';
 import AmazonPaymentMethod from './AmazonPaymentMethod';
 import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod';
@@ -53,7 +53,7 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
     const { method } = props;
 
     if (method.gateway === PaymentMethodId.AdyenV2) {
-        return <AdyenPaymentMethod { ...props } />;
+        return <AdyenPaymentMethodV2 { ...props } />;
     }
 
     if (method.id === PaymentMethodId.SquareV2) {
