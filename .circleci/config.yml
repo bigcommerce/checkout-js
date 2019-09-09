@@ -105,7 +105,8 @@ jobs:
           name: "Upload source maps to Sentry"
           command: |
             source /tmp/release_version.txt
-            SENTRY_RELEASE=$SENTRY_PROJECT@$RELEASE_VERSION
+            git checkout $RELEASE_VERSION
+            SENTRY_RELEASE=$SENTRY_PROJECT@${RELEASE_VERSION#v}
             SENTRY_COMMIT=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME@$RELEASE_REVISION
             sentry-cli releases --project $SENTRY_PROJECT --org $SENTRY_ORG new $SENTRY_RELEASE
             sentry-cli releases --project $SENTRY_PROJECT --org $SENTRY_ORG set-commits $SENTRY_RELEASE --commit $SENTRY_COMMIT
