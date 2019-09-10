@@ -142,7 +142,7 @@ class CreditCardPaymentMethod extends Component<
                         shouldShowCardCodeField={ isInstrumentCardCodeRequiredProp }
                         shouldShowNumberField={ selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument) : false }
                         selectedInstrumentId={ selectedInstrumentId }
-                        onUseNewCard={ this.handleUseNewCard }
+                        onUseNewInstrument={ this.handleUseNewCard }
                         onSelectInstrument={ this.handleSelectInstrument }
                     /> }
 

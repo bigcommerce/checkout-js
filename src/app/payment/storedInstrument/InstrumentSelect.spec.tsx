@@ -21,7 +21,7 @@ describe('InstrumentSelect', () => {
             instruments: getInstruments(),
             selectedInstrumentId: '123',
             onSelectInstrument: jest.fn(),
-            onUseNewCard: jest.fn(),
+            onUseNewInstrument: jest.fn(),
         };
 
         initialValues = {
@@ -236,7 +236,7 @@ describe('InstrumentSelect', () => {
             .simulate('click')
             .update();
 
-        expect(defaultProps.onUseNewCard)
+        expect(defaultProps.onUseNewInstrument)
             .toHaveBeenCalled();
     });
 });

@@ -153,7 +153,7 @@ class HostedWidgetPaymentMethod extends Component<
                     shouldShowNumberField={ selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument) : false }
                     selectedInstrumentId={ selectedInstrumentId }
                     onSelectInstrument={ this.handleSelectInstrument }
-                    onUseNewCard={ this.handleUseNewCard }
+                    onUseNewInstrument={ this.handleUseNewCard }
                 /> }
 
                 <div

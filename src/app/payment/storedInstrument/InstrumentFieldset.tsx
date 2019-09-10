@@ -17,7 +17,7 @@ export interface InstrumentFieldsetProps {
     shouldShowCardCodeField: boolean;
     shouldShowNumberField: boolean;
     onSelectInstrument(id: string): void;
-    onUseNewCard(): void;
+    onUseNewInstrument(): void;
 }
 
 export interface InstrumentFieldsetValues {
@@ -30,7 +30,7 @@ const InstrumentFieldset: FunctionComponent<InstrumentFieldsetProps> = ({
     instruments,
     method,
     onSelectInstrument,
-    onUseNewCard,
+    onUseNewInstrument,
     selectedInstrumentId,
     shouldShowCardCodeField,
     shouldShowNumberField,
@@ -40,13 +40,13 @@ const InstrumentFieldset: FunctionComponent<InstrumentFieldsetProps> = ({
             { ...field }
             instruments={ instruments }
             onSelectInstrument={ onSelectInstrument }
-            onUseNewCard={ onUseNewCard }
+            onUseNewInstrument={ onUseNewInstrument }
             selectedInstrumentId={ selectedInstrumentId }
         />
     ), [
         instruments,
         onSelectInstrument,
-        onUseNewCard,
+        onUseNewInstrument,
         selectedInstrumentId,
     ]);
 

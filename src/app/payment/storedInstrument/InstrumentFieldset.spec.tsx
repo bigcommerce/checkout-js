@@ -22,7 +22,7 @@ describe('InstrumentFieldset', () => {
             instruments: getInstruments(),
             method: getPaymentMethod(),
             onSelectInstrument: jest.fn(),
-            onUseNewCard: jest.fn(),
+            onUseNewInstrument: jest.fn(),
             selectedInstrumentId: '123',
             shouldShowCardCodeField: false,
             shouldShowNumberField: false,

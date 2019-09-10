@@ -16,7 +16,7 @@ export interface InstrumentSelectProps extends FieldProps<string> {
     instruments: Instrument[];
     selectedInstrumentId?: string;
     onSelectInstrument(id: string): void;
-    onUseNewCard(): void;
+    onUseNewInstrument(): void;
 }
 
 export interface InstrumentSelectValues {
@@ -42,7 +42,7 @@ class InstrumentSelect extends PureComponent<InstrumentSelectProps> {
             field,
             instruments,
             onSelectInstrument,
-            onUseNewCard,
+            onUseNewInstrument,
             selectedInstrumentId,
         } = this.props;
 
@@ -56,7 +56,7 @@ class InstrumentSelect extends PureComponent<InstrumentSelectProps> {
                             instruments={ instruments }
                             selectedInstrumentId={ selectedInstrumentId }
                             onSelectInstrument={ onSelectInstrument }
-                            onUseNewCard={ onUseNewCard }
+                            onUseNewInstrument={ onUseNewInstrument }
                         />
                     }
                 >
@@ -89,14 +89,14 @@ interface InstrumentMenuProps {
     instruments: Instrument[];
     selectedInstrumentId?: string;
     onSelectInstrument(id: string): void;
-    onUseNewCard(): void;
+    onUseNewInstrument(): void;
 }
 
 const InstrumentMenu: FunctionComponent<InstrumentMenuProps> = ({
     instruments,
     selectedInstrumentId,
     onSelectInstrument,
-    onUseNewCard,
+    onUseNewInstrument,
 }) => {
     return <ul
         className="instrumentSelect-dropdownMenu instrumentSelect-dropdownMenuNext dropdown-menu"
@@ -120,7 +120,7 @@ const InstrumentMenu: FunctionComponent<InstrumentMenuProps> = ({
 
         <li className="instrumentSelect-option instrumentSelect-option--addNew dropdown-menu-item">
             <InstrumentUseNewButton
-                onClick={ onUseNewCard }
+                onClick={ onUseNewInstrument }
                 testId="instrument-select-option-use-new"
             />
         </li>
