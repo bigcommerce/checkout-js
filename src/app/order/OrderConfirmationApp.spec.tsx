@@ -12,7 +12,6 @@ describe('OrderConfirmationApp', () => {
         defaultProps = {
             orderId: 100,
             containerId: 'bar',
-            publicPath: 'https://foobar.com/assets/',
         };
 
         container = document.createElement('div');

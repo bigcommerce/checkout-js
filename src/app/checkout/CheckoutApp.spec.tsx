@@ -15,7 +15,6 @@ describe('CheckoutApp', () => {
             checkoutId: getCheckout().id,
             containerId: 'checkout-app',
             flashMessages: [],
-            publicPath: 'https://foobar.com/assets/',
         };
 
         container = document.createElement('div');

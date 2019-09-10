@@ -1,13 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import OrderConfirmationApp, { OrderConfirmationAppProps } from './OrderConfirmationApp';
+import { configurePublicPath } from '../common/bundler';
 
-function renderOrderConfirmation(props: OrderConfirmationAppProps): void {
-    ReactDOM.render(
-        <OrderConfirmationApp { ...props } />,
-        document.getElementById(props.containerId)
-    );
+import { OrderConfirmationAppProps } from './OrderConfirmationApp';
+
+export interface RenderOrderConfirmationOptions extends OrderConfirmationAppProps {
+    publicPath: string;
 }
 
-export default renderOrderConfirmation;
+export default function renderOrderConfirmation({
+    containerId,
+    publicPath,
+    ...props
+}: RenderOrderConfirmationOptions): void {
+    configurePublicPath(publicPath);
+
+    const { default: OrderConfirmationApp } = require('./OrderConfirmationApp');
+
+    ReactDOM.render(
+        <OrderConfirmationApp
+            containerId={ containerId }
+            { ...props }
+        />,
+        document.getElementById(containerId)
+    );
+}

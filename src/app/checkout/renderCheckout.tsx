@@ -1,11 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import CheckoutApp, { CheckoutAppProps } from './CheckoutApp';
+import { configurePublicPath } from '../common/bundler';
 
-export default function renderCheckout(props: CheckoutAppProps): void {
+import { CheckoutAppProps } from './CheckoutApp';
+
+export interface RenderCheckoutOptions extends CheckoutAppProps {
+    publicPath: string;
+}
+
+export default function renderCheckout({
+    containerId,
+    publicPath,
+    ...props
+}: RenderCheckoutOptions): void {
+    configurePublicPath(publicPath);
+
+    const { default: CheckoutApp } = require('./CheckoutApp');
+
     ReactDOM.render(
-        <CheckoutApp { ...props } />,
-        document.getElementById(props.containerId)
+        <CheckoutApp
+            containerId={ containerId }
+            { ...props }
+        />,
+        document.getElementById(containerId)
     );
 }
