@@ -1,7 +1,7 @@
 import { Address, Cart, CheckoutParams, CheckoutSelectors, Consignment, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, Promotion, RequestOptions } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
-import React, { lazy, Component, ReactNode, Suspense } from 'react';
+import React, { lazy, Component, ReactNode } from 'react';
 
 import { NoopStepTracker, StepTracker } from '../analytics';
 import { StaticBillingAddress } from '../billing';
@@ -14,7 +14,7 @@ import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { PromotionBannerList } from '../promotion';
 import { isUsingMultiShipping, StaticConsignment } from '../shipping';
 import { FlashMessage } from '../ui/alert';
-import { LoadingNotification, LoadingOverlay, LoadingSpinner } from '../ui/loading';
+import { LazyContainer, LoadingNotification, LoadingOverlay } from '../ui/loading';
 import { MobileView } from '../ui/responsive';
 
 import mapToCheckoutProps from './mapToCheckoutProps';
@@ -260,7 +260,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                     />
                 }
             >
-                <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                <LazyContainer>
                     <Customer
                         viewType={ customerViewType }
                         checkEmbeddedSupport={ this.checkEmbeddedSupport }
@@ -273,7 +273,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onUnhandledError={ this.handleUnhandledError }
                         subscribeToNewsletter={ subscribeToNewsletter }
                     />
-                </Suspense>
+                </LazyContainer>
             </CheckoutStep>
         );
     }
@@ -307,7 +307,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         />
                     </div>) }
             >
-                <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                <LazyContainer>
                     <Shipping
                         cartHasChanged={ hasCartChanged }
                         onReady={ this.handleReady }
@@ -317,7 +317,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onUnhandledError={ this.handleUnhandledError }
                         navigateNextStep={ this.handleShippingNextStep }
                     />
-                </Suspense>
+                </LazyContainer>
             </CheckoutStep>
         );
     }
@@ -334,13 +334,13 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 onExpanded={ this.handleExpanded }
                 summary={ billingAddress && <StaticBillingAddress address={ billingAddress } /> }
             >
-                <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                <LazyContainer>
                     <Billing
                         navigateNextStep={ this.navigateToNextIncompleteStep }
                         onReady={ this.handleReady }
                         onUnhandledError={ this.handleUnhandledError }
                     />
-                </Suspense>
+                </LazyContainer>
             </CheckoutStep>
         );
     }
@@ -360,7 +360,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 onEdit={ this.handleEditStep }
                 onExpanded={ this.handleExpanded }
             >
-                <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                <LazyContainer>
                     <Payment
                         checkEmbeddedSupport={ this.checkEmbeddedSupport }
                         flashMessages={ flashMessages }
@@ -374,7 +374,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onSubmitError={ this.handleError }
                         onUnhandledError={ this.handleUnhandledError }
                     />
-                </Suspense>
+                </LazyContainer>
             </CheckoutStep>
         );
     }
@@ -387,15 +387,15 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             <MobileView>
                 { matched => {
                     if (matched) {
-                        return <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                        return <LazyContainer>
                             <CartSummaryDrawer storeCreditAmount={ useStoreCredit ? usableStoreCredit : 0 } />
-                        </Suspense>;
+                        </LazyContainer>;
                     }
 
                     return <aside className="layout-cart">
-                        <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                        <LazyContainer>
                             <CartSummary storeCreditAmount={ useStoreCredit ? usableStoreCredit : 0 } />
-                        </Suspense>
+                        </LazyContainer>
                     </aside>;
                 } }
             </MobileView>

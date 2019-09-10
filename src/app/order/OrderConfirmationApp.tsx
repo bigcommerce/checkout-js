@@ -6,7 +6,7 @@ import ReactModal from 'react-modal';
 import '../../scss/App.scss';
 import { StepTracker, StepTrackerFactory } from '../analytics';
 import { CheckoutProvider } from '../checkout';
-import { createErrorLogger, ErrorLogger, ErrorLoggingBoundary } from '../common/error';
+import { createErrorLogger, ErrorBoundary, ErrorLogger } from '../common/error';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { AccountService, CreatedCustomer, SignUpFormValues } from '../guestSignup';
 import { getLanguageService, LocaleProvider } from '../locale';
@@ -46,7 +46,7 @@ class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
 
     render(): ReactNode {
         return (
-            <ErrorLoggingBoundary logger={ this.errorLogger }>
+            <ErrorBoundary logger={ this.errorLogger }>
                 <LocaleProvider checkoutService={ this.checkoutService }>
                     <CheckoutProvider checkoutService={ this.checkoutService }>
                         <OrderConfirmation
@@ -59,7 +59,7 @@ class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
                         />
                     </CheckoutProvider>
                 </LocaleProvider>
-            </ErrorLoggingBoundary>
+            </ErrorBoundary>
         );
     }
 
