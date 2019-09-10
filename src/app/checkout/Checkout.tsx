@@ -7,6 +7,7 @@ import { NoopStepTracker, StepTracker } from '../analytics';
 import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
 import { ErrorLogger, ErrorModal } from '../common/error';
+import { retry } from '../common/utility';
 import { CustomerInfo, CustomerSignOutEvent, CustomerViewType } from '../customer';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
@@ -24,35 +25,35 @@ import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
 
-const Billing = lazy(() => import(
+const Billing = lazy(() => retry(() => import(
     /* webpackChunkName: "billing" */
     '../billing/Billing'
-));
+)));
 
-const CartSummary = lazy(() => import(
+const CartSummary = lazy(() => retry(() => import(
     /* webpackChunkName: "cart-summary" */
     '../cart/CartSummary'
-));
+)));
 
-const CartSummaryDrawer = lazy(() => import(
+const CartSummaryDrawer = lazy(() => retry(() => import(
     /* webpackChunkName: "cart-summary-drawer" */
     '../cart/CartSummaryDrawer'
-));
+)));
 
-const Customer = lazy(() => import(
+const Customer = lazy(() => retry(() => import(
     /* webpackChunkName: "customer" */
     '../customer/Customer'
-));
+)));
 
-const Payment = lazy(() => import(
+const Payment = lazy(() => retry(() => import(
     /* webpackChunkName: "payment" */
     '../payment/Payment'
-));
+)));
 
-const Shipping = lazy(() => import(
+const Shipping = lazy(() => retry(() => import(
     /* webpackChunkName: "shipping" */
     '../shipping/Shipping'
-));
+)));
 
 export interface CheckoutProps {
     checkoutId: string;

@@ -6,6 +6,7 @@ import React, { lazy, Component, Fragment, ReactNode, Suspense } from 'react';
 import { StepTracker } from '../analytics';
 import { withCheckout, CheckoutContextProps } from '../checkout';
 import { ErrorLogger, ErrorModal } from '../common/error';
+import { retry } from '../common/utility';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { CreatedCustomer, GuestSignUpForm, SignedUpSuccessAlert, SignUpFormValues } from '../guestSignup';
 import { AccountCreationFailedError, AccountCreationRequirementsError } from '../guestSignup/errors';
@@ -21,15 +22,15 @@ import OrderStatus from './OrderStatus';
 import PrintLink from './PrintLink';
 import ThankYouHeader from './ThankYouHeader';
 
-const OrderSummary = lazy(() => import(
+const OrderSummary = lazy(() => retry(() => import(
     /* webpackChunkName: "order-summary" */
     './OrderSummary'
-));
+)));
 
-const OrderSummaryDrawer = lazy(() => import(
+const OrderSummaryDrawer = lazy(() => retry(() => import(
     /* webpackChunkName: "order-summary-drawer" */
     './OrderSummaryDrawer'
-));
+)));
 
 export interface OrderConfirmationState {
     error?: Error;
