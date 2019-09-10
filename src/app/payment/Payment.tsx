@@ -246,13 +246,14 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         const { defaultMethod, isSubmittingOrder, language } = this.props;
         const { selectedMethod = defaultMethod } = this.state;
 
-        // TODO: Perhaps there is a better way to handle `sagepay` and
-        // `afterpay`. They require a redirection to another website during the
-        // payment flow but are not categorised as hosted payment methods.
+        // TODO: Perhaps there is a better way to handle `amazon`, `converge`,
+        // `sagepay` and `afterpay`. They require a redirection to another website
+        // during the payment flow but are not categorised as hosted payment methods.
         if (!isSubmittingOrder ||
             !selectedMethod ||
             selectedMethod.type === PaymentMethodProviderType.Hosted ||
             selectedMethod.id === PaymentMethodId.Amazon ||
+            selectedMethod.id === PaymentMethodId.Converge ||
             selectedMethod.id === PaymentMethodId.SagePay ||
             selectedMethod.gateway === PaymentMethodId.Afterpay) {
             return;
