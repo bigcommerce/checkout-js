@@ -3,9 +3,9 @@ import { BrowserOptions } from '@sentry/browser';
 import React, { Component, ReactNode } from 'react';
 import ReactModal from 'react-modal';
 
+import '../../scss/App.scss';
 import { StepTracker, StepTrackerFactory } from '../analytics';
 import { CheckoutProvider } from '../checkout';
-import { configurePublicPath } from '../common/bundler';
 import { createErrorLogger, ErrorLogger, ErrorLoggingBoundary } from '../common/error';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { AccountService, CreatedCustomer, SignUpFormValues } from '../guestSignup';
@@ -16,7 +16,6 @@ import OrderConfirmation from './OrderConfirmation';
 export interface OrderConfirmationAppProps {
     containerId: string;
     orderId: number;
-    publicPath?: string;
     sentryConfig?: BrowserOptions;
 }
 
@@ -32,8 +31,6 @@ class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
 
     constructor(props: Readonly<OrderConfirmationAppProps>) {
         super(props);
-
-        configurePublicPath(props.publicPath);
 
         this.errorLogger = createErrorLogger(
             { sentry: props.sentryConfig },
