@@ -48,13 +48,13 @@ export default function mapAddressToFormValues(fields: FormField[], address?: Ad
     return values;
 }
 
-function getValue(fieldType?: string, fieldValue?: string | string[] | number, defaultValue?: string): string | string[] | number | Date {
+function getValue(fieldType?: string, fieldValue?: string | string[] | number, defaultValue?: string): string | string[] | number | Date | undefined {
     if (fieldValue === undefined || fieldValue === null) {
         return getDefaultValue(fieldType, defaultValue);
     }
 
     if (fieldType === DynamicFormFieldType.date && typeof fieldValue === 'string') {
-        return new Date(fieldValue);
+        return fieldValue ? new Date(fieldValue) : undefined;
     }
 
     return fieldValue;

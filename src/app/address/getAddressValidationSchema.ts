@@ -63,7 +63,8 @@ export default memoize(function getAddressValidationSchema({
                             // Transform NaN values to undefined to avoid empty string (empty input) to fail date
                             // validation when it's optional
                             .strict(true)
-                            .transform(value => value === '' ? undefined : value);
+                            .nullable(true)
+                            .transform(value => value === '' ? null : value);
                     } else if (type === 'integer') {
                         schema[name] = number()
                             // Transform NaN values to undefined to avoid empty string (empty input) to fail number
