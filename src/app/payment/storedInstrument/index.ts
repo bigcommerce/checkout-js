@@ -8,3 +8,4 @@ export { default as isInstrumentCardCodeRequired } from './isInstrumentCardCodeR
 export { default as isInstrumentCardNumberRequired } from './isInstrumentCardNumberRequired';
 export { default as isInstrumentCardNumberRequiredSelector } from './isInstrumentCardNumberRequiredSelector';
 export { default as InstrumentFieldset } from './InstrumentFieldset';
+export { default as CreditCardValidation } from './CreditCardValidation';

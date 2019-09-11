@@ -5,7 +5,6 @@ import React from 'react';
 
 import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
-import { CreditCardCodeField, CreditCardNumberField } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
 
 import { getInstruments } from './instruments.mock';
@@ -24,8 +23,6 @@ describe('InstrumentFieldset', () => {
             onSelectInstrument: jest.fn(),
             onUseNewInstrument: jest.fn(),
             selectedInstrumentId: '123',
-            shouldShowCardCodeField: false,
-            shouldShowNumberField: false,
         };
 
         initialValues = {
@@ -51,7 +48,9 @@ describe('InstrumentFieldset', () => {
             .toEqual(1);
     });
 
-    it('shows card number field if configured', () => {
+    it('shows the validation form when an instrument is selected', () => {
+        const ValidateInstrument = () => <span>test</span>;
+
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <Formik
@@ -60,17 +59,19 @@ describe('InstrumentFieldset', () => {
                 >
                     <InstrumentFieldset
                         { ...defaultProps }
-                        shouldShowNumberField={ true }
+                        validateInstrument={ <ValidateInstrument /> }
                     />
                 </Formik>
             </LocaleContext.Provider>
         );
 
-        expect(component.find(CreditCardNumberField).length)
+        expect(component.find(ValidateInstrument).length)
             .toEqual(1);
     });
 
-    it('shows card code field if configured', () => {
+    it('shows the validation form when an instrument is selected', () => {
+        const ValidateInstrument = () => <span>test</span>;
+
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <Formik
@@ -79,13 +80,14 @@ describe('InstrumentFieldset', () => {
                 >
                     <InstrumentFieldset
                         { ...defaultProps }
-                        shouldShowCardCodeField={ true }
+                        selectedInstrumentId={ undefined }
+                        validateInstrument={ <ValidateInstrument /> }
                     />
                 </Formik>
             </LocaleContext.Provider>
         );
 
-        expect(component.find(CreditCardCodeField).length)
-            .toEqual(1);
+        expect(component.find(ValidateInstrument).length)
+            .toEqual(0);
     });
 });
