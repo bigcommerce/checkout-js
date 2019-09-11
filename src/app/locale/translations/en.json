@@ -82,6 +82,7 @@
             "optional_text": "(Optional)",
             "unavailable_error": "Checkout is temporarily unavailable. Please try again later.",
             "unavailable_heading": "Checkout is temporarily unavailable",
+            "unstable_network_error": "It looks like the server is taking too long to respond, this can be caused by either poor connectivity or an error with our servers. Please try again in a while.",
             "order_loading_error": "There was an error loading your order. Please try again.",
             "order_fatal_error_heading": "There was an error placing your order",
             "order_fatal_error_extra": "Please choose another payment method or contact us for further assistance."

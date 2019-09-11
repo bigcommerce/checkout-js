@@ -6,7 +6,7 @@ import ReactModal from 'react-modal';
 
 import '../../scss/App.scss';
 import { StepTracker, StepTrackerFactory } from '../analytics';
-import { createErrorLogger, ErrorLogger, ErrorLoggingBoundary } from '../common/error';
+import { createErrorLogger, ErrorBoundary, ErrorLogger } from '../common/error';
 import { NewsletterService, NewsletterSubscribeData } from '../customer';
 import { createEmbeddedCheckoutStylesheet, createEmbeddedCheckoutSupport } from '../embeddedCheckout';
 import { getLanguageService, LocaleProvider } from '../locale';
@@ -50,7 +50,7 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
 
     render() {
         return (
-            <ErrorLoggingBoundary logger={ this.errorLogger }>
+            <ErrorBoundary logger={ this.errorLogger }>
                 <LocaleProvider checkoutService={ this.checkoutService }>
                     <CheckoutProvider checkoutService={ this.checkoutService }>
                         <Checkout
@@ -64,7 +64,7 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
                         />
                     </CheckoutProvider>
                 </LocaleProvider>
-            </ErrorLoggingBoundary>
+            </ErrorBoundary>
         );
     }
 

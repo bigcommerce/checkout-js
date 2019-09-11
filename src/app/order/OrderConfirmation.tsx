@@ -1,17 +1,18 @@
 import { CheckoutSelectors, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, Order, ShopperConfig, StoreConfig } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';
-import React, { lazy, Component, Fragment, ReactNode, Suspense } from 'react';
+import React, { lazy, Component, Fragment, ReactNode } from 'react';
 
 import { StepTracker } from '../analytics';
 import { withCheckout, CheckoutContextProps } from '../checkout';
 import { ErrorLogger, ErrorModal } from '../common/error';
+import { retry } from '../common/utility';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { CreatedCustomer, GuestSignUpForm, SignedUpSuccessAlert, SignUpFormValues } from '../guestSignup';
 import { AccountCreationFailedError, AccountCreationRequirementsError } from '../guestSignup/errors';
 import { TranslatedString } from '../locale';
 import { Button, ButtonVariant } from '../ui/button';
-import { LoadingSpinner } from '../ui/loading';
+import { LazyContainer, LoadingSpinner } from '../ui/loading';
 import { MobileView } from '../ui/responsive';
 
 import getPaymentInstructions from './getPaymentInstructions';
@@ -21,15 +22,15 @@ import OrderStatus from './OrderStatus';
 import PrintLink from './PrintLink';
 import ThankYouHeader from './ThankYouHeader';
 
-const OrderSummary = lazy(() => import(
+const OrderSummary = lazy(() => retry(() => import(
     /* webpackChunkName: "order-summary" */
     './OrderSummary'
-));
+)));
 
-const OrderSummaryDrawer = lazy(() => import(
+const OrderSummaryDrawer = lazy(() => retry(() => import(
     /* webpackChunkName: "order-summary-drawer" */
     './OrderSummaryDrawer'
-));
+)));
 
 export interface OrderConfirmationState {
     error?: Error;
@@ -195,7 +196,7 @@ class OrderConfirmation extends Component<
             <MobileView>
                 { matched => {
                     if (matched) {
-                        return <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                        return <LazyContainer>
                             <OrderSummaryDrawer
                                 { ...mapToOrderSummarySubtotalsProps(order) }
                                 headerLink={ <PrintLink className="modal-header-link cart-modal-link" /> }
@@ -204,11 +205,11 @@ class OrderConfirmation extends Component<
                                 storeCurrency={ currency }
                                 shopperCurrency={ shopperCurrency }
                             />
-                        </Suspense>;
+                        </LazyContainer>;
                     }
 
                     return <aside className="layout-cart">
-                        <Suspense fallback={ <LoadingSpinner isLoading /> }>
+                        <LazyContainer>
                             <OrderSummary
                                 headerLink={ <PrintLink /> }
                                 { ...mapToOrderSummarySubtotalsProps(order) }
@@ -217,7 +218,7 @@ class OrderConfirmation extends Component<
                                 storeCurrency={ currency }
                                 shopperCurrency={ shopperCurrency }
                             />
-                        </Suspense>
+                        </LazyContainer>
                     </aside>;
                 } }
             </MobileView>
