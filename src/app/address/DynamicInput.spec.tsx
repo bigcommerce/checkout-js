@@ -26,16 +26,23 @@ describe('DynamicInput', () => {
     });
 
     it('renders date picker for date type', () => {
-        expect(shallow(
+        const datePicker = shallow(
             <DynamicInput
                 id="field_33"
                 fieldType={ DynamicFormFieldType.date }
-            />)
-            .find(ReactDatePicker)
-            .length).toEqual(1);
+                min="2019-1-1"
+                max="2019-2-1"
+            />
+        );
+
+        expect(datePicker.find(ReactDatePicker).props())
+            .toMatchObject(expect.objectContaining({
+                minDate: new Date('2019-01-01 00:00:00'),
+                maxDate: new Date('2019-02-01 00:00:00'),
+            }));
     });
 
-    it('renders checkbox input for checbox type', () => {
+    it('renders checkbox input for checkbox type', () => {
         const component = shallow(
             <DynamicInput
                 fieldType={ DynamicFormFieldType.checkbox }
