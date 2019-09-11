@@ -5,7 +5,7 @@ import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
-import { ErrorModal, ErrorModalOnCloseProps } from '../common/error';
+import { isRequestError, ErrorModal, ErrorModalOnCloseProps } from '../common/error';
 import { EMPTY_ARRAY } from '../common/utility';
 import { withLanguage, WithLanguageProps } from '../locale';
 import { FlashAlert, FlashMessage } from '../ui/alert';
@@ -280,6 +280,14 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         if (errorType === 'provider_fatal_error' ||
             errorType === 'order_could_not_be_finalized_error') {
             window.location.replace(cartUrl || '/');
+        }
+
+        if (isRequestError(error)) {
+            const { body, headers } = error;
+
+            if (body.type === 'provider_error' && headers.location) {
+                window.top.location.assign(headers.location);
+            }
         }
 
         clearError(error);
