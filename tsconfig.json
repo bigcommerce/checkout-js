@@ -20,7 +20,7 @@
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true,
         "experimentalDecorators": true,
-        "importHelpers": false,
+        "importHelpers": true,
         "sourceMap": true,
         "jsx": "react",
         "target": "es5",
@@ -36,5 +36,5 @@
         "types/card-validator.d.ts",
         "types/supported-files.d.ts",
         "types/webpack.d.ts"
-    ],
+    ]
 }

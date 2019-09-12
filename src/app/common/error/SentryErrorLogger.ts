@@ -1,8 +1,8 @@
-import { BrowserOptions, Event, Hub, Severity } from '@sentry/browser';
+import { captureException, init, withScope, BrowserOptions, Event, Severity, StackFrame } from '@sentry/browser';
+import { RewriteFrames } from '@sentry/integrations';
 
 import computeErrorCode from './computeErrorCode';
 import ErrorLogger, { ErrorLevelType, ErrorLoggerOptions, ErrorTags } from './ErrorLogger';
-import SentryClientFactory from './SentryClientFactory';
 
 export const DEFAULT_ERROR_TYPES = [
     'Error',
@@ -16,22 +16,30 @@ export const DEFAULT_ERROR_TYPES = [
 
 export default class SentryErrorLogger implements ErrorLogger {
     private errorTypes: string[];
-    private hub: Hub;
+    private publicPath: string;
 
     constructor(
-        clientFactory: SentryClientFactory,
         config: BrowserOptions,
         options?: Omit<ErrorLoggerOptions, 'serviceConfig'>
     ) {
+        const { errorTypes = [], publicPath = '' } = options || {};
+
         this.errorTypes = [
             ...DEFAULT_ERROR_TYPES,
-            ...(options && options.errorTypes ? options.errorTypes : []),
+            ...errorTypes,
         ];
 
-        this.hub = clientFactory.createHub(clientFactory.createClient({
+        this.publicPath = publicPath;
+
+        init({
             beforeSend: this.handleBeforeSend,
+            integrations: [
+                new RewriteFrames({
+                    iteratee: this.handleRewriteFrame,
+                }),
+            ],
             ...config,
-        }));
+        });
     }
 
     log(
@@ -39,7 +47,7 @@ export default class SentryErrorLogger implements ErrorLogger {
         tags?: ErrorTags,
         level: ErrorLevelType = ErrorLevelType.Error
     ): void {
-        this.hub.withScope(scope => {
+        withScope(scope => {
             const { errorCode = computeErrorCode(error) } = tags || {};
             const fingerprint = ['{{ default }}', errorCode];
 
@@ -47,7 +55,7 @@ export default class SentryErrorLogger implements ErrorLogger {
             scope.setTags({ errorCode });
             scope.setFingerprint(fingerprint);
 
-            this.hub.captureException(error);
+            captureException(error);
         });
     }
 
@@ -73,5 +81,22 @@ export default class SentryErrorLogger implements ErrorLogger {
         }
 
         return event;
+    };
+
+    private handleRewriteFrame: (frame: StackFrame) => StackFrame = frame => {
+        if (this.publicPath && frame.filename) {
+            // We want to remove the base path of the filename, otherwise we
+            // will need to specify it when we upload the sourcemaps so that the
+            // filenames can match up.
+            const filename = frame.filename.replace(new RegExp(`^${this.publicPath}\/?`), '');
+
+            // `frame` needs to be modified in-place (based on the example in
+            // their documentation).
+            if (filename !== frame.filename) {
+                frame.filename = `app:///${filename}`;
+            }
+        }
+
+        return frame;
     };
 }

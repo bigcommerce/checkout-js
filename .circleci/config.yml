@@ -110,7 +110,7 @@ jobs:
             SENTRY_COMMIT=$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME@$RELEASE_REVISION
             sentry-cli releases --project $SENTRY_PROJECT --org $SENTRY_ORG new $SENTRY_RELEASE
             sentry-cli releases --project $SENTRY_PROJECT --org $SENTRY_ORG set-commits $SENTRY_RELEASE --commit $SENTRY_COMMIT
-            sentry-cli releases --project $SENTRY_PROJECT --org $SENTRY_ORG files $SENTRY_RELEASE upload-sourcemaps dist
+            sentry-cli releases --project $SENTRY_PROJECT --org $SENTRY_ORG files $SENTRY_RELEASE upload-sourcemaps --rewrite dist
             sentry-cli releases --project $SENTRY_PROJECT --org $SENTRY_ORG finalize $SENTRY_RELEASE
 
 workflows:

@@ -5,22 +5,20 @@ import { configurePublicPath } from '../common/bundler';
 
 import { CheckoutAppProps } from './CheckoutApp';
 
-export interface RenderCheckoutOptions extends CheckoutAppProps {
-    publicPath: string;
-}
+export type RenderCheckoutOptions = CheckoutAppProps;
 
 export default function renderCheckout({
     containerId,
     publicPath,
     ...props
 }: RenderCheckoutOptions): void {
-    configurePublicPath(publicPath);
-
+    const configuredPublicPath = configurePublicPath(publicPath);
     const { default: CheckoutApp } = require('./CheckoutApp');
 
     ReactDOM.render(
         <CheckoutApp
             containerId={ containerId }
+            publicPath={ configuredPublicPath }
             { ...props }
         />,
         document.getElementById(containerId)

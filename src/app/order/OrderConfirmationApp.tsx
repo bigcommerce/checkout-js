@@ -16,6 +16,7 @@ import OrderConfirmation from './OrderConfirmation';
 export interface OrderConfirmationAppProps {
     containerId: string;
     orderId: number;
+    publicPath?: string;
     sentryConfig?: BrowserOptions;
 }
 
@@ -34,7 +35,10 @@ class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
 
         this.errorLogger = createErrorLogger(
             { sentry: props.sentryConfig },
-            { errorTypes: ['UnrecoverableError'] }
+            {
+                errorTypes: ['UnrecoverableError'],
+                publicPath: props.publicPath,
+            }
         );
     }
 
