@@ -4,6 +4,7 @@ import { noop, some } from 'lodash';
 import React, { Component, Fragment, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
+import { preventDefault } from '../../common/dom';
 import { withLanguage, TranslatedString, WithLanguageProps } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
 import withPayment, { WithPaymentProps } from '../withPayment';
@@ -125,6 +126,7 @@ class WalletButtonPaymentMethod extends Component<
             <a
                 className={ signInButtonClassName }
                 id={ buttonId }
+                onClick={ preventDefault() }
                 href="#"
             >
                 { signInButtonLabel || <TranslatedString
@@ -173,6 +175,7 @@ class WalletButtonPaymentMethod extends Component<
                     <a
                         className={ editButtonClassName }
                         href="#"
+                        onClick={ preventDefault() }
                         id={ buttonId }
                     >
                         { editButtonLabel || <TranslatedString id="remote.select_different_card_action" /> }
