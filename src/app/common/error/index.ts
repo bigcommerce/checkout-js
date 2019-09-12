@@ -13,4 +13,5 @@ export { default as ErrorModal } from './ErrorModal';
 export { default as computeErrorCode } from './computeErrorCode';
 export { default as createErrorLogger } from './createErrorLogger';
 export { default as isCustomError } from './isCustomError';
+export { default as isRequestError } from './isRequestError';
 export { setPrototypeOf } from './createCustomErrorType';

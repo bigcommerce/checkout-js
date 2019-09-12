@@ -1,4 +1,4 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService, CustomError, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, CheckoutSelectors, CheckoutService, CustomError, PaymentMethod, RequestError } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { EventEmitter } from 'events';
 import { find, merge, noop } from 'lodash';
@@ -11,6 +11,7 @@ import { ErrorModal } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { Button } from '../ui/button';
 
 import { getPaymentMethod } from './payment-methods.mock';
 import Payment, { PaymentProps } from './Payment';
@@ -311,6 +312,24 @@ describe('Payment', () => {
 
         expect(container.find(ErrorModal))
             .toHaveLength(1);
+    });
+
+    it('redirects to location error header when error type is provider_error', () => {
+        jest.spyOn(window.top.location, 'assign')
+            .mockImplementation();
+
+        jest.spyOn(checkoutState.errors, 'getFinalizeOrderError')
+            .mockReturnValue({
+                type: 'request',
+                body: { type: 'provider_error' },
+                headers: { location: 'foo' },
+            } as unknown as RequestError);
+
+        const container = mount(<PaymentTest { ...defaultProps } />);
+
+        container.find(Button).simulate('click');
+
+        expect(window.top.location.assign).toHaveBeenCalledWith('foo');
     });
 
     it('does not render error modal if order does not need to finalize', () => {
