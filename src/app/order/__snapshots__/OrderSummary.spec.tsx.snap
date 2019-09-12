@@ -39,6 +39,7 @@ exports[`OrderSummary when shopper has same currency as store renders order summ
               "categoryNames": Array [
                 "Cat 1",
               ],
+              "comparisonPrice": 200,
               "couponAmount": 0,
               "discountAmount": 0,
               "discounts": Array [],

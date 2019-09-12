@@ -61,6 +61,7 @@ exports[`OrderSummaryModal renders order summary 1`] = `
               "categoryNames": Array [
                 "Cat 1",
               ],
+              "comparisonPrice": 200,
               "couponAmount": 0,
               "discountAmount": 0,
               "discounts": Array [],

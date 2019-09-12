@@ -20,6 +20,7 @@ export function getCheckout(): Checkout {
             },
         ],
         discounts: [],
+        isStoreCreditApplied: false,
         coupons: [
             getCoupon(),
         ],
@@ -30,6 +31,7 @@ export function getCheckout(): Checkout {
         taxTotal: 3,
         subtotal: 190,
         grandTotal: 190,
+        outstandingBalance: 190,
         giftCertificates: [],
         balanceDue: 0,
         createdTime: '2018-03-06T04:41:49+00:00',
