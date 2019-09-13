@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/bigcommerce/checkout-js/compare/v1.1.0...v1.1.1) (2019-09-13)
+
+
+### Bug Fixes
+
+* **cart:** CHECKOUT-4315 Do not strike-through amount without tax ([4f74825](https://github.com/bigcommerce/checkout-js/commit/4f74825))
+* **common:** CHECKOUT-4336 Allow empty date custom field when optional ([13f1a98](https://github.com/bigcommerce/checkout-js/commit/13f1a98))
+* **common:** CHECKOUT-4336 Allow empty date custom field when optional ([3e2401c](https://github.com/bigcommerce/checkout-js/commit/3e2401c))
+* **common:** CHECKOUT-4340 Use local timezone for date ranges ([dc6cac2](https://github.com/bigcommerce/checkout-js/commit/dc6cac2))
+* **common:** CHECKOUT-4374 Check out tag before uploading artifacts to Sentry ([53e179b](https://github.com/bigcommerce/checkout-js/commit/53e179b))
+* **common:** CHECKOUT-4374 Remove version prefix from Sentry release name ([d7725e1](https://github.com/bigcommerce/checkout-js/commit/d7725e1))
+* **common:** CHECKOUT-4409 Configure public path before rendering apps ([24504f6](https://github.com/bigcommerce/checkout-js/commit/24504f6))
+* **common:** CHECKOUT-4412 Display fallback component if unable to lazy load chunk ([0cb677f](https://github.com/bigcommerce/checkout-js/commit/0cb677f))
+* **common:** CHECKOUT-4412 Retry if unable to load asset chunk ([f253041](https://github.com/bigcommerce/checkout-js/commit/f253041))
+* **common:** CHECKOUT-4418 Rewrite filename of error frames before sending to Sentry ([ff05b2e](https://github.com/bigcommerce/checkout-js/commit/ff05b2e))
+* **order:** CHECKOUT-4393 Bump SDK to fix order resubmission. ([decc29a](https://github.com/bigcommerce/checkout-js/commit/decc29a))
+* **payment:** CHECKOUT-4357 Redirect to PayPal when location header ([315fcca](https://github.com/bigcommerce/checkout-js/commit/315fcca))
+* **payment:** CHECKOUT-4398 Prevent default when sign in to visa ([ae21ef5](https://github.com/bigcommerce/checkout-js/commit/ae21ef5))
+* **payments:** INT-1892 Do not prompt when been redirected to 3DS1 using Converge ([d984fce](https://github.com/bigcommerce/checkout-js/commit/d984fce))
+
 ## [1.1.0](https://github.com/bigcommerce/checkout-js/compare/v1.0.2...v1.1.0) (2019-09-09)
 
 
