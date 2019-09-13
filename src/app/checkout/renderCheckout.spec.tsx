@@ -1,4 +1,3 @@
-import { omit } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import renderCheckout, { RenderCheckoutOptions } from './renderCheckout';
@@ -11,6 +10,8 @@ let publicPath: string;
 jest.mock('../common/bundler', () => {
     configurePublicPath = jest.fn(path => {
         publicPath = path;
+
+        return publicPath;
     });
 
     return {
@@ -63,6 +64,6 @@ describe('renderCheckout()', () => {
         renderCheckout(options);
 
         expect(CheckoutApp)
-            .toHaveBeenCalledWith(omit(options, 'publicPath'), {});
+            .toHaveBeenCalledWith(options, {});
     });
 });

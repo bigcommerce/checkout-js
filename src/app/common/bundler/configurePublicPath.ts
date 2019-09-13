@@ -2,7 +2,7 @@ import getCurrentScriptPath from './getCurrentScriptPath';
 
 export default function configurePublicPath(
     publicPath?: string
-): void {
+): string {
     if (!publicPath) {
         const scriptPath = getCurrentScriptPath();
 
@@ -12,8 +12,10 @@ export default function configurePublicPath(
 
         __webpack_public_path__ = `${scriptPath.split('/').slice(0, -1).join('/')}/`;
 
-        return;
+        return __webpack_public_path__;
     }
 
     __webpack_public_path__ = publicPath.substr(-1) === '/' ? publicPath : `${publicPath}/`;
+
+    return __webpack_public_path__;
 }

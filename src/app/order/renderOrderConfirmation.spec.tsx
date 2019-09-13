@@ -1,4 +1,3 @@
-import { omit } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import renderOrderConfirmation, { RenderOrderConfirmationOptions } from './renderOrderConfirmation';
@@ -11,6 +10,8 @@ let publicPath: string;
 jest.mock('../common/bundler', () => {
     configurePublicPath = jest.fn(path => {
         publicPath = path;
+
+        return publicPath;
     });
 
     return {
@@ -63,6 +64,6 @@ describe('renderOrderConfirmation()', () => {
         renderOrderConfirmation(options);
 
         expect(OrderConfirmationApp)
-            .toHaveBeenCalledWith(omit(options, 'publicPath'), {});
+            .toHaveBeenCalledWith(options, {});
     });
 });

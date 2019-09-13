@@ -17,6 +17,7 @@ export default interface ErrorLogger {
 
 export interface ErrorLoggerOptions {
     errorTypes?: string[];
+    publicPath?: string;
 }
 
 export interface ErrorLoggerServiceConfig {

@@ -19,6 +19,7 @@ export interface CheckoutAppProps {
     checkoutId: string;
     containerId: string;
     flashMessages?: FlashMessage[]; // TODO: Expose flash messages from SDK
+    publicPath?: string;
     sentryConfig?: BrowserOptions;
 }
 
@@ -38,7 +39,10 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
 
         this.errorLogger = createErrorLogger(
             { sentry: props.sentryConfig },
-            { errorTypes: ['UnrecoverableError'] }
+            {
+                errorTypes: ['UnrecoverableError'],
+                publicPath: props.publicPath,
+            }
         );
     }
 

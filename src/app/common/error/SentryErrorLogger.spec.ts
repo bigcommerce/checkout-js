@@ -1,28 +1,41 @@
-import { BrowserOptions, Exception, Hub, Scope, Severity } from '@sentry/browser';
+import { captureException, init, withScope, BrowserOptions, Exception, Scope, Severity } from '@sentry/browser';
+import { RewriteFrames } from '@sentry/integrations';
+import { Integration } from '@sentry/types';
 
 import computeErrorCode from './computeErrorCode';
 import { ErrorLevelType } from './ErrorLogger';
-import SentryClientFactory from './SentryClientFactory';
 import SentryErrorLogger, { DEFAULT_ERROR_TYPES } from './SentryErrorLogger';
 
+jest.mock('@sentry/browser', () => {
+    return {
+        captureException: jest.fn(),
+        init: jest.fn(),
+        withScope: jest.fn(),
+        Severity: {
+            Error: 'Error',
+            Warning: 'Warning',
+        },
+    };
+});
+
 describe('SentryErrorLogger', () => {
-    let factory: SentryClientFactory;
     let config: BrowserOptions;
 
     beforeEach(() => {
         config = {
             dsn: 'https://abc@sentry.io/123',
         };
-        factory = new SentryClientFactory();
+
+        (captureException as jest.Mock).mockClear();
+        (init as jest.Mock).mockClear();
+        (withScope as jest.Mock).mockClear();
     });
 
     it('configures Sentry client to only log certain error types', () => {
-        jest.spyOn(factory, 'createClient');
-
         // tslint:disable-next-line:no-unused-expression
-        new SentryErrorLogger(factory, config);
+        new SentryErrorLogger(config);
 
-        const clientOptions: BrowserOptions = (factory.createClient as jest.Mock).mock.calls[0][0];
+        const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
         const exception: Exception = { type: 'Error', value: '' };
 
         DEFAULT_ERROR_TYPES.forEach(type => {
@@ -43,12 +56,10 @@ describe('SentryErrorLogger', () => {
     });
 
     it('allows additional error types to be logged', () => {
-        jest.spyOn(factory, 'createClient');
-
         // tslint:disable-next-line:no-unused-expression
-        new SentryErrorLogger(factory, config, { errorTypes: ['Foo', 'Bar'] });
+        new SentryErrorLogger(config, { errorTypes: ['Foo', 'Bar'] });
 
-        const clientOptions: BrowserOptions = (factory.createClient as jest.Mock).mock.calls[0][0];
+        const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
         const exception: Exception = { type: 'Error', value: '' };
 
         ['Foo', 'Bar'].forEach(type => {
@@ -60,35 +71,88 @@ describe('SentryErrorLogger', () => {
         });
     });
 
+    it('configures client to rewrite filename of error frames', () => {
+        // tslint:disable-next-line:no-unused-expression
+        new SentryErrorLogger(config, { publicPath: 'https://cdn.foo.bar' });
+
+        const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
+
+        // tslint:disable-next-line:no-non-null-assertion
+        const rewriteFrames = (clientOptions.integrations! as Integration[]).find(integration => (
+            integration.name === 'RewriteFrames'
+        )) as RewriteFrames;
+
+        const output = rewriteFrames.process({
+            stacktrace: {
+                frames: [
+                    {
+                        colno: 1234,
+                        filename: 'https://cdn.foo.bar/js/app-123.js',
+                        function: 't.<anonymous>',
+                        in_app: true,
+                        lineno: 1,
+                    },
+                ],
+            },
+        });
+
+        // tslint:disable-next-line:no-non-null-assertion
+        const frame = output.stacktrace!.frames![0];
+
+        expect(frame)
+            .toEqual({
+                ...frame,
+                filename: 'app:///js/app-123.js',
+            });
+    });
+
+    it('does not rewrite filename of error frames if it does match with public path', () => {
+        // tslint:disable-next-line:no-unused-expression
+        new SentryErrorLogger(config, { publicPath: 'https://cdn.foo.bar' });
+
+        const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
+
+        // tslint:disable-next-line:no-non-null-assertion
+        const rewriteFrames = (clientOptions.integrations! as Integration[]).find(integration => (
+            integration.name === 'RewriteFrames'
+        )) as RewriteFrames;
+
+        const output = rewriteFrames.process({
+            stacktrace: {
+                frames: [
+                    {
+                        colno: 1234,
+                        filename: 'https://cdn.hello.world/js/app-123.js',
+                        function: 't.<anonymous>',
+                        in_app: true,
+                        lineno: 1,
+                    },
+                ],
+            },
+        });
+
+        // tslint:disable-next-line:no-non-null-assertion
+        const frame = output.stacktrace!.frames![0];
+
+        expect(frame)
+            .toEqual(frame);
+    });
+
     describe('#log()', () => {
-        let hub: Hub;
-        let scope: Scope;
+        let scope: Partial<Scope>;
 
         beforeEach(() => {
-            hub = new Hub();
-            scope = new Scope();
+            scope = {
+                setLevel: jest.fn(),
+                setTags: jest.fn(),
+                setFingerprint: jest.fn(),
+            };
 
-            jest.spyOn(hub, 'captureException')
-                .mockImplementation();
-
-            jest.spyOn(scope, 'setLevel')
-                .mockImplementation();
-
-            jest.spyOn(scope, 'setTags')
-                .mockImplementation();
-
-            jest.spyOn(scope, 'setFingerprint')
-                .mockImplementation();
-
-            jest.spyOn(hub, 'withScope')
-                .mockImplementation(fn => fn(scope));
-
-            jest.spyOn(factory, 'createHub')
-                .mockReturnValue(hub);
+            (withScope as jest.Mock).mockImplementation(fn => fn(scope));
         });
 
         it('logs error with provided error code, level and specific fingerprint', () => {
-            const logger = new SentryErrorLogger(factory, config, { errorTypes: ['Foo', 'Bar'] });
+            const logger = new SentryErrorLogger(config, { errorTypes: ['Foo', 'Bar'] });
             const error = new Error();
             const tags = { errorCode: 'foo' };
 
@@ -103,12 +167,12 @@ describe('SentryErrorLogger', () => {
             expect(scope.setFingerprint)
                 .toHaveBeenCalledWith(['{{ default }}', tags.errorCode]);
 
-            expect(hub.captureException)
+            expect(captureException)
                 .toHaveBeenCalledWith(error);
         });
 
         it('logs error with default error code, level and specific fingerprint if level / code is not provided', () => {
-            const logger = new SentryErrorLogger(factory, config);
+            const logger = new SentryErrorLogger(config);
             const error = new Error();
 
             logger.log(error);
@@ -122,12 +186,12 @@ describe('SentryErrorLogger', () => {
             expect(scope.setFingerprint)
                 .toHaveBeenCalledWith(['{{ default }}', computeErrorCode(error)]);
 
-            expect(hub.captureException)
+            expect(captureException)
                 .toHaveBeenCalledWith(error);
         });
 
         it('maps to error level enum recognized by Sentry', () => {
-            const logger = new SentryErrorLogger(factory, config);
+            const logger = new SentryErrorLogger(config);
             const error = new Error();
 
             logger.log(error, undefined, ErrorLevelType.Error);
