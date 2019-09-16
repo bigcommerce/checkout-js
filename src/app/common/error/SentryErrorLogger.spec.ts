@@ -1,4 +1,4 @@
-import { captureException, init, withScope, BrowserOptions, Exception, Scope, Severity } from '@sentry/browser';
+import { captureException, init, withScope, BrowserOptions, Scope, Severity } from '@sentry/browser';
 import { RewriteFrames } from '@sentry/integrations';
 import { Integration } from '@sentry/types';
 
@@ -36,21 +36,26 @@ describe('SentryErrorLogger', () => {
         new SentryErrorLogger(config);
 
         const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
-        const exception: Exception = { type: 'Error', value: '' };
 
         DEFAULT_ERROR_TYPES.forEach(type => {
-            const event = { exception: { values: [{ ...exception, type }] } };
+            const event = { exception: { values: [{ type, value: `${type} error message` }] } };
+            const originalException = new Error(`${type} error message`);
+
+            originalException.name = type;
 
             // tslint:disable-next-line:no-non-null-assertion
-            expect(clientOptions.beforeSend!(event))
+            expect(clientOptions.beforeSend!(event, { originalException }))
                 .toEqual(event);
         });
 
         ['Foo', 'Bar'].forEach(type => {
-            const event = { exception: { values: [{ ...exception, type }] } };
+            const event = { exception: { values: [{ type, value: `${type} error message` }] } };
+            const originalException = new Error(`${type} error message`);
+
+            originalException.name = type;
 
             // tslint:disable-next-line:no-non-null-assertion
-            expect(clientOptions.beforeSend!(event))
+            expect(clientOptions.beforeSend!(event, { originalException }))
                 .toEqual(null);
         });
     });
@@ -60,15 +65,30 @@ describe('SentryErrorLogger', () => {
         new SentryErrorLogger(config, { errorTypes: ['Foo', 'Bar'] });
 
         const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
-        const exception: Exception = { type: 'Error', value: '' };
 
         ['Foo', 'Bar'].forEach(type => {
-            const event = { exception: { values: [{ ...exception, type }] } };
+            const event = { exception: { values: [{ type, value: `${type} error message` }] } };
+            const originalException = new Error(`${type} error message`);
+
+            originalException.name = type;
 
             // tslint:disable-next-line:no-non-null-assertion
-            expect(clientOptions.beforeSend!(event))
+            expect(clientOptions.beforeSend!(event, { originalException }))
                 .toEqual(event);
         });
+    });
+
+    it('does not log exception event if it is raised by error', () => {
+        // tslint:disable-next-line:no-unused-expression
+        new SentryErrorLogger(config);
+
+        const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
+        const event = { exception: { values: [{ type: 'Error', value: 'Unexpected error' }] } };
+        const hint = { originalException: 'Unexpected error' };
+
+        // tslint:disable-next-line:no-non-null-assertion
+        expect(clientOptions.beforeSend!(event, hint))
+            .toEqual(null);
     });
 
     it('configures client to rewrite filename of error frames', () => {
