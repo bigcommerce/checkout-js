@@ -11,7 +11,7 @@ import { EMPTY_ARRAY } from '../../common/utility';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
 import { configureCardValidator, getCreditCardValidationSchema, CreditCardFieldset, CreditCardFieldsetValues } from '../creditCard';
-import { getInstrumentValidationSchema, isInstrumentCardCodeRequired, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, InstrumentFieldset, InstrumentFieldsetValues } from '../storedInstrument';
+import { getInstrumentValidationSchema, isInstrumentCardCodeRequired, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CreditCardValidation, InstrumentFieldset, InstrumentFieldsetValues } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
 
@@ -129,6 +129,7 @@ class CreditCardPaymentMethod extends Component<
         const shouldShowInstrumentFieldset = isInstrumentFeatureAvailableProp && instruments.length > 0;
         const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
         const isLoading = isInitializing || isLoadingInstruments;
+        const shouldShowNumberField = selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument) : false;
 
         return (
             <LoadingOverlay
@@ -139,11 +140,13 @@ class CreditCardPaymentMethod extends Component<
                     { shouldShowInstrumentFieldset && <InstrumentFieldset
                         instruments={ instruments }
                         method={ method }
-                        shouldShowCardCodeField={ isInstrumentCardCodeRequiredProp }
-                        shouldShowNumberField={ selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument) : false }
                         selectedInstrumentId={ selectedInstrumentId }
-                        onUseNewCard={ this.handleUseNewCard }
+                        onUseNewInstrument={ this.handleUseNewCard }
                         onSelectInstrument={ this.handleSelectInstrument }
+                        validateInstrument={ <CreditCardValidation
+                            shouldShowCardCodeField={ isInstrumentCardCodeRequiredProp }
+                            shouldShowNumberField={ shouldShowNumberField }
+                        /> }
                     /> }
 
                     { shouldShowCreditCardFieldset && <CreditCardFieldset

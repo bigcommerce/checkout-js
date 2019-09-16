@@ -10,7 +10,7 @@ import { MapToProps } from '../../common/hoc';
 import { EMPTY_ARRAY } from '../../common/utility';
 import { LoadingOverlay } from '../../ui/loading';
 import { CreditCardStorageField } from '../creditCard';
-import { isInstrumentCardCodeRequired, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, InstrumentFieldset } from '../storedInstrument';
+import { isInstrumentCardCodeRequired, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CreditCardValidation, InstrumentFieldset } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
 
@@ -140,6 +140,7 @@ class HostedWidgetPaymentMethod extends Component<
         const shouldShowInstrumentFieldset = isInstrumentFeatureAvailableProp && instruments.length > 0;
         const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
         const isLoading = isInitializing || isLoadingInstruments;
+        const shouldShowNumberField = selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument) : false;
 
         return (
             <LoadingOverlay
@@ -149,11 +150,13 @@ class HostedWidgetPaymentMethod extends Component<
                 { shouldShowInstrumentFieldset && <InstrumentFieldset
                     instruments={ instruments }
                     method={ method }
-                    shouldShowCardCodeField={ isInstrumentCardCodeRequiredProp }
-                    shouldShowNumberField={ selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument) : false }
                     selectedInstrumentId={ selectedInstrumentId }
                     onSelectInstrument={ this.handleSelectInstrument }
-                    onUseNewCard={ this.handleUseNewCard }
+                    onUseNewInstrument={ this.handleUseNewCard }
+                    validateInstrument={ <CreditCardValidation
+                        shouldShowCardCodeField={ isInstrumentCardCodeRequiredProp }
+                        shouldShowNumberField={ shouldShowNumberField }
+                    /> }
                 /> }
 
                 <div

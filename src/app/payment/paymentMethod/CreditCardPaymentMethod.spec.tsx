@@ -245,7 +245,7 @@ describe('CreditCardPaymentMethod', () => {
                 .toHaveLength(0);
 
             component.find(InstrumentFieldset)
-                .prop('onUseNewCard')();
+                .prop('onUseNewInstrument')();
 
             component.update();
 
