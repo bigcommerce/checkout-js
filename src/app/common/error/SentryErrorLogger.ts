@@ -1,5 +1,6 @@
 import { captureException, init, withScope, BrowserOptions, Event, Severity, StackFrame } from '@sentry/browser';
 import { RewriteFrames } from '@sentry/integrations';
+import { EventHint } from '@sentry/types';
 
 import computeErrorCode from './computeErrorCode';
 import ErrorLogger, { ErrorLevelType, ErrorLoggerOptions, ErrorTags } from './ErrorLogger';
@@ -73,9 +74,11 @@ export default class SentryErrorLogger implements ErrorLogger {
         }
     }
 
-    private handleBeforeSend: (event: Event) => Event | null = event => {
-        if (event.exception && event.exception.values) {
-            return event.exception.values.some(exception => exception.type && this.errorTypes.indexOf(exception.type) >= 0) ?
+    private handleBeforeSend: (event: Event, hint?: EventHint) => Event | null = (event, hint) => {
+        if (event.exception) {
+            const { originalException = null } = hint || {};
+
+            return originalException instanceof Error && this.errorTypes.indexOf(originalException.name) >= 0 ?
                 event :
                 null;
         }
