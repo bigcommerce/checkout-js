@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.2](https://github.com/bigcommerce/checkout-js/compare/v1.1.1...v1.1.2) (2019-09-17)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-4418 Only log exception event if it contains stacktrace ([6ea9938](https://github.com/bigcommerce/checkout-js/commit/6ea9938))
+* **common:** CHECKOUT-4418 Only log exception event if it is raised by error ([99d156d](https://github.com/bigcommerce/checkout-js/commit/99d156d))
+* **common:** CHECKOUT-4427 CHECKOUT-4418 CHECKOUT-4415 INT-1759 Bump checkout-sdk version ([9e362fb](https://github.com/bigcommerce/checkout-js/commit/9e362fb))
+
+
+### Code Refactoring
+
+* **payment:** PAYMENTS-4617 Allow to pass different instrument validation components ([6cbef67](https://github.com/bigcommerce/checkout-js/commit/6cbef67))
+* **payment:** PAYMENTS-4617 Rename useNewCard to useNewInstrument ([97c9bc4](https://github.com/bigcommerce/checkout-js/commit/97c9bc4))
+
 ### [1.1.1](https://github.com/bigcommerce/checkout-js/compare/v1.1.0...v1.1.1) (2019-09-13)
 
 
