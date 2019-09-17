@@ -38,7 +38,10 @@ describe('SentryErrorLogger', () => {
         const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
 
         DEFAULT_ERROR_TYPES.forEach(type => {
-            const event = { exception: { values: [{ type, value: `${type} error message` }] } };
+            const event = {
+                exception: { values: [{ type, value: `${type} error message` }] },
+                stacktrace: { frames: [{ filename: 'js/app-123.js' }] },
+            };
             const originalException = new Error(`${type} error message`);
 
             originalException.name = type;
@@ -49,7 +52,10 @@ describe('SentryErrorLogger', () => {
         });
 
         ['Foo', 'Bar'].forEach(type => {
-            const event = { exception: { values: [{ type, value: `${type} error message` }] } };
+            const event = {
+                exception: { values: [{ type, value: `${type} error message` }] },
+                stacktrace: { frames: [{ filename: 'js/app-123.js' }] },
+            };
             const originalException = new Error(`${type} error message`);
 
             originalException.name = type;
@@ -67,7 +73,10 @@ describe('SentryErrorLogger', () => {
         const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
 
         ['Foo', 'Bar'].forEach(type => {
-            const event = { exception: { values: [{ type, value: `${type} error message` }] } };
+            const event = {
+                exception: { values: [{ type, value: `${type} error message` }] },
+                stacktrace: { frames: [{ filename: 'js/app-123.js' }] },
+            };
             const originalException = new Error(`${type} error message`);
 
             originalException.name = type;
@@ -78,13 +87,31 @@ describe('SentryErrorLogger', () => {
         });
     });
 
-    it('does not log exception event if it is raised by error', () => {
+    it('does not log exception event if it is not raised by error', () => {
         // tslint:disable-next-line:no-unused-expression
         new SentryErrorLogger(config);
 
         const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
-        const event = { exception: { values: [{ type: 'Error', value: 'Unexpected error' }] } };
+        const event = {
+            exception: { values: [{ type: 'Error', value: 'Unexpected error' }] },
+            stacktrace: { frames: [{ filename: 'js/app-123.js' }] },
+        };
         const hint = { originalException: 'Unexpected error' };
+
+        // tslint:disable-next-line:no-non-null-assertion
+        expect(clientOptions.beforeSend!(event, hint))
+            .toEqual(null);
+    });
+
+    it('does not log exeception event if it does not contain stacktrace', () => {
+        // tslint:disable-next-line:no-unused-expression
+        new SentryErrorLogger(config);
+
+        const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
+        const event = {
+            exception: { values: [{ type: 'Error', value: 'Unexpected error' }] },
+        };
+        const hint = { originalException: new Error('Unexpected error') };
 
         // tslint:disable-next-line:no-non-null-assertion
         expect(clientOptions.beforeSend!(event, hint))
