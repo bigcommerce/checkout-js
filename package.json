@@ -106,6 +106,7 @@
     "stylelint-webpack-plugin": "^0.10.5",
     "ts-jest": "^24.0.2",
     "ts-loader": "^6.0.4",
+    "tslib": "^1.10.0",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3",
     "webpack": "^4.39.0",
