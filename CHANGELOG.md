@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.3](https://github.com/bigcommerce/checkout-js/compare/v1.1.2...v1.1.3) (2019-09-18)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-4415 Bump checkout-sdk version ([5a827b9](https://github.com/bigcommerce/checkout-js/commit/5a827b9))
+* **common:** CHECKOUT-4418 Fix `instanceof` check not returning true when code is minified ([5f8858f](https://github.com/bigcommerce/checkout-js/commit/5f8858f))
+* **common:** CHECKOUT-4418 Log error in console ([5a35293](https://github.com/bigcommerce/checkout-js/commit/5a35293))
+
 ### [1.1.2](https://github.com/bigcommerce/checkout-js/compare/v1.1.1...v1.1.2) (2019-09-17)
 
 
