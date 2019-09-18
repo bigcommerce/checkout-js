@@ -3,8 +3,10 @@ import { RewriteFrames } from '@sentry/integrations';
 import { Integration } from '@sentry/types';
 
 import computeErrorCode from './computeErrorCode';
+import DEFAULT_ERROR_TYPES from './defaultErrorTypes';
+import ConsoleErrorLogger from './ConsoleErrorLogger';
 import { ErrorLevelType } from './ErrorLogger';
-import SentryErrorLogger, { DEFAULT_ERROR_TYPES } from './SentryErrorLogger';
+import SentryErrorLogger from './SentryErrorLogger';
 
 jest.mock('@sentry/browser', () => {
     return {
@@ -253,6 +255,23 @@ describe('SentryErrorLogger', () => {
 
             expect(scope.setLevel)
                 .toHaveBeenNthCalledWith(3, Severity.Info);
+        });
+
+        it('logs error in console if console logger is provided', () => {
+            const consoleLogger = new ConsoleErrorLogger();
+
+            jest.spyOn(consoleLogger, 'log')
+                .mockImplementation();
+
+            const logger = new SentryErrorLogger(config, { consoleLogger });
+            const error = new Error('Testing 123');
+            const tags = { errorCode: 'abc' };
+            const level = ErrorLevelType.Error;
+
+            logger.log(error, tags, level);
+
+            expect(consoleLogger.log)
+                .toHaveBeenCalledWith(error, tags, level);
         });
     });
 });

@@ -4,33 +4,38 @@ import { EventHint } from '@sentry/types';
 import { includes, isEmpty } from 'lodash';
 
 import computeErrorCode from './computeErrorCode';
-import ErrorLogger, { ErrorLevelType, ErrorLoggerOptions, ErrorTags } from './ErrorLogger';
+import DEFAULT_ERROR_TYPES from './defaultErrorTypes';
+import ConsoleErrorLogger from './ConsoleErrorLogger';
+import ErrorLogger, { ErrorLevelType, ErrorTags } from './ErrorLogger';
+import NoopErrorLogger from './NoopErrorLogger';
 
-export const DEFAULT_ERROR_TYPES = [
-    'Error',
-    'EvalError',
-    'RangeError',
-    'ReferenceError',
-    'SyntaxError',
-    'TypeError',
-    'URIError',
-];
+export interface SentryErrorLoggerOptions {
+    consoleLogger?: ConsoleErrorLogger;
+    errorTypes?: string[];
+    publicPath?: string;
+}
 
 export default class SentryErrorLogger implements ErrorLogger {
+    private consoleLogger: ErrorLogger;
     private errorTypes: string[];
     private publicPath: string;
 
     constructor(
         config: BrowserOptions,
-        options?: Omit<ErrorLoggerOptions, 'serviceConfig'>
+        options?: SentryErrorLoggerOptions
     ) {
-        const { errorTypes = [], publicPath = '' } = options || {};
+        const {
+            consoleLogger = new NoopErrorLogger(),
+            errorTypes = [],
+            publicPath = '',
+        } = options || {};
 
         this.errorTypes = [
             ...DEFAULT_ERROR_TYPES,
             ...errorTypes,
         ];
 
+        this.consoleLogger = consoleLogger;
         this.publicPath = publicPath;
 
         init({
@@ -49,6 +54,8 @@ export default class SentryErrorLogger implements ErrorLogger {
         tags?: ErrorTags,
         level: ErrorLevelType = ErrorLevelType.Error
     ): void {
+        this.consoleLogger.log(error, tags, level);
+
         withScope(scope => {
             const { errorCode = computeErrorCode(error) } = tags || {};
             const fingerprint = ['{{ default }}', errorCode];
