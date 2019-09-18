@@ -1,3 +1,4 @@
+import ConsoleErrorLogger from './ConsoleErrorLogger';
 import ErrorLogger, { ErrorLoggerOptions, ErrorLoggerServiceConfig } from './ErrorLogger';
 import NoopErrorLogger from './NoopErrorLogger';
 import SentryErrorLogger from './SentryErrorLogger';
@@ -9,9 +10,13 @@ export default function createErrorLogger(
     if (serviceConfig && serviceConfig.sentry) {
         return new SentryErrorLogger(
             serviceConfig.sentry,
-            options
+            { ...options, consoleLogger: new ConsoleErrorLogger(options) }
         );
     }
 
-    return new NoopErrorLogger();
+    if (process.env.NODE_ENV === 'test') {
+        return new NoopErrorLogger();
+    }
+
+    return new ConsoleErrorLogger(options);
 }
