@@ -29,9 +29,11 @@ const SignUpPasswordField: FunctionComponent<PasswordField> = ({
 
     const passwordLabelContent = useMemo(() => (
         <Fragment>
-            <TranslatedString id={ 'customer.password_label' } />&nbsp;
+            <TranslatedString id={ 'customer.password_label' } />
+            { ' ' }
             <small>
-                { minLength }-<TranslatedString id={ 'customer.password_minimum_character_label' } />
+                { `${minLength}-` }
+                <TranslatedString id={ 'customer.password_minimum_character_label' } />
             </small>
         </Fragment>
     ), [minLength]);
@@ -42,15 +44,15 @@ const SignUpPasswordField: FunctionComponent<PasswordField> = ({
 
     return <Fragment>
         <FormField
-            name="password"
-            labelContent={ passwordLabelContent }
             input={ renderPasswordInput }
+            labelContent={ passwordLabelContent }
+            name="password"
         />
 
         <FormField
-            name="confirmPassword"
-            labelContent={ passwordConfirmationLabelContent }
             input={ renderPasswordConfirmationInput }
+            labelContent={ passwordConfirmationLabelContent }
+            name="confirmPassword"
         />
     </Fragment>;
 };

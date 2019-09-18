@@ -30,8 +30,8 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
 
         { shouldShowMultiShipping &&
             <a
-                href="#"
                 data-test="shipping-mode-toggle"
+                href="#"
                 onClick={ preventDefault(onMultiShippingChange) }
             >
                 <TranslatedString id={ isMultiShippingMode ?

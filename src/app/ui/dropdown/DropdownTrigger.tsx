@@ -43,12 +43,12 @@ export default class DropdownTrigger extends Component<DropdownTriggerProps, Dro
                 </Reference>
 
                 <Popper
-                    placement={ placement }
                     modifiers={ {
                         hide: { enabled: false },
                         flip: { enabled: false },
                         preventOverflow: { enabled: false },
                     } }
+                    placement={ placement }
                 >
                     { ({ ref, style }) => !shouldShow ? null : (
                         <div

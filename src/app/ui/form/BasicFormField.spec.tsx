@@ -35,9 +35,9 @@ describe('BasicFormField', () => {
                     render={ () => (
                         <BasicFormField
                             name="foobar"
-                            validate={ () => 'Invalid' }
                             render={ ({ field }) =>
                                 <input { ...field } type="text" /> }
+                            validate={ () => 'Invalid' }
                         />
                     ) }
                 />

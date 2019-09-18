@@ -91,8 +91,8 @@ describe('Customer', () => {
             const subscribeToNewsletter = jest.fn();
             const component = mount(
                 <CustomerTest
-                    viewType={ CustomerViewType.Guest }
                     subscribeToNewsletter={ subscribeToNewsletter }
+                    viewType={ CustomerViewType.Guest }
                 />
             );
 
@@ -119,8 +119,8 @@ describe('Customer', () => {
             const subscribeToNewsletter = jest.fn();
             const component = mount(
                 <CustomerTest
-                    viewType={ CustomerViewType.Guest }
                     subscribeToNewsletter={ subscribeToNewsletter }
+                    viewType={ CustomerViewType.Guest }
                 />
             );
 
@@ -141,8 +141,8 @@ describe('Customer', () => {
             const handleChangeViewType = jest.fn();
             const component = mount(
                 <CustomerTest
-                    viewType={ CustomerViewType.Guest }
                     onChangeViewType={ handleChangeViewType }
+                    viewType={ CustomerViewType.Guest }
                 />
             );
 
@@ -160,8 +160,8 @@ describe('Customer', () => {
             const handleContinueAsGuest = jest.fn();
             const component = mount(
                 <CustomerTest
-                    viewType={ CustomerViewType.Guest }
                     onContinueAsGuest={ handleContinueAsGuest }
+                    viewType={ CustomerViewType.Guest }
                 />
             );
 
@@ -184,8 +184,8 @@ describe('Customer', () => {
             const handleError = jest.fn();
             const component = mount(
                 <CustomerTest
-                    viewType={ CustomerViewType.Guest }
                     onContinueAsGuestError={ handleError }
+                    viewType={ CustomerViewType.Guest }
                 />
             );
 
@@ -278,8 +278,8 @@ describe('Customer', () => {
             const handleSignedIn = jest.fn();
             const component = mount(
                 <CustomerTest
-                    viewType={ CustomerViewType.Login }
                     onSignIn={ handleSignedIn }
+                    viewType={ CustomerViewType.Login }
                 />
             );
 
@@ -302,8 +302,8 @@ describe('Customer', () => {
             const handleError = jest.fn();
             const component = mount(
                 <CustomerTest
-                    viewType={ CustomerViewType.Login }
                     onSignInError={ handleError }
+                    viewType={ CustomerViewType.Login }
                 />
             );
 
@@ -344,8 +344,8 @@ describe('Customer', () => {
             const handleChangeViewType = jest.fn();
             const component = mount(
                 <CustomerTest
-                    viewType={ CustomerViewType.Login }
                     onChangeViewType={ handleChangeViewType }
+                    viewType={ CustomerViewType.Login }
                 />
             );
 

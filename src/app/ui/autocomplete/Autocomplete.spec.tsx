@@ -33,7 +33,7 @@ describe('Autocomplete Component', () => {
 
         beforeEach(() => {
             onChange = jest.fn();
-            tree = mount(<Autocomplete onChange={ onChange } items={ items }><h1>Bob</h1></Autocomplete>);
+            tree = mount(<Autocomplete items={ items } onChange={ onChange }><h1>Bob</h1></Autocomplete>);
             tree.find('input').simulate('change', { target: { value: 'zo' }});
             tree.render();
         });
@@ -63,7 +63,7 @@ describe('Autocomplete Component', () => {
 
         beforeEach(() => {
             onSelect = jest.fn();
-            tree = mount(<Autocomplete onSelect={ onSelect } items={ items } />);
+            tree = mount(<Autocomplete items={ items } onSelect={ onSelect } />);
             tree.find('input')
                 .simulate('change', { target: { value: 'zo' }});
 
@@ -92,7 +92,7 @@ describe('Autocomplete Component', () => {
 
         beforeEach(() => {
             onSelect = jest.fn();
-            tree = mount(<Autocomplete onSelect={ onSelect } items={ items } />);
+            tree = mount(<Autocomplete items={ items } onSelect={ onSelect } />);
             tree.find('input')
                 .simulate('change', { target: { value: 'zo' }})
                 .simulate('keyDown', { key: 'ArrowDown', keyCode: 40, which: 40 })

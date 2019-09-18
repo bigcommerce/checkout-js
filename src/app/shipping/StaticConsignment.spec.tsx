@@ -25,8 +25,8 @@ describe('StaticConsignment Component', () => {
         const tree = render(
             <StaticConsignment
                 cart={ cart }
-                consignment={ consignment }
                 compactView
+                consignment={ consignment }
             />
         );
 

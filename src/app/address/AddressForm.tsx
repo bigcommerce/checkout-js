@@ -67,31 +67,31 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                     if (addressFieldName === 'address1' && googleMapsApiKey && countriesWithAutocomplete) {
                         return (
                             <GoogleAutocompleteFormField
-                                key={ field.id }
-                                parentFieldName={ fieldName }
+                                apiKey={ googleMapsApiKey }
                                 countryCode={ countryCode }
-                                supportedCountries={ countriesWithAutocomplete }
                                 field={ field }
+                                key={ field.id }
+                                nextElement={ this.nextElement || undefined }
+                                onChange={ this.handleAutocompleteChange }
                                 onSelect={ this.handleAutocompleteSelect }
                                 onToggleOpen={ onAutocompleteToggle }
-                                onChange={ this.handleAutocompleteChange }
-                                apiKey={ googleMapsApiKey }
-                                nextElement={ this.nextElement || undefined }
+                                parentFieldName={ fieldName }
+                                supportedCountries={ countriesWithAutocomplete }
                             />
                         );
                     }
 
                     return (
                         <DynamicFormField
-                            onChange={ this.handleDynamicFormFieldChange(addressFieldName) }
+                            field={ field }
                             // stateOrProvince can sometimes be a dropdown or input, so relying on id is not sufficient
+                            fieldType={ this.getDynamicFormFieldType(field) }
                             key={ `${field.id}-${field.name}` }
+                            onChange={ this.handleDynamicFormFieldChange(addressFieldName) }
                             parentFieldName={ field.custom ?
                                 (fieldName ? `${fieldName}.customFields` : 'customFields') :
                                 fieldName }
-                            field={ field }
                             placeholder={ translatedPlaceholderId && language.translate(translatedPlaceholderId) }
-                            fieldType={ this.getDynamicFormFieldType(field) }
                         />
                     );
                 }) }

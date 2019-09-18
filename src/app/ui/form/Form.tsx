@@ -52,8 +52,8 @@ const Form: FunctionComponent<FormProps> = ({
                     { ...rest }
                     className={ className }
                     data-test={ testId }
-                    onSubmitCapture={ handleSubmitCapture(setSubmitted) }
                     noValidate
+                    onSubmitCapture={ handleSubmitCapture(setSubmitted) }
                 />
             </div>
         );

@@ -21,9 +21,9 @@ describe('OrderSummary', () => {
                 { ...mapToOrderSummarySubtotalsProps(order) }
                 headerLink={ <PrintLink /> }
                 lineItems={ order.lineItems }
-                total={ order.orderAmount }
-                storeCurrency={ getStoreConfig().currency }
                 shopperCurrency={ getStoreConfig().shopperCurrency }
+                storeCurrency={ getStoreConfig().currency }
+                total={ order.orderAmount }
             />);
         });
 

@@ -28,9 +28,9 @@ const CheckboxInput = forwardRef((
                 'optimizedCheckout-form-checkbox',
                 additionalClassName
             ) }
+            id={ id }
             ref={ ref }
             type="checkbox"
-            id={ id }
         />
         <Label htmlFor={ id }>
             { label }

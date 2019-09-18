@@ -81,26 +81,26 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
         return (
             <RemoteShippingAddress
                 containerId={ containerId }
-                methodId={ methodId }
-                onSignOut={ handleSignOutRequest }
                 deinitialize={ deinitialize }
                 initialize={ initializeShipping(options) }
+                methodId={ methodId }
+                onSignOut={ handleSignOutRequest }
             />
         );
     }
 
     return (
         <ShippingAddressForm
-            isLoading={ isLoading }
-            countries={ countries }
-            countriesWithAutocomplete={ countriesWithAutocomplete }
-            consignments={ consignments }
-            googleMapsApiKey={ googleMapsApiKey }
-            formFields={ formFields }
             address={ shippingAddress }
             addresses={ addresses }
-            onFieldChange={ onFieldChange }
+            consignments={ consignments }
+            countries={ countries }
+            countriesWithAutocomplete={ countriesWithAutocomplete }
+            formFields={ formFields }
+            googleMapsApiKey={ googleMapsApiKey }
+            isLoading={ isLoading }
             onAddressSelect={ onAddressSelect }
+            onFieldChange={ onFieldChange }
             onUseNewAddress={ onUseNewAddress }
         />
     );

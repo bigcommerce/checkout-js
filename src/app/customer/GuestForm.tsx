@@ -34,8 +34,8 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
 }) => (
     <Form
         className="checkout-form"
-        testId="checkout-customer-guest"
         id="checkout-customer-guest"
+        testId="checkout-customer-guest"
     >
         <Fieldset
             legend={
@@ -53,19 +53,19 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
                     <EmailField onChange={ onChangeEmail } />
 
                     { canSubscribe && <BasicFormField
-                        name="shouldSubscribe"
                         component={ SubscribeField }
+                        name="shouldSubscribe"
                     /> }
                 </div>
 
                 <div className="form-actions customerEmail-action">
                     <Button
                         className="customerEmail-button"
-                        testId="customer-continue-as-guest-button"
                         id="checkout-customer-continue"
                         isLoading={ isContinuingAsGuest }
-                        variant={ ButtonVariant.Primary }
+                        testId="customer-continue-as-guest-button"
                         type="submit"
+                        variant={ ButtonVariant.Primary }
                     >
                         <TranslatedString id="customer.continue_as_guest_action" />
                     </Button>

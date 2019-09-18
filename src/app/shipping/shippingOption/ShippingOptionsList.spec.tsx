@@ -35,16 +35,16 @@ describe('ShippingOptionsList Component', () => {
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <Formik
-                    onSubmit={ noop }
                     initialValues={ { } }
+                    onSubmit={ noop }
                 >
                     <ShippingOptionsList
-                        inputName="c_id"
                         consignmentId="c_id"
-                        selectedShippingOptionId="bar"
-                        shippingOptions={ shippingOptions }
+                        inputName="c_id"
                         isLoading={ true }
                         onSelectedOption={ onSelected }
+                        selectedShippingOptionId="bar"
+                        shippingOptions={ shippingOptions }
                     />
                 </Formik>
             </LocaleContext.Provider>
@@ -69,8 +69,8 @@ describe('ShippingOptionsList Component', () => {
 
     it('does not render if there are no shipping optionss', () => {
         let component = shallow(<ShippingOptionsList
-            inputName="c_id"
             consignmentId="c_id"
+            inputName="c_id"
             isLoading={ false }
             onSelectedOption={ onSelected }
         />);
@@ -78,11 +78,11 @@ describe('ShippingOptionsList Component', () => {
         expect(component.getElement()).toBeFalsy();
 
         component = shallow(<ShippingOptionsList
-            inputName="c_id"
             consignmentId="c_id"
-            shippingOptions={ [] }
+            inputName="c_id"
             isLoading={ false }
             onSelectedOption={ onSelected }
+            shippingOptions={ [] }
         />);
 
         expect(component.getElement()).toBeFalsy();

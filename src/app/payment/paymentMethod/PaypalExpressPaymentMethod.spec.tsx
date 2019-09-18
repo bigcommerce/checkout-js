@@ -82,7 +82,7 @@ describe('when using Paypal Express payment', () => {
     });
 
     it('uses redirect flow when in embedded mode', () => {
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } isEmbedded={ true } />);
+        const container = mount(<PaymentMethodTest { ...defaultProps } isEmbedded={ true } method={ method } />);
         const component: ReactWrapper<HostedPaymentMethodProps> = container.find(HostedPaymentMethod);
 
         component.prop('initializePayment')({

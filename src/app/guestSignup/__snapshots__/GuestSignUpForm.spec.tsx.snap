@@ -24,7 +24,7 @@ exports[`GuestSignUpForm matches snapshot 1`] = `
             class="form-label optimizedCheckout-form-label"
             for="password"
           >
-            Password 
+            Password 
             <small>
               5-character minimum, case sensitive
             </small>

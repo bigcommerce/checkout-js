@@ -19,11 +19,11 @@ const PasswordField: FunctionComponent<PasswordFieldProps> = ({
                 <div className="form-field-password">
                     <TextInput
                         { ...props.field }
-                        id={ props.field.name }
                         additionalClassName="form-input--withIcon"
+                        id={ props.field.name }
                         type={ isOpen ? 'text' : 'password' }
                     />
-                    <a href="#" className="form-toggle-password form-input-icon" onClick={ toggle }>
+                    <a className="form-toggle-password form-input-icon" href="#" onClick={ toggle }>
                         { isOpen ? <IconEye /> : <IconEyeSlash /> }
                     </a>
                 </div>
@@ -47,10 +47,10 @@ const PasswordField: FunctionComponent<PasswordFieldProps> = ({
     ), [forgotPasswordUrl]);
 
     return <FormField
-        labelContent={ labelContent }
-        name="password"
         footer={ footer }
         input={ renderInput }
+        labelContent={ labelContent }
+        name="password"
     />;
 };
 

@@ -3,7 +3,7 @@ import React, { FunctionComponent } from 'react';
 import withIconContainer from './withIconContainer';
 
 const IconCardUnionPay: FunctionComponent = () => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="2500" height="1597" viewBox="0.3 0.4 295.5 188.8">
+    <svg height="1597" viewBox="0.3 0.4 295.5 188.8" width="2500" xmlns="http://www.w3.org/2000/svg">
         <path d="M281.3.5h-72.8-.2c-10 .3-22.4 8.3-24.7 18.2l-34.4 152.2c-2.3 10 3.9 18.1 13.8 18.3h76.4c9.8-.5 19.3-8.4 21.5-18.2l34.5-152.3c2.3-10-4-18.2-14.1-18.2" fill="#01798a" />
         <path d="M149.2 171l34.4-152.3c2.3-10 14.7-18 24.7-18.2h-81c-10 .1-22.7 8.2-25 18.2L68 170.9c-2.3 10 4 18.1 13.8 18.3H163c-10-.2-16-8.3-13.8-18.3" fill="#024381" />
         <path d="M68 171l34.3-152.3c2.3-10 15-18 25-18.3H60.4c-10.1 0-23 8.2-25.3 18.3L.7 170.9a19 19 0 0 0-.4 2.8v2.8c.7 7.3 6.3 12.6 14.3 12.7h67.1c-9.9-.2-16-8.3-13.8-18.3" fill="#dd0228" />

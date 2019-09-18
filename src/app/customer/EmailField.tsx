@@ -25,10 +25,10 @@ const EmailField: FunctionComponent<EmailFieldProps>  = ({
     ), []);
 
     return <FormField
-        name="email"
-        labelContent={ labelContent }
-        onChange={ onChange }
         input={ renderInput }
+        labelContent={ labelContent }
+        name="email"
+        onChange={ onChange }
     />;
 };
 

@@ -14,8 +14,8 @@ const CreditCardStorageField: FunctionComponent<CreditCardStorageFieldProps> = (
 
     return <CheckboxFormField
         additionalClassName="form-field--saveInstrument"
-        name={ name }
         labelContent={ labelContent }
+        name={ name }
     />;
 };
 

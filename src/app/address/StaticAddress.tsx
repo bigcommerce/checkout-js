@@ -34,7 +34,7 @@ const StaticAddress: FunctionComponent<StaticAddressProps & WithCheckoutStaticAd
         {
             (address.firstName || address.lastName) &&
             <p className="fn address-entry">
-                <span className="first-name">{ address.firstName } </span>
+                <span className="first-name">{ `${address.firstName} ` }</span>
                 <span className="family-name">{ address.lastName }</span>
             </p>
         }
@@ -42,18 +42,18 @@ const StaticAddress: FunctionComponent<StaticAddressProps & WithCheckoutStaticAd
         {
             (address.phone || address.company) &&
             <p className="address-entry">
-                <span className="company-name">{ address.company } </span>
+                <span className="company-name">{ `${address.company} ` }</span>
                 <span className="tel">{ address.phone }</span>
             </p>
         }
 
         <div className="adr">
             <p className="street-address address-entry">
-                <span className="address-line-1">{ address.address1 } </span>
+                <span className="address-line-1">{ `${address.address1} ` }</span>
                 {
                     address.address2 &&
                     <span className="address-line-2">
-                        / { address.address2 }
+                        { ` / ${address.address2 }` }
                     </span>
                 }
             </p>
@@ -61,19 +61,19 @@ const StaticAddress: FunctionComponent<StaticAddressProps & WithCheckoutStaticAd
             <p className="address-entry">
                 {
                     address.city &&
-                    <span className="locality">{ address.city }, </span>
+                    <span className="locality">{ `${address.city}, ` }</span>
                 }
                 {
                     address.localizedProvince &&
-                    <span className="region">{ address.localizedProvince }, </span>
+                    <span className="region">{ `${address.localizedProvince}, ` }</span>
                 }
                 {
                     address.postalCode &&
-                    <span className="postal-code">{ address.postalCode } / </span>
+                    <span className="postal-code">{ `${address.postalCode} / ` }</span>
                 }
                 {
                     address.localizedCountry &&
-                    <span className="country-name">{ address.localizedCountry } </span>
+                    <span className="country-name">{ `${address.localizedCountry} ` }</span>
                 }
             </p>
         </div>

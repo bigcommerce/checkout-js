@@ -10,8 +10,8 @@ const SubscribeField: FunctionComponent<SubscribeFieldProps> = ({ field }) => (
     <Fragment>
         <Input
             { ...field }
-            className="form-checkbox"
             checked={ field.value }
+            className="form-checkbox"
             id={ field.name }
             type="checkbox"
         />

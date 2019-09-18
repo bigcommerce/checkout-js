@@ -46,21 +46,21 @@ const OrderSummaryDrawer: FunctionComponent<OrderSummaryDrawerProps & OrderSumma
     const renderModal = useCallback(props => (
         <OrderSummaryModal
             { ...props }
+            additionalLineItems={ additionalLineItems }
             coupons={ coupons }
             discountAmount={ discountAmount }
             giftCertificates={ giftCertificates }
             handlingAmount={ handlingAmount }
+            headerLink={ headerLink }
+            lineItems={ lineItems }
             onRemovedCoupon={ onRemovedCoupon }
             onRemovedGiftCertificate={ onRemovedGiftCertificate }
             shippingAmount={ shippingAmount }
+            shopperCurrency={ shopperCurrency }
             storeCreditAmount={ storeCreditAmount }
+            storeCurrency={ storeCurrency }
             subtotalAmount={ subtotalAmount }
             taxes={ taxes }
-            additionalLineItems={ additionalLineItems }
-            headerLink={ headerLink }
-            lineItems={ lineItems }
-            shopperCurrency={ shopperCurrency }
-            storeCurrency={ storeCurrency }
             total={ total }
         />
     ), [
@@ -100,8 +100,8 @@ const OrderSummaryDrawer: FunctionComponent<OrderSummaryDrawerProps & OrderSumma
             <div className="cartDrawer-body">
                 <h3 className="cartDrawer-items optimizedCheckout-headingPrimary">
                     <TranslatedString
-                        id="cart.item_count_text"
                         data={ { count: getItemsCount(lineItems) } }
+                        id="cart.item_count_text"
                     />
                 </h3>
                 <a>

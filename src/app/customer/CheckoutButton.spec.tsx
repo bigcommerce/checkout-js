@@ -12,9 +12,9 @@ describe('CheckoutButton', () => {
         mount(
             <CheckoutButton
                 containerId="foobarContainer"
-                methodId="foobar"
                 deinitialize={ noop }
                 initialize={ initialize }
+                methodId="foobar"
                 onError={ onError }
             />
         );
@@ -36,9 +36,9 @@ describe('CheckoutButton', () => {
         const component = mount(
             <CheckoutButton
                 containerId="foobarContainer"
-                methodId="foobar"
                 deinitialize={ deinitialize }
                 initialize={ noop }
+                methodId="foobar"
                 onError={ onError }
             />
         );

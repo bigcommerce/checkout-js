@@ -113,10 +113,10 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         return (
             <div className="checkout-form">
                 <ShippingHeader
-                    isMultiShippingMode={ isMultiShippingMode }
                     isGuest={ isGuest }
-                    shouldShowMultiShipping={ shouldShowMultiShipping }
+                    isMultiShippingMode={ isMultiShippingMode }
                     onMultiShippingChange={ onToggleMultiShipping }
+                    shouldShowMultiShipping={ shouldShowMultiShipping }
                 />
 
                 <LoadingOverlay
@@ -125,15 +125,15 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                 >
                     <ShippingForm
                         { ...shippingFormProps }
-                        isGuest={ isGuest }
                         addresses={ customer.addresses }
-                        updateAddress={ updateShippingAddress }
-                        initialize={ initializeShippingMethod }
                         deinitialize={ deinitializeShippingMethod }
-                        onUseNewAddress={ this.handleUseNewAddress }
-                        onSingleShippingSubmit={ this.handleSingleShippingSubmit }
-                        onMultiShippingSubmit={ this.handleMultiShippingSubmit }
+                        initialize={ initializeShippingMethod }
+                        isGuest={ isGuest }
                         isMultiShippingMode={ isMultiShippingMode }
+                        onMultiShippingSubmit={ this.handleMultiShippingSubmit }
+                        onSingleShippingSubmit={ this.handleSingleShippingSubmit }
+                        onUseNewAddress={ this.handleUseNewAddress }
+                        updateAddress={ updateShippingAddress }
                     />
                 </LoadingOverlay>
             </div>

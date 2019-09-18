@@ -73,8 +73,8 @@ export default class CheckoutStep extends Component<CheckoutStepProps> {
                     <CheckoutStepHeader
                         heading={ heading }
                         isActive={ isActive }
-                        isEditable={ isEditable }
                         isComplete={ isComplete }
+                        isEditable={ isEditable }
                         onEdit={ onEdit }
                         summary={ summary }
                         type={ type }
@@ -101,10 +101,10 @@ export default class CheckoutStep extends Component<CheckoutStepProps> {
                     return <CSSTransition
                         addEndListener={ this.handleTransitionEnd }
                         classNames="checkout-view-content"
-                        timeout={ {} }
                         in={ isActive }
-                        unmountOnExit
                         mountOnEnter
+                        timeout={ {} }
+                        unmountOnExit
                     >
                         <div
                             className="checkout-view-content"

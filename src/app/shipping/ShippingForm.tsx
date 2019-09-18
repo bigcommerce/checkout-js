@@ -70,43 +70,43 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
 
         return isMultiShippingMode ?
             <MultiShippingForm
-                cart={ cart }
-                consignments={ consignments }
-                customerMessage={ customerMessage }
-                isGuest={ isGuest }
                 addresses={ addresses }
                 assignItem={ assignItem }
+                cart={ cart }
+                cartHasChanged={ cartHasChanged }
+                consignments={ consignments }
+                createAccountUrl={ createAccountUrl }
+                customerMessage={ customerMessage }
+                getFields={ getFields }
+                isGuest={ isGuest }
+                isLoading={ isLoading }
+                onSignIn={ onSignIn }
+                onSubmit={ onMultiShippingSubmit }
                 onUnhandledError={ onUnhandledError }
                 onUseNewAddress={ onUseNewAddress }
-                onSignIn={ onSignIn }
-                createAccountUrl={ createAccountUrl }
-                isLoading={ isLoading }
-                getFields={ getFields }
-                cartHasChanged={ cartHasChanged }
                 shouldShowOrderComments={ shouldShowOrderComments }
-                onSubmit={ onMultiShippingSubmit }
             /> :
             <SingleShippingForm
+                addresses={ addresses }
+                cartHasChanged={ cartHasChanged }
+                consignments={ consignments }
+                countries={ countries }
                 countriesWithAutocomplete={ countriesWithAutocomplete }
                 customerMessage={ customerMessage }
-                cartHasChanged={ cartHasChanged }
-                isMultiShippingMode={ isMultiShippingMode }
-                shouldShowOrderComments={ shouldShowOrderComments }
-                shippingAddress={ shippingAddress }
-                onSubmit={ onSingleShippingSubmit }
-                updateAddress={ updateAddress }
+                deinitialize={ deinitialize }
                 deleteConsignments={ deleteConsignments }
                 getFields={ getFields }
-                onUnhandledError={ onUnhandledError }
-                consignments={ consignments }
-                methodId={ methodId }
-                isLoading={ isLoading }
                 googleMapsApiKey={ googleMapsApiKey }
-                countries={ countries }
-                addresses={ addresses }
                 initialize={ initialize }
-                deinitialize={ deinitialize }
+                isLoading={ isLoading }
+                isMultiShippingMode={ isMultiShippingMode }
+                methodId={ methodId }
+                onSubmit={ onSingleShippingSubmit }
+                onUnhandledError={ onUnhandledError }
+                shippingAddress={ shippingAddress }
+                shouldShowOrderComments={ shouldShowOrderComments }
                 signOut={ signOut }
+                updateAddress={ updateAddress }
             />;
     }
 }

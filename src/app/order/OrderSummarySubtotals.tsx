@@ -33,70 +33,70 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
 }) => {
     return (<Fragment>
         <OrderSummaryPrice
-            testId="cart-subtotal"
+            amount={ subtotalAmount }
             className="cart-priceItem--subtotal"
             label={ <TranslatedString id="cart.subtotal_text" /> }
-            amount={ subtotalAmount }
+            testId="cart-subtotal"
         />
 
         { (coupons || [])
             .map((coupon, index) =>
                 <OrderSummaryDiscount
-                    onRemoved={ onRemovedCoupon }
-                    key={ index }
-                    testId="cart-coupon"
-                    label={ coupon.displayName }
-                    code={ coupon.code }
                     amount={ coupon.discountedAmount }
+                    code={ coupon.code }
+                    key={ index }
+                    label={ coupon.displayName }
+                    onRemoved={ onRemovedCoupon }
+                    testId="cart-coupon"
                 />
         ) }
 
         { !!discountAmount && <OrderSummaryDiscount
-            testId="cart-discount"
-            label={ <TranslatedString id="cart.discount_text" /> }
             amount={ discountAmount }
+            label={ <TranslatedString id="cart.discount_text" /> }
+            testId="cart-discount"
         /> }
 
         { (giftCertificates || [])
             .map((giftCertificate, index) =>
                 <OrderSummaryDiscount
-                    onRemoved={ onRemovedGiftCertificate }
-                    key={ index }
-                    testId="cart-gift-certificate"
-                    label={ <TranslatedString id="cart.gift_certificate_text" /> }
-                    code={ giftCertificate.code }
                     amount={ giftCertificate.used }
+                    code={ giftCertificate.code }
+                    key={ index }
+                    label={ <TranslatedString id="cart.gift_certificate_text" /> }
+                    onRemoved={ onRemovedGiftCertificate }
                     remaining={ giftCertificate.remaining }
+                    testId="cart-gift-certificate"
                 />
         ) }
 
         <OrderSummaryPrice
-            testId="cart-shipping"
-            label={ <TranslatedString id="cart.shipping_text" /> }
-            zeroLabel={ <TranslatedString id="cart.free_text" /> }
             amount={ shippingAmount }
+            label={ <TranslatedString id="cart.shipping_text" /> }
+            testId="cart-shipping"
+            zeroLabel={ <TranslatedString id="cart.free_text" /> }
         />
 
         { !!handlingAmount && <OrderSummaryPrice
-            testId="cart-handling"
-            label={ <TranslatedString id="cart.handling_text" /> }
             amount={ handlingAmount }
+            label={ <TranslatedString id="cart.handling_text" /> }
+            testId="cart-handling"
         /> }
 
         { (taxes || [])
             .map((tax, index) =>
                 <OrderSummaryPrice
-                    key={ index }
-                    testId="cart-taxes"
-                    label={ tax.name }
                     amount={ tax.amount }
+                    key={ index }
+                    label={ tax.name }
+                    testId="cart-taxes"
                 />
          ) }
 
         { !!storeCreditAmount && <OrderSummaryDiscount
-            testId="cart-store-credit"
-            label={ <TranslatedString id="cart.store_credit_text" /> }
             amount={ storeCreditAmount }
+            label={ <TranslatedString id="cart.store_credit_text" /> }
+            testId="cart-store-credit"
         /> }
     </Fragment>);
 };

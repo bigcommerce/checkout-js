@@ -19,8 +19,8 @@ describe('SignOutLink', () => {
         const component = render(
             <LocaleContext.Provider value={ localeContext }>
                 <SignOutLink
-                    onSignOut={ noop }
                     method={ getPaymentMethod() }
+                    onSignOut={ noop }
                 />
             </LocaleContext.Provider>
         );
@@ -34,8 +34,8 @@ describe('SignOutLink', () => {
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <SignOutLink
-                    onSignOut={ handleSignOut }
                     method={ getPaymentMethod() }
+                    onSignOut={ handleSignOut }
                 />
             </LocaleContext.Provider>
         );

@@ -8,8 +8,8 @@ describe('AccordionItem', () => {
     it('renders component that matches snapshot', () => {
         const component = mount(
             <AccordionItem
-                itemId="foobar"
                 headerContent={ () => 'Foobar' }
+                itemId="foobar"
             >
                 Hello world
             </AccordionItem>
@@ -22,10 +22,10 @@ describe('AccordionItem', () => {
     it('overrides default class names', () => {
         const component = mount(
             <AccordionItem
-                itemId="foobar"
-                headerContent={ () => 'Foobar' }
                 className="item"
                 headerClassName="header"
+                headerContent={ () => 'Foobar' }
+                itemId="foobar"
             >
                 Hello world
             </AccordionItem>

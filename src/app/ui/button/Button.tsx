@@ -61,8 +61,8 @@ const Button: FunctionComponent<ButtonProps> = ({
     <button
         { ...rest }
         className={ getClassName({ className, isFullWidth, isLoading, size, variant }) }
-        disabled={ disabled || isLoading }
         data-test={ testId }
+        disabled={ disabled || isLoading }
         type={ type ? type : 'button' }
     >
         { children }

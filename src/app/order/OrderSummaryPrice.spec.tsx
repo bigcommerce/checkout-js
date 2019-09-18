@@ -14,8 +14,8 @@ describe('OrderSummaryPrice', () => {
         describe('and has only required props', () => {
             beforeEach(() => {
                 orderSummaryPrice = shallow(<OrderSummaryPrice
-                    label="Label"
                     amount={ amount }
+                    label="Label"
                 >
                     Foo Children
                 </OrderSummaryPrice>);
@@ -29,12 +29,12 @@ describe('OrderSummaryPrice', () => {
         describe('and has only required props', () => {
             beforeEach(() => {
                 orderSummaryPrice = shallow(<OrderSummaryPrice
-                    label="Label"
                     amount={ amount }
-                    testId="test-id"
                     className="extra-class"
                     currencyCode="EUR"
+                    label="Label"
                     superscript="*"
+                    testId="test-id"
                 />);
             });
 
@@ -59,8 +59,8 @@ describe('OrderSummaryPrice', () => {
     describe('when has null amount', () => {
         beforeEach(() => {
             orderSummaryPrice = shallow(<OrderSummaryPrice
-                label="Label"
                 amount={ null }
+                label="Label"
             />);
         });
 
@@ -76,9 +76,9 @@ describe('OrderSummaryPrice', () => {
         describe('and no label', () => {
             beforeEach(() => {
                 orderSummaryPrice = shallow(<OrderSummaryPrice
-                    label="Label"
                     amount={ amount }
                     className="label"
+                    label="Label"
                     testId="test"
                 />);
             });
@@ -92,11 +92,11 @@ describe('OrderSummaryPrice', () => {
         describe('and zero label', () => {
             beforeEach(() => {
                 orderSummaryPrice = shallow(<OrderSummaryPrice
-                    label="Label"
                     amount={ amount }
-                    zeroLabel="Free"
                     className="label"
+                    label="Label"
                     testId="test"
+                    zeroLabel="Free"
                 />);
             });
 

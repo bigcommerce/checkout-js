@@ -12,7 +12,7 @@ describe('TextArea', () => {
     });
 
     it('renders with class names', () => {
-        const component = shallow(<TextArea name="foobar" additionalClassName="foobar" />);
+        const component = shallow(<TextArea additionalClassName="foobar" name="foobar" />);
 
         expect(component.hasClass('form-input'))
             .toEqual(true);

@@ -194,8 +194,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
         return (
             <LoadingOverlay
-                isLoading={ isRedirecting }
                 hideContentWhenLoading
+                isLoading={ isRedirecting }
             >
                 <div className="layout-main">
                     <LoadingNotification isLoading={ isPending } />
@@ -262,7 +262,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             >
                 <LazyContainer>
                     <Customer
-                        viewType={ customerViewType }
                         checkEmbeddedSupport={ this.checkEmbeddedSupport }
                         onChangeViewType={ this.handleChangeCustomerViewType }
                         onContinueAsGuest={ this.navigateToNextIncompleteStep }
@@ -272,6 +271,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onSignInError={ this.handleError }
                         onUnhandledError={ this.handleUnhandledError }
                         subscribeToNewsletter={ subscribeToNewsletter }
+                        viewType={ customerViewType }
                     />
                 </LazyContainer>
             </CheckoutStep>
@@ -299,23 +299,23 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 onEdit={ this.handleEditStep }
                 onExpanded={ this.handleExpanded }
                 summary={ consignments.map(consignment =>
-                    <div key={ consignment.id } className="staticConsignmentContainer">
+                    <div className="staticConsignmentContainer" key={ consignment.id }>
                         <StaticConsignment
                             cart={ cart }
-                            consignment={ consignment }
                             compactView={ consignments.length < 2 }
+                            consignment={ consignment }
                         />
                     </div>) }
             >
                 <LazyContainer>
                     <Shipping
                         cartHasChanged={ hasCartChanged }
-                        onReady={ this.handleReady }
                         isMultiShippingMode={ isMultiShippingMode }
-                        onToggleMultiShipping={ this.handleToggleMultiShipping }
-                        onSignIn={ this.handleShippingSignIn }
-                        onUnhandledError={ this.handleUnhandledError }
                         navigateNextStep={ this.handleShippingNextStep }
+                        onReady={ this.handleReady }
+                        onSignIn={ this.handleShippingSignIn }
+                        onToggleMultiShipping={ this.handleToggleMultiShipping }
+                        onUnhandledError={ this.handleUnhandledError }
                     />
                 </LazyContainer>
             </CheckoutStep>
@@ -366,8 +366,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         flashMessages={ flashMessages }
                         isEmbedded={ isEmbedded() }
                         isUsingMultiShipping={ cart && consignments ? isUsingMultiShipping(consignments, cart.lineItems) : false }
-                        onFinalize={ this.navigateToOrderConfirmation }
                         onCartChangedError={ this.handleCartChangedError }
+                        onFinalize={ this.navigateToOrderConfirmation }
                         onReady={ this.handleReady }
                         onStoreCreditChange={ this.handleStoreCreditChange }
                         onSubmit={ this.navigateToOrderConfirmation }

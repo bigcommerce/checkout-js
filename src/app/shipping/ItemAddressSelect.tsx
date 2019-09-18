@@ -44,31 +44,31 @@ const ItemAddressSelect: FunctionComponent<ItemAddressSelectProps> = ({
     return <div className="consignment">
         <figure className="consignment-product-figure">
             { imageUrl &&
-                <img src={ imageUrl } alt={ name } /> }
+                <img alt={ name } src={ imageUrl } /> }
         </figure>
 
         <div className="consignment-product-body">
             <h5 className="optimizedCheckout-contentPrimary">
-                { quantity } x { name }
+                { `${quantity} x ${name}` }
             </h5>
 
             { (options || []).map(({ name: optionName, value, nameId }) =>
                 <ul
-                    key={ nameId }
-                    data-test="consigment-item-product-options"
                     className="product-options optimizedCheckout-contentSecondary"
+                    data-test="consigment-item-product-options"
+                    key={ nameId }
                 >
                     <li className="product-option">
-                        { optionName } { value }
+                        { `${optionName } ${value}` }
                     </li>
                 </ul>
             ) }
 
             <AddressSelect
                 addresses={ addresses }
-                selectedAddress={ consignment && consignment.shippingAddress }
-                onUseNewAddress={ handleUseNewAddress }
                 onSelectAddress={ handleSelectAddress }
+                onUseNewAddress={ handleUseNewAddress }
+                selectedAddress={ consignment && consignment.shippingAddress }
             />
         </div>
     </div>;

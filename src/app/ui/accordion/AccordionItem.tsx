@@ -58,10 +58,10 @@ const AccordionItem: FunctionComponent<AccordionItemProps> = ({
             { children && <CSSTransition
                 addEndListener={ transitionEndListener }
                 classNames={ bodyClassName }
-                timeout={ {} }
                 in={ isSelected }
-                unmountOnExit
                 mountOnEnter
+                timeout={ {} }
+                unmountOnExit
             >
                 <div className={ bodyClassName }>
                     { children }

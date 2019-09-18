@@ -1,7 +1,7 @@
 import { CheckoutSelectors, Consignment } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps } from 'formik';
 import { noop } from 'lodash';
-import React, { Fragment, PureComponent, ReactNode } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 
 import { StaticAddress } from '../../address';
 import { TranslatedString } from '../../locale';
@@ -58,31 +58,30 @@ class ShippingOptionsForm extends PureComponent<ShippingOptionsFormProps & Formi
             );
         }
 
-        return (
-            <Fragment> { consignments
+        return <>
+            { consignments
                 .slice(0, isMultiShippingMode ? undefined : 1)
                 .sort((a, b) => (a.id > b.id ? -1 : 1))
                 .map(consignment => (
-                    <div className="shippingOptions-container form-fieldset" key={ consignment.id }>
+                <div className="shippingOptions-container form-fieldset" key={ consignment.id }>
                         { isMultiShippingMode && this.renderConsignment(consignment) }
 
                         <ShippingOptionsList
-                            inputName={ getRadioInputName(consignment.id) }
                             consignmentId={ consignment.id }
-                            shippingOptions={ consignment.availableShippingOptions }
+                            inputName={ getRadioInputName(consignment.id) }
                             isLoading={ isLoading(consignment.id) }
-                            selectedShippingOptionId={ consignment.selectedShippingOption && consignment.selectedShippingOption.id }
                             onSelectedOption={ selectShippingOption }
+                            selectedShippingOptionId={ consignment.selectedShippingOption && consignment.selectedShippingOption.id }
+                            shippingOptions={ consignment.availableShippingOptions }
                         />
 
                         { (!consignment.availableShippingOptions || !consignment.availableShippingOptions.length) &&
-                            <LoadingOverlay isLoading={ isLoading(consignment.id) } hideContentWhenLoading>
+                            <LoadingOverlay hideContentWhenLoading isLoading={ isLoading(consignment.id) }>
                                 { this.renderNoShippingOptions(invalidShippingMessage) }
                             </LoadingOverlay> }
                     </div>
                 )) }
-            </Fragment>
-        );
+        </>;
     }
 
     private selectDefaultShippingOption: (state: CheckoutSelectors) => void = ({ data }) => {

@@ -54,8 +54,8 @@ const VisaCheckoutPaymentMethod: FunctionComponent<VisaCheckoutPaymentMethodProp
             buttonId="walletButton"
             deinitializePayment={ deinitializePayment }
             editButtonClassName="v-button"
-            method={ method }
             initializePayment={ initializeVisaCheckoutPayment }
+            method={ method }
             shouldShowEditButton
             signInButtonClassName="v-button"
         />

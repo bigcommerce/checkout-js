@@ -42,8 +42,8 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
 }) => (
     <Form
         className="checkout-form"
-        testId="checkout-customer-returning"
         id="checkout-customer-returning"
+        testId="checkout-customer-returning"
     >
         <Fieldset legend={
             <Legend hidden>
@@ -71,11 +71,11 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
 
             <div className="form-actions">
                 <Button
-                    testId="customer-continue-button"
                     id="checkout-customer-continue"
                     isLoading={ isSigningIn }
-                    variant={ ButtonVariant.Primary }
+                    testId="customer-continue-button"
                     type="submit"
+                    variant={ ButtonVariant.Primary }
                 >
                     <TranslatedString id="customer.sign_in_action" />
                 </Button>

@@ -44,8 +44,8 @@ const CreditCardCodeField: FunctionComponent<CreditCardCodeFieldProps> = ({ name
 
     return <FormField
         additionalClassName="form-ccFields-field--ccCvv"
-        labelContent={ labelContent }
         input={ renderInput }
+        labelContent={ labelContent }
         name={ name }
     />;
 };

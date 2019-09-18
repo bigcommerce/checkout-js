@@ -68,8 +68,8 @@ const Modal: FunctionComponent<ModalProps> = ({
             { shouldShowCloseButton && <a
                 className="modal-close"
                 data-test="modal-close-button"
-                onClick={ handleClose }
                 href="javascript:void(0);"
+                onClick={ handleClose }
             >
                 { closeButtonLabel && <span className="is-srOnly">
                     { closeButtonLabel }

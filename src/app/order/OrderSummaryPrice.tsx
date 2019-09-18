@@ -88,16 +88,17 @@ class OrderSummaryPrice extends Component<OrderSummaryPriceProps, OrderSummaryPr
                     >
                         <span className="cart-priceItem-label">
                             <span data-test="cart-price-label">
-                                { label } { ' ' }
+                                { label }
+                                { '  ' }
                             </span>
                             { currencyCode && <span className="cart-priceItem-currencyCode">
-                                ({ currencyCode }) { ' ' }
+                                { `(${currencyCode}) ` }
                             </span> }
                             { onActionTriggered && actionLabel && <span className="cart-priceItem-link">
                                 <a
-                                    onClick={ preventDefault(onActionTriggered) }
                                     data-test="cart-price-callback"
                                     href="#"
+                                    onClick={ preventDefault(onActionTriggered) }
                                 >
                                     { actionLabel }
                                 </a>

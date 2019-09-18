@@ -39,8 +39,8 @@ describe('GuestForm', () => {
             <LocaleContext.Provider value={ localeContext }>
                 <GuestForm
                     { ...defaultProps }
-                    email={ 'test@bigcommerce.com' }
                     defaultShouldSubscribe={ true }
+                    email={ 'test@bigcommerce.com' }
                 />
             </LocaleContext.Provider>
         );

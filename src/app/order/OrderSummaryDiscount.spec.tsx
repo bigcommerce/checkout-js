@@ -12,8 +12,8 @@ describe('OrderSummaryDiscount', () => {
     describe('when it is a simple discount', () => {
         beforeEach(() => {
             discount = shallow(<OrderSummaryDiscount
-                label={ <span>Foo</span> }
                 amount={ 10 }
+                label={ <span>Foo</span> }
             />);
         });
 
@@ -29,9 +29,9 @@ describe('OrderSummaryDiscount', () => {
     describe('when discount has code and remaining balance', () => {
         beforeEach(() => {
             discount = shallow(<OrderSummaryDiscount
-                label="Gift Certificate"
                 amount={ 10 }
                 code="ABCDFE"
+                label="Gift Certificate"
                 remaining={ 2 }
             />);
         });

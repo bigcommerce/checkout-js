@@ -29,8 +29,8 @@ const CreditCardCustomerCodeField: FunctionComponent<CreditCardCustomerCodeField
     ), []);
 
     return <FormField
-        labelContent={ labelContent }
         input={ renderInput }
+        labelContent={ labelContent }
         name={ name }
     />;
 };

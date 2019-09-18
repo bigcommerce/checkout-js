@@ -17,9 +17,7 @@ exports[`OrderSummaryItems when amount and amountAfterDiscount are different ren
       className="product-title optimizedCheckout-contentPrimary"
       data-test="cart-item-product-title"
     >
-      2
-       x 
-      Product
+      2 x Product
     </h5>
     <ul
       className="product-options optimizedCheckout-contentSecondary"

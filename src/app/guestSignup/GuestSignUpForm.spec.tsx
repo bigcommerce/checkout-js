@@ -24,8 +24,8 @@ describe('GuestSignUpForm', () => {
         component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <GuestSignUpForm
-                    passwordRequirements={ passwordRequirements }
                     onSignUp={ handleSignUp }
+                    passwordRequirements={ passwordRequirements }
                 />
             </LocaleContext.Provider>
         );
@@ -35,8 +35,8 @@ describe('GuestSignUpForm', () => {
         const shallowComponent = render(
             <LocaleContext.Provider value={ localeContext }>
                 <GuestSignUpForm
-                    passwordRequirements={ passwordRequirements }
                     onSignUp={ noop }
+                    passwordRequirements={ passwordRequirements }
                 />
             </LocaleContext.Provider>
         );

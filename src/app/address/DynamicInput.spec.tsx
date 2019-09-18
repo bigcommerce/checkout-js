@@ -16,8 +16,8 @@ describe('DynamicInput', () => {
     it('renders textarea for multiline type', () => {
         expect(shallow(
             <DynamicInput
-                id="field_33"
                 fieldType={ DynamicFormFieldType.multiline }
+                id="field_33"
                 rows={ 4 }
             />)
             .find(TextArea)
@@ -28,10 +28,10 @@ describe('DynamicInput', () => {
     it('renders date picker for date type', () => {
         const datePicker = shallow(
             <DynamicInput
-                id="field_33"
                 fieldType={ DynamicFormFieldType.date }
-                min="2019-1-1"
+                id="field_33"
                 max="2019-2-1"
+                min="2019-1-1"
             />
         );
 
@@ -47,11 +47,11 @@ describe('DynamicInput', () => {
             <DynamicInput
                 fieldType={ DynamicFormFieldType.checkbox }
                 id="id"
-                value={ ['y'] }
                 options={ [
                     { value: 'x', label: 'X' },
                     { value: 'y', label: 'Y' },
                 ] }
+                value={ ['y'] }
             />);
 
         expect(component.find(CheckboxInput).at(0).props())
@@ -72,12 +72,12 @@ describe('DynamicInput', () => {
             <DynamicInput
                 fieldType={ DynamicFormFieldType.radio }
                 id="id"
-                value="y"
                 onChange={ jest.fn() }
                 options={ [
                     { value: 'x', label: 'X' },
                     { value: 'y', label: 'Y' },
                 ] }
+                value="y"
             />);
 
         expect(component.find(RadioInput).at(0).props())
@@ -96,8 +96,8 @@ describe('DynamicInput', () => {
     it('renders number type input for number type', () => {
         expect(shallow(
             <DynamicInput
-                id="field_33"
                 fieldType={ DynamicFormFieldType.number }
+                id="field_33"
             />)
             .find(TextInput)
             .prop('type'))
@@ -107,8 +107,8 @@ describe('DynamicInput', () => {
     it('renders password type input for password type', () => {
         expect(shallow(
             <DynamicInput
-                id="field_33"
                 fieldType={ DynamicFormFieldType.password }
+                id="field_33"
             />)
             .find(TextInput)
             .prop('type'))
@@ -118,8 +118,8 @@ describe('DynamicInput', () => {
     it('renders tel type input for phone type', () => {
         expect(shallow(
             <DynamicInput
-                id="field_33"
                 fieldType={ DynamicFormFieldType.telephone }
+                id="field_33"
             />)
             .find(TextInput)
             .prop('type'))
@@ -129,15 +129,15 @@ describe('DynamicInput', () => {
     it('renders select input with passed props', () => {
         expect(shallow(
             <DynamicInput
-                id="field_33"
+                defaultValue="foo"
                 fieldType={ DynamicFormFieldType.dropdown }
+                id="field_33"
+                name="select"
                 options={ [
                     { label: 'Foo', value: 'foo'},
                     { label: 'Foo1', value: 'foo1'},
                 ] }
-                defaultValue="foo"
                 placeholder="Select an option"
-                name="select"
             />).html())
             .toMatchSnapshot();
     });

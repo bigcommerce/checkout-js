@@ -12,7 +12,7 @@ describe('CheckboxFormField', () => {
             <Formik
                 initialValues={ { foobar: true } }
                 onSubmit={ noop }
-                render={ () => <CheckboxFormField name="foobar" labelContent="Foobar" /> }
+                render={ () => <CheckboxFormField labelContent="Foobar" name="foobar" /> }
             />
         );
 
@@ -25,7 +25,7 @@ describe('CheckboxFormField', () => {
             <Formik
                 initialValues={ { foobar: true } }
                 onSubmit={ noop }
-                render={ () => <CheckboxFormField name="foobar" labelContent="Foobar" /> }
+                render={ () => <CheckboxFormField labelContent="Foobar" name="foobar" /> }
             />
         );
 
@@ -41,7 +41,7 @@ describe('CheckboxFormField', () => {
             <Formik
                 initialValues={ { foobar: true } }
                 onSubmit={ noop }
-                render={ () => <CheckboxFormField name="foobar" labelContent="Foobar" /> }
+                render={ () => <CheckboxFormField labelContent="Foobar" name="foobar" /> }
             />
         );
 
@@ -54,7 +54,7 @@ describe('CheckboxFormField', () => {
             <Formik
                 initialValues={ { foobar: true } }
                 onSubmit={ noop }
-                render={ () => <CheckboxFormField name="foobar" labelContent="Foobar" /> }
+                render={ () => <CheckboxFormField labelContent="Foobar" name="foobar" /> }
             />
         );
 

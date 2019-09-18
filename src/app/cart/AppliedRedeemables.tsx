@@ -27,8 +27,8 @@ const AppliedCouponChecklistItem: FunctionComponent<AppliedCouponProps> = ({
     return (
         <li className="form-checklist-item optimizedCheckout-form-checklist-item">
             <AppliedRedeemable
-                onRemove={ handleRemove }
                 isRemoving={ isRemoving }
+                onRemove={ handleRemove }
             >
                 <AppliedCoupon coupon={ coupon } />
             </AppliedRedeemable>
@@ -57,8 +57,8 @@ const AppliedGiftCertificateChecklistItem: FunctionComponent<AppliedGiftCertific
     return (
         <li className="form-checklist-item optimizedCheckout-form-checklist-item">
             <AppliedRedeemable
-                onRemove={ handleRemove }
                 isRemoving={ isRemoving }
+                onRemove={ handleRemove }
             >
                 <AppliedGiftCertificate giftCertificate={ giftCertificate } />
             </AppliedRedeemable>
@@ -88,7 +88,7 @@ const AppliedRedeemables: FunctionComponent<AppliedRedeemablesProps> = ({
     }
 
     return (
-        <ul data-test="redeemables-list" className="form-checklist optimizedCheckout-form-checklist">
+        <ul className="form-checklist optimizedCheckout-form-checklist" data-test="redeemables-list">
             { coupons.map(coupon => (
                 <AppliedCouponChecklistItem
                     coupon={ coupon }

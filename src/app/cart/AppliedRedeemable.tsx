@@ -31,8 +31,8 @@ const AppliedRedeemable: FunctionComponent<AppliedRedeemableProps> = ({
                             { 'is-loading': isRemoving }
                         ) }
                         data-test="redeemable-remove"
-                        onClick={ onRemove }
                         disabled={ isRemoving }
+                        onClick={ onRemove }
                         type="button"
                     >
                         <IconRemove />

@@ -35,7 +35,7 @@
         "react/destructuring-assignment": "error",
         "react/display-name": "off",
         "react/jsx-closing-bracket-location": [
-            "error", 
+            "error",
             "line-aligned"
         ],
         "react/jsx-curly-newline": [
@@ -62,8 +62,15 @@
         ],
         "react/jsx-key": "error",
         "react/jsx-no-bind": "error",
+        "react/jsx-one-expression-per-line": [
+            "error",
+            {
+                "allow": "single-child"
+            }
+        ],
         "react/jsx-pascal-case": "error",
         "react/jsx-props-no-multi-spaces": "error",
+        "react/jsx-sort-props": "error",
         "react/jsx-tag-spacing": [
             "error",
             {

@@ -99,8 +99,8 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
 
     const renderPaymentMethodTitle = useCallback((isSelected: boolean) => (
         <PaymentMethodTitle
-            method={ method }
             isSelected={ isSelected }
+            method={ method }
         />
     ), [method]);
 

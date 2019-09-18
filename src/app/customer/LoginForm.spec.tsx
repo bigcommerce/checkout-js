@@ -130,8 +130,8 @@ describe('LoginForm', () => {
                     canCancel
                     createAccountUrl={ '/create-account' }
                     forgotPasswordUrl={ '/forgot-password' }
-                    signInError={ error }
                     onSignIn={ noop }
+                    signInError={ error }
                 />
             </LocaleContext.Provider>
         );
