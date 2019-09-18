@@ -79,7 +79,7 @@ export default class SentryErrorLogger implements ErrorLogger {
         if (event.exception) {
             const { originalException = null } = hint || {};
 
-            if (!(originalException instanceof Error)) {
+            if (!originalException || typeof originalException === 'string') {
                 return null;
             }
 
