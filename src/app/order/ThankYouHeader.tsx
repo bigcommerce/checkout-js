@@ -12,8 +12,8 @@ const ThankYouHeader: FunctionComponent<HeaderProps> = ({
 }) => (
     <PrimaryHeader testId="order-confirmation-heading">
         { name && <TranslatedString
-            id="order_confirmation.thank_you_customer_heading"
             data={ { name } }
+            id="order_confirmation.thank_you_customer_heading"
         /> }
 
         { !name && <TranslatedString

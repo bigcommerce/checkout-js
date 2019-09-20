@@ -159,13 +159,13 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
                     { !isEmpty(methods) && defaultMethod && <PaymentForm
                         { ...rest }
                         defaultMethodId={ defaultMethod.id }
-                        methods={ methods }
                         isUsingMultiShipping={ isUsingMultiShipping }
+                        methods={ methods }
                         onMethodSelect={ this.setSelectedMethod }
                         onStoreCreditChange={ onStoreCreditChange }
                         onSubmit={ this.handleSubmit }
-                        shouldDisableSubmit={ uniqueSelectedMethodId && shouldDisableSubmit[uniqueSelectedMethodId] || undefined }
                         selectedMethod={ selectedMethod }
+                        shouldDisableSubmit={ uniqueSelectedMethodId && shouldDisableSubmit[uniqueSelectedMethodId] || undefined }
                         validationSchema={ uniqueSelectedMethodId && validationSchemas[uniqueSelectedMethodId] || undefined }
                     /> }
                 </LoadingOverlay>
@@ -197,8 +197,8 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             <ErrorModal
                 error={ error }
                 message={ mapSubmitOrderErrorMessage(error, language.translate.bind(language)) }
-                title={ mapSubmitOrderErrorTitle(error, language.translate.bind(language)) }
                 onClose={ this.handleCloseModal }
+                title={ mapSubmitOrderErrorTitle(error, language.translate.bind(language)) }
             />
         );
     }

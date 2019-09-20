@@ -32,13 +32,13 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
 
         return (
             <Downshift
-                initialInputValue={ initialValue }
                 defaultHighlightedIndex={ 0 }
                 initialHighlightedIndex={ initialHighlightedIndex }
+                initialInputValue={ initialValue }
+                itemToString={ this.itemToString }
+                onChange={ onSelect }
                 onStateChange={ this.handleStateChange }
                 stateReducer={ this.stateReducer }
-                onChange={ onSelect }
-                itemToString={ this.itemToString }
             >
                 { ({
                     isOpen,
@@ -55,11 +55,11 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
                         { isOpen && !!items.length &&
                             <Popover>
                                 <PopoverList
-                                    testId={ listTestId }
-                                    menuProps={ getMenuProps() }
-                                    items={ items.map(item => this.toPopoverItem(item)) }
-                                    highlightedIndex={ isNumber(highlightedIndex) ? highlightedIndex : -1 }
                                     getItemProps={ getItemProps }
+                                    highlightedIndex={ isNumber(highlightedIndex) ? highlightedIndex : -1 }
+                                    items={ items.map(item => this.toPopoverItem(item)) }
+                                    menuProps={ getMenuProps() }
+                                    testId={ listTestId }
                                 />
                                 { children }
                             </Popover> }

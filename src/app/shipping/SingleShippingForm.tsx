@@ -101,22 +101,22 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             <Form autoComplete="on">
                 <Fieldset>
                     <ShippingAddress
-                        countriesWithAutocomplete={ countriesWithAutocomplete }
-                        isLoading={ isResettingAddress }
-                        onUnhandledError={ onUnhandledError }
-                        methodId={ methodId }
-                        googleMapsApiKey={ googleMapsApiKey }
-                        countries={ countries }
-                        formFields={ this.getFields(addressForm && addressForm.countryCode) }
-                        shippingAddress={ shippingAddress }
-                        consignments={ consignments }
                         addresses={ addresses }
-                        initialize={ initialize }
+                        consignments={ consignments }
+                        countries={ countries }
+                        countriesWithAutocomplete={ countriesWithAutocomplete }
                         deinitialize={ deinitialize }
-                        signOut={ signOut }
+                        formFields={ this.getFields(addressForm && addressForm.countryCode) }
+                        googleMapsApiKey={ googleMapsApiKey }
+                        initialize={ initialize }
+                        isLoading={ isResettingAddress }
+                        methodId={ methodId }
                         onAddressSelect={ this.handleAddressSelect }
                         onFieldChange={ this.handleFieldChange }
+                        onUnhandledError={ onUnhandledError }
                         onUseNewAddress={ this.onUseNewAddress }
+                        shippingAddress={ shippingAddress }
+                        signOut={ signOut }
                     />
                     <div className="form-body">
                         <BillingSameAsShippingField />
@@ -124,12 +124,12 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                 </Fieldset>
 
                 <ShippingFormFooter
-                    isMultiShippingMode={ false }
                     cartHasChanged={ cartHasChanged }
+                    isLoading={ isLoading || isUpdatingShippingData }
+                    isMultiShippingMode={ false }
+                    shouldDisableSubmit={ this.shouldDisableSubmit() }
                     shouldShowOrderComments={ shouldShowOrderComments }
                     shouldShowShippingOptions={ isValid }
-                    shouldDisableSubmit={ this.shouldDisableSubmit() }
-                    isLoading={ isLoading || isUpdatingShippingData }
                 />
             </Form>
         );

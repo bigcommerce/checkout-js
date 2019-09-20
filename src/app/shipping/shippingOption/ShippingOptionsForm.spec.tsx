@@ -82,9 +82,9 @@ describe('ShippingOptions Component', () => {
             <Formik initialValues={ {} } onSubmit={ noop }>
                 <ShippingOptionsForm
                     { ...defaultProps }
-                    isMultiShippingMode={ false }
-                    isLoading={ () => false }
                     consignments={ [] }
+                    isLoading={ () => false }
+                    isMultiShippingMode={ false }
                 />
             </Formik>
         );
@@ -98,9 +98,9 @@ describe('ShippingOptions Component', () => {
             <Formik initialValues={ {} } onSubmit={ noop }>
                 <ShippingOptionsForm
                     { ...defaultProps }
+                    consignments={ [] }
                     isLoading={ () => false }
                     methodId="amazon"
-                    consignments={ [] }
                 />
             </Formik>
         );

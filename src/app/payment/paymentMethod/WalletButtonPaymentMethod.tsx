@@ -125,13 +125,13 @@ class WalletButtonPaymentMethod extends Component<
         return (
             <a
                 className={ signInButtonClassName }
+                href="#"
                 id={ buttonId }
                 onClick={ preventDefault() }
-                href="#"
             >
                 { signInButtonLabel || <TranslatedString
-                    id="remote.sign_in_action"
                     data={ { providerName: getPaymentMethodName(language)(method) } }
+                    id="remote.sign_in_action"
                 /> }
             </a>
         );
@@ -154,19 +154,27 @@ class WalletButtonPaymentMethod extends Component<
         return (
             <Fragment>
                 { cardName && <p data-test="payment-method-wallet-card-name">
-                    <strong><TranslatedString id="payment.credit_card_name_label" />:</strong>
+                    <strong>
+                        <TranslatedString id="payment.credit_card_name_label" />
+                        :
+                    </strong>
                     { ' ' }
                     { cardName }
                 </p> }
 
                 { accountMask && <p data-test="payment-method-wallet-card-type">
-                    <strong>{ cardType }:</strong>
+                    <strong>
+                        { `${cardType}:` }
+                    </strong>
                     { ' ' }
                     { accountMask }
                 </p> }
 
                 { expiryMonth && expiryYear && <p data-test="payment-method-wallet-card-expiry">
-                    <strong><TranslatedString id="payment.credit_card_expiration_date_label" />:</strong>
+                    <strong>
+                        <TranslatedString id="payment.credit_card_expiration_date_label" />
+                        :
+                        </strong>
                     { ' ' }
                     { `${expiryMonth}/${expiryYear}` }
                 </p> }
@@ -175,8 +183,8 @@ class WalletButtonPaymentMethod extends Component<
                     <a
                         className={ editButtonClassName }
                         href="#"
-                        onClick={ preventDefault() }
                         id={ buttonId }
+                        onClick={ preventDefault() }
                     >
                         { editButtonLabel || <TranslatedString id="remote.select_different_card_action" /> }
                     </a>

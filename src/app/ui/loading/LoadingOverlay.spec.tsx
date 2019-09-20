@@ -22,8 +22,8 @@ describe('LoadingOverlay', () => {
     it('hides content when loading if configured', () => {
         const component = mount(
             <LoadingOverlay
-                isLoading={ true }
                 hideContentWhenLoading
+                isLoading={ true }
             >
                 <div id="content">Hello world</div>
             </LoadingOverlay>
@@ -39,8 +39,8 @@ describe('LoadingOverlay', () => {
     it('shows content when loading is complete if configured', () => {
         const component = shallow(
             <LoadingOverlay
-                isLoading={ false }
                 hideContentWhenLoading
+                isLoading={ false }
             >
                 <div id="content">Hello world</div>
             </LoadingOverlay>

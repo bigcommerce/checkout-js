@@ -41,12 +41,12 @@ export default class TooltipTrigger extends Component<TooltipTriggerProps, Toolt
                 </Reference>
 
                 <Popper
-                    placement={ placement }
                     modifiers={ {
                         hide: { enabled: false },
                         flip: { enabled: false },
                         preventOverflow: { enabled: false },
                     } }
+                    placement={ placement }
                 >
                     { ({ ref, style }) => (
                         shouldShow && <div

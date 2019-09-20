@@ -15,8 +15,8 @@ describe('AppliedGiftCertificate', () => {
         const AppliedRedeembleContainer = ({ isRemoving }: { isRemoving: boolean }) => (
             <LocaleContext.Provider value={ localeContext }>
                 <AppliedRedeemable
-                    onRemove={ onRemove() }
                     isRemoving={ isRemoving }
+                    onRemove={ onRemove() }
                 >
                     foo
                 </AppliedRedeemable>

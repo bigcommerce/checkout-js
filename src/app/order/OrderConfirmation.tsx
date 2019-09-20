@@ -129,10 +129,10 @@ class OrderConfirmation extends Component<
 
                         { paymentInstructions && <OrderConfirmationSection>
                             <div
-                                data-test="payment-instructions"
                                 dangerouslySetInnerHTML={ {
                                     __html: DOMPurify.sanitize(paymentInstructions),
                                 } }
+                                data-test="payment-instructions"
                             />
                         </OrderConfirmationSection> }
 
@@ -201,9 +201,9 @@ class OrderConfirmation extends Component<
                                 { ...mapToOrderSummarySubtotalsProps(order) }
                                 headerLink={ <PrintLink className="modal-header-link cart-modal-link" /> }
                                 lineItems={ order.lineItems }
-                                total={ order.orderAmount }
-                                storeCurrency={ currency }
                                 shopperCurrency={ shopperCurrency }
+                                storeCurrency={ currency }
+                                total={ order.orderAmount }
                             />
                         </LazyContainer>;
                     }
@@ -214,9 +214,9 @@ class OrderConfirmation extends Component<
                                 headerLink={ <PrintLink /> }
                                 { ...mapToOrderSummarySubtotalsProps(order) }
                                 lineItems={ order.lineItems }
-                                total={ order.orderAmount }
-                                storeCurrency={ currency }
                                 shopperCurrency={ shopperCurrency }
+                                storeCurrency={ currency }
+                                total={ order.orderAmount }
                             />
                         </LazyContainer>
                     </aside>;

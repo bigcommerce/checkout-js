@@ -31,19 +31,19 @@ const OrderSummaryTotal: FunctionComponent<OrderSummaryTotalProps & WithCurrency
                 amount={ orderAmount }
                 className="cart-priceItem--total"
                 label={ label }
-                testId="cart-total"
                 superscript={ hasDifferentCurrency ? '*' : undefined }
+                testId="cart-total"
             />
             { hasDifferentCurrency && currency && <p
                 className="cart-priceItem--totalNote"
                 data-test="cart-price-item-total-note"
             >
                 <TranslatedString
-                    id="cart.billed_amount_text"
                     data={ {
                         total: currency.toStoreCurrency(orderAmount),
                         code: storeCurrencyCode,
                     } }
+                    id="cart.billed_amount_text"
                 />
             </p> }
         </Fragment>

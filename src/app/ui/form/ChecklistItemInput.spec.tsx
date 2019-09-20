@@ -8,8 +8,8 @@ describe('ChecklistItemInput', () => {
     it('renders children inside label', () => {
         const component = shallow(<ChecklistItemInput
             isSelected={ false }
-            value="foobar_val"
             name="foobar"
+            value="foobar_val"
         >
             children text
         </ChecklistItemInput>);
@@ -21,8 +21,8 @@ describe('ChecklistItemInput', () => {
     it('renders input as checked when is selected', () => {
         const component = shallow(<ChecklistItemInput
             isSelected={ true }
-            value="foobar_val"
             name="foobar"
+            value="foobar_val"
         />);
 
         expect(component.find('.form-checklist-checkbox').prop('checked'))
@@ -32,8 +32,8 @@ describe('ChecklistItemInput', () => {
     it('renders input as unchecked when is not selected', () => {
         const component = shallow(<ChecklistItemInput
             isSelected={ false }
-            value="foobar_val"
             name="foobar"
+            value="foobar_val"
         />);
 
         expect(component.find('.form-checklist-checkbox').prop('checked'))
@@ -44,9 +44,9 @@ describe('ChecklistItemInput', () => {
         const onChange = jest.fn();
         const component = mount(<ChecklistItemInput
             isSelected={ true }
-            value="foobar_val"
-            onChange={ onChange }
             name="foobar"
+            onChange={ onChange }
+            value="foobar_val"
         />);
 
         component.find('.form-checklist-checkbox').at(0)

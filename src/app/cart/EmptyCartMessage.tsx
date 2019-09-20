@@ -37,12 +37,12 @@ export default class EmptyCartMessage extends PureComponent<EmptyCartMessageProp
 
         return (
             <LoadingOverlay
-                isLoading={ isWaiting }
                 hideContentWhenLoading
+                isLoading={ isWaiting }
             >
                 <TranslatedHtml
-                    id="cart.empty_cart_message"
                     data={ { url: loginUrl } }
+                    id="cart.empty_cart_message"
                 />
             </LoadingOverlay>
         );

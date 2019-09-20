@@ -48,18 +48,18 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
     const renderInput = useCallback(({ field }: FieldProps) => (
         <GoogleAutocomplete
             apiKey={ apiKey }
-            onSelect={ onSelect }
-            onChange={ onChange }
-            initialValue={ field.value }
-            nextElement={ nextElement }
-            onToggleOpen={ onToggleOpen }
-            isAutocompleteEnabled={ countryCode ?
-                supportedCountries.indexOf(countryCode) > -1 :
-                false }
-            inputProps={ inputProps }
             componentRestrictions={ countryCode ?
                 { country: countryCode } :
                 undefined }
+            initialValue={ field.value }
+            inputProps={ inputProps }
+            isAutocompleteEnabled={ countryCode ?
+                supportedCountries.indexOf(countryCode) > -1 :
+                false }
+            nextElement={ nextElement }
+            onChange={ onChange }
+            onSelect={ onSelect }
+            onToggleOpen={ onToggleOpen }
         />
     ), [
         apiKey,
@@ -75,9 +75,9 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
     return (
         <div className={ `dynamic-form-field dynamic-form-field--addressLineAutocomplete` }>
             <FormField
-                name={ fieldName }
-                labelContent={ labelContent }
                 input={ renderInput }
+                labelContent={ labelContent }
+                name={ fieldName }
             />
         </div>
     );

@@ -5,7 +5,6 @@ exports[`OrderSummaryItems when it has 4 line items or less renders product list
   aria-live="polite"
   className="productList"
 >
-   
   <li
     className="productList-item is-visible"
     key="666"
@@ -102,6 +101,5 @@ exports[`OrderSummaryItems when it has 4 line items or less renders product list
       quantity={2}
     />
   </li>
-   
 </ul>
 `;

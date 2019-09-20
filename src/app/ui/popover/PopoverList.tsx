@@ -28,23 +28,24 @@ const PopoverList: FunctionComponent<PopoverListProps> = ({
 
     return (
         <ul
-            data-test={ testId }
-            className="popoverList" { ...menuProps }
-        >{ items
-            .map((item, index) => (
-                <li
-                    data-test={ testId && `${testId}-item` }
-                    className={ getItemClassName(highlightedIndex, index) }
-                    { ...getItemProps({
-                        key: item.id,
-                        index,
-                        item,
-                    }) }
-                    key={ index }
-                >
-                    { item.content }
-                </li>
-            )) }
+            className="popoverList"
+            data-test={ testId } { ...menuProps }
+        >
+            { items
+                .map((item, index) => (
+                    <li
+                        className={ getItemClassName(highlightedIndex, index) }
+                        data-test={ testId && `${testId}-item` }
+                        { ...getItemProps({
+                            key: item.id,
+                            index,
+                            item,
+                        }) }
+                        key={ index }
+                    >
+                        { item.content }
+                    </li>
+                )) }
         </ul>
     );
 };

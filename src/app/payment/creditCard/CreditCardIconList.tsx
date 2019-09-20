@@ -34,12 +34,12 @@ const CreditCardIconList: FunctionComponent<CreditCardIconListProps> = ({
         <ul className="creditCardTypes-list">
             { filteredCardTypes.map(type => (
                 <li
-                    key={ type }
                     className={ classNames(
                         'creditCardTypes-list-item',
                         { 'is-active': selectedCardType === type },
                         { 'not-active': selectedCardType && selectedCardType !== type}
                     ) }
+                    key={ type }
                 >
                     <span className="cardIcon">
                         <CreditCardIcon cardType={ type } />

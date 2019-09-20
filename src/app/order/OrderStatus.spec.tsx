@@ -19,8 +19,8 @@ describe('OrderStatus', () => {
             beforeEach(() => {
                 orderStatus = shallow(<OrderStatus
                     order={ order }
-                    supportPhoneNumber="990"
                     supportEmail="test@example.com"
+                    supportPhoneNumber="990"
                 />);
             });
 

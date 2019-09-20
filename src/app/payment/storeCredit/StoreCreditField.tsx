@@ -30,8 +30,8 @@ const StoreCreditField: FunctionComponent<StoreCreditFieldProps & WithCurrencyPr
                 tooltip={
                     <Tooltip testId="payment-store-credit-tooltip">
                         <TranslatedString
-                            id="redeemable.store_credit_available_text"
                             data={ { storeCredit: currency.toCustomerCurrency(availableStoreCredit) } }
+                            id="redeemable.store_credit_available_text"
                         />
                     </Tooltip>
                 }
@@ -52,8 +52,8 @@ const StoreCreditField: FunctionComponent<StoreCreditFieldProps & WithCurrencyPr
     ]);
 
     return <CheckboxFormField
-        name={ name }
         labelContent={ labelContent }
+        name={ name }
         onChange={ onChange }
     />;
 };

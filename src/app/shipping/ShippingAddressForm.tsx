@@ -53,9 +53,9 @@ class ShippingAddressForm extends Component<ShippingAddressFormProps & ConnectFo
                         <LoadingOverlay isLoading={ isLoading }>
                             <AddressSelect
                                 addresses={ addresses }
+                                onSelectAddress={ onAddressSelect }
                                 onUseNewAddress={ onUseNewAddress }
                                 selectedAddress={ hasValidCustomerAddress ? shippingAddress : undefined }
-                                onSelectAddress={ onAddressSelect }
                             />
                         </LoadingOverlay>
                     </Fieldset> }
@@ -65,13 +65,13 @@ class ShippingAddressForm extends Component<ShippingAddressFormProps & ConnectFo
                         <AddressForm
                             countries={ countries }
                             countriesWithAutocomplete={ countriesWithAutocomplete }
-                            setFieldValue={ this.setFieldValue }
-                            googleMapsApiKey={ googleMapsApiKey }
                             countryCode={ formAddress && formAddress.countryCode }
-                            onChange={ this.handleChange }
-                            onAutocompleteToggle={ this.handleAutocompleteToggle }
                             fieldName={ addressFieldName }
                             formFields={ formFields }
+                            googleMapsApiKey={ googleMapsApiKey }
+                            onAutocompleteToggle={ this.handleAutocompleteToggle }
+                            onChange={ this.handleChange }
+                            setFieldValue={ this.setFieldValue }
                         />
                     </LoadingOverlay> }
             </Fieldset>

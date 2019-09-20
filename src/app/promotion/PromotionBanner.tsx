@@ -17,10 +17,10 @@ const PromotionBanner: FunctionComponent<PromotionBannerProps> = ({
         type={ AlertType.Info }
     >
         <span
-            data-test="promotion-banner-message"
             dangerouslySetInnerHTML={ {
                 __html: DOMPurify.sanitize(message),
             } }
+            data-test="promotion-banner-message"
         />
     </Alert>
 );

@@ -18,11 +18,11 @@ describe('OrderSummaryModal', () => {
         orderSummary = shallow(<OrderSummaryModal
             isOpen={ true }
             { ...mapToOrderSummarySubtotalsProps(order) }
-            lineItems={ order.lineItems }
-            total={ order.orderAmount }
-            storeCurrency={ getStoreConfig().currency }
-            shopperCurrency={ getStoreConfig().shopperCurrency }
             additionalLineItems="foo"
+            lineItems={ order.lineItems }
+            shopperCurrency={ getStoreConfig().shopperCurrency }
+            storeCurrency={ getStoreConfig().currency }
+            total={ order.orderAmount }
         />);
     });
 

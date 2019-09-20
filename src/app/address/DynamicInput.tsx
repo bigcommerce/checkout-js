@@ -43,11 +43,11 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
         return (
             <select
                 { ...rest as any }
+                className="form-select optimizedCheckout-form-select"
+                data-test={ `${id}-select` }
+                id={ id }
                 name={ name }
                 onChange={ onChange }
-                id={ id }
-                data-test={ `${id}-select` }
-                className="form-select optimizedCheckout-form-select"
                 value={ value === null ? '' : value }
             >
                 { placeholder &&
@@ -70,53 +70,57 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
             return null;
         }
 
-        return <>{ options.map(({ label, value: optionValue }) =>
-            <RadioInput
-                { ...rest }
-                name={ name }
-                onChange={ onChange }
-                id={ `${id}-${optionValue}` }
-                testId={ `${id}-${optionValue}-radio` }
-                key={ optionValue }
-                label={ label }
-                value={ optionValue }
-                checked={ optionValue === value }
-            />) }</>;
+        return <>
+            { options.map(({ label, value: optionValue }) =>
+                <RadioInput
+                    { ...rest }
+                    checked={ optionValue === value }
+                    id={ `${id}-${optionValue}` }
+                    key={ optionValue }
+                    label={ label }
+                    name={ name }
+                    onChange={ onChange }
+                    testId={ `${id}-${optionValue}-radio` }
+                    value={ optionValue }
+                />) }
+        </>;
 
     case DynamicFormFieldType.checkbox:
         if (!options || !options.length) {
             return null;
         }
 
-        return <>{ options.map(({ label, value: optionValue }) =>
-            <CheckboxInput
-                { ...rest }
-                name={ name }
-                onChange={ onChange }
-                id={ `${id}-${optionValue}` }
-                testId={ `${id}-${optionValue}-checkbox` }
-                key={ optionValue }
-                label={ label }
-                value={ optionValue }
-                checked={ Array.isArray(value) ? value.includes(optionValue) : false }
-            />) }</>;
+        return <>
+            { options.map(({ label, value: optionValue }) =>
+                <CheckboxInput
+                    { ...rest }
+                    checked={ Array.isArray(value) ? value.includes(optionValue) : false }
+                    id={ `${id}-${optionValue}` }
+                    key={ optionValue }
+                    label={ label }
+                    name={ name }
+                    onChange={ onChange }
+                    testId={ `${id}-${optionValue}-checkbox` }
+                    value={ optionValue }
+                />) }
+        </>;
 
     case DynamicFormFieldType.date:
         return (
             <ReactDatePicker
                 { ...rest as any }
-                name={ name }
+                autoComplete="off"
                 // FIXME: we can avoid this by simply using onChangeRaw, but it's not being triggered properly
                 // https://github.com/Hacker0x01/react-datepicker/issues/1357
                 // onChangeRaw={ rest.onChange }
-                onChange={ handleDateChange }
-                autoComplete="off"
-                placeholderText="MM/DD/YYYY"
-                minDate={ rest.min ? new Date(`${rest.min} 00:00:00`) : undefined }
-                maxDate={ rest.max ? new Date(`${rest.max} 00:00:00`) : undefined }
-                className="form-input optimizedCheckout-form-input"
-                popperClassName="optimizedCheckout-contentPrimary"
                 calendarClassName="optimizedCheckout-contentPrimary"
+                className="form-input optimizedCheckout-form-input"
+                maxDate={ rest.max ? new Date(`${rest.max} 00:00:00`) : undefined }
+                minDate={ rest.min ? new Date(`${rest.min} 00:00:00`) : undefined }
+                name={ name }
+                onChange={ handleDateChange }
+                placeholderText="MM/DD/YYYY"
+                popperClassName="optimizedCheckout-contentPrimary"
                 selected={ isDate(value) ? value : undefined }
             />
         );
@@ -125,9 +129,9 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
         return (
             <TextArea
                 { ...rest as any }
+                id={ id }
                 name={ name }
                 onChange={ onChange }
-                id={ id }
                 testId={ `${id}-text` }
                 type={ fieldType }
                 value={ value }
@@ -138,9 +142,9 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
         return (
             <TextInput
                 { ...rest }
+                id={ id }
                 name={ name }
                 onChange={ onChange }
-                id={ id }
                 testId={ `${id}-${ fieldType === DynamicFormFieldType.password ?
                     'password' :
                     'text' }` }

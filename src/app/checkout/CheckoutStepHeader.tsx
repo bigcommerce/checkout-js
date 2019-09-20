@@ -51,16 +51,16 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
             </div>
 
             <div
-                data-test="step-info"
                 className="stepHeader-body stepHeader-column optimizedCheckout-contentPrimary"
+                data-test="step-info"
             >
                 { !isActive && isComplete && summary }
             </div>
 
             { isEditable && !isActive && <div className="stepHeader-actions stepHeader-column">
                 <Button
-                    testId="step-edit-button"
                     size={ ButtonSize.Tiny }
+                    testId="step-edit-button"
                     variant={ ButtonVariant.Secondary }
                 >
                     <TranslatedString id="common.edit_action" />

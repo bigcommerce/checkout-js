@@ -13,7 +13,7 @@ describe('TextInput', () => {
     });
 
     it('renders with class names', () => {
-        const component = shallow(<TextInput name="foobar" additionalClassName="foobar" />);
+        const component = shallow(<TextInput additionalClassName="foobar" name="foobar" />);
 
         expect(component.find(Input).hasClass('form-input'))
             .toEqual(true);

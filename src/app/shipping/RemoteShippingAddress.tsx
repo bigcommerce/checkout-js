@@ -52,8 +52,8 @@ class RemoteShippingAddress extends PureComponent<RemoteShippingAddressProps> {
         return (
             <>
                 <div
-                    id={ containerId }
                     className={ `widget address-widget widget--${methodId}` }
+                    id={ containerId }
                     tabIndex={ -1 }
                 />
 

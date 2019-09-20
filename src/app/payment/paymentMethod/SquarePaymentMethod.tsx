@@ -45,9 +45,9 @@ const SquarePaymentMethod: FunctionComponent<SquarePaymentMethodProps> = ({
 
     const walletButtons = useMemo(() => (
         <input
-            type="button"
-            id="sq-masterpass"
             className="button-masterpass"
+            id="sq-masterpass"
+            type="button"
         />
     ), []);
 
@@ -56,8 +56,8 @@ const SquarePaymentMethod: FunctionComponent<SquarePaymentMethodProps> = ({
         cardCodeId="sq-cvv"
         cardExpiryId="sq-expiration-date"
         cardNumberId="sq-card-number"
-        method={ method }
         initializePayment={ initializeSquarePayment }
+        method={ method }
         postalCodeId="sq-postal-code"
         walletButtons={ isMasterpassEnabled && walletButtons }
     />;

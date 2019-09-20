@@ -23,8 +23,8 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
         { orderNumber &&
         <p data-test="order-confirmation-order-number-text">
             <TranslatedHtml
-                id="order_confirmation.order_number_text"
                 data={ { orderNumber } }
+                id="order_confirmation.order_number_text"
             />
         </p> }
 
@@ -38,10 +38,10 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
         { !isPendingReview &&
         <p>
             <TranslatedHtml
+                data={ { orderNumber, supportEmail, supportPhoneNumber } }
                 id={ supportPhoneNumber ?
                     'order_confirmation.order_with_support_number_text' :
                     'order_confirmation.order_without_support_number_text' }
-                data={ { orderNumber, supportEmail, supportPhoneNumber } }
             />
         </p> }
 

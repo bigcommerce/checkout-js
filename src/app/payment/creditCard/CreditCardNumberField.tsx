@@ -27,8 +27,8 @@ const CreditCardNumberField: FunctionComponent<CreditCardNumberFieldProps> = ({ 
 
     return <FormField
         additionalClassName="form-field--ccNumber"
-        labelContent={ labelContent }
         input={ renderInput }
+        labelContent={ labelContent }
         name={ name }
     />;
 };
@@ -52,9 +52,9 @@ class CreditCardNumberInput extends PureComponent<FieldProps<string>> {
                     { ...field }
                     additionalClassName="has-icon"
                     autoComplete="cc-number"
-                    ref={ this.inputRef }
                     id={ field.name }
                     onChange={ this.handleChange }
+                    ref={ this.inputRef }
                     type="tel"
                 />
 

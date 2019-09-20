@@ -23,7 +23,7 @@ describe('Popover Component', () => {
     });
 
     it('renders list with highlighted item', () => {
-        const tree = mount(<PopoverList items={ items } highlightedIndex={ 1 } />);
+        const tree = mount(<PopoverList highlightedIndex={ 1 } items={ items } />);
 
         expect(tree.find('.popoverList-item').at(0).hasClass('is-active')).toBeFalsy();
         expect(tree.find('.popoverList-item').at(1).hasClass('is-active')).toBeTruthy();

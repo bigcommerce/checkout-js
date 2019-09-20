@@ -22,8 +22,8 @@ const MasterpassPaymentMethod: FunctionComponent<MasterpassPaymentMethodProps & 
 
     const signInButtonLabel = useMemo(() => (
         <img
-            id="mpbutton"
             alt={ language.translate('payment.masterpass_name_text') }
+            id="mpbutton"
             src="https://masterpass.com/dyn/img/btn/global/mp_chk_btn_126x030px.svg"
         />
     ), [language]);

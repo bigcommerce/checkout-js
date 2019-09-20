@@ -36,12 +36,12 @@ const OrderSummaryModal: FunctionComponent<OrderSummaryDrawerProps & OrderSummar
     ...orderSummarySubtotalsProps
 }) => (
 <Modal
-    onAfterOpen={ onAfterOpen }
-    onRequestClose={ onRequestClose }
-    additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary"
     additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
+    additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary"
     header={ renderHeader({ headerLink, onRequestClose }) }
     isOpen={ isOpen }
+    onAfterOpen={ onAfterOpen }
+    onRequestClose={ onRequestClose }
 >
     <OrderSummarySection>
         <OrderSummaryItems items={ lineItems } />
@@ -71,8 +71,8 @@ const renderHeader: FunctionComponent<{
 }) => (<Fragment>
     <a
         className="cart-modal-close"
-        onClick={ onRequestClose }
         href="javascript:void(0);"
+        onClick={ onRequestClose }
     >
         <span className="is-srOnly">
             <TranslatedString id="common.close_action" />

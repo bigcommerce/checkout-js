@@ -22,8 +22,8 @@ const CreditCardNameField: FunctionComponent<CreditCardNameFieldProps> = ({ name
 
     return <FormField
         additionalClassName="form-field--ccName"
-        labelContent={ labelContent }
         input={ renderInput }
+        labelContent={ labelContent }
         name={ name }
     />;
 };

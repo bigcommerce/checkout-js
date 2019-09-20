@@ -28,14 +28,6 @@ export default function withRedeemable(
         return (
             <OriginalComponent
                 { ...mapToOrderSummarySubtotalsProps(checkout) }
-                onRemovedCoupon={ onRemovedCoupon }
-                onRemovedGiftCertificate={ onRemovedGiftCertificate }
-                headerLink={ headerLink }
-                storeCreditAmount={ storeCreditAmount }
-                lineItems={ checkout.cart.lineItems }
-                total={ checkout.grandTotal }
-                storeCurrency={ storeCurrency }
-                shopperCurrency={ shopperCurrency }
                 additionalLineItems={
                     <Redeemable { ...{
                         ...redeemableProps,
@@ -44,6 +36,14 @@ export default function withRedeemable(
                     } }
                     />
                 }
+                headerLink={ headerLink }
+                lineItems={ checkout.cart.lineItems }
+                onRemovedCoupon={ onRemovedCoupon }
+                onRemovedGiftCertificate={ onRemovedGiftCertificate }
+                shopperCurrency={ shopperCurrency }
+                storeCreditAmount={ storeCreditAmount }
+                storeCurrency={ storeCurrency }
+                total={ checkout.grandTotal }
             />
         );
     };

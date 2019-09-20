@@ -82,7 +82,8 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
                 fieldLabel :
                 translatedLabelString && <TranslatedString id={ translatedLabelString } /> }
             { !required &&
-                <> { '' }
+                <>
+                    { '' }
                     <small className="optimizedCheckout-contentSecondary">
                         <TranslatedString id="common.optional_text" />
                     </small>
@@ -99,15 +100,15 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
     const renderInput = useCallback(({ field }: FieldProps<string>) => (
         <DynamicInput
             { ...field }
-            maxLength={ maxLength || undefined }
-            max={ max }
-            min={ min }
-            placeholder={ placeholder || (options && options.helperLabel) }
-            fieldType={ fieldType }
-            rows={ options && (options as any).rows }
-            options={ options && options.items }
             autoComplete={ AUTOCOMPLETE[addressFieldName] }
+            fieldType={ fieldType }
             id={ fieldInputId }
+            max={ max }
+            maxLength={ maxLength || undefined }
+            min={ min }
+            options={ options && options.items }
+            placeholder={ placeholder || (options && options.helperLabel) }
+            rows={ options && (options as any).rows }
         />
     ), [
         addressFieldName,
@@ -124,17 +125,17 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
         <div className={ `dynamic-form-field dynamic-form-field--${getFormFieldLegacyName(addressFieldName)}` }>
             { fieldType === DynamicFormFieldType.checkbox ?
                 <CheckboxGroupFormField
-                    onChange={ onChange }
-                    name={ fieldName }
                     id={ fieldInputId }
                     label={ label }
+                    name={ fieldName }
+                    onChange={ onChange }
                     options={ (options && options.items) || [] }
                 /> :
                 <FormField
+                    input={ renderInput }
+                    label={ label }
                     name={ fieldName }
                     onChange={ onChange }
-                    label={ label }
-                    input={ renderInput }
                 /> }
         </div>
     );

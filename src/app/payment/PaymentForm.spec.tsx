@@ -85,8 +85,8 @@ describe('PaymentForm', () => {
     it('renders terms and conditions field if copy is provided', () => {
         const container = mount(<PaymentFormTest
             { ...defaultProps }
-            termsConditionsText="Accept terms"
             isTermsConditionsRequired={ true }
+            termsConditionsText="Accept terms"
         />);
         const termsField: ReactWrapper<TermsConditionsFieldProps> = container.find(TermsConditionsField);
 
@@ -103,8 +103,8 @@ describe('PaymentForm', () => {
     it('renders terms and conditions field if terms URL is provided', () => {
         const container = mount(<PaymentFormTest
             { ...defaultProps }
-            termsConditionsUrl="https://foobar.com/terms"
             isTermsConditionsRequired={ true }
+            termsConditionsUrl="https://foobar.com/terms"
         />);
         const termsField: ReactWrapper<TermsConditionsFieldProps> = container.find(TermsConditionsField);
 
@@ -233,11 +233,11 @@ describe('PaymentForm', () => {
         const handleSubmit = jest.fn();
         const container = mount(<PaymentFormTest
             { ...defaultProps }
+            onSubmit={ handleSubmit }
             validationSchema={ getCreditCardValidationSchema({
                 isCardCodeRequired: true,
                 language: localeContext.language,
             }) }
-            onSubmit={ handleSubmit }
         />);
 
         container.find('input[name="ccNumber"]')

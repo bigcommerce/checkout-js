@@ -23,8 +23,8 @@ const SignOutLink: FunctionComponent<SignOutLinkProps & WithLanguageProps> = ({
 
         <a href="#" onClick={ preventDefault(onSignOut) }>
             <TranslatedString
-                id="remote.sign_out_action"
                 data={ { providerName: getPaymentMethodName(language)(method) } }
+                id="remote.sign_out_action"
             />
         </a>
 

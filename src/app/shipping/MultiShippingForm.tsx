@@ -74,13 +74,13 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
                 <div className="checkout-step-info">
                     <TranslatedString id="shipping.multishipping_guest_intro" />
                     { ' ' }
-                    <a href="#" onClick={ preventDefault(onSignIn) } data-test="shipping-sign-in-link">
+                    <a data-test="shipping-sign-in-link" href="#" onClick={ preventDefault(onSignIn) }>
                         <TranslatedString id="shipping.multishipping_guest_sign_in" />
                     </a>
                     { ' ' }
                     <TranslatedHtml
-                        id="shipping.multishipping_guest_create"
                         data={ { url: createAccountUrl } }
+                        id="shipping.multishipping_guest_create"
                     />
                 </div>
             );
@@ -92,8 +92,8 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
                     { items.map(item => (
                         <li key={ item.key }>
                             <ItemAddressSelect
-                                item={ item }
                                 addresses={ addresses }
+                                item={ item }
                                 onSelectAddress={ this.handleSelectAddress }
                                 onUseNewAddress={ onUseNewAddress }
                             />
@@ -102,12 +102,12 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
                 </ul>
 
                 <ShippingFormFooter
-                    isMultiShippingMode={ true }
                     cartHasChanged={ cartHasChanged }
+                    isLoading={ isLoading }
+                    isMultiShippingMode={ true }
+                    shouldDisableSubmit={ this.shouldDisableSubmit() }
                     shouldShowOrderComments={ shouldShowOrderComments }
                     shouldShowShippingOptions={ !hasUnassignedLineItems(consignments, cart.lineItems) }
-                    shouldDisableSubmit={ this.shouldDisableSubmit() }
-                    isLoading={ isLoading }
                 />
             </Form>
         );

@@ -84,18 +84,18 @@ const MultiCheckboxFormField: FunctionComponent<MultiCheckboxFormFieldProps> = (
         { label }
 
         <MultiCheckboxControl
-            testId={ id }
             onSelectedAll={ handleSelectAll }
             onSelectedNone={ handleSelectNone }
+            testId={ id }
         />
 
         <DynamicInput
-            name={ name }
-            value={ getIn(values, name) || [] }
-            onChange={ handleInputChange }
             fieldType={ DynamicFormFieldType.checkbox }
-            options={ options }
             id={ id }
+            name={ name }
+            onChange={ handleInputChange }
+            options={ options }
+            value={ getIn(values, name) || [] }
         />
 
         <FormFieldError

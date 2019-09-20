@@ -28,11 +28,11 @@ export default class ErrorModal extends PureComponent<ErrorModalProps> {
 
         return (
             <Modal
-                isOpen={ !!error }
                 additionalModalClassName="modal--error"
-                onRequestClose={ this.handleOnRequestClose }
-                header={ this.renderHeader() }
                 footer={ this.renderFooter() }
+                header={ this.renderHeader() }
+                isOpen={ !!error }
+                onRequestClose={ this.handleOnRequestClose }
             >
                 { this.renderBody() }
             </Modal>

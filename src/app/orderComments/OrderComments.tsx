@@ -14,8 +14,8 @@ const OrderComments: FunctionComponent = () => {
     const renderInput = useCallback(({ field }: FieldProps) => (
         <TextInput
             { ...field }
-            maxLength={ 2000 }
             autoComplete={ 'off' }
+            maxLength={ 2000 }
         />
     ), []);
 
@@ -25,11 +25,11 @@ const OrderComments: FunctionComponent = () => {
         </Legend>
     ), []);
 
-    return <Fieldset testId="checkout-shipping-comments" legend={ legend }>
+    return <Fieldset legend={ legend } testId="checkout-shipping-comments">
         <FormField
-            name="orderComment"
-            label={ renderLabel }
             input={ renderInput }
+            label={ renderLabel }
+            name="orderComment"
         />
     </Fieldset>;
 };

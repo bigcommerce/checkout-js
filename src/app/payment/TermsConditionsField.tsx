@@ -42,8 +42,8 @@ const TermsConditionsTextField: FunctionComponent<TermsConditionsTextFieldProps>
 
     return (
         <FormField
-            name={ `${name}Text` }
             input={ renderInput }
+            name={ `${name}Text` }
         />
     );
 };
@@ -59,14 +59,14 @@ const TermsConditionsCheckboxField: FunctionComponent<TermsConditionsCheckboxFie
 }) => {
     const labelContent = useMemo(() => (
         url ?
-            <TranslatedHtml id="terms_and_conditions.agreement_with_link_text" data={ { url } } /> :
+            <TranslatedHtml data={ { url } } id="terms_and_conditions.agreement_with_link_text" /> :
             <TranslatedString id="terms_and_conditions.agreement_text" />
     ), [url]);
 
     return (
         <CheckboxFormField
-            name={ name }
             labelContent={ labelContent }
+            name={ name }
         />
     );
 };

@@ -9,16 +9,16 @@ describe('OrderSummaryItems', () => {
     describe('when amount and amountAfterDiscount are different', () => {
         beforeEach(() => {
             orderSummaryItem = shallow(<OrderSummaryItem
-                id="foo"
-                name="Product"
-                quantity={ 2 }
                 amount={ 10 }
                 amountAfterDiscount={ 8 }
+                id="foo"
                 image={ <img /> }
+                name="Product"
                 productOptions={ [{
                     testId: 'test-id',
                     content: <span />,
                 }] }
+                quantity={ 2 }
             />);
         });
 
@@ -30,10 +30,10 @@ describe('OrderSummaryItems', () => {
     describe('when no discount is present', () => {
         beforeEach(() => {
             orderSummaryItem = shallow(<OrderSummaryItem
+                amount={ 10 }
                 id="foo"
                 name="Product"
                 quantity={ 2 }
-                amount={ 10 }
             />);
         });
 
@@ -51,11 +51,11 @@ describe('OrderSummaryItems', () => {
     describe('when amount and amountAfterDiscount are the same', () => {
         beforeEach(() => {
             orderSummaryItem = shallow(<OrderSummaryItem
+                amount={ 10 }
+                amountAfterDiscount={ 10 }
                 id="foo"
                 name="Product"
                 quantity={ 2 }
-                amount={ 10 }
-                amountAfterDiscount={ 10 }
             />);
         });
 

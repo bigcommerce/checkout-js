@@ -20,12 +20,12 @@ const Fieldset = forwardRef((
 ) => (
     <fieldset
         { ...rest }
-        ref={ ref }
         className={ className ? className : classNames(
             'form-fieldset',
             additionalClassName
         ) }
         data-test={ testId }
+        ref={ ref }
     >
         { legend }
 

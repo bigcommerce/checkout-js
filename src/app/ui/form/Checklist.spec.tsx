@@ -29,8 +29,8 @@ describe('Checklist', () => {
             >
                 <Form>
                     <Checklist
-                        name="option"
                         defaultSelectedItemId="bar"
+                        name="option"
                     >
                         { items.map(({ label, id }) => (
                             <ChecklistItem

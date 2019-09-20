@@ -47,9 +47,9 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
                 }
             >
                 <ShippingOptions
+                    isMultiShippingMode={ isMultiShippingMode }
                     isUpdatingAddress={ isLoading }
                     shouldShowShippingOptions={ shouldShowShippingOptions }
-                    isMultiShippingMode={ isMultiShippingMode }
                 />
             </Fieldset>
 
@@ -58,11 +58,11 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
 
             <div className="form-actions">
                 <Button
-                    variant={ ButtonVariant.Primary }
-                    isLoading={ isLoading }
                     disabled={ shouldDisableSubmit }
                     id="checkout-shipping-continue"
+                    isLoading={ isLoading }
                     type="submit"
+                    variant={ ButtonVariant.Primary }
                 >
                     <TranslatedString id="common.continue_action" />
                 </Button>

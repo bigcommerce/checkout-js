@@ -150,9 +150,9 @@ class HostedWidgetPaymentMethod extends Component<
                 { shouldShowInstrumentFieldset && <InstrumentFieldset
                     instruments={ instruments }
                     method={ method }
-                    selectedInstrumentId={ selectedInstrumentId }
                     onSelectInstrument={ this.handleSelectInstrument }
                     onUseNewInstrument={ this.handleUseNewCard }
+                    selectedInstrumentId={ selectedInstrumentId }
                     validateInstrument={ <CreditCardValidation
                         shouldShowCardCodeField={ isInstrumentCardCodeRequiredProp }
                         shouldShowNumberField={ shouldShowNumberField }
@@ -160,12 +160,12 @@ class HostedWidgetPaymentMethod extends Component<
                 /> }
 
                 <div
-                    id={ containerId }
                     className={ classNames(
                         'widget',
                         `widget--${method.id}`,
                         'payment-widget'
                     ) }
+                    id={ containerId }
                     style={ {
                         display: (hideContentWhenSignedOut && isSignInRequired && !isSignedIn) || !shouldShowCreditCardFieldset ? 'none' : undefined,
                     } }

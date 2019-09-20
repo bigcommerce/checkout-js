@@ -73,8 +73,8 @@ describe('TermsConditionsField', () => {
                 >
                     <TermsConditionsField
                         name="terms"
-                        url="/terms-and-conditions"
                         type={ TermsConditionsType.Link }
+                        url="/terms-and-conditions"
                     />
                 </Formik>
             </LocaleContext.Provider>
@@ -83,7 +83,7 @@ describe('TermsConditionsField', () => {
         expect(component.find('label[htmlFor="terms"]').html())
             .toContain(render(
                 <LocaleContext.Provider value={ localeContext }>
-                    <TranslatedHtml id="terms_and_conditions.agreement_with_link_text" data={ { url: '/terms-and-conditions' } } />
+                    <TranslatedHtml data={ { url: '/terms-and-conditions' } } id="terms_and_conditions.agreement_with_link_text" />
                 </LocaleContext.Provider>
             ).html());
     });

@@ -27,9 +27,9 @@ const BasicFormField: FunctionComponent<BasicFormFieldProps> = ({
             additionalClassName={ additionalClassName }
             className={ className }
             component={ component }
+            onChange={ onChange }
             render={ render }
             testId={ testId }
-            onChange={ onChange }
         />
     ), [
         additionalClassName,
@@ -58,10 +58,10 @@ const InnerField: FunctionComponent<InnerFieldProps> = memo(({
     testId,
 }) => {
     const input = useMemo(() => <InnerFieldInput
+        component={ component }
         field={ field }
         form={ form }
         onChange={ onChange }
-        component={ component }
         render={ render }
     />, [
         field,
@@ -74,8 +74,8 @@ const InnerField: FunctionComponent<InnerFieldProps> = memo(({
     return (
         <FormFieldContainer
             additionalClassName={ additionalClassName }
-            testId={ testId }
             hasError={ getIn(form.errors, field.name) }
+            testId={ testId }
         >
             { input }
         </FormFieldContainer>

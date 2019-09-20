@@ -35,8 +35,8 @@ const CreditCardExpiryField: FunctionComponent<CreditCardExpiryFieldProps> = ({ 
 
     return <FormField
         additionalClassName="form-field--ccExpiry"
-        labelContent={ labelContent }
         input={ renderInput }
+        labelContent={ labelContent }
         name={ name }
     />;
 };

@@ -19,9 +19,9 @@ describe('CheckoutButtonList', () => {
         const component = render(
             <LocaleContext.Provider value={ localeContext }>
                 <CheckoutButtonList
-                    methodIds={ ['amazon', 'braintreevisacheckout'] }
                     deinitialize={ noop }
                     initialize={ noop }
+                    methodIds={ ['amazon', 'braintreevisacheckout'] }
                 />
             </LocaleContext.Provider>
         );
@@ -34,9 +34,9 @@ describe('CheckoutButtonList', () => {
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <CheckoutButtonList
-                    methodIds={ ['amazon', 'braintreevisacheckout', 'foobar'] }
                     deinitialize={ noop }
                     initialize={ noop }
+                    methodIds={ ['amazon', 'braintreevisacheckout', 'foobar'] }
                 />
             </LocaleContext.Provider>
         );
@@ -49,9 +49,9 @@ describe('CheckoutButtonList', () => {
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <CheckoutButtonList
-                    methodIds={ ['foobar'] }
                     deinitialize={ noop }
                     initialize={ noop }
+                    methodIds={ ['foobar'] }
                 />
             </LocaleContext.Provider>
         );
@@ -66,9 +66,9 @@ describe('CheckoutButtonList', () => {
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <CheckoutButtonList
-                    methodIds={ ['amazon', 'braintreevisacheckout'] }
                     deinitialize={ deinitialize }
                     initialize={ initialize }
+                    methodIds={ ['amazon', 'braintreevisacheckout'] }
                 />
             </LocaleContext.Provider>
         );
@@ -90,10 +90,10 @@ describe('CheckoutButtonList', () => {
         render(
             <LocaleContext.Provider value={ localeContext }>
                 <CheckoutButtonList
-                    methodIds={ methodIds }
                     checkEmbeddedSupport={ checkEmbeddedSupport }
                     deinitialize={ noop }
                     initialize={ noop }
+                    methodIds={ methodIds }
                     onError={ onError }
                 />
             </LocaleContext.Provider>

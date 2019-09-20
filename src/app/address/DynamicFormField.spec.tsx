@@ -31,8 +31,8 @@ describe('DynamicFormField Component', () => {
         const component = mount(
             <Formik initialValues={ {} } onSubmit={ jest.fn() }>
                 <DynamicFormField
-                    onChange={ onChange }
                     field={ formFields.find(({ name }) => name === 'address1') as FormFieldType }
+                    onChange={ onChange }
                 />
             </Formik>
         );
@@ -48,8 +48,8 @@ describe('DynamicFormField Component', () => {
         const component = mount(
             <Formik initialValues={ {} } onSubmit={ jest.fn() }>
                 <DynamicFormField
-                    onChange={ onChange }
                     field={ formFields.find(({ name }) => name === 'address1') as FormFieldType }
+                    onChange={ onChange }
                 />
             </Formik>
         );

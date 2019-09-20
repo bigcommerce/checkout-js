@@ -28,12 +28,12 @@ describe('OrderSummaryDrawer', () => {
             <LocaleContext.Provider value={ localeContext }>
                 <OrderSummaryDrawer
                     { ...mapToOrderSummarySubtotalsProps(order) }
+                    additionalLineItems="foo"
                     headerLink={ <PrintLink /> }
                     lineItems={ order.lineItems }
-                    total={ order.orderAmount }
-                    storeCurrency={ getStoreConfig().currency }
                     shopperCurrency={ getStoreConfig().shopperCurrency }
-                    additionalLineItems="foo"
+                    storeCurrency={ getStoreConfig().currency }
+                    total={ order.orderAmount }
                 />
             </LocaleContext.Provider>
         );
@@ -44,16 +44,16 @@ describe('OrderSummaryDrawer', () => {
             <LocaleContext.Provider value={ localeContext }>
                 <OrderSummaryDrawer
                     { ...mapToOrderSummarySubtotalsProps(order) }
+                    additionalLineItems="foo"
                     headerLink={ <PrintLink /> }
                     lineItems={ {
                         giftCertificates: [ getGiftCertificateItem() ],
                         physicalItems: [],
                         digitalItems: [],
                     } }
-                    total={ order.orderAmount }
-                    storeCurrency={ getStoreConfig().currency }
                     shopperCurrency={ getStoreConfig().shopperCurrency }
-                    additionalLineItems="foo"
+                    storeCurrency={ getStoreConfig().currency }
+                    total={ order.orderAmount }
                 />
             </LocaleContext.Provider>
         );

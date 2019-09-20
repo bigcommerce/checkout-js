@@ -54,9 +54,9 @@ class InstrumentSelect extends PureComponent<InstrumentSelectProps> {
                     dropdown={
                         <InstrumentMenu
                             instruments={ instruments }
-                            selectedInstrumentId={ selectedInstrumentId }
                             onSelectInstrument={ onSelectInstrument }
                             onUseNewInstrument={ onUseNewInstrument }
+                            selectedInstrumentId={ selectedInstrumentId }
                         />
                     }
                 >
@@ -151,8 +151,8 @@ const InstrumentSelectButton: FunctionComponent<InstrumentSelectButtonProps> = (
         <InstrumentMenuItem
             className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
             instrument={ instrument }
-            testId={ testId }
             onClick={ onClick }
+            testId={ testId }
         />
     );
 };
@@ -177,8 +177,8 @@ const InstrumentOption: FunctionComponent<InstrumentOptionProps> = ({
     return (
         <InstrumentMenuItem
             instrument={ instrument }
-            testId="instrument-select-option"
             onClick={ handleClick }
+            testId="instrument-select-option"
         />
     );
 };
@@ -205,10 +205,10 @@ const InstrumentMenuItem: FunctionComponent<InstrumentMenuItemProps> = ({
 
     return (
         <button
-            type="button"
             className={ className }
             data-test={ testId }
             onClick={ onClick }
+            type="button"
         >
             <div className={ classNames(
                 'instrumentSelect-details',
@@ -223,12 +223,12 @@ const InstrumentMenuItem: FunctionComponent<InstrumentMenuItemProps> = ({
                 >
                     { cardInfo ?
                         <TranslatedString
-                            id="payment.instrument_ending_in_text"
                             data={ { cardTitle: cardInfo.niceType, endingIn: instrument.last4 } }
+                            id="payment.instrument_ending_in_text"
                         /> :
                         <TranslatedString
-                            id="payment.instrument_default_ending_in_text"
                             data={ { endingIn: instrument.last4 } }
+                            id="payment.instrument_default_ending_in_text"
                         /> }
                 </div>
 
@@ -241,12 +241,12 @@ const InstrumentMenuItem: FunctionComponent<InstrumentMenuItemProps> = ({
                 >
                     { isExpired ?
                         <TranslatedString
-                            id="payment.instrument_expired_text"
                             data={ { expiryDate: `${instrument.expiryMonth}/${instrument.expiryYear}` } }
+                            id="payment.instrument_expired_text"
                         /> :
                         <TranslatedString
-                            id="payment.instrument_expires_text"
                             data={ { expiryDate: `${instrument.expiryMonth}/${instrument.expiryYear}` } }
+                            id="payment.instrument_expires_text"
                         /> }
                 </div>
             </div>
@@ -268,8 +268,8 @@ const InstrumentUseNewButton: FunctionComponent<InstrumentUseNewButtonProps> = (
     <button
         className={ className }
         data-test={ testId }
-        type="button"
         onClick={ onClick }
+        type="button"
     >
         <div className="instrumentSelect-details instrumentSelect-details--addNew">
             <CreditCardIcon />

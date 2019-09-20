@@ -21,15 +21,15 @@ const StaticConsignmentItemList: FunctionComponent<StaticConsignmentItemListProp
         <div className="staticConsignment-items">
             <strong>
                 <TranslatedString
-                    id="cart.item_count_text"
                     data={ { count: getLineItemsCount(lineItems) } }
+                    id="cart.item_count_text"
                 />
             </strong>
 
             <ul>
                 { lineItems.map(item =>
                     <li key={ item.id }>
-                        { item.quantity } x { item.name }
+                        { `${item.quantity} x ${item.name}` }
                     </li>
                 ) }
             </ul>

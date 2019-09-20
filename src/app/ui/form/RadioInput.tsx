@@ -25,16 +25,16 @@ const RadioInput = forwardRef((
     <>
         <Input
             { ...rest }
+            checked={ checked }
             className={ classNames(
                 'form-radio',
                 'optimizedCheckout-form-radio',
                 additionalClassName
             ) }
+            id={ id }
             ref={ ref }
             type="radio"
             value={ value }
-            id={ id }
-            checked={ checked }
         />
         <Label htmlFor={ id }>
             { label }

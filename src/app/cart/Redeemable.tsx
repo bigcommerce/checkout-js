@@ -118,18 +118,18 @@ const RedeemableForm: FunctionComponent<Partial<RedeemableProps> & FormikProps<R
             <div className="form-prefixPostfix">
                 <TextInput
                     { ...field }
-                    onKeyDown={ handleKeyDown(setSubmitted) }
                     className="form-input optimizedCheckout-form-input"
+                    onKeyDown={ handleKeyDown(setSubmitted) }
                     testId="redeemableEntry-input"
                 />
 
                 <Button
                     className="form-prefixPostfix-button--postfix"
-                    testId="redeemableEntry-submit"
                     id="applyRedeemableButton"
-                    variant={ ButtonVariant.Secondary }
                     isLoading={ isApplyingRedeemable }
                     onClick={ handleSubmit(setSubmitted) }
+                    testId="redeemableEntry-submit"
+                    variant={ ButtonVariant.Secondary }
                 >
                     <TranslatedString id="redeemable.apply_action" />
                 </Button>
@@ -144,9 +144,9 @@ const RedeemableForm: FunctionComponent<Partial<RedeemableProps> & FormikProps<R
 
     const renderContent = useCallback(memoizeOne(({ setSubmitted }: FormContextType) => (
         <FormField
-            name="redeemableCode"
-            label={ renderLabel }
             input={ renderInput(setSubmitted) }
+            label={ renderLabel }
+            name="redeemableCode"
         />
     )), [
         renderLabel,

@@ -27,10 +27,11 @@ const OrderSummaryDiscount: FunctionComponent<OrderSummaryDiscountProps> = ({
         amount={ -1 * (amount || 0) }
     >
         { remaining && remaining > 0 && <span
-            data-test="cart-price-remaining"
             className="cart-priceItem-postFix optimizedCheckout-contentSecondary"
+            data-test="cart-price-remaining"
         >
-            Remaining: <ShopperCurrency amount={ remaining } />
+            Remaining:
+            <ShopperCurrency amount={ remaining } />
         </span> }
 
         { code && <span

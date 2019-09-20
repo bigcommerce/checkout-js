@@ -48,9 +48,9 @@ describe('AddressSelect Component', () => {
                 <LocaleContext.Provider value={ localeContext }>
                     <AddressSelect
                         addresses={ getCustomer().addresses }
-                        selectedAddress={ getAddress() }
                         onSelectAddress={ noop }
                         onUseNewAddress={ noop }
+                        selectedAddress={ getAddress() }
                     />
                 </LocaleContext.Provider>
             </CheckoutProvider>
@@ -65,9 +65,9 @@ describe('AddressSelect Component', () => {
                 <LocaleContext.Provider value={ localeContext }>
                     <AddressSelect
                         addresses={ getCustomer().addresses }
-                        selectedAddress={ getAddress() }
                         onSelectAddress={ noop }
                         onUseNewAddress={ noop }
+                        selectedAddress={ getAddress() }
                     />
                 </LocaleContext.Provider>
             </CheckoutProvider>
@@ -115,8 +115,8 @@ describe('AddressSelect Component', () => {
                     <AddressSelect
                         addresses={ getCustomer().addresses }
                         onSelectAddress={ onSelectAddress }
-                        selectedAddress={ getAddress() }
                         onUseNewAddress={ noop }
+                        selectedAddress={ getAddress() }
                     />
                 </LocaleContext.Provider>
             </CheckoutProvider>

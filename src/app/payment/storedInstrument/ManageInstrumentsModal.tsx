@@ -96,18 +96,18 @@ class ManageInstrumentsModal extends Component<ManageInstrumentsModalProps & Wit
                 <Fragment>
                     <Button
                         data-test="manage-instrument-cancel-button"
-                        size={ ButtonSize.Small }
                         onClick={ this.handleCancel }
+                        size={ ButtonSize.Small }
                     >
                         <TranslatedString id="common.cancel_action" />
                     </Button>
 
                     <Button
                         data-test="manage-instrument-confirm-button"
-                        size={ ButtonSize.Small }
-                        variant={ ButtonVariant.Primary }
                         disabled={ isDeletingInstrument }
                         onClick={ this.handleConfirmDelete }
+                        size={ ButtonSize.Small }
+                        variant={ ButtonVariant.Primary }
                     >
                         <TranslatedString id="payment.instrument_manage_modal_confirmation_action" />
                     </Button>

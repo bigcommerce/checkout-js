@@ -19,8 +19,7 @@ exports[`OrderSummaryPrice when has non-zero amount and has only required props 
           data-test="cart-price-label"
         >
           Label
-           
-           
+            
         </span>
       </span>
       <span

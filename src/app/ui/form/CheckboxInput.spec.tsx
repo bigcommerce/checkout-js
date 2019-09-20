@@ -7,14 +7,14 @@ import Label from './Label';
 
 describe('CheckboxInput', () => {
     it('renders `input` element', () => {
-        const component = shallow(<CheckboxInput label="label" value="x" name="foobar" checked={ false } />);
+        const component = shallow(<CheckboxInput checked={ false } label="label" name="foobar" value="x" />);
 
         expect(component.find(Input).prop('type'))
             .toEqual('checkbox');
     });
 
     it('renders with passed props', () => {
-        const component = shallow(<CheckboxInput id="id" label="label" value="x" name="foobar" checked={ false } />);
+        const component = shallow(<CheckboxInput checked={ false } id="id" label="label" name="foobar" value="x" />);
 
         expect(component.find(Label).props())
             .toEqual(expect.objectContaining({
@@ -31,7 +31,7 @@ describe('CheckboxInput', () => {
     });
 
     it('renders with class names', () => {
-        const component = shallow(<CheckboxInput label="label" value="x" name="foobar" checked={ false } />);
+        const component = shallow(<CheckboxInput checked={ false } label="label" name="foobar" value="x" />);
 
         expect(component.find(Input).hasClass('form-checkbox'))
             .toEqual(true);

@@ -40,37 +40,39 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
                 data-test="cart-count-total"
             >
                 <TranslatedString
-                    id="cart.item_count_text"
                     data={ { count: getItemsCount(items) } }
+                    id="cart.item_count_text"
                 />
             </h3>
 
-            <ul className="productList" aria-live="polite"> {
-                [
-                    ...items.physicalItems
-                        .slice()
-                        .sort(item => item.variantId)
-                        .map(mapFromPhysical),
-                    ...items.giftCertificates
-                        .slice()
-                        .map(mapFromGiftCertificate),
-                    ...items.digitalItems
-                        .slice()
-                        .sort(item => item.variantId)
-                        .map(mapFromDigital),
-                    ...(items.customItems || [])
-                        .map(mapFromCustom),
-                ]
-                    .slice(0, isExpanded ? undefined : COLLAPSED_ITEMS_LIMIT)
-                    .map(summaryItemProps =>
-                        <li
-                            key={ summaryItemProps.id }
-                            className="productList-item is-visible"
-                        >
-                            <OrderSummaryItem { ...summaryItemProps } />
-                        </li>
-                    )
-            } </ul>
+            <ul aria-live="polite" className="productList">
+                {
+                    [
+                        ...items.physicalItems
+                            .slice()
+                            .sort(item => item.variantId)
+                            .map(mapFromPhysical),
+                        ...items.giftCertificates
+                            .slice()
+                            .map(mapFromGiftCertificate),
+                        ...items.digitalItems
+                            .slice()
+                            .sort(item => item.variantId)
+                            .map(mapFromDigital),
+                        ...(items.customItems || [])
+                            .map(mapFromCustom),
+                    ]
+                        .slice(0, isExpanded ? undefined : COLLAPSED_ITEMS_LIMIT)
+                        .map(summaryItemProps =>
+                            <li
+                                className="productList-item is-visible"
+                                key={ summaryItemProps.id }
+                            >
+                                <OrderSummaryItem { ...summaryItemProps } />
+                            </li>
+                        )
+                }
+            </ul>
 
             { this.renderActions() }
         </Fragment>);

@@ -59,10 +59,10 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
 
             <div className="customerView-actions">
                 { isSignedIn && <Button
-                    testId="sign-out-link"
                     isLoading={ isSigningOut }
                     onClick={ handleSignOut }
                     size={ ButtonSize.Tiny }
+                    testId="sign-out-link"
                     variant={ ButtonVariant.Secondary }
                 >
                     <TranslatedString id="customer.sign_out_action" />

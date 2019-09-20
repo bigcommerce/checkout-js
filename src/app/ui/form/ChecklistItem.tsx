@@ -28,8 +28,8 @@ const ChecklistItem: FunctionComponent<ChecklistItemProps> = ({
     const renderInput = useCallback(memoizeOne((isSelected: boolean) => ({ field }: FieldProps) => (
         <ChecklistItemInput
             { ...field }
-            isSelected={ field.value === value }
             id={ htmlId }
+            isSelected={ field.value === value }
             value={ value }
         >
             { label instanceof Function ?

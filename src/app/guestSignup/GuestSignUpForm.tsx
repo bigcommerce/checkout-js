@@ -44,8 +44,8 @@ const GuestSignUpForm: FunctionComponent<SignUpFormProps & WithLanguageProps & F
                 <Button
                     id="createAccountButton"
                     isLoading={ isSigningUp }
-                    variant={ ButtonVariant.Primary }
                     type="submit"
+                    variant={ ButtonVariant.Primary }
                 >
                     <TranslatedString id="customer.create_account_action" />
                 </Button>

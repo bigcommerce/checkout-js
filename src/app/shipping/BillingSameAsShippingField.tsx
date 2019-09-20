@@ -15,9 +15,9 @@ const BillingSameAsShippingField: FunctionComponent<BillingSameAsShippingFieldPr
     ), []);
 
     return <CheckboxFormField
-        name="billingSameAsShipping"
         id="sameAsBilling"
         labelContent={ labelContent }
+        name="billingSameAsShipping"
         onChange={ onChange }
     />;
 };

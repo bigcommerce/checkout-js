@@ -14,12 +14,12 @@ describe('OrderSummarySubtotals', () => {
 
         orderSummarySubtotals = shallow(<OrderSummarySubtotals
             coupons={ order.coupons }
-            giftCertificates={ order.payments && mapFromPayments(order.payments) }
             discountAmount={ order.discountAmount }
-            taxes={ order.taxes }
-            shippingAmount={ order.shippingCostTotal }
+            giftCertificates={ order.payments && mapFromPayments(order.payments) }
             handlingAmount={ order.handlingCostTotal }
+            shippingAmount={ order.shippingCostTotal }
             subtotalAmount={ order.orderAmount }
+            taxes={ order.taxes }
         />);
     });
 

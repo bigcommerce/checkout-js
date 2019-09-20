@@ -34,7 +34,7 @@ describe('TranslatedString Component', () => {
 
         expect(testRenderer.create(
             <LocaleContext.Provider value={ localeContext }>
-                <TranslatedString id="address.address_line_1_label" data={ data } />
+                <TranslatedString data={ data } id="address.address_line_1_label" />
             </LocaleContext.Provider>)
             .toJSON());
 

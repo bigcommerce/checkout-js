@@ -140,9 +140,9 @@ class CreditCardPaymentMethod extends Component<
                     { shouldShowInstrumentFieldset && <InstrumentFieldset
                         instruments={ instruments }
                         method={ method }
-                        selectedInstrumentId={ selectedInstrumentId }
-                        onUseNewInstrument={ this.handleUseNewCard }
                         onSelectInstrument={ this.handleSelectInstrument }
+                        onUseNewInstrument={ this.handleUseNewCard }
+                        selectedInstrumentId={ selectedInstrumentId }
                         validateInstrument={ <CreditCardValidation
                             shouldShowCardCodeField={ isInstrumentCardCodeRequiredProp }
                             shouldShowNumberField={ shouldShowNumberField }

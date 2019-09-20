@@ -128,8 +128,8 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
                     /> :
                     <TermsConditionsField
                         name="terms"
-                        type={ TermsConditionsType.TextArea }
                         terms={ termsConditionsText }
+                        type={ TermsConditionsType.TextArea }
                     /> }
             </Fragment> }
 

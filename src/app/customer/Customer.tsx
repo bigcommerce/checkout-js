@@ -86,8 +86,8 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
                         onError={ onUnhandledError }
                     />
                 }
-                email={ this.draftEmail || email }
                 defaultShouldSubscribe={ defaultShouldSubscribe }
+                email={ this.draftEmail || email }
                 isContinuingAsGuest={ isContinuingAsGuest }
                 onChangeEmail={ this.handleChangeEmail }
                 onContinueAsGuest={ this.handleContinueAsGuest }
@@ -113,10 +113,10 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
                 email={ this.draftEmail || email }
                 forgotPasswordUrl={ forgotPasswordUrl }
                 isSigningIn={ isSigningIn }
-                signInError={ signInError }
                 onCancel={ this.handleCancelSignIn }
                 onChangeEmail={ this.handleChangeEmail }
                 onSignIn={ this.handleSignIn }
+                signInError={ signInError }
             />
         );
     }

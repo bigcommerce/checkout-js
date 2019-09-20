@@ -59,15 +59,15 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
 
         return (
             <Form autoComplete="on">
-                <Fieldset ref={ this.addressFormRef } id="checkoutBillingAddress">
+                <Fieldset id="checkoutBillingAddress" ref={ this.addressFormRef }>
                     { hasAddresses &&
                         <Fieldset id="billingAddresses">
                             <LoadingOverlay isLoading={ isResettingAddress }>
                                 <AddressSelect
                                     addresses={ addresses }
-                                    selectedAddress={ hasValidCustomerAddress ? billingAddress : undefined }
-                                    onUseNewAddress={ this.handleUseNewAddress }
                                     onSelectAddress={ this.handleSelectAddress }
+                                    onUseNewAddress={ this.handleUseNewAddress }
+                                    selectedAddress={ hasValidCustomerAddress ? billingAddress : undefined }
                                 />
                             </LoadingOverlay>
                         </Fieldset> }
@@ -77,10 +77,10 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
                             <AddressForm
                                 countries={ countries }
                                 countriesWithAutocomplete={ countriesWithAutocomplete }
-                                setFieldValue={ setFieldValue }
-                                googleMapsApiKey={ googleMapsApiKey }
                                 countryCode={ values.countryCode }
                                 formFields={ getFields(values.countryCode) }
+                                googleMapsApiKey={ googleMapsApiKey }
+                                setFieldValue={ setFieldValue }
                             />
                         </LoadingOverlay> }
                 </Fieldset>
@@ -90,11 +90,11 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
 
                 <div className="form-actions">
                     <Button
-                        variant={ ButtonVariant.Primary }
-                        isLoading={ isUpdating || isResettingAddress }
                         disabled={ isUpdating || isResettingAddress }
                         id="checkout-billing-continue"
+                        isLoading={ isUpdating || isResettingAddress }
                         type="submit"
+                        variant={ ButtonVariant.Primary }
                     >
                         <TranslatedString id="common.continue_action" />
                     </Button>

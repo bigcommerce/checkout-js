@@ -19,10 +19,11 @@ const PrintLink: FunctionComponent<PrintLinkProps> = ({ className }) => {
     return (
         <a
             className={ className || 'cart-header-link' }
-            onClick={ handleClick }
             id="cart-print-link"
+            onClick={ handleClick }
         >
-            <IconPrint />&nbsp;
+            <IconPrint />
+            { ' ' }
             <TranslatedString id="cart.print_action" />
         </a>
     );

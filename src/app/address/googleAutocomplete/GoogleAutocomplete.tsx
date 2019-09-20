@@ -52,16 +52,16 @@ class GoogleAutocomplete extends PureComponent<GoogleAutocompleteProps, GoogleAu
 
         return (
             <Autocomplete
-                listTestId="address-autocomplete-suggestions"
-                items={ items }
                 initialHighlightedIndex={ 0 }
+                initialValue={ initialValue }
                 inputProps={ {
                     ...inputProps,
                     autoComplete,
                 } }
-                initialValue={ initialValue }
-                onSelect={ this.onSelect }
+                items={ items }
+                listTestId="address-autocomplete-suggestions"
                 onChange={ this.onChange }
+                onSelect={ this.onSelect }
                 onToggleOpen={ onToggleOpen }
             >
                 <div className="co-googleAutocomplete-footer" />

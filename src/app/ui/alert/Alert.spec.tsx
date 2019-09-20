@@ -57,8 +57,8 @@ describe('Alert', () => {
     it('overrides default icon if custom icon is provided', () => {
         const component = shallow(
             <Alert
-                type={ AlertType.Info }
                 icon={ <IconTag /> }
+                type={ AlertType.Info }
             />
         );
 

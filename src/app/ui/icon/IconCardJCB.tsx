@@ -4,12 +4,12 @@ import withIconContainer from './withIconContainer';
 
 const IconCardJCB: FunctionComponent = () => (
     <svg
-        viewBox="0 0 480 301"
-        xmlns="http://www.w3.org/2000/svg"
-        fillRule="evenodd"
         clipRule="evenodd"
+        fillRule="evenodd"
         strokeLinejoin="round"
         strokeMiterlimit="1.4"
+        viewBox="0 0 480 301"
+        xmlns="http://www.w3.org/2000/svg"
     >
         <path d="M444 0H24C12 0 0 12 0 24v240.1c0 24 12 36 36 36h408c24 0 36-12 36-36v-228C480 12 468 0 444 0z" fill="#f4f4f4" />
         <path d="M314.8 174.9h21.5l2.7-.2c4-.8 7.6-4.5 7.6-9.6 0-5-3.5-8.6-7.6-9.6l-2.7-.3h-21.5V175z" fill="#469951" fillRule="nonzero" />

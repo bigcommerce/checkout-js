@@ -3,7 +3,7 @@ import React, { FunctionComponent } from 'react';
 import withIconContainer from './withIconContainer';
 
 const IconCardAmex: FunctionComponent = () => (
-    <svg width="156" height="104" viewBox="0 0 156 104" xmlns="http://www.w3.org/2000/svg">
+    <svg height="104" viewBox="0 0 156 104" width="156" xmlns="http://www.w3.org/2000/svg">
         <g fill="none" fillRule="evenodd">
             <path d="M144 104H12c-6.15 0-12-5.85-12-12V12C0 5.85 5.85 0 12 0h132c6.15 0 12 5.85 12 12v80c0 6.15-5.85 12-12 12z" fill="#60C7EE" />
             <g fill="#FFF">
