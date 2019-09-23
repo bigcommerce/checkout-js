@@ -1,6 +1,12 @@
-import { CheckoutSelectors, CustomerInitializeOptions, PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import React, { useCallback, FunctionComponent } from 'react';
+import {
+    CheckoutSelectors,
+    CustomerInitializeOptions,
+    PaymentInitializeOptions,
+} from '@bigcommerce/checkout-sdk';
+import React, { useCallback, useContext, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
+
+import PaymentContext from '../PaymentContext';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 
@@ -22,6 +28,7 @@ const AmazonPaymentMethod: FunctionComponent<AmazonPaymentMethodProps> = ({
     onUnhandledError,
     ...rest
 }) => {
+    const paymentContext = useContext(PaymentContext);
     const initializeAmazonCustomer = useCallback((options: CustomerInitializeOptions) => initializeCustomer({
         ...options,
         amazon: {
@@ -34,9 +41,21 @@ const AmazonPaymentMethod: FunctionComponent<AmazonPaymentMethodProps> = ({
         ...options,
         amazon: {
             container: 'paymentWidget',
-            onError: onUnhandledError,
+            onError: (error: Error) => {
+                if (onUnhandledError) {
+                    onUnhandledError(error);
+                }
+                if (paymentContext) {
+                    paymentContext.disableSubmit(rest.method, true);
+                }
+            },
+            onPaymentSelect: () => {
+                if (paymentContext) {
+                    paymentContext.disableSubmit(rest.method, false);
+                }
+            },
         },
-    }), [initializePayment, onUnhandledError]);
+    }), [initializePayment, onUnhandledError, paymentContext, rest.method]);
 
     return <HostedWidgetPaymentMethod
         { ...rest }
