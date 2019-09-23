@@ -69,6 +69,7 @@
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
+    "@bigcommerce/eslint-config": "^1.0.0",
     "@bigcommerce/tslint-config": "^4.0.1",
     "@types/enzyme": "^3.10.3",
     "@types/jest": "^24.0.17",
