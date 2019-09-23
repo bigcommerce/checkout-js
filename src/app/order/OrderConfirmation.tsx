@@ -13,7 +13,7 @@ import { AccountCreationFailedError, AccountCreationRequirementsError } from '..
 import { TranslatedString } from '../locale';
 import { Button, ButtonVariant } from '../ui/button';
 import { LazyContainer, LoadingSpinner } from '../ui/loading';
-import { MobileView } from '../ui/responsive';
+import { ViewPicker } from '../ui/responsive';
 
 import getPaymentInstructions from './getPaymentInstructions';
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
@@ -129,10 +129,10 @@ class OrderConfirmation extends Component<
 
                         { paymentInstructions && <OrderConfirmationSection>
                             <div
+                                data-test="payment-instructions"
                                 dangerouslySetInnerHTML={ {
                                     __html: DOMPurify.sanitize(paymentInstructions),
                                 } }
-                                data-test="payment-instructions"
                             />
                         </OrderConfirmationSection> }
 
@@ -193,35 +193,36 @@ class OrderConfirmation extends Component<
         } = config;
 
         return <>
-            <MobileView>
-                { matched => {
-                    if (matched) {
-                        return <LazyContainer>
-                            <OrderSummaryDrawer
-                                { ...mapToOrderSummarySubtotalsProps(order) }
-                                headerLink={ <PrintLink className="modal-header-link cart-modal-link" /> }
-                                lineItems={ order.lineItems }
-                                shopperCurrency={ shopperCurrency }
-                                storeCurrency={ currency }
-                                total={ order.orderAmount }
-                            />
-                        </LazyContainer>;
-                    }
-
-                    return <aside className="layout-cart">
+            <ViewPicker>
+                { (matches: { print: boolean; small: boolean }) => {
+                    if (matches.print || !matches.small) {
+                        return <aside className="layout-cart">
                         <LazyContainer>
                             <OrderSummary
                                 headerLink={ <PrintLink /> }
                                 { ...mapToOrderSummarySubtotalsProps(order) }
                                 lineItems={ order.lineItems }
-                                shopperCurrency={ shopperCurrency }
-                                storeCurrency={ currency }
                                 total={ order.orderAmount }
+                                storeCurrency={ currency }
+                                shopperCurrency={ shopperCurrency }
                             />
                         </LazyContainer>
                     </aside>;
+                    }
+                    if (matches.small) {
+                        return <LazyContainer>
+                            <OrderSummaryDrawer
+                                { ...mapToOrderSummarySubtotalsProps(order) }
+                                headerLink={ <PrintLink className="modal-header-link cart-modal-link" /> }
+                                lineItems={ order.lineItems }
+                                total={ order.orderAmount }
+                                storeCurrency={ currency }
+                                shopperCurrency={ shopperCurrency }
+                            />
+                        </LazyContainer>;
+                    }
                 } }
-            </MobileView>
+            </ViewPicker>
         </>;
     }
 

@@ -49,15 +49,31 @@
 }
 
 @media print {
+    @page {
+        margin: remCalc(40px) 0;
+        size: auto;
+    }
+
     .layout-cart {
+        display: block;
         float: none;
-        page-break-before: always;
+        page-break-inside: auto;
         // scss-lint:disable ImportantRule
         position: static !important; // 1
         // scss-lint:enable ImportantRule
+        width: 75%;
+    }
+
+    .cart {
+        display: block;
+    }
+
+    .continueButtonContainer {
+        display: none;
     }
 
     .layout-main {
         float: none;
+        width: 75%;
     }
 }
