@@ -30,7 +30,8 @@ const OrderSummaryDiscount: FunctionComponent<OrderSummaryDiscountProps> = ({
             className="cart-priceItem-postFix optimizedCheckout-contentSecondary"
             data-test="cart-price-remaining"
         >
-            Remaining:
+            <TranslatedString id="cart.remaining_text" />
+            { ': ' }
             <ShopperCurrency amount={ remaining } />
         </span> }
 

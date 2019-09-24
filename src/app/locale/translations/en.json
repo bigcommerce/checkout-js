@@ -57,6 +57,7 @@
             "handling_text": "Handling",
             "item_count_text": "{count, plural, one{1 Item} other{# Items} }",
             "print_action": "Print",
+            "remaining_text": "Remaining",
             "remove_action": "remove",
             "see_all_action": "See All",
             "see_less_action": "See Less",

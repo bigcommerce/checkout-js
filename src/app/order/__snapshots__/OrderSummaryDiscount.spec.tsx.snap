@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OrderSummaryDiscount when discount has code and remaining balance matches snapshot 1`] = `
+<div>
+  <div
+    aria-live="polite"
+    class="cart-priceItem optimizedCheckout-contentPrimary"
+  >
+    <span
+      class="cart-priceItem-label"
+    >
+      <span
+        data-test="cart-price-label"
+      >
+        Gift Certificate  
+      </span>
+    </span>
+    <span
+      class="cart-priceItem-value"
+    >
+      <span
+        data-test="cart-price-value"
+      >
+        -$11.20
+      </span>
+    </span>
+    <span
+      class="cart-priceItem-postFix optimizedCheckout-contentSecondary"
+      data-test="cart-price-remaining"
+    >
+      Remaining: $2.24
+    </span>
+    <span
+      class="cart-priceItem-postFix optimizedCheckout-contentSecondary"
+      data-test="cart-price-code"
+    >
+      ABCDFE
+    </span>
+  </div>
+</div>
+`;
