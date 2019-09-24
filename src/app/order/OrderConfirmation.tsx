@@ -195,31 +195,34 @@ class OrderConfirmation extends Component<
         return <>
             <ViewPicker>
                 { (matches: { print: boolean; small: boolean }) => {
-                    if (matches.print || !matches.small) {
-                        return <aside className="layout-cart">
-                        <LazyContainer>
-                            <OrderSummary
-                                headerLink={ <PrintLink /> }
-                                { ...mapToOrderSummarySubtotalsProps(order) }
-                                lineItems={ order.lineItems }
-                                total={ order.orderAmount }
-                                storeCurrency={ currency }
-                                shopperCurrency={ shopperCurrency }
-                            />
-                        </LazyContainer>
-                    </aside>;
-                    }
-                    if (matches.small) {
-                        return <LazyContainer>
-                            <OrderSummaryDrawer
-                                { ...mapToOrderSummarySubtotalsProps(order) }
-                                headerLink={ <PrintLink className="modal-header-link cart-modal-link" /> }
-                                lineItems={ order.lineItems }
-                                total={ order.orderAmount }
-                                storeCurrency={ currency }
-                                shopperCurrency={ shopperCurrency }
-                            />
-                        </LazyContainer>;
+                    switch (true) {
+                        case matches.small:
+                            return <LazyContainer>
+                                        <OrderSummaryDrawer
+                                            { ...mapToOrderSummarySubtotalsProps(order) }
+                                            headerLink={ <PrintLink className="modal-header-link cart-modal-link" /> }
+                                            lineItems={ order.lineItems }
+                                            total={ order.orderAmount }
+                                            storeCurrency={ currency }
+                                            shopperCurrency={ shopperCurrency }
+                                        />
+                                    </LazyContainer>;
+
+                        case matches.print:
+                        default:
+                            return <aside className="layout-cart">
+                                        <LazyContainer>
+                                            <OrderSummary
+                                                headerLink={ <PrintLink /> }
+                                                { ...mapToOrderSummarySubtotalsProps(order) }
+                                                lineItems={ order.lineItems }
+                                                total={ order.orderAmount }
+                                                storeCurrency={ currency }
+                                                shopperCurrency={ shopperCurrency }
+                                            />
+                                        </LazyContainer>
+                                    </aside>;
+
                     }
                 } }
             </ViewPicker>
