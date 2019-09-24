@@ -1,20 +1,27 @@
-import { shallow, ShallowWrapper } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
-import { ShopperCurrency } from '../currency';
+import { getStoreConfig } from '../config/config.mock';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 
 import OrderSummaryDiscount from './OrderSummaryDiscount';
 import OrderSummaryPrice from './OrderSummaryPrice';
 
 describe('OrderSummaryDiscount', () => {
-    let discount: ShallowWrapper;
+    let discount: ReactWrapper;
+    let localeContext: LocaleContextType;
 
     describe('when it is a simple discount', () => {
         beforeEach(() => {
-            discount = shallow(<OrderSummaryDiscount
-                amount={ 10 }
-                label={ <span>Foo</span> }
-            />);
+            localeContext = createLocaleContext(getStoreConfig());
+            discount = mount(
+                <LocaleContext.Provider value={ localeContext }>
+                    <OrderSummaryDiscount
+                        amount={ 10 }
+                        label={ <span>Foo</span> }
+                    />
+                </LocaleContext.Provider>
+            );
         });
 
         it('passes right props to OrderSummaryPrice', () => {
@@ -28,12 +35,20 @@ describe('OrderSummaryDiscount', () => {
 
     describe('when discount has code and remaining balance', () => {
         beforeEach(() => {
-            discount = shallow(<OrderSummaryDiscount
-                amount={ 10 }
-                code="ABCDFE"
-                label="Gift Certificate"
-                remaining={ 2 }
-            />);
+            discount = mount(
+                <LocaleContext.Provider value={ localeContext }>
+                    <OrderSummaryDiscount
+                        amount={ 10 }
+                        code="ABCDFE"
+                        label="Gift Certificate"
+                        remaining={ 2 }
+                    />
+                </LocaleContext.Provider>
+            );
+        });
+
+        it('matches snapshot', () => {
+            expect(discount.render()).toMatchSnapshot();
         });
 
         it('renders gift certificate code', () => {
@@ -47,7 +62,7 @@ describe('OrderSummaryDiscount', () => {
         });
 
         it('renders remaining balance', () => {
-            expect(discount.find(ShopperCurrency).props())
+            expect(discount.find('[data-test="cart-price-remaining"] ShopperCurrency').props())
                 .toMatchObject({ amount: 2 });
         });
     });
