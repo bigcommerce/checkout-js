@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.1](https://github.com/bigcommerce/checkout-js/compare/v1.2.0...v1.2.1) (2019-09-24)
+
+
+### Bug Fixes
+
+* **cart:** CHECKOUT-4378 Add missing spacing between label and dollar amount ([8c49c69](https://github.com/bigcommerce/checkout-js/commit/8c49c69))
+
 ## [1.2.0](https://github.com/bigcommerce/checkout-js/compare/v1.1.3...v1.2.0) (2019-09-24)
 
 
