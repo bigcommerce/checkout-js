@@ -128,6 +128,7 @@
 @media print {
     .cart {
         background-color: color("whites", "bright");
+        display: block;
     }
 
     .cart-header-link {

@@ -50,7 +50,7 @@
 
 @media print {
     @page {
-        margin: remCalc(20px) 0;
+        margin: spacing("single") 0;
         size: auto;
     }
 
@@ -61,19 +61,11 @@
         // scss-lint:disable ImportantRule
         position: static !important; // 1
         // scss-lint:enable ImportantRule
-        width: 75%;
-    }
-
-    .cart {
-        display: block;
-    }
-
-    .continueButtonContainer {
-        display: none;
+        width: $print-pageThreeQuarters;
     }
 
     .layout-main {
         float: none;
-        width: 75%;
+        width: $print-pageThreeQuarters;
     }
 }
