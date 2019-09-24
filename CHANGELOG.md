@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/bigcommerce/checkout-js/compare/v1.1.3...v1.2.0) (2019-09-24)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-4418 Check whether stack trace exists under exception key rather than at top level ([d9e4e42](https://github.com/bigcommerce/checkout-js/commit/d9e4e42))
+
+
+### Features
+
+* **common:** CHECKOUT-4378 Add sort-props and one-expression-per-line rules ([990d043](https://github.com/bigcommerce/checkout-js/commit/990d043))
+* **common:** CHECKOUT-4422 Use BC eslint-config ([fdb7eac](https://github.com/bigcommerce/checkout-js/commit/fdb7eac))
+
 ### [1.1.3](https://github.com/bigcommerce/checkout-js/compare/v1.1.2...v1.1.3) (2019-09-18)
 
 
