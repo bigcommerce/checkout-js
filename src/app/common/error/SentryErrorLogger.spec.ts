@@ -41,8 +41,13 @@ describe('SentryErrorLogger', () => {
 
         DEFAULT_ERROR_TYPES.forEach(type => {
             const event = {
-                exception: { values: [{ type, value: `${type} error message` }] },
-                stacktrace: { frames: [{ filename: 'js/app-123.js' }] },
+                exception: {
+                    values: [{
+                        stacktrace: { frames: [{ filename: 'js/app-123.js' }] },
+                        type,
+                        value: `${type} error message`,
+                    }],
+                },
             };
             const originalException = new Error(`${type} error message`);
 
@@ -55,8 +60,13 @@ describe('SentryErrorLogger', () => {
 
         ['Foo', 'Bar'].forEach(type => {
             const event = {
-                exception: { values: [{ type, value: `${type} error message` }] },
-                stacktrace: { frames: [{ filename: 'js/app-123.js' }] },
+                exception: {
+                    values: [{
+                        stacktrace: { frames: [{ filename: 'js/app-123.js' }] },
+                        type,
+                        value: `${type} error message`,
+                    }],
+                },
             };
             const originalException = new Error(`${type} error message`);
 
@@ -76,8 +86,13 @@ describe('SentryErrorLogger', () => {
 
         ['Foo', 'Bar'].forEach(type => {
             const event = {
-                exception: { values: [{ type, value: `${type} error message` }] },
-                stacktrace: { frames: [{ filename: 'js/app-123.js' }] },
+                exception: {
+                    values: [{
+                        stacktrace: { frames: [{ filename: 'js/app-123.js' }] },
+                        type,
+                        value: `${type} error message`,
+                    }],
+                },
             };
             const originalException = new Error(`${type} error message`);
 
@@ -95,8 +110,13 @@ describe('SentryErrorLogger', () => {
 
         const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
         const event = {
-            exception: { values: [{ type: 'Error', value: 'Unexpected error' }] },
-            stacktrace: { frames: [{ filename: 'js/app-123.js' }] },
+            exception: {
+                values: [{
+                    stacktrace: { frames: [{ filename: 'js/app-123.js' }] },
+                    type: 'Error',
+                    value: 'Unexpected error',
+                }],
+            },
         };
         const hint = { originalException: 'Unexpected error' };
 
