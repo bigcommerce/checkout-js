@@ -1,7 +1,7 @@
 import { captureException, init, withScope, BrowserOptions, Event, Severity, StackFrame } from '@sentry/browser';
 import { RewriteFrames } from '@sentry/integrations';
 import { EventHint } from '@sentry/types';
-import { includes, isEmpty } from 'lodash';
+import { every, includes, isEmpty } from 'lodash';
 
 import computeErrorCode from './computeErrorCode';
 import DEFAULT_ERROR_TYPES from './defaultErrorTypes';
@@ -90,7 +90,7 @@ export default class SentryErrorLogger implements ErrorLogger {
                 return null;
             }
 
-            if (!event.stacktrace || isEmpty(event.stacktrace.frames)) {
+            if (every(event.exception.values, value => !value.stacktrace || isEmpty(value.stacktrace.frames))) {
                 return null;
             }
 
