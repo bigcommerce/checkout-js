@@ -42,6 +42,7 @@
             {
                 "allow": [
                     "react-dom/test-utils",
+                    "scripts/*",
                     "**/*.{mock,scss}",
                     "**/index.ts",
                     "**/billing/Billing.tsx",

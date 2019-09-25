@@ -1,9 +1,17 @@
 const { exec } = require('child_process');
 
-class BuildHooks {
+class BuildHookPlugin {
+    constructor({ onDone } = {}) {
+        this.onDone = onDone;
+    }
+
     apply(compiler) {
         if (process.env.WEBPACK_DONE) {
             compiler.hooks.done.tapPromise('BuildHooks', this.process(process.env.WEBPACK_DONE));
+        }
+
+        if (this.onDone) {
+            compiler.hooks.done.tap('BuildHooks', this.onDone);
         }
     }
 
@@ -30,4 +38,4 @@ class BuildHooks {
     }
 }
 
-module.exports = BuildHooks;
+module.exports = BuildHookPlugin;
