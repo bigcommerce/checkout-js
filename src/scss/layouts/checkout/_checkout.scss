@@ -61,11 +61,11 @@
         // scss-lint:disable ImportantRule
         position: static !important; // 1
         // scss-lint:enable ImportantRule
-        width: $print-pageThreeQuarters;
+        width: $printLayout-widthFixed;
     }
 
     .layout-main {
         float: none;
-        width: $print-pageThreeQuarters;
+        width: $printLayout-widthFixed;
     }
 }

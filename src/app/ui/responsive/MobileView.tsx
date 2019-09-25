@@ -5,8 +5,8 @@ import ViewPicker from './ViewPicker';
 const MobileView: FunctionComponent<{children(matched: boolean): React.ReactNode}> = ({ children }) => {
     return (
         <ViewPicker>
-            { (matches: { small: boolean }) => {
-                return children(matches.small);
+            { (matches: { mobile: boolean }) => {
+                return children(matches.mobile);
             } }
         </ViewPicker>
     );
