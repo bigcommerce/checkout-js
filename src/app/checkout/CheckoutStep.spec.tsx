@@ -29,7 +29,7 @@ describe('CheckoutStep', () => {
 
         // Mock `matchMedia` to detect mobile viewport
         window.matchMedia = jest.fn(query => ({
-            matches: query === `(max-width: ${MOBILE_MAX_WIDTH}px)` ? isMobile : false,
+            matches: query === `screen and (max-width: ${MOBILE_MAX_WIDTH}px)` ? isMobile : false,
             addListener: noop,
             addEventListener: noop,
             removeListener: noop,
