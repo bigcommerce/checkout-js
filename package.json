@@ -6,6 +6,7 @@
   "scripts": {
     "build": "rm -rf dist && webpack --mode production",
     "dev": "webpack --mode development --watch",
+    "dev:server": "http-server dist",
     "release": "npm run test -- --coverage && npm run build && npm run release:version",
     "release:version": "git add dist && standard-version -a",
     "test": "jest",
@@ -94,6 +95,7 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "file-loader": "^4.1.0",
     "fork-ts-checker-webpack-plugin": "^1.4.3",
+    "http-server": "^0.11.1",
     "image-webpack-loader": "^5.0.0",
     "jest": "^24.8.0",
     "mini-css-extract-plugin": "^0.8.0",
