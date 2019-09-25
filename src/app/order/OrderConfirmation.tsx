@@ -13,7 +13,7 @@ import { AccountCreationFailedError, AccountCreationRequirementsError } from '..
 import { TranslatedString } from '../locale';
 import { Button, ButtonVariant } from '../ui/button';
 import { LazyContainer, LoadingSpinner } from '../ui/loading';
-import { ViewPicker } from '../ui/responsive';
+import { MobileView } from '../ui/responsive';
 
 import getPaymentInstructions from './getPaymentInstructions';
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
@@ -193,39 +193,35 @@ class OrderConfirmation extends Component<
         } = config;
 
         return <>
-            <ViewPicker>
-                { (matches: { print: boolean; small: boolean }) => {
-                    switch (true) {
-                        case matches.small:
-                            return <LazyContainer>
-                                        <OrderSummaryDrawer
-                                            { ...mapToOrderSummarySubtotalsProps(order) }
-                                            headerLink={ <PrintLink className="modal-header-link cart-modal-link" /> }
-                                            lineItems={ order.lineItems }
-                                            shopperCurrency={ shopperCurrency }
-                                            storeCurrency={ currency }
-                                            total={ order.orderAmount }
-                                        />
-                                    </LazyContainer>;
-
-                        case matches.print:
-                        default:
-                            return <aside className="layout-cart">
-                                        <LazyContainer>
-                                            <OrderSummary
-                                                headerLink={ <PrintLink /> }
-                                                { ...mapToOrderSummarySubtotalsProps(order) }
-                                                lineItems={ order.lineItems }
-                                                shopperCurrency={ shopperCurrency }
-                                                storeCurrency={ currency }
-                                                total={ order.orderAmount }
-                                            />
-                                        </LazyContainer>
-                                    </aside>;
-
+            <MobileView>
+                { matched => {
+                    if (matched) {
+                        return <LazyContainer>
+                            <OrderSummaryDrawer
+                                { ...mapToOrderSummarySubtotalsProps(order) }
+                                headerLink={ <PrintLink className="modal-header-link cart-modal-link" /> }
+                                lineItems={ order.lineItems }
+                                shopperCurrency={ shopperCurrency }
+                                storeCurrency={ currency }
+                                total={ order.orderAmount }
+                            />
+                        </LazyContainer>;
                     }
+
+                    return <aside className="layout-cart">
+                        <LazyContainer>
+                            <OrderSummary
+                                headerLink={ <PrintLink /> }
+                                { ...mapToOrderSummarySubtotalsProps(order) }
+                                lineItems={ order.lineItems }
+                                shopperCurrency={ shopperCurrency }
+                                storeCurrency={ currency }
+                                total={ order.orderAmount }
+                            />
+                        </LazyContainer>
+                    </aside>;
                 } }
-            </ViewPicker>
+            </MobileView>
         </>;
     }
 

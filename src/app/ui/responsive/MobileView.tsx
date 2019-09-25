@@ -1,13 +1,14 @@
 import React, { memo, FunctionComponent } from 'react';
-import Media, { SingleQueryProps } from 'react-media';
 
-import { MOBILE_MAX_WIDTH } from './breakpoints';
+import ViewPicker from './ViewPicker';
 
-const MobileView: FunctionComponent<Pick<SingleQueryProps, 'children'>> = ({ children }) => {
+const MobileView: FunctionComponent<{children(matched: boolean): React.ReactNode}> = ({ children }) => {
     return (
-        <Media query={ `(max-width: ${MOBILE_MAX_WIDTH}px)` }>
-            { children }
-        </Media>
+        <ViewPicker>
+            { (matches: { small: boolean }) => {
+                return children(matches.small);
+            } }
+        </ViewPicker>
     );
 };
 
