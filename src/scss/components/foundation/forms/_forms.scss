@@ -90,6 +90,11 @@
         }
     }
 
+    .form-input--error {
+        border-color: $color-error;
+        box-shadow: $input-box-shadow-error;
+    }
+
     .form-legend-container {
         align-items: center;
         display: flex;

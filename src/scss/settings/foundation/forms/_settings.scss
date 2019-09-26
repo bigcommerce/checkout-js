@@ -40,6 +40,7 @@ $input-disabled-borderColor:         container("borderColor", "dark");
 $input-disabled-color:               color("greys", "darker");
 $input-disabled-cursor:              not-allowed;
 $input-box-shadow:                   inset 0 1px 1px color("greys", "light");
+$input-box-shadow-error:             0 0 3px rgba($color-error, 0.6);
 $input-include-glowing-effect:       true;
 
 // We use these to style the fieldset border and spacing.
