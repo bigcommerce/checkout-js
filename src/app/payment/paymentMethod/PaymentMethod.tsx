@@ -5,6 +5,7 @@ import { withCheckout, CheckoutContextProps } from '../../checkout';
 
 import AffirmPaymentMethod from './AffirmPaymentMethod';
 import AmazonPaymentMethod from './AmazonPaymentMethod';
+import BlueSnapV2PaymentMethod from './BlueSnapV2PaymentMethod';
 import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod';
 import ChasePayPaymentMethod from './ChasePayPaymentMethod';
 import CreditCardPaymentMethod from './CreditCardPaymentMethod';
@@ -32,6 +33,7 @@ export interface PaymentMethodProps {
 
 export interface WithCheckoutPaymentMethodProps {
     isInitializing: boolean;
+    isSubmittingOrder: boolean;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
     initializeCustomer(options: CustomerInitializeOptions): Promise<CheckoutSelectors>;
@@ -104,6 +106,10 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
         return <PaypalPaymentsProPaymentMethod { ...props } />;
     }
 
+    if (method.id === PaymentMethodId.BlueSnapV2) {
+        return <BlueSnapV2PaymentMethod { ...props } />;
+    }
+
     if (method.gateway === PaymentMethodId.Afterpay ||
         method.id === PaymentMethodId.Zip ||
         method.method === PaymentMethodType.Paypal ||
@@ -132,7 +138,7 @@ function mapToWithCheckoutPaymentMethodProps(
     { method }: PaymentMethodProps
 ): WithCheckoutPaymentMethodProps {
     const {
-        statuses: { isInitializingPayment },
+        statuses: { isInitializingPayment, isSubmittingOrder },
     } = checkoutState;
 
     return {
@@ -141,6 +147,7 @@ function mapToWithCheckoutPaymentMethodProps(
         initializeCustomer: checkoutService.initializeCustomer,
         initializePayment: checkoutService.initializePayment,
         isInitializing: isInitializingPayment(method.id),
+        isSubmittingOrder: isSubmittingOrder(),
     };
 }
 
