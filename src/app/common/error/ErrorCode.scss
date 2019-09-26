@@ -1,6 +1,8 @@
 @import '../../../../node_modules/@bigcommerce/citadel/src/settings/global/global';
+@import '../../../scss/settings/global/color/color';
 
 .errorCode {
+    color: $color-errorCode;
     font-size: fontSize("tiny");
 
     .errorCode-value {
