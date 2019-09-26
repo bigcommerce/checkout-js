@@ -232,6 +232,7 @@ class OrderConfirmation extends Component<
             <ErrorModal
                 error={ error }
                 onClose={ this.handleErrorModalClose }
+                shouldShowErrorCode={ false }
             />
         );
     }
