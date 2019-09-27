@@ -7,6 +7,8 @@ let CheckoutApp: FunctionComponent<CheckoutAppProps>;
 let configurePublicPath: (path: string) => void;
 let publicPath: string;
 
+jest.mock('@welldone-software/why-did-you-render', () => jest.fn());
+
 jest.mock('../common/bundler', () => {
     configurePublicPath = jest.fn(path => {
         publicPath = path;
@@ -65,5 +67,29 @@ describe('renderCheckout()', () => {
 
         expect(CheckoutApp)
             .toHaveBeenCalledWith(options, {});
+    });
+
+    it('does not configure `whyDidYouRender` if not in development mode', () => {
+        renderCheckout(options);
+
+        expect(require('@welldone-software/why-did-you-render'))
+            .not.toHaveBeenCalled();
+
+        process.env.NODE_ENV = 'development';
+    });
+
+    it('configures `whyDidYouRender` if in development mode', () => {
+        const env = process.env.NODE_ENV;
+
+        process.env.NODE_ENV = 'development';
+
+        renderCheckout(options);
+
+        expect(require('@welldone-software/why-did-you-render'))
+            .toHaveBeenCalledWith(React, {
+                collapseGroups: true,
+            });
+
+        process.env.NODE_ENV = env;
     });
 });
