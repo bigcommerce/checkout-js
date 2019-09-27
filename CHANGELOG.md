@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/bigcommerce/checkout-js/compare/v1.2.1...v1.3.0) (2019-09-27)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-2070 Fix print view of order summary page to show product details ([8ec267d](https://github.com/bigcommerce/checkout-js/commit/8ec267d))
+* **checkout:** CHECKOUT-4403 INT-1759 Bump `checkout-sdk` version ([2dd3d22](https://github.com/bigcommerce/checkout-js/commit/2dd3d22))
+* **common:** CHECKOUT-4418 Fix import path of external ESM modules that are conditionally required ([4fa5c17](https://github.com/bigcommerce/checkout-js/commit/4fa5c17))
+* **common:** CHECKOUT-4418 Prefer `main` field over `module` field when resolving packages ([86637f6](https://github.com/bigcommerce/checkout-js/commit/86637f6))
+* **payment:** PAYMENTS-4753 Apply validation highlighting to Square V2 form fields ([7b122ef](https://github.com/bigcommerce/checkout-js/commit/7b122ef))
+
+
+### Features
+
+* **common:** CHECKOUT-4400 Add loader file for loading files listed in manifest ([521a81b](https://github.com/bigcommerce/checkout-js/commit/521a81b))
+
 ### [1.2.1](https://github.com/bigcommerce/checkout-js/compare/v1.2.0...v1.2.1) (2019-09-24)
 
 
