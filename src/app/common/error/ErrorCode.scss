@@ -2,9 +2,9 @@
 
 .errorCode {
     font-size: fontSize("tiny");
+    opacity: 0.4;
 
     .errorCode-value {
-        opacity: 0.4;
         word-break: break-word;
     }
 }
