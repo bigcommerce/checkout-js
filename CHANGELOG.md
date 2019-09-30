@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.1](https://github.com/bigcommerce/checkout-js/compare/v1.3.0...v1.3.1) (2019-09-30)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-4457 Catch error if unable to compute error code ([fd947ed](https://github.com/bigcommerce/checkout-js/commit/fd947ed))
+* **common:** CHECKOUT-4458 Disable global error handler ([4618e0c](https://github.com/bigcommerce/checkout-js/commit/4618e0c))
+
 ## [1.3.0](https://github.com/bigcommerce/checkout-js/compare/v1.2.1...v1.3.0) (2019-09-27)
 
 
