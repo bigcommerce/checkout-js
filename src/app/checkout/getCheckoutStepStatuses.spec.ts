@@ -5,6 +5,7 @@ import { getBillingAddress } from '../billing/billingAddresses.mock';
 import { getCart } from '../cart/carts.mock';
 import { getCustomer, getGuestCustomer } from '../customer/customers.mock';
 import { getOrder } from '../order/orders.mock';
+import { getPaymentMethod } from '../payment/payment-methods.mock';
 import { getConsignment } from '../shipping/consignment.mock';
 import { getShippingAddress } from '../shipping/shipping-addresses.mock';
 
@@ -168,6 +169,32 @@ describe('getCheckoutStepStatuses()', () => {
             // tslint:disable-next-line:no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Shipping })!.isComplete)
                 .toEqual(false);
+        });
+
+        it('is marked as complete if shipping address is not valid but payment is amazon', () => {
+            jest.spyOn(state.data, 'getShippingAddress')
+                .mockReturnValue({
+                    ...getShippingAddress(),
+                    address1: '',
+                });
+
+            jest.spyOn(state.data, 'getCart')
+                .mockReturnValue(getCart());
+
+            jest.spyOn(state.data, 'getSelectedPaymentMethod')
+                .mockReturnValue({
+                    ...getPaymentMethod(),
+                    id: 'amazon',
+                });
+
+            jest.spyOn(state.data, 'getConsignments')
+                .mockReturnValue([getConsignment()]);
+
+            const steps = getCheckoutStepStatuses(state);
+
+            // tslint:disable-next-line:no-non-null-assertion
+            expect(find(steps, { type: CheckoutStepType.Shipping })!.isComplete)
+                .toEqual(true);
         });
 
         it('is marked as incomplete if shipping option is not provided', () => {

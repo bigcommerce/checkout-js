@@ -56,16 +56,19 @@ const getShippingStepStatus = createSelector(
     ({ data }: CheckoutSelectors) => data.getShippingAddress(),
     ({ data }: CheckoutSelectors) => data.getConsignments(),
     ({ data }: CheckoutSelectors) => data.getCart(),
+    ({ data }: CheckoutSelectors) => data.getSelectedPaymentMethod(),
     ({ data }: CheckoutSelectors) => {
         const shippingAddress = data.getShippingAddress();
 
         return shippingAddress ? data.getShippingAddressFields(shippingAddress.countryCode) : EMPTY_ARRAY;
     },
-    (shippingAddress, consignments, cart, shippingAddressFields) => {
+    (shippingAddress, consignments, cart, payment, shippingAddressFields) => {
         const hasAddress = shippingAddress ? isValidAddress(shippingAddress, shippingAddressFields) : false;
+        // @todo: interim solution, ideally we should render custom form fields below amazon shipping widget
+        const hasRemoteAddress = !!shippingAddress && !!payment && payment.id === 'amazon';
         const hasOptions = consignments ? hasSelectedShippingOptions(consignments) : false;
         const hasUnassignedItems = cart && consignments ? hasUnassignedLineItems(consignments, cart.lineItems) : true;
-        const isComplete = hasAddress && hasOptions && !hasUnassignedItems;
+        const isComplete = (hasAddress || hasRemoteAddress) && hasOptions && !hasUnassignedItems;
         const isRequired = cart ? cart.lineItems.physicalItems.some(lineItem => lineItem.isShippingRequired) : false;
 
         return {
