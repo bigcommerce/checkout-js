@@ -1,4 +1,4 @@
-import { captureException, init, withScope, BrowserOptions, Scope, Severity } from '@sentry/browser';
+import { captureException, init, withScope, BrowserOptions, Integrations, Scope, Severity } from '@sentry/browser';
 import { RewriteFrames } from '@sentry/integrations';
 import { Integration } from '@sentry/types';
 
@@ -13,6 +13,9 @@ jest.mock('@sentry/browser', () => {
         captureException: jest.fn(),
         init: jest.fn(),
         withScope: jest.fn(),
+        Integrations: {
+            GlobalHandlers: jest.fn(),
+        },
         Severity: {
             Error: 'Error',
             Warning: 'Warning',
@@ -205,6 +208,17 @@ describe('SentryErrorLogger', () => {
 
         expect(frame)
             .toEqual(frame);
+    });
+
+    it('disables global error handler', () => {
+        // tslint:disable-next-line:no-unused-expression
+        new SentryErrorLogger(config);
+
+        expect(Integrations.GlobalHandlers)
+            .toHaveBeenCalledWith({
+                onerror: false,
+                onunhandledrejection: true,
+            });
     });
 
     describe('#log()', () => {

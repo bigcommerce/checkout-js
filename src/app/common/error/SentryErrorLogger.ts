@@ -1,4 +1,4 @@
-import { captureException, init, withScope, BrowserOptions, Event, Severity, StackFrame } from '@sentry/browser';
+import { captureException, init, withScope, BrowserOptions, Event, Integrations, Severity, StackFrame } from '@sentry/browser';
 import { RewriteFrames } from '@sentry/integrations';
 import { EventHint } from '@sentry/types';
 import { every, includes, isEmpty } from 'lodash';
@@ -41,6 +41,10 @@ export default class SentryErrorLogger implements ErrorLogger {
         init({
             beforeSend: this.handleBeforeSend,
             integrations: [
+                new Integrations.GlobalHandlers({
+                    onerror: false,
+                    onunhandledrejection: true,
+                }),
                 new RewriteFrames({
                     iteratee: this.handleRewriteFrame,
                 }),
@@ -58,10 +62,14 @@ export default class SentryErrorLogger implements ErrorLogger {
 
         withScope(scope => {
             const { errorCode = computeErrorCode(error) } = tags || {};
-            const fingerprint = ['{{ default }}', errorCode];
+            const fingerprint = ['{{ default }}'];
+
+            if (errorCode) {
+                fingerprint.push(errorCode);
+                scope.setTags({ errorCode });
+            }
 
             scope.setLevel(this.mapToSentryLevel(level));
-            scope.setTags({ errorCode });
             scope.setFingerprint(fingerprint);
 
             captureException(error);
