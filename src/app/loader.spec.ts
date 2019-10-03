@@ -1,4 +1,5 @@
 import { getScriptLoader, getStylesheetLoader } from '@bigcommerce/script-loader';
+import { noop } from 'lodash';
 
 import { loadFiles, AssetManifest, LoadFilesOptions } from './loader';
 
@@ -137,5 +138,17 @@ describe('loadFiles', () => {
                 containerId: 'checkout-app',
                 publicPath: options.publicPath,
             });
+    });
+
+    it('does not wait for prefetched scripts to resolve', async () => {
+        const scriptLoader = getScriptLoader();
+
+        jest.spyOn(scriptLoader, 'preloadScripts')
+            .mockImplementation((_url, opt) => {
+                return (opt && opt.prefetch ? new Promise(noop) : Promise.resolve());
+            });
+
+        expect(await loadFiles(options))
+            .toBeDefined();
     });
 });

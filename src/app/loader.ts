@@ -41,24 +41,22 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
         js.map(path => joinPaths(publicPath, path))
     );
 
-    const prefetchedScripts = getScriptLoader().preloadScripts(
-        jsDynamicChunks.map(path => joinPaths(publicPath, path)),
-        { prefetch: true }
-    );
-
     const stylesheets = getStylesheetLoader().loadStylesheets(
         css.map(path => joinPaths(publicPath, path)),
         { prepend: true }
     );
 
-    const prefetchedStylesheets = getStylesheetLoader().preloadStylesheets(
+    getScriptLoader().preloadScripts(
+        jsDynamicChunks.map(path => joinPaths(publicPath, path)),
+        { prefetch: true }
+    );
+
+    getStylesheetLoader().preloadStylesheets(
         cssDynamicChunks.map(path => joinPaths(publicPath, path)),
         { prefetch: true }
     );
 
     return Promise.all([
-        prefetchedScripts,
-        prefetchedStylesheets,
         scripts,
         stylesheets,
     ])
