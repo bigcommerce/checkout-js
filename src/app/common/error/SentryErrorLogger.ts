@@ -40,6 +40,11 @@ export default class SentryErrorLogger implements ErrorLogger {
 
         init({
             beforeSend: this.handleBeforeSend,
+            blacklistUrls: [
+                ...(config.blacklistUrls || []),
+                'polyfill~checkout',
+                'sentry~checkout',
+            ],
             integrations: [
                 new Integrations.GlobalHandlers({
                     onerror: false,

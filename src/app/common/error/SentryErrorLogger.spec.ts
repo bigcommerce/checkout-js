@@ -178,6 +178,19 @@ describe('SentryErrorLogger', () => {
             });
     });
 
+    it('configures client to ignore errors from polyfill and Sentry client', () => {
+        // tslint:disable-next-line:no-unused-expression
+        new SentryErrorLogger(config);
+
+        expect(init)
+            .toHaveBeenCalledWith(expect.objectContaining({
+                blacklistUrls: [
+                    'polyfill~checkout',
+                    'sentry~checkout',
+                ],
+            }));
+    });
+
     it('does not rewrite filename of error frames if it does match with public path', () => {
         // tslint:disable-next-line:no-unused-expression
         new SentryErrorLogger(config, { publicPath: 'https://cdn.foo.bar' });
