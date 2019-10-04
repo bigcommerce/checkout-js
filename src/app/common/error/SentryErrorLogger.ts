@@ -62,15 +62,13 @@ export default class SentryErrorLogger implements ErrorLogger {
 
         withScope(scope => {
             const { errorCode = computeErrorCode(error) } = tags || {};
-            const fingerprint = ['{{ default }}'];
 
             if (errorCode) {
-                fingerprint.push(errorCode);
                 scope.setTags({ errorCode });
             }
 
             scope.setLevel(this.mapToSentryLevel(level));
-            scope.setFingerprint(fingerprint);
+            scope.setFingerprint(['{{ default }}']);
 
             captureException(error);
         });
