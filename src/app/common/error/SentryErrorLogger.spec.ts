@@ -234,7 +234,7 @@ describe('SentryErrorLogger', () => {
             (withScope as jest.Mock).mockImplementation(fn => fn(scope));
         });
 
-        it('logs error with provided error code, level and specific fingerprint', () => {
+        it('logs error with provided error code, level and default fingerprint', () => {
             const logger = new SentryErrorLogger(config, { errorTypes: ['Foo', 'Bar'] });
             const error = new Error();
             const tags = { errorCode: 'foo' };
@@ -248,7 +248,7 @@ describe('SentryErrorLogger', () => {
                 .toHaveBeenCalledWith(tags);
 
             expect(scope.setFingerprint)
-                .toHaveBeenCalledWith(['{{ default }}', tags.errorCode]);
+                .toHaveBeenCalledWith(['{{ default }}']);
 
             expect(captureException)
                 .toHaveBeenCalledWith(error);
@@ -267,7 +267,7 @@ describe('SentryErrorLogger', () => {
                 .toHaveBeenCalledWith({ errorCode: computeErrorCode(error) });
 
             expect(scope.setFingerprint)
-                .toHaveBeenCalledWith(['{{ default }}', computeErrorCode(error)]);
+                .toHaveBeenCalledWith(['{{ default }}']);
 
             expect(captureException)
                 .toHaveBeenCalledWith(error);
