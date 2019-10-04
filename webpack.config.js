@@ -69,6 +69,11 @@ function appConfig(options, argv) {
                                 reuseExistingChunk: true,
                                 enforce: true,
                             },
+                            sentry: {
+                                test: /\/node_modules\/@sentry/,
+                                reuseExistingChunk: true,
+                                enforce: true,
+                            },
                         },
                     },
                 },
