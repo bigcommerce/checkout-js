@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.2](https://github.com/bigcommerce/checkout-js/compare/v1.3.1...v1.3.2) (2019-10-04)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-4240 Error Code Modal styling and display changes ([1edafa9](https://github.com/bigcommerce/checkout-js/commit/1edafa9))
+* **common:** CHECKOUT-4418 Use default fingerprint grouping ([3a06eac](https://github.com/bigcommerce/checkout-js/commit/3a06eac))
+* **common:** CHECKOUT-4455 Resolve without waiting for prefetched scripts to complete ([11defb4](https://github.com/bigcommerce/checkout-js/commit/11defb4))
+* **order:** CHECKOUT-4450 Bump checkout-sdk version ([0c76143](https://github.com/bigcommerce/checkout-js/commit/0c76143))
+* **payment:** CHECKOUT-4459 Bypass address validation for amazon ([3a7baf6](https://github.com/bigcommerce/checkout-js/commit/3a7baf6))
+
 ### [1.3.1](https://github.com/bigcommerce/checkout-js/compare/v1.3.0...v1.3.1) (2019-09-30)
 
 
