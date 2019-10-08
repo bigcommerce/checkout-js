@@ -38,7 +38,7 @@ export default memoize(function getInstrumentValidationSchema({
             .required(language.translate('payment.credit_card_cvv_required_error'))
             .test({
                 message: language.translate('payment.credit_card_cvv_invalid_error'),
-                test(value) {
+                test(value = '') {
                     const cardType = mapFromInstrumentCardType(instrumentBrand);
                     const cardInfo = creditCardType.getTypeInfo(cardType);
 
@@ -52,11 +52,11 @@ export default memoize(function getInstrumentValidationSchema({
             .required(language.translate('payment.credit_card_number_required_error'))
             .test({
                 message: language.translate('payment.credit_card_number_invalid_error'),
-                test: value => number(value).isValid,
+                test: (value = '') => number(value).isValid,
             })
             .test({
                 message: language.translate('payment.credit_card_number_mismatch_error'),
-                test: value => value.slice(-instrumentLast4.length) === instrumentLast4,
+                test: (value = '') => value.slice(-instrumentLast4.length) === instrumentLast4,
             });
     }
 
