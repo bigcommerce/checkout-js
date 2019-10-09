@@ -82,6 +82,16 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
             onLoad,
             onComplete,
         },
+        browserInfo: {
+            userAgent: navigator.userAgent,
+            acceptHeader: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,/;q=0.8',
+            language: navigator.language,
+            colorDepth: screen.colorDepth,
+            screenHeight: screen.height,
+            screenWidth: screen.width,
+            timeZoneOffset: new Date().getTimezoneOffset(),
+            javaEnabled: navigator.javaEnabled(),
+        },
     };
 
     const initializeAdyenPayment = useCallback((options: PaymentInitializeOptions) => {
