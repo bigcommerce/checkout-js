@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/bigcommerce/checkout-js/compare/v1.3.2...v1.4.0) (2019-10-09)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-4399 resolve console errors caused by javascript errors in formik validation ([4df85ce](https://github.com/bigcommerce/checkout-js/commit/4df85ce))
+* **common:** CHECKOUT-4418 Ignore errors coming from polyfill file and Sentry client ([9988e1e](https://github.com/bigcommerce/checkout-js/commit/9988e1e))
+* **common:** CHECKOUT-4418 Remove comments from minified bundles ([546dc3c](https://github.com/bigcommerce/checkout-js/commit/546dc3c))
+
+
+### Features
+
+* **payment:** INT-1737 & INT-1901 Add Adyen V2 Payment Method support with modal 3DS ([bfc2566](https://github.com/bigcommerce/checkout-js/commit/bfc2566))
+
 ### [1.3.2](https://github.com/bigcommerce/checkout-js/compare/v1.3.1...v1.3.2) (2019-10-04)
 
 
