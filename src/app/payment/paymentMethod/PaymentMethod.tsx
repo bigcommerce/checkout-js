@@ -3,6 +3,7 @@ import React, { memo, FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 
+import AdyenV2PaymentMethod from './AdyenV2PaymentMethod';
 import AffirmPaymentMethod from './AffirmPaymentMethod';
 import AmazonPaymentMethod from './AmazonPaymentMethod';
 import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod';
@@ -50,6 +51,10 @@ export interface WithCheckoutPaymentMethodProps {
 // tslint:disable:cyclomatic-complexity
 const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckoutPaymentMethodProps> = props => {
     const { method } = props;
+
+    if (method.gateway === PaymentMethodId.AdyenV2) {
+        return <AdyenV2PaymentMethod { ...props } />;
+    }
 
     if (method.id === PaymentMethodId.SquareV2) {
         return <SquarePaymentMethod { ...props } />;
