@@ -84,7 +84,8 @@ describe('when using Amazon payment', () => {
                 gatewayId: method.gateway,
                 [method.id]: {
                     container: 'paymentWidget',
-                    onError: defaultProps.onUnhandledError,
+                    onError: expect.any(Function),
+                    onPaymentSelect: expect.any(Function),
                 },
             }));
     });
