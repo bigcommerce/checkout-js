@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/bigcommerce/checkout-js/compare/v1.4.0...v1.5.0) (2019-10-10)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-4418 Discard the error event if none of the frames in its stack trace contains a file name ([4fb1112](https://github.com/bigcommerce/checkout-js/commit/4fb1112))
+
+
+### Features
+
+* **checkout:** INT-1956 Disable or enable checkout button depending if a payment method is selected or not ([06492be](https://github.com/bigcommerce/checkout-js/commit/06492be))
+
 ## [1.4.0](https://github.com/bigcommerce/checkout-js/compare/v1.3.2...v1.4.0) (2019-10-09)
 
 
