@@ -128,7 +128,7 @@ describe('SentryErrorLogger', () => {
             .toEqual(null);
     });
 
-    it('does not log exeception event if it does not contain stacktrace', () => {
+    it('does not log exception event if it does not contain stacktrace', () => {
         // tslint:disable-next-line:no-unused-expression
         new SentryErrorLogger(config);
 
@@ -141,6 +141,48 @@ describe('SentryErrorLogger', () => {
         // tslint:disable-next-line:no-non-null-assertion
         expect(clientOptions.beforeSend!(event, hint))
             .toEqual(null);
+    });
+
+    it('does not log exception event if all frames in stacktrace are missing filename', () => {
+        // tslint:disable-next-line:no-unused-expression
+        new SentryErrorLogger(config);
+
+        const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
+        const event = {
+            exception: {
+                values: [{
+                    stacktrace: { frames: [{ filename: '' }] },
+                    type: 'Error',
+                    value: 'Unexpected error',
+                }],
+            },
+        };
+        const hint = { originalException: new Error('Unexpected error') };
+
+        // tslint:disable-next-line:no-non-null-assertion
+        expect(clientOptions.beforeSend!(event, hint))
+            .toEqual(null);
+    });
+
+    it('logs exception event if some frames in stacktrace contain filename', () => {
+        // tslint:disable-next-line:no-unused-expression
+        new SentryErrorLogger(config);
+
+        const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
+        const event = {
+            exception: {
+                values: [{
+                    stacktrace: { frames: [{ filename: '' }, { filename: 'js/app-123.js' }] },
+                    type: 'Error',
+                    value: 'Unexpected error',
+                }],
+            },
+        };
+        const hint = { originalException: new Error('Unexpected error') };
+
+        // tslint:disable-next-line:no-non-null-assertion
+        expect(clientOptions.beforeSend!(event, hint))
+            .toEqual(event);
     });
 
     it('configures client to rewrite filename of error frames', () => {

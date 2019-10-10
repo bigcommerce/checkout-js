@@ -1,7 +1,7 @@
 import { captureException, init, withScope, BrowserOptions, Event, Integrations, Severity, StackFrame } from '@sentry/browser';
 import { RewriteFrames } from '@sentry/integrations';
-import { EventHint } from '@sentry/types';
-import { every, includes, isEmpty } from 'lodash';
+import { EventHint, Exception } from '@sentry/types';
+import { every, includes, isEmpty, some } from 'lodash';
 
 import computeErrorCode from './computeErrorCode';
 import DEFAULT_ERROR_TYPES from './defaultErrorTypes';
@@ -93,6 +93,24 @@ export default class SentryErrorLogger implements ErrorLogger {
         }
     }
 
+    private hasUsefulStacktrace(exceptions: Exception[]): boolean {
+        return some(exceptions, exception => {
+            if (!exception.stacktrace) {
+                return false;
+            }
+
+            if (isEmpty(exception.stacktrace.frames)) {
+                return false;
+            }
+
+            if (every(exception.stacktrace.frames, frame => !frame.filename)) {
+                return false;
+            }
+
+            return true;
+        });
+    }
+
     private handleBeforeSend: (event: Event, hint?: EventHint) => Event | null = (event, hint) => {
         if (event.exception) {
             const { originalException = null } = hint || {};
@@ -101,7 +119,7 @@ export default class SentryErrorLogger implements ErrorLogger {
                 return null;
             }
 
-            if (every(event.exception.values, value => !value.stacktrace || isEmpty(value.stacktrace.frames))) {
+            if (!event.exception.values || !this.hasUsefulStacktrace(event.exception.values)) {
                 return null;
             }
 
