@@ -1,8 +1,4 @@
-import {
-    LineItemMap,
-    ShopperCurrency as ShopperCurrencyType,
-    StoreCurrency
-} from '@bigcommerce/checkout-sdk';
+import { LineItemMap, ShopperCurrency as ShopperCurrencyType, StoreCurrency } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import React, { memo, useCallback, FunctionComponent, ReactNode } from 'react';
 

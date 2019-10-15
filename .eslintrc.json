@@ -55,6 +55,12 @@
                     "**/shipping/Shipping.tsx"
                 ]
             }
+        ],
+        "object-curly-newline": [
+            "error",
+            {
+                "ImportDeclaration": "never"
+            }
         ]
     }
 }

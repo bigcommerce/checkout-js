@@ -1,10 +1,5 @@
 import getStoreCreditAmount from './getStoreCreditAmount';
-import {
-    getGatewayOrderPayment,
-    getGiftCertificateOrderPayment,
-    getOrder,
-    getStoreCreditPayment
-} from './orders.mock';
+import { getGatewayOrderPayment, getGiftCertificateOrderPayment, getOrder, getStoreCreditPayment } from './orders.mock';
 
 describe('getStoreCreditAmount()', () => {
     describe('when there are no store credit payments', () => {
