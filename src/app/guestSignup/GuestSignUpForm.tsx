@@ -64,9 +64,8 @@ export default withLanguage(withFormik<SignUpFormProps & WithLanguageProps, Sign
     },
     validationSchema: ({
         language,
-        passwordRequirements: { description, numeric, alpha, minLength } }:
-        SignUpFormProps & WithLanguageProps
-    ) => object({
+        passwordRequirements: { description, numeric, alpha, minLength },
+    }: SignUpFormProps & WithLanguageProps) => object({
         password: string()
             .required(description || language.translate('customer.password_required_error'))
             .matches(numeric, description || language.translate('customer.password_number_required_error'))

@@ -2,12 +2,7 @@ import { OrderRequestBody } from '@bigcommerce/checkout-sdk';
 
 import { unformatCreditCardExpiryDate, unformatCreditCardNumber } from './creditCard';
 import { parseUniquePaymentMethodId } from './paymentMethod';
-import {
-    isCreditCardFieldsetValues,
-    isHostedWidgetValues,
-    isInstrumentFieldsetValues,
-    PaymentFormValues
-} from './PaymentForm';
+import { isCreditCardFieldsetValues, isHostedWidgetValues, isInstrumentFieldsetValues, PaymentFormValues } from './PaymentForm';
 
 export default function mapToOrderRequestBody(
     values: PaymentFormValues,

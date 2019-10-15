@@ -1,8 +1,4 @@
-import {
-    CheckoutSelectors,
-    CustomerInitializeOptions,
-    PaymentInitializeOptions,
-} from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, CustomerInitializeOptions, PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import React, { useCallback, useContext, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 

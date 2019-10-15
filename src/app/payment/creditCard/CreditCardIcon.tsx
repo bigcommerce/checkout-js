@@ -1,16 +1,6 @@
 import React, { memo, FunctionComponent } from 'react';
 
-import {
-    IconCardAmex,
-    IconCardDinersClub,
-    IconCardDiscover,
-    IconCardJCB,
-    IconCardMaestro,
-    IconCardMastercard,
-    IconCardUnionPay,
-    IconCardVisa,
-    IconSize
-} from '../../ui/icon';
+import { IconCardAmex, IconCardDinersClub, IconCardDiscover, IconCardJCB, IconCardMaestro, IconCardMastercard, IconCardUnionPay, IconCardVisa, IconSize } from '../../ui/icon';
 
 export interface CreditCardIconProps {
     cardType?: string;

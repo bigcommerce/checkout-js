@@ -1,9 +1,4 @@
-import {
-    createCheckoutService,
-    CheckoutSelectors,
-    CheckoutService,
-    PaymentMethod
-} from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, CheckoutSelectors, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
