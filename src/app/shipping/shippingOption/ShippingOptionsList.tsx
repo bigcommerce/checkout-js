@@ -18,7 +18,7 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
 }) => {
     const renderLabel = useCallback(() => (
         <div className="shippingOptionLabel">
-            <StaticShippingOption method={ shippingOption } />
+            <StaticShippingOption displayAdditionalInformation={ true } method={ shippingOption } />
         </div>
     ), [shippingOption]);
 

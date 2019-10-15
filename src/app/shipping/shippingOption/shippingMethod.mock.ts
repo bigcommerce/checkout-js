@@ -2,7 +2,7 @@ import { ShippingOption } from '@bigcommerce/checkout-sdk';
 
 export function getShippingOption(): ShippingOption {
     return {
-        additionalDescription: 'Flat rate additional description',
+        additionalDescription: 'Pick up in store additional description',
         description: 'Flat Rate',
         id: '0:61d4bb52f746477e1d4fb411221318c3',
         imageUrl: '',

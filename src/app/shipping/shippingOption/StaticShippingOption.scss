@@ -61,4 +61,34 @@
         max-width: remCalc(50px);
         min-width: remCalc(50px);
     }
+
+    .shippingOption-additionalDescription--container {
+        display: flex;
+        flex-direction: row;
+        line-height: 1.5rem;
+
+        .shippingOption-additionalDescription {
+            font-size: fontSize("smaller");
+            font-weight: fontWeight("normal");
+            text-overflow: ellipsis;
+        }
+
+        .shippingOption-additionalDescription--collapsed {
+            height: 2.2rem;
+            overflow: hidden;
+            white-space: nowrap;
+            width: 80%;
+        }
+
+        .shippingOption-additionalDescription--expanded {
+            height: auto;
+            overflow: visible;
+            white-space: initial;
+            width: 100%;
+        }
+
+        .shippingOption-readMore {
+            font-weight: normal;
+        }
+    }
 }
