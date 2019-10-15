@@ -12,7 +12,8 @@ import { CustomerInfo, CustomerSignOutEvent, CustomerViewType } from '../custome
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { PromotionBannerList } from '../promotion';
-import { isUsingMultiShipping, StaticConsignment } from '../shipping';
+import { hasSelectedShippingOptions, isUsingMultiShipping, StaticConsignment } from '../shipping';
+import { ShippingOptionExpiredError } from '../shipping/shippingOption';
 import { FlashMessage } from '../ui/alert';
 import { LazyContainer, LoadingNotification, LoadingOverlay } from '../ui/loading';
 import { MobileView } from '../ui/responsive';
@@ -76,6 +77,7 @@ export interface CheckoutState {
     isCartEmpty: boolean;
     isRedirecting: boolean;
     useStoreCredit: boolean;
+    hasSelectedShippingOptions: boolean;
 }
 
 export interface WithCheckoutProps {
@@ -93,6 +95,7 @@ export interface WithCheckoutProps {
     usableStoreCredit: number;
     clearError(error?: Error): void;
     loadCheckout(id: string, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
+    subscribeToConsignments(subscriber: (state: CheckoutSelectors) => void): () => void;
 }
 
 class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguageProps, CheckoutState> {
@@ -103,9 +106,18 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         isRedirecting: false,
         useStoreCredit: true,
         isMultiShippingMode: false,
+        hasSelectedShippingOptions: false,
     };
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
+    private unsubscribeFromConsignments?: () => void;
+
+    componentWillUnmount(): void {
+        if (this.unsubscribeFromConsignments) {
+            this.unsubscribeFromConsignments();
+            this.unsubscribeFromConsignments = undefined;
+        }
+    }
 
     async componentDidMount(): Promise<void> {
         const {
@@ -115,6 +127,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             createEmbeddedMessenger,
             embeddedStylesheet,
             loadCheckout,
+            subscribeToConsignments,
         } = this.props;
 
         try {
@@ -129,6 +142,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             const { links: { siteLink = '' } = {} } = data.getConfig() || {};
             const messenger = createEmbeddedMessenger({ parentOrigin: siteLink });
 
+            this.unsubscribeFromConsignments = subscribeToConsignments(this.handleConsignmentsUpdated);
             this.embeddedMessenger = messenger;
             messenger.receiveStyles(styles => embeddedStylesheet.append(styles));
             messenger.postFrameLoaded({ contentId: containerId });
@@ -388,13 +402,17 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 { matched => {
                     if (matched) {
                         return <LazyContainer>
-                            <CartSummaryDrawer storeCreditAmount={ useStoreCredit ? usableStoreCredit : 0 } />
+                            <CartSummaryDrawer
+                                storeCreditAmount={ useStoreCredit ? usableStoreCredit : 0 }
+                            />
                         </LazyContainer>;
                     }
 
                     return <aside className="layout-cart">
                         <LazyContainer>
-                            <CartSummary storeCreditAmount={ useStoreCredit ? usableStoreCredit : 0 } />
+                            <CartSummary
+                                storeCreditAmount={ useStoreCredit ? usableStoreCredit : 0 }
+                            />
                         </LazyContainer>
                     </aside>;
                 } }
@@ -467,6 +485,27 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
     private handleCartChangedError: () => void = () => {
         this.navigateToStep(CheckoutStepType.Shipping);
+    };
+
+    private handleConsignmentsUpdated: (state: CheckoutSelectors) => void = ({ data }) => {
+        const {
+            hasSelectedShippingOptions: prevHasSelectedShippingOptions,
+            activeStepType,
+        } = this.state;
+
+        const { steps } = this.props;
+
+        const newHasSelectedShippingOptions = hasSelectedShippingOptions(data.getConsignments() || []);
+
+        if (prevHasSelectedShippingOptions &&
+            !newHasSelectedShippingOptions &&
+            findIndex(steps, { type: CheckoutStepType.Shipping }) < findIndex(steps, { type: activeStepType })
+        ) {
+            this.navigateToStep(CheckoutStepType.Shipping);
+            this.setState({ error: new ShippingOptionExpiredError() });
+        }
+
+        this.setState({ hasSelectedShippingOptions: newHasSelectedShippingOptions });
     };
 
     private handleCloseErrorModal: () => void = () => {
