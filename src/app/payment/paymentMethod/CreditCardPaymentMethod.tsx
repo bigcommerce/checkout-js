@@ -1,5 +1,4 @@
 import { CardInstrument, CheckoutSelectors, Instrument, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
-import { memoizeOne } from '@bigcommerce/memoize';
 import { find, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
@@ -139,7 +138,6 @@ class CreditCardPaymentMethod extends Component<
                 <div className="paymentMethod paymentMethod--creditCard">
                     { shouldShowInstrumentFieldset && <InstrumentFieldset
                         instruments={ instruments }
-                        method={ method }
                         onSelectInstrument={ this.handleSelectInstrument }
                         onUseNewInstrument={ this.handleUseNewCard }
                         selectedInstrumentId={ selectedInstrumentId }
@@ -227,10 +225,6 @@ function mapFromCheckoutProps(): MapToProps<
     WithCheckoutCreditCardPaymentMethodProps,
     CreditCardPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
 > {
-    const filterInstruments = memoizeOne((instruments: Instrument[] = EMPTY_ARRAY, method: PaymentMethod) =>
-        instruments.filter(({ provider }) => provider === method.id)
-    );
-
     return (context, props) => {
         const {
             formik: { values },
@@ -262,7 +256,7 @@ function mapFromCheckoutProps(): MapToProps<
         }
 
         return {
-            instruments: filterInstruments(getInstruments(), method).filter(isCardInstrument),
+            instruments: (getInstruments(method) || EMPTY_ARRAY).filter(isCardInstrument),
             isInstrumentCardCodeRequired: isInstrumentCardCodeRequired({
                 config,
                 lineItems: cart.lineItems,

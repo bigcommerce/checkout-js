@@ -15,7 +15,7 @@ import { LoadingOverlay } from '../../ui/loading';
 import { getCreditCardValidationSchema, CreditCardFieldset, CreditCardFieldsetProps } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
 import * as storedInstrumentModule from '../storedInstrument';
-import { getInstruments } from '../storedInstrument/instruments.mock';
+import { getCardInstrument, getInstruments } from '../storedInstrument/instruments.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
 import CreditCardPaymentMethod, { CreditCardPaymentMethodProps, CreditCardPaymentMethodValues } from './CreditCardPaymentMethod';
@@ -181,6 +181,12 @@ describe('CreditCardPaymentMethod', () => {
         });
 
         it('sets validation schema for stored instruments when component mounts', () => {
+            jest.spyOn(checkoutState.data, 'getInstruments')
+                .mockReturnValue([{
+                    ...getCardInstrument(),
+                    trustedShippingAddress: false,
+                }]);
+
             mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
 
             expect(paymentContext.setValidationSchema)
@@ -230,12 +236,11 @@ describe('CreditCardPaymentMethod', () => {
                 .toEqual(true);
         });
 
-        it('displays available instruments for selected method only', () => {
-            const component = mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
-            const instruments = checkoutState.data.getInstruments() || [];
+        it('uses PaymentMethod to retrieve instruments', () => {
+            mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
 
-            expect(component.find(InstrumentFieldset).prop('instruments'))
-                .toEqual(instruments.filter(({ provider }) => provider === defaultProps.method.id));
+            expect(checkoutState.data.getInstruments)
+                .toHaveBeenCalledWith(defaultProps.method);
         });
 
         it('hides credit card fieldset if user is not adding new card', () => {

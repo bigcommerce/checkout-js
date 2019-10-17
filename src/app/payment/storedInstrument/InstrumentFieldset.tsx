@@ -1,4 +1,4 @@
-import { CardInstrument, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { CardInstrument } from '@bigcommerce/checkout-sdk';
 import { FieldProps } from 'formik';
 import React, { memo, useCallback, FunctionComponent } from 'react';
 
@@ -11,7 +11,6 @@ import ManageInstrumentsModal from './ManageInstrumentsModal';
 
 export interface InstrumentFieldsetProps {
     instruments: CardInstrument[];
-    method: PaymentMethod;
     selectedInstrumentId?: string;
     validateInstrument?: React.ReactNode;
     onSelectInstrument(id: string): void;
@@ -26,7 +25,6 @@ export interface InstrumentFieldsetValues {
 
 const InstrumentFieldset: FunctionComponent<InstrumentFieldsetProps> = ({
     instruments,
-    method,
     onSelectInstrument,
     onUseNewInstrument,
     selectedInstrumentId,
@@ -49,10 +47,10 @@ const InstrumentFieldset: FunctionComponent<InstrumentFieldsetProps> = ({
 
     const renderModal = useCallback((props: ModalTriggerModalProps) => (
         <ManageInstrumentsModal
-            methodId={ method.id }
+            instruments={ instruments }
             { ...props }
         />
-    ), [method]);
+    ), [instruments]);
 
     return <Fieldset
         additionalClassName="instrumentFieldset"
