@@ -1,4 +1,4 @@
-import { Instrument, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { CardInstrument, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { FieldProps } from 'formik';
 import React, { memo, useCallback, FunctionComponent } from 'react';
 
@@ -10,7 +10,7 @@ import InstrumentSelect from './InstrumentSelect';
 import ManageInstrumentsModal from './ManageInstrumentsModal';
 
 export interface InstrumentFieldsetProps {
-    instruments: Instrument[];
+    instruments: CardInstrument[];
     method: PaymentMethod;
     selectedInstrumentId?: string;
     validateInstrument?: React.ReactNode;

@@ -1,4 +1,4 @@
-import { Instrument } from '@bigcommerce/checkout-sdk';
+import { CardInstrument } from '@bigcommerce/checkout-sdk';
 import { expirationDate } from 'card-validator';
 import classNames from 'classnames';
 import creditCardType from 'credit-card-type';
@@ -13,7 +13,7 @@ import { CreditCardIcon } from '../creditCard';
 import mapFromInstrumentCardType from './mapFromInstrumentCardType';
 
 export interface InstrumentSelectProps extends FieldProps<string> {
-    instruments: Instrument[];
+    instruments: CardInstrument[];
     selectedInstrumentId?: string;
     onSelectInstrument(id: string): void;
     onUseNewInstrument(): void;
@@ -86,7 +86,7 @@ class InstrumentSelect extends PureComponent<InstrumentSelectProps> {
 }
 
 interface InstrumentMenuProps {
-    instruments: Instrument[];
+    instruments: CardInstrument[];
     selectedInstrumentId?: string;
     onSelectInstrument(id: string): void;
     onUseNewInstrument(): void;
@@ -128,7 +128,7 @@ const InstrumentMenu: FunctionComponent<InstrumentMenuProps> = ({
 };
 
 interface InstrumentSelectButtonProps {
-    instrument?: Instrument;
+    instrument?: CardInstrument;
     testId?: string;
     onClick?(): void;
 }
@@ -158,7 +158,7 @@ const InstrumentSelectButton: FunctionComponent<InstrumentSelectButtonProps> = (
 };
 
 interface InstrumentOptionProps {
-    instrument: Instrument;
+    instrument: CardInstrument;
     testId?: string;
     onClick?(token: string): void;
 }
@@ -185,7 +185,7 @@ const InstrumentOption: FunctionComponent<InstrumentOptionProps> = ({
 
 interface InstrumentMenuItemProps {
     className?: string;
-    instrument: Instrument;
+    instrument: CardInstrument;
     testId?: string;
     onClick?(): void;
 }

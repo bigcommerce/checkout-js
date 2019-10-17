@@ -1,4 +1,4 @@
-import { CheckoutSelectors, Instrument } from '@bigcommerce/checkout-sdk';
+import { CardInstrument, CheckoutSelectors } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, Fragment, ReactNode } from 'react';
 
@@ -8,6 +8,7 @@ import { TranslatedString } from '../../locale';
 import { Button, ButtonSize, ButtonVariant } from '../../ui/button';
 import { Modal, ModalHeader } from '../../ui/modal';
 
+import isCardInstrument from './isCardInstrument';
 import ManageInstrumentsAlert from './ManageInstrumentsAlert';
 import ManageInstrumentsTable from './ManageInstrumentsTable';
 
@@ -26,7 +27,7 @@ export interface ManageInstrumentsModalState {
 
 interface WithCheckoutProps {
     deleteInstrumentError?: Error;
-    instruments: Instrument[];
+    instruments: CardInstrument[];
     isDeletingInstrument: boolean;
     clearError(error: Error): Promise<CheckoutSelectors>;
     deleteInstrument(id: string): Promise<CheckoutSelectors>;
@@ -187,7 +188,7 @@ export function mapFromCheckoutProps(
         clearError: checkoutService.clearError,
         deleteInstrument: checkoutService.deleteInstrument,
         deleteInstrumentError: getDeleteInstrumentError(),
-        instruments: (getInstruments() || EMPTY_ARRAY).filter(({ provider }) => provider === methodId),
+        instruments: (getInstruments() || EMPTY_ARRAY).filter(isCardInstrument).filter(({ provider }) => provider === methodId),
         isDeletingInstrument: isDeletingInstrument(),
     };
 }

@@ -7,7 +7,8 @@ import { Omit } from 'utility-types';
 import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 
-import { getInstrument, getInstruments } from './instruments.mock';
+import { getCardInstrument, getInstruments } from './instruments.mock';
+import isCardInstrument from './isCardInstrument';
 import InstrumentSelect, { InstrumentSelectProps } from './InstrumentSelect';
 
 /* eslint-disable react/jsx-no-bind */
@@ -18,7 +19,7 @@ describe('InstrumentSelect', () => {
 
     beforeEach(() => {
         defaultProps = {
-            instruments: getInstruments(),
+            instruments: getInstruments().filter(isCardInstrument),
             selectedInstrumentId: '123',
             onSelectInstrument: jest.fn(),
             onUseNewInstrument: jest.fn(),
@@ -131,8 +132,8 @@ describe('InstrumentSelect', () => {
                                 { ...field }
                                 { ...defaultProps }
                                 instruments={ [
-                                    { ...getInstrument(), bigpayToken: 'expired_card', expiryMonth: '10', expiryYear: '15' },
-                                    getInstrument(),
+                                    { ...getCardInstrument(), bigpayToken: 'expired_card', expiryMonth: '10', expiryYear: '15' },
+                                    getCardInstrument(),
                                 ] }
                             />
                         ) }

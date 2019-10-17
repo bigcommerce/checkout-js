@@ -1,4 +1,4 @@
-import { CheckoutSelectors, CustomerInitializeOptions, CustomerRequestOptions, Instrument, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
+import { CardInstrument, CheckoutSelectors, CustomerInitializeOptions, CustomerRequestOptions, Instrument, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import classNames from 'classnames';
 import { find, noop, some } from 'lodash';
@@ -10,7 +10,7 @@ import { MapToProps } from '../../common/hoc';
 import { EMPTY_ARRAY } from '../../common/utility';
 import { LoadingOverlay } from '../../ui/loading';
 import { CreditCardStorageField } from '../creditCard';
-import { isInstrumentCardCodeRequired, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CreditCardValidation, InstrumentFieldset } from '../storedInstrument';
+import { isCardInstrument, isInstrumentCardCodeRequired, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CreditCardValidation, InstrumentFieldset } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
 
@@ -35,7 +35,7 @@ export interface HostedWidgetPaymentMethodProps {
 }
 
 interface WithCheckoutHostedWidgetPaymentMethodProps {
-    instruments: Instrument[];
+    instruments: CardInstrument[];
     isInstrumentCardCodeRequired: boolean;
     isInstrumentFeatureAvailable: boolean;
     isLoadingInstruments: boolean;
@@ -321,7 +321,7 @@ function mapFromCheckoutProps(): MapToProps<
         }
 
         return {
-            instruments: filterInstruments(getInstruments(), method),
+            instruments: filterInstruments(getInstruments(), method).filter(isCardInstrument),
             isLoadingInstruments: isLoadingInstruments(),
             isPaymentDataRequired: isPaymentDataRequired(values.useStoreCredit),
             isSignedIn: some(checkout.payments, { providerId: method.id }),

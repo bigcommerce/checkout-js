@@ -9,3 +9,5 @@ export { default as isInstrumentCardNumberRequired } from './isInstrumentCardNum
 export { default as isInstrumentCardNumberRequiredSelector } from './isInstrumentCardNumberRequiredSelector';
 export { default as InstrumentFieldset } from './InstrumentFieldset';
 export { default as CreditCardValidation } from './CreditCardValidation';
+export { default as isCardInstrument } from './isCardInstrument';
+export { default as isAccountInstrument } from './isAccountInstrument';
