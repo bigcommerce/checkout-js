@@ -1,6 +1,6 @@
-import { Instrument } from '@bigcommerce/checkout-sdk';
+import { AccountInstrument, CardInstrument, PaymentInstrument } from '@bigcommerce/checkout-sdk';
 
-export function getInstruments(): Instrument[] {
+export function getInstruments(): PaymentInstrument[] {
     return [
         {
             bigpayToken: '123',
@@ -12,6 +12,8 @@ export function getInstruments(): Instrument[] {
             brand: 'visa',
             trustedShippingAddress: true,
             defaultInstrument: true,
+            method: 'card',
+            type: 'card',
         },
         {
             bigpayToken: '111',
@@ -23,11 +25,13 @@ export function getInstruments(): Instrument[] {
             brand: 'american_express',
             trustedShippingAddress: false,
             defaultInstrument: false,
+            method: 'card',
+            type: 'card',
         },
     ];
 }
 
-export function getInstrument(): Instrument {
+export function getCardInstrument(): CardInstrument {
     return {
         bigpayToken: '123',
         provider: 'braintree',
@@ -38,5 +42,19 @@ export function getInstrument(): Instrument {
         brand: 'test',
         trustedShippingAddress: true,
         defaultInstrument: true,
+        method: 'card',
+        type: 'card',
+    };
+}
+
+export function getAccountInstrument(): AccountInstrument {
+    return {
+        bigpayToken: '123',
+        provider: 'braintree',
+        externalId: 'test@external-id.com',
+        trustedShippingAddress: true,
+        defaultInstrument: true,
+        method: 'paypal',
+        type: 'account',
     };
 }

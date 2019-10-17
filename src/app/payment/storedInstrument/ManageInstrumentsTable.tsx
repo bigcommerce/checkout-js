@@ -1,4 +1,4 @@
-import { Instrument } from '@bigcommerce/checkout-sdk';
+import { CardInstrument } from '@bigcommerce/checkout-sdk';
 import { expirationDate } from 'card-validator';
 import classNames from 'classnames';
 import creditCardType from 'credit-card-type';
@@ -11,7 +11,7 @@ import { CreditCardIcon } from '../creditCard';
 import mapFromInstrumentCardType from './mapFromInstrumentCardType';
 
 export interface ManageInstrumentsTableProps {
-    instruments: Instrument[];
+    instruments: CardInstrument[];
     isDeletingInstrument: boolean;
     onDeleteInstrument(id: string): void;
 }
@@ -54,7 +54,7 @@ const ManageInstrumentsTable: FunctionComponent<ManageInstrumentsTableProps> = (
 };
 
 interface ManageInstrumentsRowProps {
-    instrument: Instrument;
+    instrument: CardInstrument;
     onDeleteInstrument(id: string): void;
 }
 

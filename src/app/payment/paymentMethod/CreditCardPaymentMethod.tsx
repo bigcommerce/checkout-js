@@ -1,4 +1,4 @@
-import { CheckoutSelectors, Instrument, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
+import { CardInstrument, CheckoutSelectors, Instrument, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { find, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
@@ -11,7 +11,7 @@ import { EMPTY_ARRAY } from '../../common/utility';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
 import { configureCardValidator, getCreditCardValidationSchema, CreditCardFieldset, CreditCardFieldsetValues } from '../creditCard';
-import { getInstrumentValidationSchema, isInstrumentCardCodeRequired, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CreditCardValidation, InstrumentFieldset, InstrumentFieldsetValues } from '../storedInstrument';
+import { getInstrumentValidationSchema, isCardInstrument, isInstrumentCardCodeRequired, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CreditCardValidation, InstrumentFieldset, InstrumentFieldsetValues } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
 
@@ -27,7 +27,7 @@ export interface CreditCardPaymentMethodProps {
 export type CreditCardPaymentMethodValues = CreditCardFieldsetValues | InstrumentFieldsetValues;
 
 interface WithCheckoutCreditCardPaymentMethodProps {
-    instruments: Instrument[];
+    instruments: CardInstrument[];
     isInstrumentCardCodeRequired: boolean;
     isInstrumentFeatureAvailable: boolean;
     isLoadingInstruments: boolean;
@@ -228,7 +228,7 @@ function mapFromCheckoutProps(): MapToProps<
     CreditCardPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
 > {
     const filterInstruments = memoizeOne((instruments: Instrument[] = EMPTY_ARRAY, method: PaymentMethod) =>
-        instruments.filter(({ provider }) => provider === method.id)
+        instruments.filter(({ provider }) => provider === method.id).filter(isCardInstrument)
     );
 
     return (context, props) => {

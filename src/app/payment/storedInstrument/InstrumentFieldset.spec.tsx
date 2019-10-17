@@ -8,6 +8,7 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../../loc
 import { getPaymentMethod } from '../payment-methods.mock';
 
 import { getInstruments } from './instruments.mock';
+import isCardInstrument from './isCardInstrument';
 import InstrumentFieldset, { InstrumentFieldsetProps, InstrumentFieldsetValues } from './InstrumentFieldset';
 import InstrumentSelect from './InstrumentSelect';
 
@@ -18,7 +19,7 @@ describe('InstrumentFieldset', () => {
 
     beforeEach(() => {
         defaultProps = {
-            instruments: getInstruments(),
+            instruments: getInstruments().filter(isCardInstrument),
             method: getPaymentMethod(),
             onSelectInstrument: jest.fn(),
             onUseNewInstrument: jest.fn(),
