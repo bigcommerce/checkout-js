@@ -1,4 +1,4 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService, RequestError } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, CardInstrument, CheckoutSelectors, CheckoutService, RequestError } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
@@ -8,6 +8,7 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../../loc
 import { Modal } from '../../ui/modal';
 
 import { getInstruments } from './instruments.mock';
+import isCardInstrument from './isCardInstrument';
 import ManageInstrumentsAlert from './ManageInstrumentsAlert';
 import ManageInstrumentsModal, { ManageInstrumentsModalProps } from './ManageInstrumentsModal';
 import ManageInstrumentsTable from './ManageInstrumentsTable';
@@ -18,11 +19,14 @@ describe('ManageInstrumentsModal', () => {
     let checkoutState: CheckoutSelectors;
     let defaultProps: ManageInstrumentsModalProps;
     let localeContext: LocaleContextType;
+    let instruments: CardInstrument[];
 
     beforeEach(() => {
+        instruments = getInstruments().filter(isCardInstrument);
+
         defaultProps = {
             isOpen: true,
-            methodId: 'braintree',
+            instruments,
             onAfterOpen: jest.fn(),
             onRequestClose: jest.fn(),
         };
@@ -32,9 +36,6 @@ describe('ManageInstrumentsModal', () => {
 
         jest.spyOn(checkoutState.data, 'getConfig')
             .mockReturnValue(getStoreConfig());
-
-        jest.spyOn(checkoutState.data, 'getInstruments')
-            .mockReturnValue(getInstruments());
 
         localeContext = createLocaleContext(getStoreConfig());
 
@@ -87,7 +88,7 @@ describe('ManageInstrumentsModal', () => {
             .simulate('click');
 
         expect(checkoutService.deleteInstrument)
-            .toHaveBeenCalledWith(getInstruments()[0].bigpayToken);
+            .toHaveBeenCalledWith(instruments[0].bigpayToken);
 
         await new Promise(resolve => process.nextTick(resolve));
 

@@ -1,4 +1,4 @@
-import { CardInstrument, CheckoutSelectors, CustomerInitializeOptions, CustomerRequestOptions, Instrument, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
+import { CardInstrument, CheckoutSelectors, CustomerInitializeOptions, CustomerRequestOptions, Instrument, PaymentInitializeOptions, PaymentInstrument, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import classNames from 'classnames';
 import { find, noop, some } from 'lodash';
@@ -7,7 +7,6 @@ import React, { Component, ReactNode } from 'react';
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { MapToProps } from '../../common/hoc';
-import { EMPTY_ARRAY } from '../../common/utility';
 import { LoadingOverlay } from '../../ui/loading';
 import { CreditCardStorageField } from '../creditCard';
 import { isCardInstrument, isInstrumentCardCodeRequired, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CreditCardValidation, InstrumentFieldset } from '../storedInstrument';
@@ -149,7 +148,6 @@ class HostedWidgetPaymentMethod extends Component<
             >
                 { shouldShowInstrumentFieldset && <InstrumentFieldset
                     instruments={ instruments }
-                    method={ method }
                     onSelectInstrument={ this.handleSelectInstrument }
                     onUseNewInstrument={ this.handleUseNewCard }
                     selectedInstrumentId={ selectedInstrumentId }
@@ -284,11 +282,10 @@ function mapFromCheckoutProps(): MapToProps<
     WithCheckoutHostedWidgetPaymentMethodProps,
     HostedWidgetPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
 > {
-    const filterInstruments = memoizeOne((instruments: Instrument[] = EMPTY_ARRAY, method: PaymentMethod) =>
-        instruments.filter(({ provider }) => provider === method.id).filter(isCardInstrument)
-    );
+    const filterInstruments = memoizeOne((instruments: PaymentInstrument[] = []) => instruments.filter(isCardInstrument));
 
     return (context, props) => {
+
         const {
             formik: { values },
             isUsingMultiShipping = false,
@@ -321,7 +318,7 @@ function mapFromCheckoutProps(): MapToProps<
         }
 
         return {
-            instruments: filterInstruments(getInstruments(), method),
+            instruments: filterInstruments(getInstruments(method)),
             isLoadingInstruments: isLoadingInstruments(),
             isPaymentDataRequired: isPaymentDataRequired(values.useStoreCredit),
             isSignedIn: some(checkout.payments, { providerId: method.id }),

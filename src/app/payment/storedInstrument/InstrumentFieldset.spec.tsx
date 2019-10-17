@@ -5,7 +5,6 @@ import React from 'react';
 
 import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
-import { getPaymentMethod } from '../payment-methods.mock';
 
 import { getInstruments } from './instruments.mock';
 import isCardInstrument from './isCardInstrument';
@@ -20,7 +19,6 @@ describe('InstrumentFieldset', () => {
     beforeEach(() => {
         defaultProps = {
             instruments: getInstruments().filter(isCardInstrument),
-            method: getPaymentMethod(),
             onSelectInstrument: jest.fn(),
             onUseNewInstrument: jest.fn(),
             selectedInstrumentId: '123',
