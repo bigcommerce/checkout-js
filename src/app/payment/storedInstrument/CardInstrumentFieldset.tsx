@@ -9,7 +9,7 @@ import { ModalTrigger, ModalTriggerModalProps } from '../../ui/modal';
 import InstrumentSelect from './InstrumentSelect';
 import ManageInstrumentsModal from './ManageInstrumentsModal';
 
-export interface InstrumentFieldsetProps {
+export interface CardInstrumentFieldsetProps {
     instruments: CardInstrument[];
     selectedInstrumentId?: string;
     validateInstrument?: React.ReactNode;
@@ -17,13 +17,13 @@ export interface InstrumentFieldsetProps {
     onUseNewInstrument(): void;
 }
 
-export interface InstrumentFieldsetValues {
+export interface CardInstrumentFieldsetValues {
     ccCvv?: string;
     ccNumber?: string;
     instrumentId: string;
 }
 
-const InstrumentFieldset: FunctionComponent<InstrumentFieldsetProps> = ({
+const CardInstrumentFieldset: FunctionComponent<CardInstrumentFieldsetProps> = ({
     instruments,
     onSelectInstrument,
     onUseNewInstrument,
@@ -79,4 +79,4 @@ const InstrumentFieldset: FunctionComponent<InstrumentFieldsetProps> = ({
     </Fieldset>;
 };
 
-export default memo(InstrumentFieldset);
+export default memo(CardInstrumentFieldset);

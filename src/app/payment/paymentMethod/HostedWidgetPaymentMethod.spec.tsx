@@ -261,7 +261,7 @@ describe('HostedWidgetPaymentMethod', () => {
         it('only shows instruments fieldset when there is at least one stored instrument', () => {
             const component = mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
 
-            expect(component.find(storedInstrumentModule.InstrumentFieldset))
+            expect(component.find(storedInstrumentModule.CardInstrumentFieldset))
                 .toHaveLength(1);
         });
 
@@ -271,7 +271,7 @@ describe('HostedWidgetPaymentMethod', () => {
 
             const component = mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
 
-            expect(component.find(storedInstrumentModule.InstrumentFieldset))
+            expect(component.find(storedInstrumentModule.CardInstrumentFieldset))
                 .toHaveLength(0);
         });
 

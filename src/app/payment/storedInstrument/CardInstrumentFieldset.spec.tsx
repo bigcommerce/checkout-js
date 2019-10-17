@@ -8,13 +8,13 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../../loc
 
 import { getInstruments } from './instruments.mock';
 import isCardInstrument from './isCardInstrument';
-import InstrumentFieldset, { InstrumentFieldsetProps, InstrumentFieldsetValues } from './InstrumentFieldset';
+import CardInstrumentFieldset, { CardInstrumentFieldsetProps, CardInstrumentFieldsetValues } from './CardInstrumentFieldset';
 import InstrumentSelect from './InstrumentSelect';
 
-describe('InstrumentFieldset', () => {
-    let defaultProps: InstrumentFieldsetProps;
+describe('CardInstrumentFieldset', () => {
+    let defaultProps: CardInstrumentFieldsetProps;
     let localeContext: LocaleContextType;
-    let initialValues: InstrumentFieldsetValues;
+    let initialValues: CardInstrumentFieldsetValues;
 
     beforeEach(() => {
         defaultProps = {
@@ -38,7 +38,7 @@ describe('InstrumentFieldset', () => {
                     initialValues={ initialValues }
                     onSubmit={ noop }
                 >
-                    <InstrumentFieldset { ...defaultProps } />
+                    <CardInstrumentFieldset { ...defaultProps } />
                 </Formik>
             </LocaleContext.Provider>
         );
@@ -56,7 +56,7 @@ describe('InstrumentFieldset', () => {
                     initialValues={ initialValues }
                     onSubmit={ noop }
                 >
-                    <InstrumentFieldset
+                    <CardInstrumentFieldset
                         { ...defaultProps }
                         validateInstrument={ <ValidateInstrument /> }
                     />
@@ -77,7 +77,7 @@ describe('InstrumentFieldset', () => {
                     initialValues={ initialValues }
                     onSubmit={ noop }
                 >
-                    <InstrumentFieldset
+                    <CardInstrumentFieldset
                         { ...defaultProps }
                         selectedInstrumentId={ undefined }
                         validateInstrument={ <ValidateInstrument /> }

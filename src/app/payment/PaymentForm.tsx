@@ -10,7 +10,7 @@ import { Fieldset, Form, FormContext, Legend } from '../ui/form';
 import { CreditCardFieldsetValues } from './creditCard';
 import getPaymentValidationSchema from './getPaymentValidationSchema';
 import { getUniquePaymentMethodId, PaymentMethodList } from './paymentMethod';
-import { InstrumentFieldsetValues } from './storedInstrument';
+import { CardInstrumentFieldsetValues } from './storedInstrument';
 import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
 import PaymentRedeemables from './PaymentRedeemables';
 import PaymentSubmitButton from './PaymentSubmitButton';
@@ -42,7 +42,7 @@ export interface PaymentFormProps {
 
 export type PaymentFormValues = (
     CreditCardFieldsetValues & PaymentFormCommonValues |
-    InstrumentFieldsetValues & PaymentFormCommonValues |
+    CardInstrumentFieldsetValues & PaymentFormCommonValues |
     HostedWidgetPaymentMethodValues & PaymentFormCommonValues |
     PaymentFormCommonValues
 );
@@ -63,8 +63,8 @@ export function isCreditCardFieldsetValues(values: PaymentFormValues): values is
     return !!ccValues.ccName || !!ccValues.ccExpiry;
 }
 
-export function isInstrumentFieldsetValues(values: PaymentFormValues): values is InstrumentFieldsetValues & PaymentFormCommonValues {
-    const instrumentValues = values as InstrumentFieldsetValues;
+export function isInstrumentFieldsetValues(values: PaymentFormValues): values is CardInstrumentFieldsetValues & PaymentFormCommonValues {
+    const instrumentValues = values as CardInstrumentFieldsetValues;
 
     return !!instrumentValues.instrumentId;
 }

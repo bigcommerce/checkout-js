@@ -1,11 +1,11 @@
 import { createLanguageService, LanguageService } from '@bigcommerce/checkout-sdk';
 
 import getInstrumentValidationSchema from './getInstrumentValidationSchema';
-import { InstrumentFieldsetValues } from './InstrumentFieldset';
+import { CardInstrumentFieldsetValues } from './CardInstrumentFieldset';
 
 describe('getInstrumentValidationSchema()', () => {
     let language: LanguageService;
-    let validData: InstrumentFieldsetValues;
+    let validData: CardInstrumentFieldsetValues;
 
     beforeEach(() => {
         language = createLanguageService();

@@ -10,7 +10,7 @@ import { MapToProps } from '../../common/hoc';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
 import { configureCardValidator, getCreditCardValidationSchema, CreditCardFieldset, CreditCardFieldsetValues } from '../creditCard';
-import { getInstrumentValidationSchema, isCardInstrument, isInstrumentCardCodeRequired, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CreditCardValidation, InstrumentFieldset, InstrumentFieldsetValues } from '../storedInstrument';
+import { getInstrumentValidationSchema, isCardInstrument, isInstrumentCardCodeRequired, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CardInstrumentFieldset, CardInstrumentFieldsetValues, CreditCardValidation } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
 
@@ -23,7 +23,7 @@ export interface CreditCardPaymentMethodProps {
     onUnhandledError?(error: Error): void;
 }
 
-export type CreditCardPaymentMethodValues = CreditCardFieldsetValues | InstrumentFieldsetValues;
+export type CreditCardPaymentMethodValues = CreditCardFieldsetValues | CardInstrumentFieldsetValues;
 
 interface WithCheckoutCreditCardPaymentMethodProps {
     instruments: CardInstrument[];
@@ -136,7 +136,7 @@ class CreditCardPaymentMethod extends Component<
                 isLoading={ isLoading }
             >
                 <div className="paymentMethod paymentMethod--creditCard">
-                    { shouldShowInstrumentFieldset && <InstrumentFieldset
+                    { shouldShowInstrumentFieldset && <CardInstrumentFieldset
                         instruments={ instruments }
                         onSelectInstrument={ this.handleSelectInstrument }
                         onUseNewInstrument={ this.handleUseNewCard }
