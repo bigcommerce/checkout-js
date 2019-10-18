@@ -49,7 +49,10 @@ const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
                             <TranslatedString id="shipping.shipping_method_label" />
                         </strong> }
                     <div className="shippingOption shippingOption--alt">
-                        <StaticShippingOption method={ selectedShippingOption } />
+                        <StaticShippingOption
+                            displayAdditionalInformation={ false }
+                            method={ selectedShippingOption }
+                        />
                     </div>
                 </div> }
         </div>
