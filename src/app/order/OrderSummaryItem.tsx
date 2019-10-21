@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { isNumber } from 'lodash';
 import React, { memo, FunctionComponent, ReactNode } from 'react';
 
 import { ShopperCurrency } from '../currency';
@@ -60,14 +61,14 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                 className={ classNames(
                     'product-price',
                     'optimizedCheckout-contentPrimary',
-                    { 'product-price--beforeDiscount': amountAfterDiscount && amountAfterDiscount !== amount }
+                    { 'product-price--beforeDiscount': isNumber(amountAfterDiscount) && amountAfterDiscount !== amount }
                 ) }
                 data-test="cart-item-product-price"
             >
                 <ShopperCurrency amount={ amount } />
             </div>
 
-            { amountAfterDiscount && amountAfterDiscount !== amount && <div
+            { isNumber(amountAfterDiscount) && amountAfterDiscount !== amount && <div
                 className="product-price"
                 data-test="cart-item-product-price--afterDiscount"
             >
