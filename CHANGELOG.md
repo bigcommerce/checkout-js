@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/bigcommerce/checkout-js/compare/v1.5.0...v1.6.0) (2019-10-21)
+
+
+### Bug Fixes
+
+* **checkout:** PAYMENTS-4802 SHIPPING-1384 Upgrade checkout-sdk version ([ed1e3e3](https://github.com/bigcommerce/checkout-js/commit/ed1e3e3))
+
+
+### Features
+
+* **shipping:** SHIPPING-1384 Display description of shipping methods ([104d6fe](https://github.com/bigcommerce/checkout-js/commit/104d6fe))
+
 ## [1.5.0](https://github.com/bigcommerce/checkout-js/compare/v1.4.0...v1.5.0) (2019-10-10)
 
 
