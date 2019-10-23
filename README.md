@@ -37,6 +37,12 @@ If you are developing the application locally and want to build the source code 
 npm run dev
 ```
 
+If you want to create a prerelease (i.e.: `alpha`) for testing in the integration environment, you can run the following command:
+
+```sh
+npm run prerelease
+```
+
 ## Theme integration
 
 In the checkout template of your theme, you have to include a script tag that points to the loader file of this application. The loader file is responsible for loading the all the required assets, located in the `dist` folder, and inserting them on the page. You will need to find a way to serve these assets, i.e.: via a CDN provider, that is best suited to your needs.
