@@ -16,7 +16,9 @@ function getNextVersion() {
             }
 
             if (argv.prerelease) {
-                return resolve(semver.inc(packageJson.version, argv.prerelease));
+                const prereleaseType = typeof argv.prerelease === 'string' ? argv.prerelease : 'alpha';
+
+                return resolve(semver.inc(packageJson.version, 'prerelease', prereleaseType).replace(/\.\d+$/, `.${Date.now()}`));
             }
 
             resolve(semver.inc(packageJson.version, release.releaseType));

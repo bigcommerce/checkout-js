@@ -7,6 +7,7 @@
     "build": "rm -rf dist && webpack --mode production",
     "dev": "webpack --mode development --watch",
     "dev:server": "http-server dist",
+    "prerelease": "npm run test -- --coverage && npm run build -- --prerelease && npm run release:version",
     "release": "npm run test -- --coverage && npm run build && npm run release:version",
     "release:version": "git add dist && standard-version -a",
     "test": "jest",
@@ -121,5 +122,10 @@
     "webpack-inject-plugin": "^1.5.3",
     "yargs": "^14.0.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "standard-version": {
+    "scripts": {
+      "prebump": "./scripts/standard-version/prebump.js"
+    }
+  }
 }
