@@ -1,22 +1,59 @@
-import { CheckoutSelectors, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
-import { noop } from 'lodash';
+import { AccountInstrument, CheckoutSelectors, PaymentInitializeOptions, PaymentInstrument, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
+import { memoizeOne } from '@bigcommerce/memoize';
+import { find, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
+import { withCheckout, CheckoutContextProps } from '../../checkout';
+import { connectFormik, ConnectFormikProps } from '../../common/form';
+import { MapToProps } from '../../common/hoc';
+import { withLanguage, TranslatedString, WithLanguageProps } from '../../locale';
+import { CheckboxFormField } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
+import { isAccountInstrument, isInstrumentFeatureAvailable, AccountInstrumentFieldset } from '../storedInstrument';
+import withPayment, { WithPaymentProps } from '../withPayment';
+import { PaymentFormValues } from '../PaymentForm';
 
 export interface HostedPaymentMethodProps {
     description?: ReactNode;
     isInitializing?: boolean;
+    isUsingMultiShipping?: boolean;
     method: PaymentMethod;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
     initializePayment(options: PaymentInitializeOptions): Promise<CheckoutSelectors>;
     onUnhandledError?(error: Error): void;
 }
 
-export default class HostedPaymentMethod extends Component<HostedPaymentMethodProps> {
+interface HostedPaymentMethodState {
+    isAddingNewInstrument: boolean;
+    selectedInstrument?: AccountInstrument;
+}
+
+interface WithCheckoutHostedPaymentMethodProps {
+    instruments: AccountInstrument[];
+    isInstrumentFeatureAvailable: boolean;
+    isLoadingInstruments: boolean;
+    isNewAddress: boolean;
+    isPaymentDataRequired: boolean;
+    loadInstruments(): Promise<CheckoutSelectors>;
+}
+
+class HostedPaymentMethod extends Component<
+    HostedPaymentMethodProps &
+        WithCheckoutHostedPaymentMethodProps &
+        WithPaymentProps &
+        WithLanguageProps &
+        ConnectFormikProps<PaymentFormValues>,
+    HostedPaymentMethodState
+> {
+    state: HostedPaymentMethodState = {
+        isAddingNewInstrument: false,
+    };
+
     async componentDidMount(): Promise<void> {
         const {
             initializePayment,
+            isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
+            loadInstruments,
             method,
             onUnhandledError = noop,
         } = this.props;
@@ -26,6 +63,10 @@ export default class HostedPaymentMethod extends Component<HostedPaymentMethodPr
                 gatewayId: method.gateway,
                 methodId: method.id,
             });
+
+            if (isInstrumentFeatureAvailableProp) {
+                await loadInstruments();
+            }
         } catch (error) {
             onUnhandledError(error);
         }
@@ -52,21 +93,138 @@ export default class HostedPaymentMethod extends Component<HostedPaymentMethodPr
         const {
             description,
             isInitializing = false,
+            isLoadingInstruments,
+            instruments,
+            isNewAddress,
+            isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
         } = this.props;
 
-        if (!description) {
+        const {
+            selectedInstrument = this.getDefaultInstrument(),
+        } = this.state;
+
+        const isLoading = isInitializing || isLoadingInstruments;
+        const shouldShowInstrumentFieldset = isInstrumentFeatureAvailableProp && (instruments.length > 0 || isNewAddress);
+        const shouldShowSaveInstrument = isInstrumentFeatureAvailableProp && !selectedInstrument;
+
+        if (!description && !isInstrumentFeatureAvailableProp) {
             return null;
         }
 
         return (
             <LoadingOverlay
                 hideContentWhenLoading
-                isLoading={ isInitializing }
+                isLoading={ isLoading }
             >
-                { description && <div className="paymentMethod paymentMethod--hosted">
+                <div className="paymentMethod paymentMethod--hosted">
                     { description }
-                </div> }
+
+                    { shouldShowInstrumentFieldset && <AccountInstrumentFieldset
+                        instruments={ instruments }
+                        onSelectInstrument={ this.handleSelectInstrument }
+                        onUseNewInstrument={ this.handleUseNewInstrument }
+                        selectedInstrument={ selectedInstrument }
+                    /> }
+
+                    { shouldShowSaveInstrument && <CheckboxFormField
+                        additionalClassName="form-field--saveInstrument"
+                        labelContent={ <TranslatedString id="payment.account_instrument_save_payment_method_label" /> }
+                        name="shouldSaveInstrument"
+                    /> }
+                </div>
             </LoadingOverlay>
         );
     }
+
+    private getDefaultInstrument(): AccountInstrument | undefined {
+        const { isAddingNewInstrument } = this.state;
+        const { instruments } = this.props;
+
+        if (isAddingNewInstrument || !instruments.length) {
+            return;
+        }
+
+        return find(instruments, { defaultInstrument: true }) || instruments[0];
+    }
+
+    private handleUseNewInstrument: () => void = () => {
+        this.setState({
+            isAddingNewInstrument: true,
+            selectedInstrument: undefined,
+        });
+    };
+
+    private handleSelectInstrument: (id: string) => void = id => {
+        const {
+            instruments,
+        } = this.props;
+
+        this.setState({
+            isAddingNewInstrument: false,
+            selectedInstrument: find(instruments, { bigpayToken: id }),
+        });
+    };
 }
+
+function mapFromCheckoutProps(): MapToProps<
+    CheckoutContextProps,
+    WithCheckoutHostedPaymentMethodProps,
+    HostedPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
+> {
+    const filterAccountInstruments = memoizeOne((instruments: PaymentInstrument[] = []) => instruments.filter(isAccountInstrument));
+    const filterTrustedInstruments = memoizeOne((instruments: AccountInstrument[] = []) => instruments.filter(({ trustedShippingAddress }) => trustedShippingAddress));
+
+    return (context, props) => {
+
+        const {
+            formik: { values },
+            isUsingMultiShipping = false,
+            method,
+        } = props;
+
+        const { checkoutService, checkoutState } = context;
+
+        const {
+            data: {
+                getCart,
+                getConfig,
+                getCustomer,
+                getInstruments,
+                isPaymentDataRequired,
+            },
+            statuses: {
+                isLoadingInstruments,
+            },
+        } = checkoutState;
+
+        const cart = getCart();
+        const config = getConfig();
+        const customer = getCustomer();
+
+        if (!config || !cart || !customer || !method) {
+            return null;
+        }
+        const {
+            features,
+        } = config.checkoutSettings;
+
+        const currentMethodInstruments = filterAccountInstruments(getInstruments(method));
+        const trustedInstruments = filterTrustedInstruments(currentMethodInstruments);
+
+        return {
+            instruments: trustedInstruments,
+            isNewAddress: trustedInstruments.length === 0 && currentMethodInstruments.length > 0,
+            isInstrumentFeatureAvailable: features['PAYMENTS-4579.braintree_paypal_vaulting'] && isInstrumentFeatureAvailable({
+                config,
+                customer,
+                isUsingMultiShipping,
+                paymentMethod: method,
+            }),
+            isLoadingInstruments: isLoadingInstruments(),
+            isPaymentDataRequired: isPaymentDataRequired(values.useStoreCredit),
+            loadInstruments: checkoutService.loadInstruments,
+        };
+    };
+}
+
+export default connectFormik(withLanguage(withPayment(withCheckout(mapFromCheckoutProps)(HostedPaymentMethod))));
