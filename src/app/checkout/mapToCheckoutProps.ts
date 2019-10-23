@@ -1,4 +1,5 @@
-import { CustomError } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, CustomError } from '@bigcommerce/checkout-sdk';
+import { createSelector } from 'reselect';
 
 import { EMPTY_ARRAY } from '../common/utility';
 
@@ -18,6 +19,13 @@ export default function mapToCheckoutProps(
         links: { loginLink: loginUrl = '' } = {},
     } = data.getConfig() || {};
 
+    const subscribeToConsignmentsSelector = createSelector(
+        ({ checkoutService: { subscribe} }: CheckoutContextProps) => subscribe,
+        subscribe => (subscriber: (state: CheckoutSelectors) => void) => {
+            return subscribe(subscriber, ({ data: { getConsignments } }) => getConsignments());
+        }
+    );
+
     return {
         billingAddress: data.getBillingAddress(),
         cart: data.getCart(),
@@ -30,6 +38,7 @@ export default function mapToCheckoutProps(
         loadCheckout: checkoutService.loadCheckout,
         loginUrl,
         promotions,
+        subscribeToConsignments: subscribeToConsignmentsSelector({ checkoutService, checkoutState }),
         steps: data.getCheckout() ? getCheckoutStepStatuses(checkoutState) : EMPTY_ARRAY,
         usableStoreCredit: Math.min(grandTotal, storeCredit),
     };
