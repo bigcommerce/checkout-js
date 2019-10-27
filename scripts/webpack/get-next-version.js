@@ -4,26 +4,32 @@ const argv = require('yargs').argv;
 
 const packageJson = require('../../package.json');
 
+let nextVersion;
+
 function getNextVersion() {
-    return new Promise((resolve, reject) => {
-        if (argv.releaseAs) {
-            return resolve(semver.clean(argv.releaseAs));
-        }
-
-        conventionalRecommendedBump({ preset: 'angular' }, (err, release) => {
-            if (err) {
-                return reject(err);
+    if (!nextVersion) {
+        nextVersion = new Promise((resolve, reject) => {
+            if (argv.releaseAs) {
+                return resolve(semver.clean(argv.releaseAs));
             }
 
-            if (argv.prerelease) {
-                const prereleaseType = typeof argv.prerelease === 'string' ? argv.prerelease : 'alpha';
+            conventionalRecommendedBump({ preset: 'angular' }, (err, release) => {
+                if (err) {
+                    return reject(err);
+                }
 
-                return resolve(semver.inc(packageJson.version, 'prerelease', prereleaseType).replace(/\.\d+$/, `.${Date.now()}`));
-            }
+                if (argv.prerelease) {
+                    const prereleaseType = typeof argv.prerelease === 'string' ? argv.prerelease : 'alpha';
 
-            resolve(semver.inc(packageJson.version, release.releaseType));
-        })
-    });
+                    return resolve(semver.inc(packageJson.version, 'prerelease', prereleaseType).replace(/\.\d+$/, `.${Date.now()}`));
+                }
+
+                resolve(semver.inc(packageJson.version, release.releaseType));
+            })
+        });
+    }
+
+    return nextVersion;
 }
 
 module.exports = getNextVersion;
