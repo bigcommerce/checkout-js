@@ -275,12 +275,11 @@ describe('HostedWidgetPaymentMethod', () => {
                 .toHaveLength(0);
         });
 
-        it('displays available instruments for selected method only', () => {
-            const component = mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
-            const instruments = checkoutState.data.getInstruments() || [];
+        it('uses PaymentMethod to retrieve instruments', () => {
+            mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
 
-            expect(component.find(storedInstrumentModule.InstrumentFieldset).prop('instruments'))
-                .toEqual(instruments.filter(({ provider }) => provider === defaultProps.method.id));
+            expect(checkoutState.data.getInstruments)
+                .toHaveBeenCalledWith(defaultProps.method);
         });
 
         it('shows hosted widget and save credit card form when there are no stored instruments', () => {

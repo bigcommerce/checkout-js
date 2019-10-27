@@ -1,9 +1,8 @@
-import { CheckoutSelectors, Instrument } from '@bigcommerce/checkout-sdk';
+import { CardInstrument, CheckoutSelectors } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, Fragment, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
-import { EMPTY_ARRAY } from '../../common/utility';
 import { TranslatedString } from '../../locale';
 import { Button, ButtonSize, ButtonVariant } from '../../ui/button';
 import { Modal, ModalHeader } from '../../ui/modal';
@@ -13,7 +12,7 @@ import ManageInstrumentsTable from './ManageInstrumentsTable';
 
 export interface ManageInstrumentsModalProps {
     isOpen: boolean;
-    methodId: string;
+    instruments: CardInstrument[];
     onAfterOpen?(): void;
     onDeleteInstrumentError?(error: Error): void;
     onRequestClose?(): void;
@@ -26,7 +25,6 @@ export interface ManageInstrumentsModalState {
 
 interface WithCheckoutProps {
     deleteInstrumentError?: Error;
-    instruments: Instrument[];
     isDeletingInstrument: boolean;
     clearError(error: Error): Promise<CheckoutSelectors>;
     deleteInstrument(id: string): Promise<CheckoutSelectors>;
@@ -174,11 +172,9 @@ class ManageInstrumentsModal extends Component<ManageInstrumentsModalProps & Wit
 }
 
 export function mapFromCheckoutProps(
-    { checkoutService, checkoutState }: CheckoutContextProps,
-    { methodId }: ManageInstrumentsModalProps
+    { checkoutService, checkoutState }: CheckoutContextProps
 ): WithCheckoutProps | null {
     const {
-        data: { getInstruments },
         errors: { getDeleteInstrumentError },
         statuses: { isDeletingInstrument },
     } = checkoutState;
@@ -187,7 +183,6 @@ export function mapFromCheckoutProps(
         clearError: checkoutService.clearError,
         deleteInstrument: checkoutService.deleteInstrument,
         deleteInstrumentError: getDeleteInstrumentError(),
-        instruments: (getInstruments() || EMPTY_ARRAY).filter(({ provider }) => provider === methodId),
         isDeletingInstrument: isDeletingInstrument(),
     };
 }

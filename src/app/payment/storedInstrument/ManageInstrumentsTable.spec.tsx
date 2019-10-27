@@ -5,6 +5,7 @@ import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
 
+import { isCardInstrument } from '.';
 import { getInstruments } from './instruments.mock';
 import ManageInstrumentsTable, { ManageInstrumentsTableProps } from './ManageInstrumentsTable';
 
@@ -14,7 +15,7 @@ describe('ManageInstrumentsTable', () => {
 
     beforeEach(() => {
         defaultProps = {
-            instruments: getInstruments(),
+            instruments: getInstruments().filter(isCardInstrument),
             isDeletingInstrument: false,
             onDeleteInstrument: jest.fn(),
         };
