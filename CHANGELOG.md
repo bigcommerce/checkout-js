@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://github.com/bigcommerce/checkout-js/compare/v1.6.0...v1.7.0) (2019-10-28)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-4401 Redirect to Shipping if selected shipping options changed ([65b85b6](https://github.com/bigcommerce/checkout-js/commit/65b85b6))
+* **checkout:** CHECKOUT-4472 Fixed inconsistent zero in the price of free item in CLD ([19f22cd](https://github.com/bigcommerce/checkout-js/commit/19f22cd))
+* **common:** CHECKOUT-4515 Add `prerelease` command for creating test builds ([b6410ac](https://github.com/bigcommerce/checkout-js/commit/b6410ac))
+* **common:** CHECKOUT-4515 Ensure next version number is calculated once per build run ([308ffb3](https://github.com/bigcommerce/checkout-js/commit/308ffb3))
+
+
+### Features
+
+* **payment:** PAYMENTS-4759 Distinguish between Account and Card Instruments ([d025b16](https://github.com/bigcommerce/checkout-js/commit/d025b16))
+* **payment:** PAYMENTS-4759 Use paymentMethod to retrieve instruments from checkout-sdk ([b7aa94f](https://github.com/bigcommerce/checkout-js/commit/b7aa94f))
+
 ## [1.6.0](https://github.com/bigcommerce/checkout-js/compare/v1.5.0...v1.6.0) (2019-10-21)
 
 
