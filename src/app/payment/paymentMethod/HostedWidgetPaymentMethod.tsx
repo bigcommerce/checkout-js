@@ -9,7 +9,7 @@ import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { MapToProps } from '../../common/hoc';
 import { LoadingOverlay } from '../../ui/loading';
 import { CreditCardStorageField } from '../creditCard';
-import { isCardInstrument, isInstrumentCardCodeRequired, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CreditCardValidation, InstrumentFieldset } from '../storedInstrument';
+import { isCardInstrument, isInstrumentCardCodeRequired, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CardInstrumentFieldset, CreditCardValidation } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
 
@@ -146,7 +146,7 @@ class HostedWidgetPaymentMethod extends Component<
                 hideContentWhenLoading
                 isLoading={ isLoading }
             >
-                { shouldShowInstrumentFieldset && <InstrumentFieldset
+                { shouldShowInstrumentFieldset && <CardInstrumentFieldset
                     instruments={ instruments }
                     onSelectInstrument={ this.handleSelectInstrument }
                     onUseNewInstrument={ this.handleUseNewCard }

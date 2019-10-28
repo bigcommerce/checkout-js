@@ -28,6 +28,24 @@ export function getInstruments(): PaymentInstrument[] {
             method: 'card',
             type: 'card',
         },
+        {
+            bigpayToken: '31415',
+            provider: 'authorizenet',
+            externalId: 'test@external-id.com',
+            trustedShippingAddress: false,
+            defaultInstrument: false,
+            method: 'paypal',
+            type: 'account',
+        },
+        {
+            bigpayToken: '4123',
+            provider: 'authorizenet',
+            externalId: 'test@external-id-2.com',
+            trustedShippingAddress: false,
+            defaultInstrument: false,
+            method: 'paypal',
+            type: 'account',
+        },
     ];
 }
 

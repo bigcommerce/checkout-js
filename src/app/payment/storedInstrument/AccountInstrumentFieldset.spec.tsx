@@ -7,21 +7,23 @@ import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 
 import { getInstruments } from './instruments.mock';
-import isCardInstrument from './isCardInstrument';
-import InstrumentFieldset, { InstrumentFieldsetProps, InstrumentFieldsetValues } from './InstrumentFieldset';
-import InstrumentSelect from './InstrumentSelect';
+import isAccountInstrument from './isAccountInstrument';
+import AccountInstrumentFieldset, { AccountInstrumentFieldsetProps, AccountInstrumentFieldsetValues } from './AccountInstrumentFieldset';
+import AccountInstrumentSelect from './AccountInstrumentSelect';
 
-describe('InstrumentFieldset', () => {
-    let defaultProps: InstrumentFieldsetProps;
+describe('AccountInstrumentFieldset', () => {
+    let defaultProps: AccountInstrumentFieldsetProps;
     let localeContext: LocaleContextType;
-    let initialValues: InstrumentFieldsetValues;
+    let initialValues: AccountInstrumentFieldsetValues;
 
     beforeEach(() => {
+        const instruments = getInstruments().filter(isAccountInstrument);
+
         defaultProps = {
-            instruments: getInstruments().filter(isCardInstrument),
+            instruments,
             onSelectInstrument: jest.fn(),
             onUseNewInstrument: jest.fn(),
-            selectedInstrumentId: '123',
+            selectedInstrument: instruments[0],
         };
 
         initialValues = {
@@ -38,55 +40,50 @@ describe('InstrumentFieldset', () => {
                     initialValues={ initialValues }
                     onSubmit={ noop }
                 >
-                    <InstrumentFieldset { ...defaultProps } />
+                    <AccountInstrumentFieldset { ...defaultProps } />
                 </Formik>
             </LocaleContext.Provider>
         );
 
-        expect(component.find(InstrumentSelect).length)
+        expect(component.find(AccountInstrumentSelect).length)
             .toEqual(1);
     });
 
-    it('shows the validation form when an instrument is selected', () => {
-        const ValidateInstrument = () => <span>test</span>;
-
+    it('shows the new address message when the list of instruments is empty', () => {
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <Formik
                     initialValues={ initialValues }
                     onSubmit={ noop }
                 >
-                    <InstrumentFieldset
+                    <AccountInstrumentFieldset
                         { ...defaultProps }
-                        validateInstrument={ <ValidateInstrument /> }
+                        instruments={ [] }
                     />
                 </Formik>
             </LocaleContext.Provider>
         );
 
-        expect(component.find(ValidateInstrument).length)
+        expect(component.find('.instrumentSelect-note').length)
             .toEqual(1);
     });
 
-    it('shows the validation form when an instrument is selected', () => {
-        const ValidateInstrument = () => <span>test</span>;
-
+    it('shows the dropdown when the list of instruments is empty', () => {
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <Formik
                     initialValues={ initialValues }
                     onSubmit={ noop }
                 >
-                    <InstrumentFieldset
+                    <AccountInstrumentFieldset
                         { ...defaultProps }
-                        selectedInstrumentId={ undefined }
-                        validateInstrument={ <ValidateInstrument /> }
+                        instruments={ [] }
                     />
                 </Formik>
             </LocaleContext.Provider>
         );
 
-        expect(component.find(ValidateInstrument).length)
-            .toEqual(0);
+        expect(component.find(AccountInstrumentSelect).length)
+            .toEqual(1);
     });
 });

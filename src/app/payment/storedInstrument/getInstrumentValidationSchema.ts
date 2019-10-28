@@ -5,7 +5,7 @@ import creditCardType from 'credit-card-type';
 import { object, string, ObjectSchema, StringSchema } from 'yup';
 
 import mapFromInstrumentCardType from './mapFromInstrumentCardType';
-import { InstrumentFieldsetValues } from './InstrumentFieldset';
+import { CardInstrumentFieldsetValues } from './CardInstrumentFieldset';
 
 export interface InstrumentValidationSchemaOptions {
     instrumentBrand: string;
@@ -27,7 +27,7 @@ export default memoize(function getInstrumentValidationSchema({
     isCardCodeRequired,
     isCardNumberRequired,
     language,
-}: InstrumentValidationSchemaOptions): ObjectSchema<InstrumentFieldsetValues> {
+}: InstrumentValidationSchemaOptions): ObjectSchema<CardInstrumentFieldsetValues> {
     const schema: InstrumentValidationSchema = {
         instrumentId: string()
             .required(),

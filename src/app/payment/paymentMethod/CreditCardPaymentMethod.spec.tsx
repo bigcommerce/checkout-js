@@ -20,7 +20,7 @@ import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
 import CreditCardPaymentMethod, { CreditCardPaymentMethodProps, CreditCardPaymentMethodValues } from './CreditCardPaymentMethod';
 
-const { getInstrumentValidationSchema, InstrumentFieldset } = storedInstrumentModule;
+const { getInstrumentValidationSchema, CardInstrumentFieldset } = storedInstrumentModule;
 
 describe('CreditCardPaymentMethod', () => {
     let checkoutService: CheckoutService;
@@ -208,7 +208,7 @@ describe('CreditCardPaymentMethod', () => {
         it('only shows instruments fieldset when there is at least one stored instrument', () => {
             const component = mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
 
-            expect(component.find(InstrumentFieldset))
+            expect(component.find(CardInstrumentFieldset))
                 .toHaveLength(1);
         });
 
@@ -218,7 +218,7 @@ describe('CreditCardPaymentMethod', () => {
 
             const component = mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
 
-            expect(component.find(InstrumentFieldset))
+            expect(component.find(CardInstrumentFieldset))
                 .toHaveLength(0);
         });
 
@@ -249,12 +249,12 @@ describe('CreditCardPaymentMethod', () => {
             expect(component.find(CreditCardFieldset))
                 .toHaveLength(0);
 
-            component.find(InstrumentFieldset)
+            component.find(CardInstrumentFieldset)
                 .prop('onUseNewInstrument')();
 
             component.update();
 
-            expect(component.find(InstrumentFieldset).prop('selectedInstrumentId'))
+            expect(component.find(CardInstrumentFieldset).prop('selectedInstrumentId'))
                 .toEqual(undefined);
 
             expect(component.find(CreditCardFieldset))
