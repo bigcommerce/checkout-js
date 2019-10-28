@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "appVersion": "1.8.1-alpha.1572304895390",
+  "appVersion": "1.8.1",
   "dynamicChunks": {
     "js": [
       "billing-a0d5a77f.js",
