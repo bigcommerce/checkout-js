@@ -57,7 +57,14 @@ describe('SingleShippingForm', () => {
             expect(defaultProps.updateAddress).toHaveBeenCalledWith({
                 ...getShippingAddress(),
                 address1: 'foo 2',
-            });
+            },
+            {
+                params: {
+                    include: {
+                        'consignments.availableShippingOptions': true,
+                    },
+                },
+             });
             done();
         }, SHIPPING_AUTOSAVE_DELAY * 1.1);
     });
@@ -86,12 +93,21 @@ describe('SingleShippingForm', () => {
         }, SHIPPING_AUTOSAVE_DELAY * 1.1);
     });
 
-    it('does not call updateAddress if modified field does not affect shipping', done => {
+    it('calls updateAddress without including shipping options if modified field does not affect shipping', done => {
         component.find('input[name="shippingAddress.address2"]')
             .simulate('change', { target: { value: 'foo 1', name: 'shippingAddress.address2' } });
 
         setTimeout(() => {
-            expect(defaultProps.updateAddress).not.toHaveBeenCalled();
+            expect(defaultProps.updateAddress).toHaveBeenCalledWith({
+                ...getShippingAddress(),
+                address2: 'foo 1',
+            }, {
+                params: {
+                    include: {
+                        'consignments.availableShippingOptions': false,
+                    },
+                },
+            });
             done();
         }, SHIPPING_AUTOSAVE_DELAY * 1.1);
     });

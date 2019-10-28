@@ -1,4 +1,4 @@
-import { Address, Cart, CheckoutSelectors, Consignment, ConsignmentAssignmentRequestBody, Country, CustomerAddress, CustomerRequestOptions, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import { Address, Cart, CheckoutParams, CheckoutSelectors, Consignment, ConsignmentAssignmentRequestBody, Country, CustomerAddress, CustomerRequestOptions, FormField, RequestOptions, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import React, { Component, ReactNode } from 'react';
 
 import { withLanguage, WithLanguageProps } from '../locale';
@@ -33,7 +33,7 @@ export interface ShippingFormProps {
     onUnhandledError(error: Error): void;
     onUseNewAddress(address: Address, itemId: string): void;
     signOut(options?: CustomerRequestOptions): void;
-    updateAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
+    updateAddress(address: Partial<Address>, options: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
 }
 
 class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {

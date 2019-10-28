@@ -1,4 +1,4 @@
-import { Address, CheckoutSelectors, Consignment, Country, CustomerAddress, CustomerRequestOptions, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import { Address, CheckoutParams, CheckoutSelectors, Consignment, Country, CustomerAddress, CustomerRequestOptions, FormField, RequestOptions, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps } from 'formik';
 import { debounce, noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
@@ -34,7 +34,7 @@ export interface SingleShippingFormProps {
     onSubmit(values: SingleShippingFormValues): void;
     onUnhandledError?(error: Error): void;
     signOut(options?: CustomerRequestOptions): void;
-    updateAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
+    updateAddress(address: Partial<Address>, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
 }
 
 export interface SingleShippingFormValues {
@@ -63,9 +63,15 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
 
         const { updateAddress } = this.props;
 
-        this.debouncedUpdateAddress = debounce(async (address: Address) => {
+        this.debouncedUpdateAddress = debounce(async (address: Address, includeShippingOptions: boolean) => {
             try {
-                await updateAddress(address);
+                await updateAddress(address, {
+                    params: {
+                        include: {
+                            'consignments.availableShippingOptions': includeShippingOptions,
+                        },
+                    },
+                });
             } finally {
                 this.setState({ isUpdatingShippingData: false });
             }
@@ -143,7 +149,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
         const { isValid } = this.props;
 
         if (!prevIsValid && isValid) {
-            this.updateAddressWithFormData();
+            this.updateAddressWithFormData(true);
         }
     }
 
@@ -182,14 +188,14 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
 
         const { isValid } = this.props;
 
-        if (!isValid || !isShippingField) {
+        if (!isValid) {
             return;
         }
 
-        this.updateAddressWithFormData();
+        this.updateAddressWithFormData(isShippingField);
     };
 
-    private updateAddressWithFormData() {
+    private updateAddressWithFormData(includeShippingOptions: boolean) {
         const {
             shippingAddress,
             values: { shippingAddress: addressForm },
@@ -202,7 +208,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
         }
 
         this.setState({ isUpdatingShippingData: true });
-        this.debouncedUpdateAddress(updatedShippingAddress);
+        this.debouncedUpdateAddress(updatedShippingAddress, includeShippingOptions);
     }
 
     private handleAddressSelect: (
