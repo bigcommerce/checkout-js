@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.1-alpha.1572304895390](https://github.com/bigcommerce/checkout-js/compare/v1.8.0...v1.8.1-alpha.1572304895390) (2019-10-28)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-4399 Fix false error message when adding new address with Valuted Cards ([e44df24](https://github.com/bigcommerce/checkout-js/commit/e44df24))
+* **shipping:** CHECKOUT-4509 Always save shipping form after changes ([8269e75](https://github.com/bigcommerce/checkout-js/commit/8269e75))
+
 ## [1.8.0](https://github.com/bigcommerce/checkout-js/compare/v1.7.0...v1.8.0) (2019-10-28)
 
 

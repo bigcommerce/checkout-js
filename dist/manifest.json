@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "appVersion": "1.8.0",
+  "appVersion": "1.8.1-alpha.1572304895390",
   "dynamicChunks": {
     "js": [
       "billing-a0d5a77f.js",
@@ -11,8 +11,8 @@
       "customer-a91debb3.js",
       "order-summary-drawer-adc009c7.js",
       "order-summary-86411054.js",
-      "payment-1a225b0c.js",
-      "shipping-b7571629.js",
+      "payment-fc153801.js",
+      "shipping-092bd161.js",
       "vendors~billing~payment~shipping-23a78964.js",
       "vendors~billing~shipping-d475c237.js",
       "vendors~payment-ca2794df.js"
@@ -32,7 +32,7 @@
     ]
   },
   "js": [
-    "runtime-3bf7491c.js",
+    "runtime-12aa6622.js",
     "polyfill~checkout-66756e6a.js",
     "transients~checkout-a5628f54.js",
     "sentry~checkout-4a818dc5.js",
