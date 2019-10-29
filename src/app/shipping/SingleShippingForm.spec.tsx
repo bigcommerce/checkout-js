@@ -93,7 +93,7 @@ describe('SingleShippingForm', () => {
         }, SHIPPING_AUTOSAVE_DELAY * 1.1);
     });
 
-    it('calls updateAddress without including shipping options if modified field does not affect shipping', done => {
+    it('calls updateAddress including shipping options if modified field does not affect shipping but has never requested shipping options', done => {
         component.find('input[name="shippingAddress.address2"]')
             .simulate('change', { target: { value: 'foo 1', name: 'shippingAddress.address2' } });
 
@@ -104,11 +104,35 @@ describe('SingleShippingForm', () => {
             }, {
                 params: {
                     include: {
-                        'consignments.availableShippingOptions': false,
+                        'consignments.availableShippingOptions': true,
                     },
                 },
             });
             done();
+        }, SHIPPING_AUTOSAVE_DELAY * 1.1);
+    });
+
+    it('calls updateAddress without shipping options if modified field does not affect shipping and shipping options have already been requested', done => {
+        component.find('input[name="shippingAddress.address2"]')
+            .simulate('change', { target: { value: 'foo 1', name: 'shippingAddress.address2' } });
+
+        setTimeout(() => {
+            component.find('input[name="shippingAddress.address2"]')
+                .simulate('change', { target: { value: 'foo 2', name: 'shippingAddress.address2' } });
+
+            setTimeout(() => {
+                expect(defaultProps.updateAddress).toHaveBeenLastCalledWith({
+                    ...getShippingAddress(),
+                    address2: 'foo 2',
+                }, {
+                    params: {
+                        include: {
+                            'consignments.availableShippingOptions': false,
+                        },
+                    },
+                });
+                done();
+            }, SHIPPING_AUTOSAVE_DELAY * 1.1);
         }, SHIPPING_AUTOSAVE_DELAY * 1.1);
     });
 
