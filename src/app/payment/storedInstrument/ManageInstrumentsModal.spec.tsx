@@ -8,10 +8,12 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../../loc
 import { Modal } from '../../ui/modal';
 
 import { getInstruments } from './instruments.mock';
+import isAccountInstrument from './isAccountInstrument';
 import isCardInstrument from './isCardInstrument';
+import ManageAccountInstrumentsTable from './ManageAccountInstrumentsTable';
+import ManageCardInstrumentsTable from './ManageCardInstrumentsTable';
 import ManageInstrumentsAlert from './ManageInstrumentsAlert';
 import ManageInstrumentsModal, { ManageInstrumentsModalProps } from './ManageInstrumentsModal';
-import ManageInstrumentsTable from './ManageInstrumentsTable';
 
 describe('ManageInstrumentsModal', () => {
     let ManageInstrumentsModalTest: FunctionComponent<ManageInstrumentsModalProps>;
@@ -48,11 +50,30 @@ describe('ManageInstrumentsModal', () => {
         );
     });
 
-    it('renders list of instruments in table format', () => {
-        const component = mount(<ManageInstrumentsModalTest { ...defaultProps } />);
+    it('renders list of card instruments in table format', () => {
+        const component = mount(<ManageInstrumentsModalTest
+            { ...defaultProps }
+            instruments={ getInstruments().filter(isCardInstrument) }
+        />);
 
-        expect(component.find(ManageInstrumentsTable).length)
+        expect(component.find(ManageCardInstrumentsTable).length)
             .toEqual(1);
+
+        expect(component.find(ManageAccountInstrumentsTable).length)
+            .toEqual(0);
+    });
+
+    it('renders list of account instruments in table format', () => {
+        const component = mount(<ManageInstrumentsModalTest
+            { ...defaultProps }
+            instruments={ getInstruments().filter(isAccountInstrument) }
+        />);
+
+        expect(component.find(ManageAccountInstrumentsTable).length)
+            .toEqual(1);
+
+        expect(component.find(ManageCardInstrumentsTable).length)
+            .toEqual(0);
     });
 
     it('only render modal if configured to do so', () => {
@@ -105,7 +126,7 @@ describe('ManageInstrumentsModal', () => {
         component.find('[data-test="manage-instrument-cancel-button"]')
             .simulate('click');
 
-        expect(component.find(ManageInstrumentsTable).length)
+        expect(component.find(ManageCardInstrumentsTable).length)
             .toEqual(1);
     });
 
@@ -124,7 +145,7 @@ describe('ManageInstrumentsModal', () => {
 
         component.update();
 
-        expect(component.find(ManageInstrumentsTable).length)
+        expect(component.find(ManageCardInstrumentsTable).length)
             .toEqual(1);
     });
 

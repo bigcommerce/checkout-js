@@ -1,4 +1,4 @@
-import { CardInstrument, CheckoutSelectors } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, PaymentInstrument } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, Fragment, ReactNode } from 'react';
 
@@ -7,12 +7,15 @@ import { TranslatedString } from '../../locale';
 import { Button, ButtonSize, ButtonVariant } from '../../ui/button';
 import { Modal, ModalHeader } from '../../ui/modal';
 
+import isAccountInstrument from './isAccountInstrument';
+import isCardInstrument from './isCardInstrument';
+import ManageAccountInstrumentsTable from './ManageAccountInstrumentsTable';
+import ManageCardInstrumentsTable from './ManageCardInstrumentsTable';
 import ManageInstrumentsAlert from './ManageInstrumentsAlert';
-import ManageInstrumentsTable from './ManageInstrumentsTable';
 
 export interface ManageInstrumentsModalProps {
     isOpen: boolean;
-    instruments: CardInstrument[];
+    instruments: PaymentInstrument[];
     onAfterOpen?(): void;
     onDeleteInstrumentError?(error: Error): void;
     onRequestClose?(): void;
@@ -75,13 +78,21 @@ class ManageInstrumentsModal extends Component<ManageInstrumentsModalProps & Wit
                 <p><TranslatedString id="payment.instrument_manage_modal_confirmation_label" /></p>
             );
         }
+        const cardInstruments = instruments.filter(isCardInstrument);
+        const accountInstruments = instruments.filter(isAccountInstrument);
 
         return (
-            <ManageInstrumentsTable
-                instruments={ instruments }
-                isDeletingInstrument={ isDeletingInstrument }
-                onDeleteInstrument={ this.handleDeleteInstrument }
-            />
+            accountInstruments.length
+                ? <ManageAccountInstrumentsTable
+                    instruments={ accountInstruments }
+                    isDeletingInstrument={ isDeletingInstrument }
+                    onDeleteInstrument={ this.handleDeleteInstrument }
+                />
+                : <ManageCardInstrumentsTable
+                    instruments={ cardInstruments }
+                    isDeletingInstrument={ isDeletingInstrument }
+                    onDeleteInstrument={ this.handleDeleteInstrument }
+                />
         );
     }
 

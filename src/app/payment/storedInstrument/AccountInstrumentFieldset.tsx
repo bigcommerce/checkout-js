@@ -4,8 +4,10 @@ import React, { memo, useCallback, FunctionComponent } from 'react';
 
 import { TranslatedHtml, TranslatedString } from '../../locale';
 import { BasicFormField, Fieldset, Legend } from '../../ui/form';
+import { ModalTrigger, ModalTriggerModalProps } from '../../ui/modal';
 
 import AccountInstrumentSelect from './AccountInstrumentSelect';
+import ManageInstrumentsModal from './ManageInstrumentsModal';
 
 export interface AccountInstrumentFieldsetProps {
     instruments: AccountInstrument[];
@@ -39,6 +41,13 @@ const AccountInstrumentFieldset: FunctionComponent<AccountInstrumentFieldsetProp
         selectedInstrument,
     ]);
 
+    const renderModal = useCallback((props: ModalTriggerModalProps) => (
+        <ManageInstrumentsModal
+            instruments={ instruments }
+            { ...props }
+        />
+    ), [instruments]);
+
     return <Fieldset
         additionalClassName="instrumentFieldset"
         legend={
@@ -47,6 +56,16 @@ const AccountInstrumentFieldset: FunctionComponent<AccountInstrumentFieldsetProp
             </Legend>
         }
     >
+        <ModalTrigger modal={ renderModal }>
+            { ({ onClick }) => <button
+                className="instrumentModal-trigger"
+                onClick={ onClick }
+                type="button"
+            >
+                <TranslatedString id="payment.instrument_manage_button" />
+            </button> }
+        </ModalTrigger>
+
         <BasicFormField
             name="instrumentId"
             render={ renderInput }

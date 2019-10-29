@@ -7,10 +7,10 @@ import { LoadingOverlay } from '../../ui/loading';
 
 import { isCardInstrument } from '.';
 import { getInstruments } from './instruments.mock';
-import ManageInstrumentsTable, { ManageInstrumentsTableProps } from './ManageInstrumentsTable';
+import ManageCardInstrumentsTable, { ManageCardInstrumentsTableProps } from './ManageCardInstrumentsTable';
 
-describe('ManageInstrumentsTable', () => {
-    let defaultProps: ManageInstrumentsTableProps;
+describe('ManageCardInstrumentsTable', () => {
+    let defaultProps: ManageCardInstrumentsTableProps;
     let localeContext: LocaleContextType;
 
     beforeEach(() => {
@@ -26,7 +26,7 @@ describe('ManageInstrumentsTable', () => {
     it('matches snapshot with rendered output', () => {
         const component = render(
             <LocaleContext.Provider value={ localeContext }>
-                <ManageInstrumentsTable { ...defaultProps } />
+                <ManageCardInstrumentsTable { ...defaultProps } />
             </LocaleContext.Provider>
         );
 
@@ -37,7 +37,7 @@ describe('ManageInstrumentsTable', () => {
     it('renders instrument as row in table', () => {
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
-                <ManageInstrumentsTable { ...defaultProps } />
+                <ManageCardInstrumentsTable { ...defaultProps } />
             </LocaleContext.Provider>
         );
 
@@ -54,7 +54,7 @@ describe('ManageInstrumentsTable', () => {
     it('triggers callback when delete button is clicked', () => {
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
-                <ManageInstrumentsTable { ...defaultProps } />
+                <ManageCardInstrumentsTable { ...defaultProps } />
             </LocaleContext.Provider>
         );
 
@@ -68,7 +68,7 @@ describe('ManageInstrumentsTable', () => {
     it('renders message if there are no available instruments', () => {
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
-                <ManageInstrumentsTable
+                <ManageCardInstrumentsTable
                     { ...defaultProps }
                     instruments={ [] }
                 />
@@ -82,7 +82,7 @@ describe('ManageInstrumentsTable', () => {
     it('shows loading overlay when deleting', () => {
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
-                <ManageInstrumentsTable
+                <ManageCardInstrumentsTable
                     { ...defaultProps }
                     isDeletingInstrument={ true }
                 />

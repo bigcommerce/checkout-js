@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ManageInstrumentsTable matches snapshot with rendered output 1`] = `
+exports[`ManageCardInstrumentsTable matches snapshot with rendered output 1`] = `
 <div
   class="loadingOverlay-container"
 >

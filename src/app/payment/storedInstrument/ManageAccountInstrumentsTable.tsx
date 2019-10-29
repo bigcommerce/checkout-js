@@ -1,22 +1,17 @@
-import { CardInstrument } from '@bigcommerce/checkout-sdk';
-import { expirationDate } from 'card-validator';
-import classNames from 'classnames';
-import creditCardType from 'credit-card-type';
+import { AccountInstrument } from '@bigcommerce/checkout-sdk';
 import React, { memo, useCallback, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
+import { IconPaypal, IconSize } from '../../ui/icon';
 import { LoadingOverlay } from '../../ui/loading';
-import { CreditCardIcon } from '../creditCard';
 
-import mapFromInstrumentCardType from './mapFromInstrumentCardType';
-
-export interface ManageInstrumentsTableProps {
-    instruments: CardInstrument[];
+export interface ManageAccountInstrumentsTableProps {
+    instruments: AccountInstrument[];
     isDeletingInstrument: boolean;
     onDeleteInstrument(id: string): void;
 }
 
-const ManageInstrumentsTable: FunctionComponent<ManageInstrumentsTableProps> = ({
+const ManageInstrumentsTable: FunctionComponent<ManageAccountInstrumentsTableProps> = ({
     instruments,
     isDeletingInstrument,
     onDeleteInstrument,
@@ -33,8 +28,6 @@ const ManageInstrumentsTable: FunctionComponent<ManageInstrumentsTableProps> = (
                 <thead className="table-thead">
                     <tr>
                         <th><TranslatedString id="payment.instrument_manage_table_header_payment_method_text" /></th>
-                        <th><TranslatedString id="payment.instrument_manage_table_header_ending_in_text" /></th>
-                        <th><TranslatedString id="payment.instrument_manage_table_header_expiry_date_text" /></th>
                         <th />
                     </tr>
                 </thead>
@@ -54,7 +47,7 @@ const ManageInstrumentsTable: FunctionComponent<ManageInstrumentsTableProps> = (
 };
 
 interface ManageInstrumentsRowProps {
-    instrument: CardInstrument;
+    instrument: AccountInstrument;
     onDeleteInstrument(id: string): void;
 }
 
@@ -62,13 +55,6 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
     instrument,
     onDeleteInstrument,
 }) => {
-    const cardType = mapFromInstrumentCardType(instrument.brand);
-    const cardInfo = creditCardType.getTypeInfo(cardType);
-    const isExpired = expirationDate({
-        month: instrument.expiryMonth,
-        year: instrument.expiryYear,
-    }).isValid === false;
-
     const handleDelete = useCallback(() => {
         onDeleteInstrument(instrument.bigpayToken);
     }, [
@@ -78,21 +64,15 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
 
     return (
         <tr>
-            <td data-test="manage-instrument-cardType">
-                <CreditCardIcon cardType={ cardType } />
+            <td data-test="manage-instrument-accountExternalId">
+                <IconPaypal
+                    additionalClassName="accountIcon-icon"
+                    size={ IconSize.Medium }
+                />
 
-                { cardInfo && <span className="instrumentModal-instrumentCardType">
-                    { cardInfo.niceType }
-                </span> }
-            </td>
-            <td data-test="manage-instrument-last4">
-                { instrument.last4 }
-            </td>
-            <td
-                className={ classNames({ 'instrumentModal-instrumentExpiry--expired': isExpired }) }
-                data-test="manage-instrument-expiry"
-            >
-                { `${instrument.expiryMonth}/${instrument.expiryYear}` }
+                <span className="instrumentModal-instrumentAccountExternalId">
+                    { instrument.externalId }
+                </span>
             </td>
             <td>
                 <button
