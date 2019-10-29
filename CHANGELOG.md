@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.2-alpha.1572325204121](https://github.com/bigcommerce/checkout-js/compare/v1.8.1...v1.8.2-alpha.1572325204121) (2019-10-29)
+
+
+### Bug Fixes
+
+* **shipping:** CHECKOUT-4509 Make sure shipping options are requested at least once ([d723d91](https://github.com/bigcommerce/checkout-js/commit/d723d91))
+
+
+### Features
+
+* **payment:** PAYMENTS-4618 Manage HostedPaymentMethod Instruments (aka. Braintree Paypal) ([059c9f4](https://github.com/bigcommerce/checkout-js/commit/059c9f4))
+
 ### [1.8.1](https://github.com/bigcommerce/checkout-js/compare/v1.8.1-alpha.1572304895390...v1.8.1) (2019-10-28)
 
 ### [1.8.1-alpha.1572304895390](https://github.com/bigcommerce/checkout-js/compare/v1.8.0...v1.8.1-alpha.1572304895390) (2019-10-28)
