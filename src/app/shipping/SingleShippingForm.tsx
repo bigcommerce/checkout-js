@@ -46,6 +46,7 @@ export interface SingleShippingFormValues {
 interface SingleShippingFormState {
     isResettingAddress: boolean;
     isUpdatingShippingData: boolean;
+    hasRequestedShippingOptions: boolean;
 }
 
 export const SHIPPING_AUTOSAVE_DELAY = 1000;
@@ -54,6 +55,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
     state: SingleShippingFormState = {
         isResettingAddress: false,
         isUpdatingShippingData: false,
+        hasRequestedShippingOptions: false,
     };
 
     private debouncedUpdateAddress: any;
@@ -72,6 +74,9 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                         },
                     },
                 });
+                if (includeShippingOptions) {
+                    this.setState({ hasRequestedShippingOptions: true });
+                }
             } finally {
                 this.setState({ isUpdatingShippingData: false });
             }
@@ -141,18 +146,6 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
         );
     }
 
-    componentDidUpdate({ isValid: prevIsValid }:
-        SingleShippingFormProps &
-        WithLanguageProps &
-        FormikProps<SingleShippingFormValues>
-    ): void {
-        const { isValid } = this.props;
-
-        if (!prevIsValid && isValid) {
-            this.updateAddressWithFormData(true);
-        }
-    }
-
     private shouldDisableSubmit: () => boolean = () => {
         const {
             isLoading,
@@ -187,12 +180,13 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
         const isShippingField = SHIPPING_ADDRESS_FIELDS.includes(name);
 
         const { isValid } = this.props;
+        const { hasRequestedShippingOptions } = this.state;
 
         if (!isValid) {
             return;
         }
 
-        this.updateAddressWithFormData(isShippingField);
+        this.updateAddressWithFormData(isShippingField || !hasRequestedShippingOptions);
     };
 
     private updateAddressWithFormData(includeShippingOptions: boolean) {
