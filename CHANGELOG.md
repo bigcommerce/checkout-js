@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.3](https://github.com/bigcommerce/checkout-js/compare/v1.8.2...v1.8.3) (2019-10-30)
+
+
+### Bug Fixes
+
+* **payment:** PAYMENTS-4886 Disable vaulting if isPaymentDataSubmitted is true ([b816ad6](https://github.com/bigcommerce/checkout-js/commit/b816ad6))
+
 ### [1.8.2](https://github.com/bigcommerce/checkout-js/compare/v1.8.2-alpha.1572325204121...v1.8.2) (2019-10-29)
 
 ### [1.8.2-alpha.1572325204121](https://github.com/bigcommerce/checkout-js/compare/v1.8.1...v1.8.2-alpha.1572325204121) (2019-10-29)
