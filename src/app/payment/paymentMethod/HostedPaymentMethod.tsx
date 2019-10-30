@@ -175,7 +175,6 @@ function mapFromCheckoutProps(): MapToProps<
     const filterTrustedInstruments = memoizeOne((instruments: AccountInstrument[] = []) => instruments.filter(({ trustedShippingAddress }) => trustedShippingAddress));
 
     return (context, props) => {
-
         const {
             formik: { values },
             isUsingMultiShipping = false,
@@ -191,6 +190,7 @@ function mapFromCheckoutProps(): MapToProps<
                 getCustomer,
                 getInstruments,
                 isPaymentDataRequired,
+                isPaymentDataSubmitted,
             },
             statuses: {
                 isLoadingInstruments,
@@ -214,12 +214,14 @@ function mapFromCheckoutProps(): MapToProps<
         return {
             instruments: trustedInstruments,
             isNewAddress: trustedInstruments.length === 0 && currentMethodInstruments.length > 0,
-            isInstrumentFeatureAvailable: features['PAYMENTS-4579.braintree_paypal_vaulting'] && isInstrumentFeatureAvailable({
-                config,
-                customer,
-                isUsingMultiShipping,
-                paymentMethod: method,
-            }),
+            isInstrumentFeatureAvailable: features['PAYMENTS-4579.braintree_paypal_vaulting']
+                && !isPaymentDataSubmitted(method.id, method.gateway)
+                && isInstrumentFeatureAvailable({
+                    config,
+                    customer,
+                    isUsingMultiShipping,
+                    paymentMethod: method,
+                }),
             isLoadingInstruments: isLoadingInstruments(),
             isPaymentDataRequired: isPaymentDataRequired(values.useStoreCredit),
             loadInstruments: checkoutService.loadInstruments,
