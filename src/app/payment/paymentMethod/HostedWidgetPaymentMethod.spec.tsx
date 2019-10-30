@@ -61,9 +61,6 @@ describe('HostedWidgetPaymentMethod', () => {
         jest.spyOn(checkoutState.data, 'getCustomer')
             .mockReturnValue(getCustomer());
 
-        jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
-            .mockReturnValue(true);
-
         HostedWidgetPaymentMethodTest = props => (
             <CheckoutProvider checkoutService={ checkoutService }>
                 <PaymentContext.Provider value={ paymentContext }>
@@ -96,16 +93,6 @@ describe('HostedWidgetPaymentMethod', () => {
 
         expect(defaultProps.deinitializePayment)
             .toHaveBeenCalled();
-    });
-
-    it('does not initialize payment method if payment data is not required', () => {
-        jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
-            .mockReturnValue(false);
-
-        mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
-
-        expect(defaultProps.initializePayment)
-            .not.toHaveBeenCalled();
     });
 
     it('renders loading overlay while waiting for method to initialize', () => {
@@ -225,19 +212,6 @@ describe('HostedWidgetPaymentMethod', () => {
 
             expect(paymentContext.setSubmit)
                 .toHaveBeenCalledWith(defaultProps.method, defaultProps.signInCustomer);
-        });
-
-        it('does not ask user to sign in if payment data is not required', () => {
-            jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
-                .mockReturnValue(false);
-
-            mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
-
-            expect(defaultProps.initializeCustomer)
-                .not.toHaveBeenCalled();
-
-            expect(paymentContext.setSubmit)
-                .not.toHaveBeenCalledWith(defaultProps.method, defaultProps.signInCustomer);
         });
     });
 

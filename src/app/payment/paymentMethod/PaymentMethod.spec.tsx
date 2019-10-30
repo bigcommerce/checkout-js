@@ -57,6 +57,9 @@ describe('PaymentMethod', () => {
         jest.spyOn(checkoutService, 'initializePayment')
             .mockResolvedValue(checkoutState);
 
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
+            .mockReturnValue(true);
+
         PaymentMethodTest = props => (
             <CheckoutProvider checkoutService={ checkoutService }>
                 <PaymentContext.Provider value={ paymentContext }>
@@ -83,6 +86,15 @@ describe('PaymentMethod', () => {
 
         expect(defaultProps.onUnhandledError)
             .toHaveBeenCalledWith(expect.any(Error));
+    });
+
+    it('does not render the payment method when payment is not required', () => {
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
+            .mockReturnValue(false);
+
+        const container = mount(<PaymentMethodTest { ...defaultProps } />);
+
+        expect(container.html()).toEqual('');
     });
 
     describe('when using hosted / offsite payment', () => {

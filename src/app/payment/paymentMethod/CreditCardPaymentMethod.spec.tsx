@@ -110,16 +110,6 @@ describe('CreditCardPaymentMethod', () => {
             .toEqual(Object.keys(expectedSchema.describe().fields));
     });
 
-    it('does not set validation schema if payment is not required', () => {
-        jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
-            .mockReturnValue(false);
-
-        mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
-
-        expect(paymentContext.setValidationSchema)
-            .toHaveBeenCalledWith(defaultProps.method, null);
-    });
-
     it('deinitializes payment method when component unmounts', () => {
         const component = mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
 

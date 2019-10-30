@@ -42,6 +42,9 @@ describe('when using Paypal Payments Pro payment method', () => {
         jest.spyOn(checkoutService, 'initializePayment')
             .mockResolvedValue(checkoutState);
 
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
+            .mockReturnValue(true);
+
         PaymentMethodTest = props => (
             <CheckoutProvider checkoutService={ checkoutService }>
                 <LocaleProvider checkoutService={ checkoutService }>

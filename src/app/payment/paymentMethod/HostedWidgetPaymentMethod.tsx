@@ -38,7 +38,6 @@ interface WithCheckoutHostedWidgetPaymentMethodProps {
     isInstrumentCardCodeRequired: boolean;
     isInstrumentFeatureAvailable: boolean;
     isLoadingInstruments: boolean;
-    isPaymentDataRequired: boolean;
     isSignedIn: boolean;
     isInstrumentCardNumberRequired(instrument: Instrument): boolean;
     loadInstruments(): void;
@@ -182,7 +181,6 @@ class HostedWidgetPaymentMethod extends Component<
 
     private async initializeMethod(): Promise<CheckoutSelectors | void> {
         const {
-            isPaymentDataRequired,
             isSignedIn,
             isSignInRequired,
             initializeCustomer = noop,
@@ -191,12 +189,6 @@ class HostedWidgetPaymentMethod extends Component<
             setSubmit,
             signInCustomer = noop,
         } = this.props;
-
-        if (!isPaymentDataRequired) {
-            setSubmit(method, null);
-
-            return Promise.resolve();
-        }
 
         if (isSignInRequired && !isSignedIn) {
             setSubmit(method, signInCustomer);
@@ -287,7 +279,6 @@ function mapFromCheckoutProps(): MapToProps<
     return (context, props) => {
 
         const {
-            formik: { values },
             isUsingMultiShipping = false,
             method,
         } = props;
@@ -301,7 +292,6 @@ function mapFromCheckoutProps(): MapToProps<
                 getConfig,
                 getCustomer,
                 getInstruments,
-                isPaymentDataRequired,
             },
             statuses: {
                 isLoadingInstruments,
@@ -320,7 +310,6 @@ function mapFromCheckoutProps(): MapToProps<
         return {
             instruments: filterInstruments(getInstruments(method)),
             isLoadingInstruments: isLoadingInstruments(),
-            isPaymentDataRequired: isPaymentDataRequired(values.useStoreCredit),
             isSignedIn: some(checkout.payments, { providerId: method.id }),
             isInstrumentCardCodeRequired: isInstrumentCardCodeRequired({
                 config,

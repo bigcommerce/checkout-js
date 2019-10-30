@@ -60,6 +60,9 @@ describe('PaymentForm', () => {
         jest.spyOn(checkoutState.data, 'getCustomer')
             .mockReturnValue(getCustomer());
 
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
+            .mockReturnValue(true);
+
         PaymentFormTest = props => (
             <CheckoutProvider checkoutService={ checkoutService }>
                 <PaymentContext.Provider value={ paymentContext }>
