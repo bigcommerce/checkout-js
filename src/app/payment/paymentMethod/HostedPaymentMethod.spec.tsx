@@ -165,13 +165,23 @@ describe('HostedPaymentMethod', () => {
 
             const component = mount(<HostedPaymentMethodTest { ...defaultProps } />);
 
-            expect(component.find(storedInstrumentModule.AccountInstrumentFieldset).length)
-                .toBe(1);
+            expect(component.find(storedInstrumentModule.AccountInstrumentFieldset))
+                .toHaveLength(1);
         });
 
         it('does not show instruments fieldset when there are no stored instruments', () => {
             jest.spyOn(checkoutState.data, 'getInstruments')
                 .mockReturnValue([]);
+
+            const component = mount(<HostedPaymentMethodTest { ...defaultProps } />);
+
+            expect(component.find(storedInstrumentModule.AccountInstrumentFieldset))
+                .toHaveLength(0);
+        });
+
+        it('does not show instruments fieldset when starting from the cart', () => {
+            jest.spyOn(checkoutState.data, 'isPaymentDataSubmitted')
+                .mockReturnValue(true);
 
             const component = mount(<HostedPaymentMethodTest { ...defaultProps } />);
 
@@ -207,8 +217,8 @@ describe('HostedPaymentMethod', () => {
             it('does not render the dropdown', () => {
                 const component = mount(<HostedPaymentMethodTest { ...defaultProps } />);
 
-                expect(component.find(storedInstrumentModule.AccountInstrumentFieldset).length)
-                    .toBe(0);
+                expect(component.find(storedInstrumentModule.AccountInstrumentFieldset))
+                    .toHaveLength(0);
             });
 
             it('does not prompt to save the instrument', () => {
@@ -220,8 +230,8 @@ describe('HostedPaymentMethod', () => {
                     { ...defaultProps }
                 />);
 
-                expect(component.find('.form-field--saveInstrument').length)
-                    .toBe(0);
+                expect(component.find('.form-field--saveInstrument'))
+                    .toHaveLength(0);
             });
         });
     });
