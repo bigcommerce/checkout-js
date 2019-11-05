@@ -1,4 +1,4 @@
-import Country from './country';
+import { Country } from '@bigcommerce/checkout-sdk';
 
 export function getCountries(): Country[] {
     return [
@@ -17,6 +17,7 @@ export function getAustralia(): Country {
             { code: 'VIC', name: 'Victoria' },
         ],
         hasPostalCodes: true,
+        requiresState: true,
     };
 }
 
@@ -25,6 +26,7 @@ export function getUnitedStates(): Country {
         code: 'US',
         name: 'United States',
         hasPostalCodes: true,
+        requiresState: true,
         subdivisions: [
             { code: 'CA', name: 'California' },
             { code: 'TX', name: 'Texas' },
@@ -37,6 +39,7 @@ export function getJapan(): Country {
         code: 'JP',
         name: 'Japan',
         hasPostalCodes: false,
+        requiresState: false,
         subdivisions: [],
     };
 }

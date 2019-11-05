@@ -1,1 +1,1 @@
-export { default as Country, Region, LocalizedGeography } from './country';
+export { LocalizedGeography } from './country';

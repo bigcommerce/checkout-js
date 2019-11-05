@@ -1,7 +1,7 @@
-import { Address } from '@bigcommerce/checkout-sdk';
+import { Address, Country } from '@bigcommerce/checkout-sdk';
 import { find, isEmpty } from 'lodash';
 
-import { Country, LocalizedGeography } from '../geography';
+import { LocalizedGeography } from '../geography';
 
 const localizeAddress = <T1 extends Address>(
     address: T1,
