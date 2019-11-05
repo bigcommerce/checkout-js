@@ -1,6 +1,4 @@
-import { Address } from '@bigcommerce/checkout-sdk';
-
-import { Country, Region } from '../../geography';
+import { Address, Country, Region } from '@bigcommerce/checkout-sdk';
 
 import AddressSelectorFactory from './AddressSelectorFactory';
 
