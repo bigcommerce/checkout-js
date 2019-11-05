@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.9.1](https://github.com/bigcommerce/checkout-js/compare/v1.9.0...v1.9.1) (2019-11-05)
+
+
+### Bug Fixes
+
+* **payment:** PAYMENTS-4899 Make formik update form values correctly in AccountInstrumentSelect ([ca0b60a](https://github.com/bigcommerce/checkout-js/commit/ca0b60a))
+
 ## [1.9.0](https://github.com/bigcommerce/checkout-js/compare/v1.8.4...v1.9.0) (2019-11-05)
 
 
