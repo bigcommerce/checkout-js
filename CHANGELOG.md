@@ -18,8 +18,6 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### [1.8.2](https://github.com/bigcommerce/checkout-js/compare/v1.8.2-alpha.1572325204121...v1.8.2) (2019-10-29)
 
-### [1.8.2-alpha.1572325204121](https://github.com/bigcommerce/checkout-js/compare/v1.8.1...v1.8.2-alpha.1572325204121) (2019-10-29)
-
 
 ### Bug Fixes
 
@@ -31,8 +29,6 @@ All notable changes to this project will be documented in this file. See [standa
 * **payment:** PAYMENTS-4618 Manage HostedPaymentMethod Instruments (aka. Braintree Paypal) ([059c9f4](https://github.com/bigcommerce/checkout-js/commit/059c9f4))
 
 ### [1.8.1](https://github.com/bigcommerce/checkout-js/compare/v1.8.1-alpha.1572304895390...v1.8.1) (2019-10-28)
-
-### [1.8.1-alpha.1572304895390](https://github.com/bigcommerce/checkout-js/compare/v1.8.0...v1.8.1-alpha.1572304895390) (2019-10-28)
 
 
 ### Bug Fixes
