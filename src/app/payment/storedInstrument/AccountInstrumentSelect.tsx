@@ -21,7 +21,7 @@ export interface AccountInstrumentSelectValues {
 
 class AccountInstrumentSelect extends PureComponent<AccountInstrumentSelectProps> {
     componentDidMount() {
-        this.updateFieldValue();
+        setTimeout(() => this.updateFieldValue());
     }
 
     componentDidUpdate(prevProps: Readonly<AccountInstrumentSelectProps>) {
