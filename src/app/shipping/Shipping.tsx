@@ -225,7 +225,11 @@ const deleteConsignmentsSelector = createSelector(
     ({ checkoutService: { deleteConsignment } }: CheckoutContextProps) => deleteConsignment,
     ({ checkoutState: { data } }: CheckoutContextProps) => data.getConsignments(),
     (deleteConsignment, consignments) => async () => {
-        const [{ data }] = await Promise.all((consignments || []).map(({ id }) =>
+        if (!consignments || !consignments.length) {
+            return;
+        }
+
+        const [{ data }] = await Promise.all(consignments.map(({ id }) =>
             deleteConsignment(id)
         ));
 

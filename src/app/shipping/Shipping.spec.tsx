@@ -45,6 +45,9 @@ describe('Shipping Component', () => {
         jest.spyOn(checkoutService, 'loadShippingOptions')
             .mockResolvedValue({} as CheckoutSelectors);
 
+        jest.spyOn(checkoutService, 'deleteConsignment')
+            .mockResolvedValue({} as CheckoutSelectors);
+
         jest.spyOn(checkoutState.data, 'getCart')
             .mockReturnValue({
                 ...getCart(),
@@ -234,6 +237,45 @@ describe('Shipping Component', () => {
         expect(checkoutService.updateShippingAddress).not.toHaveBeenCalled();
         expect(checkoutService.updateCheckout).not.toHaveBeenCalled();
         expect(defaultProps.navigateNextStep).toHaveBeenCalledWith(true);
+    });
+
+    it('calls delete consignment if consignments exist when adding a new address', async () => {
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue({
+            ...getCustomer(),
+        });
+
+        jest.spyOn(checkoutState.data, 'getConsignments')
+        .mockReturnValue([getConsignment()]);
+
+        component = mount(<ComponentTest { ...defaultProps } />);
+        await new Promise(resolve => process.nextTick(resolve));
+
+        component.update();
+        component.find('#addressToggle').simulate('click');
+        component.find('#addressDropdown li').first().find('a').simulate('click');
+
+        await new Promise(resolve => process.nextTick(resolve));
+        component.update();
+
+        expect(checkoutService.deleteConsignment).toHaveBeenCalled();
+    });
+
+    it('does not Call delete consignment if consignment doesnot exist when adding a new address', async () => {
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue({
+            ...getCustomer(),
+        });
+
+        jest.spyOn(checkoutState.data, 'getConsignments')
+            .mockReturnValue([]);
+
+        component = mount(<ComponentTest { ...defaultProps } />);
+        await new Promise(resolve => process.nextTick(resolve));
+
+        component.update();
+        component.find('#addressToggle').simulate('click');
+        component.find('#addressDropdown li').first().find('a').simulate('click');
+
+        expect(checkoutService.deleteConsignment).not.toHaveBeenCalled();
     });
 
     describe('when multishipping mode is on', () => {
