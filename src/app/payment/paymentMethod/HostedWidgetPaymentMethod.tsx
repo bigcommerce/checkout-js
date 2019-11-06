@@ -18,6 +18,7 @@ import SignOutLink from './SignOutLink';
 export interface HostedWidgetPaymentMethodProps {
     containerId: string;
     hideContentWhenSignedOut?: boolean;
+    hideVerificationFields?: boolean;
     isInitializing?: boolean;
     isUsingMultiShipping?: boolean;
     isSignInRequired?: boolean;
@@ -41,7 +42,7 @@ interface WithCheckoutHostedWidgetPaymentMethodProps {
     isPaymentDataRequired: boolean;
     isSignedIn: boolean;
     isInstrumentCardNumberRequired(instrument: Instrument): boolean;
-    loadInstruments(): void;
+    loadInstruments(): Promise<CheckoutSelectors>;
     signOut(options: CustomerRequestOptions): void;
 }
 
@@ -120,6 +121,7 @@ class HostedWidgetPaymentMethod extends Component<
             instruments,
             containerId,
             hideContentWhenSignedOut = false,
+            hideVerificationFields = false,
             isInitializing = false,
             isSignedIn = false,
             isSignInRequired = false,
@@ -152,8 +154,8 @@ class HostedWidgetPaymentMethod extends Component<
                     onUseNewInstrument={ this.handleUseNewCard }
                     selectedInstrumentId={ selectedInstrumentId }
                     validateInstrument={ <CreditCardValidation
-                        shouldShowCardCodeField={ isInstrumentCardCodeRequiredProp }
-                        shouldShowNumberField={ shouldShowNumberField }
+                        shouldShowCardCodeField={ !hideVerificationFields && isInstrumentCardCodeRequiredProp }
+                        shouldShowNumberField={ !hideVerificationFields && shouldShowNumberField }
                     /> }
                 /> }
 
@@ -301,6 +303,7 @@ function mapFromCheckoutProps(): MapToProps<
                 getConfig,
                 getCustomer,
                 getInstruments,
+                getOrder,
                 isPaymentDataRequired,
             },
             statuses: {
@@ -312,10 +315,13 @@ function mapFromCheckoutProps(): MapToProps<
         const checkout = getCheckout();
         const config = getConfig();
         const customer = getCustomer();
+        const order = getOrder();
 
         if (!checkout || !config || !cart || !customer || !method) {
             return null;
         }
+
+        const orderIsComplete = order ? order.isComplete : false;
 
         return {
             instruments: filterInstruments(getInstruments(method)),
@@ -333,6 +339,7 @@ function mapFromCheckoutProps(): MapToProps<
                 customer,
                 isUsingMultiShipping,
                 paymentMethod: method,
+                orderIsComplete,
             }),
             loadInstruments: checkoutService.loadInstruments,
             signOut: checkoutService.signOutCustomer,

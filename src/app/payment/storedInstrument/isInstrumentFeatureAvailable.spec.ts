@@ -73,6 +73,13 @@ describe('isInstrumentFeatureAvailable()', () => {
             .toEqual(false);
     });
 
+    it('returns false if the current order is already complete', () => {
+        expect(isInstrumentFeatureAvailable(merge({}, state, {
+            orderIsComplete: true,
+        })))
+            .toEqual(false);
+    });
+
     it('returns true otherwise', () => {
         expect(isInstrumentFeatureAvailable(state))
             .toEqual(true);
