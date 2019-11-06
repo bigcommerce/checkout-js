@@ -63,7 +63,7 @@ describe('when using Adyen V2 payment', () => {
 
         expect(component.props())
             .toEqual(expect.objectContaining({
-                containerId: 'scheme-adyen-component-field',
+                containerId: 'adyen-scheme-component-field',
                 deinitializePayment: expect.any(Function),
                 initializePayment: expect.any(Function),
                 method,
@@ -85,15 +85,22 @@ describe('when using Adyen V2 payment', () => {
             .toHaveBeenCalledWith(expect.objectContaining({
                 adyenv2: {
                     cardVerificationContainerId: undefined,
-                    containerId: 'scheme-adyen-component-field',
+                    containerId: 'adyen-scheme-component-field',
                     options: {
                         hasHolderName: true,
                     },
-                    threeDS2ContainerId: 'scheme-adyen-component-field-3ds',
+                    additionalActionOptions: {
+                        containerId: 'adyen-scheme-additional-action-component-field',
+                        onBeforeLoad: expect.any(Function),
+                        onComplete: expect.any(Function),
+                        onLoad: expect.any(Function),
+                    },
+                    threeDS2ContainerId: 'adyen-scheme-additional-action-component-field',
                     threeDS2Options: {
                         widgetSize: '05',
-                        onLoad: expect.any(Function),
+                        onBeforeLoad: expect.any(Function),
                         onComplete: expect.any(Function),
+                        onLoad: expect.any(Function),
                     },
                 },
                 gatewayId: method.gateway,
@@ -101,78 +108,114 @@ describe('when using Adyen V2 payment', () => {
             }));
     });
 
-    it('renders 3DS modal if required by selected method', async () => {
-        const defaultAdyenProps: AdyenPaymentMethodProps = {
-            deinitializePayment: jest.fn(),
-            initializePayment: jest.fn(),
-            isInitializing: false,
-            method: getPaymentMethod(),
-            onUnhandledError: jest.fn(),
-        };
-        const container = mount(<PaymentMethodTest { ...defaultAdyenProps } method={ method } />);
-        const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+    describe('#During payment', () => {
+        it('renders 3DS modal if required by selected method', async () => {
+            const defaultAdyenProps: AdyenPaymentMethodProps = {
+                deinitializePayment: jest.fn(),
+                initializePayment: jest.fn(),
+                isInitializing: false,
+                method: getPaymentMethod(),
+                onUnhandledError: jest.fn(),
+            };
+            const container = mount(<PaymentMethodTest { ...defaultAdyenProps } method={ method } />);
+            const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
 
-        component.prop('initializePayment')({
-            methodId: method.id,
-            gatewayId: method.gateway,
+            component.prop('initializePayment')({
+                methodId: method.id,
+                gatewayId: method.gateway,
+            });
+
+            const initializeOptions = (defaultAdyenProps.initializePayment as jest.Mock).mock.calls[0][0];
+
+            act(() => {
+                initializeOptions.adyenv2.threeDS2Options.onBeforeLoad(true);
+            });
+
+            await new Promise(resolve => process.nextTick(resolve));
+
+            act(() => {
+                container.update();
+            });
+
+            expect(container.find(Modal).prop('isOpen'))
+                .toEqual(true);
+
+            expect(container.find('#adyen-scheme-additional-action-component-field'))
+                .toHaveLength(0);
         });
 
-        const initializeOptions = (defaultAdyenProps.initializePayment as jest.Mock).mock.calls[0][0];
+        it('Do not render 3DS modal if required by selected method', async () => {
+            const defaultAdyenProps: AdyenPaymentMethodProps = {
+                deinitializePayment: jest.fn(),
+                initializePayment: jest.fn(),
+                isInitializing: false,
+                method: getPaymentMethod(),
+                onUnhandledError: jest.fn(),
+            };
+            const container = mount(<PaymentMethodTest { ...defaultAdyenProps } method={ method } />);
+            const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
 
-        act(() => {
-            initializeOptions.adyenv2.threeDS2Options.onLoad(jest.fn());
+            component.prop('initializePayment')({
+                methodId: method.id,
+                gatewayId: method.gateway,
+            });
+
+            const initializeOptions = (defaultAdyenProps.initializePayment as jest.Mock).mock.calls[0][0];
+
+            act(() => {
+                initializeOptions.adyenv2.threeDS2Options.onBeforeLoad(false);
+            });
+
+            await new Promise(resolve => process.nextTick(resolve));
+
+            act(() => {
+                container.update();
+            });
+
+            expect(container.find(Modal).prop('isOpen'))
+                .toEqual(false);
+
+            expect(container.find('#adyen-scheme-additional-action-component-field'))
+                .toHaveLength(1);
         });
 
-        await new Promise(resolve => process.nextTick(resolve));
+        it('cancels 3DS modal flow if user chooses to close modal', async () => {
+            const cancelAdditionalActionModalFlow = jest.fn();
+            const defaultAdyenProps: AdyenPaymentMethodProps = {
+                deinitializePayment: jest.fn(),
+                initializePayment: jest.fn(),
+                isInitializing: false,
+                method: getPaymentMethod(),
+                onUnhandledError: jest.fn(),
+            };
+            const container = mount(<PaymentMethodTest { ...defaultAdyenProps } method={ method } />);
+            const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
 
-        act(() => {
-            container.update();
+            component.prop('initializePayment')({
+                methodId: method.id,
+                gatewayId: method.gateway,
+            });
+
+            const initializeOptions = (defaultAdyenProps.initializePayment as jest.Mock).mock.calls[0][0];
+
+            act(() => {
+                initializeOptions.adyenv2.threeDS2Options.onLoad(cancelAdditionalActionModalFlow, true);
+            });
+
+            await new Promise(resolve => process.nextTick(resolve));
+
+            act(() => {
+                container.update();
+            });
+
+            const modal: ReactWrapper<ModalProps> = container.find(Modal);
+
+            act(() => {
+                // tslint:disable-next-line:no-non-null-assertion
+                modal.prop('onRequestClose')!(new MouseEvent('click') as any);
+            });
+
+            expect(cancelAdditionalActionModalFlow).toHaveBeenCalled();
         });
-
-        expect(container.find(Modal).prop('isOpen'))
-            .toEqual(true);
-
-        expect(container.find(Modal).render().find('#scheme-adyen-component-field-3ds'))
-            .toHaveLength(1);
-    });
-
-    it('cancels 3DS modal flow if user chooses to close modal', async () => {
-        const cancelThreeDSecureModalFlow = jest.fn();
-        const defaultAdyenProps: AdyenPaymentMethodProps = {
-            deinitializePayment: jest.fn(),
-            initializePayment: jest.fn(),
-            isInitializing: false,
-            method: getPaymentMethod(),
-            onUnhandledError: jest.fn(),
-        };
-        const container = mount(<PaymentMethodTest { ...defaultAdyenProps } method={ method } />);
-        const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
-
-        component.prop('initializePayment')({
-            methodId: method.id,
-            gatewayId: method.gateway,
-        });
-
-        const initializeOptions = (defaultAdyenProps.initializePayment as jest.Mock).mock.calls[0][0];
-
-        act(() => {
-            initializeOptions.adyenv2.threeDS2Options.onLoad(cancelThreeDSecureModalFlow);
-        });
-
-        await new Promise(resolve => process.nextTick(resolve));
-
-        act(() => {
-            container.update();
-        });
-
-        const modal: ReactWrapper<ModalProps> = container.find(Modal);
-
-        act(() => {
-            // tslint:disable-next-line:no-non-null-assertion
-            modal.prop('onRequestClose')!(new MouseEvent('click') as any);
-        });
-
-        expect(cancelThreeDSecureModalFlow)
-            .toHaveBeenCalled();
     });
 });
