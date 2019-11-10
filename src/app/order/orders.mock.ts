@@ -61,7 +61,7 @@ export function getGatewayOrderPayment(): GatewayOrderPayment {
         amount: 190,
         detail: {
             step: 'FINALIZE',
-            instructions: '<strong>%%OrderID%%</strong> something',
+            instructions: '<strong>295</strong> something',
         },
     };
 }
