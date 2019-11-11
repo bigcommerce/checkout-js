@@ -15,11 +15,7 @@ function getPaymentInstructions(order: Order): string {
     const gatewayPayment = (order.payments || []).find(isDefaultOrderPayment);
     const instructions = gatewayPayment && gatewayPayment.detail.instructions;
 
-    if (!instructions) {
-        return '';
-    }
-
-    return instructions.replace(/%%OrderID%%/g, order.orderId.toString());
+    return instructions || '';
 }
 
 export default getPaymentInstructions;
