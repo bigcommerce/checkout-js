@@ -210,4 +210,24 @@ describe('PaymentMethodTitle', () => {
                 .toEqual(0);
         });
     });
+
+    it('renders credit card icons', () => {
+        const component = mount(<PaymentMethodTitleTest { ...defaultProps } />);
+
+        expect(component.find('[data-test="payment-method-cc_icon_list"]'))
+            .toHaveLength(1);
+    });
+
+    it('should not render credit card icons if gateway is bluesnapv2', () => {
+        const component = mount(<PaymentMethodTitleTest
+            { ...defaultProps }
+            method={ {
+                ...defaultProps.method,
+                gateway: 'bluesnapv2',
+            } }
+        />);
+
+        expect(component.find('[data-test="payment-method-cc_icon_list"]'))
+            .toHaveLength(0);
+    });
 });

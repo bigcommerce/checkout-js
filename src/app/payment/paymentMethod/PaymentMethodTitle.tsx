@@ -108,6 +108,7 @@ const PaymentMethodTitle: FunctionComponent<PaymentMethodTitleProps & WithLangua
     const methodName = getPaymentMethodName(language)(method);
     const { logoUrl, titleText } = getPaymentMethodTitle(language, cdnBasePath)(method);
     const { type: selectedCardType = '' } = isSelected ? (number(values.ccNumber).card || {}) : {};
+    const cardTypes: string[] = shouldHideIconList(method.gateway) ? [] : compact(method.supportedCards.map(mapFromPaymentMethodCardType));
 
     return (
         <Fragment>
@@ -125,15 +126,26 @@ const PaymentMethodTitle: FunctionComponent<PaymentMethodTitleProps & WithLangua
                 { titleText }
             </span> }
 
-            <div className="paymentProviderHeader-cc">
+            { cardTypes.length > 0 && <div
+                className="paymentProviderHeader-cc"
+                data-test="payment-method-cc_icon_list"
+            >
                 <CreditCardIconList
-                    cardTypes={ compact(method.supportedCards.map(mapFromPaymentMethodCardType)) }
+                    cardTypes={ cardTypes }
                     selectedCardType={ selectedCardType }
                 />
-            </div>
+            </div> }
         </Fragment>
     );
 };
+
+function shouldHideIconList(provider = ''): boolean {
+    if (!provider) {
+        return false;
+    }
+
+    return provider === 'bluesnapv2';
+}
 
 function mapToCdnPathProps({ checkoutState }: CheckoutContextProps): WithCdnPathProps | null {
     const { data: { getConfig } } = checkoutState;
