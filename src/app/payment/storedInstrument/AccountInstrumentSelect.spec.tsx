@@ -201,4 +201,45 @@ describe('AccountInstrumentSelect', () => {
         expect(defaultProps.onUseNewInstrument)
             .toHaveBeenCalled();
     });
+
+    it('cleans the instrumentId when the component unmounts', async () => {
+        const submit = jest.fn();
+        initialValues.instrumentId = '1234';
+
+        const Component = ({ show }: { show: boolean }) =>
+            <Formik initialValues={ initialValues } onSubmit={ submit }>
+                { ({ handleSubmit }) => <form onSubmit={ handleSubmit }>
+                    { show && <Field name="instrumentId">
+                        { (field: FieldProps<string>) => (
+                            <AccountInstrumentSelect
+                                { ...field }
+                                { ...defaultProps }
+                            />
+                        ) }
+                    </Field> }
+                </form> }
+            </Formik>;
+
+        const component = mount(<Component show={ true } />);
+
+        component.find('form')
+            .simulate('submit')
+            .update();
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        expect(submit).toHaveBeenCalledWith({ instrumentId: '1234' }, expect.anything());
+
+        component
+            .setProps({ show: false })
+            .update();
+
+        component.find('form')
+            .simulate('submit')
+            .update();
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        expect(submit).toHaveBeenCalledWith({ instrumentId: '' }, expect.anything());
+    });
 });

@@ -21,7 +21,12 @@ export interface AccountInstrumentSelectValues {
 
 class AccountInstrumentSelect extends PureComponent<AccountInstrumentSelectProps> {
     componentDidMount() {
-        setTimeout(() => this.updateFieldValue());
+        const { selectedInstrumentId } = this.props;
+
+        // FIXME: Used setTimeout here because setFieldValue call doesnot set value if called before formik is properly mounted.
+        //        This ensures that update Field value is called after formik has mounted.
+        // See GitHub issue: https://github.com/jaredpalmer/formik/issues/930
+        setTimeout(() => this.updateFieldValue(selectedInstrumentId));
     }
 
     componentDidUpdate(prevProps: Readonly<AccountInstrumentSelectProps>) {
@@ -29,8 +34,12 @@ class AccountInstrumentSelect extends PureComponent<AccountInstrumentSelectProps
         const { selectedInstrumentId } = this.props;
 
         if (prevSelectedInstrumentId !== selectedInstrumentId) {
-            this.updateFieldValue();
+            this.updateFieldValue(selectedInstrumentId);
         }
+    }
+
+    componentWillUnmount() {
+        this.updateFieldValue();
     }
 
     render(): ReactNode {
@@ -70,14 +79,13 @@ class AccountInstrumentSelect extends PureComponent<AccountInstrumentSelectProps
         );
     }
 
-    private updateFieldValue(): void {
+    private updateFieldValue(instrumentId: string = ''): void {
         const {
             form,
             field,
-            selectedInstrumentId,
         } = this.props;
 
-        form.setFieldValue(field.name, selectedInstrumentId || '');
+        form.setFieldValue(field.name, instrumentId);
     }
 }
 
