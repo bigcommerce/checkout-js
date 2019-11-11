@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.9.2](https://github.com/bigcommerce/checkout-js/compare/v1.9.1...v1.9.2) (2019-11-11)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-4336 Fix optional date validation ([8b928a8](https://github.com/bigcommerce/checkout-js/commit/8b928a8))
+* **payment:** PAYMENTS-4917 Clear instrumentId when InstrumentSelect gets unmounted ([1fe39ca](https://github.com/bigcommerce/checkout-js/commit/1fe39ca))
+
 ### [1.9.1](https://github.com/bigcommerce/checkout-js/compare/v1.9.0...v1.9.1) (2019-11-05)
 
 
