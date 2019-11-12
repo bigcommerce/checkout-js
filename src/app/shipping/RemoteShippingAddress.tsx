@@ -1,30 +1,40 @@
-import { CheckoutSelectors, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import { Address, CheckoutSelectors, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
 
 import { AddressFormField } from '../address/';
+import { connectFormik, ConnectFormikProps } from '../common/form';
 import { Fieldset } from '../ui/form';
+
+import { SingleShippingFormValues } from './SingleShippingForm';
 
 export interface RemoteShippingAddressProps {
     containerId: string;
     methodId: string;
     formFields: FormField[];
+    shippingAddress?: Address;
     deinitialize(options?: ShippingRequestOptions): Promise<CheckoutSelectors>;
     initialize(options?: ShippingInitializeOptions): Promise<CheckoutSelectors>;
     onUnhandledError?(error: Error): void;
     onFieldChange(fieldName: string, value: string): void;
 }
 
-class RemoteShippingAddress extends PureComponent<RemoteShippingAddressProps> {
+class RemoteShippingAddress extends PureComponent<RemoteShippingAddressProps & ConnectFormikProps<SingleShippingFormValues>> {
+
+    onAddressSelect = () => {
+        const { formik: { setFieldValue }, shippingAddress } = this.props;
+        setFieldValue('shippingAddress', shippingAddress);
+    };
+
     async componentDidMount(): Promise<void> {
         const {
+            containerId,
             initialize,
             methodId,
             onUnhandledError = noop,
         } = this.props;
-
         try {
-            await initialize({ methodId });
+            await initialize({ methodId, amazon: { container: containerId, onAddressSelect: this.onAddressSelect } });
         } catch (error) {
             onUnhandledError(error);
         }
@@ -80,4 +90,4 @@ class RemoteShippingAddress extends PureComponent<RemoteShippingAddressProps> {
     };
 }
 
-export default RemoteShippingAddress;
+export default connectFormik(RemoteShippingAddress);

@@ -85,6 +85,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
                 initialize={ initializeShipping(options) }
                 methodId={ methodId }
                 onFieldChange={ onFieldChange }
+                shippingAddress={ shippingAddress }
             />
         );
     }

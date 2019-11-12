@@ -1,4 +1,4 @@
-import { mount, shallow } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
@@ -6,13 +6,19 @@ import React from 'react';
 import { DynamicFormField } from '../address';
 import { getFormFields } from '../address/formField.mock';
 
+import { getShippingAddress } from './shipping-addresses.mock';
 import RemoteShippingAddress, { RemoteShippingAddressProps } from './RemoteShippingAddress';
 
 describe('RemoteShippingAddress Component', () => {
+    let component: ReactWrapper;
     const defaultProps: RemoteShippingAddressProps = {
         formFields: getFormFields(),
         containerId: 'container',
         methodId: 'amazon',
+        shippingAddress: {
+            ...getShippingAddress(),
+            address1: 'x',
+        },
         initialize: jest.fn(),
         deinitialize: jest.fn(),
         onFieldChange: jest.fn(),
@@ -27,25 +33,37 @@ describe('RemoteShippingAddress Component', () => {
     };
 
     it('renders widget', () => {
-        const component = shallow(<RemoteShippingAddress { ...defaultProps } />);
+        component = mount(
+            <Formik initialValues= { {} } onSubmit={ noop }>
+                <RemoteShippingAddress { ...defaultProps } />
+            </Formik>
+        );
 
         expect(component.find('#container').hasClass('widget--amazon')).toBeTruthy();
     });
 
     it('calls initialize prop on mount', () => {
-        shallow(<RemoteShippingAddress { ...defaultProps } />);
+        component = mount(
+            <Formik initialValues= { {} } onSubmit={ noop }>
+                <RemoteShippingAddress { ...defaultProps } />
+            </Formik>
+        );
 
         expect(defaultProps.initialize).toHaveBeenCalled();
     });
 
     it('calls deinitialize prop on unmount', () => {
-        shallow(<RemoteShippingAddress { ...defaultProps } />).unmount();
+        component = mount(
+            <Formik initialValues= { {} } onSubmit={ noop }>
+                <RemoteShippingAddress { ...defaultProps } />
+            </Formik>
+        ).unmount();
 
-        expect(defaultProps.initialize).toHaveBeenCalled();
+        expect(defaultProps.deinitialize).toHaveBeenCalled();
     });
 
     it('renders correct number of custom form fields', () => {
-        const component = mount(
+        component = mount(
             <Formik
                 initialValues={ initialFormikValues }
                 onSubmit={ noop }
@@ -58,7 +76,7 @@ describe('RemoteShippingAddress Component', () => {
     });
 
     it('calls method to set field value on change in custom form field', () => {
-        const component = mount(
+        component = mount(
             <Formik
                 initialValues={ initialFormikValues }
                 onSubmit={ noop }

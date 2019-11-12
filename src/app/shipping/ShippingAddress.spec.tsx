@@ -24,7 +24,7 @@ describe('ShippingAddress Component', () => {
         isLoading: false,
         hasRequestedShippingOptions: false,
         formFields: getFormFields(),
-        onAddressSelect: jest.fn(),
+        onAddressSelect: jest.fn().mockReturnValue(null),
         onFieldChange: jest.fn(),
         initialize: jest.fn(),
         deinitialize: jest.fn(),
@@ -102,7 +102,7 @@ describe('ShippingAddress Component', () => {
                 methodId: 'amazon',
                 amazon: {
                     container: 'addressWidget',
-                    onError: defaultProps.onUnhandledError,
+                    onAddressSelect: expect.any(Function),
                 },
             });
         });
