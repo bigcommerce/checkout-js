@@ -35,7 +35,7 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
     const [threeDSecureContent, setThreeDSecureContent] = useState<HTMLElement>();
     const containerId = `${method.id}-adyen-component-field`;
     const threeDS2ContainerId = `${containerId}-3ds`;
-    const component = method.method as AdyenMethodType;
+    const component = method.id as AdyenMethodType;
     const adyenOptions: AdyenOptions = {
         [AdyenMethodType.scheme]: {
             hasHolderName: true,
