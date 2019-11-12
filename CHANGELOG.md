@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.10.0](https://github.com/bigcommerce/checkout-js/compare/v1.9.2...v1.10.0) (2019-11-12)
+
+
+### Bug Fixes
+
+* **checkout:** INT-1902 Bump `checkout-js` version ([64ae4fe](https://github.com/bigcommerce/checkout-js/commit/64ae4fe))
+
+
+### Features
+
+* **payment:** PAYMENTS-4924 Remove order ID substitution. ([7ac389a](https://github.com/bigcommerce/checkout-js/commit/7ac389a))
+
 ### [1.9.2](https://github.com/bigcommerce/checkout-js/compare/v1.9.1...v1.9.2) (2019-11-11)
 
 
