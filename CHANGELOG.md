@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.11.0](https://github.com/bigcommerce/checkout-js/compare/v1.10.0...v1.11.0) (2019-11-13)
+
+
+### Features
+
+* **checkout:** INT-1916 Customize barclacard payment method title logos ([ebec263](https://github.com/bigcommerce/checkout-js/commit/ebec263))
+
 ## [1.10.0](https://github.com/bigcommerce/checkout-js/compare/v1.9.2...v1.10.0) (2019-11-12)
 
 
