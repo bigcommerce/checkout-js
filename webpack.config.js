@@ -13,6 +13,7 @@ const { AsyncHookPlugin, BuildHookPlugin, getNextVersion, transformManifest } = 
 
 const ENTRY_NAME = 'checkout';
 const LIBRARY_NAME = 'checkout';
+const AUTO_LOADER_ENTRY_NAME = 'auto-loader';
 const LOADER_ENTRY_NAME = 'loader';
 const LOADER_LIBRARY_NAME = 'checkoutLoader';
 const SUPPORTED_BROWSERS = [
@@ -208,6 +209,7 @@ function loaderConfig(options, argv) {
             return {
                 entry: {
                     [LOADER_ENTRY_NAME]: join(__dirname, 'src', 'app', 'loader.ts'),
+                    [AUTO_LOADER_ENTRY_NAME]: join(__dirname, 'src', 'app', 'auto-loader.ts'),
                 },
                 mode,
                 devtool: isProduction ? 'source-map' : 'eval-source-map',
@@ -240,6 +242,7 @@ function loaderConfig(options, argv) {
                     new BuildHookPlugin({
                         onDone() {
                             copyFileSync(`dist/${LOADER_ENTRY_NAME}-${appVersion}.js`, `dist/${LOADER_ENTRY_NAME}.js`);
+                            copyFileSync(`dist/${AUTO_LOADER_ENTRY_NAME}-${appVersion}.js`, `dist/${AUTO_LOADER_ENTRY_NAME}.js`);
                         },
                     }),
                 ],
