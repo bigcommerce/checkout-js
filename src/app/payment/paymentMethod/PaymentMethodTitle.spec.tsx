@@ -190,6 +190,7 @@ describe('PaymentMethodTitle', () => {
         const methodIds = [
             PaymentMethodId.Amazon,
             PaymentMethodId.ChasePay,
+            PaymentMethodType.Barclaycard,
             PaymentMethodType.GooglePay,
             PaymentMethodType.Masterpass,
         ];
@@ -209,5 +210,27 @@ describe('PaymentMethodTitle', () => {
             expect(component.find('[data-test="payment-method-name"]').length)
                 .toEqual(0);
         });
+    });
+
+    it('renders a different logo for each methodId for Barclaycard', () => {
+        const imageExtension = '.png';
+        const imageFolder = '/img/payment-providers/';
+        const method = PaymentMethodType.Barclaycard;
+        const id = 'card';
+
+        const component = mount(<PaymentMethodTitleTest
+            { ...defaultProps }
+            method={ {
+                ...defaultProps.method,
+                id,
+                method,
+            } }
+        />);
+
+        const expectedPath = `${config.cdnPath}${imageFolder}${method}_${id.toLowerCase()}${imageExtension}`;
+
+        expect(component.find('[data-test="payment-method-logo"]').prop('src'))
+            .toEqual(expectedPath);
+
     });
 });
