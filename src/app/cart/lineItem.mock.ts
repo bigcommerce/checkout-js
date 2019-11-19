@@ -31,7 +31,7 @@ export function getPhysicalItem(): PhysicalItem {
         comparisonPrice: 200,
         extendedListPrice: 200,
         extendedSalePrice: 200,
-        extendedComparisonPrice: 150,
+        extendedComparisonPrice: 250,
         isShippingRequired: true,
         addedByPromotion: false,
         options: [
@@ -69,7 +69,7 @@ export function getDigitalItem(): DigitalItem {
         downloadSize: '',
         extendedListPrice: 200,
         extendedSalePrice: 200,
-        extendedComparisonPrice: 150,
+        extendedComparisonPrice: 250,
         addedByPromotion: false,
         options: [
             {

@@ -10,7 +10,7 @@ exports[`OrderSummaryItems when it has 4 line items or less renders product list
     key="666"
   >
     <Memo(OrderSummaryItem)
-      amount={200}
+      amount={250}
       amountAfterDiscount={200}
       id="666"
       image={
