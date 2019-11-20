@@ -40,8 +40,10 @@ npm run dev
 If you want to create a prerelease (i.e.: `alpha`) for testing in the integration environment, you can run the following command:
 
 ```sh
-npm run prerelease
+npm run release:alpha
 ```
+
+After that, you need to push the prerelease tag to your fork so it can be referenced remotely.
 
 ## Theme integration
 
