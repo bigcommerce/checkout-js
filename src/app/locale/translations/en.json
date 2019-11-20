@@ -226,6 +226,7 @@
             "code_label": "Gift Certificate or Coupon Code",
             "code_required_error": "Please enter a gift certificate or coupon code",
             "coupon_location_error": "Your shipping address doesn't meet the location requirements for the coupon code you entered.",
+            "coupon_min_order_total": "Your order does not meet the minimum total for this coupon code to be applied.",
             "coupon_text": "Coupon",
             "gift_certificate_remaining_text": "Remaining",
             "gift_certificate_text": "Gift Certificate",

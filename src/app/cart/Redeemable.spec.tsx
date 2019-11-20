@@ -3,7 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '../locale';
 import { Alert } from '../ui/alert';
 
 import Redeemable from './Redeemable';
@@ -16,6 +16,9 @@ describe('CartSummary Component', () => {
     const clearError = jest.fn();
     const onRemovedCoupon = jest.fn();
     const onRemovedGiftCertificate = jest.fn();
+    const minPurchaseError = {
+        errors: [ { code: 'min_purchase' } ],
+    } as RequestError;
     const appliedError = {
         errors: [ {} ],
     } as RequestError;
@@ -27,7 +30,7 @@ describe('CartSummary Component', () => {
             component = mount(
                 <LocaleContext.Provider value={ localeContext }>
                     <Redeemable
-                        appliedRedeemableError={ appliedError }
+                        appliedRedeemableError={ minPurchaseError }
                         applyCoupon={ applyCoupon }
                         applyGiftCertificate={ applyGiftCertificate }
                         clearError={ clearError }
@@ -38,6 +41,11 @@ describe('CartSummary Component', () => {
                     />
                 </LocaleContext.Provider>
             );
+        });
+
+        it('renders min purchase error', () => {
+            expect(component.find(Alert).find(TranslatedString).prop('id'))
+                .toEqual('redeemable.coupon_min_order_total');
         });
 
         it('does not render toggle link', () => {
