@@ -107,13 +107,23 @@ const RedeemableForm: FunctionComponent<Partial<RedeemableProps> & FormikProps<R
         </Label>
     ), []);
 
+    const renderErrorMessage = useCallback((errorCode: string) => {
+        switch (errorCode) {
+        case 'min_purchase':
+            return <TranslatedString id="redeemable.coupon_min_order_total" />;
+        case 'not_applicable':
+            return <TranslatedString id="redeemable.coupon_location_error" />;
+        default:
+            return <TranslatedString id="redeemable.code_invalid_error" />;
+        }
+    }, []);
+
     const renderInput = useCallback((setSubmitted: FormContextType['setSubmitted']) => ({ field }: FieldProps) => (
         <Fragment>
-            { appliedRedeemableError && <Alert type={ AlertType.Error }>
-                { appliedRedeemableError.errors[0].code === 'not_applicable' ?
-                    <TranslatedString id="redeemable.coupon_location_error" /> :
-                    <TranslatedString id="redeemable.code_invalid_error" /> }
-            </Alert> }
+            { appliedRedeemableError && appliedRedeemableError.errors && appliedRedeemableError.errors[0] &&
+                <Alert type={ AlertType.Error }>
+                    { renderErrorMessage(appliedRedeemableError.errors[0].code) }
+                </Alert> }
 
             <div className="form-prefixPostfix">
                 <TextInput
@@ -140,6 +150,7 @@ const RedeemableForm: FunctionComponent<Partial<RedeemableProps> & FormikProps<R
         handleKeyDown,
         handleSubmit,
         isApplyingRedeemable,
+        renderErrorMessage,
     ]);
 
     const renderContent = useCallback(memoizeOne(({ setSubmitted }: FormContextType) => (
