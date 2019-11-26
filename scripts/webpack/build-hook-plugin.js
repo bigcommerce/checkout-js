@@ -16,14 +16,14 @@ class BuildHookPlugin {
     }
 
     process(command) {
-        return () => new Promise((resolve, reject) => {
+        return () => new Promise(resolve => {
             exec(command, (err, stdout, stderr) => {
                 if (err) {
-                    reject(err);
+                    throw err;
                 }
 
                 if (stderr) {
-                    reject(new Error(stderr));
+                    throw new Error(stderr);
                 }
 
                 const cleanOutput = stdout.trim();
