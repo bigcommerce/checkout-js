@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.12.0](https://github.com/bigcommerce/checkout-js/compare/v1.11.2...v1.12.0) (2019-11-26)
+
+
+### Bug Fixes
+
+* **cart:** CHECKOUT-4448 Show min purchase error when coupon doesnt meet requirements ([3e64fa6](https://github.com/bigcommerce/checkout-js/commit/3e64fa6))
+* **checkout:** CHECKOUT-4513 Remove strike-through logic from UI - read from extendedComparisonPrice instead ([884c7e9](https://github.com/bigcommerce/checkout-js/commit/884c7e9))
+
+
+### Features
+
+* **common:** CHECKOUT-4556 Make app auto-load if checkout config is global ([6572030](https://github.com/bigcommerce/checkout-js/commit/6572030))
+* **payment:** INT-1902 Update payment method id ([648bea4](https://github.com/bigcommerce/checkout-js/commit/648bea4))
+
 ### [1.11.2](https://github.com/bigcommerce/checkout-js/compare/v1.11.1...v1.11.2) (2019-11-25)
 
 ### [1.11.1](https://github.com/bigcommerce/checkout-js/compare/v1.11.0...v1.11.1) (2019-11-14)
