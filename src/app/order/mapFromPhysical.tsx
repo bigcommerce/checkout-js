@@ -4,13 +4,10 @@ import getOrderSummaryItemImage from './getOrderSummaryItemImage';
 import { OrderSummaryItemProps } from './OrderSummaryItem';
 
 function mapFromPhysical(item: PhysicalItem): OrderSummaryItemProps {
-    // FIXME: add type in Checkout SDK
-    const comparisonPrice = (item as PhysicalItem & { comparisonPrice: number }).comparisonPrice;
-
     return {
         id: item.id,
         quantity: item.quantity,
-        amount: item.listPrice < comparisonPrice ? item.extendedSalePrice : item.extendedListPrice,
+        amount: item.extendedComparisonPrice,
         amountAfterDiscount: item.extendedSalePrice,
         name: item.name,
         image: getOrderSummaryItemImage(item),
