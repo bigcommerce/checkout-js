@@ -1,6 +1,6 @@
 import { EmbeddedCheckoutStyles } from '@bigcommerce/checkout-sdk';
 
-import toCSSRule from './toCssRule';
+import { toCSSRule } from '../common/dom';
 
 export default class EmbeddedCheckoutStyleParser {
     parse(styles: EmbeddedCheckoutStyles): string[] {
