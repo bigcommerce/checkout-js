@@ -45,7 +45,8 @@
     }
 
     .form-input {
-        &:focus {
+        &:focus,
+        &--focus {
             box-shadow: $input-focus-boxShadow, $input-box-shadow;
         }
 

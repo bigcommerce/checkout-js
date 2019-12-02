@@ -1,5 +1,7 @@
 import { EmbeddedCheckoutStyles } from '@bigcommerce/checkout-sdk';
 
+import { appendStylesheet } from '../common/dom';
+
 import EmbeddedCheckoutStyleParser from './EmbeddedCheckoutStyleParser';
 
 export default class EmbeddedCheckoutStylesheet {
@@ -12,19 +14,6 @@ export default class EmbeddedCheckoutStylesheet {
     }
 
     append(styles: EmbeddedCheckoutStyles): HTMLStyleElement {
-        const style = document.createElement('style');
-        const rules = this._parser.parse(styles);
-
-        document.head.appendChild(style);
-
-        if (style.sheet instanceof CSSStyleSheet) {
-            const { sheet } = style;
-
-            rules.forEach((rule, index) => {
-                sheet.insertRule(rule, index);
-            });
-        }
-
-        return style;
+        return appendStylesheet(this._parser.parse(styles));
     }
 }
