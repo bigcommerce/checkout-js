@@ -16,6 +16,7 @@ export function getStoreConfig(): StoreConfig {
             guestCheckoutEnabled: true,
             isAnalyticsEnabled: true,
             isCardVaultingEnabled: true,
+            isHostedPaymentFormEnabled: false,
             isPaymentRequestEnabled: false,
             isPaymentRequestCanMakePaymentEnabled: false,
             isSpamProtectionEnabled: false,

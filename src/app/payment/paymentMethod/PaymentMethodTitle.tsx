@@ -7,6 +7,7 @@ import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { mapFromPaymentMethodCardType, CreditCardIconList } from '../creditCard';
+import { PaymentFormValues } from '../PaymentForm';
 
 import getPaymentMethodName from './getPaymentMethodName';
 import PaymentMethodId from './PaymentMethodId';
@@ -102,7 +103,7 @@ function getPaymentMethodTitle(
     };
 }
 
-const PaymentMethodTitle: FunctionComponent<PaymentMethodTitleProps & WithLanguageProps & WithCdnPathProps & ConnectFormikProps<{ ccNumber: string }>> = ({
+const PaymentMethodTitle: FunctionComponent<PaymentMethodTitleProps & WithLanguageProps & WithCdnPathProps & ConnectFormikProps<PaymentFormValues>> = ({
     cdnBasePath,
     formik: { values },
     isSelected,
@@ -111,7 +112,26 @@ const PaymentMethodTitle: FunctionComponent<PaymentMethodTitleProps & WithLangua
 }) => {
     const methodName = getPaymentMethodName(language)(method);
     const { logoUrl, titleText } = getPaymentMethodTitle(language, cdnBasePath)(method);
-    const { type: selectedCardType = '' } = isSelected ? (number(values.ccNumber).card || {}) : {};
+
+    const getSelectedCardType = () => {
+        if (!isSelected) {
+            return;
+        }
+
+        if ('hostedForm' in values && 'cardType' in values.hostedForm && values.hostedForm.cardType) {
+            return values.hostedForm.cardType;
+        }
+
+        if ('ccNumber' in values && values.ccNumber) {
+            const { card } = number(values.ccNumber);
+
+            if (!card) {
+                return;
+            }
+
+            return card.type;
+        }
+    };
 
     return (
         <Fragment>
@@ -132,7 +152,7 @@ const PaymentMethodTitle: FunctionComponent<PaymentMethodTitleProps & WithLangua
             <div className="paymentProviderHeader-cc">
                 <CreditCardIconList
                     cardTypes={ compact(method.supportedCards.map(mapFromPaymentMethodCardType)) }
-                    selectedCardType={ selectedCardType }
+                    selectedCardType={ getSelectedCardType() }
                 />
             </div>
         </Fragment>

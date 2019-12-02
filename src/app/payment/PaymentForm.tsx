@@ -1,6 +1,6 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps, WithFormikConfig } from 'formik';
-import { noop } from 'lodash';
+import { isNil, noop, omitBy } from 'lodash';
 import React, { memo, useCallback, useContext, useMemo, FunctionComponent } from 'react';
 import { ObjectSchema } from 'yup';
 
@@ -8,7 +8,7 @@ import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { TermsConditions } from '../termsConditions';
 import { Fieldset, Form, FormContext, Legend } from '../ui/form';
 
-import { CreditCardFieldsetValues } from './creditCard';
+import { CreditCardFieldsetValues, HostedCreditCardFieldsetValues } from './creditCard';
 import getPaymentValidationSchema from './getPaymentValidationSchema';
 import { getUniquePaymentMethodId, PaymentMethodList } from './paymentMethod';
 import { CardInstrumentFieldsetValues } from './storedInstrument';
@@ -43,6 +43,7 @@ export interface PaymentFormProps {
 export type PaymentFormValues = (
     CreditCardFieldsetValues & PaymentFormCommonValues |
     CardInstrumentFieldsetValues & PaymentFormCommonValues |
+    HostedCreditCardFieldsetValues & PaymentFormCommonValues |
     HostedWidgetPaymentMethodValues & PaymentFormCommonValues |
     PaymentFormCommonValues
 );
@@ -55,24 +56,6 @@ export interface PaymentFormCommonValues {
 
 export interface HostedWidgetPaymentMethodValues {
     shouldSaveInstrument: boolean;
-}
-
-export function isCreditCardFieldsetValues(values: PaymentFormValues): values is CreditCardFieldsetValues & PaymentFormCommonValues {
-    const ccValues = values as CreditCardFieldsetValues;
-
-    return !!ccValues.ccName || !!ccValues.ccExpiry;
-}
-
-export function isInstrumentFieldsetValues(values: PaymentFormValues): values is CardInstrumentFieldsetValues & PaymentFormCommonValues {
-    const instrumentValues = values as CardInstrumentFieldsetValues;
-
-    return !!instrumentValues.instrumentId;
-}
-
-export function isHostedWidgetValues(values: PaymentFormValues): values is HostedWidgetPaymentMethodValues & PaymentFormCommonValues {
-    const hostedWidgetValues = values as HostedWidgetPaymentMethodValues;
-
-    return hostedWidgetValues.shouldSaveInstrument;
 }
 
 const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormValues> & WithLanguageProps> = ({
@@ -226,42 +209,22 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
         shouldSaveInstrument: false,
         terms: false,
         useStoreCredit: usableStoreCredit > 0,
+        hostedForm: {
+            cardType: '',
+            errors: {
+                cardCode: '',
+                cardCodeVerification: '',
+                cardExpiry: '',
+                cardName: '',
+                cardNumber: '',
+                cardNumberVerification: '',
+            },
+        },
     }),
 
     handleSubmit: (values, { props: { onSubmit = noop } }) => {
-        const commonValues = {
-            paymentProviderRadio: values.paymentProviderRadio,
-            terms: values.terms || undefined,
-            useStoreCredit: values.useStoreCredit || undefined,
-        };
-
-        // Convert values of optional fields into `undefined` as Formik fields
-        // always have an initial value.
-        if (isCreditCardFieldsetValues(values)) {
-            onSubmit({
-                ...commonValues,
-                ccCustomerCode: values.ccCustomerCode || undefined,
-                ccCvv: values.ccCvv || undefined,
-                ccExpiry: values.ccExpiry,
-                ccName: values.ccName,
-                ccNumber: values.ccNumber,
-                shouldSaveInstrument: values.shouldSaveInstrument,
-            });
-        } else if (isInstrumentFieldsetValues(values)) {
-            onSubmit({
-                ...commonValues,
-                ccNumber: values.ccNumber || undefined,
-                ccCvv: values.ccCvv || undefined,
-                instrumentId: values.instrumentId,
-            });
-        } else if (isHostedWidgetValues(values)) {
-            onSubmit({
-                ...commonValues,
-                shouldSaveInstrument: values.shouldSaveInstrument,
-            });
-        } else {
-            onSubmit(commonValues);
-        }
+        // Omit optional fields
+        onSubmit(omitBy(values, value => isNil(value) || value === ''));
     },
 
     validationSchema: ({
