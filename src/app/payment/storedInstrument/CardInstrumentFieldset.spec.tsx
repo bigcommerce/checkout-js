@@ -87,6 +87,6 @@ describe('CardInstrumentFieldset', () => {
         );
 
         expect(component.find(ValidateInstrument).length)
-            .toEqual(0);
+            .toEqual(1);
     });
 });

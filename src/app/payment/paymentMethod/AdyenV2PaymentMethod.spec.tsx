@@ -84,6 +84,7 @@ describe('when using Adyen V2 payment', () => {
         expect(checkoutService.initializePayment)
             .toHaveBeenCalledWith(expect.objectContaining({
                 adyenv2: {
+                    cardVerificationContainerId: undefined,
                     containerId: 'scheme-adyen-component-field',
                     options: {
                         hasHolderName: true,

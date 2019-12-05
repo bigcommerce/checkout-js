@@ -1,10 +1,11 @@
-import { AdyenCreditCardComponentOptions, PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { AdyenCreditCardComponentOptions } from '@bigcommerce/checkout-sdk';
 import React, { createRef, useCallback, useRef, useState, FunctionComponent, RefObject } from 'react';
 import { Omit } from 'utility-types';
 
 import { TranslatedString } from '../../locale';
 import { Modal } from '../../ui/modal';
 
+import AdyenV2CardValidation from './AdyenV2CardValidation';
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 
 export type AdyenPaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId' | 'hideContentWhenSignedOut'>;
@@ -35,6 +36,7 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
     const [threeDSecureContent, setThreeDSecureContent] = useState<HTMLElement>();
     const containerId = `${method.id}-adyen-component-field`;
     const threeDS2ContainerId = `${containerId}-3ds`;
+    const cardVerificationContainerId = `${method.id}-tsv`;
     const component = method.id as AdyenMethodType;
     const adyenOptions: AdyenOptions = {
         [AdyenMethodType.scheme]: {
@@ -73,23 +75,29 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
         }
     }, []);
 
-    const adyenv2 = {
-        containerId,
-        threeDS2ContainerId,
-        options: adyenOptions[component],
-        threeDS2Options: {
-            widgetSize: '05',
-            onLoad,
-            onComplete,
-        },
-    };
-
-    const initializeAdyenPayment = useCallback((options: PaymentInitializeOptions) => {
+    const initializeAdyenPayment: HostedWidgetPaymentMethodProps['initializePayment'] = useCallback((options, selectedInstrumentId) => {
         return initializePayment({
             ...options,
-            adyenv2,
+            adyenv2: {
+                cardVerificationContainerId: selectedInstrumentId && cardVerificationContainerId,
+                containerId,
+                options: adyenOptions[component],
+                threeDS2ContainerId,
+                threeDS2Options: {
+                    widgetSize: '05',
+                    onLoad,
+                    onComplete,
+                },
+            },
         });
-    }, [initializePayment, adyenv2]);
+    }, [initializePayment, component, cardVerificationContainerId, containerId, threeDS2ContainerId, adyenOptions, onLoad, onComplete]);
+
+    const validateInstrument = (shouldShowNumberField: boolean) => {
+        return <AdyenV2CardValidation
+            shouldShowNumberField={ shouldShowNumberField }
+            verificationFieldsContainerId={ cardVerificationContainerId }
+        />;
+    };
 
     return <>
         <HostedWidgetPaymentMethod
@@ -98,6 +106,7 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
             hideContentWhenSignedOut
             initializePayment={ initializeAdyenPayment }
             method={ method }
+            validateInstrument={ validateInstrument }
         />
 
         <Modal

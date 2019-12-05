@@ -23,10 +23,11 @@ export interface HostedWidgetPaymentMethodProps {
     isUsingMultiShipping?: boolean;
     isSignInRequired?: boolean;
     method: PaymentMethod;
+    validateInstrument?(shouldShowNumberField: boolean): React.ReactNode;
     deinitializeCustomer?(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
     initializeCustomer?(options: CustomerInitializeOptions): Promise<CheckoutSelectors>;
-    initializePayment(options: PaymentInitializeOptions): Promise<CheckoutSelectors>;
+    initializePayment(options: PaymentInitializeOptions, selectedInstrumentId?: string): Promise<CheckoutSelectors>;
     onPaymentSelect?(): void;
     onSignOut?(): void;
     onSignOutError?(error: Error): void;
@@ -121,13 +122,10 @@ class HostedWidgetPaymentMethod extends Component<
             instruments,
             containerId,
             hideContentWhenSignedOut = false,
-            hideVerificationFields = false,
             isInitializing = false,
             isSignedIn = false,
             isSignInRequired = false,
             method,
-            isInstrumentCardCodeRequired: isInstrumentCardCodeRequiredProp,
-            isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredProp,
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
             isLoadingInstruments,
         } = this.props;
@@ -137,11 +135,9 @@ class HostedWidgetPaymentMethod extends Component<
             selectedInstrumentId = this.getDefaultInstrumentId(),
         } = this.state;
 
-        const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
         const shouldShowInstrumentFieldset = isInstrumentFeatureAvailableProp && instruments.length > 0;
         const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
         const isLoading = isInitializing || isLoadingInstruments;
-        const shouldShowNumberField = selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument) : false;
 
         return (
             <LoadingOverlay
@@ -153,10 +149,7 @@ class HostedWidgetPaymentMethod extends Component<
                     onSelectInstrument={ this.handleSelectInstrument }
                     onUseNewInstrument={ this.handleUseNewCard }
                     selectedInstrumentId={ selectedInstrumentId }
-                    validateInstrument={ !hideVerificationFields && <CreditCardValidation
-                        shouldShowCardCodeField={ isInstrumentCardCodeRequiredProp }
-                        shouldShowNumberField={ shouldShowNumberField }
-                    /> }
+                    validateInstrument={ this.getValidateInstrument() }
                 /> }
 
                 <div
@@ -182,6 +175,35 @@ class HostedWidgetPaymentMethod extends Component<
         );
     }
 
+    getValidateInstrument(): ReactNode | undefined {
+        const {
+            hideVerificationFields,
+            instruments,
+            isInstrumentCardCodeRequired: isInstrumentCardCodeRequiredProp,
+            isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredProp,
+            validateInstrument,
+        } = this.props;
+
+        const { selectedInstrumentId = this.getDefaultInstrumentId() } = this.state;
+        const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
+        const shouldShowNumberField = selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument) : false;
+
+        if (hideVerificationFields) {
+            return;
+        }
+
+        if (validateInstrument) {
+            return validateInstrument(shouldShowNumberField);
+        }
+
+        return (
+            <CreditCardValidation
+                shouldShowCardCodeField={ isInstrumentCardCodeRequiredProp }
+                shouldShowNumberField={ shouldShowNumberField }
+            />
+        );
+    }
+
     private async initializeMethod(): Promise<CheckoutSelectors | void> {
         const {
             isPaymentDataRequired,
@@ -193,6 +215,8 @@ class HostedWidgetPaymentMethod extends Component<
             setSubmit,
             signInCustomer = noop,
         } = this.props;
+
+        const { selectedInstrumentId = this.getDefaultInstrumentId() } = this.state;
 
         if (!isPaymentDataRequired) {
             setSubmit(method, null);
@@ -213,7 +237,7 @@ class HostedWidgetPaymentMethod extends Component<
         return initializePayment({
             gatewayId: method.gateway,
             methodId: method.id,
-        });
+        }, selectedInstrumentId);
     }
 
     private getDefaultInstrumentId(): string | undefined {
