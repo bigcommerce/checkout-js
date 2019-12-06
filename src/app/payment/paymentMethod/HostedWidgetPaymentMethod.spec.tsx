@@ -9,7 +9,6 @@ import { CheckoutProvider } from '../../checkout';
 import { getCheckout, getCheckoutPayment } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
-import { getOrder } from '../../order/orders.mock';
 import { getConsignment } from '../../shipping/consignment.mock';
 import { LoadingOverlay } from '../../ui/loading';
 import { CreditCardStorageField } from '../creditCard';
@@ -61,9 +60,6 @@ describe('HostedWidgetPaymentMethod', () => {
 
         jest.spyOn(checkoutState.data, 'getCustomer')
             .mockReturnValue(getCustomer());
-
-        jest.spyOn(checkoutState.data, 'getOrder')
-            .mockReturnValue(getOrder());
 
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
             .mockReturnValue(true);
@@ -299,22 +295,6 @@ describe('HostedWidgetPaymentMethod', () => {
 
             expect(creditCardStorageFieldComponent)
                 .toHaveLength(1);
-        });
-    });
-
-    describe('if current order is complete', () => {
-        beforeEach(() => {
-            jest.spyOn(checkoutService, 'loadInstruments')
-                .mockResolvedValue(checkoutState);
-            jest.spyOn(storedInstrumentModule, 'isInstrumentFeatureAvailable')
-                .mockReturnValue(false);
-        });
-
-        it('does not load stored instruments when component mounts', () => {
-            mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
-
-            expect(checkoutService.loadInstruments)
-                .not.toHaveBeenCalled();
         });
     });
 });

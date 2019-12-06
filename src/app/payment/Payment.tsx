@@ -393,6 +393,7 @@ export function mapToPaymentProps({
             getCheckout,
             getConfig,
             getCustomer,
+            getOrder,
             getPaymentMethod,
             getPaymentMethods,
             isPaymentDataRequired,
@@ -407,9 +408,10 @@ export function mapToPaymentProps({
     const checkout = getCheckout();
     const config = getConfig();
     const customer = getCustomer();
+    const { isComplete = false } = getOrder() || {};
     const methods = getPaymentMethods() || EMPTY_ARRAY;
 
-    if (!checkout || !config || !customer) {
+    if (!checkout || !config || !customer || isComplete) {
         return null;
     }
 

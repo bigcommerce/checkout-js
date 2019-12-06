@@ -303,7 +303,6 @@ function mapFromCheckoutProps(): MapToProps<
                 getConfig,
                 getCustomer,
                 getInstruments,
-                getOrder,
                 isPaymentDataRequired,
             },
             statuses: {
@@ -315,13 +314,10 @@ function mapFromCheckoutProps(): MapToProps<
         const checkout = getCheckout();
         const config = getConfig();
         const customer = getCustomer();
-        const order = getOrder();
 
         if (!checkout || !config || !cart || !customer || !method) {
             return null;
         }
-
-        const orderIsComplete = order ? order.isComplete : false;
 
         return {
             instruments: filterInstruments(getInstruments(method)),
@@ -339,7 +335,6 @@ function mapFromCheckoutProps(): MapToProps<
                 customer,
                 isUsingMultiShipping,
                 paymentMethod: method,
-                orderIsComplete,
             }),
             loadInstruments: checkoutService.loadInstruments,
             signOut: checkoutService.signOutCustomer,

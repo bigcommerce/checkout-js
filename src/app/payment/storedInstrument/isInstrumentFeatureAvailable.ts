@@ -5,7 +5,6 @@ export interface IsInstrumentFeatureAvailableState {
     customer: Customer;
     isUsingMultiShipping: boolean;
     paymentMethod: PaymentMethod;
-    orderIsComplete?: boolean;
 }
 
 export default function isInstrumentFeatureAvailable({
@@ -13,13 +12,11 @@ export default function isInstrumentFeatureAvailable({
     customer,
     isUsingMultiShipping,
     paymentMethod,
-    orderIsComplete,
 }: IsInstrumentFeatureAvailableState): boolean {
     if (!config.checkoutSettings.isCardVaultingEnabled ||
         !paymentMethod.config.isVaultingEnabled ||
         customer.isGuest ||
-        isUsingMultiShipping ||
-        orderIsComplete
+        isUsingMultiShipping
     ) {
         return false;
     }
