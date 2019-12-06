@@ -6,6 +6,7 @@ import { withCheckout, CheckoutContextProps } from '../../checkout';
 import AdyenV2PaymentMethod from './AdyenV2PaymentMethod';
 import AffirmPaymentMethod from './AffirmPaymentMethod';
 import AmazonPaymentMethod from './AmazonPaymentMethod';
+import BarclaycardPaymentMethod from './BarclaycardPaymentMethod';
 import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod';
 import ChasePayPaymentMethod from './ChasePayPaymentMethod';
 import CreditCardPaymentMethod from './CreditCardPaymentMethod';
@@ -107,6 +108,10 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
 
     if (method.id === PaymentMethodId.PaypalPaymentsPro) {
         return <PaypalPaymentsProPaymentMethod { ...props } />;
+    }
+
+    if (method.gateway === PaymentMethodId.Barclaycard) {
+        return <BarclaycardPaymentMethod { ...props } />;
     }
 
     if (method.gateway === PaymentMethodId.Afterpay ||

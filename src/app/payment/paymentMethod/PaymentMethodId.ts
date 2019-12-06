@@ -4,6 +4,7 @@ enum PaymentMethodId {
     Affirm = 'affirm',
     Afterpay = 'afterpay',
     Amazon = 'amazon',
+    Barclaycard = 'barclaycard',
     Braintree = 'braintree',
     BraintreeGooglePay = 'googlepaybraintree',
     BraintreeVisaCheckout = 'braintreevisacheckout',

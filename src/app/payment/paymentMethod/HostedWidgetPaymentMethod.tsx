@@ -18,6 +18,7 @@ import SignOutLink from './SignOutLink';
 export interface HostedWidgetPaymentMethodProps {
     containerId: string;
     hideContentWhenSignedOut?: boolean;
+    hideVerificationFields?: boolean;
     isInitializing?: boolean;
     isUsingMultiShipping?: boolean;
     isSignInRequired?: boolean;
@@ -41,7 +42,7 @@ interface WithCheckoutHostedWidgetPaymentMethodProps {
     isPaymentDataRequired: boolean;
     isSignedIn: boolean;
     isInstrumentCardNumberRequired(instrument: Instrument): boolean;
-    loadInstruments(): void;
+    loadInstruments(): Promise<CheckoutSelectors>;
     signOut(options: CustomerRequestOptions): void;
 }
 
@@ -120,6 +121,7 @@ class HostedWidgetPaymentMethod extends Component<
             instruments,
             containerId,
             hideContentWhenSignedOut = false,
+            hideVerificationFields = false,
             isInitializing = false,
             isSignedIn = false,
             isSignInRequired = false,
@@ -151,7 +153,7 @@ class HostedWidgetPaymentMethod extends Component<
                     onSelectInstrument={ this.handleSelectInstrument }
                     onUseNewInstrument={ this.handleUseNewCard }
                     selectedInstrumentId={ selectedInstrumentId }
-                    validateInstrument={ <CreditCardValidation
+                    validateInstrument={ !hideVerificationFields && <CreditCardValidation
                         shouldShowCardCodeField={ isInstrumentCardCodeRequiredProp }
                         shouldShowNumberField={ shouldShowNumberField }
                     /> }

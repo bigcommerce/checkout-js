@@ -11,6 +11,7 @@ import { ErrorModal } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { getOrder } from '../order/orders.mock';
 import { Button } from '../ui/button';
 
 import { getPaymentMethod } from './payment-methods.mock';
@@ -65,6 +66,9 @@ describe('Payment', () => {
 
         jest.spyOn(checkoutState.data, 'getCustomer')
             .mockReturnValue(getCustomer());
+
+        jest.spyOn(checkoutState.data, 'getOrder')
+            .mockReturnValue(merge(getOrder(), { isComplete: false }));
 
         jest.spyOn(checkoutState.data, 'getPaymentMethods')
             .mockReturnValue(paymentMethods);
@@ -126,6 +130,16 @@ describe('Payment', () => {
     it('does not render payment form if there are no methods', () => {
         jest.spyOn(checkoutState.data, 'getPaymentMethods')
             .mockReturnValue([]);
+
+        const container = mount(<PaymentTest { ...defaultProps } />);
+
+        expect(container.find(PaymentForm).length)
+            .toEqual(0);
+    });
+
+    it('does not render payment form if the current order is complete', () => {
+        jest.spyOn(checkoutState.data, 'getOrder')
+            .mockReturnValue(getOrder());
 
         const container = mount(<PaymentTest { ...defaultProps } />);
 
