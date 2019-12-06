@@ -12,7 +12,7 @@ const BarclaycardPaymentMethod: FunctionComponent<BarclaycardPaymentMethodProps>
     return <HostedWidgetPaymentMethod
         { ...props }
         containerId={ containerId }
-        hideVerificationFields={ true }
+        hideVerificationFields
     />;
 };
 

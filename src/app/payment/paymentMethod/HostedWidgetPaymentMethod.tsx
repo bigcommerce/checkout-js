@@ -153,9 +153,9 @@ class HostedWidgetPaymentMethod extends Component<
                     onSelectInstrument={ this.handleSelectInstrument }
                     onUseNewInstrument={ this.handleUseNewCard }
                     selectedInstrumentId={ selectedInstrumentId }
-                    validateInstrument={ <CreditCardValidation
-                        shouldShowCardCodeField={ !hideVerificationFields && isInstrumentCardCodeRequiredProp }
-                        shouldShowNumberField={ !hideVerificationFields && shouldShowNumberField }
+                    validateInstrument={ !hideVerificationFields && <CreditCardValidation
+                        shouldShowCardCodeField={ isInstrumentCardCodeRequiredProp }
+                        shouldShowNumberField={ shouldShowNumberField }
                     /> }
                 /> }
 
