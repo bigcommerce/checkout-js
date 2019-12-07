@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.14.0](https://github.com/bigcommerce/checkout-js/compare/v1.13.0...v1.14.0) (2019-12-07)
+
+
+### Features
+
+* **checkout:** INT-1780 Enable card vaulting for barclaycard ([e6bbf0b](https://github.com/bigcommerce/checkout-js/commit/e6bbf0b))
+* **checkout:** INT-1780 Move order completion check to Payment ([145863d](https://github.com/bigcommerce/checkout-js/commit/145863d))
+* **checkout:** INT-1780 Simplify prop and change validation ([22de1c7](https://github.com/bigcommerce/checkout-js/commit/22de1c7))
+* **common:** CHECKOUT-4206 Programatically obtain styling properties from an element ([9c63d52](https://github.com/bigcommerce/checkout-js/commit/9c63d52))
+
 ## [1.13.0](https://github.com/bigcommerce/checkout-js/compare/v1.12.0...v1.13.0) (2019-11-28)
 
 
