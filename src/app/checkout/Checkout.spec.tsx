@@ -1,10 +1,9 @@
-import { createCheckoutService, createEmbeddedCheckoutMessenger, CheckoutSelectors, CheckoutService, EmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, createEmbeddedCheckoutMessenger, CheckoutSelectors, CheckoutService, EmbeddedCheckoutMessenger, StepTracker } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { EventEmitter } from 'events';
 import { merge, noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { NoopStepTracker, StepTracker } from '../analytics';
 import { BillingProps } from '../billing';
 import Billing from '../billing/Billing';
 import { CartSummaryProps } from '../cart';
@@ -46,7 +45,11 @@ describe('Checkout', () => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         embeddedMessengerMock = createEmbeddedCheckoutMessenger({ parentOrigin: getStoreConfig().links.siteLink });
-        stepTracker = new NoopStepTracker();
+        stepTracker = {
+            trackCheckoutStarted: jest.fn(),
+            trackStepViewed: jest.fn(),
+            trackStepCompleted: jest.fn(),
+        } as unknown as StepTracker;
         subscribeEventEmitter = new EventEmitter();
 
         defaultProps = {
@@ -86,10 +89,6 @@ describe('Checkout', () => {
 
         jest.spyOn(checkoutState.data, 'getConfig')
             .mockReturnValue(getStoreConfig());
-
-        jest.spyOn(stepTracker, 'trackCheckoutStarted');
-        jest.spyOn(stepTracker, 'trackStepViewed');
-        jest.spyOn(stepTracker, 'trackStepCompleted');
 
         CheckoutTest = props => (
             <CheckoutProvider checkoutService={ checkoutService }>

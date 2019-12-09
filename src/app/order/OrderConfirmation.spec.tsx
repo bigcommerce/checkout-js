@@ -1,8 +1,7 @@
-import { createCheckoutService, createEmbeddedCheckoutMessenger, CheckoutSelectors, CheckoutService, EmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, createEmbeddedCheckoutMessenger, CheckoutSelectors, CheckoutService, EmbeddedCheckoutMessenger, StepTracker } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
-import { NoopStepTracker, StepTracker } from '../analytics';
 import { CheckoutProvider } from '../checkout';
 import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
@@ -28,7 +27,9 @@ describe('OrderConfirmation', () => {
     beforeEach(() => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
-        stepTracker = new NoopStepTracker();
+        stepTracker = {
+            trackOrderComplete: jest.fn(),
+        } as unknown as StepTracker;
         embeddedMessengerMock = createEmbeddedCheckoutMessenger({ parentOrigin: getStoreConfig().links.siteLink });
 
         jest.spyOn(checkoutService, 'loadOrder')
@@ -42,8 +43,6 @@ describe('OrderConfirmation', () => {
 
         jest.spyOn(checkoutState.data, 'getConfig')
             .mockReturnValue(getStoreConfig());
-
-        jest.spyOn(stepTracker, 'trackOrderComplete');
 
         defaultProps = {
             containerId: 'app',
