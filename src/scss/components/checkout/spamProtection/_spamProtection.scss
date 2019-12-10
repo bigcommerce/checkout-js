@@ -1,0 +1,38 @@
+// =============================================================================
+// SPAM PROTECTION (Component)
+// =============================================================================
+
+// Spam protection panel
+// -----------------------------------------------------------------------------
+
+.spamProtection-container {
+    margin: 0;
+
+    @include breakpoint("small") {
+        margin-left: remCalc($checkoutStep-counter-size) + $checkoutStep-header-figure-margin;
+    }
+
+    @include breakpoint("large") {
+        margin-left: 0;
+    }
+
+    @include breakpoint(1080px) {
+        margin-left: remCalc($checkoutStep-counter-size) + $checkoutStep-header-figure-margin;
+    }
+}
+
+.spamProtection-panel {
+    background-color: container("fill");
+    border: container("border");
+    border-radius: $global-radius;
+    display: flex;
+    min-height: 10rem;
+    padding: $shippingOptions-spacing;
+    text-align: center;
+}
+
+.spamProtection-panel-message {
+    align-self: center;
+    flex: 1;
+    margin: 0;
+}

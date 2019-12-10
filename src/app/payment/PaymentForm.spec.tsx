@@ -125,10 +125,10 @@ describe('PaymentForm', () => {
             .toHaveLength(0);
     });
 
-    it('renders spam protection field', () => {
+    it('renders spam protection field if spam check should be executed', () => {
         const container = mount(<PaymentFormTest
             { ...defaultProps }
-            isSpamProtectionEnabled={ true }
+            shouldExecuteSpamCheck={ true }
         />);
         const spamProtectionField: ReactWrapper<SpamProtectionProps> = container.find(SpamProtectionField);
 

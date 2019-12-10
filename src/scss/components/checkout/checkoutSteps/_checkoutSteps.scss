@@ -47,7 +47,7 @@
         margin-left: 0;
     }
 
-    @include breakpoint(1080px) { // 1
+    @include breakpoint(1080px) {
         margin-left: remCalc($checkoutStep-counter-size) + $checkoutStep-header-figure-margin;
     }
 }

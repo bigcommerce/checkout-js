@@ -38,10 +38,10 @@ interface WithCheckoutPaymentProps {
     cartUrl: string;
     defaultMethod?: PaymentMethod;
     finalizeOrderError?: Error;
-    isSpamProtectionEnabled: boolean;
     isSubmittingOrder: boolean;
     isTermsConditionsRequired: boolean;
     methods: PaymentMethod[];
+    shouldExecuteSpamCheck: boolean;
     submitOrderError?: Error;
     termsConditionsText?: string;
     termsConditionsUrl?: string;
@@ -416,7 +416,6 @@ export function mapToPaymentProps({
     }
 
     const {
-        isSpamProtectionEnabled,
         enableTermsAndConditions: isTermsConditionsRequired,
         orderTermsAndConditionsType: termsConditionsType,
         orderTermsAndConditions: termsCondtitionsText,
@@ -436,10 +435,10 @@ export function mapToPaymentProps({
         finalizeOrderIfNeeded: checkoutService.finalizeOrderIfNeeded,
         isPaymentDataRequired,
         isSubmittingOrder: isSubmittingOrder(),
-        isSpamProtectionEnabled,
         isTermsConditionsRequired,
         loadPaymentMethods: checkoutService.loadPaymentMethods,
         methods: filteredMethods,
+        shouldExecuteSpamCheck: checkout.shouldExecuteSpamCheck,
         submitOrder: checkoutService.submitOrder,
         submitOrderError: getSubmitOrderError(),
         termsConditionsText: isTermsConditionsRequired && termsConditionsType === TermsConditionsType.TextArea ?

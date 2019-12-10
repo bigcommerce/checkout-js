@@ -13,7 +13,7 @@ describe('SpamProtectionField', () => {
     beforeEach(() => {
         checkoutService = createCheckoutService();
 
-        jest.spyOn(checkoutService, 'initializeSpamProtection')
+        jest.spyOn(checkoutService, 'executeSpamCheck')
             .mockResolvedValue(checkoutService.getState());
 
         SpamProtectionTest = props => (
@@ -23,15 +23,15 @@ describe('SpamProtectionField', () => {
         );
     });
 
-    it('intializes spam protection when component is mounted', () => {
-        mount(<SpamProtectionTest containerId="spamProtection" />);
+    it('execute spam check when component is mounted', () => {
+        mount(<SpamProtectionTest />);
 
-        expect(checkoutService.initializeSpamProtection)
-            .toHaveBeenCalledWith({ containerId: 'spamProtection' });
+        expect(checkoutService.executeSpamCheck)
+            .toHaveBeenCalled();
     });
 
-    it('renders spam protection field with the given container id', () => {
-        expect(render(<SpamProtectionTest containerId="spamProtection" />))
+    it('renders spam protection field', () => {
+        expect(render(<SpamProtectionTest />))
             .toMatchSnapshot();
     });
 });
