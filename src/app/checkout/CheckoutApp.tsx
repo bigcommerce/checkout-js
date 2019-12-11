@@ -1,11 +1,10 @@
-import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, createEmbeddedCheckoutMessenger, createStepTracker, StepTracker } from '@bigcommerce/checkout-sdk';
 import { createRequestSender, Response } from '@bigcommerce/request-sender';
 import { BrowserOptions } from '@sentry/browser';
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 
 import '../../scss/App.scss';
-import { StepTracker, StepTrackerFactory } from '../analytics';
 import { createErrorLogger, ErrorBoundary, ErrorLogger } from '../common/error';
 import { NewsletterService, NewsletterSubscribeData } from '../customer';
 import { createEmbeddedCheckoutStylesheet, createEmbeddedCheckoutSupport } from '../embeddedCheckout';
@@ -32,7 +31,6 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
     private embeddedSupport = createEmbeddedCheckoutSupport(getLanguageService());
     private errorLogger: ErrorLogger;
     private newsletterService = new NewsletterService(createRequestSender());
-    private stepTrackerFactory = new StepTrackerFactory(this.checkoutService);
 
     constructor(props: Readonly<CheckoutAppProps>) {
         super(props);
@@ -73,7 +71,7 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
     }
 
     private createStepTracker: () => StepTracker = () => {
-        return this.stepTrackerFactory.createTracker();
+        return createStepTracker(this.checkoutService);
     };
 
     private subscribeToNewsletter: (data: NewsletterSubscribeData) => Promise<Response> = data => {

@@ -1,10 +1,9 @@
-import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, createEmbeddedCheckoutMessenger, createStepTracker, StepTracker } from '@bigcommerce/checkout-sdk';
 import { BrowserOptions } from '@sentry/browser';
 import React, { Component, ReactNode } from 'react';
 import ReactModal from 'react-modal';
 
 import '../../scss/App.scss';
-import { StepTracker, StepTrackerFactory } from '../analytics';
 import { CheckoutProvider } from '../checkout';
 import { createErrorLogger, ErrorBoundary, ErrorLogger } from '../common/error';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
@@ -28,7 +27,6 @@ class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
     });
     private embeddedStylesheet = createEmbeddedCheckoutStylesheet();
     private errorLogger: ErrorLogger;
-    private stepTrackerFactory = new StepTrackerFactory(this.checkoutService);
 
     constructor(props: Readonly<OrderConfirmationAppProps>) {
         super(props);
@@ -82,7 +80,7 @@ class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
     };
 
     private createStepTracker: () => StepTracker = () => {
-        return this.stepTrackerFactory.createTracker();
+        return createStepTracker(this.checkoutService);
     };
 }
 

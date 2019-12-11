@@ -1,9 +1,8 @@
-import { Address, Cart, CheckoutParams, CheckoutSelectors, Consignment, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, Promotion, RequestOptions } from '@bigcommerce/checkout-sdk';
+import { Address, Cart, CheckoutParams, CheckoutSelectors, Consignment, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, Promotion, RequestOptions, StepTracker } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { lazy, Component, ReactNode } from 'react';
 
-import { NoopStepTracker, StepTracker } from '../analytics';
 import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
 import { ErrorLogger, ErrorModal } from '../common/error';
@@ -99,7 +98,7 @@ export interface WithCheckoutProps {
 }
 
 class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguageProps, CheckoutState> {
-    stepTracker: StepTracker = new NoopStepTracker();
+    stepTracker: StepTracker | undefined;
 
     state: CheckoutState = {
         isCartEmpty: false,
@@ -456,7 +455,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
         const previousStep = steps[Math.max(activeStepIndex - 1, 0)];
 
-        if (previousStep) {
+        if (previousStep && this.stepTracker) {
             this.stepTracker.trackStepCompleted(previousStep.type);
         }
 
@@ -466,7 +465,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     private navigateToOrderConfirmation: () => void = () => {
         const { steps } = this.props;
 
-        this.stepTracker.trackStepCompleted(steps[steps.length - 1].type);
+        if (this.stepTracker) {
+            this.stepTracker.trackStepCompleted(steps[steps.length - 1].type);
+        }
 
         if (this.embeddedMessenger) {
             this.embeddedMessenger.postComplete();
@@ -517,7 +518,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     };
 
     private handleExpanded: (type: CheckoutStepType) => void = type => {
-        this.stepTracker.trackStepViewed(type);
+        if (this.stepTracker) {
+           this.stepTracker.trackStepViewed(type);
+        }
     };
 
     private handleUnhandledError: (error: Error) => void = error => {
