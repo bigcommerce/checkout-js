@@ -120,8 +120,34 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
         }
     };
 
-    private handleUseNewAddress: () => void = () => {
-        this.handleSelectAddress({});
+    private handleUseNewAddress: () => void = async () => {
+        const {
+            updateAddress,
+            onUnhandledError,
+            setValues,
+            customerMessage,
+            getFields,
+        } = this.props;
+
+        this.setState({ isResettingAddress: true });
+
+        try {
+            const { data: { getBillingAddress } } = await updateAddress({});
+
+            const billingAddress = getBillingAddress();
+
+            setValues({
+                ...mapAddressToFormValues(
+                    getFields(billingAddress && billingAddress.countryCode),
+                    billingAddress
+                ),
+                orderComment: customerMessage,
+            });
+        } catch (e) {
+            onUnhandledError(e);
+        } finally {
+            this.setState({ isResettingAddress: false });
+        }
     };
 }
 
