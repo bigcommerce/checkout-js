@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.14.1](https://github.com/bigcommerce/checkout-js/compare/v1.14.0...v1.14.1) (2019-12-11)
+
+
+### Code Refactoring
+
+* **common:** CHECKOUT-4571 Use Checkout DSK StepTracker ([1d9e86c](https://github.com/bigcommerce/checkout-js/commit/1d9e86c))
+
 ## [1.14.0](https://github.com/bigcommerce/checkout-js/compare/v1.13.0...v1.14.0) (2019-12-07)
 
 
