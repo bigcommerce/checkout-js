@@ -33,7 +33,6 @@ interface WithCheckoutHostedPaymentMethodProps {
     isInstrumentFeatureAvailable: boolean;
     isLoadingInstruments: boolean;
     isNewAddress: boolean;
-    isPaymentDataRequired: boolean;
     loadInstruments(): Promise<CheckoutSelectors>;
 }
 
@@ -176,7 +175,6 @@ function mapFromCheckoutProps(): MapToProps<
 
     return (context, props) => {
         const {
-            formik: { values },
             isUsingMultiShipping = false,
             method,
         } = props;
@@ -189,7 +187,6 @@ function mapFromCheckoutProps(): MapToProps<
                 getConfig,
                 getCustomer,
                 getInstruments,
-                isPaymentDataRequired,
                 isPaymentDataSubmitted,
             },
             statuses: {
@@ -223,7 +220,6 @@ function mapFromCheckoutProps(): MapToProps<
                     paymentMethod: method,
                 }),
             isLoadingInstruments: isLoadingInstruments(),
-            isPaymentDataRequired: isPaymentDataRequired(values.useStoreCredit),
             loadInstruments: checkoutService.loadInstruments,
         };
     };

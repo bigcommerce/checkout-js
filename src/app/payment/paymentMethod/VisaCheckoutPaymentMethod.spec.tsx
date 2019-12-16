@@ -46,6 +46,9 @@ describe('when using Visa Checkout payment', () => {
         jest.spyOn(checkoutService, 'initializePayment')
             .mockResolvedValue(checkoutState);
 
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
+            .mockReturnValue(true);
+
         PaymentMethodTest = props => (
             <CheckoutProvider checkoutService={ checkoutService }>
                 <LocaleContext.Provider value={ localeContext }>

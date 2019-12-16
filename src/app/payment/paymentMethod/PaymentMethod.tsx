@@ -2,6 +2,8 @@ import { CheckoutSelectors, CustomerInitializeOptions, CustomerRequestOptions, P
 import React, { memo, FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
+import { connectFormik, ConnectFormikProps } from '../../common/form';
+import { PaymentFormValues } from '../PaymentForm';
 
 import AdyenV2PaymentMethod from './AdyenV2PaymentMethod';
 import AffirmPaymentMethod from './AffirmPaymentMethod';
@@ -34,6 +36,7 @@ export interface PaymentMethodProps {
 
 export interface WithCheckoutPaymentMethodProps {
     isInitializing: boolean;
+    isPaymentDataRequired: boolean;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
     initializeCustomer(options: CustomerInitializeOptions): Promise<CheckoutSelectors>;
@@ -51,7 +54,11 @@ export interface WithCheckoutPaymentMethodProps {
  */
 // tslint:disable:cyclomatic-complexity
 const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckoutPaymentMethodProps> = props => {
-    const { method } = props;
+    const { method, isPaymentDataRequired } = props;
+
+    if (!isPaymentDataRequired) {
+        return null;
+    }
 
     if (method.gateway === PaymentMethodId.AdyenV2) {
         return <AdyenV2PaymentMethod { ...props } />;
@@ -139,11 +146,16 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
 
 function mapToWithCheckoutPaymentMethodProps(
     { checkoutService, checkoutState }: CheckoutContextProps,
-    { method }: PaymentMethodProps
+    { method, formik }: PaymentMethodProps & ConnectFormikProps<PaymentFormValues>
 ): WithCheckoutPaymentMethodProps {
     const {
+        data: { isPaymentDataRequired },
         statuses: { isInitializingPayment },
     } = checkoutState;
+
+    const {
+        values: { useStoreCredit },
+    } = formik;
 
     return {
         deinitializeCustomer: checkoutService.deinitializeCustomer,
@@ -151,7 +163,8 @@ function mapToWithCheckoutPaymentMethodProps(
         initializeCustomer: checkoutService.initializeCustomer,
         initializePayment: checkoutService.initializePayment,
         isInitializing: isInitializingPayment(method.id),
+        isPaymentDataRequired: isPaymentDataRequired(useStoreCredit),
     };
 }
 
-export default withCheckout(mapToWithCheckoutPaymentMethodProps)(memo(PaymentMethodComponent));
+export default connectFormik(withCheckout(mapToWithCheckoutPaymentMethodProps)(memo(PaymentMethodComponent)));

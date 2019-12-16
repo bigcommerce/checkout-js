@@ -30,7 +30,6 @@ interface WithCheckoutCreditCardPaymentMethodProps {
     isInstrumentCardCodeRequired: boolean;
     isInstrumentFeatureAvailable: boolean;
     isLoadingInstruments: boolean;
-    isPaymentDataRequired: boolean;
     isInstrumentCardNumberRequired(instrument: Instrument): boolean;
     loadInstruments(): Promise<CheckoutSelectors>;
 }
@@ -179,14 +178,9 @@ class CreditCardPaymentMethod extends Component<
             isInstrumentCardCodeRequired: isInstrumentCardCodeRequiredProp,
             isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredProp,
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
-            isPaymentDataRequired,
             language,
             method,
         } = this.props;
-
-        if (!isPaymentDataRequired) {
-            return null;
-        }
 
         const { selectedInstrumentId = this.getDefaultInstrumentId() } = this.state;
         const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
@@ -229,7 +223,6 @@ function mapFromCheckoutProps(): MapToProps<
 
     return (context, props) => {
         const {
-            formik: { values },
             isUsingMultiShipping = false,
             method,
         } = props;
@@ -242,7 +235,6 @@ function mapFromCheckoutProps(): MapToProps<
                 getConfig,
                 getCustomer,
                 getInstruments,
-                isPaymentDataRequired,
             },
             statuses: {
                 isLoadingInstruments,
@@ -272,7 +264,6 @@ function mapFromCheckoutProps(): MapToProps<
                 paymentMethod: method,
             }),
             isLoadingInstruments: isLoadingInstruments(),
-            isPaymentDataRequired: isPaymentDataRequired(values.useStoreCredit),
             loadInstruments: checkoutService.loadInstruments,
         };
     };
