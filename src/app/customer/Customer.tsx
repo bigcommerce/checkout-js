@@ -201,7 +201,7 @@ export function mapToWithCheckoutCustomerProps(
     const customer = getCustomer();
     const config = getConfig();
 
-    if (!billingAddress || !checkout || !customer || !config) {
+    if (!checkout || !config) {
         return null;
     }
 
@@ -213,8 +213,8 @@ export function mapToWithCheckoutCustomerProps(
         createAccountUrl: config.links.createAccountLink,
         defaultShouldSubscribe: config.shopperConfig.defaultNewsletterSignup,
         deinitializeCustomer: checkoutService.deinitializeCustomer,
-        email: billingAddress.email || customer.email,
-        firstName: customer.firstName,
+        email: (billingAddress && billingAddress.email) || (customer && customer.email),
+        firstName: customer && customer.firstName,
         forgotPasswordUrl: config.links.forgotPasswordLink,
         initializeCustomer: checkoutService.initializeCustomer,
         isContinuingAsGuest: isContinuingAsGuest(),

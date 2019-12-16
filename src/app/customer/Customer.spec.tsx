@@ -71,6 +71,30 @@ describe('Customer', () => {
                 .toEqual(true);
         });
 
+        it('renders guest form if billing address is undefined', () => {
+            jest.spyOn(checkoutService.getState().data, 'getBillingAddress')
+                .mockReturnValue(undefined);
+
+            const component = mount(
+                <CustomerTest viewType={ CustomerViewType.Guest } />
+            );
+
+            expect(component.find(GuestForm).exists())
+                .toEqual(true);
+        });
+
+        it('renders guest form if customer is undefined', () => {
+            jest.spyOn(checkoutService.getState().data, 'getCustomer')
+                .mockReturnValue(undefined);
+
+            const component = mount(
+                <CustomerTest viewType={ CustomerViewType.Guest } />
+            );
+
+            expect(component.find(GuestForm).exists())
+                .toEqual(true);
+        });
+
         it('passes data to guest form', () => {
             const component = mount(
                 <CustomerTest viewType={ CustomerViewType.Guest } />
