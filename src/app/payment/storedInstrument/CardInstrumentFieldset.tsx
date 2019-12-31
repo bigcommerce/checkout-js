@@ -75,7 +75,9 @@ const CardInstrumentFieldset: FunctionComponent<CardInstrumentFieldsetProps> = (
             render={ renderInput }
         />
 
-        { selectedInstrumentId && validateInstrument }
+        <div style={ {display: selectedInstrumentId ? undefined : 'none'} }>
+            { validateInstrument }
+        </div>
     </Fieldset>;
 };
 

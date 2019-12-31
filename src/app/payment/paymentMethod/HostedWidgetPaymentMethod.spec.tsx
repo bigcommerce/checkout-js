@@ -265,16 +265,6 @@ describe('HostedWidgetPaymentMethod', () => {
                 .toHaveLength(1);
         });
 
-        it('does not show instruments fieldset when there are no stored instruments', () => {
-            jest.spyOn(checkoutState.data, 'getInstruments')
-                .mockReturnValue([]);
-
-            const component = mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
-
-            expect(component.find(storedInstrumentModule.CardInstrumentFieldset))
-                .toHaveLength(0);
-        });
-
         it('uses PaymentMethod to retrieve instruments', () => {
             mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
 
