@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.15.0](https://github.com/bigcommerce/checkout-js/compare/v1.14.2...v1.15.0) (2019-12-31)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-4606 Set right timezone in custom date field ([10cb6cf](https://github.com/bigcommerce/checkout-js/commit/10cb6cf))
+
+
+### Features
+
+* **payment:** INT-2181 Add secured fields to support TSV with hosted fields ([69d4753](https://github.com/bigcommerce/checkout-js/commit/69d4753))
+
 ### [1.14.2](https://github.com/bigcommerce/checkout-js/compare/v1.14.1...v1.14.2) (2019-12-16)
 
 
