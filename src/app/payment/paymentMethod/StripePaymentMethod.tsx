@@ -2,6 +2,8 @@ import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import React, { useCallback, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
+import { getCreditCardInputStyles, CreditCardInputStylesType } from '../creditCard';
+
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 
 export type SquarePaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId' | 'hideContentWhenSignedOut'>;
@@ -10,28 +12,29 @@ const StripePaymentMethod: FunctionComponent<SquarePaymentMethodProps> = ({
     initializePayment,
     ...rest
 }) => {
-    const initializeStripePayment = useCallback((options: PaymentInitializeOptions) => initializePayment({
-        ...options,
-        stripev3: {
-            containerId: 'stripe-card-field',
-            style: {
-                base: {
-                    color: '#32325d',
-                    fontWeight: 500,
-                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                    fontSize: '16px',
-                    fontSmoothing: 'antialiased',
-                    '::placeholder': {
-                        color: '#aab7c4',
+    const initializeStripePayment = useCallback(async (options: PaymentInitializeOptions) => {
+        const creditCardInputStyles =  await getCreditCardInputStyles('stripe-card-field', ['color', 'fontFamily', 'fontWeight', 'fontSmoothing']);
+        const creditCardInputErrorStyles = await getCreditCardInputStyles('stripe-card-field', ['color'], CreditCardInputStylesType.Error);
+
+        return initializePayment({
+            ...options,
+            stripev3: {
+                containerId: 'stripe-card-field',
+                style: {
+                    base: {
+                        ...creditCardInputStyles,
+                        '::placeholder': {
+                            color: '#E1E1E1',
+                        },
+                    },
+                    invalid: {
+                        ...creditCardInputErrorStyles,
+                        iconColor: creditCardInputErrorStyles.color,
                     },
                 },
-                invalid: {
-                    color: '#fa755a',
-                    iconColor: '#fa755a',
-                },
             },
-        },
-    }), [initializePayment]);
+        });
+    }, [initializePayment]);
 
     return <HostedWidgetPaymentMethod
         { ...rest }
