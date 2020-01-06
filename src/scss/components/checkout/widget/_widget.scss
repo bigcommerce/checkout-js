@@ -53,3 +53,15 @@
 .widget-header-googlepay {
     text-align: center;
 }
+
+.widget--stripev3 {
+    @extend .form-input;
+
+    margin-bottom: remCalc(20px);
+    margin-top: remCalc(20px);
+}
+
+.StripeElement--focus {
+    border-color: $input-focus-border-color;
+    box-shadow: $input-focus-boxShadow, $input-box-shadow;
+}

@@ -2,6 +2,8 @@ import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import React, { useCallback, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
+import { getCreditCardInputStyles } from '../creditCard';
+
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 
 export type SquarePaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId' | 'hideContentWhenSignedOut'>;
@@ -10,21 +12,19 @@ const StripePaymentMethod: FunctionComponent<SquarePaymentMethodProps> = ({
     initializePayment,
     ...rest
 }) => {
-    const initializeStripePayment = useCallback((options: PaymentInitializeOptions) => initializePayment({
+    async function configureStyle() {
+        const style: any = await getCreditCardInputStyles('stripe-card-field', ['color', 'fontFamily', 'fontWeight', 'fontSmoothing']);
+        style['\'::placeholder\''] = {color: '#E1E1E1'};
+
+        return style;
+    }
+
+    const initializeStripePayment = useCallback(async (options: PaymentInitializeOptions) => initializePayment({
         ...options,
         stripev3: {
             containerId: 'stripe-card-field',
             style: {
-                base: {
-                    color: '#32325d',
-                    fontWeight: 500,
-                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                    fontSize: '16px',
-                    fontSmoothing: 'antialiased',
-                    '::placeholder': {
-                        color: '#aab7c4',
-                    },
-                },
+                base: await configureStyle(),
                 invalid: {
                     color: '#fa755a',
                     iconColor: '#fa755a',

@@ -14,3 +14,4 @@ export { default as getCreditCardValidationSchema } from './getCreditCardValidat
 export { default as mapFromPaymentMethodCardType } from './mapFromPaymentMethodCardType';
 export { default as unformatCreditCardNumber } from './unformatCreditCardNumber';
 export { default as unformatCreditCardExpiryDate } from './unformatCreditCardExpiryDate';
+export { default as getCreditCardInputStyles, CreditCardInputStylesType } from './getCreditCardInputStyles';
