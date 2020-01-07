@@ -1,45 +1,65 @@
-import { SpamProtectionOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
+import { TranslatedString } from '../locale';
+import { LoadingOverlay } from '../ui/loading';
 
 export interface SpamProtectionProps {
-    containerId: string;
     onUnhandledError?(error: Error): void;
 }
 
 interface WithCheckoutSpamProtectionProps {
-    initialize(options: SpamProtectionOptions): void;
+    isExecutingSpamCheck: boolean;
+    verify(): void;
 }
 
 function mapToSpamProtectionProps(
-    { checkoutService }: CheckoutContextProps
+    { checkoutService, checkoutState }: CheckoutContextProps
 ): WithCheckoutSpamProtectionProps {
     return {
-        initialize: checkoutService.initializeSpamProtection,
+        isExecutingSpamCheck: checkoutState.statuses.isExecutingSpamCheck(),
+        verify: checkoutService.executeSpamCheck,
     };
 }
 
 class SpamProtectionField extends Component<SpamProtectionProps & WithCheckoutSpamProtectionProps> {
     async componentDidMount() {
         const {
-            containerId,
-            initialize,
+            verify,
             onUnhandledError = noop,
         } = this.props;
 
         try {
-            await initialize({ containerId });
+            await verify();
         } catch (error) {
             onUnhandledError(error);
         }
     }
 
     render() {
-        const { containerId } = this.props;
+        const {
+            isExecutingSpamCheck,
+            verify,
+        } = this.props;
 
-        return <div id={ containerId } />;
+        return (
+            <div className="spamProtection-container">
+                <LoadingOverlay isLoading={ isExecutingSpamCheck }>
+                    <div className="spamProtection-panel optimizedCheckout-overlay">
+                        <a
+                            className="spamProtection-panel-message optimizedCheckout-primaryContent"
+                            data-test="customer-continue-button"
+                            onClick={ verify }
+                        >
+                            <TranslatedString
+                                id="spam_protection.verify_action"
+                            />
+                        </a>
+                    </div>
+                </LoadingOverlay>
+            </div>
+        );
     }
 }
 

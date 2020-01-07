@@ -22,13 +22,13 @@ export interface PaymentFormProps {
     defaultGatewayId?: string;
     defaultMethodId: string;
     isEmbedded?: boolean;
-    isSpamProtectionEnabled?: boolean;
     isTermsConditionsRequired?: boolean;
     isUsingMultiShipping?: boolean;
     methods: PaymentMethod[];
     selectedMethod?: PaymentMethod;
     shouldShowStoreCredit?: boolean;
     shouldDisableSubmit?: boolean;
+    shouldExecuteSpamCheck?: boolean;
     termsConditionsText?: string;
     termsConditionsUrl?: string;
     usableStoreCredit?: number;
@@ -79,7 +79,6 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
     availableStoreCredit = 0,
     isEmbedded,
     isPaymentDataRequired,
-    isSpamProtectionEnabled,
     isTermsConditionsRequired,
     isUsingMultiShipping,
     methods,
@@ -89,11 +88,16 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
     resetForm,
     selectedMethod,
     shouldDisableSubmit,
+    shouldExecuteSpamCheck,
     termsConditionsText = '',
     termsConditionsUrl,
     usableStoreCredit = 0,
     values,
 }) => {
+    if (shouldExecuteSpamCheck) {
+        return <SpamProtectionField />;
+    }
+
     return (
         <Form
             className="checkout-form"
@@ -132,8 +136,6 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
                         type={ TermsConditionsType.TextArea }
                     /> }
             </Fragment> }
-
-            { isSpamProtectionEnabled && <SpamProtectionField containerId="spamProtection" /> }
 
             <div className="form-actions">
                 <PaymentSubmitButton

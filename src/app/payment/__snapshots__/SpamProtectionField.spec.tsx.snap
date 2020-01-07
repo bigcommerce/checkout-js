@@ -1,7 +1,20 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SpamProtectionField renders spam protection field with the given container id 1`] = `
+exports[`SpamProtectionField renders spam protection field 1`] = `
 <div
-  id="spamProtection"
-/>
+  class="spamProtection-container"
+>
+  <div
+    class="loadingOverlay-container"
+  >
+    <div
+      class="spamProtection-panel optimizedCheckout-overlay"
+    >
+      <a
+        class="spamProtection-panel-message optimizedCheckout-primaryContent"
+        data-test="customer-continue-button"
+      />
+    </div>
+  </div>
+</div>
 `;

@@ -27,6 +27,7 @@ export function getCheckout(): Checkout {
         orderId: 295,
         shippingCostTotal: 15,
         shippingCostBeforeDiscount: 20,
+        shouldExecuteSpamCheck: false,
         handlingCostTotal: 8,
         taxTotal: 3,
         subtotal: 190,

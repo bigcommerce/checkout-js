@@ -278,6 +278,9 @@
             "share_heading": "Tell your friends about your purchase!",
             "tweet_action": "Tweet"
         },
+        "spam_protection": {
+            "verify_action": "Please click here to verify yourself as human before proceeding."
+        },
         "terms_and_conditions": {
             "agreement_required_error": "Please agree to the terms and conditions",
             "agreement_text": "Yes, I agree with the above terms and conditions",
