@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.16.0](https://github.com/bigcommerce/checkout-js/compare/v1.15.1...v1.16.0) (2020-01-08)
+
+
+### Code Refactoring
+
+* **common:** CHECKOUT-4606 Use padStart to construct date value ([285eb2b](https://github.com/bigcommerce/checkout-js/commit/285eb2b))
+
+
+### Features
+
+* **payment:** CHECKOUT-4560 Run spam check before rendering payment options ([e26f9c6](https://github.com/bigcommerce/checkout-js/commit/e26f9c6))
+* **payment:** INT-1780 INT-1997 Bump checkout-sdk version ([cfbeb2c](https://github.com/bigcommerce/checkout-js/commit/cfbeb2c))
+
 ### [1.15.1](https://github.com/bigcommerce/checkout-js/compare/v1.15.0...v1.15.1) (2020-01-02)
 
 
