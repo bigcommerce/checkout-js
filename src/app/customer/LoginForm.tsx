@@ -104,12 +104,13 @@ export default withLanguage(withFormik<LoginFormProps & WithLanguageProps, Login
     handleSubmit: (values, { props: { onSignIn } }) => {
         onSignIn(values);
     },
-    validationSchema: ({ language }: LoginFormProps & WithLanguageProps) => object({
-        email: string()
-            .max(256)
-            .matches(EMAIL_REGEXP, language.translate('customer.email_invalid_error'))
-            .required(language.translate('customer.email_required_error')),
-        password: string()
-            .required(language.translate('customer.password_required_error')),
-    }),
+    validationSchema: ({ language }: LoginFormProps & WithLanguageProps) =>
+        object({
+            email: string()
+                .max(256)
+                .matches(EMAIL_REGEXP, language.translate('customer.email_invalid_error'))
+                .required(language.translate('customer.email_required_error')),
+            password: string()
+                .required(language.translate('customer.password_required_error')),
+        }),
 })(memo(LoginForm)));

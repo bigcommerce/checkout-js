@@ -3,6 +3,7 @@ import React from 'react';
 
 import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { TermsConditions } from '../termsConditions';
 
 import GuestForm, { GuestFormProps } from './GuestForm';
 
@@ -18,6 +19,7 @@ describe('GuestForm', () => {
             onChangeEmail: jest.fn(),
             onContinueAsGuest: jest.fn(),
             onShowLogin: jest.fn(),
+            isTermsConditionsRequired: false,
         };
 
         localeContext = createLocaleContext(getStoreConfig());
@@ -218,5 +220,47 @@ describe('GuestForm', () => {
 
         expect(componentB.find('input[name="shouldSubscribe"]').prop('value'))
             .toEqual(false);
+    });
+
+    it('renders terms and conditions field', () => {
+        const component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <GuestForm
+                    { ...defaultProps }
+                    isTermsConditionsRequired={ true }
+                />
+            </LocaleContext.Provider>
+        );
+
+        expect(component.find(TermsConditions)).toHaveLength(1);
+    });
+
+    it('displays error message if newsletter is required and not checked', async () => {
+        const handleContinueAsGuest = jest.fn();
+        const component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <GuestForm
+                    { ...defaultProps }
+                    isTermsConditionsRequired={ true }
+                    onContinueAsGuest={ handleContinueAsGuest }
+                />
+            </LocaleContext.Provider>
+        );
+
+        component.find('input[name="email"]')
+            .simulate('change', { target: { value: 'test@test.com', name: 'email' } });
+
+        component.find('form')
+            .simulate('submit');
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        component.update();
+
+        expect(handleContinueAsGuest)
+            .not.toHaveBeenCalled();
+
+        expect(component.find('[data-test="terms-field-error-message"]').text())
+            .toEqual('Please agree to the terms and conditions');
     });
 });

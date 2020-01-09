@@ -3,6 +3,7 @@ import React, { memo, FunctionComponent, ReactNode } from 'react';
 import { object, string } from 'yup';
 
 import { withLanguage, TranslatedHtml, TranslatedString, WithLanguageProps } from '../locale';
+import { getTermsConditionsValidationSchema, TermsConditions } from '../termsConditions';
 import { Button, ButtonVariant } from '../ui/button';
 import { BasicFormField, Fieldset, Form, Legend  } from '../ui/form';
 
@@ -15,6 +16,9 @@ export interface GuestFormProps {
     defaultShouldSubscribe: boolean;
     email?: string;
     isContinuingAsGuest: boolean;
+    isTermsConditionsRequired: boolean;
+    termsConditionsText?: string;
+    termsConditionsUrl?: string;
     onChangeEmail(email: string): void;
     onContinueAsGuest(data: GuestFormValues): void;
     onShowLogin(): void;
@@ -23,6 +27,7 @@ export interface GuestFormProps {
 export interface GuestFormValues {
     email: string;
     shouldSubscribe: boolean;
+    terms?: boolean;
 }
 
 const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikProps<GuestFormValues>> = ({
@@ -31,6 +36,9 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
     isContinuingAsGuest,
     onChangeEmail,
     onShowLogin,
+    isTermsConditionsRequired,
+    termsConditionsText,
+    termsConditionsUrl,
 }) => (
     <Form
         className="checkout-form"
@@ -55,6 +63,10 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
                     { canSubscribe && <BasicFormField
                         component={ SubscribeField }
                         name="shouldSubscribe"
+                    /> }
+                    { isTermsConditionsRequired && <TermsConditions
+                        termsConditionsText={ termsConditionsText }
+                        termsConditionsUrl={ termsConditionsUrl }
                     /> }
                 </div>
 
@@ -96,16 +108,21 @@ export default withLanguage(withFormik<GuestFormProps & WithLanguageProps, Guest
     }) => ({
         email,
         shouldSubscribe: defaultShouldSubscribe,
+        terms: false,
     }),
     handleSubmit: (values, { props: { onContinueAsGuest } }) => {
         onContinueAsGuest(values);
     },
-    validationSchema: ({ language }: GuestFormProps & WithLanguageProps) => {
+    validationSchema: ({ language, isTermsConditionsRequired }: GuestFormProps & WithLanguageProps) => {
         const email = string()
             .email(language.translate('customer.email_invalid_error'))
             .max(256)
             .required(language.translate('customer.email_required_error'));
 
-        return object({ email });
+        return object({ email })
+            .concat(getTermsConditionsValidationSchema({
+                isTermsConditionsRequired,
+                language,
+            }));
     },
 })(memo(GuestForm)));
