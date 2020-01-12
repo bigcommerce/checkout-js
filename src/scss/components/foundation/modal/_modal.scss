@@ -54,6 +54,13 @@
             }
         }
 
+        &.modal--terms {
+            .modal-body {
+                padding-bottom: spacing("half");
+                padding-top: 0;
+            }
+        }
+
         &.modal--error {
             padding-bottom: spacing("half");
             padding-left: #{spacing("half") + spacing("double")};
