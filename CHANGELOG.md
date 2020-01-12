@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.17.0](https://github.com/bigcommerce/checkout-js/compare/v1.16.1...v1.17.0) (2020-01-12)
+
+
+### Features
+
+* **common:** CHECKOUT-3460 Relocate terms and conditions according to setting ([763ba72](https://github.com/bigcommerce/checkout-js/commit/763ba72))
+
 ### [1.16.1](https://github.com/bigcommerce/checkout-js/compare/v1.16.0...v1.16.1) (2020-01-09)
 
 
