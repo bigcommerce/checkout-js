@@ -1,0 +1,21 @@
+@import '../ui/Base';
+
+.discountBanner {
+    margin-top: spacing("single");
+
+    .alertBox {
+        border-radius: $global-radius;
+    }
+}
+
+.discountBannerList {
+    list-style: none;
+    margin: 0;
+    margin-left: 0;
+
+    ul,
+    ol {
+        list-style: none;
+        margin-bottom: 0;
+    }
+}

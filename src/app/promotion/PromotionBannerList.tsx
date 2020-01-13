@@ -2,6 +2,7 @@ import { Banner, Promotion } from '@bigcommerce/checkout-sdk';
 import React, { memo, FunctionComponent } from 'react';
 
 import PromotionBanner from './PromotionBanner';
+import './PromotionBannerList.scss';
 
 export interface PromotionBannerListProps {
     promotions: Promotion[];
