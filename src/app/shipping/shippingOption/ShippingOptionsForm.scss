@@ -1,0 +1,17 @@
+@import '../../ui/Base';
+
+.shippingOptions-panel {
+    background-color: container("fill");
+    border: container("border");
+    border-radius: $global-radius;
+    display: flex;
+    min-height: 10rem;
+    padding: spacing("half");
+    text-align: center;
+}
+
+.shippingOptions-panel-message {
+    align-self: center;
+    flex: 1;
+    margin: 0;
+}

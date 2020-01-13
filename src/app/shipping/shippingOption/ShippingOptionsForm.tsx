@@ -10,6 +10,7 @@ import getRecommendedShippingOption from '../getRecommendedShippingOption';
 import StaticConsignmentItemList from '../StaticConsignmentItemList';
 
 import { ShippingOptionsProps, WithCheckoutShippingOptionsProps } from './ShippingOptions';
+import './ShippingOptionsForm.scss';
 import ShippingOptionsList from './ShippingOptionsList';
 
 export type ShippingOptionsFormProps = ShippingOptionsProps & WithCheckoutShippingOptionsProps;
