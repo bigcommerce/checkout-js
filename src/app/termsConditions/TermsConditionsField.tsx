@@ -48,7 +48,7 @@ const TermsConditionsModalLink: FunctionComponent<TermsConditionsTextFieldProps 
     const renderModal = useCallback((props: ModalTriggerModalProps) => (
         <Modal
             { ...props }
-            additionalModalClassName="modal--terms"
+            additionalBodyClassName="modal--terms"
             footer={ (
                 <Button
                     onClick={ props.onRequestClose }
