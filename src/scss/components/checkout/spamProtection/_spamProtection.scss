@@ -27,7 +27,7 @@
     border-radius: $global-radius;
     display: flex;
     min-height: 10rem;
-    padding: $shippingOptions-spacing;
+    padding: spacing("half");
     text-align: center;
 }
 
