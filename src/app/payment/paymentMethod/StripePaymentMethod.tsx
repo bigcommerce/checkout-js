@@ -14,7 +14,7 @@ const StripePaymentMethod: FunctionComponent<SquarePaymentMethodProps> = ({
 }) => {
     async function configureStyle() {
         const style: any = await getCreditCardInputStyles('stripe-card-field', ['color', 'fontFamily', 'fontWeight', 'fontSmoothing']);
-        style['\'::placeholder\''] = {color: '#E1E1E1'};
+        style["'::placeholder'"] = {color: '#E1E1E1'};
 
         return style;
     }

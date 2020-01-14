@@ -17,7 +17,7 @@ jest.mock('../creditCard', () => ({
     ...jest.requireActual('../creditCard'),
     getCreditCardInputStyles: jest.fn<ReturnType<typeof getCreditCardInputStyles>, Parameters<typeof getCreditCardInputStyles>>(
         (_containerId, _fieldType) => {
-            return Promise.resolve({ color: 'rgb(255, 0, 0)', fontWeight: '500', fontFamily: 'Montserrat, Arial, Helvetica, sans-serif;', fontSize: '14px', fontSmoothing: 'auto'});
+            return Promise.resolve({ color: 'rgb(255, 0, 0)', fontWeight: '500', fontFamily: 'Montserrat, Arial, Helvetica, sans-serif', fontSize: '14px', fontSmoothing: 'auto'});
         }
     ),
 }));
@@ -101,10 +101,10 @@ describe('when using Stripe payment', () => {
                         base: {
                             color: 'rgb(255, 0, 0)',
                             fontWeight: '500',
-                            fontFamily: 'Montserrat, Arial, Helvetica, sans-serif;',
+                            fontFamily: 'Montserrat, Arial, Helvetica, sans-serif',
                             fontSize: '14px',
                             fontSmoothing: 'auto',
-                            '\'::placeholder\'': {
+                            "'::placeholder'": {
                                 color: '#E1E1E1',
                            },
                         },
