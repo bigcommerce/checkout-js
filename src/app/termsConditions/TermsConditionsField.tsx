@@ -1,10 +1,9 @@
-import { FieldProps } from 'formik';
-import React, { memo, useCallback, FunctionComponent } from 'react';
+import React, { memo, useCallback, Fragment, FunctionComponent } from 'react';
 
 import { preventDefault } from '../common/dom';
 import { withLanguage, TranslatedHtml, WithLanguageProps } from '../locale';
 import { Button, ButtonSize } from '../ui/button';
-import { CheckboxFormField, FormField, TextArea } from '../ui/form';
+import { CheckboxFormField, FormField } from '../ui/form';
 import { Modal, ModalHeader, ModalTrigger, ModalTriggerModalProps } from '../ui/modal';
 
 export enum TermsConditionsType {
@@ -36,13 +35,15 @@ const TermsConditionsModalLink: FunctionComponent<TermsConditionsTextFieldProps 
     name,
     terms,
 }) => {
-    const renderInput = useCallback(({ field }: FieldProps) => (
-        <TextArea
-            defaultValue={ terms }
-            name={ field.name }
-            readOnly
-            rows={ 5 }
-        />
+    const renderInput = useCallback(() => (
+        <div>
+            { terms.split('\n').map((item, key) =>
+                <Fragment key={ key }>
+                    { item }
+                    <br />
+                </Fragment>
+            ) }
+        </div>
     ), [terms]);
 
     const renderModal = useCallback((props: ModalTriggerModalProps) => (
