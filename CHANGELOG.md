@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.17.1](https://github.com/bigcommerce/checkout-js/compare/v1.17.0...v1.17.1) (2020-01-20)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-3460 Improve terms readability ([926b723](https://github.com/bigcommerce/checkout-js/commit/926b723))
+* **payment:** PAYMENTS-4997 Bump checkout-sdk to v1.47.4 ([72a1d64](https://github.com/bigcommerce/checkout-js/commit/72a1d64))
+
+
+### Code Refactoring
+
+* **common:** CHECKOUT-4431 Create common stylesheet for react component ([706b6c9](https://github.com/bigcommerce/checkout-js/commit/706b6c9))
+* **common:** CHECKOUT-4431 Move PromotionBannerList styles into promotion folder ([486257c](https://github.com/bigcommerce/checkout-js/commit/486257c))
+* **order:** CHECKOUT-4431 Remove social badges scss ([198613a](https://github.com/bigcommerce/checkout-js/commit/198613a))
+* **shipping:** CHECKOUT-4431 Move shipping option styles to module folder ([42d2ac9](https://github.com/bigcommerce/checkout-js/commit/42d2ac9))
+
 ## [1.17.0](https://github.com/bigcommerce/checkout-js/compare/v1.16.1...v1.17.0) (2020-01-12)
 
 
