@@ -38,6 +38,7 @@ const StripePaymentMethod: FunctionComponent<SquarePaymentMethodProps> = ({
 
     return <HostedWidgetPaymentMethod
         { ...rest }
+        additionalContainerClassName="optimizedCheckout-form-input"
         containerId="stripe-card-field"
         hideContentWhenSignedOut
         initializePayment={ initializeStripePayment }
