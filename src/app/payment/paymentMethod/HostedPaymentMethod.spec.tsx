@@ -35,7 +35,6 @@ describe('HostedPaymentMethod', () => {
         };
 
         storeConfig = getStoreConfig();
-        storeConfig.checkoutSettings.features['PAYMENTS-4579.braintree_paypal_vaulting'] = true;
 
         checkoutService = createCheckoutService();
         localeContext = createLocaleContext(storeConfig);
@@ -207,32 +206,6 @@ describe('HostedPaymentMethod', () => {
 
             expect(checkoutState.data.getInstruments)
                 .toHaveBeenCalledWith(defaultProps.method);
-        });
-
-        describe('when experiment is off', () => {
-            beforeEach(() => {
-                storeConfig.checkoutSettings.features['PAYMENTS-4579.braintree_paypal_vaulting'] = false;
-            });
-
-            it('does not render the dropdown', () => {
-                const component = mount(<HostedPaymentMethodTest { ...defaultProps } />);
-
-                expect(component.find(storedInstrumentModule.AccountInstrumentFieldset))
-                    .toHaveLength(0);
-            });
-
-            it('does not prompt to save the instrument', () => {
-                jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(
-                    getInstruments().map(instrument => ({ ...instrument, trustedShippingAddress: false }))
-                );
-
-                const component = mount(<HostedPaymentMethodTest
-                    { ...defaultProps }
-                />);
-
-                expect(component.find('.form-field--saveInstrument'))
-                    .toHaveLength(0);
-            });
         });
     });
 });

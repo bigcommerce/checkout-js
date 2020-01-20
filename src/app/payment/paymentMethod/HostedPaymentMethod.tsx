@@ -204,9 +204,6 @@ function mapFromCheckoutProps(): MapToProps<
         if (!config || !cart || !customer || !method) {
             return null;
         }
-        const {
-            features,
-        } = config.checkoutSettings;
 
         const currentMethodInstruments = filterAccountInstruments(getInstruments(method));
         const trustedInstruments = filterTrustedInstruments(currentMethodInstruments);
@@ -214,8 +211,7 @@ function mapFromCheckoutProps(): MapToProps<
         return {
             instruments: trustedInstruments,
             isNewAddress: trustedInstruments.length === 0 && currentMethodInstruments.length > 0,
-            isInstrumentFeatureAvailable: features['PAYMENTS-4579.braintree_paypal_vaulting']
-                && !isPaymentDataSubmitted(method.id, method.gateway)
+            isInstrumentFeatureAvailable: !isPaymentDataSubmitted(method.id, method.gateway)
                 && isInstrumentFeatureAvailable({
                     config,
                     customer,
