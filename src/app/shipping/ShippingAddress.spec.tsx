@@ -22,12 +22,12 @@ describe('ShippingAddress Component', () => {
         },
         countriesWithAutocomplete: [],
         isLoading: false,
+        hasRequestedShippingOptions: false,
         formFields: getFormFields(),
         onAddressSelect: jest.fn(),
         onFieldChange: jest.fn(),
         initialize: jest.fn(),
         deinitialize: jest.fn(),
-        signOut: jest.fn(),
         onUnhandledError: jest.fn(),
         onUseNewAddress: jest.fn(),
     };
@@ -80,13 +80,21 @@ describe('ShippingAddress Component', () => {
 
     describe('when method id is provided', () => {
         it('renders RemoteShippingAddress with expected props', () => {
-            const component = mount(<ShippingAddress { ...defaultProps } methodId="amazon" />);
+            const component = mount(
+                <Formik
+                    initialValues={ {} }
+                    onSubmit={ noop }
+                >
+                    <ShippingAddress { ...defaultProps } methodId="amazon" />
+                </Formik>
+            );
 
             expect(component.find(RemoteShippingAddress).props()).toEqual(
                 expect.objectContaining({
                     containerId: 'addressWidget',
                     methodId: 'amazon',
                     deinitialize: defaultProps.deinitialize,
+                    formFields: defaultProps.formFields,
                 })
             );
 
@@ -100,7 +108,14 @@ describe('ShippingAddress Component', () => {
         });
 
         it('does not render ShippingAddressForm', () => {
-            const component = mount(<ShippingAddress { ...defaultProps } methodId="amazon" />);
+            const component = mount(
+                <Formik
+                    initialValues={ {} }
+                    onSubmit={ noop }
+                >
+                    <ShippingAddress { ...defaultProps } methodId="amazon" />
+                </Formik>
+            );
 
             expect(component.find(ShippingAddressForm).length).toEqual(0);
         });

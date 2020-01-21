@@ -6,7 +6,7 @@ import { lazy, object } from 'yup';
 
 import { getAddressValidationSchema, isEqualAddress, mapAddressFromFormValues, mapAddressToFormValues, AddressFormValues } from '../address';
 import { withLanguage, WithLanguageProps } from '../locale';
-import { Fieldset, Form } from '../ui/form';
+import { Fieldset, Form, FormContext } from '../ui/form';
 
 import hasSelectedShippingOptions from './hasSelectedShippingOptions';
 import BillingSameAsShippingField from './BillingSameAsShippingField';
@@ -52,6 +52,8 @@ interface SingleShippingFormState {
 export const SHIPPING_AUTOSAVE_DELAY = 1000;
 
 class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLanguageProps & FormikProps<SingleShippingFormValues>> {
+    static contextType = FormContext;
+
     state: SingleShippingFormState = {
         isResettingAddress: false,
         isUpdatingShippingData: false,
@@ -99,13 +101,13 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             initialize,
             isValid,
             deinitialize,
-            signOut,
             values: { shippingAddress: addressForm },
         } = this.props;
 
         const {
             isResettingAddress,
             isUpdatingShippingData,
+            hasRequestedShippingOptions,
         } = this.state;
 
         return (
@@ -119,6 +121,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                         deinitialize={ deinitialize }
                         formFields={ this.getFields(addressForm && addressForm.countryCode) }
                         googleMapsApiKey={ googleMapsApiKey }
+                        hasRequestedShippingOptions={ hasRequestedShippingOptions }
                         initialize={ initialize }
                         isLoading={ isResettingAddress }
                         methodId={ methodId }
@@ -127,7 +130,6 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                         onUnhandledError={ onUnhandledError }
                         onUseNewAddress={ this.onUseNewAddress }
                         shippingAddress={ shippingAddress }
-                        signOut={ signOut }
                     />
                     <div className="form-body">
                         <BillingSameAsShippingField />
@@ -179,8 +181,9 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
 
         const isShippingField = SHIPPING_ADDRESS_FIELDS.includes(name);
 
-        const { isValid } = this.props;
         const { hasRequestedShippingOptions } = this.state;
+
+        const { isValid } = this.props;
 
         if (!isValid) {
             return;
@@ -294,17 +297,13 @@ export default withLanguage(withFormik<SingleShippingFormProps & WithLanguagePro
     validationSchema: ({
         language,
         getFields,
-        methodId,
-    }: SingleShippingFormProps & WithLanguageProps) => ( methodId ?
-        object() :
-        object({
+    }: SingleShippingFormProps & WithLanguageProps) => object({
             shippingAddress: lazy<Partial<AddressFormValues>>(formValues =>
                 getAddressValidationSchema({
                     language,
                     formFields: getFields(formValues && formValues.countryCode),
                 })
             ),
-        })
-    ),
+        }),
     enableReinitialize: false,
 })(SingleShippingForm));

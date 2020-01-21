@@ -2,8 +2,13 @@ import { Checkout, Customer } from '@bigcommerce/checkout-sdk';
 import { every } from 'lodash';
 
 import { SUPPORTED_METHODS } from './CheckoutButtonList';
+import { isSupportedSignoutMethod } from './CustomerInfo';
 
-export default function canSignOut(customer: Customer, checkout: Checkout): boolean {
+export default function canSignOut(customer: Customer, checkout: Checkout, methodId: string): boolean {
+    if (isSupportedSignoutMethod(methodId)) {
+        return true;
+    }
+
     if (customer.isGuest) {
         return false;
     }

@@ -1,7 +1,9 @@
-import { Address, CheckoutSelectors, Consignment, Country, CustomerAddress, CustomerRequestOptions, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import { Address, CheckoutSelectors, Consignment, Country, CustomerAddress, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { noop } from 'lodash';
-import React, { memo, useCallback, FunctionComponent } from 'react';
+import React, { memo, useCallback, useContext, FunctionComponent } from 'react';
+
+import { FormContext } from '../ui/form';
 
 import RemoteShippingAddress from './RemoteShippingAddress';
 import ShippingAddressForm from './ShippingAddressForm';
@@ -16,13 +18,13 @@ export interface ShippingAddressProps {
     isLoading: boolean;
     methodId?: string;
     shippingAddress?: Address;
+    hasRequestedShippingOptions: boolean;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     initialize(options: ShippingInitializeOptions): Promise<CheckoutSelectors>;
     onAddressSelect(address: Address): void;
     onFieldChange(name: string, value: string): void;
     onUnhandledError?(error: Error): void;
     onUseNewAddress(): void;
-    signOut(options?: CustomerRequestOptions): void;
 }
 
 const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
@@ -38,25 +40,14 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
         onUseNewAddress,
         initialize,
         deinitialize,
-        signOut,
         isLoading,
         shippingAddress,
+        hasRequestedShippingOptions,
         addresses,
         onUnhandledError = noop,
     } = props;
 
-    const handleSignOutRequest = useCallback(async () => {
-        try {
-            await signOut({ methodId });
-            window.location.reload();
-        } catch (error) {
-            onUnhandledError(error);
-        }
-    }, [
-        methodId,
-        onUnhandledError,
-        signOut,
-    ]);
+    const { setSubmitted } = useContext(FormContext);
 
     const initializeShipping = useCallback(memoizeOne((defaultOptions: ShippingInitializeOptions) => (
         (options?: ShippingInitializeOptions) => initialize({
@@ -64,6 +55,14 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
             ...options,
         })
     )), []);
+
+    const handleFieldChange: (fieldName: string, value: string) => void = (fieldName, value) => {
+        if (hasRequestedShippingOptions) {
+            setSubmitted(true);
+        }
+
+        onFieldChange(fieldName, value);
+    };
 
     if (methodId) {
         const containerId = 'addressWidget';
@@ -82,9 +81,10 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
             <RemoteShippingAddress
                 containerId={ containerId }
                 deinitialize={ deinitialize }
+                formFields={ formFields }
                 initialize={ initializeShipping(options) }
                 methodId={ methodId }
-                onSignOut={ handleSignOutRequest }
+                onFieldChange={ onFieldChange }
             />
         );
     }
@@ -100,7 +100,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
             googleMapsApiKey={ googleMapsApiKey }
             isLoading={ isLoading }
             onAddressSelect={ onAddressSelect }
-            onFieldChange={ onFieldChange }
+            onFieldChange={ handleFieldChange }
             onUseNewAddress={ onUseNewAddress }
         />
     );
