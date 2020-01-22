@@ -1,7 +1,7 @@
 import classNames from 'classnames';
-import React, { forwardRef, Ref, TextareaHTMLAttributes } from 'react';
+import React, { forwardRef, InputHTMLAttributes, Ref } from 'react';
 
-export interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+export interface TextAreaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
     additionalClassName?: string;
     testId?: string;
 }

@@ -1,4 +1,4 @@
-import { CheckoutSelectors, CheckoutSettings, OrderRequestBody, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, OrderRequestBody, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { compact, find, isEmpty, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
@@ -8,7 +8,6 @@ import { withCheckout, CheckoutContextProps } from '../checkout';
 import { isRequestError, ErrorModal, ErrorModalOnCloseProps } from '../common/error';
 import { EMPTY_ARRAY } from '../common/utility';
 import { withLanguage, WithLanguageProps } from '../locale';
-import { TermsConditionsType } from '../termsConditions';
 import { FlashAlert, FlashMessage } from '../ui/alert';
 import { LoadingOverlay } from '../ui/loading';
 
@@ -17,6 +16,7 @@ import mapToOrderRequestBody from './mapToOrderRequestBody';
 import { getUniquePaymentMethodId, PaymentMethodId, PaymentMethodProviderType } from './paymentMethod';
 import PaymentContext from './PaymentContext';
 import PaymentForm, { PaymentFormValues } from './PaymentForm';
+import { TermsConditionsType } from './TermsConditionsField';
 
 export interface PaymentProps {
     isEmbedded?: boolean;
@@ -416,17 +416,11 @@ export function mapToPaymentProps({
     }
 
     const {
-        enableTermsAndConditions: isTermsConditionsEnabled,
+        enableTermsAndConditions: isTermsConditionsRequired,
         orderTermsAndConditionsType: termsConditionsType,
-        orderTermsAndConditionsLocation: termsAndConditionsLocation,
         orderTermsAndConditions: termsCondtitionsText,
         orderTermsAndConditionsLink: termsCondtitionsUrl,
-    } = config.checkoutSettings as CheckoutSettings & { orderTermsAndConditionsLocation: string };
-
-    const termsAndConditionsAtPayment = termsAndConditionsLocation === 'payment' ||
-        (termsAndConditionsLocation === 'customer' && !customer.isGuest);
-
-    const isTermsConditionsRequired = isTermsConditionsEnabled && termsAndConditionsAtPayment;
+    } = config.checkoutSettings;
 
     const selectedPayment = find(checkout.payments, { providerType: PaymentMethodProviderType.Hosted });
     const selectedPaymentMethod = selectedPayment ? getPaymentMethod(selectedPayment.providerId, selectedPayment.gatewayId) : undefined;

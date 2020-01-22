@@ -8,7 +8,6 @@ import { CheckoutProvider } from '../checkout';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
-import { TermsConditionsField, TermsConditionsFieldProps, TermsConditionsType } from '../termsConditions';
 
 import { getCreditCardValidationSchema } from './creditCard';
 import { getPaymentMethod } from './payment-methods.mock';
@@ -17,6 +16,7 @@ import { StoreCreditField, StoreCreditFieldProps, StoreCreditOverlay } from './s
 import PaymentContext, { PaymentContextProps } from './PaymentContext';
 import PaymentForm, { PaymentFormProps } from './PaymentForm';
 import SpamProtectionField, { SpamProtectionProps } from './SpamProtectionField';
+import TermsConditionsField, { TermsConditionsFieldProps, TermsConditionsType } from './TermsConditionsField';
 
 jest.useFakeTimers();
 

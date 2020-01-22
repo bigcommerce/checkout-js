@@ -283,8 +283,8 @@
         },
         "terms_and_conditions": {
             "agreement_required_error": "Please agree to the terms and conditions",
-            "agreement_text": "Yes, I agree with the above terms and conditions.",
-            "agreement_with_link_text": "Yes, I agree with the <a href=\"{url}\" target=\"_blank\">terms and conditions</a>.",
+            "agreement_text": "Yes, I agree with the above terms and conditions",
+            "agreement_with_link_text": "Yes, I agree with the <a href=\"{url}\" target=\"_blank\">terms and conditions</a>",
             "terms_and_conditions_heading": "Terms and Conditions"
         },
         "order_confirmation": {

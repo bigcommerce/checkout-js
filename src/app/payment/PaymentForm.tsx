@@ -1,11 +1,10 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps, WithFormikConfig } from 'formik';
 import { noop } from 'lodash';
-import React, { memo, useCallback, useContext, useMemo, FunctionComponent } from 'react';
+import React, { memo, useCallback, useContext, useMemo, Fragment, FunctionComponent } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
-import { TermsConditions } from '../termsConditions';
 import { Fieldset, Form, FormContext, Legend } from '../ui/form';
 
 import { CreditCardFieldsetValues } from './creditCard';
@@ -16,6 +15,7 @@ import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
 import PaymentRedeemables from './PaymentRedeemables';
 import PaymentSubmitButton from './PaymentSubmitButton';
 import SpamProtectionField from './SpamProtectionField';
+import TermsConditionsField, { TermsConditionsType } from './TermsConditionsField';
 
 export interface PaymentFormProps {
     availableStoreCredit?: number;
@@ -123,10 +123,19 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
 
             <PaymentRedeemables />
 
-            { isTermsConditionsRequired && <TermsConditions
-                termsConditionsText={ termsConditionsText }
-                termsConditionsUrl={ termsConditionsUrl }
-            /> }
+            { isTermsConditionsRequired && <Fragment>
+                { termsConditionsUrl ?
+                    <TermsConditionsField
+                        name="terms"
+                        type={ TermsConditionsType.Link }
+                        url={ termsConditionsUrl }
+                    /> :
+                    <TermsConditionsField
+                        name="terms"
+                        terms={ termsConditionsText }
+                        type={ TermsConditionsType.TextArea }
+                    /> }
+            </Fragment> }
 
             <div className="form-actions">
                 <PaymentSubmitButton
