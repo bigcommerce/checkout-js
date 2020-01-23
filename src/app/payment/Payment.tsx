@@ -418,16 +418,11 @@ export function mapToPaymentProps({
     const {
         enableTermsAndConditions: isTermsConditionsEnabled,
         orderTermsAndConditionsType: termsConditionsType,
-        orderTermsAndConditionsLocation: termsAndConditionsLocation,
         orderTermsAndConditions: termsCondtitionsText,
         orderTermsAndConditionsLink: termsCondtitionsUrl,
     } = config.checkoutSettings as CheckoutSettings & { orderTermsAndConditionsLocation: string };
 
-    const termsAndConditionsAtPayment = termsAndConditionsLocation === 'payment' ||
-        (termsAndConditionsLocation === 'customer' && !customer.isGuest);
-
-    const isTermsConditionsRequired = isTermsConditionsEnabled && termsAndConditionsAtPayment;
-
+    const isTermsConditionsRequired = isTermsConditionsEnabled;
     const selectedPayment = find(checkout.payments, { providerType: PaymentMethodProviderType.Hosted });
     const selectedPaymentMethod = selectedPayment ? getPaymentMethod(selectedPayment.providerId, selectedPayment.gatewayId) : undefined;
     const filteredMethods = selectedPaymentMethod ? compact([selectedPaymentMethod]) : methods;

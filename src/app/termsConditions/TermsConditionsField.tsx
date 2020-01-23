@@ -1,14 +1,16 @@
-import React, { memo, useCallback, Fragment, FunctionComponent } from 'react';
+import { FieldProps } from 'formik';
+import React, { memo, useCallback, useMemo, Fragment, FunctionComponent } from 'react';
 
 import { preventDefault } from '../common/dom';
-import { withLanguage, TranslatedHtml, WithLanguageProps } from '../locale';
+import { withLanguage, TranslatedHtml, TranslatedString, WithLanguageProps } from '../locale';
 import { Button, ButtonSize } from '../ui/button';
-import { CheckboxFormField, FormField } from '../ui/form';
+import { CheckboxFormField, Fieldset, FormField, Legend, TextArea } from '../ui/form';
 import { Modal, ModalHeader, ModalTrigger, ModalTriggerModalProps } from '../ui/modal';
 
 export enum TermsConditionsType {
     Link = 'link',
     TextArea = 'textarea',
+    Modal = 'modal',
 }
 
 export type TermsConditionsFieldProps = TermsConditionsLinkFieldProps | TermsConditionsTextAreaFieldProps;
@@ -22,7 +24,7 @@ interface TermsConditionsLinkFieldProps {
 interface TermsConditionsTextAreaFieldProps {
     name: string;
     terms: string;
-    type: TermsConditionsType.TextArea;
+    type: TermsConditionsType.TextArea | TermsConditionsType.Modal;
 }
 
 interface TermsConditionsTextFieldProps {
@@ -30,7 +32,7 @@ interface TermsConditionsTextFieldProps {
     terms: string;
 }
 
-const TermsConditionsModalLink: FunctionComponent<TermsConditionsTextFieldProps & WithLanguageProps> = ({
+const BaseTermsConditionsModalCheckboxField: FunctionComponent<TermsConditionsTextFieldProps & WithLanguageProps> = ({
     language,
     name,
     terms,
@@ -97,27 +99,77 @@ const TermsConditionsModalLink: FunctionComponent<TermsConditionsTextFieldProps 
     );
 };
 
-const TermsConditionsTranslatedModalLink = withLanguage(TermsConditionsModalLink);
-const TermsConditionsExternalLinkField: FunctionComponent<TermsConditionsLinkFieldProps> = ({ name, url }) => (
-    <CheckboxFormField
-        labelContent={
-            <TranslatedHtml
-                data={ { url } }
-                id="terms_and_conditions.agreement_with_link_text"
-            />
-        }
-        name={ name }
-    />
-);
+const TermsConditionsModalCheckboxField = withLanguage(BaseTermsConditionsModalCheckboxField);
 
-const TermsConditionsCheckboxField: FunctionComponent<TermsConditionsFieldProps> = props => {
-    return areTermsConditionsTextFieldProps(props) ?
-        <TermsConditionsTranslatedModalLink { ...props } /> :
-        <TermsConditionsExternalLinkField { ...props } />;
+interface TermsConditionsCheckboxFieldProps {
+    name: string;
+    type: TermsConditionsType;
+    url?: string;
+}
+
+const TermsConditionsCheckboxField: FunctionComponent<TermsConditionsCheckboxFieldProps> = ({
+    name,
+    url,
+}) => {
+    const labelContent = useMemo(() => (url ?
+        <TranslatedHtml data={ { url } } id="terms_and_conditions.agreement_with_link_text" /> :
+        <TranslatedString id="terms_and_conditions.agreement_text" />
+    ), [url]);
+
+    return (
+        <CheckboxFormField
+            labelContent={ labelContent }
+            name={ name }
+        />
+    );
 };
 
-function areTermsConditionsTextFieldProps(props: any): props is TermsConditionsTextFieldProps {
+const TermsConditionsTextField: FunctionComponent<TermsConditionsTextFieldProps> = ({
+    name,
+    terms,
+}) => {
+    const renderInput = useCallback(({ field }: FieldProps) => (
+        <TextArea
+            defaultValue={ terms }
+            name={ field.name }
+            readOnly
+        />
+    ), [terms]);
+
+    return (
+        <FormField
+            input={ renderInput }
+            name={ `${name}Text` }
+        />
+    );
+};
+
+const TermsConditionsFieldset: FunctionComponent<TermsConditionsFieldProps> = props => {
+    const { type } = props;
+
+    return (
+        <Fieldset
+            additionalClassName="checkout-terms"
+            legend={ (
+                <Legend>
+                    <TranslatedString id="terms_and_conditions.terms_and_conditions_heading" />
+                </Legend>
+            ) }
+        >
+            { isTermsConditionsTextArea(props) && <TermsConditionsTextField { ...props } /> }
+            { isTermsConditionModal(props) && type === TermsConditionsType.Modal ?
+                <TermsConditionsModalCheckboxField { ...props } /> :
+                <TermsConditionsCheckboxField { ...props } /> }
+        </Fieldset>
+    );
+};
+
+function isTermsConditionsTextArea(props: any): props is TermsConditionsTextFieldProps {
     return props.type === TermsConditionsType.TextArea;
 }
 
-export default memo(TermsConditionsCheckboxField);
+function isTermsConditionModal(props: any): props is TermsConditionsTextFieldProps {
+    return props.type === TermsConditionsType.Modal;
+}
+
+export default memo(TermsConditionsFieldset);
