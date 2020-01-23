@@ -1,9 +1,8 @@
-import { CheckoutSelectors, CheckoutSettings, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, GuestCredentials } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, GuestCredentials } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, Fragment, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
-import { TermsConditionsType } from '../termsConditions';
 
 import CheckoutButtonList from './CheckoutButtonList';
 import CustomerViewType from './CustomerViewType';
@@ -34,10 +33,7 @@ interface WithCheckoutCustomerProps {
     isContinuingAsGuest: boolean;
     isGuestEnabled: boolean;
     isSigningIn: boolean;
-    isTermsConditionsRequired: boolean;
     signInError?: Error;
-    termsConditionsText?: string;
-    termsConditionsUrl?: string;
     clearError(error: Error): Promise<CheckoutSelectors>;
     continueAsGuest(credentials: GuestCredentials): Promise<CheckoutSelectors>;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
@@ -75,10 +71,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
             email,
             initializeCustomer,
             isContinuingAsGuest = false,
-            isTermsConditionsRequired,
             onUnhandledError = noop,
-            termsConditionsUrl,
-            termsConditionsText,
         } = this.props;
 
         return (
@@ -96,12 +89,9 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
                 defaultShouldSubscribe={ defaultShouldSubscribe }
                 email={ this.draftEmail || email }
                 isContinuingAsGuest={ isContinuingAsGuest }
-                isTermsConditionsRequired={ isTermsConditionsRequired }
                 onChangeEmail={ this.handleChangeEmail }
                 onContinueAsGuest={ this.handleContinueAsGuest }
                 onShowLogin={ this.handleShowLogin }
-                termsConditionsText={ termsConditionsText }
-                termsConditionsUrl={ termsConditionsUrl }
             />
         );
     }
@@ -215,16 +205,6 @@ export function mapToWithCheckoutCustomerProps(
         return null;
     }
 
-    const {
-        enableTermsAndConditions: isTermsConditionsEnabled,
-        orderTermsAndConditionsType: termsConditionsType,
-        orderTermsAndConditionsLocation: termsAndConditionsLocation,
-        orderTermsAndConditions: termsCondtitionsText,
-        orderTermsAndConditionsLink: termsCondtitionsUrl,
-    } = config.checkoutSettings as CheckoutSettings & { orderTermsAndConditionsLocation: string };
-
-    const isTermsConditionsRequired = isTermsConditionsEnabled && termsAndConditionsLocation === 'customer';
-
     return {
         canSubscribe: config.shopperConfig.showNewsletterSignup,
         checkoutButtonIds: config.checkoutSettings.remoteCheckoutProviders,
@@ -239,16 +219,9 @@ export function mapToWithCheckoutCustomerProps(
         initializeCustomer: checkoutService.initializeCustomer,
         isContinuingAsGuest: isContinuingAsGuest(),
         isGuestEnabled: config.checkoutSettings.guestCheckoutEnabled,
-        isTermsConditionsRequired,
         isSigningIn: isSigningIn(),
         signIn: checkoutService.signInCustomer,
         signInError: getSignInError(),
-        termsConditionsText: isTermsConditionsRequired && termsConditionsType === TermsConditionsType.TextArea ?
-            termsCondtitionsText :
-            undefined,
-        termsConditionsUrl: isTermsConditionsRequired && termsConditionsType === TermsConditionsType.Link ?
-            termsCondtitionsUrl :
-            undefined,
     };
 }
 

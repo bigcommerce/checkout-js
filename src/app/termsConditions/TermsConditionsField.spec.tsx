@@ -17,6 +17,26 @@ describe('TermsConditionsField', () => {
         localeContext = createLocaleContext(getStoreConfig());
     });
 
+    it('renders terms and conditions checkbox with link if type is "modal"', () => {
+        const component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <Formik
+                    initialValues={ initialValues }
+                    onSubmit={ noop }
+                >
+                    <TermsConditionsField
+                        name="terms"
+                        terms="Hello world"
+                        type={ TermsConditionsType.Modal }
+                    />
+                </Formik>
+            </LocaleContext.Provider>
+        );
+
+        expect(component.find('label[htmlFor="terms"]').text())
+            .toEqual('Yes, I agree with the terms and conditions.');
+    });
+
     it('renders terms and conditions checkbox with link if type is "text"', () => {
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
@@ -34,7 +54,10 @@ describe('TermsConditionsField', () => {
         );
 
         expect(component.find('label[htmlFor="terms"]').text())
-            .toEqual('Yes, I agree with the terms and conditions.');
+            .toEqual('Yes, I agree with the above terms and conditions.');
+
+        expect(component.find('textarea').length)
+            .toBeGreaterThan(0);
     });
 
     it('renders terms and conditions checkbox with link if type is "url"', () => {
