@@ -1,8 +1,8 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, CheckoutSelectors, CheckoutService, HostedFieldType } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
-import { Formik } from 'formik';
-import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import { Formik, FormikProps } from 'formik';
+import { last, merge, noop } from 'lodash';
+import React, { FunctionComponent, ReactNode } from 'react';
 import { Schema } from 'yup';
 
 import { getCart } from '../../cart/carts.mock';
@@ -12,20 +12,43 @@ import { getCustomer } from '../../customer/customers.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { getConsignment } from '../../shipping/consignment.mock';
 import { LoadingOverlay } from '../../ui/loading';
-import { getCreditCardValidationSchema, CreditCardFieldset, CreditCardFieldsetProps } from '../creditCard';
+import { getCreditCardInputStyles, getCreditCardValidationSchema, CreditCardFieldset, CreditCardFieldsetProps, CreditCardInputStylesType, HostedCreditCardFieldset, HostedCreditCardFieldsetValues } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
-import * as storedInstrumentModule from '../storedInstrument';
+import { getInstrumentValidationSchema, isInstrumentFeatureAvailable, CardInstrumentFieldset } from '../storedInstrument';
 import { getCardInstrument, getInstruments } from '../storedInstrument/instruments.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
 import CreditCardPaymentMethod, { CreditCardPaymentMethodProps, CreditCardPaymentMethodValues } from './CreditCardPaymentMethod';
 
-const { getInstrumentValidationSchema, CardInstrumentFieldset } = storedInstrumentModule;
+jest.mock('../creditCard', () => ({
+    ...jest.requireActual('../creditCard'),
+    getCreditCardInputStyles: jest.fn<ReturnType<typeof getCreditCardInputStyles>, Parameters<typeof getCreditCardInputStyles>>(
+        (_containerId, _fieldType, type) => {
+            if (type === CreditCardInputStylesType.Error) {
+                return Promise.resolve({ color: 'rgb(255, 0, 0)' });
+            }
+
+            if (type === CreditCardInputStylesType.Focus) {
+                return Promise.resolve({ color: 'rgb(0, 0, 255)' });
+            }
+
+            return Promise.resolve({ color: 'rgb(0, 0, 0)' });
+        }
+    ),
+}));
+
+jest.mock('../storedInstrument', () => ({
+    ...jest.requireActual('../storedInstrument'),
+    isInstrumentFeatureAvailable: jest.fn<ReturnType<typeof isInstrumentFeatureAvailable>, Parameters<typeof isInstrumentFeatureAvailable>>(
+        () => true
+    ),
+}));
 
 describe('CreditCardPaymentMethod', () => {
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
-    let defaultProps: CreditCardPaymentMethodProps;
+    let defaultProps: jest.Mocked<CreditCardPaymentMethodProps>;
+    let formikRender: jest.Mock<ReactNode, [FormikProps<CreditCardPaymentMethodValues>]>;
     let initialValues: CreditCardPaymentMethodValues;
     let localeContext: LocaleContextType;
     let paymentContext: PaymentContextProps;
@@ -44,6 +67,7 @@ describe('CreditCardPaymentMethod', () => {
             ccExpiry: '',
             ccName: '',
             ccNumber: '',
+            hostedForm: {},
             instrumentId: '',
         };
 
@@ -55,6 +79,19 @@ describe('CreditCardPaymentMethod', () => {
             setSubmit: jest.fn(),
             setValidationSchema: jest.fn(),
         };
+
+        jest.spyOn(checkoutService, 'getState')
+            .mockReturnValue(checkoutState);
+
+        jest.spyOn(checkoutService, 'subscribe')
+            .mockImplementation(subscriber => {
+                subscriber(checkoutState);
+
+                return noop;
+            });
+
+        jest.spyOn(checkoutService, 'loadInstruments')
+            .mockResolvedValue(checkoutState);
 
         jest.spyOn(checkoutState.data, 'getCart')
             .mockReturnValue(getCart());
@@ -68,30 +105,40 @@ describe('CreditCardPaymentMethod', () => {
         jest.spyOn(checkoutState.data, 'getCustomer')
             .mockReturnValue(getCustomer());
 
+        jest.spyOn(checkoutState.data, 'getInstruments')
+            .mockReturnValue([]);
+
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
             .mockReturnValue(true);
 
-        CreditCardPaymentMethodTest = props => (
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <PaymentContext.Provider value={ paymentContext }>
-                    <LocaleContext.Provider value={ localeContext }>
-                        <Formik
-                            initialValues={ initialValues }
-                            onSubmit={ noop }
-                        >
-                            <CreditCardPaymentMethod { ...props } />
-                        </Formik>
-                    </LocaleContext.Provider>
-                </PaymentContext.Provider>
-            </CheckoutProvider>
-        );
+        CreditCardPaymentMethodTest = props => {
+            formikRender = jest.fn(_ => <CreditCardPaymentMethod { ...props } />);
+
+            return (
+                <CheckoutProvider checkoutService={ checkoutService }>
+                    <PaymentContext.Provider value={ paymentContext }>
+                        <LocaleContext.Provider value={ localeContext }>
+                            <Formik
+                                initialValues={ initialValues }
+                                onSubmit={ noop }
+                                render={ formikRender }
+                            />
+                        </LocaleContext.Provider>
+                    </PaymentContext.Provider>
+                </CheckoutProvider>
+            );
+        };
     });
 
-    it('initializes payment method when component mounts', () => {
+    it('initializes payment method when component mounts', async () => {
         mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
 
+        await new Promise(resolve => process.nextTick(resolve));
+
         expect(defaultProps.initializePayment)
-            .toHaveBeenCalled();
+            .toHaveBeenCalledWith({
+                methodId: defaultProps.method.id,
+            });
     });
 
     it('sets validation schema for credit cards when component mounts', () => {
@@ -158,9 +205,6 @@ describe('CreditCardPaymentMethod', () => {
 
     describe('if stored instrument feature is available', () => {
         beforeEach(() => {
-            jest.spyOn(storedInstrumentModule, 'isInstrumentFeatureAvailable')
-                .mockReturnValue(true);
-
             jest.spyOn(checkoutState.data, 'getInstruments')
                 .mockReturnValue(getInstruments());
 
@@ -259,6 +303,217 @@ describe('CreditCardPaymentMethod', () => {
 
             expect(component.find(CreditCardFieldset))
                 .toHaveLength(1);
+        });
+    });
+
+    describe('if hosted form feature is enabled', () => {
+        beforeEach(() => {
+            jest.spyOn(checkoutState.data, 'getConfig')
+                .mockReturnValue(merge({}, getStoreConfig(), {
+                    checkoutSettings: {
+                        isHostedPaymentFormEnabled: true,
+                    },
+                }));
+        });
+
+        it('renders hosted credit card fieldset', () => {
+            const container = mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
+
+            expect(container.find(HostedCreditCardFieldset).length)
+                .toEqual(1);
+        });
+
+        it('initializes payment method with hosted form configuration', async () => {
+            mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
+
+            await new Promise(resolve => process.nextTick(resolve));
+
+            expect(defaultProps.initializePayment)
+                .toHaveBeenCalledWith({
+                    methodId: defaultProps.method.id,
+                    creditCard: {
+                        form: {
+                            fields: {
+                                cardCode: { containerId: 'ccCvv' },
+                                cardExpiry: { containerId: 'ccExpiry' },
+                                cardName: { containerId: 'ccName' },
+                                cardNumber: { containerId: 'ccNumber' },
+                            },
+                            styles: {
+                                default: expect.any(Object),
+                                error: expect.any(Object),
+                                focus: expect.any(Object),
+                            },
+                            onBlur: expect.any(Function),
+                            onCardTypeChange: expect.any(Function),
+                            onFocus: expect.any(Function),
+                            onValidate: expect.any(Function),
+                        },
+                    },
+                });
+        });
+
+        it('passes styling properties to hosted form', async () => {
+            mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
+
+            await new Promise(resolve => process.nextTick(resolve));
+
+            expect(getCreditCardInputStyles)
+                .toHaveBeenCalledWith('ccNumber', ['color', 'fontFamily', 'fontSize', 'fontWeight']);
+            expect(getCreditCardInputStyles)
+                .toHaveBeenCalledWith('ccNumber', ['color', 'fontFamily', 'fontSize', 'fontWeight'], CreditCardInputStylesType.Error);
+            expect(getCreditCardInputStyles)
+                .toHaveBeenCalledWith('ccNumber', ['color', 'fontFamily', 'fontSize', 'fontWeight'], CreditCardInputStylesType.Focus);
+
+            // tslint:disable-next-line:no-non-null-assertion
+            expect(defaultProps.initializePayment.mock.calls[0][0].creditCard!.form)
+                .toEqual(expect.objectContaining({
+                    styles: {
+                        default: { color: 'rgb(0, 0, 0)' },
+                        error: { color: 'rgb(255, 0, 0)' },
+                        focus: { color: 'rgb(0, 0, 255)' },
+                    },
+                }));
+        });
+
+        it('passes error messages from hosted form to Formik form', async () => {
+            const container = mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
+
+            await new Promise(resolve => process.nextTick(resolve));
+
+            // tslint:disable-next-line:no-non-null-assertion
+            const onValidate = defaultProps.initializePayment.mock.calls[0][0].creditCard!.form.onValidate!;
+
+            onValidate({
+                isValid: false,
+                errors: {
+                    cardCode: [],
+                    cardExpiry: [],
+                    cardName: [],
+                    cardNumber: [{ fieldType: 'cardNumber', type: 'required', message: 'Card number is required' }],
+                },
+            });
+
+            container.update();
+
+            // tslint:disable-next-line:no-non-null-assertion
+            expect((last(formikRender.mock.calls)![0].values as HostedCreditCardFieldsetValues).hostedForm.errors)
+                .toEqual(expect.objectContaining({
+                    cardNumber: 'required',
+                }));
+        });
+
+        it('passes card type from hosted form to Formik form', async () => {
+            const container = mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
+
+            await new Promise(resolve => process.nextTick(resolve));
+
+            // tslint:disable-next-line:no-non-null-assertion
+            const onCardTypeChange = defaultProps.initializePayment.mock.calls[0][0].creditCard!.form.onCardTypeChange!;
+
+            onCardTypeChange({ cardType: 'mastercard' });
+
+            container.update();
+
+            // tslint:disable-next-line:no-non-null-assertion
+            expect((last(formikRender.mock.calls)![0].values as HostedCreditCardFieldsetValues).hostedForm.cardType)
+                .toEqual('mastercard');
+        });
+
+        it('highlights hosted field in focus', async () => {
+            const container = mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
+
+            await new Promise(resolve => process.nextTick(resolve));
+
+            // tslint:disable-next-line:no-non-null-assertion
+            const onFocus = last(defaultProps.initializePayment.mock.calls)![0].creditCard!.form.onFocus!;
+
+            onFocus({ fieldType: 'cardNumber' as HostedFieldType });
+
+            container.update();
+
+            expect(container.find(HostedCreditCardFieldset).prop('focusedFieldType'))
+                .toEqual('cardNumber');
+        });
+
+        it('clears highlight if hosted field in no longer in focus', async () => {
+            const container = mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
+
+            await new Promise(resolve => process.nextTick(resolve));
+
+            // tslint:disable-next-line:no-non-null-assertion
+            const onBlur = last(defaultProps.initializePayment.mock.calls)![0].creditCard!.form.onBlur!;
+
+            onBlur({ fieldType: 'cardNumber' as HostedFieldType });
+
+            container.update();
+
+            expect(container.find(HostedCreditCardFieldset).prop('focusedFieldType'))
+                .toEqual(undefined);
+        });
+
+        describe('if stored instrument is available', () => {
+            beforeEach(() => {
+                jest.spyOn(checkoutState.data, 'getInstruments')
+                    .mockReturnValue([{
+                        ...getCardInstrument(),
+                        trustedShippingAddress: false,
+                    }]);
+            });
+
+            it('initializes payment method with hosted verification fields if paying with stored card', async () => {
+                mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
+
+                await new Promise(resolve => process.nextTick(resolve));
+
+                expect(defaultProps.initializePayment)
+                    .toHaveBeenCalledWith({
+                        methodId: defaultProps.method.id,
+                        creditCard: {
+                            form: {
+                                fields: {
+                                    cardCodeVerification: {
+                                        containerId: 'ccCvv',
+                                        instrumentId: getCardInstrument().bigpayToken,
+                                    },
+                                    cardNumberVerification: {
+                                        containerId: 'ccNumber',
+                                        instrumentId: getCardInstrument().bigpayToken,
+                                    },
+                                },
+                                styles: {
+                                    default: expect.any(Object),
+                                    error: expect.any(Object),
+                                    focus: expect.any(Object),
+                                },
+                                onBlur: expect.any(Function),
+                                onCardTypeChange: expect.any(Function),
+                                onFocus: expect.any(Function),
+                                onValidate: expect.any(Function),
+                            },
+                        },
+                    });
+            });
+
+            it('re-initializes payment method when using new card', async () => {
+                const component = mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
+
+                defaultProps.deinitializePayment.mockReset();
+                defaultProps.initializePayment.mockReset();
+
+                component.find(CardInstrumentFieldset)
+                    .prop('onUseNewInstrument')();
+
+                component.update();
+
+                expect(defaultProps.deinitializePayment)
+                    .toHaveBeenCalled();
+
+                await new Promise(resolve => process.nextTick(resolve));
+
+                expect(defaultProps.initializePayment)
+                    .toHaveBeenCalled();
+            });
         });
     });
 });

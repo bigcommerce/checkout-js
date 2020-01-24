@@ -1,71 +1,32 @@
-import { OrderRequestBody } from '@bigcommerce/checkout-sdk';
+import { OrderPaymentRequestBody, OrderRequestBody } from '@bigcommerce/checkout-sdk';
+import { isEmpty, isNil, omitBy } from 'lodash';
 
 import { unformatCreditCardExpiryDate, unformatCreditCardNumber } from './creditCard';
 import { parseUniquePaymentMethodId } from './paymentMethod';
-import { isCreditCardFieldsetValues, isHostedWidgetValues, isInstrumentFieldsetValues, PaymentFormValues } from './PaymentForm';
+import { PaymentFormValues } from './PaymentForm';
 
 export default function mapToOrderRequestBody(
-    values: PaymentFormValues,
+    { paymentProviderRadio, useStoreCredit, ...values }: PaymentFormValues,
     isPaymentDataRequired: boolean
 ): OrderRequestBody {
-    const { methodId, gatewayId } = parseUniquePaymentMethodId(values.paymentProviderRadio);
-
     if (!isPaymentDataRequired) {
-        return {
-            useStoreCredit: values.useStoreCredit,
-        };
+        return { useStoreCredit };
     }
 
-    if (isCreditCardFieldsetValues(values)) {
-        return {
-            payment: {
-                gatewayId,
-                methodId,
-                paymentData: {
-                    ccCustomerCode: values.ccCustomerCode,
-                    ccCvv: values.ccCvv,
-                    ccExpiry: unformatCreditCardExpiryDate(values.ccExpiry),
-                    ccName: values.ccName,
-                    ccNumber: unformatCreditCardNumber(values.ccNumber),
-                    shouldSaveInstrument: values.shouldSaveInstrument,
-                },
-            },
-            useStoreCredit: values.useStoreCredit,
-        };
-    }
-
-    if (isInstrumentFieldsetValues(values)) {
-        return {
-            payment: {
-                gatewayId,
-                methodId,
-                paymentData: {
-                    instrumentId: values.instrumentId,
-                    ccCvv: values.ccCvv,
-                    ccNumber: values.ccNumber ? unformatCreditCardNumber(values.ccNumber) : '',
-                },
-            },
-            useStoreCredit: values.useStoreCredit,
-        };
-    }
-
-    if (isHostedWidgetValues(values)) {
-        return {
-            payment: {
-                gatewayId,
-                methodId,
-                paymentData: {
-                    shouldSaveInstrument: values.shouldSaveInstrument,
-                },
-            },
-        };
-    }
-
-    return {
-        payment: {
-            gatewayId,
-            methodId,
-        },
-        useStoreCredit: values.useStoreCredit,
+    const { methodId, gatewayId } = parseUniquePaymentMethodId(paymentProviderRadio);
+    const payload: OrderRequestBody = {
+        payment: { gatewayId, methodId },
+        useStoreCredit,
     };
+    const paymentData = omitBy({
+        ...values,
+        ccExpiry: 'ccExpiry' in values && values.ccExpiry ? unformatCreditCardExpiryDate(values.ccExpiry) : null,
+        ccNumber: 'ccNumber' in values && values.ccNumber ? unformatCreditCardNumber(values.ccNumber) : null,
+    }, isNil) as OrderPaymentRequestBody['paymentData'];
+
+    if (payload.payment && !isEmpty(paymentData)) {
+        payload.payment.paymentData = paymentData;
+    }
+
+    return payload;
 }

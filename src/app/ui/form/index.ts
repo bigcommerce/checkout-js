@@ -43,6 +43,7 @@ export { default as FormFieldContainer } from './FormFieldContainer';
 export { default as Input } from './Input';
 export { default as TextArea } from './TextArea';
 export { default as TextInput } from './TextInput';
+export { default as TextInputIframeContainer } from './TextInputIframeContainer';
 export { default as RadioInput } from './RadioInput';
 export { default as CheckboxInput } from './CheckboxInput';
 export { default as Label } from './Label';

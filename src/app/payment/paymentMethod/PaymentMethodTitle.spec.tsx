@@ -7,7 +7,9 @@ import React, { FunctionComponent } from 'react';
 import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
+import { CreditCardIconList } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
+import { PaymentFormValues } from '../PaymentForm';
 
 import getPaymentMethodName from './getPaymentMethodName';
 import PaymentMethodId from './PaymentMethodId';
@@ -15,10 +17,10 @@ import PaymentMethodTitle, { PaymentMethodTitleProps } from './PaymentMethodTitl
 import PaymentMethodType from './PaymentMethodType';
 
 describe('PaymentMethodTitle', () => {
-    let PaymentMethodTitleTest: FunctionComponent<PaymentMethodTitleProps>;
+    let PaymentMethodTitleTest: FunctionComponent<PaymentMethodTitleProps & { formValues: PaymentFormValues }>;
     let checkoutService: CheckoutService;
     let config: StoreConfig;
-    let defaultProps: PaymentMethodTitleProps;
+    let defaultProps: PaymentMethodTitleProps & { formValues: PaymentFormValues };
     let localeContext: LocaleContextType;
 
     const LOGO_PATHS: { [key: string]: string } = {
@@ -36,6 +38,12 @@ describe('PaymentMethodTitle', () => {
 
     beforeEach(() => {
         defaultProps = {
+            formValues: {
+                ccExpiry: '10 / 22',
+                ccName: 'Good Shopper',
+                ccNumber: '4111 1111 1111 1111',
+                paymentProviderRadio: getPaymentMethod().id,
+            },
             method: getPaymentMethod(),
         };
 
@@ -46,11 +54,11 @@ describe('PaymentMethodTitle', () => {
         jest.spyOn(checkoutService.getState().data, 'getConfig')
             .mockReturnValue(config);
 
-        PaymentMethodTitleTest = props => (
+        PaymentMethodTitleTest = ({ formValues, ...props }) => (
             <CheckoutProvider checkoutService={ checkoutService }>
                 <LocaleContext.Provider value={ localeContext }>
                     <Formik
-                        initialValues={ { ccNumber: '4111 1111 1111 1111' } }
+                        initialValues={ formValues }
                         onSubmit={ noop }
                     >
                         <PaymentMethodTitle { ...props } />
@@ -232,5 +240,29 @@ describe('PaymentMethodTitle', () => {
         expect(component.find('[data-test="payment-method-logo"]').prop('src'))
             .toEqual(expectedPath);
 
+    });
+
+    it('renders selected credit card type using information provided by hosted fields', () => {
+        const component = mount(<PaymentMethodTitleTest
+            { ...defaultProps }
+            formValues={ {
+                hostedForm: { cardType: 'mastercard' },
+                paymentProviderRadio: defaultProps.formValues.paymentProviderRadio,
+            } }
+            isSelected
+        />);
+
+        expect(component.find(CreditCardIconList).prop('selectedCardType'))
+            .toEqual('mastercard');
+    });
+
+    it('renders selected credit card type using card number if not using hosted fields', () => {
+        const component = mount(<PaymentMethodTitleTest
+            { ...defaultProps }
+            isSelected
+        />);
+
+        expect(component.find(CreditCardIconList).prop('selectedCardType'))
+            .toEqual('visa');
     });
 });

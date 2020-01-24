@@ -19,6 +19,7 @@ export interface HostedFieldPaymentMethodProps {
     onUnhandledError?(error: Error): void;
 }
 
+// TODO: Use HostedCreditCardFieldset
 export default class HostedFieldPaymentMethod extends Component<HostedFieldPaymentMethodProps> {
     async componentDidMount(): Promise<void> {
         const {

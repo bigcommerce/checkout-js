@@ -6,6 +6,8 @@ import { TranslatedString } from '../../locale';
 import { BasicFormField, Fieldset, Legend } from '../../ui/form';
 import { ModalTrigger, ModalTriggerModalProps } from '../../ui/modal';
 
+import { CreditCardValidationValues } from './CreditCardValidation';
+import { HostedCreditCardValidationValues } from './HostedCreditCardValidation';
 import InstrumentSelect from './InstrumentSelect';
 import ManageInstrumentsModal from './ManageInstrumentsModal';
 
@@ -17,11 +19,9 @@ export interface CardInstrumentFieldsetProps {
     onUseNewInstrument(): void;
 }
 
-export interface CardInstrumentFieldsetValues {
-    ccCvv?: string;
-    ccNumber?: string;
+export type CardInstrumentFieldsetValues = {
     instrumentId: string;
-}
+} & CreditCardValidationValues | HostedCreditCardValidationValues;
 
 const CardInstrumentFieldset: FunctionComponent<CardInstrumentFieldsetProps> = ({
     instruments,
