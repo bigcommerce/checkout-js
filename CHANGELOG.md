@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.18.0](https://github.com/bigcommerce/checkout-js/compare/v1.17.1...v1.18.0) (2020-01-24)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-4645 Render terms and conditions as textarea ([afd2932](https://github.com/bigcommerce/checkout-js/commit/afd2932))
+
+
+### Features
+
+* **payment:** CHECKOUT-4203 Use hosted form fields for credit card payment ([1f9ca1e](https://github.com/bigcommerce/checkout-js/commit/1f9ca1e))
+
 ### [1.17.1](https://github.com/bigcommerce/checkout-js/compare/v1.17.0...v1.17.1) (2020-01-20)
 
 
