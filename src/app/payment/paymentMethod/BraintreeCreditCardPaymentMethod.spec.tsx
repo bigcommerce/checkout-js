@@ -86,6 +86,7 @@ describe('when using Braintree payment', () => {
                 deinitializePayment: expect.any(Function),
                 initializePayment: expect.any(Function),
                 method: defaultProps.method,
+                shouldDisableHostedFieldset: true,
             }));
     });
 

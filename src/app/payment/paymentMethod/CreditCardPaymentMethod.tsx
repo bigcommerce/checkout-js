@@ -18,6 +18,7 @@ export interface CreditCardPaymentMethodProps {
     isInitializing?: boolean;
     isUsingMultiShipping?: boolean;
     method: PaymentMethod;
+    shouldDisableHostedFieldset?: boolean;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
     initializePayment(options: PaymentInitializeOptions): Promise<CheckoutSelectors>;
     onUnhandledError?(error: Error): void;
@@ -377,6 +378,7 @@ function mapFromCheckoutProps(): MapToProps<
             formik: { values },
             isUsingMultiShipping = false,
             method,
+            shouldDisableHostedFieldset,
         } = props;
 
         const { checkoutService, checkoutState } = context;
@@ -426,6 +428,7 @@ function mapFromCheckoutProps(): MapToProps<
             loadInstruments: checkoutService.loadInstruments,
             shouldShowInstrumentFieldset: isInstrumentFeatureAvailableProp && instruments.length > 0,
             shouldUseHostedFieldset: (
+                shouldDisableHostedFieldset !== true &&
                 config.checkoutSettings.isHostedPaymentFormEnabled &&
                 some(config.paymentSettings.clientSidePaymentProviders, id =>
                     method.id === id || method.gateway === id

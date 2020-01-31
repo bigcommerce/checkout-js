@@ -65,6 +65,7 @@ const BraintreeCreditCardPaymentMethod: FunctionComponent<BraintreeCreditCardPay
         <CreditCardPaymentMethod
             { ...rest }
             initializePayment={ initializeBraintreePayment }
+            shouldDisableHostedFieldset
         />
 
         <Modal
