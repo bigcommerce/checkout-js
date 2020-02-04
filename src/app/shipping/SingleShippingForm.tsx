@@ -4,7 +4,7 @@ import { debounce, noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
 import { lazy, object } from 'yup';
 
-import { getAddressValidationSchema, isEqualAddress, mapAddressFromFormValues, mapAddressToFormValues, AddressFormValues } from '../address';
+import { getAddressCustomFieldsValidationSchema, getAddressValidationSchema, isEqualAddress, mapAddressFromFormValues, mapAddressToFormValues, AddressFormValues } from '../address';
 import { withLanguage, WithLanguageProps } from '../locale';
 import { Fieldset, Form, FormContext } from '../ui/form';
 
@@ -297,7 +297,17 @@ export default withLanguage(withFormik<SingleShippingFormProps & WithLanguagePro
     validationSchema: ({
         language,
         getFields,
-    }: SingleShippingFormProps & WithLanguageProps) => object({
+        methodId,
+    }: SingleShippingFormProps & WithLanguageProps) => methodId ?
+        object({
+            shippingAddress: lazy<Partial<AddressFormValues>>(formValues =>
+                getAddressCustomFieldsValidationSchema({
+                    language,
+                    formFields: getFields(formValues && formValues.countryCode),
+                })
+            ),
+        }) :
+        object({
             shippingAddress: lazy<Partial<AddressFormValues>>(formValues =>
                 getAddressValidationSchema({
                     language,

@@ -60,18 +60,14 @@ class RemoteShippingAddress extends PureComponent<RemoteShippingAddressProps> {
                 />
                 <Fieldset>
                 {
-                    formFields.map(field => {
-                        if (field.custom) {
-                            return (
-                                <AddressFormField
-                                    field={ field }
-                                    key={ `${field.id}-${field.name}` }
-                                    onChange={ this.handleFieldValueChange(field.name) }
-                                    parentFieldName="shippingAddress.customFields"
-                                />
-                            );
-                        }
-                    })
+                    formFields.filter(({ custom }) => custom).map(field => (
+                        <AddressFormField
+                            field={ field }
+                            key={ `${field.id}-${field.name}` }
+                            onChange={ this.handleFieldValueChange(field.name) }
+                            parentFieldName="shippingAddress.customFields"
+                        />
+                    ))
                 }
                 </Fieldset>
             </>

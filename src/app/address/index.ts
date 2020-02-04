@@ -5,6 +5,7 @@ export { default as AddressForm } from './AddressForm';
 export { default as AddressSelect } from './AddressSelect';
 export { default as AddressType } from './AddressType';
 export { default as getAddressValidationSchema } from './getAddressValidationSchema';
+export { default as getAddressCustomFieldsValidationSchema } from './getAddressCustomFieldsValidationSchema';
 export { default as StaticAddress } from './StaticAddress';
 export { default as localizeAddress } from './localizeAddress';
 export { default as isValidAddress } from './isValidAddress';
