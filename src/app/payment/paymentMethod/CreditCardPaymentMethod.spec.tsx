@@ -323,6 +323,18 @@ describe('CreditCardPaymentMethod', () => {
                 .toEqual(1);
         });
 
+        it('does not render hosted credit card fieldset if there is a manual override', () => {
+            const container = mount(
+                <CreditCardPaymentMethodTest
+                    { ...defaultProps }
+                    shouldDisableHostedFieldset
+                />
+            );
+
+            expect(container.find(HostedCreditCardFieldset).length)
+                .toEqual(0);
+        });
+
         it('initializes payment method with hosted form configuration', async () => {
             mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
 
