@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.18.1](https://github.com/bigcommerce/checkout-js/compare/v1.18.0...v1.18.1) (2020-02-04)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-4632 CSS styling change for gift certificate icon ([ac68703](https://github.com/bigcommerce/checkout-js/commit/ac68703))
+* **payment:** CHECKOUT-4655 Bump checkout-sdk version ([16e1199](https://github.com/bigcommerce/checkout-js/commit/16e1199))
+* **payment:** CHECKOUT-4655 Disable hosted payment form for Braintree CC ([7afbc52](https://github.com/bigcommerce/checkout-js/commit/7afbc52))
+
 ## [1.18.0](https://github.com/bigcommerce/checkout-js/compare/v1.17.1...v1.18.0) (2020-01-24)
 
 
