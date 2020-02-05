@@ -3,6 +3,7 @@ import React from 'react';
 
 import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { PrivacyPolicyField, PrivacyPolicyType } from '../privacyPolicy';
 
 import GuestForm, { GuestFormProps } from './GuestForm';
 
@@ -218,5 +219,55 @@ describe('GuestForm', () => {
 
         expect(componentB.find('input[name="shouldSubscribe"]').prop('value'))
             .toEqual(false);
+    });
+
+    it('renders privacy policy field', () => {
+        const component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <GuestForm
+                    { ...defaultProps }
+                    privacyPolicy={ {
+                        isEnabled: true,
+                        value: 'foo',
+                        type: PrivacyPolicyType.Text,
+                    } }
+                />
+            </LocaleContext.Provider>
+        );
+
+        expect(component.find(PrivacyPolicyField)).toHaveLength(1);
+    });
+
+    it('displays error message if privacy policy is required and not checked', async () => {
+        const handleContinueAsGuest = jest.fn();
+        const component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <GuestForm
+                    { ...defaultProps }
+                    onContinueAsGuest={ handleContinueAsGuest }
+                    privacyPolicy={ {
+                        isEnabled: true,
+                        type: PrivacyPolicyType.Text,
+                        value: 'foo',
+                    } }
+                />
+            </LocaleContext.Provider>
+        );
+
+        component.find('input[name="email"]')
+            .simulate('change', { target: { value: 'test@test.com', name: 'email' } });
+
+        component.find('form')
+            .simulate('submit');
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        component.update();
+
+        expect(handleContinueAsGuest)
+            .not.toHaveBeenCalled();
+
+        expect(component.find('[data-test="privacy-policy-field-error-message"]').text())
+            .toEqual('Please agree to the Privacy Policy.');
     });
 });

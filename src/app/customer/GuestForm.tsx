@@ -3,9 +3,11 @@ import React, { memo, FunctionComponent, ReactNode } from 'react';
 import { object, string } from 'yup';
 
 import { withLanguage, TranslatedHtml, TranslatedString, WithLanguageProps } from '../locale';
+import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
 import { Button, ButtonVariant } from '../ui/button';
 import { BasicFormField, Fieldset, Form, Legend  } from '../ui/form';
 
+import { PrivacyPolicyConfig } from './Customer';
 import EmailField from './EmailField';
 import SubscribeField from './SubscribeField';
 
@@ -15,6 +17,7 @@ export interface GuestFormProps {
     defaultShouldSubscribe: boolean;
     email?: string;
     isContinuingAsGuest: boolean;
+    privacyPolicy?: PrivacyPolicyConfig;
     onChangeEmail(email: string): void;
     onContinueAsGuest(data: GuestFormValues): void;
     onShowLogin(): void;
@@ -31,6 +34,7 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
     isContinuingAsGuest,
     onChangeEmail,
     onShowLogin,
+    privacyPolicy,
 }) => (
     <Form
         className="checkout-form"
@@ -55,6 +59,11 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
                     { canSubscribe && <BasicFormField
                         component={ SubscribeField }
                         name="shouldSubscribe"
+                    /> }
+
+                    { privacyPolicy && privacyPolicy.isEnabled && <PrivacyPolicyField
+                        type={ privacyPolicy.type }
+                        value={ privacyPolicy.value }
                     /> }
                 </div>
 
@@ -96,17 +105,26 @@ export default withLanguage(withFormik<GuestFormProps & WithLanguageProps, Guest
     }) => ({
         email,
         shouldSubscribe: defaultShouldSubscribe,
-        terms: false,
+        privacyPolicy: false,
     }),
     handleSubmit: (values, { props: { onContinueAsGuest } }) => {
         onContinueAsGuest(values);
     },
-    validationSchema: ({ language }: GuestFormProps & WithLanguageProps) => {
+    validationSchema: ({ language, privacyPolicy }: GuestFormProps & WithLanguageProps) => {
         const email = string()
             .email(language.translate('customer.email_invalid_error'))
             .max(256)
             .required(language.translate('customer.email_required_error'));
 
-        return object({ email });
+        const baseSchema = object({ email });
+
+        if (privacyPolicy) {
+            return baseSchema.concat(getPrivacyPolicyValidationSchema({
+                isRequired: privacyPolicy.isEnabled,
+                language,
+            }));
+        }
+
+        return baseSchema;
     },
 })(memo(GuestForm)));

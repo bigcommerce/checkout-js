@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react';
 
-import './TermsConditions.scss';
 import TermsConditionsField, { TermsConditionsType } from './TermsConditionsField';
 
 export interface TermsConditionsProps {

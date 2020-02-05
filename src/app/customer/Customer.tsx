@@ -1,4 +1,4 @@
-import { CheckoutSelectors, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, GuestCredentials } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, GuestCredentials, StoreConfig } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, Fragment, ReactNode } from 'react';
 
@@ -8,6 +8,13 @@ import CheckoutButtonList from './CheckoutButtonList';
 import CustomerViewType from './CustomerViewType';
 import GuestForm, { GuestFormValues } from './GuestForm';
 import LoginForm from './LoginForm';
+
+// todo: this should be in Checkout SDK
+export interface PrivacyPolicyConfig {
+    isEnabled: boolean;
+    type: string;
+    value: string;
+}
 
 export interface CustomerProps {
     viewType: CustomerViewType;
@@ -34,6 +41,7 @@ interface WithCheckoutCustomerProps {
     isGuestEnabled: boolean;
     isSigningIn: boolean;
     signInError?: Error;
+    privacyPolicy?: PrivacyPolicyConfig;
     clearError(error: Error): Promise<CheckoutSelectors>;
     continueAsGuest(credentials: GuestCredentials): Promise<CheckoutSelectors>;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
@@ -71,6 +79,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
             email,
             initializeCustomer,
             isContinuingAsGuest = false,
+            privacyPolicy,
             onUnhandledError = noop,
         } = this.props;
 
@@ -92,6 +101,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
                 onChangeEmail={ this.handleChangeEmail }
                 onContinueAsGuest={ this.handleContinueAsGuest }
                 onShowLogin={ this.handleShowLogin }
+                privacyPolicy={ privacyPolicy }
             />
         );
     }
@@ -205,6 +215,12 @@ export function mapToWithCheckoutCustomerProps(
         return null;
     }
 
+    const { checkoutSettings: { privacyPolicy } } = config as StoreConfig & {
+        checkoutSettings: {
+            privacyPolicy: PrivacyPolicyConfig;
+        };
+    };
+
     return {
         canSubscribe: config.shopperConfig.showNewsletterSignup,
         checkoutButtonIds: config.checkoutSettings.remoteCheckoutProviders,
@@ -220,6 +236,7 @@ export function mapToWithCheckoutCustomerProps(
         isContinuingAsGuest: isContinuingAsGuest(),
         isGuestEnabled: config.checkoutSettings.guestCheckoutEnabled,
         isSigningIn: isSigningIn(),
+        privacyPolicy,
         signIn: checkoutService.signInCustomer,
         signInError: getSignInError(),
     };
