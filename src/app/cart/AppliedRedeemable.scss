@@ -1,11 +1,4 @@
-// REDEEMABLE
-// -----------------------------------------------------------------------------
-//
-// Purpose: Styling of the redeemable items
-//
-//
-//
-// -----------------------------------------------------------------------------
+@import '../ui/Base';
 
 .form-checklist-checkbox ~ .form-label-redeemable {
     &:hover {
@@ -19,10 +12,14 @@
 }
 
 .redeemable {
-    @include media("table");
-
+    display: table;
+    padding: spacing("single");
     padding: 0;
     width: 100%;
+}
+
+.redeemable-column {
+    display: table-cell;
 }
 
 .redeemable-actions {
@@ -39,8 +36,7 @@
 }
 
 .redeemable-info-header {
-    @include u-display("block");
-
+    display: block;
     margin-bottom: spacing("sixth");
 }
 
@@ -55,23 +51,7 @@
 }
 
 .redeemable-info-subHeader--remaining {
-    @include u-display("block");
-}
-
-.redeemable-remove.is-loading {
-    position: relative;
-
-    &::before {
-        @include loadingOverlay-spinner();
-        @include square(22px);
-
-        animation: spin $loadingOverlay-spinner-duration infinite $loadingOverlay-spinner-easing;
-        border-color: color("whites") color("whites") color("greys") color("greys");
-    }
-
-    svg {
-        display: none;
-    }
+    display: block;
 }
 
 .redeemable-remove-action {

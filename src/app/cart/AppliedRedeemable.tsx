@@ -4,6 +4,8 @@ import React, { FunctionComponent } from 'react';
 import { TranslatedString } from '../locale';
 import { IconRemove } from '../ui/icon';
 
+import './AppliedRedeemable.scss';
+
 export interface AppliedRedeemableProps {
     isRemoving: boolean;
     onRemove(): void;
