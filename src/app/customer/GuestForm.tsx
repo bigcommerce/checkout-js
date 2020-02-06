@@ -7,7 +7,6 @@ import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacy
 import { Button, ButtonVariant } from '../ui/button';
 import { BasicFormField, Fieldset, Form, Legend  } from '../ui/form';
 
-import { PrivacyPolicyConfig } from './Customer';
 import EmailField from './EmailField';
 import SubscribeField from './SubscribeField';
 
@@ -17,7 +16,7 @@ export interface GuestFormProps {
     defaultShouldSubscribe: boolean;
     email?: string;
     isContinuingAsGuest: boolean;
-    privacyPolicy?: PrivacyPolicyConfig;
+    privacyPolicyUrl?: string;
     onChangeEmail(email: string): void;
     onContinueAsGuest(data: GuestFormValues): void;
     onShowLogin(): void;
@@ -34,7 +33,7 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
     isContinuingAsGuest,
     onChangeEmail,
     onShowLogin,
-    privacyPolicy,
+    privacyPolicyUrl,
 }) => (
     <Form
         className="checkout-form"
@@ -61,9 +60,8 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
                         name="shouldSubscribe"
                     /> }
 
-                    { privacyPolicy && privacyPolicy.isEnabled && <PrivacyPolicyField
-                        type={ privacyPolicy.type }
-                        value={ privacyPolicy.value }
+                    { privacyPolicyUrl && <PrivacyPolicyField
+                        url={ privacyPolicyUrl }
                     /> }
                 </div>
 
@@ -110,7 +108,7 @@ export default withLanguage(withFormik<GuestFormProps & WithLanguageProps, Guest
     handleSubmit: (values, { props: { onContinueAsGuest } }) => {
         onContinueAsGuest(values);
     },
-    validationSchema: ({ language, privacyPolicy }: GuestFormProps & WithLanguageProps) => {
+    validationSchema: ({ language, privacyPolicyUrl }: GuestFormProps & WithLanguageProps) => {
         const email = string()
             .email(language.translate('customer.email_invalid_error'))
             .max(256)
@@ -118,9 +116,9 @@ export default withLanguage(withFormik<GuestFormProps & WithLanguageProps, Guest
 
         const baseSchema = object({ email });
 
-        if (privacyPolicy) {
+        if (privacyPolicyUrl) {
             return baseSchema.concat(getPrivacyPolicyValidationSchema({
-                isRequired: privacyPolicy.isEnabled,
+                isRequired: !!privacyPolicyUrl,
                 language,
             }));
         }

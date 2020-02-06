@@ -9,13 +9,6 @@ import CustomerViewType from './CustomerViewType';
 import GuestForm, { GuestFormValues } from './GuestForm';
 import LoginForm from './LoginForm';
 
-// todo: this should be in Checkout SDK
-export interface PrivacyPolicyConfig {
-    isEnabled: boolean;
-    type: string;
-    value: string;
-}
-
 export interface CustomerProps {
     viewType: CustomerViewType;
     checkEmbeddedSupport?(methodIds: string[]): void;
@@ -41,7 +34,7 @@ interface WithCheckoutCustomerProps {
     isGuestEnabled: boolean;
     isSigningIn: boolean;
     signInError?: Error;
-    privacyPolicy?: PrivacyPolicyConfig;
+    privacyPolicyUrl?: string;
     clearError(error: Error): Promise<CheckoutSelectors>;
     continueAsGuest(credentials: GuestCredentials): Promise<CheckoutSelectors>;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
@@ -79,7 +72,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
             email,
             initializeCustomer,
             isContinuingAsGuest = false,
-            privacyPolicy,
+            privacyPolicyUrl,
             onUnhandledError = noop,
         } = this.props;
 
@@ -101,7 +94,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
                 onChangeEmail={ this.handleChangeEmail }
                 onContinueAsGuest={ this.handleContinueAsGuest }
                 onShowLogin={ this.handleShowLogin }
-                privacyPolicy={ privacyPolicy }
+                privacyPolicyUrl={ privacyPolicyUrl }
             />
         );
     }
@@ -215,9 +208,9 @@ export function mapToWithCheckoutCustomerProps(
         return null;
     }
 
-    const { checkoutSettings: { privacyPolicy } } = config as StoreConfig & {
+    const { checkoutSettings: { privacyPolicyUrl } } = config as StoreConfig & {
         checkoutSettings: {
-            privacyPolicy: PrivacyPolicyConfig;
+            privacyPolicyUrl: string;
         };
     };
 
@@ -236,7 +229,7 @@ export function mapToWithCheckoutCustomerProps(
         isContinuingAsGuest: isContinuingAsGuest(),
         isGuestEnabled: config.checkoutSettings.guestCheckoutEnabled,
         isSigningIn: isSigningIn(),
-        privacyPolicy,
+        privacyPolicyUrl,
         signIn: checkoutService.signInCustomer,
         signInError: getSignInError(),
     };

@@ -3,7 +3,7 @@ import React from 'react';
 
 import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
-import { PrivacyPolicyField, PrivacyPolicyType } from '../privacyPolicy';
+import { PrivacyPolicyField } from '../privacyPolicy';
 
 import GuestForm, { GuestFormProps } from './GuestForm';
 
@@ -226,11 +226,7 @@ describe('GuestForm', () => {
             <LocaleContext.Provider value={ localeContext }>
                 <GuestForm
                     { ...defaultProps }
-                    privacyPolicy={ {
-                        isEnabled: true,
-                        value: 'foo',
-                        type: PrivacyPolicyType.Text,
-                    } }
+                    privacyPolicyUrl={ 'foo' }
                 />
             </LocaleContext.Provider>
         );
@@ -245,11 +241,7 @@ describe('GuestForm', () => {
                 <GuestForm
                     { ...defaultProps }
                     onContinueAsGuest={ handleContinueAsGuest }
-                    privacyPolicy={ {
-                        isEnabled: true,
-                        type: PrivacyPolicyType.Text,
-                        value: 'foo',
-                    } }
+                    privacyPolicyUrl={ 'foo' }
                 />
             </LocaleContext.Provider>
         );
