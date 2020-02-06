@@ -37,26 +37,25 @@ const BaseTermsConditionsModalCheckboxField: FunctionComponent<TermsConditionsTe
     name,
     terms,
 }) => {
-    const parsedLabel = parseAnchor(language.translate('terms_and_conditions.agreement_with_link_text', { url: '' }));
+    const translatedLabel = language.translate('terms_and_conditions.agreement_with_link_text', { url: '' });
+    const parsedLabel = parseAnchor(translatedLabel);
 
-    if (!parsedLabel) {
-        return null;
-    }
-
-    const labelContent = (<>
-        { parsedLabel[0] }
-        <ModalLink
-            body={ <MultiLineText>{ terms }</MultiLineText> }
-            header={
-                <ModalHeader>
-                    <TranslatedString id="terms_and_conditions.heading" />
-                </ModalHeader>
-            }
-        >
-            { parsedLabel[1] }
-        </ModalLink>
-        { parsedLabel[2] }
-    </>);
+    const labelContent = parsedLabel ?
+        (<>
+            { parsedLabel[0] }
+            <ModalLink
+                body={ <MultiLineText>{ terms }</MultiLineText> }
+                header={
+                    <ModalHeader>
+                        <TranslatedString id="terms_and_conditions.heading" />
+                    </ModalHeader>
+                }
+            >
+                { parsedLabel[1] }
+            </ModalLink>
+            { parsedLabel[2] }
+        </>) :
+        translatedLabel;
 
     return (
         <CheckboxFormField

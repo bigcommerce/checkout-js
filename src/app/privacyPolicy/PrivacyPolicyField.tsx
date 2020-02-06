@@ -16,26 +16,25 @@ const BasePrivacyPolicyCheckboxFieldModal: FunctionComponent<WithLanguageProps &
     language,
     text,
 }) => {
-    const parsedLabel = parseAnchor(language.translate('privacy_policy.label', { url: '' }));
+    const translatedLabel = language.translate('privacy_policy.label', { url: '' });
+    const parsedLabel = parseAnchor(translatedLabel);
 
-    if (!parsedLabel) {
-        return null;
-    }
-
-    const labelContent = (<>
-        { parsedLabel[0] }
-        <ModalLink
-            body={ <MultiLineText>{ text }</MultiLineText> }
-            header={
-                <ModalHeader>
-                    <TranslatedString id="privacy_policy.heading" />
-                </ModalHeader>
-            }
-        >
-            { parsedLabel[1] }
-        </ModalLink>
-        { parsedLabel[2] }
-    </>);
+    const labelContent = parsedLabel ?
+        (<>
+            { parsedLabel[0] }
+            <ModalLink
+                body={ <MultiLineText>{ text }</MultiLineText> }
+                header={
+                    <ModalHeader>
+                        <TranslatedString id="privacy_policy.heading" />
+                    </ModalHeader>
+                }
+            >
+                { parsedLabel[1] }
+            </ModalLink>
+            { parsedLabel[2] }
+        </>) :
+        translatedLabel;
 
     return (
         <CheckboxFormField

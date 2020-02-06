@@ -33,9 +33,7 @@ const ModalLink: FunctionComponent<ModalLinkProps> = ({
             header={ header }
             shouldShowCloseButton={ true }
         >
-            <div>
-                { body }
-            </div>
+            { body }
         </Modal>
     ), [header, body]);
 
