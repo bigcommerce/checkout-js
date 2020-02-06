@@ -21,8 +21,6 @@
 
 .shippingOption-price {
     font-weight: fontWeight("bold");
-    max-width: none;
-    min-width: 0;
     padding-left: spacing("half");
 }
 
@@ -41,19 +39,17 @@
         min-height: remCalc(35px);
     }
 
-    .shippingOption-price {
-        max-width: remCalc(55px);
-        min-width: remCalc(55px);
-        text-align: right;
-    }
-
     .shippingOption-figure,
     .shippingOption-desc,
     .shippingOption-price {
-        flex: 1;
         font-size: inherit;
         line-height: lineHeight("base");
         vertical-align: middle;
+    }
+
+    .shippingOption-figure,
+    .shippingOption-desc {
+        flex: 1;
     }
 
     .shippingOption-figure {
