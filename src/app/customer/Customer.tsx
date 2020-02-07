@@ -1,4 +1,4 @@
-import { CheckoutSelectors, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, GuestCredentials } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, GuestCredentials, StoreConfig } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, Fragment, ReactNode } from 'react';
 
@@ -34,6 +34,7 @@ interface WithCheckoutCustomerProps {
     isGuestEnabled: boolean;
     isSigningIn: boolean;
     signInError?: Error;
+    privacyPolicyUrl?: string;
     clearError(error: Error): Promise<CheckoutSelectors>;
     continueAsGuest(credentials: GuestCredentials): Promise<CheckoutSelectors>;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
@@ -71,6 +72,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
             email,
             initializeCustomer,
             isContinuingAsGuest = false,
+            privacyPolicyUrl,
             onUnhandledError = noop,
         } = this.props;
 
@@ -92,6 +94,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
                 onChangeEmail={ this.handleChangeEmail }
                 onContinueAsGuest={ this.handleContinueAsGuest }
                 onShowLogin={ this.handleShowLogin }
+                privacyPolicyUrl={ privacyPolicyUrl }
             />
         );
     }
@@ -205,6 +208,12 @@ export function mapToWithCheckoutCustomerProps(
         return null;
     }
 
+    const { checkoutSettings: { privacyPolicyUrl } } = config as StoreConfig & {
+        checkoutSettings: {
+            privacyPolicyUrl: string;
+        };
+    };
+
     return {
         canSubscribe: config.shopperConfig.showNewsletterSignup,
         checkoutButtonIds: config.checkoutSettings.remoteCheckoutProviders,
@@ -220,6 +229,7 @@ export function mapToWithCheckoutCustomerProps(
         isContinuingAsGuest: isContinuingAsGuest(),
         isGuestEnabled: config.checkoutSettings.guestCheckoutEnabled,
         isSigningIn: isSigningIn(),
+        privacyPolicyUrl,
         signIn: checkoutService.signInCustomer,
         signInError: getSignInError(),
     };

@@ -1,11 +1,11 @@
 import { FieldProps } from 'formik';
-import React, { memo, useCallback, useMemo, Fragment, FunctionComponent } from 'react';
+import React, { memo, useCallback, useMemo, FunctionComponent } from 'react';
 
-import { preventDefault } from '../common/dom';
+import { parseAnchor } from '../common/utility';
 import { withLanguage, TranslatedHtml, TranslatedString, WithLanguageProps } from '../locale';
-import { Button, ButtonSize } from '../ui/button';
 import { CheckboxFormField, Fieldset, FormField, Legend, TextArea } from '../ui/form';
-import { Modal, ModalHeader, ModalTrigger, ModalTriggerModalProps } from '../ui/modal';
+import { ModalHeader, ModalLink } from '../ui/modal';
+import { MultiLineText } from '../ui/text';
 
 export enum TermsConditionsType {
     Link = 'link',
@@ -37,59 +37,25 @@ const BaseTermsConditionsModalCheckboxField: FunctionComponent<TermsConditionsTe
     name,
     terms,
 }) => {
-    const renderInput = useCallback(() => (
-        <div>
-            { terms.split('\n').map((item, key) =>
-                <Fragment key={ key }>
-                    { item }
-                    <br />
-                </Fragment>
-            ) }
-        </div>
-    ), [terms]);
+    const translatedLabel = language.translate('terms_and_conditions.agreement_with_link_text', { url: '' });
+    const parsedLabel = parseAnchor(translatedLabel);
 
-    const renderModal = useCallback((props: ModalTriggerModalProps) => (
-        <Modal
-            { ...props }
-            additionalBodyClassName="modal--terms"
-            footer={ (
-                <Button
-                    onClick={ props.onRequestClose }
-                    size={ ButtonSize.Small }
-                >
-                    { language.translate('common.ok_action') }
-                </Button>
-            ) }
-            header={ (
-                <ModalHeader>
-                    { language.translate('terms_and_conditions.terms_and_conditions_heading') }
-                </ModalHeader>
-            ) }
-            shouldShowCloseButton={ true }
-        >
-            <FormField
-                input={ renderInput }
-                name={ `${name}Text` }
-            />
-        </Modal>
-    ), [language, renderInput, name]);
-
-    const termsLabel = language.translate('terms_and_conditions.agreement_with_link_text', { url: '' });
-    const termsLabelPrefix = termsLabel.replace(/(<a.*)/g, '');
-    const termsLabelSuffix = termsLabel.replace(/.*<\/a>/, '');
-    const termsLinkLabelMatches = termsLabel.match(/<a [^>]+>([^<]+)<\/a>/);
-
-    const labelContent = (<>
-        { termsLabelPrefix }
-        <ModalTrigger modal={ renderModal }>
-            { ({ onClick }) => (
-                <a onClick={ preventDefault(onClick) }>
-                    { termsLinkLabelMatches && termsLinkLabelMatches[1] }
-                </a>
-            ) }
-        </ModalTrigger>
-        { termsLabelSuffix }
-    </>);
+    const labelContent = parsedLabel ?
+        (<>
+            { parsedLabel[0] }
+            <ModalLink
+                body={ <MultiLineText>{ terms }</MultiLineText> }
+                header={
+                    <ModalHeader>
+                        <TranslatedString id="terms_and_conditions.heading" />
+                    </ModalHeader>
+                }
+            >
+                { parsedLabel[1] }
+            </ModalLink>
+            { parsedLabel[2] }
+        </>) :
+        translatedLabel;
 
     return (
         <CheckboxFormField

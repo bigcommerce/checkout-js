@@ -281,6 +281,11 @@
         "spam_protection": {
             "verify_action": "Please click here to verify yourself as human before proceeding."
         },
+        "privacy_policy": {
+            "required_error": "Please agree to the Privacy Policy.",
+            "label": "Yes, I agree with the <a href=\"{url}\" target=\"_blank\">privacy policy</a>.",
+            "heading": "Privacy Policy"
+        },
         "terms_and_conditions": {
             "agreement_required_error": "Please agree to the terms and conditions",
             "agreement_text": "Yes, I agree with the above terms and conditions.",
