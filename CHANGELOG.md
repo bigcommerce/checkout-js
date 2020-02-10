@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.19.0](https://github.com/bigcommerce/checkout-js/compare/v1.18.1...v1.19.0) (2020-02-10)
+
+
+### Bug Fixes
+
+* **shipping:** CHECKOUT-4664 Fix expensive shipping quote overflow from shipping option container ([9d9c513](https://github.com/bigcommerce/checkout-js/commit/9d9c513))
+
+
+### Code Refactoring
+
+* **cart:** CHECKOUT-4431 Move reedemable css to cart module ([2433a3a](https://github.com/bigcommerce/checkout-js/commit/2433a3a))
+
+
+### Features
+
+* **checkout:** INT-2286 Bump SDK. ([87de4e8](https://github.com/bigcommerce/checkout-js/commit/87de4e8))
+* **customer:** CHECKOUT-4641 Add Privacy Policy feature ([525fc4b](https://github.com/bigcommerce/checkout-js/commit/525fc4b))
+
 ### [1.18.1](https://github.com/bigcommerce/checkout-js/compare/v1.18.0...v1.18.1) (2020-02-04)
 
 
