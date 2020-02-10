@@ -25,6 +25,7 @@ export function getStoreConfig(): StoreConfig {
             orderTermsAndConditions: '',
             orderTermsAndConditionsLink: '',
             orderTermsAndConditionsType: '',
+            privacyPolicyUrl: '',
             shippingQuoteFailedMessage: 'Unfortunately one or more items in your cart can\'t be shipped to your \
             location.Please choose a different delivery address.',
             realtimeShippingProviders: [
@@ -32,6 +33,7 @@ export function getStoreConfig(): StoreConfig {
                 'UPS',
                 'USPS',
             ],
+            requiresMarketingConsent: false,
             features: {},
             remoteCheckoutProviders: [],
         },

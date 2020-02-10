@@ -4,9 +4,11 @@ import React, { memo, Fragment, FunctionComponent } from 'react';
 import { TranslatedString } from '../locale';
 import { Input, Label } from '../ui/form';
 
-export type SubscribeFieldProps = FieldProps<boolean>;
+export type SubscribeFieldProps = FieldProps<boolean> & {
+    requiresMarketingConsent: boolean;
+};
 
-const SubscribeField: FunctionComponent<SubscribeFieldProps> = ({ field }) => (
+const SubscribeField: FunctionComponent<SubscribeFieldProps> = ({ field, requiresMarketingConsent }) => (
     <Fragment>
         <Input
             { ...field }
@@ -17,7 +19,10 @@ const SubscribeField: FunctionComponent<SubscribeFieldProps> = ({ field }) => (
         />
 
         <Label htmlFor={ field.name }>
-            <TranslatedString id="customer.guest_subscribe_to_newsletter_text" />
+            <TranslatedString id={ requiresMarketingConsent ?
+                'customer.guest_marketing_consent' :
+                'customer.guest_subscribe_to_newsletter_text' }
+            />
         </Label>
     </Fragment>
 );

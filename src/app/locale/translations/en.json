@@ -105,6 +105,7 @@
             "forgot_password_action": "Forgot password?",
             "guest_customer_text": "Guest Customer",
             "guest_subscribe_to_newsletter_text": "Subscribe to our newsletter.",
+            "guest_marketing_consent": "I would like to receive updates and offers.",
             "login_action": "Sign in now",
             "login_text": "Already have an account?",
             "password_confirmation_error": "Passwords do not match",
