@@ -10,8 +10,7 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale
 
 import { getFormFields } from './formField.mock';
 import AddressForm from './AddressForm';
-import DynamicFormField from './DynamicFormField';
-import DynamicFormFieldType from './DynamicFormFieldType';
+import AddressFormField from './AddressFormField';
 
 describe('AddressForm Component', () => {
     let checkoutService: CheckoutService;
@@ -28,7 +27,7 @@ describe('AddressForm Component', () => {
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
     });
 
-    it('renders all DynamicFormField based on formFields', () => {
+    it('renders all AddressFormFields based on formFields', () => {
         component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <Formik
@@ -43,10 +42,10 @@ describe('AddressForm Component', () => {
             </LocaleContext.Provider>
         );
 
-        expect(component.find(DynamicFormField).length).toEqual(formFields.length);
+        expect(component.find(AddressFormField).length).toEqual(formFields.length);
     });
 
-    it('renders DynamicFormField with expected props', () => {
+    it('renders AddressFormField with expected props', () => {
         component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <Formik
@@ -61,15 +60,14 @@ describe('AddressForm Component', () => {
             </LocaleContext.Provider>
         );
 
-        expect(component.find(DynamicFormField).at(0).props()).toEqual(
+        expect(component.find(AddressFormField).at(0).props()).toEqual(
             expect.objectContaining({
                 parentFieldName: 'address',
-                fieldType: DynamicFormFieldType.text,
                 placeholder: undefined,
             })
         );
 
-        expect(component.find(DynamicFormField).at(0).prop('field')).toEqual(
+        expect(component.find(AddressFormField).at(0).prop('field')).toEqual(
             expect.objectContaining({
                 id: 'field_14',
             })

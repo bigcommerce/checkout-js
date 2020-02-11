@@ -1,4 +1,4 @@
-import { CheckoutSelectors, CustomError } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, CustomerRequestOptions, CustomError } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
@@ -17,15 +17,25 @@ export interface CustomerSignOutEvent {
     isCartEmpty: boolean;
 }
 
+const SUPPORTED_SIGNOUT_METHODS = [
+    'amazon',
+];
+
+export const isSupportedSignoutMethod = (methodId: string): boolean => {
+    return SUPPORTED_SIGNOUT_METHODS.indexOf(methodId) > -1;
+};
+
 interface WithCheckoutCustomerInfoProps {
     email: string;
+    methodId: string;
     isSignedIn: boolean;
     isSigningOut: boolean;
-    signOut(): Promise<CheckoutSelectors>;
+    signOut(options?: CustomerRequestOptions): Promise<CheckoutSelectors>;
 }
 
 const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerInfoProps> = ({
     email,
+    methodId,
     isSignedIn,
     isSigningOut,
     onSignOut = noop,
@@ -34,8 +44,14 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
 }) => {
     const handleSignOut: () => Promise<void> = async () => {
         try {
-            await signOut();
-            onSignOut({ isCartEmpty: false });
+            if (isSupportedSignoutMethod(methodId)) {
+                await signOut({ methodId });
+                onSignOut({ isCartEmpty: false });
+                window.location.reload();
+            } else {
+                await signOut();
+                onSignOut({ isCartEmpty: false });
+            }
         } catch (error) {
             if (error.type === 'checkout_not_available') {
                 onSignOut({ isCartEmpty: true });
@@ -88,9 +104,12 @@ function mapToWithCheckoutCustomerInfoProps(
         return null;
     }
 
+    const methodId = checkout.payments && checkout.payments.length === 1 ? checkout.payments[0].providerId : '';
+
     return {
         email: billingAddress.email || customer.email,
-        isSignedIn: canSignOut(customer, checkout),
+        methodId,
+        isSignedIn: canSignOut(customer, checkout, methodId),
         isSigningOut: isSigningOut(),
         signOut: checkoutService.signOutCustomer,
     };

@@ -165,4 +165,78 @@ describe('SingleShippingForm', () => {
             done();
         }, SHIPPING_AUTOSAVE_DELAY * 1.1);
     });
+
+    it('calls update address for amazon pay if required custom fields are filled out', done => {
+        component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <SingleShippingForm
+                    { ...defaultProps }
+                    getFields={ () => [
+                        ...addressFormFields,
+                        {
+                            custom: true,
+                            default: '',
+                            fieldType: 'text',
+                            id: 'field_25',
+                            label: 'Custom message',
+                            name: 'field_25',
+                            required: true,
+                            type: 'string',
+                        },
+                    ] }
+                />
+            </LocaleContext.Provider>
+        );
+
+        component.find('input[name="shippingAddress.customFields.field_25"]')
+            .simulate('change', { target: { value: 'foo', name: 'shippingAddress.customFields.field_25' } });
+
+        setTimeout(() => {
+            expect(defaultProps.updateAddress).toHaveBeenCalledWith({
+                ...getShippingAddress(),
+                customFields: [{
+                    fieldId: 'field_25',
+                    fieldValue: 'foo',
+                }],
+            }, {
+                params: {
+                    include: {
+                        'consignments.availableShippingOptions': true,
+                    },
+                },
+            });
+            done();
+        }, SHIPPING_AUTOSAVE_DELAY * 1.1);
+    });
+
+    it('does not update address for amazon pay if required custom fields is left empty', done => {
+        component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <SingleShippingForm
+                    { ...defaultProps }
+                    getFields={ () => [
+                        ...addressFormFields,
+                        {
+                            custom: true,
+                            default: '',
+                            fieldType: 'text',
+                            id: 'field_25',
+                            label: 'Custom message',
+                            name: 'field_25',
+                            required: true,
+                            type: 'string',
+                        },
+                    ] }
+                />
+            </LocaleContext.Provider>
+        );
+
+        component.find('input[name="shippingAddress.customFields.field_25"]')
+            .simulate('change', { target: { value: '', name: 'shippingAddress.customFields.field_25' } });
+
+        setTimeout(() => {
+            expect(defaultProps.updateAddress).not.toHaveBeenCalled();
+            done();
+        }, SHIPPING_AUTOSAVE_DELAY * 1.1);
+    });
 });

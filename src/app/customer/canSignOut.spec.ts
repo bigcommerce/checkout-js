@@ -8,7 +8,7 @@ describe('canSignOut()', () => {
         const customer = getGuestCustomer();
         const checkout = getCheckout();
 
-        expect(canSignOut(customer, checkout))
+        expect(canSignOut(customer, checkout, ''))
             .toEqual(false);
     });
 
@@ -16,7 +16,7 @@ describe('canSignOut()', () => {
         const customer = getCustomer();
         const checkout = getCheckout();
 
-        expect(canSignOut(customer, checkout))
+        expect(canSignOut(customer, checkout, ''))
             .toEqual(true);
     });
 
@@ -24,7 +24,15 @@ describe('canSignOut()', () => {
         const customer = getCustomer();
         const checkout = getCheckoutWithPayments();
 
-        expect(canSignOut(customer, checkout))
+        expect(canSignOut(customer, checkout, ''))
             .toEqual(false);
+    });
+
+    it('returns true if customer uses amazon as checkout method', () => {
+        const customer = getCustomer();
+        const checkout = getCheckoutWithPayments();
+
+        expect(canSignOut(customer, checkout, 'amazon'))
+            .toEqual(true);
     });
 });

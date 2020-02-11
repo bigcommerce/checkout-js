@@ -7,7 +7,8 @@ import { withLanguage, WithLanguageProps } from '../locale';
 import { AutocompleteItem } from '../ui/autocomplete';
 
 import { mapToAddress, GoogleAutocompleteFormField } from './googleAutocomplete';
-import DynamicFormField, { AddressKeyMap } from './DynamicFormField';
+import AddressFormField from './AddressFormField';
+import { AddressKeyMap } from './DynamicFormField';
 import DynamicFormFieldType from './DynamicFormFieldType';
 
 export interface AddressFormProps {
@@ -82,10 +83,9 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                     }
 
                     return (
-                        <DynamicFormField
+                        <AddressFormField
                             field={ field }
                             // stateOrProvince can sometimes be a dropdown or input, so relying on id is not sufficient
-                            fieldType={ this.getDynamicFormFieldType(field) }
                             key={ `${field.id}-${field.name}` }
                             onChange={ this.handleDynamicFormFieldChange(addressFieldName) }
                             parentFieldName={ field.custom ?
@@ -97,36 +97,6 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                 }) }
             </div>
         );
-    }
-
-    private getDynamicFormFieldType({
-        custom,
-        name,
-        fieldType,
-        type,
-        secret,
-    }: FormField): DynamicFormFieldType {
-        if (!custom) {
-            const defaultTypes: { [key: string]: DynamicFormFieldType } = {
-                phone: DynamicFormFieldType.telephone,
-                countryCode: DynamicFormFieldType.dropdown,
-                stateOrProvinceCode: DynamicFormFieldType.dropdown,
-            };
-
-            return defaultTypes[name] || DynamicFormFieldType.text;
-        }
-
-        if (fieldType === 'text') {
-            if (type === 'integer') {
-                return DynamicFormFieldType.number;
-            }
-
-            return secret ?
-                DynamicFormFieldType.password :
-                DynamicFormFieldType.text;
-        }
-
-        return fieldType as DynamicFormFieldType;
     }
 
     private handleAutocompleteChange: (value: string, isOpen: boolean) => void = (value, isOpen) => {

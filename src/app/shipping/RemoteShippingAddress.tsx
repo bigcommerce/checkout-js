@@ -1,16 +1,18 @@
-import { CheckoutSelectors, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
 
-import { SignOutLink } from '../payment/paymentMethod';
+import { AddressFormField } from '../address/';
+import { Fieldset } from '../ui/form';
 
 export interface RemoteShippingAddressProps {
     containerId: string;
     methodId: string;
+    formFields: FormField[];
     deinitialize(options?: ShippingRequestOptions): Promise<CheckoutSelectors>;
     initialize(options?: ShippingInitializeOptions): Promise<CheckoutSelectors>;
-    onSignOut(): void;
     onUnhandledError?(error: Error): void;
+    onFieldChange(fieldName: string, value: string): void;
 }
 
 class RemoteShippingAddress extends PureComponent<RemoteShippingAddressProps> {
@@ -45,8 +47,8 @@ class RemoteShippingAddress extends PureComponent<RemoteShippingAddressProps> {
     render(): ReactNode {
         const {
             containerId,
+            formFields,
             methodId,
-            onSignOut,
         } = this.props;
 
         return (
@@ -56,11 +58,26 @@ class RemoteShippingAddress extends PureComponent<RemoteShippingAddressProps> {
                     id={ containerId }
                     tabIndex={ -1 }
                 />
-
-                <SignOutLink method={ { id: methodId } } onSignOut={ onSignOut } />
+                <Fieldset>
+                {
+                    formFields.filter(({ custom }) => custom).map(field => (
+                        <AddressFormField
+                            field={ field }
+                            key={ `${field.id}-${field.name}` }
+                            onChange={ this.handleFieldValueChange(field.name) }
+                            parentFieldName="shippingAddress.customFields"
+                        />
+                    ))
+                }
+                </Fieldset>
             </>
         );
     }
+
+    private handleFieldValueChange: (name: string) => (value: string) => void = name => value => {
+        const { onFieldChange } = this.props;
+        onFieldChange(name, value);
+    };
 }
 
 export default RemoteShippingAddress;
