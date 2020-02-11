@@ -122,7 +122,7 @@ describe('Customer', () => {
 
             (component.find(GuestForm) as ReactWrapper<GuestFormProps>)
                 .prop('onContinueAsGuest')({
-                    email: 'test@bigcommerce.com',
+                    email: ' test@bigcommerce.com ',
                     shouldSubscribe: true,
                 });
 
