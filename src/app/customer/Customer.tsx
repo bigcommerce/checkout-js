@@ -134,12 +134,14 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
             subscribeToNewsletter = noop,
         } = this.props;
 
+        const email = formValues.email.trim();
+
         if (canSubscribe && formValues.shouldSubscribe) {
-            subscribeToNewsletter({ email: formValues.email, firstName });
+            subscribeToNewsletter({ email, firstName });
         }
 
         try {
-            await continueAsGuest({ email: formValues.email });
+            await continueAsGuest({ email });
             onContinueAsGuest();
 
             this.draftEmail = undefined;
