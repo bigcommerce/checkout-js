@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.20.0](https://github.com/bigcommerce/checkout-js/compare/v1.19.1...v1.20.0) (2020-02-12)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-4245 Add custom fields support for amazon pay ([fedb909](https://github.com/bigcommerce/checkout-js/commit/fedb909))
+* **checkout:** CHECKOUT-4245 Fix validation on first render of custom fields with amazon pay ([fa8ed4b](https://github.com/bigcommerce/checkout-js/commit/fa8ed4b))
+* **customer:** CHECKOUT-4596 Trim customer email ([653879e](https://github.com/bigcommerce/checkout-js/commit/653879e))
+
+
+### Features
+
+* **checkout:** CHECKOUT-4655 Bump `checkout-sdk` version ([26ad322](https://github.com/bigcommerce/checkout-js/commit/26ad322))
+
 ### [1.19.1](https://github.com/bigcommerce/checkout-js/compare/v1.19.0...v1.19.1) (2020-02-10)
 
 
