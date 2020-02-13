@@ -2,7 +2,14 @@ import { Checkout, Customer } from '@bigcommerce/checkout-sdk';
 import { every } from 'lodash';
 
 import { SUPPORTED_METHODS } from './CheckoutButtonList';
-import { isSupportedSignoutMethod } from './CustomerInfo';
+
+const SUPPORTED_SIGNOUT_METHODS = [
+    'amazon',
+];
+
+export const isSupportedSignoutMethod = (methodId: string): boolean => {
+    return SUPPORTED_SIGNOUT_METHODS.indexOf(methodId) > -1;
+};
 
 export default function canSignOut(customer: Customer, checkout: Checkout, methodId: string): boolean {
     if (isSupportedSignoutMethod(methodId)) {
