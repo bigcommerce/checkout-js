@@ -6,6 +6,7 @@ import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 
 import { getShippingAddress } from './shipping-addresses.mock';
+import BillingSameAsShippingField from './BillingSameAsShippingField';
 import SingleShippingForm, { SingleShippingFormProps, SHIPPING_AUTOSAVE_DELAY } from './SingleShippingForm';
 
 /* eslint-disable react/jsx-no-bind */
@@ -238,5 +239,18 @@ describe('SingleShippingForm', () => {
             expect(defaultProps.updateAddress).not.toHaveBeenCalled();
             done();
         }, SHIPPING_AUTOSAVE_DELAY * 1.1);
+    });
+
+    it('does not render billing same as shipping checkbox for amazon pay', () => {
+        component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <SingleShippingForm
+                    { ...defaultProps }
+                    methodId="amazon"
+                />
+            </LocaleContext.Provider>
+        );
+
+        expect(component.contains( <BillingSameAsShippingField /> )).toBe(false);
     });
 });

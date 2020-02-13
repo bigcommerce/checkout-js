@@ -110,6 +110,8 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             hasRequestedShippingOptions,
         } = this.state;
 
+        const shouldShowBillingSameAsShipping = methodId !== 'amazon';
+
         return (
             <Form autoComplete="on">
                 <Fieldset>
@@ -131,9 +133,11 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                         onUseNewAddress={ this.onUseNewAddress }
                         shippingAddress={ shippingAddress }
                     />
-                    <div className="form-body">
-                        <BillingSameAsShippingField />
-                    </div>
+                    {
+                        shouldShowBillingSameAsShipping && <div className="form-body">
+                            <BillingSameAsShippingField />
+                        </div>
+                    }
                 </Fieldset>
 
                 <ShippingFormFooter
