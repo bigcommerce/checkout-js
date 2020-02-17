@@ -19,7 +19,7 @@ export interface WithCheckoutShippingOptionsProps {
     cart: Cart;
     isSelectingShippingOption(consignmentId?: string): boolean;
     subscribeToConsignments(subscriber: (state: CheckoutSelectors) => void): () => void;
-    selectShippingOption(consignmentId: string, optionId: string): void;
+    selectShippingOption(consignmentId: string, optionId: string): Promise<CheckoutSelectors>;
     isLoading(consignmentId?: string): boolean;
 }
 
