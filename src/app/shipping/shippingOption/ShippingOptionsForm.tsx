@@ -86,26 +86,32 @@ class ShippingOptionsForm extends PureComponent<ShippingOptionsFormProps & Formi
     }
 
     private selectDefaultShippingOption: (state: CheckoutSelectors) => void = ({ data }) => {
-        const {
-            selectShippingOption,
-            isSelectingShippingOption,
-        } = this.props;
+        const { selectShippingOption, setFieldValue } = this.props;
 
-        (data.getConsignments() || []).map(consignment => {
-            const {
-                id,
-                selectedShippingOption,
-            } = consignment;
+        (data.getConsignments() || []).forEach(({ id }) => {
+            // consignment data changes during the loop. Make sure always the latest is used
+            const consignments = data.getConsignments();
 
-            if (selectedShippingOption || isSelectingShippingOption(consignment.id)) {
+            if (!consignments) {
                 return;
             }
 
-            const recommendedOption = getRecommendedShippingOption(consignment);
+            const consignment = consignments.find(({ id: cId }) => cId === id);
+
+            if (!consignment) {
+                return;
+            }
+
+            const { selectedShippingOption, availableShippingOptions } = consignment;
+
+            if (selectedShippingOption || !availableShippingOptions) {
+                return;
+            }
+
+            const recommendedOption = getRecommendedShippingOption(availableShippingOptions);
             const defaultShippingOption = recommendedOption || (
-                consignment.availableShippingOptions &&
-                consignment.availableShippingOptions.length === 1 ?
-                    consignment.availableShippingOptions[0] :
+                availableShippingOptions.length === 1 ?
+                    availableShippingOptions[0] :
                     undefined
                 );
 
@@ -113,7 +119,8 @@ class ShippingOptionsForm extends PureComponent<ShippingOptionsFormProps & Formi
                 return;
             }
 
-            return selectShippingOption(id, defaultShippingOption.id);
+            selectShippingOption(id, defaultShippingOption.id);
+            setFieldValue(`shippingOptionIds.${id}`, defaultShippingOption.id);
         });
     };
 
@@ -159,7 +166,6 @@ export interface ShippingOptionsFormValues {
 
 export default withFormik<ShippingOptionsFormProps, ShippingOptionsFormValues>({
     handleSubmit: noop,
-    enableReinitialize: true,
     mapPropsToValues({ consignments }) {
         const shippingOptionIds: { [id: string]: string } = {};
 

@@ -1,12 +1,9 @@
-import { Consignment, ShippingOption } from '@bigcommerce/checkout-sdk';
+import { ShippingOption } from '@bigcommerce/checkout-sdk';
 
-export default function getRecommendedShippingOption(consignment: Consignment): ShippingOption | undefined {
-    if (consignment.selectedShippingOption ||
-        !consignment.availableShippingOptions ||
-        !consignment.availableShippingOptions.length
-    ) {
+export default function getRecommendedShippingOption(availableShippingOptions: ShippingOption[]): ShippingOption | undefined {
+    if (!availableShippingOptions) {
         return;
     }
 
-    return consignment.availableShippingOptions.find((option: { isRecommended: any }) => option.isRecommended);
+    return availableShippingOptions.find(({ isRecommended }: { isRecommended: any }) => isRecommended);
 }
