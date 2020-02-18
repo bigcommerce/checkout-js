@@ -1,10 +1,11 @@
+import { CardInstrument } from '@bigcommerce/checkout-sdk';
 import { merge } from 'lodash';
 
 import { getCart } from '../../cart/carts.mock';
 import { getDigitalItem, getGiftCertificateItem } from '../../cart/lineItem.mock';
-import { getStoreConfig } from '../../config/config.mock';
 import { getPaymentMethod } from '../payment-methods.mock';
 
+import { getCardInstrument } from './instruments.mock';
 import isInstrumentCardCodeRequired, { IsInstrumentCardCodeRequiredState } from './isInstrumentCardCodeRequired';
 
 describe('isInstrumentCardCodeRequired()', () => {
@@ -12,15 +13,14 @@ describe('isInstrumentCardCodeRequired()', () => {
 
     beforeEach(() => {
         state = {
-            config: merge({}, getStoreConfig(), {
-                checkoutSettings: {
-                    isTrustedShippingAddressEnabled: true,
-                },
-            }),
             lineItems: {
                 ...getCart().lineItems,
                 digitalItems: [],
                 giftCertificates: [],
+            },
+            instrument: {
+                ...getCardInstrument(),
+                trustedShippingAddress: true,
             },
             paymentMethod: merge({}, getPaymentMethod(), {
                 config: {
@@ -28,17 +28,6 @@ describe('isInstrumentCardCodeRequired()', () => {
                 },
             }),
         };
-    });
-
-    it('returns true if trusted shipping address is not enabled', () => {
-        expect(isInstrumentCardCodeRequired(merge({}, state, {
-            config: {
-                checkoutSettings: {
-                    isTrustedShippingAddressEnabled: false,
-                },
-            },
-        })))
-            .toEqual(true);
     });
 
     it('returns true if there is digital item in cart', () => {
@@ -63,30 +52,77 @@ describe('isInstrumentCardCodeRequired()', () => {
             .toEqual(true);
     });
 
-    it('returns true if payment method requires card code for vaulted instrument', () => {
-        expect(isInstrumentCardCodeRequired(merge({}, state, {
-            paymentMethod: merge({}, getPaymentMethod(), {
-                config: {
-                    isVaultingCvvEnabled: true,
-                },
-            }),
-        })))
-            .toEqual(true);
+    describe('if shipping address is trusted', () => {
+        it('returns true if method is configured to require CVV for using stored instrument', () => {
+            expect(isInstrumentCardCodeRequired(merge({}, state, {
+                paymentMethod: merge({}, getPaymentMethod(), {
+                    config: {
+                        isVaultingCvvEnabled: true,
+                    },
+                }),
+            })))
+                .toEqual(true);
+        });
+
+        it('returns false if method is configured not to require CVV for using stored instrument', () => {
+            expect(isInstrumentCardCodeRequired(merge({}, state, {
+                paymentMethod: merge({}, getPaymentMethod(), {
+                    config: {
+                        isVaultingCvvEnabled: false,
+                    },
+                }),
+            })))
+                .toEqual(false);
+        });
     });
 
-    it('returns true if payment method requires card code', () => {
-        expect(isInstrumentCardCodeRequired(merge({}, state, {
-            paymentMethod: merge({}, getPaymentMethod(), {
-                config: {
-                    cardCode: true,
-                },
-            }),
-        })))
-            .toEqual(true);
-    });
+    describe('if shipping address is untrusted', () => {
+        let instrument: CardInstrument;
 
-    it('returns false otherwise', () => {
-        expect(isInstrumentCardCodeRequired(state))
-            .toEqual(false);
+        beforeEach(() => {
+            instrument = {
+                ...getCardInstrument(),
+                trustedShippingAddress: false,
+            };
+        });
+
+        it('returns true if method is configured to require CVV for using stored instrument', () => {
+            expect(isInstrumentCardCodeRequired(merge({}, state, {
+                instrument,
+                paymentMethod: merge({}, getPaymentMethod(), {
+                    config: {
+                        cardCode: false,
+                        isVaultingCvvEnabled: true,
+                    },
+                }),
+            })))
+                .toEqual(true);
+        });
+
+        it('returns true if method is configured to require CVV for regular card payment', () => {
+            expect(isInstrumentCardCodeRequired(merge({}, state, {
+                instrument,
+                paymentMethod: merge({}, getPaymentMethod(), {
+                    config: {
+                        cardCode: true,
+                        isVaultingCvvEnabled: false,
+                    },
+                }),
+            })))
+                .toEqual(true);
+        });
+
+        it('returns false if method is configured not to require CVV for regular card or stored card payment', () => {
+            expect(isInstrumentCardCodeRequired(merge({}, state, {
+                instrument,
+                paymentMethod: merge({}, getPaymentMethod(), {
+                    config: {
+                        cardCode: false,
+                        isVaultingCvvEnabled: false,
+                    },
+                }),
+            })))
+                .toEqual(false);
+        });
     });
 });

@@ -6,6 +6,7 @@ export { default as isInstrumentFeatureAvailable } from './isInstrumentFeatureAv
 export { default as getInstrumentValidationSchema } from './getInstrumentValidationSchema';
 export { default as getHostedInstrumentValidationSchema } from './getHostedInstrumentValidationSchema';
 export { default as isInstrumentCardCodeRequired } from './isInstrumentCardCodeRequired';
+export { default as isInstrumentCardCodeRequiredSelector } from './isInstrumentCardCodeRequiredSelector';
 export { default as isInstrumentCardNumberRequired } from './isInstrumentCardNumberRequired';
 export { default as isInstrumentCardNumberRequiredSelector } from './isInstrumentCardNumberRequiredSelector';
 export { default as AccountInstrumentFieldset } from './AccountInstrumentFieldset';

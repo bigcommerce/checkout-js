@@ -4,19 +4,17 @@ import { createSelector } from 'reselect';
 import isInstrumentCardNumberRequired from './isInstrumentCardNumberRequired';
 
 const isInstrumentCardNumberRequiredSelector = createSelector(
-    ({ data }: CheckoutSelectors) => data.getConfig(),
     ({ data }: CheckoutSelectors) => {
         const cart = data.getCart();
 
         return cart && cart.lineItems;
     },
-    (config, lineItems) => (instrument: Instrument) => {
-        if (!config || !lineItems) {
+    lineItems => (instrument: Instrument) => {
+        if (!lineItems) {
             return false;
         }
 
         return isInstrumentCardNumberRequired({
-            config,
             lineItems,
             instrument,
         });
