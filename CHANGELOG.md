@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.20.2](https://github.com/bigcommerce/checkout-js/compare/v1.20.1...v1.20.2) (2020-02-18)
+
+
+### Bug Fixes
+
+* **payment:** CHECKOUT-4690 Only show CVV field when using stored card if configured to be required or shipping address is untrusted ([0bade25](https://github.com/bigcommerce/checkout-js/commit/0bade25))
+
 ### [1.20.1](https://github.com/bigcommerce/checkout-js/compare/v1.20.0...v1.20.1) (2020-02-12)
 
 
