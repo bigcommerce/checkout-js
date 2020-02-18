@@ -10,7 +10,7 @@ import { MapToProps } from '../../common/hoc';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
 import { configureCardValidator, getCreditCardInputStyles, getCreditCardValidationSchema, getHostedCreditCardValidationSchema, CreditCardCustomerCodeField, CreditCardFieldset, CreditCardFieldsetValues, CreditCardInputStylesType, HostedCreditCardFieldset, HostedCreditCardFieldsetValues } from '../creditCard';
-import { getHostedInstrumentValidationSchema, getInstrumentValidationSchema, isCardInstrument, isInstrumentCardCodeRequired, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CardInstrumentFieldset, CardInstrumentFieldsetValues, CreditCardValidation, HostedCreditCardValidation } from '../storedInstrument';
+import { getHostedInstrumentValidationSchema, getInstrumentValidationSchema, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CardInstrumentFieldset, CardInstrumentFieldsetValues, CreditCardValidation, HostedCreditCardValidation } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
 
@@ -30,12 +30,12 @@ interface WithCheckoutCreditCardPaymentMethodProps {
     instruments: CardInstrument[];
     isCardCodeRequired: boolean;
     isCustomerCodeRequired: boolean;
-    isInstrumentCardCodeRequired: boolean;
     isInstrumentFeatureAvailable: boolean;
     isLoadingInstruments: boolean;
     isPaymentDataRequired: boolean;
     shouldUseHostedFieldset: boolean;
     shouldShowInstrumentFieldset: boolean;
+    isInstrumentCardCodeRequired(instrument: Instrument, method: PaymentMethod): boolean;
     isInstrumentCardNumberRequired(instrument: Instrument): boolean;
     loadInstruments(): Promise<CheckoutSelectors>;
 }
@@ -171,6 +171,7 @@ class CreditCardPaymentMethod extends Component<
         const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
         const isLoading = isInitializing || isLoadingInstruments;
         const shouldShowNumberField = selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument) : false;
+        const shouldShowCardCodeField = selectedInstrument ? isInstrumentCardCodeRequiredProp(selectedInstrument, method) : false;
 
         return (
             <LoadingOverlay
@@ -185,12 +186,12 @@ class CreditCardPaymentMethod extends Component<
                         selectedInstrumentId={ selectedInstrumentId }
                         validateInstrument={ shouldUseHostedFieldset ?
                             <HostedCreditCardValidation
-                                cardCodeId={ isInstrumentCardCodeRequiredProp ? 'ccCvv' : undefined }
+                                cardCodeId={ shouldShowCardCodeField ? 'ccCvv' : undefined }
                                 cardNumberId={ shouldShowNumberField ? 'ccNumber' : undefined }
                                 focusedFieldType={ focusedHostedFieldType }
                             /> :
                             <CreditCardValidation
-                                shouldShowCardCodeField={ isInstrumentCardCodeRequiredProp }
+                                shouldShowCardCodeField={ shouldShowCardCodeField }
                                 shouldShowNumberField={ shouldShowNumberField }
                             /> }
                     /> }
@@ -255,7 +256,7 @@ class CreditCardPaymentMethod extends Component<
                 return getInstrumentValidationSchema({
                     instrumentBrand: selectedInstrument.brand,
                     instrumentLast4: selectedInstrument.last4,
-                    isCardCodeRequired: isInstrumentCardCodeRequiredProp,
+                    isCardCodeRequired: isInstrumentCardCodeRequiredProp(selectedInstrument, method),
                     isCardNumberRequired: isInstrumentCardNumberRequiredProp(selectedInstrument),
                     language,
                 });
@@ -385,7 +386,6 @@ function mapFromCheckoutProps(): MapToProps<
 
         const {
             data: {
-                getCart,
                 getConfig,
                 getCustomer,
                 getInstruments,
@@ -396,11 +396,10 @@ function mapFromCheckoutProps(): MapToProps<
             },
         } = checkoutState;
 
-        const cart = getCart();
         const config = getConfig();
         const customer = getCustomer();
 
-        if (!config || !cart || !customer || !method) {
+        if (!config || !customer || !method) {
             return null;
         }
 
@@ -416,11 +415,7 @@ function mapFromCheckoutProps(): MapToProps<
             instruments,
             isCardCodeRequired: method.config.cardCode || method.config.cardCode === null,
             isCustomerCodeRequired: !!method.config.requireCustomerCode,
-            isInstrumentCardCodeRequired: isInstrumentCardCodeRequired({
-                config,
-                lineItems: cart.lineItems,
-                paymentMethod: method,
-            }),
+            isInstrumentCardCodeRequired: isInstrumentCardCodeRequiredSelector(checkoutState),
             isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredSelector(checkoutState),
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
             isLoadingInstruments: isLoadingInstruments(),

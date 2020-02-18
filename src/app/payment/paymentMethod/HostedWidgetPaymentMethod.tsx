@@ -9,7 +9,7 @@ import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { MapToProps } from '../../common/hoc';
 import { LoadingOverlay } from '../../ui/loading';
 import { CreditCardStorageField } from '../creditCard';
-import { isCardInstrument, isInstrumentCardCodeRequired, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CardInstrumentFieldset, CreditCardValidation } from '../storedInstrument';
+import { isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CardInstrumentFieldset, CreditCardValidation } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
 
@@ -37,11 +37,11 @@ export interface HostedWidgetPaymentMethodProps {
 
 interface WithCheckoutHostedWidgetPaymentMethodProps {
     instruments: CardInstrument[];
-    isInstrumentCardCodeRequired: boolean;
     isInstrumentFeatureAvailable: boolean;
     isLoadingInstruments: boolean;
     isPaymentDataRequired: boolean;
     isSignedIn: boolean;
+    isInstrumentCardCodeRequired(instrument: Instrument, method: PaymentMethod): boolean;
     isInstrumentCardNumberRequired(instrument: Instrument): boolean;
     loadInstruments(): Promise<CheckoutSelectors>;
     signOut(options: CustomerRequestOptions): void;
@@ -195,12 +195,14 @@ class HostedWidgetPaymentMethod extends Component<
             instruments,
             isInstrumentCardCodeRequired: isInstrumentCardCodeRequiredProp,
             isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredProp,
+            method,
             validateInstrument,
         } = this.props;
 
         const { selectedInstrumentId = this.getDefaultInstrumentId() } = this.state;
         const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
         const shouldShowNumberField = selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument) : false;
+        const shouldShowCardCodeField = selectedInstrument ? isInstrumentCardCodeRequiredProp(selectedInstrument, method) : false;
 
         if (hideVerificationFields) {
             return;
@@ -212,7 +214,7 @@ class HostedWidgetPaymentMethod extends Component<
 
         return (
             <CreditCardValidation
-                shouldShowCardCodeField={ isInstrumentCardCodeRequiredProp }
+                shouldShowCardCodeField={ shouldShowCardCodeField }
                 shouldShowNumberField={ shouldShowNumberField }
             />
         );
@@ -336,7 +338,6 @@ function mapFromCheckoutProps(): MapToProps<
 
         const {
             data: {
-                getCart,
                 getCheckout,
                 getConfig,
                 getCustomer,
@@ -348,12 +349,11 @@ function mapFromCheckoutProps(): MapToProps<
             },
         } = checkoutState;
 
-        const cart = getCart();
         const checkout = getCheckout();
         const config = getConfig();
         const customer = getCustomer();
 
-        if (!checkout || !config || !cart || !customer || !method) {
+        if (!checkout || !config || !customer || !method) {
             return null;
         }
 
@@ -362,11 +362,7 @@ function mapFromCheckoutProps(): MapToProps<
             isLoadingInstruments: isLoadingInstruments(),
             isPaymentDataRequired: isPaymentDataRequired(values.useStoreCredit),
             isSignedIn: some(checkout.payments, { providerId: method.id }),
-            isInstrumentCardCodeRequired: isInstrumentCardCodeRequired({
-                config,
-                lineItems: cart.lineItems,
-                paymentMethod: method,
-            }),
+            isInstrumentCardCodeRequired: isInstrumentCardCodeRequiredSelector(checkoutState),
             isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredSelector(checkoutState),
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailable({
                 config,
