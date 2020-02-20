@@ -1,7 +1,7 @@
 import { Address, CheckoutPayment, FormField } from '@bigcommerce/checkout-sdk';
 import React, { memo, FunctionComponent } from 'react';
 
-import { isValidAddress, AddressType, StaticAddress } from '../address';
+import { AddressType, StaticAddress } from '../address';
 import { withCheckout, CheckoutContextProps } from '../checkout';
 import { EMPTY_ARRAY } from '../common/utility';
 import { TranslatedString } from '../locale';
@@ -20,11 +20,9 @@ const StaticBillingAddress: FunctionComponent<
     WithCheckoutStaticBillingAddressProps
 > = ({
     address,
-    fields,
     payments = EMPTY_ARRAY,
 }) => {
-    if (isValidAddress(address, fields.filter(field => !field.custom)) &&
-        payments.find(payment => payment.providerId === 'amazon')) {
+    if (payments.find(payment => payment.providerId === 'amazon')) {
         return (
             <p><TranslatedString id="billing.billing_address_amazon" /></p>
         );

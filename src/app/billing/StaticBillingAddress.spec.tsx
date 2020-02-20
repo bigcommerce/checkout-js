@@ -64,25 +64,4 @@ describe('StaticBillingAddress', () => {
         expect(container.text())
             .toEqual(getLanguageService().translate('billing.billing_address_amazon'));
     });
-
-    it('does not render message instead of address when using Amazon if address is incomplete', () => {
-        jest.spyOn(checkoutState.data, 'getCheckout')
-            .mockReturnValue({
-                ...getCheckout(),
-                payments: [
-                    { ...getCheckoutPayment(), providerId: 'amazon' },
-                ],
-            });
-
-        const container = mount(<StaticBillingAddressTest
-            { ...defaultProps }
-            address={ {
-                ...defaultProps.address,
-                address1: '',
-            } }
-        />);
-
-        expect(container.find(StaticAddress).length)
-            .toEqual(1);
-    });
 });

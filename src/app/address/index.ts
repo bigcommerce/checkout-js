@@ -1,4 +1,7 @@
-export { AddressFormValues as AddressFormValues } from './mapAddressToFormValues';
+import { AddressFormValues } from './mapAddressToFormValues';
+
+export type AddressFormValues = AddressFormValues;
+
 export { default as mapAddressToFormValues } from './mapAddressToFormValues';
 export { default as mapAddressFromFormValues } from './mapAddressFromFormValues';
 export { default as AddressForm } from './AddressForm';

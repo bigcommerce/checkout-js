@@ -6,7 +6,7 @@ import { withCheckout, CheckoutContextProps } from '../checkout';
 import { TranslatedString } from '../locale';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 
-import canSignOut from './canSignOut';
+import canSignOut, { isSupportedSignoutMethod } from './canSignOut';
 
 export interface CustomerInfoProps {
     onSignOut?(event: CustomerSignOutEvent): void;
@@ -16,14 +16,6 @@ export interface CustomerInfoProps {
 export interface CustomerSignOutEvent {
     isCartEmpty: boolean;
 }
-
-const SUPPORTED_SIGNOUT_METHODS = [
-    'amazon',
-];
-
-export const isSupportedSignoutMethod = (methodId: string): boolean => {
-    return SUPPORTED_SIGNOUT_METHODS.indexOf(methodId) > -1;
-};
 
 interface WithCheckoutCustomerInfoProps {
     email: string;
