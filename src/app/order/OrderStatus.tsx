@@ -17,6 +17,7 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
     supportPhoneNumber,
 }) => {
     const isPendingReview = order.status === 'MANUAL_VERIFICATION_REQUIRED';
+    const isAwaitingPayment = order.status === 'AWAITING_PAYMENT';
     const orderNumber = order.orderId;
 
     return <OrderConfirmationSection>
@@ -28,14 +29,14 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
             />
         </p> }
 
-        { isPendingReview &&
+        { (isPendingReview || isAwaitingPayment) &&
         <p>
             <TranslatedString
                 id="order_confirmation.order_pending_review_text"
             />
         </p> }
 
-        { !isPendingReview &&
+        { !(isPendingReview || isAwaitingPayment) &&
         <p>
             <TranslatedHtml
                 data={ { orderNumber, supportEmail, supportPhoneNumber } }
