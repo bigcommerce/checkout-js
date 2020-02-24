@@ -3783,6 +3783,8 @@ h6 a:hover {
       position: absolute;
       top: 50%;
       transform: translateY(-50%); }
+  .modal.modal--bluesnapv2 {
+    width: auto; }
 
 .modal-header {
   border-bottom: 0; }
@@ -5314,4 +5316,4 @@ body.klarna-payments-fso-open {
     font-weight: normal; }
 
 
-/*# sourceMappingURL=checkout-04fd46b2.css.map*/
+/*# sourceMappingURL=checkout-c43f13d9.css.map*/

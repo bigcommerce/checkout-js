@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.22.0](https://github.com/bigcommerce/checkout-js/compare/v1.21.0...v1.22.0) (2020-02-24)
+
+
+### Bug Fixes
+
+* **payment:** INT-1997 Fix BlueSnap V2 payment method style ([8786e2e](https://github.com/bigcommerce/checkout-js/commit/8786e2e))
+
+
+### Features
+
+* **payment:** INT-1997 Add BlueSnap V2 payment method ([1c7884e](https://github.com/bigcommerce/checkout-js/commit/1c7884e))
+
 ## [1.21.0](https://github.com/bigcommerce/checkout-js/compare/v1.20.2...v1.21.0) (2020-02-24)
 
 
