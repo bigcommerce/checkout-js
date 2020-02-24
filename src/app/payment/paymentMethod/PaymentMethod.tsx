@@ -7,6 +7,7 @@ import AdyenV2PaymentMethod from './AdyenV2PaymentMethod';
 import AffirmPaymentMethod from './AffirmPaymentMethod';
 import AmazonPaymentMethod from './AmazonPaymentMethod';
 import BarclaycardPaymentMethod from './BarclaycardPaymentMethod';
+import BlueSnapV2PaymentMethod from './BlueSnapV2PaymentMethod';
 import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod';
 import ChasePayPaymentMethod from './ChasePayPaymentMethod';
 import CreditCardPaymentMethod from './CreditCardPaymentMethod';
@@ -71,6 +72,10 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
 
     if (method.id === PaymentMethodId.Affirm) {
         return <AffirmPaymentMethod { ...props } />;
+    }
+
+    if (method.gateway === PaymentMethodId.BlueSnapV2) {
+        return <BlueSnapV2PaymentMethod { ...props } />;
     }
 
     if (method.id === PaymentMethodId.Klarna) {

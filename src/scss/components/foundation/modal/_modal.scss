@@ -76,6 +76,10 @@
                 transform: translateY(-50%);
             }
         }
+
+        &.modal--bluesnapv2 {
+            width: auto;
+        }
     }
 
     .modal-header {
