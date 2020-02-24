@@ -127,7 +127,10 @@ describe('Customer', () => {
                 });
 
             expect(checkoutService.continueAsGuest)
-                .toHaveBeenCalledWith({ email: 'test@bigcommerce.com' });
+                .toHaveBeenCalledWith({
+                    email: 'test@bigcommerce.com',
+                    marketingEmailConsent: true,
+                });
 
             expect(subscribeToNewsletter)
                 .toHaveBeenCalledWith({
@@ -155,7 +158,10 @@ describe('Customer', () => {
                 });
 
             expect(checkoutService.continueAsGuest)
-                .toHaveBeenCalledWith({ email: 'test@bigcommerce.com' });
+                .toHaveBeenCalledWith({
+                    email: 'test@bigcommerce.com',
+                    marketingEmailConsent: undefined,
+                });
 
             expect(subscribeToNewsletter)
                 .not.toHaveBeenCalled();

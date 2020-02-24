@@ -19,6 +19,7 @@ describe('GuestForm', () => {
             onChangeEmail: jest.fn(),
             onContinueAsGuest: jest.fn(),
             onShowLogin: jest.fn(),
+            requiresMarketingConsent: false,
         };
 
         localeContext = createLocaleContext(getStoreConfig());
@@ -67,13 +68,20 @@ describe('GuestForm', () => {
         component.find('input[name="email"]')
             .simulate('change', { target: { value: 'test@bigcommerce.com', name: 'email' } });
 
+        component.find('input[name="shouldSubscribe"]')
+            .simulate('change', { target: { value: true, name: 'shouldSubscribe' } });
+
         component.find('form')
             .simulate('submit');
 
         await new Promise(resolve => process.nextTick(resolve));
 
         expect(handleContinueAsGuest)
-            .toHaveBeenCalled();
+            .toHaveBeenCalledWith({
+                email: 'test@bigcommerce.com',
+                privacyPolicy: false,
+                shouldSubscribe: true,
+            });
     });
 
     it('displays error message if email is not valid', async () => {
@@ -196,6 +204,25 @@ describe('GuestForm', () => {
             </LocaleContext.Provider>
         );
 
+        expect(component.find('label[htmlFor="shouldSubscribe"]').text())
+            .toEqual('Subscribe to our newsletter.');
+        expect(component.exists('input[name="shouldSubscribe"]'))
+            .toEqual(true);
+    });
+
+    it('renders marketing consent field', () => {
+        const component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <GuestForm
+                    { ...defaultProps }
+                    canSubscribe={ true }
+                    requiresMarketingConsent={ true }
+                />
+            </LocaleContext.Provider>
+        );
+
+        expect(component.find('label[htmlFor="shouldSubscribe"]').text())
+            .toEqual('I would like to receive updates and offers.');
         expect(component.exists('input[name="shouldSubscribe"]'))
             .toEqual(true);
     });
