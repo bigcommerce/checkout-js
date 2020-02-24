@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.21.0](https://github.com/bigcommerce/checkout-js/compare/v1.20.2...v1.21.0) (2020-02-24)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-4667 Fix to always use billing address from amazon pay ([1bedcb7](https://github.com/bigcommerce/checkout-js/commit/1bedcb7))
+* **checkout:** CHECKOUT-4667 fixed build warnings ([1653eb7](https://github.com/bigcommerce/checkout-js/commit/1653eb7))
+
+
+### Features
+
+* **customer:** CHECKOUT-4640 Allow guest shopper to provide marketing email consent ([fd907cd](https://github.com/bigcommerce/checkout-js/commit/fd907cd))
+
 ### [1.20.2](https://github.com/bigcommerce/checkout-js/compare/v1.20.1...v1.20.2) (2020-02-18)
 
 
