@@ -67,24 +67,6 @@ body.klarna-payments-fso-open {
     scroll-behavior: auto;
 }
 
-#stripe-card-field {
-    background-color: white;
-    border: remCalc(1px) solid transparent;
-    border-radius: remCalc(4px);
-    box-shadow: 0 remCalc(1px) remCalc(3px) 0 #e6ebf1;
-    box-sizing: border-box;
-    height: remCalc(40px);
-    margin-bottom: remCalc(20px);
-    margin-top: remCalc(20px);
-    padding: remCalc(10px) remCalc(12px);
-    -webkit-transition: box-shadow 150ms ease;
-    transition: box-shadow 150ms ease;
-}
-
-#stripe-card-field--focus {
-    box-shadow: 0 1px (3px) 0 #cfd7df;
-}
-
 #stripe-card-field--invalid {
     border-color: #fa755a;
 }
