@@ -85,6 +85,10 @@ function getPaymentMethodTitle(
                 logoUrl: cdnPath(`/img/payment-providers/barclaycard_${method.id.toLowerCase()}.png`),
                 titleText: '',
             },
+            [PaymentMethodId.AdyenV2]: {
+                logoUrl: `https://checkoutshopper-live.adyen.com/checkoutshopper/images/logos/${(method.id === 'scheme') ? 'card' : method.id.toLowerCase()}.svg`,
+                titleText: method.config.displayName || '',
+            },
         };
 
         // KLUDGE: 'paypal' is actually a credit card method. It is the only
