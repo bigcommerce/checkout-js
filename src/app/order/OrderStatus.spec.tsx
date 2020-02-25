@@ -2,6 +2,8 @@ import { Order } from '@bigcommerce/checkout-sdk';
 import { shallow, ShallowWrapper } from 'enzyme';
 import React from 'react';
 
+import { TranslatedString } from '../locale';
+
 import { getOrder } from './orders.mock';
 import OrderStatus from './OrderStatus';
 
@@ -54,6 +56,22 @@ describe('OrderStatus', () => {
 
         it('renders status with special text', () => {
             expect(orderStatus).toMatchSnapshot();
+        });
+    });
+
+    describe('when order is awaiting payment', () => {
+        beforeEach(() => {
+            orderStatus = shallow(<OrderStatus
+                order={ {
+                    ...getOrder(),
+                    status: 'AWAITING_PAYMENT',
+                } }
+            />);
+        });
+
+        it('displays order is pending text', () => {
+            expect(orderStatus.find(TranslatedString).prop('id'))
+                .toEqual('order_confirmation.order_pending_review_text');
         });
     });
 
