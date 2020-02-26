@@ -1,4 +1,4 @@
-import { AdyenCreditCardComponentOptions } from '@bigcommerce/checkout-sdk';
+import { AdyenCreditCardComponentOptions, AdyenIdealComponentOptions  } from '@bigcommerce/checkout-sdk';
 import React, { createRef, useCallback, useRef, useState, FunctionComponent, RefObject } from 'react';
 import { Omit } from 'utility-types';
 
@@ -13,16 +13,19 @@ export type AdyenPaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'cont
 export interface AdyenOptions {
     scheme: AdyenCreditCardComponentOptions;
     bcmc: AdyenCreditCardComponentOptions;
+    ideal: AdyenIdealComponentOptions;
 }
 
-export enum AdyenMethodType {
+export enum AdyenV2PaymentMethodType {
     scheme = 'scheme',
     bcmc = 'bcmc',
+    ideal = 'ideal',
 }
 
 interface AdyenPaymentMethodRef {
-    threeDSecureContentRef: RefObject<HTMLDivElement>;
-    cancelThreeDSecureVerification?(): void;
+    additionalActionContentRef: RefObject<HTMLDivElement>;
+    shouldShowModal: boolean;
+    cancelAdditionalAction?(): void;
 }
 
 const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
@@ -31,47 +34,62 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
     ...rest
 }) => {
     const ref = useRef<AdyenPaymentMethodRef>({
-        threeDSecureContentRef: createRef(),
+        shouldShowModal: true,
+        additionalActionContentRef: createRef(),
     });
-    const [threeDSecureContent, setThreeDSecureContent] = useState<HTMLElement>();
-    const containerId = `${method.id}-adyen-component-field`;
-    const threeDS2ContainerId = `${containerId}-3ds`;
-    const cardVerificationContainerId = `${method.id}-tsv`;
-    const component = method.id as AdyenMethodType;
+
+    const [additionalActionContent, setAdditionalActionContent] = useState<HTMLElement>();
+    const containerId = `adyen-${method.id}-component-field`;
+    const additionalActionContainerId = `adyen-${method.id}-additional-action-component-field`;
+    const cardVerificationContainerId = `adyen-${method.id}-tsv-component-field`;
+    const threeDS2ContainerId = `adyen-${method.id}-additional-action-component-field`;
+    const component = method.id as AdyenV2PaymentMethodType;
     const adyenOptions: AdyenOptions = {
-        [AdyenMethodType.scheme]: {
+        [AdyenV2PaymentMethodType.scheme]: {
             hasHolderName: true,
         },
-        [AdyenMethodType.bcmc]: {
+        [AdyenV2PaymentMethodType.bcmc]: {
             hasHolderName: false,
+        },
+        [AdyenV2PaymentMethodType.ideal]: {
+            showImage: true,
         },
     };
 
-    const onLoad = useCallback(cancel => {
-        const div = document.createElement('div');
-        div.setAttribute('id', threeDS2ContainerId);
+    const onBeforeLoad = useCallback((shopperInteraction: boolean)  => {
+        ref.current.shouldShowModal = shopperInteraction;
 
-        setThreeDSecureContent(div);
-        ref.current.cancelThreeDSecureVerification = cancel;
-    }, [threeDS2ContainerId]);
+        if (ref.current.shouldShowModal) {
+            const div = document.createElement('div');
+
+            div.setAttribute('id', additionalActionContainerId);
+            setAdditionalActionContent(div);
+        } else {
+            setAdditionalActionContent(undefined);
+        }
+    }, [additionalActionContainerId]);
 
     const onComplete = useCallback(() => {
-        setThreeDSecureContent(undefined);
-        ref.current.cancelThreeDSecureVerification = undefined;
+        setAdditionalActionContent(undefined);
+        ref.current.cancelAdditionalAction = undefined;
     }, []);
 
-    const appendThreeDSecureContent = useCallback(() => {
-        if (ref.current.threeDSecureContentRef.current && threeDSecureContent) {
-            ref.current.threeDSecureContentRef.current.appendChild(threeDSecureContent);
+    const onLoad = useCallback((cancel?) => {
+        ref.current.cancelAdditionalAction = cancel;
+    }, []);
+
+    const appendAdditionalActionContent = useCallback(() => {
+        if (ref.current.additionalActionContentRef.current && additionalActionContent) {
+            ref.current.additionalActionContentRef.current.appendChild(additionalActionContent);
         }
-    }, [threeDSecureContent]);
+    }, [additionalActionContent]);
 
-    const cancelThreeDSecureModalFlow = useCallback(() => {
-        setThreeDSecureContent(undefined);
+    const cancelAdditionalActionModalFlow = useCallback(() => {
+        setAdditionalActionContent(undefined);
 
-        if (ref.current.cancelThreeDSecureVerification) {
-            ref.current.cancelThreeDSecureVerification();
-            ref.current.cancelThreeDSecureVerification = undefined;
+        if (ref.current.cancelAdditionalAction) {
+            ref.current.cancelAdditionalAction();
+            ref.current.cancelAdditionalAction = undefined;
         }
     }, []);
 
@@ -83,14 +101,21 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
                 containerId,
                 options: adyenOptions[component],
                 threeDS2ContainerId,
+                additionalActionOptions: {
+                    containerId: additionalActionContainerId,
+                    onBeforeLoad,
+                    onComplete,
+                    onLoad,
+                },
                 threeDS2Options: {
                     widgetSize: '05',
-                    onLoad,
+                    onBeforeLoad,
                     onComplete,
+                    onLoad,
                 },
             },
         });
-    }, [initializePayment, component, cardVerificationContainerId, containerId, threeDS2ContainerId, adyenOptions, onLoad, onComplete]);
+    }, [initializePayment, component, cardVerificationContainerId, containerId, additionalActionContainerId, threeDS2ContainerId, adyenOptions, onBeforeLoad, onComplete, onLoad]);
 
     const validateInstrument = (shouldShowNumberField: boolean) => {
         return <AdyenV2CardValidation
@@ -112,16 +137,21 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
         <Modal
             additionalBodyClassName="modal-body--center"
             closeButtonLabel={ <TranslatedString id="common.close_action" /> }
-            isOpen={ !!threeDSecureContent }
-            onAfterOpen={ appendThreeDSecureContent }
-            onRequestClose={ cancelThreeDSecureModalFlow }
+            isOpen={ !!additionalActionContent && ref.current.shouldShowModal }
+            onAfterOpen={ appendAdditionalActionContent }
+            onRequestClose={ cancelAdditionalActionModalFlow }
             shouldShowCloseButton={ true }
         >
             <div
-                ref={ ref.current.threeDSecureContentRef }
+                ref={ ref.current.additionalActionContentRef }
                 style={ { width: '100%' } }
             />
         </Modal>
+        { !additionalActionContent &&
+            <div
+                id= { additionalActionContainerId }
+                style={ { display: 'none' } }
+            /> }
     </>;
 };
 
