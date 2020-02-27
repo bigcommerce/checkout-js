@@ -73,6 +73,7 @@ describe('when using Stripe payment', () => {
                 containerId: 'stripe-card-field',
                 deinitializePayment: expect.any(Function),
                 initializePayment: expect.any(Function),
+                additionalContainerClassName: 'optimizedCheckout-form-input',
                 method,
             }));
     });

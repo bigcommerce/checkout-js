@@ -16,6 +16,7 @@ import { PaymentFormValues } from '../PaymentForm';
 import SignOutLink from './SignOutLink';
 
 export interface HostedWidgetPaymentMethodProps {
+    additionalContainerClassName?: string;
     containerId: string;
     hideContentWhenSignedOut?: boolean;
     hideVerificationFields?: boolean;
@@ -142,6 +143,7 @@ class HostedWidgetPaymentMethod extends Component<
             method,
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
             isLoadingInstruments,
+            additionalContainerClassName,
         } = this.props;
 
         const {
@@ -170,7 +172,8 @@ class HostedWidgetPaymentMethod extends Component<
                     className={ classNames(
                         'widget',
                         `widget--${method.id}`,
-                        'payment-widget'
+                        'payment-widget',
+                        additionalContainerClassName
                     ) }
                     id={ containerId }
                     style={ {
