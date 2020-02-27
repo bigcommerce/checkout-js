@@ -22,7 +22,7 @@ export interface CustomerProps {
     subscribeToNewsletter?(data: { email: string; firstName?: string }): void;
 }
 
-interface WithCheckoutCustomerProps {
+export interface WithCheckoutCustomerProps {
     canSubscribe: boolean;
     checkoutButtonIds: string[];
     createAccountUrl: string;
@@ -135,6 +135,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
             onContinueAsGuest = noop,
             onContinueAsGuestError = noop,
             subscribeToNewsletter = noop,
+            requiresMarketingConsent,
         } = this.props;
 
         const email = formValues.email.trim();
@@ -146,7 +147,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
         try {
             await continueAsGuest({
                 email,
-                marketingEmailConsent: formValues.shouldSubscribe ? true : undefined,
+                marketingEmailConsent: requiresMarketingConsent && formValues.shouldSubscribe ? true : undefined,
             });
             onContinueAsGuest();
 
