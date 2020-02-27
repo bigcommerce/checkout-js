@@ -1857,7 +1857,7 @@ Inputs of all types should be associated with a label which has a `for` attribut
     text-transform: none;
     vertical-align: bottom; }
 
-.form-input {
+.form-input, .widget--stripev3 {
   appearance: none;
   background-color: #fff;
   border-color: #d9d9d9;
@@ -1897,33 +1897,33 @@ parent: forms
 </div>
 ```
 */ }
-  .form-input:disabled {
+  .form-input:disabled, .widget--stripev3:disabled {
     background-color: #f5f5f5;
     border-color: #d9d9d9;
     color: #333;
     cursor: not-allowed; }
-  .form-input[readonly] {
+  .form-input[readonly], .widget--stripev3[readonly] {
     background-color: #f5f5f5;
     border-color: #d9d9d9;
     color: #333;
     cursor: text; }
-  .form-input:focus {
+  .form-input:focus, .widget--stripev3:focus {
     background: #fff;
     border-color: #4496f6;
     box-shadow: 0 0 3px rgba(68, 150, 246, 0.4);
     outline: none; }
-  .form-input[rows] {
+  .form-input[rows], .widget--stripev3[rows] {
     height: auto; }
-  .form-input[type="search"] {
+  .form-input[type="search"], .widget--stripev3[type="search"] {
     box-sizing: border-box; }
-  .form-input::-webkit-input-placeholder {
+  .form-input::-webkit-input-placeholder, .widget--stripev3::-webkit-input-placeholder {
     color: #d9d9d9; }
-  .form-input::-ms-clear {
+  .form-input::-ms-clear, .widget--stripev3::-ms-clear {
     height: 0;
     width: 0; }
-  .form-input::-moz-placeholder {
+  .form-input::-moz-placeholder, .widget--stripev3::-moz-placeholder {
     color: #d9d9d9; }
-  .form-input:-ms-input-placeholder {
+  .form-input:-ms-input-placeholder, .widget--stripev3:-ms-input-placeholder {
     color: #d9d9d9; }
 
 /*doc
@@ -2287,10 +2287,10 @@ Sometimes inputs need inline actions. An inline button for a search box for exam
 </div>
 ```
 */
-.form-input.has-action {
+.form-input.has-action, .has-action.widget--stripev3 {
   float: left;
   padding-right: 2.84615rem; }
-  .form-input.has-action + .button--inputAction {
+  .form-input.has-action + .button--inputAction, .has-action.widget--stripev3 + .button--inputAction {
     background: transparent;
     border: 0;
     border-radius: 0 4px 4px 0;
@@ -2317,10 +2317,10 @@ Sometimes inputs need to display an informative icon to convey a certain meaning
 </div>
 ```
 */
-.form-input.has-icon {
+.form-input.has-icon, .has-icon.widget--stripev3 {
   float: left;
   padding-right: 2.15385rem; }
-  .form-input.has-icon + .icon {
+  .form-input.has-icon + .icon, .has-icon.widget--stripev3 + .icon {
     height: 3.45rem;
     margin-left: -2.15385rem;
     width: 1.53846rem; }
@@ -2377,7 +2377,7 @@ PrefixPostfix
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap; }
-  .form-prefixPostfix .form-input {
+  .form-prefixPostfix .form-input, .form-prefixPostfix .widget--stripev3 {
     flex: 1; }
   .form-prefixPostfix .button {
     height: 3.45rem; }
@@ -2400,7 +2400,7 @@ PrefixPostfix
 .form-prefixPostfix-label--prefix {
   border-radius: 4px 0 0 4px;
   border-width: 1px 0 1px 1px; }
-  .form-prefixPostfix-label--prefix + .form-input {
+  .form-prefixPostfix-label--prefix + .form-input, .form-prefixPostfix-label--prefix + .widget--stripev3 {
     border-radius: 0 4px 4px 0; }
 
 .form-prefixPostfix-label--postfix {
@@ -2841,12 +2841,14 @@ Form inline errors
   margin: 0.1875rem 0 0;
   width: 100%; }
 
-.form-field--success .form-input,
+.form-field--success .form-input, .form-field--success .widget--stripev3,
 .form-field--error .form-input,
-.form-field--warning .form-input {
+.form-field--error .widget--stripev3,
+.form-field--warning .form-input,
+.form-field--warning .widget--stripev3 {
   float: left; }
 
-.form-field--success .form-input,
+.form-field--success .form-input, .form-field--success .widget--stripev3,
 .form-field--success .form-select,
 .form-field--success .form-checkbox + .form-label::before,
 .form-field--success .form-radio + .form-label::before,
@@ -2860,7 +2862,9 @@ Form inline errors
 .form-field--success .form-input-indicator > svg {
   fill: #51a551; }
 
+
 .form-field--error .form-input,
+.form-field--error .widget--stripev3,
 .form-field--error .form-select,
 .form-field--error .form-checkbox + .form-label::before,
 .form-field--error .form-radio + .form-label::before,
@@ -2874,7 +2878,9 @@ Form inline errors
 .form-field--error .form-input-indicator > svg {
   fill: #ed6a6a; }
 
+
 .form-field--warning .form-input,
+.form-field--warning .widget--stripev3,
 .form-field--warning .form-select,
 .form-field--warning .form-checkbox + .form-label::before,
 .form-field--warning .form-radio + .form-label::before,
@@ -3652,10 +3658,10 @@ h6 a:hover {
   .form-field:last-child {
     margin-bottom: 0; }
 
-.form-input:focus, .form-input--focus {
+.form-input:focus, .widget--stripev3:focus, .form-input--focus {
   box-shadow: 0 0 3px rgba(68, 150, 246, 0.4), inset 0 1px 1px #ebebeb; }
 
-.form-input.form-input--withIcon {
+.form-input.form-input--withIcon, .form-input--withIcon.widget--stripev3 {
   padding-right: 2.88462rem; }
 
 .form-input-icon {
@@ -3677,7 +3683,9 @@ h6 a:hover {
   margin: 0;
   position: relative; }
 
+
 .form-field--error .form-input,
+.form-field--error .widget--stripev3,
 .form-field--error .form-select {
   background-color: #fffafa;
   transition: background-color 0.8s ease-out; }
@@ -4798,22 +4806,6 @@ h6 a:hover {
 body.klarna-payments-fso-open {
   scroll-behavior: auto; }
 
-#stripe-card-field {
-  background-color: white;
-  border: 0.07692rem solid transparent;
-  border-radius: 0.30769rem;
-  box-shadow: 0 0.07692rem 0.23077rem 0 #e6ebf1;
-  box-sizing: border-box;
-  height: 3.07692rem;
-  margin-bottom: 1.53846rem;
-  margin-top: 1.53846rem;
-  padding: 0.76923rem 0.92308rem;
-  -webkit-transition: box-shadow 150ms ease;
-  transition: box-shadow 150ms ease; }
-
-#stripe-card-field--focus {
-  box-shadow: 0 1px 3px 0 #cfd7df; }
-
 #stripe-card-field--invalid {
   border-color: #fa755a; }
 
@@ -5010,6 +5002,14 @@ body.klarna-payments-fso-open {
 
 .widget-header-googlepay {
   text-align: center; }
+
+.widget--stripev3 {
+  margin-bottom: 1.53846rem;
+  margin-top: 1.53846rem; }
+
+.StripeElement--focus {
+  border-color: #4496f6;
+  box-shadow: 0 0 3px rgba(68, 150, 246, 0.4); }
 
 .signout-link {
   padding-bottom: 1.5rem;
@@ -5316,4 +5316,4 @@ body.klarna-payments-fso-open {
     font-weight: normal; }
 
 
-/*# sourceMappingURL=checkout-c43f13d9.css.map*/
+/*# sourceMappingURL=checkout-09b40a60.css.map*/

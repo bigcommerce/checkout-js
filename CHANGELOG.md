@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.23.0](https://github.com/bigcommerce/checkout-js/compare/v1.22.0...v1.23.0) (2020-02-27)
+
+
+### Bug Fixes
+
+* **common:** INT-2235 Update mastercard and maestro marks ([9fb28b5](https://github.com/bigcommerce/checkout-js/commit/9fb28b5))
+* **customer:** CHECKOUT-4712 Do not send consent if not required ([1d9fcb5](https://github.com/bigcommerce/checkout-js/commit/1d9fcb5))
+* **order:** CHECKOUT-4575 Display different message if order is awaiting payment ([930472c](https://github.com/bigcommerce/checkout-js/commit/930472c))
+
+
+### Features
+
+* **payment:** INT-2049 added changes to charge correct styles on StripeV3 ([aeb8675](https://github.com/bigcommerce/checkout-js/commit/aeb8675))
+* **payment:** INT-2062 Support iDEAL, Giropay & SEPA APMs through AdyenV2 gateway ([e67321f](https://github.com/bigcommerce/checkout-js/commit/e67321f))
+* **payment:** INT-2317 Added validation to show payment provider logos for AdyenV2 ([15df8d1](https://github.com/bigcommerce/checkout-js/commit/15df8d1))
+
 ## [1.22.0](https://github.com/bigcommerce/checkout-js/compare/v1.21.0...v1.22.0) (2020-02-24)
 
 
