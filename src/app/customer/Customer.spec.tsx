@@ -9,13 +9,13 @@ import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 
 import { getGuestCustomer } from './customers.mock';
-import Customer, { CustomerProps } from './Customer';
+import Customer, { CustomerProps, WithCheckoutCustomerProps } from './Customer';
 import CustomerViewType from './CustomerViewType';
 import GuestForm, { GuestFormProps } from './GuestForm';
 import LoginForm, { LoginFormProps } from './LoginForm';
 
 describe('Customer', () => {
-    let CustomerTest: FunctionComponent<CustomerProps>;
+    let CustomerTest: FunctionComponent<CustomerProps & Partial<WithCheckoutCustomerProps>>;
     let billingAddress: BillingAddress;
     let checkout: Checkout;
     let checkoutService: CheckoutService;
@@ -108,13 +108,40 @@ describe('Customer', () => {
                 });
         });
 
-        it('continues checkout as guest and subscribes to newsletter when "continue as guest" event is received', () => {
+        it('continues checkout as guest and does not send consent if not required', () => {
             jest.spyOn(checkoutService, 'continueAsGuest')
                 .mockReturnValue(Promise.resolve(checkoutService.getState()));
 
             const subscribeToNewsletter = jest.fn();
             const component = mount(
                 <CustomerTest
+                    requiresMarketingConsent={ false }
+                    subscribeToNewsletter={ subscribeToNewsletter }
+                    viewType={ CustomerViewType.Guest }
+                />
+            );
+
+            (component.find(GuestForm) as ReactWrapper<GuestFormProps>)
+                .prop('onContinueAsGuest')({
+                    email: ' test@bigcommerce.com ',
+                    shouldSubscribe: true,
+                });
+
+            expect(checkoutService.continueAsGuest)
+                .toHaveBeenCalledWith({
+                    email: 'test@bigcommerce.com',
+                    marketingEmailConsent: undefined,
+                });
+        });
+
+        it('continues checkout as guest, subscribes to newsletter and sends marketing consent', () => {
+            jest.spyOn(checkoutService, 'continueAsGuest')
+                .mockReturnValue(Promise.resolve(checkoutService.getState()));
+
+            const subscribeToNewsletter = jest.fn();
+            const component = mount(
+                <CustomerTest
+                    requiresMarketingConsent={ true }
                     subscribeToNewsletter={ subscribeToNewsletter }
                     viewType={ CustomerViewType.Guest }
                 />
