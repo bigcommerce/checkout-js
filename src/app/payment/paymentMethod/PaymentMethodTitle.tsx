@@ -86,7 +86,7 @@ function getPaymentMethodTitle(
                 titleText: '',
             },
             [PaymentMethodId.AdyenV2]: {
-                logoUrl: `https://checkoutshopper-live.adyen.com/checkoutshopper/images/logos/${(method.id === 'scheme') ? 'card' : method.id.toLowerCase()}.svg`,
+                logoUrl: `https://checkoutshopper-live.adyen.com/checkoutshopper/images/logos/${(method.method === 'scheme') ? 'card' : method.method}.svg`,
                 titleText: method.config.displayName || '',
             },
         };
