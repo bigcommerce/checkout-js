@@ -48,7 +48,7 @@ describe('ManageCardInstrumentsTable', () => {
             .toEqual('4321');
 
         expect(component.find('[data-test="manage-instrument-expiry"]').at(0).text())
-            .toEqual('02/2020');
+            .toEqual('02/2025');
     });
 
     it('triggers callback when delete button is clicked', () => {
