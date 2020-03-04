@@ -15,6 +15,7 @@ import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
 import GooglePayPaymentMethod from './GooglePayPaymentMethod';
 import HostedPaymentMethod from './HostedPaymentMethod';
 import KlarnaPaymentMethod from './KlarnaPaymentMethod';
+import KlarnaV2PaymentMethod from './KlarnaV2PaymentMethod';
 import MasterpassPaymentMethod from './MasterpassPaymentMethod';
 import OfflinePaymentMethod from './OfflinePaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
@@ -76,6 +77,10 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
 
     if (method.gateway === PaymentMethodId.BlueSnapV2) {
         return <BlueSnapV2PaymentMethod { ...props } />;
+    }
+
+    if (method.gateway === PaymentMethodId.Klarna) {
+        return <KlarnaV2PaymentMethod { ...props } />;
     }
 
     if (method.id === PaymentMethodId.Klarna) {
