@@ -82,7 +82,7 @@ exports[`ManageCardInstrumentsTable matches snapshot with rendered output 1`] = 
           class=""
           data-test="manage-instrument-expiry"
         >
-          02/2020
+          02/2025
         </td>
         <td>
           <button

@@ -1,3 +1,4 @@
+import { CheckoutSelectors, Consignment } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -23,6 +24,7 @@ describe('ShippingOptions Component', () => {
             id: 'foo',
         },
     ];
+    let triggerConsignmentsUpdated: (state: CheckoutSelectors) => void;
     const defaultProps: ShippingOptionsFormProps = {
         isMultiShippingMode: true,
         consignments,
@@ -30,8 +32,10 @@ describe('ShippingOptions Component', () => {
         cart: getCart(),
         shouldShowShippingOptions: true,
         isSelectingShippingOption: jest.fn(() => false),
-        subscribeToConsignments: jest.fn(),
-        selectShippingOption: jest.fn(),
+        subscribeToConsignments: ((subscriber: (state: CheckoutSelectors) => void) => {
+            triggerConsignmentsUpdated = subscriber;
+        }) as any,
+        selectShippingOption: jest.fn(() => Promise.resolve()) as any,
         isLoading: jest.fn(() => false),
     };
 
@@ -75,6 +79,39 @@ describe('ShippingOptions Component', () => {
         );
 
         expect(component.find(ShippingOptionsList).length).toEqual(1);
+    });
+
+    it('selects default shipping option once per consignment when updated consignment has no shipping option', async () => {
+        const consignmentWithoutShippingOption: Consignment = {
+            ...getConsignment(),
+            selectedShippingOption: undefined,
+        };
+
+        mount(
+            <Formik initialValues={ {} } onSubmit={ noop }>
+                <ShippingOptionsForm
+                    { ...defaultProps }
+                    isMultiShippingMode={ false }
+                />
+            </Formik>
+        );
+
+        const selectors = {
+            data: {
+                getConsignments: () => [
+                    consignmentWithoutShippingOption,
+                    getConsignment(),
+                    consignmentWithoutShippingOption,
+                ],
+            },
+        } as CheckoutSelectors;
+
+        triggerConsignmentsUpdated(selectors);
+        triggerConsignmentsUpdated(selectors);
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        expect(defaultProps.selectShippingOption).toHaveBeenCalledTimes(2);
     });
 
     it('renders enter shipping address when no consignments', () => {

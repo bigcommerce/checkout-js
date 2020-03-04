@@ -56,7 +56,7 @@ describe('InstrumentSelect', () => {
             .toEqual('Visa ending in 4321');
 
         expect(component.find('[data-test="instrument-select-expiry"]').at(0).text())
-            .toEqual('Expires 02/2020');
+            .toEqual('Expires 02/2025');
     });
 
     it('shows "use different card" label if no instrument is selected', () => {
