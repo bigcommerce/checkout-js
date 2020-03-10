@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.25.0](https://github.com/bigcommerce/checkout-js/compare/v1.24.0...v1.25.0) (2020-03-10)
+
+
+### Bug Fixes
+
+* **payment:** INT-2379 changed variable to get the correct image ([dd04655](https://github.com/bigcommerce/checkout-js/commit/dd04655))
+* **shipping:** CHECKOUT-4638 Reduce consignments request in multishipping ([2397be4](https://github.com/bigcommerce/checkout-js/commit/2397be4))
+
+
+### Features
+
+* **checkout:** INT-1434 Create KlarnaV2PaymentMethod to support Multi Option ([0ecb5a8](https://github.com/bigcommerce/checkout-js/commit/0ecb5a8))
+* **payment:** INT-1107 Checkout from Cart Page & Quick Cart using Google Pay on Auth.net ([fe32763](https://github.com/bigcommerce/checkout-js/commit/fe32763))
+
 ## [1.24.0](https://github.com/bigcommerce/checkout-js/compare/v1.23.0...v1.24.0) (2020-02-27)
 
 
