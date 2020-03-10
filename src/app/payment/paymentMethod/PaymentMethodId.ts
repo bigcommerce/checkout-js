@@ -7,6 +7,7 @@ enum PaymentMethodId {
     Barclaycard = 'barclaycard',
     BlueSnapV2 = 'bluesnapv2',
     Braintree = 'braintree',
+    AuthorizeNetGooglePay = 'googlepayauthorizenet',
     BraintreeGooglePay = 'googlepaybraintree',
     BraintreeVisaCheckout = 'braintreevisacheckout',
     CCAvenueMars = 'ccavenuemars',
