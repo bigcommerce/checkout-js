@@ -12,6 +12,7 @@ enum PaymentMethodId {
     BraintreeVisaCheckout = 'braintreevisacheckout',
     CCAvenueMars = 'ccavenuemars',
     ChasePay = 'chasepay',
+    Checkoutcom = 'checkoutcom',
     Converge = 'converge',
     Klarna = 'klarna',
     Masterpass = 'masterpass',

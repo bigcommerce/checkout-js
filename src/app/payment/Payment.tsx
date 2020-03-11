@@ -248,12 +248,13 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         const { selectedMethod = defaultMethod } = this.state;
 
         // TODO: Perhaps there is a better way to handle `adyen`, `afterpay`, `amazon`,
-        // `converge` and `sagepay``. They require a redirection to another website
+        // `checkout.com`, `converge` and `sagepay``. They require a redirection to another website
         // during the payment flow but are not categorised as hosted payment methods.
         if (!isSubmittingOrder ||
             !selectedMethod ||
             selectedMethod.type === PaymentMethodProviderType.Hosted ||
             selectedMethod.id === PaymentMethodId.Amazon ||
+            selectedMethod.id === PaymentMethodId.Checkoutcom ||
             selectedMethod.id === PaymentMethodId.Converge ||
             selectedMethod.id === PaymentMethodId.SagePay ||
             selectedMethod.gateway === PaymentMethodId.AdyenV2 ||
