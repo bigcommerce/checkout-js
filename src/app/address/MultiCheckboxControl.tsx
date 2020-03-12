@@ -2,6 +2,8 @@ import React, { memo, useCallback, FunctionComponent, MouseEvent } from 'react';
 
 import { TranslatedString } from '../locale';
 
+import './MultiCheckboxControl.scss';
+
 export interface MultiCheckboxControlProps {
     testId?: string;
     onSelectedAll(): void;
