@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.27.0](https://github.com/bigcommerce/checkout-js/compare/v1.26.0...v1.27.0) (2020-03-13)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-4573 Removed extra zero after decimal for gift certificate value ([493e737](https://github.com/bigcommerce/checkout-js/commit/493e737))
+
+
+### Features
+
+* **checkout:** INT-2350 Bump `checkout-sdk` version ([08c9d71](https://github.com/bigcommerce/checkout-js/commit/08c9d71))
+
 ## [1.26.0](https://github.com/bigcommerce/checkout-js/compare/v1.25.0...v1.26.0) (2020-03-11)
 
 
