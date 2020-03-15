@@ -101,6 +101,7 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
 
     if (method.id === PaymentMethodId.AuthorizeNetGooglePay ||
         method.id === PaymentMethodId.BraintreeGooglePay ||
+        method.id === PaymentMethodId.CheckoutcomGooglePay ||
         method.id === PaymentMethodId.StripeGooglePay) {
         return <GooglePayPaymentMethod { ...props } />;
     }

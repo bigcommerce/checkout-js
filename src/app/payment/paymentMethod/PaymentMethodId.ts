@@ -13,6 +13,7 @@ enum PaymentMethodId {
     CCAvenueMars = 'ccavenuemars',
     ChasePay = 'chasepay',
     Checkoutcom = 'checkoutcom',
+    CheckoutcomGooglePay = 'googlepaycheckoutcom',
     Converge = 'converge',
     Klarna = 'klarna',
     Masterpass = 'masterpass',
