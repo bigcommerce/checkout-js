@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.28.0](https://github.com/bigcommerce/checkout-js/compare/v1.27.0...v1.28.0) (2020-03-16)
+
+
+### Features
+
+* **payment:** INT-1104 Bump SDK. ([ba16b14](https://github.com/bigcommerce/checkout-js/commit/ba16b14))
+* **payment:** INT-2280 added GooglePay for Checkout.com ([43219aa](https://github.com/bigcommerce/checkout-js/commit/43219aa))
+
 ## [1.27.0](https://github.com/bigcommerce/checkout-js/compare/v1.26.0...v1.27.0) (2020-03-13)
 
 
