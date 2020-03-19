@@ -6,11 +6,13 @@ import { TranslatedString } from '../../locale';
 export interface AdyenV2CardValidationProps {
     verificationFieldsContainerId?: string;
     shouldShowNumberField: boolean;
+    paymentMethodType: string;
 }
 
 const AdyenV2CardValidation: React.FunctionComponent<AdyenV2CardValidationProps> = ({
     verificationFieldsContainerId,
     shouldShowNumberField,
+    paymentMethodType,
 }) => (
     <div>
         { shouldShowNumberField && <p>
@@ -24,13 +26,13 @@ const AdyenV2CardValidation: React.FunctionComponent<AdyenV2CardValidationProps>
         </p> }
 
         <div className="form-ccFields" id={ verificationFieldsContainerId }>
-            { <div className="form-field form-field--ccNumber" style={ { display: (shouldShowNumberField) ? undefined : 'none' } }>
+            <div className="form-field form-field--ccNumber" style={ { display: (shouldShowNumberField) ? undefined : 'none' } }>
                 <label htmlFor="encryptedCardNumber">
                     <TranslatedString id="payment.credit_card_number_label" />
                 </label>
                 <div className="form-input optimizedCheckout-form-input has-icon" data-cse="encryptedCardNumber" id="encryptedCardNumber" />
-            </div> }
-            <div className="form-field form-ccFields-field--ccCvv">
+            </div>
+            { paymentMethodType === 'scheme' && <div className="form-field form-ccFields-field--ccCvv">
                 <label htmlFor="encryptedSecurityCode">
                     <TranslatedString id="payment.credit_card_cvv_label" />
                 </label>
@@ -43,7 +45,21 @@ const AdyenV2CardValidation: React.FunctionComponent<AdyenV2CardValidationProps>
                     data-cse="encryptedSecurityCode"
                     id="encryptedSecurityCode"
                 />
-            </div>
+            </div> }
+            { paymentMethodType === 'bcmc' && <div className="form-field form-field--ccExpiry">
+                <label htmlFor="encryptedExpiryDate">
+                    <TranslatedString id="payment.credit_card_expiration_label" />
+                </label>
+                <div
+                    className={ classNames(
+                        'form-input',
+                        'optimizedCheckout-form-input',
+                        'has-icon'
+                    ) }
+                    data-cse="encryptedExpiryDate"
+                    id="encryptedExpiryDate"
+                />
+            </div> }
         </div>
     </div>
 );
