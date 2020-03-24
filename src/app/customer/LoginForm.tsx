@@ -18,6 +18,7 @@ export interface LoginFormProps {
     createAccountUrl: string;
     email?: string;
     forgotPasswordUrl: string;
+    accountExists?: boolean;
     isSigningIn?: boolean;
     signInError?: Error;
     onCancel?(): void;
@@ -34,11 +35,14 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
     canCancel,
     createAccountUrl,
     forgotPasswordUrl,
+    email,
     isSigningIn,
     language,
+    accountExists,
     onCancel,
     onChangeEmail,
     signInError,
+    values: { email: formEmail },
 }) => (
     <Form
         className="checkout-form"
@@ -58,12 +62,28 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
                 { mapErrorMessage(signInError, key => language.translate(key)) }
             </Alert> }
 
-            <p>
+            { !accountExists && <p>
                 <TranslatedHtml
                     data={ { url: createAccountUrl } }
                     id="customer.create_account_to_continue_text"
                 />
-            </p>
+            </p> }
+
+            { accountExists && canCancel && email === formEmail &&
+                <Alert type={ AlertType.Info }>
+                    <TranslatedHtml
+                        data={ { email } }
+                        id="customer.account_must_login"
+                    />
+                </Alert> }
+
+            { accountExists && !canCancel &&
+                <Alert type={ AlertType.Error }>
+                    <TranslatedHtml
+                        data={ { url: createAccountUrl } }
+                        id="customer.guest_temporary_disabled"
+                    />
+                </Alert> }
 
             <EmailField onChange={ onChangeEmail } />
 

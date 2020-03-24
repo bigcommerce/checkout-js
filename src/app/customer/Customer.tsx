@@ -22,6 +22,11 @@ export interface CustomerProps {
     subscribeToNewsletter?(data: { email: string; firstName?: string }): void;
 }
 
+export interface CustomerState {
+    guestMustLogIn: boolean;
+    guestAttemptsLimitReached: boolean;
+}
+
 export interface WithCheckoutCustomerProps {
     canSubscribe: boolean;
     checkoutButtonIds: string[];
@@ -43,7 +48,12 @@ export interface WithCheckoutCustomerProps {
     signIn(credentials: CustomerCredentials): Promise<CheckoutSelectors>;
 }
 
-class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
+class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, CustomerState> {
+    state: CustomerState = {
+        guestMustLogIn: false,
+        guestAttemptsLimitReached: false,
+    };
+
     private draftEmail?: string;
 
     componentDidMount(): void {
@@ -54,11 +64,13 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
 
     render(): ReactNode {
         const { viewType } = this.props;
+        const { guestMustLogIn } = this.state;
 
         return (
             <Fragment>
-                { viewType === CustomerViewType.Login && this.renderLoginForm() }
-                { viewType === CustomerViewType.Guest && this.renderGuestForm() }
+                { (viewType === CustomerViewType.Login || guestMustLogIn) ?
+                    this.renderLoginForm() :
+                    this.renderGuestForm() }
             </Fragment>
         );
     }
@@ -112,9 +124,15 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
             signInError,
         } = this.props;
 
+        const {
+            guestMustLogIn,
+            guestAttemptsLimitReached,
+        } = this.state;
+
         return (
             <LoginForm
-                canCancel={ isGuestEnabled }
+                accountExists={ guestMustLogIn }
+                canCancel={ isGuestEnabled && !guestAttemptsLimitReached }
                 createAccountUrl={ createAccountUrl }
                 email={ this.draftEmail || email }
                 forgotPasswordUrl={ forgotPasswordUrl }
@@ -150,9 +168,15 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
                 marketingEmailConsent: requiresMarketingConsent && formValues.shouldSubscribe ? true : undefined,
             });
             onContinueAsGuest();
-
             this.draftEmail = undefined;
         } catch (error) {
+            if (error.status === 403 || error.status === 429) {
+                return this.setState({
+                    guestMustLogIn: true,
+                    guestAttemptsLimitReached: error.status === 429,
+                });
+            }
+
             onContinueAsGuestError(error);
         }
     };
@@ -185,6 +209,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
             clearError(signInError);
         }
 
+        this.setState({ guestMustLogIn: false });
         onChangeViewType(CustomerViewType.Guest);
     };
 
