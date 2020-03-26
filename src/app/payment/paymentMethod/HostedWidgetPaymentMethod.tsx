@@ -1,4 +1,4 @@
-import { CardInstrument, CheckoutSelectors, CustomerInitializeOptions, CustomerRequestOptions, Instrument, PaymentInitializeOptions, PaymentInstrument, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
+import { AccountInstrument, CardInstrument, CheckoutSelectors, CustomerInitializeOptions, CustomerRequestOptions, Instrument, PaymentInitializeOptions, PaymentInstrument, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import classNames from 'classnames';
 import { find, noop, some } from 'lodash';
@@ -9,7 +9,7 @@ import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { MapToProps } from '../../common/hoc';
 import { LoadingOverlay } from '../../ui/loading';
 import { CreditCardStorageField } from '../creditCard';
-import { isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CardInstrumentFieldset, CreditCardValidation } from '../storedInstrument';
+import { isBankAccountInstrument, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, AccountInstrumentFieldset, CardInstrumentFieldset, CreditCardValidation } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
 
@@ -38,7 +38,7 @@ export interface HostedWidgetPaymentMethodProps {
 }
 
 interface WithCheckoutHostedWidgetPaymentMethodProps {
-    instruments: CardInstrument[];
+    instruments: PaymentInstrument[];
     isInstrumentFeatureAvailable: boolean;
     isLoadingInstruments: boolean;
     isPaymentDataRequired: boolean;
@@ -153,17 +153,28 @@ class HostedWidgetPaymentMethod extends Component<
             selectedInstrumentId = this.getDefaultInstrumentId(),
         } = this.state;
 
+        const selectedInstrument = instruments.find(instrument => instrument.bigpayToken === selectedInstrumentId) || instruments[0];
+
         const shouldShowInstrumentFieldset = isInstrumentFeatureAvailableProp && instruments.length > 0;
         const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
         const isLoading = isInitializing || isLoadingInstruments;
+
+        const selectedAccountInstrument = selectedInstrumentId && selectedInstrument && isBankAccountInstrument(selectedInstrument) ? selectedInstrument : undefined;
 
         return (
             <LoadingOverlay
                 hideContentWhenLoading
                 isLoading={ isLoading }
             >
-                { shouldShowInstrumentFieldset && <CardInstrumentFieldset
-                    instruments={ instruments }
+                { selectedAccountInstrument && shouldShowInstrumentFieldset && <AccountInstrumentFieldset
+                    instruments={ instruments as AccountInstrument[] }
+                    onSelectInstrument={ this.handleSelectInstrument }
+                    onUseNewInstrument={ this.handleUseNewCard }
+                    selectedInstrument={ selectedAccountInstrument }
+                /> }
+
+                { !selectedAccountInstrument && shouldShowInstrumentFieldset && <CardInstrumentFieldset
+                    instruments={ instruments as CardInstrument[] }
                     onSelectInstrument={ this.handleSelectInstrument }
                     onUseNewInstrument={ this.handleUseNewCard }
                     selectedInstrumentId={ selectedInstrumentId }
@@ -207,8 +218,8 @@ class HostedWidgetPaymentMethod extends Component<
 
         const { selectedInstrumentId = this.getDefaultInstrumentId() } = this.state;
         const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
-        const shouldShowNumberField = selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument) : false;
-        const shouldShowCardCodeField = selectedInstrument ? isInstrumentCardCodeRequiredProp(selectedInstrument, method) : false;
+        const shouldShowNumberField = selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument as CardInstrument) : false;
+        const shouldShowCardCodeField = selectedInstrument ? isInstrumentCardCodeRequiredProp(selectedInstrument as CardInstrument, method) : false;
 
         if (hideVerificationFields) {
             return;
@@ -330,7 +341,7 @@ function mapFromCheckoutProps(): MapToProps<
     WithCheckoutHostedWidgetPaymentMethodProps,
     HostedWidgetPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
 > {
-    const filterInstruments = memoizeOne((instruments: PaymentInstrument[] = []) => instruments.filter(isCardInstrument));
+    const filterInstruments = memoizeOne((instruments: PaymentInstrument[] = []) => instruments.filter( instrument => isCardInstrument(instrument) || isBankAccountInstrument(instrument)));
 
     return (context, props) => {
 
