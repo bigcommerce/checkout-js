@@ -234,6 +234,54 @@ describe('Customer', () => {
                 .toHaveBeenCalled();
         });
 
+        it('renders cancellable log-in form if continue as guest fails with code 403', async () => {
+            jest.spyOn(checkoutService, 'continueAsGuest')
+                .mockRejectedValue({ status: 403 });
+
+            const component = mount(
+                <CustomerTest viewType={ CustomerViewType.Guest } />
+            );
+
+            (component.find(GuestForm) as ReactWrapper<GuestFormProps>)
+                .prop('onContinueAsGuest')({
+                    email: 'test@bigcommerce.com',
+                    shouldSubscribe: false,
+                });
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
+            expect(component.find(LoginForm).props())
+                .toMatchObject({
+                    accountExists: true,
+                    canCancel: true,
+                });
+        });
+
+        it('renders mandatory log-in form if continue as guest fails with code 429', async () => {
+            jest.spyOn(checkoutService, 'continueAsGuest')
+                .mockRejectedValue({ status: 429 });
+
+            const component = mount(
+                <CustomerTest viewType={ CustomerViewType.Guest } />
+            );
+
+            (component.find(GuestForm) as ReactWrapper<GuestFormProps>)
+                .prop('onContinueAsGuest')({
+                    email: 'test@bigcommerce.com',
+                    shouldSubscribe: false,
+                });
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
+            expect(component.find(LoginForm).props())
+                .toMatchObject({
+                    accountExists: true,
+                    canCancel: false,
+                });
+        });
+
         it('triggers error callback if customer is unable to continue as guest', async () => {
             jest.spyOn(checkoutService, 'continueAsGuest')
                 .mockRejectedValue({ type: 'unknown_error' });

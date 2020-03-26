@@ -3,7 +3,8 @@ import { noop } from 'lodash';
 import React from 'react';
 
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedHtml } from '../locale';
+import { Alert } from '../ui/alert';
 
 import LoginForm from './LoginForm';
 
@@ -120,6 +121,58 @@ describe('LoginForm', () => {
 
         expect(component.find('[data-test="password-field-error-message"]').text())
             .toEqual('Password is required');
+    });
+
+    it('renders info alert if account exists, and hides it if email changes', () => {
+        const component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <LoginForm
+                    accountExists
+                    canCancel
+                    createAccountUrl={ '/create-account' }
+                    email="foo@bar.com"
+                    forgotPasswordUrl={ '/forgot-password' }
+                    onSignIn={ noop }
+                />
+            </LocaleContext.Provider>
+        );
+
+        expect(component.find(Alert).prop('type'))
+            .toEqual('info');
+
+        expect(component.find(Alert).find(TranslatedHtml).props())
+            .toEqual({
+                id: 'customer.account_must_login',
+                data: { email: 'foo@bar.com' },
+            });
+
+        component.find('input[name="email"]')
+            .simulate('change', { target: { value: 'test@bigcommerce.com', name: 'email' } });
+
+        expect(component.find(Alert).length).toEqual(0);
+    });
+
+    it('renders error alert if account exists and cant cancel', () => {
+        const component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <LoginForm
+                    accountExists
+                    createAccountUrl={ '/create-account' }
+                    email="foo@bar.com"
+                    forgotPasswordUrl={ '/forgot-password' }
+                    onSignIn={ noop }
+                />
+            </LocaleContext.Provider>
+        );
+
+        expect(component.find(Alert).prop('type'))
+            .toEqual('error');
+
+        expect(component.find(Alert).find(TranslatedHtml).props())
+            .toEqual({
+                id: 'customer.guest_temporary_disabled',
+                data: { url: '/create-account' },
+            });
     });
 
     it('renders error as alert if password is incorrect', () => {
