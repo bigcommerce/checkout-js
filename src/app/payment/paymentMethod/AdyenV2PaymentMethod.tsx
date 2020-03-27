@@ -44,6 +44,7 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
     const cardVerificationContainerId = `adyen-${method.id}-tsv-component-field`;
     const threeDS2ContainerId = `adyen-${method.id}-additional-action-component-field`;
     const component = method.id as AdyenV2PaymentMethodType;
+    const shouldHideInstrumentExpiryDate = component === AdyenV2PaymentMethodType.bcmc;
     const adyenOptions: AdyenOptions = {
         [AdyenV2PaymentMethodType.scheme]: {
             hasHolderName: true,
@@ -132,6 +133,7 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
             hideContentWhenSignedOut
             initializePayment={ initializeAdyenPayment }
             method={ method }
+            shouldHideInstrumentExpiryDate={ shouldHideInstrumentExpiryDate }
             validateInstrument={ validateInstrument }
         />
 

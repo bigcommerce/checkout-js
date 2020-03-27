@@ -26,7 +26,7 @@ const AdyenV2CardValidation: React.FunctionComponent<AdyenV2CardValidationProps>
         </p> }
 
         <div className="form-ccFields" id={ verificationFieldsContainerId }>
-            <div className="form-field form-field--ccNumber" style={ { display: (shouldShowNumberField) ? undefined : 'none' } }>
+            <div className="form-field form-field--ccNumber" style={ { display: (shouldShowNumberField) ? undefined : 'none', flexBasis: (paymentMethodType === 'bcmc') ? '50%' : '65%' } }>
                 <label htmlFor="encryptedCardNumber">
                     <TranslatedString id="payment.credit_card_number_label" />
                 </label>

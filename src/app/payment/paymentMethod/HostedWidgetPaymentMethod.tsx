@@ -24,6 +24,7 @@ export interface HostedWidgetPaymentMethodProps {
     isUsingMultiShipping?: boolean;
     isSignInRequired?: boolean;
     method: PaymentMethod;
+    shouldHideInstrumentExpiryDate?: boolean;
     validateInstrument?(shouldShowNumberField: boolean): React.ReactNode;
     deinitializeCustomer?(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
@@ -144,6 +145,7 @@ class HostedWidgetPaymentMethod extends Component<
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
             isLoadingInstruments,
             additionalContainerClassName,
+            shouldHideInstrumentExpiryDate = false,
         } = this.props;
 
         const {
@@ -165,6 +167,7 @@ class HostedWidgetPaymentMethod extends Component<
                     onSelectInstrument={ this.handleSelectInstrument }
                     onUseNewInstrument={ this.handleUseNewCard }
                     selectedInstrumentId={ selectedInstrumentId }
+                    shouldHideInstrumentExpiryDate={ shouldHideInstrumentExpiryDate }
                     validateInstrument={ this.getValidateInstrument() }
                 /> }
 
