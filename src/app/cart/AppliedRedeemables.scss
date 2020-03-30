@@ -1,0 +1,26 @@
+@import '../ui/Base';
+
+.form-checklist {
+    border: container("border", "dark");
+    border-radius: $global-radius $global-radius 0 0;
+    color: $checklist-label-color;
+    list-style: none;
+    margin-left: 0;
+
+    &:only-child {
+        border-radius: $global-radius;
+    }
+}
+
+.form-checklist-item {
+    border-bottom: container("border", "dark");
+    overflow: hidden;
+
+    &:last-child {
+        border-bottom: 0;
+    }
+
+    &:hover {
+        background-color: container("fill", "dark");
+    }
+}

@@ -1,0 +1,27 @@
+@import '../Base.scss';
+
+.form-checklist-container {
+    clear: both;
+    padding: ($checklist-spacing / 1.5) 0;
+}
+
+.form-checklist-body {
+    @include collapse($max-height: remCalc(350px));
+
+    margin-left: $checklist-spacingLeft--small;
+    margin-right: $checklist-spacingRight;
+
+    @include breakpoint("small") {
+        margin-left: $checklist-spacingLeft;
+    }
+}
+
+.form-checklist-header > .form-field {
+    margin-bottom: 0;
+}
+
+.form-checklist-header--selected {
+    .form-label {
+        font-weight: $checklist-label-selected-fontWeight;
+    }
+}
