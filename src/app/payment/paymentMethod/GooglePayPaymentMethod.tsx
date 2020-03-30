@@ -12,6 +12,10 @@ const GooglePayPaymentMethod: FunctionComponent<GooglePayPaymentMethodProps> = (
 }) => {
     const initializeGooglePayPayment = useCallback(options => initializePayment({
         ...options,
+        googlepayadyenv2: {
+            walletButton: 'walletButton',
+            onError: onUnhandledError,
+        },
         googlepayauthorizenet: {
             walletButton: 'walletButton',
             onError: onUnhandledError,
