@@ -26,7 +26,13 @@ const AdyenV2CardValidation: React.FunctionComponent<AdyenV2CardValidationProps>
         </p> }
 
         <div className="form-ccFields" id={ verificationFieldsContainerId }>
-            <div className="form-field form-field--ccNumber" style={ { display: (shouldShowNumberField) ? undefined : 'none', flexBasis: (paymentMethodType === 'bcmc') ? '50%' : '65%' } }>
+            <div className={ classNames(
+                'form-field',
+                'form-field--ccNumber',
+                { 'form-field--ccNumber--hasExpiryDate': paymentMethodType === 'bcmc' },
+                { 'form-field-ccNumber--show': shouldShowNumberField }
+                ) }
+            >
                 <label htmlFor="encryptedCardNumber">
                     <TranslatedString id="payment.credit_card_number_label" />
                 </label>

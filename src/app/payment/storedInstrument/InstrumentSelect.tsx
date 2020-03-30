@@ -15,7 +15,7 @@ import mapFromInstrumentCardType from './mapFromInstrumentCardType';
 export interface InstrumentSelectProps extends FieldProps<string> {
     instruments: CardInstrument[];
     selectedInstrumentId?: string;
-    shouldHideInstrumentExpiryDate?: boolean;
+    shouldHideExpiryDate?: boolean;
     onSelectInstrument(id: string): void;
     onUseNewInstrument(): void;
 }
@@ -54,7 +54,7 @@ class InstrumentSelect extends PureComponent<InstrumentSelectProps> {
             onSelectInstrument,
             onUseNewInstrument,
             selectedInstrumentId,
-            shouldHideInstrumentExpiryDate = false,
+            shouldHideExpiryDate = false,
         } = this.props;
 
         const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
@@ -68,13 +68,13 @@ class InstrumentSelect extends PureComponent<InstrumentSelectProps> {
                             onSelectInstrument={ onSelectInstrument }
                             onUseNewInstrument={ onUseNewInstrument }
                             selectedInstrumentId={ selectedInstrumentId }
-                            shouldHideInstrumentExpiryDate={ shouldHideInstrumentExpiryDate }
+                            shouldHideExpiryDate={ shouldHideExpiryDate }
                         />
                     }
                 >
                     <InstrumentSelectButton
                         instrument={ selectedInstrument }
-                        shouldHideInstrumentExpiryDate={ shouldHideInstrumentExpiryDate }
+                        shouldHideExpiryDate={ shouldHideExpiryDate }
                         testId="instrument-select"
                     />
 
@@ -100,7 +100,7 @@ class InstrumentSelect extends PureComponent<InstrumentSelectProps> {
 interface InstrumentMenuProps {
     instruments: CardInstrument[];
     selectedInstrumentId?: string;
-    shouldHideInstrumentExpiryDate?: boolean;
+    shouldHideExpiryDate?: boolean;
     onSelectInstrument(id: string): void;
     onUseNewInstrument(): void;
 }
@@ -108,7 +108,7 @@ interface InstrumentMenuProps {
 const InstrumentMenu: FunctionComponent<InstrumentMenuProps> = ({
     instruments,
     selectedInstrumentId,
-    shouldHideInstrumentExpiryDate = false,
+    shouldHideExpiryDate = false,
     onSelectInstrument,
     onUseNewInstrument,
 }) => {
@@ -127,7 +127,7 @@ const InstrumentMenu: FunctionComponent<InstrumentMenuProps> = ({
                 <InstrumentOption
                     instrument={ instrument }
                     onClick={ onSelectInstrument }
-                    shouldHideInstrumentExpiryDate={ shouldHideInstrumentExpiryDate }
+                    shouldHideExpiryDate={ shouldHideExpiryDate }
                     testId="instrument-select-option"
                 />
             </li>
@@ -144,14 +144,14 @@ const InstrumentMenu: FunctionComponent<InstrumentMenuProps> = ({
 
 interface InstrumentSelectButtonProps {
     instrument?: CardInstrument;
-    shouldHideInstrumentExpiryDate?: boolean;
+    shouldHideExpiryDate?: boolean;
     testId?: string;
     onClick?(): void;
 }
 
 const InstrumentSelectButton: FunctionComponent<InstrumentSelectButtonProps> = ({
     instrument,
-    shouldHideInstrumentExpiryDate = false,
+    shouldHideExpiryDate = false,
     testId,
     onClick,
 }) => {
@@ -169,7 +169,7 @@ const InstrumentSelectButton: FunctionComponent<InstrumentSelectButtonProps> = (
             className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
             instrument={ instrument }
             onClick={ onClick }
-            shouldHideInstrumentExpiryDate={ shouldHideInstrumentExpiryDate }
+            shouldHideExpiryDate={ shouldHideExpiryDate }
             testId={ testId }
         />
     );
@@ -178,13 +178,13 @@ const InstrumentSelectButton: FunctionComponent<InstrumentSelectButtonProps> = (
 interface InstrumentOptionProps {
     instrument: CardInstrument;
     testId?: string;
-    shouldHideInstrumentExpiryDate?: boolean;
+    shouldHideExpiryDate?: boolean;
     onClick?(token: string): void;
 }
 
 const InstrumentOption: FunctionComponent<InstrumentOptionProps> = ({
     instrument,
-    shouldHideInstrumentExpiryDate = false,
+    shouldHideExpiryDate = false,
     onClick = noop,
 }) => {
     const handleClick = useCallback(() => {
@@ -198,7 +198,7 @@ const InstrumentOption: FunctionComponent<InstrumentOptionProps> = ({
         <InstrumentMenuItem
             instrument={ instrument }
             onClick={ handleClick }
-            shouldHideInstrumentExpiryDate={ shouldHideInstrumentExpiryDate }
+            shouldHideExpiryDate={ shouldHideExpiryDate }
             testId="instrument-select-option"
         />
     );
@@ -208,7 +208,7 @@ interface InstrumentMenuItemProps {
     className?: string;
     instrument: CardInstrument;
     testId?: string;
-    shouldHideInstrumentExpiryDate?: boolean;
+    shouldHideExpiryDate?: boolean;
     onClick?(): void;
 }
 
@@ -216,7 +216,7 @@ const InstrumentMenuItem: FunctionComponent<InstrumentMenuItemProps> = ({
     className,
     instrument,
     testId,
-    shouldHideInstrumentExpiryDate = false,
+    shouldHideExpiryDate = false,
     onClick,
 }) => {
     const cardType = mapFromInstrumentCardType(instrument.brand);
@@ -255,7 +255,7 @@ const InstrumentMenuItem: FunctionComponent<InstrumentMenuItemProps> = ({
                         /> }
                 </div>
 
-                { !shouldHideInstrumentExpiryDate && <div
+                { !shouldHideExpiryDate && <div
                     className={ classNames(
                         'instrumentSelect-expiry',
                         { 'instrumentSelect-expiry--expired': isExpired }

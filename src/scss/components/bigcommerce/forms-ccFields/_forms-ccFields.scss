@@ -20,6 +20,14 @@
     flex-basis: 65%;
 }
 
+.form-field--ccNumber--hasExpiryDate {
+    flex-basis: 50%;
+}
+
+.form-field-ccNumber--show {
+    display: none;
+}
+
 .form-ccFields-field--ccCvv,
 .form-field--ccExpiry {
     flex-basis: 1%;

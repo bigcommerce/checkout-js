@@ -14,7 +14,7 @@ import ManageInstrumentsModal from './ManageInstrumentsModal';
 export interface CardInstrumentFieldsetProps {
     instruments: CardInstrument[];
     selectedInstrumentId?: string;
-    shouldHideInstrumentExpiryDate?: boolean;
+    shouldHideExpiryDate?: boolean;
     validateInstrument?: React.ReactNode;
     onSelectInstrument(id: string): void;
     onUseNewInstrument(): void;
@@ -29,7 +29,7 @@ const CardInstrumentFieldset: FunctionComponent<CardInstrumentFieldsetProps> = (
     onSelectInstrument,
     onUseNewInstrument,
     selectedInstrumentId,
-    shouldHideInstrumentExpiryDate = false,
+    shouldHideExpiryDate = false,
     validateInstrument = null,
 }) => {
     const renderInput = useCallback((field: FieldProps) => (
@@ -39,14 +39,14 @@ const CardInstrumentFieldset: FunctionComponent<CardInstrumentFieldsetProps> = (
             onSelectInstrument={ onSelectInstrument }
             onUseNewInstrument={ onUseNewInstrument }
             selectedInstrumentId={ selectedInstrumentId }
-            shouldHideInstrumentExpiryDate={ shouldHideInstrumentExpiryDate }
+            shouldHideExpiryDate={ shouldHideExpiryDate }
         />
     ), [
         instruments,
         onSelectInstrument,
         onUseNewInstrument,
         selectedInstrumentId,
-        shouldHideInstrumentExpiryDate,
+        shouldHideExpiryDate,
     ]);
 
     const renderModal = useCallback((props: ModalTriggerModalProps) => (

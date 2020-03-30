@@ -167,7 +167,7 @@ class HostedWidgetPaymentMethod extends Component<
                     onSelectInstrument={ this.handleSelectInstrument }
                     onUseNewInstrument={ this.handleUseNewCard }
                     selectedInstrumentId={ selectedInstrumentId }
-                    shouldHideInstrumentExpiryDate={ shouldHideInstrumentExpiryDate }
+                    shouldHideExpiryDate={ shouldHideInstrumentExpiryDate }
                     validateInstrument={ this.getValidateInstrument() }
                 /> }
 
