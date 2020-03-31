@@ -114,6 +114,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
             <div className="form-actions">
                 <PaymentSubmitButton
                     isDisabled={ shouldDisableSubmit }
+                    methodGateway={ selectedMethod && selectedMethod.gateway }
                     methodId={ selectedMethod && selectedMethod.id }
                     methodType={ selectedMethod && selectedMethod.method }
                 />
