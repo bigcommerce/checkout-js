@@ -7,13 +7,18 @@ import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 import { PaymentMethodId, PaymentMethodType } from './paymentMethod';
 
 interface PaymentSubmitButtonTextProps {
+    methodGateway?: string;
     methodId?: string;
     methodType?: string;
 }
 
-const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> = memo(({ methodId, methodType }) => {
+const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> = memo(({ methodId, methodType, methodGateway }) => {
     if (methodId === PaymentMethodId.Amazon) {
         return <TranslatedString id="payment.amazon_continue_action" />;
+    }
+
+    if (methodGateway === PaymentMethodId.BlueSnapV2) {
+        return <TranslatedString id="payment.bluesnap_v2_continue_action" />;
     }
 
     if (methodType === PaymentMethodType.VisaCheckout) {
@@ -36,6 +41,7 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
 });
 
 export interface PaymentSubmitButtonProps {
+    methodGateway?: string;
     methodId?: string;
     methodType?: string;
     isDisabled?: boolean;
@@ -50,6 +56,7 @@ const PaymentSubmitButton: FunctionComponent<PaymentSubmitButtonProps & WithChec
     isDisabled,
     isInitializing,
     isSubmitting,
+    methodGateway,
     methodId,
     methodType,
 }) => (
@@ -63,6 +70,7 @@ const PaymentSubmitButton: FunctionComponent<PaymentSubmitButtonProps & WithChec
         variant={ ButtonVariant.Action }
     >
         <PaymentSubmitButtonText
+            methodGateway={ methodGateway }
             methodId={ methodId }
             methodType={ methodType }
         />
