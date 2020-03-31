@@ -425,7 +425,14 @@ export function mapToPaymentProps({
 
     const isTermsConditionsRequired = isTermsConditionsEnabled;
     const selectedPayment = find(checkout.payments, { providerType: PaymentMethodProviderType.Hosted });
-    const selectedPaymentMethod = selectedPayment ? getPaymentMethod(selectedPayment.providerId, selectedPayment.gatewayId) : undefined;
+
+    let selectedPaymentMethod;
+    if (selectedPayment) {
+        selectedPaymentMethod = getPaymentMethod(selectedPayment.providerId, selectedPayment.gatewayId);
+    } else {
+        selectedPaymentMethod = find(methods, { config: { hasDefaultStoredInstrument: true } });
+    }
+
     const filteredMethods = selectedPaymentMethod ? compact([selectedPaymentMethod]) : methods;
 
     return {
