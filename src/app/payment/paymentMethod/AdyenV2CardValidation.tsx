@@ -30,7 +30,7 @@ const AdyenV2CardValidation: React.FunctionComponent<AdyenV2CardValidationProps>
                 'form-field',
                 'form-field--ccNumber',
                 { 'form-field--ccNumber--hasExpiryDate': paymentMethodType === 'bcmc' },
-                { 'form-field-ccNumber--show': shouldShowNumberField }
+                { 'form-field-ccNumber--hide': !shouldShowNumberField }
                 ) }
             >
                 <label htmlFor="encryptedCardNumber">

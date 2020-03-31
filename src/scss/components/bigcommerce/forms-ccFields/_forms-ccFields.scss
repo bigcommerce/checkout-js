@@ -24,8 +24,8 @@
     flex-basis: 50%;
 }
 
-.form-field-ccNumber--show {
-    display: none;
+.form-field-ccNumber--hide {
+    display: none !important;
 }
 
 .form-ccFields-field--ccCvv,
