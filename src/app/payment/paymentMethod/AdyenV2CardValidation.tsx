@@ -26,7 +26,15 @@ const AdyenV2CardValidation: React.FunctionComponent<AdyenV2CardValidationProps>
         </p> }
 
         <div className="form-ccFields" id={ verificationFieldsContainerId }>
-            <div className="form-field form-field--ccNumber" style={ { display: (shouldShowNumberField) ? undefined : 'none' } }>
+            <div className={ classNames(
+                'form-field',
+                'form-field--ccNumber',
+                { 'form-field--ccNumber--hasExpiryDate': paymentMethodType === 'bcmc' },
+                // This div is hiding by CSS because there is an Adyen library in
+                // checkout-sdk which mounts verification fields and if is removed with JS this mounting event will be thrown an error
+                { 'form-field-ccNumber--hide': !shouldShowNumberField }
+                ) }
+            >
                 <label htmlFor="encryptedCardNumber">
                     <TranslatedString id="payment.credit_card_number_label" />
                 </label>
