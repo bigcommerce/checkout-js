@@ -30,6 +30,8 @@ const AdyenV2CardValidation: React.FunctionComponent<AdyenV2CardValidationProps>
                 'form-field',
                 'form-field--ccNumber',
                 { 'form-field--ccNumber--hasExpiryDate': paymentMethodType === 'bcmc' },
+                // This div is hiding by CSS because there is an Adyen library in
+                // checkout-sdk which mounts verification fields and if is removed with JS this mounting event will be thrown an error
                 { 'form-field-ccNumber--hide': !shouldShowNumberField }
                 ) }
             >
