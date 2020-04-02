@@ -1,0 +1,45 @@
+@import "./Base.scss";
+
+.form {
+    @include breakpoint("large") {
+        max-width: remCalc(540px);
+    }
+}
+
+.checkout-form {
+    margin: 0;
+
+    @include breakpoint("small") {
+        margin-left: remCalc($checkoutStep-counter-size) + $checkoutStep-header-figure-margin;
+    }
+
+    @include breakpoint("large") {
+        margin-left: 0;
+    }
+
+    @include breakpoint(1080px) {
+        margin-left: remCalc($checkoutStep-counter-size) + $checkoutStep-header-figure-margin;
+    }
+}
+
+.form-legend-container {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.form-actions {
+    margin: #{spacing("single") + spacing("half")} 0;
+    padding: 0;
+
+    .button:first-child {
+        margin-left: 0;
+    }
+}
+
+@media print {
+    .guest-signup {
+        display: none;
+    }
+}

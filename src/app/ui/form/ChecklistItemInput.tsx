@@ -1,5 +1,6 @@
 import React, { FunctionComponent, InputHTMLAttributes } from 'react';
 
+import './ChecklistItemInput';
 import Input from './Input';
 import Label from './Label';
 

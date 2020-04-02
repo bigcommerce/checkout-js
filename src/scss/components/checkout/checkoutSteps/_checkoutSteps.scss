@@ -36,22 +36,6 @@
     margin-bottom: spacing("single");
 }
 
-.checkout-form {
-    margin: 0;
-
-    @include breakpoint("small") {
-        margin-left: remCalc($checkoutStep-counter-size) + $checkoutStep-header-figure-margin;
-    }
-
-    @include breakpoint("large") {
-        margin-left: 0;
-    }
-
-    @include breakpoint(1080px) {
-        margin-left: remCalc($checkoutStep-counter-size) + $checkoutStep-header-figure-margin;
-    }
-}
-
 // Checkout Step Counter
 // -----------------------------------------------------------------------------
 .stepHeader-counter {

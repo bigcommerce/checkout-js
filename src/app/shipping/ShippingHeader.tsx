@@ -3,6 +3,7 @@ import React, { memo, FunctionComponent } from 'react';
 import { preventDefault } from '../common/dom';
 import { TranslatedString } from '../locale';
 import { Legend } from '../ui/form';
+import '../ui/Form.scss';
 
 interface ShippingHeaderProps {
     isMultiShippingMode: boolean;
