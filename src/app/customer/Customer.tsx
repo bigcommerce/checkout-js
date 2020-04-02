@@ -19,7 +19,6 @@ export interface CustomerProps {
     onSignIn?(): void;
     onSignInError?(error: Error): void;
     onUnhandledError?(error: Error): void;
-    subscribeToNewsletter?(data: { email: string; firstName?: string }): void;
 }
 
 export interface CustomerState {
@@ -149,27 +148,26 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
         const {
             canSubscribe,
             continueAsGuest,
-            firstName,
             onContinueAsGuest = noop,
             onContinueAsGuestError = noop,
-            subscribeToNewsletter = noop,
-            requiresMarketingConsent,
         } = this.props;
 
         const email = formValues.email.trim();
-
-        if (canSubscribe && formValues.shouldSubscribe) {
-            subscribeToNewsletter({ email, firstName });
-        }
-
         try {
             await continueAsGuest({
                 email,
-                marketingEmailConsent: requiresMarketingConsent && formValues.shouldSubscribe ? true : undefined,
+                acceptsMarketingNewsletter: canSubscribe && formValues.shouldSubscribe ? true : undefined,
+                acceptsAbandonedCartEmails: formValues.shouldSubscribe ? true : undefined,
             });
             onContinueAsGuest();
             this.draftEmail = undefined;
         } catch (error) {
+            if (error.type === 'update_subscriptions') {
+                this.draftEmail = undefined;
+
+                return onContinueAsGuest();
+            }
+
             if (error.status === 403 || error.status === 429) {
                 return this.setState({
                     guestMustLogIn: true,

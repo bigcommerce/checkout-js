@@ -64,7 +64,6 @@ export interface CheckoutProps {
     flashMessages?: FlashMessage[]; // TODO: Expose flash messages from SDK
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
     createStepTracker(): StepTracker;
-    subscribeToNewsletter(data: { email: string; firstName?: string }): void;
 }
 
 export interface CheckoutState {
@@ -252,7 +251,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     private renderCustomerStep(step: CheckoutStepStatus): ReactNode {
         const {
             isGuestEnabled,
-            subscribeToNewsletter,
         } = this.props;
 
         const {
@@ -283,7 +281,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onSignIn={ this.navigateToNextIncompleteStep }
                         onSignInError={ this.handleError }
                         onUnhandledError={ this.handleUnhandledError }
-                        subscribeToNewsletter={ subscribeToNewsletter }
                         viewType={ customerViewType }
                     />
                 </LazyContainer>
