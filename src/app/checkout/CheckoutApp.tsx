@@ -1,12 +1,10 @@
 import { createCheckoutService, createEmbeddedCheckoutMessenger, createStepTracker, StepTracker } from '@bigcommerce/checkout-sdk';
-import { createRequestSender, Response } from '@bigcommerce/request-sender';
 import { BrowserOptions } from '@sentry/browser';
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 
 import '../../scss/App.scss';
 import { createErrorLogger, ErrorBoundary, ErrorLogger } from '../common/error';
-import { NewsletterService, NewsletterSubscribeData } from '../customer';
 import { createEmbeddedCheckoutStylesheet, createEmbeddedCheckoutSupport } from '../embeddedCheckout';
 import { getLanguageService, LocaleProvider } from '../locale';
 import { FlashMessage } from '../ui/alert';
@@ -30,7 +28,6 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
     private embeddedStylesheet = createEmbeddedCheckoutStylesheet();
     private embeddedSupport = createEmbeddedCheckoutSupport(getLanguageService());
     private errorLogger: ErrorLogger;
-    private newsletterService = new NewsletterService(createRequestSender());
 
     constructor(props: Readonly<CheckoutAppProps>) {
         super(props);
@@ -62,7 +59,6 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
                             embeddedStylesheet={ this.embeddedStylesheet }
                             embeddedSupport={ this.embeddedSupport }
                             errorLogger={ this.errorLogger }
-                            subscribeToNewsletter={ this.subscribeToNewsletter }
                         />
                     </CheckoutProvider>
                 </LocaleProvider>
@@ -72,9 +68,5 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
 
     private createStepTracker: () => StepTracker = () => {
         return createStepTracker(this.checkoutService);
-    };
-
-    private subscribeToNewsletter: (data: NewsletterSubscribeData) => Promise<Response> = data => {
-        return this.newsletterService.subscribe(data);
     };
 }

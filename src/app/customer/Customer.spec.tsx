@@ -112,11 +112,8 @@ describe('Customer', () => {
             jest.spyOn(checkoutService, 'continueAsGuest')
                 .mockReturnValue(Promise.resolve(checkoutService.getState()));
 
-            const subscribeToNewsletter = jest.fn();
             const component = mount(
                 <CustomerTest
-                    requiresMarketingConsent={ false }
-                    subscribeToNewsletter={ subscribeToNewsletter }
                     viewType={ CustomerViewType.Guest }
                 />
             );
@@ -130,39 +127,8 @@ describe('Customer', () => {
             expect(checkoutService.continueAsGuest)
                 .toHaveBeenCalledWith({
                     email: 'test@bigcommerce.com',
-                    marketingEmailConsent: undefined,
-                });
-        });
-
-        it('continues checkout as guest, subscribes to newsletter and sends marketing consent', () => {
-            jest.spyOn(checkoutService, 'continueAsGuest')
-                .mockReturnValue(Promise.resolve(checkoutService.getState()));
-
-            const subscribeToNewsletter = jest.fn();
-            const component = mount(
-                <CustomerTest
-                    requiresMarketingConsent={ true }
-                    subscribeToNewsletter={ subscribeToNewsletter }
-                    viewType={ CustomerViewType.Guest }
-                />
-            );
-
-            (component.find(GuestForm) as ReactWrapper<GuestFormProps>)
-                .prop('onContinueAsGuest')({
-                    email: ' test@bigcommerce.com ',
-                    shouldSubscribe: true,
-                });
-
-            expect(checkoutService.continueAsGuest)
-                .toHaveBeenCalledWith({
-                    email: 'test@bigcommerce.com',
-                    marketingEmailConsent: true,
-                });
-
-            expect(subscribeToNewsletter)
-                .toHaveBeenCalledWith({
-                    email: 'test@bigcommerce.com',
-                    firstName: expect.any(String),
+                    acceptsMarketingNewsletter: true,
+                    acceptsAbandonedCartEmails: true,
                 });
         });
 
@@ -173,7 +139,6 @@ describe('Customer', () => {
             const subscribeToNewsletter = jest.fn();
             const component = mount(
                 <CustomerTest
-                    subscribeToNewsletter={ subscribeToNewsletter }
                     viewType={ CustomerViewType.Guest }
                 />
             );
@@ -187,7 +152,8 @@ describe('Customer', () => {
             expect(checkoutService.continueAsGuest)
                 .toHaveBeenCalledWith({
                     email: 'test@bigcommerce.com',
-                    marketingEmailConsent: undefined,
+                    acceptsMarketingNewsletter: undefined,
+                    acceptsAbandonedCartEmails: undefined,
                 });
 
             expect(subscribeToNewsletter)
@@ -226,6 +192,30 @@ describe('Customer', () => {
                 .prop('onContinueAsGuest')({
                     email: 'test@bigcommerce.com',
                     shouldSubscribe: false,
+                });
+
+            await new Promise(resolve => process.nextTick(resolve));
+
+            expect(handleContinueAsGuest)
+                .toHaveBeenCalled();
+        });
+
+        it('triggers completion callback if continueAsGuest fails with update_subscriptions', async () => {
+            jest.spyOn(checkoutService, 'continueAsGuest')
+                .mockRejectedValue({ type: 'update_subscriptions' });
+
+            const handleContinueAsGuest = jest.fn();
+            const component = mount(
+                <CustomerTest
+                    onContinueAsGuest={ handleContinueAsGuest }
+                    viewType={ CustomerViewType.Guest }
+                />
+            );
+
+            (component.find(GuestForm) as ReactWrapper<GuestFormProps>)
+                .prop('onContinueAsGuest')({
+                    email: 'test@bigcommerce.com',
+                    shouldSubscribe: true,
                 });
 
             await new Promise(resolve => process.nextTick(resolve));

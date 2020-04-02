@@ -60,7 +60,6 @@ describe('Checkout', () => {
             embeddedSupport: createEmbeddedCheckoutSupport(getLanguageService()),
             errorLogger: createErrorLogger(),
             flashMessages: [],
-            subscribeToNewsletter: jest.fn(),
             createStepTracker: () => stepTracker,
         };
 
@@ -386,17 +385,6 @@ describe('Checkout', () => {
 
             expect(window.top.location.assign)
                 .toHaveBeenCalled();
-        });
-
-        it('injects function for subscribing to newsletter', () => {
-            const data = { email: 'foo@foo.com', firstName: 'foo' };
-
-            // tslint:disable-next-line:no-non-null-assertion
-            (container.find(Customer).at(0) as ReactWrapper<CustomerProps>)
-                .prop('subscribeToNewsletter')!(data);
-
-            expect(defaultProps.subscribeToNewsletter)
-                .toHaveBeenCalledWith(data);
         });
 
         it('logs unhandled error', () => {
