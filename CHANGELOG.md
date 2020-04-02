@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.31.0](https://github.com/bigcommerce/checkout-js/compare/v1.30.1...v1.31.0) (2020-04-02)
+
+
+### Code Refactoring
+
+* **common:** CHECKOUT-4752 refactor address css to be included inside js files ([763016e](https://github.com/bigcommerce/checkout-js/commit/763016e))
+* **common:** CHECKOUT-4780 Changes for including CSS in module files ([08af9f2](https://github.com/bigcommerce/checkout-js/commit/08af9f2))
+
+
+### Features
+
+* **customer:** CHECKOUT-4740 Enforce log-in when account exists ([e2fe0c4](https://github.com/bigcommerce/checkout-js/commit/e2fe0c4))
+* **customer:** CHECKOUT-4791 Use subscriptions endpoint for newsletter signup ([6580ac6](https://github.com/bigcommerce/checkout-js/commit/6580ac6))
+* **customer:** INT-2473 change place order button for bluesnapv2 ([fe27424](https://github.com/bigcommerce/checkout-js/commit/fe27424))
+* **payment:** INT-2422 Updated title for credit card on adyen v2 ([e47726c](https://github.com/bigcommerce/checkout-js/commit/e47726c))
+* **payment:** INT-2432 Addressed feedback comments ([f539757](https://github.com/bigcommerce/checkout-js/commit/f539757))
+* **payment:** INT-2432 Addressed last comment from Luis ([81c4ddc](https://github.com/bigcommerce/checkout-js/commit/81c4ddc))
+* **payment:** INT-2432 Comments from  Luis addressed ([c7b1e81](https://github.com/bigcommerce/checkout-js/commit/c7b1e81))
+* **payment:** INT-2432 Hide expiration date when Adyen Bancontact is using instruments ([25f05f3](https://github.com/bigcommerce/checkout-js/commit/25f05f3))
+
 ### [1.30.1](https://github.com/bigcommerce/checkout-js/compare/v1.30.0...v1.30.1) (2020-03-19)
 
 
