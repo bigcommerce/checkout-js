@@ -1,0 +1,50 @@
+// ============================================================================
+// ANIMATION
+// =============================================================================
+
+@mixin collapse($min-height: $animation-collapse-minHeight, $max-height: $animation-collapse-maxHeight) {
+    &.ng-enter,
+    &.ng-leave {
+        overflow: hidden;
+        transition: $animation-collapse-transition;
+    }
+
+    &.ng-enter {
+        max-height: $min-height;
+    }
+
+    &.ng-leave {
+        max-height: $max-height;
+    }
+
+    &.ng-enter.ng-enter-active {
+        max-height: $max-height;
+    }
+
+    &.ng-leave.ng-leave-active {
+        max-height: $min-height;
+    }
+
+    // App next
+    &-enter,
+    &-exit {
+        overflow: hidden;
+        transition: $animation-collapse-transition;
+    }
+
+    &-enter {
+        max-height: $min-height;
+    }
+
+    &-exit {
+        max-height: $max-height;
+    }
+
+    &-enter-active {
+        max-height: $max-height;
+    }
+
+    &-exit-active {
+        max-height: $min-height;
+    }
+}

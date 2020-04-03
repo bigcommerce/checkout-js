@@ -5,7 +5,6 @@ import { AppliedCoupon } from '../coupon';
 import { AppliedGiftCertificate } from '../giftCertificate';
 
 import AppliedRedeemable from './AppliedRedeemable';
-import './AppliedRedeemables.scss';
 
 interface AppliedCouponProps {
     coupon: Coupon;

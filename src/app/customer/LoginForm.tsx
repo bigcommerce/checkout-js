@@ -7,7 +7,6 @@ import { withLanguage, TranslatedHtml, TranslatedString, WithLanguageProps } fro
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form, Legend } from '../ui/form';
-import '../ui/Form.scss';
 
 import mapErrorMessage from './mapErrorMessage';
 import { EMAIL_REGEXP } from './validationPatterns';

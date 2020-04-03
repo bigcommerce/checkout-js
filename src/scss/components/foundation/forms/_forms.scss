@@ -14,6 +14,12 @@
 
 @if $exportCSS--forms { // 1
 
+    .form {
+        @include breakpoint("large") {
+            max-width: remCalc(540px);
+        }
+    }
+
     .form-fieldset {
         margin-bottom: spacing("single");
 
@@ -48,6 +54,15 @@
         top: 50%;
         transform: translateY(-50%);
         width: $input-formIcon-width;
+    }
+
+    .form-actions {
+        margin: #{spacing("single") + spacing("half")} 0;
+        padding: 0;
+
+        .button:first-child {
+            margin-left: 0;
+        }
     }
 
     .form-body {
