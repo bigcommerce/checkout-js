@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.31.1](https://github.com/bigcommerce/checkout-js/compare/v1.31.0...v1.31.1) (2020-04-03)
+
+
+### Bug Fixes
+
+* **payment:** PAYMENTS-5178 Default vaulted instrument is not used as default payment method ([4637f04](https://github.com/bigcommerce/checkout-js/commit/4637f04))
+
 ## [1.31.0](https://github.com/bigcommerce/checkout-js/compare/v1.30.1...v1.31.0) (2020-04-02)
 
 
