@@ -6,10 +6,8 @@ import { withLanguage, TranslatedHtml, TranslatedString, WithLanguageProps } fro
 import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
 import { Button, ButtonVariant } from '../ui/button';
 import { BasicFormField, Fieldset, Form, Legend  } from '../ui/form';
-import '../ui/Form.scss';
 
 import EmailField from './EmailField';
-import './GuestForm.scss';
 import SubscribeField from './SubscribeField';
 
 export interface GuestFormProps {

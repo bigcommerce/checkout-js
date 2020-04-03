@@ -1,16 +1,5 @@
 @import '../../../node_modules/@bigcommerce/citadel/src/tools/toolkit';
-@import '../../scss/tools/toolkit';
-@import '../../scss/settings/global/global';
 @import '../../../node_modules/@bigcommerce/citadel/src/settings/global/global';
-@import '../../../node_modules/@bigcommerce/citadel/src/settings/normalize/normalize';
-@import '../../../node_modules/@bigcommerce/citadel/src/settings/foundation/foundation';
-@import '../../../node_modules/@bigcommerce/citadel/src/settings/bigcommerce/bigcommerce';
 @import '../../scss/settings/foundation/foundation';
-@import '../../scss/settings/normalize/normalize';
-@import '../../scss/settings/utilities/utilities';
-@import '../../scss/settings/bigcommerce/bigcommerce';
-@import '../../scss/settings/checkout/checkout';
-@import '../../../node_modules/@bigcommerce/citadel/src/utilities/display/tools';
-@import '../../../node_modules/@bigcommerce/citadel/src/vendor/foundation/foundation.scss';
 
 $global-radius: 4px;

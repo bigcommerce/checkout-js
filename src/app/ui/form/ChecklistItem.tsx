@@ -7,7 +7,6 @@ import { AccordionItem, AccordionItemHeaderProps } from '../accordion';
 
 import BasicFormField from './BasicFormField';
 import { ChecklistContext } from './Checklist';
-import './ChecklistItem.scss';
 import ChecklistItemInput from './ChecklistItemInput';
 
 export interface ChecklistItemProps {

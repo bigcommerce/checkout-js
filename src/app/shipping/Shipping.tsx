@@ -7,7 +7,6 @@ import { isEqualAddress, mapAddressFromFormValues } from '../address';
 import { withCheckout, CheckoutContextProps } from '../checkout';
 import { EMPTY_ARRAY } from '../common/utility';
 import { LoadingOverlay } from '../ui/loading';
-import '../ui/Form.scss';
 
 import { UnassignItemError } from './errors';
 import getShippableItemsCount from './getShippableItemsCount';

@@ -9,7 +9,6 @@ import { TranslatedString } from '../locale';
 import { getShippableItemsCount } from '../shipping';
 import { Legend } from '../ui/form';
 import { LoadingOverlay } from '../ui/loading';
-import '../ui/Form.scss';
 
 import BillingForm, { BillingFormValues } from './BillingForm';
 

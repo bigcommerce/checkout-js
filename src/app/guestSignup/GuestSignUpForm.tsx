@@ -5,7 +5,6 @@ import { object, ref, string } from 'yup';
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form, Legend } from '../ui/form';
-import '../ui/Form.scss';
 
 import SignUpPasswordField from './SignUpPasswordField';
 
