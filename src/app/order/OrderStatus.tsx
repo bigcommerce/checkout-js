@@ -6,7 +6,7 @@ import { TranslatedHtml, TranslatedString } from '../locale';
 import OrderConfirmationSection from './OrderConfirmationSection';
 
 export interface OrderStatusProps {
-    supportEmail?: string;
+    supportEmail: string;
     supportPhoneNumber?: string;
     order: Order;
 }
@@ -16,38 +16,26 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
     supportEmail,
     supportPhoneNumber,
 }) => {
-    const isPendingReview = order.status === 'MANUAL_VERIFICATION_REQUIRED';
-    const isAwaitingPayment = order.status === 'AWAITING_PAYMENT';
-    const orderNumber = order.orderId;
-
     return <OrderConfirmationSection>
-        { orderNumber &&
+        { order.orderId &&
         <p data-test="order-confirmation-order-number-text">
             <TranslatedHtml
-                data={ { orderNumber } }
+                data={ { orderNumber: order.orderId } }
                 id="order_confirmation.order_number_text"
             />
         </p> }
 
-        { (isPendingReview || isAwaitingPayment) &&
-        <p>
-            <TranslatedString
-                id="order_confirmation.order_pending_review_text"
+        <p data-test="order-confirmation-order-status-text">
+            <OrderStatusMessage
+                orderNumber={ order.orderId }
+                orderStatus={ order.status }
+                supportEmail={ supportEmail }
+                supportPhoneNumber={ supportPhoneNumber }
             />
-        </p> }
-
-        { !(isPendingReview || isAwaitingPayment) &&
-        <p>
-            <TranslatedHtml
-                data={ { orderNumber, supportEmail, supportPhoneNumber } }
-                id={ supportPhoneNumber ?
-                    'order_confirmation.order_with_support_number_text' :
-                    'order_confirmation.order_without_support_number_text' }
-            />
-        </p> }
+        </p>
 
         { order.hasDigitalItems &&
-        <p>
+        <p data-test="order-confirmation-digital-items-text">
             <TranslatedHtml
                 id={ order.isDownloadable ?
                     'order_confirmation.order_with_downloadable_digital_items_text' :
@@ -55,6 +43,48 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
             />
         </p> }
     </OrderConfirmationSection>;
+};
+
+interface OrderStatusMessageProps {
+    orderNumber: number;
+    orderStatus: string;
+    supportEmail?: string;
+    supportPhoneNumber?: string;
+}
+
+const OrderStatusMessage: FunctionComponent<OrderStatusMessageProps> = ({
+    orderNumber,
+    orderStatus,
+    supportEmail,
+    supportPhoneNumber,
+}) => {
+    switch (orderStatus) {
+    case 'MANUAL_VERIFICATION_REQUIRED':
+    case 'AWAITING_PAYMENT':
+        return <TranslatedString
+            id="order_confirmation.order_pending_review_text"
+        />;
+
+    case 'PENDING':
+        return <TranslatedString
+            data={ { orderNumber, supportEmail } }
+            id="order_confirmation.order_pending_status_text"
+        />;
+
+    case 'INCOMPLETE':
+        return <TranslatedString
+            data={ { orderNumber, supportEmail } }
+            id="order_confirmation.order_incomplete_status_text"
+        />;
+
+    default:
+        return <TranslatedHtml
+            data={ { orderNumber, supportEmail, supportPhoneNumber } }
+            id={ supportPhoneNumber ?
+                'order_confirmation.order_with_support_number_text' :
+                'order_confirmation.order_without_support_number_text' }
+        />;
+    }
 };
 
 export default memo(OrderStatus);
