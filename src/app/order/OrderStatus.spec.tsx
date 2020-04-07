@@ -1,77 +1,187 @@
-import { Order } from '@bigcommerce/checkout-sdk';
-import { shallow, ShallowWrapper } from 'enzyme';
-import React from 'react';
+import { createCheckoutService, CheckoutService, Order } from '@bigcommerce/checkout-sdk';
+import { mount } from 'enzyme';
+import React, { FunctionComponent } from 'react';
 
-import { TranslatedString } from '../locale';
+import { LocaleProvider, TranslatedHtml, TranslatedString } from '../locale';
 
 import { getOrder } from './orders.mock';
-import OrderStatus from './OrderStatus';
-
-let order: Order;
-let orderStatus: ShallowWrapper;
+import OrderStatus, { OrderStatusProps } from './OrderStatus';
 
 describe('OrderStatus', () => {
-    describe('when order is not waiting manual verification', () => {
+    let checkoutService: CheckoutService;
+    let defaultProps: OrderStatusProps;
+    let order: Order;
+    let OrderStatusTest: FunctionComponent<OrderStatusProps>;
 
-        beforeEach(() => {
-            order = getOrder();
-        });
+    beforeEach(() => {
+        checkoutService = createCheckoutService();
+        order = getOrder();
 
-        describe('and has support data', () => {
-            beforeEach(() => {
-                orderStatus = shallow(<OrderStatus
-                    order={ order }
-                    supportEmail="test@example.com"
+        defaultProps = {
+            order,
+            supportEmail: 'test@example.com',
+        };
+
+        OrderStatusTest = props => (
+            <LocaleProvider checkoutService={ checkoutService }>
+                <OrderStatus { ...props } />
+            </LocaleProvider>
+        );
+    });
+
+    describe('when order is complete', () => {
+        it('renders confirmation message with contact email and phone number if both are provided', () => {
+            const orderStatus = mount(
+                <OrderStatusTest
+                    { ...defaultProps }
                     supportPhoneNumber="990"
-                />);
-            });
+                />
+            );
+            const translationProps = orderStatus.find('[data-test="order-confirmation-order-status-text"]')
+                .find(TranslatedHtml)
+                .props();
 
-            it('renders status with contact information', () => {
-                expect(orderStatus).toMatchSnapshot();
-            });
+            expect(translationProps)
+                .toEqual({
+                    data: {
+                        orderNumber: defaultProps.order.orderId,
+                        supportEmail: defaultProps.supportEmail,
+                        supportPhoneNumber: '990',
+                    },
+                    id: 'order_confirmation.order_with_support_number_text',
+                });
         });
 
-        describe('and has no support data', () => {
-            beforeEach(() => {
-                orderStatus = shallow(<OrderStatus
-                    order={ order }
-                />);
-            });
+        it('renders confirmation message without contact phone number if it is not provided', () => {
+            const orderStatus = mount(
+                <OrderStatusTest
+                    { ...defaultProps }
+                />
+            );
+            const translationProps = orderStatus.find('[data-test="order-confirmation-order-status-text"]')
+                .find(TranslatedHtml)
+                .props();
 
-            it('renders status', () => {
-                expect(orderStatus).toMatchSnapshot();
-            });
+            expect(translationProps)
+                .toEqual({
+                    data: {
+                        orderNumber: defaultProps.order.orderId,
+                        supportEmail: defaultProps.supportEmail,
+                    },
+                    id: 'order_confirmation.order_without_support_number_text',
+                });
         });
     });
 
-    describe('when order is waiting manual verification', () => {
+    describe('when order requires manual verification', () => {
         beforeEach(() => {
-            orderStatus = shallow(<OrderStatus
-                order={ {
-                    ...getOrder(),
-                    status: 'MANUAL_VERIFICATION_REQUIRED',
-                } }
-            />);
+            order = {
+                ...getOrder(),
+                status: 'MANUAL_VERIFICATION_REQUIRED',
+            };
         });
 
-        it('renders status with special text', () => {
-            expect(orderStatus).toMatchSnapshot();
+        it('renders message indicating order is pending review', () => {
+            const orderStatus = mount(
+                <OrderStatusTest
+                    { ...defaultProps }
+                    order={ order }
+                />
+            );
+            const translationProps = orderStatus.find('[data-test="order-confirmation-order-status-text"]')
+                .find(TranslatedString)
+                .props();
+
+            expect(translationProps)
+                .toEqual({
+                    id: 'order_confirmation.order_pending_review_text',
+                });
         });
     });
 
     describe('when order is awaiting payment', () => {
         beforeEach(() => {
-            orderStatus = shallow(<OrderStatus
-                order={ {
-                    ...getOrder(),
-                    status: 'AWAITING_PAYMENT',
-                } }
-            />);
+            order = {
+                ...getOrder(),
+                status: 'AWAITING_PAYMENT',
+            };
         });
 
-        it('displays order is pending text', () => {
-            expect(orderStatus.find(TranslatedString).prop('id'))
-                .toEqual('order_confirmation.order_pending_review_text');
+        it('renders message indicating order is awaiting payment', () => {
+            const orderStatus = mount(
+                <OrderStatusTest
+                    { ...defaultProps }
+                    order={ order }
+                />
+            );
+            const translationProps = orderStatus.find('[data-test="order-confirmation-order-status-text"]')
+                .find(TranslatedString)
+                .props();
+
+            expect(translationProps)
+                .toEqual({
+                    id: 'order_confirmation.order_pending_review_text',
+                });
+        });
+    });
+
+    describe('when order is pending', () => {
+        beforeEach(() => {
+            order = {
+                ...getOrder(),
+                status: 'PENDING',
+            };
+        });
+
+        it('renders message indicating order is pending', () => {
+            const orderStatus = mount(
+                <OrderStatusTest
+                    { ...defaultProps }
+                    order={ order }
+                />
+            );
+            const translationProps = orderStatus.find('[data-test="order-confirmation-order-status-text"]')
+                .find(TranslatedString)
+                .props();
+
+            expect(translationProps)
+                .toEqual({
+                    data: {
+                        orderNumber: defaultProps.order.orderId,
+                        supportEmail: defaultProps.supportEmail,
+                    },
+                    id: 'order_confirmation.order_pending_status_text',
+                });
+        });
+    });
+
+    describe('when order is incomplete', () => {
+        beforeEach(() => {
+            order = {
+                ...getOrder(),
+                status: 'INCOMPLETE',
+            };
+        });
+
+        it('renders message indicating order is incomplete', () => {
+            const orderStatus = mount(
+                <OrderStatusTest
+                    { ...defaultProps }
+                    order={ order }
+                />
+            );
+            const translationProps = orderStatus.find('[data-test="order-confirmation-order-status-text"]')
+                .find(TranslatedString)
+                .props();
+
+            expect(translationProps)
+                .toEqual({
+                    data: {
+                        orderNumber: defaultProps.order.orderId,
+                        supportEmail: defaultProps.supportEmail,
+                    },
+                    id: 'order_confirmation.order_incomplete_status_text',
+                });
         });
     });
 
@@ -83,24 +193,38 @@ describe('OrderStatus', () => {
             };
         });
 
-        describe('and has downloadable items', () => {
-            beforeEach(() => {
-                order.isDownloadable = true;
-            });
+        it('renders status with downloadable items text if order is downloadable', () => {
+            const orderStatus = mount(
+                <OrderStatusTest
+                    { ...defaultProps }
+                    order={ { ...order, isDownloadable: true } }
+                />
+            );
+            const translationProps = orderStatus.find('[data-test="order-confirmation-digital-items-text"]')
+                .find(TranslatedHtml)
+                .props();
 
-            it('renders status with downloadable items text', () => {
-                expect(shallow(<OrderStatus order={ order } />)).toMatchSnapshot();
-            });
+            expect(translationProps)
+                .toEqual({
+                    id: 'order_confirmation.order_with_downloadable_digital_items_text',
+                });
         });
 
-        describe('and does not have downloadable items', () => {
-            beforeEach(() => {
-                order.isDownloadable = false;
-            });
+        it('renders status without downloadable items text if order it not yet downloadable', () => {
+            const orderStatus = mount(
+                <OrderStatusTest
+                    { ...defaultProps }
+                    order={ { ...order, isDownloadable: false } }
+                />
+            );
+            const translationProps = orderStatus.find('[data-test="order-confirmation-digital-items-text"]')
+                .find(TranslatedHtml)
+                .props();
 
-            it('renders status without downloadable items text', () => {
-                expect(shallow(<OrderStatus order={ order } />)).toMatchSnapshot();
-            });
+            expect(translationProps)
+                .toEqual({
+                    id: 'order_confirmation.order_without_downloadable_digital_items_text',
+                });
         });
     });
 });
