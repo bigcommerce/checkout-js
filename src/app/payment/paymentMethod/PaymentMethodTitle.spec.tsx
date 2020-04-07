@@ -34,6 +34,7 @@ describe('PaymentMethodTitle', () => {
         masterpass: 'https://masterpass.com/dyn/img/acc/global/mp_mark_hor_blk.svg',
         paypal: '/img/payment-providers/paypalpaymentsprouk.png',
         zip: '/img/payment-providers/zip.png',
+        paypalcommerce: '/img/payment-providers/paypal_commerce_logo.svg',
     };
 
     beforeEach(() => {
@@ -120,6 +121,7 @@ describe('PaymentMethodTitle', () => {
         const methods = [
             { id: PaymentMethodId.Amazon, method: 'widget' },
             { id: PaymentMethodId.Klarna, method: 'widget' },
+            { id: PaymentMethodId.PaypalCommerce, method: 'widget' },
         ];
 
         methods.forEach(method => {
@@ -198,6 +200,7 @@ describe('PaymentMethodTitle', () => {
         const methodIds = [
             PaymentMethodId.Amazon,
             PaymentMethodId.ChasePay,
+            PaymentMethodId.PaypalCommerce,
             PaymentMethodType.Barclaycard,
             PaymentMethodType.GooglePay,
             PaymentMethodType.Masterpass,

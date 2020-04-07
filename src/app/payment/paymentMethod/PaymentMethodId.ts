@@ -19,6 +19,7 @@ enum PaymentMethodId {
     Masterpass = 'masterpass',
     PaypalExpress = 'paypalexpress',
     PaypalPaymentsPro = 'paypal',
+    PaypalCommerce = 'paypalcommerce',
     SagePay = 'sagepay',
     SquareV2 = 'squarev2',
     StripeGooglePay = 'googlepaystripe',
