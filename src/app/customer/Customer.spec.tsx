@@ -8,7 +8,7 @@ import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 
-import { getGuestCustomer } from './customers.mock';
+import { getCustomer, getGuestCustomer } from './customers.mock';
 import Customer, { CustomerProps, WithCheckoutCustomerProps } from './Customer';
 import CustomerViewType from './CustomerViewType';
 import GuestForm, { GuestFormProps } from './GuestForm';
@@ -224,12 +224,16 @@ describe('Customer', () => {
                 .toHaveBeenCalled();
         });
 
-        it('renders cancellable log-in form if continue as guest fails with code 403', async () => {
+        it('renders CancellableEnforcedLogin if continue as guest fails with code 403', async () => {
             jest.spyOn(checkoutService, 'continueAsGuest')
                 .mockRejectedValue({ status: 403 });
 
+            const handleChangeViewType = jest.fn();
             const component = mount(
-                <CustomerTest viewType={ CustomerViewType.Guest } />
+                <CustomerTest
+                    onChangeViewType={ handleChangeViewType }
+                    viewType={ CustomerViewType.Guest }
+                />
             );
 
             (component.find(GuestForm) as ReactWrapper<GuestFormProps>)
@@ -241,19 +245,53 @@ describe('Customer', () => {
             await new Promise(resolve => process.nextTick(resolve));
             component.update();
 
-            expect(component.find(LoginForm).props())
-                .toMatchObject({
-                    accountExists: true,
-                    canCancel: true,
-                });
+            expect(handleChangeViewType).toHaveBeenCalledWith(CustomerViewType.CancellableEnforcedLogin);
         });
 
-        it('renders mandatory log-in form if continue as guest fails with code 429', async () => {
+        it('renders SuggestedLogin form if continue as guest returns truthy hasAccount', async () => {
+            jest.spyOn(checkoutService.getState().data, 'getCustomer')
+                .mockReturnValue({
+                    ...getCustomer(),
+                    isGuest: true,
+                    hasAccount: true,
+                } as any);
+
+            jest.spyOn(checkoutService, 'continueAsGuest')
+                .mockReturnValue(Promise.resolve(checkoutService.getState()));
+
+            const handleChangeViewType = jest.fn();
+            const component = mount(
+                <CustomerTest
+                    onChangeViewType={ handleChangeViewType }
+                    viewType={ CustomerViewType.Guest }
+                />
+            );
+
+            (component.find(GuestForm) as ReactWrapper<GuestFormProps>)
+                .prop('onContinueAsGuest')({
+                    email: 'test@bigcommerce.com',
+                    shouldSubscribe: false,
+                });
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
+            expect(handleChangeViewType).toHaveBeenCalledWith(CustomerViewType.SuggestedLogin);
+
+            (checkoutService.getState().data.getCustomer as jest.Mock).mockRestore();
+        });
+
+        it('renders EnforcedLogin form if continue as guest fails with code 429', async () => {
             jest.spyOn(checkoutService, 'continueAsGuest')
                 .mockRejectedValue({ status: 429 });
 
+            const handleChangeViewType = jest.fn();
+
             const component = mount(
-                <CustomerTest viewType={ CustomerViewType.Guest } />
+                <CustomerTest
+                    onChangeViewType={ handleChangeViewType }
+                    viewType={ CustomerViewType.Guest }
+                />
             );
 
             (component.find(GuestForm) as ReactWrapper<GuestFormProps>)
@@ -265,11 +303,7 @@ describe('Customer', () => {
             await new Promise(resolve => process.nextTick(resolve));
             component.update();
 
-            expect(component.find(LoginForm).props())
-                .toMatchObject({
-                    accountExists: true,
-                    canCancel: false,
-                });
+            expect(handleChangeViewType).toHaveBeenCalledWith(CustomerViewType.EnforcedLogin);
         });
 
         it('triggers error callback if customer is unable to continue as guest', async () => {

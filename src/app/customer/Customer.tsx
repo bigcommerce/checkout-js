@@ -1,4 +1,4 @@
-import { CheckoutSelectors, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, GuestCredentials } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, Customer as CustomerType, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, GuestCredentials } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, Fragment, ReactNode } from 'react';
 
@@ -19,11 +19,6 @@ export interface CustomerProps {
     onSignIn?(): void;
     onSignInError?(error: Error): void;
     onUnhandledError?(error: Error): void;
-}
-
-export interface CustomerState {
-    guestMustLogIn: boolean;
-    guestAttemptsLimitReached: boolean;
 }
 
 export interface WithCheckoutCustomerProps {
@@ -47,12 +42,7 @@ export interface WithCheckoutCustomerProps {
     signIn(credentials: CustomerCredentials): Promise<CheckoutSelectors>;
 }
 
-class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, CustomerState> {
-    state: CustomerState = {
-        guestMustLogIn: false,
-        guestAttemptsLimitReached: false,
-    };
-
+class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
     private draftEmail?: string;
 
     componentDidMount(): void {
@@ -63,13 +53,12 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
 
     render(): ReactNode {
         const { viewType } = this.props;
-        const { guestMustLogIn } = this.state;
 
         return (
             <Fragment>
-                { (viewType === CustomerViewType.Login || guestMustLogIn) ?
-                    this.renderLoginForm() :
-                    this.renderGuestForm() }
+                { (viewType === CustomerViewType.Guest) ?
+                    this.renderGuestForm() :
+                    this.renderLoginForm() }
             </Fragment>
         );
     }
@@ -120,26 +109,24 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             forgotPasswordUrl,
             isGuestEnabled,
             isSigningIn,
+            onContinueAsGuest,
             signInError,
+            viewType,
         } = this.props;
-
-        const {
-            guestMustLogIn,
-            guestAttemptsLimitReached,
-        } = this.state;
 
         return (
             <LoginForm
-                accountExists={ guestMustLogIn }
-                canCancel={ isGuestEnabled && !guestAttemptsLimitReached }
+                canCancel={ isGuestEnabled }
                 createAccountUrl={ createAccountUrl }
                 email={ this.draftEmail || email }
                 forgotPasswordUrl={ forgotPasswordUrl }
                 isSigningIn={ isSigningIn }
                 onCancel={ this.handleCancelSignIn }
                 onChangeEmail={ this.handleChangeEmail }
+                onContinueAsGuest={ onContinueAsGuest }
                 onSignIn={ this.handleSignIn }
                 signInError={ signInError }
+                viewType={ viewType }
             />
         );
     }
@@ -148,18 +135,28 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
         const {
             canSubscribe,
             continueAsGuest,
+            onChangeViewType = noop,
             onContinueAsGuest = noop,
             onContinueAsGuestError = noop,
         } = this.props;
 
         const email = formValues.email.trim();
         try {
-            await continueAsGuest({
+            const { data } = await continueAsGuest({
                 email,
                 acceptsMarketingNewsletter: canSubscribe && formValues.shouldSubscribe ? true : undefined,
                 acceptsAbandonedCartEmails: formValues.shouldSubscribe ? true : undefined,
             });
+
+            // todo: remove when SDK has been updated
+            const { hasAccount, isGuest } = data.getCustomer() as unknown as CustomerType & { hasAccount: boolean };
+
+            if (hasAccount && isGuest) {
+                return onChangeViewType(CustomerViewType.SuggestedLogin);
+            }
+
             onContinueAsGuest();
+
             this.draftEmail = undefined;
         } catch (error) {
             if (error.type === 'update_subscriptions') {
@@ -168,11 +165,12 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                 return onContinueAsGuest();
             }
 
-            if (error.status === 403 || error.status === 429) {
-                return this.setState({
-                    guestMustLogIn: true,
-                    guestAttemptsLimitReached: error.status === 429,
-                });
+            if (error.status === 429) {
+                return onChangeViewType(CustomerViewType.EnforcedLogin);
+            }
+
+            if (error.status === 403) {
+                return onChangeViewType(CustomerViewType.CancellableEnforcedLogin);
             }
 
             onContinueAsGuestError(error);
@@ -207,7 +205,6 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             clearError(signInError);
         }
 
-        this.setState({ guestMustLogIn: false });
         onChangeViewType(CustomerViewType.Guest);
     };
 

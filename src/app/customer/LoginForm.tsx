@@ -10,6 +10,7 @@ import { Fieldset, Form, Legend } from '../ui/form';
 
 import mapErrorMessage from './mapErrorMessage';
 import { EMAIL_REGEXP } from './validationPatterns';
+import CustomerViewType from './CustomerViewType';
 import EmailField from './EmailField';
 import PasswordField from './PasswordField';
 
@@ -18,12 +19,13 @@ export interface LoginFormProps {
     createAccountUrl: string;
     email?: string;
     forgotPasswordUrl: string;
-    accountExists?: boolean;
     isSigningIn?: boolean;
     signInError?: Error;
+    viewType?: Omit<CustomerViewType, 'guest'>;
     onCancel?(): void;
     onChangeEmail?(email: string): void;
     onSignIn(data: LoginFormValues): void;
+    onContinueAsGuest?(): void;
 }
 
 export interface LoginFormValues {
@@ -38,11 +40,11 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
     email,
     isSigningIn,
     language,
-    accountExists,
     onCancel,
     onChangeEmail,
+    onContinueAsGuest,
     signInError,
-    values: { email: formEmail },
+    viewType = CustomerViewType.Login,
 }) => (
     <Form
         className="checkout-form"
@@ -62,22 +64,30 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
                 { mapErrorMessage(signInError, key => language.translate(key)) }
             </Alert> }
 
-            { !accountExists && <p>
+            { viewType === CustomerViewType.SuggestedLogin &&
+                <Alert type={ AlertType.Info }>
+                    <TranslatedHtml
+                        data={ { email } }
+                        id="customer.guest_could_login"
+                    />
+                </Alert> }
+
+            { viewType === CustomerViewType.Login && <p>
                 <TranslatedHtml
                     data={ { url: createAccountUrl } }
                     id="customer.create_account_to_continue_text"
                 />
             </p> }
 
-            { accountExists && canCancel && email === formEmail &&
+            { viewType === CustomerViewType.CancellableEnforcedLogin &&
                 <Alert type={ AlertType.Info }>
                     <TranslatedHtml
                         data={ { email } }
-                        id="customer.account_must_login"
+                        id="customer.guest_must_login"
                     />
                 </Alert> }
 
-            { accountExists && !canCancel &&
+            { viewType === CustomerViewType.EnforcedLogin &&
                 <Alert type={ AlertType.Error }>
                     <TranslatedHtml
                         data={ { url: createAccountUrl } }
@@ -85,7 +95,8 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
                     />
                 </Alert> }
 
-            <EmailField onChange={ onChangeEmail } />
+            { (viewType === CustomerViewType.Login || viewType === CustomerViewType.EnforcedLogin) &&
+                <EmailField onChange={ onChangeEmail } /> }
 
             <PasswordField forgotPasswordUrl={ forgotPasswordUrl } />
 
@@ -100,15 +111,28 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
                     <TranslatedString id="customer.sign_in_action" />
                 </Button>
 
-                { canCancel && <a
+                { viewType === CustomerViewType.SuggestedLogin && <a
                     className="button optimizedCheckout-buttonSecondary"
-                    data-test="customer-cancel-button"
+                    data-test="customer-guest-continue"
                     href="#"
-                    id="checkout-customer-cancel"
-                    onClick={ preventDefault(onCancel) }
+                    id="checkout-guest-continue"
+                    onClick={ preventDefault(onContinueAsGuest) }
                 >
-                    <TranslatedString id="common.cancel_action" />
+                    <TranslatedString id="customer.continue_as_guest_action" />
                 </a> }
+
+                { canCancel &&
+                    viewType !== CustomerViewType.EnforcedLogin &&
+                    viewType !== CustomerViewType.SuggestedLogin  &&
+                    <a
+                        className="button optimizedCheckout-buttonSecondary"
+                        data-test="customer-cancel-button"
+                        href="#"
+                        id="checkout-customer-cancel"
+                        onClick={ preventDefault(onCancel) }
+                    >
+                        <TranslatedString id="common.cancel_action" />
+                    </a> }
             </div>
         </Fieldset>
     </Form>
