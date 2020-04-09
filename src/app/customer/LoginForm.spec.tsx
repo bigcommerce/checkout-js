@@ -125,6 +125,7 @@ describe('LoginForm', () => {
     });
 
     it('renders SuggestedLogin (no email input, suggestion, continue as guest) and ignores canCancel flag', () => {
+        const onCancel = jest.fn();
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <LoginForm
@@ -132,6 +133,7 @@ describe('LoginForm', () => {
                     createAccountUrl={ '/create-account' }
                     email="foo@bar.com"
                     forgotPasswordUrl={ '/forgot-password' }
+                    onCancel={ onCancel }
                     onSignIn={ noop }
                     viewType={ CustomerViewType.SuggestedLogin }
                 />
@@ -152,6 +154,9 @@ describe('LoginForm', () => {
 
         expect(component.exists('[data-test="customer-guest-continue"]'))
             .toEqual(true);
+
+        component.find('[data-test="change-email"]').simulate('click');
+        expect(onCancel).toHaveBeenCalled();
 
         expect(component.exists('input[name="email"]'))
             .toEqual(false);
