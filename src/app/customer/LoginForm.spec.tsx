@@ -6,6 +6,7 @@ import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedHtml } from '../locale';
 import { Alert } from '../ui/alert';
 
+import CustomerViewType from './CustomerViewType';
 import LoginForm from './LoginForm';
 
 describe('LoginForm', () => {
@@ -123,16 +124,18 @@ describe('LoginForm', () => {
             .toEqual('Password is required');
     });
 
-    it('renders info alert if account exists, and hides it if email changes', () => {
+    it('renders SuggestedLogin (no email input, suggestion, continue as guest) and ignores canCancel flag', () => {
+        const onCancel = jest.fn();
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <LoginForm
-                    accountExists
                     canCancel
                     createAccountUrl={ '/create-account' }
                     email="foo@bar.com"
                     forgotPasswordUrl={ '/forgot-password' }
+                    onCancel={ onCancel }
                     onSignIn={ noop }
+                    viewType={ CustomerViewType.SuggestedLogin }
                 />
             </LocaleContext.Provider>
         );
@@ -142,25 +145,60 @@ describe('LoginForm', () => {
 
         expect(component.find(Alert).find(TranslatedHtml).props())
             .toEqual({
-                id: 'customer.account_must_login',
+                id: 'customer.guest_could_login',
                 data: { email: 'foo@bar.com' },
             });
 
-        component.find('input[name="email"]')
-            .simulate('change', { target: { value: 'test@bigcommerce.com', name: 'email' } });
+        expect(component.exists('[data-test="customer-cancel-button"]'))
+            .toEqual(false);
 
-        expect(component.find(Alert).length).toEqual(0);
+        expect(component.exists('[data-test="customer-guest-continue"]'))
+            .toEqual(true);
+
+        component.find('[data-test="change-email"]').simulate('click');
+        expect(onCancel).toHaveBeenCalled();
+
+        expect(component.exists('input[name="email"]'))
+            .toEqual(false);
     });
 
-    it('renders error alert if account exists and cant cancel', () => {
+    it('renders info alert if CancellableEnforcedLogin, and hides email input', () => {
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <LoginForm
-                    accountExists
+                    canCancel
                     createAccountUrl={ '/create-account' }
                     email="foo@bar.com"
                     forgotPasswordUrl={ '/forgot-password' }
                     onSignIn={ noop }
+                    viewType={ CustomerViewType.CancellableEnforcedLogin }
+                />
+            </LocaleContext.Provider>
+        );
+
+        expect(component.find(Alert).prop('type'))
+            .toEqual('info');
+
+        expect(component.find(Alert).find(TranslatedHtml).props())
+            .toEqual({
+                id: 'customer.guest_must_login',
+                data: { email: 'foo@bar.com' },
+            });
+
+        expect(component.exists('input[name="email"]'))
+            .toEqual(false);
+    });
+
+    it('renders guest is temporary disabled alert if EnforcedLogin, and ignores canCancel flag', () => {
+        const component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <LoginForm
+                    canCancel
+                    createAccountUrl={ '/create-account' }
+                    email="foo@bar.com"
+                    forgotPasswordUrl={ '/forgot-password' }
+                    onSignIn={ noop }
+                    viewType={ CustomerViewType.EnforcedLogin }
                 />
             </LocaleContext.Provider>
         );
@@ -173,6 +211,12 @@ describe('LoginForm', () => {
                 id: 'customer.guest_temporary_disabled',
                 data: { url: '/create-account' },
             });
+
+        expect(component.exists('input[name="email"]'))
+            .toEqual(true);
+
+        expect(component.exists('[data-test="customer-cancel-button"]'))
+            .toEqual(false);
     });
 
     it('renders error as alert if password is incorrect', () => {
