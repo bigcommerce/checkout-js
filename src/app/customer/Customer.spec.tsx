@@ -248,12 +248,12 @@ describe('Customer', () => {
             expect(handleChangeViewType).toHaveBeenCalledWith(CustomerViewType.CancellableEnforcedLogin);
         });
 
-        it('renders SuggestedLogin form if continue as guest returns truthy hasAccount', async () => {
+        it('renders SuggestedLogin form if continue as guest returns truthy shouldEncourageSignIn', async () => {
             jest.spyOn(checkoutService.getState().data, 'getCustomer')
                 .mockReturnValue({
                     ...getCustomer(),
                     isGuest: true,
-                    hasAccount: true,
+                    shouldEncourageSignIn: true,
                 } as any);
 
             jest.spyOn(checkoutService, 'continueAsGuest')

@@ -149,9 +149,9 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
             });
 
             // todo: remove when SDK has been updated
-            const { hasAccount, isGuest } = data.getCustomer() as unknown as CustomerType & { hasAccount: boolean };
+            const { shouldEncourageSignIn, isGuest } = data.getCustomer() as unknown as CustomerType & { shouldEncourageSignIn: boolean };
 
-            if (hasAccount && isGuest) {
+            if (shouldEncourageSignIn && isGuest) {
                 return onChangeViewType(CustomerViewType.SuggestedLogin);
             }
 
