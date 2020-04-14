@@ -1,4 +1,4 @@
-import { CheckoutSelectors, Customer as CustomerType, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, GuestCredentials } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, Customer as CustomerType, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, GuestCredentials, SignInEmail } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, Fragment, ReactNode } from 'react';
 
@@ -6,6 +6,7 @@ import { withCheckout, CheckoutContextProps } from '../checkout';
 
 import CheckoutButtonList from './CheckoutButtonList';
 import CustomerViewType from './CustomerViewType';
+import EmailLoginForm, { EmailLoginFormValues } from './EmailLoginForm';
 import GuestForm, { GuestFormValues } from './GuestForm';
 import LoginForm from './LoginForm';
 
@@ -31,31 +32,53 @@ export interface WithCheckoutCustomerProps {
     forgotPasswordUrl: string;
     isContinuingAsGuest: boolean;
     isGuestEnabled: boolean;
+    isSendingSignInEmail: boolean;
+    isSignInEmailEnabled: boolean;
     isSigningIn: boolean;
-    signInError?: Error;
     privacyPolicyUrl?: string;
     requiresMarketingConsent: boolean;
+    signInEmail?: SignInEmail;
+    signInEmailError?: Error;
+    signInError?: Error;
     clearError(error: Error): Promise<CheckoutSelectors>;
     continueAsGuest(credentials: GuestCredentials): Promise<CheckoutSelectors>;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     initializeCustomer(options: CustomerInitializeOptions): Promise<CheckoutSelectors>;
+    sendLoginEmail(email: string): Promise<CheckoutSelectors>;
     signIn(credentials: CustomerCredentials): Promise<CheckoutSelectors>;
 }
 
-class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
+export interface CustomerState {
+    isEmailLoginFormOpen: boolean;
+    hasRequestedLoginEmail: boolean;
+}
+
+class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, CustomerState> {
+    state: CustomerState = {
+        isEmailLoginFormOpen: false,
+        hasRequestedLoginEmail: false,
+    };
+
     private draftEmail?: string;
 
     componentDidMount(): void {
-        const { onReady = noop } = this.props;
+        const {
+            onReady = noop,
+            email,
+        } = this.props;
+
+        this.draftEmail = email;
 
         onReady();
     }
 
     render(): ReactNode {
         const { viewType } = this.props;
+        const { isEmailLoginFormOpen } = this.state;
 
         return (
             <Fragment>
+                { isEmailLoginFormOpen && this.renderEmailLoginFormForm() }
                 { (viewType === CustomerViewType.Guest) ?
                     this.renderGuestForm() :
                     this.renderLoginForm() }
@@ -102,12 +125,47 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
         );
     }
 
+    private renderEmailLoginFormForm(): ReactNode {
+        const {
+            isEmailLoginFormOpen,
+            hasRequestedLoginEmail,
+        } = this.state;
+
+        const {
+            isSendingSignInEmail,
+            signInEmailError,
+            signInEmail,
+        } = this.props;
+
+        return (
+            <EmailLoginForm
+                email={ this.draftEmail }
+                emailHasBeenRequested={ hasRequestedLoginEmail }
+                isOpen={ isEmailLoginFormOpen }
+                isSendingEmail={ isSendingSignInEmail }
+                onRequestClose={ this.closeEmailLoginFormForm }
+                onSendLoginEmail={ this.handleSendLoginEmail }
+                sentEmail={ signInEmail }
+                sentEmailError={ signInEmailError }
+            />
+        );
+    }
+
+    private closeEmailLoginFormForm: () => void = () => {
+        this.setState({
+            isEmailLoginFormOpen: false,
+            hasRequestedLoginEmail: false,
+        });
+    };
+
     private renderLoginForm(): ReactNode {
         const {
             createAccountUrl,
             email,
             forgotPasswordUrl,
+            isSignInEmailEnabled,
             isGuestEnabled,
+            isSendingSignInEmail,
             isSigningIn,
             onContinueAsGuest,
             signInError,
@@ -120,16 +178,47 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps> {
                 createAccountUrl={ createAccountUrl }
                 email={ this.draftEmail || email }
                 forgotPasswordUrl={ forgotPasswordUrl }
+                isSendingSignInEmail={ isSendingSignInEmail }
+                isSignInEmailEnabled={ isSignInEmailEnabled }
                 isSigningIn={ isSigningIn }
                 onCancel={ this.handleCancelSignIn }
                 onChangeEmail={ this.handleChangeEmail }
                 onContinueAsGuest={ onContinueAsGuest }
+                onSendLoginEmail={ this.handleEmailLoginClicked }
                 onSignIn={ this.handleSignIn }
                 signInError={ signInError }
                 viewType={ viewType }
             />
         );
     }
+
+    private handleEmailLoginClicked: () => void = async () => {
+        const { viewType } = this.props;
+
+        try {
+            if (viewType !== CustomerViewType.Login && this.draftEmail) {
+                await this.handleSendLoginEmail({ email: this.draftEmail });
+            }
+        } finally {
+            this.setState({
+                isEmailLoginFormOpen: true,
+            });
+        }
+    };
+
+    private handleSendLoginEmail: (values: EmailLoginFormValues) => Promise<void> = async values => {
+        const {
+            sendLoginEmail,
+        } = this.props;
+
+        try {
+            await sendLoginEmail(values.email);
+        } finally {
+            this.setState({
+                hasRequestedLoginEmail: true,
+            });
+        }
+    };
 
     private handleContinueAsGuest: (formValues: GuestFormValues) => Promise<void> = async formValues => {
         const {
@@ -223,30 +312,35 @@ export function mapToWithCheckoutCustomerProps(
     { checkoutService, checkoutState }: CheckoutContextProps
 ): WithCheckoutCustomerProps | null {
     const {
-        data: { getBillingAddress, getCheckout, getCustomer, getConfig },
-        errors: { getSignInError },
-        statuses: { isContinuingAsGuest, isSigningIn },
+        data: { getBillingAddress, getCheckout, getCustomer, getSignInEmail, getConfig },
+        errors: { getSignInError, getSignInEmailError },
+        statuses: { isContinuingAsGuest, isSigningIn, isSendingSignInEmail },
     } = checkoutState;
 
     const billingAddress = getBillingAddress();
     const checkout = getCheckout();
     const customer = getCustomer();
+    const signInEmail = getSignInEmail();
     const config = getConfig();
 
     if (!checkout || !config) {
         return null;
     }
 
+    // todo: add isSignInEmailEnabled to SDK
     const { checkoutSettings: {
         privacyPolicyUrl,
         requiresMarketingConsent,
-    } } = config;
+        isSignInEmailEnabled,
+    } } = config as any;
 
     return {
         canSubscribe: config.shopperConfig.showNewsletterSignup,
         checkoutButtonIds: config.checkoutSettings.remoteCheckoutProviders,
         clearError: checkoutService.clearError,
         continueAsGuest: checkoutService.continueAsGuest,
+        // todo: remove casting when method is properly exposed.
+        sendLoginEmail: (checkoutService as any).sendSignInEmail as (emai: string) => Promise<CheckoutSelectors>,
         createAccountUrl: config.links.createAccountLink,
         defaultShouldSubscribe: config.shopperConfig.defaultNewsletterSignup,
         deinitializeCustomer: checkoutService.deinitializeCustomer,
@@ -255,8 +349,12 @@ export function mapToWithCheckoutCustomerProps(
         forgotPasswordUrl: config.links.forgotPasswordLink,
         initializeCustomer: checkoutService.initializeCustomer,
         isContinuingAsGuest: isContinuingAsGuest(),
+        isSignInEmailEnabled,
         isGuestEnabled: config.checkoutSettings.guestCheckoutEnabled,
         isSigningIn: isSigningIn(),
+        isSendingSignInEmail: isSendingSignInEmail(),
+        signInEmail,
+        signInEmailError: getSignInEmailError(),
         privacyPolicyUrl,
         requiresMarketingConsent,
         signIn: checkoutService.signInCustomer,

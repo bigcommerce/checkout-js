@@ -11,6 +11,7 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale
 import { getCustomer, getGuestCustomer } from './customers.mock';
 import Customer, { CustomerProps, WithCheckoutCustomerProps } from './Customer';
 import CustomerViewType from './CustomerViewType';
+import EmailLoginForm from './EmailLoginForm';
 import GuestForm, { GuestFormProps } from './GuestForm';
 import LoginForm, { LoginFormProps } from './LoginForm';
 
@@ -365,6 +366,23 @@ describe('Customer', () => {
                 .toEqual(true);
         });
 
+        it('renders sign-in email when link is clicked', async () => {
+            const component = mount(
+                <CustomerTest
+                    isSignInEmailEnabled={ true }
+                    viewType={ CustomerViewType.Login }
+                />);
+
+            expect(component.find(EmailLoginForm).exists())
+                .toEqual(false);
+
+            component.find('[data-test="customer-signin-link"]').simulate('click');
+            await new Promise(resolve => process.nextTick(resolve));
+
+            expect(component.find(EmailLoginForm).prop('emailHasBeenRequested'))
+                .toEqual(false);
+        });
+
         it('passes data to login form', () => {
             const component = mount(
                 <CustomerTest viewType={ CustomerViewType.Login } />
@@ -500,6 +518,79 @@ describe('Customer', () => {
 
             expect((component.find(GuestForm) as ReactWrapper<GuestFormProps>).prop('email'))
                 .toEqual('test@bigcommerce.com');
+        });
+    });
+
+    describe('when view type is "cancellable_enforced_login"', () => {
+        it('renders login form', () => {
+            const component = mount(
+                <CustomerTest viewType={ CustomerViewType.CancellableEnforcedLogin } />
+            );
+
+            expect(component.find(LoginForm).prop('viewType'))
+                .toEqual(CustomerViewType.CancellableEnforcedLogin);
+        });
+    });
+
+    describe('when view type is "suggested_login"', () => {
+        it('renders login form', () => {
+            const component = mount(
+                <CustomerTest viewType={ CustomerViewType.SuggestedLogin } />
+            );
+
+            expect(component.find(LoginForm).prop('viewType'))
+                .toEqual(CustomerViewType.SuggestedLogin);
+        });
+    });
+
+    describe('when view type is "enforced_login"', () => {
+        it('renders login form', () => {
+            const component = mount(
+                <CustomerTest viewType={ CustomerViewType.EnforcedLogin } />
+            );
+
+            expect(component.find(LoginForm).prop('viewType'))
+                .toEqual(CustomerViewType.EnforcedLogin);
+        });
+
+        it('calls sendLoginEmail and renders form when sign-in email link is clicked ', async () => {
+            const sendLoginEmail = jest.fn(() => new Promise(resolve => resolve()) as any);
+            const component = mount(
+                <CustomerTest
+                    email="foo@bar.com"
+                    isSignInEmailEnabled={ true }
+                    sendLoginEmail={ sendLoginEmail }
+                    viewType={ CustomerViewType.EnforcedLogin }
+                />);
+
+            component.find('[data-test="customer-signin-link"]').simulate('click');
+            component.update();
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
+            expect(sendLoginEmail).toHaveBeenCalledWith('foo@bar.com');
+            expect(component.find(EmailLoginForm).prop('emailHasBeenRequested'))
+                .toEqual(true);
+        });
+
+        it('renders EmailLoginForm even when sendLoginForm is rejected', async () => {
+            const sendLoginEmail = jest.fn(() => new Promise((_, reject) => reject()) as any);
+            const component = mount(
+                <CustomerTest
+                    email="foo@bar.com"
+                    isSignInEmailEnabled={ true }
+                    sendLoginEmail={ sendLoginEmail }
+                    viewType={ CustomerViewType.EnforcedLogin }
+                />);
+
+            component.find('[data-test="customer-signin-link"]').simulate('click');
+            component.update();
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
+            expect(sendLoginEmail).toHaveBeenCalledWith('foo@bar.com');
+            expect(component.find(EmailLoginForm).prop('emailHasBeenRequested'))
+                .toEqual(true);
         });
     });
 });

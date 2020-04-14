@@ -20,12 +20,17 @@ export interface LoginFormProps {
     createAccountUrl: string;
     email?: string;
     forgotPasswordUrl: string;
+    isSignInEmailEnabled?: boolean;
+    isSendingSignInEmail?: boolean;
     isSigningIn?: boolean;
     signInError?: Error;
+    signInEmailError?: Error;
     viewType?: Omit<CustomerViewType, 'guest'>;
+    passwordlessLogin?: boolean;
     onCancel?(): void;
     onChangeEmail?(email: string): void;
     onSignIn(data: LoginFormValues): void;
+    onSendLoginEmail?(): void;
     onContinueAsGuest?(): void;
 }
 
@@ -39,11 +44,13 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
     createAccountUrl,
     forgotPasswordUrl,
     email,
+    isSignInEmailEnabled,
     isSigningIn,
     language,
     onCancel = noop,
     onChangeEmail,
     onContinueAsGuest,
+    onSendLoginEmail = noop,
     signInError,
     viewType = CustomerViewType.Login,
 }) => {
@@ -117,12 +124,20 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
                 { (viewType === CustomerViewType.Login || viewType === CustomerViewType.EnforcedLogin) &&
                     <EmailField onChange={ onChangeEmail } /> }
 
-                <PasswordField forgotPasswordUrl={ forgotPasswordUrl } />
+                <PasswordField forgotPasswordUrl={ isSignInEmailEnabled ? undefined : forgotPasswordUrl } />
+
+                { isSignInEmailEnabled && <p>
+                    <TranslatedLink
+                        id="login_email.link"
+                        onClick={ onSendLoginEmail }
+                        testId="customer-signin-link"
+                    />
+                </p> }
 
                 <div className="form-actions">
                     <Button
+                        disabled={ isSigningIn }
                         id="checkout-customer-continue"
-                        isLoading={ isSigningIn }
                         testId="customer-continue-button"
                         type="submit"
                         variant={ ButtonVariant.Primary }

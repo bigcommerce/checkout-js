@@ -23,6 +23,18 @@ describe('TranslatedLink Component', () => {
             .toMatchSnapshot();
     });
 
+    it('renders translated text if theres no link', () => {
+        expect(mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <TranslatedLink
+                    data={ { email: 'foo@bar' } }
+                    id="customer.create_account_action"
+                    onClick={ noop }
+                />
+            </LocaleContext.Provider>).html())
+            .toEqual('Create Account');
+    });
+
     it('calls onClick when link is clicked', () => {
         const onClick = jest.fn();
 

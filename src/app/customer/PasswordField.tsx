@@ -7,7 +7,7 @@ import { IconEye, IconEyeSlash } from '../ui/icon';
 import { Toggle } from '../ui/toggle';
 
 export interface PasswordFieldProps {
-    forgotPasswordUrl: string;
+    forgotPasswordUrl?: string;
 }
 
 const PasswordField: FunctionComponent<PasswordFieldProps> = ({
@@ -35,16 +35,20 @@ const PasswordField: FunctionComponent<PasswordFieldProps> = ({
         <TranslatedString id={ 'customer.password_label' } />
     ), []);
 
-    const footer = useMemo(() => (
-        <a
+    const footer = useMemo(() => {
+        if (!forgotPasswordUrl) {
+            return null;
+        }
+
+        return <a
             data-test="forgot-password-link"
             href={ forgotPasswordUrl }
             rel="noopener noreferrer"
             target="_blank"
         >
             <TranslatedString id="customer.forgot_password_action" />
-        </a>
-    ), [forgotPasswordUrl]);
+        </a>;
+    }, [forgotPasswordUrl]);
 
     return <FormField
         footer={ footer }
