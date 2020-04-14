@@ -126,8 +126,7 @@ class CreditCardPaymentMethod extends Component<
 
         setValidationSchema(method, this.getValidationSchema());
 
-        if (shouldUseHostedFieldset &&
-            selectedInstrumentId !== prevState.selectedInstrumentId ||
+        if (selectedInstrumentId !== prevState.selectedInstrumentId ||
             isAddingNewCard !== prevState.isAddingNewCard) {
             try {
                 await deinitializePayment({
@@ -138,7 +137,9 @@ class CreditCardPaymentMethod extends Component<
                 await initializePayment({
                     gatewayId: method.gateway,
                     methodId: method.id,
-                    creditCard: { form: await this.getHostedFormOptions() },
+                    creditCard: shouldUseHostedFieldset ?
+                        { form: await this.getHostedFormOptions() } :
+                        undefined,
                 });
             } catch (error) {
                 onUnhandledError(error);
@@ -279,6 +280,7 @@ class CreditCardPaymentMethod extends Component<
         const {
             instruments,
             isCardCodeRequired,
+            method,
             isInstrumentCardCodeRequired: isInstrumentCardCodeRequiredProp,
             isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredProp,
             language,
@@ -292,14 +294,14 @@ class CreditCardPaymentMethod extends Component<
         const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
         const shouldShowNumberVerificationField = selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument) : false;
         const styleProps = ['color', 'fontFamily', 'fontSize', 'fontWeight'];
-        const styleContainerId = shouldShowInstrumentFieldset && selectedInstrumentId ?
-            (isInstrumentCardCodeRequiredProp ? 'ccCvv' : 'ccNumber') :
+        const styleContainerId = shouldShowInstrumentFieldset && selectedInstrument ?
+            (isInstrumentCardCodeRequiredProp(selectedInstrument, method) ? 'ccCvv' : undefined) :
             'ccNumber';
 
         return {
-            fields: shouldShowInstrumentFieldset && selectedInstrumentId ?
+            fields: shouldShowInstrumentFieldset && selectedInstrumentId && selectedInstrument ?
                 {
-                    cardCodeVerification: isInstrumentCardCodeRequiredProp ? { containerId: 'ccCvv', instrumentId: selectedInstrumentId } : undefined,
+                    cardCodeVerification: isInstrumentCardCodeRequiredProp(selectedInstrument, method) ? { containerId: 'ccCvv', instrumentId: selectedInstrumentId } : undefined,
                     cardNumberVerification: shouldShowNumberVerificationField ? { containerId: 'ccNumber', instrumentId: selectedInstrumentId } : undefined,
                 } :
                 {
@@ -308,11 +310,12 @@ class CreditCardPaymentMethod extends Component<
                     cardName: { containerId: 'ccName' },
                     cardNumber: { containerId: 'ccNumber' },
                 },
-            styles: {
-                default: await getCreditCardInputStyles(styleContainerId, styleProps),
-                error: await getCreditCardInputStyles(styleContainerId, styleProps, CreditCardInputStylesType.Error),
-                focus: await getCreditCardInputStyles(styleContainerId, styleProps, CreditCardInputStylesType.Focus),
-            },
+            styles: styleContainerId ?
+                {
+                    default: await getCreditCardInputStyles(styleContainerId, styleProps),
+                    error: await getCreditCardInputStyles(styleContainerId, styleProps, CreditCardInputStylesType.Error),
+                    focus: await getCreditCardInputStyles(styleContainerId, styleProps, CreditCardInputStylesType.Focus),
+                } : {},
             onBlur: this.handleHostedFieldBlur,
             onCardTypeChange: this.handleHostedFieldCardTypeChange,
             onFocus: this.handleHostedFieldFocus,
