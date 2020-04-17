@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.32.0](https://github.com/bigcommerce/checkout-js/compare/v1.31.1...v1.32.0) (2020-04-17)
+
+
+### Bug Fixes
+
+* **customer:** CHECKOUT-4739 Rename hasAccount to shouldEncourageSignIn ([#262](https://github.com/bigcommerce/checkout-js/issues/262)) ([26ceb63](https://github.com/bigcommerce/checkout-js/commit/26ceb63))
+* **order:** CHECKOUT-4809 Improve message for orders in pending and incomplete status ([846fbbd](https://github.com/bigcommerce/checkout-js/commit/846fbbd))
+
+
+### Features
+
+* **customer:** CHECKOUT-4739 Encourage guest to sign-in if account exists ([134e5cd](https://github.com/bigcommerce/checkout-js/commit/134e5cd))
+* **payment:** INT-2410 CHECKOUT-4789 Bump checkout-sdk ([42698a0](https://github.com/bigcommerce/checkout-js/commit/42698a0))
+* **payment:** PAYPAL-287 Add logo of paypal commerce ([3f398e0](https://github.com/bigcommerce/checkout-js/commit/3f398e0))
+
 ### [1.31.1](https://github.com/bigcommerce/checkout-js/compare/v1.31.0...v1.31.1) (2020-04-03)
 
 
