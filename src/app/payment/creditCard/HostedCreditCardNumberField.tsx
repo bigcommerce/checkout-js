@@ -27,6 +27,7 @@ const HostedCreditCardNumberField: FunctionComponent<HostedCreditCardNumberField
 
     return (
         <FormField
+            additionalClassName="form-field--ccNumber"
             input={ renderInput }
             labelContent={ <TranslatedString id="payment.credit_card_number_label" /> }
             name={ name }
