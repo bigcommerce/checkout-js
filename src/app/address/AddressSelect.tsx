@@ -6,7 +6,6 @@ import { TranslatedString } from '../locale';
 import { DropdownTrigger } from '../ui/dropdown';
 
 import isEqualAddress from './isEqualAddress';
-import './AddressSelect.scss';
 import StaticAddress from './StaticAddress';
 
 export interface AddressSelectProps {

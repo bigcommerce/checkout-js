@@ -28,6 +28,14 @@
         }
     }
 
+    .dynamic-form-field {
+        margin-bottom: spacing("half");
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
     .form-field {
         position: relative;
 

@@ -7,7 +7,6 @@ import { withLanguage, WithLanguageProps } from '../locale';
 import { AutocompleteItem } from '../ui/autocomplete';
 
 import { mapToAddress, GoogleAutocompleteFormField } from './googleAutocomplete';
-import './AddressForm.scss';
 import AddressFormField from './AddressFormField';
 import { AddressKeyMap } from './DynamicFormField';
 import DynamicFormFieldType from './DynamicFormFieldType';
