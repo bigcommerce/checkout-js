@@ -15,6 +15,7 @@ export function getPaymentMethod(): PaymentMethod {
             displayName: 'Authorizenet',
             cardCode: true,
             enablePaypal: undefined,
+            hasDefaultStoredInstrument: false,
             helpText: '',
             is3dsEnabled: undefined,
             isVisaCheckoutEnabled: undefined,

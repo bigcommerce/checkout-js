@@ -177,7 +177,22 @@ describe('Payment', () => {
             .toEqual(paymentMethods[0]);
     });
 
-    it('sets selected hosted payment as default selected payment method', async () => {
+    it('sets default selected payment method to the one with default stored instrument', async () => {
+        paymentMethods[1].config.hasDefaultStoredInstrument = true;
+
+        const container = mount(<PaymentTest { ...defaultProps } />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+        container.update();
+
+        expect(container.find(PaymentForm).props())
+            .toEqual(expect.objectContaining({
+                methods: paymentMethods,
+                selectedMethod: paymentMethods[1],
+            }));
+    });
+
+    it('sets selected hosted payment as default selected payment method and filters methods prop to the hosted payment only', async () => {
         jest.spyOn(checkoutState.data, 'getCheckout')
             .mockReturnValue({
                 ...getCheckout(),
@@ -192,8 +207,11 @@ describe('Payment', () => {
         await new Promise(resolve => process.nextTick(resolve));
         container.update();
 
-        expect(container.find(PaymentForm).prop('selectedMethod'))
-            .toEqual(paymentMethods[1]);
+        expect(container.find(PaymentForm).props())
+            .toEqual(expect.objectContaining({
+                methods: [paymentMethods[1]],
+                selectedMethod: paymentMethods[1],
+            }));
     });
 
     it('updates default selected payment method when list changes', async () => {
