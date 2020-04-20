@@ -46,15 +46,6 @@ jobs:
           paths:
             - dist
 
-  validate-commits:
-    <<: *node_executor
-    steps:
-      - ci/pre-setup
-      - ci/merge-base
-      - run:
-          name: 'Validate Commits'
-          command: '[ -z "$MERGE_BASE_SHA1" ] || npx @bigcommerce/validate-commits ${MERGE_BASE_SHA1}..${CIRCLE_SHA1}'
-
   release:
     <<: *node_executor
     steps:
@@ -119,7 +110,7 @@ workflows:
       - build:
           filters:
             <<: *pull_request_filter
-      - validate-commits:
+      - ci/validate-commits:
           filters:
             <<: *pull_request_filter
 
