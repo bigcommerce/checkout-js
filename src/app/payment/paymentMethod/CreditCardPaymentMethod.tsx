@@ -281,6 +281,7 @@ class CreditCardPaymentMethod extends Component<
             isCardCodeRequired,
             isInstrumentCardCodeRequired: isInstrumentCardCodeRequiredProp,
             isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredProp,
+            language,
             shouldShowInstrumentFieldset,
         } = this.props;
 
@@ -303,7 +304,7 @@ class CreditCardPaymentMethod extends Component<
                 } :
                 {
                     cardCode: isCardCodeRequired ? { containerId: 'ccCvv' } : undefined,
-                    cardExpiry: { containerId: 'ccExpiry' },
+                    cardExpiry: { containerId: 'ccExpiry', placeholder: language.translate('payment.credit_card_expiration_placeholder_text') },
                     cardName: { containerId: 'ccName' },
                     cardNumber: { containerId: 'ccNumber' },
                 },

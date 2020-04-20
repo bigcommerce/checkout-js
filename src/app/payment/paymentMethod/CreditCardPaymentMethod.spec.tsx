@@ -347,7 +347,7 @@ describe('CreditCardPaymentMethod', () => {
                         form: {
                             fields: {
                                 cardCode: { containerId: 'ccCvv' },
-                                cardExpiry: { containerId: 'ccExpiry' },
+                                cardExpiry: { containerId: 'ccExpiry', placeholder: 'MM / YY' },
                                 cardName: { containerId: 'ccName' },
                                 cardNumber: { containerId: 'ccNumber' },
                             },
