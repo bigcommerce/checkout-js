@@ -2,7 +2,7 @@ import { memoizeOne } from '@bigcommerce/memoize';
 import { FieldProps } from 'formik';
 import React, { memo, useCallback, useMemo, ChangeEvent, FunctionComponent } from 'react';
 
-import { TranslatedString } from '../../locale';
+import { withLanguage, TranslatedString, WithLanguageProps } from '../../locale';
 import { FormField, TextInput } from '../../ui/form';
 
 import formatCreditCardExpiryDate from './formatCreditCardExpiryDate';
@@ -11,7 +11,10 @@ export interface CreditCardExpiryFieldProps {
     name: string;
 }
 
-const CreditCardExpiryField: FunctionComponent<CreditCardExpiryFieldProps> = ({ name }) => {
+const CreditCardExpiryField: FunctionComponent<CreditCardExpiryFieldProps & WithLanguageProps> = ({
+    language,
+    name,
+}) => {
     const handleChange = useCallback(memoizeOne((field: FieldProps['field'], form: FieldProps['form']) => {
         return (event: ChangeEvent<any>) => {
             form.setFieldValue(field.name, formatCreditCardExpiryDate(event.target.value));
@@ -24,10 +27,10 @@ const CreditCardExpiryField: FunctionComponent<CreditCardExpiryFieldProps> = ({ 
             autoComplete="cc-exp"
             id={ field.name }
             onChange={ handleChange(field, form) }
-            placeholder="MM / YY"
+            placeholder={ language.translate('payment.credit_card_expiration_placeholder_text') }
             type="tel"
         />
-    ), [handleChange]);
+    ), [handleChange, language]);
 
     const labelContent = useMemo(() => (
         <TranslatedString id="payment.credit_card_expiration_label" />
@@ -41,4 +44,4 @@ const CreditCardExpiryField: FunctionComponent<CreditCardExpiryFieldProps> = ({ 
     />;
 };
 
-export default memo(CreditCardExpiryField);
+export default memo(withLanguage(CreditCardExpiryField));

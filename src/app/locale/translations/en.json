@@ -160,6 +160,7 @@
             "credit_card_expiration_label": "Expiration",
             "credit_card_expiration_date_label": "Expiration Date",
             "credit_card_expiration_required_error": "Expiration Date is required",
+            "credit_card_expiration_placeholder_text": "MM / YY",
             "credit_card_name_label": "Name on Card",
             "credit_card_name_required_error": "Full name is required",
             "credit_card_number_invalid_error": "Credit Card Number must be valid",
