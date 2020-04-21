@@ -8,6 +8,7 @@ import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { MapToProps } from '../../common/hoc';
 import { withLanguage, WithLanguageProps } from '../../locale';
+import { withForm, WithFormProps } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
 import { configureCardValidator, getCreditCardInputStyles, getCreditCardValidationSchema, getHostedCreditCardValidationSchema, CreditCardCustomerCodeField, CreditCardFieldset, CreditCardFieldsetValues, CreditCardInputStylesType, HostedCreditCardFieldset, HostedCreditCardFieldsetValues } from '../creditCard';
 import { getHostedInstrumentValidationSchema, getInstrumentValidationSchema, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CardInstrumentFieldset, CardInstrumentFieldsetValues, CreditCardValidation, HostedCreditCardValidation } from '../storedInstrument';
@@ -49,6 +50,7 @@ interface CreditCardPaymentMethodState {
 class CreditCardPaymentMethod extends Component<
     CreditCardPaymentMethodProps &
         WithCheckoutCreditCardPaymentMethodProps &
+        WithFormProps &
         WithPaymentProps &
         WithLanguageProps &
         ConnectFormikProps<PaymentFormValues>,
@@ -318,6 +320,7 @@ class CreditCardPaymentMethod extends Component<
                 } : {},
             onBlur: this.handleHostedFieldBlur,
             onCardTypeChange: this.handleHostedFieldCardTypeChange,
+            onEnter: this.handleHostedFieldEnter,
             onFocus: this.handleHostedFieldFocus,
             onValidate: this.handleHostedFieldValidate,
         };
@@ -345,6 +348,13 @@ class CreditCardPaymentMethod extends Component<
                 focusedHostedFieldType: undefined,
             });
         }
+    };
+
+    private handleHostedFieldEnter: () => void = () => {
+        const { formik, setSubmitted } = this.props;
+
+        setSubmitted(true);
+        formik.submitForm();
     };
 
     private handleHostedFieldFocus: (event: HostedFieldFocusEventData) => void = ({ fieldType }) => {
@@ -437,4 +447,4 @@ function mapFromCheckoutProps(): MapToProps<
     };
 }
 
-export default connectFormik(withLanguage(withPayment(withCheckout(mapFromCheckoutProps)(CreditCardPaymentMethod))));
+export default connectFormik(withForm(withLanguage(withPayment(withCheckout(mapFromCheckoutProps)(CreditCardPaymentMethod)))));

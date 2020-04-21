@@ -11,6 +11,7 @@ import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { getConsignment } from '../../shipping/consignment.mock';
+import { FormContext, FormContextType } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
 import { getCreditCardInputStyles, getCreditCardValidationSchema, CreditCardFieldset, CreditCardFieldsetProps, CreditCardInputStylesType, HostedCreditCardFieldset, HostedCreditCardFieldsetValues } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
@@ -48,6 +49,8 @@ describe('CreditCardPaymentMethod', () => {
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
     let defaultProps: jest.Mocked<CreditCardPaymentMethodProps>;
+    let formContext: FormContextType;
+    let formikProps: FormikProps<CreditCardPaymentMethodValues>;
     let formikRender: jest.Mock<ReactNode, [FormikProps<CreditCardPaymentMethodValues>]>;
     let initialValues: CreditCardPaymentMethodValues;
     let localeContext: LocaleContextType;
@@ -78,6 +81,10 @@ describe('CreditCardPaymentMethod', () => {
             disableSubmit: jest.fn(),
             setSubmit: jest.fn(),
             setValidationSchema: jest.fn(),
+        };
+        formContext = {
+            isSubmitted: false,
+            setSubmitted: jest.fn(),
         };
 
         jest.spyOn(checkoutService, 'getState')
@@ -112,17 +119,23 @@ describe('CreditCardPaymentMethod', () => {
             .mockReturnValue(true);
 
         CreditCardPaymentMethodTest = props => {
-            formikRender = jest.fn(_ => <CreditCardPaymentMethod { ...props } />);
+            formikRender = jest.fn(renderProps => {
+                formikProps = renderProps;
+
+                return <CreditCardPaymentMethod { ...props } />;
+            });
 
             return (
                 <CheckoutProvider checkoutService={ checkoutService }>
                     <PaymentContext.Provider value={ paymentContext }>
                         <LocaleContext.Provider value={ localeContext }>
-                            <Formik
-                                initialValues={ initialValues }
-                                onSubmit={ noop }
-                                render={ formikRender }
-                            />
+                            <FormContext.Provider value={ formContext }>
+                                <Formik
+                                    initialValues={ initialValues }
+                                    onSubmit={ noop }
+                                    render={ formikRender }
+                                />
+                            </FormContext.Provider>
                         </LocaleContext.Provider>
                     </PaymentContext.Provider>
                 </CheckoutProvider>
@@ -358,6 +371,7 @@ describe('CreditCardPaymentMethod', () => {
                             },
                             onBlur: expect.any(Function),
                             onCardTypeChange: expect.any(Function),
+                            onEnter: expect.any(Function),
                             onFocus: expect.any(Function),
                             onValidate: expect.any(Function),
                         },
@@ -464,6 +478,24 @@ describe('CreditCardPaymentMethod', () => {
                 .toEqual(undefined);
         });
 
+        it('submits form when enter key is pressed', async () => {
+            const container = mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
+
+            await new Promise(resolve => process.nextTick(resolve));
+
+            // tslint:disable-next-line:no-non-null-assertion
+            const onEnter = last(defaultProps.initializePayment.mock.calls)![0].creditCard!.form.onEnter!;
+
+            onEnter({ fieldType: 'cardNumber' as HostedFieldType });
+
+            container.update();
+
+            expect(formikProps.submitCount)
+                .toEqual(1);
+            expect(formContext.setSubmitted)
+                .toHaveBeenCalled();
+        });
+
         describe('if stored instrument is available', () => {
             beforeEach(() => {
                 jest.spyOn(checkoutState.data, 'getInstruments')
@@ -500,6 +532,7 @@ describe('CreditCardPaymentMethod', () => {
                                 },
                                 onBlur: expect.any(Function),
                                 onCardTypeChange: expect.any(Function),
+                                onEnter: expect.any(Function),
                                 onFocus: expect.any(Function),
                                 onValidate: expect.any(Function),
                             },

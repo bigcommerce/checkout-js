@@ -1,3 +1,4 @@
+import { WithFormProps } from './withForm';
 import { BasicFormFieldProps } from './BasicFormField';
 import { CheckboxFormFieldProps } from './CheckboxFormField';
 import { ChecklistProps } from './Checklist';
@@ -29,7 +30,9 @@ export type TextInputProps = TextInputProps;
 export type LabelProps = LabelProps;
 export type LegendProps = LegendProps;
 export type ChecklistItemInputProps = ChecklistItemInputProps;
+export type WithFormProps = WithFormProps;
 
+export { default as withForm } from './withForm';
 export { default as Fieldset } from './Fieldset';
 export { default as Form } from './Form';
 export { default as FormProvider, FormContext } from './FormProvider';
