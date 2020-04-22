@@ -27,7 +27,7 @@
     "@bigcommerce/citadel": "^2.15.1",
     "@bigcommerce/form-poster": "^1.2.2",
     "@bigcommerce/memoize": "^1.0.0",
-    "@bigcommerce/request-sender": "^0.3.0",
+    "@bigcommerce/request-sender": "^0.5.1",
     "@bigcommerce/script-loader": "^2.0.0",
     "@sentry/browser": "^5.6.3",
     "@sentry/integrations": "^5.6.1",
