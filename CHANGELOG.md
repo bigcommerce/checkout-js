@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.32.1](https://github.com/bigcommerce/checkout-js/compare/v1.32.0...v1.32.1) (2020-04-22)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-4774 Fix for invalid container Id issue with non hosted fields ([3a3f78e](https://github.com/bigcommerce/checkout-js/commit/3a3f78e))
+* **payment:** CHECKOUT-4842 Add missing class name which causes fields to be misaligned in tablet view ([99382d3](https://github.com/bigcommerce/checkout-js/commit/99382d3))
+* **payment:** CHECKOUT-4842 Add missing placeholder text to hosted expiration field ([000549c](https://github.com/bigcommerce/checkout-js/commit/000549c))
+* **payment:** CHECKOUT-4842 Add missing tooltip for CVV field ([28f5cca](https://github.com/bigcommerce/checkout-js/commit/28f5cca))
+* **payment:** PAYMENTS-5380 Checkout payment methods list is not complete if default vaulted instrument is not BT ([8f267c1](https://github.com/bigcommerce/checkout-js/commit/8f267c1))
+
 ## [1.32.0](https://github.com/bigcommerce/checkout-js/compare/v1.31.1...v1.32.0) (2020-04-17)
 
 
