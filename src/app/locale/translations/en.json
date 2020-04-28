@@ -142,6 +142,7 @@
             "afterpay_description": "Checkout with Afterpay",
             "amazon_continue_action": "Continue with Amazon",
             "amazon_name_text": "Amazon Pay",
+            "barclaycard_continue_action": "Continue",
             "bluesnap_v2_continue_action": "Continue",
             "braintreevisacheckout_continue_action": "Continue with Visa Checkout",
             "ccavenuemars_description_text": "Checkout with CCAvenue",

@@ -67,6 +67,15 @@ describe('PaymentSubmitButton', () => {
             .toEqual(languageService.translate('payment.amazon_continue_action'));
     });
 
+    it('renders button with special label for Barclaycard', () => {
+        const component = mount(
+            <PaymentSubmitButtonTest methodGateway="barclaycard" />
+        );
+
+        expect(component.text())
+            .toEqual(languageService.translate('payment.barclaycard_continue_action'));
+    });
+
     it('renders button with special label for Visa Checkout provided by Braintree', () => {
         const component = mount(
             <PaymentSubmitButtonTest methodType="visa-checkout" />
