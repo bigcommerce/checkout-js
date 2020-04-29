@@ -86,6 +86,60 @@ const EmailLoginForm: FunctionComponent<EmailLoginFormProps & WithLanguageProps 
         </div>
     ), [sentEmailError, emailHasBeenRequested, isSendingEmail, onRequestClose]);
 
+    const renderError = useCallback(() => {
+        if (!sentEmailError) {
+            return null;
+        }
+
+        const { status } = sentEmailError;
+
+        return (
+            <Alert type={ AlertType.Error }>
+                { status === 429 ?
+                    <TranslatedString id="login_email.error_temporary_disabled" /> :
+                    <TranslatedString id={ status === 404 ?
+                        'login_email.error_not_found' :
+                        'login_email.error_server' }
+                    /> }
+            </Alert>
+        );
+    }, [sentEmailError]);
+
+    const renderForm = useCallback(() => {
+        if (sentEmailError && sentEmailError.status === 429) {
+            return null;
+        }
+
+        if (emailHasBeenRequested && sentEmail && !sentEmailError) {
+            const { expiry, sent_email } = sentEmail;
+
+            return (
+                <p>
+                    <TranslatedString
+                        data={ {
+                            email: formEmail,
+                            minutes: Math.round(expiry / 60),
+                        } }
+                        id={ sent_email === 'sign_in' ?
+                            'login_email.sent_text' :
+                            'customer.reset_password_before_login_error' }
+                    />
+                </p>
+            );
+        }
+
+        if (emailHasBeenRequested && !sentEmail) {
+            return <EmailField />;
+        }
+
+        return (<>
+            <p>
+                <TranslatedString id="login_email.text" />
+            </p>
+            <EmailField />
+        </>);
+    }, [sentEmailError, emailHasBeenRequested, sentEmail, formEmail]);
+
     return (
         <Modal
             additionalBodyClassName="modal--withText"
@@ -101,35 +155,8 @@ const EmailLoginForm: FunctionComponent<EmailLoginFormProps & WithLanguageProps 
         >
             <Form>
                 <LoadingSpinner isLoading={ isSendingEmail && !email } />
-
-                { sentEmailError && sentEmailError.status !== 429 &&
-                    <Alert type={ AlertType.Error }>
-                        <TranslatedString id={ sentEmailError.status === 404 ?
-                                'login_email.error_not_found' :
-                                'login_email.error_server' }
-                        />
-                    </Alert> }
-
-                { emailHasBeenRequested && sentEmail ?
-                    <p>
-                        <TranslatedString
-                            data={ {
-                                email: formEmail,
-                                minutes: Math.round(sentEmail.expiry / 60),
-                            } }
-                            id={ sentEmail.sent_email === 'sign_in' ? 'login_email.sent_text' : 'customer.reset_password_before_login_error' }
-                        />
-                    </p> :
-                    <p>
-                        <TranslatedString id="login_email.text" />
-                    </p> }
-
-                { sentEmailError && sentEmailError.status === 429 ?
-                    <Alert type={ AlertType.Error }>
-                        <TranslatedString id="login_email.error_temporary_disabled" />
-                    </Alert> :
-                    !emailHasBeenRequested && <EmailField /> }
-
+                { renderError() }
+                { renderForm() }
                 { renderFooter() }
             </Form>
         </Modal>);
@@ -144,5 +171,5 @@ export default withLanguage(withFormik<EmailLoginFormProps & WithLanguageProps, 
     handleSubmit: (values, { props: { onSendLoginEmail = noop } }) => {
         onSendLoginEmail(values);
     },
-    validationSchema: getEmailValidationSchema,
+    validationSchema: ({ language }: WithLanguageProps) => getEmailValidationSchema({ language }),
 })(memo(EmailLoginForm)));

@@ -92,6 +92,9 @@ describe('EmailLoginForm', () => {
             />
         );
 
+        expect(component.find('[id="login_email.sent_text"]').exists())
+            .toEqual(false);
+
         expect(component.find(Alert).prop('type'))
             .toEqual(AlertType.Error);
 
@@ -120,8 +123,14 @@ describe('EmailLoginForm', () => {
             />
         );
 
+        expect(component.find('[id="login_email.sent_text"]').exists())
+            .toEqual(false);
+
         expect(component.find(Alert).prop('type'))
             .toEqual(AlertType.Error);
+
+        expect(component.find(EmailField).exists())
+            .toEqual(true);
 
         expect(component.find(Alert).find(TranslatedString).prop('id'))
             .toEqual('login_email.error_not_found');
@@ -138,6 +147,12 @@ describe('EmailLoginForm', () => {
                 sentEmailError={ { status: 500 } }
             />
         );
+
+        expect(component.find('[id="login_email.sent_text"]').exists())
+            .toEqual(false);
+
+        expect(component.find(EmailField).exists())
+            .toEqual(true);
 
         expect(component.find(Alert).prop('type'))
             .toEqual(AlertType.Error);
