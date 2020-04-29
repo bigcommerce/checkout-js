@@ -9,8 +9,8 @@ import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form, Legend } from '../ui/form';
 
+import getEmailValidationSchema from './getEmailValidationSchema';
 import mapErrorMessage from './mapErrorMessage';
-import { EMAIL_REGEXP } from './validationPatterns';
 import CustomerViewType from './CustomerViewType';
 import EmailField from './EmailField';
 import PasswordField from './PasswordField';
@@ -185,12 +185,8 @@ export default withLanguage(withFormik<LoginFormProps & WithLanguageProps, Login
         onSignIn(values);
     },
     validationSchema: ({ language }: LoginFormProps & WithLanguageProps) =>
-        object({
-            email: string()
-                .max(256)
-                .matches(EMAIL_REGEXP, language.translate('customer.email_invalid_error'))
-                .required(language.translate('customer.email_required_error')),
+        getEmailValidationSchema({ language }).concat(object({
             password: string()
                 .required(language.translate('customer.password_required_error')),
-        }),
+        })),
 })(memo(LoginForm)));

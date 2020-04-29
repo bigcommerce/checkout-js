@@ -340,7 +340,7 @@ export function mapToWithCheckoutCustomerProps(
         clearError: checkoutService.clearError,
         continueAsGuest: checkoutService.continueAsGuest,
         // todo: remove casting when method is properly exposed.
-        sendLoginEmail: (checkoutService as any).sendSignInEmail as (emai: string) => Promise<CheckoutSelectors>,
+        sendLoginEmail: (checkoutService as any).sendSignInEmail as (email: string) => Promise<CheckoutSelectors>,
         createAccountUrl: config.links.createAccountLink,
         defaultShouldSubscribe: config.shopperConfig.defaultNewsletterSignup,
         deinitializeCustomer: checkoutService.deinitializeCustomer,

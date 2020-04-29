@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent, MouseEventHandler } from 'react';
+import React, { FunctionComponent, MouseEventHandler } from 'react';
 
 import { preventDefault } from '../common/dom';
 import { parseAnchor } from '../common/utility';
@@ -22,7 +22,7 @@ const TranslatedLink: FunctionComponent<TranslatedLinkProps & WithLanguageProps>
     const parsedString = parseAnchor(translatedString);
 
     return parsedString.length ?
-        <Fragment>
+        <>
             { parsedString[0] }
             <a
                 data-test={ testId }
@@ -32,7 +32,7 @@ const TranslatedLink: FunctionComponent<TranslatedLinkProps & WithLanguageProps>
                 { parsedString[1] }
             </a>
             { parsedString[2] }
-        </Fragment> :
+        </> :
         <>{ translatedString }</>;
 };
 

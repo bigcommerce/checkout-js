@@ -2,7 +2,6 @@ import { SignInEmail } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps } from 'formik';
 import { noop } from 'lodash';
 import React, { memo, useCallback, FunctionComponent } from 'react';
-import { object, string } from 'yup';
 
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { Alert, AlertType } from '../ui/alert';
@@ -11,7 +10,7 @@ import { Form } from '../ui/form';
 import { LoadingSpinner } from '../ui/loading';
 import { Modal, ModalHeader } from '../ui/modal';
 
-import { EMAIL_REGEXP } from './validationPatterns';
+import getEmailValidationSchema from './getEmailValidationSchema';
 import EmailField from './EmailField';
 
 export interface EmailLoginFormProps {
@@ -145,11 +144,5 @@ export default withLanguage(withFormik<EmailLoginFormProps & WithLanguageProps, 
     handleSubmit: (values, { props: { onSendLoginEmail = noop } }) => {
         onSendLoginEmail(values);
     },
-    validationSchema: ({ language }: EmailLoginFormProps & WithLanguageProps) =>
-        object({
-            email: string()
-                .max(256)
-                .matches(EMAIL_REGEXP, language.translate('customer.email_invalid_error'))
-                .required(language.translate('customer.email_required_error')),
-        }),
+    validationSchema: getEmailValidationSchema,
 })(memo(EmailLoginForm)));
