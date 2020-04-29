@@ -1,7 +1,7 @@
 import { SignInEmail } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps } from 'formik';
 import { noop } from 'lodash';
-import React, { memo, useCallback, FunctionComponent } from 'react';
+import React, { memo, useMemo, FunctionComponent } from 'react';
 
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { Alert, AlertType } from '../ui/alert';
@@ -40,7 +40,7 @@ const EmailLoginForm: FunctionComponent<EmailLoginFormProps & WithLanguageProps 
         email: formEmail,
     },
 }) => {
-    const modalHeaderStringId = () => {
+    const modalHeaderStringId = useMemo(() => {
         if (emailHasBeenRequested) {
             if (sentEmailError) {
                 return 'common.error_heading';
@@ -54,10 +54,9 @@ const EmailLoginForm: FunctionComponent<EmailLoginFormProps & WithLanguageProps 
         }
 
         return 'login_email.header';
+    }, [emailHasBeenRequested, sentEmailError, email]);
 
-    };
-
-    const renderFooter = useCallback(() => (
+    const footer = useMemo(() => (
         <div className="modal-footer">
             { sentEmailError && sentEmailError.status === 429 ?
                 <Button
@@ -86,7 +85,7 @@ const EmailLoginForm: FunctionComponent<EmailLoginFormProps & WithLanguageProps 
         </div>
     ), [sentEmailError, emailHasBeenRequested, isSendingEmail, onRequestClose]);
 
-    const renderError = useCallback(() => {
+    const error = useMemo(() => {
         if (!sentEmailError) {
             return null;
         }
@@ -105,7 +104,7 @@ const EmailLoginForm: FunctionComponent<EmailLoginFormProps & WithLanguageProps 
         );
     }, [sentEmailError]);
 
-    const renderForm = useCallback(() => {
+    const form = useMemo(() => {
         if (sentEmailError && sentEmailError.status === 429) {
             return null;
         }
@@ -146,7 +145,7 @@ const EmailLoginForm: FunctionComponent<EmailLoginFormProps & WithLanguageProps 
             additionalModalClassName="modal--medium"
             header={
                 <ModalHeader>
-                    <TranslatedString id={ modalHeaderStringId() } />
+                    <TranslatedString id={ modalHeaderStringId } />
                 </ModalHeader>
             }
             isOpen={ isOpen }
@@ -155,9 +154,9 @@ const EmailLoginForm: FunctionComponent<EmailLoginFormProps & WithLanguageProps 
         >
             <Form>
                 <LoadingSpinner isLoading={ isSendingEmail && !email } />
-                { renderError() }
-                { renderForm() }
-                { renderFooter() }
+                { error }
+                { form }
+                { footer }
             </Form>
         </Modal>);
 };
