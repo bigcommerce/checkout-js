@@ -1,4 +1,3 @@
-import { noop } from 'lodash';
 import React, { Component } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
@@ -24,19 +23,6 @@ function mapToSpamProtectionProps(
 }
 
 class SpamProtectionField extends Component<SpamProtectionProps & WithCheckoutSpamProtectionProps> {
-    async componentDidMount() {
-        const {
-            verify,
-            onUnhandledError = noop,
-        } = this.props;
-
-        try {
-            await verify();
-        } catch (error) {
-            onUnhandledError(error);
-        }
-    }
-
     render() {
         const {
             isExecutingSpamCheck,
