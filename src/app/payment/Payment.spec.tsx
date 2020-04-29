@@ -529,4 +529,22 @@ describe('Payment', () => {
                 useStoreCredit: false,
             });
     });
+
+    it('reloads checkout object if unable to submit order due to spam protection error', () => {
+        jest.spyOn(checkoutService, 'loadCheckout')
+            .mockResolvedValue(checkoutState);
+
+        jest.spyOn(checkoutState.errors, 'getSubmitOrderError')
+            .mockReturnValue({
+                type: 'request',
+                body: { type: 'spam_protection_expired' },
+            } as unknown as RequestError);
+
+        const container = mount(<PaymentTest { ...defaultProps } />);
+
+        container.find('ErrorModal Button').simulate('click');
+
+        expect(checkoutService.loadCheckout)
+            .toHaveBeenCalled();
+    });
 });
