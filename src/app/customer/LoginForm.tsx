@@ -9,8 +9,8 @@ import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form, Legend } from '../ui/form';
 
+import getEmailValidationSchema from './getEmailValidationSchema';
 import mapErrorMessage from './mapErrorMessage';
-import { EMAIL_REGEXP } from './validationPatterns';
 import CustomerViewType from './CustomerViewType';
 import EmailField from './EmailField';
 import PasswordField from './PasswordField';
@@ -20,12 +20,17 @@ export interface LoginFormProps {
     createAccountUrl: string;
     email?: string;
     forgotPasswordUrl: string;
+    isSignInEmailEnabled?: boolean;
+    isSendingSignInEmail?: boolean;
     isSigningIn?: boolean;
     signInError?: Error;
+    signInEmailError?: Error;
     viewType?: Omit<CustomerViewType, 'guest'>;
+    passwordlessLogin?: boolean;
     onCancel?(): void;
     onChangeEmail?(email: string): void;
     onSignIn(data: LoginFormValues): void;
+    onSendLoginEmail?(): void;
     onContinueAsGuest?(): void;
 }
 
@@ -39,11 +44,13 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
     createAccountUrl,
     forgotPasswordUrl,
     email,
+    isSignInEmailEnabled,
     isSigningIn,
     language,
     onCancel = noop,
     onChangeEmail,
     onContinueAsGuest,
+    onSendLoginEmail = noop,
     signInError,
     viewType = CustomerViewType.Login,
 }) => {
@@ -117,12 +124,20 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
                 { (viewType === CustomerViewType.Login || viewType === CustomerViewType.EnforcedLogin) &&
                     <EmailField onChange={ onChangeEmail } /> }
 
-                <PasswordField forgotPasswordUrl={ forgotPasswordUrl } />
+                <PasswordField forgotPasswordUrl={ isSignInEmailEnabled ? undefined : forgotPasswordUrl } />
+
+                { isSignInEmailEnabled && <p>
+                    <TranslatedLink
+                        id="login_email.link"
+                        onClick={ onSendLoginEmail }
+                        testId="customer-signin-link"
+                    />
+                </p> }
 
                 <div className="form-actions">
                     <Button
+                        disabled={ isSigningIn }
                         id="checkout-customer-continue"
-                        isLoading={ isSigningIn }
                         testId="customer-continue-button"
                         type="submit"
                         variant={ ButtonVariant.Primary }
@@ -170,12 +185,8 @@ export default withLanguage(withFormik<LoginFormProps & WithLanguageProps, Login
         onSignIn(values);
     },
     validationSchema: ({ language }: LoginFormProps & WithLanguageProps) =>
-        object({
-            email: string()
-                .max(256)
-                .matches(EMAIL_REGEXP, language.translate('customer.email_invalid_error'))
-                .required(language.translate('customer.email_required_error')),
+        getEmailValidationSchema({ language }).concat(object({
             password: string()
                 .required(language.translate('customer.password_required_error')),
-        }),
+        })),
 })(memo(LoginForm)));
