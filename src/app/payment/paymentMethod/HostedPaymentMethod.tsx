@@ -176,7 +176,6 @@ function mapFromCheckoutProps(): MapToProps<
 
     return (context, props) => {
         const {
-            formik: { values },
             isUsingMultiShipping = false,
             method,
         } = props;
@@ -219,7 +218,7 @@ function mapFromCheckoutProps(): MapToProps<
                     paymentMethod: method,
                 }),
             isLoadingInstruments: isLoadingInstruments(),
-            isPaymentDataRequired: isPaymentDataRequired(values.useStoreCredit),
+            isPaymentDataRequired: isPaymentDataRequired(),
             loadInstruments: checkoutService.loadInstruments,
         };
     };

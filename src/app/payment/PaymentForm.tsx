@@ -24,6 +24,7 @@ export interface PaymentFormProps {
     isEmbedded?: boolean;
     isTermsConditionsRequired?: boolean;
     isUsingMultiShipping?: boolean;
+    isStoreCreditApplied: boolean;
     methods: PaymentMethod[];
     selectedMethod?: PaymentMethod;
     shouldShowStoreCredit?: boolean;
@@ -33,7 +34,7 @@ export interface PaymentFormProps {
     termsConditionsUrl?: string;
     usableStoreCredit?: number;
     validationSchema?: ObjectSchema<Partial<PaymentFormValues>>;
-    isPaymentDataRequired(useStoreCredit?: boolean): boolean;
+    isPaymentDataRequired(): boolean;
     onMethodSelect?(method: PaymentMethod): void;
     onStoreCreditChange?(useStoreCredit?: boolean): void;
     onSubmit?(values: PaymentFormValues): void;
@@ -51,7 +52,6 @@ export type PaymentFormValues = (
 export interface PaymentFormCommonValues {
     paymentProviderRadio: string; // TODO: Give this property a better name. We need to keep it for now because of legacy reasons.
     terms?: boolean;
-    useStoreCredit?: boolean;
 }
 
 export interface HostedWidgetPaymentMethodValues {
@@ -63,6 +63,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
     isEmbedded,
     isPaymentDataRequired,
     isTermsConditionsRequired,
+    isStoreCreditApplied,
     isUsingMultiShipping,
     methods,
     onMethodSelect,
@@ -86,8 +87,9 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
             className="checkout-form"
             testId="payment-form"
         >
-            { usableStoreCredit > 0 && isPaymentDataRequired() && <StoreCreditField
+            { usableStoreCredit > 0 && <StoreCreditField
                 availableStoreCredit={ availableStoreCredit }
+                isStoreCreditApplied={ isStoreCreditApplied }
                 name="useStoreCredit"
                 onChange={ onStoreCreditChange }
                 usableStoreCredit={ usableStoreCredit }
@@ -128,7 +130,7 @@ interface PaymentMethodListFieldsetProps {
     isUsingMultiShipping?: boolean;
     methods: PaymentMethod[];
     values: PaymentFormValues;
-    isPaymentDataRequired(useStoreCredit?: boolean): boolean;
+    isPaymentDataRequired(): boolean;
     onMethodSelect?(method: PaymentMethod): void;
     onUnhandledError?(error: Error): void;
     resetForm(nextValues?: PaymentFormValues): void;
@@ -147,8 +149,8 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
     const { setSubmitted } = useContext(FormContext);
 
     const commonValues = useMemo(
-        () => ({ terms: values.terms, useStoreCredit: values.useStoreCredit }),
-        [values.terms, values.useStoreCredit]
+        () => ({ terms: values.terms }),
+        [values.terms]
     );
 
     const handlePaymentMethodSelect = useCallback((method: PaymentMethod) => {
@@ -181,7 +183,7 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
 
     return (
         <Fieldset legend={ legend }>
-            { !isPaymentDataRequired(values.useStoreCredit) && <StoreCreditOverlay /> }
+            { !isPaymentDataRequired() && <StoreCreditOverlay /> }
 
             <PaymentMethodList
                 isEmbedded={ isEmbedded }
@@ -198,7 +200,7 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
     mapPropsToValues: ({
         defaultGatewayId,
         defaultMethodId,
-        usableStoreCredit = 0,
+
     }) => ({
         ccCustomerCode: '',
         ccCvv: '',
@@ -209,7 +211,6 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
         instrumentId: '',
         shouldSaveInstrument: false,
         terms: false,
-        useStoreCredit: usableStoreCredit > 0,
         hostedForm: {
             cardType: '',
             errors: {

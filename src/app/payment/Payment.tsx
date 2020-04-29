@@ -27,18 +27,18 @@ export interface PaymentProps {
     onFinalize?(): void;
     onFinalizeError?(error: Error): void;
     onReady?(): void;
-    onStoreCreditChange?(useStoreCredit?: boolean): void;
     onSubmit?(): void;
     onSubmitError?(error: Error): void;
     onUnhandledError?(error: Error): void;
 }
 
-interface WithCheckoutPaymentProps {
+export interface WithCheckoutPaymentProps {
     availableStoreCredit: number;
     cartUrl: string;
     defaultMethod?: PaymentMethod;
     finalizeOrderError?: Error;
     isSubmittingOrder: boolean;
+    isStoreCreditApplied: boolean;
     isTermsConditionsRequired: boolean;
     methods: PaymentMethod[];
     shouldExecuteSpamCheck: boolean;
@@ -46,9 +46,10 @@ interface WithCheckoutPaymentProps {
     termsConditionsText?: string;
     termsConditionsUrl?: string;
     usableStoreCredit: number;
+    applyStoreCredit(useStoreCredit: boolean): Promise<CheckoutSelectors>;
     clearError(error: Error): void;
     finalizeOrderIfNeeded(): Promise<CheckoutSelectors>;
-    isPaymentDataRequired(useStoreCredit?: boolean): boolean;
+    isPaymentDataRequired(): boolean;
     loadCheckout(): Promise<CheckoutSelectors>;
     loadPaymentMethods(): Promise<CheckoutSelectors>;
     submitOrder(values: OrderRequestBody): Promise<CheckoutSelectors>;
@@ -128,7 +129,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             flashMessages = [],
             isUsingMultiShipping,
             methods,
-            onStoreCreditChange,
+            applyStoreCredit,
             ...rest
         } = this.props;
 
@@ -164,7 +165,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
                         isUsingMultiShipping={ isUsingMultiShipping }
                         methods={ methods }
                         onMethodSelect={ this.setSelectedMethod }
-                        onStoreCreditChange={ onStoreCreditChange }
+                        onStoreCreditChange={ this.handleStoreCreditChange }
                         onSubmit={ this.handleSubmit }
                         selectedMethod={ selectedMethod }
                         shouldDisableSubmit={ uniqueSelectedMethodId && shouldDisableSubmit[uniqueSelectedMethodId] || undefined }
@@ -303,6 +304,19 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         clearError(error);
     };
 
+    private handleStoreCreditChange: (useStoreCredit: boolean) => void = async useStoreCredit => {
+        const {
+            applyStoreCredit,
+            onUnhandledError = noop,
+        } = this.props;
+
+        try {
+            await applyStoreCredit(useStoreCredit);
+        } catch (e) {
+            onUnhandledError(e);
+        }
+    };
+
     private handleSubmit: (values: PaymentFormValues) => void = async values => {
         const {
             defaultMethod,
@@ -328,7 +342,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         }
 
         try {
-            await submitOrder(mapToOrderRequestBody(values, isPaymentDataRequired(values.useStoreCredit)));
+            await submitOrder(mapToOrderRequestBody(values, isPaymentDataRequired()));
             onSubmit();
         } catch (error) {
             if (error.type === 'payment_method_invalid') {
@@ -433,6 +447,8 @@ export function mapToPaymentProps({
     const isTermsConditionsRequired = isTermsConditionsEnabled;
     const selectedPayment = find(checkout.payments, { providerType: PaymentMethodProviderType.Hosted });
 
+    const { isStoreCreditApplied } = checkout;
+
     let selectedPaymentMethod;
     let filteredMethods;
     if (selectedPayment) {
@@ -444,6 +460,7 @@ export function mapToPaymentProps({
     }
 
     return {
+        applyStoreCredit: checkoutService.applyStoreCredit,
         availableStoreCredit: customer.storeCredit,
         cartUrl: config.links.cartLink,
         clearError: checkoutService.clearError,
@@ -452,6 +469,7 @@ export function mapToPaymentProps({
         finalizeOrderIfNeeded: checkoutService.finalizeOrderIfNeeded,
         loadCheckout: checkoutService.loadCheckout,
         isPaymentDataRequired,
+        isStoreCreditApplied,
         isSubmittingOrder: isSubmittingOrder(),
         isTermsConditionsRequired,
         loadPaymentMethods: checkoutService.loadPaymentMethods,
@@ -465,7 +483,8 @@ export function mapToPaymentProps({
         termsConditionsUrl: isTermsConditionsRequired && termsConditionsType === TermsConditionsType.Link ?
             termsCondtitionsUrl :
             undefined,
-        usableStoreCredit: Math.min(checkout.grandTotal, customer.storeCredit || 0),
+        usableStoreCredit: checkout.grandTotal > 0 ?
+            Math.min(checkout.grandTotal, customer.storeCredit || 0) : 0,
     };
 }
 

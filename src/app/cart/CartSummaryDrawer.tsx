@@ -5,10 +5,10 @@ import OrderSummaryDrawer from '../order/OrderSummaryDrawer';
 
 import mapToCartSummaryProps from './mapToCartSummaryProps';
 import withRedeemable from './withRedeemable';
-import { CartSummaryProps, WithCheckoutCartSummaryProps } from './CartSummary';
+import { WithCheckoutCartSummaryProps } from './CartSummary';
 import EditLink from './EditLink';
 
-const CartSummaryDrawer: FunctionComponent<CartSummaryProps & WithCheckoutCartSummaryProps> = ({
+const CartSummaryDrawer: FunctionComponent<WithCheckoutCartSummaryProps> = ({
     cartUrl,
     ...props
 }) => (

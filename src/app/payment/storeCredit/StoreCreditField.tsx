@@ -1,14 +1,16 @@
-import React, { useMemo, Fragment, FunctionComponent } from 'react';
+import { noop } from 'lodash';
+import React, { useCallback, useMemo, Fragment, FunctionComponent } from 'react';
 
 import { preventDefault } from '../../common/dom';
 import { withCurrency, TranslatedString, WithCurrencyProps } from '../../locale';
-import { CheckboxFormField } from '../../ui/form';
+import { CheckboxInput } from '../../ui/form';
 import { Tooltip, TooltipTrigger } from '../../ui/tooltip';
 
 export interface StoreCreditFieldProps {
     availableStoreCredit: number;
     name: string;
     usableStoreCredit: number;
+    isStoreCreditApplied: boolean;
     onChange?(value: boolean): void;
 }
 
@@ -16,11 +18,13 @@ const StoreCreditField: FunctionComponent<StoreCreditFieldProps & WithCurrencyPr
     availableStoreCredit,
     currency,
     name,
-    onChange,
+    onChange = noop,
     usableStoreCredit,
+    isStoreCreditApplied,
 }) => {
+    const handleChange = useCallback(event => onChange(event.target.checked), [onChange]);
     const labelContent = useMemo(() => (
-        <Fragment>
+        <>
             <TranslatedString id="redeemable.apply_store_credit_before_action" />
 
             { ' ' }
@@ -44,17 +48,20 @@ const StoreCreditField: FunctionComponent<StoreCreditFieldProps & WithCurrencyPr
             { ' ' }
 
             <TranslatedString id="redeemable.apply_store_credit_after_action" />
-        </Fragment>
+        </>
     ), [
         availableStoreCredit,
         currency,
         usableStoreCredit,
     ]);
 
-    return <CheckboxFormField
-        labelContent={ labelContent }
+    return <CheckboxInput
+        checked={ isStoreCreditApplied }
+        id={ name }
+        label={ labelContent }
         name={ name }
-        onChange={ onChange }
+        onChange={ handleChange }
+        value={ name }
     />;
 };
 

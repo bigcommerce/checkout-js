@@ -390,7 +390,6 @@ function mapFromCheckoutProps(): MapToProps<
 
     return (context, props) => {
         const {
-            formik: { values },
             isUsingMultiShipping = false,
             method,
             shouldDisableHostedFieldset,
@@ -433,7 +432,7 @@ function mapFromCheckoutProps(): MapToProps<
             isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredSelector(checkoutState),
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
             isLoadingInstruments: isLoadingInstruments(),
-            isPaymentDataRequired: isPaymentDataRequired(values.useStoreCredit),
+            isPaymentDataRequired: isPaymentDataRequired(),
             loadInstruments: checkoutService.loadInstruments,
             shouldShowInstrumentFieldset: isInstrumentFeatureAvailableProp && instruments.length > 0,
             shouldUseHostedFieldset: (

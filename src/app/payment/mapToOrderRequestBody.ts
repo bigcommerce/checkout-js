@@ -6,17 +6,16 @@ import { parseUniquePaymentMethodId } from './paymentMethod';
 import { PaymentFormValues } from './PaymentForm';
 
 export default function mapToOrderRequestBody(
-    { paymentProviderRadio, useStoreCredit, ...values }: PaymentFormValues,
+    { paymentProviderRadio, ...values }: PaymentFormValues,
     isPaymentDataRequired: boolean
 ): OrderRequestBody {
     if (!isPaymentDataRequired) {
-        return { useStoreCredit };
+        return {};
     }
 
     const { methodId, gatewayId } = parseUniquePaymentMethodId(paymentProviderRadio);
     const payload: OrderRequestBody = {
         payment: { gatewayId, methodId },
-        useStoreCredit,
     };
     const paymentData = omitBy({
         ...values,

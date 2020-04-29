@@ -1,49 +1,35 @@
-import { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
-import { createSelector } from 'reselect';
-
 import { CheckoutContextProps } from '../checkout';
 
 import mapToRedeemableProps from './mapToRedeemableProps';
-import { CartSummaryProps, WithCheckoutCartSummaryProps } from './CartSummary';
-
-const checkoutSelector = createSelector(
-    ({ data }: CheckoutSelectors) => data.getCheckout(),
-    (_: CheckoutSelectors, { storeCreditAmount }: CartSummaryProps) => storeCreditAmount,
-    (checkout, storeCreditAmount) => {
-        if (!checkout) {
-            return;
-        }
-
-        return {
-            ...checkout,
-            grandTotal: checkout.grandTotal - (storeCreditAmount || 0),
-        };
-    }
-);
+import { WithCheckoutCartSummaryProps } from './CartSummary';
 
 export default function mapToCartSummaryProps(
-    context: CheckoutContextProps,
-    props: CartSummaryProps
+    context: CheckoutContextProps
 ): WithCheckoutCartSummaryProps | null {
     const {
         checkoutState: {
-            data: { getConfig },
+            data: { getConfig, getCustomer, getCheckout },
         },
     } = context;
 
+    const checkout = getCheckout();
     const config = getConfig();
+    const customer = getCustomer();
     const redeemableProps = mapToRedeemableProps(context);
-    const checkout = checkoutSelector(context.checkoutState, props);
 
-    if (!checkout || !config || !redeemableProps) {
+    if (!checkout || !config || !redeemableProps || !customer) {
         return null;
     }
+
+    const { isStoreCreditApplied, grandTotal } = checkout;
+    const { storeCredit } = customer;
 
     return {
         checkout,
         shopperCurrency: config.shopperCurrency,
         cartUrl: config.links.cartLink,
         storeCurrency: config.currency,
+        storeCreditAmount: isStoreCreditApplied ? Math.min(grandTotal, storeCredit) : undefined,
         ...redeemableProps,
     };
 }

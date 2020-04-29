@@ -11,8 +11,7 @@ export default function mapToCheckoutProps(
     { checkoutService, checkoutState }: CheckoutContextProps
 ): WithCheckoutProps {
     const { data, errors, statuses } = checkoutState;
-    const { grandTotal = 0, promotions = EMPTY_ARRAY } = data.getCheckout() || {};
-    const { storeCredit = 0 } = data.getCustomer() || {};
+    const { promotions = EMPTY_ARRAY } = data.getCheckout() || {};
     const submitOrderError = errors.getSubmitOrderError() as CustomError;
     const {
         checkoutSettings: { guestCheckoutEnabled: isGuestEnabled = false } = {},
@@ -40,6 +39,5 @@ export default function mapToCheckoutProps(
         promotions,
         subscribeToConsignments: subscribeToConsignmentsSelector({ checkoutService, checkoutState }),
         steps: data.getCheckout() ? getCheckoutStepStatuses(checkoutState) : EMPTY_ARRAY,
-        usableStoreCredit: Math.min(grandTotal, storeCredit),
     };
 }

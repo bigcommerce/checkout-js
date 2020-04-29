@@ -15,11 +15,11 @@ import { getOrder } from '../order/orders.mock';
 import { Button } from '../ui/button';
 
 import { getPaymentMethod } from './payment-methods.mock';
-import Payment, { PaymentProps } from './Payment';
+import Payment, { PaymentProps, WithCheckoutPaymentProps } from './Payment';
 import PaymentForm, { PaymentFormProps } from './PaymentForm';
 
 describe('Payment', () => {
-    let PaymentTest: FunctionComponent<PaymentProps>;
+    let PaymentTest: FunctionComponent<PaymentProps & Partial<WithCheckoutPaymentProps>>;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
     let defaultProps: PaymentProps;
@@ -167,6 +167,26 @@ describe('Payment', () => {
             .toHaveBeenCalled();
     });
 
+    it('calls applyStoreCredit when checkbox is clicked', async () => {
+        const applyStoreCredit = jest.fn();
+
+        const component = mount(<PaymentTest
+            { ...defaultProps }
+            applyStoreCredit={ applyStoreCredit }
+            usableStoreCredit={ 10 }
+        />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        component.update();
+
+        component.find('input[name="useStoreCredit"]')
+            .simulate('change', { target: { checked: false, name: 'useStoreCredit' } });
+
+        expect(applyStoreCredit)
+            .toHaveBeenCalled();
+    });
+
     it('sets default selected payment method', async () => {
         const container = mount(<PaymentTest { ...defaultProps } />);
 
@@ -190,6 +210,44 @@ describe('Payment', () => {
                 methods: paymentMethods,
                 selectedMethod: paymentMethods[1],
             }));
+    });
+
+    it('renders PaymentForm with usableStoreCredit=0 when grandTotal=0', async () => {
+        jest.spyOn(checkoutState.data, 'getCheckout')
+            .mockReturnValue({
+                ...getCheckout(),
+                grandTotal: 0,
+            });
+
+        const container = mount(<PaymentTest { ...defaultProps } />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+        container.update();
+
+        expect(container.find(PaymentForm).prop('usableStoreCredit'))
+            .toEqual(0);
+    });
+
+    it('renders PaymentForm with grandTotal as usableStoreCredit when usableStoreCredit > grandTotal', async () => {
+        jest.spyOn(checkoutState.data, 'getCheckout')
+            .mockReturnValue({
+                ...getCheckout(),
+                grandTotal: 20,
+            });
+
+        jest.spyOn(checkoutState.data, 'getCustomer')
+            .mockReturnValue({
+                ...getCustomer(),
+                storeCredit: 100,
+            });
+
+        const container = mount(<PaymentTest { ...defaultProps } />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+        container.update();
+
+        expect(container.find(PaymentForm).prop('usableStoreCredit'))
+            .toEqual(20);
     });
 
     it('sets selected hosted payment as default selected payment method and filters methods prop to the hosted payment only', async () => {
@@ -414,7 +472,6 @@ describe('Payment', () => {
             ccExpiry: '10 / 25',
             ccName: 'test',
             ccNumber: '4111 1111 1111 1111',
-            useStoreCredit: false,
             paymentProviderRadio: selectedPaymentMethod.id,
         });
 
@@ -433,7 +490,6 @@ describe('Payment', () => {
                         ccNumber: '4111111111111111',
                     },
                 },
-                useStoreCredit: false,
             });
     });
 
@@ -512,7 +568,6 @@ describe('Payment', () => {
             ccNumber: '4111 1111 1111 1111',
             instrumentId: '123',
             paymentProviderRadio: selectedPaymentMethod.id,
-            useStoreCredit: false,
         });
 
         expect(checkoutService.submitOrder)
@@ -526,7 +581,6 @@ describe('Payment', () => {
                         instrumentId: '123',
                     },
                 },
-                useStoreCredit: false,
             });
     });
 
