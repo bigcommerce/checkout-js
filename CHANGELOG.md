@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.33.0](https://github.com/bigcommerce/checkout-js/compare/v1.32.1...v1.33.0) (2020-04-30)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-4852 Handle error case when order submission fails because of expired or invalid spam protection token ([114aa9d](https://github.com/bigcommerce/checkout-js/commit/114aa9d))
+* **checkout:** CHECKOUT-4852 Initialize reCaptcha when user interacts with form element rather than automatically ([cc48d84](https://github.com/bigcommerce/checkout-js/commit/cc48d84))
+* **common:** CHECKOUT-4835 Upgrade `request-sender` package version ([aad0b2e](https://github.com/bigcommerce/checkout-js/commit/aad0b2e))
+* **payment:** CHECKOUT-4842 Submit hosted payment form when "enter" key is pressed ([ce71693](https://github.com/bigcommerce/checkout-js/commit/ce71693))
+
+
+### Features
+
+* **checkout:** INT-2602 Replace Barclaycard's Place Order text ([efe1834](https://github.com/bigcommerce/checkout-js/commit/efe1834))
+* **customer:** CHECKOUT-4799 Add passwordless login link ([f07e789](https://github.com/bigcommerce/checkout-js/commit/f07e789))
+
 ### [1.32.1](https://github.com/bigcommerce/checkout-js/compare/v1.32.0...v1.32.1) (2020-04-22)
 
 
