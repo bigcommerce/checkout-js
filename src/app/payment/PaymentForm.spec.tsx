@@ -158,7 +158,7 @@ describe('PaymentForm', () => {
         const container = mount(<PaymentFormTest { ...defaultProps } />);
 
         expect(container.find(StoreCreditField).exists())
-    .toEqual(false);
+            .toEqual(false);
     });
 
     it('does not render store credit field if store credit cannot be applied', () => {

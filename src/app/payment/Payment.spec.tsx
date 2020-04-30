@@ -15,11 +15,11 @@ import { getOrder } from '../order/orders.mock';
 import { Button } from '../ui/button';
 
 import { getPaymentMethod } from './payment-methods.mock';
-import Payment, { PaymentProps, WithCheckoutPaymentProps } from './Payment';
+import Payment, { PaymentProps } from './Payment';
 import PaymentForm, { PaymentFormProps } from './PaymentForm';
 
 describe('Payment', () => {
-    let PaymentTest: FunctionComponent<PaymentProps & Partial<WithCheckoutPaymentProps>>;
+    let PaymentTest: FunctionComponent<PaymentProps>;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
     let defaultProps: PaymentProps;
@@ -168,13 +168,16 @@ describe('Payment', () => {
     });
 
     it('calls applyStoreCredit when checkbox is clicked', async () => {
-        const applyStoreCredit = jest.fn();
+        jest.spyOn(checkoutState.data, 'getCustomer')
+            .mockReturnValue({
+                ...getCustomer(),
+                storeCredit: 10,
+            });
 
-        const component = mount(<PaymentTest
-            { ...defaultProps }
-            applyStoreCredit={ applyStoreCredit }
-            usableStoreCredit={ 10 }
-        />);
+        jest.spyOn(checkoutService, 'applyStoreCredit')
+            .mockResolvedValue(checkoutState);
+
+        const component = mount(<PaymentTest { ...defaultProps } />);
 
         await new Promise(resolve => process.nextTick(resolve));
 
@@ -183,8 +186,8 @@ describe('Payment', () => {
         component.find('input[name="useStoreCredit"]')
             .simulate('change', { target: { checked: false, name: 'useStoreCredit' } });
 
-        expect(applyStoreCredit)
-            .toHaveBeenCalled();
+        expect(checkoutService.applyStoreCredit)
+            .toHaveBeenCalledWith(false);
     });
 
     it('sets default selected payment method', async () => {

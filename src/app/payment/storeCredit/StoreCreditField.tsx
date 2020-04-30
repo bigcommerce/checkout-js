@@ -1,5 +1,5 @@
 import { noop } from 'lodash';
-import React, { useCallback, useMemo, Fragment, FunctionComponent } from 'react';
+import React, { useCallback, useMemo, FunctionComponent } from 'react';
 
 import { preventDefault } from '../../common/dom';
 import { withCurrency, TranslatedString, WithCurrencyProps } from '../../locale';

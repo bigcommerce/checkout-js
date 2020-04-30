@@ -32,7 +32,7 @@ export interface PaymentProps {
     onUnhandledError?(error: Error): void;
 }
 
-export interface WithCheckoutPaymentProps {
+interface WithCheckoutPaymentProps {
     availableStoreCredit: number;
     cartUrl: string;
     defaultMethod?: PaymentMethod;
