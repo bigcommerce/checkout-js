@@ -1,5 +1,5 @@
 import { createCheckoutService, CheckoutService } from '@bigcommerce/checkout-sdk';
-import { mount, render } from 'enzyme';
+import { render } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
 import { CheckoutProvider } from '../checkout';
@@ -21,13 +21,6 @@ describe('SpamProtectionField', () => {
                 <SpamProtectionField { ...props } />
             </CheckoutProvider>
         );
-    });
-
-    it('execute spam check when component is mounted', () => {
-        mount(<SpamProtectionTest />);
-
-        expect(checkoutService.executeSpamCheck)
-            .toHaveBeenCalled();
     });
 
     it('renders spam protection field', () => {

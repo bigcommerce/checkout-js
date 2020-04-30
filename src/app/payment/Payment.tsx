@@ -49,6 +49,7 @@ interface WithCheckoutPaymentProps {
     clearError(error: Error): void;
     finalizeOrderIfNeeded(): Promise<CheckoutSelectors>;
     isPaymentDataRequired(useStoreCredit?: boolean): boolean;
+    loadCheckout(): Promise<CheckoutSelectors>;
     loadPaymentMethods(): Promise<CheckoutSelectors>;
     submitOrder(values: OrderRequestBody): Promise<CheckoutSelectors>;
 }
@@ -272,12 +273,12 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
     private handleCloseModal: (
         event: Event,
         props: ErrorModalOnCloseProps
-    ) => void = (_, { error }) => {
+    ) => Promise<void> = async (_, { error }) => {
         if (!error) {
             return;
         }
 
-        const { cartUrl, clearError } = this.props;
+        const { cartUrl, clearError, loadCheckout } = this.props;
         const { type: errorType } = error as any; // FIXME: Export correct TS interface
 
         if (errorType === 'provider_fatal_error' ||
@@ -290,6 +291,12 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
 
             if (body.type === 'provider_error' && headers.location) {
                 window.top.location.assign(headers.location);
+            }
+
+            // Reload the checkout object to get the latest `shouldExecuteSpamCheck` value,
+            // which will in turn make `SpamProtectionField` visible again.
+            if (body.type === 'spam_protection_expired' || body.type === 'spam_protection_failed') {
+                await loadCheckout();
             }
         }
 
@@ -443,6 +450,7 @@ export function mapToPaymentProps({
         defaultMethod: selectedPaymentMethod ? selectedPaymentMethod : filteredMethods[0],
         finalizeOrderError: getFinalizeOrderError(),
         finalizeOrderIfNeeded: checkoutService.finalizeOrderIfNeeded,
+        loadCheckout: checkoutService.loadCheckout,
         isPaymentDataRequired,
         isSubmittingOrder: isSubmittingOrder(),
         isTermsConditionsRequired,
