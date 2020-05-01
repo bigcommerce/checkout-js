@@ -30,6 +30,7 @@ describe('PaymentForm', () => {
 
     beforeEach(() => {
         defaultProps = {
+            isStoreCreditApplied: true,
             defaultMethodId: getPaymentMethod().id,
             isPaymentDataRequired: jest.fn(() => true),
             methods: [
@@ -156,8 +157,18 @@ describe('PaymentForm', () => {
     it('does not render store credit field if store credit cannot be applied', () => {
         const container = mount(<PaymentFormTest { ...defaultProps } />);
 
-        expect(container.find(StoreCreditField))
-            .toHaveLength(0);
+        expect(container.find(StoreCreditField).exists())
+            .toEqual(false);
+    });
+
+    it('does not render store credit field if store credit cannot be applied', () => {
+        const container = mount(<PaymentFormTest
+            usableStoreCredit={ 10 }
+            { ...defaultProps }
+        />);
+
+        expect(container.find(StoreCreditField).prop('usableStoreCredit'))
+            .toEqual(10);
     });
 
     it('shows overlay if store credit can cover total cost of order', () => {
@@ -238,7 +249,6 @@ describe('PaymentForm', () => {
                 paymentProviderRadio: defaultProps.defaultMethodId,
                 shouldSaveInstrument: false,
                 terms: false,
-                useStoreCredit: false,
             });
     });
 

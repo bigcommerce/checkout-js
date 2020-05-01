@@ -74,7 +74,6 @@ export interface CheckoutState {
     isMultiShippingMode: boolean;
     isCartEmpty: boolean;
     isRedirecting: boolean;
-    useStoreCredit: boolean;
     hasSelectedShippingOptions: boolean;
 }
 
@@ -90,7 +89,6 @@ export interface WithCheckoutProps {
     loginUrl: string;
     promotions?: Promotion[];
     steps: CheckoutStepStatus[];
-    usableStoreCredit: number;
     clearError(error?: Error): void;
     loadCheckout(id: string, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
     subscribeToConsignments(subscriber: (state: CheckoutSelectors) => void): () => void;
@@ -102,7 +100,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     state: CheckoutState = {
         isCartEmpty: false,
         isRedirecting: false,
-        useStoreCredit: true,
         isMultiShippingMode: false,
         hasSelectedShippingOptions: false,
     };
@@ -379,7 +376,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onCartChangedError={ this.handleCartChangedError }
                         onFinalize={ this.navigateToOrderConfirmation }
                         onReady={ this.handleReady }
-                        onStoreCreditChange={ this.handleStoreCreditChange }
                         onSubmit={ this.navigateToOrderConfirmation }
                         onSubmitError={ this.handleError }
                         onUnhandledError={ this.handleUnhandledError }
@@ -390,25 +386,18 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     }
 
     private renderCartSummary(): ReactNode {
-        const { usableStoreCredit } = this.props;
-        const { useStoreCredit } = this.state;
-
         return (
             <MobileView>
                 { matched => {
                     if (matched) {
                         return <LazyContainer>
-                            <CartSummaryDrawer
-                                storeCreditAmount={ useStoreCredit ? usableStoreCredit : 0 }
-                            />
+                            <CartSummaryDrawer />
                         </LazyContainer>;
                     }
 
                     return <aside className="layout-cart">
                         <LazyContainer>
-                            <CartSummary
-                                storeCreditAmount={ useStoreCredit ? usableStoreCredit : 0 }
-                            />
+                            <CartSummary />
                         </LazyContainer>
                     </aside>;
                 } }
@@ -579,10 +568,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     private handleShippingSignIn: () => void = () => {
         this.navigateToStep(CheckoutStepType.Customer);
         this.setState({ customerViewType: CustomerViewType.Login });
-    };
-
-    private handleStoreCreditChange: (useStoreCredit: boolean) => void = (useStoreCredit = false) => {
-        this.setState({ useStoreCredit });
     };
 }
 

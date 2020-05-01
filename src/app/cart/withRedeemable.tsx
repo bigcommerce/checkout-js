@@ -3,13 +3,12 @@ import React, { ComponentType, FunctionComponent } from 'react';
 import { OrderSummaryProps, OrderSummarySubtotalsProps } from '../order';
 
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
-import { CartSummaryProps, WithCheckoutCartSummaryProps } from './CartSummary';
+import { WithCheckoutCartSummaryProps } from './CartSummary';
 import Redeemable from './Redeemable';
 
 export default function withRedeemable(
     OriginalComponent: ComponentType<OrderSummaryProps & OrderSummarySubtotalsProps>
 ): FunctionComponent<
-    CartSummaryProps &
     WithCheckoutCartSummaryProps &
     { headerLink?: any }
 > {
@@ -43,7 +42,7 @@ export default function withRedeemable(
                 shopperCurrency={ shopperCurrency }
                 storeCreditAmount={ storeCreditAmount }
                 storeCurrency={ storeCurrency }
-                total={ checkout.grandTotal }
+                total={ checkout.outstandingBalance }
             />
         );
     };

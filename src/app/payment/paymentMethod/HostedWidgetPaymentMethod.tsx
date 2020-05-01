@@ -335,7 +335,6 @@ function mapFromCheckoutProps(): MapToProps<
     return (context, props) => {
 
         const {
-            formik: { values },
             isUsingMultiShipping = false,
             method,
         } = props;
@@ -366,7 +365,7 @@ function mapFromCheckoutProps(): MapToProps<
         return {
             instruments: filterInstruments(getInstruments(method)),
             isLoadingInstruments: isLoadingInstruments(),
-            isPaymentDataRequired: isPaymentDataRequired(values.useStoreCredit),
+            isPaymentDataRequired: isPaymentDataRequired(),
             isSignedIn: some(checkout.payments, { providerId: method.id }),
             isInstrumentCardCodeRequired: isInstrumentCardCodeRequiredSelector(checkoutState),
             isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredSelector(checkoutState),

@@ -1,9 +1,7 @@
-import { CartSummaryProps } from './CartSummary';
 import { EmptyCartMessageProps } from './EmptyCartMessage';
 import { RedeemableProps } from './Redeemable';
 
 export type EmptyCartMessageProps = EmptyCartMessageProps;
-export type CartSummaryProps = CartSummaryProps;
 export type RedeemableProps = RedeemableProps;
 
 export { default as EmptyCartMessage } from './EmptyCartMessage';

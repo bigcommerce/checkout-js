@@ -9,18 +9,15 @@ import withRedeemable from './withRedeemable';
 import EditLink from './EditLink';
 import { RedeemableProps } from './Redeemable';
 
-export interface CartSummaryProps {
-    storeCreditAmount?: number;
-}
-
 export type WithCheckoutCartSummaryProps = {
     checkout: Checkout;
     cartUrl: string;
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrency;
+    storeCreditAmount?: number;
 } & RedeemableProps;
 
-const CartSummary: FunctionComponent<CartSummaryProps & WithCheckoutCartSummaryProps> = ({
+const CartSummary: FunctionComponent<WithCheckoutCartSummaryProps> = ({
     cartUrl,
     ...props
 }) => (

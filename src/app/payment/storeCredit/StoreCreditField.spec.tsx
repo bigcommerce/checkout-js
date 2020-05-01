@@ -34,6 +34,7 @@ describe('StoreCreditField', () => {
         const component = mount(
             <StoreCreditFieldTest
                 availableStoreCredit={ 200 }
+                isStoreCreditApplied={ true }
                 name="useStoreCredit"
                 usableStoreCredit={ 100 }
             />
@@ -47,6 +48,7 @@ describe('StoreCreditField', () => {
         const component = mount(
             <StoreCreditFieldTest
                 availableStoreCredit={ 200 }
+                isStoreCreditApplied={ true }
                 name="useStoreCredit"
                 usableStoreCredit={ 100 }
             />
@@ -55,6 +57,7 @@ describe('StoreCreditField', () => {
         expect(component.find('input').props())
             .toEqual(expect.objectContaining({
                 name: 'useStoreCredit',
+                checked: true,
                 type: 'checkbox',
             }));
     });
@@ -64,6 +67,7 @@ describe('StoreCreditField', () => {
         const component = mount(
             <StoreCreditFieldTest
                 availableStoreCredit={ 200 }
+                isStoreCreditApplied={ true }
                 name="useStoreCredit"
                 onChange={ handleChange }
                 usableStoreCredit={ 100 }

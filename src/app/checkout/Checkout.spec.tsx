@@ -1,15 +1,13 @@
 import { createCheckoutService, createEmbeddedCheckoutMessenger, CheckoutSelectors, CheckoutService, EmbeddedCheckoutMessenger, StepTracker } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { EventEmitter } from 'events';
-import { merge, noop } from 'lodash';
+import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { BillingProps } from '../billing';
 import Billing from '../billing/Billing';
-import { CartSummaryProps } from '../cart';
 import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';
-import CartSummary from '../cart/CartSummary';
 import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { CustomerInfo, CustomerInfoProps, CustomerProps, CustomerViewType } from '../customer';
@@ -553,7 +551,7 @@ describe('Checkout', () => {
     });
 
     describe('payment step', () => {
-        let container: ReactWrapper<CheckoutProps>;
+        let container: ReactWrapper<CheckoutProps & WithCheckoutProps>;
 
         beforeEach(async () => {
             jest.spyOn(location, 'replace')
@@ -656,45 +654,6 @@ describe('Checkout', () => {
 
             expect(defaultProps.errorLogger.log)
                 .toHaveBeenCalledWith(error);
-        });
-
-        it('shows store credit amount in cart summary if store credit is applied', () => {
-            checkoutState = merge({}, checkoutState, {
-                data: {
-                    getCustomer: jest.fn(() => ({
-                        ...getCustomer(),
-                        storeCredit: 10,
-                    })),
-                },
-            });
-
-            subscribeEventEmitter.emit('change');
-
-            // tslint:disable-next-line:no-non-null-assertion
-            (container.find(Payment).at(0) as ReactWrapper<PaymentProps>)
-                .prop('onStoreCreditChange')!(true);
-
-            container.update();
-
-            expect((container.find(CartSummary).at(0) as ReactWrapper<CartSummaryProps>).prop('storeCreditAmount'))
-                .toEqual(10);
-        });
-
-        it('removes store credit amount from cart summary if store credit is not applied', () => {
-            jest.spyOn(checkoutState.data, 'getCustomer')
-                .mockReturnValue({
-                    ...getCustomer(),
-                    storeCredit: 10,
-                });
-
-            // tslint:disable-next-line:no-non-null-assertion
-            (container.find(Payment).at(0) as ReactWrapper<PaymentProps>)
-                .prop('onStoreCreditChange')!(false);
-
-            container.update();
-
-            expect((container.find(CartSummary).at(0) as ReactWrapper<CartSummaryProps>).prop('storeCreditAmount'))
-                .toEqual(0);
         });
     });
 });
