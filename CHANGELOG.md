@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.35.0](https://github.com/bigcommerce/checkout-js/compare/v1.34.0...v1.35.0) (2020-05-01)
+
+
+### Features
+
+* **payment:** CHECKOUT-4304 Apply store credit using endpoint ([38ae017](https://github.com/bigcommerce/checkout-js/commit/38ae017))
+* **payment:** INT-2541 boilerplate laybuy ([95b0286](https://github.com/bigcommerce/checkout-js/commit/95b0286))
+
+
+### Performance Improvements
+
+* **customer:** CHECKOUT-4799 Use useMemo instead of useCallback ([38e369d](https://github.com/bigcommerce/checkout-js/commit/38e369d))
+
 ## [1.34.0](https://github.com/bigcommerce/checkout-js/compare/v1.33.0...v1.34.0) (2020-04-30)
 
 
