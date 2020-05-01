@@ -46,6 +46,28 @@ export function getInstruments(): PaymentInstrument[] {
             method: 'paypal',
             type: 'account',
         },
+        {
+            bigpayToken: '12341234',
+            provider: 'adyen',
+            iban: 'ABC',
+            issuer: 'DEF',
+            externalId: 'test@external-id-3.com',
+            trustedShippingAddress: false,
+            defaultInstrument: false,
+            method: 'ideal',
+            type: 'bank',
+        },
+        {
+            bigpayToken: '45454545',
+            provider: 'adyen',
+            iban: 'GHI',
+            issuer: 'JKL',
+            externalId: 'test@external-id-4.com',
+            trustedShippingAddress: false,
+            defaultInstrument: false,
+            method: 'ideal',
+            type: 'bank',
+        },
     ];
 }
 
@@ -74,5 +96,17 @@ export function getAccountInstrument(): AccountInstrument {
         defaultInstrument: true,
         method: 'paypal',
         type: 'account',
+    };
+}
+
+export function getBankInstrument(): AccountInstrument {
+    return {
+        bigpayToken: '454545',
+        provider: 'adyen',
+        externalId: 'test@external-id-3.com',
+        trustedShippingAddress: true,
+        defaultInstrument: true,
+        method: 'ideal',
+        type: 'bank',
     };
 }

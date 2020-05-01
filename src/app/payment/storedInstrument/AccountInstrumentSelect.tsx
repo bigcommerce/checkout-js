@@ -8,6 +8,8 @@ import { TranslatedString } from '../../locale';
 import { DropdownTrigger } from '../../ui/dropdown';
 import { IconNewAccount, IconPaypal, IconSize } from '../../ui/icon';
 
+import isBankAccountInstrument from './isBankAccountInstrument';
+
 export interface AccountInstrumentSelectProps extends FieldProps<string> {
     instruments: AccountInstrument[];
     selectedInstrumentId?: string;
@@ -152,12 +154,19 @@ const AccountInstrumentSelectButton: FunctionComponent<AccountInstrumentSelectBu
     }
 
     return (
-        <AccountInstrumentMenuItem
-            className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
-            instrument={ instrument }
-            onClick={ onClick }
-            testId={ testId }
-        />
+        !isBankAccountInstrument(instrument) ?
+            (<AccountInstrumentMenuItem
+                className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
+                instrument={ instrument }
+                onClick={ onClick }
+                testId={ testId }
+            />) :
+            (<BankInstrumentMenuItem
+                className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
+                instrument={ instrument }
+                onClick={ onClick }
+                testId={ testId }
+            />)
     );
 };
 
@@ -179,11 +188,17 @@ const AccountInstrumentOption: FunctionComponent<AccountInstrumentOptionProps> =
     ]);
 
     return (
-        <AccountInstrumentMenuItem
-            instrument={ instrument }
-            onClick={ handleClick }
-            testId="instrument-select-option"
-        />
+        !isBankAccountInstrument(instrument) ?
+            (<AccountInstrumentMenuItem
+                instrument={ instrument }
+                onClick={ handleClick }
+                testId="instrument-select-option"
+            />) :
+            (<BankInstrumentMenuItem
+                instrument={ instrument }
+                onClick={ handleClick }
+                testId="instrument-select-option"
+            />)
     );
 };
 
@@ -222,6 +237,38 @@ const AccountInstrumentMenuItem: FunctionComponent<AccountInstrumentMenuItemProp
                     data-test={ `${testId}-externalId` }
                 >
                     { externalId }
+                </div>
+            </div>
+        </button>
+    );
+};
+
+const BankInstrumentMenuItem: FunctionComponent<AccountInstrumentMenuItemProps> = ({
+      className,
+      instrument,
+      testId,
+      onClick,
+}) => {
+    const issuerName = `Issuer: ${instrument.issuer}`;
+    const maskIban = `Iban ending in: ${instrument.iban}`;
+
+    return (
+        <button
+            className={ className }
+            data-test={ testId }
+            onClick={ onClick }
+            type="button"
+        >
+            <div className="instrumentSelect-details">
+                {
+                    // TODO: When we include new account instrument types we can
+                    // abstract these icons in a similar way we did for credit cards.
+                }
+                <div className="instrumentSelect-card">
+                    { maskIban }
+                </div>
+                <div className="instrumentSelect-issuer">
+                    { issuerName }
                 </div>
             </div>
         </button>

@@ -8,6 +8,7 @@ import { Button, ButtonSize, ButtonVariant } from '../../ui/button';
 import { Modal, ModalHeader } from '../../ui/modal';
 
 import isAccountInstrument from './isAccountInstrument';
+import isBankAccountInstrument from './isBankAccountInstrument';
 import isCardInstrument from './isCardInstrument';
 import ManageAccountInstrumentsTable from './ManageAccountInstrumentsTable';
 import ManageCardInstrumentsTable from './ManageCardInstrumentsTable';
@@ -79,7 +80,9 @@ class ManageInstrumentsModal extends Component<ManageInstrumentsModalProps & Wit
             );
         }
         const cardInstruments = instruments.filter(isCardInstrument);
+        const bankInstruments = instruments.filter(isBankAccountInstrument);
         const accountInstruments = instruments.filter(isAccountInstrument);
+        accountInstruments.push(...bankInstruments, ...accountInstruments);
 
         return (
             accountInstruments.length

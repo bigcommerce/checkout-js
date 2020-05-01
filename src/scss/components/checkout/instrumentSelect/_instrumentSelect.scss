@@ -69,6 +69,12 @@
     text-align: right;
 }
 
+.instrumentSelect-issuer {
+    flex-grow: 2;
+    margin-right: remCalc(20px);
+    text-align: left;
+}
+
 .instrumentSelect-expiry--expired {
     color: color("error");
 }

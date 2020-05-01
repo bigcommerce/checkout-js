@@ -7,6 +7,7 @@ import { Omit } from 'utility-types';
 import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 
+import { isBankAccountInstrument } from './index';
 import { getInstruments } from './instruments.mock';
 import isAccountInstrument from './isAccountInstrument';
 import AccountInstrumentSelect, { AccountInstrumentSelectProps } from './AccountInstrumentSelect';
@@ -241,5 +242,70 @@ describe('AccountInstrumentSelect', () => {
         await new Promise(resolve => process.nextTick(resolve));
 
         expect(submit).toHaveBeenCalledWith({ instrumentId: '' }, expect.anything());
+    });
+
+    it('shows list of instruments when clicked and is a bank instrument', () => {
+        defaultProps.instruments = getInstruments().filter(isBankAccountInstrument);
+        const component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <Formik
+                    initialValues={ initialValues }
+                    onSubmit={ noop }
+                >
+                    <Field
+                        name="instrumentId"
+                        render={ (field: FieldProps<string>) => (
+                            <AccountInstrumentSelect
+                                { ...field }
+                                { ...defaultProps }
+                            />
+                        ) }
+                    />
+                </Formik>
+            </LocaleContext.Provider>
+        );
+
+        component.find('[data-test="instrument-select"]')
+            .simulate('click')
+            .update();
+
+        expect(component.exists('[data-test="instrument-select-menu"]'))
+            .toEqual(true);
+
+        expect(component.find('[data-test="instrument-select-option"]').at(0).text())
+            .toContain('Iban ending in: ABCIssuer: DEF');
+    });
+
+    it('notifies parent when instrument is selected and is a bank instrument', () => {
+        defaultProps.instruments = getInstruments().filter(isBankAccountInstrument);
+        const component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <Formik
+                    initialValues={ initialValues }
+                    onSubmit={ noop }
+                >
+                    <Field
+                        name="instrumentId"
+                        render={ (field: FieldProps<string>) => (
+                            <AccountInstrumentSelect
+                                { ...field }
+                                { ...defaultProps }
+                            />
+                        ) }
+                    />
+                </Formik>
+            </LocaleContext.Provider>
+        );
+
+        component.find('[data-test="instrument-select"]')
+            .simulate('click')
+            .update();
+
+        component.find('[data-test="instrument-select-option"]').at(1)
+            .simulate('click')
+            .update();
+
+        expect(defaultProps.onSelectInstrument)
+            .toHaveBeenCalledWith('45454545');
     });
 });

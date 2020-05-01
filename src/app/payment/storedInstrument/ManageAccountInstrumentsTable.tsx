@@ -5,6 +5,8 @@ import { TranslatedString } from '../../locale';
 import { IconPaypal, IconSize } from '../../ui/icon';
 import { LoadingOverlay } from '../../ui/loading';
 
+import isBankAccountInstrument from './isBankAccountInstrument';
+
 export interface ManageAccountInstrumentsTableProps {
     instruments: AccountInstrument[];
     isDeletingInstrument: boolean;
@@ -65,10 +67,10 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
     return (
         <tr>
             <td data-test="manage-instrument-accountExternalId">
-                <IconPaypal
+                { !isBankAccountInstrument(instrument) && <IconPaypal
                     additionalClassName="accountIcon-icon"
                     size={ IconSize.Medium }
-                />
+                /> }
 
                 <span className="instrumentModal-instrumentAccountExternalId">
                     { instrument.externalId }

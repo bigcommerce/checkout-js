@@ -15,3 +15,4 @@ export { default as CreditCardValidation } from './CreditCardValidation';
 export { default as HostedCreditCardValidation } from './HostedCreditCardValidation';
 export { default as isCardInstrument } from './isCardInstrument';
 export { default as isAccountInstrument } from './isAccountInstrument';
+export { default as isBankAccountInstrument } from './isBankAccountInstrument';
