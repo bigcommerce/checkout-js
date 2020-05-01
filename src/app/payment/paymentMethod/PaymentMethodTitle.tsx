@@ -73,6 +73,10 @@ function getPaymentMethodTitle(
                 logoUrl: cdnPath('/img/payment-providers/klarna-header.png'),
                 titleText: method.config && method.config.displayName || '',
             },
+            [PaymentMethodId.Laybuy]: {
+                logoUrl: cdnPath('/img/payment-providers/laybuy-checkout-header.png'),
+                titleText: '',
+            },
             [PaymentMethodId.Masterpass]: {
                 logoUrl: 'https://masterpass.com/dyn/img/acc/global/mp_mark_hor_blk.svg',
                 titleText: '',

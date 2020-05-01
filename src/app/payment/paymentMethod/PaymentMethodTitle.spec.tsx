@@ -31,6 +31,7 @@ describe('PaymentMethodTitle', () => {
         chasepay: '/img/payment-providers/chase-pay.png',
         googlepay: '/img/payment-providers/google-pay.png',
         klarna: '/img/payment-providers/klarna-header.png',
+        laybuy: '/img/payment-providers/laybuy-checkout-header.png',
         masterpass: 'https://masterpass.com/dyn/img/acc/global/mp_mark_hor_blk.svg',
         paypal: '/img/payment-providers/paypalpaymentsprouk.png',
         zip: '/img/payment-providers/zip.png',
