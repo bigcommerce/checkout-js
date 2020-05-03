@@ -587,7 +587,7 @@ describe('Payment', () => {
             });
     });
 
-    it('reloads checkout object if unable to submit order due to spam protection error', () => {
+    it('reloads checkout object if unable to submit order due to spam protection error', async () => {
         jest.spyOn(checkoutService, 'loadCheckout')
             .mockResolvedValue(checkoutState);
 
@@ -599,9 +599,14 @@ describe('Payment', () => {
 
         const container = mount(<PaymentTest { ...defaultProps } />);
 
+        await new Promise(resolve => process.nextTick(resolve));
+
+        container.update();
         container.find('ErrorModal Button').simulate('click');
 
         expect(checkoutService.loadCheckout)
             .toHaveBeenCalled();
+        expect(container.find(PaymentForm).prop('didExceedSpamLimit'))
+            .toBeTruthy();
     });
 });

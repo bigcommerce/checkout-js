@@ -56,6 +56,7 @@ interface WithCheckoutPaymentProps {
 }
 
 interface PaymentState {
+    didExceedSpamLimit: boolean;
     isReady: boolean;
     selectedMethod?: PaymentMethod;
     shouldDisableSubmit: { [key: string]: boolean };
@@ -65,6 +66,7 @@ interface PaymentState {
 
 class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLanguageProps, PaymentState> {
     state: PaymentState = {
+        didExceedSpamLimit: false,
         isReady: false,
         shouldDisableSubmit: {},
         validationSchemas: {},
@@ -134,6 +136,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         } = this.props;
 
         const {
+            didExceedSpamLimit,
             isReady,
             selectedMethod = defaultMethod,
             shouldDisableSubmit,
@@ -162,6 +165,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
                         { ...rest }
                         defaultGatewayId={ defaultMethod.gateway }
                         defaultMethodId={ defaultMethod.id }
+                        didExceedSpamLimit={ didExceedSpamLimit }
                         isUsingMultiShipping={ isUsingMultiShipping }
                         methods={ methods }
                         onMethodSelect={ this.setSelectedMethod }
@@ -298,6 +302,8 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             // Reload the checkout object to get the latest `shouldExecuteSpamCheck` value,
             // which will in turn make `SpamProtectionField` visible again.
             if (body.type === 'spam_protection_expired' || body.type === 'spam_protection_failed') {
+                this.setState({ didExceedSpamLimit: true });
+
                 await loadCheckout();
             }
         }
