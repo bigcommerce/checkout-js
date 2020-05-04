@@ -293,7 +293,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         }
 
         if (isRequestError(error)) {
-            const { body, headers } = error;
+            const { body, headers, status } = error;
 
             if (body.type === 'provider_error' && headers.location) {
                 window.top.location.assign(headers.location);
@@ -301,7 +301,10 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
 
             // Reload the checkout object to get the latest `shouldExecuteSpamCheck` value,
             // which will in turn make `SpamProtectionField` visible again.
-            if (body.type === 'spam_protection_expired' || body.type === 'spam_protection_failed') {
+            // NOTE: As a temporary fix, we're checking the status code instead of the error
+            // type because of an issue with Nginx config, which causes the server to return
+            // HTML page instead of JSON response when there is a 429 error.
+            if (status === 429 || body.type === 'spam_protection_expired' || body.type === 'spam_protection_failed') {
                 this.setState({ didExceedSpamLimit: true });
 
                 await loadCheckout();
