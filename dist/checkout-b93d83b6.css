@@ -4701,6 +4701,11 @@ h6 a:hover {
   margin-right: 1.53846rem;
   text-align: right; }
 
+.instrumentSelect-issuer {
+  flex-grow: 2;
+  margin-right: 1.53846rem;
+  text-align: left; }
+
 .instrumentSelect-expiry--expired {
   color: #ed6a6a; }
 
@@ -5269,4 +5274,4 @@ body.klarna-payments-fso-open {
     font-weight: normal; }
 
 
-/*# sourceMappingURL=checkout-6213a3b4.css.map*/
+/*# sourceMappingURL=checkout-b93d83b6.css.map*/

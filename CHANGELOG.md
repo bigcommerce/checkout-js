@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.36.0](https://github.com/bigcommerce/checkout-js/compare/v1.35.0...v1.36.0) (2020-05-04)
+
+
+### Bug Fixes
+
+* **payment:** CHECKOUT-4852 Check for status code instead as quick fix ([1666289](https://github.com/bigcommerce/checkout-js/commit/1666289))
+* **payment:** CHECKOUT-4852 Only show human verification message on mount if exceeded limit ([ff199b6](https://github.com/bigcommerce/checkout-js/commit/ff199b6))
+
+
+### Features
+
+* **payment:** INT-2428 Modify filter to accept AccountInstruments ([6b5486b](https://github.com/bigcommerce/checkout-js/commit/6b5486b))
+
 ## [1.35.0](https://github.com/bigcommerce/checkout-js/compare/v1.34.0...v1.35.0) (2020-05-01)
 
 
