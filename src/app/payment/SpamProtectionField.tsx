@@ -1,16 +1,23 @@
-import React, { Component } from 'react';
+import { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
+import { noop } from 'lodash';
+import React, { Component, MouseEvent, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
 import { TranslatedString } from '../locale';
 import { LoadingOverlay } from '../ui/loading';
 
 export interface SpamProtectionProps {
+    didExceedSpamLimit?: boolean;
     onUnhandledError?(error: Error): void;
+}
+
+interface SpamProtectionState {
+    shouldShowRetryButton: boolean;
 }
 
 interface WithCheckoutSpamProtectionProps {
     isExecutingSpamCheck: boolean;
-    verify(): void;
+    executeSpamCheck(): Promise<CheckoutSelectors>;
 }
 
 function mapToSpamProtectionProps(
@@ -18,35 +25,84 @@ function mapToSpamProtectionProps(
 ): WithCheckoutSpamProtectionProps {
     return {
         isExecutingSpamCheck: checkoutState.statuses.isExecutingSpamCheck(),
-        verify: checkoutService.executeSpamCheck,
+        executeSpamCheck: checkoutService.executeSpamCheck,
     };
 }
 
-class SpamProtectionField extends Component<SpamProtectionProps & WithCheckoutSpamProtectionProps> {
+class SpamProtectionField extends Component<
+    SpamProtectionProps & WithCheckoutSpamProtectionProps,
+    SpamProtectionState
+> {
+    state = {
+        shouldShowRetryButton: false,
+    };
+
+    async componentDidMount() {
+        const { didExceedSpamLimit } = this.props;
+
+        if (didExceedSpamLimit) {
+            return;
+        }
+
+        this.verify();
+    }
+
     render() {
-        const {
-            isExecutingSpamCheck,
-            verify,
-        } = this.props;
+        const { isExecutingSpamCheck } = this.props;
 
         return (
             <div className="spamProtection-container">
                 <LoadingOverlay isLoading={ isExecutingSpamCheck }>
-                    <div className="spamProtection-panel optimizedCheckout-overlay">
-                        <a
-                            className="spamProtection-panel-message optimizedCheckout-primaryContent"
-                            data-test="customer-continue-button"
-                            onClick={ verify }
-                        >
-                            <TranslatedString
-                                id="spam_protection.verify_action"
-                            />
-                        </a>
-                    </div>
+                    { this.renderContent() }
                 </LoadingOverlay>
             </div>
         );
     }
+
+    private renderContent(): ReactNode {
+        const { didExceedSpamLimit } = this.props;
+        const { shouldShowRetryButton } = this.state;
+
+        if (!didExceedSpamLimit && !shouldShowRetryButton) {
+            return;
+        }
+
+        return <div className="spamProtection-panel optimizedCheckout-overlay">
+            <a
+                className="spamProtection-panel-message optimizedCheckout-primaryContent"
+                data-test="spam-protection-verify-button"
+                onClick={ this.handleRetry }
+            >
+                <TranslatedString
+                    id="spam_protection.verify_action"
+                />
+            </a>
+        </div>;
+    }
+
+    private async verify(): Promise<void> {
+        const {
+            executeSpamCheck,
+            onUnhandledError = noop,
+        } = this.props;
+
+        try {
+            await executeSpamCheck();
+        } catch (error) {
+            this.setState({ shouldShowRetryButton: true });
+
+            // Notify the parent component if the user experiences a problem other than cancelling the reCaptcha challenge.
+            if (error && error.type !== 'spam_protection_challenge_not_completed') {
+                onUnhandledError(error);
+            }
+        }
+    }
+
+    private handleRetry: (event: MouseEvent) => void = event => {
+        event.preventDefault();
+
+        this.verify();
+    };
 }
 
 export default withCheckout(mapToSpamProtectionProps)(SpamProtectionField);

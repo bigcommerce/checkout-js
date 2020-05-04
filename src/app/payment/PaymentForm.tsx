@@ -21,6 +21,7 @@ export interface PaymentFormProps {
     availableStoreCredit?: number;
     defaultGatewayId?: string;
     defaultMethodId: string;
+    didExceedSpamLimit?: boolean;
     isEmbedded?: boolean;
     isTermsConditionsRequired?: boolean;
     isUsingMultiShipping?: boolean;
@@ -60,6 +61,7 @@ export interface HostedWidgetPaymentMethodValues {
 
 const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormValues> & WithLanguageProps> = ({
     availableStoreCredit = 0,
+    didExceedSpamLimit,
     isEmbedded,
     isPaymentDataRequired,
     isTermsConditionsRequired,
@@ -79,7 +81,10 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
     values,
 }) => {
     if (shouldExecuteSpamCheck) {
-        return <SpamProtectionField />;
+        return <SpamProtectionField
+            didExceedSpamLimit={ didExceedSpamLimit }
+            onUnhandledError={ onUnhandledError }
+        />;
     }
 
     return (
