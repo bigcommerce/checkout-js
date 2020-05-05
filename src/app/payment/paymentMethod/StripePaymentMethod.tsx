@@ -6,26 +6,34 @@ import { getCreditCardInputStyles, CreditCardInputStylesType } from '../creditCa
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 
-export type SquarePaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId' | 'hideContentWhenSignedOut'>;
+export type StripePaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId'>;
 
-const StripePaymentMethod: FunctionComponent<SquarePaymentMethodProps> = ({
+const StripePaymentMethod: FunctionComponent<StripePaymentMethodProps> = ({
     initializePayment,
     ...rest
 }) => {
+    // method.gateway = 'stripev3';
+    // method.id = 'card' | 'idealBank' | 'iban';
+    const type = 'card' || rest.method.id;
+    const containerId = `stripe-${type}-element`;
+
     const initializeStripePayment = useCallback(async (options: PaymentInitializeOptions) => {
-        const creditCardInputStyles =  await getCreditCardInputStyles('stripe-card-field', ['color', 'fontFamily', 'fontWeight', 'fontSmoothing']);
-        const creditCardInputErrorStyles = await getCreditCardInputStyles('stripe-card-field', ['color'], CreditCardInputStylesType.Error);
+        const properties = ['color', 'fontFamily', 'fontSize', 'fontWeight'];
+        const creditCardInputStyles =  await getCreditCardInputStyles(containerId, properties);
+        const creditCardInputErrorStyles = await getCreditCardInputStyles(containerId, properties, CreditCardInputStylesType.Error);
 
         return initializePayment({
             ...options,
             stripev3: {
-                containerId: 'stripe-card-field',
+                type,
+                containerId,
                 style: {
                     base: {
                         ...creditCardInputStyles,
                         '::placeholder': {
                             color: '#E1E1E1',
                         },
+                        padding: '5px',
                     },
                     invalid: {
                         ...creditCardInputErrorStyles,
@@ -34,12 +42,12 @@ const StripePaymentMethod: FunctionComponent<SquarePaymentMethodProps> = ({
                 },
             },
         });
-    }, [initializePayment]);
+    }, [containerId, initializePayment, type]);
 
     return <HostedWidgetPaymentMethod
         { ...rest }
         additionalContainerClassName="optimizedCheckout-form-input"
-        containerId="stripe-card-field"
+        containerId={ containerId }
         hideContentWhenSignedOut
         initializePayment={ initializeStripePayment }
     />;

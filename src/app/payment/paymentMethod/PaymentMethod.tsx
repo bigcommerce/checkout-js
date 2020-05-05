@@ -63,6 +63,7 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
         return <SquarePaymentMethod { ...props } />;
     }
 
+    // if (method.gateway === PaymentMethodId.StripeV3) {
     if (method.id === PaymentMethodId.StripeV3) {
         return <StripePaymentMethod { ...props } />;
     }

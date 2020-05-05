@@ -17,7 +17,7 @@ jest.mock('../creditCard', () => ({
     ...jest.requireActual('../creditCard'),
     getCreditCardInputStyles: jest.fn<ReturnType<typeof getCreditCardInputStyles>, Parameters<typeof getCreditCardInputStyles>>(
         (_containerId, _fieldType) => {
-            return Promise.resolve({ color: 'rgb(255, 0, 0)', fontWeight: '500', fontFamily: 'Montserrat, Arial, Helvetica, sans-serif', fontSize: '14px', fontSmoothing: 'auto'});
+            return Promise.resolve({ color: 'rgb(255, 0, 0)', fontWeight: '500', fontFamily: 'Montserrat, Arial, Helvetica, sans-serif', fontSize: '14px'});
         }
     ),
 }));
@@ -39,6 +39,7 @@ describe('when using Stripe payment', () => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
+        // method = { ...getPaymentMethod(), id: 'card', gateway: 'stripev3' };
         method = { ...getPaymentMethod(), id: 'stripev3' };
 
         jest.spyOn(checkoutState.data, 'getConfig')
@@ -70,7 +71,7 @@ describe('when using Stripe payment', () => {
 
         expect(component.props())
             .toEqual(expect.objectContaining({
-                containerId: 'stripe-card-field',
+                containerId: `stripe-card-element`,
                 deinitializePayment: expect.any(Function),
                 initializePayment: expect.any(Function),
                 additionalContainerClassName: 'optimizedCheckout-form-input',
@@ -88,7 +89,7 @@ describe('when using Stripe payment', () => {
         });
 
         expect(getCreditCardInputStyles)
-            .toHaveBeenCalledWith('stripe-card-field', ['color', 'fontFamily', 'fontWeight', 'fontSmoothing']);
+            .toHaveBeenCalledWith('stripe-card-element', ['color', 'fontFamily', 'fontSize', 'fontWeight']);
 
         await new Promise(resolve => process.nextTick(resolve));
 
@@ -96,25 +97,26 @@ describe('when using Stripe payment', () => {
             .toHaveBeenCalledWith(expect.objectContaining({
                 methodId: method.id,
                 gatewayId: method.gateway,
+                // [method.gateway]: {
                 [method.id]: {
-                    containerId: 'stripe-card-field',
+                    type: 'card',
+                    containerId: 'stripe-card-element',
                     style: {
                         base: {
                             color: 'rgb(255, 0, 0)',
                             fontWeight: '500',
                             fontFamily: 'Montserrat, Arial, Helvetica, sans-serif',
                             fontSize: '14px',
-                            fontSmoothing: 'auto',
                             '::placeholder': {
                                 color: '#E1E1E1',
-                           },
+                            },
+                            padding: '5px',
                         },
                         invalid: {
                             color: 'rgb(255, 0, 0)',
                             fontWeight: '500',
                             fontFamily: 'Montserrat, Arial, Helvetica, sans-serif',
                             fontSize: '14px',
-                            fontSmoothing: 'auto',
                             iconColor: 'rgb(255, 0, 0)',
                         },
                     },
