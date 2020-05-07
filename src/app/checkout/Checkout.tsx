@@ -71,6 +71,7 @@ export interface CheckoutState {
     customerViewType?: CustomerViewType;
     defaultStepType?: CheckoutStepType;
     error?: Error;
+    flashMessages?: FlashMessage[];
     isMultiShippingMode: boolean;
     isCartEmpty: boolean;
     isRedirecting: boolean;
@@ -97,15 +98,23 @@ export interface WithCheckoutProps {
 class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguageProps, CheckoutState> {
     stepTracker: StepTracker | undefined;
 
-    state: CheckoutState = {
-        isCartEmpty: false,
-        isRedirecting: false,
-        isMultiShippingMode: false,
-        hasSelectedShippingOptions: false,
-    };
-
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
     private unsubscribeFromConsignments?: () => void;
+
+    constructor(props: Readonly<CheckoutProps & WithCheckoutProps & WithLanguageProps>) {
+        super(props);
+
+        const { flashMessages } = this.props;
+        const flashMessageError = flashMessages && flashMessages.find(({ type }) => type === 0);
+
+        this.state = {
+            error: flashMessageError ? new Error(flashMessageError.message) : undefined,
+            isCartEmpty: false,
+            isRedirecting: false,
+            isMultiShippingMode: false,
+            hasSelectedShippingOptions: false,
+        };
+    }
 
     componentWillUnmount(): void {
         if (this.unsubscribeFromConsignments) {
@@ -246,9 +255,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     }
 
     private renderCustomerStep(step: CheckoutStepStatus): ReactNode {
-        const {
-            isGuestEnabled,
-        } = this.props;
+        const { isGuestEnabled } = this.props;
 
         const {
             customerViewType = isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
@@ -356,7 +363,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         const {
             consignments,
             cart,
-            flashMessages,
         } = this.props;
 
         return (
@@ -370,7 +376,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 <LazyContainer>
                     <Payment
                         checkEmbeddedSupport={ this.checkEmbeddedSupport }
-                        flashMessages={ flashMessages }
                         isEmbedded={ isEmbedded() }
                         isUsingMultiShipping={ cart && consignments ? isUsingMultiShipping(consignments, cart.lineItems) : false }
                         onCartChangedError={ this.handleCartChangedError }

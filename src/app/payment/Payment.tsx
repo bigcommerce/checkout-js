@@ -9,7 +9,6 @@ import { isRequestError, ErrorModal, ErrorModalOnCloseProps } from '../common/er
 import { EMPTY_ARRAY } from '../common/utility';
 import { withLanguage, WithLanguageProps } from '../locale';
 import { TermsConditionsType } from '../termsConditions';
-import { FlashAlert, FlashMessage } from '../ui/alert';
 import { LoadingOverlay } from '../ui/loading';
 
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
@@ -21,7 +20,6 @@ import PaymentForm, { PaymentFormValues } from './PaymentForm';
 export interface PaymentProps {
     isEmbedded?: boolean;
     isUsingMultiShipping?: boolean;
-    flashMessages?: FlashMessage[]; // TODO: Remove once we can read flash messages from SDK
     checkEmbeddedSupport?(methodIds: string[]): void; // TODO: We're currently doing this check in multiple places, perhaps we should move it up so this check get be done in a single place instead.
     onCartChangedError?(error: Error): void;
     onFinalize?(): void;
@@ -128,7 +126,6 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         const {
             defaultMethod,
             finalizeOrderError,
-            flashMessages = [],
             isUsingMultiShipping,
             methods,
             applyStoreCredit,
@@ -154,13 +151,6 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
                     isLoading={ !isReady }
                     unmountContentWhenLoading
                 >
-                    { flashMessages.map(message =>
-                        <FlashAlert
-                            key={ message.message }
-                            message={ message }
-                        />
-                    ) }
-
                     { !isEmpty(methods) && defaultMethod && <PaymentForm
                         { ...rest }
                         defaultGatewayId={ defaultMethod.gateway }
