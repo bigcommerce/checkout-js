@@ -8,7 +8,7 @@ import { BillingProps } from '../billing';
 import Billing from '../billing/Billing';
 import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';
-import { createErrorLogger } from '../common/error';
+import { createErrorLogger, ErrorModal } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { CustomerInfo, CustomerInfoProps, CustomerProps, CustomerViewType } from '../customer';
 import { getCustomer } from '../customer/customers.mock';
@@ -152,6 +152,21 @@ describe('Checkout', () => {
 
         expect(defaultProps.embeddedStylesheet.append)
             .toHaveBeenCalledWith(styles);
+    });
+
+    it('renders modal error when theres an error flash message', () => {
+        const container = mount(<CheckoutTest
+            { ...defaultProps }
+            flashMessages={ [
+                {
+                    message: 'flash message',
+                    type: 0,
+                },
+            ] }
+        />);
+
+        expect(container.find(ErrorModal).prop('error'))
+            .toEqual(new Error('flash message'));
     });
 
     it('renders required checkout steps', () => {
