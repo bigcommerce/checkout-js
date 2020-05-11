@@ -11,6 +11,7 @@ import PaymentMethodTitle from './PaymentMethodTitle';
 
 export interface PaymentMethodListProps {
     isEmbedded?: boolean;
+    isStoreCreditApplied?: boolean;
     isUsingMultiShipping?: boolean;
     methods: PaymentMethod[];
     onSelect?(method: PaymentMethod): void;
@@ -34,6 +35,7 @@ const PaymentMethodList: FunctionComponent<
 > = ({
     formik: { values },
     isEmbedded,
+    isStoreCreditApplied,
     isUsingMultiShipping,
     methods,
     onSelect = noop,
@@ -57,6 +59,7 @@ const PaymentMethodList: FunctionComponent<
             return (
                 <PaymentMethodListItem
                     isEmbedded={ isEmbedded }
+                    isStoreCreditApplied = { isStoreCreditApplied }
                     isUsingMultiShipping={ isUsingMultiShipping }
                     key={ value }
                     method={ method }
@@ -70,6 +73,7 @@ const PaymentMethodList: FunctionComponent<
 
 interface PaymentMethodListItemProps {
     isEmbedded?: boolean;
+    isStoreCreditApplied?: boolean;
     isUsingMultiShipping?: boolean;
     method: PaymentMethod;
     value: string;
@@ -78,6 +82,7 @@ interface PaymentMethodListItemProps {
 
 const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
     isEmbedded,
+    isStoreCreditApplied,
     isUsingMultiShipping,
     method,
     onUnhandledError,
@@ -86,12 +91,14 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
     const renderPaymentMethod = useMemo(() => (
         <PaymentMethodComponent
             isEmbedded={ isEmbedded }
+            isStoreCreditApplied = { isStoreCreditApplied }
             isUsingMultiShipping={ isUsingMultiShipping }
             method={ method }
             onUnhandledError={ onUnhandledError }
         />
     ), [
         isEmbedded,
+        isStoreCreditApplied,
         isUsingMultiShipping,
         method,
         onUnhandledError,

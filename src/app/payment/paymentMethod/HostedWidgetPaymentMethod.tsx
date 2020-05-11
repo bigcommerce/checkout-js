@@ -23,6 +23,7 @@ export interface HostedWidgetPaymentMethodProps {
     isInitializing?: boolean;
     isUsingMultiShipping?: boolean;
     isSignInRequired?: boolean;
+    isStoreCreditApplied?: boolean;
     method: PaymentMethod;
     shouldHideInstrumentExpiryDate?: boolean;
     validateInstrument?(shouldShowNumberField: boolean): React.ReactNode;
@@ -52,6 +53,7 @@ interface WithCheckoutHostedWidgetPaymentMethodProps {
 interface HostedWidgetPaymentMethodState {
     isAddingNewCard: boolean;
     selectedInstrumentId?: string;
+    isStoreCreditApplied?: boolean;
 }
 
 class HostedWidgetPaymentMethod extends Component<
@@ -69,8 +71,10 @@ class HostedWidgetPaymentMethod extends Component<
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
             loadInstruments,
             onUnhandledError = noop,
+            isStoreCreditApplied,
         } = this.props;
 
+        this.setState({ isStoreCreditApplied });
         try {
             if (isInstrumentFeatureAvailableProp) {
                 await loadInstruments();
@@ -86,6 +90,7 @@ class HostedWidgetPaymentMethod extends Component<
         const {
             deinitializePayment = noop,
             method,
+            isStoreCreditApplied,
             onUnhandledError = noop,
         } = this.props;
 
@@ -93,7 +98,9 @@ class HostedWidgetPaymentMethod extends Component<
             selectedInstrumentId,
         } = this.state;
 
-        if (selectedInstrumentId !== prevState.selectedInstrumentId) {
+        if (selectedInstrumentId !== prevState.selectedInstrumentId || isStoreCreditApplied !== prevState.isStoreCreditApplied) {
+            this.setState({ isStoreCreditApplied });
+
             try {
                 await deinitializePayment({
                     gatewayId: method.gateway,
