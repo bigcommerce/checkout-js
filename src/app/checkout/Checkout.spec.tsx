@@ -57,7 +57,6 @@ describe('Checkout', () => {
             embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
             embeddedSupport: createEmbeddedCheckoutSupport(getLanguageService()),
             errorLogger: createErrorLogger(),
-            flashMessages: [],
             createStepTracker: () => stepTracker,
         };
 
@@ -154,16 +153,19 @@ describe('Checkout', () => {
             .toHaveBeenCalledWith(styles);
     });
 
-    it('renders modal error when theres an error flash message', () => {
-        const container = mount(<CheckoutTest
-            { ...defaultProps }
-            flashMessages={ [
+    it('renders modal error when theres an error flash message', async () => {
+        jest.spyOn(checkoutState.data, 'getFlashMessages')
+            .mockReturnValue([
                 {
                     message: 'flash message',
-                    type: 0,
+                    type: 'error',
                 },
-            ] }
-        />);
+            ]);
+
+        const container = mount(<CheckoutTest { ...defaultProps } />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+        container.update();
 
         expect(container.find(ErrorModal).prop('error'))
             .toEqual(new Error('flash message'));

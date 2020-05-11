@@ -1,4 +1,4 @@
-import { Address, Cart, CheckoutParams, CheckoutSelectors, Consignment, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, Promotion, RequestOptions, StepTracker } from '@bigcommerce/checkout-sdk';
+import { Address, Cart, CheckoutParams, CheckoutSelectors, Consignment, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, FlashMessage, Promotion, RequestOptions, StepTracker } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { lazy, Component, ReactNode } from 'react';
@@ -13,7 +13,6 @@ import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { PromotionBannerList } from '../promotion';
 import { hasSelectedShippingOptions, isUsingMultiShipping, StaticConsignment } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
-import { FlashMessage } from '../ui/alert';
 import { LazyContainer, LoadingNotification, LoadingOverlay } from '../ui/loading';
 import { MobileView } from '../ui/responsive';
 
@@ -61,7 +60,6 @@ export interface CheckoutProps {
     embeddedStylesheet: EmbeddedCheckoutStylesheet;
     embeddedSupport: CheckoutSupport;
     errorLogger: ErrorLogger;
-    flashMessages?: FlashMessage[]; // TODO: Expose flash messages from SDK
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
     createStepTracker(): StepTracker;
 }
@@ -84,6 +82,7 @@ export interface WithCheckoutProps {
     consignments?: Consignment[];
     error?: Error;
     hasCartChanged: boolean;
+    flashMessages?: FlashMessage[];
     isGuestEnabled: boolean;
     isLoadingCheckout: boolean;
     isPending: boolean;
@@ -98,23 +97,15 @@ export interface WithCheckoutProps {
 class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguageProps, CheckoutState> {
     stepTracker: StepTracker | undefined;
 
+    state: CheckoutState = {
+        isCartEmpty: false,
+        isRedirecting: false,
+        isMultiShippingMode: false,
+        hasSelectedShippingOptions: false,
+    };
+
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
     private unsubscribeFromConsignments?: () => void;
-
-    constructor(props: Readonly<CheckoutProps & WithCheckoutProps & WithLanguageProps>) {
-        super(props);
-
-        const { flashMessages } = this.props;
-        const flashMessageError = flashMessages && flashMessages.find(({ type }) => type === 0);
-
-        this.state = {
-            error: flashMessageError ? new Error(flashMessageError.message) : undefined,
-            isCartEmpty: false,
-            isRedirecting: false,
-            isMultiShippingMode: false,
-            hasSelectedShippingOptions: false,
-        };
-    }
 
     componentWillUnmount(): void {
         if (this.unsubscribeFromConsignments) {
@@ -144,6 +135,12 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 },
             });
             const { links: { siteLink = '' } = {} } = data.getConfig() || {};
+            const errorFlashMessages = data.getFlashMessages('error') || [];
+
+            if (errorFlashMessages.length) {
+                this.setState({ error: new Error(errorFlashMessages[0].message) });
+            }
+
             const messenger = createEmbeddedMessenger({ parentOrigin: siteLink });
 
             this.unsubscribeFromConsignments = subscribeToConsignments(this.handleConsignmentsUpdated);

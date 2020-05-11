@@ -7,7 +7,6 @@ import '../../scss/App.scss';
 import { createErrorLogger, ErrorBoundary, ErrorLogger } from '../common/error';
 import { createEmbeddedCheckoutStylesheet, createEmbeddedCheckoutSupport } from '../embeddedCheckout';
 import { getLanguageService, LocaleProvider } from '../locale';
-import { FlashMessage } from '../ui/alert';
 
 import Checkout from './Checkout';
 import CheckoutProvider from './CheckoutProvider';
@@ -15,7 +14,6 @@ import CheckoutProvider from './CheckoutProvider';
 export interface CheckoutAppProps {
     checkoutId: string;
     containerId: string;
-    flashMessages?: FlashMessage[]; // TODO: Expose flash messages from SDK
     publicPath?: string;
     sentryConfig?: BrowserOptions;
 }
