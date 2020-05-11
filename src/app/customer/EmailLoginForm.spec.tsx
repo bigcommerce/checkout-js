@@ -2,7 +2,7 @@ import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '../locale';
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedHtml, TranslatedString } from '../locale';
 import { Alert, AlertType } from '../ui/alert';
 import { Form } from '../ui/form';
 import { LoadingSpinner } from '../ui/loading';
@@ -35,7 +35,7 @@ describe('EmailLoginForm', () => {
             .toEqual('Send');
 
         expect(component.find('button[type="button"]').text())
-            .toEqual('Cancel');
+            .toEqual('Use another email');
 
         expect(component.find(ModalHeader).find(TranslatedString).prop('id'))
             .toEqual('login_email.header');
@@ -109,9 +109,6 @@ describe('EmailLoginForm', () => {
 
         expect(component.find(ModalHeader).find(TranslatedString).prop('id'))
             .toEqual('common.error_heading');
-
-        expect(component.find('button[type="button"]').text())
-            .toEqual('Ok');
     });
 
     it('renders "account not found" if error.status === 404', () => {
@@ -174,7 +171,7 @@ describe('EmailLoginForm', () => {
             />
         );
 
-        expect(component.find('p').find(TranslatedString).props())
+        expect(component.find('p').find(TranslatedHtml).props())
             .toEqual({
                 id: 'login_email.sent_text',
                 data: {
@@ -189,8 +186,11 @@ describe('EmailLoginForm', () => {
         expect(component.find(EmailField).exists())
             .toEqual(false);
 
-        expect(component.find('button[type="submit"]').text())
-            .toEqual('Resend');
+        expect(component.find('form a').at(0).text())
+            .toEqual('Resend the link');
+
+        expect(component.find('form a').at(1).text())
+            .toEqual('sign in using your password');
     });
 
     it('displays error message if email is invalid', async () => {

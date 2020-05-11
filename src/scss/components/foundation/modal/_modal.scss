@@ -96,6 +96,13 @@
         @include headingStyle("h4");
     }
 
+    .modal-body {
+        .modal-footer {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+
     .modal-footer {
         border-top: 0;
 

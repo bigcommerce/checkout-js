@@ -135,14 +135,16 @@
             "error_server": "We couldn't send you a sign-in link. Please try again.",
             "error_not_found": "The entered email is not associated to an account. Please try with a different email.",
             "sent_header": "Check your inbox",
-            "sent_text": "We’ve sent an email to {email} that contains a sign-in link. This will expire in {minutes} minutes - If you don’t see it in your inbox, check your junk folder.",
+            "sent_text": "We’ve sent an email to <strong>{email}</strong> that contains a sign-in link. This will expire in {minutes} minutes - If you don’t see it in your inbox, check your junk folder.",
             "text": "Enter the email address associated to your account. We will send you a sign-in link.",
             "header": "Enter your email address",
             "header_with_email": "Confirm your email address",
-            "link": "Forgot password? <a>Send me a sign-in link</a>.",
+            "link": "<a>Send me a sign-in link instead</a>.",
+            "use_another_email": "Use another email",
             "send": "Send",
             "error_temporary_disabled": "Sign-in email functionality is temporary unavailable. Please sign in by entering your password.",
-            "resend": "Resend"
+            "resend_link": "Didn't get the email? <a>Resend the link</a>",
+            "use_password": " or <a>sign in using your password</a> instead."
         },
         "embedded_checkout": {
             "unsupported_error": "The following payment methods are not supported by Embedded Checkout: {methods}. Please contact us for assistance."

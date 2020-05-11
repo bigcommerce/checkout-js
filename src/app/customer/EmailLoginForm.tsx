@@ -3,7 +3,7 @@ import { withFormik, FormikProps } from 'formik';
 import { noop } from 'lodash';
 import React, { memo, useMemo, FunctionComponent } from 'react';
 
-import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
+import { withLanguage, TranslatedHtml, TranslatedLink, TranslatedString, WithLanguageProps } from '../locale';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { Form } from '../ui/form';
@@ -33,9 +33,10 @@ const EmailLoginForm: FunctionComponent<EmailLoginFormProps & WithLanguageProps 
     isOpen,
     isSendingEmail = false,
     emailHasBeenRequested,
-    onRequestClose,
+    onRequestClose = noop,
     sentEmailError,
     sentEmail,
+    submitForm,
     values: {
         email: formEmail,
     },
@@ -56,34 +57,49 @@ const EmailLoginForm: FunctionComponent<EmailLoginFormProps & WithLanguageProps 
         return 'login_email.header';
     }, [emailHasBeenRequested, sentEmailError, email]);
 
-    const footer = useMemo(() => (
-        <div className="modal-footer">
-            { sentEmailError && sentEmailError.status === 429 ?
+    const footer = useMemo(() => {
+        if (sentEmailError && sentEmailError.status === 429) {
+            return null;
+        }
+
+        if (emailHasBeenRequested && !sentEmailError) {
+            if (isSendingEmail) {
+                return <LoadingSpinner isLoading />;
+            }
+
+            return (
+                <p>
+                    <TranslatedLink
+                        id="login_email.resend_link"
+                        onClick={ submitForm }
+                    />
+                    <TranslatedLink
+                        id="login_email.use_password"
+                        onClick={ onRequestClose }
+                    />
+                </p>
+            );
+        }
+
+        return (
+            <div className="modal-footer">
                 <Button
+                    className="optimizedCheckout-buttonSecondary"
                     onClick={ onRequestClose }
                     type="button"
+                >
+                    <TranslatedString id="login_email.use_another_email" />
+                </Button>
+                <Button
+                    isLoading={ isSendingEmail }
+                    type="submit"
                     variant={ ButtonVariant.Primary }
                 >
-                    <TranslatedString id="common.ok_action" />
-                </Button> :
-                <>
-                    <Button
-                        className="optimizedCheckout-buttonSecondary"
-                        onClick={ onRequestClose }
-                        type="button"
-                    >
-                        <TranslatedString id="common.cancel_action" />
-                    </Button>
-                    <Button
-                        isLoading={ isSendingEmail }
-                        type="submit"
-                        variant={ ButtonVariant.Primary }
-                    >
-                        <TranslatedString id={ emailHasBeenRequested ? 'login_email.resend' : 'login_email.send' } />
-                    </Button>
-                </> }
-        </div>
-    ), [sentEmailError, emailHasBeenRequested, isSendingEmail, onRequestClose]);
+                    <TranslatedString id="login_email.send" />
+                </Button>
+            </div>
+        );
+    }, [sentEmailError, emailHasBeenRequested, submitForm, isSendingEmail, onRequestClose]);
 
     const error = useMemo(() => {
         if (!sentEmailError) {
@@ -114,7 +130,7 @@ const EmailLoginForm: FunctionComponent<EmailLoginFormProps & WithLanguageProps 
 
             return (
                 <p>
-                    <TranslatedString
+                    <TranslatedHtml
                         data={ {
                             email: formEmail,
                             minutes: Math.round(expiry / 60),
