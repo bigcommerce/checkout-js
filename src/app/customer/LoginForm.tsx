@@ -157,7 +157,7 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
 
                     { canCancel &&
                         viewType !== CustomerViewType.EnforcedLogin &&
-                        viewType !== CustomerViewType.SuggestedLogin  &&
+                        viewType !== CustomerViewType.SuggestedLogin &&
                         <a
                             className="button optimizedCheckout-buttonSecondary"
                             data-test="customer-cancel-button"
@@ -165,7 +165,10 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
                             id="checkout-customer-cancel"
                             onClick={ preventDefault(onCancel) }
                         >
-                            <TranslatedString id="common.cancel_action" />
+                            <TranslatedString id={ viewType === CustomerViewType.CancellableEnforcedLogin ?
+                                'login_email.use_another_email' :
+                                'common.cancel_action' }
+                            />
                         </a> }
                 </div>
 
