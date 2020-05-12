@@ -3798,6 +3798,10 @@ h6 a:hover {
 .modal-header-title {
   font-size: 1.38462rem; }
 
+.modal-body .modal-footer {
+  padding-left: 0;
+  padding-right: 0; }
+
 .modal-footer {
   border-top: 0; }
   .modal-footer .button {
@@ -5274,4 +5278,4 @@ body.klarna-payments-fso-open {
     font-weight: normal; }
 
 
-/*# sourceMappingURL=checkout-f7779b11.css.map*/
+/*# sourceMappingURL=checkout-957512aa.css.map*/

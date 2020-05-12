@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.39.0](https://github.com/bigcommerce/checkout-js/compare/v1.38.0...v1.39.0) (2020-05-12)
+
+
+### Bug Fixes
+
+* **customer:** CHECKOUT-4880 Copy changes in passwordless login ([bc4e6a5](https://github.com/bigcommerce/checkout-js/commit/bc4e6a5))
+
+
+### Features
+
+* **common:** CHECKOUT-4882 Consume flash messages from SDK ([5946e0d](https://github.com/bigcommerce/checkout-js/commit/5946e0d))
+
 ## [1.38.0](https://github.com/bigcommerce/checkout-js/compare/v1.37.0...v1.38.0) (2020-05-12)
 
 
