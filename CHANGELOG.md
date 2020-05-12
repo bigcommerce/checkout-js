@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.38.0](https://github.com/bigcommerce/checkout-js/compare/v1.37.0...v1.38.0) (2020-05-12)
+
+
+### Features
+
+* **common:** CHECKOUT-4879 Render flash messages as popup ([a3ce461](https://github.com/bigcommerce/checkout-js/commit/a3ce461))
+* **payment:** INT-2611 Bump checkout-sdk ([e16524d](https://github.com/bigcommerce/checkout-js/commit/e16524d))
+
 ## [1.37.0](https://github.com/bigcommerce/checkout-js/compare/v1.36.0...v1.37.0) (2020-05-07)
 
 
