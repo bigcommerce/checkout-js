@@ -14,7 +14,6 @@ describe('CheckoutApp', () => {
         defaultProps = {
             checkoutId: getCheckout().id,
             containerId: 'checkout-app',
-            flashMessages: [],
         };
 
         container = document.createElement('div');
