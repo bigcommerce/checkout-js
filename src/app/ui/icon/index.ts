@@ -4,11 +4,13 @@ export type IconProps = IconProps;
 
 export { IconSize } from './withIconContainer';
 export { default as IconCardAmex } from './IconCardAmex';
+export { default as IconCardCB } from './IconCardCB';
 export { default as IconCardCodeAmex } from './IconCardCodeAmex';
 export { default as IconCardCodeVisa } from './IconCardCodeVisa';
 export { default as IconCardDinersClub } from './IconCardDinersClub';
 export { default as IconCardDiscover } from './IconCardDiscover';
 export { default as IconCardJCB } from './IconCardJCB';
+export { default as IconCardMada } from './IconCardMada';
 export { default as IconCardMaestro } from './IconCardMaestro';
 export { default as IconCardMastercard } from './IconCardMastercard';
 export { default as IconCardVisa } from './IconCardVisa';

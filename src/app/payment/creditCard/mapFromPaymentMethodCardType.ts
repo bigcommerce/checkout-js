@@ -3,6 +3,9 @@ export default function mapFromPaymentMethodCardType(type: string): string | und
     case 'AMEX':
         return 'american-express';
 
+    case 'CB':
+        return 'cb';
+
     case 'DINERS':
         return 'diners-club';
 
@@ -11,6 +14,9 @@ export default function mapFromPaymentMethodCardType(type: string): string | und
 
     case 'JCB':
         return 'jcb';
+
+    case 'MADA':
+        return 'mada';
 
     case 'MAESTRO':
         return 'maestro';

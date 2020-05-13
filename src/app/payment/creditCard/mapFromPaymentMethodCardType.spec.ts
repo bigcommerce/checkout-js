@@ -25,6 +25,12 @@ describe('mapFromPaymentMethodCardType()', () => {
 
         expect(mapFromPaymentMethodCardType('VISA'))
             .toEqual('visa');
+
+        expect(mapFromPaymentMethodCardType('CB'))
+            .toEqual('cb');
+
+        expect(mapFromPaymentMethodCardType('MADA'))
+            .toEqual('mada');
     });
 
     it('returns undefined if unable to map type', () => {

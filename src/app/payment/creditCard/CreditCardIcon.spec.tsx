@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import { IconCardAmex, IconCardDinersClub, IconCardDiscover, IconCardJCB, IconCardMaestro, IconCardMastercard, IconCardUnionPay, IconCardVisa } from '../../ui/icon';
+import { IconCardAmex, IconCardCB, IconCardDinersClub, IconCardDiscover, IconCardJCB, IconCardMada, IconCardMaestro, IconCardMastercard, IconCardUnionPay, IconCardVisa } from '../../ui/icon';
 
 import CreditCardIcon from './CreditCardIcon';
 
@@ -43,6 +43,16 @@ describe('CreditCardIcon', () => {
 
     it('returns Visa card icon', () => {
         expect(shallow(<CreditCardIcon cardType="visa" />).find(IconCardVisa))
+            .toHaveLength(1);
+    });
+
+    it('returns CB card icon', () => {
+        expect(shallow(<CreditCardIcon cardType="cb" />).find(IconCardCB))
+            .toHaveLength(1);
+    });
+
+    it('returns Mada card icon', () => {
+        expect(shallow(<CreditCardIcon cardType="mada" />).find(IconCardMada))
             .toHaveLength(1);
     });
 
