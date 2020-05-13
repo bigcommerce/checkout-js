@@ -1,6 +1,7 @@
 enum PaymentMethodId {
     Adyen = 'adyen',
     AdyenV2 = 'adyenv2',
+    AdyenV2GooglePay = 'googlepayadyenv2',
     Affirm = 'affirm',
     Afterpay = 'afterpay',
     Amazon = 'amazon',

@@ -11,6 +11,7 @@ export const SUPPORTED_METHODS: string[] = [
     'braintreevisacheckout',
     'chasepay',
     'masterpass',
+    'googlepayadyenv2',
     'googlepayauthorizenet',
     'googlepaybraintree',
     'googlepaycheckoutcom',
