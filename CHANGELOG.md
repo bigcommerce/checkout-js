@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.40.0](https://github.com/bigcommerce/checkout-js/compare/v1.39.0...v1.40.0) (2020-05-14)
+
+
+### Features
+
+* **payment:** INT-2437 Add support for GooglePay on Adyen ([df703ca](https://github.com/bigcommerce/checkout-js/commit/df703ca))
+* **payment:** INT-2437 INT-2497 Bump checkout-sdk ([4e845c6](https://github.com/bigcommerce/checkout-js/commit/4e845c6))
+
 ## [1.39.0](https://github.com/bigcommerce/checkout-js/compare/v1.38.0...v1.39.0) (2020-05-12)
 
 
