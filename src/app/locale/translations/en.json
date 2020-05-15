@@ -142,9 +142,10 @@
             "link": "<a>Send me a sign-in link instead</a>.",
             "use_another_email": "Use another email",
             "send": "Send",
-            "error_temporary_disabled": "Sign-in email functionality is temporary unavailable. Please sign in by entering your password.",
+            "error_temporary_disabled": "Sign-in link functionality is temporary unavailable. Please sign in by entering your password.",
             "resend_link": "Didn't get the email? <a>Resend the link</a>",
-            "use_password": " or <a>sign in using your password</a> instead."
+            "use_password_action": "Use Password Instead",
+            "use_password_link": " or <a>sign in using your password</a> instead."
         },
         "embedded_checkout": {
             "unsupported_error": "The following payment methods are not supported by Embedded Checkout: {methods}. Please contact us for assistance."

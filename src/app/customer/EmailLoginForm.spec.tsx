@@ -35,7 +35,7 @@ describe('EmailLoginForm', () => {
             .toEqual('Send');
 
         expect(component.find('button[type="button"]').text())
-            .toEqual('Use another email');
+            .toEqual('Use Password Instead');
 
         expect(component.find(ModalHeader).find(TranslatedString).prop('id'))
             .toEqual('login_email.header');
@@ -60,6 +60,12 @@ describe('EmailLoginForm', () => {
 
         expect(component.find('input[name="email"]').prop('value'))
             .toEqual('test@bigcommerce.com');
+
+        expect(component.find('button[type="submit"]').text())
+            .toEqual('Send');
+
+        expect(component.find('button[type="button"]').text())
+            .toEqual('Use Password Instead');
     });
 
     it('notifies when user submits form', async () => {
@@ -109,6 +115,9 @@ describe('EmailLoginForm', () => {
 
         expect(component.find(ModalHeader).find(TranslatedString).prop('id'))
             .toEqual('common.error_heading');
+
+        expect(component.find('button[type="button"]').text())
+            .toEqual('Ok');
     });
 
     it('renders "account not found" if error.status === 404', () => {
@@ -191,6 +200,31 @@ describe('EmailLoginForm', () => {
 
         expect(component.find('form a').at(1).text())
             .toEqual('sign in using your password');
+    });
+
+    it('renders reset email text if sent email is reset_password', () => {
+        const component = mount(
+            <EmailLoginFormTest
+                email="foo@bar.com"
+                emailHasBeenRequested={ true }
+                isOpen={ true }
+                sentEmail={ { sent_email: 'reset_password', expiry: 890 } }
+            />
+        );
+
+        expect(component.find('p').find(TranslatedHtml).props())
+            .toEqual(expect.objectContaining({
+                id: 'customer.reset_password_before_login_error',
+            }));
+
+        expect(component.find(ModalHeader).find(TranslatedString).prop('id'))
+            .toEqual('login_email.sent_header');
+
+        expect(component.find(EmailField).exists())
+            .toEqual(false);
+
+        expect(component.find('button[type="submit"]').exists())
+            .toEqual(false);
     });
 
     it('displays error message if email is invalid', async () => {

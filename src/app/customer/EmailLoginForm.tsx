@@ -57,14 +57,26 @@ const EmailLoginForm: FunctionComponent<EmailLoginFormProps & WithLanguageProps 
         return 'login_email.header';
     }, [emailHasBeenRequested, sentEmailError, email]);
 
+    const okButton = useMemo(() => (
+        <div className="modal-footer">
+            <Button onClick={ onRequestClose }>
+                <TranslatedString id="common.ok_action" />
+            </Button>
+        </div>
+    ), [onRequestClose]);
+
     const footer = useMemo(() => {
         if (sentEmailError && sentEmailError.status === 429) {
-            return null;
+            return okButton;
         }
 
         if (emailHasBeenRequested && !sentEmailError) {
             if (isSendingEmail) {
                 return <LoadingSpinner isLoading />;
+            }
+
+            if (sentEmail && sentEmail.sent_email === 'reset_password') {
+                return okButton;
             }
 
             return (
@@ -74,7 +86,7 @@ const EmailLoginForm: FunctionComponent<EmailLoginFormProps & WithLanguageProps 
                         onClick={ submitForm }
                     />
                     <TranslatedLink
-                        id="login_email.use_password"
+                        id="login_email.use_password_link"
                         onClick={ onRequestClose }
                     />
                 </p>
@@ -88,7 +100,7 @@ const EmailLoginForm: FunctionComponent<EmailLoginFormProps & WithLanguageProps 
                     onClick={ onRequestClose }
                     type="button"
                 >
-                    <TranslatedString id="login_email.use_another_email" />
+                    <TranslatedString id="login_email.use_password_action" />
                 </Button>
                 <Button
                     isLoading={ isSendingEmail }
@@ -99,7 +111,15 @@ const EmailLoginForm: FunctionComponent<EmailLoginFormProps & WithLanguageProps 
                 </Button>
             </div>
         );
-    }, [sentEmailError, emailHasBeenRequested, submitForm, isSendingEmail, onRequestClose]);
+    }, [
+        sentEmailError,
+        emailHasBeenRequested,
+        okButton,
+        submitForm,
+        isSendingEmail,
+        onRequestClose,
+        sentEmail,
+    ]);
 
     const error = useMemo(() => {
         if (!sentEmailError) {
