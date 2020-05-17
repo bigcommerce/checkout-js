@@ -86,6 +86,7 @@ describe('when using Adyen V2 payment', () => {
                 adyenv2: {
                     cardVerificationContainerId: undefined,
                     containerId: 'adyen-scheme-component-field',
+                    hasVaultedInstruments: false,
                     options: {
                         hasHolderName: true,
                     },

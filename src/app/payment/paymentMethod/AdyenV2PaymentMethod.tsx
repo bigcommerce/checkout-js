@@ -100,6 +100,7 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
             adyenv2: {
                 cardVerificationContainerId: selectedInstrumentId && cardVerificationContainerId,
                 containerId,
+                hasVaultedInstruments: !!selectedInstrumentId,
                 options: adyenOptions[component],
                 threeDS2ContainerId,
                 additionalActionOptions: {
