@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.43.1](https://github.com/bigcommerce/checkout-js/compare/v1.43.0...v1.43.1) (2020-05-19)
+
+
+### Bug Fixes
+
+* **customer:** CHECKOUT-4880 Rename to use password instead ([8e06429](https://github.com/bigcommerce/checkout-js/commit/8e06429))
+
 ## [1.43.0](https://github.com/bigcommerce/checkout-js/compare/v1.42.0...v1.43.0) (2020-05-17)
 
 
