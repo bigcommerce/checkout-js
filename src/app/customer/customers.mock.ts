@@ -13,6 +13,7 @@ export function getGuestCustomer(): Customer {
         isGuest: true,
         lastName: '',
         storeCredit: 0,
+        shouldEncourageSignIn: false,
         customerGroup: {
             id: 1,
             name: 'Customer group',
@@ -27,6 +28,7 @@ export function getCustomer(): Customer {
         firstName: 'Foo',
         fullName: 'Foo Bar',
         lastName: 'Bar',
+        shouldEncourageSignIn: false,
         storeCredit: 0,
         addresses: [
             {

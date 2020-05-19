@@ -1,4 +1,4 @@
-import { CheckoutSelectors, Customer as CustomerType, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, GuestCredentials, SignInEmail } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, GuestCredentials, SignInEmail } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, Fragment, ReactNode } from 'react';
 
@@ -237,10 +237,9 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                 acceptsAbandonedCartEmails: formValues.shouldSubscribe ? true : undefined,
             });
 
-            // todo: remove when SDK has been updated
-            const { shouldEncourageSignIn, isGuest } = data.getCustomer() as unknown as CustomerType & { shouldEncourageSignIn: boolean };
+            const customer = data.getCustomer();
 
-            if (shouldEncourageSignIn && isGuest) {
+            if (customer && customer.shouldEncourageSignIn && customer.isGuest) {
                 return onChangeViewType(CustomerViewType.SuggestedLogin);
             }
 
