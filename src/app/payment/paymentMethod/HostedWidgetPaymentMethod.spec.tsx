@@ -286,5 +286,22 @@ describe('HostedWidgetPaymentMethod', () => {
             expect(creditCardStorageFieldComponent)
                 .toHaveLength(1);
         });
+
+        it('shows save account checkbox when has isAccountInstrument prop', () => {
+            defaultProps.isAccountInstrument = true;
+
+            jest.spyOn(checkoutState.data, 'getInstruments')
+                .mockReturnValue([]);
+
+            const container = mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
+            const hostedWidgetComponent = container.find('#widget-container');
+            const accountInstrumentStorageFieldComponent = container.find(storedInstrumentModule.AccountInstrumentStorageField);
+
+            expect(hostedWidgetComponent)
+                .toHaveLength(1);
+
+            expect(accountInstrumentStorageFieldComponent)
+                .toHaveLength(1);
+        });
     });
 });
