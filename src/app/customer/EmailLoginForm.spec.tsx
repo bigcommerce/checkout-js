@@ -35,7 +35,7 @@ describe('EmailLoginForm', () => {
             .toEqual('Send');
 
         expect(component.find('button[type="button"]').text())
-            .toEqual('Use Password Instead');
+            .toEqual('Go Back');
 
         expect(component.find(ModalHeader).find(TranslatedString).prop('id'))
             .toEqual('login_email.header');
@@ -65,7 +65,7 @@ describe('EmailLoginForm', () => {
             .toEqual('Send');
 
         expect(component.find('button[type="button"]').text())
-            .toEqual('Use Password Instead');
+            .toEqual('Go Back');
     });
 
     it('notifies when user submits form', async () => {

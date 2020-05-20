@@ -100,7 +100,7 @@ const EmailLoginForm: FunctionComponent<EmailLoginFormProps & WithLanguageProps 
                     onClick={ onRequestClose }
                     type="button"
                 >
-                    <TranslatedString id="login_email.use_password_action" />
+                    <TranslatedString id="common.go_back" />
                 </Button>
                 <Button
                     isLoading={ isSendingEmail }

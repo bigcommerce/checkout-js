@@ -87,6 +87,7 @@
             "order_loading_error": "There was an error loading your order. Please try again.",
             "order_fatal_error_heading": "There was an error placing your order",
             "order_fatal_error_extra": "Please choose another payment method or contact us for further assistance.",
+            "go_back": "Go Back",
             "show_more": "Show more"
         },
         "customer": {

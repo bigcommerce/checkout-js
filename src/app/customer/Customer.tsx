@@ -44,7 +44,7 @@ export interface WithCheckoutCustomerProps {
     continueAsGuest(credentials: GuestCredentials): Promise<CheckoutSelectors>;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     initializeCustomer(options: CustomerInitializeOptions): Promise<CheckoutSelectors>;
-    sendLoginEmail(email: string): Promise<CheckoutSelectors>;
+    sendLoginEmail(params: { email: string }): Promise<CheckoutSelectors>;
     signIn(credentials: CustomerCredentials): Promise<CheckoutSelectors>;
 }
 
@@ -212,7 +212,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
         } = this.props;
 
         try {
-            await sendLoginEmail(values.email);
+            await sendLoginEmail(values);
         } finally {
             this.setState({
                 hasRequestedLoginEmail: true,
@@ -339,7 +339,7 @@ export function mapToWithCheckoutCustomerProps(
         clearError: checkoutService.clearError,
         continueAsGuest: checkoutService.continueAsGuest,
         // todo: remove casting when method is properly exposed.
-        sendLoginEmail: (checkoutService as any).sendSignInEmail as (email: string) => Promise<CheckoutSelectors>,
+        sendLoginEmail: (checkoutService as any).sendSignInEmail as (params: { email: string }) => Promise<CheckoutSelectors>,
         createAccountUrl: config.links.createAccountLink,
         defaultShouldSubscribe: config.shopperConfig.defaultNewsletterSignup,
         deinitializeCustomer: checkoutService.deinitializeCustomer,
