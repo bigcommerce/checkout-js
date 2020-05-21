@@ -568,7 +568,8 @@ describe('Customer', () => {
             await new Promise(resolve => process.nextTick(resolve));
             component.update();
 
-            expect(sendLoginEmail).toHaveBeenCalledWith('foo@bar.com');
+            expect(sendLoginEmail)
+                .toHaveBeenCalledWith({ email: 'foo@bar.com' });
             expect(component.find(EmailLoginForm).prop('emailHasBeenRequested'))
                 .toEqual(true);
         });
@@ -588,7 +589,8 @@ describe('Customer', () => {
             await new Promise(resolve => process.nextTick(resolve));
             component.update();
 
-            expect(sendLoginEmail).toHaveBeenCalledWith('foo@bar.com');
+            expect(sendLoginEmail)
+                .toHaveBeenCalledWith({ email: 'foo@bar.com' });
             expect(component.find(EmailLoginForm).prop('emailHasBeenRequested'))
                 .toEqual(true);
         });
