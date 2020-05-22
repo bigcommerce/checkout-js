@@ -82,9 +82,10 @@ class HostedWidgetPaymentMethod extends Component<
         }
     }
 
-    async componentDidUpdate(_prevProps: Readonly<HostedWidgetPaymentMethodProps>, prevState: Readonly<HostedWidgetPaymentMethodState>): Promise<void> {
+    async componentDidUpdate(prevProps: Readonly<HostedWidgetPaymentMethodProps & WithCheckoutHostedWidgetPaymentMethodProps>, prevState: Readonly<HostedWidgetPaymentMethodState>): Promise<void> {
         const {
             deinitializePayment = noop,
+            instruments,
             method,
             onUnhandledError = noop,
         } = this.props;
@@ -93,7 +94,8 @@ class HostedWidgetPaymentMethod extends Component<
             selectedInstrumentId,
         } = this.state;
 
-        if (selectedInstrumentId !== prevState.selectedInstrumentId) {
+        if (selectedInstrumentId !== prevState.selectedInstrumentId ||
+            (prevProps.instruments.length > 0 && instruments.length === 0)) {
             try {
                 await deinitializePayment({
                     gatewayId: method.gateway,
