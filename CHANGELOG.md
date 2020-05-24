@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.45.0](https://github.com/bigcommerce/checkout-js/compare/v1.44.0...v1.45.0) (2020-05-24)
+
+
+### Bug Fixes
+
+* **payment:** INT-2667 Add validation to handle initializePayment when instruments is empty ([8bd345a](https://github.com/bigcommerce/checkout-js/commit/8bd345a))
+
+
+### Features
+
+* **payment:** INT-2577 INT-2613 INT-2684 Bump SDK. ([63a6aa4](https://github.com/bigcommerce/checkout-js/commit/63a6aa4))
+
 ## [1.44.0](https://github.com/bigcommerce/checkout-js/compare/v1.43.1...v1.44.0) (2020-05-21)
 
 
