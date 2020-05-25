@@ -26,6 +26,7 @@ export interface SingleShippingFormProps {
     isMultiShippingMode: boolean;
     methodId?: string;
     shippingAddress?: Address;
+    shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -92,6 +93,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             isLoading,
             onUnhandledError,
             methodId,
+            shouldShowSaveAddress,
             countries,
             countriesWithAutocomplete,
             googleMapsApiKey,
@@ -132,6 +134,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                         onUnhandledError={ onUnhandledError }
                         onUseNewAddress={ this.onUseNewAddress }
                         shippingAddress={ shippingAddress }
+                        shouldShowSaveAddress={ shouldShowSaveAddress }
                     />
                     {
                         shouldShowBillingSameAsShipping && <div className="form-body">

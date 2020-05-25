@@ -11,6 +11,7 @@ describe('isEqualAddress', () => {
             stateOrProvinceCode: 'w',
             id: 'x',
             email: 'y',
+            shouldSaveAddress: false,
             type: 'z',
         })).toBeTruthy();
     });

@@ -28,6 +28,7 @@
             "phone_number_required_error": "Phone Number is required",
             "postal_code_label": "Postal Code",
             "postal_code_required_error": "Postal Code is required",
+            "save_in_addressbook": "Save this address in my address book.",
             "select_country_action": "Select a country",
             "select_state_action": "Select a state",
             "state_label": "State/Province",
@@ -41,7 +42,7 @@
             "billing_heading": "Billing",
             "save_billing_address_error": "An error occurred while saving the billing address to your price quote. Please try again.",
             "billing_address_amazon": "Same as the Billing address set by you in your Amazon account.",
-            "use_shipping_address_label": "My Billing address is the same as my Shipping address"
+            "use_shipping_address_label": "My billing address is the same as my shipping address."
         },
         "cart": {
             "billed_amount_text": "*You will be charged and invoiced {total} ({code}) for this order.",
@@ -145,7 +146,6 @@
             "send": "Send",
             "error_temporary_disabled": "Sign-in link functionality is temporary unavailable. Please sign in by entering your password.",
             "resend_link": "Didn't get the email? <a>Resend the link</a>",
-            "use_password_action": "Use Password Instead",
             "use_password_link": " or <a>sign in using your password</a> instead."
         },
         "embedded_checkout": {

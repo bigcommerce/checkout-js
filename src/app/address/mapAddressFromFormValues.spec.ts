@@ -12,7 +12,8 @@ describe('mapAddressFromFormValues', () => {
             customFields: {},
         };
 
-        expect(mapAddressFromFormValues(formValues)).toMatchObject(getShippingAddress());
+        expect(mapAddressFromFormValues(formValues))
+            .toMatchObject(getShippingAddress());
     });
 
     it('converts formats date values to YYYY-MM-DD format', () => {

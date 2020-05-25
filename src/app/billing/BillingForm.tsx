@@ -20,6 +20,7 @@ export interface BillingFormProps {
     countriesWithAutocomplete: string[];
     googleMapsApiKey: string;
     isUpdating: boolean;
+    hasSaveAddressFeature: boolean;
     shouldShowOrderComments: boolean;
     getFields(countryCode?: string): FormField[];
     onUnhandledError(error: Error): void;
@@ -43,12 +44,13 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
             googleMapsApiKey,
             billingAddress,
             countriesWithAutocomplete,
-            customer: { addresses },
+            customer: { addresses, isGuest },
             getFields,
             countries,
             isUpdating,
             setFieldValue,
             shouldShowOrderComments,
+            hasSaveAddressFeature,
             values,
         } = this.props;
 
@@ -81,6 +83,7 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
                                 formFields={ getFields(values.countryCode) }
                                 googleMapsApiKey={ googleMapsApiKey }
                                 setFieldValue={ setFieldValue }
+                                shouldShowSaveAddress={ hasSaveAddressFeature && !isGuest }
                             />
                         </LoadingOverlay> }
                 </Fieldset>

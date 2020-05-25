@@ -3,8 +3,9 @@ import { memoize } from '@bigcommerce/memoize';
 import { forIn, noop } from 'lodash';
 import React, { createRef, Component, ReactNode, RefObject } from 'react';
 
-import { withLanguage, WithLanguageProps } from '../locale';
+import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { AutocompleteItem } from '../ui/autocomplete';
+import { CheckboxFormField, Fieldset } from '../ui/form';
 
 import { mapToAddress, GoogleAutocompleteFormField } from './googleAutocomplete';
 import './AddressForm.scss';
@@ -19,6 +20,7 @@ export interface AddressFormProps {
     countries?: Country[];
     formFields: FormField[];
     googleMapsApiKey?: string;
+    shouldShowSaveAddress?: boolean;
     onAutocompleteSelect?(address: Partial<Address>): void;
     onAutocompleteToggle?(state: { inputValue: string; isOpen: boolean }): void;
     onChange?(fieldName: string, value: string | string[]): void;
@@ -58,46 +60,54 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
             countryCode,
             googleMapsApiKey,
             onAutocompleteToggle,
+            shouldShowSaveAddress,
         } = this.props;
 
-        return (
-            <div className="checkout-address" ref={ this.containerRef as RefObject<HTMLDivElement> }>
-                { formFields.map(field => {
-                    const addressFieldName = field.name;
-                    const translatedPlaceholderId = PLACEHOLDER[addressFieldName];
+        return (<>
+            <Fieldset>
+                <div className="checkout-address" ref={ this.containerRef as RefObject<HTMLDivElement> }>
+                    { formFields.map(field => {
+                        const addressFieldName = field.name;
+                        const translatedPlaceholderId = PLACEHOLDER[addressFieldName];
 
-                    if (addressFieldName === 'address1' && googleMapsApiKey && countriesWithAutocomplete) {
+                        if (addressFieldName === 'address1' && googleMapsApiKey && countriesWithAutocomplete) {
+                            return (
+                                <GoogleAutocompleteFormField
+                                    apiKey={ googleMapsApiKey }
+                                    countryCode={ countryCode }
+                                    field={ field }
+                                    key={ field.id }
+                                    nextElement={ this.nextElement || undefined }
+                                    onChange={ this.handleAutocompleteChange }
+                                    onSelect={ this.handleAutocompleteSelect }
+                                    onToggleOpen={ onAutocompleteToggle }
+                                    parentFieldName={ fieldName }
+                                    supportedCountries={ countriesWithAutocomplete }
+                                />
+                            );
+                        }
+
                         return (
-                            <GoogleAutocompleteFormField
-                                apiKey={ googleMapsApiKey }
-                                countryCode={ countryCode }
+                            <AddressFormField
                                 field={ field }
-                                key={ field.id }
-                                nextElement={ this.nextElement || undefined }
-                                onChange={ this.handleAutocompleteChange }
-                                onSelect={ this.handleAutocompleteSelect }
-                                onToggleOpen={ onAutocompleteToggle }
-                                parentFieldName={ fieldName }
-                                supportedCountries={ countriesWithAutocomplete }
+                                // stateOrProvince can sometimes be a dropdown or input, so relying on id is not sufficient
+                                key={ `${field.id}-${field.name}` }
+                                onChange={ this.handleDynamicFormFieldChange(addressFieldName) }
+                                parentFieldName={ field.custom ?
+                                    (fieldName ? `${fieldName}.customFields` : 'customFields') :
+                                    fieldName }
+                                placeholder={ translatedPlaceholderId && language.translate(translatedPlaceholderId) }
                             />
                         );
-                    }
-
-                    return (
-                        <AddressFormField
-                            field={ field }
-                            // stateOrProvince can sometimes be a dropdown or input, so relying on id is not sufficient
-                            key={ `${field.id}-${field.name}` }
-                            onChange={ this.handleDynamicFormFieldChange(addressFieldName) }
-                            parentFieldName={ field.custom ?
-                                (fieldName ? `${fieldName}.customFields` : 'customFields') :
-                                fieldName }
-                            placeholder={ translatedPlaceholderId && language.translate(translatedPlaceholderId) }
-                        />
-                    );
-                }) }
-            </div>
-        );
+                    }) }
+                </div>
+            </Fieldset>
+            { shouldShowSaveAddress &&
+                <CheckboxFormField
+                    labelContent={ <TranslatedString id="address.save_in_addressbook" /> }
+                    name={ fieldName ? `${fieldName}.shouldSaveAddress` : 'shouldSaveAddress' }
+                /> }
+        </>);
     }
 
     private handleAutocompleteChange: (value: string, isOpen: boolean) => void = (value, isOpen) => {
