@@ -36,6 +36,10 @@ export default function mapAddressToFormValues(fields: FormField[], address?: Ad
         ),
     });
 
+    values.shouldSaveAddress = address && address.shouldSaveAddress !== undefined ?
+        address.shouldSaveAddress :
+        true;
+
     // Manually backfill stateOrProvince to avoid Formik warning (uncontrolled to controlled input)
     if (values.stateOrProvince === undefined) {
         values.stateOrProvince = '';
@@ -72,6 +76,6 @@ function getDefaultValue(fieldType?: string, defaultValue?: string): string | st
     return defaultValue || '';
 }
 
-function isSystemAddressFieldName(fieldName: string): fieldName is Exclude<keyof Address, 'customFields'> {
-    return fieldName !== 'customFields';
+function isSystemAddressFieldName(fieldName: string): fieldName is Exclude<keyof Address, 'customFields' | 'shouldSaveAddress'> {
+    return fieldName !== 'customFields' && fieldName !== 'shouldSaveAddress';
 }

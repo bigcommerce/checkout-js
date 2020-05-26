@@ -16,7 +16,7 @@ export default function isEqualAddress(address1?: ComparableAddress, address2?: 
 }
 
 function normalizeAddress(address: ComparableAddress) {
-    const ignoredFields: ComparableAddressFields[] = ['id', 'stateOrProvinceCode', 'type', 'email'];
+    const ignoredFields: ComparableAddressFields[] = ['id', 'shouldSaveAddress', 'stateOrProvinceCode', 'type', 'email'];
 
     return omit(
         {

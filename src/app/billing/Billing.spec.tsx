@@ -168,6 +168,7 @@ describe('Billing Component', () => {
             stateOrProvinceCode: '',
             firstName: 'foo',
             lastName: 'Tester',
+            shouldSaveAddress: true,
         });
 
         expect(defaultProps.navigateNextStep).toHaveBeenCalled();

@@ -42,6 +42,9 @@ describe('AddressForm Component', () => {
             </LocaleContext.Provider>
         );
 
+        expect(component.find('[name="address.shouldSaveAddress"]').exists())
+            .toEqual(false);
+
         expect(component.find(AddressFormField).length).toEqual(formFields.length);
     });
 
@@ -55,6 +58,7 @@ describe('AddressForm Component', () => {
                     <AddressForm
                         fieldName="address"
                         formFields={ formFields }
+                        shouldShowSaveAddress={ true }
                     />
                 </Formik>
             </LocaleContext.Provider>
@@ -66,6 +70,9 @@ describe('AddressForm Component', () => {
                 placeholder: undefined,
             })
         );
+
+        expect(component.find('[name="address.shouldSaveAddress"]').exists())
+            .toEqual(true);
 
         expect(component.find(AddressFormField).at(0).prop('field')).toEqual(
             expect.objectContaining({

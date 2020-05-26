@@ -5,6 +5,7 @@ import { AddressFormValues } from './mapAddressToFormValues';
 
 export default function mapAddressFromFormValues(formValues: AddressFormValues): Address {
     const { customFields: customFieldsObject, ...address } = formValues;
+    const shouldSaveAddress = formValues.shouldSaveAddress;
     const customFields: Array<{fieldId: string; fieldValue: string}> = [];
 
     forIn(customFieldsObject, (value, key) => {
@@ -26,6 +27,7 @@ export default function mapAddressFromFormValues(formValues: AddressFormValues):
 
     return {
         ...address,
+        shouldSaveAddress,
         customFields,
     };
 }

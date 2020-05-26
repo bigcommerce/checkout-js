@@ -21,6 +21,7 @@ export interface ShippingFormProps {
     isMultiShippingMode: boolean;
     methodId?: string;
     shippingAddress?: Address;
+    shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
@@ -64,6 +65,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             onUseNewAddress,
             shippingAddress,
             shouldShowOrderComments,
+            shouldShowSaveAddress,
             signOut,
             updateAddress,
         } = this.props;
@@ -105,6 +107,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 onUnhandledError={ onUnhandledError }
                 shippingAddress={ shippingAddress }
                 shouldShowOrderComments={ shouldShowOrderComments }
+                shouldShowSaveAddress={ shouldShowSaveAddress }
                 signOut={ signOut }
                 updateAddress={ updateAddress }
             />;

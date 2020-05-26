@@ -18,6 +18,7 @@ export interface ShippingAddressProps {
     isLoading: boolean;
     methodId?: string;
     shippingAddress?: Address;
+    shouldShowSaveAddress?: boolean;
     hasRequestedShippingOptions: boolean;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     initialize(options: ShippingInitializeOptions): Promise<CheckoutSelectors>;
@@ -44,6 +45,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
         shippingAddress,
         hasRequestedShippingOptions,
         addresses,
+        shouldShowSaveAddress,
         onUnhandledError = noop,
     } = props;
 
@@ -102,6 +104,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
             onAddressSelect={ onAddressSelect }
             onFieldChange={ handleFieldChange }
             onUseNewAddress={ onUseNewAddress }
+            shouldShowSaveAddress={ shouldShowSaveAddress }
         />
     );
 };

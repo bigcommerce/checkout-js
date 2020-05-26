@@ -17,6 +17,7 @@ export interface ShippingAddressFormProps {
     googleMapsApiKey?: string;
     isLoading: boolean;
     formFields: FormField[];
+    shouldShowSaveAddress?: boolean;
     onUseNewAddress(): void;
     onFieldChange(fieldName: string, value: string): void;
     onAddressSelect(address: Address): void;
@@ -31,6 +32,7 @@ class ShippingAddressForm extends Component<ShippingAddressFormProps & ConnectFo
             address: shippingAddress,
             onAddressSelect,
             onUseNewAddress,
+            shouldShowSaveAddress,
             countries,
             countriesWithAutocomplete,
             formFields,
@@ -72,6 +74,7 @@ class ShippingAddressForm extends Component<ShippingAddressFormProps & ConnectFo
                             onAutocompleteToggle={ this.handleAutocompleteToggle }
                             onChange={ this.handleChange }
                             setFieldValue={ this.setFieldValue }
+                            shouldShowSaveAddress={ shouldShowSaveAddress }
                         />
                     </LoadingOverlay> }
             </Fieldset>
