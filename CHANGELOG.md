@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.47.0](https://github.com/bigcommerce/checkout-js/compare/v1.46.0...v1.47.0) (2020-05-26)
+
+
+### Features
+
+* **common:** CHECKOUT-4642 Expose Save Address checkbox ([d231cc1](https://github.com/bigcommerce/checkout-js/commit/d231cc1))
+
 ## [1.46.0](https://github.com/bigcommerce/checkout-js/compare/v1.45.0...v1.46.0) (2020-05-25)
 
 
