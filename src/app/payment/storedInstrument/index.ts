@@ -10,6 +10,7 @@ export { default as isInstrumentCardCodeRequiredSelector } from './isInstrumentC
 export { default as isInstrumentCardNumberRequired } from './isInstrumentCardNumberRequired';
 export { default as isInstrumentCardNumberRequiredSelector } from './isInstrumentCardNumberRequiredSelector';
 export { default as AccountInstrumentFieldset } from './AccountInstrumentFieldset';
+export { default as AccountInstrumentStorageField } from './AccountInstrumentStorageField';
 export { default as CardInstrumentFieldset } from './CardInstrumentFieldset';
 export { default as CreditCardValidation } from './CreditCardValidation';
 export { default as HostedCreditCardValidation } from './HostedCreditCardValidation';

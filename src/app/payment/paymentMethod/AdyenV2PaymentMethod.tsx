@@ -127,12 +127,25 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
         />;
     };
 
+    const isAccountInstrument = () => {
+        switch (method.method) {
+        case 'directEbanking':
+        case 'giropay':
+        case 'ideal':
+        case 'sepadirectdebit':
+            return true;
+        default:
+            return false;
+        }
+    };
+
     return <>
         <HostedWidgetPaymentMethod
             { ...rest }
             containerId={ containerId }
             hideContentWhenSignedOut
             initializePayment={ initializeAdyenPayment }
+            isAccountInstrument={ isAccountInstrument() }
             method={ method }
             shouldHideInstrumentExpiryDate={ shouldHideInstrumentExpiryDate }
             validateInstrument={ validateInstrument }

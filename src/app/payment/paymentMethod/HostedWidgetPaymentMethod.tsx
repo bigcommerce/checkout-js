@@ -9,7 +9,7 @@ import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { MapToProps } from '../../common/hoc';
 import { LoadingOverlay } from '../../ui/loading';
 import { CreditCardStorageField } from '../creditCard';
-import { isBankAccountInstrument, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, AccountInstrumentFieldset, CardInstrumentFieldset, CreditCardValidation } from '../storedInstrument';
+import { isBankAccountInstrument, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, AccountInstrumentFieldset, AccountInstrumentStorageField, CardInstrumentFieldset, CreditCardValidation } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
 
@@ -20,6 +20,7 @@ export interface HostedWidgetPaymentMethodProps {
     containerId: string;
     hideContentWhenSignedOut?: boolean;
     hideVerificationFields?: boolean;
+    isAccountInstrument?: boolean;
     isInitializing?: boolean;
     isUsingMultiShipping?: boolean;
     isSignInRequired?: boolean;
@@ -159,6 +160,7 @@ class HostedWidgetPaymentMethod extends Component<
 
         const shouldShowInstrumentFieldset = isInstrumentFeatureAvailableProp && instruments.length > 0;
         const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
+        const shouldShowSaveInstrument = isInstrumentFeatureAvailableProp && shouldShowCreditCardFieldset;
         const isLoading = isInitializing || isLoadingInstruments;
 
         const selectedAccountInstrument = selectedInstrumentId && selectedInstrument && isBankAccountInstrument(selectedInstrument) ? selectedInstrument : undefined;
@@ -198,7 +200,7 @@ class HostedWidgetPaymentMethod extends Component<
                     tabIndex={ -1 }
                 />
 
-                { shouldShowCreditCardFieldset && isInstrumentFeatureAvailableProp && <CreditCardStorageField name="shouldSaveInstrument" /> }
+                { shouldShowSaveInstrument && this.renderSaveInstrumentCheckbox() }
 
                 { isSignedIn && <SignOutLink
                     method={ method }
@@ -237,6 +239,16 @@ class HostedWidgetPaymentMethod extends Component<
                 shouldShowNumberField={ shouldShowNumberField }
             />
         );
+    }
+
+    private renderSaveInstrumentCheckbox() {
+        const { isAccountInstrument } = this.props;
+
+        if (isAccountInstrument) {
+            return <AccountInstrumentStorageField name="shouldSaveInstrument" />;
+        }
+
+        return <CreditCardStorageField name="shouldSaveInstrument" />;
     }
 
     private async initializeMethod(): Promise<CheckoutSelectors | void> {
