@@ -52,6 +52,10 @@ export function getTranslatedPaymentMethodName(
             return language.translate('payment.amazon_name_text');
         }
 
+        if (method.id === PaymentMethodId.AmazonPay) {
+            return language.translate('payment.amazon_name_text');
+        }
+
         if (method.id === PaymentMethodId.Klarna) {
             return language.translate('payment.klarna_name_text');
         }

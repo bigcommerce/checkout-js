@@ -157,10 +157,12 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             onUnhandledError,
             shippingAddress,
             billingAddress,
+            methodId,
         } = this.props;
 
         const updatedShippingAddress = addressValues && mapAddressFromFormValues(addressValues);
         const promises: Array<Promise<CheckoutSelectors>> = [];
+        const hasRemoteBilling = this.hasRemoteBilling(methodId);
 
         if (!isEqualAddress(updatedShippingAddress, shippingAddress)) {
             promises.push(updateShippingAddress(updatedShippingAddress || {}));
@@ -168,7 +170,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
         if (billingSameAsShipping &&
             updatedShippingAddress &&
-            !isEqualAddress(updatedShippingAddress, billingAddress)
+            !isEqualAddress(updatedShippingAddress, billingAddress) &&
+            !hasRemoteBilling
         ) {
             promises.push(updateBillingAddress(updatedShippingAddress));
         }
@@ -184,6 +187,12 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         } catch (error) {
             onUnhandledError(error);
         }
+    };
+
+    private hasRemoteBilling: (methodId?: string) => boolean = methodId => {
+        const PAYMENT_METHOD_VALID = ['amazonpay'];
+
+        return PAYMENT_METHOD_VALID.some(method => method === methodId);
     };
 
     private handleUseNewAddress: (address: Address, itemId: string) => void = async (address, itemId) => {
@@ -257,6 +266,7 @@ export function mapToShippingProps({
             getShippingCountries,
         },
         statuses: {
+            isShippingStepPending,
             isSelectingShippingOption,
             isLoadingShippingOptions,
             isUpdatingConsignment,
@@ -290,6 +300,7 @@ export function mapToShippingProps({
     const methodId = getShippingMethodId(checkout);
     const shippableItemsCount = getShippableItemsCount(cart);
     const isLoading = (
+        isShippingStepPending() ||
         isLoadingShippingOptions() ||
         isSelectingShippingOption() ||
         isUpdatingConsignment() ||

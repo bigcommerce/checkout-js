@@ -5,6 +5,7 @@ import { SUPPORTED_METHODS } from './CheckoutButtonList';
 
 const SUPPORTED_SIGNOUT_METHODS = [
     'amazon',
+    'amazonpay',
 ];
 
 export const isSupportedSignoutMethod = (methodId: string): boolean => {

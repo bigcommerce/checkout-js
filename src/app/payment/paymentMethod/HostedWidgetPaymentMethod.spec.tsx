@@ -9,6 +9,7 @@ import { CheckoutProvider } from '../../checkout';
 import { getCheckout, getCheckoutPayment } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
+import { TranslatedString } from '../../locale';
 import { getConsignment } from '../../shipping/consignment.mock';
 import { LoadingOverlay } from '../../ui/loading';
 import { CreditCardStorageField } from '../creditCard';
@@ -146,6 +147,30 @@ describe('HostedWidgetPaymentMethod', () => {
             .toHaveLength(0);
     });
 
+    it('shows the payment descriptor', () => {
+        const propsDescriptor = {
+            ...defaultProps,
+            shouldShowDescriptor: true,
+            paymentDescriptor: 'meow',
+        };
+
+        const component = mount(<HostedWidgetPaymentMethodTest { ...propsDescriptor } />);
+
+        expect(component.find('.payment-descriptor')).toHaveLength(1);
+    });
+
+    it('does not show the payment descriptor', () => {
+        const propsDescriptor = {
+            ...defaultProps,
+            shouldShowDescriptor: false,
+            paymentDescriptor: 'meow',
+        };
+
+        const component = mount(<HostedWidgetPaymentMethodTest { ...propsDescriptor } />);
+
+        expect(component.find('.payment-descriptor')).toHaveLength(0);
+    });
+
     describe('when user is signed into their payment method account', () => {
         beforeEach(() => {
             jest.spyOn(checkoutState.data, 'getCheckout')
@@ -203,6 +228,18 @@ describe('HostedWidgetPaymentMethod', () => {
 
             expect(handleSignOutError)
                 .toHaveBeenCalledWith(expect.any(Error));
+        });
+
+        it('renders link for user to edit their selected credit card', () => {
+            const payMethodId = 'walletButton';
+            const component = mount(<HostedWidgetPaymentMethodTest
+                { ...defaultProps }
+                buttonId={ payMethodId }
+                shouldShowEditButton
+            />);
+
+            expect(component.find(`#${payMethodId}`).find(TranslatedString).prop('id'))
+                .toEqual('remote.select_different_card_action');
         });
     });
 

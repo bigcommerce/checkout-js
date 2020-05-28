@@ -7,6 +7,7 @@ import { FormContext } from '../ui/form';
 
 import RemoteShippingAddress from './RemoteShippingAddress';
 import ShippingAddressForm from './ShippingAddressForm';
+import StaticAddressEditable from './StaticAddressEditable';
 
 export interface ShippingAddressProps {
     addresses: CustomerAddress[];
@@ -77,18 +78,39 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
                     onError: onUnhandledError,
                 },
             };
+
+            return (
+                <RemoteShippingAddress
+                    containerId={ containerId }
+                    deinitialize={ deinitialize }
+                    formFields={ formFields }
+                    initialize={ initializeShipping(options) }
+                    methodId={ methodId }
+                    onFieldChange={ onFieldChange }
+                />
+            );
         }
 
-        return (
-            <RemoteShippingAddress
-                containerId={ containerId }
-                deinitialize={ deinitialize }
-                formFields={ formFields }
-                initialize={ initializeShipping(options) }
-                methodId={ methodId }
-                onFieldChange={ onFieldChange }
-            />
-        );
+        if (methodId === 'amazonpay' && shippingAddress) {
+            const editAddressButtonId = 'edit-ship-button';
+
+            options = {
+                amazonpay: {
+                    editAddressButtonId,
+                },
+            };
+
+            return (
+                <StaticAddressEditable
+                    address={ shippingAddress }
+                    buttonId={ editAddressButtonId }
+                    deinitialize={ deinitialize }
+                    initialize={ initializeShipping(options) }
+                    isLoading={ isLoading }
+                    methodId={ methodId }
+                />
+            );
+        }
     }
 
     return (
