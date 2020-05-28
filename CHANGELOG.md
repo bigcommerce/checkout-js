@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.49.0](https://github.com/bigcommerce/checkout-js/compare/v1.48.0...v1.49.0) (2020-05-28)
+
+
+### Bug Fixes
+
+* **payment:** INT-2672 Adjust verbiage when using Online Bank Transfer Payment Methods ([19f8d79](https://github.com/bigcommerce/checkout-js/commit/19f8d79))
+
+
+### Features
+
+* **payment:** INT-2484 Add additional payment method marks ([966ad52](https://github.com/bigcommerce/checkout-js/commit/966ad52))
+
 ## [1.48.0](https://github.com/bigcommerce/checkout-js/compare/v1.47.1...v1.48.0) (2020-05-28)
 
 
