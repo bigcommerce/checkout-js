@@ -1,6 +1,6 @@
 import React, { memo, FunctionComponent } from 'react';
 
-import { IconCardAmex, IconCardDinersClub, IconCardDiscover, IconCardJCB, IconCardMaestro, IconCardMastercard, IconCardUnionPay, IconCardVisa, IconSize } from '../../ui/icon';
+import { IconCardAmex, IconCardCB, IconCardDinersClub, IconCardDiscover, IconCardJCB, IconCardMada, IconCardMaestro, IconCardMastercard, IconCardUnionPay, IconCardVisa, IconSize } from '../../ui/icon';
 
 export interface CreditCardIconProps {
     cardType?: string;
@@ -19,6 +19,9 @@ const CreditCardIcon: FunctionComponent<CreditCardIconProps> = ({
     case 'american-express':
         return <IconCardAmex { ...iconProps } />;
 
+    case 'cb':
+        return <IconCardCB { ...iconProps } />;
+
     case 'diners-club':
         return <IconCardDinersClub { ...iconProps } />;
 
@@ -27,6 +30,9 @@ const CreditCardIcon: FunctionComponent<CreditCardIconProps> = ({
 
     case 'jcb':
         return <IconCardJCB { ...iconProps } />;
+
+    case 'mada':
+        return <IconCardMada { ...iconProps } />;
 
     case 'maestro':
         return <IconCardMaestro { ...iconProps } />;

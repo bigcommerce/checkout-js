@@ -5,9 +5,11 @@ import CreditCardIcon from './CreditCardIcon';
 
 export const SUPPORTED_CARD_TYPES = [
     'american-express',
+    'cb',
     'diners-club',
     'discover',
     'jcb',
+    'mada',
     'maestro',
     'mastercard',
     'unionpay',
