@@ -72,9 +72,16 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
                     size={ IconSize.Medium }
                 /> }
 
-                <span className="instrumentModal-instrumentAccountExternalId">
+                { !instrument.accountNumber ?
+                  <span className="instrumentModal-instrumentAccountExternalId">
                     { instrument.externalId }
-                </span>
+                  </span> :
+                  <span className="instrumentModal-instrumentAccountNumber">
+                    <TranslatedString id="payment.instrument_manage_table_header_ending_in_text" />
+                    <span>
+                      { instrument.accountNumber }
+                    </span>
+                  </span> }
             </td>
             <td>
                 <button
