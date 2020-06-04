@@ -359,10 +359,10 @@ describe('CreditCardPaymentMethod', () => {
                     creditCard: {
                         form: {
                             fields: {
-                                cardCode: { containerId: 'ccCvv' },
-                                cardExpiry: { containerId: 'ccExpiry', placeholder: 'MM / YY' },
-                                cardName: { containerId: 'ccName' },
-                                cardNumber: { containerId: 'ccNumber' },
+                                cardCode: { containerId: 'authorizenet-ccCvv' },
+                                cardExpiry: { containerId: 'authorizenet-ccExpiry', placeholder: 'MM / YY' },
+                                cardName: { containerId: 'authorizenet-ccName' },
+                                cardNumber: { containerId: 'authorizenet-ccNumber' },
                             },
                             styles: {
                                 default: expect.any(Object),
@@ -385,11 +385,11 @@ describe('CreditCardPaymentMethod', () => {
             await new Promise(resolve => process.nextTick(resolve));
 
             expect(getCreditCardInputStyles)
-                .toHaveBeenCalledWith('ccNumber', ['color', 'fontFamily', 'fontSize', 'fontWeight']);
+                .toHaveBeenCalledWith('authorizenet-ccNumber', ['color', 'fontFamily', 'fontSize', 'fontWeight']);
             expect(getCreditCardInputStyles)
-                .toHaveBeenCalledWith('ccNumber', ['color', 'fontFamily', 'fontSize', 'fontWeight'], CreditCardInputStylesType.Error);
+                .toHaveBeenCalledWith('authorizenet-ccNumber', ['color', 'fontFamily', 'fontSize', 'fontWeight'], CreditCardInputStylesType.Error);
             expect(getCreditCardInputStyles)
-                .toHaveBeenCalledWith('ccNumber', ['color', 'fontFamily', 'fontSize', 'fontWeight'], CreditCardInputStylesType.Focus);
+                .toHaveBeenCalledWith('authorizenet-ccNumber', ['color', 'fontFamily', 'fontSize', 'fontWeight'], CreditCardInputStylesType.Focus);
 
             // tslint:disable-next-line:no-non-null-assertion
             expect(defaultProps.initializePayment.mock.calls[0][0].creditCard!.form)
@@ -517,11 +517,11 @@ describe('CreditCardPaymentMethod', () => {
                             form: {
                                 fields: {
                                     cardCodeVerification: {
-                                        containerId: 'ccCvv',
+                                        containerId: 'authorizenet-ccCvv',
                                         instrumentId: getCardInstrument().bigpayToken,
                                     },
                                     cardNumberVerification: {
-                                        containerId: 'ccNumber',
+                                        containerId: 'authorizenet-ccNumber',
                                         instrumentId: getCardInstrument().bigpayToken,
                                     },
                                 },

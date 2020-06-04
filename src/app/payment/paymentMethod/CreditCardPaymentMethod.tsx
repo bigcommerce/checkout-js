@@ -15,6 +15,8 @@ import { getHostedInstrumentValidationSchema, getInstrumentValidationSchema, isC
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
 
+import getUniquePaymentMethodId from './getUniquePaymentMethodId';
+
 export interface CreditCardPaymentMethodProps {
     isInitializing?: boolean;
     isUsingMultiShipping?: boolean;
@@ -189,8 +191,8 @@ class CreditCardPaymentMethod extends Component<
                         selectedInstrumentId={ selectedInstrumentId }
                         validateInstrument={ shouldUseHostedFieldset ?
                             <HostedCreditCardValidation
-                                cardCodeId={ shouldShowCardCodeField ? 'ccCvv' : undefined }
-                                cardNumberId={ shouldShowNumberField ? 'ccNumber' : undefined }
+                                cardCodeId={ shouldShowCardCodeField ? this.getHostedFieldId('ccCvv') : undefined }
+                                cardNumberId={ shouldShowNumberField ? this.getHostedFieldId('ccNumber') : undefined }
                                 focusedFieldType={ focusedHostedFieldType }
                             /> :
                             <CreditCardValidation
@@ -207,10 +209,10 @@ class CreditCardPaymentMethod extends Component<
 
                     { shouldShowCreditCardFieldset && shouldUseHostedFieldset && <HostedCreditCardFieldset
                         additionalFields={ isCustomerCodeRequired && <CreditCardCustomerCodeField name="ccCustomerCode" /> }
-                        cardCodeId={ isCardCodeRequired ? 'ccCvv' : undefined }
-                        cardExpiryId="ccExpiry"
-                        cardNameId="ccName"
-                        cardNumberId="ccNumber"
+                        cardCodeId={ isCardCodeRequired ? this.getHostedFieldId('ccCvv') : undefined }
+                        cardExpiryId={ this.getHostedFieldId('ccExpiry') }
+                        cardNameId={ this.getHostedFieldId('ccName') }
+                        cardNumberId={ this.getHostedFieldId('ccNumber') }
                         focusedFieldType={ focusedHostedFieldType }
                         shouldShowSaveCardField={ isInstrumentFeatureAvailableProp }
                     /> }
@@ -297,20 +299,20 @@ class CreditCardPaymentMethod extends Component<
         const shouldShowNumberVerificationField = selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument) : false;
         const styleProps = ['color', 'fontFamily', 'fontSize', 'fontWeight'];
         const styleContainerId = shouldShowInstrumentFieldset && selectedInstrument ?
-            (isInstrumentCardCodeRequiredProp(selectedInstrument, method) ? 'ccCvv' : undefined) :
-            'ccNumber';
+            (isInstrumentCardCodeRequiredProp(selectedInstrument, method) ? this.getHostedFieldId('ccCvv') : undefined) :
+            this.getHostedFieldId('ccNumber');
 
         return {
             fields: shouldShowInstrumentFieldset && selectedInstrumentId && selectedInstrument ?
                 {
-                    cardCodeVerification: isInstrumentCardCodeRequiredProp(selectedInstrument, method) ? { containerId: 'ccCvv', instrumentId: selectedInstrumentId } : undefined,
-                    cardNumberVerification: shouldShowNumberVerificationField ? { containerId: 'ccNumber', instrumentId: selectedInstrumentId } : undefined,
+                    cardCodeVerification: isInstrumentCardCodeRequiredProp(selectedInstrument, method) ? { containerId: this.getHostedFieldId('ccCvv'), instrumentId: selectedInstrumentId } : undefined,
+                    cardNumberVerification: shouldShowNumberVerificationField ? { containerId: this.getHostedFieldId('ccNumber'), instrumentId: selectedInstrumentId } : undefined,
                 } :
                 {
-                    cardCode: isCardCodeRequired ? { containerId: 'ccCvv' } : undefined,
-                    cardExpiry: { containerId: 'ccExpiry', placeholder: language.translate('payment.credit_card_expiration_placeholder_text') },
-                    cardName: { containerId: 'ccName' },
-                    cardNumber: { containerId: 'ccNumber' },
+                    cardCode: isCardCodeRequired ? { containerId: this.getHostedFieldId('ccCvv') } : undefined,
+                    cardExpiry: { containerId: this.getHostedFieldId('ccExpiry'), placeholder: language.translate('payment.credit_card_expiration_placeholder_text') },
+                    cardName: { containerId: this.getHostedFieldId('ccName') },
+                    cardNumber: { containerId: this.getHostedFieldId('ccNumber') },
                 },
             styles: styleContainerId ?
                 {
@@ -324,6 +326,12 @@ class CreditCardPaymentMethod extends Component<
             onFocus: this.handleHostedFieldFocus,
             onValidate: this.handleHostedFieldValidate,
         };
+    }
+
+    private getHostedFieldId(name: string): string {
+        const { method: { id, gateway } } = this.props;
+
+        return `${getUniquePaymentMethodId(id, gateway)}-${name}`;
     }
 
     private handleUseNewCard: () => void = () => {
