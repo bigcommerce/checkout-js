@@ -85,6 +85,26 @@ describe('PaymentMethod', () => {
             .toHaveBeenCalledWith(expect.any(Error));
     });
 
+    it('renders as hosted paypal payment method in Adyen v1', () => {
+        let method: PaymentMethod;
+
+        method = {
+            ...getPaymentMethod(),
+            id: 'paypal',
+            gateway: PaymentMethodId.Adyen,
+            type: PaymentMethodProviderType.Hosted,
+        };
+
+        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+
+        expect(container.find(HostedPaymentMethod).props())
+            .toEqual(expect.objectContaining({
+                deinitializePayment: expect.any(Function),
+                initializePayment: expect.any(Function),
+                method,
+            }));
+    });
+
     describe('when using hosted / offsite payment', () => {
         let method: PaymentMethod;
 

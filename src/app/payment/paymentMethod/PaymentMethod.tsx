@@ -119,7 +119,8 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
         return <PaypalExpressPaymentMethod { ...props } />;
     }
 
-    if (method.id === PaymentMethodId.PaypalPaymentsPro) {
+    if (method.type !== PaymentMethodProviderType.Hosted &&
+        method.id === PaymentMethodId.PaypalPaymentsPro) {
         return <PaypalPaymentsProPaymentMethod { ...props } />;
     }
 
