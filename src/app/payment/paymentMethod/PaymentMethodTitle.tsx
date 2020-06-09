@@ -1,5 +1,6 @@
 import { LanguageService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { number } from 'card-validator';
+import DOMPurify from 'dompurify';
 import { compact } from 'lodash';
 import React, { memo, Fragment, FunctionComponent } from 'react';
 
@@ -85,6 +86,10 @@ function getPaymentMethodTitle(
                 logoUrl: cdnPath('/img/payment-providers/paypalpaymentsprouk.png'),
                 titleText: '',
             },
+            [PaymentMethodId.Sezzle]: {
+                logoUrl: cdnPath('/img/payment-providers/sezzle-checkout-header.png'),
+                titleText: language.translate('payment.sezzle_display_name_text', { url: 'https://sezzle.com/merchants'}),
+            },
             [PaymentMethodId.Zip]: {
                 logoUrl: cdnPath('/img/payment-providers/zip.png'),
                 titleText: language.translate('payment.zip_display_name_text'),
@@ -156,10 +161,11 @@ const PaymentMethodTitle: FunctionComponent<PaymentMethodTitleProps & WithLangua
 
             { titleText && <span
                 className="paymentProviderHeader-name"
+                dangerouslySetInnerHTML={ {
+                    __html: DOMPurify.sanitize(titleText, { ADD_ATTR: ['target'] }),
+                } }
                 data-test="payment-method-name"
-            >
-                { titleText }
-            </span> }
+            /> }
 
             <div className="paymentProviderHeader-cc">
                 <CreditCardIconList
