@@ -236,7 +236,7 @@
             "account_instrument_new_shipping_address": "<strong>We noticed this is a new shipping address.</strong><p>For security reasons, you will need to re-link your PayPal account when shipping to an address for the first time or if the shipping address was edited recently.</p>",
             "instrument_trusted_shipping_address_text": "This additional security step is applied to your card when shipping to an address for the first time or if the shipping address was edited recently.",
             "instrument_trusted_shipping_address_title_text": "Please re-enter your card number to authorize this transaction.",
-            "sezzle_display_name_text": "Pay Later. 0% Interest. <a href=\"{url}\" target=\"_blank\">Learn more</a>",
+            "sezzle_display_name_text": "Pay Later. 0% Interest.",
             "vco_name_text": "Visa Checkout",
             "visa_checkout_continue_action": "Continue with Visa Checkout",
             "zip_continue_action": "Continue with Zip",
