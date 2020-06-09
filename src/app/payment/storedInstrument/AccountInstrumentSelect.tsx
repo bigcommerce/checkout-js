@@ -28,7 +28,7 @@ class AccountInstrumentSelect extends PureComponent<AccountInstrumentSelectProps
         // FIXME: Used setTimeout here because setFieldValue call doesnot set value if called before formik is properly mounted.
         //        This ensures that update Field value is called after formik has mounted.
         // See GitHub issue: https://github.com/jaredpalmer/formik/issues/930
-        setTimeout(() => this.updateFieldValue(selectedInstrumentId));
+        setTimeout(() => this.updateFieldValue(selectedInstrumentId), 800);
     }
 
     componentDidUpdate(prevProps: Readonly<AccountInstrumentSelectProps>) {
