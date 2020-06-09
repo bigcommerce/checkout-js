@@ -12,7 +12,7 @@ import LoginForm from './LoginForm';
 
 export interface CustomerProps {
     viewType: CustomerViewType;
-    isEmbedded: boolean;
+    isEmbedded?: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void;
     onChangeViewType?(viewType: CustomerViewType): void;
     onContinueAsGuest?(): void;
