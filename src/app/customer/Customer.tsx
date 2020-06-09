@@ -12,6 +12,7 @@ import LoginForm from './LoginForm';
 
 export interface CustomerProps {
     viewType: CustomerViewType;
+    isEmbedded?: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void;
     onChangeViewType?(viewType: CustomerViewType): void;
     onContinueAsGuest?(): void;
@@ -161,6 +162,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
     private renderLoginForm(): ReactNode {
         const {
             createAccountUrl,
+            isEmbedded,
             email,
             forgotPasswordUrl,
             isSignInEmailEnabled,
@@ -179,7 +181,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                 email={ this.draftEmail || email }
                 forgotPasswordUrl={ forgotPasswordUrl }
                 isSendingSignInEmail={ isSendingSignInEmail }
-                isSignInEmailEnabled={ isSignInEmailEnabled }
+                isSignInEmailEnabled={ isSignInEmailEnabled && !isEmbedded }
                 isSigningIn={ isSigningIn }
                 onCancel={ this.handleCancelSignIn }
                 onChangeEmail={ this.handleChangeEmail }

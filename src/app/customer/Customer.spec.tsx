@@ -383,6 +383,21 @@ describe('Customer', () => {
                 .toEqual(false);
         });
 
+        it('does not render sign-in email link when is embedded checkout', () => {
+            const component = mount(
+                <CustomerTest
+                    isEmbedded={ true }
+                    isSignInEmailEnabled={ true }
+                    viewType={ CustomerViewType.Login }
+                />);
+
+            expect(component.find(EmailLoginForm).exists())
+                .toEqual(false);
+
+            expect(component.find('[data-test="customer-signin-link"]').exists())
+                .toEqual(false);
+        });
+
         it('passes data to login form', () => {
             const component = mount(
                 <CustomerTest viewType={ CustomerViewType.Login } />

@@ -101,7 +101,7 @@
             "create_account_text": "Create an account for a faster checkout in the future",
             "create_account_to_continue_text": "Don’t have an account? <a href=\"{url}\" target=\"_blank\">Create an account</a> to continue.",
             "guest_could_login": "Looks like you have an account. Sign in with {email} for a faster checkout.",
-            "guest_must_login": "Looks like you have an account. Please sign in to proceed with {email}, or cancel to use a different email.",
+            "guest_must_login": "Looks like you have an account. Please sign in to proceed with {email}, or use another email.",
             "guest_temporary_disabled": "Guest checkout is temporarily disabled. Please sign in or <a href=\"{url}\" target=\"_blank\">create an account</a> to continue.",
             "customer_heading": "Customer",
             "email_invalid_error": "Email address must be valid",
