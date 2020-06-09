@@ -275,6 +275,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 <LazyContainer>
                     <Customer
                         checkEmbeddedSupport={ this.checkEmbeddedSupport }
+                        isEmbedded={ isEmbedded() }
                         onChangeViewType={ this.handleChangeCustomerViewType }
                         onContinueAsGuest={ this.navigateToNextIncompleteStep }
                         onContinueAsGuestError={ this.handleError }
