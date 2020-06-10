@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.52.3](https://github.com/bigcommerce/checkout-js/compare/v1.52.2...v1.52.3) (2020-06-10)
+
+
+### Bug Fixes
+
+* **customer:** CHECKOUT-4901 Do not render passwordless link for embedded checkout ([2bafb5d](https://github.com/bigcommerce/checkout-js/commit/2bafb5d))
+* **customer:** CHECKOUT-4928 Fix enforced login copy ([3e2aa2b](https://github.com/bigcommerce/checkout-js/commit/3e2aa2b))
+* **payment:** CHECKOUT-4926 Assign unique IDs to hosted form field containers ([46f6018](https://github.com/bigcommerce/checkout-js/commit/46f6018))
+* **payment:** INT-2595 Removed credit card fields in Adyen v1 using Paypal ([7caae80](https://github.com/bigcommerce/checkout-js/commit/7caae80))
+
 ### [1.52.2](https://github.com/bigcommerce/checkout-js/compare/v1.52.1...v1.52.2) (2020-06-05)
 
 
