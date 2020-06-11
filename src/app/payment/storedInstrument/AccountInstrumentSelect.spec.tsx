@@ -244,7 +244,7 @@ describe('AccountInstrumentSelect', () => {
         expect(submit).toHaveBeenCalledWith({ instrumentId: '' }, expect.anything());
     });
 
-    it('shows list of instruments when clicked and is a bank instrument', () => {
+    it('shows list of instruments when clicked and is an account instrument', () => {
         defaultProps.instruments = getInstruments().filter(isBankAccountInstrument);
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
@@ -273,10 +273,10 @@ describe('AccountInstrumentSelect', () => {
             .toEqual(true);
 
         expect(component.find('[data-test="instrument-select-option"]').at(0).text())
-            .toContain('Iban ending in: ABCIssuer: DEF');
+            .toContain('Account number ending in: ABCIssuer: DEF');
     });
 
-    it('notifies parent when instrument is selected and is a bank instrument', () => {
+    it('notifies parent when instrument is selected and is an account instrument', () => {
         defaultProps.instruments = getInstruments().filter(isBankAccountInstrument);
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>

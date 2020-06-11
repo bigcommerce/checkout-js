@@ -250,7 +250,7 @@ const BankInstrumentMenuItem: FunctionComponent<AccountInstrumentMenuItemProps> 
       onClick,
 }) => {
     const issuerName = `Issuer: ${instrument.issuer}`;
-    const maskIban = `Iban ending in: ${instrument.iban}`;
+    const accountNumber = `Account number ending in: ${instrument.accountNumber}`;
 
     return (
         <button
@@ -265,7 +265,7 @@ const BankInstrumentMenuItem: FunctionComponent<AccountInstrumentMenuItemProps> 
                     // abstract these icons in a similar way we did for credit cards.
                 }
                 <div className="instrumentSelect-card">
-                    { maskIban }
+                    { accountNumber }
                 </div>
                 <div className="instrumentSelect-issuer">
                     { issuerName }

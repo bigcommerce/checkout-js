@@ -49,7 +49,7 @@ export function getInstruments(): PaymentInstrument[] {
         {
             bigpayToken: '12341234',
             provider: 'adyen',
-            iban: 'ABC',
+            accountNumber: 'ABC',
             issuer: 'DEF',
             externalId: 'test@external-id-3.com',
             trustedShippingAddress: false,
@@ -60,7 +60,7 @@ export function getInstruments(): PaymentInstrument[] {
         {
             bigpayToken: '45454545',
             provider: 'adyen',
-            iban: 'GHI',
+            accountNumber: 'GHI',
             issuer: 'JKL',
             externalId: 'test@external-id-4.com',
             trustedShippingAddress: false,
