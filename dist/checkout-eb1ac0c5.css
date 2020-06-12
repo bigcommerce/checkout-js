@@ -4650,6 +4650,7 @@ h6 a:hover {
   margin-right: 0; }
 
 .instrumentModal-instrumentAccountExternalId,
+.instrumentModal-instrumentAccountNumber,
 .instrumentModal-instrumentCardType {
   margin-left: 0.75rem; }
 
@@ -5278,4 +5279,4 @@ body.klarna-payments-fso-open {
     font-weight: normal; }
 
 
-/*# sourceMappingURL=checkout-e07c359c.css.map*/
+/*# sourceMappingURL=checkout-eb1ac0c5.css.map*/
