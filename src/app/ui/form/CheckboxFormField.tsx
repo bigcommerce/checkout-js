@@ -8,6 +8,7 @@ import FormFieldError from './FormFieldError';
 
 export interface CheckboxFormFieldProps {
     additionalClassName?: string;
+    disabled?: boolean;
     name: string;
     id?: string;
     labelContent: ReactNode;
@@ -16,6 +17,7 @@ export interface CheckboxFormFieldProps {
 
 const CheckboxFormField: FunctionComponent<CheckboxFormFieldProps> = ({
     additionalClassName,
+    disabled = false,
     labelContent,
     onChange,
     name,
@@ -26,6 +28,7 @@ const CheckboxFormField: FunctionComponent<CheckboxFormFieldProps> = ({
             { <CheckboxInput
                 { ...field }
                 checked={ !!field.value }
+                disabled={ disabled }
                 id={ id || field.name }
                 label={ labelContent }
             /> }
@@ -35,11 +38,7 @@ const CheckboxFormField: FunctionComponent<CheckboxFormFieldProps> = ({
                 testId={ `${kebabCase(name)}-field-error-message` }
             />
         </Fragment>
-    ), [
-        id,
-        labelContent,
-        name,
-    ]);
+    ), [disabled, id, labelContent, name]);
 
     return <BasicFormField
         additionalClassName={ additionalClassName }

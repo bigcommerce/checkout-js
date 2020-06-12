@@ -88,4 +88,42 @@ describe('CreditCardFieldset', () => {
         expect(component.find('input[name="ccCustomerCode"]').exists())
             .toEqual(false);
     });
+
+    it('shows "save card" and "make default" inputs when configured', () => {
+        const component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <Formik
+                    initialValues={ initialValues }
+                    onSubmit={ noop }
+                >
+                    <CreditCardFieldset shouldShowSaveCardField={ true } shouldShowSetAsDefault={ true } />
+                </Formik>
+            </LocaleContext.Provider>
+        );
+
+        expect(component.find('input[name="shouldSaveInstrument"]').exists())
+            .toBe(true);
+
+        expect(component.find('input[name="shouldSetAsDefaultInstrument"]').exists())
+            .toBe(true);
+    });
+
+    it('does not show the "save card" and "make default" inputs by default', () => {
+        const component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <Formik
+                    initialValues={ initialValues }
+                    onSubmit={ noop }
+                >
+                    <CreditCardFieldset />
+                </Formik>
+            </LocaleContext.Provider>
+        );
+
+        expect(component.find('input[name="shouldSaveInstrument"]').exists())
+            .toBe(false);
+
+        expect(component.find('input[name="shouldSetAsDefaultInstrument"]').exists())
+            .toBe(false);
+    });
 });

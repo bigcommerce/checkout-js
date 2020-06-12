@@ -12,7 +12,6 @@ import { getCustomer } from '../../customer/customers.mock';
 import { TranslatedString } from '../../locale';
 import { getConsignment } from '../../shipping/consignment.mock';
 import { LoadingOverlay } from '../../ui/loading';
-import { CreditCardStorageField } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
 import * as storedInstrumentModule from '../storedInstrument';
 import { getInstruments } from '../storedInstrument/instruments.mock';
@@ -302,6 +301,25 @@ describe('HostedWidgetPaymentMethod', () => {
                 .toHaveLength(1);
         });
 
+        it('hides the "make default" input when an already default stored instrument is selected', () => {
+            const container = mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
+
+            expect(container.find('input[name="shouldSetAsDefaultInstrument"]').exists()).toBe(false);
+        });
+
+        it('shows the "make default" input when a non-default stored instrument is selected', () => {
+            const container = mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
+            const cardInstrumentFieldsetComponent = container.find(storedInstrumentModule.CardInstrumentFieldset);
+
+            cardInstrumentFieldsetComponent.prop('onSelectInstrument')(getInstruments()[1].bigpayToken);
+
+            container.update();
+
+            expect(container.find('input[name="shouldSaveInstrument"]').exists()).toBe(false);
+
+            expect(container.find('input[name="shouldSetAsDefaultInstrument"]').exists()).toBe(true);
+        });
+
         it('uses PaymentMethod to retrieve instruments', () => {
             mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
 
@@ -309,19 +327,19 @@ describe('HostedWidgetPaymentMethod', () => {
                 .toHaveBeenCalledWith(defaultProps.method);
         });
 
-        it('shows hosted widget and save credit card form when there are no stored instruments', () => {
+        it('shows the hosted widget with "save credit card" when there are no stored instruments', () => {
             jest.spyOn(checkoutState.data, 'getInstruments')
                 .mockReturnValue([]);
 
             const container = mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
             const hostedWidgetComponent = container.find('#widget-container');
-            const creditCardStorageFieldComponent = container.find(CreditCardStorageField);
 
             expect(hostedWidgetComponent)
                 .toHaveLength(1);
 
-            expect(creditCardStorageFieldComponent)
-                .toHaveLength(1);
+            expect(container.find('input[name="shouldSaveInstrument"]').exists()).toBe(true);
+
+            expect(container.find('input[name="shouldSetAsDefaultInstrument"]').exists()).toBe(false);
         });
 
         it('shows save account checkbox when has isAccountInstrument prop', () => {

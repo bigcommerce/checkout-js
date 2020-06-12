@@ -60,4 +60,22 @@ describe('HostedCreditCardValidation', () => {
         expect(component.find(HostedCreditCardCodeField).length)
             .toEqual(0);
     });
+
+    it('shows the "make default" input if configured', () => {
+        const component = mount(
+            <HostedCreditCardValidationTest cardNumberId="cardNumber" showSetCardAsDefault={ true } />
+        );
+
+        expect(component.find('input[name="shouldSetAsDefaultInstrument"]').exists())
+            .toBe(true);
+    });
+
+    it('hides the "make default" input by default', () => {
+        const component = mount(
+            <HostedCreditCardValidationTest cardNumberId="cardNumber" />
+        );
+
+        expect(component.find('input[name="shouldSetAsDefaultInstrument"]').exists())
+            .toBe(false);
+    });
 });

@@ -119,9 +119,10 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
         });
     }, [initializePayment, component, cardVerificationContainerId, containerId, additionalActionContainerId, threeDS2ContainerId, adyenOptions, onBeforeLoad, onComplete, onLoad]);
 
-    const validateInstrument = (shouldShowNumberField: boolean) => {
+    const validateInstrument = (shouldShowNumberField: boolean, shouldShowMakeDefaultOption: boolean) => {
         return <AdyenV2CardValidation
             paymentMethodType={ method.method }
+            shouldShowMakeDefaultOption={ shouldShowMakeDefaultOption }
             shouldShowNumberField={ shouldShowNumberField }
             verificationFieldsContainerId={ cardVerificationContainerId }
         />;

@@ -237,6 +237,7 @@ describe('PaymentForm', () => {
                 ccExpiry: '10 / 22',
                 paymentProviderRadio: defaultProps.defaultMethodId,
                 shouldSaveInstrument: false,
+                shouldSetAsDefaultInstrument: false,
                 terms: false,
             });
     });

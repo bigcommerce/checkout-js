@@ -5,9 +5,10 @@ import { CheckboxFormField } from '../../ui/form';
 
 export interface AccountInstrumentStorageFieldProps {
     name: string;
+    onChange?(isChecked: boolean): void;
 }
 
-const AccountInstrumentStorageField: FunctionComponent<AccountInstrumentStorageFieldProps> = ({ name }) => {
+const AccountInstrumentStorageField: FunctionComponent<AccountInstrumentStorageFieldProps> = ({ name, onChange }) => {
     const labelContent = useMemo(() => (
         <TranslatedString id="payment.account_instrument_save_payment_method_label" />
     ), []);
@@ -16,6 +17,7 @@ const AccountInstrumentStorageField: FunctionComponent<AccountInstrumentStorageF
         additionalClassName="form-field--saveInstrument"
         labelContent={ labelContent }
         name={ name }
+        onChange={ onChange }
     />;
 };
 

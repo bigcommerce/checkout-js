@@ -1,4 +1,4 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService, StoreConfig } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, CheckoutSelectors, CheckoutService, PayPalInstrument, StoreConfig } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -9,7 +9,6 @@ import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
-import { CheckboxFormField } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
 import { getPaymentMethod } from '../payment-methods.mock';
 import * as storedInstrumentModule from '../storedInstrument';
@@ -126,6 +125,13 @@ describe('HostedPaymentMethod', () => {
             .toHaveLength(0);
     });
 
+    it('hides the "make default" input if the stored instrument feature is not available', () => {
+        const container = mount(<HostedPaymentMethodTest { ...defaultProps } />);
+
+        expect(container.find('input[name="shouldSetAsDefaultInstrument"]').exists())
+            .toBe(false);
+    });
+
     describe('if stored instrument feature is available', () => {
         beforeEach(() => {
             jest.spyOn(storedInstrumentModule, 'isInstrumentFeatureAvailable')
@@ -168,6 +174,58 @@ describe('HostedPaymentMethod', () => {
                 .toHaveLength(1);
         });
 
+        it('hides the "make default" input when an already default stored instrument is selected', () => {
+            jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(
+                [{ bigpayToken: '31415',
+                provider: 'authorizenet',
+                externalId: 'test@external-id.com',
+                trustedShippingAddress: true,
+                defaultInstrument: true,
+                method: 'paypal',
+                type: 'account' }]
+            );
+
+            const container = mount(<HostedPaymentMethodTest { ...defaultProps } />);
+
+            expect(container.find('input[name="shouldSetAsDefaultInstrument"]').exists())
+                .toBe(false);
+        });
+
+        it('shows the "make default" input when a non-default instrument is selected', () => {
+            const mockInstruments: PayPalInstrument[] = [
+                {
+                    bigpayToken: '31415',
+                    provider: 'paypal',
+                    externalId: 'test@external-id.com',
+                    trustedShippingAddress: true,
+                    defaultInstrument: true,
+                    method: 'paypal',
+                    type: 'account',
+                },
+                {
+                    bigpayToken: '12345',
+                    provider: 'paypal',
+                    externalId: 'test@external-id.com',
+                    trustedShippingAddress: true,
+                    defaultInstrument: false,
+                    method: 'paypal',
+                    type: 'account',
+                },
+              ];
+            jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(mockInstruments);
+
+            const container = mount(<HostedPaymentMethodTest { ...defaultProps } />);
+
+            const cardInstrumentFieldsetComponent = container.find(storedInstrumentModule.AccountInstrumentFieldset);
+
+            cardInstrumentFieldsetComponent.prop('onSelectInstrument')(mockInstruments[1].bigpayToken);
+
+            container.update();
+
+            expect(container.find('input[name="shouldSetAsDefaultInstrument"]').exists())
+                .toBe(true);
+        });
+
         it('does not show instruments fieldset when there are no stored instruments', () => {
             jest.spyOn(checkoutState.data, 'getInstruments')
                 .mockReturnValue([]);
@@ -188,17 +246,17 @@ describe('HostedPaymentMethod', () => {
                 .toHaveLength(0);
         });
 
-        it('shows save account checkbox when there are no stored instruments', () => {
+        it('shows the "save account instrument" input when there are no stored instruments', () => {
             jest.spyOn(checkoutState.data, 'getInstruments')
                 .mockReturnValue([]);
 
             const container = mount(<HostedPaymentMethodTest { ...defaultProps } />);
-            const component = container.find(CheckboxFormField);
 
-            expect(component)
-                .toHaveLength(1);
-            expect(component.prop('name'))
-                .toEqual('shouldSaveInstrument');
+            expect(container.find('input[name="shouldSaveInstrument"]').exists())
+                .toBe(true);
+
+            expect(container.find('input[name="shouldSetAsDefaultInstrument"]').exists())
+                .toBe(false);
         });
 
         it('uses PaymentMethod to retrieve instruments', () => {

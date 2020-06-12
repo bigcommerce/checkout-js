@@ -3,8 +3,6 @@ import { Field, Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { CreditCardStorageField } from '../creditCard';
-
 import HostedCreditCardCodeField from './HostedCreditCardCodeField';
 import HostedCreditCardExpiryField from './HostedCreditCardExpiryField';
 import HostedCreditCardFieldset, { HostedCreditCardFieldsetProps } from './HostedCreditCardFieldset';
@@ -59,16 +57,31 @@ describe('HostedCreditCardFieldset', () => {
             .toEqual(1);
     });
 
-    it('renders with "save card" checkbox if configured', () => {
-        const component = mount(
+    it('shows the "save card" and "make default" inputs if configured', () => {
+        const container = mount(
             <HostedCreditCardFieldsetTest
                 { ...defaultProps }
                 shouldShowSaveCardField
             />
         );
 
-        expect(component.find(CreditCardStorageField).length)
-            .toEqual(1);
+        expect(container.find('input[name="shouldSaveInstrument"]').exists())
+            .toBe(true);
+
+        expect(container.find('input[name="shouldSetAsDefaultInstrument"]').exists())
+            .toBe(true);
+    });
+
+    it('does not show the "save card" and "make default" inputs by default', () => {
+        const container = mount(
+            <HostedCreditCardFieldsetTest { ...defaultProps } />
+        );
+
+        expect(container.find('input[name="shouldSaveInstrument"]').exists())
+            .toBe(false);
+
+        expect(container.find('input[name="shouldSetAsDefaultInstrument"]').exists())
+            .toBe(false);
     });
 
     it('renders additional fields if provided', () => {

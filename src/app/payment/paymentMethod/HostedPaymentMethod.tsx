@@ -6,12 +6,13 @@ import React, { Component, ReactNode } from 'react';
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { MapToProps } from '../../common/hoc';
-import { withLanguage, TranslatedString, WithLanguageProps } from '../../locale';
-import { CheckboxFormField } from '../../ui/form';
+import { withLanguage, WithLanguageProps } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
 import { isAccountInstrument, isInstrumentFeatureAvailable, AccountInstrumentFieldset } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
+
+import StoreInstrumentFieldset from './StoreInstrumentFieldset';
 
 export interface HostedPaymentMethodProps {
     description?: ReactNode;
@@ -104,8 +105,11 @@ class HostedPaymentMethod extends Component<
         } = this.state;
 
         const isLoading = isInitializing || isLoadingInstruments;
-        const shouldShowInstrumentFieldset = isInstrumentFeatureAvailableProp && (instruments.length > 0 || isNewAddress);
+        const hasSavedInstruments = instruments.length > 0;
+        const shouldShowInstrumentFieldset = isInstrumentFeatureAvailableProp && (hasSavedInstruments || isNewAddress);
         const shouldShowSaveInstrument = isInstrumentFeatureAvailableProp && !selectedInstrument;
+        const selectedInstrumentIsDefault = selectedInstrument && selectedInstrument === this.getDefaultInstrument();
+        const shouldShowMakeDefault = isInstrumentFeatureAvailableProp && hasSavedInstruments && !selectedInstrumentIsDefault;
 
         if (!description && !isInstrumentFeatureAvailableProp) {
             return null;
@@ -126,11 +130,7 @@ class HostedPaymentMethod extends Component<
                         selectedInstrument={ selectedInstrument }
                     /> }
 
-                    { shouldShowSaveInstrument && <CheckboxFormField
-                        additionalClassName="form-field--saveInstrument"
-                        labelContent={ <TranslatedString id="payment.account_instrument_save_payment_method_label" /> }
-                        name="shouldSaveInstrument"
-                    /> }
+                    <StoreInstrumentFieldset isAccountInstrument={ true } showSave={ shouldShowSaveInstrument } showSetAsDefault={ shouldShowMakeDefault } />
                 </div>
             </LoadingOverlay>
         );

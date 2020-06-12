@@ -59,6 +59,7 @@ export interface PaymentFormCommonValues {
 
 export interface HostedWidgetPaymentMethodValues {
     shouldSaveInstrument: boolean;
+    shouldSetAsDefaultInstrument: boolean;
 }
 
 const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormValues> & WithLanguageProps> = ({
@@ -175,6 +176,7 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
             instrumentId: '',
             paymentProviderRadio: getUniquePaymentMethodId(method.id, method.gateway),
             shouldSaveInstrument: false,
+            shouldSetAsDefaultInstrument: false,
         });
 
         setSubmitted(false);
@@ -222,6 +224,7 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
         paymentProviderRadio: getUniquePaymentMethodId(defaultMethodId, defaultGatewayId),
         instrumentId: '',
         shouldSaveInstrument: false,
+        shouldSetAsDefaultInstrument: false,
         terms: false,
         hostedForm: {
             cardType: '',

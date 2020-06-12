@@ -2,17 +2,20 @@ import classNames from 'classnames';
 import React from 'react';
 
 import { TranslatedString } from '../../locale';
+import { CreditCardStoreAsDefaultField } from '../creditCard';
 
 export interface AdyenV2CardValidationProps {
     verificationFieldsContainerId?: string;
     shouldShowNumberField: boolean;
     paymentMethodType: string;
+    shouldShowMakeDefaultOption?: boolean;
 }
 
 const AdyenV2CardValidation: React.FunctionComponent<AdyenV2CardValidationProps> = ({
     verificationFieldsContainerId,
     shouldShowNumberField,
     paymentMethodType,
+    shouldShowMakeDefaultOption,
 }) => (
     <div>
         { shouldShowNumberField && <p>
@@ -67,8 +70,13 @@ const AdyenV2CardValidation: React.FunctionComponent<AdyenV2CardValidationProps>
                     data-cse="encryptedExpiryDate"
                     id="encryptedExpiryDate"
                 />
-            </div> }
+                </div> }
         </div>
+        { shouldShowMakeDefaultOption && <div className="form-field">
+            <CreditCardStoreAsDefaultField
+                name="shouldSetAsDefaultInstrument"
+            />
+        </div> }
     </div>
 );
 

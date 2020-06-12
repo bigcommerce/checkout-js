@@ -79,4 +79,37 @@ describe('CreditCardValidation', () => {
         expect(component.find(CreditCardCodeField).length)
             .toEqual(0);
     });
+
+    it('shows the "make default" input if configured', () => {
+        const component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <Formik initialValues={ {} } onSubmit={ noop }>
+                    <CreditCardValidation
+                        shouldShowCardCodeField={ true }
+                        shouldShowNumberField={ true }
+                        shouldShowSetCardAsDefault={ true }
+                    />
+                </Formik>
+            </LocaleContext.Provider>
+        );
+
+        expect(component.find('input[name="shouldSetAsDefaultInstrument"]').exists())
+            .toBe(true);
+    });
+
+    it('hides the "make default" input by default', () => {
+        const component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <Formik initialValues={ {} } onSubmit={ noop }>
+                    <CreditCardValidation
+                        shouldShowCardCodeField={ true }
+                        shouldShowNumberField={ true }
+                    />
+                </Formik>
+            </LocaleContext.Provider>
+        );
+
+        expect(component.find('input[name="shouldSetAsDefaultInstrument"]').exists())
+            .toBe(false);
+    });
 });

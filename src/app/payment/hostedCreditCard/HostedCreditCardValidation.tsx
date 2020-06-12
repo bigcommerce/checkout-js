@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
+import { CreditCardStoreAsDefaultField } from '../creditCard';
 
 import HostedCreditCardCodeField from './HostedCreditCardCodeField';
 import HostedCreditCardNumberField from './HostedCreditCardNumberField';
@@ -9,6 +10,7 @@ export interface HostedCreditCardValidationProps {
     cardCodeId?: string;
     cardNumberId?: string;
     focusedFieldType?: string;
+    showSetCardAsDefault?: boolean;
 }
 
 export interface HostedCreditCardValidationValues {
@@ -24,6 +26,7 @@ const HostedCreditCardValidation: FunctionComponent<HostedCreditCardValidationPr
     cardCodeId,
     cardNumberId,
     focusedFieldType,
+    showSetCardAsDefault,
 }) => (<>
     { cardNumberId && <p>
         <strong>
@@ -47,6 +50,8 @@ const HostedCreditCardValidation: FunctionComponent<HostedCreditCardValidationPr
             id={ cardCodeId }
             name="hostedForm.errors.cardCodeVerification"
         /> }
+
+        { showSetCardAsDefault && <CreditCardStoreAsDefaultField name="shouldSetAsDefaultInstrument" /> }
     </div>
 </>);
 

@@ -8,6 +8,7 @@ describe('mapToOrderRequestBody()', () => {
             ccName: 'Big Shopper',
             ccNumber: '4111 1111 1111 1111',
             shouldSaveInstrument: true,
+            shouldSetAsDefaultInstrument: true,
             paymentProviderRadio: 'authorizenet',
         }, true);
 
@@ -25,6 +26,7 @@ describe('mapToOrderRequestBody()', () => {
                         ccName: 'Big Shopper',
                         ccNumber: '4111111111111111',
                         shouldSaveInstrument: true,
+                        shouldSetAsDefaultInstrument: true,
                     },
                 },
             });

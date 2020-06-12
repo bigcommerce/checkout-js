@@ -161,10 +161,12 @@ class CreditCardPaymentMethod extends Component<
         const { isAddingNewCard } = this.state;
 
         const selectedInstrument = this.getSelectedInstrument();
+        const selectedInstrumentIsDefault = selectedInstrument && selectedInstrument.bigpayToken === this.getDefaultInstrumentId();
         const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
         const isLoading = isInitializing || isLoadingInstruments;
         const shouldShowNumberField = selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument) : false;
         const shouldShowCardCodeField = selectedInstrument ? isInstrumentCardCodeRequiredProp(selectedInstrument, method) : false;
+        const shouldShowSetAsDefault = isInstrumentFeatureAvailableProp && instruments.length > 0 && !selectedInstrumentIsDefault;
 
         return (
             <LoadingOverlay
@@ -182,6 +184,7 @@ class CreditCardPaymentMethod extends Component<
                             <CreditCardValidation
                                 shouldShowCardCodeField={ shouldShowCardCodeField }
                                 shouldShowNumberField={ shouldShowNumberField }
+                                shouldShowSetCardAsDefault={ shouldShowSetAsDefault }
                             /> }
                     /> }
 
@@ -189,6 +192,7 @@ class CreditCardPaymentMethod extends Component<
                         shouldShowCardCodeField={ method.config.cardCode || method.config.cardCode === null }
                         shouldShowCustomerCodeField={ method.config.requireCustomerCode }
                         shouldShowSaveCardField={ isInstrumentFeatureAvailableProp }
+                        shouldShowSetAsDefault={ shouldShowSetAsDefault }
                     /> }
 
                     { shouldShowCreditCardFieldset && cardFieldset }

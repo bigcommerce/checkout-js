@@ -10,12 +10,12 @@ import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { MapToProps } from '../../common/hoc';
 import { TranslatedString } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
-import { CreditCardStorageField } from '../creditCard';
-import { isBankAccountInstrument, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, AccountInstrumentFieldset, AccountInstrumentStorageField, CardInstrumentFieldset, CreditCardValidation } from '../storedInstrument';
+import { isBankAccountInstrument, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, AccountInstrumentFieldset, CardInstrumentFieldset, CreditCardValidation } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
 
 import SignOutLink from './SignOutLink';
+import StoreInstrumentFieldset from './StoreInstrumentFieldset';
 
 export interface HostedWidgetPaymentMethodProps {
     additionalContainerClassName?: string;
@@ -33,7 +33,7 @@ export interface HostedWidgetPaymentMethodProps {
     shouldHideInstrumentExpiryDate?: boolean;
     shouldShowDescriptor?: boolean;
     shouldShowEditButton?: boolean;
-    validateInstrument?(shouldShowNumberField: boolean): React.ReactNode;
+    validateInstrument?(shouldShowNumberField: boolean, shouldShowMakeDefaultOption: boolean): React.ReactNode;
     deinitializeCustomer?(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
     initializeCustomer?(options: CustomerInitializeOptions): Promise<CheckoutSelectors>;
@@ -212,7 +212,7 @@ class HostedWidgetPaymentMethod extends Component<
                         tabIndex={ -1 }
                     />
 
-                    { shouldShowSaveInstrument && this.renderSaveInstrumentCheckbox() }
+                    { shouldShowSaveInstrument && this.renderStoreInstrumentFieldSet() }
 
                     { this.renderEditButtonIfAvailable() }
 
@@ -233,25 +233,29 @@ class HostedWidgetPaymentMethod extends Component<
             isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredProp,
             method,
             validateInstrument,
+            isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
         } = this.props;
 
-        const { selectedInstrumentId = this.getDefaultInstrumentId() } = this.state;
+        const { selectedInstrumentId = this.getDefaultInstrumentId(), isAddingNewCard } = this.state;
         const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
+        const selectedInstrumentIsDefault = selectedInstrument && selectedInstrument.bigpayToken === this.getDefaultInstrumentId();
         const shouldShowNumberField = selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument as CardInstrument) : false;
         const shouldShowCardCodeField = selectedInstrument ? isInstrumentCardCodeRequiredProp(selectedInstrument as CardInstrument, method) : false;
+        const shouldShowSetCardAsDefault = isInstrumentFeatureAvailableProp && (!isAddingNewCard && !selectedInstrumentIsDefault);
 
         if (hideVerificationFields) {
             return;
         }
 
         if (validateInstrument) {
-            return validateInstrument(shouldShowNumberField);
+            return validateInstrument(shouldShowNumberField, shouldShowSetCardAsDefault);
         }
 
         return (
             <CreditCardValidation
                 shouldShowCardCodeField={ shouldShowCardCodeField }
                 shouldShowNumberField={ shouldShowNumberField }
+                shouldShowSetCardAsDefault={ shouldShowSetCardAsDefault }
             />
         );
     }
@@ -289,14 +293,16 @@ class HostedWidgetPaymentMethod extends Component<
         }
     }
 
-    private renderSaveInstrumentCheckbox() {
-        const { isAccountInstrument } = this.props;
+    private renderStoreInstrumentFieldSet(): ReactNode {
+        const {
+            selectedInstrumentId,
+        } = this.state;
+        const { instruments, isAccountInstrument } = this.props;
 
-        if (isAccountInstrument) {
-            return <AccountInstrumentStorageField name="shouldSaveInstrument" />;
-        }
+        const selectedInstrumentIsDefault = selectedInstrumentId && selectedInstrumentId === this.getDefaultInstrumentId();
+        const shouldShowSetAsDefault = instruments.length > 0 && !selectedInstrumentIsDefault;
 
-        return <CreditCardStorageField name="shouldSaveInstrument" />;
+        return <StoreInstrumentFieldset isAccountInstrument={ Boolean(isAccountInstrument) } showSave={ true } showSetAsDefault={ shouldShowSetAsDefault } />;
     }
 
     private async initializeMethod(): Promise<CheckoutSelectors | void> {
