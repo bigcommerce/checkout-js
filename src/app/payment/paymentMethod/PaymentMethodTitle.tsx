@@ -85,6 +85,10 @@ function getPaymentMethodTitle(
                 logoUrl: cdnPath('/img/payment-providers/paypalpaymentsprouk.png'),
                 titleText: '',
             },
+            [PaymentMethodId.Sezzle]: {
+                logoUrl: cdnPath('/img/payment-providers/sezzle-checkout-header.png'),
+                titleText: language.translate('payment.sezzle_display_name_text'),
+            },
             [PaymentMethodId.Zip]: {
                 logoUrl: cdnPath('/img/payment-providers/zip.png'),
                 titleText: language.translate('payment.zip_display_name_text'),
