@@ -20,6 +20,7 @@ enum PaymentMethodId {
     Klarna = 'klarna',
     Laybuy = 'laybuy',
     Masterpass = 'masterpass',
+    Elavon = 'elavon',
     PaypalExpress = 'paypalexpress',
     PaypalPaymentsPro = 'paypal',
     PaypalCommerce = 'paypalcommerce',

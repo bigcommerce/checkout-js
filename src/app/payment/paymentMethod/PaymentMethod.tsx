@@ -13,6 +13,7 @@ import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod
 import ChasePayPaymentMethod from './ChasePayPaymentMethod';
 import CreditCardPaymentMethod from './CreditCardPaymentMethod';
 import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
+import ElavonPaymentMethod from './ElavonPaymentMethod';
 import GooglePayPaymentMethod from './GooglePayPaymentMethod';
 import HostedPaymentMethod from './HostedPaymentMethod';
 import KlarnaPaymentMethod from './KlarnaPaymentMethod';
@@ -131,6 +132,10 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
 
     if (method.gateway === PaymentMethodId.Barclaycard) {
         return <BarclaycardPaymentMethod { ...props } />;
+    }
+
+    if (method.gateway === PaymentMethodId.Elavon) {
+        return <ElavonPaymentMethod { ...props } />;
     }
 
     if (method.gateway === PaymentMethodId.Afterpay ||
