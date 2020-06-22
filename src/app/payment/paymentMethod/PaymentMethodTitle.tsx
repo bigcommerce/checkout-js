@@ -45,6 +45,10 @@ function getPaymentMethodTitle(
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo.svg'),
                 titleText: '',
             },
+            [PaymentMethodId.PaypalCommerceCredit]: {
+                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_credit_logo.svg'),
+                titleText: '',
+            },
             [PaymentMethodType.VisaCheckout]: {
                 logoUrl: cdnPath('/img/payment-providers/visa-checkout.png'),
                 titleText: '',
