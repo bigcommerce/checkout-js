@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.57.0](https://github.com/bigcommerce/checkout-js/compare/v1.56.0...v1.57.0) (2020-06-22)
+
+
+### Features
+
+* **payment:** PAYPAL-503 Add logo for paypal credit ([8b3514c](https://github.com/bigcommerce/checkout-js/commit/8b3514c))
+
 ## [1.56.0](https://github.com/bigcommerce/checkout-js/compare/v1.55.0...v1.56.0) (2020-06-16)
 
 
