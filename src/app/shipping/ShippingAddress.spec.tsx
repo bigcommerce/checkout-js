@@ -3,6 +3,7 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
+import { StaticAddress } from '../address/';
 import { getFormFields } from '../address/formField.mock';
 import { getCustomer } from '../customer/customers.mock';
 
@@ -11,6 +12,7 @@ import { getShippingAddress } from './shipping-addresses.mock';
 import RemoteShippingAddress from './RemoteShippingAddress';
 import ShippingAddress, { ShippingAddressProps } from './ShippingAddress';
 import ShippingAddressForm from './ShippingAddressForm';
+import StaticAddressEditable from './StaticAddressEditable';
 
 describe('ShippingAddress Component', () => {
     const defaultProps: ShippingAddressProps = {
@@ -76,6 +78,19 @@ describe('ShippingAddress Component', () => {
 
             expect(component.find(RemoteShippingAddress).length).toEqual(0);
         });
+
+        it('does not render StaticAddress if method id is not sent', () => {
+            const component = mount(
+                <Formik
+                    initialValues={ {} }
+                    onSubmit={ noop }
+                >
+                    <ShippingAddress { ...defaultProps } />
+                </Formik>
+            );
+
+            expect(component.find(StaticAddress).length).toEqual(0);
+        });
     });
 
     describe('when method id is provided', () => {
@@ -118,6 +133,19 @@ describe('ShippingAddress Component', () => {
             );
 
             expect(component.find(ShippingAddressForm).length).toEqual(0);
+        });
+
+        it('renders a StaticAddressEditable if methodId is amazon pay', () => {
+            const component = mount(
+                <Formik
+                    initialValues={ {} }
+                    onSubmit={ noop }
+                >
+                    <ShippingAddress { ...defaultProps } methodId="amazonpay" />
+                </Formik>
+            );
+
+            expect(component.find(StaticAddressEditable).length).toEqual(1);
         });
     });
 });

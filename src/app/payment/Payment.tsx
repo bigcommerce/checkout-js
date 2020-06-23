@@ -250,6 +250,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             !selectedMethod ||
             selectedMethod.type === PaymentMethodProviderType.Hosted ||
             selectedMethod.id === PaymentMethodId.Amazon ||
+            selectedMethod.id === PaymentMethodId.AmazonPay ||
             selectedMethod.id === PaymentMethodId.Checkoutcom ||
             selectedMethod.id === PaymentMethodId.Converge ||
             selectedMethod.id === PaymentMethodId.SagePay ||

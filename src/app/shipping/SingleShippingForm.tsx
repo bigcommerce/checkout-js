@@ -112,7 +112,8 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             hasRequestedShippingOptions,
         } = this.state;
 
-        const shouldShowBillingSameAsShipping = methodId !== 'amazon';
+        const PAYMENT_METHOD_VALID = ['amazon', 'amazonpay'];
+        const shouldShowBillingSameAsShipping = !PAYMENT_METHOD_VALID.some(method => method === methodId);
 
         return (
             <Form autoComplete="on">
@@ -127,7 +128,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                         googleMapsApiKey={ googleMapsApiKey }
                         hasRequestedShippingOptions={ hasRequestedShippingOptions }
                         initialize={ initialize }
-                        isLoading={ isResettingAddress }
+                        isLoading={ isLoading || isResettingAddress }
                         methodId={ methodId }
                         onAddressSelect={ this.handleAddressSelect }
                         onFieldChange={ this.handleFieldChange }

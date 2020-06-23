@@ -13,7 +13,7 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale
 
 import { getConsignment } from './consignment.mock';
 import { getShippingAddress } from './shipping-addresses.mock';
-import Shipping, { ShippingProps } from './Shipping';
+import Shipping, { ShippingProps, WithCheckoutShippingProps } from './Shipping';
 import ShippingForm from './ShippingForm';
 
 describe('Shipping Component', () => {
@@ -22,7 +22,7 @@ describe('Shipping Component', () => {
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
     let defaultProps: ShippingProps;
-    let ComponentTest: FunctionComponent<ShippingProps>;
+    let ComponentTest: FunctionComponent<ShippingProps> & Partial<WithCheckoutShippingProps>;
 
     beforeEach(() => {
         localeContext = createLocaleContext(getStoreConfig());
@@ -59,10 +59,10 @@ describe('Shipping Component', () => {
                 },
             } as Cart);
 
-        jest.spyOn(checkoutService.getState().data, 'getShippingAddress')
+        jest.spyOn(checkoutState.data, 'getShippingAddress')
             .mockReturnValue(getShippingAddress());
 
-        jest.spyOn(checkoutService.getState().data, 'getBillingAddress')
+        jest.spyOn(checkoutState.data, 'getBillingAddress')
             .mockReturnValue(undefined);
 
         jest.spyOn(checkoutState.data, 'getConfig')

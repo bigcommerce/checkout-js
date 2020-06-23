@@ -1,4 +1,4 @@
-import { Address, Country, FormField } from '@bigcommerce/checkout-sdk';
+import { Address, CheckoutSelectors, Country, FormField, ShippingInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { isEmpty } from 'lodash';
 import React, { memo, FunctionComponent } from 'react';
 
@@ -14,12 +14,16 @@ export interface StaticAddressProps {
     type?: AddressType;
 }
 
+export interface StaticAddressEditableProps extends StaticAddressProps {
+    initialize?(options: ShippingInitializeOptions): Promise<CheckoutSelectors>;
+}
+
 interface WithCheckoutStaticAddressProps {
     countries?: Country[];
     fields?: FormField[];
 }
 
-const StaticAddress: FunctionComponent<StaticAddressProps & WithCheckoutStaticAddressProps> = ({
+const StaticAddress: FunctionComponent<StaticAddressEditableProps & WithCheckoutStaticAddressProps> = ({
     countries,
     fields,
     address: addressWithoutLocalization,

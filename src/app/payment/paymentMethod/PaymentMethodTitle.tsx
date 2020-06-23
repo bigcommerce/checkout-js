@@ -65,6 +65,10 @@ function getPaymentMethodTitle(
                 logoUrl: cdnPath('/img/payment-providers/amazon-header.png'),
                 titleText: '',
             },
+            [PaymentMethodId.AmazonPay]: {
+                logoUrl: cdnPath('/img/payment-providers/amazon-header.png'),
+                titleText: '',
+            },
             [PaymentMethodId.ChasePay]: {
                 logoUrl: cdnPath('/img/payment-providers/chase-pay.png'),
                 titleText: '',

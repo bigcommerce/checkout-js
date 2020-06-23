@@ -5,8 +5,10 @@ import { find, noop, some } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
+import { preventDefault } from '../../common/dom';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { MapToProps } from '../../common/hoc';
+import { TranslatedString } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
 import { CreditCardStorageField } from '../creditCard';
 import { isBankAccountInstrument, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, AccountInstrumentFieldset, AccountInstrumentStorageField, CardInstrumentFieldset, CreditCardValidation } from '../storedInstrument';
@@ -17,15 +19,20 @@ import SignOutLink from './SignOutLink';
 
 export interface HostedWidgetPaymentMethodProps {
     additionalContainerClassName?: string;
+    buttonId?: string;
     containerId: string;
     hideContentWhenSignedOut?: boolean;
     hideVerificationFields?: boolean;
     isAccountInstrument?: boolean;
+    hideWidget?: boolean;
     isInitializing?: boolean;
     isUsingMultiShipping?: boolean;
     isSignInRequired?: boolean;
     method: PaymentMethod;
+    paymentDescriptor?: string;
     shouldHideInstrumentExpiryDate?: boolean;
+    shouldShowDescriptor?: boolean;
+    shouldShowEditButton?: boolean;
     validateInstrument?(shouldShowNumberField: boolean): React.ReactNode;
     deinitializeCustomer?(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
@@ -141,6 +148,7 @@ class HostedWidgetPaymentMethod extends Component<
             instruments,
             containerId,
             hideContentWhenSignedOut = false,
+            hideWidget = false,
             isInitializing = false,
             isSignedIn = false,
             isSignInRequired = false,
@@ -161,9 +169,9 @@ class HostedWidgetPaymentMethod extends Component<
         const shouldShowInstrumentFieldset = isInstrumentFeatureAvailableProp && instruments.length > 0;
         const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
         const shouldShowSaveInstrument = isInstrumentFeatureAvailableProp && shouldShowCreditCardFieldset;
-        const isLoading = isInitializing || isLoadingInstruments;
+        const isLoading = (isInitializing || isLoadingInstruments) && !hideWidget;
 
-        const selectedAccountInstrument = selectedInstrumentId && selectedInstrument && isBankAccountInstrument(selectedInstrument) ? selectedInstrument : undefined;
+        const selectedAccountInstrument = selectedInstrument && isBankAccountInstrument(selectedInstrument) ? selectedInstrument : undefined;
 
         return (
             <LoadingOverlay
@@ -186,6 +194,8 @@ class HostedWidgetPaymentMethod extends Component<
                     validateInstrument={ this.getValidateInstrument() }
                 /> }
 
+                { this.renderPaymentDescriptorIfAvailable() }
+
                 <div
                     className={ classNames(
                         'widget',
@@ -195,12 +205,14 @@ class HostedWidgetPaymentMethod extends Component<
                     ) }
                     id={ containerId }
                     style={ {
-                        display: (hideContentWhenSignedOut && isSignInRequired && !isSignedIn) || !shouldShowCreditCardFieldset ? 'none' : undefined,
+                        display: (hideContentWhenSignedOut && isSignInRequired && !isSignedIn) || !shouldShowCreditCardFieldset || hideWidget ? 'none' : undefined,
                     } }
                     tabIndex={ -1 }
                 />
 
                 { shouldShowSaveInstrument && this.renderSaveInstrumentCheckbox() }
+
+                { this.renderEditButtonIfAvailable() }
 
                 { isSignedIn && <SignOutLink
                     method={ method }
@@ -239,6 +251,35 @@ class HostedWidgetPaymentMethod extends Component<
                 shouldShowNumberField={ shouldShowNumberField }
             />
         );
+    }
+
+    private renderEditButtonIfAvailable() {
+        const { shouldShowEditButton, buttonId } = this.props;
+        const translatedString = <TranslatedString id="remote.select_different_card_action" />;
+
+        if (shouldShowEditButton) {
+            return (
+                <p>
+                    <a
+                        className={ classNames('stepHeader', 'widget-link-amazonpay') }
+                        id={ buttonId }
+                        onClick={ preventDefault() }
+                    >
+                        { translatedString }
+                    </a>
+                </p>
+            );
+        }
+    }
+
+    private renderPaymentDescriptorIfAvailable() {
+        const { shouldShowDescriptor, paymentDescriptor } = this.props;
+
+        if (shouldShowDescriptor && paymentDescriptor) {
+            return(
+                <div className="payment-descriptor">{ paymentDescriptor }</div>
+            );
+        }
     }
 
     private renderSaveInstrumentCheckbox() {

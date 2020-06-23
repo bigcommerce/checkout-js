@@ -8,6 +8,7 @@ import CheckoutButton from './CheckoutButton';
 // TODO: The API should tell UI which payment method offers its own checkout button
 export const SUPPORTED_METHODS: string[] = [
     'amazon',
+    'amazonpay',
     'braintreevisacheckout',
     'chasepay',
     'masterpass',
