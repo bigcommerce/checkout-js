@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.58.0](https://github.com/bigcommerce/checkout-js/compare/v1.57.0...v1.58.0) (2020-06-24)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-4954 Upgrade script-loader version ([acf7e98](https://github.com/bigcommerce/checkout-js/commit/acf7e98))
+
+
+### Features
+
+* **checkout:** INT-2118 Bump checkout-sdk version to 1.78.0 ([3a47ee6](https://github.com/bigcommerce/checkout-js/commit/3a47ee6))
+* **payment:** INT-2118 adding amazon pay option ([5edac19](https://github.com/bigcommerce/checkout-js/commit/5edac19))
+
 ## [1.57.0](https://github.com/bigcommerce/checkout-js/compare/v1.56.0...v1.57.0) (2020-06-22)
 
 
