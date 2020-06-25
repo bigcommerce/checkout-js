@@ -16,13 +16,20 @@ const LIBRARY_NAME = 'checkout';
 const AUTO_LOADER_ENTRY_NAME = 'auto-loader';
 const LOADER_ENTRY_NAME = 'loader';
 const LOADER_LIBRARY_NAME = 'checkoutLoader';
-const SUPPORTED_BROWSERS = [
-    'last 2 versions',
-    'not ie < 11',
-    'not Baidu > 0',
-    'not QQAndroid > 0',
-    'not Android < 62',
-];
+const BABEL_PRESET_ENV_CONFIG = {
+    corejs: '3',
+    targets: {
+        browsers: [
+            'last 2 versions',
+            'not ie < 11',
+            'not Baidu > 0',
+            'not QQAndroid > 0',
+            'not Android < 62',
+        ],
+    },
+    useBuiltIns: 'usage',
+    modules: false,
+};
 
 const eventEmitter = new EventEmitter();
 
@@ -155,17 +162,28 @@ function appConfig(options, argv) {
                                         cacheDirectory: true,
                                         presets: [
                                             ['@babel/preset-env', {
-                                                corejs: '3',
-                                                targets: {
-                                                    browsers: SUPPORTED_BROWSERS,
-                                                },
+                                                ...BABEL_PRESET_ENV_CONFIG,
                                                 useBuiltIns: 'entry',
-                                                modules: false,
                                             }],
                                         ],
                                     },
                                 },
                             ],
+                        },
+                        {
+                            test: /\.js$/,
+                            loader: 'babel-loader',
+                            include: join(__dirname, 'node_modules'),
+                            exclude: [
+                                /\/node_modules\/core-js\//,
+                                /\/node_modules\/webpack\//,
+                            ],
+                            options: {
+                                presets: [
+                                    ['@babel/preset-env', BABEL_PRESET_ENV_CONFIG],
+                                ],
+                                sourceType: 'unambiguous',
+                            },
                         },
                         {
                             test: /\.scss$/,
@@ -262,14 +280,7 @@ function loaderConfig(options, argv) {
                                     options: {
                                         cacheDirectory: true,
                                         presets: [
-                                            ['@babel/preset-env', {
-                                                corejs: '3',
-                                                targets: {
-                                                    browsers: SUPPORTED_BROWSERS,
-                                                },
-                                                useBuiltIns: 'usage',
-                                                modules: false,
-                                            }],
+                                            ['@babel/preset-env', BABEL_PRESET_ENV_CONFIG],
                                         ],
                                     },
                                 },
@@ -281,6 +292,21 @@ function loaderConfig(options, argv) {
                                     },
                                 },
                             ],
+                        },
+                        {
+                            test: /\.js$/,
+                            loader: 'babel-loader',
+                            include: join(__dirname, 'node_modules'),
+                            exclude: [
+                                /\/node_modules\/core-js\//,
+                                /\/node_modules\/webpack\//,
+                            ],
+                            options: {
+                                presets: [
+                                    ['@babel/preset-env', BABEL_PRESET_ENV_CONFIG],
+                                ],
+                                sourceType: 'unambiguous',
+                            },
                         },
                     ],
                 },
