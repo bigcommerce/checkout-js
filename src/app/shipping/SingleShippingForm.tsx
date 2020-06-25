@@ -128,7 +128,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                         googleMapsApiKey={ googleMapsApiKey }
                         hasRequestedShippingOptions={ hasRequestedShippingOptions }
                         initialize={ initialize }
-                        isLoading={ isLoading || isResettingAddress }
+                        isLoading={ isResettingAddress }
                         methodId={ methodId }
                         onAddressSelect={ this.handleAddressSelect }
                         onFieldChange={ this.handleFieldChange }
