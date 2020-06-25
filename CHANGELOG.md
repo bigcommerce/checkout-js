@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.59.0](https://github.com/bigcommerce/checkout-js/compare/v1.58.0...v1.59.0) (2020-06-25)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-4773 fix IE/EDGE when clicking print button multiple times ([80e977f](https://github.com/bigcommerce/checkout-js/commit/80e977f))
+* **checkout:** CHECKOUT-4954 Transpile dependencies in case they are not compatible with our targeted environments ([4925304](https://github.com/bigcommerce/checkout-js/commit/4925304))
+
+
+### Features
+
+* **payment:** INT-2282 Bump SDK. ([41b57a4](https://github.com/bigcommerce/checkout-js/commit/41b57a4))
+
 ## [1.58.0](https://github.com/bigcommerce/checkout-js/compare/v1.57.0...v1.58.0) (2020-06-24)
 
 
