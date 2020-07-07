@@ -1,11 +1,12 @@
-import { Address, CheckoutSelectors, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import { Address, CheckoutSelectors, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
 
-import { StaticAddress } from '../address/';
+import { AddressFormField, StaticAddress } from '../address/';
 import { preventDefault } from '../common/dom';
 import { TranslatedString } from '../locale';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
+import { Fieldset } from '../ui/form';
 import { LoadingOverlay } from '../ui/loading';
 
 import './StaticAddressEditable.scss';
@@ -13,10 +14,12 @@ import './StaticAddressEditable.scss';
 export interface StaticAddressEditableProps {
     address: Address;
     buttonId: string;
+    formFields: FormField[];
     isLoading: boolean;
     methodId?: string;
     deinitialize(options?: ShippingRequestOptions): Promise<CheckoutSelectors>;
     initialize(options?: ShippingInitializeOptions): Promise<CheckoutSelectors>;
+    onFieldChange(fieldName: string, value: string): void;
     onUnhandledError?(error: Error): void;
 }
 
@@ -53,8 +56,12 @@ class StaticAddressEditable extends PureComponent<StaticAddressEditableProps> {
         const {
             address,
             buttonId,
+            formFields,
             isLoading,
         } = this.props;
+
+        const customFormFields = formFields.filter(({ custom }) => custom);
+        const shouldShowCustomFormFields = customFormFields.length > 0;
 
         return (
             <LoadingOverlay isLoading={ isLoading }>
@@ -77,9 +84,27 @@ class StaticAddressEditable extends PureComponent<StaticAddressEditableProps> {
                         </Button>
                     </div>
                 </div>
+
+                { shouldShowCustomFormFields && <Fieldset id="customFieldset">
+                    {
+                        customFormFields.map(field => (
+                            <AddressFormField
+                                field={ field }
+                                key={ `${field.id}-${field.name}` }
+                                onChange={ this.handleFieldValueChange(field.name) }
+                                parentFieldName="shippingAddress.customFields"
+                            />
+                        ))
+                    }
+                </Fieldset> }
             </LoadingOverlay>
         );
     }
+
+    private handleFieldValueChange: (name: string) => (value: string) => void = name => value => {
+        const { onFieldChange } = this.props;
+        onFieldChange(name, value);
+    };
 }
 
 export default StaticAddressEditable;
