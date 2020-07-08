@@ -32,9 +32,12 @@ describe('LocaleProvider', () => {
 
         expect(component.find(Child).prop('language'))
             .toBeDefined();
+
+        expect(component.find(Child).prop('date'))
+            .toBeDefined();
     });
 
-    it('provides locale context without currency service to child components when config is not available yet', () => {
+    it('provides locale context without currency service and date to child components when config is not available yet', () => {
         jest.spyOn(checkoutService.getState().data, 'getConfig')
             .mockReturnValue(undefined);
 
@@ -52,5 +55,8 @@ describe('LocaleProvider', () => {
 
         expect(component.find(Child).prop('language'))
             .toBeDefined();
+
+        expect(component.find(Child).prop('date'))
+            .not.toBeDefined();
     });
 });

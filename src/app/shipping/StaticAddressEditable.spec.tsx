@@ -6,6 +6,8 @@ import React from 'react';
 import { DynamicFormField, StaticAddress } from '../address/';
 import { getAddress } from '../address/address.mock';
 import { getFormFields } from '../address/formField.mock';
+import { getStoreConfig } from '../config/config.mock';
+import { createLocaleContext, LocaleContext } from '../locale';
 import { Button } from '../ui/button';
 
 import StaticAddressEditable, { StaticAddressEditableProps } from './StaticAddressEditable';
@@ -73,13 +75,16 @@ describe('StaticAddressEditable Component', () => {
     });
 
     it('calls method to set field value on change in custom form field', () => {
+        const localeContext = createLocaleContext(getStoreConfig());
         const component = mount(
-            <Formik
-                initialValues={ initialFormikValues }
-                onSubmit={ noop }
-            >
-                <StaticAddressEditable { ...defaultProps } />
-            </Formik>
+            <LocaleContext.Provider value={ localeContext }>
+                <Formik
+                    initialValues={ initialFormikValues }
+                    onSubmit={ noop }
+                >
+                    <StaticAddressEditable { ...defaultProps } />
+                </Formik>
+            </LocaleContext.Provider>
         );
 
         const inputFieldName = getFormFields()[4].name;

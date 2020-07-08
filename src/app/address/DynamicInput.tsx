@@ -3,6 +3,7 @@ import { isDate, noop } from 'lodash';
 import React, { memo, useCallback, FunctionComponent } from 'react';
 import ReactDatePicker from 'react-datepicker';
 
+import { withDate, WithDateProps } from '../locale';
 import { CheckboxInput, InputProps, RadioInput, TextArea, TextInput } from '../ui/form';
 
 import DynamicFormFieldType from './DynamicFormFieldType';
@@ -16,8 +17,9 @@ export interface DynamicInputProps extends InputProps {
     options?: FormFieldItem[];
 }
 
-const DynamicInput: FunctionComponent<DynamicInputProps> = ({
+const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
     additionalClassName,
+    date,
     fieldType,
     id,
     name,
@@ -27,11 +29,12 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
     value,
     ...rest
 }) => {
-    const handleDateChange = useCallback((date, event) => onChange({
+    const { inputFormat } = date;
+    const handleDateChange = useCallback((dateValue, event) => onChange({
         ...event,
         target: {
             name,
-            value: date,
+            value: dateValue,
         },
     }), [
         onChange,
@@ -115,11 +118,12 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
                 // onChangeRaw={ rest.onChange }
                 calendarClassName="optimizedCheckout-contentPrimary"
                 className="form-input optimizedCheckout-form-input"
+                dateFormat={ inputFormat }
                 maxDate={ rest.max ? new Date(`${rest.max} 00:00:00`) : undefined }
                 minDate={ rest.min ? new Date(`${rest.min} 00:00:00`) : undefined }
                 name={ name }
                 onChange={ handleDateChange }
-                placeholderText="MM/DD/YYYY"
+                placeholderText={ inputFormat.toUpperCase() }
                 popperClassName="optimizedCheckout-contentPrimary"
                 selected={ isDate(value) ? value : undefined }
             />
@@ -155,4 +159,4 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
     }
 };
 
-export default memo(DynamicInput);
+export default memo(withDate(DynamicInput));

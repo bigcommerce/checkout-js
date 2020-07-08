@@ -5,6 +5,8 @@ import React from 'react';
 
 import { DynamicFormField } from '../address';
 import { getFormFields } from '../address/formField.mock';
+import { getStoreConfig } from '../config/config.mock';
+import { createLocaleContext, LocaleContext } from '../locale';
 
 import RemoteShippingAddress, { RemoteShippingAddressProps } from './RemoteShippingAddress';
 
@@ -58,13 +60,16 @@ describe('RemoteShippingAddress Component', () => {
     });
 
     it('calls method to set field value on change in custom form field', () => {
+        const localeContext = createLocaleContext(getStoreConfig());
         const component = mount(
-            <Formik
-                initialValues={ initialFormikValues }
-                onSubmit={ noop }
-            >
-                <RemoteShippingAddress { ...defaultProps } />
-            </Formik>
+            <LocaleContext.Provider value={ localeContext }>
+                <Formik
+                    initialValues={ initialFormikValues }
+                    onSubmit={ noop }
+                >
+                    <RemoteShippingAddress { ...defaultProps } />
+                </Formik>
+            </LocaleContext.Provider>
         );
 
         const inputFieldName = getFormFields()[4].name;

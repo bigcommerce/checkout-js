@@ -3,6 +3,9 @@ import { createContext } from 'react';
 
 export interface LocaleContextType {
     language: LanguageService;
+    date?: {
+        inputFormat: string;
+    };
     currency?: CurrencyService;
 }
 

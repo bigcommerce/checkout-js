@@ -8,8 +8,13 @@ export default function createLocaleContext(config: StoreConfig): Required<Local
         throw new Error('Missing configuration data');
     }
 
+    const { inputDateFormat } = config;
+
     return {
         currency: createCurrencyService(config),
+        date: {
+            inputFormat: inputDateFormat,
+        },
         language: getLanguageService(),
     };
 }

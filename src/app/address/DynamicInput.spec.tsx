@@ -1,21 +1,39 @@
-import { shallow } from 'enzyme';
-import React from 'react';
+import { mount } from 'enzyme';
+import React, { FunctionComponent } from 'react';
 import ReactDatePicker from 'react-datepicker';
 
+import { getStoreConfig } from '../config/config.mock';
+import { createLocaleContext, LocaleContext, LocaleContextType, WithDateProps } from '../locale';
 import { CheckboxInput, RadioInput, TextArea, TextInput } from '../ui/form';
 
 import DynamicFormFieldType from './DynamicFormFieldType';
-import DynamicInput from './DynamicInput';
+import DynamicInput, { DynamicInputProps } from './DynamicInput';
 
 describe('DynamicInput', () => {
+    let localeContext: Required<LocaleContextType>;
+    let date: Required<LocaleContextType>['date'];
+    let DynamicInputTest: FunctionComponent<DynamicInputProps & WithDateProps>;
+
+    beforeEach(() => {
+        localeContext = createLocaleContext(getStoreConfig());
+        date = localeContext.date;
+
+        DynamicInputTest = props => (
+            <LocaleContext.Provider value={ localeContext }>
+                <DynamicInput { ...props } />
+            </LocaleContext.Provider>
+        );
+    });
+
     it('renders text input for default input with passed props', () => {
-        expect(shallow(<DynamicInput id="field_33" name="x" />).html())
+        expect(mount(<DynamicInputTest date={ date } id="field_33" name="x" />).html())
             .toMatchSnapshot();
     });
 
     it('renders textarea for multiline type', () => {
-        expect(shallow(
-            <DynamicInput
+        expect(mount(
+            <DynamicInputTest
+                date={ date }
                 fieldType={ DynamicFormFieldType.multiline }
                 id="field_33"
                 rows={ 4 }
@@ -26,8 +44,9 @@ describe('DynamicInput', () => {
     });
 
     it('renders date picker for date type', () => {
-        const datePicker = shallow(
-            <DynamicInput
+        const datePicker = mount(
+            <DynamicInputTest
+                date={ date }
                 fieldType={ DynamicFormFieldType.date }
                 id="field_33"
                 max="2019-2-1"
@@ -43,8 +62,9 @@ describe('DynamicInput', () => {
     });
 
     it('renders checkbox input for checkbox type', () => {
-        const component = shallow(
-            <DynamicInput
+        const component = mount(
+            <DynamicInputTest
+                date={ date }
                 fieldType={ DynamicFormFieldType.checkbox }
                 id="id"
                 options={ [
@@ -68,8 +88,9 @@ describe('DynamicInput', () => {
     });
 
     it('renders radio type input for radio type', () => {
-        const component = shallow(
-            <DynamicInput
+        const component = mount(
+            <DynamicInputTest
+                date={ date }
                 fieldType={ DynamicFormFieldType.radio }
                 id="id"
                 onChange={ jest.fn() }
@@ -94,8 +115,9 @@ describe('DynamicInput', () => {
     });
 
     it('renders number type input for number type', () => {
-        expect(shallow(
-            <DynamicInput
+        expect(mount(
+            <DynamicInputTest
+                date={ date }
                 fieldType={ DynamicFormFieldType.number }
                 id="field_33"
             />)
@@ -105,8 +127,9 @@ describe('DynamicInput', () => {
     });
 
     it('renders password type input for password type', () => {
-        expect(shallow(
-            <DynamicInput
+        expect(mount(
+            <DynamicInputTest
+                date={ date }
                 fieldType={ DynamicFormFieldType.password }
                 id="field_33"
             />)
@@ -116,8 +139,9 @@ describe('DynamicInput', () => {
     });
 
     it('renders tel type input for phone type', () => {
-        expect(shallow(
-            <DynamicInput
+        expect(mount(
+            <DynamicInputTest
+                date={ date }
                 fieldType={ DynamicFormFieldType.telephone }
                 id="field_33"
             />)
@@ -127,8 +151,9 @@ describe('DynamicInput', () => {
     });
 
     it('renders select input with passed props', () => {
-        expect(shallow(
-            <DynamicInput
+        expect(mount(
+            <DynamicInputTest
+                date={ date }
                 defaultValue="foo"
                 fieldType={ DynamicFormFieldType.dropdown }
                 id="field_33"
