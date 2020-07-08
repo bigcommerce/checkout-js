@@ -171,7 +171,7 @@ class HostedWidgetPaymentMethod extends Component<
         const shouldShowSaveInstrument = isInstrumentFeatureAvailableProp && shouldShowCreditCardFieldset;
         const isLoading = (isInitializing || isLoadingInstruments) && !hideWidget;
 
-        const selectedAccountInstrument = selectedInstrument && isBankAccountInstrument(selectedInstrument) ? selectedInstrument : undefined;
+        const selectedAccountInstrument = this.getSelectedBankAccountInstrument(isAddingNewCard, selectedInstrument);
 
         return (
             <LoadingOverlay
@@ -251,6 +251,10 @@ class HostedWidgetPaymentMethod extends Component<
                 shouldShowNumberField={ shouldShowNumberField }
             />
         );
+    }
+
+    private getSelectedBankAccountInstrument(isAddingNewCard: boolean, selectedInstrument: PaymentInstrument): AccountInstrument | undefined {
+        return !isAddingNewCard && selectedInstrument && isBankAccountInstrument(selectedInstrument) ? selectedInstrument : undefined;
     }
 
     private renderEditButtonIfAvailable() {
