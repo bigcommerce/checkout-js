@@ -178,46 +178,48 @@ class HostedWidgetPaymentMethod extends Component<
                 hideContentWhenLoading
                 isLoading={ isLoading }
             >
-                { selectedAccountInstrument && shouldShowInstrumentFieldset && <AccountInstrumentFieldset
-                    instruments={ instruments as AccountInstrument[] }
-                    onSelectInstrument={ this.handleSelectInstrument }
-                    onUseNewInstrument={ this.handleUseNewCard }
-                    selectedInstrument={ selectedAccountInstrument }
-                /> }
+                <div className="paymentMethod--hosted">
+                    { selectedAccountInstrument && shouldShowInstrumentFieldset && <AccountInstrumentFieldset
+                        instruments={ instruments as AccountInstrument[] }
+                        onSelectInstrument={ this.handleSelectInstrument }
+                        onUseNewInstrument={ this.handleUseNewCard }
+                        selectedInstrument={ selectedAccountInstrument }
+                    /> }
 
-                { !selectedAccountInstrument && shouldShowInstrumentFieldset && <CardInstrumentFieldset
-                    instruments={ instruments as CardInstrument[] }
-                    onSelectInstrument={ this.handleSelectInstrument }
-                    onUseNewInstrument={ this.handleUseNewCard }
-                    selectedInstrumentId={ selectedInstrumentId }
-                    shouldHideExpiryDate={ shouldHideInstrumentExpiryDate }
-                    validateInstrument={ this.getValidateInstrument() }
-                /> }
+                    { !selectedAccountInstrument && shouldShowInstrumentFieldset && <CardInstrumentFieldset
+                        instruments={ instruments as CardInstrument[] }
+                        onSelectInstrument={ this.handleSelectInstrument }
+                        onUseNewInstrument={ this.handleUseNewCard }
+                        selectedInstrumentId={ selectedInstrumentId }
+                        shouldHideExpiryDate={ shouldHideInstrumentExpiryDate }
+                        validateInstrument={ this.getValidateInstrument() }
+                    /> }
 
-                { this.renderPaymentDescriptorIfAvailable() }
+                    { this.renderPaymentDescriptorIfAvailable() }
 
-                <div
-                    className={ classNames(
-                        'widget',
-                        `widget--${method.id}`,
-                        'payment-widget',
-                        additionalContainerClassName
-                    ) }
-                    id={ containerId }
-                    style={ {
-                        display: (hideContentWhenSignedOut && isSignInRequired && !isSignedIn) || !shouldShowCreditCardFieldset || hideWidget ? 'none' : undefined,
-                    } }
-                    tabIndex={ -1 }
-                />
+                    <div
+                        className={ classNames(
+                            'widget',
+                            `widget--${method.id}`,
+                            'payment-widget',
+                            additionalContainerClassName
+                        ) }
+                        id={ containerId }
+                        style={ {
+                            display: (hideContentWhenSignedOut && isSignInRequired && !isSignedIn) || !shouldShowCreditCardFieldset || hideWidget ? 'none' : undefined,
+                        } }
+                        tabIndex={ -1 }
+                    />
 
-                { shouldShowSaveInstrument && this.renderSaveInstrumentCheckbox() }
+                    { shouldShowSaveInstrument && this.renderSaveInstrumentCheckbox() }
 
-                { this.renderEditButtonIfAvailable() }
+                    { this.renderEditButtonIfAvailable() }
 
-                { isSignedIn && <SignOutLink
-                    method={ method }
-                    onSignOut={ this.handleSignOut }
-                /> }
+                    { isSignedIn && <SignOutLink
+                        method={ method }
+                        onSignOut={ this.handleSignOut }
+                    /> }
+                </div>
             </LoadingOverlay>
         );
     }
