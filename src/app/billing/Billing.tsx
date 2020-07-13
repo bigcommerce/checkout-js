@@ -10,6 +10,7 @@ import { getShippableItemsCount } from '../shipping';
 import { Legend } from '../ui/form';
 import { LoadingOverlay } from '../ui/loading';
 
+import getBillingMethodId from './getBillingMethodId';
 import BillingForm, { BillingFormValues } from './BillingForm';
 
 export interface BillingProps {
@@ -19,16 +20,17 @@ export interface BillingProps {
 }
 
 export interface WithCheckoutBillingProps {
-    billingAddress?: Address;
     countries: Country[];
     countriesWithAutocomplete: string[];
     customer: Customer;
     customerMessage: string;
     googleMapsApiKey: string;
+    hasSaveAddressFeature: boolean;
     isInitializing: boolean;
     isUpdating: boolean;
-    hasSaveAddressFeature: boolean;
     shouldShowOrderComments: boolean;
+    billingAddress?: Address;
+    methodId?: string;
     getFields(countryCode?: string): FormField[];
     initialize(): Promise<CheckoutSelectors>;
     updateAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
@@ -168,6 +170,7 @@ function mapToBillingProps({
         isInitializing: isLoadingBillingCountries(),
         isUpdating: isUpdatingBillingAddress() || isUpdatingCheckout(),
         hasSaveAddressFeature: features['CHECKOUT-4642.uco_save_address_checkbox'],
+        methodId: getBillingMethodId(checkout),
         shouldShowOrderComments: enableOrderComments && getShippableItemsCount(cart) < 1,
         updateAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,

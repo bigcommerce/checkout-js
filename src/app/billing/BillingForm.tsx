@@ -3,29 +3,32 @@ import { withFormik, FormikProps } from 'formik';
 import React, { createRef, PureComponent, ReactNode, RefObject } from 'react';
 import { lazy } from 'yup';
 
-import { getAddressValidationSchema, isValidCustomerAddress, mapAddressToFormValues, AddressForm, AddressFormValues, AddressSelect } from '../address';
+import { getAddressCustomFieldsValidationSchema, getAddressValidationSchema, isValidCustomerAddress, mapAddressToFormValues, AddressForm, AddressFormValues, AddressSelect } from '../address';
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { OrderComments } from '../orderComments';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form } from '../ui/form';
 import { LoadingOverlay } from '../ui/loading';
 
+import StaticBillingAddress from './StaticBillingAddress';
+
 export type BillingFormValues = AddressFormValues & { orderComment: string };
 
 export interface BillingFormProps {
     billingAddress?: Address;
-    customer: Customer;
-    customerMessage: string;
     countries: Country[];
     countriesWithAutocomplete: string[];
+    customer: Customer;
+    customerMessage: string;
     googleMapsApiKey: string;
-    isUpdating: boolean;
     hasSaveAddressFeature: boolean;
+    isUpdating: boolean;
+    methodId?: string;
     shouldShowOrderComments: boolean;
     getFields(countryCode?: string): FormField[];
+    onSubmit(values: BillingFormValues): void;
     onUnhandledError(error: Error): void;
     updateAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
-    onSubmit(values: BillingFormValues): void;
 }
 
 interface BillingFormState {
@@ -52,8 +55,14 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
             shouldShowOrderComments,
             hasSaveAddressFeature,
             values,
+            methodId,
         } = this.props;
 
+        const shouldRenderStaticAddress = methodId === 'amazonpay';
+        const allFormFields = getFields(values.countryCode);
+        const customFormFields = allFormFields.filter(({ custom }) => custom);
+        const hasCustomFormFields = customFormFields.length > 0;
+        const editableFormFields = shouldRenderStaticAddress && hasCustomFormFields ? customFormFields : allFormFields;
         const { isResettingAddress } = this.state;
         const hasAddresses = addresses && addresses.length > 0;
         const hasValidCustomerAddress = billingAddress &&
@@ -61,8 +70,13 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
 
         return (
             <Form autoComplete="on">
+                { shouldRenderStaticAddress && billingAddress &&
+                    <div className={ 'form-fieldset' }>
+                        <StaticBillingAddress address={ billingAddress } />
+                    </div> }
+
                 <Fieldset id="checkoutBillingAddress" ref={ this.addressFormRef }>
-                    { hasAddresses &&
+                    { hasAddresses && !shouldRenderStaticAddress &&
                         <Fieldset id="billingAddresses">
                             <LoadingOverlay isLoading={ isResettingAddress }>
                                 <AddressSelect
@@ -80,7 +94,7 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
                                 countries={ countries }
                                 countriesWithAutocomplete={ countriesWithAutocomplete }
                                 countryCode={ values.countryCode }
-                                formFields={ getFields(values.countryCode) }
+                                formFields={ editableFormFields }
                                 googleMapsApiKey={ googleMapsApiKey }
                                 setFieldValue={ setFieldValue }
                                 shouldShowSaveAddress={ hasSaveAddressFeature && !isGuest }
@@ -153,11 +167,15 @@ export default withLanguage(withFormik<BillingFormProps & WithLanguageProps, Bil
     validationSchema: ({
         language,
         getFields,
-    }: BillingFormProps & WithLanguageProps) => (
-        lazy<Partial<AddressFormValues>>(values => getAddressValidationSchema({
+        methodId,
+    }: BillingFormProps & WithLanguageProps) => methodId === 'amazonpay' ?
+        (lazy<Partial<AddressFormValues>>(values => getAddressCustomFieldsValidationSchema({
             language,
             formFields: getFields(values && values.countryCode),
-        }))
-    ),
+        }))) :
+        (lazy<Partial<AddressFormValues>>(values => getAddressValidationSchema({
+            language,
+            formFields: getFields(values && values.countryCode),
+        }))),
     enableReinitialize: true,
 })(BillingForm));

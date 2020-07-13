@@ -41,6 +41,21 @@ const getBillingStepStatus = createSelector(
         const hasAddress = billingAddress ? isValidAddress(billingAddress, billingAddressFields) : false;
         const isUsingWallet = checkout && checkout.payments ? checkout.payments.some(payment => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0) : false;
         const isComplete = hasAddress || isUsingWallet;
+        const isUsingAmazonPay = checkout && checkout.payments ? checkout.payments.some(payment => payment.providerId === 'amazonpay') : false;
+
+        if (isUsingAmazonPay) {
+            const billingAddressCustomFields = billingAddressFields.filter(({ custom }: { custom: boolean }) => custom);
+            const hasCustomFields = billingAddressCustomFields.length > 0;
+            const isAmazonPayBillingStepComplete = billingAddress && hasCustomFields ? isValidAddress(billingAddress, billingAddressCustomFields) : true;
+
+            return {
+                type: CheckoutStepType.Billing,
+                isActive: false,
+                isComplete: isAmazonPayBillingStepComplete,
+                isEditable: isAmazonPayBillingStepComplete && hasCustomFields,
+                isRequired: true,
+            };
+        }
 
         return {
             type: CheckoutStepType.Billing,

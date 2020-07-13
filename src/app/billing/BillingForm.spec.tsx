@@ -1,8 +1,8 @@
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
-import { AddressForm, AddressSelect } from '../address';
-import { getFormFields } from '../address/formField.mock';
+import { AddressForm, AddressFormField, AddressSelect } from '../address';
+import { getAddressFormFieldsWithCustomRequired, getFormFields } from '../address/formField.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 import { getCountries } from '../geography/countries.mock';
@@ -10,6 +10,7 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale
 
 import { getBillingAddress } from './billingAddresses.mock';
 import BillingForm, { BillingFormProps } from './BillingForm';
+import StaticBillingAddress from './StaticBillingAddress';
 
 describe('BillingForm Component', () => {
     let component: ReactWrapper;
@@ -49,6 +50,23 @@ describe('BillingForm Component', () => {
 
     it('renders form with expected id', () => {
         expect(component.find('fieldset#checkoutBillingAddress').length).toEqual(1);
+    });
+
+    it('renders form with static address and custom fields', () => {
+        defaultProps = {
+            ...defaultProps,
+            getFields: () => getAddressFormFieldsWithCustomRequired(),
+        };
+
+        component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <BillingForm { ...defaultProps } methodId={ 'amazonpay' } />
+            </LocaleContext.Provider>
+        );
+
+        expect(component.find(StaticBillingAddress).length).toEqual(1);
+        expect(component.find(AddressSelect).length).toEqual(0);
+        expect(component.find(AddressFormField).length).toEqual(4);
     });
 
     it('renders addresses', () => {
