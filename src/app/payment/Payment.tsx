@@ -35,6 +35,7 @@ interface WithCheckoutPaymentProps {
     cartUrl: string;
     defaultMethod?: PaymentMethod;
     finalizeOrderError?: Error;
+    isInitializingPayment: boolean;
     isSubmittingOrder: boolean;
     isStoreCreditApplied: boolean;
     isTermsConditionsRequired: boolean;
@@ -126,6 +127,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         const {
             defaultMethod,
             finalizeOrderError,
+            isInitializingPayment,
             isUsingMultiShipping,
             methods,
             applyStoreCredit,
@@ -156,6 +158,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
                         defaultGatewayId={ defaultMethod.gateway }
                         defaultMethodId={ defaultMethod.id }
                         didExceedSpamLimit={ didExceedSpamLimit }
+                        isInitializingPayment={ isInitializingPayment }
                         isUsingMultiShipping={ isUsingMultiShipping }
                         methods={ methods }
                         onMethodSelect={ this.setSelectedMethod }
@@ -426,7 +429,10 @@ export function mapToPaymentProps({
             getFinalizeOrderError,
             getSubmitOrderError,
         },
-        statuses: { isSubmittingOrder },
+        statuses: {
+            isInitializingPayment,
+            isSubmittingOrder,
+        },
     } = checkoutState;
 
     const checkout = getCheckout();
@@ -470,6 +476,7 @@ export function mapToPaymentProps({
         finalizeOrderError: getFinalizeOrderError(),
         finalizeOrderIfNeeded: checkoutService.finalizeOrderIfNeeded,
         loadCheckout: checkoutService.loadCheckout,
+        isInitializingPayment: isInitializingPayment(),
         isPaymentDataRequired,
         isStoreCreditApplied,
         isSubmittingOrder: isSubmittingOrder(),

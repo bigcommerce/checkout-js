@@ -8,6 +8,7 @@ export interface AccordionProps {
     children: ReactNode;
     className?: string;
     defaultSelectedItemId?: string;
+    isDisabled?: boolean;
     onSelect?(id: string): void;
 }
 
@@ -44,7 +45,11 @@ export default class Accordion extends Component<AccordionProps, AccordionState>
     }
 
     private handleToggleItem: (id: string) => void = id => {
-        const { onSelect = noop } = this.props;
+        const { isDisabled, onSelect = noop } = this.props;
+
+        if (isDisabled) {
+            return;
+        }
 
         this.setState({ selectedItemId: id });
         onSelect(id);

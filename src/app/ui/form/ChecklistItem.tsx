@@ -12,11 +12,13 @@ import ChecklistItemInput from './ChecklistItemInput';
 export interface ChecklistItemProps {
     content?: ReactNode;
     htmlId?: string;
+    isDisabled?: boolean;
     label: ReactNode | ((isSelected: boolean) => ReactNode);
     value: string;
 }
 
 const ChecklistItem: FunctionComponent<ChecklistItemProps> = ({
+    isDisabled,
     value,
     content,
     htmlId = kebabCase(value),
@@ -28,6 +30,7 @@ const ChecklistItem: FunctionComponent<ChecklistItemProps> = ({
     const renderInput = useCallback(memoizeOne((isSelected: boolean) => ({ field }: FieldProps) => (
         <ChecklistItemInput
             { ...field }
+            disabled={ isDisabled }
             id={ htmlId }
             isSelected={ field.value === value }
             value={ value }
@@ -38,6 +41,7 @@ const ChecklistItem: FunctionComponent<ChecklistItemProps> = ({
         </ChecklistItemInput>
     )), [
         htmlId,
+        isDisabled,
         label,
         value,
     ]);

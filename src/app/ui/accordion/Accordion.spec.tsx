@@ -76,4 +76,34 @@ describe('Accordion', () => {
         expect(onSelect)
             .toHaveBeenCalledWith('foo');
     });
+
+    it('does not change selected item if component is disabled', () => {
+        const onSelect = jest.fn();
+        const component = mount(
+            <Accordion
+                defaultSelectedItemId="bar"
+                isDisabled
+                onSelect={ onSelect }
+            >
+                { items.map(({ label, id }) => (
+                    <AccordionItem
+                        headerContent={ ({ onToggle }) =>
+                            <div id={ id } onClick={ () => onToggle(id) }>{ label }</div> }
+                        itemId={ id }
+                        key={ id }
+                    />
+                )) }
+            </Accordion>
+        );
+
+        component.find('#foo')
+            .simulate('click')
+            .update();
+
+        expect(component.find('.accordion-item--selected').text())
+            .not.toEqual('Foo');
+
+        expect(onSelect)
+            .not.toHaveBeenCalledWith('foo');
+    });
 });

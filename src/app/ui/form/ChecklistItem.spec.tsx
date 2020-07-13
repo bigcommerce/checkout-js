@@ -33,4 +33,25 @@ describe('ChecklistItem', () => {
                 classNameSelected: 'form-checklist-item--selected optimizedCheckout-form-checklist-item--selected',
             }));
     });
+
+    it('can be disabled', () => {
+        const component = mount(
+            <Formik
+                initialValues={ { option: 'foo' } }
+                onSubmit={ noop }
+                render={ () => (
+                    <Checklist name="option">
+                        <ChecklistItem
+                            isDisabled
+                            label="Foo label"
+                            value="foo"
+                        />
+                    </Checklist>
+                ) }
+            />
+        );
+
+        expect(component.find('input').prop('disabled'))
+            .toEqual(true);
+    });
 });

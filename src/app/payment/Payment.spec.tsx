@@ -110,6 +110,19 @@ describe('Payment', () => {
             }));
     });
 
+    it('passes initialisation status to payment form', async () => {
+        jest.spyOn(checkoutState.statuses, 'isInitializingPayment')
+            .mockReturnValue(true);
+
+        const container = mount(<PaymentTest { ...defaultProps } />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+        container.update();
+
+        expect(container.find(PaymentForm).prop('isInitializingPayment'))
+            .toEqual(true);
+    });
+
     it('does not render payment form until initial requests are made', async () => {
         const container = mount(<PaymentTest { ...defaultProps } />);
 

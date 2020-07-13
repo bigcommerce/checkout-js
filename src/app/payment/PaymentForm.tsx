@@ -23,6 +23,7 @@ export interface PaymentFormProps {
     defaultMethodId: string;
     didExceedSpamLimit?: boolean;
     isEmbedded?: boolean;
+    isInitializingPayment?: boolean;
     isTermsConditionsRequired?: boolean;
     isUsingMultiShipping?: boolean;
     isStoreCreditApplied: boolean;
@@ -63,6 +64,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
     availableStoreCredit = 0,
     didExceedSpamLimit,
     isEmbedded,
+    isInitializingPayment,
     isPaymentDataRequired,
     isTermsConditionsRequired,
     isStoreCreditApplied,
@@ -102,6 +104,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
 
             <PaymentMethodListFieldset
                 isEmbedded={ isEmbedded }
+                isInitializingPayment={ isInitializingPayment }
                 isPaymentDataRequired={ isPaymentDataRequired }
                 isUsingMultiShipping={ isUsingMultiShipping }
                 methods={ methods }
@@ -132,6 +135,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
 
 interface PaymentMethodListFieldsetProps {
     isEmbedded?: boolean;
+    isInitializingPayment?: boolean;
     isUsingMultiShipping?: boolean;
     methods: PaymentMethod[];
     values: PaymentFormValues;
@@ -143,6 +147,7 @@ interface PaymentMethodListFieldsetProps {
 
 const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProps> = ({
     isEmbedded,
+    isInitializingPayment,
     isPaymentDataRequired,
     isUsingMultiShipping,
     methods,
@@ -192,6 +197,7 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
 
             <PaymentMethodList
                 isEmbedded={ isEmbedded }
+                isInitializingPayment={ isInitializingPayment }
                 isUsingMultiShipping={ isUsingMultiShipping }
                 methods={ methods }
                 onSelect={ handlePaymentMethodSelect }

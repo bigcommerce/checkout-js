@@ -11,6 +11,7 @@ import PaymentMethodTitle from './PaymentMethodTitle';
 
 export interface PaymentMethodListProps {
     isEmbedded?: boolean;
+    isInitializingPayment?: boolean;
     isUsingMultiShipping?: boolean;
     methods: PaymentMethod[];
     onSelect?(method: PaymentMethod): void;
@@ -34,6 +35,7 @@ const PaymentMethodList: FunctionComponent<
 > = ({
     formik: { values },
     isEmbedded,
+    isInitializingPayment,
     isUsingMultiShipping,
     methods,
     onSelect = noop,
@@ -48,6 +50,7 @@ const PaymentMethodList: FunctionComponent<
 
     return <Checklist
         defaultSelectedItemId={ values.paymentProviderRadio }
+        isDisabled={ isInitializingPayment }
         name="paymentProviderRadio"
         onSelect={ handleSelect }
     >
@@ -56,6 +59,7 @@ const PaymentMethodList: FunctionComponent<
 
             return (
                 <PaymentMethodListItem
+                    isDisabled={ isInitializingPayment }
                     isEmbedded={ isEmbedded }
                     isUsingMultiShipping={ isUsingMultiShipping }
                     key={ value }
@@ -69,6 +73,7 @@ const PaymentMethodList: FunctionComponent<
 };
 
 interface PaymentMethodListItemProps {
+    isDisabled?: boolean;
     isEmbedded?: boolean;
     isUsingMultiShipping?: boolean;
     method: PaymentMethod;
@@ -77,6 +82,7 @@ interface PaymentMethodListItemProps {
 }
 
 const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
+    isDisabled,
     isEmbedded,
     isUsingMultiShipping,
     method,
@@ -108,6 +114,7 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
         <ChecklistItem
             content={ renderPaymentMethod }
             htmlId={ `radio-${value}` }
+            isDisabled={ isDisabled }
             label={ renderPaymentMethodTitle }
             value={ value }
         />
