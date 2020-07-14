@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.63.1](https://github.com/bigcommerce/checkout-js/compare/v1.63.0...v1.63.1) (2020-07-14)
+
+
+### Bug Fixes
+
+* **payment:** CHECKOUT-5029 Prevent shopper from changing payment method during initialisation ([c188870](https://github.com/bigcommerce/checkout-js/commit/c1888705c48bd326ec45389a8911b7247d28617d))
+* **shipping:** INT-2832 Bump SDK. ([2aa112a](https://github.com/bigcommerce/checkout-js/commit/2aa112a4c3f22b7a82d6efae1fc7d2b66a83b8d8))
+
 ## [1.63.0](https://github.com/bigcommerce/checkout-js/compare/v1.62.0...v1.63.0) (2020-07-10)
 
 
