@@ -7,6 +7,7 @@ import { Accordion } from '../accordion';
 export interface ChecklistProps {
     children: ReactNode;
     defaultSelectedItemId?: string;
+    isDisabled?: boolean;
     name: string;
     onSelect?(value: string): void;
 }
