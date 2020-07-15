@@ -23,6 +23,7 @@ export interface SingleShippingFormProps {
     customerMessage: string;
     googleMapsApiKey?: string;
     isLoading: boolean;
+    isShippingStepPending: boolean;
     isMultiShippingMode: boolean;
     methodId?: string;
     shippingAddress?: Address;
@@ -104,6 +105,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             isValid,
             deinitialize,
             values: { shippingAddress: addressForm },
+            isShippingStepPending,
         } = this.props;
 
         const {
@@ -129,6 +131,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                         hasRequestedShippingOptions={ hasRequestedShippingOptions }
                         initialize={ initialize }
                         isLoading={ isResettingAddress }
+                        isShippingStepPending={ isShippingStepPending }
                         methodId={ methodId }
                         onAddressSelect={ this.handleAddressSelect }
                         onFieldChange={ this.handleFieldChange }

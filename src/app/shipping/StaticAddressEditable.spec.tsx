@@ -1,4 +1,4 @@
-import { mount, shallow } from 'enzyme';
+import { mount, shallow, ShallowWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
@@ -9,6 +9,7 @@ import { getFormFields } from '../address/formField.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext } from '../locale';
 import { Button } from '../ui/button';
+import { LoadingOverlay } from '../ui/loading';
 
 import StaticAddressEditable, { StaticAddressEditableProps } from './StaticAddressEditable';
 
@@ -93,5 +94,19 @@ describe('StaticAddressEditable Component', () => {
             .simulate('change', { target: { value: 'foo', name: 'shippingAddress.customFields.field_25' } });
 
         expect(defaultProps.onFieldChange).toHaveBeenCalledWith(inputFieldName, 'foo');
+    });
+
+    it('renders loading overlay while loading, updating or interacting', () => {
+        let wrapper: ShallowWrapper;
+
+        wrapper = shallow(<StaticAddressEditable { ...defaultProps } isLoading={ true } />);
+
+        expect(wrapper.find(LoadingOverlay).prop('isLoading'))
+            .toEqual(true);
+
+        wrapper = shallow(<StaticAddressEditable { ...defaultProps } />);
+
+        expect(wrapper.find(LoadingOverlay).prop('isLoading'))
+            .toEqual(false);
     });
 });

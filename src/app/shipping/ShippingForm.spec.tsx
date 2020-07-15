@@ -55,6 +55,7 @@ describe('ShippingForm Component', () => {
             onMultiShippingSubmit: jest.fn(),
             onSingleShippingSubmit: jest.fn(),
             isLoading: false,
+            isShippingStepPending: false,
             deleteConsignments: jest.fn(),
             updateAddress: jest.fn(),
             onUseNewAddress: jest.fn(),

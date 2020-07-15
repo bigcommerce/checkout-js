@@ -24,6 +24,7 @@ describe('ShippingAddress Component', () => {
         },
         countriesWithAutocomplete: [],
         isLoading: false,
+        isShippingStepPending: false,
         hasRequestedShippingOptions: false,
         formFields: getFormFields(),
         onAddressSelect: jest.fn(),

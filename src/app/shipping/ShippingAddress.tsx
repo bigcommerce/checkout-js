@@ -17,6 +17,7 @@ export interface ShippingAddressProps {
     formFields: FormField[];
     googleMapsApiKey?: string;
     isLoading: boolean;
+    isShippingStepPending: boolean;
     methodId?: string;
     shippingAddress?: Address;
     shouldShowSaveAddress?: boolean;
@@ -48,6 +49,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
         addresses,
         shouldShowSaveAddress,
         onUnhandledError = noop,
+        isShippingStepPending,
     } = props;
 
     const { setSubmitted } = useContext(FormContext);
@@ -107,7 +109,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
                     deinitialize={ deinitialize }
                     formFields={ formFields }
                     initialize={ initializeShipping(options) }
-                    isLoading={ isLoading }
+                    isLoading={ isShippingStepPending }
                     methodId={ methodId }
                     onFieldChange={ onFieldChange }
                 />

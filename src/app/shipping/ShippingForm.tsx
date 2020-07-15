@@ -18,6 +18,7 @@ export interface ShippingFormProps {
     googleMapsApiKey?: string;
     isGuest: boolean;
     isLoading: boolean;
+    isShippingStepPending: boolean;
     isMultiShippingMode: boolean;
     methodId?: string;
     shippingAddress?: Address;
@@ -68,6 +69,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             shouldShowSaveAddress,
             signOut,
             updateAddress,
+            isShippingStepPending,
         } = this.props;
 
         return isMultiShippingMode ?
@@ -102,6 +104,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 initialize={ initialize }
                 isLoading={ isLoading }
                 isMultiShippingMode={ isMultiShippingMode }
+                isShippingStepPending={ isShippingStepPending }
                 methodId={ methodId }
                 onSubmit={ onSingleShippingSubmit }
                 onUnhandledError={ onUnhandledError }

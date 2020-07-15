@@ -29,6 +29,7 @@ describe('SingleShippingForm', () => {
             consignments: [],
             cartHasChanged: false,
             isLoading: false,
+            isShippingStepPending: false,
             onSubmit: jest.fn(),
             getFields: jest.fn(() => addressFormFields),
             onUnhandledError: jest.fn(),

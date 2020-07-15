@@ -40,6 +40,7 @@ export interface WithCheckoutShippingProps {
     isGuest: boolean;
     isInitializing: boolean;
     isLoading: boolean;
+    isShippingStepPending: boolean;
     methodId?: string;
     shippingAddress?: Address;
     shouldShowMultiShipping: boolean;
@@ -300,7 +301,6 @@ export function mapToShippingProps({
     const methodId = getShippingMethodId(checkout);
     const shippableItemsCount = getShippableItemsCount(cart);
     const isLoading = (
-        isShippingStepPending() ||
         isLoadingShippingOptions() ||
         isSelectingShippingOption() ||
         isUpdatingConsignment() ||
@@ -339,6 +339,7 @@ export function mapToShippingProps({
         hasSaveAddressFeature: features['CHECKOUT-4642.uco_save_address_checkbox'],
         isInitializing: isLoadingShippingCountries() || isLoadingShippingOptions(),
         isLoading,
+        isShippingStepPending: isShippingStepPending(),
         loadShippingAddressFields: checkoutService.loadShippingAddressFields,
         loadShippingOptions: checkoutService.loadShippingOptions,
         methodId,
