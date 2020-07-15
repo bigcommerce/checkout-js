@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.63.2](https://github.com/bigcommerce/checkout-js/compare/v1.63.1...v1.63.2) (2020-07-15)
+
+
+### Bug Fixes
+
+* **billing:** INT-2832 Add custom fields support for AmazonPayV2 ([f8cbbac](https://github.com/bigcommerce/checkout-js/commit/f8cbbacc51b872fff9efc469ceb41990e2d8b41a))
+* **payment:** INT-2858 fixed value for SelectedAccountInstrument ([8b37bf7](https://github.com/bigcommerce/checkout-js/commit/8b37bf734243b64f7a80dfe7f4bb42d49954cb5a))
+* **shipping:** INT-2832 Add custom fields support for AmazonPayV2 ([cae36eb](https://github.com/bigcommerce/checkout-js/commit/cae36eb444cb4835e5785a016f249acd19893834))
+
 ### [1.63.1](https://github.com/bigcommerce/checkout-js/compare/v1.63.0...v1.63.1) (2020-07-14)
 
 
