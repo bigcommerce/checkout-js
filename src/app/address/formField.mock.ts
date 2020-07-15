@@ -1,5 +1,19 @@
 import { FormField } from '@bigcommerce/checkout-sdk';
 
+export function getAddressFormFieldsWithCustomRequired(): FormField[] {
+    return [
+        ...getAddressFormFields(),
+        {
+            custom: true,
+            default: '',
+            id: 'foo',
+            label: 'foo',
+            name: 'foo',
+            required: true,
+        },
+    ];
+}
+
 export function getAddressFormFields(): FormField[] {
     return [
         ...getFormFields(),

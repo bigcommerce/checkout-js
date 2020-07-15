@@ -50,6 +50,16 @@ export function getCheckoutWithPayments(): Checkout {
     };
 }
 
+export function getCheckoutWithAmazonPay(): Checkout {
+    return {
+        ...getCheckout(),
+        payments: [{
+            ...getCheckoutPayment(),
+            providerId: 'amazonpay',
+        }],
+    };
+}
+
 export function getCheckoutWithPromotions(): Checkout {
     return {
         ...getCheckout(),

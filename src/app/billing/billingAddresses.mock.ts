@@ -19,3 +19,23 @@ export function getBillingAddress(): BillingAddress {
         customFields: [],
     };
 }
+
+export function getEmptyBillingAddress(): BillingAddress {
+    return {
+        id: '55c96cda6f04c',
+        firstName: '',
+        lastName: '',
+        email: 'test@bigcommerce.com',
+        company: '',
+        address1: '',
+        address2: '',
+        city: '',
+        stateOrProvince: '',
+        stateOrProvinceCode: '',
+        country: '',
+        countryCode: '',
+        postalCode: '',
+        phone: '',
+        customFields: [],
+    };
+}

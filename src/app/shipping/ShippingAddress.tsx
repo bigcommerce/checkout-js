@@ -105,9 +105,11 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
                     address={ shippingAddress }
                     buttonId={ editAddressButtonId }
                     deinitialize={ deinitialize }
+                    formFields={ formFields }
                     initialize={ initializeShipping(options) }
                     isLoading={ isLoading }
                     methodId={ methodId }
+                    onFieldChange={ onFieldChange }
                 />
             );
         }
