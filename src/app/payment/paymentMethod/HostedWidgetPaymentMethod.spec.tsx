@@ -340,5 +340,37 @@ describe('HostedWidgetPaymentMethod', () => {
             expect(accountInstrumentStorageFieldComponent)
                 .toHaveLength(1);
         });
+
+        it('shows fields on the Widget when you click Use another payment form on the vaulted bank account instruments dropdown', () => {
+            defaultProps.isAccountInstrument = true;
+
+            const BankInstrument = [
+                {
+                    bigpayToken: '45454545',
+                    provider: 'adyen',
+                    accountNumber: 'GHI',
+                    issuer: 'JKL',
+                    externalId: 'test@external-id-4.com',
+                    trustedShippingAddress: false,
+                    defaultInstrument: false,
+                    method: 'ideal',
+                    type: 'bank',
+                },
+            ];
+            jest.spyOn(checkoutState.data, 'getInstruments')
+                .mockReturnValue(BankInstrument);
+
+            const container = mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
+
+            container.find(storedInstrumentModule.AccountInstrumentFieldset)
+                .prop('onUseNewInstrument')();
+            container.update();
+
+            expect(container.find('.form-field--saveInstrument'))
+                .toHaveLength(1);
+
+            expect(container.find('.form-field--saveInstrument'))
+                .toHaveLength(1);
+        });
     });
 });
