@@ -67,21 +67,22 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
     return (
         <tr>
             <td data-test="manage-instrument-accountExternalId">
-                { !isBankAccountInstrument(instrument) && <IconPaypal
-                    additionalClassName="accountIcon-icon"
-                    size={ IconSize.Medium }
-                /> }
-
-                { !instrument.accountNumber ?
-                  <span className="instrumentModal-instrumentAccountExternalId">
-                    { instrument.externalId }
-                  </span> :
-                  <span className="instrumentModal-instrumentAccountNumber">
-                    <TranslatedString id="payment.instrument_manage_table_header_ending_in_text" />
-                    <span>
-                      { instrument.accountNumber }
-                    </span>
-                  </span> }
+                { isBankAccountInstrument(instrument) ? (
+                        <span className="instrumentModal-instrumentAccountNumber">
+                            <TranslatedString id="payment.instrument_manage_table_header_ending_in_text" />
+                            <span>{ instrument.accountNumber }</span>
+                        </span>
+                    ) : (
+                        <>
+                            <IconPaypal
+                                additionalClassName="accountIcon-icon"
+                                size={ IconSize.Medium }
+                            />
+                            <span className="instrumentModal-instrumentAccountExternalId">
+                                { instrument.externalId }
+                            </span>
+                        </>
+                    ) }
             </td>
             <td>
                 <button

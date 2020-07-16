@@ -1,4 +1,4 @@
-import { AccountInstrument, CardInstrument, PaymentInstrument } from '@bigcommerce/checkout-sdk';
+import { AccountInstrument, BankInstrument, CardInstrument, PaymentInstrument } from '@bigcommerce/checkout-sdk';
 
 export function getInstruments(): PaymentInstrument[] {
     return [
@@ -56,6 +56,7 @@ export function getInstruments(): PaymentInstrument[] {
             defaultInstrument: false,
             method: 'ideal',
             type: 'bank',
+            iban: '12345',
         },
         {
             bigpayToken: '45454545',
@@ -67,6 +68,7 @@ export function getInstruments(): PaymentInstrument[] {
             defaultInstrument: false,
             method: 'ideal',
             type: 'bank',
+            iban: '12345',
         },
     ];
 }
@@ -99,7 +101,7 @@ export function getAccountInstrument(): AccountInstrument {
     };
 }
 
-export function getBankInstrument(): AccountInstrument {
+export function getBankInstrument(): BankInstrument {
     return {
         bigpayToken: '454545',
         provider: 'adyen',
@@ -108,5 +110,8 @@ export function getBankInstrument(): AccountInstrument {
         defaultInstrument: true,
         method: 'ideal',
         type: 'bank',
+        accountNumber: 'GHI',
+        issuer: 'JKL',
+        iban: '12345',
     };
 }
