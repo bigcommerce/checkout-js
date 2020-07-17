@@ -1,4 +1,4 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, BankInstrument, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -344,7 +344,7 @@ describe('HostedWidgetPaymentMethod', () => {
         it('shows fields on the Widget when you click Use another payment form on the vaulted bank account instruments dropdown', () => {
             defaultProps.isAccountInstrument = true;
 
-            const BankInstrument = [
+            const mockBankInstrument: BankInstrument[] = [
                 {
                     bigpayToken: '45454545',
                     provider: 'adyen',
@@ -355,10 +355,11 @@ describe('HostedWidgetPaymentMethod', () => {
                     defaultInstrument: false,
                     method: 'ideal',
                     type: 'bank',
+                    iban: '12345',
                 },
             ];
             jest.spyOn(checkoutState.data, 'getInstruments')
-                .mockReturnValue(BankInstrument);
+                .mockReturnValue(mockBankInstrument);
 
             const container = mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
 
