@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.64.0](https://github.com/bigcommerce/checkout-js/compare/v1.63.2...v1.64.0) (2020-07-20)
+
+
+### Features
+
+* **payment:** PAYMENTS-5575 bump checkout-sdk version, fix bank type guards and tests ([f8a8ecf](https://github.com/bigcommerce/checkout-js/commit/f8a8ecfa361a00f66094bae3efc705ad48d74723))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-5006 Changes for formatting date as per store config ([a81656d](https://github.com/bigcommerce/checkout-js/commit/a81656d0d7f69b9b5445d0493f75441f244a49e5))
+
 ### [1.63.2](https://github.com/bigcommerce/checkout-js/compare/v1.63.1...v1.63.2) (2020-07-15)
 
 
