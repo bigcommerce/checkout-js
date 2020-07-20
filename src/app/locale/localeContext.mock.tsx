@@ -8,6 +8,9 @@ import { LocaleContextType } from './LocaleContext';
 export function getLocaleContext(): Required<LocaleContextType> {
     return {
         currency: createCurrencyService(getStoreConfig()),
+        date: {
+            inputFormat: 'dd/mm/yyyy',
+        },
         language: createLanguageService({
             ...(window as any).language,
             defaultTranslations: DEFAULT_TRANSLATIONS,

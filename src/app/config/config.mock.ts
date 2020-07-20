@@ -3,6 +3,8 @@ import { StoreConfig } from '@bigcommerce/checkout-sdk';
 export function getStoreConfig(): StoreConfig {
     return {
         cdnPath: 'https://cdn.bcapp.dev/rHEAD',
+        inputDateFormat: 'dd/MM/yyyy',
+        displayDateFormat: 'dd/MM/yyyy',
         formFields: {
             shippingAddressFields: [],
             billingAddressFields: [],

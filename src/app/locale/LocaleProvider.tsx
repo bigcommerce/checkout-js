@@ -20,8 +20,12 @@ class LocaleProvider extends Component<LocaleProviderProps> {
     private unsubscribe?: () => void;
 
     private getContextValue = memoizeOne((config?: StoreConfig) => {
+
         return {
             currency: config ? createCurrencyService(config) : undefined,
+            date: config ? {
+                inputFormat: config.inputDateFormat,
+            } : undefined,
             language: this.languageService,
         };
     });

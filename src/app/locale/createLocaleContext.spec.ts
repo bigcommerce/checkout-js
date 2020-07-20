@@ -20,4 +20,10 @@ describe('createLocaleContext', () => {
         expect(localeContext).toHaveProperty('language');
         expect(localeContext.language.translate).toBeDefined();
     });
+
+    it('returns an object with date', () => {
+        expect(localeContext).toHaveProperty('date');
+        // tslint:disable-next-line:no-non-null-assertion
+        expect(localeContext.date!.inputFormat).toBeDefined();
+    });
 });
