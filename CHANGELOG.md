@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.64.1](https://github.com/bigcommerce/checkout-js/compare/v1.64.0...v1.64.1) (2020-07-20)
+
+
+### Bug Fixes
+
+* **payment:** INT-2871 Styled credit card of apms on adyen v2. ([8a13caa](https://github.com/bigcommerce/checkout-js/commit/8a13caa8a40f12f81c83da357c9bb040968b0c71))
+
 ## [1.64.0](https://github.com/bigcommerce/checkout-js/compare/v1.63.2...v1.64.0) (2020-07-20)
 
 
