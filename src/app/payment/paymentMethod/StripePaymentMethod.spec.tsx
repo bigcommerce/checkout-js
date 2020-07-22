@@ -7,20 +7,10 @@ import React, { FunctionComponent } from 'react';
 import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
-import { getCreditCardInputStyles } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
-
-jest.mock('../creditCard', () => ({
-    ...jest.requireActual('../creditCard'),
-    getCreditCardInputStyles: jest.fn<ReturnType<typeof getCreditCardInputStyles>, Parameters<typeof getCreditCardInputStyles>>(
-        (_containerId, _fieldType) => {
-            return Promise.resolve({ color: 'rgb(255, 0, 0)', fontWeight: '500', fontFamily: 'Montserrat, Arial, Helvetica, sans-serif', fontSize: '14px', fontSmoothing: 'auto'});
-        }
-    ),
-}));
 
 describe('when using Stripe payment', () => {
     let method: PaymentMethod;
@@ -39,7 +29,6 @@ describe('when using Stripe payment', () => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
-        method = { ...getPaymentMethod(), id: 'stripev3' };
 
         jest.spyOn(checkoutState.data, 'getConfig')
             .mockReturnValue(getStoreConfig());
@@ -64,61 +53,134 @@ describe('when using Stripe payment', () => {
         );
     });
 
-    it('renders as hosted widget method', () => {
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
-        const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
-
-        expect(component.props())
-            .toEqual(expect.objectContaining({
-                containerId: 'stripe-card-field',
-                deinitializePayment: expect.any(Function),
-                initializePayment: expect.any(Function),
-                additionalContainerClassName: 'optimizedCheckout-form-input',
-                method,
-            }));
-    });
-
-    it('initializes method with required config', async () => {
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
-        const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
-
-        component.prop('initializePayment')({
-            methodId: method.id,
-            gatewayId: method.gateway,
+    describe('when using card component', () => {
+        beforeEach(() => {
+            method = { ...getPaymentMethod(), id: 'card', gateway: 'stripev3', method: 'card'};
         });
 
-        expect(getCreditCardInputStyles)
-            .toHaveBeenCalledWith('stripe-card-field', ['color', 'fontFamily', 'fontWeight', 'fontSmoothing']);
+        it('renders as hosted widget method', () => {
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+            const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
 
-        await new Promise(resolve => process.nextTick(resolve));
+            expect(component.props())
+                .toEqual(expect.objectContaining({
+                    containerId: `stripe-card-component-field`,
+                    deinitializePayment: expect.any(Function),
+                    initializePayment: expect.any(Function),
+                    additionalContainerClassName: 'optimizedCheckout-form-input widget--stripev3',
+                    method,
+                }));
+        });
 
-        expect(checkoutService.initializePayment)
-            .toHaveBeenCalledWith(expect.objectContaining({
+        it('initializes method with required config', () => {
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+            const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+
+            component.prop('initializePayment')({
                 methodId: method.id,
                 gatewayId: method.gateway,
-                [method.id]: {
-                    containerId: 'stripe-card-field',
-                    style: {
-                        base: {
-                            color: 'rgb(255, 0, 0)',
-                            fontWeight: '500',
-                            fontFamily: 'Montserrat, Arial, Helvetica, sans-serif',
-                            fontSize: '14px',
-                            fontSmoothing: 'auto',
-                            '::placeholder': {
-                                color: '#E1E1E1',
-                           },
-                        },
-                        invalid: {
-                            color: 'rgb(255, 0, 0)',
-                            fontWeight: '500',
-                            fontFamily: 'Montserrat, Arial, Helvetica, sans-serif',
-                            fontSize: '14px',
-                            fontSmoothing: 'auto',
-                            iconColor: 'rgb(255, 0, 0)',
+            });
+
+            expect(checkoutService.initializePayment)
+                .toHaveBeenCalledWith(expect.objectContaining({
+                    methodId: method.id,
+                    stripev3: {
+                        containerId: 'stripe-card-component-field',
+                        options: {
+                            classes: {
+                                base: 'form-input optimizedCheckout-form-input',
+                            },
                         },
                     },
-                },
-            }));
+                }));
+        });
+    });
+
+    describe('when using ideal component', () => {
+        beforeEach(() => {
+            method = { ...getPaymentMethod(), id: 'idealBank', gateway: 'stripev3', method: 'idealBank'};
+        });
+
+        it('renders as hosted widget method', () => {
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+            const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+
+            expect(component.props())
+                .toEqual(expect.objectContaining({
+                    containerId: `stripe-idealBank-component-field`,
+                    deinitializePayment: expect.any(Function),
+                    initializePayment: expect.any(Function),
+                    additionalContainerClassName: 'optimizedCheckout-form-input widget--stripev3',
+                    method,
+                }));
+        });
+
+        it('initializes method with required config', () => {
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+            const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+
+            component.prop('initializePayment')({
+                methodId: method.id,
+                gatewayId: method.gateway,
+            });
+
+            expect(checkoutService.initializePayment)
+                .toHaveBeenCalledWith(expect.objectContaining({
+                        methodId: method.id,
+                        stripev3: {
+                            containerId: 'stripe-idealBank-component-field',
+                            options: {
+                                classes: {
+                                    base: 'form-input optimizedCheckout-form-input',
+                                },
+                            },
+                        },
+                    })
+                );
+        });
+    });
+
+    describe('when using iban component', () => {
+        beforeEach(() => {
+            method = { ...getPaymentMethod(), id: 'iban', gateway: 'stripev3', method: 'iban'};
+        });
+
+        it('renders as hosted widget method', () => {
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+            const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+
+            expect(component.props())
+                .toEqual(expect.objectContaining({
+                    containerId: `stripe-iban-component-field`,
+                    deinitializePayment: expect.any(Function),
+                    initializePayment: expect.any(Function),
+                    additionalContainerClassName: 'optimizedCheckout-form-input widget--stripev3',
+                    method,
+                }));
+        });
+
+        it('initializes method with required config', () => {
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+            const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+
+            component.prop('initializePayment')({
+                methodId: method.id,
+                gatewayId: method.gateway,
+            });
+
+            expect(checkoutService.initializePayment)
+                .toHaveBeenCalledWith(expect.objectContaining({
+                    methodId: method.id,
+                    stripev3: {
+                        containerId: 'stripe-iban-component-field',
+                        options: {
+                            classes: {
+                                base: 'form-input optimizedCheckout-form-input',
+                            },
+                            supportedCountries: ['SEPA'],
+                        },
+                    },
+                }));
+        });
     });
 });
