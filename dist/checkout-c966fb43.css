@@ -4968,7 +4968,8 @@ body.klarna-payments-fso-open {
 
 .widget--stripev3 {
   margin-bottom: 1.53846rem;
-  margin-top: 1.53846rem; }
+  margin-top: 1.53846rem;
+  padding: 1rem; }
 
 .StripeElement--focus {
   border-color: #4496f6;
@@ -5282,4 +5283,4 @@ body.klarna-payments-fso-open {
     font-weight: normal; }
 
 
-/*# sourceMappingURL=checkout-1f4a5a59.css.map*/
+/*# sourceMappingURL=checkout-c966fb43.css.map*/

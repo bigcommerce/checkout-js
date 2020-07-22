@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.66.0](https://github.com/bigcommerce/checkout-js/compare/v1.65.0...v1.66.0) (2020-07-22)
+
+
+### Features
+
+* **payment:** INT-2532 Accept payments through StripeV3 using iDEAL and SEPA ([69ac6cd](https://github.com/bigcommerce/checkout-js/commit/69ac6cdd7b93c0768fbe8b7e95b8316cee06be6b))
+* **shipping:** INT-2823 Show spinner in StaticAddressEditable ([3fbbb42](https://github.com/bigcommerce/checkout-js/commit/3fbbb42226e65b7277477e5746137adb55447e2f))
+
 ## [1.65.0](https://github.com/bigcommerce/checkout-js/compare/v1.64.1...v1.65.0) (2020-07-22)
 
 
