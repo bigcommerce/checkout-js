@@ -1,47 +1,65 @@
-import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { PaymentInitializeOptions, StripeElementOptions } from '@bigcommerce/checkout-sdk';
 import React, { useCallback, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
-import { getCreditCardInputStyles, CreditCardInputStylesType } from '../creditCard';
-
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 
-export type SquarePaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId' | 'hideContentWhenSignedOut'>;
+export type StripePaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId'>;
 
-const StripePaymentMethod: FunctionComponent<SquarePaymentMethodProps> = ({
+export interface StripeOptions {
+    card: StripeElementOptions;
+    iban: StripeElementOptions;
+    idealBank: StripeElementOptions;
+}
+
+export enum StripeV3PaymentMethodType {
+    card = 'card',
+    iban = 'iban',
+    idealBank = 'idealBank',
+}
+
+const StripePaymentMethod: FunctionComponent<StripePaymentMethodProps> = ({
     initializePayment,
+    method,
     ...rest
 }) => {
+    const paymentMethodType = method.id as StripeV3PaymentMethodType;
+    const containerId = `stripe-${paymentMethodType}-component-field`;
+
     const initializeStripePayment = useCallback(async (options: PaymentInitializeOptions) => {
-        const creditCardInputStyles =  await getCreditCardInputStyles('stripe-card-field', ['color', 'fontFamily', 'fontWeight', 'fontSmoothing']);
-        const creditCardInputErrorStyles = await getCreditCardInputStyles('stripe-card-field', ['color'], CreditCardInputStylesType.Error);
+        const classes = {
+            base: 'form-input optimizedCheckout-form-input',
+        };
+
+        const stripeOptions: StripeOptions = {
+            [StripeV3PaymentMethodType.card]: {
+                classes,
+            },
+            [StripeV3PaymentMethodType.iban]: {
+                ...{ classes },
+                supportedCountries: ['SEPA'],
+            },
+            [StripeV3PaymentMethodType.idealBank]: {
+                classes,
+            },
+        };
 
         return initializePayment({
             ...options,
             stripev3: {
-                containerId: 'stripe-card-field',
-                style: {
-                    base: {
-                        ...creditCardInputStyles,
-                        '::placeholder': {
-                            color: '#E1E1E1',
-                        },
-                    },
-                    invalid: {
-                        ...creditCardInputErrorStyles,
-                        iconColor: creditCardInputErrorStyles.color,
-                    },
-                },
+                containerId,
+                options: stripeOptions[paymentMethodType],
             },
         });
-    }, [initializePayment]);
+    }, [initializePayment, containerId, paymentMethodType]);
 
     return <HostedWidgetPaymentMethod
         { ...rest }
-        additionalContainerClassName="optimizedCheckout-form-input"
-        containerId="stripe-card-field"
+        additionalContainerClassName="optimizedCheckout-form-input widget--stripev3"
+        containerId={ containerId }
         hideContentWhenSignedOut
         initializePayment={ initializeStripePayment }
+        method={ method }
     />;
 };
 
