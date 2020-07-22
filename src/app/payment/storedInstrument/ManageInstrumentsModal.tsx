@@ -30,6 +30,7 @@ export interface ManageInstrumentsModalState {
 interface WithCheckoutProps {
     deleteInstrumentError?: Error;
     isDeletingInstrument: boolean;
+    isLoadingInstruments: boolean;
     clearError(error: Error): Promise<CheckoutSelectors>;
     deleteInstrument(id: string): Promise<CheckoutSelectors>;
 }
@@ -100,7 +101,7 @@ class ManageInstrumentsModal extends Component<ManageInstrumentsModalProps & Wit
     }
 
     private renderFooter(): ReactNode {
-        const { isDeletingInstrument, onRequestClose } = this.props;
+        const { isDeletingInstrument, isLoadingInstruments, onRequestClose } = this.props;
         const { isConfirmingDelete } = this.state;
 
         if (isConfirmingDelete) {
@@ -116,7 +117,7 @@ class ManageInstrumentsModal extends Component<ManageInstrumentsModalProps & Wit
 
                     <Button
                         data-test="manage-instrument-confirm-button"
-                        disabled={ isDeletingInstrument }
+                        disabled={ isDeletingInstrument || isLoadingInstruments }
                         onClick={ this.handleConfirmDelete }
                         size={ ButtonSize.Small }
                         variant={ ButtonVariant.Primary }
@@ -190,7 +191,7 @@ export function mapFromCheckoutProps(
 ): WithCheckoutProps | null {
     const {
         errors: { getDeleteInstrumentError },
-        statuses: { isDeletingInstrument },
+        statuses: { isDeletingInstrument, isLoadingInstruments },
     } = checkoutState;
 
     return {
@@ -198,6 +199,7 @@ export function mapFromCheckoutProps(
         deleteInstrument: checkoutService.deleteInstrument,
         deleteInstrumentError: getDeleteInstrumentError(),
         isDeletingInstrument: isDeletingInstrument(),
+        isLoadingInstruments: isLoadingInstruments(),
     };
 }
 

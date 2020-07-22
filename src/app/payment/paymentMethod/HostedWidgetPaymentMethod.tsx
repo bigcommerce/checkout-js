@@ -172,6 +172,7 @@ class HostedWidgetPaymentMethod extends Component<
         const isLoading = (isInitializing || isLoadingInstruments) && !hideWidget;
 
         const selectedAccountInstrument = this.getSelectedBankAccountInstrument(isAddingNewCard, selectedInstrument);
+        const shouldShowAccountInstrument = instruments[0] && isBankAccountInstrument(instruments[0]);
 
         return (
             <LoadingOverlay
@@ -179,14 +180,14 @@ class HostedWidgetPaymentMethod extends Component<
                 isLoading={ isLoading }
             >
                 <div className="paymentMethod--hosted">
-                    { selectedAccountInstrument && shouldShowInstrumentFieldset && <AccountInstrumentFieldset
+                    { shouldShowAccountInstrument && shouldShowInstrumentFieldset && <AccountInstrumentFieldset
                         instruments={ instruments as AccountInstrument[] }
                         onSelectInstrument={ this.handleSelectInstrument }
                         onUseNewInstrument={ this.handleUseNewCard }
                         selectedInstrument={ selectedAccountInstrument }
                     /> }
 
-                    { !selectedAccountInstrument && shouldShowInstrumentFieldset && <CardInstrumentFieldset
+                    { !shouldShowAccountInstrument && shouldShowInstrumentFieldset && <CardInstrumentFieldset
                         instruments={ instruments as CardInstrument[] }
                         onSelectInstrument={ this.handleSelectInstrument }
                         onUseNewInstrument={ this.handleUseNewCard }
