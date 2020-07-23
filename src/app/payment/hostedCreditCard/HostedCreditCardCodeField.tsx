@@ -4,8 +4,7 @@ import { TranslatedString } from '../../locale';
 import { FormField, TextInputIframeContainer } from '../../ui/form';
 import { IconHelp, IconLock } from '../../ui/icon';
 import { TooltipTrigger } from '../../ui/tooltip';
-
-import CreditCardCodeTooltip from './CreditCardCodeTooltip';
+import { CreditCardCodeTooltip } from '../creditCard';
 
 export interface HostedCreditCardCodeFieldProps {
     appearFocused: boolean;

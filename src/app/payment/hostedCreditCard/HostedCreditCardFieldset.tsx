@@ -2,8 +2,8 @@ import React, { FunctionComponent, ReactNode } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { Fieldset, Legend } from '../../ui/form';
+import { CreditCardStorageField } from '../creditCard';
 
-import CreditCardStorageField from './CreditCardStorageField';
 import HostedCreditCardCodeField from './HostedCreditCardCodeField';
 import HostedCreditCardExpiryField from './HostedCreditCardExpiryField';
 import HostedCreditCardNameField from './HostedCreditCardNameField';

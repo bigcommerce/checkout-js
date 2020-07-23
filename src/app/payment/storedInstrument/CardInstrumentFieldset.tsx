@@ -5,9 +5,9 @@ import React, { memo, useCallback, FunctionComponent } from 'react';
 import { TranslatedString } from '../../locale';
 import { BasicFormField, Fieldset, Legend } from '../../ui/form';
 import { ModalTrigger, ModalTriggerModalProps } from '../../ui/modal';
+import { HostedCreditCardValidationValues } from '../hostedCreditCard';
 
 import { CreditCardValidationValues } from './CreditCardValidation';
-import { HostedCreditCardValidationValues } from './HostedCreditCardValidation';
 import InstrumentSelect from './InstrumentSelect';
 import ManageInstrumentsModal from './ManageInstrumentsModal';
 

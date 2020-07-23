@@ -10,7 +10,7 @@ import { getStoreConfig } from '../../config/config.mock';
 import { LocaleProvider } from '../../locale';
 import { getPaymentMethod } from '../payment-methods.mock';
 
-import CreditCardPaymentMethod from './CreditCardPaymentMethod';
+import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';
 import HostedPaymentMethod from './HostedPaymentMethod';
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
@@ -59,7 +59,7 @@ describe('when using Paypal Payments Pro payment method', () => {
     it('renders as credit card method', () => {
         const container = mount(<PaymentMethodTest { ...defaultProps } />);
 
-        expect(container.find(CreditCardPaymentMethod).props())
+        expect(container.find(HostedCreditCardPaymentMethod).props())
             .toEqual(expect.objectContaining(defaultProps));
     });
 

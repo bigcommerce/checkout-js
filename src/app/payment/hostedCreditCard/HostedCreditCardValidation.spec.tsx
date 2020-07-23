@@ -5,8 +5,9 @@ import React, { FunctionComponent } from 'react';
 
 import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext } from '../../locale';
-import { HostedCreditCardCodeField, HostedCreditCardNumberField } from '../creditCard';
 
+import HostedCreditCardCodeField from './HostedCreditCardCodeField';
+import HostedCreditCardNumberField from './HostedCreditCardNumberField';
 import HostedCreditCardValidation, { HostedCreditCardValidationProps } from './HostedCreditCardValidation';
 
 describe('HostedCreditCardValidation', () => {

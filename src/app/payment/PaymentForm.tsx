@@ -8,8 +8,9 @@ import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { TermsConditions } from '../termsConditions';
 import { Fieldset, Form, FormContext, Legend } from '../ui/form';
 
-import { CreditCardFieldsetValues, HostedCreditCardFieldsetValues } from './creditCard';
+import { CreditCardFieldsetValues } from './creditCard';
 import getPaymentValidationSchema from './getPaymentValidationSchema';
+import { HostedCreditCardFieldsetValues } from './hostedCreditCard';
 import { getUniquePaymentMethodId, PaymentMethodList } from './paymentMethod';
 import { CardInstrumentFieldsetValues } from './storedInstrument';
 import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
@@ -236,8 +237,9 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
     }),
 
     handleSubmit: (values, { props: { onSubmit = noop } }) => {
-        // Omit optional fields
-        onSubmit(omitBy(values, value => isNil(value) || value === ''));
+        onSubmit(omitBy(values, (value, key) =>
+            isNil(value) || value === '' || key === 'hostedForm'
+        ));
     },
 
     validationSchema: ({
