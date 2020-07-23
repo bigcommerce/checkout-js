@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.66.1](https://github.com/bigcommerce/checkout-js/compare/v1.66.0...v1.66.1) (2020-07-23)
+
+
+### Bug Fixes
+
+* **payment:** INT-2914 Added validation to show the correct dropdown for vaulted accounts ([bd88d41](https://github.com/bigcommerce/checkout-js/commit/bd88d41bcca90bfe5deff8b810dad3df15c9044f))
+
 ## [1.66.0](https://github.com/bigcommerce/checkout-js/compare/v1.65.0...v1.66.0) (2020-07-22)
 
 
