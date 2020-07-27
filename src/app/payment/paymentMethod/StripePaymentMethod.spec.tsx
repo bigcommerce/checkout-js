@@ -53,6 +53,43 @@ describe('when using Stripe payment', () => {
         );
     });
 
+    describe('when using alipay component', () => {
+        beforeEach(() => {
+            method = { ...getPaymentMethod(), id: 'alipay', gateway: 'stripev3', method: 'alipay' };
+        });
+
+        it('renders as hosted widget method', () => {
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+            const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+
+            expect(component.props())
+                .toEqual(expect.objectContaining({
+                    containerId: `stripe-alipay-component-field`,
+                    deinitializePayment: expect.any(Function),
+                    initializePayment: expect.any(Function),
+                    method,
+                }));
+        });
+
+        it('initializes method with required config', () => {
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+            const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+
+            component.prop('initializePayment')({
+                methodId: method.id,
+                gatewayId: method.gateway,
+            });
+
+            expect(checkoutService.initializePayment)
+                .toHaveBeenCalledWith(expect.objectContaining({
+                    methodId: method.id,
+                    stripev3: {
+                        containerId: 'stripe-alipay-component-field',
+                    },
+                }));
+        });
+    });
+
     describe('when using card component', () => {
         beforeEach(() => {
             method = { ...getPaymentMethod(), id: 'card', gateway: 'stripev3', method: 'card'};
