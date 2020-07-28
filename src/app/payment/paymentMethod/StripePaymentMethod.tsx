@@ -7,23 +7,26 @@ import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './Hos
 export type StripePaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId'>;
 
 export interface StripeOptions {
+    alipay?: StripeElementOptions;
     card: StripeElementOptions;
     iban: StripeElementOptions;
     idealBank: StripeElementOptions;
 }
 
 export enum StripeV3PaymentMethodType {
+    alipay = 'alipay',
     card = 'card',
     iban = 'iban',
     idealBank = 'idealBank',
 }
 
 const StripePaymentMethod: FunctionComponent<StripePaymentMethodProps> = ({
-    initializePayment,
-    method,
-    ...rest
-}) => {
+      initializePayment,
+      method,
+      ...rest
+  }) => {
     const paymentMethodType = method.id as StripeV3PaymentMethodType;
+    const additionalStripeV3Classes = paymentMethodType !== StripeV3PaymentMethodType.alipay ? 'optimizedCheckout-form-input widget--stripev3' : '';
     const containerId = `stripe-${paymentMethodType}-component-field`;
 
     const initializeStripePayment = useCallback(async (options: PaymentInitializeOptions) => {
@@ -55,7 +58,7 @@ const StripePaymentMethod: FunctionComponent<StripePaymentMethodProps> = ({
 
     return <HostedWidgetPaymentMethod
         { ...rest }
-        additionalContainerClassName="optimizedCheckout-form-input widget--stripev3"
+        additionalContainerClassName= { additionalStripeV3Classes }
         containerId={ containerId }
         hideContentWhenSignedOut
         initializePayment={ initializeStripePayment }
