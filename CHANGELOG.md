@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.68.0](https://github.com/bigcommerce/checkout-js/compare/v1.67.0...v1.68.0) (2020-07-29)
+
+
+### Features
+
+* **checkout:** INT-2919 Change display text for bolt ([e3b50eb](https://github.com/bigcommerce/checkout-js/commit/e3b50eb7de71cee2c527dec68ce5cb50c607c34b))
+* **checkout:** INT-2919 Desplay bolt in checkout page ([d227d13](https://github.com/bigcommerce/checkout-js/commit/d227d1346cdbbbe53b130e8335f04ec19c1b9313))
+* **payment:** INT-2653 Bump version checkout sdk ([64a82b3](https://github.com/bigcommerce/checkout-js/commit/64a82b3e6e1989d9f765403bc9dc2e8b155f41b1))
+
 ## [1.67.0](https://github.com/bigcommerce/checkout-js/compare/v1.66.1...v1.67.0) (2020-07-29)
 
 
