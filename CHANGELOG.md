@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.67.0](https://github.com/bigcommerce/checkout-js/compare/v1.66.1...v1.67.0) (2020-07-29)
+
+
+### Features
+
+* **payment:** INT-2653 Accept payments through StripeV3 using Alipay ([12c816a](https://github.com/bigcommerce/checkout-js/commit/12c816a290d5e62d876d7c5033aac36e94ea221d))
+
 ### [1.66.1](https://github.com/bigcommerce/checkout-js/compare/v1.66.0...v1.66.1) (2020-07-23)
 
 
