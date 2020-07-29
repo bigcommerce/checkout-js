@@ -17,6 +17,10 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
         return <TranslatedString id="payment.amazon_continue_action" />;
     }
 
+    if (methodId === PaymentMethodId.Bolt) {
+        return <TranslatedString id="payment.bolt_continue_action" />;
+    }
+
     if (methodGateway === PaymentMethodId.Barclaycard) {
         return <TranslatedString id="payment.barclaycard_continue_action" />;
     }
