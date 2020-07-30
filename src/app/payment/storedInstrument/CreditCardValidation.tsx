@@ -28,7 +28,7 @@ const CreditCardValidation: React.FunctionComponent<CreditCardValidationProps> =
             <br />
 
             <TranslatedString id="payment.instrument_trusted_shipping_address_text" />
-            </p> }
+        </p> }
 
         <div className="form-ccFields">
             { shouldShowNumberField && <CreditCardNumberField name="ccNumber" /> }

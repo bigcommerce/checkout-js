@@ -70,7 +70,7 @@ const AdyenV2CardValidation: React.FunctionComponent<AdyenV2CardValidationProps>
                     data-cse="encryptedExpiryDate"
                     id="encryptedExpiryDate"
                 />
-                </div> }
+            </div> }
         </div>
         { shouldShowMakeDefaultOption && <div className="form-field">
             <CreditCardStoreAsDefaultField
