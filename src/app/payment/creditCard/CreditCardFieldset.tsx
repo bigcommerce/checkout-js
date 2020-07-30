@@ -51,7 +51,7 @@ const CreditCardFieldset: FunctionComponent<CreditCardFieldsetProps> = ({
 
             { shouldShowCustomerCodeField && <CreditCardCustomerCodeField name="ccCustomerCode" /> }
 
-            { shouldShowSaveCardField && <StoreCreditCardFieldset showSetAsDefault={ Boolean(shouldShowSetAsDefault) } /> }
+            { shouldShowSaveCardField && <StoreCreditCardFieldset shouldShowSetAsDefault={ Boolean(shouldShowSetAsDefault) } /> }
         </div>
     </Fieldset>
 );

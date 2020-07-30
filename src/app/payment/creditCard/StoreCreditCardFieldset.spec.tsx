@@ -12,27 +12,27 @@ describe('StoreCreditCardFieldset', () => {
     it('shows the "save" input by default', () => {
         const component = mount(
             <Formik initialValues={ {} } onSubmit={ noop }>
-                <StoreCreditCardFieldset showSetAsDefault={ false } />
+                <StoreCreditCardFieldset shouldShowSetAsDefault={ false } />
             </Formik>
         );
 
         expect(component.find('input[name="shouldSaveInstrument"]').exists()).toBe(true);
     });
 
-    it('hides the "make default" input if "showSetAsDefault" is set to false', () => {
+    it('hides the "make default" input if "shouldShowSetAsDefault" is set to false', () => {
         const component = mount(
             <Formik initialValues={ {} } onSubmit={ noop }>
-                <StoreCreditCardFieldset showSetAsDefault={ false } />
+                <StoreCreditCardFieldset shouldShowSetAsDefault={ false } />
             </Formik>
         );
 
         expect(component.find('input[name="shouldSetAsDefaultInstrument"]').exists()).toBe(false);
     });
 
-    it('shows the "make default" input if "showSetAsDefault" is set to true', () => {
+    it('shows the "make default" input if "shouldShowSetAsDefault" is set to true', () => {
         const component = mount(
             <Formik initialValues={ {} } onSubmit={ noop }>
-                <StoreCreditCardFieldset showSetAsDefault={ true } />
+                <StoreCreditCardFieldset shouldShowSetAsDefault={ true } />
             </Formik>
         );
 
@@ -42,7 +42,7 @@ describe('StoreCreditCardFieldset', () => {
     it('shows "make default" input as disabled by default', () => {
         const component = mount(
             <Formik initialValues={ {} } onSubmit={ noop }>
-                <StoreCreditCardFieldset showSetAsDefault={ true } />
+                <StoreCreditCardFieldset shouldShowSetAsDefault={ true } />
             </Formik>
         );
 
@@ -52,7 +52,7 @@ describe('StoreCreditCardFieldset', () => {
     it('enables "make default" input after "save" is clicked', () => {
         const component = mount(
             <Formik initialValues={ {} } onSubmit={ noop }>
-                <StoreCreditCardFieldset showSetAsDefault={ true } />
+                <StoreCreditCardFieldset shouldShowSetAsDefault={ true } />
             </Formik>
         );
 

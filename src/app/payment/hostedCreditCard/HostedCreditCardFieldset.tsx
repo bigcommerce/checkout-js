@@ -75,7 +75,7 @@ const HostedCreditCardFieldset: FunctionComponent<HostedCreditCardFieldsetProps>
 
             { additionalFields }
 
-            { shouldShowSaveCardField && <StoreCreditCardFieldset showSetAsDefault={ true } /> }
+            { shouldShowSaveCardField && <StoreCreditCardFieldset shouldShowSetAsDefault={ true } /> }
         </div>
     </Fieldset>
 );

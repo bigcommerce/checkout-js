@@ -3,7 +3,7 @@ import React, { useState, FC } from 'react';
 import CreditCardStorageField from './CreditCardStorageField';
 import CreditCardStoreAsDefaultField from './CreditCardStoreAsDefaultField';
 
-const StoreCreditCardFieldset: FC<{ showSetAsDefault: boolean }> = ({ showSetAsDefault }) => {
+const StoreCreditCardFieldset: FC<{ shouldShowSetAsDefault: boolean }> = ({ shouldShowSetAsDefault }) => {
     const [saveIsChecked, setSaveIsChecked] = useState(false);
     const trackSaveCheckedStatus = (isChecked: boolean) => {
         setSaveIsChecked(isChecked);
@@ -12,7 +12,7 @@ const StoreCreditCardFieldset: FC<{ showSetAsDefault: boolean }> = ({ showSetAsD
     return (
         <>
             <CreditCardStorageField name="shouldSaveInstrument" onChange={ trackSaveCheckedStatus } />
-            { showSetAsDefault && <CreditCardStoreAsDefaultField disabled={ !saveIsChecked } name="shouldSetAsDefaultInstrument" /> }
+            { shouldShowSetAsDefault && <CreditCardStoreAsDefaultField disabled={ !saveIsChecked } name="shouldSetAsDefaultInstrument" /> }
         </>
     );
 };
