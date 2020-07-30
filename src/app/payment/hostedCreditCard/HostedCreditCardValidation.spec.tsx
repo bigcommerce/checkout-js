@@ -63,7 +63,7 @@ describe('HostedCreditCardValidation', () => {
 
     it('shows the "make default" input if configured', () => {
         const component = mount(
-            <HostedCreditCardValidationTest cardNumberId="cardNumber" showSetCardAsDefault={ true } />
+            <HostedCreditCardValidationTest cardNumberId="cardNumber" shouldShowSetCardAsDefault={ true } />
         );
 
         expect(component.find('input[name="shouldSetAsDefaultInstrument"]').exists())

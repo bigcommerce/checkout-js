@@ -10,7 +10,7 @@ export interface HostedCreditCardValidationProps {
     cardCodeId?: string;
     cardNumberId?: string;
     focusedFieldType?: string;
-    showSetCardAsDefault?: boolean;
+    shouldShowSetCardAsDefault?: boolean;
 }
 
 export interface HostedCreditCardValidationValues {
@@ -26,7 +26,7 @@ const HostedCreditCardValidation: FunctionComponent<HostedCreditCardValidationPr
     cardCodeId,
     cardNumberId,
     focusedFieldType,
-    showSetCardAsDefault,
+    shouldShowSetCardAsDefault,
 }) => (<>
     { cardNumberId && <p>
         <strong>
@@ -51,7 +51,7 @@ const HostedCreditCardValidation: FunctionComponent<HostedCreditCardValidationPr
             name="hostedForm.errors.cardCodeVerification"
         /> }
 
-        { showSetCardAsDefault && <CreditCardStoreAsDefaultField name="shouldSetAsDefaultInstrument" /> }
+        { shouldShowSetCardAsDefault && <CreditCardStoreAsDefaultField name="shouldSetAsDefaultInstrument" /> }
     </div>
 </>);
 
