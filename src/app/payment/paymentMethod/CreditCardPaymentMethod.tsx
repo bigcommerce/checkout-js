@@ -32,6 +32,7 @@ export interface CreditCardPaymentMethodProps {
 export type CreditCardPaymentMethodValues = CreditCardFieldsetValues | CardInstrumentFieldsetValues | HostedCreditCardFieldsetValues;
 
 interface WithCheckoutCreditCardPaymentMethodProps {
+    hasAnyInstruments: boolean;
     instruments: CardInstrument[];
     isCardCodeRequired: boolean;
     isCustomerCodeRequired: boolean;
@@ -148,6 +149,7 @@ class CreditCardPaymentMethod extends Component<
         const {
             cardFieldset,
             getStoredCardValidationFieldset,
+            hasAnyInstruments,
             instruments,
             isInitializing,
             isInstrumentCardCodeRequired: isInstrumentCardCodeRequiredProp,
@@ -158,7 +160,10 @@ class CreditCardPaymentMethod extends Component<
             method,
         } = this.props;
 
-        const { isAddingNewCard } = this.state;
+        const {
+            isAddingNewCard,
+            selectedInstrumentId = this.getInitiallySelectedInstrumentId(),
+        } = this.state;
 
         const selectedInstrument = this.getSelectedInstrument();
         const selectedInstrumentIsDefault = selectedInstrument && selectedInstrument.bigpayToken === this.getDefaultInstrumentId();
@@ -166,7 +171,7 @@ class CreditCardPaymentMethod extends Component<
         const isLoading = isInitializing || isLoadingInstruments;
         const shouldShowNumberField = selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument) : false;
         const shouldShowCardCodeField = selectedInstrument ? isInstrumentCardCodeRequiredProp(selectedInstrument, method) : false;
-        const shouldShowSetAsDefault = isInstrumentFeatureAvailableProp && instruments.length > 0 && !selectedInstrumentIsDefault;
+        const shouldShowSetCardAsDefault = hasAnyInstruments && !selectedInstrumentIsDefault;
 
         return (
             <LoadingOverlay
@@ -178,13 +183,13 @@ class CreditCardPaymentMethod extends Component<
                         instruments={ instruments }
                         onSelectInstrument={ this.handleSelectInstrument }
                         onUseNewInstrument={ this.handleUseNewCard }
-                        selectedInstrumentId={ selectedInstrument && selectedInstrument.bigpayToken }
+                        selectedInstrumentId={ selectedInstrumentId }
                         validateInstrument={ getStoredCardValidationFieldset ?
                             getStoredCardValidationFieldset(selectedInstrument) :
                             <CreditCardValidation
                                 shouldShowCardCodeField={ shouldShowCardCodeField }
                                 shouldShowNumberField={ shouldShowNumberField }
-                                shouldShowSetCardAsDefault={ shouldShowSetAsDefault }
+                                shouldShowSetCardAsDefault={ shouldShowSetCardAsDefault }
                             /> }
                     /> }
 
@@ -192,7 +197,7 @@ class CreditCardPaymentMethod extends Component<
                         shouldShowCardCodeField={ method.config.cardCode || method.config.cardCode === null }
                         shouldShowCustomerCodeField={ method.config.requireCustomerCode }
                         shouldShowSaveCardField={ isInstrumentFeatureAvailableProp }
-                        shouldShowSetAsDefault={ shouldShowSetAsDefault }
+                        shouldShowSetAsDefault={ shouldShowSetCardAsDefault }
                     /> }
 
                     { shouldShowCreditCardFieldset && cardFieldset }
@@ -209,19 +214,28 @@ class CreditCardPaymentMethod extends Component<
     }
 
     private getDefaultInstrumentId(): string | undefined {
+        const { instruments } = this.props;
+        const defaultInstrument = instruments.find(instrument => instrument.defaultInstrument);
+
+        return defaultInstrument && defaultInstrument.bigpayToken;
+    }
+
+    private getInitiallySelectedInstrumentId(): string | undefined {
         const { isAddingNewCard } = this.state;
 
         if (isAddingNewCard) {
             return;
         }
 
-        const { instruments } = this.props;
-        const defaultInstrument = (
-            instruments.find(instrument => instrument.defaultInstrument) ||
-            instruments[0]
-        );
+        const defaultInstrumentId = this.getDefaultInstrumentId();
 
-        return defaultInstrument && defaultInstrument.bigpayToken;
+        if (defaultInstrumentId) {
+            return defaultInstrumentId;
+        }
+
+        const { instruments: [firstInstrument] } = this.props;
+
+        return firstInstrument && firstInstrument.bigpayToken;
     }
 
     private getValidationSchema(): ObjectSchema<CreditCardPaymentMethodValues> | null {
@@ -314,8 +328,10 @@ function mapFromCheckoutProps(): MapToProps<
             isUsingMultiShipping,
             paymentMethod: method,
         });
+        const allInstruments = getInstruments();
 
         return {
+            hasAnyInstruments: !!allInstruments && allInstruments.length > 0,
             instruments,
             isCardCodeRequired: method.config.cardCode || method.config.cardCode === null,
             isCustomerCodeRequired: !!method.config.requireCustomerCode,

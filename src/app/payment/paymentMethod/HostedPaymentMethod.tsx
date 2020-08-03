@@ -30,6 +30,7 @@ interface HostedPaymentMethodState {
 }
 
 interface WithCheckoutHostedPaymentMethodProps {
+    hasAnyInstruments: boolean;
     instruments: AccountInstrument[];
     isInstrumentFeatureAvailable: boolean;
     isLoadingInstruments: boolean;
@@ -92,6 +93,7 @@ class HostedPaymentMethod extends Component<
 
     render(): ReactNode {
         const {
+            hasAnyInstruments,
             description,
             isInitializing = false,
             isLoadingInstruments,
@@ -109,7 +111,7 @@ class HostedPaymentMethod extends Component<
         const shouldShowInstrumentFieldset = isInstrumentFeatureAvailableProp && (hasSavedInstruments || isNewAddress);
         const shouldShowSaveInstrument = isInstrumentFeatureAvailableProp && !selectedInstrument;
         const selectedInstrumentIsDefault = selectedInstrument && selectedInstrument === this.getDefaultInstrument();
-        const shouldShowMakeDefault = isInstrumentFeatureAvailableProp && hasSavedInstruments && !selectedInstrumentIsDefault;
+        const shouldShowSetInstrumentAsDefault = hasAnyInstruments && isInstrumentFeatureAvailableProp && !selectedInstrumentIsDefault;
 
         if (!description && !isInstrumentFeatureAvailableProp) {
             return null;
@@ -130,7 +132,7 @@ class HostedPaymentMethod extends Component<
                         selectedInstrument={ selectedInstrument }
                     /> }
 
-                    <StoreInstrumentFieldset isAccountInstrument={ true } showSave={ shouldShowSaveInstrument } showSetAsDefault={ shouldShowMakeDefault } />
+                    <StoreInstrumentFieldset isAccountInstrument={ true } showSave={ shouldShowSaveInstrument } showSetAsDefault={ shouldShowSetInstrumentAsDefault } />
                 </div>
             </LoadingOverlay>
         );
@@ -206,8 +208,10 @@ function mapFromCheckoutProps(): MapToProps<
 
         const currentMethodInstruments = filterAccountInstruments(getInstruments(method));
         const trustedInstruments = filterTrustedInstruments(currentMethodInstruments);
+        const allInstruments = getInstruments();
 
         return {
+            hasAnyInstruments: !!allInstruments && allInstruments.length > 0,
             instruments: trustedInstruments,
             isNewAddress: trustedInstruments.length === 0 && currentMethodInstruments.length > 0,
             isInstrumentFeatureAvailable: !isPaymentDataSubmitted(method.id, method.gateway)

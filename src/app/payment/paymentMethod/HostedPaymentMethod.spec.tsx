@@ -236,6 +236,16 @@ describe('HostedPaymentMethod', () => {
                 .toHaveLength(0);
         });
 
+        it('does not show the "make default" option when there are no previously stored instruments', () => {
+            jest.spyOn(checkoutState.data, 'getInstruments')
+                .mockReturnValue([]);
+
+            const container = mount(<HostedPaymentMethodTest { ...defaultProps } />);
+
+            expect(container.find('input[name="shouldSetAsDefaultInstrument"]').exists())
+                .toBe(false);
+        });
+
         it('does not show instruments fieldset when starting from the cart', () => {
             jest.spyOn(checkoutState.data, 'isPaymentDataSubmitted')
                 .mockReturnValue(true);

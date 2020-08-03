@@ -320,6 +320,16 @@ describe('HostedWidgetPaymentMethod', () => {
             expect(container.find('input[name="shouldSetAsDefaultInstrument"]').exists()).toBe(true);
         });
 
+        it('does not show the "make default" option when there are no previously stored instruments', () => {
+            jest.spyOn(checkoutState.data, 'getInstruments')
+                .mockReturnValue([]);
+
+            const container = mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
+
+            expect(container.find('input[name="shouldSetAsDefaultInstrument"]').exists())
+                .toBe(false);
+        });
+
         it('uses PaymentMethod to retrieve instruments', () => {
             mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
 
