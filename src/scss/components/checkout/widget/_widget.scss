@@ -60,6 +60,18 @@
     margin-bottom: remCalc(20px);
     margin-top: remCalc(20px);
     padding: 1rem;
+
+    @media screen and (max-width: 375px) {
+        margin: remCalc(20px) -2rem remCalc(20px) -2rem;
+        padding: 1rem;
+        width: 20rem;
+    }
+
+    @media screen and (max-width: 320px) {
+        margin: remCalc(20px) -2rem remCalc(20px) -3rem;
+        padding: 1rem;
+        width: 19rem;
+    }
 }
 
 .StripeElement--focus {
