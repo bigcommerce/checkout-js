@@ -38,7 +38,13 @@ const CheckboxFormField: FunctionComponent<CheckboxFormFieldProps> = ({
                 testId={ `${kebabCase(name)}-field-error-message` }
             />
         </Fragment>
-    ), [disabled, id, labelContent, name]);
+    ), [
+            disabled,
+            id,
+            labelContent,
+            name,
+        ]
+    );
 
     return <BasicFormField
         additionalClassName={ additionalClassName }

@@ -1,5 +1,5 @@
 
-import React, { useState, FC } from 'react';
+import React, { useState, FunctionComponent } from 'react';
 
 import { CreditCardStorageField, CreditCardStoreAsDefaultField } from '../creditCard';
 import {  AccountInstrumentStorageField, AccountInstrumentStoreAsDefaultField } from '../storedInstrument';
@@ -10,7 +10,7 @@ interface StoreInstrumentFieldsetProps {
     isAccountInstrument: boolean;
 }
 
-const StoreInstrumentFieldset: FC<StoreInstrumentFieldsetProps> = ({showSave, showSetAsDefault, isAccountInstrument}) => {
+const StoreInstrumentFieldset: FunctionComponent<StoreInstrumentFieldsetProps> = ({showSave, showSetAsDefault, isAccountInstrument}) => {
     const StorageField = isAccountInstrument ? AccountInstrumentStorageField : CreditCardStorageField;
     const StoreAsDefaultField = isAccountInstrument ? AccountInstrumentStoreAsDefaultField : CreditCardStoreAsDefaultField;
     const [saveIsChecked, setSaveIsChecked] = useState(false);
@@ -21,8 +21,20 @@ const StoreInstrumentFieldset: FC<StoreInstrumentFieldsetProps> = ({showSave, sh
 
     return (
         <>
-            { showSave && <StorageField name="shouldSaveInstrument" onChange={ trackSaveCheckedStatus } /> }
-            { showSetAsDefault && <StoreAsDefaultField disabled={ !setAsDefaultEnabled } name="shouldSetAsDefaultInstrument" /> }
+            {
+                showSave &&
+                <StorageField
+                    name="shouldSaveInstrument"
+                    onChange={ trackSaveCheckedStatus }
+                />
+            }
+            {
+                showSetAsDefault &&
+                <StoreAsDefaultField
+                    disabled={ !setAsDefaultEnabled }
+                    name="shouldSetAsDefaultInstrument"
+                />
+            }
         </>
     );
 };
