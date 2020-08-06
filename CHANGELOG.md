@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.70.0](https://github.com/bigcommerce/checkout-js/compare/v1.69.0...v1.70.0) (2020-08-06)
+
+
+### Features
+
+* **checkout:** CHECKOUT-5089 Bump checkout-sdk version ([44d0a15](https://github.com/bigcommerce/checkout-js/commit/44d0a15c4e7f8ce1a2497b00cd7ef00ab5bd7dc0))
+
+
+### Bug Fixes
+
+* **payment:** INT-2902  modified style in order to avoid  overlapping fields with small devices  on stripeV3 ([83f26f4](https://github.com/bigcommerce/checkout-js/commit/83f26f41dfcc282d8086880d90a6202433f4faec))
+
 ## [1.69.0](https://github.com/bigcommerce/checkout-js/compare/v1.68.0...v1.69.0) (2020-07-31)
 
 
