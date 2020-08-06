@@ -166,11 +166,11 @@ class CreditCardPaymentMethod extends Component<
         } = this.state;
 
         const selectedInstrument = this.getSelectedInstrument();
-        const selectedInstrumentIsDefault = selectedInstrument && selectedInstrument.bigpayToken === this.getDefaultInstrumentId();
         const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
         const isLoading = isInitializing || isLoadingInstruments;
         const shouldShowNumberField = selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument) : false;
         const shouldShowCardCodeField = selectedInstrument ? isInstrumentCardCodeRequiredProp(selectedInstrument, method) : false;
+        const selectedInstrumentIsDefault = selectedInstrument && selectedInstrument.defaultInstrument;
         const shouldShowSetCardAsDefault = hasAnyInstruments && !selectedInstrumentIsDefault;
 
         return (
@@ -227,15 +227,13 @@ class CreditCardPaymentMethod extends Component<
             return;
         }
 
-        const defaultInstrumentId = this.getDefaultInstrumentId();
+        const { instruments } = this.props;
+        const targetInstrument = (
+            instruments.find(instrument => instrument.defaultInstrument) ||
+            instruments[0]
+        );
 
-        if (defaultInstrumentId) {
-            return defaultInstrumentId;
-        }
-
-        const { instruments: [firstInstrument] } = this.props;
-
-        return firstInstrument && firstInstrument.bigpayToken;
+        return targetInstrument && targetInstrument.bigpayToken;
     }
 
     private getValidationSchema(): ObjectSchema<CreditCardPaymentMethodValues> | null {

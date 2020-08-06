@@ -238,11 +238,14 @@ class HostedWidgetPaymentMethod extends Component<
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
         } = this.props;
 
-        const { selectedInstrumentId = this.getInitiallySelectedInstrumentId(), isAddingNewCard } = this.state;
-        const selectedInstrument = find(instruments, { bigpayToken: isAddingNewCard ? undefined : selectedInstrumentId });
-        const selectedInstrumentIsDefault = selectedInstrument && selectedInstrument.bigpayToken === this.getDefaultInstrumentId();
+        const {
+            selectedInstrumentId = this.getInitiallySelectedInstrumentId(),
+            isAddingNewCard,
+        } = this.state;
+        const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
         const shouldShowNumberField = selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument as CardInstrument) : false;
         const shouldShowCardCodeField = selectedInstrument ? isInstrumentCardCodeRequiredProp(selectedInstrument as CardInstrument, method) : false;
+        const selectedInstrumentIsDefault = selectedInstrument && selectedInstrument.defaultInstrument;
         const shouldShowSetCardAsDefault = hasAnyInstruments && isInstrumentFeatureAvailableProp && (!isAddingNewCard && !selectedInstrumentIsDefault);
 
         if (hideVerificationFields) {
@@ -297,11 +300,17 @@ class HostedWidgetPaymentMethod extends Component<
 
     private renderStoreInstrumentFieldSet(): ReactNode {
         const {
+            hasAnyInstruments,
+            instruments,
+            isAccountInstrument,
+        } = this.props;
+        const {
             selectedInstrumentId,
         } = this.state;
-        const { isAccountInstrument, hasAnyInstruments } = this.props;
 
-        const showSetAsDefault = hasAnyInstruments && !(selectedInstrumentId && selectedInstrumentId === this.getDefaultInstrumentId());
+        const selectedInstrument = selectedInstrumentId && instruments.find(instrument => instrument.bigpayToken === selectedInstrumentId);
+        const selectedInstrumentIsDefault = selectedInstrument && selectedInstrument.defaultInstrument;
+        const showSetAsDefault = hasAnyInstruments && !selectedInstrumentIsDefault;
 
         return <StoreInstrumentFieldset isAccountInstrument={ Boolean(isAccountInstrument) } showSave={ true } showSetAsDefault={ showSetAsDefault } />;
     }
@@ -342,23 +351,20 @@ class HostedWidgetPaymentMethod extends Component<
         }, selectedInstrumentId);
     }
 
-    private getDefaultInstrumentId(): string | undefined {
-        const { instruments } = this.props;
-        const defaultInstrument = instruments.find(instrument => instrument.defaultInstrument);
-
-        return defaultInstrument && defaultInstrument.bigpayToken;
-    }
-
     private getInitiallySelectedInstrumentId(): string | undefined {
-        const defaultInstrumentId = this.getDefaultInstrumentId();
+        const { isAddingNewCard } = this.state;
 
-        if (defaultInstrumentId) {
-            return defaultInstrumentId;
+        if (isAddingNewCard) {
+            return;
         }
 
-        const { instruments: [firstInstrument] } = this.props;
+        const { instruments } = this.props;
+        const defaultInstrument = (
+            instruments.find(instrument => instrument.defaultInstrument) ||
+            instruments[0]
+        );
 
-        return firstInstrument && firstInstrument.bigpayToken;
+        return defaultInstrument && defaultInstrument.bigpayToken;
     }
 
     private handleUseNewCard: () => void = async () => {
