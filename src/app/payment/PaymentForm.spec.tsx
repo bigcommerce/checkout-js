@@ -235,17 +235,6 @@ describe('PaymentForm', () => {
                 ccCvv: '123',
                 ccName: 'Foo Bar',
                 ccExpiry: '10 / 22',
-                hostedForm: {
-                    cardType: '',
-                    errors: {
-                        cardCode: '',
-                        cardCodeVerification: '',
-                        cardExpiry: '',
-                        cardName: '',
-                        cardNumber: '',
-                        cardNumberVerification: '',
-                    },
-                },
                 paymentProviderRadio: defaultProps.defaultMethodId,
                 shouldSaveInstrument: false,
                 terms: false,

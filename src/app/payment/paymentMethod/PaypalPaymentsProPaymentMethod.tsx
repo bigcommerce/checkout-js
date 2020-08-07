@@ -3,12 +3,12 @@ import React, { FunctionComponent } from 'react';
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { EMPTY_ARRAY } from '../../common/utility';
 
-import CreditCardPaymentMethod, { CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
+import HostedCreditCardPaymentMethod, { HostedCreditCardPaymentMethodProps } from './HostedCreditCardPaymentMethod';
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
 import { PaymentMethodProps } from './PaymentMethod';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
 
-export type PaypalPaymentsProPaymentMethodProps = HostedPaymentMethodProps | CreditCardPaymentMethodProps;
+export type PaypalPaymentsProPaymentMethodProps = HostedPaymentMethodProps | HostedCreditCardPaymentMethodProps;
 
 interface WithCheckoutPaypalPaymentsProPaymentMethodProps {
     isHostedPayment: boolean;
@@ -33,7 +33,7 @@ const PaypalPaymentsProPaymentMethod: FunctionComponent<
     }
 
     return (
-        <CreditCardPaymentMethod { ...props } />
+        <HostedCreditCardPaymentMethod { ...props } />
     );
 };
 

@@ -3,7 +3,8 @@ import { Field, Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import CreditCardStorageField from './CreditCardStorageField';
+import { CreditCardStorageField } from '../creditCard';
+
 import HostedCreditCardCodeField from './HostedCreditCardCodeField';
 import HostedCreditCardExpiryField from './HostedCreditCardExpiryField';
 import HostedCreditCardFieldset, { HostedCreditCardFieldsetProps } from './HostedCreditCardFieldset';

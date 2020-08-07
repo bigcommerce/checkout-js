@@ -2,8 +2,9 @@ import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigc
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { useEffect, FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
+import { object } from 'yup';
 
 import { getCart } from '../../cart/carts.mock';
 import { CheckoutProvider } from '../../checkout';
@@ -11,12 +12,56 @@ import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { Modal, ModalProps } from '../../ui/modal';
+import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps } from '../hostedCreditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
 import BraintreeCreditCardPaymentMethod, { BraintreeCreditCardPaymentMethodProps } from './BraintreeCreditCardPaymentMethod';
 import CreditCardPaymentMethod from './CreditCardPaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
+
+const hostedFormOptions = {
+    fields: {
+        cardCode: { containerId: 'cardCode', placeholder: 'Card code' },
+        cardName: { containerId: 'cardName', placeholder: 'Card name' },
+        cardNumber: { containerId: 'cardNumber', placeholder: 'Card number' },
+        cardExpiry: { containerId: 'cardExpiry', placeholder: 'Card expiry' },
+    },
+};
+
+const injectedProps: WithInjectedHostedCreditCardFieldsetProps = {
+    getHostedFormOptions: () => Promise.resolve(hostedFormOptions),
+    getHostedStoredCardValidationFieldset: () => <div />,
+    hostedFieldset: <div />,
+    hostedStoredCardValidationSchema: object(),
+    hostedValidationSchema: object(),
+};
+
+jest.mock('../hostedCreditCard', () => ({
+    ...jest.requireActual('../hostedCreditCard'),
+    withHostedCreditCardFieldset: jest.fn(
+        Component => props => <Component
+            { ...props }
+            { ...injectedProps }
+        />
+    ) as jest.Mocked<typeof withHostedCreditCardFieldset>,
+}));
+
+jest.mock('./CreditCardPaymentMethod', () =>
+    jest.fn(({
+        initializePayment,
+        method,
+    }) => {
+        useEffect(() => {
+            initializePayment({
+                methodId: method.id,
+                gatewayId: method.gateway,
+            });
+        });
+
+        return <div />;
+    }) as jest.Mocked<typeof CreditCardPaymentMethod>
+);
 
 describe('when using Braintree payment', () => {
     let BraintreeCreditCardPaymentMethodTest: FunctionComponent<BraintreeCreditCardPaymentMethodProps>;
@@ -78,20 +123,23 @@ describe('when using Braintree payment', () => {
         );
     });
 
-    it('renders as credit card payment method', () => {
+    it('renders as credit card payment method', async () => {
         const container = mount(<BraintreeCreditCardPaymentMethodTest { ...defaultProps } />);
+
+        await new Promise(resolve => process.nextTick(resolve));
 
         expect(container.find(CreditCardPaymentMethod).props())
             .toEqual(expect.objectContaining({
                 deinitializePayment: expect.any(Function),
                 initializePayment: expect.any(Function),
                 method: defaultProps.method,
-                shouldDisableHostedFieldset: true,
             }));
     });
 
-    it('initializes method with required config', () => {
+    it('initializes method with required config', async () => {
         mount(<BraintreeCreditCardPaymentMethodTest { ...defaultProps } />);
+
+        await new Promise(resolve => process.nextTick(resolve));
 
         expect(defaultProps.initializePayment)
             .toHaveBeenCalledWith(expect.objectContaining({
@@ -102,12 +150,33 @@ describe('when using Braintree payment', () => {
                         addFrame: expect.any(Function),
                         removeFrame: expect.any(Function),
                     },
+                    form: hostedFormOptions,
                 },
             }));
     });
 
+    it('injects hosted form properties to credit card payment method component', async () => {
+        const component = mount(<BraintreeCreditCardPaymentMethodTest { ...defaultProps } />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        const decoratedComponent = component.find(CreditCardPaymentMethod);
+
+        expect(decoratedComponent.prop('cardFieldset'))
+            .toEqual(injectedProps.hostedFieldset);
+        expect(decoratedComponent.prop('cardValidationSchema'))
+            .toEqual(injectedProps.hostedValidationSchema);
+        expect(decoratedComponent.prop('getStoredCardValidationFieldset'))
+            .toEqual(injectedProps.getHostedStoredCardValidationFieldset);
+        expect(decoratedComponent.prop('storedCardValidationSchema'))
+            .toEqual(injectedProps.hostedStoredCardValidationSchema);
+    });
+
     it('renders 3DS modal if required by selected method', async () => {
         const component = mount(<BraintreeCreditCardPaymentMethodTest { ...defaultProps } />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+
         const initializeOptions = (defaultProps.initializePayment as jest.Mock).mock.calls[0][0];
 
         act(() => {
@@ -134,6 +203,9 @@ describe('when using Braintree payment', () => {
     it('cancels 3DS modal flow if user chooses to close modal', async () => {
         const cancelThreeDSecureVerification = jest.fn();
         const component = mount(<BraintreeCreditCardPaymentMethodTest { ...defaultProps } />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+
         const initializeOptions = (defaultProps.initializePayment as jest.Mock).mock.calls[0][0];
 
         act(() => {

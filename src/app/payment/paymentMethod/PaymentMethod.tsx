@@ -11,9 +11,9 @@ import BarclaycardPaymentMethod from './BarclaycardPaymentMethod';
 import BlueSnapV2PaymentMethod from './BlueSnapV2PaymentMethod';
 import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod';
 import ChasePayPaymentMethod from './ChasePayPaymentMethod';
-import CreditCardPaymentMethod from './CreditCardPaymentMethod';
 import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
 import GooglePayPaymentMethod from './GooglePayPaymentMethod';
+import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';
 import HostedPaymentMethod from './HostedPaymentMethod';
 import KlarnaPaymentMethod from './KlarnaPaymentMethod';
 import KlarnaV2PaymentMethod from './KlarnaV2PaymentMethod';
@@ -153,7 +153,7 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
     // check last.
     if (method.method === PaymentMethodType.CreditCard ||
         method.type === PaymentMethodProviderType.Api) {
-        return <CreditCardPaymentMethod { ...props } />;
+        return <HostedCreditCardPaymentMethod { ...props } />;
     }
 
     return null;

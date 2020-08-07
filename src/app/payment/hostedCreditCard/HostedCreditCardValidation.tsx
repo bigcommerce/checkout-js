@@ -1,7 +1,9 @@
 import React, { FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
-import { HostedCreditCardCodeField, HostedCreditCardNumberField } from '../creditCard';
+
+import HostedCreditCardCodeField from './HostedCreditCardCodeField';
+import HostedCreditCardNumberField from './HostedCreditCardNumberField';
 
 export interface HostedCreditCardValidationProps {
     cardCodeId?: string;
