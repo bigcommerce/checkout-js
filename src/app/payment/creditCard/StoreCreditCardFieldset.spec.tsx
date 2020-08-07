@@ -2,9 +2,7 @@ import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
-import { act } from 'react-dom/test-utils';
 
-import CreditCardStorageField from './CreditCardStorageField';
 import StoreCreditCardFieldset from './StoreCreditCardFieldset';
 
 describe('StoreCreditCardFieldset', () => {
@@ -39,9 +37,9 @@ describe('StoreCreditCardFieldset', () => {
         expect(component.find('input[name="shouldSetAsDefaultInstrument"]').exists()).toBe(true);
     });
 
-    it('shows "make default" input as disabled by default', () => {
+    it('renders the "make default" input as disabled when Formik passes shouldSaveInstrument as false', () => {
         const component = mount(
-            <Formik initialValues={ {} } onSubmit={ noop }>
+            <Formik initialValues={ { shouldSaveInstrument: false } } onSubmit={ noop }>
                 <StoreCreditCardFieldset shouldShowSetAsDefault={ true } />
             </Formik>
         );
@@ -49,22 +47,12 @@ describe('StoreCreditCardFieldset', () => {
         expect(component.find('input[name="shouldSetAsDefaultInstrument"]').props().disabled).toBe(true);
     });
 
-    it('enables "make default" input after "save" is clicked', () => {
+    it('renders the "make default" input as enabled when Formik passes shouldSaveInstrument as true', () => {
         const component = mount(
-            <Formik initialValues={ {} } onSubmit={ noop }>
+            <Formik initialValues={ { shouldSaveInstrument: true } } onSubmit={ noop }>
                 <StoreCreditCardFieldset shouldShowSetAsDefault={ true } />
             </Formik>
         );
-
-        const saveOnChange = component.find(CreditCardStorageField).prop('onChange');
-
-        if (saveOnChange) {
-            act(() => {
-                saveOnChange(true);
-            });
-        }
-
-        component.update();
 
         expect(component.find('input[name="shouldSetAsDefaultInstrument"]').props().disabled).toBe(false);
     });

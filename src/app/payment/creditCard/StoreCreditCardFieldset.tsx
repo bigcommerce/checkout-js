@@ -1,29 +1,32 @@
-import React, { useState, FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
+
+import { connectFormik, ConnectFormikProps } from '../../common/form';
 
 import CreditCardStorageField from './CreditCardStorageField';
 import CreditCardStoreAsDefaultField from './CreditCardStoreAsDefaultField';
 
-const StoreCreditCardFieldset: FunctionComponent<{ shouldShowSetAsDefault: boolean }> = ({ shouldShowSetAsDefault }) => {
-    const [saveIsChecked, setSaveIsChecked] = useState(false);
-    const trackSaveCheckedStatus = (isChecked: boolean) => {
-        setSaveIsChecked(isChecked);
-    };
+interface FormikValues {
+    shouldSaveInstrument: boolean;
+}
+interface StoreCreditCardFieldsetProps extends ConnectFormikProps<FormikValues> {
+    shouldShowSetAsDefault: boolean;
+}
 
-    return (
-        <>
-            <CreditCardStorageField
-                name="shouldSaveInstrument"
-                onChange={ trackSaveCheckedStatus }
+const StoreCreditCardFieldset: FunctionComponent<StoreCreditCardFieldsetProps> = ({ shouldShowSetAsDefault, formik }) => {
+    const { values: { shouldSaveInstrument: saveIsChecked } } = formik;
+
+    return <>
+        <CreditCardStorageField
+            name="shouldSaveInstrument"
+        />
+        {
+            shouldShowSetAsDefault &&
+            <CreditCardStoreAsDefaultField
+                disabled={ !saveIsChecked }
+                name="shouldSetAsDefaultInstrument"
             />
-            {
-                shouldShowSetAsDefault &&
-                <CreditCardStoreAsDefaultField
-                    disabled={ !saveIsChecked }
-                    name="shouldSetAsDefaultInstrument"
-                />
-            }
-        </>
-    );
+        }
+    </>;
 };
 
-export default StoreCreditCardFieldset;
+export default connectFormik(memo(StoreCreditCardFieldset));
