@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.71.0](https://github.com/bigcommerce/checkout-js/compare/v1.70.0...v1.71.0) (2020-08-07)
+
+
+### Features
+
+* **payment:** CHECKOUT-4947 Use hosted credit card fields for Braintree payment provider ([49d1e28](https://github.com/bigcommerce/checkout-js/commit/49d1e280127de7f7974105c03d863596d0a7feed))
+
 ## [1.70.0](https://github.com/bigcommerce/checkout-js/compare/v1.69.0...v1.70.0) (2020-08-06)
 
 
