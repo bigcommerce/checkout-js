@@ -360,13 +360,11 @@ describe('HostedWidgetPaymentMethod', () => {
 
             const container = mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
             const hostedWidgetComponent = container.find('#widget-container');
-            const accountInstrumentStorageFieldComponent = container.find(storedInstrumentModule.AccountInstrumentStorageField);
 
             expect(hostedWidgetComponent)
                 .toHaveLength(1);
 
-            expect(accountInstrumentStorageFieldComponent)
-                .toHaveLength(1);
+            expect(container.find('input[name="shouldSaveInstrument"]').exists()).toBe(true);
         });
 
         it('shows fields on the Widget when you click Use another payment form on the vaulted bank account instruments dropdown', () => {

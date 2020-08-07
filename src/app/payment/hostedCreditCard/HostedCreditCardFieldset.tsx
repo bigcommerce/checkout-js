@@ -2,7 +2,7 @@ import React, { FunctionComponent, ReactNode } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { Fieldset, Legend } from '../../ui/form';
-import { StoreCreditCardFieldset } from '../creditCard';
+import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
 
 import HostedCreditCardCodeField from './HostedCreditCardCodeField';
 import HostedCreditCardExpiryField from './HostedCreditCardExpiryField';
@@ -39,7 +39,7 @@ const HostedCreditCardFieldset: FunctionComponent<HostedCreditCardFieldsetProps>
     cardNameId,
     cardNumberId,
     focusedFieldType,
-    shouldShowSaveCardField,
+    shouldShowSaveCardField = false,
 }) => (
     <Fieldset
         legend={
@@ -75,7 +75,11 @@ const HostedCreditCardFieldset: FunctionComponent<HostedCreditCardFieldsetProps>
 
             { additionalFields }
 
-            { shouldShowSaveCardField && <StoreCreditCardFieldset shouldShowSetAsDefault={ true } /> }
+            <StoreInstrumentFieldset
+                isAccountInstrument={ false }
+                showSave={ shouldShowSaveCardField }
+                showSetAsDefault={ shouldShowSaveCardField }
+            />
         </div>
     </Fieldset>
 );

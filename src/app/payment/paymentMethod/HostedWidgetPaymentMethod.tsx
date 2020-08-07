@@ -13,9 +13,9 @@ import { LoadingOverlay } from '../../ui/loading';
 import { isBankAccountInstrument, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, AccountInstrumentFieldset, CardInstrumentFieldset, CreditCardValidation } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
+import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
 
 import SignOutLink from './SignOutLink';
-import StoreInstrumentFieldset from './StoreInstrumentFieldset';
 
 export interface HostedWidgetPaymentMethodProps {
     additionalContainerClassName?: string;

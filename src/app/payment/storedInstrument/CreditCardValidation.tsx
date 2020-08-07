@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
 
 import { TranslatedString } from '../../locale';
-import { CreditCardCodeField, CreditCardNumberField, CreditCardStoreAsDefaultField } from '../creditCard';
+import { CreditCardCodeField, CreditCardNumberField } from '../creditCard';
+import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
 
 interface CreditCardValidationProps {
     shouldShowCardCodeField: boolean;
@@ -35,7 +36,11 @@ const CreditCardValidation: React.FunctionComponent<CreditCardValidationProps> =
 
             { shouldShowCardCodeField && <CreditCardCodeField name="ccCvv" /> }
 
-            { shouldShowSetCardAsDefault && <CreditCardStoreAsDefaultField name="shouldSetAsDefaultInstrument" /> }
+            <StoreInstrumentFieldset
+                isAccountInstrument={ false }
+                showSave={ false }
+                showSetAsDefault={ Boolean(shouldShowSetCardAsDefault) }
+            />
         </div>
     </Fragment>
 );

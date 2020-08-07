@@ -2,13 +2,13 @@ import React, { memo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { Fieldset, Legend } from '../../ui/form';
+import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
 
 import CreditCardCodeField from './CreditCardCodeField';
 import CreditCardCustomerCodeField from './CreditCardCustomerCodeField';
 import CreditCardExpiryField from './CreditCardExpiryField';
 import CreditCardNameField from './CreditCardNameField';
 import CreditCardNumberField from './CreditCardNumberField';
-import StoreCreditCardFieldset from './StoreCreditCardFieldset';
 
 export interface CreditCardFieldsetProps {
     shouldShowCardCodeField?: boolean;
@@ -29,8 +29,8 @@ export interface CreditCardFieldsetValues {
 const CreditCardFieldset: FunctionComponent<CreditCardFieldsetProps> = ({
     shouldShowCardCodeField,
     shouldShowCustomerCodeField,
-    shouldShowSaveCardField,
-    shouldShowSetAsDefault,
+    shouldShowSaveCardField = false,
+    shouldShowSetAsDefault = false,
 }) => (
     <Fieldset
         additionalClassName="creditCardFieldset"
@@ -51,7 +51,11 @@ const CreditCardFieldset: FunctionComponent<CreditCardFieldsetProps> = ({
 
             { shouldShowCustomerCodeField && <CreditCardCustomerCodeField name="ccCustomerCode" /> }
 
-            { shouldShowSaveCardField && <StoreCreditCardFieldset shouldShowSetAsDefault={ Boolean(shouldShowSetAsDefault) } /> }
+            <StoreInstrumentFieldset
+                isAccountInstrument={ false }
+                showSave={ shouldShowSaveCardField }
+                showSetAsDefault={ shouldShowSetAsDefault }
+            />
         </div>
     </Fieldset>
 );

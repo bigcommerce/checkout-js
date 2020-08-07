@@ -11,8 +11,7 @@ import { LoadingOverlay } from '../../ui/loading';
 import { isAccountInstrument, isInstrumentFeatureAvailable, AccountInstrumentFieldset } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
-
-import StoreInstrumentFieldset from './StoreInstrumentFieldset';
+import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
 
 export interface HostedPaymentMethodProps {
     description?: ReactNode;
@@ -110,7 +109,7 @@ class HostedPaymentMethod extends Component<
         const hasSavedInstruments = instruments.length > 0;
         const shouldShowInstrumentFieldset = isInstrumentFeatureAvailableProp && (hasSavedInstruments || isNewAddress);
         const shouldShowSaveInstrument = isInstrumentFeatureAvailableProp && !selectedInstrument;
-        const selectedInstrumentIsDefault = selectedInstrument && selectedInstrument === this.getDefaultInstrument();
+        const selectedInstrumentIsDefault = selectedInstrument && selectedInstrument.defaultInstrument;
         const shouldShowSetInstrumentAsDefault = hasAnyInstruments && isInstrumentFeatureAvailableProp && !selectedInstrumentIsDefault;
 
         if (!description && !isInstrumentFeatureAvailableProp) {
@@ -132,7 +131,11 @@ class HostedPaymentMethod extends Component<
                         selectedInstrument={ selectedInstrument }
                     /> }
 
-                    <StoreInstrumentFieldset isAccountInstrument={ true } showSave={ shouldShowSaveInstrument } showSetAsDefault={ shouldShowSetInstrumentAsDefault } />
+                    <StoreInstrumentFieldset
+                        isAccountInstrument={ true }
+                        showSave={ shouldShowSaveInstrument }
+                        showSetAsDefault={ shouldShowSetInstrumentAsDefault }
+                    />
                 </div>
             </LoadingOverlay>
         );

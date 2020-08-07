@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 
 import { TranslatedString } from '../../locale';
-import { CreditCardStoreAsDefaultField } from '../creditCard';
+import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
 
 export interface AdyenV2CardValidationProps {
     verificationFieldsContainerId?: string;
@@ -73,8 +73,10 @@ const AdyenV2CardValidation: React.FunctionComponent<AdyenV2CardValidationProps>
             </div> }
         </div>
         { shouldShowMakeDefaultOption && <div className="form-field">
-            <CreditCardStoreAsDefaultField
-                name="shouldSetAsDefaultInstrument"
+            <StoreInstrumentFieldset
+                isAccountInstrument={ false }
+                showSave={ false }
+                showSetAsDefault={ true }
             />
         </div> }
     </div>

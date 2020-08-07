@@ -162,7 +162,6 @@ class CreditCardPaymentMethod extends Component<
 
         const {
             isAddingNewCard,
-            selectedInstrumentId = this.getInitiallySelectedInstrumentId(),
         } = this.state;
 
         const selectedInstrument = this.getSelectedInstrument();
@@ -183,7 +182,7 @@ class CreditCardPaymentMethod extends Component<
                         instruments={ instruments }
                         onSelectInstrument={ this.handleSelectInstrument }
                         onUseNewInstrument={ this.handleUseNewCard }
-                        selectedInstrumentId={ selectedInstrumentId }
+                        selectedInstrumentId={ selectedInstrument && selectedInstrument.bigpayToken }
                         validateInstrument={ getStoredCardValidationFieldset ?
                             getStoredCardValidationFieldset(selectedInstrument) :
                             <CreditCardValidation
@@ -214,13 +213,6 @@ class CreditCardPaymentMethod extends Component<
     }
 
     private getDefaultInstrumentId(): string | undefined {
-        const { instruments } = this.props;
-        const defaultInstrument = instruments.find(instrument => instrument.defaultInstrument);
-
-        return defaultInstrument && defaultInstrument.bigpayToken;
-    }
-
-    private getInitiallySelectedInstrumentId(): string | undefined {
         const { isAddingNewCard } = this.state;
 
         if (isAddingNewCard) {
@@ -228,12 +220,12 @@ class CreditCardPaymentMethod extends Component<
         }
 
         const { instruments } = this.props;
-        const targetInstrument = (
+        const defaultInstrument = (
             instruments.find(instrument => instrument.defaultInstrument) ||
             instruments[0]
         );
 
-        return targetInstrument && targetInstrument.bigpayToken;
+        return defaultInstrument && defaultInstrument.bigpayToken;
     }
 
     private getValidationSchema(): ObjectSchema<CreditCardPaymentMethodValues> | null {
