@@ -245,7 +245,7 @@ describe('InstrumentSelect', () => {
         const submit = jest.fn();
         initialValues.instrumentId = '1234';
 
-        const Component = ({ show }: { show: boolean }) =>
+        const Component = ({ show, selectedInstrumentId }: { show: boolean; selectedInstrumentId?: string }) =>
             <Formik initialValues={ initialValues } onSubmit={ submit }>
                 { ({ handleSubmit }) => <form onSubmit={ handleSubmit }>
                     { show && <Field name="instrumentId">
@@ -253,13 +253,14 @@ describe('InstrumentSelect', () => {
                             <InstrumentSelect
                                 { ...field }
                                 { ...defaultProps }
+                                selectedInstrumentId={ selectedInstrumentId }
                             />
                         ) }
                     </Field> }
                 </form> }
             </Formik>;
 
-        const component = mount(<Component show={ true } />);
+        const component = mount(<Component selectedInstrumentId={ defaultProps.selectedInstrumentId } show={ true } />);
 
         component.find('form')
             .simulate('submit')
@@ -268,6 +269,10 @@ describe('InstrumentSelect', () => {
         await new Promise(resolve => process.nextTick(resolve));
 
         expect(submit).toHaveBeenCalledWith({ instrumentId: '1234' }, expect.anything());
+
+        component
+            .setProps({ selectedInstrumentId: '' })
+            .update();
 
         component
             .setProps({ show: false })
