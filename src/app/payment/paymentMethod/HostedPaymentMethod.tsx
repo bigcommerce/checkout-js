@@ -5,7 +5,7 @@ import React, { Component, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
-import { MapToProps } from '../../common/hoc';
+import { MapToPropsFactory } from '../../common/hoc';
 import { withLanguage, TranslatedString, WithLanguageProps } from '../../locale';
 import { CheckboxFormField } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
@@ -166,11 +166,11 @@ class HostedPaymentMethod extends Component<
     };
 }
 
-function mapFromCheckoutProps(): MapToProps<
+const mapFromCheckoutProps: MapToPropsFactory<
     CheckoutContextProps,
     WithCheckoutHostedPaymentMethodProps,
     HostedPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
-> {
+> = () => {
     const filterAccountInstruments = memoizeOne((instruments: PaymentInstrument[] = []) => instruments.filter(isAccountInstrument));
     const filterTrustedInstruments = memoizeOne((instruments: AccountInstrument[] = []) => instruments.filter(({ trustedShippingAddress }) => trustedShippingAddress));
 
@@ -222,6 +222,6 @@ function mapFromCheckoutProps(): MapToProps<
             loadInstruments: checkoutService.loadInstruments,
         };
     };
-}
+};
 
 export default connectFormik(withLanguage(withPayment(withCheckout(mapFromCheckoutProps)(HostedPaymentMethod))));

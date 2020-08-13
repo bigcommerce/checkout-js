@@ -1,10 +1,3 @@
-import { WithInjectedHostedCreditCardFieldsetProps } from './withHostedCreditCardFieldset';
-import { HostedCreditCardFieldsetValues } from './HostedCreditCardFieldset';
-import { HostedCreditCardValidationValues } from './HostedCreditCardValidation';
-
-export type WithInjectedHostedCreditCardFieldsetProps = WithInjectedHostedCreditCardFieldsetProps;
-export type HostedCreditCardFieldsetValues = HostedCreditCardFieldsetValues;
-export type HostedCreditCardValidationValues = HostedCreditCardValidationValues;
-
-export { default as withHostedCreditCardFieldset } from './withHostedCreditCardFieldset';
-export { default as HostedCreditCardFieldset } from './HostedCreditCardFieldset';
+export { HostedCreditCardValidationValues } from './HostedCreditCardValidation';
+export { default as withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps } from './withHostedCreditCardFieldset';
+export { default as HostedCreditCardFieldset, HostedCreditCardFieldsetValues } from './HostedCreditCardFieldset';

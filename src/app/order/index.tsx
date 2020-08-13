@@ -1,10 +1,5 @@
-import { RenderOrderConfirmationOptions } from './renderOrderConfirmation';
-import { OrderSummaryProps } from './OrderSummary';
-import { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
-
-export type OrderSummaryProps = OrderSummaryProps;
-export type OrderSummarySubtotalsProps = OrderSummarySubtotalsProps;
-export type RenderOrderConfirmationOptions = RenderOrderConfirmationOptions;
-
+export { RenderOrderConfirmationOptions } from './renderOrderConfirmation';
+export { OrderSummaryProps } from './OrderSummary';
+export { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 export { default as OrderStatus } from './OrderStatus';
 export { default as getPaymentInstructions } from './getPaymentInstructions';

@@ -39,6 +39,9 @@ jobs:
       - ci/pre-setup
       - node/npm-install
       - run:
+          name: "Run linter"
+          command: npm run lint
+      - run:
           name: "Test build"
           command: npm run build
       - persist_to_workspace:

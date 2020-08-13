@@ -14,7 +14,7 @@ import { getConsignment } from '../../shipping/consignment.mock';
 import { LoadingOverlay } from '../../ui/loading';
 import { CreditCardStorageField } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
-import * as storedInstrumentModule from '../storedInstrument';
+import { AccountInstrumentFieldset, AccountInstrumentStorageField, CardInstrumentFieldset } from '../storedInstrument';
 import { getInstruments } from '../storedInstrument/instruments.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
@@ -280,8 +280,8 @@ describe('HostedWidgetPaymentMethod', () => {
 
     describe('if stored instrument feature is available', () => {
         beforeEach(() => {
-            jest.spyOn(storedInstrumentModule, 'isInstrumentFeatureAvailable')
-                .mockReturnValue(true);
+            defaultProps.method.config.isVaultingEnabled = true;
+
             jest.spyOn(checkoutState.data, 'getInstruments')
                 .mockReturnValue(getInstruments());
             jest.spyOn(checkoutService, 'loadInstruments')
@@ -298,7 +298,7 @@ describe('HostedWidgetPaymentMethod', () => {
         it('only shows instruments fieldset when there is at least one stored instrument', () => {
             const component = mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
 
-            expect(component.find(storedInstrumentModule.CardInstrumentFieldset))
+            expect(component.find(CardInstrumentFieldset))
                 .toHaveLength(1);
         });
 
@@ -332,7 +332,7 @@ describe('HostedWidgetPaymentMethod', () => {
 
             const container = mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
             const hostedWidgetComponent = container.find('#widget-container');
-            const accountInstrumentStorageFieldComponent = container.find(storedInstrumentModule.AccountInstrumentStorageField);
+            const accountInstrumentStorageFieldComponent = container.find(AccountInstrumentStorageField);
 
             expect(hostedWidgetComponent)
                 .toHaveLength(1);
@@ -363,7 +363,7 @@ describe('HostedWidgetPaymentMethod', () => {
 
             const container = mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
 
-            container.find(storedInstrumentModule.AccountInstrumentFieldset)
+            container.find(AccountInstrumentFieldset)
                 .prop('onUseNewInstrument')();
             container.update();
 

@@ -40,7 +40,7 @@ const injectedProps: WithInjectedHostedCreditCardFieldsetProps = {
 jest.mock('../hostedCreditCard', () => ({
     ...jest.requireActual('../hostedCreditCard'),
     withHostedCreditCardFieldset: jest.fn(
-        Component => props => <Component
+        Component => (props: any) => <Component
             { ...props }
             { ...injectedProps }
         />

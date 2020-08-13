@@ -6,7 +6,7 @@ import { ObjectSchema } from 'yup';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
-import { MapToProps } from '../../common/hoc';
+import { MapToPropsFactory } from '../../common/hoc';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { withForm, WithFormProps } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
@@ -269,11 +269,11 @@ class CreditCardPaymentMethod extends Component<
     };
 }
 
-function mapFromCheckoutProps(): MapToProps<
+const mapFromCheckoutProps: MapToPropsFactory<
     CheckoutContextProps,
     WithCheckoutCreditCardPaymentMethodProps,
     CreditCardPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
-> {
+> = () => {
     const filterInstruments = memoizeOne((instruments: PaymentInstrument[] = []) => instruments.filter(isCardInstrument));
 
     return (context, props) => {
@@ -324,6 +324,6 @@ function mapFromCheckoutProps(): MapToProps<
             shouldShowInstrumentFieldset: isInstrumentFeatureAvailableProp && instruments.length > 0,
         };
     };
-}
+};
 
 export default connectFormik(withForm(withLanguage(withPayment(withCheckout(mapFromCheckoutProps)(CreditCardPaymentMethod)))));

@@ -54,6 +54,7 @@ class AccountInstrumentSelect extends PureComponent<AccountInstrumentSelectProps
         } = this.props;
 
         const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
+        const { value, ...otherFieldProps } = field;
 
         return (
             <div className="instrumentSelect">
@@ -74,7 +75,8 @@ class AccountInstrumentSelect extends PureComponent<AccountInstrumentSelectProps
 
                     <input
                         type="hidden"
-                        { ...field }
+                        value={ value || '' }
+                        { ...otherFieldProps }
                     />
                 </DropdownTrigger>
             </div>

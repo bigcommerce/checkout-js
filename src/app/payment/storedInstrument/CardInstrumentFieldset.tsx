@@ -32,7 +32,7 @@ const CardInstrumentFieldset: FunctionComponent<CardInstrumentFieldsetProps> = (
     shouldHideExpiryDate = false,
     validateInstrument = null,
 }) => {
-    const renderInput = useCallback((field: FieldProps) => (
+    const renderInput = useCallback((field: FieldProps<string>) => (
         <InstrumentSelect
             { ...field }
             instruments={ instruments }

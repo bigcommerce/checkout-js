@@ -1,5 +1,2 @@
-import { BillingProps } from './Billing';
-
-export type BillingProps = BillingProps;
-
+export { BillingProps } from './Billing';
 export { default as StaticBillingAddress } from './StaticBillingAddress';

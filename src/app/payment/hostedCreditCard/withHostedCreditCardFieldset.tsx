@@ -5,7 +5,7 @@ import { ObjectSchema } from 'yup';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
-import { MapToProps } from '../../common/hoc';
+import { MapToPropsFactory } from '../../common/hoc';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { withForm, WithFormProps } from '../../ui/form';
 import { getCreditCardInputStyles, CreditCardCustomerCodeField, CreditCardInputStylesType } from '../creditCard';
@@ -191,11 +191,11 @@ export default function withHostedCreditCardFieldset<TProps extends WithHostedCr
     return connectFormik(withForm(withLanguage(withCheckout(mapFromCheckoutProps)(Component)))) as ComponentType<Omit<TProps, keyof WithInjectedHostedCreditCardFieldsetProps>>;
 }
 
-function mapFromCheckoutProps(): MapToProps<
+const mapFromCheckoutProps: MapToPropsFactory<
     CheckoutContextProps,
     WithCheckoutContextProps,
     WithHostedCreditCardFieldsetProps & ConnectFormikProps<PaymentFormValues>
-> {
+> = () => {
     return ({ checkoutState }, { isUsingMultiShipping = false, method }) => {
         const {
             data: {
@@ -226,4 +226,4 @@ function mapFromCheckoutProps(): MapToProps<
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
         };
     };
-}
+};

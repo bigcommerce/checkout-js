@@ -1,6 +1,5 @@
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const EventEmitter = require('events');
-const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const { copyFileSync } = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { join } = require('path');
@@ -122,13 +121,12 @@ function appConfig(options, argv) {
                         entrypoints: true,
                         transform: assets => transformManifest(assets, appVersion),
                     }),
-                    new ForkTsCheckerWebpackPlugin({
-                        async: !isProduction,
-                        eslint: true,
-                    }),
                     new BuildHookPlugin({
-                        onDone() {
+                        onSuccess() {
                             eventEmitter.emit('app:done');
+                        },
+                        onError(errors) {
+                            eventEmitter.emit('app:error', errors);
                         },
                     }),
                 ].filter(Boolean),
@@ -147,7 +145,6 @@ function appConfig(options, argv) {
                                     loader: 'ts-loader',
                                     options: {
                                         onlyCompileBundledFiles: true,
-                                        transpileOnly: true,
                                     },
                                 },
                             ],
@@ -255,10 +252,15 @@ function loaderConfig(options, argv) {
                                 eventEmitter.emit('loader:done');
                                 done();
                             });
+
+                            eventEmitter.on('app:error', () => {
+                                eventEmitter.emit('loader:error');
+                                done();
+                            });
                         },
                     }),
                     new BuildHookPlugin({
-                        onDone() {
+                        onSuccess() {
                             copyFileSync(`dist/${LOADER_ENTRY_NAME}-${appVersion}.js`, `dist/${LOADER_ENTRY_NAME}.js`);
                             copyFileSync(`dist/${AUTO_LOADER_ENTRY_NAME}-${appVersion}.js`, `dist/${AUTO_LOADER_ENTRY_NAME}.js`);
                         },
@@ -288,7 +290,6 @@ function loaderConfig(options, argv) {
                                     loader: 'ts-loader',
                                     options: {
                                         onlyCompileBundledFiles: true,
-                                        transpileOnly: true,
                                     },
                                 },
                             ],

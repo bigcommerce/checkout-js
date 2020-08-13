@@ -1,5 +1,2 @@
-import { PaymentProps } from './Payment';
-
-export type PaymentProps = PaymentProps;
-
+export { PaymentProps } from './Payment';
 export { default as getPreselectedPayment } from './getPreselectedPayment';
