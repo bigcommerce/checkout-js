@@ -6,6 +6,7 @@ import CreditCardIcon from './CreditCardIcon';
 export const SUPPORTED_CARD_TYPES = [
     'american-express',
     'cb',
+    'dankort',
     'diners-club',
     'discover',
     'jcb',

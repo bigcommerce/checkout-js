@@ -7,6 +7,7 @@ export { default as IconCardAmex } from './IconCardAmex';
 export { default as IconCardCB } from './IconCardCB';
 export { default as IconCardCodeAmex } from './IconCardCodeAmex';
 export { default as IconCardCodeVisa } from './IconCardCodeVisa';
+export { default as IconCardDankort } from './IconCardDankort';
 export { default as IconCardDinersClub } from './IconCardDinersClub';
 export { default as IconCardDiscover } from './IconCardDiscover';
 export { default as IconCardJCB } from './IconCardJCB';
