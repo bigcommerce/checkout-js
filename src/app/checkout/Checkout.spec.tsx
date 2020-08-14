@@ -3,6 +3,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import { EventEmitter } from 'events';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
+import { act } from 'react-dom/test-utils';
 
 import { BillingProps } from '../billing';
 import Billing from '../billing/Billing';
@@ -583,7 +584,9 @@ describe('Checkout', () => {
 
             // Wait for initial load to complete
             await new Promise(resolve => process.nextTick(resolve));
-            container.update();
+
+            act(() => { container.update(); });
+            act(() => { container.update(); });
         });
 
         afterEach(() => {

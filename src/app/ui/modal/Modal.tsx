@@ -4,6 +4,7 @@ import React, { useCallback, FunctionComponent, KeyboardEvent, MouseEvent, React
 import ReactModal from 'react-modal';
 import { Omit } from 'utility-types';
 
+import { preventDefault } from '../../common/dom';
 import { IconClose } from '../icon';
 
 export type ModalProps = Omit<
@@ -68,8 +69,8 @@ const Modal: FunctionComponent<ModalProps> = ({
             { shouldShowCloseButton && <a
                 className="modal-close"
                 data-test="modal-close-button"
-                href="javascript:void(0);"
-                onClick={ handleClose }
+                href="#"
+                onClick={ preventDefault(handleClose) }
             >
                 { closeButtonLabel && <span className="is-srOnly">
                     { closeButtonLabel }

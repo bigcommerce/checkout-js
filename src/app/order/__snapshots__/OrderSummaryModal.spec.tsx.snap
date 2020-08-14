@@ -8,7 +8,8 @@ exports[`OrderSummaryModal renders order summary 1`] = `
     <React.Fragment>
       <a
         className="cart-modal-close"
-        href="javascript:void(0);"
+        href="#"
+        onClick={[Function]}
       >
         <span
           className="is-srOnly"

@@ -1,6 +1,7 @@
 import { createCheckoutService, createEmbeddedCheckoutMessenger, CheckoutSelectors, CheckoutService, EmbeddedCheckoutMessenger, StepTracker } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React, { FunctionComponent } from 'react';
+import { act } from 'react-dom/test-utils';
 
 import { CheckoutProvider } from '../checkout';
 import { createErrorLogger } from '../common/error';
@@ -120,7 +121,8 @@ describe('OrderConfirmation', () => {
 
         await new Promise(resolve => process.nextTick(resolve));
 
-        orderConfirmation.update();
+        act(() => { orderConfirmation.update(); });
+        act(() => { orderConfirmation.update(); });
 
         expect(orderConfirmation.find(LoadingSpinner).length).toEqual(0);
         expect(orderConfirmation.find('.orderConfirmation').length).toEqual(1);

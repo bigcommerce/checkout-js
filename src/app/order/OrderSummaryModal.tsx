@@ -1,6 +1,7 @@
 import { LineItemMap, ShopperCurrency as ShopperCurrencyType, StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { Fragment, FunctionComponent, ReactNode } from 'react';
 
+import { preventDefault } from '../common/dom';
 import { TranslatedString } from '../locale';
 import { IconClose } from '../ui/icon';
 import { Modal, ModalHeader } from '../ui/modal';
@@ -71,8 +72,8 @@ const renderHeader: FunctionComponent<{
 }) => (<Fragment>
     <a
         className="cart-modal-close"
-        href="javascript:void(0);"
-        onClick={ onRequestClose }
+        href="#"
+        onClick={ preventDefault(onRequestClose) }
     >
         <span className="is-srOnly">
             <TranslatedString id="common.close_action" />
