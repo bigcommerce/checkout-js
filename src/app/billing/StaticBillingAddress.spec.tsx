@@ -85,7 +85,7 @@ describe('StaticBillingAddress', () => {
             .toEqual(0);
 
         expect(container.text())
-            .toEqual(getLanguageService().translate('billing.billing_address_amazon'));
+            .toEqual(getLanguageService().translate('billing.billing_address_amazonpay'));
     });
 
     it('renders address when using Amazon Pay V2 when full address is provided', () => {

@@ -22,10 +22,15 @@ const StaticBillingAddress: FunctionComponent<
     address,
     payments = EMPTY_ARRAY,
 }) => {
-    if (payments.find(payment => payment.providerId === 'amazon') ||
-        (payments.find(payment => payment.providerId === 'amazonpay' && address.firstName === ''))) {
+    if (payments.find(payment => payment.providerId === 'amazon')) {
         return (
             <p><TranslatedString id="billing.billing_address_amazon" /></p>
+        );
+    }
+
+    if (payments.find(payment => payment.providerId === 'amazonpay' && address.firstName === '')) {
+        return (
+            <p><TranslatedString id="billing.billing_address_amazonpay" /></p>
         );
     }
 
