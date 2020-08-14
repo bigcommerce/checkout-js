@@ -410,6 +410,16 @@ describe('Payment', () => {
             .toHaveLength(0);
     });
 
+    it('does not render error modal when there is invalid hosted form value error', () => {
+        jest.spyOn(checkoutState.errors, 'getSubmitOrderError')
+            .mockReturnValue({ type: 'invalid_hosted_form_value' } as CustomError);
+
+        const container = mount(<PaymentTest { ...defaultProps } />);
+
+        expect(container.find(ErrorModal))
+            .toHaveLength(0);
+    });
+
     it('renders error modal if there is error when finalizing order', () => {
         jest.spyOn(checkoutState.errors, 'getFinalizeOrderError')
             .mockReturnValue({ type: 'request' } as CustomError);
