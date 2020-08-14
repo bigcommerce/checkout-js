@@ -7,7 +7,7 @@ import React, { Component, ReactNode } from 'react';
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { preventDefault } from '../../common/dom';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
-import { MapToProps } from '../../common/hoc';
+import { MapToPropsFactory } from '../../common/hoc';
 import { TranslatedString } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
 import { CreditCardStorageField } from '../creditCard';
@@ -398,11 +398,11 @@ class HostedWidgetPaymentMethod extends Component<
     };
 }
 
-function mapFromCheckoutProps(): MapToProps<
+const mapFromCheckoutProps: MapToPropsFactory<
     CheckoutContextProps,
     WithCheckoutHostedWidgetPaymentMethodProps,
     HostedWidgetPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
-> {
+> = () => {
     const filterInstruments = memoizeOne((instruments: PaymentInstrument[] = []) => instruments.filter( instrument => isCardInstrument(instrument) || isBankAccountInstrument(instrument)));
 
     return (context, props) => {
@@ -452,6 +452,6 @@ function mapFromCheckoutProps(): MapToProps<
             signOut: checkoutService.signOutCustomer,
         };
     };
-}
+};
 
 export default connectFormik(withPayment(withCheckout(mapFromCheckoutProps)(HostedWidgetPaymentMethod)));

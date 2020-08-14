@@ -26,7 +26,7 @@ const AccountInstrumentFieldset: FunctionComponent<AccountInstrumentFieldsetProp
     onUseNewInstrument,
     selectedInstrument,
 }) => {
-    const renderInput = useCallback((field: FieldProps) => (
+    const renderInput = useCallback((field: FieldProps<string>) => (
         <AccountInstrumentSelect
             { ...field }
             instruments={ instruments }

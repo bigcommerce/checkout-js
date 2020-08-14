@@ -1,4 +1,4 @@
-import { AccountInstrument } from '@bigcommerce/checkout-sdk';
+import { AccountInstrument, BankInstrument } from '@bigcommerce/checkout-sdk';
 import React, { memo, useCallback, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
@@ -8,7 +8,7 @@ import { LoadingOverlay } from '../../ui/loading';
 import isBankAccountInstrument from './isBankAccountInstrument';
 
 export interface ManageAccountInstrumentsTableProps {
-    instruments: AccountInstrument[];
+    instruments: Array<AccountInstrument | BankInstrument>;
     isDeletingInstrument: boolean;
     onDeleteInstrument(id: string): void;
 }

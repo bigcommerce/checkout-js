@@ -23,9 +23,9 @@ const VisaCheckoutPaymentMethod: FunctionComponent<VisaCheckoutPaymentMethodProp
                 });
 
                 await initializePayment({
+                    ...options,
                     gatewayId: method.gateway,
                     methodId: method.id,
-                    ...options,
                 });
             } catch (error) {
                 onUnhandledError(error);

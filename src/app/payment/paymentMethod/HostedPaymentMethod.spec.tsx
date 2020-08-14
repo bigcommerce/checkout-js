@@ -12,7 +12,7 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../../loc
 import { CheckboxFormField } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
 import { getPaymentMethod } from '../payment-methods.mock';
-import * as storedInstrumentModule from '../storedInstrument';
+import { AccountInstrumentFieldset } from '../storedInstrument';
 import { getInstruments } from '../storedInstrument/instruments.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
@@ -128,8 +128,7 @@ describe('HostedPaymentMethod', () => {
 
     describe('if stored instrument feature is available', () => {
         beforeEach(() => {
-            jest.spyOn(storedInstrumentModule, 'isInstrumentFeatureAvailable')
-                .mockReturnValue(true);
+            defaultProps.method.config.isVaultingEnabled = true;
 
             jest.spyOn(checkoutState.data, 'getInstruments')
                 .mockReturnValue(getInstruments());
@@ -153,7 +152,7 @@ describe('HostedPaymentMethod', () => {
         it('shows instruments fieldset when there is at least one stored instrument', () => {
             const component = mount(<HostedPaymentMethodTest { ...defaultProps } />);
 
-            expect(component.find(storedInstrumentModule.AccountInstrumentFieldset))
+            expect(component.find(AccountInstrumentFieldset))
                 .toHaveLength(1);
         });
 
@@ -164,7 +163,7 @@ describe('HostedPaymentMethod', () => {
 
             const component = mount(<HostedPaymentMethodTest { ...defaultProps } />);
 
-            expect(component.find(storedInstrumentModule.AccountInstrumentFieldset))
+            expect(component.find(AccountInstrumentFieldset))
                 .toHaveLength(1);
         });
 
@@ -174,7 +173,7 @@ describe('HostedPaymentMethod', () => {
 
             const component = mount(<HostedPaymentMethodTest { ...defaultProps } />);
 
-            expect(component.find(storedInstrumentModule.AccountInstrumentFieldset))
+            expect(component.find(AccountInstrumentFieldset))
                 .toHaveLength(0);
         });
 
@@ -184,7 +183,7 @@ describe('HostedPaymentMethod', () => {
 
             const component = mount(<HostedPaymentMethodTest { ...defaultProps } />);
 
-            expect(component.find(storedInstrumentModule.AccountInstrumentFieldset))
+            expect(component.find(AccountInstrumentFieldset))
                 .toHaveLength(0);
         });
 

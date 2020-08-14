@@ -1,10 +1,5 @@
-import { CreditCardFieldsetProps, CreditCardFieldsetValues } from './CreditCardFieldset';
-
-export type CreditCardFieldsetProps = CreditCardFieldsetProps;
-export type CreditCardFieldsetValues = CreditCardFieldsetValues;
-
 export { default as configureCardValidator } from './configureCardValidator';
-export { default as CreditCardFieldset } from './CreditCardFieldset';
+export { default as CreditCardFieldset, CreditCardFieldsetProps, CreditCardFieldsetValues } from './CreditCardFieldset';
 export { default as CreditCardIcon } from './CreditCardIcon';
 export { default as CreditCardIconList } from './CreditCardIconList';
 export { default as CreditCardCodeField } from './CreditCardCodeField';

@@ -14,7 +14,7 @@ export interface CreditCardNumberFieldProps {
 }
 
 const CreditCardNumberField: FunctionComponent<CreditCardNumberFieldProps> = ({ name }) => {
-    const renderInput = useCallback(({ field, form }: FieldProps) => (
+    const renderInput = useCallback(({ field, form }: FieldProps<string>) => (
         <CreditCardNumberInput
             field={ field }
             form={ form }

@@ -1,8 +1,4 @@
-import { IconProps } from './withIconContainer';
-
-export type IconProps = IconProps;
-
-export { IconSize } from './withIconContainer';
+export { IconSize, IconProps } from './withIconContainer';
 export { default as IconCardAmex } from './IconCardAmex';
 export { default as IconCardCB } from './IconCardCB';
 export { default as IconCardCodeAmex } from './IconCardCodeAmex';
