@@ -1,3 +1,4 @@
+import { RequestError } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Fragment, PureComponent, ReactNode, SyntheticEvent } from 'react';
 
@@ -8,10 +9,11 @@ import { Modal, ModalHeader } from '../../ui/modal';
 
 import computeErrorCode from './computeErrorCode';
 import isCustomError from './isCustomError';
+import isRequestError from './isRequestError';
 import ErrorCode from './ErrorCode';
 
 export interface ErrorModalProps {
-    error?: Error;
+    error?: Error | RequestError;
     message?: ReactNode;
     title?: ReactNode;
     shouldShowErrorCode?: boolean;
@@ -89,6 +91,13 @@ export default class ErrorModal extends PureComponent<ErrorModalProps> {
 
         if (!error || !shouldShowErrorCode) {
             return;
+        }
+
+        if (isRequestError(error) && error?.headers?.['x-request-id']) {
+            return <ErrorCode
+                code={ error.headers['x-request-id'] }
+                label={ <TranslatedString id="common.request_id" /> }
+            />;
         }
 
         const errorCode = computeErrorCode(error);

@@ -81,6 +81,7 @@
             "loading_text": "Loading",
             "ok_action": "Ok",
             "error_code": "Error code:",
+            "request_id": "Request ID:",
             "optional_text": "(Optional)",
             "unavailable_error": "Checkout is temporarily unavailable. Please try again later.",
             "unavailable_heading": "Checkout is temporarily unavailable",
