@@ -2,6 +2,9 @@ import { PaymentInitializeOptions, StripeElementOptions } from '@bigcommerce/che
 import React, { useCallback, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
+import { withCheckout, CheckoutContextProps } from '../../checkout';
+import { TranslatedString } from '../../locale';
+
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 
 export type StripePaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId'>;
@@ -12,6 +15,9 @@ export interface StripeOptions {
     iban: StripeElementOptions;
     idealBank: StripeElementOptions;
 }
+interface WithCheckoutStripePaymentMethodProps {
+    storeUrl: string;
+}
 
 export enum StripeV3PaymentMethodType {
     alipay = 'alipay',
@@ -20,9 +26,10 @@ export enum StripeV3PaymentMethodType {
     idealBank = 'idealBank',
 }
 
-const StripePaymentMethod: FunctionComponent<StripePaymentMethodProps> = ({
+const StripePaymentMethod: FunctionComponent<StripePaymentMethodProps & WithCheckoutStripePaymentMethodProps> = ({
       initializePayment,
       method,
+      storeUrl,
       ...rest
   }) => {
     const paymentMethodType = method.id as StripeV3PaymentMethodType;
@@ -56,14 +63,35 @@ const StripePaymentMethod: FunctionComponent<StripePaymentMethodProps> = ({
         });
     }, [initializePayment, containerId, paymentMethodType]);
 
-    return <HostedWidgetPaymentMethod
-        { ...rest }
-        additionalContainerClassName= { additionalStripeV3Classes }
-        containerId={ containerId }
-        hideContentWhenSignedOut
-        initializePayment={ initializeStripePayment }
-        method={ method }
-    />;
+    return <>
+        <HostedWidgetPaymentMethod
+            { ...rest }
+            additionalContainerClassName= { additionalStripeV3Classes }
+            containerId={ containerId }
+            hideContentWhenSignedOut
+            initializePayment={ initializeStripePayment }
+            method={ method }
+        />
+        {
+            method.id === 'iban' &&
+                <p className="stripe-sepa-mandate-disclaimer">
+                    <TranslatedString data={ {storeUrl} } id="payment.stripe_sepa_mandate_disclaimer" />
+                </p>
+        }
+    </>;
 };
 
-export default StripePaymentMethod;
+function mapFromCheckoutProps(
+    { checkoutState }: CheckoutContextProps) {
+    const { data: { getConfig } } = checkoutState;
+    const config = getConfig();
+
+    if (!config) {
+        return null;
+    }
+
+    return {
+        storeUrl: config.links.siteLink,
+    };
+}
+export default withCheckout(mapFromCheckoutProps)(StripePaymentMethod);
