@@ -31,6 +31,9 @@ describe('mapFromPaymentMethodCardType()', () => {
 
         expect(mapFromPaymentMethodCardType('MADA'))
             .toEqual('mada');
+
+        expect(mapFromPaymentMethodCardType('DANKORT'))
+            .toEqual('dankort');
     });
 
     it('returns undefined if unable to map type', () => {

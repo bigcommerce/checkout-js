@@ -9,6 +9,9 @@ export default function mapFromPaymentMethodCardType(type: string): string | und
     case 'DINERS':
         return 'diners-club';
 
+    case 'DANKORT':
+        return 'dankort';
+
     case 'DISCOVER':
         return 'discover';
 
