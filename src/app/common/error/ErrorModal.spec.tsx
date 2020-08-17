@@ -1,3 +1,4 @@
+import { RequestError } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
@@ -13,7 +14,7 @@ import ErrorModal, { ErrorModalProps } from './ErrorModal';
 describe('ErrorModal', () => {
     let errorModal: ReactWrapper;
     let localeContext: LocaleContextType;
-    let error: Error;
+    let error: Error | RequestError;
     const onClose = jest.fn();
 
     const ErrorModalContainer = (props: ErrorModalProps) => (
@@ -46,6 +47,18 @@ describe('ErrorModal', () => {
 
     it('renders error code', () => {
         expect(errorModal.find(ErrorCode).length).toEqual(1);
+    });
+
+    it('renders request ID if available', () => {
+        error = {
+            type: 'request',
+            headers: { 'x-request-id': 'foobar' },
+        } as unknown as RequestError;
+
+        errorModal = mount(<ErrorModalContainer error={ error } />);
+
+        expect(errorModal.find(ErrorCode).text())
+            .toEqual('Request ID: foobar');
     });
 
     it('overrides error message', () => {
