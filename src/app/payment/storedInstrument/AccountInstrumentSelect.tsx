@@ -41,7 +41,11 @@ class AccountInstrumentSelect extends PureComponent<AccountInstrumentSelectProps
     }
 
     componentWillUnmount() {
-        this.updateFieldValue();
+        const { selectedInstrumentId, field } = this.props;
+
+        if (field.value === '' && selectedInstrumentId !== undefined) {
+            this.updateFieldValue();
+        }
     }
 
     render(): ReactNode {
