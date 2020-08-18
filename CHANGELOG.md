@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.74.0](https://github.com/bigcommerce/checkout-js/compare/v1.73.1...v1.74.0) (2020-08-18)
+
+
+### Features
+
+* **checkout:** CHECKOUT-5101 Upgrade React version to 16.13 ([4b0bd7e](https://github.com/bigcommerce/checkout-js/commit/4b0bd7e50ab0d7c6c6fa615f0f80bbdee01b5abe))
+* **checkout:** CHECKOUT-5101 Upgrade TypeScript version to 3.9 ([8e810ce](https://github.com/bigcommerce/checkout-js/commit/8e810cef67b41b739d7337c63629d4bb867ce688))
+* **checkout:** CHECKOUT-5102 Show request ID in error modal if available ([a4e4f00](https://github.com/bigcommerce/checkout-js/commit/a4e4f0042d3306b961610501158e55b22836fb8f))
+* **payment:** INT-3016 Bump SDK. ([9ebfde6](https://github.com/bigcommerce/checkout-js/commit/9ebfde6b9d4fa697eb05cceee17cd9f756bb6d6b))
+* **payment:** INT-3020 added dankort payment method mark ([423cb3e](https://github.com/bigcommerce/checkout-js/commit/423cb3e1e74a342943ea521cdab2569964a67a67))
+
+
+### Bug Fixes
+
+* **payment:** CHECKOUT-5099 Only show inline error message if form validation fails without any input attempt ([757b530](https://github.com/bigcommerce/checkout-js/commit/757b5308ea1d6ea6789d23c6c7bf4e4540c154d1))
+* **payment:** INT-2754 adding conditional for updateFieldValue on ([6f349d3](https://github.com/bigcommerce/checkout-js/commit/6f349d34c0d6889c14782c20191a4e9ce067a3ec))
+* **payment:** INT-3010 Bump SDK. ([5d40576](https://github.com/bigcommerce/checkout-js/commit/5d40576932d262951588fc3d916bf1744f66fda7))
+* **payment:** INT-3043 Bump SDK. ([64159c6](https://github.com/bigcommerce/checkout-js/commit/64159c6a293e00fc885e87fee7a3b24437efe420))
+
+
+### Code Refactoring
+
+* **billing:** INT-3025 Update the text when no billing address is provided for AmazonPayV2 ([4fda062](https://github.com/bigcommerce/checkout-js/commit/4fda062dcce2904e69871c604f13e7b6bf223e19))
+
 ### [1.73.1](https://github.com/bigcommerce/checkout-js/compare/v1.73.0...v1.73.1) (2020-08-13)
 
 
