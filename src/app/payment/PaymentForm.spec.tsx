@@ -1,4 +1,4 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, CheckoutSelectors, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
@@ -16,6 +16,7 @@ import { PaymentMethodList, PaymentMethodListProps } from './paymentMethod';
 import { StoreCreditField, StoreCreditFieldProps, StoreCreditOverlay } from './storeCredit';
 import PaymentContext, { PaymentContextProps } from './PaymentContext';
 import PaymentForm, { PaymentFormProps } from './PaymentForm';
+import PaymentSubmitButton from './PaymentSubmitButton';
 import SpamProtectionField, { SpamProtectionProps } from './SpamProtectionField';
 
 jest.useFakeTimers();
@@ -299,5 +300,63 @@ describe('PaymentForm', () => {
 
         expect(container.exists('[data-test="cc-number-field-error-message"]'))
             .toEqual(false);
+    });
+
+    describe('PaymentSubmitButton', () => {
+        let selectedMethod: PaymentMethod;
+
+        beforeEach(() => {
+            selectedMethod = { ...getPaymentMethod(), id: 'foo', method: 'bar', gateway: 'baz' };
+        });
+
+        it('renders with default label', () => {
+            defaultProps = { ...defaultProps, selectedMethod };
+            const container = mount(<PaymentFormTest { ...defaultProps } />);
+            const submitButton = container.find(PaymentSubmitButton);
+
+            expect(submitButton)
+                .toHaveLength(1);
+
+            expect(submitButton.props())
+                .toEqual(expect.objectContaining({
+                    methodGateway: 'baz',
+                    methodId: 'foo',
+                    methodType: 'bar',
+                }));
+        });
+
+        it('renders with default label if selected method is amazonpay and there is paymentToken', () => {
+            selectedMethod = { ...selectedMethod, id: 'amazonpay', initializationData: { paymentToken: 'foo' } };
+            defaultProps = { ...defaultProps, selectedMethod };
+            const container = mount(<PaymentFormTest { ...defaultProps } />);
+            const submitButton = container.find(PaymentSubmitButton);
+
+            expect(submitButton)
+                .toHaveLength(1);
+
+            expect(submitButton.props())
+                .toEqual(expect.objectContaining({
+                    methodGateway: 'baz',
+                    methodId: undefined,
+                    methodType: 'bar',
+                }));
+        });
+
+        it('renders with special label if selected method is amazonpay and there is no paymentToken', () => {
+            selectedMethod = { ...selectedMethod, id: 'amazonpay', initializationData: { paymentToken: '' } };
+            defaultProps = { ...defaultProps, selectedMethod };
+            const container = mount(<PaymentFormTest { ...defaultProps } />);
+            const submitButton = container.find(PaymentSubmitButton);
+
+            expect(submitButton)
+                .toHaveLength(1);
+
+            expect(submitButton.props())
+                .toEqual(expect.objectContaining({
+                    methodGateway: 'baz',
+                    methodId: 'amazonpay',
+                    methodType: 'bar',
+                }));
+        });
     });
 });

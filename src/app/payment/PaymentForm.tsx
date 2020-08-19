@@ -11,7 +11,7 @@ import { Fieldset, Form, FormContext, Legend } from '../ui/form';
 import { CreditCardFieldsetValues } from './creditCard';
 import getPaymentValidationSchema from './getPaymentValidationSchema';
 import { HostedCreditCardFieldsetValues } from './hostedCreditCard';
-import { getUniquePaymentMethodId, PaymentMethodList } from './paymentMethod';
+import { getUniquePaymentMethodId, PaymentMethodId, PaymentMethodList } from './paymentMethod';
 import { CardInstrumentFieldsetValues } from './storedInstrument';
 import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
 import PaymentRedeemables from './PaymentRedeemables';
@@ -83,6 +83,24 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
     usableStoreCredit = 0,
     values,
 }) => {
+    const selectedMethodId = useMemo(() => {
+        if (!selectedMethod) {
+            return;
+        }
+
+        switch (selectedMethod.id) {
+        case PaymentMethodId.AmazonPay:
+            if (selectedMethod.initializationData.paymentToken) {
+                return;
+            }
+
+            return selectedMethod.id;
+
+        default:
+            return selectedMethod.id;
+        }
+    }, [selectedMethod]);
+
     if (shouldExecuteSpamCheck) {
         return <SpamProtectionField
             didExceedSpamLimit={ didExceedSpamLimit }
@@ -126,7 +144,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
                 <PaymentSubmitButton
                     isDisabled={ shouldDisableSubmit }
                     methodGateway={ selectedMethod && selectedMethod.gateway }
-                    methodId={ selectedMethod && selectedMethod.id }
+                    methodId={ selectedMethodId }
                     methodType={ selectedMethod && selectedMethod.method }
                 />
             </div>
