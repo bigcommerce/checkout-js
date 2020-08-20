@@ -13,13 +13,13 @@ const ChasePayPaymentMethod: FunctionComponent<CCAvenueMarsPaymentMethodProps> =
     const initializeChasePayPayment = useCallback((options: PaymentInitializeOptions) => initializePayment({
         ...options,
         chasepay: {
-            walletButton: 'walletButton',
+            walletButton: 'chaseWalletButton',
         },
     }), [initializePayment]);
 
     return <WalletButtonPaymentMethod
         { ...rest }
-        buttonId="walletButton"
+        buttonId="chaseWalletButton"
         initializePayment={ initializeChasePayPayment }
         shouldShowEditButton
     />;
