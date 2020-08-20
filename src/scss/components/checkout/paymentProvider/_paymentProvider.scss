@@ -67,6 +67,11 @@ body.klarna-payments-fso-open {
     scroll-behavior: auto;
 }
 
+.stripe-sepa-mandate-disclaimer {
+    margin-bottom: 0;
+    padding-bottom: remCalc(20px);
+}
+
 #stripe-card-field--invalid {
     border-color: #fa755a;
 }
