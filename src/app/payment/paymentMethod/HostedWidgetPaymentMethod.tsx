@@ -31,6 +31,7 @@ export interface HostedWidgetPaymentMethodProps {
     method: PaymentMethod;
     paymentDescriptor?: string;
     shouldHideInstrumentExpiryDate?: boolean;
+    shouldShow?: boolean;
     shouldShowDescriptor?: boolean;
     shouldShowEditButton?: boolean;
     validateInstrument?(shouldShowNumberField: boolean): React.ReactNode;
@@ -157,12 +158,17 @@ class HostedWidgetPaymentMethod extends Component<
             isLoadingInstruments,
             additionalContainerClassName,
             shouldHideInstrumentExpiryDate = false,
+            shouldShow = true,
         } = this.props;
 
         const {
             isAddingNewCard,
             selectedInstrumentId = this.getDefaultInstrumentId(),
         } = this.state;
+
+        if (!shouldShow) {
+            return null;
+        }
 
         const selectedInstrument = instruments.find(instrument => instrument.bigpayToken === selectedInstrumentId) || instruments[0];
 
