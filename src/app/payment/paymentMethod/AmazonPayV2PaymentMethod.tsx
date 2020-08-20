@@ -1,12 +1,10 @@
-import { CheckoutSelectors, PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import React, { useCallback, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
 import HostedWidgetPaymentMethod , { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 
-export interface AmazonPayV2PaymentMethodProps extends Omit<HostedWidgetPaymentMethodProps, 'buttonId' | 'containerId' | 'hideWidget' | 'isSignInRequired' | 'paymentDescriptor' | 'shouldShowDescriptor' | 'shouldShowEditButton'> {
-    initializePayment(options: PaymentInitializeOptions): Promise<CheckoutSelectors>;
-}
+export type AmazonPayV2PaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'buttonId' | 'containerId' | 'deinitializeCustomer' | 'hideWidget' | 'initializeCustomer' | 'isSignInRequired' | 'onSignOut' | 'paymentDescriptor' | 'shouldShow' | 'shouldShowDescriptor' | 'shouldShowEditButton'>;
 
 const AmazonPayV2PaymentMethod: FunctionComponent<AmazonPayV2PaymentMethodProps> = ({
     initializePayment,
@@ -35,6 +33,7 @@ const AmazonPayV2PaymentMethod: FunctionComponent<AmazonPayV2PaymentMethodProps>
         method={ method }
         onSignOut={ reload }
         paymentDescriptor={ paymentDescriptor }
+        shouldShow={ !!paymentToken }
         shouldShowDescriptor={ !!paymentToken }
         shouldShowEditButton={ !!paymentToken }
     />;
