@@ -227,4 +227,51 @@ describe('OrderStatus', () => {
                 });
         });
     });
+
+    describe('when order has mandate', () => {
+        beforeEach(() => {
+            order = {
+                ...getOrder(),
+                mandate: 'mandateLink',
+            };
+        });
+
+        it('renders mandate link if it is provided', () => {
+            const orderStatus = mount(
+                <OrderStatusTest
+                    { ...defaultProps }
+                    order={ order }
+                />
+            );
+
+            expect(orderStatus.find('[data-test="order-confirmation-mandate-link-text"]')
+                .prop('href'))
+                .toEqual('mandateLink');
+        });
+
+        it('renders "SEPA Direct Debit Mandate" text on mandate link when provider description is Stripe (SEPA)', () => {
+            const orderStatus = mount(
+                <OrderStatusTest
+                    { ...defaultProps }
+                    order={ {
+                        ...order,
+                        payments: [{
+                            providerId: 'stripev3',
+                            description: 'Stripe (SEPA)',
+                            amount: 190,
+                            detail: {
+                                step: 'FINALIZE',
+                                instructions: '<strong>295</strong> something',
+                            },
+                        }],
+                    } }
+                />
+            );
+
+            expect(orderStatus.find('[data-test="order-confirmation-mandate-link-text"]')
+                .text())
+                .toEqual('SEPA Direct Debit Mandate');
+        });
+    });
+
 });
