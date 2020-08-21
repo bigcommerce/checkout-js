@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.76.0](https://github.com/bigcommerce/checkout-js/compare/v1.75.0...v1.76.0) (2020-08-21)
+
+
+### Features
+
+* **payment:** INT-3018 added sepa mandate disclaimer on stripeV3 ([7e6a5fa](https://github.com/bigcommerce/checkout-js/commit/7e6a5fab9098f4bc97ee0d046fd0ef61f008f784))
+* **payment:** INT-3041 INT-2992 Bump SDK. ([d3f9c93](https://github.com/bigcommerce/checkout-js/commit/d3f9c93d27dc0d5ea6de749c62633a85722b63e4))
+
+
+### Bug Fixes
+
+* **payment:** INT-2995 Bump SDK. ([5a37f65](https://github.com/bigcommerce/checkout-js/commit/5a37f65095287c1997fc25ce26ce48621da50a23))
+
 ## [1.75.0](https://github.com/bigcommerce/checkout-js/compare/v1.74.0...v1.75.0) (2020-08-18)
 
 
