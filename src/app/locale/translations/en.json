@@ -335,7 +335,8 @@
             "thank_you_customer_heading": "Thank you {name}!",
             "thank_you_heading": "Thank you!",
             "continue_shopping": "Continue Shopping »",
-            "order_status_update_facebook_messenger_heading": "Get instant updates of your order to Messenger"
+            "order_status_update_facebook_messenger_heading": "Get instant updates of your order to Messenger",
+            "mandate_link_text": "{provider} Mandate"
         }
     }
 }

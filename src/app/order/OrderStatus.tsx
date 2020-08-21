@@ -34,6 +34,13 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
             />
         </p>
 
+        { order.mandate && <a href={ order.mandate } rel="noopener noreferrer" target="_blank">
+                <TranslatedString
+                    data={ {provider : order?.payments?.[0].description === 'Stripe (SEPA)' ? 'SEPA Direct Debit ' : order?.payments?.[0].description } }
+                    id="order_confirmation.mandate_link_text"
+                />
+        </a> }
+
         { order.hasDigitalItems &&
         <p data-test="order-confirmation-digital-items-text">
             <TranslatedHtml
