@@ -4769,6 +4769,10 @@ h6 a:hover {
 body.klarna-payments-fso-open {
   scroll-behavior: auto; }
 
+.stripe-sepa-mandate-disclaimer {
+  margin-bottom: 0;
+  padding-bottom: 1.53846rem; }
+
 #stripe-card-field--invalid {
   border-color: #fa755a; }
 
@@ -5293,4 +5297,4 @@ body.klarna-payments-fso-open {
     font-weight: normal; }
 
 
-/*# sourceMappingURL=checkout-2499fd8e.css.map*/
+/*# sourceMappingURL=checkout-7a7f7ec7.css.map*/
