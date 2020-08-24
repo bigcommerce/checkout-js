@@ -65,7 +65,7 @@ describe('when using ChasePay payment', () => {
 
         expect(container.find(WalletButtonPaymentMethod).props())
             .toEqual(expect.objectContaining({
-                buttonId: 'walletButton',
+                buttonId: 'chaseWalletButton',
                 deinitializePayment: expect.any(Function),
                 initializePayment: expect.any(Function),
                 method,
@@ -87,7 +87,7 @@ describe('when using ChasePay payment', () => {
                 methodId: method.id,
                 gatewayId: method.gateway,
                 [method.id]: {
-                    walletButton: 'walletButton',
+                    walletButton: 'chaseWalletButton',
                 },
             }));
     });
