@@ -58,7 +58,7 @@ function getPaymentMethodTitle(
                 titleText: language.translate('payment.affirm_display_name_text'),
             },
             [PaymentMethodId.Afterpay]: {
-                logoUrl: cdnPath('/img/payment-providers/afterpay-header.png'),
+                logoUrl: cdnPath('/img/payment-providers/afterpay-badge-blackonmint.png'),
                 titleText: methodName,
             },
             [PaymentMethodId.Amazon]: {
