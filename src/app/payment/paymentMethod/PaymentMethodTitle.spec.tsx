@@ -26,7 +26,7 @@ describe('PaymentMethodTitle', () => {
     const LOGO_PATHS: { [key: string]: string } = {
         'paypal-credit': '/img/payment-providers/paypal-credit.png',
         'visa-checkout': '/img/payment-providers/visa-checkout.png',
-        afterpay: '/img/payment-providers/afterpay-header.png',
+        afterpay: '/img/payment-providers/afterpay-badge-blackonmint.png',
         amazon: '/img/payment-providers/amazon-header.png',
         chasepay: '/img/payment-providers/chase-pay.png',
         googlepay: '/img/payment-providers/google-pay.png',
