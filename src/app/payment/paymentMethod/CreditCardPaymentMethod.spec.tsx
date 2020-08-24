@@ -13,7 +13,7 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../../loc
 import { getConsignment } from '../../shipping/consignment.mock';
 import { FormContext, FormContextType } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
-import { getCreditCardValidationSchema, CreditCardFieldset, CreditCardFieldsetProps } from '../creditCard';
+import { getCreditCardValidationSchema, CreditCardFieldset } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
 import { getInstrumentValidationSchema, isInstrumentFeatureAvailable, CardInstrumentFieldset } from '../storedInstrument';
 import { getCardInstrument, getInstruments } from '../storedInstrument/instruments.mock';
@@ -295,13 +295,9 @@ describe('CreditCardPaymentMethod', () => {
                 .mockReturnValue([]);
 
             const container = mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
-            const component: ReactWrapper<CreditCardFieldsetProps> = container.find(CreditCardFieldset);
 
-            expect(component)
-                .toHaveLength(1);
-
-            expect(component.prop('shouldShowSaveCardField'))
-                .toEqual(true);
+            expect(container.find('input[name="shouldSaveInstrument"]').exists())
+                .toBe(true);
         });
 
         it('uses PaymentMethod to retrieve instruments', () => {

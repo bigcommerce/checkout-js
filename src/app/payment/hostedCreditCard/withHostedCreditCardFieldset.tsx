@@ -179,7 +179,6 @@ export default function withHostedCreditCardFieldset<TProps extends WithHostedCr
                     cardNameId={ getHostedFieldId('ccName') }
                     cardNumberId={ getHostedFieldId('ccNumber') }
                     focusedFieldType={ focusedFieldType }
-                    shouldShowSaveCardField={ isInstrumentFeatureAvailableProp }
                 />
             }
             hostedStoredCardValidationSchema={ getHostedInstrumentValidationSchema({ language }) }
