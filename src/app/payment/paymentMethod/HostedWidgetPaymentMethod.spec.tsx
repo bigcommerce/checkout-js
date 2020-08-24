@@ -171,6 +171,16 @@ describe('HostedWidgetPaymentMethod', () => {
         expect(component.find('.payment-descriptor')).toHaveLength(0);
     });
 
+    it('does not render the component', () => {
+        const component = mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
+
+        expect(component.isEmptyRender()).toBe(false);
+
+        component.setProps({ shouldShow: false });
+
+        expect(component.isEmptyRender()).toBe(true);
+    });
+
     describe('when user is signed into their payment method account', () => {
         beforeEach(() => {
             jest.spyOn(checkoutState.data, 'getCheckout')
