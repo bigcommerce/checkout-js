@@ -67,6 +67,15 @@ describe('PaymentSubmitButton', () => {
             .toEqual(languageService.translate('payment.amazon_continue_action'));
     });
 
+    it('renders button with special label for Amazon Pay', () => {
+        const component = mount(
+            <PaymentSubmitButtonTest methodId="amazon" />
+        );
+
+        expect(component.text())
+            .toEqual(languageService.translate('payment.amazonpay_continue_action'));
+    });
+
     it('renders button with special label for Bolt', () => {
         const component = mount(
             <PaymentSubmitButtonTest methodId="bolt" />
