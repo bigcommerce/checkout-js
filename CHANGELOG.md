@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.76.2](https://github.com/bigcommerce/checkout-js/compare/v1.76.1...v1.76.2) (2020-08-24)
+
+
+### Bug Fixes
+
+* **payment:** INT-2901 Fixed Chase pay sign in link functionality ([d93e936](https://github.com/bigcommerce/checkout-js/commit/d93e936d6d8d96c381cb56352651886d24821b4f))
+* **payment:** INT-3053 Add shouldShow property to HostedWidgetPaymentMethod ([101572d](https://github.com/bigcommerce/checkout-js/commit/101572de463f76d09fa842276042b0ac85e6db59))
+
+
+### Code Refactoring
+
+* **payment:** INT-3054 Customize submit button text for AmazonPayV2 ([3ed4385](https://github.com/bigcommerce/checkout-js/commit/3ed438576e248d45050dfa41378e6127d67b0eed))
+
 ### [1.76.1](https://github.com/bigcommerce/checkout-js/compare/v1.76.0...v1.76.1) (2020-08-21)
 
 
