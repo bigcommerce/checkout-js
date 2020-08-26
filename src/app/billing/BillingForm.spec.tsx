@@ -32,7 +32,6 @@ describe('BillingForm Component', () => {
             customer: getCustomer(),
             countries: getCountries(),
             googleMapsApiKey: 'key',
-            hasSaveAddressFeature: true,
             getFields: () => getFormFields(),
             onUnhandledError: jest.fn(),
             updateAddress: jest.fn(),
