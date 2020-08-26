@@ -36,7 +36,6 @@ export interface WithCheckoutShippingProps {
     customer: Customer;
     customerMessage: string;
     googleMapsApiKey: string;
-    hasSaveAddressFeature: boolean;
     isGuest: boolean;
     isInitializing: boolean;
     isLoading: boolean;
@@ -104,7 +103,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             initializeShippingMethod,
             deinitializeShippingMethod,
             isMultiShippingMode,
-            hasSaveAddressFeature,
             onToggleMultiShipping,
             ...shippingFormProps
         } = this.props;
@@ -136,7 +134,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         onMultiShippingSubmit={ this.handleMultiShippingSubmit }
                         onSingleShippingSubmit={ this.handleSingleShippingSubmit }
                         onUseNewAddress={ this.handleUseNewAddress }
-                        shouldShowSaveAddress={ !isGuest && hasSaveAddressFeature }
+                        shouldShowSaveAddress={ !isGuest }
                         updateAddress={ updateShippingAddress }
                     />
                 </LoadingOverlay>
@@ -336,7 +334,6 @@ export function mapToShippingProps({
         googleMapsApiKey,
         initializeShippingMethod: checkoutService.initializeShipping,
         isGuest: customer.isGuest,
-        hasSaveAddressFeature: features['CHECKOUT-4642.uco_save_address_checkbox'],
         isInitializing: isLoadingShippingCountries() || isLoadingShippingOptions(),
         isLoading,
         isShippingStepPending: isShippingStepPending(),
