@@ -21,7 +21,6 @@ export interface BillingFormProps {
     customer: Customer;
     customerMessage: string;
     googleMapsApiKey: string;
-    hasSaveAddressFeature: boolean;
     isUpdating: boolean;
     methodId?: string;
     shouldShowOrderComments: boolean;
@@ -53,7 +52,6 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
             isUpdating,
             setFieldValue,
             shouldShowOrderComments,
-            hasSaveAddressFeature,
             values,
             methodId,
         } = this.props;
@@ -97,7 +95,7 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
                                 formFields={ editableFormFields }
                                 googleMapsApiKey={ googleMapsApiKey }
                                 setFieldValue={ setFieldValue }
-                                shouldShowSaveAddress={ hasSaveAddressFeature && !isGuest }
+                                shouldShowSaveAddress={ !isGuest }
                             />
                         </LoadingOverlay> }
                 </Fieldset>

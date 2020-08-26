@@ -25,7 +25,6 @@ export interface WithCheckoutBillingProps {
     customer: Customer;
     customerMessage: string;
     googleMapsApiKey: string;
-    hasSaveAddressFeature: boolean;
     isInitializing: boolean;
     isUpdating: boolean;
     shouldShowOrderComments: boolean;
@@ -169,7 +168,6 @@ function mapToBillingProps({
         initialize: checkoutService.loadBillingAddressFields,
         isInitializing: isLoadingBillingCountries(),
         isUpdating: isUpdatingBillingAddress() || isUpdatingCheckout(),
-        hasSaveAddressFeature: features['CHECKOUT-4642.uco_save_address_checkbox'],
         methodId: getBillingMethodId(checkout),
         shouldShowOrderComments: enableOrderComments && getShippableItemsCount(cart) < 1,
         updateAddress: checkoutService.updateBillingAddress,
