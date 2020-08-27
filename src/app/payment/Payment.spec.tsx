@@ -266,28 +266,6 @@ describe('Payment', () => {
             .toEqual(20);
     });
 
-    it('sets selected hosted payment as default selected payment method and filters methods prop to the hosted payment only', async () => {
-        jest.spyOn(checkoutState.data, 'getCheckout')
-            .mockReturnValue({
-                ...getCheckout(),
-                payments: [{
-                    ...getCheckoutPayment(),
-                    providerId: paymentMethods[1].id,
-                }],
-            });
-
-        const container = mount(<PaymentTest { ...defaultProps } />);
-
-        await new Promise(resolve => process.nextTick(resolve));
-        container.update();
-
-        expect(container.find(PaymentForm).props())
-            .toEqual(expect.objectContaining({
-                methods: [paymentMethods[1]],
-                selectedMethod: paymentMethods[1],
-            }));
-    });
-
     it('updates default selected payment method when list changes', async () => {
         const container = mount(<PaymentTest { ...defaultProps } />);
 
