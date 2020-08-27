@@ -456,19 +456,11 @@ export function mapToPaymentProps({
     } = config.checkoutSettings as CheckoutSettings & { orderTermsAndConditionsLocation: string };
 
     const isTermsConditionsRequired = isTermsConditionsEnabled;
-    const selectedPayment = find(checkout.payments, { providerType: PaymentMethodProviderType.Hosted });
 
     const { isStoreCreditApplied } = checkout;
 
-    let selectedPaymentMethod;
-    let filteredMethods;
-    if (selectedPayment) {
-        selectedPaymentMethod = getPaymentMethod(selectedPayment.providerId, selectedPayment.gatewayId);
-        filteredMethods = selectedPaymentMethod ? compact([selectedPaymentMethod]) : methods;
-    } else {
-        selectedPaymentMethod = find(methods, { config: { hasDefaultStoredInstrument: true } });
-        filteredMethods = methods;
-    }
+    let selectedPaymentMethod = find(methods, { config: { hasDefaultStoredInstrument: true } });
+    let filteredMethods = methods;
 
     return {
         applyStoreCredit: checkoutService.applyStoreCredit,
