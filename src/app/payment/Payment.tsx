@@ -1,6 +1,6 @@
 import { CheckoutSelectors, CheckoutSettings, OrderRequestBody, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
-import { compact, find, isEmpty, noop } from 'lodash';
+import { find, isEmpty, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
@@ -424,7 +424,6 @@ export function mapToPaymentProps({
             getConfig,
             getCustomer,
             getOrder,
-            getPaymentMethod,
             getPaymentMethods,
             isPaymentDataRequired,
         },
@@ -456,19 +455,11 @@ export function mapToPaymentProps({
     } = config.checkoutSettings as CheckoutSettings & { orderTermsAndConditionsLocation: string };
 
     const isTermsConditionsRequired = isTermsConditionsEnabled;
-    const selectedPayment = find(checkout.payments, { providerType: PaymentMethodProviderType.Hosted });
 
     const { isStoreCreditApplied } = checkout;
 
-    let selectedPaymentMethod;
-    let filteredMethods;
-    if (selectedPayment) {
-        selectedPaymentMethod = getPaymentMethod(selectedPayment.providerId, selectedPayment.gatewayId);
-        filteredMethods = selectedPaymentMethod ? compact([selectedPaymentMethod]) : methods;
-    } else {
-        selectedPaymentMethod = find(methods, { config: { hasDefaultStoredInstrument: true } });
-        filteredMethods = methods;
-    }
+    const selectedPaymentMethod = find(methods, { config: { hasDefaultStoredInstrument: true } });
+    const filteredMethods = methods;
 
     return {
         applyStoreCredit: checkoutService.applyStoreCredit,
