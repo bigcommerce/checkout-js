@@ -34,6 +34,7 @@ export interface HostedWidgetPaymentMethodProps {
     shouldShow?: boolean;
     shouldShowDescriptor?: boolean;
     shouldShowEditButton?: boolean;
+    disableSubmitButton?: boolean;
     validateInstrument?(shouldShowNumberField: boolean): React.ReactNode;
     deinitializeCustomer?(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
@@ -77,6 +78,7 @@ class HostedWidgetPaymentMethod extends Component<
         const {
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
             loadInstruments,
+            disableSubmitButton,
             onUnhandledError = noop,
         } = this.props;
 
@@ -84,7 +86,9 @@ class HostedWidgetPaymentMethod extends Component<
             if (isInstrumentFeatureAvailableProp) {
                 await loadInstruments();
             }
-
+            if (disableSubmitButton) {
+                this.turnOffSubmit();
+            }
             await this.initializeMethod();
         } catch (error) {
             onUnhandledError(error);
@@ -266,6 +270,14 @@ class HostedWidgetPaymentMethod extends Component<
         return !isAddingNewCard && selectedInstrument && isBankAccountInstrument(selectedInstrument) ? selectedInstrument : undefined;
     }
 
+    private turnOffSubmit(): void {
+        const {
+            disableSubmit,
+            method,
+        } = this.props;
+        disableSubmit(method, true);
+    }
+
     private renderEditButtonIfAvailable() {
         const { shouldShowEditButton, buttonId } = this.props;
         const translatedString = <TranslatedString id="remote.select_different_card_action" />;
@@ -332,7 +344,6 @@ class HostedWidgetPaymentMethod extends Component<
                 methodId: method.id,
             });
         }
-
         setSubmit(method, null);
 
         return initializePayment({
