@@ -9,6 +9,7 @@ import AmazonPaymentMethod from './AmazonPaymentMethod';
 import AmazonPayV2PaymentMethod from './AmazonPayV2PaymentMethod';
 import BarclaycardPaymentMethod from './BarclaycardPaymentMethod';
 import BlueSnapV2PaymentMethod from './BlueSnapV2PaymentMethod';
+import BoltPaymentMethod from './BoltPaymentMethod';
 import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod';
 import ChasePayPaymentMethod from './ChasePayPaymentMethod';
 import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
@@ -133,8 +134,11 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
         return <BarclaycardPaymentMethod { ...props } />;
     }
 
+    if (method.id === PaymentMethodId.Bolt) {
+        return <BoltPaymentMethod { ...props } />;
+    }
+
     if (method.gateway === PaymentMethodId.Afterpay ||
-        method.id === PaymentMethodId.Bolt ||
         method.id === PaymentMethodId.Laybuy ||
         method.id === PaymentMethodId.Sezzle ||
         method.id === PaymentMethodId.Zip ||
