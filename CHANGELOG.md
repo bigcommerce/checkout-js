@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.76.5-alpha.1598891304796](https://github.com/bigcommerce/checkout-js/compare/v1.76.4...v1.76.5-alpha.1598891304796) (2020-08-31)
+
+
+### Features
+
+* **payment:** PAYPAL-570 Ignore selected payment method ([fa8540a](https://github.com/bigcommerce/checkout-js/commit/fa8540ad75f43c0309ea1922e5c688437fff9c27))
+
+### [1.76.5-alpha.1598612745447](https://github.com/bigcommerce/checkout-js/compare/v1.76.4...v1.76.5-alpha.1598612745447) (2020-08-28)
+
+
+### Features
+
+* **payment:** PAYPAL-570 Ignore selected payment method ([9b9aae7](https://github.com/bigcommerce/checkout-js/commit/9b9aae79caaae2c28b360bed9e1c0927d3cc8a0b))
+
 ### [1.76.4](https://github.com/bigcommerce/checkout-js/compare/v1.76.3...v1.76.4) (2020-08-27)
 
 
