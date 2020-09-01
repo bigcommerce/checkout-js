@@ -14,6 +14,7 @@ import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
 import BoltPaymentMethod from './BoltPaymentMethod';
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
+import OfflinePaymentMethod from './OfflinePaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
 
 describe('when using Bolt payment', () => {
@@ -31,6 +32,9 @@ describe('when using Bolt payment', () => {
             method: {
                 ...getPaymentMethod(),
                 id: PaymentMethodId.Bolt,
+                initializationData: {
+                    showInCheckout: true,
+                },
             },
         };
 
@@ -74,6 +78,18 @@ describe('when using Bolt payment', () => {
 
         expect(container.find(HostedPaymentMethod).length)
             .toEqual(1);
+        expect(container.find(OfflinePaymentMethod).length)
+            .toEqual(0);
+    });
+
+    it('renders as offline payment method', () => {
+        defaultProps.method.initializationData.showInCheckout = false;
+        const container = mount(<PaymentMethodTest />);
+
+        expect(container.find(OfflinePaymentMethod).length)
+            .toEqual(1);
+        expect(container.find(HostedPaymentMethod).length)
+            .toEqual(0);
     });
 
     it('initializes method with required config', () => {
