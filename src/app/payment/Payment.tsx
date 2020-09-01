@@ -462,12 +462,22 @@ export function mapToPaymentProps({
 
     let selectedPaymentMethod;
     let filteredMethods;
+
+    // Prevent a payment method from being rendered
+    const prefilteredMethods = methods.filter((method: PaymentMethod) => {
+        if (method.id === PaymentMethodId.Bolt && method.initializationData) {
+            return !!method.initializationData.showInCheckout;
+        }
+
+        return true;
+    });
+
     if (selectedPayment) {
         selectedPaymentMethod = getPaymentMethod(selectedPayment.providerId, selectedPayment.gatewayId);
-        filteredMethods = selectedPaymentMethod ? compact([selectedPaymentMethod]) : methods;
+        filteredMethods = selectedPaymentMethod ? compact([selectedPaymentMethod]) : prefilteredMethods;
     } else {
-        selectedPaymentMethod = find(methods, { config: { hasDefaultStoredInstrument: true } });
-        filteredMethods = methods;
+        selectedPaymentMethod = find(prefilteredMethods, { config: { hasDefaultStoredInstrument: true } });
+        filteredMethods = prefilteredMethods;
     }
 
     return {
