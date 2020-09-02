@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.78.0](https://github.com/bigcommerce/checkout-js/compare/v1.77.0...v1.78.0) (2020-09-02)
+
+
+### Features
+
+* **shipping:** CHECKOUT-5038 Extend shipping debounce timer ([7adc4d7](https://github.com/bigcommerce/checkout-js/commit/7adc4d76e998bd6f84bb8263c1adbe10f2e38849))
+
 ## [1.77.0](https://github.com/bigcommerce/checkout-js/compare/v1.76.4...v1.77.0) (2020-08-31)
 
 
