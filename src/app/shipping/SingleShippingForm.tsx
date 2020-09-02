@@ -51,7 +51,7 @@ interface SingleShippingFormState {
     hasRequestedShippingOptions: boolean;
 }
 
-export const SHIPPING_AUTOSAVE_DELAY = 1000;
+export const SHIPPING_AUTOSAVE_DELAY = 1700;
 
 class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLanguageProps & FormikProps<SingleShippingFormValues>> {
     static contextType = FormContext;
