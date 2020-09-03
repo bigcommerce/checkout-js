@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.80.0](https://github.com/bigcommerce/checkout-js/compare/v1.79.0...v1.80.0) (2020-09-03)
+
+
+### Features
+
+* **common:** CHECKOUT-5135 Log all unhandled errors and filter them on Sentry side ([49f95bb](https://github.com/bigcommerce/checkout-js/commit/49f95bb936350ebc1c11f1594567d6c4b4a5b50f))
+
 ## [1.79.0](https://github.com/bigcommerce/checkout-js/compare/v1.78.0...v1.79.0) (2020-09-03)
 
 
