@@ -44,34 +44,4 @@ describe('ConsoleErrorLogger', () => {
         expect(mockConsole.info)
             .toHaveBeenCalledWith(error, tags);
     });
-
-    it('allows additional error types to be logged', () => {
-        const logger = new ConsoleErrorLogger({
-            console: mockConsole,
-            errorTypes: ['Foo'],
-        });
-
-        const error = new Error('Foo');
-        error.name = 'Foo';
-
-        logger.log(error);
-
-        expect(mockConsole.error)
-            .toHaveBeenCalledWith(error, undefined);
-    });
-
-    it('does not log custom errors unless they are listed as additional error types', () => {
-        const logger = new ConsoleErrorLogger({
-            console: mockConsole,
-            errorTypes: ['Foo'],
-        });
-
-        const error = new Error('Bar');
-        error.name = 'Bar';
-
-        logger.log(error);
-
-        expect(mockConsole.error)
-            .not.toHaveBeenCalledWith(error, undefined);
-    });
 });
