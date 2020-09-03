@@ -1,10 +1,9 @@
 import { captureException, init, withScope, BrowserOptions, Event, Integrations, Severity, StackFrame } from '@sentry/browser';
 import { RewriteFrames } from '@sentry/integrations';
 import { EventHint, Exception } from '@sentry/types';
-import { every, includes, isEmpty, some } from 'lodash';
+import { every, isEmpty, some } from 'lodash';
 
 import computeErrorCode from './computeErrorCode';
-import DEFAULT_ERROR_TYPES from './defaultErrorTypes';
 import ConsoleErrorLogger from './ConsoleErrorLogger';
 import ErrorLogger, { ErrorLevelType, ErrorTags } from './ErrorLogger';
 import NoopErrorLogger from './NoopErrorLogger';
@@ -17,7 +16,6 @@ export interface SentryErrorLoggerOptions {
 
 export default class SentryErrorLogger implements ErrorLogger {
     private consoleLogger: ErrorLogger;
-    private errorTypes: string[];
     private publicPath: string;
 
     constructor(
@@ -26,14 +24,8 @@ export default class SentryErrorLogger implements ErrorLogger {
     ) {
         const {
             consoleLogger = new NoopErrorLogger(),
-            errorTypes = [],
             publicPath = '',
         } = options || {};
-
-        this.errorTypes = [
-            ...DEFAULT_ERROR_TYPES,
-            ...errorTypes,
-        ];
 
         this.consoleLogger = consoleLogger;
         this.publicPath = publicPath;
@@ -120,10 +112,6 @@ export default class SentryErrorLogger implements ErrorLogger {
             }
 
             if (!event.exception.values || !this.hasUsefulStacktrace(event.exception.values)) {
-                return null;
-            }
-
-            if (!includes(this.errorTypes, originalException.name)) {
                 return null;
             }
 
