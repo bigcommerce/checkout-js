@@ -18,7 +18,7 @@ const InstrumentStoreAsDefaultField: FunctionComponent<InstrumentStoreAsDefaultF
     ), [translationId]);
 
     return <CheckboxFormField
-        additionalClassName="form-field--shouldSetAsDefaultInstrument"
+        additionalClassName="form-field--setAsDefaultInstrument"
         disabled={ disabled }
         labelContent={ labelContent }
         name="shouldSetAsDefaultInstrument"
