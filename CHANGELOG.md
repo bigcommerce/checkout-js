@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.81.0](https://github.com/bigcommerce/checkout-js/compare/v1.80.0...v1.81.0) (2020-09-04)
+
+
+### Features
+
+* **checkout:** INT-3112 Add Bolt Payment method ([25f1620](https://github.com/bigcommerce/checkout-js/commit/25f1620059673e2f3ec7f4e79ac319d9b7f78113))
+* **payment:** PAYPAL-202 Add tests ([5736abd](https://github.com/bigcommerce/checkout-js/commit/5736abd4bae9fbb1b5eedd8515d89912b970d0ee))
+* **payment:** PAYPAL-202 Add tests ([5ec6264](https://github.com/bigcommerce/checkout-js/commit/5ec62641ca8aa4f2d0fed088e916bc4f6c57a5c5))
+* **payment:** PAYPAL-202 Bump checkout-sdk ([f44f588](https://github.com/bigcommerce/checkout-js/commit/f44f58820925bd7c4479067655df4a3dfe5e29ee))
+* **payment:** PAYPAL-202 Bump checkout-sdk ([c75c2c0](https://github.com/bigcommerce/checkout-js/commit/c75c2c0f918c769cc0bd54552fe3e2f193a7a33e))
+* **payment:** PAYPAL-202 Paypal Hosted Credit Cards ([f07ae4b](https://github.com/bigcommerce/checkout-js/commit/f07ae4bf22cf60cb69e81d29eec39ff7e881c753))
+* **payment:** PAYPAL-202 Paypal Hosted Credit Cards ([d7fa478](https://github.com/bigcommerce/checkout-js/commit/d7fa4782918f845f882b44a31d6622bb47aa1de2))
+
 ## [1.80.0](https://github.com/bigcommerce/checkout-js/compare/v1.79.0...v1.80.0) (2020-09-03)
 
 
