@@ -23,7 +23,6 @@ import OfflinePaymentMethod from './OfflinePaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
 import PaymentMethodType from './PaymentMethodType';
-import PaypalCommerceCreditCardPaymentMethod from './PaypalCommerceCreditCardPaymentMethod';
 import PaypalExpressPaymentMethod from './PaypalExpressPaymentMethod';
 import PaypalPaymentsProPaymentMethod from './PaypalPaymentsProPaymentMethod';
 import SquarePaymentMethod from './SquarePaymentMethod';
@@ -120,10 +119,6 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
 
     if (method.id === PaymentMethodId.Braintree) {
         return <BraintreeCreditCardPaymentMethod { ...props } />;
-    }
-
-    if (method.id === PaymentMethodId.PaypalCommerceCreditCards) {
-        return <PaypalCommerceCreditCardPaymentMethod { ...props } />;
     }
 
     if (method.id === PaymentMethodId.PaypalExpress) {
