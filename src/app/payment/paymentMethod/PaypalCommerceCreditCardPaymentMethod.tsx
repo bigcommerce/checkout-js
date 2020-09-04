@@ -4,13 +4,7 @@ import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps
 
 import CreditCardPaymentMethod, { CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
 
-export type PaypalCommerceCreditCardPaymentMethodProps = Omit<
-    CreditCardPaymentMethodProps,
-    'cardFieldset' |
-    'cardValidationSchema' |
-    'storedCardValidationSchema' |
-    'getStoredCardValidationFieldset'
->;
+export type PaypalCommerceCreditCardPaymentMethodProps = CreditCardPaymentMethodProps;
 
 const PaypalCommerceCreditCardPaymentMethod: FunctionComponent<
     PaypalCommerceCreditCardPaymentMethodProps &
