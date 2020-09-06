@@ -24,6 +24,7 @@ import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
 import PaymentMethodType from './PaymentMethodType';
 import PaypalCommerceCreditCardPaymentMethod from './PaypalCommerceCreditCardPaymentMethod';
+import PaypalCommercePaymentMethod from './PaypalCommercePaymentMethod';
 import PaypalExpressPaymentMethod from './PaypalExpressPaymentMethod';
 import PaypalPaymentsProPaymentMethod from './PaypalPaymentsProPaymentMethod';
 import SquarePaymentMethod from './SquarePaymentMethod';
@@ -35,6 +36,7 @@ export interface PaymentMethodProps {
     isEmbedded?: boolean;
     isUsingMultiShipping?: boolean;
     onUnhandledError?(error: Error): void;
+    submitForm?(): void;
 }
 
 export interface WithCheckoutPaymentMethodProps {
@@ -124,6 +126,11 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
 
     if (method.id === PaymentMethodId.PaypalCommerceCreditCards) {
         return <PaypalCommerceCreditCardPaymentMethod { ...props } />;
+    }
+
+    if (method.id === PaymentMethodId.PaypalCommerce ||
+        method.id === PaymentMethodId.PaypalCommerceCredit) {
+        return <PaypalCommercePaymentMethod { ...props } />;
     }
 
     if (method.id === PaymentMethodId.PaypalExpress) {
