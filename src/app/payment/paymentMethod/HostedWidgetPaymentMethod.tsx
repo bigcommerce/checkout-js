@@ -34,6 +34,7 @@ export interface HostedWidgetPaymentMethodProps {
     shouldShow?: boolean;
     shouldShowDescriptor?: boolean;
     shouldShowEditButton?: boolean;
+    submitForm?(): void | undefined;
     validateInstrument?(shouldShowNumberField: boolean): React.ReactNode;
     deinitializeCustomer?(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
@@ -84,7 +85,6 @@ class HostedWidgetPaymentMethod extends Component<
             if (isInstrumentFeatureAvailableProp) {
                 await loadInstruments();
             }
-
             await this.initializeMethod();
         } catch (error) {
             onUnhandledError(error);
@@ -332,7 +332,6 @@ class HostedWidgetPaymentMethod extends Component<
                 methodId: method.id,
             });
         }
-
         setSubmit(method, null);
 
         return initializePayment({
