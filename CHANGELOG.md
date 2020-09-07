@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.82.0](https://github.com/bigcommerce/checkout-js/compare/v1.81.0...v1.82.0) (2020-09-07)
+
+
+### Features
+
+* **payment:** PAYMENTS-5513 add field to set a stored card as the default during payment ([4036a94](https://github.com/bigcommerce/checkout-js/commit/4036a94dc29a793a55b9789384865321d4c2720a))
+
+
+### Bug Fixes
+
+* **payment:** INT-3027 Bump checkout-sdk ([311a1d8](https://github.com/bigcommerce/checkout-js/commit/311a1d8d01c7c490f228f4dc1d5f1aad8d4bc5cd))
+
 ## [1.81.0](https://github.com/bigcommerce/checkout-js/compare/v1.80.0...v1.81.0) (2020-09-04)
 
 
