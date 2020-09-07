@@ -9,7 +9,6 @@ import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
-import { CheckboxFormField } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
 import { getPaymentMethod } from '../payment-methods.mock';
 import { AccountInstrumentFieldset } from '../storedInstrument';
@@ -192,12 +191,9 @@ describe('HostedPaymentMethod', () => {
                 .mockReturnValue([]);
 
             const container = mount(<HostedPaymentMethodTest { ...defaultProps } />);
-            const component = container.find(CheckboxFormField);
 
-            expect(component)
-                .toHaveLength(1);
-            expect(component.prop('name'))
-                .toEqual('shouldSaveInstrument');
+            expect(container.find('input[name="shouldSaveInstrument"]').exists())
+                .toBe(true);
         });
 
         it('uses PaymentMethod to retrieve instruments', () => {

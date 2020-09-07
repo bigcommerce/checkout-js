@@ -3,8 +3,6 @@ import { Field, Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { CreditCardStorageField } from '../creditCard';
-
 import HostedCreditCardCodeField from './HostedCreditCardCodeField';
 import HostedCreditCardExpiryField from './HostedCreditCardExpiryField';
 import HostedCreditCardFieldset, { HostedCreditCardFieldsetProps } from './HostedCreditCardFieldset';
@@ -56,18 +54,6 @@ describe('HostedCreditCardFieldset', () => {
             .toEqual(1);
 
         expect(component.find(HostedCreditCardNameField).length)
-            .toEqual(1);
-    });
-
-    it('renders with "save card" checkbox if configured', () => {
-        const component = mount(
-            <HostedCreditCardFieldsetTest
-                { ...defaultProps }
-                shouldShowSaveCardField
-            />
-        );
-
-        expect(component.find(CreditCardStorageField).length)
             .toEqual(1);
     });
 

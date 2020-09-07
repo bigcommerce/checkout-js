@@ -8,7 +8,6 @@ import CreditCardCustomerCodeField from './CreditCardCustomerCodeField';
 import CreditCardExpiryField from './CreditCardExpiryField';
 import CreditCardNameField from './CreditCardNameField';
 import CreditCardNumberField from './CreditCardNumberField';
-import CreditCardStorageField from './CreditCardStorageField';
 
 export interface CreditCardFieldsetProps {
     shouldShowCardCodeField?: boolean;
@@ -28,7 +27,6 @@ export interface CreditCardFieldsetValues {
 const CreditCardFieldset: FunctionComponent<CreditCardFieldsetProps> = ({
     shouldShowCardCodeField,
     shouldShowCustomerCodeField,
-    shouldShowSaveCardField,
 }) => (
     <Fieldset
         additionalClassName="creditCardFieldset"
@@ -48,8 +46,6 @@ const CreditCardFieldset: FunctionComponent<CreditCardFieldsetProps> = ({
             { shouldShowCardCodeField && <CreditCardCodeField name="ccCvv" /> }
 
             { shouldShowCustomerCodeField && <CreditCardCustomerCodeField name="ccCustomerCode" /> }
-
-            { shouldShowSaveCardField && <CreditCardStorageField name="shouldSaveInstrument" /> }
         </div>
     </Fieldset>
 );

@@ -10,10 +10,10 @@ import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { MapToPropsFactory } from '../../common/hoc';
 import { TranslatedString } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
-import { CreditCardStorageField } from '../creditCard';
-import { isBankAccountInstrument, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, AccountInstrumentFieldset, AccountInstrumentStorageField, CardInstrumentFieldset, CreditCardValidation } from '../storedInstrument';
+import { isBankAccountInstrument, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, AccountInstrumentFieldset, CardInstrumentFieldset, CreditCardValidation } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
+import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
 
 import SignOutLink from './SignOutLink';
 
@@ -154,6 +154,7 @@ class HostedWidgetPaymentMethod extends Component<
             isSignedIn = false,
             isSignInRequired = false,
             method,
+            isAccountInstrument,
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
             isLoadingInstruments,
             additionalContainerClassName,
@@ -174,7 +175,6 @@ class HostedWidgetPaymentMethod extends Component<
 
         const shouldShowInstrumentFieldset = isInstrumentFeatureAvailableProp && instruments.length > 0;
         const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
-        const shouldShowSaveInstrument = isInstrumentFeatureAvailableProp && shouldShowCreditCardFieldset;
         const isLoading = (isInitializing || isLoadingInstruments) && !hideWidget;
 
         const selectedAccountInstrument = this.getSelectedBankAccountInstrument(isAddingNewCard, selectedInstrument);
@@ -218,7 +218,10 @@ class HostedWidgetPaymentMethod extends Component<
                         tabIndex={ -1 }
                     />
 
-                    { shouldShowSaveInstrument && this.renderSaveInstrumentCheckbox() }
+                    { isInstrumentFeatureAvailableProp && <StoreInstrumentFieldset
+                        instrumentId={ selectedInstrumentId }
+                        isAccountInstrument={ isAccountInstrument || shouldShowAccountInstrument }
+                    /> }
 
                     { this.renderEditButtonIfAvailable() }
 
@@ -293,16 +296,6 @@ class HostedWidgetPaymentMethod extends Component<
                 <div className="payment-descriptor">{ paymentDescriptor }</div>
             );
         }
-    }
-
-    private renderSaveInstrumentCheckbox() {
-        const { isAccountInstrument } = this.props;
-
-        if (isAccountInstrument) {
-            return <AccountInstrumentStorageField name="shouldSaveInstrument" />;
-        }
-
-        return <CreditCardStorageField name="shouldSaveInstrument" />;
     }
 
     private async initializeMethod(): Promise<CheckoutSelectors | void> {

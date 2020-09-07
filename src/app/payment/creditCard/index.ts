@@ -6,7 +6,6 @@ export { default as CreditCardCodeField } from './CreditCardCodeField';
 export { default as CreditCardCodeTooltip } from './CreditCardCodeTooltip';
 export { default as CreditCardCustomerCodeField } from './CreditCardCustomerCodeField';
 export { default as CreditCardNumberField } from './CreditCardNumberField';
-export { default as CreditCardStorageField } from './CreditCardStorageField';
 export { default as getCreditCardInputStyles, CreditCardInputStylesType } from './getCreditCardInputStyles';
 export { default as getCreditCardValidationSchema } from './getCreditCardValidationSchema';
 export { default as mapFromPaymentMethodCardType } from './mapFromPaymentMethodCardType';

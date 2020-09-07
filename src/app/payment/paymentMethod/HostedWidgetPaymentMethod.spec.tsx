@@ -9,12 +9,11 @@ import { CheckoutProvider } from '../../checkout';
 import { getCheckout, getCheckoutPayment } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
-import { TranslatedString } from '../../locale';
+import { createLocaleContext, LocaleContext, TranslatedString } from '../../locale';
 import { getConsignment } from '../../shipping/consignment.mock';
 import { LoadingOverlay } from '../../ui/loading';
-import { CreditCardStorageField } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
-import { AccountInstrumentFieldset, AccountInstrumentStorageField, CardInstrumentFieldset } from '../storedInstrument';
+import { AccountInstrumentFieldset, CardInstrumentFieldset } from '../storedInstrument';
 import { getInstruments } from '../storedInstrument/instruments.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
@@ -66,16 +65,18 @@ describe('HostedWidgetPaymentMethod', () => {
             .mockReturnValue(true);
 
         HostedWidgetPaymentMethodTest = props => (
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <PaymentContext.Provider value={ paymentContext }>
-                    <Formik
-                        initialValues={ {} }
-                        onSubmit={ noop }
-                    >
-                        <HostedWidgetPaymentMethod { ...props } />
-                    </Formik>
-                </PaymentContext.Provider>
-            </CheckoutProvider>
+            <LocaleContext.Provider value={ createLocaleContext(getStoreConfig()) }>
+                <CheckoutProvider checkoutService={ checkoutService }>
+                    <PaymentContext.Provider value={ paymentContext }>
+                        <Formik
+                            initialValues={ {} }
+                            onSubmit={ noop }
+                        >
+                            <HostedWidgetPaymentMethod { ...props } />
+                        </Formik>
+                    </PaymentContext.Provider>
+                    </CheckoutProvider>
+            </LocaleContext.Provider>
         );
     });
 
@@ -325,13 +326,16 @@ describe('HostedWidgetPaymentMethod', () => {
 
             const container = mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
             const hostedWidgetComponent = container.find('#widget-container');
-            const creditCardStorageFieldComponent = container.find(CreditCardStorageField);
 
             expect(hostedWidgetComponent)
                 .toHaveLength(1);
 
-            expect(creditCardStorageFieldComponent)
-                .toHaveLength(1);
+            expect(container.text()).toMatch(/save/i);
+            expect(container.text()).toMatch(/card/i);
+            expect(container.text()).not.toMatch(/account/i);
+
+            expect(container.find('input[name="shouldSaveInstrument"]').exists())
+                .toBe(true);
         });
 
         it('shows save account checkbox when has isAccountInstrument prop', () => {
@@ -342,13 +346,16 @@ describe('HostedWidgetPaymentMethod', () => {
 
             const container = mount(<HostedWidgetPaymentMethodTest { ...defaultProps } />);
             const hostedWidgetComponent = container.find('#widget-container');
-            const accountInstrumentStorageFieldComponent = container.find(AccountInstrumentStorageField);
 
             expect(hostedWidgetComponent)
                 .toHaveLength(1);
 
-            expect(accountInstrumentStorageFieldComponent)
-                .toHaveLength(1);
+            expect(container.text()).toMatch(/save/i);
+            expect(container.text()).toMatch(/account/i);
+            expect(container.text()).not.toMatch(/card/i);
+
+            expect(container.find('input[name="shouldSaveInstrument"]').exists())
+                .toBe(true);
         });
 
         it('shows fields on the Widget when you click Use another payment form on the vaulted bank account instruments dropdown', () => {

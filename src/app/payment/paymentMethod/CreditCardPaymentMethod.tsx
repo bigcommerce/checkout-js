@@ -15,6 +15,7 @@ import { HostedCreditCardFieldsetValues } from '../hostedCreditCard';
 import { getInstrumentValidationSchema, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CardInstrumentFieldset, CardInstrumentFieldsetValues, CreditCardValidation } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
+import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
 
 export interface CreditCardPaymentMethodProps {
     isInitializing?: boolean;
@@ -188,10 +189,13 @@ class CreditCardPaymentMethod extends Component<
                     { shouldShowCreditCardFieldset && !cardFieldset && <CreditCardFieldset
                         shouldShowCardCodeField={ method.config.cardCode || method.config.cardCode === null }
                         shouldShowCustomerCodeField={ method.config.requireCustomerCode }
-                        shouldShowSaveCardField={ isInstrumentFeatureAvailableProp }
                     /> }
 
                     { shouldShowCreditCardFieldset && cardFieldset }
+
+                    { isInstrumentFeatureAvailableProp && <StoreInstrumentFieldset
+                        instrumentId={ selectedInstrument && selectedInstrument.bigpayToken }
+                    /> }
                 </div>
             </LoadingOverlay>
         );
