@@ -62,32 +62,41 @@ export interface PaymentSubmitButtonProps {
 interface WithCheckoutPaymentSubmitButtonProps {
     isInitializing?: boolean;
     isSubmitting?: boolean;
+    isEmbeddedSubmitButton?: boolean;
 }
 
 const PaymentSubmitButton: FunctionComponent<PaymentSubmitButtonProps & WithCheckoutPaymentSubmitButtonProps> = ({
     isDisabled,
     isInitializing,
+    isEmbeddedSubmitButton,
     isSubmitting,
     methodGateway,
     methodId,
     methodType,
-}) => (
-    <Button
-        disabled={ isInitializing || isSubmitting || isDisabled }
-        id="checkout-payment-continue"
-        isFullWidth
-        isLoading={ isSubmitting }
-        size={ ButtonSize.Large }
-        type="submit"
-        variant={ ButtonVariant.Action }
-    >
-        <PaymentSubmitButtonText
-            methodGateway={ methodGateway }
-            methodId={ methodId }
-            methodType={ methodType }
-        />
-    </Button>
-);
+}) => {
+
+    if (isEmbeddedSubmitButton) {
+        return <div id="embeddedSubmitButtonContainer" />;
+    }
+
+    return (
+        <Button
+            disabled={ isInitializing || isSubmitting || isDisabled }
+            id="checkout-payment-continue"
+            isFullWidth
+            isLoading={ isSubmitting }
+            size={ ButtonSize.Large }
+            type="submit"
+            variant={ ButtonVariant.Action }
+        >
+            <PaymentSubmitButtonText
+                methodGateway={ methodGateway }
+                methodId={ methodId }
+                methodType={ methodType }
+            />
+        </Button>
+    );
+};
 
 export default withCheckout(({ checkoutState }) => {
     const {
@@ -95,11 +104,13 @@ export default withCheckout(({ checkoutState }) => {
             isInitializingCustomer,
             isInitializingPayment,
             isSubmittingOrder,
+            isEmbeddedSubmitButton,
         },
     } = checkoutState;
 
     return {
         isInitializing: isInitializingCustomer() || isInitializingPayment(),
         isSubmitting: isSubmittingOrder(),
+        isEmbeddedSubmitButton: isEmbeddedSubmitButton(),
     };
 })(memo(PaymentSubmitButton));
