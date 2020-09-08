@@ -2,10 +2,6 @@
 
 Checkout JS is a browser-based application providing a seamless UI for BigCommerce shoppers to complete their checkout. It is also known as [Optimized One-Page Checkout](https://support.bigcommerce.com/s/article/Optimized-Single-Page-Checkout), which is currently the recommended checkout option for all BigCommerce stores.
 
-## Limited Beta
-
-Please note that we are currently in Limited Beta. For external parties, in order to have access to the source code, you must agree and sign our Beta License Program Document. Although we intend to eventually open-source this software, it is still a private software at this stage. For specific information about the terms and conditions of this beta, please refer to the aforementioned document.
-
 ## Requirements
 
 In order to build from the source code, you must have the following set up in your development environment.
