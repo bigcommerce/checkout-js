@@ -92,6 +92,16 @@ describe('when using Bolt payment', () => {
             .toEqual(0);
     });
 
+    it('renders as offline payment method when no initialization data is provided', () => {
+        defaultProps.method.initializationData = undefined;
+        const container = mount(<PaymentMethodTest />);
+
+        expect(container.find(OfflinePaymentMethod).length)
+            .toEqual(1);
+        expect(container.find(HostedPaymentMethod).length)
+            .toEqual(0);
+    });
+
     it('initializes method with required config', () => {
         mount(<PaymentMethodTest />);
 

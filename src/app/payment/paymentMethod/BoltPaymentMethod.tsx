@@ -11,7 +11,7 @@ const BoltPaymentMethod: FunctionComponent<HostedPaymentMethodProps> = ({
     ...rest
 }) => {
     const paymentContext = useContext(PaymentContext);
-    const showInCheckout = method.initializationData && method.initializationData.showInCheckout;
+    const disableInCheckout = !(method.initializationData && method.initializationData.showInCheckout);
 
     const initializeBoltPayment = useCallback(options => initializePayment({
         ...options,
@@ -26,7 +26,7 @@ const BoltPaymentMethod: FunctionComponent<HostedPaymentMethodProps> = ({
         }
     });
 
-    if (!showInCheckout) {
+    if (disableInCheckout) {
         const methodPlaceholder = {
             ...method,
             id: '',
