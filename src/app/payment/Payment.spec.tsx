@@ -1,7 +1,7 @@
 import { createCheckoutService, CheckoutSelectors, CheckoutService, CustomError, PaymentMethod, RequestError } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { EventEmitter } from 'events';
-import { find, merge, noop } from 'lodash';
+import { find, merge, noop, remove } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { getCart } from '../cart/carts.mock';
@@ -15,6 +15,7 @@ import { getOrder } from '../order/orders.mock';
 import { Button } from '../ui/button';
 
 import { getPaymentMethod } from './payment-methods.mock';
+import { PaymentMethodId } from './paymentMethod';
 import Payment, { PaymentProps } from './Payment';
 import PaymentForm, { PaymentFormProps } from './PaymentForm';
 
@@ -34,6 +35,7 @@ describe('Payment', () => {
         paymentMethods = [
             getPaymentMethod(),
             { ...getPaymentMethod(), id: 'sagepay' },
+            { ...getPaymentMethod(), id: 'bolt', initializationData: { showInCheckout: true }},
         ];
         selectedPaymentMethod = paymentMethods[0];
         subscribeEventEmitter = new EventEmitter();
@@ -107,6 +109,24 @@ describe('Payment', () => {
                 methods: paymentMethods,
                 onSubmit: expect.any(Function),
                 selectedMethod: paymentMethods[0],
+            }));
+    });
+
+    it('does not render bolt if showInCheckout is false', async () => {
+        const expectedPaymentMethods = paymentMethods;
+        remove(expectedPaymentMethods, method =>  method.id === PaymentMethodId.Bolt);
+        paymentMethods[2] = { ...getPaymentMethod(), id: 'bolt', initializationData: { showInCheckout: false } };
+
+        const container = mount(<PaymentTest { ...defaultProps } />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+        container.update();
+
+        expect(container.find(PaymentForm).props())
+            .toEqual(expect.objectContaining({
+                methods: expectedPaymentMethods,
+                onSubmit: expect.any(Function),
+                selectedMethod: expectedPaymentMethods[0],
             }));
     });
 

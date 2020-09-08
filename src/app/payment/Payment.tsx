@@ -1,6 +1,6 @@
 import { CheckoutSelectors, CheckoutSettings, OrderRequestBody, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
-import { compact, find, isEmpty, noop } from 'lodash';
+import { compact, find, isEmpty, noop, remove } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
@@ -462,6 +462,16 @@ export function mapToPaymentProps({
 
     let selectedPaymentMethod;
     let filteredMethods;
+
+    // Prevent a payment method from being rendered
+    remove(methods, method => {
+        if (method.id === PaymentMethodId.Bolt && method.initializationData) {
+            return !method.initializationData.showInCheckout;
+        }
+
+        return false;
+    });
+
     if (selectedPayment) {
         selectedPaymentMethod = getPaymentMethod(selectedPayment.providerId, selectedPayment.gatewayId);
         filteredMethods = selectedPaymentMethod ? compact([selectedPaymentMethod]) : methods;
