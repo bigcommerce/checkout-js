@@ -41,50 +41,9 @@ npm run release:alpha
 
 After that, you need to push the prerelease tag to your fork so it can be referenced remotely.
 
-## Theme integration
+## Custom Checkout installation
 
-In the checkout template of your theme, you have to include a script tag that points to the loader file of this application. The loader file is responsible for loading the all the required assets, located in the `dist` folder, and inserting them on the page. You will need to find a way to serve these assets, i.e.: via a CDN provider, that is best suited to your needs.
-
-Below is an example showing you how you could use the loader file to load and initialize the application.
-
-```html
-<div id="app"></div>
-
-<script src="https://cdn.foo.bar/checkout-js/loader-1.2.3.js"></script>
-
-<script>
-    checkoutLoader.loadFiles({ publicPath: 'https://cdn.foo.bar/checkout-js/' })
-        .then(({ renderCheckout }) => {
-            renderCheckout({
-                checkoutId: '{{ checkout.id }}',
-                containerId: 'app',
-            });
-        });
-</script>
-```
-
-For the order confirmation page, the instruction is similar. But instead, you will need to call a different initialization method.
-
-```html
-<script>
-    checkoutLoader.loadFiles({ publicPath: 'https://cdn.foo.bar/checkout-js/' })
-        .then(({ renderOrderConfirmation }) => {
-            renderOrderConfirmation({
-                orderId: '{{ checkout.order.id }}',
-                containerId: 'app',
-            });
-        });
-</script>
-```
-
-To make it easier for you, we have prepared a command that you can run to start a static web server for local development.
-
-```sh
-npm run dev:server
-```
-
-After starting the server, you can reference the loader file that it serves (i.e.: `http://localhost:8080/loader.js`) in your theme.
-
+Follow [this guide](https://developer.bigcommerce.com/stencil-docs/customizing-checkout/installing-custom-checkouts) for instructions on how to fork and install this app as a Custom Checkout in your store.
 
 ## Release
 
