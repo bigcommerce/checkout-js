@@ -47,7 +47,7 @@ export default function withHostedCreditCardFieldset<TProps extends WithHostedCr
         WithFormProps &
         ConnectFormikProps<PaymentFormValues>
     > = ({
-        formik: { setFieldValue, submitForm },
+        formik: { setFieldValue, setFieldTouched, submitForm },
         isCardCodeRequired,
         isInstrumentCardCodeRequired: isInstrumentCardCodeRequiredProp,
         isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredProp,
@@ -122,10 +122,13 @@ export default function withHostedCreditCardFieldset<TProps extends WithHostedCr
                 },
                 onValidate: ({ errors = {} }) => {
                     forIn(errors, (fieldErrors = [], fieldType) => {
-                        setFieldValue(
-                            `hostedForm.errors.${fieldType}`,
-                            fieldErrors[0] ? fieldErrors[0].type : ''
-                        );
+                        const errorKey = `hostedForm.errors.${fieldType}`;
+
+                        setFieldValue(errorKey, fieldErrors[0]?.type ?? '');
+
+                        if (fieldErrors[0]) {
+                            setFieldTouched(errorKey);
+                        }
                     });
                 },
             };
@@ -138,6 +141,7 @@ export default function withHostedCreditCardFieldset<TProps extends WithHostedCr
             language,
             method,
             setFieldValue,
+            setFieldTouched,
             setFocusedFieldType,
             setSubmitted,
             submitForm,

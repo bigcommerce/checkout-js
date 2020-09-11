@@ -189,6 +189,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         if (!error ||
             error.type === 'order_finalization_not_required' ||
             error.type === 'payment_cancelled' ||
+            error.type === 'payment_invalid_form' ||
             error.type === 'spam_protection_not_completed' ||
             error.type === 'invalid_hosted_form_value') {
             return null;
