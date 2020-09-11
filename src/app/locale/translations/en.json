@@ -160,7 +160,7 @@
             "afterpay_name_text": "Afterpay",
             "afterpay_description": "Checkout with Afterpay",
             "amazon_continue_action": "Continue with Amazon",
-            "amazonpay_continue_action": "Continue with Amazon",
+            "amazonpay_continue_action": "Continue with Amazon Pay",
             "amazon_name_text": "Amazon Pay",
             "barclaycard_continue_action": "Continue",
             "bluesnap_v2_continue_action": "Continue",
