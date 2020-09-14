@@ -1,7 +1,8 @@
 import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
+import { EventEmitter } from 'events';
 import { Formik } from 'formik';
-import { noop } from 'lodash';
+import { merge, noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 import { object, string, Schema } from 'yup';
 
@@ -36,6 +37,7 @@ describe('CreditCardPaymentMethod', () => {
     let initialValues: CreditCardPaymentMethodValues;
     let localeContext: LocaleContextType;
     let paymentContext: PaymentContextProps;
+    let subscribeEventEmitter: EventEmitter;
     let CreditCardPaymentMethodTest: FunctionComponent<CreditCardPaymentMethodProps>;
 
     beforeEach(() => {
@@ -66,13 +68,15 @@ describe('CreditCardPaymentMethod', () => {
             isSubmitted: false,
             setSubmitted: jest.fn(),
         };
+        subscribeEventEmitter = new EventEmitter();
 
         jest.spyOn(checkoutService, 'getState')
             .mockReturnValue(checkoutState);
 
         jest.spyOn(checkoutService, 'subscribe')
             .mockImplementation(subscriber => {
-                subscriber(checkoutState);
+                subscribeEventEmitter.on('change', () => subscriber(checkoutState));
+                subscribeEventEmitter.emit('change');
 
                 return noop;
             });
@@ -320,6 +324,31 @@ describe('CreditCardPaymentMethod', () => {
 
             expect(component.find(CardInstrumentFieldset).prop('selectedInstrumentId'))
                 .toEqual(undefined);
+
+            expect(component.find(CreditCardFieldset))
+                .toHaveLength(1);
+        });
+
+        it('switches to "use new card" view if all instruments are deleted', () => {
+            const component = mount(<CreditCardPaymentMethodTest { ...defaultProps } />);
+
+            expect(component.find(CreditCardFieldset))
+                .toHaveLength(0);
+
+            // Update state
+            checkoutState = merge({}, checkoutState, {
+                data: {
+                    getInstruments: jest.fn(() => []),
+                },
+            });
+
+            subscribeEventEmitter.emit('change');
+
+            component.find(CardInstrumentFieldset)
+                // tslint:disable-next-line:no-non-null-assertion
+                .prop('onDeleteInstrument')!(getInstruments()[0].bigpayToken);
+
+            component.update();
 
             expect(component.find(CreditCardFieldset))
                 .toHaveLength(1);
