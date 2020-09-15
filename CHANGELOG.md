@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.83.0](https://github.com/bigcommerce/checkout-js/compare/v1.82.3...v1.83.0) (2020-09-15)
+
+
+### Features
+
+* **payment:** INT-3061 added mandate link on confirmation page ([96075ae](https://github.com/bigcommerce/checkout-js/commit/96075ae32a707e09af70a6aa236b4380191f7155))
+
+
+### Bug Fixes
+
+* **checkout:** INT-3116 Hide Bolt on checkout ([e204ea0](https://github.com/bigcommerce/checkout-js/commit/e204ea0f576ce114cac1f068f373d15cee11bfb3))
+
 ### [1.82.3](https://github.com/bigcommerce/checkout-js/compare/v1.82.2...v1.82.3) (2020-09-15)
 
 
