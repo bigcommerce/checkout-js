@@ -34,6 +34,7 @@ export interface HostedWidgetPaymentMethodProps {
     shouldShow?: boolean;
     shouldShowDescriptor?: boolean;
     shouldShowEditButton?: boolean;
+    hidePaymentButton?(): void;
     submitForm?(): void | undefined;
     validateInstrument?(shouldShowNumberField: boolean): React.ReactNode;
     deinitializeCustomer?(options: CustomerRequestOptions): Promise<CheckoutSelectors>;

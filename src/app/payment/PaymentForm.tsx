@@ -1,7 +1,7 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps, WithFormikConfig } from 'formik';
 import { isNil, noop, omitBy } from 'lodash';
-import React, { memo, useCallback, useContext, useMemo, FunctionComponent } from 'react';
+import React, { memo, useCallback, useContext, useMemo, useState, FunctionComponent } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
@@ -84,10 +84,16 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
     usableStoreCredit = 0,
     values,
 }) => {
+    const [isShowingPaymentButton, setShowingPaymentButton] = useState(true);
+
+    const hidePaymentButton = () => setShowingPaymentButton(false);
+
     const selectedMethodId = useMemo(() => {
         if (!selectedMethod) {
             return;
         }
+
+        setShowingPaymentButton(true);
 
         switch (selectedMethod.id) {
         case PaymentMethodId.AmazonPay:
@@ -131,6 +137,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
                 onMethodSelect={ onMethodSelect }
                 onUnhandledError={ onUnhandledError }
                 resetForm={ resetForm }
+                hidePaymentButton={ hidePaymentButton }
                 submitForm={ submitForm }
                 values={ values }
             />
@@ -145,6 +152,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
             <div className="form-actions">
                 <PaymentSubmitButton
                     isDisabled={ shouldDisableSubmit }
+                    isShown={ isShowingPaymentButton }
                     methodGateway={ selectedMethod && selectedMethod.gateway }
                     methodId={ selectedMethodId }
                     methodType={ selectedMethod && selectedMethod.method }
@@ -162,6 +170,7 @@ interface PaymentMethodListFieldsetProps {
     values: PaymentFormValues;
     isPaymentDataRequired(): boolean;
     submitForm(): void;
+    hidePaymentButton(): void;
     onMethodSelect?(method: PaymentMethod): void;
     onUnhandledError?(error: Error): void;
     resetForm(nextValues?: PaymentFormValues): void;
@@ -175,6 +184,7 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
     methods,
     onMethodSelect = noop,
     onUnhandledError,
+    hidePaymentButton,
     submitForm,
     resetForm,
     values,
@@ -225,6 +235,7 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
                 methods={ methods }
                 onSelect={ handlePaymentMethodSelect }
                 onUnhandledError={ onUnhandledError }
+                hidePaymentButton={ hidePaymentButton }
                 submitForm={ submitForm }
             />
         </Fieldset>

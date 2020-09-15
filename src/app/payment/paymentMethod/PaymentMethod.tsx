@@ -36,6 +36,7 @@ export interface PaymentMethodProps {
     isEmbedded?: boolean;
     isUsingMultiShipping?: boolean;
     onUnhandledError?(error: Error): void;
+    hidePaymentButton?(): void;
     submitForm?(): void;
 }
 

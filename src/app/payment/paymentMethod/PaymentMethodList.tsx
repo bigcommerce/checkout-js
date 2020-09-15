@@ -14,6 +14,7 @@ export interface PaymentMethodListProps {
     isInitializingPayment?: boolean;
     isUsingMultiShipping?: boolean;
     methods: PaymentMethod[];
+    hidePaymentButton(): void;
     submitForm?(): void;
     onSelect?(method: PaymentMethod): void;
     onUnhandledError?(error: Error): void;
@@ -41,6 +42,7 @@ const PaymentMethodList: FunctionComponent<
     methods,
     onSelect = noop,
     onUnhandledError,
+    hidePaymentButton,
     submitForm,
 }) => {
     const handleSelect = useCallback((value: string) => {
@@ -67,6 +69,7 @@ const PaymentMethodList: FunctionComponent<
                     key={ value }
                     method={ method }
                     onUnhandledError={ onUnhandledError }
+                    hidePaymentButton={ hidePaymentButton }
                     submitForm={ submitForm }
                     value={ value }
                 />
@@ -81,6 +84,7 @@ interface PaymentMethodListItemProps {
     isUsingMultiShipping?: boolean;
     method: PaymentMethod;
     value: string;
+    hidePaymentButton?(): void;
     submitForm?(): void;
     onUnhandledError?(error: Error): void;
 }
@@ -91,6 +95,7 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
     isUsingMultiShipping,
     method,
     onUnhandledError,
+    hidePaymentButton,
     submitForm,
     value,
 }) => {
@@ -100,6 +105,7 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
             isUsingMultiShipping={ isUsingMultiShipping }
             method={ method }
             onUnhandledError={ onUnhandledError }
+            hidePaymentButton={ hidePaymentButton }
             submitForm={ submitForm }
         />
     ), [
@@ -108,6 +114,7 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
         submitForm,
         method,
         onUnhandledError,
+        hidePaymentButton,
     ]);
 
     const renderPaymentMethodTitle = useCallback((isSelected: boolean) => (
