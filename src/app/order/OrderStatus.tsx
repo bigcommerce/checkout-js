@@ -1,5 +1,5 @@
 import { Order } from '@bigcommerce/checkout-sdk';
-import React, { memo, FunctionComponent } from 'react';
+import React, { memo, useCallback, FunctionComponent } from 'react';
 
 import { TranslatedHtml, TranslatedString } from '../locale';
 
@@ -16,6 +16,11 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
     supportEmail,
     supportPhoneNumber,
 }) => {
+
+    const getMandateProvider = useCallback(() => {
+        return order?.payments?.[0].description === 'Stripe (SEPA)' ? 'SEPA Direct Debit' : order?.payments?.[0].description;
+    }, [order]);
+
     return <OrderConfirmationSection>
         { order.orderId &&
         <p data-test="order-confirmation-order-number-text">
@@ -33,6 +38,13 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
                 supportPhoneNumber={ supportPhoneNumber }
             />
         </p>
+
+        { order.mandate && <a data-test="order-confirmation-mandate-link-text" href={ order.mandate } rel="noopener noreferrer" target="_blank">
+                <TranslatedString
+                    data={ { provider : getMandateProvider() } }
+                    id="order_confirmation.mandate_link_text"
+                />
+        </a> }
 
         { order.hasDigitalItems &&
         <p data-test="order-confirmation-digital-items-text">
