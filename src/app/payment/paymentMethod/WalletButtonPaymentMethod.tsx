@@ -35,6 +35,7 @@ interface WithCheckoutWalletButtonPaymentMethodProps {
     cardType?: string;
     expiryMonth?: string;
     expiryYear?: string;
+    isPaymentDataRequired: boolean;
     isPaymentSelected: boolean;
     signOut(options: CustomerRequestOptions): void;
 }
@@ -85,10 +86,12 @@ class WalletButtonPaymentMethod extends Component<
     }
 
     componentDidUpdate(prevProps: Readonly<PaymentMethodProps & WalletButtonPaymentMethodProps & WithCheckoutWalletButtonPaymentMethodProps & WithLanguageProps>): void {
-        const { method } = this.props;
-        const { method: prevMethod } = prevProps;
+        const { method, isPaymentDataRequired } = this.props;
+        const { method: prevMethod, isPaymentDataRequired: prevIsPaymentDataRequired } = prevProps;
 
-        if (method.initializationData !== prevMethod.initializationData) {
+        if (method.initializationData !== prevMethod.initializationData ||
+            isPaymentDataRequired !== prevIsPaymentDataRequired
+        ) {
             this.toggleSubmit();
         }
     }
@@ -202,9 +205,10 @@ class WalletButtonPaymentMethod extends Component<
         const {
             disableSubmit,
             method,
+            isPaymentDataRequired,
         } = this.props;
 
-        if (normalizeWalletPaymentData(method.initializationData)) {
+        if (normalizeWalletPaymentData(method.initializationData) || !isPaymentDataRequired) {
             disableSubmit(method, false);
         } else {
             disableSubmit(method, true);
@@ -281,7 +285,7 @@ function mapFromCheckoutProps(
     { checkoutService, checkoutState }: CheckoutContextProps,
     { method }: WalletButtonPaymentMethodProps
 ): WithCheckoutWalletButtonPaymentMethodProps | null {
-    const { data: { getBillingAddress, getCheckout } } = checkoutState;
+    const { data: { getBillingAddress, getCheckout, isPaymentDataRequired } } = checkoutState;
     const billingAddress = getBillingAddress();
     const checkout = getCheckout();
 
@@ -295,6 +299,7 @@ function mapFromCheckoutProps(
         ...walletPaymentData,
         // FIXME: I'm not sure how this would work for non-English names.
         cardName: walletPaymentData && [billingAddress.firstName, billingAddress.lastName].join(' '),
+        isPaymentDataRequired: isPaymentDataRequired(),
         isPaymentSelected: some(checkout.payments, { providerId: method.id }),
         signOut: checkoutService.signOutCustomer,
     };

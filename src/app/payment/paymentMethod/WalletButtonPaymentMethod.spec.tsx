@@ -47,6 +47,9 @@ describe('WalletButtonPaymentMethod', () => {
         jest.spyOn(checkoutState.data, 'getBillingAddress')
             .mockReturnValue(getBillingAddress());
 
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
+            .mockReturnValue(true);
+
         jest.spyOn(window.location, 'reload')
             .mockImplementation();
 
@@ -149,6 +152,16 @@ describe('WalletButtonPaymentMethod', () => {
 
         expect(paymentContext.disableSubmit)
             .toHaveBeenCalledWith(defaultProps.method, true);
+    });
+
+    it('enables submit button if payment data is not required', () => {
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
+            .mockReturnValue(false);
+
+        mount(<WalletButtonPaymentMethodTest { ...defaultProps } />);
+
+        expect(paymentContext.disableSubmit)
+            .toHaveBeenCalledWith(defaultProps.method, false);
     });
 
     describe('when user is signed into their payment method account and credit card is selected from their wallet', () => {
