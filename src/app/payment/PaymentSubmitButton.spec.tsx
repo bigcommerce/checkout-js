@@ -69,7 +69,7 @@ describe('PaymentSubmitButton', () => {
 
     it('renders button with special label for Amazon Pay', () => {
         const component = mount(
-            <PaymentSubmitButtonTest methodId="amazon" />
+            <PaymentSubmitButtonTest methodId="amazonpay" />
         );
 
         expect(component.text())
