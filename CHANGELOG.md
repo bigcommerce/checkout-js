@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.82.3](https://github.com/bigcommerce/checkout-js/compare/v1.82.2...v1.82.3) (2020-09-15)
+
+
+### Code Refactoring
+
+* **payment:** INT-3105 Update submit button text for AmazonPayV2 ([f775e9d](https://github.com/bigcommerce/checkout-js/commit/f775e9d9457b44e60f0357edccc302adfc9055e9))
+
 ### [1.82.2](https://github.com/bigcommerce/checkout-js/compare/v1.82.1...v1.82.2) (2020-09-11)
 
 
