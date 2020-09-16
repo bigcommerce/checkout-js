@@ -1,7 +1,7 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps, WithFormikConfig } from 'formik';
 import { isNil, noop, omitBy } from 'lodash';
-import React, { memo, useCallback, useContext, useMemo, useState, FunctionComponent } from 'react';
+import React, { memo, useCallback, useContext, useMemo, FunctionComponent } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
@@ -32,6 +32,7 @@ export interface PaymentFormProps {
     selectedMethod?: PaymentMethod;
     shouldShowStoreCredit?: boolean;
     shouldDisableSubmit?: boolean;
+    shouldHidePaymentSubmitButton?: boolean;
     shouldExecuteSpamCheck?: boolean;
     termsConditionsText?: string;
     termsConditionsUrl?: string;
@@ -75,25 +76,19 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
     onStoreCreditChange,
     onUnhandledError,
     resetForm,
-    submitForm,
     selectedMethod,
     shouldDisableSubmit,
+    shouldHidePaymentSubmitButton,
     shouldExecuteSpamCheck,
     termsConditionsText = '',
     termsConditionsUrl,
     usableStoreCredit = 0,
     values,
 }) => {
-    const [isShowingPaymentButton, setShowingPaymentButton] = useState(true);
-
-    const hidePaymentButton = () => setShowingPaymentButton(false);
-
     const selectedMethodId = useMemo(() => {
         if (!selectedMethod) {
             return;
         }
-
-        setShowingPaymentButton(true);
 
         switch (selectedMethod.id) {
         case PaymentMethodId.AmazonPay:
@@ -137,8 +132,6 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
                 onMethodSelect={ onMethodSelect }
                 onUnhandledError={ onUnhandledError }
                 resetForm={ resetForm }
-                hidePaymentButton={ hidePaymentButton }
-                submitForm={ submitForm }
                 values={ values }
             />
 
@@ -150,16 +143,21 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
             /> }
 
             <div className="form-actions">
-                <PaymentSubmitButton
-                    isDisabled={ shouldDisableSubmit }
-                    isShown={ isShowingPaymentButton }
-                    methodGateway={ selectedMethod && selectedMethod.gateway }
-                    methodId={ selectedMethodId }
-                    methodType={ selectedMethod && selectedMethod.method }
-                />
+                { shouldHidePaymentSubmitButton ?
+                    <PaymentMethodSubmitButtonContainer /> :
+                    <PaymentSubmitButton
+                        isDisabled={ shouldDisableSubmit }
+                        methodGateway={ selectedMethod && selectedMethod.gateway }
+                        methodId={ selectedMethodId }
+                        methodType={ selectedMethod && selectedMethod.method }
+                    /> }
             </div>
         </Form>
     );
+};
+
+const PaymentMethodSubmitButtonContainer: FunctionComponent = () => {
+    return <div id="checkout-payment-continue" />;
 };
 
 interface PaymentMethodListFieldsetProps {
@@ -169,8 +167,6 @@ interface PaymentMethodListFieldsetProps {
     methods: PaymentMethod[];
     values: PaymentFormValues;
     isPaymentDataRequired(): boolean;
-    submitForm(): void;
-    hidePaymentButton(): void;
     onMethodSelect?(method: PaymentMethod): void;
     onUnhandledError?(error: Error): void;
     resetForm(nextValues?: PaymentFormValues): void;
@@ -184,8 +180,6 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
     methods,
     onMethodSelect = noop,
     onUnhandledError,
-    hidePaymentButton,
-    submitForm,
     resetForm,
     values,
 }) => {
@@ -235,8 +229,6 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
                 methods={ methods }
                 onSelect={ handlePaymentMethodSelect }
                 onUnhandledError={ onUnhandledError }
-                hidePaymentButton={ hidePaymentButton }
-                submitForm={ submitForm }
             />
         </Fieldset>
     );

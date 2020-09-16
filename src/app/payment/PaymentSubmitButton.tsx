@@ -57,7 +57,6 @@ export interface PaymentSubmitButtonProps {
     methodId?: string;
     methodType?: string;
     isDisabled?: boolean;
-    isShown?: boolean;
 }
 
 interface WithCheckoutPaymentSubmitButtonProps {
@@ -69,16 +68,11 @@ interface WithCheckoutPaymentSubmitButtonProps {
 const PaymentSubmitButton: FunctionComponent<PaymentSubmitButtonProps & WithCheckoutPaymentSubmitButtonProps> = ({
     isDisabled,
     isInitializing,
-    isShown,
     isSubmitting,
     methodGateway,
     methodId,
     methodType,
 }) => {
-    if (!isShown) {
-        return  <div id="paymentButtonWidget" />;
-    }
-
     return (
         <Button
             disabled={ isInitializing || isSubmitting || isDisabled }

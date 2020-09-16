@@ -34,8 +34,6 @@ export interface HostedWidgetPaymentMethodProps {
     shouldShow?: boolean;
     shouldShowDescriptor?: boolean;
     shouldShowEditButton?: boolean;
-    hidePaymentButton?(): void;
-    submitForm?(): void | undefined;
     validateInstrument?(shouldShowNumberField: boolean): React.ReactNode;
     deinitializeCustomer?(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
@@ -308,6 +306,7 @@ class HostedWidgetPaymentMethod extends Component<
             initializePayment = noop,
             method,
             setSubmit,
+            hidePaymentSubmitButton,
             signInCustomer = noop,
         } = this.props;
 
@@ -327,6 +326,7 @@ class HostedWidgetPaymentMethod extends Component<
             });
         }
         setSubmit(method, null);
+        hidePaymentSubmitButton(method, false);
 
         return initializePayment({
             gatewayId: method.gateway,

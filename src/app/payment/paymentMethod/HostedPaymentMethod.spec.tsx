@@ -43,6 +43,7 @@ describe('HostedPaymentMethod', () => {
             disableSubmit: jest.fn(),
             setSubmit: jest.fn(),
             setValidationSchema: jest.fn(),
+            hidePaymentSubmitButton: jest.fn(),
         };
 
         jest.spyOn(checkoutState.data, 'getCart')

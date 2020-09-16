@@ -1,46 +1,53 @@
 import React, { useCallback, useContext, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
+import { connectFormik, ConnectFormikProps } from '../../common/form';
 import PaymentContext from '../PaymentContext';
+import { PaymentFormValues } from '../PaymentForm';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
-// import {WithPaymentProps} from "../withPayment";
 
-export type PaypalCommercePaymentMethod = Omit<HostedWidgetPaymentMethodProps, 'containerId'>;
+export type PaypalCommercePaymentMethod = Omit<HostedWidgetPaymentMethodProps, 'containerId'> & ConnectFormikProps<PaymentFormValues>;
 
 const PaypalCommercePaymentMethod: FunctionComponent<PaypalCommercePaymentMethod> = ({
       initializePayment,
       onUnhandledError,
-      hidePaymentButton,
-      submitForm,
-      // disableSubmit,
+      formik: { submitForm },
       ...rest
   }) => {
     const paymentContext = useContext(PaymentContext);
     const initializePayPalCommercePayment = useCallback(options => initializePayment({
         ...options,
         paypalcommerce: {
-            container: '#paymentButtonWidget', // TODO add container for hosted submit button
+            container: '#checkout-payment-continue', // TODO add container for hosted submit button
             style: {
                 height: 55,
                 color: 'black',
                 label: 'pay',
             },
-            hidePaymentButton,
-            submitForm,
-            onError: () => {
+            hidePaymentButton: () => {
                 if (paymentContext) {
-                    paymentContext.disableSubmit(rest.method, true);
+                    paymentContext.hidePaymentSubmitButton(rest.method, true);
                 }
             },
+            submitForm,
         },
-    }), [initializePayment, submitForm, hidePaymentButton, paymentContext, rest.method]);
+    }), [initializePayment, submitForm, paymentContext, rest.method]);
+
+    const onError = (error: Error) => {
+        if (paymentContext) {
+            paymentContext.disableSubmit(rest.method, true);
+        }
+
+        onUnhandledError?.(error);
+    };
 
     return <HostedWidgetPaymentMethod
         { ...rest }
         containerId="paymentWidget"
         initializePayment={ initializePayPalCommercePayment }
+        onUnhandledError={ onError }
     />;
 };
 
-export default PaypalCommercePaymentMethod;
+export default connectFormik(PaypalCommercePaymentMethod);
