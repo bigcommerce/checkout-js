@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.83.1](https://github.com/bigcommerce/checkout-js/compare/v1.83.0...v1.83.1) (2020-09-16)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-5135 Upgrade checkout-sdk version ([8aef399](https://github.com/bigcommerce/checkout-js/commit/8aef399f280c0b8930fb9053b95ab6f0999147e1))
+* **payment:** CHECKOUT-5135 Fix error handler for Braintree hosted form ([a62edcd](https://github.com/bigcommerce/checkout-js/commit/a62edcd6d3b9ed2828e70e4be402cf4213f2fe61))
+* **payment:** CHECKOUT-5161 Re-initialise credit card form after deleting last stored card ([306ae2a](https://github.com/bigcommerce/checkout-js/commit/306ae2a41507759157edf892f3e578e7114998ef))
+
 ## [1.83.0](https://github.com/bigcommerce/checkout-js/compare/v1.82.3...v1.83.0) (2020-09-15)
 
 
