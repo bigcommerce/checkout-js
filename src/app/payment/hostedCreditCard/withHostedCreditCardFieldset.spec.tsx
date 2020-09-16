@@ -251,6 +251,16 @@ describe('withHostedCreditCardFieldset', () => {
             .toEqual(expect.objectContaining({
                 cardNumber: 'required',
             }));
+
+        // tslint:disable-next-line:no-non-null-assertion
+        expect(last(formikRender.mock.calls)![0].touched)
+            .toEqual(expect.objectContaining({
+                hostedForm: {
+                    errors: {
+                        cardNumber: true,
+                    },
+                },
+            }));
     });
 
     it('passes card type from hosted form to Formik form', async () => {
