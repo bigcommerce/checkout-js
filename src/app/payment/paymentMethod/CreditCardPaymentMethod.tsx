@@ -175,6 +175,7 @@ class CreditCardPaymentMethod extends Component<
                 <div className="paymentMethod paymentMethod--creditCard">
                     { shouldShowInstrumentFieldset && <CardInstrumentFieldset
                         instruments={ instruments }
+                        onDeleteInstrument={ this.handleDeleteInstrument }
                         onSelectInstrument={ this.handleSelectInstrument }
                         onUseNewInstrument={ this.handleUseNewCard }
                         selectedInstrumentId={ selectedInstrument && selectedInstrument.bigpayToken }
@@ -270,6 +271,26 @@ class CreditCardPaymentMethod extends Component<
             isAddingNewCard: false,
             selectedInstrumentId: id,
         });
+    };
+
+    private handleDeleteInstrument: (id: string) => void = id => {
+        const { instruments, formik: { setFieldValue } } = this.props;
+        const { selectedInstrumentId } = this.state;
+
+        if (instruments.length === 0) {
+            this.setState({
+                isAddingNewCard: true,
+                selectedInstrumentId: undefined,
+            });
+
+            setFieldValue('instrumentId', '');
+        } else if (selectedInstrumentId === id) {
+            this.setState({
+                selectedInstrumentId: this.getDefaultInstrumentId(),
+            });
+
+            setFieldValue('instrumentId', this.getDefaultInstrumentId());
+        }
     };
 }
 

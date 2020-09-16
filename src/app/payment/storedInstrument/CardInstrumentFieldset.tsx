@@ -16,6 +16,7 @@ export interface CardInstrumentFieldsetProps {
     selectedInstrumentId?: string;
     shouldHideExpiryDate?: boolean;
     validateInstrument?: React.ReactNode;
+    onDeleteInstrument?(instrumentId: string): void;
     onSelectInstrument(id: string): void;
     onUseNewInstrument(): void;
 }
@@ -26,6 +27,7 @@ export type CardInstrumentFieldsetValues = {
 
 const CardInstrumentFieldset: FunctionComponent<CardInstrumentFieldsetProps> = ({
     instruments,
+    onDeleteInstrument,
     onSelectInstrument,
     onUseNewInstrument,
     selectedInstrumentId,
@@ -52,9 +54,13 @@ const CardInstrumentFieldset: FunctionComponent<CardInstrumentFieldsetProps> = (
     const renderModal = useCallback((props: ModalTriggerModalProps) => (
         <ManageInstrumentsModal
             instruments={ instruments }
+            onDeleteInstrument={ onDeleteInstrument }
             { ...props }
         />
-    ), [instruments]);
+    ), [
+        instruments,
+        onDeleteInstrument,
+    ]);
 
     return <Fieldset
         additionalClassName="instrumentFieldset"

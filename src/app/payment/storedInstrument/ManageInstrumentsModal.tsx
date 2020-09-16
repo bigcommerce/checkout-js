@@ -18,6 +18,7 @@ export interface ManageInstrumentsModalProps {
     isOpen: boolean;
     instruments: PaymentInstrument[];
     onAfterOpen?(): void;
+    onDeleteInstrument?(instrumentId: string): void;
     onDeleteInstrumentError?(error: Error): void;
     onRequestClose?(): void;
 }
@@ -165,7 +166,7 @@ class ManageInstrumentsModal extends Component<ManageInstrumentsModalProps & Wit
     };
 
     private handleConfirmDelete: () => void = async () => {
-        const { deleteInstrument, onDeleteInstrumentError = noop, onRequestClose = noop } = this.props;
+        const { deleteInstrument, onDeleteInstrument = noop, onDeleteInstrumentError = noop, onRequestClose = noop } = this.props;
         const { selectedInstrumentId } = this.state;
 
         if (!selectedInstrumentId) {
@@ -174,6 +175,7 @@ class ManageInstrumentsModal extends Component<ManageInstrumentsModalProps & Wit
 
         try {
             await deleteInstrument(selectedInstrumentId);
+            onDeleteInstrument(selectedInstrumentId);
             onRequestClose();
         } catch (error) {
             onDeleteInstrumentError(error);
