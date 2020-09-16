@@ -154,7 +154,7 @@ describe('Customer', () => {
                 .toHaveBeenCalledWith({
                     email: 'test@bigcommerce.com',
                     acceptsMarketingNewsletter: undefined,
-                    acceptsAbandonedCartEmails: undefined,
+                    acceptsAbandonedCartEmails: false,
                 });
 
             expect(subscribeToNewsletter)

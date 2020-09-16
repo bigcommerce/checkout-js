@@ -236,7 +236,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             const { data } = await continueAsGuest({
                 email,
                 acceptsMarketingNewsletter: canSubscribe && formValues.shouldSubscribe ? true : undefined,
-                acceptsAbandonedCartEmails: formValues.shouldSubscribe ? true : undefined,
+                acceptsAbandonedCartEmails: formValues.shouldSubscribe ? true : false,
             });
 
             const customer = data.getCustomer();
