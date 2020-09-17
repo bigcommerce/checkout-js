@@ -13,7 +13,7 @@ One of the simplest ways to install Node is using [NVM](https://github.com/nvm-s
 
 ## Development
 
-Once you have cloned the repository and set up your environment, you can start developing with it. 
+Once you have cloned the repository and set up your environment, you can start developing with it.
 
 First, you have to pull in the dependencies required for the application.
 
@@ -45,6 +45,13 @@ After that, you need to push the prerelease tag to your fork so it can be refere
 
 Follow [this guide](https://developer.bigcommerce.com/stencil-docs/customizing-checkout/installing-custom-checkouts) for instructions on how to fork and install this app as a Custom Checkout in your store.
 
+If you want to test your checkout implementation, you can run:
+```sh
+npm run dev:server
+```
+
+And enter the local URL for `auto-loader-dev.js` in Checkout Settings, e.g `http://127.0.0.1:8080/auto-loader.dev.js`
+
 ## Release
 
 Everytime a PR is merged to the master branch, CircleCI will trigger a build automatically. However, it won't create a new Git release until it is approved by a person with write access to the repository. If you have write access, you can approve a release job by going to [CircleCI](https://circleci.com/gh/bigcommerce/workflows/checkout-js/tree/master) and look for the job you wish to approve. You can also navigate directly to the release job by clicking on the yellow dot next to the merged commit.
@@ -52,7 +59,7 @@ Everytime a PR is merged to the master branch, CircleCI will trigger a build aut
 
 ## Contribution
 
-We currently do not accept Pull Requests from external parties. However, if you are an external party and want to report a bug or provide your feedback, you are more than welcome to raise a GitHub Issue. We will attend to these issues as quickly as we can. 
+We currently do not accept Pull Requests from external parties. However, if you are an external party and want to report a bug or provide your feedback, you are more than welcome to raise a GitHub Issue. We will attend to these issues as quickly as we can.
 
 More information can be found in the [contribution guide](CONTRIBUTING.md) and [code of conduct](CODE_OF_CONDUCT.md) for this project.
 
