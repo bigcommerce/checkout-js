@@ -6,8 +6,9 @@
   "license": "MIT",
   "scripts": {
     "build": "rm -rf dist && webpack --mode production",
+    "build:server": "http-server dist",
     "dev": "webpack --mode development --watch",
-    "dev:server": "http-server dist",
+    "dev:server": "http-server build",
     "release": "echo 'Please do not release locally, use CircleCi'",
     "release:alpha": "npm run lint && npm run test -- --coverage && npm run build -- --prerelease && npm run release:version",
     "release:version": "git add dist && standard-version -a",
