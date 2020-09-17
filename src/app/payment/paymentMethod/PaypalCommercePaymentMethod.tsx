@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, FunctionComponent } from 'react';
-import { Omit } from 'utility-types';
 
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import PaymentContext from '../PaymentContext';
@@ -19,7 +18,7 @@ const PaypalCommercePaymentMethod: FunctionComponent<PaypalCommercePaymentMethod
     const initializePayPalCommercePayment = useCallback(options => initializePayment({
         ...options,
         paypalcommerce: {
-            container: '#checkout-payment-continue', // TODO add container for hosted submit button
+            container: '#checkout-payment-continue',
             style: {
                 height: 55,
                 color: 'black',

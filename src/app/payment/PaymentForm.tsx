@@ -157,7 +157,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
 };
 
 const PaymentMethodSubmitButtonContainer: FunctionComponent = () => {
-    return <div id="checkout-payment-continue" />;
+    return <div className="submitButtonContainer" id="checkout-payment-continue" />;
 };
 
 interface PaymentMethodListFieldsetProps {

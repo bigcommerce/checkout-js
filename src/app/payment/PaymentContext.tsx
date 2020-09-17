@@ -15,7 +15,7 @@ export interface PaymentContextProps {
     // can remove this prop.
     setSubmit(method: PaymentMethod, fn: ((values: PaymentFormValues) => void) | null): void;
     setValidationSchema(method: PaymentMethod, schema: ObjectSchema<Partial<PaymentFormValues>> | null): void;
-    hidePaymentSubmitButton(method: PaymentMethod, hided?: boolean): void;
+    hidePaymentSubmitButton(method: PaymentMethod, hidden?: boolean): void;
 }
 
 const PaymentContext = createContext<PaymentContextProps | undefined>(undefined);
