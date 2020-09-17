@@ -25,7 +25,7 @@ const PaypalCommercePaymentMethod: FunctionComponent<PaypalCommercePaymentMethod
                 color: 'black',
                 label: 'pay',
             },
-            hidePaymentButton: () => {
+            onRenderButton: () => {
                 if (paymentContext) {
                     paymentContext.hidePaymentSubmitButton(rest.method, true);
                 }
