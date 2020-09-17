@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "appVersion": "1.83.1",
+  "appVersion": "1.83.2",
   "dynamicChunks": {
     "js": [
       "billing-025b6f52.js",
@@ -32,7 +32,7 @@
   "js": [
     "runtime-da070234.js",
     "polyfill~checkout-bedae8d2.js",
-    "transients~checkout-4b9f8b54.js",
+    "transients~checkout-054d28f1.js",
     "sentry~checkout-062dfa73.js",
     "vendors~checkout-b446dc18.js",
     "checkout-2223a1e7.js"

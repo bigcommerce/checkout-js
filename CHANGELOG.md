@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.83.2](https://github.com/bigcommerce/checkout-js/compare/v1.83.1...v1.83.2) (2020-09-17)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-5173 Fix server commands ([4fdef1e](https://github.com/bigcommerce/checkout-js/commit/4fdef1e63296b5c7eb21ef70bab886dd4580eada))
+* **payment:** CHECKOUT-5135 Bump checkout-sdk version ([182618b](https://github.com/bigcommerce/checkout-js/commit/182618bb75af49ea16525fa91d8e9b4251d85310))
+
 ### [1.83.1](https://github.com/bigcommerce/checkout-js/compare/v1.83.0...v1.83.1) (2020-09-16)
 
 
