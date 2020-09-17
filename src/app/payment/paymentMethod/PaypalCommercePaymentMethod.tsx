@@ -46,6 +46,7 @@ const PaypalCommercePaymentMethod: FunctionComponent<PaypalCommercePaymentMethod
         containerId="paymentWidget"
         initializePayment={ initializePayPalCommercePayment }
         onUnhandledError={ onError }
+        shouldShow={ false }
     />;
 };
 
