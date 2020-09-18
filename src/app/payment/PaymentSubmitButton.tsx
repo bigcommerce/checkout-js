@@ -72,22 +72,22 @@ const PaymentSubmitButton: FunctionComponent<PaymentSubmitButtonProps & WithChec
     methodId,
     methodType,
 }) => (
-    <Button
-        disabled={ isInitializing || isSubmitting || isDisabled }
-        id="checkout-payment-continue"
-        isFullWidth
-        isLoading={ isSubmitting }
-        size={ ButtonSize.Large }
-        type="submit"
-        variant={ ButtonVariant.Action }
-    >
-        <PaymentSubmitButtonText
-            methodGateway={ methodGateway }
-            methodId={ methodId }
-            methodType={ methodType }
-        />
-    </Button>
-);
+        <Button
+            disabled={ isInitializing || isSubmitting || isDisabled }
+            id="checkout-payment-continue"
+            isFullWidth
+            isLoading={ isSubmitting }
+            size={ ButtonSize.Large }
+            type="submit"
+            variant={ ButtonVariant.Action }
+        >
+            <PaymentSubmitButtonText
+                methodGateway={ methodGateway }
+                methodId={ methodId }
+                methodType={ methodType }
+            />
+        </Button>
+    );
 
 export default withCheckout(({ checkoutState }) => {
     const {

@@ -32,6 +32,7 @@ export interface PaymentFormProps {
     selectedMethod?: PaymentMethod;
     shouldShowStoreCredit?: boolean;
     shouldDisableSubmit?: boolean;
+    shouldHidePaymentSubmitButton?: boolean;
     shouldExecuteSpamCheck?: boolean;
     termsConditionsText?: string;
     termsConditionsUrl?: string;
@@ -77,6 +78,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
     resetForm,
     selectedMethod,
     shouldDisableSubmit,
+    shouldHidePaymentSubmitButton,
     shouldExecuteSpamCheck,
     termsConditionsText = '',
     termsConditionsUrl,
@@ -141,15 +143,21 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
             /> }
 
             <div className="form-actions">
-                <PaymentSubmitButton
-                    isDisabled={ shouldDisableSubmit }
-                    methodGateway={ selectedMethod && selectedMethod.gateway }
-                    methodId={ selectedMethodId }
-                    methodType={ selectedMethod && selectedMethod.method }
-                />
+                { shouldHidePaymentSubmitButton ?
+                    <PaymentMethodSubmitButtonContainer /> :
+                    <PaymentSubmitButton
+                        isDisabled={ shouldDisableSubmit }
+                        methodGateway={ selectedMethod && selectedMethod.gateway }
+                        methodId={ selectedMethodId }
+                        methodType={ selectedMethod && selectedMethod.method }
+                    /> }
             </div>
         </Form>
     );
+};
+
+const PaymentMethodSubmitButtonContainer: FunctionComponent = () => {
+    return <div className="submitButtonContainer" id="checkout-payment-continue" />;
 };
 
 interface PaymentMethodListFieldsetProps {

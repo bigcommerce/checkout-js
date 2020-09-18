@@ -84,7 +84,6 @@ class HostedWidgetPaymentMethod extends Component<
             if (isInstrumentFeatureAvailableProp) {
                 await loadInstruments();
             }
-
             await this.initializeMethod();
         } catch (error) {
             onUnhandledError(error);
@@ -307,6 +306,7 @@ class HostedWidgetPaymentMethod extends Component<
             initializePayment = noop,
             method,
             setSubmit,
+            hidePaymentSubmitButton,
             signInCustomer = noop,
         } = this.props;
 
@@ -325,8 +325,8 @@ class HostedWidgetPaymentMethod extends Component<
                 methodId: method.id,
             });
         }
-
         setSubmit(method, null);
+        hidePaymentSubmitButton(method, false);
 
         return initializePayment({
             gatewayId: method.gateway,

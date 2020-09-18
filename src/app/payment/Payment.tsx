@@ -59,6 +59,7 @@ interface PaymentState {
     isReady: boolean;
     selectedMethod?: PaymentMethod;
     shouldDisableSubmit: { [key: string]: boolean };
+    shouldHidePaymentSubmitButton: { [key: string]: boolean };
     submitFunctions: { [key: string]: ((values: PaymentFormValues) => void) | null };
     validationSchemas: { [key: string]: ObjectSchema<Partial<PaymentFormValues>> | null };
 }
@@ -68,6 +69,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         didExceedSpamLimit: false,
         isReady: false,
         shouldDisableSubmit: {},
+        shouldHidePaymentSubmitButton: {},
         validationSchemas: {},
         submitFunctions: {},
     };
@@ -77,6 +79,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             disableSubmit: this.disableSubmit,
             setSubmit: this.setSubmit,
             setValidationSchema: this.setValidationSchema,
+            hidePaymentSubmitButton: this.hidePaymentSubmitButton,
         };
     });
 
@@ -140,6 +143,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             selectedMethod = defaultMethod,
             shouldDisableSubmit,
             validationSchemas,
+            shouldHidePaymentSubmitButton,
         } = this.state;
 
         const uniqueSelectedMethodId = (
@@ -166,6 +170,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
                         onSubmit={ this.handleSubmit }
                         selectedMethod={ selectedMethod }
                         shouldDisableSubmit={ uniqueSelectedMethodId && shouldDisableSubmit[uniqueSelectedMethodId] || undefined }
+                        shouldHidePaymentSubmitButton={ uniqueSelectedMethodId && shouldHidePaymentSubmitButton[uniqueSelectedMethodId] || undefined }
                         validationSchema={ uniqueSelectedMethodId && validationSchemas[uniqueSelectedMethodId] || undefined }
                     /> }
                 </LoadingOverlay>
@@ -239,6 +244,25 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         this.setState({
             shouldDisableSubmit: {
                 ...shouldDisableSubmit,
+                [uniqueId]: disabled,
+            },
+        });
+    };
+
+    private hidePaymentSubmitButton: (
+        method: PaymentMethod,
+        disabled?: boolean
+    ) => void = (method, disabled = true) => {
+        const uniqueId = getUniquePaymentMethodId(method.id, method.gateway);
+        const { shouldHidePaymentSubmitButton } = this.state;
+
+        if (shouldHidePaymentSubmitButton[uniqueId] === disabled) {
+            return;
+        }
+
+        this.setState({
+            shouldHidePaymentSubmitButton: {
+                ...shouldHidePaymentSubmitButton,
                 [uniqueId]: disabled,
             },
         });
