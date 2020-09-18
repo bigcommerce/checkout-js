@@ -4782,6 +4782,10 @@ body.klarna-payments-fso-open {
 #stripe-card-field--webkit-autofill {
   background-color: #fefde5 !important; }
 
+.submitButtonContainer {
+  margin-left: 0;
+  width: 100%; }
+
 .productList {
   list-style: none;
   margin-left: 0;
@@ -5300,4 +5304,4 @@ body.klarna-payments-fso-open {
     font-weight: normal; }
 
 
-/*# sourceMappingURL=checkout-7ec24d64.css.map*/
+/*# sourceMappingURL=checkout-52344743.css.map*/
