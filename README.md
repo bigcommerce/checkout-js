@@ -50,7 +50,7 @@ If you want to test your checkout implementation, you can run:
 npm run dev:server
 ```
 
-And enter the local URL for `auto-loader-dev.js` in Checkout Settings, e.g `http://127.0.0.1:8080/auto-loader.dev.js`
+And enter the local URL for `auto-loader-dev.js` in Checkout Settings, e.g `http://127.0.0.1:8080/auto-loader-dev.js`
 
 ## Release
 
