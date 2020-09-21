@@ -17,6 +17,7 @@
 .paymentProviderHeader-cc {
     @include breakpoint("small") {
         float: right;
+        max-width: 14em;
     }
 }
 
