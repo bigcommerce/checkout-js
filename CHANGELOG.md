@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.84.1](https://github.com/bigcommerce/checkout-js/compare/v1.84.0...v1.84.1) (2020-09-24)
+
+
+### Bug Fixes
+
+* **payment:** INT-3140 Enable checkout button with googlepay when use store credit ([c8f3d91](https://github.com/bigcommerce/checkout-js/commit/c8f3d91c2ec54ffc5a6c7a10560e6ea8390283e2))
+
 ## [1.84.0](https://github.com/bigcommerce/checkout-js/compare/v1.83.3...v1.84.0) (2020-09-23)
 
 
