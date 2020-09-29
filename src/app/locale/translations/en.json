@@ -155,7 +155,7 @@
         },
         "payment": {
             "affirm_name_text": "Affirm",
-            "affirm_display_name_text": "Monthly Payments",
+            "affirm_display_name_text": "Pay over time",
             "affirm_body_text": "You will be redirected to Affirm to securely complete your purchase. Just fill out a few pieces of basic information and get a real-time decision. Checking your eligibility won't affect your credit score.",
             "afterpay_name_text": "Afterpay",
             "afterpay_description": "Checkout with Afterpay",
