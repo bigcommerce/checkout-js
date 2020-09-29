@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.85.1](https://github.com/bigcommerce/checkout-js/compare/v1.85.0...v1.85.1) (2020-09-29)
+
+
+### Bug Fixes
+
+* **checkout:** INT-3198 Update Affirm verbiage ([dabf120](https://github.com/bigcommerce/checkout-js/commit/dabf120553a7b779b18e52307c631009dfb4db90))
+
 ## [1.85.0](https://github.com/bigcommerce/checkout-js/compare/v1.84.1...v1.85.0) (2020-09-28)
 
 
