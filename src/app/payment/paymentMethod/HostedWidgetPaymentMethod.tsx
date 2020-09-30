@@ -34,6 +34,8 @@ export interface HostedWidgetPaymentMethodProps {
     shouldShow?: boolean;
     shouldShowDescriptor?: boolean;
     shouldShowEditButton?: boolean;
+    shouldRenderCustomInstrument?: boolean;
+    renderCustomPaymentForm?(): React.ReactNode;
     validateInstrument?(shouldShowNumberField: boolean): React.ReactNode;
     deinitializeCustomer?(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
@@ -90,7 +92,8 @@ class HostedWidgetPaymentMethod extends Component<
         }
     }
 
-    async componentDidUpdate(prevProps: Readonly<HostedWidgetPaymentMethodProps & WithCheckoutHostedWidgetPaymentMethodProps>, prevState: Readonly<HostedWidgetPaymentMethodState>): Promise<void> {
+    async componentDidUpdate(prevProps: Readonly<HostedWidgetPaymentMethodProps & WithCheckoutHostedWidgetPaymentMethodProps>,
+                             prevState: Readonly<HostedWidgetPaymentMethodState>): Promise<void> {
         const {
             deinitializePayment = noop,
             instruments,
@@ -146,17 +149,13 @@ class HostedWidgetPaymentMethod extends Component<
     render(): ReactNode {
         const {
             instruments,
-            containerId,
-            hideContentWhenSignedOut = false,
             hideWidget = false,
             isInitializing = false,
             isSignedIn = false,
-            isSignInRequired = false,
             method,
             isAccountInstrument,
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
             isLoadingInstruments,
-            additionalContainerClassName,
             shouldHideInstrumentExpiryDate = false,
             shouldShow = true,
         } = this.props;
@@ -203,19 +202,7 @@ class HostedWidgetPaymentMethod extends Component<
 
                     { this.renderPaymentDescriptorIfAvailable() }
 
-                    <div
-                        className={ classNames(
-                            'widget',
-                            `widget--${method.id}`,
-                            'payment-widget',
-                            additionalContainerClassName
-                        ) }
-                        id={ containerId }
-                        style={ {
-                            display: (hideContentWhenSignedOut && isSignInRequired && !isSignedIn) || !shouldShowCreditCardFieldset || hideWidget ? 'none' : undefined,
-                        } }
-                        tabIndex={ -1 }
-                    />
+                    { this.renderContainer(shouldShowCreditCardFieldset) }
 
                     { isInstrumentFeatureAvailableProp && <StoreInstrumentFieldset
                         instrumentId={ selectedInstrumentId }
@@ -233,7 +220,7 @@ class HostedWidgetPaymentMethod extends Component<
         );
     }
 
-    getValidateInstrument(): ReactNode | undefined {
+    getValidateInstrument(): ReactNode {
         const {
             hideVerificationFields,
             instruments,
@@ -261,6 +248,38 @@ class HostedWidgetPaymentMethod extends Component<
                 shouldShowCardCodeField={ shouldShowCardCodeField }
                 shouldShowNumberField={ shouldShowNumberField }
             />
+        );
+    }
+
+    renderContainer(shouldShowCreditCardFieldset: any): ReactNode {
+        const {
+            containerId,
+            hideContentWhenSignedOut = false,
+            hideWidget,
+            isSignInRequired = false,
+            isSignedIn,
+            method,
+            additionalContainerClassName,
+            shouldRenderCustomInstrument = false,
+            renderCustomPaymentForm,
+        } = this.props;
+
+        return (
+            <div
+                className={ classNames(
+                    'widget',
+                    `widget--${method.id}`,
+                    'payment-widget',
+                    shouldRenderCustomInstrument ? '' : additionalContainerClassName
+                ) }
+                id={ containerId }
+                style={ {
+                    display: (hideContentWhenSignedOut && isSignInRequired && !isSignedIn) || !shouldShowCreditCardFieldset || hideWidget ? 'none' : undefined,
+                } }
+                tabIndex={ -1 }
+            >
+                { shouldRenderCustomInstrument && renderCustomPaymentForm && renderCustomPaymentForm() }
+            </div>
         );
     }
 
@@ -306,7 +325,6 @@ class HostedWidgetPaymentMethod extends Component<
             initializePayment = noop,
             method,
             setSubmit,
-            hidePaymentSubmitButton,
             signInCustomer = noop,
         } = this.props;
 
@@ -325,8 +343,8 @@ class HostedWidgetPaymentMethod extends Component<
                 methodId: method.id,
             });
         }
+
         setSubmit(method, null);
-        hidePaymentSubmitButton(method, false);
 
         return initializePayment({
             gatewayId: method.gateway,
