@@ -74,7 +74,10 @@ class OrderConfirmation extends Component<
 
         loadOrder(orderId)
             .then(({ data }) => {
-                const { links: { siteLink = '' } = {} } = data.getConfig() || {};
+                const {
+                    links: { siteLink = '' } = {},
+                    checkoutSettings: { features = {} } = {},
+                } = data.getConfig() || {};
                 const messenger = createEmbeddedMessenger({ parentOrigin: siteLink });
 
                 this.embeddedMessenger = messenger;
@@ -82,7 +85,7 @@ class OrderConfirmation extends Component<
                 messenger.receiveStyles(styles => embeddedStylesheet.append(styles));
                 messenger.postFrameLoaded({ contentId: containerId });
 
-                createStepTracker().trackOrderComplete();
+                createStepTracker().trackOrderComplete(features);
             })
             .catch(this.handleUnhandledError);
     }
