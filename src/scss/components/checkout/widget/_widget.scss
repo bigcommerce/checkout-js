@@ -54,6 +54,17 @@
     text-align: center;
 }
 
+.widget-input--stripev3 {
+    color: $color-black;
+    font: 400 1.1rem/normal sans-serif;
+    padding: 1rem;
+
+    &::placeholder {
+        color: rgb(117, 117, 117);
+        font: 400 1.1rem/normal sans-serif;
+    }
+}
+
 .widget--stripev3 {
     @extend .form-input;
 
