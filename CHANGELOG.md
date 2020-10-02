@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.88.0](https://github.com/bigcommerce/checkout-js/compare/v1.87.0...v1.88.0) (2020-10-02)
+
+
+### Features
+
+* **payment:** INT-3086 added optional custom render fields on Stripe V3 ([0513637](https://github.com/bigcommerce/checkout-js/commit/051363765fb15c03d818dcb09d0668be574f490a))
+* **payment:** PAYPAL-726 bump checkout sdk ([850899f](https://github.com/bigcommerce/checkout-js/commit/850899f71fa7e3130d5dd587b664835751b508b0))
+
 ## [1.87.0](https://github.com/bigcommerce/checkout-js/compare/v1.86.0...v1.87.0) (2020-09-30)
 
 
