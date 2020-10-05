@@ -14,10 +14,13 @@
 
 @if $exportCSS--credit-card-types {
     .creditCardTypes-list {
+        align-content: flex-end;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        margin-bottom: 1em;
+        justify-content: space-evenly;
+        margin-left: spacing("single");
+        min-width: 9em;
     }
 
     .creditCardTypes-list-item {

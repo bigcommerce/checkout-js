@@ -159,25 +159,27 @@ const PaymentMethodTitle: FunctionComponent<PaymentMethodTitleProps & WithLangua
 
     return (
         <Fragment>
-            { logoUrl && <img
-                alt={ methodName }
-                className="paymentProviderHeader-img"
-                data-test="payment-method-logo"
-                src={ logoUrl }
-            /> }
+            <div className="paymentProviderHeader-container">
+                { logoUrl && <img
+                    alt={ methodName }
+                    className="paymentProviderHeader-img"
+                    data-test="payment-method-logo"
+                    src={ logoUrl }
+                /> }
 
-            { titleText && <span
-                className="paymentProviderHeader-name"
-                data-test="payment-method-name"
-            >
-                { titleText }
-            </span> }
+                { titleText && <span
+                    className="paymentProviderHeader-name"
+                    data-test="payment-method-name"
+                >
+                    { titleText }
+                </span> }
 
-            <div className="paymentProviderHeader-cc">
-                <CreditCardIconList
-                    cardTypes={ compact(method.supportedCards.map(mapFromPaymentMethodCardType)) }
-                    selectedCardType={ getSelectedCardType() }
-                />
+                <div className="paymentProviderHeader-cc">
+                    <CreditCardIconList
+                        cardTypes={ compact(method.supportedCards.map(mapFromPaymentMethodCardType)) }
+                        selectedCardType={ getSelectedCardType() }
+                    />
+                </div>
             </div>
         </Fragment>
     );

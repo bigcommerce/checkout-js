@@ -2,7 +2,14 @@
 // PAYMENT PROVIDER (Component)
 // =============================================================================
 
+.paymentProviderHeader-container {
+    display: flex;
+    justify-content: space-between;
+}
+
 .paymentProviderHeader-img {
+    align-self: center;
+    display: flex;
     height: fontSize("large");
 
     + .paymentProviderHeader-name {
@@ -16,9 +23,19 @@
 
 .paymentProviderHeader-cc {
     @include breakpoint("small") {
-        float: right;
-        max-width: 14em;
+        align-items: flex-end;
+        display: flex;
+        flex-grow: 0;
+        flex-shrink: 2;
     }
+}
+
+.paymentProviderHeader-name {
+    align-items: flex-start;
+    align-self: center;
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 1;
 }
 
 .paymentMethod--creditCard,
