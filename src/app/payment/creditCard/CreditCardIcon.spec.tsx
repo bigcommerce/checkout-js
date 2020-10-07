@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import { IconCardAmex, IconCardCB, IconCardDankort, IconCardDinersClub, IconCardDiscover, IconCardJCB, IconCardMada, IconCardMaestro, IconCardMastercard, IconCardUnionPay, IconCardVisa } from '../../ui/icon';
+import { IconCardAmex, IconCardCarnet, IconCardCB, IconCardDankort, IconCardDinersClub, IconCardDiscover, IconCardElo, IconCardHipercard, IconCardJCB, IconCardMada, IconCardMaestro, IconCardMastercard, IconCardTroy, IconCardUnionPay, IconCardVisa } from '../../ui/icon';
 
 import CreditCardIcon from './CreditCardIcon';
 
@@ -58,6 +58,26 @@ describe('CreditCardIcon', () => {
 
     it('returns Dankor card icon', () => {
         expect(shallow(<CreditCardIcon cardType="dankort" />).find(IconCardDankort))
+            .toHaveLength(1);
+    });
+
+    it('returns Carnet card icon', () => {
+        expect(shallow(<CreditCardIcon cardType="carnet" />).find(IconCardCarnet))
+            .toHaveLength(1);
+    });
+
+    it('returns Elo card icon', () => {
+        expect(shallow(<CreditCardIcon cardType="elo" />).find(IconCardElo))
+            .toHaveLength(1);
+    });
+
+    it('returns Hipercard card icon', () => {
+        expect(shallow(<CreditCardIcon cardType="hiper" />).find(IconCardHipercard))
+            .toHaveLength(1);
+    });
+
+    it('returns Troy card icon', () => {
+        expect(shallow(<CreditCardIcon cardType="troy" />).find(IconCardTroy))
             .toHaveLength(1);
     });
 

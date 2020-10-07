@@ -3,6 +3,9 @@ export default function mapFromPaymentMethodCardType(type: string): string | und
     case 'AMEX':
         return 'american-express';
 
+    case 'CARNET':
+        return 'carnet';
+
     case 'CB':
         return 'cb';
 
@@ -15,6 +18,12 @@ export default function mapFromPaymentMethodCardType(type: string): string | und
     case 'DISCOVER':
         return 'discover';
 
+    case 'ELO':
+        return 'elo';
+
+    case 'HIPER':
+        return 'hiper';
+
     case 'JCB':
         return 'jcb';
 
@@ -26,6 +35,9 @@ export default function mapFromPaymentMethodCardType(type: string): string | und
 
     case 'MC':
         return 'mastercard';
+
+    case 'TROY':
+        return 'troy';
 
     case 'CUP':
         return 'unionpay';
