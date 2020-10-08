@@ -72,15 +72,21 @@
     margin-top: remCalc(20px);
     padding: 1rem;
 
-    @media screen and (max-width: 375px) {
-        margin: remCalc(20px) -2rem remCalc(20px) -2rem;
-        padding: 1rem;
+    @media screen and (max-width: $screen-large-iPhone) {
+        margin: remCalc(20px) 0 remCalc(20px) 0;
+        padding: 1rem 0 1rem 1rem;
         width: 20rem;
     }
 
-    @media screen and (max-width: 320px) {
+    @media screen and (max-width: $screen-medium-iPhone) {
+        margin: remCalc(20px) -2rem remCalc(20px) -2rem;
+        padding: 1rem 0 1rem 1rem;
+        width: 20rem;
+    }
+
+    @media screen and (max-width: $screen-xxsmall) {
         margin: remCalc(20px) -2rem remCalc(20px) -3rem;
-        padding: 1rem;
+        padding: 1rem 0 1rem 0.25rem;
         width: 19rem;
     }
 }
