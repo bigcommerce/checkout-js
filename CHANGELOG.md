@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.92.0](https://github.com/bigcommerce/checkout-js/compare/v1.91.0...v1.92.0) (2020-10-12)
+
+
+### Features
+
+* **payment:** INT-3254 Added adyen supported card icons ([69c1cdd](https://github.com/bigcommerce/checkout-js/commit/69c1cdd7131132eb1f21d515f2220aea7d88ad38))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-5201 fix safari date range issue ([e306a7f](https://github.com/bigcommerce/checkout-js/commit/e306a7fa7b72662504cf5bc1f007f26d6a737e1e))
+
 ## [1.91.0](https://github.com/bigcommerce/checkout-js/compare/v1.90.0...v1.91.0) (2020-10-09)
 
 
