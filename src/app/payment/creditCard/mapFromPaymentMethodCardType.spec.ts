@@ -34,6 +34,18 @@ describe('mapFromPaymentMethodCardType()', () => {
 
         expect(mapFromPaymentMethodCardType('DANKORT'))
             .toEqual('dankort');
+
+        expect(mapFromPaymentMethodCardType('CARNET'))
+            .toEqual('carnet');
+
+        expect(mapFromPaymentMethodCardType('ELO'))
+            .toEqual('elo');
+
+        expect(mapFromPaymentMethodCardType('HIPER'))
+            .toEqual('hiper');
+
+        expect(mapFromPaymentMethodCardType('TROY'))
+            .toEqual('troy');
     });
 
     it('returns undefined if unable to map type', () => {
