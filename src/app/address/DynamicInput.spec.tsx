@@ -49,15 +49,15 @@ describe('DynamicInput', () => {
                 date={ date }
                 fieldType={ DynamicFormFieldType.date }
                 id="field_33"
-                max="2019-2-1"
-                min="2019-1-1"
+                max="2019-02-01"
+                min="2019-01-01"
             />
         );
 
         expect(datePicker.find(ReactDatePicker).props())
             .toMatchObject(expect.objectContaining({
-                minDate: new Date('2019-01-01 00:00:00'),
-                maxDate: new Date('2019-02-01 00:00:00'),
+                minDate: new Date('2019-01-01T00:00:00Z'),
+                maxDate: new Date('2019-02-01T00:00:00Z'),
             }));
     });
 
