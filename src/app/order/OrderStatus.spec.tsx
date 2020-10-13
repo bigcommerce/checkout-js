@@ -232,7 +232,7 @@ describe('OrderStatus', () => {
         beforeEach(() => {
             order = {
                 ...getOrder(),
-                mandate: 'mandateLink',
+                mandateUrl: 'mandateLink',
             };
         });
 

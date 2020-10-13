@@ -39,7 +39,7 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
             />
         </p>
 
-        { order.mandate && <a data-test="order-confirmation-mandate-link-text" href={ order.mandate } rel="noopener noreferrer" target="_blank">
+        { order.mandateUrl && <a data-test="order-confirmation-mandate-link-text" href={ order.mandateUrl } rel="noopener noreferrer" target="_blank">
                 <TranslatedString
                     data={ { provider : getMandateProvider() } }
                     id="order_confirmation.mandate_link_text"
