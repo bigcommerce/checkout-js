@@ -22,11 +22,6 @@ const PaypalCommercePaymentMethod: FunctionComponent<PaypalCommercePaymentMethod
         ...options,
         paypalcommerce: {
             container: '#checkout-payment-continue',
-            style: {
-                height: 55,
-                color: 'black',
-                label: 'pay',
-            },
             onRenderButton: () => {
                 paymentContext?.hidePaymentSubmitButton?.(rest.method, true);
             },
