@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.93.0](https://github.com/bigcommerce/checkout-js/compare/v1.92.1...v1.93.0) (2020-10-15)
+
+
+### Features
+
+* **payment:** INT-3061 renamed mandate field to mandateUrl on confirmation page ([04c0f15](https://github.com/bigcommerce/checkout-js/commit/04c0f152fb2c1b56be94e09c9a1cb63be79eb634))
+
+
+### Bug Fixes
+
+* **payment:** INT-3308 added style to avoid overlapping Cards fields with Postcode label on it on stripeV3 ([d4425d9](https://github.com/bigcommerce/checkout-js/commit/d4425d9794682f0b49b58430508d5fdb9022e45e))
+
 ### [1.92.1](https://github.com/bigcommerce/checkout-js/compare/v1.92.0...v1.92.1) (2020-10-14)
 
 ## [1.92.0](https://github.com/bigcommerce/checkout-js/compare/v1.91.0...v1.92.0) (2020-10-12)

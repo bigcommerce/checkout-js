@@ -4996,15 +4996,20 @@ body.klarna-payments-fso-open {
   margin-bottom: 1.53846rem;
   margin-top: 1.53846rem;
   padding: 1rem; }
+  @media screen and (max-width: 414px) {
+    .widget--stripev3 {
+      margin: 1.53846rem 0 1.53846rem 0;
+      padding: 1rem 0 1rem 1rem;
+      width: 20rem; } }
   @media screen and (max-width: 375px) {
     .widget--stripev3 {
       margin: 1.53846rem -2rem 1.53846rem -2rem;
-      padding: 1rem;
+      padding: 1rem 0 1rem 1rem;
       width: 20rem; } }
   @media screen and (max-width: 320px) {
     .widget--stripev3 {
       margin: 1.53846rem -2rem 1.53846rem -3rem;
-      padding: 1rem;
+      padding: 1rem 0 1rem 0.25rem;
       width: 19rem; } }
 
 .StripeElement--focus {
@@ -5319,4 +5324,4 @@ body.klarna-payments-fso-open {
     font-weight: normal; }
 
 
-/*# sourceMappingURL=checkout-8b8cd43c.css.map*/
+/*# sourceMappingURL=checkout-6c02b07a.css.map*/
