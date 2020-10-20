@@ -129,7 +129,8 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
     }
 
     if (method.id === PaymentMethodId.PaypalCommerce ||
-        method.id === PaymentMethodId.PaypalCommerceCredit) {
+        method.id === PaymentMethodId.PaypalCommerceCredit ||
+        method.gateway === PaymentMethodId.PaypalCommerceAlternativeMethod) {
         return <PaypalCommercePaymentMethod { ...props } />;
     }
 
