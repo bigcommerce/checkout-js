@@ -45,6 +45,20 @@ describe('CheckoutButtonList', () => {
             .toHaveLength(2);
     });
 
+    it('does not crash when no methods are passed', () => {
+        const component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <CheckoutButtonList
+                    deinitialize={ noop }
+                    initialize={ noop }
+                />
+            </LocaleContext.Provider>
+        );
+
+        expect(component.html())
+            .toBeFalsy();
+    });
+
     it('does not render if there are no supported methods', () => {
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>

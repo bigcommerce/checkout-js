@@ -20,7 +20,7 @@ export const SUPPORTED_METHODS: string[] = [
 ];
 
 export interface CheckoutButtonListProps {
-    methodIds: string[];
+    methodIds?: string[];
     checkEmbeddedSupport?(methodIds: string[]): void;
     deinitialize(options: CustomerRequestOptions): void;
     initialize(options: CustomerInitializeOptions): void;
@@ -33,7 +33,7 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
     methodIds,
     ...rest
 }) => {
-    const supportedMethodIds = methodIds
+    const supportedMethodIds = (methodIds ?? [])
         .filter(methodId => SUPPORTED_METHODS.indexOf(methodId) !== -1);
 
     if (supportedMethodIds.length === 0) {
