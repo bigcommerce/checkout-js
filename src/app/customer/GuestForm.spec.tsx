@@ -1,5 +1,5 @@
 import { mount, render } from 'enzyme';
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
 import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
@@ -10,6 +10,7 @@ import GuestForm, { GuestFormProps } from './GuestForm';
 describe('GuestForm', () => {
     let defaultProps: GuestFormProps;
     let localeContext: LocaleContextType;
+    let TestComponent: FunctionComponent<Partial<GuestFormProps>>;
 
     beforeEach(() => {
         defaultProps = {
@@ -23,14 +24,19 @@ describe('GuestForm', () => {
         };
 
         localeContext = createLocaleContext(getStoreConfig());
+
+        TestComponent = props => (
+            <LocaleContext.Provider value={ localeContext }>
+                <GuestForm
+                    { ...defaultProps }
+                    { ...props }
+                />
+            </LocaleContext.Provider>
+        );
     });
 
     it('matches snapshot', () => {
-        const component = render(
-            <LocaleContext.Provider value={ localeContext }>
-                <GuestForm { ...defaultProps } />
-            </LocaleContext.Provider>
-        );
+        const component = render(<TestComponent />);
 
         expect(component)
             .toMatchSnapshot();
@@ -38,13 +44,10 @@ describe('GuestForm', () => {
 
     it('renders form with initial values', () => {
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <GuestForm
-                    { ...defaultProps }
-                    defaultShouldSubscribe={ true }
-                    email={ 'test@bigcommerce.com' }
-                />
-            </LocaleContext.Provider>
+            <TestComponent
+                defaultShouldSubscribe={ true }
+                email={ 'test@bigcommerce.com' }
+            />
         );
 
         expect(component.find('input[name="email"]').prop('value'))
@@ -57,12 +60,9 @@ describe('GuestForm', () => {
     it('notifies when user clicks on "continue as guest" button', async () => {
         const handleContinueAsGuest = jest.fn();
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <GuestForm
-                    { ...defaultProps }
-                    onContinueAsGuest={ handleContinueAsGuest }
-                />
-            </LocaleContext.Provider>
+            <TestComponent
+                onContinueAsGuest={ handleContinueAsGuest }
+            />
         );
 
         component.find('input[name="email"]')
@@ -84,71 +84,45 @@ describe('GuestForm', () => {
             });
     });
 
-    it('displays error message if email is not valid', async () => {
-        const handleContinueAsGuest = jest.fn();
-        const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <GuestForm
-                    { ...defaultProps }
+    it('displays error message if email is not valid', () => {
+        async function getEmailError(value: string): Promise<string> {
+            const handleContinueAsGuest = jest.fn();
+            const component = mount(
+                <TestComponent
+                    email={ value }
                     onContinueAsGuest={ handleContinueAsGuest }
                 />
-            </LocaleContext.Provider>
-        );
+            );
 
-        component.find('input[name="email"]')
-            .simulate('change', { target: { value: 'test', name: 'email' } });
+            component.find('form').simulate('submit');
 
-        component.find('form')
-            .simulate('submit');
+            await new Promise(resolve => process.nextTick(resolve));
 
-        await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
-        component.update();
+            return component.find('[data-test="email-field-error-message"]').text();
+        }
 
-        expect(handleContinueAsGuest)
-            .not.toHaveBeenCalled();
+        expect(getEmailError('')).resolves.toEqual('Email address is required');
 
-        expect(component.find('[data-test="email-field-error-message"]').text())
-            .toEqual('Email address must be valid');
-    });
+        const invalidEmailMessage = 'Email address must be valid';
 
-    it('displays error message if email does not have a domain and strict validation is enabled', async () => {
-        const handleContinueAsGuest = jest.fn();
-        const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <GuestForm
-                    { ...defaultProps }
-                    onContinueAsGuest={ handleContinueAsGuest }
-                />
-            </LocaleContext.Provider>
-        );
-
-        component.find('input[name="email"]')
-            .simulate('change', { target: { value: 'test@bigcommerce', name: 'email' } });
-
-        component.find('form')
-            .simulate('submit');
-
-        await new Promise(resolve => process.nextTick(resolve));
-
-        component.update();
-
-        expect(handleContinueAsGuest)
-            .not.toHaveBeenCalled();
-
-        expect(component.find('[data-test="email-field-error-message"]').text())
-            .toEqual('Email address must be valid');
+        expect(getEmailError('test@bigcommerce')).resolves.toEqual(invalidEmailMessage);
+        expect(getEmailError('test')).resolves.toEqual(invalidEmailMessage);
+        expect(getEmailError('@test.test')).resolves.toEqual(invalidEmailMessage);
+        expect(getEmailError('test@.test')).resolves.toEqual(invalidEmailMessage);
+        expect(getEmailError('test@test.')).resolves.toEqual(invalidEmailMessage);
+        expect(getEmailError('test@te st.test')).resolves.toEqual(invalidEmailMessage);
+        expect(getEmailError('test@test.comtest@test.com')).resolves.toEqual(invalidEmailMessage);
+        expect(getEmailError('test@test.com,test@test.com')).resolves.toEqual(invalidEmailMessage);
     });
 
     it('notifies when user clicks on "sign in" button', () => {
         const handleShowLogin = jest.fn();
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <GuestForm
-                    { ...defaultProps }
-                    onShowLogin={ handleShowLogin }
-                />
-            </LocaleContext.Provider>
+            <TestComponent
+                onShowLogin={ handleShowLogin }
+            />
         );
 
         component.find('[data-test="customer-continue-button"]')
@@ -161,12 +135,9 @@ describe('GuestForm', () => {
     it('calls "onChangeEmail" handler when user changes email address', () => {
         const handleChangeEmail = jest.fn();
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <GuestForm
-                    { ...defaultProps }
-                    onChangeEmail={ handleChangeEmail }
-                />
-            </LocaleContext.Provider>
+            <TestComponent
+                onChangeEmail={ handleChangeEmail }
+            />
         );
 
         component.find('input[name="email"]')
@@ -179,12 +150,9 @@ describe('GuestForm', () => {
     it('calls "onChangeEmail" handler when user changes email address with strict validation enabled and it includes a domain', () => {
         const handleChangeEmail = jest.fn();
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <GuestForm
-                    { ...defaultProps }
-                    onChangeEmail={ handleChangeEmail }
-                />
-            </LocaleContext.Provider>
+            <TestComponent
+                onChangeEmail={ handleChangeEmail }
+            />
         );
 
         component.find('input[name="email"]')
@@ -196,12 +164,9 @@ describe('GuestForm', () => {
 
     it('renders newsletter field if store allows newsletter subscription', () => {
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <GuestForm
-                    { ...defaultProps }
-                    canSubscribe={ true }
-                />
-            </LocaleContext.Provider>
+            <TestComponent
+                canSubscribe={ true }
+            />
         );
 
         expect(component.find('label[htmlFor="shouldSubscribe"]').text())
@@ -212,13 +177,10 @@ describe('GuestForm', () => {
 
     it('renders marketing consent field', () => {
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <GuestForm
-                    { ...defaultProps }
-                    canSubscribe={ true }
-                    requiresMarketingConsent={ true }
-                />
-            </LocaleContext.Provider>
+            <TestComponent
+                canSubscribe={ true }
+                requiresMarketingConsent={ true }
+            />
         );
 
         expect(component.find('label[htmlFor="shouldSubscribe"]').text())
@@ -229,13 +191,10 @@ describe('GuestForm', () => {
 
     it('sets newsletter field with default value', () => {
         const Container = ({ defaultShouldSubscribe }: { defaultShouldSubscribe: boolean }) => (
-            <LocaleContext.Provider value={ localeContext }>
-                <GuestForm
-                    { ...defaultProps }
-                    canSubscribe={ true }
-                    defaultShouldSubscribe={ defaultShouldSubscribe }
-                />
-            </LocaleContext.Provider>
+            <TestComponent
+                canSubscribe={ true }
+                defaultShouldSubscribe={ defaultShouldSubscribe }
+            />
         );
 
         const componentA = mount(<Container defaultShouldSubscribe={ true } />);
@@ -250,12 +209,9 @@ describe('GuestForm', () => {
 
     it('renders privacy policy field', () => {
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <GuestForm
-                    { ...defaultProps }
-                    privacyPolicyUrl={ 'foo' }
-                />
-            </LocaleContext.Provider>
+            <TestComponent
+                privacyPolicyUrl={ 'foo' }
+            />
         );
 
         expect(component.find(PrivacyPolicyField)).toHaveLength(1);
@@ -264,13 +220,10 @@ describe('GuestForm', () => {
     it('displays error message if privacy policy is required and not checked', async () => {
         const handleContinueAsGuest = jest.fn();
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <GuestForm
-                    { ...defaultProps }
-                    onContinueAsGuest={ handleContinueAsGuest }
-                    privacyPolicyUrl={ 'foo' }
-                />
-            </LocaleContext.Provider>
+            <TestComponent
+                onContinueAsGuest={ handleContinueAsGuest }
+                privacyPolicyUrl={ 'foo' }
+            />
         );
 
         component.find('input[name="email"]')
