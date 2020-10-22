@@ -4468,6 +4468,8 @@ h6 a:hover {
   flex-wrap: wrap;
   margin-left: -0.5rem;
   margin-right: -0.5rem; }
+  .checkoutRemote > div {
+    margin-right: 1.5rem; }
 
 .checkoutRemote-button {
   margin-bottom: 1rem;
@@ -5324,4 +5326,4 @@ body.klarna-payments-fso-open {
     font-weight: normal; }
 
 
-/*# sourceMappingURL=checkout-6c02b07a.css.map*/
+/*# sourceMappingURL=checkout-f7e542a5.css.map*/

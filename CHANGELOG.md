@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.96.0](https://github.com/bigcommerce/checkout-js/compare/v1.95.0...v1.96.0) (2020-10-22)
+
+
+### Features
+
+* **payment:** PAYPAL-746 Bump checkout sdk ([2aa3b56](https://github.com/bigcommerce/checkout-js/commit/2aa3b5691ce6344f2c43ffd374cf713f61f343b6))
+* **payment:** PAYPAL-746 Change style for sbp on checkout ([dd430ab](https://github.com/bigcommerce/checkout-js/commit/dd430ab979c2583ae01e213e7437238025b4b7a3))
+
+
+### Bug Fixes
+
+* **checkout:** BCTHEME-287 Add padding between wallet buttons ([40f1f1a](https://github.com/bigcommerce/checkout-js/commit/40f1f1ae9b34424500c7089dd2e5c0090cfae904))
+* **payment:** CHECKOUT-5263 Default to empty array if no payments are set ([18bb2dc](https://github.com/bigcommerce/checkout-js/commit/18bb2dc0298976d3736dc94164316aadb21ef44e))
+
 ## [1.95.0](https://github.com/bigcommerce/checkout-js/compare/v1.94.0...v1.95.0) (2020-10-20)
 
 
