@@ -21,6 +21,10 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
         return order?.payments?.[0].description === 'Stripe (SEPA)' ? 'SEPA Direct Debit' : order?.payments?.[0].description;
     }, [order]);
 
+    const getWepayConfirmationsMessage = useCallback(() => {
+        return order?.payments?.[0].providerId === 'wepay';
+    }, [order]);
+
     return <OrderConfirmationSection>
         { order.orderId &&
         <p data-test="order-confirmation-order-number-text">
@@ -33,6 +37,7 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
         <p data-test="order-confirmation-order-status-text">
             <OrderStatusMessage
                 orderNumber={ order.orderId }
+                orderProvideId={ getWepayConfirmationsMessage() }
                 orderStatus={ order.status }
                 supportEmail={ supportEmail }
                 supportPhoneNumber={ supportPhoneNumber }
@@ -59,6 +64,7 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
 
 interface OrderStatusMessageProps {
     orderNumber: number;
+    orderProvideId: boolean;
     orderStatus: string;
     supportEmail?: string;
     supportPhoneNumber?: string;
@@ -66,6 +72,7 @@ interface OrderStatusMessageProps {
 
 const OrderStatusMessage: FunctionComponent<OrderStatusMessageProps> = ({
     orderNumber,
+    orderProvideId,
     orderStatus,
     supportEmail,
     supportPhoneNumber,
@@ -73,7 +80,9 @@ const OrderStatusMessage: FunctionComponent<OrderStatusMessageProps> = ({
     switch (orderStatus) {
     case 'MANUAL_VERIFICATION_REQUIRED':
     case 'AWAITING_PAYMENT':
-        return <TranslatedString
+        return orderProvideId ? <TranslatedString
+            id="order_confirmation.order_pending_status_for_wepay"
+        /> : <TranslatedString
             id="order_confirmation.order_pending_review_text"
         />;
 
