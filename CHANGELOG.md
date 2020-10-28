@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.96.1-alpha.1603912820909](https://github.com/bigcommerce/checkout-js/compare/v1.96.0...v1.96.1-alpha.1603912820909) (2020-10-28)
+
+
+### Features
+
+* **payment:** INT-3103 testing ([faf4b01](https://github.com/bigcommerce/checkout-js/commit/faf4b0177e5bff4d9f1708d0bc7fcca68771be0f))
+
 ## [1.96.0](https://github.com/bigcommerce/checkout-js/compare/v1.95.0...v1.96.0) (2020-10-22)
 
 
