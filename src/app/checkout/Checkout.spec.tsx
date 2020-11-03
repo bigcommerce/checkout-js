@@ -9,7 +9,7 @@ import { BillingProps } from '../billing';
 import Billing from '../billing/Billing';
 import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';
-import { createErrorLogger, ErrorModal } from '../common/error';
+import { createErrorLogger, CustomError, ErrorModal } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { CustomerInfo, CustomerInfoProps, CustomerProps, CustomerViewType } from '../customer';
 import { getCustomer } from '../customer/customers.mock';
@@ -159,6 +159,7 @@ describe('Checkout', () => {
             .mockReturnValue([
                 {
                     message: 'flash message',
+                    title: '',
                     type: 'error',
                 },
             ]);
@@ -170,6 +171,26 @@ describe('Checkout', () => {
 
         expect(container.find(ErrorModal).prop('error'))
             .toEqual(new Error('flash message'));
+    });
+
+    it('renders modal error when theres an custom error flash message', async () => {
+        jest.spyOn(checkoutState.data, 'getFlashMessages')
+            .mockReturnValue([
+                {
+                    message: 'flash message',
+                    title: 'flash title',
+                    type: 'error',
+                },
+            ]);
+
+        const container = mount(<CheckoutTest { ...defaultProps } />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+        container.update();
+
+        const errorData = {data: {}, message: 'flash message', title: 'flash title', name: 'default'};
+        expect(container.find(ErrorModal).prop('error'))
+            .toEqual(new CustomError(errorData));
     });
 
     it('renders required checkout steps', () => {

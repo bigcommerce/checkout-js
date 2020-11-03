@@ -1,4 +1,4 @@
-export default abstract class CustomError extends Error {
+export default class CustomError extends Error {
     static shouldReport: boolean;
 
     data: any;

@@ -5,7 +5,7 @@ import React, { lazy, Component, ReactNode } from 'react';
 
 import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
-import { ErrorLogger, ErrorModal } from '../common/error';
+import { isCustomError, CustomError, ErrorLogger, ErrorModal } from '../common/error';
 import { retry } from '../common/utility';
 import { CustomerInfo, CustomerSignOutEvent, CustomerViewType } from '../customer';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
@@ -138,7 +138,16 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             const errorFlashMessages = data.getFlashMessages('error') || [];
 
             if (errorFlashMessages.length) {
-                this.setState({ error: new Error(errorFlashMessages[0].message) });
+                const { language } = this.props;
+
+                this.setState({
+                    error: new CustomError({
+                        title: errorFlashMessages[0].title || language.translate('common.error_heading'),
+                        message: errorFlashMessages[0].message,
+                        data: {},
+                        name: 'default',
+                    }),
+                });
             }
 
             const messenger = createEmbeddedMessenger({ parentOrigin: siteLink });
@@ -168,18 +177,24 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
     render(): ReactNode {
         const { error } = this.state;
+        let errorModal = null;
+
+        if (error) {
+            if (isCustomError(error)) {
+                errorModal = <ErrorModal error={ error } onClose={ this.handleCloseErrorModal } title={ error.title } />;
+            } else {
+                errorModal = <ErrorModal error={ error } onClose={ this.handleCloseErrorModal } />;
+            }
+        }
 
         return <>
             <div className={ classNames({ 'is-embedded': isEmbedded() }) }>
                 <div className="layout optimizedCheckout-contentPrimary">
                     { this.renderContent() }
                 </div>
+                { errorModal }
             </div>
 
-            <ErrorModal
-                error={ error }
-                onClose={ this.handleCloseErrorModal }
-            />
         </>;
     }
 
