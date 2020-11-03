@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.97.0](https://github.com/bigcommerce/checkout-js/compare/v1.96.0...v1.97.0) (2020-11-03)
+
+
+### Features
+
+* **payment:** INT-3174 Bump SDK. ([5e471ab](https://github.com/bigcommerce/checkout-js/commit/5e471abdfe51306aece7a344b761507a80f37c8c))
+
 ## [1.96.0](https://github.com/bigcommerce/checkout-js/compare/v1.95.0...v1.96.0) (2020-10-22)
 
 
