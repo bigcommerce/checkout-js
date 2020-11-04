@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.97.1](https://github.com/bigcommerce/checkout-js/compare/v1.97.0...v1.97.1) (2020-11-04)
+
+
+### Bug Fixes
+
+* **checkout:** INT-3174 Allows create customized error modal ([953dcdf](https://github.com/bigcommerce/checkout-js/commit/953dcdfd0863b82547719349c779286a33e5d1b1))
+
 ## [1.97.0](https://github.com/bigcommerce/checkout-js/compare/v1.96.0...v1.97.0) (2020-11-03)
 
 
