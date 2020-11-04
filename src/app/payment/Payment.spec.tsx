@@ -12,6 +12,7 @@ import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 import { getOrder } from '../order/orders.mock';
+import { getConsignment } from '../shipping/consignment.mock';
 import { Button } from '../ui/button';
 
 import { getPaymentMethod } from './payment-methods.mock';
@@ -110,6 +111,26 @@ describe('Payment', () => {
                 onSubmit: expect.any(Function),
                 selectedMethod: paymentMethods[0],
             }));
+    });
+
+    it('does not render amazon if multi-shipping', async () => {
+        paymentMethods.push({ ...getPaymentMethod(), id: 'amazonpay' });
+
+        jest.spyOn(checkoutState.data, 'getConsignments')
+            .mockReturnValue([
+                getConsignment(),
+                getConsignment(),
+            ]);
+
+        const container = mount(<PaymentTest { ...defaultProps } />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+        container.update();
+
+        paymentMethods.pop();
+
+        expect(container.find(PaymentForm).prop('methods'))
+            .toEqual(paymentMethods);
     });
 
     it('does not render bolt if showInCheckout is false', async () => {
