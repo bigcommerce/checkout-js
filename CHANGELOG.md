@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.97.2](https://github.com/bigcommerce/checkout-js/compare/v1.97.1...v1.97.2) (2020-11-05)
+
+
+### Bug Fixes
+
+* **payment:** CHECKOUT-5295 Hide AmazonPay when multishipping ([cacccdc](https://github.com/bigcommerce/checkout-js/commit/cacccdc46d841eac99bb6b498b62dc66b65e3aee))
+
 ### [1.97.1](https://github.com/bigcommerce/checkout-js/compare/v1.97.0...v1.97.1) (2020-11-04)
 
 
