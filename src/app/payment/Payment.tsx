@@ -448,6 +448,7 @@ export function mapToPaymentProps({
             getCheckout,
             getConfig,
             getCustomer,
+            getConsignments,
             getOrder,
             getPaymentMethod,
             getPaymentMethods,
@@ -466,6 +467,7 @@ export function mapToPaymentProps({
     const checkout = getCheckout();
     const config = getConfig();
     const customer = getCustomer();
+    const consignments = getConsignments();
     const { isComplete = false } = getOrder() || {};
     const methods = getPaymentMethods() || EMPTY_ARRAY;
 
@@ -488,8 +490,7 @@ export function mapToPaymentProps({
     let selectedPaymentMethod;
     let filteredMethods;
 
-    // Prevent a payment method from being rendered
-    const prefilteredMethods = methods.filter((method: PaymentMethod) => {
+    filteredMethods = methods.filter((method: PaymentMethod) => {
         if (method.id === PaymentMethodId.Bolt && method.initializationData) {
             return !!method.initializationData.showInCheckout;
         }
@@ -497,12 +498,23 @@ export function mapToPaymentProps({
         return true;
     });
 
+    if (consignments && consignments.length > 1) {
+        const multiShippingIncompatibleMethodIds: string[] = [
+            PaymentMethodId.AmazonPay,
+            PaymentMethodId.Amazon,
+        ];
+
+        filteredMethods = methods.filter((method: PaymentMethod) => {
+            return multiShippingIncompatibleMethodIds.indexOf(method.id) === -1;
+        });
+    }
+
     if (selectedPayment) {
         selectedPaymentMethod = getPaymentMethod(selectedPayment.providerId, selectedPayment.gatewayId);
-        filteredMethods = selectedPaymentMethod ? compact([selectedPaymentMethod]) : prefilteredMethods;
+        filteredMethods = selectedPaymentMethod ? compact([selectedPaymentMethod]) : filteredMethods;
     } else {
-        selectedPaymentMethod = find(prefilteredMethods, { config: { hasDefaultStoredInstrument: true } });
-        filteredMethods = prefilteredMethods;
+        selectedPaymentMethod = find(filteredMethods, { config: { hasDefaultStoredInstrument: true } });
+        filteredMethods = filteredMethods;
     }
 
     return {
