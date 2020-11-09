@@ -14,7 +14,10 @@ export default function mapToCheckoutProps(
     const { promotions = EMPTY_ARRAY } = data.getCheckout() || {};
     const submitOrderError = errors.getSubmitOrderError() as CustomError;
     const {
-        checkoutSettings: { guestCheckoutEnabled: isGuestEnabled = false } = {},
+        checkoutSettings: {
+            guestCheckoutEnabled: isGuestEnabled = false,
+            hasMultiShippingEnabled = false,
+        } = {},
         links: { loginLink: loginUrl = '' } = {},
     } = data.getConfig() || {};
 
@@ -32,6 +35,7 @@ export default function mapToCheckoutProps(
         consignments: data.getConsignments(),
         hasCartChanged: submitOrderError && submitOrderError.type === 'cart_changed', // TODO: Need to clear the error once it's displayed
         isGuestEnabled,
+        hasMultiShippingEnabled,
         isLoadingCheckout: statuses.isLoadingCheckout(),
         isPending: statuses.isPending(),
         loadCheckout: checkoutService.loadCheckout,

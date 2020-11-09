@@ -339,5 +339,30 @@ describe('Shipping Component', () => {
                 expect(component.find(ShippingForm).length).toEqual(1);
             });
         });
+
+        describe('when there are multiple consignments', () => {
+            beforeEach(async () => {
+                jest.spyOn(checkoutState.data, 'getConsignments').mockReturnValue([
+                    getConsignment(),
+                    getConsignment(),
+                ]);
+
+                jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+                    ...getStoreConfig(),
+                    checkoutSettings: {
+                        ...getStoreConfig().checkoutSettings,
+                        hasMultiShippingEnabled: false,
+                    },
+                });
+
+                component = mount(<ComponentTest { ...defaultProps } />);
+                await new Promise(resolve => process.nextTick(resolve));
+                component.update();
+            });
+
+            it('does not initialize any shipping address', () => {
+                expect(component.find(ShippingForm).prop('address')).toBeFalsy();
+            });
+        });
     });
 });
