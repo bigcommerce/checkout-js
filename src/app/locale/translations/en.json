@@ -17,6 +17,7 @@
             "custom_required_error": "{label} is required",
             "custom_min_error": "{label} should be bigger than {min}",
             "custom_max_error": "{label} should be smaller than {max}",
+            "invalid_characters_error": "{label} contains invalid characters",
             "custom_valid_error": "{label} is not valid",
             "edit_address_action": "Edit address",
             "enter_address_action": "Enter a new address",

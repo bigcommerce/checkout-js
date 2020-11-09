@@ -1,6 +1,8 @@
 import { memoize } from '@bigcommerce/memoize';
 import { object, string, ObjectSchema, StringSchema } from 'yup';
 
+export const WHITELIST_REGEXP = /^[^<>]*$/;
+
 import getAddressCustomFieldsValidationSchema, { AddressValidationSchemaOptions } from './getAddressCustomFieldsValidationSchema';
 import { AddressFormValues } from './mapAddressToFormValues';
 
@@ -21,6 +23,7 @@ const ERROR_KEYS: { [fieldName: string]: string } = {
 export default memoize(function getAddressValidationSchema({
     formFields,
     language,
+    shouldValidateSafeInput,
 }: AddressValidationSchemaOptions): ObjectSchema<Partial<AddressFormValues>> {
     const translate: (
         key: string,
@@ -30,12 +33,19 @@ export default memoize(function getAddressValidationSchema({
     return object({
         ...formFields
             .filter(({ custom }) => !custom)
-            .reduce((schema, { name, required }) => {
+            .reduce((schema, { name, required, label }) => {
                 schema[name] = string();
 
                 if (required) {
                     schema[name] = schema[name].required(
                         translate(`${ERROR_KEYS[name]}_required_error`)
+                    );
+                }
+
+                if (shouldValidateSafeInput) {
+                    schema[name] = schema[name].matches(
+                        WHITELIST_REGEXP,
+                        translate('address.invalid_characters_error', { label })
                     );
                 }
 

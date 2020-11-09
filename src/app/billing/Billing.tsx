@@ -30,6 +30,7 @@ export interface WithCheckoutBillingProps {
     shouldShowOrderComments: boolean;
     billingAddress?: Address;
     methodId?: string;
+    shouldValidateSafeInput: boolean;
     getFields(countryCode?: string): FormField[];
     initialize(): Promise<CheckoutSelectors>;
     updateAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
@@ -162,6 +163,7 @@ function mapToBillingProps({
         countries: getBillingCountries() || EMPTY_ARRAY,
         countriesWithAutocomplete,
         customer,
+        shouldValidateSafeInput: features['CHECKOUT-5327.validate_checkout_values'],
         customerMessage: checkout.customerMessage,
         getFields: getBillingAddressFields,
         googleMapsApiKey,

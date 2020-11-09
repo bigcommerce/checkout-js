@@ -5,6 +5,7 @@ import { getShippingAddress } from '../shipping/shipping-addresses.mock';
 
 import { getFormFields } from './formField.mock';
 import getAddressCustomFieldsValidationSchema from './getAddressCustomFieldsValidationSchema';
+import getAddressValidationSchema from './getAddressValidationSchema';
 import { AddressFormValues } from './mapAddressToFormValues';
 
 describe('getAddressCustomFieldsValidationSchema', () => {
@@ -14,6 +15,57 @@ describe('getAddressCustomFieldsValidationSchema', () => {
     beforeEach(() => {
         language = createLanguageService();
         jest.spyOn(language, 'translate').mockImplementation(id => id);
+    });
+
+    describe('when should not enforce validate safe input', () => {
+        let schema: ObjectSchema<Partial<AddressFormValues>>;
+
+        beforeEach(() => {
+            schema = getAddressValidationSchema({
+                formFields,
+                language,
+            });
+        });
+
+        it('does not throw', async () => {
+            expect(await schema.isValid({
+                ...getShippingAddress(),
+                firstName: 'Luis<>',
+            })).toBeTruthy();
+
+            expect(await schema.isValid({
+                ...getShippingAddress(),
+                firstName: 'Luis{}:;()`/-\'',
+            })).toBeTruthy();
+        });
+    });
+
+    describe('when enforce validate safe input', () => {
+        let schema: ObjectSchema<Partial<AddressFormValues>>;
+
+        beforeEach(() => {
+            schema = getAddressValidationSchema({
+                formFields,
+                language,
+                shouldValidateSafeInput: true,
+            });
+        });
+
+        it('throws if invalid characters are present', async () => {
+            const errors = await schema.validate({
+                ...getShippingAddress(),
+                firstName: 'Luis<>',
+            }).catch((error: ValidationError) => error.message);
+
+            expect(errors).toEqual('address.invalid_characters_error');
+        });
+
+        it('does not throw if valid characters are present', async () => {
+            expect(await schema.isValid({
+                ...getShippingAddress(),
+                firstName: 'Luis{}:;()`/-\'',
+            })).toBeTruthy();
+        });
     });
 
     describe('when custom integer field is present', () => {
