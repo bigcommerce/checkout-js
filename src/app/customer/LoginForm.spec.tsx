@@ -74,29 +74,41 @@ describe('LoginForm', () => {
             .toHaveBeenCalled();
     });
 
-    it('displays error message if email is not valid', async () => {
-        const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <LoginForm
-                    createAccountUrl={ '/create-account' }
-                    forgotPasswordUrl={ '/forgot-password' }
-                    onSignIn={ noop }
-                />
-            </LocaleContext.Provider>
-        );
+    it('displays error message if email is not valid', () => {
+        async function getEmailError(value: string): Promise<string> {
+            const component = mount(
+                <LocaleContext.Provider value={ localeContext }>
+                    <LoginForm
+                        createAccountUrl={ '/create-account' }
+                        forgotPasswordUrl={ '/forgot-password' }
+                        onSignIn={ noop }
+                    />
+                </LocaleContext.Provider>
+            );
 
-        component.find('input[name="email"]')
-            .simulate('change', { target: { value: 'test@bigcommerce.', name: 'email' } });
+            component.find('input[name="email"]')
+            .simulate('change', { target: { value, name: 'email' } });
 
-        component.find('form')
-            .simulate('submit');
+            component.find('form')
+                .simulate('submit');
 
-        await new Promise(resolve => process.nextTick(resolve));
+            await new Promise(resolve => process.nextTick(resolve));
 
-        component.update();
+            component.update();
 
-        expect(component.find('[data-test="email-field-error-message"]').text())
-            .toEqual('Email address must be valid');
+            return component.find('[data-test="email-field-error-message"]').text();
+        }
+
+        const invalidEmailMessage = 'Email address must be valid';
+
+        expect(getEmailError('test@bigcommerce')).resolves.toEqual(invalidEmailMessage);
+        expect(getEmailError('test')).resolves.toEqual(invalidEmailMessage);
+        expect(getEmailError('@test.test')).resolves.toEqual(invalidEmailMessage);
+        expect(getEmailError('test@.test')).resolves.toEqual(invalidEmailMessage);
+        expect(getEmailError('test@test.')).resolves.toEqual(invalidEmailMessage);
+        expect(getEmailError('test@te st.test')).resolves.toEqual(invalidEmailMessage);
+        expect(getEmailError('test@test.comtest@test.com')).resolves.toEqual(invalidEmailMessage);
+        expect(getEmailError('漢漢漢漢漢漢@漢漢漢漢漢漢.漢漢漢漢漢漢')).resolves.toEqual(invalidEmailMessage);
     });
 
     it('displays error message if password is missing', async () => {
