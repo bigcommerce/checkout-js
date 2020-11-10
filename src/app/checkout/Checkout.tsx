@@ -84,6 +84,7 @@ export interface WithCheckoutProps {
     hasCartChanged: boolean;
     flashMessages?: FlashMessage[];
     isGuestEnabled: boolean;
+    hasMultiShippingEnabled?: boolean;
     isLoadingCheckout: boolean;
     isPending: boolean;
     loginUrl: string;
@@ -123,6 +124,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             embeddedStylesheet,
             loadCheckout,
             subscribeToConsignments,
+            hasMultiShippingEnabled,
         } = this.props;
 
         try {
@@ -163,7 +165,10 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
             const consignments = data.getConsignments();
             const cart = data.getCart();
-            const isMultiShippingMode = !!cart && !!consignments && isUsingMultiShipping(consignments, cart.lineItems);
+            const isMultiShippingMode = !!cart &&
+                !!consignments &&
+                hasMultiShippingEnabled &&
+                isUsingMultiShipping(consignments, cart.lineItems);
 
             if (isMultiShippingMode) {
                 this.setState({ isMultiShippingMode }, this.handleReady);

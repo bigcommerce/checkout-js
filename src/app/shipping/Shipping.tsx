@@ -318,6 +318,8 @@ export function mapToShippingProps({
         countriesWithAutocomplete.push('GB');
     }
 
+    const shippingAddress = !shouldShowMultiShipping && consignments.length > 1 ? undefined : getShippingAddress();
+
     return {
         assignItem: checkoutService.assignItemsToAddress,
         billingAddress: getBillingAddress(),
@@ -340,7 +342,7 @@ export function mapToShippingProps({
         loadShippingAddressFields: checkoutService.loadShippingAddressFields,
         loadShippingOptions: checkoutService.loadShippingOptions,
         methodId,
-        shippingAddress: getShippingAddress(),
+        shippingAddress,
         shouldShowMultiShipping,
         shouldShowOrderComments: enableOrderComments,
         signOut: checkoutService.signOutCustomer,

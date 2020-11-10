@@ -1,7 +1,7 @@
 import { createCheckoutService, createEmbeddedCheckoutMessenger, CheckoutSelectors, CheckoutService, EmbeddedCheckoutMessenger, StepTracker } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { EventEmitter } from 'events';
-import { noop } from 'lodash';
+import { noop, omit } from 'lodash';
 import React, { FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
 
@@ -477,6 +477,68 @@ describe('Checkout', () => {
         it('renders shipping component when shipping step is active', () => {
             expect(container.find(Shipping).length)
                 .toEqual(1);
+        });
+
+        it('renders multi-shipping when enabled and there are multiple consignments', async () => {
+            jest.spyOn(checkoutState.data, 'getConsignments')
+                .mockReturnValue([
+                    omit(getConsignment(), 'selectedShippingOption'),
+                    omit(getConsignment(), 'selectedShippingOption'),
+                ]);
+
+            jest.spyOn(checkoutState.data, 'getConfig')
+                .mockReturnValue({
+                    ...getStoreConfig(),
+                    checkoutSettings: {
+                        ...getStoreConfig().checkoutSettings,
+                        hasMultiShippingEnabled: true,
+                    },
+                });
+
+            container = mount(<CheckoutTest { ...defaultProps } />);
+
+            (container.find(CheckoutStep) as ReactWrapper<CheckoutStepProps>)
+                .findWhere(step => step.prop('type') === CheckoutStepType.Shipping)
+                .at(0)
+                .prop('onEdit')(CheckoutStepType.Shipping);
+
+            // Wait for initial load to complete
+            await new Promise(resolve => process.nextTick(resolve));
+            container.update();
+
+            expect(container.find(Shipping).at(0).prop('isMultiShippingMode'))
+                .toEqual(true);
+        });
+
+        it('does not render multi-shipping when disabled even if there are multiple consignments', async () => {
+            jest.spyOn(checkoutState.data, 'getConsignments')
+                .mockReturnValue([
+                    omit(getConsignment(), 'selectedShippingOption'),
+                    omit(getConsignment(), 'selectedShippingOption'),
+                ]);
+
+            jest.spyOn(checkoutState.data, 'getConfig')
+                .mockReturnValue({
+                    ...getStoreConfig(),
+                    checkoutSettings: {
+                        ...getStoreConfig().checkoutSettings,
+                        hasMultiShippingEnabled: false,
+                    },
+                });
+
+            container = mount(<CheckoutTest { ...defaultProps } />);
+
+            (container.find(CheckoutStep) as ReactWrapper<CheckoutStepProps>)
+                .findWhere(step => step.prop('type') === CheckoutStepType.Shipping)
+                .at(0)
+                .prop('onEdit')(CheckoutStepType.Shipping);
+
+            // Wait for initial load to complete
+            await new Promise(resolve => process.nextTick(resolve));
+            container.update();
+
+            expect(container.find(Shipping).at(0).prop('isMultiShippingMode'))
+                .toEqual(false);
         });
 
         it('navigates to login view when shopper tries to sign in in order to use multi-shipping feature', () => {
