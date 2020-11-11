@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.100.0](https://github.com/bigcommerce/checkout-js/compare/v1.99.1...v1.100.0) (2020-11-11)
+
+
+### Features
+
+* **common:** CHECKOUT-5327 Validate checkout safe values if experiment is on ([6529db6](https://github.com/bigcommerce/checkout-js/commit/6529db6803fefbebb58291ecffcd2fe6f21962ae))
+
+
+### Bug Fixes
+
+* **customer:** CHECKOUT-5368 Add negative unit tests to login form ([968c3cb](https://github.com/bigcommerce/checkout-js/commit/968c3cb19bfaddf4675ab917a81bf6cecbba364e))
+
 ### [1.99.1](https://github.com/bigcommerce/checkout-js/compare/v1.99.0...v1.99.1) (2020-11-10)
 
 
