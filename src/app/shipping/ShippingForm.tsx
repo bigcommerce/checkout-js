@@ -24,6 +24,7 @@ export interface ShippingFormProps {
     shippingAddress?: Address;
     shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
+    shouldValidateSafeInput: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -67,6 +68,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             shippingAddress,
             shouldShowOrderComments,
             shouldShowSaveAddress,
+            shouldValidateSafeInput,
             signOut,
             updateAddress,
             isShippingStepPending,
@@ -111,6 +113,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 shippingAddress={ shippingAddress }
                 shouldShowOrderComments={ shouldShowOrderComments }
                 shouldShowSaveAddress={ shouldShowSaveAddress }
+                shouldValidateSafeInput={ shouldValidateSafeInput }
                 signOut={ signOut }
                 updateAddress={ updateAddress }
             />;

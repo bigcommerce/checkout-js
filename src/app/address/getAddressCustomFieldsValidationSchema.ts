@@ -8,6 +8,7 @@ import DynamicFormFieldType from './DynamicFormFieldType';
 export interface AddressValidationSchemaOptions {
     formFields: FormField[];
     language?: LanguageService;
+    shouldValidateSafeInput?: boolean;
 }
 
 const ERROR_KEYS: { [fieldName: string]: string } = {
