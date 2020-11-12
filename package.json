@@ -41,7 +41,7 @@
     "@types/es6-promise": "^0.0.33",
     "@types/googlemaps": "^3.30.16",
     "@types/lodash": "^4.14.136",
-    "@types/react": "^16.8.0",
+    "@types/react": "^16.9.53",
     "@types/react-datepicker": "^2.9.3",
     "@types/react-dom": "^16.8.5",
     "@types/react-modal": "^3.8.0",
