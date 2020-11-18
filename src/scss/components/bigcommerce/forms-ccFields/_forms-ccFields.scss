@@ -20,6 +20,11 @@
     flex-basis: 65%;
 }
 
+.form-field--ccDocument {
+    flex-basis: 100%;
+    order: 4;
+}
+
 .form-field--stripe-ccNumber {
     flex-basis: 100%;
 }

@@ -12,6 +12,7 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../../loc
 import { getPaymentMethod } from '../payment-methods.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
+import CheckoutcomCustomPaymentMethod, { CheckoutcomCustomPaymentMethodProps } from './CheckoutcomCustomPaymentMethod';
 import CreditCardPaymentMethod, { CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
 import OfflinePaymentMethod, { OfflinePaymentMethodProps } from './OfflinePaymentMethod';
@@ -295,6 +296,79 @@ describe('PaymentMethod', () => {
                 .toHaveBeenCalledWith(expect.objectContaining({
                     methodId: method.id,
                     gatewayId: method.gateway,
+                }));
+        });
+    });
+
+    describe('when using checkout.com APMs', () => {
+        let creditCardMethod: PaymentMethod;
+        let alternateMethod: PaymentMethod;
+
+        beforeEach(() => {
+            creditCardMethod = {
+                ...getPaymentMethod(),
+                id: 'credit_card',
+                gateway: PaymentMethodId.Checkoutcom,
+            };
+
+            alternateMethod = {
+                ...getPaymentMethod(),
+                id: 'oxxo',
+                gateway: PaymentMethodId.Checkoutcom,
+            };
+        });
+
+        it('renders credit_card as credit card payment method', () => {
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ creditCardMethod } />);
+
+            expect(container.find(CreditCardPaymentMethod).props())
+                .toEqual(expect.objectContaining({
+                    deinitializePayment: expect.any(Function),
+                    initializePayment: expect.any(Function),
+                    method: creditCardMethod,
+                }));
+        });
+
+        it('initializes method with required config', () => {
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ creditCardMethod } />);
+            const component: ReactWrapper<CreditCardPaymentMethodProps> = container.find(CreditCardPaymentMethod);
+
+            component.prop('initializePayment')({
+                methodId: defaultProps.method.id,
+                gatewayId: defaultProps.method.gateway,
+            });
+
+            expect(checkoutService.initializePayment)
+                .toHaveBeenCalledWith(expect.objectContaining({
+                    methodId: creditCardMethod.id,
+                    gatewayId: creditCardMethod.gateway,
+                }));
+        });
+
+        it('renders oxxo as oxxo payment method', () => {
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ alternateMethod } />);
+
+            expect(container.find(CheckoutcomCustomPaymentMethod).props())
+                .toEqual(expect.objectContaining({
+                    deinitializePayment: expect.any(Function),
+                    initializePayment: expect.any(Function),
+                    method: alternateMethod,
+                }));
+        });
+
+        it('initializes method with required config', () => {
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ alternateMethod } />);
+            const component: ReactWrapper<CheckoutcomCustomPaymentMethodProps> = container.find(CheckoutcomCustomPaymentMethod);
+
+            component.prop('initializePayment')({
+                methodId: alternateMethod.id,
+                gatewayId: alternateMethod.gateway,
+            });
+
+            expect(checkoutService.initializePayment)
+                .toHaveBeenCalledWith(expect.objectContaining({
+                    methodId: alternateMethod.id,
+                    gatewayId: alternateMethod.gateway,
                 }));
         });
     });

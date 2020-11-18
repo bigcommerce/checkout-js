@@ -9,6 +9,7 @@ import { TermsConditions } from '../termsConditions';
 import { Fieldset, Form, FormContext, Legend } from '../ui/form';
 
 import { CreditCardFieldsetValues } from './creditCard';
+import { DocumentOnlyCustomFormFieldsetValues } from './documentOnly';
 import getPaymentValidationSchema from './getPaymentValidationSchema';
 import { HostedCreditCardFieldsetValues } from './hostedCreditCard';
 import { getUniquePaymentMethodId, PaymentMethodId, PaymentMethodList } from './paymentMethod';
@@ -50,6 +51,7 @@ export type PaymentFormValues = (
     CardInstrumentFieldsetValues & PaymentFormCommonValues |
     HostedCreditCardFieldsetValues & PaymentFormCommonValues |
     HostedWidgetPaymentMethodValues & PaymentFormCommonValues |
+    DocumentOnlyCustomFormFieldsetValues & PaymentFormCommonValues |
     PaymentFormCommonValues
 );
 
@@ -195,6 +197,7 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
             ...commonValues,
             ccCustomerCode: '',
             ccCvv: '',
+            ccDocument: '',
             ccExpiry: '',
             ccName: '',
             ccNumber: '',
@@ -242,6 +245,7 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
     }) => ({
         ccCustomerCode: '',
         ccCvv: '',
+        ccDocument: '',
         ccExpiry: '',
         ccName: '',
         ccNumber: '',
