@@ -288,6 +288,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             selectedMethod.id === PaymentMethodId.Sezzle ||
             selectedMethod.gateway === PaymentMethodId.AdyenV2 ||
             selectedMethod.gateway === PaymentMethodId.Afterpay ||
+            selectedMethod.gateway === PaymentMethodId.Checkoutcom ||
             selectedMethod.gateway === PaymentMethodId.StripeV3) {
             return;
         }
