@@ -3,7 +3,6 @@ import { RewriteFrames } from '@sentry/integrations';
 import { Integration } from '@sentry/types';
 
 import computeErrorCode from './computeErrorCode';
-import DEFAULT_ERROR_TYPES from './defaultErrorTypes';
 import ConsoleErrorLogger from './ConsoleErrorLogger';
 import { ErrorLevelType } from './ErrorLogger';
 import SentryErrorLogger from './SentryErrorLogger';
@@ -93,7 +92,7 @@ describe('SentryErrorLogger', () => {
             .toEqual(null);
     });
 
-    it('logs exception event if some frames in stacktrace contain filename', () => {
+    it('logs exception event if all frames in stacktrace reference app file', () => {
         // tslint:disable-next-line:no-unused-expression
         new SentryErrorLogger(config);
 
@@ -101,7 +100,7 @@ describe('SentryErrorLogger', () => {
         const event = {
             exception: {
                 values: [{
-                    stacktrace: { frames: [{ filename: '' }, { filename: 'js/app-123.js' }] },
+                    stacktrace: { frames: [{ filename: 'app:///js/app-123.js' }, { filename: 'app:///js/app-456.js' }] },
                     type: 'Error',
                     value: 'Unexpected error',
                 }],
