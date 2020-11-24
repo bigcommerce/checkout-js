@@ -1,12 +1,13 @@
 import { captureException, init, withScope, BrowserOptions, Event, Integrations, Severity, StackFrame } from '@sentry/browser';
 import { RewriteFrames } from '@sentry/integrations';
 import { EventHint, Exception } from '@sentry/types';
-import { every, isEmpty, some } from 'lodash';
 
 import computeErrorCode from './computeErrorCode';
 import ConsoleErrorLogger from './ConsoleErrorLogger';
 import ErrorLogger, { ErrorLevelType, ErrorTags } from './ErrorLogger';
 import NoopErrorLogger from './NoopErrorLogger';
+
+const FILENAME_PREFIX = 'app://';
 
 export interface SentryErrorLoggerOptions {
     consoleLogger?: ConsoleErrorLogger;
@@ -85,33 +86,37 @@ export default class SentryErrorLogger implements ErrorLogger {
         }
     }
 
-    private hasUsefulStacktrace(exceptions: Exception[]): boolean {
-        return some(exceptions, exception => {
-            if (!exception.stacktrace) {
+    /**
+     * Ignore exceptions that don't have a stacktrace at all, or have a stacktrace that references files external to
+     * this app. For example, if the exception is caused by a piece of third party code, one of the frames in the
+     * stacktrace will reference a file that is not a part of the app. This behaviour is different to the whitelist
+     * config provided by Sentry, as the latter only examines the topmost frame in the stacktrace. The config is not
+     * sufficient for us because some stores have customisation code built on top of our code, resulting in a stacktrace
+     * whose topmost frame is ours but frames below it are not.
+     */
+    private shouldReportExceptions(exceptions: Exception[], originalException: Error | string | null): boolean {
+        // Ignore exceptions that are not an instance of Error because they are most likely not thrown by our own code,
+        // as we have a lint rule that prevents us from doing so. Although these exceptions don't actually have a
+        // stacktrace, meaning that the condition below should theoretically cover the scenario, but we still need this
+        // condition because Sentry client creates a "synthentic" stacktrace for them using the information it has.
+        if (!exceptions?.length || !(originalException instanceof Error)) {
+            return false;
+        }
+
+        return exceptions.every(exception => {
+            if (!exception.stacktrace?.frames?.length) {
                 return false;
             }
 
-            if (isEmpty(exception.stacktrace.frames)) {
-                return false;
-            }
-
-            if (every(exception.stacktrace.frames, frame => !frame.filename)) {
-                return false;
-            }
-
-            return true;
+            return exception.stacktrace?.frames?.every(frame =>
+                frame.filename?.startsWith(FILENAME_PREFIX)
+            );
         });
     }
 
     private handleBeforeSend: (event: Event, hint?: EventHint) => Event | null = (event, hint) => {
         if (event.exception) {
-            const { originalException = null } = hint || {};
-
-            if (!originalException || typeof originalException === 'string') {
-                return null;
-            }
-
-            if (!event.exception.values || !this.hasUsefulStacktrace(event.exception.values)) {
+            if (!this.shouldReportExceptions(event.exception.values ?? [], hint?.originalException ?? null)) {
                 return null;
             }
 
@@ -131,7 +136,7 @@ export default class SentryErrorLogger implements ErrorLogger {
             // `frame` needs to be modified in-place (based on the example in
             // their documentation).
             if (filename !== frame.filename) {
-                frame.filename = `app:///${filename}`;
+                frame.filename = `${FILENAME_PREFIX}/${filename}`;
             }
         }
 
