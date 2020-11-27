@@ -18,3 +18,5 @@ export { default as CheckboxInput } from './CheckboxInput';
 export { default as Label, LabelProps } from './Label';
 export { default as Legend, LegendProps } from './Legend';
 export { default as ChecklistItemInput, ChecklistItemInputProps } from './ChecklistItemInput';
+export { default as DynamicFormField } from './DynamicFormField';
+export { default as DynamicFormFieldType } from './DynamicFormFieldType';

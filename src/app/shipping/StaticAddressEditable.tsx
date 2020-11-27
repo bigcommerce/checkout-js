@@ -2,11 +2,11 @@ import { Address, CheckoutSelectors, FormField, ShippingInitializeOptions, Shipp
 import { noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
 
-import { AddressFormField, StaticAddress } from '../address/';
+import { StaticAddress } from '../address/';
 import { preventDefault } from '../common/dom';
 import { TranslatedString } from '../locale';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
-import { Fieldset } from '../ui/form';
+import { DynamicFormField, Fieldset } from '../ui/form';
 import { LoadingOverlay } from '../ui/loading';
 
 import './StaticAddressEditable.scss';
@@ -88,7 +88,7 @@ class StaticAddressEditable extends PureComponent<StaticAddressEditableProps> {
                 { shouldShowCustomFormFields && <Fieldset id="customFieldset">
                     {
                         customFormFields.map(field => (
-                            <AddressFormField
+                            <DynamicFormField
                                 field={ field }
                                 key={ `${field.id}-${field.name}` }
                                 onChange={ this.handleFieldValueChange(field.name) }

@@ -5,7 +5,7 @@ import React, { memo, useCallback, useMemo, FunctionComponent } from 'react';
 import { TranslatedString } from '../../locale';
 import { AutocompleteItem } from '../../ui/autocomplete';
 import { FormField } from '../../ui/form';
-import { getFormFieldInputId } from '../getFormFieldInputId';
+import { getAddressFormFieldInputId } from '../getAddressFormFieldInputId';
 
 import GoogleAutocomplete from './GoogleAutocomplete';
 
@@ -42,7 +42,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
 
     const inputProps = useMemo(() => ({
         className: 'form-input optimizedCheckout-form-input',
-        id: getFormFieldInputId(name),
+        id: getAddressFormFieldInputId(name),
     }), [name]);
 
     const renderInput = useCallback(({ field }: FieldProps) => (

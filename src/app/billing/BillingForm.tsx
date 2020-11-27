@@ -3,7 +3,8 @@ import { withFormik, FormikProps } from 'formik';
 import React, { createRef, PureComponent, ReactNode, RefObject } from 'react';
 import { lazy } from 'yup';
 
-import { getAddressCustomFieldsValidationSchema, getAddressValidationSchema, isValidCustomerAddress, mapAddressToFormValues, AddressForm, AddressFormValues, AddressSelect } from '../address';
+import { getAddressFormFieldsValidationSchema, getTranslateAddressError, isValidCustomerAddress, mapAddressToFormValues, AddressForm, AddressFormValues, AddressSelect } from '../address';
+import { getCustomFormFieldsValidationSchema } from '../formFields';
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { OrderComments } from '../orderComments';
 import { Button, ButtonVariant } from '../ui/button';
@@ -159,7 +160,7 @@ export default withLanguage(withFormik<BillingFormProps & WithLanguageProps, Bil
         shouldValidateSafeInput,
         language,
     }) => (
-        !!billingAddress && getAddressValidationSchema({
+        !!billingAddress && getAddressFormFieldsValidationSchema({
             language,
             shouldValidateSafeInput,
             formFields: getFields(billingAddress.countryCode),
@@ -171,11 +172,11 @@ export default withLanguage(withFormik<BillingFormProps & WithLanguageProps, Bil
         methodId,
         shouldValidateSafeInput,
     }: BillingFormProps & WithLanguageProps) => methodId === 'amazonpay' ?
-        (lazy<Partial<AddressFormValues>>(values => getAddressCustomFieldsValidationSchema({
-            language,
+        (lazy<Partial<AddressFormValues>>(values => getCustomFormFieldsValidationSchema({
+            translate: getTranslateAddressError(language),
             formFields: getFields(values && values.countryCode),
         }))) :
-        (lazy<Partial<AddressFormValues>>(values => getAddressValidationSchema({
+        (lazy<Partial<AddressFormValues>>(values => getAddressFormFieldsValidationSchema({
             language,
             shouldValidateSafeInput,
             formFields: getFields(values && values.countryCode),

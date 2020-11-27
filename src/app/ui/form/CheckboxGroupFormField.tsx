@@ -3,10 +3,10 @@ import { getIn, FieldArray, FieldArrayRenderProps } from 'formik';
 import { difference, kebabCase, noop, pick } from 'lodash';
 import React, { memo, useCallback, ChangeEvent, FunctionComponent, ReactNode } from 'react';
 
-import { FormFieldContainer, FormFieldError } from '../ui/form';
-
 import DynamicFormFieldType from './DynamicFormFieldType';
 import DynamicInput from './DynamicInput';
+import FormFieldContainer from './FormFieldContainer';
+import FormFieldError from './FormFieldError';
 import MultiCheckboxControl from './MultiCheckboxControl';
 
 export interface CheckboxGroupFormFieldProps {

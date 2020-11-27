@@ -1,29 +1,26 @@
-import { createLanguageService, LanguageService } from '@bigcommerce/checkout-sdk';
 import { ObjectSchema, ValidationError } from 'yup';
 
+import { getFormFields } from '../address/formField.mock';
 import { getShippingAddress } from '../shipping/shipping-addresses.mock';
 
-import { getFormFields } from './formField.mock';
-import getAddressCustomFieldsValidationSchema from './getAddressCustomFieldsValidationSchema';
-import getAddressValidationSchema from './getAddressValidationSchema';
-import { AddressFormValues } from './mapAddressToFormValues';
+import getCustomFormFieldsValidationSchema, { TranslateValidationErrorFunction } from './getCustomFormFieldsValidationSchema';
+import getFormFieldsValidationSchema, { FormFieldValues } from './getFormFieldsValidationSchema';
 
-describe('getAddressCustomFieldsValidationSchema', () => {
+describe('getCustomFormFieldsValidationSchema', () => {
     const formFields = getFormFields();
-    let language: LanguageService;
+    let translate: TranslateValidationErrorFunction;
 
     beforeEach(() => {
-        language = createLanguageService();
-        jest.spyOn(language, 'translate').mockImplementation(id => id);
+        translate = jest.fn();
     });
 
     describe('when should not enforce validate safe input', () => {
-        let schema: ObjectSchema<Partial<AddressFormValues>>;
+        let schema: ObjectSchema<Partial<FormFieldValues>>;
 
         beforeEach(() => {
-            schema = getAddressValidationSchema({
+            schema = getFormFieldsValidationSchema({
                 formFields,
-                language,
+                translate,
             });
         });
 
@@ -41,12 +38,12 @@ describe('getAddressCustomFieldsValidationSchema', () => {
     });
 
     describe('when enforce validate safe input', () => {
-        let schema: ObjectSchema<Partial<AddressFormValues>>;
+        let schema: ObjectSchema<Partial<FormFieldValues>>;
 
         beforeEach(() => {
-            schema = getAddressValidationSchema({
+            schema = getFormFieldsValidationSchema({
                 formFields,
-                language,
+                translate,
                 shouldValidateSafeInput: true,
             });
         });
@@ -57,7 +54,7 @@ describe('getAddressCustomFieldsValidationSchema', () => {
                 firstName: 'Luis<>',
             }).catch((error: ValidationError) => error.message);
 
-            expect(errors).toEqual('address.invalid_characters_error');
+            expect(errors).toEqual('firstName must match the following: \"/^[^<>]*$/\"');
         });
 
         it('does not throw if valid characters are present', async () => {
@@ -69,10 +66,10 @@ describe('getAddressCustomFieldsValidationSchema', () => {
     });
 
     describe('when custom integer field is present', () => {
-        let schema: ObjectSchema<Partial<AddressFormValues>>;
+        let schema: ObjectSchema<Partial<FormFieldValues>>;
 
         beforeEach(() => {
-            schema = getAddressCustomFieldsValidationSchema({ formFields: [
+            schema = getCustomFormFieldsValidationSchema({ formFields: [
                 ...formFields,
                 {
                     custom: true,
@@ -84,7 +81,7 @@ describe('getAddressCustomFieldsValidationSchema', () => {
                     required: false,
                     type: 'integer',
                 } as any,
-            ], language });
+            ], translate });
         });
 
         it('throws if min validation fails', async () => {
@@ -95,7 +92,7 @@ describe('getAddressCustomFieldsValidationSchema', () => {
                 },
             }).catch((error: ValidationError) => error.message);
 
-            expect(errors).toEqual('address.custom_min_error');
+            expect(errors).toEqual('customFields.field_100 must be greater than or equal to 3');
         });
 
         it('throws if max validation fails', async () => {
@@ -106,7 +103,7 @@ describe('getAddressCustomFieldsValidationSchema', () => {
                 },
             }).catch((error: ValidationError) => error.message);
 
-            expect(errors).toEqual('address.custom_max_error');
+            expect(errors).toEqual('customFields.field_100 must be less than or equal to 5');
         });
 
         it('resolves if min/max validation pass', async () => {
@@ -123,10 +120,10 @@ describe('getAddressCustomFieldsValidationSchema', () => {
     });
 
     describe('when custom radio field is present', () => {
-        let schema: ObjectSchema<Partial<AddressFormValues>>;
+        let schema: ObjectSchema<Partial<FormFieldValues>>;
 
         beforeEach(() => {
-            schema = getAddressCustomFieldsValidationSchema({ formFields: [
+            schema = getCustomFormFieldsValidationSchema({ formFields: [
                 ...formFields,
                 {
                     options: { items: [{ value: 'x' }, { value: 'y' }] },
@@ -137,7 +134,7 @@ describe('getAddressCustomFieldsValidationSchema', () => {
                     type: 'string',
                     custom: true,
                 } as any,
-            ], language });
+            ], translate });
         });
 
         it('throws if value empty', async () => {
@@ -148,7 +145,7 @@ describe('getAddressCustomFieldsValidationSchema', () => {
                 },
             }).catch((error: ValidationError) => error.message);
 
-            expect(errors).toEqual('address.custom_required_error');
+            expect(errors).toEqual('customFields.field_100 is a required field');
         });
 
         it('resolves if valid value', async () => {

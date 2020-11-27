@@ -1,4 +1,4 @@
-import { AddressKeyMap } from './DynamicFormField';
+import { AddressKeyMap } from './address';
 
 export const ADDRESS_FIELD_IDS: AddressKeyMap = {
     address1: 'addressLine1',
@@ -8,10 +8,10 @@ export const ADDRESS_FIELD_IDS: AddressKeyMap = {
     stateOrProvinceCode: 'provinceCode',
 };
 
-export function getFormFieldLegacyName(name: string): string {
+export function getAddressFormFieldLegacyName(name: string): string {
     return `${ADDRESS_FIELD_IDS[name] || name}`;
 }
 
-export function getFormFieldInputId(name: string): string {
-    return `${getFormFieldLegacyName(name)}Input`;
+export function getAddressFormFieldInputId(name: string): string {
+    return `${getAddressFormFieldLegacyName(name)}Input`;
 }

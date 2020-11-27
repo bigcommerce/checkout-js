@@ -7,10 +7,10 @@ import React from 'react';
 import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { DynamicFormField } from '../ui/form';
 
 import { getFormFields } from './formField.mock';
 import AddressForm from './AddressForm';
-import AddressFormField from './AddressFormField';
 
 describe('AddressForm Component', () => {
     let checkoutService: CheckoutService;
@@ -27,7 +27,7 @@ describe('AddressForm Component', () => {
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
     });
 
-    it('renders all AddressFormFields based on formFields', () => {
+    it('renders all fields based on formFields', () => {
         component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <Formik
@@ -45,10 +45,10 @@ describe('AddressForm Component', () => {
         expect(component.find('[name="address.shouldSaveAddress"]').exists())
             .toEqual(false);
 
-        expect(component.find(AddressFormField).length).toEqual(formFields.length);
+        expect(component.find(DynamicFormField).length).toEqual(formFields.length);
     });
 
-    it('renders AddressFormField with expected props', () => {
+    it('renders DynamicFormField with expected props', () => {
         component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <Formik
@@ -64,7 +64,7 @@ describe('AddressForm Component', () => {
             </LocaleContext.Provider>
         );
 
-        expect(component.find(AddressFormField).at(0).props()).toEqual(
+        expect(component.find(DynamicFormField).at(0).props()).toEqual(
             expect.objectContaining({
                 parentFieldName: 'address',
                 placeholder: undefined,
@@ -74,7 +74,7 @@ describe('AddressForm Component', () => {
         expect(component.find('[name="address.shouldSaveAddress"]').exists())
             .toEqual(true);
 
-        expect(component.find(AddressFormField).at(0).prop('field')).toEqual(
+        expect(component.find(DynamicFormField).at(0).prop('field')).toEqual(
             expect.objectContaining({
                 id: 'field_14',
             })

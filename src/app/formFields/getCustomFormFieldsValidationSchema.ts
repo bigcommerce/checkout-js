@@ -1,35 +1,38 @@
-import { FormField, LanguageService } from '@bigcommerce/checkout-sdk';
+import { FormField } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
 import { array, date, number, object, string, ArraySchema, NumberSchema, ObjectSchema, Schema } from 'yup';
 
-import { AddressFormValues } from './mapAddressToFormValues';
-import DynamicFormFieldType from './DynamicFormFieldType';
+import { DynamicFormFieldType } from '../ui/form';
 
-export interface AddressValidationSchemaOptions {
+export type TranslateValidationErrorFunction = ((
+    validationType: 'max' | 'min' | 'required' | 'invalid',
+    field: {
+        name: string;
+        label: string;
+        min?: number;
+        max?: number;
+    }
+) => string | undefined);
+
+export interface FormFieldsValidationSchemaOptions {
     formFields: FormField[];
-    language?: LanguageService;
+    translate?: TranslateValidationErrorFunction;
     shouldValidateSafeInput?: boolean;
 }
 
-const ERROR_KEYS: { [fieldName: string]: string } = {
-    custom: 'address.custom',
-};
+export interface CustomFormFieldValues {
+    customFields: { [id: string]: any };
+}
 
-export default memoize(function getAddressCustomFieldsValidationSchema({
+export default memoize(function getCustomFormFieldsValidationSchema({
     formFields,
-    language,
-}: AddressValidationSchemaOptions): ObjectSchema<Partial<AddressFormValues>> {
-    const translate: (
-        key: string,
-        data?: any
-    ) => string | undefined = (key, data) => language && language.translate(key, data);
-
+    translate = () => undefined,
+}: FormFieldsValidationSchemaOptions): ObjectSchema<Partial<CustomFormFieldValues>> {
     return object({
         customFields: object(
             formFields
                 .filter(({ custom }) => !!custom)
                 .reduce((schema, { name, label, required, fieldType, type, min, max }) => {
-                    const requiredErrorMessage = translate(`${ERROR_KEYS.custom}_required_error`, { label });
                     let maxValue: number | undefined;
                     let minValue: number | undefined;
 
@@ -57,17 +60,19 @@ export default memoize(function getAddressCustomFieldsValidationSchema({
 
                     if (maxValue !== undefined) {
                         schema[name] = (schema[name] as NumberSchema).max(maxValue,
-                            translate(`${ERROR_KEYS.custom}_max_error`, { label, max: maxValue + 1 })
+                            translate('max', { label, name, max: maxValue + 1 })
                         );
                     }
 
                     if (minValue !== undefined) {
                         schema[name] = (schema[name] as NumberSchema).min(minValue,
-                            translate(`${ERROR_KEYS.custom}_min_error`, { label, min: minValue - 1 })
+                            translate('min', { label, name, min: minValue - 1 })
                         );
                     }
 
                     if (required) {
+                        const requiredErrorMessage = translate('required', { name, label });
+
                         schema[name] = fieldType === DynamicFormFieldType.checkbox ?
                             (schema[name] as ArraySchema<string>).min(1, requiredErrorMessage) :
                             (schema[name] as ArraySchema<string>).required(requiredErrorMessage);
@@ -78,5 +83,5 @@ export default memoize(function getAddressCustomFieldsValidationSchema({
                 {} as { [key: string]: Schema<any> }
             )
         ).nullable(true),
-    }) as ObjectSchema<Partial<AddressFormValues>>;
+    }) as ObjectSchema<CustomFormFieldValues>;
 });

@@ -2,12 +2,15 @@ import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 import ReactDatePicker from 'react-datepicker';
 
-import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType, WithDateProps } from '../locale';
-import { CheckboxInput, RadioInput, TextArea, TextInput } from '../ui/form';
+import { getStoreConfig } from '../../config/config.mock';
+import { createLocaleContext, LocaleContext, LocaleContextType, WithDateProps } from '../../locale';
 
+import CheckboxInput from './CheckboxInput';
 import DynamicFormFieldType from './DynamicFormFieldType';
 import DynamicInput, { DynamicInputProps } from './DynamicInput';
+import RadioInput from './RadioInput';
+import TextArea from './TextArea';
+import TextInput from './TextInput';
 
 describe('DynamicInput', () => {
     let localeContext: Required<LocaleContextType>;

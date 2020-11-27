@@ -1,46 +1,14 @@
 import { FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
 import { FieldProps } from 'formik';
-import React, { memo, useCallback, useMemo, FunctionComponent } from 'react';
+import React, { memo, useCallback, useMemo, FunctionComponent, ReactNode } from 'react';
 
-import { TranslatedString } from '../locale';
-import { FormField, Label } from '../ui/form';
+import { TranslatedString } from '../../locale';
 
-import { getFormFieldInputId, getFormFieldLegacyName } from './getFormFieldInputId';
 import CheckboxGroupFormField from './CheckboxGroupFormField';
 import DynamicFormFieldType from './DynamicFormFieldType';
 import DynamicInput from './DynamicInput';
-
-export interface AddressKeyMap<T = string> {
-    [fieldName: string]: T;
-}
-
-const LABEL: AddressKeyMap = {
-    address1: 'address.address_line_1_label',
-    address2: 'address.address_line_2_label',
-    city: 'address.city_label',
-    company: 'address.company_name_label',
-    countryCode: 'address.country_label',
-    firstName: 'address.first_name_label',
-    lastName: 'address.last_name_label',
-    phone: 'address.phone_number_label',
-    postalCode: 'address.postal_code_label',
-    stateOrProvince: 'address.state_label',
-    stateOrProvinceCode: 'address.state_label',
-};
-
-const AUTOCOMPLETE: AddressKeyMap = {
-    address1: 'address-line1',
-    address2: 'address-line2',
-    city: 'address-level2',
-    company: 'organization',
-    countryCode: 'country',
-    firstName: 'given-name',
-    lastName: 'family-name',
-    phone: 'tel',
-    postalCode: 'postal-code',
-    stateOrProvince: 'address-level1',
-    stateOrProvinceCode: 'address-level1',
-};
+import FormField from './FormField';
+import Label from './Label';
 
 export interface DynamicFormFieldOption {
     code: string;
@@ -49,38 +17,42 @@ export interface DynamicFormFieldOption {
 
 export interface DynamicFormFieldProps {
     field: FormFieldType;
+    inputId?: string;
+    extraClass?: string;
+    autocomplete?: string;
     parentFieldName?: string;
     placeholder?: string;
-    fieldType?: DynamicFormFieldType;
+    label?: ReactNode;
     onChange?(value: string | string[]): void;
 }
 
 const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
     field: {
+        fieldType,
+        type,
+        secret,
         name,
         label: fieldLabel,
-        custom,
         required,
         options,
         max,
         min,
         maxLength,
     },
-    fieldType,
     parentFieldName,
     onChange,
     placeholder,
+    inputId,
+    autocomplete,
+    label,
+    extraClass,
 }) => {
-    const addressFieldName = name;
-    const fieldInputId = getFormFieldInputId(addressFieldName);
+    const fieldInputId = inputId || name;
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
-    const translatedLabelString = LABEL[name];
 
-    const label = useMemo(() => (
+    const labelComponent = useMemo(() => (
         <Label htmlFor={ fieldInputId }>
-            { custom ?
-                fieldLabel :
-                translatedLabelString && <TranslatedString id={ translatedLabelString } /> }
+            { label || fieldLabel }
             { !required &&
                 <>
                     { '' }
@@ -90,18 +62,31 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
                 </> }
         </Label>
     ), [
-        custom,
         fieldInputId,
         fieldLabel,
         required,
-        translatedLabelString,
+        label,
     ]);
+
+    const dynamicFormFieldType = useMemo((): DynamicFormFieldType => {
+        if (fieldType === 'text') {
+            if (type === 'integer') {
+                return DynamicFormFieldType.number;
+            }
+
+            return secret ?
+                DynamicFormFieldType.password :
+                DynamicFormFieldType.text;
+        }
+
+        return fieldType as DynamicFormFieldType;
+    }, [fieldType, type, secret]);
 
     const renderInput = useCallback(({ field }: FieldProps<string>) => (
         <DynamicInput
             { ...field }
-            autoComplete={ AUTOCOMPLETE[addressFieldName] }
-            fieldType={ fieldType }
+            autoComplete={ autocomplete }
+            fieldType={ dynamicFormFieldType }
             id={ fieldInputId }
             max={ max }
             maxLength={ maxLength || undefined }
@@ -111,29 +96,29 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
             rows={ options && (options as any).rows }
         />
     ), [
-        addressFieldName,
         fieldInputId,
-        fieldType,
         max,
         maxLength,
         min,
         options,
         placeholder,
+        dynamicFormFieldType,
+        autocomplete,
     ]);
 
     return (
-        <div className={ `dynamic-form-field dynamic-form-field--${getFormFieldLegacyName(addressFieldName)}` }>
+        <div className={ `dynamic-form-field ${extraClass}` }>
             { fieldType === DynamicFormFieldType.checkbox ?
                 <CheckboxGroupFormField
                     id={ fieldInputId }
-                    label={ label }
+                    label={ labelComponent }
                     name={ fieldName }
                     onChange={ onChange }
                     options={ (options && options.items) || [] }
                 /> :
                 <FormField
                     input={ renderInput }
-                    label={ label }
+                    label={ labelComponent }
                     name={ fieldName }
                     onChange={ onChange }
                 /> }

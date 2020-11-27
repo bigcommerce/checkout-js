@@ -64,6 +64,7 @@ describe('ShippingForm Component', () => {
             initialize: jest.fn(),
             deinitialize: jest.fn(),
             signOut: jest.fn(),
+            shouldValidateSafeInput: true,
         };
     });
 
