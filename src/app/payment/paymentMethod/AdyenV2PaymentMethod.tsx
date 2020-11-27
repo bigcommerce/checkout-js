@@ -22,7 +22,7 @@ export enum AdyenV2PaymentMethodType {
     ideal = 'ideal',
 }
 
-interface AdyenPaymentMethodRef {
+export interface AdyenPaymentMethodRef {
     additionalActionContentRef: RefObject<HTMLDivElement>;
     shouldShowModal: boolean;
     cancelAdditionalAction?(): void;
