@@ -3,7 +3,7 @@ import { noop } from 'lodash';
 import React from 'react';
 
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedHtml } from '../locale';
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedHtml, TranslatedLink } from '../locale';
 import { Alert } from '../ui/alert';
 
 import CustomerViewType from './CustomerViewType';
@@ -20,7 +20,6 @@ describe('LoginForm', () => {
         const component = render(
             <LocaleContext.Provider value={ localeContext }>
                 <LoginForm
-                    createAccountUrl={ '/create-account' }
                     forgotPasswordUrl={ '/forgot-password' }
                     onSignIn={ noop }
                 />
@@ -35,7 +34,6 @@ describe('LoginForm', () => {
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <LoginForm
-                    createAccountUrl={ '/create-account' }
                     email={ 'test@bigcommerce.com' }
                     forgotPasswordUrl={ '/forgot-password' }
                     onSignIn={ noop }
@@ -52,7 +50,6 @@ describe('LoginForm', () => {
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <LoginForm
-                    createAccountUrl={ '/create-account' }
                     forgotPasswordUrl={ '/forgot-password' }
                     onSignIn={ handleSignIn }
                 />
@@ -79,7 +76,6 @@ describe('LoginForm', () => {
             const component = mount(
                 <LocaleContext.Provider value={ localeContext }>
                     <LoginForm
-                        createAccountUrl={ '/create-account' }
                         forgotPasswordUrl={ '/forgot-password' }
                         onSignIn={ noop }
                     />
@@ -115,7 +111,6 @@ describe('LoginForm', () => {
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <LoginForm
-                    createAccountUrl={ '/create-account' }
                     forgotPasswordUrl={ '/forgot-password' }
                     onSignIn={ noop }
                 />
@@ -142,7 +137,6 @@ describe('LoginForm', () => {
             <LocaleContext.Provider value={ localeContext }>
                 <LoginForm
                     canCancel
-                    createAccountUrl={ '/create-account' }
                     email="foo@bar.com"
                     forgotPasswordUrl={ '/forgot-password' }
                     onCancel={ onCancel }
@@ -179,7 +173,6 @@ describe('LoginForm', () => {
             <LocaleContext.Provider value={ localeContext }>
                 <LoginForm
                     canCancel
-                    createAccountUrl={ '/create-account' }
                     email="foo@bar.com"
                     forgotPasswordUrl={ '/forgot-password' }
                     onSignIn={ noop }
@@ -206,7 +199,6 @@ describe('LoginForm', () => {
             <LocaleContext.Provider value={ localeContext }>
                 <LoginForm
                     canCancel
-                    createAccountUrl={ '/create-account' }
                     email="foo@bar.com"
                     forgotPasswordUrl={ '/forgot-password' }
                     onSignIn={ noop }
@@ -218,11 +210,8 @@ describe('LoginForm', () => {
         expect(component.find(Alert).prop('type'))
             .toEqual('error');
 
-        expect(component.find(Alert).find(TranslatedHtml).props())
-            .toEqual({
-                id: 'customer.guest_temporary_disabled',
-                data: { url: '/create-account' },
-            });
+        expect(component.find(Alert).find(TranslatedLink).prop('id'))
+            .toEqual('customer.guest_temporary_disabled');
 
         expect(component.exists('input[name="email"]'))
             .toEqual(true);
@@ -237,7 +226,6 @@ describe('LoginForm', () => {
             <LocaleContext.Provider value={ localeContext }>
                 <LoginForm
                     canCancel
-                    createAccountUrl={ '/create-account' }
                     forgotPasswordUrl={ '/forgot-password' }
                     onSignIn={ noop }
                     signInError={ error }
@@ -254,7 +242,6 @@ describe('LoginForm', () => {
             <LocaleContext.Provider value={ localeContext }>
                 <LoginForm
                     canCancel
-                    createAccountUrl={ '/create-account' }
                     forgotPasswordUrl={ '/forgot-password' }
                     onSignIn={ noop }
                 />
@@ -269,7 +256,6 @@ describe('LoginForm', () => {
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <LoginForm
-                    createAccountUrl={ '/create-account' }
                     forgotPasswordUrl={ '/forgot-password' }
                     onSignIn={ noop }
                 />
@@ -285,7 +271,6 @@ describe('LoginForm', () => {
         const component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <LoginForm
-                    createAccountUrl={ '/create-account' }
                     forgotPasswordUrl={ '/forgot-password' }
                     onChangeEmail={ handleChangeEmail }
                     onSignIn={ noop }

@@ -374,6 +374,27 @@ describe('Checkout', () => {
                 .toEqual(true);
         });
 
+        it('navigates to next step when account is created', () => {
+            container.setProps({
+                steps: getCheckoutStepStatuses(checkoutState)
+                    .map(step => ({
+                        ...step,
+                        isActive: step.type === CheckoutStepType.Shipping ? true : false,
+                    })),
+            });
+
+            // tslint:disable-next-line:no-non-null-assertion
+            (container.find(Customer).at(0) as ReactWrapper<CustomerProps>)
+                .prop('onAccountCreated')!();
+
+            container.update();
+
+            const steps: ReactWrapper<CheckoutStepProps> = container.find(CheckoutStep);
+
+            expect(steps.findWhere(step => step.prop('type') === CheckoutStepType.Shipping).at(0).prop('isActive'))
+                .toEqual(true);
+        });
+
         it('navigates to next step when shopper continues as guest', () => {
             container.setProps({
                 steps: getCheckoutStepStatuses(checkoutState)

@@ -9,6 +9,7 @@ import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 
 import { getCustomer, getGuestCustomer } from './customers.mock';
+import CreateAccountForm from './CreateAccountForm';
 import Customer, { CustomerProps, WithCheckoutCustomerProps } from './Customer';
 import CustomerViewType from './CustomerViewType';
 import EmailLoginForm from './EmailLoginForm';
@@ -93,6 +94,29 @@ describe('Customer', () => {
             );
 
             expect(component.find(GuestForm).exists())
+                .toEqual(true);
+        });
+
+        it('renders create account form if type is create account', () => {
+            jest.spyOn(checkoutService.getState().data, 'getCustomer')
+                .mockReturnValue(undefined);
+
+            jest.spyOn(checkoutService.getState().data, 'getConfig')
+                .mockReturnValue({
+                    ...getStoreConfig(),
+                    checkoutSettings: {
+                        ...getStoreConfig().checkoutSettings,
+                        features: {
+                            'CHECKOUT-4941.account_creation_in_checkout': true,
+                        },
+                    },
+                });
+
+            const component = mount(
+                <CustomerTest viewType={ CustomerViewType.CreateAccount } />
+            );
+
+            expect(component.find(CreateAccountForm).exists())
                 .toEqual(true);
         });
 
@@ -407,7 +431,6 @@ describe('Customer', () => {
                 .toMatchObject({
                     email: billingAddress.email,
                     canCancel: config.checkoutSettings.guestCheckoutEnabled,
-                    createAccountUrl: config.links.createAccountLink,
                     forgotPasswordUrl: config.links.forgotPasswordLink,
                 });
         });

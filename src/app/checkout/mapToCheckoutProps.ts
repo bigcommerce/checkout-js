@@ -16,8 +16,12 @@ export default function mapToCheckoutProps(
     const {
         checkoutSettings: {
             guestCheckoutEnabled: isGuestEnabled = false,
+            features = {},
         } = {},
-        links: { loginLink: loginUrl = '' } = {},
+        links: {
+            loginLink: loginUrl = '',
+            createAccountLink: createAccountUrl = '',
+        } = {},
     } = data.getConfig() || {};
 
     const subscribeToConsignmentsSelector = createSelector(
@@ -38,6 +42,8 @@ export default function mapToCheckoutProps(
         isPending: statuses.isPending(),
         loadCheckout: checkoutService.loadCheckout,
         loginUrl,
+        createAccountUrl,
+        canCreateAccountInCheckout: features['CHECKOUT-4941.account_creation_in_checkout'],
         promotions,
         subscribeToConsignments: subscribeToConsignmentsSelector({ checkoutService, checkoutState }),
         steps: data.getCheckout() ? getCheckoutStepStatuses(checkoutState) : EMPTY_ARRAY,

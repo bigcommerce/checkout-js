@@ -87,6 +87,8 @@ export interface WithCheckoutProps {
     isLoadingCheckout: boolean;
     isPending: boolean;
     loginUrl: string;
+    createAccountUrl: string;
+    canCreateAccountInCheckout: boolean;
     promotions?: Promotion[];
     steps: CheckoutStepStatus[];
     clearError(error?: Error): void;
@@ -295,7 +297,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                     <Customer
                         checkEmbeddedSupport={ this.checkEmbeddedSupport }
                         isEmbedded={ isEmbedded() }
-                        onChangeViewType={ this.handleChangeCustomerViewType }
+                        onAccountCreated={ this.navigateToNextIncompleteStep }
+                        onChangeViewType={ this.setCustomerViewType }
                         onContinueAsGuest={ this.navigateToNextIncompleteStep }
                         onContinueAsGuestError={ this.handleError }
                         onReady={ this.handleReady }
@@ -343,6 +346,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         cartHasChanged={ hasCartChanged }
                         isMultiShippingMode={ isMultiShippingMode }
                         navigateNextStep={ this.handleShippingNextStep }
+                        onCreateAccount={ this.handleShippingCreateAccount }
                         onReady={ this.handleReady }
                         onSignIn={ this.handleShippingSignIn }
                         onToggleMultiShipping={ this.handleToggleMultiShipping }
@@ -429,9 +433,14 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
     private navigateToStep(type: CheckoutStepType, options?: { isDefault?: boolean }): void {
         const { clearError, error, steps } = this.props;
+        const { activeStepType } = this.state;
         const step = find(steps, { type });
 
         if (!step) {
+            return;
+        }
+
+        if (activeStepType === step.type) {
             return;
         }
 
@@ -521,10 +530,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         this.setState({ error: undefined });
     };
 
-    private handleChangeCustomerViewType: (viewType: CustomerViewType) => void = viewType => {
-        this.setState({ customerViewType: viewType });
-    };
-
     private handleExpanded: (type: CheckoutStepType) => void = type => {
         if (this.stepTracker) {
            this.stepTracker.trackStepViewed(type);
@@ -565,7 +570,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         }
 
         if (isGuestEnabled) {
-            this.setState({ customerViewType: CustomerViewType.Guest });
+            this.setCustomerViewType(CustomerViewType.Guest);
         }
 
         if (isCartEmpty) {
@@ -588,8 +593,29 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     };
 
     private handleShippingSignIn: () => void = () => {
+        this.setCustomerViewType(CustomerViewType.Login);
+    };
+
+    private handleShippingCreateAccount: () => void = () => {
+        this.setCustomerViewType(CustomerViewType.CreateAccount);
+    };
+
+    private setCustomerViewType: (viewType: CustomerViewType) => void = customerViewType => {
+        const {
+            canCreateAccountInCheckout,
+            createAccountUrl,
+        } = this.props;
+
+        if (customerViewType === CustomerViewType.CreateAccount &&
+            (!canCreateAccountInCheckout || isEmbedded())
+        ) {
+            window.top.location.assign(createAccountUrl);
+
+            return;
+        }
+
         this.navigateToStep(CheckoutStepType.Customer);
-        this.setState({ customerViewType: CustomerViewType.Login });
+        this.setState({ customerViewType });
     };
 }
 

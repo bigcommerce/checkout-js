@@ -55,7 +55,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
             { label || fieldLabel }
             { !required &&
                 <>
-                    { '' }
+                    { ' ' }
                     <small className="optimizedCheckout-contentSecondary">
                         <TranslatedString id="common.optional_text" />
                     </small>

@@ -3,7 +3,7 @@ import { ObjectSchema, ValidationError } from 'yup';
 import { getFormFields } from '../address/formField.mock';
 import { getShippingAddress } from '../shipping/shipping-addresses.mock';
 
-import getCustomFormFieldsValidationSchema, { TranslateValidationErrorFunction } from './getCustomFormFieldsValidationSchema';
+import getCustomFormFieldsValidationSchema, { CustomFormFieldValues, TranslateValidationErrorFunction } from './getCustomFormFieldsValidationSchema';
 import getFormFieldsValidationSchema, { FormFieldValues } from './getFormFieldsValidationSchema';
 
 describe('getCustomFormFieldsValidationSchema', () => {
@@ -66,7 +66,7 @@ describe('getCustomFormFieldsValidationSchema', () => {
     });
 
     describe('when custom integer field is present', () => {
-        let schema: ObjectSchema<Partial<FormFieldValues>>;
+        let schema: ObjectSchema<CustomFormFieldValues>;
 
         beforeEach(() => {
             schema = getCustomFormFieldsValidationSchema({ formFields: [
@@ -120,7 +120,7 @@ describe('getCustomFormFieldsValidationSchema', () => {
     });
 
     describe('when custom radio field is present', () => {
-        let schema: ObjectSchema<Partial<FormFieldValues>>;
+        let schema: ObjectSchema<CustomFormFieldValues>;
 
         beforeEach(() => {
             schema = getCustomFormFieldsValidationSchema({ formFields: [

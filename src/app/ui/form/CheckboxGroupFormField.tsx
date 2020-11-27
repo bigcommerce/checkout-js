@@ -83,11 +83,11 @@ const MultiCheckboxFormField: FunctionComponent<MultiCheckboxFormFieldProps> = (
     return <FormFieldContainer hasError={ getIn(errors, name) && getIn(errors, name).length }>
         { label }
 
-        <MultiCheckboxControl
+        { options.length > 1 && <MultiCheckboxControl
             onSelectedAll={ handleSelectAll }
             onSelectedNone={ handleSelectNone }
             testId={ id }
-        />
+        /> }
 
         <DynamicInput
             fieldType={ DynamicFormFieldType.checkbox }

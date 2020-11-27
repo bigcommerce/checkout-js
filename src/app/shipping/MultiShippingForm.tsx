@@ -4,7 +4,7 @@ import React, { PureComponent, ReactNode } from 'react';
 
 import { isValidAddress } from '../address';
 import { preventDefault } from '../common/dom';
-import { withLanguage, TranslatedHtml, TranslatedString, WithLanguageProps } from '../locale';
+import { withLanguage, TranslatedLink, TranslatedString, WithLanguageProps } from '../locale';
 import { Form } from '../ui/form';
 
 import { AssignItemFailedError, AssignItemInvalidAddressError } from './errors';
@@ -22,12 +22,12 @@ export interface MultiShippingFormProps {
     cart: Cart;
     cartHasChanged: boolean;
     consignments: Consignment[];
-    createAccountUrl: string;
     customerMessage: string;
     isGuest: boolean;
     isLoading: boolean;
     shouldShowOrderComments: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
+    onCreateAccount(): void;
     onSignIn(): void;
     getFields(countryCode?: string): FormField[];
     onSubmit(values: MultiShippingFormValues): void;
@@ -61,7 +61,7 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
             isGuest,
             onUseNewAddress,
             onSignIn,
-            createAccountUrl,
+            onCreateAccount,
             cartHasChanged,
             shouldShowOrderComments,
             isLoading,
@@ -78,9 +78,9 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
                         <TranslatedString id="shipping.multishipping_guest_sign_in" />
                     </a>
                     { ' ' }
-                    <TranslatedHtml
-                        data={ { url: createAccountUrl } }
+                    <TranslatedLink
                         id="shipping.multishipping_guest_create"
+                        onClick={ onCreateAccount }
                     />
                 </div>
             );

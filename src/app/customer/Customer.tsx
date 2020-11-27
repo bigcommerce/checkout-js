@@ -1,10 +1,13 @@
-import { CheckoutSelectors, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, GuestCredentials, SignInEmail } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, CustomerAccountRequestBody, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, FormField, GuestCredentials, SignInEmail } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, Fragment, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
 
+import { CreateAccountFormValues } from './getCreateCustomerValidationSchema';
+import mapCreateAccountFromFormValues from './mapCreateAccountFromFormValues';
 import CheckoutButtonList from './CheckoutButtonList';
+import CreateAccountForm from './CreateAccountForm';
 import CustomerViewType from './CustomerViewType';
 import EmailLoginForm, { EmailLoginFormValues } from './EmailLoginForm';
 import GuestForm, { GuestFormValues } from './GuestForm';
@@ -15,6 +18,7 @@ export interface CustomerProps {
     isEmbedded?: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void;
     onChangeViewType?(viewType: CustomerViewType): void;
+    onAccountCreated?(): void;
     onContinueAsGuest?(): void;
     onContinueAsGuestError?(error: Error): void;
     onReady?(): void;
@@ -25,13 +29,14 @@ export interface CustomerProps {
 
 export interface WithCheckoutCustomerProps {
     canSubscribe: boolean;
+    customerAccountFields: FormField[];
     checkoutButtonIds: string[];
-    createAccountUrl: string;
     defaultShouldSubscribe: boolean;
     email?: string;
     firstName?: string;
     forgotPasswordUrl: string;
     isContinuingAsGuest: boolean;
+    isCreatingAccount: boolean;
     isGuestEnabled: boolean;
     isSendingSignInEmail: boolean;
     isSignInEmailEnabled: boolean;
@@ -40,6 +45,7 @@ export interface WithCheckoutCustomerProps {
     requiresMarketingConsent: boolean;
     signInEmail?: SignInEmail;
     signInEmailError?: Error;
+    createAccountError?: Error;
     signInError?: Error;
     clearError(error: Error): Promise<CheckoutSelectors>;
     continueAsGuest(credentials: GuestCredentials): Promise<CheckoutSelectors>;
@@ -47,6 +53,7 @@ export interface WithCheckoutCustomerProps {
     initializeCustomer(options: CustomerInitializeOptions): Promise<CheckoutSelectors>;
     sendLoginEmail(params: { email: string }): Promise<CheckoutSelectors>;
     signIn(credentials: CustomerCredentials): Promise<CheckoutSelectors>;
+    createAccount(values: CustomerAccountRequestBody): Promise<CheckoutSelectors>;
 }
 
 export interface CustomerState {
@@ -76,13 +83,16 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
     render(): ReactNode {
         const { viewType } = this.props;
         const { isEmailLoginFormOpen } = this.state;
+        const shouldRenderGuestForm = viewType === CustomerViewType.Guest;
+        const shouldRenderCreateAccountForm = viewType === CustomerViewType.CreateAccount;
+        const shouldRenderLoginForm = !shouldRenderGuestForm && !shouldRenderCreateAccountForm;
 
         return (
             <Fragment>
-                { isEmailLoginFormOpen && this.renderEmailLoginFormForm() }
-                { (viewType === CustomerViewType.Guest) ?
-                    this.renderGuestForm() :
-                    this.renderLoginForm() }
+                { isEmailLoginFormOpen && this.renderEmailLoginLinkForm() }
+                { shouldRenderLoginForm && this.renderLoginForm() }
+                { shouldRenderGuestForm && this.renderGuestForm() }
+                { shouldRenderCreateAccountForm && this.renderCreateAccountForm() }
             </Fragment>
         );
     }
@@ -126,7 +136,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
         );
     }
 
-    private renderEmailLoginFormForm(): ReactNode {
+    private renderEmailLoginLinkForm(): ReactNode {
         const {
             isEmailLoginFormOpen,
             hasRequestedLoginEmail,
@@ -159,9 +169,26 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
         });
     };
 
+    private renderCreateAccountForm(): ReactNode {
+        const {
+            customerAccountFields,
+            isCreatingAccount,
+            createAccountError,
+        } = this.props;
+
+        return (
+            <CreateAccountForm
+                createAccountError={ createAccountError }
+                formFields={ customerAccountFields }
+                isCreatingAccount={ isCreatingAccount }
+                onCancel={ this.handleCancelCreateAccount }
+                onSubmit={ this.handleCreateAccount }
+            />
+        );
+    }
+
     private renderLoginForm(): ReactNode {
         const {
-            createAccountUrl,
             isEmbedded,
             email,
             forgotPasswordUrl,
@@ -177,7 +204,6 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
         return (
             <LoginForm
                 canCancel={ isGuestEnabled }
-                createAccountUrl={ createAccountUrl }
                 email={ this.draftEmail || email }
                 forgotPasswordUrl={ forgotPasswordUrl }
                 isSendingSignInEmail={ isSendingSignInEmail }
@@ -186,6 +212,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                 onCancel={ this.handleCancelSignIn }
                 onChangeEmail={ this.handleChangeEmail }
                 onContinueAsGuest={ onContinueAsGuest }
+                onCreateAccount={ this.showCreateAccount }
                 onSendLoginEmail={ this.handleEmailLoginClicked }
                 onSignIn={ this.handleSignIn }
                 signInError={ signInError }
@@ -284,6 +311,39 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
         }
     };
 
+    private handleCreateAccount: (values: CreateAccountFormValues) => void = async values => {
+        const {
+            createAccount = noop,
+            onAccountCreated = noop,
+        } = this.props;
+
+        await createAccount(mapCreateAccountFromFormValues(values));
+
+        onAccountCreated();
+    };
+
+    private showCreateAccount: () => void = () => {
+        const {
+            onChangeViewType = noop,
+        } = this.props;
+
+        onChangeViewType(CustomerViewType.CreateAccount);
+    };
+
+    private handleCancelCreateAccount: () => void = () => {
+        const {
+            clearError,
+            onChangeViewType = noop,
+            createAccountError,
+        } = this.props;
+
+        if (createAccountError) {
+            clearError(createAccountError);
+        }
+
+        onChangeViewType(CustomerViewType.Login);
+    };
+
     private handleCancelSignIn: () => void = () => {
         const {
             clearError,
@@ -313,9 +373,9 @@ export function mapToWithCheckoutCustomerProps(
     { checkoutService, checkoutState }: CheckoutContextProps
 ): WithCheckoutCustomerProps | null {
     const {
-        data: { getBillingAddress, getCheckout, getCustomer, getSignInEmail, getConfig },
-        errors: { getSignInError, getSignInEmailError },
-        statuses: { isContinuingAsGuest, isSigningIn, isSendingSignInEmail },
+        data: { getBillingAddress, getCustomerAccountFields, getCheckout, getCustomer, getSignInEmail, getConfig },
+        errors: { getSignInError, getSignInEmailError, getCreateCustomerAccountError },
+        statuses: { isContinuingAsGuest, isSigningIn, isSendingSignInEmail, isCreatingCustomerAccount },
     } = checkoutState;
 
     const billingAddress = getBillingAddress();
@@ -328,27 +388,30 @@ export function mapToWithCheckoutCustomerProps(
         return null;
     }
 
-    // todo: add isSignInEmailEnabled to SDK
-    const { checkoutSettings: {
-        privacyPolicyUrl,
-        requiresMarketingConsent,
-        isSignInEmailEnabled,
-    } } = config as any;
+    const {
+        checkoutSettings: {
+            privacyPolicyUrl,
+            requiresMarketingConsent,
+            isSignInEmailEnabled,
+        },
+    } = config;
 
     return {
+        customerAccountFields: getCustomerAccountFields(),
         canSubscribe: config.shopperConfig.showNewsletterSignup,
         checkoutButtonIds: config.checkoutSettings.remoteCheckoutProviders,
         clearError: checkoutService.clearError,
+        createAccount: checkoutService.createCustomerAccount,
         continueAsGuest: checkoutService.continueAsGuest,
-        // todo: remove casting when method is properly exposed.
-        sendLoginEmail: (checkoutService as any).sendSignInEmail as (params: { email: string }) => Promise<CheckoutSelectors>,
-        createAccountUrl: config.links.createAccountLink,
+        sendLoginEmail: checkoutService.sendSignInEmail,
         defaultShouldSubscribe: config.shopperConfig.defaultNewsletterSignup,
         deinitializeCustomer: checkoutService.deinitializeCustomer,
         email: (billingAddress && billingAddress.email) || (customer && customer.email),
         firstName: customer && customer.firstName,
         forgotPasswordUrl: config.links.forgotPasswordLink,
         initializeCustomer: checkoutService.initializeCustomer,
+        isCreatingAccount: isCreatingCustomerAccount(),
+        createAccountError: getCreateCustomerAccountError(),
         isContinuingAsGuest: isContinuingAsGuest(),
         isSignInEmailEnabled,
         isGuestEnabled: config.checkoutSettings.guestCheckoutEnabled,
