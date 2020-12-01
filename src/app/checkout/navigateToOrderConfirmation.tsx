@@ -1,9 +1,9 @@
 import { noop } from 'lodash';
 
-export default function navigateToOrderConfirmation(): Promise<never> {
-    const url = `${window.location.href}/order-confirmation`;
+export default function navigateToOrderConfirmation(location = window.location): Promise<never> {
+    const url = `${location.pathname.replace(/\/$/, '')}/order-confirmation`;
 
-    window.location.replace(url);
+    location.replace(url);
 
     return new Promise(noop);
 }

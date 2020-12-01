@@ -687,7 +687,7 @@ describe('Checkout', () => {
                 .prop('onSubmit')!();
 
             expect(location.replace)
-                .toHaveBeenCalledWith(`${window.location.href}/order-confirmation`);
+                .toHaveBeenCalledWith('/order-confirmation');
         });
 
         it('navigates to order confirmation page when order is finalized', () => {
@@ -696,7 +696,7 @@ describe('Checkout', () => {
                 .prop('onFinalize')!();
 
             expect(location.replace)
-                .toHaveBeenCalledWith(`${window.location.href}/order-confirmation`);
+                .toHaveBeenCalledWith('/order-confirmation');
         });
 
         it('posts message to parent of embedded checkout when shopper completes checkout', () => {
