@@ -111,7 +111,7 @@ function getPaymentMethodTitle(
             },
             [PaymentMethodId.AdyenV2]: {
                 logoUrl: `https://checkoutshopper-live.adyen.com/checkoutshopper/images/logos/${(method.method === 'scheme') ? 'card' : method.method}.svg`,
-                titleText: (method.config.displayName === 'Credit Card' ? 'Credit/Debit Card' : method.config.displayName) || '',
+                titleText: (method.config.displayName === 'Credit Card' ? language.translate('payment.adyen_credit_debit_card_text') : method.config.displayName) || '',
             },
         };
 
