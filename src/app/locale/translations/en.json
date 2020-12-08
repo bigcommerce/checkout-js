@@ -155,6 +155,7 @@
             "unsupported_error": "The following payment methods are not supported by Embedded Checkout: {methods}. Please contact us for assistance."
         },
         "payment": {
+            "adyen_credit_debit_card_text": "Credit/Debit Card",
             "affirm_name_text": "Affirm",
             "affirm_display_name_text": "Pay over time",
             "affirm_body_text": "You will be redirected to Affirm to securely complete your purchase. Just fill out a few pieces of basic information and get a real-time decision. Checking your eligibility won't affect your credit score.",
