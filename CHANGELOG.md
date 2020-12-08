@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.104.1](https://github.com/bigcommerce/checkout-js/compare/v1.104.0...v1.104.1) (2020-12-08)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-5300 Fix order confirmation page redirection failure if existing url contains query param ([196115d](https://github.com/bigcommerce/checkout-js/commit/196115d9ba10e92d3fd37167abfc2839108ea2ca))
+
 ## [1.104.0](https://github.com/bigcommerce/checkout-js/compare/v1.103.0...v1.104.0) (2020-12-01)
 
 
