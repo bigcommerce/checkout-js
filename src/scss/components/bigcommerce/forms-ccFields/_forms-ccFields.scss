@@ -29,6 +29,15 @@
     flex-basis: 100%;
 }
 
+.form-field--mollie {
+    color: #4496f6 !important;
+
+    &-ccNumber,
+    &-ccName {
+        flex-basis: 100%;
+    }
+}
+
 .form-field--ccNumber--hasExpiryDate {
     flex-basis: 50%;
 }
