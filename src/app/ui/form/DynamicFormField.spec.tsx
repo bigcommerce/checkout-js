@@ -3,14 +3,13 @@ import { mount, shallow } from 'enzyme';
 import { Formik } from 'formik';
 import React from 'react';
 
-import { TranslatedString } from '../locale';
-import { FormField } from '../ui/form';
+import { getFormFields } from '../../address/formField.mock';
+import { TranslatedString } from '../../locale';
 
-import { getFormFields } from './formField.mock';
 import CheckboxGroupFormField from './CheckboxGroupFormField';
 import DynamicFormField from './DynamicFormField';
-import DynamicFormFieldType from './DynamicFormFieldType';
 import DynamicInput from './DynamicInput';
+import FormField from './FormField';
 
 describe('DynamicFormField Component', () => {
     const formFields = getFormFields();
@@ -19,6 +18,7 @@ describe('DynamicFormField Component', () => {
     it('renders legacy class name', () => {
         const component = shallow(
             <DynamicFormField
+                extraClass="dynamic-form-field--addressLine1"
                 field={ formFields.find(({ name }) => name === 'address1') as FormFieldType }
             />
         );
@@ -48,14 +48,13 @@ describe('DynamicFormField Component', () => {
         const component = mount(
             <Formik initialValues={ {} } onSubmit={ jest.fn() }>
                 <DynamicFormField
+                    autocomplete="address-line1"
                     field={ formFields.find(({ name }) => name === 'address1') as FormFieldType }
+                    inputId="addressLine1Input"
                     onChange={ onChange }
                 />
             </Formik>
         );
-
-        expect(component.find('.dynamic-form-field').prop('className'))
-            .toContain('dynamic-form-field--addressLine1');
 
         expect(component.find(DynamicInput).props())
             .toEqual(expect.objectContaining({
@@ -68,8 +67,10 @@ describe('DynamicFormField Component', () => {
         const component = mount(
             <Formik initialValues={ {} } onSubmit={ jest.fn() }>
                 <DynamicFormField
-                    field={ formFields.find(({ name }) => name === 'field_27') as FormFieldType }
-                    fieldType={ DynamicFormFieldType.checkbox }
+                    field={ {
+                        ...formFields.find(({ name }) => name === 'field_27') as FormFieldType,
+                        fieldType: 'checkbox',
+                    } }
                 />
             </Formik>
         );
@@ -82,6 +83,7 @@ describe('DynamicFormField Component', () => {
             <Formik initialValues={ {} } onSubmit={ jest.fn() }>
                 <DynamicFormField
                     field={ formFields.find(({ name }) => name === 'address1') as FormFieldType }
+                    label={ <TranslatedString id="address.address_line_1_label" /> }
                 />
             </Formik>
         );

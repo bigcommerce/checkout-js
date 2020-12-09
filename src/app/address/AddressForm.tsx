@@ -5,13 +5,12 @@ import React, { createRef, Component, ReactNode, RefObject } from 'react';
 
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { AutocompleteItem } from '../ui/autocomplete';
-import { CheckboxFormField, Fieldset } from '../ui/form';
+import { CheckboxFormField, DynamicFormField, DynamicFormFieldType, Fieldset } from '../ui/form';
 
+import { AddressKeyMap } from './address';
+import { getAddressFormFieldInputId, getAddressFormFieldLegacyName } from './getAddressFormFieldInputId';
 import { mapToAddress, GoogleAutocompleteFormField } from './googleAutocomplete';
 import './AddressForm.scss';
-import AddressFormField from './AddressFormField';
-import { AddressKeyMap } from './DynamicFormField';
-import DynamicFormFieldType from './DynamicFormFieldType';
 
 export interface AddressFormProps {
     fieldName?: string;
@@ -26,6 +25,34 @@ export interface AddressFormProps {
     onChange?(fieldName: string, value: string | string[]): void;
     setFieldValue?(fieldName: string, value: string | string[]): void;
 }
+
+const LABEL: AddressKeyMap = {
+    address1: 'address.address_line_1_label',
+    address2: 'address.address_line_2_label',
+    city: 'address.city_label',
+    company: 'address.company_name_label',
+    countryCode: 'address.country_label',
+    firstName: 'address.first_name_label',
+    lastName: 'address.last_name_label',
+    phone: 'address.phone_number_label',
+    postalCode: 'address.postal_code_label',
+    stateOrProvince: 'address.state_label',
+    stateOrProvinceCode: 'address.state_label',
+};
+
+const AUTOCOMPLETE: AddressKeyMap = {
+    address1: 'address-line1',
+    address2: 'address-line2',
+    city: 'address-level2',
+    company: 'organization',
+    countryCode: 'country',
+    firstName: 'given-name',
+    lastName: 'family-name',
+    phone: 'tel',
+    postalCode: 'postal-code',
+    stateOrProvince: 'address-level1',
+    stateOrProvinceCode: 'address-level1',
+};
 
 const PLACEHOLDER: AddressKeyMap = {
     countryCode: 'address.select_country_action',
@@ -88,10 +115,14 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                         }
 
                         return (
-                            <AddressFormField
+                            <DynamicFormField
+                                autocomplete={ AUTOCOMPLETE[field.name] }
+                                extraClass={ `dynamic-form-field--${getAddressFormFieldLegacyName(addressFieldName)}` }
                                 field={ field }
+                                inputId={ getAddressFormFieldInputId(addressFieldName) }
                                 // stateOrProvince can sometimes be a dropdown or input, so relying on id is not sufficient
                                 key={ `${field.id}-${field.name}` }
+                                label={ field.custom ? field.label : <TranslatedString id={ LABEL[field.name] } /> }
                                 onChange={ this.handleDynamicFormFieldChange(addressFieldName) }
                                 parentFieldName={ field.custom ?
                                     (fieldName ? `${fieldName}.customFields` : 'customFields') :

@@ -3,10 +3,10 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { DynamicFormField } from '../address';
 import { getFormFields } from '../address/formField.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext } from '../locale';
+import { DynamicFormField } from '../ui/form';
 
 import RemoteShippingAddress, { RemoteShippingAddressProps } from './RemoteShippingAddress';
 

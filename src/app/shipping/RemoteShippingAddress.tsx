@@ -2,8 +2,7 @@ import { CheckoutSelectors, FormField, ShippingInitializeOptions, ShippingReques
 import { noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
 
-import { AddressFormField } from '../address/';
-import { Fieldset } from '../ui/form';
+import { DynamicFormField, Fieldset } from '../ui/form';
 
 export interface RemoteShippingAddressProps {
     containerId: string;
@@ -61,7 +60,7 @@ class RemoteShippingAddress extends PureComponent<RemoteShippingAddressProps> {
                 <Fieldset>
                 {
                     formFields.filter(({ custom }) => custom).map(field => (
-                        <AddressFormField
+                        <DynamicFormField
                             field={ field }
                             key={ `${field.id}-${field.name}` }
                             onChange={ this.handleFieldValueChange(field.name) }

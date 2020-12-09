@@ -1,23 +1,21 @@
-import { createLanguageService, LanguageService } from '@bigcommerce/checkout-sdk';
 import { ObjectSchema, ValidationError } from 'yup';
 
+import { getFormFields } from '../address/formField.mock';
 import { getShippingAddress } from '../shipping/shipping-addresses.mock';
 
-import { getFormFields } from './formField.mock';
-import getAddressValidationSchema from './getAddressValidationSchema';
-import { AddressFormValues } from './mapAddressToFormValues';
+import { TranslateValidationErrorFunction } from './getCustomFormFieldsValidationSchema';
+import { default as getFormFieldsValidationSchema, FormFieldValues } from './getFormFieldsValidationSchema';
 
-describe('getAddressValidationSchema', () => {
+describe('getFormFielsValidationSchema', () => {
     const formFields = getFormFields();
-    let language: LanguageService;
+    let translate: TranslateValidationErrorFunction;
 
     beforeEach(() => {
-        language = createLanguageService();
-        jest.spyOn(language, 'translate').mockImplementation(id => id);
+        translate = jest.fn();
     });
 
     it('resolves for a valid address', async () => {
-        const schema = getAddressValidationSchema({ formFields, language });
+        const schema = getFormFieldsValidationSchema({ formFields, translate });
         const spy = jest.fn();
 
         await schema.validate(getShippingAddress()).then(spy);
@@ -25,22 +23,43 @@ describe('getAddressValidationSchema', () => {
         expect(spy).toHaveBeenCalled();
     });
 
-    it('throws if missing required field with translated error', async () => {
-        const schema = getAddressValidationSchema({ formFields, language });
+    it('uses provided translation key when a required field is missing', async () => {
+        const schema = getFormFieldsValidationSchema({
+            formFields,
+            translate,
+        });
 
         const errors = await schema.validate({
             ...getShippingAddress(),
             firstName: undefined,
         }).catch((error: ValidationError) => error.message);
 
-        expect(errors).toEqual('address.first_name_required_error');
+        expect(errors).toEqual('firstName is a required field');
+    });
+
+    it('throws if missing required field with translated error', async () => {
+        const schema = getFormFieldsValidationSchema({ formFields, translate });
+
+        const errors = await schema.validate({
+            ...getShippingAddress(),
+            firstName: undefined,
+        }).catch((error: ValidationError) => error.message);
+
+        expect(translate)
+            .toHaveBeenCalledWith('required', {
+                label: 'First Name',
+                name: 'firstName',
+            });
+
+        expect(errors)
+            .toEqual('firstName is a required field');
     });
 
     describe('when custom integer field is present', () => {
-        let schema: ObjectSchema<Partial<AddressFormValues>>;
+        let schema: ObjectSchema<Partial<FormFieldValues>>;
 
         beforeEach(() => {
-            schema = getAddressValidationSchema({ formFields: [
+            schema = getFormFieldsValidationSchema({ formFields: [
                 ...formFields,
                 {
                     custom: true,
@@ -52,7 +71,7 @@ describe('getAddressValidationSchema', () => {
                     required: false,
                     type: 'integer',
                 } as any,
-            ], language });
+            ], translate });
         });
 
         it('throws if min validation fails', async () => {
@@ -63,7 +82,7 @@ describe('getAddressValidationSchema', () => {
                 },
             }).catch((error: ValidationError) => error.message);
 
-            expect(errors).toEqual('address.custom_min_error');
+            expect(errors).toEqual('customFields.field_100 must be greater than or equal to 3');
         });
 
         it('throws if max validation fails', async () => {
@@ -74,7 +93,7 @@ describe('getAddressValidationSchema', () => {
                 },
             }).catch((error: ValidationError) => error.message);
 
-            expect(errors).toEqual('address.custom_max_error');
+            expect(errors).toEqual('customFields.field_100 must be less than or equal to 5');
         });
 
         it('resolves if min/max validation pass', async () => {

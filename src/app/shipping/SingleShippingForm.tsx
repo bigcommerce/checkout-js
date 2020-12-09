@@ -4,7 +4,8 @@ import { debounce, noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
 import { lazy, object } from 'yup';
 
-import { getAddressCustomFieldsValidationSchema, getAddressValidationSchema, isEqualAddress, mapAddressFromFormValues, mapAddressToFormValues, AddressFormValues } from '../address';
+import { getAddressFormFieldsValidationSchema, getTranslateAddressError, isEqualAddress, mapAddressFromFormValues, mapAddressToFormValues, AddressFormValues } from '../address';
+import { getCustomFormFieldsValidationSchema } from '../formFields';
 import { withLanguage, WithLanguageProps } from '../locale';
 import { Fieldset, Form, FormContext } from '../ui/form';
 
@@ -301,7 +302,7 @@ export default withLanguage(withFormik<SingleShippingFormProps & WithLanguagePro
         getFields,
         language,
     }) => (
-        !!shippingAddress && getAddressValidationSchema({
+        !!shippingAddress && getAddressFormFieldsValidationSchema({
             language,
             formFields: getFields(shippingAddress.countryCode),
         }).isValidSync(shippingAddress)
@@ -314,15 +315,15 @@ export default withLanguage(withFormik<SingleShippingFormProps & WithLanguagePro
     }: SingleShippingFormProps & WithLanguageProps) => methodId ?
         object({
             shippingAddress: lazy<Partial<AddressFormValues>>(formValues =>
-                getAddressCustomFieldsValidationSchema({
-                    language,
+                getCustomFormFieldsValidationSchema({
+                    translate: getTranslateAddressError(language),
                     formFields: getFields(formValues && formValues.countryCode),
                 })
             ),
         }) :
         object({
             shippingAddress: lazy<Partial<AddressFormValues>>(formValues =>
-                getAddressValidationSchema({
+                getAddressFormFieldsValidationSchema({
                     language,
                     shouldValidateSafeInput,
                     formFields: getFields(formValues && formValues.countryCode),

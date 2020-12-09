@@ -1,6 +1,6 @@
 import React, { memo, useCallback, FunctionComponent, MouseEvent } from 'react';
 
-import { TranslatedString } from '../locale';
+import { TranslatedString } from '../../locale';
 
 import './MultiCheckboxControl.scss';
 

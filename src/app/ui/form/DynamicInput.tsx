@@ -3,10 +3,14 @@ import { isDate, noop } from 'lodash';
 import React, { memo, useCallback, FunctionComponent } from 'react';
 import ReactDatePicker from 'react-datepicker';
 
-import { withDate, WithDateProps } from '../locale';
-import { CheckboxInput, InputProps, RadioInput, TextArea, TextInput } from '../ui/form';
+import { withDate, WithDateProps } from '../../locale';
 
+import CheckboxInput from './CheckboxInput';
 import DynamicFormFieldType from './DynamicFormFieldType';
+import { InputProps } from './Input';
+import RadioInput from './RadioInput';
+import TextArea from './TextArea';
+import TextInput from './TextInput';
 
 export interface DynamicInputProps extends InputProps {
     id: string;

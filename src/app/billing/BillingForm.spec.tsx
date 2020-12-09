@@ -1,12 +1,13 @@
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
-import { AddressForm, AddressFormField, AddressSelect } from '../address';
+import { AddressForm, AddressSelect } from '../address';
 import { getAddressFormFieldsWithCustomRequired, getFormFields } from '../address/formField.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 import { getCountries } from '../geography/countries.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { DynamicFormField } from '../ui/form';
 
 import { getBillingAddress } from './billingAddresses.mock';
 import BillingForm, { BillingFormProps } from './BillingForm';
@@ -36,6 +37,7 @@ describe('BillingForm Component', () => {
             onUnhandledError: jest.fn(),
             updateAddress: jest.fn(),
             onSubmit: jest.fn(),
+            shouldValidateSafeInput: true,
         };
     });
 
@@ -65,7 +67,7 @@ describe('BillingForm Component', () => {
 
         expect(component.find(StaticBillingAddress).length).toEqual(1);
         expect(component.find(AddressSelect).length).toEqual(0);
-        expect(component.find(AddressFormField).length).toEqual(4);
+        expect(component.find(DynamicFormField).length).toEqual(4);
     });
 
     it('renders addresses', () => {
