@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.105.0](https://github.com/bigcommerce/checkout-js/compare/v1.104.1...v1.105.0) (2020-12-15)
+
+
+### Features
+
+* **payment:** INT-3538 Added translation method on  credit debit car title on adyenv2d ([e07cc65](https://github.com/bigcommerce/checkout-js/commit/e07cc650b0158123af6a18bf8c3140e9b7516d7b))
+* **payment:** PAYPAL-848 Bump checkout-sdk ([23c7d26](https://github.com/bigcommerce/checkout-js/commit/23c7d2623ca02c2937ed4dda3d6de2351abf9f41))
+
+
+### Code Refactoring
+
+* **common:** CHECKOUT-4941 Create FormField module ([5532d5c](https://github.com/bigcommerce/checkout-js/commit/5532d5c4a56ca04fe9a96efa6fd9af154ea3c4e2))
+
 ### [1.104.1](https://github.com/bigcommerce/checkout-js/compare/v1.104.0...v1.104.1) (2020-12-08)
 
 
