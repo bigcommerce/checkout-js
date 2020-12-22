@@ -184,9 +184,6 @@ describe('when using Stripe payment', () => {
                                 placeholder: '',
                                 containerId: 'stripe-cvc-component-field',
                             },
-                            zipCodeElementOptions: {
-                                containerId: 'stripe-postal-code-component-field',
-                            },
                         },
                     },
                 });

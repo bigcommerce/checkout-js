@@ -19,9 +19,6 @@ describe('StripeV3CustomCardForm', () => {
                 cardCvcElementOptions: {
                     containerId: 'stripe-cvc-component-field',
                 },
-                zipCodeElementOptions: {
-                    containerId: 'stripe-postal-code-component-field',
-                },
             },
         };
 
@@ -46,11 +43,5 @@ describe('StripeV3CustomCardForm', () => {
         const container = mount(<StripeV3CustomCardFormTest { ...defaultProps } />);
 
         expect(container.find('#stripe-cvc-component-field').length).toEqual(1);
-    });
-
-    it('renders stripeV3 postal code field', () => {
-        const container = mount(<StripeV3CustomCardFormTest { ...defaultProps } />);
-
-        expect(container.find('#stripe-postal-code-component-field').length).toEqual(1);
     });
 });
