@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.105.2](https://github.com/bigcommerce/checkout-js/compare/v1.105.1...v1.105.2) (2020-12-23)
+
+
+### Bug Fixes
+
+* **shipping:** CHECKOUT-5477 Check if multishipping is enabled once config is loaded ([d5ed8b7](https://github.com/bigcommerce/checkout-js/commit/d5ed8b733bd28a5221134306e556b960c3a384e4))
+
 ### [1.105.1](https://github.com/bigcommerce/checkout-js/compare/v1.105.0...v1.105.1) (2020-12-21)
 
 ## [1.105.0](https://github.com/bigcommerce/checkout-js/compare/v1.104.1...v1.105.0) (2020-12-15)
