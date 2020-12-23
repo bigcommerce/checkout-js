@@ -62,7 +62,18 @@ describe('Checkout', () => {
         };
 
         jest.spyOn(checkoutService, 'loadCheckout')
-            .mockResolvedValue(checkoutState);
+            .mockImplementation(() => new Promise(resolve => {
+                jest.spyOn(checkoutState.data, 'getConfig')
+                    .mockReturnValue({
+                        ...getStoreConfig(),
+                        checkoutSettings: {
+                            ...getStoreConfig().checkoutSettings,
+                            hasMultiShippingEnabled: true,
+                        },
+                    });
+
+                resolve(checkoutState);
+            }));
 
         jest.spyOn(checkoutService, 'getState')
             .mockImplementation(() => checkoutState);
@@ -486,15 +497,6 @@ describe('Checkout', () => {
                     omit(getConsignment(), 'selectedShippingOption'),
                 ]);
 
-            jest.spyOn(checkoutState.data, 'getConfig')
-                .mockReturnValue({
-                    ...getStoreConfig(),
-                    checkoutSettings: {
-                        ...getStoreConfig().checkoutSettings,
-                        hasMultiShippingEnabled: true,
-                    },
-                });
-
             container = mount(<CheckoutTest { ...defaultProps } />);
 
             (container.find(CheckoutStep) as ReactWrapper<CheckoutStepProps>)
@@ -517,14 +519,19 @@ describe('Checkout', () => {
                     omit(getConsignment(), 'selectedShippingOption'),
                 ]);
 
-            jest.spyOn(checkoutState.data, 'getConfig')
-                .mockReturnValue({
-                    ...getStoreConfig(),
-                    checkoutSettings: {
-                        ...getStoreConfig().checkoutSettings,
-                        hasMultiShippingEnabled: false,
-                    },
-                });
+            jest.spyOn(checkoutService, 'loadCheckout')
+                .mockImplementation(() => new Promise(resolve => {
+                    jest.spyOn(checkoutState.data, 'getConfig')
+                        .mockReturnValue({
+                            ...getStoreConfig(),
+                            checkoutSettings: {
+                                ...getStoreConfig().checkoutSettings,
+                                hasMultiShippingEnabled: false,
+                            },
+                        });
+
+                    resolve(checkoutState);
+                }));
 
             container = mount(<CheckoutTest { ...defaultProps } />);
 
