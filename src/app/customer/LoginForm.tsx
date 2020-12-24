@@ -17,7 +17,6 @@ import PasswordField from './PasswordField';
 
 export interface LoginFormProps {
     canCancel?: boolean;
-    createAccountUrl: string;
     email?: string;
     forgotPasswordUrl: string;
     isSignInEmailEnabled?: boolean;
@@ -28,6 +27,7 @@ export interface LoginFormProps {
     viewType?: Omit<CustomerViewType, 'guest'>;
     passwordlessLogin?: boolean;
     onCancel?(): void;
+    onCreateAccount?(): void;
     onChangeEmail?(email: string): void;
     onSignIn(data: LoginFormValues): void;
     onSendLoginEmail?(): void;
@@ -41,7 +41,6 @@ export interface LoginFormValues {
 
 const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikProps<LoginFormValues>> = ({
     canCancel,
-    createAccountUrl,
     forgotPasswordUrl,
     email,
     isSignInEmailEnabled,
@@ -50,6 +49,7 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
     onCancel = noop,
     onChangeEmail,
     onContinueAsGuest,
+    onCreateAccount = noop,
     onSendLoginEmail = noop,
     signInError,
     viewType = CustomerViewType.Login,
@@ -99,9 +99,9 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
                     </Alert> }
 
                 { viewType === CustomerViewType.Login && <p>
-                    <TranslatedHtml
-                        data={ { url: createAccountUrl } }
+                    <TranslatedLink
                         id="customer.create_account_to_continue_text"
+                        onClick={ onCreateAccount }
                     />
                 </p> }
 
@@ -115,9 +115,9 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
 
                 { viewType === CustomerViewType.EnforcedLogin &&
                     <Alert type={ AlertType.Error }>
-                        <TranslatedHtml
-                            data={ { url: createAccountUrl } }
+                        <TranslatedLink
                             id="customer.guest_temporary_disabled"
+                            onClick={ onCreateAccount }
                         />
                     </Alert> }
 

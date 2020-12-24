@@ -2,18 +2,12 @@ import { withFormik, FormikProps } from 'formik';
 import React, { memo, FunctionComponent } from 'react';
 import { object, ref, string } from 'yup';
 
+import { PasswordRequirements } from '../customer';
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form, Legend } from '../ui/form';
 
 import SignUpPasswordField from './SignUpPasswordField';
-
-export interface PasswordRequirements {
-    minLength: number;
-    alpha: RegExp;
-    numeric: RegExp;
-    description?: string;
-}
 
 export interface SignUpFormProps {
     isSigningUp?: boolean;

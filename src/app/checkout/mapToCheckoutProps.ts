@@ -16,9 +16,12 @@ export default function mapToCheckoutProps(
     const {
         checkoutSettings: {
             guestCheckoutEnabled: isGuestEnabled = false,
-            hasMultiShippingEnabled = false,
+            features = {},
         } = {},
-        links: { loginLink: loginUrl = '' } = {},
+        links: {
+            loginLink: loginUrl = '',
+            createAccountLink: createAccountUrl = '',
+        } = {},
     } = data.getConfig() || {};
 
     const subscribeToConsignmentsSelector = createSelector(
@@ -35,11 +38,12 @@ export default function mapToCheckoutProps(
         consignments: data.getConsignments(),
         hasCartChanged: submitOrderError && submitOrderError.type === 'cart_changed', // TODO: Need to clear the error once it's displayed
         isGuestEnabled,
-        hasMultiShippingEnabled,
         isLoadingCheckout: statuses.isLoadingCheckout(),
         isPending: statuses.isPending(),
         loadCheckout: checkoutService.loadCheckout,
         loginUrl,
+        createAccountUrl,
+        canCreateAccountInCheckout: features['CHECKOUT-4941.account_creation_in_checkout'],
         promotions,
         subscribeToConsignments: subscribeToConsignmentsSelector({ checkoutService, checkoutState }),
         steps: data.getCheckout() ? getCheckoutStepStatuses(checkoutState) : EMPTY_ARRAY,

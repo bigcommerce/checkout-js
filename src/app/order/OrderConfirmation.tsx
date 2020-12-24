@@ -6,6 +6,7 @@ import React, { lazy, Component, Fragment, ReactNode } from 'react';
 import { withCheckout, CheckoutContextProps } from '../checkout';
 import { ErrorLogger, ErrorModal } from '../common/error';
 import { retry } from '../common/utility';
+import { getPasswordRequirementsFromConfig } from '../customer';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { CreatedCustomer, GuestSignUpForm, SignedUpSuccessAlert, SignUpFormValues } from '../guestSignup';
 import { AccountCreationFailedError, AccountCreationRequirementsError } from '../guestSignup/errors';
@@ -169,7 +170,7 @@ class OrderConfirmation extends Component<
             { customerCanBeCreated && !hasSignedUp && <GuestSignUpForm
                 isSigningUp={ isSigningUp }
                 onSignUp={ this.handleSignUp }
-                passwordRequirements={ this.getPasswordRequirements(shopperConfig) }
+                passwordRequirements={ getPasswordRequirementsFromConfig(shopperConfig) }
             /> }
 
             { hasSignedUp && <SignedUpSuccessAlert /> }
@@ -283,19 +284,6 @@ class OrderConfirmation extends Component<
             this.embeddedMessenger.postError(error);
         }
     };
-
-    private getPasswordRequirements(config: ShopperConfig) {
-        const allSlashes = new RegExp('/', 'g');
-        const { passwordRequirements } = config;
-        const { minlength, error, alpha, numeric } = passwordRequirements;
-
-        return {
-            minLength: minlength,
-            description: error,
-            alpha: new RegExp(alpha.replace(allSlashes, '')),
-            numeric: new RegExp(numeric.replace(allSlashes, '')),
-        };
-    }
 }
 
 export function mapToOrderConfirmationProps(

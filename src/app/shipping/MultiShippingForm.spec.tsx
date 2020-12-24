@@ -33,7 +33,7 @@ describe('MultiShippingForm Component', () => {
             },
             getFields: jest.fn(() => getAddressFormFields()),
             isGuest: false,
-            createAccountUrl: 'create-account',
+            onCreateAccount: jest.fn(),
             onSignIn: jest.fn(),
             addresses: getCustomer().addresses,
             shouldShowOrderComments: true,

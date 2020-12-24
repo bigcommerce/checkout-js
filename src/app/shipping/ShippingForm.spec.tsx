@@ -37,7 +37,7 @@ describe('ShippingForm Component', () => {
                 },
             },
             isGuest: false,
-            createAccountUrl: 'create-account',
+            onCreateAccount: jest.fn(),
             onSignIn: jest.fn(),
             assignItem: jest.fn(),
             addresses: getCustomer().addresses,

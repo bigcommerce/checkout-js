@@ -62,7 +62,18 @@ describe('Checkout', () => {
         };
 
         jest.spyOn(checkoutService, 'loadCheckout')
-            .mockResolvedValue(checkoutState);
+            .mockImplementation(() => new Promise(resolve => {
+                jest.spyOn(checkoutState.data, 'getConfig')
+                    .mockReturnValue({
+                        ...getStoreConfig(),
+                        checkoutSettings: {
+                            ...getStoreConfig().checkoutSettings,
+                            hasMultiShippingEnabled: true,
+                        },
+                    });
+
+                resolve(checkoutState);
+            }));
 
         jest.spyOn(checkoutService, 'getState')
             .mockImplementation(() => checkoutState);
@@ -363,6 +374,27 @@ describe('Checkout', () => {
                 .toEqual(true);
         });
 
+        it('navigates to next step when account is created', () => {
+            container.setProps({
+                steps: getCheckoutStepStatuses(checkoutState)
+                    .map(step => ({
+                        ...step,
+                        isActive: step.type === CheckoutStepType.Shipping ? true : false,
+                    })),
+            });
+
+            // tslint:disable-next-line:no-non-null-assertion
+            (container.find(Customer).at(0) as ReactWrapper<CustomerProps>)
+                .prop('onAccountCreated')!();
+
+            container.update();
+
+            const steps: ReactWrapper<CheckoutStepProps> = container.find(CheckoutStep);
+
+            expect(steps.findWhere(step => step.prop('type') === CheckoutStepType.Shipping).at(0).prop('isActive'))
+                .toEqual(true);
+        });
+
         it('navigates to next step when shopper continues as guest', () => {
             container.setProps({
                 steps: getCheckoutStepStatuses(checkoutState)
@@ -486,15 +518,6 @@ describe('Checkout', () => {
                     omit(getConsignment(), 'selectedShippingOption'),
                 ]);
 
-            jest.spyOn(checkoutState.data, 'getConfig')
-                .mockReturnValue({
-                    ...getStoreConfig(),
-                    checkoutSettings: {
-                        ...getStoreConfig().checkoutSettings,
-                        hasMultiShippingEnabled: true,
-                    },
-                });
-
             container = mount(<CheckoutTest { ...defaultProps } />);
 
             (container.find(CheckoutStep) as ReactWrapper<CheckoutStepProps>)
@@ -517,14 +540,19 @@ describe('Checkout', () => {
                     omit(getConsignment(), 'selectedShippingOption'),
                 ]);
 
-            jest.spyOn(checkoutState.data, 'getConfig')
-                .mockReturnValue({
-                    ...getStoreConfig(),
-                    checkoutSettings: {
-                        ...getStoreConfig().checkoutSettings,
-                        hasMultiShippingEnabled: false,
-                    },
-                });
+            jest.spyOn(checkoutService, 'loadCheckout')
+                .mockImplementation(() => new Promise(resolve => {
+                    jest.spyOn(checkoutState.data, 'getConfig')
+                        .mockReturnValue({
+                            ...getStoreConfig(),
+                            checkoutSettings: {
+                                ...getStoreConfig().checkoutSettings,
+                                hasMultiShippingEnabled: false,
+                            },
+                        });
+
+                    resolve(checkoutState);
+                }));
 
             container = mount(<CheckoutTest { ...defaultProps } />);
 

@@ -1,0 +1,23 @@
+@import "../ui/Base";
+
+.create-account-form {
+    display: flex;
+    flex-flow: row wrap;
+    margin-left: -1 * spacing("half");
+    margin-right: -1 * spacing("half");
+
+    .dynamic-form-field {
+        display: block;
+        flex: 1;
+        flex-basis: 100%;
+        max-width: 100%;
+        padding: 0 spacing("half");
+    }
+
+    .dynamic-form-field--firstName,
+    .dynamic-form-field--lastName {
+        @include breakpoint("small") {
+            flex-basis: 50%;
+        }
+    }
+}

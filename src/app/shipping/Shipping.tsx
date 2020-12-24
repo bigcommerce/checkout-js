@@ -19,6 +19,7 @@ import { SingleShippingFormValues } from './SingleShippingForm';
 export interface ShippingProps {
     cartHasChanged: boolean;
     isMultiShippingMode: boolean;
+    onCreateAccount(): void;
     onToggleMultiShipping(): void;
     onReady?(): void;
     onUnhandledError(error: Error): void;
@@ -32,7 +33,6 @@ export interface WithCheckoutShippingProps {
     consignments: Consignment[];
     countries: Country[];
     countriesWithAutocomplete: string[];
-    createAccountUrl: string;
     customer: Customer;
     customerMessage: string;
     googleMapsApiKey: string;
@@ -294,7 +294,6 @@ export function mapToShippingProps({
             hasMultiShippingEnabled,
             googleMapsApiKey,
         },
-        links,
     } = config;
 
     const methodId = getShippingMethodId(checkout);
@@ -328,7 +327,6 @@ export function mapToShippingProps({
         consignments,
         countries: getShippingCountries() || EMPTY_ARRAY,
         countriesWithAutocomplete,
-        createAccountUrl: links.createAccountLink,
         customer,
         customerMessage: checkout.customerMessage,
         deinitializeShippingMethod: checkoutService.deinitializeShipping,
