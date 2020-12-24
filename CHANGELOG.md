@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.106.0](https://github.com/bigcommerce/checkout-js/compare/v1.105.2...v1.106.0) (2020-12-24)
+
+
+### Features
+
+* **customer:** CHECKOUT-4941 Add CreateAccountForm ([5a93e3d](https://github.com/bigcommerce/checkout-js/commit/5a93e3ddef943f3301afc1dccd1b015833601221))
+* **payment:** PAYPAL-830 bump checkout-sdk version ([c9b5a0d](https://github.com/bigcommerce/checkout-js/commit/c9b5a0df5c03905c77f1c690e24de74cf015bf70))
+
 ### [1.105.2](https://github.com/bigcommerce/checkout-js/compare/v1.105.1...v1.105.2) (2020-12-23)
 
 
