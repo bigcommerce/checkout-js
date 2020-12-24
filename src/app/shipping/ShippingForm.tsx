@@ -13,7 +13,6 @@ export interface ShippingFormProps {
     consignments: Consignment[];
     countries: Country[];
     countriesWithAutocomplete: string[];
-    createAccountUrl: string;
     customerMessage: string;
     googleMapsApiKey?: string;
     isGuest: boolean;
@@ -30,6 +29,7 @@ export interface ShippingFormProps {
     deleteConsignments(): Promise<Address | undefined>;
     getFields(countryCode?: string): FormField[];
     initialize(options: ShippingInitializeOptions): Promise<CheckoutSelectors>;
+    onCreateAccount(): void;
     onMultiShippingSubmit(values: MultiShippingFormValues): void;
     onSignIn(): void;
     onSingleShippingSubmit(values: SingleShippingFormValues): void;
@@ -49,7 +49,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             consignments,
             countries,
             countriesWithAutocomplete,
-            createAccountUrl,
+            onCreateAccount,
             customerMessage,
             deinitialize,
             deleteConsignments,
@@ -81,11 +81,11 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 cart={ cart }
                 cartHasChanged={ cartHasChanged }
                 consignments={ consignments }
-                createAccountUrl={ createAccountUrl }
                 customerMessage={ customerMessage }
                 getFields={ getFields }
                 isGuest={ isGuest }
                 isLoading={ isLoading }
+                onCreateAccount={ onCreateAccount }
                 onSignIn={ onSignIn }
                 onSubmit={ onMultiShippingSubmit }
                 onUnhandledError={ onUnhandledError }

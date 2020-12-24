@@ -118,16 +118,13 @@ exports[`Customer when view type is "login" matches snapshot 1`] = `
         class="form-body"
       >
         <p>
-          <span>
-            Don’t have an account? 
-            <a
-              href="https://store-k1drp8k8.bcapp.dev/login.php?action=create_account"
-              target="_blank"
-            >
-              Create an account
-            </a>
-             to continue.
-          </span>
+          Don’t have an account? 
+          <a
+            href="#"
+          >
+            Create an account
+          </a>
+           to continue.
         </p>
         <div
           class="form-field"

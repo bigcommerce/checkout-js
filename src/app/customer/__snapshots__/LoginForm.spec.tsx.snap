@@ -20,16 +20,13 @@ exports[`LoginForm matches snapshot 1`] = `
         class="form-body"
       >
         <p>
-          <span>
-            Don’t have an account? 
-            <a
-              href="/create-account"
-              target="_blank"
-            >
-              Create an account
-            </a>
-             to continue.
-          </span>
+          Don’t have an account? 
+          <a
+            href="#"
+          >
+            Create an account
+          </a>
+           to continue.
         </p>
         <div
           class="form-field"

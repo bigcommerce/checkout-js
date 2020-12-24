@@ -21,13 +21,17 @@ export interface FormFieldsValidationSchemaOptions {
 }
 
 export interface CustomFormFieldValues {
-    customFields: { [id: string]: any };
+    customFields: CustomFormFields;
+}
+
+export interface CustomFormFields {
+    [id: string]: string | string[] | number;
 }
 
 export default memoize(function getCustomFormFieldsValidationSchema({
     formFields,
     translate = () => undefined,
-}: FormFieldsValidationSchemaOptions): ObjectSchema<Partial<CustomFormFieldValues>> {
+}: FormFieldsValidationSchemaOptions): ObjectSchema<CustomFormFieldValues> {
     return object({
         customFields: object(
             formFields
