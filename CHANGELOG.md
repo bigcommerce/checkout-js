@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.107.0](https://github.com/bigcommerce/checkout-js/compare/v1.106.0...v1.107.0) (2021-01-06)
+
+
+### Features
+
+* **payment:** INT-3637 removed Zip code from individual fields form on StripeV3 ([193823a](https://github.com/bigcommerce/checkout-js/commit/193823aa80964557eaf0f6209e97b229cce19aa8))
+
 ## [1.106.0](https://github.com/bigcommerce/checkout-js/compare/v1.105.2...v1.106.0) (2020-12-24)
 
 
