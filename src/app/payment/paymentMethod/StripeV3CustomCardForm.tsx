@@ -16,9 +16,6 @@ export interface StripeV3CustomCardFormProps {
         cardCvcElementOptions: {
             containerId: string;
         };
-        zipCodeElementOptions?: {
-            containerId: string;
-        };
     };
 }
 
@@ -86,20 +83,6 @@ const StripeV3CustomCardForm: React.FunctionComponent<StripeV3CustomCardFormProp
                 <IconLock />
             </>
         </div>
-        { options.zipCodeElementOptions && <div className="form-field form-field--stripe-postalCode">
-            <label className="form-label optimizedCheckout-form-label" htmlFor={ options.zipCodeElementOptions.containerId }>
-                <TranslatedString id="payment.postal_code_label" />
-            </label>
-            <input
-                className={ classNames(
-                    'form-input',
-                    'optimizedCheckout-form-input',
-                    'widget-input--stripev3'
-                ) }
-                data-cse="stripe-postal-code"
-                id={ options.zipCodeElementOptions.containerId }
-            />
-        </div> }
     </div>
 );
 
