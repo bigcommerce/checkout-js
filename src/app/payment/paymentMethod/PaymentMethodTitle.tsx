@@ -118,7 +118,7 @@ function getPaymentMethodTitle(
                 titleText: (method.config.displayName === 'Credit Card' ? language.translate('payment.adyen_credit_debit_card_text') : method.config.displayName) || '',
             },
             [PaymentMethodId.Mollie]: {
-                logoUrl: method.method === 'creditcard' ? '' : cdnPath(`/img/payment-providers/${method.method}.svg`),
+                logoUrl: method.method === 'credit_card' ? '' : cdnPath(`/img/payment-providers/${method.method}.svg`),
                 titleText: methodName,
             },
             [PaymentMethodId.Checkoutcom]: {

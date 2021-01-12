@@ -29,7 +29,7 @@ describe('MolliePaymentMethod', () => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
-        method = {...defaultProps.method, id: 'mollie', gateway: 'mollie', method: 'multi-options'};
+        method = {...defaultProps.method, id: 'mollie', gateway: 'mollie', method: 'belfius'};
 
         jest.spyOn(checkoutState.data, 'getConfig')
             .mockReturnValue(getStoreConfig());
@@ -99,6 +99,7 @@ describe('MolliePaymentMethod', () => {
                             color: '#D14343',
                         },
                     },
+                    containerId: 'mollie-belfius',
                 },
             }));
     });
