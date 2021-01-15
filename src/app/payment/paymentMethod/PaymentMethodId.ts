@@ -18,6 +18,7 @@ enum PaymentMethodId {
     Checkoutcom = 'checkoutcom',
     CheckoutcomGooglePay = 'googlepaycheckoutcom',
     Converge = 'converge',
+    CybersourceV2GooglePay = 'googlepaycybersourcev2',
     Klarna = 'klarna',
     Laybuy = 'laybuy',
     Masterpass = 'masterpass',

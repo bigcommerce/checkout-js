@@ -16,6 +16,7 @@ export const SUPPORTED_METHODS: string[] = [
     'googlepayauthorizenet',
     'googlepaybraintree',
     'googlepaycheckoutcom',
+    'googlepaycybersourcev2',
     'googlepaystripe',
 ];
 
