@@ -69,4 +69,21 @@ describe('OrderSummaryItems', () => {
                 .not.toContain('product-price--beforeDiscount');
         });
     });
+
+    describe('when description is present', () => {
+        beforeEach(() => {
+            orderSummaryItem = shallow(<OrderSummaryItem
+                amount={ 10 }
+                description="Description"
+                id="foo"
+                name="Product"
+                quantity={ 2 }
+            />);
+        });
+
+        it('does render description', () => {
+            expect(orderSummaryItem.find('[data-test="cart-item-product-description"]').text())
+                .toEqual('Description');
+        });
+    });
 });
