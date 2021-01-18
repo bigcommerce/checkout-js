@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.109.0](https://github.com/bigcommerce/checkout-js/compare/v1.108.2...v1.109.0) (2021-01-18)
+
+
+### Features
+
+* **cart:** CHECKOUT-2322 Show gift wrapping cost ([2e8fcb9](https://github.com/bigcommerce/checkout-js/commit/2e8fcb90cfc5d1a82970bb23fcf53a02978374d6))
+
 ### [1.108.2](https://github.com/bigcommerce/checkout-js/compare/v1.108.1...v1.108.2) (2021-01-16)
 
 
