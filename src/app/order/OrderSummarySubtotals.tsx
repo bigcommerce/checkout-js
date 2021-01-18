@@ -11,6 +11,7 @@ export interface OrderSummarySubtotalsProps {
     giftCertificates?: GiftCertificate[];
     discountAmount?: number;
     taxes?: Tax[];
+    giftWrappingAmount?: number;
     shippingAmount?: number;
     handlingAmount?: number;
     storeCreditAmount?: number;
@@ -23,6 +24,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
     discountAmount,
     giftCertificates,
     taxes,
+    giftWrappingAmount,
     shippingAmount,
     subtotalAmount,
     handlingAmount,
@@ -69,6 +71,12 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                     testId="cart-gift-certificate"
                 />
         ) }
+
+        { !!giftWrappingAmount && <OrderSummaryPrice
+            amount={ giftWrappingAmount }
+            label={ <TranslatedString id="cart.gift_wrapping_text" /> }
+            testId="cart-gift-wrapping"
+        /> }
 
         <OrderSummaryPrice
             amount={ shippingAmount }

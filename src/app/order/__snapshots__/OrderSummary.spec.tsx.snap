@@ -104,6 +104,7 @@ exports[`OrderSummary when shopper has same currency as store renders order summ
           },
         ]
       }
+      giftWrappingAmount={0}
       handlingAmount={8}
       shippingAmount={20}
       storeCreditAmount={0}

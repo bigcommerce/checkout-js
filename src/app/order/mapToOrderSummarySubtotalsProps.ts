@@ -11,12 +11,14 @@ export default function mapToOrderSummarySubtotalsProps({
     shippingCostBeforeDiscount,
     payments,
     handlingCostTotal,
+    giftWrappingCostTotal,
     coupons,
     taxes,
 }: Order): OrderSummarySubtotalsProps {
     return {
         subtotalAmount: baseAmount,
         shippingAmount: shippingCostBeforeDiscount,
+        giftWrappingAmount: giftWrappingCostTotal,
         discountAmount,
         storeCreditAmount: getStoreCreditAmount(payments),
         handlingAmount: handlingCostTotal,

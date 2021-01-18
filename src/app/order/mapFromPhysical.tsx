@@ -1,25 +1,9 @@
 import { PhysicalItem } from '@bigcommerce/checkout-sdk';
-import React from 'react';
-
-import { ShopperCurrency } from '../currency';
 
 import getOrderSummaryItemImage from './getOrderSummaryItemImage';
 import { OrderSummaryItemProps } from './OrderSummaryItem';
 
 function mapFromPhysical(item: PhysicalItem): OrderSummaryItemProps {
-    let description;
-
-    if (item.giftWrapping) {
-        description = (
-            <>
-                { item.giftWrapping.name }
-                { ' (' }
-                <ShopperCurrency amount={ item.giftWrapping.amount } />
-                { ')' }
-            </>
-        );
-    }
-
     return {
         id: item.id,
         quantity: item.quantity,
@@ -27,7 +11,7 @@ function mapFromPhysical(item: PhysicalItem): OrderSummaryItemProps {
         amountAfterDiscount: item.extendedSalePrice,
         name: item.name,
         image: getOrderSummaryItemImage(item),
-        description,
+        description: item.giftWrapping ? item.giftWrapping.name : undefined,
         productOptions: (item.options || []).map(option => ({
             testId: 'cart-item-product-option',
             content: `${option.name} ${option.value}`,
