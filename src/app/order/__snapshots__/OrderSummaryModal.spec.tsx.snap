@@ -127,6 +127,7 @@ exports[`OrderSummaryModal renders order summary 1`] = `
           },
         ]
       }
+      giftWrappingAmount={0}
       handlingAmount={8}
       shippingAmount={20}
       storeCreditAmount={0}

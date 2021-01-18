@@ -34,6 +34,7 @@ const OrderSummaryDrawer: FunctionComponent<OrderSummaryDrawerProps & OrderSumma
     shippingAmount,
     shopperCurrency,
     storeCreditAmount,
+    giftWrappingAmount,
     storeCurrency,
     subtotalAmount,
     taxes,
@@ -46,6 +47,7 @@ const OrderSummaryDrawer: FunctionComponent<OrderSummaryDrawerProps & OrderSumma
             coupons={ coupons }
             discountAmount={ discountAmount }
             giftCertificates={ giftCertificates }
+            giftWrappingAmount={  giftWrappingAmount }
             handlingAmount={ handlingAmount }
             headerLink={ headerLink }
             lineItems={ lineItems }
@@ -69,6 +71,7 @@ const OrderSummaryDrawer: FunctionComponent<OrderSummaryDrawerProps & OrderSumma
         lineItems,
         onRemovedCoupon,
         onRemovedGiftCertificate,
+        giftWrappingAmount,
         shippingAmount,
         shopperCurrency,
         storeCreditAmount,
