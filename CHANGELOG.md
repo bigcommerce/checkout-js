@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.110.0](https://github.com/bigcommerce/checkout-js/compare/v1.109.0...v1.110.0) (2021-01-20)
+
+
+### Features
+
+* **payment:** ADYEN-8  bump checkout-sdk ([7fa6db3](https://github.com/bigcommerce/checkout-js/commit/7fa6db33488cb791ea87dc59af42bf222cf23f3e))
+
 ## [1.109.0](https://github.com/bigcommerce/checkout-js/compare/v1.108.2...v1.109.0) (2021-01-18)
 
 
