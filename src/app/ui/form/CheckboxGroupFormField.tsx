@@ -29,7 +29,6 @@ const MultiCheckboxFormField: FunctionComponent<MultiCheckboxFormFieldProps> = (
     name,
     onChange = noop,
     options,
-    pop,
     push,
     remove,
 }) => {
@@ -51,13 +50,13 @@ const MultiCheckboxFormField: FunctionComponent<MultiCheckboxFormFieldProps> = (
     const handleSelectNone = useCallback(() => {
         const checkedValues: string[] = getIn(values, name) || [];
 
-        checkedValues.forEach(() => pop());
+        checkedValues.forEach(() => remove(0));
 
         onChange(getIn(values, name));
     }, [
         name,
         onChange,
-        pop,
+        remove,
         values,
     ]);
 
