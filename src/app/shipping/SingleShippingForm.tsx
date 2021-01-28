@@ -29,7 +29,6 @@ export interface SingleShippingFormProps {
     methodId?: string;
     shippingAddress?: Address;
     shouldShowSaveAddress?: boolean;
-    shouldValidateSafeInput: boolean;
     shouldShowOrderComments: boolean;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -311,7 +310,6 @@ export default withLanguage(withFormik<SingleShippingFormProps & WithLanguagePro
         language,
         getFields,
         methodId,
-        shouldValidateSafeInput,
     }: SingleShippingFormProps & WithLanguageProps) => methodId ?
         object({
             shippingAddress: lazy<Partial<AddressFormValues>>(formValues =>
@@ -325,7 +323,6 @@ export default withLanguage(withFormik<SingleShippingFormProps & WithLanguagePro
             shippingAddress: lazy<Partial<AddressFormValues>>(formValues =>
                 getAddressFormFieldsValidationSchema({
                     language,
-                    shouldValidateSafeInput,
                     formFields: getFields(formValues && formValues.countryCode),
                 })
             ),

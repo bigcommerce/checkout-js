@@ -25,7 +25,6 @@ export interface BillingFormProps {
     isUpdating: boolean;
     methodId?: string;
     shouldShowOrderComments: boolean;
-    shouldValidateSafeInput: boolean;
     getFields(countryCode?: string): FormField[];
     onSubmit(values: BillingFormValues): void;
     onUnhandledError(error: Error): void;
@@ -157,12 +156,10 @@ export default withLanguage(withFormik<BillingFormProps & WithLanguageProps, Bil
     isInitialValid: ({
         billingAddress,
         getFields,
-        shouldValidateSafeInput,
         language,
     }) => (
         !!billingAddress && getAddressFormFieldsValidationSchema({
             language,
-            shouldValidateSafeInput,
             formFields: getFields(billingAddress.countryCode),
         }).isValidSync(billingAddress)
     ),
@@ -170,7 +167,6 @@ export default withLanguage(withFormik<BillingFormProps & WithLanguageProps, Bil
         language,
         getFields,
         methodId,
-        shouldValidateSafeInput,
     }: BillingFormProps & WithLanguageProps) => methodId === 'amazonpay' ?
         (lazy<Partial<AddressFormValues>>(values => getCustomFormFieldsValidationSchema({
             translate: getTranslateAddressError(language),
@@ -178,7 +174,6 @@ export default withLanguage(withFormik<BillingFormProps & WithLanguageProps, Bil
         }))) :
         (lazy<Partial<AddressFormValues>>(values => getAddressFormFieldsValidationSchema({
             language,
-            shouldValidateSafeInput,
             formFields: getFields(values && values.countryCode),
         }))),
     enableReinitialize: true,

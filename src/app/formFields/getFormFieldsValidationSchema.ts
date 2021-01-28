@@ -12,7 +12,6 @@ export interface FormFieldValues {
 export default memoize(function getFormFieldsValidationSchema({
     formFields,
     translate = () => undefined,
-    shouldValidateSafeInput,
 }: FormFieldsValidationSchemaOptions): ObjectSchema<FormFieldValues> {
     return object({
         ...formFields
@@ -24,12 +23,10 @@ export default memoize(function getFormFieldsValidationSchema({
                     schema[name] = schema[name].required(translate('required', { label, name }));
                 }
 
-                if (shouldValidateSafeInput) {
-                    schema[name] = schema[name].matches(
-                        WHITELIST_REGEXP,
-                        translate('invalid', {  name, label })
-                    );
-                }
+                schema[name] = schema[name].matches(
+                    WHITELIST_REGEXP,
+                    translate('invalid', { name, label })
+                );
 
                 return schema;
             },
