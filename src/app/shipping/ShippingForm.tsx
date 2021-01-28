@@ -1,4 +1,4 @@
-import { Address, Cart, CheckoutParams, CheckoutSelectors, Consignment, ConsignmentAssignmentRequestBody, Country, CustomerAddress, CustomerRequestOptions, FormField, RequestOptions, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import { Address, AddressRequestBody, Cart, CheckoutParams, CheckoutSelectors, Consignment, ConsignmentAssignmentRequestBody, Country, CustomerAddress, CustomerRequestOptions, FormField, RequestOptions, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import React, { Component, ReactNode } from 'react';
 
 import { withLanguage, WithLanguageProps } from '../locale';
@@ -23,12 +23,14 @@ export interface ShippingFormProps {
     shippingAddress?: Address;
     shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
+    shouldShowAddAddressInCheckout: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
     getFields(countryCode?: string): FormField[];
     initialize(options: ShippingInitializeOptions): Promise<CheckoutSelectors>;
     onCreateAccount(): void;
+    createCustomerAddress(address: AddressRequestBody): Promise<CheckoutSelectors>;
     onMultiShippingSubmit(values: MultiShippingFormValues): void;
     onSignIn(): void;
     onSingleShippingSubmit(values: SingleShippingFormValues): void;
@@ -45,6 +47,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             assignItem,
             cart,
             cartHasChanged,
+            createCustomerAddress,
             consignments,
             countries,
             countriesWithAutocomplete,
@@ -67,6 +70,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             shippingAddress,
             shouldShowOrderComments,
             shouldShowSaveAddress,
+            shouldShowAddAddressInCheckout,
             signOut,
             updateAddress,
             isShippingStepPending,
@@ -79,8 +83,13 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 cart={ cart }
                 cartHasChanged={ cartHasChanged }
                 consignments={ consignments }
+                countries={ countries }
+                countriesWithAutocomplete={ countriesWithAutocomplete }
+                createCustomerAddress={ createCustomerAddress }
                 customerMessage={ customerMessage }
+                defaultCountryCode={ shippingAddress?.countryCode }
                 getFields={ getFields }
+                googleMapsApiKey={ googleMapsApiKey }
                 isGuest={ isGuest }
                 isLoading={ isLoading }
                 onCreateAccount={ onCreateAccount }
@@ -88,6 +97,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 onSubmit={ onMultiShippingSubmit }
                 onUnhandledError={ onUnhandledError }
                 onUseNewAddress={ onUseNewAddress }
+                shouldShowAddAddressInCheckout={ shouldShowAddAddressInCheckout }
                 shouldShowOrderComments={ shouldShowOrderComments }
             /> :
             <SingleShippingForm

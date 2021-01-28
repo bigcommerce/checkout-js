@@ -1,6 +1,7 @@
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
+import { AddressFormModal } from '../address';
 import { getAddressFormFields } from '../address/formField.mock';
 import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';
@@ -39,6 +40,7 @@ describe('MultiShippingForm Component', () => {
             shouldShowOrderComments: true,
             cartHasChanged: false,
             customerMessage: 'x',
+            countriesWithAutocomplete: [],
             isLoading: false,
             consignments: [
                 { ...getConsignment(), id: 'foo' },
@@ -46,6 +48,8 @@ describe('MultiShippingForm Component', () => {
             ],
             onSubmit: jest.fn(),
             assignItem: jest.fn(),
+            createCustomerAddress: jest.fn(),
+            shouldShowAddAddressInCheckout: true,
             onUnhandledError: jest.fn(),
             onUseNewAddress: jest.fn(),
         };
@@ -91,6 +95,24 @@ describe('MultiShippingForm Component', () => {
                     addresses: defaultProps.addresses,
                 })
             );
+        });
+
+        it('renders address form modal when shoppers choose new address', async () => {
+            component.find(ItemAddressSelect)
+                .first()
+                .find('#addressToggle')
+                .simulate('click');
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
+            component.find('[data-test="add-new-address"]')
+                .simulate('click');
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
+            expect(component.find(AddressFormModal).prop('isOpen')).toBeTruthy();
         });
     });
 });

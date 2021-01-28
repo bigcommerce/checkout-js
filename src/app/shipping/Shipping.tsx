@@ -1,4 +1,4 @@
-import { Address, Cart, CheckoutRequestBody, CheckoutSelectors, Consignment, ConsignmentAssignmentRequestBody, Country, Customer, CustomerRequestOptions, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import { Address, AddressRequestBody, Cart, CheckoutRequestBody, CheckoutSelectors, Consignment, ConsignmentAssignmentRequestBody, Country, Customer, CustomerRequestOptions, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { createSelector } from 'reselect';
@@ -42,6 +42,7 @@ export interface WithCheckoutShippingProps {
     isShippingStepPending: boolean;
     methodId?: string;
     shippingAddress?: Address;
+    shouldShowAddAddressInCheckout: boolean;
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
@@ -52,6 +53,7 @@ export interface WithCheckoutShippingProps {
     loadShippingAddressFields(): Promise<CheckoutSelectors>;
     loadShippingOptions(): Promise<CheckoutSelectors>;
     signOut(options?: CustomerRequestOptions): void;
+    createCustomerAddress(address: AddressRequestBody): Promise<CheckoutSelectors>;
     unassignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     updateBillingAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
     updateCheckout(payload: CheckoutRequestBody): Promise<CheckoutSelectors>;
@@ -270,6 +272,7 @@ export function mapToShippingProps({
             isLoadingShippingOptions,
             isUpdatingConsignment,
             isCreatingConsignments,
+            isCreatingCustomerAddress,
             isLoadingShippingCountries,
             isUpdatingBillingAddress,
             isUpdatingCheckout,
@@ -303,7 +306,8 @@ export function mapToShippingProps({
         isUpdatingConsignment() ||
         isCreatingConsignments() ||
         isUpdatingBillingAddress() ||
-        isUpdatingCheckout()
+        isUpdatingCheckout() ||
+        isCreatingCustomerAddress()
     );
     const shouldShowMultiShipping = (
         hasMultiShippingEnabled &&
@@ -328,6 +332,7 @@ export function mapToShippingProps({
         countriesWithAutocomplete,
         customer,
         customerMessage: checkout.customerMessage,
+        createCustomerAddress: checkoutService.createCustomerAddress,
         deinitializeShippingMethod: checkoutService.deinitializeShipping,
         deleteConsignments: deleteConsignmentsSelector({ checkoutService, checkoutState }),
         getFields: getShippingAddressFields,
@@ -342,6 +347,7 @@ export function mapToShippingProps({
         methodId,
         shippingAddress,
         shouldShowMultiShipping,
+        shouldShowAddAddressInCheckout: features['CHECKOUT-4726.add_address_in_multishipping_checkout'],
         shouldShowOrderComments: enableOrderComments,
         signOut: checkoutService.signOutCustomer,
         unassignItem: checkoutService.unassignItemsToAddress,
