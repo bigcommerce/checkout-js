@@ -7,7 +7,6 @@ import { getFormFieldsValidationSchema, FormFieldValues, TranslateValidationErro
 export interface AddressFormFieldsValidationSchemaOptions {
     formFields: FormField[];
     language?: LanguageService;
-    shouldValidateSafeInput?: boolean;
 }
 
 export function getTranslateAddressError(language?: LanguageService): TranslateValidationErrorFunction {
@@ -57,11 +56,9 @@ export function getTranslateAddressError(language?: LanguageService): TranslateV
 export default memoize(function getAddressFormFieldsValidationSchema({
     formFields,
     language,
-    shouldValidateSafeInput,
 }: AddressFormFieldsValidationSchemaOptions): ObjectSchema<FormFieldValues> {
     return getFormFieldsValidationSchema({
         formFields,
         translate: getTranslateAddressError(language),
-        shouldValidateSafeInput,
     });
 });

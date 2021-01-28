@@ -17,7 +17,6 @@ export type TranslateValidationErrorFunction = ((
 export interface FormFieldsValidationSchemaOptions {
     formFields: FormField[];
     translate?: TranslateValidationErrorFunction;
-    shouldValidateSafeInput?: boolean;
 }
 
 export interface CustomFormFieldValues {

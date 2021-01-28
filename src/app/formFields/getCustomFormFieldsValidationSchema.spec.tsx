@@ -14,29 +14,6 @@ describe('getCustomFormFieldsValidationSchema', () => {
         translate = jest.fn();
     });
 
-    describe('when should not enforce validate safe input', () => {
-        let schema: ObjectSchema<Partial<FormFieldValues>>;
-
-        beforeEach(() => {
-            schema = getFormFieldsValidationSchema({
-                formFields,
-                translate,
-            });
-        });
-
-        it('does not throw', async () => {
-            expect(await schema.isValid({
-                ...getShippingAddress(),
-                firstName: 'Luis<>',
-            })).toBeTruthy();
-
-            expect(await schema.isValid({
-                ...getShippingAddress(),
-                firstName: 'Luis{}:;()`/-\'',
-            })).toBeTruthy();
-        });
-    });
-
     describe('when enforce validate safe input', () => {
         let schema: ObjectSchema<Partial<FormFieldValues>>;
 
@@ -44,7 +21,6 @@ describe('getCustomFormFieldsValidationSchema', () => {
             schema = getFormFieldsValidationSchema({
                 formFields,
                 translate,
-                shouldValidateSafeInput: true,
             });
         });
 

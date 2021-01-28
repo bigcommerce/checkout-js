@@ -44,7 +44,6 @@ export interface WithCheckoutShippingProps {
     shippingAddress?: Address;
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
-    shouldValidateSafeInput: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitializeShippingMethod(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -344,7 +343,6 @@ export function mapToShippingProps({
         shippingAddress,
         shouldShowMultiShipping,
         shouldShowOrderComments: enableOrderComments,
-        shouldValidateSafeInput: features['CHECKOUT-5327.validate_checkout_values'],
         signOut: checkoutService.signOutCustomer,
         unassignItem: checkoutService.unassignItemsToAddress,
         updateBillingAddress: checkoutService.updateBillingAddress,
