@@ -1,9 +1,10 @@
 import { FormField } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps } from 'formik';
 import { noop } from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React, { useMemo, FunctionComponent } from 'react';
 
 import { preventDefault } from '../common/dom';
+import { isRequestError } from '../common/error';
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
@@ -27,6 +28,27 @@ const CreateAccountForm: FunctionComponent<CreateAccountFormProps & WithLanguage
     isCreatingAccount,
     onCancel,
 }) => {
+    const createAccountErrorMessage = useMemo(() => {
+        if (!createAccountError) {
+            return;
+        }
+
+        if (isRequestError(createAccountError) && createAccountError.status === 409) {
+            const splitMessage = createAccountError.message.split(':');
+
+            if (splitMessage.length > 1) {
+                return <TranslatedString
+                    data={ { email:  splitMessage[1].trim() } }
+                    id="customer.email_in_use_text"
+                />;
+            }
+
+            return <TranslatedString id="customer.unknown_email_in_use_text" />;
+        }
+
+        return createAccountError.message;
+    }, [createAccountError]);
+
     return (<>
         <Form
             className="checkout-form"
@@ -34,10 +56,10 @@ const CreateAccountForm: FunctionComponent<CreateAccountFormProps & WithLanguage
             testId="checkout-customer-returning"
         >
             <Fieldset>
-                { createAccountError && <Alert
+                { createAccountErrorMessage && <Alert
                     type={ AlertType.Error }
                 >
-                    { createAccountError.message }
+                    { createAccountErrorMessage }
                 </Alert> }
                 <div className="create-account-form">
                     { formFields.map(field => (

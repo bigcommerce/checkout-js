@@ -1,11 +1,12 @@
-import { FormField } from '@bigcommerce/checkout-sdk';
+import { FormField, RequestError } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '../locale';
+import { Alert } from '../ui/alert';
 import { DynamicFormField } from '../ui/form';
 
 import { getCustomerAccountFormFields } from './formField.mock';
@@ -42,6 +43,30 @@ describe('CreateAccountForm Component', () => {
                 id: 'field_4',
             })
         );
+    });
+
+    it('renders email in use error when present', () => {
+        const onCancel = jest.fn();
+        const createAccountError = {
+            message: 'Email already in use: test@bigcommerce.com',
+            type: 'request',
+            status: 409,
+        } as RequestError;
+
+        component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <CreateAccountForm
+                    createAccountError={ createAccountError }
+                    formFields={ formFields }
+                    onCancel={ onCancel }
+                />
+            </LocaleContext.Provider>
+        );
+
+        expect(component.find(Alert).find(TranslatedString).props()).toEqual({
+            data: { email: 'test@bigcommerce.com' },
+            id: 'customer.email_in_use_text',
+        });
     });
 
     it('calls onCancel', () => {
