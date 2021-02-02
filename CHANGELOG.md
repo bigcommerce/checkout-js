@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.110.3](https://github.com/bigcommerce/checkout-js/compare/v1.110.2...v1.110.3) (2021-02-02)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-5324 Upgrade checkout-sdk version ([f0cb128](https://github.com/bigcommerce/checkout-js/commit/f0cb1280ad2085620189d7ed7aafe42801fcb28e))
+* **customer:** CHECKOUT-5531 Fix spacing in account creation form ([514f039](https://github.com/bigcommerce/checkout-js/commit/514f0394de44b455ee5b16504fa67354eafc4947))
+
 ### [1.110.2](https://github.com/bigcommerce/checkout-js/compare/v1.110.1...v1.110.2) (2021-01-28)
 
 
