@@ -10,8 +10,13 @@
         display: block;
         flex: 1;
         flex-basis: 100%;
+        margin-bottom: spacing("half");
         max-width: 100%;
         padding: 0 spacing("half");
+
+        &:last-child {
+            margin-bottom: 0;
+        }
     }
 
     .dynamic-form-field--firstName,
