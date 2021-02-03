@@ -121,6 +121,8 @@
             "guest_marketing_consent": "I would like to receive updates and offers.",
             "login_action": "Sign in now",
             "login_text": "Already have an account?",
+            "email_in_use_text": "There's already an account for {email}. Please enter a different email address or sign-in.",
+            "unknown_email_in_use_text": "There's already an account for the provided email. Please enter a different email address or sign-in.",
             "guest_could_login_change_email": "Not {email}? <a>Change email</a>.",
             "password_confirmation_error": "Passwords do not match",
             "password_confirmation_label": "Confirm Password",
