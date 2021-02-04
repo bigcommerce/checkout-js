@@ -29,6 +29,9 @@ const PaypalCommercePaymentMethod: FunctionComponent<PaypalCommercePaymentMethod
                 setSubmitted(true);
                 submitForm();
             },
+            onError: (error: Error) => {
+                onUnhandledError?.(error);
+            },
             onValidate: async (resolve: () => void, reject: () => void): Promise<void> => {
                 const keysValidation = Object.keys(await validateForm());
 
@@ -42,7 +45,7 @@ const PaypalCommercePaymentMethod: FunctionComponent<PaypalCommercePaymentMethod
                 return resolve();
             },
         },
-    }), [initializePayment, submitForm, paymentContext, rest.method, validateForm, setSubmitted, setFieldTouched]);
+    }), [initializePayment, submitForm, paymentContext, rest.method, validateForm, setSubmitted, setFieldTouched, onUnhandledError]);
 
     const onError = (error: Error) => {
         paymentContext?.disableSubmit(rest.method, true);
