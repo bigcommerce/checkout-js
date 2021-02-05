@@ -85,21 +85,24 @@ class ManageInstrumentsModal extends Component<ManageInstrumentsModalProps & Wit
         const bankInstruments = instruments.filter(isBankAccountInstrument);
         const accountInstruments = instruments.filter(isAccountInstrument);
 
+        const bankAndAccountInstruments = [...bankInstruments, ...accountInstruments];
+
+        if (bankAndAccountInstruments.length) {
+            return (
+                <ManageAccountInstrumentsTable
+                    instruments={ bankAndAccountInstruments }
+                    isDeletingInstrument={ isDeletingInstrument }
+                    onDeleteInstrument={ this.handleDeleteInstrument }
+                />
+            );
+        }
+
         return (
-            accountInstruments.length
-                ? <ManageAccountInstrumentsTable
-                    instruments={ [
-                        ...bankInstruments,
-                        ...accountInstruments,
-                    ] }
-                    isDeletingInstrument={ isDeletingInstrument }
-                    onDeleteInstrument={ this.handleDeleteInstrument }
-                />
-                : <ManageCardInstrumentsTable
-                    instruments={ cardInstruments }
-                    isDeletingInstrument={ isDeletingInstrument }
-                    onDeleteInstrument={ this.handleDeleteInstrument }
-                />
+            <ManageCardInstrumentsTable
+                instruments={ cardInstruments }
+                isDeletingInstrument={ isDeletingInstrument }
+                onDeleteInstrument={ this.handleDeleteInstrument }
+            />
         );
     }
 

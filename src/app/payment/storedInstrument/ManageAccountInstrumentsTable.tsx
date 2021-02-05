@@ -70,7 +70,9 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
                 { isBankAccountInstrument(instrument) ? (
                         <span className="instrumentModal-instrumentAccountNumber">
                             <TranslatedString id="payment.instrument_manage_table_header_ending_in_text" />
-                            <span>{ instrument.accountNumber }</span>
+                            <span>
+                                { ` ${instrument.accountNumber}` }
+                            </span>
                         </span>
                     ) : (
                         <>
