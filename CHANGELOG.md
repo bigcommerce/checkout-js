@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.112.0](https://github.com/bigcommerce/checkout-js/compare/v1.111.0...v1.112.0) (2021-02-08)
+
+
+### Features
+
+* **payment:** INT-3418 added GooglePay for CybersourceV2 ([daf5147](https://github.com/bigcommerce/checkout-js/commit/daf51475bc560d07aabae9db7def7abe68469224))
+
 ## [1.111.0](https://github.com/bigcommerce/checkout-js/compare/v1.110.3...v1.111.0) (2021-02-04)
 
 
