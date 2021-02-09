@@ -11,6 +11,7 @@ import { withLanguage, WithLanguageProps } from '../../locale';
 import { withForm, WithFormProps } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
 import { configureCardValidator, getCreditCardValidationSchema, CreditCardFieldset, CreditCardFieldsetValues } from '../creditCard';
+import { DocumentOnlyCustomFormFieldsetValues } from '../documentOnly';
 import { HostedCreditCardFieldsetValues } from '../hostedCreditCard';
 import { getInstrumentValidationSchema, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CardInstrumentFieldset, CardInstrumentFieldsetValues, CreditCardValidation } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
@@ -30,7 +31,7 @@ export interface CreditCardPaymentMethodProps {
     onUnhandledError?(error: Error): void;
 }
 
-export type CreditCardPaymentMethodValues = CreditCardFieldsetValues | CardInstrumentFieldsetValues | HostedCreditCardFieldsetValues;
+export type CreditCardPaymentMethodValues = CreditCardFieldsetValues | CardInstrumentFieldsetValues | HostedCreditCardFieldsetValues | DocumentOnlyCustomFormFieldsetValues;
 
 interface WithCheckoutCreditCardPaymentMethodProps {
     instruments: CardInstrument[];

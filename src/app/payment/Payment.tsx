@@ -289,6 +289,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             selectedMethod.gateway === PaymentMethodId.AdyenV2 ||
             selectedMethod.gateway === PaymentMethodId.AdyenV2GooglePay ||
             selectedMethod.gateway === PaymentMethodId.Afterpay ||
+            selectedMethod.gateway === PaymentMethodId.Checkoutcom ||
             selectedMethod.gateway === PaymentMethodId.StripeV3) {
             return;
         }
