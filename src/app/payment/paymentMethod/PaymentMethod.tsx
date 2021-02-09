@@ -14,6 +14,7 @@ import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod
 import ChasePayPaymentMethod from './ChasePayPaymentMethod';
 import CheckoutCustomPaymentMethod from './CheckoutcomCustomPaymentMethod';
 import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
+import DigitalRiverPaymentMethod from './DigitalRiverPaymentMethod';
 import GooglePayPaymentMethod from './GooglePayPaymentMethod';
 import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';
 import HostedPaymentMethod from './HostedPaymentMethod';
@@ -88,6 +89,10 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
 
     if (method.gateway === PaymentMethodId.BlueSnapV2) {
         return <BlueSnapV2PaymentMethod { ...props } />;
+    }
+
+    if (method.id === PaymentMethodId.DigitalRiver) {
+        return <DigitalRiverPaymentMethod { ...props } />;
     }
 
     if (method.gateway === PaymentMethodId.Klarna) {
