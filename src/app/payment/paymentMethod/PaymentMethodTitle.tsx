@@ -81,6 +81,10 @@ function getPaymentMethodTitle(
                 logoUrl: cdnPath('/img/payment-providers/google-pay.png'),
                 titleText: '',
             },
+            [PaymentMethodId.DigitalRiver]: {
+                logoUrl: cdnPath('/img/payment-providers/digital-river-header.png'),
+                titleText: '',
+            },
             [PaymentMethodId.Klarna]: {
                 logoUrl: cdnPath('/img/payment-providers/klarna-header.png'),
                 titleText: method.config && method.config.displayName || '',
