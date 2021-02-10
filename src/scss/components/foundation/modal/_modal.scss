@@ -33,6 +33,10 @@
             transform: scale(0.95) translateY($modal-transformY);
         }
 
+        .form-actions {
+            text-align: right;
+        }
+
         &.is-active,
         &.modal--afterOpen {
             bottom: 2%;

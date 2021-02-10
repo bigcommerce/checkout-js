@@ -122,7 +122,7 @@ describe('updateShippableItems()', () => {
             // tslint:disable-next-line:no-non-null-assertion
             expect(updatedShippableItems![0]).toEqual(shippableItems[0]);
             // tslint:disable-next-line:no-non-null-assertion
-            expect(updatedShippableItems![0]).not.toBe(shippableItems[0]);
+            expect(updatedShippableItems![0]).toBe(shippableItems[0]);
 
             // tslint:disable-next-line:no-non-null-assertion
             expect(updatedShippableItems![2]).toEqual(shippableItems[2]);

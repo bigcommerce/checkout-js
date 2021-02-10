@@ -26,20 +26,20 @@ export default function updateShippableItems(
     );
 
     const newId = findNewItemId(items[updatedItemIndex], cart, updatedConsignment);
-    const updatedItems: ShippableItem[] = [];
 
-    items.forEach((item, i) => {
-        const id = newId && (i === updatedItemIndex || !cartItemIds.includes(item.id)) ?
-            newId : item.id;
+    return items.map((item, i) => {
+        if (newId && !cartItemIds.includes(item.id) || i === updatedItemIndex) {
+            const itemId = newId ?? item.id;
 
-        updatedItems[i] = {
-            ...item,
-            id,
-            consignment: findConsignment(consignments || [], id  as string),
-        };
+            return {
+                ...item,
+                id: itemId,
+                consignment: findConsignment(consignments || [], itemId as string),
+            };
+        } else {
+            return item;
+        }
     });
-
-    return updatedItems;
 }
 
 function findNewItemId(item: ShippableItem, cart?: Cart, consignment?: Consignment): string | undefined {

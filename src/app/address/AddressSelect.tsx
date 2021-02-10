@@ -78,7 +78,11 @@ const AddressSelectMenu: FunctionComponent<AddressSelectProps> = ({
         id="addressDropdown"
     >
         <li className="dropdown-menu-item dropdown-menu-item--select">
-            <a href="#" onClick={ preventDefault(() => onUseNewAddress(selectedAddress)) }>
+            <a
+                data-test="add-new-address"
+                href="#"
+                onClick={ preventDefault(() => onUseNewAddress(selectedAddress)) }
+            >
                 <TranslatedString id="address.enter_address_action" />
             </a>
         </li>

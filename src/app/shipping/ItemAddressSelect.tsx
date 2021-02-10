@@ -9,7 +9,7 @@ export interface ItemAddressSelectProps {
     item: ShippableItem;
     addresses: CustomerAddress[];
     onSelectAddress(address: Address, itemId: string, itemKey: string): void;
-    onUseNewAddress(address: Address | undefined, itemId: string): void;
+    onUseNewAddress(address: Address | undefined, itemId: string, itemKey: string): void;
 }
 
 const ItemAddressSelect: FunctionComponent<ItemAddressSelectProps> = ({
@@ -27,10 +27,11 @@ const ItemAddressSelect: FunctionComponent<ItemAddressSelectProps> = ({
     onUseNewAddress,
 }) => {
     const handleUseNewAddress = useCallback((address: Address) => {
-        onUseNewAddress(address, id as string);
+        onUseNewAddress(address, id as string, key);
     }, [
         id,
         onUseNewAddress,
+        key,
     ]);
 
     const handleSelectAddress = useCallback((address: Address) => {
