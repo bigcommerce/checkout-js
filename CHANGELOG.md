@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.113.0](https://github.com/bigcommerce/checkout-js/compare/v1.112.0...v1.113.0) (2021-02-10)
+
+
+### Features
+
+* **checkout:** INT-2544 Create document payment method for checkout.com APMs ([f82bc3f](https://github.com/bigcommerce/checkout-js/commit/f82bc3f37d973e6e66ff8eea1ad285a68da4a042))
+* **shipping:** CHECKOUT-4726 Allow adding address in multishipping UI ([450c9f8](https://github.com/bigcommerce/checkout-js/commit/450c9f87c241e59e8a72ae26dc407fe1f5b08a4e))
+
 ## [1.112.0](https://github.com/bigcommerce/checkout-js/compare/v1.111.0...v1.112.0) (2021-02-08)
 
 
