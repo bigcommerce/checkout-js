@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.114.1](https://github.com/bigcommerce/checkout-js/compare/v1.114.0...v1.114.1) (2021-02-12)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-5324 Upgrade checkout-sdk version ([bfdd3d8](https://github.com/bigcommerce/checkout-js/commit/bfdd3d86bc5c8795361d7e1e6d3f499ff8969937))
+* **payment:** CHECKOUT-5610 Pass accessibility labels to payment form ([703c7cd](https://github.com/bigcommerce/checkout-js/commit/703c7cd2a9263fb285e016db4b8c198e5d780b9a))
+
 ## [1.114.0](https://github.com/bigcommerce/checkout-js/compare/v1.113.0...v1.114.0) (2021-02-10)
 
 
