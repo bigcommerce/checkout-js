@@ -20,13 +20,15 @@ const MasterpassPaymentMethod: FunctionComponent<MasterpassPaymentMethodProps & 
         },
     }), [initializePayment]);
 
+    const { config: { testMode }, initializationData: { checkoutId } } = rest.method;
+    const locale = navigator.language.replace('-', '_');
     const signInButtonLabel = useMemo(() => (
         <img
             alt={ language.translate('payment.masterpass_name_text') }
             id="mpbutton"
-            src="https://masterpass.com/dyn/img/btn/global/mp_chk_btn_126x030px.svg"
+            src={ `https://${testMode ? 'sandbox.' : ''}src.mastercard.com/assets/img/btn/src_chk_btn_126x030px.svg?locale=${locale}&paymentmethod=master,visa,amex,discover&checkoutid=${checkoutId}` }
         />
-    ), [language]);
+    ), [checkoutId, language, locale, testMode]);
 
     return <WalletButtonPaymentMethod
         { ...rest }

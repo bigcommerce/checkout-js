@@ -35,6 +35,9 @@ describe('when using Masterpass payment', () => {
             ...getPaymentMethod(),
             id: PaymentMethodId.Masterpass,
             method: PaymentMethodType.Masterpass,
+            initializationData: {
+                checkoutId: '1234',
+            },
         };
 
         jest.spyOn(checkoutState.data, 'getConfig')
