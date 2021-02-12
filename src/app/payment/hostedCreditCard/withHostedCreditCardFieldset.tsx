@@ -77,12 +77,14 @@ export default function withHostedCreditCardFieldset<TProps extends WithHostedCr
                     {
                         cardCodeVerification: isInstrumentCardCodeRequired && selectedInstrument ?
                             {
+                                accessibilityLabel: language.translate('payment.credit_card_cvv_label'),
                                 containerId: getHostedFieldId('ccCvv'),
                                 instrumentId: selectedInstrument.bigpayToken,
                             } :
                             undefined,
                         cardNumberVerification: isInstrumentCardNumberRequired && selectedInstrument ?
                             {
+                                accessibilityLabel: language.translate('payment.credit_card_number_label'),
                                 containerId: getHostedFieldId('ccNumber'),
                                 instrumentId: selectedInstrument.bigpayToken,
                             } :
@@ -90,14 +92,24 @@ export default function withHostedCreditCardFieldset<TProps extends WithHostedCr
                     } :
                     {
                         cardCode: isCardCodeRequired ?
-                            { containerId: getHostedFieldId('ccCvv') } :
+                            {
+                                accessibilityLabel: language.translate('payment.credit_card_cvv_label'),
+                                containerId: getHostedFieldId('ccCvv'),
+                            } :
                             undefined,
                         cardExpiry: {
+                            accessibilityLabel: language.translate('payment.credit_card_expiration_label'),
                             containerId: getHostedFieldId('ccExpiry'),
                             placeholder: language.translate('payment.credit_card_expiration_placeholder_text'),
                         },
-                        cardName: { containerId: getHostedFieldId('ccName') },
-                        cardNumber: { containerId: getHostedFieldId('ccNumber') },
+                        cardName: {
+                            accessibilityLabel: language.translate('payment.credit_card_name_label'),
+                            containerId: getHostedFieldId('ccName'),
+                        },
+                        cardNumber: {
+                            accessibilityLabel: language.translate('payment.credit_card_number_label'),
+                            containerId: getHostedFieldId('ccNumber'),
+                        },
                     },
                 styles: styleContainerId ?
                     {

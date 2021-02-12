@@ -158,10 +158,10 @@ describe('withHostedCreditCardFieldset', () => {
         expect(await getHostedFormOptions())
             .toEqual({
                 fields: {
-                    cardCode: { containerId: 'authorizenet-ccCvv' },
-                    cardExpiry: { containerId: 'authorizenet-ccExpiry', placeholder: 'MM / YY' },
-                    cardName: { containerId: 'authorizenet-ccName' },
-                    cardNumber: { containerId: 'authorizenet-ccNumber' },
+                    cardCode: { accessibilityLabel: 'CVV', containerId: 'authorizenet-ccCvv' },
+                    cardExpiry: { accessibilityLabel: 'Expiration', containerId: 'authorizenet-ccExpiry', placeholder: 'MM / YY' },
+                    cardName: { accessibilityLabel: 'Name on Card', containerId: 'authorizenet-ccName' },
+                    cardNumber: { accessibilityLabel: 'Credit Card Number', containerId: 'authorizenet-ccNumber' },
                 },
                 styles: {
                     default: expect.any(Object),
@@ -187,10 +187,12 @@ describe('withHostedCreditCardFieldset', () => {
             .toEqual({
                 fields: {
                     cardCodeVerification: {
+                        accessibilityLabel: 'CVV',
                         containerId: 'authorizenet-ccCvv',
                         instrumentId: getCardInstrument().bigpayToken,
                     },
                     cardNumberVerification: {
+                        accessibilityLabel: 'Credit Card Number',
                         containerId: 'authorizenet-ccNumber',
                         instrumentId: getCardInstrument().bigpayToken,
                     },
