@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.114.2](https://github.com/bigcommerce/checkout-js/compare/v1.114.1...v1.114.2) (2021-02-15)
+
+
+### Bug Fixes
+
+* **payment:** INT-3813  adding bankAccount in order to render accountInstrumentTable ([37e8507](https://github.com/bigcommerce/checkout-js/commit/37e85077833bf8e28c721cdbfebbbc5dd9b38fc9))
+
 ### [1.114.1](https://github.com/bigcommerce/checkout-js/compare/v1.114.0...v1.114.1) (2021-02-12)
 
 
