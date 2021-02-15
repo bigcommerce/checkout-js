@@ -9,6 +9,7 @@ import { Modal } from '../../ui/modal';
 
 import { getInstruments } from './instruments.mock';
 import isAccountInstrument from './isAccountInstrument';
+import isBankAccountInstrument from './isBankAccountInstrument';
 import isCardInstrument from './isCardInstrument';
 import ManageAccountInstrumentsTable from './ManageAccountInstrumentsTable';
 import ManageCardInstrumentsTable from './ManageCardInstrumentsTable';
@@ -67,6 +68,19 @@ describe('ManageInstrumentsModal', () => {
         const component = mount(<ManageInstrumentsModalTest
             { ...defaultProps }
             instruments={ getInstruments().filter(isAccountInstrument) }
+        />);
+
+        expect(component.find(ManageAccountInstrumentsTable).length)
+            .toEqual(1);
+
+        expect(component.find(ManageCardInstrumentsTable).length)
+            .toEqual(0);
+    });
+
+    it('renders list of bank instruments in table format', () => {
+        const component = mount(<ManageInstrumentsModalTest
+            { ...defaultProps }
+            instruments={ getInstruments().filter(isBankAccountInstrument) }
         />);
 
         expect(component.find(ManageAccountInstrumentsTable).length)
