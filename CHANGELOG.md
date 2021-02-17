@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.115.1](https://github.com/bigcommerce/checkout-js/compare/v1.115.0...v1.115.1) (2021-02-17)
+
+
+### Bug Fixes
+
+* **customer:** CHECKOUT-5612 Hide create account link/form if account creation is disabled ([3d8c2cd](https://github.com/bigcommerce/checkout-js/commit/3d8c2cdfc158be67ead6f309bdf4176007551588))
+
 ## [1.115.0](https://github.com/bigcommerce/checkout-js/compare/v1.114.2...v1.115.0) (2021-02-15)
 
 
