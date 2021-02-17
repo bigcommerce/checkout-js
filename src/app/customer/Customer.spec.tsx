@@ -374,7 +374,10 @@ describe('Customer', () => {
     describe('when view type is "login"', () => {
         it('matches snapshot', () => {
             const component = mount(
-                <CustomerTest viewType={ CustomerViewType.Login } />
+                <CustomerTest
+                    isAccountCreationEnabled={ true }
+                    viewType={ CustomerViewType.Login }
+                />
             );
 
             expect(component.render())

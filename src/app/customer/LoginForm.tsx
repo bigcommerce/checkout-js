@@ -26,6 +26,7 @@ export interface LoginFormProps {
     signInEmailError?: Error;
     viewType?: Omit<CustomerViewType, 'guest'>;
     passwordlessLogin?: boolean;
+    shouldShowCreateAccountLink?: boolean;
     onCancel?(): void;
     onCreateAccount?(): void;
     onChangeEmail?(email: string): void;
@@ -52,6 +53,7 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
     onCreateAccount = noop,
     onSendLoginEmail = noop,
     signInError,
+    shouldShowCreateAccountLink,
     viewType = CustomerViewType.Login,
 }) => {
     const changeEmailLink = useCallback(() => {
@@ -98,7 +100,7 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
                         />
                     </Alert> }
 
-                { viewType === CustomerViewType.Login && <p>
+                { viewType === CustomerViewType.Login && shouldShowCreateAccountLink && <p>
                     <TranslatedLink
                         id="customer.create_account_to_continue_text"
                         onClick={ onCreateAccount }

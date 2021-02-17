@@ -1,4 +1,4 @@
-import { CheckoutSelectors, CustomerAccountRequestBody, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, FormField, GuestCredentials, SignInEmail } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, CustomerAccountRequestBody, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, FormField, GuestCredentials, SignInEmail, StoreConfig } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, Fragment, ReactNode } from 'react';
 
@@ -45,6 +45,7 @@ export interface WithCheckoutCustomerProps {
     requiresMarketingConsent: boolean;
     signInEmail?: SignInEmail;
     signInEmailError?: Error;
+    isAccountCreationEnabled: boolean;
     createAccountError?: Error;
     signInError?: Error;
     clearError(error: Error): Promise<CheckoutSelectors>;
@@ -196,6 +197,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             isGuestEnabled,
             isSendingSignInEmail,
             isSigningIn,
+            isAccountCreationEnabled,
             onContinueAsGuest,
             signInError,
             viewType,
@@ -215,6 +217,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                 onCreateAccount={ this.showCreateAccount }
                 onSendLoginEmail={ this.handleEmailLoginClicked }
                 onSignIn={ this.handleSignIn }
+                shouldShowCreateAccountLink={ isAccountCreationEnabled }
                 signInError={ signInError }
                 viewType={ viewType }
             />
@@ -393,8 +396,9 @@ export function mapToWithCheckoutCustomerProps(
             privacyPolicyUrl,
             requiresMarketingConsent,
             isSignInEmailEnabled,
+            isAccountCreationEnabled,
         },
-    } = config;
+    } = config as StoreConfig & { checkoutSettings: { isAccountCreationEnabled: boolean } };
 
     return {
         customerAccountFields: getCustomerAccountFields(),
@@ -414,6 +418,7 @@ export function mapToWithCheckoutCustomerProps(
         createAccountError: getCreateCustomerAccountError(),
         isContinuingAsGuest: isContinuingAsGuest(),
         isSignInEmailEnabled,
+        isAccountCreationEnabled,
         isGuestEnabled: config.checkoutSettings.guestCheckoutEnabled,
         isSigningIn: isSigningIn(),
         isSendingSignInEmail: isSendingSignInEmail(),
