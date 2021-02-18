@@ -9,6 +9,7 @@ describe('isEqualAddress', () => {
         expect(isEqualAddress(getAddress(), {
             ...getAddress(),
             stateOrProvinceCode: 'w',
+            country: 'none',
             id: 'x',
             email: 'y',
             shouldSaveAddress: false,
