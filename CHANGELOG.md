@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.115.2](https://github.com/bigcommerce/checkout-js/compare/v1.115.1...v1.115.2) (2021-02-18)
+
+
+### Bug Fixes
+
+* **shipping:** CHECKOUT-5618 Update address in dropdown when multishipping ([116ca7f](https://github.com/bigcommerce/checkout-js/commit/116ca7fd4df57d60d5cff44c18e18a45776d132d))
+
 ### [1.115.1](https://github.com/bigcommerce/checkout-js/compare/v1.115.0...v1.115.1) (2021-02-17)
 
 
