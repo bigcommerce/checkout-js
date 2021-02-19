@@ -49,6 +49,15 @@ const Sepa: FunctionComponent<CheckoutcomSepaFormProps> = ({method}) => {
     </>);
 };
 
+export const checkoutcomDocumentCustomFieldset = (
+    <TextFieldForm
+        additionalClassName="form-field--ccDocument"
+        autoComplete="cc-document"
+        labelId="payment.credit_card_document_label"
+        name="ccDocument"
+    />
+);
+
 const checkoutcomCustomFormFields = {
     sepa: Sepa,
 };
