@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.117.0](https://github.com/bigcommerce/checkout-js/compare/v1.116.0...v1.117.0) (2021-02-23)
+
+
+### Features
+
+* **payment:** PAYMENTS-6576 remove the lable "Payment Methods" in checkout ([ccc9446](https://github.com/bigcommerce/checkout-js/commit/ccc9446a5c1270391c21d3bcf754c0ada82f8519))
+
 ## [1.116.0](https://github.com/bigcommerce/checkout-js/compare/v1.115.2...v1.116.0) (2021-02-23)
 
 
