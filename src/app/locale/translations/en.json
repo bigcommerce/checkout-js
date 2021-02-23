@@ -220,7 +220,6 @@
             "payment_method_disabled_error": "The selected payment method is no longer valid. Click OK to see the most up-to-date payment methods.",
             "payment_method_error": "Response from payment provider: {message}",
             "payment_method_invalid_error": "There's a problem processing your payment. Please contact us for assistance or choose another payment method.",
-            "payment_method_label": "Payment Method",
             "payment_method_unavailable_error": "This payment provider is temporarily unavailable. Please try again later.",
             "payment_not_required_text": "Payment is not required for this order.",
             "paypal_continue_action": "Continue with PayPal",
