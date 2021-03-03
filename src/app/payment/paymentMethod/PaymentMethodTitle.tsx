@@ -113,6 +113,10 @@ function getPaymentMethodTitle(
                 logoUrl: `https://checkoutshopper-live.adyen.com/checkoutshopper/images/logos/${(method.method === 'scheme') ? 'card' : method.method}.svg`,
                 titleText: (method.config.displayName === 'Credit Card' ? language.translate('payment.adyen_credit_debit_card_text') : method.config.displayName) || '',
             },
+            [PaymentMethodId.Mollie]: {
+                logoUrl: method.method === 'creditcard' ? '' : cdnPath(`/img/payment-providers/${method.method}.svg`),
+                titleText: methodName,
+            },
         };
 
         // KLUDGE: 'paypal' is actually a credit card method. It is the only
