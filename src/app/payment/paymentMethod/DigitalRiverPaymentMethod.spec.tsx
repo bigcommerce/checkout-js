@@ -26,7 +26,6 @@ describe('when using Digital River payment', () => {
             method: getPaymentMethod(),
             onUnhandledError: jest.fn(),
         };
-
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
@@ -61,8 +60,7 @@ describe('when using Digital River payment', () => {
 
         expect(component.props())
             .toEqual(expect.objectContaining({
-                containerId: 'drop-in',
-                deinitializePayment: expect.any(Function),
+                containerId: `${method}-component-field`,
                 initializePayment: expect.any(Function),
                 method,
             }));
@@ -78,16 +76,30 @@ describe('when using Digital River payment', () => {
         });
 
         expect(checkoutService.initializePayment)
-            .toHaveBeenCalledWith(expect.objectContaining({
-                methodId: method.id,
-                gatewayId: method.gateway,
-                digitalriver: expect.objectContaining({
-                    container: expect.any(String),
-                    configuration: expect.any(Object),
+            .toHaveBeenCalledWith({
+                digitalriver: {
+                    configuration: {
+                        button: {
+                            type: 'submitOrder',
+                        },
+                        flow: 'checkout',
+                        paymentMethodConfiguration: {
+                            classes: {
+                                base: 'form-input optimizedCheckout-form-input',
+                            },
+                        },
+                        showComplianceSection: true,
+                        showSavePaymentAgreement: false,
+                        showTermsOfSaleDisclosure: true,
+                        usage: 'unscheduled',
+                    },
+                    containerId: `${method}-component-field`,
+                    onError: expect.any(Function),
                     onRenderButton: expect.any(Function),
                     submitForm: expect.any(Function),
-                    onError: expect.any(Function),
-                }),
-            }));
+                },
+                gatewayId: undefined,
+                methodId: 'digitalriver',
+            });
     });
 });

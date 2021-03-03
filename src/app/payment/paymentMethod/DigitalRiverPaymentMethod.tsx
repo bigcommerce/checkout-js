@@ -11,12 +11,7 @@ import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './Hos
 export type DigitalRiverPaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId'> & ConnectFormikProps<PaymentFormValues>;
 
 export enum DigitalRiverClasses {
-    base =  'DRElement',
-    complete = 'complete',
-    empty = 'empty',
-    focus = 'focus',
-    invalid = 'invalid',
-    webkitAutofill = 'autofill',
+    base =  'form-input optimizedCheckout-form-input',
 }
 
 const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProps> = ({
@@ -25,14 +20,13 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
     formik: { submitForm },
     ...rest
 }) => {
-
     const paymentContext = useContext(PaymentContext);
     const { setSubmitted } = useContext(FormContext);
-
+    const containerId = `${rest.method}-component-field`;
     const initializeDigitalRiverPayment = useCallback(options => initializePayment({
         ...options,
         digitalriver: {
-            container: 'drop-in',
+            containerId,
             configuration: {
                 flow: 'checkout',
                 showSavePaymentAgreement: false,
@@ -59,17 +53,10 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
         },
     }), [initializePayment, submitForm, paymentContext, rest.method, setSubmitted, onUnhandledError]);
 
-    const onError = (error: Error) => {
-        paymentContext?.disableSubmit(rest.method, true);
-
-        onUnhandledError?.(error);
-    };
-
     return <HostedWidgetPaymentMethod
         { ...rest }
-        containerId="drop-in"
+        containerId={ containerId }
         initializePayment={ initializeDigitalRiverPayment }
-        onUnhandledError={ onError }
     />;
 };
 
