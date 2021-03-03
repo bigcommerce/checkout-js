@@ -8,7 +8,7 @@ import { ErrorLogger, ErrorModal } from '../common/error';
 import { retry } from '../common/utility';
 import { getPasswordRequirementsFromConfig } from '../customer';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
-import { CreatedCustomer, GuestSignUpForm, SignedUpSuccessAlert, SignUpFormValues } from '../guestSignup';
+import { CreatedCustomer, GuestSignUpForm, PasswordSavedSuccessAlert, SignedUpSuccessAlert, SignUpFormValues } from '../guestSignup';
 import { AccountCreationFailedError, AccountCreationRequirementsError } from '../guestSignup/errors';
 import { TranslatedString } from '../locale';
 import { Button, ButtonVariant } from '../ui/button';
@@ -137,7 +137,8 @@ class OrderConfirmation extends Component<
                         </OrderConfirmationSection> }
 
                         { this.renderGuestSignUp({
-                            customerCanBeCreated: order.customerCanBeCreated,
+                            shouldShowPasswordForm: order.customerCanBeCreated,
+                            customerCanBeCreated: !order.customerId,
                             shopperConfig,
                         }) }
 
@@ -157,8 +158,9 @@ class OrderConfirmation extends Component<
         );
     }
 
-    private renderGuestSignUp({ customerCanBeCreated, shopperConfig }: {
+    private renderGuestSignUp({ customerCanBeCreated, shouldShowPasswordForm, shopperConfig }: {
         customerCanBeCreated: boolean;
+        shouldShowPasswordForm: boolean;
         shopperConfig: ShopperConfig;
     }): ReactNode {
         const {
@@ -166,14 +168,17 @@ class OrderConfirmation extends Component<
             hasSignedUp,
         } = this.state;
 
+        const { order } = this.props;
+
         return <Fragment>
-            { customerCanBeCreated && !hasSignedUp && <GuestSignUpForm
+            { shouldShowPasswordForm && !hasSignedUp && <GuestSignUpForm
+                customerCanBeCreated={ customerCanBeCreated }
                 isSigningUp={ isSigningUp }
                 onSignUp={ this.handleSignUp }
                 passwordRequirements={ getPasswordRequirementsFromConfig(shopperConfig) }
             /> }
 
-            { hasSignedUp && <SignedUpSuccessAlert /> }
+            { hasSignedUp && (order?.customerId ? <PasswordSavedSuccessAlert /> : <SignedUpSuccessAlert />) }
         </Fragment>;
     }
 

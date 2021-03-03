@@ -11,6 +11,7 @@ import SignUpPasswordField from './SignUpPasswordField';
 
 export interface SignUpFormProps {
     isSigningUp?: boolean;
+    customerCanBeCreated: boolean;
     passwordRequirements: PasswordRequirements;
     onSignUp(data: SignUpFormValues): void;
 }
@@ -22,16 +23,22 @@ export interface SignUpFormValues {
 
 const GuestSignUpForm: FunctionComponent<SignUpFormProps & WithLanguageProps & FormikProps<SignUpFormValues>> = ({
     isSigningUp,
+    customerCanBeCreated,
     passwordRequirements: { minLength },
 }) => (
-    <Form className="guest-signup form">
-        <Fieldset
-            legend={
-                <Legend>
-                    <TranslatedString id="customer.create_account_text" />
-                </Legend>
-            }
-        >
+    <Fieldset
+        legend={
+            <Legend>
+                <TranslatedString id={ customerCanBeCreated ? 'customer.create_account_text' : 'customer.set_password_text' } />
+            </Legend>
+        }
+    >
+        { !customerCanBeCreated &&
+            <p>
+                <TranslatedString id="customer.account_created_text" />
+            </p> }
+
+        <Form className="guest-signup form">
             <SignUpPasswordField minLength={ minLength } />
 
             <div className="form-actions">
@@ -41,11 +48,11 @@ const GuestSignUpForm: FunctionComponent<SignUpFormProps & WithLanguageProps & F
                     type="submit"
                     variant={ ButtonVariant.Primary }
                 >
-                    <TranslatedString id="customer.create_account_action" />
+                    <TranslatedString id={ customerCanBeCreated ? 'customer.create_account_action' : 'customer.set_password_action' } />
                 </Button>
             </div>
-        </Fieldset>
-    </Form>
+        </Form>
+    </Fieldset>
 );
 
 export default withLanguage(withFormik<SignUpFormProps & WithLanguageProps, SignUpFormValues>({
