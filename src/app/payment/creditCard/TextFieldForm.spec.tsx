@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { DocumentOnlyCustomFormFieldsetValues } from '../documentOnly';
+import { DocumentOnlyCustomFormFieldsetValues } from '../checkoutcomFieldsets';
 
 import TextFieldForm, { TextFieldFormProps } from './TextFieldForm';
 
