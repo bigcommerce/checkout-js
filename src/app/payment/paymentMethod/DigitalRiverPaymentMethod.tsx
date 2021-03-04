@@ -37,6 +37,12 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
                 usage: 'unscheduled',
                 showTermsOfSaleDisclosure: true,
                 paymentMethodConfiguration: {
+                    disabledPaymentMethods: [
+                        'klarnaCredit',
+                        'payPal',
+                        'payPalCredit',
+                        'payPalBilling',
+                    ],
                     classes: DigitalRiverClasses,
                 },
             },
