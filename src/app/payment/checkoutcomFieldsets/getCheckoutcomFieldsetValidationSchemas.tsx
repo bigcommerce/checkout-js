@@ -2,7 +2,7 @@ import { LanguageService } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
 import { boolean, object, string, ObjectSchema } from 'yup';
 
-export type checkoutcomCustomPaymentMethods = 'sepa';
+export type checkoutcomCustomPaymentMethods = 'fawry' | 'sepa';
 export type documentPaymentMethods = 'oxxo' | 'qpay' | 'boleto' | 'ideal';
 export type checkoutcomPaymentMethods = documentPaymentMethods | checkoutcomCustomPaymentMethods;
 export interface CustomValidationSchemaOptions {
@@ -19,9 +19,15 @@ export interface SepaCustomFormFieldsetValues {
     sepaMandate: boolean;
 }
 
+export interface FawryCustomFormFieldsetValues {
+    customerMobile?: number;
+    customerEmail?: string;
+}
+
 const checkoutComShemas: {
     [key in checkoutcomPaymentMethods]: (language: LanguageService) => {}
 } = {
+
     oxxo: (language: LanguageService) => ({
         ccDocument: string()
             .required(language.translate('payment.checkoutcom_document_invalid_error_oxxo'))
@@ -74,12 +80,25 @@ const checkoutComShemas: {
                 language.translate('payment.checkoutcom_document_invalid_error_ideal')
             ),
     }),
+    fawry: (language: LanguageService) => ({
+        customerMobile: string()
+            .required(language.translate('payment.checkoutcom_fawry_customer_mobile_invalid_error'))
+            .matches(
+                new RegExp(`^\\d{11}$`),
+                language.translate('payment.checkoutcom_fawry_customer_mobile_invalid_error')
+            ),
+        customerEmail: string()
+            .required(language.translate('payment.checkoutcom_fawry_customer_email_invalid_error'))
+            .email(
+                language.translate('payment.checkoutcom_fawry_customer_email_invalid_error')
+            ),
+    }),
 };
 
 export default memoize(function getCheckoutcomValidationSchemas({
     paymentMethod,
     language,
-}: CustomValidationSchemaOptions): ObjectSchema<DocumentOnlyCustomFormFieldsetValues | SepaCustomFormFieldsetValues> {
+}: CustomValidationSchemaOptions): ObjectSchema<DocumentOnlyCustomFormFieldsetValues | FawryCustomFormFieldsetValues | SepaCustomFormFieldsetValues> {
 
     return object(checkoutComShemas[paymentMethod](language));
 });

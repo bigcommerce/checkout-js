@@ -1,1 +1,1 @@
-export { default as getCheckoutcomValidationSchemas, DocumentOnlyCustomFormFieldsetValues, SepaCustomFormFieldsetValues, checkoutcomPaymentMethods, documentPaymentMethods, checkoutcomCustomPaymentMethods } from './getCheckoutcomFieldsetValidationSchemas';
+export { default as getCheckoutcomValidationSchemas, DocumentOnlyCustomFormFieldsetValues, FawryCustomFormFieldsetValues, SepaCustomFormFieldsetValues, checkoutcomPaymentMethods, documentPaymentMethods, checkoutcomCustomPaymentMethods } from './getCheckoutcomFieldsetValidationSchemas';

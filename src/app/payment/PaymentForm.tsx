@@ -8,7 +8,7 @@ import { withLanguage, WithLanguageProps } from '../locale';
 import { TermsConditions } from '../termsConditions';
 import { Fieldset, Form, FormContext } from '../ui/form';
 
-import { DocumentOnlyCustomFormFieldsetValues, SepaCustomFormFieldsetValues } from './checkoutcomFieldsets';
+import { DocumentOnlyCustomFormFieldsetValues, FawryCustomFormFieldsetValues, SepaCustomFormFieldsetValues } from './checkoutcomFieldsets';
 import { CreditCardFieldsetValues } from './creditCard';
 import getPaymentValidationSchema from './getPaymentValidationSchema';
 import { HostedCreditCardFieldsetValues } from './hostedCreditCard';
@@ -53,6 +53,7 @@ export type PaymentFormValues = (
     HostedWidgetPaymentMethodValues & PaymentFormCommonValues |
     DocumentOnlyCustomFormFieldsetValues & PaymentFormCommonValues |
     SepaCustomFormFieldsetValues & PaymentFormCommonValues |
+    FawryCustomFormFieldsetValues & PaymentFormCommonValues |
     PaymentFormCommonValues
 );
 
