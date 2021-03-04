@@ -1,18 +1,27 @@
 import { LanguageService } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
-import { object, string, ObjectSchema } from 'yup';
+import { boolean, object, string, ObjectSchema } from 'yup';
 
+export type checkoutcomCustomPaymentMethods = 'sepa';
 export type documentPaymentMethods = 'oxxo' | 'qpay' | 'boleto';
-export interface DocumentValidationSchemaOptions {
-    paymentMethod: documentPaymentMethods;
+export type checkoutcomPaymentMethods = documentPaymentMethods | checkoutcomCustomPaymentMethods;
+export interface CustomValidationSchemaOptions {
+    paymentMethod: checkoutcomPaymentMethods;
     language: LanguageService;
 }
 
 export interface DocumentOnlyCustomFormFieldsetValues {
     ccDocument?: string;
 }
+export interface SepaCustomFormFieldsetValues {
+    bic?: string;
+    iban: string;
+    sepaMandate: boolean;
+}
 
-const checkoutComShemas = {
+const checkoutComShemas: {
+    [key in checkoutcomPaymentMethods]: (language: LanguageService) => {}
+} = {
     oxxo: (language: LanguageService) => ({
         ccDocument: string()
             .notRequired()
@@ -41,12 +50,24 @@ const checkoutComShemas = {
                 language.translate('payment.credit_card_document_invalid_error_boleto')
             ),
     }),
+    sepa: (language: LanguageService) => ({
+        bic: string()
+            .notRequired(),
+        iban: string()
+            .required(
+                language.translate('payment.sepa_account_number_required')
+            ),
+        sepaMandate: boolean()
+            .required(
+                language.translate('payment.sepa_mandate_required')
+            ),
+    }),
 };
 
-export default memoize(function getDocumentValidationSchema({
+export default memoize(function getCheckoutcomValidationSchemas({
     paymentMethod,
     language,
-}: DocumentValidationSchemaOptions): ObjectSchema<DocumentOnlyCustomFormFieldsetValues> {
+}: CustomValidationSchemaOptions): ObjectSchema<DocumentOnlyCustomFormFieldsetValues | SepaCustomFormFieldsetValues> {
 
     return object(checkoutComShemas[paymentMethod](language));
 });

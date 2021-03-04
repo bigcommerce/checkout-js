@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from 'react';
 
 import { withLanguage, WithLanguageProps } from '../../locale';
-import { TextFieldForm } from '../creditCard';
-import { documentPaymentMethods, getDocumentOnlyValidationSchema } from '../documentOnly';
+import { checkoutcomCustomPaymentMethods, checkoutcomPaymentMethods, getCheckoutcomValidationSchemas } from '../checkoutcomFieldsets';
 
+import checkoutcomCustomFormFields, { ccDocumentField } from './CheckoutcomCustomFormFields';
 import CreditCardPaymentMethod, { CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
 
 export interface CheckoutcomCustomPaymentMethodProps
@@ -15,21 +15,16 @@ const CheckoutcomCustomPaymentMethod: FunctionComponent<
     CheckoutcomCustomPaymentMethodProps & WithLanguageProps
 > = ({ language, checkoutCustomMethod, ...rest }) => {
 
-    const checkoutcomCustomFieldset = (
-        <TextFieldForm
-            additionalClassName="form-field--ccDocument"
-            autoComplete="cc-document"
-            labelId="payment.credit_card_document_label"
-            name="ccDocument"
-        />
-    );
+    const CheckoutcomCustomFieldset = checkoutCustomMethod in checkoutcomCustomFormFields
+    ? checkoutcomCustomFormFields[checkoutCustomMethod as checkoutcomCustomPaymentMethods]
+    : ccDocumentField;
 
     return (
         <CreditCardPaymentMethod
             { ...rest }
-            cardFieldset={ checkoutcomCustomFieldset }
-            cardValidationSchema={ getDocumentOnlyValidationSchema({
-                paymentMethod: checkoutCustomMethod as documentPaymentMethods,
+            cardFieldset={ <CheckoutcomCustomFieldset method={ rest.method } /> }
+            cardValidationSchema={ getCheckoutcomValidationSchemas({
+                paymentMethod: checkoutCustomMethod as checkoutcomPaymentMethods,
                 language,
             }) }
         />

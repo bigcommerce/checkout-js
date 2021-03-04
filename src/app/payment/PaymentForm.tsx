@@ -8,8 +8,8 @@ import { withLanguage, WithLanguageProps } from '../locale';
 import { TermsConditions } from '../termsConditions';
 import { Fieldset, Form, FormContext } from '../ui/form';
 
+import { DocumentOnlyCustomFormFieldsetValues, SepaCustomFormFieldsetValues } from './checkoutcomFieldsets';
 import { CreditCardFieldsetValues } from './creditCard';
-import { DocumentOnlyCustomFormFieldsetValues } from './documentOnly';
 import getPaymentValidationSchema from './getPaymentValidationSchema';
 import { HostedCreditCardFieldsetValues } from './hostedCreditCard';
 import { getUniquePaymentMethodId, PaymentMethodId, PaymentMethodList } from './paymentMethod';
@@ -52,6 +52,7 @@ export type PaymentFormValues = (
     HostedCreditCardFieldsetValues & PaymentFormCommonValues |
     HostedWidgetPaymentMethodValues & PaymentFormCommonValues |
     DocumentOnlyCustomFormFieldsetValues & PaymentFormCommonValues |
+    SepaCustomFormFieldsetValues & PaymentFormCommonValues |
     PaymentFormCommonValues
 );
 

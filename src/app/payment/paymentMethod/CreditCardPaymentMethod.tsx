@@ -10,8 +10,8 @@ import { MapToPropsFactory } from '../../common/hoc';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { withForm, WithFormProps } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
+import { DocumentOnlyCustomFormFieldsetValues, SepaCustomFormFieldsetValues } from '../checkoutcomFieldsets';
 import { configureCardValidator, getCreditCardValidationSchema, CreditCardFieldset, CreditCardFieldsetValues } from '../creditCard';
-import { DocumentOnlyCustomFormFieldsetValues } from '../documentOnly';
 import { HostedCreditCardFieldsetValues } from '../hostedCreditCard';
 import { getInstrumentValidationSchema, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CardInstrumentFieldset, CardInstrumentFieldsetValues, CreditCardValidation } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
@@ -31,7 +31,7 @@ export interface CreditCardPaymentMethodProps {
     onUnhandledError?(error: Error): void;
 }
 
-export type CreditCardPaymentMethodValues = CreditCardFieldsetValues | CardInstrumentFieldsetValues | HostedCreditCardFieldsetValues | DocumentOnlyCustomFormFieldsetValues;
+export type CreditCardPaymentMethodValues = CreditCardFieldsetValues | CardInstrumentFieldsetValues | HostedCreditCardFieldsetValues | DocumentOnlyCustomFormFieldsetValues | SepaCustomFormFieldsetValues;
 
 interface WithCheckoutCreditCardPaymentMethodProps {
     instruments: CardInstrument[];
