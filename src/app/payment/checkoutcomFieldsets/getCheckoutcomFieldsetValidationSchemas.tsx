@@ -2,8 +2,8 @@ import { LanguageService } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
 import { boolean, object, string, ObjectSchema } from 'yup';
 
-export type checkoutcomCustomPaymentMethods = 'ideal' | 'sepa';
-export type documentPaymentMethods = 'oxxo' | 'qpay' | 'boleto';
+export type checkoutcomCustomPaymentMethods = 'sepa';
+export type documentPaymentMethods = 'oxxo' | 'qpay' | 'boleto' | 'ideal';
 export type checkoutcomPaymentMethods = documentPaymentMethods | checkoutcomCustomPaymentMethods;
 export interface CustomValidationSchemaOptions {
     paymentMethod: checkoutcomPaymentMethods;
@@ -24,10 +24,10 @@ const checkoutComShemas: {
 } = {
     oxxo: (language: LanguageService) => ({
         ccDocument: string()
-            .required(language.translate('payment.credit_card_document_invalid_error_oxxo'))
+            .required(language.translate('payment.checkoutcom_document_invalid_error_oxxo'))
             .length(
                 18,
-                language.translate('payment.credit_card_document_invalid_error_oxxo')
+                language.translate('payment.checkoutcom_document_invalid_error_oxxo')
             ),
     }),
     qpay: (language: LanguageService) => ({
@@ -35,19 +35,19 @@ const checkoutComShemas: {
             .notRequired()
             .max(
                 32,
-                language.translate('payment.credit_card_document_invalid_error_qpay')
+                language.translate('payment.checkoutcom_document_invalid_error_qpay')
             ),
     }),
     boleto: (language: LanguageService) => ({
         ccDocument: string()
-            .required(language.translate('payment.credit_card_document_invalid_error_boleto'))
+            .required(language.translate('payment.checkoutcom_document_invalid_error_boleto'))
             .min(
                 11,
-                language.translate('payment.credit_card_document_invalid_error_boleto')
+                language.translate('payment.checkoutcom_document_invalid_error_boleto')
             )
             .max(
                 14,
-                language.translate('payment.credit_card_document_invalid_error_boleto')
+                language.translate('payment.checkoutcom_document_invalid_error_boleto')
             ),
     }),
     sepa: (language: LanguageService) => ({
@@ -61,19 +61,19 @@ const checkoutComShemas: {
             .required(
                 language.translate('payment.sepa_mandate_required')
             ),
-        }),
+    }),
     ideal: (language: LanguageService) => ({
         ccDocument: string()
             .required()
             .min(
                 8,
-                language.translate('payment.credit_card_document_invalid_error_ideal')
+                language.translate('payment.checkoutcom_document_invalid_error_ideal')
             )
             .max(
                 11,
-                language.translate('payment.credit_card_document_invalid_error_ideal')
+                language.translate('payment.checkoutcom_document_invalid_error_ideal')
             ),
-        }),
+    }),
 };
 
 export default memoize(function getCheckoutcomValidationSchemas({

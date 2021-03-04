@@ -7,11 +7,11 @@ import { CheckboxFormField } from '../../ui/form';
 import { TextFieldForm } from '../creditCard';
 import PaymentContext from '../PaymentContext';
 
-interface CheckoutcomSepaFormProps {
+interface CheckoutcomAPMFormProps {
     method: PaymentMethod;
 }
 
-const Sepa: FunctionComponent<CheckoutcomSepaFormProps> = ({method}) => {
+const Sepa: FunctionComponent<CheckoutcomAPMFormProps> = ({method}) => {
     const checkoutContext = useContext(CheckoutContext);
     const paymentContext = useContext(PaymentContext);
     const config = checkoutContext?.checkoutState.data.getConfig();
@@ -49,24 +49,15 @@ const Sepa: FunctionComponent<CheckoutcomSepaFormProps> = ({method}) => {
     </>);
 };
 
-export const checkoutcomDocumentCustomFieldset = (
-    <TextFieldForm
-        additionalClassName="form-field--ccDocument"
-        autoComplete="cc-document"
-        labelId="payment.credit_card_document_label"
-        name="ccDocument"
-    />
-);
-
 const checkoutcomCustomFormFields = {
     sepa: Sepa,
 };
 
-export const ccDocumentField = () => (
+export const ccDocumentField = ({ method }: CheckoutcomAPMFormProps) => (
     <TextFieldForm
         additionalClassName="form-field--ccDocument"
         autoComplete="cc-document"
-        labelId="payment.credit_card_document_label"
+        labelId={ `payment.checkoutcom_document_label_${ method.id }` }
         name="ccDocument"
     />
 );

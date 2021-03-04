@@ -111,10 +111,11 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
             return <HostedCreditCardPaymentMethod { ...props } />;
         }
 
-        if (method.id === PaymentMethodId.Oxxo ||
-            method.id === PaymentMethodId.Boleto ||
+        if (method.id === PaymentMethodId.Boleto ||
+            method.id === PaymentMethodId.Ideal ||
+            method.id === PaymentMethodId.Oxxo ||
             method.id === PaymentMethodId.Qpay ||
-            method.id === PaymentMethodId.Ideal
+            method.id === PaymentMethodId.Sepa
             ) {
             return <CheckoutCustomPaymentMethod checkoutCustomMethod={ method.id } { ...props } />;
         }
