@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.118.0](https://github.com/bigcommerce/checkout-js/compare/v1.117.0...v1.118.0) (2021-03-04)
+
+
+### Features
+
+* **payment:** INT-3610 added Mollie Checkout ([7ae5002](https://github.com/bigcommerce/checkout-js/commit/7ae500247c68f45b3b9b59e0505b9a54b6feeaa0))
+* **payment:** INT-3610 INT-3408 Bump SDK. ([f63b9d2](https://github.com/bigcommerce/checkout-js/commit/f63b9d2608af7e01dd3fa4b8a506c16c2ec27ffb))
+* **payment:** INT-3931 Add SEPA form for Checkout.com ([e9f305b](https://github.com/bigcommerce/checkout-js/commit/e9f305b39205d5d7642d88485959df7b443249b6))
+
+
+### Bug Fixes
+
+* **payment:** INT-3408 migrated masterpass to SRC ([7810e4a](https://github.com/bigcommerce/checkout-js/commit/7810e4ac2bb817ac39d31c92f3d84d07ef32b512))
+
 ## [1.117.0](https://github.com/bigcommerce/checkout-js/compare/v1.116.0...v1.117.0) (2021-02-23)
 
 
