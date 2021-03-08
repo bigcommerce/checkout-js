@@ -57,7 +57,7 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
                 onUnhandledError?.(error);
             },
         },
-    }), [initializePayment, submitForm, paymentContext, rest.method, setSubmitted, onUnhandledError]);
+    }), [containerId, initializePayment, submitForm, paymentContext, rest.method, setSubmitted, onUnhandledError]);
 
     return <HostedWidgetPaymentMethod
         { ...rest }
