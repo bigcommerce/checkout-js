@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.118.1-alpha.1615221079882](https://github.com/bigcommerce/checkout-js/compare/v1.118.0...v1.118.1-alpha.1615221079882) (2021-03-08)
+
+
+### Features
+
+* **payment:** INT-3840 Add DigitalRiver payment method ([e9bd6f7](https://github.com/bigcommerce/checkout-js/commit/e9bd6f74fecd2beec66e903fb60497811f6af2fa))
+* **payment:** INT-3840 Add DigitalRiver payment method + mexico review ([6fe7810](https://github.com/bigcommerce/checkout-js/commit/6fe7810b6bda2a83c7f82997d41031d2d0c72d37))
+* **payment:** INT-3947 suppress PayPal and Klarna on digitalRiver ([8366bcd](https://github.com/bigcommerce/checkout-js/commit/8366bcd9ebae2090e6141cdea63f063120ed3302))
+* **payment:** INT-3947 suppress PayPal and Klarna on digitalRiver ([958bf4f](https://github.com/bigcommerce/checkout-js/commit/958bf4ff8ec2e1be7d908bce1deac31b02396ffe))
+* **payment:** INT-3947 suppress PayPal and Klarna on digitalRiver ([fb56551](https://github.com/bigcommerce/checkout-js/commit/fb56551014b795e20b9f578362f1ff567fb0d90a))
+
 ## [1.118.0](https://github.com/bigcommerce/checkout-js/compare/v1.117.0...v1.118.0) (2021-03-04)
 
 
