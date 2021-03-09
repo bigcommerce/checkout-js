@@ -7,7 +7,7 @@ import { CheckoutProvider } from '../checkout';
 import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
-import { CreatedCustomer } from '../guestSignup';
+import { CreatedCustomer, GuestSignUpForm } from '../guestSignup';
 import { LoadingSpinner } from '../ui/loading';
 
 import { getOrder } from './orders.mock';
@@ -129,7 +129,27 @@ describe('OrderConfirmation', () => {
         expect(orderConfirmation.find(OrderStatus).length).toEqual(1);
         expect(orderConfirmation.find(ThankYouHeader).length).toEqual(1);
         expect(orderConfirmation.find(OrderSummary).length).toEqual(1);
+        expect(orderConfirmation.find(GuestSignUpForm).prop('customerCanBeCreated'))
+            .toBeTruthy();
         expect(orderConfirmation.find('[data-test="payment-instructions"]')).toMatchSnapshot();
+    });
+
+    it('renders set password form', async () => {
+        jest.spyOn(checkoutState.statuses, 'isLoadingOrder')
+            .mockReturnValue(false);
+
+        jest.spyOn(checkoutState.data, 'getOrder')
+            .mockReturnValue({
+                ...getOrder(),
+                customerId: 1,
+            });
+
+        orderConfirmation = mount(<ComponentTest { ...defaultProps } />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        expect(orderConfirmation.find(GuestSignUpForm).prop('customerCanBeCreated'))
+            .toBeFalsy();
     });
 
     it('renders continue shopping button', () => {

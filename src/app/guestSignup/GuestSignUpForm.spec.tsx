@@ -24,6 +24,7 @@ describe('GuestSignUpForm', () => {
         component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <GuestSignUpForm
+                    customerCanBeCreated={ true }
                     onSignUp={ handleSignUp }
                     passwordRequirements={ passwordRequirements }
                 />
@@ -35,6 +36,22 @@ describe('GuestSignUpForm', () => {
         const shallowComponent = render(
             <LocaleContext.Provider value={ localeContext }>
                 <GuestSignUpForm
+                    customerCanBeCreated={ true }
+                    onSignUp={ noop }
+                    passwordRequirements={ passwordRequirements }
+                />
+            </LocaleContext.Provider>
+        );
+
+        expect(shallowComponent)
+            .toMatchSnapshot();
+    });
+
+    it('matches snapshot when customer cannot be created', () => {
+        const shallowComponent = render(
+            <LocaleContext.Provider value={ localeContext }>
+                <GuestSignUpForm
+                    customerCanBeCreated={ false }
                     onSignUp={ noop }
                     passwordRequirements={ passwordRequirements }
                 />
