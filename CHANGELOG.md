@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.118.1](https://github.com/bigcommerce/checkout-js/compare/v1.118.0...v1.118.1) (2021-03-09)
+
+
+### Bug Fixes
+
+* **order:** CHECKOUT-5619 Update text when account has been created ([7d31a7e](https://github.com/bigcommerce/checkout-js/commit/7d31a7ec34ce49eea71146a462e0ee8868ea205f))
+
 ## [1.118.0](https://github.com/bigcommerce/checkout-js/compare/v1.117.0...v1.118.0) (2021-03-04)
 
 
