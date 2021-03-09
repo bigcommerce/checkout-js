@@ -123,8 +123,8 @@ function getPaymentMethodTitle(
         }
 
         return (
-            customTitles[method.id] ||
             customTitles[method.gateway || ''] ||
+            customTitles[method.id] ||
             customTitles[method.method] ||
             customTitles[PaymentMethodType.CreditCard]
         );
