@@ -302,7 +302,8 @@ describe('PaymentMethod', () => {
 
     describe('when using checkout.com APMs', () => {
         let creditCardMethod: PaymentMethod;
-        let alternateMethod: PaymentMethod;
+        let alternateMethodA: PaymentMethod;
+        let alternateMethodB: PaymentMethod;
 
         beforeEach(() => {
             creditCardMethod = {
@@ -311,9 +312,15 @@ describe('PaymentMethod', () => {
                 gateway: PaymentMethodId.Checkoutcom,
             };
 
-            alternateMethod = {
+            alternateMethodA = {
                 ...getPaymentMethod(),
                 id: 'oxxo',
+                gateway: PaymentMethodId.Checkoutcom,
+            };
+
+            alternateMethodB = {
+                ...getPaymentMethod(),
+                id: 'paypal',
                 gateway: PaymentMethodId.Checkoutcom,
             };
         });
@@ -345,30 +352,57 @@ describe('PaymentMethod', () => {
                 }));
         });
 
-        it('renders oxxo as oxxo payment method', () => {
-            const container = mount(<PaymentMethodTest { ...defaultProps } method={ alternateMethod } />);
+        it('renders oxxo as custom payment method', () => {
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ alternateMethodA } />);
 
             expect(container.find(CheckoutcomCustomPaymentMethod).props())
                 .toEqual(expect.objectContaining({
                     deinitializePayment: expect.any(Function),
                     initializePayment: expect.any(Function),
-                    method: alternateMethod,
+                    method: alternateMethodA,
                 }));
         });
 
         it('initializes method with required config', () => {
-            const container = mount(<PaymentMethodTest { ...defaultProps } method={ alternateMethod } />);
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ alternateMethodA } />);
             const component: ReactWrapper<CheckoutcomCustomPaymentMethodProps> = container.find(CheckoutcomCustomPaymentMethod);
 
             component.prop('initializePayment')({
-                methodId: alternateMethod.id,
-                gatewayId: alternateMethod.gateway,
+                methodId: alternateMethodA.id,
+                gatewayId: alternateMethodA.gateway,
             });
 
             expect(checkoutService.initializePayment)
                 .toHaveBeenCalledWith(expect.objectContaining({
-                    methodId: alternateMethod.id,
-                    gatewayId: alternateMethod.gateway,
+                    methodId: alternateMethodA.id,
+                    gatewayId: alternateMethodA.gateway,
+                }));
+        });
+
+        it('renders paypal as hosted payment method', () => {
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ alternateMethodB } />);
+
+            expect(container.find(HostedPaymentMethod).props())
+                .toEqual(expect.objectContaining({
+                    deinitializePayment: expect.any(Function),
+                    initializePayment: expect.any(Function),
+                    method: alternateMethodB,
+                }));
+        });
+
+        it('initializes method with required config', () => {
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ alternateMethodB } />);
+            const component: ReactWrapper<HostedPaymentMethodProps> = container.find(HostedPaymentMethod);
+
+            component.prop('initializePayment')({
+                methodId: alternateMethodB.id,
+                gatewayId: alternateMethodB.gateway,
+            });
+
+            expect(checkoutService.initializePayment)
+                .toHaveBeenCalledWith(expect.objectContaining({
+                    methodId: alternateMethodB.id,
+                    gatewayId: alternateMethodB.gateway,
                 }));
         });
     });
