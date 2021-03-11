@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.120.0](https://github.com/bigcommerce/checkout-js/compare/v1.119.0...v1.120.0) (2021-03-11)
+
+
+### Features
+
+* **payment:** PAYPAL-922 changed paypal credit to pay later logo ([18c2935](https://github.com/bigcommerce/checkout-js/commit/18c2935353f3b7751266ba419c56c8d4ddb3815b))
+
 ## [1.119.0](https://github.com/bigcommerce/checkout-js/compare/v1.118.1...v1.119.0) (2021-03-10)
 
 
