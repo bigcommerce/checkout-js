@@ -60,7 +60,7 @@
             "estimated_total_text": "Estimated Total",
             "free_text": "Free",
             "gift_certificate_text": "Gift Certificate",
-            "handling_text": "Handling",
+            "handling_text": "Duties and Fees",
             "item_count_text": "{count, plural, one{1 Item} other{# Items} }",
             "print_action": "Print",
             "remaining_text": "Remaining",
