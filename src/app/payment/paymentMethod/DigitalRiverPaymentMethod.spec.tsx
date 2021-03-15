@@ -84,6 +84,12 @@ describe('when using Digital River payment', () => {
                         },
                         flow: 'checkout',
                         paymentMethodConfiguration: {
+                            disabledPaymentMethods: [
+                                'klarnaCredit',
+                                'payPal',
+                                'payPalCredit',
+                                'payPalBilling',
+                            ],
                             classes: {
                                 base: 'form-input optimizedCheckout-form-input',
                             },
