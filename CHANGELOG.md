@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.121.0](https://github.com/bigcommerce/checkout-js/compare/v1.120.0...v1.121.0) (2021-03-15)
+
+
+### Features
+
+* **payment:** INT-3840 Add DigitalRiver payment method ([0b36c4d](https://github.com/bigcommerce/checkout-js/commit/0b36c4de8bd604c253abbe6f0e75ba001fe5e5f5))
+* **payment:** INT-3896 INT-3840 Bump SDK. ([6e07a9a](https://github.com/bigcommerce/checkout-js/commit/6e07a9a7e6afa4f003ad209dd109a0a0de324009))
+
 ## [1.120.0](https://github.com/bigcommerce/checkout-js/compare/v1.119.0...v1.120.0) (2021-03-11)
 
 
