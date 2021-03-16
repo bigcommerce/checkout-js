@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.122.1](https://github.com/bigcommerce/checkout-js/compare/v1.122.0...v1.122.1) (2021-03-16)
+
+
+### Bug Fixes
+
+* **checkout:** ADYEN-38 Fix Adyen icons on checkout page ([5bbc02c](https://github.com/bigcommerce/checkout-js/commit/5bbc02c529cd78f17d34480ee19abf83a6514ec3))
+
 ## [1.122.0](https://github.com/bigcommerce/checkout-js/compare/v1.121.0...v1.122.0) (2021-03-16)
 
 
