@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.122.2](https://github.com/bigcommerce/checkout-js/compare/v1.122.1...v1.122.2) (2021-03-17)
+
+
+### Bug Fixes
+
+* **shipping:** CHECKOUT-5618 Check state code for address equality ([37020ec](https://github.com/bigcommerce/checkout-js/commit/37020ecc02873f6fe0a727e3d6054991a1c141e2))
+
 ### [1.122.1](https://github.com/bigcommerce/checkout-js/compare/v1.122.0...v1.122.1) (2021-03-16)
 
 
