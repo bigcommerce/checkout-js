@@ -17,10 +17,57 @@ describe('isEqualAddress', () => {
         })).toBeTruthy();
     });
 
-    it('returns false when values are different', () => {
-        expect(isEqualAddress(getAddress(), {
+    it('returns true when stateOrProvinceCode matches stateOrProvince', () => {
+        expect(isEqualAddress({
             ...getAddress(),
-            stateOrProvince: 'Foo',
+            stateOrProvince: '',
+            stateOrProvinceCode: 'CA',
+        }, {
+            ...getAddress(),
+            stateOrProvince: 'California',
+            stateOrProvinceCode: 'CA',
+        })).toBeTruthy();
+
+        expect(isEqualAddress({
+            ...getAddress(),
+            stateOrProvince: 'California',
+            stateOrProvinceCode: '',
+        }, {
+            ...getAddress(),
+            stateOrProvince: 'California',
+            stateOrProvinceCode: 'CA',
+        })).toBeTruthy();
+
+        expect(isEqualAddress({
+            ...getAddress(),
+            stateOrProvince: '',
+            stateOrProvinceCode: '',
+        }, {
+            ...getAddress(),
+            stateOrProvince: '',
+            stateOrProvinceCode: '',
+        })).toBeTruthy();
+    });
+
+    it('returns false when values are different', () => {
+        expect(isEqualAddress({
+            ...getAddress(),
+            stateOrProvince: 'California',
+            stateOrProvinceCode: '',
+        }, {
+            ...getAddress(),
+            stateOrProvince: 'New York',
+            stateOrProvinceCode: '',
+        })).toBeFalsy();
+
+        expect(isEqualAddress({
+            ...getAddress(),
+            stateOrProvince: '',
+            stateOrProvinceCode: 'CA',
+        }, {
+            ...getAddress(),
+            stateOrProvince: '',
+            stateOrProvinceCode: 'NY',
         })).toBeFalsy();
     });
 
