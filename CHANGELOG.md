@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.123.0](https://github.com/bigcommerce/checkout-js/compare/v1.122.2...v1.123.0) (2021-03-22)
+
+
+### Features
+
+* **payment:** INT-3947 Bump SDK. ([1694879](https://github.com/bigcommerce/checkout-js/commit/16948796fe2e99093db8b78e90be165e6e24d002))
+* **payment:** INT-3947 Suppress PayPal and Klarna ([fa52523](https://github.com/bigcommerce/checkout-js/commit/fa5252301a54a9836d888cff5c1e103492541cbc))
+* **payment:** INT-3969 Use APMs logos instead names in checkout accordion for Checkout.com ([60d680f](https://github.com/bigcommerce/checkout-js/commit/60d680f2b46d65141af74019b48ef2effc2c38f3))
+
 ### [1.122.2](https://github.com/bigcommerce/checkout-js/compare/v1.122.1...v1.122.2) (2021-03-17)
 
 
