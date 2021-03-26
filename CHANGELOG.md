@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.123.1](https://github.com/bigcommerce/checkout-js/compare/v1.123.0...v1.123.1) (2021-03-26)
+
+
+### Bug Fixes
+
+* **payment:** INT-3408 added masterpass SRC experiment ([51769c6](https://github.com/bigcommerce/checkout-js/commit/51769c6f0e0afc6aaee3e34c03a2b2935754800f))
+
 ## [1.123.0](https://github.com/bigcommerce/checkout-js/compare/v1.122.2...v1.123.0) (2021-03-22)
 
 
