@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.123.2-alpha.1616779303257](https://github.com/bigcommerce/checkout-js/compare/v1.123.1...v1.123.2-alpha.1616779303257) (2021-03-26)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-4936 Display shipping step with custom item carts ([12c53b5](https://github.com/bigcommerce/checkout-js/commit/12c53b54bf922fc30093e654277af6b36cf8fd74))
+
 ### [1.123.1](https://github.com/bigcommerce/checkout-js/compare/v1.123.0...v1.123.1) (2021-03-26)
 
 
