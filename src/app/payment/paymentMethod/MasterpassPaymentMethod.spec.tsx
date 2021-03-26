@@ -37,6 +37,7 @@ describe('when using Masterpass payment', () => {
             method: PaymentMethodType.Masterpass,
             initializationData: {
                 checkoutId: '1234',
+                isMasterpassSrcEnabled: false,
             },
         };
 
