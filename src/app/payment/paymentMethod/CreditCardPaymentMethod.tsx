@@ -10,7 +10,7 @@ import { MapToPropsFactory } from '../../common/hoc';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { withForm, WithFormProps } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
-import { DocumentOnlyCustomFormFieldsetValues, FawryCustomFormFieldsetValues, SepaCustomFormFieldsetValues } from '../checkoutcomFieldsets/';
+import { DocumentOnlyCustomFormFieldsetValues, FawryCustomFormFieldsetValues, IdealCustomFormFieldsetValues, SepaCustomFormFieldsetValues } from '../checkoutcomFieldsets/';
 import { configureCardValidator, getCreditCardValidationSchema, CreditCardFieldset, CreditCardFieldsetValues } from '../creditCard';
 import { HostedCreditCardFieldsetValues } from '../hostedCreditCard';
 import { getInstrumentValidationSchema, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CardInstrumentFieldset, CardInstrumentFieldsetValues, CreditCardValidation } from '../storedInstrument';
@@ -31,7 +31,7 @@ export interface CreditCardPaymentMethodProps {
     onUnhandledError?(error: Error): void;
 }
 
-export type CreditCardPaymentMethodValues = CreditCardFieldsetValues | CardInstrumentFieldsetValues | HostedCreditCardFieldsetValues | DocumentOnlyCustomFormFieldsetValues | SepaCustomFormFieldsetValues | FawryCustomFormFieldsetValues;
+export type CreditCardPaymentMethodValues = CreditCardFieldsetValues | CardInstrumentFieldsetValues | HostedCreditCardFieldsetValues | DocumentOnlyCustomFormFieldsetValues | SepaCustomFormFieldsetValues | FawryCustomFormFieldsetValues | IdealCustomFormFieldsetValues;
 
 interface WithCheckoutCreditCardPaymentMethodProps {
     instruments: CardInstrument[];

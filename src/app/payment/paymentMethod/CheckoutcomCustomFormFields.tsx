@@ -1,14 +1,31 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
-import React, { useContext, useEffect, FunctionComponent } from 'react';
+import { FieldProps } from 'formik';
+import React, { useCallback, useContext, useEffect, useState, FunctionComponent, SyntheticEvent } from 'react';
 
 import { CheckoutContext } from '../../checkout';
 import { TranslatedString } from '../../locale';
-import { CheckboxFormField } from '../../ui/form';
+import { DropdownTrigger } from '../../ui/dropdown';
+import { CheckboxFormField, FormField } from '../../ui/form';
 import { TextFieldForm } from '../creditCard';
 import PaymentContext from '../PaymentContext';
 
 interface CheckoutcomAPMFormProps {
     method: PaymentMethod;
+}
+interface Issuer {
+    bic: string;
+    name: string;
+}
+interface HiddenInputProps extends FieldProps {
+    selectedIssuer?: string;
+}
+interface DropdownButtonProps {
+    selectedIssuer?: Issuer;
+}
+interface OptionButtonProps {
+    className?: string;
+    issuer: Issuer;
+    onClick?(event: SyntheticEvent<EventTarget>): void;
 }
 
 const Sepa: FunctionComponent<CheckoutcomAPMFormProps> = ({method}) => {
@@ -68,9 +85,88 @@ const Fawry: FunctionComponent<CheckoutcomAPMFormProps> = () => {
     );
 };
 
+const Ideal: FunctionComponent<CheckoutcomAPMFormProps> = ({ method }) => {
+    const [selectedIssuer, setSelectedIssuer] = useState<Issuer | undefined>();
+    const [bicValue, setBicValue] = useState<string>('');
+    const render = useCallback((props: FieldProps) => <HiddenInput { ...props } selectedIssuer={ bicValue } />, [bicValue]);
+
+    const issuers: Issuer[] = method.initializationData.idealIssuers;
+
+    const handleClick = ({ currentTarget }: SyntheticEvent<HTMLButtonElement>) => {
+        const _selectedIssuer = issuers.find(({ bic }) => bic === currentTarget?.dataset.bic);
+        if (!_selectedIssuer) {
+            return;
+        }
+
+        setSelectedIssuer(_selectedIssuer);
+        setBicValue(_selectedIssuer.bic);
+    };
+
+    const issuersList = <ul className="instrumentSelect-dropdownMenu instrumentSelect-dropdownMenuNext dropdown-menu">
+        { issuers.map(issuer =>
+            <li className="instrumentSelect-option dropdown-menu-item" key={ issuer.bic }>
+                <OptionButton issuer={ issuer } onClick={ handleClick } />
+            </li>
+        ) }
+    </ul>;
+
+    return (<>
+        <DropdownTrigger
+            dropdown={ issuersList }
+        >
+            <DropdownButton selectedIssuer={ selectedIssuer } />
+        </DropdownTrigger>
+        <FormField input={ render } name="bic" />
+    </>);
+};
+
+const HiddenInput: FunctionComponent<HiddenInputProps> = ({field: {value, ...restField}, form, selectedIssuer}) => {
+    const Input = useCallback(() => <input { ...restField } type="hidden" />, [restField]);
+    useEffect(() => {
+        if (value === selectedIssuer) {
+            return;
+        }
+
+        form.setFieldValue(restField.name, selectedIssuer);
+    }, [value, form, selectedIssuer, restField.name]);
+
+    return <Input />;
+};
+
+const DropdownButton: FunctionComponent<DropdownButtonProps> = ({ selectedIssuer }) => {
+    if (!selectedIssuer) {
+        return (<button
+            className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
+            type="button"
+        >
+            <div className="instrumentSelect-details instrumentSelect-details--addNew">
+                <div className="instrumentSelect-card">
+                    Your bank
+                </div>
+            </div>
+        </button>);
+    }
+
+    return (<OptionButton
+        className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
+        issuer={ selectedIssuer }
+    />);
+};
+
+const OptionButton: FunctionComponent<OptionButtonProps> = ({ issuer, ...restProps }) => {
+    const { bic, name } = issuer;
+
+    return (<button data-bic={ bic } type="button" { ...restProps }>
+        <div className="instrumentSelect-details">
+            { `${bic} / ${name}` }
+        </div>
+    </button>);
+};
+
 const checkoutcomCustomFormFields = {
     fawry: Fawry,
     sepa: Sepa,
+    ideal: Ideal,
 };
 
 export const ccDocumentField = ({ method }: CheckoutcomAPMFormProps) => (

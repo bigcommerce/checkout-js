@@ -18,6 +18,9 @@ export interface SepaCustomFormFieldsetValues {
     iban: string;
     sepaMandate: boolean;
 }
+export interface IdealCustomFormFieldsetValues {
+    bic: string;
+}
 
 export interface FawryCustomFormFieldsetValues {
     customerMobile?: number;
@@ -58,7 +61,15 @@ const checkoutComShemas: {
     }),
     sepa: (language: LanguageService) => ({
         bic: string()
-            .notRequired(),
+            .notRequired()
+            .min(
+                8,
+                language.translate('payment.sepa_bic_length')
+            )
+            .max(
+                11,
+                language.translate('payment.sepa_bic_length')
+            ),
         iban: string()
             .required(
                 language.translate('payment.sepa_account_number_required')
@@ -69,15 +80,9 @@ const checkoutComShemas: {
             ),
     }),
     ideal: (language: LanguageService) => ({
-        ccDocument: string()
-            .required()
-            .min(
-                8,
-                language.translate('payment.checkoutcom_document_invalid_error_ideal')
-            )
-            .max(
-                11,
-                language.translate('payment.checkoutcom_document_invalid_error_ideal')
+        bic: string()
+            .required(
+                language.translate('payment.ideal_bic_required')
             ),
     }),
     fawry: (language: LanguageService) => ({
@@ -98,7 +103,7 @@ const checkoutComShemas: {
 export default memoize(function getCheckoutcomValidationSchemas({
     paymentMethod,
     language,
-}: CustomValidationSchemaOptions): ObjectSchema<DocumentOnlyCustomFormFieldsetValues | FawryCustomFormFieldsetValues | SepaCustomFormFieldsetValues> {
+}: CustomValidationSchemaOptions): ObjectSchema<DocumentOnlyCustomFormFieldsetValues | FawryCustomFormFieldsetValues | IdealCustomFormFieldsetValues | SepaCustomFormFieldsetValues> {
 
     return object(checkoutComShemas[paymentMethod](language));
 });
