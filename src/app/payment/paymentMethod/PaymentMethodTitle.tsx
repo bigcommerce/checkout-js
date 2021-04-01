@@ -46,7 +46,7 @@ function getPaymentMethodTitle(
                 titleText: '',
             },
             [PaymentMethodId.PaypalCommerceCredit]: {
-                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_pay_later.png'),
+                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_pay_later.svg'),
                 titleText: '',
             },
             [PaymentMethodId.PaypalCommerceAlternativeMethod]: {
