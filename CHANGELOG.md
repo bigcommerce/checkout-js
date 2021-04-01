@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.125.0](https://github.com/bigcommerce/checkout-js/compare/v1.124.1...v1.125.0) (2021-04-01)
+
+
+### Features
+
+* **payment:** PAYPAL-973 changed pay later logo to svg ([bbdc9f7](https://github.com/bigcommerce/checkout-js/commit/bbdc9f7f2100cb2ae1f83821d73d0fa872538e33))
+
 ### [1.124.1](https://github.com/bigcommerce/checkout-js/compare/v1.124.0...v1.124.1) (2021-04-01)
 
 
