@@ -125,6 +125,10 @@ function getPaymentMethodTitle(
                 logoUrl: method.id === 'credit_card' ? '' : cdnPath(`/img/payment-providers/checkoutcom_${method.id.toLowerCase()}.png`),
                 titleText: method.id === 'credit_card' ? methodName : '',
             },
+            [PaymentMethodId.StripeV3]: {
+                logoUrl: '',
+                titleText: method.method === 'iban' ? language.translate('payment.stripe_sepa_display_name_text') : methodName,
+            },
         };
 
         // KLUDGE: 'paypal' is actually a credit card method. It is the only
