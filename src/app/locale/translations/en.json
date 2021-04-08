@@ -197,7 +197,7 @@
             "checkoutcom_document_invalid_error_ideal": "BIC must be 8 or 11 characters",
             "checkoutcom_document_invalid_error_oxxo": "CURP must be at most 18 characters",
             "checkoutcom_document_invalid_error_qpay": "National ID must be at most 32 characters",
-            "checkoutcom_fawry_customer_mobile_invalid_error": "A valid Mobile Number is required",
+            "checkoutcom_fawry_customer_mobile_invalid_error": "Mobile Number must be valid",
             "checkoutcom_fawry_customer_mobile_label": "Mobile Number",
             "checkoutcom_fawry_customer_email_invalid_error": "Email address must be valid",
             "checkoutcom_fawry_customer_email_label": "Email",
