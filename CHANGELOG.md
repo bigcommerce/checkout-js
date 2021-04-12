@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.126.3](https://github.com/bigcommerce/checkout-js/compare/v1.126.2...v1.126.3) (2021-04-12)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-970 update version of checkout-sdk ([c3dfaaf](https://github.com/bigcommerce/checkout-js/commit/c3dfaaf3a9cceb28bc574f432a4deeed3a90fb90))
+
 ### [1.126.2](https://github.com/bigcommerce/checkout-js/compare/v1.126.1...v1.126.2) (2021-04-09)
 
 
