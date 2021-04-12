@@ -284,7 +284,7 @@ describe('PaymentMethodTitle', () => {
                 } }
             />
         );
-        const baseURL = (id: string) => `/img/payment-providers/checkoutcom_${id}.png`;
+        const baseURL = (id: string) => `/img/payment-providers/checkoutcom_${id}.svg`;
 
         let component = checkoutcomTitleComponent('sepa');
         expect(component.find('[data-test="payment-method-logo"]').prop('src'))
