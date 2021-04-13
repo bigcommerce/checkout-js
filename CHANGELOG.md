@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.126.4](https://github.com/bigcommerce/checkout-js/compare/v1.126.3...v1.126.4) (2021-04-13)
+
+
+### Bug Fixes
+
+* **payment:** INT-4100 added ability to translate SEPA display name ([52a0571](https://github.com/bigcommerce/checkout-js/commit/52a0571d717dd7129543a13c3bf131b4197b6976))
+
 ### [1.126.3](https://github.com/bigcommerce/checkout-js/compare/v1.126.2...v1.126.3) (2021-04-12)
 
 
