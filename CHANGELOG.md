@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.128.0](https://github.com/bigcommerce/checkout-js/compare/v1.127.0...v1.128.0) (2021-04-13)
+
+
+### Features
+
+* **payment:** INT-2503 Change autocomplete props ([7102646](https://github.com/bigcommerce/checkout-js/commit/71026468c799e7a5456fd6f4ad55257ac0d65eaa))
+* **payment:** INT-2503 Fawry custom form ([08cca99](https://github.com/bigcommerce/checkout-js/commit/08cca99b983925e07b47e120eb737222a7b37a7a))
+
 ## [1.127.0](https://github.com/bigcommerce/checkout-js/compare/v1.126.4...v1.127.0) (2021-04-13)
 
 
