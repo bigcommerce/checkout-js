@@ -49,7 +49,27 @@ const Sepa: FunctionComponent<CheckoutcomAPMFormProps> = ({method}) => {
     </>);
 };
 
+const Fawry: FunctionComponent<CheckoutcomAPMFormProps> = () => {
+    return (
+        <>
+            <TextFieldForm
+                additionalClassName="form-field--customerMobile"
+                autoComplete="customerMobile"
+                labelId="payment.checkoutcom_fawry_customer_mobile_label"
+                name="tel"
+            />
+            <TextFieldForm
+                additionalClassName="form-field--customerEmail"
+                autoComplete="customerEmail"
+                labelId="payment.checkoutcom_fawry_customer_email_label"
+                name="email"
+            />
+        </>
+    );
+};
+
 const checkoutcomCustomFormFields = {
+    fawry: Fawry,
     sepa: Sepa,
 };
 

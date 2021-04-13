@@ -118,6 +118,7 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
 
         if (method.id === PaymentMethodId.Boleto ||
             method.id === PaymentMethodId.Ideal ||
+            method.id === PaymentMethodId.Fawry ||
             method.id === PaymentMethodId.Oxxo ||
             method.id === PaymentMethodId.Qpay ||
             method.id === PaymentMethodId.Sepa
