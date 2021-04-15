@@ -4,7 +4,7 @@ import { EventHint, Exception } from '@sentry/types';
 
 import computeErrorCode from './computeErrorCode';
 import ConsoleErrorLogger from './ConsoleErrorLogger';
-import ErrorLogger, { ErrorLevelType, ErrorTags } from './ErrorLogger';
+import ErrorLogger, { ErrorLevelType, ErrorMeta, ErrorTags } from './ErrorLogger';
 import NoopErrorLogger from './NoopErrorLogger';
 
 const FILENAME_PREFIX = 'app://';
@@ -54,7 +54,8 @@ export default class SentryErrorLogger implements ErrorLogger {
     log(
         error: Error,
         tags?: ErrorTags,
-        level: ErrorLevelType = ErrorLevelType.Error
+        level: ErrorLevelType = ErrorLevelType.Error,
+        payload?: ErrorMeta
     ): void {
         this.consoleLogger.log(error, tags, level);
 
@@ -66,6 +67,11 @@ export default class SentryErrorLogger implements ErrorLogger {
             }
 
             scope.setLevel(this.mapToSentryLevel(level));
+
+            if (payload) {
+                scope.setExtras(payload);
+            }
+
             scope.setFingerprint(['{{ default }}']);
 
             captureException(error);
@@ -79,6 +85,9 @@ export default class SentryErrorLogger implements ErrorLogger {
 
         case ErrorLevelType.Warning:
             return Severity.Warning;
+
+        case ErrorLevelType.Debug:
+            return Severity.Debug;
 
         case ErrorLevelType.Error:
         default:

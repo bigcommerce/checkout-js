@@ -20,7 +20,7 @@ describe('ConsoleErrorLogger', () => {
         logger.log(error, tags);
 
         expect(mockConsole.error)
-            .toHaveBeenCalledWith(error, tags);
+            .toHaveBeenCalledWith(error, tags, undefined);
     });
 
     it('logs error as warning to console', () => {
@@ -31,7 +31,7 @@ describe('ConsoleErrorLogger', () => {
         logger.log(error, tags, ErrorLevelType.Warning);
 
         expect(mockConsole.warn)
-            .toHaveBeenCalledWith(error, tags);
+            .toHaveBeenCalledWith(error, tags, undefined);
     });
 
     it('logs error as info to console', () => {
@@ -42,6 +42,6 @@ describe('ConsoleErrorLogger', () => {
         logger.log(error, tags, ErrorLevelType.Info);
 
         expect(mockConsole.info)
-            .toHaveBeenCalledWith(error, tags);
+            .toHaveBeenCalledWith(error, tags, undefined);
     });
 });

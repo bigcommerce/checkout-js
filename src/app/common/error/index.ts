@@ -6,5 +6,6 @@ export { default as ErrorModal, ErrorModalOnCloseProps, ErrorModalProps } from '
 export { default as computeErrorCode } from './computeErrorCode';
 export { default as createErrorLogger } from './createErrorLogger';
 export { default as isCustomError } from './isCustomError';
+export { default as isCartChangedError } from './isCartChangedError';
 export { default as isRequestError } from './isRequestError';
 export { setPrototypeOf } from './createCustomErrorType';
