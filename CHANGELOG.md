@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.130.0](https://github.com/bigcommerce/checkout-js/compare/v1.129.0...v1.130.0) (2021-04-16)
+
+
+### Features
+
+* **common:** CHECKOUT-5747 Log extra debug data related to cart changed error ([e4ea5b5](https://github.com/bigcommerce/checkout-js/commit/e4ea5b5d2afdd8ba3bd8c4a704b6f9d5facacdd3))
+
 ## [1.129.0](https://github.com/bigcommerce/checkout-js/compare/v1.128.0...v1.129.0) (2021-04-15)
 
 
