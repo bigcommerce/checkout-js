@@ -1,11 +1,11 @@
-import { CheckoutSelectors, CheckoutSettings, OrderRequestBody, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { CartChangedError, CheckoutSelectors, CheckoutSettings, OrderRequestBody, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { compact, find, isEmpty, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
-import { isRequestError, ErrorModal, ErrorModalOnCloseProps } from '../common/error';
+import { isCartChangedError, isRequestError, ErrorModal, ErrorModalOnCloseProps } from '../common/error';
 import { EMPTY_ARRAY } from '../common/utility';
 import { withLanguage, WithLanguageProps } from '../locale';
 import { TermsConditionsType } from '../termsConditions';
@@ -21,7 +21,7 @@ export interface PaymentProps {
     isEmbedded?: boolean;
     isUsingMultiShipping?: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void; // TODO: We're currently doing this check in multiple places, perhaps we should move it up so this check get be done in a single place instead.
-    onCartChangedError?(error: Error): void;
+    onCartChangedError?(error: CartChangedError): void;
     onFinalize?(): void;
     onFinalizeError?(error: Error): void;
     onReady?(): void;
@@ -385,7 +385,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
                 return loadPaymentMethods();
             }
 
-            if (error.type === 'cart_changed') {
+            if (isCartChangedError(error)) {
                 return onCartChangedError(error);
             }
 

@@ -1,11 +1,11 @@
-import { Address, Cart, CheckoutParams, CheckoutSelectors, Consignment, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, FlashMessage, Promotion, RequestOptions, StepTracker } from '@bigcommerce/checkout-sdk';
+import { Address, Cart, CartChangedError, CheckoutParams, CheckoutSelectors, ComparableCheckout, Consignment, Coupon, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, FlashMessage, GiftCertificate, Promotion, RequestOptions, StepTracker } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { lazy, Component, ReactNode } from 'react';
 
 import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
-import { isCustomError, CustomError, ErrorLogger, ErrorModal } from '../common/error';
+import { isCustomError, CustomError, ErrorLevelType, ErrorLogger, ErrorModal } from '../common/error';
 import { retry } from '../common/utility';
 import { CustomerInfo, CustomerSignOutEvent, CustomerViewType } from '../customer';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
@@ -501,9 +501,29 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         return embeddedSupport.isSupported(...methodIds);
     };
 
-    private handleCartChangedError: () => void = () => {
+    private handleCartChangedError: (error: CartChangedError) => void = error => {
+        const { errorLogger } = this.props;
+
+        errorLogger.log(error, undefined, ErrorLevelType.Debug, {
+            previous: this.sanitizeComparableCheckout(error.data.previous),
+            updated: this.sanitizeComparableCheckout(error.data.updated),
+        });
+
         this.navigateToStep(CheckoutStepType.Shipping);
     };
+
+    private sanitizeComparableCheckout(
+        { coupons, giftCertificates, ...data }: ComparableCheckout
+    ): Omit<ComparableCheckout, 'giftCertificates' | 'coupons'> & {
+        giftCertificates: Array<Partial<GiftCertificate>>;
+        coupons: Array<Partial<Coupon>>;
+    } {
+        return {
+            ...data,
+            coupons: coupons.map(({ code, ...coupon }) => coupon),
+            giftCertificates: giftCertificates.map(({ code, ...gc }) => gc),
+        };
+    }
 
     private handleConsignmentsUpdated: (state: CheckoutSelectors) => void = ({ data }) => {
         const {
