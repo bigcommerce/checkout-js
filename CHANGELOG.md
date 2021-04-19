@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.131.0](https://github.com/bigcommerce/checkout-js/compare/v1.130.0...v1.131.0) (2021-04-19)
+
+
+### Features
+
+* **payment:** INT-4021 Checkout.com iDeal add BIC field as a dropdown ([57d0b0e](https://github.com/bigcommerce/checkout-js/commit/57d0b0e0d4a5c6e0fbe16f2738f4cda7c312dea8))
+
 ## [1.130.0](https://github.com/bigcommerce/checkout-js/compare/v1.129.0...v1.130.0) (2021-04-16)
 
 
