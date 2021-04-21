@@ -28,6 +28,7 @@ enum PaymentMethodId {
     Laybuy = 'laybuy',
     Masterpass = 'masterpass',
     Mollie = 'mollie',
+    Moneris = 'moneris',
     Oxxo = 'oxxo',
     PaypalExpress = 'paypalexpress',
     PaypalPaymentsPro = 'paypal',
