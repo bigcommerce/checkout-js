@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.131.2-alpha.1619022794901](https://github.com/bigcommerce/checkout-js/compare/v1.127.0...v1.131.2-alpha.1619022794901) (2021-04-21)
+
+
+### Features
+
+* **common:** CHECKOUT-5747 Log extra debug data related to cart changed error ([e4ea5b5](https://github.com/bigcommerce/checkout-js/commit/e4ea5b5d2afdd8ba3bd8c4a704b6f9d5facacdd3))
+* **payment:** INT-2503 Change autocomplete props ([7102646](https://github.com/bigcommerce/checkout-js/commit/71026468c799e7a5456fd6f4ad55257ac0d65eaa))
+* **payment:** INT-2503 Fawry custom form ([08cca99](https://github.com/bigcommerce/checkout-js/commit/08cca99b983925e07b47e120eb737222a7b37a7a))
+* **payment:** INT-2503 INT-3611 Bump checkout-sdk-js ([37ac777](https://github.com/bigcommerce/checkout-js/commit/37ac777cab9e902680cb6050a12fe8ae9e9e4479))
+* **payment:** INT-4021 Checkout.com iDeal add BIC field as a dropdown ([57d0b0e](https://github.com/bigcommerce/checkout-js/commit/57d0b0e0d4a5c6e0fbe16f2738f4cda7c312dea8))
+
 ### [1.131.1](https://github.com/bigcommerce/checkout-js/compare/v1.131.0...v1.131.1) (2021-04-19)
 
 ## [1.131.0](https://github.com/bigcommerce/checkout-js/compare/v1.130.0...v1.131.0) (2021-04-19)
