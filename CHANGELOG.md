@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.132.0](https://github.com/bigcommerce/checkout-js/compare/v1.131.1...v1.132.0) (2021-04-22)
+
+
+### Features
+
+* **payment:** INT-3702 INT-4063 Bump checkout-sdk-js ([9755050](https://github.com/bigcommerce/checkout-js/commit/9755050e7dc855b38cfd35eb92b2db96160327bd))
+
+
+### Bug Fixes
+
+* **checkout:** INT-4180 Display method name along with the icon for checkout.com ([97c1bec](https://github.com/bigcommerce/checkout-js/commit/97c1bec64d371c080d1e12d95de401aaa067e453))
+
 ### [1.131.1](https://github.com/bigcommerce/checkout-js/compare/v1.131.0...v1.131.1) (2021-04-19)
 
 ## [1.131.0](https://github.com/bigcommerce/checkout-js/compare/v1.130.0...v1.131.0) (2021-04-19)
