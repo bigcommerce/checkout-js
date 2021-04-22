@@ -122,8 +122,8 @@ function getPaymentMethodTitle(
                 titleText: methodName,
             },
             [PaymentMethodId.Checkoutcom]: {
-                logoUrl: method.id === 'credit_card' ? '' : cdnPath(`/img/payment-providers/checkoutcom_${method.id.toLowerCase()}.png`),
-                titleText: method.id === 'credit_card' ? methodName : '',
+                logoUrl: method.id === 'credit_card' ? '' : cdnPath(`/img/payment-providers/checkoutcom_${method.id.toLowerCase()}.svg`),
+                titleText: methodName,
             },
             [PaymentMethodId.StripeV3]: {
                 logoUrl: '',
