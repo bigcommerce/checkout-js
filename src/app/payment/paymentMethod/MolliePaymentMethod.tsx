@@ -6,7 +6,7 @@ import MollieCustomCardForm from './MollieCustomCardForm';
 export type MolliePaymentMethodsProps = Omit<HostedWidgetPaymentMethodProps, 'containerId'>;
 
 export enum MolliePaymentMethodType {
-    creditcard = 'creditcard',
+    creditcard = 'credit_card',
 }
 
 const MolliePaymentMethod: FunctionComponent<MolliePaymentMethodsProps> = ({ initializePayment, method, ...props }) => {
@@ -18,6 +18,7 @@ const MolliePaymentMethod: FunctionComponent<MolliePaymentMethodsProps> = ({ ini
         return initializePayment({
             ...options,
             mollie: {
+                containerId,
                 cardNumberId : mollieElements.cardNumberElementOptions.containerId,
                 cardCvcId: mollieElements.cardCvcElementOptions.containerId,
                 cardHolderId: mollieElements.cardHolderElementOptions.containerId,
@@ -38,7 +39,7 @@ const MolliePaymentMethod: FunctionComponent<MolliePaymentMethodsProps> = ({ ini
                 },
             },
         });
-    }, [initializePayment]);
+    }, [initializePayment, containerId]);
 
     const getMolliesElementOptions = () => {
 
@@ -68,17 +69,18 @@ const MolliePaymentMethod: FunctionComponent<MolliePaymentMethodsProps> = ({ ini
         return method.method === MolliePaymentMethodType.creditcard;
     }
 
-    return <>
+    return (
         <HostedWidgetPaymentMethod
             { ...props }
             containerId={ containerId }
             hideContentWhenSignedOut
+            hideVerificationFields={ true }
             initializePayment={ initializeMolliePayment }
+            isAccountInstrument={ !isCreditCard() }
             method={ method }
             renderCustomPaymentForm={ renderCustomPaymentForm }
             shouldRenderCustomInstrument={ true }
-        />
-    </>;
+        />);
 };
 
 export default MolliePaymentMethod;

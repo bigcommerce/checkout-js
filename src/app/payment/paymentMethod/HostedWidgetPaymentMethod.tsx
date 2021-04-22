@@ -193,6 +193,7 @@ class HostedWidgetPaymentMethod extends Component<
 
                     { !shouldShowAccountInstrument && shouldShowInstrumentFieldset && <CardInstrumentFieldset
                         instruments={ instruments as CardInstrument[] }
+                        onDeleteInstrument={ this.handleDeleteInstrument }
                         onSelectInstrument={ this.handleSelectInstrument }
                         onUseNewInstrument={ this.handleUseNewCard }
                         selectedInstrumentId={ selectedInstrumentId }
@@ -282,6 +283,26 @@ class HostedWidgetPaymentMethod extends Component<
             </div>
         );
     }
+
+    private handleDeleteInstrument: (id: string) => void = id => {
+        const { instruments, formik: { setFieldValue } } = this.props;
+        const { selectedInstrumentId } = this.state;
+
+        if (instruments.length === 0) {
+            this.setState({
+                isAddingNewCard: true,
+                selectedInstrumentId: undefined,
+            });
+
+            setFieldValue('instrumentId', '');
+        } else if (selectedInstrumentId === id) {
+            this.setState({
+                selectedInstrumentId: this.getDefaultInstrumentId(),
+            });
+
+            setFieldValue('instrumentId', this.getDefaultInstrumentId());
+        }
+    };
 
     private getSelectedBankAccountInstrument(isAddingNewCard: boolean, selectedInstrument: PaymentInstrument): AccountInstrument | undefined {
         return !isAddingNewCard && selectedInstrument && isBankAccountInstrument(selectedInstrument) ? selectedInstrument : undefined;

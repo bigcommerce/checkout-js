@@ -29,12 +29,13 @@
     flex-basis: 100%;
 }
 
-.form-field--mollie {
-    color: #4496f6 !important;
-
-    &-ccNumber,
-    &-ccName {
+.mollie {
+    &-full {
         flex-basis: 100%;
+    }
+
+    &-aside {
+        flex: 1 0 0;
     }
 }
 
