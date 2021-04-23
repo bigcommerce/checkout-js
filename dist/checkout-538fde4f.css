@@ -3950,10 +3950,11 @@ h6 a:hover {
 .form-field--stripe-ccNumber {
   flex-basis: 100%; }
 
-.form-field--mollie {
-  color: #4496f6 !important; }
-  .form-field--mollie-ccNumber, .form-field--mollie-ccName {
-    flex-basis: 100%; }
+.mollie-full {
+  flex-basis: 100%; }
+
+.mollie-aside {
+  flex: 1 0 0; }
 
 .form-field--ccNumber--hasExpiryDate {
   flex-basis: 50%; }
@@ -5340,4 +5341,4 @@ body.klarna-payments-fso-open {
     font-weight: normal; }
 
 
-/*# sourceMappingURL=checkout-ffd3ba3c.css.map*/
+/*# sourceMappingURL=checkout-538fde4f.css.map*/
