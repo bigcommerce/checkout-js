@@ -47,7 +47,7 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
                 },
             },
             onRenderButton: () => {
-                paymentContext?.hidePaymentSubmitButton?.(rest.method, true);
+                // paymentContext?.hidePaymentSubmitButton?.(rest.method, true);
             },
             onSubmitForm: () => {
                 setSubmitted(true);
@@ -62,6 +62,7 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
     return <HostedWidgetPaymentMethod
         { ...rest }
         containerId={ containerId }
+        hideContentWhenSignedOut
         initializePayment={ initializeDigitalRiverPayment }
     />;
 };
