@@ -105,6 +105,10 @@ function getPaymentMethodTitle(
                 logoUrl: cdnPath('/img/payment-providers/paypalpaymentsprouk.png'),
                 titleText: '',
             },
+            [PaymentMethodId.Quadpay]: {
+                logoUrl: cdnPath('/img/payment-providers/quadpay.png'),
+                titleText: language.translate('payment.quadpay_display_name_text'),
+            },
             [PaymentMethodId.Sezzle]: {
                 logoUrl: cdnPath('/img/payment-providers/sezzle-checkout-header.png'),
                 titleText: language.translate('payment.sezzle_display_name_text'),
