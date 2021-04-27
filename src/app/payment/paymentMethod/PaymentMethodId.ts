@@ -18,6 +18,7 @@ enum PaymentMethodId {
     ChasePay = 'chasepay',
     Checkoutcom = 'checkoutcom',
     CheckoutcomGooglePay = 'googlepaycheckoutcom',
+    Clearpay = 'clearpay',
     Converge = 'converge',
     CybersourceV2GooglePay = 'googlepaycybersourcev2',
     DigitalRiver = 'digitalriver',
