@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.134.1](https://github.com/bigcommerce/checkout-js/compare/v1.134.0...v1.134.1) (2021-04-27)
+
+
+### Bug Fixes
+
+* **checkout:** INT-4229 Fix checkout.com logo for credit card on phase 1 ([7ccf06e](https://github.com/bigcommerce/checkout-js/commit/7ccf06e09588b36cf91ada05bca671c0a9702a4b))
+* **common:** CHECKOUT-5747 Cleanup debugging logs ([e32429b](https://github.com/bigcommerce/checkout-js/commit/e32429b33f7d512f3434f96e38ffd9641515b5cf))
+
 ## [1.134.0](https://github.com/bigcommerce/checkout-js/compare/v1.133.0...v1.134.0) (2021-04-23)
 
 
