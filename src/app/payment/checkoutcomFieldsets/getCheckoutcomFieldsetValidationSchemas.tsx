@@ -23,8 +23,8 @@ export interface IdealCustomFormFieldsetValues {
 }
 
 export interface FawryCustomFormFieldsetValues {
-    customerMobile?: number;
-    customerEmail?: string;
+    customerMobile: string;
+    customerEmail: string;
 }
 
 const checkoutComShemas: {
