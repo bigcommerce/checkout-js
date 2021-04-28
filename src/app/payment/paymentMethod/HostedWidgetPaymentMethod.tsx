@@ -10,7 +10,7 @@ import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { MapToPropsFactory } from '../../common/hoc';
 import { TranslatedString } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
-import { isBankAccountInstrument, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, AccountInstrumentFieldset, CardInstrumentFieldset, CreditCardValidation } from '../storedInstrument';
+import { isBankAccountInstrument, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, AccountInstrumentFieldset, CardInstrumentFieldset } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
 import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
@@ -36,11 +36,11 @@ export interface HostedWidgetPaymentMethodProps {
     shouldShowEditButton?: boolean;
     shouldRenderCustomInstrument?: boolean;
     renderCustomPaymentForm?(): React.ReactNode;
-    validateInstrument?(shouldShowNumberField: boolean): React.ReactNode;
+    validateInstrument?(shouldShowNumberField: boolean, selectedInstrument?: CardInstrument): React.ReactNode;
     deinitializeCustomer?(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
     initializeCustomer?(options: CustomerInitializeOptions): Promise<CheckoutSelectors>;
-    initializePayment(options: PaymentInitializeOptions, selectedInstrumentId?: string): Promise<CheckoutSelectors>;
+    initializePayment(options: PaymentInitializeOptions, selectedInstrument?: CardInstrument): Promise<CheckoutSelectors>;
     onPaymentSelect?(): void;
     onSignOut?(): void;
     onSignOutError?(error: Error): void;
@@ -64,7 +64,6 @@ interface HostedWidgetPaymentMethodState {
     isAddingNewCard: boolean;
     selectedInstrumentId?: string;
 }
-
 class HostedWidgetPaymentMethod extends Component<
     HostedWidgetPaymentMethodProps &
     WithCheckoutHostedWidgetPaymentMethodProps &
@@ -225,31 +224,23 @@ class HostedWidgetPaymentMethod extends Component<
         const {
             hideVerificationFields,
             instruments,
-            isInstrumentCardCodeRequired: isInstrumentCardCodeRequiredProp,
             isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredProp,
-            method,
             validateInstrument,
         } = this.props;
 
         const { selectedInstrumentId = this.getDefaultInstrumentId() } = this.state;
-        const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
-        const shouldShowNumberField = selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument as CardInstrument) : false;
-        const shouldShowCardCodeField = selectedInstrument ? isInstrumentCardCodeRequiredProp(selectedInstrument as CardInstrument, method) : false;
+        const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId }) as CardInstrument;
+        const shouldShowNumberField = selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument) : false;
 
         if (hideVerificationFields) {
             return;
         }
 
         if (validateInstrument) {
-            return validateInstrument(shouldShowNumberField);
+            return validateInstrument(shouldShowNumberField, selectedInstrument);
         }
 
-        return (
-            <CreditCardValidation
-                shouldShowCardCodeField={ shouldShowCardCodeField }
-                shouldShowNumberField={ shouldShowNumberField }
-            />
-        );
+        return;
     }
 
     renderContainer(shouldShowCreditCardFieldset: any): ReactNode {
@@ -344,12 +335,14 @@ class HostedWidgetPaymentMethod extends Component<
             isSignInRequired,
             initializeCustomer = noop,
             initializePayment = noop,
+            instruments,
             method,
             setSubmit,
             signInCustomer = noop,
         } = this.props;
 
         const { selectedInstrumentId = this.getDefaultInstrumentId() } = this.state;
+        const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId }) as CardInstrument;
 
         if (!isPaymentDataRequired) {
             setSubmit(method, null);
@@ -370,7 +363,7 @@ class HostedWidgetPaymentMethod extends Component<
         return initializePayment({
             gatewayId: method.gateway,
             methodId: method.id,
-        }, selectedInstrumentId);
+        }, selectedInstrument);
     }
 
     private getDefaultInstrumentId(): string | undefined {

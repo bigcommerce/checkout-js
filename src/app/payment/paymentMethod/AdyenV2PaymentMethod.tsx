@@ -1,4 +1,4 @@
-import { AdyenCreditCardComponentOptions, AdyenIdealComponentOptions  } from '@bigcommerce/checkout-sdk';
+import { AdyenCreditCardComponentOptions, AdyenIdealComponentOptions } from '@bigcommerce/checkout-sdk';
 import React, { createRef, useCallback, useRef, useState, FunctionComponent, RefObject } from 'react';
 import { Omit } from 'utility-types';
 
@@ -94,7 +94,9 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
         }
     }, []);
 
-    const initializeAdyenPayment: HostedWidgetPaymentMethodProps['initializePayment'] = useCallback((options, selectedInstrumentId) => {
+    const initializeAdyenPayment: HostedWidgetPaymentMethodProps['initializePayment'] = useCallback((options, selectedInstrument) => {
+        const selectedInstrumentId = selectedInstrument?.bigpayToken;
+
         return initializePayment({
             ...options,
             adyenv2: {
