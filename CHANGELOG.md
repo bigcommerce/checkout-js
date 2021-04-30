@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.135.2-alpha.1619810554688](https://github.com/bigcommerce/checkout-js/compare/v1.135.1...v1.135.2-alpha.1619810554688) (2021-04-30)
+
+
+### Features
+
+* **payment:** INT-3806 Hide dependency ([5386fe8](https://github.com/bigcommerce/checkout-js/commit/5386fe8f647b1352568684f88a973468e6770d07))
+* **payment:** INT-3806 Support vaulting ([f66c512](https://github.com/bigcommerce/checkout-js/commit/f66c512d6c4bd8f52862ab17627a617be26fa0cb))
+
 ### [1.135.1](https://github.com/bigcommerce/checkout-js/compare/v1.135.0...v1.135.1) (2021-04-29)
 
 ## [1.135.0](https://github.com/bigcommerce/checkout-js/compare/v1.134.1...v1.135.0) (2021-04-29)
