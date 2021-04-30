@@ -3,7 +3,6 @@ import { Omit } from 'utility-types';
 
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { FormContext } from '../../ui/form';
-import PaymentContext from '../PaymentContext';
 import { PaymentFormValues } from '../PaymentForm';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
@@ -20,7 +19,7 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
     formik: { submitForm },
     ...rest
 }) => {
-    const paymentContext = useContext(PaymentContext);
+    // const paymentContext = useContext(PaymentContext);
     const { setSubmitted } = useContext(FormContext);
     const containerId = `${rest.method}-component-field`;
     const initializeDigitalRiverPayment = useCallback(options => initializePayment({
@@ -57,7 +56,7 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
                 onUnhandledError?.(error);
             },
         },
-    }), [containerId, initializePayment, submitForm, paymentContext, rest.method, setSubmitted, onUnhandledError]);
+    }), [containerId, initializePayment, submitForm, setSubmitted, onUnhandledError]);
 
     return <HostedWidgetPaymentMethod
         { ...rest }
