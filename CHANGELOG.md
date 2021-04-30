@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.135.2-alpha.1619788370923](https://github.com/bigcommerce/checkout-js/compare/v1.134.1-alpha.1619776192347...v1.135.2-alpha.1619788370923) (2021-04-30)
+
+
+### Features
+
+* **payment:** INT-4150 adding zip to handlebeforeunload ([87a5c1f](https://github.com/bigcommerce/checkout-js/commit/87a5c1f8f15ab9e5a34a3aed4c3006e361eefd6d))
+* **payment:** INT-4150 Bump SDK. ([055f759](https://github.com/bigcommerce/checkout-js/commit/055f759a66fc39854a8f5b27677f2256f2586b19))
+
+
+### Bug Fixes
+
+* **analytics:** DATA-7883 bump version ([93c9604](https://github.com/bigcommerce/checkout-js/commit/93c9604580264f91b3f32f366add6c835a66f536))
+* **checkout:** INT-4229 Fix checkout.com logo for credit card on phase 1 ([7ccf06e](https://github.com/bigcommerce/checkout-js/commit/7ccf06e09588b36cf91ada05bca671c0a9702a4b))
+
 ### [1.135.1](https://github.com/bigcommerce/checkout-js/compare/v1.135.0...v1.135.1) (2021-04-29)
 
 ## [1.135.0](https://github.com/bigcommerce/checkout-js/compare/v1.134.1...v1.135.0) (2021-04-29)
