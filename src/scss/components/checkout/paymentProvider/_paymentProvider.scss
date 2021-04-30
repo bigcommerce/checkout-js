@@ -84,3 +84,25 @@ body.klarna-payments-fso-open {
     margin-left: 0;
     width: 100%;
 }
+
+.checkoutcom-sepa-column-container {
+    display: flex;
+    flex: 1;
+    flex-basis: 100%;
+    flex-direction: row;
+    margin-bottom: 0;
+    padding-bottom: remCalc(20px);
+}
+
+.checkoutcom-sepa-column-content {
+    width: 50%;
+}
+
+.checkoutcom-sepa-title {
+    margin-bottom: 0;
+    padding-bottom: remCalc(5px);
+}
+
+.checkoutcom-sepa-line {
+    margin-bottom: 0;
+}

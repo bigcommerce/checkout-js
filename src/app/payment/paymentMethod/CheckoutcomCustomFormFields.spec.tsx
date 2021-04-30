@@ -5,6 +5,7 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
+import { getBillingAddress } from '../../billing/billingAddresses.mock';
 import { getCart } from '../../cart/carts.mock';
 import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
@@ -47,7 +48,14 @@ const getAPMProps = {
             config: { cardCode: null, displayName: 'SEPA' },
             type: 'PAYMENT_TYPE_API',
             nonce: null,
-            initializationData: { gateway: 'checkoutcom' },
+            initializationData: { gateway: 'checkoutcom', sepaCreditor: {
+                sepaCreditorAddress: 'sepaCreditorAddress',
+                sepaCreditorCity: 'sepaCreditorCity',
+                sepaCreditorCompanyName: 'sepaCreditorCompanyName',
+                sepaCreditorCountry: 'sepaCreditorCountry',
+                sepaCreditorIdentifier: 'sepaCreditorIdentifier',
+                sepaCreditorPostalCode: 'sepaCreditorPostalCode',
+            }},
             clientToken: null,
             returnUrl: 'https://test-store.store.bcdev/checkout.php?action=set_external_checkout&provider=checkoutcom',
         },
@@ -169,7 +177,7 @@ describe('CheckoutCustomFormFields', () => {
 
         it('should render the sepa fieldset', () => {
             const sepaProps = getAPMProps.sepa();
-            const compoonent = mount(<CheckoutcomAPMsTest { ...sepaProps } cardFieldset={ <SepaFormFieldset method={ sepaProps.method } /> } />);
+            const compoonent = mount(<CheckoutcomAPMsTest { ...sepaProps } cardFieldset={ <SepaFormFieldset debtor={ getBillingAddress() } method={ sepaProps.method } /> } />);
 
             expect(compoonent.find('input[name="iban"]')).toHaveLength(1);
             expect(compoonent.find('input[name="bic"]')).toHaveLength(1);

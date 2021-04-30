@@ -1,4 +1,4 @@
-import { PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { BillingAddress, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { FieldProps } from 'formik';
 import React, { useCallback, useContext, useEffect, useState, FunctionComponent, SyntheticEvent } from 'react';
 
@@ -11,6 +11,7 @@ import PaymentContext from '../PaymentContext';
 
 interface CheckoutcomAPMFormProps {
     method: PaymentMethod;
+    debtor?: BillingAddress;
 }
 interface Issuer {
     bic: string;
@@ -28,10 +29,20 @@ interface OptionButtonProps {
     onClick?(event: SyntheticEvent<EventTarget>): void;
 }
 
-const Sepa: FunctionComponent<CheckoutcomAPMFormProps> = ({method}) => {
+interface SepaCreditor {
+    sepaCreditorAddress: string;
+    sepaCreditorCity: string;
+    sepaCreditorCompanyName: string;
+    sepaCreditorCountry: string;
+    sepaCreditorIdentifier: string;
+    sepaCreditorPostalCode: string;
+}
+
+const Sepa: FunctionComponent<CheckoutcomAPMFormProps> = ({method, debtor}) => {
     const checkoutContext = useContext(CheckoutContext);
     const paymentContext = useContext(PaymentContext);
     const config = checkoutContext?.checkoutState.data.getConfig();
+    const creditor: SepaCreditor = method.initializationData.sepaCreditor;
 
     useEffect(() => {
         paymentContext?.disableSubmit(method, true);
@@ -44,6 +55,30 @@ const Sepa: FunctionComponent<CheckoutcomAPMFormProps> = ({method}) => {
     }
 
     return (<>
+        <div className="checkoutcom-sepa-column-container">
+            <div className="checkoutcom-sepa-column-content">
+                <h4 className="checkoutcom-sepa-title">
+                    <TranslatedString id="payment.checkoutcom_sepa_creditor_title" />
+                </h4>
+                <h5 className="checkoutcom-sepa-title">{ creditor.sepaCreditorCompanyName }</h5>
+                <p className="checkoutcom-sepa-line">{ creditor.sepaCreditorAddress }</p>
+                <p className="checkoutcom-sepa-line">{ `${creditor.sepaCreditorPostalCode} ${creditor.sepaCreditorCity}` }</p>
+                <p className="checkoutcom-sepa-line">{ creditor.sepaCreditorCountry }</p>
+                <br />
+                <p className="checkoutcom-sepa-line">
+                    <TranslatedString data={ {creditorId: creditor.sepaCreditorIdentifier} } id="payment.checkoutcom_sepa_creditor_id" />
+                </p>
+            </div>
+            <div className="checkoutcom-sepa-column-content">
+                <h4 className="checkoutcom-sepa-title">
+                    <TranslatedString id="payment.checkoutcom_sepa_debtor_title" />
+                </h4>
+                <h5 className="checkoutcom-sepa-title">{ `${debtor?.firstName} ${debtor?.lastName}` }</h5>
+                <p className="checkoutcom-sepa-line">{ debtor?.address1 }</p>
+                <p className="checkoutcom-sepa-line">{ `${debtor?.postalCode} ${debtor?.city}, ${debtor?.stateOrProvinceCode}` }</p>
+                <p className="checkoutcom-sepa-line">{ debtor?.countryCode }</p>
+            </div>
+        </div>
         <TextFieldForm
             additionalClassName="form-field--iban"
             autoComplete="iban"
