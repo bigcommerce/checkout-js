@@ -372,7 +372,10 @@
             "thank_you_heading": "Thank you!",
             "continue_shopping": "Continue Shopping »",
             "order_status_update_facebook_messenger_heading": "Get instant updates of your order to Messenger",
-            "mandate_link_text": "{provider} Mandate"
+            "mandate_link_text": "{provider} Mandate",
+            "boleto_link_text": "Boleto Bancário Ticket",
+            "oxxo_link_text": "OXXO Ticket",
+            "sepa_link_text": "SEPA Direct Debit Mandate"
         }
     }
 }

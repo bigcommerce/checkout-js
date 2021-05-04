@@ -18,7 +18,19 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
 }) => {
 
     const getMandateProvider = useCallback(() => {
-        return order?.payments?.[0].description === 'Stripe (SEPA)' ? 'SEPA Direct Debit' : order?.payments?.[0].description;
+        return order?.payments?.[0].description;
+    }, [order]);
+
+    const getMandateTextId = useCallback(() => {
+        const Mandates = [
+            { method: 'Stripe (SEPA)', value: 'sepa_link_text' },
+            { method: 'OXXO (via Checkout.com)', value: 'oxxo_link_text' },
+            { method: 'Boleto Bancário (via Checkout.com)', value: 'boleto_link_text' },
+        ];
+
+        const mandateText = Mandates.find(pair => pair.method === order?.payments?.[0].description);
+
+        return mandateText ? mandateText.value : 'mandate_link_text';
     }, [order]);
 
     return <OrderConfirmationSection>
@@ -42,7 +54,7 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
         { order.mandateUrl && <a data-test="order-confirmation-mandate-link-text" href={ order.mandateUrl } rel="noopener noreferrer" target="_blank">
                 <TranslatedString
                     data={ { provider : getMandateProvider() } }
-                    id="order_confirmation.mandate_link_text"
+                    id={ 'order_confirmation.' + getMandateTextId() }
                 />
         </a> }
 
