@@ -2,7 +2,6 @@ import { BillingAddress, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { FieldProps } from 'formik';
 import React, { useCallback, useContext, useEffect, useState, FunctionComponent, SyntheticEvent } from 'react';
 
-import { CheckoutContext } from '../../checkout';
 import { TranslatedString } from '../../locale';
 import { DropdownTrigger } from '../../ui/dropdown';
 import { CheckboxFormField, FormField } from '../../ui/form';
@@ -39,9 +38,7 @@ interface SepaCreditor {
 }
 
 const Sepa: FunctionComponent<CheckoutcomAPMFormProps> = ({method, debtor}) => {
-    const checkoutContext = useContext(CheckoutContext);
     const paymentContext = useContext(PaymentContext);
-    const config = checkoutContext?.checkoutState.data.getConfig();
     const creditor: SepaCreditor = method.initializationData.sepaCreditor;
 
     useEffect(() => {
@@ -85,15 +82,9 @@ const Sepa: FunctionComponent<CheckoutcomAPMFormProps> = ({method, debtor}) => {
             labelId="payment.sepa_account_number"
             name="iban"
         />
-        <TextFieldForm
-            additionalClassName="form-field--bic"
-            autoComplete="bic"
-            labelId="payment.sepa_bic"
-            name="bic"
-        />
         <CheckboxFormField
             labelContent={
-                <TranslatedString data={ {storeName: config?.storeProfile.storeName} } id="payment.checkoutcom_sepa_mandate_disclaimer" />
+                <TranslatedString data={ {creditorName: creditor.sepaCreditorCompanyName} } id="payment.checkoutcom_sepa_mandate_disclaimer" />
             }
             name="sepaMandate"
             onChange={ toggleSubmitButton }

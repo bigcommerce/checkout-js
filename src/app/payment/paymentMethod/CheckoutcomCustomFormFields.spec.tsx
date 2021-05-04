@@ -180,7 +180,6 @@ describe('CheckoutCustomFormFields', () => {
             const compoonent = mount(<CheckoutcomAPMsTest { ...sepaProps } cardFieldset={ <SepaFormFieldset debtor={ getBillingAddress() } method={ sepaProps.method } /> } />);
 
             expect(compoonent.find('input[name="iban"]')).toHaveLength(1);
-            expect(compoonent.find('input[name="bic"]')).toHaveLength(1);
             expect(compoonent.find('input[name="sepaMandate"]')).toHaveLength(1);
         });
     });
