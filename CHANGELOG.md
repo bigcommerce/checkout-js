@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.135.2-alpha.1620146871167](https://github.com/bigcommerce/checkout-js/compare/v1.127.0...v1.135.2-alpha.1620146871167) (2021-05-04)
+
+
+### Features
+
+* **common:** CHECKOUT-5747 Log extra debug data related to cart changed error ([e4ea5b5](https://github.com/bigcommerce/checkout-js/commit/e4ea5b5d2afdd8ba3bd8c4a704b6f9d5facacdd3))
+* **payment:** INT-2503 Change autocomplete props ([7102646](https://github.com/bigcommerce/checkout-js/commit/71026468c799e7a5456fd6f4ad55257ac0d65eaa))
+* **payment:** INT-2503 Fawry custom form ([08cca99](https://github.com/bigcommerce/checkout-js/commit/08cca99b983925e07b47e120eb737222a7b37a7a))
+* **payment:** INT-2503 INT-3611 Bump checkout-sdk-js ([37ac777](https://github.com/bigcommerce/checkout-js/commit/37ac777cab9e902680cb6050a12fe8ae9e9e4479))
+* **payment:** INT-3702 added vaulted cc ([1f16fa7](https://github.com/bigcommerce/checkout-js/commit/1f16fa7f16d71e19868329ab039c68d66539363e))
+* **payment:** INT-3702 INT-4063 Bump checkout-sdk-js ([9755050](https://github.com/bigcommerce/checkout-js/commit/9755050e7dc855b38cfd35eb92b2db96160327bd))
+* **payment:** INT-4021 Checkout.com iDeal add BIC field as a dropdown ([57d0b0e](https://github.com/bigcommerce/checkout-js/commit/57d0b0e0d4a5c6e0fbe16f2738f4cda7c312dea8))
+* **payment:** INT-4150 adding zip to handlebeforeunload ([87a5c1f](https://github.com/bigcommerce/checkout-js/commit/87a5c1f8f15ab9e5a34a3aed4c3006e361eefd6d))
+* **payment:** INT-4150 Bump SDK. ([055f759](https://github.com/bigcommerce/checkout-js/commit/055f759a66fc39854a8f5b27677f2256f2586b19))
+* **payment:** PAYPAL-982 bump checkout-sdk ([c4ea48f](https://github.com/bigcommerce/checkout-js/commit/c4ea48f6884d19d8bbf8cd266849d6e935399f76))
+
+
+### Bug Fixes
+
+* **checkout:** INT-4180 Display method name along with the icon for checkout.com ([97c1bec](https://github.com/bigcommerce/checkout-js/commit/97c1bec64d371c080d1e12d95de401aaa067e453))
+* **checkout:** INT-4229 Fix checkout.com logo for credit card on phase 1 ([7ccf06e](https://github.com/bigcommerce/checkout-js/commit/7ccf06e09588b36cf91ada05bca671c0a9702a4b))
+* **common:** CHECKOUT-5747 Cleanup debugging logs ([e32429b](https://github.com/bigcommerce/checkout-js/commit/e32429b33f7d512f3434f96e38ffd9641515b5cf))
+
 ### [1.135.1](https://github.com/bigcommerce/checkout-js/compare/v1.135.0...v1.135.1) (2021-04-29)
 
 ## [1.135.0](https://github.com/bigcommerce/checkout-js/compare/v1.134.1...v1.135.0) (2021-04-29)
