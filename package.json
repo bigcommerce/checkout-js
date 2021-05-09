@@ -56,7 +56,7 @@
     "downshift": "^3.2.10",
     "formik": "^1.5.8",
     "local-storage-fallback": "^4.1.1",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "object-hash": "^1.3.0",
     "prop-types": "^15.6.2",
     "react": "^16.13.1",
