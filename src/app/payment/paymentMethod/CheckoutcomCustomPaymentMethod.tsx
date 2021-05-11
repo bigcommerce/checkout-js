@@ -14,7 +14,7 @@ export interface CheckoutcomCustomPaymentMethodProps
 }
 
 interface WithCheckoutCheckoutcomCustomPaymentMethodProps {
-    debtor?: BillingAddress;
+    debtor: BillingAddress;
 }
 
 const CheckoutcomCustomPaymentMethod: FunctionComponent<
@@ -28,7 +28,7 @@ const CheckoutcomCustomPaymentMethod: FunctionComponent<
     return (
         <CreditCardPaymentMethod
             { ...rest }
-            cardFieldset={ <CheckoutcomCustomFieldset debtor= { rest.debtor } method={ rest.method } /> }
+            cardFieldset={ <CheckoutcomCustomFieldset debtor={ rest.debtor } method={ rest.method } /> }
             cardValidationSchema={ getCheckoutcomValidationSchemas({
                 paymentMethod: checkoutCustomMethod as checkoutcomPaymentMethods,
                 language,
@@ -40,10 +40,15 @@ const CheckoutcomCustomPaymentMethod: FunctionComponent<
 function mapToCheckoutcomCustomPaymentMethodProps(
     { checkoutState }: CheckoutContextProps
 ): WithCheckoutCheckoutcomCustomPaymentMethodProps {
-    const { data: { getCheckout } } = checkoutState;
+    const { data: { getBillingAddress } } = checkoutState;
+    const billingAddress = getBillingAddress();
+
+    if (!billingAddress) {
+        throw new Error('Billing address is missing');
+    }
 
     return {
-        debtor: getCheckout()?.billingAddress,
+        debtor: billingAddress,
     };
 }
 

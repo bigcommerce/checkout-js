@@ -10,7 +10,7 @@ import PaymentContext from '../PaymentContext';
 
 interface CheckoutcomAPMFormProps {
     method: PaymentMethod;
-    debtor?: BillingAddress;
+    debtor: BillingAddress;
 }
 interface Issuer {
     bic: string;
@@ -63,17 +63,17 @@ const Sepa: FunctionComponent<CheckoutcomAPMFormProps> = ({method, debtor}) => {
                 <p className="checkoutcom-sepa-line">{ creditor.sepaCreditorCountry }</p>
                 <br />
                 <p className="checkoutcom-sepa-line">
-                    <TranslatedString data={ {creditorId: creditor.sepaCreditorIdentifier} } id="payment.checkoutcom_sepa_creditor_id" />
+                    <TranslatedString data={ { creditorId: creditor.sepaCreditorIdentifier } } id="payment.checkoutcom_sepa_creditor_id" />
                 </p>
             </div>
             <div className="checkoutcom-sepa-column-content">
                 <h4 className="checkoutcom-sepa-title">
                     <TranslatedString id="payment.checkoutcom_sepa_debtor_title" />
                 </h4>
-                <h5 className="checkoutcom-sepa-title">{ `${debtor?.firstName} ${debtor?.lastName}` }</h5>
-                <p className="checkoutcom-sepa-line">{ debtor?.address1 }</p>
-                <p className="checkoutcom-sepa-line">{ `${debtor?.postalCode} ${debtor?.city}, ${debtor?.stateOrProvinceCode}` }</p>
-                <p className="checkoutcom-sepa-line">{ debtor?.countryCode }</p>
+                <h5 className="checkoutcom-sepa-title">{ `${debtor.firstName} ${debtor.lastName}` }</h5>
+                <p className="checkoutcom-sepa-line">{ debtor.address1 }</p>
+                <p className="checkoutcom-sepa-line">{ `${debtor.postalCode} ${debtor.city}, ${debtor.stateOrProvinceCode}` }</p>
+                <p className="checkoutcom-sepa-line">{ debtor.countryCode }</p>
             </div>
         </div>
         <TextFieldForm
@@ -84,7 +84,7 @@ const Sepa: FunctionComponent<CheckoutcomAPMFormProps> = ({method, debtor}) => {
         />
         <CheckboxFormField
             labelContent={
-                <TranslatedString data={ {creditorName: creditor.sepaCreditorCompanyName} } id="payment.checkoutcom_sepa_mandate_disclaimer" />
+                <TranslatedString data={ { creditorName: creditor.sepaCreditorCompanyName } } id="payment.checkoutcom_sepa_mandate_disclaimer" />
             }
             name="sepaMandate"
             onChange={ toggleSubmitButton }
