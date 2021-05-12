@@ -282,7 +282,11 @@
             "visa_checkout_continue_action": "Continue with Visa Checkout",
             "zip_continue_action": "Continue with Zip",
             "zip_name_text": "Zip",
-            "zip_display_name_text": "Own it now, pay later"
+            "zip_display_name_text": "Own it now, pay later",
+            "errors": {
+                "incorrect_address": "Unable to process the payment because invalid data was supplied with the transaction. (translated)",
+                "transaction_declined": "Payment was declined. Please try again. (translated)"
+            }
         },
         "redeemable": {
             "applied_text": "Applied",
