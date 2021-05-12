@@ -97,15 +97,15 @@ const Fawry: FunctionComponent<CheckoutcomAPMFormProps> = () => {
         <>
             <TextFieldForm
                 additionalClassName="form-field--customerMobile"
-                autoComplete="customerMobile"
+                autoComplete="tel"
                 labelId="payment.checkoutcom_fawry_customer_mobile_label"
-                name="tel"
+                name="customerMobile"
             />
             <TextFieldForm
                 additionalClassName="form-field--customerEmail"
-                autoComplete="customerEmail"
+                autoComplete="email"
                 labelId="payment.checkoutcom_fawry_customer_email_label"
-                name="email"
+                name="customerEmail"
             />
         </>
     );
