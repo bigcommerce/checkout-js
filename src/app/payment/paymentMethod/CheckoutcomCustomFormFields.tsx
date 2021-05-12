@@ -1,8 +1,7 @@
-import { PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { BillingAddress, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { FieldProps } from 'formik';
 import React, { useCallback, useContext, useEffect, useState, FunctionComponent, SyntheticEvent } from 'react';
 
-import { CheckoutContext } from '../../checkout';
 import { TranslatedString } from '../../locale';
 import { DropdownTrigger } from '../../ui/dropdown';
 import { CheckboxFormField, FormField } from '../../ui/form';
@@ -11,6 +10,7 @@ import PaymentContext from '../PaymentContext';
 
 interface CheckoutcomAPMFormProps {
     method: PaymentMethod;
+    debtor: BillingAddress;
 }
 interface Issuer {
     bic: string;
@@ -28,10 +28,18 @@ interface OptionButtonProps {
     onClick?(event: SyntheticEvent<EventTarget>): void;
 }
 
-const Sepa: FunctionComponent<CheckoutcomAPMFormProps> = ({method}) => {
-    const checkoutContext = useContext(CheckoutContext);
+interface SepaCreditor {
+    sepaCreditorAddress: string;
+    sepaCreditorCity: string;
+    sepaCreditorCompanyName: string;
+    sepaCreditorCountry: string;
+    sepaCreditorIdentifier: string;
+    sepaCreditorPostalCode: string;
+}
+
+const Sepa: FunctionComponent<CheckoutcomAPMFormProps> = ({method, debtor}) => {
     const paymentContext = useContext(PaymentContext);
-    const config = checkoutContext?.checkoutState.data.getConfig();
+    const creditor: SepaCreditor = method.initializationData.sepaCreditor;
 
     useEffect(() => {
         paymentContext?.disableSubmit(method, true);
@@ -44,21 +52,39 @@ const Sepa: FunctionComponent<CheckoutcomAPMFormProps> = ({method}) => {
     }
 
     return (<>
+        <div className="checkoutcom-sepa-column-container">
+            <div className="checkoutcom-sepa-column-content">
+                <h4 className="checkoutcom-sepa-title">
+                    <TranslatedString id="payment.checkoutcom_sepa_creditor_title" />
+                </h4>
+                <h5 className="checkoutcom-sepa-title">{ creditor.sepaCreditorCompanyName }</h5>
+                <p className="checkoutcom-sepa-line">{ creditor.sepaCreditorAddress }</p>
+                <p className="checkoutcom-sepa-line">{ `${creditor.sepaCreditorPostalCode} ${creditor.sepaCreditorCity}` }</p>
+                <p className="checkoutcom-sepa-line">{ creditor.sepaCreditorCountry }</p>
+                <br />
+                <p className="checkoutcom-sepa-line">
+                    <TranslatedString data={ { creditorId: creditor.sepaCreditorIdentifier } } id="payment.checkoutcom_sepa_creditor_id" />
+                </p>
+            </div>
+            <div className="checkoutcom-sepa-column-content">
+                <h4 className="checkoutcom-sepa-title">
+                    <TranslatedString id="payment.checkoutcom_sepa_debtor_title" />
+                </h4>
+                <h5 className="checkoutcom-sepa-title">{ `${debtor.firstName} ${debtor.lastName}` }</h5>
+                <p className="checkoutcom-sepa-line">{ debtor.address1 }</p>
+                <p className="checkoutcom-sepa-line">{ `${debtor.postalCode} ${debtor.city}, ${debtor.stateOrProvinceCode}` }</p>
+                <p className="checkoutcom-sepa-line">{ debtor.countryCode }</p>
+            </div>
+        </div>
         <TextFieldForm
             additionalClassName="form-field--iban"
             autoComplete="iban"
             labelId="payment.sepa_account_number"
             name="iban"
         />
-        <TextFieldForm
-            additionalClassName="form-field--bic"
-            autoComplete="bic"
-            labelId="payment.sepa_bic"
-            name="bic"
-        />
         <CheckboxFormField
             labelContent={
-                <TranslatedString data={ {storeName: config?.storeProfile.storeName} } id="payment.checkoutcom_sepa_mandate_disclaimer" />
+                <TranslatedString data={ { creditorName: creditor.sepaCreditorCompanyName } } id="payment.checkoutcom_sepa_mandate_disclaimer" />
             }
             name="sepaMandate"
             onChange={ toggleSubmitButton }

@@ -12,7 +12,6 @@ const getFormfields = {
         ccDocument: 'DOJH010199HJLZQQ01',
     }),
     sepa: () => ({
-        bic: 'INGBNL2A',
         iban: 'testiban',
         sepaMandate: true,
     }),

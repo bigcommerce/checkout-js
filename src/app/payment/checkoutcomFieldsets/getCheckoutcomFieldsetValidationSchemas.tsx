@@ -14,7 +14,6 @@ export interface DocumentOnlyCustomFormFieldsetValues {
     ccDocument?: string;
 }
 export interface SepaCustomFormFieldsetValues {
-    bic?: string;
     iban: string;
     sepaMandate: boolean;
 }
@@ -60,16 +59,6 @@ const checkoutComShemas: {
             ),
     }),
     sepa: (language: LanguageService) => ({
-        bic: string()
-            .notRequired()
-            .min(
-                8,
-                language.translate('payment.sepa_bic_length')
-            )
-            .max(
-                11,
-                language.translate('payment.sepa_bic_length')
-            ),
         iban: string()
             .required(
                 language.translate('payment.sepa_account_number_required')

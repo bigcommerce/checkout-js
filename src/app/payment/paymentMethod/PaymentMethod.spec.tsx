@@ -4,6 +4,7 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
+import { getBillingAddress } from '../../billing/billingAddresses.mock';
 import { getCart } from '../../cart/carts.mock';
 import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
@@ -43,6 +44,9 @@ describe('PaymentMethod', () => {
             setValidationSchema: jest.fn(),
             hidePaymentSubmitButton: jest.fn(),
         };
+
+        jest.spyOn(checkoutState.data, 'getBillingAddress')
+            .mockReturnValue(getBillingAddress());
 
         jest.spyOn(checkoutState.data, 'getCart')
             .mockReturnValue(getCart());
