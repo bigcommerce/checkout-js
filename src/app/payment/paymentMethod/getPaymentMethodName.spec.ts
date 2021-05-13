@@ -34,6 +34,13 @@ describe('getPaymentMethodName()', () => {
             .toEqual(language.translate('payment.amazon_name_text'));
     });
 
+    it('returns specific display name for Clearpay', () => {
+        const method = { ...getPaymentMethod(), id: PaymentMethodId.Clearpay, method: 'multi-option' };
+
+        expect(getPaymentMethodName(language)(method))
+            .toEqual(method.config.displayName);
+    });
+
     it('returns specific translated name for Klarna', () => {
         const method = { ...getPaymentMethod(), id: 'klarna', method: 'widget', config: { displayName: '' } };
 

@@ -158,6 +158,7 @@ describe('PaymentMethodTitle', () => {
         const methodIds = [
             PaymentMethodId.Affirm,
             PaymentMethodId.Afterpay,
+            PaymentMethodId.Clearpay,
             PaymentMethodId.Klarna,
             PaymentMethodId.Sezzle,
             PaymentMethodId.Zip,
