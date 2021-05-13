@@ -4807,6 +4807,24 @@ body.klarna-payments-fso-open {
   margin-left: 0;
   width: 100%; }
 
+.checkoutcom-sepa-column-container {
+  display: flex;
+  flex: 1;
+  flex-basis: 100%;
+  flex-direction: row;
+  margin-bottom: 0;
+  padding-bottom: 1.53846rem; }
+
+.checkoutcom-sepa-column-content {
+  width: 50%; }
+
+.checkoutcom-sepa-title {
+  margin-bottom: 0;
+  padding-bottom: 0.38462rem; }
+
+.checkoutcom-sepa-line {
+  margin-bottom: 0; }
+
 .productList {
   list-style: none;
   margin-left: 0;
@@ -5341,4 +5359,4 @@ body.klarna-payments-fso-open {
     font-weight: normal; }
 
 
-/*# sourceMappingURL=checkout-538fde4f.css.map*/
+/*# sourceMappingURL=checkout-e11843b2.css.map*/
