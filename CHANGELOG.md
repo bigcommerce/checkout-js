@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.139.0](https://github.com/bigcommerce/checkout-js/compare/v1.138.0...v1.139.0) (2021-05-13)
+
+
+### Features
+
+* **payment:** INT-4071 Clearpay - Create payment method ([971deea](https://github.com/bigcommerce/checkout-js/commit/971deea87e5d7db6c3e8ce34bd028d4d625e2a67))
+* **payment:** INT-4237 INT-4071 Bump SDK. ([7e46eb0](https://github.com/bigcommerce/checkout-js/commit/7e46eb055e291446fa4d8f8ef53e9b212f911d87))
+
 ## [1.138.0](https://github.com/bigcommerce/checkout-js/compare/v1.137.1...v1.138.0) (2021-05-13)
 
 
