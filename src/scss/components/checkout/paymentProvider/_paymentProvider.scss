@@ -108,20 +108,12 @@ body.klarna-payments-fso-open {
 }
 
 /* Custom payment submit buttons styles */
-.custom-payment-submit-button-bolt {
-    background-color: #006cff;
-    border-radius: 3px;
-    color: white;
+.payment-submit-button-bolt {
     font-size: 16px;
-    font-variant-caps: normal;
-
-    &:hover {
-        background-color: #1a7cff;
-    }
 }
 
-.custom-payment-submit-button-bolt-icon {
-    height: 12px;
-    margin-right: 8px;
-    width: 12px;
+.payment-submit-button-bolt-icon {
+    height: remCalc(12px);
+    margin-right: remCalc(8px);
+    width: remCalc(12px);
 }

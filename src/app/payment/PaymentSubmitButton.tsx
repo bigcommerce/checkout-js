@@ -1,8 +1,9 @@
-import React, { memo, FunctionComponent } from 'react';
+import React, { memo, Fragment, FunctionComponent } from 'react';
 
 import { withCheckout } from '../checkout';
 import { TranslatedString } from '../locale';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
+import { IconBolt } from '../ui/icon';
 
 import { PaymentMethodId, PaymentMethodType } from './paymentMethod';
 
@@ -11,6 +12,8 @@ interface PaymentSubmitButtonTextProps {
     methodId?: string;
     methodType?: string;
 }
+
+const providersWithCustomClasses = [PaymentMethodId.Bolt];
 
 const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> = memo(({ methodId, methodType, methodGateway }) => {
     if (methodId === PaymentMethodId.Amazon) {
@@ -22,7 +25,10 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
     }
 
     if (methodId === PaymentMethodId.Bolt) {
-        return <TranslatedString id="payment.bolt_continue_action" />;
+        return (<Fragment>
+            <IconBolt additionalClassName="payment-submit-button-bolt-icon" />
+            <TranslatedString id="payment.bolt_continue_action" />
+        </Fragment>);
     }
 
     if (methodGateway === PaymentMethodId.Barclaycard) {
@@ -73,6 +79,7 @@ const PaymentSubmitButton: FunctionComponent<PaymentSubmitButtonProps & WithChec
     methodType,
 }) => (
         <Button
+            className={ providersWithCustomClasses.includes(methodId as PaymentMethodId) ? `payment-submit-button-${methodId}` : undefined }
             disabled={ isInitializing || isSubmitting || isDisabled }
             id="checkout-payment-continue"
             isFullWidth

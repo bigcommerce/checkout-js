@@ -15,7 +15,6 @@ import { HostedCreditCardFieldsetValues } from './hostedCreditCard';
 import { getUniquePaymentMethodId, PaymentMethodId, PaymentMethodList } from './paymentMethod';
 import { CardInstrumentFieldsetValues } from './storedInstrument';
 import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
-import CustomPaymentSubmitButton, { CUSTOM_BUTTON_SUPPORTED_METHODS } from './CustomPaymentSubmitButton';
 import PaymentRedeemables from './PaymentRedeemables';
 import PaymentSubmitButton from './PaymentSubmitButton';
 import SpamProtectionField from './SpamProtectionField';
@@ -151,14 +150,6 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
             <div className="form-actions">
                 { shouldHidePaymentSubmitButton ?
                     <PaymentMethodSubmitButtonContainer /> :
-                    selectedMethodId && CUSTOM_BUTTON_SUPPORTED_METHODS.includes(selectedMethodId as PaymentMethodId) ?
-                    <CustomPaymentSubmitButton
-                        isDisabled={ shouldDisableSubmit }
-                        methodGateway={ selectedMethod && selectedMethod.gateway }
-                        methodId={ selectedMethodId }
-                        methodType={ selectedMethod && selectedMethod.method }
-                    />
-                    :
                     <PaymentSubmitButton
                         isDisabled={ shouldDisableSubmit }
                         methodGateway={ selectedMethod && selectedMethod.gateway }
