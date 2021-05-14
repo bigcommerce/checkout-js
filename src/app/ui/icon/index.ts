@@ -1,4 +1,5 @@
 export { IconSize, IconProps } from './withIconContainer';
+export { default as IconBolt } from './IconBolt';
 export { default as IconCardAmex } from './IconCardAmex';
 export { default as IconCardCarnet } from './IconCardCarnet';
 export { default as IconCardCB } from './IconCardCB';

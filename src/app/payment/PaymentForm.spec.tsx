@@ -14,6 +14,7 @@ import { getCreditCardValidationSchema } from './creditCard';
 import { getPaymentMethod } from './payment-methods.mock';
 import { PaymentMethodList, PaymentMethodListProps } from './paymentMethod';
 import { StoreCreditField, StoreCreditFieldProps, StoreCreditOverlay } from './storeCredit';
+import CustomPaymentSubmitButton from './CustomPaymentSubmitButton';
 import PaymentContext, { PaymentContextProps } from './PaymentContext';
 import PaymentForm, { PaymentFormProps } from './PaymentForm';
 import PaymentSubmitButton from './PaymentSubmitButton';
@@ -341,6 +342,32 @@ describe('PaymentForm', () => {
                     methodId: undefined,
                     methodType: 'bar',
                 }));
+        });
+
+        it('renders custom button when method has a custom button', () => {
+            selectedMethod = { ...selectedMethod, id: 'bolt' };
+            defaultProps = { ...defaultProps, selectedMethod };
+            const container = mount(<PaymentFormTest { ...defaultProps } />);
+            const customSubmitButton = container.find(CustomPaymentSubmitButton);
+
+            expect(customSubmitButton)
+                .toHaveLength(1);
+
+            expect(customSubmitButton.props())
+                .toEqual(expect.objectContaining({
+                    methodGateway: 'baz',
+                    methodId: 'bolt',
+                    methodType: 'bar',
+                }));
+        });
+
+        it('deos not render custom button when method does not have a custom button', () => {
+            defaultProps = { ...defaultProps, selectedMethod };
+            const container = mount(<PaymentFormTest { ...defaultProps } />);
+            const customSubmitButton = container.find(CustomPaymentSubmitButton);
+
+            expect(customSubmitButton)
+                .toHaveLength(0);
         });
 
         it('renders with special label if selected method is amazonpay and there is no paymentToken', () => {
