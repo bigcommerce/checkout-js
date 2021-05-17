@@ -31,6 +31,7 @@ import PaypalCommerceCreditCardPaymentMethod from './PaypalCommerceCreditCardPay
 import PaypalCommercePaymentMethod from './PaypalCommercePaymentMethod';
 import PaypalExpressPaymentMethod from './PaypalExpressPaymentMethod';
 import PaypalPaymentsProPaymentMethod from './PaypalPaymentsProPaymentMethod';
+import PPSDKPaymentMethod from './PPSDKPaymentMethod';
 import SquarePaymentMethod from './SquarePaymentMethod';
 import StripePaymentMethod from './StripePaymentMethod';
 import VisaCheckoutPaymentMethod from './VisaCheckoutPaymentMethod';
@@ -44,6 +45,7 @@ export interface PaymentMethodProps {
 }
 
 export interface WithCheckoutPaymentMethodProps {
+    ppsdkFeatureOn: boolean;
     isInitializing: boolean;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
@@ -62,7 +64,11 @@ export interface WithCheckoutPaymentMethodProps {
  */
 // tslint:disable:cyclomatic-complexity
 const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckoutPaymentMethodProps> = props => {
-    const { method } = props;
+    const { method, ppsdkFeatureOn } = props;
+
+    if (ppsdkFeatureOn && method.type === PaymentMethodProviderType.PPSDK) {
+        return <PPSDKPaymentMethod { ...props } />;
+    }
 
     if (method.gateway === PaymentMethodId.AdyenV2) {
         return <AdyenV2PaymentMethod { ...props } />;
@@ -219,12 +225,19 @@ function mapToWithCheckoutPaymentMethodProps(
         statuses: { isInitializingPayment },
     } = checkoutState;
 
+    const ppsdkFeatureOn = Boolean(
+        checkoutService.getState()
+            .data.getConfig()
+            ?.checkoutSettings.features['PAYMENTS-6806.enable_ppsdk_strategy']
+    );
+
     return {
         deinitializeCustomer: checkoutService.deinitializeCustomer,
         deinitializePayment: checkoutService.deinitializePayment,
         initializeCustomer: checkoutService.initializeCustomer,
         initializePayment: checkoutService.initializePayment,
         isInitializing: isInitializingPayment(method.id),
+        ppsdkFeatureOn,
     };
 }
 
