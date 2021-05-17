@@ -3,6 +3,7 @@ import React, { memo, FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 
+import getUniquePaymentMethodId from './getUniquePaymentMethodId';
 import AdyenV2PaymentMethod from './AdyenV2PaymentMethod';
 import AffirmPaymentMethod from './AffirmPaymentMethod';
 import AmazonPaymentMethod from './AmazonPaymentMethod';
@@ -157,7 +158,11 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
     if (method.id === PaymentMethodId.PaypalCommerce ||
         method.id === PaymentMethodId.PaypalCommerceCredit ||
         method.gateway === PaymentMethodId.PaypalCommerceAlternativeMethod) {
-        return <PaypalCommercePaymentMethod { ...props } />;
+        return <PaypalCommercePaymentMethod
+            { ...props }
+            isAPM={ method.gateway === PaymentMethodId.PaypalCommerceAlternativeMethod }
+            uniqueId={ getUniquePaymentMethodId(method.id, method.gateway) }
+        />;
     }
 
     if (method.id === PaymentMethodId.PaypalExpress) {
