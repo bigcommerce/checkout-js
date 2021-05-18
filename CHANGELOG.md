@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.140.1](https://github.com/bigcommerce/checkout-js/compare/v1.140.0...v1.140.1) (2021-05-18)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-5037 Fix mailto: links on order confirmation page if payment is still pending or order is still incomplete ([510b6c6](https://github.com/bigcommerce/checkout-js/commit/510b6c60cd6edc9795c2c5f7c8c49f055349ef0a))
+
 ## [1.140.0](https://github.com/bigcommerce/checkout-js/compare/v1.139.1...v1.140.0) (2021-05-17)
 
 
