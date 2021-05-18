@@ -27,6 +27,19 @@ export default function mapSubmitOrderErrorMessage(
                 return translate('payment.payment_method_error', { message: error.message });
             }
 
+            // Checking here if the error is a RequestError, get the translated message(s) based on the error code (s).
+            // It's an array of errors, so there could be more than one message.
+            // If we are going to add all BigPay messages to the translation JSON file,
+            // it should be not possible to have a code that does not exit.
+            // However, we want this case to be handled.
+            if (error.body && error.body.errors) {
+                const messages = error.body.errors.map((error: { code: any; }) => translate(`payment.errors.${error.code}`));
+
+                if (messages.length) {
+                    return messages.join(' ');
+                }
+            }
+            
             if (error.message) {
                 return error.message;
             }
