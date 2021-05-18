@@ -3,7 +3,8 @@ import { includes } from 'lodash';
 
 export default function mapSubmitOrderErrorMessage(
     error: any,
-    translate: (key: string, data?: TranslationData) => string
+    translate: (key: string, data?: TranslationData) => string,
+    shouldLocalise: boolean
 ): string {
     switch (error.type) {
         case 'payment_cancelled':
@@ -25,6 +26,14 @@ export default function mapSubmitOrderErrorMessage(
                 'user_payment_error',
             ], error.body && error.body.type)) {
                 return translate('payment.payment_method_error', { message: error.message });
+            }
+
+            if (shouldLocalise && error.body && error.body.errors) {
+                const messages = error.body.errors.map((err: { code: any }) => translate(`payment.errors.${err.code}`));
+
+                if (messages.length) {
+                    return messages.join(' ');
+                }
             }
 
             if (error.message) {
