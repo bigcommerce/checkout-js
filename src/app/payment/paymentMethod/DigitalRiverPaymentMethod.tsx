@@ -3,10 +3,10 @@ import { Omit } from 'utility-types';
 
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { FormContext } from '../../ui/form';
-import PaymentContext from '../PaymentContext';
 import { PaymentFormValues } from '../PaymentForm';
 
-import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
+import HostedDropInPaymentMethod from './HostedDropInPaymentMethod';
+import { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 
 export type DigitalRiverPaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId'> & ConnectFormikProps<PaymentFormValues>;
 
@@ -20,7 +20,6 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
     formik: { submitForm },
     ...rest
 }) => {
-    const paymentContext = useContext(PaymentContext);
     const { setSubmitted } = useContext(FormContext);
     const containerId = `${rest.method}-component-field`;
     const initializeDigitalRiverPayment = useCallback(options => initializePayment({
@@ -53,9 +52,6 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
                     classes: DigitalRiverClasses,
                 },
             },
-            onRenderButton: () => {
-                paymentContext?.hidePaymentSubmitButton?.(rest.method, true);
-            },
             onSubmitForm: () => {
                 setSubmitted(true);
                 submitForm();
@@ -64,11 +60,12 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
                 onUnhandledError?.(error);
             },
         },
-    }), [containerId, initializePayment, submitForm, paymentContext, rest.method, setSubmitted, onUnhandledError]);
+    }), [initializePayment, containerId, setSubmitted, submitForm, onUnhandledError]);
 
-    return <HostedWidgetPaymentMethod
+    return <HostedDropInPaymentMethod
         { ...rest }
         containerId={ containerId }
+        hideVerificationFields
         initializePayment={ initializeDigitalRiverPayment }
     />;
 };
