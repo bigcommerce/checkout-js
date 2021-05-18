@@ -1,4 +1,7 @@
+import { CardInstrument, PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import React, { useCallback, FunctionComponent } from 'react';
+
+import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps } from '../hostedCreditCard';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 import MollieCustomCardForm from './MollieCustomCardForm';
@@ -9,10 +12,15 @@ export enum MolliePaymentMethodType {
     creditcard = 'credit_card',
 }
 
-const MolliePaymentMethod: FunctionComponent<MolliePaymentMethodsProps> = ({ initializePayment, method, ...props }) => {
-
+const MolliePaymentMethod: FunctionComponent<MolliePaymentMethodsProps & WithInjectedHostedCreditCardFieldsetProps > = ({
+    initializePayment,
+    method,
+    getHostedFormOptions,
+    getHostedStoredCardValidationFieldset,
+    ...props
+}) => {
     const containerId = `mollie-${method.method}`;
-    const initializeMolliePayment: HostedWidgetPaymentMethodProps['initializePayment'] = useCallback(options => {
+    const initializeMolliePayment: HostedWidgetPaymentMethodProps['initializePayment'] = useCallback(async (options: PaymentInitializeOptions, selectedInstrument) => {
         const mollieElements = getMolliesElementOptions();
 
         return initializePayment({
@@ -37,9 +45,10 @@ const MolliePaymentMethod: FunctionComponent<MolliePaymentMethodsProps> = ({ ini
                         color: '#D14343',
                     },
                 },
+                ...(selectedInstrument && !selectedInstrument?.trustedShippingAddress && { form : await getHostedFormOptions(selectedInstrument) }),
             },
         });
-    }, [initializePayment, containerId]);
+    }, [initializePayment, containerId, getHostedFormOptions]);
 
     const getMolliesElementOptions = () => {
 
@@ -66,7 +75,16 @@ const MolliePaymentMethod: FunctionComponent<MolliePaymentMethodsProps> = ({ ini
     }
 
     function isCreditCard(): boolean {
+
         return method.method === MolliePaymentMethodType.creditcard;
+    }
+
+    function validateInstrument(_shouldShowNumber: boolean, selectedInstrument: CardInstrument) {
+        if (selectedInstrument && selectedInstrument.trustedShippingAddress) {
+            return;
+        }
+
+        return getHostedStoredCardValidationFieldset(selectedInstrument);
     }
 
     return (
@@ -74,13 +92,13 @@ const MolliePaymentMethod: FunctionComponent<MolliePaymentMethodsProps> = ({ ini
             { ...props }
             containerId={ containerId }
             hideContentWhenSignedOut
-            hideVerificationFields={ true }
             initializePayment={ initializeMolliePayment }
             isAccountInstrument={ !isCreditCard() }
             method={ method }
             renderCustomPaymentForm={ renderCustomPaymentForm }
             shouldRenderCustomInstrument={ true }
+            validateInstrument={ validateInstrument }
         />);
 };
 
-export default MolliePaymentMethod;
+export default withHostedCreditCardFieldset(MolliePaymentMethod);

@@ -94,7 +94,9 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
         }
     }, []);
 
-    const initializeAdyenPayment: HostedWidgetPaymentMethodProps['initializePayment'] = useCallback((options, selectedInstrumentId) => {
+    const initializeAdyenPayment: HostedWidgetPaymentMethodProps['initializePayment'] = useCallback((options, selectedInstrument) => {
+        const selectedInstrumentId = selectedInstrument?.bigpayToken;
+
         return initializePayment({
             ...options,
             adyenv2: {

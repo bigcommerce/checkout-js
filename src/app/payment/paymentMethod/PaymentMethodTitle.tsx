@@ -123,7 +123,7 @@ function getPaymentMethodTitle(
             },
             [PaymentMethodId.Mollie]: {
                 logoUrl: method.method === 'credit_card' ? '' : cdnPath(`/img/payment-providers/${method.method}.svg`),
-                titleText: startCase(methodName),
+                titleText: method.method === 'credit_card' ? startCase(methodName) : methodName,
             },
             [PaymentMethodId.Checkoutcom]: {
                 logoUrl: ['credit_card', 'checkoutcom'].includes(method.id) ? '' : cdnPath(`/img/payment-providers/checkoutcom_${method.id.toLowerCase()}.svg`),

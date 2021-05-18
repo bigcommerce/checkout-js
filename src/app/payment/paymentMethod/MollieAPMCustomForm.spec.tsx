@@ -6,9 +6,16 @@ import React, { FunctionComponent } from 'react';
 
 import { DropdownTrigger } from '../../ui/dropdown';
 
-import MollieAPMCustomForm, { MollieCustomCardFormProps } from './MollieAPMCustomForm';
+import MollieAPMCustomForm, { Issuer, IssuerSelectButton, MollieCustomCardFormProps, OptionButton } from './MollieAPMCustomForm';
 
 describe('MollieAPMCustomForm', () => {
+    const issuer: Issuer = {
+        id: 'kbc',
+        name: 'kbc',
+        image: {
+            size1x: 'logo.png',
+        },
+    };
     const method: PaymentMethod = {
         id: 'mollie',
         method: 'kbc/cbc',
@@ -17,10 +24,10 @@ describe('MollieAPMCustomForm', () => {
         type: 'card',
         initializationData: {
             paymentMethodsResponse: [
+                issuer,
                 {
-                    resource: 'kbc',
-                    id: 'kbc',
-                    name: 'kbc',
+                    id: 'cbc',
+                    name: 'cbc',
                     image: {
                         size1x: 'logo.png',
                     },
@@ -35,6 +42,7 @@ describe('MollieAPMCustomForm', () => {
             <Formik
                 initialValues={ {} }
                 onSubmit={ noop }
+
             >
                 <MollieAPMCustomForm { ...props } />
             </Formik>
@@ -51,5 +59,26 @@ describe('MollieAPMCustomForm', () => {
         const container = mount(<MollieAPMCustomFormTest method={ method } />);
 
         expect(container.find(DropdownTrigger)).toHaveLength(1);
+    });
+
+    it('should change IssuerSelectButton Value when option is selected', () => {
+        const container = mount(<MollieAPMCustomFormTest method={ method } />);
+
+        expect(container.find(IssuerSelectButton).props()).toEqual(expect.objectContaining({
+            selectedIssuer: {
+                id: '',
+                image: {
+                    size1x: '',
+                },
+                name: 'Select your bank',
+            },
+        }));
+
+        container.find(DropdownTrigger).simulate('click');
+        container.find(OptionButton).at(0).simulate('click', { currentTarget: { dataset: { id: 'kbc'}}});
+
+        expect(container.find(IssuerSelectButton).props()).toEqual(expect.objectContaining({
+            selectedIssuer: issuer,
+        }));
     });
 });
