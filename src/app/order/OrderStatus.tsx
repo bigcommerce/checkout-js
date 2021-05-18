@@ -90,13 +90,13 @@ const OrderStatusMessage: FunctionComponent<OrderStatusMessageProps> = ({
         />;
 
     case 'PENDING':
-        return <TranslatedString
+        return <TranslatedHtml
             data={ { orderNumber, supportEmail } }
             id="order_confirmation.order_pending_status_text"
         />;
 
     case 'INCOMPLETE':
-        return <TranslatedString
+        return <TranslatedHtml
             data={ { orderNumber, supportEmail } }
             id="order_confirmation.order_incomplete_status_text"
         />;

@@ -141,7 +141,7 @@ describe('OrderStatus', () => {
                 />
             );
             const translationProps = orderStatus.find('[data-test="order-confirmation-order-status-text"]')
-                .find(TranslatedString)
+                .find(TranslatedHtml)
                 .props();
 
             expect(translationProps)
@@ -171,7 +171,7 @@ describe('OrderStatus', () => {
                 />
             );
             const translationProps = orderStatus.find('[data-test="order-confirmation-order-status-text"]')
-                .find(TranslatedString)
+                .find(TranslatedHtml)
                 .props();
 
             expect(translationProps)
