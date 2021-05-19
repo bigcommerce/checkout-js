@@ -76,6 +76,11 @@ const Sepa: FunctionComponent<CheckoutcomAPMFormProps> = ({method, debtor}) => {
                 <p className="checkoutcom-sepa-line">{ debtor.countryCode }</p>
             </div>
         </div>
+        <p className="checkoutcom-sepa-line">
+            <TranslatedString id="payment.checkoutcom_sepa_payment_type" />
+        </p>
+        <br />
+
         <TextFieldForm
             additionalClassName="form-field--iban"
             autoComplete="iban"
