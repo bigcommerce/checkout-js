@@ -4744,6 +4744,19 @@ h6 a:hover {
 .instrumentSelect-note p:last-child {
   margin-bottom: 0; }
 
+.mollie-instrument-card {
+  margin-left: 0.69231rem;
+  margin-top: -1.53846rem;
+  overflow: auto;
+  width: 80%; }
+
+.mollie-instrument-list {
+  display: flex !important;
+  justify-content: flex-end; }
+
+.mollie-instrument-left {
+  margin-right: auto; }
+
 .loadingSpinner .loadingOverlay {
   background-color: transparent; }
 
@@ -4813,7 +4826,7 @@ body.klarna-payments-fso-open {
   flex-basis: 100%;
   flex-direction: row;
   margin-bottom: 0;
-  padding-bottom: 1.53846rem; }
+  padding-bottom: 0.38462rem; }
 
 .checkoutcom-sepa-column-content {
   width: 50%; }
@@ -5359,4 +5372,4 @@ body.klarna-payments-fso-open {
     font-weight: normal; }
 
 
-/*# sourceMappingURL=checkout-e11843b2.css.map*/
+/*# sourceMappingURL=checkout-2f39ed80.css.map*/

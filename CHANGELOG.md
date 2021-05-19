@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.141.0](https://github.com/bigcommerce/checkout-js/compare/v1.140.1...v1.141.0) (2021-05-19)
+
+
+### Features
+
+* **payment:** INT-4237 Add issuer for Mollie APMs ([0da0b44](https://github.com/bigcommerce/checkout-js/commit/0da0b4474e51cebd8d0142a7e86d754b9f16cc07))
+
+
+### Bug Fixes
+
+* **payment:** INT-4184 Add missing payment type to SEPA ([04fe6cb](https://github.com/bigcommerce/checkout-js/commit/04fe6cb9a1e03d493c4443cd1c1eac9f032cc8b4))
+
 ### [1.140.1](https://github.com/bigcommerce/checkout-js/compare/v1.140.0...v1.140.1) (2021-05-18)
 
 
