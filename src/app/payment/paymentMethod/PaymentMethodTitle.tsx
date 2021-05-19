@@ -1,6 +1,6 @@
 import { LanguageService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { number } from 'card-validator';
-import { compact } from 'lodash';
+import { compact, startCase } from 'lodash';
 import React, { memo, Fragment, FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
@@ -123,7 +123,7 @@ function getPaymentMethodTitle(
             },
             [PaymentMethodId.Mollie]: {
                 logoUrl: method.method === 'credit_card' ? '' : cdnPath(`/img/payment-providers/${method.method}.svg`),
-                titleText: methodName,
+                titleText: startCase(methodName),
             },
             [PaymentMethodId.Checkoutcom]: {
                 logoUrl: ['credit_card', 'checkoutcom'].includes(method.id) ? '' : cdnPath(`/img/payment-providers/checkoutcom_${method.id.toLowerCase()}.svg`),

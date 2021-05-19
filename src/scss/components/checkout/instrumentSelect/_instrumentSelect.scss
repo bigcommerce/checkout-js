@@ -88,3 +88,21 @@
         margin-bottom: 0;
     }
 }
+
+.mollie {
+    &-instrument-card {
+        margin-left: remCalc(9px);
+        margin-top: remCalc(-20px);
+        overflow: auto;
+        width: 80%;
+    }
+
+    &-instrument-list {
+        display: flex !important;
+        justify-content: flex-end;
+    }
+
+    &-instrument-left {
+        margin-right: auto;
+    }
+}

@@ -62,7 +62,7 @@ const MolliePaymentMethod: FunctionComponent<MolliePaymentMethodsProps> = ({ ini
     function renderCustomPaymentForm() {
         const options = getMolliesElementOptions();
 
-        return <MollieCustomCardForm isCreditCard={ isCreditCard() } options={ options } />;
+        return <MollieCustomCardForm isCreditCard={ isCreditCard() } method={ method } options={ options } />;
     }
 
     function isCreditCard(): boolean {
