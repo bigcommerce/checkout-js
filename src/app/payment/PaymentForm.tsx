@@ -12,7 +12,7 @@ import { DocumentOnlyCustomFormFieldsetValues, FawryCustomFormFieldsetValues, Id
 import { CreditCardFieldsetValues } from './creditCard';
 import getPaymentValidationSchema from './getPaymentValidationSchema';
 import { HostedCreditCardFieldsetValues } from './hostedCreditCard';
-import { getUniquePaymentMethodId, PaymentMethodId, PaymentMethodList } from './paymentMethod';
+import { getPaymentMethodName, getUniquePaymentMethodId, PaymentMethodId, PaymentMethodList } from './paymentMethod';
 import { CardInstrumentFieldsetValues } from './storedInstrument';
 import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
 import PaymentRedeemables from './PaymentRedeemables';
@@ -76,6 +76,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
     isTermsConditionsRequired,
     isStoreCreditApplied,
     isUsingMultiShipping,
+    language,
     methods,
     onMethodSelect,
     onStoreCreditChange,
@@ -115,6 +116,9 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
         />;
     }
 
+    const selectedMethodName = selectedMethod && getPaymentMethodName(language)(selectedMethod);
+    const continueWith = selectedMethod?.initializationStrategy?.type === 'NONE' ? selectedMethodName : undefined;
+
     return (
         <Form
             className="checkout-form"
@@ -151,6 +155,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
                 { shouldHidePaymentSubmitButton ?
                     <PaymentMethodSubmitButtonContainer /> :
                     <PaymentSubmitButton
+                        continueWith={ continueWith }
                         isDisabled={ shouldDisableSubmit }
                         methodGateway={ selectedMethod && selectedMethod.gateway }
                         methodId={ selectedMethodId }

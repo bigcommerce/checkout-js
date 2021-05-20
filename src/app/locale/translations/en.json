@@ -204,6 +204,7 @@
             "checkoutcom_sepa_debtor_title": "Debtor",
             "checkoutcom_sepa_mandate_disclaimer": "By accepting this mandate form, you authorize {creditorName} to send instructions to your bank to debit your account, and your bank to debit your account in accordance with those instructions. You are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited.",
             "checkoutcom_sepa_payment_type": "Payment type: one-off (non-recurring)",
+            "continue_with_action": "Continue with {methodName}",
             "credit_card_text": "Credit card",
             "credit_card_customer_code_label": "Customer Code",
             "credit_card_cvv_help_text": "For VISA and Mastercard, the CVV is a three-digit code printed on the back. For American Express it is the four-digit code printed on the front. The CVV is a security measure to ensure that you are in possession of the card.",

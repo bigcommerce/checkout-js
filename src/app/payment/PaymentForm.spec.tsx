@@ -359,5 +359,28 @@ describe('PaymentForm', () => {
                     methodType: 'bar',
                 }));
         });
+
+        describe('with a no UI, PPSDK payment method', () => {
+            it('passes a continueWith value to the submitButton', () => {
+                selectedMethod = {
+                    ...selectedMethod,
+                    initializationStrategy: { type: 'NONE' },
+                    config: { displayName: 'Some Method' },
+                };
+
+                defaultProps = { ...defaultProps, selectedMethod };
+                const container = mount(<PaymentFormTest { ...defaultProps } />);
+                const submitButton = container.find(PaymentSubmitButton);
+
+                expect(submitButton)
+                    .toHaveLength(1);
+
+                expect(submitButton.props())
+                    .toEqual(expect.objectContaining({
+                        continueWith: 'Some Method',
+                    }));
+            });
+        });
+
     });
 });

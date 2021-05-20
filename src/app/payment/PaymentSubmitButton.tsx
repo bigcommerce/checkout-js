@@ -10,9 +10,16 @@ interface PaymentSubmitButtonTextProps {
     methodGateway?: string;
     methodId?: string;
     methodType?: string;
+    continueWith?: string;
+    ppsdkFeatureOn?: boolean;
 }
 
-const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> = memo(({ methodId, methodType, methodGateway }) => {
+const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> = memo(({ methodId, continueWith, methodType, methodGateway, ppsdkFeatureOn = false }) => {
+
+    if (ppsdkFeatureOn && continueWith) {
+        return <TranslatedString data={ { methodName: continueWith } } id="payment.continue_with_action" />;
+    }
+
     if (methodId === PaymentMethodId.Amazon) {
         return <TranslatedString id="payment.amazon_continue_action" />;
     }
@@ -53,6 +60,7 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
 });
 
 export interface PaymentSubmitButtonProps {
+    continueWith?: string;
     methodGateway?: string;
     methodId?: string;
     methodType?: string;
@@ -62,15 +70,18 @@ export interface PaymentSubmitButtonProps {
 interface WithCheckoutPaymentSubmitButtonProps {
     isInitializing?: boolean;
     isSubmitting?: boolean;
+    ppsdkFeatureOn: boolean;
 }
 
 const PaymentSubmitButton: FunctionComponent<PaymentSubmitButtonProps & WithCheckoutPaymentSubmitButtonProps> = ({
+    continueWith,
     isDisabled,
     isInitializing,
     isSubmitting,
     methodGateway,
     methodId,
     methodType,
+    ppsdkFeatureOn,
 }) => (
         <Button
             disabled={ isInitializing || isSubmitting || isDisabled }
@@ -81,15 +92,17 @@ const PaymentSubmitButton: FunctionComponent<PaymentSubmitButtonProps & WithChec
             type="submit"
             variant={ ButtonVariant.Action }
         >
-            <PaymentSubmitButtonText
-                methodGateway={ methodGateway }
-                methodId={ methodId }
-                methodType={ methodType }
-            />
+        <PaymentSubmitButtonText
+            continueWith={ continueWith }
+            methodGateway={ methodGateway }
+            methodId={ methodId }
+            methodType={ methodType }
+            ppsdkFeatureOn={ ppsdkFeatureOn }
+        />
         </Button>
     );
 
-export default withCheckout(({ checkoutState }) => {
+export default withCheckout(({ checkoutState, checkoutService }) => {
     const {
         statuses: {
             isInitializingCustomer,
@@ -98,8 +111,15 @@ export default withCheckout(({ checkoutState }) => {
         },
     } = checkoutState;
 
+    const ppsdkFeatureOn = Boolean(
+        checkoutService.getState()
+            .data.getConfig()
+            ?.checkoutSettings.features['PAYMENTS-6806.enable_ppsdk_strategy']
+    );
+
     return {
         isInitializing: isInitializingCustomer() || isInitializingPayment(),
         isSubmitting: isSubmittingOrder(),
+        ppsdkFeatureOn,
     };
 })(memo(PaymentSubmitButton));
