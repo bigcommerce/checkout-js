@@ -1,13 +1,13 @@
+import { CardInstrument, CheckoutSelectors, CustomerInitializeOptions,
+    CustomerRequestOptions,
+    Instrument, PaymentInitializeOptions,
+    PaymentInstrument,
+    PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import classNames from 'classnames';
 import { find, noop, some } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
-import { CardInstrument, CheckoutSelectors, CustomerInitializeOptions,
-    CustomerRequestOptions,
-    Instrument, PaymentInitializeOptions,
-    PaymentInstrument,
-    PaymentMethod, PaymentRequestOptions } from '../../../../../checkout-sdk-js';
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { MapToPropsFactory } from '../../common/hoc';
@@ -20,7 +20,7 @@ import { isBankAccountInstrument, isCardInstrument, isInstrumentCardCodeRequired
 import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
 
-interface HostedDropInPaymentMethodProps {
+export interface HostedDropInPaymentMethodProps {
     containerId: string;
     method: PaymentMethod;
     isUsingMultiShipping?: boolean;
@@ -94,10 +94,12 @@ class HostedDropInPaymentMethod extends Component<
 
         const {
             selectedInstrumentId,
+            isAddingNewCard,
         } = this.state;
 
         if (selectedInstrumentId !== prevState.selectedInstrumentId ||
-            (prevProps.instruments.length > 0 && instruments.length === 0)) {
+            (prevProps.instruments.length > 0 && instruments.length === 0) ||
+            isAddingNewCard !== prevState.isAddingNewCard) {
             try {
                 await deinitializePayment({
                     gatewayId: method.gateway,

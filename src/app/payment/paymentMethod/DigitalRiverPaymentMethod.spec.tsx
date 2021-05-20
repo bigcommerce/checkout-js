@@ -9,7 +9,7 @@ import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { getPaymentMethod } from '../payment-methods.mock';
 
-import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
+import HostedDropInPaymentMethod, { HostedDropInPaymentMethodProps } from './HostedDropInPaymentMethod';
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
 
@@ -54,9 +54,9 @@ describe('when using Digital River payment', () => {
         );
     });
 
-    it('renders as hosted widget method', () => {
+    it('renders as hosted drop in method', () => {
         const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
-        const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+        const component: ReactWrapper<HostedDropInPaymentMethodProps> = container.find(HostedDropInPaymentMethod);
 
         expect(component.props())
             .toEqual(expect.objectContaining({
@@ -68,7 +68,7 @@ describe('when using Digital River payment', () => {
 
     it('initializes method with required config', () => {
         const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
-        const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+        const component: ReactWrapper<HostedDropInPaymentMethodProps> = container.find(HostedDropInPaymentMethod);
 
         component.prop('initializePayment')({
             methodId: method.id,
@@ -101,7 +101,6 @@ describe('when using Digital River payment', () => {
                     },
                     containerId: `${method}-component-field`,
                     onError: expect.any(Function),
-                    onRenderButton: expect.any(Function),
                     onSubmitForm: expect.any(Function),
                 },
                 gatewayId: undefined,
