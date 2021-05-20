@@ -85,10 +85,17 @@ describe('when using Digital River payment', () => {
                         flow: 'checkout',
                         paymentMethodConfiguration: {
                             disabledPaymentMethods: [
+                                'alipay',
+                                'bPay',
+                                'codJapan',
                                 'klarnaCredit',
+                                'konbini',
+                                'msts',
+                                'payco',
                                 'payPal',
                                 'payPalCredit',
                                 'payPalBilling',
+                                'wireTransfer',
                             ],
                             classes: {
                                 base: 'form-input optimizedCheckout-form-input',
