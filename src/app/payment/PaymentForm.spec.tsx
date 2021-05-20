@@ -323,6 +323,7 @@ describe('PaymentForm', () => {
                     methodGateway: 'baz',
                     methodId: 'foo',
                     methodType: 'bar',
+                    methodName: 'Authorizenet',
                 }));
         });
 
@@ -340,6 +341,7 @@ describe('PaymentForm', () => {
                     methodGateway: 'baz',
                     methodId: undefined,
                     methodType: 'bar',
+                    methodName: 'Amazon Pay',
                 }));
         });
 
@@ -357,6 +359,7 @@ describe('PaymentForm', () => {
                     methodGateway: 'baz',
                     methodId: 'amazonpay',
                     methodType: 'bar',
+                    methodName: 'Amazon Pay',
                 }));
         });
     });

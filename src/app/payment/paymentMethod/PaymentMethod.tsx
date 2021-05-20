@@ -45,7 +45,7 @@ export interface PaymentMethodProps {
 }
 
 export interface WithCheckoutPaymentMethodProps {
-    ppsdkFeatureOn: boolean;
+    isPpsdkEnabled: boolean;
     isInitializing: boolean;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
@@ -64,9 +64,9 @@ export interface WithCheckoutPaymentMethodProps {
  */
 // tslint:disable:cyclomatic-complexity
 const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckoutPaymentMethodProps> = props => {
-    const { method, ppsdkFeatureOn } = props;
+    const { method, isPpsdkEnabled } = props;
 
-    if (ppsdkFeatureOn && method.type === PaymentMethodProviderType.PPSDK) {
+    if (isPpsdkEnabled && method.type === PaymentMethodProviderType.PPSDK) {
         return <PPSDKPaymentMethod { ...props } />;
     }
 
@@ -226,7 +226,7 @@ function mapToWithCheckoutPaymentMethodProps(
         statuses: { isInitializingPayment },
     } = checkoutState;
 
-    const ppsdkFeatureOn = Boolean(
+    const isPpsdkEnabled = Boolean(
         checkoutService.getState()
             .data.getConfig()
             ?.checkoutSettings.features['PAYMENTS-6806.enable_ppsdk_strategy']
@@ -238,7 +238,7 @@ function mapToWithCheckoutPaymentMethodProps(
         initializeCustomer: checkoutService.initializeCustomer,
         initializePayment: checkoutService.initializePayment,
         isInitializing: isInitializingPayment(method.id),
-        ppsdkFeatureOn,
+        isPpsdkEnabled,
     };
 }
 
