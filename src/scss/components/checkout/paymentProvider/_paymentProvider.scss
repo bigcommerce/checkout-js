@@ -106,3 +106,14 @@ body.klarna-payments-fso-open {
 .checkoutcom-sepa-line {
     margin-bottom: 0;
 }
+
+/* Custom payment submit buttons styles */
+.payment-submit-button-bolt {
+    font-size: 16px;
+}
+
+.payment-submit-button-bolt-icon {
+    height: remCalc(12px);
+    margin-right: remCalc(8px);
+    width: remCalc(12px);
+}

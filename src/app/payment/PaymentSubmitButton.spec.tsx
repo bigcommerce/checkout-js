@@ -6,6 +6,7 @@ import { CheckoutProvider } from '../checkout';
 import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 import { Button } from '../ui/button';
+import { IconBolt } from '../ui/icon';
 
 import PaymentSubmitButton, { PaymentSubmitButtonProps } from './PaymentSubmitButton';
 
@@ -76,13 +77,15 @@ describe('PaymentSubmitButton', () => {
             .toEqual(languageService.translate('payment.amazonpay_continue_action'));
     });
 
-    it('renders button with special label for Bolt', () => {
+    it('renders button with special label and icon for Bolt', () => {
         const component = mount(
             <PaymentSubmitButtonTest methodId="bolt" />
         );
 
         expect(component.text())
             .toEqual(languageService.translate('payment.bolt_continue_action'));
+        expect(component.find(IconBolt).length)
+            .toEqual(1);
     });
 
     it('renders button with special label for Barclaycard', () => {
