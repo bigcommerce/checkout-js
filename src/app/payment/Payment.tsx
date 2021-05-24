@@ -41,6 +41,7 @@ interface WithCheckoutPaymentProps {
     isTermsConditionsRequired: boolean;
     methods: PaymentMethod[];
     shouldExecuteSpamCheck: boolean;
+    shouldLocaliseErrorMessages: boolean;
     submitOrderError?: Error;
     termsConditionsText?: string;
     termsConditionsUrl?: string;
@@ -185,6 +186,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         const {
             finalizeOrderError,
             language,
+            shouldLocaliseErrorMessages,
             submitOrderError,
         } = this.props;
 
@@ -203,7 +205,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         return (
             <ErrorModal
                 error={ error }
-                message={ mapSubmitOrderErrorMessage(error, language.translate.bind(language)) }
+                message={ mapSubmitOrderErrorMessage(error, language.translate.bind(language), shouldLocaliseErrorMessages) }
                 onClose={ this.handleCloseModal }
                 title={ mapSubmitOrderErrorTitle(error, language.translate.bind(language)) }
             />
@@ -482,6 +484,7 @@ export function mapToPaymentProps({
 
     const {
         enableTermsAndConditions: isTermsConditionsEnabled,
+        features,
         orderTermsAndConditionsType: termsConditionsType,
         orderTermsAndConditions: termsCondtitionsText,
         orderTermsAndConditionsLink: termsCondtitionsUrl,
@@ -539,6 +542,7 @@ export function mapToPaymentProps({
         loadPaymentMethods: checkoutService.loadPaymentMethods,
         methods: filteredMethods,
         shouldExecuteSpamCheck: checkout.shouldExecuteSpamCheck,
+        shouldLocaliseErrorMessages: features['PAYMENTS-6799.localise_checkout_payment_error_messages'],
         submitOrder: checkoutService.submitOrder,
         submitOrderError: getSubmitOrderError(),
         termsConditionsText: isTermsConditionsRequired && termsConditionsType === TermsConditionsType.TextArea ?
