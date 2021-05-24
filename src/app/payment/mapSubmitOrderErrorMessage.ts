@@ -28,12 +28,10 @@ export default function mapSubmitOrderErrorMessage(
                 return translate('payment.payment_method_error', { message: error.message });
             }
 
-            if (shouldLocalise && error.body && error.body.errors) {
+            if (shouldLocalise && error.body && error.body.errors && error.body.errors.length) {
                 const messages = error.body.errors.map((err: { code: any }) => translate(`payment.errors.${err.code}`));
 
-                if (messages.length) {
-                    return messages.join(' ');
-                }
+                return messages.join(' ');
             }
 
             if (error.message) {
