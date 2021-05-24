@@ -122,6 +122,32 @@ describe('when using BlueSnapV2 payment', () => {
             .toHaveLength(1);
     });
 
+    it('renders modal but does not append bluesnap payment page because is empty', async () => {
+        const component = mount(<BlueSnapV2PaymentMethodTest />);
+        const initializeOptions = (defaultProps.initializePayment as jest.Mock).mock.calls[0][0];
+
+        act(() => {
+            initializeOptions.bluesnapv2.onLoad(
+                undefined,
+                jest.fn()
+            );
+        });
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        act(() => {
+            component.update();
+            // tslint:disable-next-line:no-non-null-assertion
+            component.find(Modal).prop('onAfterOpen')!();
+        });
+
+        expect(component.find(Modal).prop('isOpen'))
+            .toEqual(false);
+
+        expect(component.find(Modal).render().find('iframe'))
+            .toHaveLength(0);
+    });
+
     it('cancels payment flow if user chooses to close modal', async () => {
         const cancelBlueSnapV2Payment = jest.fn();
         const component = mount(<BlueSnapV2PaymentMethodTest />);
@@ -145,9 +171,11 @@ describe('when using BlueSnapV2 payment', () => {
         act(() => {
             // tslint:disable-next-line:no-non-null-assertion
             modal.prop('onRequestClose')!(new MouseEvent('click') as any);
+            // tslint:disable-next-line:no-non-null-assertion
+            modal.prop('onRequestClose')!(new MouseEvent('click') as any);
         });
 
         expect(cancelBlueSnapV2Payment)
-            .toHaveBeenCalled();
+            .toHaveBeenCalledTimes(1);
     });
 });
