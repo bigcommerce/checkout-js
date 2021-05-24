@@ -151,13 +151,6 @@ describe('HostedDropInPaymentMethod', () =>  {
             .toEqual(true);
     });
 
-    it('hides the payment submit button when a vaulted instrument is not selected', () => {
-        mount(<HostedDropInPaymentMethodTest { ...defaultProps } />);
-
-        expect(paymentContext.hidePaymentSubmitButton)
-            .toHaveBeenCalledWith(defaultProps.method, true);
-    });
-
     it('deinitializes payment method when component unmounts', () => {
         const component = mount(<HostedDropInPaymentMethodTest { ...defaultProps } />);
 
@@ -204,10 +197,25 @@ describe('HostedDropInPaymentMethod', () =>  {
         });
 
         it('shows the payment submit button when a vaulted instrument is selected', () => {
-            mount(<HostedDropInPaymentMethodTest { ...defaultProps } />);
+            const component = mount(<HostedDropInPaymentMethodTest { ...defaultProps } />);
+
+            component.find(CardInstrumentFieldset)
+                .prop('onSelectInstrument')(getInstruments()[0].bigpayToken);
+            component.update();
 
             expect(paymentContext.hidePaymentSubmitButton)
                 .toHaveBeenCalledWith(defaultProps.method, false);
+        });
+
+        it('hides the payment submit button when a vaulted instrument is not selected', () => {
+            const component = mount(<HostedDropInPaymentMethodTest { ...defaultProps } />);
+
+            component.find(CardInstrumentFieldset)
+                .prop('onUseNewInstrument')();
+            component.update();
+
+            expect(paymentContext.hidePaymentSubmitButton)
+                .toHaveBeenCalledWith(defaultProps.method, true);
         });
 
         it('shows fields on the Widget when you click Use another payment form on the vaulted instruments dropdown', () => {

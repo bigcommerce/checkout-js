@@ -90,12 +90,16 @@ class HostedDropInPaymentMethod extends Component<
             instruments,
             method,
             onUnhandledError = noop,
+            hidePaymentSubmitButton,
         } = this.props;
 
         const {
             selectedInstrumentId,
             isAddingNewCard,
         } = this.state;
+        const selectedInstrument = this.getDefaultInstrumentId();
+
+        hidePaymentSubmitButton(method, !selectedInstrument);
 
         if (selectedInstrumentId !== prevState.selectedInstrumentId ||
             (prevProps.instruments.length > 0 && instruments.length === 0) ||
@@ -149,7 +153,6 @@ class HostedDropInPaymentMethod extends Component<
             isLoadingInstruments,
             hideWidget = false,
             shouldHideInstrumentExpiryDate = false,
-            hidePaymentSubmitButton,
         } = this.props;
 
         const {
@@ -160,8 +163,6 @@ class HostedDropInPaymentMethod extends Component<
         const shouldShowInstrumentFieldset = isInstrumentFeatureAvailableProp && instruments.length > 0;
         const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
         const isLoading = (isInitializing || isLoadingInstruments) && !hideWidget;
-
-        hidePaymentSubmitButton(method, !selectedInstrumentId);
 
         return (
             <LoadingOverlay
