@@ -38,10 +38,17 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
                 showTermsOfSaleDisclosure: true,
                 paymentMethodConfiguration: {
                     disabledPaymentMethods: [
+                        'alipay',
+                        'bPay',
+                        'codJapan',
                         'klarnaCredit',
+                        'konbini',
+                        'msts',
+                        'payco',
                         'payPal',
                         'payPalCredit',
                         'payPalBilling',
+                        'wireTransfer',
                     ],
                     classes: DigitalRiverClasses,
                 },
