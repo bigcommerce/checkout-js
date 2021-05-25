@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.143.0](https://github.com/bigcommerce/checkout-js/compare/v1.142.0...v1.143.0) (2021-05-25)
+
+
+### Features
+
+* **checkout:** INT-4151 Create custom Place Order button for Bolt ([0341d61](https://github.com/bigcommerce/checkout-js/commit/0341d61d3fb2f48b2ffc52d7f6f4c11478bd6fc7))
+* **checkout:** INT-4151 Move Logic to base component ([90e08ee](https://github.com/bigcommerce/checkout-js/commit/90e08ee737d6ea59bfc14bb011478d175fa44d1f))
+* **payment:** INT-4197 Bump SDK. ([5e8b805](https://github.com/bigcommerce/checkout-js/commit/5e8b8052b5173336be1019677b6dd69db203891f))
+* **payment:** INT-4289 Suppress payment methods out of scope on Digital River ([97af127](https://github.com/bigcommerce/checkout-js/commit/97af127e4f866588f41a550ef6a7108ce59777f2))
+* **payment:** PAYMENTS-6799 Use key-based translatable payment error message instead of that of the error response ([db7df13](https://github.com/bigcommerce/checkout-js/commit/db7df13de00099b44c58e0a58cd9b67ba9be0298))
+
+
+### Bug Fixes
+
+* **common:** PAYMENTS-6799 Add missing mapSubmitOrderErrorMessage unit tests to fix test coverage release issue ([3e20ac8](https://github.com/bigcommerce/checkout-js/commit/3e20ac82b4517afa7970be956b4241126a791992))
+
 ## [1.142.0](https://github.com/bigcommerce/checkout-js/compare/v1.141.0...v1.142.0) (2021-05-20)
 
 
