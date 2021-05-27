@@ -3,7 +3,7 @@ import { noop } from 'lodash';
 import React from 'react';
 
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '../locale';
 
 import CheckoutButton from './CheckoutButton';
 import CheckoutButtonList from './CheckoutButtonList';
@@ -72,6 +72,22 @@ describe('CheckoutButtonList', () => {
 
         expect(component.html())
             .toBeFalsy();
+    });
+
+    it('does not render the translated string when initializing', () => {
+        const component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <CheckoutButtonList
+                    deinitialize={ noop }
+                    initialize={ noop }
+                    isInitializing={ true }
+                    methodIds={ ['amazon', 'braintreevisacheckout'] }
+                />
+            </LocaleContext.Provider>
+        );
+
+        expect(component.find(TranslatedString))
+            .toHaveLength(0);
     });
 
     it('passes data to every checkout button', () => {

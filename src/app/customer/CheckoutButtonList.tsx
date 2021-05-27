@@ -22,6 +22,7 @@ export const SUPPORTED_METHODS: string[] = [
 
 export interface CheckoutButtonListProps {
     methodIds?: string[];
+    isInitializing?: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void;
     deinitialize(options: CustomerRequestOptions): void;
     initialize(options: CustomerInitializeOptions): void;
@@ -31,6 +32,7 @@ export interface CheckoutButtonListProps {
 const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
     checkEmbeddedSupport,
     onError,
+    isInitializing = false,
     methodIds,
     ...rest
 }) => {
@@ -57,7 +59,7 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
 
     return (
         <Fragment>
-            <p><TranslatedString id="remote.continue_with_text" /></p>
+            { !isInitializing && <p><TranslatedString id="remote.continue_with_text" /></p> }
 
             <div className="checkoutRemote">
                 { supportedMethodIds.map(methodId =>
