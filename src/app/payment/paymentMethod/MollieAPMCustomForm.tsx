@@ -10,7 +10,7 @@ export interface MollieCustomCardFormProps {
     method: PaymentMethod;
 }
 
-interface Issuer {
+export interface Issuer {
     name: string;
     image: {
         size1x: string;
@@ -76,7 +76,7 @@ const MollieAPMCustomForm: FunctionComponent<MollieCustomCardFormProps> = ({ met
     </>);
 };
 
-const HiddenInput: FunctionComponent<HiddenInputProps> = ({ field: { value, ...restField }, form, selectedIssuer}) => {
+export const HiddenInput: FunctionComponent<HiddenInputProps> = ({ field: { value, ...restField }, form, selectedIssuer}) => {
     const Input = useCallback(() => <input { ...restField } type="hidden" />, [restField]);
 
     useEffect(() => {
@@ -90,7 +90,7 @@ const HiddenInput: FunctionComponent<HiddenInputProps> = ({ field: { value, ...r
     return <Input />;
 };
 
-const IssuerSelectButton: FunctionComponent<SelecteIssuerProp> = ({ selectedIssuer }) => (
+export const IssuerSelectButton: FunctionComponent<SelecteIssuerProp> = ({ selectedIssuer }) => (
     <a
         className="instrumentSelect instrumentSelect-card button dropdown-button dropdown-toogle--select"
         href="#"
@@ -101,7 +101,7 @@ const IssuerSelectButton: FunctionComponent<SelecteIssuerProp> = ({ selectedIssu
     </a>
 );
 
-const OptionButton: FunctionComponent<OptionButtonProps> = ({ issuer, ...props }) => {
+export const OptionButton: FunctionComponent<OptionButtonProps> = ({ issuer, ...props }) => {
     const { name, image, id } = issuer;
 
     return (
