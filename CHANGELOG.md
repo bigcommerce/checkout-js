@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.144.0](https://github.com/bigcommerce/checkout-js/compare/v1.143.0...v1.144.0) (2021-05-28)
+
+
+### Features
+
+* **payment:** INT-4170 added hosted fields on Mollie verification field ([111b4a5](https://github.com/bigcommerce/checkout-js/commit/111b4a59488b8b3ad2dc46295eb3876a19a144c1))
+* **payment:** INT-4310 Bump SDK. ([27fe1be](https://github.com/bigcommerce/checkout-js/commit/27fe1bedecca358d45d3af2aa0407bc687db0998))
+* **payment:** INT-4310 Create HostedDroInPaymentMethod ([b585268](https://github.com/bigcommerce/checkout-js/commit/b585268fddefeb73f9763884376b7dc796424697))
+
 ## [1.143.0](https://github.com/bigcommerce/checkout-js/compare/v1.142.0...v1.143.0) (2021-05-25)
 
 
