@@ -34,6 +34,7 @@ describe('PaymentMethodTitle', () => {
         laybuy: '/img/payment-providers/laybuy-checkout-header.png',
         masterpass: 'https://masterpass.com/dyn/img/acc/global/mp_mark_hor_blk.svg',
         paypal: '/img/payment-providers/paypalpaymentsprouk.png',
+        quadpay: '/img/payment-providers/quadpay.png',
         sezzle: '/img/payment-providers/sezzle-checkout-header.png',
         zip: '/img/payment-providers/zip.png',
         paypalcommerce: '/img/payment-providers/paypal_commerce_logo.svg',
@@ -160,6 +161,7 @@ describe('PaymentMethodTitle', () => {
             PaymentMethodId.Afterpay,
             PaymentMethodId.Clearpay,
             PaymentMethodId.Klarna,
+            PaymentMethodId.Quadpay,
             PaymentMethodId.Sezzle,
             PaymentMethodId.Zip,
         ];
@@ -185,6 +187,7 @@ describe('PaymentMethodTitle', () => {
         const methodIds = [
             PaymentMethodId.Affirm,
             PaymentMethodId.Klarna,
+            PaymentMethodId.Quadpay,
             PaymentMethodId.Sezzle,
             PaymentMethodId.Zip,
         ];
