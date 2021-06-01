@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.145.0](https://github.com/bigcommerce/checkout-js/compare/v1.144.0...v1.145.0) (2021-06-01)
+
+
+### Features
+
+* **payment:** INT-4205 Bump checkout-sdk ([cd82a3a](https://github.com/bigcommerce/checkout-js/commit/cd82a3a61a5d03ab7d0e6bd418c95d8906ffa8ac))
+* **payment:** INT-4242 Add Quadpay payment method ([8ccca1f](https://github.com/bigcommerce/checkout-js/commit/8ccca1f7c33a84a463d6dbab60e359380d9246fd))
+* **payment:** INT-4242 Bump SDK. ([acff9f5](https://github.com/bigcommerce/checkout-js/commit/acff9f5eef7251c7ed9ce79ffc8d52884f360a63))
+
 ## [1.144.0](https://github.com/bigcommerce/checkout-js/compare/v1.143.0...v1.144.0) (2021-05-28)
 
 
