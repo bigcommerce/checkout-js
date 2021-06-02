@@ -21,7 +21,31 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
     ...rest
 }) => {
     const { setSubmitted } = useContext(FormContext);
-    const containerId = `${rest.method}-component-field`;
+    const containerId = `${rest.method.id}-component-field`;
+    let disabledPaymentMethodsFromSettings: string[] = [];
+    const { initializationData } = rest.method;
+    if (initializationData) {
+        const { disabledPaymentMethods } = initializationData;
+
+        if (disabledPaymentMethods) {
+            disabledPaymentMethodsFromSettings = disabledPaymentMethods;
+        }
+    }
+
+    const disabledPaymentMethodsData = [
+        ...disabledPaymentMethodsFromSettings,
+        'alipay',
+        'bPay',
+        'codJapan',
+        'klarnaCredit',
+        'konbini',
+        'msts',
+        'payco',
+        'payPal',
+        'payPalCredit',
+        'payPalBilling',
+        'wireTransfer',
+    ];
     const initializeDigitalRiverPayment = useCallback(options => initializePayment({
         ...options,
         digitalriver: {
@@ -36,19 +60,7 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
                 usage: 'unscheduled',
                 showTermsOfSaleDisclosure: true,
                 paymentMethodConfiguration: {
-                    disabledPaymentMethods: [
-                        'alipay',
-                        'bPay',
-                        'codJapan',
-                        'klarnaCredit',
-                        'konbini',
-                        'msts',
-                        'payco',
-                        'payPal',
-                        'payPalCredit',
-                        'payPalBilling',
-                        'wireTransfer',
-                    ],
+                    disabledPaymentMethods: disabledPaymentMethodsData,
                     classes: DigitalRiverClasses,
                 },
             },
@@ -60,7 +72,7 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
                 onUnhandledError?.(error);
             },
         },
-    }), [initializePayment, containerId, setSubmitted, submitForm, onUnhandledError]);
+    }), [initializePayment, containerId, disabledPaymentMethodsData, setSubmitted, submitForm, onUnhandledError]);
 
     return <HostedDropInPaymentMethod
         { ...rest }
