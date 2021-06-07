@@ -276,6 +276,7 @@
             "instrument_trusted_shipping_address_title_text": "Please re-enter your card number to authorize this transaction.",
             "quadpay_continue_action": "Continue with Quadpay",
             "quadpay_display_name_text": "Pay in 4 installments",
+            "ppsdk_continue_action": "Continue with {methodName}",
             "sepa_account_number": "Account Number (IBAN)",
             "sepa_account_number_required": "You must enter your account number (IBAN)",
             "sepa_bic": "BIC",

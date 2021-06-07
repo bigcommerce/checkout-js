@@ -11,11 +11,19 @@ interface PaymentSubmitButtonTextProps {
     methodGateway?: string;
     methodId?: string;
     methodType?: string;
+    methodName?: string;
+    initialisationStrategyType?: string;
+    isPpsdkEnabled?: boolean;
 }
 
 const providersWithCustomClasses = [PaymentMethodId.Bolt];
 
-const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> = memo(({ methodId, methodType, methodGateway }) => {
+const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> = memo(({ methodId, methodName, methodType, methodGateway, isPpsdkEnabled = false, initialisationStrategyType }) => {
+
+    if (isPpsdkEnabled && methodName && initialisationStrategyType === 'NONE') {
+        return <TranslatedString data={ { methodName } } id="payment.ppsdk_continue_action" />;
+    }
+
     if (methodId === PaymentMethodId.Amazon) {
         return <TranslatedString id="payment.amazon_continue_action" />;
     }
@@ -65,13 +73,16 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
 export interface PaymentSubmitButtonProps {
     methodGateway?: string;
     methodId?: string;
+    methodName?: string;
     methodType?: string;
     isDisabled?: boolean;
+    initialisationStrategyType?: string;
 }
 
 interface WithCheckoutPaymentSubmitButtonProps {
     isInitializing?: boolean;
     isSubmitting?: boolean;
+    isPpsdkEnabled: boolean;
 }
 
 const PaymentSubmitButton: FunctionComponent<PaymentSubmitButtonProps & WithCheckoutPaymentSubmitButtonProps> = ({
@@ -80,7 +91,10 @@ const PaymentSubmitButton: FunctionComponent<PaymentSubmitButtonProps & WithChec
     isSubmitting,
     methodGateway,
     methodId,
+    methodName,
     methodType,
+    isPpsdkEnabled,
+    initialisationStrategyType,
 }) => (
         <Button
             className={ providersWithCustomClasses.includes(methodId as PaymentMethodId) ? `payment-submit-button-${methodId}` : undefined }
@@ -93,14 +107,17 @@ const PaymentSubmitButton: FunctionComponent<PaymentSubmitButtonProps & WithChec
             variant={ ButtonVariant.Action }
         >
             <PaymentSubmitButtonText
+                initialisationStrategyType={ initialisationStrategyType }
+                isPpsdkEnabled={ isPpsdkEnabled }
                 methodGateway={ methodGateway }
                 methodId={ methodId }
+                methodName={ methodName }
                 methodType={ methodType }
             />
         </Button>
     );
 
-export default withCheckout(({ checkoutState }) => {
+export default withCheckout(({ checkoutState, checkoutService }) => {
     const {
         statuses: {
             isInitializingCustomer,
@@ -109,8 +126,15 @@ export default withCheckout(({ checkoutState }) => {
         },
     } = checkoutState;
 
+    const isPpsdkEnabled = Boolean(
+        checkoutService.getState()
+            .data.getConfig()
+            ?.checkoutSettings.features['PAYMENTS-6806.enable_ppsdk_strategy']
+    );
+
     return {
         isInitializing: isInitializingCustomer() || isInitializingPayment(),
         isSubmitting: isSubmittingOrder(),
+        isPpsdkEnabled,
     };
 })(memo(PaymentSubmitButton));
