@@ -32,20 +32,6 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
         }
     }
 
-    const disabledPaymentMethodsData = [
-        ...disabledPaymentMethodsFromSettings,
-        'alipay',
-        'bPay',
-        'codJapan',
-        'klarnaCredit',
-        'konbini',
-        'msts',
-        'payco',
-        'payPal',
-        'payPalCredit',
-        'payPalBilling',
-        'wireTransfer',
-    ];
     const initializeDigitalRiverPayment = useCallback(options => initializePayment({
         ...options,
         digitalriver: {
@@ -60,7 +46,7 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
                 usage: 'unscheduled',
                 showTermsOfSaleDisclosure: true,
                 paymentMethodConfiguration: {
-                    disabledPaymentMethods: disabledPaymentMethodsData,
+                    disabledPaymentMethods: disabledPaymentMethodsFromSettings,
                     classes: DigitalRiverClasses,
                 },
             },
@@ -72,7 +58,7 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
                 onUnhandledError?.(error);
             },
         },
-    }), [initializePayment, containerId, disabledPaymentMethodsData, setSubmitted, submitForm, onUnhandledError]);
+    }), [initializePayment, containerId, disabledPaymentMethodsFromSettings, setSubmitted, submitForm, onUnhandledError]);
 
     return <HostedDropInPaymentMethod
         { ...rest }

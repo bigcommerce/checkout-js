@@ -66,12 +66,23 @@ describe('when using Digital River payment', () => {
             }));
     });
 
-    it('initializes method with required config', () => {
+    it('initializes method with required config including initializationData', () => {
         const methodWithInitializationData = {
             ...method,
             initializationData: {
                 disabledPaymentMethods: [
                     'googlePay',
+                    'alipay',
+                    'bPay',
+                    'codJapan',
+                    'klarnaCredit',
+                    'konbini',
+                    'msts',
+                    'payco',
+                    'payPal',
+                    'payPalCredit',
+                    'payPalBilling',
+                    'wireTransfer',
                 ],
             },
         };
@@ -125,7 +136,7 @@ describe('when using Digital River payment', () => {
             });
     });
 
-    it('initializes method with required config including initializationData', () => {
+    it('initializes method with required config and without initializationData', () => {
         const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
         const component: ReactWrapper<HostedDropInPaymentMethodProps> = container.find(HostedDropInPaymentMethod);
 
@@ -143,19 +154,7 @@ describe('when using Digital River payment', () => {
                         },
                         flow: 'checkout',
                         paymentMethodConfiguration: {
-                            disabledPaymentMethods: [
-                                'alipay',
-                                'bPay',
-                                'codJapan',
-                                'klarnaCredit',
-                                'konbini',
-                                'msts',
-                                'payco',
-                                'payPal',
-                                'payPalCredit',
-                                'payPalBilling',
-                                'wireTransfer',
-                            ],
+                            disabledPaymentMethods: [],
                             classes: {
                                 base: 'form-input optimizedCheckout-form-input',
                             },
