@@ -22,15 +22,7 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
 }) => {
     const { setSubmitted } = useContext(FormContext);
     const containerId = `${rest.method.id}-component-field`;
-    let disabledPaymentMethodsFromSettings: string[] = [];
-    const { initializationData } = rest.method;
-    if (initializationData) {
-        const { disabledPaymentMethods } = initializationData;
-
-        if (disabledPaymentMethods) {
-            disabledPaymentMethodsFromSettings = disabledPaymentMethods;
-        }
-    }
+    const disabledPaymentMethods = rest.method.initializationData?.disabledPaymentMethods ?? [];
 
     const initializeDigitalRiverPayment = useCallback(options => initializePayment({
         ...options,
@@ -46,7 +38,7 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
                 usage: 'unscheduled',
                 showTermsOfSaleDisclosure: true,
                 paymentMethodConfiguration: {
-                    disabledPaymentMethods: disabledPaymentMethodsFromSettings,
+                    disabledPaymentMethods,
                     classes: DigitalRiverClasses,
                 },
             },
@@ -58,7 +50,7 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
                 onUnhandledError?.(error);
             },
         },
-    }), [initializePayment, containerId, disabledPaymentMethodsFromSettings, setSubmitted, submitForm, onUnhandledError]);
+    }), [initializePayment, containerId, disabledPaymentMethods, setSubmitted, submitForm, onUnhandledError]);
 
     return <HostedDropInPaymentMethod
         { ...rest }

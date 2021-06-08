@@ -73,16 +73,6 @@ describe('when using Digital River payment', () => {
                 disabledPaymentMethods: [
                     'googlePay',
                     'alipay',
-                    'bPay',
-                    'codJapan',
-                    'klarnaCredit',
-                    'konbini',
-                    'msts',
-                    'payco',
-                    'payPal',
-                    'payPalCredit',
-                    'payPalBilling',
-                    'wireTransfer',
                 ],
             },
         };
@@ -107,16 +97,6 @@ describe('when using Digital River payment', () => {
                             disabledPaymentMethods: [
                                 'googlePay',
                                 'alipay',
-                                'bPay',
-                                'codJapan',
-                                'klarnaCredit',
-                                'konbini',
-                                'msts',
-                                'payco',
-                                'payPal',
-                                'payPalCredit',
-                                'payPalBilling',
-                                'wireTransfer',
                             ],
                             classes: {
                                 base: 'form-input optimizedCheckout-form-input',
