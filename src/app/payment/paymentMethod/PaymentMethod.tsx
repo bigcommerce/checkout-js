@@ -23,6 +23,7 @@ import KlarnaPaymentMethod from './KlarnaPaymentMethod';
 import KlarnaV2PaymentMethod from './KlarnaV2PaymentMethod';
 import MasterpassPaymentMethod from './MasterpassPaymentMethod';
 import MolliePaymentMethod from './MolliePaymentMethod';
+import MonerisPaymentMethod from './MonerisPaymentMethod';
 import OfflinePaymentMethod from './OfflinePaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
@@ -186,6 +187,10 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
 
     if (method.id === PaymentMethodId.Bolt) {
         return <BoltPaymentMethod { ...props } />;
+    }
+
+    if (method.id === PaymentMethodId.Moneris) {
+        return <MonerisPaymentMethod { ...props } />;
     }
 
     if (method.gateway === PaymentMethodId.Afterpay ||
