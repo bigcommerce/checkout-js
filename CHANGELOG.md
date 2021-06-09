@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.147.0](https://github.com/bigcommerce/checkout-js/compare/v1.146.1...v1.147.0) (2021-06-09)
+
+
+### Features
+
+* **payment:** INT-4170 Bump SDK. ([5a0f805](https://github.com/bigcommerce/checkout-js/commit/5a0f805614408e74b7751513bb9bf71b4a9887de))
+* **payment:** INT-4205 Create Moneris payment Method ([0838fc6](https://github.com/bigcommerce/checkout-js/commit/0838fc658fb15bce717be55d397004d4199a43a1))
+* **payment:** PAYMENTS-6899 add ppsdk payment method submit button text ([b391a6b](https://github.com/bigcommerce/checkout-js/commit/b391a6b933a070e47cb753492be4e8892c153d54))
+
 ### [1.146.1](https://github.com/bigcommerce/checkout-js/compare/v1.146.0...v1.146.1) (2021-06-02)
 
 
