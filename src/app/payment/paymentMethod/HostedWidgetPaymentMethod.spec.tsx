@@ -3,15 +3,17 @@ import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent, ReactElement } from 'react';
+import { Schema } from 'yup';
 
 import { getCart } from '../../cart/carts.mock';
 import { CheckoutProvider } from '../../checkout';
 import { getCheckout, getCheckoutPayment } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
-import { createLocaleContext, LocaleContext, TranslatedString } from '../../locale';
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '../../locale';
 import { getConsignment } from '../../shipping/consignment.mock';
 import { LoadingOverlay } from '../../ui/loading';
+import { getCreditCardValidationSchema } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
 import { AccountInstrumentFieldset, CardInstrumentFieldset } from '../storedInstrument';
 import { getInstruments } from '../storedInstrument/instruments.mock';
@@ -26,6 +28,7 @@ describe('HostedWidgetPaymentMethod', () => {
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
     let paymentContext: PaymentContextProps;
+    let localeContext: LocaleContextType;
 
     beforeEach(() => {
         defaultProps = {
@@ -43,6 +46,7 @@ describe('HostedWidgetPaymentMethod', () => {
             setValidationSchema: jest.fn(),
             hidePaymentSubmitButton: jest.fn(),
         };
+        localeContext = createLocaleContext(getStoreConfig());
 
         jest.spyOn(checkoutState.data, 'getCheckout')
             .mockReturnValue(getCheckout());
@@ -449,5 +453,25 @@ describe('HostedWidgetPaymentMethod', () => {
             expect(container.find('.form-field--saveInstrument'))
                 .toHaveLength(1);
         });
+
+        it('sets validation schema when component mounts', () => {
+            const expectedSchema = getCreditCardValidationSchema({
+                isCardCodeRequired: true,
+                language: localeContext.language,
+            });
+
+            mount(<HostedWidgetPaymentMethodTest
+                storedCardValidationSchema={ expectedSchema }
+                { ...defaultProps }
+            />);
+
+            expect(paymentContext.setValidationSchema)
+                .toHaveBeenCalled();
+
+            const schema: Schema<any> = (paymentContext.setValidationSchema as jest.Mock).mock.calls[0][1];
+
+            expect(Object.keys(schema.describe().fields))
+                .toEqual(Object.keys(expectedSchema.describe().fields));
+            });
     });
 });

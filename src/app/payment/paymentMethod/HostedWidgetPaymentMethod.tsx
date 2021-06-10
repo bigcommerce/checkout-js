@@ -3,6 +3,7 @@ import { memoizeOne } from '@bigcommerce/memoize';
 import classNames from 'classnames';
 import { find, noop, some } from 'lodash';
 import React, { Component, ReactNode } from 'react';
+import { ObjectSchema } from 'yup';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { preventDefault } from '../../common/dom';
@@ -15,6 +16,7 @@ import withPayment, { WithPaymentProps } from '../withPayment';
 import { PaymentFormValues } from '../PaymentForm';
 import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
 
+import { CreditCardPaymentMethodValues } from './CreditCardPaymentMethod';
 import SignOutLink from './SignOutLink';
 
 export interface HostedWidgetPaymentMethodProps {
@@ -35,6 +37,7 @@ export interface HostedWidgetPaymentMethodProps {
     shouldShowDescriptor?: boolean;
     shouldShowEditButton?: boolean;
     shouldRenderCustomInstrument?: boolean;
+    storedCardValidationSchema?: ObjectSchema<CreditCardPaymentMethodValues>;
     renderCustomPaymentForm?(): React.ReactNode;
     validateInstrument?(shouldShowNumberField: boolean, selectedInstrument?: CardInstrument): React.ReactNode;
     deinitializeCustomer?(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
@@ -79,8 +82,12 @@ class HostedWidgetPaymentMethod extends Component<
         const {
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
             loadInstruments,
+            method,
             onUnhandledError = noop,
+            setValidationSchema,
         } = this.props;
+
+        setValidationSchema(method, this.getValidationSchema());
 
         try {
             if (isInstrumentFeatureAvailableProp) {
@@ -99,11 +106,14 @@ class HostedWidgetPaymentMethod extends Component<
             instruments,
             method,
             onUnhandledError = noop,
+            setValidationSchema,
         } = this.props;
 
         const {
             selectedInstrumentId,
         } = this.state;
+
+        setValidationSchema(method, this.getValidationSchema());
 
         if (selectedInstrumentId !== prevState.selectedInstrumentId ||
             (prevProps.instruments.length > 0 && instruments.length === 0)) {
@@ -274,6 +284,33 @@ class HostedWidgetPaymentMethod extends Component<
                 { shouldRenderCustomInstrument && renderCustomPaymentForm && renderCustomPaymentForm() }
             </div>
         );
+    }
+
+    private getValidationSchema(): ObjectSchema<CreditCardPaymentMethodValues> | null {
+        const {
+            isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
+            isPaymentDataRequired,
+            storedCardValidationSchema,
+        } = this.props;
+
+        if (!isPaymentDataRequired) {
+            return null;
+        }
+
+        const selectedInstrument = this.getSelectedInstrument();
+
+        if (isInstrumentFeatureAvailableProp && selectedInstrument) {
+            return storedCardValidationSchema || null;
+        }
+
+        return null;
+    }
+
+    private getSelectedInstrument(): PaymentInstrument | undefined {
+        const { instruments } = this.props;
+        const { selectedInstrumentId = this.getDefaultInstrumentId() } = this.state;
+
+        return find(instruments, { bigpayToken: selectedInstrumentId });
     }
 
     private handleDeleteInstrument: (id: string) => void = id => {
