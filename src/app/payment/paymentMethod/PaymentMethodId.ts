@@ -30,6 +30,7 @@ enum PaymentMethodId {
     Mollie = 'mollie',
     Moneris = 'moneris',
     Oxxo = 'oxxo',
+    OrbitalGooglePay = 'googlepayorbital',
     PaypalExpress = 'paypalexpress',
     PaypalPaymentsPro = 'paypal',
     PaypalCommerce = 'paypalcommerce',

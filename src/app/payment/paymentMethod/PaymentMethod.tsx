@@ -146,6 +146,7 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
         method.id === PaymentMethodId.BraintreeGooglePay ||
         method.id === PaymentMethodId.CheckoutcomGooglePay ||
         method.id === PaymentMethodId.CybersourceV2GooglePay ||
+        method.id === PaymentMethodId.OrbitalGooglePay ||
         method.id === PaymentMethodId.StripeGooglePay) {
         return <GooglePayPaymentMethod { ...props } />;
     }
