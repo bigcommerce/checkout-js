@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.148.0](https://github.com/bigcommerce/checkout-js/compare/v1.147.0...v1.148.0) (2021-06-14)
+
+
+### Features
+
+* **payment:** INT-4170 added hosted_field schema ([d8012c2](https://github.com/bigcommerce/checkout-js/commit/d8012c2acbe2aea52f7d5b5fc2839b5a59e3310c))
+
 ## [1.147.0](https://github.com/bigcommerce/checkout-js/compare/v1.146.1...v1.147.0) (2021-06-09)
 
 
