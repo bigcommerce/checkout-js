@@ -17,6 +17,7 @@ const MolliePaymentMethod: FunctionComponent<MolliePaymentMethodsProps & WithInj
     method,
     getHostedFormOptions,
     getHostedStoredCardValidationFieldset,
+    hostedStoredCardValidationSchema,
     ...props
 }) => {
     const containerId = `mollie-${method.method}`;
@@ -97,6 +98,7 @@ const MolliePaymentMethod: FunctionComponent<MolliePaymentMethodsProps & WithInj
             method={ method }
             renderCustomPaymentForm={ renderCustomPaymentForm }
             shouldRenderCustomInstrument={ true }
+            storedCardValidationSchema={ hostedStoredCardValidationSchema }
             validateInstrument={ validateInstrument }
         />);
 };
