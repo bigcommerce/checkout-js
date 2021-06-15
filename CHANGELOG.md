@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.148.1-alpha.1623795732778](https://github.com/bigcommerce/checkout-js/compare/v1.143.0...v1.148.1-alpha.1623795732778) (2021-06-15)
+
+
+### Features
+
+* **payment:** INT-4170 added hosted fields on Mollie verification field ([111b4a5](https://github.com/bigcommerce/checkout-js/commit/111b4a59488b8b3ad2dc46295eb3876a19a144c1))
+* **payment:** INT-4170 added hosted_field schema ([d8012c2](https://github.com/bigcommerce/checkout-js/commit/d8012c2acbe2aea52f7d5b5fc2839b5a59e3310c))
+* **payment:** INT-4170 Bump SDK. ([5a0f805](https://github.com/bigcommerce/checkout-js/commit/5a0f805614408e74b7751513bb9bf71b4a9887de))
+* **payment:** INT-4205 Bump checkout-sdk ([cd82a3a](https://github.com/bigcommerce/checkout-js/commit/cd82a3a61a5d03ab7d0e6bd418c95d8906ffa8ac))
+* **payment:** INT-4205 Create Moneris payment Method ([0838fc6](https://github.com/bigcommerce/checkout-js/commit/0838fc658fb15bce717be55d397004d4199a43a1))
+* **payment:** INT-4242 Add Quadpay payment method ([8ccca1f](https://github.com/bigcommerce/checkout-js/commit/8ccca1f7c33a84a463d6dbab60e359380d9246fd))
+* **payment:** INT-4242 Bump SDK. ([acff9f5](https://github.com/bigcommerce/checkout-js/commit/acff9f5eef7251c7ed9ce79ffc8d52884f360a63))
+* **payment:** INT-4310 Bump SDK. ([27fe1be](https://github.com/bigcommerce/checkout-js/commit/27fe1bedecca358d45d3af2aa0407bc687db0998))
+* **payment:** INT-4310 Create HostedDroInPaymentMethod ([b585268](https://github.com/bigcommerce/checkout-js/commit/b585268fddefeb73f9763884376b7dc796424697))
+* **payment:** PAYMENTS-6899 add ppsdk payment method submit button text ([b391a6b](https://github.com/bigcommerce/checkout-js/commit/b391a6b933a070e47cb753492be4e8892c153d54))
+* **payment:** PAYPAL-863 bump checkout-sdk-js version ([8ba759f](https://github.com/bigcommerce/checkout-js/commit/8ba759f3daa626f2884ebb2b29dcfc0398a35b4d))
+
+
+### Bug Fixes
+
+* **checkout:** PAYPAL-1055 bump checkout-sdk version ([2069edf](https://github.com/bigcommerce/checkout-js/commit/2069edf3310a3d0a1563d2ba91466665418e06dc))
+
 ## [1.148.0](https://github.com/bigcommerce/checkout-js/compare/v1.147.0...v1.148.0) (2021-06-14)
 
 
