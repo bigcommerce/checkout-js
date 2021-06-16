@@ -60,14 +60,24 @@ describe('when using Digital River payment', () => {
 
         expect(component.props())
             .toEqual(expect.objectContaining({
-                containerId: `${method}-component-field`,
+                containerId: `${method.id}-component-field`,
                 initializePayment: expect.any(Function),
                 method,
             }));
     });
 
-    it('initializes method with required config', () => {
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+    it('initializes method with required config including initializationData', () => {
+        const methodWithInitializationData = {
+            ...method,
+            initializationData: {
+                disabledPaymentMethods: [
+                    'googlePay',
+                    'alipay',
+                ],
+            },
+        };
+
+        const container = mount(<PaymentMethodTest { ...defaultProps } method={ methodWithInitializationData } />);
         const component: ReactWrapper<HostedDropInPaymentMethodProps> = container.find(HostedDropInPaymentMethod);
 
         component.prop('initializePayment')({
@@ -85,17 +95,8 @@ describe('when using Digital River payment', () => {
                         flow: 'checkout',
                         paymentMethodConfiguration: {
                             disabledPaymentMethods: [
+                                'googlePay',
                                 'alipay',
-                                'bPay',
-                                'codJapan',
-                                'klarnaCredit',
-                                'konbini',
-                                'msts',
-                                'payco',
-                                'payPal',
-                                'payPalCredit',
-                                'payPalBilling',
-                                'wireTransfer',
                             ],
                             classes: {
                                 base: 'form-input optimizedCheckout-form-input',
@@ -106,7 +107,44 @@ describe('when using Digital River payment', () => {
                         showTermsOfSaleDisclosure: true,
                         usage: 'unscheduled',
                     },
-                    containerId: `${method}-component-field`,
+                    containerId: `${method.id}-component-field`,
+                    onError: expect.any(Function),
+                    onSubmitForm: expect.any(Function),
+                },
+                gatewayId: undefined,
+                methodId: 'digitalriver',
+            });
+    });
+
+    it('initializes method with required config and without initializationData', () => {
+        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+        const component: ReactWrapper<HostedDropInPaymentMethodProps> = container.find(HostedDropInPaymentMethod);
+
+        component.prop('initializePayment')({
+            methodId: method.id,
+            gatewayId: method.gateway,
+        });
+
+        expect(checkoutService.initializePayment)
+            .toHaveBeenCalledWith({
+                digitalriver: {
+                    configuration: {
+                        button: {
+                            type: 'submitOrder',
+                        },
+                        flow: 'checkout',
+                        paymentMethodConfiguration: {
+                            disabledPaymentMethods: [],
+                            classes: {
+                                base: 'form-input optimizedCheckout-form-input',
+                            },
+                        },
+                        showComplianceSection: true,
+                        showSavePaymentAgreement: false,
+                        showTermsOfSaleDisclosure: true,
+                        usage: 'unscheduled',
+                    },
+                    containerId: `${method.id}-component-field`,
                     onError: expect.any(Function),
                     onSubmitForm: expect.any(Function),
                 },
