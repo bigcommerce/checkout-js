@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.149.0](https://github.com/bigcommerce/checkout-js/compare/v1.148.0...v1.149.0) (2021-06-16)
+
+
+### Features
+
+* **payment:** INT-3792 Cleanning variables by Lee Feedback ([5308765](https://github.com/bigcommerce/checkout-js/commit/5308765b0f3c24326796286a064e81f2ec2ee128))
+* **payment:** INT-3792 Disabled payment method due to settings ([bec1139](https://github.com/bigcommerce/checkout-js/commit/bec11399c3375dd894c5256cb6788e27dd249b4b))
+* **payment:** INT-3792 Disabled payment method due to settings from BE ([fb1715a](https://github.com/bigcommerce/checkout-js/commit/fb1715abf9a7a6642df9937256f375b2b3201e46))
+
 ## [1.148.0](https://github.com/bigcommerce/checkout-js/compare/v1.147.0...v1.148.0) (2021-06-14)
 
 
