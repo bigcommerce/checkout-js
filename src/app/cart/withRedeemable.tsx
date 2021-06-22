@@ -4,7 +4,7 @@ import { OrderSummaryProps, OrderSummarySubtotalsProps } from '../order';
 
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
 import { WithCheckoutCartSummaryProps } from './CartSummary';
-import Redeemable from './Redeemable';
+import Redeemable from './Giftcard';
 
 export default function withRedeemable(
     OriginalComponent: ComponentType<OrderSummaryProps & OrderSummarySubtotalsProps>
@@ -23,6 +23,11 @@ export default function withRedeemable(
             storeCreditAmount,
             ...redeemableProps
         } = props;
+//        console.log('order summary:'+JSON.stringify(checkout))
+
+        // console.log('subtotal:'+checkout.subtotal)
+        // console.log('email:'+checkout.cart.email)
+        // console.log('Name:'+checkout.billingAddress?.firstName+' '+checkout.billingAddress?.lastName)
 
         return (
             <OriginalComponent
@@ -30,6 +35,7 @@ export default function withRedeemable(
                 additionalLineItems={
                     <Redeemable { ...{
                         ...redeemableProps,
+                        checkout,
                         onRemovedCoupon,
                         onRemovedGiftCertificate,
                     } }

@@ -7,7 +7,7 @@ import OrderSummary from '../order/OrderSummary';
 import mapToCartSummaryProps from './mapToCartSummaryProps';
 import withRedeemable from './withRedeemable';
 import EditLink from './EditLink';
-import { RedeemableProps } from './Redeemable';
+import { RedeemableProps } from './Giftcard';
 
 export type WithCheckoutCartSummaryProps = {
     checkout: Checkout;

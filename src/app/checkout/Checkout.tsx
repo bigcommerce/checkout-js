@@ -196,6 +196,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         return <>
             <div className={ classNames({ 'is-embedded': isEmbedded() }) }>
                 <div className="layout optimizedCheckout-contentPrimary">
+                    <b>MEC Custom Checkout</b>
                     { this.renderContent() }
                 </div>
                 { errorModal }
