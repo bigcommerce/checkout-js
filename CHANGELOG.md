@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.150.0](https://github.com/bigcommerce/checkout-js/compare/v1.149.0...v1.150.0) (2021-06-22)
+
+
+### Features
+
+* **payment:** INT-4441 Update Mollie APMs logos ([cf913fe](https://github.com/bigcommerce/checkout-js/commit/cf913fe2052d8ea5cab202c1dd23385cc9727fd7))
+
 ## [1.149.0](https://github.com/bigcommerce/checkout-js/compare/v1.148.0...v1.149.0) (2021-06-16)
 
 
