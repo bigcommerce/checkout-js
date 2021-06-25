@@ -6,6 +6,7 @@ import { configurePublicPath } from '../common/bundler';
 import { OrderConfirmationAppProps } from './OrderConfirmationApp';
 
 export type RenderOrderConfirmationOptions = OrderConfirmationAppProps;
+export type RenderOrderConfirmation = typeof renderOrderConfirmation;
 
 export default function renderOrderConfirmation({
     containerId,

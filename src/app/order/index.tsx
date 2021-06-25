@@ -1,4 +1,4 @@
-export { RenderOrderConfirmationOptions } from './renderOrderConfirmation';
+export { RenderOrderConfirmation, RenderOrderConfirmationOptions } from './renderOrderConfirmation';
 export { OrderSummaryProps } from './OrderSummary';
 export { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 export { default as OrderStatus } from './OrderStatus';

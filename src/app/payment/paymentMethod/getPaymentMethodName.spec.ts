@@ -1,6 +1,6 @@
 import { createLanguageService, LanguageService } from '@bigcommerce/checkout-sdk';
 
-import { DEFAULT_TRANSLATIONS } from '../../locale/translations';
+import { FALLBACK_TRANSLATIONS } from '../../locale/translations';
 import { getPaymentMethod } from '../payment-methods.mock';
 
 import getPaymentMethodName from './getPaymentMethodName';
@@ -10,7 +10,7 @@ describe('getPaymentMethodName()', () => {
     let language: LanguageService;
 
     beforeEach(() => {
-        language = createLanguageService({ defaultTranslations: DEFAULT_TRANSLATIONS });
+        language = createLanguageService({ defaultTranslations: FALLBACK_TRANSLATIONS });
     });
 
     it('returns configured display name if method does not have specific translated name', () => {

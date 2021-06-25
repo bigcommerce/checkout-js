@@ -2,8 +2,10 @@ import { getScriptLoader, getStylesheetLoader } from '@bigcommerce/script-loader
 
 import { RenderCheckoutOptions } from './checkout';
 import { configurePublicPath } from './common/bundler';
-import { joinPaths } from './common/utility';
+import { isRecordContainingKey, joinPaths } from './common/utility';
+import { getDefaultTranslations, isLanguageWindow } from './locale';
 import { RenderOrderConfirmationOptions } from './order';
+import { isAppExport } from './AppExport';
 
 declare const LIBRARY_NAME: string;
 declare const MANIFEST_JSON: AssetManifest;
@@ -56,12 +58,36 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
         { prefetch: true }
     );
 
+    const languageConfig = isLanguageWindow(window) ?
+        window.language :
+        { locale: 'en', locales: {}, translations: {} };
+
     return Promise.all([
+        getDefaultTranslations(languageConfig.locale),
         scripts,
         stylesheets,
     ])
-        .then(() => {
-            const { renderCheckout, renderOrderConfirmation } = (window as any)[LIBRARY_NAME];
+        .then(([defaultTranslations]) => {
+            if (!isRecordContainingKey(window, LIBRARY_NAME)) {
+                throw new Error(`'${LIBRARY_NAME}' property is not available in window.`);
+            }
+
+            const appExport = window[LIBRARY_NAME];
+
+            if (!isAppExport(appExport)) {
+                throw new Error('The functions required to bootstrap the application are not available.');
+            }
+
+            const {
+                renderCheckout,
+                renderOrderConfirmation,
+                initializeLanguageService,
+            } = appExport;
+
+            initializeLanguageService({
+                ...languageConfig,
+                defaultTranslations,
+            });
 
             return {
                 appVersion,
