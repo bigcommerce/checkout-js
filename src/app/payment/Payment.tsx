@@ -13,6 +13,7 @@ import { LoadingOverlay } from '../ui/loading';
 
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
+import { methodNavigatesAway } from './methodNavigatesAway';
 import { getUniquePaymentMethodId, PaymentMethodId, PaymentMethodProviderType } from './paymentMethod';
 import PaymentContext from './PaymentContext';
 import PaymentForm, { PaymentFormValues } from './PaymentForm';
@@ -274,29 +275,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         const { defaultMethod, isSubmittingOrder, language } = this.props;
         const { selectedMethod = defaultMethod } = this.state;
 
-        // TODO: Perhaps there is a better way to handle `adyen`, `afterpay`, `amazon`,
-        // `checkout.com`, `converge`, `sagepay`, `stripev3` and `sezzle`. They require
-        //  a redirection to another website during the payment flow but are not
-        //  categorised as hosted payment methods.
-        if (!isSubmittingOrder ||
-            !selectedMethod ||
-            selectedMethod.type === PaymentMethodProviderType.Hosted ||
-            selectedMethod.id === PaymentMethodId.Amazon ||
-            selectedMethod.id === PaymentMethodId.AmazonPay ||
-            selectedMethod.id === PaymentMethodId.Checkoutcom ||
-            selectedMethod.id === PaymentMethodId.Converge ||
-            selectedMethod.id === PaymentMethodId.Laybuy ||
-            selectedMethod.id === PaymentMethodId.Quadpay ||
-            selectedMethod.id === PaymentMethodId.SagePay ||
-            selectedMethod.id === PaymentMethodId.Sezzle ||
-            selectedMethod.id === PaymentMethodId.Zip ||
-            selectedMethod.gateway === PaymentMethodId.AdyenV2 ||
-            selectedMethod.gateway === PaymentMethodId.AdyenV2GooglePay ||
-            selectedMethod.gateway === PaymentMethodId.Afterpay ||
-            selectedMethod.gateway === PaymentMethodId.Clearpay ||
-            selectedMethod.gateway === PaymentMethodId.Checkoutcom ||
-            selectedMethod.gateway === PaymentMethodId.Mollie ||
-            selectedMethod.gateway === PaymentMethodId.StripeV3) {
+        if (!isSubmittingOrder || !selectedMethod || methodNavigatesAway(selectedMethod)) {
             return;
         }
 
