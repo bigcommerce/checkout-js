@@ -101,6 +101,7 @@
         "customer": {
             "checkout_as_guest_text": "Checking out as a <strong>Guest</strong>? You'll be able to save your details to create an account with us later.",
             "continue_as_guest_action": "Continue as guest",
+            "continue": "Continue",
             "create_account_action": "Create Account",
             "set_password_action": "Save Password",
             "required_error": "{label} is required",
