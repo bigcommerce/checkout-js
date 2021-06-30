@@ -2,7 +2,7 @@ import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import React, { useCallback, useMemo, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
-import { withLanguage, WithLanguageProps } from '../../locale';
+import { getLanguageService, withLanguage, WithLanguageProps } from '../../locale';
 
 import WalletButtonPaymentMethod, { WalletButtonPaymentMethodProps } from './WalletButtonPaymentMethod';
 
@@ -20,8 +20,17 @@ const MasterpassPaymentMethod: FunctionComponent<MasterpassPaymentMethodProps & 
         },
     }), [initializePayment]);
 
+    const formatLocale = useCallback((localeLanguage: string) => {
+        const auxLocale = localeLanguage.replace(/[-_]/g, '_');
+        const formatedLocale = auxLocale.includes('_') ? `${auxLocale}` : `${auxLocale}_${auxLocale}`;
+
+        return formatedLocale.toLowerCase();
+    }, []);
+
     const { config: { testMode }, initializationData: { checkoutId, isMasterpassSrcEnabled } } = rest.method;
-    const locale = navigator.language.replace('-', '_');
+
+    const locale = formatLocale(getLanguageService().getLocale());
+
     const signInButtonLabel = useMemo(() => (
         <img
             alt={ language.translate('payment.masterpass_name_text') }
