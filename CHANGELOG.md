@@ -2,6 +2,67 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.151.1-alpha.1625164222709](https://github.com/bigcommerce/checkout-js/compare/v1.127.0...v1.151.1-alpha.1625164222709) (2021-07-01)
+
+
+### Features
+
+* **checkout:** CHECKOUT-5892 Load default translations for various languages ([c5d79af](https://github.com/bigcommerce/checkout-js/commit/c5d79af4c2f6602cebab1f76bb2d512c56c499fe))
+* **checkout:** INT-4151 Create custom Place Order button for Bolt ([0341d61](https://github.com/bigcommerce/checkout-js/commit/0341d61d3fb2f48b2ffc52d7f6f4c11478bd6fc7))
+* **checkout:** INT-4151 Move Logic to base component ([90e08ee](https://github.com/bigcommerce/checkout-js/commit/90e08ee737d6ea59bfc14bb011478d175fa44d1f))
+* **checkout:** PAYPAL-1024 bump chechkout-sdk-js version ([cb2c3a0](https://github.com/bigcommerce/checkout-js/commit/cb2c3a0f5d93e79429d7c139495ab1be2aa5e7a2))
+* **common:** CHECKOUT-5747 Log extra debug data related to cart changed error ([e4ea5b5](https://github.com/bigcommerce/checkout-js/commit/e4ea5b5d2afdd8ba3bd8c4a704b6f9d5facacdd3))
+* **payment:** INT-2503 Change autocomplete props ([7102646](https://github.com/bigcommerce/checkout-js/commit/71026468c799e7a5456fd6f4ad55257ac0d65eaa))
+* **payment:** INT-2503 Fawry custom form ([08cca99](https://github.com/bigcommerce/checkout-js/commit/08cca99b983925e07b47e120eb737222a7b37a7a))
+* **payment:** INT-2503 INT-3611 Bump checkout-sdk-js ([37ac777](https://github.com/bigcommerce/checkout-js/commit/37ac777cab9e902680cb6050a12fe8ae9e9e4479))
+* **payment:** INT-3702 added vaulted cc ([1f16fa7](https://github.com/bigcommerce/checkout-js/commit/1f16fa7f16d71e19868329ab039c68d66539363e))
+* **payment:** INT-3702 INT-4063 Bump checkout-sdk-js ([9755050](https://github.com/bigcommerce/checkout-js/commit/9755050e7dc855b38cfd35eb92b2db96160327bd))
+* **payment:** INT-3792 Cleanning variables by Lee Feedback ([5308765](https://github.com/bigcommerce/checkout-js/commit/5308765b0f3c24326796286a064e81f2ec2ee128))
+* **payment:** INT-3792 Disabled payment method due to settings ([bec1139](https://github.com/bigcommerce/checkout-js/commit/bec11399c3375dd894c5256cb6788e27dd249b4b))
+* **payment:** INT-3792 Disabled payment method due to settings from BE ([fb1715a](https://github.com/bigcommerce/checkout-js/commit/fb1715abf9a7a6642df9937256f375b2b3201e46))
+* **payment:** INT-4021 Checkout.com iDeal add BIC field as a dropdown ([57d0b0e](https://github.com/bigcommerce/checkout-js/commit/57d0b0e0d4a5c6e0fbe16f2738f4cda7c312dea8))
+* **payment:** INT-4071 Clearpay - Create payment method ([971deea](https://github.com/bigcommerce/checkout-js/commit/971deea87e5d7db6c3e8ce34bd028d4d625e2a67))
+* **payment:** INT-4150 adding zip to handlebeforeunload ([87a5c1f](https://github.com/bigcommerce/checkout-js/commit/87a5c1f8f15ab9e5a34a3aed4c3006e361eefd6d))
+* **payment:** INT-4150 Bump SDK. ([055f759](https://github.com/bigcommerce/checkout-js/commit/055f759a66fc39854a8f5b27677f2256f2586b19))
+* **payment:** INT-4170 added hosted fields on Mollie verification field ([111b4a5](https://github.com/bigcommerce/checkout-js/commit/111b4a59488b8b3ad2dc46295eb3876a19a144c1))
+* **payment:** INT-4170 added hosted_field schema ([d8012c2](https://github.com/bigcommerce/checkout-js/commit/d8012c2acbe2aea52f7d5b5fc2839b5a59e3310c))
+* **payment:** INT-4170 Bump SDK. ([5a0f805](https://github.com/bigcommerce/checkout-js/commit/5a0f805614408e74b7751513bb9bf71b4a9887de))
+* **payment:** INT-4184 Add Creditor and Debtor to Sepa ([2d64770](https://github.com/bigcommerce/checkout-js/commit/2d6477006d0c6e909f89bb3bd9017f28a4ca642b))
+* **payment:** INT-4184 Fix styling issues ([99d8a18](https://github.com/bigcommerce/checkout-js/commit/99d8a1866742fea6bf776ebf45e1260d51702b92))
+* **payment:** INT-4184 Remove BIC field from fieldset ([0bd9551](https://github.com/bigcommerce/checkout-js/commit/0bd955104ebd00dc93fa5e302a49826fd1d87d5e))
+* **payment:** INT-4193 Add ticket url for OXXO/Boleto on checkout.com ([507123e](https://github.com/bigcommerce/checkout-js/commit/507123ed4fee0cc83b4bc769787abe0e4c9eb166))
+* **payment:** INT-4197 Bump SDK. ([5e8b805](https://github.com/bigcommerce/checkout-js/commit/5e8b8052b5173336be1019677b6dd69db203891f))
+* **payment:** INT-4205 Bump checkout-sdk ([cd82a3a](https://github.com/bigcommerce/checkout-js/commit/cd82a3a61a5d03ab7d0e6bd418c95d8906ffa8ac))
+* **payment:** INT-4205 Create Moneris payment Method ([0838fc6](https://github.com/bigcommerce/checkout-js/commit/0838fc658fb15bce717be55d397004d4199a43a1))
+* **payment:** INT-4237 Add issuer for Mollie APMs ([0da0b44](https://github.com/bigcommerce/checkout-js/commit/0da0b4474e51cebd8d0142a7e86d754b9f16cc07))
+* **payment:** INT-4237 INT-4071 Bump SDK. ([7e46eb0](https://github.com/bigcommerce/checkout-js/commit/7e46eb055e291446fa4d8f8ef53e9b212f911d87))
+* **payment:** INT-4242 Add Quadpay payment method ([8ccca1f](https://github.com/bigcommerce/checkout-js/commit/8ccca1f7c33a84a463d6dbab60e359380d9246fd))
+* **payment:** INT-4242 Bump SDK. ([acff9f5](https://github.com/bigcommerce/checkout-js/commit/acff9f5eef7251c7ed9ce79ffc8d52884f360a63))
+* **payment:** INT-4258 Bump SDK. ([ebbe07b](https://github.com/bigcommerce/checkout-js/commit/ebbe07bf8bc220b651f8122507abacaa26e9e4d3))
+* **payment:** INT-4289 Suppress payment methods out of scope on Digital River ([97af127](https://github.com/bigcommerce/checkout-js/commit/97af127e4f866588f41a550ef6a7108ce59777f2))
+* **payment:** INT-4310 Bump SDK. ([27fe1be](https://github.com/bigcommerce/checkout-js/commit/27fe1bedecca358d45d3af2aa0407bc687db0998))
+* **payment:** INT-4310 Create HostedDroInPaymentMethod ([b585268](https://github.com/bigcommerce/checkout-js/commit/b585268fddefeb73f9763884376b7dc796424697))
+* **payment:** INT-4441 Update Mollie APMs logos ([cf913fe](https://github.com/bigcommerce/checkout-js/commit/cf913fe2052d8ea5cab202c1dd23385cc9727fd7))
+* **payment:** PAYMENTS-6799 Use key-based translatable payment error message instead of that of the error response ([db7df13](https://github.com/bigcommerce/checkout-js/commit/db7df13de00099b44c58e0a58cd9b67ba9be0298))
+* **payment:** PAYMENTS-6813 add wip ppsdk payment method ([2d4f49c](https://github.com/bigcommerce/checkout-js/commit/2d4f49c326957d6678ce4dbe3fa3a3f4193fc98e))
+* **payment:** PAYMENTS-6899 add ppsdk payment method submit button text ([b391a6b](https://github.com/bigcommerce/checkout-js/commit/b391a6b933a070e47cb753492be4e8892c153d54))
+* **payment:** PAYPAL-863 bump checkout-sdk-js version ([8ba759f](https://github.com/bigcommerce/checkout-js/commit/8ba759f3daa626f2884ebb2b29dcfc0398a35b4d))
+* **payment:** PAYPAL-976 Order placement v2 ([2490db1](https://github.com/bigcommerce/checkout-js/commit/2490db199b21da5149712e2acb7eb82fb3cbf6ad))
+* **payment:** PAYPAL-982 bump checkout-sdk ([c4ea48f](https://github.com/bigcommerce/checkout-js/commit/c4ea48f6884d19d8bbf8cd266849d6e935399f76))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-5037 Fix mailto: links on order confirmation page if payment is still pending or order is still incomplete ([510b6c6](https://github.com/bigcommerce/checkout-js/commit/510b6c60cd6edc9795c2c5f7c8c49f055349ef0a))
+* **checkout:** INT-4180 Display method name along with the icon for checkout.com ([97c1bec](https://github.com/bigcommerce/checkout-js/commit/97c1bec64d371c080d1e12d95de401aaa067e453))
+* **checkout:** INT-4229 Fix checkout.com logo for credit card on phase 1 ([7ccf06e](https://github.com/bigcommerce/checkout-js/commit/7ccf06e09588b36cf91ada05bca671c0a9702a4b))
+* **checkout:** PAYPAL-1055 bump checkout-sdk version ([2069edf](https://github.com/bigcommerce/checkout-js/commit/2069edf3310a3d0a1563d2ba91466665418e06dc))
+* **common:** CHECKOUT-5747 Cleanup debugging logs ([e32429b](https://github.com/bigcommerce/checkout-js/commit/e32429b33f7d512f3434f96e38ffd9641515b5cf))
+* **common:** PAYMENTS-6799 Add missing mapSubmitOrderErrorMessage unit tests to fix test coverage release issue ([3e20ac8](https://github.com/bigcommerce/checkout-js/commit/3e20ac82b4517afa7970be956b4241126a791992))
+* **payment:** INT-3941 Bump SDK. ([8f2e3b1](https://github.com/bigcommerce/checkout-js/commit/8f2e3b1080110af9f254b69fd31b8478bf516858))
+* **payment:** INT-4184 Add missing payment type to SEPA ([04fe6cb](https://github.com/bigcommerce/checkout-js/commit/04fe6cb9a1e03d493c4443cd1c1eac9f032cc8b4))
+* **payment:** INT-4287 Fix Fawry payment ([837fca7](https://github.com/bigcommerce/checkout-js/commit/837fca77a0ece4e8acc4ee61382f2f384cc807a1))
+
 ## [1.151.0](https://github.com/bigcommerce/checkout-js/compare/v1.150.0...v1.151.0) (2021-07-01)
 
 
