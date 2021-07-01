@@ -1,13 +1,28 @@
-import { createLanguageService, LanguageService } from '@bigcommerce/checkout-sdk';
-import { memoize } from '@bigcommerce/memoize';
+import { createLanguageService, LanguageConfig, LanguageService } from '@bigcommerce/checkout-sdk';
 
-import { DEFAULT_TRANSLATIONS } from './translations';
+import { FALLBACK_LOCALE, FALLBACK_TRANSLATIONS } from './translations';
 
-function getLanguageService(): LanguageService {
-    return createLanguageService({
-        ...(window as any).language,
-        defaultTranslations: DEFAULT_TRANSLATIONS,
+let languageService: LanguageService | undefined;
+
+export default function getLanguageService(): LanguageService {
+    languageService = languageService ?? createLanguageService({
+        fallbackLocale: FALLBACK_LOCALE,
+        fallbackTranslations: FALLBACK_TRANSLATIONS,
     });
+
+    return languageService;
 }
 
-export default memoize(getLanguageService);
+export type InitializeLanguageService = typeof initializeLanguageService;
+
+export function initializeLanguageService(config: LanguageConfig): LanguageService {
+    languageService = createLanguageService({
+        ...config,
+        defaultLocale: config.locale,
+        defaultTranslations: config.defaultTranslations,
+        fallbackLocale: FALLBACK_LOCALE,
+        fallbackTranslations: FALLBACK_TRANSLATIONS,
+    });
+
+    return languageService;
+}

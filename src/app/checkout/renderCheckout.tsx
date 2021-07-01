@@ -6,6 +6,7 @@ import { configurePublicPath } from '../common/bundler';
 import { CheckoutAppProps } from './CheckoutApp';
 
 export type RenderCheckoutOptions = CheckoutAppProps;
+export type RenderCheckout = typeof renderCheckout;
 
 export default function renderCheckout({
     containerId,

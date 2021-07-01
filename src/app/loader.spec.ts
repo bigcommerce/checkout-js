@@ -2,6 +2,7 @@ import { getScriptLoader, getStylesheetLoader } from '@bigcommerce/script-loader
 import { noop } from 'lodash';
 
 import { loadFiles, AssetManifest, LoadFilesOptions } from './loader';
+import AppExport from './AppExport';
 
 jest.mock('@bigcommerce/script-loader', () => {
     return {
@@ -19,6 +20,7 @@ jest.mock('@bigcommerce/script-loader', () => {
 describe('loadFiles', () => {
     let manifestJson: AssetManifest;
     let options: LoadFilesOptions;
+    let appExports: AppExport;
 
     beforeEach(() => {
         options = {
@@ -49,9 +51,10 @@ describe('loadFiles', () => {
 
         (global as any).MANIFEST_JSON = manifestJson;
         (global as any).LIBRARY_NAME = 'checkout';
-        (global as any).checkout = {
+        (global as any).checkout = appExports = {
             renderCheckout: jest.fn(),
             renderOrderConfirmation: jest.fn(),
+            initializeLanguageService: jest.fn(),
         };
     });
 
@@ -150,5 +153,17 @@ describe('loadFiles', () => {
 
         expect(await loadFiles(options))
             .toBeDefined();
+    });
+
+    it('initializes language service with default translations', async () => {
+        await loadFiles(options);
+
+        expect(appExports.initializeLanguageService)
+            .toHaveBeenCalledWith({
+                defaultTranslations: expect.any(Object),
+                locale: expect.any(String),
+                locales: expect.any(Object),
+                translations: expect.any(Object),
+            });
     });
 });
