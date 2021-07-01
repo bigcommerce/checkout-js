@@ -32,6 +32,10 @@ const GooglePayPaymentMethod: FunctionComponent<GooglePayPaymentMethodProps> = (
             walletButton: 'walletButton',
             onError: onUnhandledError,
         },
+        googlepayorbital: {
+            walletButton: 'walletButton',
+            onError: onUnhandledError,
+        },
         googlepaycheckoutcom: {
             walletButton: 'walletButton',
             onError: onUnhandledError,
