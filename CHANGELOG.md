@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.151.0](https://github.com/bigcommerce/checkout-js/compare/v1.150.0...v1.151.0) (2021-07-01)
+
+
+### Features
+
+* **checkout:** CHECKOUT-5892 Load default translations for various languages ([c5d79af](https://github.com/bigcommerce/checkout-js/commit/c5d79af4c2f6602cebab1f76bb2d512c56c499fe))
+
 ## [1.150.0](https://github.com/bigcommerce/checkout-js/compare/v1.149.0...v1.150.0) (2021-06-22)
 
 
