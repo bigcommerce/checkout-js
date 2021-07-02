@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.152.1](https://github.com/bigcommerce/checkout-js/compare/v1.152.0...v1.152.1) (2021-07-02)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-5872 Handle locale with region identifier ([439f663](https://github.com/bigcommerce/checkout-js/commit/439f66344644c986583913dd5b95a4fb5c757ca1))
+
 ## [1.152.0](https://github.com/bigcommerce/checkout-js/compare/v1.151.0...v1.152.0) (2021-07-01)
 
 
