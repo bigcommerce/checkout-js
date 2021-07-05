@@ -93,7 +93,7 @@
             "unavailable_heading": "Afrekenen is tijdelijk niet beschikbaar",
             "unstable_network_error": "Het lijkt erop dat de server er te lang over doet om te reageren, dit kan worden veroorzaakt door een slechte verbinding of een fout met onze servers. Probeer het later opnieuw.",
             "order_loading_error": "Er is een fout opgetreden bij het laden van uw bestelling. Probeer het opnieuw.",
-            "order_fatal_error_heading": "Er is een fout opgetreden bij het plaatsen van uw bestelling",
+            "order_fatal_error_heading": "Er is een fout opgetreden bij het plaatsen van uw bestelling.",
             "order_fatal_error_extra": "Kies een andere betaalmethode of neem contact met ons op voor verdere hulp.",
             "go_back": "Teruggaan",
             "show_more": "Meer weergeven"
@@ -173,7 +173,7 @@
             "adyen_credit_debit_card_text": "Creditcard/betaalpas",
             "affirm_name_text": "Affirm",
             "affirm_display_name_text": "Later betalen",
-            "affirm_body_text": "U wordt omgeleid naar Affirm om uw aankoop veilig te voltooien. Als u enkele basisgegevens invult, krijgt u in real time een beslissing. Het controleren van uw geschiktheid heeft geen invloed op uw creditscore.",
+            "affirm_body_text": "U wordt omgeleid naar Affirm om uw aankoop veilig te voltooien. Als u enkele basisgegevens invult, krijgt u in real time een beslissing. Het controleren van uw geschiktheid heeft geen invloed op uw creditscore.",
             "afterpay_name_text": "Afterpay",
             "afterpay_description": "Afrekenen met Afterpay",
             "amazon_continue_action": "Doorgaan met Amazon",
