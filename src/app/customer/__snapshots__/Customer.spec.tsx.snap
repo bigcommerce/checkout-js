@@ -118,7 +118,7 @@ exports[`Customer when view type is "login" matches snapshot 1`] = `
         class="form-body"
       >
         <p>
-          Don’t have an account? 
+          Don't have an account? 
           <a
             href="#"
           >
