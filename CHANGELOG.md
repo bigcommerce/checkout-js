@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.153.0](https://github.com/bigcommerce/checkout-js/compare/v1.152.1...v1.153.0) (2021-07-06)
+
+
+### Features
+
+* **payment:** INT-4237 Added select your bank to json ([e7275d7](https://github.com/bigcommerce/checkout-js/commit/e7275d7068e4ba7b0084c19ab04a92da5f8f81e8))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-0000 Fix some language strings ([6e2076c](https://github.com/bigcommerce/checkout-js/commit/6e2076c6ff828dac403b9feddcb1c2d541a5e2a4))
+* **customer:** INT-3604 Disable continue as guest button when loading ([31e8fa3](https://github.com/bigcommerce/checkout-js/commit/31e8fa3546f5a188a3b3c1d5f74c304fc9fbb1a7))
+
 ### [1.152.1](https://github.com/bigcommerce/checkout-js/compare/v1.152.0...v1.152.1) (2021-07-02)
 
 
