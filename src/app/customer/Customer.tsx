@@ -38,6 +38,7 @@ export interface WithCheckoutCustomerProps {
     isContinuingAsGuest: boolean;
     isCreatingAccount: boolean;
     isGuestEnabled: boolean;
+    isInitializing: boolean;
     isSendingSignInEmail: boolean;
     isSignInEmailEnabled: boolean;
     isSigningIn: boolean;
@@ -108,6 +109,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             email,
             initializeCustomer,
             isContinuingAsGuest = false,
+            isInitializing = false,
             privacyPolicyUrl,
             requiresMarketingConsent,
             onUnhandledError = noop,
@@ -121,13 +123,14 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                         checkEmbeddedSupport={ checkEmbeddedSupport }
                         deinitialize={ deinitializeCustomer }
                         initialize={ initializeCustomer }
+                        isInitializing={ isInitializing }
                         methodIds={ checkoutButtonIds }
                         onError={ onUnhandledError }
                     />
                 }
                 defaultShouldSubscribe={ defaultShouldSubscribe }
                 email={ this.draftEmail || email }
-                isContinuingAsGuest={ isContinuingAsGuest }
+                isLoading={ isContinuingAsGuest || isInitializing }
                 onChangeEmail={ this.handleChangeEmail }
                 onContinueAsGuest={ this.handleContinueAsGuest }
                 onShowLogin={ this.handleShowLogin }
@@ -378,7 +381,7 @@ export function mapToWithCheckoutCustomerProps(
     const {
         data: { getBillingAddress, getCustomerAccountFields, getCheckout, getCustomer, getSignInEmail, getConfig },
         errors: { getSignInError, getSignInEmailError, getCreateCustomerAccountError },
-        statuses: { isContinuingAsGuest, isSigningIn, isSendingSignInEmail, isCreatingCustomerAccount },
+        statuses: { isContinuingAsGuest, isInitializingCustomer, isSigningIn, isSendingSignInEmail, isCreatingCustomerAccount },
     } = checkoutState;
 
     const billingAddress = getBillingAddress();
@@ -417,6 +420,7 @@ export function mapToWithCheckoutCustomerProps(
         isCreatingAccount: isCreatingCustomerAccount(),
         createAccountError: getCreateCustomerAccountError(),
         isContinuingAsGuest: isContinuingAsGuest(),
+        isInitializing:  isInitializingCustomer(),
         isSignInEmailEnabled,
         isAccountCreationEnabled,
         isGuestEnabled: config.checkoutSettings.guestCheckoutEnabled,
