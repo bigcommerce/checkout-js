@@ -26,6 +26,7 @@ describe('ShippingForm Component', () => {
         localeContext = createLocaleContext(getStoreConfig());
 
         defaultProps = {
+            isBillingSameAsShipping: true,
             cart: {
                 ...getCart(),
                 lineItems: {
