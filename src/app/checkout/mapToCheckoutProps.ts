@@ -41,6 +41,7 @@ export default function mapToCheckoutProps(
         isLoadingCheckout: statuses.isLoadingCheckout(),
         isPending: statuses.isPending(),
         loadCheckout: checkoutService.loadCheckout,
+        loadPaymentMethods: checkoutService.loadPaymentMethods,
         loginUrl,
         createAccountUrl,
         canCreateAccountInCheckout: features['CHECKOUT-4941.account_creation_in_checkout'],

@@ -54,7 +54,6 @@ export interface WithCheckoutCustomerProps {
     continueAsGuest(credentials: GuestCredentials, options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     initializeCustomer(options: CustomerInitializeOptions): Promise<CheckoutSelectors>;
-    loadPaymentMethods(): Promise<CheckoutSelectors>;
     sendLoginEmail(params: { email: string }): Promise<CheckoutSelectors>;
     signIn(credentials: CustomerCredentials, options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     createAccount(values: CustomerAccountRequestBody, options: CustomerRequestOptions): Promise<CheckoutSelectors>;
@@ -79,21 +78,33 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
     async componentDidMount(): Promise<void> {
         const {
             email,
-            loadPaymentMethods,
+            paymentMethods,
+            continueAsGuest,
             initializeCustomer,
             onReady = noop,
             onUnhandledError = noop,
+            onContinueAsGuest = noop,
         } = this.props;
 
         this.draftEmail = email;
 
         try {
-            const { data } = await loadPaymentMethods();
-
-            this.providerIdWithCustomContinueFlow = this.getCustomCustomerFlowProviderId(data.getPaymentMethods());
+            this.providerIdWithCustomContinueFlow = this.getCustomCustomerFlowProviderId(paymentMethods);
 
             if (this.providerIdWithCustomContinueFlow) {
                 await initializeCustomer({ methodId: this.providerIdWithCustomContinueFlow });
+
+                // (WIP) Here will be another method to trigger customContinueFlow
+                await continueAsGuest(
+                    { email: 'test@test.com' },
+                    { methodId: this.providerIdWithCustomContinueFlow }
+                );
+
+                onContinueAsGuest();
+
+                onReady();
+
+                return;
             }
         } catch (error) {
             onUnhandledError(error);
@@ -484,7 +495,6 @@ export function mapToWithCheckoutCustomerProps(
         isGuestEnabled: config.checkoutSettings.guestCheckoutEnabled,
         isSigningIn: isSigningIn(),
         isSendingSignInEmail: isSendingSignInEmail(),
-        loadPaymentMethods: checkoutService.loadPaymentMethods,
         signInEmail,
         signInEmailError: getSignInEmailError(),
         paymentMethods: getPaymentMethods(),

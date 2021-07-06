@@ -71,6 +71,7 @@ export interface CheckoutState {
     error?: Error;
     flashMessages?: FlashMessage[];
     isMultiShippingMode: boolean;
+    isReady: boolean;
     isCartEmpty: boolean;
     isRedirecting: boolean;
     hasSelectedShippingOptions: boolean;
@@ -93,6 +94,7 @@ export interface WithCheckoutProps {
     steps: CheckoutStepStatus[];
     clearError(error?: Error): void;
     loadCheckout(id: string, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
+    loadPaymentMethods(): Promise<CheckoutSelectors>;
     subscribeToConsignments(subscriber: (state: CheckoutSelectors) => void): () => void;
 }
 
@@ -100,6 +102,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     stepTracker: StepTracker | undefined;
 
     state: CheckoutState = {
+        isReady: false,
         isCartEmpty: false,
         isRedirecting: false,
         isMultiShippingMode: false,
@@ -118,12 +121,14 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
     async componentDidMount(): Promise<void> {
         const {
+            billingAddress,
             checkoutId,
             containerId,
             createStepTracker,
             createEmbeddedMessenger,
             embeddedStylesheet,
             loadCheckout,
+            loadPaymentMethods,
             subscribeToConsignments,
         } = this.props;
 
@@ -139,6 +144,36 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             const { links: { siteLink = '' } = {} } = data.getConfig() || {};
             const errorFlashMessages = data.getFlashMessages('error') || [];
 
+            /**
+             *
+             *
+             *
+             *
+             *
+             *
+             */
+            // if customer is not guest
+            // if customCheckoutFlowIsEnabled
+            // if checkout first load
+            const loadedData = await loadPaymentMethods();
+
+            const paymentMethods = await loadedData.data.getPaymentMethods();
+            // const customer = await loadedData.data.getCustomer();
+
+            const hasPaymentWithCustomContinueFlow = paymentMethods.filter(paymentMethod => paymentMethod?.initializationData?.customContinueFlowEnabled).length > 0;
+
+            if (hasPaymentWithCustomContinueFlow) {
+                this.navigateToStep(CheckoutStepType.Customer);
+            }
+            /**
+             *
+             *
+             *
+             *
+             *
+             *
+             */
+
             if (errorFlashMessages.length) {
                 const { language } = this.props;
 
@@ -151,6 +186,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                     }),
                 });
             }
+
+            this.setState({ isReady: true });
 
             const messenger = createEmbeddedMessenger({ parentOrigin: siteLink });
 
@@ -172,7 +209,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 isUsingMultiShipping(consignments, cart.lineItems);
 
             if (isMultiShippingMode) {
-                this.setState({ isMultiShippingMode }, this.handleReady);
+                this.setState({ isMultiShippingMode, isReady: true }, this.handleReady);
             } else {
                 this.handleReady();
             }
@@ -217,6 +254,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             defaultStepType,
             isCartEmpty,
             isRedirecting,
+            isReady,
         } = this.state;
 
         if (isCartEmpty) {
@@ -231,7 +269,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         return (
             <LoadingOverlay
                 hideContentWhenLoading
-                isLoading={ isRedirecting }
+                isLoading={ isRedirecting || !isReady }
             >
                 <div className="layout-main">
                     <LoadingNotification isLoading={ isPending } />
@@ -436,6 +474,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         const { activeStepType } = this.state;
         const step = find(steps, { type });
 
+        console.log('navigate to', type);
+
         if (!step) {
             return;
         }
@@ -465,6 +505,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         const { steps } = this.props;
         const activeStepIndex = findIndex(steps, { isActive: true });
         const activeStep = activeStepIndex >= 0 && steps[activeStepIndex];
+
+        console.log('activeStep', activeStep);
 
         if (!activeStep) {
             return;
