@@ -277,6 +277,7 @@
             "quadpay_continue_action": "Continue with Quadpay",
             "quadpay_display_name_text": "Pay in 4 installments",
             "ppsdk_continue_action": "Continue with {methodName}",
+            "select_your_bank": "Select your bank",
             "sepa_account_number": "Account Number (IBAN)",
             "sepa_account_number_required": "You must enter your account number (IBAN)",
             "sepa_bic": "BIC",

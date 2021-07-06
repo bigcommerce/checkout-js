@@ -3,6 +3,7 @@ import { FieldProps } from 'formik';
 import React, { useCallback, useEffect, useState, FunctionComponent, SyntheticEvent } from 'react';
 
 import { preventDefault } from '../../common/dom';
+import { withLanguage, WithLanguageProps } from '../../locale';
 import { DropdownTrigger } from '../../ui/dropdown';
 import { FormField } from '../../ui/form';
 
@@ -32,10 +33,10 @@ interface OptionButtonProps {
     onClick?(event: SyntheticEvent<EventTarget>): void;
 }
 
-const MollieAPMCustomForm: FunctionComponent<MollieCustomCardFormProps> = ({ method }) => {
+const MollieAPMCustomForm: FunctionComponent<MollieCustomCardFormProps & WithLanguageProps> = ({ method, language }) => {
     const issuers: Issuer[] = method.initializationData?.paymentMethodsResponse;
 
-    const [ selectedIssuer, setSelectedIssuer ] = useState<Issuer>({ name: 'Select your bank', id: '', image: { size1x: '' } });
+    const [ selectedIssuer, setSelectedIssuer ] = useState<Issuer>({ name: language.translate('payment.select_your_bank') , id: '', image: { size1x: '' } });
     const render = useCallback((props: FieldProps) => <HiddenInput { ...props } selectedIssuer={ selectedIssuer } />, [ selectedIssuer ]);
 
     if (!issuers || issuers.length === 0) {
@@ -120,4 +121,4 @@ export const OptionButton: FunctionComponent<OptionButtonProps> = ({ issuer, ...
     );
 };
 
-export default MollieAPMCustomForm;
+export default withLanguage(MollieAPMCustomForm);

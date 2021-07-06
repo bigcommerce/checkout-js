@@ -4,11 +4,14 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
+import { getStoreConfig } from '../../config/config.mock';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { DropdownTrigger } from '../../ui/dropdown';
 
 import MollieAPMCustomForm, { Issuer, IssuerSelectButton, MollieCustomCardFormProps, OptionButton } from './MollieAPMCustomForm';
 
 describe('MollieAPMCustomForm', () => {
+    let localeContext: LocaleContextType;
     const issuer: Issuer = {
         id: 'kbc',
         name: 'kbc',
@@ -38,14 +41,17 @@ describe('MollieAPMCustomForm', () => {
     let MollieAPMCustomFormTest: FunctionComponent<MollieCustomCardFormProps> ;
 
     beforeEach(() => {
-        MollieAPMCustomFormTest = (props: MollieCustomCardFormProps) => (
-            <Formik
-                initialValues={ {} }
-                onSubmit={ noop }
+        localeContext = createLocaleContext(getStoreConfig());
 
-            >
-                <MollieAPMCustomForm { ...props } />
-            </Formik>
+        MollieAPMCustomFormTest = (props: MollieCustomCardFormProps) => (
+            <LocaleContext.Provider value={ localeContext }>
+                <Formik
+                    initialValues={ {} }
+                    onSubmit={ noop }
+                >
+                    <MollieAPMCustomForm { ...props } />
+                </Formik>
+            </LocaleContext.Provider>
         );
     });
 
