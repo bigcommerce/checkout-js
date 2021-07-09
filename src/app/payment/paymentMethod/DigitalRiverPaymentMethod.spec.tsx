@@ -20,16 +20,18 @@ describe('when using Digital River payment', () => {
     let defaultProps: PaymentMethodProps;
     let localeContext: LocaleContextType;
     let PaymentMethodTest: FunctionComponent<PaymentMethodProps>;
+    const digitalRiverMethod = getPaymentMethod();
+    digitalRiverMethod.config.isVaultingEnabled = true;
 
     beforeEach(() => {
         defaultProps = {
-            method: getPaymentMethod(),
+            method: digitalRiverMethod,
             onUnhandledError: jest.fn(),
         };
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
-        method = { ...getPaymentMethod(), id: PaymentMethodId.DigitalRiver };
+        method = { ...digitalRiverMethod, id: PaymentMethodId.DigitalRiver };
 
         jest.spyOn(checkoutState.data, 'getConfig')
             .mockReturnValue(getStoreConfig());
@@ -103,7 +105,7 @@ describe('when using Digital River payment', () => {
                             },
                         },
                         showComplianceSection: true,
-                        showSavePaymentAgreement: false,
+                        showSavePaymentAgreement: true,
                         showTermsOfSaleDisclosure: true,
                         usage: 'unscheduled',
                     },
@@ -140,7 +142,7 @@ describe('when using Digital River payment', () => {
                             },
                         },
                         showComplianceSection: true,
-                        showSavePaymentAgreement: false,
+                        showSavePaymentAgreement: true,
                         showTermsOfSaleDisclosure: true,
                         usage: 'unscheduled',
                     },
