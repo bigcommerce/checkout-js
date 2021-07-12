@@ -270,6 +270,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         });
     };
 
+    // tslint:disable:cyclomatic-complexity
     private handleBeforeUnload: (event: BeforeUnloadEvent) => string | undefined = event => {
         const { defaultMethod, isSubmittingOrder, language } = this.props;
         const { selectedMethod = defaultMethod } = this.state;
@@ -281,6 +282,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         if (!isSubmittingOrder ||
             !selectedMethod ||
             selectedMethod.type === PaymentMethodProviderType.Hosted ||
+            selectedMethod.type === PaymentMethodProviderType.PPSDK ||
             selectedMethod.id === PaymentMethodId.Amazon ||
             selectedMethod.id === PaymentMethodId.AmazonPay ||
             selectedMethod.id === PaymentMethodId.Checkoutcom ||
