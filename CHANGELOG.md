@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.155.0](https://github.com/bigcommerce/checkout-js/compare/v1.154.0...v1.155.0) (2021-07-12)
+
+
+### Features
+
+* **payment:** PAYMENTS-6812 add PPSDK payment methods to the handleBeforeUnload exemption list ([c2626c3](https://github.com/bigcommerce/checkout-js/commit/c2626c31b0ca4d69ff955b93106c68655b08f30a))
+
 ## [1.154.0](https://github.com/bigcommerce/checkout-js/compare/v1.153.0...v1.154.0) (2021-07-08)
 
 
