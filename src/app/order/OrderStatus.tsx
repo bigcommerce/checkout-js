@@ -11,6 +11,8 @@ export interface OrderStatusProps {
     order: Order;
 }
 
+const checkoutcomSEPAMethod = 'SEPA Direct Debit (via Checkout.com)';
+
 const OrderStatus: FunctionComponent<OrderStatusProps> = ({
     order,
     supportEmail,
@@ -26,11 +28,24 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
             { method: 'Stripe (SEPA)', value: 'sepa_link_text' },
             { method: 'OXXO (via Checkout.com)', value: 'oxxo_link_text' },
             { method: 'Boleto Bancário (via Checkout.com)', value: 'boleto_link_text' },
+            { method: checkoutcomSEPAMethod, value: 'mandate_text_only' },
         ];
 
         const mandateText = Mandates.find(pair => pair.method === order?.payments?.[0].description);
 
         return mandateText ? mandateText.value : 'mandate_link_text';
+    }, [order]);
+
+    const showMandateAsTextOnly = useCallback(() => {
+        const textOnlyMethods = [checkoutcomSEPAMethod];
+
+        const paymentDescription = order?.payments?.[0].description;
+
+        if (!paymentDescription) {
+            return false;
+        }
+
+        return textOnlyMethods.includes(paymentDescription);
     }, [order]);
 
     return <OrderConfirmationSection>
@@ -51,12 +66,20 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
             />
         </p>
 
-        { order.mandateUrl && <a data-test="order-confirmation-mandate-link-text" href={ order.mandateUrl } rel="noopener noreferrer" target="_blank">
+        { showMandateAsTextOnly() ?
+            <div data-test="order-confirmation-mandate-text-only">
+                <br />
+                <TranslatedString
+                    data={ { provider : getMandateProvider(), mandate: order.mandateUrl } }
+                    id={ 'order_confirmation.' + getMandateTextId() }
+                />
+            </div> :
+            order.mandateUrl && <a data-test="order-confirmation-mandate-link-text" href={ order.mandateUrl } rel="noopener noreferrer" target="_blank">
                 <TranslatedString
                     data={ { provider : getMandateProvider() } }
                     id={ 'order_confirmation.' + getMandateTextId() }
                 />
-        </a> }
+            </a> }
 
         { order.hasDigitalItems &&
         <p data-test="order-confirmation-digital-items-text">

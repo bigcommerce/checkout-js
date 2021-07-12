@@ -272,6 +272,30 @@ describe('OrderStatus', () => {
                 .text())
                 .toEqual('SEPA Direct Debit Mandate');
         });
+
+        it('renders "SEPA Direct Debit (via Checkout.com)" mandate text without link when provider description is Checkout.com (SEPA)', () => {
+            const orderStatus = mount(
+                <OrderStatusTest
+                    { ...defaultProps }
+                    order={ {
+                        ...order,
+                        payments: [{
+                            providerId: 'checkoutcom',
+                            description: 'SEPA Direct Debit (via Checkout.com)',
+                            amount: 190,
+                            detail: {
+                                step: 'FINALIZE',
+                                instructions: '<strong>295</strong> something',
+                            },
+                        }],
+                    } }
+                />
+            );
+
+            expect(orderStatus.find('[data-test="order-confirmation-mandate-text-only"]')
+                .text())
+                .toEqual('SEPA Direct Debit (via Checkout.com) Mandate Reference: mandateLink');
+        });
     });
 
 });
