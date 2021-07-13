@@ -10,6 +10,7 @@ import { retry } from '../common/utility';
 import { CustomerInfo, CustomerSignOutEvent, CustomerViewType } from '../customer';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
+import { PaymentMethodProviderType } from '../payment/paymentMethod';
 import { PromotionBannerList } from '../promotion';
 import { hasSelectedShippingOptions, isUsingMultiShipping, StaticConsignment } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
@@ -68,6 +69,7 @@ export interface CheckoutState {
     activeStepType?: CheckoutStepType;
     customerViewType?: CustomerViewType;
     defaultStepType?: CheckoutStepType;
+    isEditingStepMode?: boolean;
     error?: Error;
     flashMessages?: FlashMessage[];
     isMultiShippingMode: boolean;
@@ -102,6 +104,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     state: CheckoutState = {
         isCartEmpty: false,
         isRedirecting: false,
+        isEditingStepMode: false,
         isMultiShippingMode: false,
         hasSelectedShippingOptions: false,
     };
@@ -136,8 +139,12 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                     ] as any, // FIXME: Currently the enum is not exported so it can't be used here.
                 },
             });
-            const { links: { siteLink = '' } = {} } = data.getConfig() || {};
+
             const errorFlashMessages = data.getFlashMessages('error') || [];
+            const billingAddress = data.getBillingAddress();
+            const customer = data.getCustomer();
+            const checkout = data.getCheckout();
+            const config = data.getConfig();
 
             if (errorFlashMessages.length) {
                 const { language } = this.props;
@@ -152,7 +159,15 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 });
             }
 
-            const messenger = createEmbeddedMessenger({ parentOrigin: siteLink });
+            const isFollowingHostedPayment = !!find(checkout?.payments, { providerType: PaymentMethodProviderType.Hosted });
+            const isLoggedInCustomer = !!(billingAddress?.email || customer?.email) && !customer?.isGuest;
+            const customContinueFlowProviderId = config?.checkoutSettings.customContinueFlowProviderId;
+
+            if (customContinueFlowProviderId && isLoggedInCustomer && !isFollowingHostedPayment) {
+                this.navigateToStep(CheckoutStepType.Customer);
+            }
+
+            const messenger = createEmbeddedMessenger({ parentOrigin: config?.links?.siteLink || '' });
 
             this.unsubscribeFromConsignments = subscribeToConsignments(this.handleConsignmentsUpdated);
             this.embeddedMessenger = messenger;
@@ -277,6 +292,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
         const {
             customerViewType = isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
+            isEditingStepMode,
         } = this.state;
 
         return (
@@ -296,9 +312,12 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 <LazyContainer>
                     <Customer
                         checkEmbeddedSupport={ this.checkEmbeddedSupport }
+                        isEditingMode={ isEditingStepMode }
                         isEmbedded={ isEmbedded() }
                         onAccountCreated={ this.navigateToNextIncompleteStep }
+                        onAccountCreatedError={ this.handleError }
                         onChangeViewType={ this.setCustomerViewType }
+                        onContinue={ this.navigateToNextIncompleteStep }
                         onContinueAsGuest={ this.navigateToNextIncompleteStep }
                         onContinueAsGuestError={ this.handleError }
                         onReady={ this.handleReady }
@@ -431,7 +450,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         );
     }
 
-    private navigateToStep(type: CheckoutStepType, options?: { isDefault?: boolean }): void {
+    private navigateToStep(type: CheckoutStepType, options?: { isDefault?: boolean; isEditingStepMode?: boolean }): void {
         const { clearError, error, steps } = this.props;
         const { activeStepType } = this.state;
         const step = find(steps, { type });
@@ -445,9 +464,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         }
 
         if (options && options.isDefault) {
-            this.setState({ defaultStepType: step.type });
+            this.setState({ defaultStepType: step.type, isEditingStepMode: options.isEditingStepMode });
         } else {
-            this.setState({ activeStepType: step.type });
+            this.setState({ activeStepType: step.type, isEditingStepMode: options?.isEditingStepMode });
         }
 
         if (error) {
@@ -555,7 +574,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     };
 
     private handleEditStep: (type: CheckoutStepType) => void = type => {
-        this.navigateToStep(type);
+        this.navigateToStep(type, { isEditingStepMode: true });
     };
 
     private handleReady: () => void = () => {
