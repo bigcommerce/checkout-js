@@ -13,6 +13,7 @@ import SubscribeField from './SubscribeField';
 export interface GuestFormProps {
     canSubscribe: boolean;
     checkoutButtons?: ReactNode;
+    customContinueAsGuestButtonLabelId?: string;
     requiresMarketingConsent: boolean;
     defaultShouldSubscribe: boolean;
     email?: string;
@@ -31,6 +32,7 @@ export interface GuestFormValues {
 const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikProps<GuestFormValues>> = ({
     canSubscribe,
     checkoutButtons,
+    customContinueAsGuestButtonLabelId,
     isLoading,
     onChangeEmail,
     onShowLogin,
@@ -86,7 +88,7 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
                             type="submit"
                             variant={ ButtonVariant.Primary }
                         >
-                            <TranslatedString id="customer.continue_as_guest_action" />
+                            <TranslatedString id={ customContinueAsGuestButtonLabelId || 'customer.continue_as_guest_action' } />
                         </Button>
                     </div>
                 </div>

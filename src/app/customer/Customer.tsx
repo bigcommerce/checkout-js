@@ -1,8 +1,9 @@
-import { CheckoutSelectors, CustomerAccountRequestBody, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, FormField, GuestCredentials, SignInEmail, StoreConfig } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, CustomerAccountRequestBody, CustomerContinueOptions, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, FormField, GuestCredentials, SignInEmail, StoreConfig } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { Component, Fragment, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
+import { LoadingOverlay } from '../ui/loading';
 
 import { CreateAccountFormValues } from './getCreateCustomerValidationSchema';
 import mapCreateAccountFromFormValues from './mapCreateAccountFromFormValues';
@@ -16,9 +17,12 @@ import LoginForm from './LoginForm';
 export interface CustomerProps {
     viewType: CustomerViewType;
     isEmbedded?: boolean;
+    isEditingMode?: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void;
     onChangeViewType?(viewType: CustomerViewType): void;
     onAccountCreated?(): void;
+    onAccountCreatedError?(error: Error): void;
+    onContinue?(): void;
     onContinueAsGuest?(): void;
     onContinueAsGuestError?(error: Error): void;
     onReady?(): void;
@@ -31,12 +35,15 @@ export interface WithCheckoutCustomerProps {
     canSubscribe: boolean;
     customerAccountFields: FormField[];
     checkoutButtonIds: string[];
+    customContinueFlowProviderId?: string;
     defaultShouldSubscribe: boolean;
     email?: string;
     firstName?: string;
     forgotPasswordUrl: string;
     isContinuingAsGuest: boolean;
     isCreatingAccount: boolean;
+    isCustomerContinuing: boolean;
+    isGuest?: boolean;
     isGuestEnabled: boolean;
     isInitializing: boolean;
     isSendingSignInEmail: boolean;
@@ -50,6 +57,7 @@ export interface WithCheckoutCustomerProps {
     createAccountError?: Error;
     signInError?: Error;
     clearError(error: Error): Promise<CheckoutSelectors>;
+    customerContinue(options: CustomerContinueOptions): Promise<CheckoutSelectors>;
     continueAsGuest(credentials: GuestCredentials): Promise<CheckoutSelectors>;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     initializeCustomer(options: CustomerInitializeOptions): Promise<CheckoutSelectors>;
@@ -60,42 +68,73 @@ export interface WithCheckoutCustomerProps {
 
 export interface CustomerState {
     isEmailLoginFormOpen: boolean;
+    isReady: boolean;
     hasRequestedLoginEmail: boolean;
 }
 
 class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, CustomerState> {
     state: CustomerState = {
         isEmailLoginFormOpen: false,
+        isReady: false,
         hasRequestedLoginEmail: false,
     };
 
     private draftEmail?: string;
 
-    componentDidMount(): void {
+    async componentDidMount(): Promise<void> {
         const {
-            onReady = noop,
+            customerContinue,
+            customContinueFlowProviderId,
             email,
+            initializeCustomer,
+            isEditingMode,
+            isGuest,
+            onContinue,
+            onReady = noop,
+            onUnhandledError = noop,
         } = this.props;
 
         this.draftEmail = email;
 
+        try {
+            await initializeCustomer({ methodId: customContinueFlowProviderId });
+
+            if (!isEditingMode && email && !isGuest) {
+                const options = {
+                    methodId: customContinueFlowProviderId,
+                    fallback: onContinue,
+                };
+
+                // in default flow will run fallback automatically
+                await customerContinue(options);
+
+                return;
+            }
+        } catch (error) {
+            onUnhandledError(error);
+        }
+
+        this.setState({ isReady: true });
         onReady();
     }
 
     render(): ReactNode {
         const { viewType } = this.props;
-        const { isEmailLoginFormOpen } = this.state;
+        const { isEmailLoginFormOpen, isReady } = this.state;
         const shouldRenderGuestForm = viewType === CustomerViewType.Guest;
         const shouldRenderCreateAccountForm = viewType === CustomerViewType.CreateAccount;
         const shouldRenderLoginForm = !shouldRenderGuestForm && !shouldRenderCreateAccountForm;
 
         return (
-            <Fragment>
+            <LoadingOverlay
+                isLoading={ !isReady }
+                unmountContentWhenLoading
+            >
                 { isEmailLoginFormOpen && this.renderEmailLoginLinkForm() }
                 { shouldRenderLoginForm && this.renderLoginForm() }
                 { shouldRenderGuestForm && this.renderGuestForm() }
                 { shouldRenderCreateAccountForm && this.renderCreateAccountForm() }
-            </Fragment>
+            </LoadingOverlay>
         );
     }
 
@@ -104,16 +143,20 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             canSubscribe,
             checkEmbeddedSupport,
             checkoutButtonIds,
+            customContinueFlowProviderId,
             defaultShouldSubscribe,
             deinitializeCustomer,
             email,
             initializeCustomer,
             isContinuingAsGuest = false,
+            isCustomerContinuing = false,
             isInitializing = false,
             privacyPolicyUrl,
             requiresMarketingConsent,
             onUnhandledError = noop,
         } = this.props;
+
+        const continueAsGuestButtonLabelId = !!customContinueFlowProviderId ? 'customer.continue' : undefined;
 
         return (
             <GuestForm
@@ -128,9 +171,10 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                         onError={ onUnhandledError }
                     />
                 }
+                customContinueAsGuestButtonLabelId={ continueAsGuestButtonLabelId }
                 defaultShouldSubscribe={ defaultShouldSubscribe }
                 email={ this.draftEmail || email }
-                isLoading={ isContinuingAsGuest || isInitializing }
+                isLoading={ isContinuingAsGuest || isInitializing || isCustomerContinuing }
                 onChangeEmail={ this.handleChangeEmail }
                 onContinueAsGuest={ this.handleContinueAsGuest }
                 onShowLogin={ this.handleShowLogin }
@@ -259,6 +303,8 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
         const {
             canSubscribe,
             continueAsGuest,
+            customerContinue,
+            customContinueFlowProviderId,
             onChangeViewType = noop,
             onContinueAsGuest = noop,
             onContinueAsGuestError = noop,
@@ -278,11 +324,17 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                 return onChangeViewType(CustomerViewType.SuggestedLogin);
             }
 
-            onContinueAsGuest();
+            const options = {
+                methodId: customContinueFlowProviderId,
+                fallback: onContinueAsGuest,
+            };
+
+            // in default flow will run fallback automatically
+            await customerContinue(options);
 
             this.draftEmail = undefined;
         } catch (error) {
-            if (error.type === 'update_subscriptions') {
+            if (error.type === 'update_subscriptions' && error.type === 'unhandled_external') {
                 this.draftEmail = undefined;
 
                 return onContinueAsGuest();
@@ -305,27 +357,61 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             signIn,
             onSignIn = noop,
             onSignInError = noop,
+            customerContinue,
+            customContinueFlowProviderId,
         } = this.props;
 
         try {
             await signIn(credentials);
-            onSignIn();
+
+            const options = {
+                methodId: customContinueFlowProviderId,
+                fallback: onSignIn,
+            };
+
+            // in default flow it will run fallback automatically
+            await customerContinue(options);
 
             this.draftEmail = undefined;
         } catch (error) {
+            if (error === 'unhandled_external') {
+                this.draftEmail = undefined;
+
+                return onSignIn();
+            }
+
             onSignInError(error);
         }
     };
 
     private handleCreateAccount: (values: CreateAccountFormValues) => void = async values => {
         const {
+            customerContinue,
+            customContinueFlowProviderId,
             createAccount = noop,
             onAccountCreated = noop,
+            onAccountCreatedError = noop,
         } = this.props;
 
-        await createAccount(mapCreateAccountFromFormValues(values));
+        try {
+            await createAccount(mapCreateAccountFromFormValues(values));
 
-        onAccountCreated();
+            const options = {
+                methodId: customContinueFlowProviderId,
+                fallback: onAccountCreated,
+            };
+
+            // in default flow it will run fallback automatically
+            await customerContinue(options);
+        } catch (error) {
+            if (error === 'unhandled_external') {
+                this.draftEmail = undefined;
+
+                return onAccountCreated();
+            }
+
+            onAccountCreatedError(error);
+        }
     };
 
     private showCreateAccount: () => void = () => {
@@ -381,7 +467,7 @@ export function mapToWithCheckoutCustomerProps(
     const {
         data: { getBillingAddress, getCustomerAccountFields, getCheckout, getCustomer, getSignInEmail, getConfig },
         errors: { getSignInError, getSignInEmailError, getCreateCustomerAccountError },
-        statuses: { isContinuingAsGuest, isInitializingCustomer, isSigningIn, isSendingSignInEmail, isCreatingCustomerAccount },
+        statuses: { isContinuingAsGuest, isCustomerContinuing, isInitializingCustomer, isSigningIn, isSendingSignInEmail, isCreatingCustomerAccount },
     } = checkoutState;
 
     const billingAddress = getBillingAddress();
@@ -404,22 +490,26 @@ export function mapToWithCheckoutCustomerProps(
     } = config as StoreConfig & { checkoutSettings: { isAccountCreationEnabled: boolean } };
 
     return {
+        customContinueFlowProviderId: config.checkoutSettings.customContinueFlowProviderId,
         customerAccountFields: getCustomerAccountFields(),
         canSubscribe: config.shopperConfig.showNewsletterSignup,
         checkoutButtonIds: config.checkoutSettings.remoteCheckoutProviders,
         clearError: checkoutService.clearError,
         createAccount: checkoutService.createCustomerAccount,
         continueAsGuest: checkoutService.continueAsGuest,
+        customerContinue: checkoutService.customerContinue,
         sendLoginEmail: checkoutService.sendSignInEmail,
         defaultShouldSubscribe: config.shopperConfig.defaultNewsletterSignup,
         deinitializeCustomer: checkoutService.deinitializeCustomer,
-        email: (billingAddress && billingAddress.email) || (customer && customer.email),
+        email: billingAddress?.email || customer?.email,
         firstName: customer && customer.firstName,
         forgotPasswordUrl: config.links.forgotPasswordLink,
         initializeCustomer: checkoutService.initializeCustomer,
         isCreatingAccount: isCreatingCustomerAccount(),
+        isGuest: customer?.isGuest,
         createAccountError: getCreateCustomerAccountError(),
         isContinuingAsGuest: isContinuingAsGuest(),
+        isCustomerContinuing: isCustomerContinuing(),
         isInitializing:  isInitializingCustomer(),
         isSignInEmailEnabled,
         isAccountCreationEnabled,
