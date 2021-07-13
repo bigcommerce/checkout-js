@@ -1,8 +1,9 @@
 import { CheckoutSelectors, CustomerAccountRequestBody, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, FormField, GuestCredentials, SignInEmail, StoreConfig } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { Component, Fragment, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
+import { LoadingOverlay } from '../ui/loading';
 
 import { CreateAccountFormValues } from './getCreateCustomerValidationSchema';
 import mapCreateAccountFromFormValues from './mapCreateAccountFromFormValues';
@@ -29,6 +30,7 @@ export interface CustomerProps {
 
 export interface WithCheckoutCustomerProps {
     canSubscribe: boolean;
+    customContinueFlowProviderId?: string;
     customerAccountFields: FormField[];
     checkoutButtonIds: string[];
     defaultShouldSubscribe: boolean;
@@ -50,52 +52,83 @@ export interface WithCheckoutCustomerProps {
     createAccountError?: Error;
     signInError?: Error;
     clearError(error: Error): Promise<CheckoutSelectors>;
-    continueAsGuest(credentials: GuestCredentials): Promise<CheckoutSelectors>;
+    continueAsGuest(credentials: GuestCredentials, options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     initializeCustomer(options: CustomerInitializeOptions): Promise<CheckoutSelectors>;
     sendLoginEmail(params: { email: string }): Promise<CheckoutSelectors>;
-    signIn(credentials: CustomerCredentials): Promise<CheckoutSelectors>;
-    createAccount(values: CustomerAccountRequestBody): Promise<CheckoutSelectors>;
+    signIn(credentials: CustomerCredentials, options: CustomerRequestOptions): Promise<CheckoutSelectors>;
+    createAccount(values: CustomerAccountRequestBody, options: CustomerRequestOptions): Promise<CheckoutSelectors>;
 }
 
 export interface CustomerState {
+    isReady: boolean;
     isEmailLoginFormOpen: boolean;
     hasRequestedLoginEmail: boolean;
 }
 
 class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, CustomerState> {
     state: CustomerState = {
+        isReady: false,
         isEmailLoginFormOpen: false,
         hasRequestedLoginEmail: false,
     };
 
     private draftEmail?: string;
 
-    componentDidMount(): void {
+    async componentDidMount(): Promise<void> {
         const {
-            onReady = noop,
+            customContinueFlowProviderId,
             email,
+            initializeCustomer,
+            onReady = noop,
+            onUnhandledError = noop,
         } = this.props;
 
         this.draftEmail = email;
 
+        try {
+            if (customContinueFlowProviderId) {
+                await initializeCustomer({ methodId: customContinueFlowProviderId });
+            }
+        } catch (error) {
+            onUnhandledError(error);
+        }
+
+        this.setState({ isReady: true });
         onReady();
+    }
+
+    async componentWillUnmount(): Promise<void> {
+        const {
+            customContinueFlowProviderId,
+            deinitializeCustomer,
+            onUnhandledError = noop,
+        } = this.props;
+
+        try {
+            await deinitializeCustomer({methodId: customContinueFlowProviderId});
+        } catch (error) {
+            onUnhandledError(error);
+        }
     }
 
     render(): ReactNode {
         const { viewType } = this.props;
-        const { isEmailLoginFormOpen } = this.state;
+        const { isEmailLoginFormOpen, isReady } = this.state;
         const shouldRenderGuestForm = viewType === CustomerViewType.Guest;
         const shouldRenderCreateAccountForm = viewType === CustomerViewType.CreateAccount;
         const shouldRenderLoginForm = !shouldRenderGuestForm && !shouldRenderCreateAccountForm;
 
         return (
-            <Fragment>
+            <LoadingOverlay
+                isLoading={ !isReady }
+                unmountContentWhenLoading
+            >
                 { isEmailLoginFormOpen && this.renderEmailLoginLinkForm() }
                 { shouldRenderLoginForm && this.renderLoginForm() }
                 { shouldRenderGuestForm && this.renderGuestForm() }
                 { shouldRenderCreateAccountForm && this.renderCreateAccountForm() }
-            </Fragment>
+            </LoadingOverlay>
         );
     }
 
@@ -104,6 +137,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             canSubscribe,
             checkEmbeddedSupport,
             checkoutButtonIds,
+            customContinueFlowProviderId,
             defaultShouldSubscribe,
             deinitializeCustomer,
             email,
@@ -114,6 +148,8 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             requiresMarketingConsent,
             onUnhandledError = noop,
         } = this.props;
+
+        const continueAsGuestButtonLabelId = !!customContinueFlowProviderId ? 'customer.continue' : undefined;
 
         return (
             <GuestForm
@@ -128,6 +164,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                         onError={ onUnhandledError }
                     />
                 }
+                customContinueAsGuestButtonLabelId={ continueAsGuestButtonLabelId }
                 defaultShouldSubscribe={ defaultShouldSubscribe }
                 email={ this.draftEmail || email }
                 isLoading={ isContinuingAsGuest || isInitializing }
@@ -259,6 +296,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
         const {
             canSubscribe,
             continueAsGuest,
+            customContinueFlowProviderId,
             onChangeViewType = noop,
             onContinueAsGuest = noop,
             onContinueAsGuestError = noop,
@@ -266,11 +304,15 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
 
         const email = formValues.email.trim();
         try {
-            const { data } = await continueAsGuest({
+            const credentials = {
                 email,
                 acceptsMarketingNewsletter: canSubscribe && formValues.shouldSubscribe ? true : undefined,
                 acceptsAbandonedCartEmails: formValues.shouldSubscribe ? true : undefined,
-            });
+            };
+
+            const options = { methodId: customContinueFlowProviderId };
+
+            const { data } = await continueAsGuest(credentials, options);
 
             const customer = data.getCustomer();
 
@@ -282,7 +324,12 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
 
             this.draftEmail = undefined;
         } catch (error) {
-            if (error.type === 'update_subscriptions') {
+            if (
+                error.type === 'update_subscriptions'
+                || error.type === 'not_initialized'
+                || error.type === 'missing_data'
+                || error.type === 'unhandled_external'
+            ) {
                 this.draftEmail = undefined;
 
                 return onContinueAsGuest();
@@ -302,30 +349,60 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
 
     private handleSignIn: (credentials: CustomerCredentials) => Promise<void> = async credentials => {
         const {
+            customContinueFlowProviderId,
             signIn,
             onSignIn = noop,
             onSignInError = noop,
         } = this.props;
 
         try {
-            await signIn(credentials);
+            const options = { methodId: customContinueFlowProviderId };
+
+            await signIn(credentials, options);
+
             onSignIn();
 
             this.draftEmail = undefined;
         } catch (error) {
+            if (
+                error.type === 'not_initialized'
+                || error.type === 'missing_data'
+                || error.type === 'unhandled_external'
+            ) {
+                this.draftEmail = undefined;
+
+                return onSignIn();
+            }
+
             onSignInError(error);
         }
     };
 
     private handleCreateAccount: (values: CreateAccountFormValues) => void = async values => {
         const {
-            createAccount = noop,
+            createAccount,
+            customContinueFlowProviderId,
             onAccountCreated = noop,
         } = this.props;
 
-        await createAccount(mapCreateAccountFromFormValues(values));
+        const options = { methodId: customContinueFlowProviderId };
 
-        onAccountCreated();
+        try {
+            await createAccount(
+                mapCreateAccountFromFormValues(values),
+                options
+            );
+        } catch (error) {
+            if (
+                error.type === 'not_initialized'
+                || error.type === 'missing_data'
+                || error.type === 'unhandled_external'
+            ) {
+                this.draftEmail = undefined;
+
+                return onAccountCreated();
+            }
+        }
     };
 
     private showCreateAccount: () => void = () => {
@@ -406,6 +483,7 @@ export function mapToWithCheckoutCustomerProps(
     return {
         customerAccountFields: getCustomerAccountFields(),
         canSubscribe: config.shopperConfig.showNewsletterSignup,
+        customContinueFlowProviderId: config.checkoutSettings.customContinueFlowProviderId,
         checkoutButtonIds: config.checkoutSettings.remoteCheckoutProviders,
         clearError: checkoutService.clearError,
         createAccount: checkoutService.createCustomerAccount,

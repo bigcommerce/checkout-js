@@ -10,6 +10,7 @@ export function getStoreConfig(): StoreConfig {
             billingAddressFields: [],
         },
         checkoutSettings: {
+            customContinueFlowProviderId: undefined,
             enableOrderComments: true,
             enableTermsAndConditions: false,
             googleRecaptchaSitekey: 'sitekey',

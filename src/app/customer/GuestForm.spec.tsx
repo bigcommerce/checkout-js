@@ -15,6 +15,7 @@ describe('GuestForm', () => {
     beforeEach(() => {
         defaultProps = {
             canSubscribe: true,
+            customContinueAsGuestButtonLabelId: '',
             defaultShouldSubscribe: false,
             isLoading: false,
             onChangeEmail: jest.fn(),
