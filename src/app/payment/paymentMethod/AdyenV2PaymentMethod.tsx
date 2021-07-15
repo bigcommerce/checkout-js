@@ -1,4 +1,4 @@
-import { AdyenCreditCardComponentOptions, AdyenIdealComponentOptions  } from '@bigcommerce/checkout-sdk';
+import { AdyenCreditCardComponentOptions, AdyenIdealComponentOptions } from '@bigcommerce/checkout-sdk';
 import React, { createRef, useCallback, useRef, useState, FunctionComponent, RefObject } from 'react';
 import { Omit } from 'utility-types';
 

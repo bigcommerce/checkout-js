@@ -1,9 +1,10 @@
-import { PaymentInitializeOptions, StripeElementOptions } from '@bigcommerce/checkout-sdk';
+import { CardInstrument, PaymentInitializeOptions, StripeElementOptions } from '@bigcommerce/checkout-sdk';
 import React, { useCallback, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { TranslatedString } from '../../locale';
+import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps } from '../hostedCreditCard';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 import StripeV3CustomCardForm from './StripeV3CustomCardForm';
@@ -22,6 +23,7 @@ export interface StripeOptions {
 interface WithCheckoutStripePaymentMethodProps {
     storeUrl: string;
 }
+
 export enum StripeElementType {
     alipay = 'alipay',
     card = 'card',
@@ -31,10 +33,12 @@ export enum StripeElementType {
     iban = 'iban',
     idealBank = 'idealBank',
 }
-const StripePaymentMethod: FunctionComponent<StripePaymentMethodProps & WithCheckoutStripePaymentMethodProps> = ({
+const StripePaymentMethod: FunctionComponent<StripePaymentMethodProps & WithCheckoutStripePaymentMethodProps & WithInjectedHostedCreditCardFieldsetProps> = ({
       initializePayment,
       method,
       storeUrl,
+      getHostedFormOptions,
+      getHostedStoredCardValidationFieldset,
       ...rest
   }) => {
     const { useIndividualCardFields } = method.initializationData;
@@ -94,13 +98,22 @@ const StripePaymentMethod: FunctionComponent<StripePaymentMethodProps & WithChec
         return stripeInitializeOptions[paymentMethodType];
     }, [paymentMethodType, getIndividualCardElementOptions]);
 
-    const initializeStripePayment = useCallback(async (options: PaymentInitializeOptions) => {
+    const validateInstrument = (_shouldShowNumber: boolean, selectedInstrument: CardInstrument) => {
+        if (selectedInstrument && selectedInstrument.trustedShippingAddress) {
+            return;
+        }
+
+        return getHostedStoredCardValidationFieldset(selectedInstrument);
+    };
+
+    const initializeStripePayment = useCallback(async (options: PaymentInitializeOptions, selectedInstrument) => {
         return initializePayment({
             ...options,
             stripev3: { containerId,
-                options: getStripeOptions(useIndividualCardFields, stripeOptions) },
+                options: getStripeOptions(useIndividualCardFields, stripeOptions),
+                ...(selectedInstrument && !selectedInstrument.trustedShippingAddress && { form: await getHostedFormOptions(selectedInstrument as CardInstrument) })},
         });
-    }, [initializePayment, containerId, getStripeOptions, useIndividualCardFields, stripeOptions]);
+    }, [initializePayment, getHostedFormOptions, containerId, getStripeOptions, useIndividualCardFields, stripeOptions]);
 
     const renderCustomPaymentForm = () => {
         const optionsCustomForm = getIndividualCardElementOptions(stripeOptions);
@@ -118,6 +131,7 @@ const StripePaymentMethod: FunctionComponent<StripePaymentMethodProps & WithChec
             method={ method }
             renderCustomPaymentForm={ renderCustomPaymentForm }
             shouldRenderCustomInstrument={ useIndividualCardFields }
+            validateInstrument={ validateInstrument }
         />
         {
             method.id === 'iban' &&
@@ -141,4 +155,4 @@ function mapFromCheckoutProps(
         storeUrl: config.links.siteLink,
     };
 }
-export default withCheckout(mapFromCheckoutProps)(StripePaymentMethod);
+export default withCheckout(mapFromCheckoutProps)(withHostedCreditCardFieldset(StripePaymentMethod));

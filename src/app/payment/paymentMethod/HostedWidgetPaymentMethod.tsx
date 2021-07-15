@@ -67,7 +67,6 @@ interface HostedWidgetPaymentMethodState {
     isAddingNewCard: boolean;
     selectedInstrumentId?: string;
 }
-
 class HostedWidgetPaymentMethod extends Component<
     HostedWidgetPaymentMethodProps &
     WithCheckoutHostedWidgetPaymentMethodProps &

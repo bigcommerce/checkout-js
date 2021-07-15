@@ -1,16 +1,46 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, CardInstrument, CheckoutSelectors, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
+import { object } from 'yup';
 
 import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
+import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps } from '../hostedCreditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
+import { getInstruments } from '../storedInstrument/instruments.mock';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
+
+const hostedFormOptions = {
+    fields: {
+        cardCode: { containerId: 'cardCode', placeholder: 'Card code' },
+        cardName: { containerId: 'cardName', placeholder: 'Card name' },
+        cardNumber: { containerId: 'cardNumber', placeholder: 'Card number' },
+        cardExpiry: { containerId: 'cardExpiry', placeholder: 'Card expiry' },
+    },
+};
+
+const injectedProps: WithInjectedHostedCreditCardFieldsetProps = {
+    getHostedFormOptions: () => Promise.resolve(hostedFormOptions),
+    getHostedStoredCardValidationFieldset: () => <div />,
+    hostedFieldset: <div />,
+    hostedStoredCardValidationSchema: object(),
+    hostedValidationSchema: object(),
+};
+
+jest.mock('../hostedCreditCard', () => ({
+    ...jest.requireActual('../hostedCreditCard'),
+    withHostedCreditCardFieldset: jest.fn(
+        Component => (props: any) => <Component
+            { ...props }
+            { ...injectedProps }
+        />
+    ) as jest.Mocked<typeof withHostedCreditCardFieldset>,
+}));
 
 describe('when using Stripe payment', () => {
     let method: PaymentMethod;
@@ -19,6 +49,7 @@ describe('when using Stripe payment', () => {
     let defaultProps: PaymentMethodProps;
     let localeContext: LocaleContextType;
     let PaymentMethodTest: FunctionComponent<PaymentMethodProps>;
+    let selectedInstrument: CardInstrument;
 
     beforeEach(() => {
         defaultProps = {
@@ -29,6 +60,7 @@ describe('when using Stripe payment', () => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
+        selectedInstrument = getInstruments()[0] as CardInstrument;
 
         jest.spyOn(checkoutState.data, 'getConfig')
             .mockReturnValue(getStoreConfig());
@@ -187,6 +219,31 @@ describe('when using Stripe payment', () => {
                         },
                     },
                 });
+        });
+
+        it('initializes method with required when selected instrument is sent', () => {
+            selectedInstrument.provdier = 'stripev3';
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+            const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+
+            component.prop('initializePayment')({
+                methodId: method.id,
+                gatewayId: method.gateway,
+            }, selectedInstrument);
+
+            expect(checkoutService.initializePayment)
+                .toHaveBeenCalledWith(expect.objectContaining({
+                    gatewayId: method.gateway,
+                    methodId: method.id,
+                    stripev3: {
+                        options: {
+                            classes: {
+                                base: 'form-input optimizedCheckout-form-input',
+                            },
+                        },
+                        containerId: 'stripe-card-component-field',
+                    },
+                }));
         });
     });
 
