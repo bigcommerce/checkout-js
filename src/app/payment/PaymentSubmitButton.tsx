@@ -67,6 +67,10 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
         return <TranslatedString id="payment.quadpay_continue_action" />;
     }
 
+    if (methodId === PaymentMethodId.Zip) {
+        return <TranslatedString id="payment.zip_continue_action" />;
+    }
+
     return <TranslatedString id="payment.place_order_action" />;
 });
 
