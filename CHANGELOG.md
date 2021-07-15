@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.156.1](https://github.com/bigcommerce/checkout-js/compare/v1.156.0...v1.156.1) (2021-07-15)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-5916 fix awaiting payment to render TranslatedHtml ([c994abc](https://github.com/bigcommerce/checkout-js/commit/c994abc3c29df35338c5057880e4192694dbd819))
+* **shipping:** CHECKOUT-5895 Keep billingSameAsShipping state when navigating through steps ([62b0c38](https://github.com/bigcommerce/checkout-js/commit/62b0c38b2818f85ff47ad58cc949dc4873d0bb4c))
+
 ## [1.156.0](https://github.com/bigcommerce/checkout-js/compare/v1.155.0...v1.156.0) (2021-07-12)
 
 
