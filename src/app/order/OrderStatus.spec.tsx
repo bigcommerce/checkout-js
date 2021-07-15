@@ -2,7 +2,7 @@ import { createCheckoutService, CheckoutService, Order } from '@bigcommerce/chec
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
-import { LocaleProvider, TranslatedHtml, TranslatedString } from '../locale';
+import { LocaleProvider, TranslatedHtml } from '../locale';
 
 import { getOrder } from './orders.mock';
 import OrderStatus, { OrderStatusProps } from './OrderStatus';
@@ -89,7 +89,7 @@ describe('OrderStatus', () => {
                 />
             );
             const translationProps = orderStatus.find('[data-test="order-confirmation-order-status-text"]')
-                .find(TranslatedString)
+                .find(TranslatedHtml)
                 .props();
 
             expect(translationProps)
@@ -115,7 +115,7 @@ describe('OrderStatus', () => {
                 />
             );
             const translationProps = orderStatus.find('[data-test="order-confirmation-order-status-text"]')
-                .find(TranslatedString)
+                .find(TranslatedHtml)
                 .props();
 
             expect(translationProps)
