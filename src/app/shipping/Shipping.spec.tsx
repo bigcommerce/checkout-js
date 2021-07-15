@@ -31,6 +31,7 @@ describe('Shipping Component', () => {
         checkoutState = checkoutService.getState();
 
         defaultProps = {
+            isBillingSameAsShipping: true,
             isMultiShippingMode: false,
             onToggleMultiShipping: jest.fn(),
             cartHasChanged: false,
@@ -260,7 +261,7 @@ describe('Shipping Component', () => {
         expect(checkoutService.deleteConsignment).toHaveBeenCalled();
     });
 
-    it('does not Call delete consignment if consignment doesnot exist when adding a new address', async () => {
+    it('does not call delete consignment if consignment doesnot exist when adding a new address', async () => {
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue({
             ...getCustomer(),
         });
