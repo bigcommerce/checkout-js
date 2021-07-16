@@ -17,10 +17,8 @@ import PaymentMethodId from './PaymentMethodId';
 
 const hostedFormOptions = {
     fields: {
-        cardCode: { containerId: 'cardCode', placeholder: 'Card code' },
-        cardName: { containerId: 'cardName', placeholder: 'Card name' },
-        cardNumber: { containerId: 'cardNumber', placeholder: 'Card number' },
-        cardExpiry: { containerId: 'cardExpiry', placeholder: 'Card expiry' },
+        cardCodeVerification: { containerId: 'card-code-veridifaction', instrumentId: 'instrument-id' },
+        cardNumberVerification: { containerId: 'card-number-verification', instrumentId: 'instrument-id' },
     },
 };
 
