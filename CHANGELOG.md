@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.157.0](https://github.com/bigcommerce/checkout-js/compare/v1.156.1...v1.157.0) (2021-07-19)
+
+
+### Features
+
+* **payment:** INT-4141 Bump SDK. ([39525d3](https://github.com/bigcommerce/checkout-js/commit/39525d3ebfd6ef602718b2b370dffcd7400b95aa))
+* **payment:** INT-4222 Implement Hosted Form ([1f306d3](https://github.com/bigcommerce/checkout-js/commit/1f306d302730c1b9877ceb71d8555379e7a0e88a))
+* **payment:** INT-4222 Update Tests ([a6a5bd9](https://github.com/bigcommerce/checkout-js/commit/a6a5bd9f877708e2660596e240de679ef45e40bf))
+* **payment:** INT-4222 Vaulting for Moneris ([f0cc383](https://github.com/bigcommerce/checkout-js/commit/f0cc38378c8e9101ed05404110120f5ab042f851))
+
 ### [1.156.1](https://github.com/bigcommerce/checkout-js/compare/v1.156.0...v1.156.1) (2021-07-15)
 
 
