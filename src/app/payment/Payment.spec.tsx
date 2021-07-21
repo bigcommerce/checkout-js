@@ -408,6 +408,23 @@ describe('Payment', () => {
             .not.toHaveBeenCalled();
     });
 
+    it('does not trigger error handler if finalization was not successful', async () => {
+        jest.spyOn(checkoutService, 'finalizeOrderIfNeeded')
+            .mockRejectedValue({ type: 'order_finalization_not_completed' });
+
+        const handleFinalizeError = jest.fn();
+
+        mount(<PaymentTest
+            { ...defaultProps }
+            onFinalizeError={ handleFinalizeError }
+        />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        expect(handleFinalizeError)
+            .not.toHaveBeenCalled();
+    });
+
     it('checks if available payment methods are supported in embedded mode', () => {
         const checkEmbeddedSupport = jest.fn();
 

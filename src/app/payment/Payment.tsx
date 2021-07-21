@@ -104,8 +104,10 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             await finalizeOrderIfNeeded();
             onFinalize();
         } catch (error) {
-            if (error.type !== 'order_finalization_not_required') {
-                onFinalizeError(error);
+            if (error.type === 'order_finalization_not_completed') {
+                this.renderOrderErrorModal();
+            } else if (error.type !== 'order_finalization_not_required') {
+                return onFinalizeError(error);
             }
         }
 
