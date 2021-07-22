@@ -617,7 +617,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         if (customerViewType === CustomerViewType.CreateAccount &&
             (!canCreateAccountInCheckout || isEmbedded())
         ) {
-            window.top.location.assign(createAccountUrl);
+            window.top.location.replace(createAccountUrl);
 
             return;
         }
