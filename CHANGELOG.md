@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.157.1](https://github.com/bigcommerce/checkout-js/compare/v1.157.0...v1.157.1) (2021-07-22)
+
+
+### Bug Fixes
+
+* **customer:** CHECKOUT-5862 Fix create account flow from Checkout blocked due to cross origin frame ([#645](https://github.com/bigcommerce/checkout-js/issues/645)) ([60f97d5](https://github.com/bigcommerce/checkout-js/commit/60f97d5f1afa23d28654a1145d41202eeba2b548))
+
 ## [1.157.0](https://github.com/bigcommerce/checkout-js/compare/v1.156.1...v1.157.0) (2021-07-19)
 
 
