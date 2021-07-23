@@ -24,6 +24,11 @@ window.matchMedia = jest.fn(() => ({
     removeEventListener: noop,
 } as MediaQueryList));
 
+Object.defineProperty(window.navigator, "userAgent", ((value) => ({
+    get() { return value; },
+    set(v) { value = v; }
+}))(window.navigator["userAgent"]));
+
 (global as any).__webpack_public_path__ = undefined;
 
 beforeAll(() => {
