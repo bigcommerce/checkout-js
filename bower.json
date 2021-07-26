@@ -6,7 +6,7 @@
     ],
     "description": "BigCommerce Checkout",
     "license": "Commercial",
-    "homepage": "http://www.bigcommerce.com",
+    "homepage": "https://www.bigcommerce.com",
     "private": true,
     "ignore": [
         "**/*",
