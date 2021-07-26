@@ -37,15 +37,15 @@ const MasterpassPaymentMethod: FunctionComponent<MasterpassPaymentMethodProps & 
             de: ['de_de'],
             fr: ['fr_fr', 'fr_ca']};
         let formatedLocale = localeLanguage.replace('-', '_').toLowerCase();
-        const regex = formatedLocale.match(/^([a-z]{2})((?:\_)([a-z]{2}))?$/);
-        if (regex && regex[3]) {
-            if (regex[1] in supportedLocales) {
-                formatedLocale = supportedLocales[regex[1]].includes(regex[0]) ? formatedLocale : supportedLocales[regex[1]][0];
+        const regexLocale = formatedLocale.match(/^([a-z]{2})((?:\_)([a-z]{2}))?$/);
+        if (regexLocale && regexLocale[3]) {
+            if (regexLocale[1] in supportedLocales) {
+                formatedLocale = supportedLocales[regexLocale[1]].includes(regexLocale[0]) ? formatedLocale : supportedLocales[regexLocale[1]][0];
             } else {
                 formatedLocale = 'en_us';
             }
-        } else if (regex) {
-            formatedLocale = regex[1] in supportedLocales ? supportedLocales[regex[1]][0] : 'en_us';
+        } else if (regexLocale) {
+            formatedLocale = regexLocale[1] in supportedLocales ? supportedLocales[regexLocale[1]][0] : 'en_us';
         } else {
             formatedLocale = 'en_us';
         }
