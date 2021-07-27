@@ -145,6 +145,15 @@ describe('PaymentSubmitButton', () => {
             .toEqual(languageService.translate('payment.quadpay_continue_action'));
     });
 
+    it('renders button with special label for Zip', () => {
+        const component = mount(
+            <PaymentSubmitButtonTest methodId="zip" />
+        );
+
+        expect(component.text())
+            .toEqual(languageService.translate('payment.zip_continue_action'));
+    });
+
     describe('PAYMENTS-6806.enable_ppsdk_strategy feature flag is off', () => {
         beforeEach(() => {
             const flagValues = { 'PAYMENTS-6806.enable_ppsdk_strategy': false };
