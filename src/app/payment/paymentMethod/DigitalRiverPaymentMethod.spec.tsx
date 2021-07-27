@@ -69,17 +69,7 @@ describe('when using Digital River payment', () => {
     });
 
     it('initializes method with required config including initializationData', () => {
-        const methodWithInitializationData = {
-            ...method,
-            initializationData: {
-                disabledPaymentMethods: [
-                    'googlePay',
-                    'alipay',
-                ],
-            },
-        };
-
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ methodWithInitializationData } />);
+        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
         const component: ReactWrapper<HostedDropInPaymentMethodProps> = container.find(HostedDropInPaymentMethod);
 
         component.prop('initializePayment')({
@@ -96,10 +86,6 @@ describe('when using Digital River payment', () => {
                         },
                         flow: 'checkout',
                         paymentMethodConfiguration: {
-                            disabledPaymentMethods: [
-                                'googlePay',
-                                'alipay',
-                            ],
                             classes: {
                                 base: 'form-input optimizedCheckout-form-input',
                             },
@@ -136,7 +122,6 @@ describe('when using Digital River payment', () => {
                         },
                         flow: 'checkout',
                         paymentMethodConfiguration: {
-                            disabledPaymentMethods: [],
                             classes: {
                                 base: 'form-input optimizedCheckout-form-input',
                             },
