@@ -14,19 +14,16 @@ export default function masterpassFormatLocale(localeLanguage: string): string {
             it: ['it_it'],
             de: ['de_de'],
             fr: ['fr_fr', 'fr_ca']};
-    let formatedLocale = localeLanguage.replace('-', '_').toLowerCase();
+    let locale = 'en_us';
+    const formatedLocale = localeLanguage.replace('-', '_').toLowerCase();
     const regexLocale = formatedLocale.match(/^([a-z]{2})((?:\_)([a-z]{2}))?$/);
     if (regexLocale && regexLocale[3]) {
         if (regexLocale[1] in supportedLocales) {
-            formatedLocale = supportedLocales[regexLocale[1]].includes(regexLocale[0]) ? formatedLocale : supportedLocales[regexLocale[1]][0];
-        } else {
-            formatedLocale = 'en_us';
+            locale = supportedLocales[regexLocale[1]].indexOf(regexLocale[0]) !== -1 ? formatedLocale : supportedLocales[regexLocale[1]][0];
         }
     } else if (regexLocale) {
-        formatedLocale = regexLocale[1] in supportedLocales ? supportedLocales[regexLocale[1]][0] : 'en_us';
-    } else {
-        formatedLocale = 'en_us';
+        locale = regexLocale[1] in supportedLocales ? supportedLocales[regexLocale[1]][0] : 'en_us';
     }
 
-    return formatedLocale;
+    return locale;
 }
