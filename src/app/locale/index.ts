@@ -2,6 +2,7 @@ export { default as LocaleContext, LocaleContextType } from './LocaleContext';
 export { default as createLocaleContext } from './createLocaleContext';
 export { default as getDefaultTranslations } from './getDefaultTranslations';
 export { default as getLanguageService, InitializeLanguageService } from './getLanguageService';
+export { default as masterpassFormatLocale } from './masterpassFormatLocale';
 export { default as withCurrency, WithCurrencyProps } from './withCurrency';
 export { default as withLanguage, WithLanguageProps } from './withLanguage';
 export { default as withDate, WithDateProps } from './withDate';
