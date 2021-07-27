@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.160.0](https://github.com/bigcommerce/checkout-js/compare/v1.159.0...v1.160.0) (2021-07-27)
+
+
+### Features
+
+* **payment:** INT-4605 Zip: Display special text for PaymentSubmitButton ([39df786](https://github.com/bigcommerce/checkout-js/commit/39df7860599fbfb2a4aa30285cd2d4eed8ac2627))
+
 ## [1.159.0](https://github.com/bigcommerce/checkout-js/compare/v1.158.0...v1.159.0) (2021-07-23)
 
 
