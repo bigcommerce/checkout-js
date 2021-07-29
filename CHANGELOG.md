@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.160.1](https://github.com/bigcommerce/checkout-js/compare/v1.160.0...v1.160.1) (2021-07-29)
+
+
+### Bug Fixes
+
+* **payment:** INT-4598 handle vaulting Enable checkbox ([aa79f47](https://github.com/bigcommerce/checkout-js/commit/aa79f47090c1e2aad1e6a781191de2614ab16695))
+
 ## [1.160.0](https://github.com/bigcommerce/checkout-js/compare/v1.159.0...v1.160.0) (2021-07-27)
 
 
