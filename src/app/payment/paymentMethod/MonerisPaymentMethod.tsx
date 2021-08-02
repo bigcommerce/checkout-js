@@ -1,4 +1,4 @@
-import { CardInstrument, PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { CardInstrument, HostedFormValidationOptions, PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import React, { useCallback, FunctionComponent } from 'react';
 
 import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps } from '../hostedCreditCard';
@@ -22,7 +22,7 @@ const MonerisPaymentMethod: FunctionComponent<MonerisPaymentMethodProps & WithIn
         ...options,
         moneris: {
             containerId,
-            ...(selectedInstrument && { form : await getHostedFormOptions(selectedInstrument) }),
+            ...(selectedInstrument && { form : await getHostedFormOptions(selectedInstrument) as HostedFormValidationOptions }),
         },
     }), [containerId, getHostedFormOptions, initializePayment]);
 
