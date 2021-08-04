@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.160.4](https://github.com/bigcommerce/checkout-js/compare/v1.160.3...v1.160.4) (2021-08-04)
+
+
+### Bug Fixes
+
+* **checkout:** CUST-1572 accept marketing emails should be true when requires marketing consent is false ([56f7fd5](https://github.com/bigcommerce/checkout-js/commit/56f7fd5f9452fcc11b6265e35153bdb90fd11d48))
+
 ### [1.160.3](https://github.com/bigcommerce/checkout-js/compare/v1.160.2...v1.160.3) (2021-08-02)
 
 ### [1.160.2](https://github.com/bigcommerce/checkout-js/compare/v1.160.1...v1.160.2) (2021-07-30)
