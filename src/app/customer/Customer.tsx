@@ -178,6 +178,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             customerAccountFields,
             isCreatingAccount,
             createAccountError,
+            requiresMarketingConsent,
         } = this.props;
 
         return (
@@ -187,6 +188,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                 isCreatingAccount={ isCreatingAccount }
                 onCancel={ this.handleCancelCreateAccount }
                 onSubmit={ this.handleCreateAccount }
+                requiresMarketingConsent={ requiresMarketingConsent }
             />
         );
     }

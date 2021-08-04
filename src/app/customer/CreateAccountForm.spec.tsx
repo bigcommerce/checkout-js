@@ -31,6 +31,7 @@ describe('CreateAccountForm Component', () => {
                 >
                     <CreateAccountForm
                         formFields={ formFields }
+                        requiresMarketingConsent={ false }
                     />
                 </Formik>
             </LocaleContext.Provider>
@@ -59,6 +60,7 @@ describe('CreateAccountForm Component', () => {
                     createAccountError={ createAccountError }
                     formFields={ formFields }
                     onCancel={ onCancel }
+                    requiresMarketingConsent={ false }
                 />
             </LocaleContext.Provider>
         );
@@ -77,6 +79,7 @@ describe('CreateAccountForm Component', () => {
                 <CreateAccountForm
                     formFields={ formFields }
                     onCancel={ onCancel }
+                    requiresMarketingConsent={ false }
                 />
             </LocaleContext.Provider>
         );
@@ -95,6 +98,53 @@ describe('CreateAccountForm Component', () => {
                 <CreateAccountForm
                     formFields={ formFields }
                     onSubmit={ onSubmit }
+                    requiresMarketingConsent={ false }
+                />
+            </LocaleContext.Provider>
+        );
+
+        component.find('input[name="email"]')
+            .simulate('change', { target: { value: 'test@bigcommerce.com', name: 'email' } });
+
+        component.find('form')
+            .simulate('submit');
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        expect(onSubmit).not.toHaveBeenCalled();
+
+        component.find('input[name="password"]')
+            .simulate('change', { target: { value: 'Password1235+', name: 'password' } });
+
+        component.find('input[name="firstName"]')
+            .simulate('change', { target: { value: 'foo', name: 'firstName' } });
+
+        component.find('input[name="lastName"]')
+            .simulate('change', { target: { value: 'bar', name: 'lastName' } });
+
+        component.find('form')
+            .simulate('submit');
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        expect(onSubmit).toHaveBeenCalledWith(expect.objectContaining({
+            acceptsMarketingEmails: ['0'],
+            email: 'test@bigcommerce.com',
+            firstName: 'foo',
+            lastName: 'bar',
+            password: 'Password1235+',
+        }));
+    });
+
+    it('calls onSubmit when form is valid and requires consent', async () => {
+        const onSubmit = jest.fn();
+
+        component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <CreateAccountForm
+                    formFields={ formFields }
+                    onSubmit={ onSubmit }
+                    requiresMarketingConsent={ true }
                 />
             </LocaleContext.Provider>
         );
@@ -128,6 +178,7 @@ describe('CreateAccountForm Component', () => {
             firstName: 'foo',
             lastName: 'bar',
             password: 'Password1235+',
+            acceptsMarketingEmails: [],
         }));
     });
 });

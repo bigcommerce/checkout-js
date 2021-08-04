@@ -18,6 +18,7 @@ export interface CreateAccountFormProps {
     formFields: FormField[];
     createAccountError?: Error;
     isCreatingAccount?: boolean;
+    requiresMarketingConsent: boolean;
     onCancel?(): void;
     onSubmit?(values: CreateAccountFormValues): void;
 }
@@ -103,13 +104,13 @@ export default withLanguage(withFormik<CreateAccountFormProps & WithLanguageProp
     handleSubmit: (values, { props: { onSubmit = noop } }) => {
         onSubmit(values);
     },
-    mapPropsToValues: () => ({
+    mapPropsToValues: ({requiresMarketingConsent}) => ({
         firstName: '',
         lastName: '',
         email: '',
         password: '',
         customFields: {},
-        acceptsMarketingEmails: [],
+        acceptsMarketingEmails: requiresMarketingConsent ? [] : ['0'],
     }),
     validationSchema: ({
         language,
