@@ -207,6 +207,34 @@ describe('HostedDropInPaymentMethod', () =>  {
                 .toHaveBeenCalledWith(defaultProps.method, false);
         });
 
+        it('shows the payment submit button when payment data is not required', () => {
+            jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
+                .mockReturnValue(false);
+
+            const component = mount(<HostedDropInPaymentMethodTest { ...defaultProps } />);
+
+            component.find(CardInstrumentFieldset)
+                .prop('onUseNewInstrument')();
+            component.update();
+
+            expect(paymentContext.hidePaymentSubmitButton)
+                .toHaveBeenCalledWith(defaultProps.method, false);
+        });
+
+        it('shows the payment submit button when payment data is required', () => {
+            jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
+                .mockReturnValue(true);
+
+            const component = mount(<HostedDropInPaymentMethodTest { ...defaultProps } />);
+
+            component.find(CardInstrumentFieldset)
+                .prop('onUseNewInstrument')();
+            component.update();
+
+            expect(paymentContext.hidePaymentSubmitButton)
+                .toHaveBeenCalledWith(defaultProps.method, true);
+        });
+
         it('hides the payment submit button when a vaulted instrument is not selected', () => {
             const component = mount(<HostedDropInPaymentMethodTest { ...defaultProps } />);
 
