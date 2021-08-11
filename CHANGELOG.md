@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.161.0](https://github.com/bigcommerce/checkout-js/compare/v1.160.7...v1.161.0) (2021-08-11)
+
+
+### Features
+
+* **payment:** INT-4686 removing disabledPaymentMethods for digitalriver ([6a22ea8](https://github.com/bigcommerce/checkout-js/commit/6a22ea8cfe1cc538b9f0f21e17b8442053d80ba8))
+
+
+### Bug Fixes
+
+* **payment:** INT-4709 handle checkout with a /bin/bash orders ([23678ea](https://github.com/bigcommerce/checkout-js/commit/23678ea3f659a06388f31f26f7ed687608152c2e))
+
 ### [1.160.7](https://github.com/bigcommerce/checkout-js/compare/v1.160.6...v1.160.7) (2021-08-09)
 
 ### [1.160.6](https://github.com/bigcommerce/checkout-js/compare/v1.160.5...v1.160.6) (2021-08-05)
