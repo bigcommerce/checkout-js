@@ -68,11 +68,12 @@ const Redeemable: FunctionComponent<RedeemableProps & WithLanguageProps & Formik
     </Toggle>
 );
 
-const RedeemableForm: FunctionComponent<Partial<RedeemableProps> & FormikProps<RedeemableFormValues>> = ({
+const RedeemableForm: FunctionComponent<Partial<RedeemableProps> & FormikProps<RedeemableFormValues> & WithLanguageProps> = ({
     appliedRedeemableError,
     isApplyingRedeemable,
     clearError = noop,
     submitForm,
+    language,
 }) => {
     const handleKeyDown = useCallback(memoizeOne((setSubmitted: FormContextType['setSubmitted']) => (
         (event: KeyboardEvent) => {
@@ -128,6 +129,7 @@ const RedeemableForm: FunctionComponent<Partial<RedeemableProps> & FormikProps<R
             <div className="form-prefixPostfix">
                 <TextInput
                     { ...field }
+                    aria-label={ language.translate('redeemable.code_label') }
                     className="form-input optimizedCheckout-form-input"
                     onKeyDown={ handleKeyDown(setSubmitted) }
                     testId="redeemableEntry-input"
@@ -145,13 +147,7 @@ const RedeemableForm: FunctionComponent<Partial<RedeemableProps> & FormikProps<R
                 </Button>
             </div>
         </Fragment>
-    ), [
-        appliedRedeemableError,
-        handleKeyDown,
-        handleSubmit,
-        isApplyingRedeemable,
-        renderErrorMessage,
-    ]);
+    ), [appliedRedeemableError, handleKeyDown, handleSubmit, isApplyingRedeemable, language, renderErrorMessage]);
 
     const renderContent = useCallback(memoizeOne(({ setSubmitted }: FormContextType) => (
         <FormField
