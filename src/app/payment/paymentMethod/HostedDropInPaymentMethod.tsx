@@ -91,6 +91,7 @@ class HostedDropInPaymentMethod extends Component<
             method,
             onUnhandledError = noop,
             hidePaymentSubmitButton,
+            isPaymentDataRequired,
         } = this.props;
 
         const {
@@ -99,7 +100,7 @@ class HostedDropInPaymentMethod extends Component<
         } = this.state;
         const selectedInstrument = this.getDefaultInstrumentId();
 
-        hidePaymentSubmitButton(method, !selectedInstrument);
+        hidePaymentSubmitButton(method, (!selectedInstrument && isPaymentDataRequired));
 
         if (selectedInstrumentId !== prevState.selectedInstrumentId ||
             (prevProps.instruments.length > 0 && instruments.length === 0) ||
@@ -254,12 +255,14 @@ class HostedDropInPaymentMethod extends Component<
             method,
             setSubmit,
             signInCustomer = noop,
+            hidePaymentSubmitButton,
         } = this.props;
 
         const { selectedInstrumentId = this.getDefaultInstrumentId() } = this.state;
 
         if (!isPaymentDataRequired) {
             setSubmit(method, null);
+            hidePaymentSubmitButton(method, false);
 
             return Promise.resolve();
         }
