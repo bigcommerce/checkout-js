@@ -11,7 +11,9 @@ export interface OrderStatusProps {
     order: Order;
 }
 
-const checkoutcomSEPAMethod = 'SEPA Direct Debit (via Checkout.com)';
+const CHECKOUTCOM_SEPA_METHOD = 'SEPA Direct Debit (via Checkout.com)';
+
+const TEXT_ONLY_METHODS = [CHECKOUTCOM_SEPA_METHOD];
 
 const OrderStatus: FunctionComponent<OrderStatusProps> = ({
     order,
@@ -19,34 +21,22 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
     supportPhoneNumber,
 }) => {
 
-    const getMandateProvider = useCallback(() => {
-        return order?.payments?.[0].description;
-    }, [order]);
+    const mandateProvider = `${order?.payments?.[0].description}`;
 
     const getMandateTextId = useCallback(() => {
         const Mandates = [
             { method: 'Stripe (SEPA)', value: 'sepa_link_text' },
             { method: 'OXXO (via Checkout.com)', value: 'oxxo_link_text' },
             { method: 'Boleto Bancário (via Checkout.com)', value: 'boleto_link_text' },
-            { method: checkoutcomSEPAMethod, value: 'mandate_text_only' },
+            { method: CHECKOUTCOM_SEPA_METHOD, value: 'mandate_text_only' },
         ];
 
-        const mandateText = Mandates.find(pair => pair.method === order?.payments?.[0].description);
+        const mandateText = Mandates.find(pair => pair.method === mandateProvider);
 
         return mandateText ? mandateText.value : 'mandate_link_text';
-    }, [order]);
+    }, [mandateProvider]);
 
-    const showMandateAsTextOnly = useCallback(() => {
-        const textOnlyMethods = [checkoutcomSEPAMethod];
-
-        const paymentDescription = order?.payments?.[0].description;
-
-        if (!paymentDescription) {
-            return false;
-        }
-
-        return textOnlyMethods.includes(paymentDescription);
-    }, [order]);
+    const showMandateAsTextOnly = TEXT_ONLY_METHODS.includes(mandateProvider);
 
     return <OrderConfirmationSection>
         { order.orderId &&
@@ -66,20 +56,9 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
             />
         </p>
 
-        { showMandateAsTextOnly() ?
-            <div data-test="order-confirmation-mandate-text-only">
-                <br />
-                <TranslatedString
-                    data={ { provider : getMandateProvider(), mandate: order.mandateUrl } }
-                    id={ 'order_confirmation.' + getMandateTextId() }
-                />
-            </div> :
-            order.mandateUrl && <a data-test="order-confirmation-mandate-link-text" href={ order.mandateUrl } rel="noopener noreferrer" target="_blank">
-                <TranslatedString
-                    data={ { provider : getMandateProvider() } }
-                    id={ 'order_confirmation.' + getMandateTextId() }
-                />
-            </a> }
+        { showMandateAsTextOnly || !order.mandateUrl ?
+            <MandateText id={ getMandateTextId() } mandate={ order.mandateUrl } provider={ mandateProvider } /> :
+            <MandateLink id={ getMandateTextId() } mandate={ order.mandateUrl } provider={ mandateProvider } /> }
 
         { order.hasDigitalItems &&
         <p data-test="order-confirmation-digital-items-text">
@@ -133,5 +112,30 @@ const OrderStatusMessage: FunctionComponent<OrderStatusMessageProps> = ({
         />;
     }
 };
+
+interface MandateTextProps {
+    provider: string;
+    id: string;
+    mandate: string;
+}
+
+const MandateText = ({ provider, id, mandate }: MandateTextProps) => (
+    <div data-test="order-confirmation-mandate-text-only">
+        <br />
+        <TranslatedString
+            data={ { provider, mandate } }
+            id={ 'order_confirmation.' + id }
+        />
+    </div>
+);
+
+const MandateLink = ({ provider, id, mandate }: MandateTextProps) => (
+    <a data-test="order-confirmation-mandate-link-text" href={ mandate } rel="noopener noreferrer" target="_blank">
+        <TranslatedString
+            data={ { provider } }
+            id={ 'order_confirmation.' + id }
+        />
+    </a>
+);
 
 export default memo(OrderStatus);
