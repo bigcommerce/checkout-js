@@ -56,9 +56,14 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
             />
         </p>
 
-        { showMandateAsTextOnly || !order.mandateUrl ?
-            <MandateText id={ getMandateTextId() } mandate={ order.mandateUrl } provider={ mandateProvider } /> :
-            <MandateLink id={ getMandateTextId() } mandate={ order.mandateUrl } provider={ mandateProvider } /> }
+        { order.mandateUrl && <MandateSection
+            mandateProps={ {
+                id: getMandateTextId(),
+                mandate: order.mandateUrl,
+                provider: mandateProvider,
+            } }
+            showAsTextOnly={ showMandateAsTextOnly }
+        /> }
 
         { order.hasDigitalItems &&
         <p data-test="order-confirmation-digital-items-text">
@@ -113,13 +118,18 @@ const OrderStatusMessage: FunctionComponent<OrderStatusMessageProps> = ({
     }
 };
 
-interface MandateTextProps {
+interface MandateSectionProps {
+    showAsTextOnly: boolean;
+    mandateProps: MandateProps;
+}
+
+interface MandateProps {
     provider: string;
     id: string;
     mandate: string;
 }
 
-const MandateText = ({ provider, id, mandate }: MandateTextProps) => (
+const MandateText = ({ provider, id, mandate }: MandateProps) => (
     <div data-test="order-confirmation-mandate-text-only">
         <br />
         <TranslatedString
@@ -129,13 +139,19 @@ const MandateText = ({ provider, id, mandate }: MandateTextProps) => (
     </div>
 );
 
-const MandateLink = ({ provider, id, mandate }: MandateTextProps) => (
+const MandateLink = ({ provider, id, mandate }: MandateProps) => (
     <a data-test="order-confirmation-mandate-link-text" href={ mandate } rel="noopener noreferrer" target="_blank">
         <TranslatedString
             data={ { provider } }
             id={ 'order_confirmation.' + id }
         />
     </a>
+);
+
+const MandateSection = ({showAsTextOnly, mandateProps}: MandateSectionProps) => (
+    showAsTextOnly ?
+    <MandateText id={ mandateProps.id } mandate={ mandateProps.mandate } provider={ mandateProps.provider } /> :
+    <MandateLink id={ mandateProps.id } mandate={ mandateProps.mandate } provider={ mandateProps.provider } />
 );
 
 export default memo(OrderStatus);

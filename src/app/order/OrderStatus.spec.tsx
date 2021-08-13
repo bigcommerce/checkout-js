@@ -249,6 +249,20 @@ describe('OrderStatus', () => {
                 .toEqual('mandateLink');
         });
 
+        it('does not render mandate link if it is mandate url is not provided', () => {
+            order.mandateUrl = undefined;
+
+            const orderStatus = mount(
+                <OrderStatusTest
+                    { ...defaultProps }
+                    order={ order }
+                />
+            );
+
+            expect(orderStatus.find('[data-test="order-confirmation-mandate-link-text"]').length).toEqual(0);
+            expect(orderStatus.find('[data-test="order-confirmation-mandate-text-only"]').length).toEqual(0);
+        });
+
         it('renders "SEPA Direct Debit Mandate" text on mandate link when provider description is Stripe (SEPA)', () => {
             const orderStatus = mount(
                 <OrderStatusTest
