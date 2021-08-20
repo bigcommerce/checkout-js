@@ -55,6 +55,26 @@ export function getOrder(): Order {
     };
 }
 
+export function getOrderWithMandateId(): Order {
+    const order = getOrder();
+    order.payments = [
+        getGatewayOrderPaymentWithMandateId(),
+        getGiftCertificateOrderPayment(),
+    ];
+
+    return order;
+}
+
+export function getOrderWithMandateURL(): Order {
+    const order = getOrder();
+    order.payments = [
+        getGatewayOrderPaymentWithMandateURL(),
+        getGiftCertificateOrderPayment(),
+    ];
+
+    return order;
+}
+
 export function getGatewayOrderPayment(): GatewayOrderPayment {
     return {
         providerId: 'authorizenet',
@@ -63,6 +83,39 @@ export function getGatewayOrderPayment(): GatewayOrderPayment {
         detail: {
             step: 'FINALIZE',
             instructions: '<strong>295</strong> something',
+        },
+    };
+}
+
+export function getGatewayOrderPaymentWithMandateId(): GatewayOrderPayment {
+    return {
+        providerId: 'checkoutcom',
+        description: 'SEPA Direct Debit (via Checkout.com)',
+        amount: 190,
+        methodId: 'sepa',
+        detail: {
+            step: 'FINALIZE',
+            instructions: '<strong>295</strong> something',
+        },
+        mandate: {
+            id: 'ABC12345',
+        },
+    };
+}
+
+export function getGatewayOrderPaymentWithMandateURL(): GatewayOrderPayment {
+    return {
+        providerId: 'checkoutcom',
+        description: 'SEPA Direct Debit (via Checkout.com)',
+        amount: 190,
+        methodId: 'sepa',
+        detail: {
+            step: 'FINALIZE',
+            instructions: '<strong>295</strong> something',
+        },
+        mandate: {
+            id: '',
+            url: 'https://www.test.com/mandate',
         },
     };
 }

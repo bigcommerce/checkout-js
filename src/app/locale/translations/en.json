@@ -454,6 +454,20 @@
             "terms_and_conditions_heading": "Terms and Conditions"
         },
         "order_confirmation": {
+            "mandate": {
+                "checkoutcom": {
+                    "boleto": "Boleto Bancário Ticket",
+                    "oxxo": "OXXO Ticket",
+                    "sepa": "SEPA Direct Debit (via Checkout.com) Mandate Reference: {mandate}"
+                },
+                "stripev3": {
+                    "iban": "SEPA Direct Debit Mandate"
+                },
+                "stripe_upe": {
+                    "boleto": "Boleto Bancário Ticket",
+                    "oxxo": "OXXO Ticket"
+                }
+            },
             "order_number_text": "Your order number is <strong>{orderNumber}</strong>",
             "order_pending_review_text": "Your order was sent to us but is currently awaiting payment. Once we receive the payment for your order, it will be completed. If you've already provided payment details then we will process your order manually and send you an email when it's completed.",
             "order_pending_status_text": "We've received your order and are processing your payment. Once the payment is verified, your order will be completed. We will send you an email when it's completed. Please note, this process may take a few minutes depending on the processing times of your chosen method. If you have any questions about your purchase, email us at <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
@@ -465,11 +479,7 @@
             "thank_you_customer_heading": "Thank you {name}!",
             "thank_you_heading": "Thank you!",
             "continue_shopping": "Continue Shopping »",
-            "order_status_update_facebook_messenger_heading": "Get instant updates of your order to Messenger",
-            "mandate_link_text": "{provider} Mandate",
-            "boleto_link_text": "Boleto Bancário Ticket",
-            "oxxo_link_text": "OXXO Ticket",
-            "sepa_link_text": "SEPA Direct Debit Mandate"
+            "order_status_update_facebook_messenger_heading": "Get instant updates of your order to Messenger"
         }
     }
 }
