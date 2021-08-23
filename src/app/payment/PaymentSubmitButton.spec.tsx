@@ -165,7 +165,7 @@ describe('PaymentSubmitButton', () => {
 
         it('does not render button with label of "Continue with ${methodName}"', () => {
             const component = mount(
-                <PaymentSubmitButtonTest initialisationStrategyType="NONE" methodName="Foo" />
+                <PaymentSubmitButtonTest initialisationStrategyType="none" methodName="Foo" />
             );
 
             expect(component.text())
@@ -184,7 +184,7 @@ describe('PaymentSubmitButton', () => {
 
         it('renders button with label of "Continue with ${methodName}"', () => {
             const component = mount(
-                <PaymentSubmitButtonTest initialisationStrategyType="NONE" methodName="Foo" />
+                <PaymentSubmitButtonTest initialisationStrategyType="none" methodName="Foo" />
             );
 
             expect(component.text())

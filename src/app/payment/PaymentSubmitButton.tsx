@@ -20,7 +20,7 @@ const providersWithCustomClasses = [PaymentMethodId.Bolt];
 
 const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> = memo(({ methodId, methodName, methodType, methodGateway, isPpsdkEnabled = false, initialisationStrategyType }) => {
 
-    if (isPpsdkEnabled && methodName && initialisationStrategyType === 'NONE') {
+    if (isPpsdkEnabled && methodName && initialisationStrategyType === 'none') {
         return <TranslatedString data={ { methodName } } id="payment.ppsdk_continue_action" />;
     }
 
