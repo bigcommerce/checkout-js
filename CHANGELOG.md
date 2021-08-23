@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.161.4](https://github.com/bigcommerce/checkout-js/compare/v1.161.3...v1.161.4) (2021-08-23)
+
+
+### Bug Fixes
+
+* **payment:** PAYMENTS-7214 fix PPSDK initialisation strategy casing ([#669](https://github.com/bigcommerce/checkout-js/issues/669)) ([1e60c15](https://github.com/bigcommerce/checkout-js/commit/1e60c152daf215b5802e8357c5824b2afd9221a0))
+
 ### [1.161.3](https://github.com/bigcommerce/checkout-js/compare/v1.161.2...v1.161.3) (2021-08-20)
 
 ### [1.161.2](https://github.com/bigcommerce/checkout-js/compare/v1.161.1...v1.161.2) (2021-08-18)
