@@ -71,6 +71,10 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
         return <TranslatedString id="payment.zip_continue_action" />;
     }
 
+    if (methodId === PaymentMethodId.Klarna) {
+        return <TranslatedString id="payment.klarna_continue_action" />;
+    }
+
     return <TranslatedString id="payment.place_order_action" />;
 });
 

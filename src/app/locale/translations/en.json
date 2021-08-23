@@ -223,6 +223,7 @@
             "credit_card_number_required_error": "Credit Card Number is required",
             "credit_card_number_mismatch_error": "The card number entered does not match the card stored in your account",
             "google_pay_name_text": "Google Pay",
+            "klarna_continue_action": "Continue with Klarna",
             "klarna_name_text": "Klarna",
             "masterpass_name_text": "Masterpass",
             "orbital_continue_action": "Place Order",
