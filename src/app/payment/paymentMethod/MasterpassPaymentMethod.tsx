@@ -2,15 +2,21 @@ import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import React, { useCallback, useMemo, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
-import { withLanguage, WithLanguageProps } from '../../locale';
+import { withCheckout, CheckoutContextProps } from '../../checkout';
+import { masterpassFormatLocale, withLanguage, WithLanguageProps } from '../../locale';
 
 import WalletButtonPaymentMethod, { WalletButtonPaymentMethodProps } from './WalletButtonPaymentMethod';
 
 export type MasterpassPaymentMethodProps = Omit<WalletButtonPaymentMethodProps, 'buttonId'>;
 
-const MasterpassPaymentMethod: FunctionComponent<MasterpassPaymentMethodProps & WithLanguageProps> = ({
+interface WithCheckoutMasterpassProps {
+    storeLanguage: string;
+}
+
+const MasterpassPaymentMethod: FunctionComponent<MasterpassPaymentMethodProps & WithLanguageProps & WithCheckoutMasterpassProps> = ({
     initializePayment,
     language,
+    storeLanguage,
     ...rest
 }) => {
     const initializeMasterpassPayment = useCallback((options: PaymentInitializeOptions) => initializePayment({
@@ -21,7 +27,9 @@ const MasterpassPaymentMethod: FunctionComponent<MasterpassPaymentMethodProps & 
     }), [initializePayment]);
 
     const { config: { testMode }, initializationData: { checkoutId, isMasterpassSrcEnabled } } = rest.method;
-    const locale = navigator.language.replace('-', '_');
+
+    const locale = masterpassFormatLocale(storeLanguage);
+
     const signInButtonLabel = useMemo(() => (
         <img
             alt={ language.translate('payment.masterpass_name_text') }
@@ -40,4 +48,17 @@ const MasterpassPaymentMethod: FunctionComponent<MasterpassPaymentMethodProps & 
     />;
 };
 
-export default withLanguage(MasterpassPaymentMethod);
+function mapFromCheckoutProps(
+    { checkoutState }: CheckoutContextProps) {
+    const { data: { getConfig } } = checkoutState;
+    const config = getConfig();
+
+    if (!config) {
+        return null;
+    }
+
+    return {
+        storeLanguage: config.storeProfile.storeLanguage,
+    };
+}
+export default withCheckout(mapFromCheckoutProps)(withLanguage(MasterpassPaymentMethod));
