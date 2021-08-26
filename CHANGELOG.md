@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.163.0](https://github.com/bigcommerce/checkout-js/compare/v1.162.0...v1.163.0) (2021-08-26)
+
+
+### Features
+
+* **payment:** INT-4771 modifying other lang files ([740c9d6](https://github.com/bigcommerce/checkout-js/commit/740c9d6947aeb5ceeb77b2b94725bb81cbfdeb38))
+* **payment:** INT-4771 updating quadpay name to zip ([814296f](https://github.com/bigcommerce/checkout-js/commit/814296f5e577eec2d26f6edad8c9ec29a04b5754))
+
 ## [1.162.0](https://github.com/bigcommerce/checkout-js/compare/v1.161.4...v1.162.0) (2021-08-25)
 
 
