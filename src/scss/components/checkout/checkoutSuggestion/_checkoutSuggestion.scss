@@ -1,0 +1,61 @@
+.checkoutSuggestion {
+    align-items: center;
+    border: 1px solid $color-greyMedium;
+    border-radius: $global-radius;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: spacing("single") 0 0 0;
+    padding: spacing("single");
+    width: 100%;
+
+    @include breakpoint("medium") {
+        flex-direction: row;
+    }
+}
+
+.checkoutSuggestion-message {
+    color: $color-greyDarker;
+    font-weight: 400;
+    margin: 0 0 spacing("single") 0;
+    width: 100%;
+
+    @include breakpoint("medium") {
+        margin: 0 spacing("single") 0 0;
+        width: auto;
+    }
+}
+
+.checkoutSuggestion-button {
+    color: $buttonStyle-action-color;
+    margin: 0;
+    text-transform: initial;
+    white-space: nowrap;
+    width: 100%;
+
+    @include breakpoint("medium") {
+        width: auto;
+    }
+
+    &:hover {
+        color: $buttonStyle-action-color;
+    }
+
+    &--bolt {
+        background-color: $bolt-action-color;
+        border-color: $bolt-action-color;
+
+        &:hover {
+            background-color: $bolt-action-color-hover;
+            border-color: $bolt-action-color-hover;
+        }
+    }
+}
+
+.checkoutSuggestion-button-icon {
+    &--bolt {
+        height: 1rem;
+        margin-right: spacing("quarter");
+    }
+}

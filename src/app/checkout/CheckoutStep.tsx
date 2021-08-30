@@ -13,13 +13,22 @@ export interface CheckoutStepProps {
     isActive?: boolean;
     isComplete?: boolean;
     isEditable?: boolean;
+    suggestion?: ReactNode;
     summary?: ReactNode;
     type: CheckoutStepType;
     onExpanded?(step: CheckoutStepType): void;
     onEdit?(step: CheckoutStepType): void;
 }
 
-export default class CheckoutStep extends Component<CheckoutStepProps> {
+export interface CheckoutStepState {
+    isClosed: boolean;
+}
+
+export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutStepState> {
+    state = {
+        isClosed: true,
+    };
+
     private containerRef = createRef<HTMLLIElement>();
     private contentRef = createRef<HTMLDivElement>();
     private timeoutRef?: number;
@@ -56,9 +65,12 @@ export default class CheckoutStep extends Component<CheckoutStepProps> {
             isComplete,
             isEditable,
             onEdit,
+            suggestion,
             summary,
             type,
         } = this.props;
+
+        const { isClosed } = this.state;
 
         return (
             <li
@@ -73,9 +85,11 @@ export default class CheckoutStep extends Component<CheckoutStepProps> {
                     <CheckoutStepHeader
                         heading={ heading }
                         isActive={ isActive }
+                        isClosed={ isClosed }
                         isComplete={ isComplete }
                         isEditable={ isEditable }
                         onEdit={ onEdit }
+                        suggestion={ suggestion }
                         summary={ summary }
                         type={ type }
                     />
@@ -120,6 +134,8 @@ export default class CheckoutStep extends Component<CheckoutStepProps> {
 
     private focusStep(): void {
         const delay = isMobileView() ? 0 : this.getTransitionDelay();
+
+        this.setState({ isClosed: false });
 
         this.timeoutRef = window.setTimeout(() => {
             const input = this.getChildInput();
@@ -195,9 +211,15 @@ export default class CheckoutStep extends Component<CheckoutStepProps> {
     }
 
     private handleTransitionEnd: (node: HTMLElement, done: () => void) => void = (node, done) => {
+        const { isActive } = this.props;
+
         node.addEventListener('transitionend', ({ target }) => {
             if (target === node) {
                 done();
+
+                if (!isActive) {
+                    this.setState({ isClosed: true });
+                }
             }
         });
     };

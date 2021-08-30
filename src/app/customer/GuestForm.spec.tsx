@@ -15,6 +15,7 @@ describe('GuestForm', () => {
     beforeEach(() => {
         defaultProps = {
             canSubscribe: true,
+            continueAsGuestButtonLabelId: 'customer.continue_as_guest_action',
             defaultShouldSubscribe: false,
             isLoading: false,
             onChangeEmail: jest.fn(),
@@ -265,5 +266,15 @@ describe('GuestForm', () => {
         );
 
         expect(component.find('[data-test="customer-continue-button"]').length).toEqual(0);
+    });
+
+    it('shows different action button label if another label id was provided', () => {
+        const component = mount(
+            <TestComponent
+                continueAsGuestButtonLabelId="customer.continue"
+            />
+        );
+
+        expect(component.find('[data-test="customer-continue-button"]').text()).not.toEqual('Continue as guest');
     });
 });
