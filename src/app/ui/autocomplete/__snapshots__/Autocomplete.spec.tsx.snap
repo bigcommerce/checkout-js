@@ -7,6 +7,11 @@ exports[`Autocomplete Component renders input with initial value 1`] = `
   aria-labelledby="downshift-0-label"
   role="combobox"
 >
+  <label
+    class="form-label optimizedCheckout-form-label"
+    for="downshift-0-input"
+    id="downshift-0-label"
+  />
   <input
     aria-autocomplete="list"
     aria-labelledby="downshift-0-label"

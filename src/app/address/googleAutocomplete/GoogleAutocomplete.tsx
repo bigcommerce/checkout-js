@@ -9,6 +9,7 @@ import GoogleAutocompleteService from './GoogleAutocompleteService';
 
 interface GoogleAutocompleteProps {
     initialValue?: string;
+    labelContent: ReactNode;
     componentRestrictions?: google.maps.places.ComponentRestrictions;
     fields?: string[];
     apiKey: string;
@@ -40,6 +41,7 @@ class GoogleAutocomplete extends PureComponent<GoogleAutocompleteProps, GoogleAu
 
     render(): ReactNode {
         const {
+            labelContent,
             initialValue,
             onToggleOpen = noop,
             inputProps = {},
@@ -59,6 +61,7 @@ class GoogleAutocomplete extends PureComponent<GoogleAutocompleteProps, GoogleAu
                     autoComplete,
                 } }
                 items={ items }
+                labelContent={ labelContent }
                 listTestId="address-autocomplete-suggestions"
                 onChange={ this.onChange }
                 onSelect={ this.onSelect }

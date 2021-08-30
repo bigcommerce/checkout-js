@@ -56,6 +56,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
             isAutocompleteEnabled={ countryCode ?
                 supportedCountries.indexOf(countryCode) > -1 :
                 false }
+            labelContent={ labelContent }
             nextElement={ nextElement }
             onChange={ onChange }
             onSelect={ onSelect }
@@ -65,6 +66,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
         apiKey,
         countryCode,
         inputProps,
+        labelContent,
         nextElement,
         onChange,
         onSelect,
@@ -76,7 +78,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
         <div className={ `dynamic-form-field dynamic-form-field--addressLineAutocomplete` }>
             <FormField
                 input={ renderInput }
-                labelContent={ labelContent }
+                labelContent={ null }
                 name={ fieldName }
             />
         </div>
