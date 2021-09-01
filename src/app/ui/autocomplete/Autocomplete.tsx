@@ -48,7 +48,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
                     getMenuProps,
                     getItemProps,
                     highlightedIndex,
-                       getLabelProps,
+                    getLabelProps,
                 }) => (
                     <div>
                         <label
