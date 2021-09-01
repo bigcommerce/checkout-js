@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { lazy, Component, ReactNode } from 'react';
 
-import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
 import { isCustomError, CustomError, ErrorLogger, ErrorModal } from '../common/error';
 import { retry } from '../common/utility';
@@ -23,11 +22,6 @@ import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
-
-const Billing = lazy(() => retry(() => import(
-    /* webpackChunkName: "billing" */
-    '../billing/Billing'
-)));
 
 const CartSummary = lazy(() => retry(() => import(
     /* webpackChunkName: "cart-summary" */
@@ -263,9 +257,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         case CheckoutStepType.Shipping:
             return this.renderShippingStep(step);
 
-        case CheckoutStepType.Billing:
-            return this.renderBillingStep(step);
-
         case CheckoutStepType.Payment:
             return this.renderPaymentStep(step);
 
@@ -356,29 +347,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onReady={ this.handleReady }
                         onSignIn={ this.handleShippingSignIn }
                         onToggleMultiShipping={ this.handleToggleMultiShipping }
-                        onUnhandledError={ this.handleUnhandledError }
-                    />
-                </LazyContainer>
-            </CheckoutStep>
-        );
-    }
-
-    private renderBillingStep(step: CheckoutStepStatus): ReactNode {
-        const { billingAddress } = this.props;
-
-        return (
-            <CheckoutStep
-                { ...step }
-                heading={ <TranslatedString id="billing.billing_heading" /> }
-                key={ step.type }
-                onEdit={ this.handleEditStep }
-                onExpanded={ this.handleExpanded }
-                summary={ billingAddress && <StaticBillingAddress address={ billingAddress } /> }
-            >
-                <LazyContainer>
-                    <Billing
-                        navigateNextStep={ this.navigateToNextIncompleteStep }
-                        onReady={ this.handleReady }
                         onUnhandledError={ this.handleUnhandledError }
                     />
                 </LazyContainer>

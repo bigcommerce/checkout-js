@@ -10,7 +10,6 @@ import { withLanguage, WithLanguageProps } from '../locale';
 import { Fieldset, Form, FormContext } from '../ui/form';
 
 import hasSelectedShippingOptions from './hasSelectedShippingOptions';
-import BillingSameAsShippingField from './BillingSameAsShippingField';
 import ShippingAddress from './ShippingAddress';
 import { SHIPPING_ADDRESS_FIELDS } from './ShippingAddressFields';
 import ShippingFormFooter from './ShippingFormFooter';
@@ -116,9 +115,6 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             hasRequestedShippingOptions,
         } = this.state;
 
-        const PAYMENT_METHOD_VALID = ['amazon', 'amazonpay'];
-        const shouldShowBillingSameAsShipping = !PAYMENT_METHOD_VALID.some(method => method === methodId);
-
         return (
             <Form autoComplete="on">
                 <Fieldset>
@@ -142,11 +138,6 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                         shippingAddress={ shippingAddress }
                         shouldShowSaveAddress={ shouldShowSaveAddress }
                     />
-                    {
-                        shouldShowBillingSameAsShipping && <div className="form-body">
-                            <BillingSameAsShippingField />
-                        </div>
-                    }
                 </Fieldset>
 
                 <ShippingFormFooter
