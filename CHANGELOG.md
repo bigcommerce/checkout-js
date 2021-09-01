@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.163.5](https://github.com/bigcommerce/checkout-js/compare/v1.163.4...v1.163.5) (2021-09-01)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-5980 invalid aria-labelledby values ([#682](https://github.com/bigcommerce/checkout-js/issues/682)) ([941e1c2](https://github.com/bigcommerce/checkout-js/commit/941e1c2b8338433274801fd0a9fd75331f032471))
+
 ### [1.163.4](https://github.com/bigcommerce/checkout-js/compare/v1.163.3...v1.163.4) (2021-08-31)
 
 ### [1.163.3](https://github.com/bigcommerce/checkout-js/compare/v1.163.2...v1.163.3) (2021-08-30)
