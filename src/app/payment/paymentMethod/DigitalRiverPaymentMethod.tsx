@@ -31,7 +31,7 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
             configuration: {
                 flow: 'checkout',
                 showSavePaymentAgreement: isVaultingEnabled,
-                showComplianceSection: true,
+                showComplianceSection: false,
                 button: {
                     type: 'submitOrder',
                 },
