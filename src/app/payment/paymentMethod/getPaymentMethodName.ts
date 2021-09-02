@@ -14,7 +14,7 @@ import PaymentMethodType from './PaymentMethodType';
  */
 export default function getPaymentMethodName(
     language: LanguageService
-): (method: Partial<PaymentMethod> & Pick<PaymentMethod, 'id'>) => string {
+): (method: PaymentMethod) => string {
     return method => {
         let name = getTranslatedPaymentMethodName(language)(method);
 
@@ -38,50 +38,23 @@ export default function getPaymentMethodName(
 
 export function getTranslatedPaymentMethodName(
     language: LanguageService
-): (method: Partial<PaymentMethod> & Pick<PaymentMethod, 'id'>) => string | undefined {
+): (method: PaymentMethod) => string | undefined {
     return method => {
-        if (method.id === PaymentMethodId.Affirm) {
-            return language.translate('payment.affirm_name_text');
-        }
+        const translations: { [key: string]: string } = {
+            [PaymentMethodId.Affirm]: language.translate('payment.affirm_name_text'),
+            [PaymentMethodId.Afterpay]: language.translate('payment.afterpay_name_text'),
+            [PaymentMethodId.Amazon]: language.translate('payment.amazon_name_text'),
+            [PaymentMethodId.AmazonPay]: language.translate('payment.amazon_name_text'),
+            [PaymentMethodId.Bolt]: language.translate('payment.bolt_name_text'),
+            [PaymentMethodType.Chasepay]: language.translate('payment.chasepay_name_text'),
+            [PaymentMethodId.Clearpay]: language.translate('payment.clearpay_name_text'),
+            [PaymentMethodType.GooglePay]: language.translate('payment.google_pay_name_text'),
+            [PaymentMethodId.Klarna]: language.translate('payment.klarna_name_text'),
+            [PaymentMethodType.Paypal]: language.translate('payment.paypal_name_text'),
+            [PaymentMethodType.PaypalCredit]: language.translate('payment.paypal_credit_name_text'),
+            [PaymentMethodType.VisaCheckout]: language.translate('payment.vco_name_text'),
+        };
 
-        if (method.id === PaymentMethodId.Afterpay) {
-            return language.translate('payment.afterpay_name_text');
-        }
-
-        if (method.id === PaymentMethodId.Amazon) {
-            return language.translate('payment.amazon_name_text');
-        }
-
-        if (method.id === PaymentMethodId.AmazonPay) {
-            return language.translate('payment.amazon_name_text');
-        }
-
-        if (method.id === PaymentMethodId.Clearpay) {
-            return language.translate('payment.clearpay_name_text');
-        }
-
-        if (method.id === PaymentMethodId.Klarna) {
-            return language.translate('payment.klarna_name_text');
-        }
-
-        if (method.method === PaymentMethodType.Paypal) {
-            return language.translate('payment.paypal_name_text');
-        }
-
-        if (method.method === PaymentMethodType.PaypalCredit) {
-            return language.translate('payment.paypal_credit_name_text');
-        }
-
-        if (method.method === PaymentMethodType.Chasepay) {
-            return language.translate('payment.chasepay_name_text');
-        }
-
-        if (method.method === PaymentMethodType.VisaCheckout) {
-            return language.translate('payment.vco_name_text');
-        }
-
-        if (method.method === PaymentMethodType.GooglePay) {
-            return language.translate('payment.google_pay_name_text');
-        }
+        return translations[method.id] || translations[method.method];
     };
 }

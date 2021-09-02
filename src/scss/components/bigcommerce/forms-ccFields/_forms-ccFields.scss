@@ -29,6 +29,11 @@
     flex-basis: 100%;
 }
 
+.form-field--bolt-embed {
+    flex-basis: 100%;
+    height: remCalc(56px);
+}
+
 .mollie {
     &-full {
         flex-basis: 100%;

@@ -1,27 +1,17 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
-import { Formik } from 'formik';
-import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { getCart } from '../../cart/carts.mock';
-import { CheckoutProvider } from '../../checkout';
-import { getStoreConfig } from '../../config/config.mock';
-import { getCustomer } from '../../customer/customers.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { getPaymentMethod } from '../payment-methods.mock';
-import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
+import BoltClientPaymentMethod from './BoltClientPaymentMethod';
+import BoltEmbeddedPaymentMethod from './BoltEmbeddedPaymentMethod';
 import BoltPaymentMethod from './BoltPaymentMethod';
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
+import HostedWidgetPaymentMethod from './HostedWidgetPaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
 
 describe('when using Bolt payment', () => {
     let defaultProps: HostedPaymentMethodProps;
-    let checkoutService: CheckoutService;
-    let checkoutState: CheckoutSelectors;
-    let localeContext: LocaleContextType;
-    let paymentContext: PaymentContextProps;
     let PaymentMethodTest: FunctionComponent;
 
     beforeEach(() => {
@@ -31,61 +21,32 @@ describe('when using Bolt payment', () => {
             method: {
                 ...getPaymentMethod(),
                 id: PaymentMethodId.Bolt,
+                initializationData: {
+                    embeddedOneClickEnabled: false,
+                },
             },
         };
 
-        checkoutService = createCheckoutService();
-        checkoutState = checkoutService.getState();
-        localeContext = createLocaleContext(getStoreConfig());
-
-        paymentContext = {
-            disableSubmit: jest.fn(),
-            setSubmit: jest.fn(),
-            setValidationSchema: jest.fn(),
-            hidePaymentSubmitButton: jest.fn(),
-        };
-
-        jest.spyOn(checkoutState.data, 'getCart')
-            .mockReturnValue(getCart());
-
-        jest.spyOn(checkoutState.data, 'getConfig')
-            .mockReturnValue(getStoreConfig());
-
-        jest.spyOn(checkoutState.data, 'getCustomer')
-            .mockReturnValue(getCustomer());
-
         PaymentMethodTest = props => (
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <PaymentContext.Provider value={ paymentContext }>
-                    <LocaleContext.Provider value={ localeContext }>
-                        <Formik
-                            initialValues={ {} }
-                            onSubmit={ noop }
-                        >
-                            <BoltPaymentMethod { ...defaultProps } { ...props } />
-                        </Formik>
-                    </LocaleContext.Provider>
-                </PaymentContext.Provider>
-            </CheckoutProvider>
+            <BoltPaymentMethod { ...defaultProps } { ...props } />
         );
     });
 
-    it('renders as hosted payment method', () => {
+    it('renders as bolt client payment method if embeddedOneClickEnabled is false', () => {
+        defaultProps.method.initializationData.embeddedOneClickEnabled = false;
+
         const container = mount(<PaymentMethodTest />);
 
-        expect(container.find(HostedPaymentMethod).length)
-            .toEqual(1);
+        expect(container.find(BoltClientPaymentMethod).length).toEqual(1);
+        expect(container.find(HostedPaymentMethod).length).toEqual(1);
     });
 
-    it('initializes method with required config', () => {
-        mount(<PaymentMethodTest />);
+    it('renders as bolt embedded payment method if embeddedOneClickEnabled is true', () => {
+        defaultProps.method.initializationData.embeddedOneClickEnabled = true;
 
-        expect(defaultProps.initializePayment)
-            .toHaveBeenCalledWith(expect.objectContaining({
-                methodId: defaultProps.method.id,
-                [defaultProps.method.id]: {
-                    useBigCommerceCheckout: true,
-                },
-            }));
+        const container = mount(<PaymentMethodTest />);
+
+        expect(container.find(BoltEmbeddedPaymentMethod).length).toEqual(1);
+        expect(container.find(HostedWidgetPaymentMethod).length).toEqual(1);
     });
 });

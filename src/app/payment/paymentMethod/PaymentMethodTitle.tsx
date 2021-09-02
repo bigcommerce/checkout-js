@@ -73,6 +73,10 @@ function getPaymentMethodTitle(
                 logoUrl: cdnPath('/img/payment-providers/amazon-header.png'),
                 titleText: '',
             },
+            [PaymentMethodId.Bolt]: {
+                logoUrl: '',
+                titleText: method.initializationData?.embeddedOneClickEnabled ? language.translate('payment.credit_card_text') : methodName,
+            },
             [PaymentMethodId.ChasePay]: {
                 logoUrl: cdnPath('/img/payment-providers/chase-pay.png'),
                 titleText: '',

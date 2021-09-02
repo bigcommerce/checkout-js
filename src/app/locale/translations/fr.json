@@ -181,7 +181,7 @@
             "amazon_name_text": "Amazon Pay",
             "barclaycard_continue_action": "Continuer",
             "bluesnap_v2_continue_action": "Continuer",
-            "bolt_continue_action": "Paiement",
+            "bolt_continue_action": "Continuer avec Bolt",
             "braintreevisacheckout_continue_action": "Continuer avec Visa Checkout",
             "ccavenuemars_description_text": "Continuer avec CCAvenue",
             "chasepay_continue_action": "Continuer avec Chase Pay",
