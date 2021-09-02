@@ -7,7 +7,7 @@ import { withLanguage, TranslatedString, WithLanguageProps } from '../../locale'
 import getPaymentMethodName from './getPaymentMethodName';
 
 export interface SignOutLinkProps {
-    method: Partial<PaymentMethod> & Pick<PaymentMethod, 'id'>;
+    method: PaymentMethod;
     onSignOut(): void;
 }
 
