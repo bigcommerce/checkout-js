@@ -8,7 +8,6 @@ import AutocompleteItem from './autocomplete-item';
 
 export interface AutocompleteProps {
     initialValue?: string;
-    labelContent: ReactNode;
     initialHighlightedIndex?: number;
     children?: ReactNode;
     items: AutocompleteItem[];
@@ -22,7 +21,6 @@ export interface AutocompleteProps {
 class Autocomplete extends PureComponent<AutocompleteProps> {
     render(): ReactNode {
         const {
-            labelContent,
             inputProps,
             initialValue,
             initialHighlightedIndex,
@@ -48,18 +46,11 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
                     getMenuProps,
                     getItemProps,
                     highlightedIndex,
-                    getLabelProps,
                 }) => (
                     <div>
-                        <label
-                            className="form-label optimizedCheckout-form-label"
-                            { ...getLabelProps() }
-                        >
-                            { labelContent }
-                        </label>
                         <input
-                            { ...inputProps }
                             { ...getInputProps() }
+                            { ...inputProps }
                         />
                         { isOpen && !!items.length &&
                             <Popover>
