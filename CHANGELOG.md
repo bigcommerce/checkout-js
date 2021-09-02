@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.164.0](https://github.com/bigcommerce/checkout-js/compare/v1.163.7...v1.164.0) (2021-09-02)
+
+
+### Features
+
+* **payment:** BOLT-23 added custom embedded credit card fields as Bolt payment method ([edd0ad4](https://github.com/bigcommerce/checkout-js/commit/edd0ad40d4cf352b610179c49da9a99ed1aa7ded))
+
 ### [1.163.7](https://github.com/bigcommerce/checkout-js/compare/v1.163.6...v1.163.7) (2021-09-02)
 
 ### [1.163.6](https://github.com/bigcommerce/checkout-js/compare/v1.163.5...v1.163.6) (2021-09-02)
