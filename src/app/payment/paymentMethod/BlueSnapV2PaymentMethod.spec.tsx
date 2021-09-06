@@ -153,6 +153,9 @@ describe('when using BlueSnapV2 payment', () => {
         const component = mount(<BlueSnapV2PaymentMethodTest />);
         const initializeOptions = (defaultProps.initializePayment as jest.Mock).mock.calls[0][0];
 
+        jest.spyOn(window, 'confirm')
+            .mockReturnValue(true);
+
         act(() => {
             initializeOptions.bluesnapv2.onLoad(
                 document.createElement('iframe'),
@@ -177,5 +180,37 @@ describe('when using BlueSnapV2 payment', () => {
 
         expect(cancelBlueSnapV2Payment)
             .toHaveBeenCalledTimes(1);
+    });
+
+    it('does not cancel the payment flow if user chooses not to close modal', async () => {
+        const cancelBlueSnapV2Payment = jest.fn();
+        const component = mount(<BlueSnapV2PaymentMethodTest />);
+        const initializeOptions = (defaultProps.initializePayment as jest.Mock).mock.calls[0][0];
+
+        jest.spyOn(window, 'confirm')
+            .mockReturnValue(false);
+
+        act(() => {
+            initializeOptions.bluesnapv2.onLoad(
+                document.createElement('iframe'),
+                cancelBlueSnapV2Payment
+            );
+        });
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        act(() => {
+            component.update();
+        });
+
+        const modal: ReactWrapper<ModalProps> = component.find(Modal);
+
+        act(() => {
+            // tslint:disable-next-line:no-non-null-assertion
+            modal.prop('onRequestClose')!(new MouseEvent('click') as any);
+        });
+
+        expect(cancelBlueSnapV2Payment)
+            .not.toHaveBeenCalled();
     });
 });

@@ -1,6 +1,7 @@
 import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import React, { createRef, useCallback, useRef, useState, FunctionComponent, RefObject } from 'react';
 
+import { withLanguage, WithLanguageProps } from '../../locale';
 import { Modal } from '../../ui/modal';
 
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
@@ -12,8 +13,9 @@ interface BlueSnapV2PaymentMethodRef {
     cancelBlueSnapV2Payment?(): void;
 }
 
-const BlueSnapV2PaymentMethod: FunctionComponent<BlueSnapV2PaymentMethodProps> = ({
+const BlueSnapV2PaymentMethod: FunctionComponent<BlueSnapV2PaymentMethodProps & WithLanguageProps> = ({
     initializePayment,
+    language,
     ...rest
 }) => {
     const [paymentPageContent, setPaymentPageContent] = useState<HTMLElement>();
@@ -29,6 +31,12 @@ const BlueSnapV2PaymentMethod: FunctionComponent<BlueSnapV2PaymentMethodProps> =
             ref.current.cancelBlueSnapV2Payment = undefined;
         }
     }, []);
+
+    const confirmCancel = () => {
+        if (window.confirm(language.translate('payment.bluesnap_v2_cancel_message'))) {
+            cancelBlueSnapV2ModalFlow();
+        }
+    };
 
     const initializeBlueSnapV2Payment = useCallback((options: PaymentInitializeOptions) => {
         return initializePayment({
@@ -63,7 +71,7 @@ const BlueSnapV2PaymentMethod: FunctionComponent<BlueSnapV2PaymentMethodProps> =
                 additionalModalClassName="modal--bluesnapv2"
                 isOpen={ !!paymentPageContent }
                 onAfterOpen={ appendPaymentPageContent }
-                onRequestClose={ cancelBlueSnapV2ModalFlow }
+                onRequestClose={ confirmCancel }
                 shouldShowCloseButton={ true }
             >
                 <div ref={ ref.current.paymentPageContentRef } />
@@ -72,4 +80,4 @@ const BlueSnapV2PaymentMethod: FunctionComponent<BlueSnapV2PaymentMethodProps> =
     );
 };
 
-export default BlueSnapV2PaymentMethod;
+export default withLanguage(BlueSnapV2PaymentMethod);

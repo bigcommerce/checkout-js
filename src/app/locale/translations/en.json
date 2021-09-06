@@ -181,6 +181,7 @@
             "amazon_name_text": "Amazon Pay",
             "barclaycard_continue_action": "Continue",
             "bluesnap_v2_continue_action": "Continue",
+            "bluesnap_v2_cancel_message": "Closing this window while the payment is being submited may result in an incomplete order, are you sure you want to close this window?",
             "bolt_continue_action": "Continue with Bolt",
             "bolt_name_text": "Bolt",
             "braintreevisacheckout_continue_action": "Continue with Visa Checkout",
