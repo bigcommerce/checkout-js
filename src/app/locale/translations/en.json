@@ -224,6 +224,7 @@
             "credit_card_number_last_four": "Enter card number for {cardType} ending in {lastFour}",
             "credit_card_number_required_error": "Credit Card Number is required",
             "credit_card_number_mismatch_error": "The card number entered does not match the card stored in your account",
+            "digitalriver_dropin_error": "There was an error while processing your payment. Please try again or contact us.",
             "google_pay_name_text": "Google Pay",
             "klarna_continue_action": "Continue with Klarna",
             "klarna_name_text": "Klarna",
