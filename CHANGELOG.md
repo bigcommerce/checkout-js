@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.166.0](https://github.com/bigcommerce/checkout-js/compare/v1.165.1...v1.166.0) (2021-09-08)
+
+
+### Features
+
+* **payment:** PAYPAL-954 bump checkout sdk version ([0510772](https://github.com/bigcommerce/checkout-js/commit/0510772c2d5e002de87e90bd6351cfc9c2e068ef))
+
 ### [1.165.1](https://github.com/bigcommerce/checkout-js/compare/v1.165.0...v1.165.1) (2021-09-08)
 
 ## [1.165.0](https://github.com/bigcommerce/checkout-js/compare/v1.164.0...v1.165.0) (2021-09-08)
