@@ -33,6 +33,7 @@ describe('PaymentMethodTitle', () => {
         klarna: '/img/payment-providers/klarna-header.png',
         laybuy: '/img/payment-providers/laybuy-checkout-header.png',
         masterpass: 'https://masterpass.com/dyn/img/acc/global/mp_mark_hor_blk.svg',
+        opy: '/img/payment-providers/opy.png',
         paypal: '/img/payment-providers/paypalpaymentsprouk.png',
         quadpay: '/img/payment-providers/quadpay.png',
         sezzle: '/img/payment-providers/sezzle-checkout-header.png',
@@ -124,6 +125,7 @@ describe('PaymentMethodTitle', () => {
         const methods = [
             { id: PaymentMethodId.Amazon, method: 'widget' },
             { id: PaymentMethodId.Klarna, method: 'widget' },
+            { id: PaymentMethodId.Opy, method: 'credit-card' },
             { id: PaymentMethodId.PaypalCommerce, method: 'widget' },
         ];
 
@@ -208,6 +210,7 @@ describe('PaymentMethodTitle', () => {
         const methodIds = [
             PaymentMethodId.Amazon,
             PaymentMethodId.ChasePay,
+            PaymentMethodId.Opy,
             PaymentMethodId.PaypalCommerce,
             PaymentMethodType.Barclaycard,
             PaymentMethodType.GooglePay,

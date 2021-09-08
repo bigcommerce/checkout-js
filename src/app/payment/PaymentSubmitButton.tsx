@@ -63,6 +63,10 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
         return <TranslatedString id="payment.paypal_credit_continue_action" />;
     }
 
+    if (methodId === PaymentMethodId.Opy) {
+        return <TranslatedString id="payment.opy_continue_action" />;
+    }
+
     if (methodId === PaymentMethodId.Quadpay) {
         return <TranslatedString id="payment.quadpay_continue_action" />;
     }

@@ -105,6 +105,10 @@ function getPaymentMethodTitle(
                 logoUrl: 'https://masterpass.com/dyn/img/acc/global/mp_mark_hor_blk.svg',
                 titleText: '',
             },
+            [PaymentMethodId.Opy]: {
+                logoUrl: cdnPath('/img/payment-providers/opy.png'),
+                titleText: '',
+            },
             [PaymentMethodType.Paypal]: {
                 logoUrl: cdnPath('/img/payment-providers/paypalpaymentsprouk.png'),
                 titleText: '',
