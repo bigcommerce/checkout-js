@@ -102,6 +102,7 @@
             "checkout_as_guest_text": "Checking out as a <strong>Guest</strong>? You'll be able to save your details to create an account with us later.",
             "continue_as_guest_action": "Continue as guest",
             "create_account_action": "Create Account",
+            "continue": "Continue",
             "set_password_action": "Save Password",
             "required_error": "{label} is required",
             "min_error": "{label} should be bigger than {min}",
@@ -149,7 +150,9 @@
             "sign_in_throttled_error": "Due to excessive login attempts, please wait 10 seconds before attempting to log in again.",
             "sign_out_action": "Sign Out",
             "sign_out_error": "An error occurred while signing out. Please try again.",
-            "subscribe_to_newsletter_text": "Yes, I'd like to receive updates."
+            "subscribe_to_newsletter_text": "Yes, I'd like to receive updates.",
+            "suggestion_text": "Looks like you have an account with {provider}. For fast checkout, continue with {providerFlow}.",
+            "suggestion_action": "{providerFlow}"
         },
         "login_email": {
             "error_server": "We couldn't send you a sign-in link. Please try again.",

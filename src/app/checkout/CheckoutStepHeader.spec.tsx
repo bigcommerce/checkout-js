@@ -13,6 +13,7 @@ describe('CheckoutStepHeader', () => {
     beforeEach(() => {
         defaultProps = {
             heading: 'Billing',
+            suggestion: 'Billing suggestion',
             summary: 'Billing summary',
             type: CheckoutStepType.Billing,
         };
@@ -49,6 +50,44 @@ describe('CheckoutStepHeader', () => {
 
         expect(component.find('[data-test="step-info"]').text())
             .toEqual('');
+    });
+
+    it('renders suggestion if step is inactive', () => {
+        const component = shallow(
+            <CheckoutStepHeader
+                { ...defaultProps }
+                isClosed
+                isComplete
+            />
+        );
+
+        expect(component.find('[data-test="step-suggestion"]').text())
+            .toEqual('Billing suggestion');
+    });
+
+    it('does not render suggestion if step is active', () => {
+        const component = shallow(
+            <CheckoutStepHeader
+                { ...defaultProps }
+                isActive
+            />
+        );
+
+        expect(component.exists('[data-test="step-suggestion"]'))
+            .toEqual(false);
+    });
+
+    it('does not render suggestion if its not provided', () => {
+        const component = shallow(
+            <CheckoutStepHeader
+                { ...defaultProps }
+                isComplete
+                suggestion={ undefined }
+            />
+        );
+
+        expect(component.exists('[data-test="step-suggestion"]'))
+            .toEqual(false);
     });
 
     it('renders edit button if it is editable', () => {

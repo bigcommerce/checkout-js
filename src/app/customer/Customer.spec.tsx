@@ -1,5 +1,5 @@
 import { createCheckoutService, BillingAddress, Checkout, CheckoutService, Customer as CustomerData, StoreConfig } from '@bigcommerce/checkout-sdk';
-import { mount, render, ReactWrapper } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
 import { getBillingAddress } from '../billing/billingAddresses.mock';
@@ -45,6 +45,15 @@ describe('Customer', () => {
         jest.spyOn(checkoutService.getState().data, 'getConfig')
             .mockReturnValue(config);
 
+        jest.spyOn(checkoutService, 'loadPaymentMethods')
+            .mockResolvedValue(checkoutService.getState());
+
+        jest.spyOn(checkoutService, 'initializeCustomer')
+            .mockResolvedValue(checkoutService.getState());
+
+        jest.spyOn(checkoutService.getState().data, 'getPaymentMethods')
+            .mockReturnValue([]);
+
         localeContext = createLocaleContext(getStoreConfig());
 
         CustomerTest = props => (
@@ -57,23 +66,31 @@ describe('Customer', () => {
     });
 
     describe('when view type is "guest"', () => {
-        it('matches snapshot', () => {
-            expect(render(
-                <CustomerTest viewType={ CustomerViewType.Guest } />
-            ))
-                .toMatchSnapshot();
-        });
-
-        it('renders guest form by default', () => {
+        it('matches snapshot', async () => {
             const component = mount(
                 <CustomerTest viewType={ CustomerViewType.Guest } />
             );
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
+            expect(component.render())
+                .toMatchSnapshot();
+        });
+
+        it('renders guest form by default', async () => {
+            const component = mount(
+                <CustomerTest viewType={ CustomerViewType.Guest } />
+            );
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
             expect(component.find(GuestForm).exists())
                 .toEqual(true);
         });
 
-        it('renders guest form if billing address is undefined', () => {
+        it('renders guest form if billing address is undefined', async () => {
             jest.spyOn(checkoutService.getState().data, 'getBillingAddress')
                 .mockReturnValue(undefined);
 
@@ -81,11 +98,14 @@ describe('Customer', () => {
                 <CustomerTest viewType={ CustomerViewType.Guest } />
             );
 
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
             expect(component.find(GuestForm).exists())
                 .toEqual(true);
         });
 
-        it('renders guest form if customer is undefined', () => {
+        it('renders guest form if customer is undefined', async () => {
             jest.spyOn(checkoutService.getState().data, 'getCustomer')
                 .mockReturnValue(undefined);
 
@@ -93,11 +113,14 @@ describe('Customer', () => {
                 <CustomerTest viewType={ CustomerViewType.Guest } />
             );
 
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
             expect(component.find(GuestForm).exists())
                 .toEqual(true);
         });
 
-        it('renders create account form if type is create account', () => {
+        it('renders create account form if type is create account', async () => {
             jest.spyOn(checkoutService.getState().data, 'getCustomer')
                 .mockReturnValue(undefined);
 
@@ -116,14 +139,20 @@ describe('Customer', () => {
                 <CustomerTest viewType={ CustomerViewType.CreateAccount } />
             );
 
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
             expect(component.find(CreateAccountForm).exists())
                 .toEqual(true);
         });
 
-        it('passes data to guest form', () => {
+        it('passes data to guest form', async () => {
             const component = mount(
                 <CustomerTest viewType={ CustomerViewType.Guest } />
             );
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
             expect(component.find(GuestForm).props())
                 .toMatchObject({
@@ -133,7 +162,7 @@ describe('Customer', () => {
                 });
         });
 
-        it('continues checkout as guest and does not send consent if not required', () => {
+        it('continues checkout as guest and does not send consent if not required', async () => {
             jest.spyOn(checkoutService, 'continueAsGuest')
                 .mockReturnValue(Promise.resolve(checkoutService.getState()));
 
@@ -142,6 +171,9 @@ describe('Customer', () => {
                     viewType={ CustomerViewType.Guest }
                 />
             );
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
             (component.find(GuestForm) as ReactWrapper<GuestFormProps>)
                 .prop('onContinueAsGuest')({
@@ -157,7 +189,7 @@ describe('Customer', () => {
                 });
         });
 
-        it('only subscribes to newsletter if allowed by customer', () => {
+        it('only subscribes to newsletter if allowed by customer', async () => {
             jest.spyOn(checkoutService, 'continueAsGuest')
                 .mockReturnValue(Promise.resolve(checkoutService.getState()));
 
@@ -167,6 +199,9 @@ describe('Customer', () => {
                     viewType={ CustomerViewType.Guest }
                 />
             );
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
             (component.find(GuestForm) as ReactWrapper<GuestFormProps>)
                 .prop('onContinueAsGuest')({
@@ -185,7 +220,7 @@ describe('Customer', () => {
                 .not.toHaveBeenCalled();
         });
 
-        it('changes to login view when "show login" event is received', () => {
+        it('changes to login view when "show login" event is received', async () => {
             const handleChangeViewType = jest.fn();
             const component = mount(
                 <CustomerTest
@@ -193,6 +228,9 @@ describe('Customer', () => {
                     viewType={ CustomerViewType.Guest }
                 />
             );
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
             (component.find(GuestForm) as ReactWrapper<GuestFormProps>)
                 .prop('onShowLogin')();
@@ -212,6 +250,9 @@ describe('Customer', () => {
                     viewType={ CustomerViewType.Guest }
                 />
             );
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
             (component.find(GuestForm) as ReactWrapper<GuestFormProps>)
                 .prop('onContinueAsGuest')({
@@ -237,6 +278,9 @@ describe('Customer', () => {
                 />
             );
 
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
             (component.find(GuestForm) as ReactWrapper<GuestFormProps>)
                 .prop('onContinueAsGuest')({
                     email: 'test@bigcommerce.com',
@@ -260,6 +304,9 @@ describe('Customer', () => {
                     viewType={ CustomerViewType.Guest }
                 />
             );
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
             (component.find(GuestForm) as ReactWrapper<GuestFormProps>)
                 .prop('onContinueAsGuest')({
@@ -292,6 +339,9 @@ describe('Customer', () => {
                 />
             );
 
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
             (component.find(GuestForm) as ReactWrapper<GuestFormProps>)
                 .prop('onContinueAsGuest')({
                     email: 'test@bigcommerce.com',
@@ -319,6 +369,9 @@ describe('Customer', () => {
                 />
             );
 
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
             (component.find(GuestForm) as ReactWrapper<GuestFormProps>)
                 .prop('onContinueAsGuest')({
                     email: 'test@bigcommerce.com',
@@ -343,6 +396,9 @@ describe('Customer', () => {
                 />
             );
 
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
             (component.find(GuestForm) as ReactWrapper<GuestFormProps>)
                 .prop('onContinueAsGuest')({
                     email: 'test@bigcommerce.com',
@@ -355,10 +411,13 @@ describe('Customer', () => {
                 .toHaveBeenCalled();
         });
 
-        it('retains draft email address when switching to login view', () => {
+        it('retains draft email address when switching to login view', async () => {
             const component = mount(
                 <CustomerTest viewType={ CustomerViewType.Guest } />
             );
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
             (component.find(GuestForm) as ReactWrapper<GuestFormProps>)
                 .prop('onChangeEmail')('test@bigcommerce.com');
@@ -372,7 +431,7 @@ describe('Customer', () => {
     });
 
     describe('when view type is "login"', () => {
-        it('matches snapshot', () => {
+        it('matches snapshot', async () => {
             const component = mount(
                 <CustomerTest
                     isAccountCreationEnabled={ true }
@@ -380,14 +439,20 @@ describe('Customer', () => {
                 />
             );
 
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
             expect(component.render())
                 .toMatchSnapshot();
         });
 
-        it('renders login form', () => {
+        it('renders login form', async () => {
             const component = mount(
                 <CustomerTest viewType={ CustomerViewType.Login } />
             );
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
             expect(component.find(LoginForm).exists())
                 .toEqual(true);
@@ -400,6 +465,9 @@ describe('Customer', () => {
                     viewType={ CustomerViewType.Login }
                 />);
 
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
             expect(component.find(EmailLoginForm).exists())
                 .toEqual(false);
 
@@ -410,13 +478,16 @@ describe('Customer', () => {
                 .toEqual(false);
         });
 
-        it('does not render sign-in email link when is embedded checkout', () => {
+        it('does not render sign-in email link when is embedded checkout', async () => {
             const component = mount(
                 <CustomerTest
                     isEmbedded={ true }
                     isSignInEmailEnabled={ true }
                     viewType={ CustomerViewType.Login }
                 />);
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
             expect(component.find(EmailLoginForm).exists())
                 .toEqual(false);
@@ -425,10 +496,13 @@ describe('Customer', () => {
                 .toEqual(false);
         });
 
-        it('passes data to login form', () => {
+        it('passes data to login form', async () => {
             const component = mount(
                 <CustomerTest viewType={ CustomerViewType.Login } />
             );
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
             expect(component.find(LoginForm).props())
                 .toMatchObject({
@@ -438,13 +512,16 @@ describe('Customer', () => {
                 });
         });
 
-        it('handles "sign in" event', () => {
+        it('handles "sign in" event', async () => {
             jest.spyOn(checkoutService, 'signInCustomer')
                 .mockReturnValue(Promise.resolve(checkoutService.getState()));
 
             const component = mount(
                 <CustomerTest viewType={ CustomerViewType.Login } />
             );
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
             (component.find(LoginForm) as ReactWrapper<LoginFormProps>)
                 .prop('onSignIn')({
@@ -471,6 +548,9 @@ describe('Customer', () => {
                 />
             );
 
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
             (component.find(LoginForm) as ReactWrapper<LoginFormProps>)
                 .prop('onSignIn')({
                     email: 'test@bigcommerce.com',
@@ -495,6 +575,9 @@ describe('Customer', () => {
                 />
             );
 
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
             (component.find(LoginForm) as ReactWrapper<LoginFormProps>)
                 .prop('onSignIn')({
                     email: 'test@bigcommerce.com',
@@ -507,7 +590,7 @@ describe('Customer', () => {
                 .toHaveBeenCalled();
         });
 
-        it('clears error when "cancel" event is triggered', () => {
+        it('clears error when "cancel" event is triggered', async () => {
             const error = new Error();
 
             jest.spyOn(checkoutService.getState().errors, 'getSignInError')
@@ -520,6 +603,9 @@ describe('Customer', () => {
                 <CustomerTest viewType={ CustomerViewType.Login } />
             );
 
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
             (component.find(LoginForm) as ReactWrapper<LoginFormProps>)
                 // tslint:disable-next-line:no-non-null-assertion
                 .prop('onCancel')!();
@@ -528,7 +614,7 @@ describe('Customer', () => {
                 .toHaveBeenCalledWith(error);
         });
 
-        it('changes to guest view when "cancel" event is triggered', () => {
+        it('changes to guest view when "cancel" event is triggered', async () => {
             const handleChangeViewType = jest.fn();
             const component = mount(
                 <CustomerTest
@@ -536,6 +622,9 @@ describe('Customer', () => {
                     viewType={ CustomerViewType.Login }
                 />
             );
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
             (component.find(LoginForm) as ReactWrapper<LoginFormProps>)
                 // tslint:disable-next-line:no-non-null-assertion
@@ -545,10 +634,13 @@ describe('Customer', () => {
                 .toHaveBeenCalledWith(CustomerViewType.Guest);
         });
 
-        it('retains draft email address when switching to guest view', () => {
+        it('retains draft email address when switching to guest view', async () => {
             const component = mount(
                 <CustomerTest viewType={ CustomerViewType.Login } />
             );
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
             (component.find(LoginForm) as ReactWrapper<LoginFormProps>)
                 // tslint:disable-next-line:no-non-null-assertion
@@ -563,10 +655,13 @@ describe('Customer', () => {
     });
 
     describe('when view type is "cancellable_enforced_login"', () => {
-        it('renders login form', () => {
+        it('renders login form', async () => {
             const component = mount(
                 <CustomerTest viewType={ CustomerViewType.CancellableEnforcedLogin } />
             );
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
             expect(component.find(LoginForm).prop('viewType'))
                 .toEqual(CustomerViewType.CancellableEnforcedLogin);
@@ -574,10 +669,13 @@ describe('Customer', () => {
     });
 
     describe('when view type is "suggested_login"', () => {
-        it('renders login form', () => {
+        it('renders login form', async () => {
             const component = mount(
                 <CustomerTest viewType={ CustomerViewType.SuggestedLogin } />
             );
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
             expect(component.find(LoginForm).prop('viewType'))
                 .toEqual(CustomerViewType.SuggestedLogin);
@@ -585,10 +683,13 @@ describe('Customer', () => {
     });
 
     describe('when view type is "enforced_login"', () => {
-        it('renders login form', () => {
+        it('renders login form', async () => {
             const component = mount(
                 <CustomerTest viewType={ CustomerViewType.EnforcedLogin } />
             );
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
             expect(component.find(LoginForm).prop('viewType'))
                 .toEqual(CustomerViewType.EnforcedLogin);
@@ -603,6 +704,9 @@ describe('Customer', () => {
                     sendLoginEmail={ sendLoginEmail }
                     viewType={ CustomerViewType.EnforcedLogin }
                 />);
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
             component.find('[data-test="customer-signin-link"]').simulate('click');
             component.update();
@@ -624,6 +728,9 @@ describe('Customer', () => {
                     sendLoginEmail={ sendLoginEmail }
                     viewType={ CustomerViewType.EnforcedLogin }
                 />);
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
 
             component.find('[data-test="customer-signin-link"]').simulate('click');
             component.update();
