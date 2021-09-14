@@ -3954,6 +3954,9 @@ h6 a:hover {
   flex-basis: 100%;
   height: 4.30769rem; }
 
+.form-field--createAccount {
+  height: auto; }
+
 .mollie-full {
   flex-basis: 100%; }
 
@@ -5446,4 +5449,4 @@ body.klarna-payments-fso-open {
     font-weight: normal; }
 
 
-/*# sourceMappingURL=checkout-23876436.css.map*/
+/*# sourceMappingURL=checkout-7c13ab84.css.map*/

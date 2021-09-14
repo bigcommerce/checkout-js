@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.167.0](https://github.com/bigcommerce/checkout-js/compare/v1.166.0...v1.167.0) (2021-09-14)
+
+
+### Features
+
+* **payment:** BOLT-24 added Bolt account creation checkbox into BoltEmbeddedPaymentMethod component ([8c04a28](https://github.com/bigcommerce/checkout-js/commit/8c04a283212154de09b6adc0bdb1ac984a247941))
+
 ## [1.166.0](https://github.com/bigcommerce/checkout-js/compare/v1.165.1...v1.166.0) (2021-09-08)
 
 
