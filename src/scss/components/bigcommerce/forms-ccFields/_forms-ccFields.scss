@@ -34,6 +34,10 @@
     height: remCalc(56px);
 }
 
+.form-field--createAccount {
+    height: auto;
+}
+
 .mollie {
     &-full {
         flex-basis: 100%;

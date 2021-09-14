@@ -1,4 +1,4 @@
-import React, { useCallback, FunctionComponent } from 'react';
+import React, { useCallback, useState, FunctionComponent } from 'react';
 
 import BoltCustomForm from './BoltCustomForm';
 import { HostedPaymentMethodProps } from './HostedPaymentMethod';
@@ -9,6 +9,8 @@ const BoltEmbeddedPaymentMethod: FunctionComponent<HostedPaymentMethodProps> = (
     method,
     ...rest
 }) => {
+    const [ showCreateAccountCheckbox, setShowCreateAccountCheckbox ] = useState(false);
+
     const boltEmbeddedContainerId = 'bolt-embedded';
 
     const initializeBoltPayment = useCallback(options => initializePayment({
@@ -16,6 +18,9 @@ const BoltEmbeddedPaymentMethod: FunctionComponent<HostedPaymentMethodProps> = (
             bolt: {
                 containerId: boltEmbeddedContainerId,
                 useBigCommerceCheckout: true,
+                onPaymentSelect: (hasBoltAccount: boolean) => {
+                    setShowCreateAccountCheckbox(!hasBoltAccount);
+                },
             },
         }
     ), [initializePayment, boltEmbeddedContainerId]);
@@ -23,8 +28,9 @@ const BoltEmbeddedPaymentMethod: FunctionComponent<HostedPaymentMethodProps> = (
     const renderCustomPaymentForm = useCallback(() => (
         <BoltCustomForm
             containerId={ boltEmbeddedContainerId }
+            showCreateAccountCheckbox={ showCreateAccountCheckbox }
         />
-    ), [ boltEmbeddedContainerId ]);
+    ), [ boltEmbeddedContainerId, showCreateAccountCheckbox ]);
 
     return <HostedWidgetPaymentMethod
         { ...rest }

@@ -91,6 +91,7 @@ describe('BoltEmbeddedPaymentMethod', () => {
                 bolt: {
                     containerId: 'bolt-embedded',
                     useBigCommerceCheckout: true,
+                    onPaymentSelect: expect.any(Function),
                 },
             }));
     });
