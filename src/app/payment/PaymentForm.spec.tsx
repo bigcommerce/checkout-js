@@ -238,6 +238,7 @@ describe('PaymentForm', () => {
                 ccName: 'Foo Bar',
                 ccExpiry: '10 / 22',
                 paymentProviderRadio: defaultProps.defaultMethodId,
+                shouldCreateAccount: false,
                 shouldSaveInstrument: false,
                 terms: false,
             });

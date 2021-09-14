@@ -243,7 +243,6 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
     mapPropsToValues: ({
         defaultGatewayId,
         defaultMethodId,
-
     }) => ({
         ccCustomerCode: '',
         ccCvv: '',
@@ -255,6 +254,7 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
         ccNumber: '',
         paymentProviderRadio: getUniquePaymentMethodId(defaultMethodId, defaultGatewayId),
         instrumentId: '',
+        shouldCreateAccount: false,
         shouldSaveInstrument: false,
         terms: false,
         hostedForm: {
