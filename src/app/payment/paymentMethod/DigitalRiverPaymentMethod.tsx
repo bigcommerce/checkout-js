@@ -2,6 +2,7 @@ import React, { useCallback, useContext, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
 import { connectFormik, ConnectFormikProps } from '../../common/form';
+import { withLanguage, WithLanguageProps } from '../../locale';
 import { FormContext } from '../../ui/form';
 import { PaymentFormValues } from '../PaymentForm';
 
@@ -14,8 +15,9 @@ export enum DigitalRiverClasses {
     base =  'form-input optimizedCheckout-form-input',
 }
 
-const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProps> = ({
+const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProps & WithLanguageProps> = ({
     initializePayment,
+    language,
     onUnhandledError,
     formik: { submitForm },
     ...rest
@@ -45,11 +47,11 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
                 setSubmitted(true);
                 submitForm();
             },
-            onError: (error: Error) => {
-                onUnhandledError?.(error);
+            onError: () => {
+                onUnhandledError?.(new Error(language.translate('payment.digitalriver_dropin_error')));
             },
         },
-    }), [initializePayment, containerId, isVaultingEnabled, setSubmitted, submitForm, onUnhandledError]);
+    }), [initializePayment, containerId, isVaultingEnabled, setSubmitted, submitForm, onUnhandledError, language]);
 
     return <HostedDropInPaymentMethod
         { ...rest }
@@ -59,4 +61,4 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
     />;
 };
 
-export default connectFormik(DigitalRiverPaymentMethod);
+export default connectFormik(withLanguage(DigitalRiverPaymentMethod));
