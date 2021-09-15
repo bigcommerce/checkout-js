@@ -40,13 +40,13 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
         <TranslatedString id="address.address_line_1_label" />
     ), []);
 
-    const labelID = getAddressFormFieldLabelId(name);
+    const labelId = getAddressFormFieldLabelId(name);
 
     const inputProps = useMemo(() => ({
         className: 'form-input optimizedCheckout-form-input',
         id: getAddressFormFieldInputId(name),
-        'aria-labelledby': labelID,
-    }), [name, labelID]);
+        'aria-labelledby': labelId,
+    }), [name, labelId]);
 
     const renderInput = useCallback(({ field }: FieldProps) => (
         <GoogleAutocomplete
@@ -79,7 +79,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
         <div className={ `dynamic-form-field dynamic-form-field--addressLineAutocomplete` }>
             <FormField
                 input={ renderInput }
-                label={ <Label htmlFor={ inputProps.id } id={ labelID }>{ labelContent }</Label> }
+                label={ <Label htmlFor={ inputProps.id } id={ labelId }>{ labelContent }</Label> }
                 name={ fieldName }
             />
         </div>
