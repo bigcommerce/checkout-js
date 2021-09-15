@@ -4,8 +4,8 @@ import React, { memo, useCallback, useMemo, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { AutocompleteItem } from '../../ui/autocomplete';
-import { FormField } from '../../ui/form';
-import { getAddressFormFieldInputId } from '../getAddressFormFieldInputId';
+import { FormField, Label } from '../../ui/form';
+import { getAddressFormFieldInputId, getAddressFormFieldLabelId } from '../getAddressFormFieldInputId';
 
 import GoogleAutocomplete from './GoogleAutocomplete';
 
@@ -40,10 +40,13 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
         <TranslatedString id="address.address_line_1_label" />
     ), []);
 
+    const labelId = getAddressFormFieldLabelId(name);
+
     const inputProps = useMemo(() => ({
         className: 'form-input optimizedCheckout-form-input',
         id: getAddressFormFieldInputId(name),
-    }), [name]);
+        'aria-labelledby': labelId,
+    }), [name, labelId]);
 
     const renderInput = useCallback(({ field }: FieldProps) => (
         <GoogleAutocomplete
@@ -76,7 +79,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
         <div className={ `dynamic-form-field dynamic-form-field--addressLineAutocomplete` }>
             <FormField
                 input={ renderInput }
-                labelContent={ labelContent }
+                label={ <Label htmlFor={ inputProps.id } id={ labelId }>{ labelContent }</Label> }
                 name={ fieldName }
             />
         </div>
