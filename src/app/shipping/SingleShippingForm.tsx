@@ -119,6 +119,10 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
         const PAYMENT_METHOD_VALID = ['amazon', 'amazonpay'];
         const shouldShowBillingSameAsShipping = !PAYMENT_METHOD_VALID.some(method => method === methodId);
 
+        if (consignments.length > 1) {
+            this.handleAddressSelect(consignments[0].shippingAddress);
+        }
+
         return (
             <Form autoComplete="on">
                 <Fieldset>
