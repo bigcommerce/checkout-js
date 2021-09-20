@@ -89,6 +89,14 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
         }, SHIPPING_AUTOSAVE_DELAY);
     }
 
+    componentDidMount(): void {
+        const { consignments } = this.props;
+
+        if ( consignments.length > 1) {
+            this.handleAddressSelect(consignments[0].shippingAddress);
+        }
+    }
+
     render(): ReactNode {
         const {
             addresses,
@@ -118,10 +126,6 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
 
         const PAYMENT_METHOD_VALID = ['amazon', 'amazonpay'];
         const shouldShowBillingSameAsShipping = !PAYMENT_METHOD_VALID.some(method => method === methodId);
-
-        if (consignments.length > 1) {
-            this.handleAddressSelect(consignments[0].shippingAddress);
-        }
 
         return (
             <Form autoComplete="on">
