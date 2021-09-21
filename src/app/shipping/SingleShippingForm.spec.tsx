@@ -5,6 +5,7 @@ import { getAddressFormFields } from '../address/formField.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 
+import { getConsignment } from './consignment.mock';
 import { getShippingAddress } from './shipping-addresses.mock';
 import BillingSameAsShippingField from './BillingSameAsShippingField';
 import SingleShippingForm, { SingleShippingFormProps, SHIPPING_AUTOSAVE_DELAY } from './SingleShippingForm';
@@ -45,6 +46,29 @@ describe('SingleShippingForm', () => {
                 <SingleShippingForm { ...defaultProps } />
             </LocaleContext.Provider>
         );
+    });
+
+    it('calls updateAddress if multiple consignments are passed to the single shipping form', done => {
+        const multipleConsignmentsProp = {
+            ...defaultProps,
+            consignments: [
+                { ...getConsignment(), id: 'foo' },
+                { ...getConsignment(), id: 'bar' },
+                { ...getConsignment(), id: 'foo2' },
+                { ...getConsignment(), id: 'bar2' },
+            ],
+        };
+
+        component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <SingleShippingForm { ...multipleConsignmentsProp } />
+            </LocaleContext.Provider>
+        );
+
+        setTimeout(() => {
+            expect(defaultProps.updateAddress).toHaveBeenCalledTimes(1);
+            done();
+        }, SHIPPING_AUTOSAVE_DELAY * 1.1);
     });
 
     it('calls updateAddress with last event during a given timeframe', done => {
