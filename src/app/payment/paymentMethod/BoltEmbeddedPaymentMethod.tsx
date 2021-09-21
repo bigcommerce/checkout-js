@@ -5,9 +5,10 @@ import { HostedPaymentMethodProps } from './HostedPaymentMethod';
 import HostedWidgetPaymentMethod from './HostedWidgetPaymentMethod';
 
 const BoltEmbeddedPaymentMethod: FunctionComponent<HostedPaymentMethodProps> = ({
+    isInitializing,
     initializePayment,
+    deinitializePayment,
     method,
-    ...rest
 }) => {
     const [ showCreateAccountCheckbox, setShowCreateAccountCheckbox ] = useState(false);
 
@@ -33,9 +34,10 @@ const BoltEmbeddedPaymentMethod: FunctionComponent<HostedPaymentMethodProps> = (
     ), [ boltEmbeddedContainerId, showCreateAccountCheckbox ]);
 
     return <HostedWidgetPaymentMethod
-        { ...rest }
         containerId="boltEmbeddedOneClick"
+        deinitializePayment={ deinitializePayment }
         initializePayment={ initializeBoltPayment }
+        isInitializing={ isInitializing }
         method={ method }
         renderCustomPaymentForm={ renderCustomPaymentForm }
         shouldRenderCustomInstrument
