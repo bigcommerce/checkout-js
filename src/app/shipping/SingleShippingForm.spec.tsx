@@ -1,6 +1,7 @@
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
+import { getAddress } from '../address/address.mock';
 import { getAddressFormFields } from '../address/formField.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
@@ -48,11 +49,13 @@ describe('SingleShippingForm', () => {
         );
     });
 
-    it('calls updateAddress if multiple consignments are passed to the single shipping form', done => {
+    it('calls updateAddress with the first consignment address if multiple consignments are passed to the single shipping form', done => {
+        const firstConsignmentAddress = { ...getAddress(), address1: 'foo address 1' };
+        const firstConsignment = { ...getConsignment(), shippingAddress: firstConsignmentAddress, id: 'foo' };
         const multipleConsignmentsProp = {
             ...defaultProps,
             consignments: [
-                { ...getConsignment(), id: 'foo' },
+                firstConsignment,
                 { ...getConsignment(), id: 'bar' },
                 { ...getConsignment(), id: 'foo2' },
                 { ...getConsignment(), id: 'bar2' },
@@ -67,6 +70,7 @@ describe('SingleShippingForm', () => {
 
         setTimeout(() => {
             expect(defaultProps.updateAddress).toHaveBeenCalledTimes(1);
+            expect(defaultProps.updateAddress).toHaveBeenCalledWith(firstConsignmentAddress);
             done();
         }, SHIPPING_AUTOSAVE_DELAY * 1.1);
     });
