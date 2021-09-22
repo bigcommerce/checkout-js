@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.168.2](https://github.com/bigcommerce/checkout-js/compare/v1.168.1...v1.168.2) (2021-09-22)
+
+
+### Bug Fixes
+
+* **payment:** BOLT-54 fixed an issue with customer strategy deinitialisation ([4522f7f](https://github.com/bigcommerce/checkout-js/commit/4522f7f795d1cbc003f358aecd2fae741722c9e9))
+
 ### [1.168.1](https://github.com/bigcommerce/checkout-js/compare/v1.168.0...v1.168.1) (2021-09-21)
 
 ## [1.168.0](https://github.com/bigcommerce/checkout-js/compare/v1.167.0...v1.168.0) (2021-09-15)
