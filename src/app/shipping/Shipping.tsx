@@ -153,6 +153,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         orderComment,
     }) => {
         const {
+            consignments,
             customerMessage,
             updateCheckout,
             updateShippingAddress,
@@ -168,7 +169,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         const promises: Array<Promise<CheckoutSelectors>> = [];
         const hasRemoteBilling = this.hasRemoteBilling(methodId);
 
-        if (!isEqualAddress(updatedShippingAddress, shippingAddress)) {
+        if (!isEqualAddress(updatedShippingAddress, shippingAddress) || consignments.length > 1 ) {
             promises.push(updateShippingAddress(updatedShippingAddress || {}));
         }
 

@@ -1,12 +1,10 @@
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
-import { getAddress } from '../address/address.mock';
 import { getAddressFormFields } from '../address/formField.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 
-import { getConsignment } from './consignment.mock';
 import { getShippingAddress } from './shipping-addresses.mock';
 import BillingSameAsShippingField from './BillingSameAsShippingField';
 import SingleShippingForm, { SingleShippingFormProps, SHIPPING_AUTOSAVE_DELAY } from './SingleShippingForm';
@@ -47,32 +45,6 @@ describe('SingleShippingForm', () => {
                 <SingleShippingForm { ...defaultProps } />
             </LocaleContext.Provider>
         );
-    });
-
-    it('calls updateAddress with the first consignment address if multiple consignments are passed to the single shipping form', done => {
-        const firstConsignmentAddress = { ...getAddress(), address1: 'foo address 1' };
-        const firstConsignment = { ...getConsignment(), shippingAddress: firstConsignmentAddress, id: 'foo' };
-        const multipleConsignmentsProp = {
-            ...defaultProps,
-            consignments: [
-                firstConsignment,
-                { ...getConsignment(), id: 'bar' },
-                { ...getConsignment(), id: 'foo2' },
-                { ...getConsignment(), id: 'bar2' },
-            ],
-        };
-
-        component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <SingleShippingForm { ...multipleConsignmentsProp } />
-            </LocaleContext.Provider>
-        );
-
-        setTimeout(() => {
-            expect(defaultProps.updateAddress).toHaveBeenCalledTimes(1);
-            expect(defaultProps.updateAddress).toHaveBeenCalledWith(firstConsignmentAddress);
-            done();
-        }, SHIPPING_AUTOSAVE_DELAY * 1.1);
     });
 
     it('calls updateAddress with last event during a given timeframe', done => {

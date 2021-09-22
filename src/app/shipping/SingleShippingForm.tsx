@@ -89,14 +89,6 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
         }, SHIPPING_AUTOSAVE_DELAY);
     }
 
-    componentDidMount(): void {
-        const { consignments } = this.props;
-
-        if ( consignments.length > 1) {
-            this.handleAddressSelect(consignments[0].shippingAddress);
-        }
-    }
-
     render(): ReactNode {
         const {
             addresses,
