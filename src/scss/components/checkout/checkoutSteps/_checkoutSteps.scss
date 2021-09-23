@@ -26,6 +26,14 @@
     }
 }
 
+.checkout-view-header {
+    margin-bottom: remCalc(10px);
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
 .checkout-view-content {
     @include breakpoint("large") {
         @include collapse;
@@ -107,7 +115,6 @@
 }
 
 .stepHeader-row {
-    align-items: flex-start;
     display: flex;
     flex-wrap: wrap;
 
