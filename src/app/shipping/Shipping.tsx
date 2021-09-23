@@ -120,7 +120,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                 <ShippingHeader
                     isGuest={ isGuest }
                     isMultiShippingMode={ isMultiShippingMode }
-                    onMultiShippingChange={ onToggleMultiShipping }
+                    onMultiShippingChange={ this.handleMultiShippingModeSwitch }
                     shouldShowMultiShipping={ shouldShowMultiShipping }
                 />
 
@@ -147,13 +147,36 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         );
     }
 
+    private handleMultiShippingModeSwitch: (isFromMultiToSingle: boolean) => void = async isFromMultiToSingle => {
+        const {
+            consignments,
+            onToggleMultiShipping = noop,
+            onUnhandledError = noop,
+            updateShippingAddress,
+        } = this.props;
+
+        if (isFromMultiToSingle && consignments.length > 1) {
+            this.setState({ isInitializing: true });
+
+            try {
+                // Collapse all consignments into one
+                await updateShippingAddress(consignments[0].shippingAddress);
+            } catch (error) {
+                onUnhandledError(error);
+            } finally {
+                this.setState({ isInitializing: false });
+            }
+        }
+
+        onToggleMultiShipping();
+    };
+
     private handleSingleShippingSubmit: (values: SingleShippingFormValues) => void = async ({
         billingSameAsShipping,
         shippingAddress: addressValues,
         orderComment,
     }) => {
         const {
-            consignments,
             customerMessage,
             updateCheckout,
             updateShippingAddress,
@@ -169,7 +192,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         const promises: Array<Promise<CheckoutSelectors>> = [];
         const hasRemoteBilling = this.hasRemoteBilling(methodId);
 
-        if (!isEqualAddress(updatedShippingAddress, shippingAddress) || consignments.length > 1 ) {
+        if (!isEqualAddress(updatedShippingAddress, shippingAddress)) {
             promises.push(updateShippingAddress(updatedShippingAddress || {}));
         }
 

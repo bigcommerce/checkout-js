@@ -167,31 +167,6 @@ describe('Shipping Component', () => {
         }));
     });
 
-    it('updates shipping if shopper clicks continue with multiple consignments', async () => {
-        const multipleConsignmentsProp = {
-            ...defaultProps,
-            consignments: [
-                { ...getConsignment(), id: 'foo' },
-                { ...getConsignment(), id: 'bar' },
-                { ...getConsignment(), id: 'foobar' },
-            ],
-        };
-        component = mount(<ComponentTest { ...multipleConsignmentsProp } />);
-        await new Promise(resolve => process.nextTick(resolve));
-        component.update();
-
-        component.find('form')
-            .simulate('submit');
-
-        await new Promise(resolve => process.nextTick(resolve));
-
-        const { address1, address2 } = getShippingAddress();
-        expect(checkoutService.updateShippingAddress).toHaveBeenCalledWith(expect.objectContaining({
-            address1,
-            address2,
-        }));
-    });
-
     it('calls updateCheckout if comment changes', async () => {
         component = mount(<ComponentTest { ...defaultProps } />);
         await new Promise(resolve => process.nextTick(resolve));
@@ -341,6 +316,26 @@ describe('Shipping Component', () => {
 
             it('renders shipping form', () => {
                 expect(component.find(ShippingForm).length).toEqual(1);
+            });
+
+            it('updates shipping if shopper disable multishipping with multiple consignments', async () => {
+                const consignments = [
+                    { ...getConsignment(), id: 'foo' },
+                    { ...getConsignment(), id: 'bar' },
+                    { ...getConsignment(), id: 'foobar' },
+                ];
+                const multipleConsignmentsProp = {
+                    ...defaultProps,
+                    consignments,
+                };
+
+                component = mount(<ComponentTest { ...multipleConsignmentsProp } isMultiShippingMode={ true } />);
+                await new Promise(resolve => process.nextTick(resolve));
+                component.update();
+
+                component.find('[data-test="shipping-mode-toggle"]').simulate('click');
+
+                expect(checkoutService.updateShippingAddress).toHaveBeenCalledWith(consignments[0].shippingAddress);
             });
         });
 

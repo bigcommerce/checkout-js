@@ -8,7 +8,7 @@ interface ShippingHeaderProps {
     isMultiShippingMode: boolean;
     isGuest: boolean;
     shouldShowMultiShipping: boolean;
-    onMultiShippingChange(): void;
+    onMultiShippingChange(isFromMultiToSingle: boolean): void;
 }
 
 const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
@@ -32,7 +32,7 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
             <a
                 data-test="shipping-mode-toggle"
                 href="#"
-                onClick={ preventDefault(onMultiShippingChange) }
+                onClick={ preventDefault(() => onMultiShippingChange(isMultiShippingMode)) }
             >
                 <TranslatedString id={ isMultiShippingMode ?
                     'shipping.ship_to_single' :
