@@ -58,6 +58,11 @@ describe('CartSummary Component', () => {
                 .toEqual(1);
         });
 
+        it('renders aria-label attribute on coupon input field', () => {
+            expect(component.find('input[aria-label="Gift Certificate or Coupon Code"]').length)
+                .toEqual(1);
+        });
+
         it('adds disabled and loading state to input', () => {
             const submit = component.find('[data-test="redeemableEntry-submit"]');
 
