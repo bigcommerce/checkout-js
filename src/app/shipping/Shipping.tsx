@@ -147,15 +147,16 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         );
     }
 
-    private handleMultiShippingModeSwitch: (isFromMultiToSingle: boolean) => void = async isFromMultiToSingle => {
+    private handleMultiShippingModeSwitch: () => void = async () => {
         const {
             consignments,
+            isMultiShippingMode,
             onToggleMultiShipping = noop,
             onUnhandledError = noop,
             updateShippingAddress,
         } = this.props;
 
-        if (isFromMultiToSingle && consignments.length > 1) {
+        if (isMultiShippingMode && consignments.length > 1) {
             this.setState({ isInitializing: true });
 
             try {
