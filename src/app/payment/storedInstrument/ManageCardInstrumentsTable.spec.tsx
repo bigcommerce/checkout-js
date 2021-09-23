@@ -42,7 +42,7 @@ describe('ManageCardInstrumentsTable', () => {
         );
 
         expect(component.find('[data-test="manage-instrument-cardType"]').at(0).text())
-            .toEqual('Visa');
+            .toEqual('VisaVisa');
 
         expect(component.find('[data-test="manage-instrument-last4"]').at(0).text())
             .toEqual('4321');

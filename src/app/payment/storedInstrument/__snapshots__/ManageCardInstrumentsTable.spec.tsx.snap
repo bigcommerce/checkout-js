@@ -35,11 +35,18 @@ exports[`ManageCardInstrumentsTable matches snapshot with rendered output 1`] = 
             data-test="credit-card-icon-visa"
           >
             <svg
+              aria-labelledby="iconCardVisaTitle"
               height="100"
+              role="img"
               viewBox="0 0 148 100"
               width="148"
               xmlns="http://www.w3.org/2000/svg"
             >
+              <title
+                id="iconCardVisaTitle"
+              >
+                Visa
+              </title>
               <g
                 fill="none"
                 fill-rule="evenodd"
@@ -103,11 +110,18 @@ exports[`ManageCardInstrumentsTable matches snapshot with rendered output 1`] = 
             data-test="credit-card-icon-american-express"
           >
             <svg
+              aria-labelledby="iconCardAmexTitle"
               height="104"
+              role="img"
               viewBox="0 0 156 104"
               width="156"
               xmlns="http://www.w3.org/2000/svg"
             >
+              <title
+                id="iconCardAmexTitle"
+              >
+                Amex
+              </title>
               <g
                 fill="none"
                 fill-rule="evenodd"

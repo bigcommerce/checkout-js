@@ -3,7 +3,8 @@ import React, { FunctionComponent } from 'react';
 import withIconContainer from './withIconContainer';
 
 const IconCardHipercard: FunctionComponent = () => (
-    <svg viewBox="0 0 40 26" xmlns="http://www.w3.org/2000/svg">
+    <svg aria-labelledby="iconCardHiperTitle" role="img" viewBox="0 0 40 26" xmlns="http://www.w3.org/2000/svg">
+        <title id="iconCardHiperTitle">Hiper</title>
         <mask height="26.1" id="a" maskUnits="userSpaceOnUse" width="41.4" x="-.7" y="0">
             <rect fill="#fff" height="26.1" rx="2.5" width="41.4" x="-.7" />
         </mask>

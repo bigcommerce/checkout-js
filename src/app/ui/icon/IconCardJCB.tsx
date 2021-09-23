@@ -4,13 +4,16 @@ import withIconContainer from './withIconContainer';
 
 const IconCardJCB: FunctionComponent = () => (
     <svg
+        aria-labelledby="iconCardJCBTitle"
         clipRule="evenodd"
         fillRule="evenodd"
+        role="img"
         strokeLinejoin="round"
         strokeMiterlimit="1.4"
         viewBox="0 0 480 301"
         xmlns="http://www.w3.org/2000/svg"
     >
+        <title id="iconCardJCBTitle">JCB</title>
         <path d="M444 0H24C12 0 0 12 0 24v240.1c0 24 12 36 36 36h408c24 0 36-12 36-36v-228C480 12 468 0 444 0z" fill="#f4f4f4" />
         <path d="M314.8 174.9h21.5l2.7-.2c4-.8 7.6-4.5 7.6-9.6 0-5-3.5-8.6-7.6-9.6l-2.7-.3h-21.5V175z" fill="#469951" fillRule="nonzero" />
         <path d="M333.9 39.2a37.3 37.3 0 0 0-37.3 37.2v38.7h52.6c1.2 0 2.7 0 3.7.2 11.9.7 20.7 6.8 20.7 17.4 0 8.4-6 15.6-17 17v.4c12 .8 21.3 7.6 21.3 18 0 11.3-10.3 18.7-23.8 18.7h-57.7v75.7h54.7a37.3 37.3 0 0 0 37.2-37.3v-186H334z" fill="#469951" fillRule="nonzero" />

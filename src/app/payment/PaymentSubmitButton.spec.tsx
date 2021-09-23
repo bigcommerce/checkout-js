@@ -86,7 +86,7 @@ describe('PaymentSubmitButton', () => {
         );
 
         expect(component.text())
-            .toEqual(languageService.translate('payment.bolt_continue_action'));
+            .toEqual('Bolt' + languageService.translate('payment.bolt_continue_action'));
         expect(component.find(IconBolt).length)
             .toEqual(1);
     });

@@ -3,7 +3,8 @@ import React, { FunctionComponent } from 'react';
 import withIconContainer from './withIconContainer';
 
 const IconCardVisa: FunctionComponent = () => (
-    <svg height="100" viewBox="0 0 148 100" width="148" xmlns="http://www.w3.org/2000/svg">
+    <svg aria-labelledby="iconCardVisaTitle" height="100" role="img" viewBox="0 0 148 100" width="148" xmlns="http://www.w3.org/2000/svg">
+        <title id="iconCardVisaTitle">Visa</title>
         <g fill="none" fillRule="evenodd">
             <path d="M148 84c0 6.6-5.55 12-12 12H12C5.55 96 0 90.6 0 84V12C0 5.4 5.55 0 12 0h124c6.45 0 12 5.4 12 12v72z" fill="#F3F4F4" />
             <path d="M0 24V12C0 5.4 5.74 0 12 0h124c6.26 0 12 5.4 12 12v12" fill="#01579F" />
