@@ -4540,6 +4540,11 @@ h6 a:hover {
   .checkout-step:last-child {
     border: 0; }
 
+.checkout-view-header {
+  margin-bottom: 0.76923rem; }
+  .checkout-view-header:last-child {
+    margin-bottom: 0; }
+
 @media (min-width: 968px) {
   .checkout-view-content.ng-enter, .checkout-view-content.ng-leave {
     overflow: hidden;
@@ -4617,7 +4622,6 @@ h6 a:hover {
     cursor: default; }
 
 .stepHeader-row {
-  align-items: flex-start;
   display: flex;
   flex-wrap: wrap; }
   @media (min-width: 551px) {
@@ -5449,4 +5453,4 @@ body.klarna-payments-fso-open {
     font-weight: normal; }
 
 
-/*# sourceMappingURL=checkout-7c13ab84.css.map*/
+/*# sourceMappingURL=checkout-015e0237.css.map*/

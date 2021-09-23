@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.168.4](https://github.com/bigcommerce/checkout-js/compare/v1.168.3...v1.168.4) (2021-09-23)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-5823 Add label attribute for screen readers on coupon/gift certificate input field in cart summary at checkout ([ce08fb7](https://github.com/bigcommerce/checkout-js/commit/ce08fb73c54fee08a8c96bfdbe725cbb3737b1e0))
+* **payment:** BOLT-60 fixed an issue with checkout step header with big font-size ([dc0670c](https://github.com/bigcommerce/checkout-js/commit/dc0670cdc375341f1863798e32162a8bcc340ae2))
+
 ### [1.168.3](https://github.com/bigcommerce/checkout-js/compare/v1.168.2...v1.168.3) (2021-09-22)
 
 ### [1.168.2](https://github.com/bigcommerce/checkout-js/compare/v1.168.1...v1.168.2) (2021-09-22)
