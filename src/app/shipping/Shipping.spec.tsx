@@ -167,6 +167,31 @@ describe('Shipping Component', () => {
         }));
     });
 
+    it('updates shipping if shopper clicks continue with multiple consignments', async () => {
+        const multipleConsignmentsProp = {
+            ...defaultProps,
+            consignments: [
+                { ...getConsignment(), id: 'foo' },
+                { ...getConsignment(), id: 'bar' },
+                { ...getConsignment(), id: 'foobar' },
+            ],
+        };
+        component = mount(<ComponentTest { ...multipleConsignmentsProp } />);
+        await new Promise(resolve => process.nextTick(resolve));
+        component.update();
+
+        component.find('form')
+            .simulate('submit');
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        const { address1, address2 } = getShippingAddress();
+        expect(checkoutService.updateShippingAddress).toHaveBeenCalledWith(expect.objectContaining({
+            address1,
+            address2,
+        }));
+    });
+
     it('calls updateCheckout if comment changes', async () => {
         component = mount(<ComponentTest { ...defaultProps } />);
         await new Promise(resolve => process.nextTick(resolve));
