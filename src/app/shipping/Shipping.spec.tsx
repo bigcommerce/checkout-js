@@ -318,7 +318,7 @@ describe('Shipping Component', () => {
                 expect(component.find(ShippingForm).length).toEqual(1);
             });
 
-            it('updates shipping if shopper disable multishipping with multiple consignments', async () => {
+            it('updates shipping if shopper turns off multishipping mode with multiple consignments', async () => {
                 const consignments = [
                     { ...getConsignment(), id: 'foo' },
                     { ...getConsignment(), id: 'bar' },
