@@ -120,7 +120,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                 <ShippingHeader
                     isGuest={ isGuest }
                     isMultiShippingMode={ isMultiShippingMode }
-                    onMultiShippingChange={ onToggleMultiShipping }
+                    onMultiShippingChange={ this.handleMultiShippingModeSwitch }
                     shouldShowMultiShipping={ shouldShowMultiShipping }
                 />
 
@@ -146,6 +146,31 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             </div>
         );
     }
+
+    private handleMultiShippingModeSwitch: () => void = async () => {
+        const {
+            consignments,
+            isMultiShippingMode,
+            onToggleMultiShipping = noop,
+            onUnhandledError = noop,
+            updateShippingAddress,
+        } = this.props;
+
+        if (isMultiShippingMode && consignments.length > 1) {
+            this.setState({ isInitializing: true });
+
+            try {
+                // Collapse all consignments into one
+                await updateShippingAddress(consignments[0].shippingAddress);
+            } catch (error) {
+                onUnhandledError(error);
+            } finally {
+                this.setState({ isInitializing: false });
+            }
+        }
+
+        onToggleMultiShipping();
+    };
 
     private handleSingleShippingSubmit: (values: SingleShippingFormValues) => void = async ({
         billingSameAsShipping,

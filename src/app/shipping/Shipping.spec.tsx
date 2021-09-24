@@ -317,6 +317,26 @@ describe('Shipping Component', () => {
             it('renders shipping form', () => {
                 expect(component.find(ShippingForm).length).toEqual(1);
             });
+
+            it('updates shipping if shopper turns off multishipping mode with multiple consignments', async () => {
+                const consignments = [
+                    { ...getConsignment(), id: 'foo' },
+                    { ...getConsignment(), id: 'bar' },
+                    { ...getConsignment(), id: 'foobar' },
+                ];
+                const multipleConsignmentsProp = {
+                    ...defaultProps,
+                    consignments,
+                };
+
+                component = mount(<ComponentTest { ...multipleConsignmentsProp } isMultiShippingMode={ true } />);
+                await new Promise(resolve => process.nextTick(resolve));
+                component.update();
+
+                component.find('[data-test="shipping-mode-toggle"]').simulate('click');
+
+                expect(checkoutService.updateShippingAddress).toHaveBeenCalledWith(consignments[0].shippingAddress);
+            });
         });
 
         describe('when is guest user', () => {
