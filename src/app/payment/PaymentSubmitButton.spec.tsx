@@ -118,6 +118,15 @@ describe('PaymentSubmitButton', () => {
             .toEqual(languageService.translate('payment.chasepay_continue_action'));
     });
 
+    it('renders button with special label for Openpay', () => {
+        const component = mount(
+            <PaymentSubmitButtonTest methodId="opy" />
+        );
+
+        expect(component.text())
+            .toEqual(languageService.translate('payment.opy_continue_action'));
+    });
+
     it('renders button with special label for PayPal', () => {
         const component = mount(
             <PaymentSubmitButtonTest methodType="paypal" />
