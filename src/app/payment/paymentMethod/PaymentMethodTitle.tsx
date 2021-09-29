@@ -106,7 +106,7 @@ function getPaymentMethodTitle(
                 titleText: '',
             },
             [PaymentMethodId.Opy]: {
-                logoUrl: cdnPath('/img/payment-providers/opy.png'),
+                logoUrl: cdnPath('/img/payment-providers/opy.svg'),
                 titleText: '',
             },
             [PaymentMethodType.Paypal]: {
