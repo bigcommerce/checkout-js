@@ -3,15 +3,40 @@ import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
+import { object } from 'yup';
 
 import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
+import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps } from '../hostedCreditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
 
+const hostedFormOptions = {
+    fields: {
+        cardCodeVerification: { containerId: 'card-code-verification', instrumentId: 'instrument-id' },
+        cardNumberVerification: { containerId: 'card-number-verification', instrumentId: 'instrument-id' },
+    },
+};
+
+const injectedProps: WithInjectedHostedCreditCardFieldsetProps = {
+    getHostedFormOptions: () => Promise.resolve(hostedFormOptions),
+    getHostedStoredCardValidationFieldset: () => <div />,
+    hostedFieldset: <div />,
+    hostedStoredCardValidationSchema: object(),
+    hostedValidationSchema: object(),
+};
+jest.mock('../hostedCreditCard', () => ({
+    ...jest.requireActual('../hostedCreditCard'),
+    withHostedCreditCardFieldset: jest.fn(
+        Component => (props: any) => <Component
+            { ...props }
+            { ...injectedProps }
+        />
+    ) as jest.Mocked<typeof withHostedCreditCardFieldset>,
+}));
 describe('when using Stripe payment', () => {
     let method: PaymentMethod;
     let checkoutService: CheckoutService;
