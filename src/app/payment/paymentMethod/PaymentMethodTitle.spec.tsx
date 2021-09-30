@@ -33,7 +33,7 @@ describe('PaymentMethodTitle', () => {
         klarna: '/img/payment-providers/klarna-header.png',
         laybuy: '/img/payment-providers/laybuy-checkout-header.png',
         masterpass: 'https://masterpass.com/dyn/img/acc/global/mp_mark_hor_blk.svg',
-        opy: '/img/payment-providers/opy.png',
+        opy: '/img/payment-providers/opy.svg',
         paypal: '/img/payment-providers/paypalpaymentsprouk.png',
         quadpay: '/img/payment-providers/quadpay.png',
         sezzle: '/img/payment-providers/sezzle-checkout-header.png',
