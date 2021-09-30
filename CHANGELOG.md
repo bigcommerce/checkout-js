@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.172.0](https://github.com/bigcommerce/checkout-js/compare/v1.171.0...v1.172.0) (2021-09-30)
+
+
+### Features
+
+* **payment:** INT-4836 Openpay: New logo on checkout page ([0e3eeaa](https://github.com/bigcommerce/checkout-js/commit/0e3eeaafcb36c175140451f59f3c60d808cebcd9))
+
 ## [1.171.0](https://github.com/bigcommerce/checkout-js/compare/v1.170.0...v1.171.0) (2021-09-30)
 
 
