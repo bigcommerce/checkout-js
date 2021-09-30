@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.171.0](https://github.com/bigcommerce/checkout-js/compare/v1.170.0...v1.171.0) (2021-09-30)
+
+
+### Features
+
+* **payment:** INT-4170 Mount hostedfields for TSV on StripeV3 ([406e76f](https://github.com/bigcommerce/checkout-js/commit/406e76f84b3dc7dab597ae8ac6e95718b70f833d))
+* **payment:** INT-4631 Add Openpay payment method ([54b29f8](https://github.com/bigcommerce/checkout-js/commit/54b29f8dd2c9e78ee7a34e2a353f431797696162))
+
 ## [1.170.0](https://github.com/bigcommerce/checkout-js/compare/v1.169.0...v1.170.0) (2021-09-29)
 
 
