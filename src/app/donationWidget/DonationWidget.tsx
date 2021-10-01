@@ -1,10 +1,6 @@
-/* eslint-disable react/jsx-no-bind */
-import { Checkout, ShopperCurrency, StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
-import { Button, ButtonSize, ButtonVariant } from '../ui/button';
-
-export interface WithCheckoutDonationWidgetProps {
+export type WithCheckoutDonationWidgetProps = {
     checkout: Checkout;
     cartUrl: string;
     storeCurrency: StoreCurrency;

@@ -6,9 +6,8 @@ import OrderSummarySection from '../order/OrderSummarySection';
 import DonationWidget from './DonationWidget';
 
 const DonationWidgetArticle: FunctionComponent = () => (
-    <article className="cart optimizedCheckout-orderSummary" data-test="cart" id="donationWidget">
+    <article id="donationWidget" className="cart optimizedCheckout-orderSummary" data-test="cart">
         <OrderSummaryHeader>
-            { 'Donate to Focus on the Family' }
         </OrderSummaryHeader>
 
         <OrderSummarySection>
