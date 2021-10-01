@@ -39,6 +39,16 @@ const CartSummaryDrawer = lazy(() => retry(() => import(
     '../cart/CartSummaryDrawer'
 )));
 
+const DonationWidget = lazy(() => retry(() => import(
+    /* webpackChunkName: "donation-widget" */
+    '../donationWidget/DonationWidgetArticle'
+)));
+
+const DonationWidgetMobile = lazy(() => retry(() => import(
+    /* webpackChunkName: "donation-widget-mobile" */
+    '../donationWidget/DonationWidgetMobile'
+)));
+
 const Customer = lazy(() => retry(() => import(
     /* webpackChunkName: "customer" */
     '../customer/Customer'
@@ -240,6 +250,16 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
                     <PromotionBannerList promotions={ promotions } />
 
+<!-- BEGIN Added Donation Widget by FotF -->
+                    <MobileView>
+                        { matched => {
+                            if (matched) {
+                                return <DonationWidgetMobile />
+                            }
+                        } }
+                    </MobileView>
+<!-- END Added Donation Widget by FotF -->
+
                     <ol className="checkout-steps">
                         { steps
                             .filter(step => step.isRequired)
@@ -430,6 +450,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
                     return <aside className="layout-cart">
                         <LazyContainer>
+<!-- BEGIN Added Donation Widget by FotF -->
+                            <DonationWidgetArticle />
+<!-- END Added Donation Widget by FotF -->
                             <CartSummary />
                         </LazyContainer>
                     </aside>;
