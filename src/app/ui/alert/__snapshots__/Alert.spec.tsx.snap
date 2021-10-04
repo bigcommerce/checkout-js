@@ -10,7 +10,9 @@ exports[`Alert matches snapshot 1`] = `
     <Memo() />
   </div>
   <div
+    aria-live="assertive"
     className="alertBox-column alertBox-message"
+    role="alert"
   >
     Hello world
   </div>

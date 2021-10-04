@@ -54,7 +54,7 @@ const Alert: FunctionComponent<AlertProps> = ({
             { icon ? icon : renderDefaultIcon(type) }
         </div>
 
-        <div className="alertBox-column alertBox-message">
+        <div aria-live="assertive" className="alertBox-column alertBox-message" role="alert">
             { children }
         </div>
     </div>
