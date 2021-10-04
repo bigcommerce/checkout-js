@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.174.0](https://github.com/bigcommerce/checkout-js/compare/v1.173.1...v1.174.0) (2021-10-04)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6032 Assert error banners on checkout page ([#708](https://github.com/bigcommerce/checkout-js/issues/708)) ([8e25f9a](https://github.com/bigcommerce/checkout-js/commit/8e25f9a6117653db5a0fe3cd928c2abca781c1ba))
+
 ### [1.173.1](https://github.com/bigcommerce/checkout-js/compare/v1.173.0...v1.173.1) (2021-09-30)
 
 ## [1.173.0](https://github.com/bigcommerce/checkout-js/compare/v1.172.0...v1.173.0) (2021-09-30)
