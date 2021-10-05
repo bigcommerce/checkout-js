@@ -8,7 +8,6 @@ import { EmptyCartMessage } from '../cart';
 import { isCustomError, CustomError, ErrorLogger, ErrorModal } from '../common/error';
 import { retry } from '../common/utility';
 import { CheckoutSuggestion, CustomerInfo, CustomerSignOutEvent, CustomerViewType } from '../customer';
-import DonationWidgetArticle from '../donationWidget/DonationWidgetArticle';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { PromotionBannerList } from '../promotion';
