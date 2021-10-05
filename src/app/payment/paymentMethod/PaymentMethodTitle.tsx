@@ -138,7 +138,7 @@ function getPaymentMethodTitle(
                 titleText: method.method === 'credit_card' ? startCase(methodName) : methodName,
             },
             [PaymentMethodId.Checkoutcom]: {
-                logoUrl: ['credit_card', 'checkoutcom'].includes(method.id) ? '' : cdnPath(`/img/payment-providers/checkoutcom_${method.id.toLowerCase()}.svg`),
+                logoUrl: ['credit_card', 'card', 'checkoutcom'].includes(method.id) ? '' : cdnPath(`/img/payment-providers/checkoutcom_${method.id.toLowerCase()}.svg`),
                 titleText: methodName,
             },
             [PaymentMethodId.StripeV3]: {

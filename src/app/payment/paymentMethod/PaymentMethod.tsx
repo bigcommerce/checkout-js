@@ -120,7 +120,7 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
     }
 
     if (method.gateway === PaymentMethodId.Checkoutcom) {
-        if (method.id === 'credit_card') {
+        if (method.id === 'credit_card' || method.id === 'card') {
             return <HostedCreditCardPaymentMethod { ...props } />;
         }
 
