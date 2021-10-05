@@ -1,17 +1,20 @@
 import { Checkout, ShopperCurrency, StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
+import OrderSummaryHeader from '../order/OrderSummaryHeader';
+import OrderSummarySection from '../order/OrderSummarySection';
+
 import DonationWidget from './DonationWidget';
 
-const DonationWidgetAritcle: FunctionComponent = () => (
-    <article id="donationWidget" className="cart optimizedCheckout-orderSummary" data-test="cart">
+const DonationWidgetArticle: FunctionComponent = () => (
+    <article className="cart optimizedCheckout-orderSummary" data-test="cart" id="donationWidget">
         <OrderSummaryHeader>
-            { "Donate to Focus on the Family"}
+            { 'Donate to Focus on the Family' }
         </OrderSummaryHeader>
 
         <OrderSummarySection>
             <DonationWidget />
         </OrderSummarySection>
-    </article>;
+    </article>);
 
 export default DonationWidgetArticle;
