@@ -1,66 +1,66 @@
 {
-    "extends": [
-        "plugin:import/errors",
-        "plugin:import/typescript",
-        "plugin:import/warnings",
-        "plugin:react/recommended",
-        "@bigcommerce/eslint-config"
-    ],
-    "env": {
-        "browser": true
+  "extends": [
+    "plugin:import/errors",
+    "plugin:import/typescript",
+    "plugin:import/warnings",
+    "plugin:react/recommended",
+    "@bigcommerce/eslint-config"
+  ],
+  "env": {
+    "browser": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "ecmaFeatures": {
+      "modules": true,
+      "jsx": true
     },
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "project": "./tsconfig.json",
-        "ecmaFeatures": {
-            "modules": true,
-            "jsx": true
-        },
-        "ecmaVersion": 6,
-        "sourceType": "module",
-        "useJSXTextNode": true
-    },
-    "plugins": [
-        "@typescript-eslint/tslint"
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "useJSXTextNode": true
+  },
+  "plugins": ["@typescript-eslint/tslint"],
+  "rules": {
+    "@typescript-eslint/tslint/config": [
+      "error",
+      {
+        "lintFile": "./tslint.json"
+      }
     ],
-    "rules": {
-        "@typescript-eslint/tslint/config": [
-            "error",
-            {
-                "lintFile": "./tslint.json"
-            }
-        ],
-        "react/jsx-curly-spacing": [
-            "error",
-            {
-                "children": true,
-                "when": "always"
-            }
-        ],
-        "import/no-internal-modules": [
-            "error",
-            {
-                "allow": [
-                    "react-dom/test-utils",
-                    "scripts/*",
-                    "**/*.{mock,scss}",
-                    "**/index.ts",
-                    "**/billing/Billing.tsx",
-                    "**/cart/CartSummary.tsx",
-                    "**/cart/CartSummaryDrawer.tsx",
-                    "**/customer/Customer.tsx",
-                    "**/order/OrderSummary.tsx",
-                    "**/order/OrderSummaryDrawer.tsx",
-                    "**/payment/Payment.tsx",
-                    "**/shipping/Shipping.tsx"
-                ]
-            }
-        ],
-        "object-curly-newline": [
-            "error",
-            {
-                "ImportDeclaration": "never"
-            }
+    "react/jsx-curly-spacing": [
+      "error",
+      {
+        "children": true,
+        "when": "always"
+      }
+    ],
+    "import/no-internal-modules": [
+      "error",
+      {
+        "allow": [
+          "react-dom/test-utils",
+          "scripts/*",
+          "**/*.{mock,scss}",
+          "**/index.ts",
+          "**/billing/Billing.tsx",
+          "**/cart/CartSummary.tsx",
+          "**/cart/CartSummaryDrawer.tsx",
+          "**/customer/Customer.tsx",
+          "**/order/OrderSummary.tsx",
+          "**/order/OrderSummaryDrawer.tsx",
+          "**/payment/Payment.tsx",
+          "**/shipping/Shipping.tsx",
+          "**/donationWidget/*.tsx",
+          "**/order/*.tsx"
         ]
-    }
+      }
+    ],
+    "object-curly-newline": [
+      "error",
+      {
+        "ImportDeclaration": "never"
+      }
+    ]
+  }
 }
