@@ -8,6 +8,7 @@ import { EmptyCartMessage } from '../cart';
 import { isCustomError, CustomError, ErrorLogger, ErrorModal } from '../common/error';
 import { retry } from '../common/utility';
 import { CheckoutSuggestion, CustomerInfo, CustomerSignOutEvent, CustomerViewType } from '../customer';
+import DonationWidgetArticle from '../donationWidget/DonationWidgetArticle';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { PromotionBannerList } from '../promotion';
@@ -250,15 +251,15 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
                     <PromotionBannerList promotions={ promotions } />
 
-<!-- BEGIN Added Donation Widget by FotF -->
+{ /* BEGIN Added Donation Widget by FotF */ }
                     <MobileView>
                         { matched => {
                             if (matched) {
-                                return <DonationWidgetMobile />
+                                return <DonationWidgetMobile />;
                             }
                         } }
                     </MobileView>
-<!-- END Added Donation Widget by FotF -->
+{ /* END Added Donation Widget by FotF */ }
 
                     <ol className="checkout-steps">
                         { steps
@@ -450,9 +451,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
                     return <aside className="layout-cart">
                         <LazyContainer>
-<!-- BEGIN Added Donation Widget by FotF -->
+{ /* BEGIN Added Donation Widget by FotF  */ }
                             <DonationWidgetArticle />
-<!-- END Added Donation Widget by FotF -->
+{ /* END Added Donation Widget by FotF  */ }
                             <CartSummary />
                         </LazyContainer>
                     </aside>;
