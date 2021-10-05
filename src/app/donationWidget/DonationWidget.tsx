@@ -1,4 +1,6 @@
+import { Checkout, ShopperCurrency, StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
+import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 
 export type WithCheckoutDonationWidgetProps = {
     checkout: Checkout;
