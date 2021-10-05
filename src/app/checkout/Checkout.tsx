@@ -8,7 +8,6 @@ import { EmptyCartMessage } from '../cart';
 import { isCustomError, CustomError, ErrorLogger, ErrorModal } from '../common/error';
 import { retry } from '../common/utility';
 import { CheckoutSuggestion, CustomerInfo, CustomerSignOutEvent, CustomerViewType } from '../customer';
-import DonationWidgetArticle from '../donationWidget/DonationWidgetArticle';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { PromotionBannerList } from '../promotion';
@@ -40,7 +39,7 @@ const CartSummaryDrawer = lazy(() => retry(() => import(
     '../cart/CartSummaryDrawer'
 )));
 
-const DonationWidget = lazy(() => retry(() => import(
+const DonationWidgetArticle = lazy(() => retry(() => import(
     /* webpackChunkName: "donation-widget" */
     '../donationWidget/DonationWidgetArticle'
 )));

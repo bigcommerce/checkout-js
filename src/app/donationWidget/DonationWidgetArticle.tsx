@@ -1,4 +1,3 @@
-import { Checkout, ShopperCurrency, StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
 import OrderSummaryHeader from '../order/OrderSummaryHeader';
