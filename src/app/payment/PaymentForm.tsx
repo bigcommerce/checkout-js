@@ -254,7 +254,7 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
         ccNumber: '',
         paymentProviderRadio: getUniquePaymentMethodId(defaultMethodId, defaultGatewayId),
         instrumentId: '',
-        shouldCreateAccount: false,
+        shouldCreateAccount: true,
         shouldSaveInstrument: false,
         terms: false,
         hostedForm: {
