@@ -1,5 +1,5 @@
 import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import React, { useCallback, useMemo, FunctionComponent } from 'react';
+import React, { useCallback, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
 import HostedFieldPaymentMethod, { HostedFieldPaymentMethodProps } from './HostedFieldPaymentMethod';
@@ -11,8 +11,6 @@ const SquarePaymentMethod: FunctionComponent<SquarePaymentMethodProps> = ({
     method,
     ...rest
 }) => {
-    const isMasterpassEnabled = method.initializationData && method.initializationData.enableMasterpass;
-
     const initializeSquarePayment = useCallback((options: PaymentInitializeOptions) => initializePayment({
         ...options,
         square: {
@@ -37,19 +35,8 @@ const SquarePaymentMethod: FunctionComponent<SquarePaymentMethodProps> = ({
                     lineHeight: '20px',
                 },
             ],
-            masterpass: isMasterpassEnabled && {
-                elementId: 'sq-masterpass',
-            },
         },
-    }), [initializePayment, isMasterpassEnabled]);
-
-    const walletButtons = useMemo(() => (
-        <input
-            className="button-masterpass"
-            id="sq-masterpass"
-            type="button"
-        />
-    ), []);
+    }), [initializePayment]);
 
     return <HostedFieldPaymentMethod
         { ...rest }
@@ -59,7 +46,6 @@ const SquarePaymentMethod: FunctionComponent<SquarePaymentMethodProps> = ({
         initializePayment={ initializeSquarePayment }
         method={ method }
         postalCodeId="sq-postal-code"
-        walletButtons={ isMasterpassEnabled && walletButtons }
     />;
 };
 
