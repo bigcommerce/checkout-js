@@ -40,7 +40,7 @@ const DonationWidget: FunctionComponent = () => {
                 $5
             </Button>
             <Button
-                onClick={ () => {window.location.href = '/cart.php?action=buy&sku=don-5&qty=1'; } }
+                onClick={ () => {window.location.href = '/cart.php?action=buy&sku=don-5&qty=2'; } }
                 size={ ButtonSize.Tiny }
                 testId="donate10"
                 variant={ ButtonVariant.Secondary }
@@ -48,7 +48,7 @@ const DonationWidget: FunctionComponent = () => {
                 $10
             </Button>
             <Button
-                onClick={ () => {window.location.assign('/cart.php?action=buy&sku=don-5&qty=1'); } }
+                onClick={ () => {window.location.assign('/cart.php?action=buy&sku=don-5&qty=3'); } }
                 size={ ButtonSize.Tiny }
                 testId="donate15"
                 variant={ ButtonVariant.Secondary }
@@ -56,15 +56,15 @@ const DonationWidget: FunctionComponent = () => {
                 $15
             </Button>
             <Button
-                onClick={ () => {window.location.href = '/cart.php?action=buy&sku=don-5&qty=1'; } }
+                onClick={ () => {window.location.href = '/cart.php?action=buy&sku=don-5&qty=4'; } }
                 size={ ButtonSize.Tiny }
-                testId="donate5"
+                testId="donate20"
                 variant={ ButtonVariant.Secondary }
             >
                 $20
             </Button>
             <Button
-                onClick={ () => {window.location.href = '/cart.php?action=buy&sku=don-5&qty=1'; } }
+                onClick={ () => {window.location.href = '/cart.php?action=buy&sku=don-5&qty=5'; } }
                 size={ ButtonSize.Tiny }
                 testId="donate25"
                 variant={ ButtonVariant.Secondary }
