@@ -1,7 +1,7 @@
 import { createCheckoutService, CheckoutSelectors, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
-import { noop, set } from 'lodash';
+import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { getBillingAddress } from '../../billing/billingAddresses.mock';
@@ -426,53 +426,31 @@ describe('PaymentMethod', () => {
             };
         });
 
-        describe('PAYMENTS-6806.enable_ppsdk_strategy feature flag is off', () => {
-            beforeEach(() => {
-                const flagValues = { 'PAYMENTS-6806.enable_ppsdk_strategy': false };
-                const storeConfig = set(getStoreConfigMock(), 'checkoutSettings.features', flagValues);
-                getStoreConfigMock.mockReturnValue(storeConfig);
-            });
+        it('renders as a PPSDK payment method', () => {
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
 
-            it('does not render as a PPSDK payment method', () => {
-                const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
-
-                expect(container.find(PPSDKPaymentMethod).exists()).toBe(false);
-            });
+            expect(container.find(PPSDKPaymentMethod).props())
+                .toEqual(expect.objectContaining({
+                    deinitializePayment: expect.any(Function),
+                    initializePayment: expect.any(Function),
+                    method,
+                }));
         });
 
-        describe('PAYMENTS-6806.enable_ppsdk_strategy feature flag is on', () => {
-            beforeEach(() => {
-                const flagValues = { 'PAYMENTS-6806.enable_ppsdk_strategy': true };
-                const storeConfig = set(getStoreConfigMock(), 'checkoutSettings.features', flagValues);
-                getStoreConfigMock.mockReturnValue(storeConfig);
+        it('initializes method with required config', () => {
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+            const component = container.find(PPSDKPaymentMethod);
+
+            component.prop('initializePayment')({
+                methodId: defaultProps.method.id,
+                gatewayId: defaultProps.method.gateway,
             });
 
-            it('renders as a PPSDK payment method', () => {
-                const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
-
-                expect(container.find(PPSDKPaymentMethod).props())
-                    .toEqual(expect.objectContaining({
-                        deinitializePayment: expect.any(Function),
-                        initializePayment: expect.any(Function),
-                        method,
-                    }));
-            });
-
-            it('initializes method with required config', () => {
-                const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
-                const component = container.find(PPSDKPaymentMethod);
-
-                component.prop('initializePayment')({
-                    methodId: defaultProps.method.id,
-                    gatewayId: defaultProps.method.gateway,
-                });
-
-                expect(checkoutService.initializePayment)
-                    .toHaveBeenCalledWith(expect.objectContaining({
-                        methodId: method.id,
-                        gatewayId: method.gateway,
-                    }));
-            });
+            expect(checkoutService.initializePayment)
+                .toHaveBeenCalledWith(expect.objectContaining({
+                    methodId: method.id,
+                    gatewayId: method.gateway,
+                }));
         });
     });
 });
