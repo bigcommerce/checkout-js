@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.175.1](https://github.com/bigcommerce/checkout-js/compare/v1.175.0...v1.175.1) (2021-10-07)
+
+
+### Bug Fixes
+
+* **payment:** BOLT-70 fixed Bolt Embedded Execution error after submit ([c0ce33a](https://github.com/bigcommerce/checkout-js/commit/c0ce33ab32dfb3771fd99cb6b073c619a6e718f0))
+
 ## [1.175.0](https://github.com/bigcommerce/checkout-js/compare/v1.174.2...v1.175.0) (2021-10-07)
 
 
