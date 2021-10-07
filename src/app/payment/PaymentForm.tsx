@@ -55,6 +55,7 @@ export type PaymentFormValues = (
     SepaCustomFormFieldsetValues & PaymentFormCommonValues |
     FawryCustomFormFieldsetValues & PaymentFormCommonValues |
     IdealCustomFormFieldsetValues & PaymentFormCommonValues |
+    AccountCreationValues & PaymentFormCommonValues |
     PaymentFormCommonValues
 );
 
@@ -65,6 +66,10 @@ export interface PaymentFormCommonValues {
 
 export interface HostedWidgetPaymentMethodValues {
     shouldSaveInstrument: boolean;
+}
+
+export interface AccountCreationValues {
+    shouldCreateAccount: boolean;
 }
 
 const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormValues> & WithLanguageProps> = ({
@@ -211,6 +216,7 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
             ccNumber: '',
             instrumentId: '',
             paymentProviderRadio: getUniquePaymentMethodId(method.id, method.gateway),
+            shouldCreateAccount: true,
             shouldSaveInstrument: false,
         });
 
