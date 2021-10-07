@@ -43,7 +43,7 @@ describe('BoltCustomForm', () => {
         );
 
         expect(container.find('[id="boltEmbeddedOneClick"]').exists()).toEqual(true);
-        expect(container.find('[name="shouldCreateAccount"]').exists()).toEqual(true);
+        expect(container.find('[id="shouldCreateAccount"]').exists()).toEqual(true);
     });
 
     it('renders bolt embedded field without showing create account checkbox', () => {
@@ -56,6 +56,18 @@ describe('BoltCustomForm', () => {
         );
 
         expect(container.find('[id="boltEmbeddedOneClick"]').exists()).toEqual(true);
-        expect(container.find('[name="shouldCreateAccount"]').exists()).toEqual(false);
+        expect(container.find('[id="shouldCreateAccount"]').exists()).toEqual(false);
+    });
+
+    it('renders bolt embedded field with checked account creation checkbox by default', () => {
+        const container = mount(
+            <Formik
+                initialValues={ { shouldCreateAccount: true } }
+                onSubmit={ noop }
+                render={ () => <BoltCustomFormTest { ...defaultProps } showCreateAccountCheckbox /> }
+            />
+        );
+
+        expect(container.find('[id="shouldCreateAccount"]').hostNodes().props().checked).toEqual(true);
     });
 });
