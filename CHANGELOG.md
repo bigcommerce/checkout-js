@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.174.3](https://github.com/bigcommerce/checkout-js/compare/v1.174.2...v1.174.3) (2021-10-07)
+
+
+### Bug Fixes
+
+* **payment:** INT-4489 cko add method supported 'card' ([4f613f4](https://github.com/bigcommerce/checkout-js/commit/4f613f4c488205ec9acd7f6f8ad4c852d864c890))
+
 ### [1.174.2](https://github.com/bigcommerce/checkout-js/compare/v1.174.1...v1.174.2) (2021-10-05)
 
 ### [1.174.1](https://github.com/bigcommerce/checkout-js/compare/v1.174.0...v1.174.1) (2021-10-05)
