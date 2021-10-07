@@ -61,9 +61,9 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
                     </Legend>
                 }
             >
-                <p>
+                {/*<p>
                     <TranslatedHtml id="customer.checkout_as_guest_text" />
-                </p>
+                </p>*/}
 
                 <div className="customerEmail-container">
                     <div className="customerEmail-body">
