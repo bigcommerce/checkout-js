@@ -1,4 +1,4 @@
-import { Address, Cart, CartChangedError, CheckoutParams, CheckoutSelectors, Consignment, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, FlashMessage, Promotion, RequestOptions, StepTracker } from '@bigcommerce/checkout-sdk';
+import { Address, Cart, CartChangedError, CheckoutParams, CheckoutSelectors, Consignment, DigitalItem, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, FlashMessage, Promotion, RequestOptions, StepTracker } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { lazy, Component, ReactNode } from 'react';
@@ -40,7 +40,7 @@ const CartSummaryDrawer = lazy(() => retry(() => import(
 )));
 
 const DonationWidgetArticle = lazy(() => retry(() => import(
-    /* webpackChunkName: "donation-widget" */
+    /* webpackChunkName: "donation-widget-article" */
     '../donationWidget/DonationWidgetArticle'
 )));
 
@@ -85,6 +85,7 @@ export interface CheckoutState {
     isCartEmpty: boolean;
     isRedirecting: boolean;
     hasSelectedShippingOptions: boolean;
+    categories: string[];
 }
 
 export interface WithCheckoutProps {
@@ -116,10 +117,17 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         isRedirecting: false,
         isMultiShippingMode: false,
         hasSelectedShippingOptions: false,
+        categories: [],
     };
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
     private unsubscribeFromConsignments?: () => void;
+
+    private hasDigitalVideos() {
+        const {categories} = this.state;
+        
+        return categories.includes("Digital Videos");
+    }
 
     componentWillUnmount(): void {
         if (this.unsubscribeFromConsignments) {
@@ -188,9 +196,43 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             } else {
                 this.handleReady();
             }
+
+            //Check to see if digital items exist. If so, set product categories to state.
+            if (cart && (cart.lineItems.digitalItems.length > 0) && this.state.categories.length === 0) {
+                const categories = await this.getProductCategories(cart.lineItems.digitalItems);
+                this.setState({categories});
+            }
+
         } catch (error) {
             this.handleUnhandledError(error);
         }
+    }
+
+    async getProductCategories(digitalItems: DigitalItem[]): Promise<string[]> {
+        const responses = await Promise.all(
+            digitalItems.map(
+                item => new Promise(
+                    (resolve, reject) =>
+                    // TODO: Fix me!  utils comes from stencil-utils, which I don't know that we can use here
+                    // Probably need to turn this into a graphql call similar to what's in isDigitalVIdeo() in
+                    // BigCommerceScripts/src/digitalVideoUpdate.js
+                        utils.api.product.getById(item.productId, {template: 'products/product-categories'}, (err: any, response: string) => {
+                            // TODO: Don't know err type, so falsy checking
+                            if (err) {
+                                reject(err);
+                            }
+
+                            // Double JSON decode due to stencil escaping characters
+                            const {categories} = JSON.parse(JSON.parse(response));
+                            resolve(categories);
+                        })
+                )
+            )
+        );
+
+        // TODO: Fix me!  This doesn't really return string[], and it needs to do so.
+        // Fixing the above code will probably require fixing this, anyway....
+        return responses.reduce((categories, response) => ([...categories, ...response]), []);
     }
 
     render(): ReactNode {
@@ -256,6 +298,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                             if (matched) {
                                 return <DonationWidgetMobile />;
                             }
+                            return null;
                         } }
                     </MobileView>
 { /* END Added Donation Widget by FotF */ }
@@ -329,6 +372,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onSignInError={ this.handleError }
                         onUnhandledError={ this.handleUnhandledError }
                         viewType={ customerViewType }
+                        hasDigitalVideos={ this.hasDigitalVideos() }
                     />
                 </LazyContainer>
             </CheckoutStep>
