@@ -1,0 +1,12 @@
+.donationButtonDiv {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+// This really shouldn't be hard-coded, there should be a variable I can use
+// from elsewhere, but I don't see one.
+.donationButtonDivAside {
+    margin-bottom: -1.5rem;
+}
