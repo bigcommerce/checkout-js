@@ -99,6 +99,7 @@
             "show_more": "Show more"
         },
         "customer": {
+            "checkout_login_required": "Your cart contains a digital video. To complete your purchase and gain access to the content you will need to sign into your account. If you do not have an account please create one.",
             "checkout_as_guest_text": "Checking out as a <strong>Guest</strong>? You'll be able to save your details to create an account with us later.",
             "continue_as_guest_action": "Continue as guest",
             "create_account_action": "Create Account",
