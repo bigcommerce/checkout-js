@@ -11,7 +11,9 @@ const DonationWidgetArticle: FunctionComponent = () => (
         </OrderSummaryHeader>
 
         <OrderSummarySection>
-            <DonationWidget />
+            <DonationWidget
+                { ...{ widgetIsMobile: false } }
+            />
         </OrderSummarySection>
     </article>);
 
