@@ -60,6 +60,7 @@ export interface WithCheckoutCustomerProps {
     sendLoginEmail(params: { email: string }): Promise<CheckoutSelectors>;
     signIn(credentials: CustomerCredentials): Promise<CheckoutSelectors>;
     createAccount(values: CustomerAccountRequestBody): Promise<CheckoutSelectors>;
+    hasDigitalVideos: boolean;
 }
 
 export interface CustomerState {
@@ -149,6 +150,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             providerWithCustomCheckout,
             requiresMarketingConsent,
             onUnhandledError = noop,
+            hasDigitalVideos,
         } = this.props;
 
         return (
@@ -173,6 +175,8 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                 onShowLogin={ this.handleShowLogin }
                 privacyPolicyUrl={ privacyPolicyUrl }
                 requiresMarketingConsent={ requiresMarketingConsent }
+                onSignIn={ this.signIn }
+                hasDigitalVideos={ hasDigitalVideos }
             />
         );
     }
@@ -408,6 +412,11 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
         this.draftEmail = email;
     };
 
+    private signIn: () => void = () => {
+        return;
+        //redirectLogin(window.location.href).bind('login');
+    };
+
     private handleShowLogin: () => void = () => {
         const { onChangeViewType = noop } = this.props;
 
@@ -489,6 +498,7 @@ export function mapToWithCheckoutCustomerProps(
         requiresMarketingConsent,
         signIn: checkoutService.signInCustomer,
         signInError: getSignInError(),
+        hasDigitalVideos: false,
     };
 }
 
