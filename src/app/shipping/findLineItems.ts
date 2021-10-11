@@ -1,5 +1,5 @@
 import { Cart, Consignment, PhysicalItem } from '@bigcommerce/checkout-sdk';
-import { compact, find, map } from 'lodash';
+import { compact, find, isNil, map } from 'lodash';
 
 export default function findLineItems(
     cart: Cart,
@@ -8,7 +8,7 @@ export default function findLineItems(
     return compact(
         map(
             consignment.lineItemIds,
-            itemId => find(cart.lineItems.physicalItems , { id: itemId })
+            itemId => find(cart.lineItems.physicalItems , item => (item.id === itemId && isNil(item.parentId)))
         )
     );
 }

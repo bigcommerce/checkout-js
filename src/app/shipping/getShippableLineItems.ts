@@ -1,5 +1,5 @@
 import { Cart, Consignment, PhysicalItem } from '@bigcommerce/checkout-sdk';
-import { reduce } from 'lodash';
+import { isNil, reduce } from 'lodash';
 
 import findConsignment from './findConsignment';
 import ShippableItem from './ShippableItem';
@@ -11,7 +11,7 @@ export default function getShippableLineItems(
     return reduce(
         (cart && cart.lineItems.physicalItems) || [],
         (result, item, i) => (
-            !item.addedByPromotion ?
+            !item.addedByPromotion && isNil(item.parentId) ?
                 result.concat(...splitItem(item, consignments, i)) :
                 result
         ),
