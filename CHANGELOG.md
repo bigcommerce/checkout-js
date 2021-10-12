@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.175.3](https://github.com/bigcommerce/checkout-js/compare/v1.175.2...v1.175.3) (2021-10-12)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-5961 Screen reader does not announce error messages and order confirmation messages during checkout ([b6912bb](https://github.com/bigcommerce/checkout-js/commit/b6912bb946237b7222f69b40174155d7862f0b50))
+
 ### [1.175.2](https://github.com/bigcommerce/checkout-js/compare/v1.175.1...v1.175.2) (2021-10-08)
 
 ### [1.175.1](https://github.com/bigcommerce/checkout-js/compare/v1.175.0...v1.175.1) (2021-10-07)
