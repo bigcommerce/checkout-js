@@ -25,12 +25,17 @@ export interface ErrorModalOnCloseProps {
 }
 
 export default class ErrorModal extends PureComponent<ErrorModalProps> {
+    private aria = {
+        labelledby: 'errorModalMessage',
+    };
+
     render(): ReactNode {
         const { error } = this.props;
 
         return (
             <Modal
                 additionalModalClassName="modal--error"
+                aria={ this.aria }
                 footer={ this.renderFooter() }
                 header={ this.renderHeader() }
                 isOpen={ !!error }
@@ -63,7 +68,7 @@ export default class ErrorModal extends PureComponent<ErrorModalProps> {
 
         return (
             <Fragment>
-                { message && <p>{ message }</p> }
+                { message && <p id="errorModalMessage">{ message }</p> }
 
                 <div className="optimizedCheckout-contentSecondary">
                     { this.renderErrorCode() }

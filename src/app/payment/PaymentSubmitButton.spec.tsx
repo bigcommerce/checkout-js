@@ -163,41 +163,12 @@ describe('PaymentSubmitButton', () => {
             .toEqual(languageService.translate('payment.zip_continue_action'));
     });
 
-    describe('PAYMENTS-6806.enable_ppsdk_strategy feature flag is off', () => {
-        beforeEach(() => {
-            const flagValues = { 'PAYMENTS-6806.enable_ppsdk_strategy': false };
-            const storeConfig = set(getStoreConfig(), 'checkoutSettings.features', flagValues);
+    it('renders button with label of "Continue with ${methodName}"', () => {
+        const component = mount(
+            <PaymentSubmitButtonTest initialisationStrategyType="none" methodName="Foo" />
+        );
 
-            jest.spyOn(checkoutState.data, 'getConfig')
-                .mockReturnValue(storeConfig);
-        });
-
-        it('does not render button with label of "Continue with ${methodName}"', () => {
-            const component = mount(
-                <PaymentSubmitButtonTest initialisationStrategyType="none" methodName="Foo" />
-            );
-
-            expect(component.text())
-                .not.toEqual(languageService.translate('payment.ppsdk_continue_action', { methodName: 'Foo' }));
-        });
-    });
-
-    describe('PAYMENTS-6806.enable_ppsdk_strategy feature flag is on', () => {
-        beforeEach(() => {
-            const flagValues = { 'PAYMENTS-6806.enable_ppsdk_strategy': true };
-            const storeConfig = set(getStoreConfig(), 'checkoutSettings.features', flagValues);
-
-            jest.spyOn(checkoutState.data, 'getConfig')
-                .mockReturnValue(storeConfig);
-        });
-
-        it('renders button with label of "Continue with ${methodName}"', () => {
-            const component = mount(
-                <PaymentSubmitButtonTest initialisationStrategyType="none" methodName="Foo" />
-            );
-
-            expect(component.text())
-                .toEqual(languageService.translate('payment.ppsdk_continue_action', { methodName: 'Foo' }));
-        });
+        expect(component.text())
+            .toEqual(languageService.translate('payment.ppsdk_continue_action', { methodName: 'Foo' }));
     });
 });
