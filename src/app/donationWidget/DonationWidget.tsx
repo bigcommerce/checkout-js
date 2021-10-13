@@ -38,9 +38,9 @@ class DonationWidget extends Component<DonationWidgetProps> {
         >
             { donationItems.map((item, index) => {
                 return <Button
+                    key={ index }
                     onClick={ () => { window.location.href = '/cart.php?action=buy&sku=don-5&qty=' + index; } }
                     size={ ButtonSize.Tiny }
-                    testId="donate5"
                     variant={ ButtonVariant.Secondary }
                 >{ item }</Button>
                 }) }
