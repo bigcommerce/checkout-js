@@ -1,10 +1,22 @@
 import { getCart } from '../cart/carts.mock';
-import { getDigitalItem, getGiftCertificateItem, getPhysicalItem } from '../cart/lineItem.mock';
+import { getDigitalItem, getGiftCertificateItem, getPhysicalItem, getPicklistItem } from '../cart/lineItem.mock';
 
 import { getConsignment } from './consignment.mock';
 import getShippableLineItems from './getShippableLineItems';
 
 describe('getShippableLineItems()', () => {
+    it('returns parent item only', () => {
+        expect(getShippableLineItems({
+            ...getCart(),
+            lineItems: {
+                digitalItems: [],
+                physicalItems: getPicklistItem(),
+                giftCertificates: [],
+            },
+        }, []))
+            .toHaveLength(1);
+    });
+
     it('returns empty if only digital items', () => {
         expect(getShippableLineItems({
                 ...getCart(),
