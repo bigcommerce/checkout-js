@@ -14,6 +14,9 @@ import { getStoreConfig } from '../config/config.mock';
 import { CustomerInfo, CustomerInfoProps, CustomerProps, CustomerViewType } from '../customer';
 import { getCustomer } from '../customer/customers.mock';
 import Customer from '../customer/Customer';
+/* BEGIN Added Donation Widget by FotF */
+import DonationWidget from '../donationWidget/DonationWidget';
+/* END Added Donation Widget by FotF */
 import { createEmbeddedCheckoutStylesheet, createEmbeddedCheckoutSupport } from '../embeddedCheckout';
 import { getLanguageService, LocaleProvider } from '../locale';
 import { PaymentProps } from '../payment';
@@ -23,10 +26,6 @@ import { ShippingProps, StaticConsignment } from '../shipping';
 import { getConsignment } from '../shipping/consignment.mock';
 import { getShippingAddress } from '../shipping/shipping-addresses.mock';
 import Shipping from '../shipping/Shipping';
-
-/* BEGIN Added Donation Widget by FotF */
-import DonationWidget from '../donationWidget/DonationWidget';
-/* END Added Donation Widget by FotF */
 
 import { getCheckout, getCheckoutWithPromotions } from './checkouts.mock';
 import getCheckoutStepStatuses from './getCheckoutStepStatuses';
