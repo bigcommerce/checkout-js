@@ -18,7 +18,7 @@ import LoginForm from './LoginForm';
 // Pre-declare window.redirectLogin which is injected by BigCommerceScripts
 declare global {
     interface Window {
-        redirectLogin: (location : string) => void;
+        redirectLogin(location: string): void;
     }
 }
 /* END Added Login Redirection (SSO)  by FotF  */
@@ -26,6 +26,9 @@ declare global {
 export interface CustomerProps {
     viewType: CustomerViewType;
     isEmbedded?: boolean;
+/* BEGIN Added forced login for "Digital Videos" category by FotF */
+    hasDigitalVideos: boolean;
+/* END Added forced login for "Digital Videos" category by FotF */
     checkEmbeddedSupport?(methodIds: string[]): void;
     onChangeViewType?(viewType: CustomerViewType): void;
     onAccountCreated?(): void;
@@ -35,9 +38,6 @@ export interface CustomerProps {
     onSignIn?(): void;
     onSignInError?(error: Error): void;
     onUnhandledError?(error: Error): void;
-/* BEGIN Added forced login for "Digital Videos" category by FotF */
-    hasDigitalVideos: boolean;
-/* END Added forced login for "Digital Videos" category by FotF */
 }
 
 export interface WithCheckoutCustomerProps {
@@ -182,18 +182,18 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                 continueAsGuestButtonLabelId={ !!providerWithCustomCheckout ? 'customer.continue' : 'customer.continue_as_guest_action' }
                 defaultShouldSubscribe={ defaultShouldSubscribe }
                 email={ this.draftEmail || email }
+/* BEGIN Added forced login for "Digital Videos" category by FotF */
+                hasDigitalVideos={ hasDigitalVideos }
+/* END Added forced login for "Digital Videos" category by FotF */
                 isLoading={ isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout }
                 onChangeEmail={ this.handleChangeEmail }
                 onContinueAsGuest={ this.handleContinueAsGuest }
                 onShowLogin={ this.handleShowLogin }
-                privacyPolicyUrl={ privacyPolicyUrl }
-                requiresMarketingConsent={ requiresMarketingConsent }
 /* BEGIN Added Login Redirection (SSO)  by FotF  */
                 onSignIn={ this.signIn }
 /* END Added Login Redirection (SSO)  by FotF  */
-/* BEGIN Added forced login for "Digital Videos" category by FotF */
-                hasDigitalVideos={ hasDigitalVideos }
-/* END Added forced login for "Digital Videos" category by FotF */
+                privacyPolicyUrl={ privacyPolicyUrl }
+                requiresMarketingConsent={ requiresMarketingConsent }
             />
         );
     }
@@ -432,7 +432,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
 /* BEGIN Added Login Redirection (SSO)  by FotF  */
     private signIn: () => void = () => {
         if (typeof window.redirectLogin === 'function') {
-            window.redirectLogin.bind('login')(window.location.href)
+            window.redirectLogin.bind('login')(window.location.href);
         }
     };
 /* END Added Login Redirection (SSO)  by FotF  */

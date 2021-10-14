@@ -19,12 +19,12 @@ export interface GuestFormProps {
     email?: string;
     isLoading: boolean;
     privacyPolicyUrl?: string;
-    onChangeEmail(email: string): void;
-    onContinueAsGuest(data: GuestFormValues): void;
-    onShowLogin(): void;
 /* BEGIN Added forced login for "Digital Videos" category by FotF */
     hasDigitalVideos: boolean;
 /* END Added forced login for "Digital Videos" category by FotF */
+    onChangeEmail(email: string): void;
+    onContinueAsGuest(data: GuestFormValues): void;
+    onShowLogin(): void;
 /* BEGIN Added Login Redirection (SSO)  by FotF  */
     onSignIn(): void;
 /* END Added Login Redirection (SSO)  by FotF  */
@@ -80,8 +80,9 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
                             <Button
                                 onClick={ onSignIn }
                                 variant={ ButtonVariant.Primary }
-                                >Sign in or Register
-                                </Button>
+                            >
+                                Sign in or Register
+                            </Button>
                         </div>
                 }
 { /* END Added forced login for "Digital Videos" category by FotF */ }

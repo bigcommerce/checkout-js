@@ -129,14 +129,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
     private unsubscribeFromConsignments?: () => void;
 
-/* BEGIN Added forced login for "Digital Videos" category by FotF */
-    private hasDigitalVideos() {
-        const {categories} = this.state;
-        
-        return categories.includes("Digital Videos");
-    }
-/* END Added forced login for "Digital Videos" category by FotF */
-
     componentWillUnmount(): void {
         if (this.unsubscribeFromConsignments) {
             this.unsubscribeFromConsignments();
@@ -206,10 +198,12 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             }
 
 /* BEGIN Added forced login for "Digital Videos" category by FotF */
-            //Check to see if digital items exist. If so, set product categories to state.
-            if (cart && (cart.lineItems.digitalItems.length > 0) && this.state.categories.length === 0) {
-                const categories = this.getProductCategories(cart.lineItems.digitalItems);
-                this.setState({categories});
+            // Check to see if digital items exist. If so, set product categories to state.
+            const { categories } = this.state;
+            if (cart && (cart.lineItems.digitalItems.length > 0)
+                && categories.length === 0) {
+                const productCategories = this.getProductCategories(cart.lineItems.digitalItems);
+                this.setState({categories: productCategories});
             }
 /* END Added forced login for "Digital Videos" category by FotF */
 
@@ -217,20 +211,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             this.handleUnhandledError(error);
         }
     }
-
-/* BEGIN Added forced login for "Digital Videos" category by FotF */
-    getProductCategories(digitalItems: DigitalItem[]): string[] {
-        var categories: (string[] | undefined)[] = digitalItems.map(item => item.categoryNames);
-        var categories2: string[] = [];
-        if (categories == undefined) {
-            categories2 = [] as string[];
-        }
-        else {
-            categories2 = categories.flat() as string[];
-        }
-        return categories2;
-    }
-/* END Added forced login for "Digital Videos" category by FotF */
 
     render(): ReactNode {
         const { error } = this.state;
@@ -295,6 +275,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                             if (matched) {
                                 return <DonationWidgetMobile />;
                             }
+
                             return null;
                         } }
                     </MobileView>
@@ -359,6 +340,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 <LazyContainer>
                     <Customer
                         checkEmbeddedSupport={ this.checkEmbeddedSupport }
+/* BEGIN Added forced login for "Digital Videos" category by FotF */
+                        hasDigitalVideos={ this.hasDigitalVideos() }
+/* END Added forced login for "Digital Videos" category by FotF */
                         isEmbedded={ isEmbedded() }
                         onAccountCreated={ this.navigateToNextIncompleteStep }
                         onChangeViewType={ this.setCustomerViewType }
@@ -369,9 +353,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onSignInError={ this.handleError }
                         onUnhandledError={ this.handleUnhandledError }
                         viewType={ customerViewType }
-/* BEGIN Added forced login for "Digital Videos" category by FotF */
-                        hasDigitalVideos={ this.hasDigitalVideos() }
-/* END Added forced login for "Digital Videos" category by FotF */
                     />
                 </LazyContainer>
             </CheckoutStep>
@@ -692,6 +673,28 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         this.navigateToStep(CheckoutStepType.Customer);
         this.setState({ customerViewType });
     };
+
+/* BEGIN Added forced login for "Digital Videos" category by FotF */
+    private hasDigitalVideos() {
+        const {categories} = this.state;
+
+        return categories.includes('Digital Videos');
+    }
+/* END Added forced login for "Digital Videos" category by FotF */
+
+/* BEGIN Added forced login for "Digital Videos" category by FotF */
+    private getProductCategories(digitalItems: DigitalItem[]): string[] {
+        const categories: Array<(string[] | undefined)> = digitalItems.map(item => item.categoryNames);
+        let categories2: string[] = [];
+        if (categories === undefined) {
+            categories2 = [] as string[];
+        } else {
+            categories2 = categories.flat() as string[];
+        }
+
+        return categories2;
+    }
+/* END Added forced login for "Digital Videos" category by FotF */
 }
 
 export default withLanguage(withCheckout(mapToCheckoutProps)(Checkout));

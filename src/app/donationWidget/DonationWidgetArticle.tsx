@@ -6,9 +6,12 @@ import OrderSummarySection from '../order/OrderSummarySection';
 import DonationWidget from './DonationWidget';
 
 const DonationWidgetArticle: FunctionComponent = () => (
-    <article id="donationWidget" className="cart optimizedCheckout-orderSummary" data-test="cart">
-        <OrderSummaryHeader>
-        </OrderSummaryHeader>
+    <article
+        className="cart optimizedCheckout-orderSummary"
+        data-test="cart"
+        id="donationWidget"
+    >
+        <OrderSummaryHeader />
 
         <OrderSummarySection>
             <DonationWidget

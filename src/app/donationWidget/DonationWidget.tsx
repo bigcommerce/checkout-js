@@ -4,18 +4,19 @@ import React, { Component } from 'react';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 
 export interface DonationWidgetProps {
-    widgetIsMobile: boolean
+    widgetIsMobile: boolean;
 }
 
 class DonationWidget extends Component<DonationWidgetProps> {
     render() {
-        var { widgetIsMobile } = this.props;
-        var classNames = "donationWidgetButtonDiv";
+        const { widgetIsMobile } = this.props;
+        let classNames = 'donationWidgetButtonDiv';
         if (!widgetIsMobile) {
-            classNames += " donationButtonDivAside";
+            classNames += ' donationButtonDivAside';
         }
-        var donationItems = [ '$5', '$10', '$15', '$20', '$25' ];
-    return(
+        const donationItems = [ '$5', '$10', '$15', '$20', '$25' ];
+
+        return(
         <>
         <svg height="72" viewBox="0 0 72 72" width="72" xmlns="http://www.w3.org/2000/svg">
             <style type="text/css">
@@ -42,12 +43,14 @@ class DonationWidget extends Component<DonationWidgetProps> {
                     onClick={ () => { window.location.href = '/cart.php?action=buy&sku=don-5&qty=' + index; } }
                     size={ ButtonSize.Tiny }
                     variant={ ButtonVariant.Secondary }
-                >{ item }</Button>
+                >
+                    { item }
+                </Button>;
                 }) }
         </div>
 </>
-    );
+        );
     }
-};
+}
 
 export default DonationWidget;
