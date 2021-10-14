@@ -39,6 +39,7 @@ const CartSummaryDrawer = lazy(() => retry(() => import(
     '../cart/CartSummaryDrawer'
 )));
 
+/* BEGIN Added Donation Widget by FotF */
 const DonationWidgetArticle = lazy(() => retry(() => import(
     /* webpackChunkName: "donation-widget-article" */
     '../donationWidget/DonationWidgetArticle'
@@ -48,6 +49,7 @@ const DonationWidgetMobile = lazy(() => retry(() => import(
     /* webpackChunkName: "donation-widget-mobile" */
     '../donationWidget/DonationWidgetMobile'
 )));
+/* END Added Donation Widget by FotF */
 
 const Customer = lazy(() => retry(() => import(
     /* webpackChunkName: "customer" */
@@ -85,7 +87,9 @@ export interface CheckoutState {
     isCartEmpty: boolean;
     isRedirecting: boolean;
     hasSelectedShippingOptions: boolean;
+/* BEGIN Added forced login for "Digital Videos" category by FotF */
     categories: string[];
+/* END Added forced login for "Digital Videos" category by FotF */
 }
 
 export interface WithCheckoutProps {
@@ -117,7 +121,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         isRedirecting: false,
         isMultiShippingMode: false,
         hasSelectedShippingOptions: false,
+/* BEGIN Added forced login for "Digital Videos" category by FotF */
         categories: [],
+/* END Added forced login for "Digital Videos" category by FotF */
     };
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
@@ -138,7 +144,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         }
     }
 
-/* BEGIN Added forced login for "Digital Videos" category by FotF */
     async componentDidMount(): Promise<void> {
         const {
             checkoutId,
@@ -200,17 +205,20 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 this.handleReady();
             }
 
+/* BEGIN Added forced login for "Digital Videos" category by FotF */
             //Check to see if digital items exist. If so, set product categories to state.
             if (cart && (cart.lineItems.digitalItems.length > 0) && this.state.categories.length === 0) {
                 const categories = this.getProductCategories(cart.lineItems.digitalItems);
                 this.setState({categories});
             }
+/* END Added forced login for "Digital Videos" category by FotF */
 
         } catch (error) {
             this.handleUnhandledError(error);
         }
     }
 
+/* BEGIN Added forced login for "Digital Videos" category by FotF */
     getProductCategories(digitalItems: DigitalItem[]): string[] {
         var categories: (string[] | undefined)[] = digitalItems.map(item => item.categoryNames);
         var categories2: string[] = [];

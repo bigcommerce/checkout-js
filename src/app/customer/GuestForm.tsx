@@ -40,8 +40,12 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
     onShowLogin,
     privacyPolicyUrl,
     requiresMarketingConsent,
+/* BEGIN Added forced login for "Digital Videos" category by FotF */
     hasDigitalVideos,
+/* END Added forced login for "Digital Videos" category by FotF */
+/* BEGIN Added Login Redirection (SSO)  by FotF  */
     onSignIn,
+/* END Added Login Redirection (SSO)  by FotF  */
 }) => {
     const renderField = useCallback((fieldProps: FieldProps<boolean>) => (
         <SubscribeField
@@ -65,6 +69,7 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
                     </Legend>
                 }
             >
+{ /* BEGIN Added forced login for "Digital Videos" category by FotF */ }
                 {
                     !isLoading && hasDigitalVideos && <div className="customerEmail-container">
                             <p><TranslatedString id="customer.checkout_login_required" /></p>
@@ -75,8 +80,10 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
                                 </Button>
                         </div>
                 }
+{ /* BEGIN Added forced login for "Digital Videos" category by FotF */ }
 
                 {
+                    /* Changed to check hasDigitalVideos by FotF */
                     !isLoading && !hasDigitalVideos && <div className="customerEmail-container">
                             <div className="customerEmail-body">
                                 <EmailField onChange={ onChangeEmail } />
@@ -107,6 +114,7 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
                 }
 
                 {
+                    /* Changed to check hasDigitalVideos by FotF */
                     !isLoading && !hasDigitalVideos && <p>
                         <TranslatedString id="customer.login_text" />
                         { ' ' }
