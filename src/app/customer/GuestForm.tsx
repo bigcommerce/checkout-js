@@ -89,7 +89,7 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
 
                 {
                     /* Changed to check hasDigitalVideos by FotF */
-                    !isLoading && !hasDigitalVideos && <div className="customerEmail-container">
+                    !hasDigitalVideos && <div className="customerEmail-container">
                             <div className="customerEmail-body">
                                 <EmailField onChange={ onChangeEmail } />
 

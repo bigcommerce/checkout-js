@@ -20,15 +20,6 @@ exports[`Customer when view type is "guest" matches snapshot 1`] = `
         <div
           class="form-body"
         >
-          <p>
-            <span>
-              Checking out as a 
-              <strong>
-                Guest
-              </strong>
-              ? You'll be able to save your details to create an account with us later.
-            </span>
-          </p>
           <div
             class="customerEmail-container"
           >

@@ -89,6 +89,7 @@ describe('GuestForm', () => {
         const handleContinueAsGuest = jest.fn();
         const component = mount(
             <TestComponent
+                hasDigitalVideos={ false }
                 isLoading={ true }
                 onContinueAsGuest={ handleContinueAsGuest }
             />
@@ -98,6 +99,34 @@ describe('GuestForm', () => {
 
         expect(button.prop('disabled')).toBeTruthy();
     });
+
+    /* BEGIN Added forced login for "Digital Videos" category by FotF */
+    it('requires login when hasDigitalVideos is true', () => {
+        const handleContinueAsGuest = jest.fn();
+        const component = mount(
+            <TestComponent
+                hasDigitalVideos={ true }
+                isLoading={ false }
+                onContinueAsGuest={ handleContinueAsGuest }
+            />
+        );
+
+        expect(component.find('[id="customer.checkout_login_required"]').exists()).toBeTruthy();
+    });
+
+    it('does not require login when hasDigitalVideos is false', () => {
+        const handleContinueAsGuest = jest.fn();
+        const component = mount(
+            <TestComponent
+                hasDigitalVideos={ false }
+                isLoading={ false }
+                onContinueAsGuest={ handleContinueAsGuest }
+            />
+        );
+
+        expect(component.find('[id="customer.checkout_login_required"]').exists()).toBeFalsy();
+    });
+    /* END Added forced login for "Digital Videos" category by FotF */
 
     it('displays error message if email is not valid', () => {
         async function getEmailError(value: string): Promise<string> {

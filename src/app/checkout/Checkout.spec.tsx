@@ -24,6 +24,10 @@ import { getConsignment } from '../shipping/consignment.mock';
 import { getShippingAddress } from '../shipping/shipping-addresses.mock';
 import Shipping from '../shipping/Shipping';
 
+/* BEGIN Added Donation Widget by FotF */
+import DonationWidget from '../donationWidget/DonationWidget';
+/* END Added Donation Widget by FotF */
+
 import { getCheckout, getCheckoutWithPromotions } from './checkouts.mock';
 import getCheckoutStepStatuses from './getCheckoutStepStatuses';
 import Checkout, { CheckoutProps, WithCheckoutProps } from './Checkout';
@@ -312,6 +316,21 @@ describe('Checkout', () => {
         expect(container.find(PromotionBannerList).prop('promotions'))
             .toEqual(checkout.promotions);
     });
+
+    /* BEGIN Added Donation Widget by FotF */
+    it('renders the donation widget', () => {
+        const checkout = getCheckoutWithPromotions();
+
+        jest.spyOn(checkoutState.data, 'getCheckout')
+            .mockReturnValue(checkout);
+
+        const container = mount(<CheckoutTest { ...defaultProps } />);
+
+        expect(container.find(DonationWidget))
+            .toHaveLength(1);
+
+    });
+    /* END Added Donation Widget by FotF */
 
     describe('customer step', () => {
         let container: ReactWrapper<CheckoutProps & WithCheckoutProps>;
