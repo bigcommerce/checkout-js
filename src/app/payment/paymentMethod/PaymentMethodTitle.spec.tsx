@@ -188,6 +188,7 @@ describe('PaymentMethodTitle', () => {
     it('renders custom text for certain hosted payment methods', () => {
         const methodIds = [
             PaymentMethodId.Affirm,
+            PaymentMethodId.Bolt,
             PaymentMethodId.Klarna,
             PaymentMethodId.Quadpay,
             PaymentMethodId.Sezzle,
