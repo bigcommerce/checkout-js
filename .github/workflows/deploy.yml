@@ -1,0 +1,67 @@
+name: deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Specify Environment (Test, UA, Prod)
+        default: Test
+        required: true
+      releaseTag:
+        description: Release to Deploy i.e. v1.2.4 (optional, overrides branch selection)
+        required: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout default branch
+        if: ${{github.event.inputs.releaseTag == null}}
+        uses: actions/checkout@v2
+
+      - name: Checkout tag
+        if: ${{github.event.inputs.releaseTag != null}}
+        uses: actions/checkout@v2
+        with:
+          ref: ${{github.event.inputs.releaseTag}}
+
+      - name: Setup npm
+        if: always()
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install node modules
+        if: always()
+        run: npm install --save-dev
+
+      - name: Build
+        if: always()
+        run: |
+          case ${{github.event.inputs.environment}} in
+            [Tt][Ee][Ss][Tt]) # case-insensitive "test"
+              npm run build:development
+              ;;
+            [Uu][Aa]) # case-insensitive "ua"
+              npm run build:ua
+              ;;
+            [Pp][Rr][Oo][Dd]) # case-insensitive "prod"
+              npm run build:production
+              ;;
+          esac
+
+      - name: Deploy
+        if: always()
+        run: |
+          case ${{github.event.inputs.environment}} in
+            [Tt][Ee][Ss][Tt]) # case-insensitive "test"
+              DAV_USER="${{secrets.DEV_DAV_USER}}" DAV_PASS="${{secrets.DEV_DAV_PASS}}" DAV_URL="${{secrets.DAV_URL}}" npm run deploy
+              ;;
+            [Uu][Aa]) # case-insensitive "ua"
+              DAV_USER="${{secrets.UA_DAV_USER}}" DAV_PASS="${{secrets.UA_DAV_PASS}}" DAV_URL="${{secrets.DAV_URL}}" npm run deploy
+              ;;
+            [Pp][Rr][Oo][Dd]) # case-insensitive "prod"
+              DAV_USER="${{secrets.PROD_DAV_USER}}" DAV_PASS="${{secrets.PROD_DAV_PASS}}" DAV_URL="${{secrets.DAV_URL}}" npm run deploy
+              ;;
+          esac

@@ -22,7 +22,8 @@
     "test:watch": "jest --watch",
     "build:production": "env-cmd -e production npm run-script build",
     "build:ua": "env-cmd -e ua npm run-script build",
-    "build:development": "env-cmd -e development npm run-script build"
+    "build:development": "env-cmd -e development npm run-script build",
+    "deploy": "curl -X MKCOL --user \"${DAV_USER}:${DAV_PASS}\" --anyauth \"${DAV_URL}/static\"; cd dist && find . -type f -exec curl -T '{}' --user \"${DAV_USER}:${DAV_PASS}\" --anyauth \"${DAV_URL}/{}\" \\;"
   },
   "repository": {
     "type": "git",
