@@ -14,7 +14,12 @@ class DonationWidget extends Component<DonationWidgetProps> {
         if (!widgetIsMobile) {
             classNames += ' donationButtonDivAside';
         }
-        const donationItems = [ '$5', '$10', '$15', '$20', '$25' ];
+        const donationItems: string[] = [];
+        const donationButtons = parseInt(process.env.REACT_APP_DONATION_BUTTONS ?? "1", 10);
+        const donationAmount = parseInt(process.env.REACT_APP_DONATION_AMOUNT ?? "1", 10);
+        for (let idx = 1; idx <= donationButtons; idx++) {
+            donationItems.push(`\$${donationAmount * idx}`);
+        }
 
         return(
         <>
@@ -40,7 +45,7 @@ class DonationWidget extends Component<DonationWidgetProps> {
             { donationItems.map((item, index) => {
                 return <Button
                     key={ index }
-                    onClick={ () => { window.location.href = '/cart.php?action=buy&sku=don-5&qty=' + index; } }
+                    onClick={ () => { window.location.href = `/cart.php?action=buy&sku=${process.env.REACT_APP_DONATION_SKU}&qty=${index}`; } }
                     size={ ButtonSize.Tiny }
                     variant={ ButtonVariant.Secondary }
                 >

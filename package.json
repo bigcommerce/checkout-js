@@ -19,7 +19,10 @@
     "release:version": "git add dist && standard-version -a",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "build:production": "env-cmd -e production npm run-script build",
+    "build:ua": "env-cmd -e ua npm run-script build",
+    "build:development": "env-cmd -e development npm run-script build"
   },
   "repository": {
     "type": "git",
@@ -90,10 +93,12 @@
     "@typescript-eslint/eslint-plugin-tslint": "^3.9.0",
     "@typescript-eslint/parser": "^3.9.0",
     "babel-loader": "^8.0.6",
+    "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "circular-dependency-plugin": "^5.2.0",
     "conventional-recommended-bump": "^6.0.0",
     "core-js": "^3.1.4",
     "css-loader": "^3.1.0",
+    "env-cmd": "^10.1.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.3.5",

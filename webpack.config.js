@@ -29,6 +29,13 @@ const BABEL_PRESET_ENV_CONFIG = {
     useBuiltIns: 'usage',
     modules: false,
 };
+const BABEL_PLUGIN_ENVIRONMENT_VARIABLES = {
+    "include": [
+        "REACT_APP_DONATION_AMOUNT",
+        "REACT_APP_DONATION_BUTTONS",
+        "REACT_APP_DONATION_SKU"
+    ]
+};
 
 const eventEmitter = new EventEmitter();
 
@@ -136,6 +143,22 @@ function appConfig(options, argv) {
                             test: /\.[tj]sx?$/,
                             enforce: 'pre',
                             loader: require.resolve('source-map-loader'),
+                        },
+                        {
+                            test: /DonationWidget\.tsx$/,
+                            include: join(__dirname, 'src'),
+                            loader: 'babel-loader',
+                            options: {
+                                presets: [
+                                    ['@babel/preset-env', BABEL_PRESET_ENV_CONFIG],
+                                ],
+                                plugins: [
+                                    ["transform-inline-environment-variables", {
+                                        BABEL_PLUGIN_ENVIRONMENT_VARIABLES
+                                    }]
+                                ],
+                                sourceType: 'unambiguous',
+                            },
                         },
                         {
                             test: /\.tsx?$/,
@@ -283,6 +306,11 @@ function loaderConfig(options, argv) {
                                         cacheDirectory: true,
                                         presets: [
                                             ['@babel/preset-env', BABEL_PRESET_ENV_CONFIG],
+                                        ],
+                                        plugins: [
+                                            ["transform-inline-environment-variables", {
+                                                BABEL_PLUGIN_ENVIRONMENT_VARIABLES
+                                            }]
                                         ],
                                     },
                                 },
