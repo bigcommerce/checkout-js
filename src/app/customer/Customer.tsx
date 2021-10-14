@@ -14,6 +14,15 @@ import EmailLoginForm, { EmailLoginFormValues } from './EmailLoginForm';
 import GuestForm, { GuestFormValues } from './GuestForm';
 import LoginForm from './LoginForm';
 
+/* BEGIN Added Login Redirection (SSO) by FotF  */
+// Pre-declare window.redirectLogin which is injected by BigCommerceScripts
+declare global {
+    interface Window {
+        redirectLogin: (location : string) => void;
+    }
+}
+/* END Added Login Redirection (SSO)  by FotF  */
+
 export interface CustomerProps {
     viewType: CustomerViewType;
     isEmbedded?: boolean;
@@ -26,6 +35,9 @@ export interface CustomerProps {
     onSignIn?(): void;
     onSignInError?(error: Error): void;
     onUnhandledError?(error: Error): void;
+/* BEGIN Added forced login for "Digital Videos" category by FotF */
+    hasDigitalVideos: boolean;
+/* END Added forced login for "Digital Videos" category by FotF */
 }
 
 export interface WithCheckoutCustomerProps {
@@ -60,7 +72,6 @@ export interface WithCheckoutCustomerProps {
     sendLoginEmail(params: { email: string }): Promise<CheckoutSelectors>;
     signIn(credentials: CustomerCredentials): Promise<CheckoutSelectors>;
     createAccount(values: CustomerAccountRequestBody): Promise<CheckoutSelectors>;
-    hasDigitalVideos: boolean;
 }
 
 export interface CustomerState {
@@ -150,7 +161,9 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             providerWithCustomCheckout,
             requiresMarketingConsent,
             onUnhandledError = noop,
+/* BEGIN Added forced login for "Digital Videos" category by FotF */
             hasDigitalVideos,
+/* END Added forced login for "Digital Videos" category by FotF */
         } = this.props;
 
         return (
@@ -175,8 +188,12 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                 onShowLogin={ this.handleShowLogin }
                 privacyPolicyUrl={ privacyPolicyUrl }
                 requiresMarketingConsent={ requiresMarketingConsent }
+/* BEGIN Added Login Redirection (SSO)  by FotF  */
                 onSignIn={ this.signIn }
+/* END Added Login Redirection (SSO)  by FotF  */
+/* BEGIN Added forced login for "Digital Videos" category by FotF */
                 hasDigitalVideos={ hasDigitalVideos }
+/* END Added forced login for "Digital Videos" category by FotF */
             />
         );
     }
@@ -412,10 +429,13 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
         this.draftEmail = email;
     };
 
+/* BEGIN Added Login Redirection (SSO)  by FotF  */
     private signIn: () => void = () => {
-        return;
-        //redirectLogin(window.location.href).bind('login');
+        if (typeof window.redirectLogin === 'function') {
+            window.redirectLogin.bind('login')(window.location.href)
+        }
     };
+/* END Added Login Redirection (SSO)  by FotF  */
 
     private handleShowLogin: () => void = () => {
         const { onChangeViewType = noop } = this.props;
@@ -498,7 +518,6 @@ export function mapToWithCheckoutCustomerProps(
         requiresMarketingConsent,
         signIn: checkoutService.signInCustomer,
         signInError: getSignInError(),
-        hasDigitalVideos: false,
     };
 }
 

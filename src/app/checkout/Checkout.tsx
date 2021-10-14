@@ -123,11 +123,13 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
     private unsubscribeFromConsignments?: () => void;
 
+/* BEGIN Added forced login for "Digital Videos" category by FotF */
     private hasDigitalVideos() {
         const {categories} = this.state;
         
         return categories.includes("Digital Videos");
     }
+/* END Added forced login for "Digital Videos" category by FotF */
 
     componentWillUnmount(): void {
         if (this.unsubscribeFromConsignments) {
@@ -136,6 +138,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         }
     }
 
+/* BEGIN Added forced login for "Digital Videos" category by FotF */
     async componentDidMount(): Promise<void> {
         const {
             checkoutId,
@@ -199,7 +202,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
             //Check to see if digital items exist. If so, set product categories to state.
             if (cart && (cart.lineItems.digitalItems.length > 0) && this.state.categories.length === 0) {
-                const categories = await this.getProductCategories(cart.lineItems.digitalItems);
+                const categories = this.getProductCategories(cart.lineItems.digitalItems);
                 this.setState({categories});
             }
 
@@ -208,32 +211,18 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         }
     }
 
-    async getProductCategories(digitalItems: DigitalItem[]): Promise<string[]> {
-        const responses = await Promise.all(
-            digitalItems.map(
-                item => new Promise(
-                    (resolve, reject) =>
-                    // TODO: Fix me!  utils comes from stencil-utils, which I don't know that we can use here
-                    // Probably need to turn this into a graphql call similar to what's in isDigitalVIdeo() in
-                    // BigCommerceScripts/src/digitalVideoUpdate.js
-                        utils.api.product.getById(item.productId, {template: 'products/product-categories'}, (err: any, response: string) => {
-                            // TODO: Don't know err type, so falsy checking
-                            if (err) {
-                                reject(err);
-                            }
-
-                            // Double JSON decode due to stencil escaping characters
-                            const {categories} = JSON.parse(JSON.parse(response));
-                            resolve(categories);
-                        })
-                )
-            )
-        );
-
-        // TODO: Fix me!  This doesn't really return string[], and it needs to do so.
-        // Fixing the above code will probably require fixing this, anyway....
-        return responses.reduce((categories, response) => ([...categories, ...response]), []);
+    getProductCategories(digitalItems: DigitalItem[]): string[] {
+        var categories: (string[] | undefined)[] = digitalItems.map(item => item.categoryNames);
+        var categories2: string[] = [];
+        if (categories == undefined) {
+            categories2 = [] as string[];
+        }
+        else {
+            categories2 = categories.flat() as string[];
+        }
+        return categories2;
     }
+/* END Added forced login for "Digital Videos" category by FotF */
 
     render(): ReactNode {
         const { error } = this.state;
@@ -372,7 +361,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onSignInError={ this.handleError }
                         onUnhandledError={ this.handleUnhandledError }
                         viewType={ customerViewType }
+/* BEGIN Added forced login for "Digital Videos" category by FotF */
                         hasDigitalVideos={ this.hasDigitalVideos() }
+/* END Added forced login for "Digital Videos" category by FotF */
                     />
                 </LazyContainer>
             </CheckoutStep>
