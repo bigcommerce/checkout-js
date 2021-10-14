@@ -22,8 +22,12 @@ export interface GuestFormProps {
     onChangeEmail(email: string): void;
     onContinueAsGuest(data: GuestFormValues): void;
     onShowLogin(): void;
+/* BEGIN Added forced login for "Digital Videos" category by FotF */
     hasDigitalVideos: boolean;
+/* END Added forced login for "Digital Videos" category by FotF */
+/* BEGIN Added Login Redirection (SSO)  by FotF  */
     onSignIn(): void;
+/* END Added Login Redirection (SSO)  by FotF  */
 }
 
 export interface GuestFormValues {
@@ -80,7 +84,7 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
                                 </Button>
                         </div>
                 }
-{ /* BEGIN Added forced login for "Digital Videos" category by FotF */ }
+{ /* END Added forced login for "Digital Videos" category by FotF */ }
 
                 {
                     /* Changed to check hasDigitalVideos by FotF */
