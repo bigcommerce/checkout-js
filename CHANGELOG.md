@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.176.1](https://github.com/bigcommerce/checkout-js/compare/v1.176.0...v1.176.1) (2021-10-13)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-6030 remove child items from checkout address entry ([#724](https://github.com/bigcommerce/checkout-js/issues/724)) ([ba452e2](https://github.com/bigcommerce/checkout-js/commit/ba452e2c76454755b14f273b30ab34105bac5a8b))
+
+## [1.176.0](https://github.com/bigcommerce/checkout-js/compare/v1.175.3...v1.176.0) (2021-10-13)
+
+
+### Features
+
+* **payment:** PAYPAL-1180 bump checkout-sdk-js version ([c8011a6](https://github.com/bigcommerce/checkout-js/commit/c8011a6b51948641595803af842448aaaf8ffa78))
+
 ### [1.175.3](https://github.com/bigcommerce/checkout-js/compare/v1.175.2...v1.175.3) (2021-10-12)
 
 
