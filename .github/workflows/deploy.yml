@@ -56,12 +56,12 @@ jobs:
         run: |
           case ${{github.event.inputs.environment}} in
             [Tt][Ee][Ss][Tt]) # case-insensitive "test"
-              DAV_USER="${{secrets.DEV_DAV_USER}}" DAV_PASS="${{secrets.DEV_DAV_PASS}}" DAV_URL="${{secrets.DAV_URL}}" npm run deploy
+              DAV_USER="${{secrets.DEV_DAV_USER}}" DAV_PASS="${{secrets.DEV_DAV_PASS}}" DAV_URL="${{secrets.DEV_DAV_URL}}" npm run deploy
               ;;
             [Uu][Aa]) # case-insensitive "ua"
-              DAV_USER="${{secrets.UA_DAV_USER}}" DAV_PASS="${{secrets.UA_DAV_PASS}}" DAV_URL="${{secrets.DAV_URL}}" npm run deploy
+              DAV_USER="${{secrets.UA_DAV_USER}}" DAV_PASS="${{secrets.UA_DAV_PASS}}" DAV_URL="${{secrets.UA_DAV_URL}}" npm run deploy
               ;;
             [Pp][Rr][Oo][Dd]) # case-insensitive "prod"
-              DAV_USER="${{secrets.PROD_DAV_USER}}" DAV_PASS="${{secrets.PROD_DAV_PASS}}" DAV_URL="${{secrets.DAV_URL}}" npm run deploy
+              DAV_USER="${{secrets.PROD_DAV_USER}}" DAV_PASS="${{secrets.PROD_DAV_PASS}}" DAV_URL="${{secrets.PROD_DAV_URL}}" npm run deploy
               ;;
           esac
