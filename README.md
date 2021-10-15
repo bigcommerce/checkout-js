@@ -1,3 +1,11 @@
+# Focus Branch Information
+
+|Branch|Usage|
+|------|-----|
+|original|This is equivalent to the master branch of https://github.com/bigcommerce/checkout-js.  Fetch updates from BigCommerce to this branch **only**.  **Do NOT place code from Focus in this branch.**|
+|master|Represents code currently deployed to production.|
+|develop|Represents code currently deployed to DEV and/or UA.  Merge/rebase from 'original' to here.|
+
 # Checkout JS
 
 Checkout JS is a browser-based application providing a seamless UI for BigCommerce shoppers to complete their checkout. It is also known as [Optimized One-Page Checkout](https://support.bigcommerce.com/s/article/Optimized-Single-Page-Checkout), which is currently the recommended checkout option for all BigCommerce stores.
