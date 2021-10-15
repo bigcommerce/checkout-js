@@ -23,7 +23,12 @@ class DonationWidget extends Component<DonationWidgetProps> {
 
         return(
         <>
-        <svg height="72" viewBox="0 0 72 72" width="72" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            className="donationWigetImage"
+            height="72"
+            viewBox="0 0 72 72"
+            width="72"
+            xmlns="http://www.w3.org/2000/svg">
             <style type="text/css">
             { '\
                 .st0{fill:#7AA92432;stroke:#7AA924;stroke-width:2;}\
