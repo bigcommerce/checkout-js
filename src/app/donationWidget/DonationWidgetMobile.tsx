@@ -12,7 +12,7 @@ const DonationWidgetMobile: FunctionComponent = () => (
 
         <div className="cart-section optimizedCheckout-orderSummary-cartSection">
             <DonationWidget
-                { ...{ widgetIsMobile: false } }
+                { ...{ widgetIsMobile: true } }
             />
         </div>
     </div>);

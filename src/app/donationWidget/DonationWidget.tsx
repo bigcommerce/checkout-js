@@ -15,8 +15,8 @@ class DonationWidget extends Component<DonationWidgetProps> {
             classNames += ' donationButtonDivAside';
         }
         const donationItems: string[] = [];
-        const donationButtons = parseInt(process.env.REACT_APP_DONATION_BUTTONS ?? "1", 10);
-        const donationAmount = parseInt(process.env.REACT_APP_DONATION_AMOUNT ?? "1", 10);
+        const donationButtons = parseInt(process.env.REACT_APP_DONATION_BUTTONS ?? '1', 10);
+        const donationAmount = parseInt(process.env.REACT_APP_DONATION_AMOUNT ?? '1', 10);
         for (let idx = 1; idx <= donationButtons; idx++) {
             donationItems.push(`\$${donationAmount * idx}`);
         }
@@ -28,7 +28,8 @@ class DonationWidget extends Component<DonationWidgetProps> {
             height="72"
             viewBox="0 0 72 72"
             width="72"
-            xmlns="http://www.w3.org/2000/svg">
+            xmlns="http://www.w3.org/2000/svg"
+        >
             <style type="text/css">
             { '\
                 .st0{fill:#7AA92432;stroke:#7AA924;stroke-width:2;}\

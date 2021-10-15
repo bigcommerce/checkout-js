@@ -273,7 +273,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                     <MobileView>
                         { matched => {
                             if (matched) {
-                                return <DonationWidgetMobile />;
+                                return <LazyContainer>
+                                    <DonationWidgetMobile />
+                                </LazyContainer>;
                             }
 
                             return null;
