@@ -1,4 +1,4 @@
-.donationButtonDiv {
+.donationWidgetButtonDiv {
     align-items: center;
     display: flex;
     flex-wrap: wrap;
@@ -7,7 +7,7 @@
 
 // This really shouldn't be hard-coded, there should be a variable I can use
 // from elsewhere, but I don't see one.
-.donationButtonDivAside {
+.donationWidgetButtonDivAside {
     margin-bottom: -1.5rem;
 }
 

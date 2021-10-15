@@ -12,7 +12,7 @@ class DonationWidget extends Component<DonationWidgetProps> {
         const { widgetIsMobile } = this.props;
         let classNames = 'donationWidgetButtonDiv';
         if (!widgetIsMobile) {
-            classNames += ' donationButtonDivAside';
+            classNames += ' donationWidgetButtonDivAside';
         }
         const donationItems: string[] = [];
         const donationButtons = parseInt(process.env.REACT_APP_DONATION_BUTTONS ?? '1', 10);
@@ -24,7 +24,7 @@ class DonationWidget extends Component<DonationWidgetProps> {
         return(
         <>
         <svg
-            className="donationWigetImage"
+            className="donationWidgetImage"
             height="72"
             viewBox="0 0 72 72"
             width="72"
