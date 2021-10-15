@@ -153,6 +153,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                 id={ id }
                 name={ name }
                 onChange={ onChange }
+                placeholder={ placeholder }
                 testId={ `${id}-${ fieldType === DynamicFormFieldType.password ?
                     'password' :
                     'text' }` }

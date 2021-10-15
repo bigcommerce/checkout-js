@@ -127,7 +127,7 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                                 parentFieldName={ field.custom ?
                                     (fieldName ? `${fieldName}.customFields` : 'customFields') :
                                     fieldName }
-                                placeholder={ translatedPlaceholderId && language.translate(translatedPlaceholderId) }
+                                placeholder={ field.default ? field.default : translatedPlaceholderId && language.translate(translatedPlaceholderId) }
                             />
                         );
                     }) }
