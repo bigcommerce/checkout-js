@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.176.2](https://github.com/bigcommerce/checkout-js/compare/v1.176.1...v1.176.2) (2021-10-18)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-6081 display form field default value as placeholder ([#729](https://github.com/bigcommerce/checkout-js/issues/729)) ([4eee719](https://github.com/bigcommerce/checkout-js/commit/4eee7198f4f1a66abd9e368202910900fc4327ec))
+
 ### [1.176.1](https://github.com/bigcommerce/checkout-js/compare/v1.176.0...v1.176.1) (2021-10-13)
 
 
