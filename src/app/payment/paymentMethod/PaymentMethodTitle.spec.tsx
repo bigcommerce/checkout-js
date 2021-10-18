@@ -33,7 +33,6 @@ describe('PaymentMethodTitle', () => {
         klarna: '/img/payment-providers/klarna-header.png',
         laybuy: '/img/payment-providers/laybuy-checkout-header.png',
         masterpass: 'https://masterpass.com/dyn/img/acc/global/mp_mark_hor_blk.svg',
-        opy: '/img/payment-providers/opy.svg',
         paypal: '/img/payment-providers/paypalpaymentsprouk.png',
         quadpay: '/img/payment-providers/quadpay.png',
         sezzle: '/img/payment-providers/sezzle-checkout-header.png',
@@ -125,7 +124,6 @@ describe('PaymentMethodTitle', () => {
         const methods = [
             { id: PaymentMethodId.Amazon, method: 'widget' },
             { id: PaymentMethodId.Klarna, method: 'widget' },
-            { id: PaymentMethodId.Opy, method: 'credit-card' },
             { id: PaymentMethodId.PaypalCommerce, method: 'widget' },
         ];
 
@@ -316,5 +314,38 @@ describe('PaymentMethodTitle', () => {
         component = checkoutcomTitleComponent('checkoutcom');
         expect(component.find('[data-test="payment-method-name"]').text())
             .toEqual(defaultProps.method.config.displayName);
+    });
+
+    it('renders logo based on provider\'s config', () => {
+        const methods = [
+          {
+            id: PaymentMethodId.Opy,
+            config: {
+              ...defaultProps.method.config,
+              checkoutLogo: 'opy_gray.svg',
+            },
+          },
+        ];
+
+        methods.forEach(method => {
+            const component = mount(<PaymentMethodTitleTest
+                { ...defaultProps }
+                method={ {
+                    ...defaultProps.method,
+                    ...method,
+                } }
+            />);
+
+            expect(component.find('[data-test="payment-method-logo"]').prop('src'))
+                .toEqual(`${config.cdnPath}/img/payment-providers/${method.config.checkoutLogo}`);
+        });
+    });
+
+    it('renders default logo for Openpay', () => {
+        defaultProps.method.id = PaymentMethodId.Opy;
+        const component = mount(<PaymentMethodTitleTest { ...defaultProps } />);
+
+        expect(component.find('[data-test="payment-method-logo"]').prop('src'))
+            .toEqual(`${config.cdnPath}/img/payment-providers/opy_default.svg`);
     });
 });
