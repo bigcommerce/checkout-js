@@ -12,6 +12,7 @@ exports[`GoogleAutocomplete Component renders input with initial value 1`] = `
     aria-labelledby="downshift-0-label"
     autocomplete="off"
     id="downshift-0-input"
+    placeholder="NO PO BOX"
     value="fo"
   />
 </div>

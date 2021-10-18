@@ -79,6 +79,8 @@ describe('AddressForm Component', () => {
                 id: 'field_14',
             })
         );
+
+        expect(component.find(DynamicFormField).at(2).props().placeholder).toEqual('NO PO BOX');
     });
 
     it('renders calls onChange when a field is updated', () => {

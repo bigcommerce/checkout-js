@@ -104,7 +104,7 @@ export function getFormFields(): FormField[] {
         },
         {
             custom: false,
-            default: '',
+            default: 'NO PO BOX',
             id: 'field_18',
             label: 'Address Line 1',
             name: 'address1',
