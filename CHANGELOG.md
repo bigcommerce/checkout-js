@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.178.0](https://github.com/bigcommerce/checkout-js/compare/v1.177.0...v1.178.0) (2021-10-21)
+
+
+### Features
+
+* **payment:** INT-4953 Change text on Digital River title checkout component ([5ba73cd](https://github.com/bigcommerce/checkout-js/commit/5ba73cde00ba28609fd04643c569b97aa498610d))
+
+
+### Bug Fixes
+
+* **payment:** INT-4961 Bolt fraud only payment method name on checkout ([4d8e671](https://github.com/bigcommerce/checkout-js/commit/4d8e671721a55d462e8a5f56fd24f969266869a6))
+* **payment:** INT-4961 Specs ([bc7a323](https://github.com/bigcommerce/checkout-js/commit/bc7a32395751760566759392724db4e57e82b77a))
+
 ## [1.177.0](https://github.com/bigcommerce/checkout-js/compare/v1.176.2...v1.177.0) (2021-10-21)
 
 
