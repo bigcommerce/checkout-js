@@ -90,8 +90,8 @@ function getPaymentMethodTitle(
                 titleText: '',
             },
             [PaymentMethodId.DigitalRiver]: {
-                logoUrl: cdnPath('/img/payment-providers/digital-river-header.png'),
-                titleText: '',
+                logoUrl: '',
+                titleText: language.translate('payment.digitalriver_display_name_text'),
             },
             [PaymentMethodId.Klarna]: {
                 logoUrl: cdnPath('/img/payment-providers/klarna-header.png'),
