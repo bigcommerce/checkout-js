@@ -60,8 +60,6 @@ class ShippingOptionsForm extends PureComponent<ShippingOptionsFormProps & Formi
 
         return <>
             { consignments
-                .slice(0, isMultiShippingMode ? undefined : 1)
-                .sort((a, b) => (a.id > b.id ? -1 : 1))
                 .map(consignment => (
                 <div className="shippingOptions-container form-fieldset" key={ consignment.id }>
                         { isMultiShippingMode && this.renderConsignment(consignment) }

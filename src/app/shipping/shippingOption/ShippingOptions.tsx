@@ -1,7 +1,9 @@
 import { Cart, CheckoutSelectors, Consignment } from '@bigcommerce/checkout-sdk';
+import { map, sortBy, uniq } from 'lodash';
 import { createSelector } from 'reselect';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
+import getShippableLineItems from '../getShippableLineItems';
 import getShippingMethodId from '../getShippingMethodId';
 
 import ShippingOptionsForm from './ShippingOptionsForm';
@@ -49,10 +51,13 @@ const isLoadingSelector = createSelector(
     }
 );
 
-function mapToShippingOptions(
+export function mapToShippingOptions(
     { checkoutService, checkoutState }: CheckoutContextProps,
     props: ShippingOptionsProps
 ): WithCheckoutShippingOptionsProps | null {
+    const {
+        isMultiShippingMode,
+    } = props;
     const {
         data: {
             getCart,
@@ -66,11 +71,20 @@ function mapToShippingOptions(
         },
     } = checkoutState;
 
-    const consignments = getConsignments() || [];
     const customer = getCustomer();
     const cart = getCart();
     const config = getConfig();
     const checkout = getCheckout();
+
+    let consignments: Consignment[];
+    const unsortedConsignments = getConsignments() ||  [];
+    if (isMultiShippingMode) {
+        const shippableItems = getShippableLineItems(cart as Cart, unsortedConsignments);
+        const consignmentsOrder = uniq(map(shippableItems, 'consignment.id'));
+        consignments = sortBy(unsortedConsignments, consignment => consignmentsOrder.indexOf(consignment.id));
+    } else {
+        consignments = unsortedConsignments.slice(0, 1);
+    }
 
     if (!config || !checkout || !customer || !cart) {
         return null;
