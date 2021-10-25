@@ -76,18 +76,18 @@ export function mapToShippingOptions(
     const config = getConfig();
     const checkout = getCheckout();
 
+    if (!config || !checkout || !customer || !cart) {
+        return null;
+    }
+
     let consignments: Consignment[];
     const unsortedConsignments = getConsignments() ||  [];
-    if (isMultiShippingMode) {
-        const shippableItems = getShippableLineItems(cart as Cart, unsortedConsignments);
+    if (isMultiShippingMode && unsortedConsignments.length > 1) {
+        const shippableItems = getShippableLineItems(cart, unsortedConsignments);
         const consignmentsOrder = uniq(map(shippableItems, 'consignment.id'));
         consignments = sortBy(unsortedConsignments, consignment => consignmentsOrder.indexOf(consignment.id));
     } else {
         consignments = unsortedConsignments.slice(0, 1);
-    }
-
-    if (!config || !checkout || !customer || !cart) {
-        return null;
     }
 
     const methodId = getShippingMethodId(checkout);
