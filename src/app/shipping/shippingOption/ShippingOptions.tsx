@@ -51,13 +51,17 @@ const isLoadingSelector = createSelector(
     }
 );
 
+const sortConsignments: (cart: Cart, unsortedConsignments: Consignment[]) => Consignment[] = (cart, unsortedConsignments) => {
+    const shippableItems = getShippableLineItems(cart, unsortedConsignments);
+    const consignmentsOrder = uniq(map(shippableItems, 'consignment.id'));
+
+    return sortBy(unsortedConsignments, consignment => consignmentsOrder.indexOf(consignment.id));
+};
+
 export function mapToShippingOptions(
     { checkoutService, checkoutState }: CheckoutContextProps,
     props: ShippingOptionsProps
 ): WithCheckoutShippingOptionsProps | null {
-    const {
-        isMultiShippingMode,
-    } = props;
     const {
         data: {
             getCart,
@@ -80,14 +84,9 @@ export function mapToShippingOptions(
         return null;
     }
 
-    let consignments: Consignment[];
-    const unsortedConsignments = getConsignments() ||  [];
-    if (isMultiShippingMode && unsortedConsignments.length > 1) {
-        const shippableItems = getShippableLineItems(cart, unsortedConsignments);
-        const consignmentsOrder = uniq(map(shippableItems, 'consignment.id'));
-        consignments = sortBy(unsortedConsignments, consignment => consignmentsOrder.indexOf(consignment.id));
-    } else {
-        consignments = unsortedConsignments.slice(0, 1);
+    let consignments: Consignment[] = getConsignments() ||  [];
+    if (consignments.length > 1) {
+        consignments = sortConsignments(cart, consignments);
     }
 
     const methodId = getShippingMethodId(checkout);

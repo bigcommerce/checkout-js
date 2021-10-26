@@ -65,13 +65,6 @@ describe('mapToShippingProps()', () => {
         })).toEqual(null);
     });
 
-    it('returns one consignment when multi-shipping is off', () => {
-        expect(mapToShippingOptions(checkoutContextProps, {
-            shouldShowShippingOptions: true,
-            isMultiShippingMode: false,
-        })?.consignments?.length).toEqual(1);
-    });
-
     it('returns sorted consignments in respect of line items order', () => {
         const unsortedConsignments = checkoutService.getState().data.getConsignments();
         if (unsortedConsignments) {
