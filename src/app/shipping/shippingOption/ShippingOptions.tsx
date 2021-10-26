@@ -51,7 +51,10 @@ const isLoadingSelector = createSelector(
     }
 );
 
-const sortConsignments: (cart: Cart, unsortedConsignments: Consignment[]) => Consignment[] = (cart, unsortedConsignments) => {
+const sortConsignments = (cart: Cart, unsortedConsignments: Consignment[]) => {
+    if (unsortedConsignments.length < 2) {
+        return unsortedConsignments;
+    }
     const shippableItems = getShippableLineItems(cart, unsortedConsignments);
     const consignmentsOrder = uniq(map(shippableItems, 'consignment.id'));
 
@@ -84,11 +87,7 @@ export function mapToShippingOptions(
         return null;
     }
 
-    let consignments: Consignment[] = getConsignments() ||  [];
-    if (consignments.length > 1) {
-        consignments = sortConsignments(cart, consignments);
-    }
-
+    const consignments = sortConsignments(cart, getConsignments() ||  []);
     const methodId = getShippingMethodId(checkout);
     const { shippingQuoteFailedMessage } = config.checkoutSettings;
 
