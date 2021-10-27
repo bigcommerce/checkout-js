@@ -1,7 +1,9 @@
 import { Cart, CheckoutSelectors, Consignment } from '@bigcommerce/checkout-sdk';
+import { map, sortBy, uniq } from 'lodash';
 import { createSelector } from 'reselect';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
+import getShippableLineItems from '../getShippableLineItems';
 import getShippingMethodId from '../getShippingMethodId';
 
 import ShippingOptionsForm from './ShippingOptionsForm';
@@ -49,7 +51,17 @@ const isLoadingSelector = createSelector(
     }
 );
 
-function mapToShippingOptions(
+const sortConsignments = (cart: Cart, unsortedConsignments: Consignment[]): Consignment[] => {
+    if (unsortedConsignments.length < 2) {
+        return unsortedConsignments;
+    }
+    const shippableItems = getShippableLineItems(cart, unsortedConsignments);
+    const consignmentsOrder = uniq(map(shippableItems, 'consignment.id'));
+
+    return sortBy(unsortedConsignments, consignment => consignmentsOrder.indexOf(consignment.id));
+};
+
+export function mapToShippingOptions(
     { checkoutService, checkoutState }: CheckoutContextProps,
     props: ShippingOptionsProps
 ): WithCheckoutShippingOptionsProps | null {
@@ -66,7 +78,6 @@ function mapToShippingOptions(
         },
     } = checkoutState;
 
-    const consignments = getConsignments() || [];
     const customer = getCustomer();
     const cart = getCart();
     const config = getConfig();
@@ -76,6 +87,7 @@ function mapToShippingOptions(
         return null;
     }
 
+    const consignments = sortConsignments(cart, getConsignments() ||  []);
     const methodId = getShippingMethodId(checkout);
     const { shippingQuoteFailedMessage } = config.checkoutSettings;
 
