@@ -51,7 +51,7 @@ const isLoadingSelector = createSelector(
     }
 );
 
-const sortConsignments = (cart: Cart, unsortedConsignments: Consignment[]) => {
+const sortConsignments = (cart: Cart, unsortedConsignments: Consignment[]): Consignment[] => {
     if (unsortedConsignments.length < 2) {
         return unsortedConsignments;
     }
