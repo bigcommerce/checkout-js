@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.178.4](https://github.com/bigcommerce/checkout-js/compare/v1.178.3...v1.178.4) (2021-10-27)
+
+
+### Bug Fixes
+
+* **payment:** BOLT-74 bolt checkout button on mobile ([cf1a514](https://github.com/bigcommerce/checkout-js/commit/cf1a514e41bcc11460804c34721fc423b46d9157))
+
 ### [1.178.3](https://github.com/bigcommerce/checkout-js/compare/v1.178.2...v1.178.3) (2021-10-27)
 
 
