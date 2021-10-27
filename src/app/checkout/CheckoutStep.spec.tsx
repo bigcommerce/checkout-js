@@ -3,13 +3,21 @@ import { noop } from 'lodash';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 
-import { MOBILE_MAX_WIDTH } from '../ui/responsive';
+import { isMobileView, MOBILE_MAX_WIDTH } from '../ui/responsive';
 
 import CheckoutStep, { CheckoutStepProps } from './CheckoutStep';
 import CheckoutStepHeader from './CheckoutStepHeader';
 import CheckoutStepType from './CheckoutStepType';
 
 jest.useFakeTimers();
+jest.mock('../ui/responsive', () => {
+    const original = jest.requireActual('../ui/responsive');
+
+    return {
+        ...original,
+        isMobileView: jest.fn(),
+    };
+});
 
 describe('CheckoutStep', () => {
     let defaultProps: CheckoutStepProps;
@@ -183,5 +191,20 @@ describe('CheckoutStep', () => {
 
         expect(component.find(CSSTransition))
             .toHaveLength(0);
+    });
+
+    it('changes isClosed for mobile', () => {
+        isMobile = true;
+        isMobileView.mockImplementation(() => isMobile);
+
+        const component = mount(<CheckoutStep { ...defaultProps } />);
+
+        expect(component.state('isClosed')).toBe(false);
+
+        component
+            .setProps({ isActive: false })
+            .update();
+
+        expect(component.state('isClosed')).toBe(true);
     });
 });

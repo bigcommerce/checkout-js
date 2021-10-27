@@ -44,9 +44,14 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
 
     componentDidUpdate(prevProps: Readonly<CheckoutStepProps>): void {
         const { isActive } = this.props;
+        const { isClosed } = this.state;
 
         if (isActive && isActive !== prevProps.isActive) {
             this.focusStep();
+        }
+
+        if (!isActive && !isClosed && isMobileView()) {
+            this.setState({ isClosed: true });
         }
     }
 
