@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.178.3](https://github.com/bigcommerce/checkout-js/compare/v1.178.2...v1.178.3) (2021-10-27)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-4288 sort consignments based on line items order ([#735](https://github.com/bigcommerce/checkout-js/issues/735)) ([c9be55d](https://github.com/bigcommerce/checkout-js/commit/c9be55db7bba83e66eab450af3692a1eebf2803f))
+* **checkout:** CHECKOUT-5322 scroll to earliest error on iOS ([#732](https://github.com/bigcommerce/checkout-js/issues/732)) ([fd3c155](https://github.com/bigcommerce/checkout-js/commit/fd3c1556385a1213900bc20b3047e3bae7f9272b))
+
 ### [1.178.2](https://github.com/bigcommerce/checkout-js/compare/v1.178.1...v1.178.2) (2021-10-25)
 
 ### [1.178.1](https://github.com/bigcommerce/checkout-js/compare/v1.178.0...v1.178.1) (2021-10-22)
