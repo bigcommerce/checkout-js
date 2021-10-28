@@ -1,4 +1,4 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -7,14 +7,11 @@ import React, { FunctionComponent } from 'react';
 import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
-import { getPaymentMethod } from '../payment-methods.mock';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
-import PaymentMethodId from './PaymentMethodId';
 
 describe('when using Barclaycard payment', () => {
-    let method: PaymentMethod;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
     let defaultProps: PaymentMethodProps;
@@ -23,14 +20,21 @@ describe('when using Barclaycard payment', () => {
 
     beforeEach(() => {
         defaultProps = {
-            method: getPaymentMethod(),
+            method: {
+                id: 'barclaycard',
+                method: 'barclaycard',
+                supportedCards: [],
+                config: {},
+                type: 'card',
+                gateway: 'barclaycard',
+            },
             onUnhandledError: jest.fn(),
+            isEmbedded: true,
         };
 
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
-        method = { ...getPaymentMethod(), id: PaymentMethodId.Amazon };
 
         jest.spyOn(checkoutState.data, 'getConfig')
             .mockReturnValue(getStoreConfig());
@@ -55,38 +59,15 @@ describe('when using Barclaycard payment', () => {
         );
     });
 
-    it('renders as hosted widget method', () => {
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+    it('should mount Barclaycard', () => {
+        const container = mount(<PaymentMethodTest { ...defaultProps } />);
         const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
-
-        expect(component.props())
-            .toEqual(expect.objectContaining({
-                containerId: 'paymentWidget',
-                deinitializePayment: expect.any(Function),
-                initializePayment: expect.any(Function),
-                isSignInRequired: true,
-                method,
-            }));
+        expect(component.prop('containerId')).toBe('barclaycard-container');
     });
 
-    it('initializes method with required config', () => {
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
-        const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+    it('renders as hosted widget method', () => {
+        const container = mount(<PaymentMethodTest { ...defaultProps } />);
 
-        component.prop('initializePayment')({
-            methodId: method.id,
-            gatewayId: method.gateway,
-        });
-
-        expect(checkoutService.initializePayment)
-            .toHaveBeenCalledWith(expect.objectContaining({
-                methodId: method.id,
-                gatewayId: method.gateway,
-                [method.id]: {
-                    container: 'paymentWidget',
-                    onError: expect.any(Function),
-                    onPaymentSelect: expect.any(Function),
-                },
-            }));
+        expect(container.find(HostedWidgetPaymentMethod)).toBeTruthy();
     });
 });
