@@ -13,6 +13,7 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../../loc
 import { getPaymentMethod } from '../payment-methods.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
+import BarclaycardPaymentMethod from './BarclaycardPaymentMethod';
 import CheckoutcomCustomPaymentMethod, { CheckoutcomCustomPaymentMethodProps } from './CheckoutcomCustomPaymentMethod';
 import CreditCardPaymentMethod, { CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
@@ -451,6 +452,27 @@ describe('PaymentMethod', () => {
                     methodId: method.id,
                     gatewayId: method.gateway,
                 }));
+        });
+    });
+
+    describe('when using barclaycard payment method', () => {
+        let method: PaymentMethod;
+
+        beforeEach(() => {
+            method = {
+                id: 'barclaycard',
+                method: 'barclaycard',
+                supportedCards: [],
+                config: {},
+                type: 'card',
+                gateway: 'barclaycard',
+            };
+        });
+
+        it('should render barclay PaymentMethod', () => {
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+
+            expect(container.find(BarclaycardPaymentMethod)).toBeTruthy();
         });
     });
 });
