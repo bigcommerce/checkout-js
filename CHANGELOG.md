@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.178.5](https://github.com/bigcommerce/checkout-js/compare/v1.178.4...v1.178.5) (2021-11-02)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-6082 localized message for the payment step initialization failure ([#739](https://github.com/bigcommerce/checkout-js/issues/739)) ([ced442a](https://github.com/bigcommerce/checkout-js/commit/ced442ab7c29181b0828575864a35c63c1189382))
+
 ### [1.178.4](https://github.com/bigcommerce/checkout-js/compare/v1.178.3...v1.178.4) (2021-10-27)
 
 
