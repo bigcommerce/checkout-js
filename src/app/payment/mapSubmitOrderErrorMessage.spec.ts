@@ -5,6 +5,12 @@ import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmi
 const translate = getLanguageService().translate;
 
 describe('mapSubmitOrderErrorMessage()', () => {
+    it('returns generic message when payment method is not initialized', () => {
+        const message = mapSubmitOrderErrorMessage({ type: 'not_initialized' }, translate, false);
+
+        expect(message).toEqual(translate('payment.payment_error'));
+    });
+
     it('returns correct message when payment is cancelled', () => {
         const message = mapSubmitOrderErrorMessage({ type: 'payment_cancelled' }, translate, false);
 

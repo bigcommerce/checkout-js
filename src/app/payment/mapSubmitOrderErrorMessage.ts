@@ -7,6 +7,9 @@ export default function mapSubmitOrderErrorMessage(
     shouldLocalise: boolean
 ): string {
     switch (error.type) {
+        case 'not_initialized':
+            return translate('payment.payment_error');
+
         case 'payment_cancelled':
             return translate('payment.payment_cancelled');
 
