@@ -107,16 +107,10 @@
 // Checkout Step Header
 // -----------------------------------------------------------------------------
 .stepHeader {
-    padding: spacing("single") 0;
-
-    &.is-readonly {
-        cursor: default;
-    }
-}
-
-.stepHeader-row {
+    align-items: top;
     display: flex;
     flex-wrap: wrap;
+    padding: spacing("single") 0;
 
     @include breakpoint("small") {
         flex-wrap: nowrap;
@@ -124,6 +118,10 @@
 
     @include breakpoint("large") {
         flex-wrap: nowrap;
+    }
+
+    &.is-readonly {
+        cursor: default;
     }
 }
 
@@ -176,7 +174,7 @@
     }
 }
 
-.stepHeader-suggestion {
+.checkout-suggestion {
     margin: 0;
 
     @include breakpoint("small") {
