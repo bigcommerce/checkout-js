@@ -1,4 +1,5 @@
 enum PaymentMethodType {
+    ApplePay = 'applepay',
     Barclaycard = 'barclaycard',
     Chasepay = 'chasepay',
     CreditCard = 'credit-card',

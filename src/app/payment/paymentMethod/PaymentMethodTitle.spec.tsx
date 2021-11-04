@@ -28,6 +28,7 @@ describe('PaymentMethodTitle', () => {
         'visa-checkout': '/img/payment-providers/visa-checkout.png',
         afterpay: '/img/payment-providers/afterpay-badge-blackonmint.png',
         amazon: '/img/payment-providers/amazon-header.png',
+        applepay: '/modules/checkout/applepay/images/applepay-header@2x.png',
         chasepay: '/img/payment-providers/chase-pay.png',
         googlepay: '/img/payment-providers/google-pay.png',
         klarna: '/img/payment-providers/klarna-header.png',
@@ -94,6 +95,7 @@ describe('PaymentMethodTitle', () => {
 
     it('renders logo based on their method type', () => {
         const methodTypes = [
+            PaymentMethodType.ApplePay,
             PaymentMethodType.Chasepay,
             PaymentMethodType.GooglePay,
             PaymentMethodType.Masterpass,

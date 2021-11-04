@@ -6,6 +6,7 @@ enum PaymentMethodId {
     Afterpay = 'afterpay',
     Amazon = 'amazon',
     AmazonPay = 'amazonpay',
+    ApplePay = 'applepay',
     Barclaycard = 'barclaycard',
     BlueSnapV2 = 'bluesnapv2',
     Boleto = 'boleto',
