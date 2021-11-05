@@ -6,3 +6,4 @@ export { default as PaymentMethodList, PaymentMethodListProps } from './PaymentM
 export { default as SignOutLink } from './SignOutLink';
 export { default as getUniquePaymentMethodId, parseUniquePaymentMethodId } from './getUniquePaymentMethodId';
 export { default as getPaymentMethodName } from './getPaymentMethodName';
+export { default as getPaymentMethodDisplayName } from './getPaymentMethodDisplayName';

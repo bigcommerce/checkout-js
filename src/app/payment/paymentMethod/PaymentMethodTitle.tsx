@@ -9,6 +9,7 @@ import { withLanguage, WithLanguageProps } from '../../locale';
 import { mapFromPaymentMethodCardType, CreditCardIconList } from '../creditCard';
 import { PaymentFormValues } from '../PaymentForm';
 
+import getPaymentMethodDisplayName from './getPaymentMethodDisplayName';
 import getPaymentMethodName from './getPaymentMethodName';
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodType from './PaymentMethodType';
@@ -30,6 +31,7 @@ function getPaymentMethodTitle(
 
     return method => {
         const methodName = getPaymentMethodName(language)(method);
+        const methodDisplayName = getPaymentMethodDisplayName(language)(method);
         // TODO: API could provide the data below so UI can read simply read it.
         // However, I'm not sure how we deal with translation yet. TBC.
         const customTitles: { [key: string]: { logoUrl: string; titleText: string } } = {
@@ -51,7 +53,7 @@ function getPaymentMethodTitle(
             },
             [PaymentMethodId.PaypalCommerceAlternativeMethod]: {
                 logoUrl: method.logoUrl || '',
-                titleText: (method.logoUrl ? '' : method.config.displayName) || '',
+                titleText: method.logoUrl ? '' : methodDisplayName,
             },
             [PaymentMethodType.VisaCheckout]: {
                 logoUrl: cdnPath('/img/payment-providers/visa-checkout.png'),
@@ -79,7 +81,7 @@ function getPaymentMethodTitle(
             },
             [PaymentMethodId.Bolt]: {
                 logoUrl: '',
-                titleText: language.translate('payment.credit_card_text'),
+                titleText: methodDisplayName,
             },
             [PaymentMethodId.ChasePay]: {
                 logoUrl: cdnPath('/img/payment-providers/chase-pay.png'),
@@ -99,7 +101,7 @@ function getPaymentMethodTitle(
             },
             [PaymentMethodId.Klarna]: {
                 logoUrl: cdnPath('/img/payment-providers/klarna-header.png'),
-                titleText: method.config && method.config.displayName || '',
+                titleText: methodDisplayName,
             },
             [PaymentMethodId.Laybuy]: {
                 logoUrl: cdnPath('/img/payment-providers/laybuy-checkout-header.png'),
@@ -135,7 +137,7 @@ function getPaymentMethodTitle(
             },
             [PaymentMethodId.AdyenV2]: {
                 logoUrl: `https://checkoutshopper-live.adyen.com/checkoutshopper/images/logos/${(method.method === 'scheme') ? 'card' : method.method}.svg`,
-                titleText: (method.config.displayName === 'Credit Card' ? language.translate('payment.adyen_credit_debit_card_text') : method.config.displayName) || '',
+                titleText: methodDisplayName,
             },
             [PaymentMethodId.Mollie]: {
                 logoUrl: method.method === 'credit_card' ? '' : cdnPath(`/img/payment-providers/mollie_${method.method}.svg`),
