@@ -1,3 +1,4 @@
+import { noop } from 'lodash';
 import React, { useCallback, useContext, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
@@ -18,7 +19,7 @@ export enum DigitalRiverClasses {
 const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProps & WithLanguageProps> = ({
     initializePayment,
     language,
-    onUnhandledError,
+    onUnhandledError = noop,
     formik: { submitForm },
     ...rest
 }) => {
@@ -53,11 +54,16 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
         },
     }), [initializePayment, containerId, isVaultingEnabled, setSubmitted, submitForm, onUnhandledError, language]);
 
+    const onError = (error: Error) => {
+        onUnhandledError?.(error);
+    };
+
     return <HostedDropInPaymentMethod
         { ...rest }
         containerId={ containerId }
         hideVerificationFields
         initializePayment={ initializeDigitalRiverPayment }
+        onUnhandledError={ onError }
     />;
 };
 
