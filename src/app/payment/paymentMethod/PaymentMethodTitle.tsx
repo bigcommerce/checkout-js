@@ -73,6 +73,10 @@ function getPaymentMethodTitle(
                 logoUrl: cdnPath('/img/payment-providers/amazon-header.png'),
                 titleText: '',
             },
+            [PaymentMethodId.ApplePay]: {
+                logoUrl: cdnPath('/modules/checkout/applepay/images/applepay-header@2x.png'),
+                titleText: '',
+            },
             [PaymentMethodId.Bolt]: {
                 logoUrl: '',
                 titleText: language.translate('payment.credit_card_text'),

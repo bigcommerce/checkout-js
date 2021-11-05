@@ -74,6 +74,10 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
         return <AdyenV2PaymentMethod { ...props } />;
     }
 
+    if (method.id === PaymentMethodId.ApplePay) {
+        return null;
+    }
+
     if (method.id === PaymentMethodId.SquareV2) {
         return <SquarePaymentMethod { ...props } />;
     }
