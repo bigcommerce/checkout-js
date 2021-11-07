@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.179.0](https://github.com/bigcommerce/checkout-js/compare/v1.178.5...v1.179.0) (2021-11-07)
+
+
+### Features
+
+* **payment:** CHECKOUT-6067 Display applepay in payment step of checkout ([#744](https://github.com/bigcommerce/checkout-js/issues/744)) ([3c49607](https://github.com/bigcommerce/checkout-js/commit/3c49607c4902bd58e33d15cf34dfe34b7a93136c))
+* **payment:** INT-4917 Openpay: display the saved logo on the settings page ([0bc8828](https://github.com/bigcommerce/checkout-js/commit/0bc88286b89ae192f282646e29cbd55128d1075f))
+
 ### [1.178.5](https://github.com/bigcommerce/checkout-js/compare/v1.178.4...v1.178.5) (2021-11-02)
 
 
