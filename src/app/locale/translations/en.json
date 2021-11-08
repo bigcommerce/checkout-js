@@ -323,7 +323,7 @@
                 "incorrect_number": "Your card details could not be verified. Please double check them and try again.",
                 "incorrect_zip": "Your billing address couldn't be verified. Please check your billing address details and try again.",
                 "insufficient_funds": "Payment was declined. Please contact your bank.",
-                "invalid_address": "Unable to process the payment because invalid data was supplied with the transaction.",
+                "invalid_address": "Your billing address couldn't be verified. Please check your billing address details and try again.",
                 "invalid_amount": "There was an error while processing your payment. Please try again or contact us.",
                 "invalid_authorization_code": "There was an error while processing your payment. Please try again or contact us.",
                 "invalid_create_instrument_request": "Unable to process the payment because invalid data was supplied with the transaction.",

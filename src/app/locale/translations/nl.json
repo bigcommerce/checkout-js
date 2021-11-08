@@ -311,7 +311,7 @@
                 "incorrect_number": "Uw kaartgegevens kunnen niet worden geverifieerd. Controleer uw gegevens en probeer het opnieuw.",
                 "incorrect_zip": "Uw factuuradres kan niet worden geverifieerd. Controleer uw factuuradresgegevens en probeer het opnieuw.",
                 "insufficient_funds": "Betaling is geweigerd. Neem contact op met uw bank.",
-                "invalid_address": "Kan de betaling niet verwerken omdat er ongeldige gegevens zijn opgegeven bij de transactie.",
+                "invalid_address": "Uw factuuradres kan niet worden geverifieerd. Controleer uw factuuradresgegevens en probeer het opnieuw.",
                 "invalid_amount": "Er is een fout opgetreden bij het verwerken van uw betaling. Probeer het opnieuw of neem contact met ons op.",
                 "invalid_authorization_code": "Er is een fout opgetreden bij het verwerken van uw betaling. Probeer het opnieuw of neem contact met ons op.",
                 "invalid_create_instrument_request": "Kan de betaling niet verwerken omdat er ongeldige gegevens zijn opgegeven bij de transactie.",

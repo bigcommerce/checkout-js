@@ -311,7 +311,7 @@
                 "incorrect_number": "Ihre Kartendaten konnten nicht verifiziert werden. Bitte überprüfen Sie Ihre Angaben noch einmal ganz genau und versuchen Sie es erneut.",
                 "incorrect_zip": "Ihre Rechnungsadresse konnte nicht verifiziert werden. Bitte überprüfen Sie die Angaben Ihrer Rechnungsadresse und versuchen Sie es erneut.",
                 "insufficient_funds": "Die Zahlung wurde abgelehnt. Bitte wenden Sie sich an Ihre Bank.",
-                "invalid_address": "Die Zahlung konnte nicht verarbeitet werden, weil bei der Transaktion ungültige Daten angegeben wurden.",
+                "invalid_address": "Ihre Rechnungsadresse konnte nicht verifiziert werden. Bitte überprüfen Sie die Angaben Ihrer Rechnungsadresse und versuchen Sie es erneut.",
                 "invalid_amount": "Bei der Verarbeitung Ihrer Zahlung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder nehmen Sie Kontakt zu uns auf.",
                 "invalid_authorization_code": "Bei der Verarbeitung Ihrer Zahlung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder nehmen Sie Kontakt zu uns auf.",
                 "invalid_create_instrument_request": "Die Zahlung konnte nicht verarbeitet werden, weil bei der Transaktion ungültige Daten angegeben wurden.",

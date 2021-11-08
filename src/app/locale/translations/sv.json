@@ -311,7 +311,7 @@
                 "incorrect_number": "Dina kortuppgifter kunde inte verifieras. Kontrollera dem och försök igen.",
                 "incorrect_zip": "Din faktureringsadress kunde inte verifieras. Kontrollera din faktureringsadress och försök igen.",
                 "insufficient_funds": "Betalningen nekades. Kontakta din bank.",
-                "invalid_address": "Det gick inte att bearbeta betalningen eftersom att ogiltigt e-postmeddelande levererades med transaktionen.",
+                "invalid_address": "Din faktureringsadress kunde inte verifieras. Kontrollera din faktureringsadress och försök igen.",
                 "invalid_amount": "Det uppstod ett fel när betalningen bearbetades. Försök igen eller kontakta oss.",
                 "invalid_authorization_code": "Det uppstod ett fel när betalningen bearbetades. Försök igen eller kontakta oss.",
                 "invalid_create_instrument_request": "Det gick inte att bearbeta betalningen eftersom att ogiltigt e-postmeddelande levererades med transaktionen.",
