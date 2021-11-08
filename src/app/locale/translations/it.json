@@ -311,7 +311,7 @@
                 "incorrect_number": "Impossibile verificare i dettagli della tua carta. Controlla i dati e riprova.",
                 "incorrect_zip": "Impossibile verificare l'indirizzo di fatturazione. Controlla i dettagli e riprova.",
                 "insufficient_funds": "Pagamento rifiutato. Contatta la tua banca.",
-                "invalid_address": "Non è stato possibile elaborare il pagamento perché i dati forniti per la transazione non sono validi.",
+                "invalid_address": "Impossibile verificare l'indirizzo di fatturazione. Controlla i dettagli e riprova.",
                 "invalid_amount": "Si è verificato un problema durante l'elaborazione del pagamento. Riprova o contattaci.",
                 "invalid_authorization_code": "Si è verificato un problema durante l'elaborazione del pagamento. Riprova o contattaci.",
                 "invalid_create_instrument_request": "Non è stato possibile elaborare il pagamento perché i dati forniti per la transazione non sono validi.",

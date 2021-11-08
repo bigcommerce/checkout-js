@@ -311,7 +311,7 @@
                 "incorrect_number": "Impossible de confirmer les informations de votre carte. Veuillez les vérifier à nouveau et réessayer.",
                 "incorrect_zip": "Impossible de confirmer votre adresse de facturation. Veuillez vérifier votre adresse de facturation et réessayer.",
                 "insufficient_funds": "Le paiement a été refusé. Veuillez contacter votre banque.",
-                "invalid_address": "Impossible de traiter le paiement car des données invalides ont été indiquées lors de la transaction.",
+                "invalid_address": "Impossible de confirmer votre adresse de facturation. Veuillez vérifier votre adresse de facturation et réessayer.",
                 "invalid_amount": "Une erreur s'est produite lors du traitement de votre paiement. Veuillez réessayer, ou contactez-nous.",
                 "invalid_authorization_code": "Une erreur s'est produite lors du traitement de votre paiement. Veuillez réessayer, ou contactez-nous.",
                 "invalid_create_instrument_request": "Impossible de traiter le paiement car des données invalides ont été indiquées lors de la transaction.",
