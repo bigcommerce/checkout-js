@@ -19,8 +19,10 @@ const FormFieldError: FunctionComponent<FormFieldErrorProps> = ({
         >
             <li className="form-field-error">
                 <label
+                    aria-live="polite"
                     className="form-inlineMessage"
                     htmlFor={ name }
+                    role="alert"
                 >
                     { message }
                 </label>
