@@ -63,8 +63,5 @@ describe('FormFieldError', () => {
 
         expect(component.find('.form-field-errors').text())
             .toEqual('Invalid');
-
-        expect(component)
-            .toMatchSnapshot();
     });
 });
