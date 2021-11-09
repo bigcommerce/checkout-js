@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.181.0](https://github.com/bigcommerce/checkout-js/compare/v1.180.1...v1.181.0) (2021-11-09)
+
+
+### Features
+
+* **payment:** BOLT-92 displays display name value that cames from method config ([5dc87d2](https://github.com/bigcommerce/checkout-js/commit/5dc87d29260eff98a61e46626cde0be9fe5fba74))
+
 ### [1.180.1](https://github.com/bigcommerce/checkout-js/compare/v1.180.0...v1.180.1) (2021-11-09)
 
 
