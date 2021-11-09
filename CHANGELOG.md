@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.180.1](https://github.com/bigcommerce/checkout-js/compare/v1.180.0...v1.180.1) (2021-11-09)
+
+
+### Bug Fixes
+
+* **payment:** BOLT-77 Fix the issue with store styling ([5013789](https://github.com/bigcommerce/checkout-js/commit/501378963cc8fabfb848df8a1933852d79d678aa))
+
 ## [1.180.0](https://github.com/bigcommerce/checkout-js/compare/v1.179.0...v1.180.0) (2021-11-09)
 
 

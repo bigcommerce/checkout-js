@@ -4617,19 +4617,18 @@ h6 a:hover {
     padding: 0.25rem; }
 
 .stepHeader {
-  padding: 1.5rem 0; }
-  .stepHeader.is-readonly {
-    cursor: default; }
-
-.stepHeader-row {
+  align-items: top;
   display: flex;
-  flex-wrap: wrap; }
+  flex-wrap: wrap;
+  padding: 1.5rem 0; }
   @media (min-width: 551px) {
-    .stepHeader-row {
+    .stepHeader {
       flex-wrap: nowrap; } }
   @media (min-width: 968px) {
-    .stepHeader-row {
+    .stepHeader {
       flex-wrap: nowrap; } }
+  .stepHeader.is-readonly {
+    cursor: default; }
 
 .stepHeader-figure {
   align-items: center;
@@ -4674,16 +4673,16 @@ h6 a:hover {
   .stepHeader-actions .button {
     margin-bottom: 0; }
 
-.stepHeader-suggestion {
+.checkout-suggestion {
   margin: 0; }
   @media (min-width: 551px) {
-    .stepHeader-suggestion {
+    .checkout-suggestion {
       margin-left: 4.19231rem; } }
   @media (min-width: 968px) {
-    .stepHeader-suggestion {
+    .checkout-suggestion {
       margin-left: 0; } }
   @media (min-width: 1080px) {
-    .stepHeader-suggestion {
+    .checkout-suggestion {
       margin-left: 4.19231rem; } }
 
 .checkoutSuggestion {
@@ -5453,4 +5452,4 @@ body.klarna-payments-fso-open {
     font-weight: normal; }
 
 
-/*# sourceMappingURL=checkout-015e0237.css.map*/
+/*# sourceMappingURL=checkout-66bb9d2e.css.map*/
