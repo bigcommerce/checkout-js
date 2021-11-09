@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.180.0](https://github.com/bigcommerce/checkout-js/compare/v1.179.0...v1.180.0) (2021-11-09)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6113 assert errors on missing address fields ([#749](https://github.com/bigcommerce/checkout-js/issues/749)) ([e94a7f2](https://github.com/bigcommerce/checkout-js/commit/e94a7f26e185b1f0d7a58b445135eb3aa14950df))
+
+
+### Bug Fixes
+
+* **payment:** PAYMENTS-4915 Changing error message for invalid_address ([0e4f0ea](https://github.com/bigcommerce/checkout-js/commit/0e4f0ea1502fafcc03a0d65e029fb1a638e5b34c))
+* **payment:** PAYMENTS-4915 Changing error message for invalid_address in other locale similar to incorrect_address ([6308e91](https://github.com/bigcommerce/checkout-js/commit/6308e9168937d09a032305cd8ffec81b018c2b6c))
+
 ## [1.179.0](https://github.com/bigcommerce/checkout-js/compare/v1.178.5...v1.179.0) (2021-11-07)
 
 
