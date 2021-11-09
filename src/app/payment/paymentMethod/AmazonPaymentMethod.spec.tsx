@@ -1,92 +1,135 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
-import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { CheckoutProvider } from '../../checkout';
-import { getStoreConfig } from '../../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { getPaymentMethod } from '../payment-methods.mock';
+import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
-import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
-import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
-import PaymentMethodId from './PaymentMethodId';
+import { PaymentMethodId } from '.';
+import AmazonPaymentMethod, { AmazonPaymentMethodProps } from './AmazonPaymentMethod';
+import HostedWidgetPaymentMethod from './HostedWidgetPaymentMethod';
 
-describe('when using Amazon payment', () => {
-    let method: PaymentMethod;
-    let checkoutService: CheckoutService;
-    let checkoutState: CheckoutSelectors;
-    let defaultProps: PaymentMethodProps;
-    let localeContext: LocaleContextType;
-    let PaymentMethodTest: FunctionComponent<PaymentMethodProps>;
+describe('When using AmazonPaymentMethod', () => {
+    const checkoutService = createCheckoutService();
+    let defaultProps: AmazonPaymentMethodProps;
+    let initializePaymentOptions: PaymentInitializeOptions;
+    let component: ReactWrapper;
+    let paymentContext: PaymentContextProps;
 
     beforeEach(() => {
+        paymentContext = {
+            disableSubmit: jest.fn(),
+            setSubmit: jest.fn(),
+            setValidationSchema: jest.fn(),
+            hidePaymentSubmitButton: jest.fn(),
+        };
         defaultProps = {
-            method: getPaymentMethod(),
+            method: {
+                ...getPaymentMethod(),
+                id: 'amazon',
+                gateway: PaymentMethodId.Amazon,
+            },
+            initializePayment: jest.fn((options: PaymentInitializeOptions) => {
+                initializePaymentOptions = options;
+
+                return Promise.resolve(checkoutService.getState());
+            }),
+            initializeCustomer: jest.fn(),
+            deinitializePayment: jest.fn(),
             onUnhandledError: jest.fn(),
         };
 
-        checkoutService = createCheckoutService();
-        checkoutState = checkoutService.getState();
-        localeContext = createLocaleContext(getStoreConfig());
-        method = { ...getPaymentMethod(), id: PaymentMethodId.Amazon };
+        const TestComponent: FunctionComponent<Partial<AmazonPaymentMethodProps>> = props =>
+            <PaymentContext.Provider value={ paymentContext }>
+                <AmazonPaymentMethod
+                    { ...defaultProps }
+                    { ...props }
+                />
+            </PaymentContext.Provider>;
 
-        jest.spyOn(checkoutState.data, 'getConfig')
-            .mockReturnValue(getStoreConfig());
+        component = mount(<TestComponent />);
+    });
 
-        jest.spyOn(checkoutService, 'deinitializePayment')
-            .mockResolvedValue(checkoutState);
+    it('Shopper should be able to see Amazon Payment Method', () => {
 
-        jest.spyOn(checkoutService, 'initializePayment')
-            .mockResolvedValue(checkoutState);
+        expect(component.find(HostedWidgetPaymentMethod).exists).toBeTruthy();
+    });
 
-        PaymentMethodTest = props => (
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <LocaleContext.Provider value={ localeContext }>
-                    <Formik
-                        initialValues={ {} }
-                        onSubmit={ noop }
-                    >
-                        <PaymentMethodComponent { ...props } />
-                    </Formik>
-                </LocaleContext.Provider>
-            </CheckoutProvider>
+    it('Shopper should be able to SignInAmazon', () => {
+        const onClick = jest.fn();
+        jest.spyOn(document, 'querySelector')
+            .mockImplementation((selector: string) => {
+                const element = document.createElement('div');
+                element.id = selector;
+                element.addEventListener('click', onClick);
+
+                return element;
+            });
+
+        const hostedWidget = component.find(HostedWidgetPaymentMethod);
+
+        const { signInCustomer = noop } = hostedWidget.props();
+        signInCustomer();
+        expect(onClick).toHaveBeenCalled();
+    });
+
+    it('should initialize customer', () => {
+        const hostedWidget = component.find(HostedWidgetPaymentMethod);
+        const { initializeCustomer = noop } = hostedWidget.props();
+
+        initializeCustomer({
+            methodId: defaultProps.method.id,
+        });
+
+        expect(defaultProps.initializeCustomer).toBeCalledWith({
+            methodId: 'amazon',
+            amazon: {
+                container: 'paymentWidget',
+                onError: expect.any(Function),
+            },
+        });
+    });
+
+    it('should be able to handle error', () => {
+        const hostedWidget = component.find(HostedWidgetPaymentMethod);
+        const { initializePayment = noop } = hostedWidget.props();
+
+        initializePayment({
+            methodId: defaultProps.method.id,
+        });
+        const { onError = noop } = initializePaymentOptions.amazon || {};
+
+        onError({ message: 'An error' });
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith({
+            message: 'An error',
+        });
+
+        expect(paymentContext.disableSubmit).toHaveBeenCalledWith(
+            expect.objectContaining({
+                id: 'amazon',
+            }),
+            true
         );
     });
 
-    it('renders as hosted widget method', () => {
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
-        const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+    it('should be able to handle payment select', () => {
+        const hostedWidget = component.find(HostedWidgetPaymentMethod);
+        const { initializePayment = noop } = hostedWidget.props();
 
-        expect(component.props())
-            .toEqual(expect.objectContaining({
-                containerId: 'paymentWidget',
-                deinitializePayment: expect.any(Function),
-                initializePayment: expect.any(Function),
-                isSignInRequired: true,
-                method,
-            }));
-    });
-
-    it('initializes method with required config', () => {
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
-        const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
-
-        component.prop('initializePayment')({
-            methodId: method.id,
-            gatewayId: method.gateway,
+        initializePayment({
+            methodId: defaultProps.method.id,
         });
+        const { onPaymentSelect = noop } = initializePaymentOptions.amazon || {};
 
-        expect(checkoutService.initializePayment)
-            .toHaveBeenCalledWith(expect.objectContaining({
-                methodId: method.id,
-                gatewayId: method.gateway,
-                [method.id]: {
-                    container: 'paymentWidget',
-                    onError: expect.any(Function),
-                    onPaymentSelect: expect.any(Function),
-                },
-            }));
+        onPaymentSelect();
+
+        expect(paymentContext.disableSubmit).toHaveBeenCalledWith(
+            expect.objectContaining({
+                id: 'amazon',
+            }),
+            false
+        );
     });
 });
