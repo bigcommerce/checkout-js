@@ -1,4 +1,4 @@
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { noop } from 'lodash';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
@@ -132,7 +132,7 @@ describe('CheckoutStep', () => {
             isComplete: true,
             isEditable: true,
             onEdit: undefined,
-            suggestion: undefined,
+
         };
 
         const component = mount(
@@ -146,7 +146,7 @@ describe('CheckoutStep', () => {
             .toHaveLength(1);
 
         expect(component.find(CheckoutStepHeader).props())
-            .toEqual({ ...headerProps, isClosed: false });
+            .toEqual({ ...headerProps });
     });
 
     it('renders content if step is active', () => {
@@ -206,5 +206,43 @@ describe('CheckoutStep', () => {
             .update();
 
         expect(component.state('isClosed')).toBe(true);
+    });
+
+    it('renders suggestion if step is inactive', () => {
+        const component = shallow(
+            <CheckoutStep
+                { ...defaultProps }
+                isActive={ false }
+                suggestion="Billing suggestion"
+            />
+        );
+
+        expect(component.find('[data-test="step-suggestion"]').text())
+            .toEqual('Billing suggestion');
+    });
+
+    it('does not render suggestion if step is active', () => {
+        const component = shallow(
+            <CheckoutStep
+                { ...defaultProps }
+                suggestion="Billing suggestion"
+            />
+        );
+
+        expect(component.exists('[data-test="step-suggestion"]'))
+            .toEqual(false);
+    });
+
+    it('does not render suggestion if its not provided', () => {
+        const component = shallow(
+            <CheckoutStep
+                { ...defaultProps }
+                isActive={ false }
+                suggestion={ undefined }
+            />
+        );
+
+        expect(component.exists('[data-test="step-suggestion"]'))
+            .toEqual(false);
     });
 });

@@ -90,15 +90,17 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
                     <CheckoutStepHeader
                         heading={ heading }
                         isActive={ isActive }
-                        isClosed={ isClosed }
                         isComplete={ isComplete }
                         isEditable={ isEditable }
                         onEdit={ onEdit }
-                        suggestion={ suggestion }
                         summary={ summary }
                         type={ type }
                     />
                 </div>
+
+                { suggestion && isClosed && !isActive && <div className="checkout-suggestion" data-test="step-suggestion">
+                    { suggestion }
+                </div> }
 
                 { this.renderContent() }
             </li>
