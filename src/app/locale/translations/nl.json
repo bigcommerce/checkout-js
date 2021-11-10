@@ -181,7 +181,6 @@
             "amazon_name_text": "Amazon Pay",
             "barclaycard_continue_action": "Doorgaan",
             "bluesnap_v2_continue_action": "Doorgaan",
-            "bolt_continue_action": "Doorgaan met Bolt",
             "braintreevisacheckout_continue_action": "Doorgaan met Visa Checkout",
             "ccavenuemars_description_text": "Afrekenen met CCAvenue",
             "chasepay_continue_action": "Doorgaan met Chase Pay",

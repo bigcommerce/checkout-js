@@ -184,7 +184,6 @@
             "amazon_name_text": "Amazon Pay",
             "barclaycard_continue_action": "Continue",
             "bluesnap_v2_continue_action": "Continue",
-            "bolt_continue_action": "Continue with Bolt",
             "bolt_create_account_label": "Remember my information with Bolt",
             "bolt_create_account_disclaimer": "By checking above, you are agreeing to create a Bolt Account under <a href=\"{termsUrl}\" target=\"_blank\">terms</a> and <a href=\"{privacyPolicyUrl}\" target=\"_blank\">privacy policy</a>.",
             "bolt_name_text": "Bolt",

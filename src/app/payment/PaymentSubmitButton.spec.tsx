@@ -1,6 +1,5 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, CheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
 import { mount, render } from 'enzyme';
-import { set } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { CheckoutProvider } from '../checkout';
@@ -14,7 +13,6 @@ import PaymentSubmitButton, { PaymentSubmitButtonProps } from './PaymentSubmitBu
 describe('PaymentSubmitButton', () => {
     let PaymentSubmitButtonTest: FunctionComponent<PaymentSubmitButtonProps>;
     let checkoutService: CheckoutService;
-    let checkoutState: CheckoutSelectors;
     let languageService: LanguageService;
     let localeContext: LocaleContextType;
 
@@ -22,7 +20,6 @@ describe('PaymentSubmitButton', () => {
         checkoutService = createCheckoutService();
         localeContext = createLocaleContext(getStoreConfig());
         languageService = localeContext.language;
-        checkoutState = checkoutService.getState();
 
         PaymentSubmitButtonTest = props => (
             <CheckoutProvider checkoutService={ checkoutService }>
@@ -86,7 +83,7 @@ describe('PaymentSubmitButton', () => {
         );
 
         expect(component.text())
-            .toEqual('Bolt' + languageService.translate('payment.bolt_continue_action'));
+            .toEqual('Bolt' + languageService.translate('payment.place_order_action'));
         expect(component.find(IconBolt).length)
             .toEqual(1);
     });

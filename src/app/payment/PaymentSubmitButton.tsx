@@ -34,7 +34,7 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
     if (methodId === PaymentMethodId.Bolt) {
         return (<Fragment>
             <IconBolt additionalClassName="payment-submit-button-bolt-icon" />
-            <TranslatedString id="payment.bolt_continue_action" />
+            <TranslatedString id="payment.place_order_action" />
         </Fragment>);
     }
 
