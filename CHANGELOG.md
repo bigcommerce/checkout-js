@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.182.0](https://github.com/bigcommerce/checkout-js/compare/v1.181.0...v1.182.0) (2021-11-10)
+
+
+### Features
+
+* **payment:** BOLT-95 changed PaymentSubmitButtonText for Bolt payment provider ([7590ee6](https://github.com/bigcommerce/checkout-js/commit/7590ee65a1120d5a2b41f29c2a6a8bbd13b2738c))
+
 ## [1.181.0](https://github.com/bigcommerce/checkout-js/compare/v1.180.1...v1.181.0) (2021-11-09)
 
 
