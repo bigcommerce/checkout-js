@@ -46,7 +46,7 @@ const MolliePaymentMethod: FunctionComponent<MolliePaymentMethodsProps & WithInj
                         color: '#D14343',
                     },
                 },
-                ...(selectedInstrument && !selectedInstrument?.trustedShippingAddress && { form : await getHostedFormOptions(selectedInstrument) }),
+                ...(selectedInstrument && { form : await getHostedFormOptions(selectedInstrument) }),
             },
         });
     }, [initializePayment, containerId, getHostedFormOptions]);
@@ -81,9 +81,6 @@ const MolliePaymentMethod: FunctionComponent<MolliePaymentMethodsProps & WithInj
     }
 
     function validateInstrument(_shouldShowNumber: boolean, selectedInstrument: CardInstrument) {
-        if (selectedInstrument && selectedInstrument.trustedShippingAddress) {
-            return;
-        }
 
         return getHostedStoredCardValidationFieldset(selectedInstrument);
     }
