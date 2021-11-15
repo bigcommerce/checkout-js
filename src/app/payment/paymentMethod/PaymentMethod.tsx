@@ -75,7 +75,7 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
     }
 
     if (method.id === PaymentMethodId.ApplePay) {
-        return null;
+        return <HostedPaymentMethod { ...props } />
     }
 
     if (method.id === PaymentMethodId.SquareV2) {

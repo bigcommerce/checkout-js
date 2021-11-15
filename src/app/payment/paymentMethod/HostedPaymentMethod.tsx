@@ -99,6 +99,8 @@ class HostedPaymentMethod extends Component<
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
         } = this.props;
 
+        console.log('hostedmethods', this.props);
+
         const {
             selectedInstrument = this.getDefaultInstrument(),
         } = this.state;
