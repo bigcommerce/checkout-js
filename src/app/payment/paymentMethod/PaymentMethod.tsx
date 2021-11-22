@@ -70,7 +70,8 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
         return <PPSDKPaymentMethod { ...props } />;
     }
 
-    if (method.gateway === PaymentMethodId.AdyenV2) {
+    if (method.gateway === PaymentMethodId.AdyenV2 ||
+        method.gateway === PaymentMethodId.AdyenV3) {
         return <AdyenV2PaymentMethod { ...props } />;
     }
 

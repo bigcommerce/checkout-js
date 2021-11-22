@@ -10,7 +10,7 @@ export default function getPaymentMethodDisplayName(
 
         const isCreditCard = displayName?.toLowerCase() === 'credit card';
 
-        if (isCreditCard && method.id === PaymentMethodId.AdyenV2) {
+        if (isCreditCard && (method.id === PaymentMethodId.AdyenV2 || method.id === PaymentMethodId.AdyenV3)) {
             return language.translate('payment.adyen_credit_debit_card_text');
         }
 
