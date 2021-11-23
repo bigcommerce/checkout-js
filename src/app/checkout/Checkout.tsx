@@ -239,7 +239,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                     <LoadingNotification isLoading={ isPending } />
 
                     <PromotionBannerList promotions={ promotions } />
-
+                    <h1>TEST</h1>
                     <ol className="checkout-steps">
                         { steps
                             .filter(step => step.isRequired)
