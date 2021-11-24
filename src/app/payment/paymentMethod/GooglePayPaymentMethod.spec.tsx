@@ -89,6 +89,7 @@ describe('when using Google Pay payment', () => {
                 [method.id]: {
                     walletButton: 'walletButton',
                     onError: defaultProps.onUnhandledError,
+                    onPaymentSelect: expect.any(Function),
                 },
             }));
     });
