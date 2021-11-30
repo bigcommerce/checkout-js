@@ -33,7 +33,11 @@ const Form: FunctionComponent<FormProps> = ({
 
         if (erroredFormField) {
             erroredFormField.focus({preventScroll: true});
-            erroredFormField.offsetParent?.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'});
+            try {
+                erroredFormField.offsetParent?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center'});
+            } catch {
+                erroredFormField.offsetParent?.scrollIntoView();
+            }
         }
     };
 
