@@ -1,4 +1,4 @@
-import { createCheckoutService, CardInstrument, CheckoutSelectors, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, CardInstrument, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -12,7 +12,8 @@ import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps
 import { getPaymentMethod } from '../payment-methods.mock';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
-import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
+import MollieCustomCardForm from './MollieCustomCardForm';
+import MolliePaymentMethod, { MolliePaymentMethodsProps } from './MolliePaymentMethod';
 
 const hostedFormOptions = {
     fields: {
@@ -25,7 +26,7 @@ const hostedFormOptions = {
 
 const injectedProps: WithInjectedHostedCreditCardFieldsetProps = {
     getHostedFormOptions: () => Promise.resolve(hostedFormOptions),
-    getHostedStoredCardValidationFieldset: () => <div />,
+    getHostedStoredCardValidationFieldset: jest.fn(() => <div />),
     hostedFieldset: <div />,
     hostedStoredCardValidationSchema: object(),
     hostedValidationSchema: object(),
@@ -42,34 +43,33 @@ jest.mock('../hostedCreditCard', () => ({
 }));
 
 describe('MolliePaymentMethod', () => {
-    let method: PaymentMethod;
-    let defaultProps: PaymentMethodProps;
+    let defaultProps: MolliePaymentMethodsProps;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
     let localeContext: LocaleContextType;
-    let PaymentMethodTest: FunctionComponent<PaymentMethodProps>;
+    let PaymentMethodTest: FunctionComponent<MolliePaymentMethodsProps>;
     let selectedInstrument: CardInstrument;
 
     beforeEach(() => {
         defaultProps = {
-            method: getPaymentMethod(),
+            method: {
+                ...getPaymentMethod(),
+                id: 'mollie',
+                gateway: 'mollie',
+            },
             onUnhandledError: jest.fn(),
+            initializePayment: jest.fn(),
+            deinitializePayment: jest.fn(),
         };
 
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
-        method = {...defaultProps.method, id: 'mollie', gateway: 'mollie', method: 'belfius'};
+
         selectedInstrument = { bigpayToken: '12345' } as CardInstrument;
 
         jest.spyOn(checkoutState.data, 'getConfig')
             .mockReturnValue(getStoreConfig());
-
-        jest.spyOn(checkoutService, 'deinitializePayment')
-            .mockResolvedValue(checkoutState);
-
-        jest.spyOn(checkoutService, 'initializePayment')
-            .mockResolvedValue(checkoutState);
 
         PaymentMethodTest = props => (
             <CheckoutProvider checkoutService={ checkoutService }>
@@ -78,7 +78,7 @@ describe('MolliePaymentMethod', () => {
                         initialValues={ {} }
                         onSubmit={ noop }
                     >
-                        <PaymentMethodComponent { ...props } />
+                        <MolliePaymentMethod { ...props } />
                     </Formik>
                 </LocaleContext.Provider>
             </CheckoutProvider>
@@ -86,30 +86,75 @@ describe('MolliePaymentMethod', () => {
     });
 
     it('renders as hosted widget method', () => {
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+        const container = mount(<PaymentMethodTest { ...defaultProps } />);
         const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
 
         expect(component.props())
             .toEqual(expect.objectContaining({
-                method,
+                method: defaultProps.method,
                 initializePayment: expect.any(Function),
             }));
     });
 
+    it('renders CustomPaymentForm', () => {
+        const container = mount(<PaymentMethodTest { ...defaultProps } />);
+        const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+        const customComponent = component.prop('renderCustomPaymentForm')?.();
+
+        expect(customComponent)
+            .toEqual(
+                <MollieCustomCardForm
+                    isCreditCard={ false }
+                    method={ {
+                        config: {
+                            cardCode: true,
+                            displayName: 'Authorizenet',
+                            enablePaypal: undefined,
+                            hasDefaultStoredInstrument: false,
+                            helpText: '',
+                            is3dsEnabled: undefined,
+                            isVisaCheckoutEnabled: undefined,
+                            merchantId: undefined,
+                            testMode: false,
+                        },
+                        gateway: 'mollie',
+                        id: 'mollie',
+                        logoUrl: '',
+                        method: 'credit-card',
+                        supportedCards: ['VISA', 'AMEX', 'MC'],
+                        type: 'PAYMENT_TYPE_API',
+                    } }
+                    options={ {
+                        cardCvcElementOptions: {
+                            containerId: 'mollie-card-cvc-component-field',
+                        },
+                        cardExpiryElementOptions: {
+                            containerId: 'mollie-card-expiry-component-field',
+                        },
+                        cardHolderElementOptions: {
+                            containerId: 'mollie-card-holder-component-field',
+                        },
+                        cardNumberElementOptions: {
+                            containerId: 'mollie-card-number-component-field',
+                        },
+                    } }
+                />);
+    });
+
     it('initializes method with required config', async () => {
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+        const container = mount(<PaymentMethodTest { ...defaultProps } />);
         const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
         component.prop('initializePayment')({
-            methodId: method.id,
-            gatewayId: method.gateway,
+            methodId: defaultProps.method.id,
+            gatewayId: defaultProps.method.gateway,
         }, selectedInstrument);
 
         await new Promise(resolve => process.nextTick(resolve));
 
-        expect(checkoutService.initializePayment)
+        expect(defaultProps.initializePayment)
             .toHaveBeenCalledWith(expect.objectContaining({
-                gatewayId: method.gateway,
-                methodId: method.id,
+                gatewayId: defaultProps.method.gateway,
+                methodId: defaultProps.method.id,
                 mollie: {
                     cardCvcId: 'mollie-card-cvc-component-field',
                     cardExpiryId: 'mollie-card-expiry-component-field',
@@ -129,7 +174,7 @@ describe('MolliePaymentMethod', () => {
                             color: '#D14343',
                         },
                     },
-                    containerId: 'mollie-belfius',
+                    containerId: 'mollie-credit-card',
                     form: {
                         fields: {
                             cardCode: {
@@ -152,5 +197,13 @@ describe('MolliePaymentMethod', () => {
                     },
                 },
             }));
+    });
+
+    it('validateInstrument', () => {
+        const container = mount(<PaymentMethodTest { ...defaultProps } />);
+        const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+        component.prop('validateInstrument')?.(false, selectedInstrument);
+
+        expect(injectedProps.getHostedStoredCardValidationFieldset).toHaveBeenCalledWith(selectedInstrument);
     });
 });
