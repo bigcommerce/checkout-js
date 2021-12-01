@@ -1,20 +1,22 @@
 import { FieldProps } from 'formik';
-// import { isDate } from 'lodash';
 import React, { useState, useEffect, useCallback, useMemo, useRef, FunctionComponent } from 'react';
 
 import ReactDatePicker from 'react-datepicker';
 import { TranslatedString } from '../locale';
-import { Fieldset, FormField, 
-    // FormFieldError, 
-    Label, Legend, TextInput } from '../ui/form';
+import {
+	Fieldset,
+	FormField,
+	// FormFieldError,
+	Label,
+	Legend,
+	TextInput,
+} from '../ui/form';
 
 export interface OrderCommentsProps {
-    onDatePicked: () => void;
+	onDatePicked: () => void;
 }
 
-const OrderComments: FunctionComponent<OrderCommentsProps> = ({
-    onDatePicked,
-}) => {
+const OrderComments: FunctionComponent<OrderCommentsProps> = ({ onDatePicked }) => {
 	const giftCheckboxRef = useRef<null | HTMLInputElement>(null);
 	const orderCommentsRef = useRef<null | HTMLInputElement>(null);
 
@@ -26,14 +28,10 @@ const OrderComments: FunctionComponent<OrderCommentsProps> = ({
 	const [giftChecked, setGiftChecked] = useState(false);
 
 	useEffect(() => {
-		console.log('[ORDER DATE]:', orderDate);
-
 		updateOrderComment(orderDate);
 	}, [orderDate]);
 
 	useEffect(() => {
-		console.log('[GIFT CHECKED]:', giftChecked);
-
 		if (orderCommentsRef.current) {
 			const original = orderCommentsRef.current.value;
 
@@ -56,7 +54,6 @@ const OrderComments: FunctionComponent<OrderCommentsProps> = ({
 			} else {
 				updatedMessage = `[${update}]${original}`;
 			}
-			console.log('[UPDATED MESSAGE - DATE]:', updatedMessage);
 
 			orderCommentsRef.current.value = updatedMessage;
 		}
@@ -75,19 +72,19 @@ const OrderComments: FunctionComponent<OrderCommentsProps> = ({
 					})
 				);
 
-                onDatePicked()
+				onDatePicked();
 			}
 		}, [selectedDate]);
 
 		const isWeekday = (date: Date) => {
 			const newDate = new Date(date);
 			const day = newDate.getDay();
-			const DISABLED_DAYS_OF_WEEK = [0, 6];
+			// window.__DISABLED_DAYS_OF_WEEK__ = [0, 6];
 
-			return !DISABLED_DAYS_OF_WEEK.includes(day);
+			return !window.__DISABLED_DAYS_OF_WEEK__.includes(day);
 		};
 
-		const DISABLED_SPECIFIC_DAYS = ['11-30-2021', '12-6-2021', '12-7-2021'];
+		// window.__DISABLED_SPECIFIC_DAYS__ = ['11-30-2021', '12-6-2021', '12-7-2021'];
 
 		return (
 			<>
@@ -100,7 +97,7 @@ const OrderComments: FunctionComponent<OrderCommentsProps> = ({
 					selected={selectedDate}
 					onChange={(date: Date) => setSelectedDate(date)}
 					minDate={new Date()}
-					excludeDates={DISABLED_SPECIFIC_DAYS.map(d => new Date(d))}
+					excludeDates={window.__DISABLED_SPECIFIC_DAYS__.map(d => new Date(d))}
 					filterDate={isWeekday}
 				/>
 				{/* <FormFieldError
