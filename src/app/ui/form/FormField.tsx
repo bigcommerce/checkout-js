@@ -1,6 +1,6 @@
 import { FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
-import React, { memo, useCallback, Fragment, FunctionComponent, ReactNode } from 'react';
+import React, { memo, useCallback, Fragment, FunctionComponent, ReactNode, MutableRefObject } from 'react';
 
 import BasicFormField from './BasicFormField';
 import FormFieldError from './FormFieldError';
@@ -12,6 +12,7 @@ export interface FormFieldProps {
     label?: ReactNode | ((fieldName: string) => ReactNode);
     labelContent?: ReactNode;
     footer?: ReactNode;
+    ref?: MutableRefObject<HTMLInputElement | null>;
     input(field: FieldProps<string>): ReactNode;
     onChange?(value: string): void;
 }

@@ -16,6 +16,8 @@ import { SHIPPING_ADDRESS_FIELDS } from './ShippingAddressFields';
 import ShippingFormFooter from './ShippingFormFooter';
 
 export interface SingleShippingFormProps {
+    isDatePicked: boolean;
+    onDatePicked: () => void;
     addresses: CustomerAddress[];
     isBillingSameAsShipping: boolean;
     cartHasChanged: boolean;
@@ -91,6 +93,8 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
 
     render(): ReactNode {
         const {
+            isDatePicked,
+            onDatePicked,
             addresses,
             cartHasChanged,
             isLoading,
@@ -118,6 +122,8 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
 
         const PAYMENT_METHOD_VALID = ['amazon', 'amazonpay'];
         const shouldShowBillingSameAsShipping = !PAYMENT_METHOD_VALID.some(method => method === methodId);
+
+        console.log('[SingleShippingForm.tsx]: Date Picked', isDatePicked);
 
         return (
             <Form autoComplete="on">
@@ -150,6 +156,8 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                 </Fieldset>
 
                 <ShippingFormFooter
+                    isDatePicked={isDatePicked}
+                    onDatePicked={onDatePicked}
                     cartHasChanged={ cartHasChanged }
                     isLoading={ isLoading || isUpdatingShippingData }
                     isMultiShippingMode={ false }
@@ -166,6 +174,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             isLoading,
             consignments,
             isValid,
+            isDatePicked,
         } = this.props;
 
         const {
@@ -176,7 +185,9 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             return false;
         }
 
-        return isLoading || isUpdatingShippingData || !hasSelectedShippingOptions(consignments);
+        console.log('Should disable?', isLoading || isUpdatingShippingData || !hasSelectedShippingOptions(consignments) || !isDatePicked);
+
+        return isLoading || isUpdatingShippingData || !hasSelectedShippingOptions(consignments) || !isDatePicked;
     };
 
     private handleFieldChange: (name: string) => void = async name => {

@@ -6,7 +6,7 @@ import { lazy } from 'yup';
 import { getAddressFormFieldsValidationSchema, getTranslateAddressError, isValidCustomerAddress, mapAddressToFormValues, AddressForm, AddressFormValues, AddressSelect } from '../address';
 import { getCustomFormFieldsValidationSchema } from '../formFields';
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
-import { OrderComments } from '../orderComments';
+// import { OrderComments } from '../orderComments';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form } from '../ui/form';
 import { LoadingOverlay } from '../ui/loading';
@@ -52,7 +52,7 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
             countries,
             isUpdating,
             setFieldValue,
-            shouldShowOrderComments,
+            // shouldShowOrderComments,
             values,
             methodId,
         } = this.props;
@@ -97,12 +97,13 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
                                 googleMapsApiKey={ googleMapsApiKey }
                                 setFieldValue={ setFieldValue }
                                 shouldShowSaveAddress={ !isGuest }
+                                formType={ 'billing' }
                             />
                         </LoadingOverlay> }
                 </Fieldset>
 
-                { shouldShowOrderComments &&
-                    <OrderComments /> }
+                {/* { shouldShowOrderComments &&
+                    <OrderComments /> } */}
 
                 <div className="form-actions">
                     <Button

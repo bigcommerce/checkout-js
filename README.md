@@ -2,6 +2,45 @@
 
 Checkout JS is a browser-based application providing a seamless UI for BigCommerce shoppers to complete their checkout. It is also known as [Optimized One-Page Checkout](https://support.bigcommerce.com/s/article/Optimized-Single-Page-Checkout), which is currently the recommended checkout option for all BigCommerce stores.
 
+## Obundle Local Development Tips
+
+Local development for the open-source checkout is not particularly intuitive but it will be improving in the near future according to the BigCommerce developers on their GitHub repo. For the time being, we have to cobble together a pattern that is cumbersome but workable.
+
+First, `git clone` this repo which is connected to BC's main repo. You **must** have this repo connected so it can pull updates with our approval. There are PCI Compliance legal issues that are maintained by BC, so we must allow for updates to be served from upstream.
+
+Second, follow the instructions laid out in the sections below (use Obundle's Sandbox store as your live store) until you are finished with the **Custom Checkout installation** section. You should have 3 things running concurrently:
+1. `stencil start` local BC theme connected to custom checkout build on `http://localhost:3000` (see Obundle Sandbox Credentials)
+2. `npm run dev` to launch the webpack watcher, TypeScript compiler, and app builder
+3. `npm run dev:server` to serve the build to the local address on your store (ex: `http://127.0.0.1:8080`)
+
+**Important:** The build provided by `npm run dev` is cached the first time you load `localhost` so you'll see your first changes but no subsequent changes will display on refresh. Instead, use a *hard refresh* (Mac: cmd + shift + R) which clears the cache and will show your changes.
+
+#### Obundle Sandbox Credentials
+
+Add these to the newest theme from Mirelli Chocolatier's [GitHub repo](https://github.com/oBundle/ob-mirelli-chocolatier). That way you can test any changes to the checkout without disrupting the store's current checkout.
+
+**config.stencil.json**
+```
+{
+  "customLayouts": {
+    "brand": {},
+    "category": {},
+    "page": {},
+    "product": {}
+  },
+  "apiHost": "https://api.bigcommerce.com",
+  "normalStoreUrl": "https://store-4o6xa.mybigcommerce.com/",
+  "port": "3000"
+}
+```
+
+**secrets.stencil.json**
+```
+{
+  "accessToken": "t1nrnl3cp8cy6ep6pti7cqkjm122s62"
+}
+```
+
 ## Requirements
 
 In order to build from the source code, you must have the following set up in your development environment.

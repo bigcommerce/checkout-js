@@ -7,6 +7,8 @@ import MultiShippingForm, { MultiShippingFormValues } from './MultiShippingForm'
 import SingleShippingForm, { SingleShippingFormValues } from './SingleShippingForm';
 
 export interface ShippingFormProps {
+    isDatePicked: boolean;
+    onDatePicked: () => void;
     addresses: CustomerAddress[];
     cart: Cart;
     cartHasChanged: boolean;
@@ -44,6 +46,8 @@ export interface ShippingFormProps {
 class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
     render(): ReactNode {
         const {
+            isDatePicked,
+            onDatePicked,
             addresses,
             assignItem,
             cart,
@@ -80,6 +84,8 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
 
         return isMultiShippingMode ?
             <MultiShippingForm
+                isDatePicked={isDatePicked}
+                onDatePicked={onDatePicked}
                 addresses={ addresses }
                 assignItem={ assignItem }
                 cart={ cart }
@@ -103,6 +109,8 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 shouldShowOrderComments={ shouldShowOrderComments }
             /> :
             <SingleShippingForm
+                isDatePicked={isDatePicked}
+                onDatePicked={onDatePicked}
                 addresses={ addresses }
                 cartHasChanged={ cartHasChanged }
                 consignments={ consignments }

@@ -42,7 +42,7 @@
             "select_none": "None"
         },
         "billing": {
-            "billing_address_heading": "Billing Address",
+            "billing_address_heading": "Credit Card Billing Address",
             "billing_heading": "Billing",
             "save_billing_address_error": "An error occurred while saving the billing address to your price quote. Please try again.",
             "billing_address_amazon": "Same as the Billing address set by you in your Amazon account.",
@@ -422,7 +422,7 @@
             "multishipping_guest_create": "or <a href=\"{url}\" target=\"_blank\">create an account</a> prior to proceeding.",
             "ship_to_multi": "Ship to multiple addresses",
             "ship_to_single": "Ship to a single address",
-            "shipping_heading": "Shipping",
+            "shipping_heading": "Address",
             "shipping_method_label": "Shipping Method",
             "shipping_option_expired_error": "The shipping price you were quoted is no longer valid. Click OK to see the most up-to-date shipping prices.",
             "shipping_option_expired_heading": "Your shipping price has been updated",

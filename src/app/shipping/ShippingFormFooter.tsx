@@ -9,6 +9,8 @@ import { Fieldset, Legend } from '../ui/form';
 import { ShippingOptions } from './shippingOption';
 
 export interface ShippingFormFooterProps {
+    isDatePicked: boolean;
+    onDatePicked: () => void;
     cartHasChanged: boolean;
     isMultiShippingMode: boolean;
     shouldShowOrderComments: boolean;
@@ -20,6 +22,8 @@ export interface ShippingFormFooterProps {
 class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
     render(): ReactNode {
         const {
+            isDatePicked,
+            onDatePicked,
             cartHasChanged,
             isMultiShippingMode,
             shouldShowOrderComments,
@@ -54,11 +58,13 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
             </Fieldset>
 
             { shouldShowOrderComments &&
-                <OrderComments /> }
+                <OrderComments 
+                    onDatePicked={onDatePicked}
+                /> }
 
             <div className="form-actions">
                 <Button
-                    disabled={ shouldDisableSubmit }
+                    disabled={ !isDatePicked ? true : shouldDisableSubmit }
                     id="checkout-shipping-continue"
                     isLoading={ isLoading }
                     type="submit"

@@ -19,6 +19,8 @@ import ShippableItem from './ShippableItem';
 import ShippingFormFooter from './ShippingFormFooter';
 
 export interface MultiShippingFormProps {
+    isDatePicked: boolean;
+    onDatePicked: () => void;
     addresses: CustomerAddress[];
     cart: Cart;
     cartHasChanged: boolean;
@@ -69,6 +71,8 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
 
     render(): ReactNode {
         const {
+            isDatePicked,
+            onDatePicked,
             addresses,
             consignments,
             cart,
@@ -145,6 +149,8 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
                     </ul>
 
                     <ShippingFormFooter
+                        isDatePicked={isDatePicked}
+                        onDatePicked={onDatePicked}
                         cartHasChanged={ cartHasChanged }
                         isLoading={ isLoading }
                         isMultiShippingMode={ true }
@@ -234,9 +240,9 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
     };
 
     private shouldDisableSubmit: () => boolean = () => {
-        const { isLoading, consignments } = this.props;
+        const { isLoading, consignments, isDatePicked } = this.props;
 
-        return isLoading || !hasSelectedShippingOptions(consignments);
+        return isLoading || !hasSelectedShippingOptions(consignments) || !isDatePicked;
     };
 
     private syncItems: (

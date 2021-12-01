@@ -20,6 +20,7 @@ export interface AddressFormProps {
     formFields: FormField[];
     googleMapsApiKey?: string;
     shouldShowSaveAddress?: boolean;
+    formType?: string;
     onAutocompleteSelect?(address: Partial<Address>): void;
     onAutocompleteToggle?(state: { inputValue: string; isOpen: boolean }): void;
     onChange?(fieldName: string, value: string | string[]): void;
@@ -88,7 +89,16 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
             googleMapsApiKey,
             onAutocompleteToggle,
             shouldShowSaveAddress,
+            formType
         } = this.props;
+
+        const addLabelAddendum = ( labelName: string ): string | JSX.Element => {
+            if (formType === 'billing' && (labelName === 'address.first_name_label' || labelName === 'address.last_name_label')) {
+                return <span className='ob-label-addendum'>(Card Holder's Name)</span>
+            }
+
+            return '';
+        }
 
         return (<>
             <Fieldset>
@@ -122,7 +132,14 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                                 inputId={ getAddressFormFieldInputId(addressFieldName) }
                                 // stateOrProvince can sometimes be a dropdown or input, so relying on id is not sufficient
                                 key={ `${field.id}-${field.name}` }
-                                label={ field.custom ? field.label : <TranslatedString id={ LABEL[field.name] } /> }
+                                label={ 
+                                    field.custom ? 
+                                    field.label : 
+                                    <>
+                                        <TranslatedString id={ LABEL[field.name] } />
+                                        { addLabelAddendum( LABEL[field.name] ) }
+                                    </> 
+                                }
                                 onChange={ this.handleDynamicFormFieldChange(addressFieldName) }
                                 parentFieldName={ field.custom ?
                                     (fieldName ? `${fieldName}.customFields` : 'customFields') :

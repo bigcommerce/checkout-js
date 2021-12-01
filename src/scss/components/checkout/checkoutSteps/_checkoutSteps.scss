@@ -65,7 +65,7 @@
 .stepHeader-counter {
     @include square($checkoutStep-counter-size);
 
-    background-color: color("primary");
+    background-color: blue;
     border-radius: 50%;
     text-align: center;
     transition: transform 250ms ease;

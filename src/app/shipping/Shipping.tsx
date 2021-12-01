@@ -63,6 +63,7 @@ export interface WithCheckoutShippingProps {
 
 interface ShippingState {
     isInitializing: boolean;
+    isDatePicked: boolean;
 }
 
 class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, ShippingState> {
@@ -71,6 +72,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
         this.state = {
             isInitializing: true,
+            isDatePicked: false,
         };
     }
 
@@ -113,6 +115,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
         const {
             isInitializing,
+            isDatePicked,
         } = this.state;
 
         return (
@@ -141,10 +144,16 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         onUseNewAddress={ this.handleUseNewAddress }
                         shouldShowSaveAddress={ !isGuest }
                         updateAddress={ updateShippingAddress }
+                        isDatePicked={isDatePicked}
+                        onDatePicked={this.handleDatePicked}
                     />
                 </LoadingOverlay>
             </div>
         );
+    }
+
+    private handleDatePicked: () => void = () => {
+        this.setState({ isDatePicked: true });
     }
 
     private handleMultiShippingModeSwitch: () => void = async () => {
