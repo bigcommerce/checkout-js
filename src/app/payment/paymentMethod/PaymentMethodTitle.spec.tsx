@@ -353,4 +353,19 @@ describe('PaymentMethodTitle', () => {
         expect(component.find('[data-test="payment-method-logo"]').prop('src'))
             .toEqual(`${config.cdnPath}/img/payment-providers/opy_default.svg`);
     });
+
+    it('renders name for Visa Checkout', () => {
+        const method = {
+            ...defaultProps.method,
+            method: PaymentMethodType.VisaCheckout,
+        };
+
+        const component = mount(<PaymentMethodTitleTest
+            { ...defaultProps }
+            method={ method }
+        />);
+
+        expect(component.find('[data-test="payment-method-name"]').text())
+            .toEqual(getPaymentMethodName(localeContext.language)(method));
+    });
 });
