@@ -57,7 +57,7 @@ function getPaymentMethodTitle(
             },
             [PaymentMethodType.VisaCheckout]: {
                 logoUrl: cdnPath('/img/payment-providers/visa-checkout.png'),
-                titleText: '',
+                titleText: methodName,
             },
             [PaymentMethodId.Affirm]: {
                 logoUrl: cdnPath('/img/payment-providers/affirm-checkout-header.png'),
