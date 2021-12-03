@@ -99,6 +99,10 @@ function getPaymentMethodTitle(
                 logoUrl: '',
                 titleText: language.translate('payment.digitalriver_display_name_text'),
             },
+            [PaymentMethodId.Humm]: {
+                logoUrl: cdnPath('/img/payment-providers/humm-checkout-header.png'),
+                titleText: '',
+            },
             [PaymentMethodId.Klarna]: {
                 logoUrl: cdnPath('/img/payment-providers/klarna-header.png'),
                 titleText: methodDisplayName,
