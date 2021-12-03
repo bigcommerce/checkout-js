@@ -2,6 +2,7 @@ import { noop } from 'lodash';
 import React, { useCallback, useContext, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
+import { CustomError } from '../../common/error';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { FormContext } from '../../ui/form';
@@ -54,7 +55,16 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
         },
     }), [initializePayment, containerId, isVaultingEnabled, setSubmitted, submitForm, onUnhandledError, language]);
 
-    const onError = (error: Error) => {
+    const onError = (error: CustomError) => {
+        if (error.name === 'digitalRiverCheckoutError') {
+            error = new CustomError({
+                title: language.translate('payment.errors.general_error'),
+                message: language.translate(error.type),
+                data: {},
+                name: 'digitalRiverCheckoutError',
+            });
+        }
+
         onUnhandledError?.(error);
     };
 
