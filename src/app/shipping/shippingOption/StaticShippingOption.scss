@@ -33,6 +33,9 @@
 // ShippingOption Label
 // ---------------------------------------------------
 .shippingOptionLabel {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
     .shippingOption {
         align-items: center;
         display: flex;
