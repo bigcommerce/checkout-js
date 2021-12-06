@@ -1,8 +1,7 @@
-import { FunctionComponent } from 'react';
-
 import { NoUI } from './NoUI';
+import { PPSDKPaymentMethod } from './PPSDKPaymentMethod';
 
-type ComponentMap = Record<string, FunctionComponent>;
+type ComponentMap = Record<string, typeof PPSDKPaymentMethod>;
 
 export const initializationComponentMap: ComponentMap = {
     none: NoUI,
