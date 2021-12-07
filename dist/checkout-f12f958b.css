@@ -5439,10 +5439,9 @@ body.klarna-payments-fso-open {
     font-weight: 400;
     text-overflow: ellipsis; }
   .shippingOptionLabel .shippingOption-additionalDescription--container .shippingOption-additionalDescription--collapsed {
-    height: 2.2rem;
+    height: 1.5rem;
     overflow: hidden;
-    white-space: nowrap;
-    width: 80%; }
+    width: 65%; }
   .shippingOptionLabel .shippingOption-additionalDescription--container .shippingOption-additionalDescription--expanded {
     height: auto;
     overflow: visible;
@@ -5452,4 +5451,4 @@ body.klarna-payments-fso-open {
     font-weight: normal; }
 
 
-/*# sourceMappingURL=checkout-66bb9d2e.css.map*/
+/*# sourceMappingURL=checkout-f12f958b.css.map*/

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.184.1](https://github.com/bigcommerce/checkout-js/compare/v1.184.0...v1.184.1) (2021-12-07)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-6215 Display long descriptions of shipping methods properly ([#764](https://github.com/bigcommerce/checkout-js/issues/764)) ([1c6f0ad](https://github.com/bigcommerce/checkout-js/commit/1c6f0ad1063df15c234cf88719fc28c90cc2626b))
+
 ## [1.184.0](https://github.com/bigcommerce/checkout-js/compare/v1.183.0...v1.184.0) (2021-12-03)
 
 
