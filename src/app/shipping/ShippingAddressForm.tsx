@@ -21,6 +21,7 @@ export interface ShippingAddressFormProps {
     onUseNewAddress(): void;
     onFieldChange(fieldName: string, value: string): void;
     onAddressSelect(address: Address): void;
+    isMessengerDelivery: boolean;
 }
 
 const addressFieldName = 'shippingAddress';

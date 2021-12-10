@@ -41,6 +41,7 @@ export interface SingleShippingFormProps {
     onUnhandledError?(error: Error): void;
     signOut(options?: CustomerRequestOptions): void;
     updateAddress(address: Partial<Address>, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
+    isMessengerDelivery: boolean;
 }
 
 export interface SingleShippingFormValues {
@@ -112,6 +113,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             deinitialize,
             values: { shippingAddress: addressForm },
             isShippingStepPending,
+            isMessengerDelivery
         } = this.props;
 
         const {
@@ -147,6 +149,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                         onUseNewAddress={ this.onUseNewAddress }
                         shippingAddress={ shippingAddress }
                         shouldShowSaveAddress={ shouldShowSaveAddress }
+                        isMessengerDelivery={ isMessengerDelivery }
                     />
                     {
                         shouldShowBillingSameAsShipping && <div className="form-body">
@@ -164,6 +167,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                     shouldDisableSubmit={ this.shouldDisableSubmit() }
                     shouldShowOrderComments={ shouldShowOrderComments }
                     shouldShowShippingOptions={ isValid }
+                    isMessengerDelivery={ isMessengerDelivery }
                 />
             </Form>
         );

@@ -41,6 +41,7 @@ export interface ShippingFormProps {
     onUseNewAddress(address: Address, itemId: string): void;
     signOut(options?: CustomerRequestOptions): void;
     updateAddress(address: Partial<Address>, options: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
+    isMessengerDelivery: boolean;
 }
 
 class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
@@ -80,6 +81,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             signOut,
             updateAddress,
             isShippingStepPending,
+            isMessengerDelivery,
         } = this.props;
 
         return isMultiShippingMode ?
@@ -107,6 +109,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 onUseNewAddress={ onUseNewAddress }
                 shouldShowAddAddressInCheckout={ shouldShowAddAddressInCheckout }
                 shouldShowOrderComments={ shouldShowOrderComments }
+                isMessengerDelivery={ isMessengerDelivery }
             /> :
             <SingleShippingForm
                 isDatePicked={isDatePicked}
@@ -134,6 +137,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 shouldShowSaveAddress={ shouldShowSaveAddress }
                 signOut={ signOut }
                 updateAddress={ updateAddress }
+                isMessengerDelivery={ isMessengerDelivery}
             />;
     }
 }

@@ -28,6 +28,7 @@ export interface ShippingAddressProps {
     onFieldChange(name: string, value: string): void;
     onUnhandledError?(error: Error): void;
     onUseNewAddress(): void;
+    isMessengerDelivery: boolean;
 }
 
 const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
@@ -50,6 +51,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
         shouldShowSaveAddress,
         onUnhandledError = noop,
         isShippingStepPending,
+        isMessengerDelivery
     } = props;
 
     const { setSubmitted } = useContext(FormContext);
@@ -131,6 +133,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
             onFieldChange={ handleFieldChange }
             onUseNewAddress={ onUseNewAddress }
             shouldShowSaveAddress={ shouldShowSaveAddress }
+            isMessengerDelivery={ isMessengerDelivery }
         />
     );
 };

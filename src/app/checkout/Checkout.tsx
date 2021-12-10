@@ -1,4 +1,4 @@
-import { Address, Cart, CartChangedError, CheckoutParams, CheckoutSelectors, Consignment, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, FlashMessage, Promotion, RequestOptions, StepTracker } from '@bigcommerce/checkout-sdk';
+import { Address, Cart, CartChangedError, CheckoutParams, CheckoutSelectors, Consignment, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, FlashMessage, Promotion, RequestOptions, StepTracker, ConsignmentUpdateRequestBody, AddressRequestBody, LineItem, ConsignmentsRequestBody } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { lazy, Component, ReactNode } from 'react';
@@ -24,10 +24,12 @@ import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
 
+// OBUNDLE GLOBAL VARIABLES
 declare global {
 	var __DISABLED_DAYS_OF_WEEK__: number[];
 	var __DISABLED_SPECIFIC_DAYS__: string[];
 }
+// -----
 
 const Billing = lazy(() => retry(() => import(
     /* webpackChunkName: "billing" */
@@ -80,6 +82,15 @@ export interface CheckoutState {
     isCartEmpty: boolean;
     isRedirecting: boolean;
     hasSelectedShippingOptions: boolean;
+    isPickupOnly: boolean;
+    isMessengerDelivery: boolean;
+    isShippingOnly: boolean;
+
+    customOptionMessage: string;
+    pickupInStoreMessage: string,
+    messengerDeliveryMessage: string,
+    shipOrderMessage: string,
+    pickupConsignmentAddress: AddressRequestBody[];
 }
 
 export interface WithCheckoutProps {
@@ -100,6 +111,18 @@ export interface WithCheckoutProps {
     clearError(error?: Error): void;
     loadCheckout(id: string, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
     subscribeToConsignments(subscriber: (state: CheckoutSelectors) => void): () => void;
+
+    updateConsignment(consignment: ConsignmentUpdateRequestBody, options?: RequestOptions<{}> | undefined): Promise<CheckoutSelectors>;
+    createConsignments: (consignments: ConsignmentsRequestBody, options?: RequestOptions<{}> | undefined) => Promise<CheckoutSelectors>;
+}
+
+/* OBUNDLE INTERFACES + TYPE ALIASES */
+/*************************************/
+export interface ShippingOptions {
+    name: string, 
+    nameId: number, 
+    value: string, 
+    valueId: number
 }
 
 class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguageProps, CheckoutState> {
@@ -111,6 +134,30 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         isRedirecting: false,
         isMultiShippingMode: false,
         hasSelectedShippingOptions: false,
+
+        isMessengerDelivery: false,
+        isPickupOnly: false,
+        isShippingOnly: false,
+        customOptionMessage: "Choose Your Pickup/Delivery Option",
+        pickupInStoreMessage: "Pickup in Store",
+        messengerDeliveryMessage: "Messenger Service Delivery",
+        shipOrderMessage: "Ship my Order",
+        pickupConsignmentAddress: [
+            {
+                firstName: 'Mirelli',
+                lastName: 'Chocolatier',
+                company: 'Mirelli Chocolatier',
+                address1: '1559 The Midway St',
+                address2: '',
+                city: 'Glendale',
+                stateOrProvince: 'California', 
+                stateOrProvinceCode: 'CA',
+                countryCode: 'US',
+                postalCode: '91208',
+                phone: '818-244-8288',
+                customFields: []
+              },
+        ]
     };
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
@@ -132,6 +179,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             embeddedStylesheet,
             loadCheckout,
             subscribeToConsignments,
+            createConsignments,
+            // updateConsignment,
         } = this.props;
 
         try {
@@ -183,9 +232,108 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             } else {
                 this.handleReady();
             }
+
+            /* OBUNDLE */
+            /**
+             * 1. GET CART ITEMS
+             * 2. CHECK FOR SHIPPING METHOD
+             * 3. MAP THROUGH CART ITEMS
+             * 4. PULL MIRELLI SHIPPING STATE
+             * 5. BYPASS SHIPPING FOR PICKUP INSTORE
+             */
+
+            const optionToCheck = !! cart && cart.lineItems.physicalItems && this.getCustomShippingMethod(cart.lineItems.physicalItems[0].options)
+
+            if (!optionToCheck) return console.log("Error finding option with shipping details");
+
+            const {
+                messengerDeliveryMessage,
+                pickupInStoreMessage,
+                shipOrderMessage,
+            } = this.state;
+
+            switch (optionToCheck.value) {
+                case pickupInStoreMessage:
+                     async () => {
+
+                        if (!cart) return;
+
+                        const mappedLineItems = this.mapLineItems(cart?.lineItems?.physicalItems);
+
+                        if (!mappedLineItems) return;
+
+                        const consignmentBody = [
+                            {
+                                shippingAddress: this.state.pickupConsignmentAddress[0],
+                                lineItems: mappedLineItems,
+                            }
+                        ]
+
+                        const response = await createConsignments(consignmentBody);
+                        
+                        if (!response) return console.log('Error creating consignment address');
+                        // console.log('[RESPONSE FROM CREATE CONSIGNMENTS]', response);
+
+                        // Update consignments with shipment option
+                        const consignments = response.data.getConsignments();
+
+                        // console.log('[CONSIGNMENTS]', consignments);
+                        
+                        if (!consignments || consignments.length === 0) return;
+                        const { availableShippingOptions, id } = consignments[0];
+                        // console.log('[AVAILABLE SHIPPING OPTIONS]', availableShippingOptions);
+
+                        const pickupOption = availableShippingOptions?.find(opt => opt.type === 'shipping_pickupinstore');
+                        
+
+                        if (!pickupOption) return;
+
+                        // console.log('[PICKUP OPTION]', pickupOption);
+                        fetch(
+                            `/api/storefront/checkouts/${checkoutId}/consignments/${id}`, {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    shippingOptionId: pickupOption?.id
+                                })
+                            }
+                        ).then(res => console.log('[UPDATE RES]', res.json()))
+                    }
+                    break;
+                case messengerDeliveryMessage:
+                    this.setState({
+                        isMessengerDelivery: true,
+                    }, () => console.log('[MESSENGER DELIVERY ONLY]', this.state.isMessengerDelivery))
+                    break;
+                case shipOrderMessage:
+                    this.setState({
+                        isShippingOnly: true,
+                    }, () => console.log('[SHIPPING ONLY]', this.state.isShippingOnly))
+                    break;
+                default:
+                    console.log("Error in determining Shipping Method from Product Options.");
+                    break;
+            }
+
+    /*************************************************************************************/
         } catch (error) {
             this.handleUnhandledError(error);
         }
+    }
+
+    mapLineItems(items: LineItem[]) {
+        return items?.map((i: {id: string | number,
+            quantity: number}) => ({
+                    itemId: i.id,
+                    quantity: i.quantity,
+                })
+        )
+    }
+
+    getCustomShippingMethod(opts: any) {
+        return opts.find((opt: ShippingOptions): {} => opt.name === this.state.customOptionMessage)
     }
 
     render(): ReactNode {
@@ -260,7 +408,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         );
     }
 
-    private renderStep(step: CheckoutStepStatus): ReactNode {
+     renderStep(step: CheckoutStepStatus): ReactNode {
         switch (step.type) {
         case CheckoutStepType.Customer:
             return this.renderCustomerStep(step);
@@ -363,6 +511,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onSignIn={ this.handleShippingSignIn }
                         onToggleMultiShipping={ this.handleToggleMultiShipping }
                         onUnhandledError={ this.handleUnhandledError }
+                        isMessengerDelivery={ this.state.isMessengerDelivery }
                     />
                 </LazyContainer>
             </CheckoutStep>
@@ -475,12 +624,21 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
     private navigateToNextIncompleteStep: (options?: { isDefault?: boolean }) => void = options => {
         const { steps } = this.props;
+        // const { isPickupOnly } = this.state;
         const activeStepIndex = findIndex(steps, { isActive: true });
-        const activeStep = activeStepIndex >= 0 && steps[activeStepIndex];
+        let activeStep = activeStepIndex >= 0 && steps[activeStepIndex];
 
         if (!activeStep) {
             return;
         }
+
+        /* OBUNDLE */
+        console.log(activeStepIndex);
+        console.log('[STEPS]', steps);
+
+        // if (isPickupOnly && this.stepTracker) 
+        // this.stepTracker.trackStepCompleted('shipping');
+        // console.log('[STEPS AFTER TRACK STEP COMPLETED]', steps);
 
         const previousStep = steps[Math.max(activeStepIndex - 1, 0)];
 

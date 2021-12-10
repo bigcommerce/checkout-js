@@ -2,6 +2,7 @@ import { FieldProps } from 'formik';
 import React, { useState, useEffect, useCallback, useMemo, useRef, FunctionComponent } from 'react';
 
 import ReactDatePicker from 'react-datepicker';
+import { withCheckout } from '../checkout';
 import { TranslatedString } from '../locale';
 import {
 	Fieldset,
@@ -14,9 +15,10 @@ import {
 
 export interface OrderCommentsProps {
 	onDatePicked: () => void;
+	order?: {};
 }
 
-const OrderComments: FunctionComponent<OrderCommentsProps> = ({ onDatePicked }) => {
+const OrderComments: FunctionComponent<OrderCommentsProps> = ({ onDatePicked, order }) => {
 	const giftCheckboxRef = useRef<null | HTMLInputElement>(null);
 	const orderCommentsRef = useRef<null | HTMLInputElement>(null);
 
@@ -26,6 +28,10 @@ const OrderComments: FunctionComponent<OrderCommentsProps> = ({ onDatePicked }) 
 	const [giftRegex] = useState(/\[This is a Gift\]/gm);
 	const [orderDate, setOrderDate] = useState('');
 	const [giftChecked, setGiftChecked] = useState(false);
+
+	useEffect(() => {
+	  console.log(order);
+	}, [])
 
 	useEffect(() => {
 		updateOrderComment(orderDate);
@@ -79,17 +85,17 @@ const OrderComments: FunctionComponent<OrderCommentsProps> = ({ onDatePicked }) 
 		const isWeekday = (date: Date) => {
 			const newDate = new Date(date);
 			const day = newDate.getDay();
-			// window.__DISABLED_DAYS_OF_WEEK__ = [0, 6];
+			window.__DISABLED_DAYS_OF_WEEK__ = [0, 6];
 
 			return !window.__DISABLED_DAYS_OF_WEEK__.includes(day);
 		};
 
-		// window.__DISABLED_SPECIFIC_DAYS__ = ['11-30-2021', '12-6-2021', '12-7-2021'];
+		window.__DISABLED_SPECIFIC_DAYS__ = [ '12-12-2021', '12-7-2021'];
 
 		return (
 			<>
 				<legend className='form-legend optimizedCheckout-headingSecondary'>
-					Select Your Delivery Date <span>(Required)</span>
+					Ship-By Date <span>(Required)</span>
 				</legend>
 				<ReactDatePicker
 					className='ob-datepicker form-input optimizedCheckout-form-input'
@@ -193,4 +199,27 @@ const OrderComments: FunctionComponent<OrderCommentsProps> = ({ onDatePicked }) 
 	);
 };
 
-export default OrderComments;
+interface WithCheckoutOrderConfirmationProps {
+    order?: {};
+}
+
+export function mapToOrderComments(
+    context: any
+): WithCheckoutOrderConfirmationProps | null {
+    const {
+        checkoutState: {
+            data: {
+                getOrder,
+            },
+
+        },
+    } = context;
+
+    const order = getOrder();
+
+    return {
+        order,
+    };
+}
+
+export default withCheckout(mapToOrderComments)(OrderComments);

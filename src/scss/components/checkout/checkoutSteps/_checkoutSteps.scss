@@ -78,7 +78,8 @@
         counter-increment: $checkoutStep-counter;
         display: inline-block;
         font-size: fontSize("small");
-        line-height: #{$checkoutStep-counter-size}px;
+        // line-height: #{$checkoutStep-counter-size}px;
+        line-height: 40px;
         text-align: center;
     }
 

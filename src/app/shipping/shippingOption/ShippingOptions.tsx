@@ -12,6 +12,7 @@ export interface ShippingOptionsProps {
     isMultiShippingMode: boolean;
     isUpdatingAddress?: boolean;
     shouldShowShippingOptions: boolean;
+    isMessengerDelivery: boolean;
 }
 
 export interface WithCheckoutShippingOptionsProps {

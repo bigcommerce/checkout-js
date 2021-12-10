@@ -23,7 +23,7 @@ const LoadingOverlay: FunctionComponent<LoadingOverlayProps> = ({
                         style={ {
                             display: hideContentWhenLoading && isLoading ?
                                 'none' :
-                                undefined,
+                                'flex',
                         } }
                     >
                         { children }

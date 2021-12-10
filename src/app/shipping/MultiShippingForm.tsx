@@ -42,6 +42,7 @@ export interface MultiShippingFormProps {
     onSubmit(values: MultiShippingFormValues): void;
     onUnhandledError(error: Error): void;
     onUseNewAddress(address: Address, itemId: string): void;
+    isMessengerDelivery: boolean;
 }
 
 interface ShippableItemId {
@@ -87,6 +88,7 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
             countries,
             countriesWithAutocomplete,
             googleMapsApiKey,
+            isMessengerDelivery
         } = this.props;
 
         const { items, itemAddingAddress, createCustomerAddressError } = this.state;
@@ -157,6 +159,7 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
                         shouldDisableSubmit={ this.shouldDisableSubmit() }
                         shouldShowOrderComments={ shouldShowOrderComments }
                         shouldShowShippingOptions={ !hasUnassignedLineItems(consignments, cart.lineItems) }
+                        isMessengerDelivery={ isMessengerDelivery }
                     />
                 </Form>
             </Fragment>

@@ -17,6 +17,7 @@ export interface ShippingFormFooterProps {
     shouldShowShippingOptions?: boolean;
     shouldDisableSubmit: boolean;
     isLoading: boolean;
+    isMessengerDelivery: boolean;
 }
 
 class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
@@ -30,9 +31,10 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
             shouldShowShippingOptions = true,
             shouldDisableSubmit,
             isLoading,
+            isMessengerDelivery
         } = this.props;
 
-        return <>
+        const shippingMethodsComponent = (
             <Fieldset
                 id="checkout-shipping-options"
                 legend={
@@ -49,14 +51,19 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
                             </Alert> }
                     </>
                 }
-            >
+            > 
                 <ShippingOptions
                     isMultiShippingMode={ isMultiShippingMode }
                     isUpdatingAddress={ isLoading }
                     shouldShowShippingOptions={ shouldShowShippingOptions }
+                    isMessengerDelivery={ isMessengerDelivery }
                 />
             </Fieldset>
+        );
 
+        return <>
+        {/* Should be false */}
+            { isMessengerDelivery && shippingMethodsComponent }
             { shouldShowOrderComments &&
                 <OrderComments 
                     onDatePicked={onDatePicked}

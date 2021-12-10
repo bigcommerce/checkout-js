@@ -26,6 +26,9 @@ export interface ShippingProps {
     onUnhandledError(error: Error): void;
     onSignIn(): void;
     navigateNextStep(isBillingSameAsShipping: boolean): void;
+
+    /****** */
+    isMessengerDelivery: boolean;
 }
 
 export interface WithCheckoutShippingProps {
@@ -110,6 +113,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             deinitializeShippingMethod,
             isMultiShippingMode,
             onToggleMultiShipping,
+            isMessengerDelivery,
             ...shippingFormProps
         } = this.props;
 
@@ -146,6 +150,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         updateAddress={ updateShippingAddress }
                         isDatePicked={isDatePicked}
                         onDatePicked={this.handleDatePicked}
+                        isMessengerDelivery={ isMessengerDelivery }
                     />
                 </LoadingOverlay>
             </div>

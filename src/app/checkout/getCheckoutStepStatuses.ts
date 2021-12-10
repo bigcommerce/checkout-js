@@ -7,6 +7,8 @@ import { EMPTY_ARRAY } from '../common/utility';
 import { SUPPORTED_METHODS } from '../customer';
 import { hasSelectedShippingOptions, hasUnassignedLineItems, itemsRequireShipping } from '../shipping';
 
+import { ShippingOptions } from './Checkout';
+
 import CheckoutStepType from './CheckoutStepType';
 
 const getCustomerStepStatus = createSelector(
@@ -87,12 +89,29 @@ const getShippingStepStatus = createSelector(
         const isComplete = (hasAddress || hasRemoteAddress) && hasOptions && !hasUnassignedItems;
         const isRequired = itemsRequireShipping(cart, config);
 
-        return {
+        const defaultCheckoutStepStatus = {
             type: CheckoutStepType.Shipping,
             isActive: false,
             isComplete,
             isEditable: isComplete && isRequired,
             isRequired,
+        }
+
+        const optionToCheck = !! cart && cart.lineItems.physicalItems && getCustomShippingMethod(cart.lineItems.physicalItems[0].options);
+        const isPickupInStore: boolean = !! optionToCheck && optionToCheck.value === 'Pickup in Store' 
+
+        function getCustomShippingMethod(opts: any) {
+            return opts.find((opt: ShippingOptions): {} => opt.name === 'Choose Your Pickup/Delivery Option')
+        }
+
+        if (!isPickupInStore) return defaultCheckoutStepStatus;
+
+        return {
+            type: CheckoutStepType.Shipping,
+            isActive: false,
+            isComplete: true,
+            isEditable: false,
+            isRequired: true,
         };
     }
 );
