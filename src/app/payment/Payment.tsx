@@ -396,7 +396,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
          * UPDATE THE CHECKOUT ORDER WITH THE PROPER COMMENTS BEFORE SUBMISSION
          */
         
-        const orderCommentAddendum = `${customerMessage} ${shipByDate}${hasGiftOption && '[This is a Gift]'}`;
+        const orderCommentAddendum = `${hasGiftOption && '[This is a Gift]'} [Delivery Date: ${shipByDate}]  ${customerMessage} `;
 
         const promises: Array<Promise<CheckoutSelectors>> = [];
 
