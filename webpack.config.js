@@ -10,6 +10,8 @@ const WebpackAssetsManifest = require('webpack-assets-manifest');
 
 const { AsyncHookPlugin, BuildHookPlugin, getNextVersion, transformManifest } = require('./scripts/webpack');
 
+require('dotenv').config();
+
 const ENTRY_NAME = 'checkout';
 const LIBRARY_NAME = 'checkout';
 const AUTO_LOADER_ENTRY_NAME = 'auto-loader';
@@ -129,6 +131,9 @@ function appConfig(options, argv) {
                             eventEmitter.emit('app:error', errors);
                         },
                     }),
+                    !isProduction && new DefinePlugin({
+                        "process.env.RECURLY_PUBLIC_KEY": JSON.stringify(process.env.RECURLY_PUBLIC_KEY)
+                    })
                 ].filter(Boolean),
                 module: {
                     rules: [
