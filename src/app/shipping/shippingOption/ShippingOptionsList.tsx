@@ -12,7 +12,7 @@ interface ShippingOptionListItemProps {
     shippingOption: ShippingOption;
 }
 
-const messengerDeliveryText = 'Messenger Delivery Service (Within 11-20 Miles Radius) - We will inform you when your order is ready to be delivered';
+// const messengerDeliveryText = 'Messenger Delivery Service (Within 11-20 Miles Radius) - We will inform you when your order is ready to be delivered';
 
 const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = ({
     consignmentId,
@@ -39,6 +39,7 @@ export interface ShippingOptionListProps {
     shippingOptions?: ShippingOption[];
     onSelectedOption(consignmentId: string, shippingOptionId: string): void;
     isMessengerDelivery: boolean;
+    isShippingOnly: boolean;
 }
 
 const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
@@ -48,7 +49,8 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
     shippingOptions = EMPTY_ARRAY,
     selectedShippingOptionId,
     onSelectedOption,
-    isMessengerDelivery
+    isMessengerDelivery,
+    isShippingOnly
  }) => {
     const handleSelect = useCallback((value: string) => {
         onSelectedOption(consignmentId, value);
@@ -77,13 +79,16 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
                             shippingOption={ shippingOption }
                         />
                     )
-                    console.log(shippingOption.description);
 
                     if (isMessengerDelivery)
-                        if (shippingOption.description === messengerDeliveryText)
+                        if (shippingOption.type !== "shipping_pickupinstore")
                         return listComponent;
-                        else return <li className='ob-zipcode-warning'>Please select the zipcode you verified on the storefront</li>;
-                    
+                        else return;
+
+                    if (isShippingOnly)
+                        if (shippingOption.type !== "shipping_pickupinstore")
+                        return listComponent;
+                        else return;
                     
                     return listComponent;
                 }) }

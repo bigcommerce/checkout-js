@@ -42,6 +42,12 @@ export interface ShippingFormProps {
     signOut(options?: CustomerRequestOptions): void;
     updateAddress(address: Partial<Address>, options: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
     isMessengerDelivery: boolean;
+    isShippingOnly: boolean;
+    hasGiftOption: boolean;
+    hasShipByDate: boolean;
+    shipByDate: string;
+    toggleGiftOption: () => void;
+    setShipByDate(value: string): void;
 }
 
 class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
@@ -82,6 +88,12 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             updateAddress,
             isShippingStepPending,
             isMessengerDelivery,
+            isShippingOnly,
+            hasGiftOption,
+            hasShipByDate,
+            shipByDate,
+            toggleGiftOption,
+            setShipByDate,
         } = this.props;
 
         return isMultiShippingMode ?
@@ -110,6 +122,12 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 shouldShowAddAddressInCheckout={ shouldShowAddAddressInCheckout }
                 shouldShowOrderComments={ shouldShowOrderComments }
                 isMessengerDelivery={ isMessengerDelivery }
+                isShippingOnly={ isShippingOnly }
+                hasGiftOption={ hasGiftOption }
+                hasShipByDate={ hasShipByDate }
+                shipByDate={ shipByDate }
+                toggleGiftOption={ toggleGiftOption }
+                setShipByDate={ setShipByDate }
             /> :
             <SingleShippingForm
                 isDatePicked={isDatePicked}
@@ -138,6 +156,12 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 signOut={ signOut }
                 updateAddress={ updateAddress }
                 isMessengerDelivery={ isMessengerDelivery}
+                isShippingOnly={ isShippingOnly }
+                hasGiftOption={ hasGiftOption }
+                hasShipByDate={ hasShipByDate }
+                shipByDate={ shipByDate }
+                toggleGiftOption={ toggleGiftOption }
+                setShipByDate={ setShipByDate }
             />;
     }
 }

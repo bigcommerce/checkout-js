@@ -1,4 +1,4 @@
-import { CartChangedError, CheckoutSelectors, CheckoutSettings, OrderRequestBody, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { CartChangedError, CheckoutRequestBody, CheckoutSelectors, CheckoutSettings, OrderRequestBody, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { compact, find, isEmpty, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
@@ -28,6 +28,9 @@ export interface PaymentProps {
     onSubmit?(): void;
     onSubmitError?(error: Error): void;
     onUnhandledError?(error: Error): void;
+    hasGiftOption: boolean;
+    hasShipByDate: boolean;
+    shipByDate: string;
 }
 
 interface WithCheckoutPaymentProps {
@@ -53,6 +56,8 @@ interface WithCheckoutPaymentProps {
     loadCheckout(): Promise<CheckoutSelectors>;
     loadPaymentMethods(): Promise<CheckoutSelectors>;
     submitOrder(values: OrderRequestBody): Promise<CheckoutSelectors>;
+    updateCheckout(payload: CheckoutRequestBody): Promise<CheckoutSelectors>;
+    customerMessage: string;
 }
 
 interface PaymentState {
@@ -370,12 +375,44 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             onSubmit = noop,
             onSubmitError = noop,
             submitOrder,
+            hasGiftOption,
+            hasShipByDate,
+            shipByDate,
+            updateCheckout,
+            customerMessage,
         } = this.props;
 
         const {
             selectedMethod = defaultMethod,
             submitFunctions,
         } = this.state;
+
+        /**
+         * CUSTOM SUBMISSION:
+         * 
+         * 1. CALENDAR DATE PICKED
+         * 2. GIFT OPTION SELECTED
+         * 
+         * UPDATE THE CHECKOUT ORDER WITH THE PROPER COMMENTS BEFORE SUBMISSION
+         */
+        
+        const orderCommentAddendum = `${customerMessage} ${shipByDate}${hasGiftOption && '[This is a Gift]'}`;
+
+        const promises: Array<Promise<CheckoutSelectors>> = [];
+
+        if (hasShipByDate) {
+            promises.push(updateCheckout({ customerMessage: orderCommentAddendum }));
+        }
+
+        try {
+            await Promise.all(promises);
+        } catch(error) {
+            // onUnhandledError(error);
+            console.log(error);
+        }
+
+
+        /***************************************************************************/
 
         const customSubmit = selectedMethod && submitFunctions[
             getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway)
@@ -557,6 +594,8 @@ export function mapToPaymentProps({
             undefined,
         usableStoreCredit: checkout.grandTotal > 0 ?
             Math.min(checkout.grandTotal, customer.storeCredit || 0) : 0,
+        updateCheckout: checkoutService.updateCheckout,
+        customerMessage: checkout.customerMessage,
     };
 }
 

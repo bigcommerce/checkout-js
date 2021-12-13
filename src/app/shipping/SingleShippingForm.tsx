@@ -42,6 +42,12 @@ export interface SingleShippingFormProps {
     signOut(options?: CustomerRequestOptions): void;
     updateAddress(address: Partial<Address>, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
     isMessengerDelivery: boolean;
+    isShippingOnly: boolean;
+    hasGiftOption: boolean;
+    hasShipByDate: boolean;
+    shipByDate: string;
+    toggleGiftOption: () => void;
+    setShipByDate(value: string): void;
 }
 
 export interface SingleShippingFormValues {
@@ -113,7 +119,13 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             deinitialize,
             values: { shippingAddress: addressForm },
             isShippingStepPending,
-            isMessengerDelivery
+            isMessengerDelivery,
+            isShippingOnly,
+            hasGiftOption,
+            hasShipByDate,
+            shipByDate,
+            toggleGiftOption,
+            setShipByDate,
         } = this.props;
 
         const {
@@ -125,7 +137,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
         const PAYMENT_METHOD_VALID = ['amazon', 'amazonpay'];
         const shouldShowBillingSameAsShipping = !PAYMENT_METHOD_VALID.some(method => method === methodId);
 
-        console.log('[SingleShippingForm.tsx]: Date Picked', isDatePicked);
+        // console.log('[SingleShippingForm.tsx]: Date Picked', isDatePicked);
 
         return (
             <Form autoComplete="on">
@@ -168,6 +180,12 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                     shouldShowOrderComments={ shouldShowOrderComments }
                     shouldShowShippingOptions={ isValid }
                     isMessengerDelivery={ isMessengerDelivery }
+                    isShippingOnly={ isShippingOnly }
+                    hasGiftOption={ hasGiftOption }
+                    hasShipByDate={ hasShipByDate }
+                    shipByDate={ shipByDate }
+                    toggleGiftOption={ toggleGiftOption }
+                    setShipByDate={ setShipByDate }
                 />
             </Form>
         );
@@ -178,7 +196,6 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             isLoading,
             consignments,
             isValid,
-            isDatePicked,
         } = this.props;
 
         const {
@@ -189,9 +206,9 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             return false;
         }
 
-        console.log('Should disable?', isLoading || isUpdatingShippingData || !hasSelectedShippingOptions(consignments) || !isDatePicked);
+        // console.log('Should disable?', isLoading || isUpdatingShippingData || !hasSelectedShippingOptions(consignments));
 
-        return isLoading || isUpdatingShippingData || !hasSelectedShippingOptions(consignments) || !isDatePicked;
+        return isLoading || isUpdatingShippingData || !hasSelectedShippingOptions(consignments);
     };
 
     private handleFieldChange: (name: string) => void = async name => {

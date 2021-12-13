@@ -40,6 +40,7 @@ class ShippingOptionsForm extends PureComponent<ShippingOptionsFormProps & Formi
             invalidShippingMessage,
             methodId,
             isMessengerDelivery,
+            isShippingOnly,
         } = this.props;
 
         if (!consignments ||
@@ -73,6 +74,7 @@ class ShippingOptionsForm extends PureComponent<ShippingOptionsFormProps & Formi
                             selectedShippingOptionId={ consignment.selectedShippingOption && consignment.selectedShippingOption.id }
                             shippingOptions={ consignment.availableShippingOptions }
                             isMessengerDelivery={ isMessengerDelivery }
+                            isShippingOnly= { isShippingOnly }
                         />
 
                         { (!consignment.availableShippingOptions || !consignment.availableShippingOptions.length) &&

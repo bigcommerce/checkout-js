@@ -29,6 +29,12 @@ export interface ShippingProps {
 
     /****** */
     isMessengerDelivery: boolean;
+    isShippingOnly: boolean;
+    hasGiftOption: boolean;
+    hasShipByDate: boolean;
+    shipByDate: string;
+    toggleGiftOption: () => void;
+    setShipByDate(value: string): void;
 }
 
 export interface WithCheckoutShippingProps {
@@ -114,6 +120,12 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             isMultiShippingMode,
             onToggleMultiShipping,
             isMessengerDelivery,
+            isShippingOnly,
+            hasGiftOption,
+            hasShipByDate,
+            shipByDate,
+            toggleGiftOption,
+            setShipByDate,
             ...shippingFormProps
         } = this.props;
 
@@ -151,6 +163,12 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         isDatePicked={isDatePicked}
                         onDatePicked={this.handleDatePicked}
                         isMessengerDelivery={ isMessengerDelivery }
+                        isShippingOnly={ isShippingOnly }
+                        hasGiftOption={ hasGiftOption }
+                        hasShipByDate={ hasShipByDate }
+                        shipByDate={ shipByDate }
+                        toggleGiftOption={ toggleGiftOption }
+                        setShipByDate={ setShipByDate }
                     />
                 </LoadingOverlay>
             </div>

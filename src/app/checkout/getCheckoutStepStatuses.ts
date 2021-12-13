@@ -89,6 +89,21 @@ const getShippingStepStatus = createSelector(
         const isComplete = (hasAddress || hasRemoteAddress) && hasOptions && !hasUnassignedItems;
         const isRequired = itemsRequireShipping(cart, config);
 
+        /* OBUNDLE */
+        /**
+         * Checks if the 'Pickup in Store' option is present on the 
+         * first item in the cart. If no method is found, default
+         * 'shipping' step generated, otherwise the 'shipping' step
+         * is disabled and the consignment address is injected in
+         * the Checkout.tsx component on mounting.
+         * 
+         * This MUST occur before Checkout.tsx mounting since this is
+         * an HOC that maps the props to the component.
+         * 
+         * @returns { 
+         *  type, isActive, isComplete, isEditable, isRequired 
+         * }
+         */
         const defaultCheckoutStepStatus = {
             type: CheckoutStepType.Shipping,
             isActive: false,
@@ -98,6 +113,7 @@ const getShippingStepStatus = createSelector(
         }
 
         const optionToCheck = !! cart && cart.lineItems.physicalItems && getCustomShippingMethod(cart.lineItems.physicalItems[0].options);
+        
         const isPickupInStore: boolean = !! optionToCheck && optionToCheck.value === 'Pickup in Store' 
 
         function getCustomShippingMethod(opts: any) {
@@ -113,6 +129,7 @@ const getShippingStepStatus = createSelector(
             isEditable: false,
             isRequired: true,
         };
+        /****************************************/
     }
 );
 

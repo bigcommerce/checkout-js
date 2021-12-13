@@ -43,6 +43,12 @@ export interface MultiShippingFormProps {
     onUnhandledError(error: Error): void;
     onUseNewAddress(address: Address, itemId: string): void;
     isMessengerDelivery: boolean;
+    isShippingOnly: boolean;
+    hasGiftOption: boolean;
+    hasShipByDate: boolean;
+    shipByDate: string;
+    toggleGiftOption: () => void;
+    setShipByDate(value: string): void;
 }
 
 interface ShippableItemId {
@@ -88,7 +94,13 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
             countries,
             countriesWithAutocomplete,
             googleMapsApiKey,
-            isMessengerDelivery
+            isMessengerDelivery,
+            isShippingOnly,
+            hasGiftOption,
+            hasShipByDate,
+            shipByDate,
+            toggleGiftOption,
+            setShipByDate,
         } = this.props;
 
         const { items, itemAddingAddress, createCustomerAddressError } = this.state;
@@ -160,6 +172,12 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
                         shouldShowOrderComments={ shouldShowOrderComments }
                         shouldShowShippingOptions={ !hasUnassignedLineItems(consignments, cart.lineItems) }
                         isMessengerDelivery={ isMessengerDelivery }
+                        isShippingOnly={ isShippingOnly }
+                        hasGiftOption={ hasGiftOption }
+                        hasShipByDate={ hasShipByDate }
+                        shipByDate={ shipByDate }
+                        toggleGiftOption={ toggleGiftOption }
+                        setShipByDate={ setShipByDate }
                     />
                 </Form>
             </Fragment>

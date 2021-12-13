@@ -91,6 +91,9 @@ export interface CheckoutState {
     messengerDeliveryMessage: string,
     shipOrderMessage: string,
     pickupConsignmentAddress: AddressRequestBody[];
+    hasGiftOption: boolean;
+    hasShipByDate: boolean;
+    shipByDate: string;
 }
 
 export interface WithCheckoutProps {
@@ -135,6 +138,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         isMultiShippingMode: false,
         hasSelectedShippingOptions: false,
 
+        /* OBUNDLE STATE */
         isMessengerDelivery: false,
         isPickupOnly: false,
         isShippingOnly: false,
@@ -157,7 +161,10 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 phone: '818-244-8288',
                 customFields: []
               },
-        ]
+        ],
+        hasGiftOption: false,
+        hasShipByDate: false,
+        shipByDate: ''
     };
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
@@ -180,7 +187,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             loadCheckout,
             subscribeToConsignments,
             createConsignments,
-            // updateConsignment,
         } = this.props;
 
         try {
@@ -244,6 +250,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
             const optionToCheck = !! cart && cart.lineItems.physicalItems && this.getCustomShippingMethod(cart.lineItems.physicalItems[0].options)
 
+
             if (!optionToCheck) return console.log("Error finding option with shipping details");
 
             const {
@@ -254,7 +261,10 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
             switch (optionToCheck.value) {
                 case pickupInStoreMessage:
-                     async () => {
+                    this.setState({
+                        isPickupOnly: true,
+                    },
+                        async () => {
 
                         if (!cart) return;
 
@@ -301,6 +311,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                             }
                         ).then(res => console.log('[UPDATE RES]', res.json()))
                     }
+                    )
                     break;
                 case messengerDeliveryMessage:
                     this.setState({
@@ -323,6 +334,20 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         }
     }
 
+    /* OBUNDLE CUSTOM METHODS */
+    toggleGiftOption = (): void => {
+        this.setState({
+            hasGiftOption: !this.state.hasGiftOption
+        })
+    }
+
+    setShipByDate = (value: string) => {
+        this.setState({
+            shipByDate: value,
+            hasShipByDate: true,
+        })
+    }
+
     mapLineItems(items: LineItem[]) {
         return items?.map((i: {id: string | number,
             quantity: number}) => ({
@@ -335,6 +360,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     getCustomShippingMethod(opts: any) {
         return opts.find((opt: ShippingOptions): {} => opt.name === this.state.customOptionMessage)
     }
+
+    /***********************************************/
 
     render(): ReactNode {
         const { error } = this.state;
@@ -512,6 +539,12 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onToggleMultiShipping={ this.handleToggleMultiShipping }
                         onUnhandledError={ this.handleUnhandledError }
                         isMessengerDelivery={ this.state.isMessengerDelivery }
+                        isShippingOnly={ this.state.isShippingOnly }
+                        hasGiftOption={ this.state.hasGiftOption }
+                        hasShipByDate={ this.state.hasShipByDate }
+                        shipByDate={ this.state.shipByDate }
+                        toggleGiftOption={ this.toggleGiftOption }
+                        setShipByDate={ this.setShipByDate }
                     />
                 </LazyContainer>
             </CheckoutStep>
@@ -566,6 +599,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onSubmit={ this.navigateToOrderConfirmation }
                         onSubmitError={ this.handleError }
                         onUnhandledError={ this.handleUnhandledError }
+                        hasGiftOption={ this.state.hasGiftOption }
+                        hasShipByDate={ this.state.hasShipByDate }
+                        shipByDate={ this.state.shipByDate }
                     />
                 </LazyContainer>
             </CheckoutStep>
@@ -633,12 +669,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         }
 
         /* OBUNDLE */
-        console.log(activeStepIndex);
-        console.log('[STEPS]', steps);
-
-        // if (isPickupOnly && this.stepTracker) 
-        // this.stepTracker.trackStepCompleted('shipping');
-        // console.log('[STEPS AFTER TRACK STEP COMPLETED]', steps);
+        // console.log('[STEPS]', steps);
 
         const previousStep = steps[Math.max(activeStepIndex - 1, 0)];
 

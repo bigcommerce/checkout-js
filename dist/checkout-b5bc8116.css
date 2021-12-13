@@ -4599,7 +4599,7 @@ h6 a:hover {
     counter-increment: li-counter;
     display: inline-block;
     font-size: 1.38462rem;
-    line-height: 35px;
+    line-height: 40px;
     text-align: center; }
   .stepHeader-counter svg {
     display: none;
@@ -5361,14 +5361,6 @@ body.klarna-payments-fso-open {
   .optimizedCheckout-header {
     text-align: left; } }
 
-.optimizedCheckout-headingPrimary {
-  color: #444;
-  font-family: VentiCF, Arial, Helvetica, sans-serif; }
-
-.optimizedCheckout-headingSecondary {
-  color: #444;
-  font-family: VentiCF, Arial, Helvetica, sans-serif; }
-
 body {
   background-color: #fff;
   font-size: 15px; }
@@ -5600,18 +5592,30 @@ body.pickup-only li.checkout-step.optimizedCheckout-checkoutStep.checkout-step--
   color: red;
   font-size: 0.9rem; }
 
+.ob-giftOption__checkbox {
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  height: 1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px; }
+
+.ob-giftOption + .form-legend span {
+  font-size: 1rem;
+  font-weight: 400; }
+
 .ob-orderComments__message {
   color: red;
-  font-size: 0.9rem; }
+  font-size: 0.9rem;
+  margin: 0;
+  margin-top: -10px; }
 
 .ob-label-addendum {
   color: red;
   font-size: 0.9rem;
-  margin-left: 1rem; }
-
-.ob-giftCheckbox + .optimizedCheckout-form-label {
-  display: inline-block;
-  margin-left: 10px; }
+  font-weight: 400;
+  margin-left: 0.5rem; }
 
 .ob-datepicker {
   background-color: #fff;
@@ -5630,6 +5634,20 @@ body.pickup-only li.checkout-step.optimizedCheckout-checkoutStep.checkout-step--
     color: white; }
   .react-datepicker__day-name {
     color: white !important; }
+
+.layout-cart {
+  display: flex;
+  float: none;
+  height: auto;
+  overflow: unset; }
+  .layout-cart .optimizedCheckout-orderSummary {
+    height: min-content;
+    position: sticky;
+    top: 25px; }
+
+.ob-zipcode-warning {
+  padding: 20px;
+  text-align: center; }
 
 .errorCode {
   font-size: 0.75rem;
@@ -5735,4 +5753,4 @@ body.pickup-only li.checkout-step.optimizedCheckout-checkoutStep.checkout-step--
     font-weight: normal; }
 
 
-/*# sourceMappingURL=checkout-aa0198d6.css.map*/
+/*# sourceMappingURL=checkout-b5bc8116.css.map*/

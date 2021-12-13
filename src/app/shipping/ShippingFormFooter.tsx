@@ -18,6 +18,12 @@ export interface ShippingFormFooterProps {
     shouldDisableSubmit: boolean;
     isLoading: boolean;
     isMessengerDelivery: boolean;
+    isShippingOnly: boolean;
+    hasGiftOption: boolean;
+    hasShipByDate: boolean;
+    shipByDate: string;
+    toggleGiftOption: () => void;
+    setShipByDate(value: string): void;
 }
 
 class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
@@ -31,7 +37,13 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
             shouldShowShippingOptions = true,
             shouldDisableSubmit,
             isLoading,
-            isMessengerDelivery
+            isMessengerDelivery,
+            isShippingOnly,
+            hasGiftOption,
+            hasShipByDate,
+            shipByDate,
+            toggleGiftOption,
+            setShipByDate,
         } = this.props;
 
         const shippingMethodsComponent = (
@@ -57,17 +69,23 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
                     isUpdatingAddress={ isLoading }
                     shouldShowShippingOptions={ shouldShowShippingOptions }
                     isMessengerDelivery={ isMessengerDelivery }
+                    isShippingOnly={ isShippingOnly }
                 />
             </Fieldset>
         );
 
         return <>
-        {/* Should be false */}
-            { isMessengerDelivery && shippingMethodsComponent }
+            { shippingMethodsComponent }
             { shouldShowOrderComments &&
                 <OrderComments 
                     onDatePicked={onDatePicked}
-                /> }
+                    hasGiftOption={ hasGiftOption }
+                    hasShipByDate={ hasShipByDate }
+                    shipByDate={ shipByDate }
+                    toggleGiftOption={ toggleGiftOption }
+                    setShipByDate={ setShipByDate }
+                /> 
+            }
 
             <div className="form-actions">
                 <Button
