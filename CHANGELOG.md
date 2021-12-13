@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.184.3](https://github.com/bigcommerce/checkout-js/compare/v1.184.2...v1.184.3) (2021-12-13)
+
+
+### Code Refactoring
+
+* **payment:** INT-1866 Update Visa Checkout to Visa SRC ([#762](https://github.com/bigcommerce/checkout-js/issues/762)) ([814b461](https://github.com/bigcommerce/checkout-js/commit/814b4613f5fe3557d89c11cefe1e9fb4b703ae24))
+
 ### [1.184.2](https://github.com/bigcommerce/checkout-js/compare/v1.184.1...v1.184.2) (2021-12-08)
 
 ### [1.184.1](https://github.com/bigcommerce/checkout-js/compare/v1.184.0...v1.184.1) (2021-12-07)
