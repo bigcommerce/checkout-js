@@ -83,7 +83,7 @@ describe('when using Stripe payment', () => {
             method = {
                 ...getPaymentMethod(),
                 id: 'alipay',
-                gateway: 'stripev3',
+                gateway: 'stripeupe',
                 method: 'alipay',
                 initializationData: {},
             };
@@ -114,7 +114,7 @@ describe('when using Stripe payment', () => {
             expect(checkoutService.initializePayment)
                 .toHaveBeenCalledWith(expect.objectContaining({
                     methodId: method.id,
-                    stripev3: {
+                    stripeupe: {
                         containerId: 'stripe-alipay-component-field',
                     },
                 }));
@@ -126,11 +126,9 @@ describe('when using Stripe payment', () => {
             method = {
                 ...getPaymentMethod(),
                 id: 'card',
-                gateway: 'stripev3',
+                gateway: 'stripeupe',
                 method: 'card',
-                initializationData: {
-                    useIndividualCardFields: false,
-                },
+                initializationData: {},
             };
         });
 
@@ -143,7 +141,6 @@ describe('when using Stripe payment', () => {
                     containerId: `stripe-card-component-field`,
                     deinitializePayment: expect.any(Function),
                     initializePayment: expect.any(Function),
-                    additionalContainerClassName: 'optimizedCheckout-form-input widget--stripev3',
                     method,
                 }));
         });
@@ -160,58 +157,10 @@ describe('when using Stripe payment', () => {
             expect(checkoutService.initializePayment)
                 .toHaveBeenCalledWith(expect.objectContaining({
                     methodId: method.id,
-                    stripev3: {
-                        options: {
-                            classes: {
-                                base: 'form-input optimizedCheckout-form-input',
-                            },
-                        },
+                    stripeupe: {
                         containerId: 'stripe-card-component-field',
                     },
                 }));
-        });
-
-        it('initializes method with required config when useIndividualCardFields option is true', () => {
-            method.initializationData.useIndividualCardFields = true;
-            const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
-            const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
-
-            component.prop('initializePayment')({
-                methodId: method.id,
-                gatewayId: method.gateway,
-            });
-
-            expect(checkoutService.initializePayment)
-                .toHaveBeenCalledWith({
-                    gatewayId: method.gateway,
-                    methodId: method.id,
-                    stripev3: {
-                        containerId: 'stripe-card-component-field',
-                        options: {
-                            cardNumberElementOptions: {
-                                showIcon: true,
-                                classes: {
-                                    base: 'form-input optimizedCheckout-form-input',
-                                },
-                                placeholder: '',
-                                containerId: 'stripe-card-number-component-field',
-                            },
-                            cardExpiryElementOptions: {
-                                classes: {
-                                    base: 'form-input optimizedCheckout-form-input',
-                                },
-                                containerId: 'stripe-expiry-component-field',
-                            },
-                            cardCvcElementOptions: {
-                                classes: {
-                                    base: 'form-input optimizedCheckout-form-input',
-                                },
-                                placeholder: '',
-                                containerId: 'stripe-cvc-component-field',
-                            },
-                        },
-                    },
-                });
         });
     });
 
@@ -220,7 +169,7 @@ describe('when using Stripe payment', () => {
             method = {
                 ...getPaymentMethod(),
                 id: 'idealBank',
-                gateway: 'stripev3',
+                gateway: 'stripeupe',
                 method: 'idealBank',
                 initializationData: {},
             };
@@ -235,7 +184,6 @@ describe('when using Stripe payment', () => {
                     containerId: `stripe-idealBank-component-field`,
                     deinitializePayment: expect.any(Function),
                     initializePayment: expect.any(Function),
-                    additionalContainerClassName: 'optimizedCheckout-form-input widget--stripev3',
                     method,
                 }));
         });
@@ -252,13 +200,8 @@ describe('when using Stripe payment', () => {
             expect(checkoutService.initializePayment)
                 .toHaveBeenCalledWith(expect.objectContaining({
                         methodId: method.id,
-                        stripev3: {
+                        stripeupe: {
                             containerId: 'stripe-idealBank-component-field',
-                            options: {
-                                classes: {
-                                    base: 'form-input optimizedCheckout-form-input',
-                                },
-                            },
                         },
                     })
                 );
@@ -270,7 +213,7 @@ describe('when using Stripe payment', () => {
             method = {
                 ...getPaymentMethod(),
                 id: 'iban',
-                gateway: 'stripev3',
+                gateway: 'stripeupe',
                 method: 'iban',
                 initializationData: {},
             };
@@ -285,7 +228,6 @@ describe('when using Stripe payment', () => {
                     containerId: `stripe-iban-component-field`,
                     deinitializePayment: expect.any(Function),
                     initializePayment: expect.any(Function),
-                    additionalContainerClassName: 'optimizedCheckout-form-input widget--stripev3',
                     method,
                 }));
         });
@@ -302,13 +244,7 @@ describe('when using Stripe payment', () => {
             expect(checkoutService.initializePayment)
                 .toHaveBeenCalledWith(expect.objectContaining({
                     methodId: method.id,
-                    stripev3: {
-                        options: {
-                            classes: {
-                                base: 'form-input optimizedCheckout-form-input',
-                            },
-                            supportedCountries: ['SEPA'],
-                        },
+                    stripeupe: {
                         containerId: 'stripe-iban-component-field',
                     },
                 }));
