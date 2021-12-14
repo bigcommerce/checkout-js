@@ -1,4 +1,4 @@
-import { CardInstrument, PaymentInitializeOptions, StripeUPEElementOptions } from '@bigcommerce/checkout-sdk';
+import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import React, { useCallback, FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
@@ -6,30 +6,14 @@ import { TranslatedString } from '../../locale';
 import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps } from '../hostedCreditCard';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
-import StripeV3CustomCardForm from './StripeV3CustomCardForm';
 
 export type StripePaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId'>;
 
-export interface StripeOptions {
-    alipay?: StripeUPEElementOptions;
-    card: StripeUPEElementOptions;
-    cardCvc: StripeUPEElementOptions;
-    cardExpiry: StripeUPEElementOptions;
-    cardNumber: StripeUPEElementOptions;
-    iban: StripeUPEElementOptions;
-    idealBank: StripeUPEElementOptions;
-}
 interface WithCheckoutStripePaymentMethodProps {
     storeUrl: string;
 }
 export enum StripeElementType {
-    alipay = 'alipay',
     card = 'card',
-    cardCvc = 'cardCvc',
-    cardExpiry = 'cardExpiry',
-    cardNumber = 'cardNumber',
-    iban = 'iban',
-    idealBank = 'idealBank',
 }
 const StripeUPEPaymentMethod: FunctionComponent<StripePaymentMethodProps & WithInjectedHostedCreditCardFieldsetProps & WithCheckoutStripePaymentMethodProps> = ({
     initializePayment,
@@ -40,94 +24,21 @@ const StripeUPEPaymentMethod: FunctionComponent<StripePaymentMethodProps & WithI
     storeUrl,
     ...rest
     }) => {
-    const { useIndividualCardFields } = method.initializationData;
     const paymentMethodType = method.id as StripeElementType;
-    const additionalStripeV3Classes = paymentMethodType !== StripeElementType.alipay ? 'optimizedCheckout-form-input widget--stripev3' : '';
     const containerId = `stripe-${paymentMethodType}-component-field`;
-    const classes = {
-        base: 'form-input optimizedCheckout-form-input',
-    };
-    const stripeOptions: StripeOptions = {
-        [StripeElementType.card]: {
-            classes,
-        },
-        [StripeElementType.cardCvc]: {
-            classes,
-            placeholder: '',
-        },
-        [StripeElementType.cardExpiry]: {
-            classes,
-        },
-        [StripeElementType.cardNumber]: {
-            classes,
-            showIcon: true,
-            placeholder: '',
-        },
-        [StripeElementType.iban]: {
-            classes,
-            supportedCountries: ['SEPA'],
-        },
-        [StripeElementType.idealBank]: {
-            classes,
-        },
-    };
 
-    const getIndividualCardElementOptions = useCallback((stripeInitializeOptions: StripeOptions) => {
-        return {
-            cardNumberElementOptions: {
-                ...stripeInitializeOptions[StripeElementType.cardNumber],
-                containerId: 'stripe-card-number-component-field',
-            },
-            cardExpiryElementOptions: {
-                ...stripeInitializeOptions[StripeElementType.cardExpiry],
-                containerId: 'stripe-expiry-component-field',
-            },
-            cardCvcElementOptions: {
-                ...stripeInitializeOptions[StripeElementType.cardCvc],
-                containerId: 'stripe-cvc-component-field',
-            },
-        };
-    }, []);
-
-    const getStripeOptions = useCallback((stripeInitializeOptions: StripeOptions) => {
-        if (useIndividualCardFields) {
-            return getIndividualCardElementOptions(stripeInitializeOptions);
-        }
-
-        return stripeInitializeOptions[paymentMethodType];
-    }, [paymentMethodType, getIndividualCardElementOptions, useIndividualCardFields]);
-
-    const initializeStripePayment: HostedWidgetPaymentMethodProps['initializePayment'] = useCallback(async (options: PaymentInitializeOptions, selectedInstrument) => {
-        return initializePayment({
-            ...options,
-            stripeupe: { containerId,
-                options: getStripeOptions(stripeOptions),
-                ...(selectedInstrument && { form : await getHostedFormOptions(selectedInstrument) })},
-        });
-    }, [initializePayment, containerId, getStripeOptions, stripeOptions, getHostedFormOptions]);
-
-    const renderCustomPaymentForm = () => {
-        const optionsCustomForm = getIndividualCardElementOptions(stripeOptions);
-
-        return <StripeV3CustomCardForm options={ optionsCustomForm } />;
-    };
-
-    function validateInstrument(_shouldShowNumber: boolean, selectedInstrument: CardInstrument) {
-        return getHostedStoredCardValidationFieldset(selectedInstrument);
-    }
+    const initializeStripePayment: HostedWidgetPaymentMethodProps['initializePayment'] = useCallback(async (options: PaymentInitializeOptions) => {
+        return initializePayment({ ...options,
+            stripeupe: { containerId}});
+    }, [initializePayment, containerId]);
 
     return <>
         <HostedWidgetPaymentMethod
             { ...rest }
-            additionalContainerClassName= { additionalStripeV3Classes }
             containerId={ containerId }
             hideContentWhenSignedOut
             initializePayment={ initializeStripePayment }
             method={ method }
-            renderCustomPaymentForm={ renderCustomPaymentForm }
-            shouldRenderCustomInstrument={ useIndividualCardFields }
-            storedCardValidationSchema={ hostedStoredCardValidationSchema }
-            validateInstrument={ validateInstrument }
         />
         {
             method.id === 'iban' &&
