@@ -151,7 +151,7 @@ const Ideal: FunctionComponent<CheckoutcomAPMFormProps> = ({ method }) => {
     </>);
 };
 
-const HiddenInput: FunctionComponent<HiddenInputProps> = ({field: {value, ...restField}, form, selectedIssuer}) => {
+export const HiddenInput: FunctionComponent<HiddenInputProps> = ({field: {value, ...restField}, form, selectedIssuer}) => {
     const Input = useCallback(() => <input { ...restField } type="hidden" />, [restField]);
     useEffect(() => {
         if (value === selectedIssuer) {
@@ -184,7 +184,7 @@ const DropdownButton: FunctionComponent<DropdownButtonProps> = ({ selectedIssuer
     />);
 };
 
-const OptionButton: FunctionComponent<OptionButtonProps> = ({ issuer, ...restProps }) => {
+export const OptionButton: FunctionComponent<OptionButtonProps> = ({ issuer, ...restProps }) => {
     const { bic, name } = issuer;
 
     return (<button data-bic={ bic } type="button" { ...restProps }>
