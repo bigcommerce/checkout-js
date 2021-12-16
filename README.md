@@ -8,12 +8,13 @@ Local development for the open-source checkout is not particularly intuitive but
 
 First, `git clone` this repo which is connected to BC's main repo. You **must** have this repo connected so it can pull updates with our approval. There are PCI Compliance legal issues that are maintained by BC, so we must allow for updates to be served from upstream.
 
-Second, follow the instructions laid out in the sections below (use Obundle's Sandbox store as your live store) until you are finished with the **Custom Checkout installation** section. You should have 3 things running concurrently:
+Second, follow the instructions laid out in the sections below (use Obundle's Sandbox store as your live store for development purposes) until you are finished with the **Custom Checkout installation** section. You should have 3 things running concurrently:
 1. `stencil start` local BC theme connected to custom checkout build on `http://localhost:3000` (see Obundle Sandbox Credentials)
-2. `npm run dev` to launch the webpack watcher, TypeScript compiler, and app builder
-3. `npm run dev:server` to serve the build to the local address on your store (ex: `http://127.0.0.1:8080`)
+2. `nvm use 14 or higher` - Install Node Version Manager so you can easily switch between Node version; the checkout requires Node version 14 or higher since that is what I installed it with. However, any new checkouts can be Node version 10 or higher
+3. `npm run dev` to launch the webpack watcher, TypeScript compiler, and app builder
+4. `npm run dev:server` to serve the build to the local address on your store (ex: `http://127.0.0.1:8080`)
 
-**Important:** The build provided by `npm run dev` is cached the first time you load `localhost` so you'll see your first changes but no subsequent changes will display on refresh. Instead, use a *hard refresh* (Mac: cmd + shift + R) which clears the cache and will show your changes.
+**Important:** The build provided by `npm run dev` is cached the first time you load `localhost` so you'll see your first changes but no subsequent changes will display on refresh. Instead, use a *hard refresh* (Mac: cmd + shift + R, PC: shift + F5) which clears the cache and will show your changes.
 
 #### Obundle Sandbox Credentials
 

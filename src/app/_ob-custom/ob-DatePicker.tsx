@@ -1,5 +1,6 @@
 import React, { useState, useEffect, FunctionComponent } from 'react';
 import ReactDatePicker from 'react-datepicker';
+import { subDays, addDays } from 'date-fns'
 
 interface DatePickerProps {
     setShipByDate: (date: string) => void;
@@ -7,7 +8,8 @@ interface DatePickerProps {
 }
 
 const DatePicker: FunctionComponent<DatePickerProps> = ({ setShipByDate, onDatePicked}) => {
-    window.__DISABLED_SPECIFIC_DAYS__ = [ '12-20-2021', '12-22-2021', '12-23-2021'];
+    // window.__DISABLED_SPECIFIC_DAYS__ = [ '12-20-2021', '12-22-2021', '12-23-2021']; // TESTING ONLY
+    // window.__DAYS_OUT_SHIPPING = 2; // TESTING ONLY
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
     useEffect(() => {
@@ -34,9 +36,10 @@ const DatePicker: FunctionComponent<DatePickerProps> = ({ setShipByDate, onDateP
                 placeholderText={selectedDate ? selectedDate.toLocaleDateString('en-US') : 'mm/dd/yyyy'}
                 selected={selectedDate}
                 onChange={(date: Date) => setSelectedDate(date)}
-                minDate={new Date()}
+                minDate={ addDays(new Date(), window.__DAYS_OUT_SHIPPING__) }
                 excludeDates={window.__DISABLED_SPECIFIC_DAYS__.map(d => new Date(d))}
                 filterDate={isWeekday}
+                excludeDateIntervals={[{start: subDays(new Date(), 5), end: addDays(new Date(), 5) }]}
             />
         </>
     );
@@ -45,7 +48,7 @@ const DatePicker: FunctionComponent<DatePickerProps> = ({ setShipByDate, onDateP
 const isWeekday = (date: Date) => {
     const newDate = new Date(date);
     const day = newDate.getDay();
-    window.__DISABLED_DAYS_OF_WEEK__ = [0, 6];
+    // window.__DISABLED_DAYS_OF_WEEK__ = [0, 6]; // TESTING ONLY
 
     return !window.__DISABLED_DAYS_OF_WEEK__.includes(day);
 };

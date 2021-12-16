@@ -28,6 +28,7 @@ import CheckoutSupport from './CheckoutSupport';
 declare global {
 	var __DISABLED_DAYS_OF_WEEK__: number[];
 	var __DISABLED_SPECIFIC_DAYS__: string[];
+    var __DAYS_OUT_SHIPPING__: number;
 }
 // -----
 
