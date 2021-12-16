@@ -65,6 +65,7 @@ describe('when using Digital River payment', () => {
                 containerId: `${method.id}-component-field`,
                 initializePayment: expect.any(Function),
                 method,
+                onUnhandledError: expect.any(Function),
             }));
     });
 
