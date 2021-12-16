@@ -3,6 +3,14 @@ import { Translations } from '@bigcommerce/checkout-sdk';
 import { FALLBACK_TRANSLATIONS } from './translations';
 
 const AVAILABLE_TRANSLATIONS: Record<string, () => Promise<{ default: unknown }>> = {
+    es: () => import(
+        /* webpackChunkName: "translations-es" */
+        './translations/es.json'
+        ),
+    'es-MX': () => import(
+        /* webpackChunkName: "translations-es-mx" */
+        './translations/es-MX.json'
+        ),
     de: () => import(
         /* webpackChunkName: "translations-de" */
         './translations/de.json'

@@ -2,6 +2,56 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.186.0](https://github.com/bigcommerce/checkout-js/compare/v1.185.0...v1.186.0) (2021-12-16)
+
+
+### Features
+
+* **payment:** INT-5000 Adding DigitalRiver custom error for translations ([2324d58](https://github.com/bigcommerce/checkout-js/commit/2324d58a644ea419fe1db0393201b28e6d07d5a2))
+* **payment:** INT-5000 Populate onUnhandledError correctly ([92dcc49](https://github.com/bigcommerce/checkout-js/commit/92dcc49c22ff295f5d05666286ccee565b187418))
+
+## [1.185.0](https://github.com/bigcommerce/checkout-js/compare/v1.184.3...v1.185.0) (2021-12-15)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6059 Add and update language translations ([#768](https://github.com/bigcommerce/checkout-js/issues/768)) ([abee757](https://github.com/bigcommerce/checkout-js/commit/abee7573271b5d85be83bffe93289c831ac86470))
+
+### [1.184.3](https://github.com/bigcommerce/checkout-js/compare/v1.184.2...v1.184.3) (2021-12-13)
+
+
+### Code Refactoring
+
+* **payment:** INT-1866 Update Visa Checkout to Visa SRC ([#762](https://github.com/bigcommerce/checkout-js/issues/762)) ([814b461](https://github.com/bigcommerce/checkout-js/commit/814b4613f5fe3557d89c11cefe1e9fb4b703ae24))
+
+### [1.184.2](https://github.com/bigcommerce/checkout-js/compare/v1.184.1...v1.184.2) (2021-12-08)
+
+### [1.184.1](https://github.com/bigcommerce/checkout-js/compare/v1.184.0...v1.184.1) (2021-12-07)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-6215 Display long descriptions of shipping methods properly ([#764](https://github.com/bigcommerce/checkout-js/issues/764)) ([1c6f0ad](https://github.com/bigcommerce/checkout-js/commit/1c6f0ad1063df15c234cf88719fc28c90cc2626b))
+
+## [1.184.0](https://github.com/bigcommerce/checkout-js/compare/v1.183.0...v1.184.0) (2021-12-03)
+
+
+### Features
+
+* **payment:** INT-4897 Humm - Show Humm as payment method ([#722](https://github.com/bigcommerce/checkout-js/issues/722)) ([8a53252](https://github.com/bigcommerce/checkout-js/commit/8a53252b514f24f6e274508aafddb7e0cc5f6df8))
+
+## [1.183.0](https://github.com/bigcommerce/checkout-js/compare/v1.182.1...v1.183.0) (2021-12-01)
+
+
+### Features
+
+* **payment:** CHECKOUT-6066 Add apple pay payment method component ([#760](https://github.com/bigcommerce/checkout-js/issues/760)) ([4ba74bf](https://github.com/bigcommerce/checkout-js/commit/4ba74bfa8ef4ab014b3d8a1ab75ea84b32b3f254))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-5322 - Sentry error checkout-js-4vg ([#746](https://github.com/bigcommerce/checkout-js/issues/746)) ([84e2a19](https://github.com/bigcommerce/checkout-js/commit/84e2a19297167c37d61499c830b7f808de358d51))
+
 ### [1.182.1](https://github.com/bigcommerce/checkout-js/compare/v1.182.0...v1.182.1) (2021-11-15)
 
 ## [1.182.0](https://github.com/bigcommerce/checkout-js/compare/v1.181.0...v1.182.0) (2021-11-10)
