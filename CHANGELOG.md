@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.186.0](https://github.com/bigcommerce/checkout-js/compare/v1.185.0...v1.186.0) (2021-12-16)
+
+
+### Features
+
+* **payment:** INT-5000 Adding DigitalRiver custom error for translations ([2324d58](https://github.com/bigcommerce/checkout-js/commit/2324d58a644ea419fe1db0393201b28e6d07d5a2))
+* **payment:** INT-5000 Populate onUnhandledError correctly ([92dcc49](https://github.com/bigcommerce/checkout-js/commit/92dcc49c22ff295f5d05666286ccee565b187418))
+
 ## [1.185.0](https://github.com/bigcommerce/checkout-js/compare/v1.184.3...v1.185.0) (2021-12-15)
 
 
