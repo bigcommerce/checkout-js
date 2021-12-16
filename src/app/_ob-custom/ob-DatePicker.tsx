@@ -7,6 +7,15 @@ interface DatePickerProps {
     onDatePicked: () => void;
 }
 
+/**
+ * Custom React Date Picker
+ * 
+ * - Global variables from Script Manager are declared and typed in Checkout.tsx (ex: window.__GLOBAL_VAR__)
+ * - shipByDate is located in the Checkout.tsx state and passed via Checkout.tsx child components
+ * 
+ * @param {Object} state 
+ * @returns {Component} React Fragment
+ */
 const DatePicker: FunctionComponent<DatePickerProps> = ({ setShipByDate, onDatePicked}) => {
     // window.__DISABLED_SPECIFIC_DAYS__ = [ '12-20-2021', '12-22-2021', '12-23-2021']; // TESTING ONLY
     // window.__DAYS_OUT_SHIPPING = 2; // TESTING ONLY

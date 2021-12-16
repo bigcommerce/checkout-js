@@ -112,13 +112,13 @@ const getShippingStepStatus = createSelector(
             isRequired,
         }
 
-        const optionToCheck = !! cart && cart.lineItems.physicalItems && getCustomShippingMethod(cart.lineItems.physicalItems[0].options);
-        
-        const isPickupInStore: boolean = !! optionToCheck && optionToCheck.value === 'Pickup in Store' 
-
         function getCustomShippingMethod(opts: any) {
             return opts.find((opt: ShippingOptions): {} => opt.name === 'Choose Your Pickup/Delivery Option')
         }
+
+        const optionToCheck = !! cart && cart.lineItems.physicalItems && getCustomShippingMethod(cart.lineItems.physicalItems[0].options);
+        
+        const isPickupInStore: boolean = !! optionToCheck && optionToCheck.value === 'Pickup in Store' 
 
         if (!isPickupInStore) return defaultCheckoutStepStatus;
 

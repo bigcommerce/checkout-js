@@ -24,7 +24,7 @@ import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
 
-// OBUNDLE GLOBAL VARIABLES
+/* OBUNDLE GLOBAL VARIABLES */
 declare global {
 	var __DISABLED_DAYS_OF_WEEK__: number[];
 	var __DISABLED_SPECIFIC_DAYS__: string[];
@@ -83,10 +83,11 @@ export interface CheckoutState {
     isCartEmpty: boolean;
     isRedirecting: boolean;
     hasSelectedShippingOptions: boolean;
+
+    /* OBUNDLE STATE TYPES */
     isPickupOnly: boolean;
     isMessengerDelivery: boolean;
     isShippingOnly: boolean;
-
     customOptionMessage: string;
     pickupInStoreMessage: string,
     messengerDeliveryMessage: string,
@@ -121,13 +122,13 @@ export interface WithCheckoutProps {
 }
 
 /* OBUNDLE INTERFACES + TYPE ALIASES */
-/*************************************/
 export interface ShippingOptions {
     name: string, 
     nameId: number, 
     value: string, 
     valueId: number
 }
+/*************************************/
 
 class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguageProps, CheckoutState> {
     stepTracker: StepTracker | undefined;
@@ -177,6 +178,16 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             this.unsubscribeFromConsignments = undefined;
         }
     }
+
+    /* OBUNDLE STEPS NOTE: */
+    /**
+     * Before Checkout.tsx component runs, getCheckoutStepStatuses.ts is mapped to props.
+     * This is where we determine is a step in the checkout process must be skipped,
+     * like for the Shipping step with the 'In Store Pickup' option.
+     * 
+     * This all MUST occur before the componentDidMount() lifecycle since this is when
+     * the stepTracker is created.
+     */
 
     async componentDidMount(): Promise<void> {
         const {
@@ -240,7 +251,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 this.handleReady();
             }
 
-            /* OBUNDLE */
+            /* OBUNDLE CHECKOUT METHOD CHECK */
             /**
              * 1. GET CART ITEMS
              * 2. CHECK FOR SHIPPING METHOD
@@ -283,23 +294,15 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         const response = await createConsignments(consignmentBody);
                         
                         if (!response) return console.log('Error creating consignment address');
-                        // console.log('[RESPONSE FROM CREATE CONSIGNMENTS]', response);
 
-                        // Update consignments with shipment option
                         const consignments = response.data.getConsignments();
-
-                        // console.log('[CONSIGNMENTS]', consignments);
                         
                         if (!consignments || consignments.length === 0) return;
                         const { availableShippingOptions, id } = consignments[0];
-                        // console.log('[AVAILABLE SHIPPING OPTIONS]', availableShippingOptions);
-
                         const pickupOption = availableShippingOptions?.find(opt => opt.type === 'shipping_pickupinstore');
                         
-
                         if (!pickupOption) return;
 
-                        // console.log('[PICKUP OPTION]', pickupOption);
                         fetch(
                             `/api/storefront/checkouts/${checkoutId}/consignments/${id}`, {
                                 method: 'PUT',
@@ -310,7 +313,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                                     shippingOptionId: pickupOption?.id
                                 })
                             }
-                        ).then(res => console.log('[UPDATE RES]', res.json()))
+                        )
                     }
                     )
                     break;
@@ -328,14 +331,21 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                     console.log("Error in determining Shipping Method from Product Options.");
                     break;
             }
-
     /*************************************************************************************/
+
         } catch (error) {
             this.handleUnhandledError(error);
         }
     }
 
     /* OBUNDLE CUSTOM METHODS */
+    /**
+     * 1. toggleGiftOption()
+     * 2. setShipByDate()
+     * 3. mapLineItems()
+     * 4. getCustomShippingMethod()
+     */
+
     toggleGiftOption = (): void => {
         this.setState({
             hasGiftOption: !this.state.hasGiftOption
@@ -661,16 +671,13 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
     private navigateToNextIncompleteStep: (options?: { isDefault?: boolean }) => void = options => {
         const { steps } = this.props;
-        // const { isPickupOnly } = this.state;
+
         const activeStepIndex = findIndex(steps, { isActive: true });
         let activeStep = activeStepIndex >= 0 && steps[activeStepIndex];
 
         if (!activeStep) {
             return;
         }
-
-        /* OBUNDLE */
-        // console.log('[STEPS]', steps);
 
         const previousStep = steps[Math.max(activeStepIndex - 1, 0)];
 
