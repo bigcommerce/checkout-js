@@ -10,6 +10,9 @@ export default function mapSubmitOrderErrorMessage(
         case 'not_initialized':
             return translate('payment.payment_error');
 
+        case 'custom_provider_execute_error':
+            return translate(error.subtype);
+
         case 'payment_cancelled':
             return translate('payment.payment_cancelled');
 

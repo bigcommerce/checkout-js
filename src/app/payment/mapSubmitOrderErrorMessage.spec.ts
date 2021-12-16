@@ -213,6 +213,16 @@ describe('mapSubmitOrderErrorMessage()', () => {
 
             expect(message).toEqual(translate('payment.place_order_error'));
         });
+
+        it('returns correct translated message when payment_execute_error', () => {
+            const error = {
+                type: 'custom_provider_execute_error',
+                subtype: 'payment.humm_not_processable_error',
+            };
+            const message = mapSubmitOrderErrorMessage(error, translate, false);
+
+            expect(message).toEqual(translate('payment.humm_not_processable_error'));
+        });
     });
 });
 
