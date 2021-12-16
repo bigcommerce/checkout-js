@@ -24,4 +24,16 @@ describe('getDefaultTranslations', () => {
             // eslint-disable-next-line import/no-internal-modules
             .toEqual(require('./translations/pt-BR.json'));
     });
+
+    it('returns Spanish translations when es locale is specified', async () => {
+        expect(await getDefaultTranslations('es'))
+            // eslint-disable-next-line import/no-internal-modules
+            .toEqual(require('./translations/es.json'));
+    });
+
+    it('returns Castilian Spanish translations when es-mx locale is specified', async () => {
+        expect(await getDefaultTranslations('es-mx'))
+            // eslint-disable-next-line import/no-internal-modules
+            .toEqual(require('./translations/es-MX.json'));
+    });
 });

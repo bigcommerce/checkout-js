@@ -57,7 +57,7 @@ function getPaymentMethodTitle(
             },
             [PaymentMethodType.VisaCheckout]: {
                 logoUrl: cdnPath('/img/payment-providers/visa-checkout.png'),
-                titleText: '',
+                titleText: methodName,
             },
             [PaymentMethodId.Affirm]: {
                 logoUrl: cdnPath('/img/payment-providers/affirm-checkout-header.png'),
@@ -98,6 +98,10 @@ function getPaymentMethodTitle(
             [PaymentMethodId.DigitalRiver]: {
                 logoUrl: '',
                 titleText: language.translate('payment.digitalriver_display_name_text'),
+            },
+            [PaymentMethodId.Humm]: {
+                logoUrl: cdnPath('/img/payment-providers/humm-checkout-header.png'),
+                titleText: '',
             },
             [PaymentMethodId.Klarna]: {
                 logoUrl: cdnPath('/img/payment-providers/klarna-header.png'),

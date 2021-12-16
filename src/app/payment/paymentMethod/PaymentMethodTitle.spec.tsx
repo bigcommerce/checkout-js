@@ -31,6 +31,7 @@ describe('PaymentMethodTitle', () => {
         applepay: '/modules/checkout/applepay/images/applepay-header@2x.png',
         chasepay: '/img/payment-providers/chase-pay.png',
         googlepay: '/img/payment-providers/google-pay.png',
+        humm: '/img/payment-providers/humm-checkout-header.png',
         klarna: '/img/payment-providers/klarna-header.png',
         laybuy: '/img/payment-providers/laybuy-checkout-header.png',
         masterpass: 'https://masterpass.com/dyn/img/acc/global/mp_mark_hor_blk.svg',
@@ -211,6 +212,7 @@ describe('PaymentMethodTitle', () => {
         const methodIds = [
             PaymentMethodId.Amazon,
             PaymentMethodId.ChasePay,
+            PaymentMethodId.Humm,
             PaymentMethodId.Opy,
             PaymentMethodId.PaypalCommerce,
             PaymentMethodType.Barclaycard,
@@ -350,5 +352,20 @@ describe('PaymentMethodTitle', () => {
 
         expect(component.find('[data-test="payment-method-logo"]').prop('src'))
             .toEqual(`${config.cdnPath}/img/payment-providers/opy_default.svg`);
+    });
+
+    it('renders name for Visa Checkout', () => {
+        const method = {
+            ...defaultProps.method,
+            method: PaymentMethodType.VisaCheckout,
+        };
+
+        const component = mount(<PaymentMethodTitleTest
+            { ...defaultProps }
+            method={ method }
+        />);
+
+        expect(component.find('[data-test="payment-method-name"]').text())
+            .toEqual(getPaymentMethodName(localeContext.language)(method));
     });
 });

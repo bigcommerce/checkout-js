@@ -24,6 +24,7 @@ enum PaymentMethodId {
     CybersourceV2GooglePay = 'googlepaycybersourcev2',
     DigitalRiver = 'digitalriver',
     Fawry = 'fawry',
+    Humm = 'humm',
     Ideal = 'ideal',
     Klarna = 'klarna',
     Laybuy = 'laybuy',
