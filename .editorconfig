@@ -1,0 +1,41 @@
+root = true
+
+[*]
+end_of_line = lf
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Force 2 "spaces" for YAML and JSON
+[*.{yml,yaml,json}]
+indent_style = space
+indent_size = 2
+
+[{.eslintrc,.prettierrc}]
+indent_style = space
+indent_size = 4
+
+[*.md]
+trim_trailing_whitespace = false
+
+# Ignore "vendor" folder
+[vendor/**]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+indent_style = unset
+indent_size = unset
+
+# Ignore "node_modules" folder
+[node_modules/**]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+indent_style = unset
+indent_size = unset
+
+[_templates/**]
+insert_final_newline = false
+trim_trailing_whitespace = false
