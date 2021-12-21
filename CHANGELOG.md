@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.188.0](https://github.com/bigcommerce/checkout-js/compare/v1.187.1...v1.188.0) (2021-12-21)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6248 Display Error When Tax Service Unavailable ([#761](https://github.com/bigcommerce/checkout-js/issues/761)) ([a076d3d](https://github.com/bigcommerce/checkout-js/commit/a076d3d75a9975780399052dd8073aa3a6d3d613)), closes [#722](https://github.com/bigcommerce/checkout-js/issues/722) [#764](https://github.com/bigcommerce/checkout-js/issues/764) [#762](https://github.com/bigcommerce/checkout-js/issues/762) [#768](https://github.com/bigcommerce/checkout-js/issues/768)
+
 ### [1.187.1](https://github.com/bigcommerce/checkout-js/compare/v1.187.0...v1.187.1) (2021-12-20)
 
 ## [1.187.0](https://github.com/bigcommerce/checkout-js/compare/v1.186.0...v1.187.0) (2021-12-16)
