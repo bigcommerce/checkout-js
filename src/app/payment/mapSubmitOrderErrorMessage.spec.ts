@@ -113,6 +113,12 @@ describe('mapSubmitOrderErrorMessage()', () => {
         expect(message).toEqual(translate('payment.payment_method_error', { message: 'payment error message' }));
     });
 
+    it('returns correct message when tax provider is unavailable', () => {
+        const message = mapSubmitOrderErrorMessage({ type: 'tax_provider_unavailable' }, translate, false);
+
+        expect(message).toEqual(translate('payment.tax_provider_unavailable'));
+    });
+
     describe('When bigpay request error and localization enabled,', () => {
         it('returns correct translated message when one error is received', () => {
             const message = mapSubmitOrderErrorMessage(
