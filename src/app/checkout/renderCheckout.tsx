@@ -29,6 +29,10 @@ export default function renderCheckout({
         });
     }
 
+    if (window.recurly) {
+        window.recurly.configure(process.env.RECURLY_PUBLIC_KEY || window.RECURLY_PUBLIC_KEY);
+    }
+
     ReactDOM.render(
         <CheckoutApp
             containerId={ containerId }
