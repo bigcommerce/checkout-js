@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.188.1](https://github.com/bigcommerce/checkout-js/compare/v1.188.0...v1.188.1) (2021-12-22)
+
+
+### Bug Fixes
+
+* **payment:** INT-5153 added card code validation ([be3b723](https://github.com/bigcommerce/checkout-js/commit/be3b723c186c33d30910a073e2209eacf2c592ac))
+
 ## [1.188.0](https://github.com/bigcommerce/checkout-js/compare/v1.187.1...v1.188.0) (2021-12-21)
 
 
