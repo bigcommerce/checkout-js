@@ -3,12 +3,14 @@ import React, { memo, Fragment, FunctionComponent } from 'react';
 
 import { TranslatedString } from '../locale';
 
+import { ApplePayButton } from './customWalletButton';
 import CheckoutButton from './CheckoutButton';
 
 // TODO: The API should tell UI which payment method offers its own checkout button
 export const SUPPORTED_METHODS: string[] = [
     'amazon',
     'amazonpay',
+    'applepay',
     'braintreevisacheckout',
     'chasepay',
     'masterpass',
@@ -64,13 +66,21 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
 
             <div className="checkoutRemote">
                 { supportedMethodIds.map(methodId =>
-                    <CheckoutButton
-                        containerId={ `${methodId}CheckoutButton` }
-                        key={ methodId }
-                        methodId={ methodId }
-                        onError={ onError }
-                        { ...rest }
-                    />
+                    methodId === 'applepay' ?
+                        <ApplePayButton
+                            containerId={ `${methodId}CheckoutButton` }
+                            key={ methodId }
+                            methodId={ methodId }
+                            onError={ onError }
+                            { ...rest }
+                        /> :
+                        <CheckoutButton
+                            containerId={ `${methodId}CheckoutButton` }
+                            key={ methodId }
+                            methodId={ methodId }
+                            onError={ onError }
+                            { ...rest }
+                        />
                 ) }
             </div>
         </Fragment>
