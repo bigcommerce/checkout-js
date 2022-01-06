@@ -2,7 +2,6 @@ import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import React, { useCallback, FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
-import { TranslatedString } from '../../locale';
 import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps } from '../hostedCreditCard';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
@@ -28,8 +27,10 @@ const StripeUPEPaymentMethod: FunctionComponent<StripePaymentMethodProps & WithI
     const containerId = `stripe-${paymentMethodType}-component-field`;
 
     const initializeStripePayment: HostedWidgetPaymentMethodProps['initializePayment'] = useCallback(async (options: PaymentInitializeOptions) => {
-        return initializePayment({ ...options,
-            stripeupe: { containerId}});
+        return initializePayment({
+            ...options,
+            stripeupe: { containerId },
+        });
     }, [initializePayment, containerId]);
 
     return <>
@@ -40,12 +41,6 @@ const StripeUPEPaymentMethod: FunctionComponent<StripePaymentMethodProps & WithI
             initializePayment={ initializeStripePayment }
             method={ method }
         />
-        {
-            method.id === 'iban' &&
-            <p className="stripe-sepa-mandate-disclaimer">
-                <TranslatedString data={ {storeUrl} } id="payment.stripe_sepa_mandate_disclaimer" />
-            </p>
-        }
     </>;
 };
 
