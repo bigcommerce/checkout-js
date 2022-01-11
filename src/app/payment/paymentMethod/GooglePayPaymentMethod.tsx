@@ -1,13 +1,17 @@
 import React, { useCallback, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
+import { connectFormik, ConnectFormikProps } from '../../common/form';
+import { PaymentFormValues } from '../PaymentForm';
+
 import WalletButtonPaymentMethod, { WalletButtonPaymentMethodProps } from './WalletButtonPaymentMethod';
 
-export type GooglePayPaymentMethodProps = Omit<WalletButtonPaymentMethodProps, 'buttonId' | 'shouldShowEditButton'>;
+export type GooglePayPaymentMethodProps = Omit<WalletButtonPaymentMethodProps, 'buttonId' | 'shouldShowEditButton'> & ConnectFormikProps<PaymentFormValues>;
 
 const GooglePayPaymentMethod: FunctionComponent<GooglePayPaymentMethodProps> = ({
     initializePayment,
     onUnhandledError,
+    formik: { submitForm },
     ...rest
 }) => {
     const initializeGooglePayPayment = useCallback(options => initializePayment({
@@ -23,6 +27,7 @@ const GooglePayPaymentMethod: FunctionComponent<GooglePayPaymentMethodProps> = (
         googlepaybraintree: {
             walletButton: 'walletButton',
             onError: onUnhandledError,
+            onPaymentSelect: submitForm,
         },
         googlepaystripe: {
             walletButton: 'walletButton',
@@ -50,4 +55,4 @@ const GooglePayPaymentMethod: FunctionComponent<GooglePayPaymentMethodProps> = (
     />;
 };
 
-export default GooglePayPaymentMethod;
+export default connectFormik(GooglePayPaymentMethod);
