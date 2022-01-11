@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.188.3](https://github.com/bigcommerce/checkout-js/compare/v1.188.2...v1.188.3) (2022-01-11)
+
+
+### Bug Fixes
+
+* **payment:** ADYEN-373 fix iDEAL payment ([c32f234](https://github.com/bigcommerce/checkout-js/commit/c32f2345e02334269db71cb806373bae30806abc))
+
 ### [1.188.2](https://github.com/bigcommerce/checkout-js/compare/v1.188.1...v1.188.2) (2022-01-04)
 
 
