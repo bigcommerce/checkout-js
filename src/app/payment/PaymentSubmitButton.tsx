@@ -1,3 +1,4 @@
+import { some } from 'lodash';
 import React, { memo, Fragment, FunctionComponent } from 'react';
 
 import { withCheckout } from '../checkout';
@@ -50,6 +51,10 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
         return <TranslatedString id="payment.visa_checkout_continue_action" />;
     }
 
+    if (methodType === PaymentMethodType.GooglePay || methodType === 'paywithgoogle') {
+        return <TranslatedString id="payment.google_pay_checkout_continue_action" />;
+    }
+
     if (methodType === PaymentMethodType.Chasepay) {
         return <TranslatedString id="payment.chasepay_continue_action" />;
     }
@@ -93,21 +98,25 @@ export interface PaymentSubmitButtonProps {
 interface WithCheckoutPaymentSubmitButtonProps {
     isInitializing?: boolean;
     isSubmitting?: boolean;
+    isPaymentSelected: boolean;
 }
 
 const PaymentSubmitButton: FunctionComponent<PaymentSubmitButtonProps & WithCheckoutPaymentSubmitButtonProps> = ({
     isDisabled,
     isInitializing,
     isSubmitting,
+    isPaymentSelected,
     methodGateway,
     methodId,
     methodName,
     methodType,
     initialisationStrategyType,
-}) => (
+}) => {
+
+    return (
         <Button
             className={ providersWithCustomClasses.includes(methodId as PaymentMethodId) ? `payment-submit-button-${methodId}` : undefined }
-            disabled={ isInitializing || isSubmitting || isDisabled }
+            disabled={ isInitializing || isSubmitting || (isDisabled && isPaymentSelected) }
             id="checkout-payment-continue"
             isFullWidth
             isLoading={ isSubmitting }
@@ -123,10 +132,13 @@ const PaymentSubmitButton: FunctionComponent<PaymentSubmitButtonProps & WithChec
                 methodType={ methodType }
             />
         </Button>
-    );
+    )};
 
-export default withCheckout(({ checkoutState }) => {
+export default withCheckout(({ checkoutState }, { methodId }: PaymentSubmitButtonProps) => {
     const {
+        data: {
+            getCheckout,
+        },
         statuses: {
             isInitializingCustomer,
             isInitializingPayment,
@@ -134,7 +146,10 @@ export default withCheckout(({ checkoutState }) => {
         },
     } = checkoutState;
 
+    const checkout = getCheckout();
+
     return {
+        isPaymentSelected: checkout ? some(checkout.payments, { providerId: methodId }) : null,
         isInitializing: isInitializingCustomer() || isInitializingPayment(),
         isSubmitting: isSubmittingOrder(),
     };

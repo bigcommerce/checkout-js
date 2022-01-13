@@ -1,7 +1,7 @@
 import { CheckoutSelectors, CustomerRequestOptions, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
 import { number } from 'card-validator';
 import { noop, some } from 'lodash';
-import React, { Component, Fragment, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { preventDefault } from '../../common/dom';
@@ -36,6 +36,7 @@ interface WithCheckoutWalletButtonPaymentMethodProps {
     expiryMonth?: string;
     expiryYear?: string;
     isPaymentDataRequired: boolean;
+    isSubmitting: boolean;
     isPaymentSelected: boolean;
     signOut(options: CustomerRequestOptions): void;
 }
@@ -100,6 +101,7 @@ class WalletButtonPaymentMethod extends Component<
         const {
             isInitializing = false,
             isPaymentSelected,
+            isSubmitting,
         } = this.props;
 
         return (
@@ -107,11 +109,7 @@ class WalletButtonPaymentMethod extends Component<
                 hideContentWhenLoading
                 isLoading={ isInitializing }
             >
-                <div className="paymentMethod paymentMethod--walletButton">
-                    { isPaymentSelected ?
-                        this.renderPaymentView() :
-                        this.renderSignInView() }
-                </div>
+                { !isSubmitting && (isPaymentSelected ? this.renderPaymentView() : this.renderSignInView()) }
             </LoadingOverlay>
         );
     }
@@ -125,18 +123,24 @@ class WalletButtonPaymentMethod extends Component<
             method,
         } = this.props;
 
+        if (method.method === 'paywithgoogle') {
+            return null;
+        }
+
         return (
-            <a
-                className={ signInButtonClassName }
-                href="#"
-                id={ buttonId }
-                onClick={ preventDefault() }
-            >
-                { signInButtonLabel || <TranslatedString
-                    data={ { providerName: getPaymentMethodName(language)(method) } }
-                    id="remote.sign_in_action"
-                /> }
-            </a>
+            <div className="paymentMethod paymentMethod--walletButton">
+                <a
+                    className={ signInButtonClassName }
+                    href="#"
+                    id={ buttonId }
+                    onClick={ preventDefault() }
+                >
+                    { signInButtonLabel || <TranslatedString
+                        data={ { providerName: getPaymentMethodName(language)(method) } }
+                        id="remote.sign_in_action"
+                    /> }
+                </a>
+            </div>
         );
     }
 
@@ -155,7 +159,7 @@ class WalletButtonPaymentMethod extends Component<
         } = this.props;
 
         return (
-            <Fragment>
+            <div className="paymentMethod paymentMethod--walletButton">
                 { cardName && <p data-test="payment-method-wallet-card-name">
                     <strong>
                         <TranslatedString id="payment.credit_card_name_label" />
@@ -197,7 +201,7 @@ class WalletButtonPaymentMethod extends Component<
                     method={ method }
                     onSignOut={ this.handleSignOut }
                 />
-            </Fragment>
+            </div>
         );
     }
 
@@ -285,7 +289,10 @@ function mapFromCheckoutProps(
     { checkoutService, checkoutState }: CheckoutContextProps,
     { method }: WalletButtonPaymentMethodProps
 ): WithCheckoutWalletButtonPaymentMethodProps | null {
-    const { data: { getBillingAddress, getCheckout, isPaymentDataRequired } } = checkoutState;
+    const {
+        data: { getBillingAddress, getCheckout, isPaymentDataRequired },
+        statuses: { isSubmittingOrder },
+    } = checkoutState;
     const billingAddress = getBillingAddress();
     const checkout = getCheckout();
 
@@ -301,6 +308,7 @@ function mapFromCheckoutProps(
         cardName: walletPaymentData && [billingAddress.firstName, billingAddress.lastName].join(' '),
         isPaymentDataRequired: isPaymentDataRequired(),
         isPaymentSelected: some(checkout.payments, { providerId: method.id }),
+        isSubmitting: isSubmittingOrder(),
         signOut: checkoutService.signOutCustomer,
     };
 }

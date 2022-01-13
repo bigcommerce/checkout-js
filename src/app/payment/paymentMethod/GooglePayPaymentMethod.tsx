@@ -11,7 +11,6 @@ export type GooglePayPaymentMethodProps = Omit<WalletButtonPaymentMethodProps, '
 const GooglePayPaymentMethod: FunctionComponent<GooglePayPaymentMethodProps> = ({
     initializePayment,
     onUnhandledError,
-    formik: { submitForm },
     ...rest
 }) => {
     const initializeGooglePayPayment = useCallback(options => initializePayment({
@@ -27,7 +26,6 @@ const GooglePayPaymentMethod: FunctionComponent<GooglePayPaymentMethodProps> = (
         googlepaybraintree: {
             walletButton: 'walletButton',
             onError: onUnhandledError,
-            onPaymentSelect: submitForm,
         },
         googlepaystripe: {
             walletButton: 'walletButton',

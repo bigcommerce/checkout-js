@@ -232,6 +232,7 @@
             "digitalriver_checkout_error": "There was a problem with your checkout, please check your details and try again or contact customer service",
             "digitalriver_display_name_text": "Please select your payment method",
             "google_pay_name_text": "Google Pay",
+            "google_pay_checkout_continue_action": "Continue with Google Pay",
             "humm_not_processable_error": "Humm cannot process your payment for this order, please select another payment method.",
             "klarna_continue_action": "Continue with Klarna",
             "klarna_name_text": "Klarna",
