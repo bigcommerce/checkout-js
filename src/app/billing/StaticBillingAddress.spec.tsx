@@ -76,7 +76,6 @@ describe('StaticBillingAddress', () => {
 
         const addressData = {
             ...getAddress(),
-            firstName: '',
         };
 
         const container = mount(<StaticBillingAddressTest address={ addressData } />);
@@ -86,24 +85,5 @@ describe('StaticBillingAddress', () => {
 
         expect(container.text())
             .toEqual(getLanguageService().translate('billing.billing_address_amazonpay'));
-    });
-
-    it('renders address when using Amazon Pay V2 when full address is provided', () => {
-        jest.spyOn(checkoutState.data, 'getCheckout')
-            .mockReturnValue({
-                ...getCheckout(),
-                payments: [
-                    { ...getCheckoutPayment(), providerId: 'amazonpay' },
-                ],
-            });
-
-        const addressData = {
-            ...getAddress(),
-        };
-
-        const container = mount(<StaticBillingAddressTest address={ addressData } />);
-
-        expect(container.find(StaticAddress).length)
-            .toEqual(1);
     });
 });

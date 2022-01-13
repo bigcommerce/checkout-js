@@ -28,7 +28,7 @@ const StaticBillingAddress: FunctionComponent<
         );
     }
 
-    if (payments.find(payment => payment.providerId === 'amazonpay' && address.firstName === '')) {
+    if (payments.find(payment => payment.providerId === 'amazonpay')) {
         return (
             <p><TranslatedString id="billing.billing_address_amazonpay" /></p>
         );
