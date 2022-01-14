@@ -46,7 +46,7 @@ describe('PaymentSubmitButton', () => {
 
         expect(component.find(Button).props())
             .toEqual(expect.objectContaining({
-                disabled: true,
+                disabled: null,
             }));
     });
 

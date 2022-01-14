@@ -132,7 +132,8 @@ const PaymentSubmitButton: FunctionComponent<PaymentSubmitButtonProps & WithChec
                 methodType={ methodType }
             />
         </Button>
-    )};
+    );
+};
 
 export default withCheckout(({ checkoutState }, { methodId }: PaymentSubmitButtonProps) => {
     const {
