@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "appVersion": "1.189.0",
+  "appVersion": "1.189.1",
   "dynamicChunks": {
     "css": [
       "billing-e15e5dfa.css",
