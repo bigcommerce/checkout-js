@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.190.0](https://github.com/bigcommerce/checkout-js/compare/v1.189.1...v1.190.0) (2022-01-18)
+
+
+### Features
+
+* **payment:** BOLT-135 multi-field component ([3bf3a27](https://github.com/bigcommerce/checkout-js/commit/3bf3a27c073aefacfdc7d03798996c328de7216e))
+* **payment:** BOLT-135 multi-field component ([e490beb](https://github.com/bigcommerce/checkout-js/commit/e490beb8181d207399a659f153b24320eb37d2ed))
+
 ### [1.189.1](https://github.com/bigcommerce/checkout-js/compare/v1.189.0...v1.189.1) (2022-01-17)
 
 ## [1.189.0](https://github.com/bigcommerce/checkout-js/compare/v1.188.3...v1.189.0) (2022-01-13)
