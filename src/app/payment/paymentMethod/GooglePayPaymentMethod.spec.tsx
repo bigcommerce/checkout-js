@@ -1,4 +1,4 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, CheckoutSelectors, CheckoutService, PaymentInitializeOptions, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -89,7 +89,37 @@ describe('when using Google Pay payment', () => {
                 [method.id]: {
                     walletButton: 'walletButton',
                     onError: defaultProps.onUnhandledError,
+                    onPaymentSelect: expect.any(Function),
                 },
             }));
+    });
+
+    it('reinitializes method once payment option is selected', async () => {
+        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+        const component: ReactWrapper<WalletButtonPaymentMethodProps> = container.find(WalletButtonPaymentMethod);
+
+        component.prop('initializePayment')({
+            methodId: method.id,
+            gatewayId: method.gateway,
+        });
+
+        const options: PaymentInitializeOptions = (checkoutService.initializePayment as jest.Mock).mock.calls[0][0];
+
+        const paymentSelectHandler = options.googlepaybraintree?.onPaymentSelect;
+        if (paymentSelectHandler) {
+            paymentSelectHandler();
+        }
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        expect(checkoutService.deinitializePayment)
+            .toHaveBeenCalledWith({ methodId: method.id });
+        expect(checkoutService.initializePayment)
+            .toHaveBeenCalledWith(expect.objectContaining({
+                methodId: method.id,
+                [method.id]: expect.any(Object),
+            }));
+        expect(checkoutService.initializePayment)
+            .toHaveBeenCalledTimes(2);
     });
 });
