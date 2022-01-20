@@ -48,6 +48,7 @@ enum PaymentMethodId {
     SquareV2 = 'squarev2',
     StripeGooglePay = 'googlepaystripe',
     StripeV3 = 'stripev3',
+    StripeUPE = 'stripeupe',
     Zip = 'zip',
 }
 
