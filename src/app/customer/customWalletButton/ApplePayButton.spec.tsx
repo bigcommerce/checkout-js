@@ -41,6 +41,7 @@ describe('ApplePayButton', () => {
         expect(initialize).toHaveBeenCalledWith({
             methodId: 'applepay',
             applepay: {
+                container: 'test',
                 shippingLabel: 'Shipping',
                 subtotalLabel: 'Subtotal',
                 onError: error,

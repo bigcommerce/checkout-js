@@ -14,12 +14,13 @@ const ApplePayButton: FunctionComponent<CheckoutButtonProps> = ({
     const initializeOptions = useCallback((options: CustomerInitializeOptions) => initialize({
         ...options,
         applepay: {
+            container: rest.containerId,
             shippingLabel: localeContext?.language.translate('cart.shipping_text'),
             subtotalLabel: localeContext?.language.translate('cart.subtotal_text'),
             onError,
             onPaymentAuthorize: navigateToOrderConfirmation,
         },
-    }), [initialize, localeContext, onError]);
+    }), [initialize, localeContext, onError, rest.containerId]);
 
     return <CheckoutButton initialize={ initializeOptions } { ...rest } />;
 };
