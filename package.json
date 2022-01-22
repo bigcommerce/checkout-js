@@ -44,7 +44,7 @@
     "@types/credit-card-type": "^7.0.0",
     "@types/dompurify": "^0.0.32",
     "@types/es6-promise": "^0.0.33",
-    "@types/googlemaps": "^3.30.16",
+    "@types/googlemaps": "^3.43.3",
     "@types/lodash": "^4.14.136",
     "@types/react": "^16.8.0",
     "@types/react-datepicker": "^2.9.3",
