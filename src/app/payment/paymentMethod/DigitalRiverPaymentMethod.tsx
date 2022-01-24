@@ -58,7 +58,7 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
     const onError = (error: CustomError) => {
         if (error.name === 'digitalRiverCheckoutError') {
             error = new CustomError({
-                title: language.translate('payment.errors.general_error'),
+                title: language.translate('payment.digitalriver_checkout_error_title'),
                 message: language.translate(error.type),
                 data: {},
                 name: 'digitalRiverCheckoutError',
