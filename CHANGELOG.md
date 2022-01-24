@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.192.0](https://github.com/bigcommerce/checkout-js/compare/v1.191.0...v1.192.0) (2022-01-24)
+
+
+### Features
+
+* **payment:** CHECKOUT-6070 Add applepay button component ([#778](https://github.com/bigcommerce/checkout-js/issues/778)) ([a7fa190](https://github.com/bigcommerce/checkout-js/commit/a7fa190d45b55500eeacb7d7c837f5b771578d85))
+
 ## [1.191.0](https://github.com/bigcommerce/checkout-js/compare/v1.190.0...v1.191.0) (2022-01-22)
 
 
