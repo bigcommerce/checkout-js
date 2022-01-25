@@ -230,6 +230,8 @@
             "credit_card_number_required_error": "Kreditkortsnummer är obligatoriskt",
             "credit_card_number_mismatch_error": "Det angivna kortnumret matchar inte det kort som är lagrat på ditt konto",
             "digitalriver_dropin_error": "Det uppstod ett fel när betalningen bearbetades. Försök igen eller kontakta oss.",
+            "digitalriver_checkout_error": "Det uppstod ett problem med din kassa, kontrollera dina uppgifter och försök igen eller kontakta kundtjänst",
+            "digitalriver_checkout_error_title": "Fel vid bearbetning av begäran.",
             "google_pay_name_text": "Google Pay",
             "klarna_continue_action": "Fortsätt med Klarna",
             "klarna_name_text": "Klarna",

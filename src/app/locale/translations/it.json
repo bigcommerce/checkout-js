@@ -230,6 +230,8 @@
             "credit_card_number_required_error": "Il numero della carta di credito è obbligatorio",
             "credit_card_number_mismatch_error": "Il numero di carta inserito non corrisponde a quello memorizzato nel tuo account",
             "digitalriver_dropin_error": "Si è verificato un problema durante l'elaborazione del pagamento. Riprova o contattaci.",
+            "digitalriver_checkout_error": "Si è verificato un problema con il pagamento, controlla i tuoi dati e riprova o contatta il servizio clienti",
+            "digitalriver_checkout_error_title": "Errore durante l'elaborazione della richiesta.",
             "google_pay_name_text": "Google Pay",
             "klarna_continue_action": "Prosegui con Klarna",
             "klarna_name_text": "Klarna",
