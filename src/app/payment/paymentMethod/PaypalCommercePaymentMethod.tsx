@@ -36,28 +36,30 @@ const PaypalCommercePaymentMethod: FunctionComponent<PaypalCommercePaymentMethod
             container: '#checkout-payment-continue',
             apmFieldsContainer: `#${paymentUniqueId}`,
             apmFieldsStyles: {
-                base: {
-                    backgroundColor: 'transparent',
-                    color: 'black',
-                    fontSize: '16px',
-                    fontFamily: 'Open Sans, Helvetica Neue, Arial, sans-serif',
-                    lineHeight: '1.5',
-                    letterSpacing: '0.3',
-                },
-                input: {
-                    backgroundColor: 'white',
-                    fontSize: '1rem',
-                    color: '#333',
-                    borderColor: '#d9d9d9',
-                    borderRadius: '4px',
-                    borderWidth: '1px',
-                    padding: '1rem',
-                },
-                invalid: {
-                    color: '#ed6a6a',
-                },
-                active: {
-                    color: '#4496f6',
+                apmFieldsStyles: {
+                    variables: {
+                        fontFamily: 'Open Sans, Helvetica Neue, Arial, sans-serif',
+                        colorBackground: 'transparent',
+                        textColor: 'black',
+                        fontSizeBase: '16px',
+                        spacingUnit: '1rem',
+                        borderColor: '#d9d9d9',
+                        borderRadius: '4px',
+                        borderWidth: '1px',
+                    },
+                    rules: {
+                        '.Input': {
+                            backgroundColor: 'white',
+                            color: '#333',
+                            fontSize: '1rem',
+                        },
+                        '.Input:active': {
+                            color: '#4496f6',
+                        },
+                        '.Input--invalid': {
+                            color: '#ed6a6a',
+                        },
+                    },
                 },
             },
             onRenderButton: () => {
