@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.193.0](https://github.com/bigcommerce/checkout-js/compare/v1.192.0...v1.193.0) (2022-01-27)
+
+
+### Features
+
+* **payment:** INT-5460 Add translations ([aa5dafb](https://github.com/bigcommerce/checkout-js/commit/aa5dafb0084109d72127da858ce6ab7ef0411c5c))
+* **payment:** INT-5460 Remove the word Payment from error title ([86ba865](https://github.com/bigcommerce/checkout-js/commit/86ba865df03019e65e024fb91725e4a4458fbca3))
+
 ## [1.192.0](https://github.com/bigcommerce/checkout-js/compare/v1.191.0...v1.192.0) (2022-01-24)
 
 
