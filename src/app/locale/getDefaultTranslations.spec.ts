@@ -32,7 +32,7 @@ describe('getDefaultTranslations', () => {
     });
 
     it('returns Castilian Spanish translations when es-mx locale is specified', async () => {
-        expect(await getDefaultTranslations('es-mx'))
+        expect(await getDefaultTranslations('es-MX'))
             // eslint-disable-next-line import/no-internal-modules
             .toEqual(require('./translations/es-MX.json'));
     });
