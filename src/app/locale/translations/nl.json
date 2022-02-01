@@ -230,6 +230,7 @@
             "credit_card_number_mismatch_error": "Het ingevoerde kaartnummer komt niet overeen met de kaart die in uw account is opgeslagen",
             "digitalriver_dropin_error": "Er is een fout opgetreden bij het verwerken van uw betaling. Probeer het opnieuw of neem contact met ons op.",
             "digitalriver_checkout_error": "Er is iets fout gegaan bij het afrekenen: controleer uw gegevens en probeer het opnieuw, of neem contact op met de klantenservice",
+            "digitalriver_checkout_error_title": "Fout tijdens het verwerken van het verzoek.",
             "digitalriver_display_name_text": "Selecteer uw betaalmethode",
             "google_pay_name_text": "Google Pay",
             "humm_not_processable_error": "Humm kan uw betaling voor deze bestelling niet verwerken. Selecteer een andere betaalmethode.",

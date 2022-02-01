@@ -230,6 +230,7 @@
             "credit_card_number_mismatch_error": "O número do cartão inserido não corresponde ao cartão armazenado na sua conta",
             "digitalriver_dropin_error": "Ocorreu um erro no processamento do seu pagamento. Tente novamente ou entre em contato conosco.",
             "digitalriver_checkout_error": "Ocorreu um problema na finalização da compra; confira os dados e tente novamente; ou procure o atendimento ao cliente",
+            "digitalriver_checkout_error_title": "Erro ao processar a solicitação.",
             "digitalriver_display_name_text": "Adicione um método de pagamento",
             "google_pay_name_text": "Google Pay",
             "humm_not_processable_error": "O Humm não pode processar o pagamento do pedido; selecione outro método de pagamento.",
