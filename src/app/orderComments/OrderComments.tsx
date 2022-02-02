@@ -99,7 +99,7 @@ const OrderComments: FunctionComponent<OrderCommentsProps> = ({
 	return (
 		<>
 			<GiftOptionComponent />
-			<DatePicker onDatePicked={onDatePicked} setShipByDate={ setShipByDate } />
+			<DatePicker onDatePicked={onDatePicked} setShipByDate={ setShipByDate } isDate='' heading='' />
 			<Fieldset legend={legend} testId='checkout-shipping-comments'>
 				<FormField input={renderInput} label={renderLabel} name='orderComment' />
 				{limitComment}

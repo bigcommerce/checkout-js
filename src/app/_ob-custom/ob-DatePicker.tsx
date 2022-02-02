@@ -1,10 +1,12 @@
 import React, { useState, useEffect, FunctionComponent } from 'react';
 import ReactDatePicker from 'react-datepicker';
-import { subDays, addDays } from 'date-fns'
+import { addDays } from 'date-fns'
 
 interface DatePickerProps {
     setShipByDate: (date: string) => void;
     onDatePicked: () => void;
+    isDate: string;
+    heading: string
 }
 
 /**
@@ -16,10 +18,10 @@ interface DatePickerProps {
  * @param {Object} state 
  * @returns {Component} React Fragment
  */
-const DatePicker: FunctionComponent<DatePickerProps> = ({ setShipByDate, onDatePicked}) => {
-    // window.__DISABLED_SPECIFIC_DAYS__ = [ '12-20-2021', '12-22-2021', '12-23-2021']; // TESTING ONLY
-    // window.__DAYS_OUT_SHIPPING = 2; // TESTING ONLY
-    const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+const DatePicker: FunctionComponent<DatePickerProps> = ({ setShipByDate, onDatePicked, isDate, heading}) => {
+    //window.__DISABLED_SPECIFIC_DAYS__ = [ '12-20-2021', '12-22-2021', '12-23-2021']; // TESTING ONLY
+    //window.__DAYS_OUT_SHIPPING__ = 2; // TESTING ONLY
+    const [selectedDate, setSelectedDate] = useState<Date | undefined>(isDate ? new Date(isDate) : undefined);
 
     useEffect(() => {
         if (selectedDate instanceof Date) {
@@ -38,7 +40,7 @@ const DatePicker: FunctionComponent<DatePickerProps> = ({ setShipByDate, onDateP
     return (
         <>
             <legend className='form-legend optimizedCheckout-headingSecondary'>
-                Ship-By Date <span>(Required)</span>
+                {heading ? heading : <>Ship-By Date <span>(Required)</span></>}
             </legend>
             <ReactDatePicker
                 className='ob-datepicker form-input optimizedCheckout-form-input'
@@ -48,7 +50,7 @@ const DatePicker: FunctionComponent<DatePickerProps> = ({ setShipByDate, onDateP
                 minDate={ addDays(new Date(), window.__DAYS_OUT_SHIPPING__) }
                 excludeDates={window.__DISABLED_SPECIFIC_DAYS__.map(d => new Date(d))}
                 filterDate={isWeekday}
-                excludeDateIntervals={[{start: subDays(new Date(), 5), end: addDays(new Date(), 5) }]}
+                //excludeDateIntervals={[{start: subDays(new Date(), 5), end: addDays(new Date(), 5) }]}
             />
         </>
     );
@@ -57,7 +59,7 @@ const DatePicker: FunctionComponent<DatePickerProps> = ({ setShipByDate, onDateP
 const isWeekday = (date: Date) => {
     const newDate = new Date(date);
     const day = newDate.getDay();
-    // window.__DISABLED_DAYS_OF_WEEK__ = [0, 6]; // TESTING ONLY
+    //window.__DISABLED_DAYS_OF_WEEK__ = [0, 6]; // TESTING ONLY
 
     return !window.__DISABLED_DAYS_OF_WEEK__.includes(day);
 };

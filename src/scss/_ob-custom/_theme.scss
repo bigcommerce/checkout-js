@@ -390,3 +390,15 @@ body.pickup-only li.checkout-step.optimizedCheckout-checkoutStep.checkout-step--
     padding: 20px;
     text-align: center;
 }
+
+.optimizedCheckout-checkoutStep.checkout-step--shipping {
+    .stepHeader {
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        .stepHeader-body {
+            margin-left: 4.19231rem;
+            order: 3;
+        }
+    }
+}

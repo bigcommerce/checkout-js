@@ -2,28 +2,26 @@
   "version": 2,
   "appVersion": "1.186.1",
   "dynamicChunks": {
+    "js": [
+      "billing-05840507.js",
+      "billing~shipping-021fbbf0.js",
+      "cart-summary-drawer-8b84af35.js",
+      "cart-summary-6181aeba.js",
+      "cart-summary~cart-summary-drawer-2e3f8cdf.js",
+      "customer-823c8c89.js",
+      "order-summary-drawer-152f7e87.js",
+      "order-summary-004be81d.js",
+      "payment-3ea86692.js",
+      "shipping-6d1ed80f.js",
+      "vendors~billing~payment~shipping-891abf60.js",
+      "vendors~billing~shipping-f12bbef8.js"
+    ],
     "css": [
-      "billing-e15e5dfa.css",
+      "billing~shipping-e15e5dfa.css",
       "cart-summary~cart-summary-drawer-ad2d875f.css",
       "customer-1f3cba72.css",
       "payment-8cbc3fde.css",
-      "shipping-44002772.css"
-    ],
-    "js": [
-      "billing-8392299b.js",
-      "cart-summary-drawer-5ec97576.js",
-      "cart-summary-ac82c845.js",
-      "cart-summary~cart-summary-drawer-f73de739.js",
-      "customer-f84f3cde.js",
-      "order-summary-drawer-44360f0c.js",
-      "order-summary-569e3cad.js",
-      "payment-910f3f38.js",
-      "shipping-9ccdcad9.js",
-      "vendors~billing~customer~payment~shipping-6ec0f974.js",
-      "vendors~billing~customer~shipping-2d157f19.js",
-      "vendors~billing~payment~shipping-6ff62424.js",
-      "vendors~billing~shipping-85a85354.js",
-      "vendors~shipping-b46b5bc5.js"
+      "shipping-37c935e6.css"
     ],
     "svg": [
       "static/card-abef8595.svg"
@@ -33,14 +31,14 @@
     ]
   },
   "js": [
-    "runtime-3b93c1ed.js",
-    "polyfill~checkout-bb6cf673.js",
-    "transients~checkout-066d71cc.js",
-    "sentry~checkout-558e85f1.js",
-    "vendors~checkout-c5ef0cb9.js",
-    "checkout-58067c09.js"
+    "runtime-7a8de0cb.js",
+    "polyfill~checkout-3927eef1.js",
+    "transients~checkout-38d709ce.js",
+    "sentry~checkout-fda225b2.js",
+    "vendors~checkout-0e511789.js",
+    "checkout-b83725c7.js"
   ],
   "css": [
-    "checkout-32aeebf3.css"
+    "checkout-1745592f.css"
   ]
 }

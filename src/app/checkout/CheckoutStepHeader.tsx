@@ -16,6 +16,7 @@ export interface CheckoutStepHeaderProps {
     isEditable?: boolean;
     summary?: ReactNode;
     type: CheckoutStepType;
+    headingDatePicker?: ReactNode;
     onEdit?(type: CheckoutStepType): void;
 }
 
@@ -27,6 +28,7 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
     onEdit,
     summary,
     type,
+    headingDatePicker
 }) => {
     return (
         <a
@@ -55,6 +57,7 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
                 data-test="step-info"
             >
                 { !isActive && isComplete && summary }
+                { !isActive && isComplete && headingDatePicker }
             </div>
 
             { isEditable && !isActive && <div className="stepHeader-actions stepHeader-column">

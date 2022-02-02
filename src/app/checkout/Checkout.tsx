@@ -24,6 +24,8 @@ import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
 
+import DatePicker from '../_ob-custom/ob-DatePicker';
+
 /* OBUNDLE GLOBAL VARIABLES */
 declare global {
 	var __DISABLED_DAYS_OF_WEEK__: number[];
@@ -152,7 +154,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             {
                 firstName: 'Mirelli',
                 lastName: 'Chocolatier',
-                company: 'Mirelli Chocolatier',
+                company: '',
                 address1: '1559 The Midway St',
                 address2: '',
                 city: 'Glendale',
@@ -516,16 +518,34 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         const {
             isBillingSameAsShipping,
             isMultiShippingMode,
+            isPickupOnly,
+            isMessengerDelivery,
+            isShippingOnly
         } = this.state;
 
         if (!cart) {
             return;
         }
 
+        let shipping_heading = "shipping_heading"
+        let date_picker_heading = "";
+        if (isPickupOnly) {
+            shipping_heading = "shipping_heading_pickup"
+            date_picker_heading = "Pickup Date"
+        }
+        else if (isMessengerDelivery) {
+            shipping_heading = "shipping_heading_messenger"
+            date_picker_heading = "Messenger Service Delivery Date"
+        }
+        else if (isShippingOnly) {
+            shipping_heading = "shipping_heading_ship"
+            date_picker_heading = "Ship by Date"
+        }
+
         return (
             <CheckoutStep
                 { ...step }
-                heading={ <TranslatedString id="shipping.shipping_heading" /> }
+                heading={ <TranslatedString id={`shipping.${shipping_heading}`} /> }
                 key={ step.type }
                 onEdit={ this.handleEditStep }
                 onExpanded={ this.handleExpanded }
@@ -537,6 +557,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                             consignment={ consignment }
                         />
                     </div>) }
+                headingDatePicker={step.type === "shipping" ? <DatePicker onDatePicked={() => ''} setShipByDate={ this.setShipByDate } isDate={ this.state.shipByDate } heading={ date_picker_heading } /> : null}
             >
                 <LazyContainer>
                     <Shipping

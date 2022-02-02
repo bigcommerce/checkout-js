@@ -16,6 +16,7 @@ export interface CheckoutStepProps {
     suggestion?: ReactNode;
     summary?: ReactNode;
     type: CheckoutStepType;
+    headingDatePicker?: ReactNode;
     onExpanded?(step: CheckoutStepType): void;
     onEdit?(step: CheckoutStepType): void;
 }
@@ -73,6 +74,7 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
             suggestion,
             summary,
             type,
+            headingDatePicker
         } = this.props;
 
         const { isClosed } = this.state;
@@ -95,6 +97,7 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
                         onEdit={ onEdit }
                         summary={ summary }
                         type={ type }
+                        headingDatePicker= { headingDatePicker }
                     />
                 </div>
 
