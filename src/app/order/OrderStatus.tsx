@@ -25,7 +25,9 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
         const Mandates = [
             { method: 'Stripe (SEPA)', value: 'sepa_link_text' },
             { method: 'OXXO (via Checkout.com)', value: 'oxxo_link_text' },
+            { method: 'OXXO (via Stripe)', value: 'oxxo_link_text'},
             { method: 'Boleto Bancário (via Checkout.com)', value: 'boleto_link_text' },
+            { method: 'Boleto (via Stripe)', value: 'boleto_link_text'},
         ];
 
         const mandateText = Mandates.find(pair => pair.method === order?.payments?.[0].description);
