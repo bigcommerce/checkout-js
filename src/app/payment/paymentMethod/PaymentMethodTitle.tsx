@@ -120,7 +120,7 @@ function getPaymentMethodTitle(
                 titleText: '',
             },
             [PaymentMethodType.Paypal]: {
-                logoUrl: cdnPath('/img/payment-providers/paypalpaymentsprouk.png'),
+                logoUrl: (method.id === 'braintreevenmo' && method.logoUrl) ? method.logoUrl : cdnPath('/img/payment-providers/paypalpaymentsprouk.png'),
                 titleText: '',
             },
             [PaymentMethodId.Quadpay]: {
