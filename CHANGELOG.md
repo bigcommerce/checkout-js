@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.194.0](https://github.com/bigcommerce/checkout-js/compare/v1.193.1...v1.194.0) (2022-02-03)
+
+
+### Features
+
+* **payment:** INT-5036 Enable to show oxxo ticket and boleto ticket link on order confirmation page for stripe UPE) ([ff5a175](https://github.com/bigcommerce/checkout-js/commit/ff5a175f4a9abed452a091142049d6371de4f0e6))
+
 ### [1.193.1](https://github.com/bigcommerce/checkout-js/compare/v1.193.0...v1.193.1) (2022-02-01)
 
 ## [1.193.0](https://github.com/bigcommerce/checkout-js/compare/v1.192.0...v1.193.0) (2022-01-27)
