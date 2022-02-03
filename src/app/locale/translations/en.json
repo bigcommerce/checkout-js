@@ -251,6 +251,7 @@
             "payment_method_unavailable_error": "This payment provider is temporarily unavailable. Please try again later.",
             "payment_not_required_text": "Payment is not required for this order.",
             "paypal_continue_action": "Continue with PayPal",
+            "braintreevenmo_continue_action": "Continue with Venmo",
             "paypal_credit_continue_action": "Continue with PayPal Credit",
             "paypal_credit_description_text": "Buy Now, Pay Over Time",
             "paypal_description_text": "Pay using your PayPal account",
