@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.195.1](https://github.com/bigcommerce/checkout-js/compare/v1.195.0...v1.195.1) (2022-02-08)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-0000 upgrade dompurify from 2.0.7 to 2.3.4 ([#796](https://github.com/bigcommerce/checkout-js/issues/796)) ([1276852](https://github.com/bigcommerce/checkout-js/commit/1276852e4cad9ea171e394f2adeac821a300adb7))
+
 ## [1.195.0](https://github.com/bigcommerce/checkout-js/compare/v1.194.0...v1.195.0) (2022-02-03)
 
 
