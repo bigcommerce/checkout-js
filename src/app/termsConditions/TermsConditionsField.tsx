@@ -99,6 +99,7 @@ const TermsConditionsTextField: FunctionComponent<TermsConditionsTextFieldProps>
             defaultValue={ terms }
             name={ field.name }
             readOnly
+            disabled={ false }
         />
     ), [terms]);
 

@@ -80,13 +80,15 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
                         />
                     )
 
+                    console.log('shippingOption', shippingOption)
+
                     if (isMessengerDelivery)
-                        if (shippingOption.type !== "shipping_pickupinstore")
+                        if (shippingOption.description.indexOf('Messenger Delivery Service') > -1)
                         return listComponent;
                         else return;
 
                     if (isShippingOnly)
-                        if (shippingOption.type !== "shipping_pickupinstore")
+                        if (shippingOption.type !== "shipping_pickupinstore" && shippingOption.description.indexOf('Messenger Delivery Service') === -1)
                         return listComponent;
                         else return;
                     

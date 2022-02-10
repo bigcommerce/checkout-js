@@ -30,6 +30,7 @@ export interface ShippingProps {
     /****** */
     isMessengerDelivery: boolean;
     isShippingOnly: boolean;
+    isPickupOnly: boolean;
     hasGiftOption: boolean;
     hasShipByDate: boolean;
     shipByDate: string;
@@ -121,6 +122,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             onToggleMultiShipping,
             isMessengerDelivery,
             isShippingOnly,
+            isPickupOnly,
             hasGiftOption,
             hasShipByDate,
             shipByDate,
@@ -141,6 +143,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                     isMultiShippingMode={ isMultiShippingMode }
                     onMultiShippingChange={ this.handleMultiShippingModeSwitch }
                     shouldShowMultiShipping={ shouldShowMultiShipping }
+                    isPickupOnly={ isPickupOnly }
                 />
 
                 <LoadingOverlay
@@ -164,6 +167,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         onDatePicked={this.handleDatePicked}
                         isMessengerDelivery={ isMessengerDelivery }
                         isShippingOnly={ isShippingOnly }
+                        isPickupOnly={ isPickupOnly }
                         hasGiftOption={ hasGiftOption }
                         hasShipByDate={ hasShipByDate }
                         shipByDate={ shipByDate }

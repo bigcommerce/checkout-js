@@ -4,10 +4,11 @@ import React, { forwardRef, Ref, TextareaHTMLAttributes } from 'react';
 export interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
     additionalClassName?: string;
     testId?: string;
+    disabled: boolean;
 }
 
 const TextArea = forwardRef((
-    { additionalClassName, testId, className, ...rest }: TextAreaProps,
+    { additionalClassName, testId, className, disabled, ...rest }: TextAreaProps,
     ref: Ref<HTMLTextAreaElement>
 ) => (
     <textarea
@@ -19,6 +20,7 @@ const TextArea = forwardRef((
         ) }
         data-test={ testId }
         ref={ ref }
+        disabled={ disabled }
     />
 ));
 

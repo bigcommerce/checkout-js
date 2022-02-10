@@ -95,6 +95,7 @@ const MultiCheckboxFormField: FunctionComponent<MultiCheckboxFormFieldProps> = (
             onChange={ handleInputChange }
             options={ options }
             value={ getIn(values, name) || [] }
+            disabled={ false }
         />
 
         <FormFieldError

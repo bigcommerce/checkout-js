@@ -19,6 +19,7 @@ export interface DynamicInputProps extends InputProps {
     rows?: number;
     fieldType?: DynamicFormFieldType;
     options?: FormFieldItem[];
+    disabled: boolean;
 }
 
 const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
@@ -31,6 +32,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
     options,
     placeholder,
     value,
+    disabled,
     ...rest
 }) => {
     const { inputFormat } = date;
@@ -50,6 +52,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
         return (
             <select
                 { ...rest as any }
+                disabled={ disabled }
                 className="form-select optimizedCheckout-form-select"
                 data-test={ `${id}-select` }
                 id={ id }
@@ -89,6 +92,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                     onChange={ onChange }
                     testId={ `${id}-${optionValue}-radio` }
                     value={ optionValue }
+                    disabled={ disabled }
                 />) }
         </>;
 
@@ -109,6 +113,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                     onChange={ onChange }
                     testId={ `${id}-${optionValue}-checkbox` }
                     value={ optionValue }
+                    disabled={ disabled }
                 />) }
         </>;
 
@@ -143,6 +148,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                 testId={ `${id}-text` }
                 type={ fieldType }
                 value={ value }
+                disabled={ disabled }
             />
         );
 
@@ -159,6 +165,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                     'text' }` }
                 type={ fieldType }
                 value={ value }
+                disabled={ disabled }
             />
         );
     }

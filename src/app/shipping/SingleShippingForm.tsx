@@ -43,6 +43,7 @@ export interface SingleShippingFormProps {
     updateAddress(address: Partial<Address>, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
     isMessengerDelivery: boolean;
     isShippingOnly: boolean;
+    isPickupOnly: boolean;
     hasGiftOption: boolean;
     hasShipByDate: boolean;
     shipByDate: string;
@@ -121,6 +122,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             isShippingStepPending,
             isMessengerDelivery,
             isShippingOnly,
+            isPickupOnly,
             hasGiftOption,
             hasShipByDate,
             shipByDate,
@@ -162,9 +164,10 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                         shippingAddress={ shippingAddress }
                         shouldShowSaveAddress={ shouldShowSaveAddress }
                         isMessengerDelivery={ isMessengerDelivery }
+                        isPickupOnly={ isPickupOnly }
                     />
                     {
-                        shouldShowBillingSameAsShipping && <div className="form-body">
+                        !isPickupOnly && shouldShowBillingSameAsShipping && <div className="form-body">
                             <BillingSameAsShippingField />
                         </div>
                     }
@@ -181,6 +184,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                     shouldShowShippingOptions={ isValid }
                     isMessengerDelivery={ isMessengerDelivery }
                     isShippingOnly={ isShippingOnly }
+                    isPickupOnly={ isPickupOnly }
                     hasGiftOption={ hasGiftOption }
                     hasShipByDate={ hasShipByDate }
                     shipByDate={ shipByDate }

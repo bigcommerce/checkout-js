@@ -9,6 +9,7 @@ export interface CheckboxInputProps extends InputProps {
     label: ReactNode;
     value: string;
     checked: boolean;
+    disabled: boolean;
 }
 
 const CheckboxInput = forwardRef((
@@ -16,6 +17,7 @@ const CheckboxInput = forwardRef((
         additionalClassName,
         label,
         id,
+        disabled,
         ...rest
     }: CheckboxInputProps,
     ref: Ref<HTMLInputElement>
@@ -31,6 +33,7 @@ const CheckboxInput = forwardRef((
             id={ id }
             ref={ ref }
             type="checkbox"
+            disabled={ disabled }
         />
         <Label htmlFor={ id }>
             { label }

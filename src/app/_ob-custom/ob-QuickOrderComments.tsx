@@ -10,7 +10,7 @@ import {
 	Legend,
 	TextInput,
 } from '../ui/form';
-import DatePicker from '../_ob-custom/ob-DatePicker';
+import DatePicker from './ob-DatePicker';
 
 export interface OrderCommentsProps {
 	onDatePicked: () => void;
@@ -22,7 +22,6 @@ export interface OrderCommentsProps {
 	order?: {};
 	isDate: string;
 	heading: string;
-	isPickupOnly: boolean;
 }
 
 const OrderComments: FunctionComponent<OrderCommentsProps> = ({
@@ -31,8 +30,7 @@ const OrderComments: FunctionComponent<OrderCommentsProps> = ({
 	toggleGiftOption,
 	setShipByDate,
 	isDate,
-	heading,
-	isPickupOnly
+	heading
 }) => {
 	const giftCheckboxRef = useRef<null | HTMLInputElement>(null);
 	const orderCommentsRef = useRef<null | HTMLInputElement>(null);
@@ -105,7 +103,7 @@ const OrderComments: FunctionComponent<OrderCommentsProps> = ({
 	return (
 		<>
 			<GiftOptionComponent />
-			<DatePicker onDatePicked={onDatePicked} setShipByDate={ setShipByDate } isDate={isDate} heading={heading} isPickupOnly={isPickupOnly} />
+			<DatePicker onDatePicked={onDatePicked} setShipByDate={ setShipByDate } isDate={isDate} heading={heading} />
 			<Fieldset legend={legend} testId='checkout-shipping-comments'>
 				<FormField input={renderInput} label={renderLabel} name='orderComment' />
 				{limitComment}

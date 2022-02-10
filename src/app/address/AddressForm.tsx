@@ -25,6 +25,7 @@ export interface AddressFormProps {
     onAutocompleteToggle?(state: { inputValue: string; isOpen: boolean }): void;
     onChange?(fieldName: string, value: string | string[]): void;
     setFieldValue?(fieldName: string, value: string | string[]): void;
+    isPickupOnly: boolean;
 }
 
 const LABEL: AddressKeyMap = {
@@ -89,7 +90,8 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
             googleMapsApiKey,
             onAutocompleteToggle,
             shouldShowSaveAddress,
-            formType
+            formType,
+            isPickupOnly
         } = this.props;
 
         const addLabelAddendum = ( labelName: string ): string | JSX.Element => {
@@ -107,7 +109,7 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                         const addressFieldName = field.name;
                         const translatedPlaceholderId = PLACEHOLDER[addressFieldName];
 
-                        if (addressFieldName === 'address1' && googleMapsApiKey && countriesWithAutocomplete) {
+                        if (!isPickupOnly && addressFieldName === 'address1' && googleMapsApiKey && countriesWithAutocomplete) {
                             return (
                                 <GoogleAutocompleteFormField
                                     apiKey={ googleMapsApiKey }
@@ -145,12 +147,13 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                                     (fieldName ? `${fieldName}.customFields` : 'customFields') :
                                     fieldName }
                                 placeholder={ field.default ? field.default : translatedPlaceholderId && language.translate(translatedPlaceholderId) }
+                                disabled={ isPickupOnly }
                             />
                         );
                     }) }
                 </div>
             </Fieldset>
-            { shouldShowSaveAddress &&
+            {!isPickupOnly && shouldShowSaveAddress &&
                 <CheckboxFormField
                     labelContent={ <TranslatedString id="address.save_in_addressbook" /> }
                     name={ fieldName ? `${fieldName}.shouldSaveAddress` : 'shouldSaveAddress' }

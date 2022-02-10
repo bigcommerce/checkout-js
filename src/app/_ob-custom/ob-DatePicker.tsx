@@ -7,6 +7,7 @@ interface DatePickerProps {
     onDatePicked: () => void;
     isDate: string;
     heading: string
+    isPickupOnly: boolean;
 }
 
 /**
@@ -18,9 +19,9 @@ interface DatePickerProps {
  * @param {Object} state 
  * @returns {Component} React Fragment
  */
-const DatePicker: FunctionComponent<DatePickerProps> = ({ setShipByDate, onDatePicked, isDate, heading}) => {
-    //window.__DISABLED_SPECIFIC_DAYS__ = [ '12-20-2021', '12-22-2021', '12-23-2021']; // TESTING ONLY
-    //window.__DAYS_OUT_SHIPPING__ = 2; // TESTING ONLY
+const DatePicker: FunctionComponent<DatePickerProps> = ({ setShipByDate, onDatePicked, isDate, heading, isPickupOnly}) => {
+    window.__DISABLED_SPECIFIC_DAYS__ = [ '12-20-2021', '12-22-2021', '12-23-2021']; // TESTING ONLY
+    window.__DAYS_OUT_SHIPPING__ = 2; // TESTING ONLY
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(isDate ? new Date(isDate) : undefined);
 
     useEffect(() => {
@@ -40,7 +41,7 @@ const DatePicker: FunctionComponent<DatePickerProps> = ({ setShipByDate, onDateP
     return (
         <>
             <legend className='form-legend optimizedCheckout-headingSecondary'>
-                {heading ? heading : <>Ship-By Date <span>(Required)</span></>}
+                {heading ? heading : (isPickupOnly ? 'Pickup Date' : <>Ship-By Date <span>(Required)</span></>)}
             </legend>
             <ReactDatePicker
                 className='ob-datepicker form-input optimizedCheckout-form-input'
@@ -59,7 +60,7 @@ const DatePicker: FunctionComponent<DatePickerProps> = ({ setShipByDate, onDateP
 const isWeekday = (date: Date) => {
     const newDate = new Date(date);
     const day = newDate.getDay();
-    //window.__DISABLED_DAYS_OF_WEEK__ = [0, 6]; // TESTING ONLY
+    window.__DISABLED_DAYS_OF_WEEK__ = [0, 6]; // TESTING ONLY
 
     return !window.__DISABLED_DAYS_OF_WEEK__.includes(day);
 };

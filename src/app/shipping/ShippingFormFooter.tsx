@@ -24,6 +24,7 @@ export interface ShippingFormFooterProps {
     shipByDate: string;
     toggleGiftOption: () => void;
     setShipByDate(value: string): void;
+    isPickupOnly: boolean;
 }
 
 class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
@@ -44,6 +45,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
             shipByDate,
             toggleGiftOption,
             setShipByDate,
+            isPickupOnly
         } = this.props;
 
         const shippingMethodsComponent = (
@@ -75,7 +77,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
         );
 
         return <>
-            { shippingMethodsComponent }
+            {!isPickupOnly && shippingMethodsComponent }
             { shouldShowOrderComments &&
                 <OrderComments 
                     onDatePicked={onDatePicked}
@@ -84,12 +86,15 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
                     shipByDate={ shipByDate }
                     toggleGiftOption={ toggleGiftOption }
                     setShipByDate={ setShipByDate }
+                    isDate=''
+                    heading=''
+                    isPickupOnly={ isPickupOnly }
                 /> 
             }
 
             <div className="form-actions">
                 <Button
-                    disabled={ !isDatePicked ? true : shouldDisableSubmit }
+                    disabled={ isPickupOnly ? false : (!isDatePicked ? true : shouldDisableSubmit) }
                     id="checkout-shipping-continue"
                     isLoading={ isLoading }
                     type="submit"

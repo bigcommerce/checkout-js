@@ -29,6 +29,7 @@ export interface ShippingAddressProps {
     onUnhandledError?(error: Error): void;
     onUseNewAddress(): void;
     isMessengerDelivery: boolean;
+    isPickupOnly: boolean;
 }
 
 const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
@@ -51,7 +52,8 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
         shouldShowSaveAddress,
         onUnhandledError = noop,
         isShippingStepPending,
-        isMessengerDelivery
+        isMessengerDelivery,
+        isPickupOnly
     } = props;
 
     const { setSubmitted } = useContext(FormContext);
@@ -134,6 +136,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
             onUseNewAddress={ onUseNewAddress }
             shouldShowSaveAddress={ shouldShowSaveAddress }
             isMessengerDelivery={ isMessengerDelivery }
+            isPickupOnly={ isPickupOnly }
         />
     );
 };

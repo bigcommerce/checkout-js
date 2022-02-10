@@ -24,6 +24,7 @@ export interface DynamicFormFieldProps {
     placeholder?: string;
     label?: ReactNode;
     onChange?(value: string | string[]): void;
+    disabled: boolean;
 }
 
 const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
@@ -46,6 +47,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
     autocomplete,
     label,
     extraClass,
+    disabled
 }) => {
     const fieldInputId = inputId || name;
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
@@ -94,6 +96,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
             options={ options && options.items }
             placeholder={ placeholder || (options && options.helperLabel) }
             rows={ options && (options as any).rows }
+            disabled={ disabled }
         />
     ), [
         fieldInputId,

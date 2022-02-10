@@ -414,7 +414,7 @@
             "save_shipping_address_error": "An error occurred while saving the shipping address to your price quote. Please try again.",
             "save_shipping_option_error": "An error occurred while saving the shipping quote to your order. Please try again.",
             "select_shipping_address_text": "Please select a shipping address in order to see shipping quotes",
-            "shipping_address_heading": "Shipping Address",
+            "shipping_address_heading": "Address",
             "multishipping_address_heading": "Choose where to ship each item",
             "multishipping_address_heading_guest": "Please sign in first",
             "multishipping_guest_intro": "To ship your items to multiple addresses you need to",

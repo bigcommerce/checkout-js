@@ -65,6 +65,7 @@ class RemoteShippingAddress extends PureComponent<RemoteShippingAddressProps> {
                             key={ `${field.id}-${field.name}` }
                             onChange={ this.handleFieldValueChange(field.name) }
                             parentFieldName="shippingAddress.customFields"
+                            disabled={ false }
                         />
                     ))
                 }

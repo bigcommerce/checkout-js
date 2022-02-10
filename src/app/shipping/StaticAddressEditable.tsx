@@ -93,6 +93,7 @@ class StaticAddressEditable extends PureComponent<StaticAddressEditableProps> {
                                 key={ `${field.id}-${field.name}` }
                                 onChange={ this.handleFieldValueChange(field.name) }
                                 parentFieldName="shippingAddress.customFields"
+                                disabled={ false }
                             />
                         ))
                     }

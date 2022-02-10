@@ -5,13 +5,14 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 const Input = forwardRef((
-    { testId, ...rest }: InputProps,
+    { testId, disabled, ...rest }: InputProps,
     ref: Ref<HTMLInputElement>
 ) => (
     <input
         { ...rest }
         data-test={ testId }
         ref={ ref }
+        disabled={ disabled ? disabled : false }
     />
 ));
 

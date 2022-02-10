@@ -49,6 +49,7 @@ export interface MultiShippingFormProps {
     shipByDate: string;
     toggleGiftOption: () => void;
     setShipByDate(value: string): void;
+    isPickupOnly: boolean;
 }
 
 interface ShippableItemId {
@@ -101,6 +102,7 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
             shipByDate,
             toggleGiftOption,
             setShipByDate,
+            isPickupOnly,
         } = this.props;
 
         const { items, itemAddingAddress, createCustomerAddressError } = this.state;
@@ -178,6 +180,7 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
                         shipByDate={ shipByDate }
                         toggleGiftOption={ toggleGiftOption }
                         setShipByDate={ setShipByDate }
+                        isPickupOnly={ isPickupOnly }
                     />
                 </Form>
             </Fragment>

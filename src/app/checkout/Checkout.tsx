@@ -557,7 +557,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                             consignment={ consignment }
                         />
                     </div>) }
-                headingDatePicker={step.type === "shipping" ? <DatePicker onDatePicked={() => ''} setShipByDate={ this.setShipByDate } isDate={ this.state.shipByDate } heading={ date_picker_heading } /> : null}
+                headingDatePicker={step.type === "shipping" ? <DatePicker onDatePicked={() => ''} setShipByDate={ this.setShipByDate } isDate={this.state.shipByDate} heading={date_picker_heading} isPickupOnly={isPickupOnly} /> : null}
             >
                 <LazyContainer>
                     <Shipping
@@ -577,10 +577,12 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         shipByDate={ this.state.shipByDate }
                         toggleGiftOption={ this.toggleGiftOption }
                         setShipByDate={ this.setShipByDate }
+                        isPickupOnly={isPickupOnly}
                     />
                 </LazyContainer>
             </CheckoutStep>
         );
+        
     }
 
     private renderBillingStep(step: CheckoutStepStatus): ReactNode {

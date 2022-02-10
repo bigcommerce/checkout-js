@@ -9,6 +9,7 @@ export interface RadioInputProps extends InputProps {
     label: ReactNode;
     value: string;
     checked: boolean;
+    disabled: boolean;
 }
 
 const RadioInput = forwardRef((
@@ -18,6 +19,7 @@ const RadioInput = forwardRef((
         value,
         checked,
         id,
+        disabled,
         ...rest
     }: RadioInputProps,
     ref: Ref<HTMLInputElement>
@@ -35,6 +37,7 @@ const RadioInput = forwardRef((
             ref={ ref }
             type="radio"
             value={ value }
+            disabled={ disabled }
         />
         <Label htmlFor={ id }>
             { label }

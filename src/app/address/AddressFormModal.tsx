@@ -51,6 +51,7 @@ const SaveAddress: FunctionComponent<AddressFormProps & WithLanguageProps & Form
                 googleMapsApiKey={ googleMapsApiKey }
                 setFieldValue={ setFieldValue }
                 shouldShowSaveAddress={ false }
+                isPickupOnly={ false }
             />
             <div className="form-actions">
                 <a

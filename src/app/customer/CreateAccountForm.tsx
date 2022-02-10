@@ -70,6 +70,7 @@ const CreateAccountForm: FunctionComponent<CreateAccountFormProps & WithLanguage
                             field={ field }
                             key={ field.id }
                             parentFieldName={ field.custom ? 'customFields'  : undefined }
+                            disabled= { false }
                         />
                     )) }
                 </div>

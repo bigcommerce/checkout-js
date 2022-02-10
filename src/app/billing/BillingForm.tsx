@@ -98,6 +98,7 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
                                 setFieldValue={ setFieldValue }
                                 shouldShowSaveAddress={ !isGuest }
                                 formType={ 'billing' }
+                                isPickupOnly={ false }
                             />
                         </LoadingOverlay> }
                 </Fieldset>

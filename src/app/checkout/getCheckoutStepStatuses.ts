@@ -126,7 +126,7 @@ const getShippingStepStatus = createSelector(
             type: CheckoutStepType.Shipping,
             isActive: false,
             isComplete: true,
-            isEditable: false,
+            isEditable: true,
             isRequired: true,
         };
         /****************************************/

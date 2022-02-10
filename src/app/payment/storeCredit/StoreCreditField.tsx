@@ -62,6 +62,7 @@ const StoreCreditField: FunctionComponent<StoreCreditFieldProps & WithCurrencyPr
         name={ name }
         onChange={ handleChange }
         value={ name }
+        disabled={ false }
     />;
 };
 

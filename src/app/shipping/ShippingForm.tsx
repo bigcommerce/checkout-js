@@ -43,6 +43,7 @@ export interface ShippingFormProps {
     updateAddress(address: Partial<Address>, options: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
     isMessengerDelivery: boolean;
     isShippingOnly: boolean;
+    isPickupOnly: boolean;
     hasGiftOption: boolean;
     hasShipByDate: boolean;
     shipByDate: string;
@@ -89,6 +90,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             isShippingStepPending,
             isMessengerDelivery,
             isShippingOnly,
+            isPickupOnly,
             hasGiftOption,
             hasShipByDate,
             shipByDate,
@@ -123,6 +125,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 shouldShowOrderComments={ shouldShowOrderComments }
                 isMessengerDelivery={ isMessengerDelivery }
                 isShippingOnly={ isShippingOnly }
+                isPickupOnly={ isPickupOnly }
                 hasGiftOption={ hasGiftOption }
                 hasShipByDate={ hasShipByDate }
                 shipByDate={ shipByDate }
@@ -157,6 +160,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 updateAddress={ updateAddress }
                 isMessengerDelivery={ isMessengerDelivery}
                 isShippingOnly={ isShippingOnly }
+                isPickupOnly= { isPickupOnly }
                 hasGiftOption={ hasGiftOption }
                 hasShipByDate={ hasShipByDate }
                 shipByDate={ shipByDate }

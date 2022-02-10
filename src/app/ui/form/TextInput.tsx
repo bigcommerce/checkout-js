@@ -14,6 +14,7 @@ const TextInput = forwardRef((
         additionalClassName,
         appearFocused,
         type = 'text',
+        disabled,
         ...rest
     }: TextInputProps,
     ref: Ref<HTMLInputElement>
@@ -29,6 +30,7 @@ const TextInput = forwardRef((
         ) }
         ref={ ref }
         type={ type }
+        disabled= { disabled ? disabled : false }
     />
 ));
 

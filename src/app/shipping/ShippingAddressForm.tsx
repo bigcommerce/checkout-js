@@ -22,6 +22,7 @@ export interface ShippingAddressFormProps {
     onFieldChange(fieldName: string, value: string): void;
     onAddressSelect(address: Address): void;
     isMessengerDelivery: boolean;
+    isPickupOnly: boolean;
 }
 
 const addressFieldName = 'shippingAddress';
@@ -44,6 +45,7 @@ class ShippingAddressForm extends Component<ShippingAddressFormProps & ConnectFo
                     shippingAddress: formAddress,
                 },
             },
+            isPickupOnly
         } = this.props;
 
         const hasAddresses = addresses && addresses.length > 0;
@@ -51,7 +53,7 @@ class ShippingAddressForm extends Component<ShippingAddressFormProps & ConnectFo
 
         return (
             <Fieldset id="checkoutShippingAddress">
-                { hasAddresses &&
+                { !isPickupOnly && hasAddresses &&
                     <Fieldset id="shippingAddresses">
                         <LoadingOverlay isLoading={ isLoading }>
                             <AddressSelect
@@ -76,6 +78,7 @@ class ShippingAddressForm extends Component<ShippingAddressFormProps & ConnectFo
                             onChange={ this.handleChange }
                             setFieldValue={ this.setFieldValue }
                             shouldShowSaveAddress={ shouldShowSaveAddress }
+                            isPickupOnly={ isPickupOnly }
                         />
                     </LoadingOverlay> }
             </Fieldset>
