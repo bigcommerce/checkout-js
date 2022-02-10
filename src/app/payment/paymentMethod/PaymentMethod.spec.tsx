@@ -18,6 +18,7 @@ import CheckoutcomCustomPaymentMethod, { CheckoutcomCustomPaymentMethodProps } f
 import CreditCardPaymentMethod, { CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
 import OfflinePaymentMethod, { OfflinePaymentMethodProps } from './OfflinePaymentMethod';
+import OpyPaymentMethod from './OpyPaymentMethod';
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
@@ -473,6 +474,34 @@ describe('PaymentMethod', () => {
             const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
 
             expect(container.find(BarclaycardPaymentMethod)).toBeTruthy();
+        });
+    });
+
+    describe('when using Opy payment method', () => {
+        let method: PaymentMethod;
+
+        beforeEach(() => {
+            method = {
+                id: 'opy',
+                method: 'credit-card',
+                supportedCards: ['VISA', 'MC'],
+                config: {
+                    displayName: 'Openpay',
+                    testMode: false,
+                },
+                type: 'PAYMENT_TYPE_API',
+            };
+        });
+
+        it('should render OpyPaymentMethod', () => {
+            const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+
+            expect(container.find(OpyPaymentMethod).props())
+                .toEqual(expect.objectContaining({
+                    initializePayment: expect.any(Function),
+                    isInitializing: expect.any(Boolean),
+                    method,
+                }));
         });
     });
 });
