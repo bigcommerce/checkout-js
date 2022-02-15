@@ -44,10 +44,20 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
 
             if (items?.length === 0) {
                 options?.querySelector('.shippingOptions-container')?.classList.add('tempHide')
+                //options?.querySelector('.loadingOverlay-container')?.classList.add('tempHide')
                 options?.querySelector('#messZipError')?.classList.remove('tempHide')
                 options?.classList.remove('tempHide')
             }
             else {
+                items?.forEach(i => {
+                    const label = i.querySelector('.shippingOption-desc')?.textContent
+                    if (label && label.indexOf('Messenger Delivery Service') > -1) {
+                        const input = i.querySelector('.form-checklist-checkbox') as HTMLInputElement
+                        if (input) {
+                            input.checked = true
+                        }
+                    }
+                })
                 options?.classList.add('tempHide')
             }
 
@@ -91,7 +101,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
                             </Alert> }
                     </>
                 }
-                className={isMessengerDelivery ? 'form-fieldset tempHide' : 'form-fieldset'}
+                className={isMessengerDelivery ? 'form-fieldset isMessengerDelivery tempHide' : 'form-fieldset'}
             > 
                 <ShippingOptions
                     isMultiShippingMode={ isMultiShippingMode }
