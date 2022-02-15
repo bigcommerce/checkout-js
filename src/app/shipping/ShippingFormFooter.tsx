@@ -28,6 +28,32 @@ export interface ShippingFormFooterProps {
 }
 
 class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
+
+    componentDidMount(): void {
+        this.checkForShipping()
+    }
+
+    componentDidUpdate() : void {
+        this.checkForShipping()
+    }
+
+    checkForShipping = () => {
+        if (this.props.isMessengerDelivery) {
+            const options = document.querySelector('#checkout-shipping-options');
+            const items = options?.querySelectorAll('.form-checklist-item')
+
+            if (items?.length === 0) {
+                options?.querySelector('.shippingOptions-container')?.classList.add('tempHide')
+                options?.querySelector('#messZipError')?.classList.remove('tempHide')
+                options?.classList.remove('tempHide')
+            }
+            else {
+                options?.classList.add('tempHide')
+            }
+
+        }
+    }
+
     render(): ReactNode {
         const {
             isDatePicked,
@@ -46,7 +72,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
             toggleGiftOption,
             setShipByDate,
             isPickupOnly
-        } = this.props;
+        } = this.props; 
 
         const shippingMethodsComponent = (
             <Fieldset
@@ -65,6 +91,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
                             </Alert> }
                     </>
                 }
+                className={isMessengerDelivery ? 'form-fieldset tempHide' : 'form-fieldset'}
             > 
                 <ShippingOptions
                     isMultiShippingMode={ isMultiShippingMode }
@@ -73,6 +100,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
                     isMessengerDelivery={ isMessengerDelivery }
                     isShippingOnly={ isShippingOnly }
                 />
+                <p id='messZipError' className='ob-giftOption__message tempHide'>No messenger service options for zipcode entered. Please use a different zipcode.</p>
             </Fieldset>
         );
 

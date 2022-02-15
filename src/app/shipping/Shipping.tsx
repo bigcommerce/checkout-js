@@ -143,7 +143,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                     isMultiShippingMode={ isMultiShippingMode }
                     onMultiShippingChange={ this.handleMultiShippingModeSwitch }
                     shouldShowMultiShipping={ shouldShowMultiShipping }
-                    isPickupOnly={ isPickupOnly }
                 />
 
                 <LoadingOverlay

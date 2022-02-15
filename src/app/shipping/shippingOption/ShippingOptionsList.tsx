@@ -80,8 +80,6 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
                         />
                     )
 
-                    console.log('shippingOption', shippingOption)
-
                     if (isMessengerDelivery)
                         if (shippingOption.description.indexOf('Messenger Delivery Service') > -1)
                         return listComponent;

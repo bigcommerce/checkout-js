@@ -61,7 +61,6 @@ class ShippingOptionsForm extends PureComponent<ShippingOptionsFormProps & Formi
         }
 
         return <>
-        {console.log('test', consignments)}
             {consignments
                 .map(consignment => (
                 <div className="shippingOptions-container form-fieldset" key={ consignment.id }>
