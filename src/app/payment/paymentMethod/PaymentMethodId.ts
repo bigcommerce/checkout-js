@@ -47,6 +47,7 @@ enum PaymentMethodId {
     Sezzle = 'sezzle',
     SquareV2 = 'squarev2',
     StripeGooglePay = 'googlepaystripe',
+    StripeUPEGooglePay = 'googlepaystripeupe',
     StripeV3 = 'stripev3',
     StripeUPE = 'stripeupe',
     Zip = 'zip',

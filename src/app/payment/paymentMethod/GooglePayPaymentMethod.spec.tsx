@@ -1,6 +1,7 @@
 import { createCheckoutService, CheckoutSelectors, CheckoutService, PaymentInitializeOptions, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
+import each from 'jest-each';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
@@ -73,7 +74,17 @@ describe('when using Google Pay payment', () => {
             }));
     });
 
-    it('initializes method with required config', () => {
+    each([
+        [PaymentMethodId.AdyenV2GooglePay],
+        [PaymentMethodId.AuthorizeNetGooglePay],
+        [PaymentMethodId.BraintreeGooglePay],
+        [PaymentMethodId.CheckoutcomGooglePay],
+        [PaymentMethodId.CybersourceV2GooglePay],
+        [PaymentMethodId.OrbitalGooglePay],
+        [PaymentMethodId.StripeGooglePay],
+        [PaymentMethodId.StripeUPEGooglePay],
+    ]).it('initializes %s with required config', id => {
+        method.id = id;
         const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
         const component: ReactWrapper<WalletButtonPaymentMethodProps> = container.find(WalletButtonPaymentMethod);
 
@@ -84,9 +95,9 @@ describe('when using Google Pay payment', () => {
 
         expect(checkoutService.initializePayment)
             .toHaveBeenCalledWith(expect.objectContaining({
-                methodId: method.id,
+                methodId: id,
                 gatewayId: method.gateway,
-                [method.id]: {
+                [id]: {
                     walletButton: 'walletButton',
                     onError: defaultProps.onUnhandledError,
                     onPaymentSelect: expect.any(Function),
