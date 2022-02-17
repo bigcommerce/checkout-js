@@ -4,7 +4,7 @@ import React, { FunctionComponent } from 'react';
 
 import { LocaleProvider, TranslatedHtml } from '../locale';
 
-import { getOrder } from './orders.mock';
+import { getOrder, getOrderWithMandateId, getOrderWithMandateURL } from './orders.mock';
 import OrderStatus, { OrderStatusProps } from './OrderStatus';
 
 describe('OrderStatus', () => {
@@ -230,10 +230,7 @@ describe('OrderStatus', () => {
 
     describe('when order has mandate', () => {
         beforeEach(() => {
-            order = {
-                ...getOrder(),
-                mandateUrl: 'mandateLink',
-            };
+            order = getOrderWithMandateURL();
         });
 
         it('renders mandate link if it is provided', () => {
@@ -246,7 +243,21 @@ describe('OrderStatus', () => {
 
             expect(orderStatus.find('[data-test="order-confirmation-mandate-link-text"]')
                 .prop('href'))
-                .toEqual('mandateLink');
+                .toEqual('https://www.test.com/mandate');
+            expect(orderStatus.find('[data-test="order-confirmation-mandate-id-text"]').length).toEqual(0);
+        });
+
+        it('renders mandate id if it is provided', () => {
+            order = getOrderWithMandateId();
+            const orderStatus = mount(
+                <OrderStatusTest
+                    { ...defaultProps }
+                    order={ order }
+                />
+            );
+
+            expect(orderStatus.find('[data-test="order-confirmation-mandate-link-text"]').length).toEqual(0);
+            expect(orderStatus.find('[data-test="order-confirmation-mandate-id-text"]').length).toEqual(1);
         });
 
         it('renders "SEPA Direct Debit Mandate" text on mandate link when provider description is Stripe (SEPA)', () => {
@@ -257,11 +268,16 @@ describe('OrderStatus', () => {
                         ...order,
                         payments: [{
                             providerId: 'stripev3',
+                            methodId: 'iban',
                             description: 'Stripe (SEPA)',
                             amount: 190,
                             detail: {
                                 step: 'FINALIZE',
                                 instructions: '<strong>295</strong> something',
+                            },
+                            mandate: {
+                                id: '',
+                                url: 'https://www.test.com/mandate',
                             },
                         }],
                     } }
@@ -271,6 +287,35 @@ describe('OrderStatus', () => {
             expect(orderStatus.find('[data-test="order-confirmation-mandate-link-text"]')
                 .text())
                 .toEqual('SEPA Direct Debit Mandate');
+        });
+
+        it('renders "SEPA Direct Debit Mandate" text when provider description is Checkout.com', () => {
+            const orderStatus = mount(
+                <OrderStatusTest
+                    { ...defaultProps }
+                    order={ {
+                        ...order,
+                        payments: [{
+                            providerId: 'checkoutcom',
+                            methodId: 'sepa',
+                            description: 'SEPA Direct Debit (via Checkout.com)',
+                            amount: 190,
+                            detail: {
+                                step: 'FINALIZE',
+                                instructions: '<strong>295</strong> something',
+                            },
+                            mandate: {
+                                id: 'ABC123',
+                                url: '',
+                            },
+                        }],
+                    } }
+                />
+            );
+
+            expect(orderStatus.find('[data-test="order-confirmation-mandate-id-text"]')
+                .text())
+                .toEqual('SEPA Direct Debit (via Checkout.com) Mandate Reference: ABC123');
         });
     });
 
