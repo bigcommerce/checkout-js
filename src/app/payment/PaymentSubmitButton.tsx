@@ -55,7 +55,7 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
     }
 
     if (methodType === PaymentMethodType.Paypal) {
-        return <TranslatedString id="payment.paypal_continue_action" />;
+        return <TranslatedString id={ methodId === PaymentMethodId.BraintreeVenmo ? 'payment.braintreevenmo_continue_action' : 'payment.paypal_continue_action' } />;
     }
 
     if (methodType === PaymentMethodType.PaypalCredit) {
