@@ -12,7 +12,7 @@ export default function getPaymentMethodDisplayName(
         if (method.id === PaymentMethodId.PaypalCommerceCredit) {
             const { payPalCreditProductBrandName } = method.initializationData;
 
-            return payPalCreditProductBrandName ? payPalCreditProductBrandName : 'Pay Later';
+            return payPalCreditProductBrandName && payPalCreditProductBrandName.credit ? payPalCreditProductBrandName.credit : 'Pay Later';
         }
 
         if (isCreditCard && method.id === PaymentMethodId.AdyenV2) {
