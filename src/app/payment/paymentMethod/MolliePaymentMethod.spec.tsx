@@ -117,6 +117,9 @@ describe('MolliePaymentMethod', () => {
                             merchantId: undefined,
                             testMode: false,
                         },
+                        initializationData: {
+                            payPalCreditProductBrandName: '',
+                        },
                         gateway: 'mollie',
                         id: 'mollie',
                         logoUrl: '',

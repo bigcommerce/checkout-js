@@ -20,6 +20,13 @@ describe('getPaymentMethodDisplayName()', () => {
             .toEqual(method.config.displayName);
     });
 
+    it('returns translated "Pay in 3" display name', () => {
+        const method = { ...getPaymentMethod(), initializationData: { payPalCreditProductBrandName: 'Pay in 3' } };
+
+        expect(getPaymentMethodDisplayName(language)(method))
+            .toEqual(method.initializationData.payPalCreditProductBrandName);
+    });
+
     it('returns translated "Credit card" display name', () => {
         const method = { ...getPaymentMethod(), config: { displayName: 'Credit Card' } };
 
