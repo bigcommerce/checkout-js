@@ -1,7 +1,7 @@
 import { createLanguageService, LanguageService } from '@bigcommerce/checkout-sdk';
 
 import { FALLBACK_TRANSLATIONS } from '../../locale/translations';
-import { getPaymentMethod } from '../payment-methods.mock';
+import { getPaymentMethod, getPaypalCreditPaymentMethod } from '../payment-methods.mock';
 
 import getPaymentMethodDisplayName from './getPaymentMethodDisplayName';
 import PaymentMethodId from './PaymentMethodId';
@@ -21,10 +21,10 @@ describe('getPaymentMethodDisplayName()', () => {
     });
 
     it('returns translated "Pay in 3" display name', () => {
-        const method = { ...getPaymentMethod(), initializationData: { payPalCreditProductBrandName: 'Pay in 3' } };
+        const method = { ...getPaypalCreditPaymentMethod() };
 
         expect(getPaymentMethodDisplayName(language)(method))
-            .toEqual(method.initializationData.payPalCreditProductBrandName);
+            .toEqual(method.initializationData.payPalCreditProductBrandName.credit);
     });
 
     it('returns translated "Credit card" display name', () => {
