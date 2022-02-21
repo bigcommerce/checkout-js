@@ -11,6 +11,9 @@ export function getPaymentMethod(): PaymentMethod {
             'AMEX',
             'MC',
         ],
+        initializationData: {
+            payPalCreditProductBrandName: '',
+        },
         config: {
             displayName: 'Authorizenet',
             cardCode: true,
