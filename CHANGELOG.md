@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.197.1](https://github.com/bigcommerce/checkout-js/compare/v1.197.0...v1.197.1) (2022-02-22)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-1282 quick fix ([fa11c78](https://github.com/bigcommerce/checkout-js/commit/fa11c782236b262ee3df7810e10a7ad0a6815ed4))
+
 ## [1.197.0](https://github.com/bigcommerce/checkout-js/compare/v1.196.0...v1.197.0) (2022-02-22)
 
 
