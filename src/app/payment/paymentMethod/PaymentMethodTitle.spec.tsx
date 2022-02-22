@@ -273,6 +273,30 @@ describe('PaymentMethodTitle', () => {
             .toEqual('mastercard');
     });
 
+    it('renders a different logo for braintreeVenmo methodId for Paypal', () => {
+        const imageExtension = '.svg';
+        const imageFolder = '/modules/checkout/braintreevenmo/images/';
+        const method = PaymentMethodType.Paypal;
+        const id = PaymentMethodId.BraintreeVenmo;
+        const logoUrl = `${config.cdnPath}${imageFolder}braintree_venmo${imageExtension}`;
+
+        const component = mount(<PaymentMethodTitleTest
+            { ...defaultProps }
+            method={ {
+                ...defaultProps.method,
+                id,
+                method,
+                logoUrl,
+            } }
+        />);
+
+        const expectedPath = `${config.cdnPath}${imageFolder}braintree_venmo${imageExtension}`;
+
+        expect(component.find('[data-test="payment-method-logo"]').prop('src'))
+            .toEqual(expectedPath);
+
+    });
+
     it('renders selected credit card type using card number if not using hosted fields', () => {
         const component = mount(<PaymentMethodTitleTest
             { ...defaultProps }
