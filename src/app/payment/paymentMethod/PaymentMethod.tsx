@@ -26,6 +26,7 @@ import MasterpassPaymentMethod from './MasterpassPaymentMethod';
 import MolliePaymentMethod from './MolliePaymentMethod';
 import MonerisPaymentMethod from './MonerisPaymentMethod';
 import OfflinePaymentMethod from './OfflinePaymentMethod';
+import OpyPaymentMethod from './OpyPaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
 import PaymentMethodType from './PaymentMethodType';
@@ -208,7 +209,6 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
         method.gateway === PaymentMethodId.Clearpay ||
         method.id === PaymentMethodId.Humm ||
         method.id === PaymentMethodId.Laybuy ||
-        method.id === PaymentMethodId.Opy ||
         method.id === PaymentMethodId.Quadpay ||
         method.id === PaymentMethodId.Sezzle ||
         method.id === PaymentMethodId.Zip ||
@@ -220,6 +220,10 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
 
     if (method.type === PaymentMethodProviderType.Offline) {
         return <OfflinePaymentMethod { ...props } />;
+    }
+
+    if (method.id === PaymentMethodId.Opy) {
+        return <OpyPaymentMethod { ...props } />;
     }
 
     if (method.gateway === PaymentMethodId.Mollie) {
