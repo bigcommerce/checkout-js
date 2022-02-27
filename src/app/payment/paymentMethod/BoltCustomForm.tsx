@@ -8,20 +8,33 @@ export interface BoltCustomFormProps {
     showCreateAccountCheckbox: boolean;
 }
 
-const accountDisclaimerTranslationOptions = {
+const agreementTranslationOptions = {
     privacyPolicyUrl: 'https://www.bolt.com/privacy/',
     termsUrl: 'https://www.bolt.com/end-user-terms/',
 };
 
+const benefitsList = [
+    { id: 'payment.bolt_benefit_1' },
+    { id: 'payment.bolt_benefit_2' },
+    { id: 'payment.bolt_benefit_3' },
+];
+
 const BoltCreateAccountCheckbox: FunctionComponent = () => {
     const labelContent = (
         <>
-            <TranslatedString id="payment.bolt_create_account_label" />
-            <br />
             <TranslatedHtml
-                data={ accountDisclaimerTranslationOptions }
-                id="payment.bolt_create_account_disclaimer"
+                data={ agreementTranslationOptions }
+                id="payment.bolt_checkbox_agreement"
             />
+            <ul>
+                {
+                    benefitsList.map(({ id }, key) => (
+                        <li key={ key }>
+                            <TranslatedString id={ id } />
+                        </li>
+                    ))
+                }
+            </ul>
         </>
     );
 

@@ -55,7 +55,7 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
     }
 
     if (methodType === PaymentMethodType.Paypal) {
-        return <TranslatedString id="payment.paypal_continue_action" />;
+        return <TranslatedString id={ methodId === PaymentMethodId.BraintreeVenmo ? 'payment.braintreevenmo_continue_action' : 'payment.paypal_continue_action' } />;
     }
 
     if (methodType === PaymentMethodType.PaypalCredit) {
@@ -63,7 +63,7 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
     }
 
     if (methodId === PaymentMethodId.Opy) {
-        return <TranslatedString id="payment.opy_continue_action" />;
+        return <TranslatedString data={ { methodName } } id="payment.opy_continue_action" />;
     }
 
     if (methodId === PaymentMethodId.Quadpay) {

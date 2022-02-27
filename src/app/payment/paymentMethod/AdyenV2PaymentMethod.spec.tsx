@@ -89,6 +89,7 @@ describe('when using Adyen V2 payment', () => {
                     hasVaultedInstruments: false,
                     options: {
                         hasHolderName: true,
+                        holderNameRequired: true,
                     },
                     additionalActionOptions: {
                         containerId: 'adyen-scheme-additional-action-component-field',
@@ -103,6 +104,7 @@ describe('when using Adyen V2 payment', () => {
                         onComplete: expect.any(Function),
                         onLoad: expect.any(Function),
                     },
+                    validateCardFields: expect.any(Function),
                 },
                 gatewayId: method.gateway,
                 methodId: method.id,

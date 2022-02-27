@@ -107,32 +107,4 @@ describe('when using Square payment', () => {
                 },
             });
     });
-
-    it('initializes method with masterpass config if it is enabled', () => {
-        method.initializationData = {
-            enableMasterpass: true,
-        };
-
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
-        const component: ReactWrapper<HostedFieldPaymentMethodProps> = container.find(HostedFieldPaymentMethod);
-
-        component.prop('initializePayment')({
-            methodId: method.id,
-            gatewayId: method.gateway,
-        });
-
-        expect(checkoutService.initializePayment)
-            .toHaveBeenCalledWith({
-                methodId: method.id,
-                gatewayId: method.gateway,
-                square: expect.objectContaining({
-                    masterpass: {
-                        elementId: 'sq-masterpass',
-                    },
-                }),
-            });
-
-        expect(component.prop('walletButtons'))
-            .toBeDefined();
-    });
 });

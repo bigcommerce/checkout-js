@@ -40,7 +40,7 @@ function getPaymentMethodTitle(
                 titleText: methodName,
             },
             [PaymentMethodType.PaypalCredit]: {
-                logoUrl: cdnPath('/img/payment-providers/paypal-credit.png'),
+                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_pay_later.svg'),
                 titleText: '',
             },
             [PaymentMethodId.PaypalCommerce]: {
@@ -120,7 +120,7 @@ function getPaymentMethodTitle(
                 titleText: '',
             },
             [PaymentMethodType.Paypal]: {
-                logoUrl: cdnPath('/img/payment-providers/paypalpaymentsprouk.png'),
+                logoUrl: (method.id === PaymentMethodId.BraintreeVenmo && method.logoUrl) ? method.logoUrl : cdnPath('/img/payment-providers/paypalpaymentsprouk.png'),
                 titleText: '',
             },
             [PaymentMethodId.Quadpay]: {
@@ -152,6 +152,10 @@ function getPaymentMethodTitle(
                 titleText: methodName,
             },
             [PaymentMethodId.StripeV3]: {
+                logoUrl: '',
+                titleText: method.method === 'iban' ? language.translate('payment.stripe_sepa_display_name_text') : methodName,
+            },
+            [PaymentMethodId.StripeUPE]: {
                 logoUrl: '',
                 titleText: method.method === 'iban' ? language.translate('payment.stripe_sepa_display_name_text') : methodName,
             },

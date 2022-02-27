@@ -327,6 +327,10 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             window.location.replace(cartUrl || '/');
         }
 
+        if (errorType === 'tax_provider_unavailable') {
+            window.location.reload();
+        }
+
         if (isRequestError(error)) {
             const { body, headers, status } = error;
 

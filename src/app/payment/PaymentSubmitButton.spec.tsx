@@ -8,6 +8,7 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale
 import { Button } from '../ui/button';
 import { IconBolt } from '../ui/icon';
 
+import { PaymentMethodId } from './paymentMethod';
 import PaymentSubmitButton, { PaymentSubmitButtonProps } from './PaymentSubmitButton';
 
 describe('PaymentSubmitButton', () => {
@@ -115,13 +116,13 @@ describe('PaymentSubmitButton', () => {
             .toEqual(languageService.translate('payment.chasepay_continue_action'));
     });
 
-    it('renders button with special label for Openpay', () => {
+    it('renders button with special label for Opy', () => {
         const component = mount(
-            <PaymentSubmitButtonTest methodId="opy" />
+            <PaymentSubmitButtonTest methodId="opy" methodName="Opy" />
         );
 
         expect(component.text())
-            .toEqual(languageService.translate('payment.opy_continue_action'));
+            .toEqual(languageService.translate('payment.opy_continue_action', { methodName: 'Opy' }));
     });
 
     it('renders button with special label for PayPal', () => {
@@ -131,6 +132,15 @@ describe('PaymentSubmitButton', () => {
 
         expect(component.text())
             .toEqual(languageService.translate('payment.paypal_continue_action'));
+    });
+
+    it('renders button with special label for BraintreeVenmo', () => {
+        const component = mount(
+            <PaymentSubmitButtonTest methodId={ PaymentMethodId.BraintreeVenmo } methodType="paypal" />
+        );
+
+        expect(component.text())
+            .toEqual(languageService.translate('payment.braintreevenmo_continue_action'));
     });
 
     it('renders button with special label for PayPal Credit', () => {

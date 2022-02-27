@@ -4,3 +4,4 @@ export { default as CheckoutProvider, CheckoutProviderProps, CheckoutProviderSta
 export { default as withCheckout } from './withCheckout';
 export { default as CheckoutSupport } from './CheckoutSupport';
 export { default as NoopCheckoutSupport } from './NoopCheckoutSupport';
+export { default as navigateToOrderConfirmation } from './navigateToOrderConfirmation';
