@@ -112,16 +112,12 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
 
         return <>
             <MobileView>
-                { matched => {
-                    if (matched) {
-                        return !isActive ? null : <div className="checkout-view-content">
-                            { children }
-                        </div>;
-                    }
-
-                    return <CSSTransition
+                { matched =>
+                    <CSSTransition
                         addEndListener={ this.handleTransitionEnd }
                         classNames="checkout-view-content"
+                        enter={ !matched }
+                        exit={ !matched }
                         in={ isActive }
                         mountOnEnter
                         timeout={ {} }
@@ -133,8 +129,7 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
                         >
                             { children }
                         </div>
-                    </CSSTransition>;
-                } }
+                    </CSSTransition> }
             </MobileView>
         </>;
     }
