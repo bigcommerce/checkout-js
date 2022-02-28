@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.198.0](https://github.com/bigcommerce/checkout-js/compare/v1.197.1...v1.198.0) (2022-02-28)
+
+
+### Features
+
+* **payment:** INT-5384 Openpay: Add support to hosting their widget ([#808](https://github.com/bigcommerce/checkout-js/issues/808)) ([8832972](https://github.com/bigcommerce/checkout-js/commit/8832972860eb5f25d4fffa2cea94167d6f425426))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-6334 Restore Instructional Text in Country Dropdown Menu ([#819](https://github.com/bigcommerce/checkout-js/issues/819)) ([d647db5](https://github.com/bigcommerce/checkout-js/commit/d647db5f6aef32cfdc155f7d3d05265490dd70c3))
+
 ### [1.197.1](https://github.com/bigcommerce/checkout-js/compare/v1.197.0...v1.197.1) (2022-02-22)
 
 
