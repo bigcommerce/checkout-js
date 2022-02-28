@@ -82,7 +82,6 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
         const {
             formFields,
             fieldName,
-            language,
             countriesWithAutocomplete,
             countryCode,
             googleMapsApiKey,
@@ -127,7 +126,7 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                                 parentFieldName={ field.custom ?
                                     (fieldName ? `${fieldName}.customFields` : 'customFields') :
                                     fieldName }
-                                placeholder={ field.default ? field.default : translatedPlaceholderId && language.translate(translatedPlaceholderId) }
+                                placeholder={ this.getPlaceholderValue(field, translatedPlaceholderId) }
                             />
                         );
                     }) }
@@ -139,6 +138,16 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                     name={ fieldName ? `${fieldName}.shouldSaveAddress` : 'shouldSaveAddress' }
                 /> }
         </>);
+    }
+
+    private getPlaceholderValue(field: FormField, translatedPlaceholderId: string): string {
+        const { language } = this.props;
+
+        if (field.default && field.fieldType !== 'dropdown') {
+            return field.default;
+        } else {
+            return translatedPlaceholderId && language.translate(translatedPlaceholderId);
+        }
     }
 
     private handleAutocompleteChange: (value: string, isOpen: boolean) => void = (value, isOpen) => {
