@@ -182,6 +182,8 @@ describe('CheckoutStep', () => {
 
         expect(component.find(CSSTransition))
             .toHaveLength(1);
+        expect(component.find(CSSTransition).prop('enter')).toBe(true);
+        expect(component.find(CSSTransition).prop('exit')).toBe(true);
     });
 
     it('does not animate using CSS transition in mobile view', () => {
@@ -189,8 +191,8 @@ describe('CheckoutStep', () => {
 
         const component = mount(<CheckoutStep { ...defaultProps } />);
 
-        expect(component.find(CSSTransition))
-            .toHaveLength(0);
+        expect(component.find(CSSTransition).prop('enter')).toBe(false);
+        expect(component.find(CSSTransition).prop('exit')).toBe(false);
     });
 
     it('changes isClosed for mobile', () => {
