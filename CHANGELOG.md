@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.198.1](https://github.com/bigcommerce/checkout-js/compare/v1.198.0...v1.198.1) (2022-02-28)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-6207 entered information lost after window resizing ([#820](https://github.com/bigcommerce/checkout-js/issues/820)) ([d14bbdd](https://github.com/bigcommerce/checkout-js/commit/d14bbdd262fc556aa1a8bd4552bb73d4e748aa55))
+
 ## [1.198.0](https://github.com/bigcommerce/checkout-js/compare/v1.197.1...v1.198.0) (2022-02-28)
 
 
