@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.198.2](https://github.com/bigcommerce/checkout-js/compare/v1.198.1...v1.198.2) (2022-03-01)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-6393 Replace NBSP with Space ([#821](https://github.com/bigcommerce/checkout-js/issues/821)) ([1589ac0](https://github.com/bigcommerce/checkout-js/commit/1589ac0d302f4ce2c9a0c31b04d44f28e6801d3c))
+
 ### [1.198.1](https://github.com/bigcommerce/checkout-js/compare/v1.198.0...v1.198.1) (2022-02-28)
 
 
