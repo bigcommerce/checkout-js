@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.199.0](https://github.com/bigcommerce/checkout-js/compare/v1.198.3...v1.199.0) (2022-03-03)
+
+
+### Features
+
+* **payment:** PAYPAL-1284 different naming for PPCP on checkout page ([924f0d4](https://github.com/bigcommerce/checkout-js/commit/924f0d4e8ed090984c1920f0f817c888edea6e13))
+* **payment:** PAYPAL-1284 different naming for PPCP on checkout page ([5556508](https://github.com/bigcommerce/checkout-js/commit/555650890df260920b7ccb92a1a39b2e9f6e3a8a))
+
 ### [1.198.3](https://github.com/bigcommerce/checkout-js/compare/v1.198.2...v1.198.3) (2022-03-02)
 
 ### [1.198.2](https://github.com/bigcommerce/checkout-js/compare/v1.198.1...v1.198.2) (2022-03-01)

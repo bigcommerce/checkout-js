@@ -4834,6 +4834,8 @@ h6 a:hover {
 .paymentProviderHeader-img {
   height: 1.92308rem; }
   .paymentProviderHeader-img + .paymentProviderHeader-name {
+    font-size: 18px;
+    font-weight: bold;
     margin-left: 0.75rem; }
 
 .googlePay-logo {
@@ -5454,4 +5456,4 @@ body.klarna-payments-fso-open {
     font-weight: normal; }
 
 
-/*# sourceMappingURL=checkout-d18e083d.css.map*/
+/*# sourceMappingURL=checkout-e17eadf2.css.map*/
