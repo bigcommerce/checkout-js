@@ -43,6 +43,7 @@ describe('when using Opy payment', () => {
             deinitializePayment: jest.fn(),
             initializePayment: jest.fn(),
             method,
+            onUnhandledError: jest.fn(),
         };
 
         OpyPaymentMethodTest = props => (
@@ -96,6 +97,7 @@ describe('when using Opy payment', () => {
                 hideWidget: false,
                 initializePayment: expect.any(Function),
                 method,
+                onUnhandledError: expect.any(Function),
             }));
     });
 
@@ -121,6 +123,28 @@ describe('when using Opy payment', () => {
         expect(container.text().includes(text1)).toBe(true);
         expect(container.text().includes(text2)).toBe(true);
         expect(container.text().includes(text3)).toBe(true);
+    });
+
+    it('returns correct message when cart is not valid', () => {
+        defaultProps.method.config.displayName = 'Foo Payment Method';
+
+        const opyError = Object.create(new Error('Something went wrong.'));
+        opyError.name = 'OpyError';
+        opyError.type = 'opy_error';
+        opyError.subtype = 'invalid_cart';
+
+        mount(<OpyPaymentMethodTest />)
+          .find(HostedWidgetPaymentMethod)
+          .props()
+          .onUnhandledError(opyError);
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(
+          new Error(
+            localeContext.language.translate('payment.opy_invalid_cart_error', {
+                methodName: 'Foo Payment Method',
+            })
+          )
+        );
     });
 
     it('matches snapshot with rendered output', () => {

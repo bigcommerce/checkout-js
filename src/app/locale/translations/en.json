@@ -242,6 +242,7 @@
             "opy_continue_action": "Continue with {methodName}",
             "opy_widget_slogan": "Buy now. Pay smarter.",
             "opy_widget_info": "You will be redirected to {methodName}'s website to complete your order when you click \"Continue with {methodName}\"",
+            "opy_invalid_cart_error": "Cart price is different to {methodName} plan amount.",
             "orbital_continue_action": "Place Order",
             "orbital_description_text": "Pay using your ChasePay Account",
             "payment_cancelled": "Payment was cancelled",
