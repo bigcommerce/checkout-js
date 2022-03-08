@@ -1,4 +1,5 @@
-import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { CustomError, PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { noop } from 'lodash';
 import React, { useCallback, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
@@ -15,15 +16,24 @@ const OpyPaymentMethod: FunctionComponent<OpyPaymentMethodProps & WithLanguagePr
     method,
     language,
     isInitializing = false,
+    onUnhandledError = noop,
     ...rest
 }) => {
     const containerId = 'learnMoreButton';
+    const methodName = getPaymentMethodName(language)(method);
     const initializeOpyPayment = useCallback((options: PaymentInitializeOptions) => initializePayment({
         ...options,
         opy: {
             containerId,
         },
     }), [initializePayment]);
+    const onUnhandledOpyError = useCallback((error: CustomError) => {
+        if (error.type === 'opy_error' && error.subtype === 'invalid_cart') {
+            error.message = language.translate('payment.opy_invalid_cart_error', { methodName });
+        }
+
+        onUnhandledError(error);
+    }, [language, methodName, onUnhandledError]);
 
     return (
       <LoadingOverlay hideContentWhenLoading isLoading={ isInitializing }>
@@ -37,11 +47,12 @@ const OpyPaymentMethod: FunctionComponent<OpyPaymentMethodProps & WithLanguagePr
                 hideWidget={ isInitializing }
                 initializePayment={ initializeOpyPayment }
                 method={ method }
+                onUnhandledError={ onUnhandledOpyError }
             />
         </div>
         <p>
             <TranslatedString
-                data={ { methodName: getPaymentMethodName(language)(method) } }
+                data={ { methodName } }
                 id="payment.opy_widget_info"
             />
         </p>
