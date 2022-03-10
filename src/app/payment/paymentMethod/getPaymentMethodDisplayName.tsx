@@ -15,7 +15,7 @@ export default function getPaymentMethodDisplayName(
             return payPalCreditProductBrandName && payPalCreditProductBrandName.credit ? payPalCreditProductBrandName.credit : 'Pay Later';
         }
 
-        if (isCreditCard && method.id === PaymentMethodId.AdyenV2) {
+        if (isCreditCard && method.id === PaymentMethodId.AdyenV2 || method.id === PaymentMethodId.AdyenV3) {
             return language.translate('payment.adyen_credit_debit_card_text');
         }
 
