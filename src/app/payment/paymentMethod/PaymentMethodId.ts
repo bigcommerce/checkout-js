@@ -52,6 +52,7 @@ enum PaymentMethodId {
     StripeV3 = 'stripev3',
     StripeUPE = 'stripeupe',
     Zip = 'zip',
+    Recurly = 'recurly',
 }
 
 export default PaymentMethodId;

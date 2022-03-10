@@ -29,8 +29,8 @@
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
         "resolveJsonModule": true,
-        "noUnusedParameters": true,
-        "noUnusedLocals": true
+        "noUnusedParameters": false,
+        "noUnusedLocals": false
     },
     "files": [
         "types/card-validator.d.ts",

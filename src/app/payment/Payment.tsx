@@ -8,6 +8,9 @@ import { withCheckout, CheckoutContextProps } from '../checkout';
 import { isCartChangedError, isRequestError, ErrorModal, ErrorModalOnCloseProps } from '../common/error';
 import { EMPTY_ARRAY } from '../common/utility';
 import { withLanguage, WithLanguageProps } from '../locale';
+import getRecurlyPaymentMethod from '../recurly/getRecurlyPaymentMethod';
+import withRecurly from '../recurly/withRecurly';
+import { RecurlyContextProps } from '../recurly/RecurlyContext';
 import { TermsConditionsType } from '../termsConditions';
 import { LoadingOverlay } from '../ui/loading';
 
@@ -61,11 +64,11 @@ interface PaymentState {
     selectedMethod?: PaymentMethod;
     shouldDisableSubmit: { [key: string]: boolean };
     shouldHidePaymentSubmitButton: { [key: string]: boolean };
-    submitFunctions: { [key: string]: ((values: PaymentFormValues) => void) | null };
+    submitFunctions: { [key: string]: ((values: PaymentFormValues, onSubmit?: () => void) => void) | null };
     validationSchemas: { [key: string]: ObjectSchema<Partial<PaymentFormValues>> | null };
 }
 
-class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLanguageProps, PaymentState> {
+class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLanguageProps & RecurlyContextProps, PaymentState> {
     state: PaymentState = {
         didExceedSpamLimit: false,
         isReady: false,
@@ -135,6 +138,8 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             isUsingMultiShipping,
             methods,
             applyStoreCredit,
+            isLoadingRecurly,
+            hasSubscription,
             ...rest
         } = this.props;
 
@@ -155,7 +160,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         return (
             <PaymentContext.Provider value={ this.getContextValue() }>
                 <LoadingOverlay
-                    isLoading={ !isReady }
+                    isLoading={ !isReady || isLoadingRecurly }
                     unmountContentWhenLoading
                 >
                     { !isEmpty(methods) && defaultMethod && <PaymentForm
@@ -381,6 +386,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             selectedMethod = defaultMethod,
             submitFunctions,
         } = this.state;
+        console.log('submitting');
 
         const customSubmit = selectedMethod && submitFunctions[
             getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway)
@@ -565,4 +571,18 @@ export function mapToPaymentProps({
     };
 }
 
-export default withLanguage(withCheckout(mapToPaymentProps)(Payment));
+export default withRecurly(({hasSubscription, isLoadingRecurly}, props) => {
+    const methods = hasSubscription ? [getRecurlyPaymentMethod()] : null;
+    const defaultMethod = methods ? methods[0] : null;
+    if (hasSubscription) {
+        return {
+            methods,
+            defaultMethod,
+            hasSubscription,
+            isLoadingRecurly,
+        };
+    } else {
+        return {hasSubscription, isLoadingRecurly};
+    }
+
+})(withLanguage(withCheckout(mapToPaymentProps)(Payment)));

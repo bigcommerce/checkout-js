@@ -98,6 +98,7 @@ const StripePaymentMethod: FunctionComponent<StripePaymentMethodProps & WithInje
     }, [paymentMethodType, getIndividualCardElementOptions, useIndividualCardFields]);
 
     const initializeStripePayment: HostedWidgetPaymentMethodProps['initializePayment'] = useCallback(async (options: PaymentInitializeOptions, selectedInstrument) => {
+
         return initializePayment({
             ...options,
             stripev3: { containerId,

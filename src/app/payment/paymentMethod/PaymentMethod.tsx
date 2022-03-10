@@ -35,6 +35,7 @@ import PaypalCommercePaymentMethod from './PaypalCommercePaymentMethod';
 import PaypalExpressPaymentMethod from './PaypalExpressPaymentMethod';
 import PaypalPaymentsProPaymentMethod from './PaypalPaymentsProPaymentMethod';
 import PPSDKPaymentMethod from './PPSDKPaymentMethod';
+import RecurlyPaymentMethod from './RecurlyPaymentMethod';
 import SquarePaymentMethod from './SquarePaymentMethod';
 import StripePaymentMethod from './StripePaymentMethod';
 import StripeUPEPaymentMethod from './StripeUPEPaymentMethod';
@@ -68,7 +69,6 @@ export interface WithCheckoutPaymentMethodProps {
 // tslint:disable:cyclomatic-complexity
 const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckoutPaymentMethodProps> = props => {
     const { method } = props;
-
     if (method.type === PaymentMethodProviderType.PPSDK) {
         return <PPSDKPaymentMethod { ...props } />;
     }
@@ -91,6 +91,9 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
 
     if (method.gateway === PaymentMethodId.StripeUPE) {
         return <StripeUPEPaymentMethod { ...props } />;
+    }
+    if (method.gateway === PaymentMethodId.Recurly) {
+        return <RecurlyPaymentMethod { ...props } />;
     }
 
     if (method.id === PaymentMethodId.Amazon) {

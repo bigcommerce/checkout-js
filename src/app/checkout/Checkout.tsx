@@ -11,6 +11,8 @@ import { CheckoutSuggestion, CustomerInfo, CustomerSignOutEvent, CustomerViewTyp
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { PromotionBannerList } from '../promotion';
+import withRecurly from '../recurly/withRecurly';
+import { RecurlyContextProps } from '../recurly/RecurlyContext';
 import { hasSelectedShippingOptions, isUsingMultiShipping, StaticConsignment } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
 import { LazyContainer, LoadingNotification, LoadingOverlay } from '../ui/loading';
@@ -97,7 +99,7 @@ export interface WithCheckoutProps {
     subscribeToConsignments(subscriber: (state: CheckoutSelectors) => void): () => void;
 }
 
-class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguageProps, CheckoutState> {
+class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguageProps & RecurlyContextProps, CheckoutState> {
     stepTracker: StepTracker | undefined;
 
     state: CheckoutState = {
@@ -275,10 +277,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     }
 
     private renderCustomerStep(step: CheckoutStepStatus): ReactNode {
-        const { isGuestEnabled } = this.props;
-
+        const { isGuestEnabled, hasSubscription } = this.props;
         const {
-            customerViewType = isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
+            customerViewType = hasSubscription ? CustomerViewType.Subscription : isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
         } = this.state;
 
         return (
@@ -628,4 +629,4 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     };
 }
 
-export default withLanguage(withCheckout(mapToCheckoutProps)(Checkout));
+export default withRecurly(props => props)(withLanguage(withCheckout(mapToCheckoutProps)(Checkout)));

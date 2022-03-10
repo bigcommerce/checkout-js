@@ -5,6 +5,7 @@ enum CustomerViewType {
     EnforcedLogin = 'enforced_login',
     CancellableEnforcedLogin = 'cancellable_enforced_login',
     CreateAccount = 'create_account',
+    Subscription = 'subscription',
 }
 
 export default CustomerViewType;

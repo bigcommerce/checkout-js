@@ -52,7 +52,8 @@
                     "**/order/OrderSummary.tsx",
                     "**/order/OrderSummaryDrawer.tsx",
                     "**/payment/Payment.tsx",
-                    "**/shipping/Shipping.tsx"
+                    "**/shipping/Shipping.tsx",
+                  "**/recurly/*"
                 ]
             }
         ],

@@ -49,7 +49,7 @@ function appConfig(options, argv) {
                     ],
                 },
                 mode,
-                devtool: isProduction ? 'source-map' : 'eval-source-map',
+                // devtool: isProduction ? 'source-map' : 'eval-source-map',
                 resolve: {
                     extensions: ['.ts', '.tsx', '.js'],
                     // It seems some packages, i.e.: Formik, have incorrect
@@ -133,6 +133,12 @@ function appConfig(options, argv) {
                     }),
                     !isProduction && new DefinePlugin({
                         "process.env.RECURLY_PUBLIC_KEY": JSON.stringify(process.env.RECURLY_PUBLIC_KEY)
+                    }),
+                    !isProduction && new DefinePlugin({
+                        "process.env.FRONTEND_API_ENDPOINT": JSON.stringify(process.env.FRONTEND_API_ENDPOINT)
+                    }),
+                    !isProduction && new DefinePlugin({
+                        "process.env.RECURLY_BC_APP_ID": JSON.stringify(process.env.RECURLY_BC_APP_ID)
                     })
                 ].filter(Boolean),
                 module: {
@@ -190,9 +196,10 @@ function appConfig(options, argv) {
                         {
                             test: /\.scss$/,
                             use: [
-                                isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
-                                'css-loader',
-                                'sass-loader',
+                                "null-loader"
+                                // isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+                                // 'css-loader',
+                                // 'sass-loader',
                             ],
                             sideEffects: true,
                         },

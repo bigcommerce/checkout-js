@@ -7,6 +7,7 @@ import '../../scss/App.scss';
 import { createErrorLogger, ErrorBoundary, ErrorLogger } from '../common/error';
 import { createEmbeddedCheckoutStylesheet, createEmbeddedCheckoutSupport } from '../embeddedCheckout';
 import { getLanguageService, LocaleProvider } from '../locale';
+import RecurlyProvider from '../recurly/RecurlyProvider';
 
 import Checkout from './Checkout';
 import CheckoutProvider from './CheckoutProvider';
@@ -46,10 +47,12 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
     }
 
     render() {
+
         return (
             <ErrorBoundary logger={ this.errorLogger }>
                 <LocaleProvider checkoutService={ this.checkoutService }>
                     <CheckoutProvider checkoutService={ this.checkoutService }>
+                        <RecurlyProvider>
                         <Checkout
                             { ...this.props }
                             createEmbeddedMessenger={ createEmbeddedCheckoutMessenger }
@@ -58,6 +61,7 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
                             embeddedSupport={ this.embeddedSupport }
                             errorLogger={ this.errorLogger }
                         />
+                        </RecurlyProvider>
                     </CheckoutProvider>
                 </LocaleProvider>
             </ErrorBoundary>
