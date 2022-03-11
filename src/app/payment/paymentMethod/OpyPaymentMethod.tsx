@@ -36,27 +36,29 @@ const OpyPaymentMethod: FunctionComponent<OpyPaymentMethodProps & WithLanguagePr
     }, [language, methodName, onUnhandledError]);
 
     return (
-      <LoadingOverlay hideContentWhenLoading isLoading={ isInitializing }>
-        <strong>
-            <TranslatedString id="payment.opy_widget_slogan" />
-        </strong>
-        <div style={ { display: 'inline-block', marginLeft: '0.5rem' } }>
-            <HostedWidgetPaymentMethod
-                { ...rest }
-                containerId={ containerId }
-                hideWidget={ isInitializing }
-                initializePayment={ initializeOpyPayment }
-                method={ method }
-                onUnhandledError={ onUnhandledOpyError }
-            />
-        </div>
-        <p>
-            <TranslatedString
-                data={ { methodName } }
-                id="payment.opy_widget_info"
-            />
-        </p>
-      </LoadingOverlay>
+        <LoadingOverlay hideContentWhenLoading isLoading={ isInitializing }>
+            <div style={ { overflow: 'auto' } }>
+                <strong>
+                    <TranslatedString id="payment.opy_widget_slogan" />
+                </strong>
+                <div style={ { display: 'inline-block', marginLeft: '0.5rem' } }>
+                    <HostedWidgetPaymentMethod
+                        { ...rest }
+                        containerId={ containerId }
+                        hideWidget={ isInitializing }
+                        initializePayment={ initializeOpyPayment }
+                        method={ method }
+                        onUnhandledError={ onUnhandledOpyError }
+                    />
+                </div>
+                <p>
+                    <TranslatedString
+                        data={ { methodName } }
+                        id="payment.opy_widget_info"
+                    />
+                </p>
+            </div>
+        </LoadingOverlay>
     );
 };
 
