@@ -67,8 +67,11 @@ interface PaymentState {
     submitFunctions: { [key: string]: ((values: PaymentFormValues, onSubmit?: () => void) => void) | null };
     validationSchemas: { [key: string]: ObjectSchema<Partial<PaymentFormValues>> | null };
 }
+interface WithRecurlyProps {
+    hasSubscription: boolean; isLoadingRecurly: boolean; methods?: PaymentMethod[]; defaultMethod?: PaymentMethod;
+}
 
-class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLanguageProps & RecurlyContextProps, PaymentState> {
+class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLanguageProps & WithRecurlyProps, PaymentState> {
     state: PaymentState = {
         didExceedSpamLimit: false,
         isReady: false,
@@ -393,7 +396,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         ];
 
         if (customSubmit) {
-            return customSubmit(values);
+            return customSubmit(values, onSubmit);
         }
 
         try {
@@ -571,10 +574,10 @@ export function mapToPaymentProps({
     };
 }
 
-export default withRecurly(({hasSubscription, isLoadingRecurly}, props) => {
-    const methods = hasSubscription ? [getRecurlyPaymentMethod()] : null;
-    const defaultMethod = methods ? methods[0] : null;
-    if (hasSubscription) {
+function mapToRecurlyProps({hasSubscription, isLoadingRecurly}: RecurlyContextProps): WithRecurlyProps {
+    const methods = hasSubscription ? [getRecurlyPaymentMethod()] : undefined;
+    const defaultMethod = methods ? methods[0] : undefined;
+    if (methods && defaultMethod) {
         return {
             methods,
             defaultMethod,
@@ -584,5 +587,5 @@ export default withRecurly(({hasSubscription, isLoadingRecurly}, props) => {
     } else {
         return {hasSubscription, isLoadingRecurly};
     }
-
-})(withLanguage(withCheckout(mapToPaymentProps)(Payment)));
+}
+export default withRecurly(mapToRecurlyProps)(withLanguage(withCheckout(mapToPaymentProps)(Payment)));
