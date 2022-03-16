@@ -20,7 +20,7 @@ export default memoize(function getFormFieldsValidationSchema({
                 schema[name] = string();
 
                 if (required) {
-                    schema[name] = schema[name].required(translate('required', { label, name }));
+                    schema[name] = schema[name].trim().required(translate('required', { label, name }));
                 }
 
                 schema[name] = schema[name].matches(
