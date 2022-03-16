@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.200.1](https://github.com/bigcommerce/checkout-js/compare/v1.200.0...v1.200.1) (2022-03-16)
+
+
+### Bug Fixes
+
+* **shipping:** CHECKOUT-6370 Trim value before validating ([#826](https://github.com/bigcommerce/checkout-js/issues/826)) ([72a28cb](https://github.com/bigcommerce/checkout-js/commit/72a28cbfbc296ba71c79dea3762caef4a1a7faa2))
+
 ## [1.200.0](https://github.com/bigcommerce/checkout-js/compare/v1.199.0...v1.200.0) (2022-03-11)
 
 
