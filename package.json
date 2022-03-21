@@ -19,7 +19,8 @@
     "release:version": "git add dist && standard-version -a",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "test:payment": "cp tests/_support/index.html ./build/index.html && playwright test && rm ./build/index.html"
   },
   "repository": {
     "type": "git",
@@ -81,6 +82,7 @@
     "@babel/preset-env": "^7.5.5",
     "@bigcommerce/eslint-config": "^1.0.0",
     "@bigcommerce/tslint-config": "^4.0.1",
+    "@playwright/test": "^1.20.0",
     "@types/enzyme": "^3.10.3",
     "@types/jest": "^24.0.17",
     "@types/node": "^12.6.9",
