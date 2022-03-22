@@ -8,6 +8,7 @@ export interface RecurlySubmission {
     cartId: string;
     store: string;
     orderId?: number;
+    threeDSecureToken?: any;
 }
 
 export async function submitOrder(data: RecurlySubmission) {
@@ -19,8 +20,11 @@ export async function submitOrder(data: RecurlySubmission) {
         body: JSON.stringify(data),
     });
     const result = await response.json();
+    if (response.status === 422) {
+        throw result;
+    }
     if (response.status !== 200) {
-        throw new Error(result.message);
+        throw result;
     }
 
     return result;

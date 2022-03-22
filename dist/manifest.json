@@ -1,45 +1,33 @@
 {
   "version": 2,
-  "appVersion": "1.197.1",
+  "appVersion": "1.198.0",
   "dynamicChunks": {
-    "css": [
-      "billing-e15e5dfa.css",
-      "cart-summary~cart-summary-drawer-ad2d875f.css",
-      "customer-1f3cba72.css",
-      "payment-8cbc3fde.css",
-      "shipping-44002772.css"
-    ],
     "js": [
-      "billing-efe30f5d.js",
-      "cart-summary-drawer-c7c0d0d6.js",
-      "cart-summary-fe6cd8cf.js",
-      "cart-summary~cart-summary-drawer-84bb1fce.js",
-      "customer-979882a5.js",
-      "order-summary-drawer-0f5ca8c2.js",
-      "order-summary-61a5c1fb.js",
-      "payment-80585082.js",
-      "shipping-ed1277e5.js",
-      "vendors~billing~customer~payment~shipping-b50839d2.js",
-      "vendors~billing~customer~shipping-85e465cd.js",
-      "vendors~billing~payment~shipping-1c62517c.js",
-      "vendors~billing~shipping-e0b88af1.js"
-    ],
-    "svg": [
-      "static/card-abef8595.svg"
-    ],
-    "png": [
-      "static/powered_by_google_on_white-f127e368.png"
+      "billing-7cefe297.js",
+      "cart-summary-drawer-fc9ed18f.js",
+      "cart-summary-56e1330c.js",
+      "customer-dd026919.js",
+      "order-summary-drawer-8cd493d4.js",
+      "order-summary-58da2ab6.js",
+      "payment-df96dc00.js",
+      "shipping-360a2242.js",
+      "translations-de-2ae8ea3d.js",
+      "translations-es-mx-a144d81a.js",
+      "translations-es-04f64c26.js",
+      "translations-fr-d2013f76.js",
+      "translations-it-8d0da7d8.js",
+      "translations-nl-daf70f3e.js",
+      "translations-pt-br-f9dd08ed.js",
+      "translations-pt-4228df27.js",
+      "translations-sv-f296438f.js"
     ]
   },
   "js": [
-    "runtime-6bb387eb.js",
-    "polyfill~checkout-5fac0f6c.js",
-    "transients~checkout-fbb92d00.js",
-    "sentry~checkout-131c1fbe.js",
-    "vendors~checkout-7188e2a7.js",
-    "checkout-02d59fa1.js"
-  ],
-  "css": [
-    "checkout-23ae2c73.css"
+    "runtime-fcd8e1e0.js",
+    "polyfill~checkout-20f0a226.js",
+    "transients~checkout-55b73a8b.js",
+    "sentry~checkout-c19875d3.js",
+    "vendors~checkout-080861c5.js",
+    "checkout-4dd7c422.js"
   ]
 }
