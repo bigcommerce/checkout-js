@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.200.3](https://github.com/bigcommerce/checkout-js/compare/v1.200.2...v1.200.3) (2022-03-22)
+
+
+### Bug Fixes
+
+* **payment:** INT-5645 Openpay: Localized message for invalid cart error ([#825](https://github.com/bigcommerce/checkout-js/issues/825)) ([c053194](https://github.com/bigcommerce/checkout-js/commit/c053194e5600253d0f2b6503b7ed31960c94b7e9))
+
 ### [1.200.2](https://github.com/bigcommerce/checkout-js/compare/v1.200.1...v1.200.2) (2022-03-21)
 
 
