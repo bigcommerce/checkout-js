@@ -6,6 +6,7 @@ test.use({ headless: false } );
 
 const checkoutReady = async (page: Page): Promise<void> => {
   await page.route('**/checkout/payment/hosted-field?**', route => route.fulfill( {status: 200, path: './tests/_support/hostedField.html' } ));
+  await page.route('/', route => route.fulfill( {status: 200, path: './tests/_support/index.html' } ));
 
   // loading
   await page.route('**/api/storefront/checkout/**', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify(checkout) } ));
@@ -15,8 +16,10 @@ const checkoutReady = async (page: Page): Promise<void> => {
 
   // submit
   await page.route('**/internalapi/v1/checkout/order', route => route.fulfill( {status: 200, headers: {token: 'JWT eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDc5NTM3MTcsIm5iZiI6MTY0Nzk1MDExNywiaXNzIjoicGF5bWVudHMuYmlnY29tbWVyY2UuY29tIiwic3ViIjoxMDAwMDQ1NSwianRpIjoiY2VmYjdlOTUtMGQ2MS00MWQ1LThhYzYtNGNiNmZmNzUwZTlmIiwiaWF0IjoxNjQ3OTUwMTE3LCJkYXRhIjp7InN0b3JlX2lkIjoiMTAwMDA0NTUiLCJvcmRlcl9pZCI6IjExMSIsImFtb3VudCI6MjEwMDAsImN1cnJlbmN5IjoiVVNEIiwic3RvcmVfdXJsIjoiaHR0cHM6Ly9teS1kZXYtc3RvcmUtNzQ1NTE2NTI4LnN0b3JlLmJjZGV2IiwiZm9ybV9pZCI6IjRhYTUwMTVlLWI5NDktNGNmYS1iYzQ3LTBkYzdlNzBjOTg4MyJ9fQ.t7FkZkrZq_E-6TdIInuWAtheen_S1TmgddfgHr0DFSw'}, contentType: 'application/json', body: JSON.stringify(submitOrder) } ));
-
   await page.route('/api/public/v1/orders/payments', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify(submitPayment) } ));
+
+  // order confirmation
+  await page.route('**/order-confirmation', route => route.fulfill( {status: 200, path: './tests/_support/orderConfirmation.html' } ));
 
   await page.goto('http://localhost:8080/');
 };
@@ -39,7 +42,10 @@ test.describe('Checkout', () => {
     // await page.screenshot({ path: 'test_fullpage.png', fullPage: true });
     // await page.locator('#checkout-payment-continue').screenshot({ path: 'test_button.png' });
 
-    await page.pause();
+    // await page.pause();
+
+    const buttonText = await page.textContent('#checkout-payment-continue');
+    expect(buttonText).toBe('Place Order');
 
     // Click [aria-label="Credit Card Number"]
     await page.frameLocator('#bigpaypay-ccNumber iframe').locator('[aria-label="Credit Card Number"]').click();
@@ -61,9 +67,6 @@ test.describe('Checkout', () => {
     await page.locator('text=Place Order').click();
 
     await page.pause();
-
-    const buttonText = await page.textContent('#checkout-payment-continue');
-    expect(buttonText).toBe('Place Order');
 
   });
 });
