@@ -2,26 +2,30 @@
 
 exports[`when using Opy payment matches snapshot with rendered output 1`] = `
 <div>
-  <strong>
-    Buy now. Pay smarter.
-  </strong>
   <div
-    style="display:inline-block;margin-left:0.5rem"
+    style="overflow:auto"
   >
-    <div>
-      <div
-        class="paymentMethod--hosted"
-      >
+    <strong>
+      Buy now. Pay smarter.
+    </strong>
+    <div
+      style="display:inline-block;margin-left:0.5rem"
+    >
+      <div>
         <div
-          class="widget widget--opy payment-widget"
-          id="learnMoreButton"
-          tabindex="-1"
-        />
+          class="paymentMethod--hosted"
+        >
+          <div
+            class="widget widget--opy payment-widget"
+            id="learnMoreButton"
+            tabindex="-1"
+          />
+        </div>
       </div>
     </div>
+    <p>
+      You will be redirected to Opy's website to complete your order when you click "Continue with Opy"
+    </p>
   </div>
-  <p>
-    You will be redirected to Opy's website to complete your order when you click "Continue with Opy"
-  </p>
 </div>
 `;
