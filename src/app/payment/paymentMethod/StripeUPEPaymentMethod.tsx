@@ -2,6 +2,7 @@ import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import React, { useCallback, FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
+import { getAppliedStyles } from '../../common/dom';
 import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps } from '../hostedCreditCard';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
@@ -11,27 +12,70 @@ export type StripePaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'con
 interface WithCheckoutStripePaymentMethodProps {
     storeUrl: string;
 }
-export enum StripeElementType {
-    card = 'card',
-}
 const StripeUPEPaymentMethod: FunctionComponent<StripePaymentMethodProps & WithInjectedHostedCreditCardFieldsetProps & WithCheckoutStripePaymentMethodProps> = ({
     initializePayment,
-    getHostedFormOptions,
-    getHostedStoredCardValidationFieldset,
-    hostedStoredCardValidationSchema,
     method,
     storeUrl,
     ...rest
     }) => {
-    const paymentMethodType = method.id as StripeElementType;
-    const containerId = `stripe-${paymentMethodType}-component-field`;
+    const containerId = `stripe-${method.id}-component-field`;
 
     const initializeStripePayment: HostedWidgetPaymentMethodProps['initializePayment'] = useCallback(async (options: PaymentInitializeOptions) => {
+        const formInput = getStylesFromElement(`${containerId}--input`, ['color', 'background-color', 'border-color', 'box-shadow']);
+        const formLabel = getStylesFromElement(`${containerId}--label`, ['color']);
+        const formError = getStylesFromElement(`${containerId}--error`, ['color']);
+
         return initializePayment({
             ...options,
-            stripeupe: { containerId },
+            stripeupe: {
+                containerId,
+                style: {
+                    labelText: formLabel.color,
+                    fieldText: formInput.color,
+                    fieldPlaceholderText: formInput.color,
+                    fieldErrorText: formError.color,
+                    fieldBackground: formInput['background-color'],
+                    fieldInnerShadow: formInput['box-shadow'],
+                    fieldBorder: formInput['border-color'],
+                },
+            },
         });
     }, [initializePayment, containerId]);
+
+    const getStylesFromElement = (
+        id: string,
+        properties: string[]) => {
+        const parentContainer = document.getElementById(id);
+
+        if (!parentContainer) {
+            throw new Error('Unable to retrieve input styles as the provided container ID is not valid.');
+        }
+
+        return getAppliedStyles(parentContainer, properties);
+    };
+
+    const renderCustomPaymentForm = () => {
+        return (
+            <div
+                className={ 'optimizedCheckout-form-input' }
+                id={ `${containerId}--input` }
+                placeholder="1111"
+            >
+                <div
+                    className={ 'form-field--error' }
+                >
+                    <div
+                        className={ 'optimizedCheckout-form-label' }
+                        id={ `${containerId}--error` }
+                    />
+                </div>
+                <div
+                    className={ 'optimizedCheckout-form-label' }
+                    id={ `${containerId}--label` }
+                />
+            </div>
+        );
+    };
 
     return <>
         <HostedWidgetPaymentMethod
@@ -40,6 +84,8 @@ const StripeUPEPaymentMethod: FunctionComponent<StripePaymentMethodProps & WithI
             hideContentWhenSignedOut
             initializePayment={ initializeStripePayment }
             method={ method }
+            renderCustomPaymentForm={ renderCustomPaymentForm }
+            shouldRenderCustomInstrument={ true }
         />
     </>;
 };
