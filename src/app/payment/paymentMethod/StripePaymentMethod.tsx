@@ -50,18 +50,38 @@ const StripePaymentMethod: FunctionComponent<StripePaymentMethodProps & WithInje
     const stripeOptions: StripeOptions = {
         [StripeElementType.card]: {
             classes,
+            style: {
+                base: {
+                    color: '#FFFFFF',
+                },
+            },
         },
         [StripeElementType.cardCvc]: {
             classes,
             placeholder: '',
+            style: {
+                base: {
+                    color: '#FFFFFF',
+                },
+            },
         },
         [StripeElementType.cardExpiry]: {
             classes,
+            style: {
+                base: {
+                    color: '#FFFFFF',
+                },
+            },
         },
         [StripeElementType.cardNumber]: {
             classes,
             showIcon: true,
             placeholder: '',
+            style: {
+                base: {
+                    color: '#FFFFFF',
+                },
+            },
         },
         [StripeElementType.iban]: {
             classes,
