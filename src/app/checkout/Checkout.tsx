@@ -571,16 +571,17 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     };
 
     private handleSignOut: (event: CustomerSignOutEvent) => void = ({ isCartEmpty }) => {
-        const { loginUrl, isGuestEnabled } = this.props;
+        const { loginUrl, isGuestEnabled, hasSubscription } = this.props;
 
         if (this.embeddedMessenger) {
             this.embeddedMessenger.postSignedOut();
         }
 
-        if (isGuestEnabled) {
+        if (hasSubscription) {
+            this.setCustomerViewType(CustomerViewType.Subscription);
+        } else if (isGuestEnabled) {
             this.setCustomerViewType(CustomerViewType.Guest);
         }
-
         if (isCartEmpty) {
             this.setState({ isCartEmpty: true });
 
