@@ -90,6 +90,8 @@ const RecurlyPaymentMethod: FunctionComponent<WithCheckoutRecurlyCheckoutProps &
             country,
             stateOrProvince,
             postalCode,
+            city,
+            phone,
         } = checkout?.billingAddress || {};
         if (firstName && lastName && recurlyValidationState.number.valid && recurlyValidationState.expiry.valid && recurlyValidationState.cvv.valid) {
             const customerInformation = {
@@ -100,6 +102,8 @@ const RecurlyPaymentMethod: FunctionComponent<WithCheckoutRecurlyCheckoutProps &
                 postal_code: postalCode,
                 first_name: firstName,
                 last_name: lastName,
+                city,
+                phone,
             };
             (token ? resubmitRecurlyOrder(customerInformation, token) : submitRecurlyOrder(recurlyElements, customerInformation)).then(() => {
                 // success
