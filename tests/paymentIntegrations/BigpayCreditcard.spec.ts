@@ -1,72 +1,92 @@
-import { expect, test , Page } from '@playwright/test';
+import { chromium, expect, Page, test } from '@playwright/test';
+import { Polly } from '@pollyjs/core';
+import FSPersister from '@pollyjs/persister-fs';
+import { PlaywrightAdapter } from 'polly-adapter-playwright';
 
-import { checkout, checkoutConfig, formFields, order, payments, submitOrder, submitPayment } from './api.mock';
+// dirty but sweet hack
+// from https://stackoverflow.com/questions/31673587/error-unable-to-verify-the-first-certificate-in-nodejs
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-test.use({ headless: false } );
+const path = require('path');
 
-const checkoutReady = async (page: Page): Promise<void> => {
-  await page.route('**/checkout/payment/hosted-field?**', route => route.fulfill( {status: 200, path: './tests/_support/hostedField.html' } ));
-  await page.route('/', route => route.fulfill( {status: 200, path: './tests/_support/index.html' } ));
-
-  // loading
-  await page.route('**/api/storefront/checkout/**', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify(checkout) } ));
-  await page.route('**/api/storefront/form-fields', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify(formFields) } ));
-  await page.route('**/api/storefront/checkout-settings', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify(checkoutConfig) } ));
-  await page.route('**/api/storefront/orders/**', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify(order) } ));
-
-  // submit
-  await page.route('**/internalapi/v1/checkout/order', route => route.fulfill( {status: 200, headers: {token: 'JWT eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE2NDc5NTM3MTcsIm5iZiI6MTY0Nzk1MDExNywiaXNzIjoicGF5bWVudHMuYmlnY29tbWVyY2UuY29tIiwic3ViIjoxMDAwMDQ1NSwianRpIjoiY2VmYjdlOTUtMGQ2MS00MWQ1LThhYzYtNGNiNmZmNzUwZTlmIiwiaWF0IjoxNjQ3OTUwMTE3LCJkYXRhIjp7InN0b3JlX2lkIjoiMTAwMDA0NTUiLCJvcmRlcl9pZCI6IjExMSIsImFtb3VudCI6MjEwMDAsImN1cnJlbmN5IjoiVVNEIiwic3RvcmVfdXJsIjoiaHR0cHM6Ly9teS1kZXYtc3RvcmUtNzQ1NTE2NTI4LnN0b3JlLmJjZGV2IiwiZm9ybV9pZCI6IjRhYTUwMTVlLWI5NDktNGNmYS1iYzQ3LTBkYzdlNzBjOTg4MyJ9fQ.t7FkZkrZq_E-6TdIInuWAtheen_S1TmgddfgHr0DFSw'}, contentType: 'application/json', body: JSON.stringify(submitOrder) } ));
-  await page.route('/api/public/v1/orders/payments', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify(submitPayment) } ));
-
-  // order confirmation
-  await page.route('**/order-confirmation', route => route.fulfill( {status: 200, path: './tests/_support/orderConfirmation.html' } ));
-
-  await page.goto('http://localhost:8080/');
-};
-
-// test.beforeAll(async ({ page }) => {
-//   // page.on('request', request => { console.log('>>', request.method(), request.url()) });
-//   // page.on('response', response => console.log('<<', response.status(), response.url() ));
-//
-// });
+test.use({
+    headless: false,
+    viewport: { width: 1000, height: 1000 },
+});
 
 test.describe('Checkout', () => {
 
-  test('Credit card payment is working', async ({ page }) => {
+    test('Credit card payment is working', async () => {
+        test.setTimeout(0);
 
-    await page.route('**/api/storefront/payments', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify(payments) } ));
+        const browser = await chromium.launch();
+        const page = await browser.newPage();
 
-    await checkoutReady(page);
+// register the playwright adapter so it's accessible by all future polly instances
+        Polly.register(PlaywrightAdapter);
+        Polly.register(FSPersister);
 
-    // await page.screenshot({ path: 'test_current_page.png' });
-    // await page.screenshot({ path: 'test_fullpage.png', fullPage: true });
-    // await page.locator('#checkout-payment-continue').screenshot({ path: 'test_button.png' });
+        const polly = new Polly('checkout', {
+            adapters: ['playwright'],
+            adapterOptions: {
+                playwright: {
+                    context: page,
+                },
+            },
+            persister: 'fs',
+        });
+        polly.configure({
+            persisterOptions: {
+                fs: {
+                    recordingsDir: path.join(__dirname, '../_har/'),
+                },
+            },
+            matchRequestsBy: {
+                headers: {
+                    exclude: ['user-agent'],
+                },
+            },
+        });
 
-    // await page.pause();
+        await page.goto('https://my-dev-store-745516528.store.bcdev/');
 
-    const buttonText = await page.textContent('#checkout-payment-continue');
-    expect(buttonText).toBe('Place Order');
+        // Click [data-test="card-86"] >> text=Add to Cart
+        await page.locator('[data-test="card-86"] >> text=Add to Cart').click();
+        // assert.equal(page.url(), 'https://my-dev-store-745516528.store.bcdev/cart.php?suggest=ae7a82e0-fd10-4df5-9dc3-f23a7f5c5aa2');
+        // Click text=Check out
+        await page.locator('text=Check out').click();
+        // assert.equal(page.url(), 'https://my-dev-store-745516528.store.bcdev/checkout');
+        // Fill input[name="email"]
+        await page.locator('input[name="email"]').fill('test@robot.com');
+        // Click [data-test="customer-continue-as-guest-button"]
+        await page.locator('[data-test="customer-continue-as-guest-button"]').click();
+        // Fill [data-test="firstNameInput-text"]
+        await page.locator('[data-test="firstNameInput-text"]').fill('BAD');
+        // Press Tab
+        await page.locator('[data-test="firstNameInput-text"]').press('Tab');
+        // Fill [data-test="lastNameInput-text"]
+        await page.locator('[data-test="lastNameInput-text"]').fill('ROBOT');
+        // Click [data-test="addressLine1Input-text"]
+        await page.locator('[data-test="addressLine1Input-text"]').click();
+        // Fill [data-test="addressLine1Input-text"]
+        await page.locator('[data-test="addressLine1Input-text"]').fill('1000 5TH Ave');
+        // Fill [data-test="cityInput-text"]
+        await page.locator('[data-test="cityInput-text"]').fill('NEW YORK');
+        // Select US
+        await page.locator('[data-test="countryCodeInput-select"]').selectOption('US');
+        // Select NY
+        await page.locator('[data-test="provinceCodeInput-select"]').selectOption('NY');
+        // Click [data-test="postCodeInput-text"]
+        await page.locator('[data-test="postCodeInput-text"]').click();
+        // Fill [data-test="postCodeInput-text"]
+        await page.locator('[data-test="postCodeInput-text"]').fill('10028');
+        // Click text=Continue
+        await page.locator('text=Continue').click();
 
-    // Click [aria-label="Credit Card Number"]
-    await page.frameLocator('#bigpaypay-ccNumber iframe').locator('[aria-label="Credit Card Number"]').click();
-    // Fill [aria-label="Credit Card Number"]
-    await page.frameLocator('#bigpaypay-ccNumber iframe').locator('[aria-label="Credit Card Number"]').fill('4111 1111 1111 1111');
-    // Press Tab
-    await page.frameLocator('#bigpaypay-ccNumber iframe').locator('[aria-label="Credit Card Number"]').press('Tab');
-    // Fill [placeholder="MM \/ YY"]
-    await page.frameLocator('#bigpaypay-ccExpiry iframe').locator('[placeholder="MM \\/ YY"]').fill('01 / 25');
-    // Press Tab
-    await page.frameLocator('#bigpaypay-ccExpiry iframe').locator('[placeholder="MM \\/ YY"]').press('Tab');
-    // Fill [aria-label="Name on Card"]
-    await page.frameLocator('#bigpaypay-ccName iframe').locator('[aria-label="Name on Card"]').fill('ROBOT');
-    // Press Tab
-    await page.frameLocator('#bigpaypay-ccName iframe').locator('[aria-label="Name on Card"]').press('Tab');
-    // Fill [aria-label="CVV"]
-    await page.frameLocator('#bigpaypay-ccCvv iframe').locator('[aria-label="CVV"]').fill('111');
-    // Click text=Place Order
-    await page.locator('text=Place Order').click();
+        await page.pause();
 
-    await page.pause();
-
-  });
+// cleanup
+        await polly.stop();
+        await page.close();
+    });
 });
