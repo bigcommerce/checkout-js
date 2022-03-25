@@ -3,8 +3,8 @@ import { Polly } from '@pollyjs/core';
 import FSPersister from '@pollyjs/persister-fs';
 import { PlaywrightAdapter } from 'polly-adapter-playwright';
 
-// dirty but sweet hack
-// from https://stackoverflow.com/questions/31673587/error-unable-to-verify-the-first-certificate-in-nodejs
+// dirty hack for root certificate issue
+// https://stackoverflow.com/questions/31673587/error-unable-to-verify-the-first-certificate-in-nodejs
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const path = require('path');
@@ -82,10 +82,34 @@ test.describe('Checkout', () => {
         await page.locator('[data-test="postCodeInput-text"]').fill('10028');
         // Click text=Continue
         await page.locator('text=Continue').click();
+        // Click text=Test Payment ProviderVisaAmexMaster
+        await page.locator('text=Test Payment ProviderVisaAmexMaster').click();
+        // Click [aria-label="Credit Card Number"]
+        await page.frameLocator('#bigpaypay-ccNumber iframe').locator('[aria-label="Credit Card Number"]').click();
+        // Fill [aria-label="Credit Card Number"]
+        await page.frameLocator('#bigpaypay-ccNumber iframe').locator('[aria-label="Credit Card Number"]').fill('4111 1111 1111 1111');
+        // Press Tab
+        await page.frameLocator('#bigpaypay-ccNumber iframe').locator('[aria-label="Credit Card Number"]').press('Tab');
+        // Fill [placeholder="MM \/ YY"]
+        await page.frameLocator('#bigpaypay-ccExpiry iframe').locator('[placeholder="MM \\/ YY"]').fill('11 / 23');
+        // Press Tab
+        await page.frameLocator('#bigpaypay-ccExpiry iframe').locator('[placeholder="MM \\/ YY"]').press('Tab');
+        // Fill [aria-label="Name on Card"]
+        await page.frameLocator('#bigpaypay-ccName iframe').locator('[aria-label="Name on Card"]').fill('BAD ROBOT');
+        // Press Tab
+        await page.frameLocator('#bigpaypay-ccName iframe').locator('[aria-label="Name on Card"]').press('Tab');
+        // Fill [aria-label="CVV"]
+        await page.frameLocator('#bigpaypay-ccCvv iframe').locator('[aria-label="CVV"]').fill('111');
+        // Click text=Place Order
+        await page.locator('text=Place Order').click();
+
+        await page.locator('.orderConfirmation').waitFor({state: 'visible'});
+
+        await expect(page.locator('.orderConfirmation')).toContainText('Your order number is');
 
         await page.pause();
 
-// cleanup
+        // cleanup
         await polly.stop();
         await page.close();
     });
