@@ -14,19 +14,23 @@ test.use({
     viewport: { width: 1000, height: 1000 },
 });
 
+// test.beforeEach(async ({ page }) => {
+// });
+
 test.describe('Checkout', () => {
 
     test('Credit card payment is working', async () => {
-        test.setTimeout(0);
 
         const browser = await chromium.launch();
         const page = await browser.newPage();
 
-// register the playwright adapter so it's accessible by all future polly instances
+    // register the playwright adapter so it's accessible by all future polly instances
         Polly.register(PlaywrightAdapter);
         Polly.register(FSPersister);
 
         const polly = new Polly('checkout', {
+            mode: 'replay',
+            logLevel: 'error',
             adapters: ['playwright'],
             adapterOptions: {
                 playwright: {
@@ -35,6 +39,13 @@ test.describe('Checkout', () => {
             },
             persister: 'fs',
         });
+        // polly.server.any().on('beforeReplay', (req, recording) => {
+        //     console.log("REPLAY!!!!!!!", recording);
+        // });
+        polly.server.any().on('request', (req) => {
+            req.url = req.url.replace('http://localhost:8080', 'https://my-dev-store-745516528.store.bcdev');
+            console.log("😃 "+req.url);
+        });
         polly.configure({
             persisterOptions: {
                 fs: {
@@ -42,19 +53,26 @@ test.describe('Checkout', () => {
                 },
             },
             matchRequestsBy: {
-                headers: {
-                    exclude: ['user-agent'],
-                },
+                headers: false,
+                url: true,
+                order: false,
+
             },
         });
 
-        await page.goto('https://my-dev-store-745516528.store.bcdev/');
+        await page.route('/', route => route.fulfill( {status: 200, path: './tests/_support/index.html' } ));
+        await page.route('**/checkout/payment/hosted-field?**', route => route.fulfill( {status: 200, path: './tests/_support/hostedField.html' } ));
+
+
+        // await page.goto('https://my-dev-store-745516528.store.bcdev/');
+        await page.goto('http://localhost:8080/');
+        // await page.pause();
 
         // Click [data-test="card-86"] >> text=Add to Cart
-        await page.locator('[data-test="card-86"] >> text=Add to Cart').click();
+        // await page.locator('[data-test="card-86"] >> text=Add to Cart').click();
         // assert.equal(page.url(), 'https://my-dev-store-745516528.store.bcdev/cart.php?suggest=ae7a82e0-fd10-4df5-9dc3-f23a7f5c5aa2');
         // Click text=Check out
-        await page.locator('text=Check out').click();
+        // await page.locator('text=Check out').click();
         // assert.equal(page.url(), 'https://my-dev-store-745516528.store.bcdev/checkout');
         // Fill input[name="email"]
         await page.locator('input[name="email"]').fill('test@robot.com');
@@ -82,8 +100,14 @@ test.describe('Checkout', () => {
         await page.locator('[data-test="postCodeInput-text"]').fill('10028');
         // Click text=Continue
         await page.locator('text=Continue').click();
+
+        await page.pause();
+
         // Click text=Test Payment ProviderVisaAmexMaster
         await page.locator('text=Test Payment ProviderVisaAmexMaster').click();
+
+
+
         // Click [aria-label="Credit Card Number"]
         await page.frameLocator('#bigpaypay-ccNumber iframe').locator('[aria-label="Credit Card Number"]').click();
         // Fill [aria-label="Credit Card Number"]
