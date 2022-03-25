@@ -24,7 +24,7 @@ test.describe('Checkout', () => {
         const browser = await chromium.launch();
         const page = await browser.newPage();
 
-    // register the playwright adapter so it's accessible by all future polly instances
+        // register the playwright adapter so it's accessible by all future polly instances
         Polly.register(PlaywrightAdapter);
         Polly.register(FSPersister);
 
@@ -43,6 +43,7 @@ test.describe('Checkout', () => {
         //     console.log("REPLAY!!!!!!!", recording);
         // });
         polly.server.any().on('request', (req) => {
+            req.url = req.url.replace('http://localhost:8080/api/public/v1/orders/payments', 'https://bigpay.service.bcdev/api/public/v1/orders/payments');
             req.url = req.url.replace('http://localhost:8080', 'https://my-dev-store-745516528.store.bcdev');
             console.log("😃 "+req.url);
         });
@@ -56,12 +57,16 @@ test.describe('Checkout', () => {
                 headers: false,
                 url: true,
                 order: false,
-
             },
+        });
+
+        polly.server.any().on('beforeResponse', (req, res) => {
+            console.log(req,res);
         });
 
         await page.route('/', route => route.fulfill( {status: 200, path: './tests/_support/index.html' } ));
         await page.route('**/checkout/payment/hosted-field?**', route => route.fulfill( {status: 200, path: './tests/_support/hostedField.html' } ));
+        await page.route('**/order-confirmation', route => route.fulfill( {status: 200, path: './tests/_support/orderConfirmation.html' } ));
 
 
         // await page.goto('https://my-dev-store-745516528.store.bcdev/');
@@ -101,7 +106,7 @@ test.describe('Checkout', () => {
         // Click text=Continue
         await page.locator('text=Continue').click();
 
-        await page.pause();
+        // await page.pause();
 
         // Click text=Test Payment ProviderVisaAmexMaster
         await page.locator('text=Test Payment ProviderVisaAmexMaster').click();
