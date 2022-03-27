@@ -23,6 +23,7 @@ export async function submitOrder(data: RecurlySubmission) {
     if (response.status === 422) {
         throw result;
     }
+
     if (response.status !== 200) {
         throw result;
     }
