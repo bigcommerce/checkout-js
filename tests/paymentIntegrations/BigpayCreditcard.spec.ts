@@ -1,4 +1,4 @@
-import { chromium, expect, Page, test } from '@playwright/test';
+import { chromium, expect, test, Page } from '@playwright/test';
 import { Polly } from '@pollyjs/core';
 import FSPersister from '@pollyjs/persister-fs';
 import { PlaywrightAdapter } from 'polly-adapter-playwright';
@@ -30,7 +30,7 @@ test.describe('Checkout', () => {
 
         const polly = new Polly('checkout', {
             mode: 'replay',
-            logLevel: 'error',
+            // logLevel: 'info',
             adapters: ['playwright'],
             adapterOptions: {
                 playwright: {
@@ -42,10 +42,31 @@ test.describe('Checkout', () => {
         // polly.server.any().on('beforeReplay', (req, recording) => {
         //     console.log("REPLAY!!!!!!!", recording);
         // });
-        polly.server.any().on('request', (req) => {
+        polly.server.any().on('request', req => {
             req.url = req.url.replace('http://localhost:8080/api/public/v1/orders/payments', 'https://bigpay.service.bcdev/api/public/v1/orders/payments');
             req.url = req.url.replace('http://localhost:8080', 'https://my-dev-store-745516528.store.bcdev');
-            console.log("😃 "+req.url);
+        });
+        polly.server.post('http://localhost:8080/api/public/v1/orders/payments').intercept((req, res) => {
+            res.status(201);
+            res.setHeaders({
+                'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Max-Age': '1728000',
+                'Cache-Control': 'max-age=0, private, must-revalidate',
+                'Content-Type': 'application/json',
+                ETag: 'W/"7b5cabf18eb298d44dcca610c3127b86"',
+                'Referrer-Policy': 'strict-origin-when-cross-origin',
+            });
+            res.json({
+                status: 'ok',
+                three_ds_result: {
+                    acs_url: null,
+                    payer_auth_request: null,
+                    merchant_data: null,
+                    callback_url: null,
+                },
+                errors: [],
+            });
         });
         polly.configure({
             persisterOptions: {
@@ -60,14 +81,13 @@ test.describe('Checkout', () => {
             },
         });
 
-        polly.server.any().on('beforeResponse', (req, res) => {
-            console.log(req,res);
-        });
+        // polly.server.any().on('beforeResponse', (req, res) => {
+        //     console.log(req, res);
+        // });
 
         await page.route('/', route => route.fulfill( {status: 200, path: './tests/_support/index.html' } ));
         await page.route('**/checkout/payment/hosted-field?**', route => route.fulfill( {status: 200, path: './tests/_support/hostedField.html' } ));
         await page.route('**/order-confirmation', route => route.fulfill( {status: 200, path: './tests/_support/orderConfirmation.html' } ));
-
 
         // await page.goto('https://my-dev-store-745516528.store.bcdev/');
         await page.goto('http://localhost:8080/');
@@ -111,8 +131,6 @@ test.describe('Checkout', () => {
         // Click text=Test Payment ProviderVisaAmexMaster
         await page.locator('text=Test Payment ProviderVisaAmexMaster').click();
 
-
-
         // Click [aria-label="Credit Card Number"]
         await page.frameLocator('#bigpaypay-ccNumber iframe').locator('[aria-label="Credit Card Number"]').click();
         // Fill [aria-label="Credit Card Number"]
@@ -130,6 +148,7 @@ test.describe('Checkout', () => {
         // Fill [aria-label="CVV"]
         await page.frameLocator('#bigpaypay-ccCvv iframe').locator('[aria-label="CVV"]').fill('111');
         // Click text=Place Order
+
         await page.locator('text=Place Order').click();
 
         await page.locator('.orderConfirmation').waitFor({state: 'visible'});
@@ -137,7 +156,6 @@ test.describe('Checkout', () => {
         await expect(page.locator('.orderConfirmation')).toContainText('Your order number is');
 
         await page.pause();
-
         // cleanup
         await polly.stop();
         await page.close();
