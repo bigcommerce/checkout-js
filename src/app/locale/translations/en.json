@@ -190,6 +190,7 @@
             "bolt_checkbox_agreement": "Save my information, create a Bolt account, and agree to Bolt’s <a href=\"{termsUrl}\" target=\"_blank\">Terms of Use</a> and <a href=\"{privacyPolicyUrl}\" target=\"_blank\">Privacy Policy</a>.",
             "bolt_name_text": "Bolt",
             "braintreevisacheckout_continue_action": "Continue with Visa Checkout",
+            "continue_with_brand": "Continue with {brandName}",
             "ccavenuemars_description_text": "Checkout with CCAvenue",
             "chasepay_continue_action": "Continue with Chase Pay",
             "chasepay_name_text": "Chase Pay",
