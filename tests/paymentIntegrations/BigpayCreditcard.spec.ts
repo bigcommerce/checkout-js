@@ -16,7 +16,7 @@ import { PlaywrightAdapter } from 'polly-adapter-playwright';
 
 test.describe('Checkout', () => {
 
-    test('Credit card payment is working', async () => {
+    test('Bigpay Test Payment Provider is working', async () => {
 
         const browser = await chromium.launch();
         const page = await browser.newPage();
@@ -26,7 +26,7 @@ test.describe('Checkout', () => {
         Polly.register(FSPersister);
         const polly = new Polly('checkout', {
             mode: 'replay',
-            // logLevel: 'info',
+            logLevel: 'info',
             adapters: ['playwright'],
             adapterOptions: {
                 playwright: {
@@ -114,6 +114,7 @@ test.describe('Checkout', () => {
         await page.locator('text=Continue').click();
         // Click text=Test Payment ProviderVisaAmexMaster
         await page.locator('text=Test Payment ProviderVisaAmexMaster').click();
+        // await page.pause();
         // Click [aria-label="Credit Card Number"]
         await page.frameLocator('#bigpaypay-ccNumber iframe').locator('[aria-label="Credit Card Number"]').click();
         // Fill [aria-label="Credit Card Number"]
@@ -134,10 +135,11 @@ test.describe('Checkout', () => {
         await page.locator('text=Place Order').click();
         await page.locator('.orderConfirmation').waitFor({state: 'visible'});
 
-        // Assertion for this test
-        await expect(page.locator('.orderConfirmation')).toContainText('Your order number is');
+        // await page.pause();
 
-        await page.pause();
+        // Assertion for this test
+        await expect(page.locator('data-test=order-confirmation-heading')).toContainText('Thank you BAD!');
+        await expect(page.locator('data-test=order-confirmation-order-number-text')).toContainText(/Your order number is \d*/);
 
         // Clean up
         await polly.stop();
