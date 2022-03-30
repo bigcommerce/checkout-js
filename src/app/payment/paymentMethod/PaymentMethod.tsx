@@ -157,6 +157,7 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
     }
 
     if (method.id === PaymentMethodId.AdyenV2GooglePay ||
+        method.id === PaymentMethodId.AdyenV3GooglePay ||
         method.id === PaymentMethodId.AuthorizeNetGooglePay ||
         method.id === PaymentMethodId.BraintreeGooglePay ||
         method.id === PaymentMethodId.CheckoutcomGooglePay ||
