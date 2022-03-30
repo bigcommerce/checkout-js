@@ -2,6 +2,7 @@ import { CustomerInitializeOptions } from '@bigcommerce/checkout-sdk';
 import React, { useCallback, useContext, FunctionComponent } from 'react';
 
 import { navigateToOrderConfirmation } from '../../checkout';
+import { isApplePayWindow } from '../../common/utility';
 import { LocaleContext } from '../../locale';
 import CheckoutButton, { CheckoutButtonProps } from '../CheckoutButton';
 
@@ -21,6 +22,10 @@ const ApplePayButton: FunctionComponent<CheckoutButtonProps> = ({
             onPaymentAuthorize: navigateToOrderConfirmation,
         },
     }), [initialize, localeContext, onError, rest.containerId]);
+
+    if (!isApplePayWindow(window)) {
+        return null;
+    }
 
     return <CheckoutButton initialize={ initializeOptions } { ...rest } />;
 };
