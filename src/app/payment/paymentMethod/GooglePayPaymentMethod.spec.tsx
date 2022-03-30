@@ -76,6 +76,7 @@ describe('when using Google Pay payment', () => {
 
     each([
         [PaymentMethodId.AdyenV2GooglePay],
+        [PaymentMethodId.AdyenV3GooglePay],
         [PaymentMethodId.AuthorizeNetGooglePay],
         [PaymentMethodId.BraintreeGooglePay],
         [PaymentMethodId.CheckoutcomGooglePay],
