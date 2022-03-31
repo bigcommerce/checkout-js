@@ -9,7 +9,7 @@ export default function getPaymentMethodDisplayName(
         const { displayName } = method.config;
 
         const isCreditCard = displayName?.toLowerCase() === 'credit card';
-        if (method.id === PaymentMethodId.PaypalCommerceCredit) {
+        if (method.id === PaymentMethodId.PaypalCommerceCredit || method.id === PaymentMethodId.Braintree) {
             const { payPalCreditProductBrandName } = method.initializationData;
 
             return payPalCreditProductBrandName && payPalCreditProductBrandName.credit ? payPalCreditProductBrandName.credit : 'Pay Later';
