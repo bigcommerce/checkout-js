@@ -1,5 +1,4 @@
-import type { PlaywrightTestConfig } from '@playwright/test';
-import { devices } from '@playwright/test';
+import { devices, PlaywrightTestConfig } from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -24,7 +23,7 @@ const config: PlaywrightTestConfig = {
      * Maximum time expect() should wait for the condition to be met.
      * For example in `await expect(locator).toHaveText();`
      */
-    timeout: 5000,
+    timeout: 500000 * 1000,
   },
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
@@ -33,7 +32,8 @@ const config: PlaywrightTestConfig = {
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [ ['html', { outputFolder: './tests/_report' }] ],
+  // reporter: [ ['html', { outputFolder: './tests/_report' }] ],
+  reporter: 'line',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
@@ -105,6 +105,7 @@ const config: PlaywrightTestConfig = {
   //   command: 'npm run start',
   //   port: 3000,
   // },
+  globalTimeout: 60 * 60 * 1000,
+  globalSetup: require.resolve('./tests/playwright.global.setup.ts'),
 };
-
 export default config;
