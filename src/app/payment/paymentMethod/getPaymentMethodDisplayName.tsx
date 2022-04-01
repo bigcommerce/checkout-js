@@ -11,8 +11,11 @@ export default function getPaymentMethodDisplayName(
         const isCreditCard = displayName?.toLowerCase() === 'credit card';
         if (method.id === PaymentMethodId.PaypalCommerceCredit || method.id === PaymentMethodId.Braintree) {
             const { payPalCreditProductBrandName } = method.initializationData;
+            if (payPalCreditProductBrandName) {
+                return payPalCreditProductBrandName.credit || payPalCreditProductBrandName;
+            }
 
-            return payPalCreditProductBrandName && payPalCreditProductBrandName.credit ? payPalCreditProductBrandName.credit : 'Pay Later';
+            return 'Pay Later';
         }
 
         if (isCreditCard && method.id === PaymentMethodId.AdyenV2 || method.id === PaymentMethodId.AdyenV3) {
