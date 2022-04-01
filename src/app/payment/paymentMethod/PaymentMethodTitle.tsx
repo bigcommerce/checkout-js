@@ -40,8 +40,8 @@ function getPaymentMethodTitle(
                 titleText: methodName,
             },
             [PaymentMethodType.PaypalCredit]: {
-                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_pay_later.svg'),
-                titleText: '',
+                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
+                titleText: methodDisplayName,
             },
             [PaymentMethodId.PaypalCommerce]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo.svg'),
