@@ -24,7 +24,7 @@ describe('PaymentMethodTitle', () => {
     let localeContext: LocaleContextType;
 
     const LOGO_PATHS: { [key: string]: string } = {
-        'paypal-credit': '/img/payment-providers/paypal_commerce_pay_later.svg',
+        'paypal-credit': '/img/payment-providers/paypal_commerce_logo_letter.svg',
         'visa-checkout': '/img/payment-providers/visa-checkout.png',
         afterpay: '/img/payment-providers/afterpay-badge-blackonmint.png',
         amazon: '/img/payment-providers/amazon-header.png',
