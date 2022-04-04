@@ -1,5 +1,6 @@
 import { getConsignment } from './consignment.mock';
 import hasSelectedShippingOptions from './hasSelectedShippingOptions';
+import { getShippingOptionPickUpStore } from './shippingOption/shippingMethod.mock';
 
 describe('hasSelectedShippingOptions()', () => {
     it('returns false when has no consignments', () => {
@@ -24,5 +25,27 @@ describe('hasSelectedShippingOptions()', () => {
             getConsignment(),
         ]))
             .toEqual(true);
+    });
+
+    it('returns false when consignments have no shipping options', () => {
+        expect(hasSelectedShippingOptions([
+            getConsignment(),
+            {
+                ...getConsignment(),
+                availableShippingOptions: [],
+            },
+        ]))
+            .toEqual(false);
+    });
+
+    it('returns false when consignments have mismatched shipping options', () => {
+        expect(hasSelectedShippingOptions([
+            getConsignment(),
+            {
+                ...getConsignment(),
+                availableShippingOptions: [ getShippingOptionPickUpStore() ],
+            },
+        ]))
+            .toEqual(false);
     });
 });
