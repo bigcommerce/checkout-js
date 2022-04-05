@@ -146,7 +146,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
                 values={ values }
             />
 
-            <PaymentRedeemables />
+            { /*<PaymentRedeemables />*/ }
 
             { isTermsConditionsRequired && <TermsConditions
                 termsConditionsText={ termsConditionsText }
