@@ -42,7 +42,7 @@ test.describe('Replay mode sample', () => {
         await page.route('**/api/public/v1/orders/payments', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify(submitPaymentResult)} ));
 
         // 4. Playwright scripts
-        // This will bring out a Playwright inspector in a headed browser
+        // page.pause() will launch a Playwright inspector in a browser if running in headed mode.
         // await page.pause();
         // Click text=Test Payment ProviderVisaAmexMaster
         await page.locator('text=Test Payment ProviderVisaAmexMaster').click();

@@ -58,7 +58,7 @@ async function pollyInitializer(mode: MODE, option: PollyOptions): Promise<Polly
     });
 
     if (mode === 'record') {
-        // dirty hack for root certificate issue during recording HAR
+        // hack for BC dev store's root certificate issue during recording HAR
         // https://stackoverflow.com/questions/31673587/error-unable-to-verify-the-first-certificate-in-nodejs
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -131,7 +131,7 @@ async function pollyInitializer(mode: MODE, option: PollyOptions): Promise<Polly
         await page.route('**/api/storefront/checkout-settings', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify(checkoutConfig) } ));
         await page.route('**/api/storefront/orders/**', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify(order) } ));
 
-        // This is for matching HAR entries
+        // Replace URLs to match URLs in recording
         polly.server.any().on('request', req => {
             req.url = req.url.replace('http://localhost:8080', storeURL);
             console.log('😃 REPLAY:: ' + req.url);
