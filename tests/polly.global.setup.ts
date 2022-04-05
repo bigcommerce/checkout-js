@@ -4,22 +4,19 @@ import FSPersister from '@pollyjs/persister-fs';
 import path from 'path';
 import { PlaywrightAdapter } from 'polly-adapter-playwright';
 
-import { checkout, checkoutConfig, formFields, order } from './paymentIntegrations/api.mock';
+import { checkout, checkoutConfig, formFields, order } from './api.mock';
 
-interface PollyRecordOptions {
+interface PollyOptions {
     playwrightContext: Page;
     recordingName: string;
+    storeURL?: string;
 }
 
-interface PollyReplayOptions extends PollyRecordOptions {
-    storeURL: string;
-}
-
-async function recordInitializer(option: PollyRecordOptions): Promise<Polly> {
+async function recordInitializer(option: PollyOptions): Promise<Polly> {
     return await pollyInitializer('record', option);
 }
 
-async function replayInitializer(option: PollyReplayOptions): Promise<Polly> {
+async function replayInitializer(option: PollyOptions): Promise<Polly> {
     return await pollyInitializer('replay', option);
 }
 
@@ -45,6 +42,7 @@ async function pollyInitializer(mode: MODE, option: PollyOptions): Promise<Polly
         },
         persister: 'fs',
         persisterOptions: {
+            keepUnusedRequests: false,
             disableSortingHarEntries: true,
             fs: {
                 recordingsDir: path.join(__dirname, './_har/'),
@@ -64,7 +62,7 @@ async function pollyInitializer(mode: MODE, option: PollyOptions): Promise<Polly
         // https://stackoverflow.com/questions/31673587/error-unable-to-verify-the-first-certificate-in-nodejs
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-        polly.server.any().on('beforePersist', (req, recording) => {
+        polly.server.any().on('beforePersist', (_, recording) => {
             // recording.request.headers = recording.request.headers.map((header: { name: string; value: string }) => {
             //     switch (header.name) {
             //         case 'authorization':
@@ -121,7 +119,7 @@ async function pollyInitializer(mode: MODE, option: PollyOptions): Promise<Polly
         });
     }
 
-    if (mode === 'replay') {
+    if (mode === 'replay' && storeURL) {
         // Serving static files
         await page.route('/', route => route.fulfill( {status: 200, path: './tests/_support/index.html' } ));
         await page.route('**/order-confirmation', route => route.fulfill( {status: 200, path: './tests/_support/orderConfirmation.html' } ));

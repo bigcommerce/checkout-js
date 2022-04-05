@@ -1,9 +1,8 @@
 import { expect, test } from '@playwright/test';
 import { Polly } from '@pollyjs/core';
 
+import { submitPaymentResult } from '../api.mock';
 import { replayInitializer } from '../polly.global.setup';
-
-import { submitPaymentResult } from './api.mock';
 
 // Uncommmnet to continue in a headed browser
 // test.use({
@@ -11,9 +10,7 @@ import { submitPaymentResult } from './api.mock';
 //     viewport: { width: 1000, height: 1000 },
 // });
 
-// test.describe.configure({ mode: 'parallel' });
-
-test.describe('Checkout', () => {
+test.describe('Replay mode sample', () => {
 
     let polly: Polly;
 
@@ -21,7 +18,7 @@ test.describe('Checkout', () => {
         // 1. Setup PollyJS
         polly = await replayInitializer({
             playwrightContext: page,
-            recordingName: 'checkout',
+            recordingName: 'sample',
             storeURL: 'https://my-dev-store-745516528.store.bcdev',
         });
 
@@ -31,6 +28,7 @@ test.describe('Checkout', () => {
     test('Bigpay Test Payment Provider is working', async ({page}) => {
 
         // 1. Setup PollyJS
+        // Since we put it into test.beforeEach(), don't have to initialize again
         // const polly = await replayInitializer({
         //     playwrightContext: page,
         //     recordingName: 'test-recording',
@@ -38,58 +36,17 @@ test.describe('Checkout', () => {
         // });
 
         // 2. Serve additional static files with Playwright
-        await page.route('**/checkout/payment/hosted-field?**', route => route.fulfill( {status: 200, path: './tests/_support/hostedField.html' } ));
+        await page.route('**/checkout/payment/hosted-field?**', route => route.fulfill( {status: 200, path: './tests/sampleTests/_support/hostedField.html' } ));
 
         // 3. Mock API endpoints via Playwright
         await page.route('**/api/public/v1/orders/payments', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify(submitPaymentResult)} ));
 
         // 4. Playwright scripts
-        // Launch local checkout page
-        // await page.goto('http://localhost:8080/');
-        // await page.goto('https://my-dev-store-745516528.store.bcdev');
-        // // Click [data-test="card-86"] >> text=Add to Cart
-        // await page.locator('[data-test="card-86"] >> text=Add to Cart').click();
-        // // assert.equal(page.url(), 'https://my-dev-store-745516528.store.bcdev/cart.php?suggest=ae7a82e0-fd10-4df5-9dc3-f23a7f5c5aa2');
-        // // Click text=Check out
-        // await page.locator('text=Check out').click();
-        // // assert.equal(page.url(), 'https://my-dev-store-745516528.store.bcdev/checkout');
-        //
-        // // Fill input[name="email"]
-        // await page.locator('input[name="email"]').fill('test@robot.com');
-        // // Click [data-test="customer-continue-as-guest-button"]
-        // await page.locator('[data-test="customer-continue-as-guest-button"]').click();
-        // // Fill [data-test="firstNameInput-text"]
-        // await page.locator('[data-test="firstNameInput-text"]').fill('BAD');
-        // // Press Tab
-        // await page.locator('[data-test="firstNameInput-text"]').press('Tab');
-        // // Fill [data-test="lastNameInput-text"]
-        // await page.locator('[data-test="lastNameInput-text"]').fill('ROBOT');
-        // // Click [data-test="addressLine1Input-text"]
-        // await page.locator('[data-test="addressLine1Input-text"]').click();
-        // // Fill [data-test="addressLine1Input-text"]
-        // await page.locator('[data-test="addressLine1Input-text"]').fill('1000 5TH Ave');
-        // // Fill [data-test="cityInput-text"]
-        // await page.locator('[data-test="cityInput-text"]').fill('NEW YORK');
-        // // Select US
-        // await page.locator('[data-test="countryCodeInput-select"]').selectOption('US');
-        // // Select NY
-        // await page.locator('[data-test="provinceCodeInput-select"]').selectOption('NY');
-        // // Click [data-test="postCodeInput-text"]
-        // await page.locator('[data-test="postCodeInput-text"]').click();
-        // // Fill [data-test="postCodeInput-text"]
-        // await page.locator('[data-test="postCodeInput-text"]').fill('10028');
-        //
-        //
-        // // Click text=Continue
-        // await page.locator('text=Continue').click();
-
-        /*
-        *  PAYMENT STEP
-        */
+        // This will bring out a Playwright inspector in a headed browser
+        // await page.pause();
         // Click text=Test Payment ProviderVisaAmexMaster
         await page.locator('text=Test Payment ProviderVisaAmexMaster').click();
         // Click [aria-label="Credit Card Number"]
-
         await page.frameLocator('#bigpaypay-ccNumber iframe').locator('[aria-label="Credit Card Number"]').click();
         // Fill [aria-label="Credit Card Number"]
         await page.frameLocator('#bigpaypay-ccNumber iframe').locator('[aria-label="Credit Card Number"]').fill('4111 1111 1111 1111');
@@ -108,8 +65,6 @@ test.describe('Checkout', () => {
         // Click text=Place Order
         await page.locator('text=Place Order').click();
         await page.locator('.orderConfirmation').waitFor({state: 'visible'});
-
-        await page.pause();
 
         // 5. Assertions
         await expect(page.locator('data-test=order-confirmation-heading')).toContainText('Thank you');
