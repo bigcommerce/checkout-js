@@ -1,25 +1,41 @@
 import { expect, test } from '@playwright/test';
+import { Polly } from '@pollyjs/core';
 
 import { replayInitializer } from '../polly.global.setup';
 
 import { submitPaymentResult } from './api.mock';
 
 // Uncommmnet to continue in a headed browser
-test.use({
-    headless: false,
-    viewport: { width: 1000, height: 1000 },
-});
+// test.use({
+//     headless: false,
+//     viewport: { width: 1000, height: 1000 },
+// });
+
+// test.describe.configure({ mode: 'parallel' });
 
 test.describe('Checkout', () => {
+
+    let polly: Polly;
+
+    test.beforeEach(async ({ page }) => {
+        // 1. Setup PollyJS
+        polly = await replayInitializer({
+            playwrightContext: page,
+            recordingName: 'checkout',
+            storeURL: 'https://my-dev-store-745516528.store.bcdev',
+        });
+
+        await page.goto('http://localhost:8080/');
+    });
 
     test('Bigpay Test Payment Provider is working', async ({page}) => {
 
         // 1. Setup PollyJS
-        const polly = await replayInitializer({
-            playwrightContext: page,
-            recordingName: 'test-recording',
-            storeURL: 'https://my-dev-store-745516528.store.bcdev',
-        });
+        // const polly = await replayInitializer({
+        //     playwrightContext: page,
+        //     recordingName: 'test-recording',
+        //     storeURL: 'https://my-dev-store-745516528.store.bcdev',
+        // });
 
         // 2. Serve additional static files with Playwright
         await page.route('**/checkout/payment/hosted-field?**', route => route.fulfill( {status: 200, path: './tests/_support/hostedField.html' } ));
@@ -29,7 +45,7 @@ test.describe('Checkout', () => {
 
         // 4. Playwright scripts
         // Launch local checkout page
-        await page.goto('http://localhost:8080/');
+        // await page.goto('http://localhost:8080/');
         // await page.goto('https://my-dev-store-745516528.store.bcdev');
         // // Click [data-test="card-86"] >> text=Add to Cart
         // await page.locator('[data-test="card-86"] >> text=Add to Cart').click();

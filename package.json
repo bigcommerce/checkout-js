@@ -19,8 +19,7 @@
     "release:version": "git add dist && standard-version -a",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "test": "jest",
-    "test:watch": "jest --watch",
-    "test:payment": "cp tests/_support/index.html ./build/index.html && playwright test && rm ./build/index.html"
+    "test:watch": "jest --watch"
   },
   "repository": {
     "type": "git",

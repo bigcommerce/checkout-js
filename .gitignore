@@ -1,4 +1,4 @@
 node_modules
 build
 coverage
-tests/_report/*
+tests/_report/

@@ -97,7 +97,7 @@ async function pollyInitializer(mode: MODE, option: PollyOptions): Promise<Polly
             // });
 
             const removeSensitiveHeaders = (headers: []): {} => {
-                const dummyData = '😃';
+                const dummyData = '*';
                 const sensitiveHeaderNames = [
                     'authorization',
                     'cookie',
@@ -125,7 +125,7 @@ async function pollyInitializer(mode: MODE, option: PollyOptions): Promise<Polly
         // Serving static files
         await page.route('/', route => route.fulfill( {status: 200, path: './tests/_support/index.html' } ));
         await page.route('**/order-confirmation', route => route.fulfill( {status: 200, path: './tests/_support/orderConfirmation.html' } ));
-        await page.route('**/ablebrewingsystem4.1647253530.190.285.jpg?c=1', route => route.fulfill( {status: 200, path: './tests/_support/product.gif' } ));
+        await page.route('**/ablebrewingsystem4.1647253530.190.285.jpg?c=1', route => route.fulfill( {status: 200, path: './tests/_support/product.jpg' } ));
 
         // API mockups managed by checkout team
         await page.route('**/api/storefront/checkout/**', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify(checkout) } ));
