@@ -110,13 +110,8 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
                 options: adyenOptions[component],
                 threeDS2ContainerId,
                 additionalActionOptions: {
-                    containerId: additionalActionContainerId,
-                    onBeforeLoad,
-                    onComplete,
-                    onLoad,
-                },
-                threeDS2Options: {
                     widgetSize: '05',
+                    containerId: additionalActionContainerId,
                     onBeforeLoad,
                     onComplete,
                     onLoad,
