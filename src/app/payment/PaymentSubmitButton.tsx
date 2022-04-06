@@ -13,12 +13,17 @@ interface PaymentSubmitButtonTextProps {
     methodType?: string;
     methodName?: string;
     initialisationStrategyType?: string;
+    isOnlyOneMethod?: boolean;
     brandName?: string;
 }
 
 const providersWithCustomClasses = [PaymentMethodId.Bolt];
 
-const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> = memo(({ methodId, methodName, methodType, methodGateway, initialisationStrategyType, brandName }) => {
+const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> = memo(({ methodId, methodName, methodType, methodGateway, initialisationStrategyType, brandName, isOnlyOneMethod }) => {
+
+    if  (isOnlyOneMethod) {
+        return <TranslatedString id="payment.place_order_action" />;
+    }
 
     if (methodName && initialisationStrategyType === 'none') {
         return <TranslatedString data={ { methodName } } id="payment.ppsdk_continue_action" />;
@@ -89,6 +94,7 @@ export interface PaymentSubmitButtonProps {
     methodType?: string;
     isDisabled?: boolean;
     initialisationStrategyType?: string;
+    isOnlyOneMethod?: boolean;
     brandName?: string;
 }
 
@@ -106,6 +112,7 @@ const PaymentSubmitButton: FunctionComponent<PaymentSubmitButtonProps & WithChec
     methodName,
     methodType,
     initialisationStrategyType,
+    isOnlyOneMethod,
     brandName,
 }) => (
         <Button
@@ -121,6 +128,7 @@ const PaymentSubmitButton: FunctionComponent<PaymentSubmitButtonProps & WithChec
             <PaymentSubmitButtonText
                 brandName={ brandName }
                 initialisationStrategyType={ initialisationStrategyType }
+                isOnlyOneMethod={ isOnlyOneMethod }
                 methodGateway={ methodGateway }
                 methodId={ methodId }
                 methodName={ methodName }

@@ -114,6 +114,8 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
         }
     }, [selectedMethod]);
 
+    const isOnlyOneMethod = useMemo(() => methods.length === 1, [methods]);
+
     const brandName = useMemo(() => {
         if (!selectedMethod ) {
             return;
@@ -168,6 +170,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
                         brandName = { brandName }
                         initialisationStrategyType={ selectedMethod && selectedMethod.initializationStrategy?.type }
                         isDisabled={ shouldDisableSubmit }
+                        isOnlyOneMethod={ isOnlyOneMethod }
                         methodGateway={ selectedMethod && selectedMethod.gateway }
                         methodId={ selectedMethodId }
                         methodName={ selectedMethod && getPaymentMethodName(language)(selectedMethod) }
