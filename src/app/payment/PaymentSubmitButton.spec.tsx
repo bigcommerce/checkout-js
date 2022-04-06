@@ -178,4 +178,13 @@ describe('PaymentSubmitButton', () => {
         expect(component.text())
             .toEqual(languageService.translate('payment.ppsdk_continue_action', { methodName: 'Foo' }));
     });
+
+    it('renders button with label of "Place Order"', () => {
+        const component = mount(
+            <PaymentSubmitButtonTest isOnlyOneMethod />
+        );
+
+        expect(component.text())
+            .toEqual(languageService.translate('payment.place_order_action'));
+    });
 });
