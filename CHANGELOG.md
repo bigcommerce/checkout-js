@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.205.0](https://github.com/bigcommerce/checkout-js/compare/v1.204.2...v1.205.0) (2022-04-07)
+
+
+### Features
+
+* **shipping:** CHECKOUT-6544 Update consignment methods to use address ([#845](https://github.com/bigcommerce/checkout-js/issues/845)) ([4d82b05](https://github.com/bigcommerce/checkout-js/commit/4d82b05aec3ec323983ac76c3185dc0dfaf2a6ad))
+
 ### [1.204.2](https://github.com/bigcommerce/checkout-js/compare/v1.204.1...v1.204.2) (2022-04-07)
 
 
