@@ -229,7 +229,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
         try {
             await unassignItem({
-                shippingAddress: address,
+                address,
                 lineItems: [{
                     quantity: 1,
                     itemId,
