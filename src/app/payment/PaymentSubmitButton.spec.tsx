@@ -181,7 +181,7 @@ describe('PaymentSubmitButton', () => {
 
     it('renders button with label of "Place Order"', () => {
         const component = mount(
-            <PaymentSubmitButtonTest isOnlyOneMethod />
+            <PaymentSubmitButtonTest isOnlyOneMethod methodName="paypal" />
         );
 
         expect(component.text())

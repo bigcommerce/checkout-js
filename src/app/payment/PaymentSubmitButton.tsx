@@ -21,7 +21,7 @@ const providersWithCustomClasses = [PaymentMethodId.Bolt];
 
 const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> = memo(({ methodId, methodName, methodType, methodGateway, initialisationStrategyType, brandName, isOnlyOneMethod }) => {
 
-    if  (isOnlyOneMethod) {
+    if  (isOnlyOneMethod && methodType === PaymentMethodType.Paypal) {
         return <TranslatedString id="payment.place_order_action" />;
     }
 
