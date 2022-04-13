@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.206.2](https://github.com/bigcommerce/checkout-js/compare/v1.206.1...v1.206.2) (2022-04-13)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-6563 Apple Pay on Cart Page Loads Checkout Settings ([#848](https://github.com/bigcommerce/checkout-js/issues/848)) ([4e4fdfe](https://github.com/bigcommerce/checkout-js/commit/4e4fdfe97bb4b50a0957984cd0860ab870b332e4))
+
 ### [1.206.1](https://github.com/bigcommerce/checkout-js/compare/v1.206.0...v1.206.1) (2022-04-11)
 
 ## [1.206.0](https://github.com/bigcommerce/checkout-js/compare/v1.205.1...v1.206.0) (2022-04-08)
