@@ -12,16 +12,9 @@ interface PollyOptions {
     storeURL?: string;
 }
 
-async function recordInitializer(option: PollyOptions): Promise<Polly> {
-    return await pollyInitializer('record', option);
-}
-
-async function replayInitializer(option: PollyOptions): Promise<Polly> {
-    return await pollyInitializer('replay', option);
-}
-
-async function pollyInitializer(mode: MODE, option: PollyOptions): Promise<Polly> {
+async function pollyInitializer(option: PollyOptions): Promise<Polly> {
     const { playwrightContext: page, recordingName, storeURL } = option;
+    const mode: MODE = process.env.MODE?.toLowerCase() === 'record' ? 'record' : 'replay';
 
     Polly.register(PlaywrightAdapter);
     Polly.register(FSPersister);
@@ -133,7 +126,7 @@ async function pollyInitializer(mode: MODE, option: PollyOptions): Promise<Polly
 
         // Replace URLs to match URLs in recording
         polly.server.any().on('request', req => {
-            req.url = req.url.replace('http://localhost:8080', storeURL);
+            req.url = req.url.replace('http://localhost:' + process.env.PORT, storeURL);
             console.log('😃 REPLAY:: ' + req.url);
         });
     }
@@ -141,4 +134,4 @@ async function pollyInitializer(mode: MODE, option: PollyOptions): Promise<Polly
     return polly;
 }
 
-export { recordInitializer, replayInitializer };
+export { pollyInitializer };

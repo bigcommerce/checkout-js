@@ -9,7 +9,7 @@ dotenv.config();
  */
 const config: PlaywrightTestConfig = {
   webServer: {
-    command: 'http-server build',
+    command: 'http-server build --port=' + process.env.PORT,
     port: Number(process.env.PORT),
     timeout: 3 * 1000,
   },
@@ -31,6 +31,7 @@ const config: PlaywrightTestConfig = {
   reporter: [ ['html', { outputFolder: './tests/_report' }] ],
   // Shared settings for all the projects below.
   use: {
+    baseURL: 'http://localhost:' + process.env.PORT,
     screenshot: 'only-on-failure',
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     // actionTimeout: 30 * 1000,
