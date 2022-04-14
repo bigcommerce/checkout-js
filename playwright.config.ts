@@ -1,23 +1,21 @@
+import dotenv from 'dotenv';
 import { devices, PlaywrightTestConfig } from '@playwright/test';
 
-/**
- * Read environment variables from file.
- * https://github.com/motdotla/dotenv
- */
-// require('dotenv').config();
+dotenv.config();
 
 /**
  * See https://playwright.dev/docs/test-configuration.
+ * All timeout settings are default values now. 14/04/2022
  */
 const config: PlaywrightTestConfig = {
   webServer: {
     command: 'http-server build',
-    port: 8080,
+    port: Number(process.env.PORT),
     timeout: 3 * 1000,
   },
-  timeout: 10 * 1000,
+  // timeout: 60 * 1000,
   expect: {
-    timeout: 10 * 1000,
+    // timeout: 25 * 1000,
   },
   testDir: './tests/',
   outputDir: 'tests/_screenshots',
@@ -35,7 +33,7 @@ const config: PlaywrightTestConfig = {
   use: {
     screenshot: 'only-on-failure',
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
-    actionTimeout: 10 * 1000,
+    // actionTimeout: 30 * 1000,
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
