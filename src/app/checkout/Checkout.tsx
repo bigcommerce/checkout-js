@@ -13,6 +13,7 @@ import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
 import { PromotionBannerList } from '../promotion';
 import { hasSelectedShippingOptions, isUsingMultiShipping, StaticConsignment } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
+import { SmartButtonsList } from '../smartButtons';
 import { LazyContainer, LoadingNotification, LoadingOverlay } from '../ui/loading';
 import { MobileView } from '../ui/responsive';
 
@@ -239,6 +240,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                     <LoadingNotification isLoading={ isPending } />
 
                     <PromotionBannerList promotions={ promotions } />
+
+                    <SmartButtonsList />
 
                     <ol className="checkout-steps">
                         { steps
