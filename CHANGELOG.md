@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.206.4](https://github.com/bigcommerce/checkout-js/compare/v1.206.3...v1.206.4) (2022-04-15)
+
+
+### Bug Fixes
+
+* **shipping:** CHECKOUT-0000 Only mark the currently selected shipping option as valid if it is available for the current address. ([#840](https://github.com/bigcommerce/checkout-js/issues/840)) ([5dbeda5](https://github.com/bigcommerce/checkout-js/commit/5dbeda57d065da3222507a0bd00a81a72c5eec79))
+
 ### [1.206.3](https://github.com/bigcommerce/checkout-js/compare/v1.206.2...v1.206.3) (2022-04-13)
 
 ### [1.206.2](https://github.com/bigcommerce/checkout-js/compare/v1.206.1...v1.206.2) (2022-04-13)
