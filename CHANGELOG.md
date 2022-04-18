@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.207.0](https://github.com/bigcommerce/checkout-js/compare/v1.206.4...v1.207.0) (2022-04-18)
+
+
+### Features
+
+* **payment:** PAYMENTS-7403 Add PPSDK Credit Card payment method UI ([9e9222f](https://github.com/bigcommerce/checkout-js/commit/9e9222fc8bc671566cab9cdc0fbf52c196ea30c1))
+* **payment:** PAYMENTS-7403 Bump checkout-sdk for PPSDK credit card sub-strategy ([638b144](https://github.com/bigcommerce/checkout-js/commit/638b14424087d0f6c015564bf92230cda72a4a5a))
+
 ### [1.206.4](https://github.com/bigcommerce/checkout-js/compare/v1.206.3...v1.206.4) (2022-04-15)
 
 
