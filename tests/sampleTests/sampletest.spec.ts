@@ -1,8 +1,5 @@
-import { expect, test } from '@playwright/test';
-import { Polly } from '@pollyjs/core';
-
 import { submitPaymentResult } from '../api.mock';
-import { pollyInitializer } from '../polly.global.setup';
+import { expect, test } from '../testService';
 
 // Uncommmnet to continue in a headed browser
 // test.use({
@@ -12,22 +9,14 @@ import { pollyInitializer } from '../polly.global.setup';
 
 test.describe('Sample test group', () => {
 
-    let polly: Polly;
-
-    test.beforeEach(async ({ page }) => {
-        polly = await pollyInitializer({
-            playwrightContext: page,
-            recordingName: 'sample',
-            storeURL: 'https://my-dev-store-745516528.store.bcdev',
-        });
+    test.beforeEach(async ({ testService, page }) => {
+        await testService.useHAR('sample');
 
         await page.goto('/');
     });
 
-    test.afterEach(async ({ page }) => {
-        await polly.stop();
-        await page.close();
-    });
+    // test.afterEach(async ({ page }) => {
+    // });
 
     test('@record Bigpay Test Payment Provider is working', async ({page}) => {
         test.skip(process.env.MODE === 'replay');
@@ -87,8 +76,6 @@ test.describe('Sample test group', () => {
         await page.locator('text=Place Order').click();
 
         await page.locator('.orderConfirmation').waitFor({state: 'visible'});
-        await polly.stop();
-        await page.close();
     });
 
     test('Bigpay Test Payment Provider is working', async ({page}) => {
