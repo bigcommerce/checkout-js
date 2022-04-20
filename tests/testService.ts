@@ -23,40 +23,8 @@ class TestService {
             playwrightContext: this.page,
             recordingName: HAR,
         });
-
-        if (!this.isReplay) {
-            // hack for BC dev store's root certificate issue during recording HAR
-            // https://stackoverflow.com/questions/31673587/error-unable-to-verify-the-first-certificate-in-nodejs
-            process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
-            this.polly.server.any().on('beforePersist', (_, recording) => {
-                const removeSensitiveHeaders = (headers: []): {} => {
-                    const dummyData = '*';
-                    const sensitiveHeaderNames = [
-                        'authorization',
-                        'cookie',
-                        'set-cookie',
-                        'token',
-                        'x-session-hash',
-                        'x-xsrf-token',
-                    ];
-
-                    return headers.map((header: { name: string; value: string }) => {
-                        if (sensitiveHeaderNames.includes(header.name)) {
-                            return { ...header, value: dummyData };
-                        }
-
-                        return header;
-                    });
-                };
-
-                recording.request.headers = removeSensitiveHeaders(recording.request.headers);
-                recording.response.headers = removeSensitiveHeaders(recording.response.headers);
-            });
-        }
-
+        this.removeSensitiveHeaders();
         await this.createCart();
-
     }
 
     async shouldSeeOrderConfirmation(): Promise<void> {
@@ -124,6 +92,39 @@ class TestService {
             await page.locator('text=Continue').click();
         }
     }
+
+    private removeSensitiveHeaders(): void {
+        if (!this.isReplay) {
+            // hack for BC dev store's root certificate issue during recording HAR
+            // https://stackoverflow.com/questions/31673587/error-unable-to-verify-the-first-certificate-in-nodejs
+            process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+            this.polly?.server.any().on('beforePersist', (_, recording) => {
+                const removeSensitiveHeaders = (headers: []): {} => {
+                    const dummyData = '*';
+                    const sensitiveHeaderNames = [
+                        'authorization',
+                        'cookie',
+                        'set-cookie',
+                        'token',
+                        'x-session-hash',
+                        'x-xsrf-token',
+                    ];
+
+                    return headers.map((header: { name: string; value: string }) => {
+                        if (sensitiveHeaderNames.includes(header.name)) {
+                            return { ...header, value: dummyData };
+                        }
+
+                        return header;
+                    });
+                };
+
+                recording.request.headers = removeSensitiveHeaders(recording.request.headers);
+                recording.response.headers = removeSensitiveHeaders(recording.response.headers);
+            });
+        }
+    }
 }
 
 interface CheckoutFixtures {
@@ -132,13 +133,8 @@ interface CheckoutFixtures {
 
 export const test = base.extend<CheckoutFixtures>({
     testService: async ({ page }, use) => {
-        // Set up the fixture.
         const testService = new TestService(page);
-
-        // Use the fixture value in the test.
         await use(testService);
-
-        // Clean up the fixture.
         await testService.polly?.stop();
         await page.close();
     },

@@ -1,30 +1,33 @@
-import { submitPaymentResult } from '../api.mock';
 import { test } from '../testService';
 
 // Uncommmnet to continue in a headed browser
-test.use({
-    headless: false,
-    viewport: { width: 1000, height: 1000 },
-});
+// test.use({
+//     headless: false,
+//     viewport: { width: 1000, height: 1000 },
+// });
 
-test.describe('Sample test group', () => {
-
-    test.beforeEach(async ({ testService }) => {
-        await testService.gotoPaymentStep({ HAR: 'sample', storeURL: 'https://my-dev-store-745516528.store.bcdev' });
-    });
+test.describe('Sample Test Group', () => {
 
     test('Bigpay Test Payment Provider is working', async ({testService, page}) => {
 
-        if (testService.isReplay) {
-            // 2. Serve additional static files with Playwright
-            await page.route('**/checkout/payment/hosted-field?**', route => route.fulfill( {status: 200, path: './tests/sampleTests/_support/hostedField.html' } ));
+        await testService.gotoPaymentStep({ storeURL: 'https://my-dev-store-745516528.store.bcdev', HAR: 'sample' });
 
-            // 3. Mock API endpoints via Playwright
-            await page.route('**/api/public/v1/orders/payments', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify(submitPaymentResult)} ));
+        if (testService.isReplay) {
+            await page.route('**/checkout/payment/hosted-field?**', route => route.fulfill( {status: 200, path: './tests/sampleTests/_support/hostedField.html' } ));
+            await page.route('**/api/public/v1/orders/payments', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify({
+                    status: 'ok',
+                    three_ds_result: {
+                        acs_url: null,
+                        payer_auth_request: null,
+                        merchant_data: null,
+                        callback_url: null,
+                    },
+                    errors: [],
+                }
+            )}));
         }
 
-        // 4. Playwright scripts
-        // page.pause() will launch a Playwright inspector in a browser if running in headed mode.
+        // Playwright scripts
         // await page.pause();
         // Click text=Test Payment ProviderVisaAmexMaster
         await page.locator('text=Test Payment ProviderVisaAmexMaster').click();
@@ -47,7 +50,7 @@ test.describe('Sample test group', () => {
         // Click text=Place Order
         await page.locator('text=Place Order').click();
 
-        // 5. Assertions
+        // Assertions
         await testService.shouldSeeOrderConfirmation();
     });
 });
