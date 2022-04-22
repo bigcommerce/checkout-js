@@ -11,7 +11,7 @@ export { default as CreditCardNameField } from './CreditCardNameField';
 export { default as CreditCardNumberField } from './CreditCardNumberField';
 export { default as getCreditCardInputStyles, CreditCardInputStylesType } from './getCreditCardInputStyles';
 export { default as getCreditCardValidationSchema } from './getCreditCardValidationSchema';
-export { default as mapFromPaymentMethodCardType } from './mapFromPaymentMethodCardType';
+export { default as mapFromPaymentMethodCardType, getPaymentMethodIconComponent, filterInstrumentTypes } from './mapFromPaymentMethodCardType';
 export { default as unformatCreditCardNumber } from './unformatCreditCardNumber';
 export { default as unformatCreditCardExpiryDate } from './unformatCreditCardExpiryDate';
 export { default as TextFieldForm } from './TextFieldForm';
