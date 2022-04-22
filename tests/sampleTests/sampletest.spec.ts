@@ -13,8 +13,8 @@ test.describe('Sample Test Group', () => {
         await testService.gotoPaymentStep({ storeURL: 'https://my-dev-store-745516528.store.bcdev', HAR: 'sample' });
 
         if (testService.isReplay) {
-            await page.route('**/checkout/payment/hosted-field?**', route => route.fulfill( {status: 200, path: './tests/sampleTests/_support/hostedField.html' } ));
-            await page.route('**/api/public/v1/orders/payments', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify({
+            await page.route('/checkout/payment/hosted-field?*', route => route.fulfill( {status: 200, path: './tests/sampleTests/_support/hostedField.html' } ));
+            await page.route('/api/public/v1/orders/payments', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify({
                     status: 'ok',
                     three_ds_result: {
                         acs_url: null,
