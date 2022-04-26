@@ -1,7 +1,9 @@
 {
     "include": [
         "src/**/*.ts",
-        "src/**/*.tsx"
+        "src/**/*.tsx",
+        "tests/**/*.ts",
+        "playwright.config.ts",
     ],
     "exclude": [
         "node_modules"
