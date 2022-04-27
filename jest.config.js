@@ -7,6 +7,7 @@ module.exports = {
             statements: 90,
         },
     },
+    testPathIgnorePatterns: ["<rootDir>/tests"],
     preset: 'ts-jest',
     setupFilesAfterEnv: [
         '<rootDir>/jest-setup.ts',
