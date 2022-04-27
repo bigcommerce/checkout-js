@@ -149,7 +149,7 @@ describe('PaymentSubmitButton', () => {
         );
 
         expect(component.text())
-            .toEqual(languageService.translate('payment.paypal_credit_continue_action'));
+            .toEqual(languageService.translate('payment.paypal_pay_later_continue_action'));
     });
 
     it('renders button with special label for Quadpay', () => {

@@ -107,4 +107,31 @@ describe('AddressForm Component', () => {
 
         expect(onChange).toHaveBeenCalledWith('address1', 'foo bar');
     });
+
+    it('renders the same dropdown menu with different field.default values', () => {
+        const field = formFields.find(({ name }) => name === 'field_27') as FormFieldType;
+        component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <Formik
+                    initialValues={ {} }
+                    onSubmit={ noop }
+                >
+                    <AddressForm formFields={ [field] } />
+                </Formik>
+            </LocaleContext.Provider>
+        );
+        const fieldChanged = {...field, default: 'new value'} as FormFieldType;
+        const componentChanged = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <Formik
+                    initialValues={ {} }
+                    onSubmit={ noop }
+                >
+                    <AddressForm formFields={ [fieldChanged] } />
+                </Formik>
+            </LocaleContext.Provider>
+        );
+
+        expect(component.html()).toEqual(componentChanged.html());
+    });
 });

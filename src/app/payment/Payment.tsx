@@ -293,7 +293,9 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             selectedMethod.type === PaymentMethodProviderType.PPSDK ||
             selectedMethod.id === PaymentMethodId.Amazon ||
             selectedMethod.id === PaymentMethodId.AmazonPay ||
+            selectedMethod.id === PaymentMethodId.CBAMPGS ||
             selectedMethod.id === PaymentMethodId.Checkoutcom ||
+            selectedMethod.id === PaymentMethodId.CheckoutcomGooglePay ||
             selectedMethod.id === PaymentMethodId.Converge ||
             selectedMethod.id === PaymentMethodId.Humm ||
             selectedMethod.id === PaymentMethodId.Laybuy ||
@@ -304,6 +306,8 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             selectedMethod.id === PaymentMethodId.Zip ||
             selectedMethod.gateway === PaymentMethodId.AdyenV2 ||
             selectedMethod.gateway === PaymentMethodId.AdyenV2GooglePay ||
+            selectedMethod.gateway === PaymentMethodId.AdyenV3 ||
+            selectedMethod.gateway === PaymentMethodId.AdyenV3GooglePay ||
             selectedMethod.gateway === PaymentMethodId.Afterpay ||
             selectedMethod.gateway === PaymentMethodId.Clearpay ||
             selectedMethod.gateway === PaymentMethodId.Checkoutcom ||

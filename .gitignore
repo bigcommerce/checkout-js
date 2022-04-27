@@ -3,3 +3,5 @@ build
 coverage
 
 .env
+tests/_report/
+tests/_screenshots/

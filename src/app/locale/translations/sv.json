@@ -296,7 +296,7 @@
             "sepa_bic": "BIC",
             "sepa_bic_length": "BIC måste bestå av 8 eller 11 tecken",
             "sepa_mandate_required": "Du måste acceptera mandatformuläret",
-            "sezzle_display_name_text": "Betala senare. 0 % ränta.",
+            "sezzle_display_name_text": "Betala senare. 0 % ränta.",
             "stripe_sepa_display_name_text": "Sepa-direktdebitering.",
             "stripe_sepa_mandate_disclaimer": "Genom att tillhandahålla ditt IBAN och bekräfta denna betalning godkänner du (A) att {storeUrl} och Stripe, vår betalningstjänsteleverantör, skickar instruktioner till din bank att debitera ditt konto och (B) att din bank debiterar ditt konto i enlighet med dessa instruktioner. Du har rätt till återbetalning från din bank enligt villkoren i ditt avtal med banken. Återbetalning måste krävas inom åtta veckor från det datum då ditt konto debiterades.",
             "tax_provider_unavailable": "Moms kunde inte beräknas. Vänligen försök igen. Om det inte lyckas, vänligen kontakta vårt supportteam för att genomföra köpet.",

@@ -1,25 +1,8 @@
 import classNames from 'classnames';
 import React, { memo, FunctionComponent } from 'react';
 
+import { filterInstrumentTypes } from './mapFromPaymentMethodCardType';
 import CreditCardIcon from './CreditCardIcon';
-
-export const SUPPORTED_CARD_TYPES = [
-    'american-express',
-    'carnet',
-    'cb',
-    'dankort',
-    'diners-club',
-    'discover',
-    'elo',
-    'hiper',
-    'jcb',
-    'mada',
-    'maestro',
-    'mastercard',
-    'troy',
-    'unionpay',
-    'visa',
-];
 
 export interface CreditCardIconListProps {
     selectedCardType?: string;
@@ -30,8 +13,7 @@ const CreditCardIconList: FunctionComponent<CreditCardIconListProps> = ({
     selectedCardType,
     cardTypes,
 }) => {
-    const filteredCardTypes = cardTypes
-        .filter(type => SUPPORTED_CARD_TYPES.indexOf(type) !== -1);
+    const filteredCardTypes = filterInstrumentTypes(cardTypes);
 
     if (!filteredCardTypes.length) {
         return null;

@@ -114,6 +114,14 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
         }
     }, [selectedMethod]);
 
+    const brandName = useMemo(() => {
+        if (!selectedMethod ) {
+            return;
+        }
+
+        return selectedMethod?.initializationData?.payPalCreditProductBrandName?.credit || selectedMethod?.initializationData?.payPalCreditProductBrandName;
+    }, [selectedMethod]);
+
     if (shouldExecuteSpamCheck) {
         return <SpamProtectionField
             didExceedSpamLimit={ didExceedSpamLimit }
@@ -157,6 +165,7 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
                 { shouldHidePaymentSubmitButton ?
                     <PaymentMethodSubmitButtonContainer /> :
                     <PaymentSubmitButton
+                        brandName = { brandName }
                         initialisationStrategyType={ selectedMethod && selectedMethod.initializationStrategy?.type }
                         isDisabled={ shouldDisableSubmit }
                         methodGateway={ selectedMethod && selectedMethod.gateway }

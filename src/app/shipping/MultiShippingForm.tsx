@@ -220,7 +220,7 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
 
         try {
             const { data } = await assignItem({
-                shippingAddress: address,
+                address,
                 lineItems: [{
                     itemId,
                     quantity: 1,

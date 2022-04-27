@@ -43,6 +43,11 @@ const GooglePayPaymentMethod: FunctionComponent<GooglePayPaymentMethodProps> =
             onError: onUnhandledError,
             onPaymentSelect: () => reinitializePayment(mergedOptions),
           },
+          googlepayadyenv3: {
+            walletButton: 'walletButton',
+            onError: onUnhandledError,
+            onPaymentSelect: () => reinitializePayment(mergedOptions),
+          },
           googlepayauthorizenet: {
             walletButton: 'walletButton',
             onError: onUnhandledError,

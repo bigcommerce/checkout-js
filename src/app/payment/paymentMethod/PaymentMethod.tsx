@@ -5,6 +5,7 @@ import { withCheckout, CheckoutContextProps } from '../../checkout';
 
 import getUniquePaymentMethodId from './getUniquePaymentMethodId';
 import AdyenV2PaymentMethod from './AdyenV2PaymentMethod';
+import AdyenV3PaymentMethod from './AdyenV3PaymentMethod';
 import AffirmPaymentMethod from './AffirmPaymentMethod';
 import AmazonPaymentMethod from './AmazonPaymentMethod';
 import AmazonPayV2PaymentMethod from './AmazonPayV2PaymentMethod';
@@ -75,6 +76,10 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
 
     if (method.gateway === PaymentMethodId.AdyenV2) {
         return <AdyenV2PaymentMethod { ...props } />;
+    }
+
+    if (method.gateway === PaymentMethodId.AdyenV3) {
+        return <AdyenV3PaymentMethod { ...props } />;
     }
 
     if (method.id === PaymentMethodId.ApplePay) {
@@ -155,6 +160,7 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
     }
 
     if (method.id === PaymentMethodId.AdyenV2GooglePay ||
+        method.id === PaymentMethodId.AdyenV3GooglePay ||
         method.id === PaymentMethodId.AuthorizeNetGooglePay ||
         method.id === PaymentMethodId.BraintreeGooglePay ||
         method.id === PaymentMethodId.CheckoutcomGooglePay ||

@@ -15,16 +15,16 @@ interface PaymentSubmitButtonTextProps {
     methodType?: string;
     methodName?: string;
     initialisationStrategyType?: string;
+    brandName?: string;
 }
 
 interface WithRecurlyProps {
     isSubmitting?: boolean;
     isInitializing?: boolean;
 }
-
 const providersWithCustomClasses = [PaymentMethodId.Bolt];
 
-const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps & WithRecurlyProps> = memo(({ methodId, methodName, methodType, methodGateway, initialisationStrategyType }) => {
+const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps & WithRecurlyProps> = memo(({ methodId, methodName, methodType, methodGateway, initialisationStrategyType, brandName }) => {
 
     if (methodName && initialisationStrategyType === 'none') {
         return <TranslatedString data={ { methodName } } id="payment.ppsdk_continue_action" />;
@@ -66,7 +66,7 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps & 
     }
 
     if (methodType === PaymentMethodType.PaypalCredit) {
-        return <TranslatedString id="payment.paypal_credit_continue_action" />;
+        return <TranslatedString data={ { brandName } } id={ brandName ? 'payment.continue_with_brand' : 'payment.paypal_pay_later_continue_action' } />;
     }
 
     if (methodId === PaymentMethodId.Opy) {
@@ -95,6 +95,7 @@ export interface PaymentSubmitButtonProps {
     methodType?: string;
     isDisabled?: boolean;
     initialisationStrategyType?: string;
+    brandName?: string;
 }
 
 interface WithCheckoutPaymentSubmitButtonProps {
@@ -111,6 +112,7 @@ const PaymentSubmitButton: FunctionComponent<PaymentSubmitButtonProps & WithChec
     methodName,
     methodType,
     initialisationStrategyType,
+    brandName,
 }) => (
         <Button
             className={ providersWithCustomClasses.includes(methodId as PaymentMethodId) ? `payment-submit-button-${methodId}` : undefined }
@@ -123,6 +125,7 @@ const PaymentSubmitButton: FunctionComponent<PaymentSubmitButtonProps & WithChec
             variant={ ButtonVariant.Action }
         >
             <PaymentSubmitButtonText
+                brandName={ brandName }
                 initialisationStrategyType={ initialisationStrategyType }
                 methodGateway={ methodGateway }
                 methodId={ methodId }

@@ -93,17 +93,12 @@ describe('when using Adyen V2 payment', () => {
                     },
                     additionalActionOptions: {
                         containerId: 'adyen-scheme-additional-action-component-field',
-                        onBeforeLoad: expect.any(Function),
-                        onComplete: expect.any(Function),
-                        onLoad: expect.any(Function),
-                    },
-                    threeDS2ContainerId: 'adyen-scheme-additional-action-component-field',
-                    threeDS2Options: {
                         widgetSize: '05',
                         onBeforeLoad: expect.any(Function),
                         onComplete: expect.any(Function),
                         onLoad: expect.any(Function),
                     },
+                    threeDS2ContainerId: 'adyen-scheme-additional-action-component-field',
                     validateCardFields: expect.any(Function),
                 },
                 gatewayId: method.gateway,
@@ -131,7 +126,7 @@ describe('when using Adyen V2 payment', () => {
             const initializeOptions = (defaultAdyenProps.initializePayment as jest.Mock).mock.calls[0][0];
 
             act(() => {
-                initializeOptions.adyenv2.threeDS2Options.onBeforeLoad(true);
+                initializeOptions.adyenv2.additionalActionOptions.onBeforeLoad(true);
             });
 
             await new Promise(resolve => process.nextTick(resolve));
@@ -166,7 +161,7 @@ describe('when using Adyen V2 payment', () => {
             const initializeOptions = (defaultAdyenProps.initializePayment as jest.Mock).mock.calls[0][0];
 
             act(() => {
-                initializeOptions.adyenv2.threeDS2Options.onBeforeLoad(false);
+                initializeOptions.adyenv2.additionalActionOptions.onBeforeLoad(false);
             });
 
             await new Promise(resolve => process.nextTick(resolve));
@@ -202,7 +197,7 @@ describe('when using Adyen V2 payment', () => {
             const initializeOptions = (defaultAdyenProps.initializePayment as jest.Mock).mock.calls[0][0];
 
             act(() => {
-                initializeOptions.adyenv2.threeDS2Options.onLoad(cancelAdditionalActionModalFlow, true);
+                initializeOptions.adyenv2.additionalActionOptions.onLoad(cancelAdditionalActionModalFlow, true);
             });
 
             await new Promise(resolve => process.nextTick(resolve));
