@@ -17,7 +17,7 @@ export interface AdyenV3CardValidationError {
 
 export type AdyenV3CardValidationState = AdyenV3ComponentState & AdyenV3CardValidationError;
 
-export type FieldsValidation = {[key in AdyenV3CardFields]?: AdyenV3ComponentState | AdyenV3CardValidationError};
+export type FieldsValidation = {[key in AdyenV3CardFields]?: AdyenV3CardValidationState };
 
 export interface AdyenV3CardValidationProps {
     verificationFieldsContainerId?: string;
@@ -40,14 +40,19 @@ const AdyenV3CardValidation: FunctionComponent<AdyenV3CardValidationProps> = ({
 
         if (Object.keys(cardValidationState).length === 0) {
             Object.values(AdyenV3CardFields).forEach((key: AdyenV3CardFields) => {
-                newFieldValidation[key] = { valid: false };
+                newFieldValidation[key] = {
+                    valid: false,
+                    data: {
+                        paymentMethod: { type: paymentMethodType },
+                    },
+                };
             });
         } else if (!!cardValidationState.fieldType) {
             newFieldValidation[cardValidationState.fieldType] = cardValidationState;
         }
 
         return newFieldValidation;
-    }, [cardValidationState]);
+    }, [cardValidationState, paymentMethodType]);
 
     const isFieldInvalid = (fieldKey: AdyenV3CardFields): boolean => {
         return !!fieldsValidation[fieldKey] && !fieldsValidation[fieldKey]?.valid;
