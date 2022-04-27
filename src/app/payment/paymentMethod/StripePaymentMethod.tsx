@@ -113,6 +113,7 @@ const StripePaymentMethod: FunctionComponent<StripePaymentMethodProps & WithInje
     };
 
     function validateInstrument(_shouldShowNumber: boolean, selectedInstrument: CardInstrument) {
+        
         return getHostedStoredCardValidationFieldset(selectedInstrument);
     }
 
