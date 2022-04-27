@@ -40,6 +40,7 @@ import SquarePaymentMethod from './SquarePaymentMethod';
 import StripePaymentMethod from './StripePaymentMethod';
 import StripeUPEPaymentMethod from './StripeUPEPaymentMethod';
 import VisaCheckoutPaymentMethod from './VisaCheckoutPaymentMethod';
+import WorldpayCreditCardPaymentMethod from './WorldpayCreditCardPaymentMethod';
 
 export interface PaymentMethodProps {
     method: PaymentMethod;
@@ -209,6 +210,10 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
 
     if (method.id === PaymentMethodId.Moneris) {
         return <MonerisPaymentMethod { ...props } />;
+    }
+
+    if (method.id === PaymentMethodId.WorldpayAccess) {
+        return <WorldpayCreditCardPaymentMethod { ...props } />;
     }
 
     if (method.gateway === PaymentMethodId.Afterpay ||

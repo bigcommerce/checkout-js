@@ -173,7 +173,6 @@
             "unsupported_error": "Los siguientes métodos de pago no son compatibles con el pago integrado: {methods}. Comunícate con nosotros para obtener ayuda."
         },
         "payment": {
-            "adyen_credit_debit_card_text": "Tarjeta de débito/crédito",
             "affirm_name_text": "Affirm",
             "affirm_display_name_text": "Paga después",
             "affirm_body_text": "Se te redirigirá a Affirm para completar de forma segura tu compra. Simplemente, proporciona algunos datos básicos y obtén una decisión en tiempo real. La verificación de tu elegibilidad no afectará tu puntaje crediticio.",
@@ -230,6 +229,7 @@
             "credit_card_number_last_four": "Ingresa el número de la tarjeta de {cardType} con terminación en {lastFour}",
             "credit_card_number_required_error": "El número de tarjeta de crédito es obligatorio",
             "credit_card_number_mismatch_error": "El número de tarjeta que se ingresó no coincide con la tarjeta guardada en tu cuenta",
+            "credit_debit_card_text": "Tarjeta de débito/crédito",
             "digitalriver_dropin_error": "Hubo un error al procesar su pago. Inténtelo de nuevo o póngase en contacto con nosotros.",
             "digitalriver_checkout_error": "Hubo un problema con tu proceso de pago; revisa tus datos e inténtalo de nuevo o ponte en contacto con el servicio de atención al cliente",
             "digitalriver_checkout_error_title": "Error al procesar la solicitud.",

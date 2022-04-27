@@ -38,6 +38,6 @@ describe('getPaymentMethodDisplayName()', () => {
         const method = { ...getPaymentMethod(), id: PaymentMethodId.AdyenV2, config: { displayName: 'Credit Card' } };
 
         expect(getPaymentMethodDisplayName(language)(method))
-            .toEqual(language.translate('payment.adyen_credit_debit_card_text'));
+            .toEqual(language.translate('payment.credit_debit_card_text'));
     });
 });

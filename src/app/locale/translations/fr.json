@@ -173,7 +173,6 @@
             "unsupported_error": "Les modes de paiement suivants ne sont pas pris en charge par Embedded Checkout : {methods}. Veuillez nous contacter pour obtenir de l'aide."
         },
         "payment": {
-            "adyen_credit_debit_card_text": "Carte de crédit/débit",
             "affirm_name_text": "Confirmer",
             "affirm_display_name_text": "Payer en plusieurs fois",
             "affirm_body_text": "Vous allez être redirigé·e vers Affirm afin de finaliser votre achat en toute sécurité. Il vous suffira de renseigner certaines informations de base pour obtenir une réponse en temps réel. La vérification de votre éligibilité n'affectera en rien votre fiabilité.",
@@ -228,6 +227,7 @@
             "credit_card_number_last_four": "Saisissez le numéro de la carte {cardType} se terminant par {lastFour}",
             "credit_card_number_required_error": "Numéro de carte bancaire requis",
             "credit_card_number_mismatch_error": "Le numéro de carte saisi ne correspond pas à celui de la carte enregistrée dans votre compte",
+            "credit_debit_card_text": "Carte de crédit/débit",
             "digitalriver_dropin_error": "Une erreur s'est produite lors du traitement de votre paiement. Veuillez réessayer, ou contactez-nous.",
             "digitalriver_checkout_error": "Un problème est survenu lors de votre paiement, veuillez vérifier vos informations et réessayer, ou contacter le service client",
             "digitalriver_checkout_error_title": "Erreur lors du traitement de la demande.",

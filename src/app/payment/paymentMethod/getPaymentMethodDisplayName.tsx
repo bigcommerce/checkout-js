@@ -19,7 +19,7 @@ export default function getPaymentMethodDisplayName(
         }
 
         if (isCreditCard && method.id === PaymentMethodId.AdyenV2 || method.id === PaymentMethodId.AdyenV3) {
-            return language.translate('payment.adyen_credit_debit_card_text');
+            return language.translate('payment.credit_debit_card_text');
         }
 
         if (isCreditCard) {

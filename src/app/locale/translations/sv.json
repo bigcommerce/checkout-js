@@ -173,7 +173,6 @@
             "unsupported_error": "Följande betalningsmetoder stöds inte av inbyggd kassa: {methods}. Kontakta oss för att få hjälp."
         },
         "payment": {
-            "adyen_credit_debit_card_text": "Kredit-/betalkort",
             "affirm_name_text": "Bekräfta",
             "affirm_display_name_text": "Betala med tiden",
             "affirm_body_text": "Du kommer att omdirigeras till Affirm för att slutföra ditt köp på ett säkert sätt. Fyll i grundläggande information och få ett beslut i realtid. Din kreditvärdighet påverkas inte när du kontrollerar din behörighet.",
@@ -228,6 +227,7 @@
             "credit_card_number_last_four": "Ange kortnummer för {cardType} som slutar på {lastFour}",
             "credit_card_number_required_error": "Kreditkortsnummer är obligatoriskt",
             "credit_card_number_mismatch_error": "Det angivna kortnumret matchar inte det kort som är lagrat på ditt konto",
+            "credit_debit_card_text": "Kredit-/betalkort",
             "digitalriver_dropin_error": "Det uppstod ett fel när betalningen bearbetades. Försök igen eller kontakta oss.",
             "digitalriver_checkout_error": "Ett fel uppstod i kassan. Vänligen kontrollera dina uppgifter och försök igen, eller kontakta kundtjänst.",
             "digitalriver_checkout_error_title": "Fel vid bearbetning av begäran.",

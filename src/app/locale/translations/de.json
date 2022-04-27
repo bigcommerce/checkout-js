@@ -173,7 +173,6 @@
             "unsupported_error": "Die folgenden Zahlungsmethoden werden von Embedded Checkout nicht unterstützt: {methods}. Bitte wenden Sie sich an uns, um Hilfe zu erhalten."
         },
         "payment": {
-            "adyen_credit_debit_card_text": "Kredit-/Debitkarte",
             "affirm_name_text": "Bestätigen",
             "affirm_display_name_text": "Im Laufe der Zeit bezahlen",
             "affirm_body_text": "Sie werden zu Affirm weitergeleitet, um Ihren Kauf sicher abzuschließen. Füllen Sie einfach ein paar grundlegende Informationen aus und Sie erhalten eine Entscheidung in Echtzeit. Die Überprüfung Ihrer Berechtigung wirkt sich nicht auf Ihre Bonität aus.",
@@ -228,6 +227,7 @@
             "credit_card_number_last_four": "Geben Sie die Kartennummer für {cardType} mit den Endziffern {lastFour} ein",
             "credit_card_number_required_error": "Kreditkartennummer erforderlich",
             "credit_card_number_mismatch_error": "Die eingegebene Kartennummer entspricht nicht der in Ihrem Konto gespeicherten Karte",
+            "credit_debit_card_text": "Kredit-/Debitkarte",
             "digitalriver_dropin_error": "Bei der Verarbeitung Ihrer Zahlung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder nehmen Sie Kontakt zu uns auf.",
             "digitalriver_checkout_error": "Es gab ein Problem mit Ihrem Bezahlvorgang, bitte prüfen Sie Ihre Details und versuchen Sie es erneut oder kontaktieren Sie den Kundendienst.",
             "digitalriver_checkout_error_title": "Fehler beim Verarbeiten der Anfrage.",
