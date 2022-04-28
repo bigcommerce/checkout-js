@@ -196,10 +196,12 @@ function appConfig(options, argv) {
                         {
                             test: /\.scss$/,
                             use: [
-                                "null-loader"
-                                // isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
-                                // 'css-loader',
-                                // 'sass-loader',
+                                // "null-loader"
+                                isProduction ? MiniCssExtractPlugin.loader : {loader: 'style-loader', options: {
+                                    insertAt:'top'
+                                    }},
+                                'css-loader',
+                                'sass-loader',
                             ],
                             sideEffects: true,
                         },
