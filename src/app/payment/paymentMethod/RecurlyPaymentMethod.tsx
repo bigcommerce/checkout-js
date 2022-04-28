@@ -160,14 +160,13 @@ const RecurlyPaymentMethod: FunctionComponent<WithCheckoutRecurlyCheckoutProps &
                 inputType: 'text',
                 style: {
                     fontColor: 'white',
+                    fontSize: '18px',
                 },
             });
             cardElement.on('change', e => {
-                console.log(e);
                 setRecurlyValidationState(e);
             });
             cardElement.on('attach', () => {
-                console.log('ready');
             });
             cardElement.attach(cardRef.current as HTMLElement);
         };
