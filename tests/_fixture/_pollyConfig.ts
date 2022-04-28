@@ -35,7 +35,7 @@ async function pollyInitializer(option: PollyOptions): Promise<Polly> {
             keepUnusedRequests: false,
             disableSortingHarEntries: true,
             fs: {
-                recordingsDir: path.join(__dirname, './_har/'),
+                recordingsDir: path.join(__dirname, '../_har/'),
             },
         },
         matchRequestsBy: {

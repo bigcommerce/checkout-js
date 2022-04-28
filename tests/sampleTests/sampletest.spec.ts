@@ -1,4 +1,4 @@
-import { test } from '../testService';
+import { test } from '../';
 
 // Uncommmnet to continue in a headed browser
 // test.use({
@@ -8,11 +8,11 @@ import { test } from '../testService';
 
 test.describe('Sample Test Group', () => {
 
-    test('Bigpay Test Payment Provider is working', async ({testService, page}) => {
+    test('Bigpay Test Payment Provider is working', async ({paymentStep, page}) => {
 
-        await testService.gotoPaymentStep({ storeURL: 'https://my-dev-store-745516528.store.bcdev', HAR: 'sample' });
+        await paymentStep.goto({ storeURL: 'https://my-dev-store-745516528.store.bcdev', HAR: 'sample' });
 
-        if (testService.isReplay) {
+        if (paymentStep.isReplay) {
             await page.route('/checkout/payment/hosted-field?*', route => route.fulfill( {status: 200, path: './tests/sampleTests/_support/hostedField.html' } ));
             await page.route('/api/public/v1/orders/payments', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify({
                     status: 'ok',
@@ -51,6 +51,6 @@ test.describe('Sample Test Group', () => {
         await page.locator('text=Place Order').click();
 
         // Assertions
-        await testService.shouldSeeOrderConfirmation();
+        await paymentStep.shouldSeeOrderConfirmation();
     });
 });
