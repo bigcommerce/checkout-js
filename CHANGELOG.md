@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.210.1](https://github.com/bigcommerce/checkout-js/compare/v1.210.0...v1.210.1) (2022-05-02)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-6631 Sentry issue bugfix ([#861](https://github.com/bigcommerce/checkout-js/issues/861)) ([21f875d](https://github.com/bigcommerce/checkout-js/commit/21f875d52964a5c9249860fea382e61d961def8f))
+
 ## [1.210.0](https://github.com/bigcommerce/checkout-js/compare/v1.209.1...v1.210.0) (2022-04-28)
 
 
