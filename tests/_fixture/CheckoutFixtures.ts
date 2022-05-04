@@ -1,6 +1,6 @@
 import { expect , test as base } from '@playwright/test';
 
-import PaymentStep from './PaymentStep';
+import { PaymentStep } from '.';
 
 interface CheckoutFixtures {
     paymentStep: PaymentStep;
@@ -11,8 +11,7 @@ export const test = base.extend<CheckoutFixtures>({
     paymentStep: async ({ page }, use) => {
         const paymentStep = new PaymentStep(page);
         await use(paymentStep);
-        await paymentStep.polly?.stop();
-        await page.close();
+        await paymentStep.close();
     },
 });
 

@@ -1,1 +1,1 @@
-export { expect, test } from './CustomFixtures';
+export { default as PaymentStep } from './_pageObject/PaymentStep';

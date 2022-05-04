@@ -10,7 +10,7 @@ test.describe('Sample Test Group', () => {
 
     test('Bigpay Test Payment Provider is working', async ({paymentStep, page}) => {
 
-        await paymentStep.goto({ storeURL: 'https://my-dev-store-745516528.store.bcdev', HAR: 'sample' });
+        await paymentStep.goto({ storeURL: 'https://my-dev-store-745516528.store.bcdev', harName: 'sample ' });
 
         if (paymentStep.isReplay) {
             await page.route('/checkout/payment/hosted-field?*', route => route.fulfill( {status: 200, path: './tests/sampleTests/_support/hostedField.html' } ));
@@ -51,6 +51,6 @@ test.describe('Sample Test Group', () => {
         await page.locator('text=Place Order').click();
 
         // Assertions
-        await paymentStep.shouldSeeOrderConfirmation();
+        await paymentStep.assertions.shouldSeeOrderConfirmation();
     });
 });
