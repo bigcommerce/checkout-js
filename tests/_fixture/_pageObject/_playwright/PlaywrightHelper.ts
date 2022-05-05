@@ -50,7 +50,7 @@ export default class PlaywrightHelper {
             }));
             await page.goto('/');
         } else {
-            // Create cart on dev store
+            // TODO: Use direct API calls to create a cart
             this._polly.pause();
             const api = new ApiRequestsSender(this._page, storeURL);
             switch (preset) {

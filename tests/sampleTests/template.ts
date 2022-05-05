@@ -4,7 +4,7 @@ test.describe('xxxxxxxxxxxxxxxxxxxxxxx', () => {
 
     test.beforeEach(async ({ paymentStep }) => {
         // Setup HAR and checkout environment.
-        await paymentStep.goto({ storeURL: 'https://my-dev-store-745516528.store.bcdev', HAR: 'sampleName' });
+        await paymentStep.goto({ storeURL: 'https://my-dev-store-745516528.store.bcdev', harName: 'sampleName' });
     });
 
     test('xxxxxxxxxxxxxxxxxxxxxxx I', async ({paymentStep, page}) => {
@@ -23,7 +23,7 @@ test.describe('xxxxxxxxxxxxxxxxxxxxxxx', () => {
         // await page.frameLocator('#bigpaypay-ccNumber iframe').locator('[aria-label="Credit Card Number"]').click();
 
         // Assertions
-        await paymentStep.shouldSeeOrderConfirmation();
+        await paymentStep.assertions.shouldSeeOrderConfirmation();
     });
 
     test('xxxxxxxxxxxxxxxxxxxxxxx II', async ({paymentStep, page}) => {
@@ -31,7 +31,7 @@ test.describe('xxxxxxxxxxxxxxxxxxxxxxx', () => {
         await page.pause();
 
         // Assertions
-        await paymentStep.shouldSeeOrderConfirmation();
+        await paymentStep.assertions.shouldSeeOrderConfirmation();
     });
 
     test('xxxxxxxxxxxxxxxxxxxxxxx III', async ({paymentStep, page}) => {
@@ -39,6 +39,6 @@ test.describe('xxxxxxxxxxxxxxxxxxxxxxx', () => {
         await page.pause();
 
         // Assertions
-        await paymentStep.shouldSeeOrderConfirmation();
+        await paymentStep.assertions.shouldSeeOrderConfirmation();
     });
 });
