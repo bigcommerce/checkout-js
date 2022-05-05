@@ -3,6 +3,7 @@ import { MODE } from '@pollyjs/core';
 
 import ApiRequestsSender from './_ApiRequestsSender';
 import PollyObject from './_PollyObject';
+import ServerSideRender from "./_ServerSideRender";
 
 export enum CheckoutPresets {
     PaymentStepAsGuest = 'paymentStepAsGuest',
@@ -38,16 +39,9 @@ export default class PlaywrightHelper {
         });
 
         if (this._isReplay) {
-            // TODO: server-side rendering
-            await page.route('/', route => route.fulfill({status: 200, path: './tests/_support/index.html'}));
-            await page.route('**/order-confirmation', route => route.fulfill({
-                status: 200,
-                path: './tests/_support/orderConfirmation.html',
-            }));
-            await page.route('**/products/**/ablebrewingsystem4.1647253530.190.285.jpg?c=1', route => route.fulfill({
-                status: 200,
-                path: './tests/_support/product.jpg',
-            }));
+            // TODO: Server-side rendering
+            const server = new ServerSideRender(this._page);
+            await server.renderCheckoutAndOrderConfirmation();
             await page.goto('/');
         } else {
             // TODO: Use direct API calls to create a cart
