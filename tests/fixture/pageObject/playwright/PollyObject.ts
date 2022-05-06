@@ -4,7 +4,7 @@ import FSPersister from '@pollyjs/persister-fs';
 import path from 'path';
 import { PlaywrightAdapter } from 'polly-adapter-playwright';
 
-import CustomFSPersister from './_CustomFSPersister';
+import CustomFSPersister from './CustomFSPersister';
 
 interface PollyOptions {
     harName: string;
@@ -14,11 +14,16 @@ interface PollyOptions {
 }
 
 export default class PollyObject {
-    private _polly: Polly | undefined;
-    private readonly _mode: MODE;
+    /**
+     * @internal
+     * This file is only accessible to PlaywrightHelper, and it is the only place to
+     * manage the mutable state of a PollyJS object.
+     */
+    private polly: Polly | undefined;
+    private readonly mode: MODE;
 
     constructor(mode: MODE) {
-        this._mode = mode;
+        this.mode = mode;
     }
 
     start(option: PollyOptions): void {
@@ -27,9 +32,9 @@ export default class PollyObject {
         Polly.register(PlaywrightAdapter);
         Polly.register(FSPersister);
 
-        this._polly = new Polly(harName);
-        this._polly.configure({
-            mode: this._mode,
+        this.polly = new Polly(harName);
+        this.polly.configure({
+            mode: this.mode,
             // logLevel: 'info',
             recordIfMissing: true,
             flushRequestsOnStop: true,
@@ -45,7 +50,7 @@ export default class PollyObject {
                 keepUnusedRequests: false,
                 disableSortingHarEntries: true,
                 CustomFSPersister: {
-                    recordingsDir: path.join(__dirname, '../../../_har/'),
+                    recordingsDir: path.join(__dirname, '../../../har/'),
                 },
             },
             matchRequestsBy: {
@@ -58,8 +63,7 @@ export default class PollyObject {
         });
 
         if (mode === 'replay') {
-            // console.log(this._polly);
-            this._polly.server.any().on('request', req => {
+            this.polly.server.any().on('request', req => {
                 req.url = req.url.replace('http://localhost:' + process.env.PORT, storeURL);
                 // console.log('😃REPLAY ' + req.url);
             });
@@ -67,14 +71,14 @@ export default class PollyObject {
     }
 
     pause(): void {
-        this._polly?.pause();
+        this.polly?.pause();
     }
 
     play(): void {
-        this._polly?.play();
+        this.polly?.play();
     }
 
     stop(): void {
-        this._polly?.stop();
+        this.polly?.stop();
     }
 }

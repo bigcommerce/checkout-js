@@ -2,12 +2,15 @@ import { Page } from '@playwright/test';
 
 // TODO: Use direct API calls to create a cart
 export default class ApiRequestsSender {
-    private readonly _page: Page;
-    private readonly _storeURL: string;
+    /**
+     * @internal
+     */
+    private readonly page: Page;
+    private readonly storeURL: string;
 
     constructor(page: Page, storeURL: string) {
-        this._page = page;
-        this._storeURL = storeURL;
+        this.page = page;
+        this.storeURL = storeURL;
     }
 
     async addPhysicalItemToCart(): Promise<void> {
@@ -15,14 +18,14 @@ export default class ApiRequestsSender {
         // https://stackoverflow.com/questions/31673587/error-unable-to-verify-the-first-certificate-in-nodejs
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-        const page = this._page;
-        await page.goto(this._storeURL + '/cart.php?action=add&product_id=86');
+        const page = this.page;
+        await page.goto(this.storeURL + '/cart.php?action=add&product_id=86');
         // page.request.post();
         await page.locator('text=Check out').click();
     }
 
     async completeCustomerStepAsGuest(): Promise<void> {
-        const page = this._page;
+        const page = this.page;
         // Fill input[name="email"]
         await page.locator('input[name="email"]').fill('test@robot.com');
         // Click [data-test="customer-continue-as-guest-button"]
@@ -30,7 +33,7 @@ export default class ApiRequestsSender {
     }
 
     async completeShippingStepAndSkipBilling(): Promise<void> {
-        const page = this._page;
+        const page = this.page;
         // Fill [data-test="firstNameInput-text"]
         await page.locator('[data-test="firstNameInput-text"]').fill('BAD');
         // Press Tab

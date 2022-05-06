@@ -1,1 +1,1 @@
-export { expect, test } from './_fixture/CheckoutFixtures';
+export { expect, test } from './fixture/CheckoutFixtures';

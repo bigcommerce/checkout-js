@@ -2,14 +2,14 @@ import { expect, Page } from '@playwright/test';
 
 // TODO: more assertions
 export default class AssertionsHelper {
-    private readonly _page: Page;
+    private readonly page: Page;
 
     constructor(page: Page) {
-        this._page = page;
+        this.page = page;
     }
 
     async shouldSeeOrderConfirmation(): Promise<void> {
-        const page = this._page;
+        const page = this.page;
 
         await page.locator('.orderConfirmation').waitFor({state: 'visible'});
         await expect(page.locator('data-test=order-confirmation-heading')).toContainText('Thank you');

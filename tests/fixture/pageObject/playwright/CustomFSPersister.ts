@@ -2,6 +2,10 @@ import { Har } from '@pollyjs/persister';
 import FSPersister from '@pollyjs/persister-fs';
 
 export default class CustomFSPersister extends FSPersister {
+    /**
+     * @internal
+     * PollyJS(PollyObject) uses this to manipulate HAR data before saving it to a file.
+     */
     static get id(): string {
         return 'CustomFSPersister';
     }
