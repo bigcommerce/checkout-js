@@ -10,6 +10,7 @@ export function getStoreConfig(): StoreConfig {
             billingAddressFields: [],
         },
         checkoutSettings: {
+            checkoutBillingSameAsShippingEnabled: true,
             enableOrderComments: true,
             enableTermsAndConditions: false,
             googleRecaptchaSitekey: 'sitekey',

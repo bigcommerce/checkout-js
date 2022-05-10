@@ -167,11 +167,15 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
             const consignments = data.getConsignments();
             const cart = data.getCart();
+
             const hasMultiShippingEnabled = data.getConfig()?.checkoutSettings?.hasMultiShippingEnabled;
+            const checkoutBillingSameAsShippingEnabled = data.getConfig()?.checkoutSettings?.checkoutBillingSameAsShippingEnabled;
             const isMultiShippingMode = !!cart &&
                 !!consignments &&
                 hasMultiShippingEnabled &&
                 isUsingMultiShipping(consignments, cart.lineItems);
+
+            this.setState({ isBillingSameAsShipping: checkoutBillingSameAsShippingEnabled || true });
 
             if (isMultiShippingMode) {
                 this.setState({ isMultiShippingMode }, this.handleReady);
