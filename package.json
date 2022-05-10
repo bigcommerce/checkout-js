@@ -17,7 +17,10 @@
     "release": "echo 'Please do not release locally, use CircleCi'",
     "release:alpha": "npm run lint && npm run test -- --coverage && npm run build -- --prerelease && npm run release:version",
     "release:version": "git add dist && standard-version -a",
+    "auto-export": "bin/auto-export.js",
+    "prelint": "npm run auto-export",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "pretest": "bin/auto-export.js",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -107,6 +110,7 @@
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^1.7.0",
     "file-loader": "^4.1.0",
+    "glob": "^8.0.1",
     "http-server": "^0.11.1",
     "image-webpack-loader": "^5.0.0",
     "jest": "^24.8.0",

@@ -3,3 +3,5 @@ build
 coverage
 tests/_report/
 tests/_screenshots/
+src/app/generated/
+__temp__
