@@ -1,7 +1,7 @@
 import { Address, Cart, CartChangedError, CheckoutParams, CheckoutSelectors, Consignment, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, FlashMessage, Promotion, RequestOptions, StepTracker } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
-import React, { lazy, Component, ReactNode } from 'react';
+import React, { lazy, Component, ReactNode, useEffect } from 'react';
 
 import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
@@ -25,6 +25,7 @@ import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
+import { trackAddCoupon, trackAddShippingInfo } from '../common/tracking/track';
 
 const Billing = lazy(() => retry(() => import(
     /* webpackChunkName: "billing" */
@@ -183,6 +184,26 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         } catch (error) {
             this.handleUnhandledError(error);
         }
+    }
+
+    componentDidUpdate(): void {
+        console.log("props", this.props);
+        // if shipping has info has been added
+        const shippingInfo = {
+            currency: this.props.cart?.currency.code,
+            value: this.props.cart?.cartAmount,
+            shipping_tier: this.props.consignments?.[0]?.selectedShippingOption?.description,
+            coupons: [],
+            items: [],
+        };
+        shippingInfo.coupons
+        this.props.cart?.coupons?.forEach(coupon => {
+            shippingInfo.coupons.push({
+                coupon: coupon.code,
+                discount: coupon.discountedAmount,
+            });
+        });
+        trackAddShippingInfo(shippingInfo);
     }
 
     render(): ReactNode {
@@ -541,6 +562,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     private handleExpanded: (type: CheckoutStepType) => void = type => {
         if (this.stepTracker) {
            this.stepTracker.trackStepViewed(type);
+           // TO DO: track step view
         }
     };
 

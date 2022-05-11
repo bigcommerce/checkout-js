@@ -42,7 +42,10 @@ interface Item {
 interface ShippingData {
   currency: string;
   value: string | number;
-  coupon: string;
+  coupons: Array<{
+    coupon: string;
+    discount: number;
+  }>;
   shipping_tier: string;
   discount: number;
   items: Item[];
