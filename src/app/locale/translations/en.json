@@ -22,6 +22,7 @@
             "custom_valid_error": "{label} is not valid",
             "edit_address_action": "Edit address",
             "enter_address_action": "Enter a new address",
+            "enter_or_select_address_action": "Enter or select a different address",
             "add_address_heading": "Add Address",
             "save_address_action": "Save Address",
             "first_name_label": "First Name",
