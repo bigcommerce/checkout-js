@@ -1,6 +1,8 @@
 import { Page } from '@playwright/test';
 import { MODE, Polly } from '@pollyjs/core';
+import { API } from '@pollyjs/node-server';
 import FSPersister from '@pollyjs/persister-fs';
+import { includes } from 'lodash';
 import path from 'path';
 import { PlaywrightAdapter } from 'polly-adapter-playwright';
 
@@ -21,9 +23,37 @@ export default class PollyObject {
      */
     private polly: Polly | undefined;
     private readonly mode: MODE;
+    private readonly baseUrl: string;
 
     constructor(mode: MODE) {
         this.mode = mode;
+        this.baseUrl = 'http://localhost:' + process.env.PORT;
+    }
+
+    getCartAndOrderIDs(): { checkoutId: string; orderId: number} {
+        const { recordingsDir } = this.polly?.persister?.options as {recordingsDir: string};
+
+        if (this.polly && recordingsDir) {
+            const api = new API({recordingsDir});
+            // PollyJS bug: The type definition does not match with the actual implementation.
+            // @ts-ignore
+            const entries = api.getRecording(this.polly.recordingId).body?.log?.entries;
+            if (entries) {
+                for (const entry of entries) {
+                    if (includes(entry.request.url, 'api/storefront/orders') && entry.response.content.text) {
+                        const {orderId, cartId} = JSON.parse(entry.response.content.text);
+                        if (orderId && cartId) {
+                            return {checkoutId: cartId, orderId};
+                        }
+                    }
+                }
+                throw new Error('Unable to read checkoutId and orderId from the \'api/storefront/orders\' request recording.');
+            } else {
+                throw new Error('Unable to find any recording from the located HAR file.');
+            }
+        } else {
+            throw new Error('Unable to locate the HAR file folder.');
+        }
     }
 
     start(option: PollyOptions): void {
@@ -63,8 +93,13 @@ export default class PollyObject {
         });
 
         if (mode === 'replay') {
+            this.polly.server.get(this.baseUrl + '/api/storefront/checkout-settings').on('beforeResponse', (_, res) => {
+                const response = res.jsonBody();
+                response.storeConfig.paymentSettings.bigpayBaseUrl = this.baseUrl;
+                res.send(response);
+            });
             this.polly.server.any().on('request', req => {
-                req.url = req.url.replace('http://localhost:' + process.env.PORT, storeURL);
+                req.url = req.url.replace(this.baseUrl, storeURL);
                 // console.log('😃REPLAY ' + req.url);
             });
         }

@@ -6,7 +6,7 @@ import PollyObject from './PollyObject';
 import ServerSideRender from './ServerSideRender';
 
 export enum CheckoutPresets {
-    PaymentStepAsGuest = 'paymentStepAsGuest',
+    PaymentStepAsGuest,
 }
 
 export default class PlaywrightHelper {
@@ -14,6 +14,7 @@ export default class PlaywrightHelper {
     private readonly mode: MODE;
     private readonly page: Page;
     private readonly polly: PollyObject;
+    private readonly server: ServerSideRender;
     private harName: string;
     private storeURL: string;
 
@@ -22,6 +23,7 @@ export default class PlaywrightHelper {
         this.mode = process.env.MODE?.toLowerCase() === 'record'  ? 'record' : 'replay';
         this.isReplay = this.mode === 'replay';
         this.polly = new PollyObject(this.mode);
+        this.server = new ServerSideRender();
         this.storeURL = '';
         this.harName = '';
     }
@@ -39,9 +41,19 @@ export default class PlaywrightHelper {
         });
 
         if (this.isReplay) {
-            // TODO: Server-side rendering
-            const server = new ServerSideRender(this.page);
-            await server.renderCheckoutAndOrderConfirmation();
+            // Server-side rendering
+            const cartAndOrderIDs = this.polly.getCartAndOrderIDs();
+            await this.serveFile({
+                routePath: '/',
+                filePath: './tests/support/checkout.ejs',
+                data: cartAndOrderIDs,
+            });
+            await this.serveFile({
+                routePath: '/order-confirmation',
+                filePath: './tests/support/orderConfirmation.ejs',
+                data: cartAndOrderIDs,
+            });
+            await page.route(/\/products\/.*\/images\//, route => route.fulfill({ status: 200, path: './tests/support/product.jpg' }));
             await page.goto('/');
         } else {
             // TODO: Use direct API calls to create a cart
@@ -60,6 +72,15 @@ export default class PlaywrightHelper {
             this.polly.play();
             await page.goto(this.storeURL + '/checkout');
         }
+    }
+
+    async serveFile({routePath, filePath, data}: {routePath: string; filePath: string; data?: {}}): Promise<void> {
+        const htmlStr = await this.server.renderFile({filePath, data});
+        await this.page.route(routePath, route => route.fulfill({
+            status: 200,
+            contentType: 'text/html',
+            body: htmlStr,
+        }));
     }
 
     async stopAll(): Promise<void> {

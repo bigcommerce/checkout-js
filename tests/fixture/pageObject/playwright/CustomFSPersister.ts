@@ -1,5 +1,6 @@
 import { Har } from '@pollyjs/persister';
 import FSPersister from '@pollyjs/persister-fs';
+import { includes } from 'lodash';
 
 export default class CustomFSPersister extends FSPersister {
     /**
@@ -22,15 +23,22 @@ export default class CustomFSPersister extends FSPersister {
         ];
 
         data.log.entries.forEach( entry => {
+            if (includes(entry.request.url, 'api/storefront/checkout-settings')) {
+                if (entry.response.content.text) {
+                    const response = JSON.parse(entry.response.content.text);
+                    response.storeConfig.paymentSettings.bigpayBaseUrl = '*';
+                    entry.response.content.text = JSON.stringify(response);
+                }
+            }
             entry.request.headers = entry.request.headers.map((header: { name: string; value: string }) => {
-                if (sensitiveHeaderNames.includes(header.name)) {
+                if (includes(sensitiveHeaderNames, header.name)) {
                     return { ...header, value: dummyData };
                 }
 
                 return header;
             });
             entry.response.headers = entry.response.headers.map((header: { name: string; value: string }) => {
-                if (sensitiveHeaderNames.includes(header.name)) {
+                if (includes(sensitiveHeaderNames, header.name)) {
                     return { ...header, value: dummyData };
                 }
 

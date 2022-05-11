@@ -5,7 +5,7 @@ import { AssertionsHelper, CheckoutPresets, PlaywrightHelper } from '.';
 export default class PaymentStep {
     assertions: AssertionsHelper;
     isReplay: boolean;
-    private playwright: PlaywrightHelper;
+    playwright: PlaywrightHelper;
 
     constructor(page: Page) {
         this.assertions = new AssertionsHelper(page);

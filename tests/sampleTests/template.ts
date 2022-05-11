@@ -11,7 +11,6 @@ test.describe('xxxxxxxxxxxxxxxxxxxxxxx', () => {
         // Optional: Serve additional static files with Playwright. Mock API endpoints via Playwright.
         // Only execute in the replay mode
         if (paymentStep.isReplay) {
-            // await page.route('**/checkout/payment/hosted-field?**', route => route.fulfill( {status: 200, path: './tests/sampleTests/support/hostedField.html' } ));
             // await page.route('**/api/public/v1/orders/payments', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify(submitPaymentResult)} ));
         }
 

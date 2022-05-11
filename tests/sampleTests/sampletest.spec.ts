@@ -1,19 +1,14 @@
 import { test } from '../';
 
-// Uncommmnet to continue in a headed browser
-// test.use({
-//     headless: false,
-//     viewport: { width: 1000, height: 1000 },
-// });
-
 test.describe('Sample Test Group', () => {
-
     test('Bigpay Test Payment Provider is working', async ({paymentStep, page}) => {
-
         await paymentStep.goto({ storeURL: 'https://my-dev-store-745516528.store.bcdev', harName: 'sample ' });
 
         if (paymentStep.isReplay) {
-            await page.route('/checkout/payment/hosted-field?*', route => route.fulfill( {status: 200, path: './tests/sampleTests/support/hostedField.html' } ));
+            await paymentStep.playwright.serveFile({
+                routePath: '/checkout/payment/hosted-field?*',
+                filePath: './tests/sampleTests/support/hostedField.ejs',
+            });
             await page.route('/api/public/v1/orders/payments', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify({
                     status: 'ok',
                     three_ds_result: {
