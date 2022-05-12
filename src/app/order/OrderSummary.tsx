@@ -1,6 +1,8 @@
 import { LineItemMap, ShopperCurrency, StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { useMemo, FunctionComponent, ReactNode } from 'react';
 
+import withRecurly from '../recurly/withRecurly';
+
 import removeBundledItems from './removeBundledItems';
 import OrderSummaryHeader from './OrderSummaryHeader';
 import OrderSummaryItems from './OrderSummaryItems';
@@ -15,6 +17,7 @@ export interface OrderSummaryProps {
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrency;
     additionalLineItems?: ReactNode;
+    hasSubscription?: boolean;
 }
 
 const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsProps> = ({
@@ -24,6 +27,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     additionalLineItems,
     lineItems,
     total,
+    hasSubscription,
     ...orderSummarySubtotalsProps
 }) => {
     const nonBundledLineItems = useMemo(() => (
@@ -53,7 +57,18 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                 storeCurrencyCode={ storeCurrency.code }
             />
         </OrderSummarySection>
+        { hasSubscription && <section className="cart-section optimizedCheckout-orderSummary-cartSection">
+            <div data-test="cart-total">
+                <div aria-live="polite" className="cart-priceItem optimizedCheckout-contentPrimary cart-priceItem--total">
+                    <span className="cart-priceItem-label">
+                        <span data-test="cart-price-label">
+                            Your order contains a subscription. This reoccurs every four weeks. You can cancel any time.
+                        </span>
+                    </span>
+                </div>
+            </div>
+        </section> }
     </article>;
 };
 
-export default OrderSummary;
+export default withRecurly(props => props)(OrderSummary);
