@@ -28,9 +28,9 @@ export function trackAddCoupon(coupon: string, discount: number) {
 
 interface Item {
   item_name: string;
-  item_id: number | string;
+  item_id?: number | string;
   item_variant?: string;
-  currency: string;
+  currency?: string;
   index?: number;
   item_brand?: string;
   item_list_id?: number;
@@ -39,15 +39,14 @@ interface Item {
   quantity: number;
 }
 
-interface ShippingData {
-  currency: string;
-  value: string | number;
+export interface ShippingData {
+  currency?: string;
+  value?: string | number;
+  shipping_tier?: string;
   coupons: Array<{
     coupon: string;
     discount: number;
   }>;
-  shipping_tier: string;
-  discount: number;
   items: Item[];
 }
 

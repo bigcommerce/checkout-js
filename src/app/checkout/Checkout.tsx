@@ -25,7 +25,7 @@ import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
-import { trackAddCoupon, trackAddShippingInfo } from '../common/tracking/track';
+import { ShippingData, trackAddCoupon, trackAddShippingInfo } from '../common/tracking/track';
 
 const Billing = lazy(() => retry(() => import(
     /* webpackChunkName: "billing" */
@@ -187,47 +187,47 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     }
 
     componentDidUpdate(previousProps: any): void {
-        console.log("props", this.props);
+        const {cart, consignments} = this.props;
+
         // if coupon has been added
-        if ( this.props.cart?.coupons.length && previousProps.cart?.coupons.length !== this.props.cart?.coupons.length ) {
-            const addedCoupon = this.props.cart?.coupons[this.props.cart?.coupons.length - 1];
+        if ( cart?.coupons.length && previousProps.cart?.coupons.length !== cart?.coupons.length ) {
+            const addedCoupon = cart?.coupons[cart?.coupons.length - 1];
             trackAddCoupon(addedCoupon.code, addedCoupon.discountedAmount);
         }
         // if shipping tier has changed
-        if ( previousProps?.consignments?.[0]?.selectedShippingOption?.description !== this.props.consignments?.[0]?.selectedShippingOption?.description ) {
-            const shippingInfo = {
-                currency: this.props.cart?.currency.code,
-                value: this.props.cart?.cartAmount,
-                shipping_tier: this.props.consignments?.[0]?.selectedShippingOption?.description,
+        if ( previousProps.consignments?.[0].selectedShippingOption?.description !== consignments?.[0].selectedShippingOption?.description ) {
+            const shippingInfo: ShippingData = {
+                currency: cart?.currency.code,
+                value: cart?.cartAmount,
+                shipping_tier: consignments?.[0].selectedShippingOption?.description,
                 coupons: [],
                 items: [],
             };
-            shippingInfo.coupons
-            this.props.cart?.coupons?.forEach(coupon => {
+            cart?.coupons?.forEach(coupon => {
                 shippingInfo.coupons.push({
                     coupon: coupon.code,
                     discount: coupon.discountedAmount,
                 });
             });
             const cartItemLists = [
-                this.props.cart?.lineItems?.customItems,
-                this.props.cart?.lineItems?.digitalItems,
-                this.props.cart?.lineItems?.giftCertificates,
-                this.props.cart?.lineItems?.physicalItems
+                cart?.lineItems.customItems,
+                cart?.lineItems.digitalItems,
+                cart?.lineItems.giftCertificates,
+                cart?.lineItems.physicalItems,
             ];
             cartItemLists.forEach(itemList => {
                 itemList?.forEach(item => {
                     shippingInfo.items.push({
-                        item_id: item.productId,
+                        item_id: 'productId' in item ? item.productId : undefined,
                         item_name: item.name,
-                        item_variant: item.options?.[0]?.value,
-                        currency: this.props.cart?.currency.code,
-                        index: null,
-                        item_brand: item.brand ?? 'MitoQ',
-                        item_list_id: null,
-                        item_list_name: null,
-                        price: item.salePrice,
-                        quantity: item.quantity,
+                        item_variant: 'options' in item ? item.options?.[0]?.value : undefined,
+                        currency: cart?.currency.code,
+                        index: undefined,
+                        item_brand: 'brand' in item ? item.brand ?? 'MitoQ' : undefined,
+                        item_list_id: undefined,
+                        item_list_name: undefined,
+                        price: 'salePrice' in item ? item.salePrice : 'listPrice' in item ? item.listPrice : item.amount,
+                        quantity: 'quantity' in item ? item.quantity : 1,
                     });
                 });
             });
