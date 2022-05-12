@@ -25,7 +25,7 @@ import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
-import { ShippingData, trackAddCoupon, trackAddShippingInfo } from '../common/tracking/track';
+import { ShippingData, trackAddCoupon, trackAddShippingInfo, trackCheckoutProgress } from '../common/tracking/track';
 
 const Billing = lazy(() => retry(() => import(
     /* webpackChunkName: "billing" */
@@ -591,7 +591,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     private handleExpanded: (type: CheckoutStepType) => void = type => {
         if (this.stepTracker) {
            this.stepTracker.trackStepViewed(type);
-           // TO DO: track step view
+        //    console.log('step viewed', type);
+        //    trackCheckoutProgress(type);
         }
     };
 
