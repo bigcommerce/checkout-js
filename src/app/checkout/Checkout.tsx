@@ -186,24 +186,31 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         }
     }
 
-    componentDidUpdate(): void {
+    componentDidUpdate(previousProps: any): void {
         console.log("props", this.props);
-        // if shipping has info has been added
-        const shippingInfo = {
-            currency: this.props.cart?.currency.code,
-            value: this.props.cart?.cartAmount,
-            shipping_tier: this.props.consignments?.[0]?.selectedShippingOption?.description,
-            coupons: [],
-            items: [],
-        };
-        shippingInfo.coupons
-        this.props.cart?.coupons?.forEach(coupon => {
-            shippingInfo.coupons.push({
-                coupon: coupon.code,
-                discount: coupon.discountedAmount,
+        // if coupon has been added
+        if ( this.props.cart?.coupons.length && previousProps.cart?.coupons.length !== this.props.cart?.coupons.length ) {
+            const addedCoupon = this.props.cart?.coupons[this.props.cart?.coupons.length - 1];
+            trackAddCoupon(addedCoupon.code, addedCoupon.discountedAmount);
+        }
+        // if shipping tier has changed
+        if ( previousProps?.consignments?.[0]?.selectedShippingOption?.description !== this.props.consignments?.[0]?.selectedShippingOption?.description ) {
+            const shippingInfo = {
+                currency: this.props.cart?.currency.code,
+                value: this.props.cart?.cartAmount,
+                shipping_tier: this.props.consignments?.[0]?.selectedShippingOption?.description,
+                coupons: [],
+                items: [],
+            };
+            shippingInfo.coupons
+            this.props.cart?.coupons?.forEach(coupon => {
+                shippingInfo.coupons.push({
+                    coupon: coupon.code,
+                    discount: coupon.discountedAmount,
+                });
             });
-        });
-        trackAddShippingInfo(shippingInfo);
+            trackAddShippingInfo(shippingInfo);
+        }
     }
 
     render(): ReactNode {
