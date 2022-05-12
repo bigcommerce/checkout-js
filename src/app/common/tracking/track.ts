@@ -91,7 +91,7 @@ interface LoginData {
   };
 }
 
-export function LoginData(userId: string | number, userEmail: string) {
+export function trackLoginData(userId: string | number, userEmail: string) {
   const data: LoginData = {
     event: 'login',
     user: {

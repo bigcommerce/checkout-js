@@ -1,11 +1,12 @@
 import { Address, Cart, CartChangedError, CheckoutParams, CheckoutSelectors, Consignment, CustomItem, DigitalItem, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, FlashMessage, GiftCertificateItem, PhysicalItem, Promotion, RequestOptions, StepTracker } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
-import React, { lazy, Component, ReactNode, useEffect } from 'react';
+import React, { lazy, Component, ReactNode } from 'react';
 
 import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
 import { isCustomError, CustomError, ErrorLogger, ErrorModal } from '../common/error';
+import { trackAddCoupon, trackAddShippingInfo, trackCheckoutProgress, ShippingData } from '../common/tracking';
 import { retry } from '../common/utility';
 import { CheckoutSuggestion, CustomerInfo, CustomerSignOutEvent, CustomerViewType } from '../customer';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
@@ -25,7 +26,6 @@ import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
-import { ShippingData, trackAddCoupon, trackAddShippingInfo, trackCheckoutProgress } from '../common/tracking/track';
 
 const Billing = lazy(() => retry(() => import(
     /* webpackChunkName: "billing" */
