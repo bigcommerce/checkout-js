@@ -195,11 +195,11 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             trackAddCoupon(addedCoupon.code, addedCoupon.discountedAmount);
         }
         // if shipping tier has changed
-        if ( previousProps.consignments?.[0].selectedShippingOption?.description !== consignments?.[0].selectedShippingOption?.description ) {
+        if ( previousProps.consignments?.[0]?.selectedShippingOption?.description !== consignments?.[0]?.selectedShippingOption?.description ) {
             const shippingInfo: ShippingData = {
                 currency: cart?.currency.code,
                 value: cart?.cartAmount,
-                shipping_tier: consignments?.[0].selectedShippingOption?.description,
+                shipping_tier: consignments?.[0]?.selectedShippingOption?.description,
                 coupons: [],
                 items: [],
             };
@@ -222,10 +222,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         item_name: item.name,
                         item_variant: 'options' in item ? item.options?.[0]?.value : undefined,
                         currency: cart?.currency.code,
-                        index: undefined,
                         item_brand: 'brand' in item ? item.brand ?? 'MitoQ' : undefined,
-                        item_list_id: undefined,
-                        item_list_name: undefined,
                         price: 'salePrice' in item ? item.salePrice : 'listPrice' in item ? item.listPrice : item.amount,
                         quantity: 'quantity' in item ? item.quantity : 1,
                     });
@@ -591,8 +588,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     private handleExpanded: (type: CheckoutStepType) => void = type => {
         if (this.stepTracker) {
            this.stepTracker.trackStepViewed(type);
-        //    console.log('step viewed', type);
-        //    trackCheckoutProgress(type);
+           console.log('step viewed', type);
+           trackCheckoutProgress(type);
         }
     };
 
