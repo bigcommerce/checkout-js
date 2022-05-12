@@ -209,6 +209,28 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                     discount: coupon.discountedAmount,
                 });
             });
+            const cartItemLists = [
+                this.props.cart?.lineItems?.customItems,
+                this.props.cart?.lineItems?.digitalItems,
+                this.props.cart?.lineItems?.giftCertificates,
+                this.props.cart?.lineItems?.physicalItems
+            ];
+            cartItemLists.forEach(itemList => {
+                itemList?.forEach(item => {
+                    shippingInfo.items.push({
+                        item_id: item.productId,
+                        item_name: item.name,
+                        item_variant: item.options?.[0]?.value,
+                        currency: this.props.cart?.currency.code,
+                        index: null,
+                        item_brand: item.brand ?? 'MitoQ',
+                        item_list_id: null,
+                        item_list_name: null,
+                        price: item.salePrice,
+                        quantity: item.quantity,
+                    });
+                });
+            });
             trackAddShippingInfo(shippingInfo);
         }
     }
