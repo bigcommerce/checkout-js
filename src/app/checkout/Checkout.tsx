@@ -588,7 +588,6 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     private handleExpanded: (type: CheckoutStepType) => void = type => {
         if (this.stepTracker) {
            this.stepTracker.trackStepViewed(type);
-           console.log('step viewed', type);
            trackCheckoutProgress(type);
         }
     };
