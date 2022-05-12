@@ -1,4 +1,4 @@
-import { Address, Cart, CartChangedError, CheckoutParams, CheckoutSelectors, Consignment, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, FlashMessage, Promotion, RequestOptions, StepTracker } from '@bigcommerce/checkout-sdk';
+import { Address, Cart, CartChangedError, CheckoutParams, CheckoutSelectors, Consignment, CustomItem, DigitalItem, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, FlashMessage, GiftCertificateItem, PhysicalItem, Promotion, RequestOptions, StepTracker } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { lazy, Component, ReactNode, useEffect } from 'react';
@@ -216,7 +216,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 cart?.lineItems.physicalItems,
             ];
             cartItemLists.forEach(itemList => {
-                itemList?.forEach(item => {
+                itemList?.forEach((item: CustomItem | DigitalItem | GiftCertificateItem | PhysicalItem) => {
                     shippingInfo.items.push({
                         item_id: 'productId' in item ? item.productId : undefined,
                         item_name: item.name,
