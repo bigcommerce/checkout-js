@@ -86,12 +86,12 @@ export function trackCheckoutProgress(stepName: string) {
 interface LoginData {
   event: string;
   user: {
-    user_id: string | number;
-    email: string;
+    user_id: number | undefined;
+    email: string | undefined;
   };
 }
 
-export function trackLoginData(userId: string | number, userEmail: string) {
+export function trackLoginData(userId: number | undefined, userEmail: string | undefined) {
   const data: LoginData = {
     event: 'login',
     user: {
@@ -109,12 +109,12 @@ interface SignUpData {
     sign_up_location: string;
   };
   user: {
-    user_id: string | number;
-    email: string;
+    user_id: number | undefined;
+    email: string | undefined;
   };
 }
 
-export function trackSignUp(userId: string | number, userEmail: string) {
+export function trackSignUp(userId: number | undefined, userEmail: string | undefined) {
   const data: SignUpData = {
     event: 'sign_up',
     event_info: {

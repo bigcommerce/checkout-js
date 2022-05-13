@@ -13,6 +13,7 @@ import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
+import { trackLoginData, trackSignUp } from '../common/tracking';
 import withRecurly from '../recurly/withRecurly';
 import { RecurlyContextProps } from '../recurly/RecurlyContext';
 import { LoadingOverlay } from '../ui/loading';
@@ -412,6 +413,11 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Rec
             onSignIn();
 
             this.draftEmail = undefined;
+            const {
+                cart,
+            } = this.props;
+            console.log('info', cart?.customerId, cart?.email);
+            trackLoginData(cart?.customerId, cart?.email);
         } catch (error) {
             onSignInError(error);
         }
@@ -426,6 +432,10 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Rec
         await createAccount(mapCreateAccountFromFormValues(values));
 
         onAccountCreated();
+        const {
+            cart,
+        } = this.props;
+        trackSignUp(cart?.customerId, cart?.email);
     };
 
     private showCreateAccount: () => void = () => {
