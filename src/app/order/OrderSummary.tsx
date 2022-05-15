@@ -62,7 +62,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                 <div aria-live="polite" className="cart-priceItem optimizedCheckout-contentPrimary cart-priceItem--total">
                     <span className="cart-priceItem-label">
                         <span data-test="cart-price-label">
-                            Your order contains a subscription. This reoccurs every four weeks. You can cancel any time.
+                            Your order contains a subscription. This reoccurs every 30 days. You can cancel any time.
                         </span>
                     </span>
                 </div>
