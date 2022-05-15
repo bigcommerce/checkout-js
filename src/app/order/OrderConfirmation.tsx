@@ -1,10 +1,11 @@
-import { CheckoutSelectors, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, Order, ShopperConfig, StepTracker, StoreConfig } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, CustomItem, DigitalItem, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, GiftCertificateItem, Order, PhysicalItem, ShopperConfig, StepTracker, StoreConfig } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';
 import React, { lazy, Component, Fragment, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
 import { ErrorLogger, ErrorModal } from '../common/error';
+import { trackPurchase, OrderData } from '../common/tracking';
 import { retry } from '../common/utility';
 import { getPasswordRequirementsFromConfig } from '../customer';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
@@ -84,6 +85,46 @@ class OrderConfirmation extends Component<
                 messenger.postFrameLoaded({ contentId: containerId });
 
                 createStepTracker().trackOrderComplete();
+
+                const {config, order} = this.props;
+                const purchaseData: OrderData = {
+                    purchase: {
+                        transaction_id: orderId,
+                        affiliation: config?.storeProfile.storeName,
+                        value: order?.orderAmount,
+                        tax: order?.taxTotal,
+                        shipping: order?.shippingCostTotal,
+                        currency: order?.currency.code,
+                        coupons: [],
+                        items: [],
+                    },
+                };
+                order?.coupons?.forEach(coupon => {
+                    purchaseData.purchase.coupons.push({
+                        coupon: coupon.code,
+                        discount: coupon.discountedAmount,
+                    });
+                });
+                const cartItemLists = [
+                    order?.lineItems.customItems,
+                    order?.lineItems.digitalItems,
+                    order?.lineItems.giftCertificates,
+                    order?.lineItems.physicalItems,
+                ];
+                cartItemLists.forEach(itemList => {
+                    itemList?.forEach((item: CustomItem | DigitalItem | GiftCertificateItem | PhysicalItem) => {
+                        purchaseData.purchase.items.push({
+                            item_id: 'productId' in item ? item.productId : undefined,
+                            item_name: item.name,
+                            item_variant: 'options' in item ? item.options?.[0]?.value : undefined,
+                            currency: order?.currency.code,
+                            item_brand: 'brand' in item ? item.brand ?? 'MitoQ' : undefined,
+                            price: 'salePrice' in item ? item.salePrice : 'listPrice' in item ? item.listPrice : item.amount,
+                            quantity: 'quantity' in item ? item.quantity : 1,
+                        });
+                    });
+                });
+                trackPurchase(purchaseData);
             })
             .catch(this.handleUnhandledError);
     }

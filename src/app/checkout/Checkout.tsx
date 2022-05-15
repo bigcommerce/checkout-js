@@ -1,4 +1,4 @@
-import { Address, Cart, CartChangedError, CheckoutParams, CheckoutSelectors, Consignment, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, FlashMessage, Promotion, RequestOptions, StepTracker } from '@bigcommerce/checkout-sdk';
+import { Address, Cart, CartChangedError, CheckoutParams, CheckoutSelectors, Consignment, CustomItem, DigitalItem, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, FlashMessage, GiftCertificateItem, PhysicalItem, Promotion, RequestOptions, StepTracker } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { lazy, Component, ReactNode } from 'react';
@@ -6,6 +6,7 @@ import React, { lazy, Component, ReactNode } from 'react';
 import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
 import { isCustomError, CustomError, ErrorLogger, ErrorModal } from '../common/error';
+import { trackAddCoupon, trackAddShippingInfo, trackCheckoutProgress, ShippingData } from '../common/tracking';
 import { retry } from '../common/utility';
 import { CheckoutSuggestion, CustomerInfo, CustomerSignOutEvent, CustomerViewType } from '../customer';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
@@ -182,6 +183,52 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             }
         } catch (error) {
             this.handleUnhandledError(error);
+        }
+    }
+
+    componentDidUpdate(previousProps: any): void {
+        const {cart, consignments} = this.props;
+
+        // if coupon has been added
+        if ( cart?.coupons.length && previousProps.cart?.coupons.length !== cart?.coupons.length ) {
+            const addedCoupon = cart?.coupons[cart?.coupons.length - 1];
+            trackAddCoupon(addedCoupon.code, addedCoupon.discountedAmount);
+        }
+        // if shipping tier has changed
+        if ( previousProps.consignments?.[0]?.selectedShippingOption?.description !== consignments?.[0]?.selectedShippingOption?.description ) {
+            const shippingInfo: ShippingData = {
+                currency: cart?.currency.code,
+                value: cart?.cartAmount,
+                shipping_tier: consignments?.[0]?.selectedShippingOption?.description,
+                coupons: [],
+                items: [],
+            };
+            cart?.coupons?.forEach(coupon => {
+                shippingInfo.coupons.push({
+                    coupon: coupon.code,
+                    discount: coupon.discountedAmount,
+                });
+            });
+            const cartItemLists = [
+                cart?.lineItems.customItems,
+                cart?.lineItems.digitalItems,
+                cart?.lineItems.giftCertificates,
+                cart?.lineItems.physicalItems,
+            ];
+            cartItemLists.forEach(itemList => {
+                itemList?.forEach((item: CustomItem | DigitalItem | GiftCertificateItem | PhysicalItem) => {
+                    shippingInfo.items.push({
+                        item_id: 'productId' in item ? item.productId : undefined,
+                        item_name: item.name,
+                        item_variant: 'options' in item ? item.options?.[0]?.value : undefined,
+                        currency: cart?.currency.code,
+                        item_brand: 'brand' in item ? item.brand ?? 'MitoQ' : undefined,
+                        price: 'salePrice' in item ? item.salePrice : 'listPrice' in item ? item.listPrice : item.amount,
+                        quantity: 'quantity' in item ? item.quantity : 1,
+                    });
+                });
+            });
+            trackAddShippingInfo(shippingInfo);
         }
     }
 
@@ -541,6 +588,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     private handleExpanded: (type: CheckoutStepType) => void = type => {
         if (this.stepTracker) {
            this.stepTracker.trackStepViewed(type);
+           trackCheckoutProgress(type);
         }
     };
 
