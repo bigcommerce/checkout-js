@@ -83,6 +83,35 @@ export function trackCheckoutProgress(stepName: string) {
   track(data);
 }
 
+export interface OrderData {
+  purchase: {
+    transaction_id: string | number;
+    affiliation: string | undefined;
+    value: number | undefined;
+    tax: number | undefined;
+    shipping: number | string | undefined;
+    currency: string | undefined;
+    coupons: Array<{
+      coupon: string;
+      discount: number;
+    }>;
+    items: Item[];
+  };
+}
+interface PurchaseData {
+  event: string;
+  ecommerce: OrderData;
+}
+
+export function trackPurchase(info: OrderData) {
+  const data: PurchaseData = {
+    event: 'purchase',
+    ecommerce: info,
+  };
+  track({ ecommerce: null });
+  track(data);
+}
+
 interface LoginData {
   event: string;
   user: {
