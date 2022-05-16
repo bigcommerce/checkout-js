@@ -1,25 +1,25 @@
 {
   "version": 2,
-  "appVersion": "1.203.1",
+  "appVersion": "1.206.0",
   "dynamicChunks": {
     "js": [
-      "billing-b5a28095.js",
-      "cart-summary-drawer-2ac6dcc6.js",
-      "cart-summary-3e699e0f.js",
-      "customer-17c6c15a.js",
-      "order-summary-drawer-b8bd8e6d.js",
-      "order-summary-72d6ed2b.js",
-      "payment-688b49e2.js",
-      "shipping-2d8c79ff.js",
-      "translations-de-1bf7fa61.js",
-      "translations-es-mx-28ebf24d.js",
-      "translations-es-ba288359.js",
-      "translations-fr-9acf8732.js",
-      "translations-it-72e450cd.js",
-      "translations-nl-3b1a21f9.js",
-      "translations-pt-br-f68cc502.js",
-      "translations-pt-5ac1cb17.js",
-      "translations-sv-63f05a9e.js"
+      "billing-046edccc.js",
+      "cart-summary-drawer-502bb371.js",
+      "cart-summary-3b57a562.js",
+      "customer-96c21e0e.js",
+      "order-summary-drawer-92e3359d.js",
+      "order-summary-c108e1eb.js",
+      "payment-6b47ebcf.js",
+      "shipping-1bd43146.js",
+      "translations-de-99d9f420.js",
+      "translations-es-mx-4b0e66c6.js",
+      "translations-es-fb8c40e7.js",
+      "translations-fr-bd0ac41c.js",
+      "translations-it-0c8a67df.js",
+      "translations-nl-2e0c6a53.js",
+      "translations-pt-br-f3cc54dc.js",
+      "translations-pt-3ff4aeb6.js",
+      "translations-sv-9f3af016.js"
     ],
     "css": [
       "customer-1f83e095.css",
@@ -33,12 +33,12 @@
     ]
   },
   "js": [
-    "runtime-d1c8acf6.js",
-    "polyfill~checkout-7d61f60c.js",
-    "transients~checkout-d69a669a.js",
-    "sentry~checkout-a1295663.js",
-    "vendors~checkout-9288ce82.js",
-    "checkout-5248544d.js"
+    "runtime-0e64a46e.js",
+    "polyfill~checkout-8c823daa.js",
+    "transients~checkout-3453867f.js",
+    "sentry~checkout-63562c93.js",
+    "vendors~checkout-07baa650.js",
+    "checkout-e572e5f9.js"
   ],
   "css": [
     "checkout-9f38eb30.css"
