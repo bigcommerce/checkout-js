@@ -1,4 +1,5 @@
 import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { noop } from 'lodash';
 import React, { useCallback, FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
@@ -16,6 +17,7 @@ const StripeUPEPaymentMethod: FunctionComponent<StripePaymentMethodProps & WithI
     initializePayment,
     method,
     storeUrl,
+    onUnhandledError = noop,
     ...rest
     }) => {
     const containerId = `stripe-${method.id}-component-field`;
@@ -38,9 +40,10 @@ const StripeUPEPaymentMethod: FunctionComponent<StripePaymentMethodProps & WithI
                     fieldInnerShadow: formInput['box-shadow'],
                     fieldBorder: formInput['border-color'],
                 },
+                onError: onUnhandledError,
             },
         });
-    }, [initializePayment, containerId]);
+    }, [initializePayment, containerId, onUnhandledError]);
 
     const getStylesFromElement = (
         id: string,
