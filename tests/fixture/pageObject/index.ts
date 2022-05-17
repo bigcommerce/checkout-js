@@ -1,2 +1,2 @@
-export { default as AssertionsHelper } from './playwright/AssertionsHelper';
-export { default as PlaywrightHelper, CheckoutPresets } from './playwright/PlaywrightHelper';
+export { default as PlaywrightHelper, ReplayConfiguration } from './playwright/PlaywrightHelper';
+export { default as PaymentStepAsGuestPreset } from './playwright/checkoutPagePresets/PaymentStepAsGuest';

@@ -1,7 +1,7 @@
 import { expect, Page } from '@playwright/test';
 
 // TODO: more assertions
-export default class AssertionsHelper {
+export default class Assertions {
     private readonly page: Page;
 
     constructor(page: Page) {

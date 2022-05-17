@@ -10,7 +10,7 @@ export default class ServerSideRender {
         this.baseUrl = 'http://localhost:' + process.env.PORT;
     }
 
-    async renderFile({filePath, data}: {filePath: string; data?: {}}): Promise<string> {
+    async renderFile(filePath: string, data?: {}): Promise<string> {
         return await ejs.renderFile(filePath, { ...data, baseUrl: this.baseUrl});
     }
 }

@@ -1,15 +1,16 @@
 import { test } from '../';
 
 test.describe('Sample Test Group', () => {
-    test('Bigpay Test Payment Provider is working', async ({paymentStep, page}) => {
-        await paymentStep.goto({ storeURL: 'https://my-dev-store-745516528.store.bcdev', harName: 'sample ' });
-
-        if (paymentStep.isReplay) {
-            await paymentStep.playwright.serveFile({
+    test('Bigpay Test Payment Provider is working', async ({assertions, paymentStep, page}) => {
+        await paymentStep.goto({storeURL: 'https://my-dev-store-745516528.store.bcdev', harName: 'sample '});
+        await paymentStep.replay({
+            file: [{
                 routePath: '/checkout/payment/hosted-field?*',
                 filePath: './tests/sampleTests/support/hostedField.ejs',
-            });
-            await page.route('/api/public/v1/orders/payments', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify({
+            }],
+            json: [{
+                routePath: '/api/public/v1/orders/payments',
+                data: {
                     status: 'ok',
                     three_ds_result: {
                         acs_url: null,
@@ -18,9 +19,9 @@ test.describe('Sample Test Group', () => {
                         callback_url: null,
                     },
                     errors: [],
-                }
-            )}));
-        }
+                },
+            }],
+        });
 
         // Playwright scripts
         // await page.pause();
@@ -46,6 +47,6 @@ test.describe('Sample Test Group', () => {
         await page.locator('text=Place Order').click();
 
         // Assertions
-        await paymentStep.assertions.shouldSeeOrderConfirmation();
+        await assertions.shouldSeeOrderConfirmation();
     });
 });

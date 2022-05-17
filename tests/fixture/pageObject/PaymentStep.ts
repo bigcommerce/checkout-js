@@ -1,20 +1,26 @@
 import { Page } from '@playwright/test';
 
-import { AssertionsHelper, CheckoutPresets, PlaywrightHelper } from '.';
+import { PaymentStepAsGuestPreset, PlaywrightHelper, ReplayConfiguration } from '.';
 
 export default class PaymentStep {
-    assertions: AssertionsHelper;
-    isReplay: boolean;
-    playwright: PlaywrightHelper;
+    private readonly playwright: PlaywrightHelper;
+    private readonly page: Page;
 
     constructor(page: Page) {
-        this.assertions = new AssertionsHelper(page);
-        this.isReplay = process.env.MODE?.toLowerCase() === 'replay';
+        this.page = page;
         this.playwright = new PlaywrightHelper(page);
     }
 
+    async replay(replayConfiguration: ReplayConfiguration): Promise<void> {
+        this.playwright.replay(replayConfiguration);
+    }
+
     async goto({ storeURL, harName }: { storeURL: string; harName: string }): Promise<void> {
-        await this.playwright.goto({ storeURL, harName, preset: CheckoutPresets.PaymentStepAsGuest });
+        await this.playwright.goto({
+            storeURL,
+            harName,
+            preset: new PaymentStepAsGuestPreset(this.page, storeURL),
+        });
     }
 
     async close(): Promise<void> {

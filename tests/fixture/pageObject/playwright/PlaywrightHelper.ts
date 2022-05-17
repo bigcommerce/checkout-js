@@ -1,12 +1,22 @@
 import { Page } from '@playwright/test';
 import { MODE } from '@pollyjs/core';
 
-import ApiRequestsSender from './ApiRequestsSender';
+import { CheckoutPagePreset } from './checkoutPagePresets';
 import PollyObject from './PollyObject';
 import ServerSideRender from './ServerSideRender';
 
-export enum CheckoutPresets {
-    PaymentStepAsGuest,
+interface ApiRoutingRule {
+    routePath: string;
+    data?: {};
+}
+
+interface PageRoutingRule extends ApiRoutingRule {
+    filePath: string;
+}
+
+export interface ReplayConfiguration {
+    file: PageRoutingRule[];
+    json: ApiRoutingRule[];
 }
 
 export default class PlaywrightHelper {
@@ -28,7 +38,7 @@ export default class PlaywrightHelper {
         this.harName = '';
     }
 
-    async goto({ storeURL, harName, preset }: { storeURL: string; harName: string; preset: CheckoutPresets }): Promise<void> {
+    async goto({ storeURL, harName, preset }: { storeURL: string; harName: string; preset: CheckoutPagePreset }): Promise<void> {
         const page = this.page;
         this.storeURL = storeURL;
         this.harName = harName;
@@ -58,33 +68,42 @@ export default class PlaywrightHelper {
         } else {
             // TODO: Use direct API calls to create a cart
             this.polly.pause();
-            const api = new ApiRequestsSender(this.page, storeURL);
-            switch (preset) {
-                // TODO: more presets
-                case CheckoutPresets.PaymentStepAsGuest:
-                    await api.addPhysicalItemToCart();
-                    await api.completeCustomerStepAsGuest();
-                    await api.completeShippingStepAndSkipBilling();
-                    break;
-                default:
-                    await api.addPhysicalItemToCart();
-            }
+            await preset.apply();
             this.polly.play();
             await page.goto(this.storeURL + '/checkout');
         }
     }
 
-    async serveFile({routePath, filePath, data}: {routePath: string; filePath: string; data?: {}}): Promise<void> {
-        const htmlStr = await this.server.renderFile({filePath, data});
-        await this.page.route(routePath, route => route.fulfill({
-            status: 200,
-            contentType: 'text/html',
-            body: htmlStr,
-        }));
+    async replay({file, json}: ReplayConfiguration): Promise<void> {
+        if (this.isReplay) {
+            if (file) {
+                for (const rule of file) {
+                    await this.serveFile(rule);
+                }
+            }
+            if (json) {
+                for (const rule of json) {
+                    await this.page.route(rule.routePath, route => route.fulfill({
+                        status: 200,
+                        contentType: 'application/json',
+                        body: JSON.stringify(rule.data),
+                    }));
+                }
+            }
+        }
     }
 
     async stopAll(): Promise<void> {
         await this.polly.stop();
         await this.page.close();
+    }
+
+    private async serveFile({routePath, filePath, data}: PageRoutingRule): Promise<void> {
+        const htmlStr = await this.server.renderFile(filePath, data);
+        await this.page.route(routePath, route => route.fulfill({
+            status: 200,
+            contentType: 'text/html',
+            body: htmlStr,
+        }));
     }
 }

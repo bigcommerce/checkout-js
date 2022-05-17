@@ -7,13 +7,7 @@ test.describe('xxxxxxxxxxxxxxxxxxxxxxx', () => {
         await paymentStep.goto({ storeURL: 'https://my-dev-store-745516528.store.bcdev', harName: 'sampleName' });
     });
 
-    test('xxxxxxxxxxxxxxxxxxxxxxx I', async ({paymentStep, page}) => {
-        // Optional: Serve additional static files with Playwright. Mock API endpoints via Playwright.
-        // Only execute in the replay mode
-        if (paymentStep.isReplay) {
-            // await page.route('**/api/public/v1/orders/payments', route => route.fulfill( {status: 200, contentType: 'application/json', body: JSON.stringify(submitPaymentResult)} ));
-        }
-
+    test('xxxxxxxxxxxxxxxxxxxxxxx I', async ({assertions, page}) => {
         // Playwright action scripts
         await page.pause();
         // Click text=Test Payment ProviderVisaAmexMaster
@@ -22,22 +16,22 @@ test.describe('xxxxxxxxxxxxxxxxxxxxxxx', () => {
         // await page.frameLocator('#bigpaypay-ccNumber iframe').locator('[aria-label="Credit Card Number"]').click();
 
         // Assertions
-        await paymentStep.assertions.shouldSeeOrderConfirmation();
+        await assertions.shouldSeeOrderConfirmation();
     });
 
-    test('xxxxxxxxxxxxxxxxxxxxxxx II', async ({paymentStep, page}) => {
+    test('xxxxxxxxxxxxxxxxxxxxxxx II', async ({assertions, page}) => {
         // Playwright action scripts
         await page.pause();
 
         // Assertions
-        await paymentStep.assertions.shouldSeeOrderConfirmation();
+        await assertions.shouldSeeOrderConfirmation();
     });
 
-    test('xxxxxxxxxxxxxxxxxxxxxxx III', async ({paymentStep, page}) => {
+    test('xxxxxxxxxxxxxxxxxxxxxxx III', async ({assertions, page}) => {
         // Playwright action scripts
         await page.pause();
 
         // Assertions
-        await paymentStep.assertions.shouldSeeOrderConfirmation();
+        await assertions.shouldSeeOrderConfirmation();
     });
 });
