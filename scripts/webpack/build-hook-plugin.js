@@ -2,10 +2,11 @@ const { noop } = require('lodash');
 const { exec } = require('child_process');
 
 class BuildHookPlugin {
-    constructor({ onDone = noop, onSuccess = noop, onError = noop } = {}) {
+    constructor({ onDone = noop, onSuccess = noop, onError = noop, onBeforeCompile } = {}) {
         this.onDone = onDone;
         this.onError = onError;
         this.onSuccess = onSuccess;
+        this.onBeforeCompile = onBeforeCompile;
     }
 
     apply(compiler) {
@@ -22,6 +23,10 @@ class BuildHookPlugin {
 
             this.onDone();
         });
+
+        if (this.onBeforeCompile) {
+            compiler.hooks.beforeCompile.tapPromise('BuildHooks', this.onBeforeCompile);
+        }
     }
 
     process(command) {
