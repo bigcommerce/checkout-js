@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.211.0](https://github.com/bigcommerce/checkout-js/compare/v1.210.3...v1.211.0) (2022-05-17)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6265 Add build script to generate export file that can automatically surface new payment integrations ([43b89c1](https://github.com/bigcommerce/checkout-js/commit/43b89c12211788ad713840d7e1fbe29ece769388))
+* **checkout:** CHECKOUT-6265 Render resolved component and inject dependencies ([1d74990](https://github.com/bigcommerce/checkout-js/commit/1d749906fc6109cf7b819ca5709c73646740807a))
+* **payment:** INT-5060 Stripe UPE Look and Feel. Get styles from store theme styles ([c5a51ee](https://github.com/bigcommerce/checkout-js/commit/c5a51ee13da87b14a4f8226111bb8b8a6aad1eb3))
+* **payment:** INT-5904 Remove formatting for payment method when Mollie ([0eda531](https://github.com/bigcommerce/checkout-js/commit/0eda5310e880ba1b1b83b4d192425bec2c4549de))
+
 ### [1.210.3](https://github.com/bigcommerce/checkout-js/compare/v1.210.2...v1.210.3) (2022-05-15)
 
 ### [1.210.2](https://github.com/bigcommerce/checkout-js/compare/v1.210.1...v1.210.2) (2022-05-09)
