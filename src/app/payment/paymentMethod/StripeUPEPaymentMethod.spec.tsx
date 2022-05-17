@@ -37,6 +37,11 @@ jest.mock('../hostedCreditCard', () => ({
         />
     ) as jest.Mocked<typeof withHostedCreditCardFieldset>,
 }));
+jest.mock('../../common/dom', () => ({
+    getAppliedStyles: () => {
+        return { color: '#cccccc' };
+    },
+}));
 describe('when using Stripe payment', () => {
     let method: PaymentMethod;
     let checkoutService: CheckoutService;
@@ -46,6 +51,7 @@ describe('when using Stripe payment', () => {
     let PaymentMethodTest: FunctionComponent<PaymentMethodProps>;
 
     beforeEach(() => {
+        const dummyElement = document.createElement('div');
         defaultProps = {
             method: getPaymentMethod(),
             onUnhandledError: jest.fn(),
@@ -63,6 +69,9 @@ describe('when using Stripe payment', () => {
 
         jest.spyOn(checkoutService, 'initializePayment')
             .mockResolvedValue(checkoutState);
+
+        jest.spyOn(document, 'getElementById')
+            .mockReturnValue(dummyElement);
 
         PaymentMethodTest = props => (
             <CheckoutProvider checkoutService={ checkoutService }>
@@ -116,6 +125,9 @@ describe('when using Stripe payment', () => {
                     methodId: method.id,
                     stripeupe: {
                         containerId: 'stripe-alipay-component-field',
+                        style: expect.objectContaining({
+                            fieldText: '#cccccc',
+                        }),
                     },
                 }));
         });
@@ -159,6 +171,9 @@ describe('when using Stripe payment', () => {
                     methodId: method.id,
                     stripeupe: {
                         containerId: 'stripe-card-component-field',
+                        style: expect.objectContaining({
+                            fieldText: '#cccccc',
+                        }),
                     },
                 }));
         });
@@ -202,6 +217,9 @@ describe('when using Stripe payment', () => {
                         methodId: method.id,
                         stripeupe: {
                             containerId: 'stripe-idealBank-component-field',
+                            style: expect.objectContaining({
+                                fieldText: '#cccccc',
+                            }),
                         },
                     })
                 );
@@ -246,6 +264,9 @@ describe('when using Stripe payment', () => {
                     methodId: method.id,
                     stripeupe: {
                         containerId: 'stripe-iban-component-field',
+                        style: expect.objectContaining({
+                            fieldText: '#cccccc',
+                        }),
                     },
                 }));
         });
