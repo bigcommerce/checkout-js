@@ -472,6 +472,9 @@
                 "stripe_upe": {
                     "boleto": "Boleto Bancário Ticket",
                     "oxxo": "OXXO Ticket"
+                },
+                "paypalcommercealternativemethods": {
+                    "oxxo": "OXXO Ticket"
                 }
             },
             "order_number_text": "Your order number is <strong>{orderNumber}</strong>",
