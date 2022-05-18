@@ -128,6 +128,7 @@ describe('when using Stripe payment', () => {
                         style: expect.objectContaining({
                             fieldText: '#cccccc',
                         }),
+                        onError: expect.any(Function),
                     },
                 }));
         });
@@ -174,6 +175,7 @@ describe('when using Stripe payment', () => {
                         style: expect.objectContaining({
                             fieldText: '#cccccc',
                         }),
+                        onError: expect.any(Function),
                     },
                 }));
         });
@@ -220,6 +222,7 @@ describe('when using Stripe payment', () => {
                             style: expect.objectContaining({
                                 fieldText: '#cccccc',
                             }),
+                            onError: expect.any(Function),
                         },
                     })
                 );
@@ -267,6 +270,7 @@ describe('when using Stripe payment', () => {
                         style: expect.objectContaining({
                             fieldText: '#cccccc',
                         }),
+                        onError: expect.any(Function),
                     },
                 }));
         });
