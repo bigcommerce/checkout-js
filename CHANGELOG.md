@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.212.0](https://github.com/bigcommerce/checkout-js/compare/v1.211.0...v1.212.0) (2022-05-18)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6643 add billingSameAsShipping check for checkout ([#871](https://github.com/bigcommerce/checkout-js/issues/871)) ([c957c2d](https://github.com/bigcommerce/checkout-js/commit/c957c2dd56b311260faa0acfe02a66576f1e826b))
+
 ## [1.211.0](https://github.com/bigcommerce/checkout-js/compare/v1.210.3...v1.211.0) (2022-05-17)
 
 
