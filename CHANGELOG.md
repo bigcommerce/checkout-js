@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.214.0](https://github.com/bigcommerce/checkout-js/compare/v1.213.0...v1.214.0) (2022-05-18)
+
+
+### Features
+
+* **payment:** PAYPAL-1416 Add oxxo ticket for PPCP ([b447960](https://github.com/bigcommerce/checkout-js/commit/b447960daa7d51902e90aa595fb252eab3893c49))
+
 ## [1.213.0](https://github.com/bigcommerce/checkout-js/compare/v1.212.0...v1.213.0) (2022-05-18)
 
 
