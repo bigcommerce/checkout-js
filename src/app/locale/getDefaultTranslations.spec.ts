@@ -1,13 +1,19 @@
 import getDefaultTranslations from './getDefaultTranslations';
 
 describe('getDefaultTranslations', () => {
+    it('returns Danish translations when da locale is specified', async () => {
+        expect(await getDefaultTranslations('da'))
+            // eslint-disable-next-line import/no-internal-modules
+            .toEqual(require('./translations/da.json'));
+    });
+
     it('returns French translations when fr locale is specified', async () => {
         expect(await getDefaultTranslations('fr'))
             // eslint-disable-next-line import/no-internal-modules
             .toEqual(require('./translations/fr.json'));
     });
 
-    it('returns French translations when fr-CA locale is specified', async () => {
+    it('returns Canadian French translations when fr-CA locale is specified', async () => {
         expect(await getDefaultTranslations('fr-CA'))
             // eslint-disable-next-line import/no-internal-modules
             .toEqual(require('./translations/fr.json'));
@@ -35,5 +41,35 @@ describe('getDefaultTranslations', () => {
         expect(await getDefaultTranslations('es-MX'))
             // eslint-disable-next-line import/no-internal-modules
             .toEqual(require('./translations/es-MX.json'));
+    });
+
+    it('returns Latin American Spanish translations when es-419 locale is specified', async () => {
+        expect(await getDefaultTranslations('es-419'))
+            // eslint-disable-next-line import/no-internal-modules
+            .toEqual(require('./translations/es-419.json'));
+    });
+
+    it('returns Argentine Spanish translations when es-AR locale is specified', async () => {
+        expect(await getDefaultTranslations('es-AR'))
+            // eslint-disable-next-line import/no-internal-modules
+            .toEqual(require('./translations/es-AR.json'));
+    });
+
+    it('returns Chilean Spanish translations when es-CL locale is specified', async () => {
+        expect(await getDefaultTranslations('es-CL'))
+            // eslint-disable-next-line import/no-internal-modules
+            .toEqual(require('./translations/es-CL.json'));
+    });
+
+    it('returns Colombian Spanish translations when es-CO locale is specified', async () => {
+        expect(await getDefaultTranslations('es-CO'))
+            // eslint-disable-next-line import/no-internal-modules
+            .toEqual(require('./translations/es-CO.json'));
+    });
+
+    it('returns Peruvian Spanish translations when es-PE locale is specified', async () => {
+        expect(await getDefaultTranslations('es-PE'))
+            // eslint-disable-next-line import/no-internal-modules
+            .toEqual(require('./translations/es-PE.json'));
     });
 });
