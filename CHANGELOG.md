@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.215.0](https://github.com/bigcommerce/checkout-js/compare/v1.214.0...v1.215.0) (2022-05-19)
+
+
+### Features
+
+* **payment:** INT-5754 Stripe UPE Added onError to initialize option to throw error from sdk subscriber ([41909ed](https://github.com/bigcommerce/checkout-js/commit/41909ed584c665a158cf87fad4956e8df8b00f2d))
+
 ## [1.214.0](https://github.com/bigcommerce/checkout-js/compare/v1.213.0...v1.214.0) (2022-05-18)
 
 
