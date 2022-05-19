@@ -434,7 +434,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Rec
         const {
             cart,
         } = this.props;
-        trackSignUp(cart?.customerId, cart?.email);
+        trackSignUp('Checkout', cart?.customerId, cart?.email);
     };
 
     private showCreateAccount: () => void = () => {
