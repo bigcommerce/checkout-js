@@ -308,7 +308,7 @@ class OrderConfirmation extends Component<
                     hasSignedUp: true,
                     isSigningUp: false,
                 });
-                trackSignUp(customer?.customerId, customer?.email);
+                trackSignUp('Purchase confirmation', customer?.customerId, customer?.email);
             })
             .catch(error => {
                 this.setState({

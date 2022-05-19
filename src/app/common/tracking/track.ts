@@ -143,12 +143,12 @@ interface SignUpData {
   };
 }
 
-export function trackSignUp(userId: number | undefined, userEmail: string | undefined) {
+export function trackSignUp(location: string, userId: number | undefined, userEmail: string | undefined) {
   const data: SignUpData = {
     event: 'sign_up',
     event_info: {
       form_name: 'create_account',
-      sign_up_location: 'Purchase confirmation',
+      sign_up_location: location,
     },
     user: {
       user_id: userId,
