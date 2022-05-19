@@ -416,7 +416,6 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Rec
             const {
                 cart,
             } = this.props;
-            console.log('info', cart?.customerId, cart?.email);
             trackLoginData(cart?.customerId, cart?.email);
         } catch (error) {
             onSignInError(error);
