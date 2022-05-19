@@ -5,7 +5,7 @@ import React, { lazy, Component, Fragment, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
 import { ErrorLogger, ErrorModal } from '../common/error';
-import { trackPurchase, OrderData } from '../common/tracking';
+import { trackPurchase, trackSignUp, OrderData } from '../common/tracking';
 import { retry } from '../common/utility';
 import { getPasswordRequirementsFromConfig } from '../customer';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
@@ -303,11 +303,12 @@ class OrderConfirmation extends Component<
             password,
             confirmPassword,
         })
-            .then(() => {
+            .then((customer: CreatedCustomer) => {
                 this.setState({
                     hasSignedUp: true,
                     isSigningUp: false,
                 });
+                trackSignUp(customer?.customerId, customer?.email);
             })
             .catch(error => {
                 this.setState({
