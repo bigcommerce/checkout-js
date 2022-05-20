@@ -2,9 +2,9 @@ import { test } from '../';
 
 test.describe('xxxxxxxxxxxxxxxxxxxxxxx', () => {
 
-    test.beforeEach(async ({ paymentStep }) => {
+    test.beforeEach(async ({ checkout }) => {
         // Setup HAR and checkout environment.
-        await paymentStep.goto({ storeURL: 'https://my-dev-store-745516528.store.bcdev', harName: 'sampleName' });
+        await checkout.goto({ storeURL: 'https://my-dev-store-745516528.store.bcdev', harName: 'sampleName' });
     });
 
     test('xxxxxxxxxxxxxxxxxxxxxxx I', async ({assertions, page}) => {

@@ -1,15 +1,15 @@
-import { test } from '../';
+import { test, PaymentStepAsGuestPreset } from '../';
 
 test.describe('Sample Test Group', () => {
-    test('Bigpay Test Payment Provider is working', async ({assertions, paymentStep, page}) => {
-        await paymentStep.goto({storeURL: 'https://my-dev-store-745516528.store.bcdev', harName: 'sample '});
-        await paymentStep.replayPages([{
+    test('Bigpay test payment rredit card is working', async ({assertions, checkout, page}) => {
+        const storeURL = 'https://my-dev-store-745516528.store.bcdev';
+        const preset = new PaymentStepAsGuestPreset(page, storeURL);
+        await checkout.goto({storeURL, harName: 'sample Bigpay test payment rredit card', preset});
+        await checkout.replayPages([{
             routePath: '/checkout/payment/hosted-field?*',
             filePath: './tests/sampleTests/support/hostedField.ejs',
         }]);
 
-        // Playwright scripts
-        // await page.pause();
         // Click text=Test Payment ProviderVisaAmexMaster
         await page.locator('text=Test Payment ProviderVisaAmexMaster').click();
         // Click [aria-label="Credit Card Number"]

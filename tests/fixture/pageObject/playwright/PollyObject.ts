@@ -6,7 +6,7 @@ import { includes } from 'lodash';
 import path from 'path';
 import { PlaywrightAdapter } from 'polly-adapter-playwright';
 
-import CustomFSPersister from './CustomFSPersister';
+import { CustomFSPersister } from './CustomFSPersister';
 
 interface PollyOptions {
     harName: string;
@@ -15,11 +15,10 @@ interface PollyOptions {
     storeURL: string;
 }
 
-export default class PollyObject {
+export class PollyObject {
     /**
      * @internal
-     * This file is only accessible to PlaywrightHelper, and it is the only place to
-     * manage the mutable state of a PollyJS object.
+     * This file is only accessible to PlaywrightHelper.
      */
     private polly: Polly | undefined;
     private readonly mode: MODE;
@@ -30,7 +29,7 @@ export default class PollyObject {
         this.baseUrl = 'http://localhost:' + process.env.PORT;
     }
 
-    getCartAndOrderIDs(): { checkoutId: string; orderId: number} {
+    getCartAndOrderIDs(): { checkoutId: string; orderId?: number} {
         const { recordingsDir } = this.polly?.persister?.options as {recordingsDir: string};
 
         if (this.polly && recordingsDir) {
@@ -39,6 +38,7 @@ export default class PollyObject {
             // @ts-ignore
             const entries = api.getRecording(this.polly.recordingId).body?.log?.entries;
             if (entries) {
+                // Search for orderID and cartID.
                 for (const entry of entries) {
                     if (includes(entry.request.url, 'api/storefront/orders') && entry.response.content.text) {
                         const {orderId, cartId} = JSON.parse(entry.response.content.text);
@@ -47,7 +47,19 @@ export default class PollyObject {
                         }
                     }
                 }
-                throw new Error('Unable to read checkoutId and orderId from the \'api/storefront/orders\' request recording.');
+
+                // This should be an unfinished order, look for cartID instead.
+                for (const entry of entries) {
+                    if (includes(entry.request.url, '/api/storefront/checkout-settings') && entry.response.content.text) {
+                        const { context: { checkoutId } } = JSON.parse(entry.response.content.text);
+                        if (checkoutId) {
+                            return { checkoutId };
+                        }
+                    }
+                }
+
+                // Critical error
+                throw new Error('Unable to find checkoutId from the \'/api/storefront/checkout-settings\' request recording.');
             } else {
                 throw new Error('Unable to find any recording from the located HAR file.');
             }
@@ -65,8 +77,8 @@ export default class PollyObject {
         this.polly = new Polly(harName);
         this.polly.configure({
             mode: this.mode,
-            // logLevel: 'info',
-            recordIfMissing: true,
+            logLevel: 'SILENT', // change this to have detailed report for unmatched requests
+            recordIfMissing: false,
             flushRequestsOnStop: true,
             recordFailedRequests: true,
             adapters: ['playwright'],
@@ -86,8 +98,8 @@ export default class PollyObject {
             matchRequestsBy: {
                 headers: false,
                 method: true,
-                body: true,
-                order: false,
+                body: false,
+                order: true,
                 url: true,
             },
         });
@@ -99,7 +111,11 @@ export default class PollyObject {
                 res.send(response);
             });
             this.polly.server.any().on('request', req => {
-                req.url = req.url.replace(this.baseUrl, storeURL);
+                if (includes(req.url, '/api/public/v1/orders/payments')) {
+                    req.url = req.url.replace(this.baseUrl, 'https://bigpay.service.bcdev');
+                } else {
+                    req.url = req.url.replace(this.baseUrl, storeURL);
+                }
                 // console.log('😃REPLAY ' + req.url);
             });
         }

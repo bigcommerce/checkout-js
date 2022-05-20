@@ -1,27 +1,19 @@
 import { Page } from '@playwright/test';
-import { MODE } from '@pollyjs/core';
 
-import { CheckoutPagePreset } from './checkoutPagePresets';
-import PollyObject from './PollyObject';
-import ServerSideRender from './ServerSideRender';
+import { CheckoutPagePreset } from '../../../';
 
-interface ApiRoutingRule {
+import { PollyObject } from './PollyObject';
+import { ServerSideRender } from './ServerSideRender';
+
+export interface PageRoutingRule {
     routePath: string;
+    filePath: string;
     data?: {};
 }
 
-interface PageRoutingRule extends ApiRoutingRule {
-    filePath: string;
-}
-
-export interface ReplayConfiguration {
-    file: PageRoutingRule[];
-    json: ApiRoutingRule[];
-}
-
-export default class PlaywrightHelper {
+export class PlaywrightHelper {
     private readonly isReplay: boolean;
-    private readonly mode: MODE;
+    private readonly mode: 'record' | 'replay';
     private readonly page: Page;
     private readonly polly: PollyObject;
     private readonly server: ServerSideRender;
@@ -52,43 +44,36 @@ export default class PlaywrightHelper {
 
         if (this.isReplay) {
             // Server-side rendering
-            const cartAndOrderIDs = this.polly.getCartAndOrderIDs();
+            await page.route(/\/products\/.*\/images\//, route => route.fulfill({ status: 200, path: './tests/support/product.jpg' }));
+            const { checkoutId, orderId } = this.polly.getCartAndOrderIDs();
             await this.serveFile({
                 routePath: '/',
                 filePath: './tests/support/checkout.ejs',
-                data: cartAndOrderIDs,
+                data: { checkoutId },
             });
-            await this.serveFile({
-                routePath: '/order-confirmation',
-                filePath: './tests/support/orderConfirmation.ejs',
-                data: cartAndOrderIDs,
-            });
-            await page.route(/\/products\/.*\/images\//, route => route.fulfill({ status: 200, path: './tests/support/product.jpg' }));
+            if (orderId) {
+                await this.serveFile({
+                    routePath: '/order-confirmation',
+                    filePath: './tests/support/orderConfirmation.ejs',
+                    data: { orderId },
+                });
+            }
             await page.goto('/');
         } else {
-            // TODO: Use direct API calls to create a cart
-            this.polly.pause();
-            await preset.apply();
-            this.polly.play();
+            if (preset) {
+                // Optional: Set Up checkout environment accroding to preset
+                this.polly.pause();
+                await preset.apply();
+                this.polly.play();
+            }
             await page.goto(this.storeURL + '/checkout');
         }
     }
 
-    async replay({file, json}: ReplayConfiguration): Promise<void> {
+    async replayPages(files: PageRoutingRule[]): Promise<void> {
         if (this.isReplay) {
-            if (file) {
-                for (const rule of file) {
-                    await this.serveFile(rule);
-                }
-            }
-            if (json) {
-                for (const rule of json) {
-                    await this.page.route(rule.routePath, route => route.fulfill({
-                        status: 200,
-                        contentType: 'application/json',
-                        body: JSON.stringify(rule.data),
-                    }));
-                }
+            for (const file of files) {
+                await this.serveFile(file);
             }
         }
     }

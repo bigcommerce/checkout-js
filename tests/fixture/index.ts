@@ -1,2 +1,5 @@
-export { default as Assertions } from './pageObject/Assertions';
-export { default as PaymentStep } from './pageObject/PaymentStep';
+/**
+ * @internal
+ */
+export { Assertions } from './pageObject/Assertions';
+export { Checkout } from './pageObject/Checkout';

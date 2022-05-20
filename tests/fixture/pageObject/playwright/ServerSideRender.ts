@@ -1,6 +1,6 @@
 import ejs from 'ejs';
 
-export default class ServerSideRender {
+export class ServerSideRender {
     /**
      * @internal
      */

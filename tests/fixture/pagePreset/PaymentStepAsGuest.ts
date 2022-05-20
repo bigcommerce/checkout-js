@@ -1,9 +1,9 @@
 import { Page } from '@playwright/test';
 
-import ApiRequestsSender from './ApiRequestsSender';
-import CheckoutPagePreset from './CheckoutPagePreset';
+import { ApiRequestsSender } from './ApiRequestsSender';
+import { CheckoutPagePreset } from './CheckoutPagePreset';
 
-export default class PaymentStepAsGuestPreset implements CheckoutPagePreset {
+export class PaymentStepAsGuest implements CheckoutPagePreset {
     private readonly api: ApiRequestsSender;
 
     constructor(page: Page, storeURL: string) {
@@ -13,6 +13,7 @@ export default class PaymentStepAsGuestPreset implements CheckoutPagePreset {
     async apply(): Promise<void> {
         await this.api.addPhysicalItemToCart();
         await this.api.completeCustomerStepAsGuest();
-        await this.api.completeShippingStepAndSkipBilling();
+        await this.api.completeSingleShippingAndSkipToPaymentStep();
+        await this.api.dispose();
     }
 }

@@ -1,23 +1,22 @@
 import { expect , test as base } from '@playwright/test';
 
-import { Assertions, PaymentStep } from '.';
+import { Assertions, Checkout } from '.';
 
 interface CheckoutFixtures {
     assertions: Assertions;
-    paymentStep: PaymentStep;
+    checkout: Checkout;
 }
 
 export const test = base.extend<CheckoutFixtures>({
-    assertions: async ({ page }, use) => {
+    assertions: async ({page}, use) => {
         const assertions = new Assertions(page);
         await use(assertions);
     },
-    paymentStep: async ({ page }, use) => {
-        const paymentStep = new PaymentStep(page);
-        await use(paymentStep);
-        await paymentStep.close();
+    checkout: async ({page}, use) => {
+        const checkout = new Checkout(page);
+        await use(checkout);
+        await checkout.close();
     },
-    // TODO: add customerStep
 });
 
 export { expect };
