@@ -173,7 +173,6 @@
             "unsupported_error": "De volgende betaalmethoden worden niet ondersteund door Embedded Checkout: {methods}. Neem voor hulp contact met ons op."
         },
         "payment": {
-            "adyen_credit_debit_card_text": "Creditcard/betaalpas",
             "affirm_name_text": "Affirm",
             "affirm_display_name_text": "Later betalen",
             "affirm_body_text": "U wordt omgeleid naar Affirm om uw aankoop veilig te voltooien. Als u enkele basisgegevens invult, krijgt u in real time een beslissing. Het controleren van uw geschiktheid heeft geen invloed op uw creditscore.",
@@ -228,6 +227,7 @@
             "credit_card_number_last_four": "Voer het kaartnummer in voor {cardType} eindigend op {lastFour}",
             "credit_card_number_required_error": "Creditcardnummer is vereist",
             "credit_card_number_mismatch_error": "Het ingevoerde kaartnummer komt niet overeen met de kaart die in uw account is opgeslagen",
+            "credit_debit_card_text": "Creditcard/betaalpas",
             "digitalriver_dropin_error": "Er is een fout opgetreden bij het verwerken van uw betaling. Probeer het opnieuw of neem contact met ons op.",
             "digitalriver_checkout_error": "Er is iets fout gegaan bij het afrekenen: controleer uw gegevens en probeer het opnieuw, of neem contact op met de klantenservice",
             "digitalriver_checkout_error_title": "Fout tijdens het verwerken van het verzoek.",

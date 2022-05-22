@@ -173,7 +173,6 @@
             "unsupported_error": "I seguenti metodi di pagamento non sono supportati dal Checkout incorporato: {methods}. Contattaci per ricevere assistenza."
         },
         "payment": {
-            "adyen_credit_debit_card_text": "Carta di credito/debito",
             "affirm_name_text": "Affirm",
             "affirm_display_name_text": "Pagamento nel tempo",
             "affirm_body_text": "Verrai reindirizzato su Affirm per completare il tuo acquisto in modo sicuro. Da lì ti basterà inserire alcune informazioni di base e prendere una decisione in tempo reale. Verificare la tua idoneità non influirà sul tuo punteggio di credito.",
@@ -229,6 +228,7 @@
             "credit_card_number_last_four": "Inserisci il numero di carta della {cardType} che termina con {lastFour}",
             "credit_card_number_required_error": "Il numero della carta di credito è obbligatorio",
             "credit_card_number_mismatch_error": "Il numero di carta inserito non corrisponde a quello memorizzato nel tuo account",
+            "credit_debit_card_text": "Carta di credito/debito",
             "digitalriver_dropin_error": "Si è verificato un problema durante l'elaborazione del pagamento. Riprova o contattaci.",
             "digitalriver_checkout_error": "Si è verificato un problema con il pagamento, controlla i tuoi dati e riprova o contatta il servizio clienti",
             "digitalriver_checkout_error_title": "Errore durante l'elaborazione della richiesta.",

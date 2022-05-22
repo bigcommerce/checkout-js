@@ -163,6 +163,10 @@ function getPaymentMethodTitle(
                 logoUrl: '',
                 titleText: method.method === 'iban' ? language.translate('payment.stripe_sepa_display_name_text') : methodName,
             },
+            [PaymentMethodId.WorldpayAccess]: {
+                logoUrl: '',
+                titleText: language.translate('payment.credit_debit_card_text'),
+            },
         };
 
         // KLUDGE: 'paypal' is actually a credit card method. It is the only

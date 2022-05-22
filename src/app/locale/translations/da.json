@@ -173,7 +173,6 @@
             "unsupported_error": "Følgende betalingsmetoder understøttes ikke af Embedded Checkout: {methods}. Kontakt os for at få hjælp."
         },
         "payment": {
-            "adyen_credit_debit_card_text": "Betalingskort",
             "affirm_name_text": "Affirm",
             "affirm_display_name_text": "Betal over tid",
             "affirm_body_text": "Du vil blive omdirigeret til Affirm for at gennemføre dit køb på sikker vis. Du skal bare udfylde lidt grundlæggende oplysninger og få en beslutning i realtid. Det påvirker ikke din kreditværdighed, at vi kontrollerer din berettigelse.",
@@ -230,6 +229,7 @@
             "credit_card_number_last_four": "Indtast kortnummer for {cardType}, der ender på {lastFour}",
             "credit_card_number_required_error": "Kreditkortnummeret er påkrævet",
             "credit_card_number_mismatch_error": "Det indtastede kortnummer stemmer ikke overens med det kort, der er gemt på din konto",
+            "credit_debit_card_text": "Betalingskort",
             "digitalriver_dropin_error": "Der opstod en fejl under behandlingen af din betaling. Prøv igen, eller kontakt os.",
             "digitalriver_checkout_error": "Der var et problem med din betaling. Tjek dine oplysninger, og prøv igen, eller kontakt kundeservice",
             "digitalriver_checkout_error_title": "Fejl under behandling af anmodningen.",

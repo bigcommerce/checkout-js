@@ -173,7 +173,6 @@
             "unsupported_error": "The following payment methods are not supported by Embedded Checkout: {methods}. Please contact us for assistance."
         },
         "payment": {
-            "adyen_credit_debit_card_text": "Credit/Debit Card",
             "affirm_name_text": "Affirm",
             "affirm_display_name_text": "Pay over time",
             "affirm_body_text": "You will be redirected to Affirm to securely complete your purchase. Just fill out a few pieces of basic information and get a real-time decision. Checking your eligibility won't affect your credit score.",
@@ -231,6 +230,7 @@
             "credit_card_number_last_four": "Enter card number for {cardType} ending in {lastFour}",
             "credit_card_number_required_error": "Credit Card Number is required",
             "credit_card_number_mismatch_error": "The card number entered does not match the card stored in your account",
+            "credit_debit_card_text": "Credit/Debit Card",
             "digitalriver_dropin_error": "There was an error while processing your payment. Please try again or contact us.",
             "digitalriver_checkout_error": "There was a problem with your checkout, please check your details and try again or contact customer service",
             "digitalriver_checkout_error_title": "Error while processing request.",
