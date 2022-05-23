@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.216.0](https://github.com/bigcommerce/checkout-js/compare/v1.215.2...v1.216.0) (2022-05-23)
+
+
+### Features
+
+* **payment:** INT-5481 Worldpay component ([98a7816](https://github.com/bigcommerce/checkout-js/commit/98a78169bd26ec19d8bf7568a240c38a14e58ee1))
+
 ### [1.215.2](https://github.com/bigcommerce/checkout-js/compare/v1.215.1...v1.215.2) (2022-05-19)
 
 ### [1.215.1](https://github.com/bigcommerce/checkout-js/compare/v1.215.0...v1.215.1) (2022-05-19)
