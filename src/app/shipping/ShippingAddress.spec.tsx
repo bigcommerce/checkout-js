@@ -1,11 +1,15 @@
-import { mount, shallow } from 'enzyme';
+import { createCheckoutService, CheckoutService } from '@bigcommerce/checkout-sdk';
+import { mount, shallow, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 
 import { StaticAddress } from '../address/';
 import { getFormFields } from '../address/formField.mock';
+import { CheckoutProvider } from '../checkout';
+import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 
 import { getConsignment } from './consignment.mock';
 import { getShippingAddress } from './shipping-addresses.mock';
@@ -15,25 +19,52 @@ import ShippingAddressForm from './ShippingAddressForm';
 import StaticAddressEditable from './StaticAddressEditable';
 
 describe('ShippingAddress Component', () => {
-    const defaultProps: ShippingAddressProps = {
-        consignments: [ getConsignment() ],
-        addresses: getCustomer().addresses,
-        shippingAddress: {
-            ...getShippingAddress(),
-            address1: 'x',
-        },
-        countriesWithAutocomplete: [],
-        isLoading: false,
-        isShippingStepPending: false,
-        hasRequestedShippingOptions: false,
-        formFields: getFormFields(),
-        onAddressSelect: jest.fn(),
-        onFieldChange: jest.fn(),
-        initialize: jest.fn(),
-        deinitialize: jest.fn(),
-        onUnhandledError: jest.fn(),
-        onUseNewAddress: jest.fn(),
+    let checkoutService: CheckoutService;
+    let localeContext: LocaleContextType;
+    let wrapperComponent: ReactWrapper;
+    let TestComponent: FunctionComponent<Partial<ShippingAddressProps>>;
+    let defaultProps: ShippingAddressProps;
+
+    beforeAll(() => {
+        checkoutService = createCheckoutService();
+        localeContext = createLocaleContext(getStoreConfig());
+
+        defaultProps = {
+            consignments: [ getConsignment() ],
+            addresses: getCustomer().addresses,
+            shippingAddress: {
+                ...getShippingAddress(),
+                address1: 'x',
+            },
+            countriesWithAutocomplete: [],
+            isLoading: false,
+            isShippingStepPending: false,
+            hasRequestedShippingOptions: false,
+            formFields: getFormFields(),
+            onAddressSelect: jest.fn(),
+            onFieldChange: jest.fn(),
+            initialize: jest.fn(),
+            deinitialize: jest.fn(),
+            onUnhandledError: jest.fn(),
+            onUseNewAddress: jest.fn(),
     };
+
+        TestComponent = props => (
+        <CheckoutProvider checkoutService={ checkoutService }>
+            <LocaleContext.Provider value={ localeContext }>
+                  <Formik
+                      initialValues={ {} }
+                      onSubmit={ noop }
+                  >
+                    <ShippingAddress
+                        { ...props }
+                        { ...defaultProps }
+                    />
+                </Formik>
+            </LocaleContext.Provider>
+        </CheckoutProvider>
+        );
+    });
 
     describe('when no method id is provided', () => {
         it('renders ShippingAddressForm with expected props', () => {
@@ -50,17 +81,9 @@ describe('ShippingAddress Component', () => {
         });
 
         it('calls onAddressSelect when an address is selected', async () => {
-            const component = mount(
-                <Formik
-                    initialValues={ {} }
-                    onSubmit={ noop }
-                >
-                    <ShippingAddress { ...defaultProps } />
-                </Formik>
-            );
-
-            component.find('#addressToggle').simulate('click');
-            component.find('#addressDropdown li').at(1).find('a').simulate('click');
+            wrapperComponent = mount(<TestComponent />);
+            wrapperComponent.find('#addressToggle').simulate('click');
+            wrapperComponent.find('#addressDropdown li').at(1).find('a').simulate('click');
 
             await new Promise(resolve => process.nextTick(resolve));
 

@@ -7,6 +7,7 @@ import { DropdownTrigger } from '../ui/dropdown';
 
 import isEqualAddress from './isEqualAddress';
 import './AddressSelect.scss';
+import AddressSelectButton from './AddressSelectButton';
 import StaticAddress from './StaticAddress';
 
 export interface AddressSelectProps {
@@ -25,7 +26,7 @@ class AddressSelect extends PureComponent<AddressSelectProps> {
 
         return (
             <div className="form-field">
-                <div className="dropdown--select" role="combobox">
+                <div className="dropdown--select">
                     <DropdownTrigger
                         dropdown={
                             <AddressSelectMenu
@@ -97,23 +98,6 @@ const AddressSelectMenu: FunctionComponent<AddressSelectProps> = ({
             </li>
         )) }
     </ul>
-);
-
-type AddressSelectButtonProps = Pick<AddressSelectProps, 'selectedAddress' | 'addresses'>;
-
-const AddressSelectButton: FunctionComponent<AddressSelectButtonProps> = ({
-    selectedAddress,
-}) => (
-    <a
-        className="button dropdown-button dropdown-toggle--select"
-        href="#"
-        id="addressToggle"
-        onClick={ preventDefault() }
-    >
-        { selectedAddress ?
-            <StaticAddress address={ selectedAddress } /> :
-            <TranslatedString id="address.enter_address_action" /> }
-    </a>
 );
 
 export default memo(AddressSelect);
