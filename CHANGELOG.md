@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.217.0](https://github.com/bigcommerce/checkout-js/compare/v1.216.0...v1.217.0) (2022-05-25)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6652 provide accessibility label for AddressSelect ([#867](https://github.com/bigcommerce/checkout-js/issues/867)) ([d102ba9](https://github.com/bigcommerce/checkout-js/commit/d102ba982c8d6a50496284d0c4333f6d378f83bd))
+
 ## [1.216.0](https://github.com/bigcommerce/checkout-js/compare/v1.215.2...v1.216.0) (2022-05-23)
 
 
