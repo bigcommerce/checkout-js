@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.217.2](https://github.com/bigcommerce/checkout-js/compare/v1.217.1...v1.217.2) (2022-05-25)
+
+
+### Bug Fixes
+
+* **checkout:** ADYEN-480 bump checkout-sdk for the adyen vaulting fix ([4ee7f5d](https://github.com/bigcommerce/checkout-js/commit/4ee7f5d152b5234f5746ab75a9ccabff5f9fc55f))
+
 ### [1.217.1](https://github.com/bigcommerce/checkout-js/compare/v1.217.0...v1.217.1) (2022-05-25)
 
 
