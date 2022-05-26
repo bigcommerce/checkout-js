@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StripeGuestForm matches snapshot 1`] = `
+<div
+  class="checkout-form"
+>
+  <fieldset
+    class="form-fieldset"
+  >
+    <legend
+      class="form-legend is-srOnly"
+    />
+    <div
+      class="form-body"
+    >
+      <p />
+      <div
+        class="customerEmail-container"
+      >
+        <div
+          class="customerEmail-body"
+        >
+          <div
+            id="stripeupeLink"
+          >
+             
+          </div>
+          <br />
+          <div
+            class="form-field"
+          >
+            <input
+              class="form-checkbox"
+              id="shouldSubscribe"
+              name="shouldSubscribe"
+              type="checkbox"
+              value="false"
+            />
+            <label
+              class="form-label optimizedCheckout-form-label"
+              for="shouldSubscribe"
+            />
+          </div>
+        </div>
+        <div
+          class="form-actions customerEmail-action"
+        >
+          <button
+            class="button stripeCustomerEmail-button button--primary optimizedCheckout-buttonPrimary"
+            data-test="stripe-customer-continue-as-guest-button"
+            disabled=""
+            id="stripe-checkout-customer-continue"
+            type="submit"
+          />
+        </div>
+      </div>
+      <p>
+         
+        <a
+          data-test="customer-continue-button"
+          id="checkout-customer-login"
+        />
+      </p>
+    </div>
+  </fieldset>
+</div>
+`;
