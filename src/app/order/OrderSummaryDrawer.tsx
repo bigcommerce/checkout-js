@@ -82,9 +82,11 @@ const OrderSummaryDrawer: FunctionComponent<OrderSummaryDrawerProps & OrderSumma
     ]);
 
     return <ModalTrigger modal={ renderModal }>
-        { ({ onClick }) => <div
+        { ({ onClick, onKeyPress }) => <div
             className="cartDrawer optimizedCheckout-orderSummary"
             onClick={ onClick }
+            onKeyPress= { onKeyPress }
+            tabIndex= { 0 }
         >
             <figure
                 className={ classNames(

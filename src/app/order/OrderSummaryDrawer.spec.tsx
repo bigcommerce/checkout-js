@@ -100,4 +100,28 @@ describe('OrderSummaryDrawer', () => {
                 });
         });
     });
+
+    describe('when active and enter is pressed', () => {
+        beforeEach(() => {
+            orderSummary.find('.cartDrawer').simulate('keypress', {key: 'Enter'});
+        });
+
+        it('renders order summary modal with the right props', () => {
+            expect(orderSummary.find(OrderSummaryModal).length)
+                .toEqual(1);
+
+            expect(orderSummary.find(OrderSummaryModal).find('#cart-print-link').length)
+                .toEqual(1);
+
+            expect(orderSummary.find(OrderSummaryModal).props())
+                .toMatchObject({
+                    ...mapToOrderSummarySubtotalsProps(getOrder()),
+                    lineItems: getOrder().lineItems,
+                    total: getOrder().orderAmount,
+                    storeCurrency: getStoreConfig().currency,
+                    shopperCurrency: getStoreConfig().shopperCurrency,
+                    additionalLineItems: 'foo',
+                });
+        });
+    });
 });
