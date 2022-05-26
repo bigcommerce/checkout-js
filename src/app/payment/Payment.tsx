@@ -574,6 +574,25 @@ export function mapToPaymentProps({
 
 export default withLanguage(withCheckout(mapToPaymentProps)(Payment));
 
+/**
+ * Removing conflicted payment methods from array
+ * @param methods: PaymentMethod[]
+ * @param paymentMethodsWithCreditCardConflicts: PaymentMethodsWithConflicts[]
+ * @returns PaymentMethod[]
+ *
+ * data exapmle:
+ * paymentMethodsWithCreditCardConflicts = [
+ *       {
+ *           methodId: 'bolt',
+ *           conflictMethodIds: ['braintree', 'stripe']
+ *       },
+ *       {
+ *           methodId: 'braintree',
+ *           conflictMethodIds: ['bolt', 'stripe']
+ *       }
+ *   ];
+ *
+ */
 function filterCreditCurdsMethods(methods: PaymentMethod[], paymentMethodsWithCreditCardConflicts?: PaymentMethodsWithConflicts[]): PaymentMethod[] {
     let filteredMethods = [...methods];
 
