@@ -661,4 +661,14 @@ describe('Payment', () => {
         expect(checkoutService.loadCheckout).toHaveBeenCalled();
         expect(container.find(PaymentForm).prop('didExceedSpamLimit')).toBeTruthy();
     });
+
+    it('calls onUnhandledError if loadPaymentMethods was failed', async () => {
+        jest.spyOn(checkoutService, 'loadPaymentMethods').mockRejectedValue(new Error());
+
+        mount(<PaymentTest { ...defaultProps } />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
+    });
 });

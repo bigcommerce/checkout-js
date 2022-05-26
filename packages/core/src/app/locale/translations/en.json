@@ -101,6 +101,7 @@
         },
         "customer": {
             "continue_as_guest_action": "Continue as guest",
+            "continue_as_stripe_customer_action": "Continue with Link",
             "create_account_action": "Create Account",
             "continue": "Continue",
             "set_password_action": "Save Password",

@@ -126,6 +126,7 @@ export interface CheckoutState {
     isRedirecting: boolean;
     hasSelectedShippingOptions: boolean;
     isBuyNowCartEnabled: boolean;
+    isStripeLinkAuthenticated: boolean;
 }
 
 export interface WithCheckoutProps {
@@ -164,6 +165,7 @@ class Checkout extends Component<
         isMultiShippingMode: false,
         hasSelectedShippingOptions: false,
         isBuyNowCartEnabled: false,
+        isStripeLinkAuthenticated: false,
     };
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
@@ -350,6 +352,10 @@ class Checkout extends Component<
     private renderCustomerStep(step: CheckoutStepStatus): ReactNode {
         const { isGuestEnabled } = this.props;
 
+        const updateStripeLinkAuthenticated = (auth: boolean = false) => {
+            this.setState({ isStripeLinkAuthenticated: auth });
+        }
+
         const {
             customerViewType = isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
         } = this.state;
@@ -381,6 +387,8 @@ class Checkout extends Component<
                         onSignIn={this.navigateToNextIncompleteStep}
                         onSignInError={this.handleError}
                         onUnhandledError={this.handleUnhandledError}
+                        step={step}
+                        updateStripeLinkAuthenticated={updateStripeLinkAuthenticated}
                         viewType={customerViewType}
                     />
                 </LazyContainer>
@@ -470,6 +478,7 @@ class Checkout extends Component<
                         checkEmbeddedSupport={this.checkEmbeddedSupport}
                         errorLogger={errorLogger}
                         isEmbedded={isEmbedded()}
+                        isStripeLinkAuthenticated={this.state.isStripeLinkAuthenticated}
                         isUsingMultiShipping={
                             cart && consignments
                                 ? isUsingMultiShipping(consignments, cart.lineItems)
