@@ -3,6 +3,7 @@ import React from 'react';
 
 import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';
+import CheckoutStepType from '../checkout/CheckoutStepType';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 import { getCountries } from '../geography/countries.mock';
@@ -43,6 +44,7 @@ describe('ShippingForm Component', () => {
             cartHasChanged: false,
             countries: getCountries(),
             countriesWithAutocomplete: [],
+            customerEmail: 'foo@test.com',
             consignments: [
                 { ...getConsignment(), id: 'foo' },
                 { ...getConsignment(), id: 'bar' },
@@ -51,6 +53,12 @@ describe('ShippingForm Component', () => {
             shippingAddress: getShippingAddress(),
             isMultiShippingMode: false,
             shouldShowOrderComments: true,
+            isStripeLinkEnabled: false,
+            step: { isActive: true,
+                isComplete: true,
+                isEditable: true,
+                isRequired: true,
+                type: CheckoutStepType.Shipping },
             onMultiShippingSubmit: jest.fn(),
             onSingleShippingSubmit: jest.fn(),
             isLoading: false,

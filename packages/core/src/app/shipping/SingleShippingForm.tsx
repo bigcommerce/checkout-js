@@ -24,6 +24,8 @@ import {
     mapAddressFromFormValues,
     mapAddressToFormValues,
 } from '../address';
+// eslint-disable-next-line import/no-internal-modules
+import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { getCustomFormFieldsValidationSchema } from '../formFields';
 import { withLanguage, WithLanguageProps } from '../locale';
 import { Fieldset, Form, FormContext } from '../ui/form';
@@ -47,9 +49,14 @@ export interface SingleShippingFormProps {
     isShippingStepPending: boolean;
     isMultiShippingMode: boolean;
     methodId?: string;
+    isStripeLinkEnabled?: boolean;
     shippingAddress?: Address;
     shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
+    step: CheckoutStepStatus;
+    customerEmail?: string;
+    isStripeLoading?(): void;
+    isStripeAutoStep?(): void;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
     getFields(countryCode?: string): FormField[];
@@ -129,6 +136,8 @@ class SingleShippingForm extends PureComponent<
             shouldShowSaveAddress,
             countries,
             countriesWithAutocomplete,
+            customerEmail,
+            isStripeLoading,
             googleMapsApiKey,
             shippingAddress,
             consignments,
@@ -138,6 +147,10 @@ class SingleShippingForm extends PureComponent<
             deinitialize,
             values: { shippingAddress: addressForm },
             isShippingStepPending,
+            isStripeLinkEnabled,
+            onSubmit,
+            isStripeAutoStep,
+            step,
         } = this.props;
 
         const { isResettingAddress, isUpdatingShippingData, hasRequestedShippingOptions } =
@@ -156,6 +169,7 @@ class SingleShippingForm extends PureComponent<
                         consignments={consignments}
                         countries={countries}
                         countriesWithAutocomplete={countriesWithAutocomplete}
+                        customerEmail={customerEmail}
                         deinitialize={deinitialize}
                         formFields={this.getFields(addressForm && addressForm.countryCode)}
                         googleMapsApiKey={googleMapsApiKey}
@@ -163,13 +177,19 @@ class SingleShippingForm extends PureComponent<
                         initialize={initialize}
                         isLoading={isResettingAddress}
                         isShippingStepPending={isShippingStepPending}
+                        isStripeAutoStep={isStripeAutoStep}
+                        isStripeLinkEnabled={isStripeLinkEnabled}
+                        isStripeLoading={isStripeLoading}
                         methodId={methodId}
                         onAddressSelect={this.handleAddressSelect}
                         onFieldChange={this.handleFieldChange}
+                        onSubmit={onSubmit}
                         onUnhandledError={onUnhandledError}
                         onUseNewAddress={this.onUseNewAddress}
                         shippingAddress={shippingAddress}
+                        shouldDisableSubmit={this.shouldDisableSubmit()}
                         shouldShowSaveAddress={shouldShowSaveAddress}
+                        step={step}
                     />
                     {shouldShowBillingSameAsShipping && (
                         <div className="form-body">

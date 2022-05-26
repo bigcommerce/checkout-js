@@ -24,6 +24,7 @@ describe('StaticAddressEditable Component', () => {
         initialize: jest.fn(),
         deinitialize: jest.fn(),
         onFieldChange: jest.fn(),
+        onUnhandledError: jest.fn(),
     };
 
     const initialFormikValues = {
@@ -106,5 +107,23 @@ describe('StaticAddressEditable Component', () => {
         wrapper = shallow(<StaticAddressEditable {...defaultProps} />);
 
         expect(wrapper.find(LoadingOverlay).prop('isLoading')).toBe(false);
+    });
+
+    it('calls onUnhandledError if initialize was failed', () => {
+        defaultProps.initialize = jest.fn(() => { throw new Error(); });
+
+        shallow(<StaticAddressEditable { ...defaultProps } />);
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
+    });
+
+    it('calls onUnhandledError if deinitialize was failed', async () => {
+        defaultProps.deinitialize = jest.fn(() => {
+            throw new Error();
+        });
+
+        shallow(<StaticAddressEditable { ...defaultProps } />).unmount();
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
     });
 });

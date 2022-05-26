@@ -425,6 +425,7 @@ class Checkout extends Component<
                         onSignIn={this.handleShippingSignIn}
                         onToggleMultiShipping={this.handleToggleMultiShipping}
                         onUnhandledError={this.handleUnhandledError}
+                        step={step}
                     />
                 </LazyContainer>
             </CheckoutStep>

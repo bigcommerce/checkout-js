@@ -7,6 +7,7 @@ import React, { FunctionComponent } from 'react';
 import { StaticAddress } from '../address/';
 import { getFormFields } from '../address/formField.mock';
 import { CheckoutProvider } from '../checkout';
+import CheckoutStepType from '../checkout/CheckoutStepType';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
@@ -17,6 +18,7 @@ import { getShippingAddress } from './shipping-addresses.mock';
 import ShippingAddress, { ShippingAddressProps } from './ShippingAddress';
 import ShippingAddressForm from './ShippingAddressForm';
 import StaticAddressEditable from './StaticAddressEditable';
+import StripeupeShippingAddress from './StripeupeShippingAddress';
 
 describe('ShippingAddress Component', () => {
     let checkoutService: CheckoutService;
@@ -24,6 +26,7 @@ describe('ShippingAddress Component', () => {
     let wrapperComponent: ReactWrapper;
     let TestComponent: FunctionComponent<Partial<ShippingAddressProps>>;
     let defaultProps: ShippingAddressProps;
+    const dummyElement = document.createElement('div');
 
     beforeAll(() => {
         checkoutService = createCheckoutService();
@@ -38,6 +41,23 @@ describe('ShippingAddress Component', () => {
             },
             countriesWithAutocomplete: [],
             isLoading: false,
+            customerEmail: 'foo@test.com',
+            step: { isActive: false,
+                isComplete: false,
+                isEditable: false,
+                isRequired: true,
+                type: CheckoutStepType.Shipping },
+            isStripeLinkEnabled: false,
+            isStripeLoading: jest.fn(),
+            shouldDisableSubmit: false,
+            onSubmit: noop,
+            countries: [{
+                code: 'US',
+                name: 'United States',
+                hasPostalCodes: true,
+                subdivisions: [{code: 'bar', name: 'foo' }],
+                requiresState: true,
+                }],
             isShippingStepPending: false,
             hasRequestedShippingOptions: false,
             formFields: getFormFields(),
@@ -48,6 +68,14 @@ describe('ShippingAddress Component', () => {
             onUnhandledError: jest.fn(),
             onUseNewAddress: jest.fn(),
         };
+
+        jest.mock('../common/dom', () => ({
+            getAppliedStyles: () => {
+                return { color: '#cccccc' };
+            },
+        }));
+        jest.spyOn(document, 'getElementById')
+            .mockReturnValue(dummyElement);
 
         TestComponent = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
@@ -129,6 +157,125 @@ describe('ShippingAddress Component', () => {
                     onError: defaultProps.onUnhandledError,
                 },
             });
+        });
+
+        it('renders StripeShippingAddress with expected props', () => {
+            const stripeProps = {...defaultProps, isStripeLinkEnabled: true, customerEmail: ''};
+            const component = mount(
+                <Formik
+                    initialValues={ {} }
+                    onSubmit={ noop }
+                >
+                    <ShippingAddress { ...stripeProps } methodId="stripeupe" />
+                </Formik>
+            );
+
+            expect(component.find(StripeupeShippingAddress).props()).toEqual(
+                expect.objectContaining({
+                    methodId: 'stripeupe',
+                    deinitialize: defaultProps.deinitialize,
+                    formFields: defaultProps.formFields,
+                })
+            );
+
+            expect(defaultProps.initialize).toHaveBeenCalledWith({
+                methodId: 'stripeupe',
+                stripeupe: {
+                    container: 'StripeUpeShipping',
+                    onChangeShipping: expect.any(Function),
+                    availableCountries: 'US',
+                    getStyles: expect.any(Function),
+                    gatewayId: 'stripeupe',
+                    methodId: 'card',
+                },
+            });
+        });
+
+        it('renders StripeShippingAddress with initialize props', async () => {
+            defaultProps.initialize = jest.fn((options) => {
+                options.stripeupe?.onChangeShipping({
+                        complete: true,
+                        elementType: 'shipping',
+                        empty: false,
+                        isNewAddress: false,
+                        value: {
+                            address: {
+                                city: 'string',
+                                country: 'US',
+                                line1: 'string',
+                                line2: 'string',
+                                postal_code: 'string',
+                                state: 'string',
+                            },
+                            name: 'cosme fulanito',
+                        },
+                    }
+                );
+                options.stripeupe?.getStyles();
+            });
+            const stripeProps = {...defaultProps, isStripeLinkEnabled: true, customerEmail: ''};
+            const component = mount(
+                <Formik
+                    initialValues={ {} }
+                    onSubmit={ noop }
+                >
+                    <ShippingAddress { ...stripeProps } methodId="stripeupe"/>
+                </Formik>
+            );
+
+            expect(component.find(StripeupeShippingAddress).props()).toEqual(
+                expect.objectContaining({
+                    methodId: 'stripeupe',
+                    deinitialize: defaultProps.deinitialize,
+                    formFields: defaultProps.formFields,
+                })
+            );
+
+            expect(defaultProps.initialize).toHaveBeenCalled();
+            expect(defaultProps.onAddressSelect).toHaveBeenCalled();
+        });
+
+        it('renders StripeShippingAddress with initialize props without last name', async () => {
+            defaultProps.initialize = jest.fn((options) => {
+                options.stripeupe?.onChangeShipping({
+                        complete: true,
+                        elementType: 'shipping',
+                        empty: false,
+                        isNewAddress: false,
+                        value: {
+                            address: {
+                                city: 'string',
+                                country: 'US',
+                                line1: 'string',
+                                postal_code: 'string',
+                                state: 'string',
+                            },
+                            name: 'cosme',
+                        },
+                    }
+                );
+                options.stripeupe?.getStyles();
+            });
+            const stripeProps = {...defaultProps, isStripeLinkEnabled: true, customerEmail: ''};
+            const component = mount(
+                <Formik
+                    initialValues={ {} }
+                    onSubmit={ noop }
+                >
+                    <ShippingAddress { ...stripeProps } methodId="stripeupe"/>
+                </Formik>
+            );
+
+            expect(component.find(StripeupeShippingAddress).props()).toEqual(
+                expect.objectContaining({
+                    methodId: 'stripeupe',
+                    deinitialize: defaultProps.deinitialize,
+                    formFields: defaultProps.formFields,
+                })
+            );
+
+            expect(defaultProps.initialize).toHaveBeenCalled();
+            expect(defaultProps.onAddressSelect).toHaveBeenCalled();
         });
 
         it('does not render ShippingAddressForm', () => {
