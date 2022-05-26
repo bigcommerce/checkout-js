@@ -80,6 +80,9 @@ describe('Checkout', () => {
                 resolve(checkoutState);
             }));
 
+        jest.spyOn(checkoutService, 'loadPaymentMethods')
+            .mockResolvedValue(checkoutService.getState());
+
         jest.spyOn(checkoutService, 'getState')
             .mockImplementation(() => checkoutState);
 

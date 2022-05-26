@@ -18,6 +18,7 @@ describe('RemoteShippingAddress Component', () => {
         initialize: jest.fn(),
         deinitialize: jest.fn(),
         onFieldChange: jest.fn(),
+        onUnhandledError: jest.fn(),
     };
 
     const initialFormikValues = {
@@ -78,5 +79,23 @@ describe('RemoteShippingAddress Component', () => {
             .simulate('change', { target: { value: 'foo', name: 'shippingAddress.customFields.field_25' } });
 
         expect(defaultProps.onFieldChange).toHaveBeenCalledWith(inputFieldName, 'foo');
+    });
+
+    it('calls onUnhandledError if initialize was failed', () => {
+        defaultProps.initialize = jest.fn(() => { throw new Error(); });
+
+        shallow(<RemoteShippingAddress { ...defaultProps } />);
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
+    });
+
+    it('calls onUnhandledError if deinitialize was failed', async () => {
+        defaultProps.deinitialize = jest.fn(() => {
+            throw new Error();
+        });
+
+        shallow(<RemoteShippingAddress { ...defaultProps } />).unmount();
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
     });
 });

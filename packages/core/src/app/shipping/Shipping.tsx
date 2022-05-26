@@ -5,7 +5,9 @@ import { createSelector } from 'reselect';
 
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
 import { withCheckout, CheckoutContextProps } from '../checkout';
+import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { EMPTY_ARRAY } from '../common/utility';
+import { PaymentMethodId } from '../payment/paymentMethod';
 import { LoadingOverlay } from '../ui/loading';
 
 import { UnassignItemError } from './errors';
@@ -20,6 +22,7 @@ export interface ShippingProps {
     isBillingSameAsShipping: boolean;
     cartHasChanged: boolean;
     isMultiShippingMode: boolean;
+    step: CheckoutStepStatus;
     onCreateAccount(): void;
     onToggleMultiShipping(): void;
     onReady?(): void;
@@ -40,12 +43,15 @@ export interface WithCheckoutShippingProps {
     isGuest: boolean;
     isInitializing: boolean;
     isLoading: boolean;
+    isStripeLoading: boolean;
+    isStripeAutoStep: boolean;
     isShippingStepPending: boolean;
     methodId?: string;
     shippingAddress?: Address;
     shouldShowAddAddressInCheckout: boolean;
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
+    isStripeLinkEnable?: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitializeShippingMethod(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -59,10 +65,13 @@ export interface WithCheckoutShippingProps {
     updateBillingAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
     updateCheckout(payload: CheckoutRequestBody): Promise<CheckoutSelectors>;
     updateShippingAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
+    loadPaymentMethods(): Promise<CheckoutSelectors>;
 }
 
 interface ShippingState {
     isInitializing: boolean;
+    isStripeLoading: boolean;
+    isStripeAutoStep: boolean;
 }
 
 class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, ShippingState> {
@@ -71,6 +80,9 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
         this.state = {
             isInitializing: true,
+            isStripeLoading: true,
+            isStripeAutoStep: false,
+
         };
     }
 
@@ -78,6 +90,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         const {
             loadShippingAddressFields,
             loadShippingOptions,
+            loadPaymentMethods,
             onReady = noop,
             onUnhandledError = noop,
         } = this.props;
@@ -89,6 +102,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             ]);
 
             onReady();
+            await loadPaymentMethods();
         } catch (error) {
             onUnhandledError(error);
         } finally {
@@ -108,43 +122,106 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             deinitializeShippingMethod,
             isMultiShippingMode,
             onToggleMultiShipping,
+            isStripeLinkEnable,
+            step,
             ...shippingFormProps
         } = this.props;
 
         const {
             isInitializing,
+            isStripeLoading,
+            isStripeAutoStep,
         } = this.state;
 
-        return (
-            <div className="checkout-form">
-                <ShippingHeader
-                    isGuest={ isGuest }
-                    isMultiShippingMode={ isMultiShippingMode }
-                    onMultiShippingChange={ this.handleMultiShippingModeSwitch }
-                    shouldShowMultiShipping={ shouldShowMultiShipping }
-                />
+        const renderShipping = () => {
+            if (isStripeLinkEnable && !customer.email) {
+                return <div className="checkout-form">
+                    <div style={ {display: isStripeAutoStep ? 'none' : undefined,} }>
+                    <LoadingOverlay
+                        hideContentWhenLoading
+                        isLoading={ isStripeLoading }
+                    >
+                        <ShippingHeader
+                            isGuest={ isGuest }
+                            isMultiShippingMode={ isMultiShippingMode }
+                            onMultiShippingChange={ this.handleMultiShippingModeSwitch }
+                            shouldShowMultiShipping={ shouldShowMultiShipping }
+                        />
 
-                <LoadingOverlay
-                    isLoading={ isInitializing }
-                    unmountContentWhenLoading
-                >
-                    <ShippingForm
-                        { ...shippingFormProps }
-                        addresses={ customer.addresses }
-                        deinitialize={ deinitializeShippingMethod }
-                        initialize={ initializeShippingMethod }
-                        isBillingSameAsShipping = { isBillingSameAsShipping }
+                        <LoadingOverlay
+                            isLoading={ isInitializing }
+                            unmountContentWhenLoading
+                        >
+                            <ShippingForm
+                                { ...shippingFormProps }
+                                addresses={ customer.addresses }
+                                customerEmail={ customer.email }
+                                deinitialize={ deinitializeShippingMethod }
+                                initialize={ initializeShippingMethod }
+                                isBillingSameAsShipping = { isBillingSameAsShipping }
+                                isGuest={ isGuest }
+                                isMultiShippingMode={ isMultiShippingMode }
+                                isStripeAutoStep={ this.handleIsAutoStep }
+                                isStripeLinkEnable={ isStripeLinkEnable }
+                                isStripeLoading={ this.handleIsStripeLoading }
+                                onMultiShippingSubmit={ this.handleMultiShippingSubmit }
+                                onSingleShippingSubmit={ this.handleSingleShippingSubmit }
+                                onUseNewAddress={ this.handleUseNewAddress }
+                                shouldShowSaveAddress={ !isGuest }
+                                step={ step }
+                                updateAddress={ updateShippingAddress }
+                            />
+                        </LoadingOverlay>
+                    </LoadingOverlay>
+                    </div>
+                </div>
+            }
+
+            return <div className="checkout-form">
+                    <ShippingHeader
                         isGuest={ isGuest }
                         isMultiShippingMode={ isMultiShippingMode }
-                        onMultiShippingSubmit={ this.handleMultiShippingSubmit }
-                        onSingleShippingSubmit={ this.handleSingleShippingSubmit }
-                        onUseNewAddress={ this.handleUseNewAddress }
-                        shouldShowSaveAddress={ !isGuest }
-                        updateAddress={ updateShippingAddress }
+                        onMultiShippingChange={ this.handleMultiShippingModeSwitch }
+                        shouldShowMultiShipping={ shouldShowMultiShipping }
                     />
-                </LoadingOverlay>
+
+                    <LoadingOverlay
+                        isLoading={ isInitializing }
+                        unmountContentWhenLoading
+                    >
+                        <ShippingForm
+                            { ...shippingFormProps }
+                            addresses={ customer.addresses }
+                            customerEmail={ customer.email }
+                            deinitialize={ deinitializeShippingMethod }
+                            initialize={ initializeShippingMethod }
+                            isBillingSameAsShipping = { isBillingSameAsShipping }
+                            isGuest={ isGuest }
+                            isMultiShippingMode={ isMultiShippingMode }
+                            isStripeAutoStep={ this.handleIsAutoStep }
+                            isStripeLinkEnable={ isStripeLinkEnable }
+                            isStripeLoading={ this.handleIsStripeLoading }
+                            onMultiShippingSubmit={ this.handleMultiShippingSubmit }
+                            onSingleShippingSubmit={ this.handleSingleShippingSubmit }
+                            onUseNewAddress={ this.handleUseNewAddress }
+                            shouldShowSaveAddress={ !isGuest }
+                            step={ step }
+                            updateAddress={ updateShippingAddress }
+                        />
+                    </LoadingOverlay>
             </div>
-        );
+
+        }
+
+        return ( renderShipping() );
+    }
+
+    private handleIsStripeLoading: () => void = () => {
+        this.setState({ isStripeLoading: false });
+    }
+
+    private handleIsAutoStep: () => void = () => {
+        this.setState({ isStripeAutoStep: true });
     }
 
     private handleMultiShippingModeSwitch: () => void = async () => {
@@ -284,6 +361,7 @@ const deleteConsignmentsSelector = createSelector(
     }
 );
 
+// tslint:disable-next-line:cyclomatic-complexity
 export function mapToShippingProps({
     checkoutService,
     checkoutState,
@@ -299,6 +377,7 @@ export function mapToShippingProps({
             getBillingAddress,
             getShippingAddressFields,
             getShippingCountries,
+            getPaymentMethod,
         },
         statuses: {
             isShippingStepPending,
@@ -351,6 +430,10 @@ export function mapToShippingProps({
     );
     const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ'];
 
+    const card = getCart() || undefined;
+    const stripeUpe = getPaymentMethod('card', PaymentMethodId.StripeUPE);
+    const stripeUpeLinkEnable = stripeUpe && stripeUpe.initializationData.enableLink && card && card.currency.code === 'USD';
+
     if (features['CHECKOUT-4183.checkout_google_address_autocomplete_uk']) {
         countriesWithAutocomplete.push('GB');
     }
@@ -375,6 +458,8 @@ export function mapToShippingProps({
         isGuest: customer.isGuest,
         isInitializing: isLoadingShippingCountries() || isLoadingShippingOptions(),
         isLoading,
+        isStripeLoading: false,
+        isStripeAutoStep: false,
         isShippingStepPending: isShippingStepPending(),
         loadShippingAddressFields: checkoutService.loadShippingAddressFields,
         loadShippingOptions: checkoutService.loadShippingOptions,
@@ -388,6 +473,8 @@ export function mapToShippingProps({
         updateBillingAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,
         updateShippingAddress: checkoutService.updateShippingAddress,
+        isStripeLinkEnable: stripeUpeLinkEnable,
+        loadPaymentMethods: checkoutService.loadPaymentMethods,
     };
 }
 

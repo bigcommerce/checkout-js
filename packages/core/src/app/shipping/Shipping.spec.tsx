@@ -7,6 +7,7 @@ import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';
 import { CheckoutProvider } from '../checkout';
 import { getCheckout } from '../checkout/checkouts.mock';
+import CheckoutStepType from '../checkout/CheckoutStepType';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
@@ -27,15 +28,20 @@ describe('Shipping Component', () => {
     beforeEach(() => {
         localeContext = createLocaleContext(getStoreConfig());
         checkoutService = createCheckoutService();
-
         checkoutState = checkoutService.getState();
-
         defaultProps = {
             isBillingSameAsShipping: true,
             isMultiShippingMode: false,
             onToggleMultiShipping: jest.fn(),
             cartHasChanged: false,
             onSignIn: jest.fn(),
+            step: { isActive: true,
+                isComplete: true,
+                isEditable: true,
+                isRequired: true,
+                type: CheckoutStepType.Shipping },
+            isStripeLinkEnable: true,
+            isStripeLoading: false,
             navigateNextStep: jest.fn(),
             onUnhandledError: jest.fn(),
         };
@@ -96,6 +102,18 @@ describe('Shipping Component', () => {
 
     it('loads shipping data  when component is mounted', () => {
         mount(<ComponentTest { ...defaultProps } />);
+
+        expect(checkoutService.loadShippingAddressFields)
+            .toHaveBeenCalled();
+
+        expect(checkoutService.loadShippingOptions)
+            .toHaveBeenCalled();
+    });
+
+    it('loads shipping data when component is mounted and stripeupe is enable', () => {
+        jest.spyOn(checkoutState.data, 'getCustomer')
+            .mockReturnValue({ ...getCustomer(), email: '' ,addresses: [] });
+        mount(<ComponentTest { ...defaultProps }/>);
 
         expect(checkoutService.loadShippingAddressFields)
             .toHaveBeenCalled();

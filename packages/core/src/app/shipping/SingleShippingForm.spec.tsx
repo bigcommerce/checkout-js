@@ -2,6 +2,7 @@ import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
 import { getAddressFormFields } from '../address/formField.mock';
+import CheckoutStepType from '../checkout/CheckoutStepType';
 import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 
@@ -29,6 +30,12 @@ describe('SingleShippingForm', () => {
             consignments: [],
             cartHasChanged: false,
             isLoading: false,
+            step: { isActive: true,
+                isComplete: true,
+                isEditable: true,
+                isRequired: true,
+                type: CheckoutStepType.Shipping },
+            customerEmail: 'foo@test.com',
             isShippingStepPending: false,
             onSubmit: jest.fn(),
             getFields: jest.fn(() => addressFormFields),
@@ -38,6 +45,7 @@ describe('SingleShippingForm', () => {
             initialize: jest.fn(),
             updateAddress: jest.fn(),
             deleteConsignments: jest.fn(),
+            isStripeLoading: jest.fn(),
         };
 
         component = mount(

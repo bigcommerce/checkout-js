@@ -4,6 +4,8 @@ import React, { Component, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
 import { isErrorWithType } from '../common/error';
+import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
+import { PaymentMethodId } from '../payment/paymentMethod';
 import { LoadingOverlay } from '../ui/loading';
 
 import { CreateAccountFormValues } from './getCreateCustomerValidationSchema';
@@ -14,9 +16,11 @@ import CustomerViewType from './CustomerViewType';
 import EmailLoginForm, { EmailLoginFormValues } from './EmailLoginForm';
 import GuestForm, { GuestFormValues } from './GuestForm';
 import LoginForm from './LoginForm';
+import StripeGuestForm from './StripeGuestForm';
 
 export interface CustomerProps {
     viewType: CustomerViewType;
+    step: CheckoutStepStatus;
     isEmbedded?: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void;
     onChangeViewType?(viewType: CustomerViewType): void;
@@ -53,6 +57,7 @@ export interface WithCheckoutCustomerProps {
     isAccountCreationEnabled: boolean;
     createAccountError?: Error;
     signInError?: Error;
+    isStripeLinkEnable?: boolean;
     clearError(error: Error): Promise<CheckoutSelectors>;
     continueAsGuest(credentials: GuestCredentials): Promise<CheckoutSelectors>;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
@@ -61,6 +66,7 @@ export interface WithCheckoutCustomerProps {
     sendLoginEmail(params: { email: string }): Promise<CheckoutSelectors>;
     signIn(credentials: CustomerCredentials): Promise<CheckoutSelectors>;
     createAccount(values: CustomerAccountRequestBody): Promise<CheckoutSelectors>;
+    loadPaymentMethods(): Promise<CheckoutSelectors>;
 }
 
 export interface CustomerState {
@@ -81,6 +87,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
     async componentDidMount(): Promise<void> {
         const {
             initializeCustomer,
+            loadPaymentMethods,
             email,
             onReady = noop,
             onUnhandledError = noop,
@@ -90,6 +97,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
         this.draftEmail = email;
 
         try {
+            await loadPaymentMethods();
             await initializeCustomer({ methodId: providerWithCustomCheckout });
         } catch (error) {
             onUnhandledError(error);
@@ -148,10 +156,39 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             isInitializing = false,
             privacyPolicyUrl,
             requiresMarketingConsent,
+            isStripeLinkEnable,
             onUnhandledError = noop,
+            step,
         } = this.props;
 
         return (
+            isStripeLinkEnable ?
+                <StripeGuestForm
+                    canSubscribe={ canSubscribe }
+                    checkoutButtons={
+                        <CheckoutButtonList
+                            checkEmbeddedSupport={ checkEmbeddedSupport }
+                            deinitialize={ deinitializeCustomer }
+                            initialize={ initializeCustomer }
+                            isInitializing={ isInitializing }
+                            methodIds={ checkoutButtonIds }
+                            onError={ onUnhandledError }
+                        />
+                    }
+                    continueAsGuestButtonLabelId={ providerWithCustomCheckout ? 'customer.continue' : 'customer.continue_as_guest_action' }
+                    defaultShouldSubscribe={ defaultShouldSubscribe }
+                    deinitialize={ deinitializeCustomer }
+                    email={ this.draftEmail || email }
+                    initialize={ initializeCustomer }
+                    isLoading={ isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout }
+                    onChangeEmail={ this.handleChangeEmail }
+                    onContinueAsGuest={ this.handleContinueAsGuest }
+                    onShowLogin={ this.handleShowLogin }
+                    privacyPolicyUrl={ privacyPolicyUrl }
+                    requiresMarketingConsent={ requiresMarketingConsent }
+                    step={ step }
+                />
+                :
             <GuestForm
                 canSubscribe={ canSubscribe }
                 checkoutButtons={
@@ -433,16 +470,23 @@ export function mapToWithCheckoutCustomerProps(
     { checkoutService, checkoutState }: CheckoutContextProps
 ): WithCheckoutCustomerProps | null {
     const {
-        data: { getBillingAddress, getCustomerAccountFields, getCheckout, getCustomer, getSignInEmail, getConfig },
+        data: { getBillingAddress, getCustomerAccountFields, getCheckout, getCustomer, getSignInEmail, getConfig, getPaymentMethod, getCart },
         errors: { getSignInError, getSignInEmailError, getCreateCustomerAccountError },
         statuses: { isContinuingAsGuest, isExecutingPaymentMethodCheckout, isInitializingCustomer, isSigningIn, isSendingSignInEmail, isCreatingCustomerAccount },
     } = checkoutState;
 
+    const card = getCart() || undefined;
     const billingAddress = getBillingAddress();
     const checkout = getCheckout();
     const customer = getCustomer();
     const signInEmail = getSignInEmail();
     const config = getConfig();
+    let stripeUpeLinkEnable = false;
+
+    if (card) {
+        const stripeUpe = getPaymentMethod('card', PaymentMethodId.StripeUPE);
+        stripeUpeLinkEnable = stripeUpe?.initializationData.enableLink && card.currency.code === 'USD';
+    }
 
     if (!checkout || !config) {
         return null;
@@ -489,6 +533,8 @@ export function mapToWithCheckoutCustomerProps(
         requiresMarketingConsent,
         signIn: checkoutService.signInCustomer,
         signInError: getSignInError(),
+        isStripeLinkEnable: stripeUpeLinkEnable,
+        loadPaymentMethods: checkoutService.loadPaymentMethods,
     };
 }
 

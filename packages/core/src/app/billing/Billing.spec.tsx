@@ -188,4 +188,16 @@ describe('Billing Component', () => {
         expect(defaultProps.onUnhandledError)
             .toHaveBeenCalledWith(error);
     });
+
+    it('calls onUnhandledError if onReady was failed', async () => {
+        defaultProps.onReady = jest.fn(() => {
+            throw new Error();
+        });
+
+        component = mount(<ComponentTest { ...defaultProps } />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
+    });
 });

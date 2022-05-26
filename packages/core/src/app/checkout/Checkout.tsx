@@ -326,6 +326,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onSignIn={ this.navigateToNextIncompleteStep }
                         onSignInError={ this.handleError }
                         onUnhandledError={ this.handleUnhandledError }
+                        step={ step }
                         viewType={ customerViewType }
                     />
                 </LazyContainer>
@@ -376,6 +377,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                         onSignIn={ this.handleShippingSignIn }
                         onToggleMultiShipping={ this.handleToggleMultiShipping }
                         onUnhandledError={ this.handleUnhandledError }
+                        step={ step }
                     />
                 </LazyContainer>
             </CheckoutStep>

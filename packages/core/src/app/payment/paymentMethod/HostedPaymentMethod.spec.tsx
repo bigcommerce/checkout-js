@@ -31,6 +31,7 @@ describe('HostedPaymentMethod', () => {
             method: getPaymentMethod(),
             deinitializePayment: jest.fn(),
             initializePayment: jest.fn(),
+            onUnhandledError: jest.fn(),
         };
 
         storeConfig = getStoreConfig();
@@ -91,6 +92,24 @@ describe('HostedPaymentMethod', () => {
 
         expect(defaultProps.deinitializePayment)
             .toHaveBeenCalled();
+    });
+
+    it('calls onUnhandledError if initialize was failed', () => {
+        defaultProps.initializePayment = jest.fn(() => { throw new Error(); });
+
+        mount(<HostedPaymentMethodTest { ...defaultProps } />);
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
+    });
+
+    it('calls onUnhandledError if deinitialize was failed', async () => {
+        defaultProps.deinitializePayment = jest.fn(() => {
+            throw new Error();
+        });
+
+        mount(<HostedPaymentMethodTest { ...defaultProps } />).unmount();
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
     });
 
     it('renders loading overlay while waiting for method to initialize if description is provided', () => {
