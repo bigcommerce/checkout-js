@@ -21,6 +21,7 @@ export default function withRedeemable(
             onRemovedCoupon,
             onRemovedGiftCertificate,
             storeCreditAmount,
+            hasSubscription,
             ...redeemableProps
         } = props;
 
@@ -35,6 +36,7 @@ export default function withRedeemable(
                     } }
                     />
                 }
+                hasSubscription={ hasSubscription }
                 headerLink={ headerLink }
                 lineItems={ checkout.cart.lineItems }
                 onRemovedCoupon={ onRemovedCoupon }

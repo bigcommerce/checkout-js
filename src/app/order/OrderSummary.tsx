@@ -1,8 +1,6 @@
 import { LineItemMap, ShopperCurrency, StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { useMemo, FunctionComponent, ReactNode } from 'react';
 
-import withRecurly from '../recurly/withRecurly';
-
 import removeBundledItems from './removeBundledItems';
 import OrderSummaryHeader from './OrderSummaryHeader';
 import OrderSummaryItems from './OrderSummaryItems';
@@ -71,4 +69,4 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     </article>;
 };
 
-export default withRecurly(props => props)(OrderSummary);
+export default OrderSummary;

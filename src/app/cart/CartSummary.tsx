@@ -3,6 +3,7 @@ import React, { FunctionComponent } from 'react';
 
 import { withCheckout } from '../checkout';
 import OrderSummary from '../order/OrderSummary';
+import withRecurly from '../recurly/withRecurly';
 
 import mapToCartSummaryProps from './mapToCartSummaryProps';
 import withRedeemable from './withRedeemable';
@@ -15,19 +16,23 @@ export type WithCheckoutCartSummaryProps = {
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrency;
     storeCreditAmount?: number;
+    hasSubscription?: boolean;
 } & RedeemableProps;
 
 const CartSummary: FunctionComponent<WithCheckoutCartSummaryProps> = ({
     cartUrl,
     ...props
-}) => (
-    withRedeemable(OrderSummary)({
-        ...props,
-        cartUrl,
-        headerLink: (
-            <EditLink url={ cartUrl } />
-        ),
-    })
-);
+}) => {
 
-export default withCheckout(mapToCartSummaryProps)(CartSummary);
+    return (
+        withRedeemable(OrderSummary)({
+            ...props,
+            cartUrl,
+            headerLink: (
+                <EditLink url={ cartUrl } />
+            ),
+        })
+    );
+};
+
+export default withCheckout(mapToCartSummaryProps)(withRecurly(({hasSubscription}) => ({hasSubscription}) )(CartSummary));
