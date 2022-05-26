@@ -46,7 +46,6 @@ interface WithCheckoutPaymentProps {
     termsConditionsText?: string;
     termsConditionsUrl?: string;
     usableStoreCredit: number;
-    paymentMethodsWithCreditCardConflicts?: PaymentMethodsWithConflicts[];
     applyStoreCredit(useStoreCredit: boolean): Promise<CheckoutSelectors>;
     clearError(error: Error): void;
     finalizeOrderIfNeeded(): Promise<CheckoutSelectors>;
@@ -135,7 +134,6 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             isInitializingPayment,
             isUsingMultiShipping,
             methods,
-            paymentMethodsWithCreditCardConflicts,
             applyStoreCredit,
             ...rest
         } = this.props;
@@ -171,7 +169,6 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
                         onMethodSelect={ this.setSelectedMethod }
                         onStoreCreditChange={ this.handleStoreCreditChange }
                         onSubmit={ this.handleSubmit }
-                        paymentMethodsWithCreditCardConflicts={ paymentMethodsWithCreditCardConflicts }
                         selectedMethod={ selectedMethod }
                         shouldDisableSubmit={ uniqueSelectedMethodId && shouldDisableSubmit[uniqueSelectedMethodId] || undefined }
                         shouldHidePaymentSubmitButton={ uniqueSelectedMethodId && shouldHidePaymentSubmitButton[uniqueSelectedMethodId] || undefined }
@@ -541,6 +538,8 @@ export function mapToPaymentProps({
         filteredMethods = filteredMethods;
     }
 
+    filteredMethods = filterCreditCurdsMethods(filteredMethods, config.checkoutSettings.paymentMethodsWithCreditCardConflicts);
+
     return {
         applyStoreCredit: checkoutService.applyStoreCredit,
         availableStoreCredit: customer.storeCredit,
@@ -569,8 +568,30 @@ export function mapToPaymentProps({
             undefined,
         usableStoreCredit: checkout.grandTotal > 0 ?
             Math.min(checkout.grandTotal, customer.storeCredit || 0) : 0,
-        paymentMethodsWithCreditCardConflicts: config.checkoutSettings.paymentMethodsWithCreditCardConflicts,
     };
 }
 
 export default withLanguage(withCheckout(mapToPaymentProps)(Payment));
+
+const filterCreditCurdsMethods = (methods: PaymentMethod[], paymentMethodsWithCreditCardConflicts?: PaymentMethodsWithConflicts[]) => {
+    let filteredMethods = [...methods];
+
+    if (!paymentMethodsWithCreditCardConflicts?.length) {
+        return filteredMethods;
+    }
+
+    paymentMethodsWithCreditCardConflicts.forEach((conflictMethod: PaymentMethodsWithConflicts ) => {
+        const { methodId, conflictMethodIds } = conflictMethod;
+
+        const isMethodExist = !!filteredMethods.find(method => method.id === methodId);
+        if (!isMethodExist || !conflictMethodIds?.length) {
+            return;
+        }
+
+        conflictMethodIds.forEach((conflictMethodId: string) => {
+            filteredMethods = filteredMethods.filter(method => method.id !== conflictMethodId);
+        });
+    });
+
+    return filteredMethods;
+};

@@ -1,4 +1,4 @@
-import { PaymentMethod, PaymentMethodsWithConflicts } from '@bigcommerce/checkout-sdk';
+import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { find, get, noop } from 'lodash';
 import React, { memo, useCallback, useMemo, FunctionComponent } from 'react';
 
@@ -15,7 +15,6 @@ export interface PaymentMethodListProps {
     isInitializingPayment?: boolean;
     isUsingMultiShipping?: boolean;
     methods: PaymentMethod[];
-    paymentMethodsWithCreditCardConflicts?: PaymentMethodsWithConflicts[];
     onSelect?(method: PaymentMethod): void;
     onUnhandledError?(error: Error): void;
 }
@@ -40,7 +39,6 @@ const PaymentMethodList: FunctionComponent<
     isInitializingPayment,
     isUsingMultiShipping,
     methods,
-    paymentMethodsWithCreditCardConflicts,
     onSelect = noop,
     onUnhandledError,
 }) => {
@@ -51,37 +49,13 @@ const PaymentMethodList: FunctionComponent<
         onSelect,
     ]);
 
-    const filteredMethodsList = useMemo(() => {
-        let filteredMethods = [...methods];
-
-        if (!paymentMethodsWithCreditCardConflicts?.length) {
-            return filteredMethods;
-        }
-
-        paymentMethodsWithCreditCardConflicts.forEach((conflictMethod: PaymentMethodsWithConflicts ) => {
-            const { methodId, conflictMethodIds } = conflictMethod;
-
-            const isMethodExist = !!filteredMethods.find(method => method.id === methodId);
-            if (!isMethodExist || !conflictMethodIds?.length) {
-                return;
-            }
-
-            conflictMethodIds.forEach((conflictMethodId: string) => {
-                filteredMethods = filteredMethods.filter(method => method.id !== conflictMethodId);
-            });
-        });
-
-        return filteredMethods;
-
-    }, [ methods, paymentMethodsWithCreditCardConflicts ]);
-
     return <Checklist
         defaultSelectedItemId={ values.paymentProviderRadio }
         isDisabled={ isInitializingPayment }
         name="paymentProviderRadio"
         onSelect={ handleSelect }
     >
-        { filteredMethodsList.map(method => {
+        { methods.map(method => {
             const value = getUniquePaymentMethodId(method.id, method.gateway);
             const showOnlyOnMobileDevices = get(method, 'initializationData.showOnlyOnMobileDevices', false);
 

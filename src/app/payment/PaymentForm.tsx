@@ -1,4 +1,4 @@
-import { PaymentMethod, PaymentMethodsWithConflicts } from '@bigcommerce/checkout-sdk';
+import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps, WithFormikConfig } from 'formik';
 import { isNil, noop, omitBy } from 'lodash';
 import React, { memo, useCallback, useContext, useMemo, FunctionComponent } from 'react';
@@ -39,7 +39,6 @@ export interface PaymentFormProps {
     termsConditionsUrl?: string;
     usableStoreCredit?: number;
     validationSchema?: ObjectSchema<Partial<PaymentFormValues>>;
-    paymentMethodsWithCreditCardConflicts?: PaymentMethodsWithConflicts[];
     isPaymentDataRequired(): boolean;
     onMethodSelect?(method: PaymentMethod): void;
     onStoreCreditChange?(useStoreCredit?: boolean): void;
@@ -84,7 +83,6 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
     isUsingMultiShipping,
     language,
     methods,
-    paymentMethodsWithCreditCardConflicts,
     onMethodSelect,
     onStoreCreditChange,
     onUnhandledError,
@@ -152,7 +150,6 @@ const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormV
                 methods={ methods }
                 onMethodSelect={ onMethodSelect }
                 onUnhandledError={ onUnhandledError }
-                paymentMethodsWithCreditCardConflicts={ paymentMethodsWithCreditCardConflicts }
                 resetForm={ resetForm }
                 values={ values }
             />
@@ -191,7 +188,6 @@ interface PaymentMethodListFieldsetProps {
     isUsingMultiShipping?: boolean;
     methods: PaymentMethod[];
     values: PaymentFormValues;
-    paymentMethodsWithCreditCardConflicts?: PaymentMethodsWithConflicts[];
     isPaymentDataRequired(): boolean;
     onMethodSelect?(method: PaymentMethod): void;
     onUnhandledError?(error: Error): void;
@@ -206,7 +202,6 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
     methods,
     onMethodSelect = noop,
     onUnhandledError,
-    paymentMethodsWithCreditCardConflicts,
     resetForm,
     values,
 }) => {
@@ -254,7 +249,6 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
                 methods={ methods }
                 onSelect={ handlePaymentMethodSelect }
                 onUnhandledError={ onUnhandledError }
-                paymentMethodsWithCreditCardConflicts={ paymentMethodsWithCreditCardConflicts }
             />
         </Fieldset>
     );
