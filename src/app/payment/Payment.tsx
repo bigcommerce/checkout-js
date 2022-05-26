@@ -501,6 +501,7 @@ export function mapToPaymentProps({
         orderTermsAndConditionsType: termsConditionsType,
         orderTermsAndConditions: termsCondtitionsText,
         orderTermsAndConditionsLink: termsCondtitionsUrl,
+        paymentMethodsWithCreditCardConflicts,
     } = config.checkoutSettings as CheckoutSettings & { orderTermsAndConditionsLocation: string };
 
     const isTermsConditionsRequired = isTermsConditionsEnabled;
@@ -538,7 +539,7 @@ export function mapToPaymentProps({
         filteredMethods = filteredMethods;
     }
 
-    filteredMethods = filterCreditCurdsMethods(filteredMethods, config.checkoutSettings.paymentMethodsWithCreditCardConflicts);
+    filteredMethods = filterCreditCurdsMethods(filteredMethods, paymentMethodsWithCreditCardConflicts);
 
     return {
         applyStoreCredit: checkoutService.applyStoreCredit,
@@ -573,7 +574,7 @@ export function mapToPaymentProps({
 
 export default withLanguage(withCheckout(mapToPaymentProps)(Payment));
 
-const filterCreditCurdsMethods = (methods: PaymentMethod[], paymentMethodsWithCreditCardConflicts?: PaymentMethodsWithConflicts[]) => {
+function filterCreditCurdsMethods(methods: PaymentMethod[], paymentMethodsWithCreditCardConflicts?: PaymentMethodsWithConflicts[]): PaymentMethod[] {
     let filteredMethods = [...methods];
 
     if (!paymentMethodsWithCreditCardConflicts?.length) {
@@ -594,4 +595,4 @@ const filterCreditCurdsMethods = (methods: PaymentMethod[], paymentMethodsWithCr
     });
 
     return filteredMethods;
-};
+}
