@@ -51,6 +51,10 @@ const AVAILABLE_TRANSLATIONS: Record<string, () => Promise<{ default: unknown }>
         /* webpackChunkName: "translations-nl" */
         './translations/nl.json'
     ),
+    no: () => import(
+        /* webpackChunkName: "translations-no" */
+        './translations/no.json'
+    ),
     'pt-BR': () => import(
         /* webpackChunkName: "translations-pt-br" */
         './translations/pt-BR.json'

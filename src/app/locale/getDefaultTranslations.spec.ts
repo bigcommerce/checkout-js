@@ -72,4 +72,10 @@ describe('getDefaultTranslations', () => {
             // eslint-disable-next-line import/no-internal-modules
             .toEqual(require('./translations/es-PE.json'));
     });
+
+    it('returns Norwegian translations when no locale is specified', async () => {
+        expect(await getDefaultTranslations('no'))
+            // eslint-disable-next-line import/no-internal-modules
+            .toEqual(require('./translations/no.json'));
+    });
 });
