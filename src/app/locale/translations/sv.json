@@ -43,7 +43,7 @@
         },
         "billing": {
             "billing_address_heading": "Fakturaadress",
-            "billing_heading": "fakturering",
+            "billing_heading": "Fakturering",
             "save_billing_address_error": "Ett fel inträffade när faktureringsadressen skulle sparas i din prisoffert. Försök igen.",
             "billing_address_amazon": "Samma som den faktureringsadress som du har angett i ditt Amazon konto.",
             "billing_address_amazonpay": "Hanteras av Amazon Pay",
