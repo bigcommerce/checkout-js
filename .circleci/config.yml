@@ -1,24 +1,24 @@
 aliases:
   - &node_executor
-      executor:
-        name: node/node
-        node-version: "14.18"
+    executor:
+      name: node/node
+      node-version: "14.18"
 
   - &release_filter
-      branches:
-        only:
-          - master
+    branches:
+      only:
+        - master
 
   - &pull_request_filter
-      branches:
-        ignore:
-          - master
+    branches:
+      ignore:
+        - master
 
 version: 2.1
 
 orbs:
   ci: bigcommerce/internal@volatile
-  node: bigcommerce/internal-node@volatile
+  node: bigcommerce/internal-node@dev:PR-207
 
 jobs:
   test:
