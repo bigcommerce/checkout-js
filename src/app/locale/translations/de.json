@@ -71,7 +71,7 @@
             "gift_wrapping_text": "Geschenkverpackung",
             "show_details_action": "Details anzeigen",
             "store_credit_text": "Shop-Guthaben",
-            "subtotal_text": "Gesamtbetrag (netto)",
+            "subtotal_text": "Zwischensumme",
             "taxes_text": "Steuern",
             "total_text": "Summe",
             "empty_cart_message": "Ihr Warenkorb ist leer, Sie werden weitergeleitet. Bitte klicken Sie <a href=\"{url}\" target=\"_top\">hier</a>, wenn Ihr Browser Sie nicht weiterleitet."

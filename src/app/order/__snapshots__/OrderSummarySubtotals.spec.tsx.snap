@@ -73,7 +73,11 @@ exports[`OrderSummarySubtotals renders component 1`] = `
   <OrderSummaryPrice
     amount={3}
     key="0"
-    label="Tax"
+    label={
+      <WithLanguage(TranslatedString)
+        id="cart.taxes_text"
+      />
+    }
     testId="cart-taxes"
   />
 </Fragment>
