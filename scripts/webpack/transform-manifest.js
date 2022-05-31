@@ -3,7 +3,7 @@ const { extname } = require('path');
 
 function transformManifest(assets, appVersion) {
     const [entries] = Object.values(assets.entrypoints);
-    const entrypoints = omitBy(entries, (_val, key) => key.toLowerCase().endsWith('.map'));
+    const entrypoints = omitBy(entries.assets, (_val, key) => key.toLowerCase().endsWith('.map'));
     const entrypointPaths = reduce(entrypoints, (result, files) => [...result, ...files], []);
     const dynamicChunks = Object.values(assets).filter(path => {
         return (
