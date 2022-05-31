@@ -259,6 +259,7 @@
             "payment_not_required_text": "Payment is not required for this order.",
             "paypal_continue_action": "Continue with PayPal",
             "paypal_pay_later_continue_action": "Continue with Pay Later",
+            "paypal_venmo_continue_action": "Continue with Venmo",
             "braintreevenmo_continue_action": "Continue with Venmo",
             "paypal_credit_continue_action": "Continue with PayPal Credit",
             "paypal_credit_description_text": "Buy Now, Pay Over Time",

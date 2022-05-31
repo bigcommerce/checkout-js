@@ -174,6 +174,10 @@ function getPaymentMethodTitle(
             },
         };
 
+        if (method.id === PaymentMethodId.PaypalCommerceVenmo) {
+            return customTitles[PaymentMethodId.PaypalCommerceAlternativeMethod];
+        }
+
         // KLUDGE: 'paypal' is actually a credit card method. It is the only
         // exception to the rule below. We should probably fix it on API level,
         // but apparently it would break LCO if we are not careful.
