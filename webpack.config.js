@@ -266,8 +266,9 @@ function loaderConfig(options, argv) {
                     }),
                     new BuildHookPlugin({
                         onSuccess() {
-                            copyFileSync(`${isProduction ? 'dist' : 'build'}/${LOADER_ENTRY_NAME}-${appVersion}.js`, `dist/${LOADER_ENTRY_NAME}.js`);
-                            copyFileSync(`${isProduction ? 'dist' : 'build'}/${AUTO_LOADER_ENTRY_NAME}-${appVersion}.js`, `dist/${AUTO_LOADER_ENTRY_NAME}.js`);
+                            const folder = isProduction ? 'dist' : 'build';
+                            copyFileSync(`${folder}/${LOADER_ENTRY_NAME}-${appVersion}.js`, `${folder}/${LOADER_ENTRY_NAME}.js`);
+                            copyFileSync(`${folder}/${AUTO_LOADER_ENTRY_NAME}-${appVersion}.js`, `${folder}/${AUTO_LOADER_ENTRY_NAME}.js`);
                         },
                     }),
                 ],
