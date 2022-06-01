@@ -1,15 +1,10 @@
 import { Page } from '@playwright/test';
+import { includes } from 'lodash';
 
 import { CheckoutPagePreset } from '../../../';
 
 import { PollyObject } from './PollyObject';
 import { ServerSideRender } from './ServerSideRender';
-
-export interface PageRoutingRule {
-    routePath: string;
-    filePath: string;
-    data?: {};
-}
 
 export class PlaywrightHelper {
     private readonly isReplay: boolean;
@@ -30,51 +25,42 @@ export class PlaywrightHelper {
         this.harName = '';
     }
 
-    async goto({ storeURL, harName, preset }: { storeURL: string; harName: string; preset: CheckoutPagePreset }): Promise<void> {
-        const page = this.page;
+    async goto(): Promise<void> {
+        if (this.isReplay) {
+            await this.page.goto('/');
+        } else {
+            await this.page.goto(this.storeURL + '/checkout');
+        }
+    }
+
+    async record(storeURL: string, harName: string): Promise<void> {
         this.storeURL = storeURL;
         this.harName = harName;
 
         await this.polly.start({
-            page,
+            page: this.page,
             mode: this.mode,
             harName: this.harName,
             storeURL: this.storeURL,
         });
 
         if (this.isReplay) {
-            // Server-side rendering
-            await page.route(/\/products\/.*\/images\//, route => route.fulfill({ status: 200, path: './tests/support/product.jpg' }));
+            // rendering local checkout page
+            await this.page.route(/\/products\/.*\/images\//, route => route.fulfill({ status: 200, path: './tests/support/product.jpg' }));
             const { checkoutId, orderId } = this.polly.getCartAndOrderIDs();
-            await this.serveFile({
-                routePath: '/',
-                filePath: './tests/support/checkout.ejs',
-                data: { checkoutId },
-            });
+            await this.routeAndRender('/checkout.php', './tests/support/checkout.php.ejs', { storeURL: this.storeURL });
+            await this.routeAndRender('/', './tests/support/checkout.ejs', { checkoutId });
             if (orderId) {
-                await this.serveFile({
-                    routePath: '/order-confirmation',
-                    filePath: './tests/support/orderConfirmation.ejs',
-                    data: { orderId },
-                });
+                await this.routeAndRender('/order-confirmation', './tests/support/orderConfirmation.ejs', { orderId });
             }
-            await page.goto('/');
-        } else {
-            if (preset) {
-                // Optional: Set Up checkout environment accroding to preset
-                this.polly.pause();
-                await preset.apply();
-                this.polly.play();
-            }
-            await page.goto(this.storeURL + '/checkout');
         }
     }
 
-    async replayPages(files: PageRoutingRule[]): Promise<void> {
-        if (this.isReplay) {
-            for (const file of files) {
-                await this.serveFile(file);
-            }
+    async applyPreset(preset: CheckoutPagePreset): Promise<void> {
+        if (!this.isReplay) {
+            this.polly.pause();
+            await preset.apply();
+            this.polly.play();
         }
     }
 
@@ -83,12 +69,18 @@ export class PlaywrightHelper {
         await this.page.close();
     }
 
-    private async serveFile({routePath, filePath, data}: PageRoutingRule): Promise<void> {
-        const htmlStr = await this.server.renderFile(filePath, data);
-        await this.page.route(routePath, route => route.fulfill({
-            status: 200,
-            contentType: 'text/html',
-            body: htmlStr,
-        }));
+    async routeAndRender(url: string | RegExp | ((url: URL) => boolean), filePath: string, data?: {}): Promise<void> {
+        if (includes(filePath, 'ejs')) {
+            const htmlStr = await this.server.renderFile(filePath, data);
+            await this.page.route(url, route => route.fulfill({
+                status: 200,
+                body: htmlStr,
+            }));
+        } else {
+            await this.page.route(url, route => route.fulfill({
+                status: 200,
+                path: filePath,
+            }));
+        }
     }
 }

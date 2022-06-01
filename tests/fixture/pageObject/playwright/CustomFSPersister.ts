@@ -2,6 +2,8 @@ import { Har } from '@pollyjs/persister';
 import FSPersister from '@pollyjs/persister-fs';
 import { includes } from 'lodash';
 
+import { sensitiveHeaders } from './senstiveDataConfig';
+
 export class CustomFSPersister extends FSPersister {
     /**
      * @internal
@@ -13,14 +15,6 @@ export class CustomFSPersister extends FSPersister {
 
     async onSaveRecording(recordingId: string, data: Har): Promise<void> {
         const dummyData = '*';
-        const sensitiveHeaderNames = [
-            'authorization',
-            'cookie',
-            'set-cookie',
-            'token',
-            'x-session-hash',
-            'x-xsrf-token',
-        ];
 
         data.log.entries.forEach( entry => {
             if (includes(entry.request.url, 'api/storefront/checkout-settings')) {
@@ -30,15 +24,9 @@ export class CustomFSPersister extends FSPersister {
                     entry.response.content.text = JSON.stringify(response);
                 }
             }
-            entry.request.headers = entry.request.headers.map((header: { name: string; value: string }) => {
-                if (includes(sensitiveHeaderNames, header.name)) {
-                    return { ...header, value: dummyData };
-                }
 
-                return header;
-            });
             entry.response.headers = entry.response.headers.map((header: { name: string; value: string }) => {
-                if (includes(sensitiveHeaderNames, header.name)) {
+                if (includes(sensitiveHeaders, header.name)) {
                     return { ...header, value: dummyData };
                 }
 

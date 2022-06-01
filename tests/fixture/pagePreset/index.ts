@@ -5,4 +5,4 @@
 export { CheckoutPagePreset } from './CheckoutPagePreset';
 export { CustomerStepAsGuest as CustomerStepPreset } from './CustomerStepAsGuest';
 export { PaymentStepAsGuest as PaymentStepAsGuestPreset } from './PaymentStepAsGuest';
-export { PaymentStepAsGuestAUD as PaymentstepAsGuestAUDPreset } from './PaymentStepAsGuestAUD';
+export { UseAUD as UseAUDPreset } from './UseAUD';

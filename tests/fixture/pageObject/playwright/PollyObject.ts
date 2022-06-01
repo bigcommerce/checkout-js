@@ -2,10 +2,11 @@ import { Page } from '@playwright/test';
 import { MODE, Polly } from '@pollyjs/core';
 import { API } from '@pollyjs/node-server';
 import FSPersister from '@pollyjs/persister-fs';
-import { includes } from 'lodash';
+import { includes, isObject } from 'lodash';
 import path from 'path';
 import { PlaywrightAdapter } from 'polly-adapter-playwright';
 
+import { ignoredHeaders, ignoredPayloads } from './senstiveDataConfig';
 import { CustomFSPersister } from './CustomFSPersister';
 
 interface PollyOptions {
@@ -77,7 +78,7 @@ export class PollyObject {
         this.polly = new Polly(harName);
         this.polly.configure({
             mode: this.mode,
-            logLevel: 'SILENT', // change this to have detailed report for unmatched requests
+            logLevel: 'SILENT', // change this to 'INFO' for a detailed report of unmatched requests
             recordIfMissing: false,
             flushRequestsOnStop: true,
             recordFailedRequests: true,
@@ -96,14 +97,26 @@ export class PollyObject {
                 },
             },
             matchRequestsBy: {
-                headers: false,
                 method: true,
-                body: false,
-                order: true,
                 url: true,
+                order: true,
+                headers: false,
+                body: true,
             },
         });
 
+        // To ensure that requests match HAR entries, ignore sensitive and constantly changing headers/payloads
+        this.polly.server.any().on('request', req => {
+            req.headers = Object.fromEntries(
+                Object.entries(req.headers).filter(([key, _]) => !includes(ignoredHeaders, key))
+            );
+            // Sort payloads to ensure consistent stringfy outcomes
+            if (req.body && req.body.length > 0) {
+                req.body = JSON.stringify(this.sortPayload(req.jsonBody()));
+            }
+        });
+
+        // To ensure that requests match HAR entries, change local URLs to production URLs.
         if (mode === 'replay') {
             this.polly.server.get(this.baseUrl + '/api/storefront/checkout-settings').on('beforeResponse', (_, res) => {
                 const response = res.jsonBody();
@@ -116,7 +129,6 @@ export class PollyObject {
                 } else {
                     req.url = req.url.replace(this.baseUrl, storeURL);
                 }
-                // console.log('😃REPLAY ' + req.url);
             });
         }
     }
@@ -131,5 +143,18 @@ export class PollyObject {
 
     stop(): void {
         this.polly?.stop();
+    }
+
+    private sortPayload(object: { [ key: string ]: any }): { [ key: string ]: any } {
+        const keys = Object.keys(object);
+        const sortedKeys = keys.sort();
+
+        return sortedKeys.reduce((previous, current) => {
+            if (isObject(object[current])) {
+                return this.sortPayload(object[current]);
+            } else {
+                return {...previous, [current]: (includes(ignoredPayloads, current)) ? '*' : object[current]};
+            }
+        }, {});
     }
 }

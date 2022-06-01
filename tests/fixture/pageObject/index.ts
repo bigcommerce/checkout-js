@@ -1,1 +1,1 @@
-export { PlaywrightHelper, PageRoutingRule } from './playwright/PlaywrightHelper';
+export { PlaywrightHelper } from './playwright/PlaywrightHelper';
