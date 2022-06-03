@@ -10,10 +10,11 @@ import { ignoredHeaders, ignoredPayloads } from './senstiveDataConfig';
 import { CustomFSPersister } from './CustomFSPersister';
 
 interface PollyOptions {
-    harName: string;
+    har: string;
     mode: MODE;
     page: Page;
     storeURL: string;
+    devMode: boolean;
 }
 
 export class PollyObject {
@@ -70,15 +71,15 @@ export class PollyObject {
     }
 
     start(option: PollyOptions): void {
-        const { mode, page, harName, storeURL } = option;
+        const { mode, page, har, storeURL, devMode } = option;
 
         Polly.register(PlaywrightAdapter);
         Polly.register(FSPersister);
 
-        this.polly = new Polly(harName);
+        this.polly = new Polly(har);
         this.polly.configure({
             mode: this.mode,
-            logLevel: 'SILENT', // change this to 'INFO' for a detailed report of unmatched requests
+            logLevel: devMode ? 'INFO' : 'SILENT', // change this to 'INFO' for a detailed report of unmatched requests
             recordIfMissing: false,
             flushRequestsOnStop: true,
             recordFailedRequests: true,

@@ -1,35 +1,19 @@
-import { test } from '../';
+import { test, PaymentStepAsGuestPreset } from '../';
 
 test.describe('xxxxxxxxxxxxxxxxxxxxxxx', () => {
+    test('xxxxxxxxxxxxxxxxxxxxxxx', async ({assertions, checkout, page}) => {
+        // Testing environment setup
+        const storeURL = 'https://my-dev-store-xxxxxxxxx.store.bcdev';
+        await checkout.use(new PaymentStepAsGuestPreset(storeURL));
+        await checkout.create('name of the har for this test', storeURL);
+        await page.route(/https:\/\/play.google.com\/log.*|https:\/\/pay.google.com\/gp\/p\/ui\/pay/, route => {
+            route.abort();
+        });
 
-    test.beforeEach(async ({ checkout }) => {
-        // Setup HAR and checkout environment.
-        await checkout.goto({ storeURL: 'https://my-dev-store-745516528.store.bcdev', harName: 'sampleName' });
-    });
-
-    test('xxxxxxxxxxxxxxxxxxxxxxx I', async ({assertions, page}) => {
-        // Playwright action scripts
-        await page.pause();
-        // Click text=Test Payment ProviderVisaAmexMaster
+        // Playwright actions
         // await page.locator('text=Test Payment ProviderVisaAmexMaster').click();
-        // Click [aria-label="Credit Card Number"]
         // await page.frameLocator('#bigpaypay-ccNumber iframe').locator('[aria-label="Credit Card Number"]').click();
-
-        // Assertions
-        await assertions.shouldSeeOrderConfirmation();
-    });
-
-    test('xxxxxxxxxxxxxxxxxxxxxxx II', async ({assertions, page}) => {
-        // Playwright action scripts
-        await page.pause();
-
-        // Assertions
-        await assertions.shouldSeeOrderConfirmation();
-    });
-
-    test('xxxxxxxxxxxxxxxxxxxxxxx III', async ({assertions, page}) => {
-        // Playwright action scripts
-        await page.pause();
+        await checkout.placeOrder();
 
         // Assertions
         await assertions.shouldSeeOrderConfirmation();

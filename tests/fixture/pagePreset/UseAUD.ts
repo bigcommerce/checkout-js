@@ -4,15 +4,16 @@ import { ApiRequestsSender } from './ApiRequestsSender';
 import { CheckoutPagePreset } from './CheckoutPagePreset';
 
 export class UseAUD implements CheckoutPagePreset {
-    private readonly api: ApiRequestsSender;
+    private readonly storeURL: string;
 
-    constructor(page: Page, storeURL: string) {
-        this.api = new ApiRequestsSender(page, storeURL);
+    constructor(storeURL: string) {
+        this.storeURL = storeURL;
     }
 
-    async apply(): Promise<void> {
-        await this.api.addPhysicalItemToCart();
-        await this.api.setCurrency('AUD');
-        await this.api.dispose();
+    async apply(page: Page): Promise<void> {
+        const api = new ApiRequestsSender(page, this.storeURL);
+        await api.addPhysicalItemToCart();
+        await api.setCurrency('AUD');
+        await api.dispose();
     }
 }

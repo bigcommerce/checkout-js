@@ -3,9 +3,10 @@ import { test, PaymentStepAsGuestPreset } from '../';
 test.describe('Sample Test Group', () => {
     test('Bigpay Test Payment Provider is working', async ({assertions, checkout, page}) => {
         // Testing environment setup
+        checkout.log();
         const storeURL = 'https://my-dev-store-745516528.store.bcdev';
-        await checkout.apply(new PaymentStepAsGuestPreset(page, storeURL));
-        await checkout.record(storeURL, 'sample Bigpay Test Payment Provider');
+        await checkout.use(new PaymentStepAsGuestPreset(storeURL));
+        await checkout.create('sample Bigpay Test Payment Provider', storeURL);
         await checkout.route(
             /https:\/\/bigpay.service.bcdev\/pay\/hosted_forms\/.+\/field?.+|http:\/\/localhost:.+\/checkout\/payment\/hosted-field?.+/,
             './tests/sampleTests/support/hostedField.ejs'
@@ -25,6 +26,7 @@ test.describe('Sample Test Group', () => {
         await checkout.placeOrder();
 
         // Assertions
+        await page.pause();
         await assertions.shouldSeeOrderConfirmation();
     });
 });

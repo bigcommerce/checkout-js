@@ -13,23 +13,27 @@ export class Checkout {
         this.playwright = new PlaywrightHelper(page);
     }
 
-    async apply(preset: CheckoutPagePreset): Promise<void> {
-        await this.playwright.applyPreset(preset);
+    log(): void {
+        this.playwright.enableDevMode();
+    }
+
+    async use(preset: CheckoutPagePreset): Promise<void> {
+        await this.playwright.usePreset(preset);
     }
 
     async close(): Promise<void> {
         await this.playwright.stopAll();
     }
 
-    async record(storeURL: string, harName: string): Promise<void> {
-        await this.playwright.record(storeURL, harName);
+    async create(har: string, storeURL: string): Promise<void> {
+        await this.playwright.createCheckout(har, storeURL);
     }
 
     async route(url: string | RegExp | ((url: URL) => boolean), filePath: string, data?: {}): Promise<void> {
         await this.playwright.routeAndRender(url, filePath, data);
     }
 
-    // Abstruct low-level HTML identifiers
+    // Abstract low-level HTML identifiers
     async goto(): Promise<void> {
         await this.playwright.goto();
     }

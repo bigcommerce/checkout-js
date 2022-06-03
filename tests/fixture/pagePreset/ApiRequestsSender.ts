@@ -48,6 +48,14 @@ export class ApiRequestsSender {
         });
     }
 
+    async setShippingQuote(): Promise<void> {
+        const apiContext = await this.apiContextFactory.create(this.page, this.storeURL);
+        await apiContext.get(`${this.storeURL}/remote/v1/shipping-quote?city=NEW%20YORK&country_id=226&state_id=43&zip_code=10028`);
+        await apiContext.post(`${this.storeURL}/remote/v1/shipping-quote`, {
+            data: {shipping_method: 0},
+        });
+    }
+
     async completeSingleShippingAndSkipToPaymentStep(): Promise<void> {
         const apiContext = await this.apiContextFactory.create(this.page, this.storeURL);
         const checkout = await this.getCheckoutOrThrow();

@@ -1,3 +1,5 @@
+import { Page } from '@playwright/test';
+
 export interface CheckoutPagePreset {
-    apply(): Promise<void>;
+    apply(page: Page): Promise<void>;
 }
