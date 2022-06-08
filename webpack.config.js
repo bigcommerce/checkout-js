@@ -100,7 +100,7 @@ function appConfig(options, argv) {
                     path: isProduction ? join(__dirname, 'dist') : join(__dirname, 'build'),
                     filename: `${outputFilename}.js`,
                     chunkFilename: `${outputFilename}.js`,
-                    jsonpFunction: 'webpackJsonpCheckout',
+                    chunkLoadingGlobal: 'webpackJsonpCheckout',
                     library: LIBRARY_NAME,
                 },
                 plugins: [
@@ -121,6 +121,7 @@ function appConfig(options, argv) {
                     new WebpackAssetsManifest({
                         entrypoints: true,
                         transform: assets => transformManifest(assets, appVersion),
+                        output: 'manifest.json'
                     }),
                     new BuildHookPlugin({
                         onSuccess() {
@@ -265,8 +266,9 @@ function loaderConfig(options, argv) {
                     }),
                     new BuildHookPlugin({
                         onSuccess() {
-                            copyFileSync(`dist/${LOADER_ENTRY_NAME}-${appVersion}.js`, `dist/${LOADER_ENTRY_NAME}.js`);
-                            copyFileSync(`dist/${AUTO_LOADER_ENTRY_NAME}-${appVersion}.js`, `dist/${AUTO_LOADER_ENTRY_NAME}.js`);
+                            const folder = isProduction ? 'dist' : 'build';
+                            copyFileSync(`${folder}/${LOADER_ENTRY_NAME}-${appVersion}.js`, `${folder}/${LOADER_ENTRY_NAME}.js`);
+                            copyFileSync(`${folder}/${AUTO_LOADER_ENTRY_NAME}-${appVersion}.js`, `${folder}/${AUTO_LOADER_ENTRY_NAME}.js`);
                         },
                     }),
                 ],
