@@ -1,4 +1,4 @@
-// Sensitive headers in a HAR file would be masked.
+// Sensitive headers would be masked in a HAR file.
 export const sensitiveHeaders = [
     'authorization',
     'cookie',
@@ -13,18 +13,9 @@ export const sensitiveHeaders = [
     'x-request-id',
 ];
 
-// When deciding whether or not to match a request, PollyJS will ignore them.
+// PollyJS will ignore those headers and payloads when deciding whether to match a request.
 export const ignoredHeaders = [
-    'authorization',
-    'cookie',
-    'set-cookie',
-    'token',
-    'x-session-hash',
-    'x-xsrf-token',
-    'referer',
-    'user-agent',
-    'x-checkout-sdk-version',
-    'accept',
+    ...sensitiveHeaders,
     'origin',
     'x-checkout-variant',
 ];

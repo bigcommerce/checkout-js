@@ -2,11 +2,11 @@ import { test, PaymentStepAsGuestPreset } from '../';
 
 test.describe('Sample Test Group', () => {
     test('Bigpay Test Payment Provider is working', async ({assertions, checkout, page}) => {
+        checkout.log(); // For demo purpose only, do not leave this in a production test file.
         // Testing environment setup
-        checkout.log();
-        const storeURL = 'https://my-dev-store-745516528.store.bcdev';
-        await checkout.use(new PaymentStepAsGuestPreset(storeURL));
-        await checkout.create('sample Bigpay Test Payment Provider', storeURL);
+        const storeUrl = 'https://my-dev-store-745516528.store.bcdev';
+        await checkout.use(new PaymentStepAsGuestPreset(storeUrl));
+        await checkout.create('sample Bigpay Test Payment Provider', storeUrl);
         await checkout.route(
             /https:\/\/bigpay.service.bcdev\/pay\/hosted_forms\/.+\/field?.+|http:\/\/localhost:.+\/checkout\/payment\/hosted-field?.+/,
             './tests/sampleTests/support/hostedField.ejs'

@@ -7,9 +7,9 @@ test.describe('Sample Test Group', () => {
         // Testing environment setup
         let isSignedIn: boolean = false;
         const responseProps = { status: 200, contentType: 'application/json' };
-        const storeURL = 'https://my-dev-store-745516528.store.bcdev';
-        await checkout.use(new CustomerStepPreset(storeURL));
-        await checkout.create('sample GooglePay in customer step', storeURL);
+        const storeUrl = 'https://my-dev-store-745516528.store.bcdev';
+        await checkout.use(new CustomerStepPreset(storeUrl));
+        await checkout.create('sample GooglePay in customer step', storeUrl);
         await checkout.route('https://pay.google.com/gp/p/js/pay.js', './tests/sampleTests/support/googlePay.mock.js');
         await checkout.route('**/checkout.php', './tests/sampleTests/support/checkout.php.ejs');
         await checkout.route('**/order-confirmation', './tests/support/orderConfirmation.ejs', { orderId: '390' });
@@ -24,6 +24,7 @@ test.describe('Sample Test Group', () => {
             if (isSignedIn) {
                 route.fulfill({...responseProps, body: checkoutAfterSignedIn});
             } else {
+                isSignedIn = true;
                 route.fulfill({...responseProps, body: checkoutBeforeSignedIn});
             }
         });
@@ -35,7 +36,6 @@ test.describe('Sample Test Group', () => {
 
         // Playwright actions
         await checkout.goto();
-        isSignedIn = true;
         await page.locator('[aria-label="Google Pay"]').click();
         await page.waitForNavigation({waitUntil: 'networkidle'});
         await checkout.placeOrder();

@@ -4,14 +4,14 @@ import { ApiRequestsSender } from './ApiRequestsSender';
 import { CheckoutPagePreset } from './CheckoutPagePreset';
 
 export class PaymentStepAsGuest implements CheckoutPagePreset {
-    private readonly storeURL: string;
+    private readonly storeUrl: string;
 
-    constructor(storeURL: string) {
-        this.storeURL = storeURL;
+    constructor(storeUrl: string) {
+        this.storeUrl = storeUrl;
     }
 
     async apply(page: Page): Promise<void> {
-        const api = new ApiRequestsSender(page, this.storeURL);
+        const api = new ApiRequestsSender(page, this.storeUrl);
         await api.addPhysicalItemToCart();
         await api.completeCustomerStepAsGuest();
         await api.completeSingleShippingAndSkipToPaymentStep();

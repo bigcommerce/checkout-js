@@ -13,7 +13,7 @@ interface PollyOptions {
     har: string;
     mode: MODE;
     page: Page;
-    storeURL: string;
+    storeUrl: string;
     devMode: boolean;
 }
 
@@ -35,13 +35,18 @@ export class PollyObject {
         const { recordingsDir } = this.polly?.persister?.options as {recordingsDir: string};
 
         if (this.polly && recordingsDir) {
+            let checkoutIdString: string = '';
             const api = new API({recordingsDir});
-            // PollyJS bug: The type definition does not match with the actual implementation.
+            // PollyJS type bug: The type definition does not match with the actual implementation.
             // @ts-ignore
             const entries = api.getRecording(this.polly.recordingId).body?.log?.entries;
+
             if (entries) {
-                // Search for orderID and cartID.
                 for (const entry of entries) {
+                    if (includes(entry.request.url, '/api/storefront/checkout-settings') && entry.response.content.text) {
+                        const { context: { checkoutId } } = JSON.parse(entry.response.content.text);
+                        checkoutIdString = checkoutId;
+                    }
                     if (includes(entry.request.url, 'api/storefront/orders') && entry.response.content.text) {
                         const {orderId, cartId} = JSON.parse(entry.response.content.text);
                         if (orderId && cartId) {
@@ -49,15 +54,8 @@ export class PollyObject {
                         }
                     }
                 }
-
-                // This should be an unfinished order, look for cartID instead.
-                for (const entry of entries) {
-                    if (includes(entry.request.url, '/api/storefront/checkout-settings') && entry.response.content.text) {
-                        const { context: { checkoutId } } = JSON.parse(entry.response.content.text);
-                        if (checkoutId) {
-                            return { checkoutId };
-                        }
-                    }
+                if (checkoutIdString) {
+                    return { checkoutId: checkoutIdString };
                 }
 
                 // Critical error
@@ -71,7 +69,7 @@ export class PollyObject {
     }
 
     start(option: PollyOptions): void {
-        const { mode, page, har, storeURL, devMode } = option;
+        const { mode, page, har, storeUrl, devMode } = option;
 
         Polly.register(PlaywrightAdapter);
         Polly.register(FSPersister);
@@ -79,7 +77,7 @@ export class PollyObject {
         this.polly = new Polly(har);
         this.polly.configure({
             mode: this.mode,
-            logLevel: devMode ? 'INFO' : 'SILENT', // change this to 'INFO' for a detailed report of unmatched requests
+            logLevel: devMode ? 'INFO' : 'SILENT',
             recordIfMissing: false,
             flushRequestsOnStop: true,
             recordFailedRequests: true,
@@ -106,29 +104,30 @@ export class PollyObject {
             },
         });
 
-        // To ensure that requests match HAR entries, ignore sensitive and constantly changing headers/payloads
         this.polly.server.any().on('request', req => {
+            // To ensure that requests match HAR entries, ignore sensitive and constantly changing headers/payloads
             req.headers = Object.fromEntries(
                 Object.entries(req.headers).filter(([key, _]) => !includes(ignoredHeaders, key))
             );
-            // Sort payloads to ensure consistent stringfy outcomes
+
             if (req.body && req.body.length > 0) {
                 req.body = JSON.stringify(this.sortPayload(req.jsonBody()));
             }
         });
 
-        // To ensure that requests match HAR entries, change local URLs to production URLs.
         if (mode === 'replay') {
             this.polly.server.get(this.baseUrl + '/api/storefront/checkout-settings').on('beforeResponse', (_, res) => {
+                // bigpayBaseUrl must be the exact URL of the local environment in order for Bigpay iframes to work.
                 const response = res.jsonBody();
                 response.storeConfig.paymentSettings.bigpayBaseUrl = this.baseUrl;
                 res.send(response);
             });
             this.polly.server.any().on('request', req => {
+                // To ensure that requests match HAR entries, change local URLs to production URLs.
                 if (includes(req.url, '/api/public/v1/orders/payments')) {
                     req.url = req.url.replace(this.baseUrl, 'https://bigpay.service.bcdev');
                 } else {
-                    req.url = req.url.replace(this.baseUrl, storeURL);
+                    req.url = req.url.replace(this.baseUrl, storeUrl);
                 }
             });
         }

@@ -14,7 +14,7 @@ export class PlaywrightHelper {
     private readonly server: ServerSideRender;
     private isDevMode: boolean = false;
     private har: string = '';
-    private storeURL: string = '';
+    private storeUrl: string = '';
 
     constructor(page: Page) {
         this.page = page;
@@ -34,19 +34,19 @@ export class PlaywrightHelper {
         if (this.isReplay) {
             await this.page.goto('/');
         } else {
-            await this.page.goto(this.storeURL + '/checkout');
+            await this.page.goto(this.storeUrl + '/checkout');
         }
     }
 
-    async createCheckout(har: string, storeURL: string): Promise<void> {
+    async createCheckout(har: string, storeUrl: string): Promise<void> {
         this.har = har;
-        this.storeURL = storeURL;
+        this.storeUrl = storeUrl.substr(-1) === '/' ? storeUrl.slice(0, -1) : storeUrl;
 
         await this.polly.start({
             page: this.page,
             mode: this.mode,
             har: this.har,
-            storeURL: this.storeURL,
+            storeUrl: this.storeUrl,
             devMode: this.isDevMode,
         });
 
@@ -55,8 +55,8 @@ export class PlaywrightHelper {
         if (this.isReplay) {
             // rendering local checkout page
             const { checkoutId, orderId } = this.polly.getCartAndOrderIDs();
-            await this.routeAndRender('/', './tests/support/checkout.ejs', { checkoutId });
-            await this.routeAndRender('/order-confirmation', './tests/support/orderConfirmation.ejs', { orderId });
+            await this.renderAndRoute('/', './tests/support/checkout.ejs', { checkoutId });
+            await this.renderAndRoute('/order-confirmation', './tests/support/orderConfirmation.ejs', { orderId });
         }
     }
 
@@ -73,12 +73,12 @@ export class PlaywrightHelper {
         await this.page.close();
     }
 
-    async routeAndRender(url: string | RegExp | ((url: URL) => boolean), filePath: string, data?: {}): Promise<void> {
+    async renderAndRoute(url: string | RegExp | ((url: URL) => boolean), filePath: string, data?: {}): Promise<void> {
         if (includes(filePath, 'ejs')) {
-            const localhostURL = 'http://localhost:' + process.env.PORT;
-            const storeURL = this.isReplay ? localhostURL : this.storeURL;
-            const checkoutURL = this.isReplay ? localhostURL : storeURL + '/checkout';
-            const htmlStr = await this.server.renderFile(filePath, { ...data, localhostURL, storeURL, checkoutURL });
+            const localhostUrl = 'http://localhost:' + process.env.PORT;
+            const storeUrl = this.isReplay ? localhostUrl : this.storeUrl;
+            const checkoutUrl = this.isReplay ? localhostUrl : storeUrl + '/checkout';
+            const htmlStr = await this.server.renderFile(filePath, { ...data, localhostUrl, storeUrl, checkoutUrl });
             await this.page.route(url, route => route.fulfill({
                 status: 200,
                 body: htmlStr,

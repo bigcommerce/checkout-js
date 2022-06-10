@@ -24,7 +24,6 @@ export class CustomFSPersister extends FSPersister {
                     entry.response.content.text = JSON.stringify(response);
                 }
             }
-
             entry.response.headers = entry.response.headers.map((header: { name: string; value: string }) => {
                 if (includes(sensitiveHeaders, header.name)) {
                     return { ...header, value: dummyData };

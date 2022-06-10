@@ -11,11 +11,11 @@ export class ApiRequestsSender {
      */
     private readonly apiContextFactory: ApiContextFactory;
     private readonly page: Page;
-    private readonly storeURL: string;
+    private readonly storeUrl: string;
 
-    constructor(page: Page, storeURL: string) {
+    constructor(page: Page, storeUrl: string) {
         this.page = page;
-        this.storeURL = storeURL;
+        this.storeUrl = storeUrl.substr(-1) === '/' ? storeUrl.slice(0, -1) : storeUrl;
         this.apiContextFactory = new ApiContextFactory();
 
         faker.setLocale('en_US');
@@ -26,7 +26,7 @@ export class ApiRequestsSender {
     }
 
     async setCurrency(code: string): Promise<void> {
-        const apiContext = await this.apiContextFactory.create(this.page, this.storeURL);
+        const apiContext = await this.apiContextFactory.create(this.page, this.storeUrl);
         const checkoutId = await this.getCheckoutIdOrThrow();
         await apiContext.post(`./carts/${checkoutId}/currency`, {
             data: {currencyCode: code},
@@ -34,14 +34,14 @@ export class ApiRequestsSender {
     }
 
     async addPhysicalItemToCart(): Promise<void> {
-        const apiContext = await this.apiContextFactory.create(this.page, this.storeURL);
+        const apiContext = await this.apiContextFactory.create(this.page, this.storeUrl);
         await apiContext.post('./carts', {
                 data: {locale: 'en', lineItems: [{quantity: 1, productId: 86}]},
         });
     }
 
     async completeCustomerStepAsGuest(): Promise<void> {
-        const apiContext = await this.apiContextFactory.create(this.page, this.storeURL);
+        const apiContext = await this.apiContextFactory.create(this.page, this.storeUrl);
         const checkout = await this.getCheckoutOrThrow();
         await apiContext.post(`./checkouts/${checkout.id}/billing-address`, {
             data: {email: faker.internet.email('checkout')},
@@ -49,15 +49,15 @@ export class ApiRequestsSender {
     }
 
     async setShippingQuote(): Promise<void> {
-        const apiContext = await this.apiContextFactory.create(this.page, this.storeURL);
-        await apiContext.get(`${this.storeURL}/remote/v1/shipping-quote?city=NEW%20YORK&country_id=226&state_id=43&zip_code=10028`);
-        await apiContext.post(`${this.storeURL}/remote/v1/shipping-quote`, {
+        const apiContext = await this.apiContextFactory.create(this.page, this.storeUrl);
+        await apiContext.get(`${this.storeUrl}/remote/v1/shipping-quote?city=NEW%20YORK&country_id=226&state_id=43&zip_code=10028`);
+        await apiContext.post(`${this.storeUrl}/remote/v1/shipping-quote`, {
             data: {shipping_method: 0},
         });
     }
 
     async completeSingleShippingAndSkipToPaymentStep(): Promise<void> {
-        const apiContext = await this.apiContextFactory.create(this.page, this.storeURL);
+        const apiContext = await this.apiContextFactory.create(this.page, this.storeUrl);
         const checkout = await this.getCheckoutOrThrow();
 
         // Set shipping address
@@ -117,12 +117,12 @@ export class ApiRequestsSender {
     }
 
     async dispose(): Promise<void> {
-        const apiContext = await this.apiContextFactory.create(this.page, this.storeURL);
+        const apiContext = await this.apiContextFactory.create(this.page, this.storeUrl);
         await apiContext.dispose();
     }
 
     private async getCheckoutIdOrThrow(): Promise<string> {
-        const apiContext = await this.apiContextFactory.create(this.page, this.storeURL);
+        const apiContext = await this.apiContextFactory.create(this.page, this.storeUrl);
         const response = await apiContext.get(`./carts`);
         const carts = await response.json();
         for (const remoteCart of carts) {
@@ -136,7 +136,7 @@ export class ApiRequestsSender {
     }
 
     private async getCheckoutOrThrow(): Promise<Checkout> {
-        const apiContext = await this.apiContextFactory.create(this.page, this.storeURL);
+        const apiContext = await this.apiContextFactory.create(this.page, this.storeUrl);
         const checkoutId = await this.getCheckoutIdOrThrow();
         const response = await apiContext.get(`./checkouts/${checkoutId}`);
         const checkout = await response.json();

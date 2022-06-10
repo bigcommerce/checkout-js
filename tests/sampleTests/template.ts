@@ -3,9 +3,9 @@ import { test, PaymentStepAsGuestPreset } from '../';
 test.describe('xxxxxxxxxxxxxxxxxxxxxxx', () => {
     test('xxxxxxxxxxxxxxxxxxxxxxx', async ({assertions, checkout, page}) => {
         // Testing environment setup
-        const storeURL = 'https://my-dev-store-xxxxxxxxx.store.bcdev';
-        await checkout.use(new PaymentStepAsGuestPreset(storeURL));
-        await checkout.create('name of the har for this test', storeURL);
+        const storeUrl = 'https://my-dev-store-xxxxxxxxx.store.bcdev';
+        await checkout.use(new PaymentStepAsGuestPreset(storeUrl));
+        await checkout.create('name of the har for this test', storeUrl);
         await page.route(/https:\/\/play.google.com\/log.*|https:\/\/pay.google.com\/gp\/p\/ui\/pay/, route => {
             route.abort();
         });
