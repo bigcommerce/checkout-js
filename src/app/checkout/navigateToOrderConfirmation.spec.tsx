@@ -18,6 +18,16 @@ describe('navigateToOrderConfirmation', () => {
             .toHaveBeenCalledWith('/checkout/order-confirmation');
     });
 
+    it('navigates to order confirmation page without cart id in the path', () => {
+        locationMock.href = `https://store.com/checkout/checkout-id-abc/`;
+        locationMock.pathname = '/checkout/checkout-id-abc';
+
+        navigateToOrderConfirmation(locationMock as Location);
+
+        expect(locationMock.replace)
+            .toHaveBeenCalledWith('/checkout/order-confirmation');
+    });
+
     it('discards any query params when navigating to order confirmation page', () => {
         locationMock.href = 'https://store.com/embedded-checkout?setCurrencyId=1';
         locationMock.pathname = '/embedded-checkout';
