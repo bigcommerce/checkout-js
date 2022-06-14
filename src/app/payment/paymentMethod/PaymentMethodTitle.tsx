@@ -39,6 +39,10 @@ function getPaymentMethodTitle(
                 logoUrl: '',
                 titleText: methodName,
             },
+            [PaymentMethodId.BraintreeVenmo]: {
+                logoUrl: method.logoUrl || '',
+                titleText: method.logoUrl ? '' : methodDisplayName,
+            },
             [PaymentMethodType.PaypalCredit]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
                 titleText: methodDisplayName,
@@ -120,6 +124,7 @@ function getPaymentMethodTitle(
                 titleText: '',
             },
             [PaymentMethodType.Paypal]: {
+                // TODO: method.id === PaymentMethodId.BraintreeVenmo should be removed after the PAYPAL-1380.checkout_button_strategies_update experiment removal
                 logoUrl: (method.id === PaymentMethodId.BraintreeVenmo && method.logoUrl) ? method.logoUrl : cdnPath('/img/payment-providers/paypalpaymentsprouk.png'),
                 titleText: '',
             },
