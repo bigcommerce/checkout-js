@@ -3,8 +3,8 @@ import React, { FunctionComponent } from 'react';
 import withIconContainer from './withIconContainer';
 
 const IconCardDinersClub: FunctionComponent = () => (
-    <svg aria-labelledby="iconCardDinnersClubTitle" height="104" role="img" viewBox="0 0 152 104" width="152" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-        <title id="iconCardDinnersClubTitle">Dinners Club</title>
+    <svg aria-labelledby="iconCardDinersClubTitle" height="104" role="img" viewBox="0 0 152 104" width="152" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+        <title id="iconCardDinersClubTitle">Diners Club</title>
         <defs>
             <rect height="104" id="a" rx="12" width="152" />
         </defs>
