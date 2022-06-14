@@ -218,6 +218,7 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
 
     if (method.gateway === PaymentMethodId.Afterpay ||
         method.gateway === PaymentMethodId.Clearpay ||
+        method.id === PaymentMethodId.BraintreeVenmo ||
         method.id === PaymentMethodId.Humm ||
         method.id === PaymentMethodId.Laybuy ||
         method.id === PaymentMethodId.Quadpay ||
