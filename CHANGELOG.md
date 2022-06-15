@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.224.1](https://github.com/bigcommerce/checkout-js/compare/v1.224.0...v1.224.1) (2022-06-15)
+
+
+### Bug Fixes
+
+* **payment:** INT-6061 StripeUPE fix initialization failing for not being able to get styles ([#898](https://github.com/bigcommerce/checkout-js/issues/898)) ([603874d](https://github.com/bigcommerce/checkout-js/commit/603874ded68678ab2141e459e870ff5c04a2ab97))
+
 ## [1.224.0](https://github.com/bigcommerce/checkout-js/compare/v1.223.0...v1.224.0) (2022-06-15)
 
 
