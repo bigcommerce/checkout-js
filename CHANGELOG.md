@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.224.0](https://github.com/bigcommerce/checkout-js/compare/v1.223.0...v1.224.0) (2022-06-15)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6621 Refactor custom fixtures ([#859](https://github.com/bigcommerce/checkout-js/issues/859)) ([c6988ed](https://github.com/bigcommerce/checkout-js/commit/c6988ed50cf666042de50fd5d408d90566f9fa18))
+
 ## [1.223.0](https://github.com/bigcommerce/checkout-js/compare/v1.222.0...v1.223.0) (2022-06-15)
 
 
