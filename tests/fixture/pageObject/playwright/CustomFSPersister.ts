@@ -4,11 +4,11 @@ import { includes } from 'lodash';
 
 import { sensitiveHeaders } from './senstiveDataConfig';
 
+/**
+ * @internal
+ * PollyJS (PollyObject) utilises this to process HAR data before writing it to a file.
+ */
 export class CustomFSPersister extends FSPersister {
-    /**
-     * @internal
-     * PollyJS (PollyObject) utilises this to process HAR data before writing it to a file.
-     */
     static get id(): string {
         return 'CustomFSPersister';
     }

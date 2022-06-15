@@ -43,17 +43,16 @@ export class PlaywrightHelper {
         this.storeUrl = storeUrl.substr(-1) === '/' ? storeUrl.slice(0, -1) : storeUrl;
 
         await this.polly.start({
-            page: this.page,
-            mode: this.mode,
-            har: this.har,
-            storeUrl: this.storeUrl,
             devMode: this.isDevMode,
+            page: this.page,
+            har: this.har,
         });
 
         await this.page.route(/.*\/products\/.*\/images\/.*/, route => route.fulfill({ status: 200, path: './tests/support/product.png' }));
 
         if (this.isReplay) {
-            // rendering local checkout page
+            // creating local checkout environment during replay
+            this.polly.enableReplay(this.storeUrl);
             const { checkoutId, orderId } = this.polly.getCartAndOrderIDs();
             await this.renderAndRoute('/', './tests/support/checkout.ejs', { checkoutId });
             await this.renderAndRoute('/order-confirmation', './tests/support/orderConfirmation.ejs', { orderId });

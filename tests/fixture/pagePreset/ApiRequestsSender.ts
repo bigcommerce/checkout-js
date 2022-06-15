@@ -5,10 +5,10 @@ import { Page } from '@playwright/test';
 
 import { ApiContextFactory } from './ApiContextFactory';
 
+/**
+ * @internal
+ */
 export class ApiRequestsSender {
-    /**
-     * @internal
-     */
     private readonly apiContextFactory: ApiContextFactory;
     private readonly page: Page;
     private readonly storeUrl: string;
@@ -126,7 +126,6 @@ export class ApiRequestsSender {
         const response = await apiContext.get(`./carts`);
         const carts = await response.json();
         for (const remoteCart of carts) {
-            // TODO: Identify the primary cart.
             if (remoteCart.id) {
                 return remoteCart.id;
             }

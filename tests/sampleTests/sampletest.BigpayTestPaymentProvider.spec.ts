@@ -26,7 +26,6 @@ test.describe('Sample Test Group', () => {
         await checkout.placeOrder();
 
         // Assertions
-        await page.pause();
         await assertions.shouldSeeOrderConfirmation();
     });
 });

@@ -18,6 +18,7 @@ const config: PlaywrightTestConfig = {
     // timeout: 25 * 1000,
   },
   testDir: './tests/',
+  testIgnore: './tests/sampleTests/**',
   outputDir: 'tests/screenshots',
   fullyParallel: true,
   /* TODO: Fail the build on CI if you accidentally left test.only in the source code. */

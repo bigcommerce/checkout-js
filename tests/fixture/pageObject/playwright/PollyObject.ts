@@ -11,65 +11,27 @@ import { CustomFSPersister } from './CustomFSPersister';
 
 interface PollyOptions {
     har: string;
-    mode: MODE;
     page: Page;
-    storeUrl: string;
     devMode: boolean;
 }
 
+/**
+ * @internal
+ * This file is only accessible to PlaywrightHelper.
+ */
 export class PollyObject {
-    /**
-     * @internal
-     * This file is only accessible to PlaywrightHelper.
-     */
     private polly: Polly | undefined;
     private readonly mode: MODE;
     private readonly baseUrl: string;
+    private readonly bigpayBaseUrlIdentifier: string = '/api/public/v1/orders/payments';
 
     constructor(mode: MODE) {
         this.mode = mode;
         this.baseUrl = 'http://localhost:' + process.env.PORT;
     }
 
-    getCartAndOrderIDs(): { checkoutId: string; orderId?: number} {
-        const { recordingsDir } = this.polly?.persister?.options as {recordingsDir: string};
-
-        if (this.polly && recordingsDir) {
-            let checkoutIdString: string = '';
-            const api = new API({recordingsDir});
-            // PollyJS type bug: The type definition does not match with the actual implementation.
-            // @ts-ignore
-            const entries = api.getRecording(this.polly.recordingId).body?.log?.entries;
-
-            if (entries) {
-                for (const entry of entries) {
-                    if (includes(entry.request.url, '/api/storefront/checkout-settings') && entry.response.content.text) {
-                        const { context: { checkoutId } } = JSON.parse(entry.response.content.text);
-                        checkoutIdString = checkoutId;
-                    }
-                    if (includes(entry.request.url, 'api/storefront/orders') && entry.response.content.text) {
-                        const {orderId, cartId} = JSON.parse(entry.response.content.text);
-                        if (orderId && cartId) {
-                            return {checkoutId: cartId, orderId};
-                        }
-                    }
-                }
-                if (checkoutIdString) {
-                    return { checkoutId: checkoutIdString };
-                }
-
-                // Critical error
-                throw new Error('Unable to find checkoutId from the \'/api/storefront/checkout-settings\' request recording.');
-            } else {
-                throw new Error('Unable to find any recording from the located HAR file.');
-            }
-        } else {
-            throw new Error('Unable to locate the HAR file folder.');
-        }
-    }
-
     start(option: PollyOptions): void {
-        const { mode, page, har, storeUrl, devMode } = option;
+        const { page, har, devMode } = option;
 
         Polly.register(PlaywrightAdapter);
         Polly.register(FSPersister);
@@ -114,23 +76,6 @@ export class PollyObject {
                 req.body = JSON.stringify(this.sortPayload(req.jsonBody()));
             }
         });
-
-        if (mode === 'replay') {
-            this.polly.server.get(this.baseUrl + '/api/storefront/checkout-settings').on('beforeResponse', (_, res) => {
-                // bigpayBaseUrl must be the exact URL of the local environment in order for Bigpay iframes to work.
-                const response = res.jsonBody();
-                response.storeConfig.paymentSettings.bigpayBaseUrl = this.baseUrl;
-                res.send(response);
-            });
-            this.polly.server.any().on('request', req => {
-                // To ensure that requests match HAR entries, change local URLs to production URLs.
-                if (includes(req.url, '/api/public/v1/orders/payments')) {
-                    req.url = req.url.replace(this.baseUrl, 'https://bigpay.service.bcdev');
-                } else {
-                    req.url = req.url.replace(this.baseUrl, storeUrl);
-                }
-            });
-        }
     }
 
     pause(): void {
@@ -145,6 +90,79 @@ export class PollyObject {
         this.polly?.stop();
     }
 
+    enableReplay(storeUrl: string): void {
+        if (this.polly) {
+            // bigpayBaseUrl must be the exact URL of the local environment in order for Bigpay iframes to work.
+            this.polly.server.get(this.baseUrl + '/api/storefront/checkout-settings').on('beforeResponse', (_, res) => {
+                const response = res.jsonBody();
+                response.storeConfig.paymentSettings.bigpayBaseUrl = this.baseUrl;
+                res.send(response);
+            });
+
+            // To ensure that requests match HAR entries, convert local URLs to production URLs.
+            // HAR may not contain any bigpay request.
+            const bigpayBaseUrl = this.getBigpayBaseUrl();
+            this.polly.server.any().on('request', req => {
+                if (bigpayBaseUrl && includes(req.url, this.bigpayBaseUrlIdentifier)) {
+                    req.url = req.url.replace(this.baseUrl, bigpayBaseUrl);
+                } else {
+                    req.url = req.url.replace(this.baseUrl, storeUrl);
+                }
+            });
+        }
+    }
+
+    getCartAndOrderIDs(): { checkoutId: string; orderId?: number} {
+        let checkoutIdString: string = '';
+        const entries = this.getEntries();
+
+        for (const entry of entries) {
+            if (includes(entry.request.url, '/api/storefront/checkout-settings') && entry.response.content.text) {
+                const { context: { checkoutId } } = JSON.parse(entry.response.content.text);
+                checkoutIdString = checkoutId;
+            }
+            if (includes(entry.request.url, 'api/storefront/orders') && entry.response.content.text) {
+                const {orderId, cartId} = JSON.parse(entry.response.content.text);
+                if (orderId && cartId) {
+                    return {checkoutId: cartId, orderId};
+                }
+            }
+        }
+
+        if (checkoutIdString) {
+            return { checkoutId: checkoutIdString };
+        }
+
+        // Critical error
+        throw new Error('Unable to find checkoutId from the \'/api/storefront/checkout-settings\' recording.');
+    }
+
+    private getBigpayBaseUrl(): string | void {
+        const entries = this.getEntries();
+        for (const entry of entries) {
+            if (includes(entry.request.url, this.bigpayBaseUrlIdentifier)) {
+                return entry.request.url.replace(this.bigpayBaseUrlIdentifier, '');
+            }
+        }
+    }
+
+    private getEntries(): any {
+        const { recordingsDir } = this.polly?.persister?.options as {recordingsDir: string};
+        if (this.polly && recordingsDir) {
+            const api = new API({recordingsDir});
+            // PollyJS type bug: The type definition does not match with the actual implementation.
+            // @ts-ignore
+            const entries = api.getRecording(this.polly.recordingId).body?.log?.entries;
+            if (entries) {
+                return entries;
+            }
+
+            throw new Error('Unable to find any recording from the HAR file.');
+        } else {
+            throw new Error('Unable to locate the HAR file folder.');
+        }
+    }
+
     private sortPayload(object: { [ key: string ]: any }): { [ key: string ]: any } {
         const keys = Object.keys(object);
         const sortedKeys = keys.sort();
@@ -152,9 +170,9 @@ export class PollyObject {
         return sortedKeys.reduce((previous, current) => {
             if (isObject(object[current])) {
                 return this.sortPayload(object[current]);
-            } else {
-                return {...previous, [current]: (includes(ignoredPayloads, current)) ? '*' : object[current]};
             }
+
+            return {...previous, [current]: (includes(ignoredPayloads, current)) ? '*' : object[current]};
         }, {});
     }
 }
