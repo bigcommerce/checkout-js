@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.223.0](https://github.com/bigcommerce/checkout-js/compare/v1.222.0...v1.223.0) (2022-06-15)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6595 remove edit cart button for buy now carts ([#899](https://github.com/bigcommerce/checkout-js/issues/899)) ([d0a4179](https://github.com/bigcommerce/checkout-js/commit/d0a4179d26d05fa629d9c6b4bff27be62f3bc4e2))
+
 ## [1.222.0](https://github.com/bigcommerce/checkout-js/compare/v1.221.1...v1.222.0) (2022-06-14)
 
 
