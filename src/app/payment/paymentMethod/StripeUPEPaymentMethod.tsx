@@ -57,7 +57,7 @@ const StripeUPEPaymentMethod: FunctionComponent<StripePaymentMethodProps & WithI
         return getAppliedStyles(parentContainer, properties);
     };
 
-    const renderCustomPaymentForm = () => {
+    const renderCheckoutThemeStylesForStripeUPE = () => {
         return (
             <div
                 className={ 'optimizedCheckout-form-input' }
@@ -87,9 +87,8 @@ const StripeUPEPaymentMethod: FunctionComponent<StripePaymentMethodProps & WithI
             hideContentWhenSignedOut
             initializePayment={ initializeStripePayment }
             method={ method }
-            renderCustomPaymentForm={ renderCustomPaymentForm }
-            shouldRenderCustomInstrument={ true }
         />
+        { renderCheckoutThemeStylesForStripeUPE() }
     </>;
 };
 
