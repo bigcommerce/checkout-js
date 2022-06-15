@@ -1,7 +1,7 @@
 node_modules
 build
 coverage
-tests/_report/
-tests/_screenshots/
+tests/report/
+tests/screenshots/
 src/app/generated/
 __temp__

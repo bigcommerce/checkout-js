@@ -18,7 +18,8 @@ const config: PlaywrightTestConfig = {
     // timeout: 25 * 1000,
   },
   testDir: './tests/',
-  outputDir: 'tests/_screenshots',
+  testIgnore: './tests/sampleTests/**',
+  outputDir: 'tests/screenshots',
   fullyParallel: true,
   /* TODO: Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
@@ -28,7 +29,7 @@ const config: PlaywrightTestConfig = {
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   // reporter: 'line',
-  reporter: [ ['html', { outputFolder: './tests/_report' }] ],
+  reporter: [ ['html', { outputFolder: './tests/report' }] ],
   // Shared settings for all the projects below.
   use: {
     baseURL: 'http://localhost:' + process.env.PORT,
