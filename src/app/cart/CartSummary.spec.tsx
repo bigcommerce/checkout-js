@@ -37,4 +37,14 @@ describe('CartSummary Component', () => {
         expect(component.find(OrderSummary).prop('headerLink'))
             .toMatchSnapshot();
     });
+
+    it('renders OrderSummary without the Edit Cart link for Buy Now carts', () => {
+        jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
+            location: {
+                pathname: '/checkout/buy-now-checkout-id',
+            },
+        }) as any);
+
+        expect(component.find(OrderSummary).prop('headerLink')).not.toBeTruthy();
+    });
 });

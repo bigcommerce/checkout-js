@@ -20,14 +20,18 @@ export type WithCheckoutCartSummaryProps = {
 const CartSummary: FunctionComponent<WithCheckoutCartSummaryProps> = ({
     cartUrl,
     ...props
-}) => (
-    withRedeemable(OrderSummary)({
-        ...props,
-        cartUrl,
-        headerLink: (
-            <EditLink url={ cartUrl } />
-        ),
-    })
-);
+}) => {
+    const isBuyNowCart = window.location.pathname.replace('/checkout', '').replace('/embedded-checkout', '').length > 0;
+
+    const headerLink = isBuyNowCart ? null : <EditLink url={ cartUrl } />;
+
+    return (
+        withRedeemable(OrderSummary)({
+            ...props,
+            cartUrl,
+            headerLink,
+        })
+    );
+};
 
 export default withCheckout(mapToCartSummaryProps)(CartSummary);
