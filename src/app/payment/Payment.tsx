@@ -101,8 +101,9 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         }
 
         try {
-            await finalizeOrderIfNeeded();
-            onFinalize();
+            const state = await finalizeOrderIfNeeded();
+            const order = state.data.getOrder();
+            onFinalize(order?.orderId);
         } catch (error) {
             if (error.type !== 'order_finalization_not_required') {
                 onFinalizeError(error);
@@ -395,8 +396,9 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         }
 
         try {
-            await submitOrder(mapToOrderRequestBody(values, isPaymentDataRequired()));
-            onSubmit();
+            const state = await submitOrder(mapToOrderRequestBody(values, isPaymentDataRequired()));
+            const order = state.data.getOrder();
+            onSubmit(order?.orderId);
         } catch (error) {
             if (error.type === 'payment_method_invalid') {
                 return loadPaymentMethods();

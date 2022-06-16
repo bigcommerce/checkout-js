@@ -23,6 +23,33 @@ describe('CartSummary Component', () => {
         jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue(getCustomer());
         jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(getCheckout());
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
+    });
+
+    it('renders OrderSummary with Edit Cart link', () => {
+        Object.defineProperty(window, 'location', {
+            value: {
+                pathname: '/checkout',
+            },
+            writable: true,
+        });
+        component = mount(
+            <CheckoutProvider checkoutService={ checkoutService }>
+                <LocaleContext.Provider value={ localeContext }>
+                    <CartSummary />
+                </LocaleContext.Provider>
+            </CheckoutProvider>
+        );
+
+        expect(component.find(OrderSummary).prop('headerLink'))
+            .toMatchSnapshot();
+    });
+
+    it('renders OrderSummary without the Edit Cart link for Buy Now carts', () => {
+        Object.defineProperty(window, 'location', {
+            value: {
+                pathname: '/checkout/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
+            },
+        });
 
         component = mount(
             <CheckoutProvider checkoutService={ checkoutService }>
@@ -31,19 +58,6 @@ describe('CartSummary Component', () => {
                 </LocaleContext.Provider>
             </CheckoutProvider>
         );
-    });
-
-    it('renders OrderSummary with Edit Cart link', () => {
-        expect(component.find(OrderSummary).prop('headerLink'))
-            .toMatchSnapshot();
-    });
-
-    it('renders OrderSummary without the Edit Cart link for Buy Now carts', () => {
-        jest.spyOn(window, 'window', 'get').mockImplementation(() => ({
-            location: {
-                pathname: '/checkout/buy-now-checkout-id',
-            },
-        }) as any);
 
         expect(component.find(OrderSummary).prop('headerLink')).not.toBeTruthy();
     });

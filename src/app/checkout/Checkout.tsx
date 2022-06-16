@@ -490,7 +490,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         this.navigateToStep(activeStep.type, options);
     };
 
-    private navigateToOrderConfirmation: () => void = () => {
+    private navigateToOrderConfirmation: (orderId?: number) => void = orderId => {
         const { steps } = this.props;
 
         if (this.stepTracker) {
@@ -502,7 +502,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         }
 
         this.setState({ isRedirecting: true }, () => {
-            navigateToOrderConfirmation();
+            navigateToOrderConfirmation(window.location, orderId);
         });
     };
 
