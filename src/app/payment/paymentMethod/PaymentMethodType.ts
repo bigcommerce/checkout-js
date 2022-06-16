@@ -8,6 +8,7 @@ enum PaymentMethodType {
     MultiOption = 'multi-option',
     Paypal = 'paypal',
     PaypalCredit = 'paypal-credit',
+    PaypalVenmo = 'paypal-venmo',
     VisaCheckout = 'visa-checkout',
 }
 

@@ -68,6 +68,10 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
         return <TranslatedString data={ { brandName } } id={ brandName ? 'payment.continue_with_brand' : 'payment.paypal_pay_later_continue_action' } />;
     }
 
+    if (methodType === PaymentMethodType.PaypalVenmo) {
+        return <TranslatedString id="payment.paypal_venmo_continue_action" />;
+    }
+
     if (methodId === PaymentMethodId.Opy) {
         return <TranslatedString data={ { methodName } } id="payment.opy_continue_action" />;
     }
