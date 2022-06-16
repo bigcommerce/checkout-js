@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "appVersion": "1.224.1",
+  "appVersion": "1.225.0",
   "dynamicChunks": {
     "js": [
       "311-47443b31.js",
@@ -15,13 +15,13 @@
       "customer-5112e7e6.js",
       "order-summary-drawer-2705287f.js",
       "order-summary-7e116cec.js",
-      "payment-fac8032c.js",
+      "payment-b91d855d.js",
       "shipping-c78c2ae5.js"
     ],
     "LICENSE": [
-      "375-2f5f5e89.js.LICENSE",
-      "41-57c38e3b.js.LICENSE",
-      "961-78c79762.js.LICENSE"
+      "375-287b8575.js.LICENSE",
+      "961-78c79762.js.LICENSE",
+      "989-3d032381.js.LICENSE"
     ],
     "css": [
       "billing-c27720ba.css",
@@ -39,12 +39,12 @@
     ]
   },
   "js": [
-    "runtime-cd09a241.js",
-    "605-6bee0bce.js",
-    "375-2f5f5e89.js",
+    "runtime-e8d361a3.js",
+    "15-252f37cb.js",
+    "375-287b8575.js",
     "35-3708ed88.js",
-    "41-57c38e3b.js",
-    "checkout-8c983fa1.js"
+    "989-3d032381.js",
+    "checkout-ce26a038.js"
   ],
   "css": [
     "checkout-5a382f28.css"
