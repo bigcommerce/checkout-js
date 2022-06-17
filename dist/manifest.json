@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "appVersion": "1.225.0",
+  "appVersion": "1.225.1",
   "dynamicChunks": {
     "js": [
       "311-47443b31.js",
@@ -19,7 +19,7 @@
       "shipping-c78c2ae5.js"
     ],
     "LICENSE": [
-      "375-287b8575.js.LICENSE",
+      "375-24ea6052.js.LICENSE",
       "961-78c79762.js.LICENSE",
       "989-3d032381.js.LICENSE"
     ],
@@ -41,7 +41,7 @@
   "js": [
     "runtime-e8d361a3.js",
     "15-252f37cb.js",
-    "375-287b8575.js",
+    "375-24ea6052.js",
     "35-3708ed88.js",
     "989-3d032381.js",
     "checkout-ce26a038.js"
