@@ -15,7 +15,7 @@
     "dev": "webpack --mode development --watch",
     "dev:server": "http-server build",
     "release": "echo 'Please do not release locally, use CircleCi'",
-    "release:alpha": "npm run lint && npm run test -- --coverage && npm run build -- --prerelease && npm run release:version",
+    "release:alpha": "npm run lint && npm run test -- --coverage && npm run build -- --env prerelease=prerelease && npm run release:version",
     "release:version": "git add dist && standard-version -a",
     "auto-export": "bin/auto-export.js",
     "prelint": "npm run auto-export",
