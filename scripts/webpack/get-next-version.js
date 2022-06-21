@@ -6,6 +6,25 @@ const packageJson = require('../../package.json');
 
 let nextVersion;
 
+function getEnvArgsMap() {
+    const obj = {};
+
+    console.log(argv);
+
+    const args = argv.env && argv.env.split(' ');
+
+    if (!args) {
+        return obj;
+    }
+
+    args.split(' ').forEach(arg => {
+        const argArray = arg.split('=');
+        obj[argArray[0]] = argArray[1];
+    });
+
+    return obj;
+}
+
 function getNextVersion() {
     if (!nextVersion) {
         nextVersion = new Promise((resolve, reject) => {
@@ -14,12 +33,14 @@ function getNextVersion() {
             }
 
             conventionalRecommendedBump({ preset: 'angular' }, (err, release) => {
+                const argsObject = getEnvArgsMap();
+
                 if (err) {
                     return reject(err);
                 }
 
-                if (argv.prerelease) {
-                    const prereleaseType = typeof argv.prerelease === 'string' ? argv.prerelease : 'alpha';
+                if (argsObject.prerelease) {
+                    const prereleaseType = typeof argsObject.prerelease === 'string' ? argsObject.prerelease : 'alpha';
 
                     return resolve(semver.inc(packageJson.version, 'prerelease', prereleaseType).replace(/\.\d+$/, `.${Date.now()}`));
                 }
