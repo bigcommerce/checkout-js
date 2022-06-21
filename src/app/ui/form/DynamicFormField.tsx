@@ -51,7 +51,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
 
     const labelComponent = useMemo(() => (
-        <Label htmlFor={ fieldInputId }>
+        <Label htmlFor={ fieldInputId } id={ fieldInputId }>
             { label || fieldLabel }
             { !required &&
                 <>
@@ -85,6 +85,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
     const renderInput = useCallback(({ field }: FieldProps<string>) => (
         <DynamicInput
             { ...field }
+            aria-labelledby={ `${fieldInputId} ${fieldInputId}-field-error-message` }
             autoComplete={ autocomplete }
             fieldType={ dynamicFormFieldType }
             id={ fieldInputId }
@@ -117,6 +118,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
                     options={ (options && options.items) || [] }
                 /> :
                 <FormField
+                    id={ fieldInputId }
                     input={ renderInput }
                     label={ labelComponent }
                     name={ fieldName }
