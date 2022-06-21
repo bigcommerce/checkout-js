@@ -56,6 +56,7 @@ const Modal: FunctionComponent<ModalProps> = ({
             afterOpen: 'modalOverlay--afterOpen',
             beforeClose: 'modalOverlay--beforeClose',
         } }
+        shouldCloseOnEsc={ true }
         shouldCloseOnOverlayClick={ false }
     >
         <div

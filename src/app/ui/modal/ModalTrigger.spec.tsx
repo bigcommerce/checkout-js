@@ -43,4 +43,21 @@ describe('ModalTrigger', () => {
         expect(component.find('#modal'))
             .toHaveLength(0);
     });
+
+    it('opens modal window when focused and enter is pressed', () => {
+        const component = mount(
+            <ModalTrigger modal={ Modal }>
+                { ({ onKeyPress }) => <button id="openButton" onKeyPress={ onKeyPress }>Open</button> }
+            </ModalTrigger>
+        );
+
+        expect(component.find('#modal'))
+            .toHaveLength(0);
+
+        component.find('#openButton')
+            .simulate('keypress', {key: 'Enter'});
+
+        expect(component.find('#modal'))
+            .toHaveLength(1);
+    });
 });
