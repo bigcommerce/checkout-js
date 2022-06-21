@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.226.0](https://github.com/bigcommerce/checkout-js/compare/v1.225.1...v1.226.0) (2022-06-21)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6653 make cart drawer interactable via keyboard ([#881](https://github.com/bigcommerce/checkout-js/issues/881)) ([9c6d398](https://github.com/bigcommerce/checkout-js/commit/9c6d398570428b9c153d4760e7abf49bb2d4d920))
+
 ### [1.225.1](https://github.com/bigcommerce/checkout-js/compare/v1.225.0...v1.225.1) (2022-06-17)
 
 ## [1.225.0](https://github.com/bigcommerce/checkout-js/compare/v1.224.1...v1.225.0) (2022-06-16)
