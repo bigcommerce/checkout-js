@@ -1,3 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CartSummary Component renders OrderSummary with Edit Cart link 1`] = `null`;
+exports[`CartSummary Component renders OrderSummary with Edit Cart link 1`] = `
+<Memo(EditLink)
+  url="https://store-k1drp8k8.bcapp.dev/cart.php"
+/>
+`;
