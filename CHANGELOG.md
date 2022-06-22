@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.228.0](https://github.com/bigcommerce/checkout-js/compare/v1.227.2...v1.228.0) (2022-06-22)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6711 Update buy now cart order-confirmation URL ([#902](https://github.com/bigcommerce/checkout-js/issues/902)) ([bdaf0f2](https://github.com/bigcommerce/checkout-js/commit/bdaf0f2a739ba77a065fe5c856313bfe330b418b))
+
 ### [1.227.2](https://github.com/bigcommerce/checkout-js/compare/v1.227.1...v1.227.2) (2022-06-22)
 
 ### [1.227.1](https://github.com/bigcommerce/checkout-js/compare/v1.227.0...v1.227.1) (2022-06-21)
