@@ -1,43 +1,39 @@
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
 
 describe('navigateToOrderConfirmation', () => {
-    let locationMock: Pick<Location, 'pathname' | 'href' | 'replace'>;
-
     beforeEach(() => {
-        locationMock = {
-            href: 'https://store.com/checkout',
-            pathname: '/checkout',
-            replace: jest.fn(),
-        };
+        Object.defineProperty(window, 'location', {
+            value: {
+                href: 'https://store.com/checkout',
+                pathname: '/checkout',
+                replace: jest.fn(),
+            },
+            writable: true,
+        });
     });
 
     it('navigates to order confirmation page based on its current path', () => {
-        navigateToOrderConfirmation(locationMock as Location);
+        navigateToOrderConfirmation(true);
 
-        expect(locationMock.replace)
+        expect(window.location.replace)
             .toHaveBeenCalledWith('/checkout/order-confirmation');
     });
 
     it('navigates to order confirmation page with orderId in the URL when it is a buy now cart checkout', () => {
-        locationMock = {
-            ...locationMock,
-            pathname: '/checkout/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',
-        };
-        jest.spyOn(window, 'window', 'get').mockImplementation(() => ({ location: locationMock }) as any);
+        window.location.pathname = '/checkout/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX';
+        navigateToOrderConfirmation(true, 100);
 
-        navigateToOrderConfirmation(locationMock as Location, 100);
-
-        expect(locationMock.replace)
+        expect(window.location.replace)
             .toHaveBeenCalledWith('/checkout/order-confirmation/100');
     });
 
     it('discards any query params when navigating to order confirmation page', () => {
-        locationMock.href = 'https://store.com/embedded-checkout?setCurrencyId=1';
-        locationMock.pathname = '/embedded-checkout';
+        window.location.href = 'https://store.com/embedded-checkout?setCurrencyId=1';
+        window.location.pathname = '/embedded-checkout';
 
-        navigateToOrderConfirmation(locationMock as Location);
+        navigateToOrderConfirmation(true);
 
-        expect(locationMock.replace)
+        expect(window.location.replace)
             .toHaveBeenCalledWith('/embedded-checkout/order-confirmation');
     });
 });
