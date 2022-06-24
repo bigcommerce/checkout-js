@@ -99,6 +99,10 @@ function getPaymentMethodTitle(
                 logoUrl: cdnPath('/img/payment-providers/google-pay.png'),
                 titleText: '',
             },
+            [PaymentMethodType.PayWithGoogle]: {
+                logoUrl: cdnPath('/img/payment-providers/google-pay.png'),
+                titleText: '',
+            },
             [PaymentMethodId.DigitalRiver]: {
                 logoUrl: '',
                 titleText: language.translate('payment.digitalriver_display_name_text'),
