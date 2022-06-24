@@ -9,15 +9,13 @@ let nextVersion;
 function getEnvArgsMap() {
     const obj = {};
 
-    console.log(argv);
-
     const args = argv.env && argv.env.split(' ');
 
     if (!args) {
         return obj;
     }
 
-    args.split(' ').forEach(arg => {
+    args.forEach(arg => {
         const argArray = arg.split('=');
         obj[argArray[0]] = argArray[1];
     });
