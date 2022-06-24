@@ -4,6 +4,7 @@ enum PaymentMethodType {
     Chasepay = 'chasepay',
     CreditCard = 'credit-card',
     GooglePay = 'googlepay',
+    PayWithGoogle = 'paywithgoogle',
     Masterpass = 'masterpass',
     MultiOption = 'multi-option',
     Paypal = 'paypal',
