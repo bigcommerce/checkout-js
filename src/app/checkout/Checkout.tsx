@@ -75,6 +75,7 @@ export interface CheckoutState {
     isCartEmpty: boolean;
     isRedirecting: boolean;
     hasSelectedShippingOptions: boolean;
+    isBuyNowCartEnabled: boolean;
 }
 
 export interface WithCheckoutProps {
@@ -106,6 +107,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         isRedirecting: false,
         isMultiShippingMode: false,
         hasSelectedShippingOptions: false,
+        isBuyNowCartEnabled: false,
     };
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
@@ -170,12 +172,13 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
             const hasMultiShippingEnabled = data.getConfig()?.checkoutSettings?.hasMultiShippingEnabled;
             const checkoutBillingSameAsShippingEnabled = data.getConfig()?.checkoutSettings?.checkoutBillingSameAsShippingEnabled ?? true;
+            const buyNowCartFlag = data.getConfig()?.checkoutSettings?.features['CHECKOUT-3190.enable_buy_now_cart'] ?? false;
             const isMultiShippingMode = !!cart &&
                 !!consignments &&
                 hasMultiShippingEnabled &&
                 isUsingMultiShipping(consignments, cart.lineItems);
 
-            this.setState({ isBillingSameAsShipping: checkoutBillingSameAsShippingEnabled });
+            this.setState({ isBillingSameAsShipping: checkoutBillingSameAsShippingEnabled, isBuyNowCartEnabled: buyNowCartFlag });
 
             if (isMultiShippingMode) {
                 this.setState({ isMultiShippingMode }, this.handleReady);
@@ -492,6 +495,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
     private navigateToOrderConfirmation: (orderId?: number) => void = orderId => {
         const { steps } = this.props;
+        const { isBuyNowCartEnabled } = this.state;
 
         if (this.stepTracker) {
             this.stepTracker.trackStepCompleted(steps[steps.length - 1].type);
@@ -502,7 +506,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         }
 
         this.setState({ isRedirecting: true }, () => {
-            navigateToOrderConfirmation(window.location, orderId);
+            navigateToOrderConfirmation(isBuyNowCartEnabled, orderId);
         });
     };
 
