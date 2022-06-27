@@ -4834,8 +4834,6 @@ h6 a:hover {
 .paymentProviderHeader-img {
   height: 1.92308rem; }
   .paymentProviderHeader-img + .paymentProviderHeader-name {
-    font-size: 18px;
-    font-weight: bold;
     margin-left: 0.75rem; }
 
 .googlePay-logo {

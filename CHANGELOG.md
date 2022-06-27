@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.229.1](https://github.com/bigcommerce/checkout-js/compare/v1.229.0...v1.229.1) (2022-06-27)
+
+
+### Bug Fixes
+
+* **checkout:** ADYEN-497 Googlepay icon fix ([3712594](https://github.com/bigcommerce/checkout-js/commit/371259432901c034a11c60426fdbe3a5ffca9d20))
+
 ## [1.229.0](https://github.com/bigcommerce/checkout-js/compare/v1.228.1...v1.229.0) (2022-06-26)
 
 
