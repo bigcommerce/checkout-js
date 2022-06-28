@@ -6,13 +6,11 @@ import { FormContext } from './FormProvider';
 export interface FormFieldErrorProps {
     name: string;
     testId?: string;
-    errorId?: string;
 }
 
 const FormFieldError: FunctionComponent<FormFieldErrorProps> = ({
     name,
     testId,
-    errorId,
 }) => {
     const renderMessage = useCallback((message: string) => (
         <ul
@@ -24,7 +22,6 @@ const FormFieldError: FunctionComponent<FormFieldErrorProps> = ({
                     aria-live="polite"
                     className="form-inlineMessage"
                     htmlFor={ name }
-                    id={ errorId }
                     role="alert"
                 >
                     { message }
@@ -32,7 +29,6 @@ const FormFieldError: FunctionComponent<FormFieldErrorProps> = ({
             </li>
         </ul>
     ), [
-        errorId,
         name,
         testId,
     ]);
