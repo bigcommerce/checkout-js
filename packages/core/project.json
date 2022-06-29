@@ -1,0 +1,31 @@
+{
+    "root": "packages/core",
+    "sourceRoot": "packages/core/src",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "rm -rf dist && webpack --mode production"
+            },
+            "dependsOn": [
+                {
+                    "target": "build",
+                    "projects": "dependencies"
+                }
+            ]
+        },
+        "dev": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "webpack --mode development --watch"
+            },
+            "dependsOn": [
+                {
+                    "target": "build",
+                    "projects": "dependencies"
+                }
+            ]
+        }
+    },
+    "tags": []
+}

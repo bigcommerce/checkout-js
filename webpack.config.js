@@ -43,8 +43,8 @@ function appConfig(options, argv) {
             return {
                 entry: {
                     [ENTRY_NAME]: [
-                        join(__dirname, 'src', 'app', 'polyfill.ts'),
-                        join(__dirname, 'src', 'app', 'index.ts'),
+                        join(__dirname, 'packages', 'core','src', 'app', 'polyfill.ts'),
+                        join(__dirname, 'packages', 'core','src', 'app', 'index.ts'),
                     ],
                 },
                 mode,
@@ -116,7 +116,7 @@ function appConfig(options, argv) {
                     }),
                     new CircularDependencyPlugin({
                         exclude: /.*\.spec\.tsx?/,
-                        include: /src\/app/,
+                        include: /packages\/core\/src\/app/,
                     }),
                     new WebpackAssetsManifest({
                         entrypoints: true,
@@ -144,7 +144,7 @@ function appConfig(options, argv) {
                         },
                         {
                             test: /\.tsx?$/,
-                            include: join(__dirname, 'src'),
+                            include: join(__dirname, 'packages', 'core','src'),
                             use: [
                                 {
                                     loader: 'ts-loader',
@@ -156,7 +156,7 @@ function appConfig(options, argv) {
                         },
                         {
                             test: /app\/polyfill\.ts$/,
-                            include: join(__dirname, 'src'),
+                            include: join(__dirname, 'packages', 'core', 'src'),
                             use: [
                                 {
                                     loader: 'babel-loader',
@@ -228,8 +228,8 @@ function loaderConfig(options, argv) {
         .then(appVersion => {
             return {
                 entry: {
-                    [LOADER_ENTRY_NAME]: join(__dirname, 'src', 'app', 'loader.ts'),
-                    [AUTO_LOADER_ENTRY_NAME]: join(__dirname, 'src', 'app', 'auto-loader.ts'),
+                    [LOADER_ENTRY_NAME]: join(__dirname,  'packages', 'core','src', 'app', 'loader.ts'),
+                    [AUTO_LOADER_ENTRY_NAME]: join(__dirname,  'packages', 'core', 'src', 'app', 'auto-loader.ts'),
                 },
                 mode,
                 devtool: isProduction ? 'source-map' : 'eval-source-map',
@@ -281,7 +281,7 @@ function loaderConfig(options, argv) {
                         },
                         {
                             test: /\.tsx?$/,
-                            include: join(__dirname, 'src'),
+                            include: join(__dirname,  'packages', 'core', 'src'),
                             use: [
                                 {
                                     loader: 'babel-loader',

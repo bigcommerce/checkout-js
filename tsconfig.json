@@ -1,7 +1,7 @@
 {
     "include": [
-        "src/**/*.ts",
-        "src/**/*.tsx",
+        "packages/**/*.ts",
+        "packages/**/*.tsx",
         "tests/**/*.ts",
         "playwright.config.ts",
     ],

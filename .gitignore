@@ -3,5 +3,5 @@ build
 coverage
 tests/report/
 tests/screenshots/
-src/app/generated/
+packages/core/src/app/generated/
 __temp__
