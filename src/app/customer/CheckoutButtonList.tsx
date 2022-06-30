@@ -72,8 +72,6 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
 
     return (
         <Fragment>
-            { !isInitializing && <p><TranslatedString id="remote.continue_with_text" /></p> }
-
             <div className="checkoutRemote">
                 { supportedMethodIds.map(methodId =>
                     methodId === 'applepay' ?

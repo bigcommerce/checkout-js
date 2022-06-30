@@ -23,6 +23,7 @@ import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
+import { ButtonWrapper } from '../ButtonWrapper';
 
 const Billing = lazy(() => retry(() => import(
     /* webpackChunkName: "billing" */
@@ -213,6 +214,10 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         </>;
     }
 
+    private renderButtons(): ReactNode {
+        return <ButtonWrapper checkEmbeddedSupport={ this.checkEmbeddedSupport } />
+    }
+
     private renderContent(): ReactNode {
         const {
             isPending,
@@ -246,6 +251,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                     <LoadingNotification isLoading={ isPending } />
 
                     <PromotionBannerList promotions={ promotions } />
+
+                    { this.renderButtons() }
 
                     <ol className="checkout-steps">
                         { steps

@@ -7,7 +7,6 @@ import { LoadingOverlay } from '../ui/loading';
 
 import { CreateAccountFormValues } from './getCreateCustomerValidationSchema';
 import mapCreateAccountFromFormValues from './mapCreateAccountFromFormValues';
-import CheckoutButtonList from './CheckoutButtonList';
 import CreateAccountForm from './CreateAccountForm';
 import CustomerViewType from './CustomerViewType';
 import EmailLoginForm, { EmailLoginFormValues } from './EmailLoginForm';
@@ -154,16 +153,6 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
         return (
             <GuestForm
                 canSubscribe={ canSubscribe }
-                checkoutButtons={
-                    <CheckoutButtonList
-                        checkEmbeddedSupport={ checkEmbeddedSupport }
-                        deinitialize={ deinitializeCustomer }
-                        initialize={ initializeCustomer }
-                        isInitializing={ isInitializing }
-                        methodIds={ checkoutButtonIds }
-                        onError={ onUnhandledError }
-                    />
-                }
                 continueAsGuestButtonLabelId={ !!providerWithCustomCheckout ? 'customer.continue' : 'customer.continue_as_guest_action' }
                 defaultShouldSubscribe={ defaultShouldSubscribe }
                 email={ this.draftEmail || email }
