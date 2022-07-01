@@ -25,6 +25,14 @@
                     "projects": "dependencies"
                 }
             ]
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/packages/core"],
+            "options": {
+                "jestConfig": "jest.config.js",
+                "passWithNoTests": true
+            }
         }
     },
     "tags": []

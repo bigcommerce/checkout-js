@@ -51,9 +51,6 @@ describe('WalletButtonPaymentMethod', () => {
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
             .mockReturnValue(true);
 
-        jest.spyOn(window.location, 'reload')
-            .mockImplementation();
-
         WalletButtonPaymentMethodTest = props => (
             <CheckoutProvider checkoutService={ checkoutService }>
                 <PaymentContext.Provider value={ paymentContext }>
@@ -68,10 +65,6 @@ describe('WalletButtonPaymentMethod', () => {
                 </PaymentContext.Provider>
             </CheckoutProvider>
         );
-    });
-
-    afterEach(() => {
-        (window.location.reload as jest.Mock).mockRestore();
     });
 
     it('initializes payment method when component mounts', () => {

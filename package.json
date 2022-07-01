@@ -21,7 +21,7 @@
     "prelint": "npm run auto-export",
     "lint": "eslint 'packages/**/*.{ts,tsx}'",
     "pretest": "bin/auto-export.js",
-    "test": "jest",
+    "test": "npx nx run-many --target=test --all",
     "test:watch": "jest --watch"
   },
   "repository": {

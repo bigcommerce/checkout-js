@@ -440,8 +440,14 @@ describe('Checkout', () => {
         it('navigates to login page if cart is empty after sign out', () => {
             checkoutState = { ...checkoutState };
 
-            jest.spyOn(window.top.location, 'assign')
-                .mockImplementation(noop);
+            Object.defineProperty(window, 'top', {
+                value: {
+                    location: {
+                        assign: jest.fn(),
+                    },
+                },
+                writable: true,
+            });
 
             jest.spyOn(checkoutState.data, 'getCustomer')
                 .mockReturnValue(getCustomer());
@@ -683,8 +689,13 @@ describe('Checkout', () => {
         let container: ReactWrapper<CheckoutProps & WithCheckoutProps>;
 
         beforeEach(async () => {
-            jest.spyOn(location, 'replace')
-                .mockImplementation(noop);
+            Object.defineProperty(window, 'location', {
+                value: {
+                    replace: jest.fn(),
+                    pathname: '/checkout',
+                },
+                writable: true,
+            });
 
             container = mount(<CheckoutTest { ...defaultProps } />);
 
@@ -700,10 +711,6 @@ describe('Checkout', () => {
             act(() => { container.update(); });
         });
 
-        afterEach(() => {
-            (location.replace as jest.Mock).mockReset();
-        });
-
         it('renders payment component when payment step is active', () => {
             expect(container.find(Payment).length)
                 .toEqual(1);
@@ -714,8 +721,8 @@ describe('Checkout', () => {
             (container.find(Payment).at(0) as ReactWrapper<PaymentProps>)
                 .prop('onSubmit')!();
 
-            expect(location.replace)
-                .toHaveBeenCalledWith('/order-confirmation');
+            expect(window.location.replace)
+                .toHaveBeenCalledWith('/checkout/order-confirmation');
         });
 
         it('navigates to order confirmation page when order is finalized', () => {
@@ -723,8 +730,8 @@ describe('Checkout', () => {
             (container.find(Payment).at(0) as ReactWrapper<PaymentProps>)
                 .prop('onFinalize')!();
 
-            expect(location.replace)
-                .toHaveBeenCalledWith('/order-confirmation');
+            expect(window.location.replace)
+                .toHaveBeenCalledWith('/checkout/order-confirmation');
         });
 
         it('posts message to parent of embedded checkout when shopper completes checkout', () => {
