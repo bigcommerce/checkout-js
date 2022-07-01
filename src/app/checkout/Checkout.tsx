@@ -284,11 +284,23 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 hideContentWhenLoading
                 isLoading={ isRedirecting }
             >
+                <MobileView>
+                    { matched => {
+                        if (matched) {
+                            return <div className="test-02-wrapper layout-cart">
+                                    <LazyContainer>
+                                        <CartSummary />
+                                    </LazyContainer>
+                                    </div>;
+                        }
+
+                    } }
+                </MobileView>
+
                 <div className="layout-main">
                     <LoadingNotification isLoading={ isPending } />
 
                     <PromotionBannerList promotions={ promotions } />
-
                     <ol className="checkout-steps">
                         { steps
                             .filter(step => step.isRequired)
