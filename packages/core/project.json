@@ -7,7 +7,13 @@
             "executor": "@nrwl/workspace:run-commands",
             "options": {
                 "command": "webpack --mode production"
-            }
+            },
+            "dependsOn": [
+                {
+                    "target": "build",
+                    "projects": "dependencies"
+                }
+            ]
         },
         "dev": {
             "executor": "@nrwl/workspace:run-commands",

@@ -106,7 +106,7 @@ function appConfig(options, argv) {
                 plugins: [
                     new StyleLintPlugin({
                         fix: !isProduction,
-                        cache: true,
+                        cache: false,
                         cacheLocation: join(process.cwd(), 'node_modules/.cache/'),
                         emitErrors: isProduction,
                     }),
