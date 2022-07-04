@@ -11,7 +11,7 @@
   "scripts": {
     "preinstall": "npx check-node-version --package",
     "prebuild": "rm -rf dist",
-    "build": "nx run core:build",
+    "build": "webpack --mode production",
     "build:server": "http-server dist",
     "dev": "nx run core:dev",
     "dev:server": "http-server build",
