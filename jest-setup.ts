@@ -1,8 +1,9 @@
 import { configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import * as Adapter from 'enzyme-adapter-react-16';
 import { noop } from 'lodash';
 
-configure({ adapter: new Adapter() });
+const adapter = Adapter as any;
+configure({ adapter: new adapter.default() });
 
 // https://github.com/FezVrasta/popper.js/issues/478
 if (window.document) {
@@ -24,10 +25,10 @@ window.matchMedia = jest.fn(() => ({
     removeEventListener: noop,
 } as MediaQueryList));
 
-Object.defineProperty(window.navigator, "userAgent", ((value) => ({
+Object.defineProperty(window.navigator, 'userAgent', (value => ({
     get() { return value; },
-    set(v) { value = v; }
-}))(window.navigator["userAgent"]));
+    set(v) { value = v; },
+}))(window.navigator.userAgent));
 
 (global as any).__webpack_public_path__ = undefined;
 

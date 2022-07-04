@@ -47,7 +47,7 @@ describe('CheckoutSuggestion', () => {
     it('does not render anything if method id is not provided', () => {
         const component = render(<TestComponent { ...defaultProps } />);
 
-        expect(component.get(0)).toBeFalsy();
+        expect(component.html().length).toBe(0);
     });
 
     it('initializes Bolt Checkout suggestion block', () => {

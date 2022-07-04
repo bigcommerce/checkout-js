@@ -4,15 +4,15 @@ import { CreditCardType as OriginalCreditCardType, CreditCardTypeInfo as Origina
 // Merge @types/card-validator with missing methods
 declare module 'card-validator' {
     type CardBrand =
-        | "american-express"
-        | "diners-club"
-        | "discover"
-        | "jcb"
-        | "maestro"
-        | "mastercard"
-        | "unionpay"
-        | "visa"
-        | "mada";
+        | 'american-express'
+        | 'diners-club'
+        | 'discover'
+        | 'jcb'
+        | 'maestro'
+        | 'mastercard'
+        | 'unionpay'
+        | 'visa'
+        | 'mada';
 
     interface CreditCardTypeInfo extends OriginalCreditCardTypeInfo {
         type?: CardBrand;

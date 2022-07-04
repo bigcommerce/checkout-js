@@ -1,25 +1,32 @@
 {
+    "compileOnSave": false,
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
+        "baseUrl": ".",
+        "declaration": false,
         "esModuleInterop": true,
         "experimentalDecorators": true,
         "forceConsistentCasingInFileNames": true,
         "importHelpers": true,
-        "lib": ["dom", "dom.iterable", "es6", "scripthost"],
+        "incremental": true,
+        "jsx": "react",
+        "lib": ["dom", "dom.iterable", "esnext", "scripthost"],
+        "module": "esnext",
         "moduleResolution": "node",
-        "noUnusedParameters": true,
         "noUnusedLocals": true,
-        "skipLibCheck": true,
-        "sourceMap": true,
-        "strict": true,
-        "stripInternal": true,
-        "target": "es5",
-        "baseUrl": ".",
+        "noUnusedParameters": true,
         "paths": {
             "@bigcommerce/checkout-js/core": ["packages/core/src/app/index.ts"]
         },
-        "module": "es2020",
-        "jsx": "react",
-        "resolveJsonModule": true
-    }
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "sourceMap": true,
+        "strict": true,
+        "strictNullChecks": true,
+        "stripInternal": true,
+        "target": "es5"
+    },
+    "include": [
+        "**/*.config.js"
+    ]
 }
