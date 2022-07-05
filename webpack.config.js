@@ -4,7 +4,6 @@ const { copyFileSync } = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { join } = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 
@@ -60,14 +59,15 @@ function appConfig(options, argv) {
                 optimization: {
                     runtimeChunk: 'single',
                     minimizer: [
-                        new TerserPlugin({
-                            terserOptions: {
-                                output: {
-                                    comments: false,
+                        (compiler) => {
+                            const TerserPlugin = require('terser-webpack-plugin');
+                            new TerserPlugin({
+                                extractComments: false,
+                                terserOptions: {
+                                    sourceMap: true,
                                 },
-                            },
-                            sourceMap: true,
-                        }),
+                            }).apply(compiler);
+                        },
                     ],
                     splitChunks: {
                         chunks: 'all',
