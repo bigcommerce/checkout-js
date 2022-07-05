@@ -9,7 +9,7 @@ dotenv.config();
  */
 const config: PlaywrightTestConfig = {
   webServer: {
-    command: 'http-server build --port=' + process.env.PORT,
+    command: 'http-server dist --port=' + process.env.PORT,
     port: Number(process.env.PORT),
     timeout: 3 * 1000,
   },

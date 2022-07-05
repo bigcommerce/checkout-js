@@ -4,7 +4,7 @@ test.describe('Sample Test Group', () => {
     test('Bigpay Test Payment Provider is working', async ({assertions, checkout, page}) => {
         checkout.log(); // For demo purpose only, do not leave this in a production test file.
         // Testing environment setup
-        const storeUrl = 'https://my-dev-store-745516528.store.bcdev';
+        const storeUrl = 'https://my-dev-store-117450812.store.bcdev';
         await checkout.use(new PaymentStepAsGuestPreset(storeUrl));
         await checkout.create('sample Bigpay Test Payment Provider', storeUrl);
         await checkout.route(
