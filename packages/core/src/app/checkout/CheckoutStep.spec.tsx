@@ -66,7 +66,7 @@ describe('CheckoutStep', () => {
         jest.runAllTimers();
 
         expect(component.getDOMNode().querySelector('input'))
-            .toEqual(document.activeElement);
+            .toMatchObject(document.activeElement as HTMLElement);
     });
 
     it('calls onExpanded when step is active', () => {

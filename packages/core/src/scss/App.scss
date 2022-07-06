@@ -18,8 +18,8 @@
 //
 // -----------------------------------------------------------------------------
 
-@import "../../node_modules/@bigcommerce/citadel/dist/tools/toolkit"; // 1
-@import "../../node_modules/react-datepicker/dist/react-datepicker";
+@import "../../../../node_modules/@bigcommerce/citadel/dist/tools/toolkit"; // 1
+@import "../../../../node_modules/react-datepicker/dist/react-datepicker";
 
 // Settings
 // -----------------------------------------------------------------------------
@@ -35,13 +35,13 @@
 // global app defined settings must be set first
 @import "settings/global/global"; // 1
 
-@import "../../node_modules/@bigcommerce/citadel/dist/settings/global/global"; // 2
-@import "../../node_modules/@bigcommerce/citadel/dist/settings/normalize/normalize"; // 2
-@import "../../node_modules/@bigcommerce/citadel/dist/settings/foundation/foundation"; // 2
-@import "../../node_modules/@bigcommerce/citadel/dist/settings/bigcommerce/bigcommerce"; // 2
+@import "../../../../node_modules/@bigcommerce/citadel/dist/settings/global/global"; // 2
+@import "../../../../node_modules/@bigcommerce/citadel/dist/settings/normalize/normalize"; // 2
+@import "../../../../node_modules/@bigcommerce/citadel/dist/settings/foundation/foundation"; // 2
+@import "../../../../node_modules/@bigcommerce/citadel/dist/settings/bigcommerce/bigcommerce"; // 2
 @import "settings/foundation/foundation"; // 2
 
-@import "../../node_modules/@bigcommerce/citadel/dist/vendor/foundation/foundation"; // 3
+@import "../../../../node_modules/@bigcommerce/citadel/dist/vendor/foundation/foundation"; // 3
 
 @import "settings/normalize/normalize"; // 4
 @import "settings/utilities/utilities"; // 4
@@ -51,7 +51,7 @@
 // Utilities
 // -----------------------------------------------------------------------------
 
-@import "../../node_modules/@bigcommerce/citadel/dist/utilities/utilities";
+@import "../../../../node_modules/@bigcommerce/citadel/dist/utilities/utilities";
 
 @import "tools/toolkit";
 
@@ -64,8 +64,8 @@
 //
 // -----------------------------------------------------------------------------
 
-@import "../../node_modules/@bigcommerce/citadel/dist/vendor/normalize/normalize"; // 1
-@import "../../node_modules/@bigcommerce/citadel/dist/components/components"; // 2
+@import "../../../../node_modules/@bigcommerce/citadel/dist/vendor/normalize/normalize"; // 1
+@import "../../../../node_modules/@bigcommerce/citadel/dist/components/components"; // 2
 
 @import "components/components";
 

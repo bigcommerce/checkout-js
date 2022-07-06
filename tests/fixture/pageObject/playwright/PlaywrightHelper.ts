@@ -55,7 +55,7 @@ export class PlaywrightHelper {
             this.polly.enableReplay(this.storeUrl);
             const { checkoutId, orderId } = this.polly.getCartAndOrderIDs();
             await this.renderAndRoute('/', './tests/support/checkout.ejs', { checkoutId });
-            await this.renderAndRoute('/order-confirmation', './tests/support/orderConfirmation.ejs', { orderId });
+            await this.renderAndRoute(/order-confirmation.*/, './tests/support/orderConfirmation.ejs', { orderId });
         }
     }
 

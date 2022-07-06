@@ -481,8 +481,14 @@ describe('Payment', () => {
     });
 
     it('redirects to location error header when error type is provider_error', () => {
-        jest.spyOn(window.top.location, 'assign')
-            .mockImplementation();
+        Object.defineProperty(window, 'top', {
+            value: {
+                location: {
+                    assign: jest.fn(),
+                },
+            },
+            writable: true,
+        });
 
         jest.spyOn(checkoutState.errors, 'getFinalizeOrderError')
             .mockReturnValue({

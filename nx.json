@@ -1,0 +1,23 @@
+{
+  "extends": "@nrwl/workspace/presets/core.json",
+  "npmScope": "@bigcommerce/checkout-js",
+  "affected": {
+    "defaultBase": "master"
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/workspace"
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": [
+          "build",
+          "dev",
+          "lint",
+          "test"
+        ]
+      }
+    }
+  }
+}

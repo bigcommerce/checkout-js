@@ -11,7 +11,7 @@
     },
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-        "project": "./tsconfig.json",
+        "project": "packages/core/tsconfig.json",
         "ecmaFeatures": {
             "modules": true,
             "jsx": true
@@ -24,6 +24,7 @@
         "@typescript-eslint/tslint"
     ],
     "rules": {
+        "react/jsx-no-bind": "off",
         "@typescript-eslint/tslint/config": [
             "error",
             {
@@ -52,7 +53,12 @@
                     "**/order/OrderSummary.tsx",
                     "**/order/OrderSummaryDrawer.tsx",
                     "**/payment/Payment.tsx",
-                    "**/shipping/Shipping.tsx"
+                    "**/shipping/Shipping.tsx",
+                    "**/translations/*.json",
+                    "**/locale/getLanguageService.ts",
+                    "**/checkoutSuggestion/CheckoutSuggestion",
+                    "**/order/renderOrderConfirmation",
+                    "**/checkout/renderCheckout"
                 ]
             }
         ],

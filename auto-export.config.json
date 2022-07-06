@@ -1,8 +1,8 @@
 {
     "entries": [
         {
-            "inputPath": "src/app/paymentIntegration/**/index.ts",
-            "outputPath": "src/app/generated/paymentIntegrations/index.ts",
+            "inputPath": "packages/core/src/app/paymentIntegration/**/index.ts",
+            "outputPath": "packages/core/src/app/generated/paymentIntegrations/index.ts",
             "memberPattern": ".+PaymentMethod$"
         }
     ]

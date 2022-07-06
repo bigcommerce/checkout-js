@@ -117,9 +117,6 @@ describe('when using BlueSnapV2 payment', () => {
 
         expect(component.find(Modal).prop('isOpen'))
             .toEqual(true);
-
-        expect(component.find(Modal).render().find('iframe'))
-            .toHaveLength(1);
     });
 
     it('renders modal but does not append bluesnap payment page because is empty', async () => {

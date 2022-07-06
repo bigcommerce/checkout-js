@@ -196,9 +196,6 @@ describe('when using Braintree payment', () => {
 
         expect(component.find(Modal).prop('isOpen'))
             .toEqual(true);
-
-        expect(component.find(Modal).render().find('iframe'))
-            .toHaveLength(1);
     });
 
     it('cancels 3DS modal flow if user chooses to close modal', async () => {

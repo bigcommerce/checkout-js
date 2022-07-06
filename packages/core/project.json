@@ -1,0 +1,40 @@
+{
+    "root": "packages/core",
+    "sourceRoot": "packages/core/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "webpack --mode production"
+            },
+            "dependsOn": [
+                {
+                    "target": "build",
+                    "projects": "dependencies"
+                }
+            ]
+        },
+        "dev": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "command": "webpack --mode development --watch"
+            },
+            "dependsOn": [
+                {
+                    "target": "build",
+                    "projects": "dependencies"
+                }
+            ]
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/packages/core"],
+            "options": {
+                "jestConfig": "packages/core/jest.config.js",
+                "passWithNoTests": false
+            }
+        }
+    },
+    "tags": []
+}
