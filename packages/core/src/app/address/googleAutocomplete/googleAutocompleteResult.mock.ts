@@ -3,6 +3,13 @@ export function getGoogleAutocompletePlaceMock(): google.maps.places.PlaceResult
         name: '1-3 Smail St',
         address_components: [
             {
+                long_name: 'unit 6',
+                short_name: 'unit 6',
+                types: [
+                    'subpremise',
+                ],
+            },
+            {
                 long_name: '1-3 (l)',
                 short_name: '1-3 (s)',
                 types: [

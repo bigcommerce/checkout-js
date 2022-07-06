@@ -22,7 +22,7 @@ export default class AddressSelector {
     }
 
     getStreet2(): string {
-        return '';
+        return this._get('subpremise', 'short_name');
     }
 
     getCity(): string {

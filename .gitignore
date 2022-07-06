@@ -5,3 +5,5 @@ tests/report/
 tests/screenshots/
 packages/core/src/app/generated/
 __temp__
+.idea
+.vscode
