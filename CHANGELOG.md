@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.230.0](https://github.com/bigcommerce/checkout-js/compare/v1.229.2...v1.230.0) (2022-07-06)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6269 Restructure checkout-js into monorepo ([#912](https://github.com/bigcommerce/checkout-js/issues/912)) ([42ee27d](https://github.com/bigcommerce/checkout-js/commit/42ee27d679f81eaabc8b43771b08575525962d4a))
+
 ### [1.229.2](https://github.com/bigcommerce/checkout-js/compare/v1.229.1...v1.229.2) (2022-06-28)
 
 ### [1.229.1](https://github.com/bigcommerce/checkout-js/compare/v1.229.0...v1.229.1) (2022-06-27)
