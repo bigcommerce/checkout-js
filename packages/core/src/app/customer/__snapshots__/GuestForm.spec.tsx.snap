@@ -40,6 +40,7 @@ exports[`GuestForm matches snapshot 1`] = `
               <label
                 class="form-label optimizedCheckout-form-label"
                 for="email"
+                id="email-label"
               >
                 Email Address
               </label>

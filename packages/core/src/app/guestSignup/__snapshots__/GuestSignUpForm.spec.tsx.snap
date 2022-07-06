@@ -23,6 +23,7 @@ exports[`GuestSignUpForm matches snapshot 1`] = `
           <label
             class="form-label optimizedCheckout-form-label"
             for="password"
+            id="password-label"
           >
             Password 
             <small>
@@ -43,6 +44,7 @@ exports[`GuestSignUpForm matches snapshot 1`] = `
           <label
             class="form-label optimizedCheckout-form-label"
             for="confirmPassword"
+            id="confirmPassword-label"
           >
             Confirm Password
           </label>
@@ -97,6 +99,7 @@ exports[`GuestSignUpForm matches snapshot when customer cannot be created 1`] = 
           <label
             class="form-label optimizedCheckout-form-label"
             for="password"
+            id="password-label"
           >
             Password 
             <small>
@@ -117,6 +120,7 @@ exports[`GuestSignUpForm matches snapshot when customer cannot be created 1`] = 
           <label
             class="form-label optimizedCheckout-form-label"
             for="confirmPassword"
+            id="confirmPassword-label"
           >
             Confirm Password
           </label>
