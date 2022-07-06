@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.231.0](https://github.com/bigcommerce/checkout-js/compare/v1.230.0...v1.231.0) (2022-07-06)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6269 Use nx to run build ([#913](https://github.com/bigcommerce/checkout-js/issues/913)) ([5485c21](https://github.com/bigcommerce/checkout-js/commit/5485c213b02add0262fae44b4f0bcc36f8939c8e))
+
 ## [1.230.0](https://github.com/bigcommerce/checkout-js/compare/v1.229.2...v1.230.0) (2022-07-06)
 
 
