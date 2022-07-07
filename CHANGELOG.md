@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.231.1](https://github.com/bigcommerce/checkout-js/compare/v1.231.0...v1.231.1) (2022-07-07)
+
+
+### Bug Fixes
+
+* **shipping:** CHECKOUT-6773 Fix bug with address auto complete ([#914](https://github.com/bigcommerce/checkout-js/issues/914)) ([5db2f49](https://github.com/bigcommerce/checkout-js/commit/5db2f49540d2545fe67951821ae30fcf8c3d5b28))
+
 ## [1.231.0](https://github.com/bigcommerce/checkout-js/compare/v1.230.0...v1.231.0) (2022-07-06)
 
 
