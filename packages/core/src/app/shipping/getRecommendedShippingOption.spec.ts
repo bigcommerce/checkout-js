@@ -11,7 +11,7 @@ describe('getShippabgetRecommendedShippingOptioneLineItems()', () => {
     });
 
     it('returns recommended shipping option when has no shipping option', () => {
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line
         expect(getRecommendedShippingOption(getConsignment().availableShippingOptions!))
             .toEqual(getShippingOption());
     });

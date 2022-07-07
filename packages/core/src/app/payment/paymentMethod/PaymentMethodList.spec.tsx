@@ -87,7 +87,7 @@ describe('PaymentMethodList', () => {
             onSelect={ handleSelect }
         />);
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line
         component.find(Checklist).prop('onSelect')!(methods[1].id);
 
         expect(handleSelect)

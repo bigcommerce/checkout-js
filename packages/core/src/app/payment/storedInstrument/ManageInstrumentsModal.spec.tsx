@@ -153,7 +153,7 @@ describe('ManageInstrumentsModal', () => {
         component.find('[data-test="manage-instrument-delete-button"]').at(0)
             .simulate('click');
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line
         component.find(Modal)
             .prop('onAfterOpen')!();
 

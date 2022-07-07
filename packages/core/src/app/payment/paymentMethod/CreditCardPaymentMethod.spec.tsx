@@ -345,8 +345,8 @@ describe('CreditCardPaymentMethod', () => {
 
             subscribeEventEmitter.emit('change');
 
+            // eslint-disable-next-line
             component.find(CardInstrumentFieldset)
-                // tslint:disable-next-line:no-non-null-assertion
                 .prop('onDeleteInstrument')!(getInstruments()[0].bigpayToken);
 
             component.update();

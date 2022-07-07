@@ -112,16 +112,16 @@ class InnerFieldInput extends Component<InnerFieldInputProps> {
         } = this.props;
 
         if (render) {
-            // tslint:disable-next-line:no-unnecessary-type-assertion
+            // eslint-disable-next-line
             return (render as any)(this.props);
         }
 
         if (typeof component === 'string') {
-            // tslint:disable-next-line:no-unnecessary-type-assertion
+            // eslint-disable-next-line
             return createElement(component as any, field);
         }
 
-        // tslint:disable-next-line:no-unnecessary-type-assertion
+        // eslint-disable-next-line
         return createElement(component as any, this.props);
     }
 }

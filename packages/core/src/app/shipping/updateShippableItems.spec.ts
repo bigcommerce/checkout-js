@@ -55,11 +55,11 @@ describe('updateShippableItems()', () => {
             { cart, consignments: [] }
         );
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line
         expect(updatedShippableItems![0].consignment).toBeFalsy();
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line
         expect(updatedShippableItems![1].consignment).toBeFalsy();
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line
         expect(updatedShippableItems![2].consignment).toBeFalsy();
     });
 
@@ -80,11 +80,11 @@ describe('updateShippableItems()', () => {
                 { cart, consignments: [] }
             );
 
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line
             expect(updatedShippableItems![0].consignment).toBeFalsy();
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line
             expect(updatedShippableItems![1].consignment).toBeFalsy();
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line
             expect(updatedShippableItems![2].consignment).toBeFalsy();
         });
 
@@ -119,15 +119,15 @@ describe('updateShippableItems()', () => {
                 }
             );
 
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line
             expect(updatedShippableItems![0]).toEqual(shippableItems[0]);
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line
             expect(updatedShippableItems![0]).toBe(shippableItems[0]);
 
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line
             expect(updatedShippableItems![2]).toEqual(shippableItems[2]);
 
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line
             expect(updatedShippableItems![1]).toMatchObject({
                 consignment: consignments[0],
                 id: 'bar',
@@ -208,7 +208,7 @@ describe('updateShippableItems()', () => {
                 }
             );
 
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line
             expect(updatedShippableItems![0]).toMatchObject({
                 consignment: {
                     ...consignments[0],
@@ -217,7 +217,7 @@ describe('updateShippableItems()', () => {
                 id: 'bar',
             });
 
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line
             expect(updatedShippableItems![1]).toMatchObject({
                 consignment: {
                     ...consignments[0],
@@ -261,7 +261,7 @@ describe('updateShippableItems()', () => {
                 }
             );
 
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line
             expect(updatedShippableItems![updatedItemIndex]).toMatchObject({
                 consignment: consignments[0],
                 id: 'foo',
@@ -303,7 +303,7 @@ describe('updateShippableItems()', () => {
                 }
             );
 
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line
             expect(updatedShippableItems![updatedItemIndex]).toMatchObject({
                 consignment: consignments[1],
                 id: 'bar',

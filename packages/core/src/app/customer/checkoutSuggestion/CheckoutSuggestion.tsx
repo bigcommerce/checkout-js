@@ -34,7 +34,6 @@ const mapToCheckoutSuggestionProps = (
 ): WithCheckoutSuggestionsProps | null => {
     const {
         data: { getCheckout, getConfig },
-        errors: {},
         statuses: { isExecutingPaymentMethodCheckout },
     } = checkoutState;
 

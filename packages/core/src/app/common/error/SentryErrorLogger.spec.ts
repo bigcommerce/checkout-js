@@ -36,7 +36,7 @@ describe('SentryErrorLogger', () => {
     });
 
     it('does not log exception event if it is not raised by error', () => {
-        // tslint:disable-next-line:no-unused-expression
+        // eslint-disable-next-line
         new SentryErrorLogger(config);
 
         const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
@@ -51,13 +51,13 @@ describe('SentryErrorLogger', () => {
         };
         const hint = { originalException: 'Unexpected error' };
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line
         expect(clientOptions.beforeSend!(event, hint))
             .toEqual(null);
     });
 
     it('does not log exception event if it does not contain stacktrace', () => {
-        // tslint:disable-next-line:no-unused-expression
+        // eslint-disable-next-line
         new SentryErrorLogger(config);
 
         const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
@@ -66,13 +66,13 @@ describe('SentryErrorLogger', () => {
         };
         const hint = { originalException: new Error('Unexpected error') };
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line
         expect(clientOptions.beforeSend!(event, hint))
             .toEqual(null);
     });
 
     it('does not log exception event if all frames in stacktrace are missing filename', () => {
-        // tslint:disable-next-line:no-unused-expression
+        // eslint-disable-next-line
         new SentryErrorLogger(config);
 
         const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
@@ -87,13 +87,13 @@ describe('SentryErrorLogger', () => {
         };
         const hint = { originalException: new Error('Unexpected error') };
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line
         expect(clientOptions.beforeSend!(event, hint))
             .toEqual(null);
     });
 
     it('logs exception event if all frames in stacktrace reference app file', () => {
-        // tslint:disable-next-line:no-unused-expression
+        // eslint-disable-next-line
         new SentryErrorLogger(config);
 
         const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
@@ -108,18 +108,18 @@ describe('SentryErrorLogger', () => {
         };
         const hint = { originalException: new Error('Unexpected error') };
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line
         expect(clientOptions.beforeSend!(event, hint))
             .toEqual(event);
     });
 
     it('configures client to rewrite filename of error frames', () => {
-        // tslint:disable-next-line:no-unused-expression
+        // eslint-disable-next-line
         new SentryErrorLogger(config, { publicPath: 'https://cdn.foo.bar' });
 
         const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line
         const rewriteFrames = (clientOptions.integrations! as Integration[]).find(integration => (
             integration.name === 'RewriteFrames'
         )) as RewriteFrames;
@@ -138,7 +138,7 @@ describe('SentryErrorLogger', () => {
             },
         });
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line
         const frame = output.stacktrace!.frames![0];
 
         expect(frame)
@@ -149,7 +149,7 @@ describe('SentryErrorLogger', () => {
     });
 
     it('configures client to ignore errors from polyfill and Sentry client', () => {
-        // tslint:disable-next-line:no-unused-expression
+        // eslint-disable-next-line
         new SentryErrorLogger(config);
 
         expect(init)
@@ -162,12 +162,12 @@ describe('SentryErrorLogger', () => {
     });
 
     it('does not rewrite filename of error frames if it does match with public path', () => {
-        // tslint:disable-next-line:no-unused-expression
+        // eslint-disable-next-line
         new SentryErrorLogger(config, { publicPath: 'https://cdn.foo.bar' });
 
         const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line
         const rewriteFrames = (clientOptions.integrations! as Integration[]).find(integration => (
             integration.name === 'RewriteFrames'
         )) as RewriteFrames;
@@ -186,7 +186,7 @@ describe('SentryErrorLogger', () => {
             },
         });
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line
         const frame = output.stacktrace!.frames![0];
 
         expect(frame)
@@ -194,7 +194,7 @@ describe('SentryErrorLogger', () => {
     });
 
     it('disables global error handler', () => {
-        // tslint:disable-next-line:no-unused-expression
+        // eslint-disable-next-line
         new SentryErrorLogger(config);
 
         expect(Integrations.GlobalHandlers)

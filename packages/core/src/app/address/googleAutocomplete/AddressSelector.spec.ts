@@ -57,7 +57,7 @@ describe('AddressSelector', () => {
         });
 
         it('returns the locality as city if no postal town', () => {
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line
             const addressComponents = googleAutoCompleteResponseMock.address_components!
                 .filter(address => !address.types.includes('postal_town'));
 
@@ -70,7 +70,7 @@ describe('AddressSelector', () => {
         });
 
         it('returns the neighborhood as city if nothing else is present', () => {
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line
             const addressComponents = googleAutoCompleteResponseMock.address_components!
                 .filter(address => !address.types.includes('postal_town') && !address.types.includes('locality'));
 

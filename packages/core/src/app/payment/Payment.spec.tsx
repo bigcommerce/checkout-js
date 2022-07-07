@@ -523,7 +523,7 @@ describe('Payment', () => {
         const form: ReactWrapper<PaymentFormProps> = container.find(PaymentForm);
 
         try {
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line
             form.prop('validationSchema')!.validateSync({ ccNumber: '' });
         } catch (error) {
             expect(error.name)
@@ -548,7 +548,7 @@ describe('Payment', () => {
 
         const form: ReactWrapper<PaymentFormProps> = container.find(PaymentForm);
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line
         form.prop('onSubmit')!({
             ccCvv: '123',
             ccExpiry: '10 / 25',
@@ -586,7 +586,7 @@ describe('Payment', () => {
 
         const form: ReactWrapper<PaymentFormProps> = container.find(PaymentForm);
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line
         form.prop('onSubmit')!({
             ccCvv: '123',
             ccExpiry: '10 / 25',
@@ -612,7 +612,7 @@ describe('Payment', () => {
 
         const form: ReactWrapper<PaymentFormProps> = container.find(PaymentForm);
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line
         form.prop('onSubmit')!({
             ccCvv: '123',
             ccExpiry: '10 / 25',
@@ -644,7 +644,7 @@ describe('Payment', () => {
 
         const form: ReactWrapper<PaymentFormProps> = container.find(PaymentForm);
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line
         form.prop('onSubmit')!({
             ccCvv: '123',
             ccNumber: '4111 1111 1111 1111',

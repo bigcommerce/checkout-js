@@ -96,9 +96,7 @@ describe('PaymentMethod', () => {
     });
 
     it('renders as hosted paypal payment method in Adyen v1', () => {
-        let method: PaymentMethod;
-
-        method = {
+        const method = {
             ...getPaymentMethod(),
             id: 'paypal',
             gateway: PaymentMethodId.Adyen,

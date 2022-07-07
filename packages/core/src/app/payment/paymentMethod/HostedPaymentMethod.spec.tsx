@@ -115,9 +115,7 @@ describe('HostedPaymentMethod', () => {
     });
 
     it('does not render loading overlay if there is no description', () => {
-        let component: ReactWrapper;
-
-        component = mount(<HostedPaymentMethodTest
+        const component = mount(<HostedPaymentMethodTest
             { ...defaultProps }
             isInitializing
         />);
