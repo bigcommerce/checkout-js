@@ -23,7 +23,7 @@
     "lint": "eslint 'packages/**/*.{ts,tsx}'",
     "pretest": "bin/auto-export.js",
     "test": "npx nx run-many --target=test --all",
-    "test:watch": "jest --watch"
+    "test:watch": "npx nx run-many --target=test --all --watch"
   },
   "repository": {
     "type": "git",

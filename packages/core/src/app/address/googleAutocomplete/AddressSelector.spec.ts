@@ -29,6 +29,13 @@ describe('AddressSelector', () => {
         });
     });
 
+    describe('#getStreet2()', () => {
+        it('returns the correct street2 value', () => {
+            const accessor = new AddressSelector(googleAutoCompleteResponseMock);
+            expect(accessor.getStreet2()).toBe('unit 6');
+        });
+    });
+
     describe('#getCountry()', () => {
         it('returns the correct country', () => {
             const accessor = new AddressSelector(googleAutoCompleteResponseMock);

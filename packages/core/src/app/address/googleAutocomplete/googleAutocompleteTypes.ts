@@ -49,4 +49,5 @@ export type GoogleAddressFieldType =
     'street_number' |
     'route' |
     'political' |
-    'country';
+    'country' |
+    'subpremise';
