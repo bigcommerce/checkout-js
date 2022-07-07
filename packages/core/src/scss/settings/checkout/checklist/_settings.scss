@@ -15,3 +15,4 @@ $checklist-pip-backgroundImage:         url("data:image/svg+xml;utf8, %3Csvg%20w
 $checklist-pip-spacing:                 spacing("base") + spacing("third");
 $checklist-pip-spacing--small:          $checklist-pip-spacing / 1.5;
 $checklist-pip-spacingVertical:         remCalc(20px);
+$checklist-pip-spacing-top:             remCalc(19px);

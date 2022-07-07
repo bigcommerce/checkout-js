@@ -1,7 +1,7 @@
 import { LanguageService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { number } from 'card-validator';
 import { compact } from 'lodash';
-import React, { memo, Fragment, FunctionComponent } from 'react';
+import React, { memo, FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
@@ -229,7 +229,7 @@ const PaymentMethodTitle: FunctionComponent<PaymentMethodTitleProps & WithLangua
     };
 
     return (
-        <Fragment>
+        <div className="paymentProviderHeader-container">
             { logoUrl && <img
                 alt={ methodName }
                 className="paymentProviderHeader-img"
@@ -237,12 +237,12 @@ const PaymentMethodTitle: FunctionComponent<PaymentMethodTitleProps & WithLangua
                 src={ logoUrl }
             /> }
 
-            { titleText && <span
+            { titleText && <div
                 className="paymentProviderHeader-name"
                 data-test="payment-method-name"
             >
                 { titleText }
-            </span> }
+            </div> }
 
             <div className="paymentProviderHeader-cc">
                 <CreditCardIconList
@@ -250,7 +250,7 @@ const PaymentMethodTitle: FunctionComponent<PaymentMethodTitleProps & WithLangua
                     selectedCardType={ getSelectedCardType() }
                 />
             </div>
-        </Fragment>
+        </div>
     );
 };
 
