@@ -292,6 +292,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                                         <CartSummary />
                                     </LazyContainer>
                                     </div>;
+                        } else {
+                            return <div className="test-02-wrapper layout-cart"></div>;
                         }
 
                     } }
