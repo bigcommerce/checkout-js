@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.231.2](https://github.com/bigcommerce/checkout-js/compare/v1.231.1...v1.231.2) (2022-07-08)
+
+
+### Bug Fixes
+
+* **checkout:** ADYEN-544 fixed adyen 3ds render error ([6c49611](https://github.com/bigcommerce/checkout-js/commit/6c49611f3954115dc36a7178efdc85f588177dec))
+
 ### [1.231.1](https://github.com/bigcommerce/checkout-js/compare/v1.231.0...v1.231.1) (2022-07-07)
 
 
