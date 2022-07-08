@@ -1,22 +1,8 @@
 {
   "extends": "../../tsconfig.base.json",
-  "files": [
-    "../../jest.setup.js",
-    "../../jest.preset.js",
-    "../../jest-setup.ts",
-    "types/card-validator.d.ts",
-    "types/supported-files.d.ts",
-    "types/webpack.d.ts"
-  ],
   "include": [
-    "**/*.config.js",
     "src/**/*.ts",
     "src/**/*.tsx",
-    "src/common/types/card-validator.d.ts"
-  ],
-  "references": [
-    {
-      "path": "./tsconfig.spec.json"
-    }
+    "types/*.d.ts"
   ]
 }
