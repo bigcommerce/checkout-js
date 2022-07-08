@@ -139,7 +139,7 @@ describe('when using Adyen V2 payment', () => {
                 .toEqual(true);
 
             expect(container.find('#adyen-scheme-additional-action-component-field'))
-                .toHaveLength(0);
+                .toHaveLength(1);
         });
 
         it('Do not render 3DS modal if required by selected method', async () => {
