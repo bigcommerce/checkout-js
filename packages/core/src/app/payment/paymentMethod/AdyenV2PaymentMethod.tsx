@@ -1,6 +1,6 @@
 import { AdyenCreditCardComponentOptions, AdyenIdealComponentOptions } from '@bigcommerce/checkout-sdk';
 import _ from 'lodash';
-import React, { createRef, useCallback, useRef, useState, FunctionComponent, RefObject } from 'react';
+import React, { useCallback, useRef, useState, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
 
 import { TranslatedString } from '../../locale';
@@ -24,7 +24,6 @@ export enum AdyenV2PaymentMethodType {
 }
 
 interface AdyenPaymentMethodRef {
-    additionalActionContentRef: RefObject<HTMLDivElement>;
     shouldShowModal: boolean;
     shouldShowNumberField?: boolean;
     cancelAdditionalAction?(): void;
@@ -37,10 +36,9 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
 }) => {
     const ref = useRef<AdyenPaymentMethodRef>({
         shouldShowModal: true,
-        additionalActionContentRef: createRef(),
     });
 
-    const [additionalActionContent, setAdditionalActionContent] = useState<HTMLElement>();
+    const [showAdditionalActionContent, setShowAdditionalActionContent] = useState<boolean>(false);
     const [cardValidationState, setCardValidationState] = useState<AdyenV2CardValidationState>();
     const containerId = `adyen-${method.id}-component-field`;
     const additionalActionContainerId = `adyen-${method.id}-additional-action-component-field`;
@@ -65,17 +63,14 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
         ref.current.shouldShowModal = shopperInteraction;
 
         if (ref.current.shouldShowModal) {
-            const div = document.createElement('div');
-
-            div.setAttribute('id', additionalActionContainerId);
-            setAdditionalActionContent(div);
+            setShowAdditionalActionContent(true);
         } else {
-            setAdditionalActionContent(undefined);
+            setShowAdditionalActionContent(false);
         }
-    }, [additionalActionContainerId]);
+    }, []);
 
     const onComplete = useCallback(() => {
-        setAdditionalActionContent(undefined);
+        setShowAdditionalActionContent(false);
         ref.current.cancelAdditionalAction = undefined;
     }, []);
 
@@ -83,14 +78,8 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
         ref.current.cancelAdditionalAction = cancel;
     }, []);
 
-    const appendAdditionalActionContent = useCallback(() => {
-        if (ref.current.additionalActionContentRef.current && additionalActionContent) {
-            ref.current.additionalActionContentRef.current.appendChild(additionalActionContent);
-        }
-    }, [additionalActionContent]);
-
     const cancelAdditionalActionModalFlow = useCallback(() => {
-        setAdditionalActionContent(undefined);
+        setShowAdditionalActionContent(false);
 
         if (ref.current.cancelAdditionalAction) {
             ref.current.cancelAdditionalAction();
@@ -161,17 +150,13 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
         <Modal
             additionalBodyClassName="modal-body--center"
             closeButtonLabel={ <TranslatedString id="common.close_action" /> }
-            isOpen={ !!additionalActionContent && ref.current.shouldShowModal }
-            onAfterOpen={ appendAdditionalActionContent }
+            isOpen={ showAdditionalActionContent }
             onRequestClose={ cancelAdditionalActionModalFlow }
             shouldShowCloseButton={ true }
         >
-            <div
-                ref={ ref.current.additionalActionContentRef }
-                style={ { width: '100%' } }
-            />
+            <div id={ additionalActionContainerId } style={ { width: '100%' } } />
         </Modal>
-        { !additionalActionContent &&
+        { !showAdditionalActionContent &&
             <div
                 id= { additionalActionContainerId }
                 style={ { display: 'none' } }
