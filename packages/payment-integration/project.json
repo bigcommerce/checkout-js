@@ -1,0 +1,43 @@
+{
+  "root": "packages/payment-integration",
+  "sourceRoot": "packages/payment-integration/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "options": {
+        "outputPath": "dist/packages/payment-integration",
+        "main": "packages/payment-integration/src/index.ts",
+        "tsConfig": "packages/payment-integration/tsconfig.lib.json",
+        "assets": [
+          "packages/payment-integration/*.md"
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/payment-integration/**/*.ts"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/packages/payment-integration"
+      ],
+      "options": {
+        "jestConfig": "packages/payment-integration/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
