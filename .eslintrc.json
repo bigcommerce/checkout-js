@@ -1,72 +1,41 @@
 {
-    "extends": [
-        "plugin:import/errors",
-        "plugin:import/typescript",
-        "plugin:import/warnings",
-        "plugin:react/recommended",
-        "@bigcommerce/eslint-config"
-    ],
-    "env": {
-        "browser": true
-    },
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "project": "packages/core/tsconfig.json",
-        "ecmaFeatures": {
-            "modules": true,
-            "jsx": true
-        },
-        "ecmaVersion": 6,
-        "sourceType": "module",
-        "useJSXTextNode": true
-    },
-    "plugins": [
-        "@typescript-eslint/tslint"
-    ],
-    "rules": {
-        "react/jsx-no-bind": "off",
-        "@typescript-eslint/tslint/config": [
-            "error",
-            {
-                "lintFile": "./tslint.json"
-            }
-        ],
-        "react/jsx-curly-spacing": [
-            "error",
-            {
-                "children": true,
-                "when": "always"
-            }
-        ],
-        "import/no-internal-modules": [
-            "error",
-            {
-                "allow": [
-                    "react-dom/test-utils",
-                    "scripts/*",
-                    "**/*.{mock,scss}",
-                    "**/index.ts",
-                    "**/billing/Billing.tsx",
-                    "**/cart/CartSummary.tsx",
-                    "**/cart/CartSummaryDrawer.tsx",
-                    "**/customer/Customer.tsx",
-                    "**/order/OrderSummary.tsx",
-                    "**/order/OrderSummaryDrawer.tsx",
-                    "**/payment/Payment.tsx",
-                    "**/shipping/Shipping.tsx",
-                    "**/translations/*.json",
-                    "**/locale/getLanguageService.ts",
-                    "**/checkoutSuggestion/CheckoutSuggestion",
-                    "**/order/renderOrderConfirmation",
-                    "**/checkout/renderCheckout"
-                ]
-            }
-        ],
-        "object-curly-newline": [
-            "error",
-            {
-                "ImportDeclaration": "never"
-            }
+  "extends": [
+    "@bigcommerce/eslint-config"
+  ],
+  "root": true,
+  "ignorePatterns": ["**/*"],
+  "plugins": ["@nrwl/nx"],
+  "env": {
+    "browser": true
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {
+        "@nrwl/nx/enforce-module-boundaries": [
+          "error",
+          {
+            "enforceBuildableLibDependency": false,
+            "allow": [],
+            "depConstraints": [
+              {
+                "sourceTag": "*",
+                "onlyDependOnLibsWithTags": ["*"]
+              }
+            ]
+          }
         ]
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nrwl/nx/typescript"],
+      "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "extends": ["plugin:@nrwl/nx/javascript"],
+      "rules": {}
     }
+  ]
 }

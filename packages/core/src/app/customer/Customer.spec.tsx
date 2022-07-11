@@ -606,8 +606,8 @@ describe('Customer', () => {
             await new Promise(resolve => process.nextTick(resolve));
             component.update();
 
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (component.find(LoginForm) as ReactWrapper<LoginFormProps>)
-                // tslint:disable-next-line:no-non-null-assertion
                 .prop('onCancel')!();
 
             expect(checkoutService.clearError)
@@ -626,8 +626,8 @@ describe('Customer', () => {
             await new Promise(resolve => process.nextTick(resolve));
             component.update();
 
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (component.find(LoginForm) as ReactWrapper<LoginFormProps>)
-                // tslint:disable-next-line:no-non-null-assertion
                 .prop('onCancel')!();
 
             expect(handleChangeViewType)
@@ -642,8 +642,8 @@ describe('Customer', () => {
             await new Promise(resolve => process.nextTick(resolve));
             component.update();
 
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (component.find(LoginForm) as ReactWrapper<LoginFormProps>)
-                // tslint:disable-next-line:no-non-null-assertion
                 .prop('onChangeEmail')!('test@bigcommerce.com');
 
             component.setProps({ viewType: CustomerViewType.Guest });

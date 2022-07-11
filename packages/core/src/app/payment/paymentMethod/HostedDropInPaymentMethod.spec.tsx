@@ -274,8 +274,8 @@ describe('HostedDropInPaymentMethod', () =>  {
 
             subscribeEventEmitter.emit('change');
 
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             component.find(CardInstrumentFieldset)
-                // tslint:disable-next-line:no-non-null-assertion
                 .prop('onDeleteInstrument')!(getInstruments()[0].bigpayToken);
 
             component.update();

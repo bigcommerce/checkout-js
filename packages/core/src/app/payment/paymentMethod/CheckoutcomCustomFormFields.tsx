@@ -119,7 +119,7 @@ const Fawry: FunctionComponent<CheckoutcomAPMFormProps> = () => {
 const Ideal: FunctionComponent<CheckoutcomAPMFormProps> = ({ method }) => {
     const [selectedIssuer, setSelectedIssuer] = useState<Issuer | undefined>();
     const [bicValue, setBicValue] = useState<string>('');
-    const render = useCallback((props: FieldProps) => <HiddenInput { ...props } selectedIssuer={ bicValue } />, [bicValue]);
+    const render = useCallback((props: FieldProps) => <HiddenInput { ...props } selectedIssuer={ bicValue } />, [bicValue]);
 
     const issuers: Issuer[] = method.initializationData.idealIssuers;
 

@@ -12,7 +12,7 @@ describe('createLocaleContext', () => {
 
     it('returns an object with currency', () => {
         expect(localeContext).toHaveProperty('currency');
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         expect(localeContext.currency!.toStoreCurrency).toBeDefined();
     });
 
@@ -23,7 +23,7 @@ describe('createLocaleContext', () => {
 
     it('returns an object with date', () => {
         expect(localeContext).toHaveProperty('date');
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         expect(localeContext.date!.inputFormat).toBeDefined();
     });
 });

@@ -140,7 +140,7 @@ export default class SentryErrorLogger implements ErrorLogger {
             // We want to remove the base path of the filename, otherwise we
             // will need to specify it when we upload the sourcemaps so that the
             // filenames can match up.
-            const filename = frame.filename.replace(new RegExp(`^${this.publicPath}\/?`), '');
+            const filename = frame.filename.replace(new RegExp(`^${this.publicPath}/?`), '');
 
             // `frame` needs to be modified in-place (based on the example in
             // their documentation).

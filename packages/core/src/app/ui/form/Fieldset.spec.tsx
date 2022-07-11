@@ -46,6 +46,6 @@ describe('Fieldset', () => {
         );
 
         expect(component.find('.form-body').children().html())
-            .toEqual('<input type=\"text\"/>');
+            .toEqual('<input type="text"/>');
     });
 });

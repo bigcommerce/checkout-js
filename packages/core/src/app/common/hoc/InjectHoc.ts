@@ -7,6 +7,7 @@ export type MatchedProps<TInjectedProps, TProps> = {
         : TProps[P];
 };
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 type InjectHoc<TInjectedProps, TOwnProps = {}> = <TProps extends MatchedProps<TInjectedProps, TProps> & TOwnProps>(
     OriginalComponent: ComponentType<TProps>
 ) => ComponentType<Omit<TProps, keyof TInjectedProps>>;

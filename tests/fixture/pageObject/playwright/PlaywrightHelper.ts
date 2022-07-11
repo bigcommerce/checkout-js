@@ -26,7 +26,6 @@ export class PlaywrightHelper {
 
     enableDevMode(): void {
         this.isDevMode = true;
-        // tslint:disable-next-line:no-console
         this.page.on('console', msg => console.log(`🧭 ${msg.text()}`));
     }
 

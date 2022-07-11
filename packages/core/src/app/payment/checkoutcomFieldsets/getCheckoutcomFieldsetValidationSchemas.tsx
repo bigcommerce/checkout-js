@@ -27,7 +27,7 @@ export interface FawryCustomFormFieldsetValues {
 }
 
 const checkoutComShemas: {
-    [key in checkoutcomPaymentMethods]: (language: LanguageService) => {}
+    [key in checkoutcomPaymentMethods]: (language: LanguageService) => any
 } = {
 
     oxxo: (language: LanguageService) => ({

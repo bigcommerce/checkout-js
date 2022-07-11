@@ -19,13 +19,13 @@ describe('MollieAPMCustomForm', () => {
             size1x: 'logo.png',
         },
     };
-    const method: PaymentMethod = {
+    const method: PaymentMethod = {
         id: 'mollie',
         method: 'kbc/cbc',
         supportedCards: [],
         config: {},
         type: 'card',
-        initializationData: {
+        initializationData: {
             paymentMethodsResponse: [
                 issuer,
                 {

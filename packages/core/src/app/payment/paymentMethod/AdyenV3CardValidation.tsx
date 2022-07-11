@@ -47,7 +47,7 @@ const AdyenV3CardValidation: FunctionComponent<AdyenV3CardValidationProps> = ({
                     },
                 };
             });
-        } else if (!!cardValidationState.fieldType) {
+        } else if (cardValidationState.fieldType) {
             newFieldValidation[cardValidationState.fieldType] = cardValidationState;
         }
 

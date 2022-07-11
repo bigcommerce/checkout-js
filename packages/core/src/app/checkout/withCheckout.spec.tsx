@@ -59,9 +59,9 @@ describe('withCheckout()', () => {
 
     it('does not update child if mapped props have not changed', () => {
         const withMockCheckout = withCheckout(({ checkoutState: { data: { getCheckout } } }) => ({
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             grandTotal: getCheckout()!.grandTotal,
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             subtotal: getCheckout()!.subtotal,
         }));
 

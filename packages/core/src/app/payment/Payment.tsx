@@ -537,6 +537,7 @@ export function mapToPaymentProps({
         filteredMethods = selectedPaymentMethod ? compact([selectedPaymentMethod]) : filteredMethods;
     } else {
         selectedPaymentMethod = find(filteredMethods, { config: { hasDefaultStoredInstrument: true } });
+        // eslint-disable-next-line no-self-assign
         filteredMethods = filteredMethods;
     }
 

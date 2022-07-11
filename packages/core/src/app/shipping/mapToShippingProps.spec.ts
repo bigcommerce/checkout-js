@@ -44,7 +44,7 @@ describe('mapToShippingProps()', () => {
         });
 
         it('returns true when enabled', () => {
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(mapToShippingProps(checkoutContextProps)!.shouldShowMultiShipping)
                 .toEqual(true);
         });
@@ -58,7 +58,7 @@ describe('mapToShippingProps()', () => {
                 },
             } as StoreConfig);
 
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(mapToShippingProps(checkoutContextProps)!.shouldShowMultiShipping)
                 .toEqual(false);
         });
@@ -71,7 +71,7 @@ describe('mapToShippingProps()', () => {
                 },
             } as unknown as Cart);
 
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(mapToShippingProps(checkoutContextProps)!.shouldShowMultiShipping)
                 .toEqual(false);
         });
@@ -82,7 +82,7 @@ describe('mapToShippingProps()', () => {
                 payments: [{ providerId: 'amazon' }],
             } as Checkout);
 
-            // tslint:disable-next-line:no-non-null-assertion
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(mapToShippingProps(checkoutContextProps)!.shouldShowMultiShipping)
                 .toEqual(false);
         });

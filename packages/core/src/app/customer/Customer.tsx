@@ -164,7 +164,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                         onError={ onUnhandledError }
                     />
                 }
-                continueAsGuestButtonLabelId={ !!providerWithCustomCheckout ? 'customer.continue' : 'customer.continue_as_guest_action' }
+                continueAsGuestButtonLabelId={ providerWithCustomCheckout ? 'customer.continue' : 'customer.continue_as_guest_action' }
                 defaultShouldSubscribe={ defaultShouldSubscribe }
                 email={ this.draftEmail || email }
                 isLoading={ isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout }
@@ -248,7 +248,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
         return (
             <LoginForm
                 canCancel={ isGuestEnabled }
-                continueAsGuestButtonLabelId={ !!providerWithCustomCheckout ? 'customer.continue' : 'customer.continue_as_guest_action' }
+                continueAsGuestButtonLabelId={ providerWithCustomCheckout ? 'customer.continue' : 'customer.continue_as_guest_action' }
                 email={ this.draftEmail || email }
                 forgotPasswordUrl={ forgotPasswordUrl }
                 isSendingSignInEmail={ isSendingSignInEmail }

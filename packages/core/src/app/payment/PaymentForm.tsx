@@ -54,7 +54,7 @@ export type PaymentFormValues = (
     DocumentOnlyCustomFormFieldsetValues & PaymentFormCommonValues |
     SepaCustomFormFieldsetValues & PaymentFormCommonValues |
     FawryCustomFormFieldsetValues & PaymentFormCommonValues |
-    IdealCustomFormFieldsetValues & PaymentFormCommonValues |
+    IdealCustomFormFieldsetValues & PaymentFormCommonValues |
     AccountCreationValues & PaymentFormCommonValues |
     PaymentFormCommonValues
 );

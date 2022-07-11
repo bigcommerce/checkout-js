@@ -236,7 +236,7 @@ describe('withHostedCreditCardFieldset', () => {
         const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
         const { onValidate } = await getHostedFormOptions();
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         onValidate!({
             isValid: false,
             errors: {
@@ -249,13 +249,13 @@ describe('withHostedCreditCardFieldset', () => {
 
         container.update();
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         expect((last(formikRender.mock.calls)![0].values as HostedCreditCardFieldsetValues).hostedForm.errors)
             .toEqual(expect.objectContaining({
                 cardNumber: 'required',
             }));
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         expect(last(formikRender.mock.calls)![0].touched)
             .toEqual(expect.objectContaining({
                 hostedForm: {
@@ -271,12 +271,12 @@ describe('withHostedCreditCardFieldset', () => {
         const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
         const { onCardTypeChange } = await getHostedFormOptions();
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         onCardTypeChange!({ cardType: 'mastercard' });
 
         container.update();
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         expect((last(formikRender.mock.calls)![0].values as HostedCreditCardFieldsetValues).hostedForm.cardType)
             .toEqual('mastercard');
     });
@@ -287,7 +287,7 @@ describe('withHostedCreditCardFieldset', () => {
         const { onFocus } = await getHostedFormOptions();
 
         act(() => {
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             onFocus!({ fieldType: 'cardNumber' as HostedFieldType });
         });
 
@@ -302,7 +302,7 @@ describe('withHostedCreditCardFieldset', () => {
         const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
         const { onBlur } = await getHostedFormOptions();
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         onBlur!({ fieldType: 'cardNumber' as HostedFieldType });
 
         container.update();
@@ -316,7 +316,7 @@ describe('withHostedCreditCardFieldset', () => {
         const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
         const { onEnter } = await getHostedFormOptions();
 
-        // tslint:disable-next-line:no-non-null-assertion
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         onEnter!({ fieldType: 'cardNumber' as HostedFieldType });
 
         container.update();

@@ -30,7 +30,7 @@ describe('getCustomFormFieldsValidationSchema', () => {
                 firstName: 'Luis<>',
             }).catch((error: ValidationError) => error.message);
 
-            expect(errors).toEqual('firstName must match the following: \"/^[^<>]*$/\"');
+            expect(errors).toEqual('firstName must match the following: "/^[^<>]*$/"');
         });
 
         it('does not throw if valid characters are present', async () => {

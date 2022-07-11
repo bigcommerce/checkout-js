@@ -42,7 +42,7 @@ const AdyenV2CardValidation: FunctionComponent<AdyenV2CardValidationProps> = ({
             Object.values(AdyenV2CardFields).forEach((key: AdyenV2CardFields) => {
                 newFieldValidation[key] = {valid: false} as AdyenV2CardValidationState;
             });
-        } else if (!!cardValidationState.fieldType) {
+        } else if (cardValidationState.fieldType) {
             newFieldValidation[cardValidationState.fieldType] = cardValidationState;
         }
 
