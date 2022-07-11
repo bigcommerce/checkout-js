@@ -30,7 +30,7 @@ describe('getCheckoutStepStatuses()', () => {
 
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Customer })!.isComplete)
                 .toEqual(true);
         });
@@ -41,7 +41,7 @@ describe('getCheckoutStepStatuses()', () => {
 
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Customer })!.isComplete)
                 .toEqual(true);
         });
@@ -52,7 +52,7 @@ describe('getCheckoutStepStatuses()', () => {
 
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Customer })!.isComplete)
                 .toEqual(true);
         });
@@ -60,7 +60,7 @@ describe('getCheckoutStepStatuses()', () => {
         it('is marked as incomplete if email is not provided', () => {
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Customer })!.isComplete)
                 .toEqual(false);
         });
@@ -75,7 +75,7 @@ describe('getCheckoutStepStatuses()', () => {
 
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Customer })!.isEditable)
                 .toEqual(true);
         });
@@ -86,7 +86,7 @@ describe('getCheckoutStepStatuses()', () => {
 
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Customer })!.isEditable)
                 .toEqual(false);
         });
@@ -94,7 +94,7 @@ describe('getCheckoutStepStatuses()', () => {
         it('is marked as non-editable if step is incomplete', () => {
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Customer })!.isEditable)
                 .toEqual(false);
         });
@@ -107,7 +107,7 @@ describe('getCheckoutStepStatuses()', () => {
 
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Billing })!.isComplete)
                 .toEqual(true);
         });
@@ -118,7 +118,7 @@ describe('getCheckoutStepStatuses()', () => {
 
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Billing })!.isComplete)
                 .toEqual(true);
         });
@@ -126,7 +126,7 @@ describe('getCheckoutStepStatuses()', () => {
         it('is marked as incomplete if billing address is not provided', () => {
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Billing })!.isComplete)
                 .toEqual(false);
         });
@@ -134,7 +134,7 @@ describe('getCheckoutStepStatuses()', () => {
         it('is marked as non-editable if step is incomplete', () => {
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Billing })!.isEditable)
                 .toEqual(false);
         });
@@ -225,7 +225,7 @@ describe('getCheckoutStepStatuses()', () => {
 
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Shipping })!.isComplete)
                 .toEqual(true);
         });
@@ -239,7 +239,7 @@ describe('getCheckoutStepStatuses()', () => {
 
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Shipping })!.isComplete)
                 .toEqual(false);
         });
@@ -265,7 +265,7 @@ describe('getCheckoutStepStatuses()', () => {
 
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Shipping })!.isComplete)
                 .toEqual(true);
         });
@@ -285,7 +285,7 @@ describe('getCheckoutStepStatuses()', () => {
 
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Shipping })!.isComplete)
                 .toEqual(false);
         });
@@ -305,7 +305,7 @@ describe('getCheckoutStepStatuses()', () => {
 
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Shipping })!.isComplete)
                 .toEqual(false);
         });
@@ -316,7 +316,7 @@ describe('getCheckoutStepStatuses()', () => {
 
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Shipping })!.isRequired)
                 .toEqual(true);
         });
@@ -333,7 +333,7 @@ describe('getCheckoutStepStatuses()', () => {
 
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Shipping })!.isRequired)
                 .toEqual(false);
         });
@@ -351,7 +351,7 @@ describe('getCheckoutStepStatuses()', () => {
             jest.spyOn(state.data, 'getShippingAddress')
                 .mockReturnValue(getShippingAddress());
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(getCheckoutStepStatuses(state), { type: CheckoutStepType.Shipping })!.isEditable)
                 .toEqual(true);
 
@@ -367,7 +367,7 @@ describe('getCheckoutStepStatuses()', () => {
                     },
                 });
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(getCheckoutStepStatuses(state), { type: CheckoutStepType.Shipping })!.isEditable)
                 .toEqual(false);
         });
@@ -375,7 +375,7 @@ describe('getCheckoutStepStatuses()', () => {
         it('is marked as non-editable if step is incomplete', () => {
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Shipping })!.isEditable)
                 .toEqual(false);
         });
@@ -388,7 +388,7 @@ describe('getCheckoutStepStatuses()', () => {
 
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Payment })!.isComplete)
                 .toEqual(true);
         });
@@ -402,7 +402,7 @@ describe('getCheckoutStepStatuses()', () => {
 
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Payment })!.isComplete)
                 .toEqual(false);
         });
@@ -410,7 +410,7 @@ describe('getCheckoutStepStatuses()', () => {
         it('is marked as non-editable if step is incomplete', () => {
             const steps = getCheckoutStepStatuses(state);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(find(steps, { type: CheckoutStepType.Payment })!.isEditable)
                 .toEqual(false);
         });
@@ -440,7 +440,7 @@ describe('getCheckoutStepStatuses()', () => {
 
         const steps = getCheckoutStepStatuses(state);
 
-        // eslint-disable-next-line
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         expect(find(steps, { type: CheckoutStepType.Billing })!.isEditable)
             .toEqual(false);
     });
@@ -460,7 +460,7 @@ describe('getCheckoutStepStatuses()', () => {
 
         const steps = getCheckoutStepStatuses(state);
 
-        // eslint-disable-next-line
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         expect(find(steps, { type: CheckoutStepType.Billing })!.isEditable)
             .toEqual(true);
     });
@@ -468,7 +468,7 @@ describe('getCheckoutStepStatuses()', () => {
     it('marks first incomplete step as active', () => {
         const steps = getCheckoutStepStatuses(state);
 
-        // eslint-disable-next-line
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         expect(find(steps, { type: CheckoutStepType.Customer })!.isActive)
             .toEqual(true);
     });
@@ -481,11 +481,11 @@ describe('getCheckoutStepStatuses()', () => {
         jest.spyOn(state.data, 'getCart')
             .mockReturnValue(getCart());
 
-        // eslint-disable-next-line
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         expect(find(getCheckoutStepStatuses(state), { type: CheckoutStepType.Shipping })!.isActive)
             .toEqual(true);
 
-        // eslint-disable-next-line
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         expect(find(getCheckoutStepStatuses(state), { type: CheckoutStepType.Billing })!.isActive)
             .toEqual(false);
 
@@ -502,11 +502,11 @@ describe('getCheckoutStepStatuses()', () => {
                 },
             });
 
-        // eslint-disable-next-line
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         expect(find(getCheckoutStepStatuses(state), { type: CheckoutStepType.Shipping })!.isActive)
             .toEqual(false);
 
-        // eslint-disable-next-line
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         expect(find(getCheckoutStepStatuses(state), { type: CheckoutStepType.Billing })!.isActive)
             .toEqual(true);
     });

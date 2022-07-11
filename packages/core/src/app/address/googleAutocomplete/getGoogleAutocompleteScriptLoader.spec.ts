@@ -20,7 +20,7 @@ describe('GoogleAutocompleteScriptLoader', () => {
                     } as any,
                 };
 
-                // eslint-disable-next-line
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 (window as GoogleCallbackWindow).initAutoComplete!();
             });
 

@@ -208,7 +208,7 @@ describe('when using Adyen V3 payment', () => {
             const modal: ReactWrapper<ModalProps> = container.find(Modal);
 
             act(() => {
-                // eslint-disable-next-line
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 modal.prop('onRequestClose')!(new MouseEvent('click') as any);
             });
 

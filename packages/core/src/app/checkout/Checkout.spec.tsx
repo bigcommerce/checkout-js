@@ -247,7 +247,7 @@ describe('Checkout', () => {
         container.update();
 
         const steps = container.find(CheckoutStep);
-        // eslint-disable-next-line
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const activeStepType = getCheckoutStepStatuses(checkoutState)
             .find(({ isActive }) => isActive === true)!.type;
 
@@ -343,7 +343,7 @@ describe('Checkout', () => {
                     })),
             });
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (container.find(Customer).at(0) as ReactWrapper<CustomerProps>)
                 .prop('onSignIn')!();
 
@@ -362,7 +362,7 @@ describe('Checkout', () => {
                     })),
             });
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (container.find(Customer).at(0) as ReactWrapper<CustomerProps>)
                 .prop('onSignIn')!();
 
@@ -383,7 +383,7 @@ describe('Checkout', () => {
                     })),
             });
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (container.find(Customer).at(0) as ReactWrapper<CustomerProps>)
                 .prop('onAccountCreated')!();
 
@@ -404,7 +404,7 @@ describe('Checkout', () => {
                     })),
             });
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (container.find(Customer).at(0) as ReactWrapper<CustomerProps>)
                 .prop('onContinueAsGuest')!();
 
@@ -424,7 +424,7 @@ describe('Checkout', () => {
 
             container = mount(<CheckoutTest { ...defaultProps } />);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (container.find(CustomerInfo) as ReactWrapper<CustomerInfoProps>)
                 .prop('onSignOut')!({ isCartEmpty: false });
 
@@ -454,7 +454,7 @@ describe('Checkout', () => {
 
             container = mount(<CheckoutTest { ...defaultProps } />);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (container.find(CustomerInfo) as ReactWrapper<CustomerInfoProps>)
                 .prop('onSignOut')!({ isCartEmpty: true });
 
@@ -465,7 +465,7 @@ describe('Checkout', () => {
         it('logs unhandled error', () => {
             const error = new Error();
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (container.find(Customer).at(0) as ReactWrapper<CustomerProps>)
                 .prop('onUnhandledError')!(error);
 
@@ -476,7 +476,7 @@ describe('Checkout', () => {
         it('logs error if shopper is unable to sign in', () => {
             const error = new Error();
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (container.find(Customer).at(0) as ReactWrapper<CustomerProps>)
                 .prop('onSignInError')!(error);
 
@@ -487,7 +487,7 @@ describe('Checkout', () => {
         it('logs error if shopper is unable to continue as guest', () => {
             const error = new Error();
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (container.find(Customer).at(0) as ReactWrapper<CustomerProps>)
                 .prop('onContinueAsGuestError')!(error);
 
@@ -611,7 +611,7 @@ describe('Checkout', () => {
             shipping.prop('navigateNextStep')(true);
             container.update();
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const activeStepType = getCheckoutStepStatuses(checkoutState)
                 .find(({ isActive }) => isActive === true)!.type;
             const steps: ReactWrapper<CheckoutStepProps> = container.find(CheckoutStep);
@@ -717,7 +717,7 @@ describe('Checkout', () => {
         });
 
         it('navigates to order confirmation page when payment is submitted', () => {
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (container.find(Payment).at(0) as ReactWrapper<PaymentProps>)
                 .prop('onSubmit')!();
 
@@ -726,7 +726,7 @@ describe('Checkout', () => {
         });
 
         it('navigates to order confirmation page when order is finalized', () => {
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (container.find(Payment).at(0) as ReactWrapper<PaymentProps>)
                 .prop('onFinalize')!();
 
@@ -738,7 +738,7 @@ describe('Checkout', () => {
             jest.spyOn(embeddedMessengerMock, 'postComplete')
                 .mockImplementation(noop);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (container.find(Payment).at(0) as ReactWrapper<PaymentProps>)
                 .prop('onSubmit')!();
 
@@ -750,7 +750,7 @@ describe('Checkout', () => {
             jest.spyOn(embeddedMessengerMock, 'postError')
                 .mockImplementation(noop);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (container.find(Payment).at(0) as ReactWrapper<PaymentProps>)
                 .prop('onUnhandledError')!(new Error());
 
@@ -761,7 +761,7 @@ describe('Checkout', () => {
         it('logs unhandled error', () => {
             const error = new Error();
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (container.find(Payment).at(0) as ReactWrapper<PaymentProps>)
                 .prop('onUnhandledError')!(error);
 
@@ -775,7 +775,7 @@ describe('Checkout', () => {
             jest.spyOn(embeddedMessengerMock, 'postError')
                 .mockImplementation(noop);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (container.find(Payment).at(0) as ReactWrapper<PaymentProps>)
                 .prop('onSubmitError')!(error);
 
@@ -786,7 +786,7 @@ describe('Checkout', () => {
         it('logs error if unable to submit order', () => {
             const error = new Error();
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (container.find(Payment).at(0) as ReactWrapper<PaymentProps>)
                 .prop('onSubmitError')!(error);
 

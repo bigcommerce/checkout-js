@@ -108,7 +108,7 @@ describe('when using Visa Checkout payment', () => {
 
         (checkoutService.initializePayment as jest.Mock).mockReset();
 
-        // eslint-disable-next-line
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         options.braintreevisacheckout!.onPaymentSelect!();
 
         await new Promise(resolve => process.nextTick(resolve));

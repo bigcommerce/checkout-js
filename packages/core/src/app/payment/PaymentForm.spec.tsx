@@ -204,7 +204,7 @@ describe('PaymentForm', () => {
         />);
         const methodList: ReactWrapper<PaymentMethodListProps> = container.find(PaymentMethodList);
 
-        // eslint-disable-next-line
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         methodList.prop('onSelect')!(defaultProps.methods[0]);
 
         expect(handleSelect)
@@ -292,7 +292,7 @@ describe('PaymentForm', () => {
         act(() => {
             const methodList: ReactWrapper<PaymentMethodListProps> = container.find(PaymentMethodList);
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             methodList.prop('onSelect')!(defaultProps.methods[1]);
         });
 

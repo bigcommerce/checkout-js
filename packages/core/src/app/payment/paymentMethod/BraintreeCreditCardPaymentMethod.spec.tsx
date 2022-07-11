@@ -223,7 +223,7 @@ describe('when using Braintree payment', () => {
         const modal: ReactWrapper<ModalProps> = component.find(Modal);
 
         act(() => {
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             modal.prop('onRequestClose')!(new MouseEvent('click') as any);
         });
 

@@ -4,10 +4,14 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "parserOptions": {
+        "project": ["packages/core/tsconfig.json"]
+      },
       "rules": {
         "@bigcommerce/jsx-short-circuit-conditionals": "off",
         "@typescript-eslint/ban-ts-comment": "warn",
         "@typescript-eslint/no-inferrable-types": "warn",
+        "@typescript-eslint/no-unused-expressions": "error",
         "@typescript-eslint/no-var-requires": "off",
         "react/destructuring-assignment": "warn",
         "react/jsx-curly-spacing": [

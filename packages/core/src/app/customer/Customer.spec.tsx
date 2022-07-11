@@ -606,7 +606,7 @@ describe('Customer', () => {
             await new Promise(resolve => process.nextTick(resolve));
             component.update();
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (component.find(LoginForm) as ReactWrapper<LoginFormProps>)
                 .prop('onCancel')!();
 
@@ -626,7 +626,7 @@ describe('Customer', () => {
             await new Promise(resolve => process.nextTick(resolve));
             component.update();
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (component.find(LoginForm) as ReactWrapper<LoginFormProps>)
                 .prop('onCancel')!();
 
@@ -642,7 +642,7 @@ describe('Customer', () => {
             await new Promise(resolve => process.nextTick(resolve));
             component.update();
 
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (component.find(LoginForm) as ReactWrapper<LoginFormProps>)
                 .prop('onChangeEmail')!('test@bigcommerce.com');
 

@@ -134,7 +134,7 @@ describe('when using BlueSnapV2 payment', () => {
 
         act(() => {
             component.update();
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             component.find(Modal).prop('onAfterOpen')!();
         });
 
@@ -166,9 +166,9 @@ describe('when using BlueSnapV2 payment', () => {
         const modal: ReactWrapper<ModalProps> = component.find(Modal);
 
         act(() => {
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             modal.prop('onRequestClose')!(new MouseEvent('click') as any);
-            // eslint-disable-next-line
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             modal.prop('onRequestClose')!(new MouseEvent('click') as any);
         });
 
