@@ -13,9 +13,20 @@
 // -----------------------------------------------------------------------------
 
 @if $exportCSS--credit-card-types {
+    .creditCardTypes-list {
+        align-content: flex-end;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: end;
+        margin-left: spacing("single");
+        max-width: $credit-card-items-max-width;
+    }
+
     .creditCardTypes-list-item {
         opacity: 1;
         transition: all 0.6s ease-out;
+        width: $credit-card-items-width;
 
         &.not-active {
             filter: grayscale(100%);

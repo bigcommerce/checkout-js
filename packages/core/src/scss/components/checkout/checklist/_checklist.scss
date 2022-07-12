@@ -66,12 +66,11 @@
 
         background-color: $input-bg-color;
         border-radius: 100%;
-        bottom: 0;
         content: "";
         left: $checklist-pip-spacing--small;
         margin: auto;
         position: absolute;
-        top: 0;
+        top: $checklist-pip-spacing-top;
 
         @include breakpoint("small") {
             left: $checklist-pip-spacing;
