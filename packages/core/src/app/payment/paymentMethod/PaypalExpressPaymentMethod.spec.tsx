@@ -1,3 +1,4 @@
+import { HostedPaymentMethodProps, PaymentMethodId, PaymentMethodType } from '@bigcommerce/checkout-js/payment-integration';
 import { createCheckoutService, CheckoutSelectors, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
@@ -9,10 +10,8 @@ import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { getPaymentMethod } from '../payment-methods.mock';
 
-import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
+import HostedPaymentMethod from './HostedPaymentMethod';
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
-import PaymentMethodId from './PaymentMethodId';
-import PaymentMethodType from './PaymentMethodType';
 
 describe('when using Paypal Express payment', () => {
     let method: PaymentMethod;

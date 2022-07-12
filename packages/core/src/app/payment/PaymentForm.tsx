@@ -1,3 +1,4 @@
+import { PaymentMethodId } from '@bigcommerce/checkout-js/payment-integration';
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps, WithFormikConfig } from 'formik';
 import { isNil, noop, omitBy } from 'lodash';
@@ -12,7 +13,7 @@ import { DocumentOnlyCustomFormFieldsetValues, FawryCustomFormFieldsetValues, Id
 import { CreditCardFieldsetValues } from './creditCard';
 import getPaymentValidationSchema from './getPaymentValidationSchema';
 import { HostedCreditCardFieldsetValues } from './hostedCreditCard';
-import { getPaymentMethodName, getUniquePaymentMethodId, PaymentMethodId, PaymentMethodList } from './paymentMethod';
+import { getPaymentMethodName, getUniquePaymentMethodId, PaymentMethodList } from './paymentMethod';
 import { CardInstrumentFieldsetValues } from './storedInstrument';
 import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
 import PaymentRedeemables from './PaymentRedeemables';

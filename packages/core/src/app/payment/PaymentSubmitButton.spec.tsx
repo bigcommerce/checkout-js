@@ -1,3 +1,4 @@
+import { PaymentMethodId } from '@bigcommerce/checkout-js/payment-integration';
 import { createCheckoutService, CheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
 import { mount, render } from 'enzyme';
 import React, { FunctionComponent } from 'react';
@@ -8,7 +9,6 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale
 import { Button } from '../ui/button';
 import { IconBolt } from '../ui/icon';
 
-import { PaymentMethodId } from './paymentMethod';
 import PaymentSubmitButton, { PaymentSubmitButtonProps } from './PaymentSubmitButton';
 
 describe('PaymentSubmitButton', () => {

@@ -1,3 +1,4 @@
+import { PaymentMethodId } from '@bigcommerce/checkout-js/payment-integration';
 import { mount } from 'enzyme';
 import React from 'react';
 
@@ -5,7 +6,6 @@ import { getPaymentMethod } from '../payment-methods.mock';
 
 import CCAvenueMarsPaymentMethod, { CCAvenueMarsPaymentMethodProps } from './CCAvenueMarsPaymentMethod';
 import HostedWidgetPaymentMethod from './HostedWidgetPaymentMethod';
-import PaymentMethodId from './PaymentMethodId';
 
 describe('When using CCAvenueMars Payment Method', () => {
     const defaultProps: CCAvenueMarsPaymentMethodProps = {

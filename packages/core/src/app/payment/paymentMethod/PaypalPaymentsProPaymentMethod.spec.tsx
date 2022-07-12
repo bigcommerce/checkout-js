@@ -1,3 +1,4 @@
+import { PaymentMethodId } from '@bigcommerce/checkout-js/payment-integration';
 import { createCheckoutService, CheckoutSelectors, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import { Formik } from 'formik';
@@ -13,7 +14,6 @@ import { getPaymentMethod } from '../payment-methods.mock';
 import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';
 import HostedPaymentMethod from './HostedPaymentMethod';
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
-import PaymentMethodId from './PaymentMethodId';
 
 describe('when using Paypal Payments Pro payment method', () => {
     let method: PaymentMethod;

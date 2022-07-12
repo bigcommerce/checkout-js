@@ -1,3 +1,4 @@
+import { PaymentMethodId, PaymentMethodType } from '@bigcommerce/checkout-js/payment-integration';
 import { createCheckoutService, CheckoutService, StoreConfig } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import { Formik } from 'formik';
@@ -12,9 +13,7 @@ import { getPaymentMethod } from '../payment-methods.mock';
 import { PaymentFormValues } from '../PaymentForm';
 
 import getPaymentMethodName from './getPaymentMethodName';
-import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodTitle, { PaymentMethodTitleProps } from './PaymentMethodTitle';
-import PaymentMethodType from './PaymentMethodType';
 
 describe('PaymentMethodTitle', () => {
     let PaymentMethodTitleTest: FunctionComponent<PaymentMethodTitleProps & { formValues: PaymentFormValues }>;

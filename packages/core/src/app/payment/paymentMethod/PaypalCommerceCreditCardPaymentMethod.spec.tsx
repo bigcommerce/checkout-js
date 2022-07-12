@@ -1,3 +1,4 @@
+import { PaymentMethodId } from '@bigcommerce/checkout-js/payment-integration';
 import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import { Formik } from 'formik';
@@ -13,7 +14,6 @@ import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps
 import { getPaymentMethod } from '../payment-methods.mock';
 
 import CreditCardPaymentMethod from './CreditCardPaymentMethod';
-import PaymentMethodId from './PaymentMethodId';
 import PaypalCommerceCreditCardPaymentMethod, { PaypalCommerceCreditCardPaymentMethodProps } from './PaypalCommerceCreditCardPaymentMethod';
 
 const hostedFormOptions = {

@@ -1,4 +1,4 @@
-enum PaymentMethodId {
+export enum PaymentMethodId {
     Adyen = 'adyen',
     AdyenV2 = 'adyenv2',
     AdyenV2GooglePay = 'googlepayadyenv2',
@@ -59,5 +59,3 @@ enum PaymentMethodId {
     WorldpayAccess = 'worldpayaccess',
     Zip = 'zip',
 }
-
-export default PaymentMethodId;

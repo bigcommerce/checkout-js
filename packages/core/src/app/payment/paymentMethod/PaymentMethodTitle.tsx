@@ -1,3 +1,4 @@
+import { PaymentMethodId, PaymentMethodType } from '@bigcommerce/checkout-js/payment-integration';
 import { LanguageService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { number } from 'card-validator';
 import { compact } from 'lodash';
@@ -11,8 +12,6 @@ import { PaymentFormValues } from '../PaymentForm';
 
 import getPaymentMethodDisplayName from './getPaymentMethodDisplayName';
 import getPaymentMethodName from './getPaymentMethodName';
-import PaymentMethodId from './PaymentMethodId';
-import PaymentMethodType from './PaymentMethodType';
 
 export interface PaymentMethodTitleProps {
     method: PaymentMethod;
