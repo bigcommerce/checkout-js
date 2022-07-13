@@ -49,6 +49,9 @@ function appConfig(options, argv) {
                 mode,
                 devtool: isProduction ? 'source-map' : 'eval-source-map',
                 resolve: {
+                    alias: {
+                        "@bigcommerce/checkout-js/payment-integration": join(__dirname, 'packages/payment-integration/src'),
+                    },
                     extensions: ['.ts', '.tsx', '.js'],
                     // It seems some packages, i.e.: Formik, have incorrect
                     // source maps for their ESM bundle. Therefore, until that
@@ -144,7 +147,10 @@ function appConfig(options, argv) {
                         },
                         {
                             test: /\.tsx?$/,
-                            include: join(__dirname, 'packages', 'core','src'),
+                            include: [
+                                join(__dirname, 'packages', 'core','src'),
+                                join(__dirname, 'packages', 'payment-integration','src')
+                            ],
                             use: [
                                 {
                                     loader: 'ts-loader',
