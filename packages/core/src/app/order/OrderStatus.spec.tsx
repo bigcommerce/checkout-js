@@ -317,6 +317,34 @@ describe('OrderStatus', () => {
                 .text())
                 .toEqual('SEPA Direct Debit (via Checkout.com) Mandate Reference: ABC123');
         });
+
+        it('does not render mandate id or url if it is not provided', () => {
+            const orderStatus = mount(
+                <OrderStatusTest
+                    { ...defaultProps }
+                    order={ {
+                        ...order,
+                        payments: [{
+                            providerId: 'stripev3',
+                            methodId: 'iban',
+                            description: 'Stripe (SEPA)',
+                            amount: 190,
+                            detail: {
+                                step: 'FINALIZE',
+                                instructions: '<strong>295</strong> something',
+                            },
+                            mandate: {
+                                id: '',
+                                url: '',
+                            },
+                        }],
+                    } }
+                />
+            );
+
+            expect(orderStatus.find('[data-test="order-confirmation-mandate-link-text"]').length).toEqual(0);
+            expect(orderStatus.find('[data-test="order-confirmation-mandate-id-text"]').length).toEqual(0);
+        });
     });
 
 });
