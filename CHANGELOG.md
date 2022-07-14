@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.232.5](https://github.com/bigcommerce/checkout-js/compare/v1.232.4...v1.232.5) (2022-07-14)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-6657 Ensure pages reflow without requiring two-dimensional scrolling without loss of  content or functionality ([#895](https://github.com/bigcommerce/checkout-js/issues/895)) ([7be8af0](https://github.com/bigcommerce/checkout-js/commit/7be8af089aabe9065895ce78f0e49b7c3e201d64))
+
 ### [1.232.4](https://github.com/bigcommerce/checkout-js/compare/v1.232.3...v1.232.4) (2022-07-13)
 
 ### [1.232.3](https://github.com/bigcommerce/checkout-js/compare/v1.232.2...v1.232.3) (2022-07-13)
