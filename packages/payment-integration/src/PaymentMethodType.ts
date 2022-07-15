@@ -1,4 +1,4 @@
-export enum PaymentMethodType {
+enum PaymentMethodType {
     ApplePay = 'applepay',
     Barclaycard = 'barclaycard',
     Chasepay = 'chasepay',
@@ -11,4 +11,6 @@ export enum PaymentMethodType {
     PaypalCredit = 'paypal-credit',
     PaypalVenmo = 'paypal-venmo',
     VisaCheckout = 'visa-checkout',
-};
+}
+
+export default PaymentMethodType;

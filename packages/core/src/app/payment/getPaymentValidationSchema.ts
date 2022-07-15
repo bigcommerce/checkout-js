@@ -1,9 +1,8 @@
+import { PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration';
 import { LanguageService } from '@bigcommerce/checkout-sdk';
 import { object, string, ObjectSchema, StringSchema } from 'yup';
 
 import { getTermsConditionsValidationSchema } from '../termsConditions';
-
-import { PaymentFormValues } from './PaymentForm';
 
 export interface PaymentValidationSchemaOptions {
     additionalValidation?: ObjectSchema<Partial<PaymentFormValues>>;

@@ -6,7 +6,7 @@ import {
     PaymentRequestOptions
 } from "@bigcommerce/checkout-sdk";
 
-export interface HostedPaymentMethodProps {
+interface HostedPaymentMethodProps {
     description?: ReactNode;
     isInitializing?: boolean;
     isUsingMultiShipping?: boolean;
@@ -15,3 +15,5 @@ export interface HostedPaymentMethodProps {
     initializePayment(options: PaymentInitializeOptions): Promise<CheckoutSelectors>;
     onUnhandledError?(error: Error): void;
 }
+
+export default HostedPaymentMethodProps;

@@ -1,9 +1,9 @@
+import { DocumentOnlyCustomFormFieldsetValues } from '@bigcommerce/checkout-js/payment-integration';
 import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { DocumentOnlyCustomFormFieldsetValues } from '../checkoutcomFieldsets/';
 
 import TextFieldForm, { TextFieldFormProps } from './TextFieldForm';
 

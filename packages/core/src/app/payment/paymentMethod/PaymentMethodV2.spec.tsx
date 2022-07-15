@@ -1,10 +1,10 @@
+import { PaymentMethodProps } from '@bigcommerce/checkout-js/payment-integration';
 import { createCheckoutService, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import React, { FunctionComponent, ReactNode } from 'react';
 
 import { CheckoutProvider } from '../../checkout';
-import { PaymentMethodProps } from '../../core/paymentIntegration';
 import { LocaleProvider } from '../../locale';
 import { FormProvider } from '../../ui/form';
 import { getPaymentMethod } from '../payment-methods.mock';

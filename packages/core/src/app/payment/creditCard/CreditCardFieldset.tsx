@@ -15,15 +15,6 @@ export interface CreditCardFieldsetProps {
     shouldShowSaveCardField?: boolean;
 }
 
-export interface CreditCardFieldsetValues {
-    ccCustomerCode?: string;
-    ccCvv?: string;
-    ccExpiry: string;
-    ccName: string;
-    ccNumber: string;
-    shouldSaveInstrument?: boolean;
-}
-
 const CreditCardFieldset: FunctionComponent<CreditCardFieldsetProps> = ({
     shouldShowCardCodeField,
     shouldShowCustomerCodeField,

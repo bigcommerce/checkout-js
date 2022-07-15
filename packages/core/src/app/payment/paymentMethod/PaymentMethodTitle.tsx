@@ -1,4 +1,4 @@
-import { PaymentMethodId, PaymentMethodType } from '@bigcommerce/checkout-js/payment-integration';
+import { PaymentMethodId, PaymentMethodType, PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration';
 import { LanguageService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { number } from 'card-validator';
 import { compact } from 'lodash';
@@ -8,7 +8,6 @@ import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { mapFromPaymentMethodCardType, CreditCardIconList } from '../creditCard';
-import { PaymentFormValues } from '../PaymentForm';
 
 import getPaymentMethodDisplayName from './getPaymentMethodDisplayName';
 import getPaymentMethodName from './getPaymentMethodName';

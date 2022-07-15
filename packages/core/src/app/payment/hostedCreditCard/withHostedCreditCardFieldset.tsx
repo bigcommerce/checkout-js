@@ -1,3 +1,4 @@
+import { PaymentFormValues } from "@bigcommerce/checkout-js/payment-integration";
 import { CardInstrument, HostedFormOptions, Instrument, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { compact, forIn } from 'lodash';
 import React, { useCallback, useState, ComponentType, FunctionComponent, ReactNode } from 'react';
@@ -10,7 +11,6 @@ import { withLanguage, WithLanguageProps } from '../../locale';
 import { withForm, WithFormProps } from '../../ui/form';
 import { getCreditCardInputStyles, CreditCardCustomerCodeField, CreditCardInputStylesType } from '../creditCard';
 import { isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable } from '../storedInstrument';
-import { PaymentFormValues } from '../PaymentForm';
 
 import getHostedCreditCardValidationSchema, { HostedCreditCardValidationSchemaShape } from './getHostedCreditCardValidationSchema';
 import getHostedInstrumentValidationSchema, { HostedInstrumentValidationSchemaShape } from './getHostedInstrumentValidationSchema';

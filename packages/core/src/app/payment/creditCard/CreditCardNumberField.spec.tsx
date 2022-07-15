@@ -1,3 +1,4 @@
+import { CreditCardFieldsetValues } from '@bigcommerce/checkout-js/payment-integration';
 import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -6,7 +7,6 @@ import React from 'react';
 import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 
-import { CreditCardFieldsetValues } from './CreditCardFieldset';
 import CreditCardNumberField from './CreditCardNumberField';
 
 describe('CreditCardNumberField', () => {

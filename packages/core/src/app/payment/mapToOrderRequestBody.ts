@@ -1,9 +1,9 @@
+import { PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration';
 import { OrderPaymentRequestBody, OrderRequestBody } from '@bigcommerce/checkout-sdk';
 import { isEmpty, isNil, omitBy } from 'lodash';
 
 import { unformatCreditCardExpiryDate, unformatCreditCardNumber } from './creditCard';
 import { parseUniquePaymentMethodId } from './paymentMethod';
-import { PaymentFormValues } from './PaymentForm';
 
 export default function mapToOrderRequestBody(
     { paymentProviderRadio, ...values }: PaymentFormValues,

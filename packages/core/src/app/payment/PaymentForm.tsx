@@ -1,4 +1,4 @@
-import { PaymentMethodId } from '@bigcommerce/checkout-js/payment-integration';
+import { PaymentMethodId, PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration';
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps, WithFormikConfig } from 'formik';
 import { isNil, noop, omitBy } from 'lodash';
@@ -9,12 +9,8 @@ import { withLanguage, WithLanguageProps } from '../locale';
 import { TermsConditions } from '../termsConditions';
 import { Fieldset, Form, FormContext } from '../ui/form';
 
-import { DocumentOnlyCustomFormFieldsetValues, FawryCustomFormFieldsetValues, IdealCustomFormFieldsetValues, SepaCustomFormFieldsetValues } from './checkoutcomFieldsets';
-import { CreditCardFieldsetValues } from './creditCard';
 import getPaymentValidationSchema from './getPaymentValidationSchema';
-import { HostedCreditCardFieldsetValues } from './hostedCreditCard';
 import { getPaymentMethodName, getUniquePaymentMethodId, PaymentMethodList } from './paymentMethod';
-import { CardInstrumentFieldsetValues } from './storedInstrument';
 import { StoreCreditField, StoreCreditOverlay } from './storeCredit';
 import PaymentRedeemables from './PaymentRedeemables';
 import PaymentSubmitButton from './PaymentSubmitButton';
@@ -45,32 +41,6 @@ export interface PaymentFormProps {
     onStoreCreditChange?(useStoreCredit?: boolean): void;
     onSubmit?(values: PaymentFormValues): void;
     onUnhandledError?(error: Error): void;
-}
-
-export type PaymentFormValues = (
-    CreditCardFieldsetValues & PaymentFormCommonValues |
-    CardInstrumentFieldsetValues & PaymentFormCommonValues |
-    HostedCreditCardFieldsetValues & PaymentFormCommonValues |
-    HostedWidgetPaymentMethodValues & PaymentFormCommonValues |
-    DocumentOnlyCustomFormFieldsetValues & PaymentFormCommonValues |
-    SepaCustomFormFieldsetValues & PaymentFormCommonValues |
-    FawryCustomFormFieldsetValues & PaymentFormCommonValues |
-    IdealCustomFormFieldsetValues & PaymentFormCommonValues |
-    AccountCreationValues & PaymentFormCommonValues |
-    PaymentFormCommonValues
-);
-
-export interface PaymentFormCommonValues {
-    paymentProviderRadio: string; // TODO: Give this property a better name. We need to keep it for now because of legacy reasons.
-    terms?: boolean;
-}
-
-export interface HostedWidgetPaymentMethodValues {
-    shouldSaveInstrument: boolean;
-}
-
-export interface AccountCreationValues {
-    shouldCreateAccount: boolean;
 }
 
 const PaymentForm: FunctionComponent<PaymentFormProps & FormikProps<PaymentFormValues> & WithLanguageProps> = ({

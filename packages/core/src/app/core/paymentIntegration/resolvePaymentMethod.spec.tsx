@@ -1,13 +1,13 @@
+import { PaymentMethodProps } from '@bigcommerce/checkout-js/payment-integration';
 import { render } from 'enzyme';
 import React from 'react';
 
 import { getPaymentMethod } from '../../payment/payment-methods.mock';
 
 import resolvePaymentMethod from './resolvePaymentMethod';
-import PaymentMethodProps from './PaymentMethodProps';
 
 jest.mock('../../generated/paymentIntegrations', () => {
-    const { default: toResolvableComponent } = jest.requireActual('./toResolvableComponent');
+    const { toResolvableComponent } = jest.requireActual('@bigcommerce/checkout-js/payment-integration');
 
     const Foo = toResolvableComponent(
         () => <div>Foo</div>,

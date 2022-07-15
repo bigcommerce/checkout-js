@@ -17,18 +17,6 @@ export interface HostedCreditCardFieldsetProps {
     focusedFieldType?: string;
 }
 
-export interface HostedCreditCardFieldsetValues {
-    hostedForm: {
-        cardType?: string;
-        errors?: {
-            cardCode?: string;
-            cardExpiry?: string;
-            cardName?: string;
-            cardNumber?: string;
-        };
-    };
-}
-
 const HostedCreditCardFieldset: FunctionComponent<HostedCreditCardFieldsetProps> = ({
     additionalFields,
     cardCodeId,
