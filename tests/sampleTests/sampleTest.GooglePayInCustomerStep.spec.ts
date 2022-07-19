@@ -12,7 +12,7 @@ test.describe('Sample Test Group', () => {
         await checkout.create('sample GooglePay in customer step', storeUrl);
         await checkout.route('https://pay.google.com/gp/p/js/pay.js', './tests/sampleTests/support/googlePay.mock.js');
         await checkout.route('**/checkout.php', './tests/sampleTests/support/checkout.php.ejs');
-        await checkout.route('**/order-confirmation', './tests/support/orderConfirmation.ejs', { orderId: '390' });
+        await checkout.route(/\/order-confirmation.*/, './tests/support/orderConfirmation.ejs', { orderId: '390' });
         await page.route(/.*\/api\/storefront\/payments\?.*/, route => route.fulfill({ ...responseProps, body: payment }));
         await page.route(/.*\/api\/storefront\/payments\/googlepayauthorizenet\?cartId=.*/, route => route.fulfill({ ...responseProps, body: googlePay }));
         await page.route(/.*\/api\/storefront\/checkouts\/.*\/billing-address\/.*/, route => route.fulfill({ ...responseProps, body: '{}' }));
