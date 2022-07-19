@@ -45,7 +45,7 @@
     "@types/card-validator": "^4.1.0",
     "@types/classnames": "^2.2.6",
     "@types/credit-card-type": "^7.0.0",
-    "@types/dompurify": "^0.0.32",
+    "@types/dompurify": "^0.0.33",
     "@types/es6-promise": "^0.0.33",
     "@types/glob": "^7.2.0",
     "@types/googlemaps": "^3.30.16",
