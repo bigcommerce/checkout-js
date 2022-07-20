@@ -31,7 +31,7 @@ export class PlaywrightHelper {
 
     async goto(): Promise<void> {
         if (this.isReplay) {
-            await this.page.goto('/');
+            await this.page.goto('/checkout');
         } else {
             await this.page.goto(this.storeUrl + '/checkout');
         }
@@ -53,7 +53,7 @@ export class PlaywrightHelper {
             // creating local checkout environment during replay
             this.polly.enableReplay(this.storeUrl);
             const { checkoutId, orderId } = this.polly.getCartAndOrderIDs();
-            await this.renderAndRoute('/', './tests/support/checkout.ejs', { checkoutId });
+            await this.renderAndRoute('/checkout', './tests/support/checkout.ejs', { checkoutId });
             await this.renderAndRoute(/order-confirmation.*/, './tests/support/orderConfirmation.ejs', { orderId });
         }
     }
@@ -75,7 +75,7 @@ export class PlaywrightHelper {
         if (includes(filePath, 'ejs')) {
             const localhostUrl = 'http://localhost:' + process.env.PORT;
             const storeUrl = this.isReplay ? localhostUrl : this.storeUrl;
-            const checkoutUrl = this.isReplay ? localhostUrl : storeUrl + '/checkout';
+            const checkoutUrl = this.isReplay ? localhostUrl + '/checkout' : storeUrl + '/checkout';
             const htmlStr = await this.server.renderFile(filePath, { ...data, localhostUrl, storeUrl, checkoutUrl });
             await this.page.route(url, route => route.fulfill({
                 status: 200,
