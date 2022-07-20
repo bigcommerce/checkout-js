@@ -1,10 +1,12 @@
 import { CardInstrument, PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import React, { useCallback, FunctionComponent } from 'react';
+import React, { useCallback, FunctionComponent, useContext } from 'react';
 
 import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps } from '../hostedCreditCard';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 import MollieCustomCardForm from './MollieCustomCardForm';
+import PaymentContext from '../PaymentContext';
+import { LocaleContext } from "../../locale";
 
 export type MolliePaymentMethodsProps = Omit<HostedWidgetPaymentMethodProps, 'containerId'>;
 
@@ -12,7 +14,7 @@ export enum MolliePaymentMethodType {
     creditcard = 'credit_card',
 }
 
-const MolliePaymentMethod: FunctionComponent<MolliePaymentMethodsProps & WithInjectedHostedCreditCardFieldsetProps > = ({
+const MolliePaymentMethod: FunctionComponent<MolliePaymentMethodsProps & WithInjectedHostedCreditCardFieldsetProps> = ({
     initializePayment,
     method,
     getHostedFormOptions,
@@ -20,6 +22,8 @@ const MolliePaymentMethod: FunctionComponent<MolliePaymentMethodsProps & WithInj
     hostedStoredCardValidationSchema,
     ...props
 }) => {
+    const paymentContext = useContext(PaymentContext);
+    const localeContext = useContext(LocaleContext);
     const containerId = `mollie-${method.method}`;
     const initializeMolliePayment: HostedWidgetPaymentMethodProps['initializePayment'] = useCallback(async (options: PaymentInitializeOptions, selectedInstrument) => {
         const mollieElements = getMolliesElementOptions();
@@ -46,10 +50,16 @@ const MolliePaymentMethod: FunctionComponent<MolliePaymentMethodsProps & WithInj
                         color: '#D14343',
                     },
                 },
+                unsupportedMethodMessage: localeContext?.language.translate('payment.mollie_unsupported_method_error'),
+                disableButton: () => {
+                    if (paymentContext) {
+                        paymentContext.disableSubmit(method, true);
+                    }
+                },
                 ...(selectedInstrument && { form : await getHostedFormOptions(selectedInstrument) }),
             },
         });
-    }, [initializePayment, containerId, getHostedFormOptions]);
+    }, [initializePayment, containerId, getHostedFormOptions, paymentContext, method, localeContext]);
 
     const getMolliesElementOptions = () => {
 

@@ -237,6 +237,7 @@
             "klarna_continue_action": "Doorgaan met Klarna",
             "klarna_name_text": "Klarna",
             "masterpass_name_text": "Masterpass",
+            "mollie_unsupported_method_error": "Deze betaalmethode kan niet worden gebruikt voor de aankoop van digitale producten. Neem contact op met de klantenservice of probeer het opnieuw.",
             "opy_continue_action": "Doorgaan met Openpay",
             "orbital_continue_action": "Bestelling plaatsen",
             "orbital_description_text": "Betalen met uw ChasePay-account",

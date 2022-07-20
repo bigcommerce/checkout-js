@@ -237,6 +237,7 @@
             "klarna_continue_action": "Continuar com o Klarna",
             "klarna_name_text": "Klarna",
             "masterpass_name_text": "Masterpass",
+            "mollie_unsupported_method_error": "Este método de pagamento não pode ser utilizado para a compra de produtos digitais. Por favor contacte o apoio ao cliente ou tente novamente.",
             "opy_continue_action": "Continuar com o Openpay",
             "orbital_continue_action": "Comprar",
             "orbital_description_text": "Pague com a sua conta do ChasePay",

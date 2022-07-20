@@ -198,6 +198,8 @@ describe('MolliePaymentMethod', () => {
                              },
                         },
                     },
+                    unsupportedMethodMessage: "This payment method cannot be used towards the purchase of digital products. Please contact customer support or try again.",
+                    disableButton: expect.any(Function)
                 },
             }));
     });
