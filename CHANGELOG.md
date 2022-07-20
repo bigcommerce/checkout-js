@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.233.1](https://github.com/bigcommerce/checkout-js/compare/v1.233.0...v1.233.1) (2022-07-20)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-0000 Update e2e tests for buy-now cart project ([#927](https://github.com/bigcommerce/checkout-js/issues/927)) ([72859bc](https://github.com/bigcommerce/checkout-js/commit/72859bc980c9d2b3dcdbbf5cd9b368ca276eadfa))
+
 ## [1.233.0](https://github.com/bigcommerce/checkout-js/compare/v1.232.6...v1.233.0) (2022-07-18)
 
 
