@@ -1,8 +1,8 @@
+import { PaymentMethodId } from '@bigcommerce/checkout-js/payment-integration';
 import { CheckoutSelectors, CustomerInitializeOptions, CustomerRequestOptions, ExecutePaymentMethodCheckoutOptions } from '@bigcommerce/checkout-sdk';
 import React, { memo, FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
-import { PaymentMethodId } from '../../payment/paymentMethod';
 
 import BoltCheckoutSuggestion from './BoltCheckoutSuggestion';
 

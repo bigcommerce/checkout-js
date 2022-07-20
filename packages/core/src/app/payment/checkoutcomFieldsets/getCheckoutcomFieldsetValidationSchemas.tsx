@@ -1,3 +1,4 @@
+import { DocumentOnlyCustomFormFieldsetValues, FawryCustomFormFieldsetValues, IdealCustomFormFieldsetValues, SepaCustomFormFieldsetValues } from "@bigcommerce/checkout-js/payment-integration";
 import { LanguageService } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
 import { boolean, object, string, ObjectSchema } from 'yup';
@@ -8,22 +9,6 @@ export type checkoutcomPaymentMethods = documentPaymentMethods | checkoutcomCust
 export interface CustomValidationSchemaOptions {
     paymentMethod: checkoutcomPaymentMethods;
     language: LanguageService;
-}
-
-export interface DocumentOnlyCustomFormFieldsetValues {
-    ccDocument?: string;
-}
-export interface SepaCustomFormFieldsetValues {
-    iban: string;
-    sepaMandate: boolean;
-}
-export interface IdealCustomFormFieldsetValues {
-    bic: string;
-}
-
-export interface FawryCustomFormFieldsetValues {
-    customerMobile: string;
-    customerEmail: string;
 }
 
 const checkoutComShemas: {

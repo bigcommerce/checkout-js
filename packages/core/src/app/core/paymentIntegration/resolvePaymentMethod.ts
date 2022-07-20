@@ -1,10 +1,8 @@
+import { isResolvableComponent, PaymentMethodProps } from '@bigcommerce/checkout-js/payment-integration';
 import { ComponentType } from 'react';
 
 import { RequireAtLeastOne } from '../../common/types';
 import * as paymentMethods from '../../generated/paymentIntegrations';
-
-import isResolvableComponent from './isResolvableComponent';
-import PaymentMethodProps from './PaymentMethodProps';
 
 export type PaymentMethodResolveId = RequireAtLeastOne<{
     id?: string;

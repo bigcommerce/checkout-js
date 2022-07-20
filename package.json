@@ -88,6 +88,7 @@
     "@nrwl/cli": "^13.10.3",
     "@nrwl/eslint-plugin-nx": "^13.10.3",
     "@nrwl/jest": "^13.10.3",
+    "@nrwl/js": "13.10.3",
     "@nrwl/linter": "^13.10.3",
     "@nrwl/workspace": "^13.10.3",
     "@playwright/test": "^1.20.1",

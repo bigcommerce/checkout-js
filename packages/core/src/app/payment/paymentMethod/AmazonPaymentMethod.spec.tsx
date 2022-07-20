@@ -1,3 +1,4 @@
+import { PaymentMethodId } from '@bigcommerce/checkout-js/payment-integration';
 import { createCheckoutService, PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { noop } from 'lodash';
@@ -6,7 +7,6 @@ import React, { FunctionComponent } from 'react';
 import { getPaymentMethod } from '../payment-methods.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
-import { PaymentMethodId } from '.';
 import AmazonPaymentMethod, { AmazonPaymentMethodProps } from './AmazonPaymentMethod';
 import HostedWidgetPaymentMethod from './HostedWidgetPaymentMethod';
 

@@ -1,3 +1,4 @@
+import { CardInstrumentFieldsetValues, CreditCardFieldsetValues, DocumentOnlyCustomFormFieldsetValues, FawryCustomFormFieldsetValues, HostedCreditCardFieldsetValues, IdealCustomFormFieldsetValues, PaymentFormValues, SepaCustomFormFieldsetValues } from "@bigcommerce/checkout-js/payment-integration";
 import { CardInstrument, CheckoutSelectors, HostedFieldType, Instrument, PaymentInitializeOptions, PaymentInstrument, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { find, noop } from 'lodash';
@@ -10,12 +11,9 @@ import { MapToPropsFactory } from '../../common/hoc';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { withForm, WithFormProps } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
-import { DocumentOnlyCustomFormFieldsetValues, FawryCustomFormFieldsetValues, IdealCustomFormFieldsetValues, SepaCustomFormFieldsetValues } from '../checkoutcomFieldsets/';
-import { configureCardValidator, getCreditCardValidationSchema, CreditCardFieldset, CreditCardFieldsetValues } from '../creditCard';
-import { HostedCreditCardFieldsetValues } from '../hostedCreditCard';
-import { getInstrumentValidationSchema, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CardInstrumentFieldset, CardInstrumentFieldsetValues, CreditCardValidation } from '../storedInstrument';
+import { configureCardValidator, getCreditCardValidationSchema, CreditCardFieldset } from '../creditCard';
+import { getInstrumentValidationSchema, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CardInstrumentFieldset, CreditCardValidation } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
-import { PaymentFormValues } from '../PaymentForm';
 import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
 
 export interface CreditCardPaymentMethodProps {

@@ -1,3 +1,4 @@
+import { PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration';
 import { noop } from 'lodash';
 import React, { useCallback, useContext, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
@@ -6,7 +7,6 @@ import { CustomError } from '../../common/error';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { FormContext } from '../../ui/form';
-import { PaymentFormValues } from '../PaymentForm';
 
 import HostedDropInPaymentMethod from './HostedDropInPaymentMethod';
 import { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';

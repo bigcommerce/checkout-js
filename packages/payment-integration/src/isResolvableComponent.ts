@@ -1,6 +1,6 @@
 import { ComponentType } from 'react';
 
-import ResolvableComponent from './ResolvableComponent';
+import { ResolvableComponent } from '.';
 
 export default function isResolvableComponent<TProps, TIdentifier>(
     Component: ComponentType<TProps>

@@ -1,9 +1,10 @@
+import { HostedPaymentMethodProps } from '@bigcommerce/checkout-js/payment-integration';
 import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import React, { useCallback, useContext, FunctionComponent } from 'react';
 
 import { LocaleContext } from '../../locale';
 
-import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
+import HostedPaymentMethod from './HostedPaymentMethod';
 
 const ApplePayPaymentMethod: FunctionComponent<HostedPaymentMethodProps> = ({
     initializePayment,

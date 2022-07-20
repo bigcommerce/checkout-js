@@ -1,6 +1,6 @@
 import { CheckoutSelectors, CheckoutService, LanguageService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 
-import { PaymentFormService } from '../../payment';
+import PaymentFormService from './PaymentFormService';
 
 export default interface PaymentMethodProps {
     method: PaymentMethod;

@@ -1,9 +1,10 @@
+import { HostedPaymentMethodProps } from '@bigcommerce/checkout-js/payment-integration';
 import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import React, { createRef, useCallback, useRef, useState, FunctionComponent, RefObject } from 'react';
 
 import { Modal } from '../../ui/modal';
 
-import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
+import HostedPaymentMethod from './HostedPaymentMethod';
 
 export type BlueSnapV2PaymentMethodProps = HostedPaymentMethodProps;
 

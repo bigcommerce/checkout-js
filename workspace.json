@@ -1,6 +1,7 @@
 {
-    "version": 2,
-    "projects": {
-        "core": "packages/core"
-    }
+  "version": 2,
+  "projects": {
+    "core": "packages/core",
+    "payment-integration": "packages/payment-integration"
+  }
 }

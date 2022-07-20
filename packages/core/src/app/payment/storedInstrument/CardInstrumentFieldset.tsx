@@ -5,9 +5,7 @@ import React, { memo, useCallback, FunctionComponent } from 'react';
 import { TranslatedString } from '../../locale';
 import { BasicFormField, Fieldset, Legend } from '../../ui/form';
 import { ModalTrigger, ModalTriggerModalProps } from '../../ui/modal';
-import { HostedCreditCardValidationValues } from '../hostedCreditCard';
 
-import { CreditCardValidationValues } from './CreditCardValidation';
 import InstrumentSelect from './InstrumentSelect';
 import ManageInstrumentsModal from './ManageInstrumentsModal';
 
@@ -20,10 +18,6 @@ export interface CardInstrumentFieldsetProps {
     onSelectInstrument(id: string): void;
     onUseNewInstrument(): void;
 }
-
-export type CardInstrumentFieldsetValues = {
-    instrumentId: string;
-} & CreditCardValidationValues | HostedCreditCardValidationValues;
 
 const CardInstrumentFieldset: FunctionComponent<CardInstrumentFieldsetProps> = ({
     instruments,

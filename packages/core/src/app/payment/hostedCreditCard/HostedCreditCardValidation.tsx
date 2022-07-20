@@ -11,15 +11,6 @@ export interface HostedCreditCardValidationProps {
     focusedFieldType?: string;
 }
 
-export interface HostedCreditCardValidationValues {
-    hostedForm: {
-        errors?: {
-            cardCodeVerification?: string;
-            cardNumberVerification?: string;
-        };
-    };
-}
-
 const HostedCreditCardValidation: FunctionComponent<HostedCreditCardValidationProps> = ({
     cardCodeId,
     cardNumberId,

@@ -1,8 +1,7 @@
+import { PaymentMethodId, PaymentMethodType } from '@bigcommerce/checkout-js/payment-integration';
 import { LanguageService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { capitalize, get } from 'lodash';
 
-import PaymentMethodId from './PaymentMethodId';
-import PaymentMethodType from './PaymentMethodType';
 
 /**
  * Always return the translated name of a payment method unless it is a

@@ -1,3 +1,4 @@
+import { PaymentMethodId } from '@bigcommerce/checkout-js/payment-integration';
 import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
@@ -18,7 +19,6 @@ import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
 import BraintreeCreditCardPaymentMethod, { BraintreeCreditCardPaymentMethodProps } from './BraintreeCreditCardPaymentMethod';
 import CreditCardPaymentMethod from './CreditCardPaymentMethod';
-import PaymentMethodId from './PaymentMethodId';
 
 const hostedFormOptions = {
     fields: {

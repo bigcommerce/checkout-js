@@ -1,3 +1,4 @@
+import { PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration';
 import { AccountInstrument, CardInstrument, CheckoutSelectors, CustomerInitializeOptions, CustomerRequestOptions, Instrument, PaymentInitializeOptions, PaymentInstrument, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import classNames from 'classnames';
@@ -13,7 +14,6 @@ import { TranslatedString } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
 import { isBankAccountInstrument, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, AccountInstrumentFieldset, CardInstrumentFieldset } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
-import { PaymentFormValues } from '../PaymentForm';
 import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
 
 import { CreditCardPaymentMethodValues } from './CreditCardPaymentMethod';

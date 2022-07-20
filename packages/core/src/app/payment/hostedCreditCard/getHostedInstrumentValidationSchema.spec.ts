@@ -1,8 +1,8 @@
+import { HostedCreditCardValidationValues } from '@bigcommerce/checkout-js/payment-integration';
 import { LanguageService } from '@bigcommerce/checkout-sdk';
 import { ObjectSchema } from 'yup';
 
 import getHostedInstrumentValidationSchema from './getHostedInstrumentValidationSchema';
-import { HostedCreditCardValidationValues } from './HostedCreditCardValidation';
 
 describe('getHostedInstrumentValidationSchema', () => {
     let language: Pick<LanguageService, 'translate'>;

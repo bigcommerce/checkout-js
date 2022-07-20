@@ -8,11 +8,6 @@ interface CreditCardValidationProps {
     shouldShowNumberField: boolean;
 }
 
-export interface CreditCardValidationValues {
-    ccCvv?: string;
-    ccNumber?: string;
-}
-
 const CreditCardValidation: React.FunctionComponent<CreditCardValidationProps> = ({
     shouldShowNumberField,
     shouldShowCardCodeField,

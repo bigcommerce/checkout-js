@@ -1,3 +1,4 @@
+import { CardInstrumentFieldsetValues, HostedCreditCardFieldsetValues } from '@bigcommerce/checkout-js/payment-integration';
 import { createCheckoutService, CheckoutSelectors, CheckoutService, HostedFieldType } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import { Formik, FormikProps } from 'formik';
@@ -13,12 +14,11 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../../loc
 import { FormContext, FormContextType } from '../../ui/form';
 import { getCreditCardInputStyles, CreditCardInputStylesType } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
-import { CardInstrumentFieldsetValues } from '../storedInstrument';
 import { getCardInstrument } from '../storedInstrument/instruments.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
 import withHostedCreditCardFieldset, { WithHostedCreditCardFieldsetProps, WithInjectedHostedCreditCardFieldsetProps } from './withHostedCreditCardFieldset';
-import HostedCreditCardFieldset, { HostedCreditCardFieldsetValues } from './HostedCreditCardFieldset';
+import HostedCreditCardFieldset from './HostedCreditCardFieldset';
 
 jest.mock('../creditCard', () => ({
     ...jest.requireActual('../creditCard'),

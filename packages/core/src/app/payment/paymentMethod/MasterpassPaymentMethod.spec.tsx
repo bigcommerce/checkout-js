@@ -1,3 +1,4 @@
+import { PaymentMethodId, PaymentMethodType } from '@bigcommerce/checkout-js/payment-integration';
 import { createCheckoutService, CheckoutSelectors, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
@@ -10,8 +11,6 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../../loc
 import { getPaymentMethod } from '../payment-methods.mock';
 
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
-import PaymentMethodId from './PaymentMethodId';
-import PaymentMethodType from './PaymentMethodType';
 import WalletButtonPaymentMethod, { WalletButtonPaymentMethodProps } from './WalletButtonPaymentMethod';
 
 describe('when using Masterpass payment', () => {

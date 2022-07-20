@@ -1,6 +1,5 @@
+import { toResolvableComponent, PaymentMethodProps } from '@bigcommerce/checkout-js/payment-integration';
 import React, { FunctionComponent } from 'react';
-
-import { toResolvableComponent, PaymentMethodProps } from '../../core/paymentIntegration';
 
 const SamplePaymentMethod: FunctionComponent<PaymentMethodProps> = () => <></>;
 
