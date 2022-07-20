@@ -163,11 +163,11 @@ function getPaymentMethodTitle(
                 titleText: methodName,
             },
             [PaymentMethodId.StripeV3]: {
-                logoUrl: '',
+                logoUrl: ['credit_card', 'card'].includes(method.id) ? '' : cdnPath(`/img/payment-providers/stripe-${method.id.toLowerCase()}.svg`),
                 titleText: method.method === 'iban' ? language.translate('payment.stripe_sepa_display_name_text') : methodName,
             },
             [PaymentMethodId.StripeUPE]: {
-                logoUrl: '',
+                logoUrl: ['credit_card', 'card'].includes(method.id) ? '' : cdnPath(`/img/payment-providers/stripe-${method.id.toLowerCase()}.svg`),
                 titleText: method.method === 'iban' ? language.translate('payment.stripe_sepa_display_name_text') : methodName,
             },
             [PaymentMethodId.WorldpayAccess]: {
