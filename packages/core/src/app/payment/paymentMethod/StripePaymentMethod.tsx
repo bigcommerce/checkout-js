@@ -1,8 +1,9 @@
-import { CardInstrument, PaymentInitializeOptions, StripeElementOptions } from '@bigcommerce/checkout-sdk';
+import { noop } from 'lodash';
+import { CardInstrument, CustomError, PaymentInitializeOptions, StripeElementOptions } from '@bigcommerce/checkout-sdk';
 import React, { useCallback, FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
-import { TranslatedString } from '../../locale';
+import { TranslatedString, WithLanguageProps, withLanguage } from '../../locale';
 import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps } from '../hostedCreditCard';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
@@ -31,13 +32,15 @@ export enum StripeElementType {
     iban = 'iban',
     idealBank = 'idealBank',
 }
-const StripePaymentMethod: FunctionComponent<StripePaymentMethodProps & WithInjectedHostedCreditCardFieldsetProps & WithCheckoutStripePaymentMethodProps> = ({
+const StripePaymentMethod: FunctionComponent<StripePaymentMethodProps & WithLanguageProps & WithInjectedHostedCreditCardFieldsetProps & WithCheckoutStripePaymentMethodProps> = ({
     initializePayment,
     getHostedFormOptions,
     getHostedStoredCardValidationFieldset,
     hostedStoredCardValidationSchema,
     method,
     storeUrl,
+    onUnhandledError = noop,
+    language,
     ...rest
     }) => {
     const { useIndividualCardFields } = method.initializationData;
@@ -71,6 +74,14 @@ const StripePaymentMethod: FunctionComponent<StripePaymentMethodProps & WithInje
             classes,
         },
     };
+
+    const onUnhandledStripeV3Error = useCallback((error: CustomError) => {
+        if (error.type === 'stripev3_error' && error.subtype === 'auth_failure') {
+            error.message = language.translate('payment.stripev3_auth_3ds_fail');
+        }
+
+        onUnhandledError?.(error);
+    }, [language, onUnhandledError]);
 
     const getIndividualCardElementOptions = useCallback((stripeInitializeOptions: StripeOptions) => {
         return {
@@ -124,6 +135,7 @@ const StripePaymentMethod: FunctionComponent<StripePaymentMethodProps & WithInje
             hideContentWhenSignedOut
             initializePayment={ initializeStripePayment }
             method={ method }
+            onUnhandledError={ onUnhandledStripeV3Error }
             renderCustomPaymentForm={ renderCustomPaymentForm }
             shouldRenderCustomInstrument={ useIndividualCardFields }
             storedCardValidationSchema={ hostedStoredCardValidationSchema }
@@ -152,4 +164,4 @@ function mapFromCheckoutProps(
     };
 }
 
-export default withHostedCreditCardFieldset(withCheckout(mapFromCheckoutProps)(StripePaymentMethod));
+export default withLanguage(withHostedCreditCardFieldset(withCheckout(mapFromCheckoutProps)(StripePaymentMethod)));
