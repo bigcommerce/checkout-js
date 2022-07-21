@@ -228,20 +228,21 @@ const PaymentMethodTitle: FunctionComponent<PaymentMethodTitleProps & WithLangua
 
     return (
         <div className="paymentProviderHeader-container">
-            { logoUrl && <img
-                alt={ methodName }
-                className="paymentProviderHeader-img"
-                data-test="payment-method-logo"
-                src={ logoUrl }
-            /> }
+            <div className="paymentProviderHeader-nameContainer">
+                { logoUrl && <img
+                    alt={ methodName }
+                    className="paymentProviderHeader-img"
+                    data-test="payment-method-logo"
+                    src={ logoUrl }
+                /> }
 
-            { titleText && <div
-                className="paymentProviderHeader-name"
-                data-test="payment-method-name"
-            >
-                { titleText }
-            </div> }
-
+                { titleText && <div
+                    className="paymentProviderHeader-name"
+                    data-test="payment-method-name"
+                >
+                    { titleText }
+                </div> }
+            </div>
             <div className="paymentProviderHeader-cc">
                 <CreditCardIconList
                     cardTypes={ compact(method.supportedCards.map(mapFromPaymentMethodCardType)) }
