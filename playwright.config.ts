@@ -39,9 +39,9 @@ const config: PlaywrightTestConfig = {
   },
   projects: [
     {
-      name: 'chromium',
+      name: 'webkit',
       use: {
-        ...devices['Desktop Chrome'],
+        ...devices['Desktop Safari'],
       },
     },
   ],
