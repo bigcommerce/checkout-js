@@ -2,6 +2,12 @@
 // PAYMENT PROVIDER (Component)
 // =============================================================================
 .paymentProviderHeader-container {
+    align-items: start;
+    display: flex;
+    justify-content: space-between;
+}
+
+.paymentProviderHeader-nameContainer {
     display: flex;
     justify-content: space-between;
 }
