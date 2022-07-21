@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.235.1-prerelease.1658433146617](https://github.com/bigcommerce/checkout-js/compare/v1.235.0...v1.235.1-prerelease.1658433146617) (2022-07-21)
+
+
+### Features
+
+* **payment:** STRIPE-82 Add code to show images on the list ([99e89df](https://github.com/bigcommerce/checkout-js/commit/99e89df2fe40e73e95bd22fc5538eae65dbd4196))
+
 ## [1.235.0](https://github.com/bigcommerce/checkout-js/compare/v1.234.1...v1.235.0) (2022-07-20)
 
 
