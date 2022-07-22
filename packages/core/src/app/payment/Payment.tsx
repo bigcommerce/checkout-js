@@ -64,6 +64,7 @@ interface PaymentState {
     shouldHidePaymentSubmitButton: { [key: string]: boolean };
     submitFunctions: { [key: string]: ((values: PaymentFormValues) => void) | null };
     validationSchemas: { [key: string]: ObjectSchema<Partial<PaymentFormValues>> | null };
+    previousStoreCreditStatus: boolean;
 }
 
 class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLanguageProps, PaymentState> {
@@ -74,6 +75,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         shouldHidePaymentSubmitButton: {},
         validationSchemas: {},
         submitFunctions: {},
+        previousStoreCreditStatus: true,
     };
 
     private getContextValue = memoizeOne(() => {
@@ -94,6 +96,10 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             onReady = noop,
             onUnhandledError = noop,
         } = this.props;
+
+        const {previousStoreCreditStatus} = this.state;
+
+        this.handleStoreCreditChange(previousStoreCreditStatus);
 
         try {
             await loadPaymentMethods();
