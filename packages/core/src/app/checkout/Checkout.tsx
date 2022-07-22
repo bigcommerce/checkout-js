@@ -77,6 +77,9 @@ export interface CheckoutState {
     isRedirecting: boolean;
     hasSelectedShippingOptions: boolean;
     isBuyNowCartEnabled: boolean;
+    isCustomerEmailComplete: boolean;
+    isShippingComplete: boolean;
+    isBillingComplete: boolean;
 }
 
 export interface WithCheckoutProps {
@@ -109,6 +112,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         isMultiShippingMode: false,
         hasSelectedShippingOptions: false,
         isBuyNowCartEnabled: false,
+        isCustomerEmailComplete: false,
+        isShippingComplete: false,
+        isBillingComplete: false,
     };
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
@@ -198,7 +204,21 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         }
     }
 
-    private emitAnalyticsEvent(event: string): void {
+    private emitAnalyticsEvent: (event:string) => void = (event: string) => {
+        // when events are emitted by manually entering details on each step,
+        // set a stepComplete state flag so that duplicate events aren't emitted
+        // from the navigateToNextStep function
+        switch(event) {
+            case "Account recognition":
+                this.setState({ isCustomerEmailComplete: true });
+                break;
+            case "Shipping method step complete":
+                this.setState({ isShippingComplete: true });
+                break;
+            case "Billing details entered":
+                this.setState({ isBillingComplete: true });
+                break;
+        }
         AnalyticsEvents.emitEvent(event);
     }
 
@@ -463,7 +483,12 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
     private navigateToStep(type: CheckoutStepType, options?: { isDefault?: boolean }): void {
         const { clearError, error, steps } = this.props;
-        const { activeStepType } = this.state;
+        const {
+            activeStepType,
+            isCustomerEmailComplete,
+            isShippingComplete,
+            isBillingComplete
+        } = this.state;
         const step = find(steps, { type });
 
         if (!step) {
@@ -472,6 +497,42 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
         if (activeStepType === step.type) {
             return;
+        }
+
+        const nextStepIndex = findIndex(steps, { type })
+        const prevStepIndex = nextStepIndex - 1;
+        const prevStep = prevStepIndex >= 0 && steps[prevStepIndex];
+
+        /**
+         * BOLT ANALYTICS
+         * This block is to handle emitting step completion events when details are autocompleted.
+         * Events will still be emitted from the individual steps and will set completion state flags
+         * so that when this block runs during step transitions, we don't emit duplicate events.
+         */
+        if (prevStep && prevStep.isComplete) {
+            switch(prevStep.type) {
+                case "customer":
+                    if (!isCustomerEmailComplete) {
+                        // if stepping through customer step automatically (saved info) emit all beginning events
+                        this.emitAnalyticsEvent("Detail entry began")
+                        this.emitAnalyticsEvent("Account recognition")
+                    }
+                    break;
+                case "billing":
+                    // for some reason "shipping" is *never* a previous step,
+                    // so checking for shipping status when billing is the previous step
+                    if (!isShippingComplete) {
+                        const shippingStep = (find(steps, { type: "shipping" }) as CheckoutStepStatus)
+                        if (shippingStep && shippingStep.isComplete) {
+                            this.emitAnalyticsEvent("Shipping details fully entered");
+                            this.emitAnalyticsEvent("Shipping method step complete");
+                        }
+                    }
+                    if (!isBillingComplete) {
+                        this.emitAnalyticsEvent("Billing details entered")
+                    }
+                    break;
+            }
         }
 
         if (options && options.isDefault) {
