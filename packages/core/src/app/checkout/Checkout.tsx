@@ -204,8 +204,10 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         }
     }
 
-    private emitAnalyticsEvent(event: string): void {
-        // 
+    private emitAnalyticsEvent: (event:string) => void = (event: string) => {
+        // when events are emitted by manually entering details on each step,
+        // set a stepComplete state flag so that duplicate events aren't emitted
+        // from the navigateToNextStep function
         switch(event) {
             case "Account recognition":
                 this.setState({ isCustomerEmailComplete: true });
