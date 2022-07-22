@@ -14,6 +14,7 @@ import getBillingMethodId from './getBillingMethodId';
 import BillingForm, { BillingFormValues } from './BillingForm';
 
 export interface BillingProps {
+    emitAnalyticsEvent(event: string): void;
     navigateNextStep(): void;
     onReady?(): void;
     onUnhandledError(error: Error): void;
@@ -92,7 +93,10 @@ class Billing extends Component<BillingProps & WithCheckoutBillingProps> {
             billingAddress,
             navigateNextStep,
             onUnhandledError,
+            emitAnalyticsEvent,
         } = this.props;
+
+        emitAnalyticsEvent("Billing details entered");
 
         const promises: Array<Promise<CheckoutSelectors>> = [];
         const address = mapAddressFromFormValues(addressValues);
