@@ -33,6 +33,7 @@ export interface ShippingFormProps {
     onCreateAccount(): void;
     createCustomerAddress(address: AddressRequestBody): Promise<CheckoutSelectors>;
     onMultiShippingSubmit(values: MultiShippingFormValues): void;
+    emitAnalyticsEvent(event: string): void;
     onSignIn(): void;
     onSingleShippingSubmit(values: SingleShippingFormValues): void;
     onUnhandledError(error: Error): void;
@@ -76,6 +77,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             signOut,
             updateAddress,
             isShippingStepPending,
+            emitAnalyticsEvent,
         } = this.props;
 
         return isMultiShippingMode ?
@@ -111,6 +113,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 customerMessage={ customerMessage }
                 deinitialize={ deinitialize }
                 deleteConsignments={ deleteConsignments }
+                emitAnalyticsEvent={ emitAnalyticsEvent }
                 getFields={ getFields }
                 googleMapsApiKey={ googleMapsApiKey }
                 initialize={ initialize }

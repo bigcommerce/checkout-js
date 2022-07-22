@@ -17,16 +17,17 @@ export const AnalyticsEvents = {
   },
   emitEvent: (eventName: string) => {
     console.log("--bolt bigc--: emitting analytics event ", eventName);
-    if (boltTracker.recordEvent) {
-      const props: any = {
-        nextState: eventName
-      }
-      if (eventLog.length > 0) {
-        props.prevState = eventLog[0];
-      }
-      boltTracker.recordEvent("CheckoutFunnelTransition", props)
-      eventLog.push(eventName)
-      console.log("--bolt bigc--: successfully sent analytics event ", eventName);
+    const props: any = {
+      nextState: eventName
     }
+    if (eventLog.length > 0) {
+      props.prevState = eventLog[0];
+    }
+    boltTracker.recordEvent("CheckoutFunnelTransition", props)
+    eventLog.unshift(eventName)
+    console.log("--bolt bigc--: successfully sent analytics event ", eventName);
+  },
+  onBeforeUnload: () => {
+    AnalyticsEvents.emitEvent("Exit")
   }
 }

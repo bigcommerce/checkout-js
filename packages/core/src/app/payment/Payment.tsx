@@ -21,6 +21,7 @@ export interface PaymentProps {
     isEmbedded?: boolean;
     isUsingMultiShipping?: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void; // TODO: We're currently doing this check in multiple places, perhaps we should move it up so this check get be done in a single place instead.
+    emitAnalyticsEvent(event: string): void;
     onCartChangedError?(error: CartChangedError): void;
     onFinalize?(): void;
     onFinalizeError?(error: Error): void;
@@ -380,6 +381,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             onSubmit = noop,
             onSubmitError = noop,
             submitOrder,
+            emitAnalyticsEvent,
         } = this.props;
 
         const {
@@ -400,6 +402,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             const order = state.data.getOrder();
             onSubmit(order?.orderId);
         } catch (error) {
+            emitAnalyticsEvent("Payment rejected");
             if (error.type === 'payment_method_invalid') {
                 return loadPaymentMethods();
             }

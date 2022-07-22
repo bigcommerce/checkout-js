@@ -35,6 +35,7 @@ export interface SingleShippingFormProps {
     deleteConsignments(): Promise<Address | undefined>;
     getFields(countryCode?: string): FormField[];
     initialize(options: ShippingInitializeOptions): Promise<CheckoutSelectors>;
+    emitAnalyticsEvent(event: string): void;
     onSubmit(values: SingleShippingFormValues): void;
     onUnhandledError?(error: Error): void;
     signOut(options?: CustomerRequestOptions): void;
@@ -51,6 +52,7 @@ interface SingleShippingFormState {
     isResettingAddress: boolean;
     isUpdatingShippingData: boolean;
     hasRequestedShippingOptions: boolean;
+    hasLoadedShippingOptions: boolean;
 }
 
 export const SHIPPING_AUTOSAVE_DELAY = 1700;
@@ -62,6 +64,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
         isResettingAddress: false,
         isUpdatingShippingData: false,
         hasRequestedShippingOptions: false,
+        hasLoadedShippingOptions: false,
     };
 
     private debouncedUpdateAddress: any;
@@ -69,7 +72,10 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
     constructor(props: SingleShippingFormProps & WithLanguageProps & FormikProps<SingleShippingFormValues>) {
         super(props);
 
-        const { updateAddress } = this.props;
+        const {
+            updateAddress,
+            emitAnalyticsEvent,
+        } = this.props;
 
         this.debouncedUpdateAddress = debounce(async (address: Address, includeShippingOptions: boolean) => {
             try {
@@ -81,6 +87,10 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                     },
                 });
                 if (includeShippingOptions) {
+                    if (!this.state.hasLoadedShippingOptions) {
+                        emitAnalyticsEvent("Shipping details fully entered");
+                        this.setState({ hasLoadedShippingOptions: true });
+                    }
                     this.setState({ hasRequestedShippingOptions: true });
                 }
             } finally {

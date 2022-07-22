@@ -25,6 +25,7 @@ export interface ShippingProps {
     onReady?(): void;
     onUnhandledError(error: Error): void;
     onSignIn(): void;
+    emitAnalyticsEvent(event: string): void;
     navigateNextStep(isBillingSameAsShipping: boolean): void;
 }
 
@@ -108,6 +109,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             deinitializeShippingMethod,
             isMultiShippingMode,
             onToggleMultiShipping,
+            emitAnalyticsEvent,
             ...shippingFormProps
         } = this.props;
 
@@ -132,6 +134,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         { ...shippingFormProps }
                         addresses={ customer.addresses }
                         deinitialize={ deinitializeShippingMethod }
+                        emitAnalyticsEvent={ emitAnalyticsEvent }
                         initialize={ initializeShippingMethod }
                         isBillingSameAsShipping = { isBillingSameAsShipping }
                         isGuest={ isGuest }
@@ -187,11 +190,17 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             shippingAddress,
             billingAddress,
             methodId,
+            emitAnalyticsEvent,
         } = this.props;
 
         const updatedShippingAddress = addressValues && mapAddressFromFormValues(addressValues);
         const promises: Array<Promise<CheckoutSelectors>> = [];
         const hasRemoteBilling = this.hasRemoteBilling(methodId);
+
+        emitAnalyticsEvent("Shipping method step complete");
+        if (billingSameAsShipping) {
+            emitAnalyticsEvent("Billing details entered")
+        }
 
         if (!isEqualAddress(updatedShippingAddress, shippingAddress)) {
             promises.push(updateShippingAddress(updatedShippingAddress || {}));

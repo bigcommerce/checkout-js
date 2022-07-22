@@ -23,6 +23,7 @@ import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
+import { AnalyticsEvents } from './AnalyticsEvents';
 
 const Billing = lazy(() => retry(() => import(
     /* webpackChunkName: "billing" */
@@ -118,6 +119,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             this.unsubscribeFromConsignments();
             this.unsubscribeFromConsignments = undefined;
         }
+
+        window.removeEventListener("beforeunload", AnalyticsEvents.onBeforeUnload);
     }
 
     async componentDidMount(): Promise<void> {
@@ -132,6 +135,11 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         } = this.props;
 
         try {
+            /** BOLT ANALYTICS */
+            // init Bolt AnalyticsEvents emitter
+            AnalyticsEvents.init();
+            window.addEventListener("beforeunload", AnalyticsEvents.onBeforeUnload);
+
             const { data } = await loadCheckout(checkoutId, {
                 params: {
                     include: [
@@ -188,6 +196,10 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         } catch (error) {
             this.handleUnhandledError(error);
         }
+    }
+
+    private emitAnalyticsEvent(event: string): void {
+        AnalyticsEvents.emitEvent(event);
     }
 
     render(): ReactNode {
@@ -306,6 +318,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 <LazyContainer>
                     <Customer
                         checkEmbeddedSupport={ this.checkEmbeddedSupport }
+                        emitAnalyticsEvent={ this.emitAnalyticsEvent }
                         isEmbedded={ isEmbedded() }
                         onAccountCreated={ this.navigateToNextIncompleteStep }
                         onChangeViewType={ this.setCustomerViewType }
@@ -357,6 +370,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 <LazyContainer>
                     <Shipping
                         cartHasChanged={ hasCartChanged }
+                        emitAnalyticsEvent={ this.emitAnalyticsEvent }
                         isBillingSameAsShipping={ isBillingSameAsShipping }
                         isMultiShippingMode={ isMultiShippingMode }
                         navigateNextStep={ this.handleShippingNextStep }
@@ -385,6 +399,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             >
                 <LazyContainer>
                     <Billing
+                        emitAnalyticsEvent={ this.emitAnalyticsEvent }
                         navigateNextStep={ this.navigateToNextIncompleteStep }
                         onReady={ this.handleReady }
                         onUnhandledError={ this.handleUnhandledError }
@@ -411,6 +426,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 <LazyContainer>
                     <Payment
                         checkEmbeddedSupport={ this.checkEmbeddedSupport }
+                        emitAnalyticsEvent={ this.emitAnalyticsEvent }
                         isEmbedded={ isEmbedded() }
                         isUsingMultiShipping={ cart && consignments ? isUsingMultiShipping(consignments, cart.lineItems) : false }
                         onCartChangedError={ this.handleCartChangedError }
@@ -496,6 +512,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
     private navigateToOrderConfirmation: (orderId?: number) => void = orderId => {
         const { steps } = this.props;
         const { isBuyNowCartEnabled } = this.state;
+
+        this.emitAnalyticsEvent("Payment complete")
 
         if (this.stepTracker) {
             this.stepTracker.trackStepCompleted(steps[steps.length - 1].type);
