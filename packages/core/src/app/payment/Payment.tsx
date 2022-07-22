@@ -389,6 +389,8 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             submitFunctions,
         } = this.state;
 
+        emitAnalyticsEvent("Payment details fully entered")
+
         const customSubmit = selectedMethod && submitFunctions[
             getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway)
         ];
