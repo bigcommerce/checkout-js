@@ -51,7 +51,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
     const setEmailCallback = useCallback((email: string) => {
         onChangeEmail(email);
         setEmailValue(email);
-        setContinueAsAGuestButton(!(!!email));
+        setContinueAsAGuestButton(!email);
     }, [setContinueAsAGuestButton, onChangeEmail]);
 
     useEffect(() => {

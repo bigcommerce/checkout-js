@@ -3,7 +3,7 @@ import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
-import { PaymentMethodId } from '../payment/paymentMethod';
+import { PaymentMethodId } from '@bigcommerce/checkout-js/payment-integration';
 import { LoadingOverlay } from '../ui/loading';
 
 import { CreateAccountFormValues } from './getCreateCustomerValidationSchema';
@@ -172,7 +172,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                             onError={ onUnhandledError }
                         />
                     }
-                    continueAsGuestButtonLabelId={ !!providerWithCustomCheckout ? 'customer.continue' : 'customer.continue_as_guest_action' }
+                    continueAsGuestButtonLabelId={ providerWithCustomCheckout ? 'customer.continue' : 'customer.continue_as_guest_action' }
                     defaultShouldSubscribe={ defaultShouldSubscribe }
                     deinitialize={ deinitializeCustomer }
                     email={ this.draftEmail || email }
