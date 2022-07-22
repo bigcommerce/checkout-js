@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.235.1](https://github.com/bigcommerce/checkout-js/compare/v1.235.0...v1.235.1) (2022-07-22)
+
+
+### Bug Fixes
+
+* **checkout:** ADYEN-0000 fixed payment provider title css ([f760a14](https://github.com/bigcommerce/checkout-js/commit/f760a14db5e8a1ae28e91b31bcd4c39e04fd32dd))
+
 ## [1.235.0](https://github.com/bigcommerce/checkout-js/compare/v1.234.1...v1.235.0) (2022-07-20)
 
 
