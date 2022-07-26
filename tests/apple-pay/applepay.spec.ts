@@ -3,7 +3,7 @@ import { ApplePaySession } from './ApplePaySessionMock';
 import { applepay, internalOrder, order, orderPayment, payments, validateMerchantResponse } from './ApplePayTestMockResponse';
 
 interface ApplePayWindow extends Window {
-    ApplePaySession: ApplePaySession;
+    ApplePaySession: any;
 }
 
 // Record command
@@ -13,6 +13,7 @@ test.describe('Apple Pay', () => {
     test('Apple Pay', async ({ assertions, checkout, page }) => {
         // Testing environment setup
         const storeUrl = 'https://store-4j2kt0jl0q.store.bcdev/';
+        await page.addInitScript({ path: './tests/apple-pay/pineapplepay.js' });
         await checkout.use(new PaymentStepAsGuestPreset(storeUrl));
         await checkout.create('ApplePay in Payment Step', storeUrl);
 
@@ -32,30 +33,9 @@ test.describe('Apple Pay', () => {
 
         // Playwright actions
         await checkout.goto();
-        await page.evaluate(()=>{
-            const main = () => {
-                (window as unknown as ApplePayWindow).ApplePaySession = new ApplePaySession(1, {});
-            }
-
-            const wrapFunction = (injectedFunction) => {
-                return '(' + injectedFunction + ')();';
-            }
-
-            const injectScript = () => {
-                const script = document.createElement('script');
-                script.textContent = wrapFunction(main);
-                (document.head || document.documentElement).appendChild(script);
-                script.remove();
-            }
-
-            injectScript();
-        });
-        
-        await page.pause();
 
         // Figure out the locator once store is public
-        await page.locator('[aria-label="Apple Pay"]').click();
-        await page.waitForNavigation({waitUntil: 'networkidle'});
+        await page.locator('img[alt="Applepay"]').click();
         await checkout.placeOrder();
 
         // Assertions

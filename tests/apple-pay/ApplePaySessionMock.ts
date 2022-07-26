@@ -1,5 +1,9 @@
 export class ApplePaySession {
-    constructor(version, paymentRequest) {
+    version: number;
+    paymentRequest: {};
+    onvalidatemerchant: any;
+
+    constructor(version: number, paymentRequest: {}) {
         this.version = version;
         this.paymentRequest = paymentRequest;
     }
@@ -13,7 +17,7 @@ export class ApplePaySession {
     static STATUS_PIN_LOCKOUT = 7;
     static STATUS_PIN_REQUIRED = 8;
 
-    static supportsVersion(versionNumber) {
+    static supportsVersion(_versionNumber) {
         return true;
     }
 
@@ -49,13 +53,16 @@ export class ApplePaySession {
 
         this.onpaymentauthorized(event, this);
     }
+    onpaymentauthorized(_event: { payment: { token: { paymentData: { version: string; data: string; signature: string; header: { ephemeralPublicKey: string; publicKeyHash: string; transactionId: string; }; }; }; }; }, arg1: this) {
+        return;
+    }
 
-    completePayment(authorizationResult){
-        console.log('Payment Completed', authorizationResult);
+    completePayment(_authorizationResult){
+        return;
     }
 
     begin() {
-        let errors = [];
+        let errors: string[] = [];
 
         if(!this.onvalidatemerchant || typeof(this.onvalidatemerchant) !== 'function')
             errors.push('onvalidatemerchant has not been implemented');
