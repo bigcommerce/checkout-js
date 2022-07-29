@@ -18,3 +18,4 @@ export {
     IdealCustomFormFieldsetValues,
     SepaCustomFormFieldsetValues,
 } from './PaymentFormValues';
+export { getMethod } from './PaymentIntegration.mock';

@@ -52,6 +52,7 @@ function appConfig(options, argv) {
                     alias: {
                         "@bigcommerce/checkout-js/payment-integration": join(__dirname, 'packages/payment-integration/src'),
                         "@bigcommerce/checkout-js/samplePaymentMethod": join(__dirname, 'packages/samplePaymentMethod/src'),
+                        "@bigcommerce/checkout-js/apple-pay-integration": join(__dirname, 'packages/apple-pay-integration/src'),
                     },
                     extensions: ['.ts', '.tsx', '.js'],
                     // It seems some packages, i.e.: Formik, have incorrect
@@ -152,6 +153,7 @@ function appConfig(options, argv) {
                                 join(__dirname, 'packages', 'core','src'),
                                 join(__dirname, 'packages', 'payment-integration','src'),
                                 join(__dirname, 'packages', 'samplePaymentMethod','src'),
+                                join(__dirname, 'packages', 'apple-pay-integration','src'),
                             ],
                             use: [
                                 {
