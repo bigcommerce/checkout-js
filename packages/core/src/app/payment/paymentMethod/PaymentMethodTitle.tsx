@@ -26,6 +26,7 @@ function getPaymentMethodTitle(
     basePath: string
 ): (method: PaymentMethod) => { logoUrl: string; titleText: string } {
     const cdnPath = (path: string) => `${basePath}${path}`;
+    const payMethood = ['Bancontact', 'Boleto Bancario', 'EPS', 'Giropay', 'GrabPay', 'iDEAL', 'OXXO', 'Sofort', 'Klarna'];
 
     return method => {
         const methodName = getPaymentMethodName(language)(method);
@@ -163,11 +164,11 @@ function getPaymentMethodTitle(
                 titleText: methodName,
             },
             [PaymentMethodId.StripeV3]: {
-                logoUrl: ['credit_card', 'card'].includes(method.id) ? '' : cdnPath(`/img/payment-providers/stripe-${method.id.toLowerCase()}.svg`),
+                logoUrl: payMethood.includes(method.id) ? '' : cdnPath(`/img/payment-providers/stripe-${method.id.toLowerCase()}.svg`),
                 titleText: method.method === 'iban' ? language.translate('payment.stripe_sepa_display_name_text') : methodName,
             },
             [PaymentMethodId.StripeUPE]: {
-                logoUrl: ['credit_card', 'card'].includes(method.id) ? '' : cdnPath(`/img/payment-providers/stripe-${method.id.toLowerCase()}.svg`),
+                logoUrl: payMethood.includes(method.id) ? '' : cdnPath(`/img/payment-providers/stripe-${method.id.toLowerCase()}.svg`),
                 titleText: method.method === 'iban' ? language.translate('payment.stripe_sepa_display_name_text') : methodName,
             },
             [PaymentMethodId.WorldpayAccess]: {
