@@ -16,7 +16,8 @@
         "coverage/packages/samplePaymentMethod"
       ],
       "options": {
-        "jestConfig": "packages/samplePaymentMethod/jest.config.js"
+        "jestConfig": "packages/samplePaymentMethod/jest.config.js",
+        "passWithNoTests": true
       }
     }
   },

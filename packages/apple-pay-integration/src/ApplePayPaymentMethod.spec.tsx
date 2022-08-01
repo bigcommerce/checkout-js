@@ -1,4 +1,4 @@
-import { getMethod, PaymentMethodId, PaymentFormService, PaymentMethodProps } from "@bigcommerce/checkout-js/payment-integration";
+import { getMethod, PaymentMethodId, PaymentFormService } from "@bigcommerce/checkout-js/payment-integration";
 import { createCheckoutService, LanguageService } from "@bigcommerce/checkout-sdk";
 import { mount } from 'enzyme';
 import React from "react";
@@ -8,7 +8,7 @@ import ApplePaymentMethod from './ApplePayPaymentMethod';
 describe('ApplePay payment method', () => {
     const checkoutService = createCheckoutService();
     const checkoutState = checkoutService.getState();
-    const props: PaymentMethodProps = {
+    const props = {
         method: {
             ...getMethod(),
             id: PaymentMethodId.ApplePay,
@@ -28,6 +28,7 @@ describe('ApplePay payment method', () => {
     it('initializes ApplePay with required props', () => {
         const initializePayment = jest.spyOn(checkoutService,'initializePayment').mockResolvedValue(checkoutState);
         const component = mount(<ApplePaymentMethod {...props} />);
+
         expect(component.find(ApplePaymentMethod)).toHaveLength(1);
         expect(initializePayment).toHaveBeenCalled()
     });
@@ -36,6 +37,7 @@ describe('ApplePay payment method', () => {
         const deinitializePayment = jest.spyOn(checkoutService,'deinitializePayment').mockResolvedValue(checkoutState);
         const component = mount(<ApplePaymentMethod {...props} />);
         component.unmount();
+
         expect(component.find(ApplePaymentMethod)).toHaveLength(0);
         expect(deinitializePayment).toHaveBeenCalled()
     });
