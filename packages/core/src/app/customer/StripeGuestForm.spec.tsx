@@ -1,5 +1,4 @@
 import { mount, render } from 'enzyme';
-import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { PrivacyPolicyField } from '../privacyPolicy';
@@ -10,8 +9,6 @@ describe('StripeGuestForm', () => {
     let defaultProps: StripeGuestFormProps;
     let TestComponent: FunctionComponent<Partial<StripeGuestFormProps>>;
     const handleContinueAsGuest = jest.fn();
-    const handleInitialize = jest.fn();
-    const handleDeinitialize = jest.fn();
 
     beforeEach(() => {
         defaultProps = {
@@ -21,8 +18,8 @@ describe('StripeGuestForm', () => {
             isLoading: false,
             onChangeEmail: jest.fn(),
             onContinueAsGuest: handleContinueAsGuest,
-            deinitialize: handleDeinitialize(),
-            initialize: handleInitialize(),
+            deinitialize: jest.fn(),
+            initialize: jest.fn(),
             onShowLogin: jest.fn(),
             requiresMarketingConsent: false,
         };
@@ -31,8 +28,6 @@ describe('StripeGuestForm', () => {
             <StripeGuestForm
                 { ...defaultProps }
                 { ...props }
-                deinitialize={ noop }
-                initialize={ noop }
             />
         );
     });
@@ -71,17 +66,19 @@ describe('StripeGuestForm', () => {
     });
 
     it('initializes stripeGuestForm when component mounts', () => {
+        defaultProps.initialize = jest.fn((options:any) => {
+            options.stripeupe.onEmailChange('cosmefulanito@cosme.mx');
+        })
         mount(<TestComponent { ...defaultProps } />);
 
-        expect(handleInitialize).toHaveBeenCalled();
+        expect(defaultProps.initialize).toHaveBeenCalled();
     });
 
     it('deinitializes stripeGuestForm when component mounts', () => {
         const component = mount(<TestComponent { ...defaultProps } />);
         component.unmount();
 
-        expect(handleDeinitialize)
-            .toHaveBeenCalled();
+        expect(defaultProps.deinitialize).toHaveBeenCalled();
     });
 
     it('renders form with initial values', () => {

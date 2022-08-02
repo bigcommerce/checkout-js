@@ -54,21 +54,25 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
         setContinueAsAGuestButton(!email);
     }, [setContinueAsAGuestButton, onChangeEmail]);
 
-    useEffect(() => {
+    const stripeDeinitialize = () => {
         deinitialize({
             methodId: 'stripeupe',
         });
-    }, [deinitialize]);
+    };
 
-    useEffect(() => {
-        initialize({
+    const stripeInitialize = () => {
+        initialize( {
             methodId: 'stripeupe',
             stripeupe: {
                 container: 'stripeupeLink',
                 onEmailChange: setEmailCallback,
             },
-        });
-    }, [continueAsAGuestButton, initialize, setEmailCallback]);
+        })};
+
+    useEffect(() => {
+        stripeInitialize();
+        return () => stripeDeinitialize();
+    }, []);
 
     const renderField = useCallback((fieldProps: FieldProps<boolean>) => (
         <SubscribeField

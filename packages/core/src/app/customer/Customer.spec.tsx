@@ -15,6 +15,7 @@ import CustomerViewType from './CustomerViewType';
 import EmailLoginForm from './EmailLoginForm';
 import GuestForm, { GuestFormProps } from './GuestForm';
 import LoginForm, { LoginFormProps } from './LoginForm';
+import StripeGuestForm from './StripeGuestForm';
 
 describe('Customer', () => {
     let CustomerTest: FunctionComponent<CustomerProps & Partial<WithCheckoutCustomerProps>>;
@@ -89,6 +90,41 @@ describe('Customer', () => {
             expect(component.find(GuestForm).exists())
                 .toEqual(true);
         });
+
+        it('renders stripe guest form if enable', async () => {
+            const component = mount(
+                <CustomerTest isStripeLinkEnable={ true } viewType={ CustomerViewType.Guest } />
+            );
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
+            expect(component.find(StripeGuestForm).exists()).toEqual(true);
+        });
+
+        it('calls onUnhandledError if initialize was failed', async () => {
+            jest.spyOn(checkoutService, 'initializeCustomer').mockRejectedValue(new Error());
+            const unhandledError = jest.fn();
+
+            mount(<CustomerTest onUnhandledError={ unhandledError } viewType={ CustomerViewType.Guest } />);
+            await new Promise(resolve => process.nextTick(resolve));
+
+            expect(unhandledError).toHaveBeenCalledWith(expect.any(Error));
+        });
+
+        it('calls onUnhandledError if deinitialize was failed', async () => {
+            jest.spyOn(checkoutService, 'deinitializeCustomer').mockRejectedValue(new Error());
+            const unhandledError = jest.fn();
+
+            const component = mount(<CustomerTest onUnhandledError={ unhandledError } viewType={ CustomerViewType.Guest }/>);
+            await new Promise(resolve => process.nextTick(resolve));
+            component.unmount();
+            await new Promise(resolve => process.nextTick(resolve));
+
+            expect(unhandledError).toHaveBeenCalled();
+        });
+
+
 
         it('renders guest form if billing address is undefined', async () => {
             jest.spyOn(checkoutService.getState().data, 'getBillingAddress')
