@@ -33,7 +33,7 @@ describe('ApplePay payment method', () => {
         expect(initializePayment).toHaveBeenCalled()
     });
 
-    it('deitializes ApplePay with required props', () => {
+    it('deinitializes ApplePay with required props', () => {
         const deinitializePayment = jest.spyOn(checkoutService,'deinitializePayment').mockResolvedValue(checkoutState);
         const component = mount(<ApplePaymentMethod {...props} />);
         component.unmount();

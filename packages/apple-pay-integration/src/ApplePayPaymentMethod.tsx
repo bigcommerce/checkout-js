@@ -3,7 +3,7 @@ import React, { FunctionComponent, useEffect } from 'react';
 
 const ApplePaymentMethod: FunctionComponent<PaymentMethodProps> = ({ method, checkoutService, language, onUnhandledError }) => {
     useEffect(() => {
-        const componentDidMount = async ():Promise<void> => {
+        const initializePayment = async () => {
             try {
                 await checkoutService.initializePayment({
                     gatewayId: method.gateway,
@@ -16,11 +16,11 @@ const ApplePaymentMethod: FunctionComponent<PaymentMethodProps> = ({ method, che
             } catch (error) {
                 onUnhandledError(error);
             }
-        }
-        componentDidMount().then();
+        };
+        initializePayment();
 
         return () => {
-            const componentWillUnmount = async ():Promise<void> => {
+            const deinitializePayment = async () => {
                 try {
                     await checkoutService.deinitializePayment({
                         gatewayId: method.gateway,
@@ -29,12 +29,12 @@ const ApplePaymentMethod: FunctionComponent<PaymentMethodProps> = ({ method, che
                 } catch (error) {
                     onUnhandledError(error);
                 }
-            }
-            componentWillUnmount().then();
+            };
+            deinitializePayment();
         }
     }, [checkoutService, language, method, onUnhandledError]);
 
-    return <React.Fragment />;
+    return <></>;
 };
 
 export default toResolvableComponent(

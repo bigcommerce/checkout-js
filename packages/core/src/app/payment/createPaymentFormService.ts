@@ -1,9 +1,10 @@
-import { PaymentFormService, PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration';
+import { PaymentFormService } from '@bigcommerce/checkout-js/payment-integration';
 import { FormikContext } from 'formik';
 
 import { FormContextType } from '../ui/form';
 
 import { PaymentContextProps } from './PaymentContext';
+import { PaymentFormValues } from './PaymentForm';
 
 export default function createPaymentFormService(
     formikContext: FormikContext<PaymentFormValues>,

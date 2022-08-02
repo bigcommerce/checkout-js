@@ -51,7 +51,6 @@ function appConfig(options, argv) {
                 resolve: {
                     alias: {
                         "@bigcommerce/checkout-js/payment-integration": join(__dirname, 'packages/payment-integration/src'),
-                        "@bigcommerce/checkout-js/samplePaymentMethod": join(__dirname, 'packages/samplePaymentMethod/src'),
                         "@bigcommerce/checkout-js/apple-pay-integration": join(__dirname, 'packages/apple-pay-integration/src'),
                     },
                     extensions: ['.ts', '.tsx', '.js'],
@@ -152,7 +151,6 @@ function appConfig(options, argv) {
                             include: [
                                 join(__dirname, 'packages', 'core','src'),
                                 join(__dirname, 'packages', 'payment-integration','src'),
-                                join(__dirname, 'packages', 'samplePaymentMethod','src'),
                                 join(__dirname, 'packages', 'apple-pay-integration','src'),
                             ],
                             use: [

@@ -1,12 +1,8 @@
 {
   "extends": ["../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "parserOptions": {
-        "project": ["packages/core/tsconfig.json"]
-      },
       "rules": {
         "@bigcommerce/jsx-short-circuit-conditionals": "off",
         "@typescript-eslint/ban-ts-comment": "warn",
@@ -55,14 +51,6 @@
           }
         ]
       }
-    },
-    {
-      "files": ["*.ts", "*.tsx"],
-      "rules": {}
-    },
-    {
-      "files": ["*.js", "*.jsx"],
-      "rules": {}
     }
   ]
 }

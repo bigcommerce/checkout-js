@@ -3,7 +3,6 @@
   "projects": {
     "core": "packages/core",
     "payment-integration": "packages/payment-integration",
-    "samplePaymentMethod": "packages/samplePaymentMethod",
     "apple-pay-integration": "packages/apple-pay-integration"
   }
 }
