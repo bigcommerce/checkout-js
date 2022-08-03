@@ -1,4 +1,4 @@
-import { AdyenV3CreditCardComponentOptions } from '@bigcommerce/checkout-sdk';
+import { AdyenV3CreditCardComponentOptions, AdyenV3ValidationState, CardInstrument } from '@bigcommerce/checkout-sdk';
 import _ from 'lodash';
 import React, { useCallback, useRef, useState, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
@@ -6,7 +6,7 @@ import { Omit } from 'utility-types';
 import { TranslatedString } from '../../locale';
 import { Modal } from '../../ui/modal';
 
-import AdyenV3CardValidation, { AdyenV3CardValidationState } from './AdyenV3CardValidation';
+import AdyenV3CardValidation from './AdyenV3CardValidation';
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 
 export type AdyenPaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId' | 'hideContentWhenSignedOut'>;
@@ -36,7 +36,7 @@ const AdyenV3PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
     });
 
     const [showAdditionalActionContent, setShowAdditionalActionContent] = useState<boolean>(false);
-    const [cardValidationState, setCardValidationState] = useState<AdyenV3CardValidationState>();
+    const [cardValidationState, setCardValidationState] = useState<AdyenV3ValidationState>();
     const containerId = `adyen-${method.id}-component-field`;
     const additionalActionContainerId = `adyen-${method.id}-additional-action-component-field`;
     const cardVerificationContainerId = `adyen-${method.id}-tsv-component-field`;
@@ -95,18 +95,19 @@ const AdyenV3PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
                     onLoad,
                 },
                 shouldShowNumberField: ref.current.shouldShowNumberField,
-                validateCardFields: (state: AdyenV3CardValidationState) => { setCardValidationState(state); },
+                validateCardFields: (state: AdyenV3ValidationState) => { setCardValidationState(state); },
             },
         });
     };
 
-    const validateInstrument = (shouldShowNumberField: boolean) => {
+    const validateInstrument = (shouldShowNumberField: boolean, selectedInstrument: CardInstrument) => {
 
         ref.current.shouldShowNumberField = shouldShowNumberField;
 
         return <AdyenV3CardValidation
             cardValidationState = { cardValidationState }
-            paymentMethodType={ method.method }
+            paymentMethod={ method }
+            selectedInstrument={ selectedInstrument }
             shouldShowNumberField={ shouldShowNumberField }
             verificationFieldsContainerId={ cardVerificationContainerId }
         />;

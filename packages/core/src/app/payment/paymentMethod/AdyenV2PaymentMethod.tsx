@@ -1,4 +1,4 @@
-import { AdyenCreditCardComponentOptions, AdyenIdealComponentOptions } from '@bigcommerce/checkout-sdk';
+import { AdyenCreditCardComponentOptions, AdyenIdealComponentOptions, AdyenV2ValidationState, CardInstrument } from '@bigcommerce/checkout-sdk';
 import _ from 'lodash';
 import React, { useCallback, useRef, useState, FunctionComponent } from 'react';
 import { Omit } from 'utility-types';
@@ -6,7 +6,7 @@ import { Omit } from 'utility-types';
 import { TranslatedString } from '../../locale';
 import { Modal } from '../../ui/modal';
 
-import AdyenV2CardValidation, { AdyenV2CardValidationState } from './AdyenV2CardValidation';
+import AdyenV2CardValidation from './AdyenV2CardValidation';
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 
 export type AdyenPaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId' | 'hideContentWhenSignedOut'>;
@@ -39,7 +39,7 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
     });
 
     const [showAdditionalActionContent, setShowAdditionalActionContent] = useState<boolean>(false);
-    const [cardValidationState, setCardValidationState] = useState<AdyenV2CardValidationState>();
+    const [cardValidationState, setCardValidationState] = useState<AdyenV2ValidationState>();
     const containerId = `adyen-${method.id}-component-field`;
     const additionalActionContainerId = `adyen-${method.id}-additional-action-component-field`;
     const cardVerificationContainerId = `adyen-${method.id}-tsv-component-field`;
@@ -106,18 +106,18 @@ const AdyenV2PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
                     onLoad,
                 },
                 shouldShowNumberField: ref.current.shouldShowNumberField,
-                validateCardFields: (state: AdyenV2CardValidationState) => { setCardValidationState(state); },
+                validateCardFields: (state: AdyenV2ValidationState) => { setCardValidationState(state); },
             },
         });
     }, [initializePayment, component, cardVerificationContainerId, containerId, additionalActionContainerId, threeDS2ContainerId, adyenOptions, onBeforeLoad, onComplete, onLoad]);
 
-    const validateInstrument = (shouldShowNumberField: boolean) => {
-
+    const validateInstrument = (shouldShowNumberField: boolean, selectedInstrument: CardInstrument) => {
         ref.current.shouldShowNumberField = shouldShowNumberField;
 
         return <AdyenV2CardValidation
             cardValidationState = { cardValidationState }
-            paymentMethodType={ method.method }
+            paymentMethod={ method }
+            selectedInstrument={ selectedInstrument }
             shouldShowNumberField={ shouldShowNumberField }
             verificationFieldsContainerId={ cardVerificationContainerId }
         />;

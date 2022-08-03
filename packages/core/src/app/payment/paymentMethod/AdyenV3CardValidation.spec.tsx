@@ -1,10 +1,13 @@
+import { AdyenV3ValidationState } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
-import AdyenV3CardValidation, { AdyenV3CardValidationProps, AdyenV3CardValidationState } from './AdyenV3CardValidation';
+import AdyenV3CardValidation, { AdyenV3CardValidationProps } from './AdyenV3CardValidation';
+import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
 describe('AdyenV3CardValidation', () => {
     let defaultProps: AdyenV3CardValidationProps;
+    let paymentContext: PaymentContextProps;
     let AdyenV3CardValidationTest: FunctionComponent<AdyenV3CardValidationProps>;
 
     beforeEach(() => {
@@ -15,7 +18,9 @@ describe('AdyenV3CardValidation', () => {
 
     it('renders Adyen V3 Card Number and CVV fields', () => {
         defaultProps = {
-            paymentMethodType: 'scheme',
+            paymentMethod: {
+                method: 'scheme'
+            },
             shouldShowNumberField: true,
             verificationFieldsContainerId: 'container',
         };
@@ -24,13 +29,15 @@ describe('AdyenV3CardValidation', () => {
 
         const field = container.find('[id="encryptedSecurityCode"]');
 
-        expect(field.hasClass('adyen-checkout__input--error')).toBeFalsy();
+        expect(field.hasClass('adyen-checkout__input--error')).toBeTruthy();
         expect(field).toHaveLength(1);
     });
 
     it('renders Adyen V3 Card Number and Expiry Date fields', () => {
         defaultProps = {
-            paymentMethodType: 'bcmc',
+            paymentMethod: {
+                method: 'bcmc',
+            },
             shouldShowNumberField: true,
             verificationFieldsContainerId: 'container',
         };
@@ -43,10 +50,12 @@ describe('AdyenV3CardValidation', () => {
 
     it('render with empty required fields', () => {
         defaultProps = {
-            paymentMethodType: 'scheme',
+            paymentMethod: {
+                method: 'scheme'
+            },
             shouldShowNumberField: false,
             verificationFieldsContainerId: 'container',
-            cardValidationState: {} as AdyenV3CardValidationState,
+            cardValidationState: {} as AdyenV3ValidationState,
         };
 
         const container = mount(<AdyenV3CardValidationTest { ...defaultProps } />);
@@ -58,13 +67,15 @@ describe('AdyenV3CardValidation', () => {
 
     it('render with invalid fields', () => {
         defaultProps = {
-            paymentMethodType: 'scheme',
+            paymentMethod: {
+                method: 'scheme'
+            },
             shouldShowNumberField: false,
             verificationFieldsContainerId: 'container',
             cardValidationState: {
                 fieldType: 'encryptedSecurityCode',
                 valid: false,
-            } as AdyenV3CardValidationState,
+            } as AdyenV3ValidationState,
         };
 
         const container = mount(<AdyenV3CardValidationTest { ...defaultProps } />);
@@ -72,5 +83,105 @@ describe('AdyenV3CardValidation', () => {
         const field = container.find('[id="encryptedSecurityCode"]');
 
         expect(field.hasClass('adyen-checkout__input--error')).toBeTruthy();
+    });
+
+    describe('validation spec', () => {
+        beforeEach(() => {
+            defaultProps = {
+                paymentMethod: {
+                    method: 'scheme'
+                },
+                shouldShowNumberField: true,
+                verificationFieldsContainerId: 'container',
+                selectedInstrument: {
+                    bigpayToken: '123',
+                    brand: 'visa',
+                    defaultInstrument: false,
+                    expiryMonth: '03',
+                    expiryYear: '2030',
+                    iin: '1',
+                    last4: '1111',
+                    method: 'scheme',
+                    provider: 'adyenv3',
+                    trustedShippingAddress: false,
+                    type: 'card',
+                },
+            };
+        });
+
+        it('should render error when entered last 4 symbols is not equal to the last 4 from selected card', () => {
+            defaultProps = {
+                paymentMethod: {
+                    method: 'scheme'
+                },
+                shouldShowNumberField: true,
+                verificationFieldsContainerId: 'container',
+                selectedInstrument: {
+                    bigpayToken: '123',
+                    brand: 'visa',
+                    defaultInstrument: false,
+                    expiryMonth: '03',
+                    expiryYear: '2030',
+                    iin: '1',
+                    last4: '1111',
+                    method: 'scheme',
+                    provider: 'adyenv3',
+                    trustedShippingAddress: false,
+                    type: 'card',
+                },
+            };
+
+            const container = mount(<AdyenV3CardValidationTest { ...defaultProps } />);
+            container.setProps({
+                cardValidationState: {
+                    blob: 'adyenjs_',
+                    encryptedFieldName: 'encryptedCardNumber',
+                    endDigits: '0000',
+                    fieldType: 'encryptedCardNumber',
+                    valid: true,
+                },
+            });
+            container.update();
+            const field = container.find('[id="encryptedCardNumber"]');
+            
+            expect(field.hasClass('adyen-checkout__input--error')).toBeTruthy();
+            expect(field).toHaveLength(1);
+        });
+
+        it('should NOT render error when entered last 4 symbols is equal to the last 4 from selected card', () => {
+            const container = mount(<AdyenV3CardValidationTest { ...defaultProps } />);
+            container.setProps({
+                cardValidationState: {
+                    blob: 'adyenjs_',
+                    encryptedFieldName: 'encryptedCardNumber',
+                    endDigits: '1111',
+                    fieldType: 'encryptedCardNumber',
+                    valid: true,
+                },
+            });
+            container.update();
+
+            const field = container.find('[id="encryptedCardNumber"]');
+
+            expect(field.hasClass('adyen-checkout__input--error')).toBeFalsy();
+            expect(field).toHaveLength(1);
+        });
+
+        it('should disable submit payment button initially', () => {
+            paymentContext = {
+                disableSubmit: jest.fn(),
+                setSubmit: jest.fn(),
+                setValidationSchema: jest.fn(),
+                hidePaymentSubmitButton: jest.fn(),
+            };
+    
+            mount(
+                <PaymentContext.Provider value={ paymentContext }>
+                    <AdyenV3CardValidationTest { ...defaultProps } />
+                </PaymentContext.Provider>
+            );
+    
+            expect(paymentContext.disableSubmit).toHaveBeenCalledWith(defaultProps.paymentMethod, true);
+        });
     });
 });
