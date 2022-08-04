@@ -93,7 +93,12 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             onFinalizeError = noop,
             onReady = noop,
             onUnhandledError = noop,
+            usableStoreCredit,
         } = this.props;
+
+        if (usableStoreCredit) {
+            this.handleStoreCreditChange(true);
+        }
 
         try {
             await loadPaymentMethods();

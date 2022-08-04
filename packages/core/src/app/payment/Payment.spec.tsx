@@ -243,6 +243,23 @@ describe('Payment', () => {
             .toHaveBeenCalledWith(false);
     });
 
+    it('calls handleStoreCreditChange when component did mount', async () => {
+        jest.spyOn(checkoutService, 'applyStoreCredit')
+            .mockResolvedValue(checkoutState);
+        const defaultProps = {
+            onSubmit: jest.fn(),
+            onSubmitError: jest.fn(),
+            onUnhandledError: jest.fn(),
+            usableStoreCredit: 10,
+        }
+        mount(<PaymentTest { ...defaultProps } />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        expect(checkoutService.applyStoreCredit)
+            .toHaveBeenCalledWith(true);
+    });
+
     it('sets default selected payment method', async () => {
         const container = mount(<PaymentTest { ...defaultProps } />);
 
