@@ -1,4 +1,3 @@
-import { PaymentMethodId } from '@bigcommerce/checkout-js/payment-integration';
 import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
@@ -17,6 +16,7 @@ import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
 import BlueSnapV2PaymentMethod, { BlueSnapV2PaymentMethodProps } from './BlueSnapV2PaymentMethod';
 import HostedPaymentMethod from './HostedPaymentMethod';
+import PaymentMethodId from './PaymentMethodId';
 
 describe('when using BlueSnapV2 payment', () => {
     let defaultProps: BlueSnapV2PaymentMethodProps;

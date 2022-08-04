@@ -1,4 +1,3 @@
-import { HostedPaymentMethodProps } from '@bigcommerce/checkout-js/payment-integration';
 import { createCheckoutService, CheckoutSelectors, CheckoutService, StoreConfig } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
@@ -16,7 +15,7 @@ import { AccountInstrumentFieldset } from '../storedInstrument';
 import { getInstruments } from '../storedInstrument/instruments.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
-import HostedPaymentMethod from './HostedPaymentMethod';
+import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
 
 describe('HostedPaymentMethod', () => {
     let checkoutService: CheckoutService;

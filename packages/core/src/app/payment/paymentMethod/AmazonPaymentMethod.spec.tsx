@@ -1,4 +1,3 @@
-import { PaymentMethodId } from '@bigcommerce/checkout-js/payment-integration';
 import { createCheckoutService, PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { noop } from 'lodash';
@@ -9,6 +8,7 @@ import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
 import AmazonPaymentMethod, { AmazonPaymentMethodProps } from './AmazonPaymentMethod';
 import HostedWidgetPaymentMethod from './HostedWidgetPaymentMethod';
+import PaymentMethodId from './PaymentMethodId';
 
 describe('When using AmazonPaymentMethod', () => {
     const checkoutService = createCheckoutService();

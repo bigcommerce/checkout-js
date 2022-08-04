@@ -1,7 +1,7 @@
-import { HostedPaymentMethodProps } from '@bigcommerce/checkout-js/payment-integration';
 import React, { useCallback, useState, FunctionComponent } from 'react';
 
 import BoltCustomForm from './BoltCustomForm';
+import { HostedPaymentMethodProps } from './HostedPaymentMethod';
 import HostedWidgetPaymentMethod from './HostedWidgetPaymentMethod';
 
 const BoltEmbeddedPaymentMethod: FunctionComponent<HostedPaymentMethodProps> = ({

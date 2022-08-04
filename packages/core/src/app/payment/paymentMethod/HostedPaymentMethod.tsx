@@ -1,5 +1,5 @@
-import { HostedPaymentMethodProps, PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration';
-import { AccountInstrument, CheckoutSelectors, PaymentInstrument } from '@bigcommerce/checkout-sdk';
+import { AccountInstrument, CheckoutSelectors, PaymentInitializeOptions, PaymentInstrument, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
+import { PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { find, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
@@ -12,6 +12,16 @@ import { LoadingOverlay } from '../../ui/loading';
 import { isAccountInstrument, isInstrumentFeatureAvailable, AccountInstrumentFieldset } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
+
+export interface HostedPaymentMethodProps {
+    description?: ReactNode;
+    isInitializing?: boolean;
+    isUsingMultiShipping?: boolean;
+    method: PaymentMethod;
+    deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
+    initializePayment(options: PaymentInitializeOptions): Promise<CheckoutSelectors>;
+    onUnhandledError?(error: Error): void;
+}
 
 interface HostedPaymentMethodState {
     isAddingNewInstrument: boolean;

@@ -1,6 +1,6 @@
-import { PaymentMethodId } from '@bigcommerce/checkout-js/payment-integration';
 import { LanguageService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 
+import PaymentMethodId from './PaymentMethodId';
 
 export default function getPaymentMethodDisplayName(
     language: LanguageService
