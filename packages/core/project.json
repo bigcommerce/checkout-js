@@ -10,6 +10,10 @@
             },
             "dependsOn": [
                 {
+                    "target": "generate",
+                    "projects": "self"
+                },
+                {
                     "target": "build",
                     "projects": "dependencies"
                 }
@@ -22,6 +26,10 @@
             },
             "dependsOn": [
                 {
+                    "target": "generate",
+                    "projects": "self"
+                },
+                {
                     "target": "build",
                     "projects": "dependencies"
                 }
@@ -33,7 +41,13 @@
             "options": {
                 "jestConfig": "packages/core/jest.config.js",
                 "passWithNoTests": false
-            }
+            },
+            "dependsOn": [
+                {
+                    "target": "generate",
+                    "projects": "self"
+                }
+            ]
         },
         "lint": {
             "executor": "@nrwl/linter:eslint",
@@ -41,6 +55,21 @@
             "fix": true,
             "options": {
                 "lintFilePatterns": ["packages/core/**/*.{ts,tsx}"]
+            },
+            "dependsOn": [
+                {
+                    "target": "generate",
+                    "projects": "self"
+                }
+            ]
+        },
+        "generate": {
+            "executor": "@nrwl/workspace:run-commands",
+            "options": {
+                "commands": [
+                    "npx nx generate @bigcommerce/checkout-js/workspace-tools:auto-export --projectName=core"
+                ],
+                "parallel": false
             }
         }
     },

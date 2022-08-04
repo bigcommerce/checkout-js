@@ -7,8 +7,7 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 
-const { AsyncHookPlugin, BuildHookPlugin, autoExport, getNextVersion, transformManifest } = require('./scripts/webpack');
-const autoExportConfig = require('./auto-export.config.json');
+const { AsyncHookPlugin, BuildHookPlugin, getNextVersion, transformManifest } = require('./scripts/webpack');
 
 const ENTRY_NAME = 'checkout';
 const LIBRARY_NAME = 'checkout';
@@ -133,9 +132,6 @@ function appConfig(options, argv) {
                         },
                         onError(errors) {
                             eventEmitter.emit('app:error', errors);
-                        },
-                        onBeforeCompile() {
-                            return Promise.all(autoExportConfig.entries.map(autoExport));
                         },
                     }),
                 ].filter(Boolean),
