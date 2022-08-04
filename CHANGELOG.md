@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.237.0](https://github.com/bigcommerce/checkout-js/compare/v1.236.0...v1.237.0) (2022-08-04)
+
+
+### Features
+
+* **payment:** PAYPAL-1445 fixed storeCredit checkbox ([575fcd4](https://github.com/bigcommerce/checkout-js/commit/575fcd4c63dad7ba13e9606626fa02a2b44e3462))
+
 ## [1.236.0](https://github.com/bigcommerce/checkout-js/compare/v1.235.2...v1.236.0) (2022-08-03)
 
 
