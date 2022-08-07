@@ -1,12 +1,12 @@
-import { HostedPaymentMethodProps, PaymentMethodProviderType } from '@bigcommerce/checkout-js/payment-integration';
 import React, { FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../../checkout';
 import { EMPTY_ARRAY } from '../../common/utility';
 
 import HostedCreditCardPaymentMethod, { HostedCreditCardPaymentMethodProps } from './HostedCreditCardPaymentMethod';
-import HostedPaymentMethod from './HostedPaymentMethod';
+import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
 import { PaymentMethodProps } from './PaymentMethod';
+import PaymentMethodProviderType from "./PaymentMethodProviderType";
 
 export type PaypalPaymentsProPaymentMethodProps = HostedPaymentMethodProps | HostedCreditCardPaymentMethodProps;
 

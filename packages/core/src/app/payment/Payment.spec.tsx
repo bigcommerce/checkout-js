@@ -1,4 +1,3 @@
-import { PaymentMethodId } from '@bigcommerce/checkout-js/payment-integration';
 import { createCheckoutService, CheckoutSelectors, CheckoutService, CustomError, PaymentMethod, RequestError } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { EventEmitter } from 'events';
@@ -16,6 +15,7 @@ import { getOrder } from '../order/orders.mock';
 import { getConsignment } from '../shipping/consignment.mock';
 import { Button } from '../ui/button';
 
+import { PaymentMethodId } from './paymentMethod';
 import { getPaymentMethod } from './payment-methods.mock';
 import Payment, { PaymentProps } from './Payment';
 import PaymentForm, { PaymentFormProps } from './PaymentForm';

@@ -1,4 +1,3 @@
-import { HostedPaymentMethodProps, PaymentMethodId } from '@bigcommerce/checkout-js/payment-integration';
 import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import { Formik } from 'formik';
@@ -14,7 +13,8 @@ import { getPaymentMethod } from '../payment-methods.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
 import BoltClientPaymentMethod from './BoltClientPaymentMethod';
-import HostedPaymentMethod from './HostedPaymentMethod';
+import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
+import PaymentMethodId from './PaymentMethodId';
 
 describe('BoltClientPaymentMethod', () => {
     let defaultProps: HostedPaymentMethodProps;

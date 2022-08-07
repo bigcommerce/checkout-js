@@ -1,4 +1,3 @@
-import { PaymentMethodId, PaymentMethodType, PaymentMethodProviderType } from '@bigcommerce/checkout-js/payment-integration';
 import { CheckoutSelectors, CustomerInitializeOptions, CustomerRequestOptions, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
 import React, { memo, FunctionComponent } from 'react';
 
@@ -29,6 +28,9 @@ import MolliePaymentMethod from './MolliePaymentMethod';
 import MonerisPaymentMethod from './MonerisPaymentMethod';
 import OfflinePaymentMethod from './OfflinePaymentMethod';
 import OpyPaymentMethod from './OpyPaymentMethod';
+import PaymentMethodId from './PaymentMethodId';
+import PaymentMethodProviderType from './PaymentMethodProviderType';
+import PaymentMethodType from './PaymentMethodType';
 import PaypalCommerceCreditCardPaymentMethod from './PaypalCommerceCreditCardPaymentMethod';
 import PaypalCommercePaymentMethod from './PaypalCommercePaymentMethod';
 import PaypalExpressPaymentMethod from './PaypalExpressPaymentMethod';

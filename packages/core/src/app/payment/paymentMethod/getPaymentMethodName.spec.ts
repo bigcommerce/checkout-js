@@ -1,10 +1,10 @@
-import { PaymentMethodId } from '@bigcommerce/checkout-js/payment-integration';
 import { createLanguageService, LanguageService } from '@bigcommerce/checkout-sdk';
 
 import { FALLBACK_TRANSLATIONS } from '../../locale/translations';
 import { getPaymentMethod } from '../payment-methods.mock';
 
 import getPaymentMethodName from './getPaymentMethodName';
+import PaymentMethodId from './PaymentMethodId';
 
 describe('getPaymentMethodName()', () => {
     let language: LanguageService;

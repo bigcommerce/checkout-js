@@ -1,4 +1,3 @@
-import { HostedPaymentMethodProps, PaymentMethodId } from '@bigcommerce/checkout-js/payment-integration';
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
@@ -7,8 +6,9 @@ import { getPaymentMethod } from '../payment-methods.mock';
 import BoltClientPaymentMethod from './BoltClientPaymentMethod';
 import BoltEmbeddedPaymentMethod from './BoltEmbeddedPaymentMethod';
 import BoltPaymentMethod from './BoltPaymentMethod';
-import HostedPaymentMethod from './HostedPaymentMethod';
+import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
 import HostedWidgetPaymentMethod from './HostedWidgetPaymentMethod';
+import PaymentMethodId from './PaymentMethodId';
 
 describe('when using Bolt payment', () => {
     let defaultProps: HostedPaymentMethodProps;

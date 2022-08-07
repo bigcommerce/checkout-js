@@ -1,10 +1,11 @@
-import { PaymentMethodId, PaymentMethodType } from '@bigcommerce/checkout-js/payment-integration';
 import React, { memo, Fragment, FunctionComponent } from 'react';
 
 import { withCheckout } from '../checkout';
 import { TranslatedString } from '../locale';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 import { IconBolt } from '../ui/icon';
+
+import { PaymentMethodId, PaymentMethodType } from './paymentMethod';
 
 interface PaymentSubmitButtonTextProps {
     methodGateway?: string;

@@ -1,4 +1,3 @@
-import { HostedPaymentMethodProps, PaymentMethodId, PaymentMethodProviderType } from '@bigcommerce/checkout-js/payment-integration';
 import { createCheckoutService, CheckoutSelectors, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
@@ -17,10 +16,12 @@ import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 import BarclaycardPaymentMethod from './BarclaycardPaymentMethod';
 import CheckoutcomCustomPaymentMethod, { CheckoutcomCustomPaymentMethodProps } from './CheckoutcomCustomPaymentMethod';
 import CreditCardPaymentMethod, { CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
-import HostedPaymentMethod from './HostedPaymentMethod';
+import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
 import OfflinePaymentMethod, { OfflinePaymentMethodProps } from './OfflinePaymentMethod';
 import OpyPaymentMethod from './OpyPaymentMethod';
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
+import PaymentMethodId from './PaymentMethodId';
+import PaymentMethodProviderType from './PaymentMethodProviderType';
 import PPSDKPaymentMethod from './PPSDKPaymentMethod';
 
 describe('PaymentMethod', () => {

@@ -1,4 +1,4 @@
-import { PaymentMethodId, PaymentMethodProviderType, PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration';
+import { PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration';
 import { CartChangedError, CheckoutSelectors, CheckoutSettings, OrderRequestBody, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { compact, find, isEmpty, noop } from 'lodash';
@@ -14,7 +14,7 @@ import { LoadingOverlay } from '../ui/loading';
 
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
-import { getUniquePaymentMethodId } from './paymentMethod';
+import { getUniquePaymentMethodId, PaymentMethodId, PaymentMethodProviderType } from './paymentMethod';
 import PaymentContext from './PaymentContext';
 import PaymentForm from './PaymentForm';
 

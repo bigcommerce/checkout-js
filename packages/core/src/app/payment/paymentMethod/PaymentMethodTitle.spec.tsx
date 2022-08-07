@@ -1,4 +1,4 @@
-import { PaymentMethodId, PaymentMethodType, PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration';
+import { PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration';
 import { createCheckoutService, CheckoutService, StoreConfig } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import { Formik } from 'formik';
@@ -12,6 +12,8 @@ import { CreditCardIconList } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
 
 import getPaymentMethodName from './getPaymentMethodName';
+import PaymentMethodId from './PaymentMethodId';
+import PaymentMethodType from './PaymentMethodType';
 import PaymentMethodTitle, { PaymentMethodTitleProps } from './PaymentMethodTitle';
 
 describe('PaymentMethodTitle', () => {

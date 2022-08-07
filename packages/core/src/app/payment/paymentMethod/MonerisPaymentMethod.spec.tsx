@@ -1,4 +1,3 @@
-import { PaymentMethodId } from '@bigcommerce/checkout-js/payment-integration';
 import { createCheckoutService, CheckoutSelectors, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
@@ -14,6 +13,7 @@ import { getPaymentMethod } from '../payment-methods.mock';
 
 import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
+import PaymentMethodId from './PaymentMethodId';
 
 const hostedFormOptions = {
     fields: {
