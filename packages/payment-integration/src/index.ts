@@ -1,3 +1,4 @@
+export { default as CheckoutButtonProps } from './CheckoutButtonProps';
 export { default as PaymentFormService } from './PaymentFormService';
 export { default as PaymentMethodProps } from './PaymentMethodProps';
 export { default as ResolvableComponent } from './ResolvableComponent';
