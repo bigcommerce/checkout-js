@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.238.0](https://github.com/bigcommerce/checkout-js/compare/v1.237.0...v1.238.0) (2022-08-07)
+
+
+### Features
+
+* **payment:** CHECKOUT-0000 Optimize Payment Integration JS API ([#956](https://github.com/bigcommerce/checkout-js/issues/956)) ([a0d5f1d](https://github.com/bigcommerce/checkout-js/commit/a0d5f1dcc6987e1ee5f2079eae35073d492b539f))
+
 ## [1.237.0](https://github.com/bigcommerce/checkout-js/compare/v1.236.0...v1.237.0) (2022-08-04)
 
 
