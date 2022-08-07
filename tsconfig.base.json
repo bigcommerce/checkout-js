@@ -26,6 +26,9 @@
       ],
       "@bigcommerce/checkout-js/payment-integration": [
         "packages/payment-integration/src/index.ts"
+      ],
+      "@bigcommerce/checkout-js/apple-pay-integration": [
+        "packages/apple-pay-integration/src/index.ts"
       ]
     },
     "resolveJsonModule": true,

@@ -3,7 +3,6 @@
     "@bigcommerce/eslint-config"
   ],
   "root": true,
-  "ignorePatterns": ["**/*"],
   "plugins": ["@nrwl/nx"],
   "env": {
     "browser": true
@@ -19,8 +18,16 @@
             "allow": [],
             "depConstraints": [
               {
-                "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
+                "sourceTag": "scope:core",
+                "onlyDependOnLibsWithTags": ["scope:shared"]
+              },
+              {
+                "sourceTag": "scope:shared",
+                "onlyDependOnLibsWithTags": ["scope:shared"]
+              },
+              {
+                "sourceTag": "scope:integration",
+                "onlyDependOnLibsWithTags": ["scope:shared"]
               }
             ]
           }
