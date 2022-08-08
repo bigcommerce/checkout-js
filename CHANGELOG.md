@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.241.0](https://github.com/bigcommerce/checkout-js/compare/v1.240.0...v1.241.0) (2022-08-08)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6655 Make Screen reader say each error ([35c271e](https://github.com/bigcommerce/checkout-js/commit/35c271e86eb53538d9e68065850f1727ef6180ca))
+
 ## [1.240.0](https://github.com/bigcommerce/checkout-js/compare/v1.239.0...v1.240.0) (2022-08-08)
 
 
