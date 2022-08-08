@@ -98,6 +98,7 @@ const MultiCheckboxFormField: FunctionComponent<MultiCheckboxFormFieldProps> = (
         />
 
         <FormFieldError
+            errorId={ `${id ?? name}-field-error-message` }
             name={ name }
             testId={ `${kebabCase(name)}-field-error-message` }
         />

@@ -41,6 +41,7 @@ exports[`Customer when view type is "guest" matches snapshot 1`] = `
                 <label
                   class="form-label optimizedCheckout-form-label"
                   for="email"
+                  id="email-label"
                 >
                   Email Address
                 </label>
@@ -135,6 +136,7 @@ exports[`Customer when view type is "login" matches snapshot 1`] = `
             <label
               class="form-label optimizedCheckout-form-label"
               for="email"
+              id="email-label"
             >
               Email Address
             </label>
@@ -153,6 +155,7 @@ exports[`Customer when view type is "login" matches snapshot 1`] = `
             <label
               class="form-label optimizedCheckout-form-label"
               for="password"
+              id="password-label"
             >
               Password
             </label>

@@ -12,6 +12,7 @@ export interface FormFieldProps {
     label?: ReactNode | ((fieldName: string) => ReactNode);
     labelContent?: ReactNode;
     footer?: ReactNode;
+    id?: string;
     input(field: FieldProps<string>): ReactNode;
     onChange?(value: string): void;
 }
@@ -24,17 +25,19 @@ const FormField: FunctionComponent<FormFieldProps> = ({
     footer,
     input,
     name,
+    id,
 }) => {
     const renderField = useCallback(props => (
         <Fragment>
             { label && (typeof label === 'function' ? label(name) : label) }
-            { labelContent && !label && <Label htmlFor={ name }>
+            { labelContent && !label && <Label htmlFor={ name } id={ `${id ?? name}-label` }>
                 { labelContent }
             </Label> }
 
             { input(props) }
 
             <FormFieldError
+                errorId={ `${id ?? name}-field-error-message` }
                 name={ name }
                 testId={ `${kebabCase(name)}-field-error-message` }
             />
@@ -44,6 +47,7 @@ const FormField: FunctionComponent<FormFieldProps> = ({
     ), [
         label,
         labelContent,
+        id,
         input,
         name,
         footer,
