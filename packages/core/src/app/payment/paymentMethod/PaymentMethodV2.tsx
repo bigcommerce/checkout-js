@@ -2,12 +2,12 @@ import { PaymentMethodProps as ResolvedPaymentMethodProps, PaymentFormValues } f
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import React, { ComponentType } from 'react';
 
-import { resolvePaymentMethod, PaymentMethodResolveId } from '../../core/paymentIntegration';
 import { withCheckout, WithCheckoutProps } from '../../checkout';
 import { connectFormik, WithFormikProps } from '../../common/form';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { withForm, WithFormProps } from '../../ui/form';
 import createPaymentFormService from '../createPaymentFormService';
+import resolvePaymentMethod, { PaymentMethodResolveId } from '../resolvePaymentMethod';
 import withPayment, { WithPaymentProps } from '../withPayment';
 
 export interface PaymentMethodProps {
@@ -55,6 +55,10 @@ const PaymentMethodContainer: ComponentType<
         gateway: method.gateway,
         type: method.type,
     });
+
+    if (!ResolvedPaymentMethod) {
+        return null;
+    }
 
     return <ResolvedPaymentMethod
         checkoutService={ checkoutService }
