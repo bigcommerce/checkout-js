@@ -3,7 +3,8 @@ build
 coverage
 tests/report/
 tests/screenshots/
-packages/core/src/app/generated/
+/dist-tools
+/packages/**/generated
 __temp__
 .idea
 .vscode

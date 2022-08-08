@@ -29,6 +29,9 @@
       ],
       "@bigcommerce/checkout-js/apple-pay-integration": [
         "packages/apple-pay-integration/src/index.ts"
+      ],
+      "@bigcommerce/checkout-js/workspace-tools": [
+        "packages/workspace-tools/src/index.ts"
       ]
     },
     "resolveJsonModule": true,
