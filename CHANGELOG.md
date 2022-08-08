@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.239.0](https://github.com/bigcommerce/checkout-js/compare/v1.238.0...v1.239.0) (2022-08-08)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6426 Refactor ApplePay as Monorepo Package ([#950](https://github.com/bigcommerce/checkout-js/issues/950)) ([885116f](https://github.com/bigcommerce/checkout-js/commit/885116fb60be6657db37ce466591ca45f346a63a))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-0000 fix ApplePay unit test ([#957](https://github.com/bigcommerce/checkout-js/issues/957)) ([ee96876](https://github.com/bigcommerce/checkout-js/commit/ee96876d55ca3519a0de730e60f60bb5a97ff624))
+
 ## [1.238.0](https://github.com/bigcommerce/checkout-js/compare/v1.237.0...v1.238.0) (2022-08-07)
 
 
