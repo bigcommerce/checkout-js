@@ -4,6 +4,7 @@
     "apple-pay-integration": "packages/apple-pay-integration",
     "core": "packages/core",
     "checkout-button-integration": "packages/checkout-button-integration",
+    "google-pay-integration": "packages/google-pay-integration",
     "payment-integration": "packages/payment-integration",
     "workspace-tools": "packages/workspace-tools"
   }
