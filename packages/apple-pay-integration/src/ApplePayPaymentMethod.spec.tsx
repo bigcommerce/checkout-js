@@ -1,4 +1,4 @@
-import { getMethod, PaymentMethodId, PaymentFormService } from "@bigcommerce/checkout-js/payment-integration";
+import { getMethod, PaymentFormService } from "@bigcommerce/checkout-js/payment-integration";
 import { createCheckoutService, LanguageService } from "@bigcommerce/checkout-sdk";
 import { mount } from 'enzyme';
 import React from "react";
@@ -11,7 +11,7 @@ describe('ApplePay payment method', () => {
     const props = {
         method: {
             ...getMethod(),
-            id: PaymentMethodId.ApplePay,
+            id: 'applepay',
             initializationData: {
                 merchantCapabilities: [
                     'supports3DS',
