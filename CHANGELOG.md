@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.240.0](https://github.com/bigcommerce/checkout-js/compare/v1.239.0...v1.240.0) (2022-08-08)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6781 Add component for loading checkout buttons from integration packages ([3a70a97](https://github.com/bigcommerce/checkout-js/commit/3a70a9797cffa52d31ae7a7dd540d2fd759c49c5))
+
 ## [1.239.0](https://github.com/bigcommerce/checkout-js/compare/v1.238.0...v1.239.0) (2022-08-08)
 
 
