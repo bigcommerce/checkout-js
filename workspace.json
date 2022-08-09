@@ -1,9 +1,10 @@
 {
   "version": 2,
   "projects": {
-    "core": "packages/core",
-    "payment-integration": "packages/payment-integration",
     "apple-pay-integration": "packages/apple-pay-integration",
+    "core": "packages/core",
+    "checkout-button-integration": "packages/checkout-button-integration",
+    "payment-integration": "packages/payment-integration",
     "workspace-tools": "packages/workspace-tools"
   }
 }

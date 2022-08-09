@@ -3,7 +3,7 @@ import { createCheckoutService, createLanguageService } from '@bigcommerce/check
 import { mount } from 'enzyme';
 import React from 'react';
 
-import CheckoutButton from './CheckoutButtonV2';
+import CheckoutButton from './CheckoutButton';
 
 describe('CheckoutButton', () => {
     let defaultProps: CheckoutButtonProps;

@@ -9,17 +9,22 @@ import { LocaleProvider } from '../locale';
 import { getStoreConfig } from '../config/config.mock';
 
 import CheckoutButtonList, { CheckoutButtonListProps } from './CheckoutButtonListV2';
-import CheckoutButton from './CheckoutButtonV2';
 
 const FooButton: ComponentType<CheckoutButtonProps> = () => (
     <button>Foo</button>
 );
 
+const DefaultButton: ComponentType<CheckoutButtonProps> = () => (
+    <button>Default</button>
+);
+
 jest.mock('./resolveCheckoutButton', () => {
     return ({ id }: CheckoutButtonResolveId) => {
         if (id === 'foo') {
-            return id === 'foo' ? FooButton : undefined;
+            return FooButton;
         }
+
+        return DefaultButton;
     };
 });
 
@@ -69,7 +74,7 @@ describe('CheckoutButtonListV2', () => {
 
         const component = mount(<CheckoutButtonListTest { ...defaultProps } />);
 
-        expect(component.find(CheckoutButton).length)
+        expect(component.find(DefaultButton).length)
             .toEqual(1);
         expect(component.find(FooButton).length)
             .toEqual(1);
