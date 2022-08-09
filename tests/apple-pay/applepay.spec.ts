@@ -1,5 +1,5 @@
 import { test, PaymentStepAsGuestPreset } from '../';
-import { applepay, internalOrder, order, orderPayment, payments, validateMerchantResponse } from './ApplePayTestMockResponse';
+import { internalOrder, order, orderPayment, validateMerchantResponse } from './ApplePayTestMockResponse';
 
 test.describe('ApplePay', () => {
     test('ApplePay in payment step', async ({ assertions, checkout, page }) => {
@@ -11,8 +11,6 @@ test.describe('ApplePay', () => {
         await checkout.use(new PaymentStepAsGuestPreset(storeUrl));
         await checkout.create('ApplePay in Payment Step', storeUrl);
         await checkout.route(/order-confirmation.*/, './tests/support/orderConfirmation.ejs', { orderId: '124' });
-        await page.route(/.*\/api\/storefront\/payments\?cartId=.*/, route => route.fulfill({ ...responseProps, body: payments }));
-        await page.route(/.*\/api\/storefront\/payments\/applepay\?cartId=.*/, route => route.fulfill({ ...responseProps, body: applepay }));
         await page.route('**/api/public/v1/payments/applepay/validate_merchant', route => route.fulfill({ ...responseProps, body: validateMerchantResponse }));
         await page.route(/.*\/api\/storefront\/orders\/124.*/, route => route.fulfill({...responseProps, body: order }));
         await page.route('**/api/public/v1/orders/payments', route => route.fulfill({ ...responseProps, body: orderPayment }));
