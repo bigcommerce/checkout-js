@@ -30,6 +30,7 @@ function getPaymentMethodTitle(
     const cdnPath = (path: string) => `${basePath}${path}`;
 
     return method => {
+        const paymentWithLogo = method.initializationData?.methodsWithLogo ? method.initializationData.methodsWithLogo : [];
         const methodName = getPaymentMethodName(language)(method);
         const methodDisplayName = getPaymentMethodDisplayName(language)(method);
         // TODO: API could provide the data below so UI can read simply read it.
@@ -165,11 +166,11 @@ function getPaymentMethodTitle(
                 titleText: methodName,
             },
             [PaymentMethodId.StripeV3]: {
-                logoUrl: ['credit_card', 'card'].includes(method.id) ? '' : cdnPath(`/img/payment-providers/stripe-${method.id.toLowerCase()}.svg`),
+                logoUrl: paymentWithLogo.includes(method.id) ? cdnPath(`/img/payment-providers/stripe-${method.id.toLowerCase()}.svg`) : '',
                 titleText: method.method === 'iban' ? language.translate('payment.stripe_sepa_display_name_text') : methodName,
             },
             [PaymentMethodId.StripeUPE]: {
-                logoUrl: ['credit_card', 'card'].includes(method.id) ? '' : cdnPath(`/img/payment-providers/stripe-${method.id.toLowerCase()}.svg`),
+                logoUrl: paymentWithLogo.includes(method.id) ? cdnPath(`/img/payment-providers/stripe-${method.id.toLowerCase()}.svg`) : '',
                 titleText: method.method === 'iban' ? language.translate('payment.stripe_sepa_display_name_text') : methodName,
             },
             [PaymentMethodId.WorldpayAccess]: {
