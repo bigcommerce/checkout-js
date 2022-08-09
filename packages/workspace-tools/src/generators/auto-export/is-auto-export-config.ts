@@ -9,6 +9,10 @@ export default function isAutoExportConfig(config: unknown): config is AutoExpor
         return false;
     }
 
+    if (!hasKey(config, 'tsConfigPath') || typeof config.tsConfigPath !== 'string') {
+        return false;
+    }
+
     return config.entries.every(entry => {
         if (!(entry instanceof Object)) {
             return false;

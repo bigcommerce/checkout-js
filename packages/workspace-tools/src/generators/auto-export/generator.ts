@@ -33,7 +33,10 @@ export default async function autoExportGenerator(
                 join(__dirname, './templates'),
                 parse(entry.outputPath).dir,
                 {
-                    content: await autoExport(entry),
+                    content: await autoExport({
+                        ...entry,
+                        tsConfigPath: config.tsConfigPath,
+                    }),
                     outputName: basename(entry.outputPath),
                 }
             );
