@@ -5,5 +5,6 @@
             "outputPath": "packages/core/src/app/generated/paymentIntegrations/index.ts",
             "memberPattern": ".+PaymentMethod$"
         }
-    ]
+    ],
+    "tsConfigPath": "tsconfig.base.json"
 }

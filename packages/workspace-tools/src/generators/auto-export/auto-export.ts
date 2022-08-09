@@ -8,16 +8,18 @@ export interface AutoExportOptions {
     inputPath: string;
     outputPath: string;
     memberPattern: string;
+    tsConfigPath: string;
 }
 
 export default async function autoExport({
     inputPath,
     outputPath,
-    memberPattern
+    memberPattern,
+    tsConfigPath
 }: AutoExportOptions): Promise<string> {
     const filePaths = await promisify(glob)(inputPath);
     const exportDeclarations = await Promise.all(
-        filePaths.map(filePath => createExportDeclaration(filePath, outputPath, memberPattern))
+        filePaths.map(filePath => createExportDeclaration(filePath, tsConfigPath, memberPattern))
     );
 
     return ts.createPrinter()
@@ -30,7 +32,7 @@ export default async function autoExport({
 
 async function createExportDeclaration(
     filePath: string,
-    outputPath: string,
+    tsConfigPath: string,
     memberPattern: string
 ): Promise<ts.ExportDeclaration | undefined> {
     const root = await getSource(filePath);
@@ -64,7 +66,7 @@ async function createExportDeclaration(
                     ts.factory.createIdentifier(memberName)
                 )
             )),
-        ts.factory.createStringLiteral(getImportPath(filePath, outputPath), true)
+        ts.factory.createStringLiteral(getImportPath(filePath, tsConfigPath), true)
     );
 }
 
@@ -79,14 +81,16 @@ async function getSource(filePath: string): Promise<ts.SourceFile> {
     );
 }
 
-function getImportPath(filePath: string, outputPath: string): string {
-    const fileName = path.parse(filePath).name;
-    const outputFolder = path.parse(outputPath).dir;
-    const importFolder = path.parse(path.relative(outputFolder, filePath)).dir;
+function getImportPath(packagePath: string, tsConfigPath: string): string {
+    const tsConfig = ts.readConfigFile(tsConfigPath, ts.sys.readFile);
 
-    return fileName === 'index' ?
-        importFolder :
-        path.join(importFolder, fileName);
+    for (const [packageName, paths] of Object.entries(tsConfig.config?.compilerOptions.paths)) {
+        if ((paths as string[]).includes(packagePath)) {
+            return packageName;
+        }
+    }
+
+    throw new Error('Unable to resolve to a valid package.');
 }
 
 function exists<TValue>(value?: TValue): value is NonNullable<TValue> {

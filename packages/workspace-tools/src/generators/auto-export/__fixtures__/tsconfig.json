@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@bigcommerce/function-a": [
+        "packages/workspace-tools/src/generators/auto-export/__fixtures__/function-a/index.ts"
+      ],
+      "@bigcommerce/strategy-a": [
+        "packages/workspace-tools/src/generators/auto-export/__fixtures__/strategy-a/index.ts"
+      ],
+      "@bigcommerce/strategy-b": [
+        "packages/workspace-tools/src/generators/auto-export/__fixtures__/strategy-b/index.ts"
+      ]
+    }
+  }
+}
