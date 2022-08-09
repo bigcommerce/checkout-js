@@ -3,7 +3,6 @@ import React, { Fragment, FunctionComponent } from 'react';
 import { withCheckout, WithCheckoutProps } from '../checkout';
 import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 import resolveCheckoutButton from './resolveCheckoutButton';
-import CheckoutButton from './CheckoutButtonV2';
 
 export interface CheckoutButtonListProps {
     onUnhandledError(error: Error): void;
@@ -32,7 +31,11 @@ const CheckoutButtonList: FunctionComponent<
 
             <div className="checkoutRemote">
                 { methodIds.map(methodId => {
-                    const ResolvedCheckoutButton = resolveCheckoutButton({ id: methodId }) ?? CheckoutButton;
+                    const ResolvedCheckoutButton = resolveCheckoutButton({ id: methodId });
+
+                    if (!ResolvedCheckoutButton) {
+                        return null;
+                    }
 
                     return <ResolvedCheckoutButton
                         checkoutService={ checkoutService }

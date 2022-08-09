@@ -21,14 +21,20 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
+      "@bigcommerce/checkout-js/apple-pay-integration": [
+        "packages/apple-pay-integration/src/index.ts"
+      ],
       "@bigcommerce/checkout-js/core": [
         "packages/core/src/app/index.ts"
       ],
+      "@bigcommerce/checkout-js/checkout-button-integration": [
+        "packages/checkout-button-integration/src/index.ts"
+      ],
+      "@bigcommerce/checkout-js/google-pay-integration": [
+        "packages/google-pay-integration/src/index.ts"
+      ],
       "@bigcommerce/checkout-js/payment-integration": [
         "packages/payment-integration/src/index.ts"
-      ],
-      "@bigcommerce/checkout-js/apple-pay-integration": [
-        "packages/apple-pay-integration/src/index.ts"
       ],
       "@bigcommerce/checkout-js/workspace-tools": [
         "packages/workspace-tools/src/index.ts"

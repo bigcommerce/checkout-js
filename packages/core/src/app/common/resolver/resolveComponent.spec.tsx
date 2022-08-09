@@ -66,4 +66,14 @@ describe('resolveComponent', () => {
         expect(resolveComponent({ type: 'hello' }, components))
             .toBeUndefined();
     });
+
+    it('returns default component if configured and unable to resolve by id', () => {
+        const Default = toResolvableComponent(
+            ({ message }: TestingProps) => <div>Default: { message }</div>,
+            [{ default: true }]
+        );
+
+        expect(resolveComponent({ id: 'hello_world' }, { ...components, Default }))
+            .toEqual(Default);
+    });
 });

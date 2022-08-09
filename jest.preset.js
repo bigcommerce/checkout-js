@@ -11,6 +11,11 @@ module.exports = {
             statements: 80,
         },
     },
+    transform: {
+        '^.+\\.(ts|tsx)?$': 'ts-jest',
+        '\\.(gif|png|jpe?g|svg)$': '../../scripts/jest/file-transformer',
+        '\\.scss$': '../../scripts/jest/style-transformer',
+    },
     moduleFileExtensions: [
         'ts',
         'tsx',
