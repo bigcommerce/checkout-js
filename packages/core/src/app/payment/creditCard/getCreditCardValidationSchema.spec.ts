@@ -1,4 +1,4 @@
-import { CreditCardFieldsetValues } from '@bigcommerce/checkout-js/payment-integration';
+import { CreditCardFieldsetValues } from '@bigcommerce/checkout-js/payment-integration-api';
 import { createLanguageService, LanguageService } from '@bigcommerce/checkout-sdk';
 
 import getCreditCardValidationSchema from './getCreditCardValidationSchema';

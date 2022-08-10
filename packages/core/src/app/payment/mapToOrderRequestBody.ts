@@ -1,4 +1,4 @@
-import { PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration';
+import { PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration-api';
 import { OrderPaymentRequestBody, OrderRequestBody } from '@bigcommerce/checkout-sdk';
 import { isEmpty, isNil, omitBy } from 'lodash';
 

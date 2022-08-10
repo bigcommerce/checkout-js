@@ -1,4 +1,4 @@
-import { PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration';
+import { PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration-api';
 import { LanguageService } from '@bigcommerce/checkout-sdk';
 import { object, string, ObjectSchema, StringSchema } from 'yup';
 

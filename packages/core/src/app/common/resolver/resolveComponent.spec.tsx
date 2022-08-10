@@ -1,4 +1,4 @@
-import { toResolvableComponent } from '@bigcommerce/checkout-js/payment-integration';
+import { toResolvableComponent } from '@bigcommerce/checkout-js/payment-integration-api';
 import { render } from 'enzyme';
 import React, { ComponentType } from 'react';
 

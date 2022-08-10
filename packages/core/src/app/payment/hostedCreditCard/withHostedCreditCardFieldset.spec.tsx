@@ -1,4 +1,4 @@
-import { CardInstrumentFieldsetValues, HostedCreditCardFieldsetValues } from '@bigcommerce/checkout-js/payment-integration';
+import { CardInstrumentFieldsetValues, HostedCreditCardFieldsetValues } from '@bigcommerce/checkout-js/payment-integration-api';
 import { createCheckoutService, CheckoutSelectors, CheckoutService, HostedFieldType } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import { Formik, FormikProps } from 'formik';

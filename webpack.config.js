@@ -49,7 +49,7 @@ function appConfig(options, argv) {
                 devtool: isProduction ? 'source-map' : 'eval-source-map',
                 resolve: {
                     alias: {
-                        "@bigcommerce/checkout-js/payment-integration": join(__dirname, 'packages/payment-integration/src'),
+                        "@bigcommerce/checkout-js/payment-integration-api": join(__dirname, 'packages/payment-integration-api/src'),
                         "@bigcommerce/checkout-js/apple-pay-integration": join(__dirname, 'packages/apple-pay-integration/src'),
                         "@bigcommerce/checkout-js/checkout-button-integration": join(__dirname, 'packages/checkout-button-integration/src'),
                         "@bigcommerce/checkout-js/google-pay-integration": join(__dirname, 'packages/google-pay-integration/src'),
@@ -148,7 +148,7 @@ function appConfig(options, argv) {
                             test: /\.tsx?$/,
                             include: [
                                 join(__dirname, 'packages', 'core','src'),
-                                join(__dirname, 'packages', 'payment-integration','src'),
+                                join(__dirname, 'packages', 'payment-integration-api','src'),
                                 join(__dirname, 'packages', 'apple-pay-integration','src'),
                             ],
                             use: [

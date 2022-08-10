@@ -1,14 +1,14 @@
 import { CheckoutButton } from '@bigcommerce/checkout-js/checkout-button-integration';
-import { CheckoutButtonProps, isEmbedded } from '@bigcommerce/checkout-js/payment-integration';
+import { CheckoutButtonProps, isEmbedded } from '@bigcommerce/checkout-js/payment-integration-api';
 import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import React from 'react';
 
 import GooglePayButton from './GooglePayButton';
 
-jest.mock('@bigcommerce/checkout-js/payment-integration', () => {
+jest.mock('@bigcommerce/checkout-js/payment-integration-api', () => {
     return {
-        ...jest.requireActual('@bigcommerce/checkout-js/payment-integration'),
+        ...jest.requireActual('@bigcommerce/checkout-js/payment-integration-api'),
         isEmbedded: jest.fn(() => false),
     };
 });

@@ -1,4 +1,4 @@
-import { CheckoutButtonProps } from '@bigcommerce/checkout-js/payment-integration';
+import { CheckoutButtonProps } from '@bigcommerce/checkout-js/payment-integration-api';
 import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import React from 'react';

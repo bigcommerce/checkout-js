@@ -1,4 +1,4 @@
-import { getMethod, PaymentFormService } from "@bigcommerce/checkout-js/payment-integration";
+import { getMethod, PaymentFormService } from "@bigcommerce/checkout-js/payment-integration-api";
 import { createCheckoutService, LanguageService } from "@bigcommerce/checkout-sdk";
 import { mount } from 'enzyme';
 import React from "react";

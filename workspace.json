@@ -5,7 +5,7 @@
     "core": "packages/core",
     "checkout-button-integration": "packages/checkout-button-integration",
     "google-pay-integration": "packages/google-pay-integration",
-    "payment-integration": "packages/payment-integration",
+    "payment-integration-api": "packages/payment-integration-api",
     "workspace-tools": "packages/workspace-tools"
   }
 }
