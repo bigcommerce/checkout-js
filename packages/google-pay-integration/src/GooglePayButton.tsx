@@ -1,6 +1,6 @@
-import { CheckoutButton } from '@bigcommerce/checkout-js/checkout-button-integration';
+import { CheckoutButton } from '@bigcommerce/checkout/checkout-button-integration';
 
-import { CheckoutButtonProps, CheckoutButtonResolveId, EmbeddedCheckoutUnsupportedError, isEmbedded, toResolvableComponent } from '@bigcommerce/checkout-js/payment-integration-api';
+import { CheckoutButtonProps, CheckoutButtonResolveId, EmbeddedCheckoutUnsupportedError, isEmbedded, toResolvableComponent } from '@bigcommerce/checkout/payment-integration-api';
 
 import React, { FunctionComponent } from 'react';
 

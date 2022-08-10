@@ -49,10 +49,10 @@ function appConfig(options, argv) {
                 devtool: isProduction ? 'source-map' : 'eval-source-map',
                 resolve: {
                     alias: {
-                        "@bigcommerce/checkout-js/payment-integration-api": join(__dirname, 'packages/payment-integration-api/src'),
-                        "@bigcommerce/checkout-js/apple-pay-integration": join(__dirname, 'packages/apple-pay-integration/src'),
-                        "@bigcommerce/checkout-js/checkout-button-integration": join(__dirname, 'packages/checkout-button-integration/src'),
-                        "@bigcommerce/checkout-js/google-pay-integration": join(__dirname, 'packages/google-pay-integration/src'),
+                        "@bigcommerce/checkout/payment-integration-api": join(__dirname, 'packages/payment-integration-api/src'),
+                        "@bigcommerce/checkout/apple-pay-integration": join(__dirname, 'packages/apple-pay-integration/src'),
+                        "@bigcommerce/checkout/checkout-button-integration": join(__dirname, 'packages/checkout-button-integration/src'),
+                        "@bigcommerce/checkout/google-pay-integration": join(__dirname, 'packages/google-pay-integration/src'),
                     },
                     extensions: ['.ts', '.tsx', '.js'],
                     // It seems some packages, i.e.: Formik, have incorrect

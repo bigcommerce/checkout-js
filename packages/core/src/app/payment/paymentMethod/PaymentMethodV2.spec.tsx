@@ -1,4 +1,4 @@
-import { PaymentMethodProps } from '@bigcommerce/checkout-js/payment-integration-api';
+import { PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 import { createCheckoutService, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import { Formik } from 'formik';

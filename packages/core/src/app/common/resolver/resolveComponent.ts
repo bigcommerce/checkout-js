@@ -1,4 +1,4 @@
-import { isResolvableComponent } from '@bigcommerce/checkout-js/payment-integration-api';
+import { isResolvableComponent } from '@bigcommerce/checkout/payment-integration-api';
 import { ComponentType } from 'react';
 
 interface ResolveResult<TProps> {

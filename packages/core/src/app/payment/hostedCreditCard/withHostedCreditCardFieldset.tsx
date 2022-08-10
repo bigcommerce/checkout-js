@@ -1,4 +1,4 @@
-import { PaymentFormValues } from "@bigcommerce/checkout-js/payment-integration-api";
+import { PaymentFormValues } from "@bigcommerce/checkout/payment-integration-api";
 import { CardInstrument, HostedFormOptions, Instrument, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { compact, forIn } from 'lodash';
 import React, { useCallback, useState, ComponentType, FunctionComponent, ReactNode } from 'react';

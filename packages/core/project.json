@@ -67,7 +67,7 @@
             "executor": "@nrwl/workspace:run-commands",
             "options": {
                 "commands": [
-                    "npx nx generate @bigcommerce/checkout-js/workspace-tools:auto-export --projectName=core"
+                    "npx nx generate @bigcommerce/checkout/workspace-tools:auto-export --projectName=core"
                 ],
                 "parallel": false
             }

@@ -1,4 +1,4 @@
-import { CardInstrumentFieldsetValues } from '@bigcommerce/checkout-js/payment-integration-api';
+import { CardInstrumentFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
 import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';

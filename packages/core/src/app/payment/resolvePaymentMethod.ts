@@ -1,4 +1,4 @@
-import { PaymentMethodProps } from '@bigcommerce/checkout-js/payment-integration-api';
+import { PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 import { ComponentType } from 'react';
 
 import { resolveComponent } from '../common/resolver';

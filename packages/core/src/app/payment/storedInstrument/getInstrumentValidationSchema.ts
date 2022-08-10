@@ -1,4 +1,4 @@
-import { CardInstrumentFieldsetValues } from '@bigcommerce/checkout-js/payment-integration-api';
+import { CardInstrumentFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
 import { LanguageService } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
 import { cvv, number } from 'card-validator';
