@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'payment-integration',
+  displayName: 'payment-integration-api',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -11,5 +11,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest'
   },
   setupFilesAfterEnv: ['../../jest-setup.ts'],
-  coverageDirectory: '../../coverage/packages/payment-integration'
+  coverageDirectory: '../../coverage/packages/payment-integration-api'
 };

@@ -1,4 +1,4 @@
-import { PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration';
+import { PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration-api';
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { withFormik, FormikProps, WithFormikConfig } from 'formik';
 import { isNil, noop, omitBy } from 'lodash';

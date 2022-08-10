@@ -33,8 +33,8 @@
       "@bigcommerce/checkout-js/google-pay-integration": [
         "packages/google-pay-integration/src/index.ts"
       ],
-      "@bigcommerce/checkout-js/payment-integration": [
-        "packages/payment-integration/src/index.ts"
+      "@bigcommerce/checkout-js/payment-integration-api": [
+        "packages/payment-integration-api/src/index.ts"
       ],
       "@bigcommerce/checkout-js/workspace-tools": [
         "packages/workspace-tools/src/index.ts"

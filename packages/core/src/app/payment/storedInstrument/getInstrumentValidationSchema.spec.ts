@@ -1,4 +1,4 @@
-import { CardInstrumentFieldsetValues } from '@bigcommerce/checkout-js/payment-integration';
+import { CardInstrumentFieldsetValues } from '@bigcommerce/checkout-js/payment-integration-api';
 import { createLanguageService, LanguageService } from '@bigcommerce/checkout-sdk';
 
 import getInstrumentValidationSchema from './getInstrumentValidationSchema';
