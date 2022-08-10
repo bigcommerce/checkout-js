@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.242.1](https://github.com/bigcommerce/checkout-js/compare/v1.242.0...v1.242.1) (2022-08-10)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-0000 Remove -js suffix in package import path ([#965](https://github.com/bigcommerce/checkout-js/issues/965)) ([c0916a5](https://github.com/bigcommerce/checkout-js/commit/c0916a54dc06c842c84603bb72616ba21f932c51))
+
 ## [1.242.0](https://github.com/bigcommerce/checkout-js/compare/v1.241.0...v1.242.0) (2022-08-10)
 
 
