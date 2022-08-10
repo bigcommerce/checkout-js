@@ -1,4 +1,4 @@
-import { PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration-api';
+import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import React, { useCallback, useContext, FunctionComponent } from 'react';
 
 import { connectFormik, ConnectFormikProps } from '../../common/form';

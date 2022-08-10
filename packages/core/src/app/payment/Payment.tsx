@@ -1,4 +1,4 @@
-import { PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration-api';
+import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { CartChangedError, CheckoutSelectors, CheckoutSettings, OrderRequestBody, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { compact, find, isEmpty, noop } from 'lodash';

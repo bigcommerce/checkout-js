@@ -1,5 +1,5 @@
 import { createCheckoutService, CheckoutService, CheckoutSelectors } from '@bigcommerce/checkout-sdk';
-import { CheckoutButtonProps, CheckoutButtonResolveId } from '@bigcommerce/checkout-js/payment-integration-api';
+import { CheckoutButtonProps, CheckoutButtonResolveId } from '@bigcommerce/checkout/payment-integration-api';
 import { mount } from 'enzyme';
 import { merge, noop } from 'lodash';
 import React, { ComponentType } from 'react';

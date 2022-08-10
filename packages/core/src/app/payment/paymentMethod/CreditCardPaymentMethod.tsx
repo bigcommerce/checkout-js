@@ -1,4 +1,4 @@
-import { CardInstrumentFieldsetValues, CreditCardFieldsetValues, DocumentOnlyCustomFormFieldsetValues, FawryCustomFormFieldsetValues, HostedCreditCardFieldsetValues, IdealCustomFormFieldsetValues, PaymentFormValues, SepaCustomFormFieldsetValues } from "@bigcommerce/checkout-js/payment-integration-api";
+import { CardInstrumentFieldsetValues, CreditCardFieldsetValues, DocumentOnlyCustomFormFieldsetValues, FawryCustomFormFieldsetValues, HostedCreditCardFieldsetValues, IdealCustomFormFieldsetValues, PaymentFormValues, SepaCustomFormFieldsetValues } from "@bigcommerce/checkout/payment-integration-api";
 import { CardInstrument, CheckoutSelectors, HostedFieldType, Instrument, PaymentInitializeOptions, PaymentInstrument, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { find, noop } from 'lodash';

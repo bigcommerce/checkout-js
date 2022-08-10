@@ -1,4 +1,4 @@
-import { DocumentOnlyCustomFormFieldsetValues } from '@bigcommerce/checkout-js/payment-integration-api';
+import { DocumentOnlyCustomFormFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
 import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';

@@ -1,4 +1,4 @@
-import { DocumentOnlyCustomFormFieldsetValues, FawryCustomFormFieldsetValues, IdealCustomFormFieldsetValues, SepaCustomFormFieldsetValues } from "@bigcommerce/checkout-js/payment-integration-api";
+import { DocumentOnlyCustomFormFieldsetValues, FawryCustomFormFieldsetValues, IdealCustomFormFieldsetValues, SepaCustomFormFieldsetValues } from "@bigcommerce/checkout/payment-integration-api";
 import { LanguageService } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
 import { boolean, object, string, ObjectSchema } from 'yup';

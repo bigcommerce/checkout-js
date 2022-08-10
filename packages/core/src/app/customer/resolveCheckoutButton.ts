@@ -1,4 +1,4 @@
-import { CheckoutButtonProps, CheckoutButtonResolveId } from '@bigcommerce/checkout-js/payment-integration-api';
+import { CheckoutButtonProps, CheckoutButtonResolveId } from '@bigcommerce/checkout/payment-integration-api';
 import { ComponentType } from 'react';
 
 import { resolveComponent } from '../common/resolver';

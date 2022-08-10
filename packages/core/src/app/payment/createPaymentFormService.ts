@@ -1,4 +1,4 @@
-import { PaymentFormService, PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration-api';
+import { PaymentFormService, PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { FormikContext } from 'formik';
 
 import { FormContextType } from '../ui/form';

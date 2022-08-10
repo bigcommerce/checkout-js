@@ -1,4 +1,4 @@
-import { PaymentFormValues } from '@bigcommerce/checkout-js/payment-integration-api';
+import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { createContext } from 'react';
 import { ObjectSchema } from 'yup';
