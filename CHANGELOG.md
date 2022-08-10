@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.242.0](https://github.com/bigcommerce/checkout-js/compare/v1.241.0...v1.242.0) (2022-08-10)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6781 Add embedded checkout override for Google Pay button ([7faba43](https://github.com/bigcommerce/checkout-js/commit/7faba433bddf7265779c5a7c254b56a6e4eb6bfc))
+* **checkout:** CHECKOUT-6781 Resolve default component ([9cab99f](https://github.com/bigcommerce/checkout-js/commit/9cab99f26c9b3c7c7e701d5997c278c9a5517124))
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-0000 Rename payment integration JS API ([#964](https://github.com/bigcommerce/checkout-js/issues/964)) ([53c22ca](https://github.com/bigcommerce/checkout-js/commit/53c22ca58c7914485bd2e5eda7aa8d85e994a6de))
+* **checkout:** CHECKOUT-6781 Define default checkout button as sub-package ([36f1c9b](https://github.com/bigcommerce/checkout-js/commit/36f1c9b5ab798210cc006405b38b0b3885704119))
+* **checkout:** CHECKOUT-6781 Move checkout button resolve ID into payment integration API package ([0052691](https://github.com/bigcommerce/checkout-js/commit/00526914d4eaff31e7329955c256539e4974c96f))
+* **common:** CHECKOUT-6781 Use package name rather than relative path in generated files ([52f3054](https://github.com/bigcommerce/checkout-js/commit/52f30540a7d354217cdcba835eede1f55f831896))
+
 ## [1.241.0](https://github.com/bigcommerce/checkout-js/compare/v1.240.0...v1.241.0) (2022-08-08)
 
 
