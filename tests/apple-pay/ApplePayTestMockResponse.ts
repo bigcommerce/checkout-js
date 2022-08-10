@@ -1,7 +1,7 @@
 export const payments = `[{
     "id": "applepay",
     "gateway": null,
-    "logoUrl": "https:\/\/shariceapplauded-cloud-dev-vm.store.bcdev\/rHEAD\/modules\/checkout\/applepay\/images\/applepay-header@2x.png",
+    "logoUrl": "example-applepay-header@2x.png",
     "method": "applepay",
     "supportedCards": [],
     "providesShippingAddress": false,
@@ -10,7 +10,7 @@ export const payments = `[{
         "cardCode": null,
         "helpText": "",
         "enablePaypal": null,
-        "merchantId": "75bfaa7d-fc1d-519a-a447-ab2f8095eade",
+        "merchantId": "00000000-0000-0000-0000-000000000000",
         "is3dsEnabled": null,
         "testMode": false,
         "isVisaCheckoutEnabled": null,
@@ -33,9 +33,9 @@ export const payments = `[{
         "supportedNetworks": ["visa", "masterCard", "amex", "discover"],
         "gateway": "braintree",
         "merchantCapabilities": ["supports3DS"],
-        "merchantId": "75bfaa7d-fc1d-519a-a447-ab2f8095eade",
+        "merchantId": "00000000-0000-0000-0000-000000000000",
         "paymentsUrl": "https:\/\/bigpay.service.bcdev",
-        "sentry": "https:\/\/e9baf8b77dd74141a0e9eaebb9dd3706@sentry.io\/1188037",
+        "sentry": "https:\/\/example@sentry.io\/0000000",
         "confirmationLink": "\/checkout\/order-confirmation"
     },
     "clientToken": null,
@@ -45,7 +45,7 @@ export const payments = `[{
 export const applepay = `{
     "id": "applepay",
     "gateway": null,
-    "logoUrl": "https://shariceapplauded-cloud-dev-vm.store.bcdev/rHEAD/modules/checkout/applepay/images/applepay-header@2x.png",
+    "logoUrl": "example-applepay-header@2x.png",
     "method": "applepay",
     "supportedCards": [],
     "providesShippingAddress": false,
@@ -54,7 +54,7 @@ export const applepay = `{
         "cardCode": null,
         "helpText": "",
         "enablePaypal": null,
-        "merchantId": "75bfaa7d-fc1d-519a-a447-ab2f8095eade",
+        "merchantId": "00000000-0000-0000-0000-000000000000",
         "is3dsEnabled": null,
         "testMode": false,
         "isVisaCheckoutEnabled": null,
@@ -84,9 +84,9 @@ export const applepay = `{
         "merchantCapabilities": [
             "supports3DS"
         ],
-        "merchantId": "75bfaa7d-fc1d-519a-a447-ab2f8095eade",
+        "merchantId": "00000000-0000-0000-0000-000000000000",
         "paymentsUrl": "https://bigpay.service.bcdev",
-        "sentry": "https://e9baf8b77dd74141a0e9eaebb9dd3706@sentry.io/1188037",
+        "sentry": "https://example@sentry.io/0000000",
         "confirmationLink": "/checkout/order-confirmation"
     },
     "clientToken": null,
@@ -109,7 +109,7 @@ export const validateMerchantResponse = `{
 
 export const order = `{
     "orderId": 124,
-    "cartId": "5613fa38-bf06-4e3c-aca8-c723851f8d15",
+    "cartId": "00000000-0000-0000-0000-000000000000",
     "currency": {
         "name": "US Dollar",
         "code": "USD",
@@ -137,7 +137,7 @@ export const order = `{
                 "quantity": 1,
                 "isTaxable": true,
                 "giftWrapping": null,
-                "imageUrl": "https://shariceapplauded-cloud-dev-vm.store.bcdev/store/4j2kt0jl0q/products/103/images/334/naturalcanvascart2.1657528585.190.285.jpg?c=1",
+                "imageUrl": "example.jpg",
                 "discounts": [],
                 "discountAmount": 0,
                 "listPrice": 200,
@@ -284,7 +284,7 @@ export const internalOrder = `{
                     "attributes": [],
                     "discount": 0,
                     "id": 86,
-                    "imageUrl": "https://corypractised-cloud-dev-vm.store.bcdev/store/m1krj3d4yv/products/86/images/286/ablebrewingsystem4.1647253530.190.285.jpg?c=1",
+                    "imageUrl": "example.jpg",
                     "integerAmount": 22500,
                     "integerAmountAfterDiscount": 22500,
                     "integerDiscount": 0,

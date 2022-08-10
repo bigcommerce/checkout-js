@@ -6,7 +6,7 @@ test.describe('ApplePay', () => {
         // Testing environment setup
         await page.addInitScript({ path: './tests/apple-pay/ApplePaySessionMockObject.js' });
 
-        const storeUrl = 'https://my-dev-store-117450812.store.bcdev/';
+        const storeUrl = 'https://my-dev-store-759854325.store.bcdev';
         const responseProps = { status: 200, contentType: 'application/json' };
         await checkout.use(new PaymentStepAsGuestPreset(storeUrl));
         await checkout.create('ApplePay in Payment Step', storeUrl);
