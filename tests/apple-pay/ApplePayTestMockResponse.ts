@@ -340,3 +340,186 @@ export const internalOrder = `{
         "deviceFingerprint": null
     }
 }`;
+
+export const consignments = `{
+    "billingAddress": {
+        "address1": "",
+        "address2": "",
+        "city": "adcasdc",
+        "company": "",
+        "country": "United States",
+        "countryCode": "US",
+        "customFields": [],
+        "email": "",
+        "firstName": "",
+        "id": "0000000000",
+        "lastName": "",
+        "phone": "",
+        "postalCode": "22222",
+        "shouldSaveAddress": false,
+        "stateOrProvince": "Alabama",
+        "stateOrProvinceCode": "AL"
+    },
+    "cart": {
+        "baseAmount": 119.95,
+        "cartAmount": 119.95,
+        "coupons": [],
+        "createdTime": "2022-08-10T06:11:21+00:00",
+        "currency": {
+            "code": "USD",
+            "decimalPlaces": 2,
+            "name": "US Dollar",
+            "symbol": "$"
+        },
+        "customerId": 0,
+        "discountAmount": 0,
+        "discounts": [
+            {
+                "discountedAmount": 0,
+                "id": "00000000-0000-0000-0000-000000000000"
+            }
+        ],
+        "email": null,
+        "id": "00000000-0000-0000-0000-000000000000",
+        "isTaxIncluded": false,
+        "lineItems": {
+            "customItems": [],
+            "digitalItems": [],
+            "giftCertificates": [],
+            "physicalItems": [
+                {
+                    "addedByPromotion": false,
+                    "brand": "OFS",
+                    "comparisonPrice": 119.95,
+                    "couponAmount": 0,
+                    "discountAmount": 0,
+                    "discounts": [],
+                    "extendedComparisonPrice": 119.95,
+                    "extendedListPrice": 119.95,
+                    "extendedSalePrice": 119.95,
+                    "giftWrapping": null,
+                    "id": "00000000-0000-0000-0000-000000000000",
+                    "imageUrl": "tieredbasket.1657528585.190.285.jpg?c=1",
+                    "isMutable": true,
+                    "isShippingRequired": true,
+                    "isTaxable": true,
+                    "listPrice": 119.95,
+                    "name": "[Sample] Tiered Wire Basket",
+                    "options": [],
+                    "originalPrice": 119.95,
+                    "parentId": null,
+                    "productId": 97,
+                    "quantity": 1,
+                    "salePrice": 119.95,
+                    "sku": "TWB",
+                    "url": "https://my-dev-store-758323881.store.bcdev/tiered-wire-basket/",
+                    "variantId": 69
+                }
+            ]
+        },
+        "locale": "en",
+        "updatedTime": "2022-08-10T06:12:15+00:00"
+    },
+    "consignments": [
+        {
+            "address": {
+                "address1": "",
+                "address2": "",
+                "city": "Sydney",
+                "company": "",
+                "country": "United States",
+                "countryCode": "US",
+                "customFields": [],
+                "email": "",
+                "firstName": "",
+                "lastName": "",
+                "phone": "",
+                "postalCode": "22222",
+                "shouldSaveAddress": true,
+                "stateOrProvince": "Alabama",
+                "stateOrProvinceCode": "AL"
+            },
+            "availableShippingOptions": [
+                {
+                    "additionalDescription": "",
+                    "cost": 0,
+                    "description": "Free Shipping",
+                    "id": "4dcbf24f457dd67d5f89bcf374e0bc9b",
+                    "imageUrl": "",
+                    "isRecommended": true,
+                    "transitTime": "",
+                    "type": "freeshipping"
+                }
+            ],
+            "couponDiscounts": [],
+            "discounts": [],
+            "handlingCost": 0,
+            "id": "0000000000000",
+            "lineItemIds": [
+                "00000000-0000-0000-0000-000000000000"
+            ],
+            "selectedShippingOption": {
+                "additionalDescription": "",
+                "cost": 0,
+                "description": "Free Shipping",
+                "id": "4dcbf24f457dd67d5f89bcf374e0bc9b",
+                "imageUrl": "",
+                "transitTime": "",
+                "type": "freeshipping"
+            },
+            "shippingAddress": {
+                "address1": "",
+                "address2": "",
+                "city": "Sydney",
+                "company": "",
+                "country": "United States",
+                "countryCode": "US",
+                "customFields": [],
+                "email": "",
+                "firstName": "",
+                "lastName": "",
+                "phone": "",
+                "postalCode": "22222",
+                "shouldSaveAddress": true,
+                "stateOrProvince": "Alabama",
+                "stateOrProvinceCode": "AL"
+            },
+            "shippingCost": 0
+        }
+    ],
+    "coupons": [],
+    "createdTime": "2022-08-10T06:11:21+00:00",
+    "customer": {
+        "addresses": [],
+        "email": "",
+        "firstName": "",
+        "fullName": "",
+        "id": 0,
+        "isGuest": true,
+        "lastName": "",
+        "shouldEncourageSignIn": false,
+        "storeCredit": 0
+    },
+    "customerMessage": "",
+    "giftCertificates": [],
+    "giftWrappingCostTotal": 0,
+    "grandTotal": 119.95,
+    "handlingCostTotal": 0,
+    "id": "00000000-0000-0000-0000-000000000000",
+    "isStoreCreditApplied": false,
+    "orderId": null,
+    "outstandingBalance": 119.95,
+    "promotions": [],
+    "shippingCostBeforeDiscount": 0,
+    "shippingCostTotal": 0,
+    "shouldExecuteSpamCheck": false,
+    "subtotal": 119.95,
+    "taxTotal": 0,
+    "taxes": [
+        {
+            "amount": 0,
+            "name": "Tax"
+        }
+    ],
+    "updatedTime": "2022-08-10T06:12:15+00:00"
+}`;

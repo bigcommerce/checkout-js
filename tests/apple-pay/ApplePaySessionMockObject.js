@@ -7,6 +7,33 @@ class ApplePaySession {
     static STATUS_SUCCESS = 1;
     static STATUS_FAILURE = 2;
 
+    onshippingcontactselected(
+        event
+    ) {
+        const mockShippingContact = {
+            emailAddress: 'example@bigcommerce.com',
+            familyName: 'ple',
+            givenName: "exam",
+            phoneNumber: "00000000",
+            addressLine: ["123 Example Road"],
+            locality: "Sydney",
+            country: "United States"
+        }
+        return { mockShippingContact };
+    }
+
+    onshippingmethodselected(
+        event
+    ) {
+        const mockShippingMethod = {
+            label: 'example label',
+            detail: 'example detail',
+            amount: '100',
+            identifier: 'example'
+        }
+        return { mockShippingMethod };
+    }
+
     static supportsVersion(versionNumber) {
         return true;
     }
@@ -58,8 +85,6 @@ class ApplePaySession {
 }
 
 const addApplePaySessionToChrome = () => {
-    
-
     window.ApplePaySession = ApplePaySession;
 }
 
