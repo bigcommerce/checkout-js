@@ -118,7 +118,7 @@ describe('SentryErrorLogger', () => {
 
     it('configures client to rewrite filename of error frames', () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        new SentryErrorLogger(config, { publicPath: 'https://cdn.foo.bar' });
+        new SentryErrorLogger(config, { publicPath: 'https://cdn.hello.world' });
 
         const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
 
@@ -201,7 +201,10 @@ describe('SentryErrorLogger', () => {
         const frame = output.exception!.values![0].stacktrace!.frames![0];
 
         expect(frame)
-            .toEqual(frame);
+            .toEqual({
+                ...frame,
+                filename: 'https://cdn.foo.bar/js/app-123.js',
+            });
     });
 
 
