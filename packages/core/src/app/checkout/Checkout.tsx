@@ -398,6 +398,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         const {
             consignments,
             cart,
+            errorLogger,
         } = this.props;
 
         return (
@@ -411,6 +412,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 <LazyContainer>
                     <Payment
                         checkEmbeddedSupport={ this.checkEmbeddedSupport }
+                        errorLogger= { errorLogger }
                         isEmbedded={ isEmbedded() }
                         isUsingMultiShipping={ cart && consignments ? isUsingMultiShipping(consignments, cart.lineItems) : false }
                         onCartChangedError={ this.handleCartChangedError }
