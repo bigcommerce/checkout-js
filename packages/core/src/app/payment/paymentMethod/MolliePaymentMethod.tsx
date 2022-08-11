@@ -51,9 +51,9 @@ const MolliePaymentMethod: FunctionComponent<MolliePaymentMethodsProps & WithInj
                     },
                 },
                 unsupportedMethodMessage: localeContext?.language.translate('payment.mollie_unsupported_method_error'),
-                disableButton: () => {
+                disableButton: (disabled: boolean) => {
                     if (paymentContext) {
-                        paymentContext.disableSubmit(method, true);
+                        paymentContext.disableSubmit(method, disabled);
                     }
                 },
                 ...(selectedInstrument && { form : await getHostedFormOptions(selectedInstrument) }),
