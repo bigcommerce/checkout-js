@@ -5,7 +5,7 @@ import { Integration } from '@sentry/types';
 import computeErrorCode from './computeErrorCode';
 import ConsoleErrorLogger from './ConsoleErrorLogger';
 import { ErrorLevelType } from './ErrorLogger';
-import SentryErrorLogger from './SentryErrorLogger';
+import SentryErrorLogger, { SeverityLevelEnum } from './SentryErrorLogger';
 
 jest.mock('@sentry/browser', () => {
     return {
@@ -118,7 +118,7 @@ describe('SentryErrorLogger', () => {
 
     it('configures client to rewrite filename of error frames', () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        new SentryErrorLogger(config, { publicPath: 'https://cdn.hello.world' });
+        new SentryErrorLogger(config, { publicPath: 'https://cdn.foo.bar' });
 
         const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
 
@@ -168,7 +168,7 @@ describe('SentryErrorLogger', () => {
             }));
     });
 
-    it('does not rewrite filename of error frames if it does match with public path', () => {
+    it('does not rewrite filename of error frames if it does not match with public path', () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         new SentryErrorLogger(config, { publicPath: 'https://cdn.foo.bar' });
 
@@ -186,7 +186,7 @@ describe('SentryErrorLogger', () => {
                         frames: [
                             {
                                 colno: 1234,
-                                filename: 'https://cdn.foo.bar/js/app-123.js',
+                                filename: 'https://cdn.hello.world/js/app-123.js',
                                 function: 't.<anonymous>',
                                 in_app: true,
                                 lineno: 1,
@@ -203,7 +203,7 @@ describe('SentryErrorLogger', () => {
         expect(frame)
             .toEqual({
                 ...frame,
-                filename: 'https://cdn.foo.bar/js/app-123.js',
+                filename: 'https://cdn.hello.world/js/app-123.js',
             });
     });
 
@@ -271,7 +271,7 @@ describe('SentryErrorLogger', () => {
                 .toHaveBeenCalledWith(error);
         });
 
-        it('maps to error level type recognized by Sentry', () => {
+        it('maps to error level enum recognized by Sentry', () => {
             const logger = new SentryErrorLogger(config);
             const error = new Error();
 
@@ -280,13 +280,13 @@ describe('SentryErrorLogger', () => {
             logger.log(error, undefined, ErrorLevelType.Info);
 
             expect(scope.setLevel)
-                .toHaveBeenNthCalledWith(1, 'error');
+                .toHaveBeenNthCalledWith(1, SeverityLevelEnum.ERROR);
 
             expect(scope.setLevel)
-                .toHaveBeenNthCalledWith(2, 'warning');
+                .toHaveBeenNthCalledWith(2, SeverityLevelEnum.WARNING);
 
             expect(scope.setLevel)
-                .toHaveBeenNthCalledWith(3, 'info');
+                .toHaveBeenNthCalledWith(3, SeverityLevelEnum.INFO);
         });
 
         it('logs error in console if console logger is provided', () => {

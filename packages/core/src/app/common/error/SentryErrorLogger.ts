@@ -16,6 +16,13 @@ export interface SentryErrorLoggerOptions {
     publicPath?: string;
 }
 
+export enum SeverityLevelEnum {
+    DEBUG = 'debug',
+    ERROR = 'error',
+    INFO = 'info',
+    WARNING = 'warning',
+}
+
 export default class SentryErrorLogger implements ErrorLogger {
     private consoleLogger: ErrorLogger;
     private publicPath: string;
@@ -83,17 +90,17 @@ export default class SentryErrorLogger implements ErrorLogger {
     private mapToSentryLevel(level: ErrorLevelType): SeverityLevel {
         switch (level) {
             case ErrorLevelType.Info:
-                return 'info';
+                return SeverityLevelEnum.INFO;
 
             case ErrorLevelType.Warning:
-                return 'warning';
+                return SeverityLevelEnum.WARNING;
 
             case ErrorLevelType.Debug:
-                return 'debug';
+                return SeverityLevelEnum.DEBUG;
 
             case ErrorLevelType.Error:
             default:
-                return 'error';
+                return SeverityLevelEnum.ERROR;
         }
     }
 
@@ -138,16 +145,17 @@ export default class SentryErrorLogger implements ErrorLogger {
     };
 
     private handleRewriteFrame: (frame: StackFrame) => StackFrame = frame => {
-        if (this.publicPath && frame.filename && !frame.filename.includes(this.publicPath)) {
+        if (this.publicPath && frame.filename) {
             // We want to remove the base path of the filename, otherwise we
             // will need to specify it when we upload the sourcemaps so that the
             // filenames can match up.
-            const url = new URL(frame.filename);
-            const pathName = url.pathname;
+            const filename = frame.filename.replace(new RegExp(`^${this.publicPath}/?`), '');
 
             // `frame` needs to be modified in-place (based on the example in
             // their documentation).
-            frame.filename = `${FILENAME_PREFIX}${pathName}`;
+            if (filename !== frame.filename) {
+                frame.filename = `${FILENAME_PREFIX}/${filename}`;
+            }
         }
 
         return frame;
