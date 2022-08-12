@@ -1,7 +1,8 @@
 import { Checkout } from '@bigcommerce/checkout-sdk';
-// @ts-ignore Faker 6 supports Typescript 4+. Ignore complaint for now https://github.com/faker-js/faker/issues/606
 import { faker } from '@faker-js/faker';
 import { Page } from '@playwright/test';
+
+import { getStoreUrl } from "../";
 
 import { ApiContextFactory } from './ApiContextFactory';
 
@@ -13,9 +14,9 @@ export class ApiRequestsSender {
     private readonly page: Page;
     private readonly storeUrl: string;
 
-    constructor(page: Page, storeUrl: string) {
+    constructor(page: Page) {
         this.page = page;
-        this.storeUrl = storeUrl.substr(-1) === '/' ? storeUrl.slice(0, -1) : storeUrl;
+        this.storeUrl = getStoreUrl();
         this.apiContextFactory = new ApiContextFactory();
 
         faker.setLocale('en_US');
