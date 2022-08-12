@@ -9,7 +9,6 @@ export type WorldpayCreditCardPaymentMethodProps = HostedCreditCardPaymentMethod
 
 interface WorldpayPaymentMethodRef {
     paymentPageContentRef: RefObject<HTMLDivElement>;
-    paymentPageContentMetaDataRef: RefObject<HTMLDivElement>;
     cancelThreeDSecureVerification?(): void;
 }
 
@@ -18,11 +17,9 @@ const WorldpayCreditCardPaymentMethod: FunctionComponent<WorldpayCreditCardPayme
     ...rest
 }) => {
     const [threeDSecureVerification, setThreeDSecureVerification] = useState<HTMLElement>();
-    const [metadata, setMetadata] = useState<HTMLElement>();
 
     const ref = useRef<WorldpayPaymentMethodRef>({
         paymentPageContentRef: createRef(),
-        paymentPageContentMetaDataRef: createRef(),
     });
 
     const cancelWorldpayModalFlow = useCallback(() => {
@@ -40,7 +37,6 @@ const WorldpayCreditCardPaymentMethod: FunctionComponent<WorldpayCreditCardPayme
             worldpay: {
                 onLoad(content: HTMLIFrameElement, cancel: () => void) {
                     setThreeDSecureVerification(content);
-                    setMetadata(content);
                     ref.current.cancelThreeDSecureVerification = cancel;
                 },
             },
@@ -48,14 +44,10 @@ const WorldpayCreditCardPaymentMethod: FunctionComponent<WorldpayCreditCardPayme
     }, [initializePayment]);
 
     const appendPaymentPageContent = useCallback(() => {
-        if (ref.current.paymentPageContentRef.current && threeDSecureVerification) {
-            ref.current.paymentPageContentRef.current.appendChild(threeDSecureVerification);
+        if (threeDSecureVerification) {
+            ref.current.paymentPageContentRef.current?.appendChild(threeDSecureVerification);
         }
     }, [threeDSecureVerification]);
-
-    if (metadata) {
-        ref.current.paymentPageContentMetaDataRef.current?.appendChild(metadata);
-    }
 
     return <>
         <HostedCreditCardPaymentMethod
@@ -70,7 +62,6 @@ const WorldpayCreditCardPaymentMethod: FunctionComponent<WorldpayCreditCardPayme
         >
             <div ref={ ref.current.paymentPageContentRef } />
         </Modal>
-        <div hidden ref={ ref.current.paymentPageContentMetaDataRef } />
     </>;
 };
 
