@@ -1,4 +1,4 @@
-import { CardInstrumentFieldsetValues, CreditCardFieldsetValues, DocumentOnlyCustomFormFieldsetValues, FawryCustomFormFieldsetValues, HostedCreditCardFieldsetValues, IdealCustomFormFieldsetValues, PaymentFormValues, SepaCustomFormFieldsetValues } from "@bigcommerce/checkout/payment-integration-api";
+import { PaymentFormValues } from "@bigcommerce/checkout/payment-integration-api";
 import { CardInstrument, CheckoutSelectors, HostedFieldType, Instrument, PaymentInitializeOptions, PaymentInstrument, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { find, noop } from 'lodash';
@@ -12,24 +12,25 @@ import { withLanguage, WithLanguageProps } from '../../locale';
 import { withForm, WithFormProps } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
 import { configureCardValidator, getCreditCardValidationSchema, CreditCardFieldset } from '../creditCard';
-import { getInstrumentValidationSchema, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CardInstrumentFieldset, CreditCardValidation } from '../storedInstrument';
+import { getInstrumentValidationSchema, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CardInstrumentFieldset, CreditCardValidation, CardInstrumentFieldsetValues } from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
+import CreditCardFieldsetValues from "./CreditCardFieldsetValues";
 
 export interface CreditCardPaymentMethodProps {
     isInitializing?: boolean;
     isUsingMultiShipping?: boolean;
     method: PaymentMethod;
     cardFieldset?: ReactNode;
-    cardValidationSchema?: ObjectSchema<CreditCardPaymentMethodValues>;
-    storedCardValidationSchema?: ObjectSchema<CreditCardPaymentMethodValues>;
+    cardValidationSchema?: ObjectSchema;
+    storedCardValidationSchema?: ObjectSchema;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
     getStoredCardValidationFieldset?(selectedInstrument?: CardInstrument): ReactNode;
     initializePayment(options: PaymentInitializeOptions, selectedInstrument?: CardInstrument): Promise<CheckoutSelectors>;
     onUnhandledError?(error: Error): void;
 }
 
-export type CreditCardPaymentMethodValues = CreditCardFieldsetValues | CardInstrumentFieldsetValues | HostedCreditCardFieldsetValues | DocumentOnlyCustomFormFieldsetValues | SepaCustomFormFieldsetValues | FawryCustomFormFieldsetValues | IdealCustomFormFieldsetValues;
+export type CreditCardPaymentMethodValues = CreditCardFieldsetValues | CardInstrumentFieldsetValues;
 
 interface WithCheckoutCreditCardPaymentMethodProps {
     instruments: CardInstrument[];
@@ -224,7 +225,7 @@ class CreditCardPaymentMethod extends Component<
         return defaultInstrument && defaultInstrument.bigpayToken;
     }
 
-    private getValidationSchema(): ObjectSchema<CreditCardPaymentMethodValues> | null {
+    private getValidationSchema(): ObjectSchema | null {
         const {
             cardValidationSchema,
             isInstrumentCardCodeRequired: isInstrumentCardCodeRequiredProp,

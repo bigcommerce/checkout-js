@@ -1,9 +1,9 @@
-import { CardInstrumentFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
 import { LanguageService } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
 import { cvv, number } from 'card-validator';
 import creditCardType from 'credit-card-type';
 import { object, string, ObjectSchema, StringSchema } from 'yup';
+import CardInstrumentFieldsetValues from './CardInstrumentFieldsetValues';
 
 import mapFromInstrumentCardType from './mapFromInstrumentCardType';
 

@@ -16,7 +16,6 @@ import { isBankAccountInstrument, isCardInstrument, isInstrumentCardCodeRequired
 import withPayment, { WithPaymentProps } from '../withPayment';
 import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
 
-import { CreditCardPaymentMethodValues } from './CreditCardPaymentMethod';
 import SignOutLink from './SignOutLink';
 
 export interface HostedWidgetPaymentMethodProps {
@@ -37,7 +36,7 @@ export interface HostedWidgetPaymentMethodProps {
     shouldShowDescriptor?: boolean;
     shouldShowEditButton?: boolean;
     shouldRenderCustomInstrument?: boolean;
-    storedCardValidationSchema?: ObjectSchema<CreditCardPaymentMethodValues>;
+    storedCardValidationSchema?: ObjectSchema;
     renderCustomPaymentForm?(): React.ReactNode;
     validateInstrument?(shouldShowNumberField: boolean, selectedInstrument?: CardInstrument): React.ReactNode;
     deinitializeCustomer?(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
@@ -286,7 +285,7 @@ class HostedWidgetPaymentMethod extends Component<
         );
     }
 
-    private getValidationSchema(): ObjectSchema<CreditCardPaymentMethodValues> | null {
+    private getValidationSchema(): ObjectSchema | null {
         const {
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
             isPaymentDataRequired,
