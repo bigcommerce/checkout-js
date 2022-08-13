@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.243.0](https://github.com/bigcommerce/checkout-js/compare/v1.242.1...v1.243.0) (2022-08-13)
+
+
+### Features
+
+* **payment:** INT-6115 Worldpay - remove unnecessary iframe ([708af7e](https://github.com/bigcommerce/checkout-js/commit/708af7e1993415c5d68a3dd5ce07f76b8931e987))
+* **payment:** STRIPE-82 Add array in back, to receive it and use it in front ([0cc8fe6](https://github.com/bigcommerce/checkout-js/commit/0cc8fe65922f44b1b893331611be19a57ea1f470))
+* **payment:** STRIPE-82 Add code to show images on the list ([93280f1](https://github.com/bigcommerce/checkout-js/commit/93280f11ab671991a2223fcc6c73f93ece5f0961))
+
 ### [1.242.1](https://github.com/bigcommerce/checkout-js/compare/v1.242.0...v1.242.1) (2022-08-10)
 
 
