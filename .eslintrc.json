@@ -3,13 +3,25 @@
     "@bigcommerce/eslint-config"
   ],
   "root": true,
-  "plugins": ["@nrwl/nx"],
+  "plugins": [
+    "@nrwl/nx"
+  ],
   "env": {
     "browser": true
   },
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "files": [
+        "*.ts",
+        "*.tsx",
+        "*.js",
+        "*.jsx"
+      ],
+      "parserOptions": {
+        "project": [
+          "tsconfig.base.json"
+        ]
+      },
       "rules": {
         "@nrwl/nx/enforce-module-boundaries": [
           "error",
@@ -19,15 +31,21 @@
             "depConstraints": [
               {
                 "sourceTag": "scope:core",
-                "onlyDependOnLibsWithTags": ["scope:shared"]
+                "onlyDependOnLibsWithTags": [
+                  "scope:shared"
+                ]
               },
               {
                 "sourceTag": "scope:shared",
-                "onlyDependOnLibsWithTags": ["scope:shared"]
+                "onlyDependOnLibsWithTags": [
+                  "scope:shared"
+                ]
               },
               {
                 "sourceTag": "scope:integration",
-                "onlyDependOnLibsWithTags": ["scope:shared"]
+                "onlyDependOnLibsWithTags": [
+                  "scope:shared"
+                ]
               }
             ]
           }
@@ -41,13 +59,23 @@
       }
     },
     {
-      "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nrwl/nx/typescript"],
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
+      "extends": [
+        "plugin:@nrwl/nx/typescript"
+      ],
       "rules": {}
     },
     {
-      "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nrwl/nx/javascript"],
+      "files": [
+        "*.js",
+        "*.jsx"
+      ],
+      "extends": [
+        "plugin:@nrwl/nx/javascript"
+      ],
       "rules": {}
     }
   ]
