@@ -1,4 +1,4 @@
-import { captureException, init, withScope, BrowserOptions, Event, Integrations, Severity, StackFrame } from '@sentry/browser';
+import { captureException, init, withScope, BrowserOptions, Event, Integrations, SeverityLevel, StackFrame } from '@sentry/browser';
 import { RewriteFrames } from '@sentry/integrations';
 import { EventHint, Exception } from '@sentry/types';
 
@@ -8,11 +8,19 @@ import ErrorLogger, { ErrorLevelType, ErrorMeta, ErrorTags } from './ErrorLogger
 import NoopErrorLogger from './NoopErrorLogger';
 
 const FILENAME_PREFIX = 'app://';
+const SAMPLE_RATE = 0.1;
 
 export interface SentryErrorLoggerOptions {
     consoleLogger?: ConsoleErrorLogger;
     errorTypes?: string[];
     publicPath?: string;
+}
+
+export enum SeverityLevelEnum {
+    DEBUG = 'debug',
+    ERROR = 'error',
+    INFO = 'info',
+    WARNING = 'warning',
 }
 
 export default class SentryErrorLogger implements ErrorLogger {
@@ -32,9 +40,10 @@ export default class SentryErrorLogger implements ErrorLogger {
         this.publicPath = publicPath;
 
         init({
+            sampleRate: SAMPLE_RATE,
             beforeSend: this.handleBeforeSend,
-            blacklistUrls: [
-                ...(config.blacklistUrls || []),
+            denyUrls: [
+                ...(config.denyUrls || []),
                 'polyfill~checkout',
                 'sentry~checkout',
             ],
@@ -78,20 +87,20 @@ export default class SentryErrorLogger implements ErrorLogger {
         });
     }
 
-    private mapToSentryLevel(level: ErrorLevelType): Severity {
+    private mapToSentryLevel(level: ErrorLevelType): SeverityLevel {
         switch (level) {
-        case ErrorLevelType.Info:
-            return Severity.Info;
+            case ErrorLevelType.Info:
+                return SeverityLevelEnum.INFO;
 
-        case ErrorLevelType.Warning:
-            return Severity.Warning;
+            case ErrorLevelType.Warning:
+                return SeverityLevelEnum.WARNING;
 
-        case ErrorLevelType.Debug:
-            return Severity.Debug;
+            case ErrorLevelType.Debug:
+                return SeverityLevelEnum.DEBUG;
 
-        case ErrorLevelType.Error:
-        default:
-            return Severity.Error;
+            case ErrorLevelType.Error:
+            default:
+                return SeverityLevelEnum.ERROR;
         }
     }
 

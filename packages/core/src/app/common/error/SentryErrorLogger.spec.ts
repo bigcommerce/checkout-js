@@ -1,11 +1,11 @@
-import { captureException, init, withScope, BrowserOptions, Integrations, Scope, Severity } from '@sentry/browser';
+import { captureException, init, withScope, BrowserOptions, Integrations, Scope } from '@sentry/browser';
 import { RewriteFrames } from '@sentry/integrations';
 import { Integration } from '@sentry/types';
 
 import computeErrorCode from './computeErrorCode';
 import ConsoleErrorLogger from './ConsoleErrorLogger';
 import { ErrorLevelType } from './ErrorLogger';
-import SentryErrorLogger from './SentryErrorLogger';
+import SentryErrorLogger, { SeverityLevelEnum } from './SentryErrorLogger';
 
 jest.mock('@sentry/browser', () => {
     return {
@@ -27,6 +27,7 @@ describe('SentryErrorLogger', () => {
 
     beforeEach(() => {
         config = {
+            sampleRate: 0.123,
             dsn: 'https://abc@sentry.io/123',
         };
 
@@ -54,6 +55,8 @@ describe('SentryErrorLogger', () => {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         expect(clientOptions.beforeSend!(event, hint))
             .toEqual(null);
+        expect(clientOptions.sampleRate)
+            .toStrictEqual(0.123);
     });
 
     it('does not log exception event if it does not contain stacktrace', () => {
@@ -125,21 +128,25 @@ describe('SentryErrorLogger', () => {
         )) as RewriteFrames;
 
         const output = rewriteFrames.process({
-            stacktrace: {
-                frames: [
-                    {
-                        colno: 1234,
-                        filename: 'https://cdn.foo.bar/js/app-123.js',
-                        function: 't.<anonymous>',
-                        in_app: true,
-                        lineno: 1,
+            exception: {
+                values: [{
+                    stacktrace: {
+                        frames: [
+                            {
+                                colno: 1234,
+                                filename: 'https://cdn.foo.bar/js/app-123.js',
+                                function: 't.<anonymous>',
+                                in_app: true,
+                                lineno: 1,
+                            },
+                        ],
                     },
-                ],
-            },
+                }],
+            }
         });
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const frame = output.stacktrace!.frames![0];
+        const frame = output.exception!.values![0].stacktrace!.frames![0];
 
         expect(frame)
             .toEqual({
@@ -154,14 +161,14 @@ describe('SentryErrorLogger', () => {
 
         expect(init)
             .toHaveBeenCalledWith(expect.objectContaining({
-                blacklistUrls: [
+                denyUrls: [
                     'polyfill~checkout',
                     'sentry~checkout',
                 ],
             }));
     });
 
-    it('does not rewrite filename of error frames if it does match with public path', () => {
+    it('does not rewrite filename of error frames if it does not match with public path', () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         new SentryErrorLogger(config, { publicPath: 'https://cdn.foo.bar' });
 
@@ -173,25 +180,33 @@ describe('SentryErrorLogger', () => {
         )) as RewriteFrames;
 
         const output = rewriteFrames.process({
-            stacktrace: {
-                frames: [
-                    {
-                        colno: 1234,
-                        filename: 'https://cdn.hello.world/js/app-123.js',
-                        function: 't.<anonymous>',
-                        in_app: true,
-                        lineno: 1,
+            exception: {
+                values: [{
+                    stacktrace: {
+                        frames: [
+                            {
+                                colno: 1234,
+                                filename: 'https://cdn.hello.world/js/app-123.js',
+                                function: 't.<anonymous>',
+                                in_app: true,
+                                lineno: 1,
+                            },
+                        ],
                     },
-                ],
-            },
+                }],
+            }
         });
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const frame = output.stacktrace!.frames![0];
+        const frame = output.exception!.values![0].stacktrace!.frames![0];
 
         expect(frame)
-            .toEqual(frame);
+            .toEqual({
+                ...frame,
+                filename: 'https://cdn.hello.world/js/app-123.js',
+            });
     });
+
 
     it('disables global error handler', () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -225,7 +240,7 @@ describe('SentryErrorLogger', () => {
             logger.log(error, tags, ErrorLevelType.Warning);
 
             expect(scope.setLevel)
-                .toHaveBeenCalledWith(Severity.Warning);
+                .toHaveBeenCalledWith('warning');
 
             expect(scope.setTags)
                 .toHaveBeenCalledWith(tags);
@@ -244,7 +259,7 @@ describe('SentryErrorLogger', () => {
             logger.log(error);
 
             expect(scope.setLevel)
-                .toHaveBeenCalledWith(Severity.Error);
+                .toHaveBeenCalledWith('error');
 
             expect(scope.setTags)
                 .toHaveBeenCalledWith({ errorCode: computeErrorCode(error) });
@@ -265,13 +280,13 @@ describe('SentryErrorLogger', () => {
             logger.log(error, undefined, ErrorLevelType.Info);
 
             expect(scope.setLevel)
-                .toHaveBeenNthCalledWith(1, Severity.Error);
+                .toHaveBeenNthCalledWith(1, SeverityLevelEnum.ERROR);
 
             expect(scope.setLevel)
-                .toHaveBeenNthCalledWith(2, Severity.Warning);
+                .toHaveBeenNthCalledWith(2, SeverityLevelEnum.WARNING);
 
             expect(scope.setLevel)
-                .toHaveBeenNthCalledWith(3, Severity.Info);
+                .toHaveBeenNthCalledWith(3, SeverityLevelEnum.INFO);
         });
 
         it('logs error in console if console logger is provided', () => {
