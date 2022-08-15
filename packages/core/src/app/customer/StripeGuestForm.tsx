@@ -27,6 +27,7 @@ export interface StripeGuestFormProps {
     deinitialize(options: CustomerRequestOptions): void;
     initialize(options: CustomerInitializeOptions): void;
     onShowLogin(): void;
+    updateStripeLinkAuthenticated(auth: boolean): void;
 }
 
 const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<GuestFormValues>> = ({
@@ -42,12 +43,14 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
     requiresMarketingConsent,
     privacyPolicyUrl,
     step,
+    updateStripeLinkAuthenticated,
 }) => {
 
     const [continueAsAGuestButton, setContinueAsAGuestButton] = useState(true);
     const [emailValue, setEmailValue] = useState('');
     const [authentication, setAuthentication] = useState(false);
     const [isStripeLoading, setIsStripeLoading] = useState(true);
+    const [isNewAuth, setIsNewAuth] = useState(false);
     const handleOnClickSubmitButton = () => {
         onContinueAsGuest({
             email: emailValue || '',
@@ -58,14 +61,18 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
         onChangeEmail(email);
         setEmailValue(email);
         setContinueAsAGuestButton(!email);
+        updateStripeLinkAuthenticated(authenticated);
         setAuthentication(authenticated);
+        if(!authenticated){
+            setIsNewAuth(true);
+        }
     }, [setContinueAsAGuestButton, onChangeEmail]);
 
     useEffect(() => {
-        if (!step.isComplete && emailValue && authentication) {
+        if ((!step.isComplete || isNewAuth) && emailValue && authentication) {
             handleOnClickSubmitButton();
         }
-    }, [emailValue, authentication]);
+    }, [emailValue, authentication, isNewAuth]);
 
     const handleLoading = useCallback((mounted: boolean) => {
         setIsStripeLoading(mounted);

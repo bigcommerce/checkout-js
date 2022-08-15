@@ -1,8 +1,7 @@
-import { Address, CheckoutSelectors, Consignment, Country, CustomerAddress, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import { Address, CheckoutSelectors, Consignment, Country, CustomerAddress, FormField, ShippingInitializeOptions, ShippingRequestOptions, StripeShippingEvent } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { noop } from 'lodash';
 import React, { memo, useCallback, useContext, useEffect, useState, FunctionComponent } from 'react';
-import { StripeShippingEvent } from '../../../../../../checkout-sdk-js/packages/core/src/payment/strategies/stripe-upe';
 
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { FormContext } from '../ui/form';

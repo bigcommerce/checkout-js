@@ -31,6 +31,7 @@ export interface CustomerProps {
     onSignIn?(): void;
     onSignInError?(error: Error): void;
     onUnhandledError?(error: Error): void;
+    updateStripeLinkAuthenticated(auth: boolean): void;
 }
 
 export interface WithCheckoutCustomerProps {
@@ -159,6 +160,8 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             isStripeLinkEnable,
             onUnhandledError = noop,
             step,
+            updateStripeLinkAuthenticated,
+
         } = this.props;
 
         return (
@@ -187,6 +190,8 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                     privacyPolicyUrl={ privacyPolicyUrl }
                     requiresMarketingConsent={ requiresMarketingConsent }
                     step={ step }
+                    updateStripeLinkAuthenticated={ updateStripeLinkAuthenticated }
+
                 />
                 :
             <GuestForm

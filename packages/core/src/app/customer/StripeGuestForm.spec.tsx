@@ -20,6 +20,7 @@ describe('StripeGuestForm', () => {
             onChangeEmail: jest.fn(),
             onContinueAsGuest: handleContinueAsGuest,
             deinitialize: jest.fn(),
+            updateStripeLinkAuthenticated: jest.fn(),
             initialize: jest.fn(),
             onShowLogin: jest.fn(),
             requiresMarketingConsent: false,
