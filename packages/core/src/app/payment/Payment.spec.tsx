@@ -7,7 +7,7 @@ import React, { FunctionComponent } from 'react';
 import { getCart } from '../cart/carts.mock';
 import { CheckoutProvider } from '../checkout';
 import { getCheckout, getCheckoutPayment } from '../checkout/checkouts.mock';
-import { ErrorModal } from '../common/error';
+import { createErrorLogger, ErrorModal } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
@@ -85,6 +85,7 @@ describe('Payment', () => {
         localeContext = createLocaleContext(getStoreConfig());
 
         defaultProps = {
+            errorLogger: createErrorLogger(),
             onSubmit: jest.fn(),
             onSubmitError: jest.fn(),
             onUnhandledError: jest.fn(),
@@ -247,6 +248,7 @@ describe('Payment', () => {
         jest.spyOn(checkoutService, 'applyStoreCredit')
             .mockResolvedValue(checkoutState);
         const defaultProps = {
+            errorLogger: createErrorLogger(),
             onSubmit: jest.fn(),
             onSubmitError: jest.fn(),
             onUnhandledError: jest.fn(),

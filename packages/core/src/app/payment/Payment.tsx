@@ -6,7 +6,7 @@ import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
-import { isCartChangedError, isRequestError, ErrorModal, ErrorModalOnCloseProps } from '../common/error';
+import { isCartChangedError, isRequestError, ErrorModal, ErrorModalOnCloseProps, ErrorLogger } from '../common/error';
 import { EMPTY_ARRAY } from '../common/utility';
 import { withLanguage, WithLanguageProps } from '../locale';
 import { TermsConditionsType } from '../termsConditions';
@@ -19,6 +19,7 @@ import PaymentContext from './PaymentContext';
 import PaymentForm from './PaymentForm';
 
 export interface PaymentProps {
+    errorLogger: ErrorLogger;
     isEmbedded?: boolean;
     isUsingMultiShipping?: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void; // TODO: We're currently doing this check in multiple places, perhaps we should move it up so this check get be done in a single place instead.
@@ -176,6 +177,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
                         onMethodSelect={ this.setSelectedMethod }
                         onStoreCreditChange={ this.handleStoreCreditChange }
                         onSubmit={ this.handleSubmit }
+                        onUnhandledError={ this.handleError }
                         selectedMethod={ selectedMethod }
                         shouldDisableSubmit={ uniqueSelectedMethodId && shouldDisableSubmit[uniqueSelectedMethodId] || undefined }
                         shouldHidePaymentSubmitButton={ uniqueSelectedMethodId && shouldHidePaymentSubmitButton[uniqueSelectedMethodId] || undefined }
@@ -377,6 +379,23 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             onUnhandledError(e);
         }
     };
+
+    private handleError: (error: Error) => void = (error: Error) => {
+        const {
+            onUnhandledError = noop,
+            errorLogger
+        } = this.props;
+
+        const { type } = error as any;
+
+        if (type === 'unexpected_detachment') {
+            errorLogger.log(error);
+
+            return;
+        }
+        
+        return onUnhandledError(error);
+    }
 
     private handleSubmit: (values: PaymentFormValues) => void = async values => {
         const {
