@@ -13,6 +13,8 @@ import getPaymentMethodDisplayName from './getPaymentMethodDisplayName';
 import getPaymentMethodName from './getPaymentMethodName';
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodType from './PaymentMethodType';
+import { isHostedCreditCardFieldsetValues } from './HostedCreditCardFieldsetValues';
+import { hasCreditCardNumber } from './CreditCardFieldsetValues';
 
 export interface PaymentMethodTitleProps {
     method: PaymentMethod;
@@ -214,11 +216,11 @@ const PaymentMethodTitle: FunctionComponent<PaymentMethodTitleProps & WithLangua
             return;
         }
 
-        if ('hostedForm' in values && 'cardType' in values.hostedForm && values.hostedForm.cardType) {
+        if (isHostedCreditCardFieldsetValues(values) && values.hostedForm.cardType) {
             return values.hostedForm.cardType;
         }
 
-        if ('ccNumber' in values && values.ccNumber) {
+        if (hasCreditCardNumber(values) && values.ccNumber) {
             const { card } = number(values.ccNumber);
 
             if (!card) {

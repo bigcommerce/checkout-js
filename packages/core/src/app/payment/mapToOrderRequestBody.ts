@@ -3,24 +3,26 @@ import { OrderPaymentRequestBody, OrderRequestBody } from '@bigcommerce/checkout
 import { isEmpty, isNil, omitBy } from 'lodash';
 
 import { unformatCreditCardExpiryDate, unformatCreditCardNumber } from './creditCard';
-import { parseUniquePaymentMethodId } from './paymentMethod';
+import { hasCreditCardExpiry, parseUniquePaymentMethodId } from './paymentMethod';
+import { hasCreditCardNumber } from './paymentMethod';
 
 export default function mapToOrderRequestBody(
-    { paymentProviderRadio, ...values }: PaymentFormValues,
+    values: PaymentFormValues,
     isPaymentDataRequired: boolean
 ): OrderRequestBody {
     if (!isPaymentDataRequired) {
         return {};
     }
 
+    const { paymentProviderRadio, ...rest } = values;
     const { methodId, gatewayId } = parseUniquePaymentMethodId(paymentProviderRadio);
     const payload: OrderRequestBody = {
         payment: { gatewayId, methodId },
     };
     const paymentData = omitBy({
-        ...values,
-        ccExpiry: 'ccExpiry' in values && values.ccExpiry ? unformatCreditCardExpiryDate(values.ccExpiry) : null,
-        ccNumber: 'ccNumber' in values && values.ccNumber ? unformatCreditCardNumber(values.ccNumber) : null,
+        ...rest,
+        ccExpiry: hasCreditCardExpiry(values) ? unformatCreditCardExpiryDate(values.ccExpiry) : null,
+        ccNumber: hasCreditCardNumber(values) ? unformatCreditCardNumber(values.ccNumber) : null,
     }, isNil) as OrderPaymentRequestBody['paymentData'];
 
     if (payload.payment && !isEmpty(paymentData)) {
