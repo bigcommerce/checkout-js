@@ -1,1 +1,7 @@
 * @bigcommerce/checkout
+/packages/apple-pay-integration @bigcommerce/checkout
+/packages/checkout-button-integration @bigcommerce/checkout
+/packages/core @bigcommerce/checkout
+/packages/google-pay-integration @bigcommerce/apex-leads
+/packages/payment-integration-api @bigcommerce/checkout
+/packages/workspace-tools @bigcommerce/checkout
