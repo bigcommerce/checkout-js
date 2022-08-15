@@ -1,4 +1,4 @@
-import { PaymentMethodProps as ResolvedPaymentMethodProps, PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { PaymentMethodProps as ResolvedPaymentMethodProps, PaymentFormValues, PaymentMethodResolveId } from '@bigcommerce/checkout/payment-integration-api';
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import React, { ComponentType } from 'react';
 
@@ -7,7 +7,7 @@ import { connectFormik, WithFormikProps } from '../../common/form';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { withForm, WithFormProps } from '../../ui/form';
 import createPaymentFormService from '../createPaymentFormService';
-import resolvePaymentMethod, { PaymentMethodResolveId } from '../resolvePaymentMethod';
+import resolvePaymentMethod from '../resolvePaymentMethod';
 import withPayment, { WithPaymentProps } from '../withPayment';
 
 export interface PaymentMethodProps {

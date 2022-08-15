@@ -1,4 +1,4 @@
-import { toResolvableComponent, PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+import { toResolvableComponent, PaymentMethodProps, PaymentMethodResolveId } from '@bigcommerce/checkout/payment-integration-api';
 import React, { FunctionComponent, useEffect } from 'react';
 
 const ApplePaymentMethod: FunctionComponent<PaymentMethodProps> = ({ method, checkoutService, language, onUnhandledError }) => {
@@ -37,7 +37,7 @@ const ApplePaymentMethod: FunctionComponent<PaymentMethodProps> = ({ method, che
     return <></>;
 };
 
-export default toResolvableComponent(
+export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
     ApplePaymentMethod,
     [{ id: 'applepay' }]
 );
