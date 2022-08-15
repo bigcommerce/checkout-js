@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.245.2](https://github.com/bigcommerce/checkout-js/compare/v1.245.1...v1.245.2) (2022-08-15)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-6899 Move method-specific interfaces out of payment integration API package ([7d1dd2b](https://github.com/bigcommerce/checkout-js/commit/7d1dd2be34783861df4dee535786fa2b0a1214b8))
+
 ### [1.245.1](https://github.com/bigcommerce/checkout-js/compare/v1.245.0...v1.245.1) (2022-08-15)
 
 
