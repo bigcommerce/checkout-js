@@ -1,50 +1,50 @@
 import { noop } from 'lodash';
 import React, {createContext,
-  memo,
-  useCallback,
-  useMemo,
-  FunctionComponent,
-  ReactNode,} from 'react';
+    memo,
+    useCallback,
+    useMemo,
+    FunctionComponent,
+    ReactNode,} from 'react';
 
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { Accordion } from '../accordion';
 
 export interface ChecklistProps {
-  children: ReactNode;
-  defaultSelectedItemId?: string;
-  isDisabled?: boolean;
-  name: string;
-  onSelect?(value: string): void;
+    children: ReactNode;
+    defaultSelectedItemId?: string;
+    isDisabled?: boolean;
+    name: string;
+    onSelect?(value: string): void;
 }
 
 export interface ChecklistContextProps {
-  name: string;
+    name: string;
 }
 
 export const ChecklistContext = createContext<ChecklistContextProps | undefined>(undefined);
 
 const Checklist: FunctionComponent<
-  ChecklistProps & ConnectFormikProps<{ [key: string]: string }>
+    ChecklistProps & ConnectFormikProps<{ [key: string]: string }>
 > = ({ formik: { setFieldValue }, name, onSelect = noop, ...props }) => {
-  const handleSelect = useCallback(
-    (value: string) => {
-      setFieldValue(name, value);
-      onSelect(value);
-    },
-    [name, onSelect, setFieldValue],
-  );
+    const handleSelect = useCallback(
+        (value: string) => {
+            setFieldValue(name, value);
+            onSelect(value);
+        },
+        [name, onSelect, setFieldValue],
+    );
 
-  const contextValue = useMemo(() => ({ name }), [name]);
+    const contextValue = useMemo(() => ({ name }), [name]);
 
-  return (
-    <ChecklistContext.Provider value={ contextValue }>
-      <Accordion
-        { ...props }
-        className="form-checklist optimizedCheckout-form-checklist"
-        onSelect={ handleSelect }
-      />
-    </ChecklistContext.Provider>
-  );
+    return (
+        <ChecklistContext.Provider value={ contextValue }>
+            <Accordion
+                { ...props }
+                className="form-checklist optimizedCheckout-form-checklist"
+                onSelect={ handleSelect }
+            />
+        </ChecklistContext.Provider>
+    );
 };
 
 export default connectFormik(memo(Checklist));

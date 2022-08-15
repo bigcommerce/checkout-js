@@ -5,13 +5,13 @@ import AppliedGiftCertificate from './AppliedGiftCertificate';
 import { getGiftCertificate } from './giftCertificate.mock';
 
 describe('AppliedGiftCertificate', () => {
-  let component: ShallowWrapper;
+    let component: ShallowWrapper;
 
-  beforeEach(() => {
-    component = shallow(<AppliedGiftCertificate giftCertificate={ getGiftCertificate() } />);
-  });
+    beforeEach(() => {
+        component = shallow(<AppliedGiftCertificate giftCertificate={ getGiftCertificate() } />);
+    });
 
-  it('renders markup that matches snapshot', () => {
-    expect(component).toMatchSnapshot();
-  });
+    it('renders markup that matches snapshot', () => {
+        expect(component).toMatchSnapshot();
+    });
 });

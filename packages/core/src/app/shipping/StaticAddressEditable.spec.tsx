@@ -15,96 +15,96 @@ import { LoadingOverlay } from '../ui/loading';
 import StaticAddressEditable, { StaticAddressEditableProps } from './StaticAddressEditable';
 
 describe('StaticAddressEditable Component', () => {
-  const defaultProps: StaticAddressEditableProps = {
-    address: getAddress(),
-    buttonId: 'foo',
-    formFields: getFormFields(),
-    isLoading: false,
-    methodId: 'bar',
-    initialize: jest.fn(),
-    deinitialize: jest.fn(),
-    onFieldChange: jest.fn(),
-  };
+    const defaultProps: StaticAddressEditableProps = {
+        address: getAddress(),
+        buttonId: 'foo',
+        formFields: getFormFields(),
+        isLoading: false,
+        methodId: 'bar',
+        initialize: jest.fn(),
+        deinitialize: jest.fn(),
+        onFieldChange: jest.fn(),
+    };
 
-  const initialFormikValues = {
-    shippingAddress: {
-      customFields: {
-        field_25: '',
-      },
-    },
-  };
+    const initialFormikValues = {
+        shippingAddress: {
+            customFields: {
+                field_25: '',
+            },
+        },
+    };
 
-  it('renders a static address, an edit button, and custom form fields', () => {
-    const wrapper = shallow(<StaticAddressEditable { ...defaultProps } />);
+    it('renders a static address, an edit button, and custom form fields', () => {
+        const wrapper = shallow(<StaticAddressEditable { ...defaultProps } />);
 
-    expect(wrapper.find(StaticAddress)).toHaveLength(1);
-    expect(wrapper.find(Button)).toHaveLength(1);
-    expect(wrapper.find('#customFieldset')).toHaveLength(1);
-  });
+        expect(wrapper.find(StaticAddress)).toHaveLength(1);
+        expect(wrapper.find(Button)).toHaveLength(1);
+        expect(wrapper.find('#customFieldset')).toHaveLength(1);
+    });
 
-  it('does not render custom form fields', () => {
-    const builtInFormFields = getFormFields().filter(({ custom }) => !custom);
-    const wrapper = shallow(
-      <StaticAddressEditable { ...defaultProps } formFields={ builtInFormFields } />,
-    );
+    it('does not render custom form fields', () => {
+        const builtInFormFields = getFormFields().filter(({ custom }) => !custom);
+        const wrapper = shallow(
+            <StaticAddressEditable { ...defaultProps } formFields={ builtInFormFields } />,
+        );
 
-    expect(wrapper.find(StaticAddress)).toHaveLength(1);
-    expect(wrapper.find(Button)).toHaveLength(1);
-    expect(wrapper.find('#customFieldset')).toHaveLength(0);
-  });
+        expect(wrapper.find(StaticAddress)).toHaveLength(1);
+        expect(wrapper.find(Button)).toHaveLength(1);
+        expect(wrapper.find('#customFieldset')).toHaveLength(0);
+    });
 
-  it('calls initialize prop on mount', () => {
-    shallow(<StaticAddressEditable { ...defaultProps } />);
+    it('calls initialize prop on mount', () => {
+        shallow(<StaticAddressEditable { ...defaultProps } />);
 
-    expect(defaultProps.initialize).toHaveBeenCalled();
-  });
+        expect(defaultProps.initialize).toHaveBeenCalled();
+    });
 
-  it('calls deinitialize prop on unmount', () => {
-    shallow(<StaticAddressEditable { ...defaultProps } />).unmount();
+    it('calls deinitialize prop on unmount', () => {
+        shallow(<StaticAddressEditable { ...defaultProps } />).unmount();
 
-    expect(defaultProps.initialize).toHaveBeenCalled();
-  });
+        expect(defaultProps.initialize).toHaveBeenCalled();
+    });
 
-  it('renders correct number of custom form fields', () => {
-    const component = mount(
-      <Formik initialValues={ initialFormikValues } onSubmit={ noop }>
-        <StaticAddressEditable { ...defaultProps } />
-      </Formik>,
-    );
+    it('renders correct number of custom form fields', () => {
+        const component = mount(
+            <Formik initialValues={ initialFormikValues } onSubmit={ noop }>
+                <StaticAddressEditable { ...defaultProps } />
+            </Formik>,
+        );
 
-    expect(component.find(DynamicFormField)).toHaveLength(3);
-  });
+        expect(component.find(DynamicFormField)).toHaveLength(3);
+    });
 
-  it('calls method to set field value on change in custom form field', () => {
-    const localeContext = createLocaleContext(getStoreConfig());
-    const component = mount(
-      <LocaleContext.Provider value={ localeContext }>
-        <Formik initialValues={ initialFormikValues } onSubmit={ noop }>
-          <StaticAddressEditable { ...defaultProps } />
-        </Formik>
-      </LocaleContext.Provider>,
-    );
+    it('calls method to set field value on change in custom form field', () => {
+        const localeContext = createLocaleContext(getStoreConfig());
+        const component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <Formik initialValues={ initialFormikValues } onSubmit={ noop }>
+                    <StaticAddressEditable { ...defaultProps } />
+                </Formik>
+            </LocaleContext.Provider>,
+        );
 
-    const inputFieldName = getFormFields()[4].name;
+        const inputFieldName = getFormFields()[4].name;
 
-    component
-      .find(`input[name="shippingAddress.customFields.${inputFieldName}"]`)
-      .simulate('change', {
-        target: { value: 'foo', name: 'shippingAddress.customFields.field_25' },
-      });
+        component
+            .find(`input[name="shippingAddress.customFields.${inputFieldName}"]`)
+            .simulate('change', {
+                target: { value: 'foo', name: 'shippingAddress.customFields.field_25' },
+            });
 
-    expect(defaultProps.onFieldChange).toHaveBeenCalledWith(inputFieldName, 'foo');
-  });
+        expect(defaultProps.onFieldChange).toHaveBeenCalledWith(inputFieldName, 'foo');
+    });
 
-  it('renders loading overlay while loading, updating or interacting', () => {
-    let wrapper: ShallowWrapper;
+    it('renders loading overlay while loading, updating or interacting', () => {
+        let wrapper: ShallowWrapper;
 
-    wrapper = shallow(<StaticAddressEditable { ...defaultProps } isLoading={ true } />);
+        wrapper = shallow(<StaticAddressEditable { ...defaultProps } isLoading={ true } />);
 
-    expect(wrapper.find(LoadingOverlay).prop('isLoading')).toBe(true);
+        expect(wrapper.find(LoadingOverlay).prop('isLoading')).toBe(true);
 
-    wrapper = shallow(<StaticAddressEditable { ...defaultProps } />);
+        wrapper = shallow(<StaticAddressEditable { ...defaultProps } />);
 
-    expect(wrapper.find(LoadingOverlay).prop('isLoading')).toBe(false);
-  });
+        expect(wrapper.find(LoadingOverlay).prop('isLoading')).toBe(false);
+    });
 });

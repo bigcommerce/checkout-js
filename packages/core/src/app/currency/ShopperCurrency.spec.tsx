@@ -7,22 +7,22 @@ import { getLocaleContext } from '../locale/localeContext.mock';
 import ShopperCurrency from './ShopperCurrency';
 
 describe('ShopperCurrency Component', () => {
-  const localeContext = getLocaleContext();
+    const localeContext = getLocaleContext();
 
-  it('renders formatted amount in shopper currency', () => {
-    const currency = localeContext.currency;
+    it('renders formatted amount in shopper currency', () => {
+        const currency = localeContext.currency;
 
-    jest.spyOn(currency, 'toCustomerCurrency');
+        jest.spyOn(currency, 'toCustomerCurrency');
 
-    const tree = testRenderer
-      .create(
-        <LocaleContext.Provider value={ localeContext }>
-          <ShopperCurrency amount={ 10 } />
-        </LocaleContext.Provider>,
-      )
-      .toJSON();
+        const tree = testRenderer
+            .create(
+                <LocaleContext.Provider value={ localeContext }>
+                    <ShopperCurrency amount={ 10 } />
+                </LocaleContext.Provider>,
+            )
+            .toJSON();
 
-    expect(currency.toCustomerCurrency).toHaveBeenCalledWith(10);
-    expect(tree).toMatchSnapshot();
-  });
+        expect(currency.toCustomerCurrency).toHaveBeenCalledWith(10);
+        expect(tree).toMatchSnapshot();
+    });
 });

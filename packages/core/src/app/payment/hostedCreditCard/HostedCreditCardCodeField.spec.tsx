@@ -11,33 +11,33 @@ import { TooltipTrigger } from '../../ui/tooltip';
 import HostedCreditCardCodeField, {HostedCreditCardCodeFieldProps,} from './HostedCreditCardCodeField';
 
 describe('HostedCreditCardCodeField', () => {
-  let HostedCreditCardCodeFieldTest: FunctionComponent<HostedCreditCardCodeFieldProps>;
-  let defaultProps: HostedCreditCardCodeFieldProps;
-  let initialValues: { ccCvv: string };
-  let localeContext: LocaleContextType;
+    let HostedCreditCardCodeFieldTest: FunctionComponent<HostedCreditCardCodeFieldProps>;
+    let defaultProps: HostedCreditCardCodeFieldProps;
+    let initialValues: { ccCvv: string };
+    let localeContext: LocaleContextType;
 
-  beforeEach(() => {
-    initialValues = { ccCvv: '' };
-    localeContext = createLocaleContext(getStoreConfig());
-    defaultProps = {
-      appearFocused: true,
-      id: 'ccCvv',
-      name: 'ccCvv',
-    };
+    beforeEach(() => {
+        initialValues = { ccCvv: '' };
+        localeContext = createLocaleContext(getStoreConfig());
+        defaultProps = {
+            appearFocused: true,
+            id: 'ccCvv',
+            name: 'ccCvv',
+        };
 
-    HostedCreditCardCodeFieldTest = (props) => (
-      <LocaleContext.Provider value={ localeContext }>
-        <Formik initialValues={ initialValues } onSubmit={ noop }>
-          <HostedCreditCardCodeField { ...props } />
-        </Formik>
-      </LocaleContext.Provider>
-    );
-  });
+        HostedCreditCardCodeFieldTest = (props) => (
+            <LocaleContext.Provider value={ localeContext }>
+                <Formik initialValues={ initialValues } onSubmit={ noop }>
+                    <HostedCreditCardCodeField { ...props } />
+                </Formik>
+            </LocaleContext.Provider>
+        );
+    });
 
-  it('renders field with tooltip icon', () => {
-    const component = mount(<HostedCreditCardCodeFieldTest { ...defaultProps } />);
+    it('renders field with tooltip icon', () => {
+        const component = mount(<HostedCreditCardCodeFieldTest { ...defaultProps } />);
 
-    expect(component.find(IconHelp)).toHaveLength(1);
-    expect(component.find(TooltipTrigger)).toHaveLength(1);
-  });
+        expect(component.find(IconHelp)).toHaveLength(1);
+        expect(component.find(TooltipTrigger)).toHaveLength(1);
+    });
 });

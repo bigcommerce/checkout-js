@@ -8,12 +8,12 @@ import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMe
 export type CCAvenueMarsPaymentMethodProps = Omit<HostedPaymentMethodProps, 'description'>;
 
 const CCAvenueMarsPaymentMethod: FunctionComponent<CCAvenueMarsPaymentMethodProps> = (props) => {
-  const description = useMemo(
-    () => <TranslatedString id="payment.ccavenuemars_description_text" />,
-    [],
-  );
+    const description = useMemo(
+        () => <TranslatedString id="payment.ccavenuemars_description_text" />,
+        [],
+    );
 
-  return <HostedPaymentMethod { ...props } description={ description } />;
+    return <HostedPaymentMethod { ...props } description={ description } />;
 };
 
 export default CCAvenueMarsPaymentMethod;

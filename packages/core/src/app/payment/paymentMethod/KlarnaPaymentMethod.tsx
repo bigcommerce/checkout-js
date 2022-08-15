@@ -6,27 +6,27 @@ import HostedWidgetPaymentMethod, {HostedWidgetPaymentMethodProps,} from './Host
 export type KlarnaPaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId'>;
 
 const KlarnaPaymentMethod: FunctionComponent<KlarnaPaymentMethodProps> = ({
-  initializePayment,
-  ...rest
+    initializePayment,
+    ...rest
 }) => {
-  const initializeKlarnaPayment = useCallback(
-    (options) =>
-      initializePayment({
-        ...options,
-        klarna: {
-          container: '#paymentWidget',
-        },
-      }),
-    [initializePayment],
-  );
+    const initializeKlarnaPayment = useCallback(
+        (options) =>
+            initializePayment({
+                ...options,
+                klarna: {
+                    container: '#paymentWidget',
+                },
+            }),
+        [initializePayment],
+    );
 
-  return (
-    <HostedWidgetPaymentMethod
-      { ...rest }
-      containerId="paymentWidget"
-      initializePayment={ initializeKlarnaPayment }
-    />
-  );
+    return (
+        <HostedWidgetPaymentMethod
+            { ...rest }
+            containerId="paymentWidget"
+            initializePayment={ initializeKlarnaPayment }
+        />
+    );
 };
 
 export default KlarnaPaymentMethod;

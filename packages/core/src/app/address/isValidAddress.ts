@@ -4,7 +4,7 @@ import getAddressFormFieldsValidationSchema from './getAddressFormFieldsValidati
 import mapAddressToFormValues from './mapAddressToFormValues';
 
 export default function isValidAddress(address: Address, formFields: FormField[]): boolean {
-  const addressSchema = getAddressFormFieldsValidationSchema({ formFields });
+    const addressSchema = getAddressFormFieldsValidationSchema({ formFields });
 
-  return addressSchema.isValidSync(mapAddressToFormValues(formFields, address));
+    return addressSchema.isValidSync(mapAddressToFormValues(formFields, address));
 }

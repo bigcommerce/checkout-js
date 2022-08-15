@@ -19,136 +19,136 @@ import ShippingAddressForm from './ShippingAddressForm';
 import StaticAddressEditable from './StaticAddressEditable';
 
 describe('ShippingAddress Component', () => {
-  let checkoutService: CheckoutService;
-  let localeContext: LocaleContextType;
-  let wrapperComponent: ReactWrapper;
-  let TestComponent: FunctionComponent<Partial<ShippingAddressProps>>;
-  let defaultProps: ShippingAddressProps;
+    let checkoutService: CheckoutService;
+    let localeContext: LocaleContextType;
+    let wrapperComponent: ReactWrapper;
+    let TestComponent: FunctionComponent<Partial<ShippingAddressProps>>;
+    let defaultProps: ShippingAddressProps;
 
-  beforeAll(() => {
-    checkoutService = createCheckoutService();
-    localeContext = createLocaleContext(getStoreConfig());
+    beforeAll(() => {
+        checkoutService = createCheckoutService();
+        localeContext = createLocaleContext(getStoreConfig());
 
-    defaultProps = {
-      consignments: [getConsignment()],
-      addresses: getCustomer().addresses,
-      shippingAddress: {
-        ...getShippingAddress(),
-        address1: 'x',
-      },
-      countriesWithAutocomplete: [],
-      isLoading: false,
-      isShippingStepPending: false,
-      hasRequestedShippingOptions: false,
-      formFields: getFormFields(),
-      onAddressSelect: jest.fn(),
-      onFieldChange: jest.fn(),
-      initialize: jest.fn(),
-      deinitialize: jest.fn(),
-      onUnhandledError: jest.fn(),
-      onUseNewAddress: jest.fn(),
-    };
+        defaultProps = {
+            consignments: [getConsignment()],
+            addresses: getCustomer().addresses,
+            shippingAddress: {
+                ...getShippingAddress(),
+                address1: 'x',
+            },
+            countriesWithAutocomplete: [],
+            isLoading: false,
+            isShippingStepPending: false,
+            hasRequestedShippingOptions: false,
+            formFields: getFormFields(),
+            onAddressSelect: jest.fn(),
+            onFieldChange: jest.fn(),
+            initialize: jest.fn(),
+            deinitialize: jest.fn(),
+            onUnhandledError: jest.fn(),
+            onUseNewAddress: jest.fn(),
+        };
 
-    TestComponent = (props) => (
-      <CheckoutProvider checkoutService={ checkoutService }>
-        <LocaleContext.Provider value={ localeContext }>
-          <Formik initialValues={ {} } onSubmit={ noop }>
-            <ShippingAddress { ...props } { ...defaultProps } />
-          </Formik>
-        </LocaleContext.Provider>
-      </CheckoutProvider>
-    );
-  });
-
-  describe('when no method id is provided', () => {
-    it('renders ShippingAddressForm with expected props', () => {
-      const component = shallow(<ShippingAddress { ...defaultProps } />);
-
-      expect(component.find(ShippingAddressForm).props()).toEqual(
-        expect.objectContaining({
-          formFields: defaultProps.formFields,
-          addresses: defaultProps.addresses,
-          onUseNewAddress: defaultProps.onUseNewAddress,
-          address: defaultProps.shippingAddress,
-        }),
-      );
+        TestComponent = (props) => (
+            <CheckoutProvider checkoutService={ checkoutService }>
+                <LocaleContext.Provider value={ localeContext }>
+                    <Formik initialValues={ {} } onSubmit={ noop }>
+                        <ShippingAddress { ...props } { ...defaultProps } />
+                    </Formik>
+                </LocaleContext.Provider>
+            </CheckoutProvider>
+        );
     });
 
-    it('calls onAddressSelect when an address is selected', async () => {
-      wrapperComponent = mount(<TestComponent />);
-      wrapperComponent.find('#addressToggle').simulate('click');
-      wrapperComponent.find('#addressDropdown li').at(1).find('a').simulate('click');
+    describe('when no method id is provided', () => {
+        it('renders ShippingAddressForm with expected props', () => {
+            const component = shallow(<ShippingAddress { ...defaultProps } />);
 
-      await new Promise((resolve) => process.nextTick(resolve));
+            expect(component.find(ShippingAddressForm).props()).toEqual(
+                expect.objectContaining({
+                    formFields: defaultProps.formFields,
+                    addresses: defaultProps.addresses,
+                    onUseNewAddress: defaultProps.onUseNewAddress,
+                    address: defaultProps.shippingAddress,
+                }),
+            );
+        });
 
-      expect(defaultProps.onAddressSelect).toHaveBeenCalled();
+        it('calls onAddressSelect when an address is selected', async () => {
+            wrapperComponent = mount(<TestComponent />);
+            wrapperComponent.find('#addressToggle').simulate('click');
+            wrapperComponent.find('#addressDropdown li').at(1).find('a').simulate('click');
+
+            await new Promise((resolve) => process.nextTick(resolve));
+
+            expect(defaultProps.onAddressSelect).toHaveBeenCalled();
+        });
+
+        it('does not render RemoteShippingAddress', () => {
+            const component = mount(
+                <Formik initialValues={ {} } onSubmit={ noop }>
+                    <ShippingAddress { ...defaultProps } />
+                </Formik>,
+            );
+
+            expect(component.find(RemoteShippingAddress)).toHaveLength(0);
+        });
+
+        it('does not render StaticAddress if method id is not sent', () => {
+            const component = mount(
+                <Formik initialValues={ {} } onSubmit={ noop }>
+                    <ShippingAddress { ...defaultProps } />
+                </Formik>,
+            );
+
+            expect(component.find(StaticAddress)).toHaveLength(0);
+        });
     });
 
-    it('does not render RemoteShippingAddress', () => {
-      const component = mount(
-        <Formik initialValues={ {} } onSubmit={ noop }>
-          <ShippingAddress { ...defaultProps } />
-        </Formik>,
-      );
+    describe('when method id is provided', () => {
+        it('renders RemoteShippingAddress with expected props', () => {
+            const component = mount(
+                <Formik initialValues={ {} } onSubmit={ noop }>
+                    <ShippingAddress { ...defaultProps } methodId="amazon" />
+                </Formik>,
+            );
 
-      expect(component.find(RemoteShippingAddress)).toHaveLength(0);
+            expect(component.find(RemoteShippingAddress).props()).toEqual(
+                expect.objectContaining({
+                    containerId: 'addressWidget',
+                    methodId: 'amazon',
+                    deinitialize: defaultProps.deinitialize,
+                    formFields: defaultProps.formFields,
+                }),
+            );
+
+            expect(defaultProps.initialize).toHaveBeenCalledWith({
+                methodId: 'amazon',
+                amazon: {
+                    container: 'addressWidget',
+                    onError: defaultProps.onUnhandledError,
+                },
+            });
+        });
+
+        it('does not render ShippingAddressForm', () => {
+            const component = mount(
+                <Formik initialValues={ {} } onSubmit={ noop }>
+                    <ShippingAddress { ...defaultProps } methodId="amazon" />
+                </Formik>,
+            );
+
+            expect(component.find(ShippingAddressForm)).toHaveLength(0);
+        });
+
+        it('renders a StaticAddressEditable if methodId is amazon pay', () => {
+            const component = mount(
+                <Formik initialValues={ {} } onSubmit={ noop }>
+                    <ShippingAddress { ...defaultProps } methodId="amazonpay" />
+                </Formik>,
+            );
+
+            expect(component.find(StaticAddressEditable)).toHaveLength(1);
+        });
     });
-
-    it('does not render StaticAddress if method id is not sent', () => {
-      const component = mount(
-        <Formik initialValues={ {} } onSubmit={ noop }>
-          <ShippingAddress { ...defaultProps } />
-        </Formik>,
-      );
-
-      expect(component.find(StaticAddress)).toHaveLength(0);
-    });
-  });
-
-  describe('when method id is provided', () => {
-    it('renders RemoteShippingAddress with expected props', () => {
-      const component = mount(
-        <Formik initialValues={ {} } onSubmit={ noop }>
-          <ShippingAddress { ...defaultProps } methodId="amazon" />
-        </Formik>,
-      );
-
-      expect(component.find(RemoteShippingAddress).props()).toEqual(
-        expect.objectContaining({
-          containerId: 'addressWidget',
-          methodId: 'amazon',
-          deinitialize: defaultProps.deinitialize,
-          formFields: defaultProps.formFields,
-        }),
-      );
-
-      expect(defaultProps.initialize).toHaveBeenCalledWith({
-        methodId: 'amazon',
-        amazon: {
-          container: 'addressWidget',
-          onError: defaultProps.onUnhandledError,
-        },
-      });
-    });
-
-    it('does not render ShippingAddressForm', () => {
-      const component = mount(
-        <Formik initialValues={ {} } onSubmit={ noop }>
-          <ShippingAddress { ...defaultProps } methodId="amazon" />
-        </Formik>,
-      );
-
-      expect(component.find(ShippingAddressForm)).toHaveLength(0);
-    });
-
-    it('renders a StaticAddressEditable if methodId is amazon pay', () => {
-      const component = mount(
-        <Formik initialValues={ {} } onSubmit={ noop }>
-          <ShippingAddress { ...defaultProps } methodId="amazonpay" />
-        </Formik>,
-      );
-
-      expect(component.find(StaticAddressEditable)).toHaveLength(1);
-    });
-  });
 });

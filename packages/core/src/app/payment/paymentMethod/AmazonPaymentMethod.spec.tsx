@@ -11,127 +11,127 @@ import HostedWidgetPaymentMethod from './HostedWidgetPaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
 
 describe('When using AmazonPaymentMethod', () => {
-  const checkoutService = createCheckoutService();
-  let defaultProps: AmazonPaymentMethodProps;
-  let initializePaymentOptions: PaymentInitializeOptions;
-  let component: ReactWrapper;
-  let paymentContext: PaymentContextProps;
+    const checkoutService = createCheckoutService();
+    let defaultProps: AmazonPaymentMethodProps;
+    let initializePaymentOptions: PaymentInitializeOptions;
+    let component: ReactWrapper;
+    let paymentContext: PaymentContextProps;
 
-  beforeEach(() => {
-    paymentContext = {
-      disableSubmit: jest.fn(),
-      setSubmit: jest.fn(),
-      setValidationSchema: jest.fn(),
-      hidePaymentSubmitButton: jest.fn(),
-    };
-    defaultProps = {
-      method: {
-        ...getPaymentMethod(),
-        id: 'amazon',
-        gateway: PaymentMethodId.Amazon,
-      },
-      initializePayment: jest.fn((options: PaymentInitializeOptions) => {
-        initializePaymentOptions = options;
+    beforeEach(() => {
+        paymentContext = {
+            disableSubmit: jest.fn(),
+            setSubmit: jest.fn(),
+            setValidationSchema: jest.fn(),
+            hidePaymentSubmitButton: jest.fn(),
+        };
+        defaultProps = {
+            method: {
+                ...getPaymentMethod(),
+                id: 'amazon',
+                gateway: PaymentMethodId.Amazon,
+            },
+            initializePayment: jest.fn((options: PaymentInitializeOptions) => {
+                initializePaymentOptions = options;
 
-        return Promise.resolve(checkoutService.getState());
-      }),
-      initializeCustomer: jest.fn(),
-      deinitializePayment: jest.fn(),
-      onUnhandledError: jest.fn(),
-    };
+                return Promise.resolve(checkoutService.getState());
+            }),
+            initializeCustomer: jest.fn(),
+            deinitializePayment: jest.fn(),
+            onUnhandledError: jest.fn(),
+        };
 
-    const TestComponent: FunctionComponent<Partial<AmazonPaymentMethodProps>> = (props) => (
-      <PaymentContext.Provider value={ paymentContext }>
-        <AmazonPaymentMethod { ...defaultProps } { ...props } />
-      </PaymentContext.Provider>
-    );
+        const TestComponent: FunctionComponent<Partial<AmazonPaymentMethodProps>> = (props) => (
+            <PaymentContext.Provider value={ paymentContext }>
+                <AmazonPaymentMethod { ...defaultProps } { ...props } />
+            </PaymentContext.Provider>
+        );
 
-    component = mount(<TestComponent />);
-  });
-
-  it('Shopper should be able to see Amazon Payment Method', () => {
-    expect(component.find(HostedWidgetPaymentMethod).exists).toBeTruthy();
-  });
-
-  it('Shopper should be able to SignInAmazon', () => {
-    const onClick = jest.fn();
-
-    jest.spyOn(document, 'querySelector').mockImplementation((selector: string) => {
-      const element = document.createElement('div');
-
-      element.id = selector;
-      element.addEventListener('click', onClick);
-
-      return element;
+        component = mount(<TestComponent />);
     });
 
-    const hostedWidget = component.find(HostedWidgetPaymentMethod);
-
-    const { signInCustomer = noop } = hostedWidget.props();
-
-    signInCustomer();
-
-    expect(onClick).toHaveBeenCalled();
-  });
-
-  it('should initialize customer', () => {
-    const hostedWidget = component.find(HostedWidgetPaymentMethod);
-    const { initializeCustomer = noop } = hostedWidget.props();
-
-    initializeCustomer({
-      methodId: defaultProps.method.id,
+    it('Shopper should be able to see Amazon Payment Method', () => {
+        expect(component.find(HostedWidgetPaymentMethod).exists).toBeTruthy();
     });
 
-    expect(defaultProps.initializeCustomer).toHaveBeenCalledWith({
-      methodId: 'amazon',
-      amazon: {
-        container: 'paymentWidget',
-        onError: expect.any(Function),
-      },
-    });
-  });
+    it('Shopper should be able to SignInAmazon', () => {
+        const onClick = jest.fn();
 
-  it('should be able to handle error', () => {
-    const hostedWidget = component.find(HostedWidgetPaymentMethod);
-    const { initializePayment = noop } = hostedWidget.props();
+        jest.spyOn(document, 'querySelector').mockImplementation((selector: string) => {
+            const element = document.createElement('div');
 
-    initializePayment({
-      methodId: defaultProps.method.id,
-    });
+            element.id = selector;
+            element.addEventListener('click', onClick);
 
-    const { onError = noop } = initializePaymentOptions.amazon || {};
+            return element;
+        });
 
-    onError({ message: 'An error' });
+        const hostedWidget = component.find(HostedWidgetPaymentMethod);
 
-    expect(defaultProps.onUnhandledError).toHaveBeenCalledWith({
-      message: 'An error',
+        const { signInCustomer = noop } = hostedWidget.props();
+
+        signInCustomer();
+
+        expect(onClick).toHaveBeenCalled();
     });
 
-    expect(paymentContext.disableSubmit).toHaveBeenCalledWith(
-      expect.objectContaining({
-        id: 'amazon',
-      }),
-      true,
-    );
-  });
+    it('should initialize customer', () => {
+        const hostedWidget = component.find(HostedWidgetPaymentMethod);
+        const { initializeCustomer = noop } = hostedWidget.props();
 
-  it('should be able to handle payment select', () => {
-    const hostedWidget = component.find(HostedWidgetPaymentMethod);
-    const { initializePayment = noop } = hostedWidget.props();
+        initializeCustomer({
+            methodId: defaultProps.method.id,
+        });
 
-    initializePayment({
-      methodId: defaultProps.method.id,
+        expect(defaultProps.initializeCustomer).toHaveBeenCalledWith({
+            methodId: 'amazon',
+            amazon: {
+                container: 'paymentWidget',
+                onError: expect.any(Function),
+            },
+        });
     });
 
-    const { onPaymentSelect = noop } = initializePaymentOptions.amazon || {};
+    it('should be able to handle error', () => {
+        const hostedWidget = component.find(HostedWidgetPaymentMethod);
+        const { initializePayment = noop } = hostedWidget.props();
 
-    onPaymentSelect();
+        initializePayment({
+            methodId: defaultProps.method.id,
+        });
 
-    expect(paymentContext.disableSubmit).toHaveBeenCalledWith(
-      expect.objectContaining({
-        id: 'amazon',
-      }),
-      false,
-    );
-  });
+        const { onError = noop } = initializePaymentOptions.amazon || {};
+
+        onError({ message: 'An error' });
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalledWith({
+            message: 'An error',
+        });
+
+        expect(paymentContext.disableSubmit).toHaveBeenCalledWith(
+            expect.objectContaining({
+                id: 'amazon',
+            }),
+            true,
+        );
+    });
+
+    it('should be able to handle payment select', () => {
+        const hostedWidget = component.find(HostedWidgetPaymentMethod);
+        const { initializePayment = noop } = hostedWidget.props();
+
+        initializePayment({
+            methodId: defaultProps.method.id,
+        });
+
+        const { onPaymentSelect = noop } = initializePaymentOptions.amazon || {};
+
+        onPaymentSelect();
+
+        expect(paymentContext.disableSubmit).toHaveBeenCalledWith(
+            expect.objectContaining({
+                id: 'amazon',
+            }),
+            false,
+        );
+    });
 });

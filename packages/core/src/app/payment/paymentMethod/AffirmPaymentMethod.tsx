@@ -8,9 +8,9 @@ import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMe
 export type AffirmPaymentMethodProps = Omit<HostedPaymentMethodProps, 'description'>;
 
 const AffirmPaymentMethod: FunctionComponent<AffirmPaymentMethodProps> = (props) => {
-  const description = useMemo(() => <TranslatedString id="payment.affirm_body_text" />, []);
+    const description = useMemo(() => <TranslatedString id="payment.affirm_body_text" />, []);
 
-  return <HostedPaymentMethod { ...props } description={ description } />;
+    return <HostedPaymentMethod { ...props } description={ description } />;
 };
 
 export default AffirmPaymentMethod;

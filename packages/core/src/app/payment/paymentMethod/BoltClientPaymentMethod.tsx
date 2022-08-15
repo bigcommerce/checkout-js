@@ -5,24 +5,24 @@ import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMe
 import { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 
 const BoltClientPaymentMethod: FunctionComponent<HostedPaymentMethodProps> = ({
-  initializePayment,
-  method,
-  ...rest
+    initializePayment,
+    method,
+    ...rest
 }) => {
-  const initializeBoltPayment: HostedWidgetPaymentMethodProps['initializePayment'] = useCallback(
-    (options: PaymentInitializeOptions) =>
-      initializePayment({
-        ...options,
-        bolt: {
-          useBigCommerceCheckout: true,
-        },
-      }),
-    [initializePayment],
-  );
+    const initializeBoltPayment: HostedWidgetPaymentMethodProps['initializePayment'] = useCallback(
+        (options: PaymentInitializeOptions) =>
+            initializePayment({
+                ...options,
+                bolt: {
+                    useBigCommerceCheckout: true,
+                },
+            }),
+        [initializePayment],
+    );
 
-  return (
-    <HostedPaymentMethod { ...rest } initializePayment={ initializeBoltPayment } method={ method } />
-  );
+    return (
+        <HostedPaymentMethod { ...rest } initializePayment={ initializeBoltPayment } method={ method } />
+    );
 };
 
 export default BoltClientPaymentMethod;

@@ -7,43 +7,43 @@ import getPaymentMethodDisplayName from './getPaymentMethodDisplayName';
 import PaymentMethodId from './PaymentMethodId';
 
 describe('getPaymentMethodDisplayName()', () => {
-  let language: LanguageService;
+    let language: LanguageService;
 
-  beforeEach(() => {
-    language = createLanguageService({ defaultTranslations: FALLBACK_TRANSLATIONS });
-  });
+    beforeEach(() => {
+        language = createLanguageService({ defaultTranslations: FALLBACK_TRANSLATIONS });
+    });
 
-  it('returns configured display name', () => {
-    const method = getPaymentMethod();
+    it('returns configured display name', () => {
+        const method = getPaymentMethod();
 
-    expect(getPaymentMethodDisplayName(language)(method)).toEqual(method.config.displayName);
-  });
+        expect(getPaymentMethodDisplayName(language)(method)).toEqual(method.config.displayName);
+    });
 
-  it('returns translated "Pay in 3" display name', () => {
-    const method = { ...getPaypalCreditPaymentMethod() };
+    it('returns translated "Pay in 3" display name', () => {
+        const method = { ...getPaypalCreditPaymentMethod() };
 
-    expect(getPaymentMethodDisplayName(language)(method)).toEqual(
-      method.initializationData.payPalCreditProductBrandName.credit,
-    );
-  });
+        expect(getPaymentMethodDisplayName(language)(method)).toEqual(
+            method.initializationData.payPalCreditProductBrandName.credit,
+        );
+    });
 
-  it('returns translated "Credit card" display name', () => {
-    const method = { ...getPaymentMethod(), config: { displayName: 'Credit Card' } };
+    it('returns translated "Credit card" display name', () => {
+        const method = { ...getPaymentMethod(), config: { displayName: 'Credit Card' } };
 
-    expect(getPaymentMethodDisplayName(language)(method)).toEqual(
-      language.translate('payment.credit_card_text'),
-    );
-  });
+        expect(getPaymentMethodDisplayName(language)(method)).toEqual(
+            language.translate('payment.credit_card_text'),
+        );
+    });
 
-  it('returns translated display name for AdyenV2 if the value is "Credit card"', () => {
-    const method = {
-      ...getPaymentMethod(),
-      id: PaymentMethodId.AdyenV2,
-      config: { displayName: 'Credit Card' },
-    };
+    it('returns translated display name for AdyenV2 if the value is "Credit card"', () => {
+        const method = {
+            ...getPaymentMethod(),
+            id: PaymentMethodId.AdyenV2,
+            config: { displayName: 'Credit Card' },
+        };
 
-    expect(getPaymentMethodDisplayName(language)(method)).toEqual(
-      language.translate('payment.credit_debit_card_text'),
-    );
-  });
+        expect(getPaymentMethodDisplayName(language)(method)).toEqual(
+            language.translate('payment.credit_debit_card_text'),
+        );
+    });
 });

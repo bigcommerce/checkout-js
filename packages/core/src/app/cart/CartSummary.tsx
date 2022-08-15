@@ -11,21 +11,21 @@ import { RedeemableProps } from './Redeemable';
 import withRedeemable from './withRedeemable';
 
 export type WithCheckoutCartSummaryProps = {
-  checkout: Checkout;
-  cartUrl: string;
-  storeCurrency: StoreCurrency;
-  shopperCurrency: ShopperCurrency;
-  storeCreditAmount?: number;
+    checkout: Checkout;
+    cartUrl: string;
+    storeCurrency: StoreCurrency;
+    shopperCurrency: ShopperCurrency;
+    storeCreditAmount?: number;
 } & RedeemableProps;
 
 const CartSummary: FunctionComponent<WithCheckoutCartSummaryProps> = ({ cartUrl, ...props }) => {
-  const headerLink = isBuyNowCart() ? null : <EditLink url={ cartUrl } />;
+    const headerLink = isBuyNowCart() ? null : <EditLink url={ cartUrl } />;
 
-  return withRedeemable(OrderSummary)({
-    ...props,
-    cartUrl,
-    headerLink,
-  });
+    return withRedeemable(OrderSummary)({
+        ...props,
+        cartUrl,
+        headerLink,
+    });
 };
 
 export default withCheckout(mapToCartSummaryProps)(CartSummary);

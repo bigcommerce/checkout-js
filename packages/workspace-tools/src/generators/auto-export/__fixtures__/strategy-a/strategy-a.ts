@@ -1,5 +1,5 @@
 export default class StrategyA {
-  execute(): boolean {
-    return true;
-  }
+    execute(): boolean {
+        return true;
+    }
 }

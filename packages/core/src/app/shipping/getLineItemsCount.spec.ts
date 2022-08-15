@@ -3,11 +3,11 @@ import { getPhysicalItem } from '../cart/lineItem.mock';
 import getLineItemsCount from './getLineItemsCount';
 
 describe('getLineItemsCount()', () => {
-  it('returns zero if empty array', () => {
-    expect(getLineItemsCount([])).toBe(0);
-  });
+    it('returns zero if empty array', () => {
+        expect(getLineItemsCount([])).toBe(0);
+    });
 
-  it('returns the sum of quantities', () => {
-    expect(getLineItemsCount([getPhysicalItem(), getPhysicalItem()])).toBe(2);
-  });
+    it('returns the sum of quantities', () => {
+        expect(getLineItemsCount([getPhysicalItem(), getPhysicalItem()])).toBe(2);
+    });
 });

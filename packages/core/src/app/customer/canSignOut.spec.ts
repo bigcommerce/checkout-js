@@ -4,38 +4,38 @@ import canSignOut from './canSignOut';
 import { getCustomer, getGuestCustomer } from './customers.mock';
 
 describe('canSignOut()', () => {
-  it('returns false if customer is guest', () => {
-    const customer = getGuestCustomer();
-    const checkout = getCheckout();
+    it('returns false if customer is guest', () => {
+        const customer = getGuestCustomer();
+        const checkout = getCheckout();
 
-    expect(canSignOut(customer, checkout, '')).toBe(false);
-  });
+        expect(canSignOut(customer, checkout, '')).toBe(false);
+    });
 
-  it('returns true if customer is signed in', () => {
-    const customer = getCustomer();
-    const checkout = getCheckout();
+    it('returns true if customer is signed in', () => {
+        const customer = getCustomer();
+        const checkout = getCheckout();
 
-    expect(canSignOut(customer, checkout, '')).toBe(true);
-  });
+        expect(canSignOut(customer, checkout, '')).toBe(true);
+    });
 
-  it('returns false if customer started with payment method that does not allow sign-out', () => {
-    const customer = getCustomer();
-    const checkout = getCheckoutWithPayments();
+    it('returns false if customer started with payment method that does not allow sign-out', () => {
+        const customer = getCustomer();
+        const checkout = getCheckoutWithPayments();
 
-    expect(canSignOut(customer, checkout, '')).toBe(false);
-  });
+        expect(canSignOut(customer, checkout, '')).toBe(false);
+    });
 
-  it('returns true if customer uses amazon as checkout method', () => {
-    const customer = getCustomer();
-    const checkout = getCheckoutWithPayments();
+    it('returns true if customer uses amazon as checkout method', () => {
+        const customer = getCustomer();
+        const checkout = getCheckoutWithPayments();
 
-    expect(canSignOut(customer, checkout, 'amazon')).toBe(true);
-  });
+        expect(canSignOut(customer, checkout, 'amazon')).toBe(true);
+    });
 
-  it('returns true if customer uses amazonpay as checkout method', () => {
-    const customer = getCustomer();
-    const checkout = getCheckoutWithPayments();
+    it('returns true if customer uses amazonpay as checkout method', () => {
+        const customer = getCustomer();
+        const checkout = getCheckoutWithPayments();
 
-    expect(canSignOut(customer, checkout, 'amazonpay')).toBe(true);
-  });
+        expect(canSignOut(customer, checkout, 'amazonpay')).toBe(true);
+    });
 });

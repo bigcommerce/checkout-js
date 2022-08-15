@@ -8,52 +8,59 @@ import OrderSummaryDiscount from './OrderSummaryDiscount';
 import OrderSummaryPrice from './OrderSummaryPrice';
 
 describe('OrderSummaryDiscount', () => {
-  let discount: ReactWrapper;
-  let localeContext: LocaleContextType;
+    let discount: ReactWrapper;
+    let localeContext: LocaleContextType;
 
-  describe('when it is a simple discount', () => {
-    beforeEach(() => {
-      localeContext = createLocaleContext(getStoreConfig());
-      discount = mount(
-        <LocaleContext.Provider value={ localeContext }>
-          <OrderSummaryDiscount amount={ 10 } label={ <span>Foo</span> } />
-        </LocaleContext.Provider>,
-      );
+    describe('when it is a simple discount', () => {
+        beforeEach(() => {
+            localeContext = createLocaleContext(getStoreConfig());
+            discount = mount(
+                <LocaleContext.Provider value={ localeContext }>
+                    <OrderSummaryDiscount amount={ 10 } label={ <span>Foo</span> } />
+                </LocaleContext.Provider>,
+            );
+        });
+
+        it('passes right props to OrderSummaryPrice', () => {
+            expect(discount.find(OrderSummaryPrice).props()).toMatchObject({
+                amount: -10,
+                label: <span>Foo</span>,
+            });
+        });
     });
 
-    it('passes right props to OrderSummaryPrice', () => {
-      expect(discount.find(OrderSummaryPrice).props()).toMatchObject({
-        amount: -10,
-        label: <span>Foo</span>,
-      });
-    });
-  });
+    describe('when discount has code and remaining balance', () => {
+        beforeEach(() => {
+            discount = mount(
+                <LocaleContext.Provider value={ localeContext }>
+                    <OrderSummaryDiscount
+                        amount={ 10 }
+                        code="ABCDFE"
+                        label="Gift Certificate"
+                        remaining={ 2 }
+                    />
+                </LocaleContext.Provider>,
+            );
+        });
 
-  describe('when discount has code and remaining balance', () => {
-    beforeEach(() => {
-      discount = mount(
-        <LocaleContext.Provider value={ localeContext }>
-          <OrderSummaryDiscount amount={ 10 } code="ABCDFE" label="Gift Certificate" remaining={ 2 } />
-        </LocaleContext.Provider>,
-      );
-    });
+        it('matches snapshot', () => {
+            expect(discount.render()).toMatchSnapshot();
+        });
 
-    it('matches snapshot', () => {
-      expect(discount.render()).toMatchSnapshot();
-    });
+        it('renders gift certificate code', () => {
+            expect(discount.find('[data-test="cart-price-code"]').text()).toBe('ABCDFE');
+        });
 
-    it('renders gift certificate code', () => {
-      expect(discount.find('[data-test="cart-price-code"]').text()).toBe('ABCDFE');
-    });
+        it('renders remaining label', () => {
+            expect(discount.find('[data-test="cart-price-remaining"]').text()).toContain(
+                'Remaining:',
+            );
+        });
 
-    it('renders remaining label', () => {
-      expect(discount.find('[data-test="cart-price-remaining"]').text()).toContain('Remaining:');
+        it('renders remaining balance', () => {
+            expect(
+                discount.find('[data-test="cart-price-remaining"] ShopperCurrency').props(),
+            ).toMatchObject({ amount: 2 });
+        });
     });
-
-    it('renders remaining balance', () => {
-      expect(
-        discount.find('[data-test="cart-price-remaining"] ShopperCurrency').props(),
-      ).toMatchObject({ amount: 2 });
-    });
-  });
 });

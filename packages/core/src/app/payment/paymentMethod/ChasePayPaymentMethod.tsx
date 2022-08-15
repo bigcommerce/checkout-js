@@ -5,33 +5,33 @@ import { Omit } from 'utility-types';
 import WalletButtonPaymentMethod, {WalletButtonPaymentMethodProps,} from './WalletButtonPaymentMethod';
 
 export type CCAvenueMarsPaymentMethodProps = Omit<
-  WalletButtonPaymentMethodProps,
-  'buttonId' | 'shouldShowEditButton'
+    WalletButtonPaymentMethodProps,
+    'buttonId' | 'shouldShowEditButton'
 >;
 
 const ChasePayPaymentMethod: FunctionComponent<CCAvenueMarsPaymentMethodProps> = ({
-  initializePayment,
-  ...rest
+    initializePayment,
+    ...rest
 }) => {
-  const initializeChasePayPayment = useCallback(
-    (options: PaymentInitializeOptions) =>
-      initializePayment({
-        ...options,
-        chasepay: {
-          walletButton: 'chaseWalletButton',
-        },
-      }),
-    [initializePayment],
-  );
+    const initializeChasePayPayment = useCallback(
+        (options: PaymentInitializeOptions) =>
+            initializePayment({
+                ...options,
+                chasepay: {
+                    walletButton: 'chaseWalletButton',
+                },
+            }),
+        [initializePayment],
+    );
 
-  return (
-    <WalletButtonPaymentMethod
-      { ...rest }
-      buttonId="chaseWalletButton"
-      initializePayment={ initializeChasePayPayment }
-      shouldShowEditButton
-    />
-  );
+    return (
+        <WalletButtonPaymentMethod
+            { ...rest }
+            buttonId="chaseWalletButton"
+            initializePayment={ initializeChasePayPayment }
+            shouldShowEditButton
+        />
+    );
 };
 
 export default ChasePayPaymentMethod;

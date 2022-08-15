@@ -6,59 +6,59 @@ import getLanguageService from './getLanguageService';
 import LocaleContext from './LocaleContext';
 
 export interface LocaleProviderProps {
-  checkoutService: CheckoutService;
+    checkoutService: CheckoutService;
 }
 
 export interface LocaleProviderState {
-  config?: StoreConfig;
+    config?: StoreConfig;
 }
 
 class LocaleProvider extends Component<LocaleProviderProps> {
-  state: Readonly<LocaleProviderState> = {};
+    state: Readonly<LocaleProviderState> = {};
 
-  private languageService = getLanguageService();
-  private unsubscribe?: () => void;
+    private languageService = getLanguageService();
+    private unsubscribe?: () => void;
 
-  private getContextValue = memoizeOne((config?: StoreConfig) => {
-    return {
-      currency: config ? createCurrencyService(config) : undefined,
-      date: config
-        ? {
-            inputFormat: config.inputDateFormat,
-          }
-        : undefined,
-      language: this.languageService,
-    };
-  });
+    private getContextValue = memoizeOne((config?: StoreConfig) => {
+        return {
+            currency: config ? createCurrencyService(config) : undefined,
+            date: config
+                ? {
+                      inputFormat: config.inputDateFormat,
+                  }
+                : undefined,
+            language: this.languageService,
+        };
+    });
 
-  componentDidMount(): void {
-    const { checkoutService } = this.props;
+    componentDidMount(): void {
+        const { checkoutService } = this.props;
 
-    this.unsubscribe = checkoutService.subscribe(
-      ({ data }) => {
-        this.setState({ config: data.getConfig() });
-      },
-      ({ data }) => data.getConfig(),
-    );
-  }
-
-  componentWillUnmount(): void {
-    if (this.unsubscribe) {
-      this.unsubscribe();
-      this.unsubscribe = undefined;
+        this.unsubscribe = checkoutService.subscribe(
+            ({ data }) => {
+                this.setState({ config: data.getConfig() });
+            },
+            ({ data }) => data.getConfig(),
+        );
     }
-  }
 
-  render(): ReactNode {
-    const { children } = this.props;
-    const { config } = this.state;
+    componentWillUnmount(): void {
+        if (this.unsubscribe) {
+            this.unsubscribe();
+            this.unsubscribe = undefined;
+        }
+    }
 
-    return (
-      <LocaleContext.Provider value={ this.getContextValue(config) }>
-        { children }
-      </LocaleContext.Provider>
-    );
-  }
+    render(): ReactNode {
+        const { children } = this.props;
+        const { config } = this.state;
+
+        return (
+            <LocaleContext.Provider value={ this.getContextValue(config) }>
+                { children }
+            </LocaleContext.Provider>
+        );
+    }
 }
 
 export default LocaleProvider;

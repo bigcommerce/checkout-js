@@ -1,6 +1,6 @@
 import {LineItemMap,
-  ShopperCurrency as ShopperCurrencyType,
-  StoreCurrency,} from '@bigcommerce/checkout-sdk';
+    ShopperCurrency as ShopperCurrencyType,
+    StoreCurrency,} from '@bigcommerce/checkout-sdk';
 import React, { Fragment, FunctionComponent, ReactNode } from 'react';
 
 import { preventDefault } from '../common/dom';
@@ -14,74 +14,74 @@ import OrderSummarySubtotals, { OrderSummarySubtotalsProps } from './OrderSummar
 import OrderSummaryTotal from './OrderSummaryTotal';
 
 export interface OrderSummaryDrawerProps {
-  additionalLineItems?: ReactNode;
-  lineItems: LineItemMap;
-  total: number;
-  storeCurrency: StoreCurrency;
-  shopperCurrency: ShopperCurrencyType;
-  isOpen: boolean;
-  headerLink?: ReactNode;
-  onRequestClose?(): void;
-  onAfterOpen?(): void;
+    additionalLineItems?: ReactNode;
+    lineItems: LineItemMap;
+    total: number;
+    storeCurrency: StoreCurrency;
+    shopperCurrency: ShopperCurrencyType;
+    isOpen: boolean;
+    headerLink?: ReactNode;
+    onRequestClose?(): void;
+    onAfterOpen?(): void;
 }
 
 const OrderSummaryModal: FunctionComponent<
-  OrderSummaryDrawerProps & OrderSummarySubtotalsProps
+    OrderSummaryDrawerProps & OrderSummarySubtotalsProps
 > = ({
-  additionalLineItems,
-  children,
-  onRequestClose,
-  onAfterOpen,
-  storeCurrency,
-  shopperCurrency,
-  isOpen,
-  headerLink,
-  lineItems,
-  total,
-  ...orderSummarySubtotalsProps
+    additionalLineItems,
+    children,
+    onRequestClose,
+    onAfterOpen,
+    storeCurrency,
+    shopperCurrency,
+    isOpen,
+    headerLink,
+    lineItems,
+    total,
+    ...orderSummarySubtotalsProps
 }) => (
-  <Modal
-    additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
-    additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary"
-    header={ renderHeader({ headerLink, onRequestClose }) }
-    isOpen={ isOpen }
-    onAfterOpen={ onAfterOpen }
-    onRequestClose={ onRequestClose }
-  >
-    <OrderSummarySection>
-      <OrderSummaryItems items={ lineItems } />
-    </OrderSummarySection>
-    <OrderSummarySection>
-      <OrderSummarySubtotals { ...orderSummarySubtotalsProps } />
-      { additionalLineItems }
-    </OrderSummarySection>
-    <OrderSummarySection>
-      <OrderSummaryTotal
-        orderAmount={ total }
-        shopperCurrencyCode={ shopperCurrency.code }
-        storeCurrencyCode={ storeCurrency.code }
-      />
-    </OrderSummarySection>
-  </Modal>
+    <Modal
+        additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
+        additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary"
+        header={ renderHeader({ headerLink, onRequestClose }) }
+        isOpen={ isOpen }
+        onAfterOpen={ onAfterOpen }
+        onRequestClose={ onRequestClose }
+    >
+        <OrderSummarySection>
+            <OrderSummaryItems items={ lineItems } />
+        </OrderSummarySection>
+        <OrderSummarySection>
+            <OrderSummarySubtotals { ...orderSummarySubtotalsProps } />
+            { additionalLineItems }
+        </OrderSummarySection>
+        <OrderSummarySection>
+            <OrderSummaryTotal
+                orderAmount={ total }
+                shopperCurrencyCode={ shopperCurrency.code }
+                storeCurrencyCode={ storeCurrency.code }
+            />
+        </OrderSummarySection>
+    </Modal>
 );
 
 const renderHeader: FunctionComponent<{
-  headerLink: ReactNode;
-  onRequestClose?(): void;
+    headerLink: ReactNode;
+    onRequestClose?(): void;
 }> = ({ onRequestClose, headerLink }) => (
-  <>
-    <a className="cart-modal-close" href="#" onClick={preventDefault(onRequestClose)}>
-      <span className="is-srOnly">
-        <TranslatedString id="common.close_action" />
-      </span>
-      <IconClose />
-    </a>
-    <ModalHeader additionalClassName="cart-modal-title">
-      <TranslatedString id="cart.cart_heading" />
-    </ModalHeader>
+    <>
+        <a className="cart-modal-close" href="#" onClick={preventDefault(onRequestClose)}>
+            <span className="is-srOnly">
+                <TranslatedString id="common.close_action" />
+            </span>
+            <IconClose />
+        </a>
+        <ModalHeader additionalClassName="cart-modal-title">
+            <TranslatedString id="cart.cart_heading" />
+        </ModalHeader>
 
-    {headerLink}
-  </>
+        {headerLink}
+    </>
 );
 
 export default OrderSummaryModal;

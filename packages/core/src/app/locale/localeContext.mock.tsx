@@ -6,14 +6,14 @@ import { FALLBACK_TRANSLATIONS } from '../locale/translations';
 import { LocaleContextType } from './LocaleContext';
 
 export function getLocaleContext(): Required<LocaleContextType> {
-  return {
-    currency: createCurrencyService(getStoreConfig()),
-    date: {
-      inputFormat: 'dd/mm/yyyy',
-    },
-    language: createLanguageService({
-      ...(window as any).language,
-      defaultTranslations: FALLBACK_TRANSLATIONS,
-    }),
-  };
+    return {
+        currency: createCurrencyService(getStoreConfig()),
+        date: {
+            inputFormat: 'dd/mm/yyyy',
+        },
+        language: createLanguageService({
+            ...(window as any).language,
+            defaultTranslations: FALLBACK_TRANSLATIONS,
+        }),
+    };
 }

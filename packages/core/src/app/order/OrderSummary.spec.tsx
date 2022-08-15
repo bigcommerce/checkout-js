@@ -13,28 +13,28 @@ let order: Order;
 let orderSummary: ShallowWrapper;
 
 describe('OrderSummary', () => {
-  describe('when shopper has same currency as store', () => {
-    beforeEach(() => {
-      order = getOrder();
+    describe('when shopper has same currency as store', () => {
+        beforeEach(() => {
+            order = getOrder();
 
-      orderSummary = shallow(
-        <OrderSummary
-          { ...mapToOrderSummarySubtotalsProps(order) }
-          headerLink={ <PrintLink /> }
-          lineItems={ order.lineItems }
-          shopperCurrency={ getStoreConfig().shopperCurrency }
-          storeCurrency={ getStoreConfig().currency }
-          total={ order.orderAmount }
-        />,
-      );
-    });
+            orderSummary = shallow(
+                <OrderSummary
+                    { ...mapToOrderSummarySubtotalsProps(order) }
+                    headerLink={ <PrintLink /> }
+                    lineItems={ order.lineItems }
+                    shopperCurrency={ getStoreConfig().shopperCurrency }
+                    storeCurrency={ getStoreConfig().currency }
+                    total={ order.orderAmount }
+                />,
+            );
+        });
 
-    it('renders order summary', () => {
-      expect(orderSummary).toMatchSnapshot();
-    });
+        it('renders order summary', () => {
+            expect(orderSummary).toMatchSnapshot();
+        });
 
-    it('does not render currency cart note', () => {
-      expect(orderSummary.find('.cart-note')).toHaveLength(0);
+        it('does not render currency cart note', () => {
+            expect(orderSummary.find('.cart-note')).toHaveLength(0);
+        });
     });
-  });
 });

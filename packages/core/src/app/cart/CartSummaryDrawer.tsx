@@ -9,13 +9,13 @@ import mapToCartSummaryProps from './mapToCartSummaryProps';
 import withRedeemable from './withRedeemable';
 
 const CartSummaryDrawer: FunctionComponent<WithCheckoutCartSummaryProps> = ({
-  cartUrl,
-  ...props
-}) =>
-  withRedeemable(OrderSummaryDrawer)({
-    ...props,
     cartUrl,
-    headerLink: <EditLink className="modal-header-link cart-modal-link" url={ cartUrl } />,
-  });
+    ...props
+}) =>
+    withRedeemable(OrderSummaryDrawer)({
+        ...props,
+        cartUrl,
+        headerLink: <EditLink className="modal-header-link cart-modal-link" url={ cartUrl } />,
+    });
 
 export default withCheckout(mapToCartSummaryProps)(memo(CartSummaryDrawer));

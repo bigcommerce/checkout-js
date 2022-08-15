@@ -7,6 +7,6 @@ import { NoUI } from './NoUI';
 type ComponentMap = Record<string, ComponentType<any>>;
 
 export const initializationComponentMap: ComponentMap = {
-  card_ui: HostedCreditCardPaymentMethod,
-  none: NoUI,
+    card_ui: HostedCreditCardPaymentMethod,
+    none: NoUI,
 };

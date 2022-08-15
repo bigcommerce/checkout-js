@@ -3,12 +3,12 @@ import React, { Fragment, FunctionComponent } from 'react';
 import { withCurrency, WithCurrencyProps } from '../locale';
 
 export interface StoreCurrencyProps {
-  amount: number;
+    amount: number;
 }
 
 const StoreCurrency: FunctionComponent<StoreCurrencyProps & WithCurrencyProps> = ({
-  amount,
-  currency,
+    amount,
+    currency,
 }) => <>{currency.toStoreCurrency(amount)}</>;
 
 export default withCurrency(StoreCurrency);

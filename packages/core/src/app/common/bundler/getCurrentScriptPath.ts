@@ -3,5 +3,5 @@
 const path = document.currentScript ? (document.currentScript as HTMLScriptElement).src : undefined;
 
 export default function getCurrentScriptPath(): string | undefined {
-  return path;
+    return path;
 }

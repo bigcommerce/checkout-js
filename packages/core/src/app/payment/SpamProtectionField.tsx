@@ -7,98 +7,100 @@ import { TranslatedString } from '../locale';
 import { LoadingOverlay } from '../ui/loading';
 
 export interface SpamProtectionProps {
-  didExceedSpamLimit?: boolean;
-  onUnhandledError?(error: Error): void;
+    didExceedSpamLimit?: boolean;
+    onUnhandledError?(error: Error): void;
 }
 
 interface SpamProtectionState {
-  shouldShowRetryButton: boolean;
+    shouldShowRetryButton: boolean;
 }
 
 interface WithCheckoutSpamProtectionProps {
-  isExecutingSpamCheck: boolean;
-  executeSpamCheck(): Promise<CheckoutSelectors>;
+    isExecutingSpamCheck: boolean;
+    executeSpamCheck(): Promise<CheckoutSelectors>;
 }
 
 function mapToSpamProtectionProps({
-  checkoutService,
-  checkoutState,
+    checkoutService,
+    checkoutState,
 }: CheckoutContextProps): WithCheckoutSpamProtectionProps {
-  return {
-    isExecutingSpamCheck: checkoutState.statuses.isExecutingSpamCheck(),
-    executeSpamCheck: checkoutService.executeSpamCheck,
-  };
+    return {
+        isExecutingSpamCheck: checkoutState.statuses.isExecutingSpamCheck(),
+        executeSpamCheck: checkoutService.executeSpamCheck,
+    };
 }
 
 class SpamProtectionField extends Component<
-  SpamProtectionProps & WithCheckoutSpamProtectionProps,
-  SpamProtectionState
+    SpamProtectionProps & WithCheckoutSpamProtectionProps,
+    SpamProtectionState
 > {
-  state = {
-    shouldShowRetryButton: false,
-  };
+    state = {
+        shouldShowRetryButton: false,
+    };
 
-  async componentDidMount() {
-    const { didExceedSpamLimit } = this.props;
+    async componentDidMount() {
+        const { didExceedSpamLimit } = this.props;
 
-    if (didExceedSpamLimit) {
-      return;
+        if (didExceedSpamLimit) {
+            return;
+        }
+
+        this.verify();
     }
 
-    this.verify();
-  }
+    render() {
+        const { isExecutingSpamCheck } = this.props;
 
-  render() {
-    const { isExecutingSpamCheck } = this.props;
-
-    return (
-      <div className="spamProtection-container">
-        <LoadingOverlay isLoading={ isExecutingSpamCheck }>{ this.renderContent() }</LoadingOverlay>
-      </div>
-    );
-  }
-
-  private renderContent(): ReactNode {
-    const { didExceedSpamLimit } = this.props;
-    const { shouldShowRetryButton } = this.state;
-
-    if (!didExceedSpamLimit && !shouldShowRetryButton) {
-      return;
+        return (
+            <div className="spamProtection-container">
+                <LoadingOverlay isLoading={ isExecutingSpamCheck }>
+                    { this.renderContent() }
+                </LoadingOverlay>
+            </div>
+        );
     }
 
-    return (
-      <div className="spamProtection-panel optimizedCheckout-overlay">
-        <a
-          className="spamProtection-panel-message optimizedCheckout-primaryContent"
-          data-test="spam-protection-verify-button"
-          onClick={ this.handleRetry }
-        >
-          <TranslatedString id="spam_protection.verify_action" />
-        </a>
-      </div>
-    );
-  }
+    private renderContent(): ReactNode {
+        const { didExceedSpamLimit } = this.props;
+        const { shouldShowRetryButton } = this.state;
 
-  private async verify(): Promise<void> {
-    const { executeSpamCheck, onUnhandledError = noop } = this.props;
+        if (!didExceedSpamLimit && !shouldShowRetryButton) {
+            return;
+        }
 
-    try {
-      await executeSpamCheck();
-    } catch (error) {
-      this.setState({ shouldShowRetryButton: true });
-
-      // Notify the parent component if the user experiences a problem other than cancelling the reCaptcha challenge.
-      if (error && error.type !== 'spam_protection_challenge_not_completed') {
-        onUnhandledError(error);
-      }
+        return (
+            <div className="spamProtection-panel optimizedCheckout-overlay">
+                <a
+                    className="spamProtection-panel-message optimizedCheckout-primaryContent"
+                    data-test="spam-protection-verify-button"
+                    onClick={ this.handleRetry }
+                >
+                    <TranslatedString id="spam_protection.verify_action" />
+                </a>
+            </div>
+        );
     }
-  }
 
-  private handleRetry: (event: MouseEvent) => void = (event) => {
-    event.preventDefault();
+    private async verify(): Promise<void> {
+        const { executeSpamCheck, onUnhandledError = noop } = this.props;
 
-    this.verify();
-  };
+        try {
+            await executeSpamCheck();
+        } catch (error) {
+            this.setState({ shouldShowRetryButton: true });
+
+            // Notify the parent component if the user experiences a problem other than cancelling the reCaptcha challenge.
+            if (error && error.type !== 'spam_protection_challenge_not_completed') {
+                onUnhandledError(error);
+            }
+        }
+    }
+
+    private handleRetry: (event: MouseEvent) => void = (event) => {
+        event.preventDefault();
+
+        this.verify();
+    };
 }
 
 export default withCheckout(mapToSpamProtectionProps)(SpamProtectionField);

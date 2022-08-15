@@ -1,39 +1,39 @@
 import mapFromPaymentMethodCardType from './mapFromPaymentMethodCardType';
 
 describe('mapFromPaymentMethodCardType()', () => {
-  it('maps from payment method card type', () => {
-    expect(mapFromPaymentMethodCardType('AMEX')).toBe('american-express');
+    it('maps from payment method card type', () => {
+        expect(mapFromPaymentMethodCardType('AMEX')).toBe('american-express');
 
-    expect(mapFromPaymentMethodCardType('DINERS')).toBe('diners-club');
+        expect(mapFromPaymentMethodCardType('DINERS')).toBe('diners-club');
 
-    expect(mapFromPaymentMethodCardType('DISCOVER')).toBe('discover');
+        expect(mapFromPaymentMethodCardType('DISCOVER')).toBe('discover');
 
-    expect(mapFromPaymentMethodCardType('JCB')).toBe('jcb');
+        expect(mapFromPaymentMethodCardType('JCB')).toBe('jcb');
 
-    expect(mapFromPaymentMethodCardType('MAESTRO')).toBe('maestro');
+        expect(mapFromPaymentMethodCardType('MAESTRO')).toBe('maestro');
 
-    expect(mapFromPaymentMethodCardType('MC')).toBe('mastercard');
+        expect(mapFromPaymentMethodCardType('MC')).toBe('mastercard');
 
-    expect(mapFromPaymentMethodCardType('CUP')).toBe('unionpay');
+        expect(mapFromPaymentMethodCardType('CUP')).toBe('unionpay');
 
-    expect(mapFromPaymentMethodCardType('VISA')).toBe('visa');
+        expect(mapFromPaymentMethodCardType('VISA')).toBe('visa');
 
-    expect(mapFromPaymentMethodCardType('CB')).toBe('cb');
+        expect(mapFromPaymentMethodCardType('CB')).toBe('cb');
 
-    expect(mapFromPaymentMethodCardType('MADA')).toBe('mada');
+        expect(mapFromPaymentMethodCardType('MADA')).toBe('mada');
 
-    expect(mapFromPaymentMethodCardType('DANKORT')).toBe('dankort');
+        expect(mapFromPaymentMethodCardType('DANKORT')).toBe('dankort');
 
-    expect(mapFromPaymentMethodCardType('CARNET')).toBe('carnet');
+        expect(mapFromPaymentMethodCardType('CARNET')).toBe('carnet');
 
-    expect(mapFromPaymentMethodCardType('ELO')).toBe('elo');
+        expect(mapFromPaymentMethodCardType('ELO')).toBe('elo');
 
-    expect(mapFromPaymentMethodCardType('HIPER')).toBe('hiper');
+        expect(mapFromPaymentMethodCardType('HIPER')).toBe('hiper');
 
-    expect(mapFromPaymentMethodCardType('TROY')).toBe('troy');
-  });
+        expect(mapFromPaymentMethodCardType('TROY')).toBe('troy');
+    });
 
-  it('returns undefined if unable to map type', () => {
-    expect(mapFromPaymentMethodCardType('FOOBAR')).toBeUndefined();
-  });
+    it('returns undefined if unable to map type', () => {
+        expect(mapFromPaymentMethodCardType('FOOBAR')).toBeUndefined();
+    });
 });

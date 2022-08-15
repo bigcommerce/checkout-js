@@ -1,169 +1,169 @@
 import { EmbeddedCheckoutStyles } from '@bigcommerce/checkout-sdk';
 
 export const styles: EmbeddedCheckoutStyles = {
-  body: {
-    backgroundColor: '#444444',
-  },
-
-  text: {
-    color: '#ffffff',
-  },
-
-  secondaryText: {
-    color: '#bbbbbb',
-  },
-
-  heading: {
-    color: '#eeeeee',
-  },
-
-  secondaryHeading: {
-    color: '#ffffff',
-  },
-
-  link: {
-    color: '#ff957f',
-
-    hover: {
-      color: '#fab8a2',
-    },
-  },
-
-  label: {
-    color: '#ffffff',
-
-    error: {
-      color: '#ff957f',
-    },
-  },
-
-  button: {
-    backgroundColor: '#ff957f',
-    borderColor: '#ff957f',
-    color: '#333333',
-
-    active: {
-      backgroundColor: '#e5735c',
-      borderColor: '#e5735c',
-      color: '#222222',
+    body: {
+        backgroundColor: '#444444',
     },
 
-    hover: {
-      backgroundColor: '#f2836d',
-      borderColor: '#f2836d',
-      color: '#222222',
+    text: {
+        color: '#ffffff',
     },
 
-    disabled: {
-      backgroundColor: '#757575',
-      borderColor: '#444444',
-      color: '#757575',
-    },
-  },
-
-  secondaryButton: {
-    backgroundColor: '#444444',
-    borderColor: '#757575',
-    color: '#ffffff',
-
-    active: {
-      backgroundColor: '#222222',
-      borderColor: '#666666',
-      color: '#ffffff',
+    secondaryText: {
+        color: '#bbbbbb',
     },
 
-    hover: {
-      backgroundColor: '#333333',
-      borderColor: '#757575',
-      color: '#ffffff',
+    heading: {
+        color: '#eeeeee',
     },
 
-    disabled: {
-      backgroundColor: '#757575',
-      borderColor: '#444444',
-      color: '#757575',
-    },
-  },
-
-  input: {
-    backgroundColor: '#404040',
-    borderColor: '#757575',
-    boxShadow: 'inset 0 1px 1px #404040',
-    color: '#ffffff',
-
-    error: {
-      borderColor: '#ff957f',
-      color: '#ff957f',
+    secondaryHeading: {
+        color: '#ffffff',
     },
 
-    placeholder: {
-      color: '#999999',
-    },
-  },
+    link: {
+        color: '#ff957f',
 
-  checkbox: {
-    backgroundColor: '#404040',
-    borderColor: '#757575',
-
-    error: {
-      color: '#ff957f',
-    },
-  },
-
-  radio: {
-    backgroundColor: '#404040',
-    borderColor: '#757575',
-
-    error: {
-      color: '#ff957f',
-    },
-  },
-
-  select: {
-    backgroundColor: '#404040',
-    borderColor: '#757575',
-    color: '#ffffff',
-
-    error: {
-      color: '#ff957f',
-    },
-  },
-
-  checklist: {
-    backgroundColor: '#404040',
-    borderColor: '#757575',
-    color: '#ffffff',
-
-    hover: {
-      backgroundColor: '#505050',
+        hover: {
+            color: '#fab8a2',
+        },
     },
 
-    checked: {
-      backgroundColor: '#505050',
+    label: {
+        color: '#ffffff',
+
+        error: {
+            color: '#ff957f',
+        },
     },
-  },
 
-  discountBanner: {
-    backgroundColor: '#e5e5e5',
-    color: '#333333',
-  },
+    button: {
+        backgroundColor: '#ff957f',
+        borderColor: '#ff957f',
+        color: '#333333',
 
-  loadingBanner: {
-    backgroundColor: '#333333',
-    color: '#ffffff',
-  },
+        active: {
+            backgroundColor: '#e5735c',
+            borderColor: '#e5735c',
+            color: '#222222',
+        },
 
-  orderSummary: {
-    backgroundColor: '#444444',
-    borderColor: '#666666',
-  },
+        hover: {
+            backgroundColor: '#f2836d',
+            borderColor: '#f2836d',
+            color: '#222222',
+        },
 
-  step: {
-    borderColor: '#757575',
-
-    icon: {
-      backgroundColor: '#ff957f',
-      color: '#333333',
+        disabled: {
+            backgroundColor: '#757575',
+            borderColor: '#444444',
+            color: '#757575',
+        },
     },
-  },
+
+    secondaryButton: {
+        backgroundColor: '#444444',
+        borderColor: '#757575',
+        color: '#ffffff',
+
+        active: {
+            backgroundColor: '#222222',
+            borderColor: '#666666',
+            color: '#ffffff',
+        },
+
+        hover: {
+            backgroundColor: '#333333',
+            borderColor: '#757575',
+            color: '#ffffff',
+        },
+
+        disabled: {
+            backgroundColor: '#757575',
+            borderColor: '#444444',
+            color: '#757575',
+        },
+    },
+
+    input: {
+        backgroundColor: '#404040',
+        borderColor: '#757575',
+        boxShadow: 'inset 0 1px 1px #404040',
+        color: '#ffffff',
+
+        error: {
+            borderColor: '#ff957f',
+            color: '#ff957f',
+        },
+
+        placeholder: {
+            color: '#999999',
+        },
+    },
+
+    checkbox: {
+        backgroundColor: '#404040',
+        borderColor: '#757575',
+
+        error: {
+            color: '#ff957f',
+        },
+    },
+
+    radio: {
+        backgroundColor: '#404040',
+        borderColor: '#757575',
+
+        error: {
+            color: '#ff957f',
+        },
+    },
+
+    select: {
+        backgroundColor: '#404040',
+        borderColor: '#757575',
+        color: '#ffffff',
+
+        error: {
+            color: '#ff957f',
+        },
+    },
+
+    checklist: {
+        backgroundColor: '#404040',
+        borderColor: '#757575',
+        color: '#ffffff',
+
+        hover: {
+            backgroundColor: '#505050',
+        },
+
+        checked: {
+            backgroundColor: '#505050',
+        },
+    },
+
+    discountBanner: {
+        backgroundColor: '#e5e5e5',
+        color: '#333333',
+    },
+
+    loadingBanner: {
+        backgroundColor: '#333333',
+        color: '#ffffff',
+    },
+
+    orderSummary: {
+        backgroundColor: '#444444',
+        borderColor: '#666666',
+    },
+
+    step: {
+        borderColor: '#757575',
+
+        icon: {
+            backgroundColor: '#ff957f',
+            color: '#333333',
+        },
+    },
 };

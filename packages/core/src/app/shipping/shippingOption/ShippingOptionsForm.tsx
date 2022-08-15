@@ -16,151 +16,157 @@ import ShippingOptionsList from './ShippingOptionsList';
 export type ShippingOptionsFormProps = ShippingOptionsProps & WithCheckoutShippingOptionsProps;
 
 class ShippingOptionsForm extends PureComponent<
-  ShippingOptionsFormProps & FormikProps<ShippingOptionsFormValues>
+    ShippingOptionsFormProps & FormikProps<ShippingOptionsFormValues>
 > {
-  private unsubscribe?: () => void;
+    private unsubscribe?: () => void;
 
-  componentDidMount(): void {
-    const { subscribeToConsignments } = this.props;
+    componentDidMount(): void {
+        const { subscribeToConsignments } = this.props;
 
-    this.unsubscribe = subscribeToConsignments(this.selectDefaultShippingOptions);
-  }
-
-  componentWillUnmount(): void {
-    if (this.unsubscribe) {
-      this.unsubscribe();
-      this.unsubscribe = undefined;
-    }
-  }
-
-  render(): ReactNode {
-    const {
-      consignments,
-      isMultiShippingMode,
-      selectShippingOption,
-      isLoading,
-      shouldShowShippingOptions,
-      invalidShippingMessage,
-      methodId,
-    } = this.props;
-
-    if (!consignments || !consignments.length || !shouldShowShippingOptions) {
-      return (
-        <LoadingOverlay isLoading={ isLoading() }>
-          { this.renderNoShippingOptions(
-            <TranslatedString
-              id={
-                methodId || isMultiShippingMode
-                  ? 'shipping.select_shipping_address_text'
-                  : 'shipping.enter_shipping_address_text'
-              }
-            />,
-          ) }
-        </LoadingOverlay>
-      );
+        this.unsubscribe = subscribeToConsignments(this.selectDefaultShippingOptions);
     }
 
-    return (
-      <>
-        { consignments.map((consignment) => (
-          <div className="shippingOptions-container form-fieldset" key={ consignment.id }>
-            { isMultiShippingMode && this.renderConsignment(consignment) }
-
-            <ShippingOptionsList
-              consignmentId={ consignment.id }
-              inputName={ getRadioInputName(consignment.id) }
-              isLoading={ isLoading(consignment.id) }
-              onSelectedOption={ selectShippingOption }
-              selectedShippingOptionId={
-                consignment.selectedShippingOption && consignment.selectedShippingOption.id
-              }
-              shippingOptions={ consignment.availableShippingOptions }
-            />
-
-            { (!consignment.availableShippingOptions ||
-              !consignment.availableShippingOptions.length) && (
-              <LoadingOverlay hideContentWhenLoading isLoading={ isLoading(consignment.id) }>
-                { this.renderNoShippingOptions(invalidShippingMessage) }
-              </LoadingOverlay>
-            ) }
-          </div>
-        )) }
-      </>
-    );
-  }
-
-  private selectDefaultShippingOptions: (state: CheckoutSelectors) => void = async ({ data }) => {
-    const { selectShippingOption, setFieldValue } = this.props;
-
-    const consignment = (data.getConsignments() || []).find(
-      ({ selectedShippingOption, availableShippingOptions: shippingOptions }) =>
-        !selectedShippingOption && shippingOptions,
-    );
-
-    if (!consignment || !consignment.availableShippingOptions) {
-      return;
+    componentWillUnmount(): void {
+        if (this.unsubscribe) {
+            this.unsubscribe();
+            this.unsubscribe = undefined;
+        }
     }
 
-    const { availableShippingOptions, id } = consignment;
-    const recommendedOption = getRecommendedShippingOption(availableShippingOptions);
-    const singleShippingOption =
-      availableShippingOptions.length === 1 && availableShippingOptions[0];
-    const defaultShippingOption = recommendedOption || singleShippingOption;
+    render(): ReactNode {
+        const {
+            consignments,
+            isMultiShippingMode,
+            selectShippingOption,
+            isLoading,
+            shouldShowShippingOptions,
+            invalidShippingMessage,
+            methodId,
+        } = this.props;
 
-    if (!defaultShippingOption) {
-      return;
+        if (!consignments || !consignments.length || !shouldShowShippingOptions) {
+            return (
+                <LoadingOverlay isLoading={ isLoading() }>
+                    { this.renderNoShippingOptions(
+                        <TranslatedString
+                            id={
+                                methodId || isMultiShippingMode
+                                    ? 'shipping.select_shipping_address_text'
+                                    : 'shipping.enter_shipping_address_text'
+                            }
+                        />,
+                    ) }
+                </LoadingOverlay>
+            );
+        }
+
+        return (
+            <>
+                { consignments.map((consignment) => (
+                    <div className="shippingOptions-container form-fieldset" key={ consignment.id }>
+                        { isMultiShippingMode && this.renderConsignment(consignment) }
+
+                        <ShippingOptionsList
+                            consignmentId={ consignment.id }
+                            inputName={ getRadioInputName(consignment.id) }
+                            isLoading={ isLoading(consignment.id) }
+                            onSelectedOption={ selectShippingOption }
+                            selectedShippingOptionId={
+                                consignment.selectedShippingOption &&
+                                consignment.selectedShippingOption.id
+                            }
+                            shippingOptions={ consignment.availableShippingOptions }
+                        />
+
+                        { (!consignment.availableShippingOptions ||
+                            !consignment.availableShippingOptions.length) && (
+                            <LoadingOverlay
+                                hideContentWhenLoading
+                                isLoading={ isLoading(consignment.id) }
+                            >
+                                { this.renderNoShippingOptions(invalidShippingMessage) }
+                            </LoadingOverlay>
+                        ) }
+                    </div>
+                )) }
+            </>
+        );
     }
 
-    await selectShippingOption(id, defaultShippingOption.id);
-    setFieldValue(`shippingOptionIds.${id}`, defaultShippingOption.id);
-  };
+    private selectDefaultShippingOptions: (state: CheckoutSelectors) => void = async ({ data }) => {
+        const { selectShippingOption, setFieldValue } = this.props;
 
-  private renderNoShippingOptions(message: ReactNode): ReactNode {
-    return (
-      <div className="shippingOptions-panel optimizedCheckout-overlay">
-        <p className="shippingOptions-panel-message optimizedCheckout-primaryContent">{ message }</p>
-      </div>
-    );
-  }
+        const consignment = (data.getConsignments() || []).find(
+            ({ selectedShippingOption, availableShippingOptions: shippingOptions }) =>
+                !selectedShippingOption && shippingOptions,
+        );
 
-  private renderConsignment(consignment: Consignment): ReactNode {
-    const { cart } = this.props;
+        if (!consignment || !consignment.availableShippingOptions) {
+            return;
+        }
 
-    return (
-      <div className="staticConsignment">
-        <strong>
-          <TranslatedString id="shipping.shipping_address_heading" />
-        </strong>
+        const { availableShippingOptions, id } = consignment;
+        const recommendedOption = getRecommendedShippingOption(availableShippingOptions);
+        const singleShippingOption =
+            availableShippingOptions.length === 1 && availableShippingOptions[0];
+        const defaultShippingOption = recommendedOption || singleShippingOption;
 
-        <StaticAddress address={ consignment.shippingAddress } />
+        if (!defaultShippingOption) {
+            return;
+        }
 
-        <StaticConsignmentItemList cart={ cart } consignment={ consignment } />
-      </div>
-    );
-  }
+        await selectShippingOption(id, defaultShippingOption.id);
+        setFieldValue(`shippingOptionIds.${id}`, defaultShippingOption.id);
+    };
+
+    private renderNoShippingOptions(message: ReactNode): ReactNode {
+        return (
+            <div className="shippingOptions-panel optimizedCheckout-overlay">
+                <p className="shippingOptions-panel-message optimizedCheckout-primaryContent">
+                    { message }
+                </p>
+            </div>
+        );
+    }
+
+    private renderConsignment(consignment: Consignment): ReactNode {
+        const { cart } = this.props;
+
+        return (
+            <div className="staticConsignment">
+                <strong>
+                    <TranslatedString id="shipping.shipping_address_heading" />
+                </strong>
+
+                <StaticAddress address={ consignment.shippingAddress } />
+
+                <StaticConsignmentItemList cart={ cart } consignment={ consignment } />
+            </div>
+        );
+    }
 }
 
 function getRadioInputName(consignmentId: string): string {
-  return `shippingOptionIds.${consignmentId}`;
+    return `shippingOptionIds.${consignmentId}`;
 }
 
 export interface ShippingOptionsFormValues {
-  shippingOptionIds: {
-    [shippingOptionIds: string]: string;
-  };
+    shippingOptionIds: {
+        [shippingOptionIds: string]: string;
+    };
 }
 
 export default withFormik<ShippingOptionsFormProps, ShippingOptionsFormValues>({
-  handleSubmit: noop,
-  mapPropsToValues({ consignments }) {
-    const shippingOptionIds: { [id: string]: string } = {};
+    handleSubmit: noop,
+    mapPropsToValues({ consignments }) {
+        const shippingOptionIds: { [id: string]: string } = {};
 
-    (consignments || []).forEach((consignment) => {
-      shippingOptionIds[consignment.id] = consignment.selectedShippingOption
-        ? consignment.selectedShippingOption.id
-        : '';
-    });
+        (consignments || []).forEach((consignment) => {
+            shippingOptionIds[consignment.id] = consignment.selectedShippingOption
+                ? consignment.selectedShippingOption.id
+                : '';
+        });
 
-    return { shippingOptionIds };
-  },
+        return { shippingOptionIds };
+    },
 })(ShippingOptionsForm);

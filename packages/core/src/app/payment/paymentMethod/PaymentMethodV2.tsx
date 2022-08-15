@@ -1,7 +1,7 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import {
-  PaymentMethodProps as ResolvedPaymentMethodProps,
-  PaymentFormValues,
+    PaymentMethodProps as ResolvedPaymentMethodProps,
+    PaymentFormValues,
 } from '@bigcommerce/checkout/payment-integration-api';
 import React, { ComponentType } from 'react';
 
@@ -14,67 +14,67 @@ import resolvePaymentMethod, { PaymentMethodResolveId } from '../resolvePaymentM
 import withPayment, { WithPaymentProps } from '../withPayment';
 
 export interface PaymentMethodProps {
-  method: PaymentMethod;
-  resolveComponent?(query: PaymentMethodResolveId): ComponentType<ResolvedPaymentMethodProps>;
-  onUnhandledError(error: Error): void;
+    method: PaymentMethod;
+    resolveComponent?(query: PaymentMethodResolveId): ComponentType<ResolvedPaymentMethodProps>;
+    onUnhandledError(error: Error): void;
 }
 
 const PaymentMethodContainer: ComponentType<
-  PaymentMethodProps &
-    WithCheckoutProps &
-    WithLanguageProps &
-    WithPaymentProps &
-    WithFormProps &
-    WithFormikProps<PaymentFormValues>
+    PaymentMethodProps &
+        WithCheckoutProps &
+        WithLanguageProps &
+        WithPaymentProps &
+        WithFormProps &
+        WithFormikProps<PaymentFormValues>
 > = ({
-  formik: formikContext,
-  checkoutService,
-  checkoutState,
-  disableSubmit,
-  hidePaymentSubmitButton,
-  isSubmitted,
-  language,
-  method,
-  onUnhandledError,
-  resolveComponent = resolvePaymentMethod,
-  setSubmit,
-  setSubmitted,
-  setValidationSchema,
-}) => {
-  const formContext = {
-    isSubmitted,
-    setSubmitted,
-  };
-
-  const paymentContext = {
+    formik: formikContext,
+    checkoutService,
+    checkoutState,
     disableSubmit,
     hidePaymentSubmitButton,
+    isSubmitted,
+    language,
+    method,
+    onUnhandledError,
+    resolveComponent = resolvePaymentMethod,
     setSubmit,
+    setSubmitted,
     setValidationSchema,
-  };
+}) => {
+    const formContext = {
+        isSubmitted,
+        setSubmitted,
+    };
 
-  const ResolvedPaymentMethod = resolveComponent({
-    id: method.id,
-    gateway: method.gateway,
-    type: method.type,
-  });
+    const paymentContext = {
+        disableSubmit,
+        hidePaymentSubmitButton,
+        setSubmit,
+        setValidationSchema,
+    };
 
-  if (!ResolvedPaymentMethod) {
-    return null;
-  }
+    const ResolvedPaymentMethod = resolveComponent({
+        id: method.id,
+        gateway: method.gateway,
+        type: method.type,
+    });
 
-  return (
-    <ResolvedPaymentMethod
-      checkoutService={ checkoutService }
-      checkoutState={ checkoutState }
-      language={ language }
-      method={ method }
-      onUnhandledError={ onUnhandledError }
-      paymentForm={ createPaymentFormService(formikContext, formContext, paymentContext) }
-    />
-  );
+    if (!ResolvedPaymentMethod) {
+        return null;
+    }
+
+    return (
+        <ResolvedPaymentMethod
+            checkoutService={ checkoutService }
+            checkoutState={ checkoutState }
+            language={ language }
+            method={ method }
+            onUnhandledError={ onUnhandledError }
+            paymentForm={ createPaymentFormService(formikContext, formContext, paymentContext) }
+        />
+    );
 };
 
 export default withCheckout((props) => props)(
-  withLanguage(withPayment(withForm(connectFormik(PaymentMethodContainer)))),
+    withLanguage(withPayment(withForm(connectFormik(PaymentMethodContainer)))),
 ) as ComponentType<PaymentMethodProps>;

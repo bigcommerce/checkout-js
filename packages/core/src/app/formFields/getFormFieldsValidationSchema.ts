@@ -6,31 +6,33 @@ import getCustomFormFieldsValidationSchema, {FormFieldsValidationSchemaOptions,}
 export const WHITELIST_REGEXP = /^[^<>]*$/;
 
 export interface FormFieldValues {
-  [key: string]: string | { [id: string]: any };
+    [key: string]: string | { [id: string]: any };
 }
 
 export default memoize(function getFormFieldsValidationSchema({
-  formFields,
-  translate = () => undefined,
+    formFields,
+    translate = () => undefined,
 }: FormFieldsValidationSchemaOptions): ObjectSchema<FormFieldValues> {
-  return object({
-    ...formFields
-      .filter(({ custom }) => !custom)
-      .reduce((schema, { name, required, label }) => {
-        schema[name] = string();
+    return object({
+        ...formFields
+            .filter(({ custom }) => !custom)
+            .reduce((schema, { name, required, label }) => {
+                schema[name] = string();
 
-        if (required) {
-          schema[name] = schema[name].trim().required(translate('required', { label, name }));
-        }
+                if (required) {
+                    schema[name] = schema[name]
+                        .trim()
+                        .required(translate('required', { label, name }));
+                }
 
-        schema[name] = schema[name].matches(
-          WHITELIST_REGEXP,
-          translate('invalid', { name, label }),
-        );
+                schema[name] = schema[name].matches(
+                    WHITELIST_REGEXP,
+                    translate('invalid', { name, label }),
+                );
 
-        return schema;
-      }, {} as { [key: string]: StringSchema }),
-  }).concat(
-    getCustomFormFieldsValidationSchema({ formFields, translate }),
-  ) as ObjectSchema<FormFieldValues>;
+                return schema;
+            }, {} as { [key: string]: StringSchema }),
+    }).concat(
+        getCustomFormFieldsValidationSchema({ formFields, translate }),
+    ) as ObjectSchema<FormFieldValues>;
 });

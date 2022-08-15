@@ -1,9 +1,9 @@
 import {CheckoutPayment,
-  GiftCertificateOrderPayment,
-  OrderPayment,} from '@bigcommerce/checkout-sdk';
+    GiftCertificateOrderPayment,
+    OrderPayment,} from '@bigcommerce/checkout-sdk';
 
 export default function isGiftCertificatePayment(
-  payment: OrderPayment | CheckoutPayment,
+    payment: OrderPayment | CheckoutPayment,
 ): payment is GiftCertificateOrderPayment {
-  return payment.providerId === 'giftcertificate';
+    return payment.providerId === 'giftcertificate';
 }

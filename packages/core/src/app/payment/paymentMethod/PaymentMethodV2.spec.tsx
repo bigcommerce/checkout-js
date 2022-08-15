@@ -13,68 +13,68 @@ import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 import { default as PaymentMethodComponent } from './PaymentMethodV2';
 
 describe('PaymentMethod', () => {
-  let checkoutService: CheckoutService;
-  let paymentContext: PaymentContextProps;
-  let ContextProvider: FunctionComponent<{ children: ReactNode }>;
+    let checkoutService: CheckoutService;
+    let paymentContext: PaymentContextProps;
+    let ContextProvider: FunctionComponent<{ children: ReactNode }>;
 
-  beforeEach(() => {
-    checkoutService = createCheckoutService();
-    paymentContext = {
-      disableSubmit: jest.fn(),
-      setSubmit: jest.fn(),
-      setValidationSchema: jest.fn(),
-      hidePaymentSubmitButton: jest.fn(),
-    };
+    beforeEach(() => {
+        checkoutService = createCheckoutService();
+        paymentContext = {
+            disableSubmit: jest.fn(),
+            setSubmit: jest.fn(),
+            setValidationSchema: jest.fn(),
+            hidePaymentSubmitButton: jest.fn(),
+        };
 
-    ContextProvider = ({ children }) => (
-      <CheckoutProvider checkoutService={ checkoutService }>
-        <LocaleProvider checkoutService={ checkoutService }>
-          <PaymentContext.Provider value={ paymentContext }>
-            <FormProvider>
-              <Formik initialValues={ {} } onSubmit={ jest.fn() }>
-                { children }
-              </Formik>
-            </FormProvider>
-          </PaymentContext.Provider>
-        </LocaleProvider>
-      </CheckoutProvider>
-    );
-  });
+        ContextProvider = ({ children }) => (
+            <CheckoutProvider checkoutService={ checkoutService }>
+                <LocaleProvider checkoutService={ checkoutService }>
+                    <PaymentContext.Provider value={ paymentContext }>
+                        <FormProvider>
+                            <Formik initialValues={ {} } onSubmit={ jest.fn() }>
+                                { children }
+                            </Formik>
+                        </FormProvider>
+                    </PaymentContext.Provider>
+                </LocaleProvider>
+            </CheckoutProvider>
+        );
+    });
 
-  it('renders component by payment method', () => {
-    const Foo: FunctionComponent<PaymentMethodProps> = ({ method }) => <div>{ method.id }</div>;
-    const Bar: FunctionComponent<PaymentMethodProps> = ({ method }) => <div>{ method.id }</div>;
+    it('renders component by payment method', () => {
+        const Foo: FunctionComponent<PaymentMethodProps> = ({ method }) => <div>{ method.id }</div>;
+        const Bar: FunctionComponent<PaymentMethodProps> = ({ method }) => <div>{ method.id }</div>;
 
-    const resolver = (method: PaymentMethod) => {
-      return method.id === 'foo' ? Foo : Bar;
-    };
+        const resolver = (method: PaymentMethod) => {
+            return method.id === 'foo' ? Foo : Bar;
+        };
 
-    const componentA = mount(
-      <ContextProvider>
-        <PaymentMethodComponent
-          method={ {
-            ...getPaymentMethod(),
-            id: 'foo',
-          } }
-          onUnhandledError={ jest.fn() }
-          resolveComponent={ resolver }
-        />
-      </ContextProvider>,
-    );
-    const componentB = mount(
-      <ContextProvider>
-        <PaymentMethodComponent
-          method={ {
-            ...getPaymentMethod(),
-            id: 'bar',
-          } }
-          onUnhandledError={ jest.fn() }
-          resolveComponent={ resolver }
-        />
-      </ContextProvider>,
-    );
+        const componentA = mount(
+            <ContextProvider>
+                <PaymentMethodComponent
+                    method={ {
+                        ...getPaymentMethod(),
+                        id: 'foo',
+                    } }
+                    onUnhandledError={ jest.fn() }
+                    resolveComponent={ resolver }
+                />
+            </ContextProvider>,
+        );
+        const componentB = mount(
+            <ContextProvider>
+                <PaymentMethodComponent
+                    method={ {
+                        ...getPaymentMethod(),
+                        id: 'bar',
+                    } }
+                    onUnhandledError={ jest.fn() }
+                    resolveComponent={ resolver }
+                />
+            </ContextProvider>,
+        );
 
-    expect(componentA.find(Foo)).toBeDefined();
-    expect(componentB.find(Bar)).toBeDefined();
-  });
+        expect(componentA.find(Foo)).toBeDefined();
+        expect(componentB.find(Bar)).toBeDefined();
+    });
 });

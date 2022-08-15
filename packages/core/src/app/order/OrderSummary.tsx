@@ -9,47 +9,47 @@ import OrderSummaryTotal from './OrderSummaryTotal';
 import removeBundledItems from './removeBundledItems';
 
 export interface OrderSummaryProps {
-  lineItems: LineItemMap;
-  total: number;
-  headerLink: ReactNode;
-  storeCurrency: StoreCurrency;
-  shopperCurrency: ShopperCurrency;
-  additionalLineItems?: ReactNode;
+    lineItems: LineItemMap;
+    total: number;
+    headerLink: ReactNode;
+    storeCurrency: StoreCurrency;
+    shopperCurrency: ShopperCurrency;
+    additionalLineItems?: ReactNode;
 }
 
 const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsProps> = ({
-  storeCurrency,
-  shopperCurrency,
-  headerLink,
-  additionalLineItems,
-  lineItems,
-  total,
-  ...orderSummarySubtotalsProps
+    storeCurrency,
+    shopperCurrency,
+    headerLink,
+    additionalLineItems,
+    lineItems,
+    total,
+    ...orderSummarySubtotalsProps
 }) => {
-  const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
+    const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
 
-  return (
-    <article className="cart optimizedCheckout-orderSummary" data-test="cart">
-      <OrderSummaryHeader>{ headerLink }</OrderSummaryHeader>
+    return (
+        <article className="cart optimizedCheckout-orderSummary" data-test="cart">
+            <OrderSummaryHeader>{ headerLink }</OrderSummaryHeader>
 
-      <OrderSummarySection>
-        <OrderSummaryItems items={ nonBundledLineItems } />
-      </OrderSummarySection>
+            <OrderSummarySection>
+                <OrderSummaryItems items={ nonBundledLineItems } />
+            </OrderSummarySection>
 
-      <OrderSummarySection>
-        <OrderSummarySubtotals { ...orderSummarySubtotalsProps } />
-        { additionalLineItems }
-      </OrderSummarySection>
+            <OrderSummarySection>
+                <OrderSummarySubtotals { ...orderSummarySubtotalsProps } />
+                { additionalLineItems }
+            </OrderSummarySection>
 
-      <OrderSummarySection>
-        <OrderSummaryTotal
-          orderAmount={ total }
-          shopperCurrencyCode={ shopperCurrency.code }
-          storeCurrencyCode={ storeCurrency.code }
-        />
-      </OrderSummarySection>
-    </article>
-  );
+            <OrderSummarySection>
+                <OrderSummaryTotal
+                    orderAmount={ total }
+                    shopperCurrencyCode={ shopperCurrency.code }
+                    storeCurrencyCode={ storeCurrency.code }
+                />
+            </OrderSummarySection>
+        </article>
+    );
 };
 
 export default OrderSummary;

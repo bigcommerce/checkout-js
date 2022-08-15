@@ -8,59 +8,59 @@ import FormFieldError from './FormFieldError';
 import FormProvider from './FormProvider';
 
 describe('FormFieldError', () => {
-  it('renders component with test ID', async () => {
-    const component = mount(
-      <FormProvider initialIsSubmitted={ true }>
-        <Formik
-          initialValues={ { foobar: '' } }
-          onSubmit={ noop }
-          render={ () => (
-            <>
-              <BasicFormField name="foobar" validate={() => 'Invalid'} />
-              <FormFieldError name="foobar" testId="test" />
-            </>
-          ) }
-        />
-      </FormProvider>,
-    );
+    it('renders component with test ID', async () => {
+        const component = mount(
+            <FormProvider initialIsSubmitted={ true }>
+                <Formik
+                    initialValues={ { foobar: '' } }
+                    onSubmit={ noop }
+                    render={ () => (
+                        <>
+                            <BasicFormField name="foobar" validate={() => 'Invalid'} />
+                            <FormFieldError name="foobar" testId="test" />
+                        </>
+                    ) }
+                />
+            </FormProvider>,
+        );
 
-    component
-      .find('input[name="foobar"]')
-      .simulate('change', { target: { value: '123', name: 'foobar' } })
-      .simulate('blur');
+        component
+            .find('input[name="foobar"]')
+            .simulate('change', { target: { value: '123', name: 'foobar' } })
+            .simulate('blur');
 
-    await new Promise((resolve) => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
-    component.update();
+        component.update();
 
-    expect(component.find('.form-field-errors').prop('data-test')).toBe('test');
-  });
+        expect(component.find('.form-field-errors').prop('data-test')).toBe('test');
+    });
 
-  it('renders error message', async () => {
-    const component = mount(
-      <FormProvider initialIsSubmitted={ true }>
-        <Formik
-          initialValues={ { foobar: '' } }
-          onSubmit={ noop }
-          render={ () => (
-            <>
-              <BasicFormField name="foobar" validate={() => 'Invalid'} />
-              <FormFieldError name="foobar" testId="test" />
-            </>
-          ) }
-        />
-      </FormProvider>,
-    );
+    it('renders error message', async () => {
+        const component = mount(
+            <FormProvider initialIsSubmitted={ true }>
+                <Formik
+                    initialValues={ { foobar: '' } }
+                    onSubmit={ noop }
+                    render={ () => (
+                        <>
+                            <BasicFormField name="foobar" validate={() => 'Invalid'} />
+                            <FormFieldError name="foobar" testId="test" />
+                        </>
+                    ) }
+                />
+            </FormProvider>,
+        );
 
-    component
-      .find('input[name="foobar"]')
-      .simulate('change', { target: { value: '123', name: 'foobar' } })
-      .simulate('blur');
+        component
+            .find('input[name="foobar"]')
+            .simulate('change', { target: { value: '123', name: 'foobar' } })
+            .simulate('blur');
 
-    await new Promise((resolve) => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
-    component.update();
+        component.update();
 
-    expect(component.find('.form-field-errors').text()).toBe('Invalid');
-  });
+        expect(component.find('.form-field-errors').text()).toBe('Invalid');
+    });
 });

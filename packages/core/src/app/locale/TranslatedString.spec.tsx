@@ -6,55 +6,55 @@ import { getLocaleContext } from './localeContext.mock';
 import TranslatedString from './TranslatedString';
 
 describe('TranslatedString Component', () => {
-  const localeContext = getLocaleContext();
+    const localeContext = getLocaleContext();
 
-  jest.spyOn(localeContext.language, 'translate');
+    jest.spyOn(localeContext.language, 'translate');
 
-  it('renders translated string', () => {
-    expect(
-      testRenderer
-        .create(
-          <LocaleContext.Provider value={ localeContext }>
-            <TranslatedString id="address.address_line_1_label" />
-          </LocaleContext.Provider>,
-        )
-        .toJSON(),
-    ).toMatchSnapshot();
-  });
+    it('renders translated string', () => {
+        expect(
+            testRenderer
+                .create(
+                    <LocaleContext.Provider value={ localeContext }>
+                        <TranslatedString id="address.address_line_1_label" />
+                    </LocaleContext.Provider>,
+                )
+                .toJSON(),
+        ).toMatchSnapshot();
+    });
 
-  it('calls language.translate', () => {
-    expect(
-      testRenderer
-        .create(
-          <LocaleContext.Provider value={ localeContext }>
-            <TranslatedString id="address.address_line_1_label" />
-          </LocaleContext.Provider>,
-        )
-        .toJSON(),
-    );
+    it('calls language.translate', () => {
+        expect(
+            testRenderer
+                .create(
+                    <LocaleContext.Provider value={ localeContext }>
+                        <TranslatedString id="address.address_line_1_label" />
+                    </LocaleContext.Provider>,
+                )
+                .toJSON(),
+        );
 
-    expect(localeContext.language.translate).toHaveBeenCalledWith(
-      'address.address_line_1_label',
-      undefined,
-    );
-  });
+        expect(localeContext.language.translate).toHaveBeenCalledWith(
+            'address.address_line_1_label',
+            undefined,
+        );
+    });
 
-  it('calls language.translate with data when passed', () => {
-    const data = { foo: 'xyz' };
+    it('calls language.translate with data when passed', () => {
+        const data = { foo: 'xyz' };
 
-    expect(
-      testRenderer
-        .create(
-          <LocaleContext.Provider value={ localeContext }>
-            <TranslatedString data={ data } id="address.address_line_1_label" />
-          </LocaleContext.Provider>,
-        )
-        .toJSON(),
-    );
+        expect(
+            testRenderer
+                .create(
+                    <LocaleContext.Provider value={ localeContext }>
+                        <TranslatedString data={ data } id="address.address_line_1_label" />
+                    </LocaleContext.Provider>,
+                )
+                .toJSON(),
+        );
 
-    expect(localeContext.language.translate).toHaveBeenCalledWith(
-      'address.address_line_1_label',
-      data,
-    );
-  });
+        expect(localeContext.language.translate).toHaveBeenCalledWith(
+            'address.address_line_1_label',
+            data,
+        );
+    });
 });

@@ -10,68 +10,68 @@ import AccountInstrumentSelect from './AccountInstrumentSelect';
 import ManageInstrumentsModal from './ManageInstrumentsModal';
 
 export interface AccountInstrumentFieldsetProps {
-  instruments: AccountInstrument[];
-  selectedInstrument?: AccountInstrument;
-  onSelectInstrument(id: string): void;
-  onUseNewInstrument(): void;
+    instruments: AccountInstrument[];
+    selectedInstrument?: AccountInstrument;
+    onSelectInstrument(id: string): void;
+    onUseNewInstrument(): void;
 }
 
 export interface AccountInstrumentFieldsetValues {
-  instrumentId: string;
+    instrumentId: string;
 }
 
 const AccountInstrumentFieldset: FunctionComponent<AccountInstrumentFieldsetProps> = ({
-  instruments,
-  onSelectInstrument,
-  onUseNewInstrument,
-  selectedInstrument,
+    instruments,
+    onSelectInstrument,
+    onUseNewInstrument,
+    selectedInstrument,
 }) => {
-  const renderInput = useCallback(
-    (field: FieldProps<string>) => (
-      <AccountInstrumentSelect
-        { ...field }
-        instruments={ instruments }
-        onSelectInstrument={ onSelectInstrument }
-        onUseNewInstrument={ onUseNewInstrument }
-        selectedInstrumentId={ selectedInstrument && selectedInstrument.bigpayToken }
-      />
-    ),
-    [instruments, onSelectInstrument, onUseNewInstrument, selectedInstrument],
-  );
+    const renderInput = useCallback(
+        (field: FieldProps<string>) => (
+            <AccountInstrumentSelect
+                { ...field }
+                instruments={ instruments }
+                onSelectInstrument={ onSelectInstrument }
+                onUseNewInstrument={ onUseNewInstrument }
+                selectedInstrumentId={ selectedInstrument && selectedInstrument.bigpayToken }
+            />
+        ),
+        [instruments, onSelectInstrument, onUseNewInstrument, selectedInstrument],
+    );
 
-  const renderModal = useCallback(
-    (props: ModalTriggerModalProps) => (
-      <ManageInstrumentsModal instruments={ instruments } { ...props } />
-    ),
-    [instruments],
-  );
+    const renderModal = useCallback(
+        (props: ModalTriggerModalProps) => (
+            <ManageInstrumentsModal instruments={ instruments } { ...props } />
+        ),
+        [instruments],
+    );
 
-  return (
-    <Fieldset
-      additionalClassName="instrumentFieldset"
-      legend={
-        <Legend hidden>
-          <TranslatedString id="payment.account_instrument_text" />
-        </Legend>
-      }
-    >
-      <ModalTrigger modal={ renderModal }>
-        { ({ onClick }) => (
-          <button className="instrumentModal-trigger" onClick={ onClick } type="button">
-            <TranslatedString id="payment.instrument_manage_button" />
-          </button>
-        ) }
-      </ModalTrigger>
+    return (
+        <Fieldset
+            additionalClassName="instrumentFieldset"
+            legend={
+                <Legend hidden>
+                    <TranslatedString id="payment.account_instrument_text" />
+                </Legend>
+            }
+        >
+            <ModalTrigger modal={ renderModal }>
+                { ({ onClick }) => (
+                    <button className="instrumentModal-trigger" onClick={ onClick } type="button">
+                        <TranslatedString id="payment.instrument_manage_button" />
+                    </button>
+                ) }
+            </ModalTrigger>
 
-      <BasicFormField name="instrumentId" render={ renderInput } />
+            <BasicFormField name="instrumentId" render={ renderInput } />
 
-      { instruments.length === 0 && (
-        <div className="instrumentSelect-note">
-          <TranslatedHtml id="payment.account_instrument_new_shipping_address" />
-        </div>
-      ) }
-    </Fieldset>
-  );
+            { instruments.length === 0 && (
+                <div className="instrumentSelect-note">
+                    <TranslatedHtml id="payment.account_instrument_new_shipping_address" />
+                </div>
+            ) }
+        </Fieldset>
+    );
 };
 
 export default memo(AccountInstrumentFieldset);

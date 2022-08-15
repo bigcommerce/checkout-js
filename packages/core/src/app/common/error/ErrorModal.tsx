@@ -13,100 +13,103 @@ import isCustomError from './isCustomError';
 import isRequestError from './isRequestError';
 
 export interface ErrorModalProps {
-  error?: Error | RequestError;
-  message?: ReactNode;
-  title?: ReactNode;
-  shouldShowErrorCode?: boolean;
-  onClose?(event: Event, props: ErrorModalOnCloseProps): void;
+    error?: Error | RequestError;
+    message?: ReactNode;
+    title?: ReactNode;
+    shouldShowErrorCode?: boolean;
+    onClose?(event: Event, props: ErrorModalOnCloseProps): void;
 }
 
 export interface ErrorModalOnCloseProps {
-  error: Error;
+    error: Error;
 }
 
 export default class ErrorModal extends PureComponent<ErrorModalProps> {
-  private aria = {
-    labelledby: 'errorModalMessage',
-  };
+    private aria = {
+        labelledby: 'errorModalMessage',
+    };
 
-  render(): ReactNode {
-    const { error } = this.props;
+    render(): ReactNode {
+        const { error } = this.props;
 
-    return (
-      <Modal
-        additionalModalClassName="modal--error"
-        aria={ this.aria }
-        footer={ this.renderFooter() }
-        header={ this.renderHeader() }
-        isOpen={ !!error }
-        onRequestClose={ this.handleOnRequestClose }
-      >
-        { this.renderBody() }
-      </Modal>
-    );
-  }
-
-  private renderHeader(): ReactNode {
-    const { error, title = error && isCustomError(error) && error.title } = this.props;
-
-    return (
-      <ModalHeader>
-        <IconError additionalClassName="icon--error modal-header-icon" size={ IconSize.Small } />
-        { title || <TranslatedString id="common.error_heading" /> }
-      </ModalHeader>
-    );
-  }
-
-  private renderBody(): ReactNode {
-    const { error, message = error && error.message } = this.props;
-
-    return (
-      <>
-        {message && <p id="errorModalMessage">{message}</p>}
-
-        <div className="optimizedCheckout-contentSecondary">{this.renderErrorCode()}</div>
-      </>
-    );
-  }
-
-  private renderFooter(): ReactNode {
-    return (
-      <Button onClick={ this.handleOnRequestClose } size={ ButtonSize.Small }>
-        <TranslatedString id="common.ok_action" />
-      </Button>
-    );
-  }
-
-  private renderErrorCode(): ReactNode {
-    const { error, shouldShowErrorCode = true } = this.props;
-
-    if (!error || !shouldShowErrorCode) {
-      return;
+        return (
+            <Modal
+                additionalModalClassName="modal--error"
+                aria={ this.aria }
+                footer={ this.renderFooter() }
+                header={ this.renderHeader() }
+                isOpen={ !!error }
+                onRequestClose={ this.handleOnRequestClose }
+            >
+                { this.renderBody() }
+            </Modal>
+        );
     }
 
-    if (isRequestError(error) && error.headers['x-request-id']) {
-      return (
-        <ErrorCode
-          code={ error.headers['x-request-id'] }
-          label={ <TranslatedString id="common.request_id" /> }
-        />
-      );
+    private renderHeader(): ReactNode {
+        const { error, title = error && isCustomError(error) && error.title } = this.props;
+
+        return (
+            <ModalHeader>
+                <IconError
+                    additionalClassName="icon--error modal-header-icon"
+                    size={ IconSize.Small }
+                />
+                { title || <TranslatedString id="common.error_heading" /> }
+            </ModalHeader>
+        );
     }
 
-    const errorCode = computeErrorCode(error);
+    private renderBody(): ReactNode {
+        const { error, message = error && error.message } = this.props;
 
-    if (!errorCode) {
-      return;
+        return (
+            <>
+                {message && <p id="errorModalMessage">{message}</p>}
+
+                <div className="optimizedCheckout-contentSecondary">{this.renderErrorCode()}</div>
+            </>
+        );
     }
 
-    return <ErrorCode code={ errorCode } />;
-  }
-
-  private handleOnRequestClose: (event: SyntheticEvent) => void = (event) => {
-    const { error, onClose = noop } = this.props;
-
-    if (error) {
-      onClose(event.nativeEvent, { error });
+    private renderFooter(): ReactNode {
+        return (
+            <Button onClick={ this.handleOnRequestClose } size={ ButtonSize.Small }>
+                <TranslatedString id="common.ok_action" />
+            </Button>
+        );
     }
-  };
+
+    private renderErrorCode(): ReactNode {
+        const { error, shouldShowErrorCode = true } = this.props;
+
+        if (!error || !shouldShowErrorCode) {
+            return;
+        }
+
+        if (isRequestError(error) && error.headers['x-request-id']) {
+            return (
+                <ErrorCode
+                    code={ error.headers['x-request-id'] }
+                    label={ <TranslatedString id="common.request_id" /> }
+                />
+            );
+        }
+
+        const errorCode = computeErrorCode(error);
+
+        if (!errorCode) {
+            return;
+        }
+
+        return <ErrorCode code={ errorCode } />;
+    }
+
+    private handleOnRequestClose: (event: SyntheticEvent) => void = (event) => {
+        const { error, onClose = noop } = this.props;
+
+        if (error) {
+            onClose(event.nativeEvent, { error });
+        }
+    };
 }

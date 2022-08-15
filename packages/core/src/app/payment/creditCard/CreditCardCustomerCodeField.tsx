@@ -5,30 +5,30 @@ import { TranslatedString } from '../../locale';
 import { FormField, TextInput } from '../../ui/form';
 
 export interface CreditCardCustomerCodeFieldProps {
-  name: string;
+    name: string;
 }
 
 const CreditCardCustomerCodeField: FunctionComponent<CreditCardCustomerCodeFieldProps> = ({
-  name,
+    name,
 }) => {
-  const renderInput = useCallback(
-    ({ field }: FieldProps) => <TextInput { ...field } id={ field.name } />,
-    [],
-  );
+    const renderInput = useCallback(
+        ({ field }: FieldProps) => <TextInput { ...field } id={ field.name } />,
+        [],
+    );
 
-  const labelContent = useMemo(
-    () => (
-      <>
-        <TranslatedString id="payment.credit_card_customer_code_label" />{' '}
-        <small className="optimizedCheckout-contentSecondary">
-          <TranslatedString id="common.optional_text" />
-        </small>
-      </>
-    ),
-    [],
-  );
+    const labelContent = useMemo(
+        () => (
+            <>
+                <TranslatedString id="payment.credit_card_customer_code_label" />{' '}
+                <small className="optimizedCheckout-contentSecondary">
+                    <TranslatedString id="common.optional_text" />
+                </small>
+            </>
+        ),
+        [],
+    );
 
-  return <FormField input={ renderInput } labelContent={ labelContent } name={ name } />;
+    return <FormField input={ renderInput } labelContent={ labelContent } name={ name } />;
 };
 
 export default memo(CreditCardCustomerCodeField);

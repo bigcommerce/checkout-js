@@ -12,28 +12,28 @@ import OrderSummaryDrawer from '../order/OrderSummaryDrawer';
 import CartSummaryDrawer from './CartSummaryDrawer';
 
 describe('CartSummary Component', () => {
-  let checkoutService: CheckoutService;
-  let localeContext: LocaleContextType;
-  let component: ReactWrapper;
+    let checkoutService: CheckoutService;
+    let localeContext: LocaleContextType;
+    let component: ReactWrapper;
 
-  beforeEach(() => {
-    checkoutService = createCheckoutService();
-    localeContext = createLocaleContext(getStoreConfig());
+    beforeEach(() => {
+        checkoutService = createCheckoutService();
+        localeContext = createLocaleContext(getStoreConfig());
 
-    jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue(getCustomer());
-    jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(getCheckout());
-    jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
+        jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue(getCustomer());
+        jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(getCheckout());
+        jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
 
-    component = mount(
-      <CheckoutProvider checkoutService={ checkoutService }>
-        <LocaleContext.Provider value={ localeContext }>
-          <CartSummaryDrawer />
-        </LocaleContext.Provider>
-      </CheckoutProvider>,
-    );
-  });
+        component = mount(
+            <CheckoutProvider checkoutService={ checkoutService }>
+                <LocaleContext.Provider value={ localeContext }>
+                    <CartSummaryDrawer />
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
+        );
+    });
 
-  it('renders OrderSummaryDrawer with Edit Cart link', () => {
-    expect(component.find(OrderSummaryDrawer).prop('headerLink')).toMatchSnapshot();
-  });
+    it('renders OrderSummaryDrawer with Edit Cart link', () => {
+        expect(component.find(OrderSummaryDrawer).prop('headerLink')).toMatchSnapshot();
+    });
 });

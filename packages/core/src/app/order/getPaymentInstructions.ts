@@ -4,18 +4,18 @@ import { isGiftCertificatePayment } from '../giftCertificate';
 import { isStoreCreditPayment } from '../payment/storeCredit';
 
 export interface PaymentInstructionsProps {
-  order: Order;
+    order: Order;
 }
 
 function isDefaultOrderPayment(payment: OrderPayment): payment is GatewayOrderPayment {
-  return !isGiftCertificatePayment(payment) && !isStoreCreditPayment(payment);
+    return !isGiftCertificatePayment(payment) && !isStoreCreditPayment(payment);
 }
 
 function getPaymentInstructions(order: Order): string {
-  const gatewayPayment = (order.payments || []).find(isDefaultOrderPayment);
-  const instructions = gatewayPayment && gatewayPayment.detail.instructions;
+    const gatewayPayment = (order.payments || []).find(isDefaultOrderPayment);
+    const instructions = gatewayPayment && gatewayPayment.detail.instructions;
 
-  return instructions || '';
+    return instructions || '';
 }
 
 export default getPaymentInstructions;

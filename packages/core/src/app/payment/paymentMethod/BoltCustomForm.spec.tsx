@@ -6,65 +6,65 @@ import React, { FunctionComponent } from 'react';
 import BoltCustomForm, { BoltCustomFormProps } from './BoltCustomForm';
 
 describe('BoltCustomForm', () => {
-  let defaultProps: BoltCustomFormProps;
-  let BoltCustomFormTest: FunctionComponent<BoltCustomFormProps>;
+    let defaultProps: BoltCustomFormProps;
+    let BoltCustomFormTest: FunctionComponent<BoltCustomFormProps>;
 
-  beforeEach(() => {
-    defaultProps = {
-      containerId: 'boltEmbeddedOneClick',
-      showCreateAccountCheckbox: false,
-    };
+    beforeEach(() => {
+        defaultProps = {
+            containerId: 'boltEmbeddedOneClick',
+            showCreateAccountCheckbox: false,
+        };
 
-    BoltCustomFormTest = (props) => <BoltCustomForm { ...props } />;
-  });
+        BoltCustomFormTest = (props) => <BoltCustomForm { ...props } />;
+    });
 
-  it('renders bolt embedded field', () => {
-    const container = mount(
-      <Formik
-        initialValues={ { shouldCreateAccount: true } }
-        onSubmit={ noop }
-        render={ () => <BoltCustomFormTest { ...defaultProps } /> }
-      />,
-    );
+    it('renders bolt embedded field', () => {
+        const container = mount(
+            <Formik
+                initialValues={ { shouldCreateAccount: true } }
+                onSubmit={ noop }
+                render={ () => <BoltCustomFormTest { ...defaultProps } /> }
+            />,
+        );
 
-    expect(container.find('[id="boltEmbeddedOneClick"]').exists()).toBe(true);
-  });
+        expect(container.find('[id="boltEmbeddedOneClick"]').exists()).toBe(true);
+    });
 
-  it('renders bolt embedded field and shows create account checkbox', () => {
-    const container = mount(
-      <Formik
-        initialValues={ { shouldCreateAccount: true } }
-        onSubmit={ noop }
-        render={ () => <BoltCustomFormTest { ...defaultProps } showCreateAccountCheckbox /> }
-      />,
-    );
+    it('renders bolt embedded field and shows create account checkbox', () => {
+        const container = mount(
+            <Formik
+                initialValues={ { shouldCreateAccount: true } }
+                onSubmit={ noop }
+                render={ () => <BoltCustomFormTest { ...defaultProps } showCreateAccountCheckbox /> }
+            />,
+        );
 
-    expect(container.find('[id="boltEmbeddedOneClick"]').exists()).toBe(true);
-    expect(container.find('[id="shouldCreateAccount"]').exists()).toBe(true);
-  });
+        expect(container.find('[id="boltEmbeddedOneClick"]').exists()).toBe(true);
+        expect(container.find('[id="shouldCreateAccount"]').exists()).toBe(true);
+    });
 
-  it('renders bolt embedded field without showing create account checkbox', () => {
-    const container = mount(
-      <Formik
-        initialValues={ { shouldCreateAccount: false } }
-        onSubmit={ noop }
-        render={ () => <BoltCustomFormTest { ...defaultProps } /> }
-      />,
-    );
+    it('renders bolt embedded field without showing create account checkbox', () => {
+        const container = mount(
+            <Formik
+                initialValues={ { shouldCreateAccount: false } }
+                onSubmit={ noop }
+                render={ () => <BoltCustomFormTest { ...defaultProps } /> }
+            />,
+        );
 
-    expect(container.find('[id="boltEmbeddedOneClick"]').exists()).toBe(true);
-    expect(container.find('[id="shouldCreateAccount"]').exists()).toBe(false);
-  });
+        expect(container.find('[id="boltEmbeddedOneClick"]').exists()).toBe(true);
+        expect(container.find('[id="shouldCreateAccount"]').exists()).toBe(false);
+    });
 
-  it('renders bolt embedded field with checked account creation checkbox by default', () => {
-    const container = mount(
-      <Formik
-        initialValues={ { shouldCreateAccount: true } }
-        onSubmit={ noop }
-        render={ () => <BoltCustomFormTest { ...defaultProps } showCreateAccountCheckbox /> }
-      />,
-    );
+    it('renders bolt embedded field with checked account creation checkbox by default', () => {
+        const container = mount(
+            <Formik
+                initialValues={ { shouldCreateAccount: true } }
+                onSubmit={ noop }
+                render={ () => <BoltCustomFormTest { ...defaultProps } showCreateAccountCheckbox /> }
+            />,
+        );
 
-    expect(container.find('[id="shouldCreateAccount"]').hostNodes().props().checked).toBe(true);
-  });
+        expect(container.find('[id="shouldCreateAccount"]').hostNodes().props().checked).toBe(true);
+    });
 });

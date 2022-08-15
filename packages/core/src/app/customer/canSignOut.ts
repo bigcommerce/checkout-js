@@ -6,25 +6,25 @@ import { SUPPORTED_METHODS } from './CheckoutButtonList';
 const SUPPORTED_SIGNOUT_METHODS = ['amazon', 'amazonpay'];
 
 export const isSupportedSignoutMethod = (methodId: string): boolean => {
-  return SUPPORTED_SIGNOUT_METHODS.indexOf(methodId) > -1;
+    return SUPPORTED_SIGNOUT_METHODS.indexOf(methodId) > -1;
 };
 
 export default function canSignOut(
-  customer: Customer,
-  checkout: Checkout,
-  methodId: string,
+    customer: Customer,
+    checkout: Checkout,
+    methodId: string,
 ): boolean {
-  if (isSupportedSignoutMethod(methodId)) {
-    return true;
-  }
+    if (isSupportedSignoutMethod(methodId)) {
+        return true;
+    }
 
-  if (customer.isGuest) {
-    return false;
-  }
+    if (customer.isGuest) {
+        return false;
+    }
 
-  // Return false if payment method offers its own checkout button
-  return every(
-    checkout.payments,
-    (payment) => SUPPORTED_METHODS.indexOf(payment.providerId) === -1,
-  );
+    // Return false if payment method offers its own checkout button
+    return every(
+        checkout.payments,
+        (payment) => SUPPORTED_METHODS.indexOf(payment.providerId) === -1,
+    );
 }

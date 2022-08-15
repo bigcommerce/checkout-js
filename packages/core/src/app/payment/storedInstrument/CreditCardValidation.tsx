@@ -4,33 +4,33 @@ import { TranslatedString } from '../../locale';
 import { CreditCardCodeField, CreditCardNumberField } from '../creditCard';
 
 interface CreditCardValidationProps {
-  shouldShowCardCodeField: boolean;
-  shouldShowNumberField: boolean;
+    shouldShowCardCodeField: boolean;
+    shouldShowNumberField: boolean;
 }
 
 const CreditCardValidation: React.FunctionComponent<CreditCardValidationProps> = ({
-  shouldShowNumberField,
-  shouldShowCardCodeField,
+    shouldShowNumberField,
+    shouldShowCardCodeField,
 }) => (
-  <>
-    {shouldShowNumberField && (
-      <p>
-        <strong>
-          <TranslatedString id="payment.instrument_trusted_shipping_address_title_text" />
-        </strong>
+    <>
+        {shouldShowNumberField && (
+            <p>
+                <strong>
+                    <TranslatedString id="payment.instrument_trusted_shipping_address_title_text" />
+                </strong>
 
-        <br />
+                <br />
 
-        <TranslatedString id="payment.instrument_trusted_shipping_address_text" />
-      </p>
-    )}
+                <TranslatedString id="payment.instrument_trusted_shipping_address_text" />
+            </p>
+        )}
 
-    <div className="form-ccFields">
-      {shouldShowNumberField && <CreditCardNumberField name="ccNumber" />}
+        <div className="form-ccFields">
+            {shouldShowNumberField && <CreditCardNumberField name="ccNumber" />}
 
-      {shouldShowCardCodeField && <CreditCardCodeField name="ccCvv" />}
-    </div>
-  </>
+            {shouldShowCardCodeField && <CreditCardCodeField name="ccCvv" />}
+        </div>
+    </>
 );
 
 export default CreditCardValidation;

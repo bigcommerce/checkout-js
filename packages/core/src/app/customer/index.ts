@@ -5,8 +5,8 @@ export { default as CheckoutSuggestion } from './checkoutSuggestion/CheckoutSugg
 export { default as GuestForm, GuestFormProps, GuestFormValues } from './GuestForm';
 export { default as LoginForm, LoginFormProps, LoginFormValues } from './LoginForm';
 export {
-  default as getPasswordRequirements,
-  getPasswordRequirementsFromConfig,
-  PasswordRequirements,
+    default as getPasswordRequirements,
+    getPasswordRequirementsFromConfig,
+    PasswordRequirements,
 } from './getPasswordRequirements';
 export { SUPPORTED_METHODS } from './CheckoutButtonList';

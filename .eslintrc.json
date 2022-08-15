@@ -23,6 +23,12 @@
         ]
       },
       "rules": {
+        "prettier/prettier": [
+          "error",
+          {
+            "tabWidth": 4
+          }
+        ],
         "@nrwl/nx/enforce-module-boundaries": [
           "error",
           {

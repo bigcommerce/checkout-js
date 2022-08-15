@@ -11,41 +11,41 @@ import HostedCreditCardNumberField from './HostedCreditCardNumberField';
 import HostedCreditCardValidation, {HostedCreditCardValidationProps,} from './HostedCreditCardValidation';
 
 describe('HostedCreditCardValidation', () => {
-  let HostedCreditCardValidationTest: FunctionComponent<HostedCreditCardValidationProps>;
+    let HostedCreditCardValidationTest: FunctionComponent<HostedCreditCardValidationProps>;
 
-  beforeEach(() => {
-    const localeContext = createLocaleContext(getStoreConfig());
+    beforeEach(() => {
+        const localeContext = createLocaleContext(getStoreConfig());
 
-    HostedCreditCardValidationTest = (props) => (
-      <LocaleContext.Provider value={ localeContext }>
-        <Formik initialValues={ {} } onSubmit={ noop }>
-          <HostedCreditCardValidation { ...props } />
-        </Formik>
-      </LocaleContext.Provider>
-    );
-  });
+        HostedCreditCardValidationTest = (props) => (
+            <LocaleContext.Provider value={ localeContext }>
+                <Formik initialValues={ {} } onSubmit={ noop }>
+                    <HostedCreditCardValidation { ...props } />
+                </Formik>
+            </LocaleContext.Provider>
+        );
+    });
 
-  it('shows card number field if configured', () => {
-    const component = mount(<HostedCreditCardValidationTest cardNumberId="cardNumber" />);
+    it('shows card number field if configured', () => {
+        const component = mount(<HostedCreditCardValidationTest cardNumberId="cardNumber" />);
 
-    expect(component.find(HostedCreditCardNumberField)).toHaveLength(1);
-  });
+        expect(component.find(HostedCreditCardNumberField)).toHaveLength(1);
+    });
 
-  it('hides card number field if configured', () => {
-    const component = mount(<HostedCreditCardValidationTest cardCodeId="cardCode" />);
+    it('hides card number field if configured', () => {
+        const component = mount(<HostedCreditCardValidationTest cardCodeId="cardCode" />);
 
-    expect(component.find(HostedCreditCardNumberField)).toHaveLength(0);
-  });
+        expect(component.find(HostedCreditCardNumberField)).toHaveLength(0);
+    });
 
-  it('shows card code field if configured', () => {
-    const component = mount(<HostedCreditCardValidationTest cardCodeId="cardCode" />);
+    it('shows card code field if configured', () => {
+        const component = mount(<HostedCreditCardValidationTest cardCodeId="cardCode" />);
 
-    expect(component.find(HostedCreditCardCodeField)).toHaveLength(1);
-  });
+        expect(component.find(HostedCreditCardCodeField)).toHaveLength(1);
+    });
 
-  it('hides card code field if configured', () => {
-    const component = mount(<HostedCreditCardValidationTest cardNumberId="cardNumber" />);
+    it('hides card code field if configured', () => {
+        const component = mount(<HostedCreditCardValidationTest cardNumberId="cardNumber" />);
 
-    expect(component.find(HostedCreditCardCodeField)).toHaveLength(0);
-  });
+        expect(component.find(HostedCreditCardCodeField)).toHaveLength(0);
+    });
 });

@@ -6,24 +6,24 @@ import getStoreCreditAmount from './getStoreCreditAmount';
 import { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 
 export default function mapToOrderSummarySubtotalsProps({
-  baseAmount,
-  discountAmount,
-  shippingCostBeforeDiscount,
-  payments,
-  handlingCostTotal,
-  giftWrappingCostTotal,
-  coupons,
-  taxes,
-}: Order): OrderSummarySubtotalsProps {
-  return {
-    subtotalAmount: baseAmount,
-    shippingAmount: shippingCostBeforeDiscount,
-    giftWrappingAmount: giftWrappingCostTotal,
+    baseAmount,
     discountAmount,
-    storeCreditAmount: getStoreCreditAmount(payments),
-    handlingAmount: handlingCostTotal,
+    shippingCostBeforeDiscount,
+    payments,
+    handlingCostTotal,
+    giftWrappingCostTotal,
     coupons,
-    giftCertificates: payments && mapFromPayments(payments),
     taxes,
-  };
+}: Order): OrderSummarySubtotalsProps {
+    return {
+        subtotalAmount: baseAmount,
+        shippingAmount: shippingCostBeforeDiscount,
+        giftWrappingAmount: giftWrappingCostTotal,
+        discountAmount,
+        storeCreditAmount: getStoreCreditAmount(payments),
+        handlingAmount: handlingCostTotal,
+        coupons,
+        giftCertificates: payments && mapFromPayments(payments),
+        taxes,
+    };
 }

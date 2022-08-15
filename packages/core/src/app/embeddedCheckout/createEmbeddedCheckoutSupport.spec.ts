@@ -7,19 +7,19 @@ import EmbeddedCheckoutSupport from './EmbeddedCheckoutSupport';
 import * as isEmbeddedModule from './isEmbedded';
 
 describe('createEmbeddedCheckoutSupport()', () => {
-  it('returns embedded checkout support if in embedded mode', () => {
-    jest.spyOn(isEmbeddedModule, 'default').mockReturnValue(true);
+    it('returns embedded checkout support if in embedded mode', () => {
+        jest.spyOn(isEmbeddedModule, 'default').mockReturnValue(true);
 
-    expect(createEmbeddedCheckoutSupport(createLanguageService())).toBeInstanceOf(
-      EmbeddedCheckoutSupport,
-    );
-  });
+        expect(createEmbeddedCheckoutSupport(createLanguageService())).toBeInstanceOf(
+            EmbeddedCheckoutSupport,
+        );
+    });
 
-  it('returns noop checkout support if not in embedded mode', () => {
-    jest.spyOn(isEmbeddedModule, 'default').mockReturnValue(false);
+    it('returns noop checkout support if not in embedded mode', () => {
+        jest.spyOn(isEmbeddedModule, 'default').mockReturnValue(false);
 
-    expect(createEmbeddedCheckoutSupport(createLanguageService())).toBeInstanceOf(
-      NoopCheckoutSupport,
-    );
-  });
+        expect(createEmbeddedCheckoutSupport(createLanguageService())).toBeInstanceOf(
+            NoopCheckoutSupport,
+        );
+    });
 });

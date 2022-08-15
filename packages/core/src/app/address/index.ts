@@ -10,6 +10,6 @@ export { default as isValidAddress } from './isValidAddress';
 export { default as isValidCustomerAddress } from './isValidCustomerAddress';
 export { default as isEqualAddress } from './isEqualAddress';
 export {
-  default as getAddressFormFieldsValidationSchema,
-  getTranslateAddressError,
+    default as getAddressFormFieldsValidationSchema,
+    getTranslateAddressError,
 } from './getAddressFormFieldsValidationSchema';
