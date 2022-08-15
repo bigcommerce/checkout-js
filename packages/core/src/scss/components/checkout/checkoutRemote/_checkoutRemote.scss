@@ -11,6 +11,10 @@
     > div {
         margin-right: spacing("single");
     }
+
+    > .AmazonPayContainer {
+        width: remCalc(200px);
+    }
 }
 
 .checkoutRemote-button {
