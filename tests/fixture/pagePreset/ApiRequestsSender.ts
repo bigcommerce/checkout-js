@@ -63,7 +63,6 @@ export class ApiRequestsSender {
 
         // Set shipping address
         const stateCode = faker.address.stateAbbr();
-        console.log('stateCode', stateCode)
         const cartWithConsignmentsResponse = await apiContext.post(`./checkouts/${checkout.id}/consignments`, {
             params: {include: 'consignments.availableShippingOptions'},
             data: [{

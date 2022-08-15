@@ -8,7 +8,6 @@
     "node": "14",
     "npm": "6"
   },
-  "prettier": "@bigcommerce/eslint-config/prettier",
   "scripts": {
     "preinstall": "npx check-node-version --package",
     "prebuild": "rm -rf dist",
@@ -83,7 +82,7 @@
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
-    "@bigcommerce/eslint-config": "^2.6.1",
+    "@bigcommerce/eslint-config": "^1.0.1",
     "@faker-js/faker": "^6.3.1",
     "@nrwl/cli": "^13.10.3",
     "@nrwl/devkit": "^13.10.3",
@@ -117,7 +116,7 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "enzyme-to-json": "^3.3.5",
-    "eslint": "^8.21.0",
+    "eslint": "^8.19.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-react": "^7.14.3",
@@ -131,7 +130,6 @@
     "node-sass": "^4.14.1",
     "nx": "^13.10.3",
     "polly-adapter-playwright": "^2.1.0",
-    "prettier": "^2.7.1",
     "react-test-renderer": "^16.8.6",
     "sass-loader": "^7.1.0",
     "semver": "^6.3.0",
