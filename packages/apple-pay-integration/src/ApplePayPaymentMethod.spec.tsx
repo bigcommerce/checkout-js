@@ -1,23 +1,16 @@
-import { getMethod, PaymentFormService } from "@bigcommerce/checkout/payment-integration-api";
+import { PaymentFormService } from "@bigcommerce/checkout/payment-integration-api";
 import { createCheckoutService, LanguageService } from "@bigcommerce/checkout-sdk";
 import { mount } from 'enzyme';
 import React from "react";
 
 import ApplePaymentMethod from './ApplePayPaymentMethod';
+import { getMethod } from './paymentMethods.mock';
 
 describe('ApplePay payment method', () => {
     const checkoutService = createCheckoutService();
     const checkoutState = checkoutService.getState();
     const props = {
-        method: {
-            ...getMethod(),
-            id: 'applepay',
-            initializationData: {
-                merchantCapabilities: [
-                    'supports3DS',
-                ],
-            },
-        },
+        method: getMethod(),
         checkoutService,
         checkoutState,
         paymentForm: jest.fn() as unknown as PaymentFormService,
