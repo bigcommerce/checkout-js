@@ -30,11 +30,17 @@
       "@bigcommerce/checkout/checkout-button-integration": [
         "packages/checkout-button-integration/src/index.ts"
       ],
+      "@bigcommerce/checkout/e2e": [
+        "packages/e2e/src/index.ts"
+      ],
       "@bigcommerce/checkout/google-pay-integration": [
         "packages/google-pay-integration/src/index.ts"
       ],
       "@bigcommerce/checkout/payment-integration-api": [
         "packages/payment-integration-api/src/index.ts"
+      ],
+      "@bigcommerce/checkout/payment-integration-test-framework": [
+        "packages/payment-integration-test-framework/src/index.ts"
       ],
       "@bigcommerce/checkout/workspace-tools": [
         "packages/workspace-tools/src/index.ts"

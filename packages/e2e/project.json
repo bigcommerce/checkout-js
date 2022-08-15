@@ -1,0 +1,15 @@
+{
+  "root": "packages/e2e",
+  "sourceRoot": "packages/e2e/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/e2e/**/*.{ts,tsx}"]
+      }
+    }
+    },
+  "tags": ["scope:shared"]
+}

@@ -49,6 +49,21 @@ jobs:
           paths:
             - dist
 
+  e2e:
+    <<: *node_executor
+    steps:
+      - ci/pre-setup
+      - node/npm-install
+      - run:
+          name: "Build checkout-js"
+          command: npm run build
+      - run:
+          name: "Install playwright"
+          command: npx playwright install --with-deps
+      - run:
+          name: "Run e2e tests"
+          command: npx playwright test
+
   release:
     <<: *node_executor
     steps:
@@ -111,6 +126,9 @@ workflows:
           filters:
             <<: *pull_request_filter
       - build:
+          filters:
+            <<: *pull_request_filter
+      - e2e:
           filters:
             <<: *pull_request_filter
       - ci/validate-commits:

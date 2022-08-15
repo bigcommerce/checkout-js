@@ -32,7 +32,7 @@ export class Checkout {
         await this.playwright.createHAR(HAR);
     }
 
-    async route(url: string | RegExp | ((url: URL) => boolean), filePath: string, data?: {}): Promise<void> {
+    async route(url: string | RegExp | ((url: URL) => boolean), filePath: string, data?: any): Promise<void> {
         await this.playwright.renderAndRoute(url, filePath, data);
     }
 

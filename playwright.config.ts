@@ -10,14 +10,14 @@ const config: PlaywrightTestConfig = {
     command: 'http-server dist --port=' + process.env.PORT,
     port: Number(process.env.PORT),
     timeout: 3 * 1000,
+    reuseExistingServer: true,
   },
   timeout: 60 * 1000,
   expect: {
     // timeout: 25 * 1000,
   },
-  testDir: './tests/',
-  testIgnore: './tests/sampleTests/**',
-  outputDir: 'tests/screenshots',
+  testDir: './packages/e2e/src',
+  outputDir: './packages/payment-integration-test-framework/screenshots',
   fullyParallel: true,
   /* TODO: Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
@@ -27,7 +27,7 @@ const config: PlaywrightTestConfig = {
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   // reporter: 'line',
-  reporter: [ ['html', { outputFolder: './tests/report' }] ],
+  reporter: [ ['html', { outputFolder: './packages/payment-integration-test-framework/report' }] ],
   // Shared settings for all the projects below.
   use: {
     baseURL: 'http://localhost:' + process.env.PORT,

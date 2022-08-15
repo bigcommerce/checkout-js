@@ -14,8 +14,9 @@ export class PlaywrightHelper {
     private readonly polly: PollyObject;
     private readonly server: ServerSideRender;
     private readonly storeUrl: string;
-    private isDevMode: boolean = false;
-    private har: string = '';
+    private readonly srcPath: string;
+    private isDevMode = false;
+    private har = '';
 
     constructor(page: Page) {
         this.page = page;
@@ -24,6 +25,7 @@ export class PlaywrightHelper {
         this.polly = new PollyObject(this.mode);
         this.server = new ServerSideRender();
         this.storeUrl = getStoreUrl();
+        this.srcPath = './packages/payment-integration-test-framework/src';
     }
 
     enableDevMode(): void {
@@ -48,14 +50,14 @@ export class PlaywrightHelper {
             har: this.har,
         });
 
-        await this.page.route(/.*\/products\/.*\/images\/.*/, route => route.fulfill({ status: 200, path: './tests/support/product.png' }));
+        await this.page.route(/.*\/products\/.*\/images\/.*/, route => route.fulfill({ status: 200, path: this.srcPath + '/support/product.png' }));
 
         if (this.isReplay) {
             // creating local checkout environment during replay
             this.polly.enableReplay();
             const { checkoutId, orderId } = this.polly.getCartAndOrderIDs();
-            await this.renderAndRoute('/checkout', './tests/support/checkout.ejs', { checkoutId });
-            await this.renderAndRoute(/order-confirmation.*/, './tests/support/orderConfirmation.ejs', { orderId });
+            await this.renderAndRoute('/checkout', this.srcPath + '/support/checkout.ejs', { checkoutId });
+            await this.renderAndRoute(/order-confirmation.*/, this.srcPath + '/support/orderConfirmation.ejs', { orderId });
         } else {
             this.polly.enableRecord();
         }

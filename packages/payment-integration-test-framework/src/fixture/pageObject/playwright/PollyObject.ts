@@ -3,7 +3,6 @@ import { MODE, Polly } from '@pollyjs/core';
 import { API } from '@pollyjs/node-server';
 import FSPersister from '@pollyjs/persister-fs';
 import { includes, isObject } from 'lodash';
-import path from 'path';
 import { PlaywrightAdapter } from 'polly-adapter-playwright';
 
 import { getStoreUrl } from "../../";
@@ -57,7 +56,7 @@ export class PollyObject {
                 keepUnusedRequests: false,
                 disableSortingHarEntries: true,
                 CustomFSPersister: {
-                    recordingsDir: path.join(__dirname, '../../../har/'),
+                    recordingsDir: './packages/e2e/har',
                 },
             },
             matchRequestsBy: {
@@ -72,6 +71,7 @@ export class PollyObject {
         this.polly.server.any().on('request', req => {
             // To ensure that requests match HAR entries, ignore sensitive and constantly changing headers/payloads
             req.headers = Object.fromEntries(
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 Object.entries(req.headers).filter(([key, _]) => !includes(ignoredHeaders, key))
             );
 
@@ -96,7 +96,7 @@ export class PollyObject {
     enableRecord(): void{
         const storeUrl = getStoreUrl();
 
-        this.polly.server.any().on('request', req => {
+        this.polly?.server.any().on('request', req => {
             req.url = req.url.replace(storeUrl, this.genericStoreUrl);
         });
     }
@@ -162,7 +162,6 @@ export class PollyObject {
         if (this.polly && recordingsDir) {
             const api = new API({recordingsDir});
             // PollyJS type bug: The type definition does not match with the actual implementation.
-            // @ts-ignore
             const entries = api.getRecording(this.polly.recordingId).body?.log?.entries;
             if (entries) {
                 return entries;
@@ -174,7 +173,6 @@ export class PollyObject {
         }
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private sortPayload(object: { [ key: string ]: any }): { [ key: string ]: any } {
         const keys = Object.keys(object);
         const sortedKeys = keys.sort();

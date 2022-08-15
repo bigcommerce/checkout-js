@@ -1,18 +1,18 @@
-import { test, CustomerStepPreset } from '../';
+import { test, CustomerStepPreset } from '@bigcommerce/checkout/payment-integration-test-framework';
 
 import { checkoutAfterSignedIn, checkoutBeforeSignedIn, googlePay, internalOrder, order390, orderPayment, payment } from './GooglePaySampleTestMockingResponses';
 
 test.describe('Sample Test Group', () => {
     test('Google Pay wallet button is working', async ({assertions, checkout, page}) => {
         // Testing environment setup
-        let isSignedIn: boolean = false;
+        let isSignedIn = false;
         await checkout.use(new CustomerStepPreset());
         await checkout.start('sample GooglePay in customer step');
 
         const responseProps = { status: 200, contentType: 'application/json' };
-        await checkout.route('https://pay.google.com/gp/p/js/pay.js', './tests/sampleTests/support/googlePay.mock.js');
-        await checkout.route('**/checkout.php', './tests/sampleTests/support/checkout.php.ejs');
-        await checkout.route(/order-confirmation.*/, './tests/support/orderConfirmation.ejs', { orderId: '390' });
+        await checkout.route('https://pay.google.com/gp/p/js/pay.js', './packages/e2e/src/sampleTests/support/googlePay.mock.js');
+        await checkout.route('**/checkout.php', './packages/e2e/src/sampleTests/support/checkout.php.ejs');
+        await checkout.route(/order-confirmation.*/, './packages/payment-integration-test-framework/src//support/orderConfirmation.ejs', { orderId: '390' });
         await page.route(/.*\/api\/storefront\/payments\?cartId=.*/, route => route.fulfill({ ...responseProps, body: payment }));
         await page.route(/.*\/api\/storefront\/payments\/googlepayauthorizenet\?cartId=.*/, route => route.fulfill({ ...responseProps, body: googlePay }));
         await page.route(/.*\/api\/storefront\/checkouts\/.*\/billing-address\/.*/, route => route.fulfill({ ...responseProps, body: '{}' }));

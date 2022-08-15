@@ -1,4 +1,4 @@
-import { test, PaymentStepAsGuestPreset } from '../';
+import { test, PaymentStepAsGuestPreset } from '@bigcommerce/checkout/payment-integration-test-framework';
 
 test.describe('Sample Test Group', () => {
     test('Bigpay Test Payment Provider is working', async ({assertions, checkout, page}) => {
@@ -8,7 +8,7 @@ test.describe('Sample Test Group', () => {
 
         await checkout.route(
             /https:\/\/bigpay.service.bcdev\/pay\/hosted_forms\/.+\/field?.+|http:\/\/localhost:.+\/checkout\/payment\/hosted-field?.+/,
-            './tests/sampleTests/support/hostedField.ejs'
+            './packages/e2e/src/sampleTests/support/hostedField.ejs'
         );
 
         // Playwright actions

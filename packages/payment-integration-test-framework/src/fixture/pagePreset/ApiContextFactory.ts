@@ -17,8 +17,8 @@ export class ApiContextFactory {
     private async setup(page: Page, storeUrl: string): Promise<void> {
         await page.goto(storeUrl);
 
-        let cookieStr: string = '';
-        let xsrfTokenStr: string = '';
+        let cookieStr = '';
+        let xsrfTokenStr = '';
         const cookies = await page.context().cookies();
         for (const cookie of cookies) {
             if (cookie.name === 'XSRF-TOKEN') {
