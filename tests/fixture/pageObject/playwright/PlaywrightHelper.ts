@@ -2,6 +2,7 @@ import { Page } from '@playwright/test';
 import { includes } from 'lodash';
 
 import { CheckoutPagePreset } from '../../../';
+import { getStoreUrl } from "../../";
 
 import { PollyObject } from './PollyObject';
 import { ServerSideRender } from './ServerSideRender';
@@ -12,9 +13,9 @@ export class PlaywrightHelper {
     private readonly page: Page;
     private readonly polly: PollyObject;
     private readonly server: ServerSideRender;
+    private readonly storeUrl: string;
     private isDevMode: boolean = false;
     private har: string = '';
-    private storeUrl: string = '';
 
     constructor(page: Page) {
         this.page = page;
@@ -22,6 +23,7 @@ export class PlaywrightHelper {
         this.isReplay = this.mode === 'replay';
         this.polly = new PollyObject(this.mode);
         this.server = new ServerSideRender();
+        this.storeUrl = getStoreUrl();
     }
 
     enableDevMode(): void {
@@ -37,9 +39,8 @@ export class PlaywrightHelper {
         }
     }
 
-    async createCheckout(har: string, storeUrl: string): Promise<void> {
+    async createHAR(har: string): Promise<void> {
         this.har = har;
-        this.storeUrl = storeUrl.substr(-1) === '/' ? storeUrl.slice(0, -1) : storeUrl;
 
         await this.polly.start({
             devMode: this.isDevMode,
@@ -51,10 +52,12 @@ export class PlaywrightHelper {
 
         if (this.isReplay) {
             // creating local checkout environment during replay
-            this.polly.enableReplay(this.storeUrl);
+            this.polly.enableReplay();
             const { checkoutId, orderId } = this.polly.getCartAndOrderIDs();
             await this.renderAndRoute('/checkout', './tests/support/checkout.ejs', { checkoutId });
             await this.renderAndRoute(/order-confirmation.*/, './tests/support/orderConfirmation.ejs', { orderId });
+        } else {
+            this.polly.enableRecord();
         }
     }
 
@@ -71,7 +74,7 @@ export class PlaywrightHelper {
         await this.page.close();
     }
 
-    async renderAndRoute(url: string | RegExp | ((url: URL) => boolean), filePath: string, data?: {}): Promise<void> {
+    async renderAndRoute(url: string | RegExp | ((url: URL) => boolean), filePath: string, data?: Record<string, unknown>): Promise<void> {
         if (includes(filePath, 'ejs')) {
             const localhostUrl = 'http://localhost:' + process.env.PORT;
             const storeUrl = this.isReplay ? localhostUrl : this.storeUrl;
@@ -79,6 +82,7 @@ export class PlaywrightHelper {
             const htmlStr = await this.server.renderFile(filePath, { ...data, localhostUrl, storeUrl, checkoutUrl });
             await this.page.route(url, route => route.fulfill({
                 status: 200,
+                contentType: 'text/html; charset=UTF-8',
                 body: htmlStr,
             }));
         } else {

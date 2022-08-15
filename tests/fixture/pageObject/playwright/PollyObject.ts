@@ -6,6 +6,8 @@ import { includes, isObject } from 'lodash';
 import path from 'path';
 import { PlaywrightAdapter } from 'polly-adapter-playwright';
 
+import { getStoreUrl } from "../../";
+
 import { ignoredHeaders, ignoredPayloads } from './senstiveDataConfig';
 import { CustomFSPersister } from './CustomFSPersister';
 
@@ -24,6 +26,7 @@ export class PollyObject {
     private readonly mode: MODE;
     private readonly baseUrl: string;
     private readonly bigpayBaseUrlIdentifier: string = '/api/public/v1/orders/payments';
+    private readonly genericStoreUrl:string = 'https://4241.project';
 
     constructor(mode: MODE) {
         this.mode = mode;
@@ -90,7 +93,15 @@ export class PollyObject {
         this.polly?.stop();
     }
 
-    enableReplay(storeUrl: string): void {
+    enableRecord(): void{
+        const storeUrl = getStoreUrl();
+
+        this.polly.server.any().on('request', req => {
+            req.url = req.url.replace(storeUrl, this.genericStoreUrl);
+        });
+    }
+
+    enableReplay(): void {
         if (this.polly) {
             // bigpayBaseUrl must be the exact URL of the local environment in order for Bigpay iframes to work.
             this.polly.server.get(this.baseUrl + '/api/storefront/checkout-settings').on('beforeResponse', (_, res) => {
@@ -106,14 +117,14 @@ export class PollyObject {
                 if (bigpayBaseUrl && includes(req.url, this.bigpayBaseUrlIdentifier)) {
                     req.url = req.url.replace(this.baseUrl, bigpayBaseUrl);
                 } else {
-                    req.url = req.url.replace(this.baseUrl, storeUrl);
+                    req.url = req.url.replace(this.baseUrl, this.genericStoreUrl);
                 }
             });
         }
     }
 
     getCartAndOrderIDs(): { checkoutId: string; orderId?: number} {
-        let checkoutIdString: string = '';
+        let checkoutIdString: string;
         const entries = this.getEntries();
 
         for (const entry of entries) {
@@ -163,6 +174,7 @@ export class PollyObject {
         }
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     private sortPayload(object: { [ key: string ]: any }): { [ key: string ]: any } {
         const keys = Object.keys(object);
         const sortedKeys = keys.sort();

@@ -3,14 +3,13 @@ import { test, PaymentStepAsGuestPreset } from '../';
 test.describe('xxxxxxxxxxxxxxxxxxxxxxx', () => {
     test('xxxxxxxxxxxxxxxxxxxxxxx', async ({assertions, checkout, page}) => {
         // Testing environment setup
-        const storeUrl = 'https://my-dev-store-xxxxxxxxx.store.bcdev';
-        await checkout.use(new PaymentStepAsGuestPreset(storeUrl));
-        await checkout.create('name of the har for this test', storeUrl);
-        await page.route(/https:\/\/play.google.com\/log.*|https:\/\/pay.google.com\/gp\/p\/ui\/pay/, route => {
-            route.abort();
-        });
+        await checkout.use(new PaymentStepAsGuestPreset());
+        await checkout.start('name of the HAR file, which can be reused');
+        // await checkout.route('https://pay.google.com/gp/p/js/pay.js', './tests/sampleTests/support/googlePay.mock.js');
+        // await page.route(/.*\/api\/storefront\/orders\/390.*/, route => route.fulfill({...responseProps, body: order390 }));
 
         // Playwright actions
+        await checkout.goto();
         // await page.locator('text=Test Payment ProviderVisaAmexMaster').click();
         // await page.frameLocator('#bigpaypay-ccNumber iframe').locator('[aria-label="Credit Card Number"]').click();
         await checkout.placeOrder();

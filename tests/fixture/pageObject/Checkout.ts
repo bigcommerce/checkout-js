@@ -13,26 +13,27 @@ export class Checkout {
         this.playwright = new PlaywrightHelper(page);
     }
 
-    // This is for a developer to debug PollyJS replay quickly.
-    // Should not be used in a final test file.
-    log(): void {
-        this.playwright.enableDevMode();
-    }
-
+    // CheckoutFixtures helper, only used in ../CheckoutFixtures.ts
     async close(): Promise<void> {
         await this.playwright.stopAll();
     }
 
-    async create(har: string, storeUrl: string): Promise<void> {
-        await this.playwright.createCheckout(har, storeUrl);
+    // Dev helper
+    log(): void {
+        this.playwright.enableDevMode();
+    }
+
+    // Testing environment setup helpers
+    async use(preset: CheckoutPagePreset): Promise<void> {
+        await this.playwright.usePreset(preset);
+    }
+
+    async start(HAR: string): Promise<void> {
+        await this.playwright.createHAR(HAR);
     }
 
     async route(url: string | RegExp | ((url: URL) => boolean), filePath: string, data?: {}): Promise<void> {
         await this.playwright.renderAndRoute(url, filePath, data);
-    }
-
-    async use(preset: CheckoutPagePreset): Promise<void> {
-        await this.playwright.usePreset(preset);
     }
 
     // Abstract low-level HTML identifiers
