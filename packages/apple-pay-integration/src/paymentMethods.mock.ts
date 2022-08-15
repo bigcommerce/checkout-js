@@ -2,7 +2,7 @@ import { PaymentMethod } from "@bigcommerce/checkout-sdk";
 
 export function getMethod(): PaymentMethod {
     return {
-        id: 'authorizenet',
+        id: 'applepay',
         gateway: undefined,
         logoUrl: '',
         method: 'credit-card',
@@ -12,7 +12,9 @@ export function getMethod(): PaymentMethod {
             'MC',
         ],
         initializationData: {
-            payPalCreditProductBrandName: {credit: ''},
+            merchantCapabilities: [
+                'supports3DS',
+            ],
         },
         config: {
             displayName: 'Authorizenet',
