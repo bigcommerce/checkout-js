@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.245.0](https://github.com/bigcommerce/checkout-js/compare/v1.244.0...v1.245.0) (2022-08-15)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6896 Add STOREURL as env variable ([#968](https://github.com/bigcommerce/checkout-js/issues/968)) ([269c74d](https://github.com/bigcommerce/checkout-js/commit/269c74d76867074fd4f5860d0803dd1819298a3b))
+
 ## [1.244.0](https://github.com/bigcommerce/checkout-js/compare/v1.243.0...v1.244.0) (2022-08-15)
 
 
