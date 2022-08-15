@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.245.1](https://github.com/bigcommerce/checkout-js/compare/v1.245.0...v1.245.1) (2022-08-15)
+
+
+### Bug Fixes
+
+* **payment:** CHECKOUT-5889 Fix issue with element detach modal ([#967](https://github.com/bigcommerce/checkout-js/issues/967)) ([58a0669](https://github.com/bigcommerce/checkout-js/commit/58a066947d6976e7bb9ed7f38815708c9bf79f37))
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-6899 Export PaymentMethodResolveId through payment integration API package ([9f162b6](https://github.com/bigcommerce/checkout-js/commit/9f162b6c4492a6e76a1a2bfed74ed0d8d7c6bccf))
+* **checkout:** CHECKOUT-6899 Move mocks out of payment integration API package ([940122c](https://github.com/bigcommerce/checkout-js/commit/940122c574477e1edf4da2e75585583d77902dc8))
+
 ## [1.245.0](https://github.com/bigcommerce/checkout-js/compare/v1.244.0...v1.245.0) (2022-08-15)
 
 
