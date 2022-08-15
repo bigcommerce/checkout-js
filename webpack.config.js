@@ -7,7 +7,11 @@ const StyleLintPlugin = require('stylelint-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 
-const { AsyncHookPlugin, BuildHookPlugin, getNextVersion, transformManifest } = require('./scripts/webpack');
+const { AsyncHookPlugin,
+    BuildHookPlugin,
+    getLoaderPackages: { aliasMap: alias, tsLoaderIncludes },
+    getNextVersion,
+    transformManifest } = require('./scripts/webpack');
 
 const ENTRY_NAME = 'checkout';
 const LIBRARY_NAME = 'checkout';
@@ -48,12 +52,7 @@ function appConfig(options, argv) {
                 mode,
                 devtool: isProduction ? 'source-map' : 'eval-source-map',
                 resolve: {
-                    alias: {
-                        "@bigcommerce/checkout/payment-integration-api": join(__dirname, 'packages/payment-integration-api/src'),
-                        "@bigcommerce/checkout/apple-pay-integration": join(__dirname, 'packages/apple-pay-integration/src'),
-                        "@bigcommerce/checkout/checkout-button-integration": join(__dirname, 'packages/checkout-button-integration/src'),
-                        "@bigcommerce/checkout/google-pay-integration": join(__dirname, 'packages/google-pay-integration/src'),
-                    },
+                    alias,
                     extensions: ['.ts', '.tsx', '.js'],
                     // It seems some packages, i.e.: Formik, have incorrect
                     // source maps for their ESM bundle. Therefore, until that
@@ -146,11 +145,7 @@ function appConfig(options, argv) {
                         },
                         {
                             test: /\.tsx?$/,
-                            include: [
-                                join(__dirname, 'packages', 'core','src'),
-                                join(__dirname, 'packages', 'payment-integration-api','src'),
-                                join(__dirname, 'packages', 'apple-pay-integration','src'),
-                            ],
+                            include: tsLoaderIncludes,
                             use: [
                                 {
                                     loader: 'ts-loader',
