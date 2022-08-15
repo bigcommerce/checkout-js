@@ -4,44 +4,41 @@ import React from 'react';
 import DropdownTrigger from './DropdownTrigger';
 
 describe('DropdownTrigger', () => {
-    it('shows dropdown when mouse clicks', () => {
-        const component = mount(
-            <DropdownTrigger dropdown={ <div>Hello world</div> }>
-                <button>Foobar</button>
-            </DropdownTrigger>
-        );
+  it('shows dropdown when mouse clicks', () => {
+    const component = mount(
+      <DropdownTrigger dropdown={ <div>Hello world</div> }>
+        <button>Foobar</button>
+      </DropdownTrigger>,
+    );
 
-        component.simulate('click');
+    component.simulate('click');
 
-        expect(component.state('shouldShow'))
-            .toEqual(true);
-    });
+    expect(component.state('shouldShow')).toBe(true);
+  });
 
-    it('hides dropdown when mouse clicks again', () => {
-        const component = mount(
-            <DropdownTrigger dropdown={ <div>Hello world</div> }>
-                <button>Foobar</button>
-            </DropdownTrigger>
-        );
+  it('hides dropdown when mouse clicks again', () => {
+    const component = mount(
+      <DropdownTrigger dropdown={ <div>Hello world</div> }>
+        <button>Foobar</button>
+      </DropdownTrigger>,
+    );
 
-        component.simulate('click');
-        component.simulate('click');
+    component.simulate('click');
+    component.simulate('click');
 
-        expect(component.state('shouldShow'))
-            .toEqual(false);
-    });
+    expect(component.state('shouldShow')).toBe(false);
+  });
 
-    it('hides dropdown when mouse clicks anywhere else in document', () => {
-        const component = mount(
-            <DropdownTrigger dropdown={ <div>Hello world</div> }>
-                <button>Foobar</button>
-            </DropdownTrigger>
-        );
+  it('hides dropdown when mouse clicks anywhere else in document', () => {
+    const component = mount(
+      <DropdownTrigger dropdown={ <div>Hello world</div> }>
+        <button>Foobar</button>
+      </DropdownTrigger>,
+    );
 
-        component.simulate('click');
-        document.body.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    component.simulate('click');
+    document.body.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
-        expect(component.state('shouldShow'))
-            .toEqual(false);
-    });
+    expect(component.state('shouldShow')).toBe(false);
+  });
 });

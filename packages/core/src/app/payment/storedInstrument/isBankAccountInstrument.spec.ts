@@ -1,12 +1,13 @@
-import { isBankAccountInstrument } from '.';
 import { getBankInstrument, getCardInstrument } from './instruments.mock';
 
-describe('isBankAccountInstrument', () => {
-    it('returns true for bank instruments', () => {
-        expect(isBankAccountInstrument(getBankInstrument())).toBeTruthy();
-    });
+import { isBankAccountInstrument } from '.';
 
-    it('returns false for non bank instruments', () => {
-        expect(isBankAccountInstrument(getCardInstrument())).toBeFalsy();
-    });
+describe('isBankAccountInstrument', () => {
+  it('returns true for bank instruments', () => {
+    expect(isBankAccountInstrument(getBankInstrument())).toBeTruthy();
+  });
+
+  it('returns false for non bank instruments', () => {
+    expect(isBankAccountInstrument(getCardInstrument())).toBeFalsy();
+  });
 });

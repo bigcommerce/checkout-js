@@ -5,14 +5,16 @@ import { resolveComponent } from '../common/resolver';
 import { RequireAtLeastOne } from '../common/types';
 
 export type PaymentMethodResolveId = RequireAtLeastOne<{
-    id?: string;
-    gateway?: string;
-    type?: string;
+  id?: string;
+  gateway?: string;
+  type?: string;
 }>;
 
-export default function resolvePaymentMethod(query: PaymentMethodResolveId): ComponentType<PaymentMethodProps> | undefined {
-    return resolveComponent<PaymentMethodResolveId, PaymentMethodProps>(
-        query,
-        require('../generated/paymentMethods')
-    );
+export default function resolvePaymentMethod(
+  query: PaymentMethodResolveId,
+): ComponentType<PaymentMethodProps> | undefined {
+  return resolveComponent<PaymentMethodResolveId, PaymentMethodProps>(
+    query,
+    require('../generated/paymentMethods'),
+  );
 }

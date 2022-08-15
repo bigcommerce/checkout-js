@@ -1,79 +1,77 @@
 import { memoizeOne } from '@bigcommerce/memoize';
 import { Form as FormikForm, FormikFormProps } from 'formik';
 import { values } from 'lodash';
-import React, { createRef, memo, useCallback, useRef, FunctionComponent } from 'react';
+import React, { createRef, FunctionComponent, memo, useCallback, useRef } from 'react';
 
 import FormProvider, { FormContextType } from './FormProvider';
 
 export interface FormProps extends FormikFormProps {
-    testId?: string;
+  testId?: string;
 }
 
-const Form: FunctionComponent<FormProps> = ({
-    className,
-    testId,
-    ...rest
-}) => {
-    const ref = useRef({ containerRef: createRef<HTMLDivElement>() });
+const Form: FunctionComponent<FormProps> = ({ className, testId, ...rest }) => {
+  const ref = useRef({ containerRef: createRef<HTMLDivElement>() });
 
-    const focusOnError = () => {
-        const { current } = ref.current.containerRef;
+  const focusOnError = () => {
+    const { current } = ref.current.containerRef;
 
-        if (!current) {
-            return;
-        }
+    if (!current) {
+      return;
+    }
 
-        const errorInputSelectors = [
-            '.form-field--error input',
-            '.form-field--error textarea',
-            '.form-field--error select',
-        ];
+    const errorInputSelectors = [
+      '.form-field--error input',
+      '.form-field--error textarea',
+      '.form-field--error select',
+    ];
 
-        const erroredFormField = current.querySelector<HTMLElement>(errorInputSelectors.join(', '));
+    const erroredFormField = current.querySelector<HTMLElement>(errorInputSelectors.join(', '));
 
-        if (erroredFormField) {
-            erroredFormField.focus({preventScroll: true});
-            try {
-                erroredFormField.offsetParent?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center'});
-            } catch {
-                erroredFormField.offsetParent?.scrollIntoView();
-            }
-        }
-    };
+    if (erroredFormField) {
+      erroredFormField.focus({ preventScroll: true });
 
-    const handleSubmitCapture = useCallback(memoizeOne((setSubmitted: FormContextType['setSubmitted']) => {
-        return () => {
-            setSubmitted(true);
+      try {
+        erroredFormField.offsetParent?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center',
+        });
+      } catch {
+        erroredFormField.offsetParent?.scrollIntoView();
+      }
+    }
+  };
 
-            // use timeout to allow Formik validation to happen
-            setTimeout(() => focusOnError());
-        };
-    }), [focusOnError]);
+  const handleSubmitCapture = useCallback(
+    memoizeOne((setSubmitted: FormContextType['setSubmitted']) => {
+      return () => {
+        setSubmitted(true);
 
-    const renderContent = useCallback(memoizeOne(({ setSubmitted }: FormContextType) => {
-        return (
-            <div ref={ ref.current.containerRef }>
-                <FormikForm
-                    { ...rest }
-                    className={ className }
-                    data-test={ testId }
-                    noValidate
-                    onSubmitCapture={ handleSubmitCapture(setSubmitted) }
-                />
-            </div>
-        );
-    }), [
-        className,
-        handleSubmitCapture,
-        testId,
-        ...values(rest),
-    ]);
+        // use timeout to allow Formik validation to happen
+        setTimeout(() => focusOnError());
+      };
+    }),
+    [focusOnError],
+  );
 
-    return (
-        <FormProvider>
-            { renderContent }
-        </FormProvider>
-    );
+  const renderContent = useCallback(
+    memoizeOne(({ setSubmitted }: FormContextType) => {
+      return (
+        <div ref={ ref.current.containerRef }>
+          <FormikForm
+            { ...rest }
+            className={ className }
+            data-test={ testId }
+            noValidate
+            onSubmitCapture={ handleSubmitCapture(setSubmitted) }
+          />
+        </div>
+      );
+    }),
+    [className, handleSubmitCapture, testId, ...values(rest)],
+  );
+
+  return <FormProvider>{ renderContent }</FormProvider>;
 };
 
 export default memo(Form);

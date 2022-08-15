@@ -1,14 +1,15 @@
 export default function parseAnchor(text: string): string[] {
-    const div = document.createElement('div');
-    div.innerHTML = text;
+  const div = document.createElement('div');
 
-    const anchor = div.querySelector('a');
+  div.innerHTML = text;
 
-    if (!anchor) {
-        return [];
-    }
+  const anchor = div.querySelector('a');
 
-    const anchorSiblings = div.innerHTML.split(anchor.outerHTML);
+  if (!anchor) {
+    return [];
+  }
 
-    return [ anchorSiblings[0], anchor.text, anchorSiblings[1] ];
+  const anchorSiblings = div.innerHTML.split(anchor.outerHTML);
+
+  return [anchorSiblings[0], anchor.text, anchorSiblings[1]];
 }

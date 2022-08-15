@@ -15,113 +15,107 @@ import OrderSummaryModal from './OrderSummaryModal';
 import PrintLink from './PrintLink';
 
 describe('OrderSummaryDrawer', () => {
-    let order: Order;
-    let orderSummary: ReactWrapper;
-    let localeContext: LocaleContextType;
+  let order: Order;
+  let orderSummary: ReactWrapper;
+  let localeContext: LocaleContextType;
 
+  beforeEach(() => {
+    localeContext = createLocaleContext(getStoreConfig());
+
+    order = getOrder();
+
+    orderSummary = mount(
+      <LocaleContext.Provider value={ localeContext }>
+        <OrderSummaryDrawer
+          { ...mapToOrderSummarySubtotalsProps(order) }
+          additionalLineItems="foo"
+          headerLink={ <PrintLink /> }
+          lineItems={ order.lineItems }
+          shopperCurrency={ getStoreConfig().shopperCurrency }
+          storeCurrency={ getStoreConfig().currency }
+          total={ order.orderAmount }
+        />
+      </LocaleContext.Provider>,
+    );
+  });
+
+  it('renders gift certificate icon when buying only GC', () => {
+    orderSummary = mount(
+      <LocaleContext.Provider value={ localeContext }>
+        <OrderSummaryDrawer
+          { ...mapToOrderSummarySubtotalsProps(order) }
+          additionalLineItems="foo"
+          headerLink={ <PrintLink /> }
+          lineItems={ {
+            giftCertificates: [getGiftCertificateItem()],
+            physicalItems: [],
+            digitalItems: [],
+          } }
+          shopperCurrency={ getStoreConfig().shopperCurrency }
+          storeCurrency={ getStoreConfig().currency }
+          total={ order.orderAmount }
+        />
+      </LocaleContext.Provider>,
+    );
+
+    expect(orderSummary.find(IconGiftCertificate)).toHaveLength(1);
+  });
+
+  it('renders order amount', () => {
+    expect(orderSummary.find(ShopperCurrency).prop('amount')).toEqual(order.orderAmount);
+  });
+
+  it('renders line items count', () => {
+    expect(orderSummary.find('.cartDrawer-items').text()).toEqual(
+      localeContext.language.translate('cart.item_count_text', { count: 2 }),
+    );
+  });
+
+  it('renders image of first product', () => {
+    expect(orderSummary.find('[data-test="cart-item-image"]').prop('src')).toEqual(
+      getPhysicalItem().imageUrl,
+    );
+  });
+
+  describe('when clicked', () => {
     beforeEach(() => {
-        localeContext = createLocaleContext(getStoreConfig());
-
-        order = getOrder();
-
-        orderSummary = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <OrderSummaryDrawer
-                    { ...mapToOrderSummarySubtotalsProps(order) }
-                    additionalLineItems="foo"
-                    headerLink={ <PrintLink /> }
-                    lineItems={ order.lineItems }
-                    shopperCurrency={ getStoreConfig().shopperCurrency }
-                    storeCurrency={ getStoreConfig().currency }
-                    total={ order.orderAmount }
-                />
-            </LocaleContext.Provider>
-        );
+      orderSummary.find('.cartDrawer').simulate('click');
     });
 
-    it('renders gift certificate icon when buying only GC', () => {
-        orderSummary = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <OrderSummaryDrawer
-                    { ...mapToOrderSummarySubtotalsProps(order) }
-                    additionalLineItems="foo"
-                    headerLink={ <PrintLink /> }
-                    lineItems={ {
-                        giftCertificates: [ getGiftCertificateItem() ],
-                        physicalItems: [],
-                        digitalItems: [],
-                    } }
-                    shopperCurrency={ getStoreConfig().shopperCurrency }
-                    storeCurrency={ getStoreConfig().currency }
-                    total={ order.orderAmount }
-                />
-            </LocaleContext.Provider>
-        );
+    it('renders order summary modal with the right props', () => {
+      expect(orderSummary.find(OrderSummaryModal)).toHaveLength(1);
 
-        expect(orderSummary.find(IconGiftCertificate).length)
-            .toEqual(1);
+      expect(orderSummary.find(OrderSummaryModal).find('#cart-print-link')).toHaveLength(1);
+
+      expect(orderSummary.find(OrderSummaryModal).props()).toMatchObject({
+        ...mapToOrderSummarySubtotalsProps(getOrder()),
+        lineItems: getOrder().lineItems,
+        total: getOrder().orderAmount,
+        storeCurrency: getStoreConfig().currency,
+        shopperCurrency: getStoreConfig().shopperCurrency,
+        additionalLineItems: 'foo',
+      });
+    });
+  });
+
+  describe('when active and enter is pressed', () => {
+    beforeEach(() => {
+      orderSummary.find('.cartDrawer').simulate('keypress', { key: 'Enter' });
     });
 
-    it('renders order amount', () => {
-        expect(orderSummary.find(ShopperCurrency).prop('amount'))
-            .toEqual(order.orderAmount);
+    it('renders order summary modal with the right props', () => {
+      expect(orderSummary.find(OrderSummaryModal)).toHaveLength(1);
+
+      expect(orderSummary.find(OrderSummaryModal).find('#cart-print-link')).toHaveLength(1);
+
+      expect(orderSummary.find(OrderSummaryModal).props()).toMatchObject({
+        ...mapToOrderSummarySubtotalsProps(getOrder()),
+        lineItems: getOrder().lineItems,
+        total: getOrder().orderAmount,
+        storeCurrency: getStoreConfig().currency,
+        shopperCurrency: getStoreConfig().shopperCurrency,
+        additionalLineItems: 'foo',
+      });
     });
-
-    it('renders line items count', () => {
-        expect(orderSummary.find('.cartDrawer-items').text())
-            .toEqual(localeContext.language.translate('cart.item_count_text', { count: 2 }));
-    });
-
-    it('renders image of first product', () => {
-        expect(orderSummary.find('[data-test="cart-item-image"]').prop('src'))
-            .toEqual(getPhysicalItem().imageUrl);
-    });
-
-    describe('when clicked', () => {
-        beforeEach(() => {
-            orderSummary.find('.cartDrawer').simulate('click');
-        });
-
-        it('renders order summary modal with the right props', () => {
-            expect(orderSummary.find(OrderSummaryModal).length)
-                .toEqual(1);
-
-            expect(orderSummary.find(OrderSummaryModal).find('#cart-print-link').length)
-                .toEqual(1);
-
-            expect(orderSummary.find(OrderSummaryModal).props())
-                .toMatchObject({
-                    ...mapToOrderSummarySubtotalsProps(getOrder()),
-                    lineItems: getOrder().lineItems,
-                    total: getOrder().orderAmount,
-                    storeCurrency: getStoreConfig().currency,
-                    shopperCurrency: getStoreConfig().shopperCurrency,
-                    additionalLineItems: 'foo',
-                });
-        });
-    });
-
-    describe('when active and enter is pressed', () => {
-        beforeEach(() => {
-            orderSummary.find('.cartDrawer').simulate('keypress', {key: 'Enter'});
-        });
-
-        it('renders order summary modal with the right props', () => {
-            expect(orderSummary.find(OrderSummaryModal).length)
-                .toEqual(1);
-
-            expect(orderSummary.find(OrderSummaryModal).find('#cart-print-link').length)
-                .toEqual(1);
-
-            expect(orderSummary.find(OrderSummaryModal).props())
-                .toMatchObject({
-                    ...mapToOrderSummarySubtotalsProps(getOrder()),
-                    lineItems: getOrder().lineItems,
-                    total: getOrder().orderAmount,
-                    storeCurrency: getStoreConfig().currency,
-                    shopperCurrency: getStoreConfig().shopperCurrency,
-                    additionalLineItems: 'foo',
-                });
-        });
-    });
+  });
 });

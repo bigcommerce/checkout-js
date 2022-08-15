@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, Fragment, FunctionComponent } from 'react';
+import React, { Fragment, FunctionComponent, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { FormField, TextInputIframeContainer } from '../../ui/form';
@@ -7,49 +7,54 @@ import { TooltipTrigger } from '../../ui/tooltip';
 import { CreditCardCodeTooltip } from '../creditCard';
 
 export interface HostedCreditCardCodeFieldProps {
-    appearFocused: boolean;
-    id: string;
-    name: string;
+  appearFocused: boolean;
+  id: string;
+  name: string;
 }
 
 const HostedCreditCardCodeField: FunctionComponent<HostedCreditCardCodeFieldProps> = ({
-    appearFocused,
-    id,
-    name,
+  appearFocused,
+  id,
+  name,
 }) => {
-    const renderInput = useCallback(() => (<>
+  const renderInput = useCallback(
+    () => (
+      <>
         <TextInputIframeContainer
-            additionalClassName="has-icon"
-            appearFocused={ appearFocused }
-            id={ id }
+          additionalClassName="has-icon"
+          appearFocused={ appearFocused }
+          id={ id }
         />
 
         <IconLock />
-    </>), [id, appearFocused]);
+      </>
+    ),
+    [id, appearFocused],
+  );
 
-    const labelContent = useMemo(() => (
-        <Fragment>
-            <TranslatedString id="payment.credit_card_cvv_label" />
+  const labelContent = useMemo(
+    () => (
+      <>
+        <TranslatedString id="payment.credit_card_cvv_label" />
 
-            <TooltipTrigger
-                placement="top-start"
-                tooltip={ <CreditCardCodeTooltip /> }
-            >
-                <span className="has-tip">
-                    <IconHelp />
-                </span>
-            </TooltipTrigger>
-        </Fragment>
-    ), []);
+        <TooltipTrigger placement="top-start" tooltip={<CreditCardCodeTooltip />}>
+          <span className="has-tip">
+            <IconHelp />
+          </span>
+        </TooltipTrigger>
+      </>
+    ),
+    [],
+  );
 
-    return (
-        <FormField
-            additionalClassName="form-ccFields-field--ccCvv"
-            input={ renderInput }
-            labelContent={ labelContent }
-            name={ name }
-        />
-    );
+  return (
+    <FormField
+      additionalClassName="form-ccFields-field--ccCvv"
+      input={ renderInput }
+      labelContent={ labelContent }
+      name={ name }
+    />
+  );
 };
 
 export default HostedCreditCardCodeField;

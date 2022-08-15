@@ -1,4 +1,4 @@
 export interface LocalizedGeography {
-    localizedCountry: string;
-    localizedProvince: string;
+  localizedCountry: string;
+  localizedProvince: string;
 }

@@ -8,29 +8,29 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../../loc
 import StoreCreditOverlay from './StoreCreditOverlay';
 
 describe('StoreCreditOverlay', () => {
-    let localeContext: LocaleContextType;
-    let languageService: LanguageService;
+  let localeContext: LocaleContextType;
+  let languageService: LanguageService;
 
-    beforeEach(() => {
-        localeContext = createLocaleContext(getStoreConfig());
-        languageService = localeContext.language;
-    });
+  beforeEach(() => {
+    localeContext = createLocaleContext(getStoreConfig());
+    languageService = localeContext.language;
+  });
 
-    it('displays "payment is not required" text', () => {
-        const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <StoreCreditOverlay />
-            </LocaleContext.Provider>
-        );
+  it('displays "payment is not required" text', () => {
+    const component = mount(
+      <LocaleContext.Provider value={ localeContext }>
+        <StoreCreditOverlay />
+      </LocaleContext.Provider>,
+    );
 
-        expect(component.text())
-            .toEqual(languageService.translate('payment.payment_not_required_text'));
-    });
+    expect(component.text()).toEqual(
+      languageService.translate('payment.payment_not_required_text'),
+    );
+  });
 
-    it('renders component with expected class', () => {
-        const component = shallow(<StoreCreditOverlay />);
+  it('renders component with expected class', () => {
+    const component = shallow(<StoreCreditOverlay />);
 
-        expect(component.hasClass('storeCreditOverlay'))
-            .toEqual(true);
-    });
+    expect(component.hasClass('storeCreditOverlay')).toBe(true);
+  });
 });

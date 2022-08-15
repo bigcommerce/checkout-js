@@ -2,254 +2,223 @@ import { mount, render } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedHtml, TranslatedLink } from '../locale';
+import {createLocaleContext,
+  LocaleContext,
+  LocaleContextType,
+  TranslatedHtml,
+  TranslatedLink,} from '../locale';
 import { Alert } from '../ui/alert';
 
 import CustomerViewType from './CustomerViewType';
 import LoginForm, { LoginFormProps } from './LoginForm';
 
 describe('LoginForm', () => {
-    let defaultProps: LoginFormProps;
-    let localeContext: LocaleContextType;
-    let TestComponent: FunctionComponent<Partial<LoginFormProps>>;
+  let defaultProps: LoginFormProps;
+  let localeContext: LocaleContextType;
+  let TestComponent: FunctionComponent<Partial<LoginFormProps>>;
 
-    beforeEach(() => {
-        defaultProps = {
-            continueAsGuestButtonLabelId: 'customer.continue_as_guest_action',
-            forgotPasswordUrl: '/forgot-password',
-            onSignIn: jest.fn(),
-        };
+  beforeEach(() => {
+    defaultProps = {
+      continueAsGuestButtonLabelId: 'customer.continue_as_guest_action',
+      forgotPasswordUrl: '/forgot-password',
+      onSignIn: jest.fn(),
+    };
 
-        localeContext = createLocaleContext(getStoreConfig());
+    localeContext = createLocaleContext(getStoreConfig());
 
-        TestComponent = props => (
-            <LocaleContext.Provider value={ localeContext }>
-                <LoginForm
-                    { ...defaultProps }
-                    { ...props }
-                />
-            </LocaleContext.Provider>
-        );
+    TestComponent = (props) => (
+      <LocaleContext.Provider value={ localeContext }>
+        <LoginForm { ...defaultProps } { ...props } />
+      </LocaleContext.Provider>
+    );
+  });
+
+  it('matches snapshot', () => {
+    const component = render(<TestComponent />);
+
+    expect(component).toMatchSnapshot();
+  });
+
+  it('renders form with initial values', () => {
+    const component = mount(<TestComponent email="test@bigcommerce.com" />);
+
+    expect(component.find('input[name="email"]').prop('value')).toBe('test@bigcommerce.com');
+  });
+
+  it('notifies when user clicks on "sign in" button', async () => {
+    const handleSignIn = jest.fn();
+    const component = mount(<TestComponent onSignIn={ handleSignIn } />);
+
+    component
+      .find('input[name="email"]')
+      .simulate('change', { target: { value: 'test@bigcommerce.com', name: 'email' } });
+
+    component
+      .find('input[name="password"]')
+      .simulate('change', { target: { value: 'password1', name: 'password' } });
+
+    component.find('form').simulate('submit');
+
+    await new Promise((resolve) => process.nextTick(resolve));
+
+    expect(handleSignIn).toHaveBeenCalled();
+  });
+
+  it('displays error message if email is not valid', () => {
+    async function getEmailError(value: string): Promise<string> {
+      const component = mount(<TestComponent />);
+
+      component
+        .find('input[name="email"]')
+        .simulate('change', { target: { value, name: 'email' } });
+
+      component.find('form').simulate('submit');
+
+      await new Promise((resolve) => process.nextTick(resolve));
+
+      component.update();
+
+      return component.find('[data-test="email-field-error-message"]').text();
+    }
+
+    const invalidEmailMessage = 'Email address must be valid';
+
+    expect(getEmailError('test@bigcommerce')).resolves.toEqual(invalidEmailMessage);
+    expect(getEmailError('test')).resolves.toEqual(invalidEmailMessage);
+    expect(getEmailError('@test.test')).resolves.toEqual(invalidEmailMessage);
+    expect(getEmailError('test@.test')).resolves.toEqual(invalidEmailMessage);
+    expect(getEmailError('test@test.')).resolves.toEqual(invalidEmailMessage);
+    expect(getEmailError('test@te st.test')).resolves.toEqual(invalidEmailMessage);
+    expect(getEmailError('test@test.comtest@test.com')).resolves.toEqual(invalidEmailMessage);
+    expect(getEmailError('漢漢漢漢漢漢@漢漢漢漢漢漢.漢漢漢漢漢漢')).resolves.toEqual(
+      invalidEmailMessage,
+    );
+  });
+
+  it('displays error message if password is missing', async () => {
+    const component = mount(<TestComponent />);
+
+    component
+      .find('input[name="email"]')
+      .simulate('change', { target: { value: 'test@bigcommerce.com', name: 'email' } });
+
+    component.find('form').simulate('submit');
+
+    await new Promise((resolve) => process.nextTick(resolve));
+
+    component.update();
+
+    expect(component.find('[data-test="password-field-error-message"]').text()).toBe(
+      'Password is required',
+    );
+  });
+
+  it('renders SuggestedLogin (no email input, suggestion, continue as guest) and ignores canCancel flag', () => {
+    const onCancel = jest.fn();
+    const component = mount(
+      <TestComponent
+        canCancel
+        email="foo@bar.com"
+        onCancel={ onCancel }
+        viewType={ CustomerViewType.SuggestedLogin }
+      />,
+    );
+
+    expect(component.find(Alert).prop('type')).toBe('info');
+
+    expect(component.find(Alert).find(TranslatedHtml).props()).toEqual({
+      id: 'customer.guest_could_login',
+      data: { email: 'foo@bar.com' },
     });
 
-    it('matches snapshot', () => {
-        const component = render(
-            <TestComponent />
-        );
+    expect(component.exists('[data-test="customer-cancel-button"]')).toBe(false);
 
-        expect(component)
-            .toMatchSnapshot();
+    expect(component.exists('[data-test="customer-guest-continue"]')).toBe(true);
+
+    component.find('[data-test="change-email"]').simulate('click');
+
+    expect(onCancel).toHaveBeenCalled();
+
+    expect(component.exists('input[name="email"]')).toBe(false);
+  });
+
+  it('renders info alert if CancellableEnforcedLogin, and hides email input', () => {
+    const component = mount(
+      <TestComponent
+        canCancel
+        email="foo@bar.com"
+        viewType={ CustomerViewType.CancellableEnforcedLogin }
+      />,
+    );
+
+    expect(component.find(Alert).prop('type')).toBe('info');
+
+    expect(component.find(Alert).find(TranslatedHtml).props()).toEqual({
+      id: 'customer.guest_must_login',
+      data: { email: 'foo@bar.com' },
     });
 
-    it('renders form with initial values', () => {
-        const component = mount(
-            <TestComponent email={ 'test@bigcommerce.com' } />
-        );
+    expect(component.exists('input[name="email"]')).toBe(false);
+  });
 
-        expect(component.find('input[name="email"]').prop('value'))
-            .toEqual('test@bigcommerce.com');
-    });
+  it('renders guest is temporary disabled alert if EnforcedLogin, and ignores canCancel flag', () => {
+    const component = mount(
+      <TestComponent canCancel email="foo@bar.com" viewType={ CustomerViewType.EnforcedLogin } />,
+    );
 
-    it('notifies when user clicks on "sign in" button', async () => {
-        const handleSignIn = jest.fn();
-        const component = mount(
-            <TestComponent onSignIn={ handleSignIn } />
-        );
+    expect(component.find(Alert).prop('type')).toBe('error');
 
-        component.find('input[name="email"]')
-            .simulate('change', { target: { value: 'test@bigcommerce.com', name: 'email' } });
+    expect(component.find(Alert).find(TranslatedLink).prop('id')).toBe(
+      'customer.guest_temporary_disabled',
+    );
 
-        component.find('input[name="password"]')
-            .simulate('change', { target: { value: 'password1', name: 'password' } });
+    expect(component.exists('input[name="email"]')).toBe(true);
 
-        component.find('form')
-            .simulate('submit');
+    expect(component.exists('[data-test="customer-cancel-button"]')).toBe(false);
+  });
 
-        await new Promise(resolve => process.nextTick(resolve));
+  it('renders error as alert if password is incorrect', () => {
+    const error = Object.assign(new Error(), { body: { type: 'invalid login' } });
+    const component = mount(<TestComponent canCancel signInError={ error } />);
 
-        expect(handleSignIn)
-            .toHaveBeenCalled();
-    });
+    expect(component.find('[data-test="customer-login-error-message"]').text()).toBe(
+      'The email or password you entered is not valid.',
+    );
+  });
 
-    it('displays error message if email is not valid', () => {
-        async function getEmailError(value: string): Promise<string> {
-            const component = mount(
-                <TestComponent />
-            );
+  it('renders cancel button if able to cancel', () => {
+    const component = mount(<TestComponent canCancel />);
 
-            component.find('input[name="email"]')
-                .simulate('change', { target: { value, name: 'email' } });
+    expect(component.exists('[data-test="customer-cancel-button"]')).toBe(true);
+  });
 
-            component.find('form')
-                .simulate('submit');
+  it('does not render cancel button by default', () => {
+    const component = mount(<TestComponent />);
 
-            await new Promise(resolve => process.nextTick(resolve));
+    expect(component.exists('[data-test="customer-cancel-button"]')).toBe(false);
+  });
 
-            component.update();
+  it('notifies when user changes email address', () => {
+    const handleChangeEmail = jest.fn();
+    const component = mount(<TestComponent onChangeEmail={ handleChangeEmail } />);
 
-            return component.find('[data-test="email-field-error-message"]').text();
-        }
+    component
+      .find('input[name="email"]')
+      .simulate('change', { target: { value: 'test@bigcommerce.com', name: 'email' } });
 
-        const invalidEmailMessage = 'Email address must be valid';
+    expect(handleChangeEmail).toHaveBeenCalledWith('test@bigcommerce.com');
+  });
 
-        expect(getEmailError('test@bigcommerce')).resolves.toEqual(invalidEmailMessage);
-        expect(getEmailError('test')).resolves.toEqual(invalidEmailMessage);
-        expect(getEmailError('@test.test')).resolves.toEqual(invalidEmailMessage);
-        expect(getEmailError('test@.test')).resolves.toEqual(invalidEmailMessage);
-        expect(getEmailError('test@test.')).resolves.toEqual(invalidEmailMessage);
-        expect(getEmailError('test@te st.test')).resolves.toEqual(invalidEmailMessage);
-        expect(getEmailError('test@test.comtest@test.com')).resolves.toEqual(invalidEmailMessage);
-        expect(getEmailError('漢漢漢漢漢漢@漢漢漢漢漢漢.漢漢漢漢漢漢')).resolves.toEqual(invalidEmailMessage);
-    });
+  it('shows different "Continue as guest" button label if another label id was provided', () => {
+    const component = mount(
+      <TestComponent
+        continueAsGuestButtonLabelId="customer.continue"
+        viewType={ CustomerViewType.SuggestedLogin }
+      />,
+    );
 
-    it('displays error message if password is missing', async () => {
-        const component = mount(
-            <TestComponent />
-        );
-
-        component.find('input[name="email"]')
-            .simulate('change', { target: { value: 'test@bigcommerce.com', name: 'email' } });
-
-        component.find('form')
-            .simulate('submit');
-
-        await new Promise(resolve => process.nextTick(resolve));
-
-        component.update();
-
-        expect(component.find('[data-test="password-field-error-message"]').text())
-            .toEqual('Password is required');
-    });
-
-    it('renders SuggestedLogin (no email input, suggestion, continue as guest) and ignores canCancel flag', () => {
-        const onCancel = jest.fn();
-        const component = mount(
-            <TestComponent
-                canCancel
-                email="foo@bar.com"
-                onCancel={ onCancel }
-                viewType={ CustomerViewType.SuggestedLogin }
-            />
-        );
-
-        expect(component.find(Alert).prop('type'))
-            .toEqual('info');
-
-        expect(component.find(Alert).find(TranslatedHtml).props())
-            .toEqual({
-                id: 'customer.guest_could_login',
-                data: { email: 'foo@bar.com' },
-            });
-
-        expect(component.exists('[data-test="customer-cancel-button"]'))
-            .toEqual(false);
-
-        expect(component.exists('[data-test="customer-guest-continue"]'))
-            .toEqual(true);
-
-        component.find('[data-test="change-email"]').simulate('click');
-        expect(onCancel).toHaveBeenCalled();
-
-        expect(component.exists('input[name="email"]'))
-            .toEqual(false);
-    });
-
-    it('renders info alert if CancellableEnforcedLogin, and hides email input', () => {
-        const component = mount(
-            <TestComponent
-                canCancel
-                email="foo@bar.com"
-                viewType={ CustomerViewType.CancellableEnforcedLogin }
-            />
-        );
-
-        expect(component.find(Alert).prop('type'))
-            .toEqual('info');
-
-        expect(component.find(Alert).find(TranslatedHtml).props())
-            .toEqual({
-                id: 'customer.guest_must_login',
-                data: { email: 'foo@bar.com' },
-            });
-
-        expect(component.exists('input[name="email"]'))
-            .toEqual(false);
-    });
-
-    it('renders guest is temporary disabled alert if EnforcedLogin, and ignores canCancel flag', () => {
-        const component = mount(
-            <TestComponent
-                canCancel
-                email="foo@bar.com"
-                viewType={ CustomerViewType.EnforcedLogin }
-            />
-        );
-
-        expect(component.find(Alert).prop('type'))
-            .toEqual('error');
-
-        expect(component.find(Alert).find(TranslatedLink).prop('id'))
-            .toEqual('customer.guest_temporary_disabled');
-
-        expect(component.exists('input[name="email"]'))
-            .toEqual(true);
-
-        expect(component.exists('[data-test="customer-cancel-button"]'))
-            .toEqual(false);
-    });
-
-    it('renders error as alert if password is incorrect', () => {
-        const error = Object.assign(new Error(), { body: { type: 'invalid login' } });
-        const component = mount(
-            <TestComponent
-                canCancel
-                signInError={ error }
-            />
-        );
-
-        expect(component.find('[data-test="customer-login-error-message"]').text())
-            .toEqual('The email or password you entered is not valid.');
-    });
-
-    it('renders cancel button if able to cancel', () => {
-        const component = mount(
-            <TestComponent canCancel />
-        );
-
-        expect(component.exists('[data-test="customer-cancel-button"]'))
-            .toEqual(true);
-    });
-
-    it('does not render cancel button by default', () => {
-        const component = mount(
-            <TestComponent />
-        );
-
-        expect(component.exists('[data-test="customer-cancel-button"]'))
-            .toEqual(false);
-    });
-
-    it('notifies when user changes email address', () => {
-        const handleChangeEmail = jest.fn();
-        const component = mount(
-            <TestComponent onChangeEmail={ handleChangeEmail } />
-        );
-
-        component.find('input[name="email"]')
-            .simulate('change', { target: { value: 'test@bigcommerce.com', name: 'email' } });
-
-        expect(handleChangeEmail)
-            .toHaveBeenCalledWith('test@bigcommerce.com');
-    });
-
-    it('shows different "Continue as guest" button label if another label id was provided', () => {
-        const component = mount(
-            <TestComponent
-                continueAsGuestButtonLabelId="customer.continue"
-                viewType={ CustomerViewType.SuggestedLogin }
-            />
-        );
-
-        expect(component.find('[data-test="customer-guest-continue"]').text()).not.toEqual('Continue as guest');
-    });
+    expect(component.find('[data-test="customer-guest-continue"]').text()).not.toBe(
+      'Continue as guest',
+    );
+  });
 });

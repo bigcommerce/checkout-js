@@ -1,9 +1,9 @@
 import RequireAtLeastOne from './RequireAtLeastOne';
 
 type CheckoutButtonResolveId = RequireAtLeastOne<{
-    id?: string;
-    gateway?: string;
-    default?: boolean;
+  id?: string;
+  gateway?: string;
+  default?: boolean;
 }>;
 
 export default CheckoutButtonResolveId;

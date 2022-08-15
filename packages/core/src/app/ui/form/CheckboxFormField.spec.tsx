@@ -5,63 +5,58 @@ import React from 'react';
 
 import CheckboxFormField from './CheckboxFormField';
 
-/* eslint-disable react/jsx-no-bind */
 describe('CheckboxFormField', () => {
-    it('matches snapshot with rendered output', () => {
-        const component = mount(
-            <Formik
-                initialValues={ { foobar: true } }
-                onSubmit={ noop }
-                render={ () => <CheckboxFormField labelContent="Foobar" name="foobar" /> }
-            />
-        );
+  it('matches snapshot with rendered output', () => {
+    const component = mount(
+      <Formik
+        initialValues={ { foobar: true } }
+        onSubmit={ noop }
+        render={ () => <CheckboxFormField labelContent="Foobar" name="foobar" /> }
+      />,
+    );
 
-        expect(component.html())
-            .toMatchSnapshot();
-    });
+    expect(component.html()).toMatchSnapshot();
+  });
 
-    it('renders form field with checkbox', () => {
-        const component = mount(
-            <Formik
-                initialValues={ { foobar: true } }
-                onSubmit={ noop }
-                render={ () => <CheckboxFormField labelContent="Foobar" name="foobar" /> }
-            />
-        );
+  it('renders form field with checkbox', () => {
+    const component = mount(
+      <Formik
+        initialValues={ { foobar: true } }
+        onSubmit={ noop }
+        render={ () => <CheckboxFormField labelContent="Foobar" name="foobar" /> }
+      />,
+    );
 
-        expect(component.find('input[type="checkbox"]').length)
-            .toEqual(1);
+    expect(component.find('input[type="checkbox"]')).toHaveLength(1);
 
-        expect(component.find('label').text())
-            .toEqual('Foobar');
-    });
+    expect(component.find('label').text()).toBe('Foobar');
+  });
 
-    it('sets initial checked value', () => {
-        const component = mount(
-            <Formik
-                initialValues={ { foobar: true } }
-                onSubmit={ noop }
-                render={ () => <CheckboxFormField labelContent="Foobar" name="foobar" /> }
-            />
-        );
+  it('sets initial checked value', () => {
+    const component = mount(
+      <Formik
+        initialValues={ { foobar: true } }
+        onSubmit={ noop }
+        render={ () => <CheckboxFormField labelContent="Foobar" name="foobar" /> }
+      />,
+    );
 
-        expect(component.find('input[type="checkbox"]').prop('checked'))
-            .toEqual(true);
-    });
+    expect(component.find('input[type="checkbox"]').prop('checked')).toBe(true);
+  });
 
-    it('updates checked value when clicked', () => {
-        const component = mount(
-            <Formik
-                initialValues={ { foobar: true } }
-                onSubmit={ noop }
-                render={ () => <CheckboxFormField labelContent="Foobar" name="foobar" /> }
-            />
-        );
+  it('updates checked value when clicked', () => {
+    const component = mount(
+      <Formik
+        initialValues={ { foobar: true } }
+        onSubmit={ noop }
+        render={ () => <CheckboxFormField labelContent="Foobar" name="foobar" /> }
+      />,
+    );
 
-        component.find('input[type="checkbox"]')
-            .simulate('change', { target: { checked: false, name: 'foobar' } });
+    component
+      .find('input[type="checkbox"]')
+      .simulate('change', { target: { checked: false, name: 'foobar' } });
 
-        expect(component.find('input[type="checkbox"]').prop('checked'))
-            .toEqual(false);
-    });
+    expect(component.find('input[type="checkbox"]').prop('checked')).toBe(false);
+  });
 });

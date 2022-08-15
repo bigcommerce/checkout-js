@@ -4,47 +4,44 @@ import { TranslatedHtml } from '../locale';
 import { LoadingOverlay } from '../ui/loading';
 
 export interface EmptyCartMessageProps {
-    waitInterval?: number;
-    loginUrl: string;
+  waitInterval?: number;
+  loginUrl: string;
 }
 
 interface EmptyCartMessageState {
-    isWaiting: boolean;
+  isWaiting: boolean;
 }
 
-export default class EmptyCartMessage extends PureComponent<EmptyCartMessageProps, EmptyCartMessageState> {
-    state: EmptyCartMessageState = {
-        isWaiting: true,
-    };
+export default class EmptyCartMessage extends PureComponent<
+  EmptyCartMessageProps,
+  EmptyCartMessageState
+> {
+  state: EmptyCartMessageState = {
+    isWaiting: true,
+  };
 
-    private waitToken?: number;
+  private waitToken?: number;
 
-    componentDidMount(): void {
-        const { waitInterval } = this.props;
+  componentDidMount(): void {
+    const { waitInterval } = this.props;
 
-        this.waitToken = setTimeout(() => {
-            this.setState({ isWaiting: false });
-        }, waitInterval);
-    }
+    this.waitToken = setTimeout(() => {
+      this.setState({ isWaiting: false });
+    }, waitInterval);
+  }
 
-    componentWillUnmount(): void {
-        clearInterval(this.waitToken);
-    }
+  componentWillUnmount(): void {
+    clearInterval(this.waitToken);
+  }
 
-    render(): ReactNode {
-        const { loginUrl } = this.props;
-        const { isWaiting } = this.state;
+  render(): ReactNode {
+    const { loginUrl } = this.props;
+    const { isWaiting } = this.state;
 
-        return (
-            <LoadingOverlay
-                hideContentWhenLoading
-                isLoading={ isWaiting }
-            >
-                <TranslatedHtml
-                    data={ { url: loginUrl } }
-                    id="cart.empty_cart_message"
-                />
-            </LoadingOverlay>
-        );
-    }
+    return (
+      <LoadingOverlay hideContentWhenLoading isLoading={ isWaiting }>
+        <TranslatedHtml data={ { url: loginUrl } } id="cart.empty_cart_message" />
+      </LoadingOverlay>
+    );
+  }
 }

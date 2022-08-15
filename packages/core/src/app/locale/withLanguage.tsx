@@ -5,12 +5,12 @@ import { createInjectHoc, InjectHoc } from '../common/hoc';
 import LocaleContext from './LocaleContext';
 
 export interface WithLanguageProps {
-    language: LanguageService;
+  language: LanguageService;
 }
 
 const withLanguage: InjectHoc<WithLanguageProps> = createInjectHoc(LocaleContext, {
-    displayNamePrefix: 'WithLanguage',
-    pickProps: (value, key) => key === 'language' && !!value,
+  displayNamePrefix: 'WithLanguage',
+  pickProps: (value, key) => key === 'language' && !!value,
 });
 
 export default withLanguage;

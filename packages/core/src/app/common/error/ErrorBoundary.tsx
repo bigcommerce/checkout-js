@@ -3,53 +3,46 @@ import React, { ReactNode } from 'react';
 import ErrorLogger from './ErrorLogger';
 
 export interface ErrorBoundaryProps {
-    children: ReactNode;
-    fallback?: ReactNode;
-    logger?: ErrorLogger;
-    filter?(error: Error): boolean;
+  children: ReactNode;
+  fallback?: ReactNode;
+  logger?: ErrorLogger;
+  filter?(error: Error): boolean;
 }
 
 interface ErrorBoundaryState {
-    error?: Error;
+  error?: Error;
 }
 
 class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-    static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-        return { error };
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { error };
+  }
+
+  state: ErrorBoundaryState = {};
+
+  componentDidCatch(error: Error): void {
+    const { filter = () => true, logger } = this.props;
+
+    if (!filter(error)) {
+      throw error;
     }
 
-    state: ErrorBoundaryState = {};
+    if (logger) {
+      logger.log(error);
+    }
+  }
 
-    componentDidCatch(error: Error): void {
-        const {
-            filter = () => true,
-            logger,
-        } = this.props;
+  render(): ReactNode {
+    const { children, fallback, filter = () => true } = this.props;
 
-        if (!filter(error)) {
-            throw error;
-        }
+    const { error } = this.state;
 
-        if (logger) {
-            logger.log(error);
-        }
+    if (error && filter(error)) {
+      return fallback || null;
     }
 
-    render(): ReactNode {
-        const {
-            children,
-            fallback,
-            filter = () => true,
-        } = this.props;
-
-        const { error } = this.state;
-
-        if (error && filter(error)) {
-            return fallback ? fallback : null;
-        }
-
-        return children;
-    }
+    return children;
+  }
 }
 
 export default ErrorBoundary;

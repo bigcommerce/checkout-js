@@ -1,76 +1,81 @@
-import React, { Component, Fragment, KeyboardEvent, KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
+import React, {Component,
+  Fragment,
+  KeyboardEvent,
+  KeyboardEventHandler,
+  MouseEventHandler,
+  ReactNode,} from 'react';
 
 export interface ModalTriggerProps {
-    children(props: { onClick: MouseEventHandler; onKeyPress: KeyboardEventHandler}): ReactNode;
-    modal(props: ModalTriggerModalProps): ReactNode;
+  children(props: { onClick: MouseEventHandler; onKeyPress: KeyboardEventHandler }): ReactNode;
+  modal(props: ModalTriggerModalProps): ReactNode;
 }
 
 export interface ModalTriggerModalProps {
-    isOpen: boolean;
-    onRequestClose(): void;
+  isOpen: boolean;
+  onRequestClose(): void;
 }
 
 export interface ModalTriggerState {
-    isOpen: boolean;
+  isOpen: boolean;
 }
 
 export default class ModalTrigger extends Component<ModalTriggerProps, ModalTriggerState> {
-    state = {
-        isOpen: false,
-    };
+  state = {
+    isOpen: false,
+  };
 
-    private canHandleEvent: boolean = false;
+  private canHandleEvent = false;
 
-    componentDidMount(): void {
-        this.canHandleEvent = true;
+  componentDidMount(): void {
+    this.canHandleEvent = true;
+  }
+
+  componentWillUnmount(): void {
+    this.canHandleEvent = false;
+  }
+
+  render() {
+    const { children, modal } = this.props;
+    const { isOpen } = this.state;
+
+    return (
+      <>
+        {children({
+          onClick: this.handleOpen,
+          onKeyPress: this.handleKeyOpen,
+        })}
+
+        {modal({
+          isOpen,
+          onRequestClose: this.handleClose,
+        })}
+      </>
+    );
+  }
+
+  private handleOpen: () => void = () => {
+    if (!this.canHandleEvent) {
+      return;
     }
 
-    componentWillUnmount(): void {
-        this.canHandleEvent = false;
+    this.setState({
+      isOpen: true,
+    });
+  };
+
+  private handleClose: () => void = () => {
+    if (!this.canHandleEvent) {
+      return;
     }
 
-    render() {
-        const { children, modal } = this.props;
-        const { isOpen } = this.state;
+    this.setState({
+      isOpen: false,
+    });
+  };
 
-        return (
-            <Fragment>
-                { children({
-                    onClick: this.handleOpen,
-                    onKeyPress: this.handleKeyOpen,
-                }) }
-
-                { modal({
-                    isOpen,
-                    onRequestClose: this.handleClose,
-                }) }
-            </Fragment>
-        );
+  private handleKeyOpen: (keyboardEvent: KeyboardEvent<HTMLElement>) => void = (keyboardEvent) => {
+    if (keyboardEvent.key === 'Enter') {
+      this.handleOpen();
     }
-
-    private handleOpen: () => void = () => {
-        if (!this.canHandleEvent) {
-            return;
-        }
-
-        this.setState({
-            isOpen: true,
-        });
-    };
-
-    private handleClose: () => void = () => {
-        if (!this.canHandleEvent) {
-            return;
-        }
-
-        this.setState({
-            isOpen: false,
-        });
-    };
-
-    private handleKeyOpen: (keyboardEvent: KeyboardEvent<HTMLElement>) => void = keyboardEvent => {
-        if (keyboardEvent.key === 'Enter') {
-            this.handleOpen();
-        }
-    };
+  };
 }

@@ -6,38 +6,38 @@ import { getAddress } from './address.mock';
 import localizeAddress from './localizeAddress';
 
 describe('localizeAddress', () => {
-    let address: Address;
+  let address: Address;
 
-    beforeEach(() => {
-        address = getAddress();
+  beforeEach(() => {
+    address = getAddress();
+  });
+
+  it('localizes address with provided countries', () => {
+    expect(localizeAddress(address, getCountries())).toMatchObject({
+      ...address,
+      localizedCountry: 'United States',
+      localizedProvince: 'California',
     });
+  });
 
-    it('localizes address with provided countries', () => {
-        expect(localizeAddress(address, getCountries())).toMatchObject({
-            ...address,
-            localizedCountry: 'United States',
-            localizedProvince: 'California',
-        });
+  it('keeps same value if unable match countryCode', () => {
+    expect(localizeAddress(address, [])).toMatchObject({
+      ...address,
+      localizedCountry: 'United States',
+      localizedProvince: 'California',
     });
+  });
 
-    it('keeps same value if unable match countryCode', () => {
-        expect(localizeAddress(address, [])).toMatchObject({
-            ...address,
-            localizedCountry: 'United States',
-            localizedProvince: 'California',
-        });
+  it('keeps same value if unable to provinceCode', () => {
+    const countries = getCountries().map((country) => ({
+      ...country,
+      subdivisions: [],
+    }));
+
+    expect(localizeAddress(address, countries)).toMatchObject({
+      ...address,
+      localizedCountry: 'United States',
+      localizedProvince: 'California',
     });
-
-    it('keeps same value if unable to provinceCode', () => {
-        const countries = getCountries().map(country => ({
-            ...country,
-            subdivisions: [],
-        }));
-
-        expect(localizeAddress(address, countries)).toMatchObject({
-            ...address,
-            localizedCountry: 'United States',
-            localizedProvince: 'California',
-        });
-    });
+  });
 });

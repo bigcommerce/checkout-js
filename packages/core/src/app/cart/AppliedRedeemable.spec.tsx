@@ -7,50 +7,46 @@ import { createLocaleContext, LocaleContext } from '../locale';
 import AppliedRedeemable from './AppliedRedeemable';
 
 describe('AppliedGiftCertificate', () => {
-    let component: ReactWrapper;
-    const onRemove = jest.fn();
+  let component: ReactWrapper;
+  const onRemove = jest.fn();
 
-    beforeEach(() => {
-        const localeContext = createLocaleContext(getStoreConfig());
-        const AppliedRedeembleContainer = ({ isRemoving }: { isRemoving: boolean }) => (
-            <LocaleContext.Provider value={ localeContext }>
-                <AppliedRedeemable
-                    isRemoving={ isRemoving }
-                    onRemove={ onRemove() }
-                >
-                    foo
-                </AppliedRedeemable>
-            </LocaleContext.Provider>
-        );
+  beforeEach(() => {
+    const localeContext = createLocaleContext(getStoreConfig());
+    const AppliedRedeembleContainer = ({ isRemoving }: { isRemoving: boolean }) => (
+      <LocaleContext.Provider value={ localeContext }>
+        <AppliedRedeemable isRemoving={ isRemoving } onRemove={ onRemove() }>
+          foo
+        </AppliedRedeemable>
+      </LocaleContext.Provider>
+    );
 
-        component = mount(<AppliedRedeembleContainer isRemoving={ false } />);
-    });
+    component = mount(<AppliedRedeembleContainer isRemoving={ false } />);
+  });
 
-    it('renders children', () => {
-        expect(component.find('.redeemable').text())
-            .toEqual('foo');
-    });
+  it('renders children', () => {
+    expect(component.find('.redeemable').text()).toBe('foo');
+  });
 
-    it('renders children', () => {
-        component.find('button').simulate('click');
+  it('renders children', () => {
+    component.find('button').simulate('click');
 
-        expect(onRemove).toHaveBeenCalled();
-    });
+    expect(onRemove).toHaveBeenCalled();
+  });
 
-    it('does not disabled button', () => {
-        const button = component.find('[data-test="redeemable-remove"]');
+  it('does not disabled button', () => {
+    const button = component.find('[data-test="redeemable-remove"]');
 
-        expect(button.prop('disabled')).toBeFalsy();
-        expect(button.hasClass('is-loading')).toBeFalsy();
-    });
+    expect(button.prop('disabled')).toBeFalsy();
+    expect(button.hasClass('is-loading')).toBeFalsy();
+  });
 
-    it('does disabled button when isRemoving is true', () => {
-        component.setProps({ isRemoving: true });
-        component.update();
+  it('does disabled button when isRemoving is true', () => {
+    component.setProps({ isRemoving: true });
+    component.update();
 
-        const button = component.find('[data-test="redeemable-remove"]');
+    const button = component.find('[data-test="redeemable-remove"]');
 
-        expect(button.prop('disabled')).toBeTruthy();
-        expect(button.hasClass('is-loading')).toBeTruthy();
-    });
+    expect(button.prop('disabled')).toBeTruthy();
+    expect(button.hasClass('is-loading')).toBeTruthy();
+  });
 });

@@ -5,47 +5,45 @@ import React from 'react';
 import CheckoutButton from './CheckoutButton';
 
 describe('CheckoutButton', () => {
-    it('initializes button when component is mounted', () => {
-        const initialize = jest.fn();
-        const onError = jest.fn();
+  it('initializes button when component is mounted', () => {
+    const initialize = jest.fn();
+    const onError = jest.fn();
 
-        mount(
-            <CheckoutButton
-                containerId="foobarContainer"
-                deinitialize={ noop }
-                initialize={ initialize }
-                methodId="foobar"
-                onError={ onError }
-            />
-        );
+    mount(
+      <CheckoutButton
+        containerId="foobarContainer"
+        deinitialize={ noop }
+        initialize={ initialize }
+        methodId="foobar"
+        onError={ onError }
+      />,
+    );
 
-        expect(initialize)
-            .toHaveBeenCalledWith({
-                methodId: 'foobar',
-                foobar: {
-                    container: 'foobarContainer',
-                    onError,
-                },
-            });
+    expect(initialize).toHaveBeenCalledWith({
+      methodId: 'foobar',
+      foobar: {
+        container: 'foobarContainer',
+        onError,
+      },
     });
+  });
 
-    it('deinitializes button when component unmounts', () => {
-        const deinitialize = jest.fn();
-        const onError = jest.fn();
+  it('deinitializes button when component unmounts', () => {
+    const deinitialize = jest.fn();
+    const onError = jest.fn();
 
-        const component = mount(
-            <CheckoutButton
-                containerId="foobarContainer"
-                deinitialize={ deinitialize }
-                initialize={ noop }
-                methodId="foobar"
-                onError={ onError }
-            />
-        );
+    const component = mount(
+      <CheckoutButton
+        containerId="foobarContainer"
+        deinitialize={ deinitialize }
+        initialize={ noop }
+        methodId="foobar"
+        onError={ onError }
+      />,
+    );
 
-        component.unmount();
+    component.unmount();
 
-        expect(deinitialize)
-            .toHaveBeenCalled();
-    });
+    expect(deinitialize).toHaveBeenCalled();
+  });
 });

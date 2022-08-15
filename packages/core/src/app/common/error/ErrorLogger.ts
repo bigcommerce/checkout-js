@@ -1,45 +1,40 @@
 import { BrowserOptions } from '@sentry/browser';
 
 export default interface ErrorLogger {
-    /**
-     * Logs an error in, tagging it with an error code.
-     *
-     * @param error The error object to be logged
-     * @param tags The tags attached to the log entry
-     * @param level The level of the log
-     * @param meta Any extra meta data
-     */
-    log(
-        error: Error,
-        tags?: ErrorTags,
-        level?: ErrorLevelType,
-        meta?: ErrorMeta
-    ): void;
+  /**
+   * Logs an error in, tagging it with an error code.
+   *
+   * @param error The error object to be logged
+   * @param tags The tags attached to the log entry
+   * @param level The level of the log
+   * @param meta Any extra meta data
+   */
+  log(error: Error, tags?: ErrorTags, level?: ErrorLevelType, meta?: ErrorMeta): void;
 }
 
 export interface ErrorLoggerOptions {
-    errorTypes?: string[];
-    publicPath?: string;
+  errorTypes?: string[];
+  publicPath?: string;
 }
 
 export interface ErrorLoggerServiceConfig {
-    sentry?: BrowserOptions;
+  sentry?: BrowserOptions;
 }
 
 export interface ErrorTags {
-    /**
-     * A code that identifies uniquely each error type
-     */
-    errorCode: string;
+  /**
+   * A code that identifies uniquely each error type
+   */
+  errorCode: string;
 }
 
 export interface ErrorMeta {
-    [key: string]: unknown;
+  [key: string]: unknown;
 }
 
 export enum ErrorLevelType {
-    Info = 'info',
-    Warning = 'warning',
-    Error = 'error',
-    Debug = 'debug',
+  Info = 'info',
+  Warning = 'warning',
+  Error = 'error',
+  Debug = 'debug',
 }

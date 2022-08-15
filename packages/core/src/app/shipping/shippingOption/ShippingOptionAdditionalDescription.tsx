@@ -5,33 +5,38 @@ import { TranslatedString } from '../../locale';
 import { Toggle } from '../../ui/toggle';
 
 interface ShippingOptionAdditionalDescriptionProps {
-    description: string;
+  description: string;
 }
 
-const ShippingOptionAdditionalDescription: React.FunctionComponent<ShippingOptionAdditionalDescriptionProps> = ({
-description,
-}) => {
-    const CHRACTER_LIMIT = 45;
+const ShippingOptionAdditionalDescription: React.FunctionComponent<
+  ShippingOptionAdditionalDescriptionProps
+> = ({ description }) => {
+  const CHRACTER_LIMIT = 45;
 
-    return (
-        <div className="shippingOption-additionalDescription--container">
-            <Toggle openByDefault={ description.length < CHRACTER_LIMIT }>
-                { ({ isOpen, toggle }) => (
-                    <>
-                        <span className={ `shippingOption-additionalDescription ${ isOpen ?
-                            'shippingOption-additionalDescription--expanded' : 'shippingOption-additionalDescription--collapsed' }` }
-                        >
-                            { description }
-                        </span>
-                        { !isOpen &&
-                            <a className="shippingOption-readMore" onClick={ preventDefault(toggle) }>
-                            <TranslatedString id="common.show_more" />
-                        </a> }
-                    </>
-                ) }
-            </Toggle>
-        </div>
-    );
+  return (
+    <div className="shippingOption-additionalDescription--container">
+      <Toggle openByDefault={ description.length < CHRACTER_LIMIT }>
+        { ({ isOpen, toggle }) => (
+          <>
+            <span
+              className={ `shippingOption-additionalDescription ${
+                isOpen
+                  ? 'shippingOption-additionalDescription--expanded'
+                  : 'shippingOption-additionalDescription--collapsed'
+              }` }
+            >
+              { description }
+            </span>
+            { !isOpen && (
+              <a className="shippingOption-readMore" onClick={ preventDefault(toggle) }>
+                <TranslatedString id="common.show_more" />
+              </a>
+            ) }
+          </>
+        ) }
+      </Toggle>
+    </div>
+  );
 };
 
 export default memo(ShippingOptionAdditionalDescription);

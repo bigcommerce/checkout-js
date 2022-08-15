@@ -9,321 +9,298 @@ import { getCountries } from '../geography/countries.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 import { OrderComments } from '../orderComments';
 
-import { getConsignment } from './consignment.mock';
-import { getShippingAddress } from './shipping-addresses.mock';
-import { ShippingOptions } from './shippingOption';
 import BillingSameAsShippingField from './BillingSameAsShippingField';
+import { getConsignment } from './consignment.mock';
 import MultiShippingForm from './MultiShippingForm';
+import { getShippingAddress } from './shipping-addresses.mock';
 import ShippingAddress from './ShippingAddress';
 import ShippingForm, { ShippingFormProps } from './ShippingForm';
+import { ShippingOptions } from './shippingOption';
 
 describe('ShippingForm Component', () => {
-    let component: ReactWrapper;
-    let localeContext: LocaleContextType;
-    let defaultProps: ShippingFormProps;
+  let component: ReactWrapper;
+  let localeContext: LocaleContextType;
+  let defaultProps: ShippingFormProps;
 
+  beforeEach(() => {
+    localeContext = createLocaleContext(getStoreConfig());
+
+    defaultProps = {
+      isBillingSameAsShipping: true,
+      cart: {
+        ...getCart(),
+        lineItems: {
+          physicalItems: [{ ...getPhysicalItem(), quantity: 3 }],
+          giftCertificates: [],
+          digitalItems: [],
+        },
+      },
+      isGuest: false,
+      onCreateAccount: jest.fn(),
+      onSignIn: jest.fn(),
+      assignItem: jest.fn(),
+      addresses: getCustomer().addresses,
+      cartHasChanged: false,
+      countries: getCountries(),
+      countriesWithAutocomplete: [],
+      consignments: [
+        { ...getConsignment(), id: 'foo' },
+        { ...getConsignment(), id: 'bar' },
+      ],
+      customerMessage: 'comment',
+      shippingAddress: getShippingAddress(),
+      isMultiShippingMode: false,
+      shouldShowOrderComments: true,
+      onMultiShippingSubmit: jest.fn(),
+      onSingleShippingSubmit: jest.fn(),
+      isLoading: false,
+      isShippingStepPending: false,
+      deleteConsignments: jest.fn(),
+      updateAddress: jest.fn(),
+      onUseNewAddress: jest.fn(),
+      getFields: jest.fn(() => []),
+      onUnhandledError: jest.fn(),
+      initialize: jest.fn(),
+      deinitialize: jest.fn(),
+      signOut: jest.fn(),
+      shouldValidateSafeInput: true,
+    };
+  });
+
+  describe('when multishipping mode is off', () => {
     beforeEach(() => {
-        localeContext = createLocaleContext(getStoreConfig());
+      component = mount(
+        <LocaleContext.Provider value={ localeContext }>
+          <ShippingForm { ...defaultProps } />
+        </LocaleContext.Provider>,
+      );
+    });
 
-        defaultProps = {
-            isBillingSameAsShipping: true,
-            cart: {
-                ...getCart(),
-                lineItems: {
-                    physicalItems: [
-                        {  ...getPhysicalItem(), quantity: 3 },
-                    ],
-                    giftCertificates: [],
-                    digitalItems: [],
+    it('renders ShippingAddress with expected props', () => {
+      component = mount(
+        <LocaleContext.Provider value={ localeContext }>
+          <ShippingForm { ...defaultProps } methodId="amazon" />
+        </LocaleContext.Provider>,
+      );
+
+      expect(component.find(ShippingAddress).props()).toEqual(
+        expect.objectContaining({
+          methodId: 'amazon',
+        }),
+      );
+    });
+
+    it('renders BillingSameAsShippping component', () => {
+      expect(component.find(BillingSameAsShippingField)).toHaveLength(1);
+    });
+
+    it('renders disabled continue button when valid address and no shipping option', () => {
+      component = mount(
+        <LocaleContext.Provider value={ localeContext }>
+          <ShippingForm { ...defaultProps } consignments={ [] } />
+        </LocaleContext.Provider>,
+      );
+
+      expect(component.find('Button#checkout-shipping-continue').props()).toEqual(
+        expect.objectContaining({
+          isLoading: false,
+          disabled: true,
+        }),
+      );
+    });
+
+    it('renders enabled continue button when invalid address', () => {
+      component = mount(
+        <LocaleContext.Provider value={ localeContext }>
+          <ShippingForm
+            { ...defaultProps }
+            shippingAddress={ {
+              ...getShippingAddress(),
+              address1: '',
+            } }
+          />
+        </LocaleContext.Provider>,
+      );
+
+      expect(component.find('Button#checkout-shipping-continue').props()).toEqual(
+        expect.objectContaining({
+          isLoading: false,
+          disabled: false,
+        }),
+      );
+    });
+
+    it('renders enabled continue button when no address', () => {
+      component = mount(
+        <LocaleContext.Provider value={ localeContext }>
+          <ShippingForm { ...defaultProps } shippingAddress={ undefined } />
+        </LocaleContext.Provider>,
+      );
+
+      expect(component.find('Button#checkout-shipping-continue').props()).toEqual(
+        expect.objectContaining({
+          isLoading: false,
+          disabled: false,
+        }),
+      );
+    });
+
+    it('renders ShippingAddress', () => {
+      expect(component.find(ShippingAddress).props()).toEqual(
+        expect.objectContaining({
+          methodId: undefined,
+          shippingAddress: defaultProps.shippingAddress,
+          addresses: defaultProps.addresses,
+          formFields: [],
+        }),
+      );
+
+      expect(defaultProps.getFields).toHaveBeenCalledWith('US');
+      expect(component.find(MultiShippingForm)).toHaveLength(0);
+    });
+
+    it('renders shipping options', () => {
+      expect(component.find(ShippingOptions).prop('isMultiShippingMode')).toBe(false);
+    });
+
+    it('renders order comments', () => {
+      expect(component.find(OrderComments)).toHaveLength(1);
+    });
+
+    it('calls onSingleShippingSubmit when form is submitted', async () => {
+      component.find('form').simulate('submit');
+
+      await new Promise((resolve) => process.nextTick(resolve));
+
+      expect(defaultProps.onSingleShippingSubmit).toHaveBeenCalledWith(
+        expect.objectContaining({
+          billingSameAsShipping: true,
+          orderComment: 'comment',
+        }),
+      );
+    });
+  });
+
+  describe('when multishipping mode is on', () => {
+    describe('when user is guest', () => {
+      beforeEach(() => {
+        component = mount(
+          <LocaleContext.Provider value={ localeContext }>
+            <ShippingForm { ...defaultProps } isGuest={ true } isMultiShippingMode={ true } />
+          </LocaleContext.Provider>,
+        );
+      });
+
+      it('doest not render shipping options', () => {
+        expect(component.find(ShippingOptions)).toHaveLength(0);
+      });
+
+      it('does not render order comments', () => {
+        expect(component.find(OrderComments)).toHaveLength(0);
+      });
+
+      it('renders MultiShippingForm', () => {
+        expect(component.find(ShippingAddress)).toHaveLength(0);
+        expect(component.find(MultiShippingForm)).toHaveLength(1);
+      });
+    });
+
+    describe('when user is signed in', () => {
+      beforeEach(() => {
+        component = mount(
+          <LocaleContext.Provider value={ localeContext }>
+            <ShippingForm { ...defaultProps } isMultiShippingMode={ true } />
+          </LocaleContext.Provider>,
+        );
+      });
+
+      it('renders disabled button when loading', () => {
+        component = mount(
+          <LocaleContext.Provider value={ localeContext }>
+            <ShippingForm { ...defaultProps } isLoading={ true } isMultiShippingMode={ true } />
+          </LocaleContext.Provider>,
+        );
+
+        expect(component.find('Button#checkout-shipping-continue').props()).toEqual(
+          expect.objectContaining({
+            isLoading: true,
+            disabled: true,
+          }),
+        );
+      });
+
+      it('renders disabled button when no shipping option selected', () => {
+        component = mount(
+          <LocaleContext.Provider value={ localeContext }>
+            <ShippingForm
+              { ...defaultProps }
+              consignments={ [
+                {
+                  ...getConsignment(),
+                  selectedShippingOption: undefined,
                 },
-            },
-            isGuest: false,
-            onCreateAccount: jest.fn(),
-            onSignIn: jest.fn(),
-            assignItem: jest.fn(),
-            addresses: getCustomer().addresses,
-            cartHasChanged: false,
-            countries: getCountries(),
-            countriesWithAutocomplete: [],
-            consignments: [
-                { ...getConsignment(), id: 'foo' },
-                { ...getConsignment(), id: 'bar' },
-             ],
-            customerMessage: 'comment',
-            shippingAddress: getShippingAddress(),
-            isMultiShippingMode: false,
-            shouldShowOrderComments: true,
-            onMultiShippingSubmit: jest.fn(),
-            onSingleShippingSubmit: jest.fn(),
+              ] }
+              isMultiShippingMode={ true }
+            />
+          </LocaleContext.Provider>,
+        );
+
+        expect(component.find('Button#checkout-shipping-continue').props()).toEqual(
+          expect.objectContaining({
             isLoading: false,
-            isShippingStepPending: false,
-            deleteConsignments: jest.fn(),
-            updateAddress: jest.fn(),
-            onUseNewAddress: jest.fn(),
-            getFields: jest.fn(() => []),
-            onUnhandledError: jest.fn(),
-            initialize: jest.fn(),
-            deinitialize: jest.fn(),
-            signOut: jest.fn(),
-            shouldValidateSafeInput: true,
-        };
+            disabled: true,
+          }),
+        );
+      });
+
+      it('renders disabled button when unassigned items', () => {
+        component = mount(
+          <LocaleContext.Provider value={ localeContext }>
+            <ShippingForm { ...defaultProps } consignments={ [] } isMultiShippingMode={ true } />
+          </LocaleContext.Provider>,
+        );
+
+        expect(component.find('Button#checkout-shipping-continue').props()).toEqual(
+          expect.objectContaining({
+            isLoading: false,
+            disabled: true,
+          }),
+        );
+      });
+
+      it('renders submit button', () => {
+        expect(component.find('Button#checkout-shipping-continue').props()).toEqual(
+          expect.objectContaining({
+            isLoading: false,
+            disabled: false,
+          }),
+        );
+      });
+
+      it('renders MultiShippingForm', () => {
+        expect(component.find(ShippingAddress)).toHaveLength(0);
+        expect(component.find(MultiShippingForm)).toHaveLength(1);
+      });
+
+      it('renders shipping options', () => {
+        expect(component.find(ShippingOptions).prop('isMultiShippingMode')).toBe(true);
+      });
+
+      it('renders order comments', () => {
+        expect(component.find(OrderComments)).toHaveLength(1);
+      });
+
+      it('calls onMultiShippingSubmit when form is submitted', async () => {
+        component.find('form').simulate('submit');
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(defaultProps.onMultiShippingSubmit).toHaveBeenCalledWith(
+          expect.objectContaining({
+            orderComment: 'comment',
+          }),
+        );
+      });
     });
-
-    describe('when multishipping mode is off', () => {
-        beforeEach(() => {
-            component = mount(
-                <LocaleContext.Provider value={ localeContext }>
-                    <ShippingForm
-                        { ...defaultProps }
-                    />
-                </LocaleContext.Provider>
-            );
-        });
-
-        it('renders ShippingAddress with expected props', () => {
-            component = mount(
-                <LocaleContext.Provider value={ localeContext }>
-                    <ShippingForm
-                        { ...defaultProps }
-                        methodId="amazon"
-                    />
-                </LocaleContext.Provider>
-            );
-
-            expect(component.find(ShippingAddress).props()).toEqual(
-                expect.objectContaining({
-                    methodId: 'amazon',
-                })
-            );
-        });
-
-        it('renders BillingSameAsShippping component', () => {
-            expect(component.find(BillingSameAsShippingField).length)
-                .toEqual(1);
-        });
-
-        it('renders disabled continue button when valid address and no shipping option', () => {
-            component = mount(
-                <LocaleContext.Provider value={ localeContext }>
-                    <ShippingForm
-                        { ...defaultProps }
-                        consignments={ [] }
-                    />
-                </LocaleContext.Provider>
-            );
-
-            expect(component.find('Button#checkout-shipping-continue').props())
-                .toEqual(expect.objectContaining({
-                    isLoading: false,
-                    disabled: true,
-                }));
-        });
-
-        it('renders enabled continue button when invalid address', () => {
-            component = mount(
-                <LocaleContext.Provider value={ localeContext }>
-                    <ShippingForm
-                        { ...defaultProps }
-                        shippingAddress={ {
-                            ...getShippingAddress(),
-                            address1: '',
-                        } }
-                    />
-                </LocaleContext.Provider>
-            );
-
-            expect(component.find('Button#checkout-shipping-continue').props())
-                .toEqual(expect.objectContaining({
-                    isLoading: false,
-                    disabled: false,
-                }));
-        });
-
-        it('renders enabled continue button when no address', () => {
-            component = mount(
-                <LocaleContext.Provider value={ localeContext }>
-                    <ShippingForm
-                        { ...defaultProps }
-                        shippingAddress={ undefined }
-                    />
-                </LocaleContext.Provider>
-            );
-
-            expect(component.find('Button#checkout-shipping-continue').props())
-                .toEqual(expect.objectContaining({
-                    isLoading: false,
-                    disabled: false,
-                }));
-        });
-
-        it('renders ShippingAddress', () => {
-            expect(component.find(ShippingAddress).props()).toEqual(
-                expect.objectContaining({
-                    methodId: undefined,
-                    shippingAddress: defaultProps.shippingAddress,
-                    addresses: defaultProps.addresses,
-                    formFields: [],
-                })
-            );
-
-            expect(defaultProps.getFields).toHaveBeenCalledWith('US');
-            expect(component.find(MultiShippingForm).length).toEqual(0);
-        });
-
-        it('renders shipping options', () => {
-            expect(component.find(ShippingOptions).prop('isMultiShippingMode'))
-                .toEqual(false);
-        });
-
-        it('renders order comments', () => {
-            expect(component.find(OrderComments).length)
-                .toEqual(1);
-        });
-
-        it('calls onSingleShippingSubmit when form is submitted', async () => {
-            component.find('form')
-                .simulate('submit');
-
-            await new Promise(resolve => process.nextTick(resolve));
-
-            expect(defaultProps.onSingleShippingSubmit).toHaveBeenCalledWith(expect.objectContaining({
-                billingSameAsShipping: true,
-                orderComment: 'comment',
-            }));
-        });
-    });
-
-    describe('when multishipping mode is on', () => {
-        describe('when user is guest', () => {
-            beforeEach(() => {
-                component = mount(
-                    <LocaleContext.Provider value={ localeContext }>
-                        <ShippingForm
-                            { ...defaultProps }
-                            isGuest={ true }
-                            isMultiShippingMode={ true }
-                        />
-                    </LocaleContext.Provider>
-                );
-            });
-
-            it('doest not render shipping options', () => {
-                expect(component.find(ShippingOptions).length).toEqual(0);
-            });
-
-            it('does not render order comments', () => {
-                expect(component.find(OrderComments).length)
-                    .toEqual(0);
-            });
-
-            it('renders MultiShippingForm', () => {
-                expect(component.find(ShippingAddress).length).toEqual(0);
-                expect(component.find(MultiShippingForm).length).toEqual(1);
-            });
-        });
-
-        describe('when user is signed in', () => {
-            beforeEach(() => {
-                component = mount(
-                    <LocaleContext.Provider value={ localeContext }>
-                        <ShippingForm
-                            { ...defaultProps }
-                            isMultiShippingMode={ true }
-                        />
-                    </LocaleContext.Provider>
-                );
-            });
-
-            it('renders disabled button when loading', () => {
-                component = mount(
-                    <LocaleContext.Provider value={ localeContext }>
-                        <ShippingForm
-                            { ...defaultProps }
-                            isLoading={ true }
-                            isMultiShippingMode={ true }
-                        />
-                    </LocaleContext.Provider>
-                );
-
-                expect(component.find('Button#checkout-shipping-continue').props())
-                    .toEqual(expect.objectContaining({
-                        isLoading: true,
-                        disabled: true,
-                    }));
-            });
-
-            it('renders disabled button when no shipping option selected', () => {
-                component = mount(
-                    <LocaleContext.Provider value={ localeContext }>
-                        <ShippingForm
-                            { ...defaultProps }
-                            consignments={ [{
-                                ...getConsignment(),
-                                selectedShippingOption: undefined,
-                            }] }
-                            isMultiShippingMode={ true }
-                        />
-                    </LocaleContext.Provider>
-                );
-
-                expect(component.find('Button#checkout-shipping-continue').props())
-                    .toEqual(expect.objectContaining({
-                        isLoading: false,
-                        disabled: true,
-                    }));
-            });
-
-            it('renders disabled button when unassigned items', () => {
-                component = mount(
-                    <LocaleContext.Provider value={ localeContext }>
-                        <ShippingForm
-                            { ...defaultProps }
-                            consignments={ [] }
-                            isMultiShippingMode={ true }
-                        />
-                    </LocaleContext.Provider>
-                );
-
-                expect(component.find('Button#checkout-shipping-continue').props())
-                    .toEqual(expect.objectContaining({
-                        isLoading: false,
-                        disabled: true,
-                    }));
-            });
-
-            it('renders submit button', () => {
-                expect(component.find('Button#checkout-shipping-continue').props())
-                    .toEqual(expect.objectContaining({
-                        isLoading: false,
-                        disabled: false,
-                    }));
-            });
-
-            it('renders MultiShippingForm', () => {
-                expect(component.find(ShippingAddress).length).toEqual(0);
-                expect(component.find(MultiShippingForm).length).toEqual(1);
-            });
-
-            it('renders shipping options', () => {
-                expect(component.find(ShippingOptions).prop('isMultiShippingMode'))
-                    .toEqual(true);
-            });
-
-            it('renders order comments', () => {
-                expect(component.find(OrderComments).length)
-                    .toEqual(1);
-            });
-
-            it('calls onMultiShippingSubmit when form is submitted', async () => {
-                component.find('form')
-                    .simulate('submit');
-
-                await new Promise(resolve => process.nextTick(resolve));
-
-                expect(defaultProps.onMultiShippingSubmit).toHaveBeenCalledWith(expect.objectContaining({
-                    orderComment: 'comment',
-                }));
-            });
-        });
-    });
+  });
 });

@@ -1,4 +1,4 @@
-import React, { memo, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { Fieldset, Legend } from '../../ui/form';
@@ -10,35 +10,35 @@ import CreditCardNameField from './CreditCardNameField';
 import CreditCardNumberField from './CreditCardNumberField';
 
 export interface CreditCardFieldsetProps {
-    shouldShowCardCodeField?: boolean;
-    shouldShowCustomerCodeField?: boolean;
-    shouldShowSaveCardField?: boolean;
+  shouldShowCardCodeField?: boolean;
+  shouldShowCustomerCodeField?: boolean;
+  shouldShowSaveCardField?: boolean;
 }
 
 const CreditCardFieldset: FunctionComponent<CreditCardFieldsetProps> = ({
-    shouldShowCardCodeField,
-    shouldShowCustomerCodeField,
+  shouldShowCardCodeField,
+  shouldShowCustomerCodeField,
 }) => (
-    <Fieldset
-        additionalClassName="creditCardFieldset"
-        legend={
-            <Legend hidden>
-                <TranslatedString id="payment.credit_card_text" />
-            </Legend>
-        }
-    >
-        <div className="form-ccFields">
-            <CreditCardNumberField name="ccNumber" />
+  <Fieldset
+    additionalClassName="creditCardFieldset"
+    legend={
+      <Legend hidden>
+        <TranslatedString id="payment.credit_card_text" />
+      </Legend>
+    }
+  >
+    <div className="form-ccFields">
+      <CreditCardNumberField name="ccNumber" />
 
-            <CreditCardExpiryField name="ccExpiry" />
+      <CreditCardExpiryField name="ccExpiry" />
 
-            <CreditCardNameField name="ccName" />
+      <CreditCardNameField name="ccName" />
 
-            { shouldShowCardCodeField && <CreditCardCodeField name="ccCvv" /> }
+      { shouldShowCardCodeField && <CreditCardCodeField name="ccCvv" /> }
 
-            { shouldShowCustomerCodeField && <CreditCardCustomerCodeField name="ccCustomerCode" /> }
-        </div>
-    </Fieldset>
+      { shouldShowCustomerCodeField && <CreditCardCustomerCodeField name="ccCustomerCode" /> }
+    </div>
+  </Fieldset>
 );
 
 export default memo(CreditCardFieldset);

@@ -1,12 +1,12 @@
-import { setPrototypeOf, CustomError } from '../../common/error';
+import { CustomError, setPrototypeOf } from '../../common/error';
 
 export class EmbeddedCheckoutUnsupportedError extends CustomError {
-    constructor(message: string) {
-        super({
-            name: 'EMBEDDED_CHECKOUT_UNSUPPORTED_ERROR',
-            message,
-        });
+  constructor(message: string) {
+    super({
+      name: 'EMBEDDED_CHECKOUT_UNSUPPORTED_ERROR',
+      message,
+    });
 
-        setPrototypeOf(this, EmbeddedCheckoutUnsupportedError.prototype);
-    }
+    setPrototypeOf(this, EmbeddedCheckoutUnsupportedError.prototype);
+  }
 }

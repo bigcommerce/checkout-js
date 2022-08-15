@@ -1,4 +1,4 @@
 export interface AutoExportGeneratorSchema {
-    config: string;
-    projectName: string;
+  config: string;
+  projectName: string;
 }

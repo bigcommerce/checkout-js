@@ -1,6 +1,6 @@
 enum AddressType {
-    Billing = 'billing',
-    Shipping = 'shipping',
+  Billing = 'billing',
+  Shipping = 'shipping',
 }
 
 export default AddressType;
