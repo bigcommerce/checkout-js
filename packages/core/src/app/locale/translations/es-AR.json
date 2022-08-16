@@ -255,7 +255,7 @@
             "payment_method_unavailable_error": "Este proveedor de pagos no está disponible temporalmente. Vuelve a intentarlo más tarde.",
             "payment_not_required_text": "No se requiere el pago para este pedido.",
             "paypal_continue_action": "Continuar con PayPal",
-            "braintreevenmo_continue_action": "Continuar con Venmo",
+            "paypal_venmo_continue_action": "Continuar con Venmo",
             "paypal_credit_continue_action": "Continuar con PayPal Credit",
             "paypal_credit_description_text": "Compra ahora y paga después",
             "paypal_description_text": "Pagar con tu cuenta de PayPal",

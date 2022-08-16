@@ -8,7 +8,7 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale
 import { Button } from '../ui/button';
 import { IconBolt } from '../ui/icon';
 
-import { PaymentMethodId } from './paymentMethod';
+import { PaymentMethodId, PaymentMethodType } from './paymentMethod';
 import PaymentSubmitButton, { PaymentSubmitButtonProps } from './PaymentSubmitButton';
 
 describe('PaymentSubmitButton', () => {
@@ -134,13 +134,22 @@ describe('PaymentSubmitButton', () => {
             .toEqual(languageService.translate('payment.paypal_continue_action'));
     });
 
-    it('renders button with special label for BraintreeVenmo', () => {
+    it('renders button with special label for Braintree Venmo', () => {
         const component = mount(
             <PaymentSubmitButtonTest methodId={ PaymentMethodId.BraintreeVenmo } methodType="paypal" />
         );
 
         expect(component.text())
-            .toEqual(languageService.translate('payment.braintreevenmo_continue_action'));
+            .toEqual(languageService.translate('payment.paypal_venmo_continue_action'));
+    });
+
+    it('renders button with special label for PayPal Venmo', () => {
+        const component = mount(
+            <PaymentSubmitButtonTest methodType={ PaymentMethodType.PaypalVenmo } />
+        );
+
+        expect(component.text())
+            .toEqual(languageService.translate('payment.paypal_venmo_continue_action'));
     });
 
     it('renders button with special label for PayPal Credit', () => {

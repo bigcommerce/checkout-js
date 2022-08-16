@@ -255,7 +255,7 @@
             "payment_method_unavailable_error": "Denne betalingsleverandøren er midlertidig utilgjengelig. Prøv igjen senere.",
             "payment_not_required_text": "Betaling kreves ikke for denne bestillingen.",
             "paypal_continue_action": "Fortsett med PayPal",
-            "braintreevenmo_continue_action": "Fortsett med Venmo",
+            "paypal_venmo_continue_action": "Fortsett med Venmo",
             "paypal_credit_continue_action": "Fortsett med PayPal Credit",
             "paypal_credit_description_text": "Kjøp nå, betal over tid",
             "paypal_description_text": "Betal med PayPal-kontoen din",
