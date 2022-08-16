@@ -102,6 +102,26 @@ describe('when using Stripe payment', () => {
                 }));
         });
 
+        it('return stripe v3 3ds auth failure', () => {
+
+            const authFail3ds = Object.create(new Error('Something went wrong.'));
+            authFail3ds.name = 'StripeV3Error';
+            authFail3ds.type = 'stripev3_error';
+            authFail3ds.subtype = 'auth_failure';
+
+
+            mount(<PaymentMethodTest { ...defaultProps } method={ method } />)
+                .find(HostedWidgetPaymentMethod)
+                .props()
+                .onUnhandledError(authFail3ds);
+
+            expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(
+                new Error(
+                    localeContext.language.translate('payment.stripev3_auth_3ds_fail')
+                )
+            );
+        });
+
         it('initializes method with required config', () => {
             const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
             const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);

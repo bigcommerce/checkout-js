@@ -232,6 +232,7 @@
             "credit_card_number_required_error": "Credit Card Number is required",
             "credit_card_number_mismatch_error": "The card number entered does not match the card stored in your account",
             "credit_debit_card_text": "Credit/Debit Card",
+            "stripev3_auth_3ds_fail": "User did not authenticate",
             "digitalriver_dropin_error": "There was an error while processing your payment. Please try again or contact us.",
             "digitalriver_checkout_error": "There was a problem with your checkout, please check your details and try again or contact customer service",
             "digitalriver_checkout_error_title": "Error while processing request.",
