@@ -239,6 +239,7 @@
             "klarna_continue_action": "Fortsett med Klarna",
             "klarna_name_text": "Klarna",
             "masterpass_name_text": "Masterpass",
+            "mollie_unsupported_method_error": "Denne betalingsmåten kan ikke brukes til kjøp av digitale produkter. Kontakt kundestøtte eller prøv igjen.",
             "opy_continue_action": "Fortsett med {methodName}",
             "opy_widget_slogan": "Kjøp nå. Betal smartere.",
             "opy_widget_info": "Du vil bli omdirigert til nettstedet til {methodName} for å fullføre bestillingen når du klikker på «Fortsett med {methodName}»",
