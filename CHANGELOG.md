@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.246.0](https://github.com/bigcommerce/checkout-js/compare/v1.245.4...v1.246.0) (2022-08-16)
+
+
+### Features
+
+* **payment:** PAYPAL-1613 removed unnecessary Braintree Venmo logic from PaymentSubmitButton component ([#977](https://github.com/bigcommerce/checkout-js/issues/977)) ([5cf70e4](https://github.com/bigcommerce/checkout-js/commit/5cf70e4bb2d24558790b75841ba9c045bd18f385))
+
 ### [1.245.4](https://github.com/bigcommerce/checkout-js/compare/v1.245.3...v1.245.4) (2022-08-16)
 
 ### [1.245.3](https://github.com/bigcommerce/checkout-js/compare/v1.245.2...v1.245.3) (2022-08-16)
