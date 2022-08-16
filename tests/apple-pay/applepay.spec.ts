@@ -1,5 +1,5 @@
 import { test, CustomerStepPreset, PaymentStepAsGuestPreset } from '../';
-import { internalOrder, order, orderPayment, validateMerchantResponse, consignments } from './ApplePayTestMockResponse';
+import { internalOrder, order, orderPayment, validateMerchantResponse, consignmentsAndBilling } from './ApplePayTestMockResponse';
 
 test.describe('ApplePay', () => {
     test('Customer should be able to pay using ApplePay through the payment step in checkout', async ({ assertions, checkout, page }) => {
@@ -38,7 +38,8 @@ test.describe('ApplePay', () => {
         await page.route('**/api/public/v1/payments/applepay/validate_merchant', route => route.fulfill({ ...responseProps, body: validateMerchantResponse }));        
         await page.route(/.*\/api\/storefront\/orders\/124.*/, route => route.fulfill({...responseProps, body: order }));
         await page.route('**/api/public/v1/orders/payments', route => route.fulfill({ ...responseProps, body: orderPayment }));
-        await page.route(/.*\/api\/storefront\/checkouts\/124.*\/consignments/, route => route.fulfill({...responseProps, body: consignments }));
+        await page.route(/.*\/api\/storefront\/checkouts\/124.*\/consignments/, route => route.fulfill({...responseProps, body: consignmentsAndBilling }));
+        await page.route(/.*\/api\/storefront\/checkouts\/124.*\/billing-address/, route => route.fulfill({...responseProps, body: consignmentsAndBilling }));
         await page.route('**/internalapi/v1/checkout/order', route => route.fulfill({
             ...responseProps,
             headers: { Token: 'White shirt now red, my bloody nose' },
