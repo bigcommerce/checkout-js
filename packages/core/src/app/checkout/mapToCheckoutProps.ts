@@ -21,7 +21,11 @@ export default function mapToCheckoutProps(
         links: {
             loginLink: loginUrl = '',
             createAccountLink: createAccountUrl = '',
+            cartLink: cartUrl = '',
         } = {},
+        displaySettings: {
+            hidePriceFromGuests: isPriceHiddenFromGuests = false,
+        } = {}
     } = data.getConfig() || {};
 
     const subscribeToConsignmentsSelector = createSelector(
@@ -40,8 +44,10 @@ export default function mapToCheckoutProps(
         isGuestEnabled,
         isLoadingCheckout: statuses.isLoadingCheckout(),
         isPending: statuses.isPending(),
+        isPriceHiddenFromGuests,
         loadCheckout: checkoutService.loadCheckout,
         loginUrl,
+        cartUrl,
         createAccountUrl,
         canCreateAccountInCheckout: features['CHECKOUT-4941.account_creation_in_checkout'],
         promotions,
