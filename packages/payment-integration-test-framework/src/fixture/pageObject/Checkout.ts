@@ -33,6 +33,10 @@ export class Checkout {
     }
 
     async route(url: string | RegExp | ((url: URL) => boolean), filePath: string, data?: Record<string, unknown>): Promise<void> {
+        if (data && typeof data !== 'object') {
+            throw new Error('Unable to render data type \''+ typeof data + '\'. Please use object instead.');
+        }
+
         await this.playwright.renderAndRoute(url, filePath, data);
     }
 
