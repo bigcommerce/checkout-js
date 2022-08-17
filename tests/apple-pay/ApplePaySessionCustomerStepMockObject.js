@@ -20,8 +20,14 @@ class ApplePaySession {
     }
 
     completePayment() {
-        console.log('ApplePaySession.completePayment()');
     }
+
+    completeShippingContactSelection(status, newShippingMethods, newTotal, newLineItems) {
+    }
+
+    completeShippingMethodSelection(update) {
+    }
+
 
     completeMerchantValidation(response) {
         const mockPaymentData = {
@@ -40,11 +46,25 @@ class ApplePaySession {
                     paymentData: mockPaymentData,
                     paymentMethod: "xx",
                     transactionIdentifier: "xx",
-                }
+                },
+                billingContact: {
+                    emailAddress: "mock@mock.com",
+                    familyName: "mock",
+                    givenName: "mock",
+                    phoneNumber: "00000000",
+                },
+                payment: {
+                    shippingContact: {
+                        emailAddress: "mock@mock.com",
+                        familyName: "mock",
+                        givenName: "mock",
+                        phoneNumber: "00000000",
+                    }
+                },
             }
         };
 
-        this.onpaymentauthorized(event, this); // defined in checkout-sdk
+        this.onpaymentauthorized(event, this);
     }
 
     begin() {
@@ -52,7 +72,9 @@ class ApplePaySession {
             const event = {
                 validationURL: 'https://www.example.com',
             }
-            this.onvalidatemerchant(event); // defined in checkout-sdk
+            this.onvalidatemerchant(event);
+            this.onshippingcontactselected(event);
+            this.onshippingmethodselected(event);
         }, 0);
     }
 }
