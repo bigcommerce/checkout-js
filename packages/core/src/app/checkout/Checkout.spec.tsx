@@ -462,6 +462,41 @@ describe('Checkout', () => {
                 .toHaveBeenCalled();
         });
 
+        it('navigates to cart page after sign out if prices are restricted to login', () => {
+            checkoutState = { ...checkoutState };
+
+            Object.defineProperty(window, 'top', {
+                value: {
+                    location: {
+                        assign: jest.fn(),
+                    },
+                },
+                writable: true,
+            });
+
+            jest.spyOn(checkoutState.data, 'getCustomer')
+                .mockReturnValue(getCustomer());
+
+            jest.spyOn(checkoutState.data, 'getConfig')
+                .mockReturnValue({
+                    ...getStoreConfig(),
+                    displaySettings: {
+                        hidePriceFromGuests: true,
+                    },
+                });
+
+            container = mount(<CheckoutTest { ...defaultProps } />);
+
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            (container.find(CustomerInfo) as ReactWrapper<CustomerInfoProps>)
+                .prop('onSignOut')!({ isCartEmpty: false });
+            
+            const cartUrl = getStoreConfig().links.cartLink;
+
+            expect(window.top.location.href)
+                .toEqual(cartUrl);
+        });
+
         it('logs unhandled error', () => {
             const error = new Error();
 
