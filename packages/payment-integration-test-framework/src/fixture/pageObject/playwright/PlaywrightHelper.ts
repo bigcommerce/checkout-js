@@ -14,7 +14,7 @@ export class PlaywrightHelper {
     private readonly polly: PollyObject;
     private readonly server: ServerSideRender;
     private readonly storeUrl: string;
-    private readonly srcPath: string;
+    private readonly srcPath = './packages/payment-integration-test-framework/src';
     private isDevMode = false;
     private har = '';
 
@@ -25,7 +25,6 @@ export class PlaywrightHelper {
         this.polly = new PollyObject(this.mode);
         this.server = new ServerSideRender();
         this.storeUrl = getStoreUrl();
-        this.srcPath = './packages/payment-integration-test-framework/src';
     }
 
     enableDevMode(): void {
