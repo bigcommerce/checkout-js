@@ -26,7 +26,7 @@ export class PollyObject {
     private readonly mode: MODE;
     private readonly baseUrl: string;
     private readonly bigpayBaseUrlIdentifier: string = '/api/public/v1/orders/payments';
-    private readonly genericStoreUrl:string = 'https://4241.project';
+    private readonly genericStoreUrl: string = 'https://4241.project';
 
     constructor(mode: MODE) {
         this.mode = mode;
@@ -94,7 +94,7 @@ export class PollyObject {
         this.polly?.stop();
     }
 
-    enableRecord(): void{
+    enableRecord(): void {
         const storeUrl = getStoreUrl();
 
         this.polly?.server.any().on('request', req => {
@@ -124,8 +124,8 @@ export class PollyObject {
         }
     }
 
-    getCartAndOrderIDs(): { checkoutId: string; orderId?: number} {
-        let checkoutIdString: string;
+    getCartAndOrderIDs(): { checkoutId: string; orderId?: number } {
+        let checkoutIdString: string = '';
         const entries = this.getEntries();
 
         for (const entry of entries) {
@@ -134,9 +134,9 @@ export class PollyObject {
                 checkoutIdString = checkoutId;
             }
             if (includes(entry.request.url, 'api/storefront/orders') && entry.response.content.text) {
-                const {orderId, cartId} = JSON.parse(entry.response.content.text);
+                const { orderId, cartId } = JSON.parse(entry.response.content.text);
                 if (orderId && cartId) {
-                    return {checkoutId: cartId, orderId};
+                    return { checkoutId: cartId, orderId };
                 }
             }
         }
@@ -159,10 +159,11 @@ export class PollyObject {
     }
 
     private getEntries(): any {
-        const { recordingsDir } = this.polly?.persister?.options as {recordingsDir: string};
+        const { recordingsDir } = this.polly?.persister?.options as { recordingsDir: string };
         if (this.polly && recordingsDir) {
-            const api = new API({recordingsDir});
+            const api = new API({ recordingsDir });
             // PollyJS type bug: The type definition does not match with the actual implementation.
+            // @ts-ignore
             const entries = api.getRecording(this.polly.recordingId).body?.log?.entries;
             if (entries) {
                 return entries;
@@ -174,7 +175,8 @@ export class PollyObject {
         }
     }
 
-    private sortPayload(object: { [ key: string ]: any }): { [ key: string ]: any } {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    private sortPayload(object: { [key: string]: any }): { [key: string]: any } {
         const keys = Object.keys(object);
         const sortedKeys = keys.sort();
 
@@ -183,7 +185,7 @@ export class PollyObject {
                 return this.sortPayload(object[current]);
             }
 
-            return {...previous, [current]: (includes(ignoredPayloads, current)) ? '*' : object[current]};
+            return { ...previous, [current]: (includes(ignoredPayloads, current)) ? '*' : object[current] };
         }, {});
     }
 }

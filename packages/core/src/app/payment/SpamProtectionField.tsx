@@ -52,8 +52,8 @@ class SpamProtectionField extends Component<
 
         return (
             <div className="spamProtection-container">
-                <LoadingOverlay isLoading={ isExecutingSpamCheck }>
-                    { this.renderContent() }
+                <LoadingOverlay isLoading={isExecutingSpamCheck}>
+                    {this.renderContent()}
                 </LoadingOverlay>
             </div>
         );
@@ -71,7 +71,7 @@ class SpamProtectionField extends Component<
             <a
                 className="spamProtection-panel-message optimizedCheckout-primaryContent"
                 data-test="spam-protection-verify-button"
-                onClick={ this.handleRetry }
+                onClick={this.handleRetry}
             >
                 <TranslatedString
                     id="spam_protection.verify_action"
@@ -89,10 +89,11 @@ class SpamProtectionField extends Component<
         try {
             await executeSpamCheck();
         } catch (error) {
+            const verifyError = error as Error & { type: string }
             this.setState({ shouldShowRetryButton: true });
 
             // Notify the parent component if the user experiences a problem other than cancelling the reCaptcha challenge.
-            if (error && error.type !== 'spam_protection_challenge_not_completed') {
+            if (error && verifyError.type !== 'spam_protection_challenge_not_completed') {
                 onUnhandledError(error);
             }
         }

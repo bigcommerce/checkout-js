@@ -36,7 +36,7 @@ describe('Payment', () => {
         paymentMethods = [
             getPaymentMethod(),
             { ...getPaymentMethod(), id: 'sagepay' },
-            { ...getPaymentMethod(), id: 'bolt', initializationData: { showInCheckout: true }},
+            { ...getPaymentMethod(), id: 'bolt', initializationData: { showInCheckout: true } },
         ];
         selectedPaymentMethod = paymentMethods[0];
         subscribeEventEmitter = new EventEmitter();
@@ -92,16 +92,16 @@ describe('Payment', () => {
         };
 
         PaymentTest = props => (
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <LocaleContext.Provider value={ localeContext }>
-                    <Payment { ...props } />
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <Payment {...props} />
                 </LocaleContext.Provider>
             </CheckoutProvider>
         );
     });
 
     it('renders payment form with expected props', async () => {
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
         container.update();
@@ -123,7 +123,7 @@ describe('Payment', () => {
                 getConsignment(),
             ]);
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
         container.update();
@@ -135,10 +135,10 @@ describe('Payment', () => {
     });
 
     it('does not render bolt if showInCheckout is false', async () => {
-        const expectedPaymentMethods = paymentMethods.filter(method =>  method.id !== PaymentMethodId.Bolt);
+        const expectedPaymentMethods = paymentMethods.filter(method => method.id !== PaymentMethodId.Bolt);
         paymentMethods[2] = { ...getPaymentMethod(), id: 'bolt', initializationData: { showInCheckout: false } };
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
         container.update();
@@ -155,7 +155,7 @@ describe('Payment', () => {
         jest.spyOn(checkoutState.statuses, 'isInitializingPayment')
             .mockReturnValue(true);
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
         container.update();
@@ -165,7 +165,7 @@ describe('Payment', () => {
     });
 
     it('does not render payment form until initial requests are made', async () => {
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         expect(container.find(PaymentForm).length)
             .toEqual(0);
@@ -185,7 +185,7 @@ describe('Payment', () => {
         jest.spyOn(checkoutState.data, 'getPaymentMethods')
             .mockReturnValue([]);
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         expect(container.find(PaymentForm).length)
             .toEqual(0);
@@ -195,14 +195,14 @@ describe('Payment', () => {
         jest.spyOn(checkoutState.data, 'getOrder')
             .mockReturnValue(getOrder());
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         expect(container.find(PaymentForm).length)
             .toEqual(0);
     });
 
     it('loads payment methods when component is mounted', async () => {
-        mount(<PaymentTest { ...defaultProps } />);
+        mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
 
@@ -213,7 +213,7 @@ describe('Payment', () => {
     it('triggers callback when payment methods are loaded', async () => {
         const handeReady = jest.fn();
 
-        mount(<PaymentTest { ...defaultProps } onReady={ handeReady } />);
+        mount(<PaymentTest {...defaultProps} onReady={handeReady} />);
 
         await new Promise(resolve => process.nextTick(resolve));
 
@@ -231,7 +231,7 @@ describe('Payment', () => {
         jest.spyOn(checkoutService, 'applyStoreCredit')
             .mockResolvedValue(checkoutState);
 
-        const component = mount(<PaymentTest { ...defaultProps } />);
+        const component = mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
 
@@ -254,7 +254,7 @@ describe('Payment', () => {
             onUnhandledError: jest.fn(),
             usableStoreCredit: 10,
         }
-        mount(<PaymentTest { ...defaultProps } />);
+        mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
 
@@ -263,7 +263,7 @@ describe('Payment', () => {
     });
 
     it('sets default selected payment method', async () => {
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
         container.update();
@@ -275,7 +275,7 @@ describe('Payment', () => {
     it('sets default selected payment method to the one with default stored instrument', async () => {
         paymentMethods[1].config.hasDefaultStoredInstrument = true;
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
         container.update();
@@ -294,7 +294,7 @@ describe('Payment', () => {
                 grandTotal: 0,
             });
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
         container.update();
@@ -316,7 +316,7 @@ describe('Payment', () => {
                 storeCredit: 100,
             });
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
         container.update();
@@ -335,7 +335,7 @@ describe('Payment', () => {
                 }],
             });
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
         container.update();
@@ -348,7 +348,7 @@ describe('Payment', () => {
     });
 
     it('updates default selected payment method when list changes', async () => {
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
         container.update();
@@ -371,7 +371,7 @@ describe('Payment', () => {
     });
 
     it('tries to finalize order when component is mounted', async () => {
-        mount(<PaymentTest { ...defaultProps } />);
+        mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
 
@@ -386,8 +386,8 @@ describe('Payment', () => {
         const handleFinalize = jest.fn();
 
         mount(<PaymentTest
-            { ...defaultProps }
-            onFinalize={ handleFinalize }
+            {...defaultProps}
+            onFinalize={handleFinalize}
         />);
 
         await new Promise(resolve => process.nextTick(resolve));
@@ -403,8 +403,8 @@ describe('Payment', () => {
         const handleFinalizeError = jest.fn();
 
         mount(<PaymentTest
-            { ...defaultProps }
-            onFinalizeError={ handleFinalizeError }
+            {...defaultProps}
+            onFinalizeError={handleFinalizeError}
         />);
 
         await new Promise(resolve => process.nextTick(resolve));
@@ -417,8 +417,8 @@ describe('Payment', () => {
         const handleFinalizeError = jest.fn();
 
         mount(<PaymentTest
-            { ...defaultProps }
-            onFinalizeError={ handleFinalizeError }
+            {...defaultProps}
+            onFinalizeError={handleFinalizeError}
         />);
 
         await new Promise(resolve => process.nextTick(resolve));
@@ -431,8 +431,8 @@ describe('Payment', () => {
         const checkEmbeddedSupport = jest.fn();
 
         mount(<PaymentTest
-            { ...defaultProps }
-            checkEmbeddedSupport={ checkEmbeddedSupport }
+            {...defaultProps}
+            checkEmbeddedSupport={checkEmbeddedSupport}
         />);
 
         expect(checkEmbeddedSupport)
@@ -443,7 +443,7 @@ describe('Payment', () => {
         jest.spyOn(checkoutState.errors, 'getSubmitOrderError')
             .mockReturnValue({ type: 'payment_method_invalid' } as CustomError);
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         expect(container.find(ErrorModal))
             .toHaveLength(1);
@@ -453,7 +453,7 @@ describe('Payment', () => {
         jest.spyOn(checkoutState.errors, 'getSubmitOrderError')
             .mockReturnValue({ type: 'payment_cancelled' } as CustomError);
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         expect(container.find(ErrorModal))
             .toHaveLength(0);
@@ -463,7 +463,7 @@ describe('Payment', () => {
         jest.spyOn(checkoutState.errors, 'getSubmitOrderError')
             .mockReturnValue({ type: 'spam_protection_not_completed' } as CustomError);
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         expect(container.find(ErrorModal))
             .toHaveLength(0);
@@ -473,7 +473,7 @@ describe('Payment', () => {
         jest.spyOn(checkoutState.errors, 'getSubmitOrderError')
             .mockReturnValue({ type: 'payment_invalid_form' } as CustomError);
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         expect(container.find(ErrorModal))
             .toHaveLength(0);
@@ -483,7 +483,7 @@ describe('Payment', () => {
         jest.spyOn(checkoutState.errors, 'getSubmitOrderError')
             .mockReturnValue({ type: 'invalid_hosted_form_value' } as CustomError);
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         expect(container.find(ErrorModal))
             .toHaveLength(0);
@@ -493,7 +493,7 @@ describe('Payment', () => {
         jest.spyOn(checkoutState.errors, 'getFinalizeOrderError')
             .mockReturnValue({ type: 'request' } as CustomError);
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         expect(container.find(ErrorModal))
             .toHaveLength(1);
@@ -516,25 +516,25 @@ describe('Payment', () => {
                 headers: { location: 'foo' },
             } as unknown as RequestError);
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         container.find(Button).simulate('click');
 
-        expect(window.top.location.assign).toHaveBeenCalledWith('foo');
+        expect(window?.top?.location.assign).toHaveBeenCalledWith('foo');
     });
 
     it('does not render error modal if order does not need to finalize', () => {
         jest.spyOn(checkoutState.errors, 'getFinalizeOrderError')
             .mockReturnValue({ type: 'order_finalization_not_required' } as CustomError);
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         expect(container.find(ErrorModal))
             .toHaveLength(0);
     });
 
     it('passes validation schema to payment form', async () => {
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
         container.update();
@@ -545,7 +545,8 @@ describe('Payment', () => {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             form.prop('validationSchema')!.validateSync({ ccNumber: '' });
         } catch (error) {
-            expect(error.name)
+            const validationSchemaError = error as RequestError
+            expect(validationSchemaError.name)
                 .toEqual('ValidationError');
         }
     });
@@ -560,7 +561,7 @@ describe('Payment', () => {
         jest.spyOn(checkoutService, 'submitOrder')
             .mockResolvedValue(checkoutState);
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
         container.update();
@@ -598,7 +599,7 @@ describe('Payment', () => {
         jest.spyOn(checkoutService, 'submitOrder')
             .mockResolvedValue(checkoutState);
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
         container.update();
@@ -624,7 +625,7 @@ describe('Payment', () => {
         jest.spyOn(checkoutService, 'submitOrder')
             .mockRejectedValue(checkoutState);
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
         container.update();
@@ -656,7 +657,7 @@ describe('Payment', () => {
         jest.spyOn(checkoutService, 'submitOrder')
             .mockResolvedValue(checkoutState);
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
         container.update();
@@ -695,7 +696,7 @@ describe('Payment', () => {
                 body: { type: 'spam_protection_expired' },
             } as unknown as RequestError);
 
-        const container = mount(<PaymentTest { ...defaultProps } />);
+        const container = mount(<PaymentTest {...defaultProps} />);
 
         await new Promise(resolve => process.nextTick(resolve));
 

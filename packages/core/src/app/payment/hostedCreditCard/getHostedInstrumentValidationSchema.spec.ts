@@ -1,4 +1,4 @@
-import { HostedCreditCardValidationValues } from '@bigcommerce/checkout/payment-integration-api';
+import { HostedCreditCardValidationValues } from '../paymentMethod/HostedCreditCardFieldsetValues'
 import { LanguageService } from '@bigcommerce/checkout-sdk';
 import { ObjectSchema } from 'yup';
 

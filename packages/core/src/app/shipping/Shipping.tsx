@@ -118,29 +118,29 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         return (
             <div className="checkout-form">
                 <ShippingHeader
-                    isGuest={ isGuest }
-                    isMultiShippingMode={ isMultiShippingMode }
-                    onMultiShippingChange={ this.handleMultiShippingModeSwitch }
-                    shouldShowMultiShipping={ shouldShowMultiShipping }
+                    isGuest={isGuest}
+                    isMultiShippingMode={isMultiShippingMode}
+                    onMultiShippingChange={this.handleMultiShippingModeSwitch}
+                    shouldShowMultiShipping={shouldShowMultiShipping}
                 />
 
                 <LoadingOverlay
-                    isLoading={ isInitializing }
+                    isLoading={isInitializing}
                     unmountContentWhenLoading
                 >
                     <ShippingForm
-                        { ...shippingFormProps }
-                        addresses={ customer.addresses }
-                        deinitialize={ deinitializeShippingMethod }
-                        initialize={ initializeShippingMethod }
-                        isBillingSameAsShipping = { isBillingSameAsShipping }
-                        isGuest={ isGuest }
-                        isMultiShippingMode={ isMultiShippingMode }
-                        onMultiShippingSubmit={ this.handleMultiShippingSubmit }
-                        onSingleShippingSubmit={ this.handleSingleShippingSubmit }
-                        onUseNewAddress={ this.handleUseNewAddress }
-                        shouldShowSaveAddress={ !isGuest }
-                        updateAddress={ updateShippingAddress }
+                        {...shippingFormProps}
+                        addresses={customer.addresses}
+                        deinitialize={deinitializeShippingMethod}
+                        initialize={initializeShippingMethod}
+                        isBillingSameAsShipping={isBillingSameAsShipping}
+                        isGuest={isGuest}
+                        isMultiShippingMode={isMultiShippingMode}
+                        onMultiShippingSubmit={this.handleMultiShippingSubmit}
+                        onSingleShippingSubmit={this.handleSingleShippingSubmit}
+                        onUseNewAddress={this.handleUseNewAddress}
+                        shouldShowSaveAddress={!isGuest}
+                        updateAddress={updateShippingAddress}
                     />
                 </LoadingOverlay>
             </div>
@@ -214,7 +214,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
             navigateNextStep(billingSameAsShipping);
         } catch (error) {
-            onUnhandledError(error);
+            const handleSingleShippingSubmitError = error as Error;
+            onUnhandledError(handleSingleShippingSubmitError);
         }
     };
 
@@ -237,8 +238,9 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             });
 
             location.href = '/account.php?action=add_shipping_address&from=checkout';
-        } catch (e) {
-            onUnhandledError(new UnassignItemError(e));
+        } catch (error) {
+            const handleUseNewAddressError = error as Error
+            onUnhandledError(new UnassignItemError(handleUseNewAddressError));
         }
     };
 
@@ -257,7 +259,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
             navigateNextStep(false);
         } catch (error) {
-            onUnhandledError(error);
+            const handleMultiShippingSubmitError = error as Error;
+            onUnhandledError(handleMultiShippingSubmitError);
         }
     };
 }

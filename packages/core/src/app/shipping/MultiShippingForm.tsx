@@ -91,14 +91,14 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
             return (
                 <div className="checkout-step-info">
                     <TranslatedString id="shipping.multishipping_guest_intro" />
-                    { ' ' }
-                    <a data-test="shipping-sign-in-link" href="#" onClick={ preventDefault(onSignIn) }>
+                    {' '}
+                    <a data-test="shipping-sign-in-link" href="#" onClick={preventDefault(onSignIn)}>
                         <TranslatedString id="shipping.multishipping_guest_sign_in" />
                     </a>
-                    { ' ' }
+                    {' '}
                     <TranslatedLink
                         id="shipping.multishipping_guest_create"
-                        onClick={ onCreateAccount }
+                        onClick={onCreateAccount}
                     />
                 </div>
             );
@@ -107,50 +107,50 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
         return (
             <Fragment>
                 <ErrorModal
-                    error={ createCustomerAddressError }
+                    error={createCustomerAddressError}
                     message={
                         <>
                             <TranslatedString id="address.consignment_address_updated_text" />
-                            { ' ' }
+                            {' '}
                             <TranslatedString id="customer.create_address_error" />
                         </>
                     }
-                    onClose={ this.handleCloseErrorModal }
-                    shouldShowErrorCode={ false }
+                    onClose={this.handleCloseErrorModal}
+                    shouldShowErrorCode={false}
                 />
-                { <AddressFormModal
-                    countries={ countries }
-                    countriesWithAutocomplete={ countriesWithAutocomplete }
-                    defaultCountryCode={ defaultCountryCode }
-                    getFields={ getFields }
-                    googleMapsApiKey={ googleMapsApiKey }
-                    isLoading={ isLoading }
-                    isOpen={ !!itemAddingAddress }
-                    onRequestClose={ this.handleCloseAddAddressForm }
-                    onSaveAddress={ this.handleSaveAddress }
-                /> }
+                {<AddressFormModal
+                    countries={countries}
+                    countriesWithAutocomplete={countriesWithAutocomplete}
+                    defaultCountryCode={defaultCountryCode}
+                    getFields={getFields}
+                    googleMapsApiKey={googleMapsApiKey}
+                    isLoading={isLoading}
+                    isOpen={!!itemAddingAddress}
+                    onRequestClose={this.handleCloseAddAddressForm}
+                    onSaveAddress={this.handleSaveAddress}
+                />}
 
                 <Form>
                     <ul className="consignmentList">
-                        { items.map(item => (
-                            <li key={ item.key }>
+                        {items.map(item => (
+                            <li key={item.key}>
                                 <ItemAddressSelect
-                                    addresses={ addresses }
-                                    item={ item }
-                                    onSelectAddress={ this.handleSelectAddress }
-                                    onUseNewAddress={ this.handleUseNewAddress }
+                                    addresses={addresses}
+                                    item={item}
+                                    onSelectAddress={this.handleSelectAddress}
+                                    onUseNewAddress={this.handleUseNewAddress}
                                 />
                             </li>
-                        )) }
+                        ))}
                     </ul>
 
                     <ShippingFormFooter
-                        cartHasChanged={ cartHasChanged }
-                        isLoading={ isLoading }
-                        isMultiShippingMode={ true }
-                        shouldDisableSubmit={ this.shouldDisableSubmit() }
-                        shouldShowOrderComments={ shouldShowOrderComments }
-                        shouldShowShippingOptions={ !hasUnassignedLineItems(consignments, cart.lineItems) }
+                        cartHasChanged={cartHasChanged}
+                        isLoading={isLoading}
+                        isMultiShippingMode={true}
+                        shouldDisableSubmit={this.shouldDisableSubmit()}
+                        shouldShowOrderComments={shouldShowOrderComments}
+                        shouldShowShippingOptions={!hasUnassignedLineItems(consignments, cart.lineItems)}
                     />
                 </Form>
             </Fragment>
@@ -175,8 +175,9 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
 
         try {
             await createCustomerAddress(shippingAddress);
-        } catch (e) {
-            this.setState({ createCustomerAddressError: e });
+        } catch (error) {
+            const handleSaveAddressError = error as Error;
+            this.setState({ createCustomerAddressError: handleSaveAddressError });
         }
 
         this.setState({
@@ -228,8 +229,9 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
             });
 
             this.syncItems(itemKey, address, data);
-        } catch (e) {
-            onUnhandledError(new AssignItemFailedError(e));
+        } catch (error) {
+            const handleSelectAddressError = error as Error;
+            onUnhandledError(new AssignItemFailedError(handleSelectAddressError));
         }
     };
 

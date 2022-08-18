@@ -112,7 +112,8 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             const order = state.data.getOrder();
             onFinalize(order?.orderId);
         } catch (error) {
-            if (error.type !== 'order_finalization_not_required') {
+            const finalizationError = error as Error & { type: string }
+            if (finalizationError.type !== 'order_finalization_not_required') {
                 onFinalizeError(error);
             }
         }
@@ -161,32 +162,32 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         );
 
         return (
-            <PaymentContext.Provider value={ this.getContextValue() }>
+            <PaymentContext.Provider value={this.getContextValue()}>
                 <LoadingOverlay
-                    isLoading={ !isReady }
+                    isLoading={!isReady}
                     unmountContentWhenLoading
                 >
-                    { !isEmpty(methods) && defaultMethod && <PaymentForm
-                        { ...rest }
-                        defaultGatewayId={ defaultMethod.gateway }
-                        defaultMethodId={ defaultMethod.id }
-                        didExceedSpamLimit={ didExceedSpamLimit }
-                        isInitializingPayment={ isInitializingPayment }
-                        isUsingMultiShipping={ isUsingMultiShipping }
-                        methods={ methods }
-                        onMethodSelect={ this.setSelectedMethod }
-                        onStoreCreditChange={ this.handleStoreCreditChange }
-                        onSubmit={ this.handleSubmit }
-                        onUnhandledError={ this.handleError }
-                        selectedMethod={ selectedMethod }
-                        shouldDisableSubmit={ uniqueSelectedMethodId && shouldDisableSubmit[uniqueSelectedMethodId] || undefined }
-                        shouldHidePaymentSubmitButton={ uniqueSelectedMethodId && shouldHidePaymentSubmitButton[uniqueSelectedMethodId] || undefined }
-                        validationSchema={ uniqueSelectedMethodId && validationSchemas[uniqueSelectedMethodId] || undefined }
-                    /> }
+                    {!isEmpty(methods) && defaultMethod && <PaymentForm
+                        {...rest}
+                        defaultGatewayId={defaultMethod.gateway}
+                        defaultMethodId={defaultMethod.id}
+                        didExceedSpamLimit={didExceedSpamLimit}
+                        isInitializingPayment={isInitializingPayment}
+                        isUsingMultiShipping={isUsingMultiShipping}
+                        methods={methods}
+                        onMethodSelect={this.setSelectedMethod}
+                        onStoreCreditChange={this.handleStoreCreditChange}
+                        onSubmit={this.handleSubmit}
+                        onUnhandledError={this.handleError}
+                        selectedMethod={selectedMethod}
+                        shouldDisableSubmit={uniqueSelectedMethodId && shouldDisableSubmit[uniqueSelectedMethodId] || undefined}
+                        shouldHidePaymentSubmitButton={uniqueSelectedMethodId && shouldHidePaymentSubmitButton[uniqueSelectedMethodId] || undefined}
+                        validationSchema={uniqueSelectedMethodId && validationSchemas[uniqueSelectedMethodId] || undefined}
+                    />}
                 </LoadingOverlay>
 
-                { this.renderOrderErrorModal() }
-                { this.renderEmbeddedSupportErrorModal() }
+                {this.renderOrderErrorModal()}
+                {this.renderEmbeddedSupportErrorModal()}
             </PaymentContext.Provider>
         );
     }
@@ -213,10 +214,10 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
 
         return (
             <ErrorModal
-                error={ error }
-                message={ mapSubmitOrderErrorMessage(error, language.translate.bind(language), shouldLocaliseErrorMessages) }
-                onClose={ this.handleCloseModal }
-                title={ mapSubmitOrderErrorTitle(error, language.translate.bind(language)) }
+                error={error}
+                message={mapSubmitOrderErrorMessage(error, language.translate.bind(language), shouldLocaliseErrorMessages)}
+                onClose={this.handleCloseModal}
+                title={mapSubmitOrderErrorTitle(error, language.translate.bind(language))}
             />
         );
     }
@@ -230,10 +231,11 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         try {
             checkEmbeddedSupport(methods.map(({ id }) => id));
         } catch (error) {
+            const renderEmbeddedSupportErrorModalError = error as Error
             return (
                 <ErrorModal
-                    error={ error }
-                    onClose={ this.handleCloseModal }
+                    error={renderEmbeddedSupportErrorModalError}
+                    onClose={this.handleCloseModal}
                 />
             );
         }
@@ -349,7 +351,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             const { body, headers, status } = error;
 
             if (body.type === 'provider_error' && headers.location) {
-                window.top.location.assign(headers.location);
+                window?.top?.location.assign(headers.location);
             }
 
             // Reload the checkout object to get the latest `shouldExecuteSpamCheck` value,
@@ -393,7 +395,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
 
             return;
         }
-        
+
         return onUnhandledError(error);
     }
 
@@ -426,11 +428,12 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             const order = state.data.getOrder();
             onSubmit(order?.orderId);
         } catch (error) {
-            if (error.type === 'payment_method_invalid') {
+            const handleSubmitError = error as Error & { type: string };
+            if (handleSubmitError.type === 'payment_method_invalid') {
                 return loadPaymentMethods();
             }
 
-            if (isCartChangedError(error)) {
+            if (isCartChangedError(handleSubmitError)) {
                 return onCartChangedError(error);
             }
 

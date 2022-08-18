@@ -5,9 +5,14 @@
   "targets": {
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "fix": true,
       "options": {
-        "lintFilePatterns": ["packages/payment-integration-api/**/*.{ts,tsx}"]
+        "lintFilePatterns": [
+          "packages/payment-integration-api/**/*.{ts,tsx}"
+        ]
       }
     },
     "test": {
@@ -21,5 +26,7 @@
       }
     }
   },
-  "tags": ["scope:shared"]
+  "tags": [
+    "scope:shared"
+  ]
 }

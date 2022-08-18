@@ -1,11 +1,11 @@
-import { CardInstrumentFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
+import { CreditCardValidationValues } from '../paymentMethod/CreditCardFieldsetValues'
 import { createLanguageService, LanguageService } from '@bigcommerce/checkout-sdk';
 
 import getInstrumentValidationSchema from './getInstrumentValidationSchema';
 
 describe('getInstrumentValidationSchema()', () => {
     let language: LanguageService;
-    let validData: CardInstrumentFieldsetValues;
+    let validData: CreditCardValidationValues;
 
     beforeEach(() => {
         language = createLanguageService();

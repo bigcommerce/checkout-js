@@ -11,7 +11,7 @@ import SingleShippingForm, { SingleShippingFormProps, SHIPPING_AUTOSAVE_DELAY } 
 
 /* eslint-disable react/jsx-no-bind */
 describe('SingleShippingForm', () => {
-    const addressFormFields = getAddressFormFields().filter(({ custom }) => !custom );
+    const addressFormFields = getAddressFormFields().filter(({ custom }) => !custom);
     let localeContext: LocaleContextType;
     let component: ReactWrapper;
     let defaultProps: SingleShippingFormProps;
@@ -30,6 +30,7 @@ describe('SingleShippingForm', () => {
             cartHasChanged: false,
             isLoading: false,
             isShippingStepPending: false,
+            isBillingSameAsShipping: false,
             onSubmit: jest.fn(),
             getFields: jest.fn(() => addressFormFields),
             onUnhandledError: jest.fn(),
@@ -41,8 +42,8 @@ describe('SingleShippingForm', () => {
         };
 
         component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <SingleShippingForm { ...defaultProps } />
+            <LocaleContext.Provider value={localeContext}>
+                <SingleShippingForm {...defaultProps} />
             </LocaleContext.Provider>
         );
     });
@@ -60,25 +61,25 @@ describe('SingleShippingForm', () => {
                 ...getShippingAddress(),
                 address1: 'foo 2',
             },
-            {
-                params: {
-                    include: {
-                        'consignments.availableShippingOptions': true,
+                {
+                    params: {
+                        include: {
+                            'consignments.availableShippingOptions': true,
+                        },
                     },
-                },
-             });
+                });
             done();
         }, SHIPPING_AUTOSAVE_DELAY * 1.1);
     });
 
     it('calls updateAddress if modified field does not affect shipping but makes form valid', done => {
         component = mount(
-            <LocaleContext.Provider value={ localeContext }>
+            <LocaleContext.Provider value={localeContext}>
                 <SingleShippingForm
-                    { ...defaultProps }
-                    getFields={ () => [
+                    {...defaultProps}
+                    getFields={() => [
                         ...addressFormFields.map(field => ({ ...field, required: true })),
-                    ] }
+                    ]}
                 />
             </LocaleContext.Provider>
         );
@@ -170,10 +171,10 @@ describe('SingleShippingForm', () => {
 
     it('calls update address for amazon pay if required custom fields are filled out', done => {
         component = mount(
-            <LocaleContext.Provider value={ localeContext }>
+            <LocaleContext.Provider value={localeContext}>
                 <SingleShippingForm
-                    { ...defaultProps }
-                    getFields={ () => [
+                    {...defaultProps}
+                    getFields={() => [
                         ...addressFormFields,
                         {
                             custom: true,
@@ -185,7 +186,7 @@ describe('SingleShippingForm', () => {
                             required: true,
                             type: 'string',
                         },
-                    ] }
+                    ]}
                 />
             </LocaleContext.Provider>
         );
@@ -213,10 +214,10 @@ describe('SingleShippingForm', () => {
 
     it('does not update address for amazon pay if required custom fields is left empty', done => {
         component = mount(
-            <LocaleContext.Provider value={ localeContext }>
+            <LocaleContext.Provider value={localeContext}>
                 <SingleShippingForm
-                    { ...defaultProps }
-                    getFields={ () => [
+                    {...defaultProps}
+                    getFields={() => [
                         ...addressFormFields,
                         {
                             custom: true,
@@ -228,7 +229,7 @@ describe('SingleShippingForm', () => {
                             required: true,
                             type: 'string',
                         },
-                    ] }
+                    ]}
                 />
             </LocaleContext.Provider>
         );
@@ -244,14 +245,14 @@ describe('SingleShippingForm', () => {
 
     it('does not render billing same as shipping checkbox for amazon pay', () => {
         component = mount(
-            <LocaleContext.Provider value={ localeContext }>
+            <LocaleContext.Provider value={localeContext}>
                 <SingleShippingForm
-                    { ...defaultProps }
+                    {...defaultProps}
                     methodId="amazon"
                 />
             </LocaleContext.Provider>
         );
 
-        expect(component.contains( <BillingSameAsShippingField /> )).toBe(false);
+        expect(component.contains(<BillingSameAsShippingField />)).toBe(false);
     });
 });

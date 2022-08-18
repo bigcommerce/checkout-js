@@ -12,20 +12,24 @@ describe('AdyenV3CardValidation', () => {
 
     beforeEach(() => {
         AdyenV3CardValidationTest = props => (
-            <AdyenV3CardValidation { ...props } />
+            <AdyenV3CardValidation {...props} />
         );
     });
 
     it('renders Adyen V3 Card Number and CVV fields', () => {
         defaultProps = {
             paymentMethod: {
-                method: 'scheme'
+                method: 'scheme',
+                id: "test id",
+                config: {},
+                supportedCards: [],
+                type: 'test type'
             },
             shouldShowNumberField: true,
             verificationFieldsContainerId: 'container',
         };
 
-        const container = mount(<AdyenV3CardValidationTest { ...defaultProps } />);
+        const container = mount(<AdyenV3CardValidationTest {...defaultProps} />);
 
         const field = container.find('[id="encryptedSecurityCode"]');
 
@@ -37,11 +41,15 @@ describe('AdyenV3CardValidation', () => {
         defaultProps = {
             paymentMethod: {
                 method: 'bcmc',
+                id: "test id",
+                config: {},
+                supportedCards: [],
+                type: 'test type'
             },
             shouldShowNumberField: true,
             verificationFieldsContainerId: 'container',
         };
-        const container = mount(<AdyenV3CardValidationTest { ...defaultProps } />);
+        const container = mount(<AdyenV3CardValidationTest {...defaultProps} />);
 
         const field = container.find('[id="encryptedExpiryDate"]');
 
@@ -51,14 +59,18 @@ describe('AdyenV3CardValidation', () => {
     it('render with empty required fields', () => {
         defaultProps = {
             paymentMethod: {
-                method: 'scheme'
+                method: 'scheme',
+                id: "test id",
+                config: {},
+                supportedCards: [],
+                type: 'test type'
             },
             shouldShowNumberField: false,
             verificationFieldsContainerId: 'container',
             cardValidationState: {} as AdyenV3ValidationState,
         };
 
-        const container = mount(<AdyenV3CardValidationTest { ...defaultProps } />);
+        const container = mount(<AdyenV3CardValidationTest {...defaultProps} />);
 
         const field = container.find('[id="encryptedSecurityCode"]');
 
@@ -68,7 +80,11 @@ describe('AdyenV3CardValidation', () => {
     it('render with invalid fields', () => {
         defaultProps = {
             paymentMethod: {
-                method: 'scheme'
+                method: 'scheme',
+                id: "test id",
+                config: {},
+                supportedCards: [],
+                type: 'test type'
             },
             shouldShowNumberField: false,
             verificationFieldsContainerId: 'container',
@@ -78,7 +94,7 @@ describe('AdyenV3CardValidation', () => {
             } as AdyenV3ValidationState,
         };
 
-        const container = mount(<AdyenV3CardValidationTest { ...defaultProps } />);
+        const container = mount(<AdyenV3CardValidationTest {...defaultProps} />);
 
         const field = container.find('[id="encryptedSecurityCode"]');
 
@@ -89,7 +105,11 @@ describe('AdyenV3CardValidation', () => {
         beforeEach(() => {
             defaultProps = {
                 paymentMethod: {
-                    method: 'scheme'
+                    method: 'scheme',
+                    id: "test id",
+                    config: {},
+                    supportedCards: [],
+                    type: 'test type'
                 },
                 shouldShowNumberField: true,
                 verificationFieldsContainerId: 'container',
@@ -112,7 +132,11 @@ describe('AdyenV3CardValidation', () => {
         it('should render error when entered last 4 symbols is not equal to the last 4 from selected card', () => {
             defaultProps = {
                 paymentMethod: {
-                    method: 'scheme'
+                    method: 'scheme',
+                    id: "test id",
+                    config: {},
+                    supportedCards: [],
+                    type: 'test type'
                 },
                 shouldShowNumberField: true,
                 verificationFieldsContainerId: 'container',
@@ -131,7 +155,7 @@ describe('AdyenV3CardValidation', () => {
                 },
             };
 
-            const container = mount(<AdyenV3CardValidationTest { ...defaultProps } />);
+            const container = mount(<AdyenV3CardValidationTest {...defaultProps} />);
             container.setProps({
                 cardValidationState: {
                     blob: 'adyenjs_',
@@ -143,13 +167,13 @@ describe('AdyenV3CardValidation', () => {
             });
             container.update();
             const field = container.find('[id="encryptedCardNumber"]');
-            
+
             expect(field.hasClass('adyen-checkout__input--error')).toBeTruthy();
             expect(field).toHaveLength(1);
         });
 
         it('should NOT render error when entered last 4 symbols is equal to the last 4 from selected card', () => {
-            const container = mount(<AdyenV3CardValidationTest { ...defaultProps } />);
+            const container = mount(<AdyenV3CardValidationTest {...defaultProps} />);
             container.setProps({
                 cardValidationState: {
                     blob: 'adyenjs_',
@@ -174,13 +198,13 @@ describe('AdyenV3CardValidation', () => {
                 setValidationSchema: jest.fn(),
                 hidePaymentSubmitButton: jest.fn(),
             };
-    
+
             mount(
-                <PaymentContext.Provider value={ paymentContext }>
-                    <AdyenV3CardValidationTest { ...defaultProps } />
+                <PaymentContext.Provider value={paymentContext}>
+                    <AdyenV3CardValidationTest {...defaultProps} />
                 </PaymentContext.Provider>
             );
-    
+
             expect(paymentContext.disableSubmit).toHaveBeenCalledWith(defaultProps.paymentMethod, true);
         });
     });
