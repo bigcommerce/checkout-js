@@ -8,6 +8,7 @@ test.describe('ApplePay', () => {
 
         const responseProps = { status: 200, contentType: 'application/json' };
         await checkout.use(new PaymentStepAsGuestPreset());
+        await checkout.start('ApplePay in Payment Step')
         await checkout.route(/order-confirmation.*/, './tests/support/orderConfirmation.ejs', { orderId: '124' });
         await page.route('**/api/public/v1/payments/applepay/validate_merchant', route => route.fulfill({ ...responseProps, body: validateMerchantResponse }));
         await page.route(/.*\/api\/storefront\/orders\/124.*/, route => route.fulfill({...responseProps, body: order }));
@@ -33,7 +34,7 @@ test.describe('ApplePay', () => {
 
         const responseProps = { status: 200, contentType: 'application/json' };
         await checkout.use(new CustomerStepPreset());
-
+        await checkout.start('ApplePay in Customer Step')
         await checkout.route(/order-confirmation.*/, './tests/support/orderConfirmation.ejs', { orderId: '124' });
         await page.route('**/api/public/v1/payments/applepay/validate_merchant', route => route.fulfill({ ...responseProps, body: validateMerchantResponse }));        
         await page.route(/.*\/api\/storefront\/orders\/124.*/, route => route.fulfill({...responseProps, body: order }));

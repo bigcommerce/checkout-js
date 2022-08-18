@@ -341,7 +341,7 @@ export const internalOrder = `{
     }
 }`;
 
-export const consignments = `{
+export const consignmentsAndBilling = `{
     "billingAddress": {
         "address1": "",
         "address2": "",
