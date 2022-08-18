@@ -40,13 +40,14 @@ export class PlaywrightHelper {
         }
     }
 
-    async createHAR(har: string): Promise<void> {
+    async useHAR(har: string, folder: string): Promise<void> {
         this.har = har;
 
         await this.polly.start({
             devMode: this.isDevMode,
             page: this.page,
             har: this.har,
+            harFolder: folder,
         });
 
         await this.page.route(/.*\/products\/.*\/images\/.*/, route => route.fulfill({ status: 200, path: this.srcPath + '/support/product.png' }));

@@ -7,6 +7,8 @@ import { PlaywrightHelper } from '.';
 export class Checkout {
     private readonly page: Page;
     private readonly playwright: PlaywrightHelper;
+    private harFileName = '';
+    private harFolderPath = '';
 
     constructor(page: Page) {
         this.page = page;
@@ -14,7 +16,21 @@ export class Checkout {
     }
 
     // CheckoutFixtures helper, only used in ../CheckoutFixtures.ts
+    async setHarFolderPath(file:string): void {
+        const regex = /packages(.+)\//gm;
+        const currentTestFilePath = regex.exec(file);
+
+        if (!currentTestFilePath) {
+            throw new Error('Unable to create HAR file. Please place the test file in a package folder.');
+        }
+
+        this.harFolderPath = `./${currentTestFilePath[0]}_har`;
+    }
+
     async close(): Promise<void> {
+        if (!this.harFileName) {
+            throw new Error('Unable to execute the test. Please use checkout.start() helper function.');
+        }
         await this.playwright.stopAll();
     }
 
@@ -29,7 +45,8 @@ export class Checkout {
     }
 
     async start(HAR: string): Promise<void> {
-        await this.playwright.createHAR(HAR);
+        this.harFileName = HAR;
+        await this.playwright.useHAR(HAR, this.harFolderPath);
     }
 
     async route(url: string | RegExp | ((url: URL) => boolean), filePath: string, data?: Record<string, unknown>): Promise<void> {

@@ -12,6 +12,7 @@ import { CustomFSPersister } from './CustomFSPersister';
 
 interface PollyOptions {
     har: string;
+    harFolder: string;
     page: Page;
     devMode: boolean;
 }
@@ -33,7 +34,7 @@ export class PollyObject {
     }
 
     start(option: PollyOptions): void {
-        const { page, har, devMode } = option;
+        const { page, har, devMode, harFolder } = option;
 
         Polly.register(PlaywrightAdapter);
         Polly.register(FSPersister);
@@ -56,7 +57,7 @@ export class PollyObject {
                 keepUnusedRequests: false,
                 disableSortingHarEntries: true,
                 CustomFSPersister: {
-                    recordingsDir: './packages/e2e/har',
+                    recordingsDir: harFolder,
                 },
             },
             matchRequestsBy: {

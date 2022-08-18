@@ -12,8 +12,9 @@ export const test = base.extend<CheckoutFixtures>({
         const assertions = new Assertions(page);
         await use(assertions);
     },
-    checkout: async ({page}, use) => {
+    checkout: async ({page}, use, testInfo) => {
         const checkout = new Checkout(page);
+        checkout.setHarFolderPath(testInfo.file);
         await use(checkout);
         await checkout.close();
     },
