@@ -30,41 +30,7 @@ class ApplePaySession {
 
 
     completeMerchantValidation(response) {
-        const mockPaymentData = {
-            version: "mock_v1",
-            data: "mockData",
-            signature: "mockSignature",
-            header: {
-                ephemeralPublicKey: "mockPublicKey",
-                publicKeyHash: "mockPublicKeyHash",
-                transactionId: "mockTransactionId",
-            }
-        }
-        const event = {
-            payment: {
-                token: {
-                    paymentData: mockPaymentData,
-                    paymentMethod: "xx",
-                    transactionIdentifier: "xx",
-                },
-                billingContact: {
-                    emailAddress: "mock@mock.com",
-                    familyName: "mock",
-                    givenName: "mock",
-                    phoneNumber: "00000000",
-                },
-                payment: {
-                    shippingContact: {
-                        emailAddress: "mock@mock.com",
-                        familyName: "mock",
-                        givenName: "mock",
-                        phoneNumber: "00000000",
-                    }
-                },
-            }
-        };
 
-        this.onpaymentauthorized(event, this);
     }
 
     begin() {
@@ -76,6 +42,43 @@ class ApplePaySession {
             this.onshippingcontactselected(event);
             this.onshippingmethodselected(event);
         }, 0);
+        setTimeout(() => {
+            const mockPaymentData = {
+                version: "mock_v1",
+                data: "mockData",
+                signature: "mockSignature",
+                header: {
+                    ephemeralPublicKey: "mockPublicKey",
+                    publicKeyHash: "mockPublicKeyHash",
+                    transactionId: "mockTransactionId",
+                }
+            }
+            const event = {
+                payment: {
+                    token: {
+                        paymentData: mockPaymentData,
+                        paymentMethod: "xx",
+                        transactionIdentifier: "xx",
+                    },
+                    billingContact: {
+                        emailAddress: "mock@mock.com",
+                        familyName: "mock",
+                        givenName: "mock",
+                        phoneNumber: "00000000",
+                    },
+                    payment: {
+                        shippingContact: {
+                            emailAddress: "mock@mock.com",
+                            familyName: "mock",
+                            givenName: "mock",
+                            phoneNumber: "00000000",
+                        }
+                    },
+                }
+            };
+
+            this.onpaymentauthorized(event, this);
+        }, 1000)
     }
 }
 
