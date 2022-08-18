@@ -10,9 +10,9 @@ test.describe('Sample Test Group', () => {
         await checkout.start('sample GooglePay in customer step');
 
         const responseProps = { status: 200, contentType: 'application/json' };
-        await checkout.route('https://pay.google.com/gp/p/js/pay.js', './packages/e2e/src/sampleTests/support/googlePay.mock.js');
-        await checkout.route('**/checkout.php', './packages/e2e/src/sampleTests/support/checkout.php.ejs');
-        await checkout.route(/order-confirmation.*/, './packages/payment-integration-test-framework/src//support/orderConfirmation.ejs', { orderId: '390' });
+        await checkout.route('https://pay.google.com/gp/p/js/pay.js', __dirname + '/support/googlePay.mock.js');
+        await checkout.route('**/checkout.php', __dirname + '/support/checkout.php.ejs');
+        await checkout.route(/order-confirmation.*/, './packages/payment-integration-test-framework/src/support/orderConfirmation.ejs', { orderId: '390' });
         await page.route(/.*\/api\/storefront\/payments\?cartId=.*/, route => route.fulfill({ ...responseProps, body: payment }));
         await page.route(/.*\/api\/storefront\/payments\/googlepayauthorizenet\?cartId=.*/, route => route.fulfill({ ...responseProps, body: googlePay }));
         await page.route(/.*\/api\/storefront\/checkouts\/.*\/billing-address\/.*/, route => route.fulfill({ ...responseProps, body: '{}' }));

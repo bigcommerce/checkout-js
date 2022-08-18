@@ -2,9 +2,8 @@
   "version": 2,
   "projects": {
     "apple-pay-integration": "packages/apple-pay-integration",
-    "core": "packages/core",
     "checkout-button-integration": "packages/checkout-button-integration",
-    "e2e": "packages/e2e",
+    "core": "packages/core",
     "google-pay-integration": "packages/google-pay-integration",
     "payment-integration-api": "packages/payment-integration-api",
     "payment-integration-test-framework": "packages/payment-integration-test-framework",

@@ -3,6 +3,7 @@ const nxPreset = require('@nrwl/jest/preset');
 
 module.exports = {
     ...nxPreset,
+    testPathIgnorePatterns: ["<rootDir>/e2e/"],
     coverageThreshold: {
         global: {
             branches: 80,

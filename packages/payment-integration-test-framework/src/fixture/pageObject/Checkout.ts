@@ -24,7 +24,8 @@ export class Checkout {
             throw new Error('Unable to create HAR file. Please place the test file in a package folder.');
         }
 
-        this.harFolderPath = `./${currentTestFilePath[0]}_har`;
+        const harFolderName = `__har__`;
+        this.harFolderPath = `./${currentTestFilePath[0]}${harFolderName}`;
     }
 
     async close(): Promise<void> {

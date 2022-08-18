@@ -8,7 +8,7 @@ test.describe('Sample Test Group', () => {
 
         await checkout.route(
             /https:\/\/bigpay.service.bcdev\/pay\/hosted_forms\/.+\/field?.+|http:\/\/localhost:.+\/checkout\/payment\/hosted-field?.+/,
-            './packages/e2e/src/sampleTests/support/hostedField.ejs'
+            __dirname + '/support/hostedField.ejs'
         );
 
         // Playwright actions

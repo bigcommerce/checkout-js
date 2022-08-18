@@ -12,7 +12,8 @@ const config: PlaywrightTestConfig = {
   expect: {
     // timeout: 25 * 1000,
   },
-  testDir: './packages/e2e/src',
+  testDir: './packages',
+  testMatch: /e2e\/.*\.spec\.ts/,
   outputDir: './packages/payment-integration-test-framework/screenshots',
   fullyParallel: true,
   forbidOnly: true,
