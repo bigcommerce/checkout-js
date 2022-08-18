@@ -24,14 +24,11 @@
       "@bigcommerce/checkout/apple-pay-integration": [
         "packages/apple-pay-integration/src/index.ts"
       ],
-      "@bigcommerce/checkout/checkout-button-integration": [
-        "packages/checkout-button-integration/src/index.ts"
-      ],
       "@bigcommerce/checkout/core": [
         "packages/core/src/app/index.ts"
       ],
-      "@bigcommerce/checkout/e2e": [
-        "packages/e2e/src/index.ts"
+      "@bigcommerce/checkout/checkout-button-integration": [
+        "packages/checkout-button-integration/src/index.ts"
       ],
       "@bigcommerce/checkout/google-pay-integration": [
         "packages/google-pay-integration/src/index.ts"

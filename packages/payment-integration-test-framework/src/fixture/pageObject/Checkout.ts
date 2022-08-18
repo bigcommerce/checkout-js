@@ -21,7 +21,7 @@ export class Checkout {
         const currentTestFilePath = regex.exec(file);
 
         if (!currentTestFilePath) {
-            throw new Error('Unable to create HAR file. Please place the test file in a package folder.');
+            throw new Error('Unable to create HAR file. Please place the test file in a package\'s \'e2e\' folder.');
         }
 
         const harFolderName = `__har__`;
@@ -30,7 +30,7 @@ export class Checkout {
 
     async close(): Promise<void> {
         if (!this.harFileName) {
-            throw new Error('Unable to execute the test. Please use checkout.start() helper function.');
+            throw new Error('Unable to run the test. Please use checkout.start() helper function.');
         }
         await this.playwright.stopAll();
     }
@@ -52,7 +52,7 @@ export class Checkout {
 
     async route(url: string | RegExp | ((url: URL) => boolean), filePath: string, data?: Record<string, unknown>): Promise<void> {
         if (data && typeof data !== 'object') {
-            throw new Error('Unable to render data type \''+ typeof data + '\'. Please use object instead.');
+            throw new Error('Unable to render data type \''+ typeof data + '\'. Please use \'object\' as data type.');
         }
 
         await this.playwright.renderAndRoute(url, filePath, data);
