@@ -17,7 +17,7 @@ export class Checkout {
 
     // CheckoutFixtures helper, only used in ../CheckoutFixtures.ts
     async setHarFolderPath(file:string): void {
-        const regex = /packages(.+)\//gm;
+        const regex = /packages(.+)e2e\//g;
         const currentTestFilePath = regex.exec(file);
 
         if (!currentTestFilePath) {
