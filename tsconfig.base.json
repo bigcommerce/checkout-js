@@ -21,20 +21,29 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
+      "@@bigcommerce/checkout/afterpay-integration": [
+        "packages/afterpay-integration/src/index.ts"
+      ],
+      "@@bigcommerce/checkout/hosted-credit-card-integration": [
+        "packages/hosted-credit-card-integration/src/index.ts"
+      ],
       "@bigcommerce/checkout/apple-pay-integration": [
         "packages/apple-pay-integration/src/index.ts"
       ],
-      "@bigcommerce/checkout/core": [
-        "packages/core/src/app/index.ts"
-      ],
       "@bigcommerce/checkout/checkout-button-integration": [
         "packages/checkout-button-integration/src/index.ts"
+      ],
+      "@bigcommerce/checkout/core": [
+        "packages/core/src/app/index.ts"
       ],
       "@bigcommerce/checkout/google-pay-integration": [
         "packages/google-pay-integration/src/index.ts"
       ],
       "@bigcommerce/checkout/payment-integration-api": [
         "packages/payment-integration-api/src/index.ts"
+      ],
+      "@bigcommerce/checkout/payment-integration-test-framework": [
+        "packages/payment-integration-test-framework/src/index.ts"
       ],
       "@bigcommerce/checkout/workspace-tools": [
         "packages/workspace-tools/src/index.ts"

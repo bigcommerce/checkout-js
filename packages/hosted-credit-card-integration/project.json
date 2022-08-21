@@ -1,0 +1,29 @@
+{
+  "root": "packages/hosted-credit-card-integration",
+  "sourceRoot": "packages/hosted-credit-card-integration/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": [
+        "{options.outputFile}"
+      ],
+      "options": {
+        "lintFilePatterns": [
+          "packages/hosted-credit-card-integration/**/*.ts"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/packages/hosted-credit-card-integration"
+      ],
+      "options": {
+        "jestConfig": "packages/hosted-credit-card-integration/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["scope:integration"]
+}
