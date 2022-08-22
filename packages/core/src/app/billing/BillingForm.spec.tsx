@@ -37,14 +37,13 @@ describe('BillingForm Component', () => {
             onUnhandledError: jest.fn(),
             updateAddress: jest.fn(),
             onSubmit: jest.fn(),
-            shouldValidateSafeInput: true,
         };
     });
 
     beforeEach(() => {
         component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <BillingForm { ...defaultProps } />
+            <LocaleContext.Provider value={localeContext}>
+                <BillingForm {...defaultProps} />
             </LocaleContext.Provider>
         );
     });
@@ -60,8 +59,8 @@ describe('BillingForm Component', () => {
         };
 
         component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <BillingForm { ...defaultProps } methodId={ 'amazonpay' } />
+            <LocaleContext.Provider value={localeContext}>
+                <BillingForm {...defaultProps} methodId={'amazonpay'} />
             </LocaleContext.Provider>
         );
 
@@ -79,10 +78,10 @@ describe('BillingForm Component', () => {
 
     it('does not render address form when selected customer address is valid', () => {
         component = mount(
-            <LocaleContext.Provider value={ localeContext }>
+            <LocaleContext.Provider value={localeContext}>
                 <BillingForm
-                    { ...defaultProps }
-                    billingAddress={ defaultProps.customer.addresses[0] }
+                    {...defaultProps}
+                    billingAddress={defaultProps.customer.addresses[0]}
                 />
             </LocaleContext.Provider>
         );
@@ -92,13 +91,13 @@ describe('BillingForm Component', () => {
 
     it('renders address form when selected customer address is not valid', () => {
         component = mount(
-            <LocaleContext.Provider value={ localeContext }>
+            <LocaleContext.Provider value={localeContext}>
                 <BillingForm
-                    { ...defaultProps }
-                    billingAddress={ {
+                    {...defaultProps}
+                    billingAddress={{
                         ...defaultProps.customer.addresses[0],
                         address1: '',
-                    } }
+                    }}
                 />
             </LocaleContext.Provider>
         );

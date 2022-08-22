@@ -69,48 +69,48 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
 
         return (
             <Form autoComplete="on">
-                { shouldRenderStaticAddress && billingAddress &&
-                    <div className={ 'form-fieldset' }>
-                        <StaticBillingAddress address={ billingAddress } />
-                    </div> }
+                {shouldRenderStaticAddress && billingAddress &&
+                    <div className={'form-fieldset'}>
+                        <StaticBillingAddress address={billingAddress} />
+                    </div>}
 
-                <Fieldset id="checkoutBillingAddress" ref={ this.addressFormRef }>
-                    { hasAddresses && !shouldRenderStaticAddress &&
+                <Fieldset id="checkoutBillingAddress" ref={this.addressFormRef}>
+                    {hasAddresses && !shouldRenderStaticAddress &&
                         <Fieldset id="billingAddresses">
-                            <LoadingOverlay isLoading={ isResettingAddress }>
+                            <LoadingOverlay isLoading={isResettingAddress}>
                                 <AddressSelect
-                                    addresses={ addresses }
-                                    onSelectAddress={ this.handleSelectAddress }
-                                    onUseNewAddress={ this.handleUseNewAddress }
-                                    selectedAddress={ hasValidCustomerAddress ? billingAddress : undefined }
+                                    addresses={addresses}
+                                    onSelectAddress={this.handleSelectAddress}
+                                    onUseNewAddress={this.handleUseNewAddress}
+                                    selectedAddress={hasValidCustomerAddress ? billingAddress : undefined}
                                 />
                             </LoadingOverlay>
-                        </Fieldset> }
+                        </Fieldset>}
 
-                    { !hasValidCustomerAddress &&
-                        <LoadingOverlay isLoading={ isResettingAddress }>
+                    {!hasValidCustomerAddress &&
+                        <LoadingOverlay isLoading={isResettingAddress}>
                             <AddressForm
-                                countries={ countries }
-                                countriesWithAutocomplete={ countriesWithAutocomplete }
-                                countryCode={ values.countryCode }
-                                formFields={ editableFormFields }
-                                googleMapsApiKey={ googleMapsApiKey }
-                                setFieldValue={ setFieldValue }
-                                shouldShowSaveAddress={ !isGuest }
+                                countries={countries}
+                                countriesWithAutocomplete={countriesWithAutocomplete}
+                                countryCode={values.countryCode}
+                                formFields={editableFormFields}
+                                googleMapsApiKey={googleMapsApiKey}
+                                setFieldValue={setFieldValue}
+                                shouldShowSaveAddress={!isGuest}
                             />
-                        </LoadingOverlay> }
+                        </LoadingOverlay>}
                 </Fieldset>
 
-                { shouldShowOrderComments &&
-                    <OrderComments /> }
+                {shouldShowOrderComments &&
+                    <OrderComments />}
 
                 <div className="form-actions">
                     <Button
-                        disabled={ isUpdating || isResettingAddress }
+                        disabled={isUpdating || isResettingAddress}
                         id="checkout-billing-continue"
-                        isLoading={ isUpdating || isResettingAddress }
+                        isLoading={isUpdating || isResettingAddress}
                         type="submit"
-                        variant={ ButtonVariant.Primary }
+                        variant={ButtonVariant.Primary}
                     >
                         <TranslatedString id="common.continue_action" />
                     </Button>
@@ -130,7 +130,8 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
         try {
             await updateAddress(address);
         } catch (e) {
-            onUnhandledError(e);
+            const error = e as Error;
+            onUnhandledError(error);
         } finally {
             this.setState({ isResettingAddress: false });
         }
@@ -147,12 +148,12 @@ export default withLanguage(withFormik<BillingFormProps & WithLanguageProps, Bil
     },
     mapPropsToValues: ({ getFields, customerMessage, billingAddress }) => (
         {
-        ...mapAddressToFormValues(
-            getFields(billingAddress && billingAddress.countryCode),
-            billingAddress
-        ),
-        orderComment: customerMessage,
-    }),
+            ...mapAddressToFormValues(
+                getFields(billingAddress && billingAddress.countryCode),
+                billingAddress
+            ),
+            orderComment: customerMessage,
+        }),
     isInitialValid: ({
         billingAddress,
         getFields,
@@ -168,13 +169,13 @@ export default withLanguage(withFormik<BillingFormProps & WithLanguageProps, Bil
         getFields,
         methodId,
     }: BillingFormProps & WithLanguageProps) => methodId === 'amazonpay' ?
-        (lazy<Partial<AddressFormValues>>(values => getCustomFormFieldsValidationSchema({
-            translate: getTranslateAddressError(language),
-            formFields: getFields(values && values.countryCode),
-        }))) :
-        (lazy<Partial<AddressFormValues>>(values => getAddressFormFieldsValidationSchema({
-            language,
-            formFields: getFields(values && values.countryCode),
-        }))),
+            (lazy<Partial<AddressFormValues>>(values => getCustomFormFieldsValidationSchema({
+                translate: getTranslateAddressError(language),
+                formFields: getFields(values && values.countryCode),
+            }))) :
+            (lazy<Partial<AddressFormValues>>(values => getAddressFormFieldsValidationSchema({
+                language,
+                formFields: getFields(values && values.countryCode),
+            }))),
     enableReinitialize: true,
 })(BillingForm));

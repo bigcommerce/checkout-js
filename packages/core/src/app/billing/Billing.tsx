@@ -48,7 +48,8 @@ class Billing extends Component<BillingProps & WithCheckoutBillingProps> {
             await initialize();
             onReady();
         } catch (e) {
-            onUnhandledError(e);
+            const error = e as Error
+            onUnhandledError(error);
         }
     }
 
@@ -68,13 +69,13 @@ class Billing extends Component<BillingProps & WithCheckoutBillingProps> {
                 </div>
 
                 <LoadingOverlay
-                    isLoading={ isInitializing }
+                    isLoading={isInitializing}
                     unmountContentWhenLoading
                 >
                     <BillingForm
-                        { ...props }
-                        onSubmit={ this.handleSubmit }
-                        updateAddress={ updateAddress }
+                        {...props}
+                        onSubmit={this.handleSubmit}
+                        updateAddress={updateAddress}
                     />
                 </LoadingOverlay>
             </div>
@@ -109,7 +110,8 @@ class Billing extends Component<BillingProps & WithCheckoutBillingProps> {
             await Promise.all(promises);
 
             navigateNextStep();
-        } catch (error) {
+        } catch (e) {
+            const error = e as Error
             onUnhandledError(error);
         }
     };

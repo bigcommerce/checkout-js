@@ -1,8 +1,7 @@
 import { test, PaymentStepAsGuestPreset } from '@bigcommerce/checkout/payment-integration-test-framework';
-import {expect} from "@playwright/test";
 
 test.describe('Sample Test Group', () => {
-    test('Bigpay Test Payment Provider is working', async ({assertions, checkout, page}) => {
+    test('Bigpay Test Payment Provider is working', async ({ assertions, checkout, page }) => {
         // Testing environment setup
         await checkout.use(new PaymentStepAsGuestPreset());
         await checkout.start('sample Bigpay Test Payment Provider');
