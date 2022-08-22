@@ -287,13 +287,13 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 <MobileView>
                     { matched => {
                         if (matched) {
-                            return <div className="test-02-wrapper layout-cart">
+                            return <div className="cart-summary-wrapper-mobile layout-cart">
                                     <LazyContainer>
                                         <CartSummary />
                                     </LazyContainer>
                                     </div>;
                         } else {
-                            return <br className="test-02-wrapper" />;
+                            return <span></span>;
                         }
 
                     } }
@@ -485,9 +485,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             <MobileView>
                 { matched => {
                     if (matched) {
-                        return <LazyContainer>
-                            <CartSummaryDrawer />
-                        </LazyContainer>;
+                        return <span></span>;
                     }
 
                     return <aside className="layout-cart">
