@@ -1,10 +1,12 @@
 import { test, CustomerStepPreset, PaymentStepAsGuestPreset } from '../';
 import { internalOrder, order, orderPayment, validateMerchantResponse, consignmentsAndBilling } from './ApplePayTestMockResponse';
+import addApplePaySessionToChromePaymentStep from './ApplePaySessionPaymentStepMockObject'
+import addApplePaySessionToChromeCustomerStep from './ApplePaySessionCustomerStepMockObject'
 
 test.describe('ApplePay', () => {
     test('Customer should be able to pay using ApplePay through the payment step in checkout', async ({ assertions, checkout, page }) => {
         // Testing environment setup
-        await page.addInitScript({ path: './tests/apple-pay/ApplePaySessionPaymentStepMockObject.js' });
+        await page.addInitScript(addApplePaySessionToChromePaymentStep);
 
         const responseProps = { status: 200, contentType: 'application/json' };
         await checkout.use(new PaymentStepAsGuestPreset());
@@ -30,7 +32,7 @@ test.describe('ApplePay', () => {
 
     test('Customer should be able to pay using ApplePay through the customer step in checkout', async ({ assertions, checkout, page }) => {
         // Testing environment setup
-        await page.addInitScript({ path: './tests/apple-pay/ApplePaySessionCustomerStepMockObject.js' });
+        await page.addInitScript(addApplePaySessionToChromeCustomerStep);
 
         const responseProps = { status: 200, contentType: 'application/json' };
         await checkout.use(new CustomerStepPreset());
