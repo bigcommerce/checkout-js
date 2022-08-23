@@ -1,3 +1,51 @@
+export const applePayCart = `{
+    "id":"applepay",
+    "gateway":null,
+    "logoUrl":"applepay-header@2x.png",
+    "method":"applepay",
+    "supportedCards":[],
+    "providesShippingAddress":false,
+    "config":{
+        "displayName":"",
+        "cardCode":null,
+        "helpText":"",
+        "enablePaypal":null,
+        "merchantId":"00000000-0000-0000-0000-000000000000",
+        "is3dsEnabled":null,
+        "testMode":false,
+        "isVisaCheckoutEnabled":null,
+        "requireCustomerCode":false,
+        "isVaultingEnabled":false,
+        "isVaultingCvvEnabled":null,
+        "hasDefaultStoredInstrument":false,
+        "isHostedFormEnabled":false,
+        "logo":null},
+        "type":"PAYMENT_TYPE_API",
+        "initializationStrategy":{
+            "type":"not_applicable"
+        },
+        "nonce":null,
+        "initializationData":{
+            "storeName":"example store",
+            "countryCode":"US",
+            "currencyCode":"USD",
+            "supportedNetworks":[
+                "visa",
+                "masterCard",
+                "amex",
+                "discover"
+            ],
+            "gateway":"authorizenet",
+            "merchantCapabilities":["supports3DS"],
+            "merchantId":"00000000-0000-0000-0000-000000000000",
+            "paymentsUrl":"https://bigpay.service.bcdev",
+            "sentry":"https://example@sentry.io/example",
+            "confirmationLink":"/checkout/order-confirmation"
+        },
+        "clientToken":null,
+        "returnUrl":null
+    }`
+
 export const payments = `[{
     "id": "applepay",
     "gateway": null,
@@ -34,9 +82,9 @@ export const payments = `[{
         "gateway": "braintree",
         "merchantCapabilities": ["supports3DS"],
         "merchantId": "00000000-0000-0000-0000-000000000000",
-        "paymentsUrl": "https:\/\/bigpay.service.bcdev",
-        "sentry": "https:\/\/example@sentry.io\/0000000",
-        "confirmationLink": "\/checkout\/order-confirmation"
+        "paymentsUrl": "https://bigpay.service.bcdev",
+        "sentry": "https://example@sentry.io/0000000",
+        "confirmationLink": "/checkout/order-confirmation"
     },
     "clientToken": null,
     "returnUrl": null

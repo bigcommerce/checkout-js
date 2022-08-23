@@ -1,9 +1,44 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/no-empty-function */
 const addApplePaySessionToChrome = () => {
     class ApplePaySessionCustomerStep {
         [x: string]: any;
+        version: number;
+        paymentRequest: ApplePayJS.ApplePayPaymentRequest;
+
+        constructor(version, paymentRequest) {
+            this.version = version;
+            this.paymentRequest = paymentRequest;
+        }
+
+        static STATUS_SUCCESS = 1;
+        static STATUS_FAILURE = 2;
+
+        static supportsVersion(versionNumber) {
+            return true;
+        }
+
+        static canMakePayments() {
+            return true;
+        }
+
+        static canMakePaymentsWithActiveCard() {
+            return Promise.resolve(this.canMakePayments());
+        }
+
+        completePayment() {
+        }
+
+        completeShippingContactSelection(update) {
+        }
+
+        completeShippingMethodSelection(update) {
+        }
+
+        completeMerchantValidation(response) {
+        }
         begin() {
             setTimeout(() => {
-                console.log('testing')
                 const validationEvent = {
                     validationURL: 'https://www.example.com',
                 } as ApplePayJS.ApplePayValidateMerchantEvent

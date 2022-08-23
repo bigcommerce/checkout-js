@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 const addApplePaySessionToChrome = () => {
     class ApplePaySessionPaymentStep {
         [x: string]: any;
@@ -32,7 +34,6 @@ const addApplePaySessionToChrome = () => {
 
         completeShippingMethodSelection(update) {
         }
-
 
         completeMerchantValidation(response) {
         }
