@@ -30,7 +30,7 @@ export interface SingleShippingFormProps {
     isShippingStepPending: boolean;
     isMultiShippingMode: boolean;
     methodId?: string;
-    isStripeLinkEnable?: boolean;
+    isStripeLinkEnabled?: boolean;
     shippingAddress?: Address;
     shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
@@ -117,7 +117,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
             deinitialize,
             values: { shippingAddress: addressForm },
             isShippingStepPending,
-            isStripeLinkEnable,
+            isStripeLinkEnabled,
             onSubmit,
             isStripeAutoStep,
             step,
@@ -149,7 +149,7 @@ class SingleShippingForm extends PureComponent<SingleShippingFormProps & WithLan
                         isLoading={ isResettingAddress }
                         isShippingStepPending={ isShippingStepPending }
                         isStripeAutoStep={ isStripeAutoStep }
-                        isStripeLinkEnable={ isStripeLinkEnable }
+                        isStripeLinkEnabled={ isStripeLinkEnabled }
                         isStripeLoading={ isStripeLoading }
                         methodId={ methodId }
                         onAddressSelect={ this.handleAddressSelect }

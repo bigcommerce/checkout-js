@@ -40,7 +40,7 @@ describe('Shipping Component', () => {
                 isEditable: true,
                 isRequired: true,
                 type: CheckoutStepType.Shipping },
-            isStripeLinkEnable: true,
+            isStripeLinkEnabled: true,
             isStripeLoading: false,
             navigateNextStep: jest.fn(),
             onUnhandledError: jest.fn(),

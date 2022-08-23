@@ -100,7 +100,7 @@ describe('Customer', () => {
                 type: CheckoutStepType.Customer };
 
             const component = mount(
-                <CustomerTest isStripeLinkEnable={ true } step={ steps } viewType={ CustomerViewType.Guest } />
+                <CustomerTest isStripeLinkEnabled={ true } step={ steps } viewType={ CustomerViewType.Guest } />
             );
 
             await new Promise(resolve => process.nextTick(resolve));

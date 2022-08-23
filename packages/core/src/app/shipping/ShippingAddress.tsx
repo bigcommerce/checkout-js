@@ -29,7 +29,7 @@ export interface ShippingAddressProps {
     shippingAddress?: Address;
     shouldShowSaveAddress?: boolean;
     hasRequestedShippingOptions: boolean;
-    isStripeLinkEnable?: boolean;
+    isStripeLinkEnabled?: boolean;
     step: CheckoutStepStatus;
     shouldDisableSubmit: boolean;
     isStripeLoading?(): void;
@@ -64,7 +64,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
         shouldShowSaveAddress,
         onUnhandledError = noop,
         isShippingStepPending,
-        isStripeLinkEnable,
+        isStripeLinkEnabled,
         shouldDisableSubmit,
         onSubmit,
         step,
@@ -179,7 +179,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
         onFieldChange(fieldName, value);
     };
 
-    if (isStripeLinkEnable && !customerEmail) {
+    if (isStripeLinkEnabled && !customerEmail) {
         let options: ShippingInitializeOptions = {};
 
         options = {

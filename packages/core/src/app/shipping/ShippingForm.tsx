@@ -28,7 +28,7 @@ export interface ShippingFormProps {
     shouldShowOrderComments: boolean;
     shouldShowAddAddressInCheckout: boolean;
     step: CheckoutStepStatus;
-    isStripeLinkEnable?: boolean;
+    isStripeLinkEnabled?: boolean;
     customerEmail?: string;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
@@ -84,7 +84,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             signOut,
             updateAddress,
             isShippingStepPending,
-            isStripeLinkEnable,
+            isStripeLinkEnabled,
             step,
             isStripeLoading,
             isStripeAutoStep,
@@ -132,7 +132,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 isMultiShippingMode={ isMultiShippingMode }
                 isShippingStepPending={ isShippingStepPending }
                 isStripeAutoStep={ isStripeAutoStep }
-                isStripeLinkEnable={ isStripeLinkEnable }
+                isStripeLinkEnabled={ isStripeLinkEnabled }
                 isStripeLoading={ isStripeLoading }
                 methodId={ methodId }
                 onSubmit={ onSingleShippingSubmit }

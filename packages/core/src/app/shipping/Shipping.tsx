@@ -51,7 +51,7 @@ export interface WithCheckoutShippingProps {
     shouldShowAddAddressInCheckout: boolean;
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
-    isStripeLinkEnable?: boolean;
+    isStripeLinkEnabled?: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitializeShippingMethod(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -122,7 +122,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             deinitializeShippingMethod,
             isMultiShippingMode,
             onToggleMultiShipping,
-            isStripeLinkEnable,
+            isStripeLinkEnabled,
             step,
             ...shippingFormProps
         } = this.props;
@@ -134,7 +134,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         } = this.state;
 
         const renderShipping = () => {
-            if (isStripeLinkEnable && !customer.email) {
+            if (isStripeLinkEnabled && !customer.email) {
                 return <div className="checkout-form">
                     <div style={ {display: isStripeAutoStep ? 'none' : undefined,} }>
                     <LoadingOverlay
@@ -162,7 +162,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                                 isGuest={ isGuest }
                                 isMultiShippingMode={ isMultiShippingMode }
                                 isStripeAutoStep={ this.handleIsAutoStep }
-                                isStripeLinkEnable={ isStripeLinkEnable }
+                                isStripeLinkEnabled={ isStripeLinkEnabled }
                                 isStripeLoading={ this.handleIsStripeLoading }
                                 onMultiShippingSubmit={ this.handleMultiShippingSubmit }
                                 onSingleShippingSubmit={ this.handleSingleShippingSubmit }
@@ -199,7 +199,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                             isGuest={ isGuest }
                             isMultiShippingMode={ isMultiShippingMode }
                             isStripeAutoStep={ this.handleIsAutoStep }
-                            isStripeLinkEnable={ isStripeLinkEnable }
+                            isStripeLinkEnabled={ isStripeLinkEnabled }
                             isStripeLoading={ this.handleIsStripeLoading }
                             onMultiShippingSubmit={ this.handleMultiShippingSubmit }
                             onSingleShippingSubmit={ this.handleSingleShippingSubmit }
@@ -429,10 +429,11 @@ export function mapToShippingProps({
         shippableItemsCount < 50
     );
     const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ'];
-
-    const card = getCart() || undefined;
     const stripeUpe = getPaymentMethod('card', PaymentMethodId.StripeUPE);
-    const stripeUpeLinkEnable = stripeUpe && stripeUpe.initializationData.enableLink && card && card.currency.code === 'USD';
+    const linkEnabled = stripeUpe?.initializationData.enableLink || false;
+    const stripeUpeSupportedCurrency = cart?.currency.code === 'USD' || false;
+    const stripeUpeLinkEnabled = linkEnabled && stripeUpeSupportedCurrency;
+
 
     if (features['CHECKOUT-4183.checkout_google_address_autocomplete_uk']) {
         countriesWithAutocomplete.push('GB');
@@ -473,7 +474,7 @@ export function mapToShippingProps({
         updateBillingAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,
         updateShippingAddress: checkoutService.updateShippingAddress,
-        isStripeLinkEnable: stripeUpeLinkEnable,
+        isStripeLinkEnabled: stripeUpeLinkEnabled,
         loadPaymentMethods: checkoutService.loadPaymentMethods,
     };
 }

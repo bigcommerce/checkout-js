@@ -55,7 +55,7 @@ describe('ShippingForm Component', () => {
             shippingAddress: getShippingAddress(),
             isMultiShippingMode: false,
             shouldShowOrderComments: true,
-            isStripeLinkEnable: false,
+            isStripeLinkEnabled: false,
             step: { isActive: true,
                 isComplete: true,
                 isEditable: true,

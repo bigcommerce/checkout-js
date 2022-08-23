@@ -58,7 +58,7 @@ export interface WithCheckoutCustomerProps {
     isAccountCreationEnabled: boolean;
     createAccountError?: Error;
     signInError?: Error;
-    isStripeLinkEnable?: boolean;
+    isStripeLinkEnabled?: boolean;
     clearError(error: Error): Promise<CheckoutSelectors>;
     continueAsGuest(credentials: GuestCredentials): Promise<CheckoutSelectors>;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
@@ -157,7 +157,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             isInitializing = false,
             privacyPolicyUrl,
             requiresMarketingConsent,
-            isStripeLinkEnable,
+            isStripeLinkEnabled,
             onUnhandledError = noop,
             step,
             updateStripeLinkAuthenticated,
@@ -165,7 +165,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
         } = this.props;
 
         return (
-            isStripeLinkEnable ?
+            isStripeLinkEnabled ?
                 <StripeGuestForm
                     canSubscribe={ canSubscribe }
                     checkoutButtons={
@@ -480,17 +480,20 @@ export function mapToWithCheckoutCustomerProps(
         statuses: { isContinuingAsGuest, isExecutingPaymentMethodCheckout, isInitializingCustomer, isSigningIn, isSendingSignInEmail, isCreatingCustomerAccount },
     } = checkoutState;
 
-    const card = getCart() || undefined;
+    const cart = getCart();
     const billingAddress = getBillingAddress();
     const checkout = getCheckout();
     const customer = getCustomer();
     const signInEmail = getSignInEmail();
     const config = getConfig();
-    let stripeUpeLinkEnable = false;
+    let stripeUpeLinkEnabled = false;
 
-    if (card) {
+    if (cart) {
         const stripeUpe = getPaymentMethod('card', PaymentMethodId.StripeUPE);
-        stripeUpeLinkEnable = stripeUpe?.initializationData.enableLink && card.currency.code === 'USD';
+        const linkEnabled = stripeUpe?.initializationData.enableLink || false;
+        const stripeUpeSupportedCurrency = cart?.currency.code === 'USD' || false;
+
+        stripeUpeLinkEnabled = linkEnabled && stripeUpeSupportedCurrency;
     }
 
     if (!checkout || !config) {
@@ -538,7 +541,7 @@ export function mapToWithCheckoutCustomerProps(
         requiresMarketingConsent,
         signIn: checkoutService.signInCustomer,
         signInError: getSignInError(),
-        isStripeLinkEnable: stripeUpeLinkEnable,
+        isStripeLinkEnabled: stripeUpeLinkEnabled,
         loadPaymentMethods: checkoutService.loadPaymentMethods,
     };
 }

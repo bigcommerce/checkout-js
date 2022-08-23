@@ -46,7 +46,7 @@ describe('ShippingAddress Component', () => {
                 isEditable: false,
                 isRequired: true,
                 type: CheckoutStepType.Shipping },
-            isStripeLinkEnable: false,
+            isStripeLinkEnabled: false,
             isStripeLoading: jest.fn(),
             shouldDisableSubmit: false,
             onSubmit: noop,
@@ -166,7 +166,7 @@ describe('ShippingAddress Component', () => {
         });
 
         it('renders StripeShippingAddress with expected props', () => {
-            const stripeProps = {...defaultProps, isStripeLinkEnable: true, customerEmail: ''};
+            const stripeProps = {...defaultProps, isStripeLinkEnabled: true, customerEmail: ''};
             const component = mount(
                 <Formik
                     initialValues={ {} }
@@ -215,7 +215,7 @@ describe('ShippingAddress Component', () => {
                     }
                 );
             });
-            const stripeProps = {...defaultProps, isStripeLinkEnable: true, customerEmail: ''};
+            const stripeProps = {...defaultProps, isStripeLinkEnabled: true, customerEmail: ''};
             const component = mount(
                 <Formik
                     initialValues={ {} }
