@@ -49,6 +49,26 @@ jobs:
           paths:
             - dist
 
+  e2e:
+    <<: *node_executor
+    steps:
+      - ci/pre-setup
+      - node/npm-install
+      - run:
+          name: "Build checkout-js"
+          command: npm run build
+      - run:
+          name: "Install playwright"
+          command: npx playwright install --with-deps
+      - run:
+          name: "Run e2e tests"
+          command: npx playwright test
+      - store_artifacts:
+          path: packages/payment-integration-test-framework/report
+          destination: artifact-file
+      - store_artifacts:
+          path: packages/payment-integration-test-framework/screenshots
+
   release:
     <<: *node_executor
     steps:
@@ -113,6 +133,9 @@ workflows:
       - build:
           filters:
             <<: *pull_request_filter
+      - e2e:
+          filters:
+            <<: *pull_request_filter
       - ci/validate-commits:
           filters:
             <<: *pull_request_filter
@@ -125,6 +148,9 @@ workflows:
       - build:
           filters:
             <<: *release_filter
+      - e2e:
+          filters:
+            <<: *release_filter
       - approve:
           filters:
             <<: *release_filter
@@ -132,6 +158,7 @@ workflows:
           requires:
             - test
             - build
+            - e2e
       - release:
           filters:
             <<: *release_filter

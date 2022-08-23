@@ -1,41 +1,31 @@
 import 'dotenv/config'
 import { devices, PlaywrightTestConfig } from '@playwright/test';
 
-/**
- * See https://playwright.dev/docs/test-configuration.
- * All timeout settings are default values now. 14/04/2022
- */
 const config: PlaywrightTestConfig = {
   webServer: {
     command: 'http-server dist --port=' + process.env.PORT,
     port: Number(process.env.PORT),
     timeout: 3 * 1000,
+    reuseExistingServer: true,
   },
   timeout: 60 * 1000,
   expect: {
     // timeout: 25 * 1000,
   },
-  testDir: './tests/',
-  testIgnore: './tests/sampleTests/**',
-  outputDir: 'tests/screenshots',
+  testDir: './packages',
+  testMatch: /e2e\/.*\.spec\.ts/,
+  outputDir: './packages/payment-integration-test-framework/screenshots',
   fullyParallel: true,
-  /* TODO: Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
-  /* TODO: Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
-  /* TODO: Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
+  forbidOnly: true,
+  retries: 0,
+  workers: process.env.IS_CI ? 3 : undefined,
   // reporter: 'line',
-  reporter: [ ['html', { outputFolder: './tests/report' }] ],
-  // Shared settings for all the projects below.
+  reporter: [['html', { outputFolder: './packages/payment-integration-test-framework/report', open: 'never' }]],
   use: {
     baseURL: 'http://localhost:' + process.env.PORT,
     screenshot: 'only-on-failure',
-    /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
-    // actionTimeout: 30 * 1000,
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
+    // actionTimeout: 30 * 1000, // Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
   },
   projects: [
     {

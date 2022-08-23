@@ -6,8 +6,9 @@ export function getStoreConfig(): StoreConfig {
         inputDateFormat: 'dd/MM/yyyy',
         displayDateFormat: 'dd/MM/yyyy',
         formFields: {
-            shippingAddressFields: [],
-            billingAddressFields: [],
+            shippingAddress: [],
+            billingAddress: [],
+            customerAccount: [],
         },
         checkoutSettings: {
             checkoutBillingSameAsShippingEnabled: true,
@@ -18,12 +19,15 @@ export function getStoreConfig(): StoreConfig {
             hasMultiShippingEnabled: true,
             guestCheckoutEnabled: true,
             isAnalyticsEnabled: true,
+            isAccountCreationEnabled: true,
             isCardVaultingEnabled: true,
             isPaymentRequestEnabled: false,
             isPaymentRequestCanMakePaymentEnabled: false,
             isSpamProtectionEnabled: false,
+            isStorefrontSpamProtectionEnabled: false,
             isCouponCodeCollapsed: true,
             isTrustedShippingAddressEnabled: true,
+            isSignInEmailEnabled: false,
             orderTermsAndConditions: '',
             orderTermsAndConditionsLink: '',
             orderTermsAndConditionsType: '',
@@ -95,6 +99,7 @@ export function getStoreConfig(): StoreConfig {
             orderEmail: 's1504098821@example.com',
             shopPath: 'https://store-k1drp8k8.bcapp.dev',
             storeCountry: 'United States',
+            storeCountryCode: 'US',
             storeHash: 'k1drp8k8',
             storeId: '1504098821',
             storeName: 's1504098821',
@@ -112,6 +117,9 @@ export function getStoreConfig(): StoreConfig {
             isTransactional: true,
             thousandsSeparator: ',',
             exchangeRate: 1.12,
+        },
+        displaySettings: {
+            hidePriceFromGuests: false,
         },
     };
 }

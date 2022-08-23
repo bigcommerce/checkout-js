@@ -1,11 +1,14 @@
 {
   "version": 2,
   "projects": {
+    "afterpay-integration": "packages/afterpay-integration",
     "apple-pay-integration": "packages/apple-pay-integration",
-    "core": "packages/core",
     "checkout-button-integration": "packages/checkout-button-integration",
+    "core": "packages/core",
     "google-pay-integration": "packages/google-pay-integration",
+    "hosted-credit-card-integration": "packages/hosted-credit-card-integration",
     "payment-integration-api": "packages/payment-integration-api",
+    "payment-integration-test-framework": "packages/payment-integration-test-framework",
     "workspace-tools": "packages/workspace-tools"
   }
 }

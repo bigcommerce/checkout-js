@@ -472,9 +472,11 @@
                 "stripev3": {
                     "iban": "SEPA Direct Debit Mandate"
                 },
-                "stripe_upe": {
+                "stripeupe": {
+                    "au_becs_debit": "BECS Direct Debit Mandate",
                     "boleto": "Boleto Bancário Ticket",
-                    "oxxo": "OXXO Ticket"
+                    "oxxo": "OXXO Ticket",
+                    "sepa_debit": "SEPA Direct Debit Mandate"
                 },
                 "paypalcommercealternativemethods": {
                     "oxxo": "OXXO Ticket"

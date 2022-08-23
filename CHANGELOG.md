@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.247.3](https://github.com/bigcommerce/checkout-js/compare/v1.247.2...v1.247.3) (2022-08-22)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-6896 Running e2e tests in CircleCI ([#979](https://github.com/bigcommerce/checkout-js/issues/979)) ([b5607ea](https://github.com/bigcommerce/checkout-js/commit/b5607ea2d5d6827a544dac184e451652d4d49352))
+
+### [1.247.2](https://github.com/bigcommerce/checkout-js/compare/v1.247.1...v1.247.2) (2022-08-19)
+
+### [1.247.1](https://github.com/bigcommerce/checkout-js/compare/v1.247.0...v1.247.1) (2022-08-18)
+
+## [1.247.0](https://github.com/bigcommerce/checkout-js/compare/v1.246.0...v1.247.0) (2022-08-18)
+
+
+### Features
+
+* **checkout:** STRF-9829 Redirect to cart on sign-out if prices are hidden from guests ([b482e59](https://github.com/bigcommerce/checkout-js/commit/b482e592c3fd09b62a91d5a93490919b2fe7479b))
+
+
+### Bug Fixes
+
+* **order:** INT-4776 Fix wrong mandate translation keys ([1455e82](https://github.com/bigcommerce/checkout-js/commit/1455e825e2051fff50678da23ec521c8537df456))
+* **payment:** INT-5854 [Mollie] Klarna is not available if cart contains digital products ([#938](https://github.com/bigcommerce/checkout-js/issues/938)) ([3ca97af](https://github.com/bigcommerce/checkout-js/commit/3ca97af516c24b6057f0f14946c564bbc2a3262a))
+
 ## [1.246.0](https://github.com/bigcommerce/checkout-js/compare/v1.245.4...v1.246.0) (2022-08-16)
 
 
