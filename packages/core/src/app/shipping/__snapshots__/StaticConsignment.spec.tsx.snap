@@ -6,7 +6,7 @@ exports[`StaticConsignment Component renders compact view of static consignment 
 >
   <div>
     <div
-      class="shippingOption shippingOption--alt"
+      class="shippingOption shippingOption--alt shippingOption--state-selected"
     >
       <div
         class="shippingOption shippingOption--alt"
@@ -39,7 +39,7 @@ exports[`StaticConsignment Component renders static consignment with shipping me
   <div>
     <strong />
     <div
-      class="shippingOption shippingOption--alt"
+      class="shippingOption shippingOption--alt shippingOption--state-selected"
     >
       <div
         class="shippingOption shippingOption--alt"
