@@ -15,7 +15,7 @@ export interface PaymentMethodProps {
     method: PaymentMethod;
     isEmbedded?: boolean;
     isUsingMultiShipping?: boolean;
-    resolveComponent?(query: PaymentMethodResolveId): ComponentType<ResolvedPaymentMethodProps>;
+    resolveComponent?(query: PaymentMethodResolveId): ComponentType<ResolvedPaymentMethodProps> | undefined;
     onUnhandledError(error: Error): void;
 }
 
@@ -62,7 +62,7 @@ const PaymentMethodContainer: ComponentType<
     });
 
     if (!ResolvedPaymentMethod) {
-        console.log('%c method not resolved, using V1 fallback', 'color: red', method.id)
+        console.log('Does this run');
         return <PaymentMethodComponent
             isEmbedded={ isEmbedded }
             isUsingMultiShipping={ isUsingMultiShipping }
@@ -70,8 +70,6 @@ const PaymentMethodContainer: ComponentType<
             onUnhandledError={ onUnhandledError }
         />;
     }
-
-    console.log('%c method resolved successfully', 'color: green', method.id,);
 
     return <ResolvedPaymentMethod
         checkoutService={ checkoutService }

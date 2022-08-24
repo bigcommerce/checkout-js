@@ -82,4 +82,28 @@ describe('PaymentMethod', () => {
         expect(componentB.find(Bar))
             .toBeDefined();
     });
+
+    it('returns payment method v1 if cannot resolve', () => {
+        const Foo: FunctionComponent<PaymentMethodProps> = ({ method }) => <div>{ method.id }</div>;
+
+        const resolver = (method: PaymentMethod) => {
+            return method.id === 'foo' ? Foo : undefined;
+        };
+
+        const componentFallback = mount(
+            <ContextProvider>
+                <PaymentMethodComponent
+                    method={ {
+                        ...getPaymentMethod(),
+                        id: 'test',
+                    } }
+                    onUnhandledError={ jest.fn() }
+                    resolveComponent={ resolver }
+                />
+            </ContextProvider>
+        );
+
+        expect(componentFallback.find(Foo))
+            .toBeDefined();
+    });
 });
