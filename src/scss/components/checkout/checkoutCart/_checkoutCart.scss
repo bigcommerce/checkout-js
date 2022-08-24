@@ -140,3 +140,46 @@
     margin-bottom: 0;
     margin-top: spacing("half");
 }
+
+.subscription-info {
+    background: radial-gradient(100% 1437.67% at 100% 54.17%, rgba(0, 50, 220, 0.25) 0%, rgba(255, 0, 0, 0.25) 100%);
+    border-radius: 0 0 8px 8px;
+    font-size: 13px;
+    padding: 0 12px;
+
+    svg {
+        margin-right: 8px;
+    }
+}
+
+.custom-description,
+.subscription-info {
+    display: none;
+    font-family: 'CircularXXWeb';
+}
+
+.test_09 {
+    .custom-description {
+        display: block;
+        font-size: 12px;
+    }
+
+    .subscription-info {
+        align-items: center;
+        display: flex;
+    }
+
+    .product-option:not(.custom-description) {
+        display: none;
+    }
+
+    .productList-item {
+        background: radial-gradient(100% 1437.67% at 100% 54.17%, rgba(0, 50, 220, 0.25) 0%, rgba(255, 0, 0, 0.25) 100%);
+        border-radius: 0 0 8px 8px;
+        padding: 1px;
+
+        .product {
+            padding: 12px 8px;
+        }
+    }
+}
