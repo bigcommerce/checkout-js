@@ -8,6 +8,12 @@
     width: 100%;
 }
 
+.shippingOption--selected {
+    border-top: container("border");
+    margin-top: spacing("half");
+    padding-top: spacing("half");
+}
+
 .shippingOption-figure,
 .shippingOption-desc,
 .shippingOption-price {
