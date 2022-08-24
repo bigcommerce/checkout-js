@@ -1,4 +1,4 @@
-import { createCheckoutService, CheckoutService, FormField, FormFieldType } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, CheckoutService, FormField } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -109,7 +109,7 @@ describe('AddressForm Component', () => {
     });
 
     it('renders the same dropdown menu with different field.default values', () => {
-        const field = formFields.find(({ name }) => name === 'field_27') as unknown as FormFieldType;
+        const field = formFields.find(({ name }) => name === 'field_27') as FormField;
         component = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <Formik
@@ -120,7 +120,7 @@ describe('AddressForm Component', () => {
                 </Formik>
             </LocaleContext.Provider>
         );
-        const fieldChanged = {...field, default: 'new value'} as unknown as FormFieldType;
+        const fieldChanged = {...field, default: 'new value'} as FormField;
         const componentChanged = mount(
             <LocaleContext.Provider value={ localeContext }>
                 <Formik

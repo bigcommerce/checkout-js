@@ -187,7 +187,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             } else {
                 this.handleReady();
             }
-        } catch (error) {
+        } catch (e) {
+            const error = e as Error;
             this.handleUnhandledError(error);
         }
     }
@@ -585,6 +586,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         const { loginUrl, cartUrl, isPriceHiddenFromGuests, isGuestEnabled } = this.props;
 
         if (isPriceHiddenFromGuests) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             return window.top.location.href = cartUrl;
         }
 
@@ -600,6 +603,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             this.setState({ isCartEmpty: true });
 
             if (!isEmbedded()) {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
                 return window.top.location.assign(loginUrl);
             }
         }
@@ -634,6 +639,8 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         if (customerViewType === CustomerViewType.CreateAccount &&
             (!canCreateAccountInCheckout || isEmbedded())
         ) {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             window.top.location.replace(createAccountUrl);
 
             return;

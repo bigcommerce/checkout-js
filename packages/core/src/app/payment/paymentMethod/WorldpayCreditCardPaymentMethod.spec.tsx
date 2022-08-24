@@ -76,7 +76,7 @@ describe('when using Worldpay payment', () => {
             isInitializing: false,
             method: {
                 ...getPaymentMethod(),
-                id: PaymentMethodId.Worldpay,
+                id: PaymentMethodId.WorldpayAccess,
             },
             onUnhandledError: jest.fn(),
         };

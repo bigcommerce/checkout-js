@@ -3,6 +3,7 @@ import { noop } from 'lodash';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 
+// eslint-disable-next-line import/no-internal-modules
 import { isMobileView, MOBILE_MAX_WIDTH } from '../ui/responsive';
 
 import CheckoutStep, { CheckoutStepProps } from './CheckoutStep';
@@ -46,7 +47,11 @@ describe('CheckoutStep', () => {
     });
 
     afterEach(() => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
         delete window.scrollTo;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
         delete window.matchMedia;
 
         // Reset the focused element after each test
@@ -197,6 +202,8 @@ describe('CheckoutStep', () => {
 
     it('changes isClosed for mobile', () => {
         isMobile = true;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
         isMobileView.mockImplementation(() => isMobile);
 
         const component = mount(<CheckoutStep { ...defaultProps } />);

@@ -1,4 +1,6 @@
-import { test, PaymentStepAsGuestPreset } from '../';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import { test, PaymentStepAsGuestPreset } from '@bigcommerce/checkout/payment-integration-test-framework';
 
 test.describe('xxxxxxxxxxxxxxxxxxxxxxx', () => {
     test('xxxxxxxxxxxxxxxxxxxxxxx', async ({ assertions, checkout }) => {

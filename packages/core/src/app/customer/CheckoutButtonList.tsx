@@ -1,6 +1,7 @@
 import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
 import React, { memo, Fragment, FunctionComponent } from 'react';
 
+// eslint-disable-next-line import/no-internal-modules
 import { isApplePayWindow } from '../common/utility';
 import { TranslatedString } from '../locale';
 
@@ -59,7 +60,8 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
     if (checkEmbeddedSupport) {
         try {
             checkEmbeddedSupport(supportedMethodIds);
-        } catch (error) {
+        } catch (e) {
+            const error = e as Error;
             if (onError) {
                 onError(error);
             } else {

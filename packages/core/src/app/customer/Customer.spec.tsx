@@ -696,7 +696,7 @@ describe('Customer', () => {
         });
 
         it('calls sendLoginEmail and renders form when sign-in email link is clicked ', async () => {
-            const sendLoginEmail = jest.fn(() => new Promise(resolve => resolve()) as any);
+            const sendLoginEmail = jest.fn(() => new Promise<void>(resolve => resolve()) as any);
             const component = mount(
                 <CustomerTest
                     email="foo@bar.com"

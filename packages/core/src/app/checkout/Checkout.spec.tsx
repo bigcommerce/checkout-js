@@ -458,6 +458,8 @@ describe('Checkout', () => {
             (container.find(CustomerInfo) as ReactWrapper<CustomerInfoProps>)
                 .prop('onSignOut')!({ isCartEmpty: true });
 
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             expect(window.top.location.assign)
                 .toHaveBeenCalled();
         });
@@ -493,6 +495,8 @@ describe('Checkout', () => {
             
             const cartUrl = getStoreConfig().links.cartLink;
 
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
             expect(window.top.location.href)
                 .toEqual(cartUrl);
         });

@@ -18,7 +18,6 @@ import PaymentContext, { PaymentContextProps } from './PaymentContext';
 import PaymentForm, { PaymentFormProps } from './PaymentForm';
 import PaymentSubmitButton from './PaymentSubmitButton';
 import SpamProtectionField, { SpamProtectionProps } from './SpamProtectionField';
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
 jest.useFakeTimers();
 
@@ -65,10 +64,10 @@ describe('PaymentForm', () => {
             .mockReturnValue(getCustomer());
 
         PaymentFormTest = props => (
-            <CheckoutProvider checkoutService={checkoutService}>
-                <PaymentContext.Provider value={paymentContext}>
-                    <LocaleContext.Provider value={localeContext}>
-                        <PaymentForm {...props} />
+            <CheckoutProvider checkoutService={ checkoutService }>
+                <PaymentContext.Provider value={ paymentContext }>
+                    <LocaleContext.Provider value={ localeContext }>
+                        <PaymentForm { ...props } />
                     </LocaleContext.Provider>
                 </PaymentContext.Provider>
             </CheckoutProvider>
@@ -76,7 +75,7 @@ describe('PaymentForm', () => {
     });
 
     it('renders list of payment methods', () => {
-        const container = mount(<PaymentFormTest {...defaultProps} />);
+        const container = mount(<PaymentFormTest { ...defaultProps } />);
         const methodList: ReactWrapper<PaymentMethodListProps> = container.find(PaymentMethodList);
 
         expect(methodList)
@@ -88,8 +87,8 @@ describe('PaymentForm', () => {
 
     it('renders terms and conditions field if copy is provided', () => {
         const container = mount(<PaymentFormTest
-            {...defaultProps}
-            isTermsConditionsRequired={true}
+            { ...defaultProps }
+            isTermsConditionsRequired={ true }
             termsConditionsText="Accept terms"
         />);
         const termsField: ReactWrapper<TermsConditionsFieldProps> = container.find(TermsConditionsField);
@@ -106,8 +105,8 @@ describe('PaymentForm', () => {
 
     it('renders terms and conditions field if terms URL is provided', () => {
         const container = mount(<PaymentFormTest
-            {...defaultProps}
-            isTermsConditionsRequired={true}
+            { ...defaultProps }
+            isTermsConditionsRequired={ true }
             termsConditionsUrl="https://foobar.com/terms"
         />);
         const termsField: ReactWrapper<TermsConditionsFieldProps> = container.find(TermsConditionsField);
@@ -123,7 +122,7 @@ describe('PaymentForm', () => {
     });
 
     it('does not render terms and conditions field if it is not required', () => {
-        const container = mount(<PaymentFormTest {...defaultProps} />);
+        const container = mount(<PaymentFormTest { ...defaultProps } />);
 
         expect(container.find(TermsConditionsField))
             .toHaveLength(0);
@@ -131,8 +130,8 @@ describe('PaymentForm', () => {
 
     it('renders spam protection field if spam check should be executed', () => {
         const container = mount(<PaymentFormTest
-            {...defaultProps}
-            shouldExecuteSpamCheck={true}
+            { ...defaultProps }
+            shouldExecuteSpamCheck={ true }
         />);
         const spamProtectionField: ReactWrapper<SpamProtectionProps> = container.find(SpamProtectionField);
 
@@ -142,8 +141,8 @@ describe('PaymentForm', () => {
 
     it('renders store credit field if store credit can be applied', () => {
         const container = mount(<PaymentFormTest
-            {...defaultProps}
-            usableStoreCredit={100}
+            { ...defaultProps }
+            usableStoreCredit={ 100 }
         />);
         const storeCreditField: ReactWrapper<StoreCreditFieldProps> = container.find(StoreCreditField);
 
@@ -158,7 +157,7 @@ describe('PaymentForm', () => {
     });
 
     it('does not render store credit field if store credit cannot be applied', () => {
-        const container = mount(<PaymentFormTest {...defaultProps} />);
+        const container = mount(<PaymentFormTest { ...defaultProps } />);
 
         expect(container.find(StoreCreditField).exists())
             .toEqual(false);
@@ -166,8 +165,8 @@ describe('PaymentForm', () => {
 
     it('does not render store credit field if store credit cannot be applied', () => {
         const container = mount(<PaymentFormTest
-            usableStoreCredit={10}
-            {...defaultProps}
+            usableStoreCredit={ 10 }
+            { ...defaultProps }
         />);
 
         expect(container.find(StoreCreditField).prop('usableStoreCredit'))
@@ -179,8 +178,8 @@ describe('PaymentForm', () => {
             .mockReturnValue(false);
 
         const container = mount(<PaymentFormTest
-            {...defaultProps}
-            usableStoreCredit={1000000}
+            { ...defaultProps }
+            usableStoreCredit={ 1000000 }
         />);
 
         expect(container.find(StoreCreditOverlay))
@@ -189,8 +188,8 @@ describe('PaymentForm', () => {
 
     it('does not show overlay if store credit cannot cover total cost of order', () => {
         const container = mount(<PaymentFormTest
-            {...defaultProps}
-            usableStoreCredit={1}
+            { ...defaultProps }
+            usableStoreCredit={ 1 }
         />);
 
         expect(container.find(StoreCreditOverlay))
@@ -200,8 +199,8 @@ describe('PaymentForm', () => {
     it('notifies parent when user selects new payment method', () => {
         const handleSelect = jest.fn();
         const container = mount(<PaymentFormTest
-            {...defaultProps}
-            onMethodSelect={handleSelect}
+            { ...defaultProps }
+            onMethodSelect={ handleSelect }
         />);
         const methodList: ReactWrapper<PaymentMethodListProps> = container.find(PaymentMethodList);
 
@@ -215,8 +214,8 @@ describe('PaymentForm', () => {
     it('passes form values to parent component', async () => {
         const handleSubmit = jest.fn();
         const container = mount(<PaymentFormTest
-            {...defaultProps}
-            onSubmit={handleSubmit}
+            { ...defaultProps }
+            onSubmit={ handleSubmit }
         />);
 
         container.find('input[name="ccNumber"]')
@@ -248,14 +247,14 @@ describe('PaymentForm', () => {
     it('does not pass form values to parent component if validation fails', async () => {
         const handleSubmit = jest.fn();
         const container = mount(<PaymentFormTest
-            {...defaultProps}
-            onSubmit={handleSubmit}
+            { ...defaultProps }
+            onSubmit={ handleSubmit }
             // TODO: need to fix type for this schema
             // @ts-ignore 
-            validationSchema={getCreditCardValidationSchema({
+            validationSchema={ getCreditCardValidationSchema({
                 isCardCodeRequired: true,
                 language: localeContext.language,
-            })}
+            }) }
         />);
 
         container.find('input[name="ccNumber"]')
@@ -273,13 +272,13 @@ describe('PaymentForm', () => {
 
     it('resets form validation message when switching to new payment method', async () => {
         const container = mount(<PaymentFormTest
-            {...defaultProps}
+            { ...defaultProps }
 
             // @ts-ignore 
-            validationSchema={getCreditCardValidationSchema({
+            validationSchema={ getCreditCardValidationSchema({
                 isCardCodeRequired: true,
                 language: localeContext.language,
-            })}
+            }) }
         />);
 
         // Submitting a blank form should display some error messages based on the provided validation schema
@@ -318,7 +317,7 @@ describe('PaymentForm', () => {
 
         it('renders with default label', () => {
             defaultProps = { ...defaultProps, selectedMethod };
-            const container = mount(<PaymentFormTest {...defaultProps} />);
+            const container = mount(<PaymentFormTest { ...defaultProps } />);
             const submitButton = container.find(PaymentSubmitButton);
 
             expect(submitButton)
@@ -336,7 +335,7 @@ describe('PaymentForm', () => {
         it('renders with default label if selected method is amazonpay and there is paymentToken', () => {
             selectedMethod = { ...selectedMethod, id: 'amazonpay', initializationData: { paymentToken: 'foo' } };
             defaultProps = { ...defaultProps, selectedMethod };
-            const container = mount(<PaymentFormTest {...defaultProps} />);
+            const container = mount(<PaymentFormTest { ...defaultProps } />);
             const submitButton = container.find(PaymentSubmitButton);
 
             expect(submitButton)
@@ -354,7 +353,7 @@ describe('PaymentForm', () => {
         it('renders with special label if selected method is amazonpay and there is no paymentToken', () => {
             selectedMethod = { ...selectedMethod, id: 'amazonpay', initializationData: { paymentToken: '' } };
             defaultProps = { ...defaultProps, selectedMethod };
-            const container = mount(<PaymentFormTest {...defaultProps} />);
+            const container = mount(<PaymentFormTest { ...defaultProps } />);
             const submitButton = container.find(PaymentSubmitButton);
 
             expect(submitButton)

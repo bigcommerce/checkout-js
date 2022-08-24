@@ -1,8 +1,9 @@
-import { CheckoutSelectors, CustomerAccountRequestBody, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, ExecutePaymentMethodCheckoutOptions, FormField, GuestCredentials, SignInEmail, StoreConfig } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, CustomerAccountRequestBody, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, ExecutePaymentMethodCheckoutOptions, FormField, GuestCredentials, RequestError, SignInEmail, StoreConfig } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
+// eslint-disable-next-line import/no-internal-modules
 import { LoadingOverlay } from '../ui/loading';
 
 import { CreateAccountFormValues } from './getCreateCustomerValidationSchema';
@@ -321,7 +322,8 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             await this.executePaymentMethodCheckoutOrContinue();
 
             this.draftEmail = undefined;
-        } catch (error) {
+        } catch (e) {
+            const error = e as RequestError;
             if (error.type === 'update_subscriptions' || error.type === 'payment_method_client_invalid') {
                 this.draftEmail = undefined;
 
