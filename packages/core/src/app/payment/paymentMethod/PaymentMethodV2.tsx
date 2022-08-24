@@ -8,10 +8,13 @@ import { withLanguage, WithLanguageProps } from '../../locale';
 import { withForm, WithFormProps } from '../../ui/form';
 import createPaymentFormService from '../createPaymentFormService';
 import resolvePaymentMethod from '../resolvePaymentMethod';
+import { default as PaymentMethodComponent } from './PaymentMethod';
 import withPayment, { WithPaymentProps } from '../withPayment';
 
 export interface PaymentMethodProps {
     method: PaymentMethod;
+    isEmbedded?: boolean;
+    isUsingMultiShipping?: boolean;
     resolveComponent?(query: PaymentMethodResolveId): ComponentType<ResolvedPaymentMethodProps>;
     onUnhandledError(error: Error): void;
 }
@@ -29,7 +32,9 @@ const PaymentMethodContainer: ComponentType<
     checkoutState,
     disableSubmit,
     hidePaymentSubmitButton,
+    isEmbedded,
     isSubmitted,
+    isUsingMultiShipping,
     language,
     method,
     onUnhandledError,
@@ -57,8 +62,16 @@ const PaymentMethodContainer: ComponentType<
     });
 
     if (!ResolvedPaymentMethod) {
-        return null;
+        console.log('%c method not resolved, using V1 fallback', 'color: red', method.id)
+        return <PaymentMethodComponent
+            isEmbedded={ isEmbedded }
+            isUsingMultiShipping={ isUsingMultiShipping }
+            method={ method }
+            onUnhandledError={ onUnhandledError }
+        />;
     }
+
+    console.log('%c method resolved successfully', 'color: green', method.id,);
 
     return <ResolvedPaymentMethod
         checkoutService={ checkoutService }

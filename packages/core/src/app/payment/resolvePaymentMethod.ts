@@ -3,9 +3,13 @@ import { ComponentType } from 'react';
 
 import { resolveComponent } from '../common/resolver';
 
+import * as paymentMethods from '../generated/paymentIntegrations';
+
+console.log('methods are:', paymentMethods);
+
 export default function resolvePaymentMethod(query: PaymentMethodResolveId): ComponentType<PaymentMethodProps> | undefined {
     return resolveComponent<PaymentMethodResolveId, PaymentMethodProps>(
         query,
-        require('../generated/paymentMethods')
+        paymentMethods
     );
 }

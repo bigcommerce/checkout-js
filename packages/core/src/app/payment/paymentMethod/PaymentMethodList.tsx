@@ -7,8 +7,8 @@ import { isMobile } from '../../common/utility';
 import { Checklist, ChecklistItem } from '../../ui/form';
 
 import getUniquePaymentMethodId, { parseUniquePaymentMethodId } from './getUniquePaymentMethodId';
-import { default as PaymentMethodComponent } from './PaymentMethod';
 import PaymentMethodTitle from './PaymentMethodTitle';
+import PaymentMethodV2 from './PaymentMethodV2';
 
 export interface PaymentMethodListProps {
     isEmbedded?: boolean;
@@ -95,14 +95,14 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
     onUnhandledError,
     value,
 }) => {
-    const renderPaymentMethod = useMemo(() => (
-        <PaymentMethodComponent
+    const renderPaymentMethod = useMemo(() => {
+        return <PaymentMethodV2
             isEmbedded={ isEmbedded }
             isUsingMultiShipping={ isUsingMultiShipping }
             method={ method }
-            onUnhandledError={ onUnhandledError }
+            onUnhandledError={ onUnhandledError || noop }
         />
-    ), [
+    }, [
         isEmbedded,
         isUsingMultiShipping,
         method,
