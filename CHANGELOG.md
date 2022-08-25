@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.249.0](https://github.com/bigcommerce/checkout-js/compare/v1.248.0...v1.249.0) (2022-08-25)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6851 Improve multi-shipping look ([#993](https://github.com/bigcommerce/checkout-js/issues/993)) ([699c181](https://github.com/bigcommerce/checkout-js/commit/699c18125e4c8b4e78ce97948b701884d61752f0))
+
 ## [1.248.0](https://github.com/bigcommerce/checkout-js/compare/v1.247.3...v1.248.0) (2022-08-24)
 
 

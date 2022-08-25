@@ -6,7 +6,7 @@
 
 .lazyContainer-error{padding:3rem;text-align:center}
 
-.staticConsignmentContainer ul{list-style:none;margin:0}.staticConsignmentContainer+.staticConsignmentContainer{border-top:1px solid #e1e6eb;margin-top:1.5rem;padding-top:1.5rem}.staticConsignment-items{margin:.375rem 0}
+.staticConsignmentContainer ul{list-style:none;margin:0}.staticConsignmentContainer+.staticConsignmentContainer{margin-top:1.5rem;padding-top:1.5rem}.staticConsignment-items{margin:.375rem 0}
 
 .checkout-address--static .address-entry{margin:0}
 
