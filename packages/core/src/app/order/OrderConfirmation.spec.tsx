@@ -158,7 +158,7 @@ describe('OrderConfirmation', () => {
 
         orderConfirmation = mount(<ComponentTest { ...defaultProps } />);
 
-        expect(orderConfirmation.find('.continueButtonContainer a').prop('href'))
+        expect(orderConfirmation.find('.continueButtonContainer form').prop('action'))
             .toEqual(getStoreConfig().links.siteLink);
     });
 });
