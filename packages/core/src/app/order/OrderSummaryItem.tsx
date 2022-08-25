@@ -35,26 +35,27 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
         </figure>
 
         <div className="product-column product-body">
-            <h5
+            <h4
                 className="product-title optimizedCheckout-contentPrimary"
                 data-test="cart-item-product-title"
             >
                 { `${quantity} x ${name}` }
-            </h5>
-            <ul
-                className="product-options optimizedCheckout-contentSecondary"
-                data-test="cart-item-product-options"
-            >
-                { (productOptions || []).map((option, index) =>
-                    <li
-                        className="product-option"
-                        data-test={ option.testId }
-                        key={ index }
-                    >
-                        { option.content }
-                    </li>
-                ) }
-            </ul>
+            </h4>
+            { (productOptions && productOptions.length>0) && <ul
+                    className="product-options optimizedCheckout-contentSecondary"
+                    data-test="cart-item-product-options"
+                >
+                    { productOptions.map((option, index) =>
+                        <li
+                            className="product-option"
+                            data-test={ option.testId }
+                            key={ index }
+                        >
+                            { option.content }
+                        </li>
+                    ) }
+                </ul>
+            }
             { description && <div
                 className="product-description optimizedCheckout-contentSecondary"
                 data-test="cart-item-product-description"
