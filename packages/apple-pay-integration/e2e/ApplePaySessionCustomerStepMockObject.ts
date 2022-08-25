@@ -1,18 +1,46 @@
 const addApplePaySessionToChrome = () => {
-    class ApplePaySessionCustomerStep {
+    class ApplePaySessionCustomerStep implements ApplePaySession {
         version: number;
         paymentRequest: ApplePayJS.ApplePayPaymentRequest;
 
         constructor(version, paymentRequest) {
             this.version = version;
             this.paymentRequest = paymentRequest;
+        }        
+
+        oncancel: (event: ApplePayJS.Event) => void = () => { 
+            console.log('oncancel');
+        }
+
+        onpaymentauthorized: (event: ApplePayJS.ApplePayPaymentAuthorizedEvent) => void = () => {
+            console.log('onpaymentauthorized');
+        }
+
+        onpaymentmethodselected: (event: ApplePayJS.ApplePayPaymentMethodSelectedEvent) => void = () => {
+            console.log('onpaymentmethodselected');
+        }
+
+        onshippingcontactselected: (event: ApplePayJS.ApplePayShippingContactSelectedEvent) => void = () => { 
+            console.log('onshippingcontactselected');
+        }
+
+        onshippingmethodselected: (event: ApplePayJS.ApplePayShippingMethodSelectedEvent) => void  = () => { 
+            console.log('onshippingmethodselected');
+        }
+
+        onvalidatemerchant: (event: ApplePayJS.ApplePayValidateMerchantEvent) => void  = () => { 
+            console.log('onvalidatemerchant');
+        }
+
+        abort(): void {
+            console.log('abort')
         }
 
         STATUS_SUCCESS = 1;
         STATUS_FAILURE = 2;
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        supportsVersion(versionNumber) {
+        static supportsVersion(_versionNumber) {
+            console.log('supportsVersion', _versionNumber)
             return true;
         }
 
@@ -24,20 +52,27 @@ const addApplePaySessionToChrome = () => {
             return Promise.resolve(this.canMakePayments());
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
         completePayment() {
+            console.log('completePayment');
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
-        completeShippingContactSelection(update) {
+        completeShippingContactSelection(_update) {
+            console.log('completeShippingContactSelection', _update);
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
-        completeShippingMethodSelection(update) {
+        completeShippingMethodSelection(_update) {
+            console.log('completeShippingMethodSelection', _update);
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
-        completeMerchantValidation(response) {
+        completeMerchantValidation(_response) {
+            console.log('completeMerchantValidation', _response);
+        }
+
+        completePaymentMethodSelection(newTotal: ApplePayJS.ApplePayLineItem, newLineItems: ApplePayJS.ApplePayLineItem[]): void;
+        completePaymentMethodSelection(update: ApplePayJS.ApplePayPaymentMethodUpdate): void;
+
+        completePaymentMethodSelection(newTotal: unknown, newLineItems?: unknown): void {
+            console.log('completeMerchantValidation', newTotal, newLineItems);
         }
 
         begin() {
@@ -63,14 +98,8 @@ const addApplePaySessionToChrome = () => {
                     }
                 } as ApplePayJS.ApplePayShippingMethodSelectedEvent
 
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
                 this.onvalidatemerchant(validationEvent);
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
                 this.onshippingcontactselected(shippingContactEvent);
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
                 this.onshippingmethodselected(shippingMethodSelectedEvent);
             }, 0);
             setTimeout(() => {
@@ -113,61 +142,9 @@ const addApplePaySessionToChrome = () => {
                             phoneNumber: "00000000",
                         }
                     },
-                    bubbles: false,
-                    cancelBubble: false,
-                    cancelable: false,
-                    composed: false,
-                    currentTarget: {
-                        addEventListener: () => { return null; },
-                        dispatchEvent: () => { return true },
-                        removeEventListener: () => { return null; },
-                    },
-                    defaultPrevented: false,
-                    eventPhase: 1,
-                    isTrusted: false,
-                    returnValue: false,
-                    srcElement: {
-                        addEventListener: () => { return null; },
-                        dispatchEvent: () => { return true },
-                        removeEventListener: () => { return null; },
-                    },
-                    target: {
-                        addEventListener: () => { return null; },
-                        dispatchEvent: () => { return true },
-                        removeEventListener: () => { return null; },
-                    },
-                    timeStamp: '',
-                    type: '',
-                    composedPath: () => { return [] },
-                    initEvent: () => { return null; },
-                    preventDefault: () => { return null; },
-                    stopImmediatePropagation: () => { return null; },
-                    stopPropagation: () => { return null; },
-                    AT_TARGET: 0,
-                    BLUR: 0,
-                    BUBBLING_PHASE: 0,
-                    CAPTURING_PHASE: 0,
-                    CHANGE: 0,
-                    CLICK: 0,
-                    DBLCLICK: 0,
-                    DRAGDROP: 0,
-                    FOCUS: 0,
-                    KEYDOWN: 0,
-                    KEYPRESS: 0,
-                    KEYUP: 0,
-                    MOUSEDOWN: 0,
-                    MOUSEDRAG: 0,
-                    MOUSEMOVE: 0,
-                    MOUSEOUT: 0,
-                    MOUSEOVER: 0,
-                    MOUSEUP: 0,
-                    NONE: 0,
-                    SELECT: 0,
-                } as ApplePayJS.ApplePayPaymentAuthorizedEvent;
+                } as unknown as ApplePayJS.ApplePayPaymentAuthorizedEvent;
 
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                this.onpaymentauthorized(event, this);
+                this.onpaymentauthorized(event);
             }, 1000)
         }
     }

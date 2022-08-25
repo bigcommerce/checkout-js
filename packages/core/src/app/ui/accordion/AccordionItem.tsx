@@ -46,7 +46,7 @@ const AccordionItem: FunctionComponent<AccordionItemProps> = ({
             className,
             { [classNameSelected]: isSelected }
         ) }
-        data-test={ `${itemId}_accordion-item` }
+        data-test={ `accordion-item_${itemId}` }
         >
             <div className={ classNames(
                 headerClassName,

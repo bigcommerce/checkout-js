@@ -24,7 +24,7 @@ test.describe('ApplePay', () => {
 
         // Playwright actions
         await checkout.goto();
-        await page.locator('[data-test=applepay_accordion-item]').click();
+        await page.locator('[data-test=accordion-item_applepay]').click();
         await checkout.placeOrder();
 
         // Assertions
