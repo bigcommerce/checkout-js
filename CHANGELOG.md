@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.249.1](https://github.com/bigcommerce/checkout-js/compare/v1.249.0...v1.249.1) (2022-08-26)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-000 upgrade @types/dompurify from 0.0.32 to 0.0.33 ([#931](https://github.com/bigcommerce/checkout-js/issues/931)) ([6fe8c54](https://github.com/bigcommerce/checkout-js/commit/6fe8c54c2635fbd483fc01679c814cf769862641))
+* **common:** CHECKOUT-000 upgrade @types/react from 16.14.28 to 16.14.29 ([#982](https://github.com/bigcommerce/checkout-js/issues/982)) ([6382ef0](https://github.com/bigcommerce/checkout-js/commit/6382ef0119b4660a2802308ae61b6243b49226e2))
+* **common:** CHECKOUT-000 upgrade dompurify from 2.3.9 to 2.3.10 ([#960](https://github.com/bigcommerce/checkout-js/issues/960)) ([1986832](https://github.com/bigcommerce/checkout-js/commit/1986832b46b202c11327f0c959985b3119c21c0d))
+
 ## [1.249.0](https://github.com/bigcommerce/checkout-js/compare/v1.248.0...v1.249.0) (2022-08-25)
 
 
