@@ -120,8 +120,8 @@
         flex-wrap: nowrap;
     }
 
-    &.is-readonly {
-        cursor: default;
+    &.is-clickable {
+        cursor: pointer;
     }
 }
 

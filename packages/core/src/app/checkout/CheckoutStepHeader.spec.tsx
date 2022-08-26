@@ -64,6 +64,9 @@ describe('CheckoutStepHeader', () => {
 
         expect(component.prop('className'))
             .not.toContain('is-readonly');
+
+        expect(component.prop('className'))
+            .toContain('is-clickable');
     });
 
     it('does not render edit button if it is not editable', () => {
