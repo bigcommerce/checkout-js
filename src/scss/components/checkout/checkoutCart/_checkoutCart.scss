@@ -144,8 +144,10 @@
 .subscription-info {
     background: radial-gradient(100% 1437.67% at 100% 54.17%, rgba(0, 50, 220, 0.25) 0%, rgba(255, 0, 0, 0.25) 100%);
     border-radius: 0 0 8px 8px;
+    box-sizing: border-box;
     font-size: 13px;
-    padding: 0 12px;
+    height: 24px;
+    padding: 5px 10px;
 
     svg {
         margin-right: 8px;
@@ -159,6 +161,7 @@
 
 .test_09 {
     .custom-description {
+        color: rgba(255, 255, 255, 0.7);
         display: block;
         font-size: 12px;
     }
@@ -183,7 +186,20 @@
         padding: 1px;
 
         .product {
+            background-color: #0a0c11;
             padding: 12px 8px;
+
+            .product-title {
+                font-weight: 450;
+            }
+
+            .product-figure {
+                padding-right: 13px;
+            }
+
+            .product-body {
+                width: 75%;
+            }
         }
     }
 }
