@@ -8,7 +8,7 @@ import { withLanguage, WithLanguageProps } from '../../locale';
 import { withForm, WithFormProps } from '../../ui/form';
 import createPaymentFormService from '../createPaymentFormService';
 import resolvePaymentMethod from '../resolvePaymentMethod';
-import { default as PaymentMethodComponent } from './PaymentMethod';
+import { default as PaymentMethodV1 } from './PaymentMethod';
 import withPayment, { WithPaymentProps } from '../withPayment';
 
 export interface PaymentMethodProps {
@@ -62,8 +62,7 @@ const PaymentMethodContainer: ComponentType<
     });
 
     if (!ResolvedPaymentMethod) {
-        console.log('Does this run');
-        return <PaymentMethodComponent
+        return <PaymentMethodV1
             isEmbedded={ isEmbedded }
             isUsingMultiShipping={ isUsingMultiShipping }
             method={ method }
