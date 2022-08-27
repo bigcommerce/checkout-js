@@ -3,16 +3,25 @@ import React, { createRef, useCallback, useRef, useState, FunctionComponent, Ref
 
 import { Modal } from '../../ui/modal';
 
-import HostedCreditCardPaymentMethod, { HostedCreditCardPaymentMethodProps } from './HostedCreditCardPaymentMethod';
+import CreditCardPaymentMethod, { CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
+import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps } from '../hostedCreditCard';
 
-export type WorldpayCreditCardPaymentMethodProps = HostedCreditCardPaymentMethodProps;
+export type WorldpayCreditCardPaymentMethodProps = CreditCardPaymentMethodProps;
 
 interface WorldpayPaymentMethodRef {
     paymentPageContentRef: RefObject<HTMLDivElement>;
     cancelThreeDSecureVerification?(): void;
 }
 
-const WorldpayCreditCardPaymentMethod: FunctionComponent<WorldpayCreditCardPaymentMethodProps> = ({
+const WorldpayCreditCardPaymentMethod: FunctionComponent<
+    WorldpayCreditCardPaymentMethodProps &
+    WithInjectedHostedCreditCardFieldsetProps
+> = ({
+    getHostedFormOptions,
+    hostedFieldset,
+    hostedValidationSchema,
+    getHostedStoredCardValidationFieldset,
+    hostedStoredCardValidationSchema,
     initializePayment,
     ...rest
 }) => {
@@ -31,9 +40,14 @@ const WorldpayCreditCardPaymentMethod: FunctionComponent<WorldpayCreditCardPayme
         }
     }, []);
 
-    const initializeWorldpayPayment = useCallback((options: PaymentInitializeOptions) => {
+    const initializeWorldpayPayment = useCallback(async (options: PaymentInitializeOptions, selectedInstrument) => {
+        const fields = getHostedFormOptions && await getHostedFormOptions(selectedInstrument);
+
         return initializePayment({
             ...options,
+            creditCard: {
+                form: fields,
+            },
             worldpay: {
                 onLoad(content: HTMLIFrameElement, cancel: () => void) {
                     setThreeDSecureVerification(content);
@@ -50,9 +64,13 @@ const WorldpayCreditCardPaymentMethod: FunctionComponent<WorldpayCreditCardPayme
     }, [threeDSecureVerification]);
 
     return <>
-        <HostedCreditCardPaymentMethod
+        <CreditCardPaymentMethod
             { ...rest }
+            cardFieldset={ hostedFieldset }
+            cardValidationSchema={ hostedValidationSchema }
+            getStoredCardValidationFieldset={ getHostedStoredCardValidationFieldset }
             initializePayment={ initializeWorldpayPayment }
+            storedCardValidationSchema={ hostedStoredCardValidationSchema }
         />
         <Modal
             isOpen={ !!threeDSecureVerification }
@@ -65,4 +83,4 @@ const WorldpayCreditCardPaymentMethod: FunctionComponent<WorldpayCreditCardPayme
     </>;
 };
 
-export default WorldpayCreditCardPaymentMethod;
+export default withHostedCreditCardFieldset(WorldpayCreditCardPaymentMethod);
