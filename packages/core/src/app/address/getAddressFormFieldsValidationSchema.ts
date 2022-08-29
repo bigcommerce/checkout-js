@@ -26,7 +26,7 @@ export function getTranslateAddressError(language?: LanguageService): TranslateV
 
     return (type, { label, name, min, max }) => {
         if (!language) {
-            return '';
+            return;
         }
 
         if (type === 'required') {
@@ -49,7 +49,7 @@ export function getTranslateAddressError(language?: LanguageService): TranslateV
             return language.translate(`address.invalid_characters_error`, { label });
         }
 
-        return '';
+        return;
     };
 }
 

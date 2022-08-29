@@ -25,7 +25,7 @@ describe('getCheckoutcomFieldsetValidationSchemas', () => {
     beforeEach(() => {
         translate = jest.fn();
         language = createLanguageService();
-        language.translate = translate
+        language.translate = translate as typeof language['translate'];
     });
 
     describe('sepa validation schema', () => {

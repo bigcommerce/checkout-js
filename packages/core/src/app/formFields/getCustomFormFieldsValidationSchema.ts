@@ -12,7 +12,7 @@ export type TranslateValidationErrorFunction = ((
         min?: number;
         max?: number;
     }
-) => string);
+) => string | undefined);
 
 export interface FormFieldsValidationSchemaOptions {
     formFields: FormField[];
