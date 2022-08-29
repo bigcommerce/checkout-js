@@ -3,10 +3,31 @@ const addApplePaySessionToChrome = () => {
         version: number;
         paymentRequest: ApplePayJS.ApplePayPaymentRequest;
 
+        static STATUS_SUCCESS = 1;
+        static STATUS_FAILURE = 2;
+
+        static supportsVersion(_versionNumber: unknown) {
+            console.log('supportsVersion', _versionNumber)
+            return true;
+        }
+
         constructor(version, paymentRequest) {
             this.version = version;
             this.paymentRequest = paymentRequest;
-        }        
+        }
+
+        addEventListener(_type: string, _callback: EventListenerOrEventListenerObject | null, _options?: boolean | AddEventListenerOptions | undefined): void {
+            console.log('addEventListener', _type, _callback, _options);
+        }
+
+        dispatchEvent(_event: Event): boolean {
+            console.log('dispatchEvent', _event);
+            return true
+        }
+        
+        removeEventListener(_type: string, _callback: EventListenerOrEventListenerObject | null, _options?: boolean | EventListenerOptions | undefined): void {
+            console.log('removeEventListener', _type, _callback, _options);
+        }
 
         oncancel: (event: ApplePayJS.Event) => void = () => { 
             console.log('oncancel');
@@ -34,15 +55,7 @@ const addApplePaySessionToChrome = () => {
 
         abort(): void {
             console.log('abort')
-        }
-
-        STATUS_SUCCESS = 1;
-        STATUS_FAILURE = 2;
-
-        static supportsVersion(_versionNumber) {
-            console.log('supportsVersion', _versionNumber)
-            return true;
-        }
+        }        
 
         canMakePayments() {
             return true;
@@ -56,23 +69,20 @@ const addApplePaySessionToChrome = () => {
             console.log('completePayment');
         }
 
-        completeShippingContactSelection(_update) {
+        completeShippingContactSelection(_update: unknown) {
             console.log('completeShippingContactSelection', _update);
         }
 
-        completeShippingMethodSelection(_update) {
+        completeShippingMethodSelection(_update: unknown) {
             console.log('completeShippingMethodSelection', _update);
         }
 
-        completeMerchantValidation(_response) {
+        completeMerchantValidation(_response: unknown) {
             console.log('completeMerchantValidation', _response);
         }
 
-        completePaymentMethodSelection(newTotal: ApplePayJS.ApplePayLineItem, newLineItems: ApplePayJS.ApplePayLineItem[]): void;
-        completePaymentMethodSelection(update: ApplePayJS.ApplePayPaymentMethodUpdate): void;
-
-        completePaymentMethodSelection(newTotal: unknown, newLineItems?: unknown): void {
-            console.log('completeMerchantValidation', newTotal, newLineItems);
+        completePaymentMethodSelection(...args: [newTotal: ApplePayJS.ApplePayLineItem, newLineItems: ApplePayJS.ApplePayLineItem[]] | [update: ApplePayJS.ApplePayPaymentMethodUpdate]): void {
+            console.log('completeMerchantValidation', args);
         }
 
         begin() {
@@ -149,9 +159,7 @@ const addApplePaySessionToChrome = () => {
         }
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    window.ApplePaySession = ApplePaySessionCustomerStep;
+    window['ApplePaySession'] = ApplePaySessionCustomerStep;
 }
 
 export default addApplePaySessionToChrome

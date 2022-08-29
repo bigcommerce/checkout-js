@@ -3,6 +3,22 @@ const addApplePaySessionToChrome = () => {
         version: number;
         paymentRequest: ApplePayJS.ApplePayPaymentRequest;
 
+        static STATUS_SUCCESS = 1;
+        static STATUS_FAILURE = 2;
+
+        static supportsVersion(_versionNumber) {
+            console.log('supportsVersion', _versionNumber)
+            return true;
+        }
+
+        static canMakePayments() {
+            return true;
+        }
+
+        static canMakePaymentsWithActiveCard() {
+            return Promise.resolve(this.canMakePayments());
+        }
+
         constructor(version, paymentRequest) {
             this.version = version;
             this.paymentRequest = paymentRequest;
@@ -35,23 +51,7 @@ const addApplePaySessionToChrome = () => {
         abort(): void {
             console.log('abort')
         }        
-
-        static STATUS_SUCCESS = 1;
-        static STATUS_FAILURE = 2;
-
-        static supportsVersion(_versionNumber) {
-            console.log('supportsVersion', _versionNumber)
-            return true;
-        }
-
-        static canMakePayments() {
-            return true;
-        }
-
-        static canMakePaymentsWithActiveCard() {
-            return Promise.resolve(this.canMakePayments());
-        }
-
+        
         completePayment() {
             console.log('completePayment');
         }
