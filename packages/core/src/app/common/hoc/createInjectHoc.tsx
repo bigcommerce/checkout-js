@@ -30,13 +30,13 @@ export default function createInjectHoc<
 
         const DecoratedComponent = (props: Omit<TProps, keyof NonNullable<TPickedProps>>) => {
             const context = useContext(ContextComponent);
-            const injectedProps = pickBy(context, (value, key) => pickProps(value, key as keyof TInjectedProps));
+            const injectedProps = pickBy(context, (value, key) => pickProps(value, key as keyof TInjectedProps));            
+
+            const mergedProps = { ...injectedProps, ...props } as unknown as TProps;
 
             if (isEmpty(injectedProps)) {
                 return null;
             }
-
-            const mergedProps = { ...injectedProps, ...props } as unknown as TProps;
 
             return <InnerDecoratedComponent { ...mergedProps } />;
         };

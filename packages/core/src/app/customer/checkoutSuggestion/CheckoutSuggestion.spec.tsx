@@ -22,7 +22,7 @@ describe('CheckoutSuggestion', () => {
             executePaymentMethodCheckout: jest.fn(),
             initializeCustomer: jest.fn(),
             isExecutingPaymentMethodCheckout: false,
-            providerWithCustomCheckout: null,
+            providerWithCustomCheckout: undefined,
             onUnhandledError: jest.fn(),
         };
 
@@ -47,7 +47,7 @@ describe('CheckoutSuggestion', () => {
     it('does not render anything if method id is not provided', () => {
         const component = render(<TestComponent { ...defaultProps } />);
 
-        expect(component.html().length).toBe(0);
+        expect(component.html()?.length).toBe(0);
     });
 
     it('initializes Bolt Checkout suggestion block', () => {
