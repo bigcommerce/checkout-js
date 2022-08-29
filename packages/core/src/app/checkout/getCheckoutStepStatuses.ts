@@ -133,6 +133,7 @@ const getCheckoutStepStatuses = createSelector(
             return {
                 ...step,
                 isActive: defaultActiveStep.type === step.type,
+                isBusy: false,
                 // A step is only editable if its previous step is complete or not required
                 isEditable: isPrevStepComplete && step.isEditable,
             };

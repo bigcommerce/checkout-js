@@ -18,7 +18,7 @@ const LoadingNotification: FunctionComponent<LoadingNotificationProps> = ({
             <div className="loadingNotification-label optimizedCheckout-loadingToaster">
                 <div className="spinner" />
 
-                <span className="label">
+                <span aria-live="assertive" className="label" role="alert">
                     <TranslatedString id="common.loading_text" />
                 </span>
             </div>
