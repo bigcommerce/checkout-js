@@ -12,7 +12,7 @@ export type TranslateValidationErrorFunction = ((
         min?: number;
         max?: number;
     }
-) => string | undefined);
+) => string);
 
 export interface FormFieldsValidationSchemaOptions {
     formFields: FormField[];
@@ -29,7 +29,7 @@ export interface CustomFormFields {
 
 export default memoize(function getCustomFormFieldsValidationSchema({
     formFields,
-    translate = () => undefined,
+    translate = () => '',
 }: FormFieldsValidationSchemaOptions): ObjectSchema<CustomFormFieldValues> {
     return object({
         customFields: object(

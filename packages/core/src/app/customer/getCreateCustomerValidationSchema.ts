@@ -25,7 +25,7 @@ export interface CreateCustomerValidationSchema {
 function getTranslateCreateCustomerError(language?: LanguageService): TranslateValidationErrorFunction {
     return (type, { label, min, max }) => {
         if (!language) {
-            return;
+            return '';
         }
 
         if (type === 'required') {
@@ -44,7 +44,7 @@ function getTranslateCreateCustomerError(language?: LanguageService): TranslateV
             return language.translate('customer.invalid_characters_error', { label });
         }
 
-        return;
+        return '';
     };
 }
 
