@@ -18,6 +18,8 @@ import PaymentContext, { PaymentContextProps } from './PaymentContext';
 import PaymentForm, { PaymentFormProps } from './PaymentForm';
 import PaymentSubmitButton from './PaymentSubmitButton';
 import SpamProtectionField, { SpamProtectionProps } from './SpamProtectionField';
+import { ObjectSchema } from 'yup';
+import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
 jest.useFakeTimers();
 
@@ -250,11 +252,10 @@ describe('PaymentForm', () => {
             { ...defaultProps }
             onSubmit={ handleSubmit }
             // TODO: need to fix type for this schema
-            // @ts-ignore 
             validationSchema={ getCreditCardValidationSchema({
                 isCardCodeRequired: true,
                 language: localeContext.language,
-            }) }
+            }) as unknown as ObjectSchema<Partial<PaymentFormValues>> }
         />);
 
         container.find('input[name="ccNumber"]')
@@ -274,11 +275,10 @@ describe('PaymentForm', () => {
         const container = mount(<PaymentFormTest
             { ...defaultProps }
 
-            // @ts-ignore 
             validationSchema={ getCreditCardValidationSchema({
                 isCardCodeRequired: true,
                 language: localeContext.language,
-            }) }
+            }) as unknown as ObjectSchema<Partial<PaymentFormValues>> }
         />);
 
         // Submitting a blank form should display some error messages based on the provided validation schema

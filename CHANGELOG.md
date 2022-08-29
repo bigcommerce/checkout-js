@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.249.1](https://github.com/bigcommerce/checkout-js/compare/v1.249.0...v1.249.1) (2022-08-26)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-000 upgrade @types/dompurify from 0.0.32 to 0.0.33 ([#931](https://github.com/bigcommerce/checkout-js/issues/931)) ([6fe8c54](https://github.com/bigcommerce/checkout-js/commit/6fe8c54c2635fbd483fc01679c814cf769862641))
+* **common:** CHECKOUT-000 upgrade @types/react from 16.14.28 to 16.14.29 ([#982](https://github.com/bigcommerce/checkout-js/issues/982)) ([6382ef0](https://github.com/bigcommerce/checkout-js/commit/6382ef0119b4660a2802308ae61b6243b49226e2))
+* **common:** CHECKOUT-000 upgrade dompurify from 2.3.9 to 2.3.10 ([#960](https://github.com/bigcommerce/checkout-js/issues/960)) ([1986832](https://github.com/bigcommerce/checkout-js/commit/1986832b46b202c11327f0c959985b3119c21c0d))
+
+## [1.249.0](https://github.com/bigcommerce/checkout-js/compare/v1.248.0...v1.249.0) (2022-08-25)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6851 Improve multi-shipping look ([#993](https://github.com/bigcommerce/checkout-js/issues/993)) ([699c181](https://github.com/bigcommerce/checkout-js/commit/699c18125e4c8b4e78ce97948b701884d61752f0))
+
+## [1.248.0](https://github.com/bigcommerce/checkout-js/compare/v1.247.3...v1.248.0) (2022-08-24)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6851 Separate shipping option from address ([#991](https://github.com/bigcommerce/checkout-js/issues/991)) ([8b141ff](https://github.com/bigcommerce/checkout-js/commit/8b141ff6a65c87325cb42b664dfd94f2e139aee5))
+
+
+### Bug Fixes
+
+* **payment:** INT-6392 [Mollie] Klarna shopper are able to place orders with digital items through klarna pay later and slice it when them are added via coupon ([#969](https://github.com/bigcommerce/checkout-js/issues/969)) ([3df97f1](https://github.com/bigcommerce/checkout-js/commit/3df97f13a0ca6db76c8b9a3248e78336ddba00e9))
+
 ### [1.247.3](https://github.com/bigcommerce/checkout-js/compare/v1.247.2...v1.247.3) (2022-08-22)
 
 

@@ -163,7 +163,9 @@ export class PollyObject {
         if (this.polly && recordingsDir) {
             const api = new API({ recordingsDir });
             // PollyJS type bug: The type definition does not match with the actual implementation.
-            const entries = api.getRecordings(this.polly.recordingId).body?.log?.entries;
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            const entries = api.getRecording(this.polly.recordingId).body?.log?.entries;
             if (entries) {
                 return entries;
             }
