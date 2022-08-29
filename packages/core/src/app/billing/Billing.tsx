@@ -69,13 +69,13 @@ class Billing extends Component<BillingProps & WithCheckoutBillingProps> {
                 </div>
 
                 <LoadingOverlay
-                    isLoading={isInitializing}
+                    isLoading={ isInitializing }
                     unmountContentWhenLoading
                 >
                     <BillingForm
-                        {...props}
-                        onSubmit={this.handleSubmit}
-                        updateAddress={updateAddress}
+                        { ...props }
+                        onSubmit={ this.handleSubmit }
+                        updateAddress={ updateAddress }
                     />
                 </LoadingOverlay>
             </div>

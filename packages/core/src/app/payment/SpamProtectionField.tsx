@@ -52,8 +52,8 @@ class SpamProtectionField extends Component<
 
         return (
             <div className="spamProtection-container">
-                <LoadingOverlay isLoading={isExecutingSpamCheck}>
-                    {this.renderContent()}
+                <LoadingOverlay isLoading={ isExecutingSpamCheck }>
+                    { this.renderContent() }
                 </LoadingOverlay>
             </div>
         );
@@ -71,7 +71,7 @@ class SpamProtectionField extends Component<
             <a
                 className="spamProtection-panel-message optimizedCheckout-primaryContent"
                 data-test="spam-protection-verify-button"
-                onClick={this.handleRetry}
+                onClick={ this.handleRetry }
             >
                 <TranslatedString
                     id="spam_protection.verify_action"

@@ -162,32 +162,32 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         );
 
         return (
-            <PaymentContext.Provider value={this.getContextValue()}>
+            <PaymentContext.Provider value={ this.getContextValue() }>
                 <LoadingOverlay
-                    isLoading={!isReady}
+                    isLoading={ !isReady }
                     unmountContentWhenLoading
                 >
-                    {!isEmpty(methods) && defaultMethod && <PaymentForm
-                        {...rest}
-                        defaultGatewayId={defaultMethod.gateway}
-                        defaultMethodId={defaultMethod.id}
-                        didExceedSpamLimit={didExceedSpamLimit}
-                        isInitializingPayment={isInitializingPayment}
-                        isUsingMultiShipping={isUsingMultiShipping}
-                        methods={methods}
-                        onMethodSelect={this.setSelectedMethod}
-                        onStoreCreditChange={this.handleStoreCreditChange}
-                        onSubmit={this.handleSubmit}
-                        onUnhandledError={this.handleError}
-                        selectedMethod={selectedMethod}
-                        shouldDisableSubmit={uniqueSelectedMethodId && shouldDisableSubmit[uniqueSelectedMethodId] || undefined}
-                        shouldHidePaymentSubmitButton={uniqueSelectedMethodId && shouldHidePaymentSubmitButton[uniqueSelectedMethodId] || undefined}
-                        validationSchema={uniqueSelectedMethodId && validationSchemas[uniqueSelectedMethodId] || undefined}
-                    />}
+                    { !isEmpty(methods) && defaultMethod && <PaymentForm
+                        { ...rest }
+                        defaultGatewayId={ defaultMethod.gateway }
+                        defaultMethodId={ defaultMethod.id }
+                        didExceedSpamLimit={ didExceedSpamLimit }
+                        isInitializingPayment={ isInitializingPayment }
+                        isUsingMultiShipping={ isUsingMultiShipping }
+                        methods={ methods }
+                        onMethodSelect={ this.setSelectedMethod }
+                        onStoreCreditChange={ this.handleStoreCreditChange }
+                        onSubmit={ this.handleSubmit }
+                        onUnhandledError={ this.handleError }
+                        selectedMethod={ selectedMethod }
+                        shouldDisableSubmit={ uniqueSelectedMethodId && shouldDisableSubmit[uniqueSelectedMethodId] || undefined }
+                        shouldHidePaymentSubmitButton={ uniqueSelectedMethodId && shouldHidePaymentSubmitButton[uniqueSelectedMethodId] || undefined }
+                        validationSchema={ uniqueSelectedMethodId && validationSchemas[uniqueSelectedMethodId] || undefined }
+                    /> }
                 </LoadingOverlay>
 
-                {this.renderOrderErrorModal()}
-                {this.renderEmbeddedSupportErrorModal()}
+                { this.renderOrderErrorModal() }
+                { this.renderEmbeddedSupportErrorModal() }
             </PaymentContext.Provider>
         );
     }
@@ -214,10 +214,10 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
 
         return (
             <ErrorModal
-                error={error}
-                message={mapSubmitOrderErrorMessage(error, language.translate.bind(language), shouldLocaliseErrorMessages)}
-                onClose={this.handleCloseModal}
-                title={mapSubmitOrderErrorTitle(error, language.translate.bind(language))}
+                error={ error }
+                message={ mapSubmitOrderErrorMessage(error, language.translate.bind(language), shouldLocaliseErrorMessages) }
+                onClose={ this.handleCloseModal }
+                title={ mapSubmitOrderErrorTitle(error, language.translate.bind(language)) }
             />
         );
     }
@@ -234,8 +234,8 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             const renderEmbeddedSupportErrorModalError = error as Error
             return (
                 <ErrorModal
-                    error={renderEmbeddedSupportErrorModalError}
-                    onClose={this.handleCloseModal}
+                    error={ renderEmbeddedSupportErrorModalError }
+                    onClose={ this.handleCloseModal }
                 />
             );
         }

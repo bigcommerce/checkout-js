@@ -82,7 +82,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
             return item.label;
         }
 
-        let lastIndex: number = 0;
+        let lastIndex = 0;
         let key = 0;
 
         return item.highlightedSlices.reduce((node, slice, i) => {

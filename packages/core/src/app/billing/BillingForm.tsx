@@ -69,48 +69,48 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
 
         return (
             <Form autoComplete="on">
-                {shouldRenderStaticAddress && billingAddress &&
-                    <div className={'form-fieldset'}>
-                        <StaticBillingAddress address={billingAddress} />
-                    </div>}
+                { shouldRenderStaticAddress && billingAddress &&
+                    <div className={ 'form-fieldset' }>
+                        <StaticBillingAddress address={ billingAddress } />
+                    </div> }
 
-                <Fieldset id="checkoutBillingAddress" ref={this.addressFormRef}>
-                    {hasAddresses && !shouldRenderStaticAddress &&
+                <Fieldset id="checkoutBillingAddress" ref={ this.addressFormRef }>
+                    { hasAddresses && !shouldRenderStaticAddress &&
                         <Fieldset id="billingAddresses">
-                            <LoadingOverlay isLoading={isResettingAddress}>
+                            <LoadingOverlay isLoading={ isResettingAddress }>
                                 <AddressSelect
-                                    addresses={addresses}
-                                    onSelectAddress={this.handleSelectAddress}
-                                    onUseNewAddress={this.handleUseNewAddress}
-                                    selectedAddress={hasValidCustomerAddress ? billingAddress : undefined}
+                                    addresses={ addresses }
+                                    onSelectAddress={ this.handleSelectAddress }
+                                    onUseNewAddress={ this.handleUseNewAddress }
+                                    selectedAddress={ hasValidCustomerAddress ? billingAddress : undefined }
                                 />
                             </LoadingOverlay>
-                        </Fieldset>}
+                        </Fieldset> }
 
-                    {!hasValidCustomerAddress &&
-                        <LoadingOverlay isLoading={isResettingAddress}>
+                    { !hasValidCustomerAddress &&
+                        <LoadingOverlay isLoading={ isResettingAddress }>
                             <AddressForm
-                                countries={countries}
-                                countriesWithAutocomplete={countriesWithAutocomplete}
-                                countryCode={values.countryCode}
-                                formFields={editableFormFields}
-                                googleMapsApiKey={googleMapsApiKey}
-                                setFieldValue={setFieldValue}
-                                shouldShowSaveAddress={!isGuest}
+                                countries={ countries }
+                                countriesWithAutocomplete={ countriesWithAutocomplete }
+                                countryCode={ values.countryCode }
+                                formFields={ editableFormFields }
+                                googleMapsApiKey={ googleMapsApiKey }
+                                setFieldValue={ setFieldValue }
+                                shouldShowSaveAddress={ !isGuest }
                             />
-                        </LoadingOverlay>}
+                        </LoadingOverlay> }
                 </Fieldset>
 
-                {shouldShowOrderComments &&
-                    <OrderComments />}
+                { shouldShowOrderComments &&
+                    <OrderComments /> }
 
                 <div className="form-actions">
                     <Button
-                        disabled={isUpdating || isResettingAddress}
+                        disabled={ isUpdating || isResettingAddress }
                         id="checkout-billing-continue"
-                        isLoading={isUpdating || isResettingAddress}
+                        isLoading={ isUpdating || isResettingAddress }
                         type="submit"
-                        variant={ButtonVariant.Primary}
+                        variant={ ButtonVariant.Primary }
                     >
                         <TranslatedString id="common.continue_action" />
                     </Button>

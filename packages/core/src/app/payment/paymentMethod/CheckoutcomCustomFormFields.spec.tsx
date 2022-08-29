@@ -167,15 +167,15 @@ describe('CheckoutCustomFormFields', () => {
 
         CheckoutcomAPMsTest = props => {
             return (
-                <CheckoutProvider checkoutService={checkoutService}>
-                    <PaymentContext.Provider value={paymentContext}>
-                        <LocaleContext.Provider value={localeContext}>
-                            <FormContext.Provider value={formContext}>
+                <CheckoutProvider checkoutService={ checkoutService }>
+                    <PaymentContext.Provider value={ paymentContext }>
+                        <LocaleContext.Provider value={ localeContext }>
+                            <FormContext.Provider value={ formContext }>
                                 <Formik
-                                    initialValues={initialValues}
-                                    onSubmit={noop}
+                                    initialValues={ initialValues }
+                                    onSubmit={ noop }
                                 >
-                                    <CreditCardPaymentMethod {...defaultProps} {...props} />
+                                    <CreditCardPaymentMethod { ...defaultProps } { ...props } />
                                 </Formik>
                             </FormContext.Provider>
                         </LocaleContext.Provider>
@@ -191,7 +191,7 @@ describe('CheckoutCustomFormFields', () => {
         const sepaProps = getAPMProps.sepa();
 
         beforeEach(() => {
-            component = mount(<CheckoutcomAPMsTest {...sepaProps} cardFieldset={<SepaFormFieldset debtor={getBillingAddress()} method={sepaProps.method} />} />);
+            component = mount(<CheckoutcomAPMsTest { ...sepaProps } cardFieldset={ <SepaFormFieldset debtor={ getBillingAddress() } method={ sepaProps.method } /> } />);
         });
 
         it('should render the sepa fieldset', () => {
@@ -223,7 +223,7 @@ describe('CheckoutCustomFormFields', () => {
 
         beforeEach(() => {
             const idealProps = getAPMProps.ideal();
-            component = mount(<CheckoutcomAPMsTest {...idealProps} cardFieldset={<IdealFormFieldset debtor={getBillingAddress()} method={idealProps.method} />} />);
+            component = mount(<CheckoutcomAPMsTest { ...idealProps } cardFieldset={ <IdealFormFieldset debtor={ getBillingAddress() } method={ idealProps.method } /> } />);
         });
 
         it('Shopper is able to see iDeal Payment Method', () => {
@@ -246,7 +246,7 @@ describe('CheckoutCustomFormFields', () => {
 
         it('should render the ideal fieldset', () => {
             const oxxoProps = getAPMProps.oxxo();
-            const compoonent = mount(<CheckoutcomAPMsTest {...oxxoProps} cardFieldset={<CcDocumentFormFieldset debtor={getBillingAddress()} method={oxxoProps.method} />} />);
+            const compoonent = mount(<CheckoutcomAPMsTest { ...oxxoProps } cardFieldset={ <CcDocumentFormFieldset debtor={ getBillingAddress() } method={ oxxoProps.method } /> } />);
 
             expect(compoonent.find('input[name="ccDocument"]')).toHaveLength(1);
         });
@@ -257,7 +257,7 @@ describe('CheckoutCustomFormFields', () => {
 
         it('Shopper is able to see Fawry Payment Method', () => {
             const fawryProps = getAPMProps.fawry();
-            const component = mount(<CheckoutcomAPMsTest {...fawryProps} cardFieldset={<FawryFormFieldset debtor={getBillingAddress()} method={fawryProps.method} />} />);
+            const component = mount(<CheckoutcomAPMsTest { ...fawryProps } cardFieldset={ <FawryFormFieldset debtor={ getBillingAddress() } method={ fawryProps.method } /> } />);
 
             expect(component.find('input[name="customerMobile"]')).toHaveLength(1);
             expect(component.find('input[name="customerEmail"]')).toHaveLength(1);

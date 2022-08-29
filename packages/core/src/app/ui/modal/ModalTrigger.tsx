@@ -19,7 +19,7 @@ export default class ModalTrigger extends Component<ModalTriggerProps, ModalTrig
         isOpen: false,
     };
 
-    private canHandleEvent: boolean = false;
+    private canHandleEvent = false;
 
     componentDidMount(): void {
         this.canHandleEvent = true;

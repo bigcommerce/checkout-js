@@ -87,16 +87,16 @@ describe('Shipping Component', () => {
         jest.spyOn(checkoutService, 'updateShippingAddress').mockResolvedValue({} as CheckoutSelectors);
 
         ComponentTest = props => (
-            <CheckoutProvider checkoutService={checkoutService}>
-                <LocaleContext.Provider value={localeContext}>
-                    <Shipping {...props} />
+            <CheckoutProvider checkoutService={ checkoutService }>
+                <LocaleContext.Provider value={ localeContext }>
+                    <Shipping { ...props } />
                 </LocaleContext.Provider>
             </CheckoutProvider>
         );
     });
 
     it('loads shipping data  when component is mounted', () => {
-        mount(<ComponentTest {...defaultProps} />);
+        mount(<ComponentTest { ...defaultProps } />);
 
         expect(checkoutService.loadShippingAddressFields)
             .toHaveBeenCalled();
@@ -108,7 +108,7 @@ describe('Shipping Component', () => {
     it('triggers callback when shipping data is loaded', async () => {
         const handleReady = jest.fn();
 
-        mount(<ComponentTest {...defaultProps} onReady={handleReady} />);
+        mount(<ComponentTest { ...defaultProps } onReady={ handleReady } />);
 
         await new Promise(resolve => process.nextTick(resolve));
 
@@ -119,14 +119,14 @@ describe('Shipping Component', () => {
         jest.spyOn(checkoutService.getState().statuses, 'isLoadingShippingCountries')
             .mockReturnValue(true);
 
-        component = mount(<ComponentTest {...defaultProps} />);
+        component = mount(<ComponentTest { ...defaultProps } />);
 
         expect(component.find(ShippingForm).length)
             .toEqual(0);
     });
 
     it('updates shipping and billing if shipping address is changed and billingSameAsShipping', async () => {
-        component = mount(<ComponentTest {...defaultProps} />);
+        component = mount(<ComponentTest { ...defaultProps } />);
         await new Promise(resolve => process.nextTick(resolve));
         component.update();
 
@@ -147,7 +147,7 @@ describe('Shipping Component', () => {
     });
 
     it('updates only shipping if shipping address is changed and billingSameAsShipping is false', async () => {
-        component = mount(<ComponentTest {...defaultProps} />);
+        component = mount(<ComponentTest { ...defaultProps } />);
         await new Promise(resolve => process.nextTick(resolve));
         component.update();
 
@@ -169,7 +169,7 @@ describe('Shipping Component', () => {
     });
 
     it('calls updateCheckout if comment changes', async () => {
-        component = mount(<ComponentTest {...defaultProps} />);
+        component = mount(<ComponentTest { ...defaultProps } />);
         await new Promise(resolve => process.nextTick(resolve));
         component.update();
 
@@ -187,7 +187,7 @@ describe('Shipping Component', () => {
     it('calls onUnhandledError if failures', async () => {
         jest.spyOn(checkoutService, 'updateShippingAddress').mockRejectedValue(new Error());
 
-        component = mount(<ComponentTest {...defaultProps} />);
+        component = mount(<ComponentTest { ...defaultProps } />);
         await new Promise(resolve => process.nextTick(resolve));
         component.update();
 
@@ -204,7 +204,7 @@ describe('Shipping Component', () => {
     });
 
     it('calls navigateNextStep if no failures', async () => {
-        component = mount(<ComponentTest {...defaultProps} />);
+        component = mount(<ComponentTest { ...defaultProps } />);
         await new Promise(resolve => process.nextTick(resolve));
         component.update();
 
@@ -226,7 +226,7 @@ describe('Shipping Component', () => {
         jest.spyOn(checkoutService.getState().data, 'getBillingAddress')
             .mockReturnValue(getShippingAddress() as BillingAddress);
 
-        component = mount(<ComponentTest {...defaultProps} />);
+        component = mount(<ComponentTest { ...defaultProps } />);
         await new Promise(resolve => process.nextTick(resolve));
         component.update();
 
@@ -249,7 +249,7 @@ describe('Shipping Component', () => {
         jest.spyOn(checkoutState.data, 'getConsignments')
             .mockReturnValue([getConsignment()]);
 
-        component = mount(<ComponentTest {...defaultProps} />);
+        component = mount(<ComponentTest { ...defaultProps } />);
         await new Promise(resolve => process.nextTick(resolve));
 
         component.update();
@@ -270,7 +270,7 @@ describe('Shipping Component', () => {
         jest.spyOn(checkoutState.data, 'getConsignments')
             .mockReturnValue([]);
 
-        component = mount(<ComponentTest {...defaultProps} />);
+        component = mount(<ComponentTest { ...defaultProps } />);
         await new Promise(resolve => process.nextTick(resolve));
 
         component.update();
@@ -283,7 +283,7 @@ describe('Shipping Component', () => {
     describe('when multishipping mode is on', () => {
         describe('when shopper is signed', () => {
             beforeEach(async () => {
-                component = mount(<ComponentTest {...defaultProps} isMultiShippingMode={true} />);
+                component = mount(<ComponentTest { ...defaultProps } isMultiShippingMode={ true } />);
                 await new Promise(resolve => process.nextTick(resolve));
                 component.update();
             });
@@ -330,7 +330,7 @@ describe('Shipping Component', () => {
                     consignments,
                 };
 
-                component = mount(<ComponentTest {...multipleConsignmentsProp} isMultiShippingMode={true} />);
+                component = mount(<ComponentTest { ...multipleConsignmentsProp } isMultiShippingMode={ true } />);
                 await new Promise(resolve => process.nextTick(resolve));
                 component.update();
 
@@ -347,7 +347,7 @@ describe('Shipping Component', () => {
                     isGuest: true,
                 });
 
-                component = mount(<ComponentTest {...defaultProps} isMultiShippingMode={true} />);
+                component = mount(<ComponentTest { ...defaultProps } isMultiShippingMode={ true } />);
                 await new Promise(resolve => process.nextTick(resolve));
                 component.update();
             });
@@ -377,7 +377,7 @@ describe('Shipping Component', () => {
                     },
                 });
 
-                component = mount(<ComponentTest {...defaultProps} />);
+                component = mount(<ComponentTest { ...defaultProps } />);
                 await new Promise(resolve => process.nextTick(resolve));
                 component.update();
             });

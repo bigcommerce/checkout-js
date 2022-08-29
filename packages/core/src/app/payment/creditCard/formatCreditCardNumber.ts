@@ -2,7 +2,7 @@ import { number } from 'card-validator';
 
 import unformatCreditCardNumber from './unformatCreditCardNumber';
 
-export default function formatCreditCardNumber(value: string, separator: string = ' '): string {
+export default function formatCreditCardNumber(value: string, separator = ' '): string {
     const { card } = number(value);
 
     if (!card) {

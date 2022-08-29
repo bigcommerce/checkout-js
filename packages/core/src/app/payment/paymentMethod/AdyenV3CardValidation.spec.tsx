@@ -12,7 +12,7 @@ describe('AdyenV3CardValidation', () => {
 
     beforeEach(() => {
         AdyenV3CardValidationTest = props => (
-            <AdyenV3CardValidation {...props} />
+            <AdyenV3CardValidation { ...props } />
         );
     });
 
@@ -29,7 +29,7 @@ describe('AdyenV3CardValidation', () => {
             verificationFieldsContainerId: 'container',
         };
 
-        const container = mount(<AdyenV3CardValidationTest {...defaultProps} />);
+        const container = mount(<AdyenV3CardValidationTest { ...defaultProps } />);
 
         const field = container.find('[id="encryptedSecurityCode"]');
 
@@ -49,7 +49,7 @@ describe('AdyenV3CardValidation', () => {
             shouldShowNumberField: true,
             verificationFieldsContainerId: 'container',
         };
-        const container = mount(<AdyenV3CardValidationTest {...defaultProps} />);
+        const container = mount(<AdyenV3CardValidationTest { ...defaultProps } />);
 
         const field = container.find('[id="encryptedExpiryDate"]');
 
@@ -70,7 +70,7 @@ describe('AdyenV3CardValidation', () => {
             cardValidationState: {} as AdyenV3ValidationState,
         };
 
-        const container = mount(<AdyenV3CardValidationTest {...defaultProps} />);
+        const container = mount(<AdyenV3CardValidationTest { ...defaultProps } />);
 
         const field = container.find('[id="encryptedSecurityCode"]');
 
@@ -94,7 +94,7 @@ describe('AdyenV3CardValidation', () => {
             } as AdyenV3ValidationState,
         };
 
-        const container = mount(<AdyenV3CardValidationTest {...defaultProps} />);
+        const container = mount(<AdyenV3CardValidationTest { ...defaultProps } />);
 
         const field = container.find('[id="encryptedSecurityCode"]');
 
@@ -155,7 +155,7 @@ describe('AdyenV3CardValidation', () => {
                 },
             };
 
-            const container = mount(<AdyenV3CardValidationTest {...defaultProps} />);
+            const container = mount(<AdyenV3CardValidationTest { ...defaultProps } />);
             container.setProps({
                 cardValidationState: {
                     blob: 'adyenjs_',
@@ -173,7 +173,7 @@ describe('AdyenV3CardValidation', () => {
         });
 
         it('should NOT render error when entered last 4 symbols is equal to the last 4 from selected card', () => {
-            const container = mount(<AdyenV3CardValidationTest {...defaultProps} />);
+            const container = mount(<AdyenV3CardValidationTest { ...defaultProps } />);
             container.setProps({
                 cardValidationState: {
                     blob: 'adyenjs_',
@@ -200,8 +200,8 @@ describe('AdyenV3CardValidation', () => {
             };
 
             mount(
-                <PaymentContext.Provider value={paymentContext}>
-                    <AdyenV3CardValidationTest {...defaultProps} />
+                <PaymentContext.Provider value={ paymentContext }>
+                    <AdyenV3CardValidationTest { ...defaultProps } />
                 </PaymentContext.Provider>
             );
 

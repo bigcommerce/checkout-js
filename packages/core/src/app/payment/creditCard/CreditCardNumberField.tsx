@@ -35,7 +35,7 @@ const CreditCardNumberField: FunctionComponent<CreditCardNumberFieldProps> = ({ 
 
 class CreditCardNumberInput extends PureComponent<FieldProps<string>> {
     private inputRef: RefObject<HTMLInputElement> = createRef();
-    private nextSelectionEnd: number = 0;
+    private nextSelectionEnd = 0;
 
     componentDidUpdate(): void {
         if (this.inputRef.current && this.inputRef.current.selectionEnd !== this.nextSelectionEnd) {

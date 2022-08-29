@@ -2,7 +2,7 @@ import { noop } from 'lodash';
 
 import { isBuyNowCart } from '../common/utility';
 
-export default function navigateToOrderConfirmation(isBuyNowCartEnabled: boolean = false, orderId?: number): Promise<never> {
+export default function navigateToOrderConfirmation(isBuyNowCartEnabled = false, orderId?: number): Promise<never> {
     let url: string;
 
     if (isBuyNowCartEnabled) {

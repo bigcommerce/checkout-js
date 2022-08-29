@@ -125,7 +125,7 @@ export class PollyObject {
     }
 
     getCartAndOrderIDs(): { checkoutId: string; orderId?: number } {
-        let checkoutIdString: string = '';
+        let checkoutIdString = '';
         const entries = this.getEntries();
 
         for (const entry of entries) {
@@ -163,8 +163,7 @@ export class PollyObject {
         if (this.polly && recordingsDir) {
             const api = new API({ recordingsDir });
             // PollyJS type bug: The type definition does not match with the actual implementation.
-            // @ts-ignore
-            const entries = api.getRecording(this.polly.recordingId).body?.log?.entries;
+            const entries = api.getRecordings(this.polly.recordingId).body?.log?.entries;
             if (entries) {
                 return entries;
             }

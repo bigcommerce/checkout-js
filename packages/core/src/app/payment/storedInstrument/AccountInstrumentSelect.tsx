@@ -87,7 +87,7 @@ class AccountInstrumentSelect extends PureComponent<AccountInstrumentSelectProps
         );
     }
 
-    private updateFieldValue(instrumentId: string = ''): void {
+    private updateFieldValue(instrumentId = ''): void {
         const {
             form,
             field,

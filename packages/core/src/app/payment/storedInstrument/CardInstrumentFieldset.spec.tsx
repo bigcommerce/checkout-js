@@ -34,12 +34,12 @@ describe('CardInstrumentFieldset', () => {
 
     it('shows instrument dropdown', () => {
         const component = mount(
-            <LocaleContext.Provider value={localeContext}>
+            <LocaleContext.Provider value={ localeContext }>
                 <Formik
-                    initialValues={initialValues}
-                    onSubmit={noop}
+                    initialValues={ initialValues }
+                    onSubmit={ noop }
                 >
-                    <CardInstrumentFieldset {...defaultProps} />
+                    <CardInstrumentFieldset { ...defaultProps } />
                 </Formik>
             </LocaleContext.Provider>
         );
@@ -52,14 +52,14 @@ describe('CardInstrumentFieldset', () => {
         const ValidateInstrument = () => <span>test</span>;
 
         const component = mount(
-            <LocaleContext.Provider value={localeContext}>
+            <LocaleContext.Provider value={ localeContext }>
                 <Formik
-                    initialValues={initialValues}
-                    onSubmit={noop}
+                    initialValues={ initialValues }
+                    onSubmit={ noop }
                 >
                     <CardInstrumentFieldset
-                        {...defaultProps}
-                        validateInstrument={<ValidateInstrument />}
+                        { ...defaultProps }
+                        validateInstrument={ <ValidateInstrument /> }
                     />
                 </Formik>
             </LocaleContext.Provider>
@@ -73,15 +73,15 @@ describe('CardInstrumentFieldset', () => {
         const ValidateInstrument = () => <span>test</span>;
 
         const component = mount(
-            <LocaleContext.Provider value={localeContext}>
+            <LocaleContext.Provider value={ localeContext }>
                 <Formik
-                    initialValues={initialValues}
-                    onSubmit={noop}
+                    initialValues={ initialValues }
+                    onSubmit={ noop }
                 >
                     <CardInstrumentFieldset
-                        {...defaultProps}
-                        selectedInstrumentId={undefined}
-                        validateInstrument={<ValidateInstrument />}
+                        { ...defaultProps }
+                        selectedInstrumentId={ undefined }
+                        validateInstrument={ <ValidateInstrument /> }
                     />
                 </Formik>
             </LocaleContext.Provider>

@@ -99,8 +99,8 @@ describe('withHostedCreditCardFieldset', () => {
             hostedFieldset,
         }) => {
             return <>
-                {hostedFieldset}
-                {getHostedStoredCardValidationFieldset()}
+                { hostedFieldset }
+                { getHostedStoredCardValidationFieldset() }
             </>;
         });
 
@@ -110,18 +110,18 @@ describe('withHostedCreditCardFieldset', () => {
             formikRender = jest.fn(renderProps => {
                 formikProps = renderProps;
 
-                return <DecoratedPaymentMethod {...props} />;
+                return <DecoratedPaymentMethod { ...props } />;
             });
 
             return (
-                <CheckoutProvider checkoutService={checkoutService}>
-                    <PaymentContext.Provider value={paymentContext}>
-                        <LocaleContext.Provider value={localeContext}>
-                            <FormContext.Provider value={formContext}>
+                <CheckoutProvider checkoutService={ checkoutService }>
+                    <PaymentContext.Provider value={ paymentContext }>
+                        <LocaleContext.Provider value={ localeContext }>
+                            <FormContext.Provider value={ formContext }>
                                 <Formik
-                                    initialValues={initialValues}
-                                    onSubmit={noop}
-                                    render={formikRender}
+                                    initialValues={ initialValues }
+                                    onSubmit={ noop }
+                                    render={ formikRender }
                                 />
                             </FormContext.Provider>
                         </LocaleContext.Provider>
@@ -132,7 +132,7 @@ describe('withHostedCreditCardFieldset', () => {
     });
 
     it('renders hosted credit card fieldset', () => {
-        const container = mount(<DecoratedPaymentMethodTest {...defaultProps} />);
+        const container = mount(<DecoratedPaymentMethodTest { ...defaultProps } />);
 
         expect(container.find(HostedCreditCardFieldset).length)
             .toEqual(1);
@@ -140,12 +140,12 @@ describe('withHostedCreditCardFieldset', () => {
 
     it('does not render hosted credit card fieldset if feature is not enabled', () => {
         const container = mount(<DecoratedPaymentMethodTest
-            {...defaultProps}
-            method={merge({}, getPaymentMethod(), {
+            { ...defaultProps }
+            method={ merge({}, getPaymentMethod(), {
                 config: {
                     isHostedFormEnabled: false,
                 },
-            })}
+            }) }
         />);
 
         expect(container.find(HostedCreditCardFieldset).length)
@@ -153,7 +153,7 @@ describe('withHostedCreditCardFieldset', () => {
     });
 
     it('passes hosted form configuration to inner component', async () => {
-        const container = mount(<DecoratedPaymentMethodTest {...defaultProps} />);
+        const container = mount(<DecoratedPaymentMethodTest { ...defaultProps } />);
         const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
 
         expect(await getHostedFormOptions())
@@ -178,7 +178,7 @@ describe('withHostedCreditCardFieldset', () => {
     });
 
     it('passes hosted verification form options to inner component when there is selected instrument', async () => {
-        const container = mount(<DecoratedPaymentMethodTest {...defaultProps} />);
+        const container = mount(<DecoratedPaymentMethodTest { ...defaultProps } />);
         const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
 
         expect(await getHostedFormOptions({
@@ -212,7 +212,7 @@ describe('withHostedCreditCardFieldset', () => {
     });
 
     it('passes styling properties to hosted form', async () => {
-        const container = mount(<DecoratedPaymentMethodTest {...defaultProps} />);
+        const container = mount(<DecoratedPaymentMethodTest { ...defaultProps } />);
         const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
 
         expect(await getHostedFormOptions())
@@ -233,7 +233,7 @@ describe('withHostedCreditCardFieldset', () => {
     });
 
     it('passes error messages from hosted form to Formik form', async () => {
-        const container = mount(<DecoratedPaymentMethodTest {...defaultProps} />);
+        const container = mount(<DecoratedPaymentMethodTest { ...defaultProps } />);
         const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
         const { onValidate } = await getHostedFormOptions();
 
@@ -268,7 +268,7 @@ describe('withHostedCreditCardFieldset', () => {
     });
 
     it('passes card type from hosted form to Formik form', async () => {
-        const container = mount(<DecoratedPaymentMethodTest {...defaultProps} />);
+        const container = mount(<DecoratedPaymentMethodTest { ...defaultProps } />);
         const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
         const { onCardTypeChange } = await getHostedFormOptions();
 
@@ -283,7 +283,7 @@ describe('withHostedCreditCardFieldset', () => {
     });
 
     it('highlights hosted field in focus', async () => {
-        const container = mount(<DecoratedPaymentMethodTest {...defaultProps} />);
+        const container = mount(<DecoratedPaymentMethodTest { ...defaultProps } />);
         const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
         const { onFocus } = await getHostedFormOptions();
 
@@ -299,7 +299,7 @@ describe('withHostedCreditCardFieldset', () => {
     });
 
     it('clears highlight if hosted field in no longer in focus', async () => {
-        const container = mount(<DecoratedPaymentMethodTest {...defaultProps} />);
+        const container = mount(<DecoratedPaymentMethodTest { ...defaultProps } />);
         const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
         const { onBlur } = await getHostedFormOptions();
 
@@ -313,7 +313,7 @@ describe('withHostedCreditCardFieldset', () => {
     });
 
     it('submits form when enter key is pressed', async () => {
-        const container = mount(<DecoratedPaymentMethodTest {...defaultProps} />);
+        const container = mount(<DecoratedPaymentMethodTest { ...defaultProps } />);
         const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
         const { onEnter } = await getHostedFormOptions();
 
