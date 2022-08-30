@@ -11,6 +11,7 @@ import CheckoutStepType from './CheckoutStepType';
 export interface CheckoutStepProps {
     heading?: ReactNode;
     isActive?: boolean;
+    isBusy: boolean;
     isComplete?: boolean;
     isEditable?: boolean;
     suggestion?: ReactNode;
