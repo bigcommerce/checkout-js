@@ -9,7 +9,6 @@ import AdyenV3PaymentMethod from './AdyenV3PaymentMethod';
 import AffirmPaymentMethod from './AffirmPaymentMethod';
 import AmazonPaymentMethod from './AmazonPaymentMethod';
 import AmazonPayV2PaymentMethod from './AmazonPayV2PaymentMethod';
-import ApplePayPaymentMethod from './ApplePayPaymentMethod';
 import BarclaycardPaymentMethod from './BarclaycardPaymentMethod';
 import BlueSnapV2PaymentMethod from './BlueSnapV2PaymentMethod';
 import BoltPaymentMethod from './BoltPaymentMethod';
@@ -81,10 +80,6 @@ const PaymentMethodComponent: FunctionComponent<PaymentMethodProps & WithCheckou
 
     if (method.gateway === PaymentMethodId.AdyenV3) {
         return <AdyenV3PaymentMethod { ...props } />;
-    }
-
-    if (method.id === PaymentMethodId.ApplePay) {
-        return <ApplePayPaymentMethod { ...props } />;
     }
 
     if (method.id === PaymentMethodId.SquareV2) {
