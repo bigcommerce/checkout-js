@@ -143,11 +143,11 @@ class OrderConfirmation extends Component<
                         }) }
 
                         <div className="continueButtonContainer">
-                            <a href={ siteLink } target="_top">
-                                <Button variant={ ButtonVariant.Secondary }>
+                            <form action={ siteLink } method="get" target="_top">
+                                <Button type="submit" variant={ ButtonVariant.Secondary }>
                                     <TranslatedString id="order_confirmation.continue_shopping" />
                                 </Button>
-                            </a>
+                            </form>
                         </div>
                     </div>
                 </div>

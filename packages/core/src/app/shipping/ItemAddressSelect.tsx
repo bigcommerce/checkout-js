@@ -49,9 +49,9 @@ const ItemAddressSelect: FunctionComponent<ItemAddressSelectProps> = ({
         </figure>
 
         <div className="consignment-product-body">
-            <h5 className="optimizedCheckout-contentPrimary">
+            <h4 className="optimizedCheckout-contentPrimary">
                 { `${quantity} x ${name}` }
-            </h5>
+            </h4>
 
             { (options || []).map(({ name: optionName, value, nameId }) =>
                 <ul

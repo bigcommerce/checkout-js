@@ -13,12 +13,12 @@ exports[`OrderSummaryItems when amount and amountAfterDiscount are different ren
   <div
     className="product-column product-body"
   >
-    <h5
+    <h4
       className="product-title optimizedCheckout-contentPrimary"
       data-test="cart-item-product-title"
     >
       2 x Product
-    </h5>
+    </h4>
     <ul
       className="product-options optimizedCheckout-contentSecondary"
       data-test="cart-item-product-options"
