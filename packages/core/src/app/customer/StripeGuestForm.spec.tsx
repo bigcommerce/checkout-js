@@ -10,6 +10,7 @@ describe('StripeGuestForm', () => {
     let defaultProps: StripeGuestFormProps;
     let TestComponent: FunctionComponent<Partial<StripeGuestFormProps>>;
     const handleContinueAsGuest = jest.fn();
+    const dummyElement = document.createElement('div');
 
     beforeEach(() => {
         defaultProps = {
@@ -30,6 +31,14 @@ describe('StripeGuestForm', () => {
                 isRequired: true,
                 type: CheckoutStepType.Customer },
         };
+
+        jest.mock('../common/dom', () => ({
+            getAppliedStyles: () => {
+                return { color: '#cccccc' };
+            },
+        }));
+        jest.spyOn(document, 'getElementById')
+            .mockReturnValue(dummyElement);
 
         TestComponent = props => (
             <StripeGuestForm
@@ -76,6 +85,7 @@ describe('StripeGuestForm', () => {
         defaultProps.initialize = jest.fn((options:any) => {
             options.stripeupe.onEmailChange('cosmefulanito@cosme.mx', true);
             options.stripeupe.isLoading(true);
+            options.stripeupe?.getStyles();
         })
         mount(<TestComponent { ...defaultProps } />);
 

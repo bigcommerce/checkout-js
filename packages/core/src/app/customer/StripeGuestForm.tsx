@@ -2,6 +2,7 @@ import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/
 import { withFormik, FieldProps, FormikProps } from 'formik';
 import React, { memo, useCallback, useEffect, useState, FunctionComponent, ReactNode } from 'react';
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
+import { getAppliedStyles } from '../common/dom';
 
 import { TranslatedHtml, TranslatedString } from '../locale';
 import { PrivacyPolicyField } from '../privacyPolicy';
@@ -78,6 +79,59 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
         setIsStripeLoading(mounted);
     }, []);
 
+
+    const getStylesFromElement = (
+        id: string,
+        properties: string[]) => {
+        const parentContainer = document.getElementById(id);
+        if (parentContainer) {
+            return getAppliedStyles(parentContainer, properties);
+        } else {
+            return undefined;
+        }
+    };
+
+    const getStripeStyles: any = useCallback( () => {
+        const containerId = 'stripe-card-component-field';
+        const formInput = getStylesFromElement(`${containerId}--input`, ['color', 'background-color', 'border-color', 'box-shadow']);
+        const formLabel = getStylesFromElement(`${containerId}--label`, ['color']);
+        const formError = getStylesFromElement(`${containerId}--error`, ['color']);
+        return formLabel && formInput && formError ? {
+            labelText: formLabel.color,
+            fieldText: formInput.color,
+            fieldPlaceholderText: formInput.color,
+            fieldErrorText: formError.color,
+            fieldBackground: formInput['background-color'],
+            fieldInnerShadow: formInput['box-shadow'],
+            fieldBorder: formInput['border-color'],
+        } : undefined;
+    }, [])
+
+    const renderCheckoutThemeStylesForStripeUPE = () => {
+        const containerId = 'stripe-card-component-field';
+
+        return (
+            <div
+                className={ 'optimizedCheckout-form-input' }
+                id={ `${containerId}--input` }
+                placeholder="1111"
+            >
+                <div
+                    className={ 'form-field--error' }
+                >
+                    <div
+                        className={ 'optimizedCheckout-form-label' }
+                        id={ `${containerId}--error` }
+                    />
+                </div>
+                <div
+                    className={ 'optimizedCheckout-form-label' }
+                    id={ `${containerId}--label` }
+                />
+            </div>
+        );
+    };
+
     const stripeDeinitialize = () => {
         deinitialize({
             methodId: 'stripeupe',
@@ -91,6 +145,9 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                     container: 'stripeupeLink',
                     onEmailChange: setEmailCallback,
                     isLoading: handleLoading,
+                    getStyles: getStripeStyles,
+                    gatewayId: 'stripeupe',
+                    methodId: 'card',
                 },
         })};
 
@@ -108,69 +165,74 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
         requiresMarketingConsent,
     ]);
 
+    const buttonText = authentication && !isNewAuth? 'customer.continue_as_stripe_customer_action' : continueAsGuestButtonLabelId || 'efe';
+
     return (
-        <div className="checkout-form">
-            <LoadingOverlay
-                hideContentWhenLoading
-                isLoading={ isStripeLoading }
-            >
-            <Fieldset
-                legend={ !authentication &&
-                    <Legend hidden>
-                        <TranslatedString id="customer.guest_customer_text" />
-                    </Legend>
-                }
-            >
-                { !authentication && <p>
-                    <TranslatedHtml id="customer.checkout_as_guest_text" />
-                </p> }
-            <div className="customerEmail-container">
-                <div className="customerEmail-body">
-                    <div id="stripeupeLink"> </div>
-                    <br />
-                    { (canSubscribe || requiresMarketingConsent) && <BasicFormField
-                        name="shouldSubscribe"
-                        render={ renderField }
-                    /> }
-
-                    { privacyPolicyUrl && <PrivacyPolicyField
-                        url={ privacyPolicyUrl }
-                    /> }
-                </div>
-
-                <div className="form-actions customerEmail-action">
-                    { !authentication && <Button
-                        className="stripeCustomerEmail-button"
-                        disabled={ continueAsAGuestButton }
-                        id="stripe-checkout-customer-continue"
-                        isLoading={ isLoading }
-                        onClick={ handleOnClickSubmitButton }
-                        testId="stripe-customer-continue-as-guest-button"
-                        type="submit"
-                        variant={ ButtonVariant.Primary }
+        <>
+            <div className="checkout-form">
+                <LoadingOverlay
+                    hideContentWhenLoading
+                    isLoading={ isStripeLoading }
+                >
+                    <Fieldset
+                        legend={ !authentication &&
+                            <Legend hidden>
+                                <TranslatedString id="customer.guest_customer_text"/>
+                            </Legend>
+                        }
                     >
-                        <TranslatedString id={ continueAsGuestButtonLabelId } />
-                    </Button> }
-                </div>
-            </div>
-                {
-                    !isLoading && <p>
-                        <TranslatedString id="customer.login_text" />
-                        { ' ' }
-                        <a
-                            data-test="customer-continue-button"
-                            id="checkout-customer-login"
-                            onClick={ onShowLogin }
-                        >
-                            <TranslatedString id="customer.login_action" />
-                        </a>
-                    </p>
-                }
+                        { !authentication && <p>
+                            <TranslatedHtml id="customer.checkout_as_guest_text"/>
+                        </p> }
+                        <div className="customerEmail-container">
+                            <div className="customerEmail-body">
+                                <div id="stripeupeLink"></div>
+                                <br/>
+                                { (canSubscribe || requiresMarketingConsent) && <BasicFormField
+                                    name="shouldSubscribe"
+                                    render={ renderField }
+                                /> }
 
-            { checkoutButtons }
-            </Fieldset>
-            </LoadingOverlay>
-        </div>
+                                { privacyPolicyUrl && <PrivacyPolicyField
+                                    url={ privacyPolicyUrl }
+                                /> }
+                            </div>
+
+                            <div className="form-actions customerEmail-action">
+                                { (!authentication || (authentication && !isNewAuth )) && <Button
+                                    className="stripeCustomerEmail-button"
+                                    disabled={ continueAsAGuestButton }
+                                    id="stripe-checkout-customer-continue"
+                                    isLoading={ isLoading }
+                                    onClick={ handleOnClickSubmitButton }
+                                    testId="stripe-customer-continue-as-guest-button"
+                                    type="submit"
+                                    variant={ ButtonVariant.Primary }
+                                >
+                                    <TranslatedString id={ buttonText }/>
+                                </Button> }
+                            </div>
+                        </div>
+                        {
+                            !isLoading && <p>
+                                <TranslatedString id="customer.login_text"/>
+                                { ' ' }
+                                <a
+                                    data-test="customer-continue-button"
+                                    id="checkout-customer-login"
+                                    onClick={ onShowLogin }
+                                >
+                                    <TranslatedString id="customer.login_action"/>
+                                </a>
+                            </p>
+                        }
+
+                        { checkoutButtons }
+                    </Fieldset>
+                </LoadingOverlay>
+            </div>
+            { renderCheckoutThemeStylesForStripeUPE() }
+        </>
     );
 };
 

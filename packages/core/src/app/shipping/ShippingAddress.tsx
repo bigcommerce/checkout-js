@@ -4,6 +4,7 @@ import { noop } from 'lodash';
 import React, { memo, useCallback, useContext, useEffect, useState, FunctionComponent } from 'react';
 
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
+import { getAppliedStyles } from '../common/dom';
 import { FormContext } from '../ui/form';
 import getRecommendedShippingOption from './getRecommendedShippingOption';
 import hasSelectedShippingOptions from './hasSelectedShippingOptions';
@@ -171,6 +172,33 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
         })
     )), []);
 
+    const getStylesFromElement = (
+        id: string,
+        properties: string[]) => {
+        const parentContainer = document.getElementById(id);
+        if (parentContainer) {
+            return getAppliedStyles(parentContainer, properties);
+        } else {
+            return undefined;
+        }
+    };
+
+    const getStripeStyles: any = useCallback( () => {
+        const containerId = 'stripe-card-component-field';
+        const formInput = getStylesFromElement(`${containerId}--input`, ['color', 'background-color', 'border-color', 'box-shadow']);
+        const formLabel = getStylesFromElement(`${containerId}--label`, ['color']);
+        const formError = getStylesFromElement(`${containerId}--error`, ['color']);
+        return formLabel && formInput && formError ? {
+            labelText: formLabel.color,
+            fieldText: formInput.color,
+            fieldPlaceholderText: formInput.color,
+            fieldErrorText: formError.color,
+            fieldBackground: formInput['background-color'],
+            fieldInnerShadow: formInput['box-shadow'],
+            fieldBorder: formInput['border-color'],
+        } : undefined;
+    }, [])
+
     const handleFieldChange: (fieldName: string, value: string) => void = (fieldName, value) => {
         if (hasRequestedShippingOptions) {
             setSubmitted(true);
@@ -182,22 +210,53 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
     if (isStripeLinkEnabled && !customerEmail) {
         let options: ShippingInitializeOptions = {};
 
+        const renderCheckoutThemeStylesForStripeUPE = () => {
+            const containerId = 'stripe-card-component-field';
+
+            return (
+                <div
+                    className={ 'optimizedCheckout-form-input' }
+                    id={ `${containerId}--input` }
+                    placeholder="1111"
+                >
+                    <div
+                        className={ 'form-field--error' }
+                    >
+                        <div
+                            className={ 'optimizedCheckout-form-label' }
+                            id={ `${containerId}--error` }
+                        />
+                    </div>
+                    <div
+                        className={ 'optimizedCheckout-form-label' }
+                        id={ `${containerId}--label` }
+                    />
+                </div>
+            );
+        };
+
         options = {
             stripeupe: {
                 container: 'StripeUpeShipping',
                 onChangeShipping: handleStripeShippingAddress,
                 availableCountries: allowedCountries,
+                getStyles: getStripeStyles,
+                gatewayId: 'stripeupe',
+                methodId: 'card',
             },
         };
 
         return (
-            <StripeupeShippingAddress
-                deinitialize={ deinitialize }
-                formFields={ formFields }
-                initialize={ initializeShipping(options) }
-                isLoading={ isShippingStepPending }
-                methodId={ 'stripeupe' }
-            />
+            <>
+                <StripeupeShippingAddress
+                    deinitialize={ deinitialize }
+                    formFields={ formFields }
+                    initialize={ initializeShipping(options) }
+                    isLoading={ isShippingStepPending }
+                    methodId={ 'stripeupe' }
+                />
+                { renderCheckoutThemeStylesForStripeUPE() }
+            </>
         );
     }
 

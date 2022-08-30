@@ -26,6 +26,7 @@ describe('ShippingAddress Component', () => {
     let wrapperComponent: ReactWrapper;
     let TestComponent: FunctionComponent<Partial<ShippingAddressProps>>;
     let defaultProps: ShippingAddressProps;
+    const dummyElement = document.createElement('div');
 
     beforeAll(() => {
         checkoutService = createCheckoutService();
@@ -67,6 +68,14 @@ describe('ShippingAddress Component', () => {
             onUnhandledError: jest.fn(),
             onUseNewAddress: jest.fn(),
     };
+
+        jest.mock('../common/dom', () => ({
+            getAppliedStyles: () => {
+                return { color: '#cccccc' };
+            },
+        }));
+        jest.spyOn(document, 'getElementById')
+            .mockReturnValue(dummyElement);
 
         TestComponent = props => (
         <CheckoutProvider checkoutService={ checkoutService }>
@@ -190,6 +199,9 @@ describe('ShippingAddress Component', () => {
                     container: 'StripeUpeShipping',
                     onChangeShipping: expect.any(Function),
                     availableCountries: 'US',
+                    getStyles: expect.any(Function),
+                    gatewayId: 'stripeupe',
+                    methodId: 'card',
                 },
             });
         });
@@ -214,6 +226,7 @@ describe('ShippingAddress Component', () => {
                         },
                     }
                 );
+                options.stripeupe?.getStyles();
             });
             const stripeProps = {...defaultProps, isStripeLinkEnabled: true, customerEmail: ''};
             const component = mount(
