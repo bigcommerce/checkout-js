@@ -179,10 +179,11 @@ export default withLanguage(withFormik<RedeemableProps & WithLanguageProps, Rede
 
         try {
             await applyGiftCertificate(code);
-        } catch (e) {
-            const error = e as Error;
-            clearError(error);
-            applyCoupon(code);
+        } catch (error) {
+            if (error instanceof Error) {
+                clearError(error);
+                applyCoupon(code);
+            }
         }
     },
 

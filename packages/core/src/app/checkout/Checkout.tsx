@@ -187,9 +187,10 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             } else {
                 this.handleReady();
             }
-        } catch (e) {
-            const error = e as Error;
-            this.handleUnhandledError(error);
+        } catch (error) {
+            if (error instanceof Error) {
+                this.handleUnhandledError(error);
+            }
         }
     }
 

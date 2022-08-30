@@ -214,8 +214,9 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
             navigateNextStep(billingSameAsShipping);
         } catch (error) {
-            const handleSingleShippingSubmitError = error as Error;
-            onUnhandledError(handleSingleShippingSubmitError);
+            if (error instanceof Error) {
+                onUnhandledError(error);
+            }
         }
     };
 
@@ -239,8 +240,9 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
             location.href = '/account.php?action=add_shipping_address&from=checkout';
         } catch (error) {
-            const handleUseNewAddressError = error as Error
-            onUnhandledError(new UnassignItemError(handleUseNewAddressError));
+            if (error instanceof UnassignItemError ) {
+                onUnhandledError(new UnassignItemError(error));
+            }
         }
     };
 
@@ -259,8 +261,9 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
             navigateNextStep(false);
         } catch (error) {
-            const handleMultiShippingSubmitError = error as Error;
-            onUnhandledError(handleMultiShippingSubmitError);
+            if (error instanceof Error) {
+                onUnhandledError(error);
+            }
         }
     };
 }

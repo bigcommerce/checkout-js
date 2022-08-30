@@ -129,9 +129,10 @@ class BillingForm extends PureComponent<BillingFormProps & WithLanguageProps & F
 
         try {
             await updateAddress(address);
-        } catch (e) {
-            const error = e as Error;
-            onUnhandledError(error);
+        } catch (error) {
+            if (error instanceof Error) {
+                onUnhandledError(error);
+            }
         } finally {
             this.setState({ isResettingAddress: false });
         }

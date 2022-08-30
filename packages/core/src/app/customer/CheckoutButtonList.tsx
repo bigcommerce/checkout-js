@@ -60,15 +60,16 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
     if (checkEmbeddedSupport) {
         try {
             checkEmbeddedSupport(supportedMethodIds);
-        } catch (e) {
-            const error = e as Error;
-            if (onError) {
-                onError(error);
-            } else {
-                throw error;
-            }
+        } catch (error) {
+            if (error instanceof Error) {
+                if (onError) {
+                    onError(error);
+                } else {
+                    throw error;
+                }
 
-            return null;
+                return null;
+            }
         }
     }
 

@@ -89,12 +89,14 @@ class SpamProtectionField extends Component<
         try {
             await executeSpamCheck();
         } catch (error) {
-            const verifyError = error as Error & { type: string }
-            this.setState({ shouldShowRetryButton: true });
+            if (error instanceof Error) {
+                const verifyError = error as Error & { type: string }
+                this.setState({ shouldShowRetryButton: true });
 
-            // Notify the parent component if the user experiences a problem other than cancelling the reCaptcha challenge.
-            if (error && verifyError.type !== 'spam_protection_challenge_not_completed') {
-                onUnhandledError(error);
+                // Notify the parent component if the user experiences a problem other than cancelling the reCaptcha challenge.
+                if (error && verifyError.type !== 'spam_protection_challenge_not_completed') {
+                    onUnhandledError(error);
+                }
             }
         }
     }

@@ -231,13 +231,14 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         try {
             checkEmbeddedSupport(methods.map(({ id }) => id));
         } catch (error) {
-            const renderEmbeddedSupportErrorModalError = error as Error
-            return (
-                <ErrorModal
-                    error={ renderEmbeddedSupportErrorModalError }
-                    onClose={ this.handleCloseModal }
-                />
-            );
+            if (error instanceof Error) {
+                return (
+                    <ErrorModal
+                        error={ error }
+                        onClose={ this.handleCloseModal }
+                    />
+                );
+            }
         }
 
         return null;
