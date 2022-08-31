@@ -71,6 +71,33 @@ describe('CreateAccountForm Component', () => {
         });
     });
 
+    it.each([['Password needs to contain a letter', '1234567'], ['Password needs to contain a number', 'abcdefg'], ['Password is too short', '1a']]) ('renders correct error when %s', async (expected, passwordCase) => {
+        const onSubmit = jest.fn();
+
+        component = mount(
+            <LocaleContext.Provider value={ localeContext }>
+                <CreateAccountForm
+                    formFields={ formFields }
+                    onSubmit={ onSubmit }
+                    requiresMarketingConsent={ false }
+                />
+            </LocaleContext.Provider>
+        );
+
+        component.find('input[name="password"]')
+            .simulate('change', { target: { value: passwordCase, name: 'password' } });
+
+        component.find('form')
+            .simulate('submit');
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        component.update();
+
+        expect(component.find('#password-field-error-message').text())
+            .toEqual(expected);
+    });
+
     it('calls onCancel', () => {
         const onCancel = jest.fn();
 

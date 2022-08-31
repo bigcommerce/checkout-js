@@ -57,10 +57,10 @@ export default memoize(function getCreateCustomerValidationSchema({
             firstName: string().required(language.translate('address.first_name_required_error')),
             lastName: string().required(language.translate('address.last_name_required_error')),
             password: string()
-                .required(description || language.translate('customer.password_required_error'))
-                .matches(numeric, description || language.translate('customer.password_number_required_error'))
-                .matches(alpha, description || language.translate('customer.password_letter_required_error'))
-                .min(minLength, description || language.translate('customer.password_under_minimum_length_error'))
+                .required(language.translate('customer.password_required_error') || description)
+                .matches(numeric, language.translate('customer.password_number_required_error') || description)
+                .matches(alpha, language.translate('customer.password_letter_required_error') || description)
+                .min(minLength, language.translate('customer.password_under_minimum_length_error' || description))
                 .max(100, language.translate('customer.password_over_maximum_length_error')),
         })
         .concat(getEmailValidationSchema({ language }))
