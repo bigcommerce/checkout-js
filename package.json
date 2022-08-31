@@ -98,6 +98,7 @@
     "@pollyjs/core": "^6.0.5",
     "@pollyjs/node-server": "^6.0.1",
     "@pollyjs/persister-fs": "^6.0.5",
+    "@types/applepayjs": "^3.0.4",
     "@types/ejs": "^3.1.0",
     "@types/enzyme": "^3.10.3",
     "@types/jest": "^24.0.17",

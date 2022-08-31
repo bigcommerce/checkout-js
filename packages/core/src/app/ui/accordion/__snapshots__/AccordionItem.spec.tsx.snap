@@ -7,6 +7,7 @@ exports[`AccordionItem renders component that matches snapshot 1`] = `
 >
   <li
     className="accordion-item"
+    data-test="accordion-item_foobar"
   >
     <div
       className="accordion-item-header"
