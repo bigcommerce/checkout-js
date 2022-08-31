@@ -39,7 +39,7 @@ const getCustomDescription = (name: string, amount: number, currencyService: any
     } else if (name.indexOf('liver') !== -1) {
         return customDescription['LIVER'];
     } else if (name.indexOf('pure triple') !== -1) {
-        return customDescription['PURE_TRIPLE_PACK'].replace('$X', currencyService.toCustomerCurrency(amount));
+        return customDescription['PURE_TRIPLE_PACK'].replace('$X', currencyService.toCustomerCurrency(amount * 3));
     } else if (name.indexOf('pure') !== -1) {
         return customDescription['PURE'];
     } else if (name.indexOf('joint') !== -1) {
