@@ -55,7 +55,7 @@ export default class ErrorModal extends PureComponent<ErrorModalProps> {
         return (
             <ModalHeader>
                 <IconError additionalClassName="icon--error modal-header-icon" size={ IconSize.Small } />
-                { title || <TranslatedString id="common.error_heading" /> }
+                <span aria-live="assertive" role="alert">{ title || <TranslatedString id="common.error_heading" /> }</span>
             </ModalHeader>
         );
     }
@@ -68,7 +68,7 @@ export default class ErrorModal extends PureComponent<ErrorModalProps> {
 
         return (
             <Fragment>
-                { message && <p id="errorModalMessage">{ message }</p> }
+                { message && <p aria-live="assertive" id="errorModalMessage" role="alert">{ message }</p> }
 
                 <div className="optimizedCheckout-contentSecondary">
                     { this.renderErrorCode() }
