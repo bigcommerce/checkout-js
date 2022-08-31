@@ -1,7 +1,5 @@
-export {};
-
-declare global {
+export declare global {
   interface Window {
-    ApplePaySession: ApplePaySession
+    ApplePaySession?: ApplePaySession
   }
 }

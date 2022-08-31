@@ -6,8 +6,8 @@ const addApplePaySessionToChrome = () => {
         static STATUS_SUCCESS = 1;
         static STATUS_FAILURE = 2;
 
-        static supportsVersion(_versionNumber: unknown) {
-            console.log('supportsVersion', _versionNumber)
+        static supportsVersion(versionNumber: number) {
+            console.log('supportsVersion', versionNumber)
             return true;
         }
 
@@ -16,17 +16,17 @@ const addApplePaySessionToChrome = () => {
             this.paymentRequest = paymentRequest;
         }
 
-        addEventListener(_type: string, _callback: EventListenerOrEventListenerObject | null, _options?: boolean | AddEventListenerOptions | undefined): void {
-            console.log('addEventListener', _type, _callback, _options);
+        addEventListener(type: string, callback: EventListenerOrEventListenerObject | null, options?: boolean | AddEventListenerOptions | undefined): void {
+            console.log('addEventListener', type, callback, options);
         }
 
-        dispatchEvent(_event: Event): boolean {
-            console.log('dispatchEvent', _event);
+        dispatchEvent(event: Event): boolean {
+            console.log('dispatchEvent', event);
             return true
         }
-        
-        removeEventListener(_type: string, _callback: EventListenerOrEventListenerObject | null, _options?: boolean | EventListenerOptions | undefined): void {
-            console.log('removeEventListener', _type, _callback, _options);
+
+        removeEventListener(type: string, callback: EventListenerOrEventListenerObject | null, options?: boolean | EventListenerOptions | undefined): void {
+            console.log('removeEventListener', type, callback, options);
         }
 
         oncancel: (event: ApplePayJS.Event) => void = () => { 
@@ -69,16 +69,16 @@ const addApplePaySessionToChrome = () => {
             console.log('completePayment');
         }
 
-        completeShippingContactSelection(_update: unknown) {
-            console.log('completeShippingContactSelection', _update);
+        completeShippingContactSelection(update: unknown) {
+            console.log('completeShippingContactSelection', update);
         }
 
-        completeShippingMethodSelection(_update: unknown) {
-            console.log('completeShippingMethodSelection', _update);
+        completeShippingMethodSelection(update: unknown) {
+            console.log('completeShippingMethodSelection', update);
         }
 
-        completeMerchantValidation(_response: unknown) {
-            console.log('completeMerchantValidation', _response);
+        completeMerchantValidation(response: unknown) {
+            console.log('completeMerchantValidation', response);
         }
 
         completePaymentMethodSelection(...args: [newTotal: ApplePayJS.ApplePayLineItem, newLineItems: ApplePayJS.ApplePayLineItem[]] | [update: ApplePayJS.ApplePayPaymentMethodUpdate]): void {
