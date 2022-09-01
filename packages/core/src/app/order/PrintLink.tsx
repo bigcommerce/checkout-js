@@ -1,7 +1,7 @@
 import { throttle } from 'lodash';
 import React, { memo, useCallback, FunctionComponent } from 'react';
 
-import {preventDefault} from "../common/dom";
+import { preventDefault } from "../common/dom";
 import { TranslatedString } from '../locale';
 import { IconPrint } from '../ui/icon';
 
