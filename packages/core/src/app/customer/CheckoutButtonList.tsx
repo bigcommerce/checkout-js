@@ -1,7 +1,6 @@
 import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
 import React, { memo, Fragment, FunctionComponent } from 'react';
 
-// eslint-disable-next-line import/no-internal-modules
 import { isApplePayWindow } from '../common/utility';
 import { TranslatedString } from '../locale';
 

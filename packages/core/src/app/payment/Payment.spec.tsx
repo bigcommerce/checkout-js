@@ -19,6 +19,7 @@ import { PaymentMethodId } from './paymentMethod';
 import { getPaymentMethod } from './payment-methods.mock';
 import Payment, { PaymentProps } from './Payment';
 import PaymentForm, { PaymentFormProps } from './PaymentForm';
+import { ValidationError } from 'yup';
 
 describe('Payment', () => {
     let PaymentTest: FunctionComponent<PaymentProps>;
@@ -545,7 +546,7 @@ describe('Payment', () => {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             form.prop('validationSchema')!.validateSync({ ccNumber: '' });
         } catch (error) {
-            const validationSchemaError = error as RequestError
+            const validationSchemaError = error as ValidationError
             expect(validationSchemaError.name)
                 .toEqual('ValidationError');
         }

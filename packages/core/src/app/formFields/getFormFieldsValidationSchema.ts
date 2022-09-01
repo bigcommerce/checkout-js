@@ -11,7 +11,7 @@ export interface FormFieldValues {
 
 export default memoize(function getFormFieldsValidationSchema({
     formFields,
-    translate = () => '',
+    translate = () => undefined,
 }: FormFieldsValidationSchemaOptions): ObjectSchema<FormFieldValues> {
     return object({
         ...formFields

@@ -587,9 +587,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         const { loginUrl, cartUrl, isPriceHiddenFromGuests, isGuestEnabled } = this.props;
 
         if (isPriceHiddenFromGuests) {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return window.top.location.href = cartUrl;
+            if (window.top) {
+                return window.top.location.href = cartUrl;
+            }
         }
 
         if (this.embeddedMessenger) {
@@ -604,9 +604,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             this.setState({ isCartEmpty: true });
 
             if (!isEmbedded()) {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-                return window.top.location.assign(loginUrl);
+                return window.top?.location.assign(loginUrl);
             }
         }
 

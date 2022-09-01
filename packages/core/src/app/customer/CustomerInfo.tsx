@@ -1,10 +1,10 @@
-import { CheckoutSelectors, CustomerRequestOptions, CustomError, RequestError } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, CustomerRequestOptions, CustomError } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
+import isRequestError from '../common/utility/isRequestError';
 import { TranslatedString } from '../locale';
-// eslint-disable-next-line import/no-internal-modules
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 
 import canSignOut, { isSupportedSignoutMethod } from './canSignOut';
@@ -45,13 +45,13 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
                 await signOut();
                 onSignOut({ isCartEmpty: false });
             }
-        } catch (e) {
-            const error = e as RequestError;
-            if (error.type === 'checkout_not_available') {
-                onSignOut({ isCartEmpty: true });
-            } else {
-                onSignOutError(error);
+        } catch (error) {
+            if ( isRequestError(error)) {
+                if (error.type === 'checkout_not_available') {
+                    onSignOut({ isCartEmpty: true });
+                }    
             }
+            onSignOutError(error);
         }
     };
 

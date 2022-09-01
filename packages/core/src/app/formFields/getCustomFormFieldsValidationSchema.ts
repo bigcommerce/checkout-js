@@ -29,7 +29,7 @@ export interface CustomFormFields {
 
 export default memoize(function getCustomFormFieldsValidationSchema({
     formFields,
-    translate = () => '',
+    translate = () => undefined,
 }: FormFieldsValidationSchemaOptions): ObjectSchema<CustomFormFieldValues> {
     return object({
         customFields: object(

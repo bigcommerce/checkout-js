@@ -454,13 +454,10 @@ describe('Checkout', () => {
 
             container = mount(<CheckoutTest { ...defaultProps } />);
 
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             (container.find(CustomerInfo) as ReactWrapper<CustomerInfoProps>)
-                .prop('onSignOut')!({ isCartEmpty: true });
+                .prop('onSignOut')?.({ isCartEmpty: true });
 
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            expect(window.top.location.assign)
+            expect(window.top?.location.assign)
                 .toHaveBeenCalled();
         });
 

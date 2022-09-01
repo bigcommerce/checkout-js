@@ -3,7 +3,8 @@ import { CartChangedError, CheckoutSelectors, CheckoutSettings, OrderRequestBody
 import { memoizeOne } from '@bigcommerce/memoize';
 import { compact, find, isEmpty, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
-import { ObjectSchema } from 'yup';
+import { ObjectSchema, ValidationError } from 'yup';
+import isRequestErrorFromString from '../common/utility/isRequestError';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
 import { isCartChangedError, isRequestError, ErrorModal, ErrorModalOnCloseProps, ErrorLogger } from '../common/error';
@@ -112,9 +113,10 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             const order = state.data.getOrder();
             onFinalize(order?.orderId);
         } catch (error) {
-            const finalizationError = error as Error & { type: string }
-            if (finalizationError.type !== 'order_finalization_not_required') {
-                onFinalizeError(error);
+            if ( isRequestErrorFromString(error)) {
+                if (error.type !== 'order_finalization_not_required') {
+                    onFinalizeError(error);
+                }
             }
         }
 
@@ -429,15 +431,15 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             const order = state.data.getOrder();
             onSubmit(order?.orderId);
         } catch (error) {
-            const handleSubmitError = error as Error & { type: string };
-            if (handleSubmitError.type === 'payment_method_invalid') {
-                return loadPaymentMethods();
-            }
+            if (error instanceof ValidationError) {
+                if (error.type === 'payment_method_invalid') {
+                    return loadPaymentMethods();
+                }
 
-            if (isCartChangedError(handleSubmitError)) {
-                return onCartChangedError(error);
+                if (isCartChangedError(error)) {
+                    return onCartChangedError(error);
+                }
             }
-
             onSubmitError(error);
         }
     };

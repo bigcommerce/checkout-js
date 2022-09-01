@@ -1,4 +1,4 @@
-import { CheckoutSelectors, CustomerAccountRequestBody, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, ExecutePaymentMethodCheckoutOptions, FormField, GuestCredentials, RequestError, SignInEmail, StoreConfig } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, CustomerAccountRequestBody, CustomerCredentials, CustomerInitializeOptions, CustomerRequestOptions, ExecutePaymentMethodCheckoutOptions, FormField, GuestCredentials, SignInEmail, StoreConfig } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
@@ -14,6 +14,7 @@ import CustomerViewType from './CustomerViewType';
 import EmailLoginForm, { EmailLoginFormValues } from './EmailLoginForm';
 import GuestForm, { GuestFormValues } from './GuestForm';
 import LoginForm from './LoginForm';
+import isRequestError from '../common/utility/isRequestError';
 
 export interface CustomerProps {
     viewType: CustomerViewType;
@@ -322,23 +323,24 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             await this.executePaymentMethodCheckoutOrContinue();
 
             this.draftEmail = undefined;
-        } catch (e) {
-            const error = e as RequestError;
-            if (error.type === 'update_subscriptions' || error.type === 'payment_method_client_invalid') {
-                this.draftEmail = undefined;
-
-                onContinueAsGuest();
+        } catch (error) {
+            if ( isRequestError(error)) {
+                if (error.type === 'update_subscriptions' || error.type === 'payment_method_client_invalid') {
+                    this.draftEmail = undefined;
+    
+                    onContinueAsGuest();
+                }
+    
+                if (error.status === 429) {
+                    return onChangeViewType(CustomerViewType.EnforcedLogin);
+                }
+    
+                if (error.status === 403) {
+                    return onChangeViewType(CustomerViewType.CancellableEnforcedLogin);
+                }
+    
+                onContinueAsGuestError(error);
             }
-
-            if (error.status === 429) {
-                return onChangeViewType(CustomerViewType.EnforcedLogin);
-            }
-
-            if (error.status === 403) {
-                return onChangeViewType(CustomerViewType.CancellableEnforcedLogin);
-            }
-
-            onContinueAsGuestError(error);
         }
     };
 

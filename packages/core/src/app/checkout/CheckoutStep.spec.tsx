@@ -3,7 +3,6 @@ import { noop } from 'lodash';
 import React from 'react';
 import { CSSTransition } from 'react-transition-group';
 
-// eslint-disable-next-line import/no-internal-modules
 import { isMobileView, MOBILE_MAX_WIDTH } from '../ui/responsive';
 
 import CheckoutStep, { CheckoutStepProps } from './CheckoutStep';
