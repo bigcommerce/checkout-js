@@ -76,7 +76,7 @@ describe('when using Worldpay payment', () => {
             isInitializing: false,
             method: {
                 ...getPaymentMethod(),
-                id: PaymentMethodId.Worldpay,
+                id: PaymentMethodId.WorldpayAccess,
             },
             onUnhandledError: jest.fn(),
         };
@@ -140,10 +140,35 @@ describe('when using Worldpay payment', () => {
 
         await new Promise(resolve => process.nextTick(resolve));
 
+        const creditCard = {
+            form: {
+                fields: {
+                    cardCode: {
+                        containerId: "cardCode",
+                        placeholder: "Card code"
+                    },
+                    cardExpiry: {
+                        containerId: "cardExpiry",
+                        placeholder: "Card expiry"
+                    },
+                    cardName: {
+                        containerId: "cardName",
+                        "placeholder": "Card name"
+                    },
+                    cardNumber: {
+                        containerId: "cardNumber",
+                        placeholder: "Card number"
+                    }
+                }
+            }
+        }
+
         expect(defaultProps.initializePayment)
             .toHaveBeenCalledWith(expect.objectContaining({
                 methodId: defaultProps.method.id,
                 gatewayId: defaultProps.method.gateway,
+                worldpay: {onLoad: expect.any(Function)},
+                creditCard: creditCard
             }));
     });
 
