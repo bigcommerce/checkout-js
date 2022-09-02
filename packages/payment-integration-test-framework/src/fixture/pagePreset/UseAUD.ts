@@ -15,6 +15,6 @@ export class UseAUD implements CheckoutPagePreset {
 
         await api.addPhysicalItemToCart();
         await api.setCurrency(this.currency);
-        await api.dispose();
+        await api.dispose(`Checkout is using ${this.currency} now`);
     }
 }
