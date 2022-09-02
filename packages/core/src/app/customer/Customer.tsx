@@ -146,7 +146,6 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             isExecutingPaymentMethodCheckout = false,
             isInitializing = false,
             privacyPolicyUrl,
-            providerWithCustomCheckout,
             requiresMarketingConsent,
             onUnhandledError = noop,
         } = this.props;
@@ -164,7 +163,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                         onError={ onUnhandledError }
                     />
                 }
-                continueAsGuestButtonLabelId={ providerWithCustomCheckout ? 'customer.continue' : 'customer.continue_as_guest_action' }
+                continueAsGuestButtonLabelId={ 'customer.continue' }
                 defaultShouldSubscribe={ defaultShouldSubscribe }
                 email={ this.draftEmail || email }
                 isLoading={ isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout }

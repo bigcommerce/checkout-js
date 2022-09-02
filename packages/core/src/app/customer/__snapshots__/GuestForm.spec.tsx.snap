@@ -19,15 +19,6 @@ exports[`GuestForm matches snapshot 1`] = `
       <div
         class="form-body"
       >
-        <p>
-          <span>
-            Checking out as a 
-            <strong>
-              Guest
-            </strong>
-            ? You'll be able to save your details to create an account with us later.
-          </span>
-        </p>
         <div
           class="customerEmail-container"
         >
@@ -42,7 +33,7 @@ exports[`GuestForm matches snapshot 1`] = `
                 for="email"
                 id="email-label"
               >
-                Email Address
+                Email
               </label>
               <input
                 autocomplete="email"
@@ -80,7 +71,7 @@ exports[`GuestForm matches snapshot 1`] = `
               id="checkout-customer-continue"
               type="submit"
             >
-              Continue as guest
+              Continue
             </button>
           </div>
         </div>

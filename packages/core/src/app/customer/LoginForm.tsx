@@ -102,13 +102,6 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
                         />
                     </Alert> }
 
-                { viewType === CustomerViewType.Login && shouldShowCreateAccountLink && <p>
-                    <TranslatedLink
-                        id="customer.create_account_to_continue_text"
-                        onClick={ onCreateAccount }
-                    />
-                </p> }
-
                 { viewType === CustomerViewType.CancellableEnforcedLogin &&
                     <Alert type={ AlertType.Info }>
                         <TranslatedHtml
@@ -128,15 +121,33 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
                 { (viewType === CustomerViewType.Login || viewType === CustomerViewType.EnforcedLogin) &&
                     <EmailField onChange={ onChangeEmail } /> }
 
-                <PasswordField forgotPasswordUrl={ isSignInEmailEnabled ? undefined : forgotPasswordUrl } />
+                <PasswordField />
 
-                { isSignInEmailEnabled && <p>
-                    <TranslatedLink
-                        id="login_email.link"
-                        onClick={ onSendLoginEmail }
-                        testId="customer-signin-link"
-                    />
-                </p> }
+                <p className="form-legend-container">
+                    { isSignInEmailEnabled &&
+                        <TranslatedLink
+                            id="login_email.link"
+                            onClick={ onSendLoginEmail }
+                            testId="customer-signin-link"
+                        />
+                    }
+                    { !isSignInEmailEnabled &&
+                        <a
+                            data-test="forgot-password-link"
+                            href={ forgotPasswordUrl }
+                            rel="noopener noreferrer"
+                            target="_blank"
+                        >
+                            <TranslatedString id="customer.forgot_password_action" />
+                        </a>
+                    }
+                    { viewType === CustomerViewType.Login && shouldShowCreateAccountLink &&
+                        <TranslatedLink
+                            id="customer.create_account_to_continue_text"
+                            onClick={ onCreateAccount }
+                        />
+                    }
+                </p>
 
                 <div className="form-actions">
                     <Button
