@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.251.1](https://github.com/bigcommerce/checkout-js/compare/v1.251.0...v1.251.1) (2022-09-02)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-6760 [Accessibility] - simplymedical.com - Ensure color is not the sole means of indicating error messages ([3b76297](https://github.com/bigcommerce/checkout-js/commit/3b76297acedcb215cf1a797698e32d0045b08ef3))
+* **payment:** INT-6115 Worldpay -Payment with hosted credit card ([#994](https://github.com/bigcommerce/checkout-js/issues/994)) ([14cd2b1](https://github.com/bigcommerce/checkout-js/commit/14cd2b1179115a6b03dd07efd639f29261bf9fe4))
+* **payment:** INT-6404 AmazonPayV2: Prevent button flickering ([#978](https://github.com/bigcommerce/checkout-js/issues/978)) ([4fe56b4](https://github.com/bigcommerce/checkout-js/commit/4fe56b4c6054c97113de4f6c333b267ed6522849))
+
 ## [1.251.0](https://github.com/bigcommerce/checkout-js/compare/v1.250.0...v1.251.0) (2022-08-31)
 
 
