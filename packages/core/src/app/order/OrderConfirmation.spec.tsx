@@ -1,4 +1,4 @@
-import { createCheckoutService, createEmbeddedCheckoutMessenger, CheckoutSelectors, CheckoutService, EmbeddedCheckoutMessenger, StepTracker } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, createEmbeddedCheckoutMessenger, CheckoutSelectors, CheckoutService, EmbeddedCheckoutMessenger, StepTracker, BodlService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
@@ -21,6 +21,7 @@ describe('OrderConfirmation', () => {
     let checkoutState: CheckoutSelectors;
     let defaultProps: OrderConfirmationProps;
     let stepTracker: StepTracker;
+    let bodlService: BodlService;
     let ComponentTest: FunctionComponent<OrderConfirmationProps>;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
     let orderConfirmation: ReactWrapper;
@@ -31,6 +32,9 @@ describe('OrderConfirmation', () => {
         stepTracker = {
             trackOrderComplete: jest.fn(),
         } as unknown as StepTracker;
+        bodlService = {
+            orderPurchased: jest.fn(),
+        } as unknown as BodlService;
         embeddedMessengerMock = createEmbeddedCheckoutMessenger({ parentOrigin: getStoreConfig().links.siteLink });
 
         jest.spyOn(checkoutService, 'loadOrder')
@@ -50,6 +54,7 @@ describe('OrderConfirmation', () => {
             createAccount: jest.fn(() => Promise.resolve({} as CreatedCustomer)),
             createEmbeddedMessenger: () => embeddedMessengerMock,
             createStepTracker: () => stepTracker,
+            createBodlService: () => bodlService,
             embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
             errorLogger: createErrorLogger(),
             orderId: 105,
@@ -74,6 +79,19 @@ describe('OrderConfirmation', () => {
         await new Promise(resolve => process.nextTick(resolve));
 
         expect(stepTracker.trackOrderComplete)
+            .toHaveBeenCalled();
+    });
+
+    it('calls bodl event order complete triggered', async () => {
+        jest.spyOn(checkoutState.data, 'getConfig')
+            .mockReturnValue(undefined);
+
+        const component = mount(<ComponentTest { ...defaultProps } />);
+        component.update();
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        expect(bodlService.orderPurchased)
             .toHaveBeenCalled();
     });
 

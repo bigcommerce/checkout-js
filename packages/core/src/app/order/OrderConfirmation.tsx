@@ -1,4 +1,4 @@
-import { CheckoutSelectors, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, Order, ShopperConfig, StepTracker, StoreConfig } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, Order, ShopperConfig, StepTracker, BodlService, StoreConfig } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';
 import React, { lazy, Component, Fragment, ReactNode } from 'react';
@@ -46,6 +46,7 @@ export interface OrderConfirmationProps {
     createAccount(values: SignUpFormValues): Promise<CreatedCustomer>;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
     createStepTracker(): StepTracker;
+    createBodlService(): BodlService;
 }
 
 interface WithCheckoutOrderConfirmationProps {
@@ -68,6 +69,7 @@ class OrderConfirmation extends Component<
             containerId,
             createEmbeddedMessenger,
             createStepTracker,
+            createBodlService,
             embeddedStylesheet,
             loadOrder,
             orderId,
@@ -84,6 +86,7 @@ class OrderConfirmation extends Component<
                 messenger.postFrameLoaded({ contentId: containerId });
 
                 createStepTracker().trackOrderComplete();
+                createBodlService().orderPurchased();
             })
             .catch(this.handleUnhandledError);
     }
