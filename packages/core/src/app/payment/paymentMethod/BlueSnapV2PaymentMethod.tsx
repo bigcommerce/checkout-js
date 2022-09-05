@@ -1,6 +1,7 @@
 import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import React, { createRef, useCallback, useRef, useState, FunctionComponent, RefObject } from 'react';
 
+import { LoadingOverlay } from "../../ui/loading";
 import { Modal } from '../../ui/modal';
 
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
@@ -16,6 +17,7 @@ const BlueSnapV2PaymentMethod: FunctionComponent<BlueSnapV2PaymentMethodProps> =
     initializePayment,
     ...rest
 }) => {
+    const [isLoadingIframe, setisLoadingIframe] = useState<boolean>(false);
     const [paymentPageContent, setPaymentPageContent] = useState<HTMLElement>();
     const ref = useRef<BlueSnapV2PaymentMethodRef>({
         paymentPageContentRef: createRef(),
@@ -36,6 +38,7 @@ const BlueSnapV2PaymentMethod: FunctionComponent<BlueSnapV2PaymentMethodProps> =
             bluesnapv2: {
                 onLoad(content: HTMLIFrameElement, cancel: () => void) {
                     setPaymentPageContent(content);
+                    setisLoadingIframe(true);
                     ref.current.cancelBlueSnapV2Payment = cancel;
                 },
                 style: {
@@ -50,6 +53,11 @@ const BlueSnapV2PaymentMethod: FunctionComponent<BlueSnapV2PaymentMethodProps> =
     const appendPaymentPageContent = useCallback(() => {
         if (ref.current.paymentPageContentRef.current && paymentPageContent) {
             ref.current.paymentPageContentRef.current.appendChild(paymentPageContent);
+            paymentPageContent.addEventListener('load',
+                () => {
+                    setisLoadingIframe(false);
+                }
+            );
         }
     }, [paymentPageContent]);
 
@@ -66,7 +74,9 @@ const BlueSnapV2PaymentMethod: FunctionComponent<BlueSnapV2PaymentMethodProps> =
                 onRequestClose={ cancelBlueSnapV2ModalFlow }
                 shouldShowCloseButton={ true }
             >
-                <div ref={ ref.current.paymentPageContentRef } />
+                <LoadingOverlay isLoading={ isLoadingIframe }  >
+                    <div ref={ ref.current.paymentPageContentRef } />
+                </LoadingOverlay>
             </Modal>
         </>
     );
