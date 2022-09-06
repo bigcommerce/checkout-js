@@ -110,7 +110,7 @@ class ShippingOptionsForm extends PureComponent<ShippingOptionsFormProps & Formi
     private renderNoShippingOptions(message: ReactNode): ReactNode {
         return (
             <div className="shippingOptions-panel optimizedCheckout-overlay">
-                <p className="shippingOptions-panel-message optimizedCheckout-primaryContent">
+                <p aria-live="polite" className="shippingOptions-panel-message optimizedCheckout-primaryContent" role="alert">
                     { message }
                 </p>
             </div>

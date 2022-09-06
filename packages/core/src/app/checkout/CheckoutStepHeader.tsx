@@ -62,6 +62,7 @@ const CheckoutStepHeader: FunctionComponent<CheckoutStepHeaderProps> = ({
 
             { isEditable && !isActive && <div className="stepHeader-actions stepHeader-column">
                 <Button
+                    aria-expanded={ isActive }
                     size={ ButtonSize.Tiny }
                     testId="step-edit-button"
                     variant={ ButtonVariant.Secondary }

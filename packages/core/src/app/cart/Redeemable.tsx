@@ -48,6 +48,8 @@ const Redeemable: FunctionComponent<RedeemableProps & WithLanguageProps & Formik
         { ({ toggle, isOpen }) => (
             <Fragment>
                 { shouldCollapseCouponCode && <a
+                    aria-controls="redeemable-collapsable"
+                    aria-expanded={ isOpen }
                     className="redeemable-label"
                     data-test="redeemable-label"
                     href="#"
@@ -58,7 +60,7 @@ const Redeemable: FunctionComponent<RedeemableProps & WithLanguageProps & Formik
                 { !shouldCollapseCouponCode && <div className="redeemable-label">
                     <TranslatedString id="redeemable.toggle_action" />
                 </div> }
-                { (isOpen || !shouldCollapseCouponCode) && <div data-test="redeemable-collapsable">
+                { (isOpen || !shouldCollapseCouponCode) && <div data-test="redeemable-collapsable" id="redeemable-collapsable">
                     <RedeemableForm { ...formProps } />
                     { showAppliedRedeemables &&
                         <AppliedRedeemables { ...formProps } /> }
