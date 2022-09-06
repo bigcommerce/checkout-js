@@ -79,10 +79,10 @@ jobs:
           command: npx playwright install --with-deps
       - run:
           name: "Run performance tests"
-          command: artillery run --output test-run-report.json hackathon.yml
+          command: npx artillery run --output test-run-report.json hackathon.yml
       - run:
           name: "Generate report"
-          command: artillery report test-run-report.json
+          command: npx artillery report test-run-report.json
       - store_artifacts:
           path: ./test-run-report.json
           destination: artifact-file
