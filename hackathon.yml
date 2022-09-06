@@ -1,0 +1,14 @@
+config:
+  target: https://a67e6yxkbb.myprivaterelay.com/
+  phases:
+    - duration: 30
+      arrivalCount: 5
+  # Enable the Playwright engine:
+  engines:
+    playwright: {}
+  processor: "./placeOrder.js"
+scenarios:
+  - engine: playwright
+    flowFunction: "placeOrder"
+    flow: []
+    name: placeOrder

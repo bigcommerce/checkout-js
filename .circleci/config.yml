@@ -69,6 +69,26 @@ jobs:
       - store_artifacts:
           path: packages/payment-integration-test-framework/screenshots
 
+  performance:
+    <<: *node_executor
+    steps:
+      - ci/pre-setup
+      - node/npm-install
+      - run:
+          name: "Install playwright"
+          command: npx playwright install --with-deps
+      - run:
+          name: "Run performance tests"
+          command: artillery run --output test-run-report.json hackathon.yml
+      - run:
+          name: "Generate report"
+          command: artillery report test-run-report.json
+      - store_artifacts:
+          path: ./test-run-report.json
+          destination: artifact-file
+      - store_artifacts:
+          path: ./test-run-report.json.html
+
   release:
     <<: *node_executor
     steps:
@@ -127,16 +147,7 @@ workflows:
 
   pull_request:
     jobs:
-      - test:
-          filters:
-            <<: *pull_request_filter
-      - build:
-          filters:
-            <<: *pull_request_filter
-      - e2e:
-          filters:
-            <<: *pull_request_filter
-      - ci/validate-commits:
+      - performance:
           filters:
             <<: *pull_request_filter
 

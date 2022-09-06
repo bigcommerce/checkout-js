@@ -108,6 +108,7 @@
     "@typescript-eslint/eslint-plugin": "^5.30.5",
     "@typescript-eslint/eslint-plugin-tslint": "^5.30.5",
     "@typescript-eslint/parser": "^5.30.5",
+    "artillery": "^2.0.0-23",
     "babel-loader": "^8.0.6",
     "circular-dependency-plugin": "^5.2.0",
     "conventional-recommended-bump": "^6.0.0",
