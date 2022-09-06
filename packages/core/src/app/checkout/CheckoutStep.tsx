@@ -11,6 +11,7 @@ import CheckoutStepType from './CheckoutStepType';
 export interface CheckoutStepProps {
     heading?: ReactNode;
     isActive?: boolean;
+    isBusy: boolean;
     isComplete?: boolean;
     isEditable?: boolean;
     suggestion?: ReactNode;
@@ -108,7 +109,7 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
     }
 
     private renderContent(): ReactNode {
-        const { children, isActive } = this.props;
+        const { children, isActive, isBusy } = this.props;
 
         return <>
             <MobileView>
@@ -124,6 +125,7 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
                         unmountOnExit
                     >
                         <div
+                            aria-busy={ isBusy }
                             className="checkout-view-content"
                             ref={ this.contentRef }
                         >

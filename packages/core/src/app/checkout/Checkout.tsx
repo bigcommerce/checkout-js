@@ -255,6 +255,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                             .map(step => this.renderStep({
                                 ...step,
                                 isActive: activeStepType ? activeStepType === step.type : defaultStepType === step.type,
+                                isBusy: isPending,
                             })) }
                     </ol>
                 </div>

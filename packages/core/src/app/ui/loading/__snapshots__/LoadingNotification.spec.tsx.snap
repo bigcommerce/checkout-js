@@ -11,7 +11,9 @@ exports[`LoadingNotification renders markup that matches snapshot 1`] = `
       className="spinner"
     />
     <span
+      aria-live="assertive"
       className="label"
+      role="alert"
     >
       <WithLanguage(TranslatedString)
         id="common.loading_text"
