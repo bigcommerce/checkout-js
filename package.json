@@ -129,7 +129,7 @@
     "image-webpack-loader": "^8.1.0",
     "jest": "^25.5.4",
     "mini-css-extract-plugin": "^2.6.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.1",
     "nx": "^13.10.3",
     "polly-adapter-playwright": "^2.1.0",
     "react-test-renderer": "^16.8.6",
