@@ -178,7 +178,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                             onError={ onUnhandledError }
                         />
                     }
-                    continueAsGuestButtonLabelId={ providerWithCustomCheckout ? 'customer.continue' : 'customer.continue_as_guest_action' }
+                    continueAsGuestButtonLabelId={ 'customer.continue' }
                     defaultShouldSubscribe={ defaultShouldSubscribe }
                     deinitialize={ deinitializeCustomer }
                     email={ this.draftEmail || email }

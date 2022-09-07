@@ -165,7 +165,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
         requiresMarketingConsent,
     ]);
 
-    const buttonText = authentication && !isNewAuth? 'customer.continue_as_stripe_customer_action' : continueAsGuestButtonLabelId || 'efe';
+    const buttonText = authentication && !isNewAuth? 'customer.continue_as_stripe_customer_action' : continueAsGuestButtonLabelId;
 
     return (
         <>
@@ -186,7 +186,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                         </p> }
                         <div className="customerEmail-container">
                             <div className="customerEmail-body">
-                                <div id="stripeupeLink"></div>
+                                <div id="stripeupeLink"/>
                                 <br/>
                                 { (canSubscribe || requiresMarketingConsent) && <BasicFormField
                                     name="shouldSubscribe"
