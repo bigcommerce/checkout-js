@@ -49,6 +49,8 @@ export default class ModalTrigger extends Component<ModalTriggerProps, ModalTrig
     }
 
     private handleOpen: () => void = () => {
+        document.body.scrollIntoView();
+
         if (!this.canHandleEvent) {
             return;
         }
