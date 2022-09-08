@@ -21,15 +21,17 @@ export interface OrderSummaryItemOption {
 }
 
 const customDescription = {
-    PURE: 'Combat cell stress for boosted energy, faster recovery and better aging',
-    PURE_TRIPLE_PACK: 'Valued at $X. Feel re-energised and refreshed after three months of cellular health and regeneration journey.',
+    PURE: 'Combats cell stress for boosted energy, faster recovery from exercise and better aging.',
+    PURE_TRIPLE_PACK: 'Valued at $X. Feel re-energized and refreshed with three months of cellular health.',
     JOINT: 'Supports post exercise recovery, joint health and mobility.',
-    HEART: 'Supports health and blood vessel function for optimal cardiovascular health',
-    BLOOD_SUGAR: 'Helps maintain normal blood sugar level and insulin levels',
-    LIVER: 'Supports optimal liver function and your body’s natural detox process',
-    CURCUMIN: 'Supports Immune system, digestion, mental clarity  and post-workout recovery',
-    EYE: 'Supports eyes, vision and blue light filtration',
-    BRAIN: 'Supports brain health, mental clarity and focus'
+    HEART: 'Supports heart and blood vessel function for optimal cardiovascular health.',
+    BLOOD_SUGAR: 'Helps maintain normal blood sugar levels and insulin levels.',
+    LIVER: 'Supports optimal liver function and your body’s natural detox process.',
+    CURCUMIN: 'Supports immune system, digestion, mental clarity and post-workout recovery.',
+    EYE: 'Supports eyes, vision and blue light filtration.',
+    BRAIN: 'Supports brain health, mental clarity and focus.',
+    PROTECT: 'Protects and repairs, supports normal skin pigmentation, skin elasticity and wrinkle management.',
+    HYDRATE: 'Supports hydrated, luminous skin and an evenly toned complexion.'
 };
 const getCustomDescription = (name: string, amount: number, currencyService: any) => {
 
@@ -39,7 +41,7 @@ const getCustomDescription = (name: string, amount: number, currencyService: any
     } else if (name.indexOf('liver') !== -1) {
         return customDescription['LIVER'];
     } else if (name.indexOf('pure triple') !== -1) {
-        return customDescription['PURE_TRIPLE_PACK'].replace('$X', currencyService.toCustomerCurrency(amount * 3));
+        return customDescription['PURE_TRIPLE_PACK'].replace('$X', currencyService.toCustomerCurrency(amount / 0.9));
     } else if (name.indexOf('pure') !== -1) {
         return customDescription['PURE'];
     } else if (name.indexOf('joint') !== -1) {
@@ -52,6 +54,10 @@ const getCustomDescription = (name: string, amount: number, currencyService: any
         return customDescription['CURCUMIN'];
     } else if (name.indexOf('brain') !== -1) {
         return customDescription['BRAIN'];
+    } else if (name.indexOf('derma +hydrate') !== -1) {
+        return customDescription['HYDRATE'];
+    } else if (name.indexOf('derma +protect') !== -1) {
+        return customDescription['PROTECT'];
     }
     return '';
 };
