@@ -1,5 +1,6 @@
 import { FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
 import { FieldProps } from 'formik';
+import { includes } from 'lodash';
 import React, { memo, useCallback, useMemo, FunctionComponent, ReactNode } from 'react';
 
 import { TranslatedString } from '../../locale';
@@ -72,6 +73,10 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
         if (fieldType === 'text') {
             if (type === 'integer') {
                 return DynamicFormFieldType.number;
+            }
+
+            if (includes(name,'phone') || includes(name,'tel')) {
+                return DynamicFormFieldType.telephone;
             }
 
             return secret ?
