@@ -3,7 +3,7 @@ import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
-import { isRequestError } from '../common/error';
+import { isErrorWithType } from '../common/error';
 import { TranslatedString } from '../locale';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 
@@ -46,7 +46,7 @@ const CustomerInfo: FunctionComponent<CustomerInfoProps & WithCheckoutCustomerIn
                 onSignOut({ isCartEmpty: false });
             }
         } catch (error) {
-            if (isRequestError(error) && error.type === 'checkout_not_available') {
+            if (isErrorWithType(error) && error.type === 'checkout_not_available') {
                 onSignOut({ isCartEmpty: true });
             } else {
                 onSignOutError(error);
