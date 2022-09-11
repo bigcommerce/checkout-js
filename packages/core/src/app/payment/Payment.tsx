@@ -112,7 +112,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             const order = state.data.getOrder();
             onFinalize(order?.orderId);
         } catch (error) {
-            if (error.type !== 'order_finalization_not_required') {
+            if (isRequestError(error) && error.type !== 'order_finalization_not_required') {
                 onFinalizeError(error);
             }
         }
@@ -230,12 +230,14 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         try {
             checkEmbeddedSupport(methods.map(({ id }) => id));
         } catch (error) {
-            return (
-                <ErrorModal
-                    error={ error }
-                    onClose={ this.handleCloseModal }
-                />
-            );
+            if (error instanceof Error) {
+                return (
+                    <ErrorModal
+                        error={ error }
+                        onClose={ this.handleCloseModal }
+                    />
+                );
+            }
         }
 
         return null;
@@ -349,7 +351,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             const { body, headers, status } = error;
 
             if (body.type === 'provider_error' && headers.location) {
-                window.top.location.assign(headers.location);
+                window?.top?.location.assign(headers.location);
             }
 
             // Reload the checkout object to get the latest `shouldExecuteSpamCheck` value,
@@ -426,7 +428,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             const order = state.data.getOrder();
             onSubmit(order?.orderId);
         } catch (error) {
-            if (error.type === 'payment_method_invalid') {
+            if (isRequestError(error) && error.type === 'payment_method_invalid') {
                 return loadPaymentMethods();
             }
 

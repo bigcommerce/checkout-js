@@ -13,6 +13,7 @@ import CustomerViewType from './CustomerViewType';
 import EmailLoginForm, { EmailLoginFormValues } from './EmailLoginForm';
 import GuestForm, { GuestFormValues } from './GuestForm';
 import LoginForm from './LoginForm';
+import { isRequestError } from '../common/error';
 
 export interface CustomerProps {
     viewType: CustomerViewType;
@@ -321,17 +322,17 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
 
             this.draftEmail = undefined;
         } catch (error) {
-            if (error.type === 'update_subscriptions' || error.type === 'payment_method_client_invalid') {
+            if (isRequestError(error) && (error.type === 'update_subscriptions' || error.type === 'payment_method_client_invalid')) {
                 this.draftEmail = undefined;
 
                 onContinueAsGuest();
             }
 
-            if (error.status === 429) {
+            if (isRequestError(error) && error.status === 429) {
                 return onChangeViewType(CustomerViewType.EnforcedLogin);
             }
 
-            if (error.status === 403) {
+            if (isRequestError(error) && error.status === 403) {
                 return onChangeViewType(CustomerViewType.CancellableEnforcedLogin);
             }
 
