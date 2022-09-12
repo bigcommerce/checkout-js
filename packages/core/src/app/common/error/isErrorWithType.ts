@@ -4,9 +4,10 @@ interface ErrorWithType extends RequestError {
     type: string;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 function hasOwnProperty<X extends {}, Y extends PropertyKey>
   (obj: X, key: Y): obj is X & Record<Y, unknown> {
-    return obj.hasOwnProperty(key)
+    return Object.prototype.hasOwnProperty.call(obj, key);
 }
 
 export default function isErrorWithType(error: Error|unknown): error is ErrorWithType {
