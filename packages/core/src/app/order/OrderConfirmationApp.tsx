@@ -1,4 +1,4 @@
-import { createCheckoutService, createEmbeddedCheckoutMessenger, createStepTracker, StepTracker } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, createEmbeddedCheckoutMessenger, createStepTracker, StepTracker, createBodlService, BodlService } from '@bigcommerce/checkout-sdk';
 import { BrowserOptions } from '@sentry/browser';
 import React, { Component, ReactNode } from 'react';
 import ReactModal from 'react-modal';
@@ -54,6 +54,7 @@ class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
                         <OrderConfirmation
                             { ...this.props }
                             createAccount={ this.createAccount }
+                            createBodlService={ this.createBodlService }
                             createEmbeddedMessenger={ createEmbeddedCheckoutMessenger }
                             createStepTracker={ this.createStepTracker }
                             embeddedStylesheet={ this.embeddedStylesheet }
@@ -81,6 +82,10 @@ class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
 
     private createStepTracker: () => StepTracker = () => {
         return createStepTracker(this.checkoutService);
+    };
+
+    private createBodlService: () => BodlService = () => {
+        return createBodlService(this.checkoutService.subscribe);
     };
 }
 

@@ -1,4 +1,4 @@
-import { Address, Cart, CartChangedError, CheckoutParams, CheckoutSelectors, Consignment, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, FlashMessage, Promotion, RequestOptions, StepTracker } from '@bigcommerce/checkout-sdk';
+import { Address, Cart, CartChangedError, CheckoutParams, CheckoutSelectors, Consignment, EmbeddedCheckoutMessenger, EmbeddedCheckoutMessengerOptions, FlashMessage, Promotion, RequestOptions, StepTracker, BodlService } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { lazy, Component, ReactNode } from 'react';
@@ -62,6 +62,7 @@ export interface CheckoutProps {
     errorLogger: ErrorLogger;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
     createStepTracker(): StepTracker;
+    createBodlService(): BodlService;
 }
 
 export interface CheckoutState {
@@ -102,6 +103,7 @@ export interface WithCheckoutProps {
 
 class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguageProps, CheckoutState> {
     stepTracker: StepTracker | undefined;
+    bodlService: BodlService | undefined;
 
     state: CheckoutState = {
         isBillingSameAsShipping: true,
@@ -127,6 +129,7 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             checkoutId,
             containerId,
             createStepTracker,
+            createBodlService,
             createEmbeddedMessenger,
             embeddedStylesheet,
             loadCheckout,
@@ -168,6 +171,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
 
             this.stepTracker = createStepTracker();
             this.stepTracker.trackCheckoutStarted();
+
+            this.bodlService = createBodlService();
+            this.bodlService.checkoutBegin();
 
             const consignments = data.getConsignments();
             const cart = data.getCart();

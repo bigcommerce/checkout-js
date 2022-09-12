@@ -1,4 +1,4 @@
-import { createCheckoutService, createEmbeddedCheckoutMessenger, CheckoutSelectors, CheckoutService, EmbeddedCheckoutMessenger, StepTracker } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, createEmbeddedCheckoutMessenger, CheckoutSelectors, CheckoutService, EmbeddedCheckoutMessenger, StepTracker, BodlService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { EventEmitter } from 'events';
 import { noop, omit } from 'lodash';
@@ -38,6 +38,7 @@ describe('Checkout', () => {
     let defaultProps: CheckoutProps;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
     let stepTracker: StepTracker;
+    let bodlService: BodlService;
     let subscribeEventEmitter: EventEmitter;
 
     beforeEach(() => {
@@ -49,6 +50,9 @@ describe('Checkout', () => {
             trackStepViewed: jest.fn(),
             trackStepCompleted: jest.fn(),
         } as unknown as StepTracker;
+        bodlService = {
+            checkoutBegin: jest.fn(),
+        } as unknown as StepTracker;
         subscribeEventEmitter = new EventEmitter();
 
         defaultProps = {
@@ -59,6 +63,7 @@ describe('Checkout', () => {
             embeddedSupport: createEmbeddedCheckoutSupport(getLanguageService()),
             errorLogger: createErrorLogger(),
             createStepTracker: () => stepTracker,
+            createBodlService: () => bodlService,
         };
 
         jest.spyOn(checkoutService, 'loadCheckout')
@@ -133,6 +138,16 @@ describe('Checkout', () => {
         await new Promise(resolve => process.nextTick(resolve));
 
         expect(stepTracker.trackCheckoutStarted)
+            .toHaveBeenCalled();
+    });
+
+    it('tracks BODL checkout begin', async () => {
+        const container = mount(<CheckoutTest { ...defaultProps } />);
+        container.update();
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        expect(bodlService.checkoutBegin)
             .toHaveBeenCalled();
     });
 
