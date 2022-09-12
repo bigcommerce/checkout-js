@@ -41,7 +41,7 @@ const WorldpayCreditCardPaymentMethod: FunctionComponent<
     }, []);
 
     const initializeWorldpayPayment = useCallback(async (options: PaymentInitializeOptions, selectedInstrument) => {
-        const fields = getHostedFormOptions && await getHostedFormOptions(selectedInstrument);
+        const fields = await getHostedFormOptions(selectedInstrument);
 
         return initializePayment({
             ...options,

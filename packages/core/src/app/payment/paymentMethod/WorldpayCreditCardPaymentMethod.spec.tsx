@@ -1,9 +1,11 @@
 import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
+import { mount, ReactWrapper } from 'enzyme';
+import { EventEmitter } from 'events';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
-import React, { useEffect, FunctionComponent } from 'react';
+import React, { FunctionComponent } from 'react';
 import { object } from 'yup';
+import { act } from 'react-dom/test-utils';
 
 import { getCart } from '../../cart/carts.mock';
 import { CheckoutProvider } from '../../checkout';
@@ -11,12 +13,24 @@ import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps } from '../hostedCreditCard';
+import { Modal, ModalProps } from '../../ui/modal';
+import { getConsignment } from '../../shipping/consignment.mock';
+import { FormContext, FormContextType } from '../../ui/form';
+import { LoadingOverlay } from '../../ui/loading';
 import { getPaymentMethod } from '../payment-methods.mock';
+import { isInstrumentFeatureAvailable, CardInstrumentFieldset } from '../storedInstrument';
+import { getInstruments } from '../storedInstrument/instruments.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
-import CreditCardPaymentMethod from './CreditCardPaymentMethod';
-import PaymentMethodId from './PaymentMethodId';
 import WorldpayCreditCardPaymentMethod, { WorldpayCreditCardPaymentMethodProps } from './WorldpayCreditCardPaymentMethod';
+import { CreditCardPaymentMethodValues } from "./CreditCardPaymentMethod";
+
+jest.mock('../storedInstrument', () => ({
+    ...jest.requireActual('../storedInstrument'),
+    isInstrumentFeatureAvailable: jest.fn<ReturnType<typeof isInstrumentFeatureAvailable>, Parameters<typeof isInstrumentFeatureAvailable>>(
+        () => true
+    ),
+}));
 
 const hostedFormOptions = {
     fields: {
@@ -26,10 +40,9 @@ const hostedFormOptions = {
         cardExpiry: { containerId: 'cardExpiry', placeholder: 'Card expiry' },
     },
 };
-
 const injectedProps: WithInjectedHostedCreditCardFieldsetProps = {
     getHostedFormOptions: () => Promise.resolve(hostedFormOptions),
-    getHostedStoredCardValidationFieldset: () => <div />,
+    getHostedStoredCardValidationFieldset: jest.fn(() => <div />),
     hostedFieldset: <div />,
     hostedStoredCardValidationSchema: object(),
     hostedValidationSchema: object(),
@@ -45,40 +58,31 @@ jest.mock('../hostedCreditCard', () => ({
     ) as jest.Mocked<typeof withHostedCreditCardFieldset>,
 }));
 
-jest.mock('./CreditCardPaymentMethod', () =>
-    jest.fn(({
-        initializePayment,
-        method,
-    }) => {
-        useEffect(() => {
-            initializePayment({
-                methodId: method.id,
-                gatewayId: method.gateway,
-            });
-        });
-
-        return <div />;
-    }) as jest.Mocked<typeof CreditCardPaymentMethod>
-);
-
-describe('when using Worldpay payment', () => {
-    let WorldpayCreditCardPaymentMethodTest: FunctionComponent<WorldpayCreditCardPaymentMethodProps>;
+describe('WorldpayCreditCardPaymentMethod', () => {
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
-    let defaultProps: WorldpayCreditCardPaymentMethodProps;
+    let defaultProps: jest.Mocked<WorldpayCreditCardPaymentMethodProps>;
+    let formContext: FormContextType;
+    let initialValues: CreditCardPaymentMethodValues;
     let localeContext: LocaleContextType;
     let paymentContext: PaymentContextProps;
+    let subscribeEventEmitter: EventEmitter;
+    let WorldpayCreditCardPaymentMethodTest: FunctionComponent<WorldpayCreditCardPaymentMethodProps>;
 
     beforeEach(() => {
         defaultProps = {
+            method: getPaymentMethod(),
             deinitializePayment: jest.fn(),
-            initializePayment: jest.fn(),
-            isInitializing: false,
-            method: {
-                ...getPaymentMethod(),
-                id: PaymentMethodId.WorldpayAccess,
-            },
-            onUnhandledError: jest.fn(),
+            initializePayment: jest.fn()
+        };
+
+        initialValues = {
+            ccCustomerCode: '',
+            ccCvv: '',
+            ccExpiry: '',
+            ccName: '',
+            ccNumber: '',
+            instrumentId: '',
         };
 
         checkoutService = createCheckoutService();
@@ -90,6 +94,25 @@ describe('when using Worldpay payment', () => {
             setValidationSchema: jest.fn(),
             hidePaymentSubmitButton: jest.fn(),
         };
+        formContext = {
+            isSubmitted: false,
+            setSubmitted: jest.fn(),
+        };
+        subscribeEventEmitter = new EventEmitter();
+
+        jest.spyOn(checkoutService, 'getState')
+            .mockReturnValue(checkoutState);
+
+        jest.spyOn(checkoutService, 'subscribe')
+            .mockImplementation(subscriber => {
+                subscribeEventEmitter.on('change', () => subscriber(checkoutState));
+                subscribeEventEmitter.emit('change');
+
+                return noop;
+            });
+
+        jest.spyOn(checkoutService, 'loadInstruments')
+            .mockResolvedValue(checkoutState);
 
         jest.spyOn(checkoutState.data, 'getCart')
             .mockReturnValue(getCart());
@@ -97,95 +120,266 @@ describe('when using Worldpay payment', () => {
         jest.spyOn(checkoutState.data, 'getConfig')
             .mockReturnValue(getStoreConfig());
 
+        jest.spyOn(checkoutState.data, 'getConsignments')
+            .mockReturnValue([getConsignment()]);
+
         jest.spyOn(checkoutState.data, 'getCustomer')
             .mockReturnValue(getCustomer());
 
-        jest.spyOn(checkoutService, 'deinitializePayment')
-            .mockResolvedValue(checkoutState);
+        jest.spyOn(checkoutState.data, 'getInstruments')
+            .mockReturnValue([]);
 
-        jest.spyOn(checkoutService, 'initializePayment')
-            .mockResolvedValue(checkoutState);
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
+            .mockReturnValue(true);
 
-        WorldpayCreditCardPaymentMethodTest = props => (
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <PaymentContext.Provider value={ paymentContext }>
-                    <LocaleContext.Provider value={ localeContext }>
-                        <Formik
-                            initialValues={ {} }
-                            onSubmit={ noop }
-                        >
-                            <WorldpayCreditCardPaymentMethod { ...props } />
-                        </Formik>
-                    </LocaleContext.Provider>
-                </PaymentContext.Provider>
-            </CheckoutProvider>
-        );
+        WorldpayCreditCardPaymentMethodTest = props => {
+            return (
+                <CheckoutProvider checkoutService={ checkoutService }>
+                    <PaymentContext.Provider value={ paymentContext }>
+                        <LocaleContext.Provider value={ localeContext }>
+                            <FormContext.Provider value={ formContext }>
+                                <Formik
+                                    initialValues={ initialValues }
+                                    onSubmit={ noop }
+                                >
+                                    <WorldpayCreditCardPaymentMethod { ...props } />
+                                </Formik>
+                            </FormContext.Provider>
+                        </LocaleContext.Provider>
+                    </PaymentContext.Provider>
+                </CheckoutProvider>
+            );
+        };
     });
 
-    it('renders as credit card payment method', async () => {
-        const container = mount(<WorldpayCreditCardPaymentMethodTest { ...defaultProps } />);
+    it('initializes payment method when component mounts', async () => {
+        jest.spyOn(checkoutState.data, 'getInstruments')
+            .mockReturnValue(getInstruments());
 
-        await new Promise(resolve => process.nextTick(resolve));
-
-        expect(container.find(CreditCardPaymentMethod).props())
-            .toEqual(expect.objectContaining({
-                deinitializePayment: expect.any(Function),
-                initializePayment: expect.any(Function),
-                method: defaultProps.method,
-            }));
-    });
-
-    it('initializes method with required config', async () => {
         mount(<WorldpayCreditCardPaymentMethodTest { ...defaultProps } />);
 
         await new Promise(resolve => process.nextTick(resolve));
 
-        const creditCard = {
-            form: {
-                fields: {
-                    cardCode: {
-                        containerId: "cardCode",
-                        placeholder: "Card code"
-                    },
-                    cardExpiry: {
-                        containerId: "cardExpiry",
-                        placeholder: "Card expiry"
-                    },
-                    cardName: {
-                        containerId: "cardName",
-                        "placeholder": "Card name"
-                    },
-                    cardNumber: {
-                        containerId: "cardNumber",
-                        placeholder: "Card number"
-                    }
-                }
-            }
-        }
-
         expect(defaultProps.initializePayment)
-            .toHaveBeenCalledWith(expect.objectContaining({
-                methodId: defaultProps.method.id,
-                gatewayId: defaultProps.method.gateway,
-                worldpay: {onLoad: expect.any(Function)},
-                creditCard: creditCard
-            }));
+            .toHaveBeenCalledWith({
+                "gatewayId": undefined,
+                "methodId": "authorizenet",
+                creditCard: {
+                    form: hostedFormOptions,
+                },
+                worldpay: {
+                    onLoad: expect.any(Function)
+                }
+            });
     });
 
-    it('injects hosted form properties to credit card payment method component', async () => {
+
+    it('does not set validation schema if payment is not required', () => {
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
+            .mockReturnValue(false);
+
+        mount(<WorldpayCreditCardPaymentMethodTest { ...defaultProps } />);
+
+        expect(paymentContext.setValidationSchema)
+            .toHaveBeenCalledWith(defaultProps.method, null);
+    });
+
+    it('deinitializes payment method when component unmounts', () => {
         const component = mount(<WorldpayCreditCardPaymentMethodTest { ...defaultProps } />);
+
+        expect(defaultProps.deinitializePayment)
+            .not.toHaveBeenCalled();
+
+        component.unmount();
+
+        expect(defaultProps.deinitializePayment)
+            .toHaveBeenCalled();
+    });
+
+    it('renders loading overlay while waiting for method to initialize', () => {
+        let component: ReactWrapper;
+
+        component = mount(<WorldpayCreditCardPaymentMethodTest
+            { ...defaultProps }
+            isInitializing
+        />);
+
+        expect(component.find(LoadingOverlay).prop('isLoading'))
+            .toEqual(true);
+
+        component = mount(<WorldpayCreditCardPaymentMethodTest { ...defaultProps } />);
+
+        expect(component.find(LoadingOverlay).prop('isLoading'))
+            .toEqual(false);
+    });
+
+    it('renders modal that hosts worldpay payment page', async () => {
+        const component = mount(<WorldpayCreditCardPaymentMethodTest { ...defaultProps } />);
+        await new Promise(resolve => process.nextTick(resolve));
+
+        const initializeOptions = (defaultProps.initializePayment as jest.Mock).mock.calls[0][0];
+
+        act(() => {
+            initializeOptions.worldpay.onLoad(
+                document.createElement('iframe'),
+                jest.fn()
+            );
+        });
 
         await new Promise(resolve => process.nextTick(resolve));
 
-        const decoratedComponent = component.find(CreditCardPaymentMethod);
+        act(() => {
+            component.update();
+        });
 
-        expect(decoratedComponent.prop('cardFieldset'))
-            .toEqual(injectedProps.hostedFieldset);
-        expect(decoratedComponent.prop('cardValidationSchema'))
-            .toEqual(injectedProps.hostedValidationSchema);
-        expect(decoratedComponent.prop('getStoredCardValidationFieldset'))
-            .toEqual(injectedProps.getHostedStoredCardValidationFieldset);
-        expect(decoratedComponent.prop('storedCardValidationSchema'))
-            .toEqual(injectedProps.hostedStoredCardValidationSchema);
+        expect(component.find(Modal).prop('isOpen'))
+            .toEqual(true);
+    });
+
+    it('renders modal', async () => {
+        const component = mount(<WorldpayCreditCardPaymentMethodTest { ...defaultProps }/>);
+        await new Promise(resolve => process.nextTick(resolve));
+
+        const initializeOptions = (defaultProps.initializePayment as jest.Mock).mock.calls[0][0];
+
+        const iframe = document.createElement('iframe');
+
+        act(() => {
+            initializeOptions.worldpay.onLoad(
+                iframe,
+                jest.fn()
+            );
+        });
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        act(() => {
+            component.update();
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            component.find(Modal).prop('onAfterOpen')!();
+        });
+
+        expect(component.find(Modal).prop('isOpen'))
+            .toEqual(true);
+
+        expect(component.find(Modal).render().find('iframe'))
+            .toHaveLength(1);
+    });
+
+    it('renders modal but does not append worldpay payment page because is empty', async () => {
+        const component = mount(<WorldpayCreditCardPaymentMethodTest { ...defaultProps }/>);
+        await new Promise(resolve => process.nextTick(resolve));
+
+        const initializeOptions = (defaultProps.initializePayment as jest.Mock).mock.calls[0][0];
+
+        act(() => {
+            initializeOptions.worldpay.onLoad(
+                undefined,
+                jest.fn()
+            );
+        });
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        act(() => {
+            component.update();
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            component.find(Modal).prop('onAfterOpen')!();
+        });
+
+        expect(component.find(Modal).prop('isOpen'))
+            .toEqual(false);
+
+        expect(component.find(Modal).render().find('iframe'))
+            .toHaveLength(0);
+    });
+
+    it('cancels payment flow if user chooses to close modal', async () => {
+        const cancelWorldpayPayment = jest.fn();
+        const component = mount(<WorldpayCreditCardPaymentMethodTest { ...defaultProps }/>);
+        await new Promise(resolve => process.nextTick(resolve));
+        const initializeOptions = (defaultProps.initializePayment as jest.Mock).mock.calls[0][0];
+
+        act(() => {
+            initializeOptions.worldpay.onLoad(
+                document.createElement('iframe'),
+                cancelWorldpayPayment
+            );
+        });
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        act(() => {
+            component.update();
+        });
+
+        const modal: ReactWrapper<ModalProps> = component.find(Modal);
+
+        act(() => {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            modal.prop('onRequestClose')!(new MouseEvent('click') as any);
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            modal.prop('onRequestClose')!(new MouseEvent('click') as any);
+        });
+
+        expect(cancelWorldpayPayment)
+            .toHaveBeenCalledTimes(1);
+    });
+
+    describe('if stored instrument feature is available', () => {
+        beforeEach(() => {
+            jest.spyOn(checkoutState.data, 'getInstruments')
+                .mockReturnValue(getInstruments());
+
+            jest.spyOn(checkoutService, 'initializePayment')
+                .mockResolvedValue(checkoutState);
+
+            jest.spyOn(checkoutService, 'loadInstruments')
+                .mockResolvedValue(checkoutState);
+        });
+
+        it('loads stored instruments when component mounts', async () => {
+            mount(<WorldpayCreditCardPaymentMethodTest { ...defaultProps } />);
+
+            await new Promise(resolve => process.nextTick(resolve));
+
+            expect(checkoutService.loadInstruments)
+                .toHaveBeenCalled();
+        });
+
+        it('only shows instruments fieldset when there is at least one stored instrument', () => {
+            const component = mount(<WorldpayCreditCardPaymentMethodTest { ...defaultProps } />);
+
+            expect(component.find(CardInstrumentFieldset))
+                .toHaveLength(1);
+        });
+
+        it('does not show instruments fieldset when there are no stored instruments', () => {
+            jest.spyOn(checkoutState.data, 'getInstruments')
+                .mockReturnValue([]);
+
+            const component = mount(<WorldpayCreditCardPaymentMethodTest { ...defaultProps } />);
+
+            expect(component.find(CardInstrumentFieldset))
+                .toHaveLength(0);
+        });
+
+        it('shows save credit card form when there are no stored instruments', () => {
+            jest.spyOn(checkoutState.data, 'getInstruments')
+                .mockReturnValue([]);
+
+            const container = mount(<WorldpayCreditCardPaymentMethodTest { ...defaultProps } />);
+
+            expect(container.find('input[name="shouldSaveInstrument"]').exists())
+                .toBe(true);
+        });
+
+        it('uses PaymentMethod to retrieve instruments', () => {
+            mount(<WorldpayCreditCardPaymentMethodTest { ...defaultProps } />);
+
+            expect(checkoutState.data.getInstruments)
+                .toHaveBeenCalledWith(defaultProps.method);
+        });
     });
 });
+
