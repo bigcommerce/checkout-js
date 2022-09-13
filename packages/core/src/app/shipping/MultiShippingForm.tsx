@@ -175,8 +175,10 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
 
         try {
             await createCustomerAddress(shippingAddress);
-        } catch (e) {
-            this.setState({ createCustomerAddressError: e });
+        } catch (error) {
+            if (error instanceof Error) {
+                this.setState({ createCustomerAddressError: error });
+            }
         }
 
         this.setState({
@@ -228,8 +230,10 @@ class MultiShippingForm extends PureComponent<MultiShippingFormProps & WithLangu
             });
 
             this.syncItems(itemKey, address, data);
-        } catch (e) {
-            onUnhandledError(new AssignItemFailedError(e));
+        } catch (error) {
+            if (error instanceof Error) {
+                onUnhandledError(new AssignItemFailedError(error));
+            }
         }
     };
 

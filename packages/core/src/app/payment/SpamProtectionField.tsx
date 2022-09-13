@@ -3,6 +3,7 @@ import { noop } from 'lodash';
 import React, { Component, MouseEvent, ReactNode } from 'react';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
+import { isErrorWithType } from '../common/error';
 import { TranslatedString } from '../locale';
 import { LoadingOverlay } from '../ui/loading';
 
@@ -92,7 +93,7 @@ class SpamProtectionField extends Component<
             this.setState({ shouldShowRetryButton: true });
 
             // Notify the parent component if the user experiences a problem other than cancelling the reCaptcha challenge.
-            if (error && error.type !== 'spam_protection_challenge_not_completed') {
+            if (isErrorWithType(error) && error.type !== 'spam_protection_challenge_not_completed') {
                 onUnhandledError(error);
             }
         }

@@ -34,4 +34,26 @@ describe('ApplePay payment method', () => {
         expect(component.find(ApplePaymentMethod)).toHaveLength(0);
         expect(deinitializePayment).toHaveBeenCalled()
     });
+
+    it('catches error during ApplePay initialization', async () => { 
+        jest.spyOn(checkoutService,'initializePayment').mockRejectedValue(new Error('test error'))
+        mount(<ApplePaymentMethod {...props} />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        expect(props.onUnhandledError).toHaveBeenCalled();
+    })
+
+    it('catches error during ApplePay deinitialization', async () => { 
+        jest.spyOn(checkoutService,'deinitializePayment').mockRejectedValue(new Error('test error'))
+        const component = mount(<ApplePaymentMethod {...props} />);
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        component.unmount();
+
+        await new Promise(resolve => process.nextTick(resolve));
+
+        expect(props.onUnhandledError).toHaveBeenCalled();
+    })
 });

@@ -30,7 +30,7 @@ describe('SpamProtectionField', () => {
 
     it('notifies parent component if unable to verify', async () => {
         const handleError = jest.fn();
-        const error = new Error('Unknown error');
+        const error = { type: 'test error' };
 
         jest.spyOn(checkoutService, 'executeSpamCheck')
             .mockRejectedValue(error);
@@ -46,9 +46,7 @@ describe('SpamProtectionField', () => {
 
     it('does not notify parent component if unable to verify because of cancellation by user', async () => {
         const handleError = jest.fn();
-        const error = new Error('Unknown error');
-
-        (error as StandardError).type = 'spam_protection_challenge_not_completed';
+        const error = { type: 'spam_protection_challenge_not_completed' };
 
         jest.spyOn(checkoutService, 'executeSpamCheck')
             .mockRejectedValue(error);

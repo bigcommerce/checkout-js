@@ -473,7 +473,7 @@ describe('Checkout', () => {
             (container.find(CustomerInfo) as ReactWrapper<CustomerInfoProps>)
                 .prop('onSignOut')!({ isCartEmpty: true });
 
-            expect(window.top.location.assign)
+            expect(window.top?.location.assign)
                 .toHaveBeenCalled();
         });
 
@@ -508,7 +508,7 @@ describe('Checkout', () => {
             
             const cartUrl = getStoreConfig().links.cartLink;
 
-            expect(window.top.location.href)
+            expect(window.top?.location.href)
                 .toEqual(cartUrl);
         });
 

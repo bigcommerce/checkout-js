@@ -14,7 +14,9 @@ const ApplePaymentMethod: FunctionComponent<PaymentMethodProps> = ({ method, che
                     },
                 });
             } catch (error) {
-                onUnhandledError(error);
+                if (error instanceof Error) {
+                    onUnhandledError(error);
+                }                
             }
         };
         initializePayment();
@@ -27,7 +29,9 @@ const ApplePaymentMethod: FunctionComponent<PaymentMethodProps> = ({ method, che
                         methodId: method.id,
                     });
                 } catch (error) {
-                    onUnhandledError(error);
+                    if (error instanceof Error) {
+                        onUnhandledError(error);
+                    }
                 }
             };
             deinitializePayment();

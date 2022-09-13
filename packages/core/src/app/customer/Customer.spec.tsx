@@ -1,4 +1,4 @@
-import { createCheckoutService, BillingAddress, Checkout, CheckoutService, Customer as CustomerData, StoreConfig } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, BillingAddress, Checkout, CheckoutService, Customer as CustomerData, StoreConfig, RequestError } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
@@ -267,8 +267,10 @@ describe('Customer', () => {
         });
 
         it('triggers completion callback if continueAsGuest fails with update_subscriptions', async () => {
+            const error = { type: 'update_subscriptions' };
+
             jest.spyOn(checkoutService, 'continueAsGuest')
-                .mockRejectedValue({ type: 'update_subscriptions' });
+                .mockRejectedValue(error);
 
             const handleContinueAsGuest = jest.fn();
             const component = mount(
@@ -287,6 +289,7 @@ describe('Customer', () => {
                     shouldSubscribe: true,
                 });
 
+
             await new Promise(resolve => process.nextTick(resolve));
 
             expect(handleContinueAsGuest)
@@ -295,7 +298,7 @@ describe('Customer', () => {
 
         it('renders CancellableEnforcedLogin if continue as guest fails with code 403', async () => {
             jest.spyOn(checkoutService, 'continueAsGuest')
-                .mockRejectedValue({ status: 403 });
+                .mockRejectedValue({ status: 403, type: '' });
 
             const handleChangeViewType = jest.fn();
             const component = mount(
@@ -358,7 +361,7 @@ describe('Customer', () => {
 
         it('renders EnforcedLogin form if continue as guest fails with code 429', async () => {
             jest.spyOn(checkoutService, 'continueAsGuest')
-                .mockRejectedValue({ status: 429 });
+                .mockRejectedValue({ status: 429, type: '' });
 
             const handleChangeViewType = jest.fn();
 
@@ -696,7 +699,7 @@ describe('Customer', () => {
         });
 
         it('calls sendLoginEmail and renders form when sign-in email link is clicked ', async () => {
-            const sendLoginEmail = jest.fn(() => new Promise(resolve => resolve()) as any);
+            const sendLoginEmail = jest.fn(() => new Promise<void>(resolve => resolve()) as any);
             const component = mount(
                 <CustomerTest
                     email="foo@bar.com"

@@ -6,7 +6,7 @@ import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { withCheckout, CheckoutContextProps } from '../checkout';
-import { isCartChangedError, isRequestError, ErrorModal, ErrorModalOnCloseProps, ErrorLogger } from '../common/error';
+import { isCartChangedError, ErrorModal, ErrorModalOnCloseProps, ErrorLogger, isErrorWithType } from '../common/error';
 import { EMPTY_ARRAY } from '../common/utility';
 import { withLanguage, WithLanguageProps } from '../locale';
 import { TermsConditionsType } from '../termsConditions';
@@ -112,7 +112,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             const order = state.data.getOrder();
             onFinalize(order?.orderId);
         } catch (error) {
-            if (error.type !== 'order_finalization_not_required') {
+            if (isErrorWithType(error) && error.type !== 'order_finalization_not_required') {
                 onFinalizeError(error);
             }
         }
@@ -230,12 +230,14 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
         try {
             checkEmbeddedSupport(methods.map(({ id }) => id));
         } catch (error) {
-            return (
-                <ErrorModal
-                    error={ error }
-                    onClose={ this.handleCloseModal }
-                />
-            );
+            if (error instanceof Error) {
+                return (
+                    <ErrorModal
+                        error={ error }
+                        onClose={ this.handleCloseModal }
+                    />
+                );
+            }
         }
 
         return null;
@@ -345,11 +347,11 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             window.location.reload();
         }
 
-        if (isRequestError(error)) {
+        if (isErrorWithType(error)) {
             const { body, headers, status } = error;
 
             if (body.type === 'provider_error' && headers.location) {
-                window.top.location.assign(headers.location);
+                window?.top?.location.assign(headers.location);
             }
 
             // Reload the checkout object to get the latest `shouldExecuteSpamCheck` value,
@@ -426,7 +428,7 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             const order = state.data.getOrder();
             onSubmit(order?.orderId);
         } catch (error) {
-            if (error.type === 'payment_method_invalid') {
+            if (isErrorWithType(error) && error.type === 'payment_method_invalid') {
                 return loadPaymentMethods();
             }
 

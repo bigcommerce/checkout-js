@@ -194,7 +194,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 this.handleReady();
             }
         } catch (error) {
-            this.handleUnhandledError(error);
+            if (error instanceof Error) {
+                this.handleUnhandledError(error);
+            }
         }
     }
 
@@ -592,7 +594,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         const { loginUrl, cartUrl, isPriceHiddenFromGuests, isGuestEnabled } = this.props;
 
         if (isPriceHiddenFromGuests) {
-            return window.top.location.href = cartUrl;
+            if (window.top) {
+                return window.top.location.href = cartUrl;
+            }
         }
 
         if (this.embeddedMessenger) {
@@ -607,7 +611,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             this.setState({ isCartEmpty: true });
 
             if (!isEmbedded()) {
-                return window.top.location.assign(loginUrl);
+                if (window.top) {
+                    return window.top.location.assign(loginUrl);
+                }
             }
         }
 
@@ -641,7 +647,9 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         if (customerViewType === CustomerViewType.CreateAccount &&
             (!canCreateAccountInCheckout || isEmbedded())
         ) {
-            window.top.location.replace(createAccountUrl);
+            if (window.top) {
+                window.top.location.replace(createAccountUrl);
+            }
 
             return;
         }
