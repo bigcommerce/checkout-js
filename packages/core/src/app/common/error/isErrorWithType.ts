@@ -10,7 +10,7 @@ function hasOwnProperty<X extends {}, Y extends PropertyKey>
     return Object.prototype.hasOwnProperty.call(obj, key);
 }
 
-export default function isErrorWithType(error: Error|unknown): error is ErrorWithType {
+export default function isErrorWithType(error: unknown): error is ErrorWithType {
     return typeof error === 'object'
         && error !== null
         && hasOwnProperty(error, 'type')
