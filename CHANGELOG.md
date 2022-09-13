@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.255.0](https://github.com/bigcommerce/checkout-js/compare/v1.254.0...v1.255.0) (2022-09-13)
+
+
+### Features
+
+* **checkout:** CHECKOUT-0000 improve login form spacing ([#1014](https://github.com/bigcommerce/checkout-js/issues/1014)) ([b96e725](https://github.com/bigcommerce/checkout-js/commit/b96e7250f916a7710cf53f65da08aaf63441c6c4))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-6365 Add scrollIntoView to embedded checkout ([#1009](https://github.com/bigcommerce/checkout-js/issues/1009)) ([143a66b](https://github.com/bigcommerce/checkout-js/commit/143a66b0353463ecfd9e88972bf72645fb15c314))
+* **common:** CHECKOUT-000 upgrade @types/react from 16.14.29 to 16.14.30 ([#995](https://github.com/bigcommerce/checkout-js/issues/995)) ([e47a0ab](https://github.com/bigcommerce/checkout-js/commit/e47a0ab11718a2231b3d09decc1439b399f030d9))
+
 ## [1.254.0](https://github.com/bigcommerce/checkout-js/compare/v1.253.3...v1.254.0) (2022-09-13)
 
 
