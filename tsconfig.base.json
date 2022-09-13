@@ -21,10 +21,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "@@bigcommerce/checkout/afterpay-integration": [
+      "@bigcommerce/checkout/afterpay-integration": [
         "packages/afterpay-integration/src/index.ts"
       ],
-      "@@bigcommerce/checkout/hosted-credit-card-integration": [
+      "@bigcommerce/checkout/hosted-credit-card-integration": [
         "packages/hosted-credit-card-integration/src/index.ts"
       ],
       "@bigcommerce/checkout/apple-pay-integration": [
