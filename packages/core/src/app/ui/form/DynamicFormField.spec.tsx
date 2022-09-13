@@ -44,6 +44,31 @@ describe('DynamicFormField Component', () => {
             }));
     });
 
+    it('renders telephone field', () => {
+        const telField = {
+            custom: false,
+            fieldType: "text",
+            id: 'field_17',
+            label: 'Phone Number',
+            name: 'phone',
+            required: true,
+            type: "string",
+        };
+        const component = mount(
+            <Formik initialValues={ {} } onSubmit={ jest.fn() }>
+                <DynamicFormField
+                    field={ telField as FormFieldType }
+                />
+            </Formik>
+        );
+
+        expect(component.find(DynamicInput).props())
+            .toEqual(expect.objectContaining({
+                id: 'phone',
+                fieldType: 'tel',
+            }));
+    });
+
     it('renders DynamicInput with expected props', () => {
         const component = mount(
             <Formik initialValues={ {} } onSubmit={ jest.fn() }>
