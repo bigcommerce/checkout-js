@@ -1,17 +1,17 @@
 {
   "version": 2,
-  "appVersion": "1.255.0",
+  "appVersion": "1.255.1",
   "dynamicChunks": {
     "js": [
       "37-6f927204.js",
-      "372-e8a5d8ec.js",
+      "372-95538e60.js",
       "831-c6289606.js",
       "850-ae1ed05b.js",
       "904-20a39b97.js",
       "billing-ff64e80b.js",
       "cart-summary-drawer-1ed0fe26.js",
       "cart-summary-cbfde46e.js",
-      "customer-6d79c1b0.js",
+      "customer-721875c1.js",
       "order-summary-drawer-836bb837.js",
       "order-summary-97a92988.js",
       "payment-c2d8bf36.js",
@@ -33,7 +33,7 @@
     ]
   },
   "js": [
-    "runtime-0a4958e5.js",
+    "runtime-02578253.js",
     "773-41308eb0.js",
     "375-5b1df621.js",
     "608-4026a4c6.js",

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.255.1](https://github.com/bigcommerce/checkout-js/compare/v1.255.0...v1.255.1) (2022-09-13)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-6860 Use numeric keypad on telephone text field ([#1015](https://github.com/bigcommerce/checkout-js/issues/1015)) ([5efd24c](https://github.com/bigcommerce/checkout-js/commit/5efd24c8b7bfd63ec655e8a80be8eb5b4297ec44))
+
 ## [1.255.0](https://github.com/bigcommerce/checkout-js/compare/v1.254.0...v1.255.0) (2022-09-13)
 
 
