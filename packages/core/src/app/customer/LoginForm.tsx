@@ -142,10 +142,12 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
                         </a>
                     }
                     { viewType === CustomerViewType.Login && shouldShowCreateAccountLink &&
-                        <TranslatedLink
-                            id="customer.create_account_to_continue_text"
-                            onClick={ onCreateAccount }
-                        />
+                        <span>
+                            <TranslatedLink
+                                id="customer.create_account_to_continue_text"
+                                onClick={ onCreateAccount }
+                            />
+                        </span>
                     }
                 </p>
 

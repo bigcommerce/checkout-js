@@ -181,11 +181,13 @@ exports[`Customer when view type is "login" matches snapshot 1`] = `
             >
               Forgot password?
             </a>
-            <a
-              href="#"
-            >
-              Create an account
-            </a>
+            <span>
+              <a
+                href="#"
+              >
+                Create an account
+              </a>
+            </span>
           </p>
           <div
             class="form-actions"
