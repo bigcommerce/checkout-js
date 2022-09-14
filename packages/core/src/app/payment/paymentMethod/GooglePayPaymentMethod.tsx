@@ -38,54 +38,59 @@ const GooglePayPaymentMethod: FunctionComponent<GooglePayPaymentMethodProps> = (
                 }
             };
 
-            const mergedOptions = {
-                ...defaultOptions,
-                googlepayadyenv2: {
-                    walletButton: 'walletButton',
-                    onError: onUnhandledError,
-                    onPaymentSelect: () => reinitializePayment(mergedOptions),
-                },
-                googlepayadyenv3: {
-                    walletButton: 'walletButton',
-                    onError: onUnhandledError,
-                    onPaymentSelect: () => reinitializePayment(mergedOptions),
-                },
-                googlepayauthorizenet: {
-                    walletButton: 'walletButton',
-                    onError: onUnhandledError,
-                    onPaymentSelect: () => reinitializePayment(mergedOptions),
-                },
-                googlepaybraintree: {
-                    walletButton: 'walletButton',
-                    onError: onUnhandledError,
-                    onPaymentSelect: () => reinitializePayment(mergedOptions),
-                },
-                googlepaystripe: {
-                    walletButton: 'walletButton',
-                    onError: onUnhandledError,
-                    onPaymentSelect: () => reinitializePayment(mergedOptions),
-                },
-                googlepaystripeupe: {
-                    walletButton: 'walletButton',
-                    onError: onUnhandledError,
-                    onPaymentSelect: () => reinitializePayment(mergedOptions),
-                },
-                googlepaycybersourcev2: {
-                    walletButton: 'walletButton',
-                    onError: onUnhandledError,
-                    onPaymentSelect: () => reinitializePayment(mergedOptions),
-                },
-                googlepayorbital: {
-                    walletButton: 'walletButton',
-                    onError: onUnhandledError,
-                    onPaymentSelect: () => reinitializePayment(mergedOptions),
-                },
-                googlepaycheckoutcom: {
-                    walletButton: 'walletButton',
-                    onError: onUnhandledError,
-                    onPaymentSelect: () => reinitializePayment(mergedOptions),
-                },
-            };
+        const mergedOptions = {
+          ...defaultOptions,
+          googlepayadyenv2: {
+            walletButton: 'walletButton',
+            onError: onUnhandledError,
+            onPaymentSelect: () => reinitializePayment(mergedOptions),
+          },
+          googlepayadyenv3: {
+            walletButton: 'walletButton',
+            onError: onUnhandledError,
+            onPaymentSelect: () => reinitializePayment(mergedOptions),
+          },
+          googlepayauthorizenet: {
+            walletButton: 'walletButton',
+            onError: onUnhandledError,
+            onPaymentSelect: () => reinitializePayment(mergedOptions),
+          },
+          googlepaybnz: {
+            walletButton: 'walletButton',
+            onError: onUnhandledError,
+            onPaymentSelect: () => reinitializePayment(mergedOptions),
+          },
+          googlepaybraintree: {
+            walletButton: 'walletButton',
+            onError: onUnhandledError,
+            onPaymentSelect: () => reinitializePayment(mergedOptions),
+          },
+          googlepaystripe: {
+            walletButton: 'walletButton',
+            onError: onUnhandledError,
+            onPaymentSelect: () => reinitializePayment(mergedOptions),
+          },
+          googlepaystripeupe: {
+            walletButton: 'walletButton',
+            onError: onUnhandledError,
+            onPaymentSelect: () => reinitializePayment(mergedOptions),
+          },
+          googlepaycybersourcev2: {
+            walletButton: 'walletButton',
+            onError: onUnhandledError,
+            onPaymentSelect: () => reinitializePayment(mergedOptions),
+          },
+          googlepayorbital: {
+            walletButton: 'walletButton',
+            onError: onUnhandledError,
+            onPaymentSelect: () => reinitializePayment(mergedOptions),
+          },
+          googlepaycheckoutcom: {
+            walletButton: 'walletButton',
+            onError: onUnhandledError,
+            onPaymentSelect: () => reinitializePayment(mergedOptions),
+          },
+        };
 
             return initializePayment(mergedOptions);
         },

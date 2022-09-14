@@ -81,6 +81,7 @@ describe('when using Google Pay payment', () => {
         [PaymentMethodId.AdyenV2GooglePay],
         [PaymentMethodId.AdyenV3GooglePay],
         [PaymentMethodId.AuthorizeNetGooglePay],
+        [PaymentMethodId.BNZGooglePay],
         [PaymentMethodId.BraintreeGooglePay],
         [PaymentMethodId.CheckoutcomGooglePay],
         [PaymentMethodId.CybersourceV2GooglePay],

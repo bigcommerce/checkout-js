@@ -20,6 +20,7 @@ export const SUPPORTED_METHODS: string[] = [
     'googlepayadyenv2',
     'googlepayadyenv3',
     'googlepayauthorizenet',
+    'googlepaybnz',
     'googlepaybraintree',
     'googlepaycheckoutcom',
     'googlepaycybersourcev2',
