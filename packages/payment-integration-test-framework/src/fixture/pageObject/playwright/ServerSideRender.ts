@@ -5,6 +5,6 @@ import ejs from 'ejs';
  */
 export class ServerSideRender {
     async renderFile(filePath: string, data?: Record<string, unknown>): Promise<string> {
-        return await ejs.renderFile(filePath, data);
+        return ejs.renderFile(filePath, data);
     }
 }

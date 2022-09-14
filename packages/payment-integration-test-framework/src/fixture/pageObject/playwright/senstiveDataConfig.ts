@@ -14,12 +14,5 @@ export const sensitiveHeaders = [
 ];
 
 // PollyJS will ignore those headers and payloads when deciding whether to match a request.
-export const ignoredHeaders = [
-    ...sensitiveHeaders,
-    'origin',
-    'x-checkout-variant',
-];
-export const ignoredPayloads = [
-    'hosted_form_nonce',
-    'session_token',
-];
+export const ignoredHeaders = [...sensitiveHeaders, 'origin', 'x-checkout-variant'];
+export const ignoredPayloads = ['hosted_form_nonce', 'session_token'];

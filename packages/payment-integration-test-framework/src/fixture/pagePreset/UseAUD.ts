@@ -12,6 +12,7 @@ export class UseAUD implements CheckoutPagePreset {
 
     async apply(page: Page): Promise<void> {
         const api = new ApiRequestsSender(page);
+
         await api.addPhysicalItemToCart();
         await api.setCurrency(this.currency);
         await api.dispose();

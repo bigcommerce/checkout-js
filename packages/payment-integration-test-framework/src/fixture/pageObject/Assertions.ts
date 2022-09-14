@@ -10,15 +10,21 @@ export class Assertions {
 
     async shouldSeePaymentStep(): Promise<void> {
         const page = this.page;
-        await page.locator('id=checkout-payment-continue').waitFor({state: 'visible'});
+
+        await page.locator('id=checkout-payment-continue').waitFor({ state: 'visible' });
         await expect(page.locator('id=checkout-payment-continue')).toBeVisible();
         await expect(page.locator('.checkout-step--payment')).toContainText('Payment');
     }
 
     async shouldSeeOrderConfirmation(): Promise<void> {
         const page = this.page;
-        await page.locator('.orderConfirmation').waitFor({state: 'visible'});
-        await expect(page.locator('data-test=order-confirmation-heading')).toContainText('Thank you');
-        await expect(page.locator('data-test=order-confirmation-order-number-text')).toContainText(/Your order number is \d*/);
+
+        await page.locator('.orderConfirmation').waitFor({ state: 'visible' });
+        await expect(page.locator('data-test=order-confirmation-heading')).toContainText(
+            'Thank you',
+        );
+        await expect(page.locator('data-test=order-confirmation-order-number-text')).toContainText(
+            /Your order number is \d*/,
+        );
     }
 }

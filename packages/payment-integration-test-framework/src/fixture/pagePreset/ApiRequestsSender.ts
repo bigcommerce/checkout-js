@@ -2,7 +2,7 @@ import { Checkout } from '@bigcommerce/checkout-sdk';
 import { faker } from '@faker-js/faker';
 import { Page } from '@playwright/test';
 
-import { getStoreUrl } from "../";
+import { getStoreUrl } from '../';
 
 import { ApiContextFactory } from './ApiContextFactory';
 
@@ -29,31 +29,38 @@ export class ApiRequestsSender {
     async setCurrency(code: string): Promise<void> {
         const apiContext = await this.apiContextFactory.create(this.page, this.storeUrl);
         const checkoutId = await this.getCheckoutIdOrThrow();
+
         await apiContext.post(`./carts/${checkoutId}/currency`, {
-            data: {currencyCode: code},
+            data: { currencyCode: code },
         });
     }
 
     async addPhysicalItemToCart(): Promise<void> {
         const apiContext = await this.apiContextFactory.create(this.page, this.storeUrl);
+
         await apiContext.post('./carts', {
-                data: {locale: 'en', lineItems: [{quantity: 1, productId: 86}]},
+            data: { locale: 'en', lineItems: [{ quantity: 1, productId: 86 }] },
         });
     }
 
     async completeCustomerStepAsGuest(): Promise<void> {
         const apiContext = await this.apiContextFactory.create(this.page, this.storeUrl);
         const checkout = await this.getCheckoutOrThrow();
+
         await apiContext.post(`./checkouts/${checkout.id}/billing-address`, {
-            data: {email: faker.internet.email('checkout')},
+            data: { email: faker.internet.email('checkout') },
         });
     }
 
     async setShippingQuote(): Promise<void> {
         const apiContext = await this.apiContextFactory.create(this.page, this.storeUrl);
-        await apiContext.get(`${this.storeUrl}/remote/v1/shipping-quote?city=NEW%20YORK&country_id=226&state_id=43&zip_code=10028`);
+
+        await apiContext.get(
+            `${this.storeUrl}/remote/v1/shipping-quote?city=NEW%20YORK&country_id=226&state_id=43&zip_code=10028`,
+        );
         await apiContext.post(`${this.storeUrl}/remote/v1/shipping-quote`, {
-            data: {shipping_method: 0},
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            data: { shipping_method: 0 },
         });
     }
 
@@ -63,44 +70,53 @@ export class ApiRequestsSender {
 
         // Set shipping address
         const stateCode = faker.address.stateAbbr();
-        const cartWithConsignmentsResponse = await apiContext.post(`./checkouts/${checkout.id}/consignments`, {
-            params: {include: 'consignments.availableShippingOptions'},
-            data: [{
-                address: {
-                    firstName: faker.name.firstName(),
-                    lastName: faker.name.lastName(),
-                    company: faker.company.companyName(),
-                    phone: faker.phone.phoneNumber('##########'),
-                    address1: faker.address.streetName(),
-                    address2: faker.address.secondaryAddress(),
-                    city: faker.address.cityName(),
-                    countryCode: 'US',
-                    stateOrProvince: '',
-                    postalCode: faker.address.zipCodeByState(stateCode),
-                    shouldSaveAddress: true,
-                    stateOrProvinceCode: stateCode,
-                    customFields: [],
-                },
-                lineItems: [
+        const cartWithConsignmentsResponse = await apiContext.post(
+            `./checkouts/${checkout.id}/consignments`,
+            {
+                params: { include: 'consignments.availableShippingOptions' },
+                data: [
                     {
-                        itemId: checkout.cart.lineItems.physicalItems[0].id,
-                        quantity: checkout.cart.lineItems.physicalItems[0].quantity,
+                        address: {
+                            firstName: faker.name.firstName(),
+                            lastName: faker.name.lastName(),
+                            company: faker.company.companyName(),
+                            phone: faker.phone.phoneNumber('##########'),
+                            address1: faker.address.streetName(),
+                            address2: faker.address.secondaryAddress(),
+                            city: faker.address.cityName(),
+                            countryCode: 'US',
+                            stateOrProvince: '',
+                            postalCode: faker.address.zipCodeByState(stateCode),
+                            shouldSaveAddress: true,
+                            stateOrProvinceCode: stateCode,
+                            customFields: [],
+                        },
+                        lineItems: [
+                            {
+                                itemId: checkout.cart.lineItems.physicalItems[0].id,
+                                quantity: checkout.cart.lineItems.physicalItems[0].quantity,
+                            },
+                        ],
                     },
                 ],
-            }],
-        });
+            },
+        );
 
         // Select shipping option
         const cartWithConsignments = await cartWithConsignmentsResponse.json();
-        const consignmentId = cartWithConsignments.consignments[0].id;
-        const shippingOptionId = cartWithConsignments.consignments[0].availableShippingOptions[0].id;
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        const consignmentId = cartWithConsignments.consignments[0].id as string;
+        const shippingOptionId =
+            cartWithConsignments.consignments[0].availableShippingOptions[0].id;
+
         await apiContext.put(`./checkouts/${checkout.id}/consignments/${consignmentId}`, {
-            params: {include: 'consignments.availableShippingOptions'},
-            data: {shippingOptionId},
+            params: { include: 'consignments.availableShippingOptions' },
+            data: { shippingOptionId },
         });
 
         // Set billing address
-        const billingAddressId = checkout.billingAddress?.id;
+        const billingAddressId = checkout.billingAddress?.id || '';
+
         await apiContext.put(`./checkouts/${checkout.id}/billing-address/${billingAddressId}`, {
             data: {
                 firstName: faker.name.firstName(),
@@ -119,6 +135,7 @@ export class ApiRequestsSender {
 
     async dispose(): Promise<void> {
         const apiContext = await this.apiContextFactory.create(this.page, this.storeUrl);
+
         await apiContext.dispose();
     }
 
@@ -126,8 +143,10 @@ export class ApiRequestsSender {
         const apiContext = await this.apiContextFactory.create(this.page, this.storeUrl);
         const response = await apiContext.get(`./carts`);
         const carts = await response.json();
+
         for (const remoteCart of carts) {
             if (remoteCart.id) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return
                 return remoteCart.id;
             }
         }
@@ -139,11 +158,13 @@ export class ApiRequestsSender {
         const apiContext = await this.apiContextFactory.create(this.page, this.storeUrl);
         const checkoutId = await this.getCheckoutIdOrThrow();
         const response = await apiContext.get(`./checkouts/${checkoutId}`);
-        const checkout = await response.json();
-        if (checkout.id) {
-            return checkout;
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        const checkout = (await response.json()) as Checkout;
+
+        if (!checkout.id) {
+            throw new Error(`ApiContext cannot get checkout details from the dev store.`);
         }
 
-        throw new Error(`ApiContext cannot get checkout details from the dev store.`);
+        return checkout;
     }
 }
