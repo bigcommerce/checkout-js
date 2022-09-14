@@ -1,4 +1,9 @@
-import { CheckoutSelectors, CheckoutService, LanguageService, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutSelectors,
+    CheckoutService,
+    LanguageService,
+    PaymentMethod,
+} from '@bigcommerce/checkout-sdk';
 
 import PaymentFormService from './PaymentFormService';
 
