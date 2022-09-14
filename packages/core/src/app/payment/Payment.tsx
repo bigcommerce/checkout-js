@@ -510,7 +510,7 @@ class Payment extends Component<
 }
 
 export function mapToPaymentProps(
-    { checkoutService, checkoutState,}: CheckoutContextProps,
+    { checkoutService, checkoutState }: CheckoutContextProps,
     props: PaymentProps
 ): WithCheckoutPaymentProps | null {
     const {

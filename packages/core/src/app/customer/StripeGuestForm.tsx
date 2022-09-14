@@ -4,7 +4,7 @@ import React, { memo, useCallback, useEffect, useState, FunctionComponent, React
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { getAppliedStyles } from '../common/dom';
 
-import { TranslatedHtml, TranslatedString } from '../locale';
+import { TranslatedString } from '../locale';
 import { PrivacyPolicyField } from '../privacyPolicy';
 import { Button, ButtonVariant } from '../ui/button';
 import { BasicFormField, Fieldset, Legend } from '../ui/form';
@@ -54,7 +54,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
     const [isNewAuth, setIsNewAuth] = useState(false);
     const handleOnClickSubmitButton = () => {
         onContinueAsGuest({
-            email: emailValue || '',
+            email: emailValue,
             shouldSubscribe: false,
         });
     };

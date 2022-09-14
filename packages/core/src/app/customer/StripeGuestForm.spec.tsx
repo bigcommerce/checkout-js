@@ -67,9 +67,7 @@ describe('StripeGuestForm', () => {
     });
 
     it('executes a function when on click action is triggered', () => {
-        const component = mount(
-            <TestComponent />
-        );
+        const component = mount(<TestComponent />);
 
         const button = component.find('button');
         const onClickEvent = button.prop('onClick');

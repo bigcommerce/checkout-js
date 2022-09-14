@@ -171,7 +171,6 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             onUnhandledError = noop,
             step,
             updateStripeLinkAuthenticated,
-
         } = this.props;
 
         return (
@@ -513,7 +512,7 @@ export function mapToWithCheckoutCustomerProps({
     if (cart) {
         const stripeUpe = getPaymentMethod('card', PaymentMethodId.StripeUPE);
         const linkEnabled = stripeUpe?.initializationData.enableLink || false;
-        const stripeUpeSupportedCurrency = cart?.currency.code === 'USD' || false;
+        const stripeUpeSupportedCurrency = cart.currency.code === 'USD' || false;
 
         stripeUpeLinkEnabled = linkEnabled && stripeUpeSupportedCurrency;
     }

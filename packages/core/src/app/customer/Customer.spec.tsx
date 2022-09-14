@@ -93,7 +93,7 @@ describe('Customer', () => {
             expect(component.find(GuestForm).exists()).toBe(true);
         });
 
-        it('renders stripe guest form if enable', async () => {
+        it('renders stripe guest form if enabled', async () => {
             const steps = { isActive: true,
                 isComplete: true,
                 isEditable: true,
