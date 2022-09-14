@@ -26,6 +26,12 @@
             "tabWidth": 4
           }
         ],
+        "no-restricted-syntax": [
+          "off",
+          {
+            "selector": "ForOfStatement"
+          }
+        ],
         "@nrwl/nx/enforce-module-boundaries": [
           "error",
           {
