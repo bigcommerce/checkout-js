@@ -1,5 +1,5 @@
 import { ShippingOption } from '@bigcommerce/checkout-sdk';
-import React, { memo, useCallback, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo, useCallback } from 'react';
 
 import { EMPTY_ARRAY } from '../../common/utility';
 import { Checklist, ChecklistItem } from '../../ui/form';
@@ -16,17 +16,22 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
     consignmentId,
     shippingOption,
 }) => {
-    const renderLabel = useCallback(() => (
-        <div className="shippingOptionLabel">
-            <StaticShippingOption displayAdditionalInformation={ true } method={ shippingOption } />
-        </div>
-    ), [shippingOption]);
+    const renderLabel = useCallback(
+        () => (
+            <div className="shippingOptionLabel">
+                <StaticShippingOption displayAdditionalInformation={true} method={shippingOption} />
+            </div>
+        ),
+        [shippingOption],
+    );
 
-    return <ChecklistItem
-        htmlId={ `shippingOptionRadio-${consignmentId}-${shippingOption.id}` }
-        label={ renderLabel }
-        value={ shippingOption.id }
-    />;
+    return (
+        <ChecklistItem
+            htmlId={`shippingOptionRadio-${consignmentId}-${shippingOption.id}`}
+            label={renderLabel}
+            value={shippingOption.id}
+        />
+    );
 };
 
 export interface ShippingOptionListProps {
@@ -45,33 +50,33 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
     shippingOptions = EMPTY_ARRAY,
     selectedShippingOptionId,
     onSelectedOption,
- }) => {
-    const handleSelect = useCallback((value: string) => {
-        onSelectedOption(consignmentId, value);
-    }, [
-        consignmentId,
-        onSelectedOption,
-    ]);
+}) => {
+    const handleSelect = useCallback(
+        (value: string) => {
+            onSelectedOption(consignmentId, value);
+        },
+        [consignmentId, onSelectedOption],
+    );
 
     if (!shippingOptions.length) {
         return null;
     }
 
     return (
-        <LoadingOverlay isLoading={ isLoading }>
+        <LoadingOverlay isLoading={isLoading}>
             <Checklist
                 aria-live="polite"
-                defaultSelectedItemId={ selectedShippingOptionId }
-                name={ inputName }
-                onSelect={ handleSelect }
+                defaultSelectedItemId={selectedShippingOptionId}
+                name={inputName}
+                onSelect={handleSelect}
             >
-                { shippingOptions.map(shippingOption => (
+                {shippingOptions.map((shippingOption) => (
                     <ShippingOptionListItem
-                        consignmentId={ consignmentId }
-                        key={ shippingOption.id }
-                        shippingOption={ shippingOption }
+                        consignmentId={consignmentId}
+                        key={shippingOption.id}
+                        shippingOption={shippingOption}
                     />
-                )) }
+                ))}
             </Checklist>
         </LoadingOverlay>
     );

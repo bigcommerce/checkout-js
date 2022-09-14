@@ -1,5 +1,6 @@
-import { isBankAccountInstrument } from '.';
 import { getBankInstrument, getCardInstrument } from './instruments.mock';
+
+import { isBankAccountInstrument } from '.';
 
 describe('isBankAccountInstrument', () => {
     it('returns true for bank instruments', () => {

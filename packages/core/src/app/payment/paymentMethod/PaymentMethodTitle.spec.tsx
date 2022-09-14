@@ -1,9 +1,10 @@
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
-import { createCheckoutService, CheckoutService, StoreConfig } from '@bigcommerce/checkout-sdk';
+import { CheckoutService, createCheckoutService, StoreConfig } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
+
+import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
 import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
@@ -13,11 +14,13 @@ import { getPaymentMethod } from '../payment-methods.mock';
 
 import getPaymentMethodName from './getPaymentMethodName';
 import PaymentMethodId from './PaymentMethodId';
-import PaymentMethodType from './PaymentMethodType';
 import PaymentMethodTitle, { PaymentMethodTitleProps } from './PaymentMethodTitle';
+import PaymentMethodType from './PaymentMethodType';
 
 describe('PaymentMethodTitle', () => {
-    let PaymentMethodTitleTest: FunctionComponent<PaymentMethodTitleProps & { formValues: PaymentFormValues }>;
+    let PaymentMethodTitleTest: FunctionComponent<
+        PaymentMethodTitleProps & { formValues: PaymentFormValues }
+    >;
     let checkoutService: CheckoutService;
     let config: StoreConfig;
     let defaultProps: PaymentMethodTitleProps & { formValues: PaymentFormValues };
@@ -57,17 +60,13 @@ describe('PaymentMethodTitle', () => {
         checkoutService = createCheckoutService();
         localeContext = createLocaleContext(config);
 
-        jest.spyOn(checkoutService.getState().data, 'getConfig')
-            .mockReturnValue(config);
+        jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(config);
 
         PaymentMethodTitleTest = ({ formValues, ...props }) => (
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <LocaleContext.Provider value={ localeContext }>
-                    <Formik
-                        initialValues={ formValues }
-                        onSubmit={ noop }
-                    >
-                        <PaymentMethodTitle { ...props } />
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <Formik initialValues={formValues} onSubmit={noop}>
+                        <PaymentMethodTitle {...props} />
                     </Formik>
                 </LocaleContext.Provider>
             </CheckoutProvider>
@@ -75,23 +74,27 @@ describe('PaymentMethodTitle', () => {
     });
 
     it('renders name of payment method if it does not have logo', () => {
-        const component = mount(<PaymentMethodTitleTest { ...defaultProps } />);
+        const component = mount(<PaymentMethodTitleTest {...defaultProps} />);
 
-        expect(component.find('[data-test="payment-method-name"]').text())
-            .toEqual(defaultProps.method.config.displayName);
+        expect(component.find('[data-test="payment-method-name"]').text()).toEqual(
+            defaultProps.method.config.displayName,
+        );
     });
 
     it('renders name of payment method if it is credit card method', () => {
-        const component = mount(<PaymentMethodTitleTest
-            { ...defaultProps }
-            method={ {
-                ...defaultProps.method,
-                method: 'credit-card',
-            } }
-        />);
+        const component = mount(
+            <PaymentMethodTitleTest
+                {...defaultProps}
+                method={{
+                    ...defaultProps.method,
+                    method: 'credit-card',
+                }}
+            />,
+        );
 
-        expect(component.find('[data-test="payment-method-name"]').text())
-            .toEqual(defaultProps.method.config.displayName);
+        expect(component.find('[data-test="payment-method-name"]').text()).toEqual(
+            defaultProps.method.config.displayName,
+        );
     });
 
     it('renders logo based on their method type', () => {
@@ -105,21 +108,24 @@ describe('PaymentMethodTitle', () => {
             PaymentMethodType.VisaCheckout,
         ];
 
-        methodTypes.forEach(method => {
-            const component = mount(<PaymentMethodTitleTest
-                { ...defaultProps }
-                method={ {
-                    ...defaultProps.method,
-                    method,
-                } }
-            />);
+        methodTypes.forEach((method) => {
+            const component = mount(
+                <PaymentMethodTitleTest
+                    {...defaultProps}
+                    method={{
+                        ...defaultProps.method,
+                        method,
+                    }}
+                />,
+            );
 
-            const expectedPath = /^http/.test(LOGO_PATHS[method]) ?
-                LOGO_PATHS[method] :
-                `${config.cdnPath}${LOGO_PATHS[method]}`;
+            const expectedPath = /^http/.test(LOGO_PATHS[method])
+                ? LOGO_PATHS[method]
+                : `${config.cdnPath}${LOGO_PATHS[method]}`;
 
-            expect(component.find('[data-test="payment-method-logo"]').prop('src'))
-                .toEqual(expectedPath);
+            expect(component.find('[data-test="payment-method-logo"]').prop('src')).toEqual(
+                expectedPath,
+            );
         });
     });
 
@@ -130,32 +136,38 @@ describe('PaymentMethodTitle', () => {
             { id: PaymentMethodId.PaypalCommerce, method: 'widget' },
         ];
 
-        methods.forEach(method => {
-            const component = mount(<PaymentMethodTitleTest
-                { ...defaultProps }
-                method={ {
-                    ...defaultProps.method,
-                    ...method,
-                } }
-            />);
+        methods.forEach((method) => {
+            const component = mount(
+                <PaymentMethodTitleTest
+                    {...defaultProps}
+                    method={{
+                        ...defaultProps.method,
+                        ...method,
+                    }}
+                />,
+            );
 
-            expect(component.find('[data-test="payment-method-logo"]').prop('src'))
-                .toEqual(`${config.cdnPath}${LOGO_PATHS[method.id]}`);
+            expect(component.find('[data-test="payment-method-logo"]').prop('src')).toBe(
+                `${config.cdnPath}${LOGO_PATHS[method.id]}`,
+            );
         });
     });
 
     it('renders logo based on their gateway id', () => {
-        const component = mount(<PaymentMethodTitleTest
-            { ...defaultProps }
-            method={ {
-                ...defaultProps.method,
-                gateway: 'afterpay',
-                method: 'multi-option',
-            } }
-        />);
+        const component = mount(
+            <PaymentMethodTitleTest
+                {...defaultProps}
+                method={{
+                    ...defaultProps.method,
+                    gateway: 'afterpay',
+                    method: 'multi-option',
+                }}
+            />,
+        );
 
-        expect(component.find('[data-test="payment-method-logo"]').prop('src'))
-            .toEqual(`${config.cdnPath}${LOGO_PATHS.afterpay}`);
+        expect(component.find('[data-test="payment-method-logo"]').prop('src')).toBe(
+            `${config.cdnPath}${LOGO_PATHS.afterpay}`,
+        );
     });
 
     it('renders both logo and name for certain hosted payment methods', () => {
@@ -169,20 +181,20 @@ describe('PaymentMethodTitle', () => {
             PaymentMethodId.Zip,
         ];
 
-        methodIds.forEach(id => {
-            const component = mount(<PaymentMethodTitleTest
-                { ...defaultProps }
-                method={ {
-                    ...defaultProps.method,
-                    id,
-                } }
-            />);
+        methodIds.forEach((id) => {
+            const component = mount(
+                <PaymentMethodTitleTest
+                    {...defaultProps}
+                    method={{
+                        ...defaultProps.method,
+                        id,
+                    }}
+                />,
+            );
 
-            expect(component.find('[data-test="payment-method-logo"]').length)
-                .toEqual(1);
+            expect(component.find('[data-test="payment-method-logo"]')).toHaveLength(1);
 
-            expect(component.find('[data-test="payment-method-name"]').length)
-                .toEqual(1);
+            expect(component.find('[data-test="payment-method-name"]')).toHaveLength(1);
         });
     });
 
@@ -196,15 +208,13 @@ describe('PaymentMethodTitle', () => {
             PaymentMethodId.Zip,
         ];
 
-        methodIds.forEach(id => {
+        methodIds.forEach((id) => {
             const method = { ...defaultProps.method, id };
-            const component = mount(<PaymentMethodTitleTest
-                { ...defaultProps }
-                method={ method }
-            />);
+            const component = mount(<PaymentMethodTitleTest {...defaultProps} method={method} />);
 
-            expect(component.find('[data-test="payment-method-name"]').text())
-                .not.toEqual(getPaymentMethodName(localeContext.language)(method));
+            expect(component.find('[data-test="payment-method-name"]').text()).not.toEqual(
+                getPaymentMethodName(localeContext.language)(method),
+            );
         });
     });
 
@@ -220,20 +230,20 @@ describe('PaymentMethodTitle', () => {
             PaymentMethodType.Masterpass,
         ];
 
-        methodIds.forEach(id => {
-            const component = mount(<PaymentMethodTitleTest
-                { ...defaultProps }
-                method={ {
-                    ...defaultProps.method,
-                    id,
-                } }
-            />);
+        methodIds.forEach((id) => {
+            const component = mount(
+                <PaymentMethodTitleTest
+                    {...defaultProps}
+                    method={{
+                        ...defaultProps.method,
+                        id,
+                    }}
+                />,
+            );
 
-            expect(component.find('[data-test="payment-method-logo"]').length)
-                .toEqual(1);
+            expect(component.find('[data-test="payment-method-logo"]')).toHaveLength(1);
 
-            expect(component.find('[data-test="payment-method-name"]').length)
-                .toEqual(0);
+            expect(component.find('[data-test="payment-method-name"]')).toHaveLength(0);
         });
     });
 
@@ -243,34 +253,39 @@ describe('PaymentMethodTitle', () => {
         const method = PaymentMethodType.Barclaycard;
         const id = 'card';
 
-        const component = mount(<PaymentMethodTitleTest
-            { ...defaultProps }
-            method={ {
-                ...defaultProps.method,
-                id,
-                method,
-            } }
-        />);
+        const component = mount(
+            <PaymentMethodTitleTest
+                {...defaultProps}
+                method={{
+                    ...defaultProps.method,
+                    id,
+                    method,
+                }}
+            />,
+        );
 
-        const expectedPath = `${config.cdnPath}${imageFolder}${method}_${id.toLowerCase()}${imageExtension}`;
+        const expectedPath = `${
+            config.cdnPath
+        }${imageFolder}${method}_${id.toLowerCase()}${imageExtension}`;
 
-        expect(component.find('[data-test="payment-method-logo"]').prop('src'))
-            .toEqual(expectedPath);
-
+        expect(component.find('[data-test="payment-method-logo"]').prop('src')).toEqual(
+            expectedPath,
+        );
     });
 
     it('renders selected credit card type using information provided by hosted fields', () => {
-        const component = mount(<PaymentMethodTitleTest
-            { ...defaultProps }
-            formValues={ {
-                hostedForm: { cardType: 'mastercard' },
-                paymentProviderRadio: defaultProps.formValues.paymentProviderRadio,
-            } }
-            isSelected
-        />);
+        const component = mount(
+            <PaymentMethodTitleTest
+                {...defaultProps}
+                formValues={{
+                    hostedForm: { cardType: 'mastercard' },
+                    paymentProviderRadio: defaultProps.formValues.paymentProviderRadio,
+                }}
+                isSelected
+            />,
+        );
 
-        expect(component.find(CreditCardIconList).prop('selectedCardType'))
-            .toEqual('mastercard');
+        expect(component.find(CreditCardIconList).prop('selectedCardType')).toBe('mastercard');
     });
 
     it('renders a different logo for braintreeVenmo methodId for Paypal', () => {
@@ -280,102 +295,118 @@ describe('PaymentMethodTitle', () => {
         const id = PaymentMethodId.BraintreeVenmo;
         const logoUrl = `${config.cdnPath}${imageFolder}braintree_venmo${imageExtension}`;
 
-        const component = mount(<PaymentMethodTitleTest
-            { ...defaultProps }
-            method={ {
-                ...defaultProps.method,
-                id,
-                method,
-                logoUrl,
-            } }
-        />);
+        const component = mount(
+            <PaymentMethodTitleTest
+                {...defaultProps}
+                method={{
+                    ...defaultProps.method,
+                    id,
+                    method,
+                    logoUrl,
+                }}
+            />,
+        );
 
         const expectedPath = `${config.cdnPath}${imageFolder}braintree_venmo${imageExtension}`;
 
-        expect(component.find('[data-test="payment-method-logo"]').prop('src'))
-            .toEqual(expectedPath);
-
+        expect(component.find('[data-test="payment-method-logo"]').prop('src')).toEqual(
+            expectedPath,
+        );
     });
 
     it('renders selected credit card type using card number if not using hosted fields', () => {
-        const component = mount(<PaymentMethodTitleTest
-            { ...defaultProps }
-            isSelected
-        />);
+        const component = mount(<PaymentMethodTitleTest {...defaultProps} isSelected />);
 
-        expect(component.find(CreditCardIconList).prop('selectedCardType'))
-            .toEqual('visa');
+        expect(component.find(CreditCardIconList).prop('selectedCardType')).toBe('visa');
     });
 
     it('renders only Checkout.com APMs logos based on their gateway id', () => {
-        const checkoutcomTitleComponent = (id: string) => mount(
-            <PaymentMethodTitleTest
-                { ...defaultProps }
-                method={ {
-                    ...defaultProps.method,
-                    method: PaymentMethodId.Checkoutcom,
-                    id,
-                } }
-            />
-        );
+        const checkoutcomTitleComponent = (id: string) =>
+            mount(
+                <PaymentMethodTitleTest
+                    {...defaultProps}
+                    method={{
+                        ...defaultProps.method,
+                        method: PaymentMethodId.Checkoutcom,
+                        id,
+                    }}
+                />,
+            );
         const baseURL = (id: string) => `/img/payment-providers/checkoutcom_${id}.svg`;
 
         let component = checkoutcomTitleComponent('sepa');
-        expect(component.find('[data-test="payment-method-logo"]').prop('src'))
-            .toEqual(`${config.cdnPath}${baseURL('sepa')}`);
+
+        expect(component.find('[data-test="payment-method-logo"]').prop('src')).toBe(
+            `${config.cdnPath}${baseURL('sepa')}`,
+        );
 
         component = checkoutcomTitleComponent('oxxo');
-        expect(component.find('[data-test="payment-method-logo"]').prop('src'))
-            .toEqual(`${config.cdnPath}${baseURL('oxxo')}`);
+
+        expect(component.find('[data-test="payment-method-logo"]').prop('src')).toBe(
+            `${config.cdnPath}${baseURL('oxxo')}`,
+        );
 
         component = checkoutcomTitleComponent('boleto');
-        expect(component.find('[data-test="payment-method-logo"]').prop('src'))
-            .toEqual(`${config.cdnPath}${baseURL('boleto')}`);
+
+        expect(component.find('[data-test="payment-method-logo"]').prop('src')).toBe(
+            `${config.cdnPath}${baseURL('boleto')}`,
+        );
 
         component = checkoutcomTitleComponent('qpay');
-        expect(component.find('[data-test="payment-method-logo"]').prop('src'))
-            .toEqual(`${config.cdnPath}${baseURL('qpay')}`);
+
+        expect(component.find('[data-test="payment-method-logo"]').prop('src')).toBe(
+            `${config.cdnPath}${baseURL('qpay')}`,
+        );
 
         component = checkoutcomTitleComponent('credit_card');
-        expect(component.find('[data-test="payment-method-name"]').text())
-            .toEqual(defaultProps.method.config.displayName);
+
+        expect(component.find('[data-test="payment-method-name"]').text()).toEqual(
+            defaultProps.method.config.displayName,
+        );
 
         component = checkoutcomTitleComponent('checkoutcom');
-        expect(component.find('[data-test="payment-method-name"]').text())
-            .toEqual(defaultProps.method.config.displayName);
+
+        expect(component.find('[data-test="payment-method-name"]').text()).toEqual(
+            defaultProps.method.config.displayName,
+        );
     });
 
-    it('renders logo based on provider\'s config', () => {
+    it("renders logo based on provider's config", () => {
         const methods = [
-          {
-            id: PaymentMethodId.Opy,
-            config: {
-              ...defaultProps.method.config,
-              logo: 'opy_gray.svg',
+            {
+                id: PaymentMethodId.Opy,
+                config: {
+                    ...defaultProps.method.config,
+                    logo: 'opy_gray.svg',
+                },
             },
-          },
         ];
 
-        methods.forEach(method => {
-            const component = mount(<PaymentMethodTitleTest
-                { ...defaultProps }
-                method={ {
-                    ...defaultProps.method,
-                    ...method,
-                } }
-            />);
+        methods.forEach((method) => {
+            const component = mount(
+                <PaymentMethodTitleTest
+                    {...defaultProps}
+                    method={{
+                        ...defaultProps.method,
+                        ...method,
+                    }}
+                />,
+            );
 
-            expect(component.find('[data-test="payment-method-logo"]').prop('src'))
-                .toEqual(`${config.cdnPath}/img/payment-providers/${method.config.logo}`);
+            expect(component.find('[data-test="payment-method-logo"]').prop('src')).toBe(
+                `${config.cdnPath}/img/payment-providers/${method.config.logo}`,
+            );
         });
     });
 
     it('renders default logo for Openpay', () => {
         defaultProps.method.id = PaymentMethodId.Opy;
-        const component = mount(<PaymentMethodTitleTest { ...defaultProps } />);
 
-        expect(component.find('[data-test="payment-method-logo"]').prop('src'))
-            .toEqual(`${config.cdnPath}/img/payment-providers/opy_default.svg`);
+        const component = mount(<PaymentMethodTitleTest {...defaultProps} />);
+
+        expect(component.find('[data-test="payment-method-logo"]').prop('src')).toBe(
+            `${config.cdnPath}/img/payment-providers/opy_default.svg`,
+        );
     });
 
     it('renders name for Visa Checkout', () => {
@@ -384,12 +415,10 @@ describe('PaymentMethodTitle', () => {
             method: PaymentMethodType.VisaCheckout,
         };
 
-        const component = mount(<PaymentMethodTitleTest
-            { ...defaultProps }
-            method={ method }
-        />);
+        const component = mount(<PaymentMethodTitleTest {...defaultProps} method={method} />);
 
-        expect(component.find('[data-test="payment-method-name"]').text())
-            .toEqual(getPaymentMethodName(localeContext.language)(method));
+        expect(component.find('[data-test="payment-method-name"]').text()).toEqual(
+            getPaymentMethodName(localeContext.language)(method),
+        );
     });
 });

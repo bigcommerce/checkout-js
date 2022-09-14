@@ -1,5 +1,5 @@
 import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import React, { useCallback, FunctionComponent } from 'react';
+import React, { FunctionComponent, useCallback } from 'react';
 
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
 
@@ -12,17 +12,18 @@ const PaypalExpressPaymentMethod: FunctionComponent<PaypalExpressPaymentMethodPr
     isEmbedded = false,
     ...rest
 }) => {
-    const initializePaypalExpressPayment = useCallback((options: PaymentInitializeOptions) => initializePayment({
-        ...options,
-        paypalexpress: {
-            useRedirectFlow: isEmbedded,
-        },
-    }), [initializePayment, isEmbedded]);
+    const initializePaypalExpressPayment = useCallback(
+        (options: PaymentInitializeOptions) =>
+            initializePayment({
+                ...options,
+                paypalexpress: {
+                    useRedirectFlow: isEmbedded,
+                },
+            }),
+        [initializePayment, isEmbedded],
+    );
 
-    return <HostedPaymentMethod
-        { ...rest }
-        initializePayment={ initializePaypalExpressPayment }
-    />;
+    return <HostedPaymentMethod {...rest} initializePayment={initializePaypalExpressPayment} />;
 };
 
 export default PaypalExpressPaymentMethod;

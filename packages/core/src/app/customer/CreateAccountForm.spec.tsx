@@ -9,8 +9,8 @@ import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString
 import { Alert } from '../ui/alert';
 import { DynamicFormField } from '../ui/form';
 
-import { getCustomerAccountFormFields } from './formField.mock';
 import CreateAccountForm from './CreateAccountForm';
+import { getCustomerAccountFormFields } from './formField.mock';
 
 describe('CreateAccountForm Component', () => {
     let localeContext: LocaleContextType;
@@ -24,25 +24,19 @@ describe('CreateAccountForm Component', () => {
 
     it('renders all fields based on formFields', () => {
         component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <Formik
-                    initialValues={ {} }
-                    onSubmit={ noop }
-                >
-                    <CreateAccountForm
-                        formFields={ formFields }
-                        requiresMarketingConsent={ false }
-                    />
+            <LocaleContext.Provider value={localeContext}>
+                <Formik initialValues={{}} onSubmit={noop}>
+                    <CreateAccountForm formFields={formFields} requiresMarketingConsent={false} />
                 </Formik>
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
-        expect(component.find(DynamicFormField).length).toEqual(formFields.length);
+        expect(component.find(DynamicFormField)).toHaveLength(formFields.length);
 
         expect(component.find(DynamicFormField).at(0).prop('field')).toEqual(
             expect.objectContaining({
                 id: 'field_4',
-            })
+            }),
         );
     });
 
@@ -55,14 +49,14 @@ describe('CreateAccountForm Component', () => {
         } as RequestError;
 
         component = mount(
-            <LocaleContext.Provider value={ localeContext }>
+            <LocaleContext.Provider value={localeContext}>
                 <CreateAccountForm
-                    createAccountError={ createAccountError }
-                    formFields={ formFields }
-                    onCancel={ onCancel }
-                    requiresMarketingConsent={ false }
+                    createAccountError={createAccountError}
+                    formFields={formFields}
+                    onCancel={onCancel}
+                    requiresMarketingConsent={false}
                 />
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
         expect(component.find(Alert).find(TranslatedString).props()).toEqual({
@@ -71,48 +65,50 @@ describe('CreateAccountForm Component', () => {
         });
     });
 
-    it.each([['Password needs to contain a letter', '1234567'], ['Password needs to contain a number', 'abcdefg'], ['Password is too short', '1a']]) ('renders correct error when %s', async (expected, passwordCase) => {
+    it.each([
+        ['Password needs to contain a letter', '1234567'],
+        ['Password needs to contain a number', 'abcdefg'],
+        ['Password is too short', '1a'],
+    ])('renders correct error when %s', async (expected, passwordCase) => {
         const onSubmit = jest.fn();
 
         component = mount(
-            <LocaleContext.Provider value={ localeContext }>
+            <LocaleContext.Provider value={localeContext}>
                 <CreateAccountForm
-                    formFields={ formFields }
-                    onSubmit={ onSubmit }
-                    requiresMarketingConsent={ false }
+                    formFields={formFields}
+                    onSubmit={onSubmit}
+                    requiresMarketingConsent={false}
                 />
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
-        component.find('input[name="password"]')
+        component
+            .find('input[name="password"]')
             .simulate('change', { target: { value: passwordCase, name: 'password' } });
 
-        component.find('form')
-            .simulate('submit');
+        component.find('form').simulate('submit');
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
         component.update();
 
-        expect(component.find('#password-field-error-message').text())
-            .toEqual(expected);
+        expect(component.find('#password-field-error-message').text()).toEqual(expected);
     });
 
     it('calls onCancel', () => {
         const onCancel = jest.fn();
 
         component = mount(
-            <LocaleContext.Provider value={ localeContext }>
+            <LocaleContext.Provider value={localeContext}>
                 <CreateAccountForm
-                    formFields={ formFields }
-                    onCancel={ onCancel }
-                    requiresMarketingConsent={ false }
+                    formFields={formFields}
+                    onCancel={onCancel}
+                    requiresMarketingConsent={false}
                 />
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
-        component.find('[data-test="customer-cancel-button"]')
-            .simulate('click');
+        component.find('[data-test="customer-cancel-button"]').simulate('click');
 
         expect(onCancel).toHaveBeenCalled();
     });
@@ -121,91 +117,99 @@ describe('CreateAccountForm Component', () => {
         const onSubmit = jest.fn();
 
         component = mount(
-            <LocaleContext.Provider value={ localeContext }>
+            <LocaleContext.Provider value={localeContext}>
                 <CreateAccountForm
-                    formFields={ formFields }
-                    onSubmit={ onSubmit }
-                    requiresMarketingConsent={ false }
+                    formFields={formFields}
+                    onSubmit={onSubmit}
+                    requiresMarketingConsent={false}
                 />
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
-        component.find('input[name="email"]')
+        component
+            .find('input[name="email"]')
             .simulate('change', { target: { value: 'test@bigcommerce.com', name: 'email' } });
 
-        component.find('form')
-            .simulate('submit');
+        component.find('form').simulate('submit');
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
         expect(onSubmit).not.toHaveBeenCalled();
 
-        component.find('input[name="password"]')
+        component
+            .find('input[name="password"]')
             .simulate('change', { target: { value: 'Password1235+', name: 'password' } });
 
-        component.find('input[name="firstName"]')
+        component
+            .find('input[name="firstName"]')
             .simulate('change', { target: { value: 'foo', name: 'firstName' } });
 
-        component.find('input[name="lastName"]')
+        component
+            .find('input[name="lastName"]')
             .simulate('change', { target: { value: 'bar', name: 'lastName' } });
 
-        component.find('form')
-            .simulate('submit');
+        component.find('form').simulate('submit');
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
-        expect(onSubmit).toHaveBeenCalledWith(expect.objectContaining({
-            acceptsMarketingEmails: ['0'],
-            email: 'test@bigcommerce.com',
-            firstName: 'foo',
-            lastName: 'bar',
-            password: 'Password1235+',
-        }));
+        expect(onSubmit).toHaveBeenCalledWith(
+            expect.objectContaining({
+                acceptsMarketingEmails: ['0'],
+                email: 'test@bigcommerce.com',
+                firstName: 'foo',
+                lastName: 'bar',
+                password: 'Password1235+',
+            }),
+        );
     });
 
     it('calls onSubmit when form is valid and requires consent', async () => {
         const onSubmit = jest.fn();
 
         component = mount(
-            <LocaleContext.Provider value={ localeContext }>
+            <LocaleContext.Provider value={localeContext}>
                 <CreateAccountForm
-                    formFields={ formFields }
-                    onSubmit={ onSubmit }
-                    requiresMarketingConsent={ true }
+                    formFields={formFields}
+                    onSubmit={onSubmit}
+                    requiresMarketingConsent={true}
                 />
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
-        component.find('input[name="email"]')
+        component
+            .find('input[name="email"]')
             .simulate('change', { target: { value: 'test@bigcommerce.com', name: 'email' } });
 
-        component.find('form')
-            .simulate('submit');
+        component.find('form').simulate('submit');
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
         expect(onSubmit).not.toHaveBeenCalled();
 
-        component.find('input[name="password"]')
+        component
+            .find('input[name="password"]')
             .simulate('change', { target: { value: 'Password1235+', name: 'password' } });
 
-        component.find('input[name="firstName"]')
+        component
+            .find('input[name="firstName"]')
             .simulate('change', { target: { value: 'foo', name: 'firstName' } });
 
-        component.find('input[name="lastName"]')
+        component
+            .find('input[name="lastName"]')
             .simulate('change', { target: { value: 'bar', name: 'lastName' } });
 
-        component.find('form')
-            .simulate('submit');
+        component.find('form').simulate('submit');
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
-        expect(onSubmit).toHaveBeenCalledWith(expect.objectContaining({
-            email: 'test@bigcommerce.com',
-            firstName: 'foo',
-            lastName: 'bar',
-            password: 'Password1235+',
-            acceptsMarketingEmails: [],
-        }));
+        expect(onSubmit).toHaveBeenCalledWith(
+            expect.objectContaining({
+                email: 'test@bigcommerce.com',
+                firstName: 'foo',
+                lastName: 'bar',
+                password: 'Password1235+',
+                acceptsMarketingEmails: [],
+            }),
+        );
     });
 });

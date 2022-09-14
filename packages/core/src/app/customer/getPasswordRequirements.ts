@@ -9,12 +9,7 @@ export interface PasswordRequirements {
 
 export function getPasswordRequirementsFromConfig(config: ShopperConfig): PasswordRequirements {
     const {
-        passwordRequirements: {
-            minlength,
-            error: description,
-            alpha,
-            numeric,
-        },
+        passwordRequirements: { minlength, error: description, alpha, numeric },
     } = config;
 
     return getPasswordRequirements({

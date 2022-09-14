@@ -1,23 +1,34 @@
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
-import { CardInstrument, CheckoutSelectors, CustomerInitializeOptions,
+import {
+    CardInstrument,
+    CheckoutSelectors,
+    CustomerInitializeOptions,
     CustomerRequestOptions,
-    Instrument, PaymentInitializeOptions,
+    Instrument,
+    PaymentInitializeOptions,
     PaymentInstrument,
-    PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
+    PaymentMethod,
+    PaymentRequestOptions,
+} from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import classNames from 'classnames';
 import { find, noop, some } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
-import { withCheckout, CheckoutContextProps } from '../../checkout';
+import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+
+import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { MapToPropsFactory } from '../../common/hoc';
 import { LoadingOverlay } from '../../ui/loading';
-import { isBankAccountInstrument, isCardInstrument, isInstrumentCardCodeRequiredSelector,
+import {
+    CardInstrumentFieldset,
+    CreditCardValidation,
+    isBankAccountInstrument,
+    isCardInstrument,
+    isInstrumentCardCodeRequiredSelector,
     isInstrumentCardNumberRequiredSelector,
     isInstrumentFeatureAvailable,
-    CardInstrumentFieldset,
-    CreditCardValidation } from '../storedInstrument';
+} from '../storedInstrument';
 import withPayment, { WithPaymentProps } from '../withPayment';
 
 export interface HostedDropInPaymentMethodProps {
@@ -34,7 +45,10 @@ export interface HostedDropInPaymentMethodProps {
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
     onUnhandledError?(error: Error): void;
     initializeCustomer?(options: CustomerInitializeOptions): Promise<CheckoutSelectors>;
-    initializePayment(options: PaymentInitializeOptions, selectedInstrumentId?: string): Promise<CheckoutSelectors>;
+    initializePayment(
+        options: PaymentInitializeOptions,
+        selectedInstrumentId?: string,
+    ): Promise<CheckoutSelectors>;
     signInCustomer?(): void;
     onSignOut?(): void;
     onSignOutError?(error: Error): void;
@@ -59,9 +73,9 @@ interface WithCheckoutHostedDropInPaymentMethodProps {
 
 class HostedDropInPaymentMethod extends Component<
     HostedDropInPaymentMethodProps &
-    WithCheckoutHostedDropInPaymentMethodProps &
-    ConnectFormikProps<PaymentFormValues> &
-    WithPaymentProps
+        WithCheckoutHostedDropInPaymentMethodProps &
+        ConnectFormikProps<PaymentFormValues> &
+        WithPaymentProps
 > {
     state: HostedDropInPaymentMethodState = {
         isAddingNewCard: false,
@@ -77,14 +91,19 @@ class HostedDropInPaymentMethod extends Component<
             if (isInstrumentFeatureAvailableProp) {
                 await loadInstruments();
             }
+
             await this.initializeMethod();
         } catch (error) {
             onUnhandledError(error);
         }
     }
 
-    async componentDidUpdate(prevProps: Readonly<HostedDropInPaymentMethodProps & WithCheckoutHostedDropInPaymentMethodProps>,
-                             prevState: Readonly<HostedDropInPaymentMethodState>): Promise<void> {
+    async componentDidUpdate(
+        prevProps: Readonly<
+            HostedDropInPaymentMethodProps & WithCheckoutHostedDropInPaymentMethodProps
+        >,
+        prevState: Readonly<HostedDropInPaymentMethodState>,
+    ): Promise<void> {
         const {
             deinitializePayment = noop,
             instruments,
@@ -94,17 +113,16 @@ class HostedDropInPaymentMethod extends Component<
             isPaymentDataRequired,
         } = this.props;
 
-        const {
-            selectedInstrumentId,
-            isAddingNewCard,
-        } = this.state;
+        const { selectedInstrumentId, isAddingNewCard } = this.state;
         const selectedInstrument = this.getDefaultInstrumentId();
 
-        hidePaymentSubmitButton(method, (!selectedInstrument && isPaymentDataRequired));
+        hidePaymentSubmitButton(method, !selectedInstrument && isPaymentDataRequired);
 
-        if (selectedInstrumentId !== prevState.selectedInstrumentId ||
+        if (
+            selectedInstrumentId !== prevState.selectedInstrumentId ||
             (prevProps.instruments.length > 0 && instruments.length === 0) ||
-            isAddingNewCard !== prevState.isAddingNewCard) {
+            isAddingNewCard !== prevState.isAddingNewCard
+        ) {
             try {
                 await deinitializePayment({
                     gatewayId: method.gateway,
@@ -156,44 +174,44 @@ class HostedDropInPaymentMethod extends Component<
             shouldHideInstrumentExpiryDate = false,
         } = this.props;
 
-        const {
-            isAddingNewCard,
-            selectedInstrumentId = this.getDefaultInstrumentId(),
-        } = this.state;
+        const { isAddingNewCard, selectedInstrumentId = this.getDefaultInstrumentId() } =
+            this.state;
 
-        const shouldShowInstrumentFieldset = isInstrumentFeatureAvailableProp && instruments.length > 0;
+        const shouldShowInstrumentFieldset =
+            isInstrumentFeatureAvailableProp && instruments.length > 0;
         const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
         const isLoading = (isInitializing || isLoadingInstruments) && !hideWidget;
 
         return (
-            <LoadingOverlay
-                hideContentWhenLoading
-                isLoading={ isLoading }
-            >
-                { shouldShowInstrumentFieldset && <CardInstrumentFieldset
-                    instruments={ instruments as CardInstrument[] }
-                    onDeleteInstrument={ this.handleDeleteInstrument }
-                    onSelectInstrument={ this.handleSelectInstrument }
-                    onUseNewInstrument={ this.handleUseNewCard }
-                    selectedInstrumentId={ selectedInstrumentId }
-                    shouldHideExpiryDate={ shouldHideInstrumentExpiryDate }
-                    validateInstrument={ this.getValidateInstrument() }
-                /> }
-
-                { shouldShowCreditCardFieldset && <div className="paymentMethod--hosted">
-                    <div
-                        className={ classNames(
-                            'widget',
-                            `widget--${method.id}`,
-                            'payment-widget'
-                        ) }
-                        id={ containerId }
-                        style={ {
-                            display: undefined,
-                        } }
-                        tabIndex={ -1 }
+            <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
+                {shouldShowInstrumentFieldset && (
+                    <CardInstrumentFieldset
+                        instruments={instruments as CardInstrument[]}
+                        onDeleteInstrument={this.handleDeleteInstrument}
+                        onSelectInstrument={this.handleSelectInstrument}
+                        onUseNewInstrument={this.handleUseNewCard}
+                        selectedInstrumentId={selectedInstrumentId}
+                        shouldHideExpiryDate={shouldHideInstrumentExpiryDate}
+                        validateInstrument={this.getValidateInstrument()}
                     />
-                </div> }
+                )}
+
+                {shouldShowCreditCardFieldset && (
+                    <div className="paymentMethod--hosted">
+                        <div
+                            className={classNames(
+                                'widget',
+                                `widget--${method.id}`,
+                                'payment-widget',
+                            )}
+                            id={containerId}
+                            style={{
+                                display: undefined,
+                            }}
+                            tabIndex={-1}
+                        />
+                    </div>
+                )}
             </LoadingOverlay>
         );
     }
@@ -206,10 +224,8 @@ class HostedDropInPaymentMethod extends Component<
         }
 
         const { instruments } = this.props;
-        const defaultInstrument = (
-            instruments.find(instrument => instrument.defaultInstrument) ||
-            instruments[0]
-        );
+        const defaultInstrument =
+            instruments.find((instrument) => instrument.defaultInstrument) || instruments[0];
 
         return defaultInstrument && defaultInstrument.bigpayToken;
     }
@@ -226,8 +242,12 @@ class HostedDropInPaymentMethod extends Component<
 
         const { selectedInstrumentId = this.getDefaultInstrumentId() } = this.state;
         const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
-        const shouldShowNumberField = selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument as CardInstrument) : false;
-        const shouldShowCardCodeField = selectedInstrument ? isInstrumentCardCodeRequiredProp(selectedInstrument as CardInstrument, method) : false;
+        const shouldShowNumberField = selectedInstrument
+            ? isInstrumentCardNumberRequiredProp(selectedInstrument as CardInstrument)
+            : false;
+        const shouldShowCardCodeField = selectedInstrument
+            ? isInstrumentCardCodeRequiredProp(selectedInstrument as CardInstrument, method)
+            : false;
 
         if (hideVerificationFields) {
             return;
@@ -239,8 +259,8 @@ class HostedDropInPaymentMethod extends Component<
 
         return (
             <CreditCardValidation
-                shouldShowCardCodeField={ shouldShowCardCodeField }
-                shouldShowNumberField={ shouldShowNumberField }
+                shouldShowCardCodeField={shouldShowCardCodeField}
+                shouldShowNumberField={shouldShowNumberField}
             />
         );
     }
@@ -277,14 +297,20 @@ class HostedDropInPaymentMethod extends Component<
 
         setSubmit(method, null);
 
-        return initializePayment({
-            gatewayId: method.gateway,
-            methodId: method.id,
-        }, selectedInstrumentId);
+        return initializePayment(
+            {
+                gatewayId: method.gateway,
+                methodId: method.id,
+            },
+            selectedInstrumentId,
+        );
     }
 
-    private handleDeleteInstrument: (id: string) => void = id => {
-        const { instruments, formik: { setFieldValue } } = this.props;
+    private handleDeleteInstrument: (id: string) => void = (id) => {
+        const {
+            instruments,
+            formik: { setFieldValue },
+        } = this.props;
         const { selectedInstrumentId } = this.state;
 
         if (instruments.length === 0) {
@@ -303,7 +329,7 @@ class HostedDropInPaymentMethod extends Component<
         }
     };
 
-    private handleSelectInstrument: (id: string) => void = id => {
+    private handleSelectInstrument: (id: string) => void = (id) => {
         this.setState({
             isAddingNewCard: false,
             selectedInstrumentId: id,
@@ -311,11 +337,7 @@ class HostedDropInPaymentMethod extends Component<
     };
 
     private handleUseNewCard: () => void = async () => {
-        const {
-            deinitializePayment = noop,
-            initializePayment = noop,
-            method,
-        } = this.props;
+        const { deinitializePayment = noop, initializePayment = noop, method } = this.props;
 
         this.setState({
             isAddingNewCard: true,
@@ -334,31 +356,25 @@ class HostedDropInPaymentMethod extends Component<
     };
 }
 
-const mapFromCheckoutProps: MapToPropsFactory<CheckoutContextProps,
+const mapFromCheckoutProps: MapToPropsFactory<
+    CheckoutContextProps,
     WithCheckoutHostedDropInPaymentMethodProps,
-    HostedDropInPaymentMethodProps & ConnectFormikProps<PaymentFormValues>> = () => {
-    const filterInstruments = memoizeOne((instruments: PaymentInstrument[] = []) => instruments.filter(instrument => isCardInstrument(instrument) || isBankAccountInstrument(instrument)));
+    HostedDropInPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
+> = () => {
+    const filterInstruments = memoizeOne((instruments: PaymentInstrument[] = []) =>
+        instruments.filter(
+            (instrument) => isCardInstrument(instrument) || isBankAccountInstrument(instrument),
+        ),
+    );
 
     return (context, props) => {
+        const { isUsingMultiShipping = false, method } = props;
+
+        const { checkoutService, checkoutState } = context;
 
         const {
-            isUsingMultiShipping = false,
-            method,
-        } = props;
-
-        const {checkoutService, checkoutState} = context;
-
-        const {
-            data: {
-                getCheckout,
-                getConfig,
-                getCustomer,
-                getInstruments,
-                isPaymentDataRequired,
-            },
-            statuses: {
-                isLoadingInstruments,
-            },
+            data: { getCheckout, getConfig, getCustomer, getInstruments, isPaymentDataRequired },
+            statuses: { isLoadingInstruments },
         } = checkoutState;
 
         const checkout = getCheckout();
@@ -373,7 +389,7 @@ const mapFromCheckoutProps: MapToPropsFactory<CheckoutContextProps,
             instruments: filterInstruments(getInstruments(method)),
             isLoadingInstruments: isLoadingInstruments(),
             isPaymentDataRequired: isPaymentDataRequired(),
-            isSignedIn: some(checkout.payments, {providerId: method.id}),
+            isSignedIn: some(checkout.payments, { providerId: method.id }),
             isInstrumentCardCodeRequired: isInstrumentCardCodeRequiredSelector(checkoutState),
             isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredSelector(checkoutState),
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailable({
@@ -388,4 +404,6 @@ const mapFromCheckoutProps: MapToPropsFactory<CheckoutContextProps,
     };
 };
 
-export default connectFormik(withPayment(withCheckout(mapFromCheckoutProps)(HostedDropInPaymentMethod)));
+export default connectFormik(
+    withPayment(withCheckout(mapFromCheckoutProps)(HostedDropInPaymentMethod)),
+);

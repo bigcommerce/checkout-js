@@ -1,7 +1,9 @@
 import { getScriptLoader, ScriptLoader } from '@bigcommerce/script-loader';
 
+import GoogleAutocompleteScriptLoader, {
+    GoogleCallbackWindow,
+} from './GoogleAutocompleteScriptLoader';
 import { GoogleAutocompleteWindow } from './googleAutocompleteTypes';
-import GoogleAutocompleteScriptLoader, { GoogleCallbackWindow } from './GoogleAutocompleteScriptLoader';
 
 describe('GoogleAutocompleteScriptLoader', () => {
     const scriptLoader: ScriptLoader = getScriptLoader();
@@ -33,13 +35,14 @@ describe('GoogleAutocompleteScriptLoader', () => {
         });
 
         it('calls loadScript with the right parameters', () => {
-            expect(scriptLoader.loadScript)
-                .toHaveBeenCalledWith([
+            expect(scriptLoader.loadScript).toHaveBeenCalledWith(
+                [
                     '//maps.googleapis.com/maps/api/js?language=en',
                     'key=foo',
                     'libraries=places',
                     'callback=initAutoComplete',
-                ].join('&'));
+                ].join('&'),
+            );
         });
 
         it('calls loadScript once', async () => {
@@ -47,8 +50,7 @@ describe('GoogleAutocompleteScriptLoader', () => {
             await googleScriptLoader.loadMapsSdk('y');
             await googleScriptLoader.loadMapsSdk('z');
 
-            expect(scriptLoader.loadScript)
-                .toHaveBeenCalledTimes(1);
+            expect(scriptLoader.loadScript).toHaveBeenCalledTimes(1);
         });
     });
 });

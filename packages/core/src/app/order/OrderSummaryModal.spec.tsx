@@ -15,15 +15,17 @@ describe('OrderSummaryModal', () => {
     beforeEach(() => {
         order = getOrder();
 
-        orderSummary = shallow(<OrderSummaryModal
-            isOpen={ true }
-            { ...mapToOrderSummarySubtotalsProps(order) }
-            additionalLineItems="foo"
-            lineItems={ order.lineItems }
-            shopperCurrency={ getStoreConfig().shopperCurrency }
-            storeCurrency={ getStoreConfig().currency }
-            total={ order.orderAmount }
-        />);
+        orderSummary = shallow(
+            <OrderSummaryModal
+                isOpen={true}
+                {...mapToOrderSummarySubtotalsProps(order)}
+                additionalLineItems="foo"
+                lineItems={order.lineItems}
+                shopperCurrency={getStoreConfig().shopperCurrency}
+                storeCurrency={getStoreConfig().currency}
+                total={order.orderAmount}
+            />,
+        );
     });
 
     it('renders order summary', () => {

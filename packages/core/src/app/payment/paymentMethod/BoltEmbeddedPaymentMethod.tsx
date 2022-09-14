@@ -1,4 +1,4 @@
-import React, { useCallback, useState, FunctionComponent } from 'react';
+import React, { FunctionComponent, useCallback, useState } from 'react';
 
 import BoltCustomForm from './BoltCustomForm';
 import { HostedPaymentMethodProps } from './HostedPaymentMethod';
@@ -10,38 +10,46 @@ const BoltEmbeddedPaymentMethod: FunctionComponent<HostedPaymentMethodProps> = (
     deinitializePayment,
     method,
 }) => {
-    const [ showCreateAccountCheckbox, setShowCreateAccountCheckbox ] = useState(false);
+    const [showCreateAccountCheckbox, setShowCreateAccountCheckbox] = useState(false);
 
     const boltEmbeddedContainerId = 'bolt-embedded';
 
-    const initializeBoltPayment = useCallback(options => initializePayment({
-            ...options,
-            bolt: {
-                containerId: boltEmbeddedContainerId,
-                useBigCommerceCheckout: true,
-                onPaymentSelect: (hasBoltAccount: boolean) => {
-                    setShowCreateAccountCheckbox(!hasBoltAccount);
+    const initializeBoltPayment = useCallback(
+        (options) =>
+            initializePayment({
+                ...options,
+                bolt: {
+                    containerId: boltEmbeddedContainerId,
+                    useBigCommerceCheckout: true,
+                    onPaymentSelect: (hasBoltAccount: boolean) => {
+                        setShowCreateAccountCheckbox(!hasBoltAccount);
+                    },
                 },
-            },
-        }
-    ), [initializePayment, boltEmbeddedContainerId]);
+            }),
+        [initializePayment, boltEmbeddedContainerId],
+    );
 
-    const renderCustomPaymentForm = useCallback(() => (
-        <BoltCustomForm
-            containerId={ boltEmbeddedContainerId }
-            showCreateAccountCheckbox={ showCreateAccountCheckbox }
+    const renderCustomPaymentForm = useCallback(
+        () => (
+            <BoltCustomForm
+                containerId={boltEmbeddedContainerId}
+                showCreateAccountCheckbox={showCreateAccountCheckbox}
+            />
+        ),
+        [boltEmbeddedContainerId, showCreateAccountCheckbox],
+    );
+
+    return (
+        <HostedWidgetPaymentMethod
+            containerId="boltEmbeddedOneClick"
+            deinitializePayment={deinitializePayment}
+            initializePayment={initializeBoltPayment}
+            isInitializing={isInitializing}
+            method={method}
+            renderCustomPaymentForm={renderCustomPaymentForm}
+            shouldRenderCustomInstrument
         />
-    ), [ boltEmbeddedContainerId, showCreateAccountCheckbox ]);
-
-    return <HostedWidgetPaymentMethod
-        containerId="boltEmbeddedOneClick"
-        deinitializePayment={ deinitializePayment }
-        initializePayment={ initializeBoltPayment }
-        isInitializing={ isInitializing }
-        method={ method }
-        renderCustomPaymentForm={ renderCustomPaymentForm }
-        shouldRenderCustomInstrument
-    />;
+    );
 };
 
 export default BoltEmbeddedPaymentMethod;

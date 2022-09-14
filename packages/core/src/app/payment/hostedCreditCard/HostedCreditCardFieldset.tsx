@@ -34,30 +34,34 @@ const HostedCreditCardFieldset: FunctionComponent<HostedCreditCardFieldsetProps>
     >
         <div className="form-ccFields">
             <HostedCreditCardNumberField
-                appearFocused={ focusedFieldType === 'cardNumber' }
-                id={ cardNumberId }
+                appearFocused={focusedFieldType === 'cardNumber'}
+                id={cardNumberId}
                 name="hostedForm.errors.cardNumber"
             />
 
             <HostedCreditCardExpiryField
-                appearFocused={ focusedFieldType === 'cardExpiry' }
-                id={ cardExpiryId }
+                appearFocused={focusedFieldType === 'cardExpiry'}
+                id={cardExpiryId}
                 name="hostedForm.errors.cardExpiry"
             />
 
-            { cardNameId && <HostedCreditCardNameField
-                appearFocused={ focusedFieldType === 'cardName' }
-                id={ cardNameId }
-                name="hostedForm.errors.cardName"
-            /> }
+            {cardNameId && (
+                <HostedCreditCardNameField
+                    appearFocused={focusedFieldType === 'cardName'}
+                    id={cardNameId}
+                    name="hostedForm.errors.cardName"
+                />
+            )}
 
-            { cardCodeId && <HostedCreditCardCodeField
-                appearFocused={ focusedFieldType === 'cardCode' }
-                id={ cardCodeId }
-                name="hostedForm.errors.cardCode"
-            /> }
+            {cardCodeId && (
+                <HostedCreditCardCodeField
+                    appearFocused={focusedFieldType === 'cardCode'}
+                    id={cardCodeId}
+                    name="hostedForm.errors.cardCode"
+                />
+            )}
 
-            { additionalFields }
+            {additionalFields}
         </div>
     </Fieldset>
 );

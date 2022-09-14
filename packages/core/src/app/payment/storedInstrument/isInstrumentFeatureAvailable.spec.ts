@@ -7,7 +7,9 @@ import { isUsingMultiShipping } from '../../shipping';
 import { getConsignment } from '../../shipping/consignment.mock';
 import { getPaymentMethod } from '../payment-methods.mock';
 
-import isInstrumentFeatureAvailable, { IsInstrumentFeatureAvailableState } from './isInstrumentFeatureAvailable';
+import isInstrumentFeatureAvailable, {
+    IsInstrumentFeatureAvailableState,
+} from './isInstrumentFeatureAvailable';
 
 describe('isInstrumentFeatureAvailable()', () => {
     let state: IsInstrumentFeatureAvailableState;
@@ -20,10 +22,7 @@ describe('isInstrumentFeatureAvailable()', () => {
                 },
             }),
             customer: getCustomer(),
-            isUsingMultiShipping: isUsingMultiShipping(
-                [getConsignment()],
-                getCart().lineItems
-            ),
+            isUsingMultiShipping: isUsingMultiShipping([getConsignment()], getCart().lineItems),
             paymentMethod: merge({}, getPaymentMethod(), {
                 config: {
                     isVaultingEnabled: true,
@@ -33,48 +32,55 @@ describe('isInstrumentFeatureAvailable()', () => {
     });
 
     it('returns false if store does not support vaulting', () => {
-        expect(isInstrumentFeatureAvailable(merge({}, state, {
-            config: {
-                checkoutSettings: {
-                    isCardVaultingEnabled: false,
-                },
-            },
-        })))
-            .toEqual(false);
+        expect(
+            isInstrumentFeatureAvailable(
+                merge({}, state, {
+                    config: {
+                        checkoutSettings: {
+                            isCardVaultingEnabled: false,
+                        },
+                    },
+                }),
+            ),
+        ).toBe(false);
     });
 
     it('returns false if payment method does not support vaulting', () => {
-        expect(isInstrumentFeatureAvailable(merge({}, state, {
-            paymentMethod: {
-                config: {
-                    isVaultingEnabled: false,
-                },
-            },
-        })))
-            .toEqual(false);
+        expect(
+            isInstrumentFeatureAvailable(
+                merge({}, state, {
+                    paymentMethod: {
+                        config: {
+                            isVaultingEnabled: false,
+                        },
+                    },
+                }),
+            ),
+        ).toBe(false);
     });
 
     it('returns false if shopper is not logged in', () => {
-        expect(isInstrumentFeatureAvailable({
-            ...state,
-            customer: getGuestCustomer(),
-        }))
-            .toEqual(false);
+        expect(
+            isInstrumentFeatureAvailable({
+                ...state,
+                customer: getGuestCustomer(),
+            }),
+        ).toBe(false);
     });
 
     it('returns false if shopper is checking out with multiple shipping address', () => {
-        expect(isInstrumentFeatureAvailable({
-            ...state,
-            isUsingMultiShipping: isUsingMultiShipping(
-                [getConsignment(), getConsignment()],
-                getCart().lineItems
-            ),
-        }))
-            .toEqual(false);
+        expect(
+            isInstrumentFeatureAvailable({
+                ...state,
+                isUsingMultiShipping: isUsingMultiShipping(
+                    [getConsignment(), getConsignment()],
+                    getCart().lineItems,
+                ),
+            }),
+        ).toBe(false);
     });
 
     it('returns true otherwise', () => {
-        expect(isInstrumentFeatureAvailable(state))
-            .toEqual(true);
+        expect(isInstrumentFeatureAvailable(state)).toBe(true);
     });
 });

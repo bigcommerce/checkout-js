@@ -5,76 +5,52 @@ export function getGoogleAutocompletePlaceMock(): google.maps.places.PlaceResult
             {
                 long_name: 'unit 6',
                 short_name: 'unit 6',
-                types: [
-                    'subpremise',
-                ],
+                types: ['subpremise'],
             },
             {
                 long_name: '1-3 (l)',
                 short_name: '1-3 (s)',
-                types: [
-                    'street_number',
-                ],
+                types: ['street_number'],
             },
             {
                 long_name: 'Smail Street',
                 short_name: 'Smail St',
-                types: [
-                    'route',
-                ],
+                types: ['route'],
             },
             {
                 long_name: 'Ultimo PT (l)',
                 short_name: 'Ultimo PT',
-                types: [
-                    'postal_town',
-                ],
+                types: ['postal_town'],
             },
             {
                 long_name: 'Ultimo (l)',
                 short_name: 'Ultimo',
-                types: [
-                    'locality',
-                    'political',
-                ],
+                types: ['locality', 'political'],
             },
             {
                 long_name: 'Ultimo N (l)',
                 short_name: 'Ultimo N',
-                types: [
-                    'neighborhood',
-                ],
+                types: ['neighborhood'],
             },
             {
                 long_name: 'Council of the City of Sydney',
                 short_name: 'Sydney',
-                types: [
-                    'administrative_area_level_2',
-                    'political',
-                ],
+                types: ['administrative_area_level_2', 'political'],
             },
             {
                 long_name: 'New South Wales',
                 short_name: 'NSW',
-                types: [
-                    'administrative_area_level_1',
-                    'political',
-                ],
+                types: ['administrative_area_level_1', 'political'],
             },
             {
                 long_name: 'Australia',
                 short_name: 'AU',
-                types: [
-                    'country',
-                    'political',
-                ],
+                types: ['country', 'political'],
             },
             {
                 long_name: '2007  (l)',
                 short_name: '2007',
-                types: [
-                    'postal_code',
-                ],
+                types: ['postal_code'],
             },
         ],
     } as google.maps.places.PlaceResult;

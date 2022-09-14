@@ -12,15 +12,17 @@ describe('OrderSummarySubtotals', () => {
     beforeEach(() => {
         const order = getOrder();
 
-        orderSummarySubtotals = shallow(<OrderSummarySubtotals
-            coupons={ order.coupons }
-            discountAmount={ order.discountAmount }
-            giftCertificates={ order.payments && mapFromPayments(order.payments) }
-            handlingAmount={ order.handlingCostTotal }
-            shippingAmount={ order.shippingCostTotal }
-            subtotalAmount={ order.orderAmount }
-            taxes={ order.taxes }
-        />);
+        orderSummarySubtotals = shallow(
+            <OrderSummarySubtotals
+                coupons={order.coupons}
+                discountAmount={order.discountAmount}
+                giftCertificates={order.payments && mapFromPayments(order.payments)}
+                handlingAmount={order.handlingCostTotal}
+                shippingAmount={order.shippingCostTotal}
+                subtotalAmount={order.orderAmount}
+                taxes={order.taxes}
+            />,
+        );
     });
 
     it('renders component', () => {

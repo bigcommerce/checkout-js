@@ -1,57 +1,70 @@
 import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { useCallback, FunctionComponent } from 'react';
+import React, { FunctionComponent, useCallback } from 'react';
 
-import { withCheckout, CheckoutContextProps } from '../../checkout';
+import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { getAppliedStyles } from '../../common/dom';
-import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps } from '../hostedCreditCard';
+import {
+    withHostedCreditCardFieldset,
+    WithInjectedHostedCreditCardFieldsetProps,
+} from '../hostedCreditCard';
 
-import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
+import HostedWidgetPaymentMethod, {
+    HostedWidgetPaymentMethodProps,
+} from './HostedWidgetPaymentMethod';
 
 export type StripePaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId'>;
 
 interface WithCheckoutStripePaymentMethodProps {
     storeUrl: string;
 }
-const StripeUPEPaymentMethod: FunctionComponent<StripePaymentMethodProps & WithInjectedHostedCreditCardFieldsetProps & WithCheckoutStripePaymentMethodProps> = ({
-    initializePayment,
-    method,
-    storeUrl,
-    onUnhandledError = noop,
-    ...rest
-    }) => {
+
+const StripeUPEPaymentMethod: FunctionComponent<
+    StripePaymentMethodProps &
+        WithInjectedHostedCreditCardFieldsetProps &
+        WithCheckoutStripePaymentMethodProps
+> = ({ initializePayment, method, storeUrl, onUnhandledError = noop, ...rest }) => {
     const containerId = `stripe-${method.id}-component-field`;
 
-    const initializeStripePayment: HostedWidgetPaymentMethodProps['initializePayment'] = useCallback(async (options: PaymentInitializeOptions) => {
-        const formInput = getStylesFromElement(`${containerId}--input`, ['color', 'background-color', 'border-color', 'box-shadow']);
-        const formLabel = getStylesFromElement(`${containerId}--label`, ['color']);
-        const formError = getStylesFromElement(`${containerId}--error`, ['color']);
+    const initializeStripePayment: HostedWidgetPaymentMethodProps['initializePayment'] =
+        useCallback(
+            async (options: PaymentInitializeOptions) => {
+                const formInput = getStylesFromElement(`${containerId}--input`, [
+                    'color',
+                    'background-color',
+                    'border-color',
+                    'box-shadow',
+                ]);
+                const formLabel = getStylesFromElement(`${containerId}--label`, ['color']);
+                const formError = getStylesFromElement(`${containerId}--error`, ['color']);
 
-        return initializePayment({
-            ...options,
-            stripeupe: {
-                containerId,
-                style: {
-                    labelText: formLabel.color,
-                    fieldText: formInput.color,
-                    fieldPlaceholderText: formInput.color,
-                    fieldErrorText: formError.color,
-                    fieldBackground: formInput['background-color'],
-                    fieldInnerShadow: formInput['box-shadow'],
-                    fieldBorder: formInput['border-color'],
-                },
-                onError: onUnhandledError,
+                return initializePayment({
+                    ...options,
+                    stripeupe: {
+                        containerId,
+                        style: {
+                            labelText: formLabel.color,
+                            fieldText: formInput.color,
+                            fieldPlaceholderText: formInput.color,
+                            fieldErrorText: formError.color,
+                            fieldBackground: formInput['background-color'],
+                            fieldInnerShadow: formInput['box-shadow'],
+                            fieldBorder: formInput['border-color'],
+                        },
+                        onError: onUnhandledError,
+                    },
+                });
             },
-        });
-    }, [initializePayment, containerId, onUnhandledError]);
+            [initializePayment, containerId, onUnhandledError],
+        );
 
-    const getStylesFromElement = (
-        id: string,
-        properties: string[]) => {
+    const getStylesFromElement = (id: string, properties: string[]) => {
         const parentContainer = document.getElementById(id);
 
         if (!parentContainer) {
-            throw new Error('Unable to retrieve input styles as the provided container ID is not valid.');
+            throw new Error(
+                'Unable to retrieve input styles as the provided container ID is not valid.',
+            );
         }
 
         return getAppliedStyles(parentContainer, properties);
@@ -60,41 +73,36 @@ const StripeUPEPaymentMethod: FunctionComponent<StripePaymentMethodProps & WithI
     const renderCheckoutThemeStylesForStripeUPE = () => {
         return (
             <div
-                className={ 'optimizedCheckout-form-input' }
-                id={ `${containerId}--input` }
+                className="optimizedCheckout-form-input"
+                id={`${containerId}--input`}
                 placeholder="1111"
             >
-                <div
-                    className={ 'form-field--error' }
-                >
-                    <div
-                        className={ 'optimizedCheckout-form-label' }
-                        id={ `${containerId}--error` }
-                    />
+                <div className="form-field--error">
+                    <div className="optimizedCheckout-form-label" id={`${containerId}--error`} />
                 </div>
-                <div
-                    className={ 'optimizedCheckout-form-label' }
-                    id={ `${containerId}--label` }
-                />
+                <div className="optimizedCheckout-form-label" id={`${containerId}--label`} />
             </div>
         );
     };
 
-    return <>
-        <HostedWidgetPaymentMethod
-            { ...rest }
-            containerId={ containerId }
-            hideContentWhenSignedOut
-            initializePayment={ initializeStripePayment }
-            method={ method }
-        />
-        { renderCheckoutThemeStylesForStripeUPE() }
-    </>;
+    return (
+        <>
+            <HostedWidgetPaymentMethod
+                {...rest}
+                containerId={containerId}
+                hideContentWhenSignedOut
+                initializePayment={initializeStripePayment}
+                method={method}
+            />
+            {renderCheckoutThemeStylesForStripeUPE()}
+        </>
+    );
 };
 
-function mapFromCheckoutProps(
-    { checkoutState }: CheckoutContextProps) {
-    const { data: { getConfig } } = checkoutState;
+function mapFromCheckoutProps({ checkoutState }: CheckoutContextProps) {
+    const {
+        data: { getConfig },
+    } = checkoutState;
     const config = getConfig();
 
     if (!config) {
@@ -106,4 +114,6 @@ function mapFromCheckoutProps(
     };
 }
 
-export default withHostedCreditCardFieldset(withCheckout(mapFromCheckoutProps)(StripeUPEPaymentMethod));
+export default withHostedCreditCardFieldset(
+    withCheckout(mapFromCheckoutProps)(StripeUPEPaymentMethod),
+);

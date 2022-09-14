@@ -1,4 +1,4 @@
-import React, { memo, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { preventDefault } from '../common/dom';
 import { TranslatedString } from '../locale';
@@ -20,25 +20,27 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
     <div className="form-legend-container">
         <Legend testId="shipping-address-heading">
             <TranslatedString
-                id={ isMultiShippingMode ?
-                    (isGuest ?
-                        'shipping.multishipping_address_heading_guest' :
-                        'shipping.multishipping_address_heading') :
-                    'shipping.shipping_address_heading' }
+                id={
+                    isMultiShippingMode
+                        ? isGuest
+                            ? 'shipping.multishipping_address_heading_guest'
+                            : 'shipping.multishipping_address_heading'
+                        : 'shipping.shipping_address_heading'
+                }
             />
         </Legend>
 
-        { shouldShowMultiShipping &&
+        {shouldShowMultiShipping && (
             <a
                 data-test="shipping-mode-toggle"
                 href="#"
-                onClick={ preventDefault(onMultiShippingChange) }
+                onClick={preventDefault(onMultiShippingChange)}
             >
-                <TranslatedString id={ isMultiShippingMode ?
-                    'shipping.ship_to_single' :
-                    'shipping.ship_to_multi' }
+                <TranslatedString
+                    id={isMultiShippingMode ? 'shipping.ship_to_single' : 'shipping.ship_to_multi'}
                 />
-            </a> }
+            </a>
+        )}
     </div>
 );
 

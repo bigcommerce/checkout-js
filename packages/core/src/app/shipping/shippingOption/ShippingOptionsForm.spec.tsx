@@ -11,7 +11,6 @@ import { getConsignment } from '../consignment.mock';
 import ShippingOptionsForm, { ShippingOptionsFormProps } from './ShippingOptionsForm';
 import ShippingOptionsList from './ShippingOptionsList';
 
-/* eslint-disable react/jsx-no-bind */
 describe('ShippingOptions Component', () => {
     const consignments = [
         {
@@ -40,17 +39,14 @@ describe('ShippingOptions Component', () => {
 
     it('renders sorted options for all consignments when multi-shipping', () => {
         const component = mount(
-            <Formik initialValues={ {} } onSubmit={ noop }>
-                <ShippingOptionsForm
-                    { ...defaultProps }
-                />
-            </Formik>
+            <Formik initialValues={{}} onSubmit={noop}>
+                <ShippingOptionsForm {...defaultProps} />
+            </Formik>,
         );
 
-        expect(component.find(ShippingOptionsList).length).toEqual(2);
+        expect(component.find(ShippingOptionsList)).toHaveLength(2);
 
-        expect(component.find('.shippingOptions-panel-message').length)
-            .toEqual(0);
+        expect(component.find('.shippingOptions-panel-message')).toHaveLength(0);
     });
 
     it('selects default shipping option once per consignment when updated consignment has no shipping option', async () => {
@@ -60,12 +56,9 @@ describe('ShippingOptions Component', () => {
         };
 
         mount(
-            <Formik initialValues={ {} } onSubmit={ noop }>
-                <ShippingOptionsForm
-                    { ...defaultProps }
-                    isMultiShippingMode={ false }
-                />
-            </Formik>
+            <Formik initialValues={{}} onSubmit={noop}>
+                <ShippingOptionsForm {...defaultProps} isMultiShippingMode={false} />
+            </Formik>,
         );
 
         const selectors = {
@@ -81,58 +74,63 @@ describe('ShippingOptions Component', () => {
         triggerConsignmentsUpdated(selectors);
         triggerConsignmentsUpdated(selectors);
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
         expect(defaultProps.selectShippingOption).toHaveBeenCalledTimes(2);
     });
 
     it('renders enter shipping address when no consignments', () => {
         const component = mount(
-            <Formik initialValues={ {} } onSubmit={ noop }>
+            <Formik initialValues={{}} onSubmit={noop}>
                 <ShippingOptionsForm
-                    { ...defaultProps }
-                    consignments={ [] }
-                    isLoading={ () => false }
-                    isMultiShippingMode={ false }
+                    {...defaultProps}
+                    consignments={[]}
+                    isLoading={() => false}
+                    isMultiShippingMode={false}
                 />
-            </Formik>
+            </Formik>,
         );
 
-        expect(component.find(TranslatedString).prop('id'))
-            .toEqual('shipping.enter_shipping_address_text');
+        expect(component.find(TranslatedString).prop('id')).toBe(
+            'shipping.enter_shipping_address_text',
+        );
     });
 
     it('renders select shipping address when no consignments and amazon shipping', () => {
         const component = mount(
-            <Formik initialValues={ {} } onSubmit={ noop }>
+            <Formik initialValues={{}} onSubmit={noop}>
                 <ShippingOptionsForm
-                    { ...defaultProps }
-                    consignments={ [] }
-                    isLoading={ () => false }
+                    {...defaultProps}
+                    consignments={[]}
+                    isLoading={() => false}
                     methodId="amazon"
                 />
-            </Formik>
+            </Formik>,
         );
 
-        expect(component.find(TranslatedString).prop('id'))
-            .toEqual('shipping.select_shipping_address_text');
+        expect(component.find(TranslatedString).prop('id')).toBe(
+            'shipping.select_shipping_address_text',
+        );
     });
 
     it('renders invalid shipping when no shipping options available', () => {
         const component = mount(
-            <Formik initialValues={ {} } onSubmit={ noop }>
+            <Formik initialValues={{}} onSubmit={noop}>
                 <ShippingOptionsForm
-                    { ...defaultProps }
-                    consignments={ [ {
-                        ...getConsignment(),
-                        availableShippingOptions: [],
-                    } ] }
-                    isMultiShippingMode={ false }
+                    {...defaultProps}
+                    consignments={[
+                        {
+                            ...getConsignment(),
+                            availableShippingOptions: [],
+                        },
+                    ]}
+                    isMultiShippingMode={false}
                 />
-            </Formik>
+            </Formik>,
         );
 
-        expect(component.find('.shippingOptions-panel-message').text())
-            .toEqual(defaultProps.invalidShippingMessage);
+        expect(component.find('.shippingOptions-panel-message').text()).toEqual(
+            defaultProps.invalidShippingMessage,
+        );
     });
 });

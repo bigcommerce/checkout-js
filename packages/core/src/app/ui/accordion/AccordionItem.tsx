@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { memo, useCallback, useContext, FunctionComponent, ReactNode } from 'react';
+import React, { FunctionComponent, memo, ReactNode, useCallback, useContext } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 import AccordionContext from './AccordionContext';
@@ -42,32 +42,26 @@ const AccordionItem: FunctionComponent<AccordionItemProps> = ({
     }, []);
 
     return (
-        <li className={ classNames(
-            className,
-            { [classNameSelected]: isSelected }
-        ) }
-        data-test={ `accordion-item_${itemId}` }
+        <li
+            className={classNames(className, { [classNameSelected]: isSelected })}
+            data-test={`accordion-item_${itemId}`}
         >
-            <div className={ classNames(
-                headerClassName,
-                { [headerClassNameSelected]: isSelected }
-            ) }
-            >
-                { headerContent({ isSelected, onToggle }) }
+            <div className={classNames(headerClassName, { [headerClassNameSelected]: isSelected })}>
+                {headerContent({ isSelected, onToggle })}
             </div>
 
-            { children && <CSSTransition
-                addEndListener={ transitionEndListener }
-                classNames={ bodyClassName }
-                in={ isSelected }
-                mountOnEnter
-                timeout={ {} }
-                unmountOnExit
-            >
-                <div className={ bodyClassName }>
-                    { children }
-                </div>
-            </CSSTransition> }
+            {children && (
+                <CSSTransition
+                    addEndListener={transitionEndListener}
+                    classNames={bodyClassName}
+                    in={isSelected}
+                    mountOnEnter
+                    timeout={{}}
+                    unmountOnExit
+                >
+                    <div className={bodyClassName}>{children}</div>
+                </CSSTransition>
+            )}
         </li>
     );
 };

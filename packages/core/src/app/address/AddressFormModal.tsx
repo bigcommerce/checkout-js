@@ -1,18 +1,18 @@
 import { Country, FormField } from '@bigcommerce/checkout-sdk';
-import { withFormik, FormikProps } from 'formik';
+import { FormikProps, withFormik } from 'formik';
 import React, { FunctionComponent } from 'react';
 import { lazy } from 'yup';
 
 import { preventDefault } from '../common/dom';
-import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
+import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 import { Button, ButtonVariant } from '../ui/button';
 import { Form } from '../ui/form';
 import { LoadingOverlay } from '../ui/loading';
 import { Modal, ModalHeader } from '../ui/modal';
 
+import AddressForm from './AddressForm';
 import getAddressFormFieldsValidationSchema from './getAddressFormFieldsValidationSchema';
 import { AddressFormValues } from './mapAddressToFormValues';
-import AddressForm from './AddressForm';
 
 export interface AddressFormModalProps extends AddressFormProps {
     isOpen: boolean;
@@ -31,7 +31,9 @@ export interface AddressFormProps {
     onRequestClose?(): void;
 }
 
-const SaveAddress: FunctionComponent<AddressFormProps & WithLanguageProps & FormikProps<AddressFormValues>> = ({
+const SaveAddress: FunctionComponent<
+    AddressFormProps & WithLanguageProps & FormikProps<AddressFormValues>
+> = ({
     googleMapsApiKey,
     getFields,
     countriesWithAutocomplete,
@@ -42,30 +44,30 @@ const SaveAddress: FunctionComponent<AddressFormProps & WithLanguageProps & Form
     onRequestClose,
 }) => (
     <Form autoComplete="on">
-        <LoadingOverlay isLoading={ isLoading }>
+        <LoadingOverlay isLoading={isLoading}>
             <AddressForm
-                countries={ countries }
-                countriesWithAutocomplete={ countriesWithAutocomplete }
-                countryCode={ values.countryCode }
-                formFields={ getFields(values.countryCode) }
-                googleMapsApiKey={ googleMapsApiKey }
-                setFieldValue={ setFieldValue }
-                shouldShowSaveAddress={ false }
+                countries={countries}
+                countriesWithAutocomplete={countriesWithAutocomplete}
+                countryCode={values.countryCode}
+                formFields={getFields(values.countryCode)}
+                googleMapsApiKey={googleMapsApiKey}
+                setFieldValue={setFieldValue}
+                shouldShowSaveAddress={false}
             />
             <div className="form-actions">
                 <a
                     className="button optimizedCheckout-buttonSecondary"
                     href="#"
-                    onClick={ preventDefault(onRequestClose) }
+                    onClick={preventDefault(onRequestClose)}
                 >
                     <TranslatedString id="common.cancel_action" />
                 </a>
 
                 <Button
-                    disabled={ isLoading }
+                    disabled={isLoading}
                     id="checkout-save-address"
                     type="submit"
-                    variant={ ButtonVariant.Primary }
+                    variant={ButtonVariant.Primary}
                 >
                     <TranslatedString id="address.save_address_action" />
                 </Button>
@@ -74,36 +76,36 @@ const SaveAddress: FunctionComponent<AddressFormProps & WithLanguageProps & Form
     </Form>
 );
 
-const SaveAddressForm = withLanguage(withFormik<AddressFormProps & WithLanguageProps, AddressFormValues>({
-    handleSubmit: (values, { props: { onSaveAddress } }) => {
-        onSaveAddress(values);
-    },
-    mapPropsToValues: ({ defaultCountryCode = '' }) => ({
-        firstName: '',
-        lastName: '',
-        address1: '',
-        address2: '',
-        customFields: {},
-        country: '',
-        countryCode: defaultCountryCode,
-        stateOrProvince: '',
-        stateOrProvinceCode: '',
-        postalCode: '',
-        phone: '',
-        city: '',
-        company: '',
-        shouldSaveAddress: false,
-    }),
-    validationSchema: ({
-        language,
-        getFields,
-    }: AddressFormProps & WithLanguageProps) => (
-        lazy<Partial<AddressFormValues>>(values => getAddressFormFieldsValidationSchema({
-            language,
-            formFields: getFields(values && values.countryCode),
-        }))
-    ),
-})(SaveAddress));
+const SaveAddressForm = withLanguage(
+    withFormik<AddressFormProps & WithLanguageProps, AddressFormValues>({
+        handleSubmit: (values, { props: { onSaveAddress } }) => {
+            onSaveAddress(values);
+        },
+        mapPropsToValues: ({ defaultCountryCode = '' }) => ({
+            firstName: '',
+            lastName: '',
+            address1: '',
+            address2: '',
+            customFields: {},
+            country: '',
+            countryCode: defaultCountryCode,
+            stateOrProvince: '',
+            stateOrProvinceCode: '',
+            postalCode: '',
+            phone: '',
+            city: '',
+            company: '',
+            shouldSaveAddress: false,
+        }),
+        validationSchema: ({ language, getFields }: AddressFormProps & WithLanguageProps) =>
+            lazy<Partial<AddressFormValues>>((values) =>
+                getAddressFormFieldsValidationSchema({
+                    language,
+                    formFields: getFields(values && values.countryCode),
+                }),
+            ),
+    })(SaveAddress),
+);
 
 const AddressFormModal: FunctionComponent<AddressFormModalProps> = ({
     isOpen,
@@ -118,15 +120,12 @@ const AddressFormModal: FunctionComponent<AddressFormModalProps> = ({
                 <TranslatedString id="address.add_address_heading" />
             </ModalHeader>
         }
-        isOpen={ isOpen }
-        onAfterOpen={ onAfterOpen }
-        onRequestClose={ onRequestClose }
-        shouldShowCloseButton={ true }
+        isOpen={isOpen}
+        onAfterOpen={onAfterOpen}
+        onRequestClose={onRequestClose}
+        shouldShowCloseButton={true}
     >
-        <SaveAddressForm
-            { ...addressFormProps }
-            onRequestClose={ onRequestClose }
-        />
+        <SaveAddressForm {...addressFormProps} onRequestClose={onRequestClose} />
     </Modal>
 );
 

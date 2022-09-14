@@ -1,20 +1,21 @@
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { LanguageService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { number } from 'card-validator';
 import { compact } from 'lodash';
-import React, { memo, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
-import { withCheckout, CheckoutContextProps } from '../../checkout';
+import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+
+import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { withLanguage, WithLanguageProps } from '../../locale';
-import { mapFromPaymentMethodCardType, CreditCardIconList } from '../creditCard';
+import { CreditCardIconList, mapFromPaymentMethodCardType } from '../creditCard';
 
+import { hasCreditCardNumber } from './CreditCardFieldsetValues';
 import getPaymentMethodDisplayName from './getPaymentMethodDisplayName';
 import getPaymentMethodName from './getPaymentMethodName';
+import { isHostedCreditCardFieldsetValues } from './HostedCreditCardFieldsetValues';
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodType from './PaymentMethodType';
-import { isHostedCreditCardFieldsetValues } from './HostedCreditCardFieldsetValues';
-import { hasCreditCardNumber } from './CreditCardFieldsetValues';
 
 export interface PaymentMethodTitleProps {
     method: PaymentMethod;
@@ -27,12 +28,14 @@ interface WithCdnPathProps {
 
 function getPaymentMethodTitle(
     language: LanguageService,
-    basePath: string
+    basePath: string,
 ): (method: PaymentMethod) => { logoUrl: string; titleText: string } {
     const cdnPath = (path: string) => `${basePath}${path}`;
 
-    return method => {
-        const paymentWithLogo = method.initializationData?.methodsWithLogo ? method.initializationData.methodsWithLogo : [];
+    return (method) => {
+        const paymentWithLogo = method.initializationData?.methodsWithLogo
+            ? method.initializationData.methodsWithLogo
+            : [];
         const methodName = getPaymentMethodName(language)(method);
         const methodDisplayName = getPaymentMethodDisplayName(language)(method);
         // TODO: API could provide the data below so UI can read simply read it.
@@ -127,12 +130,17 @@ function getPaymentMethodTitle(
                 titleText: '',
             },
             [PaymentMethodId.Opy]: {
-                logoUrl: cdnPath(`/img/payment-providers/${method.config.logo ?? 'opy_default.svg'}`),
+                logoUrl: cdnPath(
+                    `/img/payment-providers/${method.config.logo ?? 'opy_default.svg'}`,
+                ),
                 titleText: '',
             },
             [PaymentMethodType.Paypal]: {
                 // TODO: method.id === PaymentMethodId.BraintreeVenmo should be removed after the PAYPAL-1380.checkout_button_strategies_update experiment removal
-                logoUrl: (method.id === PaymentMethodId.BraintreeVenmo && method.logoUrl) ? method.logoUrl : cdnPath('/img/payment-providers/paypalpaymentsprouk.png'),
+                logoUrl:
+                    method.id === PaymentMethodId.BraintreeVenmo && method.logoUrl
+                        ? method.logoUrl
+                        : cdnPath('/img/payment-providers/paypalpaymentsprouk.png'),
                 titleText: '',
             },
             [PaymentMethodId.Quadpay]: {
@@ -148,32 +156,53 @@ function getPaymentMethodTitle(
                 titleText: language.translate('payment.zip_display_name_text'),
             },
             [PaymentMethodType.Barclaycard]: {
-                logoUrl: cdnPath(`/img/payment-providers/barclaycard_${method.id.toLowerCase()}.png`),
+                logoUrl: cdnPath(
+                    `/img/payment-providers/barclaycard_${method.id.toLowerCase()}.png`,
+                ),
                 titleText: '',
             },
             [PaymentMethodId.AdyenV2]: {
-                logoUrl: `https://checkoutshopper-live.adyen.com/checkoutshopper/images/logos/${(method.method === 'scheme') ? 'card' : method.method}.svg`,
+                logoUrl: `https://checkoutshopper-live.adyen.com/checkoutshopper/images/logos/${
+                    method.method === 'scheme' ? 'card' : method.method
+                }.svg`,
                 titleText: methodDisplayName,
             },
             [PaymentMethodId.AdyenV3]: {
-                logoUrl: `https://checkoutshopper-live.adyen.com/checkoutshopper/images/logos/${(method.method === 'scheme') ? 'card' : method.method}.svg`,
+                logoUrl: `https://checkoutshopper-live.adyen.com/checkoutshopper/images/logos/${
+                    method.method === 'scheme' ? 'card' : method.method
+                }.svg`,
                 titleText: methodDisplayName,
             },
             [PaymentMethodId.Mollie]: {
-                logoUrl: method.method === 'credit_card' ? '' : cdnPath(`/img/payment-providers/mollie_${method.method}.svg`),
+                logoUrl:
+                    method.method === 'credit_card'
+                        ? ''
+                        : cdnPath(`/img/payment-providers/mollie_${method.method}.svg`),
                 titleText: methodName,
             },
             [PaymentMethodId.Checkoutcom]: {
-                logoUrl: ['credit_card', 'card', 'checkoutcom'].includes(method.id) ? '' : cdnPath(`/img/payment-providers/checkoutcom_${method.id.toLowerCase()}.svg`),
+                logoUrl: ['credit_card', 'card', 'checkoutcom'].includes(method.id)
+                    ? ''
+                    : cdnPath(`/img/payment-providers/checkoutcom_${method.id.toLowerCase()}.svg`),
                 titleText: methodName,
             },
             [PaymentMethodId.StripeV3]: {
-                logoUrl: paymentWithLogo.includes(method.id) ? cdnPath(`/img/payment-providers/stripe-${method.id.toLowerCase()}.svg`) : '',
-                titleText: method.method === 'iban' ? language.translate('payment.stripe_sepa_display_name_text') : methodName,
+                logoUrl: paymentWithLogo.includes(method.id)
+                    ? cdnPath(`/img/payment-providers/stripe-${method.id.toLowerCase()}.svg`)
+                    : '',
+                titleText:
+                    method.method === 'iban'
+                        ? language.translate('payment.stripe_sepa_display_name_text')
+                        : methodName,
             },
             [PaymentMethodId.StripeUPE]: {
-                logoUrl: paymentWithLogo.includes(method.id) ? cdnPath(`/img/payment-providers/stripe-${method.id.toLowerCase()}.svg`) : '',
-                titleText: method.method === 'iban' ? language.translate('payment.stripe_sepa_display_name_text') : methodName,
+                logoUrl: paymentWithLogo.includes(method.id)
+                    ? cdnPath(`/img/payment-providers/stripe-${method.id.toLowerCase()}.svg`)
+                    : '',
+                titleText:
+                    method.method === 'iban'
+                        ? language.translate('payment.stripe_sepa_display_name_text')
+                        : methodName,
             },
             [PaymentMethodId.WorldpayAccess]: {
                 logoUrl: '',
@@ -188,7 +217,10 @@ function getPaymentMethodTitle(
         // KLUDGE: 'paypal' is actually a credit card method. It is the only
         // exception to the rule below. We should probably fix it on API level,
         // but apparently it would break LCO if we are not careful.
-        if (method.id === PaymentMethodId.PaypalPaymentsPro && method.method === PaymentMethodType.CreditCard) {
+        if (
+            method.id === PaymentMethodId.PaypalPaymentsPro &&
+            method.method === PaymentMethodType.CreditCard
+        ) {
             return customTitles[PaymentMethodType.CreditCard];
         }
 
@@ -201,13 +233,12 @@ function getPaymentMethodTitle(
     };
 }
 
-const PaymentMethodTitle: FunctionComponent<PaymentMethodTitleProps & WithLanguageProps & WithCdnPathProps & ConnectFormikProps<PaymentFormValues>> = ({
-    cdnBasePath,
-    formik: { values },
-    isSelected,
-    language,
-    method,
-}) => {
+const PaymentMethodTitle: FunctionComponent<
+    PaymentMethodTitleProps &
+        WithLanguageProps &
+        WithCdnPathProps &
+        ConnectFormikProps<PaymentFormValues>
+> = ({ cdnBasePath, formik: { values }, isSelected, language, method }) => {
     const methodName = getPaymentMethodName(language)(method);
     const { logoUrl, titleText } = getPaymentMethodTitle(language, cdnBasePath)(method);
 
@@ -234,24 +265,25 @@ const PaymentMethodTitle: FunctionComponent<PaymentMethodTitleProps & WithLangua
     return (
         <div className="paymentProviderHeader-container">
             <div className="paymentProviderHeader-nameContainer">
-                { logoUrl && <img
-                    alt={ methodName }
-                    className="paymentProviderHeader-img"
-                    data-test="payment-method-logo"
-                    src={ logoUrl }
-                /> }
+                {logoUrl && (
+                    <img
+                        alt={methodName}
+                        className="paymentProviderHeader-img"
+                        data-test="payment-method-logo"
+                        src={logoUrl}
+                    />
+                )}
 
-                { titleText && <div
-                    className="paymentProviderHeader-name"
-                    data-test="payment-method-name"
-                >
-                    { titleText }
-                </div> }
+                {titleText && (
+                    <div className="paymentProviderHeader-name" data-test="payment-method-name">
+                        {titleText}
+                    </div>
+                )}
             </div>
             <div className="paymentProviderHeader-cc">
                 <CreditCardIconList
-                    cardTypes={ compact(method.supportedCards.map(mapFromPaymentMethodCardType)) }
-                    selectedCardType={ getSelectedCardType() }
+                    cardTypes={compact(method.supportedCards.map(mapFromPaymentMethodCardType))}
+                    selectedCardType={getSelectedCardType()}
                 />
             </div>
         </div>
@@ -259,7 +291,9 @@ const PaymentMethodTitle: FunctionComponent<PaymentMethodTitleProps & WithLangua
 };
 
 function mapToCdnPathProps({ checkoutState }: CheckoutContextProps): WithCdnPathProps | null {
-    const { data: { getConfig } } = checkoutState;
+    const {
+        data: { getConfig },
+    } = checkoutState;
     const config = getConfig();
 
     if (!config) {
@@ -271,4 +305,6 @@ function mapToCdnPathProps({ checkoutState }: CheckoutContextProps): WithCdnPath
     };
 }
 
-export default connectFormik(withLanguage(withCheckout(mapToCdnPathProps)(memo(PaymentMethodTitle))));
+export default connectFormik(
+    withLanguage(withCheckout(mapToCdnPathProps)(memo(PaymentMethodTitle))),
+);

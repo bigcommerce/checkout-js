@@ -5,16 +5,14 @@ import LoadingSpinner from './LoadingSpinner';
 
 describe('LoadingSpinner', () => {
     it('shows loading spinner when loading', () => {
-        const component = shallow(<LoadingSpinner isLoading={ true } />);
+        const component = shallow(<LoadingSpinner isLoading={true} />);
 
-        expect(component.exists('.loadingOverlay'))
-            .toEqual(true);
+        expect(component.exists('.loadingOverlay')).toBe(true);
     });
 
     it('hides itself when not loading', () => {
-        const component = shallow(<LoadingSpinner isLoading={ false } />);
+        const component = shallow(<LoadingSpinner isLoading={false} />);
 
-        expect(component.html())
-            .toEqual(null);
+        expect(component.html()).toBeNull();
     });
 });

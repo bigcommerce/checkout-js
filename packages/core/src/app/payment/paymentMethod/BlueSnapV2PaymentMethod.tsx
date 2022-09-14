@@ -1,7 +1,14 @@
 import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import React, { createRef, useCallback, useRef, useState, FunctionComponent, RefObject } from 'react';
+import React, {
+    createRef,
+    FunctionComponent,
+    RefObject,
+    useCallback,
+    useRef,
+    useState,
+} from 'react';
 
-import { LoadingOverlay } from "../../ui/loading";
+import { LoadingOverlay } from '../../ui/loading';
 import { Modal } from '../../ui/modal';
 
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
@@ -32,50 +39,48 @@ const BlueSnapV2PaymentMethod: FunctionComponent<BlueSnapV2PaymentMethodProps> =
         }
     }, []);
 
-    const initializeBlueSnapV2Payment = useCallback((options: PaymentInitializeOptions) => {
-        return initializePayment({
-            ...options,
-            bluesnapv2: {
-                onLoad(content: HTMLIFrameElement, cancel: () => void) {
-                    setPaymentPageContent(content);
-                    setisLoadingIframe(true);
-                    ref.current.cancelBlueSnapV2Payment = cancel;
+    const initializeBlueSnapV2Payment = useCallback(
+        (options: PaymentInitializeOptions) => {
+            return initializePayment({
+                ...options,
+                bluesnapv2: {
+                    onLoad(content: HTMLIFrameElement, cancel: () => void) {
+                        setPaymentPageContent(content);
+                        setisLoadingIframe(true);
+                        ref.current.cancelBlueSnapV2Payment = cancel;
+                    },
+                    style: {
+                        border: '1px solid lightgray',
+                        height: '60vh',
+                        width: '100%',
+                    },
                 },
-                style: {
-                    border: '1px solid lightgray',
-                    height: '60vh',
-                    width: '100%',
-                },
-            },
-        });
-    }, [initializePayment]);
+            });
+        },
+        [initializePayment],
+    );
 
     const appendPaymentPageContent = useCallback(() => {
         if (ref.current.paymentPageContentRef.current && paymentPageContent) {
             ref.current.paymentPageContentRef.current.appendChild(paymentPageContent);
-            paymentPageContent.addEventListener('load',
-                () => {
-                    setisLoadingIframe(false);
-                }
-            );
+            paymentPageContent.addEventListener('load', () => {
+                setisLoadingIframe(false);
+            });
         }
     }, [paymentPageContent]);
 
     return (
         <>
-            <HostedPaymentMethod
-                { ...rest }
-                initializePayment={ initializeBlueSnapV2Payment }
-            />
+            <HostedPaymentMethod {...rest} initializePayment={initializeBlueSnapV2Payment} />
             <Modal
                 additionalModalClassName="modal--bluesnapv2"
-                isOpen={ !!paymentPageContent }
-                onAfterOpen={ appendPaymentPageContent }
-                onRequestClose={ cancelBlueSnapV2ModalFlow }
-                shouldShowCloseButton={ true }
+                isOpen={!!paymentPageContent}
+                onAfterOpen={appendPaymentPageContent}
+                onRequestClose={cancelBlueSnapV2ModalFlow}
+                shouldShowCloseButton={true}
             >
-                <LoadingOverlay isLoading={ isLoadingIframe }  >
-                    <div ref={ ref.current.paymentPageContentRef } />
+                <LoadingOverlay isLoading={isLoadingIframe}>
+                    <div ref={ref.current.paymentPageContentRef} />
                 </LoadingOverlay>
             </Modal>
         </>

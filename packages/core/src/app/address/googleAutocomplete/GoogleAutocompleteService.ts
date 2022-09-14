@@ -7,13 +7,14 @@ export default class GoogleAutocompleteService {
 
     constructor(
         private _apiKey: string,
-        private _scriptLoader: GoogleAutocompleteScriptLoader = getGoogleAutocompleteScriptLoader()
+        private _scriptLoader: GoogleAutocompleteScriptLoader = getGoogleAutocompleteScriptLoader(),
     ) {}
 
     getAutocompleteService(): Promise<google.maps.places.AutocompleteService> {
         if (!this._autocompletePromise) {
-            this._autocompletePromise = this._scriptLoader.loadMapsSdk(this._apiKey)
-                .then(googleMapsSdk => {
+            this._autocompletePromise = this._scriptLoader
+                .loadMapsSdk(this._apiKey)
+                .then((googleMapsSdk) => {
                     if (!googleMapsSdk.places.AutocompleteService) {
                         throw new Error('`AutocompleteService` is undefined');
                     }
@@ -29,8 +30,9 @@ export default class GoogleAutocompleteService {
         const node = document.createElement('div');
 
         if (!this._placesPromise) {
-            this._placesPromise = this._scriptLoader.loadMapsSdk(this._apiKey)
-                .then(googleMapsSdk => {
+            this._placesPromise = this._scriptLoader
+                .loadMapsSdk(this._apiKey)
+                .then((googleMapsSdk) => {
                     if (!googleMapsSdk.places.PlacesService) {
                         throw new Error('`PlacesService` is undefined');
                     }

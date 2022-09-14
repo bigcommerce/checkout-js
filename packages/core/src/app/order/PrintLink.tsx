@@ -1,7 +1,7 @@
 import { throttle } from 'lodash';
-import React, { memo, useCallback, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo, useCallback } from 'react';
 
-import { preventDefault } from "../common/dom";
+import { preventDefault } from '../common/dom';
 import { TranslatedString } from '../locale';
 import { IconPrint } from '../ui/icon';
 
@@ -12,10 +12,12 @@ export interface PrintLinkProps {
 const PRINT_MODAL_THROTTLE = 500;
 
 const PrintLink: FunctionComponent<PrintLinkProps> = ({ className }) => {
-
-    const handleClick = useCallback(throttle(() => {
-        window.print();
-    }, PRINT_MODAL_THROTTLE), []);
+    const handleClick = useCallback(
+        throttle(() => {
+            window.print();
+        }, PRINT_MODAL_THROTTLE),
+        [],
+    );
 
     if (typeof window.print !== 'function') {
         return null;
@@ -23,14 +25,12 @@ const PrintLink: FunctionComponent<PrintLinkProps> = ({ className }) => {
 
     return (
         <a
-            className={ className || 'cart-header-link' }
+            className={className || 'cart-header-link'}
             href="#"
             id="cart-print-link"
-            onClick={ preventDefault(handleClick) }
+            onClick={preventDefault(handleClick)}
         >
-            <IconPrint />
-            { ' ' }
-            <TranslatedString id="cart.print_action" />
+            <IconPrint /> <TranslatedString id="cart.print_action" />
         </a>
     );
 };

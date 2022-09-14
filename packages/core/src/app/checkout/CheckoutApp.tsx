@@ -1,11 +1,21 @@
-import { createCheckoutService, createEmbeddedCheckoutMessenger, createStepTracker, StepTracker, createBodlService, BodlService } from '@bigcommerce/checkout-sdk';
+import {
+    BodlService,
+    createBodlService,
+    createCheckoutService,
+    createEmbeddedCheckoutMessenger,
+    createStepTracker,
+    StepTracker,
+} from '@bigcommerce/checkout-sdk';
 import { BrowserOptions } from '@sentry/browser';
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 
 import '../../scss/App.scss';
 import { createErrorLogger, ErrorBoundary, ErrorLogger } from '../common/error';
-import { createEmbeddedCheckoutStylesheet, createEmbeddedCheckoutSupport } from '../embeddedCheckout';
+import {
+    createEmbeddedCheckoutStylesheet,
+    createEmbeddedCheckoutSupport,
+} from '../embeddedCheckout';
 import { getLanguageService, LocaleProvider } from '../locale';
 
 import Checkout from './Checkout';
@@ -35,7 +45,7 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
             {
                 errorTypes: ['UnrecoverableError'],
                 publicPath: props.publicPath,
-            }
+            },
         );
     }
 
@@ -47,17 +57,17 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
 
     render() {
         return (
-            <ErrorBoundary logger={ this.errorLogger }>
-                <LocaleProvider checkoutService={ this.checkoutService }>
-                    <CheckoutProvider checkoutService={ this.checkoutService }>
+            <ErrorBoundary logger={this.errorLogger}>
+                <LocaleProvider checkoutService={this.checkoutService}>
+                    <CheckoutProvider checkoutService={this.checkoutService}>
                         <Checkout
-                            { ...this.props }
-                            createBodlService={ this.createBodlService }
-                            createEmbeddedMessenger={ createEmbeddedCheckoutMessenger }
-                            createStepTracker={ this.createStepTracker }
-                            embeddedStylesheet={ this.embeddedStylesheet }
-                            embeddedSupport={ this.embeddedSupport }
-                            errorLogger={ this.errorLogger }
+                            {...this.props}
+                            createBodlService={this.createBodlService}
+                            createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
+                            createStepTracker={this.createStepTracker}
+                            embeddedStylesheet={this.embeddedStylesheet}
+                            embeddedSupport={this.embeddedSupport}
+                            errorLogger={this.errorLogger}
                         />
                     </CheckoutProvider>
                 </LocaleProvider>

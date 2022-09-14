@@ -1,7 +1,7 @@
 import { LanguageService } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
 import { cvv, expirationDate, number } from 'card-validator';
-import { object, string, ObjectSchema } from 'yup';
+import { object, ObjectSchema, string } from 'yup';
 
 import { CreditCardFieldsetValues } from '../paymentMethod';
 
@@ -21,7 +21,7 @@ export default memoize(function getCreditCardValidationSchema({
             .required(language.translate('payment.credit_card_expiration_required_error'))
             .test({
                 message: language.translate('payment.credit_card_expiration_invalid_error'),
-                test: value => expirationDate(value).isValid,
+                test: (value) => expirationDate(value).isValid,
             }),
         ccName: string()
             .max(200)
@@ -30,7 +30,7 @@ export default memoize(function getCreditCardValidationSchema({
             .required(language.translate('payment.credit_card_number_required_error'))
             .test({
                 message: language.translate('payment.credit_card_number_invalid_error'),
-                test: value => number(value).isValid,
+                test: (value) => number(value).isValid,
             }),
     };
 

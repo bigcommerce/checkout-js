@@ -6,23 +6,17 @@ export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
     hidden?: boolean;
 }
 
-const Label: FunctionComponent<LabelProps> = ({
-    children,
-    className,
-    hidden,
-    testId,
-    ...rest
-}) => (
+const Label: FunctionComponent<LabelProps> = ({ children, className, hidden, testId, ...rest }) => (
     <label
-        { ...rest }
-        className={ classNames(
+        {...rest}
+        className={classNames(
             className || 'form-label',
             { 'is-srOnly': hidden },
-            'optimizedCheckout-form-label'
-        ) }
-        data-test={ testId }
+            'optimizedCheckout-form-label',
+        )}
+        data-test={testId}
     >
-        { children }
+        {children}
     </label>
 );
 

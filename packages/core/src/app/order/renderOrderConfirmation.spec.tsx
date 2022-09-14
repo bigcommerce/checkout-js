@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 
-import renderOrderConfirmation, { RenderOrderConfirmationOptions } from './renderOrderConfirmation';
 import { OrderConfirmationAppProps } from './OrderConfirmationApp';
+import renderOrderConfirmation, { RenderOrderConfirmationOptions } from './renderOrderConfirmation';
 
 let OrderConfirmationApp: FunctionComponent<OrderConfirmationAppProps>;
 let configurePublicPath: (path: string) => void;
@@ -10,7 +10,7 @@ let publicPath: string;
 jest.mock('@welldone-software/why-did-you-render', () => jest.fn());
 
 jest.mock('../common/bundler', () => {
-    configurePublicPath = jest.fn(path => {
+    configurePublicPath = jest.fn((path) => {
         publicPath = path;
 
         return publicPath;
@@ -22,7 +22,7 @@ jest.mock('../common/bundler', () => {
 });
 
 jest.mock('./OrderConfirmationApp', () => {
-    OrderConfirmationApp = jest.fn(() => <>{ publicPath }</>);
+    OrderConfirmationApp = jest.fn(() => <>{publicPath}</>);
 
     return {
         default: OrderConfirmationApp,
@@ -55,25 +55,21 @@ describe('renderOrderConfirmation()', () => {
     it('configures public path before mounting app component', () => {
         renderOrderConfirmation(options);
 
-        expect(configurePublicPath)
-            .toHaveBeenCalledWith(options.publicPath);
+        expect(configurePublicPath).toHaveBeenCalledWith(options.publicPath);
 
-        expect(container.innerHTML)
-            .toEqual(options.publicPath);
+        expect(container.innerHTML).toEqual(options.publicPath);
     });
 
     it('passes props to app component', () => {
         renderOrderConfirmation(options);
 
-        expect(OrderConfirmationApp)
-            .toHaveBeenCalledWith(options, {});
+        expect(OrderConfirmationApp).toHaveBeenCalledWith(options, {});
     });
 
     it('does not configure `whyDidYouRender` if not in development mode', () => {
         renderOrderConfirmation(options);
 
-        expect(require('@welldone-software/why-did-you-render'))
-            .not.toHaveBeenCalled();
+        expect(require('@welldone-software/why-did-you-render')).not.toHaveBeenCalled();
 
         process.env.NODE_ENV = 'development';
     });
@@ -85,10 +81,9 @@ describe('renderOrderConfirmation()', () => {
 
         renderOrderConfirmation(options);
 
-        expect(require('@welldone-software/why-did-you-render'))
-            .toHaveBeenCalledWith(React, {
-                collapseGroups: true,
-            });
+        expect(require('@welldone-software/why-did-you-render')).toHaveBeenCalledWith(React, {
+            collapseGroups: true,
+        });
 
         process.env.NODE_ENV = env;
     });

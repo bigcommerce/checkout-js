@@ -4,9 +4,11 @@ import { mapCustomFormFieldsFromFormValues } from '../formFields';
 
 import { CreateAccountFormValues } from './getCreateCustomerValidationSchema';
 
-export default function mapCreateAccountFromFormValues(
-    { acceptsMarketingEmails, customFields, ...values }: CreateAccountFormValues
-): CustomerAccountRequestBody {
+export default function mapCreateAccountFromFormValues({
+    acceptsMarketingEmails,
+    customFields,
+    ...values
+}: CreateAccountFormValues): CustomerAccountRequestBody {
     return {
         ...values,
         acceptsMarketingEmails: acceptsMarketingEmails && acceptsMarketingEmails.length > 0,

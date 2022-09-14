@@ -1,18 +1,24 @@
-import { withFormik, FormikProps } from 'formik';
+import { FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
-import React, { memo, useCallback, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo, useCallback } from 'react';
 import { object, string } from 'yup';
 
 import { preventDefault } from '../common/dom';
-import { withLanguage, TranslatedHtml, TranslatedLink, TranslatedString, WithLanguageProps } from '../locale';
+import {
+    TranslatedHtml,
+    TranslatedLink,
+    TranslatedString,
+    withLanguage,
+    WithLanguageProps,
+} from '../locale';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form, Legend } from '../ui/form';
 
-import getEmailValidationSchema from './getEmailValidationSchema';
-import mapErrorMessage from './mapErrorMessage';
 import CustomerViewType from './CustomerViewType';
 import EmailField from './EmailField';
+import getEmailValidationSchema from './getEmailValidationSchema';
+import mapErrorMessage from './mapErrorMessage';
 import PasswordField from './PasswordField';
 
 export interface LoginFormProps {
@@ -41,7 +47,9 @@ export interface LoginFormValues {
     password: string;
 }
 
-const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikProps<LoginFormValues>> = ({
+const LoginForm: FunctionComponent<
+    LoginFormProps & WithLanguageProps & FormikProps<LoginFormValues>
+> = ({
     canCancel,
     continueAsGuestButtonLabelId,
     forgotPasswordUrl,
@@ -66,9 +74,9 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
         return (
             <p className="optimizedCheckout-contentSecondary">
                 <TranslatedLink
-                    data={ { email } }
+                    data={{ email }}
                     id="customer.guest_could_login_change_email"
-                    onClick={ onCancel }
+                    onClick={onCancel}
                     testId="change-email"
                 />
             </p>
@@ -81,45 +89,44 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
             id="checkout-customer-returning"
             testId="checkout-customer-returning"
         >
-            <Fieldset legend={
-                <Legend hidden>
-                    <TranslatedString id="customer.returning_customer_text" />
-                </Legend>
-            }
+            <Fieldset
+                legend={
+                    <Legend hidden>
+                        <TranslatedString id="customer.returning_customer_text" />
+                    </Legend>
+                }
             >
-                { signInError && <Alert
-                    testId="customer-login-error-message"
-                    type={ AlertType.Error }
-                >
-                    { mapErrorMessage(signInError, key => language.translate(key)) }
-                </Alert> }
+                {signInError && (
+                    <Alert testId="customer-login-error-message" type={AlertType.Error}>
+                        {mapErrorMessage(signInError, (key) => language.translate(key))}
+                    </Alert>
+                )}
 
-                { viewType === CustomerViewType.SuggestedLogin &&
-                    <Alert type={ AlertType.Info }>
-                        <TranslatedHtml
-                            data={ { email } }
-                            id="customer.guest_could_login"
-                        />
-                    </Alert> }
+                {viewType === CustomerViewType.SuggestedLogin && (
+                    <Alert type={AlertType.Info}>
+                        <TranslatedHtml data={{ email }} id="customer.guest_could_login" />
+                    </Alert>
+                )}
 
-                { viewType === CustomerViewType.CancellableEnforcedLogin &&
-                    <Alert type={ AlertType.Info }>
-                        <TranslatedHtml
-                            data={ { email } }
-                            id="customer.guest_must_login"
-                        />
-                    </Alert> }
+                {viewType === CustomerViewType.CancellableEnforcedLogin && (
+                    <Alert type={AlertType.Info}>
+                        <TranslatedHtml data={{ email }} id="customer.guest_must_login" />
+                    </Alert>
+                )}
 
-                { viewType === CustomerViewType.EnforcedLogin &&
-                    <Alert type={ AlertType.Error }>
+                {viewType === CustomerViewType.EnforcedLogin && (
+                    <Alert type={AlertType.Error}>
                         <TranslatedLink
                             id="customer.guest_temporary_disabled"
-                            onClick={ onCreateAccount }
+                            onClick={onCreateAccount}
                         />
-                    </Alert> }
+                    </Alert>
+                )}
 
-                { (viewType === CustomerViewType.Login || viewType === CustomerViewType.EnforcedLogin) &&
-                    <EmailField onChange={ onChangeEmail } /> }
+                {(viewType === CustomerViewType.Login ||
+                    viewType === CustomerViewType.EnforcedLogin) && (
+                    <EmailField onChange={onChangeEmail} />
+                )}
 
                 <PasswordField />
 
@@ -147,68 +154,78 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
                         <span>
                             <TranslatedLink
                                 id="customer.create_account_to_continue_text"
-                                onClick={ onCreateAccount }
+                                onClick={onCreateAccount}
                             />
                         </span>
-                    }
+                    )}
                 </p>
 
                 <div className="form-actions">
                     <Button
-                        disabled={ isSigningIn }
+                        disabled={isSigningIn}
                         id="checkout-customer-continue"
                         testId="customer-continue-button"
                         type="submit"
-                        variant={ ButtonVariant.Primary }
+                        variant={ButtonVariant.Primary}
                     >
                         <TranslatedString id="customer.sign_in_action" />
                     </Button>
 
-                    { viewType === CustomerViewType.SuggestedLogin && <a
-                        className="button optimizedCheckout-buttonSecondary"
-                        data-test="customer-guest-continue"
-                        href="#"
-                        id="checkout-guest-continue"
-                        onClick={ preventDefault(onContinueAsGuest) }
-                    >
-                        <TranslatedString id={ continueAsGuestButtonLabelId } />
-                    </a> }
-
-                    { canCancel &&
-                        viewType !== CustomerViewType.EnforcedLogin &&
-                        viewType !== CustomerViewType.SuggestedLogin &&
+                    {viewType === CustomerViewType.SuggestedLogin && (
                         <a
                             className="button optimizedCheckout-buttonSecondary"
-                            data-test="customer-cancel-button"
+                            data-test="customer-guest-continue"
                             href="#"
-                            id="checkout-customer-cancel"
-                            onClick={ preventDefault(onCancel) }
+                            id="checkout-guest-continue"
+                            onClick={preventDefault(onContinueAsGuest)}
                         >
-                            <TranslatedString id={ viewType === CustomerViewType.CancellableEnforcedLogin ?
-                                'login_email.use_another_email' :
-                                'common.cancel_action' }
-                            />
-                        </a> }
+                            <TranslatedString id={continueAsGuestButtonLabelId} />
+                        </a>
+                    )}
+
+                    {canCancel &&
+                        viewType !== CustomerViewType.EnforcedLogin &&
+                        viewType !== CustomerViewType.SuggestedLogin && (
+                            <a
+                                className="button optimizedCheckout-buttonSecondary"
+                                data-test="customer-cancel-button"
+                                href="#"
+                                id="checkout-customer-cancel"
+                                onClick={preventDefault(onCancel)}
+                            >
+                                <TranslatedString
+                                    id={
+                                        viewType === CustomerViewType.CancellableEnforcedLogin
+                                            ? 'login_email.use_another_email'
+                                            : 'common.cancel_action'
+                                    }
+                                />
+                            </a>
+                        )}
                 </div>
 
-                { viewType === CustomerViewType.SuggestedLogin && changeEmailLink() }
+                {viewType === CustomerViewType.SuggestedLogin && changeEmailLink()}
             </Fieldset>
-        </Form>);
+        </Form>
+    );
 };
 
-export default withLanguage(withFormik<LoginFormProps & WithLanguageProps, LoginFormValues>({
-    mapPropsToValues: ({
-        email = '',
-    }) => ({
-        email,
-        password: '',
-    }),
-    handleSubmit: (values, { props: { onSignIn } }) => {
-        onSignIn(values);
-    },
-    validationSchema: ({ language }: LoginFormProps & WithLanguageProps) =>
-        getEmailValidationSchema({ language }).concat(object({
-            password: string()
-                .required(language.translate('customer.password_required_error')),
-        })),
-})(memo(LoginForm)));
+export default withLanguage(
+    withFormik<LoginFormProps & WithLanguageProps, LoginFormValues>({
+        mapPropsToValues: ({ email = '' }) => ({
+            email,
+            password: '',
+        }),
+        handleSubmit: (values, { props: { onSignIn } }) => {
+            onSignIn(values);
+        },
+        validationSchema: ({ language }: LoginFormProps & WithLanguageProps) =>
+            getEmailValidationSchema({ language }).concat(
+                object({
+                    password: string().required(
+                        language.translate('customer.password_required_error'),
+                    ),
+                }),
+            ),
+    })(memo(LoginForm)),
+);

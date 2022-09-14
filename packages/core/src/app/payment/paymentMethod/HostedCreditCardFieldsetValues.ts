@@ -1,4 +1,4 @@
-import { CardInstrumentFieldsetValues } from "../storedInstrument";
+import { CardInstrumentFieldsetValues } from '../storedInstrument';
 
 export default interface HostedCreditCardFieldsetValues {
     hostedForm: {
@@ -21,11 +21,13 @@ export interface HostedCreditCardValidationValues extends CardInstrumentFieldset
     };
 }
 
-export function isHostedCreditCardFieldsetValues(value: unknown): value is HostedCreditCardFieldsetValues {
+export function isHostedCreditCardFieldsetValues(
+    value: unknown,
+): value is HostedCreditCardFieldsetValues {
     if (!(value instanceof Object)) {
         return false;
     }
-    
+
     if (!('hostedForm' in value)) {
         return false;
     }

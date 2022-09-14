@@ -7,61 +7,60 @@ import BasicFormField from './BasicFormField';
 import FormFieldError from './FormFieldError';
 import FormProvider from './FormProvider';
 
-/* eslint-disable react/jsx-no-bind */
 describe('FormFieldError', () => {
     it('renders component with test ID', async () => {
         const component = mount(
-            <FormProvider initialIsSubmitted={ true }>
+            <FormProvider initialIsSubmitted={true}>
                 <Formik
-                    initialValues={ { foobar: '' } }
-                    onSubmit={ noop }
-                    render={ () => (
-                        <Fragment>
-                            <BasicFormField name="foobar" validate={ () => 'Invalid' } />
+                    initialValues={{ foobar: '' }}
+                    onSubmit={noop}
+                    render={() => (
+                        <>
+                            <BasicFormField name="foobar" validate={() => 'Invalid'} />
                             <FormFieldError name="foobar" testId="test" />
-                        </Fragment>
-                    ) }
+                        </>
+                    )}
                 />
-            </FormProvider>
+            </FormProvider>,
         );
 
-        component.find('input[name="foobar"]')
+        component
+            .find('input[name="foobar"]')
             .simulate('change', { target: { value: '123', name: 'foobar' } })
             .simulate('blur');
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
         component.update();
 
-        expect(component.find('.form-field-errors').prop('data-test'))
-            .toEqual('test');
+        expect(component.find('.form-field-errors').prop('data-test')).toBe('test');
     });
 
     it('renders error message', async () => {
         const component = mount(
-            <FormProvider initialIsSubmitted={ true }>
+            <FormProvider initialIsSubmitted={true}>
                 <Formik
-                    initialValues={ { foobar: '' } }
-                    onSubmit={ noop }
-                    render={ () => (
-                        <Fragment>
-                            <BasicFormField name="foobar" validate={ () => 'Invalid' } />
+                    initialValues={{ foobar: '' }}
+                    onSubmit={noop}
+                    render={() => (
+                        <>
+                            <BasicFormField name="foobar" validate={() => 'Invalid'} />
                             <FormFieldError name="foobar" testId="test" />
-                        </Fragment>
-                    ) }
+                        </>
+                    )}
                 />
-            </FormProvider>
+            </FormProvider>,
         );
 
-        component.find('input[name="foobar"]')
+        component
+            .find('input[name="foobar"]')
             .simulate('change', { target: { value: '123', name: 'foobar' } })
             .simulate('blur');
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
         component.update();
 
-        expect(component.find('.form-field-errors').text())
-            .toEqual('Invalid');
+        expect(component.find('.form-field-errors').text()).toBe('Invalid');
     });
 });

@@ -20,14 +20,11 @@ describe('PrivacyPolicyField', () => {
 
     it('renders checkbox with external link', () => {
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <Formik
-                    initialValues={ initialValues }
-                    onSubmit={ noop }
-                >
+            <LocaleContext.Provider value={localeContext}>
+                <Formik initialValues={initialValues} onSubmit={noop}>
                     <PrivacyPolicyField url="foo" />
                 </Formik>
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
         expect(component.find(CheckboxFormField)).toHaveLength(1);

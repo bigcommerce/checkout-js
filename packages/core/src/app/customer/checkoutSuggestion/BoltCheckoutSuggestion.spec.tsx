@@ -18,12 +18,7 @@ describe('BoltCheckoutSuggestion', () => {
             methodId: 'bolt',
         };
 
-        TestComponent = props => (
-            <BoltCheckoutSuggestion
-                { ...defaultProps }
-                { ...props }
-            />
-        );
+        TestComponent = (props) => <BoltCheckoutSuggestion {...defaultProps} {...props} />;
     });
 
     it('deinitializes previous Bolt customer strategy before initialisation', () => {
@@ -48,7 +43,9 @@ describe('BoltCheckoutSuggestion', () => {
     });
 
     it('calls onUnhandledError if initialization was failed', () => {
-        defaultProps.initializeCustomer = jest.fn(() => { throw new Error(); });
+        defaultProps.initializeCustomer = jest.fn(() => {
+            throw new Error();
+        });
 
         mount(<TestComponent />);
 
@@ -64,7 +61,7 @@ describe('BoltCheckoutSuggestion', () => {
             initializeOptions.bolt.onInit(customerHasBoltAccount);
         });
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
         component.update();
 
         expect(component.find('[data-test="suggestion-action-button"]')).toHaveLength(0);
@@ -79,7 +76,7 @@ describe('BoltCheckoutSuggestion', () => {
             initializeOptions.bolt.onInit(customerHasBoltAccount);
         });
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
         component.update();
 
         expect(component.find('[data-test="suggestion-action-button"]')).toHaveLength(1);
@@ -92,7 +89,7 @@ describe('BoltCheckoutSuggestion', () => {
 
         act(() => initializeOptions.bolt.onInit(customerHasBoltAccount));
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
         component.update();
 
         const actionButton = component.find('[data-test="suggestion-action-button"]');

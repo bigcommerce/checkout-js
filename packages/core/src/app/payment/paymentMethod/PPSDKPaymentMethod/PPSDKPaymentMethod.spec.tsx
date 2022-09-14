@@ -21,8 +21,10 @@ describe('when using a PPSDK payment method', () => {
         it('renders empty', () => {
             const container = mount(
                 <PPSDKPaymentMethod
-                    deinitializePayment={ jest.fn().mockResolvedValue(undefined) } initializePayment={ jest.fn().mockResolvedValue(undefined) } method={ method }
-                />
+                    deinitializePayment={jest.fn().mockResolvedValue(undefined)}
+                    initializePayment={jest.fn().mockResolvedValue(undefined)}
+                    method={method}
+                />,
             );
 
             expect(container.isEmptyRender()).toBe(true);
@@ -33,8 +35,10 @@ describe('when using a PPSDK payment method', () => {
 
             mount(
                 <PPSDKPaymentMethod
-                    deinitializePayment={ jest.fn().mockResolvedValue(undefined) } initializePayment={ initializeMock } method={ method }
-                />
+                    deinitializePayment={jest.fn().mockResolvedValue(undefined)}
+                    initializePayment={initializeMock}
+                    method={method}
+                />,
             );
 
             expect(initializeMock).toHaveBeenCalledWith({
@@ -48,8 +52,10 @@ describe('when using a PPSDK payment method', () => {
 
             const container = mount(
                 <PPSDKPaymentMethod
-                    deinitializePayment={ deinitializeMock } initializePayment={ jest.fn().mockResolvedValue(undefined) } method={ method }
-                />
+                    deinitializePayment={deinitializeMock}
+                    initializePayment={jest.fn().mockResolvedValue(undefined)}
+                    method={method}
+                />,
             );
 
             container.unmount();
@@ -67,11 +73,14 @@ describe('when using a PPSDK payment method', () => {
 
                 mount(
                     <PPSDKPaymentMethod
-                        deinitializePayment={ jest.fn().mockResolvedValue(undefined) } initializePayment={ initializeMock } method={ method } onUnhandledError={ errorHandlerMock }
-                    />
+                        deinitializePayment={jest.fn().mockResolvedValue(undefined)}
+                        initializePayment={initializeMock}
+                        method={method}
+                        onUnhandledError={errorHandlerMock}
+                    />,
                 );
 
-                await new Promise(resolve => process.nextTick(resolve));
+                await new Promise((resolve) => process.nextTick(resolve));
 
                 expect(errorHandlerMock).toHaveBeenCalledWith(expect.any(Error));
             });
@@ -98,8 +107,10 @@ describe('when using a PPSDK payment method', () => {
         it('renders empty', () => {
             const container = mount(
                 <PPSDKPaymentMethod
-                    deinitializePayment={ jest.fn().mockResolvedValue(undefined) } initializePayment={ jest.fn().mockResolvedValue(undefined) } method={ unsupportedMethod }
-                />
+                    deinitializePayment={jest.fn().mockResolvedValue(undefined)}
+                    initializePayment={jest.fn().mockResolvedValue(undefined)}
+                    method={unsupportedMethod}
+                />,
             );
 
             expect(container.isEmptyRender()).toBe(true);
@@ -110,11 +121,14 @@ describe('when using a PPSDK payment method', () => {
 
             mount(
                 <PPSDKPaymentMethod
-                    deinitializePayment={ jest.fn().mockResolvedValue(undefined) } initializePayment={ jest.fn().mockResolvedValue(undefined) } method={ unsupportedMethod } onUnhandledError={ errorHandlerMock }
-                />
+                    deinitializePayment={jest.fn().mockResolvedValue(undefined)}
+                    initializePayment={jest.fn().mockResolvedValue(undefined)}
+                    method={unsupportedMethod}
+                    onUnhandledError={errorHandlerMock}
+                />,
             );
 
-            await new Promise(resolve => process.nextTick(resolve));
+            await new Promise((resolve) => process.nextTick(resolve));
 
             expect(errorHandlerMock).toHaveBeenCalledWith(expect.any(Error));
         });
@@ -124,8 +138,10 @@ describe('when using a PPSDK payment method', () => {
 
             mount(
                 <PPSDKPaymentMethod
-                    deinitializePayment={ jest.fn().mockResolvedValue(undefined) } initializePayment={ initializeMock } method={ unsupportedMethod }
-                />
+                    deinitializePayment={jest.fn().mockResolvedValue(undefined)}
+                    initializePayment={initializeMock}
+                    method={unsupportedMethod}
+                />,
             );
 
             expect(initializeMock).not.toHaveBeenCalled();
@@ -136,8 +152,10 @@ describe('when using a PPSDK payment method', () => {
 
             const container = mount(
                 <PPSDKPaymentMethod
-                    deinitializePayment={ deinitializeMock } initializePayment={ jest.fn().mockResolvedValue(undefined) } method={ unsupportedMethod }
-                />
+                    deinitializePayment={deinitializeMock}
+                    initializePayment={jest.fn().mockResolvedValue(undefined)}
+                    method={unsupportedMethod}
+                />,
             );
 
             container.unmount();

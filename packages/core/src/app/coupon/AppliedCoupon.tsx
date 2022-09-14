@@ -1,5 +1,5 @@
 import { Coupon } from '@bigcommerce/checkout-sdk';
-import React, { memo, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '../locale';
 
@@ -8,25 +8,16 @@ export interface AppliedCouponProps {
 }
 
 const AppliedCoupon: FunctionComponent<AppliedCouponProps> = ({ coupon }) => (
-    <div
-        className="redeemable-column redeemable-info"
-        data-test="redeemable-item--coupon"
-    >
+    <div className="redeemable-column redeemable-info" data-test="redeemable-item--coupon">
         <span className="redeemable-info-header">
-            <span
-                className="redeemable-info-header--highlight"
-                data-test="coupon-amount"
-            >
-                { coupon.displayName }
-            </span>
-
-            { ' ' }
-
+            <span className="redeemable-info-header--highlight" data-test="coupon-amount">
+                {coupon.displayName}
+            </span>{' '}
             <TranslatedString id="redeemable.coupon_text" />
         </span>
 
         <span className="redeemable-info-subHeader" data-test="coupon-code">
-            { coupon.code }
+            {coupon.code}
         </span>
     </div>
 );

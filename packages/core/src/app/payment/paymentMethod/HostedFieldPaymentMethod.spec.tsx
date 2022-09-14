@@ -8,7 +8,9 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../../loc
 import { LoadingOverlay } from '../../ui/loading';
 import { getPaymentMethod } from '../payment-methods.mock';
 
-import HostedFieldPaymentMethod, { HostedFieldPaymentMethodProps } from './HostedFieldPaymentMethod';
+import HostedFieldPaymentMethod, {
+    HostedFieldPaymentMethodProps,
+} from './HostedFieldPaymentMethod';
 
 describe('HostedFieldPaymentMethod', () => {
     let HostedFieldPaymentMethodTest: FunctionComponent<HostedFieldPaymentMethodProps>;
@@ -26,95 +28,79 @@ describe('HostedFieldPaymentMethod', () => {
 
         localeContext = createLocaleContext(getStoreConfig());
 
-        HostedFieldPaymentMethodTest = props => (
-            <Formik
-                initialValues={ {} }
-                onSubmit={ noop }
-            >
-                <LocaleContext.Provider value={ localeContext }>
-                    <HostedFieldPaymentMethod { ...props } />
+        HostedFieldPaymentMethodTest = (props) => (
+            <Formik initialValues={{}} onSubmit={noop}>
+                <LocaleContext.Provider value={localeContext}>
+                    <HostedFieldPaymentMethod {...props} />
                 </LocaleContext.Provider>
             </Formik>
         );
     });
 
     it('initializes payment method when component mounts', () => {
-        mount(<HostedFieldPaymentMethodTest { ...defaultProps } />);
+        mount(<HostedFieldPaymentMethodTest {...defaultProps} />);
 
-        expect(defaultProps.initializePayment)
-            .toHaveBeenCalled();
+        expect(defaultProps.initializePayment).toHaveBeenCalled();
     });
 
     it('deinitializes payment method when component unmounts', () => {
-        const component = mount(<HostedFieldPaymentMethodTest { ...defaultProps } />);
+        const component = mount(<HostedFieldPaymentMethodTest {...defaultProps} />);
 
-        expect(defaultProps.deinitializePayment)
-            .not.toHaveBeenCalled();
+        expect(defaultProps.deinitializePayment).not.toHaveBeenCalled();
 
         component.unmount();
 
-        expect(defaultProps.deinitializePayment)
-            .toHaveBeenCalled();
+        expect(defaultProps.deinitializePayment).toHaveBeenCalled();
     });
 
     it('renders loading overlay while waiting for method to initialize', () => {
         let component: ReactWrapper;
 
-        component = mount(<HostedFieldPaymentMethodTest
-            { ...defaultProps }
-            isInitializing
-        />);
+        component = mount(<HostedFieldPaymentMethodTest {...defaultProps} isInitializing />);
 
-        expect(component.find(LoadingOverlay).prop('isLoading'))
-            .toEqual(true);
+        expect(component.find(LoadingOverlay).prop('isLoading')).toBe(true);
 
-        component = mount(<HostedFieldPaymentMethodTest { ...defaultProps } />);
+        component = mount(<HostedFieldPaymentMethodTest {...defaultProps} />);
 
-        expect(component.find(LoadingOverlay).prop('isLoading'))
-            .toEqual(false);
+        expect(component.find(LoadingOverlay).prop('isLoading')).toBe(false);
     });
 
     it('renders card number placeholder', () => {
-        const component = mount(<HostedFieldPaymentMethodTest { ...defaultProps } />);
+        const component = mount(<HostedFieldPaymentMethodTest {...defaultProps} />);
 
-        expect(component.exists(`#${defaultProps.cardNumberId}`))
-            .toEqual(true);
+        expect(component.exists(`#${defaultProps.cardNumberId}`)).toBe(true);
     });
 
     it('renders card expiry placeholder', () => {
-        const component = mount(<HostedFieldPaymentMethodTest { ...defaultProps } />);
+        const component = mount(<HostedFieldPaymentMethodTest {...defaultProps} />);
 
-        expect(component.exists(`#${defaultProps.cardExpiryId}`))
-            .toEqual(true);
+        expect(component.exists(`#${defaultProps.cardExpiryId}`)).toBe(true);
     });
 
     it('renders card cvv placeholder if configured', () => {
-        const component = mount(<HostedFieldPaymentMethodTest
-            { ...defaultProps }
-            cardCodeId="card-code"
-        />);
+        const component = mount(
+            <HostedFieldPaymentMethodTest {...defaultProps} cardCodeId="card-code" />,
+        );
 
-        expect(component.exists('#card-code'))
-            .toEqual(true);
+        expect(component.exists('#card-code')).toBe(true);
     });
 
     it('renders postal code placeholder if configured', () => {
-        const component = mount(<HostedFieldPaymentMethodTest
-            { ...defaultProps }
-            postalCodeId="postal-code"
-        />);
+        const component = mount(
+            <HostedFieldPaymentMethodTest {...defaultProps} postalCodeId="postal-code" />,
+        );
 
-        expect(component.exists('#postal-code'))
-            .toEqual(true);
+        expect(component.exists('#postal-code')).toBe(true);
     });
 
     it('renders wallet button placeholder if required', () => {
-        const component = mount(<HostedFieldPaymentMethodTest
-            { ...defaultProps }
-            walletButtons={ <div id="wallet-button" /> }
-        />);
+        const component = mount(
+            <HostedFieldPaymentMethodTest
+                {...defaultProps}
+                walletButtons={<div id="wallet-button" />}
+            />,
+        );
 
-        expect(component.exists('#wallet-button'))
-            .toEqual(true);
+        expect(component.exists('#wallet-button')).toBe(true);
     });
 });

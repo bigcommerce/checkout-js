@@ -40,30 +40,35 @@ describe('getCreditCardInputStyles', () => {
     it('returns default styles of credit card input', async () => {
         const styles = await getCreditCardInputStyles('form-field', ['color', 'fontSize']);
 
-        expect(styles)
-            .toEqual({
-                color: 'rgb(0, 0, 0)',
-                fontSize: '20px',
-            });
+        expect(styles).toEqual({
+            color: 'rgb(0, 0, 0)',
+            fontSize: '20px',
+        });
     });
 
     it('returns error styles of credit card input', async () => {
-        const styles = await getCreditCardInputStyles('form-field', ['color', 'fontSize'], CreditCardInputStylesType.Error);
+        const styles = await getCreditCardInputStyles(
+            'form-field',
+            ['color', 'fontSize'],
+            CreditCardInputStylesType.Error,
+        );
 
-        expect(styles)
-            .toEqual({
-                color: 'rgb(255, 0, 0)',
-                fontSize: '20px',
-            });
+        expect(styles).toEqual({
+            color: 'rgb(255, 0, 0)',
+            fontSize: '20px',
+        });
     });
 
     it('returns focus styles of credit card input', async () => {
-        const styles = await getCreditCardInputStyles('form-field', ['color', 'fontSize'], CreditCardInputStylesType.Focus);
+        const styles = await getCreditCardInputStyles(
+            'form-field',
+            ['color', 'fontSize'],
+            CreditCardInputStylesType.Focus,
+        );
 
-        expect(styles)
-            .toEqual({
-                color: 'rgb(0, 0, 255)',
-                fontSize: '20px',
-            });
+        expect(styles).toEqual({
+            color: 'rgb(0, 0, 255)',
+            fontSize: '20px',
+        });
     });
 });

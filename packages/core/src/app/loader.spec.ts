@@ -1,8 +1,8 @@
 import { getScriptLoader, getStylesheetLoader } from '@bigcommerce/script-loader';
 import { noop } from 'lodash';
 
-import { loadFiles, AssetManifest, LoadFilesOptions } from './loader';
 import AppExport from './AppExport';
+import { AssetManifest, loadFiles, LoadFilesOptions } from './loader';
 
 jest.mock('@bigcommerce/script-loader', () => {
     return {
@@ -29,24 +29,12 @@ describe('loadFiles', () => {
 
         manifestJson = {
             appVersion: '1.0.0',
-            css: [
-                'vendor.css',
-                'main.css',
-            ],
+            css: ['vendor.css', 'main.css'],
             dynamicChunks: {
-                css: [
-                    'step-a.css',
-                    'step-b.css',
-                ],
-                js: [
-                    'step-a.js',
-                    'step-b.js',
-                ],
+                css: ['step-a.css', 'step-b.css'],
+                js: ['step-a.js', 'step-b.js'],
             },
-            js: [
-                'vendor.js',
-                'main.js',
-            ],
+            js: ['vendor.js', 'main.js'],
         };
 
         (global as any).MANIFEST_JSON = manifestJson;
@@ -67,48 +55,43 @@ describe('loadFiles', () => {
     it('loads required JS files listed in manifest', async () => {
         await loadFiles(options);
 
-        expect(getScriptLoader().loadScripts)
-            .toHaveBeenCalledWith([
-                'https://cdn.foo.bar/vendor.js',
-                'https://cdn.foo.bar/main.js',
-            ]);
+        expect(getScriptLoader().loadScripts).toHaveBeenCalledWith([
+            'https://cdn.foo.bar/vendor.js',
+            'https://cdn.foo.bar/main.js',
+        ]);
     });
 
     it('loads required CSS files listed in manifest', async () => {
         await loadFiles(options);
 
-        expect(getStylesheetLoader().loadStylesheets)
-            .toHaveBeenCalledWith([
-                'https://cdn.foo.bar/vendor.css',
-                'https://cdn.foo.bar/main.css',
-            ], { prepend: true });
+        expect(getStylesheetLoader().loadStylesheets).toHaveBeenCalledWith(
+            ['https://cdn.foo.bar/vendor.css', 'https://cdn.foo.bar/main.css'],
+            { prepend: true },
+        );
     });
 
     it('prefetches dynamic JS chunks listed in manifest', async () => {
         await loadFiles(options);
 
-        expect(getScriptLoader().preloadScripts)
-            .toHaveBeenCalledWith([
-                'https://cdn.foo.bar/step-a.js',
-                'https://cdn.foo.bar/step-b.js',
-            ], { prefetch: true });
+        expect(getScriptLoader().preloadScripts).toHaveBeenCalledWith(
+            ['https://cdn.foo.bar/step-a.js', 'https://cdn.foo.bar/step-b.js'],
+            { prefetch: true },
+        );
     });
 
     it('prefetches dynamic CSS chunks listed in manifest', async () => {
         await loadFiles(options);
 
-        expect(getStylesheetLoader().preloadStylesheets)
-            .toHaveBeenCalledWith([
-                'https://cdn.foo.bar/step-a.css',
-                'https://cdn.foo.bar/step-b.css',
-            ], { prefetch: true });
+        expect(getStylesheetLoader().preloadStylesheets).toHaveBeenCalledWith(
+            ['https://cdn.foo.bar/step-a.css', 'https://cdn.foo.bar/step-b.css'],
+            { prefetch: true },
+        );
     });
 
     it('resolves with app version', async () => {
         const result = await loadFiles(options);
 
-        expect(result.appVersion)
-            .toEqual(manifestJson.appVersion);
+        expect(result.appVersion).toEqual(manifestJson.appVersion);
     });
 
     it('resolves with render checkout function', async () => {
@@ -119,12 +102,11 @@ describe('loadFiles', () => {
             containerId: 'checkout-app',
         });
 
-        expect((global as any).checkout.renderCheckout)
-            .toHaveBeenCalledWith({
-                checkoutId: 'abc',
-                containerId: 'checkout-app',
-                publicPath: options.publicPath,
-            });
+        expect((global as any).checkout.renderCheckout).toHaveBeenCalledWith({
+            checkoutId: 'abc',
+            containerId: 'checkout-app',
+            publicPath: options.publicPath,
+        });
     });
 
     it('resolves with render order confirmation function', async () => {
@@ -135,35 +117,31 @@ describe('loadFiles', () => {
             containerId: 'checkout-app',
         });
 
-        expect((global as any).checkout.renderOrderConfirmation)
-            .toHaveBeenCalledWith({
-                orderId: 123,
-                containerId: 'checkout-app',
-                publicPath: options.publicPath,
-            });
+        expect((global as any).checkout.renderOrderConfirmation).toHaveBeenCalledWith({
+            orderId: 123,
+            containerId: 'checkout-app',
+            publicPath: options.publicPath,
+        });
     });
 
     it('does not wait for prefetched scripts to resolve', async () => {
         const scriptLoader = getScriptLoader();
 
-        jest.spyOn(scriptLoader, 'preloadScripts')
-            .mockImplementation((_url, opt) => {
-                return (opt && opt.prefetch ? new Promise(noop) : Promise.resolve());
-            });
+        jest.spyOn(scriptLoader, 'preloadScripts').mockImplementation((_url, opt) => {
+            return opt && opt.prefetch ? new Promise(noop) : Promise.resolve();
+        });
 
-        expect(await loadFiles(options))
-            .toBeDefined();
+        expect(await loadFiles(options)).toBeDefined();
     });
 
     it('initializes language service with default translations', async () => {
         await loadFiles(options);
 
-        expect(appExports.initializeLanguageService)
-            .toHaveBeenCalledWith({
-                defaultTranslations: expect.any(Object),
-                locale: expect.any(String),
-                locales: expect.any(Object),
-                translations: expect.any(Object),
-            });
+        expect(appExports.initializeLanguageService).toHaveBeenCalledWith({
+            defaultTranslations: expect.any(Object),
+            locale: expect.any(String),
+            locales: expect.any(Object),
+            translations: expect.any(Object),
+        });
     });
 });

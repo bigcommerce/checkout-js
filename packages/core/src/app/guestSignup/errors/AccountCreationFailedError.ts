@@ -1,4 +1,4 @@
-import { setPrototypeOf, CustomError } from '../../common/error';
+import { CustomError, setPrototypeOf } from '../../common/error';
 import { getLanguageService } from '../../locale';
 
 export default class AccountCreationFailedError extends CustomError {

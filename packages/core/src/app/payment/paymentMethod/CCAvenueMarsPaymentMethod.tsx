@@ -1,4 +1,4 @@
-import React, { useMemo, FunctionComponent } from 'react';
+import React, { FunctionComponent, useMemo } from 'react';
 import { Omit } from 'utility-types';
 
 import { TranslatedString } from '../../locale';
@@ -7,13 +7,13 @@ import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMe
 
 export type CCAvenueMarsPaymentMethodProps = Omit<HostedPaymentMethodProps, 'description'>;
 
-const CCAvenueMarsPaymentMethod: FunctionComponent<CCAvenueMarsPaymentMethodProps> = props => {
-    const description = useMemo(() => <TranslatedString id="payment.ccavenuemars_description_text" />, []);
+const CCAvenueMarsPaymentMethod: FunctionComponent<CCAvenueMarsPaymentMethodProps> = (props) => {
+    const description = useMemo(
+        () => <TranslatedString id="payment.ccavenuemars_description_text" />,
+        [],
+    );
 
-    return <HostedPaymentMethod
-        { ...props }
-        description={ description }
-    />;
+    return <HostedPaymentMethod {...props} description={description} />;
 };
 
 export default CCAvenueMarsPaymentMethod;

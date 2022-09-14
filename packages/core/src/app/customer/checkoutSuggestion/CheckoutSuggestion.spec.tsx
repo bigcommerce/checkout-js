@@ -1,4 +1,8 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutSelectors,
+    CheckoutService,
+    createCheckoutService,
+} from '@bigcommerce/checkout-sdk';
 import { mount, render } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
@@ -8,7 +12,10 @@ import { getStoreConfig } from '../../config/config.mock';
 import { LocaleProvider } from '../../locale';
 
 import BoltCheckoutSuggestion from './BoltCheckoutSuggestion';
-import CheckoutSuggestion, { CheckoutSuggestionProps, WithCheckoutSuggestionsProps } from './CheckoutSuggestion';
+import CheckoutSuggestion, {
+    CheckoutSuggestionProps,
+    WithCheckoutSuggestionsProps,
+} from './CheckoutSuggestion';
 
 describe('CheckoutSuggestion', () => {
     let defaultProps: WithCheckoutSuggestionsProps & CheckoutSuggestionProps;
@@ -29,40 +36,41 @@ describe('CheckoutSuggestion', () => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
 
-        jest.spyOn(checkoutState.data, 'getCheckout')
-            .mockReturnValue(getCheckout());
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
 
-        jest.spyOn(checkoutState.data, 'getConfig')
-            .mockReturnValue(getStoreConfig());
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
-        TestComponent = props => (
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <LocaleProvider checkoutService={ checkoutService }>
-                    <CheckoutSuggestion { ...props } />
+        TestComponent = (props) => (
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleProvider checkoutService={checkoutService}>
+                    <CheckoutSuggestion {...props} />
                 </LocaleProvider>
             </CheckoutProvider>
         );
     });
 
     it('does not render anything if method id is not provided', () => {
-        const component = render(<TestComponent { ...defaultProps } />);
+        const component = render(<TestComponent {...defaultProps} />);
 
-        expect(component.html().length).toBe(0);
+        expect(component.html()).toHaveLength(0);
     });
 
     it('initializes Bolt Checkout suggestion block', () => {
-        const container = mount(<TestComponent { ...defaultProps } providerWithCustomCheckout="bolt" />);
+        const container = mount(
+            <TestComponent {...defaultProps} providerWithCustomCheckout="bolt" />,
+        );
         const component = container.find(BoltCheckoutSuggestion);
 
-        expect(component.props())
-            .toEqual(expect.objectContaining({
+        expect(component.props()).toEqual(
+            expect.objectContaining({
                 deinitializeCustomer: expect.any(Function),
                 executePaymentMethodCheckout: expect.any(Function),
                 initializeCustomer: expect.any(Function),
                 isExecutingPaymentMethodCheckout: false,
                 methodId: 'bolt',
                 onUnhandledError: expect.any(Function),
-            }));
+            }),
+        );
 
         expect(defaultProps.initializeCustomer).toHaveBeenCalledWith({
             methodId: 'bolt',

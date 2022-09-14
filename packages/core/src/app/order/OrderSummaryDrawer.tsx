@@ -1,6 +1,10 @@
-import { LineItemMap, ShopperCurrency as ShopperCurrencyType, StoreCurrency } from '@bigcommerce/checkout-sdk';
+import {
+    LineItemMap,
+    ShopperCurrency as ShopperCurrencyType,
+    StoreCurrency,
+} from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { memo, useCallback, FunctionComponent, ReactNode } from 'react';
+import React, { FunctionComponent, memo, ReactNode, useCallback } from 'react';
 
 import { ShopperCurrency } from '../currency';
 import { TranslatedString } from '../locale';
@@ -21,7 +25,9 @@ export interface OrderSummaryDrawerProps {
     additionalLineItems?: ReactNode;
 }
 
-const OrderSummaryDrawer: FunctionComponent<OrderSummaryDrawerProps & OrderSummarySubtotalsProps> = ({
+const OrderSummaryDrawer: FunctionComponent<
+    OrderSummaryDrawerProps & OrderSummarySubtotalsProps
+> = ({
     additionalLineItems,
     coupons,
     discountAmount,
@@ -40,93 +46,99 @@ const OrderSummaryDrawer: FunctionComponent<OrderSummaryDrawerProps & OrderSumma
     taxes,
     total,
 }) => {
-    const renderModal = useCallback(props => (
-        <OrderSummaryModal
-            { ...props }
-            additionalLineItems={ additionalLineItems }
-            coupons={ coupons }
-            discountAmount={ discountAmount }
-            giftCertificates={ giftCertificates }
-            giftWrappingAmount={  giftWrappingAmount }
-            handlingAmount={ handlingAmount }
-            headerLink={ headerLink }
-            lineItems={ lineItems }
-            onRemovedCoupon={ onRemovedCoupon }
-            onRemovedGiftCertificate={ onRemovedGiftCertificate }
-            shippingAmount={ shippingAmount }
-            shopperCurrency={ shopperCurrency }
-            storeCreditAmount={ storeCreditAmount }
-            storeCurrency={ storeCurrency }
-            subtotalAmount={ subtotalAmount }
-            taxes={ taxes }
-            total={ total }
-        />
-    ), [
-        additionalLineItems,
-        coupons,
-        discountAmount,
-        giftCertificates,
-        handlingAmount,
-        headerLink,
-        lineItems,
-        onRemovedCoupon,
-        onRemovedGiftCertificate,
-        giftWrappingAmount,
-        shippingAmount,
-        shopperCurrency,
-        storeCreditAmount,
-        storeCurrency,
-        subtotalAmount,
-        taxes,
-        total,
-    ]);
+    const renderModal = useCallback(
+        (props) => (
+            <OrderSummaryModal
+                {...props}
+                additionalLineItems={additionalLineItems}
+                coupons={coupons}
+                discountAmount={discountAmount}
+                giftCertificates={giftCertificates}
+                giftWrappingAmount={giftWrappingAmount}
+                handlingAmount={handlingAmount}
+                headerLink={headerLink}
+                lineItems={lineItems}
+                onRemovedCoupon={onRemovedCoupon}
+                onRemovedGiftCertificate={onRemovedGiftCertificate}
+                shippingAmount={shippingAmount}
+                shopperCurrency={shopperCurrency}
+                storeCreditAmount={storeCreditAmount}
+                storeCurrency={storeCurrency}
+                subtotalAmount={subtotalAmount}
+                taxes={taxes}
+                total={total}
+            />
+        ),
+        [
+            additionalLineItems,
+            coupons,
+            discountAmount,
+            giftCertificates,
+            handlingAmount,
+            headerLink,
+            lineItems,
+            onRemovedCoupon,
+            onRemovedGiftCertificate,
+            giftWrappingAmount,
+            shippingAmount,
+            shopperCurrency,
+            storeCreditAmount,
+            storeCurrency,
+            subtotalAmount,
+            taxes,
+            total,
+        ],
+    );
 
-    return <ModalTrigger modal={ renderModal }>
-        { ({ onClick, onKeyPress }) => <div
-            className="cartDrawer optimizedCheckout-orderSummary"
-            onClick={ onClick }
-            onKeyPress= { onKeyPress }
-            tabIndex= { 0 }
-        >
-            <figure
-                className={ classNames(
-                    'cartDrawer-figure',
-                    { 'cartDrawer-figure--stack': getLineItemsCount(lineItems) > 1 }
-                ) }
-            >
-                <div className="cartDrawer-imageWrapper">
-                    { getImage(lineItems) }
+    return (
+        <ModalTrigger modal={renderModal}>
+            {({ onClick, onKeyPress }) => (
+                <div
+                    className="cartDrawer optimizedCheckout-orderSummary"
+                    onClick={onClick}
+                    onKeyPress={onKeyPress}
+                    tabIndex={0}
+                >
+                    <figure
+                        className={classNames('cartDrawer-figure', {
+                            'cartDrawer-figure--stack': getLineItemsCount(lineItems) > 1,
+                        })}
+                    >
+                        <div className="cartDrawer-imageWrapper">{getImage(lineItems)}</div>
+                    </figure>
+                    <div className="cartDrawer-body">
+                        <h3 className="cartDrawer-items optimizedCheckout-headingPrimary">
+                            <TranslatedString
+                                data={{ count: getItemsCount(lineItems) }}
+                                id="cart.item_count_text"
+                            />
+                        </h3>
+                        <a>
+                            <TranslatedString id="cart.show_details_action" />
+                        </a>
+                    </div>
+                    <div className="cartDrawer-actions">
+                        <h3 className="cartDrawer-total optimizedCheckout-headingPrimary">
+                            <ShopperCurrency amount={total} />
+                        </h3>
+                    </div>
                 </div>
-            </figure>
-            <div className="cartDrawer-body">
-                <h3 className="cartDrawer-items optimizedCheckout-headingPrimary">
-                    <TranslatedString
-                        data={ { count: getItemsCount(lineItems) } }
-                        id="cart.item_count_text"
-                    />
-                </h3>
-                <a>
-                    <TranslatedString id="cart.show_details_action" />
-                </a>
-            </div>
-            <div className="cartDrawer-actions">
-                <h3 className="cartDrawer-total optimizedCheckout-headingPrimary">
-                    <ShopperCurrency amount={ total } />
-                </h3>
-            </div>
-        </div> }
-    </ModalTrigger>;
+            )}
+        </ModalTrigger>
+    );
 };
 
 function getImage(lineItems: LineItemMap): ReactNode {
     const productWithImage = lineItems.physicalItems[0] || lineItems.digitalItems[0];
 
     if (productWithImage && productWithImage.imageUrl) {
-        return <img
-            alt={ productWithImage.name }
-            data-test="cart-item-image"
-            src={ productWithImage.imageUrl }
-        />;
+        return (
+            <img
+                alt={productWithImage.name}
+                data-test="cart-item-image"
+                src={productWithImage.imageUrl}
+            />
+        );
     }
 
     if (lineItems.giftCertificates.length) {

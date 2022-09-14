@@ -9,7 +9,13 @@ describe('GoogleAutocomplete Component', () => {
     // At the moment, jest.mock('...') doesn't seem to do the trick.
 
     it('renders input with initial value', () => {
-        const tree = render(<GoogleAutocomplete apiKey="bar" initialValue="fo" inputProps={ { placeholder: 'NO PO BOX' } } />);
+        const tree = render(
+            <GoogleAutocomplete
+                apiKey="bar"
+                initialValue="fo"
+                inputProps={{ placeholder: 'NO PO BOX' }}
+            />,
+        );
 
         expect(toJson(tree)).toMatchSnapshot();
     });

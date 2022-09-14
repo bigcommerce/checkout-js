@@ -2,7 +2,7 @@ import { CardInstrument } from '@bigcommerce/checkout-sdk';
 import { expirationDate } from 'card-validator';
 import classNames from 'classnames';
 import creditCardType from 'credit-card-type';
-import React, { memo, useCallback, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo, useCallback } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
@@ -23,30 +23,38 @@ const ManageCardInstrumentsTable: FunctionComponent<ManageCardInstrumentsTablePr
 }) => {
     if (instruments.length === 0) {
         return (
-            <p><TranslatedString id="payment.instrument_manage_modal_empty_text" /></p>
+            <p>
+                <TranslatedString id="payment.instrument_manage_modal_empty_text" />
+            </p>
         );
     }
 
     return (
-        <LoadingOverlay isLoading={ isDeletingInstrument }>
+        <LoadingOverlay isLoading={isDeletingInstrument}>
             <table className="table">
                 <thead className="table-thead">
                     <tr>
-                        <th><TranslatedString id="payment.instrument_manage_table_header_payment_method_text" /></th>
-                        <th><TranslatedString id="payment.instrument_manage_table_header_ending_in_text" /></th>
-                        <th><TranslatedString id="payment.instrument_manage_table_header_expiry_date_text" /></th>
+                        <th>
+                            <TranslatedString id="payment.instrument_manage_table_header_payment_method_text" />
+                        </th>
+                        <th>
+                            <TranslatedString id="payment.instrument_manage_table_header_ending_in_text" />
+                        </th>
+                        <th>
+                            <TranslatedString id="payment.instrument_manage_table_header_expiry_date_text" />
+                        </th>
                         <th />
                     </tr>
                 </thead>
 
                 <tbody className="table-tbody">
-                    { instruments.map(instrument => (
+                    {instruments.map((instrument) => (
                         <ManageInstrumentsRow
-                            instrument={ instrument }
-                            key={ instrument.bigpayToken }
-                            onDeleteInstrument={ onDeleteInstrument }
+                            instrument={instrument}
+                            key={instrument.bigpayToken}
+                            onDeleteInstrument={onDeleteInstrument}
                         />
-                    )) }
+                    ))}
                 </tbody>
             </table>
         </LoadingOverlay>
@@ -64,41 +72,37 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
 }) => {
     const cardType = mapFromInstrumentCardType(instrument.brand);
     const cardInfo = creditCardType.getTypeInfo(cardType);
-    const isExpired = expirationDate({
-        month: instrument.expiryMonth,
-        year: instrument.expiryYear,
-    }).isValid === false;
+    const isExpired =
+        expirationDate({
+            month: instrument.expiryMonth,
+            year: instrument.expiryYear,
+        }).isValid === false;
 
     const handleDelete = useCallback(() => {
         onDeleteInstrument(instrument.bigpayToken);
-    }, [
-        instrument,
-        onDeleteInstrument,
-    ]);
+    }, [instrument, onDeleteInstrument]);
 
     return (
         <tr>
             <td data-test="manage-instrument-cardType">
-                <CreditCardIcon cardType={ cardType } />
+                <CreditCardIcon cardType={cardType} />
 
-                { cardInfo && <span className="instrumentModal-instrumentCardType">
-                    { cardInfo.niceType }
-                </span> }
+                {cardInfo && (
+                    <span className="instrumentModal-instrumentCardType">{cardInfo.niceType}</span>
+                )}
             </td>
-            <td data-test="manage-instrument-last4">
-                { instrument.last4 }
-            </td>
+            <td data-test="manage-instrument-last4">{instrument.last4}</td>
             <td
-                className={ classNames({ 'instrumentModal-instrumentExpiry--expired': isExpired }) }
+                className={classNames({ 'instrumentModal-instrumentExpiry--expired': isExpired })}
                 data-test="manage-instrument-expiry"
             >
-                { `${instrument.expiryMonth}/${instrument.expiryYear}` }
+                {`${instrument.expiryMonth}/${instrument.expiryYear}`}
             </td>
             <td>
                 <button
                     className="button button--tiny table-actionButton optimizedCheckout-buttonSecondary"
                     data-test="manage-instrument-delete-button"
-                    onClick={ handleDelete }
+                    onClick={handleDelete}
                     type="button"
                 >
                     <TranslatedString id="common.delete_action" />

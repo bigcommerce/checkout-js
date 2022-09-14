@@ -29,53 +29,50 @@ describe('RemoteShippingAddress Component', () => {
     };
 
     it('renders widget', () => {
-        const component = shallow(<RemoteShippingAddress { ...defaultProps } />);
+        const component = shallow(<RemoteShippingAddress {...defaultProps} />);
 
         expect(component.find('#container').hasClass('widget--amazon')).toBeTruthy();
     });
 
     it('calls initialize prop on mount', () => {
-        shallow(<RemoteShippingAddress { ...defaultProps } />);
+        shallow(<RemoteShippingAddress {...defaultProps} />);
 
         expect(defaultProps.initialize).toHaveBeenCalled();
     });
 
     it('calls deinitialize prop on unmount', () => {
-        shallow(<RemoteShippingAddress { ...defaultProps } />).unmount();
+        shallow(<RemoteShippingAddress {...defaultProps} />).unmount();
 
         expect(defaultProps.initialize).toHaveBeenCalled();
     });
 
     it('renders correct number of custom form fields', () => {
         const component = mount(
-            <Formik
-                initialValues={ initialFormikValues }
-                onSubmit={ noop }
-            >
-                <RemoteShippingAddress { ...defaultProps } />
-            </Formik>
+            <Formik initialValues={initialFormikValues} onSubmit={noop}>
+                <RemoteShippingAddress {...defaultProps} />
+            </Formik>,
         );
 
-        expect(component.find(DynamicFormField).length).toEqual(3);
+        expect(component.find(DynamicFormField)).toHaveLength(3);
     });
 
     it('calls method to set field value on change in custom form field', () => {
         const localeContext = createLocaleContext(getStoreConfig());
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <Formik
-                    initialValues={ initialFormikValues }
-                    onSubmit={ noop }
-                >
-                    <RemoteShippingAddress { ...defaultProps } />
+            <LocaleContext.Provider value={localeContext}>
+                <Formik initialValues={initialFormikValues} onSubmit={noop}>
+                    <RemoteShippingAddress {...defaultProps} />
                 </Formik>
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
         const inputFieldName = getFormFields()[4].name;
 
-        component.find(`input[name="shippingAddress.customFields.${inputFieldName}"]`)
-            .simulate('change', { target: { value: 'foo', name: 'shippingAddress.customFields.field_25' } });
+        component
+            .find(`input[name="shippingAddress.customFields.${inputFieldName}"]`)
+            .simulate('change', {
+                target: { value: 'foo', name: 'shippingAddress.customFields.field_25' },
+            });
 
         expect(defaultProps.onFieldChange).toHaveBeenCalledWith(inputFieldName, 'foo');
     });

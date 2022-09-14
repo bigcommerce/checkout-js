@@ -1,4 +1,4 @@
-import { createCurrencyService, CheckoutService, StoreConfig } from '@bigcommerce/checkout-sdk';
+import { CheckoutService, createCurrencyService, StoreConfig } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import React, { Component, ReactNode } from 'react';
 
@@ -20,12 +20,13 @@ class LocaleProvider extends Component<LocaleProviderProps> {
     private unsubscribe?: () => void;
 
     private getContextValue = memoizeOne((config?: StoreConfig) => {
-
         return {
             currency: config ? createCurrencyService(config) : undefined,
-            date: config ? {
-                inputFormat: config.inputDateFormat,
-            } : undefined,
+            date: config
+                ? {
+                      inputFormat: config.inputDateFormat,
+                  }
+                : undefined,
             language: this.languageService,
         };
     });
@@ -37,7 +38,7 @@ class LocaleProvider extends Component<LocaleProviderProps> {
             ({ data }) => {
                 this.setState({ config: data.getConfig() });
             },
-            ({ data }) => data.getConfig()
+            ({ data }) => data.getConfig(),
         );
     }
 
@@ -53,8 +54,8 @@ class LocaleProvider extends Component<LocaleProviderProps> {
         const { config } = this.state;
 
         return (
-            <LocaleContext.Provider value={ this.getContextValue(config) }>
-                { children }
+            <LocaleContext.Provider value={this.getContextValue(config)}>
+                {children}
             </LocaleContext.Provider>
         );
     }

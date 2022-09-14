@@ -1,10 +1,10 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import { getCheckout } from './checkouts.mock';
 import Checkout from './Checkout';
 import CheckoutApp, { CheckoutAppProps } from './CheckoutApp';
 import CheckoutProvider from './CheckoutProvider';
+import { getCheckout } from './checkouts.mock';
 
 describe('CheckoutApp', () => {
     let defaultProps: CheckoutAppProps;
@@ -26,16 +26,14 @@ describe('CheckoutApp', () => {
     });
 
     it('renders checkout component', () => {
-        const component = shallow(<CheckoutApp { ...defaultProps } />);
+        const component = shallow(<CheckoutApp {...defaultProps} />);
 
-        expect(component.find(Checkout))
-            .toHaveLength(1);
+        expect(component.find(Checkout)).toHaveLength(1);
     });
 
     it('provides checkout context', () => {
-        const component = shallow(<CheckoutApp { ...defaultProps } />);
+        const component = shallow(<CheckoutApp {...defaultProps} />);
 
-        expect(component.find(CheckoutProvider))
-            .toHaveLength(1);
+        expect(component.find(CheckoutProvider)).toHaveLength(1);
     });
 });

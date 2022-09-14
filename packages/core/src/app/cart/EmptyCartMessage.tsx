@@ -12,7 +12,10 @@ interface EmptyCartMessageState {
     isWaiting: boolean;
 }
 
-export default class EmptyCartMessage extends PureComponent<EmptyCartMessageProps, EmptyCartMessageState> {
+export default class EmptyCartMessage extends PureComponent<
+    EmptyCartMessageProps,
+    EmptyCartMessageState
+> {
     state: EmptyCartMessageState = {
         isWaiting: true,
     };
@@ -36,14 +39,8 @@ export default class EmptyCartMessage extends PureComponent<EmptyCartMessageProp
         const { isWaiting } = this.state;
 
         return (
-            <LoadingOverlay
-                hideContentWhenLoading
-                isLoading={ isWaiting }
-            >
-                <TranslatedHtml
-                    data={ { url: loginUrl } }
-                    id="cart.empty_cart_message"
-                />
+            <LoadingOverlay hideContentWhenLoading isLoading={isWaiting}>
+                <TranslatedHtml data={{ url: loginUrl }} id="cart.empty_cart_message" />
             </LoadingOverlay>
         );
     }

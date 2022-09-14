@@ -1,15 +1,24 @@
-import { AdyenV3CreditCardComponentOptions, AdyenV3ValidationState, CardInstrument } from '@bigcommerce/checkout-sdk';
+import {
+    AdyenV3CreditCardComponentOptions,
+    AdyenV3ValidationState,
+    CardInstrument,
+} from '@bigcommerce/checkout-sdk';
 import _ from 'lodash';
-import React, { useCallback, useRef, useState, FunctionComponent } from 'react';
+import React, { FunctionComponent, useCallback, useRef, useState } from 'react';
 import { Omit } from 'utility-types';
 
 import { TranslatedString } from '../../locale';
 import { Modal } from '../../ui/modal';
 
 import AdyenV3CardValidation from './AdyenV3CardValidation';
-import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
+import HostedWidgetPaymentMethod, {
+    HostedWidgetPaymentMethodProps,
+} from './HostedWidgetPaymentMethod';
 
-export type AdyenPaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId' | 'hideContentWhenSignedOut'>;
+export type AdyenPaymentMethodProps = Omit<
+    HostedWidgetPaymentMethodProps,
+    'containerId' | 'hideContentWhenSignedOut'
+>;
 
 export interface AdyenOptions {
     [key: string]: AdyenV3CreditCardComponentOptions;
@@ -49,7 +58,7 @@ const AdyenV3PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
         },
     };
 
-    const onBeforeLoad = useCallback((shopperInteraction: boolean)  => {
+    const onBeforeLoad = useCallback((shopperInteraction: boolean) => {
         ref.current.shouldShowModal = shopperInteraction;
 
         if (ref.current.shouldShowModal) {
@@ -77,7 +86,10 @@ const AdyenV3PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
         }
     }, []);
 
-    const initializeAdyenPayment: HostedWidgetPaymentMethodProps['initializePayment'] = (options, selectedInstrument) => {
+    const initializeAdyenPayment: HostedWidgetPaymentMethodProps['initializePayment'] = (
+        options,
+        selectedInstrument,
+    ) => {
         const selectedInstrumentId = selectedInstrument?.bigpayToken;
 
         return initializePayment({
@@ -86,7 +98,7 @@ const AdyenV3PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
                 cardVerificationContainerId: selectedInstrumentId && cardVerificationContainerId,
                 containerId,
                 hasVaultedInstruments: !!selectedInstrumentId,
-                ...(adyenOptions[component] ? {options: adyenOptions[component]} : {}),
+                ...(adyenOptions[component] ? { options: adyenOptions[component] } : {}),
                 additionalActionOptions: {
                     widgetSize: '05',
                     containerId: additionalActionContainerId,
@@ -95,63 +107,70 @@ const AdyenV3PaymentMethod: FunctionComponent<AdyenPaymentMethodProps> = ({
                     onLoad,
                 },
                 shouldShowNumberField: ref.current.shouldShowNumberField,
-                validateCardFields: (state: AdyenV3ValidationState) => { setCardValidationState(state); },
+                validateCardFields: (state: AdyenV3ValidationState) => {
+                    setCardValidationState(state);
+                },
             },
         });
     };
 
-    const validateInstrument = (shouldShowNumberField: boolean, selectedInstrument: CardInstrument) => {
-
+    const validateInstrument = (
+        shouldShowNumberField: boolean,
+        selectedInstrument: CardInstrument,
+    ) => {
         ref.current.shouldShowNumberField = shouldShowNumberField;
 
-        return <AdyenV3CardValidation
-            cardValidationState = { cardValidationState }
-            paymentMethod={ method }
-            selectedInstrument={ selectedInstrument }
-            shouldShowNumberField={ shouldShowNumberField }
-            verificationFieldsContainerId={ cardVerificationContainerId }
-        />;
+        return (
+            <AdyenV3CardValidation
+                cardValidationState={cardValidationState}
+                paymentMethod={method}
+                selectedInstrument={selectedInstrument}
+                shouldShowNumberField={shouldShowNumberField}
+                verificationFieldsContainerId={cardVerificationContainerId}
+            />
+        );
     };
 
     const isAccountInstrument = () => {
         switch (method.method) {
-        case 'directEbanking':
-        case 'giropay':
-        case 'ideal':
-        case 'sepadirectdebit':
-            return true;
-        default:
-            return false;
+            case 'directEbanking':
+            case 'giropay':
+            case 'ideal':
+            case 'sepadirectdebit':
+                return true;
+
+            default:
+                return false;
         }
     };
 
-    return <>
-        <HostedWidgetPaymentMethod
-            { ...rest }
-            containerId={ containerId }
-            hideContentWhenSignedOut
-            initializePayment={ initializeAdyenPayment }
-            isAccountInstrument={ isAccountInstrument() }
-            method={ method }
-            shouldHideInstrumentExpiryDate={ shouldHideInstrumentExpiryDate }
-            validateInstrument={ validateInstrument }
-        />
+    return (
+        <>
+            <HostedWidgetPaymentMethod
+                {...rest}
+                containerId={containerId}
+                hideContentWhenSignedOut
+                initializePayment={initializeAdyenPayment}
+                isAccountInstrument={isAccountInstrument()}
+                method={method}
+                shouldHideInstrumentExpiryDate={shouldHideInstrumentExpiryDate}
+                validateInstrument={validateInstrument}
+            />
 
-        <Modal
-            additionalBodyClassName="modal-body--center"
-            closeButtonLabel={ <TranslatedString id="common.close_action" /> }
-            isOpen={ showAdditionalActionContent }
-            onRequestClose={ cancelAdditionalActionModalFlow }
-            shouldShowCloseButton={ true }
-        >
-            <div id={ additionalActionContainerId } style={ { width: '100%' } } />
-        </Modal>
-        { !showAdditionalActionContent &&
-            <div
-                id= { additionalActionContainerId }
-                style={ { display: 'none' } }
-            /> }
-    </>;
+            <Modal
+                additionalBodyClassName="modal-body--center"
+                closeButtonLabel={<TranslatedString id="common.close_action" />}
+                isOpen={showAdditionalActionContent}
+                onRequestClose={cancelAdditionalActionModalFlow}
+                shouldShowCloseButton={true}
+            >
+                <div id={additionalActionContainerId} style={{ width: '100%' }} />
+            </Modal>
+            {!showAdditionalActionContent && (
+                <div id={additionalActionContainerId} style={{ display: 'none' }} />
+            )}
+        </>
+    );
 };
 
 export default AdyenV3PaymentMethod;

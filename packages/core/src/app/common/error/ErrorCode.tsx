@@ -1,4 +1,4 @@
-import React, { memo, FunctionComponent, ReactNode } from 'react';
+import React, { FunctionComponent, memo, ReactNode } from 'react';
 
 import { TranslatedString } from '../../locale';
 
@@ -13,10 +13,9 @@ const ErrorCode: FunctionComponent<ErrorCodeProps> = ({ code, label }) => {
     return (
         <div className="errorCode">
             <span className="errorCode-label">
-                { label ?? <TranslatedString id="common.error_code" /> }
-            </span>
-            { ' ' }
-            <span className="errorCode-value">{ code }</span>
+                {label ?? <TranslatedString id="common.error_code" />}
+            </span>{' '}
+            <span className="errorCode-value">{code}</span>
         </div>
     );
 };

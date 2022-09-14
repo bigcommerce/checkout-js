@@ -4,16 +4,12 @@ import { EMPTY_ARRAY } from '../common/utility';
 import { RedeemableProps } from './Redeemable';
 
 export default function mapToRedeemableProps(
-    context: CheckoutContextProps
+    context: CheckoutContextProps,
 ): RedeemableProps | null {
     const {
         checkoutService,
         checkoutState: {
-            data: {
-                getConfig,
-                getCoupons,
-                getGiftCertificates,
-            },
+            data: { getConfig, getCoupons, getGiftCertificates },
             statuses: {
                 isApplyingCoupon,
                 isApplyingGiftCertificate,
@@ -42,12 +38,12 @@ export default function mapToRedeemableProps(
         clearError: checkoutService.clearError,
         coupons: getCoupons() || EMPTY_ARRAY,
         giftCertificates: getGiftCertificates() || EMPTY_ARRAY,
-        isApplyingRedeemable: (isApplyingCoupon() || isApplyingGiftCertificate()),
+        isApplyingRedeemable: isApplyingCoupon() || isApplyingGiftCertificate(),
         isRemovingCoupon: isRemovingCoupon(),
         isRemovingGiftCertificate: isRemovingGiftCertificate(),
         onRemovedCoupon: checkoutService.removeCoupon,
         onRemovedGiftCertificate: checkoutService.removeGiftCertificate,
-        removedRedeemableError: (getRemoveCouponError() || getRemoveGiftCertificateError()),
+        removedRedeemableError: getRemoveCouponError() || getRemoveGiftCertificateError(),
         shouldCollapseCouponCode: config.checkoutSettings.isCouponCodeCollapsed,
     };
 }

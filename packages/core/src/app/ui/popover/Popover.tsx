@@ -7,11 +7,7 @@ export interface PopoverProps {
 }
 
 const Popover: FunctionComponent<PopoverProps> = ({ children }) => {
-    return (
-        <div className="popover">
-            { children }
-        </div>
-    );
+    return <div className="popover">{children}</div>;
 };
 
 export default Popover;

@@ -13,12 +13,11 @@ describe('OrderSummaryPrice', () => {
 
         describe('and has only required props', () => {
             beforeEach(() => {
-                orderSummaryPrice = shallow(<OrderSummaryPrice
-                    amount={ amount }
-                    label="Label"
-                >
-                    Foo Children
-                </OrderSummaryPrice>);
+                orderSummaryPrice = shallow(
+                    <OrderSummaryPrice amount={amount} label="Label">
+                        Foo Children
+                    </OrderSummaryPrice>,
+                );
             });
 
             it('renders component', () => {
@@ -28,45 +27,45 @@ describe('OrderSummaryPrice', () => {
 
         describe('and has only required props', () => {
             beforeEach(() => {
-                orderSummaryPrice = shallow(<OrderSummaryPrice
-                    amount={ amount }
-                    className="extra-class"
-                    currencyCode="EUR"
-                    label="Label"
-                    superscript="*"
-                    testId="test-id"
-                />);
+                orderSummaryPrice = shallow(
+                    <OrderSummaryPrice
+                        amount={amount}
+                        className="extra-class"
+                        currencyCode="EUR"
+                        label="Label"
+                        superscript="*"
+                        testId="test-id"
+                    />,
+                );
             });
 
             it('renders additional elements/props', () => {
-                expect(orderSummaryPrice.first().props())
-                    .toMatchObject({
-                        'data-test': 'test-id',
-                    });
+                expect(orderSummaryPrice.first().props()).toMatchObject({
+                    'data-test': 'test-id',
+                });
 
-                expect(orderSummaryPrice.find('.cart-priceItem').props().className)
-                    .toContain('extra-class');
+                expect(orderSummaryPrice.find('.cart-priceItem').props().className).toContain(
+                    'extra-class',
+                );
 
-                expect(orderSummaryPrice.find('.cart-priceItem-currencyCode').text())
-                    .toMatch('(EUR)');
+                expect(orderSummaryPrice.find('.cart-priceItem-currencyCode').text()).toMatch(
+                    '(EUR)',
+                );
 
-                expect(orderSummaryPrice.find('[data-test="cart-price-value-superscript"]').text())
-                    .toMatch('*');
+                expect(
+                    orderSummaryPrice.find('[data-test="cart-price-value-superscript"]').text(),
+                ).toMatch('*');
             });
         });
     });
 
     describe('when has null amount', () => {
         beforeEach(() => {
-            orderSummaryPrice = shallow(<OrderSummaryPrice
-                amount={ null }
-                label="Label"
-            />);
+            orderSummaryPrice = shallow(<OrderSummaryPrice amount={null} label="Label" />);
         });
 
         it('renders not yet symbol as label', () => {
-            expect(orderSummaryPrice.find('[data-test="cart-price-value"]').text())
-                .toEqual('--');
+            expect(orderSummaryPrice.find('[data-test="cart-price-value"]').text()).toBe('--');
         });
     });
 
@@ -75,34 +74,40 @@ describe('OrderSummaryPrice', () => {
 
         describe('and no label', () => {
             beforeEach(() => {
-                orderSummaryPrice = shallow(<OrderSummaryPrice
-                    amount={ amount }
-                    className="label"
-                    label="Label"
-                    testId="test"
-                />);
+                orderSummaryPrice = shallow(
+                    <OrderSummaryPrice
+                        amount={amount}
+                        className="label"
+                        label="Label"
+                        testId="test"
+                    />,
+                );
             });
 
             it('renders formatted amount', () => {
-                expect(orderSummaryPrice.find(ShopperCurrency).props())
-                    .toMatchObject({ amount: 0 });
+                expect(orderSummaryPrice.find(ShopperCurrency).props()).toMatchObject({
+                    amount: 0,
+                });
             });
         });
 
         describe('and zero label', () => {
             beforeEach(() => {
-                orderSummaryPrice = shallow(<OrderSummaryPrice
-                    amount={ amount }
-                    className="label"
-                    label="Label"
-                    testId="test"
-                    zeroLabel="Free"
-                />);
+                orderSummaryPrice = shallow(
+                    <OrderSummaryPrice
+                        amount={amount}
+                        className="label"
+                        label="Label"
+                        testId="test"
+                        zeroLabel="Free"
+                    />,
+                );
             });
 
             it('renders zero label', () => {
-                expect(orderSummaryPrice.find('[data-test="cart-price-value"]').text())
-                    .toEqual('Free');
+                expect(orderSummaryPrice.find('[data-test="cart-price-value"]').text()).toBe(
+                    'Free',
+                );
             });
         });
     });

@@ -39,62 +39,51 @@ class GoogleAutocomplete extends PureComponent<GoogleAutocompleteProps, GoogleAu
     }
 
     render(): ReactNode {
-        const {
-            initialValue,
-            onToggleOpen = noop,
-            inputProps = {},
-        } = this.props;
+        const { initialValue, onToggleOpen = noop, inputProps = {} } = this.props;
 
-        const {
-            autoComplete,
-            items,
-        } = this.state;
+        const { autoComplete, items } = this.state;
 
         return (
             <Autocomplete
-                initialHighlightedIndex={ 0 }
-                initialValue={ initialValue }
-                inputProps={ {
+                initialHighlightedIndex={0}
+                initialValue={initialValue}
+                inputProps={{
                     ...inputProps,
                     autoComplete,
-                } }
-                items={ items }
+                }}
+                items={items}
                 listTestId="address-autocomplete-suggestions"
-                onChange={ this.onChange }
-                onSelect={ this.onSelect }
-                onToggleOpen={ onToggleOpen }
+                onChange={this.onChange}
+                onSelect={this.onSelect}
+                onToggleOpen={onToggleOpen}
             >
                 <div className="co-googleAutocomplete-footer" />
             </Autocomplete>
         );
     }
 
-    private onSelect: (item: AutocompleteItem) => void = item => {
-        const {
-            fields,
-            onSelect = noop,
-            nextElement,
-        } = this.props;
+    private onSelect: (item: AutocompleteItem) => void = (item) => {
+        const { fields, onSelect = noop, nextElement } = this.props;
 
-        this.googleAutocompleteService.getPlacesServices().then(service => {
-            service.getDetails({
-                placeId: item.id,
-                fields: fields || ['address_components', 'name'],
-            }, result => {
-                if (nextElement) {
-                    nextElement.focus();
-                }
+        this.googleAutocompleteService.getPlacesServices().then((service) => {
+            service.getDetails(
+                {
+                    placeId: item.id,
+                    fields: fields || ['address_components', 'name'],
+                },
+                (result) => {
+                    if (nextElement) {
+                        nextElement.focus();
+                    }
 
-                onSelect(result, item);
-            });
+                    onSelect(result, item);
+                },
+            );
         });
     };
 
-    private onChange: (input: string) => void = input => {
-        const {
-            isAutocompleteEnabled,
-            onChange = noop,
-        } = this.props;
+    private onChange: (input: string) => void = (input) => {
+        const { isAutocompleteEnabled, onChange = noop } = this.props;
 
         onChange(input, false);
 
@@ -113,18 +102,16 @@ class GoogleAutocomplete extends PureComponent<GoogleAutocompleteProps, GoogleAu
             return;
         }
 
-        const {
-            componentRestrictions,
-            types,
-        } = this.props;
+        const { componentRestrictions, types } = this.props;
 
-        this.googleAutocompleteService.getAutocompleteService().then(service => {
-            service.getPlacePredictions({
-                input,
-                types: types || ['geocode'],
-                componentRestrictions,
-            }, results =>
-                this.setState({ items: this.toAutocompleteItems(results) })
+        this.googleAutocompleteService.getAutocompleteService().then((service) => {
+            service.getPlacePredictions(
+                {
+                    input,
+                    types: types || ['geocode'],
+                    componentRestrictions,
+                },
+                (results) => this.setState({ items: this.toAutocompleteItems(results) }),
             );
         });
     }
@@ -143,8 +130,10 @@ class GoogleAutocomplete extends PureComponent<GoogleAutocompleteProps, GoogleAu
         });
     }
 
-    private toAutocompleteItems(results?: google.maps.places.AutocompletePrediction[]): AutocompleteItem[] {
-        return (results || []).map(result => ({
+    private toAutocompleteItems(
+        results?: google.maps.places.AutocompletePrediction[],
+    ): AutocompleteItem[] {
+        return (results || []).map((result) => ({
             label: result.description,
             value: result.structured_formatting.main_text,
             highlightedSlices: result.matched_substrings,

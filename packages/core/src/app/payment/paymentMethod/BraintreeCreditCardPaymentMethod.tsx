@@ -1,9 +1,19 @@
 import { noop } from 'lodash';
-import React, { createRef, useCallback, useRef, useState, FunctionComponent, RefObject } from 'react';
+import React, {
+    createRef,
+    FunctionComponent,
+    RefObject,
+    useCallback,
+    useRef,
+    useState,
+} from 'react';
 
 import { TranslatedString } from '../../locale';
 import { Modal } from '../../ui/modal';
-import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps } from '../hostedCreditCard';
+import {
+    withHostedCreditCardFieldset,
+    WithInjectedHostedCreditCardFieldsetProps,
+} from '../hostedCreditCard';
 
 import CreditCardPaymentMethod, { CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
 
@@ -15,8 +25,7 @@ interface BraintreeCreditCardPaymentMethodRef {
 }
 
 const BraintreeCreditCardPaymentMethod: FunctionComponent<
-    BraintreeCreditCardPaymentMethodProps &
-    WithInjectedHostedCreditCardFieldsetProps
+    BraintreeCreditCardPaymentMethodProps & WithInjectedHostedCreditCardFieldsetProps
 > = ({
     getHostedFormOptions,
     getHostedStoredCardValidationFieldset,
@@ -32,32 +41,34 @@ const BraintreeCreditCardPaymentMethod: FunctionComponent<
         threeDSecureContentRef: createRef(),
     });
 
-    const initializeBraintreePayment: BraintreeCreditCardPaymentMethodProps['initializePayment'] = useCallback(async (options, selectedInstrument) => {
-        return initializePayment({
-            ...options,
-            braintree: {
-                threeDSecure: {
-                    addFrame(error, content, cancel) {
-                        if (error) {
-                            return onUnhandledError(error);
-                        }
+    const initializeBraintreePayment: BraintreeCreditCardPaymentMethodProps['initializePayment'] =
+        useCallback(
+            async (options, selectedInstrument) => {
+                return initializePayment({
+                    ...options,
+                    braintree: {
+                        threeDSecure: {
+                            addFrame(error, content, cancel) {
+                                if (error) {
+                                    return onUnhandledError(error);
+                                }
 
-                        setThreeDSecureContent(content);
-                        ref.current.cancelThreeDSecureVerification = cancel;
+                                setThreeDSecureContent(content);
+                                ref.current.cancelThreeDSecureVerification = cancel;
+                            },
+                            removeFrame() {
+                                setThreeDSecureContent(undefined);
+                                ref.current.cancelThreeDSecureVerification = undefined;
+                            },
+                        },
+                        form:
+                            getHostedFormOptions &&
+                            (await getHostedFormOptions(selectedInstrument)),
                     },
-                    removeFrame() {
-                        setThreeDSecureContent(undefined);
-                        ref.current.cancelThreeDSecureVerification = undefined;
-                    },
-                },
-                form: getHostedFormOptions && await getHostedFormOptions(selectedInstrument),
+                });
             },
-        });
-    }, [
-        getHostedFormOptions,
-        initializePayment,
-        onUnhandledError,
-    ]);
+            [getHostedFormOptions, initializePayment, onUnhandledError],
+        );
 
     const appendThreeDSecureContent = useCallback(() => {
         if (ref.current.threeDSecureContentRef.current && threeDSecureContent) {
@@ -74,26 +85,28 @@ const BraintreeCreditCardPaymentMethod: FunctionComponent<
         }
     }, []);
 
-    return <>
-        <CreditCardPaymentMethod
-            { ...rest }
-            cardFieldset={ hostedFieldset }
-            cardValidationSchema={ hostedValidationSchema }
-            getStoredCardValidationFieldset={ getHostedStoredCardValidationFieldset }
-            initializePayment={ initializeBraintreePayment }
-            storedCardValidationSchema={ hostedStoredCardValidationSchema }
-        />
+    return (
+        <>
+            <CreditCardPaymentMethod
+                {...rest}
+                cardFieldset={hostedFieldset}
+                cardValidationSchema={hostedValidationSchema}
+                getStoredCardValidationFieldset={getHostedStoredCardValidationFieldset}
+                initializePayment={initializeBraintreePayment}
+                storedCardValidationSchema={hostedStoredCardValidationSchema}
+            />
 
-        <Modal
-            additionalBodyClassName="modal-body--center"
-            closeButtonLabel={ <TranslatedString id="common.close_action" /> }
-            isOpen={ !!threeDSecureContent }
-            onAfterOpen={ appendThreeDSecureContent }
-            onRequestClose={ cancelThreeDSecureModalFlow }
-        >
-            <div ref={ ref.current.threeDSecureContentRef } />
-        </Modal>
-    </>;
+            <Modal
+                additionalBodyClassName="modal-body--center"
+                closeButtonLabel={<TranslatedString id="common.close_action" />}
+                isOpen={!!threeDSecureContent}
+                onAfterOpen={appendThreeDSecureContent}
+                onRequestClose={cancelThreeDSecureModalFlow}
+            >
+                <div ref={ref.current.threeDSecureContentRef} />
+            </Modal>
+        </>
+    );
 };
 
 export default withHostedCreditCardFieldset(BraintreeCreditCardPaymentMethod);

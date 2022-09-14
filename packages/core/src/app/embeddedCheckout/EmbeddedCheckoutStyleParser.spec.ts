@@ -1,5 +1,5 @@
-import { styles } from './embeddedCheckoutStyles.mock';
 import EmbeddedCheckoutStyleParser from './EmbeddedCheckoutStyleParser';
+import { styles } from './embeddedCheckoutStyles.mock';
 
 describe('EmbeddedCheckoutStyleParser', () => {
     let parser: EmbeddedCheckoutStyleParser;

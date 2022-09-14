@@ -21,152 +21,170 @@ describe('DynamicInput', () => {
         localeContext = createLocaleContext(getStoreConfig());
         date = localeContext.date;
 
-        DynamicInputTest = props => (
-            <LocaleContext.Provider value={ localeContext }>
-                <DynamicInput { ...props } />
+        DynamicInputTest = (props) => (
+            <LocaleContext.Provider value={localeContext}>
+                <DynamicInput {...props} />
             </LocaleContext.Provider>
         );
     });
 
     it('renders text input for default input with passed props', () => {
-        expect(mount(<DynamicInputTest date={ date } id="field_33" name="x" />).html())
-            .toMatchSnapshot();
+        expect(
+            mount(<DynamicInputTest date={date} id="field_33" name="x" />).html(),
+        ).toMatchSnapshot();
     });
 
     it('renders textarea for multiline type', () => {
-        expect(mount(
-            <DynamicInputTest
-                date={ date }
-                fieldType={ DynamicFormFieldType.multiline }
-                id="field_33"
-                rows={ 4 }
-            />)
-            .find(TextArea)
-            .prop('rows'))
-            .toEqual(4);
+        expect(
+            mount(
+                <DynamicInputTest
+                    date={date}
+                    fieldType={DynamicFormFieldType.multiline}
+                    id="field_33"
+                    rows={4}
+                />,
+            )
+                .find(TextArea)
+                .prop('rows'),
+        ).toBe(4);
     });
 
     it('renders date picker for date type', () => {
         const datePicker = mount(
             <DynamicInputTest
-                date={ date }
-                fieldType={ DynamicFormFieldType.date }
+                date={date}
+                fieldType={DynamicFormFieldType.date}
                 id="field_33"
                 max="2019-02-01"
                 min="2019-01-01"
-            />
+            />,
         );
 
-        expect(datePicker.find(ReactDatePicker).props())
-            .toMatchObject(expect.objectContaining({
+        expect(datePicker.find(ReactDatePicker).props()).toMatchObject(
+            expect.objectContaining({
                 minDate: new Date('2019-01-01T00:00:00Z'),
                 maxDate: new Date('2019-02-01T00:00:00Z'),
-            }));
+            }),
+        );
     });
 
     it('renders checkbox input for checkbox type', () => {
         const component = mount(
             <DynamicInputTest
-                date={ date }
-                fieldType={ DynamicFormFieldType.checkbox }
+                date={date}
+                fieldType={DynamicFormFieldType.checkbox}
                 id="id"
-                options={ [
+                options={[
                     { value: 'x', label: 'X' },
                     { value: 'y', label: 'Y' },
-                ] }
-                value={ ['y'] }
-            />);
+                ]}
+                value={['y']}
+            />,
+        );
 
-        expect(component.find(CheckboxInput).at(0).props())
-            .toEqual(expect.objectContaining({
+        expect(component.find(CheckboxInput).at(0).props()).toEqual(
+            expect.objectContaining({
                 id: 'id-x',
                 checked: false,
-            }));
+            }),
+        );
 
-        expect(component.find(CheckboxInput).at(1).props())
-            .toEqual(expect.objectContaining({
+        expect(component.find(CheckboxInput).at(1).props()).toEqual(
+            expect.objectContaining({
                 id: 'id-y',
                 checked: true,
-            }));
+            }),
+        );
     });
 
     it('renders radio type input for radio type', () => {
         const component = mount(
             <DynamicInputTest
-                date={ date }
-                fieldType={ DynamicFormFieldType.radio }
+                date={date}
+                fieldType={DynamicFormFieldType.radio}
                 id="id"
-                onChange={ jest.fn() }
-                options={ [
+                onChange={jest.fn()}
+                options={[
                     { value: 'x', label: 'X' },
                     { value: 'y', label: 'Y' },
-                ] }
+                ]}
                 value="y"
-            />);
+            />,
+        );
 
-        expect(component.find(RadioInput).at(0).props())
-            .toEqual(expect.objectContaining({
+        expect(component.find(RadioInput).at(0).props()).toEqual(
+            expect.objectContaining({
                 id: 'id-x',
                 checked: false,
-            }));
+            }),
+        );
 
-        expect(component.find(RadioInput).at(1).props())
-            .toEqual(expect.objectContaining({
+        expect(component.find(RadioInput).at(1).props()).toEqual(
+            expect.objectContaining({
                 id: 'id-y',
                 checked: true,
-            }));
+            }),
+        );
     });
 
     it('renders number type input for number type', () => {
-        expect(mount(
-            <DynamicInputTest
-                date={ date }
-                fieldType={ DynamicFormFieldType.number }
-                id="field_33"
-            />)
-            .find(TextInput)
-            .prop('type'))
-            .toEqual('number');
+        expect(
+            mount(
+                <DynamicInputTest
+                    date={date}
+                    fieldType={DynamicFormFieldType.number}
+                    id="field_33"
+                />,
+            )
+                .find(TextInput)
+                .prop('type'),
+        ).toBe('number');
     });
 
     it('renders password type input for password type', () => {
-        expect(mount(
-            <DynamicInputTest
-                date={ date }
-                fieldType={ DynamicFormFieldType.password }
-                id="field_33"
-            />)
-            .find(TextInput)
-            .prop('type'))
-            .toEqual('password');
+        expect(
+            mount(
+                <DynamicInputTest
+                    date={date}
+                    fieldType={DynamicFormFieldType.password}
+                    id="field_33"
+                />,
+            )
+                .find(TextInput)
+                .prop('type'),
+        ).toBe('password');
     });
 
     it('renders tel type input for phone type', () => {
-        expect(mount(
-            <DynamicInputTest
-                date={ date }
-                fieldType={ DynamicFormFieldType.telephone }
-                id="field_33"
-            />)
-            .find(TextInput)
-            .prop('type'))
-            .toEqual('tel');
+        expect(
+            mount(
+                <DynamicInputTest
+                    date={date}
+                    fieldType={DynamicFormFieldType.telephone}
+                    id="field_33"
+                />,
+            )
+                .find(TextInput)
+                .prop('type'),
+        ).toBe('tel');
     });
 
     it('renders select input with passed props', () => {
-        expect(mount(
-            <DynamicInputTest
-                date={ date }
-                defaultValue="foo"
-                fieldType={ DynamicFormFieldType.dropdown }
-                id="field_33"
-                name="select"
-                options={ [
-                    { label: 'Foo', value: 'foo'},
-                    { label: 'Foo1', value: 'foo1'},
-                ] }
-                placeholder="Select an option"
-            />).html())
-            .toMatchSnapshot();
+        expect(
+            mount(
+                <DynamicInputTest
+                    date={date}
+                    defaultValue="foo"
+                    fieldType={DynamicFormFieldType.dropdown}
+                    id="field_33"
+                    name="select"
+                    options={[
+                        { label: 'Foo', value: 'foo' },
+                        { label: 'Foo1', value: 'foo1' },
+                    ]}
+                    placeholder="Select an option"
+                />,
+            ).html(),
+        ).toMatchSnapshot();
     });
 });

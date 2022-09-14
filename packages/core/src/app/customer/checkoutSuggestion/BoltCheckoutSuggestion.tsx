@@ -1,6 +1,11 @@
-import { CheckoutSelectors, CustomerInitializeOptions, CustomerRequestOptions, ExecutePaymentMethodCheckoutOptions } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutSelectors,
+    CustomerInitializeOptions,
+    CustomerRequestOptions,
+    ExecutePaymentMethodCheckoutOptions,
+} from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { memo, useEffect, useState, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo, useEffect, useState } from 'react';
 
 import { stopPropagation } from '../../common/dom';
 import { TranslatedString } from '../../locale';
@@ -11,7 +16,9 @@ export interface BoltCheckoutSuggestionProps {
     isExecutingPaymentMethodCheckout: boolean;
     methodId: string;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
-    executePaymentMethodCheckout(options: ExecutePaymentMethodCheckoutOptions): Promise<CheckoutSelectors>;
+    executePaymentMethodCheckout(
+        options: ExecutePaymentMethodCheckoutOptions,
+    ): Promise<CheckoutSelectors>;
     initializeCustomer(options: CustomerInitializeOptions): Promise<CheckoutSelectors>;
     onUnhandledError?(error: Error): void;
 }
@@ -24,7 +31,7 @@ const BoltCheckoutSuggestion: FunctionComponent<BoltCheckoutSuggestionProps> = (
     initializeCustomer,
     onUnhandledError = noop,
 }) => {
-    const [ showSuggestion, setShowSuggestion ] = useState<boolean>(false);
+    const [showSuggestion, setShowSuggestion] = useState<boolean>(false);
 
     useEffect(() => {
         deinitializeCustomer({ methodId });
@@ -33,7 +40,7 @@ const BoltCheckoutSuggestion: FunctionComponent<BoltCheckoutSuggestionProps> = (
             initializeCustomer({
                 methodId,
                 bolt: {
-                    onInit: hasBoltAccount => {
+                    onInit: (hasBoltAccount) => {
                         setShowSuggestion(hasBoltAccount);
                     },
                 },
@@ -56,30 +63,25 @@ const BoltCheckoutSuggestion: FunctionComponent<BoltCheckoutSuggestionProps> = (
     };
 
     return (
-        <div
-            className="checkoutSuggestion"
-            onClick={ stopPropagation() }
-        >
+        <div className="checkoutSuggestion" onClick={stopPropagation()}>
             <p className="checkoutSuggestion-message">
                 <TranslatedString
-                    data={ {
+                    data={{
                         provider: 'Bolt',
                         providerFlow: 'Bolt Checkout',
-                    } }
+                    }}
                     id="customer.suggestion_text"
                 />
             </p>
             <Button
                 className="checkoutSuggestion-button checkoutSuggestion-button--bolt"
                 data-test="suggestion-action-button"
-                isLoading={ isExecutingPaymentMethodCheckout }
-                onClick={ handleActionClick }
+                isLoading={isExecutingPaymentMethodCheckout}
+                onClick={handleActionClick}
             >
-                <IconBolt
-                    additionalClassName="checkoutSuggestion-button-icon--bolt"
-                />
+                <IconBolt additionalClassName="checkoutSuggestion-button-icon--bolt" />
                 <TranslatedString
-                    data={ { providerFlow: 'Bolt Checkout' } }
+                    data={{ providerFlow: 'Bolt Checkout' }}
                     id="customer.suggestion_action"
                 />
             </Button>

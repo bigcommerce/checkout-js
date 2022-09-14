@@ -7,13 +7,11 @@ import ErrorLogger from './ErrorLogger';
 describe('ErrorBoundary', () => {
     beforeEach(() => {
         // Need to mock `console.error` because React calls it deliberately
-        jest.spyOn(console, 'error')
-            .mockImplementation();
+        jest.spyOn(console, 'error').mockImplementation();
     });
 
     afterEach(() => {
-        jest.spyOn(console, 'error')
-            .mockRestore();
+        jest.spyOn(console, 'error').mockRestore();
     });
 
     it('logs error if logger is provided', () => {
@@ -22,16 +20,17 @@ describe('ErrorBoundary', () => {
             log: jest.fn(),
         };
 
-        const Child: FunctionComponent = () => { throw error; };
+        const Child: FunctionComponent = () => {
+            throw error;
+        };
 
         mount(
-            <ErrorBoundary logger={ logger }>
+            <ErrorBoundary logger={logger}>
                 <Child />
-            </ErrorBoundary>
+            </ErrorBoundary>,
         );
 
-        expect(logger.log)
-            .toHaveBeenCalledWith(error);
+        expect(logger.log).toHaveBeenCalledWith(error);
     });
 
     it('does not log error if filter returns false', () => {
@@ -40,54 +39,54 @@ describe('ErrorBoundary', () => {
             log: jest.fn(),
         };
 
-        const Child: FunctionComponent = () => { throw error; };
+        const Child: FunctionComponent = () => {
+            throw error;
+        };
         const filterError = ({ name }: Error) => name === 'TypeError';
 
         try {
             mount(
-                <ErrorBoundary
-                    filter={ filterError }
-                    logger={ logger }
-                >
+                <ErrorBoundary filter={filterError} logger={logger}>
                     <Child />
-                </ErrorBoundary>
+                </ErrorBoundary>,
             );
         } catch (error) {
-            expect(logger.log)
-                .not.toHaveBeenCalledWith(error);
+            expect(logger.log).not.toHaveBeenCalledWith(error);
         }
     });
 
     it('renders fallback component if provided', () => {
-        const Child: FunctionComponent = () => { throw new Error(); };
+        const Child: FunctionComponent = () => {
+            throw new Error();
+        };
 
         const component = mount(
-            <ErrorBoundary fallback={ <strong>Something went wrong</strong> }>
+            <ErrorBoundary fallback={<strong>Something went wrong</strong>}>
                 <Child />
-            </ErrorBoundary>
+            </ErrorBoundary>,
         );
 
-        expect(component.html())
-            .toEqual('<strong>Something went wrong</strong>');
+        expect(component.html()).toBe('<strong>Something went wrong</strong>');
     });
 
     it('does not render fallback component if filter returns false', () => {
         const error = new Error();
-        const Child: FunctionComponent = () => { throw error; };
+        const Child: FunctionComponent = () => {
+            throw error;
+        };
         const filterError = ({ name }: Error) => name === 'TypeError';
 
         try {
             mount(
                 <ErrorBoundary
-                    fallback={ <strong>Something went wrong</strong> }
-                    filter={ filterError }
+                    fallback={<strong>Something went wrong</strong>}
+                    filter={filterError}
                 >
                     <Child />
-                </ErrorBoundary>
+                </ErrorBoundary>,
             );
         } catch (thrown) {
-            expect(thrown)
-                .toEqual(error);
+            expect(thrown).toEqual(error);
         }
     });
 });

@@ -4,9 +4,7 @@ export default class AddressSelector {
     protected _address: google.maps.GeocoderAddressComponent[] | undefined;
     protected _name: string;
 
-    constructor(
-        googlePlace: google.maps.places.PlaceResult
-    ) {
+    constructor(googlePlace: google.maps.places.PlaceResult) {
         const { address_components, name } = googlePlace;
 
         this._name = name;
@@ -26,9 +24,11 @@ export default class AddressSelector {
     }
 
     getCity(): string {
-        return this._get('postal_town', 'long_name') ||
+        return (
+            this._get('postal_town', 'long_name') ||
             this._get('locality', 'long_name') ||
-            this._get('neighborhood', 'short_name');
+            this._get('neighborhood', 'short_name')
+        );
     }
 
     getCountry(): string {
@@ -41,9 +41,10 @@ export default class AddressSelector {
 
     protected _get(
         type: GoogleAddressFieldType,
-        access: Exclude<keyof google.maps.GeocoderAddressComponent, 'types'>
+        access: Exclude<keyof google.maps.GeocoderAddressComponent, 'types'>,
     ): string {
-        const element = this._address && this._address.find(field => field.types.indexOf(type) !== -1);
+        const element =
+            this._address && this._address.find((field) => field.types.indexOf(type) !== -1);
 
         if (element) {
             return element[access];

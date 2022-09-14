@@ -3,7 +3,9 @@ import React from 'react';
 
 import { getPaymentMethod } from '../payment-methods.mock';
 
-import CCAvenueMarsPaymentMethod, { CCAvenueMarsPaymentMethodProps } from './CCAvenueMarsPaymentMethod';
+import CCAvenueMarsPaymentMethod, {
+    CCAvenueMarsPaymentMethodProps,
+} from './CCAvenueMarsPaymentMethod';
 import HostedWidgetPaymentMethod from './HostedWidgetPaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
 
@@ -19,7 +21,8 @@ describe('When using CCAvenueMars Payment Method', () => {
     };
 
     it('Shopper is able to see CCAvenueMars Payment Method', () => {
-        const component = mount(<CCAvenueMarsPaymentMethod { ...defaultProps } />);
+        const component = mount(<CCAvenueMarsPaymentMethod {...defaultProps} />);
+
         expect(component.find(HostedWidgetPaymentMethod)).toBeTruthy();
     });
 });

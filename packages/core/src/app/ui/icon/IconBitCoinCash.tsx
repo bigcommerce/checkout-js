@@ -3,7 +3,13 @@ import React, { FunctionComponent } from 'react';
 import withIconContainer from './withIconContainer';
 
 const IconBitCoinCash: FunctionComponent = () => (
-    <svg aria-labelledby="iconBitCoinCashTitle" height="100" viewBox="0 0 788 788" width="100" xmlns="http://www.w3.org/2000/svg">
+    <svg
+        aria-labelledby="iconBitCoinCashTitle"
+        height="100"
+        viewBox="0 0 788 788"
+        width="100"
+        xmlns="http://www.w3.org/2000/svg"
+    >
         <title id="iconBitCoinCashTitle">BitCoin Cash</title>
         <circle cx="394" cy="394" fill="#0AC18E" r="394" />
         <path
@@ -13,7 +19,9 @@ const IconBitCoinCash: FunctionComponent = () => (
             l18.1,70.2l42.2-10.9l-18.1-70.7c11.6-2.7,22.9-5.5,33.9-8.4l18,70.3l42.2-10.9l-18.1-70.1c65-15.8,110.9-56.8,101.5-119.5
             c-6-37.8-47.3-68.8-81.6-72.3C519.3,324.7,530,297.4,516.9,261.7L516.9,261.7z M496.6,427.2c8.4,62.1-77.9,69.7-106.4,77.2
             l-24.8-92.9C394,404,482.4,372.5,496.6,427.2z M444.6,300.7c8.9,55.2-64.9,61.6-88.7,67.7l-22.6-84.3
-            C357.2,278.2,426.5,249.6,444.6,300.7z" fill="#FFF" id="symbol_1_"
+            C357.2,278.2,426.5,249.6,444.6,300.7z"
+            fill="#FFF"
+            id="symbol_1_"
         />
     </svg>
 );

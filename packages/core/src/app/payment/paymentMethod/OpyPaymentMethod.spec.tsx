@@ -1,4 +1,9 @@
-import { createCheckoutService, CheckoutService, CheckoutStoreSelector, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutService,
+    CheckoutStoreSelector,
+    createCheckoutService,
+    PaymentMethod,
+} from '@bigcommerce/checkout-sdk';
 import { mount, render } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -46,15 +51,12 @@ describe('when using Opy payment', () => {
             onUnhandledError: jest.fn(),
         };
 
-        OpyPaymentMethodTest = props => (
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <PaymentContext.Provider value={ paymentContext }>
-                    <LocaleContext.Provider value={ localeContext }>
-                        <Formik
-                            initialValues={ {} }
-                            onSubmit={ noop }
-                        >
-                            <OpyPaymentMethod { ...defaultProps } { ...props } />
+        OpyPaymentMethodTest = (props) => (
+            <CheckoutProvider checkoutService={checkoutService}>
+                <PaymentContext.Provider value={paymentContext}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <Formik initialValues={{}} onSubmit={noop}>
+                            <OpyPaymentMethod {...defaultProps} {...props} />
                         </Formik>
                     </LocaleContext.Provider>
                 </PaymentContext.Provider>
@@ -63,52 +65,50 @@ describe('when using Opy payment', () => {
 
         checkoutState = checkoutService.getState().data;
 
-        jest.spyOn(checkoutState, 'getCheckout')
-            .mockReturnValue(getCheckout());
+        jest.spyOn(checkoutState, 'getCheckout').mockReturnValue(getCheckout());
 
-        jest.spyOn(checkoutState, 'getConfig')
-            .mockReturnValue(getStoreConfig());
+        jest.spyOn(checkoutState, 'getConfig').mockReturnValue(getStoreConfig());
 
-        jest.spyOn(checkoutState, 'getCustomer')
-            .mockReturnValue(getCustomer());
+        jest.spyOn(checkoutState, 'getCustomer').mockReturnValue(getCustomer());
 
-        jest.spyOn(checkoutState, 'isPaymentDataRequired')
-            .mockReturnValue(true);
+        jest.spyOn(checkoutState, 'isPaymentDataRequired').mockReturnValue(true);
     });
 
     it('initializes method with required config', () => {
         mount(<OpyPaymentMethodTest />);
 
-        expect(defaultProps.initializePayment)
-            .toHaveBeenCalledWith(expect.objectContaining({
+        expect(defaultProps.initializePayment).toHaveBeenCalledWith(
+            expect.objectContaining({
                 methodId: 'opy',
                 opy: {
                     containerId: 'learnMoreButton',
                 },
-            }));
+            }),
+        );
     });
 
     it('renders as HostedWidgetPaymentMethod', () => {
         const container = mount(<OpyPaymentMethodTest />);
 
-        expect(container.find(HostedWidgetPaymentMethod).props())
-            .toEqual(expect.objectContaining({
+        expect(container.find(HostedWidgetPaymentMethod).props()).toEqual(
+            expect.objectContaining({
                 containerId: 'learnMoreButton',
                 hideWidget: false,
                 initializePayment: expect.any(Function),
                 method,
                 onUnhandledError: expect.any(Function),
-            }));
+            }),
+        );
     });
 
-    it('renders loading overlay while it\'s initializing', () => {
+    it("renders loading overlay while it's initializing", () => {
         defaultProps.isInitializing = true;
 
         const container = mount(<OpyPaymentMethodTest />);
         const overlay = container.find(HostedWidgetPaymentMethod).closest(LoadingOverlay);
 
-        expect(overlay.prop('hideContentWhenLoading')).toEqual(true);
-        expect(overlay.prop('isLoading')).toEqual(true);
+        expect(overlay.prop('hideContentWhenLoading')).toBe(true);
+        expect(overlay.prop('isLoading')).toBe(true);
     });
 
     it('renders the expected copy', () => {
@@ -117,33 +117,38 @@ describe('when using Opy payment', () => {
         const container = mount(<OpyPaymentMethodTest />);
 
         const text1 = localeContext.language.translate('payment.opy_widget_slogan');
-        const text2 = localeContext.language.translate('payment.opy_widget_info', { methodName: 'Foo Payment Method' });
-        const text3 = localeContext.language.translate('payment.opy_continue_action', { methodName: 'Foo Payment Method' });
+        const text2 = localeContext.language.translate('payment.opy_widget_info', {
+            methodName: 'Foo Payment Method',
+        });
+        const text3 = localeContext.language.translate('payment.opy_continue_action', {
+            methodName: 'Foo Payment Method',
+        });
 
-        expect(container.text().includes(text1)).toBe(true);
-        expect(container.text().includes(text2)).toBe(true);
-        expect(container.text().includes(text3)).toBe(true);
+        expect(container.text()).toContain(text1);
+        expect(container.text()).toContain(text2);
+        expect(container.text()).toContain(text3);
     });
 
     it('returns correct message when cart is not valid', () => {
         defaultProps.method.config.displayName = 'Foo Payment Method';
 
         const opyError = Object.create(new Error('Something went wrong.'));
+
         opyError.name = 'OpyError';
         opyError.type = 'opy_error';
         opyError.subtype = 'invalid_cart';
 
         mount(<OpyPaymentMethodTest />)
-          .find(HostedWidgetPaymentMethod)
-          .props()
-          .onUnhandledError(opyError);
+            .find(HostedWidgetPaymentMethod)
+            .props()
+            .onUnhandledError(opyError);
 
         expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(
-          new Error(
-            localeContext.language.translate('payment.opy_invalid_cart_error', {
-                methodName: 'Foo Payment Method',
-            })
-          )
+            new Error(
+                localeContext.language.translate('payment.opy_invalid_cart_error', {
+                    methodName: 'Foo Payment Method',
+                }),
+            ),
         );
     });
 

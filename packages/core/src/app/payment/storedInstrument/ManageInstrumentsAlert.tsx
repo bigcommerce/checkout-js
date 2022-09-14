@@ -1,4 +1,4 @@
-import React, { memo, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { Alert, AlertType } from '../../ui/alert';
@@ -7,14 +7,12 @@ export interface ManageInstrumentsAlertProps {
     error: any; // TODO: Fix typing
 }
 
-const ManageInstrumentsAlert: FunctionComponent<ManageInstrumentsAlertProps> = ({
-    error,
-}) => {
+const ManageInstrumentsAlert: FunctionComponent<ManageInstrumentsAlertProps> = ({ error }) => {
     const { status } = error;
 
     if (status === 401) {
         return (
-            <Alert type={ AlertType.Error }>
+            <Alert type={AlertType.Error}>
                 <TranslatedString id="payment.instrument_manage_delete_auth_error" />
             </Alert>
         );
@@ -22,14 +20,14 @@ const ManageInstrumentsAlert: FunctionComponent<ManageInstrumentsAlertProps> = (
 
     if (status >= 400 && status < 500) {
         return (
-            <Alert type={ AlertType.Error }>
+            <Alert type={AlertType.Error}>
                 <TranslatedString id="payment.instrument_manage_delete_client_error" />
             </Alert>
         );
     }
 
     return (
-        <Alert type={ AlertType.Error }>
+        <Alert type={AlertType.Error}>
             <TranslatedString id="payment.instrument_manage_delete_server_error" />
         </Alert>
     );

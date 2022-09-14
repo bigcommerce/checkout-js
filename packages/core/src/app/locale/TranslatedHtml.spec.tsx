@@ -27,34 +27,33 @@ describe('TranslatedHtml', () => {
 
     it('renders translated Html', () => {
         const component = mount(
-            <LocaleContext.Provider value={ context }>
+            <LocaleContext.Provider value={context}>
                 <TranslatedHtml id="abc" />
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
-        expect(component.html())
-            .toEqual('<span><strong>abc</strong></span>');
+        expect(component.html()).toBe('<span><strong>abc</strong></span>');
     });
 
     it('sanitizes translated Html', () => {
         const component = mount(
-            <LocaleContext.Provider value={ context }>
+            <LocaleContext.Provider value={context}>
                 <TranslatedHtml id="dirty" />
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
-        expect(component.html())
-            .toEqual('<span><img src="x"></span>');
+        expect(component.html()).toBe('<span><img src="x"></span>');
     });
 
     it('allows anchor tags with target attribute', () => {
         const component = mount(
-            <LocaleContext.Provider value={ context }>
+            <LocaleContext.Provider value={context}>
                 <TranslatedHtml id="link" />
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
-        expect(component.html())
-            .toEqual('<span><a target="_blank" href="https://bigcommerce.com">Link</a></span>');
+        expect(component.html()).toBe(
+            '<span><a target="_blank" href="https://bigcommerce.com">Link</a></span>',
+        );
     });
 });

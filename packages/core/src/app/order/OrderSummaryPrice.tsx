@@ -71,53 +71,59 @@ class OrderSummaryPrice extends Component<OrderSummaryPriceProps, OrderSummaryPr
         const displayValue = getDisplayValue(amount, zeroLabel);
 
         return (
-            <div data-test={ testId }>
+            <div data-test={testId}>
                 <CSSTransition
-                    addEndListener={ this.handleTransitionEnd }
+                    addEndListener={this.handleTransitionEnd}
                     classNames="changeHighlight"
-                    in={ highlight }
-                    timeout={ {} }
+                    in={highlight}
+                    timeout={{}}
                 >
                     <div
                         aria-live="polite"
-                        className={ classNames(
+                        className={classNames(
                             'cart-priceItem',
                             'optimizedCheckout-contentPrimary',
-                            className
-                        ) }
+                            className,
+                        )}
                     >
                         <span className="cart-priceItem-label">
                             <span data-test="cart-price-label">
-                                { label }
-                                { '  ' }
+                                {label}
+                                {'  '}
                             </span>
-                            { currencyCode && <span className="cart-priceItem-currencyCode">
-                                { `(${currencyCode}) ` }
-                            </span> }
-                            { onActionTriggered && actionLabel && <span className="cart-priceItem-link">
-                                <a
-                                    data-test="cart-price-callback"
-                                    href="#"
-                                    onClick={ preventDefault(onActionTriggered) }
-                                >
-                                    { actionLabel }
-                                </a>
-                            </span> }
+                            {currencyCode && (
+                                <span className="cart-priceItem-currencyCode">
+                                    {`(${currencyCode}) `}
+                                </span>
+                            )}
+                            {onActionTriggered && actionLabel && (
+                                <span className="cart-priceItem-link">
+                                    <a
+                                        data-test="cart-price-callback"
+                                        href="#"
+                                        onClick={preventDefault(onActionTriggered)}
+                                    >
+                                        {actionLabel}
+                                    </a>
+                                </span>
+                            )}
                         </span>
 
                         <span className="cart-priceItem-value">
                             <span data-test="cart-price-value">
-                                { isNumberValue(displayValue) ?
-                                    <ShopperCurrency amount={ displayValue } /> :
-                                    displayValue }
+                                {isNumberValue(displayValue) ? (
+                                    <ShopperCurrency amount={displayValue} />
+                                ) : (
+                                    displayValue
+                                )}
                             </span>
 
-                            { superscript && <sup data-test="cart-price-value-superscript">
-                                { superscript }
-                            </sup> }
+                            {superscript && (
+                                <sup data-test="cart-price-value-superscript">{superscript}</sup>
+                            )}
                         </span>
 
-                        { children }
+                        {children}
                     </div>
                 </CSSTransition>
             </div>

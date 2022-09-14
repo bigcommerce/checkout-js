@@ -8,20 +8,18 @@ describe('getPaymentInstructions()', () => {
         const order = getOrder();
 
         it('returns instructions', () => {
-            expect(getPaymentInstructions(order)).toEqual('<strong>295</strong> something');
+            expect(getPaymentInstructions(order)).toBe('<strong>295</strong> something');
         });
     });
 
     describe('when order has no payments with instructions', () => {
         const order = {
             ...getOrder(),
-            payments: [
-                getGiftCertificateOrderPayment(),
-            ],
+            payments: [getGiftCertificateOrderPayment()],
         };
 
         it('returns empty string', () => {
-            expect(getPaymentInstructions(order)).toEqual('');
+            expect(getPaymentInstructions(order)).toBe('');
         });
     });
 
@@ -32,7 +30,7 @@ describe('getPaymentInstructions()', () => {
         };
 
         it('returns empty string', () => {
-            expect(getPaymentInstructions(order)).toEqual('');
+            expect(getPaymentInstructions(order)).toBe('');
         });
     });
 });

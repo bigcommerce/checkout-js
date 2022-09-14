@@ -3,36 +3,32 @@ import { createSelector } from 'reselect';
 
 import { EMPTY_ARRAY } from '../common/utility';
 
-import getCheckoutStepStatuses from './getCheckoutStepStatuses';
 import { WithCheckoutProps } from './Checkout';
 import { CheckoutContextProps } from './CheckoutContext';
+import getCheckoutStepStatuses from './getCheckoutStepStatuses';
 
-export default function mapToCheckoutProps(
-    { checkoutService, checkoutState }: CheckoutContextProps
-): WithCheckoutProps {
+export default function mapToCheckoutProps({
+    checkoutService,
+    checkoutState,
+}: CheckoutContextProps): WithCheckoutProps {
     const { data, errors, statuses } = checkoutState;
     const { promotions = EMPTY_ARRAY } = data.getCheckout() || {};
     const submitOrderError = errors.getSubmitOrderError() as CustomError;
     const {
-        checkoutSettings: {
-            guestCheckoutEnabled: isGuestEnabled = false,
-            features = {},
-        } = {},
+        checkoutSettings: { guestCheckoutEnabled: isGuestEnabled = false, features = {} } = {},
         links: {
             loginLink: loginUrl = '',
             createAccountLink: createAccountUrl = '',
             cartLink: cartUrl = '',
         } = {},
-        displaySettings: {
-            hidePriceFromGuests: isPriceHiddenFromGuests = false,
-        } = {}
+        displaySettings: { hidePriceFromGuests: isPriceHiddenFromGuests = false } = {},
     } = data.getConfig() || {};
 
     const subscribeToConsignmentsSelector = createSelector(
-        ({ checkoutService: { subscribe} }: CheckoutContextProps) => subscribe,
-        subscribe => (subscriber: (state: CheckoutSelectors) => void) => {
+        ({ checkoutService: { subscribe } }: CheckoutContextProps) => subscribe,
+        (subscribe) => (subscriber: (state: CheckoutSelectors) => void) => {
             return subscribe(subscriber, ({ data: { getConsignments } }) => getConsignments());
-        }
+        },
     );
 
     return {
@@ -51,7 +47,10 @@ export default function mapToCheckoutProps(
         createAccountUrl,
         canCreateAccountInCheckout: features['CHECKOUT-4941.account_creation_in_checkout'],
         promotions,
-        subscribeToConsignments: subscribeToConsignmentsSelector({ checkoutService, checkoutState }),
+        subscribeToConsignments: subscribeToConsignmentsSelector({
+            checkoutService,
+            checkoutState,
+        }),
         steps: data.getCheckout() ? getCheckoutStepStatuses(checkoutState) : EMPTY_ARRAY,
     };
 }

@@ -2,11 +2,16 @@ import { mount } from 'enzyme';
 import React, { useEffect } from 'react';
 import { object } from 'yup';
 
-import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps } from '../hostedCreditCard';
+import {
+    withHostedCreditCardFieldset,
+    WithInjectedHostedCreditCardFieldsetProps,
+} from '../hostedCreditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
 
 import CreditCardPaymentMethod from './CreditCardPaymentMethod';
-import HostedCreditCardPaymentMethod, { HostedCreditCardPaymentMethodProps } from './HostedCreditCardPaymentMethod';
+import HostedCreditCardPaymentMethod, {
+    HostedCreditCardPaymentMethodProps,
+} from './HostedCreditCardPaymentMethod';
 
 const hostedFormOptions = {
     fields: {
@@ -27,28 +32,24 @@ const injectedProps: WithInjectedHostedCreditCardFieldsetProps = {
 
 jest.mock('../hostedCreditCard', () => ({
     ...jest.requireActual('../hostedCreditCard'),
-    withHostedCreditCardFieldset: jest.fn(
-        Component => (props: any) => <Component
-            { ...props }
-            { ...injectedProps }
-        />
-    ) as jest.Mocked<typeof withHostedCreditCardFieldset>,
+    withHostedCreditCardFieldset: jest.fn((Component) => (props: any) => (
+        <Component {...props} {...injectedProps} />
+    )) as jest.Mocked<typeof withHostedCreditCardFieldset>,
 }));
 
-jest.mock('./CreditCardPaymentMethod', () =>
-    jest.fn(({
-        initializePayment,
-        method,
-    }) => {
-        useEffect(() => {
-            initializePayment({
-                methodId: method.id,
-                gatewayId: method.gateway,
+jest.mock(
+    './CreditCardPaymentMethod',
+    () =>
+        jest.fn(({ initializePayment, method }) => {
+            useEffect(() => {
+                initializePayment({
+                    methodId: method.id,
+                    gatewayId: method.gateway,
+                });
             });
-        });
 
-        return <div />;
-    }) as jest.Mocked<typeof CreditCardPaymentMethod>
+            return <div />;
+        }) as jest.Mocked<typeof CreditCardPaymentMethod>,
 );
 
 describe('HostedCreditCardPaymentMethod', () => {
@@ -63,33 +64,34 @@ describe('HostedCreditCardPaymentMethod', () => {
     });
 
     it('initializes method with hosted form options', async () => {
-        mount(<HostedCreditCardPaymentMethod { ...defaultProps } />);
+        mount(<HostedCreditCardPaymentMethod {...defaultProps} />);
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
-        expect(defaultProps.initializePayment)
-            .toHaveBeenCalledWith({
-                methodId: defaultProps.method.id,
-                creditCard: {
-                    form: hostedFormOptions,
-                },
-            });
+        expect(defaultProps.initializePayment).toHaveBeenCalledWith({
+            methodId: defaultProps.method.id,
+            creditCard: {
+                form: hostedFormOptions,
+            },
+        });
     });
 
     it('injects hosted form properties to credit card payment method component', async () => {
-        const component = mount(<HostedCreditCardPaymentMethod { ...defaultProps } />);
+        const component = mount(<HostedCreditCardPaymentMethod {...defaultProps} />);
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
         const decoratedComponent = component.find(CreditCardPaymentMethod);
 
-        expect(decoratedComponent.prop('cardFieldset'))
-            .toEqual(injectedProps.hostedFieldset);
-        expect(decoratedComponent.prop('cardValidationSchema'))
-            .toEqual(injectedProps.hostedValidationSchema);
-        expect(decoratedComponent.prop('getStoredCardValidationFieldset'))
-            .toEqual(injectedProps.getHostedStoredCardValidationFieldset);
-        expect(decoratedComponent.prop('storedCardValidationSchema'))
-            .toEqual(injectedProps.hostedStoredCardValidationSchema);
+        expect(decoratedComponent.prop('cardFieldset')).toEqual(injectedProps.hostedFieldset);
+        expect(decoratedComponent.prop('cardValidationSchema')).toEqual(
+            injectedProps.hostedValidationSchema,
+        );
+        expect(decoratedComponent.prop('getStoredCardValidationFieldset')).toEqual(
+            injectedProps.getHostedStoredCardValidationFieldset,
+        );
+        expect(decoratedComponent.prop('storedCardValidationSchema')).toEqual(
+            injectedProps.hostedStoredCardValidationSchema,
+        );
     });
 });

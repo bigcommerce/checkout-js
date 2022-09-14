@@ -15,7 +15,7 @@ function mapFromDigital(item: DigitalItem): OrderSummaryItemProps {
         name: item.name,
         image: getOrderSummaryItemImage(item),
         productOptions: [
-            ...(item.options || []).map(option => ({
+            ...(item.options || []).map((option) => ({
                 testId: 'cart-item-product-option',
                 content: `${option.name} ${option.value}`,
             })),
@@ -34,14 +34,11 @@ function getDigitalItemDescription(item: DigitalItem): OrderSummaryItemOption {
 
     return {
         testId: 'cart-item-digital-product-download',
-        content:
-            <a
-                href={ item.downloadPageUrl }
-                rel="noopener noreferrer"
-                target="_blank"
-            >
+        content: (
+            <a href={item.downloadPageUrl} rel="noopener noreferrer" target="_blank">
                 <TranslatedString id="cart.downloads_action" />
-            </a>,
+            </a>
+        ),
     };
 }
 

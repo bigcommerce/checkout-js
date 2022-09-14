@@ -26,6 +26,7 @@ describe('getCheckoutcomFieldsetValidationSchemas', () => {
 
     describe('sepa validation schema', () => {
         let sepaValidationSchema: ObjectSchema;
+
         beforeEach(() => {
             sepaValidationSchema = getCheckoutcomFieldsetValidationSchemas({
                 paymentMethod: 'sepa',
@@ -35,34 +36,42 @@ describe('getCheckoutcomFieldsetValidationSchemas', () => {
 
         it('resolves if valid value', async () => {
             const spy = jest.fn();
-            await sepaValidationSchema.validate({
-                ...getFormfields.sepa(),
-            }).then(spy);
+
+            await sepaValidationSchema
+                .validate({
+                    ...getFormfields.sepa(),
+                })
+                .then(spy);
 
             expect(spy).toHaveBeenCalled();
         });
 
         it('throws error if iban is not present', async () => {
-            const errors = await sepaValidationSchema.validate({
-                ...getFormfields.sepa(),
-                iban: '',
-            }).catch((error: ValidationError) => error.message);
+            const errors = await sepaValidationSchema
+                .validate({
+                    ...getFormfields.sepa(),
+                    iban: '',
+                })
+                .catch((error: ValidationError) => error.message);
 
-            expect(errors).toEqual('iban is a required field');
+            expect(errors).toBe('iban is a required field');
         });
 
         it('throws error if sepaMandate is false', async () => {
-            const errors = await sepaValidationSchema.validate({
-                ...getFormfields.sepa(),
-                sepaMandate: undefined,
-            }).catch((error: ValidationError) => error.message);
+            const errors = await sepaValidationSchema
+                .validate({
+                    ...getFormfields.sepa(),
+                    sepaMandate: undefined,
+                })
+                .catch((error: ValidationError) => error.message);
 
-            expect(errors).toEqual('sepaMandate is a required field');
+            expect(errors).toBe('sepaMandate is a required field');
         });
     });
 
     describe('ccDocument validation schema', () => {
         let ccDocumentValidationSchema: ObjectSchema;
+
         beforeEach(() => {
             ccDocumentValidationSchema = getCheckoutcomFieldsetValidationSchemas({
                 paymentMethod: 'oxxo',
@@ -72,24 +81,30 @@ describe('getCheckoutcomFieldsetValidationSchemas', () => {
 
         it('resolves if valid value', async () => {
             const spy = jest.fn();
-            await ccDocumentValidationSchema.validate({
-                ...getFormfields.oxxo(),
-            }).then(spy);
+
+            await ccDocumentValidationSchema
+                .validate({
+                    ...getFormfields.oxxo(),
+                })
+                .then(spy);
 
             expect(spy).toHaveBeenCalled();
         });
 
         it('throws error if ccDocument is incomplete', async () => {
-            const errors = await ccDocumentValidationSchema.validate({
-                ccDocument: 'DOJH010199HJLZQQ',
-            }).catch((error: ValidationError) => error.message);
+            const errors = await ccDocumentValidationSchema
+                .validate({
+                    ccDocument: 'DOJH010199HJLZQQ',
+                })
+                .catch((error: ValidationError) => error.message);
 
-            expect(errors).toEqual('ccDocument must be exactly 18 characters');
+            expect(errors).toBe('ccDocument must be exactly 18 characters');
         });
     });
 
     describe('iDeal validation schema', () => {
         let iDealValidationSchema: ObjectSchema;
+
         beforeEach(() => {
             iDealValidationSchema = getCheckoutcomFieldsetValidationSchemas({
                 paymentMethod: 'ideal',
@@ -99,19 +114,24 @@ describe('getCheckoutcomFieldsetValidationSchemas', () => {
 
         it('resolves if valid value', async () => {
             const spy = jest.fn();
-            await iDealValidationSchema.validate({
-                ...getFormfields.ideal(),
-            }).then(spy);
+
+            await iDealValidationSchema
+                .validate({
+                    ...getFormfields.ideal(),
+                })
+                .then(spy);
 
             expect(spy).toHaveBeenCalled();
         });
 
         it('throws error if iban is not present', async () => {
-            const errors = await iDealValidationSchema.validate({
-                bic: '',
-            }).catch((error: ValidationError) => error.message);
+            const errors = await iDealValidationSchema
+                .validate({
+                    bic: '',
+                })
+                .catch((error: ValidationError) => error.message);
 
-            expect(errors).toEqual('bic is a required field');
+            expect(errors).toBe('bic is a required field');
         });
     });
 });

@@ -1,6 +1,16 @@
-import { CustomItem, DigitalItem, GiftCertificateItem, PhysicalItem } from '@bigcommerce/checkout-sdk';
+import {
+    CustomItem,
+    DigitalItem,
+    GiftCertificateItem,
+    PhysicalItem,
+} from '@bigcommerce/checkout-sdk';
 
-import { getCustomItem, getDigitalItem, getGiftCertificateItem, getPhysicalItem } from '../cart/lineItem.mock';
+import {
+    getCustomItem,
+    getDigitalItem,
+    getGiftCertificateItem,
+    getPhysicalItem,
+} from '../cart/lineItem.mock';
 
 import getItemsCount from './getItemsCount';
 
@@ -16,8 +26,7 @@ describe('getItemsCount()', () => {
         };
 
         it('returns zero', () => {
-            expect(getItemsCount(items))
-                .toEqual(0);
+            expect(getItemsCount(items)).toBe(0);
         });
     });
 
@@ -30,20 +39,13 @@ describe('getItemsCount()', () => {
                     quantity: 2,
                 },
             ],
-            digitalItems: [
-                getDigitalItem(),
-            ],
-            giftCertificates: [
-                getGiftCertificateItem(),
-            ],
-            customItems: [
-                getCustomItem(),
-            ],
+            digitalItems: [getDigitalItem()],
+            giftCertificates: [getGiftCertificateItem()],
+            customItems: [getCustomItem()],
         };
 
         it('returns all quantities summed up', () => {
-            expect(getItemsCount(items))
-                .toEqual(7);
+            expect(getItemsCount(items)).toBe(7);
         });
     });
 });

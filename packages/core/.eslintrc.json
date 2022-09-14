@@ -1,56 +1,9 @@
 {
   "extends": ["../../.eslintrc.json"],
-  "overrides": [
-    {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "rules": {
-        "@bigcommerce/jsx-short-circuit-conditionals": "off",
-        "@typescript-eslint/ban-ts-comment": "warn",
-        "@typescript-eslint/no-inferrable-types": "warn",
-        "@typescript-eslint/no-unused-expressions": "error",
-        "@typescript-eslint/no-var-requires": "off",
-        "react/destructuring-assignment": "warn",
-        "react/jsx-curly-spacing": [
-          "error",
-          {
-            "children": true,
-            "when": "always"
-          }
-        ],
-        "react/jsx-no-bind": "off",
-        "react-hooks/exhaustive-deps": "off",
-        "import/no-internal-modules": [
-          "error",
-          {
-            "allow": [
-              "react-dom/test-utils",
-              "scripts/*",
-              "**/*.{mock,scss}",
-              "**/index.ts",
-              "**/billing/Billing.tsx",
-              "**/cart/CartSummary.tsx",
-              "**/cart/CartSummaryDrawer.tsx",
-              "**/customer/Customer.tsx",
-              "**/order/OrderSummary.tsx",
-              "**/order/OrderSummaryDrawer.tsx",
-              "**/payment/Payment.tsx",
-              "**/shipping/Shipping.tsx",
-              "**/translations/*.json",
-              "**/locale/getLanguageService.ts",
-              "**/checkoutSuggestion/CheckoutSuggestion",
-              "**/order/renderOrderConfirmation",
-              "**/checkout/renderCheckout"
-            ]
-          }
-        ],
-        "no-var": "off",
-        "object-curly-newline": [
-          "error",
-          {
-            "ImportDeclaration": "never"
-          }
-        ]
-      }
-    }
-  ]
+  "rules": {
+    "@typescript-eslint/no-unsafe-argument": "warn",
+    "@typescript-eslint/no-unsafe-member-access": "warn",
+    "@typescript-eslint/no-unsafe-assignment": "warn",
+    "@typescript-eslint/consistent-type-assertions": "warn"
+  }
 }

@@ -1,7 +1,8 @@
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { noop } from 'lodash';
-import React, { useCallback, useContext, FunctionComponent } from 'react';
+import React, { FunctionComponent, useCallback, useContext } from 'react';
 import { Omit } from 'utility-types';
+
+import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
 import { CustomError } from '../../common/error';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
@@ -11,49 +12,60 @@ import { FormContext } from '../../ui/form';
 import HostedDropInPaymentMethod from './HostedDropInPaymentMethod';
 import { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 
-export type DigitalRiverPaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId'> & ConnectFormikProps<PaymentFormValues>;
+export type DigitalRiverPaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId'> &
+    ConnectFormikProps<PaymentFormValues>;
 
 export enum DigitalRiverClasses {
-    base =  'form-input optimizedCheckout-form-input',
+    base = 'form-input optimizedCheckout-form-input',
 }
 
-const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProps & WithLanguageProps> = ({
-    initializePayment,
-    language,
-    onUnhandledError = noop,
-    formik: { submitForm },
-    ...rest
-}) => {
+const DigitalRiverPaymentMethod: FunctionComponent<
+    DigitalRiverPaymentMethodProps & WithLanguageProps
+> = ({ initializePayment, language, onUnhandledError = noop, formik: { submitForm }, ...rest }) => {
     const { setSubmitted } = useContext(FormContext);
     const containerId = `${rest.method.id}-component-field`;
     const isVaultingEnabled = rest.method.config.isVaultingEnabled;
 
-    const initializeDigitalRiverPayment = useCallback(options => initializePayment({
-        ...options,
-        digitalriver: {
+    const initializeDigitalRiverPayment = useCallback(
+        (options) =>
+            initializePayment({
+                ...options,
+                digitalriver: {
+                    containerId,
+                    configuration: {
+                        flow: 'checkout',
+                        showSavePaymentAgreement: isVaultingEnabled,
+                        showComplianceSection: false,
+                        button: {
+                            type: 'submitOrder',
+                        },
+                        usage: 'unscheduled',
+                        showTermsOfSaleDisclosure: true,
+                        paymentMethodConfiguration: {
+                            classes: DigitalRiverClasses,
+                        },
+                    },
+                    onSubmitForm: () => {
+                        setSubmitted(true);
+                        submitForm();
+                    },
+                    onError: () => {
+                        onUnhandledError(
+                            new Error(language.translate('payment.digitalriver_dropin_error')),
+                        );
+                    },
+                },
+            }),
+        [
+            initializePayment,
             containerId,
-            configuration: {
-                flow: 'checkout',
-                showSavePaymentAgreement: isVaultingEnabled,
-                showComplianceSection: false,
-                button: {
-                    type: 'submitOrder',
-                },
-                usage: 'unscheduled',
-                showTermsOfSaleDisclosure: true,
-                paymentMethodConfiguration: {
-                    classes: DigitalRiverClasses,
-                },
-            },
-            onSubmitForm: () => {
-                setSubmitted(true);
-                submitForm();
-            },
-            onError: () => {
-                onUnhandledError?.(new Error(language.translate('payment.digitalriver_dropin_error')));
-            },
-        },
-    }), [initializePayment, containerId, isVaultingEnabled, setSubmitted, submitForm, onUnhandledError, language]);
+            isVaultingEnabled,
+            setSubmitted,
+            submitForm,
+            onUnhandledError,
+            language,
+        ],
+    );
 
     const onError = (error: CustomError) => {
         if (error.name === 'digitalRiverCheckoutError') {
@@ -65,16 +77,18 @@ const DigitalRiverPaymentMethod: FunctionComponent<DigitalRiverPaymentMethodProp
             });
         }
 
-        onUnhandledError?.(error);
+        onUnhandledError(error);
     };
 
-    return <HostedDropInPaymentMethod
-        { ...rest }
-        containerId={ containerId }
-        hideVerificationFields
-        initializePayment={ initializeDigitalRiverPayment }
-        onUnhandledError={ onError }
-    />;
+    return (
+        <HostedDropInPaymentMethod
+            {...rest}
+            containerId={containerId}
+            hideVerificationFields
+            initializePayment={initializeDigitalRiverPayment}
+            onUnhandledError={onError}
+        />
+    );
 };
 
 export default connectFormik(withLanguage(DigitalRiverPaymentMethod));

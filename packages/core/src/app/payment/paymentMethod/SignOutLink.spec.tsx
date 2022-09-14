@@ -17,33 +17,24 @@ describe('SignOutLink', () => {
 
     it('renders output that matches snapshot', () => {
         const component = render(
-            <LocaleContext.Provider value={ localeContext }>
-                <SignOutLink
-                    method={ getPaymentMethod() }
-                    onSignOut={ noop }
-                />
-            </LocaleContext.Provider>
+            <LocaleContext.Provider value={localeContext}>
+                <SignOutLink method={getPaymentMethod()} onSignOut={noop} />
+            </LocaleContext.Provider>,
         );
 
-        expect(component)
-            .toMatchSnapshot();
+        expect(component).toMatchSnapshot();
     });
 
     it('triggers callback when it is clicked', () => {
         const handleSignOut = jest.fn();
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <SignOutLink
-                    method={ getPaymentMethod() }
-                    onSignOut={ handleSignOut }
-                />
-            </LocaleContext.Provider>
+            <LocaleContext.Provider value={localeContext}>
+                <SignOutLink method={getPaymentMethod()} onSignOut={handleSignOut} />
+            </LocaleContext.Provider>,
         );
 
-        component.find('a')
-            .simulate('click');
+        component.find('a').simulate('click');
 
-        expect(handleSignOut)
-            .toHaveBeenCalled();
+        expect(handleSignOut).toHaveBeenCalled();
     });
 });

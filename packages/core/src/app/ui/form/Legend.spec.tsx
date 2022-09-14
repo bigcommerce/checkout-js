@@ -5,27 +5,24 @@ import Legend from './Legend';
 
 describe('Legend', () => {
     it('matches snapshot', () => {
-        expect(shallow(<Legend>Hello world</Legend>))
-            .toMatchSnapshot();
+        expect(shallow(<Legend>Hello world</Legend>)).toMatchSnapshot();
     });
 
     it('renders component with text', () => {
-        expect(shallow(<Legend>Hello world</Legend>).text())
-            .toEqual('Hello world');
+        expect(shallow(<Legend>Hello world</Legend>).text()).toBe('Hello world');
     });
 
     it('renders component with test ID', () => {
-        expect(shallow(<Legend testId="test">Hello world</Legend>).prop('data-test'))
-            .toEqual('test');
+        expect(shallow(<Legend testId="test">Hello world</Legend>).prop('data-test')).toBe('test');
     });
 
     it('renders component as hidden', () => {
-        expect(shallow(<Legend hidden>Hello world</Legend>).hasClass('is-srOnly'))
-            .toEqual(true);
+        expect(shallow(<Legend hidden>Hello world</Legend>).hasClass('is-srOnly')).toBe(true);
     });
 
     it('renders component as heading by default', () => {
-        expect(shallow(<Legend>Hello world</Legend>).hasClass('optimizedCheckout-headingSecondary'))
-            .toEqual(true);
+        expect(
+            shallow(<Legend>Hello world</Legend>).hasClass('optimizedCheckout-headingSecondary'),
+        ).toBe(true);
     });
 });

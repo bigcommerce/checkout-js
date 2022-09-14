@@ -19,9 +19,9 @@ export default function mapToOrderSummarySubtotalsProps({
         discountAmount,
         giftCertificates,
         giftWrappingAmount: giftWrappingCostTotal,
-        shippingAmount: hasSelectedShippingOptions(consignments) ?
-            shippingCostBeforeDiscount :
-            undefined,
+        shippingAmount: hasSelectedShippingOptions(consignments)
+            ? shippingCostBeforeDiscount
+            : undefined,
         handlingAmount: handlingCostTotal,
         coupons,
         taxes,

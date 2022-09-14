@@ -21,9 +21,7 @@ export function getCheckout(): Checkout {
         ],
         discounts: [],
         isStoreCreditApplied: false,
-        coupons: [
-            getCoupon(),
-        ],
+        coupons: [getCoupon()],
         orderId: 295,
         shippingCostTotal: 15,
         shippingCostBeforeDiscount: 20,
@@ -45,28 +43,26 @@ export function getCheckout(): Checkout {
 export function getCheckoutWithPayments(): Checkout {
     return {
         ...getCheckout(),
-        payments: [
-            getCheckoutPayment(),
-        ],
+        payments: [getCheckoutPayment()],
     };
 }
 
 export function getCheckoutWithAmazonPay(): Checkout {
     return {
         ...getCheckout(),
-        payments: [{
-            ...getCheckoutPayment(),
-            providerId: 'amazonpay',
-        }],
+        payments: [
+            {
+                ...getCheckoutPayment(),
+                providerId: 'amazonpay',
+            },
+        ],
     };
 }
 
 export function getCheckoutWithPromotions(): Checkout {
     return {
         ...getCheckout(),
-        promotions: [
-            getPromotion(),
-        ],
+        promotions: [getPromotion()],
     };
 }
 

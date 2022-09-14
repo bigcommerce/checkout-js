@@ -1,4 +1,8 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutSelectors,
+    CheckoutService,
+    createCheckoutService,
+} from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
@@ -25,65 +29,58 @@ describe('StaticBillingAddress', () => {
             address: getAddress(),
         };
 
-        jest.spyOn(checkoutState.data, 'getCheckout')
-            .mockReturnValue(getCheckout());
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
 
-        jest.spyOn(checkoutState.data, 'getBillingAddressFields')
-            .mockReturnValue(getAddressFormFields());
+        jest.spyOn(checkoutState.data, 'getBillingAddressFields').mockReturnValue(
+            getAddressFormFields(),
+        );
 
-        StaticBillingAddressTest = props => (
-            <LocaleProvider checkoutService={ checkoutService }>
-                <CheckoutProvider checkoutService={ checkoutService }>
-                    <StaticBillingAddress { ...props } />
+        StaticBillingAddressTest = (props) => (
+            <LocaleProvider checkoutService={checkoutService}>
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <StaticBillingAddress {...props} />
                 </CheckoutProvider>
             </LocaleProvider>
         );
     });
 
     it('renders address normally if not using Amazon', () => {
-        const container = mount(<StaticBillingAddressTest { ...defaultProps } />);
+        const container = mount(<StaticBillingAddressTest {...defaultProps} />);
 
-        expect(container.find(StaticAddress).length)
-            .toEqual(1);
+        expect(container.find(StaticAddress)).toHaveLength(1);
     });
 
     it('renders message instead of address when using Amazon', () => {
-        jest.spyOn(checkoutState.data, 'getCheckout')
-            .mockReturnValue({
-                ...getCheckout(),
-                payments: [
-                    { ...getCheckoutPayment(), providerId: 'amazon' },
-                ],
-            });
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+            ...getCheckout(),
+            payments: [{ ...getCheckoutPayment(), providerId: 'amazon' }],
+        });
 
-        const container = mount(<StaticBillingAddressTest { ...defaultProps } />);
+        const container = mount(<StaticBillingAddressTest {...defaultProps} />);
 
-        expect(container.find(StaticAddress).length)
-            .toEqual(0);
+        expect(container.find(StaticAddress)).toHaveLength(0);
 
-        expect(container.text())
-            .toEqual(getLanguageService().translate('billing.billing_address_amazon'));
+        expect(container.text()).toEqual(
+            getLanguageService().translate('billing.billing_address_amazon'),
+        );
     });
 
     it('renders message instead of address when using Amazon Pay V2 and no full address is provided', () => {
-        jest.spyOn(checkoutState.data, 'getCheckout')
-            .mockReturnValue({
-                ...getCheckout(),
-                payments: [
-                    { ...getCheckoutPayment(), providerId: 'amazonpay' },
-                ],
-            });
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+            ...getCheckout(),
+            payments: [{ ...getCheckoutPayment(), providerId: 'amazonpay' }],
+        });
 
         const addressData = {
             ...getAddress(),
         };
 
-        const container = mount(<StaticBillingAddressTest address={ addressData } />);
+        const container = mount(<StaticBillingAddressTest address={addressData} />);
 
-        expect(container.find(StaticAddress).length)
-            .toEqual(0);
+        expect(container.find(StaticAddress)).toHaveLength(0);
 
-        expect(container.text())
-            .toEqual(getLanguageService().translate('billing.billing_address_amazonpay'));
+        expect(container.text()).toEqual(
+            getLanguageService().translate('billing.billing_address_amazonpay'),
+        );
     });
 });

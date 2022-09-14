@@ -1,4 +1,13 @@
-import { captureException, init, withScope, BrowserOptions, Event, Integrations, SeverityLevel, StackFrame } from '@sentry/browser';
+import {
+    BrowserOptions,
+    captureException,
+    Event,
+    init,
+    Integrations,
+    SeverityLevel,
+    StackFrame,
+    withScope,
+} from '@sentry/browser';
 import { RewriteFrames } from '@sentry/integrations';
 import { EventHint, Exception } from '@sentry/types';
 
@@ -27,14 +36,8 @@ export default class SentryErrorLogger implements ErrorLogger {
     private consoleLogger: ErrorLogger;
     private publicPath: string;
 
-    constructor(
-        config: BrowserOptions,
-        options?: SentryErrorLoggerOptions
-    ) {
-        const {
-            consoleLogger = new NoopErrorLogger(),
-            publicPath = '',
-        } = options || {};
+    constructor(config: BrowserOptions, options?: SentryErrorLoggerOptions) {
+        const { consoleLogger = new NoopErrorLogger(), publicPath = '' } = options || {};
 
         this.consoleLogger = consoleLogger;
         this.publicPath = publicPath;
@@ -42,11 +45,7 @@ export default class SentryErrorLogger implements ErrorLogger {
         init({
             sampleRate: SAMPLE_RATE,
             beforeSend: this.handleBeforeSend,
-            denyUrls: [
-                ...(config.denyUrls || []),
-                'polyfill~checkout',
-                'sentry~checkout',
-            ],
+            denyUrls: [...(config.denyUrls || []), 'polyfill~checkout', 'sentry~checkout'],
             integrations: [
                 new Integrations.GlobalHandlers({
                     onerror: false,
@@ -64,11 +63,11 @@ export default class SentryErrorLogger implements ErrorLogger {
         error: Error,
         tags?: ErrorTags,
         level: ErrorLevelType = ErrorLevelType.Error,
-        payload?: ErrorMeta
+        payload?: ErrorMeta,
     ): void {
         this.consoleLogger.log(error, tags, level);
 
-        withScope(scope => {
+        withScope((scope) => {
             const { errorCode = computeErrorCode(error) } = tags || {};
 
             if (errorCode) {
@@ -112,29 +111,37 @@ export default class SentryErrorLogger implements ErrorLogger {
      * sufficient for us because some stores have customisation code built on top of our code, resulting in a stacktrace
      * whose topmost frame is ours but frames below it are not.
      */
-    private shouldReportExceptions(exceptions: Exception[], originalException: Error | string | null): boolean {
+    private shouldReportExceptions(
+        exceptions: Exception[],
+        originalException: Error | string | null,
+    ): boolean {
         // Ignore exceptions that are not an instance of Error because they are most likely not thrown by our own code,
         // as we have a lint rule that prevents us from doing so. Although these exceptions don't actually have a
         // stacktrace, meaning that the condition below should theoretically cover the scenario, but we still need this
         // condition because Sentry client creates a "synthentic" stacktrace for them using the information it has.
-        if (!exceptions?.length || !(originalException instanceof Error)) {
+        if (!exceptions.length || !(originalException instanceof Error)) {
             return false;
         }
 
-        return exceptions.every(exception => {
+        return exceptions.every((exception) => {
             if (!exception.stacktrace?.frames?.length) {
                 return false;
             }
 
-            return exception.stacktrace?.frames?.every(frame =>
-                frame.filename?.startsWith(FILENAME_PREFIX)
+            return exception.stacktrace.frames.every((frame) =>
+                frame.filename?.startsWith(FILENAME_PREFIX),
             );
         });
     }
 
     private handleBeforeSend: (event: Event, hint?: EventHint) => Event | null = (event, hint) => {
         if (event.exception) {
-            if (!this.shouldReportExceptions(event.exception.values ?? [], hint?.originalException ?? null)) {
+            if (
+                !this.shouldReportExceptions(
+                    event.exception.values ?? [],
+                    hint?.originalException ?? null,
+                )
+            ) {
                 return null;
             }
 
@@ -144,7 +151,7 @@ export default class SentryErrorLogger implements ErrorLogger {
         return event;
     };
 
-    private handleRewriteFrame: (frame: StackFrame) => StackFrame = frame => {
+    private handleRewriteFrame: (frame: StackFrame) => StackFrame = (frame) => {
         if (this.publicPath && frame.filename) {
             // We want to remove the base path of the filename, otherwise we
             // will need to specify it when we upload the sourcemaps so that the

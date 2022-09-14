@@ -31,6 +31,6 @@ describe('createCustomError()', () => {
         const MyError = createCustomErrorType({ name: 'Foobar' });
         const myError = new MyError();
 
-        expect(myError.type).toEqual('custom');
+        expect(myError.type).toBe('custom');
     });
 });

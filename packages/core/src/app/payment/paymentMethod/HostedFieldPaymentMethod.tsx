@@ -1,4 +1,9 @@
-import { CheckoutSelectors, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutSelectors,
+    PaymentInitializeOptions,
+    PaymentMethod,
+    PaymentRequestOptions,
+} from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
@@ -22,11 +27,7 @@ export interface HostedFieldPaymentMethodProps {
 // TODO: Use HostedCreditCardFieldset
 export default class HostedFieldPaymentMethod extends Component<HostedFieldPaymentMethodProps> {
     async componentDidMount(): Promise<void> {
-        const {
-            initializePayment,
-            method,
-            onUnhandledError = noop,
-        } = this.props;
+        const { initializePayment, method, onUnhandledError = noop } = this.props;
 
         try {
             await initializePayment({
@@ -39,11 +40,7 @@ export default class HostedFieldPaymentMethod extends Component<HostedFieldPayme
     }
 
     async componentWillUnmount(): Promise<void> {
-        const {
-            deinitializePayment,
-            method,
-            onUnhandledError = noop,
-        } = this.props;
+        const { deinitializePayment, method, onUnhandledError = noop } = this.props;
 
         try {
             await deinitializePayment({
@@ -66,21 +63,16 @@ export default class HostedFieldPaymentMethod extends Component<HostedFieldPayme
         } = this.props;
 
         return (
-            <LoadingOverlay
-                hideContentWhenLoading
-                isLoading={ isInitializing }
-            >
+            <LoadingOverlay hideContentWhenLoading isLoading={isInitializing}>
                 <div className="form-ccFields">
-                    { walletButtons && <FormFieldContainer>
-                        { walletButtons }
-                    </FormFieldContainer> }
+                    {walletButtons && <FormFieldContainer>{walletButtons}</FormFieldContainer>}
 
                     <FormFieldContainer additionalClassName="form-field--ccNumber">
                         <Label>
                             <TranslatedString id="payment.credit_card_number_label" />
                         </Label>
 
-                        <div id={ cardNumberId } />
+                        <div id={cardNumberId} />
                     </FormFieldContainer>
 
                     <FormFieldContainer additionalClassName="form-field--ccExpiry">
@@ -88,24 +80,28 @@ export default class HostedFieldPaymentMethod extends Component<HostedFieldPayme
                             <TranslatedString id="payment.credit_card_expiration_label" />
                         </Label>
 
-                        <div id={ cardExpiryId } />
+                        <div id={cardExpiryId} />
                     </FormFieldContainer>
 
-                    { cardCodeId && <FormFieldContainer additionalClassName="form-field--ccCvv">
-                        <Label>
-                            <TranslatedString id="payment.credit_card_cvv_label" />
-                        </Label>
+                    {cardCodeId && (
+                        <FormFieldContainer additionalClassName="form-field--ccCvv">
+                            <Label>
+                                <TranslatedString id="payment.credit_card_cvv_label" />
+                            </Label>
 
-                        <div id={ cardCodeId } />
-                    </FormFieldContainer> }
+                            <div id={cardCodeId} />
+                        </FormFieldContainer>
+                    )}
 
-                    { postalCodeId && <FormFieldContainer additionalClassName="form-field--postCode">
-                        <Label>
-                            <TranslatedString id="payment.postal_code_label" />
-                        </Label>
+                    {postalCodeId && (
+                        <FormFieldContainer additionalClassName="form-field--postCode">
+                            <Label>
+                                <TranslatedString id="payment.postal_code_label" />
+                            </Label>
 
-                        <div id={ postalCodeId } />
-                    </FormFieldContainer> }
+                            <div id={postalCodeId} />
+                        </FormFieldContainer>
+                    )}
                 </div>
             </LoadingOverlay>
         );

@@ -1,10 +1,10 @@
 import { CheckoutContextProps } from '../checkout';
 
-import mapToRedeemableProps from './mapToRedeemableProps';
 import { WithCheckoutCartSummaryProps } from './CartSummary';
+import mapToRedeemableProps from './mapToRedeemableProps';
 
 export default function mapToCartSummaryProps(
-    context: CheckoutContextProps
+    context: CheckoutContextProps,
 ): WithCheckoutCartSummaryProps | null {
     const {
         checkoutState: {

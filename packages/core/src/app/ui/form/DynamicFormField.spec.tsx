@@ -19,116 +19,118 @@ describe('DynamicFormField Component', () => {
         const component = shallow(
             <DynamicFormField
                 extraClass="dynamic-form-field--addressLine1"
-                field={ formFields.find(({ name }) => name === 'address1') as FormFieldType }
-            />
+                field={formFields.find(({ name }) => name === 'address1') as FormFieldType}
+            />,
         );
 
-        expect(component.find('.dynamic-form-field').prop('className'))
-            .toContain('dynamic-form-field--addressLine1');
+        expect(component.find('.dynamic-form-field').prop('className')).toContain(
+            'dynamic-form-field--addressLine1',
+        );
     });
 
     it('renders FormField with expected props', () => {
         const component = mount(
-            <Formik initialValues={ {} } onSubmit={ jest.fn() }>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
                 <DynamicFormField
-                    field={ formFields.find(({ name }) => name === 'address1') as FormFieldType }
-                    onChange={ onChange }
+                    field={formFields.find(({ name }) => name === 'address1') as FormFieldType}
+                    onChange={onChange}
                 />
-            </Formik>
+            </Formik>,
         );
 
-        expect(component.find(FormField).props())
-            .toEqual(expect.objectContaining({
+        expect(component.find(FormField).props()).toEqual(
+            expect.objectContaining({
                 onChange,
                 name: 'address1',
-            }));
+            }),
+        );
     });
 
     it('renders telephone field', () => {
         const telField = {
             custom: false,
-            fieldType: "text",
+            fieldType: 'text',
             id: 'field_17',
             label: 'Phone Number',
             name: 'phone',
             required: true,
-            type: "string",
+            type: 'string',
         };
         const component = mount(
-            <Formik initialValues={ {} } onSubmit={ jest.fn() }>
-                <DynamicFormField
-                    field={ telField as FormFieldType }
-                />
-            </Formik>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+                <DynamicFormField field={telField as FormFieldType} />
+            </Formik>,
         );
 
-        expect(component.find(DynamicInput).props())
-            .toEqual(expect.objectContaining({
+        expect(component.find(DynamicInput).props()).toEqual(
+            expect.objectContaining({
                 id: 'phone',
                 fieldType: 'tel',
-            }));
+            }),
+        );
     });
 
     it('renders DynamicInput with expected props', () => {
         const component = mount(
-            <Formik initialValues={ {} } onSubmit={ jest.fn() }>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
                 <DynamicFormField
                     autocomplete="address-line1"
-                    field={ formFields.find(({ name }) => name === 'address1') as FormFieldType }
+                    field={formFields.find(({ name }) => name === 'address1') as FormFieldType}
                     inputId="addressLine1Input"
-                    onChange={ onChange }
+                    onChange={onChange}
                 />
-            </Formik>
+            </Formik>,
         );
 
-        expect(component.find(DynamicInput).props())
-            .toEqual(expect.objectContaining({
+        expect(component.find(DynamicInput).props()).toEqual(
+            expect.objectContaining({
                 autoComplete: 'address-line1',
                 id: 'addressLine1Input',
-            }));
+            }),
+        );
     });
 
     it('renders CheckboxGroupFormField if fieldType is checkbox', () => {
         const component = mount(
-            <Formik initialValues={ {} } onSubmit={ jest.fn() }>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
                 <DynamicFormField
-                    field={ {
-                        ...formFields.find(({ name }) => name === 'field_27') as FormFieldType,
+                    field={{
+                        ...(formFields.find(({ name }) => name === 'field_27') as FormFieldType),
                         fieldType: 'checkbox',
-                    } }
+                    }}
                 />
-            </Formik>
+            </Formik>,
         );
 
-        expect(component.find(CheckboxGroupFormField).length).toEqual(1);
+        expect(component.find(CheckboxGroupFormField)).toHaveLength(1);
     });
 
     it('renders label', () => {
         const component = mount(
-            <Formik initialValues={ {} } onSubmit={ jest.fn() }>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
                 <DynamicFormField
-                    field={ formFields.find(({ name }) => name === 'address1') as FormFieldType }
-                    label={ <TranslatedString id="address.address_line_1_label" /> }
+                    field={formFields.find(({ name }) => name === 'address1') as FormFieldType}
+                    label={<TranslatedString id="address.address_line_1_label" />}
                 />
-            </Formik>
+            </Formik>,
         );
 
-        expect(component.find(TranslatedString).prop('id'))
-            .toEqual('address.address_line_1_label');
+        expect(component.find(TranslatedString).prop('id')).toBe('address.address_line_1_label');
 
-        expect(component.find('.optimizedCheckout-contentSecondary').length).toEqual(0);
+        expect(component.find('.optimizedCheckout-contentSecondary')).toHaveLength(0);
     });
 
     it('renders `optional` label when field is not required', () => {
         const component = mount(
-            <Formik initialValues={ {} } onSubmit={ jest.fn() }>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
                 <DynamicFormField
-                    field={ formFields.find(({ name }) => name === 'address2') as FormFieldType }
+                    field={formFields.find(({ name }) => name === 'address2') as FormFieldType}
                 />
-            </Formik>
+            </Formik>,
         );
 
-        expect(component.find('.optimizedCheckout-contentSecondary').find(TranslatedString).prop('id'))
-            .toEqual('common.optional_text');
+        expect(
+            component.find('.optimizedCheckout-contentSecondary').find(TranslatedString).prop('id'),
+        ).toBe('common.optional_text');
     });
 });

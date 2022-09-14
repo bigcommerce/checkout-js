@@ -8,10 +8,8 @@ describe('retry()', () => {
         try {
             await retry(() => call(), { count: 3, interval: 1 });
         } catch (thrown) {
-            expect(call)
-                .toHaveBeenCalledTimes(3);
-            expect(thrown)
-                .toEqual(error);
+            expect(call).toHaveBeenCalledTimes(3);
+            expect(thrown).toEqual(error);
         }
     });
 
@@ -23,16 +21,12 @@ describe('retry()', () => {
         const call = jest.fn(() => {
             times++;
 
-            return times === 2 ?
-                Promise.resolve(response) :
-                Promise.reject(error);
+            return times === 2 ? Promise.resolve(response) : Promise.reject(error);
         });
 
         const output = await retry(() => call(), { interval: 1 });
 
-        expect(call)
-            .toHaveBeenCalledTimes(2);
-        expect(output)
-            .toEqual(response);
+        expect(call).toHaveBeenCalledTimes(2);
+        expect(output).toEqual(response);
     });
 });

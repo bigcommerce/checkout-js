@@ -1,4 +1,10 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService, PaymentInitializeOptions, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutSelectors,
+    CheckoutService,
+    createCheckoutService,
+    PaymentInitializeOptions,
+    PaymentMethod,
+} from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import each from 'jest-each';
@@ -13,7 +19,9 @@ import { getPaymentMethod } from '../payment-methods.mock';
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodType from './PaymentMethodType';
-import WalletButtonPaymentMethod, { WalletButtonPaymentMethodProps } from './WalletButtonPaymentMethod';
+import WalletButtonPaymentMethod, {
+    WalletButtonPaymentMethodProps,
+} from './WalletButtonPaymentMethod';
 
 describe('when using Google Pay payment', () => {
     let method: PaymentMethod;
@@ -38,23 +46,17 @@ describe('when using Google Pay payment', () => {
             method: PaymentMethodType.GooglePay,
         };
 
-        jest.spyOn(checkoutState.data, 'getConfig')
-            .mockReturnValue(getStoreConfig());
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
-        jest.spyOn(checkoutService, 'deinitializePayment')
-            .mockResolvedValue(checkoutState);
+        jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
 
-        jest.spyOn(checkoutService, 'initializePayment')
-            .mockResolvedValue(checkoutState);
+        jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);
 
-        PaymentMethodTest = props => (
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <LocaleContext.Provider value={ localeContext }>
-                    <Formik
-                        initialValues={ {} }
-                        onSubmit={ noop }
-                    >
-                        <PaymentMethodComponent { ...props } />
+        PaymentMethodTest = (props) => (
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <Formik initialValues={{}} onSubmit={noop}>
+                        <PaymentMethodComponent {...props} />
                     </Formik>
                 </LocaleContext.Provider>
             </CheckoutProvider>
@@ -62,16 +64,17 @@ describe('when using Google Pay payment', () => {
     });
 
     it('renders as wallet button method', () => {
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+        const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
 
-        expect(container.find(WalletButtonPaymentMethod).props())
-            .toEqual(expect.objectContaining({
+        expect(container.find(WalletButtonPaymentMethod).props()).toEqual(
+            expect.objectContaining({
                 buttonId: 'walletButton',
                 deinitializePayment: expect.any(Function),
                 initializePayment: expect.any(Function),
                 method,
                 shouldShowEditButton: true,
-            }));
+            }),
+        );
     });
 
     each([
@@ -84,18 +87,20 @@ describe('when using Google Pay payment', () => {
         [PaymentMethodId.OrbitalGooglePay],
         [PaymentMethodId.StripeGooglePay],
         [PaymentMethodId.StripeUPEGooglePay],
-    ]).it('initializes %s with required config', id => {
+    ]).it('initializes %s with required config', (id) => {
         method.id = id;
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
-        const component: ReactWrapper<WalletButtonPaymentMethodProps> = container.find(WalletButtonPaymentMethod);
+
+        const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
+        const component: ReactWrapper<WalletButtonPaymentMethodProps> =
+            container.find(WalletButtonPaymentMethod);
 
         component.prop('initializePayment')({
             methodId: method.id,
             gatewayId: method.gateway,
         });
 
-        expect(checkoutService.initializePayment)
-            .toHaveBeenCalledWith(expect.objectContaining({
+        expect(checkoutService.initializePayment).toHaveBeenCalledWith(
+            expect.objectContaining({
                 methodId: id,
                 gatewayId: method.gateway,
                 [id]: {
@@ -103,35 +108,38 @@ describe('when using Google Pay payment', () => {
                     onError: defaultProps.onUnhandledError,
                     onPaymentSelect: expect.any(Function),
                 },
-            }));
+            }),
+        );
     });
 
     it('reinitializes method once payment option is selected', async () => {
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
-        const component: ReactWrapper<WalletButtonPaymentMethodProps> = container.find(WalletButtonPaymentMethod);
+        const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
+        const component: ReactWrapper<WalletButtonPaymentMethodProps> =
+            container.find(WalletButtonPaymentMethod);
 
         component.prop('initializePayment')({
             methodId: method.id,
             gatewayId: method.gateway,
         });
 
-        const options: PaymentInitializeOptions = (checkoutService.initializePayment as jest.Mock).mock.calls[0][0];
+        const options: PaymentInitializeOptions = (checkoutService.initializePayment as jest.Mock)
+            .mock.calls[0][0];
 
         const paymentSelectHandler = options.googlepaybraintree?.onPaymentSelect;
+
         if (paymentSelectHandler) {
             paymentSelectHandler();
         }
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
-        expect(checkoutService.deinitializePayment)
-            .toHaveBeenCalledWith({ methodId: method.id });
-        expect(checkoutService.initializePayment)
-            .toHaveBeenCalledWith(expect.objectContaining({
+        expect(checkoutService.deinitializePayment).toHaveBeenCalledWith({ methodId: method.id });
+        expect(checkoutService.initializePayment).toHaveBeenCalledWith(
+            expect.objectContaining({
                 methodId: method.id,
                 [method.id]: expect.any(Object),
-            }));
-        expect(checkoutService.initializePayment)
-            .toHaveBeenCalledTimes(2);
+            }),
+        );
+        expect(checkoutService.initializePayment).toHaveBeenCalledTimes(2);
     });
 });

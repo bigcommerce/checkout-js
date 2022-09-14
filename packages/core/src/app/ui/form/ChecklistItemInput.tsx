@@ -15,16 +15,14 @@ const ChecklistItemInput: FunctionComponent<ChecklistItemInputProps> = ({
 }) => (
     <>
         <Input
-            { ...props }
-            checked={ isSelected }
+            {...props}
+            checked={isSelected}
             className="form-checklist-checkbox optimizedCheckout-form-checklist-checkbox"
-            id={ id }
+            id={id}
             type="radio"
         />
 
-        <Label htmlFor={ id }>
-            { children }
-        </Label>
+        <Label htmlFor={id}>{children}</Label>
     </>
 );
 

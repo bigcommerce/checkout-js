@@ -4,7 +4,7 @@ import { TranslatedString } from '../locale';
 import { Alert, AlertType } from '../ui/alert';
 
 const PasswordSavedSuccessAlert: FunctionComponent = () => (
-    <Alert type={ AlertType.Success }>
+    <Alert type={AlertType.Success}>
         <strong>
             <TranslatedString id="customer.set_password_success" />
         </strong>

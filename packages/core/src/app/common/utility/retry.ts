@@ -8,10 +8,7 @@ export interface RetryOptions {
     interval?: number;
 }
 
-export default async function retry<T>(
-    fn: () => Promise<T>,
-    options?: RetryOptions
-): Promise<T> {
+export default async function retry<T>(fn: () => Promise<T>, options?: RetryOptions): Promise<T> {
     const { count, interval } = { ...DEFAULT_OPTIONS, ...options };
 
     try {
@@ -21,7 +18,7 @@ export default async function retry<T>(
             throw error;
         }
 
-        await new Promise(resolve => setTimeout(resolve, interval));
+        await new Promise((resolve) => setTimeout(resolve, interval));
 
         return retry(fn, { interval, count: count - 1 });
     }

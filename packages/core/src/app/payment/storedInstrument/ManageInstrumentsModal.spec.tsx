@@ -1,4 +1,10 @@
-import { createCheckoutService, CardInstrument, CheckoutSelectors, CheckoutService, RequestError } from '@bigcommerce/checkout-sdk';
+import {
+    CardInstrument,
+    CheckoutSelectors,
+    CheckoutService,
+    createCheckoutService,
+    RequestError,
+} from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
@@ -37,139 +43,122 @@ describe('ManageInstrumentsModal', () => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
 
-        jest.spyOn(checkoutState.data, 'getConfig')
-            .mockReturnValue(getStoreConfig());
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
         localeContext = createLocaleContext(getStoreConfig());
 
-        ManageInstrumentsModalTest = props => (
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <LocaleContext.Provider value={ localeContext }>
-                    <ManageInstrumentsModal { ...props } />
+        ManageInstrumentsModalTest = (props) => (
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <ManageInstrumentsModal {...props} />
                 </LocaleContext.Provider>
             </CheckoutProvider>
         );
     });
 
     it('renders list of card instruments in table format', () => {
-        const component = mount(<ManageInstrumentsModalTest
-            { ...defaultProps }
-            instruments={ getInstruments().filter(isCardInstrument) }
-        />);
+        const component = mount(
+            <ManageInstrumentsModalTest
+                {...defaultProps}
+                instruments={getInstruments().filter(isCardInstrument)}
+            />,
+        );
 
-        expect(component.find(ManageCardInstrumentsTable).length)
-            .toEqual(1);
+        expect(component.find(ManageCardInstrumentsTable)).toHaveLength(1);
 
-        expect(component.find(ManageAccountInstrumentsTable).length)
-            .toEqual(0);
+        expect(component.find(ManageAccountInstrumentsTable)).toHaveLength(0);
     });
 
     it('renders list of account instruments in table format', () => {
-        const component = mount(<ManageInstrumentsModalTest
-            { ...defaultProps }
-            instruments={ getInstruments().filter(isAccountInstrument) }
-        />);
+        const component = mount(
+            <ManageInstrumentsModalTest
+                {...defaultProps}
+                instruments={getInstruments().filter(isAccountInstrument)}
+            />,
+        );
 
-        expect(component.find(ManageAccountInstrumentsTable).length)
-            .toEqual(1);
+        expect(component.find(ManageAccountInstrumentsTable)).toHaveLength(1);
 
-        expect(component.find(ManageCardInstrumentsTable).length)
-            .toEqual(0);
+        expect(component.find(ManageCardInstrumentsTable)).toHaveLength(0);
     });
 
     it('renders list of bank instruments in table format', () => {
-        const component = mount(<ManageInstrumentsModalTest
-            { ...defaultProps }
-            instruments={ getInstruments().filter(isBankAccountInstrument) }
-        />);
+        const component = mount(
+            <ManageInstrumentsModalTest
+                {...defaultProps}
+                instruments={getInstruments().filter(isBankAccountInstrument)}
+            />,
+        );
 
-        expect(component.find(ManageAccountInstrumentsTable).length)
-            .toEqual(1);
+        expect(component.find(ManageAccountInstrumentsTable)).toHaveLength(1);
 
-        expect(component.find(ManageCardInstrumentsTable).length)
-            .toEqual(0);
+        expect(component.find(ManageCardInstrumentsTable)).toHaveLength(0);
     });
 
     it('only render modal if configured to do so', () => {
-        const component = mount(<ManageInstrumentsModalTest
-            { ...defaultProps }
-            isOpen={ false }
-        />);
+        const component = mount(<ManageInstrumentsModalTest {...defaultProps} isOpen={false} />);
 
-        expect(component.find(Modal).prop('isOpen'))
-            .toEqual(false);
+        expect(component.find(Modal).prop('isOpen')).toBe(false);
     });
 
     it('shows confirmation message before deleting instrument', () => {
-        const component = mount(<ManageInstrumentsModalTest { ...defaultProps } />);
+        const component = mount(<ManageInstrumentsModalTest {...defaultProps} />);
 
-        component.find('[data-test="manage-instrument-delete-button"]').at(0)
-            .simulate('click');
+        component.find('[data-test="manage-instrument-delete-button"]').at(0).simulate('click');
 
-        expect(component.find('[data-test="modal-body"]').text())
-            .toEqual(localeContext.language.translate('payment.instrument_manage_modal_confirmation_label'));
+        expect(component.find('[data-test="modal-body"]').text()).toEqual(
+            localeContext.language.translate('payment.instrument_manage_modal_confirmation_label'),
+        );
     });
 
     it('deletes selected instrument and closes modal if user confirms their action', async () => {
-        jest.spyOn(checkoutService, 'deleteInstrument')
-            .mockResolvedValue(checkoutState);
+        jest.spyOn(checkoutService, 'deleteInstrument').mockResolvedValue(checkoutState);
 
-        const component = mount(<ManageInstrumentsModalTest { ...defaultProps } />);
+        const component = mount(<ManageInstrumentsModalTest {...defaultProps} />);
 
-        component.find('[data-test="manage-instrument-delete-button"]').at(0)
-            .simulate('click');
+        component.find('[data-test="manage-instrument-delete-button"]').at(0).simulate('click');
 
-        component.find('[data-test="manage-instrument-confirm-button"]')
-            .simulate('click');
+        component.find('[data-test="manage-instrument-confirm-button"]').simulate('click');
 
-        expect(checkoutService.deleteInstrument)
-            .toHaveBeenCalledWith(instruments[0].bigpayToken);
+        expect(checkoutService.deleteInstrument).toHaveBeenCalledWith(instruments[0].bigpayToken);
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
-        expect(defaultProps.onRequestClose)
-            .toHaveBeenCalled();
+        expect(defaultProps.onRequestClose).toHaveBeenCalled();
     });
 
     it('shows list of instruments if user decides to cancel their action', () => {
-        const component = mount(<ManageInstrumentsModalTest { ...defaultProps } />);
+        const component = mount(<ManageInstrumentsModalTest {...defaultProps} />);
 
-        component.find('[data-test="manage-instrument-delete-button"]').at(0)
-            .simulate('click');
+        component.find('[data-test="manage-instrument-delete-button"]').at(0).simulate('click');
 
-        component.find('[data-test="manage-instrument-cancel-button"]')
-            .simulate('click');
+        component.find('[data-test="manage-instrument-cancel-button"]').simulate('click');
 
-        expect(component.find(ManageCardInstrumentsTable).length)
-            .toEqual(1);
+        expect(component.find(ManageCardInstrumentsTable)).toHaveLength(1);
     });
 
     it('cancels "delete confirmation" screen when modal is re-open', () => {
-        jest.spyOn(checkoutService, 'deleteInstrument')
-            .mockResolvedValue(checkoutState);
+        jest.spyOn(checkoutService, 'deleteInstrument').mockResolvedValue(checkoutState);
 
-        const component = mount(<ManageInstrumentsModalTest { ...defaultProps } />);
+        const component = mount(<ManageInstrumentsModalTest {...defaultProps} />);
 
-        component.find('[data-test="manage-instrument-delete-button"]').at(0)
-            .simulate('click');
+        component.find('[data-test="manage-instrument-delete-button"]').at(0).simulate('click');
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        component.find(Modal)
-            .prop('onAfterOpen')!();
+        component.find(Modal).prop('onAfterOpen')!();
 
         component.update();
 
-        expect(component.find(ManageCardInstrumentsTable).length)
-            .toEqual(1);
+        expect(component.find(ManageCardInstrumentsTable)).toHaveLength(1);
     });
 
     it('displays error message to user if unable to delete instrument', () => {
-        jest.spyOn(checkoutState.errors, 'getDeleteInstrumentError')
-            .mockReturnValue({ status: 500 } as RequestError);
+        jest.spyOn(checkoutState.errors, 'getDeleteInstrumentError').mockReturnValue({
+            status: 500,
+        } as RequestError);
 
-        const component = mount(<ManageInstrumentsModalTest { ...defaultProps } />);
+        const component = mount(<ManageInstrumentsModalTest {...defaultProps} />);
 
-        expect(component.find(ManageInstrumentsAlert).length)
-            .toEqual(1);
+        expect(component.find(ManageInstrumentsAlert)).toHaveLength(1);
     });
 });

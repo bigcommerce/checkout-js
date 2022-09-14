@@ -1,4 +1,4 @@
-import React, { memo, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { ShopperCurrency } from '../currency';
 import { TranslatedString } from '../locale';
@@ -19,28 +19,32 @@ const OrderSummaryDiscount: FunctionComponent<OrderSummaryDiscountProps> = ({
     ...rest
 }) => (
     <OrderSummaryPrice
-        { ...rest }
-        { ...(onRemoved && {
+        {...rest}
+        {...(onRemoved && {
             onActionTriggered: () => code && onRemoved(code),
             actionLabel: <TranslatedString id="cart.remove_action" />,
-        }) }
-        amount={ -1 * (amount || 0) }
+        })}
+        amount={-1 * (amount || 0)}
     >
-        { !!remaining && remaining > 0 && <span
-            className="cart-priceItem-postFix optimizedCheckout-contentSecondary"
-            data-test="cart-price-remaining"
-        >
-            <TranslatedString id="cart.remaining_text" />
-            { ': ' }
-            <ShopperCurrency amount={ remaining } />
-        </span> }
+        {!!remaining && remaining > 0 && (
+            <span
+                className="cart-priceItem-postFix optimizedCheckout-contentSecondary"
+                data-test="cart-price-remaining"
+            >
+                <TranslatedString id="cart.remaining_text" />
+                {': '}
+                <ShopperCurrency amount={remaining} />
+            </span>
+        )}
 
-        { code && <span
-            className="cart-priceItem-postFix optimizedCheckout-contentSecondary"
-            data-test="cart-price-code"
-        >
-            { code }
-        </span> }
+        {code && (
+            <span
+                className="cart-priceItem-postFix optimizedCheckout-contentSecondary"
+                data-test="cart-price-code"
+            >
+                {code}
+            </span>
+        )}
     </OrderSummaryPrice>
 );
 

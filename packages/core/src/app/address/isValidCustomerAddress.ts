@@ -7,11 +7,11 @@ import isValidAddress from './isValidAddress';
 export default function isValidCustomerAddress(
     address: Address | undefined,
     addresses: CustomerAddress[],
-    formFields: FormField[]
+    formFields: FormField[],
 ): boolean {
     if (!address || !isValidAddress(address, formFields)) {
         return false;
     }
 
-    return some(addresses, customerAddress => isEqualAddress(customerAddress, address));
+    return some(addresses, (customerAddress) => isEqualAddress(customerAddress, address));
 }

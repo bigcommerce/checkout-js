@@ -14,9 +14,9 @@ describe('ShopperCurrency Component', () => {
 
         const tree = testRenderer
             .create(
-                <LocaleContext.Provider value={ localeContext }>
-                    <StoreCurrency amount={ 10 } />
-                </LocaleContext.Provider>
+                <LocaleContext.Provider value={localeContext}>
+                    <StoreCurrency amount={10} />
+                </LocaleContext.Provider>,
             )
             .toJSON();
 

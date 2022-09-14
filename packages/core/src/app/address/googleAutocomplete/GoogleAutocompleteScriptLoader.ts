@@ -32,8 +32,9 @@ export default class GoogleAutocompleteScriptLoader {
                 reject();
             };
 
-            this._scriptLoader.loadScript(`//maps.googleapis.com/maps/api/js?${params}`)
-                .catch(e => {
+            this._scriptLoader
+                .loadScript(`//maps.googleapis.com/maps/api/js?${params}`)
+                .catch((e) => {
                     this._googleAutoComplete = undefined;
                     throw e;
                 });
@@ -46,9 +47,11 @@ export default class GoogleAutocompleteScriptLoader {
 function isAutocompleteWindow(window: Window): window is GoogleAutocompleteWindow {
     const autocompleteWindow = window as GoogleAutocompleteWindow;
 
-    return Boolean(autocompleteWindow.google &&
-        autocompleteWindow.google.maps &&
-        autocompleteWindow.google.maps.places);
+    return Boolean(
+        autocompleteWindow.google &&
+            autocompleteWindow.google.maps &&
+            autocompleteWindow.google.maps.places,
+    );
 }
 
 export interface GoogleCallbackWindow extends Window {

@@ -1,4 +1,4 @@
-import React, { memo, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '../../locale';
 
@@ -6,9 +6,7 @@ export interface LoadingNotificationProps {
     isLoading: boolean;
 }
 
-const LoadingNotification: FunctionComponent<LoadingNotificationProps> = ({
-    isLoading,
-}) => {
+const LoadingNotification: FunctionComponent<LoadingNotificationProps> = ({ isLoading }) => {
     if (!isLoading) {
         return null;
     }

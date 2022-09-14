@@ -14,15 +14,15 @@ const Legend: FunctionComponent<LegendProps> = ({
     ...rest
 }) => (
     <legend
-        { ...rest }
-        className={ classNames(
+        {...rest}
+        className={classNames(
             className || 'form-legend',
             { 'is-srOnly': hidden },
-            { 'optimizedCheckout-headingSecondary': !hidden }
-        ) }
-        data-test={ testId }
+            { 'optimizedCheckout-headingSecondary': !hidden },
+        )}
+        data-test={testId}
     >
-        { children }
+        {children}
     </legend>
 );
 

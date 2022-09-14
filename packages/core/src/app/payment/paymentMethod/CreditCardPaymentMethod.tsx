@@ -1,21 +1,45 @@
-import { PaymentFormValues } from "@bigcommerce/checkout/payment-integration-api";
-import { CardInstrument, CheckoutSelectors, HostedFieldType, Instrument, PaymentInitializeOptions, PaymentInstrument, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
+import {
+    CardInstrument,
+    CheckoutSelectors,
+    HostedFieldType,
+    Instrument,
+    PaymentInitializeOptions,
+    PaymentInstrument,
+    PaymentMethod,
+    PaymentRequestOptions,
+} from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { find, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
-import { withCheckout, CheckoutContextProps } from '../../checkout';
+import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+
+import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { MapToPropsFactory } from '../../common/hoc';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { withForm, WithFormProps } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
-import { configureCardValidator, getCreditCardValidationSchema, CreditCardFieldset } from '../creditCard';
-import { getInstrumentValidationSchema, isCardInstrument, isInstrumentCardCodeRequiredSelector, isInstrumentCardNumberRequiredSelector, isInstrumentFeatureAvailable, CardInstrumentFieldset, CreditCardValidation, CardInstrumentFieldsetValues } from '../storedInstrument';
-import withPayment, { WithPaymentProps } from '../withPayment';
+import {
+    configureCardValidator,
+    CreditCardFieldset,
+    getCreditCardValidationSchema,
+} from '../creditCard';
+import {
+    CardInstrumentFieldset,
+    CardInstrumentFieldsetValues,
+    CreditCardValidation,
+    getInstrumentValidationSchema,
+    isCardInstrument,
+    isInstrumentCardCodeRequiredSelector,
+    isInstrumentCardNumberRequiredSelector,
+    isInstrumentFeatureAvailable,
+} from '../storedInstrument';
 import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
-import CreditCardFieldsetValues from "./CreditCardFieldsetValues";
+import withPayment, { WithPaymentProps } from '../withPayment';
+
+import CreditCardFieldsetValues from './CreditCardFieldsetValues';
 
 export interface CreditCardPaymentMethodProps {
     isInitializing?: boolean;
@@ -26,7 +50,10 @@ export interface CreditCardPaymentMethodProps {
     storedCardValidationSchema?: ObjectSchema;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
     getStoredCardValidationFieldset?(selectedInstrument?: CardInstrument): ReactNode;
-    initializePayment(options: PaymentInitializeOptions, selectedInstrument?: CardInstrument): Promise<CheckoutSelectors>;
+    initializePayment(
+        options: PaymentInitializeOptions,
+        selectedInstrument?: CardInstrument,
+    ): Promise<CheckoutSelectors>;
     onUnhandledError?(error: Error): void;
 }
 
@@ -82,10 +109,13 @@ class CreditCardPaymentMethod extends Component<
                 await loadInstruments();
             }
 
-            await initializePayment({
-                gatewayId: method.gateway,
-                methodId: method.id,
-            }, this.getSelectedInstrument());
+            await initializePayment(
+                {
+                    gatewayId: method.gateway,
+                    methodId: method.id,
+                },
+                this.getSelectedInstrument(),
+            );
         } catch (error) {
             onUnhandledError(error);
         }
@@ -111,7 +141,10 @@ class CreditCardPaymentMethod extends Component<
         }
     }
 
-    async componentDidUpdate(_prevProps: Readonly<CreditCardPaymentMethodProps>, prevState: Readonly<CreditCardPaymentMethodState>): Promise<void> {
+    async componentDidUpdate(
+        _prevProps: Readonly<CreditCardPaymentMethodProps>,
+        prevState: Readonly<CreditCardPaymentMethodState>,
+    ): Promise<void> {
         const {
             deinitializePayment,
             initializePayment,
@@ -120,25 +153,27 @@ class CreditCardPaymentMethod extends Component<
             setValidationSchema,
         } = this.props;
 
-        const {
-            isAddingNewCard,
-            selectedInstrumentId,
-        } = this.state;
+        const { isAddingNewCard, selectedInstrumentId } = this.state;
 
         setValidationSchema(method, this.getValidationSchema());
 
-        if (selectedInstrumentId !== prevState.selectedInstrumentId ||
-            isAddingNewCard !== prevState.isAddingNewCard) {
+        if (
+            selectedInstrumentId !== prevState.selectedInstrumentId ||
+            isAddingNewCard !== prevState.isAddingNewCard
+        ) {
             try {
                 await deinitializePayment({
                     gatewayId: method.gateway,
                     methodId: method.id,
                 });
 
-                await initializePayment({
-                    gatewayId: method.gateway,
-                    methodId: method.id,
-                }, this.getSelectedInstrument());
+                await initializePayment(
+                    {
+                        gatewayId: method.gateway,
+                        methodId: method.id,
+                    },
+                    this.getSelectedInstrument(),
+                );
             } catch (error) {
                 onUnhandledError(error);
             }
@@ -164,39 +199,54 @@ class CreditCardPaymentMethod extends Component<
         const selectedInstrument = this.getSelectedInstrument();
         const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
         const isLoading = isInitializing || isLoadingInstruments;
-        const shouldShowNumberField = selectedInstrument ? isInstrumentCardNumberRequiredProp(selectedInstrument) : false;
-        const shouldShowCardCodeField = selectedInstrument ? isInstrumentCardCodeRequiredProp(selectedInstrument, method) : false;
+        const shouldShowNumberField = selectedInstrument
+            ? isInstrumentCardNumberRequiredProp(selectedInstrument)
+            : false;
+        const shouldShowCardCodeField = selectedInstrument
+            ? isInstrumentCardCodeRequiredProp(selectedInstrument, method)
+            : false;
 
         return (
-            <LoadingOverlay
-                hideContentWhenLoading
-                isLoading={ isLoading }
-            >
+            <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
                 <div className="paymentMethod paymentMethod--creditCard">
-                    { shouldShowInstrumentFieldset && <CardInstrumentFieldset
-                        instruments={ instruments }
-                        onDeleteInstrument={ this.handleDeleteInstrument }
-                        onSelectInstrument={ this.handleSelectInstrument }
-                        onUseNewInstrument={ this.handleUseNewCard }
-                        selectedInstrumentId={ selectedInstrument && selectedInstrument.bigpayToken }
-                        validateInstrument={ getStoredCardValidationFieldset ?
-                            getStoredCardValidationFieldset(selectedInstrument) :
-                            <CreditCardValidation
-                                shouldShowCardCodeField={ shouldShowCardCodeField }
-                                shouldShowNumberField={ shouldShowNumberField }
-                            /> }
-                    /> }
+                    {shouldShowInstrumentFieldset && (
+                        <CardInstrumentFieldset
+                            instruments={instruments}
+                            onDeleteInstrument={this.handleDeleteInstrument}
+                            onSelectInstrument={this.handleSelectInstrument}
+                            onUseNewInstrument={this.handleUseNewCard}
+                            selectedInstrumentId={
+                                selectedInstrument && selectedInstrument.bigpayToken
+                            }
+                            validateInstrument={
+                                getStoredCardValidationFieldset ? (
+                                    getStoredCardValidationFieldset(selectedInstrument)
+                                ) : (
+                                    <CreditCardValidation
+                                        shouldShowCardCodeField={shouldShowCardCodeField}
+                                        shouldShowNumberField={shouldShowNumberField}
+                                    />
+                                )
+                            }
+                        />
+                    )}
 
-                    { shouldShowCreditCardFieldset && !cardFieldset && <CreditCardFieldset
-                        shouldShowCardCodeField={ method.config.cardCode || method.config.cardCode === null }
-                        shouldShowCustomerCodeField={ method.config.requireCustomerCode }
-                    /> }
+                    {shouldShowCreditCardFieldset && !cardFieldset && (
+                        <CreditCardFieldset
+                            shouldShowCardCodeField={
+                                method.config.cardCode || method.config.cardCode === null
+                            }
+                            shouldShowCustomerCodeField={method.config.requireCustomerCode}
+                        />
+                    )}
 
-                    { shouldShowCreditCardFieldset && cardFieldset }
+                    {shouldShowCreditCardFieldset && cardFieldset}
 
-                    { isInstrumentFeatureAvailableProp && <StoreInstrumentFieldset
-                        instrumentId={ selectedInstrument && selectedInstrument.bigpayToken }
-                    /> }
+                    {isInstrumentFeatureAvailableProp && (
+                        <StoreInstrumentFieldset
+                            instrumentId={selectedInstrument && selectedInstrument.bigpayToken}
+                        />
+                    )}
                 </div>
             </LoadingOverlay>
         );
@@ -217,10 +267,8 @@ class CreditCardPaymentMethod extends Component<
         }
 
         const { instruments } = this.props;
-        const defaultInstrument = (
-            instruments.find(instrument => instrument.defaultInstrument) ||
-            instruments[0]
-        );
+        const defaultInstrument =
+            instruments.find((instrument) => instrument.defaultInstrument) || instruments[0];
 
         return defaultInstrument && defaultInstrument.bigpayToken;
     }
@@ -244,19 +292,28 @@ class CreditCardPaymentMethod extends Component<
         const selectedInstrument = this.getSelectedInstrument();
 
         if (isInstrumentFeatureAvailableProp && selectedInstrument) {
-            return storedCardValidationSchema || getInstrumentValidationSchema({
-                instrumentBrand: selectedInstrument.brand,
-                instrumentLast4: selectedInstrument.last4,
-                isCardCodeRequired: isInstrumentCardCodeRequiredProp(selectedInstrument, method),
-                isCardNumberRequired: isInstrumentCardNumberRequiredProp(selectedInstrument),
-                language,
-            });
+            return (
+                storedCardValidationSchema ||
+                getInstrumentValidationSchema({
+                    instrumentBrand: selectedInstrument.brand,
+                    instrumentLast4: selectedInstrument.last4,
+                    isCardCodeRequired: isInstrumentCardCodeRequiredProp(
+                        selectedInstrument,
+                        method,
+                    ),
+                    isCardNumberRequired: isInstrumentCardNumberRequiredProp(selectedInstrument),
+                    language,
+                })
+            );
         }
 
-        return cardValidationSchema || getCreditCardValidationSchema({
-            isCardCodeRequired: method.config.cardCode === true,
-            language,
-        });
+        return (
+            cardValidationSchema ||
+            getCreditCardValidationSchema({
+                isCardCodeRequired: method.config.cardCode === true,
+                language,
+            })
+        );
     }
 
     private handleUseNewCard: () => void = () => {
@@ -266,15 +323,18 @@ class CreditCardPaymentMethod extends Component<
         });
     };
 
-    private handleSelectInstrument: (id: string) => void = id => {
+    private handleSelectInstrument: (id: string) => void = (id) => {
         this.setState({
             isAddingNewCard: false,
             selectedInstrumentId: id,
         });
     };
 
-    private handleDeleteInstrument: (id: string) => void = id => {
-        const { instruments, formik: { setFieldValue } } = this.props;
+    private handleDeleteInstrument: (id: string) => void = (id) => {
+        const {
+            instruments,
+            formik: { setFieldValue },
+        } = this.props;
         const { selectedInstrumentId } = this.state;
 
         if (instruments.length === 0) {
@@ -299,26 +359,18 @@ const mapFromCheckoutProps: MapToPropsFactory<
     WithCheckoutCreditCardPaymentMethodProps,
     CreditCardPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
 > = () => {
-    const filterInstruments = memoizeOne((instruments: PaymentInstrument[] = []) => instruments.filter(isCardInstrument));
+    const filterInstruments = memoizeOne((instruments: PaymentInstrument[] = []) =>
+        instruments.filter(isCardInstrument),
+    );
 
     return (context, props) => {
-        const {
-            isUsingMultiShipping = false,
-            method,
-        } = props;
+        const { isUsingMultiShipping = false, method } = props;
 
         const { checkoutService, checkoutState } = context;
 
         const {
-            data: {
-                getConfig,
-                getCustomer,
-                getInstruments,
-                isPaymentDataRequired,
-            },
-            statuses: {
-                isLoadingInstruments,
-            },
+            data: { getConfig, getCustomer, getInstruments, isPaymentDataRequired },
+            statuses: { isLoadingInstruments },
         } = checkoutState;
 
         const config = getConfig();
@@ -346,9 +398,14 @@ const mapFromCheckoutProps: MapToPropsFactory<
             isLoadingInstruments: isLoadingInstruments(),
             isPaymentDataRequired: isPaymentDataRequired(),
             loadInstruments: checkoutService.loadInstruments,
-            shouldShowInstrumentFieldset: isInstrumentFeatureAvailableProp && instruments.length > 0,
+            shouldShowInstrumentFieldset:
+                isInstrumentFeatureAvailableProp && instruments.length > 0,
         };
     };
 };
 
-export default connectFormik(withForm(withLanguage(withPayment(withCheckout(mapFromCheckoutProps)(CreditCardPaymentMethod)))));
+export default connectFormik(
+    withForm(
+        withLanguage(withPayment(withCheckout(mapFromCheckoutProps)(CreditCardPaymentMethod))),
+    ),
+);

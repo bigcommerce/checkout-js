@@ -15,35 +15,31 @@ describe('OrderSummaryDiscount', () => {
         beforeEach(() => {
             localeContext = createLocaleContext(getStoreConfig());
             discount = mount(
-                <LocaleContext.Provider value={ localeContext }>
-                    <OrderSummaryDiscount
-                        amount={ 10 }
-                        label={ <span>Foo</span> }
-                    />
-                </LocaleContext.Provider>
+                <LocaleContext.Provider value={localeContext}>
+                    <OrderSummaryDiscount amount={10} label={<span>Foo</span>} />
+                </LocaleContext.Provider>,
             );
         });
 
         it('passes right props to OrderSummaryPrice', () => {
-            expect(discount.find(OrderSummaryPrice).props())
-                .toMatchObject({
-                    amount: -10,
-                    label: <span>Foo</span>,
-                });
+            expect(discount.find(OrderSummaryPrice).props()).toMatchObject({
+                amount: -10,
+                label: <span>Foo</span>,
+            });
         });
     });
 
     describe('when discount has code and remaining balance', () => {
         beforeEach(() => {
             discount = mount(
-                <LocaleContext.Provider value={ localeContext }>
+                <LocaleContext.Provider value={localeContext}>
                     <OrderSummaryDiscount
-                        amount={ 10 }
+                        amount={10}
                         code="ABCDFE"
                         label="Gift Certificate"
-                        remaining={ 2 }
+                        remaining={2}
                     />
-                </LocaleContext.Provider>
+                </LocaleContext.Provider>,
             );
         });
 
@@ -52,18 +48,19 @@ describe('OrderSummaryDiscount', () => {
         });
 
         it('renders gift certificate code', () => {
-            expect(discount.find('[data-test="cart-price-code"]').text())
-                .toEqual('ABCDFE');
+            expect(discount.find('[data-test="cart-price-code"]').text()).toBe('ABCDFE');
         });
 
         it('renders remaining label', () => {
-            expect(discount.find('[data-test="cart-price-remaining"]').text())
-                .toContain('Remaining:');
+            expect(discount.find('[data-test="cart-price-remaining"]').text()).toContain(
+                'Remaining:',
+            );
         });
 
         it('renders remaining balance', () => {
-            expect(discount.find('[data-test="cart-price-remaining"] ShopperCurrency').props())
-                .toMatchObject({ amount: 2 });
+            expect(
+                discount.find('[data-test="cart-price-remaining"] ShopperCurrency').props(),
+            ).toMatchObject({ amount: 2 });
         });
     });
 });

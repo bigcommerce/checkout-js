@@ -1,4 +1,4 @@
-import React, { memo, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { IconSize } from '../../ui/icon';
 
@@ -8,9 +8,7 @@ export interface CreditCardIconProps {
     cardType?: string;
 }
 
-const CreditCardIcon: FunctionComponent<CreditCardIconProps> = ({
-    cardType,
-}) => {
+const CreditCardIcon: FunctionComponent<CreditCardIconProps> = ({ cardType }) => {
     const iconProps = {
         additionalClassName: 'cardIcon-icon',
         size: IconSize.Medium,
@@ -19,7 +17,11 @@ const CreditCardIcon: FunctionComponent<CreditCardIconProps> = ({
 
     const IconComponent = getPaymentMethodIconComponent(cardType);
 
-    return IconComponent ? <IconComponent { ...iconProps } /> : <div className="cardIcon-icon cardIcon-icon--default icon icon--medium" />;
+    return IconComponent ? (
+        <IconComponent {...iconProps} />
+    ) : (
+        <div className="cardIcon-icon cardIcon-icon--default icon icon--medium" />
+    );
 };
 
 export default memo(CreditCardIcon);

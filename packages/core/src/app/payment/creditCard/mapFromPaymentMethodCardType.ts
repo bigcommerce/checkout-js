@@ -1,6 +1,30 @@
 import { ComponentType } from 'react';
 
-import { IconBitCoin, IconBitCoinCash, IconCardAmex, IconCardCarnet, IconCardCB, IconCardDankort, IconCardDinersClub, IconCardDiscover, IconCardElo, IconCardHipercard, IconCardJCB, IconCardMada, IconCardMaestro, IconCardMastercard, IconCardTroy, IconCardUnionPay, IconCardVisa, IconDogeCoin, IconEthereum, IconLiteCoin, IconProps, IconShibaInu, IconUsdCoin } from '../../ui/icon';
+import {
+    IconBitCoin,
+    IconBitCoinCash,
+    IconCardAmex,
+    IconCardCarnet,
+    IconCardCB,
+    IconCardDankort,
+    IconCardDinersClub,
+    IconCardDiscover,
+    IconCardElo,
+    IconCardHipercard,
+    IconCardJCB,
+    IconCardMada,
+    IconCardMaestro,
+    IconCardMastercard,
+    IconCardTroy,
+    IconCardUnionPay,
+    IconCardVisa,
+    IconDogeCoin,
+    IconEthereum,
+    IconLiteCoin,
+    IconProps,
+    IconShibaInu,
+    IconUsdCoin,
+} from '../../ui/icon';
 
 interface InstrumentComponent {
     instrument: string;
@@ -99,7 +123,7 @@ const instrumentTypeMap: Record<string, InstrumentComponent> = {
 };
 
 export default function mapFromPaymentMethodCardType(type: string): string | undefined {
-    return instrumentTypeMap[type]?.instrument || undefined;
+    return instrumentTypeMap[type].instrument || undefined;
 }
 
 export function getPaymentMethodIconComponent(type?: string): ComponentType<any> | undefined {
@@ -107,17 +131,19 @@ export function getPaymentMethodIconComponent(type?: string): ComponentType<any>
         return undefined;
     }
 
-    const instrumentType = Object.values(instrumentTypeMap).find(record => record.instrument === type);
+    const instrumentType = Object.values(instrumentTypeMap).find(
+        (record) => record.instrument === type,
+    );
 
     return instrumentType ? instrumentType.component : undefined;
 }
 
 function getSupportedInstrumentTypes() {
-    return Object.values(instrumentTypeMap).map(record => record.instrument);
+    return Object.values(instrumentTypeMap).map((record) => record.instrument);
 }
 
 export function filterInstrumentTypes(instrumentTypes: string[]) {
     const supportedInstrumentTypes = getSupportedInstrumentTypes();
 
-    return instrumentTypes.filter(type => supportedInstrumentTypes.indexOf(type) !== -1);
+    return instrumentTypes.filter((type) => supportedInstrumentTypes.indexOf(type) !== -1);
 }

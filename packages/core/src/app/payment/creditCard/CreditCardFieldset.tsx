@@ -1,4 +1,4 @@
-import React, { memo, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { Fieldset, Legend } from '../../ui/form';
@@ -34,9 +34,9 @@ const CreditCardFieldset: FunctionComponent<CreditCardFieldsetProps> = ({
 
             <CreditCardNameField name="ccName" />
 
-            { shouldShowCardCodeField && <CreditCardCodeField name="ccCvv" /> }
+            {shouldShowCardCodeField && <CreditCardCodeField name="ccCvv" />}
 
-            { shouldShowCustomerCodeField && <CreditCardCustomerCodeField name="ccCustomerCode" /> }
+            {shouldShowCustomerCodeField && <CreditCardCustomerCodeField name="ccCustomerCode" />}
         </div>
     </Fieldset>
 );

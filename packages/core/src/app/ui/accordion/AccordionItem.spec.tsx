@@ -3,20 +3,15 @@ import React from 'react';
 
 import AccordionItem from './AccordionItem';
 
-/* eslint-disable react/jsx-no-bind */
 describe('AccordionItem', () => {
     it('renders component that matches snapshot', () => {
         const component = mount(
-            <AccordionItem
-                headerContent={ () => 'Foobar' }
-                itemId="foobar"
-            >
+            <AccordionItem headerContent={() => 'Foobar'} itemId="foobar">
                 Hello world
-            </AccordionItem>
+            </AccordionItem>,
         );
 
-        expect(component)
-            .toMatchSnapshot();
+        expect(component).toMatchSnapshot();
     });
 
     it('overrides default class names', () => {
@@ -24,17 +19,15 @@ describe('AccordionItem', () => {
             <AccordionItem
                 className="item"
                 headerClassName="header"
-                headerContent={ () => 'Foobar' }
+                headerContent={() => 'Foobar'}
                 itemId="foobar"
             >
                 Hello world
-            </AccordionItem>
+            </AccordionItem>,
         );
 
-        expect(component.exists('.item'))
-            .toEqual(true);
+        expect(component.exists('.item')).toBe(true);
 
-        expect(component.exists('.header'))
-            .toEqual(true);
+        expect(component.exists('.header')).toBe(true);
     });
 });

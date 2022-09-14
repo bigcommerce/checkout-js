@@ -1,4 +1,9 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutSelectors,
+    CheckoutService,
+    createCheckoutService,
+    PaymentMethod,
+} from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -33,23 +38,17 @@ describe('when using Paypal Payments Pro payment method', () => {
             method,
         };
 
-        jest.spyOn(checkoutState.data, 'getConfig')
-            .mockReturnValue(getStoreConfig());
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
-        jest.spyOn(checkoutService, 'deinitializePayment')
-            .mockResolvedValue(checkoutState);
+        jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
 
-        jest.spyOn(checkoutService, 'initializePayment')
-            .mockResolvedValue(checkoutState);
+        jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);
 
-        PaymentMethodTest = props => (
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <LocaleProvider checkoutService={ checkoutService }>
-                    <Formik
-                        initialValues={ {} }
-                        onSubmit={ noop }
-                    >
-                        <PaymentMethodComponent { ...props } />
+        PaymentMethodTest = (props) => (
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleProvider checkoutService={checkoutService}>
+                    <Formik initialValues={{}} onSubmit={noop}>
+                        <PaymentMethodComponent {...props} />
                     </Formik>
                 </LocaleProvider>
             </CheckoutProvider>
@@ -57,25 +56,28 @@ describe('when using Paypal Payments Pro payment method', () => {
     });
 
     it('renders as credit card method', () => {
-        const container = mount(<PaymentMethodTest { ...defaultProps } />);
+        const container = mount(<PaymentMethodTest {...defaultProps} />);
 
-        expect(container.find(HostedCreditCardPaymentMethod).props())
-            .toEqual(expect.objectContaining(defaultProps));
+        expect(container.find(HostedCreditCardPaymentMethod).props()).toEqual(
+            expect.objectContaining(defaultProps),
+        );
     });
 
     it('renders as hosted payment method if shopper has already provided payment details via PayPal', () => {
-        jest.spyOn(checkoutState.data, 'getCheckout')
-            .mockReturnValue({
-                ...getCheckout(),
-                payments: [{
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+            ...getCheckout(),
+            payments: [
+                {
                     ...getCheckoutPayment(),
                     providerId: 'paypal',
-                }],
-            });
+                },
+            ],
+        });
 
-        const container = mount(<PaymentMethodTest { ...defaultProps } />);
+        const container = mount(<PaymentMethodTest {...defaultProps} />);
 
-        expect(container.find(HostedPaymentMethod).props())
-            .toEqual(expect.objectContaining(defaultProps));
+        expect(container.find(HostedPaymentMethod).props()).toEqual(
+            expect.objectContaining(defaultProps),
+        );
     });
 });

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import creditCardType from 'credit-card-type';
 import { FieldProps } from 'formik';
 import { find, noop } from 'lodash';
-import React, { useCallback, FunctionComponent, PureComponent, ReactNode } from 'react';
+import React, { FunctionComponent, PureComponent, ReactNode, useCallback } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { DropdownTrigger } from '../../ui/dropdown';
@@ -68,34 +68,28 @@ class InstrumentSelect extends PureComponent<InstrumentSelectProps> {
                 <DropdownTrigger
                     dropdown={
                         <InstrumentMenu
-                            instruments={ instruments }
-                            onSelectInstrument={ onSelectInstrument }
-                            onUseNewInstrument={ onUseNewInstrument }
-                            selectedInstrumentId={ selectedInstrumentId }
-                            shouldHideExpiryDate={ shouldHideExpiryDate }
+                            instruments={instruments}
+                            onSelectInstrument={onSelectInstrument}
+                            onUseNewInstrument={onUseNewInstrument}
+                            selectedInstrumentId={selectedInstrumentId}
+                            shouldHideExpiryDate={shouldHideExpiryDate}
                         />
                     }
                 >
                     <InstrumentSelectButton
-                        instrument={ selectedInstrument }
-                        shouldHideExpiryDate={ shouldHideExpiryDate }
+                        instrument={selectedInstrument}
+                        shouldHideExpiryDate={shouldHideExpiryDate}
                         testId="instrument-select"
                     />
 
-                    <input
-                        type="hidden"
-                        { ...field }
-                    />
+                    <input type="hidden" {...field} />
                 </DropdownTrigger>
             </div>
         );
     }
 
-    private updateFieldValue(instrumentId: string = ''): void {
-        const {
-            form,
-            field,
-        } = this.props;
+    private updateFieldValue(instrumentId = ''): void {
+        const { form, field } = this.props;
 
         form.setFieldValue(field.name, instrumentId);
     }
@@ -116,34 +110,36 @@ const InstrumentMenu: FunctionComponent<InstrumentMenuProps> = ({
     onSelectInstrument,
     onUseNewInstrument,
 }) => {
-    return <ul
-        className="instrumentSelect-dropdownMenu instrumentSelect-dropdownMenuNext dropdown-menu"
-        data-test="instrument-select-menu"
-    >
-        { instruments.map(instrument => (
-            <li
-                className={ classNames(
-                    'instrumentSelect-option dropdown-menu-item',
-                    { 'instrumentSelect-option--selected': instrument.bigpayToken === selectedInstrumentId }
-                ) }
-                key={ instrument.bigpayToken }
-            >
-                <InstrumentOption
-                    instrument={ instrument }
-                    onClick={ onSelectInstrument }
-                    shouldHideExpiryDate={ shouldHideExpiryDate }
-                    testId="instrument-select-option"
+    return (
+        <ul
+            className="instrumentSelect-dropdownMenu instrumentSelect-dropdownMenuNext dropdown-menu"
+            data-test="instrument-select-menu"
+        >
+            {instruments.map((instrument) => (
+                <li
+                    className={classNames('instrumentSelect-option dropdown-menu-item', {
+                        'instrumentSelect-option--selected':
+                            instrument.bigpayToken === selectedInstrumentId,
+                    })}
+                    key={instrument.bigpayToken}
+                >
+                    <InstrumentOption
+                        instrument={instrument}
+                        onClick={onSelectInstrument}
+                        shouldHideExpiryDate={shouldHideExpiryDate}
+                        testId="instrument-select-option"
+                    />
+                </li>
+            ))}
+
+            <li className="instrumentSelect-option instrumentSelect-option--addNew dropdown-menu-item">
+                <InstrumentUseNewButton
+                    onClick={onUseNewInstrument}
+                    testId="instrument-select-option-use-new"
                 />
             </li>
-        )) }
-
-        <li className="instrumentSelect-option instrumentSelect-option--addNew dropdown-menu-item">
-            <InstrumentUseNewButton
-                onClick={ onUseNewInstrument }
-                testId="instrument-select-option-use-new"
-            />
-        </li>
-    </ul>;
+        </ul>
+    );
 };
 
 interface InstrumentSelectButtonProps {
@@ -163,7 +159,7 @@ const InstrumentSelectButton: FunctionComponent<InstrumentSelectButtonProps> = (
         return (
             <InstrumentUseNewButton
                 className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
-                testId={ testId }
+                testId={testId}
             />
         );
     }
@@ -171,10 +167,10 @@ const InstrumentSelectButton: FunctionComponent<InstrumentSelectButtonProps> = (
     return (
         <InstrumentMenuItem
             className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
-            instrument={ instrument }
-            onClick={ onClick }
-            shouldHideExpiryDate={ shouldHideExpiryDate }
-            testId={ testId }
+            instrument={instrument}
+            onClick={onClick}
+            shouldHideExpiryDate={shouldHideExpiryDate}
+            testId={testId}
         />
     );
 };
@@ -193,16 +189,13 @@ const InstrumentOption: FunctionComponent<InstrumentOptionProps> = ({
 }) => {
     const handleClick = useCallback(() => {
         onClick(instrument.bigpayToken);
-    }, [
-        onClick,
-        instrument,
-    ]);
+    }, [onClick, instrument]);
 
     return (
         <InstrumentMenuItem
-            instrument={ instrument }
-            onClick={ handleClick }
-            shouldHideExpiryDate={ shouldHideExpiryDate }
+            instrument={instrument}
+            onClick={handleClick}
+            shouldHideExpiryDate={shouldHideExpiryDate}
             testId="instrument-select-option"
         />
     );
@@ -231,51 +224,52 @@ const InstrumentMenuItem: FunctionComponent<InstrumentMenuItemProps> = ({
     }).isValid;
 
     return (
-        <button
-            className={ className }
-            data-test={ testId }
-            onClick={ onClick }
-            type="button"
-        >
-            <div className={ classNames(
-                'instrumentSelect-details',
-                { 'instrumentSelect-details--expired': isExpired }
-            ) }
+        <button className={className} data-test={testId} onClick={onClick} type="button">
+            <div
+                className={classNames('instrumentSelect-details', {
+                    'instrumentSelect-details--expired': isExpired,
+                })}
             >
-                <CreditCardIcon cardType={ cardType } />
+                <CreditCardIcon cardType={cardType} />
 
-                <div
-                    className="instrumentSelect-card"
-                    data-test={ `${testId}-last4` }
-                >
-                    { cardInfo ?
+                <div className="instrumentSelect-card" data-test={`${testId}-last4`}>
+                    {cardInfo ? (
                         <TranslatedString
-                            data={ { cardTitle: cardInfo.niceType, endingIn: instrument.last4 } }
+                            data={{ cardTitle: cardInfo.niceType, endingIn: instrument.last4 }}
                             id="payment.instrument_ending_in_text"
-                        /> :
+                        />
+                    ) : (
                         <TranslatedString
-                            data={ { endingIn: instrument.last4 } }
+                            data={{ endingIn: instrument.last4 }}
                             id="payment.instrument_default_ending_in_text"
-                        /> }
+                        />
+                    )}
                 </div>
 
-                { !shouldHideExpiryDate && <div
-                    className={ classNames(
-                        'instrumentSelect-expiry',
-                        { 'instrumentSelect-expiry--expired': isExpired }
-                    ) }
-                    data-test={ `${testId}-expiry` }
-                >
-                    { isExpired ?
-                        <TranslatedString
-                            data={ { expiryDate: `${instrument.expiryMonth}/${instrument.expiryYear}` } }
-                            id="payment.instrument_expired_text"
-                        /> :
-                        <TranslatedString
-                            data={ { expiryDate: `${instrument.expiryMonth}/${instrument.expiryYear}` } }
-                            id="payment.instrument_expires_text"
-                        /> }
-                </div> }
+                {!shouldHideExpiryDate && (
+                    <div
+                        className={classNames('instrumentSelect-expiry', {
+                            'instrumentSelect-expiry--expired': isExpired,
+                        })}
+                        data-test={`${testId}-expiry`}
+                    >
+                        {isExpired ? (
+                            <TranslatedString
+                                data={{
+                                    expiryDate: `${instrument.expiryMonth}/${instrument.expiryYear}`,
+                                }}
+                                id="payment.instrument_expired_text"
+                            />
+                        ) : (
+                            <TranslatedString
+                                data={{
+                                    expiryDate: `${instrument.expiryMonth}/${instrument.expiryYear}`,
+                                }}
+                                id="payment.instrument_expires_text"
+                            />
+                        )}
+                    </div>
+                )}
             </div>
         </button>
     );
@@ -292,12 +286,7 @@ const InstrumentUseNewButton: FunctionComponent<InstrumentUseNewButtonProps> = (
     testId,
     onClick = noop,
 }) => (
-    <button
-        className={ className }
-        data-test={ testId }
-        onClick={ onClick }
-        type="button"
-    >
+    <button className={className} data-test={testId} onClick={onClick} type="button">
         <div className="instrumentSelect-details instrumentSelect-details--addNew">
             <CreditCardIcon />
 

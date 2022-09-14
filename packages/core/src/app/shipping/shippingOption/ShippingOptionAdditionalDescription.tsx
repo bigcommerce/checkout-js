@@ -8,27 +8,32 @@ interface ShippingOptionAdditionalDescriptionProps {
     description: string;
 }
 
-const ShippingOptionAdditionalDescription: React.FunctionComponent<ShippingOptionAdditionalDescriptionProps> = ({
-description,
-}) => {
+const ShippingOptionAdditionalDescription: React.FunctionComponent<
+    ShippingOptionAdditionalDescriptionProps
+> = ({ description }) => {
     const CHRACTER_LIMIT = 45;
 
     return (
         <div className="shippingOption-additionalDescription--container">
-            <Toggle openByDefault={ description.length < CHRACTER_LIMIT }>
-                { ({ isOpen, toggle }) => (
+            <Toggle openByDefault={description.length < CHRACTER_LIMIT}>
+                {({ isOpen, toggle }) => (
                     <>
-                        <span className={ `shippingOption-additionalDescription ${ isOpen ?
-                            'shippingOption-additionalDescription--expanded' : 'shippingOption-additionalDescription--collapsed' }` }
+                        <span
+                            className={`shippingOption-additionalDescription ${
+                                isOpen
+                                    ? 'shippingOption-additionalDescription--expanded'
+                                    : 'shippingOption-additionalDescription--collapsed'
+                            }`}
                         >
-                            { description }
+                            {description}
                         </span>
-                        { !isOpen &&
-                            <a className="shippingOption-readMore" onClick={ preventDefault(toggle) }>
-                            <TranslatedString id="common.show_more" />
-                        </a> }
+                        {!isOpen && (
+                            <a className="shippingOption-readMore" onClick={preventDefault(toggle)}>
+                                <TranslatedString id="common.show_more" />
+                            </a>
+                        )}
                     </>
-                ) }
+                )}
             </Toggle>
         </div>
     );

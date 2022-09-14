@@ -1,4 +1,3 @@
-
 import { CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import { useCallback, useMemo } from 'react';
@@ -12,7 +11,7 @@ interface Props {
     onUnhandledError?(error: Error): void;
 }
 
-export const usePropsToOnMount = (props: Props): () => () => void => {
+export const usePropsToOnMount = (props: Props): (() => () => void) => {
     const { initializePayment, deinitializePayment, method, onUnhandledError = noop } = props;
 
     const options = useMemo(
@@ -20,11 +19,14 @@ export const usePropsToOnMount = (props: Props): () => () => void => {
             gatewayId: method.gateway,
             methodId: method.id,
         }),
-        [method.gateway, method.id]
+        [method.gateway, method.id],
     );
 
     const onInit = useCallback(() => initializePayment(options), [initializePayment, options]);
-    const onDeinit = useCallback(() => deinitializePayment(options), [deinitializePayment, options]);
+    const onDeinit = useCallback(
+        () => deinitializePayment(options),
+        [deinitializePayment, options],
+    );
 
     return useCallback(() => {
         onInit().catch(onUnhandledError);

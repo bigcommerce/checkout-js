@@ -21,12 +21,8 @@ export function getCart(): Cart {
         coupons: [],
         discounts: [],
         lineItems: {
-            physicalItems: [
-                getPhysicalItem(),
-            ],
-            digitalItems: [
-                getDigitalItem(),
-            ],
+            physicalItems: [getPhysicalItem()],
+            digitalItems: [getDigitalItem()],
             giftCertificates: [],
             customItems: [],
         },

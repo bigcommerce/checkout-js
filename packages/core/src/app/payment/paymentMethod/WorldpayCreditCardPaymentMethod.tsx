@@ -1,10 +1,20 @@
 import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import React, { createRef, useCallback, useRef, useState, FunctionComponent, RefObject } from 'react';
+import React, {
+    createRef,
+    FunctionComponent,
+    RefObject,
+    useCallback,
+    useRef,
+    useState,
+} from 'react';
 
 import { Modal } from '../../ui/modal';
+import {
+    withHostedCreditCardFieldset,
+    WithInjectedHostedCreditCardFieldsetProps,
+} from '../hostedCreditCard';
 
 import CreditCardPaymentMethod, { CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
-import { withHostedCreditCardFieldset, WithInjectedHostedCreditCardFieldsetProps } from '../hostedCreditCard';
 
 export type WorldpayCreditCardPaymentMethodProps = CreditCardPaymentMethodProps;
 
@@ -14,8 +24,7 @@ interface WorldpayPaymentMethodRef {
 }
 
 const WorldpayCreditCardPaymentMethod: FunctionComponent<
-    WorldpayCreditCardPaymentMethodProps &
-    WithInjectedHostedCreditCardFieldsetProps
+    WorldpayCreditCardPaymentMethodProps & WithInjectedHostedCreditCardFieldsetProps
 > = ({
     getHostedFormOptions,
     hostedFieldset,
@@ -40,22 +49,25 @@ const WorldpayCreditCardPaymentMethod: FunctionComponent<
         }
     }, []);
 
-    const initializeWorldpayPayment = useCallback(async (options: PaymentInitializeOptions, selectedInstrument) => {
-        const fields = await getHostedFormOptions(selectedInstrument);
+    const initializeWorldpayPayment = useCallback(
+        async (options: PaymentInitializeOptions, selectedInstrument) => {
+            const fields = await getHostedFormOptions(selectedInstrument);
 
-        return initializePayment({
-            ...options,
-            creditCard: {
-                form: fields,
-            },
-            worldpay: {
-                onLoad(content: HTMLIFrameElement, cancel: () => void) {
-                    setThreeDSecureVerification(content);
-                    ref.current.cancelThreeDSecureVerification = cancel;
+            return initializePayment({
+                ...options,
+                creditCard: {
+                    form: fields,
                 },
-            },
-        });
-    }, [initializePayment]);
+                worldpay: {
+                    onLoad(content: HTMLIFrameElement, cancel: () => void) {
+                        setThreeDSecureVerification(content);
+                        ref.current.cancelThreeDSecureVerification = cancel;
+                    },
+                },
+            });
+        },
+        [getHostedFormOptions, initializePayment],
+    );
 
     const appendPaymentPageContent = useCallback(() => {
         if (threeDSecureVerification) {
@@ -63,24 +75,26 @@ const WorldpayCreditCardPaymentMethod: FunctionComponent<
         }
     }, [threeDSecureVerification]);
 
-    return <>
-        <CreditCardPaymentMethod
-            { ...rest }
-            cardFieldset={ hostedFieldset }
-            cardValidationSchema={ hostedValidationSchema }
-            getStoredCardValidationFieldset={ getHostedStoredCardValidationFieldset }
-            initializePayment={ initializeWorldpayPayment }
-            storedCardValidationSchema={ hostedStoredCardValidationSchema }
-        />
-        <Modal
-            isOpen={ !!threeDSecureVerification }
-            onAfterOpen={ appendPaymentPageContent }
-            onRequestClose={ cancelWorldpayModalFlow }
-            shouldShowCloseButton={ true }
-        >
-            <div ref={ ref.current.paymentPageContentRef } />
-        </Modal>
-    </>;
+    return (
+        <>
+            <CreditCardPaymentMethod
+                {...rest}
+                cardFieldset={hostedFieldset}
+                cardValidationSchema={hostedValidationSchema}
+                getStoredCardValidationFieldset={getHostedStoredCardValidationFieldset}
+                initializePayment={initializeWorldpayPayment}
+                storedCardValidationSchema={hostedStoredCardValidationSchema}
+            />
+            <Modal
+                isOpen={!!threeDSecureVerification}
+                onAfterOpen={appendPaymentPageContent}
+                onRequestClose={cancelWorldpayModalFlow}
+                shouldShowCloseButton={true}
+            >
+                <div ref={ref.current.paymentPageContentRef} />
+            </Modal>
+        </>
+    );
 };
 
 export default withHostedCreditCardFieldset(WorldpayCreditCardPaymentMethod);

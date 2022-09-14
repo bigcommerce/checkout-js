@@ -1,6 +1,6 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { FieldProps } from 'formik';
-import React, { useCallback, useEffect, useState, FunctionComponent, SyntheticEvent } from 'react';
+import React, { FunctionComponent, SyntheticEvent, useCallback, useEffect, useState } from 'react';
 
 import { preventDefault } from '../../common/dom';
 import { withLanguage, WithLanguageProps } from '../../locale';
@@ -33,18 +33,28 @@ interface OptionButtonProps {
     onClick?(event: SyntheticEvent<EventTarget>): void;
 }
 
-const MollieAPMCustomForm: FunctionComponent<MollieCustomCardFormProps & WithLanguageProps> = ({ method, language }) => {
+const MollieAPMCustomForm: FunctionComponent<MollieCustomCardFormProps & WithLanguageProps> = ({
+    method,
+    language,
+}) => {
     const issuers: Issuer[] = method.initializationData?.paymentMethodsResponse;
 
-    const [ selectedIssuer, setSelectedIssuer ] = useState<Issuer>({ name: language.translate('payment.select_your_bank') , id: '', image: { size1x: '' } });
-    const render = useCallback((props: FieldProps) => <HiddenInput { ...props } selectedIssuer={ selectedIssuer } />, [ selectedIssuer ]);
+    const [selectedIssuer, setSelectedIssuer] = useState<Issuer>({
+        name: language.translate('payment.select_your_bank'),
+        id: '',
+        image: { size1x: '' },
+    });
+    const render = useCallback(
+        (props: FieldProps) => <HiddenInput {...props} selectedIssuer={selectedIssuer} />,
+        [selectedIssuer],
+    );
 
     if (!issuers || issuers.length === 0) {
         return <></>;
     }
 
     const handleClick = ({ currentTarget }: SyntheticEvent<HTMLButtonElement>) => {
-        const _selectedIssuer = issuers.find(({ id }) => id === currentTarget?.dataset.id);
+        const _selectedIssuer = issuers.find(({ id }) => id === currentTarget.dataset.id);
 
         if (!_selectedIssuer) {
             return;
@@ -58,27 +68,30 @@ const MollieAPMCustomForm: FunctionComponent<MollieCustomCardFormProps & WithLan
             className="dropdown-menu instrumentSelect-dropdownMenu mollie-instrument-card"
             id="issuersDropdown"
         >
-            { issuers.map(issuer =>
-                <li
-                    className="dropdown-menu-item dropdown-menu-item--select"
-                    key={ issuer.id }
-                >
-                    <OptionButton issuer={ issuer } onClick={ handleClick } />
+            {issuers.map((issuer) => (
+                <li className="dropdown-menu-item dropdown-menu-item--select" key={issuer.id}>
+                    <OptionButton issuer={issuer} onClick={handleClick} />
                 </li>
-            ) }
+            ))}
         </ul>
     );
 
-    return (<>
-        <DropdownTrigger dropdown={ issuersList }>
-            <IssuerSelectButton selectedIssuer={ selectedIssuer } />
-        </DropdownTrigger>
-        <FormField input={ render } name="issuer" />
-    </>);
+    return (
+        <>
+            <DropdownTrigger dropdown={issuersList}>
+                <IssuerSelectButton selectedIssuer={selectedIssuer} />
+            </DropdownTrigger>
+            <FormField input={render} name="issuer" />
+        </>
+    );
 };
 
-export const HiddenInput: FunctionComponent<HiddenInputProps> = ({ field: { value, ...restField }, form, selectedIssuer}) => {
-    const Input = useCallback(() => <input { ...restField } type="hidden" />, [restField]);
+export const HiddenInput: FunctionComponent<HiddenInputProps> = ({
+    field: { value, ...restField },
+    form,
+    selectedIssuer,
+}) => {
+    const Input = useCallback(() => <input {...restField} type="hidden" />, [restField]);
 
     useEffect(() => {
         if (value === selectedIssuer) {
@@ -96,9 +109,9 @@ export const IssuerSelectButton: FunctionComponent<SelecteIssuerProp> = ({ selec
         className="instrumentSelect instrumentSelect-card button dropdown-button dropdown-toogle--select"
         href="#"
         id="issuerToggle"
-        onClick={ preventDefault() }
+        onClick={preventDefault()}
     >
-        { selectedIssuer.name }
+        {selectedIssuer.name}
     </a>
 );
 
@@ -106,17 +119,9 @@ export const OptionButton: FunctionComponent<OptionButtonProps> = ({ issuer, ...
     const { name, image, id } = issuer;
 
     return (
-        <a
-            className="instrumentSelect-details mollie-instrument-list"
-            { ...props }
-            data-id={ id }
-        >
-            <label className="mollie-instrument-left">{ name }</label>
-            <img
-                alt={ name }
-                data-test="cart-item-image"
-                src={ image.size1x }
-            />
+        <a className="instrumentSelect-details mollie-instrument-list" {...props} data-id={id}>
+            <label className="mollie-instrument-left">{name}</label>
+            <img alt={name} data-test="cart-item-image" src={image.size1x} />
         </a>
     );
 };

@@ -1,7 +1,8 @@
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { createContext } from 'react';
 import { ObjectSchema } from 'yup';
+
+import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
 export interface PaymentContextProps {
     disableSubmit(method: PaymentMethod, disabled?: boolean): void;
@@ -13,7 +14,10 @@ export interface PaymentContextProps {
     // snowflake behaviours. In the future, if we decide to change the UX, we
     // can remove this prop.
     setSubmit(method: PaymentMethod, fn: ((values: PaymentFormValues) => void) | null): void;
-    setValidationSchema(method: PaymentMethod, schema: ObjectSchema<Partial<PaymentFormValues>> | null): void;
+    setValidationSchema(
+        method: PaymentMethod,
+        schema: ObjectSchema<Partial<PaymentFormValues>> | null,
+    ): void;
     hidePaymentSubmitButton(method: PaymentMethod, hidden?: boolean): void;
 }
 

@@ -1,8 +1,9 @@
-import { CreditCardFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
 import { mount, render } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
+
+import { CreditCardFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
@@ -26,67 +27,52 @@ describe('CreditCardFieldset', () => {
     });
 
     it('matches snapshot', () => {
-        expect(render(
-            <LocaleContext.Provider value={ localeContext }>
-                <Formik
-                    initialValues={ initialValues }
-                    onSubmit={ noop }
-                >
-                    <CreditCardFieldset />
-                </Formik>
-            </LocaleContext.Provider>
-        ))
-            .toMatchSnapshot();
+        expect(
+            render(
+                <LocaleContext.Provider value={localeContext}>
+                    <Formik initialValues={initialValues} onSubmit={noop}>
+                        <CreditCardFieldset />
+                    </Formik>
+                </LocaleContext.Provider>,
+            ),
+        ).toMatchSnapshot();
     });
 
     it('shows card code field when configured', () => {
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <Formik
-                    initialValues={ initialValues }
-                    onSubmit={ noop }
-                >
-                    <CreditCardFieldset shouldShowCardCodeField={ true } />
+            <LocaleContext.Provider value={localeContext}>
+                <Formik initialValues={initialValues} onSubmit={noop}>
+                    <CreditCardFieldset shouldShowCardCodeField={true} />
                 </Formik>
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
-        expect(component.find('input[name="ccCvv"]').exists())
-            .toEqual(true);
+        expect(component.find('input[name="ccCvv"]').exists()).toBe(true);
     });
 
     it('shows customer code field when configured', () => {
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <Formik
-                    initialValues={ initialValues }
-                    onSubmit={ noop }
-                >
-                    <CreditCardFieldset shouldShowCustomerCodeField={ true } />
+            <LocaleContext.Provider value={localeContext}>
+                <Formik initialValues={initialValues} onSubmit={noop}>
+                    <CreditCardFieldset shouldShowCustomerCodeField={true} />
                 </Formik>
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
-        expect(component.find('input[name="ccCustomerCode"]').exists())
-            .toEqual(true);
+        expect(component.find('input[name="ccCustomerCode"]').exists()).toBe(true);
     });
 
     it('does not show card code field or customer code field by default', () => {
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <Formik
-                    initialValues={ initialValues }
-                    onSubmit={ noop }
-                >
+            <LocaleContext.Provider value={localeContext}>
+                <Formik initialValues={initialValues} onSubmit={noop}>
                     <CreditCardFieldset />
                 </Formik>
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
-        expect(component.find('input[name="ccCvv"]').exists())
-            .toEqual(false);
+        expect(component.find('input[name="ccCvv"]').exists()).toBe(false);
 
-        expect(component.find('input[name="ccCustomerCode"]').exists())
-            .toEqual(false);
+        expect(component.find('input[name="ccCustomerCode"]').exists()).toBe(false);
     });
 });

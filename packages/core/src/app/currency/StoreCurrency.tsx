@@ -9,10 +9,6 @@ export interface StoreCurrencyProps {
 const StoreCurrency: FunctionComponent<StoreCurrencyProps & WithCurrencyProps> = ({
     amount,
     currency,
-}) => (
-    <Fragment>
-        { currency.toStoreCurrency(amount) }
-    </Fragment>
-);
+}) => <>{currency.toStoreCurrency(amount)}</>;
 
 export default withCurrency(StoreCurrency);

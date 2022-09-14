@@ -11,10 +11,6 @@ const TranslatedString: FunctionComponent<TranslatedStringProps & WithLanguagePr
     data,
     id,
     language,
-}) => (
-    <Fragment>
-        { language.translate(id, data) }
-    </Fragment>
-);
+}) => <>{language.translate(id, data)}</>;
 
 export default withLanguage(TranslatedString);

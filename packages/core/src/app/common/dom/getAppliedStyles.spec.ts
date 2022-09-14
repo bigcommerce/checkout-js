@@ -38,17 +38,15 @@ describe('getAppliedStyles', () => {
     });
 
     it('returns selected properties as map object', () => {
-        expect(getAppliedStyles(element, ['backgroundColor', 'fontSize']))
-            .toEqual({
-                backgroundColor: 'rgb(255, 0, 0)',
-                fontSize: '20px',
-            });
+        expect(getAppliedStyles(element, ['backgroundColor', 'fontSize'])).toEqual({
+            backgroundColor: 'rgb(255, 0, 0)',
+            fontSize: '20px',
+        });
     });
 
     it('returns inherited styles', () => {
-        expect(getAppliedStyles(element, ['color']))
-            .toEqual({
-                color: 'rgb(0, 0, 255)',
-            });
+        expect(getAppliedStyles(element, ['color'])).toEqual({
+            color: 'rgb(0, 0, 255)',
+        });
     });
 });

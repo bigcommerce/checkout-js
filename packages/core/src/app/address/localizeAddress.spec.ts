@@ -29,7 +29,7 @@ describe('localizeAddress', () => {
     });
 
     it('keeps same value if unable to provinceCode', () => {
-        const countries = getCountries().map(country => ({
+        const countries = getCountries().map((country) => ({
             ...country,
             subdivisions: [],
         }));

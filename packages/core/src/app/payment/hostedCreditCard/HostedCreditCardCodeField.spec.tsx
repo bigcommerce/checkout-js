@@ -8,7 +8,9 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '../../loc
 import { IconHelp } from '../../ui/icon';
 import { TooltipTrigger } from '../../ui/tooltip';
 
-import HostedCreditCardCodeField, { HostedCreditCardCodeFieldProps } from './HostedCreditCardCodeField';
+import HostedCreditCardCodeField, {
+    HostedCreditCardCodeFieldProps,
+} from './HostedCreditCardCodeField';
 
 describe('HostedCreditCardCodeField', () => {
     let HostedCreditCardCodeFieldTest: FunctionComponent<HostedCreditCardCodeFieldProps>;
@@ -25,24 +27,19 @@ describe('HostedCreditCardCodeField', () => {
             name: 'ccCvv',
         };
 
-        HostedCreditCardCodeFieldTest = props => (
-            <LocaleContext.Provider value={ localeContext }>
-                <Formik
-                    initialValues={ initialValues }
-                    onSubmit={ noop }
-                >
-                    <HostedCreditCardCodeField { ...props } />
+        HostedCreditCardCodeFieldTest = (props) => (
+            <LocaleContext.Provider value={localeContext}>
+                <Formik initialValues={initialValues} onSubmit={noop}>
+                    <HostedCreditCardCodeField {...props} />
                 </Formik>
             </LocaleContext.Provider>
         );
     });
 
     it('renders field with tooltip icon', () => {
-        const component = mount(<HostedCreditCardCodeFieldTest { ...defaultProps } />);
+        const component = mount(<HostedCreditCardCodeFieldTest {...defaultProps} />);
 
-        expect(component.find(IconHelp).length)
-            .toEqual(1);
-        expect(component.find(TooltipTrigger).length)
-            .toEqual(1);
+        expect(component.find(IconHelp)).toHaveLength(1);
+        expect(component.find(TooltipTrigger)).toHaveLength(1);
     });
 });

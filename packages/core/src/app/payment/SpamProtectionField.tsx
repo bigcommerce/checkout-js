@@ -2,7 +2,7 @@ import { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, MouseEvent, ReactNode } from 'react';
 
-import { withCheckout, CheckoutContextProps } from '../checkout';
+import { CheckoutContextProps, withCheckout } from '../checkout';
 import { isErrorWithType } from '../common/error';
 import { TranslatedString } from '../locale';
 import { LoadingOverlay } from '../ui/loading';
@@ -21,9 +21,10 @@ interface WithCheckoutSpamProtectionProps {
     executeSpamCheck(): Promise<CheckoutSelectors>;
 }
 
-function mapToSpamProtectionProps(
-    { checkoutService, checkoutState }: CheckoutContextProps
-): WithCheckoutSpamProtectionProps {
+function mapToSpamProtectionProps({
+    checkoutService,
+    checkoutState,
+}: CheckoutContextProps): WithCheckoutSpamProtectionProps {
     return {
         isExecutingSpamCheck: checkoutState.statuses.isExecutingSpamCheck(),
         executeSpamCheck: checkoutService.executeSpamCheck,
@@ -53,8 +54,8 @@ class SpamProtectionField extends Component<
 
         return (
             <div className="spamProtection-container">
-                <LoadingOverlay isLoading={ isExecutingSpamCheck }>
-                    { this.renderContent() }
+                <LoadingOverlay isLoading={isExecutingSpamCheck}>
+                    {this.renderContent()}
                 </LoadingOverlay>
             </div>
         );
@@ -68,24 +69,21 @@ class SpamProtectionField extends Component<
             return;
         }
 
-        return <div className="spamProtection-panel optimizedCheckout-overlay">
-            <a
-                className="spamProtection-panel-message optimizedCheckout-primaryContent"
-                data-test="spam-protection-verify-button"
-                onClick={ this.handleRetry }
-            >
-                <TranslatedString
-                    id="spam_protection.verify_action"
-                />
-            </a>
-        </div>;
+        return (
+            <div className="spamProtection-panel optimizedCheckout-overlay">
+                <a
+                    className="spamProtection-panel-message optimizedCheckout-primaryContent"
+                    data-test="spam-protection-verify-button"
+                    onClick={this.handleRetry}
+                >
+                    <TranslatedString id="spam_protection.verify_action" />
+                </a>
+            </div>
+        );
     }
 
     private async verify(): Promise<void> {
-        const {
-            executeSpamCheck,
-            onUnhandledError = noop,
-        } = this.props;
+        const { executeSpamCheck, onUnhandledError = noop } = this.props;
 
         try {
             await executeSpamCheck();
@@ -93,13 +91,16 @@ class SpamProtectionField extends Component<
             this.setState({ shouldShowRetryButton: true });
 
             // Notify the parent component if the user experiences a problem other than cancelling the reCaptcha challenge.
-            if (isErrorWithType(error) && error.type !== 'spam_protection_challenge_not_completed') {
+            if (
+                isErrorWithType(error) &&
+                error.type !== 'spam_protection_challenge_not_completed'
+            ) {
                 onUnhandledError(error);
             }
         }
     }
 
-    private handleRetry: (event: MouseEvent) => void = event => {
+    private handleRetry: (event: MouseEvent) => void = (event) => {
         event.preventDefault();
 
         this.verify();

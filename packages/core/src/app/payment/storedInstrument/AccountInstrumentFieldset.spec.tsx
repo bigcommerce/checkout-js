@@ -6,10 +6,13 @@ import React from 'react';
 import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 
+import AccountInstrumentFieldset, {
+    AccountInstrumentFieldsetProps,
+    AccountInstrumentFieldsetValues,
+} from './AccountInstrumentFieldset';
+import AccountInstrumentSelect from './AccountInstrumentSelect';
 import { getInstruments } from './instruments.mock';
 import isAccountInstrument from './isAccountInstrument';
-import AccountInstrumentFieldset, { AccountInstrumentFieldsetProps, AccountInstrumentFieldsetValues } from './AccountInstrumentFieldset';
-import AccountInstrumentSelect from './AccountInstrumentSelect';
 
 describe('AccountInstrumentFieldset', () => {
     let defaultProps: AccountInstrumentFieldsetProps;
@@ -35,55 +38,37 @@ describe('AccountInstrumentFieldset', () => {
 
     it('shows instrument dropdown', () => {
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <Formik
-                    initialValues={ initialValues }
-                    onSubmit={ noop }
-                >
-                    <AccountInstrumentFieldset { ...defaultProps } />
+            <LocaleContext.Provider value={localeContext}>
+                <Formik initialValues={initialValues} onSubmit={noop}>
+                    <AccountInstrumentFieldset {...defaultProps} />
                 </Formik>
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
-        expect(component.find(AccountInstrumentSelect).length)
-            .toEqual(1);
+        expect(component.find(AccountInstrumentSelect)).toHaveLength(1);
     });
 
     it('shows the new address message when the list of instruments is empty', () => {
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <Formik
-                    initialValues={ initialValues }
-                    onSubmit={ noop }
-                >
-                    <AccountInstrumentFieldset
-                        { ...defaultProps }
-                        instruments={ [] }
-                    />
+            <LocaleContext.Provider value={localeContext}>
+                <Formik initialValues={initialValues} onSubmit={noop}>
+                    <AccountInstrumentFieldset {...defaultProps} instruments={[]} />
                 </Formik>
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
-        expect(component.find('.instrumentSelect-note').length)
-            .toEqual(1);
+        expect(component.find('.instrumentSelect-note')).toHaveLength(1);
     });
 
     it('shows the dropdown when the list of instruments is empty', () => {
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <Formik
-                    initialValues={ initialValues }
-                    onSubmit={ noop }
-                >
-                    <AccountInstrumentFieldset
-                        { ...defaultProps }
-                        instruments={ [] }
-                    />
+            <LocaleContext.Provider value={localeContext}>
+                <Formik initialValues={initialValues} onSubmit={noop}>
+                    <AccountInstrumentFieldset {...defaultProps} instruments={[]} />
                 </Formik>
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
-        expect(component.find(AccountInstrumentSelect).length)
-            .toEqual(1);
+        expect(component.find(AccountInstrumentSelect)).toHaveLength(1);
     });
 });

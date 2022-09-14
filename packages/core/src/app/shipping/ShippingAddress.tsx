@@ -1,7 +1,16 @@
-import { Address, CheckoutSelectors, Consignment, Country, CustomerAddress, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import {
+    Address,
+    CheckoutSelectors,
+    Consignment,
+    Country,
+    CustomerAddress,
+    FormField,
+    ShippingInitializeOptions,
+    ShippingRequestOptions,
+} from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { noop } from 'lodash';
-import React, { memo, useCallback, useContext, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo, useCallback, useContext } from 'react';
 
 import { FormContext } from '../ui/form';
 
@@ -30,7 +39,7 @@ export interface ShippingAddressProps {
     onUseNewAddress(): void;
 }
 
-const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
+const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
     const {
         methodId,
         formFields,
@@ -54,12 +63,16 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
 
     const { setSubmitted } = useContext(FormContext);
 
-    const initializeShipping = useCallback(memoizeOne((defaultOptions: ShippingInitializeOptions) => (
-        (options?: ShippingInitializeOptions) => initialize({
-            ...defaultOptions,
-            ...options,
-        })
-    )), []);
+    const initializeShipping = useCallback(
+        memoizeOne(
+            (defaultOptions: ShippingInitializeOptions) => (options?: ShippingInitializeOptions) =>
+                initialize({
+                    ...defaultOptions,
+                    ...options,
+                }),
+        ),
+        [],
+    );
 
     const handleFieldChange: (fieldName: string, value: string) => void = (fieldName, value) => {
         if (hasRequestedShippingOptions) {
@@ -83,12 +96,12 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
 
             return (
                 <RemoteShippingAddress
-                    containerId={ containerId }
-                    deinitialize={ deinitialize }
-                    formFields={ formFields }
-                    initialize={ initializeShipping(options) }
-                    methodId={ methodId }
-                    onFieldChange={ onFieldChange }
+                    containerId={containerId}
+                    deinitialize={deinitialize}
+                    formFields={formFields}
+                    initialize={initializeShipping(options)}
+                    methodId={methodId}
+                    onFieldChange={onFieldChange}
                 />
             );
         }
@@ -104,14 +117,14 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
 
             return (
                 <StaticAddressEditable
-                    address={ shippingAddress }
-                    buttonId={ editAddressButtonId }
-                    deinitialize={ deinitialize }
-                    formFields={ formFields }
-                    initialize={ initializeShipping(options) }
-                    isLoading={ isShippingStepPending }
-                    methodId={ methodId }
-                    onFieldChange={ onFieldChange }
+                    address={shippingAddress}
+                    buttonId={editAddressButtonId}
+                    deinitialize={deinitialize}
+                    formFields={formFields}
+                    initialize={initializeShipping(options)}
+                    isLoading={isShippingStepPending}
+                    methodId={methodId}
+                    onFieldChange={onFieldChange}
                 />
             );
         }
@@ -119,18 +132,18 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = props => {
 
     return (
         <ShippingAddressForm
-            address={ shippingAddress }
-            addresses={ addresses }
-            consignments={ consignments }
-            countries={ countries }
-            countriesWithAutocomplete={ countriesWithAutocomplete }
-            formFields={ formFields }
-            googleMapsApiKey={ googleMapsApiKey }
-            isLoading={ isLoading }
-            onAddressSelect={ onAddressSelect }
-            onFieldChange={ handleFieldChange }
-            onUseNewAddress={ onUseNewAddress }
-            shouldShowSaveAddress={ shouldShowSaveAddress }
+            address={shippingAddress}
+            addresses={addresses}
+            consignments={consignments}
+            countries={countries}
+            countriesWithAutocomplete={countriesWithAutocomplete}
+            formFields={formFields}
+            googleMapsApiKey={googleMapsApiKey}
+            isLoading={isLoading}
+            onAddressSelect={onAddressSelect}
+            onFieldChange={handleFieldChange}
+            onUseNewAddress={onUseNewAddress}
+            shouldShowSaveAddress={shouldShowSaveAddress}
         />
     );
 };

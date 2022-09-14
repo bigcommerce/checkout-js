@@ -1,13 +1,17 @@
 import getStoreCreditAmount from './getStoreCreditAmount';
-import { getGatewayOrderPayment, getGiftCertificateOrderPayment, getOrder, getStoreCreditPayment } from './orders.mock';
+import {
+    getGatewayOrderPayment,
+    getGiftCertificateOrderPayment,
+    getOrder,
+    getStoreCreditPayment,
+} from './orders.mock';
 
 describe('getStoreCreditAmount()', () => {
     describe('when there are no store credit payments', () => {
         const { payments } = getOrder();
 
         it('returns zero', () => {
-            expect(getStoreCreditAmount(payments))
-                .toEqual(0);
+            expect(getStoreCreditAmount(payments)).toBe(0);
         });
     });
 
@@ -20,8 +24,7 @@ describe('getStoreCreditAmount()', () => {
         ];
 
         it('returns sum of them', () => {
-            expect(getStoreCreditAmount(payments))
-                .toEqual(120);
+            expect(getStoreCreditAmount(payments)).toBe(120);
         });
     });
 });

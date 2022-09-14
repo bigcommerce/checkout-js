@@ -1,5 +1,5 @@
 import { Cart, Consignment } from '@bigcommerce/checkout-sdk';
-import React, { memo, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { AddressType, StaticAddress } from '../address';
 
@@ -18,33 +18,24 @@ const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
     cart,
     compactView,
 }) => {
-    const {
-        shippingAddress: address,
-        selectedShippingOption,
-    } = consignment;
+    const { shippingAddress: address, selectedShippingOption } = consignment;
 
     return (
         <div className="staticConsignment">
-            <StaticAddress
-                address={ address }
-                type={ AddressType.Shipping }
-            />
+            <StaticAddress address={address} type={AddressType.Shipping} />
 
-            { !compactView &&
-                <StaticConsignmentItemList
-                    cart={ cart }
-                    consignment={ consignment }
-                /> }
+            {!compactView && <StaticConsignmentItemList cart={cart} consignment={consignment} />}
 
-            { selectedShippingOption &&
+            {selectedShippingOption && (
                 <div>
                     <div className="shippingOption shippingOption--alt shippingOption--selected">
                         <StaticShippingOption
-                            displayAdditionalInformation={ false }
-                            method={ selectedShippingOption }
+                            displayAdditionalInformation={false}
+                            method={selectedShippingOption}
                         />
                     </div>
-                </div> }
+                </div>
+            )}
         </div>
     );
 };

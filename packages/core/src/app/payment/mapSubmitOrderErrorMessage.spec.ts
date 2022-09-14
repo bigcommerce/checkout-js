@@ -18,7 +18,11 @@ describe('mapSubmitOrderErrorMessage()', () => {
     });
 
     it('returns correct message when payment method is not valid', () => {
-        const message = mapSubmitOrderErrorMessage({ type: 'payment_method_invalid' }, translate, false);
+        const message = mapSubmitOrderErrorMessage(
+            { type: 'payment_method_invalid' },
+            translate,
+            false,
+        );
 
         expect(message).toEqual(translate('payment.payment_method_disabled_error'));
     });
@@ -38,9 +42,12 @@ describe('mapSubmitOrderErrorMessage()', () => {
                 message: 'payment error message',
             },
             translate,
-            false);
+            false,
+        );
 
-        expect(message).toEqual(translate('payment.payment_method_error', { message: 'payment error message' }));
+        expect(message).toEqual(
+            translate('payment.payment_method_error', { message: 'payment error message' }),
+        );
     });
 
     it('returns correct message when payment error provider_fatal_error', () => {
@@ -52,9 +59,12 @@ describe('mapSubmitOrderErrorMessage()', () => {
                 message: 'payment error message',
             },
             translate,
-            false);
+            false,
+        );
 
-        expect(message).toEqual(translate('payment.payment_method_error', { message: 'payment error message' }));
+        expect(message).toEqual(
+            translate('payment.payment_method_error', { message: 'payment error message' }),
+        );
     });
 
     it('returns correct message when payment error payment_invalid', () => {
@@ -66,9 +76,12 @@ describe('mapSubmitOrderErrorMessage()', () => {
                 message: 'payment error message',
             },
             translate,
-            false);
+            false,
+        );
 
-        expect(message).toEqual(translate('payment.payment_method_error', { message: 'payment error message' }));
+        expect(message).toEqual(
+            translate('payment.payment_method_error', { message: 'payment error message' }),
+        );
     });
 
     it('returns correct message when payment error provider_error', () => {
@@ -80,9 +93,12 @@ describe('mapSubmitOrderErrorMessage()', () => {
                 message: 'payment error message',
             },
             translate,
-            false);
+            false,
+        );
 
-        expect(message).toEqual(translate('payment.payment_method_error', { message: 'payment error message' }));
+        expect(message).toEqual(
+            translate('payment.payment_method_error', { message: 'payment error message' }),
+        );
     });
 
     it('returns correct message when payment error provider_widget_error', () => {
@@ -94,9 +110,12 @@ describe('mapSubmitOrderErrorMessage()', () => {
                 message: 'payment error message',
             },
             translate,
-            false);
+            false,
+        );
 
-        expect(message).toEqual(translate('payment.payment_method_error', { message: 'payment error message' }));
+        expect(message).toEqual(
+            translate('payment.payment_method_error', { message: 'payment error message' }),
+        );
     });
 
     it('returns correct message when payment error user_payment_error', () => {
@@ -108,13 +127,20 @@ describe('mapSubmitOrderErrorMessage()', () => {
                 message: 'payment error message',
             },
             translate,
-            false);
+            false,
+        );
 
-        expect(message).toEqual(translate('payment.payment_method_error', { message: 'payment error message' }));
+        expect(message).toEqual(
+            translate('payment.payment_method_error', { message: 'payment error message' }),
+        );
     });
 
     it('returns correct message when tax provider is unavailable', () => {
-        const message = mapSubmitOrderErrorMessage({ type: 'tax_provider_unavailable' }, translate, false);
+        const message = mapSubmitOrderErrorMessage(
+            { type: 'tax_provider_unavailable' },
+            translate,
+            false,
+        );
 
         expect(message).toEqual(translate('payment.tax_provider_unavailable'));
     });
@@ -133,7 +159,8 @@ describe('mapSubmitOrderErrorMessage()', () => {
                     },
                 },
                 translate,
-                true);
+                true,
+            );
 
             expect(message).toEqual(translate('payment.errors.incorrect_address'));
         });
@@ -155,9 +182,14 @@ describe('mapSubmitOrderErrorMessage()', () => {
                     },
                 },
                 translate,
-                true);
+                true,
+            );
 
-            expect(message).toEqual(`${translate('payment.errors.incorrect_address')} ${translate('payment.errors.incorrect_amount')}`);
+            expect(message).toBe(
+                `${translate('payment.errors.incorrect_address')} ${translate(
+                    'payment.errors.incorrect_amount',
+                )}`,
+            );
         });
 
         it('returns untranslated error message when errors array is empty', () => {
@@ -169,11 +201,13 @@ describe('mapSubmitOrderErrorMessage()', () => {
                     message: 'bigpay error message',
                 },
                 translate,
-                true);
+                true,
+            );
 
-            expect(message).toEqual('bigpay error message');
+            expect(message).toBe('bigpay error message');
         });
     });
+
     it('returns untranslated error message when bigpay request error and localization disabled', () => {
         const message = mapSubmitOrderErrorMessage(
             {
@@ -192,9 +226,10 @@ describe('mapSubmitOrderErrorMessage()', () => {
                 message: 'bigpay error message',
             },
             translate,
-            false);
+            false,
+        );
 
-        expect(message).toEqual('bigpay error message');
+        expect(message).toBe('bigpay error message');
     });
 
     describe('When not bigpay request error and no error message exists,', () => {
@@ -204,7 +239,8 @@ describe('mapSubmitOrderErrorMessage()', () => {
                     type: 'unrecoverable',
                 },
                 translate,
-                false);
+                false,
+            );
 
             expect(message).toEqual(translate('common.unavailable_error'));
         });
@@ -215,7 +251,8 @@ describe('mapSubmitOrderErrorMessage()', () => {
                     type: 'some_type',
                 },
                 translate,
-                false);
+                false,
+            );
 
             expect(message).toEqual(translate('payment.place_order_error'));
         });
@@ -238,7 +275,8 @@ describe('mapSubmitOrderErrorTitle()', () => {
             {
                 type: 'unrecoverable',
             },
-            translate);
+            translate,
+        );
 
         expect(title).toEqual(translate('common.unavailable_heading'));
     });
@@ -248,7 +286,8 @@ describe('mapSubmitOrderErrorTitle()', () => {
             {
                 type: 'some_type',
             },
-            translate);
+            translate,
+        );
 
         expect(title).toEqual(translate('common.error_heading'));
     });

@@ -18,13 +18,13 @@ describe('ApplePayButton', () => {
     beforeEach(() => {
         localeContext = createLocaleContext(getStoreConfig());
         ButtonTest = () => (
-            <LocaleContext.Provider value={ localeContext }>
+            <LocaleContext.Provider value={localeContext}>
                 <ApplePayButton
-                    containerId={ 'test' }
-                    deinitialize={ noop }
-                    initialize={ initialize }
-                    methodId={ 'applepay' }
-                    onError={ error }
+                    containerId="test"
+                    deinitialize={noop}
+                    initialize={initialize}
+                    methodId="applepay"
+                    onError={error}
                 />
             </LocaleContext.Provider>
         );
@@ -33,11 +33,12 @@ describe('ApplePayButton', () => {
     it('renders as CheckoutButton', () => {
         const container = mount(<ButtonTest />);
 
-        expect(container.find(CheckoutButton).length).toEqual(1);
+        expect(container.find(CheckoutButton)).toHaveLength(1);
     });
 
     it('initializes the button correctly', () => {
         mount(<ButtonTest />);
+
         expect(initialize).toHaveBeenCalledWith({
             methodId: 'applepay',
             applepay: {

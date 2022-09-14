@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { noop } from 'lodash';
-import React, { createRef, Component, ReactNode } from 'react';
+import React, { Component, createRef, ReactNode } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 import { isMobileView, MobileView } from '../ui/responsive';
@@ -65,45 +65,37 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
     }
 
     render(): ReactNode {
-        const {
-            heading,
-            isActive,
-            isComplete,
-            isEditable,
-            onEdit,
-            suggestion,
-            summary,
-            type,
-        } = this.props;
+        const { heading, isActive, isComplete, isEditable, onEdit, suggestion, summary, type } =
+            this.props;
 
         const { isClosed } = this.state;
 
         return (
             <li
-                className={ classNames(
-                    'checkout-step',
-                    'optimizedCheckout-checkoutStep',
-                    { [`checkout-step--${type}`]: !!type }
-                ) }
-                ref={ this.containerRef }
+                className={classNames('checkout-step', 'optimizedCheckout-checkoutStep', {
+                    [`checkout-step--${type}`]: !!type,
+                })}
+                ref={this.containerRef}
             >
                 <div className="checkout-view-header">
                     <CheckoutStepHeader
-                        heading={ heading }
-                        isActive={ isActive }
-                        isComplete={ isComplete }
-                        isEditable={ isEditable }
-                        onEdit={ onEdit }
-                        summary={ summary }
-                        type={ type }
+                        heading={heading}
+                        isActive={isActive}
+                        isComplete={isComplete}
+                        isEditable={isEditable}
+                        onEdit={onEdit}
+                        summary={summary}
+                        type={type}
                     />
                 </div>
 
-                { suggestion && isClosed && !isActive && <div className="checkout-suggestion" data-test="step-suggestion">
-                    { suggestion }
-                </div> }
+                {suggestion && isClosed && !isActive && (
+                    <div className="checkout-suggestion" data-test="step-suggestion">
+                        {suggestion}
+                    </div>
+                )}
 
-                { this.renderContent() }
+                {this.renderContent()}
             </li>
         );
     }
@@ -111,29 +103,30 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
     private renderContent(): ReactNode {
         const { children, isActive, isBusy } = this.props;
 
-        return <>
+        return (
             <MobileView>
-                { matched =>
+                {(matched) => (
                     <CSSTransition
-                        addEndListener={ this.handleTransitionEnd }
+                        addEndListener={this.handleTransitionEnd}
                         classNames="checkout-view-content"
-                        enter={ !matched }
-                        exit={ !matched }
-                        in={ isActive }
+                        enter={!matched}
+                        exit={!matched}
+                        in={isActive}
                         mountOnEnter
-                        timeout={ {} }
+                        timeout={{}}
                         unmountOnExit
                     >
                         <div
-                            aria-busy={ isBusy }
+                            aria-busy={isBusy}
                             className="checkout-view-content"
-                            ref={ this.contentRef }
+                            ref={this.contentRef}
                         >
-                            { children }
+                            {children}
                         </div>
-                    </CSSTransition> }
+                    </CSSTransition>
+                )}
             </MobileView>
-        </>;
+        );
     }
 
     private focusStep(): void {
@@ -169,7 +162,7 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
 
         const input = container.querySelector<HTMLElement>('input, select, textarea');
 
-        return input ? input : undefined;
+        return input || undefined;
     }
 
     private getScrollPosition(): number | undefined {
@@ -181,7 +174,8 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
         }
 
         const topOffset = isComplete ? 0 : window.innerHeight / 5;
-        const containerOffset = container.getBoundingClientRect().top + (window.scrollY || window.pageYOffset);
+        const containerOffset =
+            container.getBoundingClientRect().top + (window.scrollY || window.pageYOffset);
 
         return containerOffset - topOffset;
     }
@@ -209,7 +203,12 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
         }
 
         // Cache the result to avoid unnecessary reflow
-        this.timeoutDelay = parseFloat(this.contentRef.current ? getComputedStyle(this.contentRef.current).transitionDuration : '0s') * 1000;
+        this.timeoutDelay =
+            parseFloat(
+                this.contentRef.current
+                    ? getComputedStyle(this.contentRef.current).transitionDuration
+                    : '0s',
+            ) * 1000;
 
         return this.timeoutDelay;
     }

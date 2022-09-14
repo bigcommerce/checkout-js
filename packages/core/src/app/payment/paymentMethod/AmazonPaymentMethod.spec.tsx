@@ -40,37 +40,37 @@ describe('When using AmazonPaymentMethod', () => {
             onUnhandledError: jest.fn(),
         };
 
-        const TestComponent: FunctionComponent<Partial<AmazonPaymentMethodProps>> = props =>
-            <PaymentContext.Provider value={ paymentContext }>
-                <AmazonPaymentMethod
-                    { ...defaultProps }
-                    { ...props }
-                />
-            </PaymentContext.Provider>;
+        const TestComponent: FunctionComponent<Partial<AmazonPaymentMethodProps>> = (props) => (
+            <PaymentContext.Provider value={paymentContext}>
+                <AmazonPaymentMethod {...defaultProps} {...props} />
+            </PaymentContext.Provider>
+        );
 
         component = mount(<TestComponent />);
     });
 
     it('Shopper should be able to see Amazon Payment Method', () => {
-
         expect(component.find(HostedWidgetPaymentMethod).exists).toBeTruthy();
     });
 
     it('Shopper should be able to SignInAmazon', () => {
         const onClick = jest.fn();
-        jest.spyOn(document, 'querySelector')
-            .mockImplementation((selector: string) => {
-                const element = document.createElement('div');
-                element.id = selector;
-                element.addEventListener('click', onClick);
 
-                return element;
-            });
+        jest.spyOn(document, 'querySelector').mockImplementation((selector: string) => {
+            const element = document.createElement('div');
+
+            element.id = selector;
+            element.addEventListener('click', onClick);
+
+            return element;
+        });
 
         const hostedWidget = component.find(HostedWidgetPaymentMethod);
 
         const { signInCustomer = noop } = hostedWidget.props();
+
         signInCustomer();
+
         expect(onClick).toHaveBeenCalled();
     });
 
@@ -82,7 +82,7 @@ describe('When using AmazonPaymentMethod', () => {
             methodId: defaultProps.method.id,
         });
 
-        expect(defaultProps.initializeCustomer).toBeCalledWith({
+        expect(defaultProps.initializeCustomer).toHaveBeenCalledWith({
             methodId: 'amazon',
             amazon: {
                 container: 'paymentWidget',
@@ -98,6 +98,7 @@ describe('When using AmazonPaymentMethod', () => {
         initializePayment({
             methodId: defaultProps.method.id,
         });
+
         const { onError = noop } = initializePaymentOptions.amazon || {};
 
         onError({ message: 'An error' });
@@ -110,7 +111,7 @@ describe('When using AmazonPaymentMethod', () => {
             expect.objectContaining({
                 id: 'amazon',
             }),
-            true
+            true,
         );
     });
 
@@ -121,6 +122,7 @@ describe('When using AmazonPaymentMethod', () => {
         initializePayment({
             methodId: defaultProps.method.id,
         });
+
         const { onPaymentSelect = noop } = initializePaymentOptions.amazon || {};
 
         onPaymentSelect();
@@ -129,7 +131,7 @@ describe('When using AmazonPaymentMethod', () => {
             expect.objectContaining({
                 id: 'amazon',
             }),
-            false
+            false,
         );
     });
 });

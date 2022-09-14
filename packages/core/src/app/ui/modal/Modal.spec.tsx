@@ -10,38 +10,29 @@ describe('Modal', () => {
 
     beforeEach(() => {
         defaultProps = {
-            children: (
-                <div>Modal content</div>
-            ),
+            children: <div>Modal content</div>,
             isOpen: true,
             onRequestClose: jest.fn(),
         };
     });
 
     it('renders modal window if it is open', () => {
-        const component = mount(<Modal { ...defaultProps } />);
+        const component = mount(<Modal {...defaultProps} />);
 
-        expect(component.exists('.modal'))
-            .toEqual(true);
+        expect(component.exists('.modal')).toBe(true);
     });
 
     it('does not render modal window if it is not open', () => {
-        const component = mount(
-            <Modal
-                { ...defaultProps }
-                isOpen={ false }
-            />
-        );
+        const component = mount(<Modal {...defaultProps} isOpen={false} />);
 
-        expect(component.exists('.modal'))
-            .toEqual(false);
+        expect(component.exists('.modal')).toBe(false);
     });
 
     it('renders modal with expected class names', () => {
-        const component = shallow(<Modal { ...defaultProps } />);
+        const component = shallow(<Modal {...defaultProps} />);
 
-        expect(component.find(ReactModal).props())
-            .toEqual(expect.objectContaining({
+        expect(component.find(ReactModal).props()).toEqual(
+            expect.objectContaining({
                 bodyOpenClassName: 'has-activeModal',
                 className: {
                     base: 'modal optimizedCheckout-contentPrimary',
@@ -53,47 +44,35 @@ describe('Modal', () => {
                     afterOpen: 'modalOverlay--afterOpen',
                     beforeClose: 'modalOverlay--beforeClose',
                 },
-            }));
+            }),
+        );
     });
 
     it('notifies parent component when user clicks on close button', () => {
-        const component = mount(<Modal { ...defaultProps } shouldShowCloseButton={ true } />);
+        const component = mount(<Modal {...defaultProps} shouldShowCloseButton={true} />);
 
-        component.find('[data-test="modal-close-button"]')
-            .simulate('click');
+        component.find('[data-test="modal-close-button"]').simulate('click');
 
-        expect(defaultProps.onRequestClose)
-            .toHaveBeenCalled();
+        expect(defaultProps.onRequestClose).toHaveBeenCalled();
     });
 
     it('does not close modal when overlay is clicked', () => {
-        const component = shallow(<Modal { ...defaultProps } />);
+        const component = shallow(<Modal {...defaultProps} />);
 
-        expect(component.find(ReactModal).prop('shouldCloseOnOverlayClick'))
-            .toEqual(false);
+        expect(component.find(ReactModal).prop('shouldCloseOnOverlayClick')).toBe(false);
     });
 
     it('renders modal with header if it is provided', () => {
         const component = mount(
-            <Modal
-                { ...defaultProps }
-                header={ <ModalHeader>Footer</ModalHeader> }
-            />
+            <Modal {...defaultProps} header={<ModalHeader>Footer</ModalHeader>} />,
         );
 
-        expect(component.find('[data-test="modal-heading"]').text())
-            .toEqual('Footer');
+        expect(component.find('[data-test="modal-heading"]').text()).toBe('Footer');
     });
 
     it('renders modal with footer if it is provided', () => {
-        const component = mount(
-            <Modal
-                { ...defaultProps }
-                footer={ 'Header' }
-            />
-        );
+        const component = mount(<Modal {...defaultProps} footer="Header" />);
 
-        expect(component.find('[data-test="modal-footer"]').text())
-            .toEqual('Header');
+        expect(component.find('[data-test="modal-footer"]').text()).toBe('Header');
     });
 });

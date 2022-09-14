@@ -1,11 +1,11 @@
 import { getScriptLoader, getStylesheetLoader } from '@bigcommerce/script-loader';
 
+import { isAppExport } from './AppExport';
 import { RenderCheckoutOptions } from './checkout';
 import { configurePublicPath } from './common/bundler';
 import { isRecordContainingKey, joinPaths } from './common/utility';
 import { getDefaultTranslations, isLanguageWindow } from './locale';
 import { RenderOrderConfirmationOptions } from './order';
-import { isAppExport } from './AppExport';
 
 declare const LIBRARY_NAME: string;
 declare const MANIFEST_JSON: AssetManifest;
@@ -32,42 +32,33 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
     const {
         appVersion,
         css = [],
-        dynamicChunks: {
-            css: cssDynamicChunks = [],
-            js: jsDynamicChunks = [],
-        },
+        dynamicChunks: { css: cssDynamicChunks = [], js: jsDynamicChunks = [] },
         js = [],
     } = MANIFEST_JSON;
 
-    const scripts = getScriptLoader().loadScripts(
-        js.map(path => joinPaths(publicPath, path))
-    );
+    const scripts = getScriptLoader().loadScripts(js.map((path) => joinPaths(publicPath, path)));
 
     const stylesheets = getStylesheetLoader().loadStylesheets(
-        css.map(path => joinPaths(publicPath, path)),
-        { prepend: true }
+        css.map((path) => joinPaths(publicPath, path)),
+        { prepend: true },
     );
 
     getScriptLoader().preloadScripts(
-        jsDynamicChunks.map(path => joinPaths(publicPath, path)),
-        { prefetch: true }
+        jsDynamicChunks.map((path) => joinPaths(publicPath, path)),
+        { prefetch: true },
     );
 
     getStylesheetLoader().preloadStylesheets(
-        cssDynamicChunks.map(path => joinPaths(publicPath, path)),
-        { prefetch: true }
+        cssDynamicChunks.map((path) => joinPaths(publicPath, path)),
+        { prefetch: true },
     );
 
-    const languageConfig = isLanguageWindow(window) ?
-        window.language :
-        { locale: 'en', locales: {}, translations: {} };
+    const languageConfig = isLanguageWindow(window)
+        ? window.language
+        : { locale: 'en', locales: {}, translations: {} };
 
-    return Promise.all([
-        getDefaultTranslations(languageConfig.locale),
-        scripts,
-        stylesheets,
-    ])
-        .then(([defaultTranslations]) => {
+    return Promise.all([getDefaultTranslations(languageConfig.locale), scripts, stylesheets]).then(
+        ([defaultTranslations]) => {
             if (!isRecordContainingKey(window, LIBRARY_NAME)) {
                 throw new Error(`'${LIBRARY_NAME}' property is not available in window.`);
             }
@@ -75,14 +66,13 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
             const appExport = window[LIBRARY_NAME];
 
             if (!isAppExport(appExport)) {
-                throw new Error('The functions required to bootstrap the application are not available.');
+                throw new Error(
+                    'The functions required to bootstrap the application are not available.',
+                );
             }
 
-            const {
-                renderCheckout,
-                renderOrderConfirmation,
-                initializeLanguageService,
-            } = appExport;
+            const { renderCheckout, renderOrderConfirmation, initializeLanguageService } =
+                appExport;
 
             initializeLanguageService({
                 ...languageConfig,
@@ -91,8 +81,10 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
 
             return {
                 appVersion,
-                renderCheckout: renderOptions => renderCheckout({ publicPath, ...renderOptions }),
-                renderOrderConfirmation: renderOptions => renderOrderConfirmation({ publicPath, ...renderOptions }),
+                renderCheckout: (renderOptions) => renderCheckout({ publicPath, ...renderOptions }),
+                renderOrderConfirmation: (renderOptions) =>
+                    renderOrderConfirmation({ publicPath, ...renderOptions }),
             };
-        });
+        },
+    );
 }

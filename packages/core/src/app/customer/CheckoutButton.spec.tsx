@@ -12,21 +12,20 @@ describe('CheckoutButton', () => {
         mount(
             <CheckoutButton
                 containerId="foobarContainer"
-                deinitialize={ noop }
-                initialize={ initialize }
+                deinitialize={noop}
+                initialize={initialize}
                 methodId="foobar"
-                onError={ onError }
-            />
+                onError={onError}
+            />,
         );
 
-        expect(initialize)
-            .toHaveBeenCalledWith({
-                methodId: 'foobar',
-                foobar: {
-                    container: 'foobarContainer',
-                    onError,
-                },
-            });
+        expect(initialize).toHaveBeenCalledWith({
+            methodId: 'foobar',
+            foobar: {
+                container: 'foobarContainer',
+                onError,
+            },
+        });
     });
 
     it('deinitializes button when component unmounts', () => {
@@ -36,16 +35,15 @@ describe('CheckoutButton', () => {
         const component = mount(
             <CheckoutButton
                 containerId="foobarContainer"
-                deinitialize={ deinitialize }
-                initialize={ noop }
+                deinitialize={deinitialize}
+                initialize={noop}
                 methodId="foobar"
-                onError={ onError }
-            />
+                onError={onError}
+            />,
         );
 
         component.unmount();
 
-        expect(deinitialize)
-            .toHaveBeenCalled();
+        expect(deinitialize).toHaveBeenCalled();
     });
 });

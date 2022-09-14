@@ -25,16 +25,13 @@ const AppliedRedeemable: FunctionComponent<AppliedRedeemableProps> = ({
 
         <div className="form-label form-label-redeemable">
             <div className="redeemable">
-                { children }
+                {children}
                 <div className="redeemable-column redeemable-actions">
                     <button
-                        className={ classNames(
-                            'redeemable-remove',
-                            { 'is-loading': isRemoving }
-                        ) }
+                        className={classNames('redeemable-remove', { 'is-loading': isRemoving })}
                         data-test="redeemable-remove"
-                        disabled={ isRemoving }
-                        onClick={ onRemove }
+                        disabled={isRemoving}
+                        onClick={onRemove}
                         type="button"
                     >
                         <IconRemove />

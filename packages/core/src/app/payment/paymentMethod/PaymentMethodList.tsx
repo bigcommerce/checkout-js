@@ -1,6 +1,6 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { find, get, noop } from 'lodash';
-import React, { memo, useCallback, useMemo, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { isMobile } from '../../common/utility';
@@ -31,8 +31,7 @@ function getPaymentMethodFromListValue(methods: PaymentMethod[], value: string):
 }
 
 const PaymentMethodList: FunctionComponent<
-    PaymentMethodListProps &
-    ConnectFormikProps<{ paymentProviderRadio?: string }>
+    PaymentMethodListProps & ConnectFormikProps<{ paymentProviderRadio?: string }>
 > = ({
     formik: { values },
     isEmbedded,
@@ -42,40 +41,46 @@ const PaymentMethodList: FunctionComponent<
     onSelect = noop,
     onUnhandledError,
 }) => {
-    const handleSelect = useCallback((value: string) => {
-        onSelect(getPaymentMethodFromListValue(methods, value));
-    }, [
-        methods,
-        onSelect,
-    ]);
+    const handleSelect = useCallback(
+        (value: string) => {
+            onSelect(getPaymentMethodFromListValue(methods, value));
+        },
+        [methods, onSelect],
+    );
 
-    return <Checklist
-        defaultSelectedItemId={ values.paymentProviderRadio }
-        isDisabled={ isInitializingPayment }
-        name="paymentProviderRadio"
-        onSelect={ handleSelect }
-    >
-        { methods.map(method => {
-            const value = getUniquePaymentMethodId(method.id, method.gateway);
-            const showOnlyOnMobileDevices = get(method, 'initializationData.showOnlyOnMobileDevices', false);
+    return (
+        <Checklist
+            defaultSelectedItemId={values.paymentProviderRadio}
+            isDisabled={isInitializingPayment}
+            name="paymentProviderRadio"
+            onSelect={handleSelect}
+        >
+            {methods.map((method) => {
+                const value = getUniquePaymentMethodId(method.id, method.gateway);
+                const showOnlyOnMobileDevices = get(
+                    method,
+                    'initializationData.showOnlyOnMobileDevices',
+                    false,
+                );
 
-            if (showOnlyOnMobileDevices && !isMobile()) {
-                return;
-            }
+                if (showOnlyOnMobileDevices && !isMobile()) {
+                    return;
+                }
 
-            return (
-                <PaymentMethodListItem
-                    isDisabled={ isInitializingPayment }
-                    isEmbedded={ isEmbedded }
-                    isUsingMultiShipping={ isUsingMultiShipping }
-                    key={ value }
-                    method={ method }
-                    onUnhandledError={ onUnhandledError }
-                    value={ value }
-                />
-            );
-        }) }
-    </Checklist>;
+                return (
+                    <PaymentMethodListItem
+                        isDisabled={isInitializingPayment}
+                        isEmbedded={isEmbedded}
+                        isUsingMultiShipping={isUsingMultiShipping}
+                        key={value}
+                        method={method}
+                        onUnhandledError={onUnhandledError}
+                        value={value}
+                    />
+                );
+            })}
+        </Checklist>
+    );
 };
 
 interface PaymentMethodListItemProps {
@@ -96,33 +101,28 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
     value,
 }) => {
     const renderPaymentMethod = useMemo(() => {
-        return <PaymentMethodV2
-            isEmbedded={ isEmbedded }
-            isUsingMultiShipping={ isUsingMultiShipping }
-            method={ method }
-            onUnhandledError={ onUnhandledError || noop }
-        />
-    }, [
-        isEmbedded,
-        isUsingMultiShipping,
-        method,
-        onUnhandledError,
-    ]);
+        return (
+            <PaymentMethodV2
+                isEmbedded={isEmbedded}
+                isUsingMultiShipping={isUsingMultiShipping}
+                method={method}
+                onUnhandledError={onUnhandledError || noop}
+            />
+        );
+    }, [isEmbedded, isUsingMultiShipping, method, onUnhandledError]);
 
-    const renderPaymentMethodTitle = useCallback((isSelected: boolean) => (
-        <PaymentMethodTitle
-            isSelected={ isSelected }
-            method={ method }
-        />
-    ), [method]);
+    const renderPaymentMethodTitle = useCallback(
+        (isSelected: boolean) => <PaymentMethodTitle isSelected={isSelected} method={method} />,
+        [method],
+    );
 
     return (
         <ChecklistItem
-            content={ renderPaymentMethod }
-            htmlId={ `radio-${value}` }
-            isDisabled={ isDisabled }
-            label={ renderPaymentMethodTitle }
-            value={ value }
+            content={renderPaymentMethod}
+            htmlId={`radio-${value}`}
+            isDisabled={isDisabled}
+            label={renderPaymentMethodTitle}
+            value={value}
         />
     );
 };

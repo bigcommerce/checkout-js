@@ -1,6 +1,7 @@
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { LanguageService } from '@bigcommerce/checkout-sdk';
-import { object, string, ObjectSchema, StringSchema } from 'yup';
+import { object, ObjectSchema, string, StringSchema } from 'yup';
+
+import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getTermsConditionsValidationSchema } from '../termsConditions';
 
@@ -21,10 +22,11 @@ export default function getPaymentValidationSchema({
         paymentProviderRadio: string().required(),
     };
 
-    const schemaFieldsWithTerms = object(schemaFields)
-        .concat(getTermsConditionsValidationSchema({ isTermsConditionsRequired, language }));
+    const schemaFieldsWithTerms = object(schemaFields).concat(
+        getTermsConditionsValidationSchema({ isTermsConditionsRequired, language }),
+    );
 
-    return additionalValidation ?
-        schemaFieldsWithTerms.concat(additionalValidation as any) :
-        schemaFieldsWithTerms;
+    return additionalValidation
+        ? schemaFieldsWithTerms.concat(additionalValidation as any)
+        : schemaFieldsWithTerms;
 }

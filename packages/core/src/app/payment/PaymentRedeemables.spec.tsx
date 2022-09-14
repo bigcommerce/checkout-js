@@ -1,4 +1,4 @@
-import { createCheckoutService, CheckoutService } from '@bigcommerce/checkout-sdk';
+import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import React from 'react';
 
@@ -15,32 +15,28 @@ describe('PaymentRedeemables', () => {
     beforeEach(() => {
         checkoutService = createCheckoutService();
 
-        jest.spyOn(checkoutService.getState().data, 'getConfig')
-            .mockReturnValue(getStoreConfig());
+        jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
 
-        jest.spyOn(checkoutService.getState().data, 'getCheckout')
-            .mockReturnValue(getCheckout());
+        jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(getCheckout());
     });
 
     it('renders redeemable component with container fieldset', () => {
         const container = mount(
-            <CheckoutProvider checkoutService={ checkoutService }>
+            <CheckoutProvider checkoutService={checkoutService}>
                 <PaymentRedeemables />
-            </CheckoutProvider>
+            </CheckoutProvider>,
         );
 
-        expect(container.exists('fieldset.redeemable-payments'))
-            .toEqual(true);
+        expect(container.exists('fieldset.redeemable-payments')).toBe(true);
     });
 
     it('renders redeemable component with applied redeemables', () => {
         const container = mount(
-            <CheckoutProvider checkoutService={ checkoutService }>
+            <CheckoutProvider checkoutService={checkoutService}>
                 <PaymentRedeemables />
-            </CheckoutProvider>
+            </CheckoutProvider>,
         );
 
-        expect(container.find(Redeemable).prop('showAppliedRedeemables'))
-            .toEqual(true);
+        expect(container.find(Redeemable).prop('showAppliedRedeemables')).toBe(true);
     });
 });
