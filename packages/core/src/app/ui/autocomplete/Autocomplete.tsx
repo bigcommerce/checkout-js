@@ -1,10 +1,11 @@
 import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
-import { isNumber, noop } from 'lodash';
+import { includes, isNumber, noop } from 'lodash';
 import React, { Fragment, PureComponent, ReactChild, ReactNode } from 'react';
 
 import { Popover, PopoverList, PopoverListItem } from '../popover';
 
 import AutocompleteItem from './autocomplete-item';
+import { Label } from '../form';
 
 export interface AutocompleteProps {
     initialValue?: string;
@@ -48,6 +49,14 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
                 {({ isOpen, getInputProps, getMenuProps, getItemProps, highlightedIndex }) => (
                     <div>
                         <input {...getInputProps()} {...inputProps} />
+                        {(inputProps && includes(inputProps.className, 'floating')) &&
+                            <Label
+                                htmlFor={inputProps.id}
+                                id={inputProps['aria-labelledby']}
+                                useFloatingLabel={true}>
+                                {inputProps.labelText}
+                            </Label>
+                        }
                         {isOpen && !!items.length && (
                             <Popover>
                                 <PopoverList

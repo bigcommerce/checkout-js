@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { FieldProps, FormikProps, withFormik } from 'formik';
 import React, { FunctionComponent, memo, ReactNode, useCallback } from 'react';
 import { object, string } from 'yup';
@@ -19,6 +20,7 @@ export interface GuestFormProps {
     email?: string;
     isLoading: boolean;
     privacyPolicyUrl?: string;
+    useFloatingLabel?: boolean;
     onChangeEmail(email: string): void;
     onContinueAsGuest(data: GuestFormValues): void;
     onShowLogin(): void;
@@ -40,6 +42,7 @@ const GuestForm: FunctionComponent<
     onShowLogin,
     privacyPolicyUrl,
     requiresMarketingConsent,
+    useFloatingLabel,
 }) => {
     const renderField = useCallback(
         (fieldProps: FieldProps<boolean>) => (
@@ -63,7 +66,7 @@ const GuestForm: FunctionComponent<
             >
                 <div className="customerEmail-container">
                     <div className="customerEmail-body">
-                        <EmailField onChange={onChangeEmail} />
+                        <EmailField onChange={onChangeEmail} useFloatingLabel={useFloatingLabel}/>
 
                         {(canSubscribe || requiresMarketingConsent) && (
                             <BasicFormField name="shouldSubscribe" render={renderField} />
@@ -72,7 +75,11 @@ const GuestForm: FunctionComponent<
                         {privacyPolicyUrl && <PrivacyPolicyField url={privacyPolicyUrl} />}
                     </div>
 
-                    <div className="form-actions customerEmail-action">
+                    <div
+                        className={classNames('form-actions customerEmail-action', {
+                            'customerEmail-floating--enabled': useFloatingLabel,
+                        })}
+                    >
                         <Button
                             className="customerEmail-button"
                             id="checkout-customer-continue"

@@ -1,5 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DynamicInput renders select input with passed props 1`] = `"<select class=\\"form-select optimizedCheckout-form-select\\" data-test=\\"field_33-select\\" id=\\"field_33\\" name=\\"select\\"><option value=\\"\\">Select an option</option><option value=\\"foo\\" selected=\\"\\">Foo</option><option value=\\"foo1\\">Foo1</option></select>"`;
+exports[`DynamicInput renders select input with passed props 1`] = `"<svg class=\\"dropdown-arrow\\" fill=\\"none\\" viewBox=\\"0 0 10 6\\" xmlns=\\"http://www.w3.org/2000/svg\\"><path d=\\"M10 0H0L5 6L10 0Z\\"></path></svg><select class=\\"form-select optimizedCheckout-form-select\\" data-test=\\"field_33-select\\" id=\\"field_33\\" name=\\"select\\"><option value=\\"\\">Select an option</option><option value=\\"foo\\" selected=\\"\\">Foo</option><option value=\\"foo1\\">Foo1</option></select>"`;
 
-exports[`DynamicInput renders text input for default input with passed props 1`] = `"<input id=\\"field_33\\" name=\\"x\\" class=\\"form-input optimizedCheckout-form-input\\" type=\\"text\\" data-test=\\"field_33-text\\" value=\\"\\">"`;
+exports[`DynamicInput renders text input for default input with passed props 1`] = `"<input id=\\"field_33\\" type=\\"text\\" class=\\"form-input optimizedCheckout-form-input\\" name=\\"x\\" data-test=\\"field_33-text\\" value=\\"\\">"`;

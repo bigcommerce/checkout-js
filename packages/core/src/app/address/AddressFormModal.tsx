@@ -26,6 +26,7 @@ export interface AddressFormProps {
     isLoading: boolean;
     shouldShowSaveAddress?: boolean;
     defaultCountryCode?: string;
+    useFloatingLabel?: boolean;
     getFields(countryCode?: string): FormField[];
     onSaveAddress(address: AddressFormValues): void;
     onRequestClose?(): void;
@@ -42,6 +43,7 @@ const SaveAddress: FunctionComponent<
     setFieldValue,
     isLoading,
     onRequestClose,
+    useFloatingLabel,
 }) => (
     <Form autoComplete="on">
         <LoadingOverlay isLoading={isLoading}>
@@ -53,6 +55,7 @@ const SaveAddress: FunctionComponent<
                 googleMapsApiKey={googleMapsApiKey}
                 setFieldValue={setFieldValue}
                 shouldShowSaveAddress={false}
+                useFloatingLabel={useFloatingLabel}
             />
             <div className="form-actions">
                 <a

@@ -28,11 +28,97 @@
         }
     }
 
+    #checkoutShippingAddress.form-fieldset:has(.floating-form-field) {
+        margin-bottom: 0.4rem;
+    }
+
+    .floating-fieldset {
+        .form-fieldset {
+            margin-bottom: 0;
+        }
+    }
+
     .form-field {
         position: relative;
 
         &:last-child {
             margin-bottom: 0;
+        }
+
+        .floating-input,
+        .floating-select {
+            background-color: $floating-label-bg-color;
+            font-size: $floating-label-initial-font-size;
+            height: $floating-label-input-height;
+            margin-bottom: $floating-label-margin-bottom;
+            padding-bottom: 0;
+            padding-left: $input-horizontalPadding;
+            padding-right: $input-horizontalPadding;
+            padding-top: $input-verticalPadding * 1.5;
+        }
+
+        .floating-input:not(:focus),
+        .floating-select:not(:focus),
+        .floating-textarea {
+            border-color: $floating-label-border-color;
+        }
+
+        .floating-textarea {
+            background-color: $floating-label-bg-color;
+            padding-top: $input-verticalPadding * 2.5;
+        }
+
+        .dropdown-arrow,
+        .floating-dropdown-arrow {
+            height: 6px;
+            position: absolute;
+            right: $input-horizontalPadding;
+            top: 65%;
+            width: 10px;
+
+            path {
+                fill: $input-border-color;
+            }
+        }
+
+        .floating-dropdown-arrow {
+            top: 45%;
+        }
+
+        .floating-label {
+            font-size: $floating-label-initial-font-size;
+            left: $input-horizontalPadding * 1.05;
+            line-height: $floating-label-initial-line-height;
+            position: absolute;
+            top: $floating-label-initial-top;
+            transition: $floating-label-transition;
+
+            small {
+                font-size: $floating-label-initial-font-size;
+                vertical-align: baseline;
+            }
+        }
+
+        .react-datepicker__tab-loop + .floating-label,
+        .react-datepicker-wrapper + .floating-label,
+        select + .floating-label,
+        textarea:focus + .floating-label,
+        textarea:not(:empty) + .floating-label,
+        input:focus + .floating-label,
+        input:not(:placeholder-shown) + .floating-label {
+            color: $floating-label-color;
+            display: block;
+            font-size: fontSize("tiny");
+            line-height: $floating-label-focus-line-height;
+            top: $floating-label-focus-top;
+
+            small {
+                font-size: fontSize("tiny");
+            }
+        }
+
+        .floating-label + .form-field-errors {
+            padding-top: $floating-label-error-padding-top;
         }
     }
 
@@ -78,8 +164,12 @@
             transition: background-color 0.8s ease-out;
         }
 
-        .form-label {
+        .form-label:not(.floating-label) {
             color: color("error");
+        }
+
+        .floating-label.form-label.optimizedCheckout-form-label {
+            color: $floating-label-color;
         }
     }
 
@@ -123,7 +213,7 @@
 
     // scss-lint:disable ImportantRule
     .form-select {
-        -webkit-appearance: menulist !important; // 2
+        -webkit-appearance: none; // 2
         background-image: none;
         border-radius: $input-border-radius;
         padding: $input-verticalPadding $select-paddingRight $input-verticalPadding $input-horizontalPadding;

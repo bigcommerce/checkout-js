@@ -25,4 +25,13 @@
             flex-basis: 50%;
         }
     }
+
+    .dynamic-form-field.floating-form-field {
+        padding: 0 4px;
+    }
+}
+
+.create-account-form:has(.floating-form-field) {
+    margin-left: -0.23rem;
+    margin-right: -0.23rem;
 }

@@ -34,6 +34,7 @@ export interface LoginFormProps {
     viewType?: Omit<CustomerViewType, 'guest'>;
     passwordlessLogin?: boolean;
     shouldShowCreateAccountLink?: boolean;
+    useFloatingLabel?: boolean;
     onCancel?(): void;
     onCreateAccount?(): void;
     onChangeEmail?(email: string): void;
@@ -64,6 +65,7 @@ const LoginForm: FunctionComponent<
     onSendLoginEmail = noop,
     signInError,
     shouldShowCreateAccountLink,
+    useFloatingLabel,
     viewType = CustomerViewType.Login,
 }) => {
     const changeEmailLink = useCallback(() => {
@@ -125,10 +127,10 @@ const LoginForm: FunctionComponent<
 
                 {(viewType === CustomerViewType.Login ||
                     viewType === CustomerViewType.EnforcedLogin) && (
-                    <EmailField onChange={onChangeEmail} />
+                    <EmailField onChange={onChangeEmail} useFloatingLabel={useFloatingLabel} />
                 )}
 
-                <PasswordField />
+                <PasswordField useFloatingLabel={useFloatingLabel} />
 
                 <p className="form-legend-container">
                     <span>

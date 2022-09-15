@@ -14,8 +14,9 @@ import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
 import { CheckoutContextProps, withCheckout } from '../checkout';
-import { isErrorWithType } from '../common/error';
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
+import { isErrorWithType } from '../common/error';
+import { isFloatingLabelEnabled } from '../common/utility';
 import { PaymentMethodId } from '../payment/paymentMethod';
 import { LoadingOverlay } from '../ui/loading';
 
@@ -26,8 +27,8 @@ import EmailLoginForm, { EmailLoginFormValues } from './EmailLoginForm';
 import { CreateAccountFormValues } from './getCreateCustomerValidationSchema';
 import GuestForm, { GuestFormValues } from './GuestForm';
 import LoginForm from './LoginForm';
-import StripeGuestForm from './StripeGuestForm';
 import mapCreateAccountFromFormValues from './mapCreateAccountFromFormValues';
+import StripeGuestForm from './StripeGuestForm';
 
 export interface CustomerProps {
     viewType: CustomerViewType;
@@ -69,6 +70,7 @@ export interface WithCheckoutCustomerProps {
     createAccountError?: Error;
     signInError?: Error;
     isStripeLinkEnabled?: boolean;
+    useFloatingLabel?: boolean;
     clearError(error: Error): Promise<CheckoutSelectors>;
     continueAsGuest(credentials: GuestCredentials): Promise<CheckoutSelectors>;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
@@ -169,6 +171,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             isStripeLinkEnabled,
             onUnhandledError = noop,
             step,
+            useFloatingLabel,
         } = this.props;
 
         return (
@@ -222,6 +225,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                 onShowLogin={this.handleShowLogin}
                 privacyPolicyUrl={privacyPolicyUrl}
                 requiresMarketingConsent={requiresMarketingConsent}
+                useFloatingLabel={useFloatingLabel}
             />
         );
     }
@@ -229,7 +233,8 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
     private renderEmailLoginLinkForm(): ReactNode {
         const { isEmailLoginFormOpen, hasRequestedLoginEmail } = this.state;
 
-        const { isSendingSignInEmail, signInEmailError, signInEmail } = this.props;
+        const { isSendingSignInEmail, signInEmailError, signInEmail, useFloatingLabel } =
+            this.props;
 
         return (
             <EmailLoginForm
@@ -241,6 +246,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                 onSendLoginEmail={this.handleSendLoginEmail}
                 sentEmail={signInEmail}
                 sentEmailError={signInEmailError}
+                useFloatingLabel={useFloatingLabel}
             />
         );
     }
@@ -258,6 +264,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             isCreatingAccount,
             createAccountError,
             requiresMarketingConsent,
+            useFloatingLabel,
         } = this.props;
 
         return (
@@ -268,6 +275,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                 onCancel={this.handleCancelCreateAccount}
                 onSubmit={this.handleCreateAccount}
                 requiresMarketingConsent={requiresMarketingConsent}
+                useFloatingLabel={useFloatingLabel}
             />
         );
     }
@@ -284,6 +292,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             isAccountCreationEnabled,
             providerWithCustomCheckout,
             signInError,
+            useFloatingLabel,
             viewType,
         } = this.props;
 
@@ -308,6 +317,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                 onSignIn={this.handleSignIn}
                 shouldShowCreateAccountLink={isAccountCreationEnabled}
                 signInError={signInError}
+                useFloatingLabel={useFloatingLabel}
                 viewType={viewType}
             />
         );
@@ -484,7 +494,7 @@ export function mapToWithCheckoutCustomerProps({
             getSignInEmail,
             getConfig,
             getPaymentMethod,
-            getCart
+            getCart,
         },
         errors: { getSignInError, getSignInEmailError, getCreateCustomerAccountError },
         statuses: {
@@ -561,6 +571,7 @@ export function mapToWithCheckoutCustomerProps({
         signInError: getSignInError(),
         isStripeLinkEnabled: stripeUpeLinkEnabled,
         loadPaymentMethods: checkoutService.loadPaymentMethods,
+        useFloatingLabel: isFloatingLabelEnabled({ checkoutService, checkoutState }),
     };
 }
 

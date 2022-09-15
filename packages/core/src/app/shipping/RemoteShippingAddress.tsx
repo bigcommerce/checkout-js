@@ -13,6 +13,7 @@ export interface RemoteShippingAddressProps {
     containerId: string;
     methodId: string;
     formFields: FormField[];
+    useFloatingLabel?: boolean;
     deinitialize(options?: ShippingRequestOptions): Promise<CheckoutSelectors>;
     initialize(options?: ShippingInitializeOptions): Promise<CheckoutSelectors>;
     onUnhandledError?(error: Error): void;
@@ -41,7 +42,7 @@ class RemoteShippingAddress extends PureComponent<RemoteShippingAddressProps> {
     }
 
     render(): ReactNode {
-        const { containerId, formFields, methodId } = this.props;
+        const { containerId, formFields, methodId, useFloatingLabel } = this.props;
 
         return (
             <>
@@ -59,6 +60,7 @@ class RemoteShippingAddress extends PureComponent<RemoteShippingAddressProps> {
                                 key={`${field.id}-${field.name}`}
                                 onChange={this.handleFieldValueChange(field.name)}
                                 parentFieldName="shippingAddress.customFields"
+                                useFloatingLabel={useFloatingLabel}
                             />
                         ))}
                 </Fieldset>

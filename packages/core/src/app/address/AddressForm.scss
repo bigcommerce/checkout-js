@@ -1,5 +1,10 @@
 @import "../ui/Base";
 
+.checkout-address:has(.floating-form-field) {
+    margin-left: -0.23rem;
+    margin-right: -0.23rem;
+}
+
 .checkout-address {
     display: flex;
     flex-flow: row wrap;
@@ -18,6 +23,10 @@
         &:last-child {
             margin-bottom: 0;
         }
+    }
+
+    .dynamic-form-field.floating-form-field {
+        padding: 0 4px;
     }
 
     .dynamic-form-field--province,

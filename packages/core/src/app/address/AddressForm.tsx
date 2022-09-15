@@ -23,6 +23,7 @@ export interface AddressFormProps {
     formFields: FormField[];
     googleMapsApiKey?: string;
     shouldShowSaveAddress?: boolean;
+    useFloatingLabel?: boolean;
     onAutocompleteSelect?(address: Partial<Address>): void;
     onAutocompleteToggle?(state: { inputValue: string; isOpen: boolean }): void;
     onChange?(fieldName: string, value: string | string[]): void;
@@ -91,6 +92,7 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
             googleMapsApiKey,
             onAutocompleteToggle,
             shouldShowSaveAddress,
+            useFloatingLabel,
         } = this.props;
 
         return (
@@ -121,6 +123,7 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                                         onToggleOpen={onAutocompleteToggle}
                                         parentFieldName={fieldName}
                                         supportedCountries={countriesWithAutocomplete}
+                                        useFloatingLabel={useFloatingLabel}
                                     />
                                 );
                             }
@@ -154,6 +157,7 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
                                         field,
                                         translatedPlaceholderId,
                                     )}
+                                    useFloatingLabel={useFloatingLabel}
                                 />
                             );
                         })}
