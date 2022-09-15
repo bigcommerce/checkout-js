@@ -286,6 +286,13 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
                 <MobileView>
                     { matched => {
                         if (matched) {
+                            setTimeout(() => {
+                                const checkoutHeader = document.querySelector(".checkoutHeader");
+                                if (checkoutHeader !== null) {
+                                    checkoutHeader.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+                                }
+                            }, 1000);
+
                             return <div className="cart-summary-wrapper-mobile layout-cart">
                                     <LazyContainer>
                                         <CartSummary />
