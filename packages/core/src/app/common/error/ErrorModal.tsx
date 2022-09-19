@@ -92,8 +92,8 @@ export default class ErrorModal extends PureComponent<ErrorModalProps> {
         if (!error || !shouldShowErrorCode) {
             return;
         }
-
-        if (isRequestError(error) && error.headers['x-request-id']) {
+        
+        if (isRequestError(error) && error.headers?.['x-request-id']) {
             return (
                 <ErrorCode
                     code={error.headers['x-request-id']}

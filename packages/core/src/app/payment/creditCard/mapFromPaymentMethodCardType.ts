@@ -123,7 +123,7 @@ const instrumentTypeMap: Record<string, InstrumentComponent> = {
 };
 
 export default function mapFromPaymentMethodCardType(type: string): string | undefined {
-    return instrumentTypeMap[type].instrument || undefined;
+    return instrumentTypeMap[type]?.instrument || undefined;
 }
 
 export function getPaymentMethodIconComponent(type?: string): ComponentType<any> | undefined {
