@@ -11,7 +11,7 @@ import {
     FormField,
 } from '@bigcommerce/checkout-sdk';
 import { FormikProps, withFormik } from 'formik';
-import React, { Fragment, PureComponent, ReactNode } from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 
 import {
     AddressFormModal,

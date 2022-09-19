@@ -1,6 +1,5 @@
 import React, {
     Component,
-    Fragment,
     KeyboardEvent,
     KeyboardEventHandler,
     MouseEventHandler,

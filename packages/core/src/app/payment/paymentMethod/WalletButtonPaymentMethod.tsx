@@ -7,7 +7,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import { number } from 'card-validator';
 import { noop, some } from 'lodash';
-import React, { Component, Fragment, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 
 import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { preventDefault } from '../../common/dom';

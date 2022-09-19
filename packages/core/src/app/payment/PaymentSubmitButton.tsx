@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent, memo } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { withCheckout } from '../checkout';
 import { TranslatedString } from '../locale';

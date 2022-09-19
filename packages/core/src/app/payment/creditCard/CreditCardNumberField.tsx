@@ -4,7 +4,6 @@ import { max } from 'lodash';
 import React, {
     ChangeEventHandler,
     createRef,
-    Fragment,
     FunctionComponent,
     memo,
     PureComponent,

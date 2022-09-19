@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent } from 'react';
+import React, { FunctionComponent } from 'react';
 
 import { TranslatedString, withCurrency, WithCurrencyProps } from '../locale';
 

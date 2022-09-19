@@ -1,6 +1,6 @@
 import { CheckoutSelectors, PaymentInstrument } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { Component, Fragment, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 
 import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { TranslatedString } from '../../locale';

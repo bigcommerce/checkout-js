@@ -2,7 +2,7 @@ import { CheckoutSelectors, RequestError } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { FieldProps, FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
-import React, { Fragment, FunctionComponent, KeyboardEvent, memo, useCallback } from 'react';
+import React, { FunctionComponent, KeyboardEvent, memo, useCallback } from 'react';
 import { object, string } from 'yup';
 
 import { preventDefault } from '../common/dom';

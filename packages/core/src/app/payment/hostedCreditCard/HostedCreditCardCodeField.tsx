@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent, useCallback, useMemo } from 'react';
+import React, { FunctionComponent, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { FormField, TextInputIframeContainer } from '../../ui/form';

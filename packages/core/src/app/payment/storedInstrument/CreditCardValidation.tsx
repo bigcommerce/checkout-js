@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 import { TranslatedString } from '../../locale';
 import { CreditCardCodeField, CreditCardNumberField } from '../creditCard';

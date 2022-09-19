@@ -1,5 +1,5 @@
 import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
-import React, { Fragment, FunctionComponent, memo } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { isApplePayWindow } from '../common/utility';
 import { TranslatedString } from '../locale';

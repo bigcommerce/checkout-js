@@ -10,7 +10,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';
-import React, { Component, Fragment, lazy, ReactNode } from 'react';
+import React, { Component, lazy, ReactNode } from 'react';
 
 import { CheckoutContextProps, withCheckout } from '../checkout';
 import { ErrorLogger, ErrorModal } from '../common/error';

@@ -1,5 +1,5 @@
 import { Coupon, GiftCertificate, Tax } from '@bigcommerce/checkout-sdk';
-import React, { Fragment, FunctionComponent, memo } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '../locale';
 

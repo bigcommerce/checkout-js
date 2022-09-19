@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent } from 'react';
+import React, { FunctionComponent } from 'react';
 
 import { withCheckout, WithCheckoutProps } from '../checkout';
 import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';

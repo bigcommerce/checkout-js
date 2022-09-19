@@ -1,5 +1,5 @@
 import { FieldProps } from 'formik';
-import React, { Fragment, FunctionComponent, memo, useCallback, useMemo } from 'react';
+import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '../locale';
 import { FormField, TextInput } from '../ui/form';

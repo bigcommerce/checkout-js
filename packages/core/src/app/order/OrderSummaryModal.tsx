@@ -3,7 +3,7 @@ import {
     ShopperCurrency as ShopperCurrencyType,
     StoreCurrency,
 } from '@bigcommerce/checkout-sdk';
-import React, { Fragment, FunctionComponent, ReactNode } from 'react';
+import React, { FunctionComponent, ReactNode } from 'react';
 
 import { preventDefault } from '../common/dom';
 import { TranslatedString } from '../locale';

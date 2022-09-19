@@ -1,6 +1,6 @@
 import { RequestError } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { Fragment, PureComponent, ReactNode, SyntheticEvent } from 'react';
+import React, { PureComponent, ReactNode, SyntheticEvent } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { Button, ButtonSize } from '../../ui/button';
