@@ -22,9 +22,9 @@ import { CreditCardFieldset, getCreditCardValidationSchema } from '../creditCard
 import { getPaymentMethod } from '../payment-methods.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 import {
+    CardInstrumentFieldset,
     getInstrumentValidationSchema,
     isInstrumentFeatureAvailable,
-    CardInstrumentFieldset,
 } from '../storedInstrument';
 import { getCardInstrument, getInstruments } from '../storedInstrument/instruments.mock';
 
@@ -303,9 +303,7 @@ describe('CreditCardPaymentMethod', () => {
 
             component.update();
 
-            expect(component.find(CardInstrumentFieldset).prop('selectedInstrumentId')).toBeUndefined(
-                ,
-            );
+            expect(component.find(CardInstrumentFieldset).prop('selectedInstrumentId')).toBeUndefined();
 
             expect(component.find(CreditCardFieldset)).toHaveLength(1);
         });

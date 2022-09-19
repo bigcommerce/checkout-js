@@ -40,5 +40,5 @@ export default function resolveComponent<TResolveId extends Record<string, unkno
         .sort((a, b) => b.matches - a.matches)
         .filter((result) => result.matches > 0)[0];
 
-    return matched.component ?? results.find((result) => result.default)?.component;
+    return matched?.component ?? results.find((result) => result.default)?.component;
 }

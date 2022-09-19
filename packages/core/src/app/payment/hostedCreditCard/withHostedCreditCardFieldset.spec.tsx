@@ -1,7 +1,7 @@
 import {
-    createCheckoutService,
     CheckoutSelectors,
     CheckoutService,
+    createCheckoutService,
     HostedFieldType,
 } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
@@ -371,9 +371,7 @@ describe('withHostedCreditCardFieldset', () => {
 
         container.update();
 
-        expect(container.find(HostedCreditCardFieldset).prop('focusedFieldType')).toBeUndefined(
-            ,
-        );
+        expect(container.find(HostedCreditCardFieldset).prop('focusedFieldType')).toBeUndefined();
     });
 
     it('submits form when enter key is pressed', async () => {

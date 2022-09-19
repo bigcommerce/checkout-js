@@ -236,9 +236,7 @@ describe('HostedDropInPaymentMethod', () => {
             component.find(CardInstrumentFieldset).prop('onUseNewInstrument')();
             component.update();
 
-            expect(component.find(CardInstrumentFieldset).prop('selectedInstrumentId')).toBeUndefined(
-                ,
-            );
+            expect(component.find(CardInstrumentFieldset).prop('selectedInstrumentId')).toBeUndefined();
         });
 
         it('switches to "use new card" view if all instruments are deleted', () => {
