@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.256.0](https://github.com/bigcommerce/checkout-js/compare/v1.255.3...v1.256.0) (2022-09-20)
+
+
+### Features
+
+* **payment:** INT-6482 | Worldpay - Increase coverage in WorldpayCreditCardPaymentMethod ([#1013](https://github.com/bigcommerce/checkout-js/issues/1013)) ([b9ffc8c](https://github.com/bigcommerce/checkout-js/commit/b9ffc8c415aac62d5d68d8a141bf60a336512f3a))
+
 ### [1.255.3](https://github.com/bigcommerce/checkout-js/compare/v1.255.2...v1.255.3) (2022-09-15)
 
 ### [1.255.2](https://github.com/bigcommerce/checkout-js/compare/v1.255.1...v1.255.2) (2022-09-13)
