@@ -1,63 +1,63 @@
 {
   "extends": ["../../.eslintrc.json"],
   "rules": {
-    "@typescript-eslint/no-unsafe-argument": "off",
-    "@typescript-eslint/no-unsafe-member-access": "off",
-    "@typescript-eslint/no-unsafe-assignment": "off",
-    "@typescript-eslint/consistent-type-assertions": "off",
-    "jest/no-restricted-matchers": "off",
-    "jsx-a11y/click-events-have-key-events": "off",
-    "jsx-a11y/anchor-is-valid": "off",
-    "jsx-a11y/no-static-element-interactions": "off",
-    "jsx-a11y/alt-text": "off",
-    "jsx-a11y/aria-props": "off",
-    "jsx-a11y/no-noninteractive-tabindex": "off",
-    "@typescript-eslint/no-unnecessary-condition": "off",
-    "@typescript-eslint/no-unsafe-call": "off",
-    "@typescript-eslint/no-unsafe-return": "off",
-    "react-hooks/exhaustive-deps": "off",
-    "@typescript-eslint/restrict-template-expressions": "off",
-    "@typescript-eslint/await-thenable": "off",
-    "@bigcommerce/jsx-short-circuit-conditionals": "off",
-    "@typescript-eslint/no-misused-promises": "off",
-    "@typescript-eslint/no-floating-promises": "off",
-    "@typescript-eslint/naming-convention": "off",
-    "import/no-named-default": "off",
-    "no-underscore-dangle": "off",
-    "@typescript-eslint/no-use-before-define": "off",
-    "import/no-extraneous-dependencies": "off",
-    "@typescript-eslint/no-shadow": "off",
-    "react/jsx-no-useless-fragment": "off",
-    "jest/no-conditional-expect": "off",
-    "jest/no-identical-title": "off",
-    "no-plusplus": "off",
-    "no-nested-ternary": "off",
-    "no-restricted-globals": "off",
-    "@typescript-eslint/member-ordering": "off",
-    "react/jsx-no-bind": "off",
-    "complexity": "off",
-    "jest/no-if": "off",
-    "array-callback-return": "off",
-    "@typescript-eslint/ban-ts-comment": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "jest/no-standalone-expect": "off",
-    "no-param-reassign": "off",
-    "jest/prefer-hooks-on-top": "off",
-    "react/destructuring-assignment": "off",
-    "@typescript-eslint/default-param-last": "off",
-    "@typescript-eslint/require-await": "off",
-    "no-template-curly-in-string": "off",
-    "global-require": "off",
-    "@typescript-eslint/no-var-requires": "off",
-    "prettier/prettier": "off",
-    "jest/valid-expect": "off",
-    "no-multi-str": "off",
-    "no-empty": "off",
-    "no-proto": "off",
-    "no-continue": "off",
-    "no-new": "off",
-    "@typescript-eslint/no-empty-function": "off",
-    "no-multi-assign": "off",
-    "import/no-unresolved": "off"
+    "@typescript-eslint/no-unsafe-argument": "off", // 40 errors
+    "@typescript-eslint/no-unsafe-member-access": "off", // 167 errors
+    "@typescript-eslint/no-unsafe-assignment": "off", // 505 errors
+    "@typescript-eslint/consistent-type-assertions": "off", // 314 errors
+    "jest/no-restricted-matchers": "off", // 76 errors
+    "jsx-a11y/click-events-have-key-events": "off", // 10 errors
+    "jsx-a11y/anchor-is-valid": "off", // 27 errors
+    "jsx-a11y/no-static-element-interactions": "off", // 11 errors
+    "jsx-a11y/alt-text": "off", // 3 errors
+    "jsx-a11y/aria-props": "off", // 1 error
+    "jsx-a11y/no-noninteractive-tabindex": "off", // 1 error
+    "@typescript-eslint/no-unnecessary-condition": "off", // 79 errors
+    "@typescript-eslint/no-unsafe-call": "off", //66  errors
+    "@typescript-eslint/no-unsafe-return": "off", // 23 errors
+    "react-hooks/exhaustive-deps": "off", // 18 errors
+    "@typescript-eslint/restrict-template-expressions": "off", // 16 errors
+    "@typescript-eslint/await-thenable": "off", // 16 errors
+    "@bigcommerce/jsx-short-circuit-conditionals": "off", // 39 errors
+    "@typescript-eslint/no-misused-promises": "off", // 13 errors
+    "@typescript-eslint/no-floating-promises": "off", // 84 errors
+    "@typescript-eslint/naming-convention": "off", // 146 errors
+    "import/no-named-default": "off", // 21 errors
+    "no-underscore-dangle": "off", // 8 errors
+    "@typescript-eslint/no-use-before-define": "off", // 40 errors
+    "import/no-extraneous-dependencies": "off", // 4 errors
+    "@typescript-eslint/no-shadow": "off", // 3 errors
+    "react/jsx-no-useless-fragment": "off", // 7 errors
+    "jest/no-conditional-expect": "off", // 6 errors
+    "jest/no-identical-title": "off", // 8 errors
+    "no-plusplus": "off", // 3 errors
+    "no-nested-ternary": "off", // 5 errors
+    "no-restricted-globals": "off", // 3 errors
+    "@typescript-eslint/member-ordering": "off", // 3 errors
+    "react/jsx-no-bind": "off", // 5 errors
+    "complexity": "off", // 3 errors
+    "jest/no-if": "off", // 1 error
+    "array-callback-return": "off", // 2 errors
+    "@typescript-eslint/ban-ts-comment": "off", // 5 errors
+    "@typescript-eslint/no-explicit-any": "off", // 98 errors
+    "jest/no-standalone-expect": "off", // 1 error
+    "no-param-reassign": "off", // 2 errors
+    "jest/prefer-hooks-on-top": "off", // 1 error
+    "react/destructuring-assignment": "off", // 1 error
+    "@typescript-eslint/default-param-last": "off", // 1 error
+    "@typescript-eslint/require-await": "off", // 1 error
+    "no-template-curly-in-string": "off", // 1 error
+    "global-require": "off", // 22 errors
+    "@typescript-eslint/no-var-requires": "off", // 22 errors
+    "prettier/prettier": "off", // 11 errors
+    "jest/valid-expect": "off", // 19 errors
+    "no-multi-str": "off", // 1 error
+    "no-empty": "off", // 1 error
+    "no-proto": "off", // 1 error
+    "no-continue": "off", // 1 error
+    "no-new": "off", // 8 errors
+    "@typescript-eslint/no-empty-function": "off", // 1 error
+    "no-multi-assign": "off", // 1 error
+    "import/no-unresolved": "off" // 1 error
   }
 }

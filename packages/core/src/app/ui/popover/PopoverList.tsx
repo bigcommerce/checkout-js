@@ -18,7 +18,7 @@ export interface PopoverListItem {
 const PopoverList: FunctionComponent<PopoverListProps> = ({
     highlightedIndex = -1,
     testId,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+     
     getItemProps = (props: any) => props,
     menuProps = {},
     items,
@@ -33,7 +33,7 @@ const PopoverList: FunctionComponent<PopoverListProps> = ({
                 <li
                     className={getItemClassName(highlightedIndex, index)}
                     data-test={testId && `${testId}-item`}
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                     
                     {...getItemProps({
                         key: item.id,
                         index,

@@ -15,7 +15,7 @@ export interface IconProps {
 }
 
 export default function withIconContainer<TProps>(
-    // eslint-disable-next-line @typescript-eslint/naming-convention
+     
     OriginalComponent: ComponentType<TProps>,
 ): ComponentType<TProps & IconProps> {
     return memo(({ additionalClassName, size, testId, ...rest }) => (

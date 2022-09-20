@@ -67,7 +67,7 @@ const Modal: FunctionComponent<ModalProps> = ({
                 {header}
 
                 {shouldShowCloseButton && (
-                    // eslint-disable-next-line jsx-a11y/anchor-is-valid
+                     
                     <a
                         className="modal-close"
                         data-test="modal-close-button"

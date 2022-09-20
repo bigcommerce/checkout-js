@@ -24,7 +24,7 @@ export default class CustomError extends Error {
             this.stack = new Error().stack;
         }
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+         
         this.data = data;
         this.message = message;
         this.name = name;

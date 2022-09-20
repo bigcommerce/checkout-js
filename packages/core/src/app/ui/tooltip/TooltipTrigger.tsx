@@ -1,4 +1,4 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
+ 
 import { Placement } from 'popper.js';
 import React, { Component, ReactEventHandler, ReactNode } from 'react';
 import { Manager, Popper, Reference } from 'react-popper';

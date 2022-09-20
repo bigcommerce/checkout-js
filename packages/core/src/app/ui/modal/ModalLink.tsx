@@ -35,7 +35,7 @@ const ModalLink: FunctionComponent<ModalLinkProps> = ({ children, body, header }
 
     return (
         <ModalTrigger modal={renderModal}>
-            {/* eslint-disable */}
+            { }
             {({ onClick }) => <a onClick={preventDefault(onClick)}>{children}</a>}
         </ModalTrigger>
     );
