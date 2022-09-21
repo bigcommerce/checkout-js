@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.256.3](https://github.com/bigcommerce/checkout-js/compare/v1.256.2...v1.256.3) (2022-09-21)
+
+
+### Bug Fixes
+
+* **payment:** ADYEN-545 fixed adyen 3ds2 challenge window size ([14c9881](https://github.com/bigcommerce/checkout-js/commit/14c9881eb566ed2a2d2dd80ee13fb9aef425139b))
+
 ### [1.256.2](https://github.com/bigcommerce/checkout-js/compare/v1.256.1...v1.256.2) (2022-09-20)
 
 ### [1.256.1](https://github.com/bigcommerce/checkout-js/compare/v1.256.0...v1.256.1) (2022-09-20)
