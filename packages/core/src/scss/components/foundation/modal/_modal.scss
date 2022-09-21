@@ -105,6 +105,15 @@
             padding-left: 0;
             padding-right: 0;
         }
+
+        // Adyen 3ds2 default sizing fix
+        .adyen-checkout__threeds2__challenge.adyen-checkout__threeds2__challenge--05 {
+            height: calc(96vh - 150px);
+            padding-top: 0;
+            @include breakpoint("small") {
+                height: calc(80vh - 150px);
+            }
+        }
     }
 
     .modal-footer {
