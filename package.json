@@ -41,7 +41,7 @@
     "@bigcommerce/request-sender": "^0.5.1",
     "@bigcommerce/script-loader": "^2.2.2",
     "@sentry/browser": "^7.11.1",
-    "@sentry/integrations": "^7.11.1",
+    "@sentry/integrations": "^7.12.0",
     "@types/card-validator": "^4.1.0",
     "@types/classnames": "^2.2.6",
     "@types/credit-card-type": "^7.0.0",
