@@ -1,14 +1,17 @@
 import React, { FunctionComponent, useCallback, useState } from 'react';
+import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { connectFormik, ConnectFormikProps } from '../../common/form';
 
 import BoltCustomForm from './BoltCustomForm';
 import { HostedPaymentMethodProps } from './HostedPaymentMethod';
 import HostedWidgetPaymentMethod from './HostedWidgetPaymentMethod';
 
-const BoltEmbeddedPaymentMethod: FunctionComponent<HostedPaymentMethodProps> = ({
+const BoltEmbeddedPaymentMethod: FunctionComponent<HostedPaymentMethodProps & ConnectFormikProps<PaymentFormValues>> = ({
     isInitializing,
     initializePayment,
     deinitializePayment,
     method,
+    formik: { setFieldValue }
 }) => {
     const [showCreateAccountCheckbox, setShowCreateAccountCheckbox] = useState(false);
 
@@ -23,6 +26,9 @@ const BoltEmbeddedPaymentMethod: FunctionComponent<HostedPaymentMethodProps> = (
                     useBigCommerceCheckout: true,
                     onPaymentSelect: (hasBoltAccount: boolean) => {
                         setShowCreateAccountCheckbox(!hasBoltAccount);
+                        if (hasBoltAccount) {
+                            setFieldValue('shouldCreateAccount', false);
+                        }
                     },
                 },
             }),
@@ -52,4 +58,4 @@ const BoltEmbeddedPaymentMethod: FunctionComponent<HostedPaymentMethodProps> = (
     );
 };
 
-export default BoltEmbeddedPaymentMethod;
+export default connectFormik(BoltEmbeddedPaymentMethod);
