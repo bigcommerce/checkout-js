@@ -162,7 +162,7 @@
             "text": "Ange e-postadressen som är kopplad till ditt konto. Vi skickar en inloggningslänk till dig.",
             "header": "Skriv in din e-postadress",
             "header_with_email": "Bekräfta din e-postadress",
-            "link": "<a>Skicka en inloggningslänk till mig i stället</a>.",
+            "link": "<a>Skicka en inloggningslänk till mig i stället</a>",
             "use_another_email": "Använd en annan e-postadress",
             "send": "Skicka",
             "error_temporary_disabled": "Funktionen med inloggningslänk är tillfälligt otillgänglig. Logga in genom att ange ditt lösenord.",

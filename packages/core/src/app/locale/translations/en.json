@@ -162,7 +162,7 @@
             "text": "Enter the email address associated to your account. We will send you a sign-in link.",
             "header": "Account sign-in link",
             "header_with_email": "Confirm your email address",
-            "link": "<a>Send me a sign-in link instead</a>.",
+            "link": "<a>Send me a sign-in link instead</a>",
             "use_another_email": "Use another email",
             "send": "Send",
             "error_temporary_disabled": "Sign-in link functionality is temporary unavailable. Please sign in by entering your password.",

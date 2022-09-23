@@ -162,7 +162,7 @@
             "text": "Veuillez saisir l'adresse e-mail associée à votre compte. Nous vous enverrons un lien de connexion.",
             "header": "Saisissez votre adresse e-mail",
             "header_with_email": "Confirmez votre adresse e-mail",
-            "link": "<a>Envoyez-moi plutôt un lien de connexion</a>.",
+            "link": "<a>Envoyez-moi plutôt un lien de connexion</a>",
             "use_another_email": "Utiliser une autre adresse e-mail",
             "send": "Envoyer",
             "error_temporary_disabled": "La fonctionnalité d'envoi d'un lien de connexion est temporairement désactivée. Veuillez vous connecter en saisissant votre mot de passe.",

@@ -124,23 +124,25 @@ const LoginForm: FunctionComponent<LoginFormProps & WithLanguageProps & FormikPr
                 <PasswordField />
 
                 <p className="form-legend-container">
-                    { isSignInEmailEnabled &&
-                        <TranslatedLink
-                            id="login_email.link"
-                            onClick={ onSendLoginEmail }
-                            testId="customer-signin-link"
-                        />
-                    }
-                    { !isSignInEmailEnabled &&
-                        <a
-                            data-test="forgot-password-link"
-                            href={ forgotPasswordUrl }
-                            rel="noopener noreferrer"
-                            target="_blank"
-                        >
-                            <TranslatedString id="customer.forgot_password_action" />
-                        </a>
-                    }
+                    <span>
+                        { isSignInEmailEnabled &&
+                            <TranslatedLink
+                                id="login_email.link"
+                                onClick={ onSendLoginEmail }
+                                testId="customer-signin-link"
+                            />
+                        }
+                        { !isSignInEmailEnabled &&
+                            <a
+                                data-test="forgot-password-link"
+                                href={ forgotPasswordUrl }
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                <TranslatedString id="customer.forgot_password_action" />
+                            </a>
+                        }
+                    </span>
                     { viewType === CustomerViewType.Login && shouldShowCreateAccountLink &&
                         <span>
                             <TranslatedLink

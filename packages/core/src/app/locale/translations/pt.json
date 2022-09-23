@@ -162,7 +162,7 @@
             "text": "Insira o endereço de email associado à sua conta. Enviaremos um link de acesso para você.",
             "header": "Digite seu endereço de email",
             "header_with_email": "Confirme seu endereço de email.",
-            "link": "<a>Envie um link de acesso para mim</a>.",
+            "link": "<a>Envie um link de acesso para mim</a>",
             "use_another_email": "Usar outro email",
             "send": "Enviar",
             "error_temporary_disabled": "O recurso do link de acesso está temporária indisponível. Acesse digitando sua senha.",

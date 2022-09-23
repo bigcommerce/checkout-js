@@ -162,7 +162,7 @@
             "text": "Inserisci l'indirizzo e-mail associato al tuo account. Ti invieremo un link per l'accesso.",
             "header": "Inserisci il tuo indirizzo e-mail",
             "header_with_email": "Conferma il tuo indirizzo e-mail",
-            "link": "<a>Inviami un link per l'accesso</a>.",
+            "link": "<a>Inviami un link per l'accesso</a>",
             "use_another_email": "Usa un'altra e-mail",
             "send": "Invia",
             "error_temporary_disabled": "La funzionalità link per l'accesso non è al momento disponibile. Accedi inserendo la password.",
