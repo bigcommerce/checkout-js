@@ -80,14 +80,16 @@ exports[`LoginForm matches snapshot 1`] = `
         <p
           class="form-legend-container"
         >
-          <a
-            data-test="forgot-password-link"
-            href="/forgot-password"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Forgot password?
-          </a>
+          <span>
+            <a
+              data-test="forgot-password-link"
+              href="/forgot-password"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Forgot password?
+            </a>
+          </span>
         </p>
         <div
           class="form-actions"
