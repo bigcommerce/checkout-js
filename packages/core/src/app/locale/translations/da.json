@@ -162,7 +162,7 @@
             "text": "Indtast den e-mailadresse, der er knyttet til din konto. Vi sender dig et link til logon.",
             "header": "Indtast din e-mailadresse",
             "header_with_email": "Bekræft din e-mailadresse",
-            "link": "<a>Send mig et link til logon i stedet for</a>.",
+            "link": "<a>Send mig et link til logon i stedet for</a>",
             "use_another_email": "Brug en anden e-mailadresse",
             "send": "Send",
             "error_temporary_disabled": "Login-linkfunktionalitet er midlertidigt utilgængelig. Log ind ved at indtaste din adgangskode.",

@@ -162,7 +162,7 @@
             "text": "Ingresa la dirección de correo electrónico asociada a tu cuenta. Te enviaremos un enlace de inicio de sesión.",
             "header": "Ingresa tu dirección de correo electrónico",
             "header_with_email": "Confirma tu dirección de correo electrónico",
-            "link": "<a>En su lugar, necesito que se me envíe un enlace de inicio de sesión</a>.",
+            "link": "<a>En su lugar, necesito que se me envíe un enlace de inicio de sesión</a>",
             "use_another_email": "Usar otro correo electrónico",
             "send": "Enviar",
             "error_temporary_disabled": "La funcionalidad del enlace de inicio de sesión no está disponible temporalmente. Inicia sesión con tu contraseña.",

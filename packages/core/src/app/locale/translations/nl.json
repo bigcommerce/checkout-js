@@ -162,7 +162,7 @@
             "text": "Voer het e-mailadres in dat aan uw account is gekoppeld. We sturen u een inloglink.",
             "header": "Voer uw e-mailadres in",
             "header_with_email": "Bevestig uw e-mailadres",
-            "link": "<a>Stuur me in plaats daarvan een inloglink</a>.",
+            "link": "<a>Stuur me in plaats daarvan een inloglink</a>",
             "use_another_email": "Gebruik een ander e-mailadres",
             "send": "Verzenden",
             "error_temporary_disabled": "Inloglinks zijn tijdelijk niet beschikbaar. Log in door uw wachtwoord in te voeren.",

@@ -162,7 +162,7 @@
             "text": "Skriv inn e-postadressen knyttet til kontoen din. Vi sender deg en påloggingslenke.",
             "header": "Oppgi e-postadressen din",
             "header_with_email": "Bekreft e-postadressen din",
-            "link": "<a>Send meg en påloggingslenke i stedet</a>.",
+            "link": "<a>Send meg en påloggingslenke i stedet</a>",
             "use_another_email": "Bruk en annen e-post",
             "send": "Send",
             "error_temporary_disabled": "Funksjonaliteten til påloggingslenken er midlertidig utilgjengelig. Logg på ved å skrive inn passordet ditt.",

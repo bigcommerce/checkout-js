@@ -162,7 +162,7 @@
             "text": "Geben Sie die mit Ihrem Konto verknüpfte E-Mail-Adresse ein. Wir senden Ihnen einen Anmeldelink.",
             "header": "Geben Sie Ihre E-Mail-Adresse ein",
             "header_with_email": "Bitte bestätigen Sie Ihre E-Mail-Adresse",
-            "link": "<a>Senden Sie mir stattdessen einen Anmeldelink</a>.",
+            "link": "<a>Senden Sie mir stattdessen einen Anmeldelink</a>",
             "use_another_email": "Eine andere E-Mail-Adresse verwenden",
             "send": "Senden",
             "error_temporary_disabled": "Die Funktion für Anmeldelinks ist vorübergehend nicht verfügbar. Bitte melden Sie sich an, indem Sie Ihr Passwort eingeben.",
