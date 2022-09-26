@@ -393,7 +393,6 @@ class Payment extends Component<PaymentProps & WithCheckoutPaymentProps & WithLa
             selectedMethod = defaultMethod,
             submitFunctions,
         } = this.state;
-        console.log('submitting');
 
         const customSubmit = selectedMethod && submitFunctions[
             getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway)
