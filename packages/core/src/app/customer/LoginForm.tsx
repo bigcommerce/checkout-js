@@ -157,7 +157,7 @@ const LoginForm: FunctionComponent<
                                 onClick={onCreateAccount}
                             />
                         </span>
-                    )}
+                    }
                 </p>
 
                 <div className="form-actions">

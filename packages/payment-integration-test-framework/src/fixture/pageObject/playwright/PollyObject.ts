@@ -92,7 +92,7 @@ export class PollyObject {
     }
 
     stop(): Promise<void> | undefined {
-        return this.polly && this.polly.stop();
+        return this.polly?.stop();
     }
 
     enableRecord(): void {
