@@ -9,12 +9,19 @@ export function track(data: any) {
   window.dataLayer.push(data);
 }
 
+export interface CouponData {
+  coupon: string;
+  discount: number;
+}
+
+export interface PromotionData {
+  id?: string | number;
+  discount: number;
+}
+
 interface AddCouponData {
   event: string;
-  ecommerce: {
-    coupon: string;
-    discount: number;
-  };
+  ecommerce: CouponData;
 }
 
 export function trackAddCoupon(coupon: string, discount: number) {
@@ -37,16 +44,15 @@ interface Item {
   item_list_name?: string;
   price: number;
   quantity: number;
+  coupons: CouponData[];
+  promotions: PromotionData[];
 }
 
 export interface ShippingData {
   currency?: string;
   value?: string | number;
   shipping_tier?: string;
-  coupons: Array<{
-    coupon: string;
-    discount: number;
-  }>;
+  coupons: CouponData[];
   items: Item[];
 }
 
@@ -91,10 +97,7 @@ export interface OrderData {
     tax: number | undefined;
     shipping: number | string | undefined;
     currency: string | undefined;
-    coupons: Array<{
-      coupon: string;
-      discount: number;
-    }>;
+    coupons: CouponData[];
     items: Item[];
   };
 }

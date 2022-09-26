@@ -6,7 +6,7 @@ import React, { lazy, Component, ReactNode } from 'react';
 import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
 import { isCustomError, CustomError, ErrorLogger, ErrorModal } from '../common/error';
-import { trackAddCoupon, trackAddShippingInfo, trackCheckoutProgress, ShippingData } from '../common/tracking';
+import { trackAddCoupon, trackAddShippingInfo, trackCheckoutProgress, CouponData, PromotionData, ShippingData } from '../common/tracking';
 import { retry } from '../common/utility';
 import { CheckoutSuggestion, CustomerInfo, CustomerSignOutEvent, CustomerViewType } from '../customer';
 import { isEmbedded, EmbeddedCheckoutStylesheet } from '../embeddedCheckout';
@@ -195,19 +195,22 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
         }
         // if shipping tier has changed
         if ( previousProps.consignments?.[0]?.selectedShippingOption?.description !== consignments?.[0]?.selectedShippingOption?.description ) {
-            const shippingInfo: ShippingData = {
-                currency: cart?.currency.code,
-                value: cart?.cartAmount,
-                shipping_tier: consignments?.[0]?.selectedShippingOption?.description,
-                coupons: [],
-                items: [],
-            };
+            const coupons: CouponData[] = [];
             cart?.coupons?.forEach(coupon => {
-                shippingInfo.coupons.push({
+                coupons.push({
                     coupon: coupon.code,
                     discount: coupon.discountedAmount,
                 });
             });
+
+            const shippingInfo: ShippingData = {
+                currency: cart?.currency.code,
+                value: cart?.cartAmount,
+                shipping_tier: consignments?.[0]?.selectedShippingOption?.description,
+                coupons,
+                items: [],
+            };
+
             const cartItemLists = [
                 cart?.lineItems.customItems,
                 cart?.lineItems.digitalItems,
@@ -216,14 +219,35 @@ class Checkout extends Component<CheckoutProps & WithCheckoutProps & WithLanguag
             ];
             cartItemLists.forEach(itemList => {
                 itemList?.forEach((item: CustomItem | DigitalItem | GiftCertificateItem | PhysicalItem) => {
+                    const itemCoupons: CouponData[] = [];
+                    const itemPromotions: PromotionData[] = [];
+
+                    const itemFullPrice = 'listPrice' in item ? item.listPrice : item.amount;
+                    const itemDiscountedPrice = ('salePrice' in item ? item.salePrice : itemFullPrice) - ('couponAmount' in item ? item.couponAmount : 0);
+                    const itemQuantity = 'quantity' in item ? item.quantity : 1;
+
+                    if ( 'discounts' in item ) {
+                        let itemCouponIndex = 0;
+                        item.discounts.forEach(({id, discountedAmount}: {id?: string | number; discountedAmount: number}) => {
+                            if ( id === 'coupon' ) {
+                                itemCoupons.push({coupon: coupons[itemCouponIndex]?.coupon, discount: discountedAmount / itemQuantity});
+                                itemCouponIndex++;
+                            } else {
+                                itemPromotions.push({id, discount: discountedAmount / itemQuantity});
+                            }
+                        });
+                    }
+
                     shippingInfo.items.push({
                         item_id: 'productId' in item ? item.productId : undefined,
                         item_name: item.name,
                         item_variant: 'options' in item ? item.options?.[0]?.value : undefined,
                         currency: cart?.currency.code,
                         item_brand: 'brand' in item ? item.brand ?? 'MitoQ' : undefined,
-                        price: 'salePrice' in item ? item.salePrice : 'listPrice' in item ? item.listPrice : item.amount,
-                        quantity: 'quantity' in item ? item.quantity : 1,
+                        price: itemDiscountedPrice,
+                        quantity: itemQuantity,
+                        coupons: itemCoupons,
+                        promotions: itemPromotions,
                     });
                 });
             });
