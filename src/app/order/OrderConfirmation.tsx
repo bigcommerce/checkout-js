@@ -123,8 +123,8 @@ class OrderConfirmation extends Component<
 
                         if ( 'discounts' in item ) {
                             let itemCouponIndex = 0;
-                            Object.keys(item.discounts).forEach((id: string | number) => {
-                                const discountedAmount = item.discounts[id]; // item.discounts of type {[key: string]: number} but incorrectly typed
+                            Object.keys(item.discounts).forEach((id: any) => {
+                                const discountedAmount = item.discounts[id] as unknown as number ; // item.discounts is of type {[key: string]: number} but incorrectly typed
                                 if ( id === 'coupon' ) {
                                     itemCoupons.push({coupon: coupons[itemCouponIndex]?.coupon, discount: discountedAmount / itemQuantity});
                                     itemCouponIndex++;
