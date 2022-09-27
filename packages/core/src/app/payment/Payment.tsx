@@ -39,7 +39,6 @@ export interface PaymentProps {
     errorLogger: ErrorLogger;
     isEmbedded?: boolean;
     isUsingMultiShipping?: boolean;
-    isStripeLinkAuthenticated: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void; // TODO: We're currently doing this check in multiple places, perhaps we should move it up so this check get be done in a single place instead.
     onCartChangedError?(error: CartChangedError): void;
     onFinalize?(): void;
@@ -509,10 +508,10 @@ class Payment extends Component<
     };
 }
 
-export function mapToPaymentProps(
-    { checkoutService, checkoutState }: CheckoutContextProps,
-    props: PaymentProps
-): WithCheckoutPaymentProps | null {
+export function mapToPaymentProps({
+        checkoutService,
+        checkoutState,
+}: CheckoutContextProps): WithCheckoutPaymentProps | null {
     const {
         data: {
             getCheckout,
@@ -533,9 +532,14 @@ export function mapToPaymentProps(
     const customer = getCustomer();
     const consignments = getConsignments();
     const { isComplete = false } = getOrder() || {};
-    const stripeUpePaymentMethod = getPaymentMethod('card', PaymentMethodId.StripeUPE);
-    const methods = props.isStripeLinkAuthenticated && stripeUpePaymentMethod ?
-        [stripeUpePaymentMethod]: getPaymentMethods() || EMPTY_ARRAY;
+    let methods = getPaymentMethods() || EMPTY_ARRAY;
+    const stripeUpePaymentMethod = methods.filter(method =>
+        method.id === 'card' && method.gateway === PaymentMethodId.StripeUPE
+    );
+
+    if (customer?.isStripeLinkAuthenticated && !!stripeUpePaymentMethod.length){
+        methods = stripeUpePaymentMethod
+    }
 
     if (!checkout || !config || !customer || isComplete) {
         return null;

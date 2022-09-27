@@ -28,7 +28,6 @@ export interface StripeGuestFormProps {
     deinitialize(options: CustomerRequestOptions): void;
     initialize(options: CustomerInitializeOptions): void;
     onShowLogin(): void;
-    updateStripeLinkAuthenticated(auth: boolean): void;
 }
 
 const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<GuestFormValues>> = ({
@@ -44,7 +43,6 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
     requiresMarketingConsent,
     privacyPolicyUrl,
     step,
-    updateStripeLinkAuthenticated,
 }) => {
 
     const [continueAsAGuestButton, setContinueAsAGuestButton] = useState(true);
@@ -62,7 +60,6 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
         onChangeEmail(email);
         setEmailValue(email);
         setContinueAsAGuestButton(!email);
-        updateStripeLinkAuthenticated(authenticated);
         setAuthentication(authenticated);
         if(!authenticated){
             setIsNewAuth(true);
