@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.256.8](https://github.com/bigcommerce/checkout-js/compare/v1.256.7...v1.256.8) (2022-09-27)
+
+
+### Bug Fixes
+
+* **payment:** BOLT-105 Send 'create_bolt_account: false' for shoppers with registered Bolt account ([d3cb3f2](https://github.com/bigcommerce/checkout-js/commit/d3cb3f294ca2e7bd9775b75dab76f35b8d42a827))
+
 ### [1.256.7](https://github.com/bigcommerce/checkout-js/compare/v1.256.6...v1.256.7) (2022-09-27)
 
 ### [1.256.6](https://github.com/bigcommerce/checkout-js/compare/v1.256.5...v1.256.6) (2022-09-27)
