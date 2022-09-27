@@ -1,5 +1,5 @@
 import { mount } from 'enzyme';
-import React, { createContext, Context, FunctionComponent } from 'react';
+import React, { Context, createContext, FunctionComponent } from 'react';
 
 import createInjectHoc from './createInjectHoc';
 
@@ -26,8 +26,11 @@ describe('createInjectHoc()', () => {
         const Inner = () => <div />;
         const Outer = withFoo(Inner);
 
-        expect(mount(<Outer />).find(Inner).props())
-            .toEqual(contextValue);
+        expect(
+            mount(<Outer />)
+                .find(Inner)
+                .props(),
+        ).toEqual(contextValue);
     });
 
     it('creates HOC that injects additional props picked from context', () => {
@@ -37,8 +40,11 @@ describe('createInjectHoc()', () => {
         const Inner = () => <div />;
         const Outer = withFoo(Inner);
 
-        expect(mount(<Outer />).find(Inner).props())
-            .toEqual({ count: contextValue.count });
+        expect(
+            mount(<Outer />)
+                .find(Inner)
+                .props(),
+        ).toEqual({ count: contextValue.count });
     });
 
     it('creates HOC that passes outer props to inner component', () => {
@@ -46,11 +52,14 @@ describe('createInjectHoc()', () => {
         const Inner: FunctionComponent<{ abc: string }> = () => <div />;
         const Outer = withFoo(Inner);
 
-        expect(mount(<Outer abc="abc" />).find(Inner).props())
-            .toEqual({
-                ...contextValue,
-                abc: 'abc',
-            });
+        expect(
+            mount(<Outer abc="abc" />)
+                .find(Inner)
+                .props(),
+        ).toEqual({
+            ...contextValue,
+            abc: 'abc',
+        });
     });
 
     it('creates HOC with display name', () => {
@@ -60,7 +69,6 @@ describe('createInjectHoc()', () => {
         const Inner = () => <div />;
         const Outer = withFoo(Inner);
 
-        expect(mount(<Outer />).name())
-            .toEqual('withFoo(Inner)');
+        expect(mount(<Outer />).name()).toBe('withFoo(Inner)');
     });
 });

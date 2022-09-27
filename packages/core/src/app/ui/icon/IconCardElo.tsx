@@ -3,7 +3,12 @@ import React, { FunctionComponent } from 'react';
 import withIconContainer from './withIconContainer';
 
 const IconCardElo: FunctionComponent = () => (
-    <svg aria-labelledby="iconCardEloTitle" role="img" viewBox="0 0 40 26" xmlns="http://www.w3.org/2000/svg">
+    <svg
+        aria-labelledby="iconCardEloTitle"
+        role="img"
+        viewBox="0 0 40 26"
+        xmlns="http://www.w3.org/2000/svg"
+    >
         <title id="iconCardEloTitle">Elo</title>
         <mask height="7.7" id="a" maskUnits="userSpaceOnUse" width="3.2" x="5.8" y="10">
             <path d="M5.8 10v7.7H9V10H5.7z" fill="#fff" />
@@ -20,7 +25,10 @@ const IconCardElo: FunctionComponent = () => (
             <path d="M16 14.8a5.2 5.2 0 01-6.8 3.9l.7-2a3 3 0 004-2.3z" fill="#ec442d" />
         </g>
         <path d="M16 12.8l-2.1.5a3 3 0 00-4-2.3l-.7-2a5.2 5.2 0 016.8 3.8" fill="#fdda2e" />
-        <path d="M29.5 13.2a1.9 1.9 0 000 2.8l-.9 1a3.2 3.2 0 010-4.8l1 1zm4.3 2a3.2 3.2 0 01-4.1 2.3l.4-1.2a1.9 1.9 0 002.5-1.4zm0-1.3l-1.2.3a1.9 1.9 0 00-2.5-1.4l-.4-1.2a3.2 3.2 0 014.1 2.3" fill="#fff" />
+        <path
+            d="M29.5 13.2a1.9 1.9 0 000 2.8l-.9 1a3.2 3.2 0 010-4.8l1 1zm4.3 2a3.2 3.2 0 01-4.1 2.3l.4-1.2a1.9 1.9 0 002.5-1.4zm0-1.3l-1.2.3a1.9 1.9 0 00-2.5-1.4l-.4-1.2a3.2 3.2 0 014.1 2.3"
+            fill="#fff"
+        />
     </svg>
 );
 

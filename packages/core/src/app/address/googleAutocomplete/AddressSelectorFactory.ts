@@ -6,8 +6,8 @@ export default class AddressSelectorFactory {
         const addressSelector = new AddressSelector(autocompleteData);
 
         switch (addressSelector.getCountry()) {
-        case 'GB':
-            return new AddressSelectorUK(autocompleteData);
+            case 'GB':
+                return new AddressSelectorUK(autocompleteData);
         }
 
         return addressSelector;

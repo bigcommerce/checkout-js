@@ -1,7 +1,7 @@
 import { FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
 import { FieldProps } from 'formik';
 import { includes } from 'lodash';
-import React, { memo, useCallback, useMemo, FunctionComponent, ReactNode } from 'react';
+import React, { FunctionComponent, memo, ReactNode, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '../../locale';
 
@@ -27,7 +27,7 @@ export interface DynamicFormFieldProps {
     onChange?(value: string | string[]): void;
 }
 
-const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
+const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
     field: {
         fieldType,
         type,
@@ -51,23 +51,22 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
     const fieldInputId = inputId || name;
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
 
-    const labelComponent = useMemo(() => (
-        <Label htmlFor={ fieldInputId } id={ `${fieldInputId}-label` }>
-            { label || fieldLabel }
-            { !required &&
-                <>
-                    { ' ' }
-                    <small className="optimizedCheckout-contentSecondary">
-                        <TranslatedString id="common.optional_text" />
-                    </small>
-                </> }
-        </Label>
-    ), [
-        fieldInputId,
-        fieldLabel,
-        required,
-        label,
-    ]);
+    const labelComponent = useMemo(
+        () => (
+            <Label htmlFor={fieldInputId} id={`${fieldInputId}-label`}>
+                {label || fieldLabel}
+                {!required && (
+                    <>
+                        {' '}
+                        <small className="optimizedCheckout-contentSecondary">
+                            <TranslatedString id="common.optional_text" />
+                        </small>
+                    </>
+                )}
+            </Label>
+        ),
+        [fieldInputId, fieldLabel, required, label],
+    );
 
     const dynamicFormFieldType = useMemo((): DynamicFormFieldType => {
         if (fieldType === 'text') {
@@ -75,60 +74,63 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps>  = ({
                 return DynamicFormFieldType.number;
             }
 
-            if (includes(name,'phone') || includes(name,'tel')) {
+            if (includes(name, 'phone') || includes(name, 'tel')) {
                 return DynamicFormFieldType.telephone;
             }
 
-            return secret ?
-                DynamicFormFieldType.password :
-                DynamicFormFieldType.text;
+            return secret ? DynamicFormFieldType.password : DynamicFormFieldType.text;
         }
 
         return fieldType as DynamicFormFieldType;
     }, [fieldType, type, secret]);
 
-    const renderInput = useCallback(({ field }: FieldProps<string>) => (
-        <DynamicInput
-            { ...field }
-            aria-labelledby={ `${fieldInputId}-label ${fieldInputId}-field-error-message` }
-            autoComplete={ autocomplete }
-            fieldType={ dynamicFormFieldType }
-            id={ fieldInputId }
-            max={ max }
-            maxLength={ maxLength || undefined }
-            min={ min }
-            options={ options && options.items }
-            placeholder={ placeholder || (options && options.helperLabel) }
-            rows={ options && (options as any).rows }
-        />
-    ), [
-        fieldInputId,
-        max,
-        maxLength,
-        min,
-        options,
-        placeholder,
-        dynamicFormFieldType,
-        autocomplete,
-    ]);
+    const renderInput = useCallback(
+        ({ field }: FieldProps<string>) => (
+            <DynamicInput
+                {...field}
+                aria-labelledby={`${fieldInputId}-label ${fieldInputId}-field-error-message`}
+                autoComplete={autocomplete}
+                fieldType={dynamicFormFieldType}
+                id={fieldInputId}
+                max={max}
+                maxLength={maxLength || undefined}
+                min={min}
+                options={options && options.items}
+                placeholder={placeholder || (options && options.helperLabel)}
+                rows={options && (options as any).rows}
+            />
+        ),
+        [
+            fieldInputId,
+            max,
+            maxLength,
+            min,
+            options,
+            placeholder,
+            dynamicFormFieldType,
+            autocomplete,
+        ],
+    );
 
     return (
-        <div className={ `dynamic-form-field ${extraClass}` }>
-            { fieldType === DynamicFormFieldType.checkbox ?
+        <div className={`dynamic-form-field ${extraClass}`}>
+            {fieldType === DynamicFormFieldType.checkbox ? (
                 <CheckboxGroupFormField
-                    id={ fieldInputId }
-                    label={ labelComponent }
-                    name={ fieldName }
-                    onChange={ onChange }
-                    options={ (options && options.items) || [] }
-                /> :
+                    id={fieldInputId}
+                    label={labelComponent}
+                    name={fieldName}
+                    onChange={onChange}
+                    options={(options && options.items) || []}
+                />
+            ) : (
                 <FormField
-                    id={ fieldInputId }
-                    input={ renderInput }
-                    label={ labelComponent }
-                    name={ fieldName }
-                    onChange={ onChange }
-                /> }
+                    id={fieldInputId}
+                    input={renderInput}
+                    label={labelComponent}
+                    name={fieldName}
+                    onChange={onChange}
+                />
+            )}
         </div>
     );
 };

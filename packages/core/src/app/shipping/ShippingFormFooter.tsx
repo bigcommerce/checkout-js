@@ -28,46 +28,48 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
             isLoading,
         } = this.props;
 
-        return <>
-            <Fieldset
-                id="checkout-shipping-options"
-                legend={
-                    <>
-                        <Legend>
-                            <TranslatedString id="shipping.shipping_method_label" />
-                        </Legend>
+        return (
+            <>
+                <Fieldset
+                    id="checkout-shipping-options"
+                    legend={
+                        <>
+                            <Legend>
+                                <TranslatedString id="shipping.shipping_method_label" />
+                            </Legend>
 
-                        { cartHasChanged &&
-                            <Alert type={ AlertType.Error }>
-                                <strong>
-                                    <TranslatedString id="shipping.cart_change_error" />
-                                </strong>
-                            </Alert> }
-                    </>
-                }
-            >
-                <ShippingOptions
-                    isMultiShippingMode={ isMultiShippingMode }
-                    isUpdatingAddress={ isLoading }
-                    shouldShowShippingOptions={ shouldShowShippingOptions }
-                />
-            </Fieldset>
-
-            { shouldShowOrderComments &&
-                <OrderComments /> }
-
-            <div className="form-actions">
-                <Button
-                    disabled={ shouldDisableSubmit }
-                    id="checkout-shipping-continue"
-                    isLoading={ isLoading }
-                    type="submit"
-                    variant={ ButtonVariant.Primary }
+                            {cartHasChanged && (
+                                <Alert type={AlertType.Error}>
+                                    <strong>
+                                        <TranslatedString id="shipping.cart_change_error" />
+                                    </strong>
+                                </Alert>
+                            )}
+                        </>
+                    }
                 >
-                    <TranslatedString id="common.continue_action" />
-                </Button>
-            </div>
-        </>;
+                    <ShippingOptions
+                        isMultiShippingMode={isMultiShippingMode}
+                        isUpdatingAddress={isLoading}
+                        shouldShowShippingOptions={shouldShowShippingOptions}
+                    />
+                </Fieldset>
+
+                {shouldShowOrderComments && <OrderComments />}
+
+                <div className="form-actions">
+                    <Button
+                        disabled={shouldDisableSubmit}
+                        id="checkout-shipping-continue"
+                        isLoading={isLoading}
+                        type="submit"
+                        variant={ButtonVariant.Primary}
+                    >
+                        <TranslatedString id="common.continue_action" />
+                    </Button>
+                </div>
+            </>
+        );
     }
 }
 

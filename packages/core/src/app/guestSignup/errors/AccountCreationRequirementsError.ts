@@ -1,4 +1,4 @@
-import { setPrototypeOf, CustomError } from '../../common/error';
+import { CustomError, setPrototypeOf } from '../../common/error';
 import { getLanguageService } from '../../locale';
 
 export default class AccountCreationRequirementsError extends CustomError {
@@ -6,7 +6,9 @@ export default class AccountCreationRequirementsError extends CustomError {
         super({
             name: 'ACCOUNT_CREATION_REQUIREMENTS_ERROR',
             message: requirements,
-            title: getLanguageService().translate('customer.create_account_requirements_error_heading'),
+            title: getLanguageService().translate(
+                'customer.create_account_requirements_error_heading',
+            ),
             data,
         });
 

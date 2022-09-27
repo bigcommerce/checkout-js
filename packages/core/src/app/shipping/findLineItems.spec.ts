@@ -8,32 +8,24 @@ import findLineItems from './findLineItems';
 
 describe('findLineItems()', () => {
     it('returns empty if couldnt find item', () => {
-        expect(findLineItems(
-            getCart(),
-            getConsignment()
-        ))
-            .toHaveLength(0);
+        expect(findLineItems(getCart(), getConsignment())).toHaveLength(0);
     });
 
     it('returns physical item from cart when consignment line item id matches', () => {
-        expect(findLineItems(
-            getCart(),
-            {
+        expect(
+            findLineItems(getCart(), {
                 ...getConsignment(),
-                lineItemIds: [ getPhysicalItem().id as string ],
-            }
-        ))
-            .toEqual([ getPhysicalItem() ]);
+                lineItemIds: [getPhysicalItem().id as string],
+            }),
+        ).toEqual([getPhysicalItem()]);
     });
 
     it('returns parent item only', () => {
-        expect(findLineItems(
-            getCart(),
-            {
+        expect(
+            findLineItems(getCart(), {
                 ...getConsignment(),
                 lineItemIds: map(getPicklistItem(), 'id') as string[],
-            }
-        ))
-            .toHaveLength(1);
+            }),
+        ).toHaveLength(1);
     });
 });

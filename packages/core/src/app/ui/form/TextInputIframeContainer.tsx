@@ -14,15 +14,15 @@ const TextInputIframeContainer: FunctionComponent<TextInputIframeContainerProps>
     ...props
 }) => (
     <div
-        { ...props }
-        className={ classNames(
+        {...props}
+        className={classNames(
             'form-input',
             'optimizedCheckout-form-input',
             { 'form-input--focus': appearFocused },
             { 'optimizedCheckout-form-input--focus': appearFocused },
-            additionalClassName
-        ) }
-        data-test={ testId }
+            additionalClassName,
+        )}
+        data-test={testId}
     />
 );
 

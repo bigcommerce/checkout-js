@@ -2,54 +2,38 @@ import mapFromPaymentMethodCardType from './mapFromPaymentMethodCardType';
 
 describe('mapFromPaymentMethodCardType()', () => {
     it('maps from payment method card type', () => {
-        expect(mapFromPaymentMethodCardType('AMEX'))
-            .toEqual('american-express');
+        expect(mapFromPaymentMethodCardType('AMEX')).toBe('american-express');
 
-        expect(mapFromPaymentMethodCardType('DINERS'))
-            .toEqual('diners-club');
+        expect(mapFromPaymentMethodCardType('DINERS')).toBe('diners-club');
 
-        expect(mapFromPaymentMethodCardType('DISCOVER'))
-            .toEqual('discover');
+        expect(mapFromPaymentMethodCardType('DISCOVER')).toBe('discover');
 
-        expect(mapFromPaymentMethodCardType('JCB'))
-            .toEqual('jcb');
+        expect(mapFromPaymentMethodCardType('JCB')).toBe('jcb');
 
-        expect(mapFromPaymentMethodCardType('MAESTRO'))
-            .toEqual('maestro');
+        expect(mapFromPaymentMethodCardType('MAESTRO')).toBe('maestro');
 
-        expect(mapFromPaymentMethodCardType('MC'))
-            .toEqual('mastercard');
+        expect(mapFromPaymentMethodCardType('MC')).toBe('mastercard');
 
-        expect(mapFromPaymentMethodCardType('CUP'))
-            .toEqual('unionpay');
+        expect(mapFromPaymentMethodCardType('CUP')).toBe('unionpay');
 
-        expect(mapFromPaymentMethodCardType('VISA'))
-            .toEqual('visa');
+        expect(mapFromPaymentMethodCardType('VISA')).toBe('visa');
 
-        expect(mapFromPaymentMethodCardType('CB'))
-            .toEqual('cb');
+        expect(mapFromPaymentMethodCardType('CB')).toBe('cb');
 
-        expect(mapFromPaymentMethodCardType('MADA'))
-            .toEqual('mada');
+        expect(mapFromPaymentMethodCardType('MADA')).toBe('mada');
 
-        expect(mapFromPaymentMethodCardType('DANKORT'))
-            .toEqual('dankort');
+        expect(mapFromPaymentMethodCardType('DANKORT')).toBe('dankort');
 
-        expect(mapFromPaymentMethodCardType('CARNET'))
-            .toEqual('carnet');
+        expect(mapFromPaymentMethodCardType('CARNET')).toBe('carnet');
 
-        expect(mapFromPaymentMethodCardType('ELO'))
-            .toEqual('elo');
+        expect(mapFromPaymentMethodCardType('ELO')).toBe('elo');
 
-        expect(mapFromPaymentMethodCardType('HIPER'))
-            .toEqual('hiper');
+        expect(mapFromPaymentMethodCardType('HIPER')).toBe('hiper');
 
-        expect(mapFromPaymentMethodCardType('TROY'))
-            .toEqual('troy');
+        expect(mapFromPaymentMethodCardType('TROY')).toBe('troy');
     });
 
     it('returns undefined if unable to map type', () => {
-        expect(mapFromPaymentMethodCardType('FOOBAR'))
-            .toEqual(undefined);
+        expect(mapFromPaymentMethodCardType('FOOBAR')).toBeUndefined();
     });
 });

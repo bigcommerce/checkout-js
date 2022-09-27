@@ -1,7 +1,7 @@
 import { EmbeddedCheckoutStyles } from '@bigcommerce/checkout-sdk';
 
-import EmbeddedCheckoutStylesheet from './EmbeddedCheckoutStylesheet';
 import EmbeddedCheckoutStyleParser from './EmbeddedCheckoutStyleParser';
+import EmbeddedCheckoutStylesheet from './EmbeddedCheckoutStylesheet';
 
 describe('EmbeddedCheckoutStylesheet', () => {
     let stylesheet: EmbeddedCheckoutStylesheet;
@@ -27,7 +27,7 @@ describe('EmbeddedCheckoutStylesheet', () => {
         const tag = stylesheet.append(styles);
         const sheet = tag.sheet as CSSStyleSheet;
 
-        expect(sheet.cssRules[0].cssText).toEqual('body {background-color: #000;}');
+        expect(sheet.cssRules[0].cssText).toBe('body {background-color: #000;}');
     });
 
     it('appends stylesheet tag to head', () => {

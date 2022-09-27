@@ -1,4 +1,9 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutSelectors,
+    CheckoutService,
+    createCheckoutService,
+    PaymentMethod,
+} from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -12,7 +17,9 @@ import { Modal, ModalProps } from '../../ui/modal';
 import { getPaymentMethod } from '../payment-methods.mock';
 
 import { AdyenPaymentMethodProps } from './AdyenV2PaymentMethod';
-import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
+import HostedWidgetPaymentMethod, {
+    HostedWidgetPaymentMethodProps,
+} from './HostedWidgetPaymentMethod';
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
 
 describe('when using Adyen V2 payment', () => {
@@ -34,23 +41,17 @@ describe('when using Adyen V2 payment', () => {
         localeContext = createLocaleContext(getStoreConfig());
         method = { ...getPaymentMethod(), id: 'scheme', gateway: 'adyenv2', method: 'scheme' };
 
-        jest.spyOn(checkoutState.data, 'getConfig')
-            .mockReturnValue(getStoreConfig());
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
-        jest.spyOn(checkoutService, 'deinitializePayment')
-            .mockResolvedValue(checkoutState);
+        jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
 
-        jest.spyOn(checkoutService, 'initializePayment')
-            .mockResolvedValue(checkoutState);
+        jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);
 
-        PaymentMethodTest = props => (
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <LocaleContext.Provider value={ localeContext }>
-                    <Formik
-                        initialValues={ {} }
-                        onSubmit={ noop }
-                    >
-                        <PaymentMethodComponent { ...props } />
+        PaymentMethodTest = (props) => (
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <Formik initialValues={{}} onSubmit={noop}>
+                        <PaymentMethodComponent {...props} />
                     </Formik>
                 </LocaleContext.Provider>
             </CheckoutProvider>
@@ -58,21 +59,24 @@ describe('when using Adyen V2 payment', () => {
     });
 
     it('renders as hosted widget method', () => {
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
-        const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+        const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
+        const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
+            container.find(HostedWidgetPaymentMethod);
 
-        expect(component.props())
-            .toEqual(expect.objectContaining({
+        expect(component.props()).toEqual(
+            expect.objectContaining({
                 containerId: 'adyen-scheme-component-field',
                 deinitializePayment: expect.any(Function),
                 initializePayment: expect.any(Function),
                 method,
-            }));
+            }),
+        );
     });
 
     it('initializes method with required config', () => {
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
-        const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+        const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
+        const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
+            container.find(HostedWidgetPaymentMethod);
 
         component.prop('initializePayment')({
             methodId: method.id,
@@ -81,8 +85,8 @@ describe('when using Adyen V2 payment', () => {
 
         expect(checkoutService.initializePayment).toHaveBeenCalled();
 
-        expect(checkoutService.initializePayment)
-            .toHaveBeenCalledWith(expect.objectContaining({
+        expect(checkoutService.initializePayment).toHaveBeenCalledWith(
+            expect.objectContaining({
                 adyenv2: {
                     cardVerificationContainerId: undefined,
                     containerId: 'adyen-scheme-component-field',
@@ -103,7 +107,8 @@ describe('when using Adyen V2 payment', () => {
                 },
                 gatewayId: method.gateway,
                 methodId: method.id,
-            }));
+            }),
+        );
     });
 
     describe('#During payment', () => {
@@ -115,31 +120,33 @@ describe('when using Adyen V2 payment', () => {
                 method: getPaymentMethod(),
                 onUnhandledError: jest.fn(),
             };
-            const container = mount(<PaymentMethodTest { ...defaultAdyenProps } method={ method } />);
-            const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+            const container = mount(<PaymentMethodTest {...defaultAdyenProps} method={method} />);
+            const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
+                container.find(HostedWidgetPaymentMethod);
 
             component.prop('initializePayment')({
                 methodId: method.id,
                 gatewayId: method.gateway,
             });
 
-            const initializeOptions = (defaultAdyenProps.initializePayment as jest.Mock).mock.calls[0][0];
+            const initializeOptions = (defaultAdyenProps.initializePayment as jest.Mock).mock
+                .calls[0][0];
 
             act(() => {
                 initializeOptions.adyenv2.additionalActionOptions.onBeforeLoad(true);
             });
 
-            await new Promise(resolve => process.nextTick(resolve));
+            await new Promise((resolve) => process.nextTick(resolve));
 
             act(() => {
                 container.update();
             });
 
-            expect(container.find(Modal).prop('isOpen'))
-                .toEqual(true);
+            expect(container.find(Modal).prop('isOpen')).toBe(true);
 
-            expect(container.find('#adyen-scheme-additional-action-component-field'))
-                .toHaveLength(1);
+            expect(container.find('#adyen-scheme-additional-action-component-field')).toHaveLength(
+                1,
+            );
         });
 
         it('Do not render 3DS modal if required by selected method', async () => {
@@ -150,31 +157,33 @@ describe('when using Adyen V2 payment', () => {
                 method: getPaymentMethod(),
                 onUnhandledError: jest.fn(),
             };
-            const container = mount(<PaymentMethodTest { ...defaultAdyenProps } method={ method } />);
-            const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+            const container = mount(<PaymentMethodTest {...defaultAdyenProps} method={method} />);
+            const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
+                container.find(HostedWidgetPaymentMethod);
 
             component.prop('initializePayment')({
                 methodId: method.id,
                 gatewayId: method.gateway,
             });
 
-            const initializeOptions = (defaultAdyenProps.initializePayment as jest.Mock).mock.calls[0][0];
+            const initializeOptions = (defaultAdyenProps.initializePayment as jest.Mock).mock
+                .calls[0][0];
 
             act(() => {
                 initializeOptions.adyenv2.additionalActionOptions.onBeforeLoad(false);
             });
 
-            await new Promise(resolve => process.nextTick(resolve));
+            await new Promise((resolve) => process.nextTick(resolve));
 
             act(() => {
                 container.update();
             });
 
-            expect(container.find(Modal).prop('isOpen'))
-                .toEqual(false);
+            expect(container.find(Modal).prop('isOpen')).toBe(false);
 
-            expect(container.find('#adyen-scheme-additional-action-component-field'))
-                .toHaveLength(1);
+            expect(container.find('#adyen-scheme-additional-action-component-field')).toHaveLength(
+                1,
+            );
         });
 
         it('cancels 3DS modal flow if user chooses to close modal', async () => {
@@ -186,21 +195,26 @@ describe('when using Adyen V2 payment', () => {
                 method: getPaymentMethod(),
                 onUnhandledError: jest.fn(),
             };
-            const container = mount(<PaymentMethodTest { ...defaultAdyenProps } method={ method } />);
-            const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+            const container = mount(<PaymentMethodTest {...defaultAdyenProps} method={method} />);
+            const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
+                container.find(HostedWidgetPaymentMethod);
 
             component.prop('initializePayment')({
                 methodId: method.id,
                 gatewayId: method.gateway,
             });
 
-            const initializeOptions = (defaultAdyenProps.initializePayment as jest.Mock).mock.calls[0][0];
+            const initializeOptions = (defaultAdyenProps.initializePayment as jest.Mock).mock
+                .calls[0][0];
 
             act(() => {
-                initializeOptions.adyenv2.additionalActionOptions.onLoad(cancelAdditionalActionModalFlow, true);
+                initializeOptions.adyenv2.additionalActionOptions.onLoad(
+                    cancelAdditionalActionModalFlow,
+                    true,
+                );
             });
 
-            await new Promise(resolve => process.nextTick(resolve));
+            await new Promise((resolve) => process.nextTick(resolve));
 
             act(() => {
                 container.update();

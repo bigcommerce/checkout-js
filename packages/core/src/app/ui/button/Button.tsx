@@ -21,14 +21,10 @@ export enum ButtonSize {
     Large = 'large',
 }
 
-function getClassName(props: Pick<ButtonProps, 'className' | 'isFullWidth' | 'isLoading' | 'size' | 'variant'>) {
-    const {
-        className,
-        isFullWidth,
-        isLoading,
-        size,
-        variant,
-    } = props;
+function getClassName(
+    props: Pick<ButtonProps, 'className' | 'isFullWidth' | 'isLoading' | 'size' | 'variant'>,
+) {
+    const { className, isFullWidth, isLoading, size, variant } = props;
 
     return classNames(
         'button',
@@ -40,9 +36,12 @@ function getClassName(props: Pick<ButtonProps, 'className' | 'isFullWidth' | 'is
         { 'button--tiny': size === ButtonSize.Tiny },
         { 'button--large': size === ButtonSize.Large },
         { 'button--slab': isFullWidth },
-        { 'optimizedCheckout-buttonPrimary': variant === ButtonVariant.Primary || variant === ButtonVariant.Action },
+        {
+            'optimizedCheckout-buttonPrimary':
+                variant === ButtonVariant.Primary || variant === ButtonVariant.Action,
+        },
         { 'optimizedCheckout-buttonSecondary': variant === ButtonVariant.Secondary },
-        { 'is-loading': isLoading }
+        { 'is-loading': isLoading },
     );
 }
 
@@ -59,13 +58,13 @@ const Button: FunctionComponent<ButtonProps> = ({
     ...rest
 }) => (
     <button
-        { ...rest }
-        className={ getClassName({ className, isFullWidth, isLoading, size, variant }) }
-        data-test={ testId }
-        disabled={ disabled || isLoading }
-        type={ type ? type : 'button' }
+        {...rest}
+        className={getClassName({ className, isFullWidth, isLoading, size, variant })}
+        data-test={testId}
+        disabled={disabled || isLoading}
+        type={type || 'button'}
     >
-        { children }
+        {children}
     </button>
 );
 

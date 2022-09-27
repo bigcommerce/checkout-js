@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent } from 'react';
+import React, { FunctionComponent } from 'react';
 
 import LoadingSpinner from './LoadingSpinner';
 
@@ -16,26 +16,25 @@ const LoadingOverlay: FunctionComponent<LoadingOverlayProps> = ({
 }) => {
     if (hideContentWhenLoading || unmountContentWhenLoading) {
         return (
-            <Fragment>
-                <LoadingSpinner isLoading={ isLoading } />
-                { unmountContentWhenLoading && isLoading ? null :
+            <>
+                <LoadingSpinner isLoading={isLoading} />
+                {unmountContentWhenLoading && isLoading ? null : (
                     <div
-                        style={ {
-                            display: hideContentWhenLoading && isLoading ?
-                                'none' :
-                                undefined,
-                        } }
+                        style={{
+                            display: hideContentWhenLoading && isLoading ? 'none' : undefined,
+                        }}
                     >
-                        { children }
-                    </div> }
-            </Fragment>
+                        {children}
+                    </div>
+                )}
+            </>
         );
     }
 
     return (
         <div className="loadingOverlay-container">
-            { children }
-            { isLoading && <div className="loadingOverlay optimizedCheckout-overlay" /> }
+            {children}
+            {isLoading && <div className="loadingOverlay optimizedCheckout-overlay" />}
         </div>
     );
 };

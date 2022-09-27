@@ -10,12 +10,12 @@ describe('AmazonPayV2Button', () => {
     it('renders as CheckoutButton', () => {
         const container = shallow(
             <AmazonPayV2Button
-                containerId={ 'test' }
-                deinitialize={ noop }
-                initialize={ noop }
-                methodId={ 'amazonpay' }
-                onError={ noop }
-            />
+                containerId="test"
+                deinitialize={noop}
+                initialize={noop}
+                methodId="amazonpay"
+                onError={noop}
+            />,
         );
 
         expect(container.hasClass('AmazonPayContainer')).toBe(true);

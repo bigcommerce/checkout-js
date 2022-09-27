@@ -1,8 +1,12 @@
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
-import BarclaycardPaymentMethod, { BarclaycardPaymentMethodProps } from './BarclaycardPaymentMethod';
-import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
+import BarclaycardPaymentMethod, {
+    BarclaycardPaymentMethodProps,
+} from './BarclaycardPaymentMethod';
+import HostedWidgetPaymentMethod, {
+    HostedWidgetPaymentMethodProps,
+} from './HostedWidgetPaymentMethod';
 
 describe('when using Barclaycard payment', () => {
     const defaultProps: BarclaycardPaymentMethodProps = {
@@ -19,8 +23,9 @@ describe('when using Barclaycard payment', () => {
     };
 
     it('should mount Barclaycard', () => {
-        const container = mount(<BarclaycardPaymentMethod { ...defaultProps } />);
-        const component: ReactWrapper<HostedWidgetPaymentMethodProps> = container.find(HostedWidgetPaymentMethod);
+        const container = mount(<BarclaycardPaymentMethod {...defaultProps} />);
+        const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
+            container.find(HostedWidgetPaymentMethod);
 
         expect(container.find(HostedWidgetPaymentMethod)).toBeTruthy();
         expect(component.prop('containerId')).toBe('barclaycard-container');

@@ -20,7 +20,7 @@
     "release:alpha": "npm run lint && npm run test -- --coverage && npm run build -- --env prerelease=prerelease && npm run release:version",
     "release:version": "git add dist && standard-version -a",
     "generate": "npx nx run core:generate",
-    "lint": "npx nx run-many --target=lint --all",
+    "lint": "npx nx run-many --target=lint --all --fix",
     "test": "npx nx run-many --target=test --all",
     "test:watch": "npx nx run-many --target=test --all --watch"
   },
@@ -32,6 +32,7 @@
   "bugs": {
     "url": "https://github.com/bigcommerce/checkout-js/issues"
   },
+  "prettier": "@bigcommerce/eslint-config/prettier",
   "homepage": "https://github.com/bigcommerce/checkout-js#readme",
   "dependencies": {
     "@bigcommerce/checkout-sdk": "^1.287.1",
@@ -83,7 +84,7 @@
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
-    "@bigcommerce/eslint-config": "^1.0.1",
+    "@bigcommerce/eslint-config": "^2.6.1",
     "@faker-js/faker": "^6.3.1",
     "@nrwl/cli": "^13.10.3",
     "@nrwl/devkit": "^13.10.3",
@@ -132,6 +133,7 @@
     "node-sass": "^4.14.1",
     "nx": "^13.10.3",
     "polly-adapter-playwright": "^2.1.0",
+    "prettier": "^2.7.1",
     "react-test-renderer": "^16.8.6",
     "sass-loader": "^7.1.0",
     "semver": "^6.3.0",

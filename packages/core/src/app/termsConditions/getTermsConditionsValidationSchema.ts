@@ -1,5 +1,5 @@
 import { LanguageService } from '@bigcommerce/checkout-sdk';
-import { boolean, object, BooleanSchema, ObjectSchema } from 'yup';
+import { boolean, BooleanSchema, object, ObjectSchema } from 'yup';
 
 export interface TermsConditionValidationSchemaOptions {
     isTermsConditionsRequired: boolean;
@@ -15,8 +15,10 @@ export default function getTermsConditionsValidationSchema({
     } = {};
 
     if (isTermsConditionsRequired) {
-        schemaFields.terms = boolean()
-            .oneOf([true], language.translate('terms_and_conditions.agreement_required_error'));
+        schemaFields.terms = boolean().oneOf(
+            [true],
+            language.translate('terms_and_conditions.agreement_required_error'),
+        );
     }
 
     return object(schemaFields);

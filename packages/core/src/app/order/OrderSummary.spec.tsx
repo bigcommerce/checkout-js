@@ -17,14 +17,16 @@ describe('OrderSummary', () => {
         beforeEach(() => {
             order = getOrder();
 
-            orderSummary = shallow(<OrderSummary
-                { ...mapToOrderSummarySubtotalsProps(order) }
-                headerLink={ <PrintLink /> }
-                lineItems={ order.lineItems }
-                shopperCurrency={ getStoreConfig().shopperCurrency }
-                storeCurrency={ getStoreConfig().currency }
-                total={ order.orderAmount }
-            />);
+            orderSummary = shallow(
+                <OrderSummary
+                    {...mapToOrderSummarySubtotalsProps(order)}
+                    headerLink={<PrintLink />}
+                    lineItems={order.lineItems}
+                    shopperCurrency={getStoreConfig().shopperCurrency}
+                    storeCurrency={getStoreConfig().currency}
+                    total={order.orderAmount}
+                />,
+            );
         });
 
         it('renders order summary', () => {
@@ -32,7 +34,7 @@ describe('OrderSummary', () => {
         });
 
         it('does not render currency cart note', () => {
-            expect(orderSummary.find('.cart-note').length).toEqual(0);
+            expect(orderSummary.find('.cart-note')).toHaveLength(0);
         });
     });
 });

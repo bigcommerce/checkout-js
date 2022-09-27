@@ -13,22 +13,18 @@ describe('AppliedGiftCertificate', () => {
     beforeEach(() => {
         const localeContext = createLocaleContext(getStoreConfig());
         const AppliedRedeembleContainer = ({ isRemoving }: { isRemoving: boolean }) => (
-            <LocaleContext.Provider value={ localeContext }>
-                <AppliedRedeemable
-                    isRemoving={ isRemoving }
-                    onRemove={ onRemove() }
-                >
+            <LocaleContext.Provider value={localeContext}>
+                <AppliedRedeemable isRemoving={isRemoving} onRemove={onRemove()}>
                     foo
                 </AppliedRedeemable>
             </LocaleContext.Provider>
         );
 
-        component = mount(<AppliedRedeembleContainer isRemoving={ false } />);
+        component = mount(<AppliedRedeembleContainer isRemoving={false} />);
     });
 
     it('renders children', () => {
-        expect(component.find('.redeemable').text())
-            .toEqual('foo');
+        expect(component.find('.redeemable').text()).toBe('foo');
     });
 
     it('renders children', () => {

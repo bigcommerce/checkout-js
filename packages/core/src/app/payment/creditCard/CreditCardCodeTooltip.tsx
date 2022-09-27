@@ -16,11 +16,11 @@ const CreditCardCodeTooltip: FunctionComponent = () => (
 
             <div className="form-ccFields-cvvExampleFigures">
                 <figure>
-                    <IconCardCodeVisa size={ IconSize.Large } />
+                    <IconCardCodeVisa size={IconSize.Large} />
                 </figure>
 
                 <figure>
-                    <IconCardCodeAmex size={ IconSize.Large } />
+                    <IconCardCodeAmex size={IconSize.Large} />
                 </figure>
             </div>
         </div>

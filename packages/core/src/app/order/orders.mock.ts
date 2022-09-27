@@ -1,4 +1,9 @@
-import { GatewayOrderPayment, GiftCertificateOrderPayment, Order, OrderPayment } from '@bigcommerce/checkout-sdk';
+import {
+    GatewayOrderPayment,
+    GiftCertificateOrderPayment,
+    Order,
+    OrderPayment,
+} from '@bigcommerce/checkout-sdk';
 
 import { getBillingAddress } from '../billing/billingAddresses.mock';
 import { getGiftCertificateItem, getPhysicalItem } from '../cart/lineItem.mock';
@@ -10,10 +15,7 @@ export function getOrder(): Order {
         baseAmount: 200,
         billingAddress: getBillingAddress(),
         cartId: 'b20deef40f9699e48671bbc3fef6ca44dc80e3c7',
-        coupons: [
-            getCoupon(),
-            getShippingCoupon(),
-        ],
+        coupons: [getCoupon(), getShippingCoupon()],
         currency: getCurrency(),
         customerMessage: '',
         customerCanBeCreated: true,
@@ -25,13 +27,9 @@ export function getOrder(): Order {
         isDownloadable: false,
         isTaxIncluded: false,
         lineItems: {
-            physicalItems: [
-                getPhysicalItem(),
-            ],
+            physicalItems: [getPhysicalItem()],
             digitalItems: [],
-            giftCertificates: [
-                getGiftCertificateItem(),
-            ],
+            giftCertificates: [getGiftCertificateItem()],
             customItems: [],
         },
         taxes: [
@@ -48,29 +46,22 @@ export function getOrder(): Order {
         orderAmount: 190,
         orderAmountAsInteger: 19000,
         orderId: 295,
-        payments: [
-            getGatewayOrderPayment(),
-            getGiftCertificateOrderPayment(),
-        ],
+        payments: [getGatewayOrderPayment(), getGiftCertificateOrderPayment()],
     };
 }
 
 export function getOrderWithMandateId(): Order {
     const order = getOrder();
-    order.payments = [
-        getGatewayOrderPaymentWithMandateId(),
-        getGiftCertificateOrderPayment(),
-    ];
+
+    order.payments = [getGatewayOrderPaymentWithMandateId(), getGiftCertificateOrderPayment()];
 
     return order;
 }
 
 export function getOrderWithMandateURL(): Order {
     const order = getOrder();
-    order.payments = [
-        getGatewayOrderPaymentWithMandateURL(),
-        getGiftCertificateOrderPayment(),
-    ];
+
+    order.payments = [getGatewayOrderPaymentWithMandateURL(), getGiftCertificateOrderPayment()];
 
     return order;
 }

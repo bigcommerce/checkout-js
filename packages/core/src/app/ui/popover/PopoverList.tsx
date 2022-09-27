@@ -1,4 +1,4 @@
-import React, { memo, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import './PopoverList.scss';
 
@@ -18,34 +18,32 @@ export interface PopoverListItem {
 const PopoverList: FunctionComponent<PopoverListProps> = ({
     highlightedIndex = -1,
     testId,
+     
     getItemProps = (props: any) => props,
     menuProps = {},
     items,
 }) => {
-    if (!items || !items.length) {
+    if (!items.length) {
         return null;
     }
 
     return (
-        <ul
-            className="popoverList"
-            data-test={ testId } { ...menuProps }
-        >
-            { items
-                .map((item, index) => (
-                    <li
-                        className={ getItemClassName(highlightedIndex, index) }
-                        data-test={ testId && `${testId}-item` }
-                        { ...getItemProps({
-                            key: item.id,
-                            index,
-                            item,
-                        }) }
-                        key={ index }
-                    >
-                        { item.content }
-                    </li>
-                )) }
+        <ul className="popoverList" data-test={testId} {...menuProps}>
+            {items.map((item, index) => (
+                <li
+                    className={getItemClassName(highlightedIndex, index)}
+                    data-test={testId && `${testId}-item`}
+                     
+                    {...getItemProps({
+                        key: item.id,
+                        index,
+                        item,
+                    })}
+                    key={index}
+                >
+                    {item.content}
+                </li>
+            ))}
         </ul>
     );
 };

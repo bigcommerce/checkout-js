@@ -18,11 +18,8 @@ describe('ErrorModal', () => {
     const onClose = jest.fn();
 
     const ErrorModalContainer = (props: ErrorModalProps) => (
-        <LocaleContext.Provider value={ localeContext }>
-            <ErrorModal
-                onClose={ onClose }
-                { ...props }
-            />
+        <LocaleContext.Provider value={localeContext}>
+            <ErrorModal onClose={onClose} {...props} />
         </LocaleContext.Provider>
     );
 
@@ -30,7 +27,7 @@ describe('ErrorModal', () => {
         error = new Error('Foo');
 
         localeContext = createLocaleContext(getStoreConfig());
-        errorModal = mount(<ErrorModalContainer error={ error } />);
+        errorModal = mount(<ErrorModalContainer error={error} />);
     });
 
     it('renders error modal', () => {
@@ -41,12 +38,11 @@ describe('ErrorModal', () => {
     it('hides error modal if there is no error', () => {
         errorModal = mount(<ErrorModalContainer />);
 
-        expect(errorModal.find(Modal).prop('isOpen'))
-            .toBeFalsy();
+        expect(errorModal.find(Modal).prop('isOpen')).toBeFalsy();
     });
 
     it('renders error code', () => {
-        expect(errorModal.find(ErrorCode).length).toEqual(1);
+        expect(errorModal.find(ErrorCode)).toHaveLength(1);
     });
 
     it('renders request ID if available', () => {
@@ -55,30 +51,21 @@ describe('ErrorModal', () => {
             headers: { 'x-request-id': 'foobar' },
         } as unknown as RequestError;
 
-        errorModal = mount(<ErrorModalContainer error={ error } />);
+        errorModal = mount(<ErrorModalContainer error={error} />);
 
-        expect(errorModal.find(ErrorCode).text())
-            .toEqual('Request ID: foobar');
+        expect(errorModal.find(ErrorCode).text()).toBe('Request ID: foobar');
     });
 
     it('overrides error message', () => {
-        errorModal = mount(<ErrorModalContainer
-            error={ error }
-            message="Hello world"
-        />);
+        errorModal = mount(<ErrorModalContainer error={error} message="Hello world" />);
 
-        expect(errorModal.find('[data-test="modal-body"]').text())
-            .toContain('Hello world');
+        expect(errorModal.find('[data-test="modal-body"]').text()).toContain('Hello world');
     });
 
     it('overrides error title', () => {
-        errorModal = mount(<ErrorModalContainer
-            error={ error }
-            title="Hello world"
-        />);
+        errorModal = mount(<ErrorModalContainer error={error} title="Hello world" />);
 
-        expect(errorModal.find('[data-test="modal-heading"]').text())
-            .toContain('Hello world');
+        expect(errorModal.find('[data-test="modal-heading"]').text()).toContain('Hello world');
     });
 
     describe('when modal is closed', () => {
@@ -87,10 +74,11 @@ describe('ErrorModal', () => {
         });
 
         it('calls `onAfterClose` callback with event and error object', async () => {
-            await new Promise(resolve => process.nextTick(resolve));
+            await new Promise((resolve) => process.nextTick(resolve));
 
-            expect(onClose)
-                .toHaveBeenCalledWith(expect.objectContaining({ type: 'click' }), { error });
+            expect(onClose).toHaveBeenCalledWith(expect.objectContaining({ type: 'click' }), {
+                error,
+            });
         });
 
         describe('when the error is updated', () => {
@@ -110,12 +98,11 @@ describe('ErrorModal', () => {
                 errorModal.setProps({ error: null });
                 errorModal.update();
 
-                expect(errorModal.find(Modal).prop('isOpen'))
-                    .toBeFalsy();
+                expect(errorModal.find(Modal).prop('isOpen')).toBeFalsy();
             });
 
             it('does not render error code', () => {
-                expect(errorModal.find(ErrorCode).length).toEqual(0);
+                expect(errorModal.find(ErrorCode)).toHaveLength(0);
             });
         });
     });

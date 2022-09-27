@@ -32,40 +32,38 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
 
         return (
             <Downshift
-                defaultHighlightedIndex={ 0 }
-                initialHighlightedIndex={ initialHighlightedIndex }
-                initialInputValue={ initialValue }
-                itemToString={ this.itemToString }
-                labelId={ inputProps && inputProps['aria-labelledby'] ? inputProps['aria-labelledby'] : null }
-                onChange={ onSelect }
-                onStateChange={ this.handleStateChange }
-                stateReducer={ this.stateReducer }
+                defaultHighlightedIndex={0}
+                initialHighlightedIndex={initialHighlightedIndex}
+                initialInputValue={initialValue}
+                itemToString={this.itemToString}
+                labelId={
+                    inputProps && inputProps['aria-labelledby']
+                        ? inputProps['aria-labelledby']
+                        : null
+                }
+                onChange={onSelect}
+                onStateChange={this.handleStateChange}
+                stateReducer={this.stateReducer}
             >
-                { ({
-                    isOpen,
-                    getInputProps,
-                    getMenuProps,
-                    getItemProps,
-                    highlightedIndex,
-                }) => (
+                {({ isOpen, getInputProps, getMenuProps, getItemProps, highlightedIndex }) => (
                     <div>
-                        <input
-                            { ...getInputProps() }
-                            { ...inputProps }
-                        />
-                        { isOpen && !!items.length &&
+                        <input {...getInputProps()} {...inputProps} />
+                        {isOpen && !!items.length && (
                             <Popover>
                                 <PopoverList
-                                    getItemProps={ getItemProps }
-                                    highlightedIndex={ isNumber(highlightedIndex) ? highlightedIndex : -1 }
-                                    items={ items.map(item => this.toPopoverItem(item)) }
-                                    menuProps={ getMenuProps() }
-                                    testId={ listTestId }
+                                    getItemProps={getItemProps}
+                                    highlightedIndex={
+                                        isNumber(highlightedIndex) ? highlightedIndex : -1
+                                    }
+                                    items={items.map((item) => this.toPopoverItem(item))}
+                                    menuProps={getMenuProps()}
+                                    testId={listTestId}
                                 />
-                                { children }
-                            </Popover> }
+                                {children}
+                            </Popover>
+                        )}
                     </div>
-                ) }
+                )}
             </Downshift>
         );
     }
@@ -82,7 +80,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
             return item.label;
         }
 
-        let lastIndex: number = 0;
+        let lastIndex = 0;
         let key = 0;
 
         return item.highlightedSlices.reduce((node, slice, i) => {
@@ -91,21 +89,19 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
             const notHighlightedLength = offset - lastIndex;
 
             if (notHighlightedLength) {
-                node.push(<Fragment key={ key }>
-                    { label.substr(lastIndex, notHighlightedLength) }
-                </Fragment>);
+                node.push(
+                    <Fragment key={key}>{label.substr(lastIndex, notHighlightedLength)}</Fragment>,
+                );
                 key += 1;
             }
 
-            lastIndex  = offset + length;
+            lastIndex = offset + length;
 
-            node.push(<strong key={ key }>{ label.substr(offset, length) }</strong>);
+            node.push(<strong key={key}>{label.substr(offset, length)}</strong>);
             key += 1;
 
             if (i === (item.highlightedSlices || []).length - 1) {
-                node.push(<Fragment key={ key }>
-                    { label.substr(lastIndex) }
-                </Fragment>);
+                node.push(<Fragment key={key}>{label.substr(lastIndex)}</Fragment>);
                 key += 1;
             }
 
@@ -114,39 +110,39 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
     }
 
     private itemToString(item?: AutocompleteItem): string {
-        return item && item.value || '';
+        return (item && item.value) || '';
     }
 
     private stateReducer: (
         state: DownshiftState<AutocompleteItem>,
-        changes: StateChangeOptions<AutocompleteItem>
+        changes: StateChangeOptions<AutocompleteItem>,
     ) => Partial<StateChangeOptions<AutocompleteItem>> = (state, changes) => {
         const { onChange } = this.props;
 
         switch (changes.type) {
-        case Downshift.stateChangeTypes.blurInput:
-        case Downshift.stateChangeTypes.blurButton:
-        case Downshift.stateChangeTypes.mouseUp:
-        case Downshift.stateChangeTypes.touchEnd:
-            return {
-                ...changes,
-                inputValue: state.inputValue,
-            };
+            case Downshift.stateChangeTypes.blurInput:
+            case Downshift.stateChangeTypes.blurButton:
+            case Downshift.stateChangeTypes.mouseUp:
+            case Downshift.stateChangeTypes.touchEnd:
+                return {
+                    ...changes,
+                    inputValue: state.inputValue,
+                };
 
-        case Downshift.stateChangeTypes.changeInput:
-            if (changes.inputValue !== state.inputValue && onChange) {
-                onChange(changes.inputValue || '', state.isOpen);
-            }
+            case Downshift.stateChangeTypes.changeInput:
+                if (changes.inputValue !== state.inputValue && onChange) {
+                    onChange(changes.inputValue || '', state.isOpen);
+                }
 
-            return changes;
+                return changes;
 
-        case Downshift.stateChangeTypes.keyDownEnter:
-            return changes;
+            case Downshift.stateChangeTypes.keyDownEnter:
+                return changes;
 
-        default:
-            return changes;
+            default:
+                return changes;
         }
-        };
+    };
 
     private handleStateChange = ({ isOpen, inputValue }: StateChangeOptions<string>) => {
         const { onToggleOpen = noop } = this.props;

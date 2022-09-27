@@ -19,7 +19,8 @@ describe('When using Affirm Payment Method', () => {
     };
 
     it('Shopper is able to see Affirm Payment Method', () => {
-        const component = mount(<AffirmPaymentMethod { ...defaultProps } />);
+        const component = mount(<AffirmPaymentMethod {...defaultProps} />);
+
         expect(component.find(HostedWidgetPaymentMethod)).toBeTruthy();
     });
 });

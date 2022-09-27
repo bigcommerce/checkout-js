@@ -19,16 +19,16 @@ export enum AlertType {
 
 function renderDefaultIcon(type?: AlertType): ReactNode {
     switch (type) {
-    case AlertType.Error:
-    case AlertType.Warning:
-        return <IconError />;
+        case AlertType.Error:
+        case AlertType.Warning:
+            return <IconError />;
 
-    case AlertType.Success:
-        return <IconSuccess />;
+        case AlertType.Success:
+            return <IconSuccess />;
 
-    case AlertType.Info:
-    default:
-        return <IconInfo />;
+        case AlertType.Info:
+        default:
+            return <IconInfo />;
     }
 }
 
@@ -40,22 +40,20 @@ const Alert: FunctionComponent<AlertProps> = ({
     type,
 }) => (
     <div
-        className={ classNames(
+        className={classNames(
             'alertBox',
             additionalClassName,
             { 'alertBox--info': type === AlertType.Info || !type },
             { 'alertBox--error': type === AlertType.Error },
             { 'alertBox--success': type === AlertType.Success },
-            { 'alertBox--warning': type === AlertType.Warning }
-        ) }
-        data-test={ testId }
+            { 'alertBox--warning': type === AlertType.Warning },
+        )}
+        data-test={testId}
     >
-        <div className="alertBox-column alertBox-icon">
-            { icon ? icon : renderDefaultIcon(type) }
-        </div>
+        <div className="alertBox-column alertBox-icon">{icon || renderDefaultIcon(type)}</div>
 
         <div aria-live="assertive" className="alertBox-column alertBox-message" role="alert">
-            { children }
+            {children}
         </div>
     </div>
 );

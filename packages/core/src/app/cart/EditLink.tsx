@@ -1,4 +1,4 @@
-import React, { memo, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '../locale';
 
@@ -9,9 +9,9 @@ export interface EditLinkProps {
 
 const EditLink: FunctionComponent<EditLinkProps> = ({ className, url }) => (
     <a
-        className={ className || 'cart-header-link' }
+        className={className || 'cart-header-link'}
         data-test="cart-edit-link"
-        href={ url }
+        href={url}
         id="cart-edit-link"
         target="_top"
     >

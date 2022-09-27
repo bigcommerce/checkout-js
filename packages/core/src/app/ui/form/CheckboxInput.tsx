@@ -11,31 +11,26 @@ export interface CheckboxInputProps extends InputProps {
     checked: boolean;
 }
 
-const CheckboxInput = forwardRef((
-    {
-        additionalClassName,
-        label,
-        id,
-        ...rest
-    }: CheckboxInputProps,
-    ref: Ref<HTMLInputElement>
-) => (
-    <>
-        <Input
-            { ...rest }
-            className={ classNames(
-                'form-checkbox',
-                'optimizedCheckout-form-checkbox',
-                additionalClassName
-            ) }
-            id={ id }
-            ref={ ref }
-            type="checkbox"
-        />
-        <Label htmlFor={ id }>
-            { label }
-        </Label>
-    </>
-));
+const CheckboxInput = forwardRef(
+    (
+        { additionalClassName, label, id, ...rest }: CheckboxInputProps,
+        ref: Ref<HTMLInputElement>,
+    ) => (
+        <>
+            <Input
+                {...rest}
+                className={classNames(
+                    'form-checkbox',
+                    'optimizedCheckout-form-checkbox',
+                    additionalClassName,
+                )}
+                id={id}
+                ref={ref}
+                type="checkbox"
+            />
+            <Label htmlFor={id}>{label}</Label>
+        </>
+    ),
+);
 
 export default CheckboxInput;

@@ -4,48 +4,46 @@ import { getShippingOptionPickUpStore } from './shippingOption/shippingMethod.mo
 
 describe('hasSelectedShippingOptions()', () => {
     it('returns false when has no consignments', () => {
-        expect(hasSelectedShippingOptions([]))
-            .toEqual(false);
+        expect(hasSelectedShippingOptions([])).toBe(false);
     });
 
     it('returns false when has one consignment without shipping option', () => {
-        expect(hasSelectedShippingOptions([
-            getConsignment(),
-            {
-                ...getConsignment(),
-                selectedShippingOption: undefined,
-            },
-        ]))
-            .toEqual(false);
+        expect(
+            hasSelectedShippingOptions([
+                getConsignment(),
+                {
+                    ...getConsignment(),
+                    selectedShippingOption: undefined,
+                },
+            ]),
+        ).toBe(false);
     });
 
     it('returns true when all consignments have shipping options', () => {
-        expect(hasSelectedShippingOptions([
-            getConsignment(),
-            getConsignment(),
-        ]))
-            .toEqual(true);
+        expect(hasSelectedShippingOptions([getConsignment(), getConsignment()])).toBe(true);
     });
 
     it('returns false when consignments have no shipping options', () => {
-        expect(hasSelectedShippingOptions([
-            getConsignment(),
-            {
-                ...getConsignment(),
-                availableShippingOptions: [],
-            },
-        ]))
-            .toEqual(false);
+        expect(
+            hasSelectedShippingOptions([
+                getConsignment(),
+                {
+                    ...getConsignment(),
+                    availableShippingOptions: [],
+                },
+            ]),
+        ).toBe(false);
     });
 
     it('returns false when consignments have mismatched shipping options', () => {
-        expect(hasSelectedShippingOptions([
-            getConsignment(),
-            {
-                ...getConsignment(),
-                availableShippingOptions: [ getShippingOptionPickUpStore() ],
-            },
-        ]))
-            .toEqual(false);
+        expect(
+            hasSelectedShippingOptions([
+                getConsignment(),
+                {
+                    ...getConsignment(),
+                    availableShippingOptions: [getShippingOptionPickUpStore()],
+                },
+            ]),
+        ).toBe(false);
     });
 });

@@ -1,4 +1,9 @@
-import { CheckoutSelectors, PaymentInitializeOptions, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutSelectors,
+    PaymentInitializeOptions,
+    PaymentMethod,
+    PaymentRequestOptions,
+} from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import { Component, ReactNode } from 'react';
 
@@ -11,11 +16,7 @@ export interface OfflinePaymentMethodProps {
 
 export default class OfflinePaymentMethod extends Component<OfflinePaymentMethodProps> {
     async componentDidMount(): Promise<void> {
-        const {
-            initializePayment,
-            method,
-            onUnhandledError = noop,
-        } = this.props;
+        const { initializePayment, method, onUnhandledError = noop } = this.props;
 
         try {
             await initializePayment({
@@ -28,11 +29,7 @@ export default class OfflinePaymentMethod extends Component<OfflinePaymentMethod
     }
 
     async componentWillUnmount(): Promise<void> {
-        const {
-            deinitializePayment,
-            method,
-            onUnhandledError = noop,
-        } = this.props;
+        const { deinitializePayment, method, onUnhandledError = noop } = this.props;
 
         try {
             await deinitializePayment({

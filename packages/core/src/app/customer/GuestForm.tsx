@@ -1,11 +1,11 @@
-import { withFormik, FieldProps, FormikProps } from 'formik';
-import React, { memo, useCallback, FunctionComponent, ReactNode } from 'react';
+import { FieldProps, FormikProps, withFormik } from 'formik';
+import React, { FunctionComponent, memo, ReactNode, useCallback } from 'react';
 import { object, string } from 'yup';
 
-import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
+import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
 import { Button, ButtonVariant } from '../ui/button';
-import { BasicFormField, Fieldset, Form, Legend  } from '../ui/form';
+import { BasicFormField, Fieldset, Form, Legend } from '../ui/form';
 
 import EmailField from './EmailField';
 import SubscribeField from './SubscribeField';
@@ -29,7 +29,9 @@ export interface GuestFormValues {
     shouldSubscribe: boolean;
 }
 
-const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikProps<GuestFormValues>> = ({
+const GuestForm: FunctionComponent<
+    GuestFormProps & WithLanguageProps & FormikProps<GuestFormValues>
+> = ({
     canSubscribe,
     checkoutButtons,
     continueAsGuestButtonLabelId,
@@ -39,14 +41,12 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
     privacyPolicyUrl,
     requiresMarketingConsent,
 }) => {
-    const renderField = useCallback((fieldProps: FieldProps<boolean>) => (
-        <SubscribeField
-            { ...fieldProps }
-            requiresMarketingConsent={ requiresMarketingConsent }
-        />
-    ), [
-        requiresMarketingConsent,
-    ]);
+    const renderField = useCallback(
+        (fieldProps: FieldProps<boolean>) => (
+            <SubscribeField {...fieldProps} requiresMarketingConsent={requiresMarketingConsent} />
+        ),
+        [requiresMarketingConsent],
+    );
 
     return (
         <Form
@@ -63,80 +63,80 @@ const GuestForm: FunctionComponent<GuestFormProps & WithLanguageProps & FormikPr
             >
                 <div className="customerEmail-container">
                     <div className="customerEmail-body">
-                        <EmailField onChange={ onChangeEmail } />
+                        <EmailField onChange={onChangeEmail} />
 
-                        { (canSubscribe || requiresMarketingConsent) && <BasicFormField
-                            name="shouldSubscribe"
-                            render={ renderField }
-                        /> }
+                        {(canSubscribe || requiresMarketingConsent) && (
+                            <BasicFormField name="shouldSubscribe" render={renderField} />
+                        )}
 
-                        { privacyPolicyUrl && <PrivacyPolicyField
-                            url={ privacyPolicyUrl }
-                        /> }
+                        {privacyPolicyUrl && <PrivacyPolicyField url={privacyPolicyUrl} />}
                     </div>
 
                     <div className="form-actions customerEmail-action">
                         <Button
                             className="customerEmail-button"
                             id="checkout-customer-continue"
-                            isLoading={ isLoading }
+                            isLoading={isLoading}
                             testId="customer-continue-as-guest-button"
                             type="submit"
-                            variant={ ButtonVariant.Primary }
+                            variant={ButtonVariant.Primary}
                         >
-                            <TranslatedString id={ continueAsGuestButtonLabelId } />
+                            <TranslatedString id={continueAsGuestButtonLabelId} />
                         </Button>
                     </div>
                 </div>
 
-                {
-                    !isLoading && <p>
-                        <TranslatedString id="customer.login_text" />
-                        { ' ' }
+                {!isLoading && (
+                    <p>
+                        <TranslatedString id="customer.login_text" />{' '}
                         <a
                             data-test="customer-continue-button"
                             id="checkout-customer-login"
-                            onClick={ onShowLogin }
+                            onClick={onShowLogin}
                         >
                             <TranslatedString id="customer.login_action" />
                         </a>
                     </p>
-                }
+                )}
 
-                { checkoutButtons }
+                {checkoutButtons}
             </Fieldset>
         </Form>
     );
 };
 
-export default withLanguage(withFormik<GuestFormProps & WithLanguageProps, GuestFormValues>({
-    mapPropsToValues: ({
-        email = '',
-        defaultShouldSubscribe = false,
-        requiresMarketingConsent,
-    }) => ({
-        email,
-        shouldSubscribe: requiresMarketingConsent ? false : defaultShouldSubscribe,
-        privacyPolicy: false,
-    }),
-    handleSubmit: (values, { props: { onContinueAsGuest } }) => {
-        onContinueAsGuest(values);
-    },
-    validationSchema: ({ language, privacyPolicyUrl }: GuestFormProps & WithLanguageProps) => {
-        const email = string()
-            .email(language.translate('customer.email_invalid_error'))
-            .max(256)
-            .required(language.translate('customer.email_required_error'));
+export default withLanguage(
+    withFormik<GuestFormProps & WithLanguageProps, GuestFormValues>({
+        mapPropsToValues: ({
+            email = '',
+            defaultShouldSubscribe = false,
+            requiresMarketingConsent,
+        }) => ({
+            email,
+            shouldSubscribe: requiresMarketingConsent ? false : defaultShouldSubscribe,
+            privacyPolicy: false,
+        }),
+        handleSubmit: (values, { props: { onContinueAsGuest } }) => {
+            onContinueAsGuest(values);
+        },
+        validationSchema: ({ language, privacyPolicyUrl }: GuestFormProps & WithLanguageProps) => {
+            const email = string()
+                .email(language.translate('customer.email_invalid_error'))
+                .max(256)
+                .required(language.translate('customer.email_required_error'));
 
-        const baseSchema = object({ email });
+            const baseSchema = object({ email });
 
-        if (privacyPolicyUrl) {
-            return baseSchema.concat(getPrivacyPolicyValidationSchema({
-                isRequired: !!privacyPolicyUrl,
-                language,
-            }));
-        }
+            if (privacyPolicyUrl) {
+                return baseSchema.concat(
+                    getPrivacyPolicyValidationSchema({
+                        isRequired: !!privacyPolicyUrl,
+                        language,
+                    }),
+                );
+            }
 
-        return baseSchema;
-    },
-})(memo(GuestForm)));
+            return baseSchema;
+        },
+    })(memo(GuestForm)),
+);

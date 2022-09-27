@@ -1,4 +1,4 @@
-import { createCheckoutService, CheckoutService } from '@bigcommerce/checkout-sdk';
+import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -21,7 +21,7 @@ describe('ShippingAddressForm Component', () => {
 
     beforeEach(() => {
         defaultProps = {
-            consignments: [ getConsignment() ],
+            consignments: [getConsignment()],
             countriesWithAutocomplete: [],
             addresses: getCustomer().addresses,
             address: getCustomer().addresses[0],
@@ -36,99 +36,89 @@ describe('ShippingAddressForm Component', () => {
     describe('when there are addresses (signed-in user)', () => {
         beforeEach(() => {
             component = mount(
-                <Formik initialValues={ {} } onSubmit={ noop }>
-                    <ShippingAddressForm { ...defaultProps } />
-                </Formik>
+                <Formik initialValues={{}} onSubmit={noop}>
+                    <ShippingAddressForm {...defaultProps} />
+                </Formik>,
             );
         });
 
         it('doest not render address form', () => {
-            expect(component.find(AddressForm).length)
-                .toEqual(0);
+            expect(component.find(AddressForm)).toHaveLength(0);
         });
 
         it('renders address select', () => {
-            expect(component.find(AddressSelect).props())
-                .toMatchObject({
-                    addresses: defaultProps.addresses,
-                    selectedAddress: defaultProps.address,
-                });
+            expect(component.find(AddressSelect).props()).toMatchObject({
+                addresses: defaultProps.addresses,
+                selectedAddress: defaultProps.address,
+            });
         });
 
         it('renders address form when selected address is not in the address list', () => {
             component = mount(
-                <Formik initialValues={ {} } onSubmit={ noop }>
+                <Formik initialValues={{}} onSubmit={noop}>
                     <ShippingAddressForm
-                        { ...defaultProps }
-                        address={ {
+                        {...defaultProps}
+                        address={{
                             ...getShippingAddress(),
                             firstName: 'foo',
-                        } }
+                        }}
                     />
-                </Formik>
+                </Formik>,
             );
 
-            expect(component.find(AddressForm).props())
-                .toMatchObject({
-                    formFields: defaultProps.formFields,
-                });
+            expect(component.find(AddressForm).props()).toMatchObject({
+                formFields: defaultProps.formFields,
+            });
         });
 
         it('renders address form when selected address is not valid even when in the list', () => {
             component = mount(
-                <Formik initialValues={ {} } onSubmit={ noop }>
+                <Formik initialValues={{}} onSubmit={noop}>
                     <ShippingAddressForm
-                        { ...defaultProps }
-                        formFields={ [
+                        {...defaultProps}
+                        formFields={[
                             ...defaultProps.formFields,
                             {
                                 ...defaultProps.formFields[1],
                                 name: 'newRequiredField',
                                 required: true,
                             },
-                        ] }
+                        ]}
                     />
-                </Formik>
+                </Formik>,
             );
 
-            expect(component.find(AddressSelect).prop('selectedAddress'))
-                .toBeFalsy();
+            expect(component.find(AddressSelect).prop('selectedAddress')).toBeFalsy();
 
-            expect(component.find(AddressForm).length)
-                .toEqual(1);
+            expect(component.find(AddressForm)).toHaveLength(1);
         });
 
         it('renders address form when there is no selected address', () => {
             component = mount(
-                <Formik initialValues={ {} } onSubmit={ noop }>
-                    <ShippingAddressForm { ...defaultProps } address={ undefined } />
-                </Formik>
+                <Formik initialValues={{}} onSubmit={noop}>
+                    <ShippingAddressForm {...defaultProps} address={undefined} />
+                </Formik>,
             );
 
-            expect(component.find(AddressForm).props())
-                .toMatchObject({
-                    formFields: defaultProps.formFields,
-                });
+            expect(component.find(AddressForm).props()).toMatchObject({
+                formFields: defaultProps.formFields,
+            });
         });
     });
 
     describe('when there are no addresses (guest user)', () => {
         beforeEach(() => {
             component = mount(
-                <Formik initialValues={ {} } onSubmit={ noop }>
-                    <ShippingAddressForm
-                        { ...defaultProps }
-                        addresses={ [] }
-                    />
-                </Formik>
+                <Formik initialValues={{}} onSubmit={noop}>
+                    <ShippingAddressForm {...defaultProps} addresses={[]} />
+                </Formik>,
             );
         });
 
         it('renders address form', () => {
-            expect(component.find(AddressForm).props())
-                .toMatchObject({
-                    formFields: defaultProps.formFields,
-                });
+            expect(component.find(AddressForm).props()).toMatchObject({
+                formFields: defaultProps.formFields,
+            });
         });
     });
 
@@ -140,24 +130,28 @@ describe('ShippingAddressForm Component', () => {
             checkoutService = createCheckoutService();
             localeContext = createLocaleContext(getStoreConfig());
 
-            jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(getCheckout());
-            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
+            jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(
+                getCheckout(),
+            );
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
+                getStoreConfig(),
+            );
 
             component = mount(
-                <LocaleContext.Provider value={ localeContext }>
+                <LocaleContext.Provider value={localeContext}>
                     <Formik
-                        initialValues={ {
+                        initialValues={{
                             shippingAddress: getShippingAddress(),
-                        } }
-                        onSubmit={ noop }
+                        }}
+                        onSubmit={noop}
                     >
                         <ShippingAddressForm
-                            { ...defaultProps }
-                            address={ getShippingAddress() }
-                            addresses={ [] }
+                            {...defaultProps}
+                            address={getShippingAddress()}
+                            addresses={[]}
                         />
                     </Formik>
-                </LocaleContext.Provider>
+                </LocaleContext.Provider>,
             );
         });
     });

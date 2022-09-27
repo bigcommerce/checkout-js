@@ -1,4 +1,4 @@
-import { createCheckoutService, CheckoutService } from '@bigcommerce/checkout-sdk';
+import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { noop } from 'lodash';
 import React from 'react';
@@ -26,34 +26,34 @@ describe('AddressSelect Component', () => {
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
     });
 
-    it('renders `Enter Address` when there is no selected address ', () => {
+    it('renders `Enter Address` when there is no selected address', () => {
         component = mount(
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <LocaleContext.Provider value={ localeContext }>
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
                     <AddressSelect
-                        addresses={ getCustomer().addresses }
-                        onSelectAddress={ noop }
-                        onUseNewAddress={ noop }
+                        addresses={getCustomer().addresses}
+                        onSelectAddress={noop}
+                        onUseNewAddress={noop}
                     />
                 </LocaleContext.Provider>
-            </CheckoutProvider>
+            </CheckoutProvider>,
         );
 
-        expect(component.find('#addressToggle').text()).toEqual('Enter a new address');
+        expect(component.find('#addressToggle').text()).toBe('Enter a new address');
     });
 
     it('renders static address when there is a selected address', () => {
         component = mount(
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <LocaleContext.Provider value={ localeContext }>
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
                     <AddressSelect
-                        addresses={ getCustomer().addresses }
-                        onSelectAddress={ noop }
-                        onUseNewAddress={ noop }
-                        selectedAddress={ getAddress() }
+                        addresses={getCustomer().addresses}
+                        onSelectAddress={noop}
+                        onUseNewAddress={noop}
+                        selectedAddress={getAddress()}
                     />
                 </LocaleContext.Provider>
-            </CheckoutProvider>
+            </CheckoutProvider>,
         );
 
         expect(component.find(StaticAddress).prop('address')).toEqual(getAddress());
@@ -61,22 +61,23 @@ describe('AddressSelect Component', () => {
 
     it('renders addresses menu when select component is clicked', () => {
         component = mount(
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <LocaleContext.Provider value={ localeContext }>
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
                     <AddressSelect
-                        addresses={ getCustomer().addresses }
-                        onSelectAddress={ noop }
-                        onUseNewAddress={ noop }
-                        selectedAddress={ getAddress() }
+                        addresses={getCustomer().addresses}
+                        onSelectAddress={noop}
+                        onUseNewAddress={noop}
+                        selectedAddress={getAddress()}
                     />
                 </LocaleContext.Provider>
-            </CheckoutProvider>
+            </CheckoutProvider>,
         );
 
         component.find('#addressToggle').simulate('click');
+
         const options = component.find('#addressDropdown li');
 
-        expect(options.first().text()).toEqual('Enter a new address');
+        expect(options.first().text()).toBe('Enter a new address');
         expect(options.find(StaticAddress).prop('address')).toEqual(getCustomer().addresses[0]);
     });
 
@@ -85,15 +86,15 @@ describe('AddressSelect Component', () => {
         const onUseNewAddress = jest.fn();
 
         component = mount(
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <LocaleContext.Provider value={ localeContext }>
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
                     <AddressSelect
-                        addresses={ getCustomer().addresses }
-                        onSelectAddress={ onSelectAddress }
-                        onUseNewAddress={ onUseNewAddress }
+                        addresses={getCustomer().addresses}
+                        onSelectAddress={onSelectAddress}
+                        onUseNewAddress={onUseNewAddress}
                     />
                 </LocaleContext.Provider>
-            </CheckoutProvider>
+            </CheckoutProvider>,
         );
 
         component.find('#addressToggle').simulate('click');
@@ -110,16 +111,16 @@ describe('AddressSelect Component', () => {
         const onSelectAddress = jest.fn();
 
         component = mount(
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <LocaleContext.Provider value={ localeContext }>
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
                     <AddressSelect
-                        addresses={ getCustomer().addresses }
-                        onSelectAddress={ onSelectAddress }
-                        onUseNewAddress={ noop }
-                        selectedAddress={ getAddress() }
+                        addresses={getCustomer().addresses}
+                        onSelectAddress={onSelectAddress}
+                        onUseNewAddress={noop}
+                        selectedAddress={getAddress()}
                     />
                 </LocaleContext.Provider>
-            </CheckoutProvider>
+            </CheckoutProvider>,
         );
 
         component.find('#addressToggle').simulate('click');

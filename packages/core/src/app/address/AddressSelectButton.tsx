@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState } from 'react';
 
 import { preventDefault } from '../common/dom';
-import { withLanguage, TranslatedString, WithLanguageProps } from '../locale';
+import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 
 import { AddressSelectProps } from './AddressSelect';
 import StaticAddress from './StaticAddress';
@@ -15,19 +15,22 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLang
     const [ariaExpanded, setAriaExpanded] = useState(false);
 
     return (
-    <a
-        aria-controls="addressDropdown"
-        aria-description={ language.translate('address.enter_or_select_address_action') }
-        aria-expanded={ ariaExpanded }
-        className="button dropdown-button dropdown-toggle--select"
-        href="#"
-        id="addressToggle"
-        onClick={ preventDefault(() => setAriaExpanded(!ariaExpanded)) }
-    >
-        { selectedAddress ?
-            <StaticAddress address={ selectedAddress } /> :
-            <TranslatedString id="address.enter_address_action" /> }
-    </a>
-)};
+        <a
+            aria-controls="addressDropdown"
+            aria-description={language.translate('address.enter_or_select_address_action')}
+            aria-expanded={ariaExpanded}
+            className="button dropdown-button dropdown-toggle--select"
+            href="#"
+            id="addressToggle"
+            onClick={preventDefault(() => setAriaExpanded(!ariaExpanded))}
+        >
+            {selectedAddress ? (
+                <StaticAddress address={selectedAddress} />
+            ) : (
+                <TranslatedString id="address.enter_address_action" />
+            )}
+        </a>
+    );
+};
 
 export default withLanguage(AddressSelectButton);

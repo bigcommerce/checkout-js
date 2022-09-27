@@ -1,3 +1,4 @@
+ 
 import { Placement } from 'popper.js';
 import React, { Component, ReactEventHandler, ReactNode } from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
@@ -27,35 +28,34 @@ export default class TooltipTrigger extends Component<TooltipTriggerProps, Toolt
         return (
             <Manager>
                 <Reference>
-                    { ({ ref }) => (
+                    {({ ref }) => (
                         <span
-                            onBlur={ this.handleHide }
-                            onFocus={ this.handleShow }
-                            onMouseEnter={ this.handleShow }
-                            onMouseLeave={ this.handleHide }
-                            ref={ ref }
+                            onBlur={this.handleHide}
+                            onFocus={this.handleShow}
+                            onMouseEnter={this.handleShow}
+                            onMouseLeave={this.handleHide}
+                            ref={ref}
                         >
-                            { children }
+                            {children}
                         </span>
-                    ) }
+                    )}
                 </Reference>
 
                 <Popper
-                    modifiers={ {
+                    modifiers={{
                         hide: { enabled: false },
                         flip: { enabled: false },
                         preventOverflow: { enabled: false },
-                    } }
-                    placement={ placement }
+                    }}
+                    placement={placement}
                 >
-                    { ({ ref, style }) => (
-                        shouldShow && <div
-                            ref={ ref }
-                            style={ style }
-                        >
-                            { tooltip }
-                        </div>
-                    ) }
+                    {({ ref, style }) =>
+                        shouldShow && (
+                            <div ref={ref} style={style}>
+                                {tooltip}
+                            </div>
+                        )
+                    }
                 </Popper>
             </Manager>
         );

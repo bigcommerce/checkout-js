@@ -23,36 +23,36 @@ const BoltCreateAccountCheckbox: FunctionComponent = () => {
     const labelContent = (
         <>
             <TranslatedHtml
-                data={ agreementTranslationOptions }
+                data={agreementTranslationOptions}
                 id="payment.bolt_checkbox_agreement"
             />
             <ul>
-                {
-                    benefitsList.map(({ id }, key) => (
-                        <li key={ key }>
-                            <TranslatedString id={ id } />
-                        </li>
-                    ))
-                }
+                {benefitsList.map(({ id }, key) => (
+                    <li key={key}>
+                        <TranslatedString id={id} />
+                    </li>
+                ))}
             </ul>
         </>
     );
 
-    return <CheckboxFormField
-        additionalClassName="form-checkbox form-field--createAccount"
-        labelContent={ labelContent }
-        name="shouldCreateAccount"
-    />;
+    return (
+        <CheckboxFormField
+            additionalClassName="form-checkbox form-field--createAccount"
+            labelContent={labelContent}
+            name="shouldCreateAccount"
+        />
+    );
 };
 
-const BoltCustomForm: FunctionComponent<BoltCustomFormProps> = ({ containerId, showCreateAccountCheckbox }) => {
+const BoltCustomForm: FunctionComponent<BoltCustomFormProps> = ({
+    containerId,
+    showCreateAccountCheckbox,
+}) => {
     return (
         <div className="form-ccFields">
-            <div
-                className="form-field form-field--bolt-embed"
-                id={ containerId }
-            />
-            { showCreateAccountCheckbox ? <BoltCreateAccountCheckbox /> : null }
+            <div className="form-field form-field--bolt-embed" id={containerId} />
+            {showCreateAccountCheckbox ? <BoltCreateAccountCheckbox /> : null}
         </div>
     );
 };

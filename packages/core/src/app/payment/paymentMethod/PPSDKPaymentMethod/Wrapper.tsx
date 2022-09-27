@@ -1,13 +1,13 @@
-import React, { useEffect, FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 
 interface Props {
     onMount(): () => void;
 }
 
-export const Wrapper: FunctionComponent<Props> = props => {
+export const Wrapper: FunctionComponent<Props> = (props) => {
     const { children, onMount } = props;
 
     useEffect(onMount, [onMount]);
 
-    return <>{ children }</>;
+    return <>{children}</>;
 };

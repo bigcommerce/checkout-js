@@ -31,44 +31,42 @@ export default class DropdownTrigger extends Component<DropdownTriggerProps, Dro
         return (
             <Manager>
                 <Reference>
-                    { ({ ref }) => (
-                        <div
-                            className="dropdownTrigger"
-                            onClick={ this.handleClick }
-                            ref={ ref }
-                        >
-                            { children }
+                    {({ ref }) => (
+                        <div className="dropdownTrigger" onClick={this.handleClick} ref={ref}>
+                            {children}
                         </div>
-                    ) }
+                    )}
                 </Reference>
 
                 <Popper
-                    modifiers={ {
+                    modifiers={{
                         hide: { enabled: false },
                         flip: { enabled: false },
                         preventOverflow: { enabled: false },
-                    } }
-                    placement={ placement }
+                    }}
+                    placement={placement}
                 >
-                    { ({ ref, style }) => !shouldShow ? null : (
-                        <div
-                            className="dropdownMenu"
-                            ref={ ref }
-                            style={ {
-                                ...style,
-                                width: '100%',
-                                zIndex: 1,
-                            } }
-                        >
-                            { dropdown }
-                        </div>
-                    ) }
+                    {({ ref, style }) =>
+                        !shouldShow ? null : (
+                            <div
+                                className="dropdownMenu"
+                                ref={ref}
+                                style={{
+                                    ...style,
+                                    width: '100%',
+                                    zIndex: 1,
+                                }}
+                            >
+                                {dropdown}
+                            </div>
+                        )
+                    }
                 </Popper>
             </Manager>
         );
     }
 
-    private handleClick: MouseEventHandler<HTMLElement> = event => {
+    private handleClick: MouseEventHandler<HTMLElement> = (event) => {
         const { shouldShow } = this.state;
 
         if (shouldShow) {

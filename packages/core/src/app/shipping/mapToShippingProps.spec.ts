@@ -1,4 +1,10 @@
-import { createCheckoutService, Cart, Checkout, CheckoutService, StoreConfig } from '@bigcommerce/checkout-sdk';
+import {
+    Cart,
+    Checkout,
+    CheckoutService,
+    createCheckoutService,
+    StoreConfig,
+} from '@bigcommerce/checkout-sdk';
 
 import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';
@@ -23,30 +29,36 @@ describe('mapToShippingProps()', () => {
     });
 
     it('returns null when not initialized', () => {
-        expect(mapToShippingProps(checkoutContextProps))
-            .toEqual(null);
+        expect(mapToShippingProps(checkoutContextProps)).toBeNull();
     });
 
     describe('shouldShowMultiShipping', () => {
         beforeEach(() => {
-            jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(getCheckout());
-            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
-            jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue(getCustomer());
+            jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(
+                getCheckout(),
+            );
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
+                getStoreConfig(),
+            );
+            jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue(
+                getCustomer(),
+            );
             jest.spyOn(checkoutService.getState().data, 'getCart').mockReturnValue({
                 ...getCart(),
                 lineItems: {
-                    physicalItems: [ {
-                        ...getPhysicalItem(),
-                        quantity: 3,
-                    }],
+                    physicalItems: [
+                        {
+                            ...getPhysicalItem(),
+                            quantity: 3,
+                        },
+                    ],
                 },
             } as Cart);
         });
 
         it('returns true when enabled', () => {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            expect(mapToShippingProps(checkoutContextProps)!.shouldShowMultiShipping)
-                .toEqual(true);
+            expect(mapToShippingProps(checkoutContextProps)!.shouldShowMultiShipping).toBe(true);
         });
 
         it('returns false when not enabled', () => {
@@ -59,8 +71,7 @@ describe('mapToShippingProps()', () => {
             } as StoreConfig);
 
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            expect(mapToShippingProps(checkoutContextProps)!.shouldShowMultiShipping)
-                .toEqual(false);
+            expect(mapToShippingProps(checkoutContextProps)!.shouldShowMultiShipping).toBe(false);
         });
 
         it('returns false when no physical items', () => {
@@ -72,8 +83,7 @@ describe('mapToShippingProps()', () => {
             } as unknown as Cart);
 
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            expect(mapToShippingProps(checkoutContextProps)!.shouldShowMultiShipping)
-                .toEqual(false);
+            expect(mapToShippingProps(checkoutContextProps)!.shouldShowMultiShipping).toBe(false);
         });
 
         it('returns false when remote shipping', () => {
@@ -83,8 +93,7 @@ describe('mapToShippingProps()', () => {
             } as Checkout);
 
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            expect(mapToShippingProps(checkoutContextProps)!.shouldShowMultiShipping)
-                .toEqual(false);
+            expect(mapToShippingProps(checkoutContextProps)!.shouldShowMultiShipping).toBe(false);
         });
     });
 });

@@ -21,9 +21,10 @@ export default class CustomError extends Error {
         if (typeof Error.captureStackTrace === 'function') {
             Error.captureStackTrace(this, CustomError);
         } else {
-            this.stack = (new Error()).stack;
+            this.stack = new Error().stack;
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         this.data = data;
         this.message = message;
         this.name = name;

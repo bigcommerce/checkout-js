@@ -1,4 +1,8 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutSelectors,
+    CheckoutService,
+    createCheckoutService,
+} from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { merge, noop } from 'lodash';
@@ -14,7 +18,9 @@ import { getPaymentMethod } from '../payment-methods.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
 import SignOutLink, { SignOutLinkProps } from './SignOutLink';
-import WalletButtonPaymentMethod, { WalletButtonPaymentMethodProps } from './WalletButtonPaymentMethod';
+import WalletButtonPaymentMethod, {
+    WalletButtonPaymentMethodProps,
+} from './WalletButtonPaymentMethod';
 
 describe('WalletButtonPaymentMethod', () => {
     let WalletButtonPaymentMethodTest: FunctionComponent<WalletButtonPaymentMethodProps>;
@@ -42,24 +48,18 @@ describe('WalletButtonPaymentMethod', () => {
             hidePaymentSubmitButton: jest.fn(),
         };
 
-        jest.spyOn(checkoutState.data, 'getCheckout')
-            .mockReturnValue(getCheckout());
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
 
-        jest.spyOn(checkoutState.data, 'getBillingAddress')
-            .mockReturnValue(getBillingAddress());
+        jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(getBillingAddress());
 
-        jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
-            .mockReturnValue(true);
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
 
-        WalletButtonPaymentMethodTest = props => (
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <PaymentContext.Provider value={ paymentContext }>
-                    <LocaleContext.Provider value={ localeContext }>
-                        <Formik
-                            initialValues={ {} }
-                            onSubmit={ noop }
-                        >
-                            <WalletButtonPaymentMethod { ...props } />
+        WalletButtonPaymentMethodTest = (props) => (
+            <CheckoutProvider checkoutService={checkoutService}>
+                <PaymentContext.Provider value={paymentContext}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <Formik initialValues={{}} onSubmit={noop}>
+                            <WalletButtonPaymentMethod {...props} />
                         </Formik>
                     </LocaleContext.Provider>
                 </PaymentContext.Provider>
@@ -68,105 +68,89 @@ describe('WalletButtonPaymentMethod', () => {
     });
 
     it('initializes payment method when component mounts', () => {
-        mount(<WalletButtonPaymentMethodTest { ...defaultProps } />);
+        mount(<WalletButtonPaymentMethodTest {...defaultProps} />);
 
-        expect(defaultProps.initializePayment)
-            .toHaveBeenCalled();
+        expect(defaultProps.initializePayment).toHaveBeenCalled();
     });
 
     it('deinitializes payment method when component unmounts', () => {
-        const component = mount(<WalletButtonPaymentMethodTest { ...defaultProps } />);
+        const component = mount(<WalletButtonPaymentMethodTest {...defaultProps} />);
 
-        expect(defaultProps.deinitializePayment)
-            .not.toHaveBeenCalled();
+        expect(defaultProps.deinitializePayment).not.toHaveBeenCalled();
 
         component.unmount();
 
-        expect(defaultProps.deinitializePayment)
-            .toHaveBeenCalled();
+        expect(defaultProps.deinitializePayment).toHaveBeenCalled();
     });
 
     it('renders loading overlay while waiting for method to initialize', () => {
         let component: ReactWrapper;
 
-        component = mount(<WalletButtonPaymentMethodTest
-            { ...defaultProps }
-            isInitializing
-        />);
+        component = mount(<WalletButtonPaymentMethodTest {...defaultProps} isInitializing />);
 
-        expect(component.find(LoadingOverlay).prop('isLoading'))
-            .toEqual(true);
+        expect(component.find(LoadingOverlay).prop('isLoading')).toBe(true);
 
-        component = mount(<WalletButtonPaymentMethodTest { ...defaultProps } />);
+        component = mount(<WalletButtonPaymentMethodTest {...defaultProps} />);
 
-        expect(component.find(LoadingOverlay).prop('isLoading'))
-            .toEqual(false);
+        expect(component.find(LoadingOverlay).prop('isLoading')).toBe(false);
     });
 
     it('hides content while loading', () => {
-        const component = mount(<WalletButtonPaymentMethodTest { ...defaultProps } />);
+        const component = mount(<WalletButtonPaymentMethodTest {...defaultProps} />);
 
-        expect(component.find(LoadingOverlay).prop('hideContentWhenLoading'))
-            .toEqual(true);
+        expect(component.find(LoadingOverlay).prop('hideContentWhenLoading')).toBe(true);
     });
 
     it('renders placeholder container with provided ID', () => {
-        const component = mount(<WalletButtonPaymentMethodTest { ...defaultProps } />);
+        const component = mount(<WalletButtonPaymentMethodTest {...defaultProps} />);
 
-        expect(component.exists(`#${defaultProps.buttonId}`))
-            .toEqual(true);
+        expect(component.exists(`#${defaultProps.buttonId}`)).toBe(true);
     });
 
     it('renders button for user to sign into their wallet', () => {
-        const component = mount(<WalletButtonPaymentMethodTest
-            { ...defaultProps }
-            signInButtonClassName="wallet-button"
-            signInButtonLabel="Sign into wallet"
-        />);
+        const component = mount(
+            <WalletButtonPaymentMethodTest
+                {...defaultProps}
+                signInButtonClassName="wallet-button"
+                signInButtonLabel="Sign into wallet"
+            />,
+        );
 
-        expect(component.exists(`#${defaultProps.buttonId}`))
-            .toEqual(true);
+        expect(component.exists(`#${defaultProps.buttonId}`)).toBe(true);
 
-        expect(component.find(`#${defaultProps.buttonId}`).text())
-            .toEqual('Sign into wallet');
+        expect(component.find(`#${defaultProps.buttonId}`).text()).toBe('Sign into wallet');
 
-        expect(component.find(`#${defaultProps.buttonId}`).prop('className'))
-            .toContain('wallet-button');
+        expect(component.find(`#${defaultProps.buttonId}`).prop('className')).toContain(
+            'wallet-button',
+        );
     });
 
     it('does not render sign out link', () => {
-        const component = mount(<WalletButtonPaymentMethodTest { ...defaultProps } />);
+        const component = mount(<WalletButtonPaymentMethodTest {...defaultProps} />);
 
-        expect(component.find(SignOutLink))
-            .toHaveLength(0);
+        expect(component.find(SignOutLink)).toHaveLength(0);
     });
 
     it('disables submit button', () => {
-        mount(<WalletButtonPaymentMethodTest { ...defaultProps } />);
+        mount(<WalletButtonPaymentMethodTest {...defaultProps} />);
 
-        expect(paymentContext.disableSubmit)
-            .toHaveBeenCalledWith(defaultProps.method, true);
+        expect(paymentContext.disableSubmit).toHaveBeenCalledWith(defaultProps.method, true);
     });
 
     it('enables submit button if payment data is not required', () => {
-        jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
-            .mockReturnValue(false);
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(false);
 
-        mount(<WalletButtonPaymentMethodTest { ...defaultProps } />);
+        mount(<WalletButtonPaymentMethodTest {...defaultProps} />);
 
-        expect(paymentContext.disableSubmit)
-            .toHaveBeenCalledWith(defaultProps.method, false);
+        expect(paymentContext.disableSubmit).toHaveBeenCalledWith(defaultProps.method, false);
     });
 
     describe('when user is signed into their payment method account and credit card is selected from their wallet', () => {
         beforeEach(() => {
-            jest.spyOn(checkoutState.data, 'getCheckout')
-                .mockReturnValue({
-                    ...getCheckout(),
-                    payments: [
-                        { ...getCheckoutPayment(), providerId: defaultProps.method.id },
-                    ],
-                });
+            jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+                ...getCheckout(),
+                payments: [{ ...getCheckoutPayment(), providerId: defaultProps.method.id }],
+            });
 
             defaultProps = merge({}, defaultProps, {
                 method: {
@@ -183,30 +167,31 @@ describe('WalletButtonPaymentMethod', () => {
         });
 
         it('renders sign out link', () => {
-            const component = mount(<WalletButtonPaymentMethodTest { ...defaultProps } />);
+            const component = mount(<WalletButtonPaymentMethodTest {...defaultProps} />);
 
-            expect(component.find(SignOutLink))
-                .toHaveLength(1);
+            expect(component.find(SignOutLink)).toHaveLength(1);
         });
 
         it('enables submit button', () => {
-            mount(<WalletButtonPaymentMethodTest { ...defaultProps } />);
+            mount(<WalletButtonPaymentMethodTest {...defaultProps} />);
 
-            expect(paymentContext.disableSubmit)
-                .toHaveBeenCalledWith(defaultProps.method, false);
+            expect(paymentContext.disableSubmit).toHaveBeenCalledWith(defaultProps.method, false);
         });
 
         it('displays information of selected credit card', () => {
-            const component = mount(<WalletButtonPaymentMethodTest { ...defaultProps } />);
+            const component = mount(<WalletButtonPaymentMethodTest {...defaultProps} />);
 
-            expect(component.find('[data-test="payment-method-wallet-card-name"]').text())
-                .toContain('Test Tester');
+            expect(
+                component.find('[data-test="payment-method-wallet-card-name"]').text(),
+            ).toContain('Test Tester');
 
-            expect(component.find('[data-test="payment-method-wallet-card-type"]').text())
-                .toContain('Visa: **** 1111');
+            expect(
+                component.find('[data-test="payment-method-wallet-card-type"]').text(),
+            ).toContain('Visa: **** 1111');
 
-            expect(component.find('[data-test="payment-method-wallet-card-expiry"]').text())
-                .toContain('10/22');
+            expect(
+                component.find('[data-test="payment-method-wallet-card-expiry"]').text(),
+            ).toContain('10/22');
         });
 
         it('displays card information in `accountNum` format', () => {
@@ -219,16 +204,17 @@ describe('WalletButtonPaymentMethod', () => {
                 },
             };
 
-            const component = mount(<WalletButtonPaymentMethodTest
-                { ...defaultProps }
-                method={ method }
-            />);
+            const component = mount(
+                <WalletButtonPaymentMethodTest {...defaultProps} method={method} />,
+            );
 
-            expect(component.find('[data-test="payment-method-wallet-card-type"]').text())
-                .toContain('Visa: **** 1111');
+            expect(
+                component.find('[data-test="payment-method-wallet-card-type"]').text(),
+            ).toContain('Visa: **** 1111');
 
-            expect(component.find('[data-test="payment-method-wallet-card-expiry"]').text())
-                .toContain('10/22');
+            expect(
+                component.find('[data-test="payment-method-wallet-card-expiry"]').text(),
+            ).toContain('10/22');
         });
 
         it('displays card information in `card_information` format', () => {
@@ -242,75 +228,77 @@ describe('WalletButtonPaymentMethod', () => {
                 },
             };
 
-            const component = mount(<WalletButtonPaymentMethodTest
-                { ...defaultProps }
-                method={ method }
-            />);
+            const component = mount(
+                <WalletButtonPaymentMethodTest {...defaultProps} method={method} />,
+            );
 
-            expect(component.find('[data-test="payment-method-wallet-card-type"]').text())
-                .toContain('Visa: **** 1111');
+            expect(
+                component.find('[data-test="payment-method-wallet-card-type"]').text(),
+            ).toContain('Visa: **** 1111');
         });
 
         it('renders button for user to edit their selected credit card', () => {
-            const component = mount(<WalletButtonPaymentMethodTest
-                { ...defaultProps }
-                editButtonLabel="Edit card"
-                shouldShowEditButton
-            />);
+            const component = mount(
+                <WalletButtonPaymentMethodTest
+                    {...defaultProps}
+                    editButtonLabel="Edit card"
+                    shouldShowEditButton
+                />,
+            );
 
-            expect(component.exists(`#${defaultProps.buttonId}`))
-                .toEqual(true);
+            expect(component.exists(`#${defaultProps.buttonId}`)).toBe(true);
 
-            expect(component.find(`#${defaultProps.buttonId}`).text())
-                .toEqual('Edit card');
+            expect(component.find(`#${defaultProps.buttonId}`).text()).toBe('Edit card');
         });
 
         it('does not render button for user to edit their selected card if not configured', () => {
-            const component = mount(<WalletButtonPaymentMethodTest { ...defaultProps } />);
+            const component = mount(<WalletButtonPaymentMethodTest {...defaultProps} />);
 
-            expect(component.exists(`#${defaultProps.buttonId}`))
-                .toEqual(false);
+            expect(component.exists(`#${defaultProps.buttonId}`)).toBe(false);
         });
 
         it('signs out from payment method account of user when clicking on sign out link', async () => {
             const handleSignOutError = jest.fn();
 
-            jest.spyOn(checkoutService, 'signOutCustomer')
-                .mockResolvedValue(checkoutState);
+            jest.spyOn(checkoutService, 'signOutCustomer').mockResolvedValue(checkoutState);
 
-            const component = mount(<WalletButtonPaymentMethodTest
-                { ...defaultProps }
-                onSignOutError={ handleSignOutError }
-            />);
+            const component = mount(
+                <WalletButtonPaymentMethodTest
+                    {...defaultProps}
+                    onSignOutError={handleSignOutError}
+                />,
+            );
 
             (component.find(SignOutLink) as ReactWrapper<SignOutLinkProps>).prop('onSignOut')();
 
-            await new Promise(resolve => process.nextTick(resolve));
+            await new Promise((resolve) => process.nextTick(resolve));
 
-            expect(checkoutService.signOutCustomer)
-                .toHaveBeenCalledWith({ methodId: defaultProps.method.id });
+            expect(checkoutService.signOutCustomer).toHaveBeenCalledWith({
+                methodId: defaultProps.method.id,
+            });
 
-            expect(handleSignOutError)
-                .not.toHaveBeenCalled();
+            expect(handleSignOutError).not.toHaveBeenCalled();
         });
 
         it('notifies parent component if unable to sign out', async () => {
             const handleSignOutError = jest.fn();
 
-            jest.spyOn(checkoutService, 'signOutCustomer')
-                .mockRejectedValue(new Error('Unknown error'));
+            jest.spyOn(checkoutService, 'signOutCustomer').mockRejectedValue(
+                new Error('Unknown error'),
+            );
 
-            const component = mount(<WalletButtonPaymentMethodTest
-                { ...defaultProps }
-                onSignOutError={ handleSignOutError }
-            />);
+            const component = mount(
+                <WalletButtonPaymentMethodTest
+                    {...defaultProps}
+                    onSignOutError={handleSignOutError}
+                />,
+            );
 
             (component.find(SignOutLink) as ReactWrapper<SignOutLinkProps>).prop('onSignOut')();
 
-            await new Promise(resolve => process.nextTick(resolve));
+            await new Promise((resolve) => process.nextTick(resolve));
 
-            expect(handleSignOutError)
-                .toHaveBeenCalledWith(expect.any(Error));
+            expect(handleSignOutError).toHaveBeenCalledWith(expect.any(Error));
         });
     });
 });

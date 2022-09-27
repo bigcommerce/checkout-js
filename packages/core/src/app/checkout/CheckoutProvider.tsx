@@ -12,7 +12,10 @@ export interface CheckoutProviderState {
     checkoutState: CheckoutSelectors;
 }
 
-export default class CheckoutProvider extends Component<CheckoutProviderProps, CheckoutProviderState> {
+export default class CheckoutProvider extends Component<
+    CheckoutProviderProps,
+    CheckoutProviderState
+> {
     state: Readonly<CheckoutProviderState>;
 
     private unsubscribe?: () => void;
@@ -35,8 +38,8 @@ export default class CheckoutProvider extends Component<CheckoutProviderProps, C
     componentDidMount(): void {
         const { checkoutService } = this.props;
 
-        this.unsubscribe = checkoutService.subscribe(checkoutState =>
-            this.setState({ checkoutState })
+        this.unsubscribe = checkoutService.subscribe((checkoutState) =>
+            this.setState({ checkoutState }),
         );
     }
 
@@ -52,8 +55,8 @@ export default class CheckoutProvider extends Component<CheckoutProviderProps, C
         const { checkoutState } = this.state;
 
         return (
-            <CheckoutContext.Provider value={ this.getContextValue(checkoutService, checkoutState) }>
-                { children }
+            <CheckoutContext.Provider value={this.getContextValue(checkoutService, checkoutState)}>
+                {children}
             </CheckoutContext.Provider>
         );
     }

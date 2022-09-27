@@ -3,14 +3,19 @@ import { LanguageService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import PaymentMethodId from './PaymentMethodId';
 
 export default function getPaymentMethodDisplayName(
-    language: LanguageService
+    language: LanguageService,
 ): (method: PaymentMethod) => string {
-    return method => {
+    return (method) => {
         const { displayName } = method.config;
 
         const isCreditCard = displayName?.toLowerCase() === 'credit card';
-        if (method.id === PaymentMethodId.PaypalCommerceCredit || method.id === PaymentMethodId.BraintreePaypalCredit) {
+
+        if (
+            method.id === PaymentMethodId.PaypalCommerceCredit ||
+            method.id === PaymentMethodId.BraintreePaypalCredit
+        ) {
             const { payPalCreditProductBrandName } = method.initializationData;
+
             if (payPalCreditProductBrandName) {
                 return payPalCreditProductBrandName.credit || payPalCreditProductBrandName;
             }
@@ -18,7 +23,10 @@ export default function getPaymentMethodDisplayName(
             return 'Pay Later';
         }
 
-        if (isCreditCard && method.id === PaymentMethodId.AdyenV2 || method.id === PaymentMethodId.AdyenV3) {
+        if (
+            (isCreditCard && method.id === PaymentMethodId.AdyenV2) ||
+            method.id === PaymentMethodId.AdyenV3
+        ) {
             return language.translate('payment.credit_debit_card_text');
         }
 

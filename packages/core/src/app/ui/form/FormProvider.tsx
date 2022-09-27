@@ -1,5 +1,5 @@
 import { isFunction, noop } from 'lodash';
-import React, { createContext, memo, useMemo, useState, FunctionComponent, ReactNode } from 'react';
+import React, { createContext, FunctionComponent, memo, ReactNode, useMemo, useState } from 'react';
 
 export interface FormContextType {
     isSubmitted: boolean;
@@ -22,14 +22,12 @@ const FormProvider: FunctionComponent<FormProviderProps> = ({
     children,
     initialIsSubmitted = false,
 }) => {
-    const [ isSubmitted, setSubmitted ] = useState(initialIsSubmitted);
+    const [isSubmitted, setSubmitted] = useState(initialIsSubmitted);
     const contextValue = useMemo(() => ({ isSubmitted, setSubmitted }), [isSubmitted]);
 
     return (
-        <FormContext.Provider value={ contextValue }>
-            { isFunction(children) ?
-                children({ isSubmitted, setSubmitted }) :
-                children }
+        <FormContext.Provider value={contextValue}>
+            {isFunction(children) ? children({ isSubmitted, setSubmitted }) : children}
         </FormContext.Provider>
     );
 };

@@ -11,13 +11,11 @@ function mapFromGiftCertificate(item: GiftCertificateItem): OrderSummaryItemProp
         quantity: 1,
         amount: item.amount,
         name: item.name,
-        image:
-            <span
-                className="productImage-giftCertificate"
-                data-test="cart-item-gift-certificate"
-            >
+        image: (
+            <span className="productImage-giftCertificate" data-test="cart-item-gift-certificate">
                 <IconGiftCertificate />
-            </span>,
+            </span>
+        ),
     };
 }
 

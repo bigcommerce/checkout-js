@@ -9,11 +9,9 @@ describe('mapFromDigital()', () => {
         const { options, ...item } = getDigitalItem();
         const { productOptions = [] } = mapFromDigital(item);
 
-        expect(productOptions[0].testId)
-            .toEqual('cart-item-digital-product-download');
+        expect(productOptions[0].testId).toBe('cart-item-digital-product-download');
 
-        expect(productOptions[0].content)
-            .toMatchSnapshot();
+        expect(productOptions[0].content).toMatchSnapshot();
     });
 
     it('returns digital related properties when it has no download URL', () => {
@@ -24,10 +22,8 @@ describe('mapFromDigital()', () => {
         };
         const { productOptions = [] } = mapFromDigital(item);
 
-        expect(productOptions[0].testId)
-            .toEqual('cart-item-digital-product');
+        expect(productOptions[0].testId).toBe('cart-item-digital-product');
 
-        expect(productOptions[0].content)
-            .toMatchSnapshot();
+        expect(productOptions[0].content).toMatchSnapshot();
     });
 });

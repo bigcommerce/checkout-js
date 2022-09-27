@@ -46,8 +46,9 @@ describe('AccountService', () => {
         });
 
         it('calls internal api', () => {
-            expect(requestSender.put)
-                .toBeCalledWith('/internalapi/v1/checkout/customer', { body: payload });
+            expect(requestSender.put).toHaveBeenCalledWith('/internalapi/v1/checkout/customer', {
+                body: payload,
+            });
         });
 
         it('returns customer', () => {

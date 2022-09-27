@@ -1,4 +1,8 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutSelectors,
+    CheckoutService,
+    createCheckoutService,
+} from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -32,9 +36,7 @@ describe('ApplePayPaymentMethod', () => {
                 ...getPaymentMethod(),
                 id: PaymentMethodId.ApplePay,
                 initializationData: {
-                    merchantCapabilities: [
-                        'supports3DS',
-                    ],
+                    merchantCapabilities: ['supports3DS'],
                 },
             },
         };
@@ -49,24 +51,18 @@ describe('ApplePayPaymentMethod', () => {
             hidePaymentSubmitButton: jest.fn(),
         };
 
-        jest.spyOn(checkoutState.data, 'getCart')
-            .mockReturnValue(getCart());
+        jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(getCart());
 
-        jest.spyOn(checkoutState.data, 'getConfig')
-            .mockReturnValue(getStoreConfig());
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
-        jest.spyOn(checkoutState.data, 'getCustomer')
-            .mockReturnValue(getCustomer());
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
 
-        PaymentMethodTest = props => (
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <PaymentContext.Provider value={ paymentContext }>
-                    <LocaleContext.Provider value={ localeContext }>
-                        <Formik
-                            initialValues={ {} }
-                            onSubmit={ noop }
-                        >
-                            <ApplePayPaymentMethod { ...defaultProps } { ...props } />
+        PaymentMethodTest = (props) => (
+            <CheckoutProvider checkoutService={checkoutService}>
+                <PaymentContext.Provider value={paymentContext}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <Formik initialValues={{}} onSubmit={noop}>
+                            <ApplePayPaymentMethod {...defaultProps} {...props} />
                         </Formik>
                     </LocaleContext.Provider>
                 </PaymentContext.Provider>
@@ -77,19 +73,20 @@ describe('ApplePayPaymentMethod', () => {
     it('renders as hosted method', () => {
         const container = mount(<PaymentMethodTest />);
 
-        expect(container.find(HostedPaymentMethod).length).toEqual(1);
+        expect(container.find(HostedPaymentMethod)).toHaveLength(1);
     });
 
     it('initializes method with required config', () => {
         mount(<PaymentMethodTest />);
 
-        expect(defaultProps.initializePayment)
-            .toHaveBeenCalledWith(expect.objectContaining({
+        expect(defaultProps.initializePayment).toHaveBeenCalledWith(
+            expect.objectContaining({
                 methodId: defaultProps.method.id,
                 [defaultProps.method.id]: {
                     shippingLabel: 'Shipping',
                     subtotalLabel: 'Subtotal',
                 },
-            }));
+            }),
+        );
     });
 });

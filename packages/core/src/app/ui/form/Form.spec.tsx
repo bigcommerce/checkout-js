@@ -6,12 +6,14 @@ import Form from './Form';
 
 describe('Form', () => {
     it('matches snapshot', () => {
-        expect(render(<Form>Hello world</Form>))
-            .toMatchSnapshot();
+        expect(render(<Form>Hello world</Form>)).toMatchSnapshot();
     });
 
     it('disables browser validation', () => {
-        expect(mount(<Form>Hello world</Form>).find(FormikForm).prop('noValidate'))
-            .toEqual(true);
+        expect(
+            mount(<Form>Hello world</Form>)
+                .find(FormikForm)
+                .prop('noValidate'),
+        ).toBe(true);
     });
 });

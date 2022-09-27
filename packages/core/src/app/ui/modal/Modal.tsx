@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import { noop } from 'lodash';
-import React, { useCallback, FunctionComponent, KeyboardEvent, MouseEvent, ReactNode } from 'react';
+import React, { FunctionComponent, KeyboardEvent, MouseEvent, ReactNode, useCallback } from 'react';
 import ReactModal from 'react-modal';
 import { Omit } from 'utility-types';
 
@@ -33,71 +33,68 @@ const Modal: FunctionComponent<ModalProps> = ({
     shouldShowCloseButton = false,
     ...rest
 }) => {
-    const handleClose = useCallback((event: MouseEvent | KeyboardEvent) => {
-        onRequestClose(event);
-    }, [onRequestClose]);
+    const handleClose = useCallback(
+        (event: MouseEvent | KeyboardEvent) => {
+            onRequestClose(event);
+        },
+        [onRequestClose],
+    );
 
-    return <ReactModal
-        { ...rest }
-        ariaHideApp={ process.env.NODE_ENV !== 'test' }
-        bodyOpenClassName="has-activeModal"
-        className={ {
-            base: classNames(
-                'modal optimizedCheckout-contentPrimary',
-                additionalModalClassName
-            ),
-            afterOpen: 'modal--afterOpen',
-            beforeClose: 'modal--beforeClose',
-        } }
-        closeTimeoutMS={ 200 }
-        onRequestClose={ onRequestClose }
-        overlayClassName={ {
-            base: 'modalOverlay',
-            afterOpen: 'modalOverlay--afterOpen',
-            beforeClose: 'modalOverlay--beforeClose',
-        } }
-        shouldCloseOnEsc={ true }
-        shouldCloseOnOverlayClick={ false }
-    >
-        <div
-            className={ classNames(
-                'modal-header',
-                additionalHeaderClassName
-            ) }
+    return (
+        <ReactModal
+            {...rest}
+            ariaHideApp={process.env.NODE_ENV !== 'test'}
+            bodyOpenClassName="has-activeModal"
+            className={{
+                base: classNames(
+                    'modal optimizedCheckout-contentPrimary',
+                    additionalModalClassName,
+                ),
+                afterOpen: 'modal--afterOpen',
+                beforeClose: 'modal--beforeClose',
+            }}
+            closeTimeoutMS={200}
+            onRequestClose={onRequestClose}
+            overlayClassName={{
+                base: 'modalOverlay',
+                afterOpen: 'modalOverlay--afterOpen',
+                beforeClose: 'modalOverlay--beforeClose',
+            }}
+            shouldCloseOnEsc={true}
+            shouldCloseOnOverlayClick={false}
         >
-            { header }
+            <div className={classNames('modal-header', additionalHeaderClassName)}>
+                {header}
 
-            { shouldShowCloseButton && <a
-                className="modal-close"
-                data-test="modal-close-button"
-                href="#"
-                onClick={ preventDefault(handleClose) }
+                {shouldShowCloseButton && (
+                     
+                    <a
+                        className="modal-close"
+                        data-test="modal-close-button"
+                        href="#"
+                        onClick={preventDefault(handleClose)}
+                    >
+                        {closeButtonLabel && <span className="is-srOnly">{closeButtonLabel}</span>}
+
+                        <IconClose />
+                    </a>
+                )}
+            </div>
+
+            <div
+                className={classNames('modal-body', additionalBodyClassName)}
+                data-test="modal-body"
             >
-                { closeButtonLabel && <span className="is-srOnly">
-                    { closeButtonLabel }
-                </span> }
+                {children}
+            </div>
 
-                <IconClose />
-            </a> }
-        </div>
-
-        <div
-            className={ classNames(
-                'modal-body',
-                additionalBodyClassName
-            ) }
-            data-test="modal-body"
-        >
-            { children }
-        </div>
-
-        { footer && <div
-            className="modal-footer"
-            data-test="modal-footer"
-        >
-            { footer }
-        </div> }
-    </ReactModal>;
+            {Boolean(footer) && (
+                <div className="modal-footer" data-test="modal-footer">
+                    {footer}
+                </div>
+            )}
+        </ReactModal>
+    );
 };
 
 export default Modal;

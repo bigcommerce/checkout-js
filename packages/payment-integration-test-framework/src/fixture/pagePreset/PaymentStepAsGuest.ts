@@ -6,6 +6,7 @@ import { CheckoutPagePreset } from './CheckoutPagePreset';
 export class PaymentStepAsGuest implements CheckoutPagePreset {
     async apply(page: Page): Promise<void> {
         const api = new ApiRequestsSender(page);
+
         await api.addPhysicalItemToCart();
         await api.completeCustomerStepAsGuest();
         await api.completeSingleShippingAndSkipToPaymentStep();

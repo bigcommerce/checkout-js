@@ -33,57 +33,55 @@ describe('ShippingOptionsList Component', () => {
 
     it('renders shipping option list with expected props', () => {
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
-                <Formik
-                    initialValues={ { } }
-                    onSubmit={ noop }
-                >
+            <LocaleContext.Provider value={localeContext}>
+                <Formik initialValues={{}} onSubmit={noop}>
                     <ShippingOptionsList
                         consignmentId="c_id"
                         inputName="c_id"
-                        isLoading={ true }
-                        onSelectedOption={ onSelected }
+                        isLoading={true}
+                        onSelectedOption={onSelected}
                         selectedShippingOptionId="bar"
-                        shippingOptions={ shippingOptions }
+                        shippingOptions={shippingOptions}
                     />
                 </Formik>
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
         expect(component.find(LoadingOverlay).prop('isLoading')).toBeTruthy();
-        expect(component.find(ChecklistItem).length).toEqual(2);
-        expect(component
-            .find(StaticShippingOption)
-            .at(0)
-            .prop('method')
-        )
-            .toMatchObject(shippingOptions[0]);
+        expect(component.find(ChecklistItem)).toHaveLength(2);
+        expect(component.find(StaticShippingOption).at(0).prop('method')).toMatchObject(
+            shippingOptions[0],
+        );
 
-        expect(component
-            .find('.form-checklist-item--selected')
-            .find(StaticShippingOption)
-            .prop('method')
-        )
-            .toMatchObject(shippingOptions[1]);
+        expect(
+            component
+                .find('.form-checklist-item--selected')
+                .find(StaticShippingOption)
+                .prop('method'),
+        ).toMatchObject(shippingOptions[1]);
     });
 
     it('does not render if there are no shipping optionss', () => {
-        let component = shallow(<ShippingOptionsList
-            consignmentId="c_id"
-            inputName="c_id"
-            isLoading={ false }
-            onSelectedOption={ onSelected }
-        />);
+        let component = shallow(
+            <ShippingOptionsList
+                consignmentId="c_id"
+                inputName="c_id"
+                isLoading={false}
+                onSelectedOption={onSelected}
+            />,
+        );
 
         expect(component.getElement()).toBeFalsy();
 
-        component = shallow(<ShippingOptionsList
-            consignmentId="c_id"
-            inputName="c_id"
-            isLoading={ false }
-            onSelectedOption={ onSelected }
-            shippingOptions={ [] }
-        />);
+        component = shallow(
+            <ShippingOptionsList
+                consignmentId="c_id"
+                inputName="c_id"
+                isLoading={false}
+                onSelectedOption={onSelected}
+                shippingOptions={[]}
+            />,
+        );
 
         expect(component.getElement()).toBeFalsy();
     });

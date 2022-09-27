@@ -2,7 +2,7 @@ import { Cart, CheckoutSelectors, Consignment } from '@bigcommerce/checkout-sdk'
 import { map, sortBy, uniq } from 'lodash';
 import { createSelector } from 'reselect';
 
-import { withCheckout, CheckoutContextProps } from '../../checkout';
+import { CheckoutContextProps, withCheckout } from '../../checkout';
 import getShippableLineItems from '../getShippableLineItems';
 import getShippingMethodId from '../getShippingMethodId';
 
@@ -27,9 +27,9 @@ export interface WithCheckoutShippingOptionsProps {
 
 const subscribeToConsignmentsSelector = createSelector(
     ({ checkoutService }: CheckoutContextProps) => checkoutService.subscribe,
-    subscribe => (subscriber: (state: CheckoutSelectors) => void) => {
+    (subscribe) => (subscriber: (state: CheckoutSelectors) => void) => {
         return subscribe(subscriber, ({ data }) => data.getConsignments());
-    }
+    },
 );
 
 const isLoadingSelector = createSelector(
@@ -38,7 +38,13 @@ const isLoadingSelector = createSelector(
     ({ statuses }: CheckoutSelectors) => statuses.isSelectingShippingOption,
     ({ statuses }: CheckoutSelectors) => statuses.isUpdatingConsignment,
     ({ statuses }: CheckoutSelectors) => statuses.isCreatingConsignments,
-    (isUpdatingAddress, isLoadingShippingOptions, isSelectingShippingOption, isUpdatingConsignment, isCreatingConsignments) => {
+    (
+        isUpdatingAddress,
+        isLoadingShippingOptions,
+        isSelectingShippingOption,
+        isUpdatingConsignment,
+        isCreatingConsignments,
+    ) => {
         return (consignmentId?: string) => {
             return (
                 isUpdatingAddress ||
@@ -48,34 +54,27 @@ const isLoadingSelector = createSelector(
                 isCreatingConsignments()
             );
         };
-    }
+    },
 );
 
 const sortConsignments = (cart: Cart, unsortedConsignments: Consignment[]): Consignment[] => {
     if (unsortedConsignments.length < 2) {
         return unsortedConsignments;
     }
+
     const shippableItems = getShippableLineItems(cart, unsortedConsignments);
     const consignmentsOrder = uniq(map(shippableItems, 'consignment.id'));
 
-    return sortBy(unsortedConsignments, consignment => consignmentsOrder.indexOf(consignment.id));
+    return sortBy(unsortedConsignments, (consignment) => consignmentsOrder.indexOf(consignment.id));
 };
 
 export function mapToShippingOptions(
     { checkoutService, checkoutState }: CheckoutContextProps,
-    props: ShippingOptionsProps
+    props: ShippingOptionsProps,
 ): WithCheckoutShippingOptionsProps | null {
     const {
-        data: {
-            getCart,
-            getConsignments,
-            getConfig,
-            getCustomer,
-            getCheckout,
-        },
-        statuses: {
-            isSelectingShippingOption,
-        },
+        data: { getCart, getConsignments, getConfig, getCustomer, getCheckout },
+        statuses: { isSelectingShippingOption },
     } = checkoutState;
 
     const customer = getCustomer();
@@ -87,7 +86,7 @@ export function mapToShippingOptions(
         return null;
     }
 
-    const consignments = sortConsignments(cart, getConsignments() ||  []);
+    const consignments = sortConsignments(cart, getConsignments() || []);
     const methodId = getShippingMethodId(checkout);
     const { shippingQuoteFailedMessage } = config.checkoutSettings;
 
@@ -99,7 +98,10 @@ export function mapToShippingOptions(
         isSelectingShippingOption,
         methodId,
         selectShippingOption: checkoutService.selectConsignmentShippingOption,
-        subscribeToConsignments: subscribeToConsignmentsSelector({ checkoutService, checkoutState }),
+        subscribeToConsignments: subscribeToConsignmentsSelector({
+            checkoutService,
+            checkoutState,
+        }),
     };
 }
 

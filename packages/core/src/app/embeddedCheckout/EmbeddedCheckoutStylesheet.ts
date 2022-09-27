@@ -7,9 +7,7 @@ import EmbeddedCheckoutStyleParser from './EmbeddedCheckoutStyleParser';
 export default class EmbeddedCheckoutStylesheet {
     private _parser: EmbeddedCheckoutStyleParser;
 
-    constructor(
-        embeddedCheckoutStyleParser: EmbeddedCheckoutStyleParser
-    ) {
+    constructor(embeddedCheckoutStyleParser: EmbeddedCheckoutStyleParser) {
         this._parser = embeddedCheckoutStyleParser;
     }
 

@@ -1,6 +1,6 @@
-import React, { Fragment, FunctionComponent } from 'react';
+import React, { FunctionComponent } from 'react';
 
-import { withCurrency, TranslatedString, WithCurrencyProps } from '../locale';
+import { TranslatedString, withCurrency, WithCurrencyProps } from '../locale';
 
 import OrderSummaryPrice from './OrderSummaryPrice';
 
@@ -16,37 +16,39 @@ const OrderSummaryTotal: FunctionComponent<OrderSummaryTotalProps & WithCurrency
     orderAmount,
     currency,
 }) => {
-
     const hasDifferentCurrency = shopperCurrencyCode !== storeCurrencyCode;
-    const label = <Fragment>
-        { hasDifferentCurrency ?
-            <TranslatedString id="cart.estimated_total_text" /> :
-            <TranslatedString id="cart.total_text" /> }
-        { ` (${shopperCurrencyCode})` }
-    </Fragment>;
+    const label = (
+        <>
+            {hasDifferentCurrency ? (
+                <TranslatedString id="cart.estimated_total_text" />
+            ) : (
+                <TranslatedString id="cart.total_text" />
+            )}
+            {` (${shopperCurrencyCode})`}
+        </>
+    );
 
     return (
-        <Fragment>
+        <>
             <OrderSummaryPrice
-                amount={ orderAmount }
+                amount={orderAmount}
                 className="cart-priceItem--total"
-                label={ label }
-                superscript={ hasDifferentCurrency ? '*' : undefined }
+                label={label}
+                superscript={hasDifferentCurrency ? '*' : undefined}
                 testId="cart-total"
             />
-            { hasDifferentCurrency && currency && <p
-                className="cart-priceItem--totalNote"
-                data-test="cart-price-item-total-note"
-            >
-                <TranslatedString
-                    data={ {
-                        total: currency.toStoreCurrency(orderAmount),
-                        code: storeCurrencyCode,
-                    } }
-                    id="cart.billed_amount_text"
-                />
-            </p> }
-        </Fragment>
+            {hasDifferentCurrency && currency && (
+                <p className="cart-priceItem--totalNote" data-test="cart-price-item-total-note">
+                    <TranslatedString
+                        data={{
+                            total: currency.toStoreCurrency(orderAmount),
+                            code: storeCurrencyCode,
+                        }}
+                        id="cart.billed_amount_text"
+                    />
+                </p>
+            )}
+        </>
     );
 };
 

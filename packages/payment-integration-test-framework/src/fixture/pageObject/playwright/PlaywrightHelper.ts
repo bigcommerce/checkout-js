@@ -1,8 +1,8 @@
 import { Page } from '@playwright/test';
 import { includes } from 'lodash';
 
+import { getStoreUrl } from '../../';
 import { CheckoutPagePreset } from '../../../';
-import { getStoreUrl } from "../../";
 
 import { PollyObject } from './PollyObject';
 import { ServerSideRender } from './ServerSideRender';
@@ -20,7 +20,7 @@ export class PlaywrightHelper {
 
     constructor(page: Page) {
         this.page = page;
-        this.mode = process.env.MODE?.toLowerCase() === 'record'  ? 'record' : 'replay';
+        this.mode = process.env.MODE?.toLowerCase() === 'record' ? 'record' : 'replay';
         this.isReplay = this.mode === 'replay';
         this.polly = new PollyObject(this.mode);
         this.server = new ServerSideRender();
@@ -29,35 +29,45 @@ export class PlaywrightHelper {
 
     enableDevMode(): void {
         this.isDevMode = true;
-        this.page.on('console', msg => console.log(`🧭 ${msg.text()}`));
+        this.page.on('console', (msg) => console.log(`🧭 ${msg.text()}`));
     }
 
     async goto(): Promise<void> {
         if (this.isReplay) {
             await this.page.goto('/checkout');
         } else {
-            await this.page.goto(this.storeUrl + '/checkout');
+            await this.page.goto(`${this.storeUrl}/checkout`);
         }
     }
 
     async useHAR(har: string, folder: string): Promise<void> {
         this.har = har;
 
-        await this.polly.start({
+        this.polly.start({
             devMode: this.isDevMode,
             page: this.page,
             har: this.har,
             harFolder: folder,
         });
 
-        await this.page.route(/.*\/products\/.*\/images\/.*/, route => route.fulfill({ status: 200, path: this.srcPath + '/support/product.png' }));
+        await this.page.route(/.*\/products\/.*\/images\/.*/, (route) => {
+            void route.fulfill({ status: 200, path: `${this.srcPath}/support/product.png` });
+        });
 
         if (this.isReplay) {
             // creating local checkout environment during replay
             this.polly.enableReplay();
+
             const { checkoutId, orderId } = this.polly.getCartAndOrderIDs();
-            await this.renderAndRoute('/checkout', this.srcPath + '/support/checkout.ejs', { checkoutId });
-            await this.renderAndRoute(/order-confirmation.*/, this.srcPath + '/support/orderConfirmation.ejs', { orderId });
+
+            await this.renderAndRoute('/checkout', `${this.srcPath}/support/checkout.ejs`, {
+                checkoutId,
+            });
+            await this.renderAndRoute(
+                /order-confirmation.*/,
+                `${this.srcPath}/support/orderConfirmation.ejs`,
+                { orderId },
+            );
         } else {
             this.polly.enableRecord();
         }
@@ -72,26 +82,44 @@ export class PlaywrightHelper {
     }
 
     async stopAll(): Promise<void> {
+        if (typeof this.polly.stop !== 'function') {
+            throw new Error('Polly stop is undefined');
+        }
+
         await this.polly.stop();
         await this.page.close();
     }
 
-    async renderAndRoute(url: string | RegExp | ((url: URL) => boolean), filePath: string, data?: Record<string, unknown>): Promise<void> {
+    async renderAndRoute(
+        url: string | RegExp | ((url: URL) => boolean),
+        filePath: string,
+        data?: Record<string, unknown>,
+    ): Promise<void> {
         if (includes(filePath, 'ejs')) {
-            const localhostUrl = 'http://localhost:' + process.env.PORT;
+            const localhostUrl = `http://localhost:${process.env.PORT || ''}`;
             const storeUrl = this.isReplay ? localhostUrl : this.storeUrl;
-            const checkoutUrl = this.isReplay ? localhostUrl + '/checkout' : storeUrl + '/checkout';
-            const htmlStr = await this.server.renderFile(filePath, { ...data, localhostUrl, storeUrl, checkoutUrl });
-            await this.page.route(url, route => route.fulfill({
-                status: 200,
-                contentType: 'text/html; charset=UTF-8',
-                body: htmlStr,
-            }));
+            const checkoutUrl = this.isReplay ? `${localhostUrl}/checkout` : `${storeUrl}/checkout`;
+            const htmlStr = await this.server.renderFile(filePath, {
+                ...data,
+                localhostUrl,
+                storeUrl,
+                checkoutUrl,
+            });
+
+            await this.page.route(url, (route) => {
+                void route.fulfill({
+                    status: 200,
+                    contentType: 'text/html; charset=UTF-8',
+                    body: htmlStr,
+                });
+            });
         } else {
-            await this.page.route(url, route => route.fulfill({
-                status: 200,
-                path: filePath,
-            }));
+            await this.page.route(url, (route) => {
+                void route.fulfill({
+                    status: 200,
+                    path: filePath,
+                });
+            });
         }
     }
 }

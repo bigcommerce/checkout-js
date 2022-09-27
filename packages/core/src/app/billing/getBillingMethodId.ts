@@ -6,7 +6,7 @@ export default function getBillingMethodId(checkout: Checkout): string | undefin
     const BILLING_METHOD_IDS = ['amazonpay'];
     const preselectedPayment = getPreselectedPayment(checkout);
 
-    return preselectedPayment && BILLING_METHOD_IDS.indexOf(preselectedPayment.providerId) > -1 ?
-        preselectedPayment.providerId :
-        undefined;
+    return preselectedPayment && BILLING_METHOD_IDS.indexOf(preselectedPayment.providerId) > -1
+        ? preselectedPayment.providerId
+        : undefined;
 }

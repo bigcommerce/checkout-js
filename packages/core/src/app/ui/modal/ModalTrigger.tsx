@@ -1,7 +1,13 @@
-import React, { Component, Fragment, KeyboardEvent, KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react';
+import React, {
+    Component,
+    KeyboardEvent,
+    KeyboardEventHandler,
+    MouseEventHandler,
+    ReactNode,
+} from 'react';
 
 export interface ModalTriggerProps {
-    children(props: { onClick: MouseEventHandler; onKeyPress: KeyboardEventHandler}): ReactNode;
+    children(props: { onClick: MouseEventHandler; onKeyPress: KeyboardEventHandler }): ReactNode;
     modal(props: ModalTriggerModalProps): ReactNode;
 }
 
@@ -21,7 +27,7 @@ export default class ModalTrigger extends Component<ModalTriggerProps, ModalTrig
         isOpen: false,
     };
 
-    private canHandleEvent: boolean = false;
+    private canHandleEvent = false;
 
     componentDidMount(): void {
         this.canHandleEvent = true;
@@ -36,17 +42,17 @@ export default class ModalTrigger extends Component<ModalTriggerProps, ModalTrig
         const { isOpen } = this.state;
 
         return (
-            <Fragment>
-                { children({
+            <>
+                {children({
                     onClick: this.handleOpen,
                     onKeyPress: this.handleKeyOpen,
-                }) }
+                })}
 
-                { modal({
+                {modal({
                     isOpen,
                     onRequestClose: this.handleClose,
-                }) }
-            </Fragment>
+                })}
+            </>
         );
     }
 
@@ -77,7 +83,9 @@ export default class ModalTrigger extends Component<ModalTriggerProps, ModalTrig
         });
     };
 
-    private handleKeyOpen: (keyboardEvent: KeyboardEvent<HTMLElement>) => void = keyboardEvent => {
+    private handleKeyOpen: (keyboardEvent: KeyboardEvent<HTMLElement>) => void = (
+        keyboardEvent,
+    ) => {
         if (keyboardEvent.key === 'Enter') {
             this.handleOpen();
         }

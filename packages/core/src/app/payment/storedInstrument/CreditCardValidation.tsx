@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 
 import { TranslatedString } from '../../locale';
 import { CreditCardCodeField, CreditCardNumberField } from '../creditCard';
@@ -12,23 +12,25 @@ const CreditCardValidation: React.FunctionComponent<CreditCardValidationProps> =
     shouldShowNumberField,
     shouldShowCardCodeField,
 }) => (
-    <Fragment>
-        { shouldShowNumberField && <p>
-            <strong>
-                <TranslatedString id="payment.instrument_trusted_shipping_address_title_text" />
-            </strong>
+    <>
+        {shouldShowNumberField && (
+            <p>
+                <strong>
+                    <TranslatedString id="payment.instrument_trusted_shipping_address_title_text" />
+                </strong>
 
-            <br />
+                <br />
 
-            <TranslatedString id="payment.instrument_trusted_shipping_address_text" />
-        </p> }
+                <TranslatedString id="payment.instrument_trusted_shipping_address_text" />
+            </p>
+        )}
 
         <div className="form-ccFields">
-            { shouldShowNumberField && <CreditCardNumberField name="ccNumber" /> }
+            {shouldShowNumberField && <CreditCardNumberField name="ccNumber" />}
 
-            { shouldShowCardCodeField && <CreditCardCodeField name="ccCvv" /> }
+            {shouldShowCardCodeField && <CreditCardCodeField name="ccCvv" />}
         </div>
-    </Fragment>
+    </>
 );
 
 export default CreditCardValidation;

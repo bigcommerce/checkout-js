@@ -1,4 +1,9 @@
-import { CustomItem, DigitalItem, GiftCertificateItem, PhysicalItem } from '@bigcommerce/checkout-sdk';
+import {
+    CustomItem,
+    DigitalItem,
+    GiftCertificateItem,
+    PhysicalItem,
+} from '@bigcommerce/checkout-sdk';
 
 import { getPhysicalItem } from '../cart/lineItem.mock';
 
@@ -15,8 +20,7 @@ describe('removeBundledItems()', () => {
         };
 
         it('returns zero', () => {
-            expect(removeBundledItems(items))
-                .toEqual(items);
+            expect(removeBundledItems(items)).toEqual(items);
         });
     });
 
@@ -43,16 +47,13 @@ describe('removeBundledItems()', () => {
         };
 
         it('removes items with parentId', () => {
-            expect(removeBundledItems(items))
-                .toEqual(emptyItems);
+            expect(removeBundledItems(items)).toEqual(emptyItems);
         });
     });
 
     describe('when there are items without parentId', () => {
         const items = {
-            physicalItems: [
-                getPhysicalItem(),
-            ],
+            physicalItems: [getPhysicalItem()],
             digitalItems: [] as DigitalItem[],
             giftCertificates: [] as GiftCertificateItem[],
             // for now, force it to be null this way.
@@ -60,8 +61,7 @@ describe('removeBundledItems()', () => {
         };
 
         it('keeps all items', () => {
-            expect(removeBundledItems(items))
-                .toEqual(items);
+            expect(removeBundledItems(items)).toEqual(items);
         });
     });
 });

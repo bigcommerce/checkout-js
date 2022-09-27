@@ -1,5 +1,5 @@
 import { Cart, Consignment } from '@bigcommerce/checkout-sdk';
-import React, { memo, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '../locale';
 
@@ -21,17 +21,15 @@ const StaticConsignmentItemList: FunctionComponent<StaticConsignmentItemListProp
         <div className="staticConsignment-items">
             <strong>
                 <TranslatedString
-                    data={ { count: getLineItemsCount(lineItems) } }
+                    data={{ count: getLineItemsCount(lineItems) }}
                     id="cart.item_count_text"
                 />
             </strong>
 
             <ul>
-                { lineItems.map(item =>
-                    <li key={ item.id }>
-                        { `${item.quantity} x ${item.name}` }
-                    </li>
-                ) }
+                {lineItems.map((item) => (
+                    <li key={item.id}>{`${item.quantity} x ${item.name}`}</li>
+                ))}
             </ul>
         </div>
     );

@@ -31,10 +31,10 @@ export default function renderOrderConfirmation({
 
     ReactDOM.render(
         <OrderConfirmationApp
-            containerId={ containerId }
-            publicPath={ configuredPublicPath }
-            { ...props }
+            containerId={containerId}
+            publicPath={configuredPublicPath}
+            {...props}
         />,
-        document.getElementById(containerId)
+        document.getElementById(containerId),
     );
 }

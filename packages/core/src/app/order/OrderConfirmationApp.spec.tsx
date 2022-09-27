@@ -24,7 +24,7 @@ describe('OrderConfirmationApp', () => {
     });
 
     it('renders app without crashing', () => {
-        orderConfirmationApp = shallow(<OrderConfirmationApp { ...defaultProps } />);
+        orderConfirmationApp = shallow(<OrderConfirmationApp {...defaultProps} />);
 
         expect(orderConfirmationApp).toBeTruthy();
     });

@@ -1,4 +1,4 @@
-import { createCheckoutService, CheckoutService } from '@bigcommerce/checkout-sdk';
+import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
@@ -33,15 +33,14 @@ describe('CartSummary Component', () => {
             writable: true,
         });
         component = mount(
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <LocaleContext.Provider value={ localeContext }>
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
                     <CartSummary />
                 </LocaleContext.Provider>
-            </CheckoutProvider>
+            </CheckoutProvider>,
         );
 
-        expect(component.find(OrderSummary).prop('headerLink'))
-            .toMatchSnapshot();
+        expect(component.find(OrderSummary).prop('headerLink')).toMatchSnapshot();
     });
 
     it('renders OrderSummary without the Edit Cart link for Buy Now carts', () => {
@@ -52,11 +51,11 @@ describe('CartSummary Component', () => {
         });
 
         component = mount(
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <LocaleContext.Provider value={ localeContext }>
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
                     <CartSummary />
                 </LocaleContext.Provider>
-            </CheckoutProvider>
+            </CheckoutProvider>,
         );
 
         expect(component.find(OrderSummary).prop('headerLink')).not.toBeTruthy();

@@ -5,10 +5,10 @@ import { withCheckout } from '../checkout';
 import { isBuyNowCart } from '../common/utility';
 import OrderSummary from '../order/OrderSummary';
 
-import mapToCartSummaryProps from './mapToCartSummaryProps';
-import withRedeemable from './withRedeemable';
 import EditLink from './EditLink';
+import mapToCartSummaryProps from './mapToCartSummaryProps';
 import { RedeemableProps } from './Redeemable';
+import withRedeemable from './withRedeemable';
 
 export type WithCheckoutCartSummaryProps = {
     checkout: Checkout;
@@ -18,19 +18,14 @@ export type WithCheckoutCartSummaryProps = {
     storeCreditAmount?: number;
 } & RedeemableProps;
 
-const CartSummary: FunctionComponent<WithCheckoutCartSummaryProps> = ({
-    cartUrl,
-    ...props
-}) => {
-    const headerLink = isBuyNowCart() ? null : <EditLink url={ cartUrl } />;
+const CartSummary: FunctionComponent<WithCheckoutCartSummaryProps> = ({ cartUrl, ...props }) => {
+    const headerLink = isBuyNowCart() ? null : <EditLink url={cartUrl} />;
 
-    return (
-        withRedeemable(OrderSummary)({
-            ...props,
-            cartUrl,
-            headerLink,
-        })
-    );
+    return withRedeemable(OrderSummary)({
+        ...props,
+        cartUrl,
+        headerLink,
+    });
 };
 
 export default withCheckout(mapToCartSummaryProps)(CartSummary);

@@ -1,4 +1,4 @@
-import { createCheckoutService, CheckoutService } from '@bigcommerce/checkout-sdk';
+import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
@@ -8,9 +8,9 @@ import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 import { Modal } from '../ui/modal';
 
-import { getFormFields } from './formField.mock';
 import AddressForm from './AddressForm';
 import AddressFormModal, { AddressFormModalProps } from './AddressFormModal';
+import { getFormFields } from './formField.mock';
 
 describe('AddressFormModal Component', () => {
     let checkoutService: CheckoutService;
@@ -35,13 +35,10 @@ describe('AddressFormModal Component', () => {
             countries: [],
         };
 
-        TestComponent = props => (
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <LocaleContext.Provider value={ localeContext }>
-                    <AddressFormModal
-                        { ...props }
-                        { ...defaultProps }
-                    />
+        TestComponent = (props) => (
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <AddressFormModal {...props} {...defaultProps} />
                 </LocaleContext.Provider>
             </CheckoutProvider>
         );
@@ -50,64 +47,69 @@ describe('AddressFormModal Component', () => {
     it('renders modal', () => {
         component = mount(<TestComponent />);
 
-        expect(component.find(Modal).props()).toEqual(expect.objectContaining({
-            isOpen: true,
-            shouldShowCloseButton: true,
-        }));
+        expect(component.find(Modal).props()).toEqual(
+            expect.objectContaining({
+                isOpen: true,
+                shouldShowCloseButton: true,
+            }),
+        );
     });
 
     it('renders address form', () => {
         component = mount(<TestComponent />);
 
-        expect(component.find(AddressForm).props()).toEqual(expect.objectContaining({
-            countries: defaultProps.countries,
-            formFields: getFormFields(),
-            shouldShowSaveAddress: false,
-        }));
+        expect(component.find(AddressForm).props()).toEqual(
+            expect.objectContaining({
+                countries: defaultProps.countries,
+                formFields: getFormFields(),
+                shouldShowSaveAddress: false,
+            }),
+        );
     });
 
     it('validates form on submission', async () => {
         component = mount(<TestComponent />);
 
-        component.find('form')
-            .simulate('submit');
+        component.find('form').simulate('submit');
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
         component.update();
 
-        expect(defaultProps.onSaveAddress)
-            .not.toHaveBeenCalled();
+        expect(defaultProps.onSaveAddress).not.toHaveBeenCalled();
 
-        expect(component.find('[data-test="first-name-field-error-message"]').text())
-            .toEqual('First Name is required');
-
+        expect(component.find('[data-test="first-name-field-error-message"]').text()).toBe(
+            'First Name is required',
+        );
     });
 
     it('submits form when valid', async () => {
         component = mount(<TestComponent />);
 
-        component.find('input[name="firstName"]')
+        component
+            .find('input[name="firstName"]')
             .simulate('change', { target: { value: 'test', name: 'firstName' } });
 
-        component.find('input[name="lastName"]')
+        component
+            .find('input[name="lastName"]')
             .simulate('change', { target: { value: 'foo', name: 'lastName' } });
 
-        component.find('input[name="address1"]')
+        component
+            .find('input[name="address1"]')
             .simulate('change', { target: { value: 'l1', name: 'address1' } });
 
-        component.find('form')
-            .simulate('submit');
+        component.find('form').simulate('submit');
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
         component.update();
 
-        expect(defaultProps.onSaveAddress)
-            .toHaveBeenCalledWith(expect.objectContaining({
+        expect(defaultProps.onSaveAddress).toHaveBeenCalledWith(
+            expect.objectContaining({
                 firstName: 'test',
                 lastName: 'foo',
                 address1: 'l1',
-            }));
+            }),
+        );
     });
 });

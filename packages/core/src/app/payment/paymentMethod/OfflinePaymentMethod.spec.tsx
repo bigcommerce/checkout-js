@@ -16,27 +16,22 @@ describe('OfflinePaymentMethod', () => {
             initializePayment: jest.fn(),
         };
 
-        OfflinePaymentMethodTest = props => (
-            <OfflinePaymentMethod { ...props } />
-        );
+        OfflinePaymentMethodTest = (props) => <OfflinePaymentMethod {...props} />;
     });
 
     it('initializes payment method when component mounts', () => {
-        mount(<OfflinePaymentMethodTest { ...defaultProps } />);
+        mount(<OfflinePaymentMethodTest {...defaultProps} />);
 
-        expect(defaultProps.initializePayment)
-            .toHaveBeenCalled();
+        expect(defaultProps.initializePayment).toHaveBeenCalled();
     });
 
     it('deinitializes payment method when component unmounts', () => {
-        const component = mount(<OfflinePaymentMethodTest { ...defaultProps } />);
+        const component = mount(<OfflinePaymentMethodTest {...defaultProps} />);
 
-        expect(defaultProps.deinitializePayment)
-            .not.toHaveBeenCalled();
+        expect(defaultProps.deinitializePayment).not.toHaveBeenCalled();
 
         component.unmount();
 
-        expect(defaultProps.deinitializePayment)
-            .toHaveBeenCalled();
+        expect(defaultProps.deinitializePayment).toHaveBeenCalled();
     });
 });

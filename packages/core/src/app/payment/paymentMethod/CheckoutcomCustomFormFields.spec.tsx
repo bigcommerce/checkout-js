@@ -1,4 +1,8 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutSelectors,
+    CheckoutService,
+    createCheckoutService,
+} from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { EventEmitter } from 'events';
 import { Formik } from 'formik';
@@ -16,8 +20,15 @@ import { DropdownTrigger } from '../../ui/dropdown';
 import { FormContext, FormContextType } from '../../ui/form';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
-import checkoutcomCustomFormFields, { ccDocumentField, HiddenInput, OptionButton } from './CheckoutcomCustomFormFields';
-import CreditCardPaymentMethod, { CreditCardPaymentMethodProps, CreditCardPaymentMethodValues } from './CreditCardPaymentMethod';
+import checkoutcomCustomFormFields, {
+    ccDocumentField,
+    HiddenInput,
+    OptionButton,
+} from './CheckoutcomCustomFormFields';
+import CreditCardPaymentMethod, {
+    CreditCardPaymentMethodProps,
+    CreditCardPaymentMethodValues,
+} from './CreditCardPaymentMethod';
 
 const getAPMProps = {
     ideal: () => ({
@@ -32,9 +43,16 @@ const getAPMProps = {
             config: { cardCode: null, displayName: 'iDEAL' },
             type: 'PAYMENT_TYPE_API',
             nonce: null,
-            initializationData: { gateway: 'checkoutcom', idealIssuers: [{ bic: 'INGBNL2A', name: 'Issuer Simulation V3 - ING' }, { bic: 'RABONL2U', name: 'Issuer Simulation V3 - RABO' }] },
+            initializationData: {
+                gateway: 'checkoutcom',
+                idealIssuers: [
+                    { bic: 'INGBNL2A', name: 'Issuer Simulation V3 - ING' },
+                    { bic: 'RABONL2U', name: 'Issuer Simulation V3 - RABO' },
+                ],
+            },
             clientToken: null,
-            returnUrl: 'https://test-store.store.bcdev/checkout.php?action=set_external_checkout&provider=checkoutcom',
+            returnUrl:
+                'https://test-store.store.bcdev/checkout.php?action=set_external_checkout&provider=checkoutcom',
         },
     }),
     sepa: () => ({
@@ -49,7 +67,8 @@ const getAPMProps = {
             config: { cardCode: null, displayName: 'SEPA' },
             type: 'PAYMENT_TYPE_API',
             nonce: null,
-            initializationData: { gateway: 'checkoutcom',
+            initializationData: {
+                gateway: 'checkoutcom',
                 sepaCreditor: {
                     sepaCreditorAddress: 'sepaCreditorAddress',
                     sepaCreditorCity: 'sepaCreditorCity',
@@ -57,9 +76,11 @@ const getAPMProps = {
                     sepaCreditorCountry: 'sepaCreditorCountry',
                     sepaCreditorIdentifier: 'sepaCreditorIdentifier',
                     sepaCreditorPostalCode: 'sepaCreditorPostalCode',
-                }},
+                },
+            },
             clientToken: null,
-            returnUrl: 'https://test-store.store.bcdev/checkout.php?action=set_external_checkout&provider=checkoutcom',
+            returnUrl:
+                'https://test-store.store.bcdev/checkout.php?action=set_external_checkout&provider=checkoutcom',
         },
     }),
     oxxo: () => ({
@@ -76,7 +97,8 @@ const getAPMProps = {
             nonce: null,
             initializationData: { gateway: 'checkoutcom' },
             clientToken: null,
-            returnUrl: 'https://test-store.store.bcdev/checkout.php?action=set_external_checkout&provider=checkoutcom',
+            returnUrl:
+                'https://test-store.store.bcdev/checkout.php?action=set_external_checkout&provider=checkoutcom',
         },
     }),
     fawry: () => ({
@@ -93,7 +115,8 @@ const getAPMProps = {
             nonce: null,
             initializationData: { gateway: 'checkoutcom' },
             clientToken: null,
-            returnUrl: 'https://test-store.store.bcdev/checkout.php?action=set_external_checkout&provider=checkoutcom',
+            returnUrl:
+                'https://test-store.store.bcdev/checkout.php?action=set_external_checkout&provider=checkoutcom',
         },
     }),
 };
@@ -101,13 +124,20 @@ const getAPMProps = {
 describe('CheckoutCustomFormFields', () => {
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
-    let defaultProps: jest.Mocked<Omit<CreditCardPaymentMethodProps, 'cardFieldset' | 'cardValidationSchema' | 'method'>>;
+    let defaultProps: jest.Mocked<
+        Omit<CreditCardPaymentMethodProps, 'cardFieldset' | 'cardValidationSchema' | 'method'>
+    >;
     let formContext: FormContextType;
     let initialValues: CreditCardPaymentMethodValues;
     let localeContext: LocaleContextType;
     let paymentContext: PaymentContextProps;
     let subscribeEventEmitter: EventEmitter;
-    let CheckoutcomAPMsTest: FunctionComponent<Omit<CreditCardPaymentMethodProps, 'cardValidationSchema' | 'deinitializePayment' | 'initializePayment'>>;
+    let CheckoutcomAPMsTest: FunctionComponent<
+        Omit<
+            CreditCardPaymentMethodProps,
+            'cardValidationSchema' | 'deinitializePayment' | 'initializePayment'
+        >
+    >;
 
     beforeEach(() => {
         defaultProps = {
@@ -139,49 +169,37 @@ describe('CheckoutCustomFormFields', () => {
         };
         subscribeEventEmitter = new EventEmitter();
 
-        jest.spyOn(checkoutService, 'getState')
-            .mockReturnValue(checkoutState);
+        jest.spyOn(checkoutService, 'getState').mockReturnValue(checkoutState);
 
-        jest.spyOn(checkoutService, 'subscribe')
-            .mockImplementation(subscriber => {
-                subscribeEventEmitter.on('change', () => subscriber(checkoutState));
-                subscribeEventEmitter.emit('change');
+        jest.spyOn(checkoutService, 'subscribe').mockImplementation((subscriber) => {
+            subscribeEventEmitter.on('change', () => subscriber(checkoutState));
+            subscribeEventEmitter.emit('change');
 
-                return noop;
-            });
+            return noop;
+        });
 
-        jest.spyOn(checkoutService, 'loadInstruments')
-            .mockResolvedValue(checkoutState);
+        jest.spyOn(checkoutService, 'loadInstruments').mockResolvedValue(checkoutState);
 
-        jest.spyOn(checkoutState.data, 'getCart')
-            .mockReturnValue(getCart());
+        jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(getCart());
 
-        jest.spyOn(checkoutState.data, 'getConfig')
-            .mockReturnValue(getStoreConfig());
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
-        jest.spyOn(checkoutState.data, 'getConsignments')
-            .mockReturnValue([getConsignment()]);
+        jest.spyOn(checkoutState.data, 'getConsignments').mockReturnValue([getConsignment()]);
 
-        jest.spyOn(checkoutState.data, 'getCustomer')
-            .mockReturnValue(getCustomer());
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
 
-        jest.spyOn(checkoutState.data, 'getInstruments')
-            .mockReturnValue([]);
+        jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([]);
 
-        jest.spyOn(checkoutState.data, 'isPaymentDataRequired')
-            .mockReturnValue(true);
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
 
-        CheckoutcomAPMsTest = props => {
+        CheckoutcomAPMsTest = (props) => {
             return (
-                <CheckoutProvider checkoutService={ checkoutService }>
-                    <PaymentContext.Provider value={ paymentContext }>
-                        <LocaleContext.Provider value={ localeContext }>
-                            <FormContext.Provider value={ formContext }>
-                                <Formik
-                                    initialValues={ initialValues }
-                                    onSubmit={ noop }
-                                >
-                                    <CreditCardPaymentMethod { ...defaultProps } { ...props } />
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <PaymentContext.Provider value={paymentContext}>
+                        <LocaleContext.Provider value={localeContext}>
+                            <FormContext.Provider value={formContext}>
+                                <Formik initialValues={initialValues} onSubmit={noop}>
+                                    <CreditCardPaymentMethod {...defaultProps} {...props} />
                                 </Formik>
                             </FormContext.Provider>
                         </LocaleContext.Provider>
@@ -197,7 +215,14 @@ describe('CheckoutCustomFormFields', () => {
         const sepaProps = getAPMProps.sepa();
 
         beforeEach(() => {
-            component = mount(<CheckoutcomAPMsTest { ...sepaProps } cardFieldset={ <SepaFormFieldset debtor={ getBillingAddress() } method={ sepaProps.method } /> } />);
+            component = mount(
+                <CheckoutcomAPMsTest
+                    {...sepaProps}
+                    cardFieldset={
+                        <SepaFormFieldset debtor={getBillingAddress()} method={sepaProps.method} />
+                    }
+                />,
+            );
         });
 
         it('should render the sepa fieldset', () => {
@@ -207,15 +232,16 @@ describe('CheckoutCustomFormFields', () => {
 
         it('should call toggleSubmitButton on checkbox checked', () => {
             const checkbox = component.find('input[name="sepaMandate"]');
-            checkbox.simulate('change', {target: {name: 'sepaMandate', value: true}});
 
-            expect(paymentContext.disableSubmit).lastCalledWith(sepaProps.method, false);
+            checkbox.simulate('change', { target: { name: 'sepaMandate', value: true } });
+
+            expect(paymentContext.disableSubmit).toHaveBeenLastCalledWith(sepaProps.method, false);
         });
 
         it('should call disableSubmit on useEffect cleanup function', () => {
             component.unmount();
 
-            expect(paymentContext.disableSubmit).lastCalledWith(sepaProps.method, false);
+            expect(paymentContext.disableSubmit).toHaveBeenLastCalledWith(sepaProps.method, false);
         });
 
         afterEach(() => {
@@ -229,11 +255,16 @@ describe('CheckoutCustomFormFields', () => {
 
         beforeEach(() => {
             const idealProps = getAPMProps.ideal();
-            component = mount(<CheckoutcomAPMsTest { ...idealProps } cardFieldset={ <IdealFormFieldset method={ idealProps.method } /> } />);
+
+            component = mount(
+                <CheckoutcomAPMsTest
+                    {...idealProps}
+                    cardFieldset={<IdealFormFieldset method={idealProps.method} />}
+                />,
+            );
         });
 
         it('Shopper is able to see iDeal Payment Method', () => {
-
             expect(component.find('input[type="hidden"]')).toHaveLength(1);
         });
 
@@ -241,9 +272,11 @@ describe('CheckoutCustomFormFields', () => {
             component.find(DropdownTrigger).simulate('click');
             component.find(OptionButton).at(0).simulate('click');
 
-            expect(component.find(HiddenInput).props()).toEqual(expect.objectContaining({
-                selectedIssuer: 'INGBNL2A',
-            }));
+            expect(component.find(HiddenInput).props()).toEqual(
+                expect.objectContaining({
+                    selectedIssuer: 'INGBNL2A',
+                }),
+            );
         });
     });
 
@@ -252,7 +285,12 @@ describe('CheckoutCustomFormFields', () => {
 
         it('should render the ideal fieldset', () => {
             const oxxoProps = getAPMProps.oxxo();
-            const compoonent = mount(<CheckoutcomAPMsTest { ...oxxoProps } cardFieldset={ <CcDocumentFormFieldset method={ oxxoProps.method } /> } />);
+            const compoonent = mount(
+                <CheckoutcomAPMsTest
+                    {...oxxoProps}
+                    cardFieldset={<CcDocumentFormFieldset method={oxxoProps.method} />}
+                />,
+            );
 
             expect(compoonent.find('input[name="ccDocument"]')).toHaveLength(1);
         });
@@ -263,7 +301,12 @@ describe('CheckoutCustomFormFields', () => {
 
         it('Shopper is able to see Fawry Payment Method', () => {
             const fawryProps = getAPMProps.fawry();
-            const component = mount(<CheckoutcomAPMsTest { ...fawryProps } cardFieldset={ <FawryFormFieldset method={ fawryProps.method } /> } />);
+            const component = mount(
+                <CheckoutcomAPMsTest
+                    {...fawryProps}
+                    cardFieldset={<FawryFormFieldset method={fawryProps.method} />}
+                />,
+            );
 
             expect(component.find('input[name="customerMobile"]')).toHaveLength(1);
             expect(component.find('input[name="customerEmail"]')).toHaveLength(1);

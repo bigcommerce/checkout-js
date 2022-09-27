@@ -9,12 +9,7 @@ export default interface ErrorLogger {
      * @param level The level of the log
      * @param meta Any extra meta data
      */
-    log(
-        error: Error,
-        tags?: ErrorTags,
-        level?: ErrorLevelType,
-        meta?: ErrorMeta
-    ): void;
+    log(error: Error, tags?: ErrorTags, level?: ErrorLevelType, meta?: ErrorMeta): void;
 }
 
 export interface ErrorLoggerOptions {

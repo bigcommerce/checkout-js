@@ -1,56 +1,63 @@
 {
   "extends": ["../../.eslintrc.json"],
-  "overrides": [
-    {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "rules": {
-        "@bigcommerce/jsx-short-circuit-conditionals": "off",
-        "@typescript-eslint/ban-ts-comment": "warn",
-        "@typescript-eslint/no-inferrable-types": "warn",
-        "@typescript-eslint/no-unused-expressions": "error",
-        "@typescript-eslint/no-var-requires": "off",
-        "react/destructuring-assignment": "warn",
-        "react/jsx-curly-spacing": [
-          "error",
-          {
-            "children": true,
-            "when": "always"
-          }
-        ],
-        "react/jsx-no-bind": "off",
-        "react-hooks/exhaustive-deps": "off",
-        "import/no-internal-modules": [
-          "error",
-          {
-            "allow": [
-              "react-dom/test-utils",
-              "scripts/*",
-              "**/*.{mock,scss}",
-              "**/index.ts",
-              "**/billing/Billing.tsx",
-              "**/cart/CartSummary.tsx",
-              "**/cart/CartSummaryDrawer.tsx",
-              "**/customer/Customer.tsx",
-              "**/order/OrderSummary.tsx",
-              "**/order/OrderSummaryDrawer.tsx",
-              "**/payment/Payment.tsx",
-              "**/shipping/Shipping.tsx",
-              "**/translations/*.json",
-              "**/locale/getLanguageService.ts",
-              "**/checkoutSuggestion/CheckoutSuggestion",
-              "**/order/renderOrderConfirmation",
-              "**/checkout/renderCheckout"
-            ]
-          }
-        ],
-        "no-var": "off",
-        "object-curly-newline": [
-          "error",
-          {
-            "ImportDeclaration": "never"
-          }
-        ]
-      }
-    }
-  ]
+  "rules": {
+    "@typescript-eslint/no-unsafe-argument": "off", // 40 errors
+    "@typescript-eslint/no-unsafe-member-access": "off", // 167 errors
+    "@typescript-eslint/no-unsafe-assignment": "off", // 505 errors
+    "@typescript-eslint/consistent-type-assertions": "off", // 314 errors
+    "jest/no-restricted-matchers": "off", // 76 errors
+    "jsx-a11y/click-events-have-key-events": "off", // 10 errors
+    "jsx-a11y/anchor-is-valid": "off", // 27 errors
+    "jsx-a11y/no-static-element-interactions": "off", // 11 errors
+    "jsx-a11y/alt-text": "off", // 3 errors
+    "jsx-a11y/aria-props": "off", // 1 error
+    "jsx-a11y/no-noninteractive-tabindex": "off", // 1 error
+    "@typescript-eslint/no-unnecessary-condition": "off", // 79 errors
+    "@typescript-eslint/no-unsafe-call": "off", //66  errors
+    "@typescript-eslint/no-unsafe-return": "off", // 23 errors
+    "react-hooks/exhaustive-deps": "off", // 18 errors
+    "@typescript-eslint/restrict-template-expressions": "off", // 16 errors
+    "@typescript-eslint/await-thenable": "off", // 16 errors
+    "@bigcommerce/jsx-short-circuit-conditionals": "off", // 39 errors
+    "@typescript-eslint/no-misused-promises": "off", // 13 errors
+    "@typescript-eslint/no-floating-promises": "off", // 84 errors
+    "@typescript-eslint/naming-convention": "off", // 146 errors
+    "import/no-named-default": "off", // 21 errors
+    "no-underscore-dangle": "off", // 8 errors
+    "@typescript-eslint/no-use-before-define": "off", // 40 errors
+    "import/no-extraneous-dependencies": "off", // 4 errors
+    "@typescript-eslint/no-shadow": "off", // 3 errors
+    "react/jsx-no-useless-fragment": "off", // 7 errors
+    "jest/no-conditional-expect": "off", // 6 errors
+    "jest/no-identical-title": "off", // 8 errors
+    "no-plusplus": "off", // 3 errors
+    "no-nested-ternary": "off", // 5 errors
+    "no-restricted-globals": "off", // 3 errors
+    "@typescript-eslint/member-ordering": "off", // 3 errors
+    "react/jsx-no-bind": "off", // 5 errors
+    "complexity": "off", // 3 errors
+    "jest/no-if": "off", // 1 error
+    "array-callback-return": "off", // 2 errors
+    "@typescript-eslint/ban-ts-comment": "off", // 5 errors
+    "@typescript-eslint/no-explicit-any": "off", // 98 errors
+    "jest/no-standalone-expect": "off", // 1 error
+    "no-param-reassign": "off", // 2 errors
+    "jest/prefer-hooks-on-top": "off", // 1 error
+    "react/destructuring-assignment": "off", // 1 error
+    "@typescript-eslint/default-param-last": "off", // 1 error
+    "@typescript-eslint/require-await": "off", // 1 error
+    "no-template-curly-in-string": "off", // 1 error
+    "global-require": "off", // 22 errors
+    "@typescript-eslint/no-var-requires": "off", // 22 errors
+    "prettier/prettier": "off", // 11 errors
+    "jest/valid-expect": "off", // 19 errors
+    "no-multi-str": "off", // 1 error
+    "no-empty": "off", // 1 error
+    "no-proto": "off", // 1 error
+    "no-continue": "off", // 1 error
+    "no-new": "off", // 8 errors
+    "@typescript-eslint/no-empty-function": "off", // 1 error
+    "no-multi-assign": "off", // 1 error
+    "import/no-unresolved": "off" // 1 error
+  }
 }

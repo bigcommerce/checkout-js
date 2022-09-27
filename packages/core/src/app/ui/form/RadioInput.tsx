@@ -11,35 +11,28 @@ export interface RadioInputProps extends InputProps {
     checked: boolean;
 }
 
-const RadioInput = forwardRef((
-    {
-        additionalClassName,
-        label,
-        value,
-        checked,
-        id,
-        ...rest
-    }: RadioInputProps,
-    ref: Ref<HTMLInputElement>
-) => (
-    <>
-        <Input
-            { ...rest }
-            checked={ checked }
-            className={ classNames(
-                'form-radio',
-                'optimizedCheckout-form-radio',
-                additionalClassName
-            ) }
-            id={ id }
-            ref={ ref }
-            type="radio"
-            value={ value }
-        />
-        <Label htmlFor={ id }>
-            { label }
-        </Label>
-    </>
-));
+const RadioInput = forwardRef(
+    (
+        { additionalClassName, label, value, checked, id, ...rest }: RadioInputProps,
+        ref: Ref<HTMLInputElement>,
+    ) => (
+        <>
+            <Input
+                {...rest}
+                checked={checked}
+                className={classNames(
+                    'form-radio',
+                    'optimizedCheckout-form-radio',
+                    additionalClassName,
+                )}
+                id={id}
+                ref={ref}
+                type="radio"
+                value={value}
+            />
+            <Label htmlFor={id}>{label}</Label>
+        </>
+    ),
+);
 
 export default RadioInput;

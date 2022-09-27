@@ -10,27 +10,23 @@ describe('CheckoutProvider', () => {
 
         jest.spyOn(service, 'subscribe');
 
-        const component = mount(<CheckoutProvider checkoutService={ service } />);
+        const component = mount(<CheckoutProvider checkoutService={service} />);
 
-        expect(service.subscribe)
-            .toHaveBeenCalled();
+        expect(service.subscribe).toHaveBeenCalled();
 
-        expect(component.state('checkoutState'))
-            .toEqual(service.getState());
+        expect(component.state('checkoutState')).toEqual(service.getState());
     });
 
     it('unsubscribes to state changes when component unmounts', () => {
         const service = createCheckoutService();
         const unsubscribe = jest.fn();
 
-        jest.spyOn(service, 'subscribe')
-            .mockReturnValue(unsubscribe);
+        jest.spyOn(service, 'subscribe').mockReturnValue(unsubscribe);
 
-        const component = mount(<CheckoutProvider checkoutService={ service } />);
+        const component = mount(<CheckoutProvider checkoutService={service} />);
 
         component.unmount();
 
-        expect(unsubscribe)
-            .toHaveBeenCalled();
+        expect(unsubscribe).toHaveBeenCalled();
     });
 });

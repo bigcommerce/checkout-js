@@ -1,10 +1,19 @@
-import { CardInstrumentFieldsetValues, HostedCreditCardFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
-import { createCheckoutService, CheckoutSelectors, CheckoutService, HostedFieldType } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutSelectors,
+    CheckoutService,
+    createCheckoutService,
+    HostedFieldType,
+} from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import { Formik, FormikProps } from 'formik';
 import { last, merge, noop } from 'lodash';
 import React, { ComponentType, FunctionComponent, ReactNode } from 'react';
 import { act } from 'react-dom/test-utils';
+
+import {
+    CardInstrumentFieldsetValues,
+    HostedCreditCardFieldsetValues,
+} from '@bigcommerce/checkout/payment-integration-api';
 
 import { getCart } from '../../cart/carts.mock';
 import { CheckoutProvider } from '../../checkout';
@@ -12,29 +21,33 @@ import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { FormContext, FormContextType } from '../../ui/form';
-import { getCreditCardInputStyles, CreditCardInputStylesType } from '../creditCard';
+import { CreditCardInputStylesType, getCreditCardInputStyles } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
-import { getCardInstrument } from '../storedInstrument/instruments.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
+import { getCardInstrument } from '../storedInstrument/instruments.mock';
 
-import withHostedCreditCardFieldset, { WithHostedCreditCardFieldsetProps, WithInjectedHostedCreditCardFieldsetProps } from './withHostedCreditCardFieldset';
 import HostedCreditCardFieldset from './HostedCreditCardFieldset';
+import withHostedCreditCardFieldset, {
+    WithHostedCreditCardFieldsetProps,
+    WithInjectedHostedCreditCardFieldsetProps,
+} from './withHostedCreditCardFieldset';
 
 jest.mock('../creditCard', () => ({
     ...jest.requireActual('../creditCard'),
-    getCreditCardInputStyles: jest.fn<ReturnType<typeof getCreditCardInputStyles>, Parameters<typeof getCreditCardInputStyles>>(
-        (_containerId, _fieldType, type) => {
-            if (type === CreditCardInputStylesType.Error) {
-                return Promise.resolve({ color: 'rgb(255, 0, 0)' });
-            }
-
-            if (type === CreditCardInputStylesType.Focus) {
-                return Promise.resolve({ color: 'rgb(0, 0, 255)' });
-            }
-
-            return Promise.resolve({ color: 'rgb(0, 0, 0)' });
+    getCreditCardInputStyles: jest.fn<
+        ReturnType<typeof getCreditCardInputStyles>,
+        Parameters<typeof getCreditCardInputStyles>
+    >((_containerId, _fieldType, type) => {
+        if (type === CreditCardInputStylesType.Error) {
+            return Promise.resolve({ color: 'rgb(255, 0, 0)' });
         }
-    ),
+
+        if (type === CreditCardInputStylesType.Focus) {
+            return Promise.resolve({ color: 'rgb(0, 0, 255)' });
+        }
+
+        return Promise.resolve({ color: 'rgb(0, 0, 0)' });
+    }),
 }));
 
 describe('withHostedCreditCardFieldset', () => {
@@ -42,14 +55,19 @@ describe('withHostedCreditCardFieldset', () => {
     let checkoutState: CheckoutSelectors;
     let defaultProps: WithHostedCreditCardFieldsetProps;
     let formContext: FormContextType;
-    let formikRender: jest.Mock<ReactNode, [FormikProps<HostedCreditCardFieldsetValues & CardInstrumentFieldsetValues>]>;
+    let formikRender: jest.Mock<
+        ReactNode,
+        [FormikProps<HostedCreditCardFieldsetValues & CardInstrumentFieldsetValues>]
+    >;
     let formikProps: FormikProps<HostedCreditCardFieldsetValues & CardInstrumentFieldsetValues>;
     let initialValues: HostedCreditCardFieldsetValues & CardInstrumentFieldsetValues;
     let localeContext: LocaleContextType;
     let paymentContext: PaymentContextProps;
     let DecoratedPaymentMethod: ComponentType<WithHostedCreditCardFieldsetProps>;
     let DecoratedPaymentMethodTest: FunctionComponent<WithHostedCreditCardFieldsetProps>;
-    let InnerPaymentMethod: ComponentType<WithHostedCreditCardFieldsetProps & WithInjectedHostedCreditCardFieldsetProps>;
+    let InnerPaymentMethod: ComponentType<
+        WithHostedCreditCardFieldsetProps & WithInjectedHostedCreditCardFieldsetProps
+    >;
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
@@ -81,46 +99,43 @@ describe('withHostedCreditCardFieldset', () => {
             setSubmitted: jest.fn(),
         };
 
-        jest.spyOn(checkoutState.data, 'getCart')
-            .mockReturnValue(getCart());
+        jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(getCart());
 
-        jest.spyOn(checkoutState.data, 'getConfig')
-            .mockReturnValue(getStoreConfig());
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
-        jest.spyOn(checkoutState.data, 'getCustomer')
-            .mockReturnValue(getCustomer());
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
 
-        jest.spyOn(checkoutState.data, 'getPaymentMethod')
-            .mockReturnValue(defaultProps.method);
+        jest.spyOn(checkoutState.data, 'getPaymentMethod').mockReturnValue(defaultProps.method);
 
-        InnerPaymentMethod = jest.fn(({
-            getHostedStoredCardValidationFieldset = noop,
-            hostedFieldset,
-        }) => {
-            return <>
-                { hostedFieldset }
-                { getHostedStoredCardValidationFieldset() }
-            </>;
-        });
+        InnerPaymentMethod = jest.fn(
+            ({ getHostedStoredCardValidationFieldset = noop, hostedFieldset }) => {
+                return (
+                    <>
+                        {hostedFieldset}
+                        {getHostedStoredCardValidationFieldset()}
+                    </>
+                );
+            },
+        );
 
         DecoratedPaymentMethod = withHostedCreditCardFieldset(InnerPaymentMethod);
 
-        DecoratedPaymentMethodTest = props => {
-            formikRender = jest.fn(renderProps => {
+        DecoratedPaymentMethodTest = (props) => {
+            formikRender = jest.fn((renderProps) => {
                 formikProps = renderProps;
 
-                return <DecoratedPaymentMethod { ...props } />;
+                return <DecoratedPaymentMethod {...props} />;
             });
 
             return (
-                <CheckoutProvider checkoutService={ checkoutService }>
-                    <PaymentContext.Provider value={ paymentContext }>
-                        <LocaleContext.Provider value={ localeContext }>
-                            <FormContext.Provider value={ formContext }>
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <PaymentContext.Provider value={paymentContext}>
+                        <LocaleContext.Provider value={localeContext}>
+                            <FormContext.Provider value={formContext}>
                                 <Formik
-                                    initialValues={ initialValues }
-                                    onSubmit={ noop }
-                                    render={ formikRender }
+                                    initialValues={initialValues}
+                                    onSubmit={noop}
+                                    render={formikRender}
                                 />
                             </FormContext.Provider>
                         </LocaleContext.Provider>
@@ -131,199 +146,247 @@ describe('withHostedCreditCardFieldset', () => {
     });
 
     it('renders hosted credit card fieldset', () => {
-        const container = mount(<DecoratedPaymentMethodTest { ...defaultProps } />);
+        const container = mount(<DecoratedPaymentMethodTest {...defaultProps} />);
 
-        expect(container.find(HostedCreditCardFieldset).length)
-            .toEqual(1);
+        expect(container.find(HostedCreditCardFieldset)).toHaveLength(1);
     });
 
     it('does not render hosted credit card fieldset if feature is not enabled', () => {
-        const container = mount(<DecoratedPaymentMethodTest
-            { ...defaultProps }
-            method={ merge({}, getPaymentMethod(), {
-                config: {
-                    isHostedFormEnabled: false,
-                },
-            }) }
-        />);
+        const container = mount(
+            <DecoratedPaymentMethodTest
+                {...defaultProps}
+                method={merge({}, getPaymentMethod(), {
+                    config: {
+                        isHostedFormEnabled: false,
+                    },
+                })}
+            />,
+        );
 
-        expect(container.find(HostedCreditCardFieldset).length)
-            .toEqual(0);
+        expect(container.find(HostedCreditCardFieldset)).toHaveLength(0);
     });
 
     it('passes hosted form configuration to inner component', async () => {
-        const container = mount(<DecoratedPaymentMethodTest { ...defaultProps } />);
-        const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
+        const container = mount(<DecoratedPaymentMethodTest {...defaultProps} />);
+        const getHostedFormOptions = container
+            .find(InnerPaymentMethod)
+            .prop('getHostedFormOptions');
 
-        expect(await getHostedFormOptions())
-            .toEqual({
-                fields: {
-                    cardCode: { accessibilityLabel: 'CVV', containerId: 'authorizenet-ccCvv' },
-                    cardExpiry: { accessibilityLabel: 'Expiration', containerId: 'authorizenet-ccExpiry', placeholder: 'MM / YY' },
-                    cardName: { accessibilityLabel: 'Name on Card', containerId: 'authorizenet-ccName' },
-                    cardNumber: { accessibilityLabel: 'Credit Card Number', containerId: 'authorizenet-ccNumber' },
+        expect(await getHostedFormOptions()).toEqual({
+            fields: {
+                cardCode: { accessibilityLabel: 'CVV', containerId: 'authorizenet-ccCvv' },
+                cardExpiry: {
+                    accessibilityLabel: 'Expiration',
+                    containerId: 'authorizenet-ccExpiry',
+                    placeholder: 'MM / YY',
                 },
-                styles: {
-                    default: expect.any(Object),
-                    error: expect.any(Object),
-                    focus: expect.any(Object),
+                cardName: {
+                    accessibilityLabel: 'Name on Card',
+                    containerId: 'authorizenet-ccName',
                 },
-                onBlur: expect.any(Function),
-                onCardTypeChange: expect.any(Function),
-                onEnter: expect.any(Function),
-                onFocus: expect.any(Function),
-                onValidate: expect.any(Function),
-            });
+                cardNumber: {
+                    accessibilityLabel: 'Credit Card Number',
+                    containerId: 'authorizenet-ccNumber',
+                },
+            },
+            styles: {
+                default: expect.any(Object),
+                error: expect.any(Object),
+                focus: expect.any(Object),
+            },
+            onBlur: expect.any(Function),
+            onCardTypeChange: expect.any(Function),
+            onEnter: expect.any(Function),
+            onFocus: expect.any(Function),
+            onValidate: expect.any(Function),
+        });
     });
 
     it('passes hosted verification form options to inner component when there is selected instrument', async () => {
-        const container = mount(<DecoratedPaymentMethodTest { ...defaultProps } />);
-        const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
+        const container = mount(<DecoratedPaymentMethodTest {...defaultProps} />);
+        const getHostedFormOptions = container
+            .find(InnerPaymentMethod)
+            .prop('getHostedFormOptions');
 
-        expect(await getHostedFormOptions({
-            ...getCardInstrument(),
-            trustedShippingAddress: false,
-        }))
-            .toEqual({
-                fields: {
-                    cardCodeVerification: {
-                        accessibilityLabel: 'CVV',
-                        containerId: 'authorizenet-ccCvv',
-                        instrumentId: getCardInstrument().bigpayToken,
-                    },
-                    cardNumberVerification: {
-                        accessibilityLabel: 'Credit Card Number',
-                        containerId: 'authorizenet-ccNumber',
-                        instrumentId: getCardInstrument().bigpayToken,
-                    },
+        expect(
+            await getHostedFormOptions({
+                ...getCardInstrument(),
+                trustedShippingAddress: false,
+            }),
+        ).toEqual({
+            fields: {
+                cardCodeVerification: {
+                    accessibilityLabel: 'CVV',
+                    containerId: 'authorizenet-ccCvv',
+                    instrumentId: getCardInstrument().bigpayToken,
                 },
-                styles: {
-                    default: expect.any(Object),
-                    error: expect.any(Object),
-                    focus: expect.any(Object),
+                cardNumberVerification: {
+                    accessibilityLabel: 'Credit Card Number',
+                    containerId: 'authorizenet-ccNumber',
+                    instrumentId: getCardInstrument().bigpayToken,
                 },
-                onBlur: expect.any(Function),
-                onCardTypeChange: expect.any(Function),
-                onEnter: expect.any(Function),
-                onFocus: expect.any(Function),
-                onValidate: expect.any(Function),
-            });
+            },
+            styles: {
+                default: expect.any(Object),
+                error: expect.any(Object),
+                focus: expect.any(Object),
+            },
+            onBlur: expect.any(Function),
+            onCardTypeChange: expect.any(Function),
+            onEnter: expect.any(Function),
+            onFocus: expect.any(Function),
+            onValidate: expect.any(Function),
+        });
     });
 
     it('passes styling properties to hosted form', async () => {
-        const container = mount(<DecoratedPaymentMethodTest { ...defaultProps } />);
-        const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
+        const container = mount(<DecoratedPaymentMethodTest {...defaultProps} />);
+        const getHostedFormOptions = container
+            .find(InnerPaymentMethod)
+            .prop('getHostedFormOptions');
 
-        expect(await getHostedFormOptions())
-            .toEqual(expect.objectContaining({
+        expect(await getHostedFormOptions()).toEqual(
+            expect.objectContaining({
                 styles: {
                     default: { color: 'rgb(0, 0, 0)' },
                     error: { color: 'rgb(255, 0, 0)' },
                     focus: { color: 'rgb(0, 0, 255)' },
                 },
-            }));
+            }),
+        );
 
-        expect(getCreditCardInputStyles)
-            .toHaveBeenCalledWith('authorizenet-ccNumber', ['color', 'fontFamily', 'fontSize', 'fontWeight']);
-        expect(getCreditCardInputStyles)
-            .toHaveBeenCalledWith('authorizenet-ccNumber', ['color', 'fontFamily', 'fontSize', 'fontWeight'], CreditCardInputStylesType.Error);
-        expect(getCreditCardInputStyles)
-            .toHaveBeenCalledWith('authorizenet-ccNumber', ['color', 'fontFamily', 'fontSize', 'fontWeight'], CreditCardInputStylesType.Focus);
+        expect(getCreditCardInputStyles).toHaveBeenCalledWith('authorizenet-ccNumber', [
+            'color',
+            'fontFamily',
+            'fontSize',
+            'fontWeight',
+        ]);
+        expect(getCreditCardInputStyles).toHaveBeenCalledWith(
+            'authorizenet-ccNumber',
+            ['color', 'fontFamily', 'fontSize', 'fontWeight'],
+            CreditCardInputStylesType.Error,
+        );
+        expect(getCreditCardInputStyles).toHaveBeenCalledWith(
+            'authorizenet-ccNumber',
+            ['color', 'fontFamily', 'fontSize', 'fontWeight'],
+            CreditCardInputStylesType.Focus,
+        );
     });
 
     it('passes error messages from hosted form to Formik form', async () => {
-        const container = mount(<DecoratedPaymentMethodTest { ...defaultProps } />);
-        const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
+        const container = mount(<DecoratedPaymentMethodTest {...defaultProps} />);
+        const getHostedFormOptions = container
+            .find(InnerPaymentMethod)
+            .prop('getHostedFormOptions');
         const { onValidate } = await getHostedFormOptions();
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        onValidate!({
+         
+        onValidate({
             isValid: false,
             errors: {
                 cardCode: [],
                 cardExpiry: [],
                 cardName: [],
-                cardNumber: [{ fieldType: 'cardNumber', type: 'required', message: 'Card number is required' }],
+                cardNumber: [
+                    {
+                        fieldType: 'cardNumber',
+                        type: 'required',
+                        message: 'Card number is required',
+                    },
+                ],
             },
         });
 
         container.update();
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        expect((last(formikRender.mock.calls)![0].values as HostedCreditCardFieldsetValues).hostedForm.errors)
-            .toEqual(expect.objectContaining({
+         
+        expect(
+            (last(formikRender.mock.calls)![0].values as HostedCreditCardFieldsetValues).hostedForm
+                .errors,
+        ).toEqual(
+            expect.objectContaining({
                 cardNumber: 'required',
-            }));
+            }),
+        );
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        expect(last(formikRender.mock.calls)![0].touched)
-            .toEqual(expect.objectContaining({
+        expect(last(formikRender.mock.calls)![0].touched).toEqual(
+            expect.objectContaining({
                 hostedForm: {
                     errors: {
                         cardNumber: true,
                     },
                 },
-            }));
+            }),
+        );
     });
 
     it('passes card type from hosted form to Formik form', async () => {
-        const container = mount(<DecoratedPaymentMethodTest { ...defaultProps } />);
-        const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
+        const container = mount(<DecoratedPaymentMethodTest {...defaultProps} />);
+        const getHostedFormOptions = container
+            .find(InnerPaymentMethod)
+            .prop('getHostedFormOptions');
         const { onCardTypeChange } = await getHostedFormOptions();
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        onCardTypeChange!({ cardType: 'mastercard' });
+         
+        onCardTypeChange({ cardType: 'mastercard' });
 
         container.update();
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        expect((last(formikRender.mock.calls)![0].values as HostedCreditCardFieldsetValues).hostedForm.cardType)
-            .toEqual('mastercard');
+         
+        expect(
+            (last(formikRender.mock.calls)![0].values as HostedCreditCardFieldsetValues).hostedForm
+                .cardType,
+        ).toBe('mastercard');
     });
 
     it('highlights hosted field in focus', async () => {
-        const container = mount(<DecoratedPaymentMethodTest { ...defaultProps } />);
-        const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
+        const container = mount(<DecoratedPaymentMethodTest {...defaultProps} />);
+        const getHostedFormOptions = container
+            .find(InnerPaymentMethod)
+            .prop('getHostedFormOptions');
         const { onFocus } = await getHostedFormOptions();
 
         act(() => {
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            onFocus!({ fieldType: 'cardNumber' as HostedFieldType });
+             
+            onFocus({ fieldType: 'cardNumber' as HostedFieldType });
         });
 
         container.update();
 
-        expect(container.find(HostedCreditCardFieldset).prop('focusedFieldType'))
-            .toEqual('cardNumber');
+        expect(container.find(HostedCreditCardFieldset).prop('focusedFieldType')).toBe(
+            'cardNumber',
+        );
     });
 
     it('clears highlight if hosted field in no longer in focus', async () => {
-        const container = mount(<DecoratedPaymentMethodTest { ...defaultProps } />);
-        const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
+        const container = mount(<DecoratedPaymentMethodTest {...defaultProps} />);
+        const getHostedFormOptions = container
+            .find(InnerPaymentMethod)
+            .prop('getHostedFormOptions');
         const { onBlur } = await getHostedFormOptions();
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        onBlur!({ fieldType: 'cardNumber' as HostedFieldType });
+         
+        onBlur({ fieldType: 'cardNumber' as HostedFieldType });
 
         container.update();
 
-        expect(container.find(HostedCreditCardFieldset).prop('focusedFieldType'))
-            .toEqual(undefined);
+        expect(container.find(HostedCreditCardFieldset).prop('focusedFieldType')).toBeUndefined();
     });
 
     it('submits form when enter key is pressed', async () => {
-        const container = mount(<DecoratedPaymentMethodTest { ...defaultProps } />);
-        const getHostedFormOptions = container.find(InnerPaymentMethod).prop('getHostedFormOptions');
+        const container = mount(<DecoratedPaymentMethodTest {...defaultProps} />);
+        const getHostedFormOptions = container
+            .find(InnerPaymentMethod)
+            .prop('getHostedFormOptions');
         const { onEnter } = await getHostedFormOptions();
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        onEnter!({ fieldType: 'cardNumber' as HostedFieldType });
+         
+        onEnter({ fieldType: 'cardNumber' as HostedFieldType });
 
         container.update();
 
-        expect(formikProps.submitCount)
-            .toEqual(1);
-        expect(formContext.setSubmitted)
-            .toHaveBeenCalled();
+        expect(formikProps.submitCount).toBe(1);
+        expect(formContext.setSubmitted).toHaveBeenCalled();
     });
 });

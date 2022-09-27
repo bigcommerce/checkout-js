@@ -19,13 +19,9 @@ describe('isUsingMultiShipping()', () => {
     });
 
     it('returns true if there are more than one consignment', () => {
-        consignments = [
-            getConsignment(),
-            getConsignment(),
-        ];
+        consignments = [getConsignment(), getConsignment()];
 
-        expect(isUsingMultiShipping(consignments, lineItems))
-            .toEqual(true);
+        expect(isUsingMultiShipping(consignments, lineItems)).toBe(true);
     });
 
     it('returns false if there is only one consignment without unassigned physical items', () => {
@@ -36,22 +32,16 @@ describe('isUsingMultiShipping()', () => {
             physicalItems: [getPhysicalItem()],
         };
 
-        expect(isUsingMultiShipping(consignments, lineItems))
-            .toEqual(false);
+        expect(isUsingMultiShipping(consignments, lineItems)).toBe(false);
     });
 
     it('returns true if there are unassigned physical items', () => {
         consignments = [getConsignment()];
         lineItems = {
             ...lineItems,
-            physicalItems: [
-                getPhysicalItem(),
-                getPhysicalItem(),
-                getPhysicalItem(),
-            ],
+            physicalItems: [getPhysicalItem(), getPhysicalItem(), getPhysicalItem()],
         };
 
-        expect(isUsingMultiShipping(consignments, lineItems))
-            .toEqual(true);
+        expect(isUsingMultiShipping(consignments, lineItems)).toBe(true);
     });
 });

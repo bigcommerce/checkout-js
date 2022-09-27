@@ -18,19 +18,19 @@ describe('StoreCreditOverlay', () => {
 
     it('displays "payment is not required" text', () => {
         const component = mount(
-            <LocaleContext.Provider value={ localeContext }>
+            <LocaleContext.Provider value={localeContext}>
                 <StoreCreditOverlay />
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
-        expect(component.text())
-            .toEqual(languageService.translate('payment.payment_not_required_text'));
+        expect(component.text()).toEqual(
+            languageService.translate('payment.payment_not_required_text'),
+        );
     });
 
     it('renders component with expected class', () => {
         const component = shallow(<StoreCreditOverlay />);
 
-        expect(component.hasClass('storeCreditOverlay'))
-            .toEqual(true);
+        expect(component.hasClass('storeCreditOverlay')).toBe(true);
     });
 });

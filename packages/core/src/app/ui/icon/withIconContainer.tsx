@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { memo, ComponentType } from 'react';
+import React, { ComponentType, memo } from 'react';
 
 export enum IconSize {
     Regular = 'regular',
@@ -15,25 +15,21 @@ export interface IconProps {
 }
 
 export default function withIconContainer<TProps>(
-    OriginalComponent: ComponentType<TProps>
+     
+    OriginalComponent: ComponentType<TProps>,
 ): ComponentType<TProps & IconProps> {
-    return memo(({
-        additionalClassName,
-        size,
-        testId,
-        ...rest
-    }) => (
+    return memo(({ additionalClassName, size, testId, ...rest }) => (
         <div
-            className={ classNames(
+            className={classNames(
                 'icon',
                 additionalClassName,
                 size === IconSize.Small ? 'icon--small' : null,
                 size === IconSize.Large ? 'icon--large' : null,
-                size === IconSize.Medium ? 'icon--medium' : null
-            ) }
-            data-test={ testId }
+                size === IconSize.Medium ? 'icon--medium' : null,
+            )}
+            data-test={testId}
         >
-            <OriginalComponent { ...rest as TProps } />
+            <OriginalComponent {...(rest as TProps)} />
         </div>
     ));
 }

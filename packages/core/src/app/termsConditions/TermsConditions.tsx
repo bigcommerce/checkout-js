@@ -12,16 +12,18 @@ export const TermsConditions: FunctionComponent<TermsConditionsProps> = ({
     termsConditionsText = '',
 }) => (
     <>
-        { termsConditionsUrl ?
+        {termsConditionsUrl ? (
             <TermsConditionsField
                 name="terms"
-                type={ TermsConditionsType.Link }
-                url={ termsConditionsUrl }
-            /> :
+                type={TermsConditionsType.Link}
+                url={termsConditionsUrl}
+            />
+        ) : (
             <TermsConditionsField
                 name="terms"
-                terms={ termsConditionsText }
-                type={ TermsConditionsType.TextArea }
-            /> }
+                terms={termsConditionsText}
+                type={TermsConditionsType.TextArea}
+            />
+        )}
     </>
 );

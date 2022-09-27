@@ -13,9 +13,9 @@ import PaymentMethodType from './PaymentMethodType';
  * the UI level.
  */
 export default function getPaymentMethodName(
-    language: LanguageService
+    language: LanguageService,
 ): (method: PaymentMethod) => string {
-    return method => {
+    return (method) => {
         let name = getTranslatedPaymentMethodName(language)(method);
 
         if (!name || method.method === PaymentMethodType.MultiOption) {
@@ -27,8 +27,8 @@ export default function getPaymentMethodName(
                 // FIXME: I'm not entirely sure why we have to do this. But for some
                 // reason this is required for Masterpass provided by Square.
                 get(method, 'initializationData.paymentData.cardData.digital_wallet_type') ||
-                method.method ||
-                method.id
+                    method.method ||
+                    method.id,
             );
         }
 
@@ -37,9 +37,9 @@ export default function getPaymentMethodName(
 }
 
 export function getTranslatedPaymentMethodName(
-    language: LanguageService
+    language: LanguageService,
 ): (method: PaymentMethod) => string | undefined {
-    return method => {
+    return (method) => {
         const translations: { [key: string]: string } = {
             [PaymentMethodId.Affirm]: language.translate('payment.affirm_name_text'),
             [PaymentMethodId.Afterpay]: language.translate('payment.afterpay_name_text'),

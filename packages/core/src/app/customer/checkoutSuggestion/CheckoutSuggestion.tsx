@@ -1,7 +1,12 @@
-import { CheckoutSelectors, CustomerInitializeOptions, CustomerRequestOptions, ExecutePaymentMethodCheckoutOptions } from '@bigcommerce/checkout-sdk';
-import React, { memo, FunctionComponent } from 'react';
+import {
+    CheckoutSelectors,
+    CustomerInitializeOptions,
+    CustomerRequestOptions,
+    ExecutePaymentMethodCheckoutOptions,
+} from '@bigcommerce/checkout-sdk';
+import React, { FunctionComponent, memo } from 'react';
 
-import { withCheckout, CheckoutContextProps } from '../../checkout';
+import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { PaymentMethodId } from '../../payment/paymentMethod';
 
 import BoltCheckoutSuggestion from './BoltCheckoutSuggestion';
@@ -14,24 +19,26 @@ export interface WithCheckoutSuggestionsProps {
     isExecutingPaymentMethodCheckout: boolean;
     providerWithCustomCheckout?: string;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
-    executePaymentMethodCheckout(options: ExecutePaymentMethodCheckoutOptions): Promise<CheckoutSelectors>;
+    executePaymentMethodCheckout(
+        options: ExecutePaymentMethodCheckoutOptions,
+    ): Promise<CheckoutSelectors>;
     initializeCustomer(options: CustomerInitializeOptions): Promise<CheckoutSelectors>;
 }
 
-const CheckoutSuggestion: FunctionComponent<WithCheckoutSuggestionsProps & CheckoutSuggestionProps> = ({
-   providerWithCustomCheckout,
-   ...rest
-}) => {
+const CheckoutSuggestion: FunctionComponent<
+    WithCheckoutSuggestionsProps & CheckoutSuggestionProps
+> = ({ providerWithCustomCheckout, ...rest }) => {
     if (providerWithCustomCheckout === PaymentMethodId.Bolt) {
-        return <BoltCheckoutSuggestion methodId={ providerWithCustomCheckout } { ...rest } />;
+        return <BoltCheckoutSuggestion methodId={providerWithCustomCheckout} {...rest} />;
     }
 
     return null;
 };
 
-const mapToCheckoutSuggestionProps = (
-    { checkoutService, checkoutState }: CheckoutContextProps
-): WithCheckoutSuggestionsProps | null => {
+const mapToCheckoutSuggestionProps = ({
+    checkoutService,
+    checkoutState,
+}: CheckoutContextProps): WithCheckoutSuggestionsProps | null => {
     const {
         data: { getCheckout, getConfig },
         statuses: { isExecutingPaymentMethodCheckout },

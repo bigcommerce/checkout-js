@@ -23,16 +23,9 @@ function isCustomCheckoutWindow(window: Window): window is CustomCheckoutWindow 
         throw new Error('Checkout config is missing.');
     }
 
-    const {
-        renderOrderConfirmation,
-        renderCheckout,
-    } = await loadFiles();
+    const { renderOrderConfirmation, renderCheckout } = await loadFiles();
 
-    const {
-        orderId,
-        checkoutId,
-        ...appProps
-    } = window.checkoutConfig;
+    const { orderId, checkoutId, ...appProps } = window.checkoutConfig;
 
     if (orderId) {
         renderOrderConfirmation({ ...appProps, orderId });

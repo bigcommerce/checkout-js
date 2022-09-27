@@ -2,7 +2,7 @@ export default class CustomError extends Error {
     static shouldReport: boolean;
 
     data: any;
-    title: any;
+    title: string;
     type: string;
 
     constructor({
@@ -21,9 +21,10 @@ export default class CustomError extends Error {
         if (typeof Error.captureStackTrace === 'function') {
             Error.captureStackTrace(this, CustomError);
         } else {
-            this.stack = (new Error()).stack;
+            this.stack = new Error().stack;
         }
 
+         
         this.data = data;
         this.message = message;
         this.name = name;
@@ -38,7 +39,11 @@ export default class CustomError extends Error {
         name,
         defaultError,
         defaultTitle,
-    }: { name: string; defaultError: string; defaultTitle: string}): void {
+    }: {
+        name: string;
+        defaultError: string;
+        defaultTitle: string;
+    }): void {
         this.name = this.name || name;
         this.message = this.message || defaultError;
         this.title = this.title || defaultTitle;

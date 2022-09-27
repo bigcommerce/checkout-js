@@ -5,11 +5,11 @@ import { LocalizedGeography } from '../geography';
 
 const localizeAddress = <T1 extends Address>(
     address: T1,
-    countries?: Country[]
+    countries?: Country[],
 ): T1 & LocalizedGeography => {
-    const country =  find(countries, { code: address.countryCode });
+    const country = find(countries, { code: address.countryCode });
     const states = !country || isEmpty(country.subdivisions) ? [] : country.subdivisions;
-    const state = find(states, { code:  address.stateOrProvinceCode });
+    const state = find(states, { code: address.stateOrProvinceCode });
 
     return {
         ...address,

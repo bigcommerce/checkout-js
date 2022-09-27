@@ -14,18 +14,20 @@ export enum CreditCardInputStylesType {
 export default function getCreditCardInputStyles(
     containerId: string,
     properties: string[],
-    type: CreditCardInputStylesType = CreditCardInputStylesType.Default
+    type: CreditCardInputStylesType = CreditCardInputStylesType.Default,
 ): Promise<{ [key: string]: string }> {
     const container = document.createElement('div');
     const parentContainer = document.getElementById(containerId);
 
     if (!parentContainer) {
-        throw new Error('Unable to retrieve input styles as the provided container ID is not valid.');
+        throw new Error(
+            'Unable to retrieve input styles as the provided container ID is not valid.',
+        );
     }
 
     parentContainer.appendChild(container);
 
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         const callbackRef = (element: HTMLInputElement | null) => {
             if (!element) {
                 return;
@@ -41,15 +43,15 @@ export default function getCreditCardInputStyles(
         };
 
         ReactDOM.render(
-            <FormContext.Provider value={ { isSubmitted: true, setSubmitted: noop } }>
-                <FormFieldContainer hasError={ type === CreditCardInputStylesType.Error }>
+            <FormContext.Provider value={{ isSubmitted: true, setSubmitted: noop }}>
+                <FormFieldContainer hasError={type === CreditCardInputStylesType.Error}>
                     <TextInput
-                        appearFocused={ type === CreditCardInputStylesType.Focus }
-                        ref={ callbackRef }
+                        appearFocused={type === CreditCardInputStylesType.Focus}
+                        ref={callbackRef}
                     />
                 </FormFieldContainer>
             </FormContext.Provider>,
-            container
+            container,
         );
     });
 }

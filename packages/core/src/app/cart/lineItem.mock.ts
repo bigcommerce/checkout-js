@@ -1,4 +1,9 @@
-import { CustomItem, DigitalItem, GiftCertificateItem, PhysicalItem } from '@bigcommerce/checkout-sdk';
+import {
+    CustomItem,
+    DigitalItem,
+    GiftCertificateItem,
+    PhysicalItem,
+} from '@bigcommerce/checkout-sdk';
 
 export function getCustomItem(): CustomItem {
     return {
@@ -135,7 +140,8 @@ export function getPicklistItem(): PhysicalItem[] {
                 },
             ],
             categoryNames: ['Cat 1'],
-        }, {
+        },
+        {
             id: '777',
             variantId: 72,
             productId: 104,

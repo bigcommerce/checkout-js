@@ -2,9 +2,9 @@ import { LanguageService } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
 import { cvv, number } from 'card-validator';
 import creditCardType from 'credit-card-type';
-import { object, string, ObjectSchema, StringSchema } from 'yup';
-import CardInstrumentFieldsetValues from './CardInstrumentFieldsetValues';
+import { object, ObjectSchema, string, StringSchema } from 'yup';
 
+import CardInstrumentFieldsetValues from './CardInstrumentFieldsetValues';
 import mapFromInstrumentCardType from './mapFromInstrumentCardType';
 
 export interface InstrumentValidationSchemaOptions {
@@ -29,8 +29,7 @@ export default memoize(function getInstrumentValidationSchema({
     language,
 }: InstrumentValidationSchemaOptions): ObjectSchema<CardInstrumentFieldsetValues> {
     const schema: InstrumentValidationSchema = {
-        instrumentId: string()
-            .required(),
+        instrumentId: string().required(),
     };
 
     if (isCardCodeRequired) {
@@ -42,7 +41,8 @@ export default memoize(function getInstrumentValidationSchema({
                     const cardType = mapFromInstrumentCardType(instrumentBrand);
                     const cardInfo = creditCardType.getTypeInfo(cardType);
 
-                    return cvv(value, cardInfo && cardInfo.code ? cardInfo.code.size : undefined).isValid;
+                    return cvv(value, cardInfo && cardInfo.code ? cardInfo.code.size : undefined)
+                        .isValid;
                 },
             });
     }

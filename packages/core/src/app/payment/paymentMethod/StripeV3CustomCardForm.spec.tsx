@@ -22,26 +22,24 @@ describe('StripeV3CustomCardForm', () => {
             },
         };
 
-        StripeV3CustomCardFormTest = props => (
-                <StripeV3CustomCardForm { ...props } />
-        );
+        StripeV3CustomCardFormTest = (props) => <StripeV3CustomCardForm {...props} />;
     });
 
     it('renders stripeV3 card number field', () => {
-        const container = mount(<StripeV3CustomCardFormTest { ...defaultProps }  />);
+        const container = mount(<StripeV3CustomCardFormTest {...defaultProps} />);
 
         expect(container.find('[id="stripe-card-number-component-field"]')).toHaveLength(1);
     });
 
     it('renders stripeV3 expiry date field', () => {
-        const container = mount(<StripeV3CustomCardFormTest { ...defaultProps } />);
+        const container = mount(<StripeV3CustomCardFormTest {...defaultProps} />);
 
-        expect(container.find('#stripe-expiry-component-field').length).toEqual(1);
+        expect(container.find('#stripe-expiry-component-field')).toHaveLength(1);
     });
 
     it('renders stripeV3 CVV field', () => {
-        const container = mount(<StripeV3CustomCardFormTest { ...defaultProps } />);
+        const container = mount(<StripeV3CustomCardFormTest {...defaultProps} />);
 
-        expect(container.find('#stripe-cvc-component-field').length).toEqual(1);
+        expect(container.find('#stripe-cvc-component-field')).toHaveLength(1);
     });
 });

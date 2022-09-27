@@ -1,8 +1,8 @@
 import { CheckoutSelectors, PaymentInstrument } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { Component, Fragment, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 
-import { withCheckout, CheckoutContextProps } from '../../checkout';
+import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { TranslatedString } from '../../locale';
 import { Button, ButtonSize, ButtonVariant } from '../../ui/button';
 import { Modal, ModalHeader } from '../../ui/modal';
@@ -36,51 +36,50 @@ interface WithCheckoutProps {
     deleteInstrument(id: string): Promise<CheckoutSelectors>;
 }
 
-class ManageInstrumentsModal extends Component<ManageInstrumentsModalProps & WithCheckoutProps, ManageInstrumentsModalState> {
+class ManageInstrumentsModal extends Component<
+    ManageInstrumentsModalProps & WithCheckoutProps,
+    ManageInstrumentsModalState
+> {
     state: ManageInstrumentsModalState = {
         isConfirmingDelete: false,
     };
 
     render(): ReactNode {
-        const {
-            deleteInstrumentError,
-            isOpen,
-            onRequestClose,
-        } = this.props;
+        const { deleteInstrumentError, isOpen, onRequestClose } = this.props;
 
         return (
             <Modal
-                closeButtonLabel={ <TranslatedString id="common.close_action" /> }
-                footer={ this.renderFooter() }
+                closeButtonLabel={<TranslatedString id="common.close_action" />}
+                footer={this.renderFooter()}
                 header={
                     <ModalHeader>
                         <TranslatedString id="payment.instrument_manage_modal_title_text" />
                     </ModalHeader>
                 }
-                isOpen={ isOpen }
-                onAfterOpen={ this.handleAfterOpen }
-                onRequestClose={ onRequestClose }
+                isOpen={isOpen}
+                onAfterOpen={this.handleAfterOpen}
+                onRequestClose={onRequestClose}
             >
-                { deleteInstrumentError && <ManageInstrumentsAlert error={ deleteInstrumentError } /> }
+                {deleteInstrumentError && <ManageInstrumentsAlert error={deleteInstrumentError} />}
 
-                { this.renderContent() }
+                {this.renderContent()}
             </Modal>
         );
     }
 
     private renderContent(): ReactNode {
-        const {
-            instruments,
-            isDeletingInstrument,
-        } = this.props;
+        const { instruments, isDeletingInstrument } = this.props;
 
         const { isConfirmingDelete } = this.state;
 
         if (isConfirmingDelete) {
             return (
-                <p><TranslatedString id="payment.instrument_manage_modal_confirmation_label" /></p>
+                <p>
+                    <TranslatedString id="payment.instrument_manage_modal_confirmation_label" />
+                </p>
             );
         }
+
         const cardInstruments = instruments.filter(isCardInstrument);
         const bankInstruments = instruments.filter(isBankAccountInstrument);
         const accountInstruments = instruments.filter(isAccountInstrument);
@@ -90,18 +89,18 @@ class ManageInstrumentsModal extends Component<ManageInstrumentsModalProps & Wit
         if (bankAndAccountInstruments.length) {
             return (
                 <ManageAccountInstrumentsTable
-                    instruments={ bankAndAccountInstruments }
-                    isDeletingInstrument={ isDeletingInstrument }
-                    onDeleteInstrument={ this.handleDeleteInstrument }
+                    instruments={bankAndAccountInstruments}
+                    isDeletingInstrument={isDeletingInstrument}
+                    onDeleteInstrument={this.handleDeleteInstrument}
                 />
             );
         }
 
         return (
             <ManageCardInstrumentsTable
-                instruments={ cardInstruments }
-                isDeletingInstrument={ isDeletingInstrument }
-                onDeleteInstrument={ this.handleDeleteInstrument }
+                instruments={cardInstruments}
+                isDeletingInstrument={isDeletingInstrument}
+                onDeleteInstrument={this.handleDeleteInstrument}
             />
         );
     }
@@ -112,33 +111,33 @@ class ManageInstrumentsModal extends Component<ManageInstrumentsModalProps & Wit
 
         if (isConfirmingDelete) {
             return (
-                <Fragment>
+                <>
                     <Button
                         data-test="manage-instrument-cancel-button"
-                        onClick={ this.handleCancel }
-                        size={ ButtonSize.Small }
+                        onClick={this.handleCancel}
+                        size={ButtonSize.Small}
                     >
                         <TranslatedString id="common.cancel_action" />
                     </Button>
 
                     <Button
                         data-test="manage-instrument-confirm-button"
-                        disabled={ isDeletingInstrument || isLoadingInstruments }
-                        onClick={ this.handleConfirmDelete }
-                        size={ ButtonSize.Small }
-                        variant={ ButtonVariant.Primary }
+                        disabled={isDeletingInstrument || isLoadingInstruments}
+                        onClick={this.handleConfirmDelete}
+                        size={ButtonSize.Small}
+                        variant={ButtonVariant.Primary}
                     >
                         <TranslatedString id="payment.instrument_manage_modal_confirmation_action" />
                     </Button>
-                </Fragment>
+                </>
             );
         }
 
         return (
             <Button
                 data-test="manage-instrument-close-button"
-                onClick={ onRequestClose }
-                size={ ButtonSize.Small }
+                onClick={onRequestClose}
+                size={ButtonSize.Small}
             >
                 <TranslatedString id="common.close_action" />
             </Button>
@@ -148,16 +147,16 @@ class ManageInstrumentsModal extends Component<ManageInstrumentsModalProps & Wit
     private handleAfterOpen: () => void = () => {
         const { onAfterOpen } = this.props;
 
-        this.setState({
-            isConfirmingDelete: false,
-        }, onAfterOpen);
+        this.setState(
+            {
+                isConfirmingDelete: false,
+            },
+            onAfterOpen,
+        );
     };
 
     private handleCancel: () => void = () => {
-        const {
-            clearError,
-            deleteInstrumentError,
-        } = this.props;
+        const { clearError, deleteInstrumentError } = this.props;
 
         if (deleteInstrumentError) {
             clearError(deleteInstrumentError);
@@ -169,7 +168,12 @@ class ManageInstrumentsModal extends Component<ManageInstrumentsModalProps & Wit
     };
 
     private handleConfirmDelete: () => void = async () => {
-        const { deleteInstrument, onDeleteInstrument = noop, onDeleteInstrumentError = noop, onRequestClose = noop } = this.props;
+        const {
+            deleteInstrument,
+            onDeleteInstrument = noop,
+            onDeleteInstrumentError = noop,
+            onRequestClose = noop,
+        } = this.props;
         const { selectedInstrumentId } = this.state;
 
         if (!selectedInstrumentId) {
@@ -185,7 +189,7 @@ class ManageInstrumentsModal extends Component<ManageInstrumentsModalProps & Wit
         }
     };
 
-    private handleDeleteInstrument: (id: string) => void = id => {
+    private handleDeleteInstrument: (id: string) => void = (id) => {
         this.setState({
             isConfirmingDelete: true,
             selectedInstrumentId: id,
@@ -193,9 +197,10 @@ class ManageInstrumentsModal extends Component<ManageInstrumentsModalProps & Wit
     };
 }
 
-export function mapFromCheckoutProps(
-    { checkoutService, checkoutState }: CheckoutContextProps
-): WithCheckoutProps | null {
+export function mapFromCheckoutProps({
+    checkoutService,
+    checkoutState,
+}: CheckoutContextProps): WithCheckoutProps | null {
     const {
         errors: { getDeleteInstrumentError },
         statuses: { isDeletingInstrument, isLoadingInstruments },

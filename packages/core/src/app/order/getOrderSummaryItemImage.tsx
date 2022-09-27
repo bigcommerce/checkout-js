@@ -6,9 +6,5 @@ export default function getOrderSummaryItemImage(item: DigitalItem | PhysicalIte
         return;
     }
 
-    return <img
-        alt={ item.name }
-        data-test="cart-item-image"
-        src={ item.imageUrl }
-    />;
+    return <img alt={item.name} data-test="cart-item-image" src={item.imageUrl} />;
 }

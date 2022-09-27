@@ -6,23 +6,22 @@ import ShippableItem from './ShippableItem';
 
 export default function getShippableLineItems(
     cart: Cart,
-    consignments: Consignment[]
+    consignments: Consignment[],
 ): ShippableItem[] {
     return reduce(
         (cart && cart.lineItems.physicalItems) || [],
-        (result, item, i) => (
-            !item.addedByPromotion && isNil(item.parentId) ?
-                result.concat(...splitItem(item, consignments, i)) :
-                result
-        ),
-        [] as ShippableItem[]
+        (result, item, i) =>
+            !item.addedByPromotion && isNil(item.parentId)
+                ? result.concat(...splitItem(item, consignments, i))
+                : result,
+        [] as ShippableItem[],
     );
 }
 
 function splitItem(
     item: PhysicalItem,
     consignments: Consignment[],
-    lineItemIndex: number
+    lineItemIndex: number,
 ): ShippableItem[] {
     let splitItems: ShippableItem[] = [];
     const consignment = findConsignment(consignments, item.id as string);

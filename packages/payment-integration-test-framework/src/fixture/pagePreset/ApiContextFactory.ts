@@ -1,4 +1,4 @@
-import { request, APIRequestContext, Page } from '@playwright/test';
+import { APIRequestContext, Page, request } from '@playwright/test';
 
 export class ApiContextFactory {
     private apiContext: APIRequestContext | undefined;
@@ -7,11 +7,12 @@ export class ApiContextFactory {
         if (!this.apiContext) {
             await this.setup(page, storeUrl);
         }
+
         if (this.apiContext) {
             return this.apiContext;
-        } else {
-            throw new Error(`Api context setup failed. Is ${storeUrl} accessible now?`);
         }
+
+        throw new Error(`Api context setup failed. Is ${storeUrl} accessible now?`);
     }
 
     private async setup(page: Page, storeUrl: string): Promise<void> {
@@ -20,16 +21,19 @@ export class ApiContextFactory {
         let cookieStr = '';
         let xsrfTokenStr = '';
         const cookies = await page.context().cookies();
+
         for (const cookie of cookies) {
             if (cookie.name === 'XSRF-TOKEN') {
                 xsrfTokenStr = cookie.value;
             }
+
             cookieStr += `${cookie.name}=${cookie.value};`;
         }
 
         this.apiContext = await request.newContext({
-            baseURL: storeUrl + '/api/storefront/',
+            baseURL: `${storeUrl}/api/storefront/`,
             extraHTTPHeaders: {
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
                 'x-xsrf-token': xsrfTokenStr,

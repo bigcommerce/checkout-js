@@ -6,18 +6,15 @@ interface ModalHeaderProps {
     additionalClassName?: string;
 }
 
-const ModalHeader: FunctionComponent<ModalHeaderProps> = ({
-    children,
-    additionalClassName,
-}) => (
+const ModalHeader: FunctionComponent<ModalHeaderProps> = ({ children, additionalClassName }) => (
     <h2
-        className={ classNames(
+        className={classNames(
             'modal-header-title optimizedCheckout-headingSecondary',
-            additionalClassName
-        ) }
+            additionalClassName,
+        )}
         data-test="modal-heading"
     >
-        { children }
+        {children}
     </h2>
 );
 

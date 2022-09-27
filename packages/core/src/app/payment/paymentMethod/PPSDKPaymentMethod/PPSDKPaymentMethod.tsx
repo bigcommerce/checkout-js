@@ -13,10 +13,10 @@ export interface Props {
     onUnhandledError?(error: Error): void;
 }
 
-export const PPSDKPaymentMethod: FunctionComponent<Props> = props => {
+export const PPSDKPaymentMethod: FunctionComponent<Props> = (props) => {
     const { method, onUnhandledError = noop } = props;
 
-    const componentKey = method?.initializationStrategy?.type || '';
+    const componentKey = method.initializationStrategy?.type || '';
     const Component = initializationComponentMap[componentKey];
 
     if (!Component) {
@@ -25,7 +25,5 @@ export const PPSDKPaymentMethod: FunctionComponent<Props> = props => {
         return null;
     }
 
-    return (
-        <Component { ...props } />
-    );
+    return <Component {...props} />;
 };

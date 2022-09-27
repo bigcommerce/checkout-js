@@ -1,4 +1,9 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutSelectors,
+    CheckoutService,
+    createCheckoutService,
+    PaymentMethod,
+} from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -12,7 +17,9 @@ import { getPaymentMethod } from '../payment-methods.mock';
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodType from './PaymentMethodType';
-import WalletButtonPaymentMethod, { WalletButtonPaymentMethodProps } from './WalletButtonPaymentMethod';
+import WalletButtonPaymentMethod, {
+    WalletButtonPaymentMethodProps,
+} from './WalletButtonPaymentMethod';
 
 describe('when using ChasePay payment', () => {
     let method: PaymentMethod;
@@ -37,23 +44,17 @@ describe('when using ChasePay payment', () => {
             method: PaymentMethodType.Chasepay,
         };
 
-        jest.spyOn(checkoutState.data, 'getConfig')
-            .mockReturnValue(getStoreConfig());
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
-        jest.spyOn(checkoutService, 'deinitializePayment')
-            .mockResolvedValue(checkoutState);
+        jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
 
-        jest.spyOn(checkoutService, 'initializePayment')
-            .mockResolvedValue(checkoutState);
+        jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);
 
-        PaymentMethodTest = props => (
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <LocaleContext.Provider value={ localeContext }>
-                    <Formik
-                        initialValues={ {} }
-                        onSubmit={ noop }
-                    >
-                        <PaymentMethodComponent { ...props } />
+        PaymentMethodTest = (props) => (
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <Formik initialValues={{}} onSubmit={noop}>
+                        <PaymentMethodComponent {...props} />
                     </Formik>
                 </LocaleContext.Provider>
             </CheckoutProvider>
@@ -61,34 +62,37 @@ describe('when using ChasePay payment', () => {
     });
 
     it('renders as wallet button method', () => {
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
+        const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
 
-        expect(container.find(WalletButtonPaymentMethod).props())
-            .toEqual(expect.objectContaining({
+        expect(container.find(WalletButtonPaymentMethod).props()).toEqual(
+            expect.objectContaining({
                 buttonId: 'chaseWalletButton',
                 deinitializePayment: expect.any(Function),
                 initializePayment: expect.any(Function),
                 method,
                 shouldShowEditButton: true,
-            }));
+            }),
+        );
     });
 
     it('initializes method with required config', () => {
-        const container = mount(<PaymentMethodTest { ...defaultProps } method={ method } />);
-        const component: ReactWrapper<WalletButtonPaymentMethodProps> = container.find(WalletButtonPaymentMethod);
+        const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
+        const component: ReactWrapper<WalletButtonPaymentMethodProps> =
+            container.find(WalletButtonPaymentMethod);
 
         component.prop('initializePayment')({
             methodId: method.id,
             gatewayId: method.gateway,
         });
 
-        expect(checkoutService.initializePayment)
-            .toHaveBeenCalledWith(expect.objectContaining({
+        expect(checkoutService.initializePayment).toHaveBeenCalledWith(
+            expect.objectContaining({
                 methodId: method.id,
                 gatewayId: method.gateway,
                 [method.id]: {
                     walletButton: 'chaseWalletButton',
                 },
-            }));
+            }),
+        );
     });
 });

@@ -26,7 +26,7 @@ export default class Toggle extends Component<ToggleProps, ToggleState> {
         });
     }
 
-    private toggle: (event: Event) => void = event => {
+    private toggle: (event: Event) => void = (event) => {
         const { isOpen } = this.state;
 
         event.preventDefault();

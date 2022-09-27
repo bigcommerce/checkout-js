@@ -15,6 +15,7 @@ export function getAddressFormFieldLegacyName(name: string): string {
 export function getAddressFormFieldInputId(name: string): string {
     return `${getAddressFormFieldLegacyName(name)}Input`;
 }
+
 export function getAddressFormFieldLabelId(name: string): string {
     return `${getAddressFormFieldLegacyName(name)}Label`;
 }

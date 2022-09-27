@@ -1,7 +1,13 @@
-import { Address, Consignment, Country, CustomerAddress, FormField } from '@bigcommerce/checkout-sdk';
+import {
+    Address,
+    Consignment,
+    Country,
+    CustomerAddress,
+    FormField,
+} from '@bigcommerce/checkout-sdk';
 import React, { Component, ReactNode } from 'react';
 
-import {  isValidCustomerAddress, AddressForm, AddressSelect } from '../address';
+import { AddressForm, AddressSelect, isValidCustomerAddress } from '../address';
 import { connectFormik, ConnectFormikProps } from '../common/form';
 import { Fieldset } from '../ui/form';
 import { LoadingOverlay } from '../ui/loading';
@@ -25,7 +31,9 @@ export interface ShippingAddressFormProps {
 
 const addressFieldName = 'shippingAddress';
 
-class ShippingAddressForm extends Component<ShippingAddressFormProps & ConnectFormikProps<SingleShippingFormValues>> {
+class ShippingAddressForm extends Component<
+    ShippingAddressFormProps & ConnectFormikProps<SingleShippingFormValues>
+> {
     render(): ReactNode {
         const {
             addresses,
@@ -39,74 +47,84 @@ class ShippingAddressForm extends Component<ShippingAddressFormProps & ConnectFo
             isLoading,
             googleMapsApiKey,
             formik: {
-                values: {
-                    shippingAddress: formAddress,
-                },
+                values: { shippingAddress: formAddress },
             },
         } = this.props;
 
         const hasAddresses = addresses && addresses.length > 0;
-        const hasValidCustomerAddress = isValidCustomerAddress(shippingAddress, addresses, formFields);
+        const hasValidCustomerAddress = isValidCustomerAddress(
+            shippingAddress,
+            addresses,
+            formFields,
+        );
 
         return (
             <Fieldset id="checkoutShippingAddress">
-                { hasAddresses &&
+                {hasAddresses && (
                     <Fieldset id="shippingAddresses">
-                        <LoadingOverlay isLoading={ isLoading }>
+                        <LoadingOverlay isLoading={isLoading}>
                             <AddressSelect
-                                addresses={ addresses }
-                                onSelectAddress={ onAddressSelect }
-                                onUseNewAddress={ onUseNewAddress }
-                                selectedAddress={ hasValidCustomerAddress ? shippingAddress : undefined }
+                                addresses={addresses}
+                                onSelectAddress={onAddressSelect}
+                                onUseNewAddress={onUseNewAddress}
+                                selectedAddress={
+                                    hasValidCustomerAddress ? shippingAddress : undefined
+                                }
                             />
                         </LoadingOverlay>
-                    </Fieldset> }
+                    </Fieldset>
+                )}
 
-                { !hasValidCustomerAddress &&
-                    <LoadingOverlay isLoading={ isLoading } unmountContentWhenLoading>
+                {!hasValidCustomerAddress && (
+                    <LoadingOverlay isLoading={isLoading} unmountContentWhenLoading>
                         <AddressForm
-                            countries={ countries }
-                            countriesWithAutocomplete={ countriesWithAutocomplete }
-                            countryCode={ formAddress && formAddress.countryCode }
-                            fieldName={ addressFieldName }
-                            formFields={ formFields }
-                            googleMapsApiKey={ googleMapsApiKey }
-                            onAutocompleteToggle={ this.handleAutocompleteToggle }
-                            onChange={ this.handleChange }
-                            setFieldValue={ this.setFieldValue }
-                            shouldShowSaveAddress={ shouldShowSaveAddress }
+                            countries={countries}
+                            countriesWithAutocomplete={countriesWithAutocomplete}
+                            countryCode={formAddress && formAddress.countryCode}
+                            fieldName={addressFieldName}
+                            formFields={formFields}
+                            googleMapsApiKey={googleMapsApiKey}
+                            onAutocompleteToggle={this.handleAutocompleteToggle}
+                            onChange={this.handleChange}
+                            setFieldValue={this.setFieldValue}
+                            shouldShowSaveAddress={shouldShowSaveAddress}
                         />
-                    </LoadingOverlay> }
+                    </LoadingOverlay>
+                )}
             </Fieldset>
         );
     }
 
-    private setFieldValue: (fieldName: string, fieldValue: string) => void = (fieldName, fieldValue) => {
+    private setFieldValue: (fieldName: string, fieldValue: string) => void = (
+        fieldName,
+        fieldValue,
+    ) => {
         const {
             formik: { setFieldValue },
             formFields,
         } = this.props;
 
         const customFormFieldNames = formFields
-            .filter(field => field.custom)
-            .map(field => field.name);
+            .filter((field) => field.custom)
+            .map((field) => field.name);
 
-        const formFieldName = customFormFieldNames.includes(fieldName) ?
-            `customFields.${fieldName}` :
-            fieldName;
+        const formFieldName = customFormFieldNames.includes(fieldName)
+            ? `customFields.${fieldName}`
+            : fieldName;
 
         setFieldValue(`${addressFieldName}.${formFieldName}`, fieldValue);
     };
 
     private handleChange: (fieldName: string, value: string) => void = (fieldName, value) => {
-        const {
-            onFieldChange,
-        } = this.props;
+        const { onFieldChange } = this.props;
 
         onFieldChange(fieldName, value);
     };
 
-    private handleAutocompleteToggle: (state: { inputValue: string; isOpen: boolean }) => void = ({ isOpen, inputValue }) => {
+    private handleAutocompleteToggle: (state: { inputValue: string; isOpen: boolean }) => void = ({
+        isOpen,
+        inputValue,
+    }) => {
         const { onFieldChange } = this.props;
 
         if (!isOpen) {

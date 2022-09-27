@@ -1,5 +1,8 @@
+ 
+ 
+ 
 import { mount, ReactWrapper } from 'enzyme';
-import React, { Fragment } from 'react';
+import React from 'react';
 
 import Toggle from './Toggle';
 
@@ -8,31 +11,28 @@ describe('Toggle', () => {
 
     beforeEach(() => {
         component = mount(
-            <Toggle openByDefault={ true }>
-                { ({ isOpen, toggle }) => (
-                    <Fragment>
-                        { isOpen && <span>foo</span> }
-                        <a onClick={ toggle }>bar</a>
-                    </Fragment>
-                ) }
-            </Toggle>
+            <Toggle openByDefault={true}>
+                {({ isOpen, toggle }) => (
+                    <>
+                        {isOpen && <span>foo</span>}
+                        <a onClick={toggle}>bar</a>
+                    </>
+                )}
+            </Toggle>,
         );
     });
 
     it('renders the content when isOpen is truthy', () => {
-        expect(component.find('span').length)
-            .toEqual(1);
+        expect(component.find('span')).toHaveLength(1);
     });
 
     it('toggles the content when the trigger is clicked', () => {
         component.find('a').simulate('click');
 
-        expect(component.find('span').length)
-            .toEqual(0);
+        expect(component.find('span')).toHaveLength(0);
 
         component.find('a').simulate('click');
 
-        expect(component.find('span').length)
-            .toEqual(1);
+        expect(component.find('span')).toHaveLength(1);
     });
 });

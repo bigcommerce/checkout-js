@@ -1,8 +1,8 @@
 import classNames from 'classnames';
-import React, { memo, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
-import { filterInstrumentTypes } from './mapFromPaymentMethodCardType';
 import CreditCardIcon from './CreditCardIcon';
+import { filterInstrumentTypes } from './mapFromPaymentMethodCardType';
 
 export interface CreditCardIconListProps {
     selectedCardType?: string;
@@ -21,20 +21,20 @@ const CreditCardIconList: FunctionComponent<CreditCardIconListProps> = ({
 
     return (
         <ul className="creditCardTypes-list">
-            { filteredCardTypes.map(type => (
+            {filteredCardTypes.map((type) => (
                 <li
-                    className={ classNames(
+                    className={classNames(
                         'creditCardTypes-list-item',
                         { 'is-active': selectedCardType === type },
-                        { 'not-active': selectedCardType && selectedCardType !== type}
-                    ) }
-                    key={ type }
+                        { 'not-active': selectedCardType && selectedCardType !== type },
+                    )}
+                    key={type}
                 >
                     <span className="cardIcon">
-                        <CreditCardIcon cardType={ type } />
+                        <CreditCardIcon cardType={type} />
                     </span>
                 </li>
-            )) }
+            ))}
         </ul>
     );
 };

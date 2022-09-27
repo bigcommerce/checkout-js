@@ -27,9 +27,7 @@ describe('when using Bolt payment', () => {
             },
         };
 
-        PaymentMethodTest = props => (
-            <BoltPaymentMethod { ...defaultProps } { ...props } />
-        );
+        PaymentMethodTest = (props) => <BoltPaymentMethod {...defaultProps} {...props} />;
     });
 
     it('renders as bolt client payment method if embeddedOneClickEnabled is false', () => {
@@ -37,8 +35,8 @@ describe('when using Bolt payment', () => {
 
         const container = mount(<PaymentMethodTest />);
 
-        expect(container.find(BoltClientPaymentMethod).length).toEqual(1);
-        expect(container.find(HostedPaymentMethod).length).toEqual(1);
+        expect(container.find(BoltClientPaymentMethod)).toHaveLength(1);
+        expect(container.find(HostedPaymentMethod)).toHaveLength(1);
     });
 
     it('renders as bolt embedded payment method if embeddedOneClickEnabled is true', () => {
@@ -46,7 +44,7 @@ describe('when using Bolt payment', () => {
 
         const container = mount(<PaymentMethodTest />);
 
-        expect(container.find(BoltEmbeddedPaymentMethod).length).toEqual(1);
-        expect(container.find(HostedWidgetPaymentMethod).length).toEqual(1);
+        expect(container.find(BoltEmbeddedPaymentMethod)).toHaveLength(1);
+        expect(container.find(HostedWidgetPaymentMethod)).toHaveLength(1);
     });
 });

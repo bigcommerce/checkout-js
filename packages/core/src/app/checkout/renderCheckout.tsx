@@ -30,11 +30,7 @@ export default function renderCheckout({
     }
 
     ReactDOM.render(
-        <CheckoutApp
-            containerId={ containerId }
-            publicPath={ configuredPublicPath }
-            { ...props }
-        />,
-        document.getElementById(containerId)
+        <CheckoutApp containerId={containerId} publicPath={configuredPublicPath} {...props} />,
+        document.getElementById(containerId),
     );
 }

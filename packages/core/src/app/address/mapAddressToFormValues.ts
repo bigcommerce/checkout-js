@@ -6,8 +6,11 @@ export type AddressFormValues = Pick<Address, Exclude<AddressKey, 'customFields'
     customFields: { [id: string]: any };
 };
 
-export default function mapAddressToFormValues(fields: FormField[], address?: Address): AddressFormValues {
-    const values = ({
+export default function mapAddressToFormValues(
+    fields: FormField[],
+    address?: Address,
+): AddressFormValues {
+    const values = {
         ...fields.reduce(
             (addressFormValues, { name, custom, fieldType, default: defaultValue }) => {
                 if (custom) {
@@ -15,13 +18,18 @@ export default function mapAddressToFormValues(fields: FormField[], address?: Ad
                         addressFormValues.customFields = {};
                     }
 
-                    const field = address &&
+                    const field =
+                        address &&
                         address.customFields &&
                         address.customFields.find(({ fieldId }) => fieldId === name);
 
-                    const fieldValue = (field && field.fieldValue);
+                    const fieldValue = field && field.fieldValue;
 
-                    addressFormValues.customFields[name] = getValue(fieldType, fieldValue, defaultValue);
+                    addressFormValues.customFields[name] = getValue(
+                        fieldType,
+                        fieldValue,
+                        defaultValue,
+                    );
 
                     return addressFormValues;
                 }
@@ -32,13 +40,12 @@ export default function mapAddressToFormValues(fields: FormField[], address?: Ad
 
                 return addressFormValues;
             },
-            {} as AddressFormValues
+            {} as AddressFormValues,
         ),
-    });
+    };
 
-    values.shouldSaveAddress = address && address.shouldSaveAddress !== undefined ?
-        address.shouldSaveAddress :
-        true;
+    values.shouldSaveAddress =
+        address && address.shouldSaveAddress !== undefined ? address.shouldSaveAddress : true;
 
     // Manually backfill stateOrProvince to avoid Formik warning (uncontrolled to controlled input)
     if (values.stateOrProvince === undefined) {
@@ -52,7 +59,11 @@ export default function mapAddressToFormValues(fields: FormField[], address?: Ad
     return values;
 }
 
-function getValue(fieldType?: string, fieldValue?: string | string[] | number, defaultValue?: string): string | string[] | number | Date | undefined {
+function getValue(
+    fieldType?: string,
+    fieldValue?: string | string[] | number,
+    defaultValue?: string,
+): string | string[] | number | Date | undefined {
     if (fieldValue === undefined || fieldValue === null) {
         return getDefaultValue(fieldType, defaultValue);
     }
@@ -76,6 +87,8 @@ function getDefaultValue(fieldType?: string, defaultValue?: string): string | st
     return defaultValue || '';
 }
 
-function isSystemAddressFieldName(fieldName: string): fieldName is Exclude<keyof Address, 'customFields' | 'shouldSaveAddress'> {
+function isSystemAddressFieldName(
+    fieldName: string,
+): fieldName is Exclude<keyof Address, 'customFields' | 'shouldSaveAddress'> {
     return fieldName !== 'customFields' && fieldName !== 'shouldSaveAddress';
 }

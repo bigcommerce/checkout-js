@@ -5,47 +5,42 @@ import Fieldset from './Fieldset';
 
 describe('Fieldset', () => {
     it('matches snapshot', () => {
-        expect(shallow(
-            <Fieldset legend={ <legend>Hello world</legend> }>
-                <input type="text" />
-            </Fieldset>
-        ))
-            .toMatchSnapshot();
+        expect(
+            shallow(
+                <Fieldset legend={<legend>Hello world</legend>}>
+                    <input type="text" />
+                </Fieldset>,
+            ),
+        ).toMatchSnapshot();
     });
 
     it('renders component with test ID', () => {
         const component = shallow(
-            <Fieldset
-                legend={ <legend>Hello world</legend> }
-                testId="test"
-            >
+            <Fieldset legend={<legend>Hello world</legend>} testId="test">
                 Hello world
-            </Fieldset>
+            </Fieldset>,
         );
 
-        expect(component.prop('data-test'))
-            .toEqual('test');
+        expect(component.prop('data-test')).toBe('test');
     });
 
     it('renders component with legend', () => {
         const component = shallow(
-            <Fieldset legend={ <legend>Hello world</legend> }>
+            <Fieldset legend={<legend>Hello world</legend>}>
                 <input type="text" />
-            </Fieldset>
+            </Fieldset>,
         );
 
-        expect(component.find('legend').text())
-            .toEqual('Hello world');
+        expect(component.find('legend').text()).toBe('Hello world');
     });
 
     it('renders component with children', () => {
         const component = shallow(
-            <Fieldset legend={ <legend>Hello world</legend> }>
+            <Fieldset legend={<legend>Hello world</legend>}>
                 <input type="text" />
-            </Fieldset>
+            </Fieldset>,
         );
 
-        expect(component.find('.form-body').children().html())
-            .toEqual('<input type="text"/>');
+        expect(component.find('.form-body').children().html()).toBe('<input type="text"/>');
     });
 });

@@ -18,13 +18,10 @@ describe('StoreCreditField', () => {
         localeContext = createLocaleContext(getStoreConfig());
         currencyService = localeContext.currency;
 
-        StoreCreditFieldTest = props => (
-            <LocaleContext.Provider value={ localeContext }>
-                <Formik
-                    initialValues={ { useStoreCredit: true } }
-                    onSubmit={ noop }
-                >
-                    <StoreCreditField { ...props } />
+        StoreCreditFieldTest = (props) => (
+            <LocaleContext.Provider value={localeContext}>
+                <Formik initialValues={{ useStoreCredit: true }} onSubmit={noop}>
+                    <StoreCreditField {...props} />
                 </Formik>
             </LocaleContext.Provider>
         );
@@ -33,51 +30,53 @@ describe('StoreCreditField', () => {
     it('renders form field with available store credit as label', () => {
         const component = mount(
             <StoreCreditFieldTest
-                availableStoreCredit={ 200 }
-                isStoreCreditApplied={ true }
+                availableStoreCredit={200}
+                isStoreCreditApplied={true}
                 name="useStoreCredit"
-                usableStoreCredit={ 100 }
-            />
+                usableStoreCredit={100}
+            />,
         );
 
-        expect(component.find('label[htmlFor="useStoreCredit"]').text())
-            .toEqual(`Apply ${currencyService.toCustomerCurrency(100)} store credit to order`);
+        expect(component.find('label[htmlFor="useStoreCredit"]').text()).toBe(
+            `Apply ${currencyService.toCustomerCurrency(100)} store credit to order`,
+        );
     });
 
     it('renders field input as checkbox', () => {
         const component = mount(
             <StoreCreditFieldTest
-                availableStoreCredit={ 200 }
-                isStoreCreditApplied={ true }
+                availableStoreCredit={200}
+                isStoreCreditApplied={true}
                 name="useStoreCredit"
-                usableStoreCredit={ 100 }
-            />
+                usableStoreCredit={100}
+            />,
         );
 
-        expect(component.find('input').props())
-            .toEqual(expect.objectContaining({
+        expect(component.find('input').props()).toEqual(
+            expect.objectContaining({
                 name: 'useStoreCredit',
                 checked: true,
                 type: 'checkbox',
-            }));
+            }),
+        );
     });
 
     it('notifies parent when value changes', () => {
         const handleChange = jest.fn();
         const component = mount(
             <StoreCreditFieldTest
-                availableStoreCredit={ 200 }
-                isStoreCreditApplied={ true }
+                availableStoreCredit={200}
+                isStoreCreditApplied={true}
                 name="useStoreCredit"
-                onChange={ handleChange }
-                usableStoreCredit={ 100 }
-            />
+                onChange={handleChange}
+                usableStoreCredit={100}
+            />,
         );
 
-        component.find('input[name="useStoreCredit"]')
+        component
+            .find('input[name="useStoreCredit"]')
             .simulate('change', { target: { checked: false, name: 'useStoreCredit' } });
 
-        expect(handleChange)
-            .toHaveBeenCalled();
+        expect(handleChange).toHaveBeenCalled();
     });
 });

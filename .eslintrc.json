@@ -1,16 +1,37 @@
 {
-  "extends": [
-    "@bigcommerce/eslint-config"
-  ],
+  "extends": ["@bigcommerce/eslint-config"],
+  "parser": "@typescript-eslint/parser",
   "root": true,
   "plugins": ["@nrwl/nx"],
   "env": {
     "browser": true
   },
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "project": "./tsconfig.*?.json"
+      }
+    }
+  },
+  "parserOptions": {
+    "project": "./tsconfig.*?.json"
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
+        "prettier/prettier": [
+          "error",
+          {
+            "tabWidth": 4
+          }
+        ],
+        "no-restricted-syntax": [
+          "off",
+          {
+            "selector": "ForOfStatement"
+          }
+        ],
         "@nrwl/nx/enforce-module-boundaries": [
           "error",
           {

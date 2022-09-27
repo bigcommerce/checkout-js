@@ -11,23 +11,14 @@ describe('StaticConsignment Component', () => {
     const cart = getCart();
 
     it('renders static consignment with shipping method', () => {
-        const tree = render(
-            <StaticConsignment
-                cart={ cart }
-                consignment={ consignment }
-            />
-        );
+        const tree = render(<StaticConsignment cart={cart} consignment={consignment} />);
 
         expect(tree).toMatchSnapshot();
     });
 
     it('renders compact view of static consignment', () => {
         const tree = render(
-            <StaticConsignment
-                cart={ cart }
-                compactView
-                consignment={ consignment }
-            />
+            <StaticConsignment cart={cart} compactView consignment={consignment} />,
         );
 
         expect(tree).toMatchSnapshot();

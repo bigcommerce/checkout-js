@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { memo, FunctionComponent, ReactNode } from 'react';
+import React, { FunctionComponent, memo, ReactNode } from 'react';
 
 import { FormContext } from './FormProvider';
 
@@ -19,18 +19,19 @@ const FormFieldContainer: FunctionComponent<FormFieldContainerProps> = ({
     testId,
 }) => (
     <FormContext.Consumer>
-        { ({ isSubmitted }) => (
+        {({ isSubmitted }) => (
             <div
-                className={ className ? className : classNames(
-                    'form-field',
-                    additionalClassName,
-                    { 'form-field--error': hasError && isSubmitted }
-                ) }
-                data-test={ testId }
+                className={
+                    className ||
+                    classNames('form-field', additionalClassName, {
+                        'form-field--error': hasError && isSubmitted,
+                    })
+                }
+                data-test={testId}
             >
-                { children }
+                {children}
             </div>
-        ) }
+        )}
     </FormContext.Consumer>
 );
 

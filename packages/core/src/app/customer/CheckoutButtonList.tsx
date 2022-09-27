@@ -1,11 +1,11 @@
 import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
-import React, { memo, Fragment, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { isApplePayWindow } from '../common/utility';
 import { TranslatedString } from '../locale';
 
-import { ApplePayButton, AmazonPayV2Button } from './customWalletButton';
 import CheckoutButton from './CheckoutButton';
+import { AmazonPayV2Button, ApplePayButton } from './customWalletButton';
 
 const APPLE_PAY = 'applepay';
 
@@ -44,7 +44,7 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
     methodIds,
     ...rest
 }) => {
-    const supportedMethodIds = (methodIds ?? []).filter(methodId => {
+    const supportedMethodIds = (methodIds ?? []).filter((methodId) => {
         if (methodId === APPLE_PAY && !isApplePayWindow(window)) {
             return false;
         }
@@ -71,41 +71,51 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
     }
 
     return (
-        <Fragment>
-            { !isInitializing && <p><TranslatedString id="remote.continue_with_text" /></p> }
+        <>
+            {!isInitializing && (
+                <p>
+                    <TranslatedString id="remote.continue_with_text" />
+                </p>
+            )}
 
             <div className="checkoutRemote">
-                { supportedMethodIds.map(methodId => {
+                {supportedMethodIds.map((methodId) => {
                     if (methodId === 'applepay') {
-                        return <ApplePayButton
-                            containerId={ `${methodId}CheckoutButton` }
-                            key={ methodId }
-                            methodId={ methodId }
-                            onError={ onError }
-                            { ...rest }
-                        />;
+                        return (
+                            <ApplePayButton
+                                containerId={`${methodId}CheckoutButton`}
+                                key={methodId}
+                                methodId={methodId}
+                                onError={onError}
+                                {...rest}
+                            />
+                        );
                     }
 
                     if (methodId === 'amazonpay') {
-                        return <AmazonPayV2Button
-                            containerId={ `${methodId}CheckoutButton` }
-                            key={ methodId }
-                            methodId={ methodId }
-                            onError={ onError }
-                            { ...rest }
-                        />;
+                        return (
+                            <AmazonPayV2Button
+                                containerId={`${methodId}CheckoutButton`}
+                                key={methodId}
+                                methodId={methodId}
+                                onError={onError}
+                                {...rest}
+                            />
+                        );
                     }
 
-                    return <CheckoutButton
-                        containerId={ `${methodId}CheckoutButton` }
-                        key={ methodId }
-                        methodId={ methodId }
-                        onError={ onError }
-                        { ...rest }
-                    />
-                }) }
+                    return (
+                        <CheckoutButton
+                            containerId={`${methodId}CheckoutButton`}
+                            key={methodId}
+                            methodId={methodId}
+                            onError={onError}
+                            {...rest}
+                        />
+                    );
+                })}
             </div>
-        </Fragment>
+        </>
     );
 };
 

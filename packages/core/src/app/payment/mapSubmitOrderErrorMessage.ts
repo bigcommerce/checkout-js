@@ -4,7 +4,7 @@ import { includes } from 'lodash';
 export default function mapSubmitOrderErrorMessage(
     error: any,
     translate: (key: string, data?: TranslationData) => string,
-    shouldLocalise: boolean
+    shouldLocalise: boolean,
 ): string {
     switch (error.type) {
         case 'not_initialized':
@@ -26,19 +26,26 @@ export default function mapSubmitOrderErrorMessage(
             return translate('shipping.cart_change_error');
 
         default:
-            if (includes([
-                'order_could_not_be_finalized_error',
-                'provider_fatal_error',
-                'payment_invalid',
-                'provider_error',
-                'provider_widget_error',
-                'user_payment_error',
-            ], error.body && error.body.type)) {
+            if (
+                includes(
+                    [
+                        'order_could_not_be_finalized_error',
+                        'provider_fatal_error',
+                        'payment_invalid',
+                        'provider_error',
+                        'provider_widget_error',
+                        'user_payment_error',
+                    ],
+                    error.body && error.body.type,
+                )
+            ) {
                 return translate('payment.payment_method_error', { message: error.message });
             }
 
             if (shouldLocalise && error.body && error.body.errors && error.body.errors.length) {
-                const messages = error.body.errors.map((err: { code: any }) => translate(`payment.errors.${err.code}`));
+                const messages = error.body.errors.map((err: { code: any }) =>
+                    translate(`payment.errors.${err.code}`),
+                );
 
                 return messages.join(' ');
             }
@@ -47,15 +54,15 @@ export default function mapSubmitOrderErrorMessage(
                 return error.message;
             }
 
-            return error.type === 'unrecoverable' ?
-                translate('common.unavailable_error') :
-                translate('payment.place_order_error');
+            return error.type === 'unrecoverable'
+                ? translate('common.unavailable_error')
+                : translate('payment.place_order_error');
     }
 }
 
 export function mapSubmitOrderErrorTitle(
     error: any,
-    translate: (key: string, data?: TranslationData) => string
+    translate: (key: string, data?: TranslationData) => string,
 ): string {
     if (error.type === 'unrecoverable') {
         return translate('common.unavailable_heading');

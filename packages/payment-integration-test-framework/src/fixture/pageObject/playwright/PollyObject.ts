@@ -5,10 +5,10 @@ import FSPersister from '@pollyjs/persister-fs';
 import { includes, isObject } from 'lodash';
 import { PlaywrightAdapter } from 'polly-adapter-playwright';
 
-import { getStoreUrl } from "../../";
+import { getStoreUrl } from '../../';
 
-import { ignoredHeaders, ignoredPayloads } from './senstiveDataConfig';
 import { CustomFSPersister } from './CustomFSPersister';
+import { ignoredHeaders, ignoredPayloads } from './senstiveDataConfig';
 
 interface PollyOptions {
     har: string;
@@ -26,11 +26,11 @@ export class PollyObject {
     private readonly mode: MODE;
     private readonly baseUrl: string;
     private readonly bigpayBaseUrlIdentifier: string = '/api/public/v1/orders/payments';
-    private readonly genericStoreUrl:string = 'https://4241.project';
+    private readonly genericStoreUrl: string = 'https://4241.project';
 
     constructor(mode: MODE) {
         this.mode = mode;
-        this.baseUrl = 'http://localhost:' + process.env.PORT;
+        this.baseUrl = `http://localhost:${process.env.PORT || ''}`;
     }
 
     start(option: PollyOptions): void {
@@ -56,6 +56,7 @@ export class PollyObject {
             persisterOptions: {
                 keepUnusedRequests: false,
                 disableSortingHarEntries: true,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
                 CustomFSPersister: {
                     recordingsDir: harFolder,
                 },
@@ -69,11 +70,11 @@ export class PollyObject {
             },
         });
 
-        this.polly.server.any().on('request', req => {
+        this.polly.server.any().on('request', (req) => {
             // To ensure that requests match HAR entries, ignore sensitive and constantly changing headers/payloads
             req.headers = Object.fromEntries(
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                Object.entries(req.headers).filter(([key, _]) => !includes(ignoredHeaders, key))
+                Object.entries(req.headers).filter(([key, _]) => !includes(ignoredHeaders, key)),
             );
 
             if (req.body && req.body.length > 0) {
@@ -90,14 +91,14 @@ export class PollyObject {
         this.polly?.play();
     }
 
-    stop(): void {
-        this.polly?.stop();
+    stop(): Promise<void> | undefined {
+        return this.polly?.stop();
     }
 
-    enableRecord(): void{
+    enableRecord(): void {
         const storeUrl = getStoreUrl();
 
-        this.polly?.server.any().on('request', req => {
+        this.polly?.server.any().on('request', (req) => {
             req.url = req.url.replace(storeUrl, this.genericStoreUrl);
         });
     }
@@ -105,16 +106,20 @@ export class PollyObject {
     enableReplay(): void {
         if (this.polly) {
             // bigpayBaseUrl must be the exact URL of the local environment in order for Bigpay iframes to work.
-            this.polly.server.get(this.baseUrl + '/api/storefront/checkout-settings').on('beforeResponse', (_, res) => {
-                const response = res.jsonBody();
-                response.storeConfig.paymentSettings.bigpayBaseUrl = this.baseUrl;
-                res.send(response);
-            });
+            this.polly.server
+                .get(`${this.baseUrl}/api/storefront/checkout-settings`)
+                .on('beforeResponse', (_, res) => {
+                    const response = res.jsonBody();
+
+                    response.storeConfig.paymentSettings.bigpayBaseUrl = this.baseUrl;
+                    res.send(response);
+                });
 
             // To ensure that requests match HAR entries, convert local URLs to production URLs.
             // HAR may not contain any bigpay request.
             const bigpayBaseUrl = this.getBigpayBaseUrl();
-            this.polly.server.any().on('request', req => {
+
+            this.polly.server.any().on('request', (req) => {
                 if (bigpayBaseUrl && includes(req.url, this.bigpayBaseUrlIdentifier)) {
                     req.url = req.url.replace(this.baseUrl, bigpayBaseUrl);
                 } else {
@@ -124,46 +129,65 @@ export class PollyObject {
         }
     }
 
-    getCartAndOrderIDs(): { checkoutId: string; orderId?: number} {
-        let checkoutIdString: string;
+    getCartAndOrderIDs(): { checkoutId: string; orderId?: number } {
+        let checkoutIdString = '';
         const entries = this.getEntries();
 
         for (const entry of entries) {
-            if (includes(entry.request.url, '/api/storefront/checkout-settings') && entry.response.content.text) {
-                const { context: { checkoutId } } = JSON.parse(entry.response.content.text);
+            if (
+                includes(entry.request.url, '/api/storefront/checkout-settings') &&
+                entry.response.content.text
+            ) {
+                const {
+                    context: { checkoutId },
+                } = JSON.parse(entry.response.content.text);
+
                 checkoutIdString = checkoutId;
             }
-            if (includes(entry.request.url, 'api/storefront/orders') && entry.response.content.text) {
-                const {orderId, cartId} = JSON.parse(entry.response.content.text);
+
+            if (
+                includes(entry.request.url, 'api/storefront/orders') &&
+                entry.response.content.text
+            ) {
+                const { orderId, cartId } = JSON.parse(entry.response.content.text);
+
                 if (orderId && cartId) {
-                    return {checkoutId: cartId, orderId};
+                    return { checkoutId: cartId, orderId };
                 }
             }
         }
 
-        if (checkoutIdString) {
+        if (checkoutIdString && checkoutIdString.length > 0) {
             return { checkoutId: checkoutIdString };
         }
 
         // Critical error
-        throw new Error('Unable to find checkoutId from the \'/api/storefront/checkout-settings\' recording.');
+        throw new Error(
+            "Unable to find checkoutId from the '/api/storefront/checkout-settings' recording.",
+        );
     }
 
     private getBigpayBaseUrl(): string | void {
         const entries = this.getEntries();
+
         for (const entry of entries) {
             if (includes(entry.request.url, this.bigpayBaseUrlIdentifier)) {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
                 return entry.request.url.replace(this.bigpayBaseUrlIdentifier, '');
             }
         }
     }
 
     private getEntries(): any {
-        const { recordingsDir } = this.polly?.persister?.options as {recordingsDir: string};
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        const { recordingsDir } = this.polly?.persister?.options as { recordingsDir: string };
+
         if (this.polly && recordingsDir) {
-            const api = new API({recordingsDir});
+            const api = new API({ recordingsDir });
             // PollyJS type bug: The type definition does not match with the actual implementation.
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
             const entries = api.getRecording(this.polly.recordingId).body?.log?.entries;
+
             if (entries) {
                 return entries;
             }
@@ -174,7 +198,7 @@ export class PollyObject {
         }
     }
 
-    private sortPayload(object: { [ key: string ]: any }): { [ key: string ]: any } {
+    private sortPayload(object: { [key: string]: any }): { [key: string]: any } {
         const keys = Object.keys(object);
         const sortedKeys = keys.sort();
 
@@ -183,7 +207,10 @@ export class PollyObject {
                 return this.sortPayload(object[current]);
             }
 
-            return {...previous, [current]: (includes(ignoredPayloads, current)) ? '*' : object[current]};
+            return {
+                ...previous,
+                [current]: includes(ignoredPayloads, current) ? '*' : object[current],
+            };
         }, {});
     }
 }

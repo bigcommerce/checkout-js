@@ -21,19 +21,18 @@ describe('ItemAddressSelect Component', () => {
     };
 
     it('renders product options', () => {
-        const component = shallow(<ItemAddressSelect { ...defaultProps } />);
+        const component = shallow(<ItemAddressSelect {...defaultProps} />);
 
-        expect(component.find('[data-test="consigment-item-product-options"]').length)
-            .toEqual(1);
+        expect(component.find('[data-test="consigment-item-product-options"]')).toHaveLength(1);
     });
 
     it('renders address select with expected props', () => {
-        const component = shallow(<ItemAddressSelect { ...defaultProps } />);
+        const component = shallow(<ItemAddressSelect {...defaultProps} />);
 
-        expect(component.find(AddressSelect).prop('addresses'))
-            .toEqual(getCustomer().addresses);
+        expect(component.find(AddressSelect).prop('addresses')).toEqual(getCustomer().addresses);
 
-        expect(component.find(AddressSelect).prop('selectedAddress'))
-            .toEqual(getConsignment().shippingAddress);
+        expect(component.find(AddressSelect).prop('selectedAddress')).toEqual(
+            getConsignment().shippingAddress,
+        );
     });
 });

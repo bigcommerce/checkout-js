@@ -19,11 +19,9 @@ const LazyContainer: FunctionComponent<LazyContainerProps> = ({ children }) => (
                 <TranslatedString id="common.unstable_network_error" />
             </div>
         }
-        filter={ filterError }
+        filter={filterError}
     >
-        <Suspense fallback={ <LoadingSpinner isLoading /> }>
-            { children }
-        </Suspense>
+        <Suspense fallback={<LoadingSpinner isLoading />}>{children}</Suspense>
     </ErrorBoundary>
 );
 

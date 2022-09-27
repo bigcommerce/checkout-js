@@ -6,11 +6,10 @@ export default function getItemsCount({
     giftCertificates,
     customItems,
 }: LineItemMap): number {
-    const totalItemsCount = [
-        ...physicalItems,
-        ...digitalItems,
-        ...(customItems || []),
-    ].reduce((total, item) => total += item.quantity, 0);
+    const totalItemsCount = [...physicalItems, ...digitalItems, ...(customItems || [])].reduce(
+        (total, item) => (total += item.quantity),
+        0,
+    );
 
     return totalItemsCount + giftCertificates.length;
 }

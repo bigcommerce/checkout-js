@@ -9,7 +9,7 @@ const isInstrumentCardCodeRequiredSelector = createSelector(
 
         return cart && cart.lineItems;
     },
-    lineItems => (instrument: Instrument, method: PaymentMethod) => {
+    (lineItems) => (instrument: Instrument, method: PaymentMethod) => {
         if (!lineItems) {
             return false;
         }
@@ -19,7 +19,7 @@ const isInstrumentCardCodeRequiredSelector = createSelector(
             lineItems,
             paymentMethod: method,
         });
-    }
+    },
 );
 
 export default isInstrumentCardCodeRequiredSelector;

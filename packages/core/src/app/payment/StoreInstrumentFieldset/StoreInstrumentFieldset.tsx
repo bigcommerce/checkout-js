@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
-import { withCheckout, CheckoutContextProps } from '../../checkout';
+import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { Fieldset } from '../../ui/form';
 
@@ -22,29 +22,22 @@ type WithFormValues = ConnectFormikProps<{ shouldSaveInstrument: boolean }>;
 
 const StoreInstrumentFieldset: FunctionComponent<
     StoreInstrumentFieldsetProps & WithStorageSettings
-> = ({
-    showSave,
-    showSetAsDefault,
-    isAccountInstrument = false,
-    setAsDefaultEnabled,
-}) => (
+> = ({ showSave, showSetAsDefault, isAccountInstrument = false, setAsDefaultEnabled }) => (
     <Fieldset>
-        { showSave && (
-            <InstrumentStorageField isAccountInstrument={ isAccountInstrument } />
-        ) }
+        {showSave && <InstrumentStorageField isAccountInstrument={isAccountInstrument} />}
 
-        { showSetAsDefault && (
+        {showSetAsDefault && (
             <InstrumentStoreAsDefaultField
-                disabled={ !setAsDefaultEnabled }
-                isAccountInstrument={ isAccountInstrument }
+                disabled={!setAsDefaultEnabled}
+                isAccountInstrument={isAccountInstrument}
             />
-        ) }
+        )}
     </Fieldset>
 );
 
 const mapToProps = (
     context: CheckoutContextProps,
-    props: StoreInstrumentFieldsetProps & WithFormValues
+    props: StoreInstrumentFieldsetProps & WithFormValues,
 ): WithStorageSettings | null => {
     const {
         checkoutState: {
@@ -64,14 +57,14 @@ const mapToProps = (
     const addingNewInstrument = !instrumentId;
     const hasAnyOtherInstruments = !!allInstruments && allInstruments.length > 0;
     const instrument =
-        allInstruments &&
-        allInstruments.find(({ bigpayToken }) => bigpayToken === instrumentId);
+        allInstruments && allInstruments.find(({ bigpayToken }) => bigpayToken === instrumentId);
 
     return {
         ...props,
         showSave: addingNewInstrument,
         showSetAsDefault:
-            (addingNewInstrument && hasAnyOtherInstruments) || Boolean(instrument && !instrument.defaultInstrument),
+            (addingNewInstrument && hasAnyOtherInstruments) ||
+            Boolean(instrument && !instrument.defaultInstrument),
         setAsDefaultEnabled: !addingNewInstrument || saveIsChecked,
     };
 };

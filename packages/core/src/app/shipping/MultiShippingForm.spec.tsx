@@ -25,9 +25,7 @@ describe('MultiShippingForm Component', () => {
             cart: {
                 ...getCart(),
                 lineItems: {
-                    physicalItems: [
-                        {  ...getPhysicalItem(), quantity: 3 },
-                    ],
+                    physicalItems: [{ ...getPhysicalItem(), quantity: 3 }],
                     giftCertificates: [],
                     digitalItems: [],
                 },
@@ -58,58 +56,47 @@ describe('MultiShippingForm Component', () => {
     describe('when user is guest', () => {
         beforeEach(() => {
             component = mount(
-                <LocaleContext.Provider value={ localeContext }>
-                    <MultiShippingForm
-                        { ...defaultProps }
-                        isGuest={ true }
-                    />
-                </LocaleContext.Provider>
+                <LocaleContext.Provider value={localeContext}>
+                    <MultiShippingForm {...defaultProps} isGuest={true} />
+                </LocaleContext.Provider>,
             );
         });
 
         it('renders sign in message', () => {
             component.find('[data-test="shipping-sign-in-link"]').simulate('click');
 
-            expect(defaultProps.onSignIn)
-                .toHaveBeenCalled();
+            expect(defaultProps.onSignIn).toHaveBeenCalled();
         });
     });
 
     describe('when user is signed in', () => {
         beforeEach(() => {
             component = mount(
-                <LocaleContext.Provider value={ localeContext }>
-                    <MultiShippingForm
-                        { ...defaultProps }
-                    />
-                </LocaleContext.Provider>
+                <LocaleContext.Provider value={localeContext}>
+                    <MultiShippingForm {...defaultProps} />
+                </LocaleContext.Provider>,
             );
         });
 
         it('renders shippable items list', () => {
-            expect(component.find('.consignmentList > li').length)
-                .toEqual(3);
+            expect(component.find('.consignmentList > li')).toHaveLength(3);
 
             expect(component.find(ItemAddressSelect).at(0).props()).toEqual(
                 expect.objectContaining({
                     addresses: defaultProps.addresses,
-                })
+                }),
             );
         });
 
         it('renders address form modal when shoppers choose new address', async () => {
-            component.find(ItemAddressSelect)
-                .first()
-                .find('#addressToggle')
-                .simulate('click');
+            component.find(ItemAddressSelect).first().find('#addressToggle').simulate('click');
 
-            await new Promise(resolve => process.nextTick(resolve));
+            await new Promise((resolve) => process.nextTick(resolve));
             component.update();
 
-            component.find('[data-test="add-new-address"]')
-                .simulate('click');
+            component.find('[data-test="add-new-address"]').simulate('click');
 
-            await new Promise(resolve => process.nextTick(resolve));
+            await new Promise((resolve) => process.nextTick(resolve));
             component.update();
 
             expect(component.find(AddressFormModal).prop('isOpen')).toBeTruthy();

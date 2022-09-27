@@ -1,5 +1,6 @@
-import { CardInstrumentFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
 import { createLanguageService, LanguageService } from '@bigcommerce/checkout-sdk';
+
+import { CardInstrumentFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
 
 import getInstrumentValidationSchema from './getInstrumentValidationSchema';
 
@@ -10,8 +11,7 @@ describe('getInstrumentValidationSchema()', () => {
     beforeEach(() => {
         language = createLanguageService();
 
-        jest.spyOn(language, 'translate')
-            .mockImplementation(key => key);
+        jest.spyOn(language, 'translate').mockImplementation((key) => key);
 
         validData = {
             ccCvv: '123',
@@ -30,8 +30,7 @@ describe('getInstrumentValidationSchema()', () => {
         };
         const schema = getInstrumentValidationSchema(state);
 
-        expect(schema.validateSync(validData))
-            .toEqual(validData);
+        expect(schema.validateSync(validData)).toEqual(validData);
     });
 
     it('throws error if card number is required but missing', () => {
@@ -44,8 +43,9 @@ describe('getInstrumentValidationSchema()', () => {
         };
         const schema = getInstrumentValidationSchema(state);
 
-        expect(() => schema.validateSync({ ...validData, ccNumber: '' }))
-            .toThrowError('payment.credit_card_number_required_error');
+        expect(() => schema.validateSync({ ...validData, ccNumber: '' })).toThrow(
+            'payment.credit_card_number_required_error',
+        );
     });
 
     it('throws error if card number does not match with last 4 digit of instrument', () => {
@@ -58,8 +58,9 @@ describe('getInstrumentValidationSchema()', () => {
         };
         const schema = getInstrumentValidationSchema(state);
 
-        expect(() => schema.validateSync(validData))
-            .toThrowError('payment.credit_card_number_mismatch_error');
+        expect(() => schema.validateSync(validData)).toThrow(
+            'payment.credit_card_number_mismatch_error',
+        );
     });
 
     it('throws error if card code is required but missing', () => {
@@ -72,8 +73,9 @@ describe('getInstrumentValidationSchema()', () => {
         };
         const schema = getInstrumentValidationSchema(state);
 
-        expect(() => schema.validateSync({ ...validData, ccCvv: '' }))
-            .toThrowError('payment.credit_card_cvv_required_error');
+        expect(() => schema.validateSync({ ...validData, ccCvv: '' })).toThrow(
+            'payment.credit_card_cvv_required_error',
+        );
     });
 
     it('throws error if card code does not match with requirement of card type', () => {
@@ -86,10 +88,12 @@ describe('getInstrumentValidationSchema()', () => {
         };
         const schema = getInstrumentValidationSchema(state);
 
-        expect(() => schema.validateSync({ ...validData, ccCvv: '123' }))
-            .toThrowError('payment.credit_card_cvv_invalid_error');
+        expect(() => schema.validateSync({ ...validData, ccCvv: '123' })).toThrow(
+            'payment.credit_card_cvv_invalid_error',
+        );
 
-        expect(() => schema.validateSync({ ...validData, ccCvv: '1234' }))
-            .not.toThrowError('payment.credit_card_cvv_invalid_error');
+        expect(() => schema.validateSync({ ...validData, ccCvv: '1234' })).not.toThrow(
+            'payment.credit_card_cvv_invalid_error',
+        );
     });
 });

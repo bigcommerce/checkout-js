@@ -1,5 +1,5 @@
 import { GiftCertificate } from '@bigcommerce/checkout-sdk';
-import React, { memo, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { ShopperCurrency } from '../currency';
 import { TranslatedString } from '../locale';
@@ -8,35 +8,28 @@ export interface AppliedGiftCertificateProps {
     giftCertificate: GiftCertificate;
 }
 
-const AppliedGiftCertificate: FunctionComponent<AppliedGiftCertificateProps> = ({ giftCertificate }) => (
-    <div
-        className="redeemable-column redeemable-info"
-        data-test="redeemable-item--giftCertificate"
-    >
+const AppliedGiftCertificate: FunctionComponent<AppliedGiftCertificateProps> = ({
+    giftCertificate,
+}) => (
+    <div className="redeemable-column redeemable-info" data-test="redeemable-item--giftCertificate">
         <span className="redeemable-info-header">
             <span className="redeemable-info-header--highlight" data-test="giftCertificate-amount">
-                <ShopperCurrency amount={ giftCertificate.used } />
-            </span>
-
-            { ' ' }
-
+                <ShopperCurrency amount={giftCertificate.used} />
+            </span>{' '}
             <TranslatedString id="redeemable.gift_certificate_text" />
         </span>
 
         <span className="redeemable-info-subHeader">
-            { giftCertificate.remaining > 0 && <span className="redeemable-info-subHeader--remaining">
-                <TranslatedString id="redeemable.gift_certificate_remaining_text" />
-
-                { ' ' }
-
-                <span data-test="giftCertificate-remaining">
-                    <ShopperCurrency amount={ giftCertificate.remaining } />
+            {giftCertificate.remaining > 0 && (
+                <span className="redeemable-info-subHeader--remaining">
+                    <TranslatedString id="redeemable.gift_certificate_remaining_text" />{' '}
+                    <span data-test="giftCertificate-remaining">
+                        <ShopperCurrency amount={giftCertificate.remaining} />
+                    </span>
                 </span>
-            </span> }
+            )}
 
-            <span data-test="giftCertificate-code">
-                { giftCertificate.code }
-            </span>
+            <span data-test="giftCertificate-code">{giftCertificate.code}</span>
         </span>
     </div>
 );

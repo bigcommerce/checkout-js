@@ -1,6 +1,10 @@
-import { CheckoutButtonProps, CheckoutButtonResolveId, toResolvableComponent } from '@bigcommerce/checkout/payment-integration-api';
-
 import React, { FunctionComponent, useEffect } from 'react';
+
+import {
+    CheckoutButtonProps,
+    CheckoutButtonResolveId,
+    toResolvableComponent,
+} from '@bigcommerce/checkout/payment-integration-api';
 
 const CheckoutButton: FunctionComponent<CheckoutButtonProps> = ({
     checkoutService: { deinitializeCustomer, initializeCustomer },
@@ -15,27 +19,16 @@ const CheckoutButton: FunctionComponent<CheckoutButtonProps> = ({
                 container: containerId,
                 onUnhandledError,
             },
-        })
-            .catch(onUnhandledError);
+        }).catch(onUnhandledError);
 
         return () => {
-            deinitializeCustomer({ methodId })
-                .catch(onUnhandledError);
-        }
-    }, [
-        containerId, 
-        deinitializeCustomer,
-        initializeCustomer, 
-        methodId,
-        onUnhandledError,
-    ]);
+            deinitializeCustomer({ methodId }).catch(onUnhandledError);
+        };
+    }, [containerId, deinitializeCustomer, initializeCustomer, methodId, onUnhandledError]);
 
-    return (
-        <div id={ containerId } />
-    );
-}
+    return <div id={containerId} />;
+};
 
-export default toResolvableComponent<CheckoutButtonProps, CheckoutButtonResolveId>(
-    CheckoutButton,
-    [{ default: true }]
-);
+export default toResolvableComponent<CheckoutButtonProps, CheckoutButtonResolveId>(CheckoutButton, [
+    { default: true },
+]);

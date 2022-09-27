@@ -21,15 +21,10 @@ describe('hasUnassignedLineItems()', () => {
     it('returns true if there are more physical items in cart than items allocated to consignments', () => {
         lineItems = {
             ...lineItems,
-            physicalItems: [
-                getPhysicalItem(),
-                getPhysicalItem(),
-                getPhysicalItem(),
-            ],
+            physicalItems: [getPhysicalItem(), getPhysicalItem(), getPhysicalItem()],
         };
 
-        expect(hasUnassignedLineItems(consignments, lineItems))
-            .toEqual(true);
+        expect(hasUnassignedLineItems(consignments, lineItems)).toBe(true);
     });
 
     it('returns false if all physical items in cart are allocated to consignments', () => {
@@ -42,13 +37,10 @@ describe('hasUnassignedLineItems()', () => {
 
         lineItems = {
             ...lineItems,
-            physicalItems: [
-                getPhysicalItem(),
-            ],
+            physicalItems: [getPhysicalItem()],
         };
 
-        expect(hasUnassignedLineItems(consignments, lineItems))
-            .toEqual(false);
+        expect(hasUnassignedLineItems(consignments, lineItems)).toBe(false);
     });
 
     it('returns false if all physical items in cart except items added by promotion are allocated to consignments', () => {
@@ -61,13 +53,9 @@ describe('hasUnassignedLineItems()', () => {
 
         lineItems = {
             ...lineItems,
-            physicalItems: [
-                getPhysicalItem(),
-                { ...getPhysicalItem(), addedByPromotion: true },
-            ],
+            physicalItems: [getPhysicalItem(), { ...getPhysicalItem(), addedByPromotion: true }],
         };
 
-        expect(hasUnassignedLineItems(consignments, lineItems))
-            .toEqual(false);
+        expect(hasUnassignedLineItems(consignments, lineItems)).toBe(false);
     });
 });

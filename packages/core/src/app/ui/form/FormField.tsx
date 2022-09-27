@@ -1,6 +1,6 @@
 import { FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
-import React, { memo, useCallback, Fragment, FunctionComponent, ReactNode } from 'react';
+import React, { FunctionComponent, memo, ReactNode, useCallback } from 'react';
 
 import BasicFormField from './BasicFormField';
 import FormFieldError from './FormFieldError';
@@ -27,38 +27,38 @@ const FormField: FunctionComponent<FormFieldProps> = ({
     name,
     id,
 }) => {
-    const renderField = useCallback(props => (
-        <Fragment>
-            { label && (typeof label === 'function' ? label(name) : label) }
-            { labelContent && !label && <Label htmlFor={ name } id={ `${id ?? name}-label` }>
-                { labelContent }
-            </Label> }
+    const renderField = useCallback(
+        (props) => (
+            <>
+                {label && (typeof label === 'function' ? label(name) : label)}
+                {labelContent && !label && (
+                    <Label htmlFor={name} id={`${id ?? name}-label`}>
+                        {labelContent}
+                    </Label>
+                )}
 
-            { input(props) }
+                {input(props)}
 
-            <FormFieldError
-                errorId={ `${id ?? name}-field-error-message` }
-                name={ name }
-                testId={ `${kebabCase(name)}-field-error-message` }
-            />
+                <FormFieldError
+                    errorId={`${id ?? name}-field-error-message`}
+                    name={name}
+                    testId={`${kebabCase(name)}-field-error-message`}
+                />
 
-            { footer }
-        </Fragment>
-    ), [
-        label,
-        labelContent,
-        id,
-        input,
-        name,
-        footer,
-    ]);
+                {footer}
+            </>
+        ),
+        [label, labelContent, id, input, name, footer],
+    );
 
-    return <BasicFormField
-        additionalClassName={ additionalClassName }
-        name={ name }
-        onChange={ onChange }
-        render={ renderField }
-    />;
+    return (
+        <BasicFormField
+            additionalClassName={additionalClassName}
+            name={name}
+            onChange={onChange}
+            render={renderField}
+        />
+    );
 };
 
 export default memo(FormField);

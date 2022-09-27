@@ -1,17 +1,24 @@
-import { Address, CheckoutRequestBody, CheckoutSelectors, Country, Customer, FormField } from '@bigcommerce/checkout-sdk';
+import {
+    Address,
+    CheckoutRequestBody,
+    CheckoutSelectors,
+    Country,
+    Customer,
+    FormField,
+} from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
-import { withCheckout, CheckoutContextProps } from '../checkout';
+import { CheckoutContextProps, withCheckout } from '../checkout';
 import { EMPTY_ARRAY } from '../common/utility';
 import { TranslatedString } from '../locale';
 import { getShippableItemsCount } from '../shipping';
 import { Legend } from '../ui/form';
 import { LoadingOverlay } from '../ui/loading';
 
-import getBillingMethodId from './getBillingMethodId';
 import BillingForm, { BillingFormValues } from './BillingForm';
+import getBillingMethodId from './getBillingMethodId';
 
 export interface BillingProps {
     navigateNextStep(): void;
@@ -38,11 +45,7 @@ export interface WithCheckoutBillingProps {
 
 class Billing extends Component<BillingProps & WithCheckoutBillingProps> {
     async componentDidMount(): Promise<void> {
-        const {
-            initialize,
-            onReady = noop,
-            onUnhandledError,
-        } = this.props;
+        const { initialize, onReady = noop, onUnhandledError } = this.props;
 
         try {
             await initialize();
@@ -55,11 +58,7 @@ class Billing extends Component<BillingProps & WithCheckoutBillingProps> {
     }
 
     render(): ReactNode {
-        const {
-            updateAddress,
-            isInitializing,
-            ...props
-        } = this.props;
+        const { updateAddress, isInitializing, ...props } = this.props;
 
         return (
             <div className="checkout-form">
@@ -69,14 +68,11 @@ class Billing extends Component<BillingProps & WithCheckoutBillingProps> {
                     </Legend>
                 </div>
 
-                <LoadingOverlay
-                    isLoading={ isInitializing }
-                    unmountContentWhenLoading
-                >
+                <LoadingOverlay isLoading={isInitializing} unmountContentWhenLoading>
                     <BillingForm
-                        { ...props }
-                        onSubmit={ this.handleSubmit }
-                        updateAddress={ updateAddress }
+                        {...props}
+                        onSubmit={this.handleSubmit}
+                        updateAddress={updateAddress}
                     />
                 </LoadingOverlay>
             </div>
@@ -133,11 +129,7 @@ function mapToBillingProps({
             getBillingAddressFields,
             getBillingCountries,
         },
-        statuses: {
-            isLoadingBillingCountries,
-            isUpdatingBillingAddress,
-            isUpdatingCheckout,
-        },
+        statuses: { isLoadingBillingCountries, isUpdatingBillingAddress, isUpdatingCheckout },
     } = checkoutState;
 
     const config = getConfig();
@@ -149,11 +141,7 @@ function mapToBillingProps({
         return null;
     }
 
-    const {
-        enableOrderComments,
-        googleMapsApiKey,
-        features,
-    } = config.checkoutSettings;
+    const { enableOrderComments, googleMapsApiKey, features } = config.checkoutSettings;
 
     const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ'];
 

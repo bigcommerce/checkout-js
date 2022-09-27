@@ -21,10 +21,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     state: ErrorBoundaryState = {};
 
     componentDidCatch(error: Error): void {
-        const {
-            filter = () => true,
-            logger,
-        } = this.props;
+        const { filter = () => true, logger } = this.props;
 
         if (!filter(error)) {
             throw error;
@@ -36,16 +33,12 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     }
 
     render(): ReactNode {
-        const {
-            children,
-            fallback,
-            filter = () => true,
-        } = this.props;
+        const { children, fallback, filter = () => true } = this.props;
 
         const { error } = this.state;
 
         if (error && filter(error)) {
-            return fallback ? fallback : null;
+            return fallback || null;
         }
 
         return children;

@@ -7,13 +7,12 @@ describe('appendStylesheet', () => {
             'p { font-size: 20px; }',
         ]);
 
-        expect(style.parentElement)
-            .toEqual(document.head);
+        expect(style.parentElement).toEqual(document.head);
 
-        expect((style.sheet as CSSStyleSheet).cssRules[0].cssText)
-            .toEqual('body {background-color: rgb(20, 20, 20);}');
+        expect((style.sheet as CSSStyleSheet).cssRules[0].cssText).toBe(
+            'body {background-color: rgb(20, 20, 20);}',
+        );
 
-        expect((style.sheet as CSSStyleSheet).cssRules[1].cssText)
-            .toEqual('p {font-size: 20px;}');
+        expect((style.sheet as CSSStyleSheet).cssRules[1].cssText).toBe('p {font-size: 20px;}');
     });
 });

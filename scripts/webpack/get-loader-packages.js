@@ -1,11 +1,12 @@
 const path = require('path');
+
 const { projects } = require('../../workspace.json');
 
 const tsLoaderIncludes = [];
 const aliasMap = {};
 
 for (const [packageName, packagePath] of Object.entries(projects)) {
-    const packageSrcPath =  path.join(__dirname, '../../', `${packagePath}/src`);
+    const packageSrcPath = path.join(__dirname, '../../', `${packagePath}/src`);
 
     tsLoaderIncludes.push(packageSrcPath);
 
@@ -14,5 +15,5 @@ for (const [packageName, packagePath] of Object.entries(projects)) {
 
 module.exports = {
     aliasMap,
-    tsLoaderIncludes
+    tsLoaderIncludes,
 };

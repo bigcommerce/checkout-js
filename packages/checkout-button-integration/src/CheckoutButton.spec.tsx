@@ -1,7 +1,8 @@
-import { CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
 import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import React from 'react';
+
+import { CheckoutButtonProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import CheckoutButton from './CheckoutButton';
 
@@ -24,48 +25,49 @@ describe('CheckoutButton', () => {
     it('initializes when component is mounted', () => {
         const { checkoutService, onUnhandledError } = defaultProps;
 
-        jest.spyOn(checkoutService, 'initializeCustomer')
-            .mockResolvedValue(checkoutService.getState());
+        jest.spyOn(checkoutService, 'initializeCustomer').mockResolvedValue(
+            checkoutService.getState(),
+        );
 
-        mount(<CheckoutButton { ...defaultProps } />);
+        mount(<CheckoutButton {...defaultProps} />);
 
-        expect(checkoutService.initializeCustomer)
-            .toHaveBeenCalledWith({
-                methodId: 'foobar',
-                foobar: {
-                    container: 'button-container',
-                    onUnhandledError,
-                },
-            });
+        expect(checkoutService.initializeCustomer).toHaveBeenCalledWith({
+            methodId: 'foobar',
+            foobar: {
+                container: 'button-container',
+                onUnhandledError,
+            },
+        });
     });
 
     it('deinitializes when component is unmounted', () => {
         const { checkoutService } = defaultProps;
 
-        jest.spyOn(checkoutService, 'initializeCustomer')
-            .mockResolvedValue(checkoutService.getState());
-        jest.spyOn(checkoutService, 'deinitializeCustomer')
-            .mockResolvedValue(checkoutService.getState());
+        jest.spyOn(checkoutService, 'initializeCustomer').mockResolvedValue(
+            checkoutService.getState(),
+        );
+        jest.spyOn(checkoutService, 'deinitializeCustomer').mockResolvedValue(
+            checkoutService.getState(),
+        );
 
-        const component = mount(<CheckoutButton { ...defaultProps } />);
+        const component = mount(<CheckoutButton {...defaultProps} />);
 
         component.unmount();
 
-        expect(checkoutService.deinitializeCustomer)
-            .toHaveBeenCalledWith({
-                methodId: 'foobar',
-            });
+        expect(checkoutService.deinitializeCustomer).toHaveBeenCalledWith({
+            methodId: 'foobar',
+        });
     });
 
     it('renders empty container with provided ID', () => {
         const { checkoutService } = defaultProps;
 
-        jest.spyOn(checkoutService, 'initializeCustomer')
-            .mockResolvedValue(checkoutService.getState());
+        jest.spyOn(checkoutService, 'initializeCustomer').mockResolvedValue(
+            checkoutService.getState(),
+        );
 
-        const component = mount(<CheckoutButton { ...defaultProps } />);
+        const component = mount(<CheckoutButton {...defaultProps} />);
 
-        expect(component.html())
-            .toEqual('<div id="button-container"></div>');
+        expect(component.html()).toBe('<div id="button-container"></div>');
     });
 });

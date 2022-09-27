@@ -1,4 +1,4 @@
-import { PaymentMethod } from "@bigcommerce/checkout-sdk";
+import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 
 export function getMethod(): PaymentMethod {
     return {
@@ -6,15 +6,9 @@ export function getMethod(): PaymentMethod {
         gateway: undefined,
         logoUrl: '',
         method: 'credit-card',
-        supportedCards: [
-            'VISA',
-            'AMEX',
-            'MC',
-        ],
+        supportedCards: ['VISA', 'AMEX', 'MC'],
         initializationData: {
-            merchantCapabilities: [
-                'supports3DS',
-            ],
+            merchantCapabilities: ['supports3DS'],
         },
         config: {
             displayName: 'Authorizenet',

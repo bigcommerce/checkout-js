@@ -1,11 +1,7 @@
 import { Country } from '@bigcommerce/checkout-sdk';
 
 export function getCountries(): Country[] {
-    return [
-        getAustralia(),
-        getUnitedStates(),
-        getJapan(),
-    ];
+    return [getAustralia(), getUnitedStates(), getJapan()];
 }
 
 export function getAustralia(): Country {

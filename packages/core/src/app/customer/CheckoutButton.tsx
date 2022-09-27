@@ -11,12 +11,7 @@ export interface CheckoutButtonProps {
 
 export default class CheckoutButton extends PureComponent<CheckoutButtonProps> {
     componentDidMount() {
-        const {
-            containerId,
-            initialize,
-            methodId,
-            onError,
-        } = this.props;
+        const { containerId, initialize, methodId, onError } = this.props;
 
         initialize({
             methodId,
@@ -28,10 +23,7 @@ export default class CheckoutButton extends PureComponent<CheckoutButtonProps> {
     }
 
     componentWillUnmount() {
-        const {
-            deinitialize,
-            methodId,
-        } = this.props;
+        const { deinitialize, methodId } = this.props;
 
         deinitialize({ methodId });
     }
@@ -39,8 +31,6 @@ export default class CheckoutButton extends PureComponent<CheckoutButtonProps> {
     render() {
         const { containerId } = this.props;
 
-        return (
-            <div id={ containerId } />
-        );
+        return <div id={containerId} />;
     }
 }

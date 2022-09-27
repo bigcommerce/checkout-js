@@ -1,5 +1,5 @@
 import { FieldProps } from 'formik';
-import React, { memo, useCallback, useMemo, Fragment, FunctionComponent } from 'react';
+import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '../../locale';
 import { FormField, TextInput } from '../../ui/form';
@@ -13,41 +13,46 @@ export interface CreditCardCodeFieldProps {
 }
 
 const CreditCardCodeField: FunctionComponent<CreditCardCodeFieldProps> = ({ name }) => {
-    const renderInput = useCallback(({ field }: FieldProps) => (
-        <Fragment>
-            <TextInput
-                { ...field }
-                additionalClassName="has-icon"
-                autoComplete="cc-csc"
-                id={ field.name }
-                type="tel"
-            />
+    const renderInput = useCallback(
+        ({ field }: FieldProps) => (
+            <>
+                <TextInput
+                    {...field}
+                    additionalClassName="has-icon"
+                    autoComplete="cc-csc"
+                    id={field.name}
+                    type="tel"
+                />
 
-            <IconLock />
-        </Fragment>
-    ), []);
+                <IconLock />
+            </>
+        ),
+        [],
+    );
 
-    const labelContent = useMemo(() => (
-        <Fragment>
-            <TranslatedString id="payment.credit_card_cvv_label" />
+    const labelContent = useMemo(
+        () => (
+            <>
+                <TranslatedString id="payment.credit_card_cvv_label" />
 
-            <TooltipTrigger
-                placement="top-start"
-                tooltip={ <CreditCardCodeTooltip /> }
-            >
-                <span className="has-tip">
-                    <IconHelp />
-                </span>
-            </TooltipTrigger>
-        </Fragment>
-    ), []);
+                <TooltipTrigger placement="top-start" tooltip={<CreditCardCodeTooltip />}>
+                    <span className="has-tip">
+                        <IconHelp />
+                    </span>
+                </TooltipTrigger>
+            </>
+        ),
+        [],
+    );
 
-    return <FormField
-        additionalClassName="form-ccFields-field--ccCvv"
-        input={ renderInput }
-        labelContent={ labelContent }
-        name={ name }
-    />;
+    return (
+        <FormField
+            additionalClassName="form-ccFields-field--ccCvv"
+            input={renderInput}
+            labelContent={labelContent}
+            name={name}
+        />
+    );
 };
 
 export default memo(CreditCardCodeField);

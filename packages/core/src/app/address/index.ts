@@ -12,4 +12,4 @@ export { default as isEqualAddress } from './isEqualAddress';
 export {
     default as getAddressFormFieldsValidationSchema,
     getTranslateAddressError,
- } from './getAddressFormFieldsValidationSchema';
+} from './getAddressFormFieldsValidationSchema';

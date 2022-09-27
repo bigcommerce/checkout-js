@@ -1,17 +1,29 @@
-import { AccountInstrument, CheckoutSelectors, PaymentInitializeOptions, PaymentInstrument, PaymentMethod, PaymentRequestOptions } from '@bigcommerce/checkout-sdk';
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import {
+    AccountInstrument,
+    CheckoutSelectors,
+    PaymentInitializeOptions,
+    PaymentInstrument,
+    PaymentMethod,
+    PaymentRequestOptions,
+} from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { find, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
-import { withCheckout, CheckoutContextProps } from '../../checkout';
+import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+
+import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { MapToPropsFactory } from '../../common/hoc';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { LoadingOverlay } from '../../ui/loading';
-import { isAccountInstrument, isInstrumentFeatureAvailable, AccountInstrumentFieldset } from '../storedInstrument';
-import withPayment, { WithPaymentProps } from '../withPayment';
+import {
+    AccountInstrumentFieldset,
+    isAccountInstrument,
+    isInstrumentFeatureAvailable,
+} from '../storedInstrument';
 import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
+import withPayment, { WithPaymentProps } from '../withPayment';
 
 export interface HostedPaymentMethodProps {
     description?: ReactNode;
@@ -73,11 +85,7 @@ class HostedPaymentMethod extends Component<
     }
 
     async componentWillUnmount(): Promise<void> {
-        const {
-            deinitializePayment,
-            method,
-            onUnhandledError = noop,
-        } = this.props;
+        const { deinitializePayment, method, onUnhandledError = noop } = this.props;
 
         try {
             await deinitializePayment({
@@ -99,36 +107,36 @@ class HostedPaymentMethod extends Component<
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
         } = this.props;
 
-        const {
-            selectedInstrument = this.getDefaultInstrument(),
-        } = this.state;
+        const { selectedInstrument = this.getDefaultInstrument() } = this.state;
 
         const isLoading = isInitializing || isLoadingInstruments;
-        const shouldShowInstrumentFieldset = isInstrumentFeatureAvailableProp && (instruments.length > 0 || isNewAddress);
+        const shouldShowInstrumentFieldset =
+            isInstrumentFeatureAvailableProp && (instruments.length > 0 || isNewAddress);
 
         if (!description && !isInstrumentFeatureAvailableProp) {
             return null;
         }
 
         return (
-            <LoadingOverlay
-                hideContentWhenLoading
-                isLoading={ isLoading }
-            >
+            <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
                 <div className="paymentMethod paymentMethod--hosted">
-                    { description }
+                    {description}
 
-                    { shouldShowInstrumentFieldset && <AccountInstrumentFieldset
-                        instruments={ instruments }
-                        onSelectInstrument={ this.handleSelectInstrument }
-                        onUseNewInstrument={ this.handleUseNewInstrument }
-                        selectedInstrument={ selectedInstrument }
-                    /> }
+                    {shouldShowInstrumentFieldset && (
+                        <AccountInstrumentFieldset
+                            instruments={instruments}
+                            onSelectInstrument={this.handleSelectInstrument}
+                            onUseNewInstrument={this.handleUseNewInstrument}
+                            selectedInstrument={selectedInstrument}
+                        />
+                    )}
 
-                    { isInstrumentFeatureAvailableProp && <StoreInstrumentFieldset
-                        instrumentId={ selectedInstrument && selectedInstrument.bigpayToken }
-                        isAccountInstrument={ true }
-                    /> }
+                    {isInstrumentFeatureAvailableProp && (
+                        <StoreInstrumentFieldset
+                            instrumentId={selectedInstrument && selectedInstrument.bigpayToken}
+                            isAccountInstrument={true}
+                        />
+                    )}
                 </div>
             </LoadingOverlay>
         );
@@ -152,10 +160,8 @@ class HostedPaymentMethod extends Component<
         });
     };
 
-    private handleSelectInstrument: (id: string) => void = id => {
-        const {
-            instruments,
-        } = this.props;
+    private handleSelectInstrument: (id: string) => void = (id) => {
+        const { instruments } = this.props;
 
         this.setState({
             isAddingNewInstrument: false,
@@ -169,14 +175,15 @@ const mapFromCheckoutProps: MapToPropsFactory<
     WithCheckoutHostedPaymentMethodProps,
     HostedPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
 > = () => {
-    const filterAccountInstruments = memoizeOne((instruments: PaymentInstrument[] = []) => instruments.filter(isAccountInstrument));
-    const filterTrustedInstruments = memoizeOne((instruments: AccountInstrument[] = []) => instruments.filter(({ trustedShippingAddress }) => trustedShippingAddress));
+    const filterAccountInstruments = memoizeOne((instruments: PaymentInstrument[] = []) =>
+        instruments.filter(isAccountInstrument),
+    );
+    const filterTrustedInstruments = memoizeOne((instruments: AccountInstrument[] = []) =>
+        instruments.filter(({ trustedShippingAddress }) => trustedShippingAddress),
+    );
 
     return (context, props) => {
-        const {
-            isUsingMultiShipping = false,
-            method,
-        } = props;
+        const { isUsingMultiShipping = false, method } = props;
 
         const { checkoutService, checkoutState } = context;
 
@@ -189,9 +196,7 @@ const mapFromCheckoutProps: MapToPropsFactory<
                 isPaymentDataRequired,
                 isPaymentDataSubmitted,
             },
-            statuses: {
-                isLoadingInstruments,
-            },
+            statuses: { isLoadingInstruments },
         } = checkoutState;
 
         const cart = getCart();
@@ -208,8 +213,9 @@ const mapFromCheckoutProps: MapToPropsFactory<
         return {
             instruments: trustedInstruments,
             isNewAddress: trustedInstruments.length === 0 && currentMethodInstruments.length > 0,
-            isInstrumentFeatureAvailable: !isPaymentDataSubmitted(method.id, method.gateway)
-                && isInstrumentFeatureAvailable({
+            isInstrumentFeatureAvailable:
+                !isPaymentDataSubmitted(method.id, method.gateway) &&
+                isInstrumentFeatureAvailable({
                     config,
                     customer,
                     isUsingMultiShipping,
@@ -222,4 +228,6 @@ const mapFromCheckoutProps: MapToPropsFactory<
     };
 };
 
-export default connectFormik(withLanguage(withPayment(withCheckout(mapFromCheckoutProps)(HostedPaymentMethod))));
+export default connectFormik(
+    withLanguage(withPayment(withCheckout(mapFromCheckoutProps)(HostedPaymentMethod))),
+);

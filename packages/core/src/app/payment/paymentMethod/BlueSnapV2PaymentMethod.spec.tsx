@@ -1,4 +1,8 @@
-import { createCheckoutService, CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutSelectors,
+    CheckoutService,
+    createCheckoutService,
+} from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
@@ -48,24 +52,18 @@ describe('when using BlueSnapV2 payment', () => {
             hidePaymentSubmitButton: jest.fn(),
         };
 
-        jest.spyOn(checkoutState.data, 'getCart')
-            .mockReturnValue(getCart());
+        jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(getCart());
 
-        jest.spyOn(checkoutState.data, 'getConfig')
-            .mockReturnValue(getStoreConfig());
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
-        jest.spyOn(checkoutState.data, 'getCustomer')
-            .mockReturnValue(getCustomer());
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
 
-        BlueSnapV2PaymentMethodTest = props => (
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <PaymentContext.Provider value={ paymentContext }>
-                    <LocaleContext.Provider value={ localeContext }>
-                        <Formik
-                            initialValues={ {} }
-                            onSubmit={ noop }
-                        >
-                            <BlueSnapV2PaymentMethod { ...defaultProps } { ...props } />
+        BlueSnapV2PaymentMethodTest = (props) => (
+            <CheckoutProvider checkoutService={checkoutService}>
+                <PaymentContext.Provider value={paymentContext}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <Formik initialValues={{}} onSubmit={noop}>
+                            <BlueSnapV2PaymentMethod {...defaultProps} {...props} />
                         </Formik>
                     </LocaleContext.Provider>
                 </PaymentContext.Provider>
@@ -76,15 +74,14 @@ describe('when using BlueSnapV2 payment', () => {
     it('renders as hosted payment method', () => {
         const container = mount(<BlueSnapV2PaymentMethodTest />);
 
-        expect(container.find(HostedPaymentMethod).length)
-            .toEqual(1);
+        expect(container.find(HostedPaymentMethod)).toHaveLength(1);
     });
 
     it('initializes method with required config', () => {
         mount(<BlueSnapV2PaymentMethodTest />);
 
-        expect(defaultProps.initializePayment)
-            .toHaveBeenCalledWith(expect.objectContaining({
+        expect(defaultProps.initializePayment).toHaveBeenCalledWith(
+            expect.objectContaining({
                 methodId: 'mastercard',
                 gatewayId: 'bluesnapv2',
                 bluesnapv2: {
@@ -95,7 +92,8 @@ describe('when using BlueSnapV2 payment', () => {
                         width: expect.any(String),
                     },
                 },
-            }));
+            }),
+        );
     });
 
     it('renders modal that hosts bluesnap payment page', async () => {
@@ -103,20 +101,16 @@ describe('when using BlueSnapV2 payment', () => {
         const initializeOptions = (defaultProps.initializePayment as jest.Mock).mock.calls[0][0];
 
         act(() => {
-            initializeOptions.bluesnapv2.onLoad(
-                document.createElement('iframe'),
-                jest.fn()
-            );
+            initializeOptions.bluesnapv2.onLoad(document.createElement('iframe'), jest.fn());
         });
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
         act(() => {
             component.update();
         });
 
-        expect(component.find(Modal).prop('isOpen'))
-            .toEqual(true);
+        expect(component.find(Modal).prop('isOpen')).toBe(true);
     });
 
     it('renders modal but does not append bluesnap payment page because is empty', async () => {
@@ -124,13 +118,10 @@ describe('when using BlueSnapV2 payment', () => {
         const initializeOptions = (defaultProps.initializePayment as jest.Mock).mock.calls[0][0];
 
         act(() => {
-            initializeOptions.bluesnapv2.onLoad(
-                undefined,
-                jest.fn()
-            );
+            initializeOptions.bluesnapv2.onLoad(undefined, jest.fn());
         });
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
         act(() => {
             component.update();
@@ -138,11 +129,9 @@ describe('when using BlueSnapV2 payment', () => {
             component.find(Modal).prop('onAfterOpen')!();
         });
 
-        expect(component.find(Modal).prop('isOpen'))
-            .toEqual(false);
+        expect(component.find(Modal).prop('isOpen')).toBe(false);
 
-        expect(component.find(Modal).render().find('iframe'))
-            .toHaveLength(0);
+        expect(component.find(Modal).render().find('iframe')).toHaveLength(0);
     });
 
     it('cancels payment flow if user chooses to close modal', async () => {
@@ -153,11 +142,11 @@ describe('when using BlueSnapV2 payment', () => {
         act(() => {
             initializeOptions.bluesnapv2.onLoad(
                 document.createElement('iframe'),
-                cancelBlueSnapV2Payment
+                cancelBlueSnapV2Payment,
             );
         });
 
-        await new Promise(resolve => process.nextTick(resolve));
+        await new Promise((resolve) => process.nextTick(resolve));
 
         act(() => {
             component.update();
@@ -172,7 +161,6 @@ describe('when using BlueSnapV2 payment', () => {
             modal.prop('onRequestClose')!(new MouseEvent('click') as any);
         });
 
-        expect(cancelBlueSnapV2Payment)
-            .toHaveBeenCalledTimes(1);
+        expect(cancelBlueSnapV2Payment).toHaveBeenCalledTimes(1);
     });
 });

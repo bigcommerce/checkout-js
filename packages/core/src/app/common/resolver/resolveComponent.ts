@@ -1,18 +1,16 @@
-import { isResolvableComponent } from '@bigcommerce/checkout/payment-integration-api';
 import { ComponentType } from 'react';
 
+import { isResolvableComponent } from '@bigcommerce/checkout/payment-integration-api';
+
 interface ResolveResult<TProps> {
-    component: ComponentType<TProps>; 
-    matches: number; 
+    component: ComponentType<TProps>;
+    matches: number;
     default: boolean;
 }
 
-export default function resolveComponent<
-    TResolveId extends Record<string, unknown>, 
-    TProps
->(
+export default function resolveComponent<TResolveId extends Record<string, unknown>, TProps>(
     query: TResolveId,
-    components: Record<string, ComponentType<TProps>>
+    components: Record<string, ComponentType<TProps>>,
 ): ComponentType<TProps> | undefined {
     const results: Array<ResolveResult<TProps>> = [];
 
@@ -38,8 +36,9 @@ export default function resolveComponent<
         }
     }
 
-    const matched = results.sort((a, b) => b.matches - a.matches)
-        .filter(result => result.matches > 0)[0];
+    const matched = results
+        .sort((a, b) => b.matches - a.matches)
+        .filter((result) => result.matches > 0)[0];
 
-    return matched?.component ?? results.find(result => result.default)?.component;
+    return matched?.component ?? results.find((result) => result.default)?.component;
 }

@@ -1,4 +1,4 @@
-import { expect , test as base } from '@playwright/test';
+import { test as base, expect } from '@playwright/test';
 
 import { Assertions, Checkout } from '.';
 
@@ -8,12 +8,14 @@ interface CheckoutFixtures {
 }
 
 export const test = base.extend<CheckoutFixtures>({
-    assertions: async ({page}, use) => {
+    assertions: async ({ page }, use) => {
         const assertions = new Assertions(page);
+
         await use(assertions);
     },
-    checkout: async ({page}, use, testInfo) => {
+    checkout: async ({ page }, use, testInfo) => {
         const checkout = new Checkout(page);
+
         checkout.setHarFolderPath(testInfo.file);
         await use(checkout);
         await checkout.close();

@@ -26,25 +26,31 @@ describe('updateShippableItems()', () => {
     let consignments: Consignment[];
 
     it('returns undefined when invalid index', () => {
-        expect(updateShippableItems(
-            getShippableLineItems(cart, []),
-            { address: getAddress(), updatedItemIndex: -1 },
-            { cart: undefined, consignments: [] }
-        )).toBeFalsy();
+        expect(
+            updateShippableItems(
+                getShippableLineItems(cart, []),
+                { address: getAddress(), updatedItemIndex: -1 },
+                { cart: undefined, consignments: [] },
+            ),
+        ).toBeFalsy();
 
-        expect(updateShippableItems(
-            getShippableLineItems(cart, []),
-            { address: getAddress(), updatedItemIndex: 3 },
-            { cart: undefined, consignments: [] }
-        )).toBeFalsy();
+        expect(
+            updateShippableItems(
+                getShippableLineItems(cart, []),
+                { address: getAddress(), updatedItemIndex: 3 },
+                { cart: undefined, consignments: [] },
+            ),
+        ).toBeFalsy();
     });
 
     it('returns undefined when no cart index', () => {
-        expect(updateShippableItems(
-            getShippableLineItems(cart, []),
-            { address: getAddress(), updatedItemIndex: 0 },
-            { cart: undefined, consignments: [] }
-        )).toBeFalsy();
+        expect(
+            updateShippableItems(
+                getShippableLineItems(cart, []),
+                { address: getAddress(), updatedItemIndex: 0 },
+                { cart: undefined, consignments: [] },
+            ),
+        ).toBeFalsy();
     });
 
     it('updates all items when no consignments', () => {
@@ -52,7 +58,7 @@ describe('updateShippableItems()', () => {
         const updatedShippableItems = updateShippableItems(
             shippableItems,
             { address: getAddress(), updatedItemIndex: 1 },
-            { cart, consignments: [] }
+            { cart, consignments: [] },
         );
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -65,11 +71,13 @@ describe('updateShippableItems()', () => {
 
     describe('when item is not split', () => {
         beforeEach(() => {
-            consignments = [{
-                ...getConsignment(),
-                shippingAddress: getAddress(),
-                lineItemIds: ['bar'],
-            }];
+            consignments = [
+                {
+                    ...getConsignment(),
+                    shippingAddress: getAddress(),
+                    lineItemIds: ['bar'],
+                },
+            ];
         });
 
         it('updates all items when no consignments', () => {
@@ -77,7 +85,7 @@ describe('updateShippableItems()', () => {
             const updatedShippableItems = updateShippableItems(
                 shippableItems,
                 { address: getAddress(), updatedItemIndex: 1 },
-                { cart, consignments: [] }
+                { cart, consignments: [] },
             );
 
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -116,7 +124,7 @@ describe('updateShippableItems()', () => {
                         },
                     },
                     consignments,
-                }
+                },
             );
 
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -175,8 +183,9 @@ describe('updateShippableItems()', () => {
 
         it('updates other item when a line item gets merged back keeping its id', () => {
             cart.lineItems.physicalItems[0].quantity = 1;
+
             const shippableItems = getShippableLineItems(cart, consignments);
-            const updatedItemIndex = shippableItems.findIndex(item => item.id === 'bar');
+            const updatedItemIndex = shippableItems.findIndex((item) => item.id === 'bar');
 
             const updatedShippableItems = updateShippableItems(
                 shippableItems,
@@ -205,7 +214,7 @@ describe('updateShippableItems()', () => {
                             lineItemIds: ['bar'],
                         },
                     ],
-                }
+                },
             );
 
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -229,7 +238,7 @@ describe('updateShippableItems()', () => {
 
         it('updates specific item when a line item gets merged back', () => {
             const shippableItems = getShippableLineItems(cart, consignments);
-            const updatedItemIndex = shippableItems.findIndex(item => item.id === 'bar');
+            const updatedItemIndex = shippableItems.findIndex((item) => item.id === 'bar');
 
             const updatedShippableItems = updateShippableItems(
                 shippableItems,
@@ -258,7 +267,7 @@ describe('updateShippableItems()', () => {
                             lineItemIds: ['foo'],
                         },
                     ],
-                }
+                },
             );
 
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -270,7 +279,7 @@ describe('updateShippableItems()', () => {
 
         it('updates specific item id and consignment when a line item gets moved', () => {
             const shippableItems = getShippableLineItems(cart, consignments);
-            const updatedItemIndex = shippableItems.findIndex(item => item.id === 'foo');
+            const updatedItemIndex = shippableItems.findIndex((item) => item.id === 'foo');
             const updatedShippableItems = updateShippableItems(
                 shippableItems,
                 {
@@ -300,7 +309,7 @@ describe('updateShippableItems()', () => {
                         },
                     },
                     consignments,
-                }
+                },
             );
 
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

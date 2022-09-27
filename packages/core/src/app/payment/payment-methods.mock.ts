@@ -6,13 +6,9 @@ export function getPaymentMethod(): PaymentMethod {
         gateway: undefined,
         logoUrl: '',
         method: 'credit-card',
-        supportedCards: [
-            'VISA',
-            'AMEX',
-            'MC',
-        ],
+        supportedCards: ['VISA', 'AMEX', 'MC'],
         initializationData: {
-            payPalCreditProductBrandName: {credit: ''},
+            payPalCreditProductBrandName: { credit: '' },
         },
         config: {
             displayName: 'Authorizenet',
@@ -38,7 +34,7 @@ export function getPaypalCreditPaymentMethod(): PaymentMethod {
         logoUrl: '',
         method: 'paypal',
         initializationData: {
-            payPalCreditProductBrandName: {credit: 'Pay in 3'},
+            payPalCreditProductBrandName: { credit: 'Pay in 3' },
         },
         type: 'PAYMENT_TYPE_API',
     };
@@ -50,11 +46,7 @@ export function getMobilePaymentMethod(): PaymentMethod {
         gateway: undefined,
         logoUrl: '',
         method: 'credit-card',
-        supportedCards: [
-            'VISA',
-            'AMEX',
-            'MC',
-        ],
+        supportedCards: ['VISA', 'AMEX', 'MC'],
         initializationData: {
             showOnlyOnMobileDevices: true,
         },

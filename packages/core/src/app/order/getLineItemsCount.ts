@@ -6,8 +6,10 @@ export default function getLineItemsCount({
     giftCertificates,
     customItems,
 }: LineItemMap): number {
-    return physicalItems.length +
+    return (
+        physicalItems.length +
         digitalItems.length +
         giftCertificates.length +
-        (customItems || []).length;
+        (customItems || []).length
+    );
 }

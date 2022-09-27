@@ -4,7 +4,7 @@ import AddressSelectorFactory from './AddressSelectorFactory';
 
 export default function mapToAddress(
     autocompleteData: google.maps.places.PlaceResult,
-    countries: Country[] = []
+    countries: Country[] = [],
 ): Partial<Address> {
     if (!autocompleteData || !autocompleteData.address_components) {
         return {};
@@ -13,7 +13,7 @@ export default function mapToAddress(
     const accessor = AddressSelectorFactory.create(autocompleteData);
     const state = accessor.getState();
     const countryCode = accessor.getCountry();
-    const country = countries && countries.find(c => countryCode === c.code);
+    const country = countries && countries.find((c) => countryCode === c.code);
     const street2 = accessor.getStreet2();
 
     return {
@@ -21,17 +21,12 @@ export default function mapToAddress(
         city: accessor.getCity(),
         countryCode,
         postalCode: accessor.getPostCode(),
-        ...state ? getState(state, country && country.subdivisions) : {},
+        ...(state ? getState(state, country && country.subdivisions) : {}),
     };
 }
 
-function getState(
-    stateName: string,
-    states: Region[] = []
-): Partial<Address> {
-    const state = states.find(({ code, name }: Region) =>
-        code === stateName || name === stateName
-    );
+function getState(stateName: string, states: Region[] = []): Partial<Address> {
+    const state = states.find(({ code, name }: Region) => code === stateName || name === stateName);
 
     if (!state) {
         return {

@@ -4,15 +4,9 @@ export interface HeaderProps {
     testId?: string;
 }
 
-const PrimaryHeader: FunctionComponent<HeaderProps> = ({
-    children,
-    testId,
-}) => (
-    <h1
-        className="optimizedCheckout-headingPrimary"
-        data-test={ testId }
-    >
-        { children }
+const PrimaryHeader: FunctionComponent<HeaderProps> = ({ children, testId }) => (
+    <h1 className="optimizedCheckout-headingPrimary" data-test={testId}>
+        {children}
     </h1>
 );
 

@@ -10,12 +10,8 @@ export function getConsignment(): Consignment {
         selectedShippingOption: getShippingOption(),
         shippingCost: 0,
         handlingCost: 0,
-        lineItemIds: [
-            '12e11c8f-7dce-4da3-9413-b649533f8bad',
-        ],
+        lineItemIds: ['12e11c8f-7dce-4da3-9413-b649533f8bad'],
         shippingAddress: getAddress(),
-        availableShippingOptions: [
-            getShippingOption(),
-        ],
+        availableShippingOptions: [getShippingOption()],
     };
 }

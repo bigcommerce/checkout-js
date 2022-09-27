@@ -1,6 +1,6 @@
 import { FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
-import React, { memo, useCallback, Fragment, FunctionComponent, ReactNode } from 'react';
+import React, { FunctionComponent, memo, ReactNode, useCallback } from 'react';
 
 import BasicFormField from './BasicFormField';
 import CheckboxInput from './CheckboxInput';
@@ -23,35 +23,35 @@ const CheckboxFormField: FunctionComponent<CheckboxFormFieldProps> = ({
     name,
     id,
 }) => {
-    const renderField = useCallback(({ field }: FieldProps) => (
-        <Fragment>
-            { <CheckboxInput
-                { ...field }
-                checked={ !!field.value }
-                disabled={ disabled }
-                id={ id || field.name }
-                label={ labelContent }
-            /> }
+    const renderField = useCallback(
+        ({ field }: FieldProps) => (
+            <>
+                <CheckboxInput
+                    {...field}
+                    checked={!!field.value}
+                    disabled={disabled}
+                    id={id || field.name}
+                    label={labelContent}
+                />
 
-            <FormFieldError
-                errorId={ `${id ?? name}-field-error-message` }
-                name={ name }
-                testId={ `${kebabCase(name)}-field-error-message` }
-            />
-        </Fragment>
-    ), [
-        disabled,
-        id,
-        labelContent,
-        name,
-    ]);
+                <FormFieldError
+                    errorId={`${id ?? name}-field-error-message`}
+                    name={name}
+                    testId={`${kebabCase(name)}-field-error-message`}
+                />
+            </>
+        ),
+        [disabled, id, labelContent, name],
+    );
 
-    return <BasicFormField
-        additionalClassName={ additionalClassName }
-        name={ name }
-        onChange={ onChange }
-        render={ renderField }
-    />;
+    return (
+        <BasicFormField
+            additionalClassName={additionalClassName}
+            name={name}
+            onChange={onChange}
+            render={renderField}
+        />
+    );
 };
 
 export default memo(CheckboxFormField);

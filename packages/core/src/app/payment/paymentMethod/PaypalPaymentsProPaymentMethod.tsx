@@ -1,14 +1,18 @@
 import React, { FunctionComponent } from 'react';
 
-import { withCheckout, CheckoutContextProps } from '../../checkout';
+import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { EMPTY_ARRAY } from '../../common/utility';
 
-import HostedCreditCardPaymentMethod, { HostedCreditCardPaymentMethodProps } from './HostedCreditCardPaymentMethod';
+import HostedCreditCardPaymentMethod, {
+    HostedCreditCardPaymentMethodProps,
+} from './HostedCreditCardPaymentMethod';
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
 import { PaymentMethodProps } from './PaymentMethod';
-import PaymentMethodProviderType from "./PaymentMethodProviderType";
+import PaymentMethodProviderType from './PaymentMethodProviderType';
 
-export type PaypalPaymentsProPaymentMethodProps = HostedPaymentMethodProps | HostedCreditCardPaymentMethodProps;
+export type PaypalPaymentsProPaymentMethodProps =
+    | HostedPaymentMethodProps
+    | HostedCreditCardPaymentMethodProps;
 
 interface WithCheckoutPaypalPaymentsProPaymentMethodProps {
     isHostedPayment: boolean;
@@ -22,34 +26,35 @@ interface WithCheckoutPaypalPaymentsProPaymentMethodProps {
  * from the checkout page, it behaves as a credit card payment method.
  */
 const PaypalPaymentsProPaymentMethod: FunctionComponent<
-    PaypalPaymentsProPaymentMethodProps &
-    WithCheckoutPaypalPaymentsProPaymentMethodProps
-> = ({
-    isHostedPayment,
-    ...props
-}) => {
+    PaypalPaymentsProPaymentMethodProps & WithCheckoutPaypalPaymentsProPaymentMethodProps
+> = ({ isHostedPayment, ...props }) => {
     if (isHostedPayment) {
-        return <HostedPaymentMethod { ...props } />;
+        return <HostedPaymentMethod {...props} />;
     }
 
-    return (
-        <HostedCreditCardPaymentMethod { ...props } />
-    );
+    return <HostedCreditCardPaymentMethod {...props} />;
 };
 
 function mapToPaypalPaymentsProPaymentMethodProps(
     { checkoutState }: CheckoutContextProps,
-    { method }: PaymentMethodProps
+    { method }: PaymentMethodProps,
 ): WithCheckoutPaypalPaymentsProPaymentMethodProps {
-    const { data: { getCheckout } } = checkoutState;
+    const {
+        data: { getCheckout },
+    } = checkoutState;
     const { payments = EMPTY_ARRAY } = getCheckout() || {};
-    const selectedHostedMethod = payments.find(({ providerType }) => providerType === PaymentMethodProviderType.Hosted);
+    const selectedHostedMethod = payments.find(
+        ({ providerType }) => providerType === PaymentMethodProviderType.Hosted,
+    );
 
     return {
-        isHostedPayment: selectedHostedMethod ?
-            selectedHostedMethod.providerId === method.id && selectedHostedMethod.gatewayId === method.gateway :
-            false,
+        isHostedPayment: selectedHostedMethod
+            ? selectedHostedMethod.providerId === method.id &&
+              selectedHostedMethod.gatewayId === method.gateway
+            : false,
     };
 }
 
-export default withCheckout(mapToPaypalPaymentsProPaymentMethodProps)(PaypalPaymentsProPaymentMethod);
+export default withCheckout(mapToPaypalPaymentsProPaymentMethodProps)(
+    PaypalPaymentsProPaymentMethod,
+);

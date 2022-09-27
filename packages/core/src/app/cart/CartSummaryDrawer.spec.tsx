@@ -1,4 +1,4 @@
-import { createCheckoutService, CheckoutService } from '@bigcommerce/checkout-sdk';
+import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
@@ -25,16 +25,15 @@ describe('CartSummary Component', () => {
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
 
         component = mount(
-            <CheckoutProvider checkoutService={ checkoutService }>
-                <LocaleContext.Provider value={ localeContext }>
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
                     <CartSummaryDrawer />
                 </LocaleContext.Provider>
-            </CheckoutProvider>
+            </CheckoutProvider>,
         );
     });
 
     it('renders OrderSummaryDrawer with Edit Cart link', () => {
-        expect(component.find(OrderSummaryDrawer).prop('headerLink'))
-            .toMatchSnapshot();
+        expect(component.find(OrderSummaryDrawer).prop('headerLink')).toMatchSnapshot();
     });
 });

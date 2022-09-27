@@ -2,14 +2,20 @@ import { FormField, LanguageService } from '@bigcommerce/checkout-sdk';
 import { memoize } from 'lodash';
 import { ObjectSchema } from 'yup';
 
-import { getFormFieldsValidationSchema, FormFieldValues, TranslateValidationErrorFunction } from '../formFields';
+import {
+    FormFieldValues,
+    getFormFieldsValidationSchema,
+    TranslateValidationErrorFunction,
+} from '../formFields';
 
 export interface AddressFormFieldsValidationSchemaOptions {
     formFields: FormField[];
     language?: LanguageService;
 }
 
-export function getTranslateAddressError(language?: LanguageService): TranslateValidationErrorFunction {
+export function getTranslateAddressError(
+    language?: LanguageService,
+): TranslateValidationErrorFunction {
     const requiredFieldErrorTranslationIds: { [fieldName: string]: string } = {
         countryCode: 'address.country',
         firstName: 'address.first_name',
@@ -31,10 +37,12 @@ export function getTranslateAddressError(language?: LanguageService): TranslateV
 
         if (type === 'required') {
             if (requiredFieldErrorTranslationIds[name]) {
-                return language.translate(`${requiredFieldErrorTranslationIds[name]}_required_error`);
-            } else {
-                return language.translate(`address.custom_required_error`, { label });
+                return language.translate(
+                    `${requiredFieldErrorTranslationIds[name]}_required_error`,
+                );
             }
+
+            return language.translate(`address.custom_required_error`, { label });
         }
 
         if (type === 'max' && max) {
@@ -48,8 +56,6 @@ export function getTranslateAddressError(language?: LanguageService): TranslateV
         if (type === 'invalid') {
             return language.translate(`address.invalid_characters_error`, { label });
         }
-
-        return;
     };
 }
 

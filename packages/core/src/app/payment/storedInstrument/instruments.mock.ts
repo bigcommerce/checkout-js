@@ -1,4 +1,9 @@
-import { AccountInstrument, BankInstrument, CardInstrument, PaymentInstrument } from '@bigcommerce/checkout-sdk';
+import {
+    AccountInstrument,
+    BankInstrument,
+    CardInstrument,
+    PaymentInstrument,
+} from '@bigcommerce/checkout-sdk';
 
 export function getInstruments(): PaymentInstrument[] {
     return [
