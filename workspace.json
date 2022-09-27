@@ -4,6 +4,7 @@
     "afterpay-integration": "packages/afterpay-integration",
     "apple-pay-integration": "packages/apple-pay-integration",
     "checkout-button-integration": "packages/checkout-button-integration",
+    "common": "packages/common",
     "core": "packages/core",
     "google-pay-integration": "packages/google-pay-integration",
     "hosted-credit-card-integration": "packages/hosted-credit-card-integration",

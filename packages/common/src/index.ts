@@ -1,0 +1,1 @@
+export { TranslatedString } from './locale';
