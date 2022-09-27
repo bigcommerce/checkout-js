@@ -49,7 +49,13 @@ export default class ModalTrigger extends Component<ModalTriggerProps, ModalTrig
     }
 
     private handleOpen: () => void = () => {
-        document.body.scrollIntoView();
+        const wordpressCheckout = parent.document.getElementById('bc-embedded-checkout');
+        if (wordpressCheckout) {
+            const top = wordpressCheckout.getBoundingClientRect().top;
+            window.parent.scrollBy(0,top);
+        } else {
+            document.body.scrollIntoView(true);
+        }
 
         if (!this.canHandleEvent) {
             return;
