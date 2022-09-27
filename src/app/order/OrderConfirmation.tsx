@@ -142,7 +142,7 @@ class OrderConfirmation extends Component<
                             item_variant: 'options' in item ? item.options?.[0]?.value : undefined,
                             currency: order?.currency.code,
                             item_brand: 'brand' in item ? item.brand ?? 'MitoQ' : undefined,
-                            price: itemDiscountedPrice,
+                            price: parseFloat(itemDiscountedPrice.toFixed(2)),
                             quantity: itemQuantity,
                             coupons: itemCoupons,
                             promotions: itemPromotions,
