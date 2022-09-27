@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.256.5](https://github.com/bigcommerce/checkout-js/compare/v1.256.4...v1.256.5) (2022-09-27)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-6365 Scroll to modal in WordPress ([#1036](https://github.com/bigcommerce/checkout-js/issues/1036)) ([20daf7b](https://github.com/bigcommerce/checkout-js/commit/20daf7bb7f31cec75b25f19b533cef0b454ca1b3))
+
 ### [1.256.4](https://github.com/bigcommerce/checkout-js/compare/v1.256.3...v1.256.4) (2022-09-26)
 
 
