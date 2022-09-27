@@ -117,8 +117,6 @@ class OrderConfirmation extends Component<
                         const itemCoupons: CouponData[] = [];
                         const itemPromotions: PromotionData[] = [];
 
-                        const itemFullPrice = 'listPrice' in item ? item.listPrice : item.amount;
-                        const itemDiscountedPrice = ('salePrice' in item ? item.salePrice : itemFullPrice) - ('couponAmount' in item ? item.couponAmount : 0);
                         const itemQuantity = 'quantity' in item ? item.quantity : 1;
 
                         if ( 'discounts' in item ) {
@@ -133,6 +131,10 @@ class OrderConfirmation extends Component<
                                 }
                             });
                         }
+
+                        const itemFullPrice = 'listPrice' in item ? item.listPrice : item.amount;
+                        const itemDiscountedPrice = ('salePrice' in item ? item.salePrice : itemFullPrice) - (itemCoupons?.length ? itemCoupons.reduce((partialSum, coupon) => partialSum + coupon.discount, 0) : 0);
+
 
                         purchaseData.purchase.items.push({
                             item_id: 'productId' in item ? item.productId : undefined,
