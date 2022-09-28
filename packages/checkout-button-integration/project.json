@@ -12,16 +12,11 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/packages/checkout-button-integration"
-      ],
+      "outputs": ["coverage/packages/checkout-button-integration"],
       "options": {
         "jestConfig": "packages/checkout-button-integration/jest.config.js"
       }
     }
   },
-  "tags": [
-    "scope:integration",
-    "scope:shared"
-  ]
+  "tags": ["scope:integration", "scope:shared"]
 }
