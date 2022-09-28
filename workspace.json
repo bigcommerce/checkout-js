@@ -4,10 +4,10 @@
     "afterpay-integration": "packages/afterpay-integration",
     "apple-pay-integration": "packages/apple-pay-integration",
     "checkout-button-integration": "packages/checkout-button-integration",
-    "common": "packages/common",
     "core": "packages/core",
     "google-pay-integration": "packages/google-pay-integration",
     "hosted-credit-card-integration": "packages/hosted-credit-card-integration",
+    "locale": "packages/locale",
     "payment-integration-api": "packages/payment-integration-api",
     "payment-integration-test-framework": "packages/payment-integration-test-framework",
     "workspace-tools": "packages/workspace-tools"

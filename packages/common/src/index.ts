@@ -1,1 +1,0 @@
-export { TranslatedString } from './locale';
