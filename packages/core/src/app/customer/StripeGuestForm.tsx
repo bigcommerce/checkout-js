@@ -1,6 +1,6 @@
 import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
 import { withFormik, FieldProps, FormikProps } from 'formik';
-import React, { memo, useCallback, useEffect, useState, FunctionComponent, ReactNode } from 'react';
+import React, { memo, useCallback, useEffect, useState, FunctionComponent } from 'react';
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { getAppliedStyles } from '../common/dom';
 
@@ -16,7 +16,6 @@ import SubscribeField from './SubscribeField';
 export interface StripeGuestFormProps {
     canSubscribe: boolean;
     step: CheckoutStepStatus;
-    checkoutButtons?: ReactNode;
     continueAsGuestButtonLabelId: string;
     email?: string;
     isLoading: boolean;
@@ -31,7 +30,6 @@ export interface StripeGuestFormProps {
 }
 
 const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<GuestFormValues>> = ({
-    checkoutButtons,
     continueAsGuestButtonLabelId,
     isLoading,
     initialize,
@@ -76,6 +74,29 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
         setIsStripeLoading(mounted);
     }, []);
 
+    const stripeDeinitialize = () => {
+        deinitialize({
+            methodId: 'stripeupe',
+        });
+    };
+
+    const stripeInitialize = () => {
+        initialize( {
+            methodId: 'stripeupe',
+            stripeupe: {
+                container: 'stripeupeLink',
+                onEmailChange: setEmailCallback,
+                isLoading: handleLoading,
+                getStyles: getStripeStyles,
+                gatewayId: 'stripeupe',
+                methodId: 'card',
+            },
+        })};
+
+    useEffect(() => {
+        stripeInitialize();
+        return () => stripeDeinitialize();
+    }, []);
 
     const getStylesFromElement = (
         id: string,
@@ -88,8 +109,9 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
         }
     };
 
-    const getStripeStyles: any = useCallback( () => {
-        const containerId = 'stripe-card-component-field';
+    const containerId = 'stripe-card-component-field';
+
+    const getStripeStyles: () => (Record<string, string> | undefined) = useCallback( () => {
         const formInput = getStylesFromElement(`${containerId}--input`, ['color', 'background-color', 'border-color', 'box-shadow']);
         const formLabel = getStylesFromElement(`${containerId}--label`, ['color']);
         const formError = getStylesFromElement(`${containerId}--error`, ['color']);
@@ -105,8 +127,6 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
     }, [])
 
     const renderCheckoutThemeStylesForStripeUPE = () => {
-        const containerId = 'stripe-card-component-field';
-
         return (
             <div
                 className={ 'optimizedCheckout-form-input' }
@@ -128,30 +148,6 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
             </div>
         );
     };
-
-    const stripeDeinitialize = () => {
-        deinitialize({
-            methodId: 'stripeupe',
-        });
-    };
-
-    const stripeInitialize = () => {
-        initialize( {
-                methodId: 'stripeupe',
-                stripeupe: {
-                    container: 'stripeupeLink',
-                    onEmailChange: setEmailCallback,
-                    isLoading: handleLoading,
-                    getStyles: getStripeStyles,
-                    gatewayId: 'stripeupe',
-                    methodId: 'card',
-                },
-        })};
-
-    useEffect(() => {
-        stripeInitialize();
-        return () => stripeDeinitialize();
-    }, []);
 
     const renderField = useCallback((fieldProps: FieldProps<boolean>) => (
         <SubscribeField
@@ -220,8 +216,6 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                                 </a>
                             </p>
                         }
-
-                        { checkoutButtons }
                     </Fieldset>
                 </LoadingOverlay>
             </div>

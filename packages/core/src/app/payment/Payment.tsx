@@ -533,13 +533,16 @@ export function mapToPaymentProps({
     const consignments = getConsignments();
     const { isComplete = false } = getOrder() || {};
     let methods = getPaymentMethods() || EMPTY_ARRAY;
-    const stripeUpePaymentMethod = methods.filter(method =>
-        method.id === 'card' && method.gateway === PaymentMethodId.StripeUPE
-    );
 
-    if (customer?.isStripeLinkAuthenticated && !!stripeUpePaymentMethod.length){
-        methods = stripeUpePaymentMethod
+    //TODO: In accordance with the checkout team, this functionality is temporary and will be implemented in the backend instead.
+    if (customer?.isStripeLinkAuthenticated) {
+        const stripeUpePaymentMethod = methods.filter(method =>
+            method.id === 'card' && method.gateway === PaymentMethodId.StripeUPE
+        );
+
+        methods = stripeUpePaymentMethod.length ? stripeUpePaymentMethod : methods;
     }
+
 
     if (!checkout || !config || !customer || isComplete) {
         return null;

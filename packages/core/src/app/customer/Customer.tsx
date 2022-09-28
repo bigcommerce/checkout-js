@@ -175,16 +175,6 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             isStripeLinkEnabled ?
                 <StripeGuestForm
                     canSubscribe={ canSubscribe }
-                    checkoutButtons={
-                        <CheckoutButtonList
-                            checkEmbeddedSupport={ checkEmbeddedSupport }
-                            deinitialize={ deinitializeCustomer }
-                            initialize={ initializeCustomer }
-                            isInitializing={ isInitializing }
-                            methodIds={ checkoutButtonIds }
-                            onError={ onUnhandledError }
-                        />
-                    }
                     continueAsGuestButtonLabelId={ 'customer.continue' }
                     defaultShouldSubscribe={ defaultShouldSubscribe }
                     deinitialize={ deinitializeCustomer }
@@ -505,6 +495,7 @@ export function mapToWithCheckoutCustomerProps({
     const config = getConfig();
     let stripeUpeLinkEnabled = false;
 
+    // TODO: This should be driven by backend, same as other wallet buttons.
     if (cart) {
         const stripeUpe = getPaymentMethod('card', PaymentMethodId.StripeUPE);
         const linkEnabled = stripeUpe?.initializationData.enableLink || false;
