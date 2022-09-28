@@ -16,7 +16,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "@@bigcommerce/checkout/locale": ["packages/locale/src/index.ts"],
+      "@bigcommerce/checkout/locale": ["packages/locale/src/index.ts"],
       "@bigcommerce/checkout/afterpay-integration": ["packages/afterpay-integration/src/index.ts"],
       "@bigcommerce/checkout/apple-pay-integration": [
         "packages/apple-pay-integration/src/index.ts"
@@ -37,6 +37,7 @@
       "@bigcommerce/checkout/payment-integration-test-framework": [
         "packages/payment-integration-test-framework/src/index.ts"
       ],
+      "@bigcommerce/checkout/ui": ["packages/ui/src/index.ts"],
       "@bigcommerce/checkout/workspace-tools": ["packages/workspace-tools/src/index.ts"]
     },
     "resolveJsonModule": true,

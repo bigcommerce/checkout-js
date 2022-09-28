@@ -10,6 +10,7 @@
     "locale": "packages/locale",
     "payment-integration-api": "packages/payment-integration-api",
     "payment-integration-test-framework": "packages/payment-integration-test-framework",
+    "ui": "packages/ui",
     "workspace-tools": "packages/workspace-tools"
   }
 }
