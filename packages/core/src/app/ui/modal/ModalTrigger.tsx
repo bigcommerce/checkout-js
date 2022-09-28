@@ -20,8 +20,6 @@ export interface ModalTriggerState {
     isOpen: boolean;
 }
 
-const wordpressCheckout = parent.document.getElementById('bc-embedded-checkout');
-
 export default class ModalTrigger extends Component<ModalTriggerProps, ModalTriggerState> {
     state = {
         isOpen: false,
@@ -57,13 +55,6 @@ export default class ModalTrigger extends Component<ModalTriggerProps, ModalTrig
     }
 
     private handleOpen: () => void = () => {
-        if (wordpressCheckout) {
-            const top = wordpressCheckout.getBoundingClientRect().top;
-            window.parent.scrollBy(0,top);
-        } else {
-            document.body.scrollIntoView(true);
-        }
-
         if (!this.canHandleEvent) {
             return;
         }
