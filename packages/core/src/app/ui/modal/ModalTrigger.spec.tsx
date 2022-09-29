@@ -4,8 +4,6 @@ import React, { FunctionComponent } from 'react';
 import ModalTrigger, { ModalTriggerModalProps } from './ModalTrigger';
 
 describe('ModalTrigger', () => {
-    window.HTMLElement.prototype.scrollIntoView = jest.fn();
-
     const Modal: FunctionComponent<ModalTriggerModalProps> = ({ isOpen, onRequestClose }) =>
         isOpen ? (
             <div id="modal">
@@ -31,8 +29,6 @@ describe('ModalTrigger', () => {
         component.find('#openButton').simulate('click');
 
         expect(component.find('#modal')).toHaveLength(1);
-
-        expect(document.body.scrollIntoView).toHaveBeenCalled();
     });
 
     it('closes modal window when "onRequestClose" is called', () => {

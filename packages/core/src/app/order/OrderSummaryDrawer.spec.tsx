@@ -20,7 +20,6 @@ describe('OrderSummaryDrawer', () => {
     let localeContext: LocaleContextType;
 
     beforeEach(() => {
-        window.HTMLElement.prototype.scrollIntoView = jest.fn();
         localeContext = createLocaleContext(getStoreConfig());
 
         order = getOrder();
@@ -96,8 +95,6 @@ describe('OrderSummaryDrawer', () => {
                 shopperCurrency: getStoreConfig().shopperCurrency,
                 additionalLineItems: 'foo',
             });
-
-            expect(document.body.scrollIntoView).toHaveBeenCalled();
         });
     });
 
@@ -119,8 +116,6 @@ describe('OrderSummaryDrawer', () => {
                 shopperCurrency: getStoreConfig().shopperCurrency,
                 additionalLineItems: 'foo',
             });
-
-            expect(document.body.scrollIntoView).toHaveBeenCalled();
         });
     });
 });
