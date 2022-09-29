@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.256.10](https://github.com/bigcommerce/checkout-js/compare/v1.256.9...v1.256.10) (2022-09-29)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-6969 Display cart summary at bottom ([#1041](https://github.com/bigcommerce/checkout-js/issues/1041)) ([9aff688](https://github.com/bigcommerce/checkout-js/commit/9aff688457c0598a2bdd4984be1c2948a9a61642))
+
 ### [1.256.9](https://github.com/bigcommerce/checkout-js/compare/v1.256.8...v1.256.9) (2022-09-28)
 
 ### [1.256.8](https://github.com/bigcommerce/checkout-js/compare/v1.256.7...v1.256.8) (2022-09-27)
