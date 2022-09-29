@@ -45,14 +45,9 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
 
     componentDidUpdate(prevProps: Readonly<CheckoutStepProps>): void {
         const { isActive } = this.props;
-        const { isClosed } = this.state;
 
         if (isActive && isActive !== prevProps.isActive) {
             this.focusStep();
-        }
-
-        if (!isActive && !isClosed && isMobileView()) {
-            this.setState({ isClosed: true });
         }
     }
 
@@ -113,7 +108,8 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
                         exit={!matched}
                         in={isActive}
                         mountOnEnter
-                        timeout={{}}
+                        onExited={ this.onAnimationEnd }
+                        timeout={ {} }
                         unmountOnExit
                     >
                         <div
@@ -214,16 +210,18 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
     }
 
     private handleTransitionEnd: (node: HTMLElement, done: () => void) => void = (node, done) => {
-        const { isActive } = this.props;
-
         node.addEventListener('transitionend', ({ target }) => {
             if (target === node) {
                 done();
-
-                if (!isActive) {
-                    this.setState({ isClosed: true });
-                }
             }
         });
     };
+
+    private onAnimationEnd = (): void => {
+        const { isActive } = this.props;
+
+        if (!isActive) {
+            this.setState({ isClosed: true });
+        }
+    }
 }
