@@ -31,6 +31,7 @@ import { MultiShippingFormValues } from './MultiShippingForm';
 import ShippingForm from './ShippingForm';
 import ShippingHeader from './ShippingHeader';
 import { SingleShippingFormValues } from './SingleShippingForm';
+import StripeShippingForm from './StripeShippingForm';
 
 export interface ShippingProps {
     isBillingSameAsShipping: boolean;
@@ -144,10 +145,9 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             isStripeAutoStep,
         } = this.state;
 
-        const renderShipping = () => {
-            if (isStripeLinkEnabled && !customer.email) {
-                return <div className="checkout-form">
-                    <div style={ {display: isStripeAutoStep ? 'none' : undefined,} }>
+        const stripeShipping = () => {
+            return <div className="checkout-form">
+                <div style={ {display: isStripeAutoStep ? 'none' : undefined,} }>
                     <LoadingOverlay
                         hideContentWhenLoading
                         isLoading={ isStripeLoading }
@@ -163,71 +163,62 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                             isLoading={ isInitializing }
                             unmountContentWhenLoading
                         >
-                            <ShippingForm
+                            <StripeShippingForm
                                 { ...shippingFormProps }
-                                addresses={ customer.addresses }
-                                customerEmail={ customer.email }
-                                deinitialize={ deinitializeShippingMethod }
-                                initialize={ initializeShippingMethod }
-                                isBillingSameAsShipping = { isBillingSameAsShipping }
-                                isGuest={ isGuest }
-                                isMultiShippingMode={ isMultiShippingMode }
-                                isStripeAutoStep={ this.handleIsAutoStep }
-                                isStripeLinkEnabled={ isStripeLinkEnabled }
-                                isStripeLoading={ this.handleIsStripeLoading }
-                                onMultiShippingSubmit={ this.handleMultiShippingSubmit }
-                                onSingleShippingSubmit={ this.handleSingleShippingSubmit }
-                                onUseNewAddress={ this.handleUseNewAddress }
-                                shouldShowSaveAddress={ !isGuest }
-                                step={ step }
-                                updateAddress={ updateShippingAddress }
+                                deinitialize={deinitializeShippingMethod}
+                                initialize={initializeShippingMethod}
+                                isBillingSameAsShipping={isBillingSameAsShipping}
+                                isMultiShippingMode={isMultiShippingMode}
+                                isStripeAutoStep={this.handleIsAutoStep}
+                                isStripeLoading={this.stripeLoadedCallback}
+                                onSubmit={this.handleSingleShippingSubmit}
+                                step={step}
+                                updateAddress={updateShippingAddress}
                             />
                         </LoadingOverlay>
                     </LoadingOverlay>
-                    </div>
                 </div>
-            }
-
+            </div>
+        }
+        const defaultShipping = () => {
             return <div className="checkout-form">
-                    <ShippingHeader
+                <ShippingHeader
+                    isGuest={ isGuest }
+                    isMultiShippingMode={ isMultiShippingMode }
+                    onMultiShippingChange={ this.handleMultiShippingModeSwitch }
+                    shouldShowMultiShipping={ shouldShowMultiShipping }
+                />
+
+                <LoadingOverlay
+                    isLoading={ isInitializing }
+                    unmountContentWhenLoading
+                >
+                    <ShippingForm
+                        { ...shippingFormProps }
+                        addresses={ customer.addresses }
+                        deinitialize={ deinitializeShippingMethod }
+                        initialize={ initializeShippingMethod }
+                        isBillingSameAsShipping = { isBillingSameAsShipping }
                         isGuest={ isGuest }
                         isMultiShippingMode={ isMultiShippingMode }
-                        onMultiShippingChange={ this.handleMultiShippingModeSwitch }
-                        shouldShowMultiShipping={ shouldShowMultiShipping }
+                        onMultiShippingSubmit={ this.handleMultiShippingSubmit }
+                        onSingleShippingSubmit={ this.handleSingleShippingSubmit }
+                        onUseNewAddress={ this.handleUseNewAddress }
+                        shouldShowSaveAddress={ !isGuest }
+                        updateAddress={ updateShippingAddress }
                     />
-
-                    <LoadingOverlay
-                        isLoading={ isInitializing }
-                        unmountContentWhenLoading
-                    >
-                        <ShippingForm
-                            { ...shippingFormProps }
-                            addresses={ customer.addresses }
-                            customerEmail={ customer.email }
-                            deinitialize={ deinitializeShippingMethod }
-                            initialize={ initializeShippingMethod }
-                            isBillingSameAsShipping = { isBillingSameAsShipping }
-                            isGuest={ isGuest }
-                            isMultiShippingMode={ isMultiShippingMode }
-                            isStripeAutoStep={ this.handleIsAutoStep }
-                            isStripeLinkEnabled={ isStripeLinkEnabled }
-                            isStripeLoading={ this.handleIsStripeLoading }
-                            onMultiShippingSubmit={ this.handleMultiShippingSubmit }
-                            onSingleShippingSubmit={ this.handleSingleShippingSubmit }
-                            onUseNewAddress={ this.handleUseNewAddress }
-                            shouldShowSaveAddress={ !isGuest }
-                            step={ step }
-                            updateAddress={ updateShippingAddress }
-                        />
-                    </LoadingOverlay>
+                </LoadingOverlay>
             </div>
-
         }
 
-        return ( renderShipping() );
+        if (isStripeLinkEnabled && !customer.email) {
+            return stripeShipping();
+        }
+
+        return defaultShipping();
     }
 
-    private handleIsStripeLoading: () => void = () => {
+    private stripeLoadedCallback: () => void = () => {
         this.setState({ isStripeLoading: false });
     }
 

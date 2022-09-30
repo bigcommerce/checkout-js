@@ -1,20 +1,15 @@
-import { CheckoutSelectors, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
 
-import './StaticAddressEditable.scss';
-
 export interface StripeupeShippingAddressProps {
-    formFields: FormField[];
-    isLoading: boolean;
     methodId?: string;
-    countries?: any;
     deinitialize(options?: ShippingRequestOptions): Promise<CheckoutSelectors>;
     initialize(options?: ShippingInitializeOptions): Promise<CheckoutSelectors>;
     onUnhandledError?(error: Error): void;
 }
 
-class StripeupeShippingAddress extends PureComponent<StripeupeShippingAddressProps> {
+class StripeShippingAddressDisplay extends PureComponent<StripeupeShippingAddressProps> {
     async componentDidMount(): Promise<void> {
         const {
             initialize,
@@ -56,4 +51,4 @@ class StripeupeShippingAddress extends PureComponent<StripeupeShippingAddressPro
     }
 }
 
-export default StripeupeShippingAddress;
+export default StripeShippingAddressDisplay;

@@ -16,8 +16,6 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, { Component, ReactNode } from 'react';
 
-// eslint-disable-next-line import/no-internal-modules
-import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { withLanguage, WithLanguageProps } from '../locale';
 
 import MultiShippingForm, { MultiShippingFormValues } from './MultiShippingForm';
@@ -42,16 +40,11 @@ export interface ShippingFormProps {
     shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
     shouldShowAddAddressInCheckout: boolean;
-    step: CheckoutStepStatus;
-    isStripeLinkEnabled?: boolean;
-    customerEmail?: string;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
     getFields(countryCode?: string): FormField[];
     initialize(options: ShippingInitializeOptions): Promise<CheckoutSelectors>;
-    isStripeLoading?(): void;
-    isStripeAutoStep?(): void;
     onCreateAccount(): void;
     createCustomerAddress(address: AddressRequestBody): Promise<CheckoutSelectors>;
     onMultiShippingSubmit(values: MultiShippingFormValues): void;
@@ -79,7 +72,6 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             countriesWithAutocomplete,
             onCreateAccount,
             customerMessage,
-            customerEmail,
             deinitialize,
             deleteConsignments,
             getFields,
@@ -102,10 +94,6 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             signOut,
             updateAddress,
             isShippingStepPending,
-            isStripeLinkEnabled,
-            step,
-            isStripeLoading,
-            isStripeAutoStep,
         } = this.props;
 
         return isMultiShippingMode ? (
@@ -139,7 +127,6 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 consignments={consignments}
                 countries={countries}
                 countriesWithAutocomplete={countriesWithAutocomplete}
-                customerEmail={customerEmail}
                 customerMessage={customerMessage}
                 deinitialize={deinitialize}
                 deleteConsignments={deleteConsignments}
@@ -150,9 +137,6 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 isLoading={isLoading}
                 isMultiShippingMode={isMultiShippingMode}
                 isShippingStepPending={isShippingStepPending}
-                isStripeAutoStep={isStripeAutoStep}
-                isStripeLinkEnabled={isStripeLinkEnabled}
-                isStripeLoading={isStripeLoading}
                 methodId={methodId}
                 onSubmit={onSingleShippingSubmit}
                 onUnhandledError={onUnhandledError}
@@ -160,7 +144,6 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 shouldShowOrderComments={shouldShowOrderComments}
                 shouldShowSaveAddress={shouldShowSaveAddress}
                 signOut={signOut}
-                step={step}
                 updateAddress={updateAddress}
             />
         );

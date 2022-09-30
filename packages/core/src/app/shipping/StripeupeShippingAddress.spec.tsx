@@ -2,7 +2,7 @@ import { mount, render, shallow } from 'enzyme';
 import React from 'react';
 
 import { getFormFields } from '../address/formField.mock';
-import StripeupeShippingAddress, { StripeupeShippingAddressProps } from './StripeupeShippingAddress';
+import StripeShippingAddressDisplay, { StripeupeShippingAddressProps } from './StripeShippingAddressDisplay';
 
 describe('StripeUpe Shipping Component', () => {
     const defaultProps: StripeupeShippingAddressProps = {
@@ -16,19 +16,19 @@ describe('StripeUpe Shipping Component', () => {
     };
 
     it('matches snapshot', () => {
-        const component = render(<StripeupeShippingAddress { ...defaultProps } />);
+        const component = render(<StripeShippingAddressDisplay { ...defaultProps } />);
 
         expect(component).toMatchSnapshot();
     });
 
     it('calls initialize prop on mount', () => {
-        shallow(<StripeupeShippingAddress { ...defaultProps } />);
+        shallow(<StripeShippingAddressDisplay { ...defaultProps } />);
 
         expect(defaultProps.initialize).toHaveBeenCalled();
     });
 
     it('calls deinitialize prop on unmount', () => {
-        shallow(<StripeupeShippingAddress { ...defaultProps } />).unmount();
+        shallow(<StripeShippingAddressDisplay { ...defaultProps } />).unmount();
 
         expect(defaultProps.initialize).toHaveBeenCalled();
     });
@@ -36,7 +36,7 @@ describe('StripeUpe Shipping Component', () => {
     it('calls onUnhandledError if initialize was failed', () => {
         defaultProps.initialize = jest.fn(() => { throw new Error(); });
 
-        mount(<StripeupeShippingAddress { ...defaultProps } />);
+        mount(<StripeShippingAddressDisplay { ...defaultProps } />);
 
         expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
     });
@@ -46,7 +46,7 @@ describe('StripeUpe Shipping Component', () => {
             throw new Error();
         });
 
-        mount(<StripeupeShippingAddress { ...defaultProps } />).unmount();
+        mount(<StripeShippingAddressDisplay { ...defaultProps } />).unmount();
 
         expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
     });
