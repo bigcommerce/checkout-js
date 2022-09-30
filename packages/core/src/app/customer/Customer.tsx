@@ -175,6 +175,16 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             isStripeLinkEnabled ?
                 <StripeGuestForm
                     canSubscribe={ canSubscribe }
+                    checkoutButtons={
+                        <CheckoutButtonList
+                            checkEmbeddedSupport={checkEmbeddedSupport}
+                            deinitialize={deinitializeCustomer}
+                            initialize={initializeCustomer}
+                            isInitializing={isInitializing}
+                            methodIds={checkoutButtonIds}
+                            onError={onUnhandledError}
+                        />
+                    }
                     continueAsGuestButtonLabelId={ 'customer.continue' }
                     defaultShouldSubscribe={ defaultShouldSubscribe }
                     deinitialize={ deinitializeCustomer }

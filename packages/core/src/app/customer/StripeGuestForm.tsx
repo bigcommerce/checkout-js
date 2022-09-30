@@ -1,6 +1,6 @@
 import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
 import { withFormik, FieldProps, FormikProps } from 'formik';
-import React, { memo, useCallback, useEffect, useState, FunctionComponent } from 'react';
+import React, { memo, useCallback, useEffect, useState, FunctionComponent, ReactNode } from 'react';
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { getAppliedStyles } from '../common/dom';
 
@@ -15,6 +15,7 @@ import SubscribeField from './SubscribeField';
 
 export interface StripeGuestFormProps {
     canSubscribe: boolean;
+    checkoutButtons?: ReactNode;
     step: CheckoutStepStatus;
     continueAsGuestButtonLabelId: string;
     email?: string;
@@ -38,6 +39,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
     onShowLogin,
     onContinueAsGuest,
     canSubscribe,
+    checkoutButtons,
     requiresMarketingConsent,
     privacyPolicyUrl,
     step,
@@ -216,6 +218,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                                 </a>
                             </p>
                         }
+                        { !authentication && checkoutButtons }
                     </Fieldset>
                 </LoadingOverlay>
             </div>
