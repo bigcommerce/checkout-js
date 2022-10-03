@@ -66,8 +66,6 @@ interface SingleShippingFormState {
     isUpdatingShippingData: boolean;
 }
 
-export const SHIPPING_AUTOSAVE_DELAY = 1700;
-
 class StripeShippingForm extends PureComponent<
     SingleShippingFormProps & WithLanguageProps & FormikProps<SingleShippingFormValues>
     > {
