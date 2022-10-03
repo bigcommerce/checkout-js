@@ -1,7 +1,7 @@
 import { mount, render, shallow } from 'enzyme';
 import React from 'react';
 
-import { getFormFields } from '../address/formField.mock';
+import { getFormFields } from '../../address/formField.mock';
 import StripeShippingAddressDisplay, { StripeupeShippingAddressProps } from './StripeShippingAddressDisplay';
 
 describe('StripeUpe Shipping Component', () => {

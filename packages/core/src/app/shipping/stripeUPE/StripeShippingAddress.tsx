@@ -10,12 +10,12 @@ import {
 import { memoizeOne } from '@bigcommerce/memoize';
 import React, { FunctionComponent, memo, useCallback, useEffect, useState } from 'react';
 
-import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
-import { getAppliedStyles } from '../common/dom';
-import getRecommendedShippingOption from './getRecommendedShippingOption';
-import hasSelectedShippingOptions from './hasSelectedShippingOptions';
+import CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
+import { getAppliedStyles } from '../../common/dom';
+import getRecommendedShippingOption from '../getRecommendedShippingOption';
+import hasSelectedShippingOptions from '../hasSelectedShippingOptions';
 
-import { SingleShippingFormValues } from './SingleShippingForm';
+import { SingleShippingFormValues } from '../SingleShippingForm';
 import StripeStateMapper from './StripeStateMapper';
 import StripeShippingAddressDisplay from './StripeShippingAddressDisplay';
 

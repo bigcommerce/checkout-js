@@ -1,17 +1,17 @@
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
-import { getAddressFormFields } from '../address/formField.mock';
-import CheckoutStepType from '../checkout/CheckoutStepType';
-import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { getAddressFormFields } from '../../address/formField.mock';
+import CheckoutStepType from '../../checkout/CheckoutStepType';
+import { getStoreConfig } from '../../config/config.mock';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 
-import BillingSameAsShippingField from './BillingSameAsShippingField';
-import { getShippingAddress } from './shipping-addresses.mock';
+import BillingSameAsShippingField from '../BillingSameAsShippingField';
+import { getShippingAddress } from '../shipping-addresses.mock';
 import SingleShippingForm, {
     SHIPPING_AUTOSAVE_DELAY,
     SingleShippingFormProps,
-} from './SingleShippingForm';
+} from '../SingleShippingForm';
 
 describe('SingleShippingForm', () => {
     const addressFormFields = getAddressFormFields().filter(({ custom }) => !custom);

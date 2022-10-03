@@ -4,13 +4,13 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { CheckoutProvider } from '../checkout';
-import CheckoutStepType from '../checkout/CheckoutStepType';
-import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { CheckoutProvider } from '../../checkout';
+import CheckoutStepType from '../../checkout/CheckoutStepType';
+import { getStoreConfig } from '../../config/config.mock';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 
-import { getConsignment } from './consignment.mock';
-import { getShippingAddress } from './shipping-addresses.mock';
+import { getConsignment } from '../consignment.mock';
+import { getShippingAddress } from '../shipping-addresses.mock';
 import StripeShippingAddress from './StripeShippingAddress';
 import { StripeShippingAddressProps } from './StripeShippingAddress';
 import StripeShippingAddressDisplay from './StripeShippingAddressDisplay';

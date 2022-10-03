@@ -10,10 +10,10 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, { Component, ReactNode } from 'react';
 
-import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
-import { LoadingOverlay } from '../ui/loading';
+import CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
+import { LoadingOverlay } from '../../ui/loading';
 
-import ShippingHeader from './ShippingHeader';
+import ShippingHeader from '../ShippingHeader';
 import StripeShippingForm, { SingleShippingFormValues } from './StripeShippingForm';
 
 export interface StripeShippingProps {

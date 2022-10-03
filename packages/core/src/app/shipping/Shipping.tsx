@@ -31,7 +31,7 @@ import { MultiShippingFormValues } from './MultiShippingForm';
 import ShippingForm from './ShippingForm';
 import ShippingHeader from './ShippingHeader';
 import { SingleShippingFormValues } from './SingleShippingForm';
-import StripeShipping from './StripeShipping';
+import StripeShipping from './stripeUPE/StripeShipping';
 
 export interface ShippingProps {
     isBillingSameAsShipping: boolean;
