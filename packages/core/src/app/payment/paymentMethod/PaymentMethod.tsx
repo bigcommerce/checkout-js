@@ -166,6 +166,7 @@ const PaymentMethodComponent: FunctionComponent<
         method.id === PaymentMethodId.AdyenV2GooglePay ||
         method.id === PaymentMethodId.AdyenV3GooglePay ||
         method.id === PaymentMethodId.AuthorizeNetGooglePay ||
+        method.id === PaymentMethodId.BNZGooglePay ||
         method.id === PaymentMethodId.BraintreeGooglePay ||
         method.id === PaymentMethodId.CheckoutcomGooglePay ||
         method.id === PaymentMethodId.CybersourceV2GooglePay ||

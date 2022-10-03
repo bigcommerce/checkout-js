@@ -16,6 +16,7 @@ enum PaymentMethodId {
     Braintree = 'braintree',
     BraintreeVenmo = 'braintreevenmo',
     AuthorizeNetGooglePay = 'googlepayauthorizenet',
+    BNZGooglePay = 'googlepaybnz',
     BraintreeGooglePay = 'googlepaybraintree',
     BraintreeVisaCheckout = 'braintreevisacheckout',
     BraintreePaypalCredit = 'braintreepaypalcredit',
