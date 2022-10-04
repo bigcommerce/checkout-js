@@ -96,6 +96,8 @@ describe('Checkout', () => {
 
         jest.spyOn(checkoutService, 'getState').mockImplementation(() => checkoutState);
 
+        jest.spyOn(checkoutService, 'loadPaymentMethods').mockResolvedValue(checkoutService.getState());
+
         jest.spyOn(checkoutService, 'subscribe').mockImplementation((subscriber) => {
             subscribeEventEmitter.on('change', () => subscriber(checkoutService.getState()));
             subscribeEventEmitter.emit('change');

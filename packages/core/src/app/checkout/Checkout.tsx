@@ -349,7 +349,6 @@ class Checkout extends Component<
 
     private renderCustomerStep(step: CheckoutStepStatus): ReactNode {
         const { isGuestEnabled } = this.props;
-
         const {
             customerViewType = isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
         } = this.state;
@@ -381,6 +380,7 @@ class Checkout extends Component<
                         onSignIn={this.navigateToNextIncompleteStep}
                         onSignInError={this.handleError}
                         onUnhandledError={this.handleUnhandledError}
+                        step={step}
                         viewType={customerViewType}
                     />
                 </LazyContainer>
