@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.258.0](https://github.com/bigcommerce/checkout-js/compare/v1.257.2...v1.258.0) (2022-10-05)
+
+
+### Features
+
+* **payment:** STRIPE-25 create a custom guest form for Stripe link ([#1017](https://github.com/bigcommerce/checkout-js/issues/1017)) ([e2639ca](https://github.com/bigcommerce/checkout-js/commit/e2639ca7712137462e9232fee4c24622ef1ee1f9))
+
 ### [1.257.2](https://github.com/bigcommerce/checkout-js/compare/v1.257.1...v1.257.2) (2022-10-05)
 
 ### [1.257.1](https://github.com/bigcommerce/checkout-js/compare/v1.257.0...v1.257.1) (2022-10-05)
