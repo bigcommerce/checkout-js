@@ -509,8 +509,8 @@ class Payment extends Component<
 }
 
 export function mapToPaymentProps({
-    checkoutService,
-    checkoutState,
+        checkoutService,
+        checkoutState,
 }: CheckoutContextProps): WithCheckoutPaymentProps | null {
     const {
         data: {
@@ -532,7 +532,17 @@ export function mapToPaymentProps({
     const customer = getCustomer();
     const consignments = getConsignments();
     const { isComplete = false } = getOrder() || {};
-    const methods = getPaymentMethods() || EMPTY_ARRAY;
+    let methods = getPaymentMethods() || EMPTY_ARRAY;
+
+    //TODO: In accordance with the checkout team, this functionality is temporary and will be implemented in the backend instead.
+    if (customer?.isStripeLinkAuthenticated) {
+        const stripeUpePaymentMethod = methods.filter(method =>
+            method.id === 'card' && method.gateway === PaymentMethodId.StripeUPE
+        );
+
+        methods = stripeUpePaymentMethod.length ? stripeUpePaymentMethod : methods;
+    }
+
 
     if (!checkout || !config || !customer || isComplete) {
         return null;
