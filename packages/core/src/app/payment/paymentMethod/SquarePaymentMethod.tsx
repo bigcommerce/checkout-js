@@ -1,10 +1,12 @@
+import { noop } from 'lodash';
 import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, useCallback } from 'react';
+import React, { FunctionComponent, useCallback, useContext } from 'react';
 import { Omit } from 'utility-types';
 
 import HostedFieldPaymentMethod, {
     HostedFieldPaymentMethodProps,
 } from './HostedFieldPaymentMethod';
+import PaymentContext from '../PaymentContext';
 
 export type SquarePaymentMethodProps = Omit<
     HostedFieldPaymentMethodProps,
@@ -14,8 +16,10 @@ export type SquarePaymentMethodProps = Omit<
 const SquarePaymentMethod: FunctionComponent<SquarePaymentMethodProps> = ({
     initializePayment,
     method,
+    onUnhandledError = noop,
     ...rest
 }) => {
+    const paymentContext = useContext(PaymentContext);
     const initializeSquarePayment = useCallback(
         (options: PaymentInitializeOptions) =>
             initializePayment({
@@ -56,6 +60,10 @@ const SquarePaymentMethod: FunctionComponent<SquarePaymentMethodProps> = ({
             initializePayment={initializeSquarePayment}
             method={method}
             postalCodeId="sq-postal-code"
+            onUnhandledError={(e) => {
+                onUnhandledError(e);
+                paymentContext?.disableSubmit(method, true);
+            }}
         />
     );
 };
