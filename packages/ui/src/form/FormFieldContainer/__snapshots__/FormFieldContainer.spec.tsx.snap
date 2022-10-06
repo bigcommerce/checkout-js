@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FormFieldContainer matches snapshot with rendered markup 1`] = `
+<div
+  class="form-field"
+>
+  <input
+    type="text"
+  />
+</div>
+`;
