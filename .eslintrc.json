@@ -40,15 +40,19 @@
             "depConstraints": [
               {
                 "sourceTag": "scope:core",
-                "onlyDependOnLibsWithTags": ["scope:shared"]
+                "onlyDependOnLibsWithTags": ["scope:shared, scope:utils"]
               },
               {
                 "sourceTag": "scope:shared",
-                "onlyDependOnLibsWithTags": ["scope:shared"]
+                "onlyDependOnLibsWithTags": ["scope:shared, scope:utils"]
               },
               {
                 "sourceTag": "scope:integration",
-                "onlyDependOnLibsWithTags": ["scope:shared"]
+                "onlyDependOnLibsWithTags": ["scope:shared, scope:utils"]
+              },
+              {
+                "sourceTag": "scope:utils",
+                "onlyDependOnLibsWithTags": ["scope:utils"]
               }
             ]
           }
