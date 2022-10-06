@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.259.0](https://github.com/bigcommerce/checkout-js/compare/v1.258.1...v1.259.0) (2022-10-06)
+
+
+### Features
+
+* **payment:** STRIPE-52 Auto-Select Address and mount shipping component for Stripe Link ([#1018](https://github.com/bigcommerce/checkout-js/issues/1018)) ([339f8b5](https://github.com/bigcommerce/checkout-js/commit/339f8b52bbe947c85ab906077c8e9c50c8b8e2d6))
+
 ### [1.258.1](https://github.com/bigcommerce/checkout-js/compare/v1.258.0...v1.258.1) (2022-10-05)
 
 ## [1.258.0](https://github.com/bigcommerce/checkout-js/compare/v1.257.2...v1.258.0) (2022-10-05)
