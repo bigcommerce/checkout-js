@@ -61,4 +61,31 @@ describe('BasicFormField', () => {
 
         expect(component.exists('input')).toBe(true);
     });
+
+    it('renders input component with date value', async () => {
+        const component = mount(
+            <Formik
+                initialValues={{ foobar: '' }}
+                onSubmit={noop}
+                render={() => <BasicFormField name="foobar" />}
+            />,
+        );
+
+        const date = new Date();
+
+        component
+            .find('input[name="foobar"]')
+            .simulate('change', { target: { value: date, name: 'foobar' } })
+            .simulate('blur');
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        component.update();
+
+        const input = component.find('input');
+
+        expect(component.exists('input')).toBe(true);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        expect(input.get(0).props.value).toBe(date);
+    });
 });
