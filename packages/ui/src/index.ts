@@ -1,1 +1,1 @@
-export * from './lib/ui';
+export { Input } from './form';
