@@ -1,5 +1,5 @@
 import AddressSelector from './AddressSelector';
-import { getGoogleAutocompletePlaceMock } from './googleAutocompleteResult.mock';
+import { getGoogleAutocompleteNZPlaceMock, getGoogleAutocompletePlaceMock } from './googleAutocompleteResult.mock';
 
 describe('AddressSelector', () => {
     let googleAutoCompleteResponseMock: google.maps.places.PlaceResult;
@@ -37,6 +37,14 @@ describe('AddressSelector', () => {
             const accessor = new AddressSelector(googleAutoCompleteResponseMock);
 
             expect(accessor.getStreet2()).toBe('unit 6');
+        });
+
+        it('returns the correct street2 value for NZ', () => {
+            const googleAutoCompleteResponseMock = getGoogleAutocompleteNZPlaceMock();
+            const accessor = new AddressSelector(googleAutoCompleteResponseMock);
+
+            expect(accessor.getStreet()).toBe('6d/17 Alberton Avenue');
+            expect(accessor.getStreet2()).toBe('Mount Albert');
         });
     });
 

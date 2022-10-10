@@ -50,4 +50,5 @@ export type GoogleAddressFieldType =
     | 'route'
     | 'political'
     | 'country'
-    | 'subpremise';
+    | 'subpremise'
+    | 'sublocality';

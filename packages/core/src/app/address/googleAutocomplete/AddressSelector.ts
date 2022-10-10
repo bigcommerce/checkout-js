@@ -20,6 +20,10 @@ export default class AddressSelector {
     }
 
     getStreet2(): string {
+        if (this.getCountry() === 'NZ') {
+            return this._get('sublocality', 'short_name');
+        }
+
         return this._get('subpremise', 'short_name');
     }
 
