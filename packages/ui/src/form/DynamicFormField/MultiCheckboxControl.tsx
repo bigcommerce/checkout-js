@@ -2,7 +2,6 @@ import React, { FunctionComponent, memo, MouseEvent, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
-// eslint-disable-next-line import/no-unresolved
 import './MultiCheckboxControl.scss';
 
 export interface MultiCheckboxControlProps {
