@@ -37,7 +37,7 @@ $floating-label-input-height:        spacing("single") * 2.465;
 $floating-label-line-height--default:3.5;
 $floating-label-line-height--focus:  lineHeight("larger");
 $floating-label-top--default:        0;
-$floating-label-top--focus:          spacing("single") * 0.1972; // 8% of $floating-label-input-height
+$floating-label-top--focus:          $floating-label-input-height * 0.08;
 $floating-label-transition:          all 0.15s cubic-bezier(0.13, 0.615, 0.315, 0.915);
 
 // $input-font-family:               inherit;

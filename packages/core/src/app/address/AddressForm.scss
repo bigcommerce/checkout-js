@@ -16,7 +16,7 @@
         display: block;
         flex: 1;
         flex-basis: 100%;
-        margin-bottom: $floating-form-field-spacing;
+        margin-bottom: spacing("half");
         max-width: 100%;
         padding: 0 spacing("half");
 
@@ -26,6 +26,7 @@
     }
 
     .dynamic-form-field.floating-form-field {
+        margin-bottom: $floating-form-field-spacing;
         padding: 0 0.5 * $floating-form-field-spacing;
     }
 

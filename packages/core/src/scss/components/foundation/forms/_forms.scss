@@ -109,10 +109,11 @@
                 font-size: fontSize("tiny");
             }
         }
+    }
 
-        .floating-label + .form-field-errors {
-            padding-top: $floating-label-error-padding-top;
-        }
+    .floating-label + .form-field-errors,
+    .dynamic-form-field--addressLineAutocomplete.floating-form-field .form-field-errors {
+        padding-top: $floating-label-error-padding-top;
     }
 
     .form-input {
