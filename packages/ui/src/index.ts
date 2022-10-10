@@ -1,1 +1,1 @@
-export { Input } from './form';
+export { Input, FormContext, FormContextType } from './form';
