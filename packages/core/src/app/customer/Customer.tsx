@@ -571,7 +571,7 @@ export function mapToWithCheckoutCustomerProps({
         signInError: getSignInError(),
         isStripeLinkEnabled: stripeUpeLinkEnabled,
         loadPaymentMethods: checkoutService.loadPaymentMethods,
-        useFloatingLabel: isFloatingLabelEnabled({ checkoutService, checkoutState }),
+        useFloatingLabel: isFloatingLabelEnabled(config.checkoutSettings),
     };
 }
 

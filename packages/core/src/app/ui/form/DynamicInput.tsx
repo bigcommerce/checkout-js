@@ -5,6 +5,7 @@ import React, { FunctionComponent, memo, useCallback } from 'react';
 import ReactDatePicker from 'react-datepicker';
 
 import { withDate, WithDateProps } from '../../locale';
+import { IconChevronDown } from '../icon';
 
 import CheckboxInput from './CheckboxInput';
 import DynamicFormFieldType from './DynamicFormFieldType';
@@ -53,17 +54,13 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
         case DynamicFormFieldType.dropdown:
             return (
                 <>
-                    <svg
+                    <div
                         className={classNames(
-                            { 'dropdown-arrow': !useFloatingLabel },
-                            { 'floating-dropdown-arrow': useFloatingLabel },
-                        )}
-                        fill="none"
-                        viewBox="0 0 10 6"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <path d="M10 0H0L5 6L10 0Z" />
-                    </svg>
+                            { 'dropdown-chevron': !useFloatingLabel },
+                            { 'floating-select-chevron': useFloatingLabel },
+                        )}>
+                        <IconChevronDown />
+                    </div>
                     <select
                         {...(rest as any)}
                         className={classNames(
@@ -166,6 +163,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                     onChange={onChange}
                     testId={`${id}-text`}
                     type={fieldType}
+                    useFloatingLabel={useFloatingLabel}
                     value={value}
                 />
             );

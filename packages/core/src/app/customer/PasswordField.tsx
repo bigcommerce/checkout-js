@@ -1,5 +1,5 @@
 import { FieldProps } from 'formik';
-import React, { FunctionComponent, memo, useCallback } from 'react';
+import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '../locale';
 import { FormField, TextInput } from '../ui/form';
@@ -24,9 +24,15 @@ const PasswordField: FunctionComponent<WithFloatingLabel> = ({ useFloatingLabel 
                             type={isOpen ? 'text' : 'password'}
                             useFloatingLabel={useFloatingLabel}
                         />
-                        <Label useFloatingLabel={useFloatingLabel}>
-                            <TranslatedString id="customer.password_label" />
-                        </Label>
+                        {useFloatingLabel && (
+                            <Label
+                                htmlFor={props.field.name}
+                                id={`${props.field.name}-label`}
+                                useFloatingLabel={true}
+                            >
+                                <TranslatedString id="customer.password_label" />
+                            </Label>
+                        )}
                         <a
                             className="form-toggle-password form-input-icon"
                             href="#"
@@ -41,7 +47,9 @@ const PasswordField: FunctionComponent<WithFloatingLabel> = ({ useFloatingLabel 
         [useFloatingLabel],
     );
 
-    return <FormField input={renderInput} name="password" useFloatingLabel={useFloatingLabel} />;
+    const labelContent = useMemo(() => <TranslatedString id="customer.password_label" />, []);
+
+    return <FormField input={renderInput} labelContent={useFloatingLabel ? null : labelContent} name="password" useFloatingLabel={useFloatingLabel} />;
 };
 
 export default memo(PasswordField);

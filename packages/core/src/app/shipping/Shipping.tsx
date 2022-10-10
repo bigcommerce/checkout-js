@@ -435,7 +435,7 @@ export function mapToShippingProps({
         updateShippingAddress: checkoutService.updateShippingAddress,
         isStripeLinkEnabled: stripeUpeLinkEnabled,
         loadPaymentMethods: checkoutService.loadPaymentMethods,
-        useFloatingLabel: isFloatingLabelEnabled({ checkoutService, checkoutState }),
+        useFloatingLabel: isFloatingLabelEnabled(config.checkoutSettings),
     };
 }
 

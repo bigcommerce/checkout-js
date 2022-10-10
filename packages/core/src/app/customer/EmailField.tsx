@@ -3,7 +3,6 @@ import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '../locale';
 import { FormField, TextInput } from '../ui/form';
-import Label from '../ui/form/Label';
 
 export interface EmailFieldProps {
     useFloatingLabel?: boolean;
@@ -23,19 +22,13 @@ const EmailField: FunctionComponent<EmailFieldProps> = ({ onChange, useFloatingL
         ),
         [useFloatingLabel],
     );
-    const labelComponent = useMemo(
-        () => (
-            <Label useFloatingLabel={useFloatingLabel}>
-                <TranslatedString id="customer.email_label" />
-            </Label>
-        ),
-        [useFloatingLabel],
-    );
+
+    const labelContent = useMemo(() => <TranslatedString id="customer.email_label" />, []);
 
     return (
         <FormField
             input={renderInput}
-            label={labelComponent}
+            labelContent={labelContent}
             name="email"
             onChange={onChange}
             useFloatingLabel={useFloatingLabel}

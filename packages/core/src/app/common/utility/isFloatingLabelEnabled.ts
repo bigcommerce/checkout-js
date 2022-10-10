@@ -1,9 +1,5 @@
-import { CheckoutContextProps } from '../../checkout';
+import { CheckoutSettings } from '@bigcommerce/checkout-sdk';
 
-export default function isFloatingLabelEnabled(context: CheckoutContextProps): boolean {
-    return (
-        context.checkoutState.data.getConfig()?.checkoutSettings.features[
-            'CHECKOUT-6879.enable_floating_labels'
-        ] ?? false
-    );
+export default function isFloatingLabelEnabled(checkoutSettings: CheckoutSettings): boolean {
+    return !!checkoutSettings.features['CHECKOUT-6879.enable_floating_labels'];
 }

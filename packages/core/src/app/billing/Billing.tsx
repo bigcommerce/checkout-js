@@ -165,7 +165,7 @@ function mapToBillingProps({
         shouldShowOrderComments: enableOrderComments && getShippableItemsCount(cart) < 1,
         updateAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,
-        useFloatingLabel: isFloatingLabelEnabled({ checkoutService, checkoutState }),
+        useFloatingLabel: isFloatingLabelEnabled(config.checkoutSettings),
     };
 }
 

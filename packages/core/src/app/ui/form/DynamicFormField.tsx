@@ -12,6 +12,11 @@ import DynamicInput from './DynamicInput';
 import FormField from './FormField';
 import Label from './Label';
 
+export interface DynamicFormFieldOption {
+    code: string;
+    name: string;
+}
+
 export interface DynamicFormFieldProps {
     field: FormFieldType;
     inputId?: string;

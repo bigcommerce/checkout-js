@@ -29,7 +29,7 @@
     }
 
     #checkoutShippingAddress.form-fieldset:has(.floating-form-field) {
-        margin-bottom: 0.4rem;
+        margin-bottom: $fontSize-root - $floating-form-field-spacing;
     }
 
     .floating-fieldset {
@@ -48,9 +48,8 @@
         .floating-input,
         .floating-select {
             background-color: $floating-label-bg-color;
-            font-size: $floating-label-initial-font-size;
+            font-size: $floating-label-font-size--default;
             height: $floating-label-input-height;
-            margin-bottom: $floating-label-margin-bottom;
             padding-bottom: 0;
             padding-left: $input-horizontalPadding;
             padding-right: $input-horizontalPadding;
@@ -68,33 +67,27 @@
             padding-top: $input-verticalPadding * 2.5;
         }
 
-        .dropdown-arrow,
-        .floating-dropdown-arrow {
-            height: 6px;
+        .dropdown-chevron,
+        .floating-select-chevron {
             position: absolute;
             right: $input-horizontalPadding;
-            top: 65%;
-            width: 10px;
-
-            path {
-                fill: $input-border-color;
-            }
+            top: $floating-chevron-top + $fontSize-root * lineHeight("large");
         }
 
-        .floating-dropdown-arrow {
-            top: 45%;
+        .floating-select-chevron {
+            top: $floating-chevron-top;
         }
 
         .floating-label {
-            font-size: $floating-label-initial-font-size;
+            font-size: $floating-label-font-size--default;
             left: $input-horizontalPadding * 1.05;
-            line-height: $floating-label-initial-line-height;
+            line-height: $floating-label-line-height--default;
             position: absolute;
-            top: $floating-label-initial-top;
+            top: $floating-label-top--default;
             transition: $floating-label-transition;
 
             small {
-                font-size: $floating-label-initial-font-size;
+                font-size: $floating-label-font-size--default;
                 vertical-align: baseline;
             }
         }
@@ -109,8 +102,8 @@
             color: $floating-label-color;
             display: block;
             font-size: fontSize("tiny");
-            line-height: $floating-label-focus-line-height;
-            top: $floating-label-focus-top;
+            line-height: $floating-label-line-height--focus;
+            top: $floating-label-top--focus;
 
             small {
                 font-size: fontSize("tiny");
