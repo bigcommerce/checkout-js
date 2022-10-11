@@ -126,7 +126,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "file-loader": "^4.1.0",
     "glob": "^8.0.1",
-    "http-server": "^0.11.1",
+    "http-server": "^14.1.1",
     "image-webpack-loader": "^8.1.0",
     "jest": "^25.5.4",
     "mini-css-extract-plugin": "^2.6.0",
