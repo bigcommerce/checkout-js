@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BasicFormField matches snapshot 1`] = `
+<FormikConnect(FieldInner)
+  name="foobar"
+  render={[Function]}
+/>
+`;

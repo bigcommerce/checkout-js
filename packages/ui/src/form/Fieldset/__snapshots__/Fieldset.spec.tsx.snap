@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Fieldset matches snapshot 1`] = `
+<fieldset
+  className="form-fieldset"
+>
+  <legend>
+    Hello world
+  </legend>
+  <div
+    className="form-body"
+  >
+    <input
+      type="text"
+    />
+  </div>
+</fieldset>
+`;

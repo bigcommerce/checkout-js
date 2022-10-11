@@ -14,8 +14,8 @@ import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { getPaymentMethod } from '../payment-methods.mock';
-import BoltEmbeddedPaymentMethod from './BoltEmbeddedPaymentMethod';
 
+import BoltEmbeddedPaymentMethod from './BoltEmbeddedPaymentMethod';
 import HostedWidgetPaymentMethod, {
     HostedWidgetPaymentMethodProps,
 } from './HostedWidgetPaymentMethod';
@@ -34,6 +34,7 @@ describe('BoltEmbeddedPaymentMethod', () => {
     const initWithFormikComponent = async () => {
         const initializePaymentMock = jest.fn().mockImplementation((options) => {
             onPaymentSelect = options.bolt.onPaymentSelect;
+
             return checkoutState;
         });
 
@@ -58,6 +59,7 @@ describe('BoltEmbeddedPaymentMethod', () => {
         
 
         const hostedWidgetComponent: ReactWrapper<HostedWidgetPaymentMethodProps> = component.find(HostedWidgetPaymentMethod);
+
         hostedWidgetComponent.prop('initializePayment')({
             methodId: method.id,
             gatewayId: method.gateway,
@@ -141,24 +143,24 @@ describe('BoltEmbeddedPaymentMethod', () => {
     it('updates shouldCreateAccount value on onPaymentSelect callback call', async () => {
         await initWithFormikComponent();
 
-        expect(formikCopy.values['shouldCreateAccount']).toBeUndefined();
+        expect(formikCopy.values.shouldCreateAccount).toBeUndefined();
 
         await act(async () => {
             await onPaymentSelect(true);
         });
 
-        expect(formikCopy.values['shouldCreateAccount']).toBe(false);
+        expect(formikCopy.values.shouldCreateAccount).toBe(false);
     });
 
     it('should not update shouldCreateAccount value on onPaymentSelect callback call', async () => {
         await initWithFormikComponent();
 
-        expect(formikCopy.values['shouldCreateAccount']).toBeUndefined();
+        expect(formikCopy.values.shouldCreateAccount).toBeUndefined();
 
         await act(async () => {
             await onPaymentSelect(false);
         });
 
-        expect(formikCopy.values['shouldCreateAccount']).toBeUndefined();
+        expect(formikCopy.values.shouldCreateAccount).toBeUndefined();
     });
 });

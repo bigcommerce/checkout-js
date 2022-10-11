@@ -1,5 +1,7 @@
 import React, { FunctionComponent, useCallback, useState } from 'react';
+
 import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 
 import BoltCustomForm from './BoltCustomForm';
@@ -26,6 +28,7 @@ const BoltEmbeddedPaymentMethod: FunctionComponent<HostedPaymentMethodProps & Co
                     useBigCommerceCheckout: true,
                     onPaymentSelect: (hasBoltAccount: boolean) => {
                         setShowCreateAccountCheckbox(!hasBoltAccount);
+
                         if (hasBoltAccount) {
                             setFieldValue('shouldCreateAccount', false);
                         }

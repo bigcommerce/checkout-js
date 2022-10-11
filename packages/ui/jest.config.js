@@ -1,5 +1,5 @@
 module.exports = {
-    displayName: 'locale',
+    displayName: 'ui',
     preset: '../../jest.preset.js',
     globals: {
         'ts-jest': {
@@ -8,5 +8,5 @@ module.exports = {
         },
     },
     setupFilesAfterEnv: ['../../jest-setup.ts'],
-    coverageDirectory: '../../coverage/packages/locale',
+    coverageDirectory: '../../coverage/packages/ui',
 };

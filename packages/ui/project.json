@@ -1,20 +1,20 @@
 {
-  "root": "packages/locale",
-  "sourceRoot": "packages/locale/src",
+  "root": "packages/ui",
+  "sourceRoot": "packages/ui/src",
   "projectType": "library",
   "targets": {
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/locale/**/*.ts"]
+        "lintFilePatterns": ["packages/ui/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/locale"],
+      "outputs": ["coverage/packages/ui"],
       "options": {
-        "jestConfig": "packages/locale/jest.config.js",
+        "jestConfig": "packages/ui/jest.config.js",
         "passWithNoTests": true
       }
     }
