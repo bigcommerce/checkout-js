@@ -1,5 +1,5 @@
 import { createLanguageService, FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import React from 'react';
 

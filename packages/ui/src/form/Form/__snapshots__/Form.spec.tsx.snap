@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Form matches snapshot 1`] = `
+<div>
+  <form
+    novalidate=""
+  >
+    Hello world
+  </form>
+</div>
+`;

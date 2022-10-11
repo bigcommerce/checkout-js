@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { memoizeOne } from '@bigcommerce/memoize';
 import { Form as FormikForm, FormikFormProps } from 'formik';
 import { values } from 'lodash';

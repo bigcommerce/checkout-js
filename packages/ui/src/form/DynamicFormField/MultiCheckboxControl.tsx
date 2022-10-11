@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import React, { FunctionComponent, memo, MouseEvent, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';

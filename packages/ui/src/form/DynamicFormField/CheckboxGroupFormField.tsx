@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { FormFieldItem } from '@bigcommerce/checkout-sdk';
 import { FieldArray, FieldArrayRenderProps, getIn } from 'formik';
 import { difference, kebabCase, noop, pick } from 'lodash';
