@@ -2,6 +2,7 @@
 
 exports[`Input matches snapshot 1`] = `
 <input
+  className=""
   name="foobar"
 />
 `;

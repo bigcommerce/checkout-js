@@ -1,9 +1,11 @@
 import { FormFieldItem } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import { isDate, noop } from 'lodash';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 import ReactDatePicker from 'react-datepicker';
 
 import { withDate, WithDateProps } from '../../locale';
+import { IconChevronDown } from '../icon';
 
 import CheckboxInput from './CheckboxInput';
 import DynamicFormFieldType from './DynamicFormFieldType';
@@ -19,6 +21,7 @@ export interface DynamicInputProps extends InputProps {
     rows?: number;
     fieldType?: DynamicFormFieldType;
     options?: FormFieldItem[];
+    useFloatingLabel?: boolean;
 }
 
 const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
@@ -30,6 +33,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
     onChange = noop,
     options,
     placeholder,
+    useFloatingLabel,
     value,
     ...rest
 }) => {
@@ -49,23 +53,36 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
     switch (fieldType) {
         case DynamicFormFieldType.dropdown:
             return (
-                <select
-                    {...(rest as any)}
-                    className="form-select optimizedCheckout-form-select"
-                    data-test={`${id}-select`}
-                    id={id}
-                    name={name}
-                    onChange={onChange}
-                    value={value === null ? '' : value}
-                >
-                    {placeholder && <option value="">{placeholder}</option>}
-                    {options &&
-                        options.map(({ label, value: optionValue }) => (
-                            <option key={optionValue} value={optionValue}>
-                                {label}
-                            </option>
-                        ))}
-                </select>
+                <>
+                    <div
+                        className={classNames(
+                            { 'dropdown-chevron': !useFloatingLabel },
+                            { 'floating-select-chevron': useFloatingLabel },
+                        )}>
+                        <IconChevronDown />
+                    </div>
+                    <select
+                        {...(rest as any)}
+                        className={classNames(
+                            { 'floating-select': useFloatingLabel },
+                            'form-select optimizedCheckout-form-select',
+                        )}
+                        data-test={`${id}-select`}
+                        id={id}
+                        name={name}
+                        onChange={onChange}
+                        useFloatingLabel={useFloatingLabel}
+                        value={value === null ? '' : value}
+                    >
+                        {placeholder && <option value="">{placeholder}</option>}
+                        {options &&
+                            options.map(({ label, value: optionValue }) => (
+                                <option key={optionValue} value={optionValue}>
+                                    {label}
+                                </option>
+                            ))}
+                    </select>
+                </>
             );
 
         case DynamicFormFieldType.radio:
@@ -123,7 +140,9 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                     // https://github.com/Hacker0x01/react-datepicker/issues/1357
                     // onChangeRaw={ rest.onChange }
                     calendarClassName="optimizedCheckout-contentPrimary"
-                    className="form-input optimizedCheckout-form-input"
+                    className={classNames('form-input optimizedCheckout-form-input', {
+                        'floating-input': useFloatingLabel,
+                    })}
                     dateFormat={inputFormat}
                     maxDate={rest.max ? new Date(`${rest.max}T00:00:00Z`) : undefined}
                     minDate={rest.min ? new Date(`${rest.min}T00:00:00Z`) : undefined}
@@ -144,6 +163,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                     onChange={onChange}
                     testId={`${id}-text`}
                     type={fieldType}
+                    useFloatingLabel={useFloatingLabel}
                     value={value}
                 />
             );
@@ -160,6 +180,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                         fieldType === DynamicFormFieldType.password ? 'password' : 'text'
                     }`}
                     type={fieldType}
+                    useFloatingLabel={useFloatingLabel}
                     value={value}
                 />
             );

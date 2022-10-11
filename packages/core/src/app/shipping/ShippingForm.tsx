@@ -40,6 +40,7 @@ export interface ShippingFormProps {
     shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
     shouldShowAddAddressInCheckout: boolean;
+    useFloatingLabel?: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -94,6 +95,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             signOut,
             updateAddress,
             isShippingStepPending,
+            useFloatingLabel,
         } = this.props;
 
         return isMultiShippingMode ? (
@@ -119,6 +121,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 onUseNewAddress={onUseNewAddress}
                 shouldShowAddAddressInCheckout={shouldShowAddAddressInCheckout}
                 shouldShowOrderComments={shouldShowOrderComments}
+                useFloatingLabel={useFloatingLabel}
             />
         ) : (
             <SingleShippingForm
@@ -145,6 +148,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 shouldShowSaveAddress={shouldShowSaveAddress}
                 signOut={signOut}
                 updateAddress={updateAddress}
+                useFloatingLabel={useFloatingLabel}
             />
         );
     }

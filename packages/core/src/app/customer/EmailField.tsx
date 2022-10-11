@@ -5,10 +5,11 @@ import { TranslatedString } from '../locale';
 import { FormField, TextInput } from '../ui/form';
 
 export interface EmailFieldProps {
+    useFloatingLabel?: boolean;
     onChange?(value: string): void;
 }
 
-const EmailField: FunctionComponent<EmailFieldProps> = ({ onChange }) => {
+const EmailField: FunctionComponent<EmailFieldProps> = ({ onChange, useFloatingLabel }) => {
     const renderInput = useCallback(
         (props: FieldProps) => (
             <TextInput
@@ -16,9 +17,10 @@ const EmailField: FunctionComponent<EmailFieldProps> = ({ onChange }) => {
                 autoComplete={props.field.name}
                 id={props.field.name}
                 type="email"
+                useFloatingLabel={useFloatingLabel}
             />
         ),
-        [],
+        [useFloatingLabel],
     );
 
     const labelContent = useMemo(() => <TranslatedString id="customer.email_label" />, []);
@@ -29,6 +31,7 @@ const EmailField: FunctionComponent<EmailFieldProps> = ({ onChange }) => {
             labelContent={labelContent}
             name="email"
             onChange={onChange}
+            useFloatingLabel={useFloatingLabel}
         />
     );
 };

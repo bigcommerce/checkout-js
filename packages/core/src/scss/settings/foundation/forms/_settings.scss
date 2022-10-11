@@ -25,6 +25,21 @@ $form-label-line-height:             lineHeight("base");
 $form-label-font-color:              color("greys", "dark");
 $form-label-bottom-margin:           ($form-spacing / 4);
 
+// We use these to style floating labels
+$floating-chevron-top:               $fontSize-root * 1.15;
+$floating-form-field-spacing:        8px;
+$floating-label-border-color:        color("greys", "light");
+$floating-label-bg-color:            color("greys", "lightest");
+$floating-label-color:               color("greys", "dark");
+$floating-label-error-padding-top:   spacing("half");
+$floating-label-font-size--default:  1.077rem; // 14px
+$floating-label-input-height:        spacing("single") * 2.465;
+$floating-label-line-height--default:3.5;
+$floating-label-line-height--focus:  lineHeight("larger");
+$floating-label-top--default:        0;
+$floating-label-top--focus:          $floating-label-input-height * 0.08;
+$floating-label-transition:          all 0.15s cubic-bezier(0.13, 0.615, 0.315, 0.915);
+
 // $input-font-family:               inherit;
 $input-font-color:                   $body-font-color;
 $input-font-size:                    fontSize("base");

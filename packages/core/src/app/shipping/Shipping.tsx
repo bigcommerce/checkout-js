@@ -20,7 +20,7 @@ import { createSelector } from 'reselect';
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
 import { CheckoutContextProps, withCheckout } from '../checkout';
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
-import { EMPTY_ARRAY } from '../common/utility';
+import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
 import { PaymentMethodId } from '../payment/paymentMethod';
 import { LoadingOverlay } from '../ui/loading';
 
@@ -65,6 +65,7 @@ export interface WithCheckoutShippingProps {
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
     isStripeLinkEnabled?: boolean;
+    useFloatingLabel?: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitializeShippingMethod(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -129,6 +130,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             onToggleMultiShipping,
             isStripeLinkEnabled,
             step,
+            useFloatingLabel,
             ...shippingFormProps
         } = this.props;
 
@@ -179,6 +181,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                     onUseNewAddress={ this.handleUseNewAddress }
                     shouldShowSaveAddress={ !isGuest }
                     updateAddress={ updateShippingAddress }
+                    useFloatingLabel={useFloatingLabel}
                 />
             </LoadingOverlay>
         </div>;
@@ -432,6 +435,7 @@ export function mapToShippingProps({
         updateShippingAddress: checkoutService.updateShippingAddress,
         isStripeLinkEnabled: stripeUpeLinkEnabled,
         loadPaymentMethods: checkoutService.loadPaymentMethods,
+        useFloatingLabel: isFloatingLabelEnabled(config.checkoutSettings),
     };
 }
 

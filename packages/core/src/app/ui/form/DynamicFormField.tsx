@@ -1,4 +1,5 @@
 import { FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import { FieldProps } from 'formik';
 import { includes } from 'lodash';
 import React, { FunctionComponent, memo, ReactNode, useCallback, useMemo } from 'react';
@@ -24,6 +25,7 @@ export interface DynamicFormFieldProps {
     parentFieldName?: string;
     placeholder?: string;
     label?: ReactNode;
+    useFloatingLabel?: boolean;
     onChange?(value: string | string[]): void;
 }
 
@@ -47,13 +49,22 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
     autocomplete,
     label,
     extraClass,
+    useFloatingLabel,
 }) => {
     const fieldInputId = inputId || name;
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
-
+    const isFloatingLabelSupportedFieldType = Boolean(
+        useFloatingLabel &&
+            (includes(['text', 'password', 'dropdown', 'date', 'multiline'], fieldType) ||
+                !fieldType),
+    );
     const labelComponent = useMemo(
         () => (
-            <Label htmlFor={fieldInputId} id={`${fieldInputId}-label`}>
+            <Label
+                htmlFor={fieldInputId}
+                id={`${fieldInputId}-label`}
+                useFloatingLabel={isFloatingLabelSupportedFieldType}
+            >
                 {label || fieldLabel}
                 {!required && (
                     <>
@@ -65,7 +76,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 )}
             </Label>
         ),
-        [fieldInputId, fieldLabel, required, label],
+        [fieldInputId, fieldLabel, required, isFloatingLabelSupportedFieldType, label],
     );
 
     const dynamicFormFieldType = useMemo((): DynamicFormFieldType => {
@@ -82,7 +93,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
         }
 
         return fieldType as DynamicFormFieldType;
-    }, [fieldType, type, secret]);
+    }, [fieldType, type, secret, name]);
 
     const renderInput = useCallback(
         ({ field }: FieldProps<string>) => (
@@ -98,6 +109,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 options={options && options.items}
                 placeholder={placeholder || (options && options.helperLabel)}
                 rows={options && (options as any).rows}
+                useFloatingLabel={isFloatingLabelSupportedFieldType}
             />
         ),
         [
@@ -113,7 +125,13 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
     );
 
     return (
-        <div className={`dynamic-form-field ${extraClass}`}>
+        <div
+            className={classNames(
+                'dynamic-form-field',
+                { 'floating-form-field': isFloatingLabelSupportedFieldType },
+                extraClass,
+            )}
+        >
             {fieldType === DynamicFormFieldType.checkbox ? (
                 <CheckboxGroupFormField
                     id={fieldInputId}
@@ -129,6 +147,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                     label={labelComponent}
                     name={fieldName}
                     onChange={onChange}
+                    useFloatingLabel={isFloatingLabelSupportedFieldType}
                 />
             )}
         </div>

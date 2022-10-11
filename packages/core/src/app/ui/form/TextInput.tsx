@@ -7,11 +7,18 @@ export interface TextInputProps extends InputProps {
     additionalClassName?: string;
     appearFocused?: boolean;
     type?: 'text' | 'password' | 'tel' | 'email' | 'number';
+    useFloatingLabel?: boolean;
 }
 
 const TextInput = forwardRef(
     (
-        { additionalClassName, appearFocused, type = 'text', ...rest }: TextInputProps,
+        {
+            additionalClassName,
+            useFloatingLabel,
+            appearFocused,
+            type = 'text',
+            ...rest
+        }: TextInputProps,
         ref: Ref<HTMLInputElement>,
     ) => (
         <Input
@@ -25,6 +32,7 @@ const TextInput = forwardRef(
             )}
             ref={ref}
             type={type}
+            useFloatingLabel={useFloatingLabel}
         />
     ),
 );

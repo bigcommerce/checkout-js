@@ -26,6 +26,7 @@ export interface EmailLoginFormProps {
     emailHasBeenRequested?: boolean;
     sentEmail?: SignInEmail;
     sentEmailError?: any;
+    useFloatingLabel?: boolean;
     onRequestClose?(): void;
     onSendLoginEmail?(values: EmailLoginFormValues): void;
 }
@@ -45,6 +46,7 @@ const EmailLoginForm: FunctionComponent<
     sentEmailError,
     sentEmail,
     submitForm,
+    useFloatingLabel,
     values: { email: formEmail },
 }) => {
     const modalHeaderStringId = useMemo(() => {
@@ -170,7 +172,7 @@ const EmailLoginForm: FunctionComponent<
         }
 
         if (emailHasBeenRequested && !sentEmail) {
-            return <EmailField />;
+            return <EmailField useFloatingLabel={useFloatingLabel} />;
         }
 
         return (
@@ -178,7 +180,7 @@ const EmailLoginForm: FunctionComponent<
                 <p>
                     <TranslatedString id="login_email.text" />
                 </p>
-                <EmailField />
+                <EmailField useFloatingLabel={useFloatingLabel} />
             </>
         );
     }, [sentEmailError, emailHasBeenRequested, sentEmail, formEmail]);
