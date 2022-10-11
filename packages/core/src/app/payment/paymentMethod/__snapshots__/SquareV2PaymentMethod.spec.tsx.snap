@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`when using SquareV2PaymentMethod should render dummy form fields 1`] = `
+<div
+  data-test="squarev2_dummy_form"
+  style={
+    Object {
+      "display": "none",
+    }
+  }
+>
+  <div
+    className="form-field"
+  >
+    <div
+      className="form-label"
+      id="labelDefault"
+    />
+    <div
+      className="form-input"
+      id="inputDefault"
+    />
+  </div>
+  <div
+    className="form-field"
+  >
+    <div
+      className="form-input form-input--focus"
+      id="inputFocus"
+    />
+  </div>
+  <div
+    className="form-field form-field--error"
+  >
+    <div
+      className="form-label"
+      id="labelError"
+    />
+    <div
+      className="form-input"
+      id="inputError"
+    />
+  </div>
+</div>
+`;
