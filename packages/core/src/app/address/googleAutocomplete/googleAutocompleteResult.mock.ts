@@ -55,3 +55,52 @@ export function getGoogleAutocompletePlaceMock(): google.maps.places.PlaceResult
         ],
     } as google.maps.places.PlaceResult;
 }
+
+
+export function getGoogleAutocompleteNZPlaceMock(): google.maps.places.PlaceResult {
+    return {
+        name: '6d/17 Alberton Avenue',
+        address_components: [
+            {
+               "long_name" : "6d",
+               "short_name" : "6d",
+               "types" : [ "subpremise" ]
+            },
+            {
+               "long_name" : "17",
+               "short_name" : "17",
+               "types" : [ "street_number" ]
+            },
+            {
+               "long_name" : "Alberton Avenue",
+               "short_name" : "Alberton Ave",
+               "types" : [ "route" ]
+            },
+            {
+               "long_name" : "Mount Albert",
+               "short_name" : "Mount Albert",
+               "types" : [ "sublocality_level_1", "sublocality", "political" ]
+            },
+            {
+               "long_name" : "Auckland",
+               "short_name" : "Auckland",
+               "types" : [ "locality", "political" ]
+            },
+            {
+               "long_name" : "Auckland",
+               "short_name" : "Auckland",
+               "types" : [ "administrative_area_level_1", "political" ]
+            },
+            {
+               "long_name" : "New Zealand",
+               "short_name" : "NZ",
+               "types" : [ "country", "political" ]
+            },
+            {
+               "long_name" : "1025",
+               "short_name" : "1025",
+               "types" : [ "postal_code" ]
+            }
+        ],
+    } as google.maps.places.PlaceResult;
+}
