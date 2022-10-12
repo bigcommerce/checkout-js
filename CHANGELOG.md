@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.261.0](https://github.com/bigcommerce/checkout-js/compare/v1.260.1...v1.261.0) (2022-10-12)
+
+
+### Features
+
+* **payment:** BOLT-332 fixed issue with initialize Bolt client on mobile ([c8ced25](https://github.com/bigcommerce/checkout-js/commit/c8ced2542c17c77bdf8a3225361da5db27eabcea))
+
+
+### Bug Fixes
+
+* **shipping:** CHECKOUT-5034 Update autocomplete fix for NZ address ([#1052](https://github.com/bigcommerce/checkout-js/issues/1052)) ([de7ed1d](https://github.com/bigcommerce/checkout-js/commit/de7ed1dfd91a02942820801cba88801cb202e79b))
+
 ### [1.260.1](https://github.com/bigcommerce/checkout-js/compare/v1.260.0...v1.260.1) (2022-10-11)
 
 ## [1.260.0](https://github.com/bigcommerce/checkout-js/compare/v1.259.0...v1.260.0) (2022-10-11)
