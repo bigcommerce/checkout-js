@@ -1,7 +1,7 @@
 import React, { FunctionComponent, InputHTMLAttributes } from 'react';
 
-import Input from '../Input/Input';
-import Label from '../Label/Label';
+import { Input } from '../Input';
+import { Label } from '../Label';
 
 export interface ChecklistItemInputProps extends InputHTMLAttributes<HTMLInputElement> {
     isSelected: boolean;

@@ -5,8 +5,8 @@ import { FieldArray, FieldArrayRenderProps, getIn } from 'formik';
 import { difference, kebabCase, noop, pick } from 'lodash';
 import React, { ChangeEvent, FunctionComponent, memo, ReactNode, useCallback } from 'react';
 
-import FormFieldContainer from '../FormFieldContainer/FormFieldContainer';
-import FormFieldError from '../FormFieldError/FormFieldError';
+import { FormFieldContainer } from '../FormFieldContainer';
+import { FormFieldError } from '../FormFieldError';
 
 import DynamicFormFieldType from './DynamicFormFieldType';
 import DynamicInput from './DynamicInput';

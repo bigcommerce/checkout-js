@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import React, { forwardRef, ReactNode, Ref } from 'react';
 
-import Input, { InputProps } from '../Input/Input';
-import Label from '../Label/Label';
+import { Input, InputProps } from '../Input';
+import { Label } from '../Label';
 
 export interface CheckboxInputProps extends InputProps {
     additionalClassName?: string;

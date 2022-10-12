@@ -5,7 +5,7 @@ import React from 'react';
 
 import { LocaleContext, LocaleContextType, TranslatedString } from '@bigcommerce/checkout/locale';
 
-import FormField from '../FormField/FormField';
+import { FormField } from '../FormField';
 
 import CheckboxGroupFormField from './CheckboxGroupFormField';
 import DynamicFormField from './DynamicFormField';

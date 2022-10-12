@@ -6,7 +6,7 @@ import React, { createRef, FunctionComponent, memo, useCallback, useRef } from '
 
 import { FormProvider } from '@bigcommerce/checkout/payment-integration-api';
 
-import { FormContextType } from '../context/FormContext';
+import { FormContextType } from '../contexts';
 
 export interface FormProps extends FormikFormProps {
     testId?: string;

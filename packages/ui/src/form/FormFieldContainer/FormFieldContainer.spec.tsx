@@ -1,7 +1,7 @@
 import { mount, render } from 'enzyme';
 import React from 'react';
 
-import FormContext from '../context/FormContext';
+import { FormContext } from '../contexts';
 
 import FormFieldContainer from './FormFieldContainer';
 

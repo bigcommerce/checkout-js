@@ -2,9 +2,9 @@ import { FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
 import React, { FunctionComponent, memo, ReactNode, useCallback } from 'react';
 
-import BasicFormField from '../BasicFormField/BasicFormField';
-import FormFieldError from '../FormFieldError/FormFieldError';
-import Label from '../Label/Label';
+import { BasicFormField } from '../BasicFormField';
+import { FormFieldError } from '../FormFieldError';
+import { Label } from '../Label';
 
 export interface FormFieldProps {
     additionalClassName?: string;

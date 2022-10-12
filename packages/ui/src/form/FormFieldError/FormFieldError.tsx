@@ -1,7 +1,7 @@
 import { ErrorMessage } from 'formik';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 
-import FormContext from '../context/FormContext';
+import { FormContext } from '../contexts';
 
 export interface FormFieldErrorProps {
     name: string;

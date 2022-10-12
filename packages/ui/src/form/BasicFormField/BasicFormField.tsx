@@ -10,7 +10,7 @@ import React, {
 } from 'react';
 import shallowEqual from 'shallowequal';
 
-import FormFieldContainer from '../FormFieldContainer/FormFieldContainer';
+import { FormFieldContainer } from '../FormFieldContainer';
 
 export interface BasicFormFieldProps extends FieldConfig {
     additionalClassName?: string;

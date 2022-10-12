@@ -2,9 +2,9 @@ import { FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
 import React, { FunctionComponent, memo, ReactNode, useCallback } from 'react';
 
-import BasicFormField from '../BasicFormField/BasicFormField';
-import CheckboxInput from '../CheckboxInput/CheckboxInput';
-import FormFieldError from '../FormFieldError/FormFieldError';
+import { BasicFormField } from '../BasicFormField';
+import { CheckboxInput } from '../CheckboxInput';
+import { FormFieldError } from '../FormFieldError';
 
 export interface CheckboxFormFieldProps {
     additionalClassName?: string;

@@ -5,10 +5,10 @@ import ReactDatePicker from 'react-datepicker';
 
 import { LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 
-import CheckboxInput from '../CheckboxInput/CheckboxInput';
-import RadioInput from '../RadioInput/RadioInput';
-import TextArea from '../TextArea/TextArea';
-import TextInput from '../TextInput/TextInput';
+import { CheckboxInput } from '../CheckboxInput';
+import { RadioInput } from '../RadioInput';
+import { TextArea } from '../TextArea';
+import { TextInput } from '../TextInput';
 
 import DynamicFormFieldType from './DynamicFormFieldType';
 import DynamicInput, { DynamicInputProps } from './DynamicInput';

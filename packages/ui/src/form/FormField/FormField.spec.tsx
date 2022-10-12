@@ -3,7 +3,7 @@ import React from 'react';
 
 import FormField from './FormField';
 
-describe.only('FormField', () => {
+describe('FormField', () => {
     it('matches snapshot', () => {
         const props = {
             additionalClassName: 'test',

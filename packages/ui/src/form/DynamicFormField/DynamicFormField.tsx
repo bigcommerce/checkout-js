@@ -5,8 +5,8 @@ import React, { FunctionComponent, memo, ReactNode, useCallback, useMemo } from 
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
-import FormField from '../FormField/FormField';
-import Label from '../Label/Label';
+import { FormField } from '../FormField';
+import { Label } from '../Label';
 
 import CheckboxGroupFormField from './CheckboxGroupFormField';
 import DynamicFormFieldType from './DynamicFormFieldType';
