@@ -1,7 +1,7 @@
 import { TranslationData } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
-import { useLocale } from '../context';
+import { useLocale } from '../contexts';
 
 export interface TranslatedStringProps {
     id: string;

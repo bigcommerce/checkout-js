@@ -2,7 +2,7 @@ import { createLanguageService } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 import { create } from 'react-test-renderer';
 
-import { LocaleContext } from '../context';
+import { LocaleContext } from '../contexts';
 
 import TranslatedString from './TranslatedString';
 

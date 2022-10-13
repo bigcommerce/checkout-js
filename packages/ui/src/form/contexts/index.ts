@@ -1,1 +1,1 @@
-export { default as FormContext, FormContextType } from './FormContext';
+export { default as FormContext, FormContextType, FormProvider } from './FormContext';

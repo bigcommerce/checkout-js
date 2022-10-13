@@ -4,9 +4,7 @@ import { Form as FormikForm, FormikFormProps } from 'formik';
 import { values } from 'lodash';
 import React, { createRef, FunctionComponent, memo, useCallback, useRef } from 'react';
 
-import { FormProvider } from '@bigcommerce/checkout/payment-integration-api';
-
-import { FormContextType } from '../contexts';
+import { FormContextType, FormProvider } from '../contexts';
 
 export interface FormProps extends FormikFormProps {
     testId?: string;
