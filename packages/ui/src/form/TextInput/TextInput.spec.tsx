@@ -1,7 +1,7 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import Input from '../Input/Input';
+import { Input } from '../Input';
 
 import TextInput from './TextInput';
 

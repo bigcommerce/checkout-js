@@ -3,8 +3,8 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import BasicFormField from '../BasicFormField/BasicFormField';
-import FormContext from '../context/FormContext';
+import { BasicFormField } from '../BasicFormField';
+import { FormContext } from '../contexts';
 
 import FormFieldError from './FormFieldError';
 

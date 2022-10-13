@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { FunctionComponent, memo, ReactNode } from 'react';
 
-import FormContext from '../context/FormContext';
+import { FormContext } from '../contexts';
 
 export interface FormFieldContainerProps {
     additionalClassName?: string;

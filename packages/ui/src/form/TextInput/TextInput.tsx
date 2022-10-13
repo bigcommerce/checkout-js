@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { forwardRef, Ref } from 'react';
 
-import Input, { InputProps } from '../Input/Input';
+import { Input, InputProps } from '../Input';
 
 export interface TextInputProps extends InputProps {
     additionalClassName?: string;

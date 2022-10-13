@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FormField matches snapshot 1`] = `
+<div
+  class="form-field test"
+/>
+`;
+
+exports[`FormField matches snapshot when label is type of function 1`] = `
+<div
+  class="form-field test"
+/>
+`;
+
+exports[`FormField matches snapshot when labelContent is provided 1`] = `
+<div
+  class="form-field test"
+>
+  <label
+    class="form-label optimizedCheckout-form-label"
+    for="test"
+    id="test-label"
+  />
+</div>
+`;

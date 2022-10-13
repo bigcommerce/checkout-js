@@ -1,0 +1,12 @@
+@import '../../Base.scss';
+
+.multiCheckbox--controls {
+    list-style: none;
+    margin: 0 0 spacing("half");
+    padding: 0;
+}
+
+.multiCheckbox--control {
+    display: inline-block;
+    margin-right: spacing("quarter");
+}

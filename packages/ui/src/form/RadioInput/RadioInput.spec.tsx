@@ -1,8 +1,8 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 
-import Input from '../Input/Input';
-import Label from '../Label/Label';
+import { Input } from '../Input';
+import { Label } from '../Label';
 
 import RadioInput from './RadioInput';
 

@@ -1,1 +1,2 @@
-export { Input } from './form';
+/* istanbul ignore file */
+export { Input, FormContext, FormContextType } from './form';
