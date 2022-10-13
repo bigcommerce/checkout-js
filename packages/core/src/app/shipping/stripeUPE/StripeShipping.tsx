@@ -1,13 +1,4 @@
-import {
-    Address,
-    CheckoutSelectors,
-    Consignment,
-    Country,
-    Customer,
-    FormField,
-    ShippingInitializeOptions,
-    ShippingRequestOptions,
-} from '@bigcommerce/checkout-sdk';
+import { Address, CheckoutSelectors, Consignment, Country, Customer, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import React, { Component, ReactNode } from 'react';
 
 import CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
@@ -28,6 +19,7 @@ export interface StripeShippingProps {
     isGuest: boolean;
     isInitializing: boolean;
     isLoading: boolean;
+    isShippingMethodLoading: boolean;
     isShippingStepPending: boolean;
     methodId?: string;
     shippingAddress?: Address;
@@ -75,6 +67,7 @@ class StripeShipping extends Component<StripeShippingProps, StripeShippingState>
             onSubmit,
             onMultiShippingChange,
             isLoading,
+            isShippingMethodLoading,
             ...shippingFormProps
         } = this.props;
 
@@ -82,7 +75,6 @@ class StripeShipping extends Component<StripeShippingProps, StripeShippingState>
             isStripeLoading,
             isStripeAutoStep,
         } = this.state;
-
 
             return <div className="checkout-form">
                 <div style={ {display: isStripeAutoStep ? 'none' : undefined,} }>
@@ -110,6 +102,7 @@ class StripeShipping extends Component<StripeShippingProps, StripeShippingState>
                                 isMultiShippingMode={isMultiShippingMode}
                                 isStripeAutoStep={this.handleIsAutoStep}
                                 isStripeLoading={this.stripeLoadedCallback}
+                                isShippingMethodLoading={isShippingMethodLoading}
                                 onSubmit={onSubmit}
                                 step={step}
                                 updateAddress={updateAddress}

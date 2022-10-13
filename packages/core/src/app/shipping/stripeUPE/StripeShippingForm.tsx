@@ -37,6 +37,7 @@ export interface SingleShippingFormProps {
     countries: Country[];
     customerMessage: string;
     isLoading: boolean;
+    isShippingMethodLoading: boolean;
     isMultiShippingMode: boolean;
     methodId?: string;
     shippingAddress?: Address;
@@ -89,6 +90,7 @@ class StripeShippingForm extends PureComponent<
             onSubmit,
             isStripeAutoStep,
             step,
+            isShippingMethodLoading,
         } = this.props;
 
         const { isUpdatingShippingData } = this.state;
@@ -101,6 +103,7 @@ class StripeShippingForm extends PureComponent<
                         countries={countries}
                         deinitialize={deinitialize}
                         initialize={initialize}
+                        isShippingMethodLoading={isShippingMethodLoading}
                         isStripeAutoStep={isStripeAutoStep}
                         isStripeLoading={isStripeLoading}
                         onAddressSelect={this.handleAddressSelect}

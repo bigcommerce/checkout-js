@@ -36,6 +36,7 @@ describe('SingleShippingForm', () => {
                 isEditable: true,
                 isRequired: true,
                 type: CheckoutStepType.Shipping },
+            isShippingMethodLoading: false,
             customerEmail: 'foo@test.com',
             isShippingStepPending: false,
             onSubmit: jest.fn(),

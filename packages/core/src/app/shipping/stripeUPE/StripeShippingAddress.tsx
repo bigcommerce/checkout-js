@@ -24,6 +24,7 @@ export interface StripeShippingAddressProps {
     countries?: Country[];
     shippingAddress?: Address;
     step: CheckoutStepStatus;
+    isShippingMethodLoading: boolean;
     shouldDisableSubmit: boolean;
     isStripeLoading?(): void;
     isStripeAutoStep?(): void;
@@ -45,6 +46,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
         step,
         isStripeLoading,
         isStripeAutoStep,
+        isShippingMethodLoading,
     } = props;
 
     const [isNewAddress, setIsNewAddress] = useState(true);
@@ -83,17 +85,16 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
     }, [consignments]);
 
     useEffect(() => {
-        if (!isFirstShippingRender && stripeShippingAddress.firstName && !isNewAddress && hasSelectedShippingOptions(consignments)) {
-            setTimeout(() => {
+        if (stripeShippingAddress.firstName && hasSelectedShippingOptions(consignments)) {
+            if (!isFirstShippingRender && !isNewAddress && !isShippingMethodLoading) {
                 if (isStripeLoading && isStripeAutoStep) {
                     isStripeLoading();
                     isStripeAutoStep();
                 }
-
                 onSubmit({billingSameAsShipping: true, shippingAddress: stripeShippingAddress, orderComment: ''});
-            }, 300);
+            }
         }
-    }, [isFirstShippingRender, onSubmit, stripeShippingAddress, shouldDisableSubmit, isNewAddress ,consignments]);
+    }, [isFirstShippingRender, onSubmit, stripeShippingAddress, shouldDisableSubmit, isShippingMethodLoading, isNewAddress ,consignments]);
 
     const availableShippingList = countries?.map(country => ({code: country.code, name: country.name}));
     const allowedCountries = availableShippingList ? availableShippingList.map(country => country.code).join(', ') : '';
@@ -163,9 +164,8 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
         if (parentContainer) {
             return getAppliedStyles(parentContainer, properties);
         }
- 
-            return undefined;
-        
+
+        return undefined;
     };
 
     const getStripeStyles: any = useCallback( () => {
@@ -191,6 +191,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
                 onChangeShipping: handleStripeShippingAddress,
                 availableCountries: allowedCountries,
                 getStyles: getStripeStyles,
+                getStripeState: StripeStateMapper,
                 gatewayId: 'stripeupe',
                 methodId: 'card',
             },

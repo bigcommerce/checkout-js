@@ -6,6 +6,11 @@ describe('hasSelectedShippingOptions()', () => {
             .toBe('JAL');
     });
 
+    it('returns correct Stripe state code', () => {
+        expect(StripeStateMapper('MX','JAL'))
+            .toBe('Jal.');
+    });
+
     it('returns same state code with invalid country', () => {
         expect(StripeStateMapper('AU','Foo'))
             .toBe('Foo');

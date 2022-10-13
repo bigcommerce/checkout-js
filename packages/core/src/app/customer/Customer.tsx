@@ -114,7 +114,9 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
 
         try {
             await loadPaymentMethods();
-            await initializeCustomer({ methodId: providerWithCustomCheckout });
+            if (providerWithCustomCheckout !== 'stripeupe') {
+                await initializeCustomer({methodId: providerWithCustomCheckout});
+            }
         } catch (error) {
             onUnhandledError(error);
         }
@@ -375,7 +377,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
 
             const customer = data.getCustomer();
 
-            if (customer && customer.shouldEncourageSignIn && customer.isGuest) {
+            if (customer && customer.shouldEncourageSignIn && customer.isGuest && !customer.isStripeLinkAuthenticated) {
                 return onChangeViewType(CustomerViewType.SuggestedLogin);
             }
 
@@ -471,7 +473,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             providerWithCustomCheckout,
         } = this.props;
 
-        if (providerWithCustomCheckout) {
+        if (providerWithCustomCheckout && providerWithCustomCheckout !== 'stripeupe') {
             await executePaymentMethodCheckout({
                 methodId: providerWithCustomCheckout,
                 continueWithCheckoutCallback: onContinueAsGuest,

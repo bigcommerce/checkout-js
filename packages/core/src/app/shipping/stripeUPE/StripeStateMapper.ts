@@ -1,6 +1,14 @@
+interface stripeCountryMapping {
+    [key: string]: stripeStateMapping;
+}
+
+interface stripeStateMapping {
+    [key: string]: string;
+}
+
 export default function StripeStateMapper(country: string, state: string): string {
 
-    const bigcommerceStates: any = {
+    const countries: stripeCountryMapping = {
         'MX': {
             'Ags.': 'AGU',
             'B.C.': 'BCN',
@@ -224,9 +232,13 @@ export default function StripeStateMapper(country: string, state: string): strin
         }
     };
 
-    if (bigcommerceStates[country]) {
-        return bigcommerceStates[country][state] || state;
+    if (countries[country]) {
+        return countries[country][state]?? getStripeState(countries[country], state);
     }
 
     return state;
+}
+
+function getStripeState(stateList: stripeStateMapping, state: string) {
+    return Object.keys(stateList).find(key => stateList[key] === state) || state;
 }
