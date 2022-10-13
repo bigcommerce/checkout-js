@@ -466,7 +466,7 @@ class Checkout extends Component<
                 onEdit={this.handleEditStep}
                 onExpanded={this.handleExpanded}
             >
-                <LazyContainer>
+                <LazyContainer hasLoadingSkeleton>
                     <Payment
                         checkEmbeddedSupport={this.checkEmbeddedSupport}
                         errorLogger={errorLogger}

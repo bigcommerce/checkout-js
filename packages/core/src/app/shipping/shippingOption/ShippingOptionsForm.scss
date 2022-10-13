@@ -5,8 +5,7 @@
     border: container("border");
     border-radius: $global-radius;
     display: flex;
-    min-height: 10rem;
-    padding: spacing("half");
+    min-height: remCalc(151.34px);
     text-align: center;
 }
 
@@ -14,4 +13,5 @@
     align-self: center;
     flex: 1;
     margin: 0;
+    padding: spacing("half");
 }

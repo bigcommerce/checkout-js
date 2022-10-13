@@ -3,9 +3,10 @@ import { FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
 
+import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
+
 import { StaticAddress } from '../../address';
 import { TranslatedString } from '../../locale';
-import { LoadingOverlay } from '../../ui/loading';
 import getRecommendedShippingOption from '../getRecommendedShippingOption';
 import StaticConsignmentItemList from '../StaticConsignmentItemList';
 
@@ -46,7 +47,7 @@ class ShippingOptionsForm extends PureComponent<
 
         if (!consignments || !consignments.length || !shouldShowShippingOptions) {
             return (
-                <LoadingOverlay isLoading={isLoading()}>
+                <ChecklistSkeleton isLoading={isLoading()} rows={2}>
                     {this.renderNoShippingOptions(
                         <TranslatedString
                             id={
@@ -56,7 +57,7 @@ class ShippingOptionsForm extends PureComponent<
                             }
                         />,
                     )}
-                </LoadingOverlay>
+                </ChecklistSkeleton>
             );
         }
 
@@ -80,12 +81,9 @@ class ShippingOptionsForm extends PureComponent<
 
                         {(!consignment.availableShippingOptions ||
                             !consignment.availableShippingOptions.length) && (
-                            <LoadingOverlay
-                                hideContentWhenLoading
-                                isLoading={isLoading(consignment.id)}
-                            >
+                            <ChecklistSkeleton isLoading={isLoading(consignment.id)} rows={2}>
                                 {this.renderNoShippingOptions(invalidShippingMessage)}
-                            </LoadingOverlay>
+                            </ChecklistSkeleton>
                         )}
                     </div>
                 ))}

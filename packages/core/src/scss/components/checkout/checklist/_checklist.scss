@@ -2,7 +2,8 @@
 // CHECKLIST
 // =============================================================================
 
-.form-checklist {
+.form-checklist,
+.checklist-skeleton {
     border: container("border", "dark");
     border-radius: $global-radius $global-radius 0 0;
     color: $checklist-label-color;

@@ -11,6 +11,7 @@ import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
 import { CheckoutContextProps, withCheckout } from '../checkout';
 import {
@@ -23,7 +24,6 @@ import {
 import { EMPTY_ARRAY } from '../common/utility';
 import { withLanguage, WithLanguageProps } from '../locale';
 import { TermsConditionsType } from '../termsConditions';
-import { LoadingOverlay } from '../ui/loading';
 
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 import mapToOrderRequestBody from './mapToOrderRequestBody';
@@ -178,7 +178,7 @@ class Payment extends Component<
 
         return (
             <PaymentContext.Provider value={this.getContextValue()}>
-                <LoadingOverlay isLoading={!isReady} unmountContentWhenLoading>
+                <ChecklistSkeleton isLoading={!isReady}>
                     {!isEmpty(methods) && defaultMethod && (
                         <PaymentForm
                             {...rest}
@@ -210,7 +210,7 @@ class Payment extends Component<
                             }
                         />
                     )}
-                </LoadingOverlay>
+                </ChecklistSkeleton>
 
                 {this.renderOrderErrorModal()}
                 {this.renderEmbeddedSupportErrorModal()}
