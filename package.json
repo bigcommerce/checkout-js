@@ -62,7 +62,7 @@
     "card-validator": "^6.1.0",
     "classnames": "^2.2.6",
     "credit-card-type": "^8.0.0",
-    "dompurify": "^2.3.10",
+    "dompurify": "^2.4.0",
     "downshift": "^3.2.10",
     "formik": "^1.5.8",
     "local-storage-fallback": "^4.1.1",
