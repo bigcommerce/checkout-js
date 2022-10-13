@@ -389,7 +389,8 @@ class Checkout extends Component<
     }
 
     private renderShippingStep(step: CheckoutStepStatus): ReactNode {
-        const { hasCartChanged, cart, consignments = [] } = this.props;
+        const { isActive, isComplete } = step;
+        const { hasCartChanged, cart, consignments = []} = this.props;
 
         const { isBillingSameAsShipping, isMultiShippingMode } = this.state;
 
@@ -414,7 +415,7 @@ class Checkout extends Component<
                     </div>
                 ))}
             >
-                <LazyContainer>
+                <LazyContainer hasLoadingSkeleton>
                     <Shipping
                         cartHasChanged={hasCartChanged}
                         isBillingSameAsShipping={isBillingSameAsShipping}
@@ -444,7 +445,7 @@ class Checkout extends Component<
                 onExpanded={this.handleExpanded}
                 summary={billingAddress && <StaticBillingAddress address={billingAddress} />}
             >
-                <LazyContainer>
+                <LazyContainer hasLoadingSkeleton>
                     <Billing
                         navigateNextStep={this.navigateToNextIncompleteStep}
                         onReady={this.handleReady}

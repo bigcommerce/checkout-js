@@ -9,6 +9,8 @@ import { FormikProps, withFormik } from 'formik';
 import React, { createRef, PureComponent, ReactNode, RefObject } from 'react';
 import { lazy } from 'yup';
 
+import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
+
 import {
     AddressForm,
     AddressFormValues,
@@ -117,7 +119,7 @@ class BillingForm extends PureComponent<
                     )}
 
                     {!hasValidCustomerAddress && (
-                        <LoadingOverlay isLoading={isResettingAddress}>
+                        <AddressFormSkeleton isLoading={isResettingAddress}>
                             <AddressForm
                                 countries={countries}
                                 countriesWithAutocomplete={countriesWithAutocomplete}
@@ -128,7 +130,7 @@ class BillingForm extends PureComponent<
                                 shouldShowSaveAddress={!isGuest}
                                 useFloatingLabel={useFloatingLabel}
                             />
-                        </LoadingOverlay>
+                        </AddressFormSkeleton>
                     )}
                 </Fieldset>
 

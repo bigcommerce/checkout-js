@@ -98,6 +98,10 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
     private renderContent(): ReactNode {
         const { children, isActive, isBusy } = this.props;
 
+        if (!isActive) {
+            return null;
+        }
+
         return (
             <MobileView>
                 {(matched) => (

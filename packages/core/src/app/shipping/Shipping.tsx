@@ -17,12 +17,13 @@ import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { createSelector } from 'reselect';
 
+import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
+
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
 import { CheckoutContextProps, withCheckout } from '../checkout';
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
 import { PaymentMethodId } from '../payment/paymentMethod';
-import { LoadingOverlay } from '../ui/loading';
 
 import { UnassignItemError } from './errors';
 import getShippableItemsCount from './getShippableItemsCount';
@@ -163,11 +164,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                 onMultiShippingChange={ this.handleMultiShippingModeSwitch }
                 shouldShowMultiShipping={ shouldShowMultiShipping }
             />
-
-            <LoadingOverlay
-                isLoading={ isInitializing }
-                unmountContentWhenLoading
-            >
+            <AddressFormSkeleton isLoading={ isInitializing } >
                 <ShippingForm
                     { ...shippingFormProps }
                     addresses={ customer.addresses }
@@ -183,7 +180,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                     updateAddress={ updateShippingAddress }
                     useFloatingLabel={useFloatingLabel}
                 />
-            </LoadingOverlay>
+            </AddressFormSkeleton>
         </div>;
     }
 

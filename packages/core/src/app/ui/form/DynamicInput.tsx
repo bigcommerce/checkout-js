@@ -71,7 +71,6 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                         id={id}
                         name={name}
                         onChange={onChange}
-                        useFloatingLabel={useFloatingLabel}
                         value={value === null ? '' : value}
                     >
                         {placeholder && <option value="">{placeholder}</option>}
