@@ -662,6 +662,25 @@ describe('Payment', () => {
         expect(container.find(PaymentForm).prop('didExceedSpamLimit')).toBeTruthy();
     });
 
+    it('clears error when error has no body', async () => {
+        jest.spyOn(checkoutService, 'loadCheckout').mockResolvedValue(checkoutState);
+        jest.spyOn(checkoutService, 'clearError').mockResolvedValue(checkoutState);
+
+        jest.spyOn(checkoutState.errors, 'getSubmitOrderError').mockReturnValue({
+            type: 'request',
+        } as unknown as RequestError);
+
+        const container = mount(<PaymentTest {...defaultProps} />);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        container.update();
+        container.find('ErrorModal Button').simulate('click');
+
+        expect(checkoutService.loadCheckout).not.toHaveBeenCalled();
+        expect(checkoutService.clearError).toHaveBeenCalled();
+    });
+
     it('calls onUnhandledError if loadPaymentMethods was failed', async () => {
         jest.spyOn(checkoutService, 'loadPaymentMethods').mockRejectedValue(new Error());
 
