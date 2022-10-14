@@ -1,1 +1,1 @@
-export { Input, ChecklistSkeleton, AddressFormSkeleton } from './form';
+export { Input, AddressFormSkeleton, ChecklistSkeleton, CustomerSkeleton } from './form';

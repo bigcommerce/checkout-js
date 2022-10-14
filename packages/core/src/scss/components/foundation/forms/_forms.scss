@@ -220,11 +220,33 @@
     }
 
     @keyframes grows {
-        0% { max-height: $floating-label-input-height * 2; }
+        0% { max-height: $floating-label-input-height * 4; }
         100% { max-height: 2000px; }
     }
 
-    .address-form-skeleton {
+    .address-form-skeleton,
+    .customer-skeleton {
+        .button-skeleton {
+            background: color("greys", "lighter");
+            border: none;
+        }
+
+        .customerEmail-body {
+            ul:first-child {
+                margin-bottom: $form-verticalSpacing;
+            }
+
+            ul.subscription-skeleton {
+                height: spacing("single");
+                margin-bottom: 0;
+                width: 66%;
+            }
+        }
+
+        .customerEmail-action {
+            margin: #{spacing("single") + spacing("half")} 0;
+        }
+
         ul {
             background-color: $formBody-backgroundColor;
             border: $input-border-style $input-border-width $floating-label-border-color;
@@ -245,9 +267,9 @@
                 animation-timing-function: cubic-bezier(0.13, 0.615, 0.315, 0.915);
                 background: color("greys", "lighter");
                 border-radius: $global-radius;
-                bottom: 0;
                 content: ' ';
                 display: block;
+                height: 100%;
                 left: 0;
                 position: absolute;
                 top: 0;

@@ -368,7 +368,7 @@ class Checkout extends Component<
                     />
                 }
             >
-                <LazyContainer>
+                <LazyContainer hasLoadingSkeleton>
                     <Customer
                         checkEmbeddedSupport={this.checkEmbeddedSupport}
                         isEmbedded={isEmbedded()}
@@ -389,7 +389,6 @@ class Checkout extends Component<
     }
 
     private renderShippingStep(step: CheckoutStepStatus): ReactNode {
-        const { isActive, isComplete } = step;
         const { hasCartChanged, cart, consignments = []} = this.props;
 
         const { isBillingSameAsShipping, isMultiShippingMode } = this.state;
