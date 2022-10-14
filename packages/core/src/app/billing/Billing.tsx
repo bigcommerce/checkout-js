@@ -63,21 +63,20 @@ class Billing extends Component<BillingProps & WithCheckoutBillingProps> {
         const { updateAddress, isInitializing, ...props } = this.props;
 
         return (
-            <div className="checkout-form">
-                <div className="form-legend-container">
-                    <Legend testId="billing-address-heading">
-                        <TranslatedString id="billing.billing_address_heading" />
-                    </Legend>
-                </div>
-
-                <AddressFormSkeleton isLoading={isInitializing}>
+            <AddressFormSkeleton isLoading={isInitializing}>
+                <div className="checkout-form">
+                    <div className="form-legend-container">
+                        <Legend testId="billing-address-heading">
+                            <TranslatedString id="billing.billing_address_heading" />
+                        </Legend>
+                    </div>
                     <BillingForm
                         {...props}
                         onSubmit={this.handleSubmit}
                         updateAddress={updateAddress}
                     />
-                </AddressFormSkeleton>
-            </div>
+                </div>
+            </AddressFormSkeleton>
         );
     }
 

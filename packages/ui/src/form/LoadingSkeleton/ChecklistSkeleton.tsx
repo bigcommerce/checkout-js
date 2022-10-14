@@ -8,7 +8,7 @@ interface ChecklistSkeletonProps {
 
 const ChecklistSkeleton: FunctionComponent<ChecklistSkeletonProps> = ({
     children,
-    isLoading,
+    isLoading = true,
     rows = 3,
 }) => {
     if (isLoading) {

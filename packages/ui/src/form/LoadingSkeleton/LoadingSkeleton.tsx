@@ -1,12 +1,16 @@
 import React, { FunctionComponent, ReactNode } from 'react';
 
 export interface LoadingSkeletonProps {
-    children: ReactNode;
-    isLoading: boolean;
+    children?: ReactNode;
+    isLoading?: boolean;
 }
 
 export const LoadingSkeleton: FunctionComponent<LoadingSkeletonProps & { skeleton: ReactNode }> = ({
     children,
-    isLoading,
+    isLoading = true,
     skeleton,
-}) => <div>{isLoading ? skeleton : <div className="loadingSkeleton">{children}</div>}</div>;
+}) => {
+    const content = children ? <div className="loadingSkeleton">{children}</div> : null;
+
+    return <div>{isLoading ? skeleton : content}</div>;
+};

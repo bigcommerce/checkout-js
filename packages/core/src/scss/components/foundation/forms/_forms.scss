@@ -224,6 +224,14 @@
         100% { max-height: 2000px; }
     }
 
+    .address-form-heading-skeleton {
+        background-color: color("greys", "lighter");
+        border-radius: $global-radius;
+        height: $h3-font-size;
+        margin: 0.75rem 0;
+        width: 12rem;
+    }
+
     .address-form-skeleton,
     .customer-skeleton {
         .button-skeleton {

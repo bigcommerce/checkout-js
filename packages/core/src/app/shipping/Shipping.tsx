@@ -135,53 +135,55 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             ...shippingFormProps
         } = this.props;
 
-        const {
-            isInitializing,
-        } = this.state;
+        const { isInitializing } = this.state;
 
         if (isStripeLinkEnabled && !customer.email) {
-            return <StripeShipping
-                { ...shippingFormProps }
-                isLoading={ isInitializing }
-                shouldShowMultiShipping={ shouldShowMultiShipping }
-                isGuest={ isGuest }
-                customer={ customer }
-                onMultiShippingChange={ this.handleMultiShippingModeSwitch }
-                deinitialize={deinitializeShippingMethod}
-                initialize={initializeShippingMethod}
-                isBillingSameAsShipping={isBillingSameAsShipping}
-                isMultiShippingMode={isMultiShippingMode}
-                onSubmit={this.handleSingleShippingSubmit}
-                step={step}
-                updateAddress={updateShippingAddress}
-            />;
+            return (
+                <StripeShipping
+                    {...shippingFormProps}
+                    customer={customer}
+                    deinitialize={deinitializeShippingMethod}
+                    initialize={initializeShippingMethod}
+                    isBillingSameAsShipping={isBillingSameAsShipping}
+                    isGuest={isGuest}
+                    isLoading={isInitializing}
+                    isMultiShippingMode={isMultiShippingMode}
+                    onMultiShippingChange={this.handleMultiShippingModeSwitch}
+                    onSubmit={this.handleSingleShippingSubmit}
+                    shouldShowMultiShipping={shouldShowMultiShipping}
+                    step={step}
+                    updateAddress={updateShippingAddress}
+                />
+            );
         }
 
-        return <div className="checkout-form">
-            <ShippingHeader
-                isGuest={ isGuest }
-                isMultiShippingMode={ isMultiShippingMode }
-                onMultiShippingChange={ this.handleMultiShippingModeSwitch }
-                shouldShowMultiShipping={ shouldShowMultiShipping }
-            />
-            <AddressFormSkeleton isLoading={ isInitializing } >
-                <ShippingForm
-                    { ...shippingFormProps }
-                    addresses={ customer.addresses }
-                    deinitialize={ deinitializeShippingMethod }
-                    initialize={ initializeShippingMethod }
-                    isBillingSameAsShipping = { isBillingSameAsShipping }
-                    isGuest={ isGuest }
-                    isMultiShippingMode={ isMultiShippingMode }
-                    onMultiShippingSubmit={ this.handleMultiShippingSubmit }
-                    onSingleShippingSubmit={ this.handleSingleShippingSubmit }
-                    onUseNewAddress={ this.handleUseNewAddress }
-                    shouldShowSaveAddress={ !isGuest }
-                    updateAddress={ updateShippingAddress }
-                    useFloatingLabel={useFloatingLabel}
-                />
+        return (
+            <AddressFormSkeleton isLoading={isInitializing}>
+                <div className="checkout-form">
+                    <ShippingHeader
+                        isGuest={isGuest}
+                        isMultiShippingMode={isMultiShippingMode}
+                        onMultiShippingChange={this.handleMultiShippingModeSwitch}
+                        shouldShowMultiShipping={shouldShowMultiShipping}
+                    />
+                    <ShippingForm
+                        {...shippingFormProps}
+                        addresses={customer.addresses}
+                        deinitialize={deinitializeShippingMethod}
+                        initialize={initializeShippingMethod}
+                        isBillingSameAsShipping={isBillingSameAsShipping}
+                        isGuest={isGuest}
+                        isMultiShippingMode={isMultiShippingMode}
+                        onMultiShippingSubmit={this.handleMultiShippingSubmit}
+                        onSingleShippingSubmit={this.handleSingleShippingSubmit}
+                        onUseNewAddress={this.handleUseNewAddress}
+                        shouldShowSaveAddress={!isGuest}
+                        updateAddress={updateShippingAddress}
+                        useFloatingLabel={useFloatingLabel}
+                    />
+                </div>
             </AddressFormSkeleton>
-        </div>;
+        );
     }
 
     private handleMultiShippingModeSwitch: () => void = async () => {
@@ -387,9 +389,8 @@ export function mapToShippingProps({
     const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ'];
     const stripeUpe = getPaymentMethod('card', PaymentMethodId.StripeUPE);
     const linkEnabled = stripeUpe?.initializationData.enableLink || false;
-    const stripeUpeSupportedCurrency = cart?.currency.code === 'USD' || false;
+    const stripeUpeSupportedCurrency = cart.currency.code === 'USD' || false;
     const stripeUpeLinkEnabled = linkEnabled && stripeUpeSupportedCurrency;
-
 
     if (features['CHECKOUT-4183.checkout_google_address_autocomplete_uk']) {
         countriesWithAutocomplete.push('GB');
