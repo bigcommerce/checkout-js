@@ -1,32 +1,30 @@
-import React, { FunctionComponent, ReactNode } from 'react';
+import React, { FunctionComponent } from 'react';
+
+import { LoadingSkeleton, LoadingSkeletonProps } from './LoadingSkeleton';
 
 interface ChecklistSkeletonProps {
-    children?: ReactNode;
-    isLoading?: boolean;
     rows?: number;
 }
 
-const ChecklistSkeleton: FunctionComponent<ChecklistSkeletonProps> = ({
+const ChecklistSkeleton: FunctionComponent<LoadingSkeletonProps & ChecklistSkeletonProps> = ({
     children,
     isLoading = true,
     rows = 3,
 }) => {
-    if (isLoading) {
-        const content = [];
+    const content = [];
 
-        for (let i = 0; i < rows; i++) {
-            content.push(
-                <ul>
-                    <div className="checklist-skeleton-circle" />
-                    <div className="checklist-skeleton-rectangle" />
-                </ul>,
-            );
-        }
-
-        return <div className="checklist-skeleton">{content}</div>;
+    for (let i = 0; i < rows; i++) {
+        content.push(
+            <ul key={`checklist-skeleton-item${i}`}>
+                <div className="checklist-skeleton-circle" />
+                <div className="checklist-skeleton-rectangle" />
+            </ul>,
+        );
     }
 
-    return <div>{children}</div>;
+    const skeleton = <div className="checklist-skeleton">{content}</div>;
+
+    return <LoadingSkeleton {...{ children, isLoading, skeleton }} />;
 };
 
 export default ChecklistSkeleton;

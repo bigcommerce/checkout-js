@@ -17,7 +17,7 @@ import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { Component, lazy, ReactNode } from 'react';
 
-import {ChecklistSkeleton, CustomerSkeleton, AddressFormSkeleton } from '@bigcommerce/checkout/ui'
+import { AddressFormSkeleton, ChecklistSkeleton, CustomerSkeleton } from '@bigcommerce/checkout/ui'
 
 import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
@@ -391,7 +391,7 @@ class Checkout extends Component<
     }
 
     private renderShippingStep(step: CheckoutStepStatus): ReactNode {
-        const { hasCartChanged, cart, consignments = []} = this.props;
+        const { hasCartChanged, cart, consignments = [] } = this.props;
 
         const { isBillingSameAsShipping, isMultiShippingMode } = this.state;
 

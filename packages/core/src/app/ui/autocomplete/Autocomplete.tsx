@@ -54,7 +54,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
                                 htmlFor={inputProps.id}
                                 id={inputProps['aria-labelledby']}
                                 useFloatingLabel={true}>
-                                {inputProps.labelText}
+                                {inputProps['data-labeltext']}
                             </Label>
                         }
                         {isOpen && !!items.length && (

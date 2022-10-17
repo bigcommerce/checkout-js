@@ -214,9 +214,10 @@
     }
     // scss-lint:enable ImportantRule
 
-    .loadingSkeleton {
+    .loading-skeleton {
         animation: grows 150ms ease-out;
         overflow: hidden;
+        will-change: max-height;
     }
 
     @keyframes grows {
@@ -225,7 +226,7 @@
     }
 
     .address-form-heading-skeleton {
-        background-color: color("greys", "lighter");
+        background-color: $loading-skeleton-button-bg-color;
         border-radius: $global-radius;
         height: $h3-font-size;
         margin: 0.75rem 0;
@@ -235,7 +236,7 @@
     .address-form-skeleton,
     .customer-skeleton {
         .button-skeleton {
-            background: color("greys", "lighter");
+            background: $loading-skeleton-button-bg-color;
             border: none;
         }
 
@@ -262,53 +263,32 @@
             height: $floating-label-input-height;
             margin-bottom: $floating-form-field-spacing;
             margin-left: 0;
-            padding: $input-horizontalPadding * 0.6;
+            padding: $loading-skeleton-input-padding;
 
-            .input-skeleton {
+            .input-skeleton,
+            .input-skeleton::before {
                 height: 100%;
                 position: relative;
                 width: 100%;
             }
 
             .input-skeleton::before {
-                animation: input-loading-keyframes 1.5s infinite;
-                animation-timing-function: cubic-bezier(0.13, 0.615, 0.315, 0.915);
-                background: color("greys", "lighter");
+                animation: $loading-skeleton-animation;
+                animation-timing-function: $loading-skeleton-timing;
+                background: $loading-skeleton-button-bg-color;
                 border-radius: $global-radius;
                 content: ' ';
                 display: block;
-                height: 100%;
                 left: 0;
                 position: absolute;
                 top: 0;
-                width: 100%;
-                will-change: left, width;
-            }
-
-            @keyframes input-loading-keyframes {
-                0% {
-                    background: $floating-label-border-color;
-                    left: 0;
-                    width: 0;
-                }
-
-                50% {
-                    background: $floating-label-bg-color;
-                    left: 0;
-                    width: 100%;
-                }
-
-                100% {
-                    background: $floating-label-border-color;
-                    left: 100%;
-                    width: 0;
-                }
+                will-change: $loading-skeleton-will-change;
             }
         }
 
-        .name {
+        .name-fields-skeleton {
             display: flex;
-            gap: 8px;
+            gap: $floating-form-field-spacing;
 
             ul {
                 flex-basis: 50%;

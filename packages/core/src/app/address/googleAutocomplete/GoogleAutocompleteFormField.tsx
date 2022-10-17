@@ -53,7 +53,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
             id: getAddressFormFieldInputId(name),
             'aria-labelledby': labelId,
             placeholder: useFloatingLabel ? ' ' : placeholder,
-            labelText: useFloatingLabel ? labelContent : null,
+            'data-labeltext': useFloatingLabel ? labelContent : null,
         }),
         [name, labelId, placeholder, labelContent],
     );

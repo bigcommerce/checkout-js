@@ -17,20 +17,11 @@ describe('ChecklistSkeleton', () => {
         expect(component.find('ul')).toHaveLength(randomRows);
     });
 
-    it('hides skeleton when loading finishes', () => {
-        const component = mount(<ChecklistSkeleton isLoading={false} />);
-
-        expect(component.exists('.checklist-skeleton')).toBe(false);
-    });
-
     it('shows content when loading is complete', () => {
-        const component = mount(
-            <ChecklistSkeleton isLoading={false}>
-                <div id="content">Hello world</div>
-            </ChecklistSkeleton>,
-        );
+        const content = <div id="content">Hello world</div>;
+        const component = mount(<ChecklistSkeleton isLoading={false}>{content}</ChecklistSkeleton>);
 
-        expect(component.html()).toBe('<div><div id="content">Hello world</div></div>');
+        expect(component.exists('#content')).toBe(true);
         expect(component.exists('.checklist-skeleton')).toBe(false);
     });
 });
