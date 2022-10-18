@@ -51,12 +51,12 @@ const WorldpayCreditCardPaymentMethod: FunctionComponent<
 
     const initializeWorldpayPayment = useCallback(
         async (options: PaymentInitializeOptions, selectedInstrument) => {
-            const fields = await getHostedFormOptions(selectedInstrument);
 
             return initializePayment({
                 ...options,
                 creditCard: {
-                    form: fields,
+                    form: getHostedFormOptions &&
+                        (await getHostedFormOptions(selectedInstrument)),
                 },
                 worldpay: {
                     onLoad(content: HTMLIFrameElement, cancel: () => void) {
