@@ -1,5 +1,6 @@
 import AddressSelector from './AddressSelector';
-import { getGoogleAutocompleteNZPlaceMock, getGoogleAutocompletePlaceMock } from './googleAutocompleteResult.mock';
+import AddressSelectorFactory from "./AddressSelectorFactory";
+import { getGoogleAutocompleteNZPlaceMock, getGoogleAutocompletePlaceMock, getGoogleAutocompleteUKPlaceMock } from './googleAutocompleteResult.mock';
 
 describe('AddressSelector', () => {
     let googleAutoCompleteResponseMock: google.maps.places.PlaceResult;
@@ -21,6 +22,13 @@ describe('AddressSelector', () => {
             const accessor = new AddressSelector(googleAutoCompleteResponseMock);
 
             expect(accessor.getState()).toBe('NSW');
+        });
+
+        it('does not return a state for a UK address', () => {
+            googleAutoCompleteResponseMock = getGoogleAutocompleteUKPlaceMock();
+            const accessor = AddressSelectorFactory.create(googleAutoCompleteResponseMock);
+
+            expect(accessor.getState()).toBe('');
         });
     });
 
@@ -61,6 +69,13 @@ describe('AddressSelector', () => {
             const accessor = new AddressSelector(googleAutoCompleteResponseMock);
 
             expect(accessor.getPostCode()).toBe('2007');
+        });
+
+        it('does not return a post code for an UK address', () => {
+            googleAutoCompleteResponseMock = getGoogleAutocompleteUKPlaceMock();
+            const accessor = AddressSelectorFactory.create(googleAutoCompleteResponseMock);
+
+            expect(accessor.getPostCode()).toBe('');
         });
     });
 

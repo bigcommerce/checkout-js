@@ -56,7 +56,6 @@ export function getGoogleAutocompletePlaceMock(): google.maps.places.PlaceResult
     } as google.maps.places.PlaceResult;
 }
 
-
 export function getGoogleAutocompleteNZPlaceMock(): google.maps.places.PlaceResult {
     return {
         name: '6d/17 Alberton Avenue',
@@ -100,6 +99,54 @@ export function getGoogleAutocompleteNZPlaceMock(): google.maps.places.PlaceResu
                "long_name" : "1025",
                "short_name" : "1025",
                "types" : [ "postal_code" ]
+            }
+        ],
+    } as google.maps.places.PlaceResult;
+}
+
+export function getGoogleAutocompleteUKPlaceMock(): google.maps.places.PlaceResult {
+    return {
+        "name" : "unit 1, 123 Buckingham Palace Rd",
+        "address_components" : [
+            {
+                "long_name" : "unit 1",
+                "short_name" : "unit 1",
+                "types" : [ "subpremise" ]
+            },
+            {
+                "long_name" : "123",
+                "short_name" : "123",
+                "types" : [ "street_number" ]
+            },
+            {
+                "long_name" : "Buckingham Palace Road",
+                "short_name" : "Buckingham Palace Rd",
+                "types" : [ "route" ]
+            },
+            {
+                "long_name" : "London",
+                "short_name" : "London",
+                "types" : [ "postal_town" ]
+            },
+            {
+                "long_name" : "Greater London",
+                "short_name" : "Greater London",
+                "types" : [ "administrative_area_level_2", "political" ]
+            },
+            {
+                "long_name" : "England",
+                "short_name" : "England",
+                "types" : [ "administrative_area_level_1", "political" ]
+            },
+            {
+                "long_name" : "United Kingdom",
+                "short_name" : "GB",
+                "types" : [ "country", "political" ]
+            },
+            {
+                "long_name" : "SW1W 9SR",
+                "short_name" : "SW1W 9SR",
+                "types" : [ "postal_code" ]
             }
         ],
     } as google.maps.places.PlaceResult;
