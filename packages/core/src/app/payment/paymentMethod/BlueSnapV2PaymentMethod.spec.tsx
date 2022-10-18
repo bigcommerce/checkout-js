@@ -113,6 +113,26 @@ describe('when using BlueSnapV2 payment', () => {
         expect(component.find(Modal).prop('isOpen')).toBe(true);
     });
 
+    it('renders modal and appends bluesnap payment page', async () => {
+        const component = mount(<BlueSnapV2PaymentMethodTest />);
+        const initializeOptions = (defaultProps.initializePayment as jest.Mock).mock.calls[0][0];
+        const iframe = document.createElement('iframe');
+
+        act(() => initializeOptions.bluesnapv2.onLoad(iframe, jest.fn()));
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        await act(async () => {
+            component.update();
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            component.find(Modal).prop('onAfterOpen')!();
+        });
+
+        expect(component.find(Modal).prop('isOpen')).toBe(true);
+
+        expect(component.find(Modal).render().find('iframe')).toHaveLength(1);
+    });
+
     it('renders modal but does not append bluesnap payment page because is empty', async () => {
         const component = mount(<BlueSnapV2PaymentMethodTest />);
         const initializeOptions = (defaultProps.initializePayment as jest.Mock).mock.calls[0][0];
