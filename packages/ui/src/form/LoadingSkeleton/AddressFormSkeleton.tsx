@@ -10,16 +10,16 @@ const AddressFormSkeleton: FunctionComponent<LoadingSkeletonProps> = ({ children
             </div>
             <div className="address-form-skeleton">
                 <div className="name-fields-skeleton">
-                    <ul>
+                    <div className="skeleton-container">
                         <div className="input-skeleton" />
-                    </ul>
-                    <ul>
+                    </div>
+                    <div className="skeleton-container">
                         <div className="input-skeleton" />
-                    </ul>
+                    </div>
                 </div>
-                <ul>
+                <div className="skeleton-container">
                     <div className="input-skeleton" />
-                </ul>
+                </div>
             </div>
         </div>
     );

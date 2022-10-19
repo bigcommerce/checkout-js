@@ -7,13 +7,13 @@ const CustomerSkeleton: FunctionComponent<LoadingSkeletonProps> = ({ children, i
         <div className="checkout-form customer-skeleton">
             <div className="customerEmail-container">
                 <div className="customerEmail-body">
-                    <ul>
+                    <div className="skeleton-container">
                         <div className="input-skeleton" />
-                    </ul>
-                    <ul className="subscription-skeleton button-skeleton" />
+                    </div>
+                    <div className="button-skeleton skeleton-container subscription-skeleton" />
                 </div>
                 <div className="customerEmail-action customerEmail-floating--enabled">
-                    <ul className="button-skeleton" />
+                    <div className="button-skeleton skeleton-container" />
                 </div>
             </div>
         </div>

@@ -14,7 +14,7 @@ describe('ChecklistSkeleton', () => {
         const randomRows = Math.floor(Math.random() * 10) + 1;
         const component = mount(<ChecklistSkeleton isLoading={true} rows={randomRows} />);
 
-        expect(component.find('ul')).toHaveLength(randomRows);
+        expect(component.find('.skeleton-container')).toHaveLength(randomRows);
     });
 
     it('shows content when loading is complete', () => {

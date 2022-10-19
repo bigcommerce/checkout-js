@@ -235,17 +235,12 @@
 
     .address-form-skeleton,
     .customer-skeleton {
-        .button-skeleton {
-            background: $loading-skeleton-button-bg-color;
-            border: none;
-        }
-
         .customerEmail-body {
-            ul:first-child {
+            div:first-child {
                 margin-bottom: $form-verticalSpacing;
             }
 
-            ul.subscription-skeleton {
+            div.subscription-skeleton {
                 height: spacing("single");
                 margin-bottom: 0;
                 width: 66%;
@@ -256,7 +251,7 @@
             margin: #{spacing("single") + spacing("half")} 0;
         }
 
-        ul {
+        .skeleton-container {
             background-color: $formBody-backgroundColor;
             border: $input-border-style $input-border-width $floating-label-border-color;
             border-radius: $global-radius;
@@ -286,11 +281,16 @@
             }
         }
 
+        .skeleton-container.button-skeleton {
+            background: $loading-skeleton-button-bg-color;
+            border: none;
+        }
+
         .name-fields-skeleton {
             display: flex;
             gap: $floating-form-field-spacing;
 
-            ul {
+            .skeleton-container {
                 flex-basis: 50%;
             }
         }

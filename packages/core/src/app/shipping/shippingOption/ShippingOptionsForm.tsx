@@ -47,7 +47,11 @@ class ShippingOptionsForm extends PureComponent<
 
         if (!consignments || !consignments.length || !shouldShowShippingOptions) {
             return (
-                <ChecklistSkeleton isLoading={isLoading()} rows={2}>
+                <ChecklistSkeleton
+                    additionalClassName="shippingOptions-skeleton"
+                    isLoading={isLoading()}
+                    rows={2}
+                >
                     {this.renderNoShippingOptions(
                         <TranslatedString
                             id={
@@ -81,7 +85,11 @@ class ShippingOptionsForm extends PureComponent<
 
                         {(!consignment.availableShippingOptions ||
                             !consignment.availableShippingOptions.length) && (
-                            <ChecklistSkeleton isLoading={isLoading(consignment.id)} rows={2}>
+                            <ChecklistSkeleton
+                                additionalClassName="shippingOptions-skeleton"
+                                isLoading={isLoading(consignment.id)}
+                                rows={2}
+                            >
                                 {this.renderNoShippingOptions(invalidShippingMessage)}
                             </ChecklistSkeleton>
                         )}

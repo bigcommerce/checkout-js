@@ -34,12 +34,6 @@
     }
 }
 
-#checkout-shipping-options {
-    .checklist-skeleton {
-        margin-left: 0;
-    }
-}
-
 .checkout-view-content {
     @include breakpoint("large") {
         @include collapse;

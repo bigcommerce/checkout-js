@@ -155,7 +155,7 @@
 .checklist-skeleton {
     border-radius: $global-radius;
 
-    ul {
+    .skeleton-container {
         border-bottom: container("border", "dark");
         display: flex;
         height: $checklist-label-height;
@@ -171,7 +171,7 @@
         }
     }
 
-    ul:last-child {
+    .skeleton-container:last-child {
         border-bottom: none;
     }
 
