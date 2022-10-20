@@ -30,6 +30,8 @@ import { default as PaymentMethodComponent, PaymentMethodProps } from './Payment
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
 import PPSDKPaymentMethod from './PPSDKPaymentMethod';
+import SquarePaymentMethod from './SquarePaymentMethod';
+import SquareV2PaymentMethod from './SquareV2PaymentMethod';
 
 describe('PaymentMethod', () => {
     let PaymentMethodTest: FunctionComponent<PaymentMethodProps>;
@@ -534,6 +536,50 @@ describe('PaymentMethod', () => {
                 expect.objectContaining({
                     initializePayment: expect.any(Function),
                     isInitializing: expect.any(Boolean),
+                    method,
+                }),
+            );
+        });
+    });
+
+    describe('when using Square payment method', () => {
+        let method: PaymentMethod;
+
+        beforeEach(() => {
+            method = {
+                id: 'squarev2',
+                method: 'credit-card',
+                supportedCards: ['VISA', 'MC', 'AMEX', 'DISCOVER', 'JCB'],
+                config: {
+                    displayName: 'Credit Card Square',
+                    testMode: false,
+                },
+                type: 'PAYMENT_TYPE_API',
+            };
+        });
+
+        it('should render SquarePaymentMethod', () => {
+            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            expect(container.find(SquarePaymentMethod).props()).toEqual(
+                expect.objectContaining({
+                    initializePayment: expect.any(Function),
+                    method,
+                }),
+            );
+        });
+
+        it('should render SquareV2PaymentMethod', () => {
+            const storeConfigMock = getDefaultStoreConfig();
+
+            storeConfigMock.checkoutSettings.features['PROJECT-4113.squarev2_web_payments_sdk'] = true;
+            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(storeConfigMock);
+
+            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            expect(container.find(SquareV2PaymentMethod).props()).toEqual(
+                expect.objectContaining({
+                    initializePayment: expect.any(Function),
                     method,
                 }),
             );
