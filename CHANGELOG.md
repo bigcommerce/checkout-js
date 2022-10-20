@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.263.0](https://github.com/bigcommerce/checkout-js/compare/v1.262.2...v1.263.0) (2022-10-20)
+
+
+### Features
+
+* **payment:** INT-6637 Sezzle change displayed text ([#1070](https://github.com/bigcommerce/checkout-js/issues/1070)) ([00c8135](https://github.com/bigcommerce/checkout-js/commit/00c813584b56306ef57cc5678e2c82946784fe34))
+
 ### [1.262.2](https://github.com/bigcommerce/checkout-js/compare/v1.262.1...v1.262.2) (2022-10-20)
 
 
