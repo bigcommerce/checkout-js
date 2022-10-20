@@ -58,10 +58,12 @@ const injectedProps: WithInjectedHostedCreditCardFieldsetProps = {
     hostedValidationSchema: object(),
 };
 
+const injectedPropsMock = jest.fn().mockReturnValueOnce({}).mockReturnValue(injectedProps)
+
 jest.mock('../hostedCreditCard', () => ({
     ...jest.requireActual('../hostedCreditCard'),
     withHostedCreditCardFieldset: jest.fn((Component) => (props: any) => (
-        <Component {...props} {...injectedProps} />
+        <Component {...props} {...injectedPropsMock()} />
     )) as jest.Mocked<typeof withHostedCreditCardFieldset>,
 }));
 
@@ -145,6 +147,25 @@ describe('WorldpayCreditCardPaymentMethod', () => {
                 </CheckoutProvider>
             );
         };
+    });
+
+    it('initializes payment method when component mounts without hosted form', async () => {
+        jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(getInstruments());
+
+        mount(<WorldpayCreditCardPaymentMethodTest {...defaultProps} />);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(defaultProps.initializePayment).toHaveBeenCalledWith({
+            gatewayId: undefined,
+            methodId: 'authorizenet',
+            creditCard: {
+                form: undefined,
+            },
+            worldpay: {
+                onLoad: expect.any(Function),
+            },
+        });
     });
 
     it('initializes payment method when component mounts', async () => {
