@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.262.2](https://github.com/bigcommerce/checkout-js/compare/v1.262.1...v1.262.2) (2022-10-20)
+
+
+### Bug Fixes
+
+* **payment:** INT-6478 SquareV2 - Fail Gracefully when payment provider unavailable ([#1047](https://github.com/bigcommerce/checkout-js/issues/1047)) ([c7ad66e](https://github.com/bigcommerce/checkout-js/commit/c7ad66e51f14e8b74567873230b856f726097de7))
+* **payment:** INT-6789 Worldpay Support payment without hosted form ([#1068](https://github.com/bigcommerce/checkout-js/issues/1068)) ([76a1bc6](https://github.com/bigcommerce/checkout-js/commit/76a1bc631e952026f06c71aaf1b8c3239a47f1e7))
+
 ### [1.262.1](https://github.com/bigcommerce/checkout-js/compare/v1.262.0...v1.262.1) (2022-10-18)
 
 ## [1.262.0](https://github.com/bigcommerce/checkout-js/compare/v1.261.3...v1.262.0) (2022-10-17)
