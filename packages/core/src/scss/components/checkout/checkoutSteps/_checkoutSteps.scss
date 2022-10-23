@@ -44,7 +44,8 @@
     margin-bottom: spacing("single");
 }
 
-.checkout-form {
+.checkout-form,
+.checklist-skeleton {
     margin: 0;
 
     @include breakpoint("small") {

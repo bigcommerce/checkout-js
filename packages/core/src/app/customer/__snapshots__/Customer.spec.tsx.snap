@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Customer when view type is "guest" matches snapshot 1`] = `
-<div>
+<div
+  class="loading-skeleton"
+>
   <div>
     <form
       class="checkout-form"
@@ -93,7 +95,9 @@ exports[`Customer when view type is "guest" matches snapshot 1`] = `
 `;
 
 exports[`Customer when view type is "login" matches snapshot 1`] = `
-<div>
+<div
+  class="loading-skeleton"
+>
   <div>
     <form
       class="checkout-form"

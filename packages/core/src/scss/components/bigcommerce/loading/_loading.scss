@@ -44,3 +44,23 @@
     opacity: 0.9;
     z-index: zIndex("low");
 }
+
+@keyframes loading-skeleton-bar-keyframes {
+    0% {
+        background-color: color("greys", "light");
+        left: 0;
+        width: 0;
+    }
+
+    50% {
+        background-color: $loading-skeleton-button-bg-color;
+        left: 0;
+        width: 100%;
+    }
+
+    100% {
+        background-color: color("greys", "light");
+        left: 100%;
+        width: 0;
+    }
+}

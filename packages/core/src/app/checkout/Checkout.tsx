@@ -17,6 +17,8 @@ import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { Component, lazy, ReactNode } from 'react';
 
+import { AddressFormSkeleton, ChecklistSkeleton, CustomerSkeleton } from '@bigcommerce/checkout/ui'
+
 import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
 import { CustomError, ErrorLogger, ErrorModal, isCustomError } from '../common/error';
@@ -368,7 +370,7 @@ class Checkout extends Component<
                     />
                 }
             >
-                <LazyContainer>
+                <LazyContainer loadingSkeleton={<CustomerSkeleton />}>
                     <Customer
                         checkEmbeddedSupport={this.checkEmbeddedSupport}
                         isEmbedded={isEmbedded()}
@@ -414,7 +416,7 @@ class Checkout extends Component<
                     </div>
                 ))}
             >
-                <LazyContainer>
+                <LazyContainer loadingSkeleton={<AddressFormSkeleton />}>
                     <Shipping
                         cartHasChanged={hasCartChanged}
                         isBillingSameAsShipping={isBillingSameAsShipping}
@@ -444,7 +446,7 @@ class Checkout extends Component<
                 onExpanded={this.handleExpanded}
                 summary={billingAddress && <StaticBillingAddress address={billingAddress} />}
             >
-                <LazyContainer>
+                <LazyContainer loadingSkeleton={<AddressFormSkeleton />}>
                     <Billing
                         navigateNextStep={this.navigateToNextIncompleteStep}
                         onReady={this.handleReady}
@@ -466,7 +468,7 @@ class Checkout extends Component<
                 onEdit={this.handleEditStep}
                 onExpanded={this.handleExpanded}
             >
-                <LazyContainer>
+                <LazyContainer loadingSkeleton={<ChecklistSkeleton />}>
                     <Payment
                         checkEmbeddedSupport={this.checkEmbeddedSupport}
                         errorLogger={errorLogger}

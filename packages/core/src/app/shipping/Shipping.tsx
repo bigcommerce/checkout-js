@@ -17,12 +17,13 @@ import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { createSelector } from 'reselect';
 
+import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
+
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
 import { CheckoutContextProps, withCheckout } from '../checkout';
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
 import { PaymentMethodId } from '../payment/paymentMethod';
-import { LoadingOverlay } from '../ui/loading';
 
 import { UnassignItemError } from './errors';
 import getShippableItemsCount from './getShippableItemsCount';
@@ -156,35 +157,33 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             />;
         }
 
-        return <div className="checkout-form">
-            <ShippingHeader
-                isGuest={ isGuest }
-                isMultiShippingMode={ isMultiShippingMode }
-                onMultiShippingChange={ this.handleMultiShippingModeSwitch }
-                shouldShowMultiShipping={ shouldShowMultiShipping }
-            />
-
-            <LoadingOverlay
-                isLoading={ isInitializing }
-                unmountContentWhenLoading
-            >
-                <ShippingForm
-                    { ...shippingFormProps }
-                    addresses={ customer.addresses }
-                    deinitialize={ deinitializeShippingMethod }
-                    initialize={ initializeShippingMethod }
-                    isBillingSameAsShipping = { isBillingSameAsShipping }
-                    isGuest={ isGuest }
-                    isMultiShippingMode={ isMultiShippingMode }
-                    onMultiShippingSubmit={ this.handleMultiShippingSubmit }
-                    onSingleShippingSubmit={ this.handleSingleShippingSubmit }
-                    onUseNewAddress={ this.handleUseNewAddress }
-                    shouldShowSaveAddress={ !isGuest }
-                    updateAddress={ updateShippingAddress }
-                    useFloatingLabel={useFloatingLabel}
-                />
-            </LoadingOverlay>
-        </div>;
+        return (
+            <AddressFormSkeleton isLoading={isInitializing}>
+                <div className="checkout-form">
+                    <ShippingHeader
+                        isGuest={isGuest}
+                        isMultiShippingMode={isMultiShippingMode}
+                        onMultiShippingChange={this.handleMultiShippingModeSwitch}
+                        shouldShowMultiShipping={shouldShowMultiShipping}
+                    />
+                    <ShippingForm
+                        {...shippingFormProps}
+                        addresses={customer.addresses}
+                        deinitialize={deinitializeShippingMethod}
+                        initialize={initializeShippingMethod}
+                        isBillingSameAsShipping={isBillingSameAsShipping}
+                        isGuest={isGuest}
+                        isMultiShippingMode={isMultiShippingMode}
+                        onMultiShippingSubmit={this.handleMultiShippingSubmit}
+                        onSingleShippingSubmit={this.handleSingleShippingSubmit}
+                        onUseNewAddress={this.handleUseNewAddress}
+                        shouldShowSaveAddress={!isGuest}
+                        updateAddress={updateShippingAddress}
+                        useFloatingLabel={useFloatingLabel}
+                    />
+                </div>
+            </AddressFormSkeleton>
+        );
     }
 
     private handleMultiShippingModeSwitch: () => void = async () => {
@@ -392,7 +391,6 @@ export function mapToShippingProps({
     const linkEnabled = stripeUpe?.initializationData.enableLink || false;
     const stripeUpeSupportedCurrency = cart?.currency.code === 'USD' || false;
     const stripeUpeLinkEnabled = linkEnabled && stripeUpeSupportedCurrency;
-
 
     if (features['CHECKOUT-4183.checkout_google_address_autocomplete_uk']) {
         countriesWithAutocomplete.push('GB');

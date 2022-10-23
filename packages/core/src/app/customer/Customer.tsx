@@ -13,12 +13,13 @@ import {
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
+import { CustomerSkeleton } from '@bigcommerce/checkout/ui';
+
 import { CheckoutContextProps, withCheckout } from '../checkout';
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { isErrorWithType } from '../common/error';
 import { isFloatingLabelEnabled } from '../common/utility';
 import { PaymentMethodId } from '../payment/paymentMethod';
-import { LoadingOverlay } from '../ui/loading';
 
 import CheckoutButtonList from './CheckoutButtonList';
 import CreateAccountForm from './CreateAccountForm';
@@ -145,12 +146,12 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
         const shouldRenderLoginForm = !shouldRenderGuestForm && !shouldRenderCreateAccountForm;
 
         return (
-            <LoadingOverlay isLoading={!isReady} unmountContentWhenLoading>
+            <CustomerSkeleton isLoading={!isReady}>
                 {isEmailLoginFormOpen && this.renderEmailLoginLinkForm()}
                 {shouldRenderLoginForm && this.renderLoginForm()}
                 {shouldRenderGuestForm && this.renderGuestForm()}
                 {shouldRenderCreateAccountForm && this.renderCreateAccountForm()}
-            </LoadingOverlay>
+            </CustomerSkeleton>
         );
     }
 

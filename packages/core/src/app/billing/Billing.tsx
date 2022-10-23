@@ -9,13 +9,14 @@ import {
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
+import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
+
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
 import { CheckoutContextProps, withCheckout } from '../checkout';
 import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
 import { TranslatedString } from '../locale';
 import { getShippableItemsCount } from '../shipping';
 import { Legend } from '../ui/form';
-import { LoadingOverlay } from '../ui/loading';
 
 import BillingForm, { BillingFormValues } from './BillingForm';
 import getBillingMethodId from './getBillingMethodId';
@@ -62,21 +63,20 @@ class Billing extends Component<BillingProps & WithCheckoutBillingProps> {
         const { updateAddress, isInitializing, ...props } = this.props;
 
         return (
-            <div className="checkout-form">
-                <div className="form-legend-container">
-                    <Legend testId="billing-address-heading">
-                        <TranslatedString id="billing.billing_address_heading" />
-                    </Legend>
-                </div>
-
-                <LoadingOverlay isLoading={isInitializing} unmountContentWhenLoading>
+            <AddressFormSkeleton isLoading={isInitializing}>
+                <div className="checkout-form">
+                    <div className="form-legend-container">
+                        <Legend testId="billing-address-heading">
+                            <TranslatedString id="billing.billing_address_heading" />
+                        </Legend>
+                    </div>
                     <BillingForm
                         {...props}
                         onSubmit={this.handleSubmit}
                         updateAddress={updateAddress}
                     />
-                </LoadingOverlay>
-            </div>
+                </div>
+            </AddressFormSkeleton>
         );
     }
 

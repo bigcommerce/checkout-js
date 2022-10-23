@@ -2,7 +2,8 @@
 // CHECKLIST
 // =============================================================================
 
-.form-checklist {
+.form-checklist,
+.checklist-skeleton {
     border: container("border", "dark");
     border-radius: $global-radius $global-radius 0 0;
     color: $checklist-label-color;
@@ -148,5 +149,66 @@
 
     &:focus {
         box-shadow: $checklist-focus-boxShadow;
+    }
+}
+
+.checklist-skeleton {
+    border-radius: $global-radius;
+
+    .skeleton-container {
+        border-bottom: container("border", "dark");
+        display: flex;
+        height: $checklist-label-height;
+        justify-content: flex-start;
+        margin-left: 0;
+        padding-left: $checklist-spacingLeft--small;
+        padding-right: $checklist-spacingRight;
+        padding-top: $checklist-pip-spacing-top;
+        position: relative;
+
+        @include breakpoint("small") {
+            padding-left: $checklist-spacingLeft;
+        }
+    }
+
+    .skeleton-container:last-child {
+        border-bottom: none;
+    }
+
+    .checklist-skeleton-circle {
+        @include square(26px);
+
+        background-color: $loading-skeleton-button-bg-color;
+        border-radius: 100%;
+        left: $checklist-pip-spacing--small;
+        position: absolute;
+        top: $checklist-pip-spacing-top;
+
+        @include breakpoint("small") {
+            left: $checklist-pip-spacing;
+        }
+    }
+
+    .checklist-skeleton-rectangle,
+    .checklist-skeleton-rectangle::before {
+        @include square(26px);
+
+        border-radius: $global-radius;
+        display: inline-block;
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+    }
+
+    .checklist-skeleton-rectangle::before {
+        animation: $loading-skeleton-animation;
+        animation-timing-function: $loading-skeleton-timing;
+        background: $loading-skeleton-button-bg-color;
+        content: ' ';
+        display: block;
+        left: 0;
+        position: absolute;
+        top: 0;
+        will-change: $loading-skeleton-will-change;
     }
 }

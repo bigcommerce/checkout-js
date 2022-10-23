@@ -213,4 +213,86 @@
         padding: $input-verticalPadding $select-paddingRight $input-verticalPadding $input-horizontalPadding;
     }
     // scss-lint:enable ImportantRule
+
+    .loading-skeleton {
+        animation: grows 150ms ease-out;
+        overflow: hidden;
+        will-change: max-height;
+    }
+
+    @keyframes grows {
+        0% { max-height: $floating-label-input-height * 4; }
+        100% { max-height: 2000px; }
+    }
+
+    .address-form-heading-skeleton {
+        background-color: $loading-skeleton-button-bg-color;
+        border-radius: $global-radius;
+        height: $h3-font-size;
+        margin: 0.75rem 0;
+        width: 12rem;
+    }
+
+    .address-form-skeleton,
+    .customer-skeleton {
+        .customerEmail-body {
+            div:first-child {
+                margin-bottom: $form-verticalSpacing;
+            }
+
+            div.subscription-skeleton {
+                height: spacing("single");
+                margin-bottom: 0;
+                width: 66%;
+            }
+        }
+
+        .customerEmail-action {
+            margin: #{spacing("single") + spacing("half")} 0;
+        }
+
+        .skeleton-container {
+            background-color: $formBody-backgroundColor;
+            border: $input-border-style $input-border-width $floating-label-border-color;
+            border-radius: $global-radius;
+            height: $floating-label-input-height;
+            margin-bottom: $floating-form-field-spacing;
+            margin-left: 0;
+            padding: $loading-skeleton-input-padding;
+
+            .input-skeleton,
+            .input-skeleton::before {
+                height: 100%;
+                position: relative;
+                width: 100%;
+            }
+
+            .input-skeleton::before {
+                animation: $loading-skeleton-animation;
+                animation-timing-function: $loading-skeleton-timing;
+                background: $loading-skeleton-button-bg-color;
+                border-radius: $global-radius;
+                content: ' ';
+                display: block;
+                left: 0;
+                position: absolute;
+                top: 0;
+                will-change: $loading-skeleton-will-change;
+            }
+        }
+
+        .skeleton-container.button-skeleton {
+            background: $loading-skeleton-button-bg-color;
+            border: none;
+        }
+
+        .name-fields-skeleton {
+            display: flex;
+            gap: $floating-form-field-spacing;
+
+            .skeleton-container {
+                flex-basis: 50%;
+            }
+        }
+    }
 }

@@ -2,10 +2,10 @@ import Downshift, { DownshiftState, StateChangeOptions } from 'downshift';
 import { includes, isNumber, noop } from 'lodash';
 import React, { Fragment, PureComponent, ReactChild, ReactNode } from 'react';
 
+import { Label } from '../form';
 import { Popover, PopoverList, PopoverListItem } from '../popover';
 
 import AutocompleteItem from './autocomplete-item';
-import { Label } from '../form';
 
 export interface AutocompleteProps {
     initialValue?: string;
@@ -46,33 +46,40 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
                 onStateChange={this.handleStateChange}
                 stateReducer={this.stateReducer}
             >
-                {({ isOpen, getInputProps, getMenuProps, getItemProps, highlightedIndex }) => (
-                    <div>
-                        <input {...getInputProps()} {...inputProps} />
-                        {(inputProps && includes(inputProps.className, 'floating')) &&
-                            <Label
-                                htmlFor={inputProps.id}
-                                id={inputProps['aria-labelledby']}
-                                useFloatingLabel={true}>
-                                {inputProps.labelText}
-                            </Label>
-                        }
-                        {isOpen && !!items.length && (
-                            <Popover>
-                                <PopoverList
-                                    getItemProps={getItemProps}
-                                    highlightedIndex={
-                                        isNumber(highlightedIndex) ? highlightedIndex : -1
-                                    }
-                                    items={items.map((item) => this.toPopoverItem(item))}
-                                    menuProps={getMenuProps()}
-                                    testId={listTestId}
-                                />
-                                {children}
-                            </Popover>
-                        )}
-                    </div>
-                )}
+                {({ isOpen, getInputProps, getMenuProps, getItemProps, highlightedIndex }) => {
+                    const validInputProps = { ...getInputProps(), ...inputProps };
+
+                    delete validInputProps.labelText;
+
+                    return (
+                        <div>
+                            <input {...validInputProps} />
+                            {inputProps && includes(inputProps.className, 'floating') && (
+                                <Label
+                                    htmlFor={inputProps.id}
+                                    id={inputProps['aria-labelledby']}
+                                    useFloatingLabel={true}
+                                >
+                                    {inputProps.labelText}
+                                </Label>
+                            )}
+                            {isOpen && !!items.length && (
+                                <Popover>
+                                    <PopoverList
+                                        getItemProps={getItemProps}
+                                        highlightedIndex={
+                                            isNumber(highlightedIndex) ? highlightedIndex : -1
+                                        }
+                                        items={items.map((item) => this.toPopoverItem(item))}
+                                        menuProps={getMenuProps()}
+                                        testId={listTestId}
+                                    />
+                                    {children}
+                                </Popover>
+                            )}
+                        </div>
+                    );
+                }}
             </Downshift>
         );
     }

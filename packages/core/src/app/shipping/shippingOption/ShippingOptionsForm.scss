@@ -5,8 +5,7 @@
     border: container("border");
     border-radius: $global-radius;
     display: flex;
-    min-height: 10rem;
-    padding: spacing("half");
+    min-height: 9.383rem;
     text-align: center;
 }
 
@@ -14,4 +13,9 @@
     align-self: center;
     flex: 1;
     margin: 0;
+    padding: spacing("half");
+}
+
+.shippingOptions-skeleton {
+    margin-left: 0;
 }

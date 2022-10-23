@@ -117,7 +117,7 @@ export default class CheckoutStep extends Component<CheckoutStepProps, CheckoutS
                             className="checkout-view-content"
                             ref={this.contentRef}
                         >
-                            {children}
+                            {isActive ? children : null}
                         </div>
                     </CSSTransition>
                 )}
