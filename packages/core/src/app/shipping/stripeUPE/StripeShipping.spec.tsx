@@ -1,6 +1,8 @@
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
+
 import CheckoutStepType from '../../checkout/CheckoutStepType';
+
 import StripeShipping, { StripeShippingProps } from './StripeShipping';
 import StripeShippingForm from './StripeShippingForm';
 
