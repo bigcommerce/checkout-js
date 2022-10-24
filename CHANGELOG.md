@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.264.0](https://github.com/bigcommerce/checkout-js/compare/v1.263.0...v1.264.0) (2022-10-24)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6852 Add loading animations ([#1065](https://github.com/bigcommerce/checkout-js/issues/1065)) ([a36f20a](https://github.com/bigcommerce/checkout-js/commit/a36f20adc9c792cb5bfca8da4de851d80607ef88))
+
 ## [1.263.0](https://github.com/bigcommerce/checkout-js/compare/v1.262.2...v1.263.0) (2022-10-20)
 
 
