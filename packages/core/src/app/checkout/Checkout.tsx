@@ -316,6 +316,7 @@ class Checkout extends Component<
                             .map((step) =>
                                 this.renderStep({
                                     ...step,
+                                    activeStepType,
                                     isActive: activeStepType
                                         ? activeStepType === step.type
                                         : defaultStepType === step.type,
