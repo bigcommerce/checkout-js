@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.265.0](https://github.com/bigcommerce/checkout-js/compare/v1.264.0...v1.265.0) (2022-10-25)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6835 Address autocomplete for UK ([#1071](https://github.com/bigcommerce/checkout-js/issues/1071)) ([5f33989](https://github.com/bigcommerce/checkout-js/commit/5f33989794256d2cc68e20baf4951cfeb6790532))
+
 ## [1.264.0](https://github.com/bigcommerce/checkout-js/compare/v1.263.0...v1.264.0) (2022-10-24)
 
 
