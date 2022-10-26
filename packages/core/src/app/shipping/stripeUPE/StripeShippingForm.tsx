@@ -20,15 +20,14 @@ import {
     getTranslateAddressError,
     mapAddressToFormValues,
 } from '../../address';
-// eslint-disable-next-line import/no-internal-modules
 import CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
 import { getCustomFormFieldsValidationSchema } from '../../formFields';
 import { withLanguage, WithLanguageProps } from '../../locale';
 import { Fieldset, Form, FormContext } from '../../ui/form';
 import BillingSameAsShippingField from '../BillingSameAsShippingField';
-
 import hasSelectedShippingOptions from '../hasSelectedShippingOptions';
 import ShippingFormFooter from '../ShippingFormFooter';
+
 import StripeShippingAddress from './StripeShippingAddress';
 
 export interface SingleShippingFormProps {

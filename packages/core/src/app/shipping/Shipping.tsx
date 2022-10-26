@@ -145,16 +145,16 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         if (isStripeLinkEnabled && !customer.email) {
             return <StripeShipping
                 { ...shippingFormProps }
-                isLoading={ isInitializing }
-                shouldShowMultiShipping={ shouldShowMultiShipping }
-                isGuest={ isGuest }
                 customer={ customer }
-                onMultiShippingChange={ this.handleMultiShippingModeSwitch }
                 deinitialize={deinitializeShippingMethod}
                 initialize={initializeShippingMethod}
                 isBillingSameAsShipping={isBillingSameAsShipping}
+                isGuest={ isGuest }
+                isLoading={ isInitializing }
                 isMultiShippingMode={isMultiShippingMode}
+                onMultiShippingChange={ this.handleMultiShippingModeSwitch }
                 onSubmit={this.handleSingleShippingSubmit}
+                shouldShowMultiShipping={ shouldShowMultiShipping }
                 step={step}
                 updateAddress={updateShippingAddress}
             />;

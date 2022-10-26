@@ -1,9 +1,9 @@
 import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
-import { withFormik, FieldProps, FormikProps } from 'formik';
-import React, { memo, useCallback, useEffect, useState, FunctionComponent, ReactNode } from 'react';
+import { FieldProps, FormikProps, withFormik } from 'formik';
+import React, { FunctionComponent, memo, ReactNode, useCallback, useEffect, useState } from 'react';
+
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { getAppliedStyles } from '../common/dom';
-
 import { TranslatedString } from '../locale';
 import { PrivacyPolicyField } from '../privacyPolicy';
 import { Button, ButtonVariant } from '../ui/button';
@@ -61,6 +61,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
         setEmailValue(email);
         setContinueAsAGuestButton(!email);
         setAuthentication(authenticated);
+
         if(!authenticated){
             setIsNewAuth(true);
         }
@@ -97,6 +98,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
 
     useEffect(() => {
         stripeInitialize();
+
         return () => stripeDeinitialize();
     }, []);
 
@@ -104,11 +106,13 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
         id: string,
         properties: string[]) => {
         const parentContainer = document.getElementById(id);
+
         if (parentContainer) {
             return getAppliedStyles(parentContainer, properties);
-        } else {
-            return undefined;
         }
+ 
+            return undefined;
+        
     };
 
     const containerId = 'stripe-card-component-field';
@@ -117,6 +121,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
         const formInput = getStylesFromElement(`${containerId}--input`, ['color', 'background-color', 'border-color', 'box-shadow']);
         const formLabel = getStylesFromElement(`${containerId}--label`, ['color']);
         const formError = getStylesFromElement(`${containerId}--error`, ['color']);
+
         return formLabel && formInput && formError ? {
             labelText: formLabel.color,
             fieldText: formInput.color,
@@ -131,20 +136,20 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
     const renderCheckoutThemeStylesForStripeUPE = () => {
         return (
             <div
-                className={ 'optimizedCheckout-form-input' }
+                className="optimizedCheckout-form-input"
                 id={ `${containerId}--input` }
                 placeholder="1111"
             >
                 <div
-                    className={ 'form-field--error' }
+                    className="form-field--error"
                 >
                     <div
-                        className={ 'optimizedCheckout-form-label' }
+                        className="optimizedCheckout-form-label"
                         id={ `${containerId}--error` }
                     />
                 </div>
                 <div
-                    className={ 'optimizedCheckout-form-label' }
+                    className="optimizedCheckout-form-label"
                     id={ `${containerId}--label` }
                 />
             </div>

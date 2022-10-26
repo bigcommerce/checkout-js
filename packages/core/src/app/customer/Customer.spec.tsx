@@ -107,11 +107,12 @@ describe('Customer', () => {
             await new Promise(resolve => process.nextTick(resolve));
             component.update();
 
-            expect(component.find(StripeGuestForm).exists()).toEqual(true);
+            expect(component.find(StripeGuestForm).exists()).toBe(true);
         });
 
         it('calls onUnhandledError if initialize was failed', async () => {
             jest.spyOn(checkoutService, 'initializeCustomer').mockRejectedValue(new Error());
+
             const unhandledError = jest.fn();
 
             mount(<CustomerTest onUnhandledError={ unhandledError } viewType={ CustomerViewType.Guest } />);
@@ -122,9 +123,11 @@ describe('Customer', () => {
 
         it('calls onUnhandledError if deinitialize was failed', async () => {
             jest.spyOn(checkoutService, 'deinitializeCustomer').mockRejectedValue(new Error());
+
             const unhandledError = jest.fn();
 
             const component = mount(<CustomerTest onUnhandledError={ unhandledError } viewType={ CustomerViewType.Guest }/>);
+
             await new Promise(resolve => process.nextTick(resolve));
             component.unmount();
             await new Promise(resolve => process.nextTick(resolve));

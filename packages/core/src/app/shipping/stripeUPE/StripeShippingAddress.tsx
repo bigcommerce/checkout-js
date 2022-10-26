@@ -14,10 +14,10 @@ import CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
 import { getAppliedStyles } from '../../common/dom';
 import getRecommendedShippingOption from '../getRecommendedShippingOption';
 import hasSelectedShippingOptions from '../hasSelectedShippingOptions';
-
 import { SingleShippingFormValues } from '../SingleShippingForm';
-import StripeStateMapper from './StripeStateMapper';
+
 import StripeShippingAddressDisplay from './StripeShippingAddressDisplay';
+import StripeStateMapper from './StripeStateMapper';
 
 export interface StripeShippingAddressProps {
     consignments: Consignment[];
@@ -75,6 +75,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
     useEffect(() => {
         if (consignments[0]) {
             const {availableShippingOptions} = consignments[0];
+
             if (availableShippingOptions && !getRecommendedShippingOption(availableShippingOptions)) {
                 handleLoading();
             }
@@ -88,6 +89,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
                     isStripeLoading();
                     isStripeAutoStep();
                 }
+
                 onSubmit({billingSameAsShipping: true, shippingAddress: stripeShippingAddress, orderComment: ''});
             }, 300);
         }
@@ -104,6 +106,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
             if (step.isComplete) {
                 handleLoading();
             }
+
             const names = name.split(' ');
             // @ts-ignore
             const country = availableShippingList?.find(country => country.code === address.country).name;
@@ -124,11 +127,14 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
                 phone: '',
                 customFields: [],
             };
+
             if (!step.isComplete) {
                 setIsFirstShippingRender(current => !current);
             }
+
             onAddressSelect(shippingValue);
             setStripeShippingAddress(shippingValue);
+
             if (shipping.isNewAddress !== isNewAddress) {
                 setIsNewAddress(current => !current);
             }
@@ -153,11 +159,13 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
         id: string,
         properties: string[]) => {
         const parentContainer = document.getElementById(id);
+
         if (parentContainer) {
             return getAppliedStyles(parentContainer, properties);
-        } else {
-            return undefined;
         }
+ 
+            return undefined;
+        
     };
 
     const getStripeStyles: any = useCallback( () => {
@@ -165,6 +173,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
         const formInput = getStylesFromElement(`${containerId}--input`, ['color', 'background-color', 'border-color', 'box-shadow']);
         const formLabel = getStylesFromElement(`${containerId}--label`, ['color']);
         const formError = getStylesFromElement(`${containerId}--error`, ['color']);
+
         return formLabel && formInput && formError ? {
             labelText: formLabel.color,
             fieldText: formInput.color,
@@ -192,20 +201,20 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
 
             return (
                 <div
-                    className={ 'optimizedCheckout-form-input' }
+                    className="optimizedCheckout-form-input"
                     id={ `${containerId}--input` }
                     placeholder="1111"
                 >
                     <div
-                        className={ 'form-field--error' }
+                        className="form-field--error"
                     >
                         <div
-                            className={ 'optimizedCheckout-form-label' }
+                            className="optimizedCheckout-form-label"
                             id={ `${containerId}--error` }
                         />
                     </div>
                     <div
-                        className={ 'optimizedCheckout-form-label' }
+                        className="optimizedCheckout-form-label"
                         id={ `${containerId}--label` }
                     />
                 </div>
@@ -217,7 +226,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
                 <StripeShippingAddressDisplay
                     deinitialize={ deinitialize }
                     initialize={ initializeShipping(options) }
-                    methodId={ 'stripeupe' }
+                    methodId="stripeupe"
                 />
                 { renderCheckoutThemeStylesForStripeUPE() }
             </>

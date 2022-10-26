@@ -1,7 +1,7 @@
 import { mount, render } from 'enzyme';
 import React, { FunctionComponent } from 'react';
-import CheckoutStepType from '../checkout/CheckoutStepType';
 
+import CheckoutStepType from '../checkout/CheckoutStepType';
 import { PrivacyPolicyField } from '../privacyPolicy';
 
 import StripeGuestForm, { StripeGuestFormProps } from './StripeGuestForm';
@@ -92,6 +92,7 @@ describe('StripeGuestForm', () => {
 
     it('deinitializes stripeGuestForm when component mounts', () => {
         const component = mount(<TestComponent { ...defaultProps } />);
+
         component.unmount();
 
         expect(defaultProps.deinitialize).toHaveBeenCalled();
@@ -101,12 +102,12 @@ describe('StripeGuestForm', () => {
         const component = mount(
             <TestComponent
                 defaultShouldSubscribe={ true }
-                email={ 'test@bigcommerce.com' }
+                email="test@bigcommerce.com"
             />
         );
 
         expect(component.find('input[name="shouldSubscribe"]').prop('value'))
-            .toEqual(true);
+            .toBe(true);
     });
 
     it('notifies when user clicks on "sign in" button', () => {
@@ -132,7 +133,7 @@ describe('StripeGuestForm', () => {
         );
 
         expect(component.exists('input[name="shouldSubscribe"]'))
-            .toEqual(true);
+            .toBe(true);
     });
 
     it('renders marketing consent field', () => {
@@ -144,7 +145,7 @@ describe('StripeGuestForm', () => {
         );
 
         expect(component.exists('input[name="shouldSubscribe"]'))
-            .toEqual(true);
+            .toBe(true);
     });
 
     it('sets newsletter field with default value', () => {
@@ -159,16 +160,16 @@ describe('StripeGuestForm', () => {
         const componentB = mount(<Container defaultShouldSubscribe={ false } />);
 
         expect(componentA.find('input[name="shouldSubscribe"]').prop('value'))
-            .toEqual(true);
+            .toBe(true);
 
         expect(componentB.find('input[name="shouldSubscribe"]').prop('value'))
-            .toEqual(false);
+            .toBe(false);
     });
 
     it('renders privacy policy field', () => {
         const component = mount(
             <TestComponent
-                privacyPolicyUrl={ 'foo' }
+                privacyPolicyUrl="foo"
             />
         );
 
@@ -182,7 +183,7 @@ describe('StripeGuestForm', () => {
             />
         );
 
-        expect(component.find('[data-test="customer-continue-button"]').length).toEqual(0);
+        expect(component.find('[data-test="customer-continue-button"]')).toHaveLength(0);
     });
 
     it('shows different action button label if another label id was provided', () => {
@@ -192,6 +193,6 @@ describe('StripeGuestForm', () => {
             />
         );
 
-        expect(component.find('[data-test="customer-continue-button"]').text()).not.toEqual('Continue as guest');
+        expect(component.find('[data-test="customer-continue-button"]').text()).not.toBe('Continue as guest');
     });
 });

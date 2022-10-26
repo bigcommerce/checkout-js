@@ -12,8 +12,8 @@ import React, { Component, ReactNode } from 'react';
 
 import CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
 import { LoadingOverlay } from '../../ui/loading';
-
 import ShippingHeader from '../ShippingHeader';
+
 import StripeShippingForm, { SingleShippingFormValues } from './StripeShippingForm';
 
 export interface StripeShippingProps {
@@ -105,8 +105,8 @@ class StripeShipping extends Component<StripeShippingProps, StripeShippingState>
                                 { ...shippingFormProps }
                                 deinitialize={deinitialize}
                                 initialize={initialize}
-                                isLoading={ isLoading }
                                 isBillingSameAsShipping={isBillingSameAsShipping}
+                                isLoading={ isLoading }
                                 isMultiShippingMode={isMultiShippingMode}
                                 isStripeAutoStep={this.handleIsAutoStep}
                                 isStripeLoading={this.stripeLoadedCallback}

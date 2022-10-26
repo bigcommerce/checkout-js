@@ -8,11 +8,10 @@ import { CheckoutProvider } from '../../checkout';
 import CheckoutStepType from '../../checkout/CheckoutStepType';
 import { getStoreConfig } from '../../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
-
 import { getConsignment } from '../consignment.mock';
 import { getShippingAddress } from '../shipping-addresses.mock';
-import StripeShippingAddress from './StripeShippingAddress';
-import { StripeShippingAddressProps } from './StripeShippingAddress';
+
+import StripeShippingAddress, { StripeShippingAddressProps } from './StripeShippingAddress';
 import StripeShippingAddressDisplay from './StripeShippingAddressDisplay';
 
 describe('StripeShippingAddress Component', () => {
@@ -108,6 +107,7 @@ describe('StripeShippingAddress Component', () => {
         it('renders StripeShippingAddress with initialize props', async () => {
             defaultProps.initialize = jest.fn((options) => {
                 const { getStyles = noop, onChangeShipping = noop} = options.stripeupe || {};
+
                 onChangeShipping({
                         complete: true,
                         elementType: 'shipping',
@@ -155,6 +155,7 @@ describe('StripeShippingAddress Component', () => {
         it('renders StripeShippingAddress with initialize props without last name', async () => {
             defaultProps.initialize = jest.fn((options) => {
                 const { getStyles = noop, onChangeShipping = noop} = options.stripeupe || {};
+
                 onChangeShipping({
                         complete: true,
                         elementType: 'shipping',
