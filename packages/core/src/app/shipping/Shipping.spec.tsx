@@ -43,7 +43,9 @@ describe('Shipping Component', () => {
             onToggleMultiShipping: jest.fn(),
             cartHasChanged: false,
             onSignIn: jest.fn(),
-            step: { isActive: true,
+            step: {
+                activeStepType: CheckoutStepType.Shipping,
+                isActive: true,
                 isComplete: true,
                 isEditable: true,
                 isRequired: true,
