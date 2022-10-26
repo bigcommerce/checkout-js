@@ -141,6 +141,7 @@ describe('when using Stripe payment', () => {
                             fieldText: '#cccccc',
                         }),
                         onError: expect.any(Function),
+                        render: expect.any(Function),
                     },
                 }),
             );
@@ -192,6 +193,7 @@ describe('when using Stripe payment', () => {
                             fieldText: '#cccccc',
                         }),
                         onError: expect.any(Function),
+                        render: expect.any(Function),
                     },
                 }),
             );
@@ -243,6 +245,7 @@ describe('when using Stripe payment', () => {
                             fieldText: '#cccccc',
                         }),
                         onError: expect.any(Function),
+                        render: expect.any(Function),
                     },
                 }),
             );
@@ -294,6 +297,7 @@ describe('when using Stripe payment', () => {
                             fieldText: '#cccccc',
                         }),
                         onError: expect.any(Function),
+                        render: expect.any(Function),
                     },
                 }),
             );
