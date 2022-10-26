@@ -20,7 +20,7 @@
     "release:alpha": "npm run lint && npm run test -- --coverage && npm run build -- --env prerelease=prerelease && npm run release:version",
     "release:version": "git add dist && standard-version -a",
     "generate": "npx nx run core:generate",
-    "lint": "npx nx run-many --target=lint --all --fix",
+    "lint": "npx nx run-many --target=lint --all",
     "test": "npx nx run-many --target=test --all",
     "test:watch": "npx nx run-many --target=test --all --watch"
   },
