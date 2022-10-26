@@ -373,7 +373,7 @@ class Payment extends Component<
             if (isErrorWithType(error)) {
                 const { body, headers, status } = error;
 
-                if (body.type === 'provider_error' && headers.location) {
+                if (body?.type === 'provider_error' && headers.location) {
                     window.top?.location.assign(headers.location);
                 }
 
@@ -384,8 +384,8 @@ class Payment extends Component<
                 // HTML page instead of JSON response when there is a 429 error.
                 if (
                     status === 429 ||
-                    body.type === 'spam_protection_expired' ||
-                    body.type === 'spam_protection_failed'
+                    body?.type === 'spam_protection_expired' ||
+                    body?.type === 'spam_protection_failed'
                 ) {
                     this.setState({ didExceedSpamLimit: true });
 
