@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.266.0](https://github.com/bigcommerce/checkout-js/compare/v1.265.3...v1.266.0) (2022-10-27)
+
+
+### Features
+
+* **checkout:** CHECKOUT-0000 Merge prettier auto fixes ([#1074](https://github.com/bigcommerce/checkout-js/issues/1074)) ([af588c1](https://github.com/bigcommerce/checkout-js/commit/af588c1017a66e5e3191e29f22853e79f548b71f))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-0000 Fix shipping component memory leakage ([#1073](https://github.com/bigcommerce/checkout-js/issues/1073)) ([8a1cc0e](https://github.com/bigcommerce/checkout-js/commit/8a1cc0e69e163aa9b179e4b664d83d9ebbfd28ab))
+* **payment:** INT-6720 prevent calls on undefined error body ([#1057](https://github.com/bigcommerce/checkout-js/issues/1057)) ([518b1a9](https://github.com/bigcommerce/checkout-js/commit/518b1a96727bc880ba62a08f0efb386b9fdd5968))
+
 ### [1.265.3](https://github.com/bigcommerce/checkout-js/compare/v1.265.2...v1.265.3) (2022-10-26)
 
 ### [1.265.2](https://github.com/bigcommerce/checkout-js/compare/v1.265.1...v1.265.2) (2022-10-25)
