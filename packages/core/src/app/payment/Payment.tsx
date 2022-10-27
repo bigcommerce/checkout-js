@@ -370,7 +370,7 @@ class Payment extends Component<
                 window.location.reload();
             }
 
-            if (isErrorWithType(error)) {
+            if (isErrorWithType(error) && error.body) {
                 const { body, headers, status } = error;
 
                 if (body.type === 'provider_error' && headers.location) {
