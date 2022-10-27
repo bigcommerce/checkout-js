@@ -121,16 +121,15 @@ export class ApiRequestsSender {
 
         const cartWithConsignments = await cartWithConsignmentsResponse.json();
         const consignmentId = cartWithConsignments.consignments[0].id;
-        const shippingOptionId =
-            cartWithConsignments.consignments[0].availableShippingOptions[0].id;
-
-        if (!shippingOptionId) {
+        if (!cartWithConsignments.consignments[0].availableShippingOptions[0]) {
             throw new Error(
                 `Unable to select a shipping option for the address: ${JSON.stringify(
                     address,
                 )}.\nPlease check shipping configuration.`,
             );
         }
+        const shippingOptionId =
+            cartWithConsignments.consignments[0].availableShippingOptions[0].id;
 
         await apiContext.put(`./checkouts/${checkout.id}/consignments/${consignmentId}`, {
             params: { include: 'consignments.availableShippingOptions' },
