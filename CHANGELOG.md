@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.266.1](https://github.com/bigcommerce/checkout-js/compare/v1.266.0...v1.266.1) (2022-10-31)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-6840 Fix payment step counter in safari ([#1082](https://github.com/bigcommerce/checkout-js/issues/1082)) ([5df5c64](https://github.com/bigcommerce/checkout-js/commit/5df5c64917a3bfff80f818c661c695dd06277cc0))
+
 ## [1.266.0](https://github.com/bigcommerce/checkout-js/compare/v1.265.3...v1.266.0) (2022-10-27)
 
 
