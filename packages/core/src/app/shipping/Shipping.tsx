@@ -103,7 +103,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             loadPaymentMethods,
             onReady = noop,
             onUnhandledError = noop,
-            step,
         } = this.props;
 
         try {
@@ -114,9 +113,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         } catch (error) {
             onUnhandledError(error);
         } finally {
-            if (step.activeStepType === step.type) {
-                this.setState({ isInitializing: false });
-            }
+            this.setState({ isInitializing: false });
         }
     }
 
