@@ -7,3 +7,5 @@ export {
     FormContextType,
     Input,
 } from './form';
+
+export { LoadingOverlay } from './loading';
