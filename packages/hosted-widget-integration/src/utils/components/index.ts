@@ -1,1 +1,2 @@
-export { default as SignOutLink } from './SignOutLink';
+export { SignOutLink } from './SignOutLink';
+export { CardInstrumentFieldset } from './CardInstrumentFieldset';

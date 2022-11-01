@@ -1,3 +1,4 @@
+export { default as CreditCardIcon } from './CreditCardIcon';
 export { IconSize, IconProps } from './withIconContainer';
 export { default as IconBitCoin } from './IconBitCoin';
 export { default as IconBitCoinCash } from './IconBitCoinCash';

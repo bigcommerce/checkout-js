@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Alert matches snapshot 1`] = `
+<div
+  className="alertBox alertBox--info"
+>
+  <div
+    className="alertBox-column alertBox-icon"
+  >
+    <Memo() />
+  </div>
+  <div
+    aria-live="assertive"
+    className="alertBox-column alertBox-message"
+    role="alert"
+  >
+    Hello world
+  </div>
+</div>
+`;

@@ -17,10 +17,9 @@ import { ObjectSchema } from 'yup';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
-import { LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { LoadingOverlay, preventDefault } from '@bigcommerce/checkout/ui';
 
-import { SignOutLink } from './utils/components';
-import { preventDefault } from './utils/dom';
+import { CardInstrumentFieldset, SignOutLink } from './utils/components';
 import { assertIsCardInstrument, isBankAccountInstrument } from './utils/guards';
 
 export interface HostedWidgetComponentState {
