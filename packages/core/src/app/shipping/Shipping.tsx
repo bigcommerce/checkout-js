@@ -232,7 +232,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         const promises: Array<Promise<CheckoutSelectors>> = [];
         const hasRemoteBilling = this.hasRemoteBilling(methodId);
 
-        if (!isEqualAddress(updatedShippingAddress, shippingAddress)) {
+        if (!isEqualAddress(updatedShippingAddress, shippingAddress) || shippingAddress?.shouldSaveAddress !== updatedShippingAddress?.shouldSaveAddress) {
             promises.push(updateShippingAddress(updatedShippingAddress || {}));
         }
 
