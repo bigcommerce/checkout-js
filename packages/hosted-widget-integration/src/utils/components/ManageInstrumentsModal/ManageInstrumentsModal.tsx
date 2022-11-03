@@ -1,11 +1,11 @@
-import { CheckoutSelectors, PaymentInstrument } from '@bigcommerce/checkout-sdk';
+import { PaymentInstrument } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { CheckoutContext } from '@bigcommerce/checkout/payment-integration-api';
 import { Button, ButtonSize, ButtonVariant, Modal, ModalHeader } from '@bigcommerce/checkout/ui';
 
-import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { isAccountInstrument, isBankAccountInstrument, isCardInstrument } from '../../guards';
 import { ManageAccountInstrumentsTable } from '../ManageAccountInstrumentsTable';
 import { ManageCardInstrumentsTable } from '../ManageCardInstrumentsTable';
@@ -25,24 +25,37 @@ export interface ManageInstrumentsModalState {
     selectedInstrumentId?: string;
 }
 
-interface WithCheckoutProps {
-    deleteInstrumentError?: Error;
-    isDeletingInstrument: boolean;
-    isLoadingInstruments: boolean;
-    clearError(error: Error): Promise<CheckoutSelectors>;
-    deleteInstrument(id: string): Promise<CheckoutSelectors>;
-}
+// interface WithCheckoutProps {
+//     deleteInstrumentError?: Error;
+//     isDeletingInstrument: boolean;
+//     isLoadingInstruments: boolean;
+//     clearError(error: Error): Promise<CheckoutSelectors>;
+//     deleteInstrument(id: string): Promise<CheckoutSelectors>;
+// }
 
 class ManageInstrumentsModal extends Component<
-    ManageInstrumentsModalProps & WithCheckoutProps,
+    ManageInstrumentsModalProps,
     ManageInstrumentsModalState
 > {
+    static contextType = CheckoutContext;
+    declare context: React.ContextType<typeof CheckoutContext>;
+
     state: ManageInstrumentsModalState = {
         isConfirmingDelete: false,
     };
 
     render(): ReactNode {
-        const { deleteInstrumentError, isOpen, onRequestClose } = this.props;
+        if (!this.context) {
+            throw Error('Need to wrap in checkout context');
+        }
+
+        const {
+            checkoutState: {
+                errors: { getDeleteInstrumentError: deleteInstrumentError },
+            },
+        } = this.context;
+
+        const { isOpen, onRequestClose } = this.props;
 
         return (
             <Modal
@@ -57,7 +70,12 @@ class ManageInstrumentsModal extends Component<
                 onAfterOpen={this.handleAfterOpen}
                 onRequestClose={onRequestClose}
             >
-                {deleteInstrumentError && <ManageInstrumentsAlert error={deleteInstrumentError} />}
+                {
+                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+                    deleteInstrumentError && (
+                        <ManageInstrumentsAlert error={deleteInstrumentError} />
+                    )
+                }
 
                 {this.renderContent()}
             </Modal>
@@ -65,7 +83,16 @@ class ManageInstrumentsModal extends Component<
     }
 
     private renderContent(): ReactNode {
-        const { instruments, isDeletingInstrument } = this.props;
+        if (!this.context) {
+            throw Error('Need to wrap in checkout context');
+        }
+
+        const {
+            checkoutState: {
+                statuses: { isDeletingInstrument },
+            },
+        } = this.context;
+        const { instruments } = this.props;
 
         const { isConfirmingDelete } = this.state;
 
@@ -87,7 +114,7 @@ class ManageInstrumentsModal extends Component<
             return (
                 <ManageAccountInstrumentsTable
                     instruments={bankAndAccountInstruments}
-                    isDeletingInstrument={isDeletingInstrument}
+                    isDeletingInstrument={isDeletingInstrument()}
                     onDeleteInstrument={this.handleDeleteInstrument}
                 />
             );
@@ -96,14 +123,24 @@ class ManageInstrumentsModal extends Component<
         return (
             <ManageCardInstrumentsTable
                 instruments={cardInstruments}
-                isDeletingInstrument={isDeletingInstrument}
+                isDeletingInstrument={isDeletingInstrument()}
                 onDeleteInstrument={this.handleDeleteInstrument}
             />
         );
     }
 
     private renderFooter(): ReactNode {
-        const { isDeletingInstrument, isLoadingInstruments, onRequestClose } = this.props;
+        if (!this.context) {
+            throw Error('Need to wrap in checkout context');
+        }
+
+        const {
+            checkoutState: {
+                statuses: { isDeletingInstrument, isLoadingInstruments },
+            },
+        } = this.context;
+
+        const { onRequestClose } = this.props;
         const { isConfirmingDelete } = this.state;
 
         if (isConfirmingDelete) {
@@ -119,7 +156,7 @@ class ManageInstrumentsModal extends Component<
 
                     <Button
                         data-test="manage-instrument-confirm-button"
-                        disabled={isDeletingInstrument || isLoadingInstruments}
+                        disabled={isDeletingInstrument() || isLoadingInstruments()}
                         onClick={this.handleConfirmDelete}
                         size={ButtonSize.Small}
                         variant={ButtonVariant.Primary}
@@ -153,7 +190,18 @@ class ManageInstrumentsModal extends Component<
     };
 
     private handleCancel: () => void = () => {
-        const { clearError, deleteInstrumentError } = this.props;
+        if (!this.context) {
+            throw Error('Need to wrap in checkout context');
+        }
+
+        const {
+            checkoutState: {
+                errors: { getDeleteInstrumentError },
+            },
+            checkoutService: { clearError },
+        } = this.context;
+
+        const deleteInstrumentError = getDeleteInstrumentError();
 
         if (deleteInstrumentError) {
             void clearError(deleteInstrumentError);
@@ -165,8 +213,15 @@ class ManageInstrumentsModal extends Component<
     };
 
     private handleConfirmDelete: () => void = async () => {
+        if (!this.context) {
+            throw Error('Need to wrap in checkout context');
+        }
+
         const {
-            deleteInstrument,
+            checkoutService: { deleteInstrument },
+        } = this.context;
+
+        const {
             onDeleteInstrument = noop,
             onDeleteInstrumentError = noop,
             onRequestClose = noop,
@@ -194,22 +249,4 @@ class ManageInstrumentsModal extends Component<
     };
 }
 
-export function mapFromCheckoutProps({
-    checkoutService,
-    checkoutState,
-}: CheckoutContextProps): WithCheckoutProps | null {
-    const {
-        errors: { getDeleteInstrumentError },
-        statuses: { isDeletingInstrument, isLoadingInstruments },
-    } = checkoutState;
-
-    return {
-        clearError: checkoutService.clearError,
-        deleteInstrument: checkoutService.deleteInstrument,
-        deleteInstrumentError: getDeleteInstrumentError(),
-        isDeletingInstrument: isDeletingInstrument(),
-        isLoadingInstruments: isLoadingInstruments(),
-    };
-}
-
-export default withCheckout(mapFromCheckoutProps)(ManageInstrumentsModal);
+export default ManageInstrumentsModal;

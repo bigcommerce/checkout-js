@@ -10,3 +10,4 @@ export { default as toResolvableComponent } from './toResolvableComponent';
 export { default as isResolvableComponent } from './isResolvableComponent';
 export { default as isEmbedded } from './isEmbedded';
 export { default as PaymentFormValues } from './PaymentFormValues';
+export { CheckoutContext, CheckoutContextProps, useCheckout } from './contexts';

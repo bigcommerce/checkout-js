@@ -12,8 +12,7 @@ import {
 } from '@bigcommerce/checkout/ui';
 
 import { InstrumentSelect } from '../InstrumentSelect';
-
-import ManageInstrumentsModal from './ManageInstrumentsModal';
+import { ManageInstrumentsModal } from '../ManageInstrumentsModal';
 
 export interface CardInstrumentFieldsetProps {
     instruments: CardInstrument[];
