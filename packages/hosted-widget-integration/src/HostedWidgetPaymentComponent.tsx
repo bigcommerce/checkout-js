@@ -20,6 +20,7 @@ import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api
 import { LoadingOverlay, preventDefault } from '@bigcommerce/checkout/ui';
 
 import { CardInstrumentFieldset, SignOutLink } from './utils/components';
+import { AccountInstrumentFieldset } from './utils/components/AccountInstrumentFieldset';
 import { assertIsCardInstrument, isBankAccountInstrument } from './utils/guards';
 
 export interface HostedWidgetComponentState {
