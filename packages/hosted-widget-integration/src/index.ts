@@ -1,1 +1,4 @@
-export * from './lib/hosted-widget-integration';
+export {
+    default as HostedWidgetPaymentComponent,
+    HostedWidgetComponentProps,
+} from './HostedWidgetPaymentComponent';

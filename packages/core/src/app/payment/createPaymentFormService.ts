@@ -4,8 +4,7 @@ import {
     PaymentFormService,
     PaymentFormValues,
 } from '@bigcommerce/checkout/payment-integration-api';
-
-import { FormContextType } from '../ui/form';
+import { FormContextType } from '@bigcommerce/checkout/ui';
 
 import { PaymentContextProps } from './PaymentContext';
 

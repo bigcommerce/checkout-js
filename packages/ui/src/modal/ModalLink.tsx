@@ -1,8 +1,9 @@
 import React, { FunctionComponent, ReactNode, useCallback } from 'react';
 
-import { preventDefault } from '../../common/dom';
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { Button, ButtonSize } from '../button';
+import { preventDefault } from '../utils/dom';
 
 import Modal from './Modal';
 import './ModalLink.scss';
@@ -35,8 +36,11 @@ const ModalLink: FunctionComponent<ModalLinkProps> = ({ children, body, header }
 
     return (
         <ModalTrigger modal={renderModal}>
-            { }
-            {({ onClick }) => <a onClick={preventDefault(onClick)}>{children}</a>}
+            {}
+            {
+                // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+                ({ onClick }) => <a onClick={preventDefault(onClick)}>{children}</a>
+            }
         </ModalTrigger>
     );
 };
