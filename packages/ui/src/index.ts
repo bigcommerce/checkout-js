@@ -5,6 +5,7 @@ export { DropdownTrigger } from './dropdown';
 export {
     AddressFormSkeleton,
     BasicFormField,
+    CheckboxFormField,
     ChecklistSkeleton,
     CustomerSkeleton,
     Fieldset,

@@ -21,6 +21,7 @@ import { LoadingOverlay, preventDefault } from '@bigcommerce/checkout/ui';
 
 import { CardInstrumentFieldset, SignOutLink } from './utils/components';
 import { AccountInstrumentFieldset } from './utils/components/AccountInstrumentFieldset';
+import { StoreInstrumentFieldset } from './utils/components/StoreInstrumentFieldset';
 import { assertIsCardInstrument, isBankAccountInstrument } from './utils/guards';
 
 export interface HostedWidgetComponentState {
@@ -239,6 +240,7 @@ class HostedWidgetPaymentComponent extends Component<
                 <div className="paymentMethod--hosted">
                     {shouldShowAccountInstrument && shouldShowInstrumentFieldset && (
                         <AccountInstrumentFieldset
+                            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
                             instruments={instruments as AccountInstrument[]}
                             onSelectInstrument={this.handleSelectInstrument}
                             onUseNewInstrument={this.handleUseNewCard}
@@ -248,6 +250,7 @@ class HostedWidgetPaymentComponent extends Component<
 
                     {!shouldShowAccountInstrument && shouldShowInstrumentFieldset && (
                         <CardInstrumentFieldset
+                            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
                             instruments={instruments as CardInstrument[]}
                             onDeleteInstrument={this.handleDeleteInstrument}
                             onSelectInstrument={this.handleSelectInstrument}

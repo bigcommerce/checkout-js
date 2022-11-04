@@ -12,6 +12,7 @@ export default interface PaymentFormService {
         field: TField,
         value: PaymentFormValues[TField],
     ): void;
+    getFieldValue<T>(field: string): T;
     setSubmit(method: PaymentMethod, fn: ((values: PaymentFormValues) => void) | null): void;
     setSubmitted(isSubmitted: boolean): void;
     setValidationSchema(
