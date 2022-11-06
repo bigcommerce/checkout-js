@@ -202,6 +202,28 @@ describe('Shipping Component', () => {
         );
     });
 
+    it('calls updateShippingAddress if shouldSaveAddress changes', async () => {
+        component = mount(<ComponentTest {...defaultProps} />);
+        await new Promise((resolve) => process.nextTick(resolve));
+        component.update();
+
+        const saveAddressField = component.find('input[name="shippingAddress.shouldSaveAddress"]');
+        const currentValue = saveAddressField.get(0).props.value;
+        const changedValue = currentValue === 'true' ? 'false' : 'true';
+
+        saveAddressField.simulate('change', {
+            target: { value: changedValue, name: 'shippingAddress.shouldSaveAddress' },
+        });
+
+        component.find('form').simulate('submit');
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(checkoutService.updateShippingAddress).toHaveBeenCalledWith(
+            expect.objectContaining({ shouldSaveAddress: changedValue }),
+        );
+    });
+
     it('calls updateCheckout if comment changes', async () => {
         component = mount(<ComponentTest {...defaultProps} />);
         await new Promise((resolve) => process.nextTick(resolve));
