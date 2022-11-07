@@ -191,6 +191,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
                 onChangeShipping: handleStripeShippingAddress,
                 availableCountries: allowedCountries,
                 getStyles: getStripeStyles,
+                getStripeState: () => '',
                 gatewayId: 'stripeupe',
                 methodId: 'card',
             },
