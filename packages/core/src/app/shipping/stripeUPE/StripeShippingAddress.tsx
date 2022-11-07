@@ -85,14 +85,13 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
     }, [consignments]);
 
     useEffect(() => {
-        if (stripeShippingAddress.firstName && hasSelectedShippingOptions(consignments)) {
-            if (!isFirstShippingRender && !isNewAddress && !isShippingMethodLoading) {
-                if (isStripeLoading && isStripeAutoStep) {
-                    isStripeLoading();
-                    isStripeAutoStep();
-                }
-                onSubmit({billingSameAsShipping: true, shippingAddress: stripeShippingAddress, orderComment: ''});
-            }
+        const hasStripeAddressAndHasShippingOptions = stripeShippingAddress.firstName && hasSelectedShippingOptions(consignments);
+        const afterReload = !isFirstShippingRender && !isNewAddress && !isShippingMethodLoading;
+        const isLoadingBeforeAutoStep =  isStripeLoading && isStripeAutoStep;
+        if (hasStripeAddressAndHasShippingOptions && afterReload && isLoadingBeforeAutoStep) {
+            isStripeLoading();
+            isStripeAutoStep();
+            onSubmit({billingSameAsShipping: true, shippingAddress: stripeShippingAddress, orderComment: ''});
         }
     }, [isFirstShippingRender, onSubmit, stripeShippingAddress, shouldDisableSubmit, isShippingMethodLoading, isNewAddress ,consignments]);
 

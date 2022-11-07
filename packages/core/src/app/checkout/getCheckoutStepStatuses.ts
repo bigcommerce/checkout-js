@@ -5,6 +5,7 @@ import { createSelector } from 'reselect';
 import { isValidAddress } from '../address';
 import { EMPTY_ARRAY } from '../common/utility';
 import { SUPPORTED_METHODS } from '../customer';
+import { PaymentMethodId } from '../payment/paymentMethod';
 import {
     hasSelectedShippingOptions,
     hasUnassignedLineItems,
@@ -33,7 +34,7 @@ const getCustomerStepStatus = createSelector(
         const isComplete = hasEmail || isUsingWallet;
         const isEditable = isComplete && !isUsingWallet && isGuest
 
-        if (config?.checkoutSettings.providerWithCustomCheckout === 'stripeupe' && hasEmail && isGuest) {
+        if (config?.checkoutSettings.providerWithCustomCheckout === PaymentMethodId.StripeUPE && hasEmail && isGuest) {
             return {
                 type: CheckoutStepType.Customer,
                 isActive: false,

@@ -114,7 +114,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
 
         try {
             await loadPaymentMethods();
-            if (providerWithCustomCheckout !== 'stripeupe') {
+            if (providerWithCustomCheckout !== PaymentMethodId.StripeUPE) {
                 await initializeCustomer({methodId: providerWithCustomCheckout});
             }
         } catch (error) {
@@ -473,7 +473,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             providerWithCustomCheckout,
         } = this.props;
 
-        if (providerWithCustomCheckout && providerWithCustomCheckout !== 'stripeupe') {
+        if (providerWithCustomCheckout && providerWithCustomCheckout !== PaymentMethodId.StripeUPE) {
             await executePaymentMethodCheckout({
                 methodId: providerWithCustomCheckout,
                 continueWithCheckoutCallback: onContinueAsGuest,
