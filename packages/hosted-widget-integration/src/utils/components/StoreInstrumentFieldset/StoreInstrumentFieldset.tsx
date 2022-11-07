@@ -35,7 +35,7 @@ const useProps = (
 
     const allInstruments = getInstruments();
 
-    const saveIsChecked = paymentForm.getFieldValue<boolean>('shouldSaveInstrument');
+    const saveIsChecked = Boolean(paymentForm.getFieldValue<boolean>('shouldSaveInstrument'));
 
     const { instrumentId } = props;
 
