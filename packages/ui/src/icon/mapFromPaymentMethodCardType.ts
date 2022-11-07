@@ -124,7 +124,8 @@ const instrumentTypeMap: Record<string, InstrumentComponent> = {
 };
 
 export default function mapFromPaymentMethodCardType(type: string): string | undefined {
-    return instrumentTypeMap[type].instrument || undefined;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    return instrumentTypeMap[type]?.instrument || undefined;
 }
 
 export function getPaymentMethodIconComponent(type?: string): ComponentType<any> | undefined {
