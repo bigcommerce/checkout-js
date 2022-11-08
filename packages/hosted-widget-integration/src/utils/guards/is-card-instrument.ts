@@ -8,6 +8,6 @@ export default function assertIsCardInstrument(
     instrument?: PaymentInstrument,
 ): asserts instrument is CardInstrument {
     if (!isCardInstrument(instrument)) {
-        throw new Error('Is not a card instrument');
+        throw new Error('Is not a card instrument.');
     }
 }
