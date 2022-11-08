@@ -1,0 +1,100 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ManageCardInstrumentsTable matches snapshot with rendered output 1`] = `
+<div
+  class="loadingOverlay-container"
+>
+  <table
+    class="table"
+  >
+    <thead
+      class="table-thead"
+    >
+      <tr>
+        <th>
+          optimized_checkout.payment.instrument_manage_table_header_payment_method_text
+        </th>
+        <th>
+          optimized_checkout.payment.instrument_manage_table_header_ending_in_text
+        </th>
+        <th>
+          optimized_checkout.payment.instrument_manage_table_header_expiry_date_text
+        </th>
+        <th />
+      </tr>
+    </thead>
+    <tbody
+      class="table-tbody"
+    >
+      <tr>
+        <td
+          data-test="manage-instrument-cardType"
+        >
+          <div
+            class="cardIcon-icon cardIcon-icon--default icon icon--medium"
+          />
+          <span
+            class="instrumentModal-instrumentCardType"
+          >
+            Visa
+          </span>
+        </td>
+        <td
+          data-test="manage-instrument-last4"
+        >
+          4321
+        </td>
+        <td
+          class=""
+          data-test="manage-instrument-expiry"
+        >
+          02/2025
+        </td>
+        <td>
+          <button
+            class="button button--tiny table-actionButton optimizedCheckout-buttonSecondary"
+            data-test="manage-instrument-delete-button"
+            type="button"
+          >
+            optimized_checkout.common.delete_action
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td
+          data-test="manage-instrument-cardType"
+        >
+          <div
+            class="cardIcon-icon cardIcon-icon--default icon icon--medium"
+          />
+          <span
+            class="instrumentModal-instrumentCardType"
+          >
+            American Express
+          </span>
+        </td>
+        <td
+          data-test="manage-instrument-last4"
+        >
+          4444
+        </td>
+        <td
+          class=""
+          data-test="manage-instrument-expiry"
+        >
+          10/2024
+        </td>
+        <td>
+          <button
+            class="button button--tiny table-actionButton optimizedCheckout-buttonSecondary"
+            data-test="manage-instrument-delete-button"
+            type="button"
+          >
+            optimized_checkout.common.delete_action
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;
