@@ -25,14 +25,6 @@ export interface ManageInstrumentsModalState {
     selectedInstrumentId?: string;
 }
 
-// interface WithCheckoutProps {
-//     deleteInstrumentError?: Error;
-//     isDeletingInstrument: boolean;
-//     isLoadingInstruments: boolean;
-//     clearError(error: Error): Promise<CheckoutSelectors>;
-//     deleteInstrument(id: string): Promise<CheckoutSelectors>;
-// }
-
 class ManageInstrumentsModal extends Component<
     ManageInstrumentsModalProps,
     ManageInstrumentsModalState
