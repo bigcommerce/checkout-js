@@ -12,13 +12,13 @@ exports[`ManageCardInstrumentsTable matches snapshot with rendered output 1`] = 
     >
       <tr>
         <th>
-          optimized_checkout.payment.instrument_manage_table_header_payment_method_text
+          Payment method
         </th>
         <th>
-          optimized_checkout.payment.instrument_manage_table_header_ending_in_text
+          Ending in
         </th>
         <th>
-          optimized_checkout.payment.instrument_manage_table_header_expiry_date_text
+          Expiry date
         </th>
         <th />
       </tr>
@@ -56,7 +56,7 @@ exports[`ManageCardInstrumentsTable matches snapshot with rendered output 1`] = 
             data-test="manage-instrument-delete-button"
             type="button"
           >
-            optimized_checkout.common.delete_action
+            Delete
           </button>
         </td>
       </tr>
@@ -90,7 +90,7 @@ exports[`ManageCardInstrumentsTable matches snapshot with rendered output 1`] = 
             data-test="manage-instrument-delete-button"
             type="button"
           >
-            optimized_checkout.common.delete_action
+            Delete
           </button>
         </td>
       </tr>

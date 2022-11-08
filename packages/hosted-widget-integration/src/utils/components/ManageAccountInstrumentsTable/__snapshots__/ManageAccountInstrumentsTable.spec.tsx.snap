@@ -12,7 +12,7 @@ exports[`ManageAccountInstrumentsTable matches snapshot with rendered output 1`]
     >
       <tr>
         <th>
-          optimized_checkout.payment.instrument_manage_table_header_payment_method_text
+          Payment method
         </th>
         <th />
       </tr>
@@ -59,7 +59,7 @@ exports[`ManageAccountInstrumentsTable matches snapshot with rendered output 1`]
             data-test="manage-instrument-delete-button"
             type="button"
           >
-            optimized_checkout.common.delete_action
+            Delete
           </button>
         </td>
       </tr>
@@ -102,7 +102,7 @@ exports[`ManageAccountInstrumentsTable matches snapshot with rendered output 1`]
             data-test="manage-instrument-delete-button"
             type="button"
           >
-            optimized_checkout.common.delete_action
+            Delete
           </button>
         </td>
       </tr>
