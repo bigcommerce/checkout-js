@@ -135,6 +135,12 @@ export default class SentryErrorLogger implements ErrorLogger {
     }
 
     private handleBeforeSend: (event: Event, hint?: EventHint) => Event | null = (event, hint) => {
+        if (
+            event.breadcrumbs?.filter((breadcrumb) => breadcrumb.data?.url.includes('convertcart'))
+        ) {
+            return null;
+        }
+
         if (event.exception) {
             if (
                 !this.shouldReportExceptions(
