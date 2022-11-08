@@ -16,6 +16,7 @@ import resolvePaymentMethod from '../resolvePaymentMethod';
 import withPayment, { WithPaymentProps } from '../withPayment';
 
 import { default as PaymentMethodV1 } from './PaymentMethod';
+import PaymentMethodId from './PaymentMethodId';
 
 export interface PaymentMethodProps {
     method: PaymentMethod;
@@ -69,7 +70,7 @@ const PaymentMethodContainer: ComponentType<
         type: method.type,
     });
 
-    if (!ResolvedPaymentMethod) {
+    if (!ResolvedPaymentMethod || method.gateway === PaymentMethodId.Mollie) {
         return (
             <PaymentMethodV1
                 isEmbedded={isEmbedded}

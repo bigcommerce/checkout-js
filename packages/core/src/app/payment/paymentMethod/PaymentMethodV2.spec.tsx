@@ -101,4 +101,28 @@ describe('PaymentMethod', () => {
 
         expect(componentFallback.find(Foo)).toBeDefined();
     });
+
+    it('returns payment method v1 if gateway is mollie', () => {
+        const Foo: FunctionComponent<PaymentMethodProps> = ({ method }) => <div>{method.id}</div>;
+
+        const resolver = (method: PaymentMethod) => {
+            return method.id === 'applepay' ? Foo : undefined;
+        };
+
+        const componentFallback = mount(
+            <ContextProvider>
+                <PaymentMethodComponent
+                    method={{
+                        ...getPaymentMethod(),
+                        gateway: 'mollie',
+                        id: 'applepay',
+                    }}
+                    onUnhandledError={jest.fn()}
+                    resolveComponent={resolver}
+                />
+            </ContextProvider>,
+        );
+
+        expect(componentFallback.find(Foo)).toBeDefined();
+    });
 });
