@@ -11,6 +11,7 @@ import {
     ModalTriggerModalProps,
 } from '@bigcommerce/checkout/ui';
 
+import { AccountInstrumentSelect } from '../AccountInstrumentSelect';
 import { ManageInstrumentsModal } from '../ManageInstrumentsModal';
 
 export interface AccountInstrumentFieldsetProps {
