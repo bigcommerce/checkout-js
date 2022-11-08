@@ -10,6 +10,8 @@ import {
 import { mount, ReactWrapper } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
+import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+
 import { getBillingAddress } from '../billing/billingAddresses.mock';
 import { CheckoutProvider } from '../checkout';
 import { getCheckout } from '../checkout/checkouts.mock';
@@ -68,7 +70,9 @@ describe('Customer', () => {
         CustomerTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
-                    <Customer {...props} />
+                    <AnalyticsProviderMock>
+                        <Customer {...props} />
+                    </AnalyticsProviderMock>
                 </LocaleContext.Provider>
             </CheckoutProvider>
         );

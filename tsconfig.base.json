@@ -18,6 +18,7 @@
     "paths": {
       "@bigcommerce/checkout/locale": ["packages/locale/src/index.ts"],
       "@bigcommerce/checkout/afterpay-integration": ["packages/afterpay-integration/src/index.ts"],
+      "@bigcommerce/checkout/analytics": ["packages/analytics/src/index.ts"],
       "@bigcommerce/checkout/apple-pay-integration": [
         "packages/apple-pay-integration/src/index.ts"
       ],
