@@ -49,6 +49,7 @@ describe('Shipping Component', () => {
                 isRequired: true,
                 type: CheckoutStepType.Shipping },
             isStripeLinkEnabled: true,
+            isShippingMethodLoading: true,
             navigateNextStep: jest.fn(),
             onUnhandledError: jest.fn(),
         };
@@ -122,6 +123,14 @@ describe('Shipping Component', () => {
     it('loads shipping data when component is mounted and stripeupe is enable', () => {
         jest.spyOn(checkoutState.data, 'getCustomer')
             .mockReturnValue({ ...getCustomer(), email: '' ,addresses: [] });
+        jest.spyOn(checkoutState.data, 'getShippingCountries')
+            .mockReturnValue([{
+            code: 'US',
+            name: 'United States',
+            hasPostalCodes: true,
+            subdivisions: [{code: 'bar', name: 'foo' }],
+            requiresState: true,
+        }])
         mount(<ComponentTest { ...defaultProps }/>);
 
         expect(checkoutService.loadShippingAddressFields)

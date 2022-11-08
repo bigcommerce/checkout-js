@@ -340,6 +340,42 @@ describe('Customer', () => {
             );
         });
 
+        it('does not render SuggestedLogin form if Stripe link is authenticated', async () => {
+            jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue({
+                ...getCustomer(),
+                isGuest: true,
+                shouldEncourageSignIn: true,
+                isStripeLinkAuthenticated: true,
+            } as CustomerData);
+
+            jest.spyOn(checkoutService, 'continueAsGuest').mockReturnValue(
+                Promise.resolve(checkoutService.getState()),
+            );
+
+            const handleChangeViewType = jest.fn();
+            const component = mount(
+                <CustomerTest
+                    onChangeViewType={handleChangeViewType}
+                    viewType={CustomerViewType.Guest}
+                />,
+            );
+
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            (component.find(GuestForm) as ReactWrapper<GuestFormProps>).prop('onContinueAsGuest')({
+                email: 'test@bigcommerce.com',
+                shouldSubscribe: false,
+            });
+
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            expect(handleChangeViewType).not.toHaveBeenCalledWith(CustomerViewType.SuggestedLogin);
+
+            (checkoutService.getState().data.getCustomer as jest.Mock).mockRestore();
+        });
+
         it('renders SuggestedLogin form if continue as guest returns truthy shouldEncourageSignIn', async () => {
             jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue({
                 ...getCustomer(),
