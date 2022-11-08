@@ -1,17 +1,17 @@
 import {
-    BodlService,
     CheckoutSelectors,
     CheckoutService,
     createCheckoutService,
     createEmbeddedCheckoutMessenger,
     EmbeddedCheckoutMessenger,
-    StepTracker,
 } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { EventEmitter } from 'events';
 import { noop, omit } from 'lodash';
 import React, { FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
+
+import { AnalyticsContextProps, AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
 
 import { BillingProps } from '../billing';
 import Billing from '../billing/Billing';
@@ -46,11 +46,10 @@ describe('Checkout', () => {
     let CheckoutTest: FunctionComponent<CheckoutProps>;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
-    let defaultProps: CheckoutProps;
+    let defaultProps: CheckoutProps & AnalyticsContextProps;
     let embeddedMessengerMock: EmbeddedCheckoutMessenger;
-    let stepTracker: StepTracker;
-    let bodlService: BodlService;
     let subscribeEventEmitter: EventEmitter;
+    let analyticsTracker: Partial<AnalyticsEvents>;
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
@@ -58,15 +57,12 @@ describe('Checkout', () => {
         embeddedMessengerMock = createEmbeddedCheckoutMessenger({
             parentOrigin: getStoreConfig().links.siteLink,
         });
-        stepTracker = {
-            trackCheckoutStarted: jest.fn(),
-            trackStepViewed: jest.fn(),
-            trackStepCompleted: jest.fn(),
-        } as unknown as StepTracker;
-        bodlService = {
-            checkoutBegin: jest.fn(),
-        } as unknown as StepTracker;
         subscribeEventEmitter = new EventEmitter();
+        analyticsTracker = {
+            checkoutBegin: jest.fn(),
+            trackStepViewed: jest.fn(),
+            trackStepCompleted: jest.fn()
+        };
 
         defaultProps = {
             checkoutId: getCheckout().id,
@@ -75,8 +71,7 @@ describe('Checkout', () => {
             embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
             embeddedSupport: createEmbeddedCheckoutSupport(getLanguageService()),
             errorLogger: createErrorLogger(),
-            createStepTracker: () => stepTracker,
-            createBodlService: () => bodlService,
+            analyticsTracker
         };
 
         jest.spyOn(checkoutService, 'loadCheckout').mockImplementation(
@@ -116,7 +111,9 @@ describe('Checkout', () => {
         CheckoutTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleProvider checkoutService={checkoutService}>
-                    <Checkout {...props} />
+                    <AnalyticsProviderMock>
+                        <Checkout {...props} />
+                    </AnalyticsProviderMock>
                 </LocaleProvider>
             </CheckoutProvider>
         );
@@ -145,17 +142,7 @@ describe('Checkout', () => {
 
         await new Promise((resolve) => process.nextTick(resolve));
 
-        expect(stepTracker.trackCheckoutStarted).toHaveBeenCalled();
-    });
-
-    it('tracks BODL checkout begin', async () => {
-        const container = mount(<CheckoutTest {...defaultProps} />);
-
-        container.update();
-
-        await new Promise((resolve) => process.nextTick(resolve));
-
-        expect(bodlService.checkoutBegin).toHaveBeenCalled();
+        expect(analyticsTracker.checkoutBegin).toHaveBeenCalled();
     });
 
     it('posts message to parent of embedded checkout when checkout is loaded', async () => {
@@ -295,7 +282,7 @@ describe('Checkout', () => {
 
         jest.runAllTimers();
 
-        expect(stepTracker.trackStepViewed).toHaveBeenCalledWith('shipping');
+        expect(analyticsTracker.trackStepViewed).toHaveBeenCalledWith('shipping');
     });
 
     it('marks step as active when user tries to edit it', () => {
@@ -365,7 +352,7 @@ describe('Checkout', () => {
 
             container.update();
 
-            expect(stepTracker.trackStepCompleted).toHaveBeenCalledWith('customer');
+            expect(analyticsTracker.trackStepCompleted).toHaveBeenCalledWith('customer');
         });
 
         it('navigates to next step when shopper signs in', () => {

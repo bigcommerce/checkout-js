@@ -10,9 +10,11 @@ import { compact, find, isEmpty, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
+import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
+import { withAnalytics } from '../analytics';
 import { CheckoutContextProps, withCheckout } from '../checkout';
 import {
     ErrorLogger,
@@ -85,7 +87,7 @@ interface PaymentState {
 }
 
 class Payment extends Component<
-    PaymentProps & WithCheckoutPaymentProps & WithLanguageProps,
+    PaymentProps & WithCheckoutPaymentProps & WithLanguageProps & AnalyticsContextProps,
     PaymentState
 > {
     state: PaymentState = {
@@ -115,7 +117,13 @@ class Payment extends Component<
             onReady = noop,
             onUnhandledError = noop,
             usableStoreCredit,
+            defaultMethod,
+            analyticsTracker
         } = this.props;
+
+        const { selectedMethod } = this.state;
+
+        analyticsTracker.selectedPaymentMethod((selectedMethod || defaultMethod)?.config.displayName);
 
         if (usableStoreCredit) {
             this.handleStoreCreditChange(true);
@@ -429,9 +437,12 @@ class Payment extends Component<
             onSubmit = noop,
             onSubmitError = noop,
             submitOrder,
+            analyticsTracker
         } = this.props;
 
         const { selectedMethod = defaultMethod, submitFunctions } = this.state;
+
+        analyticsTracker.clickPayButton({shouldCreateAccount: values.shouldCreateAccount});
 
         const customSubmit =
             selectedMethod &&
@@ -445,8 +456,12 @@ class Payment extends Component<
             const state = await submitOrder(mapToOrderRequestBody(values, isPaymentDataRequired()));
             const order = state.data.getOrder();
 
+            analyticsTracker.paymentComplete();
+
             onSubmit(order?.orderId);
         } catch (error) {
+            analyticsTracker.paymentRejected();
+
             if (isErrorWithType(error) && error.type === 'payment_method_invalid') {
                 return loadPaymentMethods();
             }
@@ -460,11 +475,14 @@ class Payment extends Component<
     };
 
     private setSelectedMethod: (method?: PaymentMethod) => void = (method) => {
+        const { analyticsTracker } = this.props;
         const { selectedMethod } = this.state;
 
         if (selectedMethod === method) {
             return;
         }
+
+        analyticsTracker.selectedPaymentMethod(method?.config.displayName);
 
         this.setState({ selectedMethod: method });
     };
@@ -635,4 +653,4 @@ export function mapToPaymentProps({
     };
 }
 
-export default withLanguage(withCheckout(mapToPaymentProps)(Payment));
+export default withAnalytics(withLanguage(withCheckout(mapToPaymentProps)(Payment)));

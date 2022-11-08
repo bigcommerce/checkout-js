@@ -1,6 +1,5 @@
 import {
     Address,
-    BodlService,
     Cart,
     CartChangedError,
     CheckoutParams,
@@ -11,14 +10,15 @@ import {
     FlashMessage,
     Promotion,
     RequestOptions,
-    StepTracker,
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { Component, lazy, ReactNode } from 'react';
 
-import { AddressFormSkeleton, ChecklistSkeleton, CustomerSkeleton } from '@bigcommerce/checkout/ui'
+import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { AddressFormSkeleton, ChecklistSkeleton, CustomerSkeleton } from '@bigcommerce/checkout/ui';
 
+import { withAnalytics } from '../analytics';
 import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
 import { CustomError, ErrorLogger, ErrorModal, isCustomError } from '../common/error';
@@ -112,8 +112,6 @@ export interface CheckoutProps {
     embeddedSupport: CheckoutSupport;
     errorLogger: ErrorLogger;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
-    createStepTracker(): StepTracker;
-    createBodlService(): BodlService;
 }
 
 export interface CheckoutState {
@@ -153,12 +151,9 @@ export interface WithCheckoutProps {
 }
 
 class Checkout extends Component<
-    CheckoutProps & WithCheckoutProps & WithLanguageProps,
+    CheckoutProps & WithCheckoutProps & WithLanguageProps & AnalyticsContextProps,
     CheckoutState
 > {
-    stepTracker: StepTracker | undefined;
-    bodlService: BodlService | undefined;
-
     state: CheckoutState = {
         isBillingSameAsShipping: true,
         isCartEmpty: false,
@@ -176,18 +171,20 @@ class Checkout extends Component<
             this.unsubscribeFromConsignments();
             this.unsubscribeFromConsignments = undefined;
         }
+
+        window.removeEventListener('beforeunload', this.handleBeforeExit);
+        this.handleBeforeExit();
     }
 
     async componentDidMount(): Promise<void> {
         const {
             checkoutId,
             containerId,
-            createStepTracker,
-            createBodlService,
             createEmbeddedMessenger,
             embeddedStylesheet,
             loadCheckout,
             subscribeToConsignments,
+            analyticsTracker
         } = this.props;
 
         try {
@@ -227,11 +224,7 @@ class Checkout extends Component<
             messenger.postFrameLoaded({ contentId: containerId });
             messenger.postLoaded();
 
-            this.stepTracker = createStepTracker();
-            this.stepTracker.trackCheckoutStarted();
-
-            this.bodlService = createBodlService();
-            this.bodlService.checkoutBegin();
+            analyticsTracker.checkoutBegin();
 
             const consignments = data.getConsignments();
             const cart = data.getCart();
@@ -259,6 +252,8 @@ class Checkout extends Component<
             } else {
                 this.handleReady();
             }
+
+            window.addEventListener('beforeunload', this.handleBeforeExit);
         } catch (error) {
             if (error instanceof Error) {
                 this.handleUnhandledError(error);
@@ -547,7 +542,7 @@ class Checkout extends Component<
     private navigateToNextIncompleteStep: (options?: { isDefault?: boolean }) => void = (
         options,
     ) => {
-        const { steps } = this.props;
+        const { steps, analyticsTracker } = this.props;
         const activeStepIndex = findIndex(steps, { isActive: true });
         const activeStep = activeStepIndex >= 0 && steps[activeStepIndex];
 
@@ -557,20 +552,18 @@ class Checkout extends Component<
 
         const previousStep = steps[Math.max(activeStepIndex - 1, 0)];
 
-        if (previousStep && this.stepTracker) {
-            this.stepTracker.trackStepCompleted(previousStep.type);
+        if (previousStep) {
+            analyticsTracker.trackStepCompleted(previousStep.type);
         }
 
         this.navigateToStep(activeStep.type, options);
     };
 
     private navigateToOrderConfirmation: (orderId?: number) => void = (orderId) => {
-        const { steps } = this.props;
+        const { steps, analyticsTracker } = this.props;
         const { isBuyNowCartEnabled } = this.state;
 
-        if (this.stepTracker) {
-            this.stepTracker.trackStepCompleted(steps[steps.length - 1].type);
-        }
+        analyticsTracker.trackStepCompleted(steps[steps.length - 1].type);
 
         if (this.embeddedMessenger) {
             this.embeddedMessenger.postComplete();
@@ -619,9 +612,8 @@ class Checkout extends Component<
     };
 
     private handleExpanded: (type: CheckoutStepType) => void = (type) => {
-        if (this.stepTracker) {
-            this.stepTracker.trackStepViewed(type);
-        }
+        const { analyticsTracker } = this.props;
+        analyticsTracker.trackStepViewed(type);
     };
 
     private handleUnhandledError: (error: Error) => void = (error) => {
@@ -717,6 +709,12 @@ class Checkout extends Component<
         this.navigateToStep(CheckoutStepType.Customer);
         this.setState({ customerViewType });
     };
+
+    private handleBeforeExit: () => void = () => {
+        const { analyticsTracker } = this.props;
+
+        analyticsTracker.exitCheckout();
+    }
 }
 
-export default withLanguage(withCheckout(mapToCheckoutProps)(Checkout));
+export default withAnalytics(withLanguage(withCheckout(mapToCheckoutProps)(Checkout)));

@@ -6,6 +6,8 @@ import {
 import { mount, render } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
+import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+
 import { CheckoutProvider } from '../../checkout';
 import { getCheckout } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
@@ -43,7 +45,9 @@ describe('CheckoutSuggestion', () => {
         TestComponent = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleProvider checkoutService={checkoutService}>
-                    <CheckoutSuggestion {...props} />
+                    <AnalyticsProviderMock>
+                        <CheckoutSuggestion {...props} />
+                    </AnalyticsProviderMock>
                 </LocaleProvider>
             </CheckoutProvider>
         );

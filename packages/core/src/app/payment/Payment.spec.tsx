@@ -11,6 +11,8 @@ import { EventEmitter } from 'events';
 import { find, merge, noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
+import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+
 import { getCart } from '../cart/carts.mock';
 import { CheckoutProvider } from '../checkout';
 import { getCheckout, getCheckoutPayment } from '../checkout/checkouts.mock';
@@ -95,7 +97,9 @@ describe('Payment', () => {
         PaymentTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
-                    <Payment {...props} />
+                    <AnalyticsProviderMock>
+                        <Payment {...props} />
+                    </AnalyticsProviderMock>
                 </LocaleContext.Provider>
             </CheckoutProvider>
         );

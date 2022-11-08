@@ -1,17 +1,18 @@
 import {
-    BodlService,
     CheckoutSelectors,
     EmbeddedCheckoutMessenger,
     EmbeddedCheckoutMessengerOptions,
     Order,
     ShopperConfig,
-    StepTracker,
     StoreConfig,
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';
 import React, { Component, lazy, ReactNode } from 'react';
 
+import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+
+import { withAnalytics } from '../analytics';
 import { CheckoutContextProps, withCheckout } from '../checkout';
 import { ErrorLogger, ErrorModal } from '../common/error';
 import { retry } from '../common/utility';
@@ -73,8 +74,6 @@ export interface OrderConfirmationProps {
     orderId: number;
     createAccount(values: SignUpFormValues): Promise<CreatedCustomer>;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
-    createStepTracker(): StepTracker;
-    createBodlService(): BodlService;
 }
 
 interface WithCheckoutOrderConfirmationProps {
@@ -85,7 +84,7 @@ interface WithCheckoutOrderConfirmationProps {
 }
 
 class OrderConfirmation extends Component<
-    OrderConfirmationProps & WithCheckoutOrderConfirmationProps,
+    OrderConfirmationProps & WithCheckoutOrderConfirmationProps & AnalyticsContextProps,
     OrderConfirmationState
 > {
     state: OrderConfirmationState = {};
@@ -96,11 +95,10 @@ class OrderConfirmation extends Component<
         const {
             containerId,
             createEmbeddedMessenger,
-            createStepTracker,
-            createBodlService,
             embeddedStylesheet,
             loadOrder,
             orderId,
+            analyticsTracker
         } = this.props;
 
         loadOrder(orderId)
@@ -113,8 +111,7 @@ class OrderConfirmation extends Component<
                 messenger.receiveStyles((styles) => embeddedStylesheet.append(styles));
                 messenger.postFrameLoaded({ contentId: containerId });
 
-                createStepTracker().trackOrderComplete();
-                createBodlService().orderPurchased();
+                analyticsTracker.orderPurchased();
             })
             .catch(this.handleUnhandledError);
     }
@@ -346,4 +343,4 @@ export function mapToOrderConfirmationProps(
     };
 }
 
-export default withCheckout(mapToOrderConfirmationProps)(OrderConfirmation);
+export default withAnalytics(withCheckout(mapToOrderConfirmationProps)(OrderConfirmation));
