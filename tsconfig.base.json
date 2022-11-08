@@ -41,6 +41,7 @@
       "@bigcommerce/checkout/payment-integration-test-framework": [
         "packages/payment-integration-test-framework/src/index.ts"
       ],
+      "@bigcommerce/checkout/test-utils": ["packages/test-utils/src/index.ts"],
       "@bigcommerce/checkout/ui": ["packages/ui/src/index.ts"],
       "@bigcommerce/checkout/workspace-tools": ["packages/workspace-tools/src/index.ts"]
     },
