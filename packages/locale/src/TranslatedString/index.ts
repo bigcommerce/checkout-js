@@ -1,1 +1,1 @@
-export { default as TranslatedString } from './TranslatedString';
+export { default as TranslatedString, TranslatedStringProps } from './TranslatedString';
