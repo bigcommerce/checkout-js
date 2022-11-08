@@ -35,12 +35,14 @@ export interface CustomerProps {
     viewType: CustomerViewType;
     step: CheckoutStepStatus;
     isEmbedded?: boolean;
+    isSubscribed: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void;
     onChangeViewType?(viewType: CustomerViewType): void;
     onAccountCreated?(): void;
     onContinueAsGuest?(): void;
     onContinueAsGuestError?(error: Error): void;
     onReady?(): void;
+    onSubscribeToNewsletter(subscribe: boolean): void;
     onSignIn?(): void;
     onSignInError?(error: Error): void;
     onUnhandledError?(error: Error): void;
@@ -58,6 +60,7 @@ export interface WithCheckoutCustomerProps {
     isCreatingAccount: boolean;
     isExecutingPaymentMethodCheckout: boolean;
     isGuestEnabled: boolean;
+    isHavingBillingId: boolean;
     isInitializing: boolean;
     isSendingSignInEmail: boolean;
     isSignInEmailEnabled: boolean;
@@ -160,13 +163,13 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
             canSubscribe,
             checkEmbeddedSupport,
             checkoutButtonIds,
-            defaultShouldSubscribe,
             deinitializeCustomer,
             email,
             initializeCustomer,
             isContinuingAsGuest = false,
             isExecutingPaymentMethodCheckout = false,
             isInitializing = false,
+            isSubscribed,
             privacyPolicyUrl,
             requiresMarketingConsent,
             isStripeLinkEnabled,
@@ -190,7 +193,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                         />
                     }
                     continueAsGuestButtonLabelId="customer.continue"
-                    defaultShouldSubscribe={ defaultShouldSubscribe }
+                    defaultShouldSubscribe={ isSubscribed }
                     deinitialize={ deinitializeCustomer }
                     email={ this.draftEmail || email }
                     initialize={ initializeCustomer }
@@ -216,7 +219,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
                     />
                 }
                 continueAsGuestButtonLabelId="customer.continue"
-                defaultShouldSubscribe={defaultShouldSubscribe}
+                defaultShouldSubscribe={isSubscribed}
                 email={this.draftEmail || email}
                 isLoading={
                     isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout
@@ -358,20 +361,31 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
         const {
             canSubscribe,
             continueAsGuest,
+            isHavingBillingId,
+            defaultShouldSubscribe,
             onChangeViewType = noop,
             onContinueAsGuest = noop,
             onContinueAsGuestError = noop,
+            onSubscribeToNewsletter,
         } = this.props;
 
         const email = formValues.email.trim();
+        const updateSubscriptionWhenUnchecked =
+            isHavingBillingId || defaultShouldSubscribe ? false : undefined;
 
         try {
             const { data } = await continueAsGuest({
                 email,
                 acceptsMarketingNewsletter:
-                    canSubscribe && formValues.shouldSubscribe ? true : undefined,
-                acceptsAbandonedCartEmails: formValues.shouldSubscribe ? true : undefined,
+                    canSubscribe && formValues.shouldSubscribe
+                        ? true
+                        : updateSubscriptionWhenUnchecked,
+                acceptsAbandonedCartEmails: formValues.shouldSubscribe
+                    ? true
+                    : updateSubscriptionWhenUnchecked,
             });
+
+            onSubscribeToNewsletter(formValues.shouldSubscribe);
 
             const customer = data.getCustomer();
 
@@ -555,6 +569,7 @@ export function mapToWithCheckoutCustomerProps({
         initializeCustomer: checkoutService.initializeCustomer,
         isCreatingAccount: isCreatingCustomerAccount(),
         createAccountError: getCreateCustomerAccountError(),
+        isHavingBillingId: !!billingAddress?.id,
         isContinuingAsGuest: isContinuingAsGuest(),
         isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
         isInitializing: isInitializingCustomer(),
