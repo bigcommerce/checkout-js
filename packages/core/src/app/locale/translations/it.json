@@ -22,6 +22,7 @@
             "custom_valid_error": "{label} non è valido",
             "edit_address_action": "Modifica indirizzo",
             "enter_address_action": "Inserisci un nuovo indirizzo",
+            "enter_or_select_address_action": "Inserisci o seleziona un indirizzo diverso",
             "add_address_heading": "Aggiungi indirizzo",
             "save_address_action": "Salva indirizzo",
             "first_name_label": "Nome",
@@ -99,8 +100,8 @@
             "show_more": "Mostra di più"
         },
         "customer": {
-            "checkout_as_guest_text": "Stai effettuando l'acquisto come <strong>Ospite</strong>? Puoi sempre salvare i tuoi dati per creare un account con noi in un secondo momento.",
             "continue_as_guest_action": "Continua come ospite",
+            "continue_as_stripe_customer_action": "Continua con Link",
             "create_account_action": "Crea account",
             "continue": "Continua",
             "set_password_action": "Salva password",
@@ -116,13 +117,13 @@
             "create_account_text": "Crea un account per un checkout più rapido in futuro",
             "set_password_text": "Salva la password per un checkout più rapido in futuro",
             "account_created_text": "È stato creato un account per te, ma per accedere dovrai impostare una password.",
-            "create_account_to_continue_text": "Non hai un account? <a href=\"{url}\" target=\"_blank\">Crea un account</a> per continuare.",
+            "create_account_to_continue_text": "<a href=\"{url}\" target=\"_blank\">Crea un account</a>",
             "guest_could_login": "Sembra che tu abbia già un account. Accedi con {email} per un checkout più rapido.",
             "guest_must_login": "Sembra che tu abbia già un account. Accedi per continuare con {email} o utilizza un'altra e-mail.",
             "guest_temporary_disabled": "Il checkout come ospite è temporaneamente disattivato. Accedi o <a href=\"{url}\" target=\"_blank\">crea un account</a> per continuare.",
             "customer_heading": "Cliente",
             "email_invalid_error": "L'indirizzo e-mail deve essere valido",
-            "email_label": "Indirizzo e-mail",
+            "email_label": "E-mail",
             "email_required_error": "L'indirizzo e-mail è obbligatorio",
             "forgot_password_action": "Hai dimenticato la password?",
             "guest_customer_text": "Cliente ospite",
@@ -158,15 +159,15 @@
             "error_server": "Non è stato possibile inviarti un link per l'accesso. Riprova.",
             "error_not_found": "L'e-mail inserita non è associata a nessun account. Prova con un indirizzo diverso.",
             "sent_header": "Controlla la casella di posta",
-            "sent_text": "Abbiamo inviato un'e-mail a <strong>{email}</strong> con un link per l'accesso. Il link scadrà tra {minutes} minuti. Se non lo vedi nella posta in arrivo, controlla la cartella della posta indesiderata.",
+            "sent_text": "Il tuo link di accesso sta per arrivare a <strong>{email}</strong>. Il link scadrà tra 15 minuti. Se non lo vedi, controlla la cartella della posta indesiderata.",
             "text": "Inserisci l'indirizzo e-mail associato al tuo account. Ti invieremo un link per l'accesso.",
-            "header": "Inserisci il tuo indirizzo e-mail",
+            "header": "Link di accesso all'account",
             "header_with_email": "Conferma il tuo indirizzo e-mail",
             "link": "<a>Inviami un link per l'accesso</a>",
             "use_another_email": "Usa un'altra e-mail",
             "send": "Invia",
             "error_temporary_disabled": "La funzionalità link per l'accesso non è al momento disponibile. Accedi inserendo la password.",
-            "resend_link": "Non hai ricevuto l'e-mail? <a>Reinvia il link</a>",
+            "resend_link": "<a>Reinvia il link</a>",
             "use_password_link": " oppure <a>accedi utilizzando la password</a>."
         },
         "embedded_checkout": {
@@ -183,11 +184,13 @@
             "amazon_name_text": "Amazon Pay",
             "barclaycard_continue_action": "Continua",
             "bluesnap_v2_continue_action": "Continua",
-            "bolt_continue_action": "Continua con Bolt",
-            "bolt_create_account_label": "Ricorda i miei dati tramite Bolt",
-            "bolt_create_account_disclaimer": "Selezionando l'opzione qui sopra, accetti di creare un account Bolt in conformità con <a href=\"{termsUrl}\" target=\"_blank\">i termini e le condizioni</a> e l'<a href=\"{privacyPolicyUrl}\" target=\"_blank\">informativa sulla privacy</a>.",
+            "bolt_benefit_1": "Acquista centinaia di marchi con un accesso senza password",
+            "bolt_benefit_2": "Effettua il check out con i dettagli di pagamento e di spedizione salvati",
+            "bolt_benefit_3": "Approfitta della sicurezza di un account con conformità PCI",
+            "bolt_checkbox_agreement": "Salva i miei dati, crea un account Bolt e accetta i <a href=\"{termsUrl}\" target=\"_blank\">Termini di utilizzo</a> e l'<a href=\"{privacyPolicyUrl}\" target=\"_blank\">Informativa sulla privacy</a> di Bolt.",
             "bolt_name_text": "Bolt",
             "braintreevisacheckout_continue_action": "Continua con Visa Checkout",
+            "continue_with_brand": "Continua con {brandName}",
             "ccavenuemars_description_text": "Checkout con CCAvenue",
             "chasepay_continue_action": "Continua con Chase Pay",
             "chasepay_name_text": "Chase Pay",
@@ -229,15 +232,21 @@
             "credit_card_number_required_error": "Il numero della carta di credito è obbligatorio",
             "credit_card_number_mismatch_error": "Il numero di carta inserito non corrisponde a quello memorizzato nel tuo account",
             "credit_debit_card_text": "Carta di credito/debito",
+            "stripev3_auth_3ds_fail": "L'utente non ha effettuato l'autenticazione",
             "digitalriver_dropin_error": "Si è verificato un problema durante l'elaborazione del pagamento. Riprova o contattaci.",
-            "digitalriver_checkout_error": "Si è verificato un problema con il pagamento, controlla i tuoi dati e riprova o contatta il servizio clienti",
+            "digitalriver_checkout_error": "Si è verificato un problema in fase di check-out: controlla i tuoi dati e riprova, oppure contatta il servizio clienti",
             "digitalriver_checkout_error_title": "Errore durante l'elaborazione della richiesta.",
+            "digitalriver_display_name_text": "Seleziona il tuo metodo di pagamento",
             "google_pay_name_text": "Google Pay",
+            "humm_not_processable_error": "Humm non è in grado di elaborare il pagamento per questo ordine: seleziona un altro metodo di pagamento.",
             "klarna_continue_action": "Prosegui con Klarna",
             "klarna_name_text": "Klarna",
             "masterpass_name_text": "Masterpass",
-            "mollie_unsupported_method_error": "Questo metodo di pagamento non può essere utilizzato per l'acquisto di prodotti digitali. Contattare l'assistenza clienti o riprovare.",
-            "opy_continue_action": "Continua con Openpay",
+            "mollie_unsupported_method_error": "Questo metodo di pagamento non può essere utilizzato per l'acquisto di prodotti digitali. Contatta l'assistenza clienti o riprova.",
+            "opy_continue_action": "Continua con {methodName}",
+            "opy_widget_slogan": "Acquista ora. Paga in modo più intelligente.",
+            "opy_widget_info": "Sarai reindirizzato al sito Web di {methodName} per completare l'ordine dopo aver fatto clic su \"Continua con {methodName}\"",
+            "opy_invalid_cart_error": "Il prezzo del carrello è diverso dall'importo del piano {methodName}.",
             "orbital_continue_action": "Effettua ordine",
             "orbital_description_text": "Paga dal tuo conto ChasePay",
             "payment_cancelled": "Il pagamento è stato annullato",
@@ -251,6 +260,8 @@
             "payment_method_unavailable_error": "Il gestore dei pagamenti non è al momento disponibile. Riprova più tardi.",
             "payment_not_required_text": "Questo ordine non richiede alcun pagamento.",
             "paypal_continue_action": "Continua con PayPal",
+            "paypal_pay_later_continue_action": "Continua con \"Paga più tardi\"",
+            "paypal_venmo_continue_action": "Continua con Venmo",
             "paypal_credit_continue_action": "Continua con PayPal Credit",
             "paypal_credit_description_text": "Acquista ora, paga nel tempo",
             "paypal_description_text": "Paga dal tuo conto PayPal",
@@ -296,11 +307,12 @@
             "sepa_bic": "BIC",
             "sepa_bic_length": "Il BIC deve contenere 8 o 11 caratteri",
             "sepa_mandate_required": "Devi accettare il modulo di autorizzazione",
-            "sezzle_display_name_text": "Paga più tardi. Interessi allo 0 %.",
+            "sezzle_display_name_text": "Compra ora, paga più tardi con Sezzle.",
             "stripe_sepa_display_name_text": "Addebito diretto SEPA.",
             "stripe_sepa_mandate_disclaimer": "Fornendo il tuo IBAN e confermando questo pagamento, autorizzi (A) {storeUrl} e Stripe, il nostro provider di servizi di pagamento, a inviare istruzioni alla tua banca affinché addebiti l'importo sul tuo conto e (B) la tua banca ad addebitare l'importo sul tuo conto in conformità con le istruzioni ricevute. Puoi avere diritto a un rimborso dalla tua banca secondo i termini e le condizioni dell'accordo in vigore con l'istituto di credito. Il rimborso va richiesto entro otto settimane a partire dalla data in cui l'importo viene addebitato sul conto.",
+            "tax_provider_unavailable": "Impossibile calcolare l'imposta sulle vendite. Riprova. Se il problema persiste, contatta il nostro team di assistenza per completare il pagamento.",
             "vco_name_text": "Click to pay",
-            "visa_checkout_continue_action": "Continua con Click to pay",
+            "visa_checkout_continue_action": "Continua con Click to Pay",
             "zip_continue_action": "Continua con Zip",
             "zip_name_text": "Zip",
             "zip_display_name_text": "Own it Now, Pay Later",
@@ -325,7 +337,7 @@
                 "incorrect_number": "Impossibile verificare i dettagli della tua carta. Controlla i dati e riprova.",
                 "incorrect_zip": "Impossibile verificare l'indirizzo di fatturazione. Controlla i dettagli e riprova.",
                 "insufficient_funds": "Pagamento rifiutato. Contatta la tua banca.",
-                "invalid_address": "Non è stato possibile elaborare il pagamento perché i dati forniti per la transazione non sono validi.",
+                "invalid_address": "Impossibile verificare l'indirizzo di fatturazione. Controlla i dettagli e riprova.",
                 "invalid_amount": "Si è verificato un problema durante l'elaborazione del pagamento. Riprova o contattaci.",
                 "invalid_authorization_code": "Si è verificato un problema durante l'elaborazione del pagamento. Riprova o contattaci.",
                 "invalid_create_instrument_request": "Non è stato possibile elaborare il pagamento perché i dati forniti per la transazione non sono validi.",
@@ -403,7 +415,8 @@
             "sign_in_action": "Accedi a {providerName}",
             "sign_out_action": "Esci da {providerName}",
             "sign_out_after_action": "per visualizzare altri metodi di pagamento",
-            "sign_in_required_error": "Prima del pagamento devi effettuare l'accesso da remoto"
+            "sign_in_required_error": "Prima del pagamento devi effettuare l'accesso da remoto",
+            "sign_out_before_action": ""
         },
         "shipping": {
             "cart_change_error": "È stato rilevato un aggiornamento del carrello e i costi di spedizione disponibili sono stati aggiornati. Per continuare, seleziona di nuovo un metodo di spedizione.",
@@ -450,10 +463,29 @@
             "terms_and_conditions_heading": "Termini e condizioni"
         },
         "order_confirmation": {
+            "mandate": {
+                "checkoutcom": {
+                    "boleto": "Ticket Boleto Bancário",
+                    "oxxo": "Ticket OXXO",
+                    "sepa": "Addebito diretto SEPA (tramite Checkout.com) Riferimento mandato: {mandate}"
+                },
+                "stripev3": {
+                    "iban": "Autorizzazione addebito diretto SEPA"
+                },
+                "stripeupe": {
+                    "au_becs_debit": "Autorizzazione addebito diretto BECS",
+                    "boleto": "Ticket Boleto Bancário",
+                    "oxxo": "Ticket OXXO",
+                    "sepa_debit": "Autorizzazione addebito diretto SEPA"
+                },
+                "paypalcommercealternativemethods": {
+                    "oxxo": "Ticket OXXO"
+                }
+            },
             "order_number_text": "Il tuo numero d'ordine è <strong>{orderNumber}</strong>",
             "order_pending_review_text": "Abbiamo ricevuto il tuo ordine, che però è ancora in attesa di pagamento. Una volta ricevuto l'importo corrispondente, l'ordine risulterà completato. Se hai già fornito i dati per il pagamento, elaboreremo l'ordine manualmente e ti invieremo un'e-mail al termine dell'operazione.",
-            "order_pending_status_text": "Abbiamo ricevuto il tuo ordine e stiamo elaborando il pagamento. Una volta verificato il pagamento, l'ordine risulterà completato. Ti invieremo un'e-mail al termine dell'operazione. Nota: la procedura può richiedere qualche minuto a seconda dei tempi di elaborazione del metodo scelto. Per qualsiasi domanda sul tuo acquisto, scrivici all'indirizzo <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
-            "order_incomplete_status_text": "Abbiamo ricevuto il tuo ordine e il relativo pagamento. L'ordine è in fase di elaborazione nel nostro sistema. L'elaborazione potrebbe richiedere alcuni minuti. Per qualsiasi domanda sul tuo acquisto, scrivici all'indirizzo <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
+            "order_pending_status_text": "Abbiamo ricevuto il tuo ordine e stiamo elaborando il pagamento. Una volta verificato il pagamento, l'ordine risulterà completato. Ti invieremo un'e-mail al termine dell'operazione. Nota: la procedura può richiedere qualche minuto a seconda dei tempi di elaborazione del metodo scelto. Per qualsiasi domanda in merito, scrivici all'indirizzo <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
+            "order_incomplete_status_text": "Abbiamo ricevuto il tuo ordine e il relativo pagamento. L'ordine è in fase di elaborazione nel nostro sistema. L'elaborazione potrebbe richiedere alcuni minuti. Per qualsiasi domanda in merito, scrivici all'indirizzo <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_with_downloadable_digital_items_text": "Puoi scaricare i tuoi acquisti digitali facendo clic sui link presenti in questa pagina o accedendo al tuo account in qualsiasi momento. Il link per il download è riportato anche nell'e-mail di conferma, che dovrebbe arrivarti a breve.",
             "order_with_support_number_text": "Riceverai un'e-mail contenente informazioni sul tuo acquisto. Per qualsiasi domanda in merito, scrivici all'indirizzo <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a> o chiamaci al <a href=\"tel://{supportPhoneNumber}\">{supportPhoneNumber}</a>.",
             "order_without_downloadable_digital_items_text": "Una volta ricevuto il pagamento, ti invieremo un'e-mail di conferma con un link per scaricare i tuoi acquisti digitali.",
@@ -461,11 +493,7 @@
             "thank_you_customer_heading": "Grazie {name}!",
             "thank_you_heading": "Grazie!",
             "continue_shopping": "Continua a fare acquisti »",
-            "order_status_update_facebook_messenger_heading": "Ricevi aggiornamenti istantanei sul tuo ordine su Messenger",
-            "mandate_link_text": "Autorizzazione per {provider}",
-            "boleto_link_text": "Ticket Boleto Bancário",
-            "oxxo_link_text": "Ticket OXXO",
-            "sepa_link_text": "Autorizzazione addebito diretto SEPA"
+            "order_status_update_facebook_messenger_heading": "Ricevi aggiornamenti istantanei sul tuo ordine su Messenger"
         }
     }
 }

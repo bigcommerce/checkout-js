@@ -22,6 +22,7 @@
             "custom_valid_error": "{label} er ikke gyldig",
             "edit_address_action": "Rediger adresse",
             "enter_address_action": "Skriv inn en ny adresse",
+            "enter_or_select_address_action": "Skriv inn eller velg en annen adresse",
             "add_address_heading": "Legg til adresse",
             "save_address_action": "Lagre adresse",
             "first_name_label": "Fornavn",
@@ -43,14 +44,14 @@
         },
         "billing": {
             "billing_address_heading": "Fakturaadresse",
-            "billing_heading": "Fakturering",
+            "billing_heading": "fakturering",
             "save_billing_address_error": "Det oppstod en feil under lagring av faktureringsadressen i pristilbudet. Prøv igjen.",
             "billing_address_amazon": "Samme som faktureringsadressen angitt av deg i Amazon-kontoen din.",
             "billing_address_amazonpay": "Administrert av Amazon Pay",
             "use_shipping_address_label": "Faktureringsadressen min er den samme som leveringsadressen min."
         },
         "cart": {
-            "billed_amount_text": "*Du vil bli belastet og fakturert {total} ({code}) for denne bestillingen.",
+            "billed_amount_text": "*Du belastes og faktureres {total} ({code}) for denne bestillingen.",
             "based_on_currency_text": "Basert på {total} {code}",
             "cart_heading": "Bestillingssammendrag",
             "digital_item_text": "Digitalt element",
@@ -61,7 +62,7 @@
             "free_text": "Kostnadsfrie",
             "gift_certificate_text": "Gavekort",
             "handling_text": "Håndtering",
-            "item_count_text": "{count, plural, one{1 element} other{# elementer} }",
+            "item_count_text": "{count, plural, one{1 Vare } other{# Varer } }",
             "print_action": "Skriv ut",
             "remaining_text": "gjenstående",
             "remove_action": "Fjern",
@@ -99,8 +100,8 @@
             "show_more": "Vis mer"
         },
         "customer": {
-            "checkout_as_guest_text": "Betaler du som <strong>gjest</strong>? Du vil kunne lagre opplysningene dine for å opprette en konto hos oss senere.",
             "continue_as_guest_action": "Fortsett som gjest",
+            "continue_as_stripe_customer_action": "Fortsett med lenke",
             "create_account_action": "Opprett konto",
             "continue": "Fortsett",
             "set_password_action": "Lagre passord",
@@ -116,13 +117,13 @@
             "create_account_text": "Opprett en konto for raskere betaling i fremtiden",
             "set_password_text": "Velg et passord for raskere betaling i fremtiden",
             "account_created_text": "En konto er opprettet for deg, men du må velge et passord for å logge på.",
-            "create_account_to_continue_text": "Har du ikke en konto? <a href=\"{url}\" target=\"_blank\">Opprett en konto</a> for å fortsette.",
+            "create_account_to_continue_text": "<a href=\"{url}\" target=\"_blank\">Opprett en konto</a>",
             "guest_could_login": "Ser ut som du har en konto. Logg på med {email} for raskere betaling.",
             "guest_must_login": "Ser ut som du har en konto. Logg på for å fortsette med {email}, eller bruk en annen e-postadresse.",
             "guest_temporary_disabled": "Betaling som gjest er midlertidig deaktivert. Logg på eller <a href=\"{url}\" target=\"_blank\">opprett en konto</a> for å fortsette.",
             "customer_heading": "Kunde",
             "email_invalid_error": "E-postadressen må være gyldig",
-            "email_label": "E-postadresse",
+            "email_label": "E-post",
             "email_required_error": "E-postadresse er påkrevd",
             "forgot_password_action": "Har du glemt passordet?",
             "guest_customer_text": "Gjestekunde",
@@ -151,29 +152,28 @@
             "sign_out_action": "Logg ut",
             "sign_out_error": "Det oppsto en feil da vi skulle logge deg ut. Prøv igjen.",
             "subscribe_to_newsletter_text": "Ja, jeg vil gjerne motta oppdateringer.",
-            "suggestion_text": "Det ser ut til at du har en konto hos {provider}. For rask betaling kan du fortsette med {providerFlow}.",
+            "suggestion_text": "Det ser ut til at du har en konto hos {provider}. For rask utsjekking, fortsett med {providerFlow}.",
             "suggestion_action": "{providerFlow}"
         },
         "login_email": {
             "error_server": "Vi kunne ikke sende deg en påloggingslenke. Prøv igjen.",
             "error_not_found": "Den angitte e-posten er ikke knyttet til en konto. Prøv med en annen e-post.",
             "sent_header": "Sjekk innboksen din",
-            "sent_text": "Vi har sendt en e-post til <strong>{email}</strong> som inneholder en påloggingslenke. Denne utløper om {minutes} minutter. Hvis du ikke ser den i innboksen, sjekk søppelmappen.",
+            "sent_text": "Påloggingskoblingen din er på vei til <strong>{email}</strong> . Denne lenken utløper om 15 minutter. Hvis du ikke ser den, se søppelpostmappen.",
             "text": "Skriv inn e-postadressen knyttet til kontoen din. Vi sender deg en påloggingslenke.",
-            "header": "Oppgi e-postadressen din",
+            "header": "Link for kontopålogging",
             "header_with_email": "Bekreft e-postadressen din",
             "link": "<a>Send meg en påloggingslenke i stedet</a>",
             "use_another_email": "Bruk en annen e-post",
             "send": "Send",
             "error_temporary_disabled": "Funksjonaliteten til påloggingslenken er midlertidig utilgjengelig. Logg på ved å skrive inn passordet ditt.",
-            "resend_link": "Fikk du ikke e-posten? <a>Send lenken på nytt</a>",
+            "resend_link": "<a>Send lenken på nytt</a>",
             "use_password_link": " eller <a>logg på med passordet ditt</a> i stedet."
         },
         "embedded_checkout": {
             "unsupported_error": "Følgende betalingsmåter støttes ikke av Embedded Checkout: {methods}. Ta kontakt med oss for å få hjelp."
         },
         "payment": {
-            "adyen_credit_debit_card_text": "Kreditt-/debetkort",
             "affirm_name_text": "Bekreft",
             "affirm_display_name_text": "Betal over tid",
             "affirm_body_text": "Du viderekobles til Affirm for å fullføre kjøpet på en sikker måte. Bare fyll ut noen felt med grunnleggende informasjon og få en avgjørelse i sanntid. En sjekk om du er kvalifisert påvirker ikke kredittscoren din.",
@@ -190,6 +190,7 @@
             "bolt_checkbox_agreement": "Lagre informasjonen min, opprett en Bolt-konto og godta Bolts <a href=\"{termsUrl}\" target=\"_blank\">vilkår for bruk</a> og <a href=\"{privacyPolicyUrl}\" target=\"_blank\">personvernerklæring</a>.",
             "bolt_name_text": "Bolt",
             "braintreevisacheckout_continue_action": "Fortsett med Visa Checkout",
+            "continue_with_brand": "Fortsett med {brandName}",
             "ccavenuemars_description_text": "Betaling med CCAvenue",
             "chasepay_continue_action": "Fortsett med Chase Pay",
             "chasepay_name_text": "Chase Pay",
@@ -209,7 +210,7 @@
             "checkoutcom_sepa_creditor_title": "Kreditor",
             "checkoutcom_sepa_creditor_id": "Kreditor-ID: {creditorId}",
             "checkoutcom_sepa_debtor_title": "Debitor",
-            "checkoutcom_sepa_mandate_disclaimer": "Ved å godta dette fullmakts skjemaet gir du {creditorName} fullmakt til å sende instruksjoner til banken din om å belaste kontoen din, og banken din til å belaste kontoen din i samsvar med disse instruksjonene. Du har rett til refusjon fra banken din i henhold til vilkårene i avtalen din med banken din. En tilbakebetaling må kreves innen 8 uker fra datoen da kontoen din ble debitert.",
+            "checkoutcom_sepa_mandate_disclaimer": "Ved å godta dette fullmaktsskjemaet gir du {0} fullmakt til å sende instruksjoner til banken din om å belaste kontoen din, og banken din til å belaste kontoen din i samsvar med disse instruksjonene. Du har rett til refusjon fra banken i henhold til vilkårene i avtalen din med banken din. En tilbakebetaling må kreves innen åtte uker fra datoen da kontoen din ble debitert.",
             "checkoutcom_sepa_payment_type": "Betalingstype: engangsbetaling (ikke-gjentakende)",
             "clearpay_name_text": "Clearpay",
             "credit_card_text": "Kredittkort",
@@ -230,6 +231,8 @@
             "credit_card_number_last_four": "Skriv inn kortnummeret for {cardType} som slutter på {lastFour}",
             "credit_card_number_required_error": "Kredittkortnummer er påkrevd",
             "credit_card_number_mismatch_error": "Kortnummeret som er angitt, samsvarer ikke med kortet som er lagret på kontoen din",
+            "credit_debit_card_text": "Kreditt-/debetkort",
+            "stripev3_auth_3ds_fail": "Brukeren ble ikke godkjent",
             "digitalriver_dropin_error": "Det oppsto en feil under behandling av betalingen. Vennligst prøv igjen eller kontakt oss.",
             "digitalriver_checkout_error": "Det oppsto et problem i kassen. Sjekk detaljene dine og prøv igjen, eller kontakt kundeservice",
             "digitalriver_checkout_error_title": "Feil under behandling av forespørsel.",
@@ -242,7 +245,8 @@
             "mollie_unsupported_method_error": "Denne betalingsmåten kan ikke brukes til kjøp av digitale produkter. Kontakt kundestøtte eller prøv igjen.",
             "opy_continue_action": "Fortsett med {methodName}",
             "opy_widget_slogan": "Kjøp nå. Betal smartere.",
-            "opy_widget_info": "Du vil bli omdirigert til nettstedet til {methodName} for å fullføre bestillingen når du klikker på «Fortsett med {methodName}»",
+            "opy_widget_info": "Du omdirigeres til nettstedet til {methodName} for å fullføre bestillingen når du klikker på «Fortsett med {methodName}»",
+            "opy_invalid_cart_error": "Handlevognprisen er forskjellig fra {methodName}-abonnementsbeløpet.",
             "orbital_continue_action": "Legg inn bestilling",
             "orbital_description_text": "Betal med ChasePay-kontoen din",
             "payment_cancelled": "Betalingen ble kansellert",
@@ -256,6 +260,7 @@
             "payment_method_unavailable_error": "Denne betalingsleverandøren er midlertidig utilgjengelig. Prøv igjen senere.",
             "payment_not_required_text": "Betaling kreves ikke for denne bestillingen.",
             "paypal_continue_action": "Fortsett med PayPal",
+            "paypal_pay_later_continue_action": "Fortsett med Betal senere",
             "paypal_venmo_continue_action": "Fortsett med Venmo",
             "paypal_credit_continue_action": "Fortsett med PayPal Credit",
             "paypal_credit_description_text": "Kjøp nå, betal over tid",
@@ -302,9 +307,9 @@
             "sepa_bic": "BIC",
             "sepa_bic_length": "BIC må være på 8 eller 11 tegn",
             "sepa_mandate_required": "Du må godta fullmaktsskjemaet",
-            "sezzle_display_name_text": "Betal senere. 0 % rente.",
+            "sezzle_display_name_text": "Kjøp nå, betal senere med Sezzle.",
             "stripe_sepa_display_name_text": "Sepa Direct Debit.",
-            "stripe_sepa_mandate_disclaimer": "Ved å oppgi IBAN og bekrefte denne betalingen autoriserer du (A) {storeUrl} og Stripe, vår betalingstjenesteleverandør, til å sende instruksjoner til banken din om å belaste kontoen din og (B) banken din til å belaste kontoen din i samsvar med disse instruksjonene. Du har rett til refusjon fra banken din i henhold til vilkårene i avtalen din med banken din. En tilbakebetaling må kreves innen 8 uker fra datoen da kontoen din ble debitert.",
+            "stripe_sepa_mandate_disclaimer": "Ved å oppgi IBAN og bekrefte denne betalingen godkjenner du at (A) {storeUrl} og Stripe, betalingstjenesteleverandøren vår, sender instruksjoner til banken din om å belaste kontoen din og at (B) banken din belaster kontoen din i samsvar med disse instruksjonene. Du har rett til refusjon fra banken i henhold til vilkårene i avtalen din med banken din. En tilbakebetaling må kreves innen åtte uker fra datoen da kontoen din ble debitert.",
             "tax_provider_unavailable": "Omsetningsavgift kunne ikke beregnes. Prøv igjen. Hvis det ikke fungerer, kan du kontakte kundestøtteteamet vårt for å fullføre betalingen.",
             "vco_name_text": "Click to pay",
             "visa_checkout_continue_action": "Fortsett med Click to pay",
@@ -396,7 +401,7 @@
             "gift_certificate_remaining_text": "gjenstående",
             "gift_certificate_text": "Gavekort",
             "remove_action": "Fjern",
-            "store_credit_available_text": "Kontoen din har for øyeblikket {storeCredit} total butikkreditt tilgjengelig",
+            "store_credit_available_text": "Kontoen din har for øyeblikket totalt {storeCredit} butikkkreditt tilgjengelig",
             "toggle_action": "Kupong/gavekort"
         },
         "remote": {
@@ -410,7 +415,8 @@
             "sign_in_action": "Logg på {providerName}",
             "sign_out_action": "Logg av {providerName}",
             "sign_out_after_action": "for å se andre betalingsmåter",
-            "sign_in_required_error": "Fjernpålogging kreves før betaling"
+            "sign_in_required_error": "Fjernpålogging kreves før betaling",
+            "sign_out_before_action": ""
         },
         "shipping": {
             "cart_change_error": "En oppdatering av handlekurven din har blitt oppdaget, og de tilgjengelige fraktkostnadene dine er oppdatert. Velg en fraktmetode på nytt for å fortsette.",
@@ -466,8 +472,13 @@
                 "stripev3": {
                     "iban": "SEPA-autorisasjon"
                 },
-                "stripe_upe": {
+                "stripeupe": {
+                    "au_becs_debit": "BECS avtalegirofullmakt",
                     "boleto": "Boleto Bancário-billett",
+                    "oxxo": "OXXO-billett",
+                    "sepa_debit": "SEPA-autorisasjon"
+                },
+                "paypalcommercealternativemethods": {
                     "oxxo": "OXXO-billett"
                 }
             },
@@ -476,9 +487,9 @@
             "order_pending_status_text": "Vi har mottatt bestillingen din og behandler betalingen din. Når betalingen er bekreftet, vil bestillingen bli fullført. Vi sender deg en e-post når den er fullført. Vær oppmerksom på at denne prosessen kan ta noen minutter avhengig av behandlingstiden for den valgte metoden. Hvis du har spørsmål om kjøpet, kan du sende oss en e-post på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_incomplete_status_text": "Vi har mottatt din bestilling og betaling. Bestillingen din behandles nå av systemet vårt. Vær oppmerksom på at behandlingen kan ta noen minutter. Hvis du har spørsmål om kjøpet, kan du sende oss en e-post på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_with_downloadable_digital_items_text": "Du kan laste ned dine digitale kjøp ved å klikke på lenkene på denne siden, eller ved å logge på kontoen din når som helst. Det er også en nedlastingslenke i bekreftelses-e-posten din, som skal komme innen kort tid.",
-            "order_with_support_number_text": "En e-post vil bli sendt med informasjon om kjøpet ditt. Hvis du har spørsmål om kjøpet, kan du sende oss en e-post på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a> eller ringe oss på <a href=\"tel://{supportPhoneNumber}\">{supportPhoneNumber}</a>.",
+            "order_with_support_number_text": "En e-post sendes ut med informasjon om kjøpet ditt. Hvis du har spørsmål om kjøpet, kan du sende oss en e-post på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a> eller ringe oss på <a href=\"tel://{supportPhoneNumber}\">{supportPhoneNumber}</a>.",
             "order_without_downloadable_digital_items_text": "Når vi mottar betalingen din, sender vi en e-postbekreftelse med en lenke for å laste ned dine digitale kjøp.",
-            "order_without_support_number_text": "En e-post vil bli sendt med informasjon om kjøpet ditt. Hvis du har spørsmål om kjøpet, kan du sende oss en e-post på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
+            "order_without_support_number_text": "En e-post sendes ut med informasjon om kjøpet ditt. Hvis du har spørsmål om kjøpet, kan du sende oss en e-post på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "thank_you_customer_heading": "Takk, {name}!",
             "thank_you_heading": "Takk!",
             "continue_shopping": "Fortsett å handle »",

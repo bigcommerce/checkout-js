@@ -22,6 +22,7 @@
             "custom_valid_error": "{label} is niet geldig",
             "edit_address_action": "Adres bewerken",
             "enter_address_action": "Voer een nieuw adres in",
+            "enter_or_select_address_action": "Selecteer of voer een ander adres in",
             "add_address_heading": "Voeg adres toe",
             "save_address_action": "Adres opslaan",
             "first_name_label": "Voornaam",
@@ -50,7 +51,7 @@
             "use_shipping_address_label": "Mijn factuuradres is hetzelfde als mijn verzendadres."
         },
         "cart": {
-            "billed_amount_text": "*Er word {total} ({code}) in rekening gebracht en gefactureerd voor deze bestelling.",
+            "billed_amount_text": "*Er wordt {total} ({code}) in rekening gebracht en gefactureerd voor deze bestelling.",
             "based_on_currency_text": "Gebaseerd op {total} {code}",
             "cart_heading": "Besteloverzicht",
             "digital_item_text": "Digitaal item",
@@ -99,8 +100,8 @@
             "show_more": "Meer weergeven"
         },
         "customer": {
-            "checkout_as_guest_text": "Afrekenen als <strong>gast</strong>? U kunt uw gegevens opslaan en later een account bij ons aanmaken.",
             "continue_as_guest_action": "Doorgaan als gast",
+            "continue_as_stripe_customer_action": "Doorgaan met link",
             "create_account_action": "Account aanmaken",
             "continue": "Doorgaan",
             "set_password_action": "Wachtwoord opslaan",
@@ -116,7 +117,7 @@
             "create_account_text": "Maak een account aan om in de toekomst sneller af te rekenen",
             "set_password_text": "Stel een wachtwoord in om in de toekomst sneller af te rekenen",
             "account_created_text": "Er is een account voor u aangemaakt, maar u moet een wachtwoord instellen om te kunnen inloggen.",
-            "create_account_to_continue_text": "Heeft u geen account? <a href=\"{url}\" target=\"_blank\">Maak een account aan</a> om door te gaan.",
+            "create_account_to_continue_text": "<a href=\"{url}\" target=\"_blank\">Maak een account aan</a>",
             "guest_could_login": "Het lijkt erop dat u al een account hebt. Log in met {email} om sneller af te rekenen.",
             "guest_must_login": "Het lijkt erop dat u al een account hebt. Log in om door te gaan met {email} of gebruik een ander e-mailadres.",
             "guest_temporary_disabled": "Afrekenen voor gasten is tijdelijk uitgeschakeld. Log in of <a href=\"{url}\" target=\"_blank\">maak een account</a> aan om door te gaan.",
@@ -151,22 +152,22 @@
             "sign_out_action": "Uitloggen",
             "sign_out_error": "Er is een fout opgetreden bij het uitloggen. Probeer het opnieuw.",
             "subscribe_to_newsletter_text": "Ja, ik wil graag updates ontvangen.",
-            "suggestion_text": "Het lijkt erop dat u al een account bij {provider} heeft. Ga verder met {providerFlow} om snel af te rekenen.",
+            "suggestion_text": "Het lijkt erop dat je al een account hebt bij {provider}. Ga verder met {providerFlow} om snel af te rekenen.",
             "suggestion_action": "{providerFlow}"
         },
         "login_email": {
             "error_server": "We konden u geen inloglink sturen. Probeer het opnieuw.",
             "error_not_found": "Het ingevoerde e-mailadres is niet gekoppeld aan een account. Probeer het met een ander e-mailadres.",
             "sent_header": "Controleer uw inbox",
-            "sent_text": "We hebben een e-mail met een inloglink gestuurd naar <strong>{email}</strong>. Deze verloopt over {minutes} minuten. Als u de mail niet in uw inbox ziet, controleer dan uw map met ongewenste e-mail.",
+            "sent_text": "Je inloglink wordt verstuurd naar <strong>{email}</strong>. Deze link verloopt binnen 15 minuten. Als je hem niet ziet, controleer dan je map met ongewenste e-mail.",
             "text": "Voer het e-mailadres in dat aan uw account is gekoppeld. We sturen u een inloglink.",
-            "header": "Voer uw e-mailadres in",
+            "header": "Inloglink van account",
             "header_with_email": "Bevestig uw e-mailadres",
             "link": "<a>Stuur me in plaats daarvan een inloglink</a>",
             "use_another_email": "Gebruik een ander e-mailadres",
             "send": "Verzenden",
             "error_temporary_disabled": "Inloglinks zijn tijdelijk niet beschikbaar. Log in door uw wachtwoord in te voeren.",
-            "resend_link": "Heeft u de e-mail niet ontvangen? <a>Verstuur de link opnieuw</a>",
+            "resend_link": "<a>Verstuur de link opnieuw</a>",
             "use_password_link": " of <a>log in met uw wachtwoord</a>."
         },
         "embedded_checkout": {
@@ -183,10 +184,13 @@
             "amazon_name_text": "Amazon Pay",
             "barclaycard_continue_action": "Doorgaan",
             "bluesnap_v2_continue_action": "Doorgaan",
-            "bolt_create_account_label": "Mijn gegevens voor Bolt onthouden",
-            "bolt_create_account_disclaimer": "Door het bovenstaande aan te vinken, gaat u akkoord met het aanmaken van een Bolt-account volgens de <a href=\"{termsUrl}\" target=\"_blank\">voorwaarden</a> en het <a href=\"{privacyPolicyUrl}\" target=\"_blank\">privacybeleid</a>.",
+            "bolt_benefit_1": "Shop honderden merken met wachtwoordloos inloggen",
+            "bolt_benefit_2": "Betaal gemakkelijk met opgeslagen betaal- en verzendgegevens",
+            "bolt_benefit_3": "Profiteer van PCI-compatibele accountbeveiliging",
+            "bolt_checkbox_agreement": "Sla mijn gegevens op, maak een Bolt-account aan en ga akkoord met de <a href=\"{termsUrl}\" target=\"_blank\">Gebruiksvoorwaarden</a> en het <a href=\"{privacyPolicyUrl}\" target=\"_blank\">Privacybeleid</a> van Bolt.",
             "bolt_name_text": "Bolt",
             "braintreevisacheckout_continue_action": "Doorgaan met Visa Checkout",
+            "continue_with_brand": "Doorgaan met {brandName}",
             "ccavenuemars_description_text": "Afrekenen met CCAvenue",
             "chasepay_continue_action": "Doorgaan met Chase Pay",
             "chasepay_name_text": "Chase Pay",
@@ -206,7 +210,7 @@
             "checkoutcom_sepa_creditor_title": "Crediteur",
             "checkoutcom_sepa_creditor_id": "Crediteur-ID: {creditorId}",
             "checkoutcom_sepa_debtor_title": "Debiteur",
-            "checkoutcom_sepa_mandate_disclaimer": "Door dit machtigingsformulier te accepteren, geeft u {creditorName} toestemming om instructies naar uw bank te sturen om het bedrag vanaf uw rekening af te schrijven en machtigt u uw bank om het bedrag volgens die instructies van uw rekening af te schrijven. U heeft recht op stornering door uw bank volgens de voorwaarden van uw overeenkomst met uw bank. Een stornering moet worden aangevraagd binnen 8 weken vanaf de datum waarop uw rekening is gedebiteerd.",
+            "checkoutcom_sepa_mandate_disclaimer": "Door dit machtigingsformulier te accepteren, geef je {creditorName} toestemming om instructies naar je bank te sturen om het bedrag vanaf je rekening af te schrijven en machtig je je bank om het bedrag volgens die instructies van je rekening af te schrijven. Je hebt recht op stornering door je bank volgens de voorwaarden van je overeenkomst met je bank. Een stornering moet worden aangevraagd binnen 8 weken vanaf de datum waarop je rekening is gedebiteerd.",
             "checkoutcom_sepa_payment_type": "Betaalwijze: eenmalig (niet-terugkerend)",
             "clearpay_name_text": "Clearpay",
             "credit_card_text": "Creditcard",
@@ -228,9 +232,10 @@
             "credit_card_number_required_error": "Creditcardnummer is vereist",
             "credit_card_number_mismatch_error": "Het ingevoerde kaartnummer komt niet overeen met de kaart die in uw account is opgeslagen",
             "credit_debit_card_text": "Creditcard/betaalpas",
+            "stripev3_auth_3ds_fail": "De gebruiker heeft zich niet geverifieerd",
             "digitalriver_dropin_error": "Er is een fout opgetreden bij het verwerken van uw betaling. Probeer het opnieuw of neem contact met ons op.",
             "digitalriver_checkout_error": "Er is iets fout gegaan bij het afrekenen: controleer uw gegevens en probeer het opnieuw, of neem contact op met de klantenservice",
-            "digitalriver_checkout_error_title": "Fout tijdens het verwerken van het verzoek.",
+            "digitalriver_checkout_error_title": "Fout bij het verwerken van verzoek.",
             "digitalriver_display_name_text": "Selecteer uw betaalmethode",
             "google_pay_name_text": "Google Pay",
             "humm_not_processable_error": "Humm kan uw betaling voor deze bestelling niet verwerken. Selecteer een andere betaalmethode.",
@@ -238,7 +243,10 @@
             "klarna_name_text": "Klarna",
             "masterpass_name_text": "Masterpass",
             "mollie_unsupported_method_error": "Deze betaalmethode kan niet worden gebruikt voor de aankoop van digitale producten. Neem contact op met de klantenservice of probeer het opnieuw.",
-            "opy_continue_action": "Doorgaan met Openpay",
+            "opy_continue_action": "Doorgaan met {methodName}",
+            "opy_widget_slogan": "Nu kopen, slimmer betalen.",
+            "opy_widget_info": "Je wordt doorgestuurd naar de website van {methodName} om je bestelling te voltooien wanneer je op 'Doorgaan met {methodName}' klikt",
+            "opy_invalid_cart_error": "De prijs van het winkelmandje verschilt van het abonnementsbedrag voor {methodName}.",
             "orbital_continue_action": "Bestelling plaatsen",
             "orbital_description_text": "Betalen met uw ChasePay-account",
             "payment_cancelled": "Betaling is geannuleerd",
@@ -252,6 +260,8 @@
             "payment_method_unavailable_error": "Deze betalingsprovider is tijdelijk niet beschikbaar. Probeer het later opnieuw.",
             "payment_not_required_text": "Voor deze bestelling is geen betaling vereist.",
             "paypal_continue_action": "Doorgaan met PayPal",
+            "paypal_pay_later_continue_action": "Doorgaan met Pay Later",
+            "paypal_venmo_continue_action": "Doorgaan met Venmo",
             "paypal_credit_continue_action": "Doorgaan met PayPal Credit",
             "paypal_credit_description_text": "Koop nu, betaal later",
             "paypal_description_text": "Betalen met uw PayPal-account",
@@ -297,9 +307,9 @@
             "sepa_bic": "BIC",
             "sepa_bic_length": "De BIC moet 8 of 11 tekens lang zijn",
             "sepa_mandate_required": "U moet het machtigingsformulier accepteren",
-            "sezzle_display_name_text": "Betaal later. 0% rente.",
+            "sezzle_display_name_text": "Koop nu en betaal later met Sezzle.",
             "stripe_sepa_display_name_text": "Sepa-incasso.",
-            "stripe_sepa_mandate_disclaimer": "Door uw IBAN op te geven en deze betaling te bevestigen, geeft u (A) {storeUrl} en onze betalingsdienstaanbieder Stripe toestemming om instructies naar uw bank te sturen om het bedrag vanaf uw rekening af te schrijven en (B) machtigt u uw bank om het bedrag volgens die instructies van uw rekening af te schrijven. U heeft recht op stornering door uw bank volgens de voorwaarden van uw overeenkomst met uw bank. Een stornering moet worden aangevraagd binnen acht weken vanaf de datum waarop uw rekening is gedebiteerd.",
+            "stripe_sepa_mandate_disclaimer": "Door je IBAN op te geven en deze betaling te bevestigen, geef je (A) {storeUrl} en onze betalingsdienstaanbieder Stripe toestemming om instructies naar je bank te sturen om het bedrag vanaf je rekening af te schrijven en (B) machtig je je bank om het bedrag volgens die instructies van je rekening af te schrijven. Je hebt recht op stornering door je bank volgens de voorwaarden van je overeenkomst met je bank. Een stornering moet worden aangevraagd binnen acht weken vanaf de datum waarop je rekening is gedebiteerd.",
             "tax_provider_unavailable": "Omzetbelasting kon niet worden berekend. Probeer het opnieuw. Neem contact op met ons ondersteuningsteam om het afrekenen te voltooien in geval dit niet lukt.",
             "vco_name_text": "Click to pay",
             "visa_checkout_continue_action": "Ga verder met Click to pay",
@@ -391,7 +401,7 @@
             "gift_certificate_remaining_text": "resterend",
             "gift_certificate_text": "Cadeaubon",
             "remove_action": "Verwijderen",
-            "store_credit_available_text": "Op uw account staat momenteel {storeCredit} totaal winkeltegoed beschikbaar",
+            "store_credit_available_text": "Je account beschikt momenteel over een totaal winkeltegoed van {storeCredit}",
             "toggle_action": "Coupon/cadeaubon"
         },
         "remote": {
@@ -402,10 +412,11 @@
             "select_different_card_action": "Selecteer een andere kaart",
             "session_error": "Uw externe sessie is verlopen. Log opnieuw in.",
             "shipping_address_error": "Er is een fout opgetreden bij het ophalen van uw externe verzendadres. Probeer het opnieuw.",
-            "sign_in_action": "Log in bij {providerName}",
-            "sign_out_action": "Log uit bij {providerName}",
+            "sign_in_action": "Inloggen bij {providerName}",
+            "sign_out_action": "Uitloggen bij {providerName}",
             "sign_out_after_action": "om andere betaalmethoden te bekijken",
-            "sign_in_required_error": "Extern aanmelden vereist voor betaling"
+            "sign_in_required_error": "Extern aanmelden vereist voor betaling",
+            "sign_out_before_action": ""
         },
         "shipping": {
             "cart_change_error": "Er is een update van uw winkelmandje gedetecteerd en de voor u beschikbare verzendkosten zijn bijgewerkt. Selecteer opnieuw een verzendmethode om door te gaan.",
@@ -452,22 +463,37 @@
             "terms_and_conditions_heading": "Algemene voorwaarden"
         },
         "order_confirmation": {
-            "order_number_text": "Uw bestelnummer is <strong>{orderNumber}</strong>",
+            "mandate": {
+                "checkoutcom": {
+                    "boleto": "Boleto Bancário-ticket",
+                    "oxxo": "OXXO-ticket",
+                    "sepa": "SEPA-incasso (via Checkout.com) Machtigingsreferentie: {mandate}"
+                },
+                "stripev3": {
+                    "iban": "Machtiging voor SEPA-incasso"
+                },
+                "stripeupe": {
+                    "au_becs_debit": "Machtiging voor BECS-incasso",
+                    "boleto": "Boleto Bancário-ticket",
+                    "oxxo": "OXXO-ticket",
+                    "sepa_debit": "Machtiging voor SEPA-incasso"
+                },
+                "paypalcommercealternativemethods": {
+                    "oxxo": "OXXO-ticket"
+                }
+            },
+            "order_number_text": "Je bestelnummer is <strong>{orderNumber}</strong>",
             "order_pending_review_text": "Uw bestelling is naar ons verzonden, maar moet nog betaald worden. Zodra we de betaling voor uw bestelling hebben ontvangen, wordt deze voltooid. Als u al betalingsgegevens heeft opgegeven, verwerken we uw bestelling handmatig en sturen we u een e-mail wanneer deze is voltooid.",
-            "order_pending_status_text": "We hebben uw bestelling ontvangen en verwerken uw betaling. Zodra de betaling is geverifieerd, wordt uw bestelling voltooid. We sturen u een e-mail als die voltooid is. Dit proces kan enkele minuten duren, afhankelijk van de verwerkingstijden van de door u gekozen methode. Als u vragen heeft over uw aankoop, kunt u ons een e-mail sturen op <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
-            "order_incomplete_status_text": "We hebben uw bestelling en betaling ontvangen. Uw bestelling wordt nu verwerkt door ons systeem. De verwerking kan enkele minuten duren. Als u vragen heeft over uw aankoop, kunt u ons een e-mail sturen op <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
+            "order_pending_status_text": "We hebben je bestelling ontvangen en verwerken je betaling. Zodra de betaling is geverifieerd, wordt je bestelling voltooid. We sturen je een e-mail als deze voltooid is. Dit proces kan enkele minuten duren, afhankelijk van de verwerkingstijden van de door jou gekozen methode. Als je vragen hebt over je aankoop, kun je ons een e-mail sturen via <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
+            "order_incomplete_status_text": "We hebben je bestelling en betaling ontvangen. Je bestelling wordt nu verwerkt door ons systeem. De verwerking kan enkele minuten duren. Als je vragen hebt over je aankoop, kun je ons een e-mail sturen via <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_with_downloadable_digital_items_text": "U kunt uw digitale aankopen downloaden door op de links op deze pagina te klikken of door op elk gewenst moment in te loggen op uw account. Er staat ook een downloadlink in uw bevestigingsmail, die u binnenkort ontvangt.",
-            "order_with_support_number_text": "Er wordt een e-mail verzonden met informatie over uw aankoop. Als u vragen heeft over uw aankoop, kunt u ons een e-mail sturen op <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a> of ons bellen op <a href=\"tel://{supportPhoneNumber}\">{supportPhoneNumber}</a>.",
+            "order_with_support_number_text": "Er wordt een e-mail verzonden met informatie over je aankoop. Als je vragen hebt over je aankoop, kun je ons een e-mail sturen via <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a> of ons bellen op <a href=\"tel://{supportPhoneNumber}\">{supportPhoneNumber}</a>.",
             "order_without_downloadable_digital_items_text": "Zodra we uw betaling hebben ontvangen, sturen we u een bevestigingsmail met een link waarmee u uw digitale aankopen kunt downloaden.",
-            "order_without_support_number_text": "Er wordt een e-mail verzonden met informatie over uw aankoop. Als u vragen heeft over uw aankoop, kunt u ons een e-mail sturen op <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
+            "order_without_support_number_text": "Er wordt een e-mail verzonden met informatie over je aankoop. Als je vragen hebt over je aankoop, kun je ons een e-mail sturen op <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "thank_you_customer_heading": "Bedankt {name}!",
             "thank_you_heading": "Bedankt!",
             "continue_shopping": "Doorgaan met winkelen »",
-            "order_status_update_facebook_messenger_heading": "Ontvang directe updates over uw bestelling in Messenger",
-            "mandate_link_text": "Machtiging {provider}",
-            "boleto_link_text": "Boleto Bancário-ticket",
-            "oxxo_link_text": "OXXO-ticket",
-            "sepa_link_text": "Machtiging voor SEPA-incasso"
+            "order_status_update_facebook_messenger_heading": "Ontvang directe updates over uw bestelling in Messenger"
         }
     }
 }
