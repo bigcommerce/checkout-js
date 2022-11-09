@@ -45,7 +45,7 @@ export default class SentryErrorLogger implements ErrorLogger {
         init({
             sampleRate: SAMPLE_RATE,
             beforeSend: this.handleBeforeSend,
-            denyUrls: [...(config.denyUrls || []), 'polyfill~checkout', 'sentry~checkout'],
+            denyUrls: [...(config.denyUrls || []), 'polyfill~checkout', 'sentry~checkout', 'convertcart'],
             integrations: [
                 new Integrations.GlobalHandlers({
                     onerror: false,

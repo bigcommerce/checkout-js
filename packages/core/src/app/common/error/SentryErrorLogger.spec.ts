@@ -231,7 +231,7 @@ describe('SentryErrorLogger', () => {
 
         expect(init).toHaveBeenCalledWith(
             expect.objectContaining({
-                denyUrls: ['polyfill~checkout', 'sentry~checkout'],
+                denyUrls: ['polyfill~checkout', 'sentry~checkout', 'convertcart'],
             }),
         );
     });
