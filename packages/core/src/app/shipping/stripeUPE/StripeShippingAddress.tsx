@@ -47,6 +47,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
         isStripeLoading,
         isStripeAutoStep,
         isShippingMethodLoading,
+        shippingAddress,
     } = props;
 
     const [isNewAddress, setIsNewAddress] = useState(true);
@@ -103,7 +104,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
             , name = '' } } = shipping;
 
         if(complete) {
-            if (step.isComplete) {
+            if (step.isComplete || (shippingAddress?.firstName && shipping.isNewAddress)) {
                 handleLoading();
             }
 
