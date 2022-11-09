@@ -44,7 +44,6 @@ const AccordionItem: FunctionComponent<AccordionItemProps> = ({
     return (
         <li
             className={classNames(className, { [classNameSelected]: isSelected })}
-            data-test={`accordion-item_${itemId}`}
         >
             <div className={classNames(headerClassName, { [headerClassNameSelected]: isSelected })}>
                 {headerContent({ isSelected, onToggle })}

@@ -9,6 +9,8 @@ export class Checkout {
     private readonly playwright: PlaywrightHelper;
     private harFileName = '';
     private harFolderPath = '';
+    private openedCheckout = false;
+    private usedPreset = false;
 
     constructor(page: Page) {
         this.page = page;
@@ -32,8 +34,10 @@ export class Checkout {
     }
 
     async close(): Promise<void> {
-        if (!this.harFileName) {
-            throw new Error('Unable to run the test. Please use checkout.start() helper function.');
+        if (!this.harFileName || !this.usedPreset || !this.openedCheckout) {
+            throw new Error(
+                'Unable to run the test. Please use all three essential helper functions: checkout.use(), checkout.start(), checkout.goto().',
+            );
         }
 
         await this.playwright.stopAll();
@@ -46,6 +50,7 @@ export class Checkout {
 
     // Testing environment setup helpers
     async use(preset: CheckoutPagePreset): Promise<void> {
+        this.usedPreset = true;
         await this.playwright.usePreset(preset);
     }
 
@@ -70,7 +75,12 @@ export class Checkout {
 
     // Abstract low-level HTML identifiers
     async goto(): Promise<void> {
+        this.openedCheckout = true;
         await this.playwright.goto();
+    }
+
+    async selectPaymentMethod(methodId: string): Promise<void> {
+        await this.page.locator(`[data-test=payment-method-${methodId}]`).click();
     }
 
     async placeOrder(): Promise<void> {

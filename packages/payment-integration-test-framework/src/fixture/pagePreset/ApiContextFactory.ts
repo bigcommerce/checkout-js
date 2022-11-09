@@ -12,7 +12,7 @@ export class ApiContextFactory {
             return this.apiContext;
         }
 
-        throw new Error(`Api context setup failed. Is ${storeUrl} accessible now?`);
+        throw new Error(`Unable to visit ${storeUrl}. APIRequestContext setup failed.`);
     }
 
     private async setup(page: Page, storeUrl: string): Promise<void> {
@@ -33,7 +33,6 @@ export class ApiContextFactory {
         this.apiContext = await request.newContext({
             baseURL: `${storeUrl}/api/storefront/`,
             extraHTTPHeaders: {
-                // eslint-disable-next-line @typescript-eslint/naming-convention
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
                 'x-xsrf-token': xsrfTokenStr,

@@ -264,7 +264,10 @@ const PaymentMethodTitle: FunctionComponent<
 
     return (
         <div className="paymentProviderHeader-container">
-            <div className="paymentProviderHeader-nameContainer">
+            <div
+                className="paymentProviderHeader-nameContainer"
+                data-test={`payment-method-${method.id}`}
+            >
                 {logoUrl && (
                     <img
                         alt={methodName}

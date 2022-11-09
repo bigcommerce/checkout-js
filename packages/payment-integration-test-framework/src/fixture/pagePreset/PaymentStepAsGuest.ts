@@ -10,6 +10,6 @@ export class PaymentStepAsGuest implements CheckoutPagePreset {
         await api.addPhysicalItemToCart();
         await api.completeCustomerStepAsGuest();
         await api.completeSingleShippingAndSkipToPaymentStep();
-        await api.dispose();
+        await api.dispose('You should be able to see checkout at the payment step now');
     }
 }
