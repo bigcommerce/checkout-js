@@ -289,7 +289,7 @@
             "instrument_trusted_shipping_address_text": "Este paso de seguridad adicional se aplica a tu tarjeta cuando realizas el envío a una dirección por primera vez o si la dirección de envío se editó recientemente.",
             "instrument_trusted_shipping_address_title_text": "Vuelve a ingresar tu número de tarjeta para autorizar esta transacción.",
             "quadpay_continue_action": "Continuar con Zip",
-            "quadpay_display_name_text": "Pagar en 4 plazos (Quadpay)",
+            "quadpay_display_name_text": "Pagar en 4 plazos",
             "ppsdk_continue_action": "Continuar con {methodName}",
             "select_your_bank": "Selecciona tu banco",
             "sepa_account_number": "Número de cuenta (IBAN)",

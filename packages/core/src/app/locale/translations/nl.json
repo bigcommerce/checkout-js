@@ -289,7 +289,7 @@
             "instrument_trusted_shipping_address_text": "Deze extra beveiligingsstap wordt op uw kaart toegepast als u voor het eerst naar een adres verzendt of als het verzendadres onlangs gewijzigd is.",
             "instrument_trusted_shipping_address_title_text": "Voer uw kaartnummer opnieuw in om deze transactie te autoriseren.",
             "quadpay_continue_action": "Doorgaan met Zip",
-            "quadpay_display_name_text": "Betaal in 4 termijnen (Quadpay)",
+            "quadpay_display_name_text": "Betaal in 4 termijnen",
             "ppsdk_continue_action": "Doorgaan met {methodName}",
             "select_your_bank": "Selecteer uw bank",
             "sepa_account_number": "Rekeningnummer (IBAN)",

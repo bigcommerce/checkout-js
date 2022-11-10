@@ -294,7 +294,7 @@
             "instrument_trusted_shipping_address_text": "Dette ekstra sikkerhedstrin anvendes på dit kort, når du sender til en adresse for første gang, eller hvis leveringsadressen er blevet redigeret for nylig.",
             "instrument_trusted_shipping_address_title_text": "Indtast dit kortnummer igen for at godkende denne transaktion.",
             "quadpay_continue_action": "Fortsæt med Zip",
-            "quadpay_display_name_text": "Betal i 4 rater (Quadpay)",
+            "quadpay_display_name_text": "Betal i 4 rater",
             "ppsdk_continue_action": "Fortsæt med {methodName}",
             "select_your_bank": "Vælg din bank",
             "sepa_account_number": "Kontonummer (IBAN)",

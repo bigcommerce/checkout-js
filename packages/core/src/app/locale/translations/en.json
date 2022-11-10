@@ -299,7 +299,7 @@
             "instrument_trusted_shipping_address_text": "This additional security step is applied to your card when shipping to an address for the first time or if the shipping address was edited recently.",
             "instrument_trusted_shipping_address_title_text": "Please re-enter your card number to authorize this transaction.",
             "quadpay_continue_action": "Continue with Zip",
-            "quadpay_display_name_text": "Pay in 4 installments (Quadpay)",
+            "quadpay_display_name_text": "Pay in 4 installments",
             "ppsdk_continue_action": "Continue with {methodName}",
             "select_your_bank": "Select your bank",
             "sepa_account_number": "Account Number (IBAN)",
