@@ -126,6 +126,7 @@ export interface CheckoutState {
     isRedirecting: boolean;
     hasSelectedShippingOptions: boolean;
     isBuyNowCartEnabled: boolean;
+    isSubscribed: boolean;
 }
 
 export interface WithCheckoutProps {
@@ -161,6 +162,7 @@ class Checkout extends Component<
         isMultiShippingMode: false,
         hasSelectedShippingOptions: false,
         isBuyNowCartEnabled: false,
+        isSubscribed: false,
     };
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
@@ -236,6 +238,9 @@ class Checkout extends Component<
             const buyNowCartFlag =
                 data.getConfig()?.checkoutSettings.features['CHECKOUT-3190.enable_buy_now_cart'] ??
                 false;
+            const defaultNewsletterSignupOption =
+                data.getConfig()?.shopperConfig.defaultNewsletterSignup ??
+                false;
             const isMultiShippingMode =
                 !!cart &&
                 !!consignments &&
@@ -245,6 +250,7 @@ class Checkout extends Component<
             this.setState({
                 isBillingSameAsShipping: checkoutBillingSameAsShippingEnabled,
                 isBuyNowCartEnabled: buyNowCartFlag,
+                isSubscribed: defaultNewsletterSignupOption,
             });
 
             if (isMultiShippingMode) {
@@ -348,6 +354,7 @@ class Checkout extends Component<
         const { isGuestEnabled } = this.props;
         const {
             customerViewType = isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
+            isSubscribed,
         } = this.state;
 
         return (
@@ -369,6 +376,7 @@ class Checkout extends Component<
                     <Customer
                         checkEmbeddedSupport={this.checkEmbeddedSupport}
                         isEmbedded={isEmbedded()}
+                        isSubscribed={isSubscribed}
                         onAccountCreated={this.navigateToNextIncompleteStep}
                         onChangeViewType={this.setCustomerViewType}
                         onContinueAsGuest={this.navigateToNextIncompleteStep}
@@ -376,6 +384,7 @@ class Checkout extends Component<
                         onReady={this.handleReady}
                         onSignIn={this.navigateToNextIncompleteStep}
                         onSignInError={this.handleError}
+                        onSubscribeToNewsletter={this.handleNewsletterSubscription}
                         onUnhandledError={this.handleUnhandledError}
                         step={step}
                         viewType={customerViewType}
@@ -641,6 +650,10 @@ class Checkout extends Component<
     private handleReady: () => void = () => {
         this.navigateToNextIncompleteStep({ isDefault: true });
     };
+
+    private handleNewsletterSubscription: (subscribed: boolean) => void = (subscribed) => {
+        this.setState({ isSubscribed: subscribed });
+    }
 
     private handleSignOut: (event: CustomerSignOutEvent) => void = ({ isCartEmpty }) => {
         const { loginUrl, cartUrl, isPriceHiddenFromGuests, isGuestEnabled } = this.props;

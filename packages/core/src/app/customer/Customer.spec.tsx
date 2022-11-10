@@ -186,7 +186,7 @@ describe('Customer', () => {
         });
 
         it('passes data to guest form', async () => {
-            const component = mount(<CustomerTest viewType={CustomerViewType.Guest} />);
+            const component = mount(<CustomerTest isSubscribed={false} viewType={CustomerViewType.Guest} />);
 
             await new Promise((resolve) => process.nextTick(resolve));
             component.update();
@@ -203,7 +203,12 @@ describe('Customer', () => {
                 Promise.resolve(checkoutService.getState()),
             );
 
-            const component = mount(<CustomerTest viewType={CustomerViewType.Guest} />);
+            const handleNewsletterSubscription=jest.fn();
+            const component = mount(<CustomerTest
+                isSubscribed={true}
+                onSubscribeToNewsletter={handleNewsletterSubscription}
+                viewType={CustomerViewType.Guest}
+            />);
 
             await new Promise((resolve) => process.nextTick(resolve));
             component.update();
@@ -221,12 +226,21 @@ describe('Customer', () => {
         });
 
         it('only subscribes to newsletter if allowed by customer', async () => {
+            jest.spyOn(checkoutService.getState().data, 'getBillingAddress').mockReturnValue({
+                ...billingAddress,
+                id: '',
+            });
             jest.spyOn(checkoutService, 'continueAsGuest').mockReturnValue(
                 Promise.resolve(checkoutService.getState()),
             );
 
             const subscribeToNewsletter = jest.fn();
-            const component = mount(<CustomerTest viewType={CustomerViewType.Guest} />);
+            const handleNewsletterSubscription = jest.fn();
+            const component = mount(<CustomerTest
+                isSubscribed={false}
+                onSubscribeToNewsletter={handleNewsletterSubscription}
+                viewType={CustomerViewType.Guest}
+            />);
 
             await new Promise((resolve) => process.nextTick(resolve));
             component.update();
@@ -268,9 +282,12 @@ describe('Customer', () => {
             );
 
             const handleContinueAsGuest = jest.fn();
+            const handleNewsletterSubscription = jest.fn();
             const component = mount(
                 <CustomerTest
+                    isSubscribed={false}
                     onContinueAsGuest={handleContinueAsGuest}
+                    onSubscribeToNewsletter={handleNewsletterSubscription}
                     viewType={CustomerViewType.Guest}
                 />,
             );
@@ -294,9 +311,11 @@ describe('Customer', () => {
             jest.spyOn(checkoutService, 'continueAsGuest').mockRejectedValue(error);
 
             const handleContinueAsGuest = jest.fn();
+            const handleNewsletterSubscription = jest.fn();
             const component = mount(
                 <CustomerTest
                     onContinueAsGuest={handleContinueAsGuest}
+                    onSubscribeToNewsletter={handleNewsletterSubscription}
                     viewType={CustomerViewType.Guest}
                 />,
             );
@@ -321,9 +340,12 @@ describe('Customer', () => {
             });
 
             const handleChangeViewType = jest.fn();
+            const handleNewsletterSubscription=jest.fn();
             const component = mount(
                 <CustomerTest
+                    isSubscribed={false}
                     onChangeViewType={handleChangeViewType}
+                    onSubscribeToNewsletter={handleNewsletterSubscription}
                     viewType={CustomerViewType.Guest}
                 />,
             );
@@ -392,9 +414,12 @@ describe('Customer', () => {
             );
 
             const handleChangeViewType = jest.fn();
+            const handleNewsletterSubscription = jest.fn();
             const component = mount(
                 <CustomerTest
+                    isSubscribed={true}
                     onChangeViewType={handleChangeViewType}
+                    onSubscribeToNewsletter={handleNewsletterSubscription}
                     viewType={CustomerViewType.Guest}
                 />,
             );
@@ -423,9 +448,12 @@ describe('Customer', () => {
 
             const handleChangeViewType = jest.fn();
 
+            const handleNewsletterSubscription = jest.fn();
             const component = mount(
                 <CustomerTest
+                    isSubscribed={true}
                     onChangeViewType={handleChangeViewType}
+                    onSubscribeToNewsletter={handleNewsletterSubscription}
                     viewType={CustomerViewType.Guest}
                 />,
             );
