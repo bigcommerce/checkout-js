@@ -60,7 +60,7 @@ export interface WithCheckoutCustomerProps {
     isCreatingAccount: boolean;
     isExecutingPaymentMethodCheckout: boolean;
     isGuestEnabled: boolean;
-    isHavingBillingId: boolean;
+    hasBillingId: boolean;
     isInitializing: boolean;
     isSendingSignInEmail: boolean;
     isSignInEmailEnabled: boolean;
@@ -361,7 +361,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
         const {
             canSubscribe,
             continueAsGuest,
-            isHavingBillingId,
+            hasBillingId,
             defaultShouldSubscribe,
             onChangeViewType = noop,
             onContinueAsGuest = noop,
@@ -371,7 +371,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps, Cust
 
         const email = formValues.email.trim();
         const updateSubscriptionWhenUnchecked =
-            isHavingBillingId || defaultShouldSubscribe ? false : undefined;
+            hasBillingId || defaultShouldSubscribe ? false : undefined;
 
         try {
             const { data } = await continueAsGuest({
@@ -569,7 +569,7 @@ export function mapToWithCheckoutCustomerProps({
         initializeCustomer: checkoutService.initializeCustomer,
         isCreatingAccount: isCreatingCustomerAccount(),
         createAccountError: getCreateCustomerAccountError(),
-        isHavingBillingId: !!billingAddress?.id,
+        hasBillingId: !!billingAddress?.id,
         isContinuingAsGuest: isContinuingAsGuest(),
         isExecutingPaymentMethodCheckout: isExecutingPaymentMethodCheckout(),
         isInitializing: isInitializingCustomer(),
