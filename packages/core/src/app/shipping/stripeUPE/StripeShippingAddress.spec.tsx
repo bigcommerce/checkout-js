@@ -153,6 +153,54 @@ describe('StripeShippingAddress Component', () => {
             expect(defaultProps.onAddressSelect).toHaveBeenCalled();
         });
 
+        it('renders StripeShippingAddress with initialize props and when page is reloaded', async () => {
+            defaultProps.initialize = jest.fn((options) => {
+                const { getStyles = noop, onChangeShipping = noop} = options.stripeupe || {};
+
+                onChangeShipping({
+                        complete: true,
+                        elementType: 'shipping',
+                        empty: false,
+                        isNewAddress: true,
+                        value: {
+                            address: {
+                                city: 'string',
+                                country: 'US',
+                                line1: 'string',
+                                line2: 'string',
+                                postal_code: 'string',
+                                state: 'string',
+                            },
+                            name: 'cosme fulanito',
+                        },
+                    }
+                );
+                getStyles();
+
+                return Promise.resolve(checkoutService.getState());
+            });
+
+            const stripeProps = {...defaultProps, isStripeLinkEnabled: true, customerEmail: ''};
+            const component = mount(
+                <Formik
+                    initialValues={ {} }
+                    onSubmit={ noop }
+                >
+                    <StripeShippingAddress { ...stripeProps } />
+                </Formik>
+            );
+
+            expect(component.find(StripeShippingAddressDisplay).props()).toEqual(
+                expect.objectContaining({
+                    methodId: 'stripeupe',
+                    deinitialize: defaultProps.deinitialize,
+                })
+            );
+
+            expect(defaultProps.initialize).toHaveBeenCalled();
+            expect(defaultProps.onAddressSelect).toHaveBeenCalled();
+        });
+
         it('renders StripeShippingAddress with initialize props without last name', async () => {
             defaultProps.initialize = jest.fn((options) => {
                 const { getStyles = noop, onChangeShipping = noop} = options.stripeupe || {};
