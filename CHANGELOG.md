@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.271.0](https://github.com/bigcommerce/checkout-js/compare/v1.270.0...v1.271.0) (2022-11-10)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7036 Filter out convertcart-related issues on Sentry. ([#1092](https://github.com/bigcommerce/checkout-js/issues/1092)) ([bc710b9](https://github.com/bigcommerce/checkout-js/commit/bc710b9857a44c03133906f3b848c4f763c46e8d))
+
 ## [1.270.0](https://github.com/bigcommerce/checkout-js/compare/v1.269.0...v1.270.0) (2022-11-09)
 
 
