@@ -100,11 +100,11 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
     const allowedCountries = availableShippingList ? availableShippingList.map(country => country.code).join(', ') : '';
 
     const handleStripeShippingAddress = useCallback(async (shipping: StripeShippingEvent) => {
-        const {complete, value: { address = { country: '', state: '', line1: '', line2: '', city: '', postal_code: '' }
-            , name = '' } } = shipping;
+        const {complete, phoneFieldRequired, value: { address = { country: '', state: '', line1: '', line2: '', city: '', postal_code: '' }
+            , name = '', phone = '' } } = shipping;
 
         if(complete) {
-            if (step.isComplete || (shippingAddress?.firstName && shipping.isNewAddress)) {
+            if (step.isComplete || (shippingAddress?.firstName && shipping.isNewAddress) || (phoneFieldRequired && !phone)) {
                 handleLoading();
             }
 
@@ -125,7 +125,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
                 country: country || address.country,
                 countryCode: address.country,
                 postalCode: address.postal_code,
-                phone: '',
+                phone: phone || '',
                 customFields: [],
             };
 
