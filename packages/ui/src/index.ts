@@ -14,7 +14,7 @@ export {
     Legend,
     Input,
 } from './form';
-export { CreditCardIcon } from './icon';
+export { CreditCardIcon, IconNewAccount, IconPaypal, IconSize } from './icon';
 export { LoadingOverlay } from './loading';
 export { Modal, ModalHeader, ModalTrigger, ModalTriggerModalProps } from './modal';
 export { preventDefault } from './utils/dom';

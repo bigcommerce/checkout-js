@@ -3,8 +3,7 @@ import React, { FunctionComponent } from 'react';
 
 import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
 import { getPaymentMethodName } from '@bigcommerce/checkout/payment-integration-api';
-
-import { preventDefault } from '../../dom';
+import { preventDefault } from '@bigcommerce/checkout/ui';
 
 export interface SignOutLinkProps {
     method: PaymentMethod;

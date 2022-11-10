@@ -2,8 +2,7 @@ import { AccountInstrument, BankInstrument } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { LoadingOverlay } from '@bigcommerce/checkout/ui';
-import { IconPaypal, IconSize } from 'packages/ui/src/icon';
+import { IconPaypal, IconSize, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { isBankAccountInstrument } from '../../guards';
 
