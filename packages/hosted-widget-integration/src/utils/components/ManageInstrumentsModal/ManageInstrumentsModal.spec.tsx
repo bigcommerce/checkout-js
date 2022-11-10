@@ -58,6 +58,16 @@ describe('ManageInstrumentsModal', () => {
         );
     });
 
+    it('throws an error if not wrapped in checkout context', () => {
+        expect(() =>
+            mount(
+                <LocaleContext.Provider value={localeContext}>
+                    <ManageInstrumentsModal {...defaultProps} />
+                </LocaleContext.Provider>,
+            ),
+        ).toThrow('Need to wrap in checkout context');
+    });
+
     it('renders list of card instruments in table format', () => {
         const component = mount(
             <ManageInstrumentsModalTest
@@ -103,15 +113,15 @@ describe('ManageInstrumentsModal', () => {
         expect(component.find(Modal).prop('isOpen')).toBe(false);
     });
 
-    // it('shows confirmation message before deleting instrument', () => {
-    //     const component = mount(<ManageInstrumentsModalTest {...defaultProps} />);
+    it('shows confirmation message before deleting instrument', () => {
+        const component = mount(<ManageInstrumentsModalTest {...defaultProps} />);
 
-    //     component.find('[data-test="manage-instrument-delete-button"]').at(0).simulate('click');
+        component.find('[data-test="manage-instrument-delete-button"]').at(0).simulate('click');
 
-    //     expect(component.find('[data-test="modal-body"]').text()).toEqual(
-    //         localeContext.language.translate('payment.instrument_manage_modal_confirmation_label'),
-    //     );
-    // });
+        expect(component.find('[data-test="modal-body"]').text()).toEqual(
+            localeContext.language.translate('payment.instrument_manage_modal_confirmation_label'),
+        );
+    });
 
     it('deletes selected instrument and closes modal if user confirms their action', async () => {
         jest.spyOn(checkoutService, 'deleteInstrument').mockResolvedValue(checkoutState);
