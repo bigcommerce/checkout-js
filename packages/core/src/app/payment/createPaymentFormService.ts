@@ -4,8 +4,7 @@ import {
     PaymentFormService,
     PaymentFormValues,
 } from '@bigcommerce/checkout/payment-integration-api';
-
-import { FormContextType } from '../ui/form';
+import { FormContextType } from '@bigcommerce/checkout/ui';
 
 import { PaymentContextProps } from './PaymentContext';
 
@@ -14,15 +13,18 @@ export default function createPaymentFormService(
     formContext: FormContextType,
     paymentContext: PaymentContextProps,
 ): PaymentFormService {
-    const { setFieldTouched, setFieldValue, submitForm, validateForm } = formikContext;
+    const { setFieldTouched, setFieldValue, submitForm, validateForm, values } = formikContext;
 
     const { isSubmitted, setSubmitted } = formContext;
 
     const { disableSubmit, setSubmit, setValidationSchema, hidePaymentSubmitButton } =
         paymentContext;
 
+    const getFieldValue = <T>(key: string): T | unknown => values[key];
+
     return {
         disableSubmit,
+        getFieldValue,
         hidePaymentSubmitButton,
         isSubmitted: () => isSubmitted,
         setFieldTouched,

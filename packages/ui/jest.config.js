@@ -7,6 +7,7 @@ module.exports = {
             diagnostics: false,
         },
     },
+    collectCoverageFrom: ['src/**/*.{ts,tsx}', '!src/**/*/index.ts', '!src/icon/*.tsx'],
     setupFilesAfterEnv: ['../../jest-setup.ts'],
     coverageDirectory: '../../coverage/packages/ui',
 };
