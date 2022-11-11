@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.273.0](https://github.com/bigcommerce/checkout-js/compare/v1.272.1...v1.273.0) (2022-11-11)
+
+
+### Features
+
+* **payment:** STRIPE-215 add more validation to avoid Shipping Steps Loads Indefinitely for stripe link ([#1096](https://github.com/bigcommerce/checkout-js/issues/1096)) ([682d61b](https://github.com/bigcommerce/checkout-js/commit/682d61b24d109955f03315f66c0bc845215137ec))
+
 ### [1.272.1](https://github.com/bigcommerce/checkout-js/compare/v1.272.0...v1.272.1) (2022-11-10)
 
 
