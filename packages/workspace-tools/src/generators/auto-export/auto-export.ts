@@ -8,6 +8,7 @@ import { promisify } from 'util';
 
 export interface AutoExportOptions {
     inputPath: string;
+    ignorePackages?: string[];
     outputPath: string;
     memberPattern: string;
     tsConfigPath: string;
@@ -15,11 +16,21 @@ export interface AutoExportOptions {
 
 export default async function autoExport({
     inputPath,
+    ignorePackages,
     outputPath,
     memberPattern,
     tsConfigPath,
 }: AutoExportOptions): Promise<string> {
-    const filePaths = await promisify(glob)(inputPath);
+    let filePaths = await promisify(glob)(inputPath);
+
+    if (ignorePackages) {
+        filePaths = filePaths.filter((filePath) => {
+            const packageName = filePath.split('/')[1];
+
+            return !ignorePackages.includes(packageName);
+        });
+    }
+
     const exportDeclarations = await Promise.all(
         filePaths.map((filePath) => createExportDeclaration(filePath, tsConfigPath, memberPattern)),
     );
