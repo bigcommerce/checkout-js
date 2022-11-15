@@ -3,18 +3,22 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { getStoreConfig } from '../../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
-import { LoadingOverlay } from '../../ui/loading';
-import { getPaymentMethod } from '../payment-methods.mock';
+import {
+    createLocaleContext,
+    LocaleContext,
+    LocaleContextType,
+} from '@bigcommerce/checkout/locale';
+import { getPaymentMethod, getStoreConfig } from '@bigcommerce/checkout/test-utils';
+import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
-import HostedFieldPaymentMethod, {
-    HostedFieldPaymentMethodProps,
-} from './HostedFieldPaymentMethod';
+import {
+    HostedFieldPaymentMethodComponent,
+    HostedFieldPaymentMethodComponentProps,
+} from './hosted-field-integration';
 
 describe('HostedFieldPaymentMethod', () => {
-    let HostedFieldPaymentMethodTest: FunctionComponent<HostedFieldPaymentMethodProps>;
-    let defaultProps: HostedFieldPaymentMethodProps;
+    let HostedFieldPaymentMethodTest: FunctionComponent<HostedFieldPaymentMethodComponentProps>;
+    let defaultProps: HostedFieldPaymentMethodComponentProps;
     let localeContext: LocaleContextType;
 
     beforeEach(() => {
@@ -31,7 +35,7 @@ describe('HostedFieldPaymentMethod', () => {
         HostedFieldPaymentMethodTest = (props) => (
             <Formik initialValues={{}} onSubmit={noop}>
                 <LocaleContext.Provider value={localeContext}>
-                    <HostedFieldPaymentMethod {...props} />
+                    <HostedFieldPaymentMethodComponent {...props} />
                 </LocaleContext.Provider>
             </Formik>
         );

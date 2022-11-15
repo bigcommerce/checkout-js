@@ -7,11 +7,10 @@ import {
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
-import { TranslatedString } from '../../locale';
-import { FormFieldContainer, Label } from '../../ui/form';
-import { LoadingOverlay } from '../../ui/loading';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { FormFieldContainer, Label, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
-export interface HostedFieldPaymentMethodProps {
+export interface HostedFieldPaymentMethodComponentProps {
     cardCodeId?: string;
     cardExpiryId: string;
     cardNumberId: string;
@@ -25,8 +24,8 @@ export interface HostedFieldPaymentMethodProps {
 }
 
 // TODO: Use HostedCreditCardFieldset
-export default class HostedFieldPaymentMethod extends Component<HostedFieldPaymentMethodProps> {
-    async componentDidMount(): Promise<void> {
+export class HostedFieldPaymentMethodComponent extends Component<HostedFieldPaymentMethodComponentProps> {
+    override async componentDidMount(): Promise<void> {
         const { initializePayment, method, onUnhandledError = noop } = this.props;
 
         try {
@@ -39,7 +38,7 @@ export default class HostedFieldPaymentMethod extends Component<HostedFieldPayme
         }
     }
 
-    async componentWillUnmount(): Promise<void> {
+    override async componentWillUnmount(): Promise<void> {
         const { deinitializePayment, method, onUnhandledError = noop } = this.props;
 
         try {
@@ -52,7 +51,7 @@ export default class HostedFieldPaymentMethod extends Component<HostedFieldPayme
         }
     }
 
-    render(): ReactNode {
+    override render(): ReactNode {
         const {
             cardCodeId,
             cardExpiryId,
@@ -65,7 +64,9 @@ export default class HostedFieldPaymentMethod extends Component<HostedFieldPayme
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isInitializing}>
                 <div className="form-ccFields">
-                    {walletButtons && <FormFieldContainer>{walletButtons}</FormFieldContainer>}
+                    {Boolean(walletButtons) && (
+                        <FormFieldContainer>{walletButtons}</FormFieldContainer>
+                    )}
 
                     <FormFieldContainer additionalClassName="form-field--ccNumber">
                         <Label>
@@ -83,7 +84,7 @@ export default class HostedFieldPaymentMethod extends Component<HostedFieldPayme
                         <div id={cardExpiryId} />
                     </FormFieldContainer>
 
-                    {cardCodeId && (
+                    {Boolean(cardCodeId) && (
                         <FormFieldContainer additionalClassName="form-field--ccCvv">
                             <Label>
                                 <TranslatedString id="payment.credit_card_cvv_label" />
@@ -93,7 +94,7 @@ export default class HostedFieldPaymentMethod extends Component<HostedFieldPayme
                         </FormFieldContainer>
                     )}
 
-                    {postalCodeId && (
+                    {Boolean(postalCodeId) && (
                         <FormFieldContainer additionalClassName="form-field--postCode">
                             <Label>
                                 <TranslatedString id="payment.postal_code_label" />

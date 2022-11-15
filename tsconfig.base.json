@@ -34,6 +34,9 @@
       "@bigcommerce/checkout/hosted-credit-card-integration": [
         "packages/hosted-credit-card-integration/src/index.ts"
       ],
+      "@bigcommerce/checkout/hosted-field-integration": [
+        "packages/hosted-field-integration/src/index.ts"
+      ],
       "@bigcommerce/checkout/locale": ["packages/locale/src/index.ts"],
       "@bigcommerce/checkout/payment-integration-api": [
         "packages/payment-integration-api/src/index.ts"

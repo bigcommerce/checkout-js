@@ -10,7 +10,9 @@ export {
     CustomerSkeleton,
     Fieldset,
     FormContext,
+    FormFieldContainer,
     FormContextType,
+    Label,
     Legend,
     Input,
 } from './form';
