@@ -16,9 +16,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "paths": {
-      "@bigcommerce/checkout/hosted-widget-integration": [
-        "packages/hosted-widget-integration/src/index.ts"
-      ],
       "@bigcommerce/checkout/afterpay-integration": ["packages/afterpay-integration/src/index.ts"],
       "@bigcommerce/checkout/analytics": ["packages/analytics/src/index.ts"],
       "@bigcommerce/checkout/apple-pay-integration": [
@@ -34,6 +31,9 @@
       "@bigcommerce/checkout/hosted-credit-card-integration": [
         "packages/hosted-credit-card-integration/src/index.ts"
       ],
+      "@bigcommerce/checkout/hosted-widget-integration": [
+        "packages/hosted-widget-integration/src/index.ts"
+      ],
       "@bigcommerce/checkout/locale": ["packages/locale/src/index.ts"],
       "@bigcommerce/checkout/payment-integration-api": [
         "packages/payment-integration-api/src/index.ts"
@@ -41,6 +41,7 @@
       "@bigcommerce/checkout/payment-integration-test-framework": [
         "packages/payment-integration-test-framework/src/index.ts"
       ],
+      "@bigcommerce/checkout/squarev2-integration": ["packages/squarev2-integration/src/index.ts"],
       "@bigcommerce/checkout/test-utils": ["packages/test-utils/src/index.ts"],
       "@bigcommerce/checkout/ui": ["packages/ui/src/index.ts"],
       "@bigcommerce/checkout/workspace-tools": ["packages/workspace-tools/src/index.ts"]
