@@ -1,6 +1,5 @@
 import {
     CheckoutSelectors,
-    CheckoutSettings,
     CustomerInitializeOptions,
     CustomerRequestOptions,
     PaymentInitializeOptions,
@@ -44,7 +43,6 @@ import PaypalExpressPaymentMethod from './PaypalExpressPaymentMethod';
 import PaypalPaymentsProPaymentMethod from './PaypalPaymentsProPaymentMethod';
 import PPSDKPaymentMethod from './PPSDKPaymentMethod';
 import SquarePaymentMethod from './SquarePaymentMethod';
-import SquareV2PaymentMethod from './SquareV2PaymentMethod';
 import StripePaymentMethod from './StripePaymentMethod';
 import StripeUPEPaymentMethod from './StripeUPEPaymentMethod';
 import VisaCheckoutPaymentMethod from './VisaCheckoutPaymentMethod';
@@ -66,10 +64,6 @@ export interface WithCheckoutPaymentMethodProps {
     initializePayment(options: PaymentInitializeOptions): Promise<CheckoutSelectors>;
 }
 
-interface WithCheckoutSettingsProps {
-    features?: CheckoutSettings['features'],
-}
-
 /**
  * If possible, try to avoid having components that are specific to a specific
  * payment provider or method. Instead, try to generalise the requirements and
@@ -81,9 +75,9 @@ interface WithCheckoutSettingsProps {
  */
 // tslint:disable:cyclomatic-complexity
 const PaymentMethodComponent: FunctionComponent<
-    PaymentMethodProps & WithCheckoutPaymentMethodProps & WithCheckoutSettingsProps
+    PaymentMethodProps & WithCheckoutPaymentMethodProps
 > = (props) => {
-    const { method, features } = props;
+    const { method } = props;
 
     if (method.type === PaymentMethodProviderType.PPSDK) {
         return <PPSDKPaymentMethod {...props} />;
@@ -98,9 +92,7 @@ const PaymentMethodComponent: FunctionComponent<
     }
 
     if (method.id === PaymentMethodId.SquareV2) {
-        return features && features['PROJECT-4113.squarev2_web_payments_sdk']
-            ? (<SquareV2PaymentMethod {...props} />)
-            : (<SquarePaymentMethod {...props} />);
+        return <SquarePaymentMethod {...props} />;
     }
 
     if (method.gateway === PaymentMethodId.StripeV3) {
@@ -283,10 +275,9 @@ const PaymentMethodComponent: FunctionComponent<
 function mapToWithCheckoutPaymentMethodProps(
     { checkoutService, checkoutState }: CheckoutContextProps,
     { method }: PaymentMethodProps,
-): WithCheckoutPaymentMethodProps & WithCheckoutSettingsProps {
+): WithCheckoutPaymentMethodProps {
     const {
         statuses: { isInitializingPayment },
-        data: { getConfig },
     } = checkoutState;
 
     return {
@@ -295,7 +286,6 @@ function mapToWithCheckoutPaymentMethodProps(
         initializeCustomer: checkoutService.initializeCustomer,
         initializePayment: checkoutService.initializePayment,
         isInitializing: isInitializingPayment(method.id),
-        features: getConfig()?.checkoutSettings.features,
     };
 }
 
