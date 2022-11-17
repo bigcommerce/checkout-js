@@ -2,6 +2,7 @@
     "entries": [
         {
             "inputPath": "packages/**/src/index.ts",
+            "ignorePackages": ["test-utils"],
             "outputPath": "packages/core/src/app/generated/paymentIntegrations/index.ts",
             "memberPattern": ".+PaymentMethod$"
         }

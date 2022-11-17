@@ -62,7 +62,7 @@ export interface WithCheckoutHostedWidgetPaymentMethodProps {
     signOut(options: CustomerRequestOptions): void;
 }
 
-export interface HostedWidgetComponentProps {
+export interface HostedWidgetComponentProps extends WithCheckoutHostedWidgetPaymentMethodProps {
     additionalContainerClassName?: string;
     buttonId?: string;
     containerId: string;
@@ -106,7 +106,7 @@ interface HostedWidgetPaymentMethodState {
 }
 
 class HostedWidgetPaymentComponent extends Component<
-    HostedWidgetComponentProps & WithCheckoutHostedWidgetPaymentMethodProps & PaymentContextProps
+    HostedWidgetComponentProps & PaymentContextProps
 > {
     state: HostedWidgetPaymentMethodState = {
         isAddingNewCard: false,
@@ -486,7 +486,8 @@ class HostedWidgetPaymentComponent extends Component<
         const defaultInstrument =
             instruments.find((instrument) => instrument.defaultInstrument) || instruments[0];
 
-        return defaultInstrument.bigpayToken;
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        return defaultInstrument && defaultInstrument.bigpayToken;
     }
 
     private handleUseNewCard: () => void = async () => {

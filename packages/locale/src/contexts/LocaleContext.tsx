@@ -9,7 +9,7 @@ export interface LocaleContextType {
     currency?: CurrencyService;
 }
 
-const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
+export const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
 
 export function useLocale() {
     const context = useContext(LocaleContext);
@@ -20,5 +20,3 @@ export function useLocale() {
 
     return context;
 }
-
-export default LocaleContext;

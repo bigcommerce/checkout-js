@@ -43,9 +43,11 @@ class ManageInstrumentsModal extends Component<
 
         const {
             checkoutState: {
-                errors: { getDeleteInstrumentError: deleteInstrumentError },
+                errors: { getDeleteInstrumentError },
             },
         } = this.context;
+
+        const deleteInstrumentError = getDeleteInstrumentError();
 
         const { isOpen, onRequestClose } = this.props;
 
