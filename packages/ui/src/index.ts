@@ -19,4 +19,4 @@ export {
 export { CreditCardIcon, IconNewAccount, IconPaypal, IconSize } from './icon';
 export { LoadingOverlay } from './loading';
 export { Modal, ModalHeader, ModalTrigger, ModalTriggerModalProps } from './modal';
-export { preventDefault } from './utils/dom';
+export { getAppliedStyles, preventDefault } from './utils/dom';
