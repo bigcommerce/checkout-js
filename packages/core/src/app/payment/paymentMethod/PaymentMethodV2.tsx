@@ -1,4 +1,4 @@
-import { PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import React, { ComponentType } from 'react';
 
 import {
@@ -70,7 +70,17 @@ const PaymentMethodContainer: ComponentType<
         type: method.type,
     });
 
-    if (!ResolvedPaymentMethod || method.gateway === PaymentMethodId.Mollie) {
+    const shouldUseV1 = (method: PaymentMethod, checkoutState: CheckoutSelectors) => {
+        const useSquareOnV1 =
+            method.id === PaymentMethodId.SquareV2 &&
+            !checkoutState.data.getConfig()?.checkoutSettings.features[
+                'PROJECT-4113.squarev2_web_payments_sdk'
+            ];
+
+        return method.gateway === PaymentMethodId.Mollie || useSquareOnV1;
+    };
+
+    if (!ResolvedPaymentMethod || shouldUseV1(method, checkoutState)) {
         return (
             <PaymentMethodV1
                 isEmbedded={isEmbedded}
