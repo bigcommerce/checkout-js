@@ -25,7 +25,7 @@ export interface HostedFieldPaymentMethodComponentProps {
 
 // TODO: Use HostedCreditCardFieldset
 export class HostedFieldPaymentMethodComponent extends Component<HostedFieldPaymentMethodComponentProps> {
-    override async componentDidMount(): Promise<void> {
+    async componentDidMount(): Promise<void> {
         const { initializePayment, method, onUnhandledError = noop } = this.props;
 
         try {
@@ -38,7 +38,7 @@ export class HostedFieldPaymentMethodComponent extends Component<HostedFieldPaym
         }
     }
 
-    override async componentWillUnmount(): Promise<void> {
+    async componentWillUnmount(): Promise<void> {
         const { deinitializePayment, method, onUnhandledError = noop } = this.props;
 
         try {
@@ -51,7 +51,7 @@ export class HostedFieldPaymentMethodComponent extends Component<HostedFieldPaym
         }
     }
 
-    override render(): ReactNode {
+    render(): ReactNode {
         const {
             cardCodeId,
             cardExpiryId,
@@ -64,9 +64,7 @@ export class HostedFieldPaymentMethodComponent extends Component<HostedFieldPaym
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isInitializing}>
                 <div className="form-ccFields">
-                    {Boolean(walletButtons) && (
-                        <FormFieldContainer>{walletButtons}</FormFieldContainer>
-                    )}
+                    {!!walletButtons && <FormFieldContainer>{walletButtons}</FormFieldContainer>}
 
                     <FormFieldContainer additionalClassName="form-field--ccNumber">
                         <Label>
@@ -84,7 +82,7 @@ export class HostedFieldPaymentMethodComponent extends Component<HostedFieldPaym
                         <div id={cardExpiryId} />
                     </FormFieldContainer>
 
-                    {Boolean(cardCodeId) && (
+                    {!!cardCodeId && (
                         <FormFieldContainer additionalClassName="form-field--ccCvv">
                             <Label>
                                 <TranslatedString id="payment.credit_card_cvv_label" />
@@ -94,7 +92,7 @@ export class HostedFieldPaymentMethodComponent extends Component<HostedFieldPaym
                         </FormFieldContainer>
                     )}
 
-                    {Boolean(postalCodeId) && (
+                    {!!postalCodeId && (
                         <FormFieldContainer additionalClassName="form-field--postCode">
                             <Label>
                                 <TranslatedString id="payment.postal_code_label" />
