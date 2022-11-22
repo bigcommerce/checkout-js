@@ -65,7 +65,7 @@ export interface WithCheckoutShippingProps {
     shouldShowAddAddressInCheckout: boolean;
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
-    isStripeLinkEnabled?: boolean;
+    providerWithCustomCheckout?: string;
     useFloatingLabel?: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitializeShippingMethod(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
@@ -80,7 +80,6 @@ export interface WithCheckoutShippingProps {
     updateBillingAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
     updateCheckout(payload: CheckoutRequestBody): Promise<CheckoutSelectors>;
     updateShippingAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
-    loadPaymentMethods(): Promise<CheckoutSelectors>;
 }
 
 interface ShippingState {
@@ -100,7 +99,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         const {
             loadShippingAddressFields,
             loadShippingOptions,
-            loadPaymentMethods,
             onReady = noop,
             onUnhandledError = noop,
         } = this.props;
@@ -109,7 +107,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             await Promise.all([loadShippingAddressFields(), loadShippingOptions()]);
 
             onReady();
-            await loadPaymentMethods();
         } catch (error) {
             onUnhandledError(error);
         } finally {
@@ -129,7 +126,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             deinitializeShippingMethod,
             isMultiShippingMode,
             onToggleMultiShipping,
-            isStripeLinkEnabled,
+            providerWithCustomCheckout,
             step,
             useFloatingLabel,
             ...shippingFormProps
@@ -139,7 +136,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             isInitializing,
         } = this.state;
 
-        if (isStripeLinkEnabled && !customer.email && this.props.countries.length > 0) {
+        if (providerWithCustomCheckout === PaymentMethodId.StripeUPE && !customer.email && this.props.countries.length > 0) {
             return <StripeShipping
                 { ...shippingFormProps }
                 customer={ customer }
@@ -341,7 +338,6 @@ export function mapToShippingProps({
             getBillingAddress,
             getShippingAddressFields,
             getShippingCountries,
-            getPaymentMethod,
         },
         statuses: {
             isShippingStepPending,
@@ -388,10 +384,6 @@ export function mapToShippingProps({
     const shouldShowMultiShipping =
         hasMultiShippingEnabled && !methodId && shippableItemsCount > 1 && shippableItemsCount < 50;
     const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ'];
-    const stripeUpe = getPaymentMethod('card', PaymentMethodId.StripeUPE);
-    const linkEnabled = stripeUpe?.initializationData.enableLink || false;
-    const stripeUpeSupportedCurrency = cart?.currency.code === 'USD' || false;
-    const stripeUpeLinkEnabled = linkEnabled && stripeUpeSupportedCurrency;
 
     if (features['CHECKOUT-4183.checkout_google_address_autocomplete_uk']) {
         countriesWithAutocomplete.push('GB');
@@ -422,6 +414,7 @@ export function mapToShippingProps({
         loadShippingAddressFields: checkoutService.loadShippingAddressFields,
         loadShippingOptions: checkoutService.loadShippingOptions,
         methodId,
+        providerWithCustomCheckout: config.checkoutSettings.providerWithCustomCheckout || undefined,
         shippingAddress,
         shouldShowMultiShipping,
         shouldShowAddAddressInCheckout:
@@ -432,8 +425,6 @@ export function mapToShippingProps({
         updateBillingAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,
         updateShippingAddress: checkoutService.updateShippingAddress,
-        isStripeLinkEnabled: stripeUpeLinkEnabled,
-        loadPaymentMethods: checkoutService.loadPaymentMethods,
         useFloatingLabel: isFloatingLabelEnabled(config.checkoutSettings),
     };
 }

@@ -17,6 +17,7 @@ import CheckoutStepType from '../checkout/CheckoutStepType';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
+import { PaymentMethodId } from '../payment/paymentMethod';
 
 import { getConsignment } from './consignment.mock';
 import Shipping, { ShippingProps, WithCheckoutShippingProps } from './Shipping';
@@ -48,7 +49,7 @@ describe('Shipping Component', () => {
                 isEditable: true,
                 isRequired: true,
                 type: CheckoutStepType.Shipping },
-            isStripeLinkEnabled: true,
+            providerWithCustomCheckout: PaymentMethodId.StripeUPE,
             isShippingMethodLoading: true,
             navigateNextStep: jest.fn(),
             onUnhandledError: jest.fn(),
