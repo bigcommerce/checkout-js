@@ -289,7 +289,7 @@
             "instrument_trusted_shipping_address_text": "Detta ytterligare säkerhetssteg tillämpas på ditt kort när du skickar till en adress för första gången eller om leveransadressen redigerades nyligen.",
             "instrument_trusted_shipping_address_title_text": "Ange ditt kortnummer igen för att auktorisera transaktionen.",
             "quadpay_continue_action": "Fortsätt med Zip",
-            "quadpay_display_name_text": "Betala i 4 delbetalningar (Quadpay)",
+            "quadpay_display_name_text": "Betala i 4 delbetalningar",
             "ppsdk_continue_action": "Fortsätt med {methodName}",
             "select_your_bank": "Välj din bank",
             "sepa_account_number": "Kontonummer (IBAN)",
