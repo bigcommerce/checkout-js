@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.274.2](https://github.com/bigcommerce/checkout-js/compare/v1.274.1...v1.274.2) (2022-11-25)
+
+
+### Bug Fixes
+
+* **checkout:** INT-6968 fix for the misaligned text when it has spaces in between on APMs name ([4dc9bf5](https://github.com/bigcommerce/checkout-js/commit/4dc9bf5859f05536c63201b36717b886dacc9434))
+
+
+### Code Refactoring
+
+* **payment:** INT-6930 Zip: remove "(Quadpay)" from checkout ([c9e9a35](https://github.com/bigcommerce/checkout-js/commit/c9e9a359455bed231458d6e508247a4e83f4a244))
+
 ### [1.274.1](https://github.com/bigcommerce/checkout-js/compare/v1.274.0...v1.274.1) (2022-11-18)
 
 ## [1.274.0](https://github.com/bigcommerce/checkout-js/compare/v1.273.1...v1.274.0) (2022-11-13)
