@@ -9,14 +9,15 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { CheckoutProvider } from '../../checkout';
-import { getStoreConfig } from '../../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
-import { getPaymentMethod } from '../payment-methods.mock';
+import {
+    HostedFieldPaymentMethodComponent,
+    HostedFieldPaymentMethodComponentProps
+} from '@bigcommerce/checkout/hosted-field-integration';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { getPaymentMethod, getStoreConfig } from '@bigcommerce/checkout/test-utils';
 
-import HostedFieldPaymentMethod, {
-    HostedFieldPaymentMethodProps,
-} from './HostedFieldPaymentMethod';
+import { CheckoutProvider } from '../../checkout';
+
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
 
@@ -58,8 +59,8 @@ describe('when using Square payment', () => {
 
     it('renders as hosted field method', () => {
         const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-        const component: ReactWrapper<HostedFieldPaymentMethodProps> =
-            container.find(HostedFieldPaymentMethod);
+        const component: ReactWrapper<HostedFieldPaymentMethodComponentProps> =
+            container.find(HostedFieldPaymentMethodComponent);
 
         expect(component.props()).toEqual(
             expect.objectContaining({
@@ -75,8 +76,8 @@ describe('when using Square payment', () => {
 
     it('initializes method with required config', () => {
         const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-        const component: ReactWrapper<HostedFieldPaymentMethodProps> =
-            container.find(HostedFieldPaymentMethod);
+        const component: ReactWrapper<HostedFieldPaymentMethodComponentProps> =
+            container.find(HostedFieldPaymentMethodComponent);
 
         component.prop('initializePayment')({
             methodId: method.id,

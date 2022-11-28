@@ -9,3 +9,5 @@ export { TextInput } from './TextInput';
 export { TextInputIframeContainer } from './TextInputIframeContainer';
 export { FormContext, FormContextType } from './contexts';
 export { AddressFormSkeleton, ChecklistSkeleton, CustomerSkeleton } from './LoadingSkeleton';
+export { Label } from './Label';
+export { FormFieldContainer } from './FormFieldContainer';
