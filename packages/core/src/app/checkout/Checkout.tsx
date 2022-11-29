@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
     Address,
     Cart,
@@ -37,6 +38,7 @@ import { ShippingOptionExpiredError } from '../shipping/shippingOption';
 import { LazyContainer, LoadingNotification, LoadingOverlay } from '../ui/loading';
 import { MobileView } from '../ui/responsive';
 
+import getFflLineItems from '../shipping/getFflLineItems';
 import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
@@ -44,6 +46,7 @@ import CheckoutSupport from './CheckoutSupport';
 import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
 import withCheckout from './withCheckout';
+import DealerShipping from './dealer/DealerShipping';
 
 const Billing = lazy(() =>
     retry(
@@ -127,6 +130,8 @@ export interface CheckoutState {
     hasSelectedShippingOptions: boolean;
     isBuyNowCartEnabled: boolean;
     isSubscribed: boolean;
+    fflLineItems: LineItem[];
+    storeHash: string;
 }
 
 export interface WithCheckoutProps {
@@ -149,6 +154,9 @@ export interface WithCheckoutProps {
     clearError(error?: Error): void;
     loadCheckout(id: string, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
     subscribeToConsignments(subscriber: (state: CheckoutSelectors) => void): () => void;
+    subscribeToLogin(subscriber: (state: CheckoutSelectors) => void): () => void;
+    loadShippingAddressFields(): Promise<CheckoutSelectors>;
+    loadShippingOptions(): Promise<CheckoutSelectors>;
 }
 
 class Checkout extends Component<
@@ -163,17 +171,24 @@ class Checkout extends Component<
         hasSelectedShippingOptions: false,
         isBuyNowCartEnabled: false,
         isSubscribed: false,
+        fflLineItems: [],
+        storeHash: ''
     };
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
     private unsubscribeFromConsignments?: () => void;
+    private unsubscribeFromLogin?: () => void;
 
     componentWillUnmount(): void {
         if (this.unsubscribeFromConsignments) {
             this.unsubscribeFromConsignments();
             this.unsubscribeFromConsignments = undefined;
         }
-
+        if (this.unsubscribeFromLogin) {
+            this.unsubscribeFromLogin();
+            this.unsubscribeFromLogin = undefined;
+        }
+        
         window.removeEventListener('beforeunload', this.handleBeforeExit);
         this.handleBeforeExit();
     }
@@ -186,7 +201,8 @@ class Checkout extends Component<
             embeddedStylesheet,
             loadCheckout,
             subscribeToConsignments,
-            analyticsTracker
+            analyticsTracker,
+            subscribeToLogin
         } = this.props;
 
         try {
@@ -200,6 +216,7 @@ class Checkout extends Component<
             });
             const { links: { siteLink = '' } = {} } = data.getConfig() || {};
             const errorFlashMessages = data.getFlashMessages('error') || [];
+            this.setState({storeHash: data.getConfig()?.storeProfile.storeHash || ''});
 
             if (errorFlashMessages.length) {
                 const { language } = this.props;
@@ -221,6 +238,7 @@ class Checkout extends Component<
             this.unsubscribeFromConsignments = subscribeToConsignments(
                 this.handleConsignmentsUpdated,
             );
+            this.unsubscribeFromLogin = subscribeToLogin(this.handleCustomerLoggedIn);
             this.embeddedMessenger = messenger;
             messenger.receiveStyles((styles) => embeddedStylesheet.append(styles));
             messenger.postFrameLoaded({ contentId: containerId });
@@ -230,6 +248,14 @@ class Checkout extends Component<
 
             const consignments = data.getConsignments();
             const cart = data.getCart();
+
+            /* window.fflStorefrontToken is derived from a custom script installed upon installation of AutomaticFFL on BigCommerce  */
+            if (cart && window.fflStorefrontToken) {
+                const fflLineItems = await getFflLineItems(cart);
+                this.setState({ fflLineItems });
+            } else {
+                console.warn('Could not find fflStorefrontToken');
+            }
 
             const hasMultiShippingEnabled =
                 data.getConfig()?.checkoutSettings.hasMultiShippingEnabled;
@@ -337,7 +363,9 @@ class Checkout extends Component<
                 return this.renderCustomerStep(step);
 
             case CheckoutStepType.Shipping:
-                return this.renderShippingStep(step);
+                return this.state.fflLineItems &&  this.state.fflLineItems.length > 0 ?
+                this.renderDealerShippingStep(step) :
+                this.renderShippingStep(step);
 
             case CheckoutStepType.Billing:
                 return this.renderBillingStep(step);
@@ -437,6 +465,58 @@ class Checkout extends Component<
             </CheckoutStep>
         );
     }
+
+    private handleConsignmentsAdresses(deleteConsignment, consignments = []) {
+      return Promise.all(consignments.map(({ id }) => deleteConsignment(id)));
+    }
+
+    private renderDealerShippingStep(step: CheckoutStepStatus): ReactNode {
+          const {
+              hasCartChanged,
+              cart,
+              consignments,
+          } = this.props;
+
+          const fflConsignmentItems = this.state.fflLineItems.map(fflItem => ({ itemId: fflItem.id, quantity: fflItem.quantity }));
+
+          if (!cart) {
+              return;
+          }
+
+          return (
+              <CheckoutStep
+                  { ...step }
+                  heading={ <TranslatedString id="shipping.ffl_shipping_heading" /> }
+                  key={ step.type }
+                  onEdit={ this.handleEditStep }
+                  onExpanded={ this.handleExpanded }
+                  summary={ consignments.map(consignment =>
+                      <div className="staticConsignmentContainer" key={ consignment.id }>
+                          <StaticConsignment
+                              cart={ cart }
+                              compactView={ consignments.length < 2 }
+                              consignment={ consignment }
+                          />
+                      </div>) }
+              >
+                  <LazyContainer>
+                    <DealerShipping
+                        cartHasChanged={ hasCartChanged }
+                        handleConsignmentsAdresses={ this.handleConsignmentsAdresses }
+                        fflConsignmentItems={ fflConsignmentItems }
+                        isMultiShippingMode={ true }
+                        navigateNextStep={ this.handleShippingNextStep }
+                        onCreateAccount={ this.handleShippingCreateAccount }
+                        onReady={ this.handleReady }
+                        onSignIn={ this.handleShippingSignIn }
+                        onToggleMultiShipping={ this.handleToggleMultiShipping }
+                        onUnhandledError={ this.handleUnhandledError }
+                        storeHash={ this.state.storeHash }
+                    />
+                  </LazyContainer>
+              </CheckoutStep>
+          );
+        }
 
     private renderBillingStep(step: CheckoutStepStatus): ReactNode {
         const { billingAddress } = this.props;
@@ -616,6 +696,21 @@ class Checkout extends Component<
         this.setState({ hasSelectedShippingOptions: newHasSelectedShippingOptions });
     };
 
+    // Everytime a user logs in or out we clear the consignment data and reload shipping fields
+    private handleCustomerLoggedIn: (state: CheckoutSelectors) => void = async ({ data }) =>  {
+        const {
+          deleteConsignment,
+          consignments,
+          loadShippingAddressFields,
+          loadShippingOptions
+        } = this.props
+             await this.handleConsignmentsAdresses(deleteConsignment, consignments);
+             await Promise.all([
+                 loadShippingAddressFields(),
+                 loadShippingOptions(),
+             ]);
+    }
+    
     private handleCloseErrorModal: () => void = () => {
         this.setState({ error: undefined });
     };

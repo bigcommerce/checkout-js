@@ -127,6 +127,10 @@ function appConfig(options, argv) {
                         transform: assets => transformManifest(assets, appVersion),
                         output: 'manifest.json'
                     }),
+                    new DefinePlugin({
+                        'process.env.HOST': JSON.stringify(process.env.HOST),
+                        'process.env.GOOGLE_MAPS_KEY': JSON.stringify(process.env.GOOGLE_MAPS_KEY),
+                      }),
                     new BuildHookPlugin({
                         onSuccess() {
                             eventEmitter.emit('app:done');

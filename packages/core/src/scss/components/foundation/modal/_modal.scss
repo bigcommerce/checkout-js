@@ -143,6 +143,10 @@
         display: flex;
         justify-content: center;
     }
+
+    .modal--overflow {
+        overflow-y: auto;
+    }
 }
 
 // Specific styles for React modal
