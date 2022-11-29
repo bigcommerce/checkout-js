@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.275.0](https://github.com/bigcommerce/checkout-js/compare/v1.274.2...v1.275.0) (2022-11-29)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6438 Refactor `HostedField` component ([#1106](https://github.com/bigcommerce/checkout-js/issues/1106)) ([7b6bd9f](https://github.com/bigcommerce/checkout-js/commit/7b6bd9f336beb1bd4e20104515c38b55d18c6cf5))
+
 ### [1.274.2](https://github.com/bigcommerce/checkout-js/compare/v1.274.1...v1.274.2) (2022-11-25)
 
 
