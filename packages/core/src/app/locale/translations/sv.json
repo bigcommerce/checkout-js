@@ -22,6 +22,7 @@
             "custom_valid_error": "{label} är inte giltig",
             "edit_address_action": "Redigera adress",
             "enter_address_action": "Ange en ny adress",
+            "enter_or_select_address_action": "Ange eller välj en annan adress",
             "add_address_heading": "Lägg till adress",
             "save_address_action": "Spara adress",
             "first_name_label": "Förnamn",
@@ -43,7 +44,7 @@
         },
         "billing": {
             "billing_address_heading": "Fakturaadress",
-            "billing_heading": "Fakturering",
+            "billing_heading": "fakturering",
             "save_billing_address_error": "Ett fel inträffade när faktureringsadressen skulle sparas i din prisoffert. Försök igen.",
             "billing_address_amazon": "Samma som den faktureringsadress som du har angett i ditt Amazon konto.",
             "billing_address_amazonpay": "Hanteras av Amazon Pay",
@@ -61,7 +62,7 @@
             "free_text": "Gratis",
             "gift_certificate_text": "Presentkort",
             "handling_text": "Hantering",
-            "item_count_text": "{count, plural, one{1 objekt} other{# objekt} }",
+            "item_count_text": "{count, plural, one{1 Item} other{# Items} }",
             "print_action": "Skriva ut",
             "remaining_text": "återstående",
             "remove_action": "Ta bort",
@@ -99,8 +100,8 @@
             "show_more": "Visa mer"
         },
         "customer": {
-            "checkout_as_guest_text": "Betalar du som <strong>gäst</strong>? Du kommer att kunna spara dina uppgifter för att skapa ett konto hos oss senare.",
             "continue_as_guest_action": "Fortsätt som gäst",
+            "continue_as_stripe_customer_action": "Fortsätt med Link",
             "create_account_action": "Skapa konto",
             "continue": "Fortsätt",
             "set_password_action": "Spara lösenord",
@@ -116,13 +117,13 @@
             "create_account_text": "Skapa ett konto för att betala snabbare nästa gång",
             "set_password_text": "Ställ in ett lösenord för att betala snabbare nästa gång",
             "account_created_text": "Ett konto har skapats åt dig, men du måste ställa in ett lösenord för att logga in.",
-            "create_account_to_continue_text": "Har du inte ett konto? <a href=\"{url}\" target=\"_blank\">Skapa ett konto</a> för att fortsätta.",
+            "create_account_to_continue_text": "<a href=\"{url}\" target=\"_blank\">Skapa ett konto</a>",
             "guest_could_login": "Det verkar som att du har ett konto. Logga in med {email} för att betala snabbare.",
             "guest_must_login": "Det verkar som att du har ett konto. Logga in för att fortsätta med {email} eller använd en annan e-postadress.",
             "guest_temporary_disabled": "Gästkassan är tillfälligt inaktiverad. Logga in eller <a href=\"{url}\" target=\"_blank\">skapa ett konto</a> för att fortsätta.",
             "customer_heading": "Kund",
             "email_invalid_error": "E-postadressen måste vara giltig",
-            "email_label": "E-postadress",
+            "email_label": "E-post",
             "email_required_error": "E-postadress måste anges",
             "forgot_password_action": "Glömt ditt lösenord?",
             "guest_customer_text": "Gästkund",
@@ -151,22 +152,22 @@
             "sign_out_action": "Logga ut",
             "sign_out_error": "Ett fel inträffade vid utloggningen. Försök igen.",
             "subscribe_to_newsletter_text": "Ja, jag vill få uppdateringar.",
-            "suggestion_text": "Det ser ut som om du har ett konto hos {provider}. För snabb utcheckning, fortsätt med {providerFlow}.",
+            "suggestion_text": "Det ser ut som om du har ett konto hos {provider}. För snabb betalning, fortsätt med {providerFlow}.",
             "suggestion_action": "{providerFlow}"
         },
         "login_email": {
             "error_server": "Vi kunde inte skicka en inloggningslänk till dig. Försök igen.",
             "error_not_found": "Den angivna e-postadressen är inte kopplad till något konto. Försök med en annan e-postadress.",
             "sent_header": "Kolla din inkorg",
-            "sent_text": "Vi har skickat ett e-postmeddelande till <strong>{email}</strong> med en inloggningslänk. Den går ut om {minutes} minuter – kontrollera skräppostmappen om du inte ser meddelandet i inkorgen.",
+            "sent_text": "Din inloggningslänk har skickats till <strong>{email}</strong>. Denna länk upphör att gälla om 15 minuter. Om du inte hittar den, titta i din skräppostmapp.",
             "text": "Ange e-postadressen som är kopplad till ditt konto. Vi skickar en inloggningslänk till dig.",
-            "header": "Skriv in din e-postadress",
+            "header": "Inloggningslänk för konto",
             "header_with_email": "Bekräfta din e-postadress",
             "link": "<a>Skicka en inloggningslänk till mig i stället</a>",
             "use_another_email": "Använd en annan e-postadress",
             "send": "Skicka",
             "error_temporary_disabled": "Funktionen med inloggningslänk är tillfälligt otillgänglig. Logga in genom att ange ditt lösenord.",
-            "resend_link": "Fick du inte e-postmeddelandet? <a>Skicka länken igen</a>",
+            "resend_link": "<a>Skicka länken igen</a>",
             "use_password_link": " eller <a>logga in med ditt lösenord</a> i stället."
         },
         "embedded_checkout": {
@@ -183,10 +184,13 @@
             "amazon_name_text": "Amazon Pay",
             "barclaycard_continue_action": "Fortsätt",
             "bluesnap_v2_continue_action": "Fortsätt",
-            "bolt_create_account_label": "Kom ihåg min information med Bolt",
-            "bolt_create_account_disclaimer": "Genom att kryssa i ovan godkänner du att skapa ett Bolt-konto enligt <a href=\"{termsUrl}\" target=\"_blank\">vilkoren</a> och <a href=\"{privacyPolicyUrl}\" target=\"_blank\">integritetspolicy</a>.",
+            "bolt_benefit_1": "Shoppa hundratals varumärken med inloggning utan lösenord",
+            "bolt_benefit_2": "Checka ut med sparade betalnings- och fraktuppgifter",
+            "bolt_benefit_3": "Dra nytta av PCI-kompatibel kontosäkerhet",
+            "bolt_checkbox_agreement": "Spara min information, skapa ett Bolt-konto och godkänn Bolts <a href=\"{termsUrl}\" target=\"_blank\">villkor</a> och <a href=\"{privacyPolicyUrl}\" target=\"_blank\">sekretesspolicy</a>.",
             "bolt_name_text": "Bolt",
             "braintreevisacheckout_continue_action": "Fortsätt med Visa Checkout",
+            "continue_with_brand": "Fortsätt med {brandName}",
             "ccavenuemars_description_text": "Fortsätt med CCAvenue",
             "chasepay_continue_action": "Fortsätt med Chase Pay",
             "chasepay_name_text": "Chase Pay",
@@ -204,7 +208,7 @@
             "checkoutcom_fawry_customer_email_invalid_error": "E-postadressen måste vara giltig",
             "checkoutcom_fawry_customer_email_label": "E-post",
             "checkoutcom_sepa_creditor_title": "Borgenär",
-            "checkoutcom_sepa_creditor_id": "Borgenärens ID: {creditorId}",
+            "checkoutcom_sepa_creditor_id": "Kreditgivarens ID: {creditorId}",
             "checkoutcom_sepa_debtor_title": "Gäldenär",
             "checkoutcom_sepa_mandate_disclaimer": "Genom att acceptera detta mandatformulär godkänner du att {creditorName} skickar instruktioner till din bank att debitera ditt konto och att din bank debiterar ditt konto i enlighet med dessa instruktioner. Du har rätt till återbetalning från din bank enligt villkoren i ditt avtal med banken. Återbetalning måste krävas inom åtta veckor från det datum då ditt konto debiterades.",
             "checkoutcom_sepa_payment_type": "Betalningstyp: engångs (ej återkommande)",
@@ -224,10 +228,11 @@
             "credit_card_name_required_error": "Fullständigt namn krävs",
             "credit_card_number_invalid_error": "Kreditkortsnummer måste vara giltigt",
             "credit_card_number_label": "Kreditkortsnummer",
-            "credit_card_number_last_four": "Ange kortnummer för {cardType} som slutar på {lastFour}",
+            "credit_card_number_last_four": "Ange kortnummer för {cardType} som slutar med {lastFour}",
             "credit_card_number_required_error": "Kreditkortsnummer är obligatoriskt",
             "credit_card_number_mismatch_error": "Det angivna kortnumret matchar inte det kort som är lagrat på ditt konto",
             "credit_debit_card_text": "Kredit-/betalkort",
+            "stripev3_auth_3ds_fail": "Användaren autentiserades inte",
             "digitalriver_dropin_error": "Det uppstod ett fel när betalningen bearbetades. Försök igen eller kontakta oss.",
             "digitalriver_checkout_error": "Ett fel uppstod i kassan. Vänligen kontrollera dina uppgifter och försök igen, eller kontakta kundtjänst.",
             "digitalriver_checkout_error_title": "Fel vid bearbetning av begäran.",
@@ -237,8 +242,11 @@
             "klarna_continue_action": "Fortsätt med Klarna",
             "klarna_name_text": "Klarna",
             "masterpass_name_text": "Masterpass",
-            "mollie_unsupported_method_error": "Denna betalningsmetod kan inte användas för att köpa digitala produkter. Kontakta kundtjänst eller försök igen.",
-            "opy_continue_action": "Fortsätt med Openpay",
+            "mollie_unsupported_method_error": "Denna betalningsmetod kan inte användas för köp av digitala produkter. Kontakta kundtjänsten eller försök igen.",
+            "opy_continue_action": "Fortsätt med {methodName}",
+            "opy_widget_slogan": "Köp nu. Betala smartare.",
+            "opy_widget_info": "Du kommer att omdirigeras till {methodName}s webbplats för att slutföra din beställning när du klickar på \"Fortsätt med {methodName}\"",
+            "opy_invalid_cart_error": "Priset i kundvagnen skiljer sig från planbeloppet för {methodName}.",
             "orbital_continue_action": "Beställ",
             "orbital_description_text": "Betala med ditt ChasePay-konto",
             "payment_cancelled": "Betalningen har avbrutits",
@@ -252,6 +260,8 @@
             "payment_method_unavailable_error": "Denna betalningsleverantör är tillfälligt otillgänglig. Försök igen senare.",
             "payment_not_required_text": "Betalning krävs inte för denna beställning.",
             "paypal_continue_action": "Fortsätt med PayPal",
+            "paypal_pay_later_continue_action": "Fortsätt med Pay Later",
+            "paypal_venmo_continue_action": "Fortsätt med Venmo",
             "paypal_credit_continue_action": "Fortsätt med PayPal Credit",
             "paypal_credit_description_text": "Köp nu, betala med tiden",
             "paypal_description_text": "Betala med ditt PayPal-konto",
@@ -264,10 +274,10 @@
             "ideal_bic_required": "Du måste välja en utfärdare för att genomföra beställningen",
             "instrument_text": "Lagrade kreditkort",
             "instrument_add_card_action": "Använd ett annat kort",
-            "instrument_default_ending_in_text": "Kort som slutar på {endingIn}",
-            "instrument_ending_in_text": "{cardTitle} slutar på {endingIn}",
-            "instrument_expired_text": "Gick ut {expiryDate}",
-            "instrument_expires_text": "Går ut {expiryDate}",
+            "instrument_default_ending_in_text": "Kort som slutar med {endingIn}",
+            "instrument_ending_in_text": "{cardTitle} som slutar med {endingIn}",
+            "instrument_expired_text": "Upphörde att gälla {expiryDate}",
+            "instrument_expires_text": "Upphör att gälla {expiryDate}",
             "instrument_manage_button": "hantera",
             "instrument_manage_modal_confirmation_action": "Ja, radera",
             "instrument_manage_modal_confirmation_label": "Är du säker på att du vill radera den här lagrade betalningsmetoden?",
@@ -289,7 +299,7 @@
             "instrument_trusted_shipping_address_text": "Detta ytterligare säkerhetssteg tillämpas på ditt kort när du skickar till en adress för första gången eller om leveransadressen redigerades nyligen.",
             "instrument_trusted_shipping_address_title_text": "Ange ditt kortnummer igen för att auktorisera transaktionen.",
             "quadpay_continue_action": "Fortsätt med Zip",
-            "quadpay_display_name_text": "Betala i 4 delbetalningar",
+            "quadpay_display_name_text": "Betala i fyra omgångar",
             "ppsdk_continue_action": "Fortsätt med {methodName}",
             "select_your_bank": "Välj din bank",
             "sepa_account_number": "Kontonummer (IBAN)",
@@ -297,7 +307,7 @@
             "sepa_bic": "BIC",
             "sepa_bic_length": "BIC måste bestå av 8 eller 11 tecken",
             "sepa_mandate_required": "Du måste acceptera mandatformuläret",
-            "sezzle_display_name_text": "Betala senare. 0 % ränta.",
+            "sezzle_display_name_text": "Köp nu, betala senare med Sezzle.",
             "stripe_sepa_display_name_text": "Sepa-direktdebitering.",
             "stripe_sepa_mandate_disclaimer": "Genom att tillhandahålla ditt IBAN och bekräfta denna betalning godkänner du (A) att {storeUrl} och Stripe, vår betalningstjänsteleverantör, skickar instruktioner till din bank att debitera ditt konto och (B) att din bank debiterar ditt konto i enlighet med dessa instruktioner. Du har rätt till återbetalning från din bank enligt villkoren i ditt avtal med banken. Återbetalning måste krävas inom åtta veckor från det datum då ditt konto debiterades.",
             "tax_provider_unavailable": "Moms kunde inte beräknas. Vänligen försök igen. Om det inte lyckas, vänligen kontakta vårt supportteam för att genomföra köpet.",
@@ -405,7 +415,8 @@
             "sign_in_action": "Logga in på {providerName}",
             "sign_out_action": "Logga ut från {providerName}",
             "sign_out_after_action": "för att visa andra betalningsmetoder",
-            "sign_in_required_error": "Fjärrinloggning krävs före betalning"
+            "sign_in_required_error": "Fjärrinloggning krävs före betalning",
+            "sign_out_before_action": ""
         },
         "shipping": {
             "cart_change_error": "En uppdatering av din kundvagn har upptäckts och dina tillgängliga fraktkostnader har uppdaterats. Välj en leveransmetod igen för att fortsätta.",
@@ -452,6 +463,25 @@
             "terms_and_conditions_heading": "Villkor"
         },
         "order_confirmation": {
+            "mandate": {
+                "checkoutcom": {
+                    "boleto": "Boleto Bancário-ticket",
+                    "oxxo": "OXXO-ticket",
+                    "sepa": "SEPA direktdebitering (via Checkout.com) Mandatreferens: {mandate}"
+                },
+                "stripev3": {
+                    "iban": "SEPA-direktdebiteringsmandat"
+                },
+                "stripeupe": {
+                    "au_becs_debit": "BECS-direktdebiteringsmandat",
+                    "boleto": "Boleto Bancário-ticket",
+                    "oxxo": "OXXO-ticket",
+                    "sepa_debit": "SEPA-direktdebiteringsmandat"
+                },
+                "paypalcommercealternativemethods": {
+                    "oxxo": "OXXO-ticket"
+                }
+            },
             "order_number_text": "Ditt beställningsnummer är <strong>{orderNumber}</strong>",
             "order_pending_review_text": "Din beställning har skickats till oss, men du har inte betalat än. Din beställning slutförs när vi tar emot betalningen. Om du redan har angett betalningsuppgifter kommer vi att behandla din beställning manuellt och skicka ett e-postmeddelande till dig när den är slutförd.",
             "order_pending_status_text": "Vi har fått din beställning och behandlar din betalning. Din beställning slutförs när betalningen har verifierats. Vi skickar ett e-postmeddelande till dig när det är klart. Observera att den här processen kan ta några minuter beroende på behandlingstiderna för din valda metod. Om du har några frågor om ditt köp kan du skicka ett meddelande till oss på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
@@ -463,11 +493,7 @@
             "thank_you_customer_heading": "Tack, {name}!",
             "thank_you_heading": "Tack!",
             "continue_shopping": "Fortsätt handla »",
-            "order_status_update_facebook_messenger_heading": "Få omedelbara uppdateringar om din beställning till Messenger",
-            "mandate_link_text": "Mandat för {provider}",
-            "boleto_link_text": "Boleto Bancário-ticket",
-            "oxxo_link_text": "OXXO-ticket",
-            "sepa_link_text": "SEPA-direktdebiteringsmandat"
+            "order_status_update_facebook_messenger_heading": "Få omedelbara uppdateringar om din beställning till Messenger"
         }
     }
 }
