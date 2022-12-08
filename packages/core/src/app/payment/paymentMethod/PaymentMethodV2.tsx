@@ -28,6 +28,16 @@ export interface PaymentMethodProps {
     onUnhandledError(error: Error): void;
 }
 
+function shouldUsePaymentMethodV1(method: PaymentMethod, checkoutState: CheckoutSelectors) {
+    const useSquareOnPaymentMethodV1 =
+        method.id === PaymentMethodId.SquareV2 &&
+        !checkoutState.data.getConfig()?.checkoutSettings.features[
+            'PROJECT-4113.squarev2_web_payments_sdk'
+        ];
+
+    return method.gateway === PaymentMethodId.Mollie || useSquareOnPaymentMethodV1;
+}
+
 const PaymentMethodContainer: ComponentType<
     PaymentMethodProps &
         WithCheckoutProps &
@@ -70,17 +80,7 @@ const PaymentMethodContainer: ComponentType<
         type: method.type,
     });
 
-    const shouldUseV1 = (method: PaymentMethod, checkoutState: CheckoutSelectors) => {
-        const useSquareOnV1 =
-            method.id === PaymentMethodId.SquareV2 &&
-            !checkoutState.data.getConfig()?.checkoutSettings.features[
-                'PROJECT-4113.squarev2_web_payments_sdk'
-            ];
-
-        return method.gateway === PaymentMethodId.Mollie || useSquareOnV1;
-    };
-
-    if (!ResolvedPaymentMethod || shouldUseV1(method, checkoutState)) {
+    if (!ResolvedPaymentMethod || shouldUsePaymentMethodV1(method, checkoutState)) {
         return (
             <PaymentMethodV1
                 isEmbedded={isEmbedded}
