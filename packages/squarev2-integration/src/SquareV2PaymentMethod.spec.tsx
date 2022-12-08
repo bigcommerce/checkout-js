@@ -46,9 +46,7 @@ describe('SquareV2 payment method', () => {
             method: getSquareV2(),
             checkoutService,
             checkoutState,
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             paymentForm: { disableSubmit: jest.fn() } as unknown as PaymentFormService,
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             language: jest.fn() as unknown as LanguageService,
             onUnhandledError: jest.fn(),
         };
@@ -121,7 +119,6 @@ describe('SquareV2 payment method', () => {
                         '.message-text.is-error': { color: 'rgb(5, 5, 5)' },
                         '.message-icon.is-error': { color: 'rgb(5, 5, 5)' },
                     },
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     onValidationChange: expect.any(Function),
                 },
             }),
@@ -139,7 +136,6 @@ describe('SquareV2 payment method', () => {
                 squarev2: {
                     containerId: 'squarev2_payment_element_container',
                     style: undefined,
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     onValidationChange: expect.any(Function),
                 },
             }),

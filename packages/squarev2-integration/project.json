@@ -7,7 +7,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/squarev2-integration/**/*.{ts,tsx}"]
+        "lintFilePatterns": ["packages/squarev2-integration/**/*.{js,ts,tsx}"]
       }
     },
     "test": {

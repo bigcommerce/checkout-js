@@ -14,6 +14,15 @@ const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     checkoutState,
     paymentForm,
 }) => {
+    const [disabled, setDisabled] = useState(true);
+
+    useEffect(() => paymentForm.disableSubmit(method, disabled), [disabled, method, paymentForm]);
+
+    const onValidationChange = useCallback(
+        (isValid: boolean) => setDisabled(!isValid),
+        [setDisabled],
+    );
+
     const renderDummyFormFields = () => {
         return (
             <div data-test="squarev2_dummy_form" style={{ display: 'none' }}>
@@ -131,14 +140,6 @@ const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         },
         [],
     );
-
-    const [disabled, setDisabled] = useState(true);
-    const onValidationChange = useCallback(
-        (isValid: boolean) => setDisabled(!isValid),
-        [setDisabled],
-    );
-
-    useEffect(() => paymentForm.disableSubmit(method, disabled), [disabled, method, paymentForm]);
 
     const containerId = 'squarev2_payment_element_container';
     const initializePayment = useCallback(async () => {
