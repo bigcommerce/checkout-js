@@ -293,16 +293,18 @@ class HostedWidgetPaymentComponent extends Component<
             bigpayToken: selectedInstrumentId,
         });
 
-        assertIsCardInstrument(selectedInstrument);
+        if (selectedInstrument) {
+            assertIsCardInstrument(selectedInstrument);
 
-        const shouldShowNumberField = isInstrumentCardNumberRequiredProp(selectedInstrument);
+            const shouldShowNumberField = isInstrumentCardNumberRequiredProp(selectedInstrument);
 
-        if (hideVerificationFields) {
-            return;
-        }
+            if (hideVerificationFields) {
+                return;
+            }
 
-        if (validateInstrument) {
-            return validateInstrument(shouldShowNumberField, selectedInstrument);
+            if (validateInstrument) {
+                return validateInstrument(shouldShowNumberField, selectedInstrument);
+            }
         }
     }
 

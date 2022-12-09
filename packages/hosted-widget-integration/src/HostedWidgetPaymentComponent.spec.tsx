@@ -1,5 +1,6 @@
 import {
     BankInstrument,
+    CardInstrument,
     CheckoutSelectors,
     CheckoutService,
     createCheckoutService,
@@ -425,6 +426,47 @@ describe('HostedWidgetPaymentMethod', () => {
             );
 
             expect(component.find(CardInstrumentFieldset)).toHaveLength(1);
+        });
+
+        it('shows fields on the Widget when you click Use another payment form on the vaulted card instruments dropdown', () => {
+            const mockCardInstrument: CardInstrument[] = [
+                {
+                    bigpayToken: '123',
+                    provider: 'braintree',
+                    iin: '11111111',
+                    last4: '4321',
+                    expiryMonth: '02',
+                    expiryYear: '2025',
+                    brand: 'visa',
+                    trustedShippingAddress: true,
+                    defaultInstrument: true,
+                    method: 'card',
+                    type: 'card',
+                },
+            ];
+
+            jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(mockCardInstrument);
+
+            const component = mount(
+                <HostedWidgetPaymentMethodTest
+                    {...defaultProps}
+                    instruments={mockCardInstrument}
+                    isInstrumentFeatureAvailable={true}
+                />,
+            );
+
+            component.find(CardInstrumentFieldset).prop('onUseNewInstrument')();
+            component.update();
+
+            const hostedWidgetComponent = component.find('#widget-container');
+
+            expect(hostedWidgetComponent).toHaveLength(1);
+
+            expect(component.text()).toMatch(/save/i);
+            expect(component.text()).not.toMatch(/account/i);
+            expect(component.text()).toMatch(/card/i);
+
+            expect(component.find('input[name="shouldSaveInstrument"]').exists()).toBe(true);
         });
 
         it('shows hosted widget and save credit card form when there are no stored instruments', () => {
