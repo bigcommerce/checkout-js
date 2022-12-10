@@ -52,17 +52,17 @@ describe('SquareV2 payment method', () => {
         };
         SquareV2PaymentMethodTest = () => <SquareV2PaymentMethod {...props} />;
 
-        const dummyElement = document.createElement('div');
+        const placeholderElement = document.createElement('div');
 
-        dummyElement.style.backgroundColor = 'rgb(1, 1, 1)';
-        dummyElement.style.borderColor = 'rgb(2, 2, 2)';
-        dummyElement.style.borderRadius = '3px';
-        dummyElement.style.borderWidth = '4px';
-        dummyElement.style.color = 'rgb(5, 5, 5)';
-        dummyElement.style.fontSize = '6px';
-        dummyElement.style.fontWeight = 'normal';
+        placeholderElement.style.backgroundColor = 'rgb(1, 1, 1)';
+        placeholderElement.style.borderColor = 'rgb(2, 2, 2)';
+        placeholderElement.style.borderRadius = '3px';
+        placeholderElement.style.borderWidth = '4px';
+        placeholderElement.style.color = 'rgb(5, 5, 5)';
+        placeholderElement.style.fontSize = '6px';
+        placeholderElement.style.fontWeight = 'normal';
 
-        jest.spyOn(document, 'querySelector').mockReturnValue(dummyElement);
+        jest.spyOn(document, 'querySelector').mockReturnValue(placeholderElement);
     });
 
     it('should render a loading overlay', () => {
@@ -71,12 +71,12 @@ describe('SquareV2 payment method', () => {
         expect(loadingOverlay).toHaveLength(1);
     });
 
-    it('should render dummy form fields', () => {
-        const dummyForm = mount(<SquareV2PaymentMethodTest />).find(
-            '[data-test="squarev2_dummy_form"]',
+    it('should render placeholder form fields', () => {
+        const placeholderForm = mount(<SquareV2PaymentMethodTest />).find(
+            '[data-test="squarev2_placeholder_form"]',
         );
 
-        expect(dummyForm).toMatchSnapshot();
+        expect(placeholderForm).toMatchSnapshot();
     });
 
     it('should be initialized with the required config', () => {

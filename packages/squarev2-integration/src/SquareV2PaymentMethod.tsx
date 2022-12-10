@@ -23,9 +23,9 @@ const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         [setDisabled],
     );
 
-    const renderDummyFormFields = () => {
+    const renderPlaceholderFields = () => {
         return (
-            <div data-test="squarev2_dummy_form" style={{ display: 'none' }}>
+            <div data-test="squarev2_placeholder_form" style={{ display: 'none' }}>
                 <div className="form-field">
                     <div
                         className="form-label optimizedCheckout-form-label"
@@ -188,7 +188,7 @@ const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             hideContentWhenLoading
             isLoading={checkoutState.statuses.isInitializingPayment(method.id)}
         >
-            {renderDummyFormFields()}
+            {renderPlaceholderFields()}
             <div id={containerId} />
         </LoadingOverlay>
     );

@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SquareV2 payment method should render dummy form fields 1`] = `
+exports[`SquareV2 payment method should render placeholder form fields 1`] = `
 <div
-  data-test="squarev2_dummy_form"
+  data-test="squarev2_placeholder_form"
   style={
     Object {
       "display": "none",
