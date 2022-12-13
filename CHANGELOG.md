@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.275.3](https://github.com/bigcommerce/checkout-js/compare/v1.275.2...v1.275.3) (2022-12-13)
+
+
+### Bug Fixes
+
+* **payment:** INT-6928 [Mollie] No Ability To Use A Different Card To Pay ([#1110](https://github.com/bigcommerce/checkout-js/issues/1110)) ([c6ccd77](https://github.com/bigcommerce/checkout-js/commit/c6ccd7792d1cc460f6281ca29e13af3ad167c8e1))
+
 ### [1.275.2](https://github.com/bigcommerce/checkout-js/compare/v1.275.1...v1.275.2) (2022-12-13)
 
 
