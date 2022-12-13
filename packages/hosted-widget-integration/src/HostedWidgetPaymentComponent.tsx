@@ -293,16 +293,18 @@ class HostedWidgetPaymentComponent extends Component<
             bigpayToken: selectedInstrumentId,
         });
 
-        assertIsCardInstrument(selectedInstrument);
+        if (selectedInstrument) {
+            assertIsCardInstrument(selectedInstrument);
 
-        const shouldShowNumberField = isInstrumentCardNumberRequiredProp(selectedInstrument);
+            const shouldShowNumberField = isInstrumentCardNumberRequiredProp(selectedInstrument);
 
-        if (hideVerificationFields) {
-            return;
-        }
+            if (hideVerificationFields) {
+                return;
+            }
 
-        if (validateInstrument) {
-            return validateInstrument(shouldShowNumberField, selectedInstrument);
+            if (validateInstrument) {
+                return validateInstrument(shouldShowNumberField, selectedInstrument);
+            }
         }
     }
 
@@ -444,7 +446,10 @@ class HostedWidgetPaymentComponent extends Component<
             signInCustomer = noop,
         } = this.props;
 
-        const { selectedInstrumentId = this.getDefaultInstrumentId() } = this.state;
+        const { selectedInstrumentId = this.getDefaultInstrumentId(), isAddingNewCard } =
+            this.state;
+
+        let selectedInstrument;
 
         if (!isPaymentDataRequired) {
             setSubmit(method, null);
@@ -462,9 +467,11 @@ class HostedWidgetPaymentComponent extends Component<
 
         setSubmit(method, null);
 
-        const selectedInstrument =
-            instruments.find((instrument) => instrument.bigpayToken === selectedInstrumentId) ||
-            instruments[0];
+        if (!isAddingNewCard) {
+            selectedInstrument =
+                instruments.find((instrument) => instrument.bigpayToken === selectedInstrumentId) ||
+                instruments[0];
+        }
 
         return initializePayment(
             {
