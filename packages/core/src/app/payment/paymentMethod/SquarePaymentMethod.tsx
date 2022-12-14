@@ -3,15 +3,16 @@ import { noop } from 'lodash';
 import React, { FunctionComponent, useCallback, useContext } from 'react';
 import { Omit } from 'utility-types';
 
-import {
-    HostedFieldPaymentMethodComponent,
-    HostedFieldPaymentMethodComponentProps
-} from '@bigcommerce/checkout/hosted-field-integration';
 
 import PaymentContext from '../PaymentContext';
 
+import HostedFieldPaymentMethod, {
+    HostedFieldPaymentMethodProps,
+} from './HostedFieldPaymentMethod';
+
+
 export type SquarePaymentMethodProps = Omit<
-    HostedFieldPaymentMethodComponentProps,
+    HostedFieldPaymentMethodProps,
     'cardCodeId' | 'cardExpiryId' | 'cardNumberId' | 'postalCodeId' | 'walletButtons'
 >;
 
@@ -54,19 +55,19 @@ const SquarePaymentMethod: FunctionComponent<SquarePaymentMethodProps> = ({
     );
 
     return (
-        <HostedFieldPaymentMethodComponent
-            {...rest}
-            cardCodeId="sq-cvv"
-            cardExpiryId="sq-expiration-date"
-            cardNumberId="sq-card-number"
-            initializePayment={initializeSquarePayment}
-            method={method}
-            onUnhandledError={(e) => {
-                onUnhandledError(e);
-                paymentContext?.disableSubmit(method, true);
-            }}
-            postalCodeId="sq-postal-code"
-        />
+            <HostedFieldPaymentMethod
+                {...rest}
+                cardCodeId="sq-cvv"
+                cardExpiryId="sq-expiration-date"
+                cardNumberId="sq-card-number"
+                initializePayment={initializeSquarePayment}
+                method={method}
+                onUnhandledError={(e) => {
+                    onUnhandledError(e);
+                    paymentContext?.disableSubmit(method, true);
+                }}
+                postalCodeId="sq-postal-code"
+            />
     );
 };
 
