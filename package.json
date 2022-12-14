@@ -80,7 +80,7 @@
     "shallowequal": "^1.1.0",
     "tslib": "^2.0.0",
     "utility-types": "^2.1.0",
-    "yup": "^0.26.6"
+    "yup": "^0.28.2"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
