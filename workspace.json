@@ -11,6 +11,7 @@
     "hosted-field-integration": "packages/hosted-field-integration",
     "hosted-widget-integration": "packages/hosted-widget-integration",
     "locale": "packages/locale",
+    "offline-payment-integration": "packages/offline-payment-integration",
     "payment-integration-api": "packages/payment-integration-api",
     "payment-integration-test-framework": "packages/payment-integration-test-framework",
     "squarev2-integration": "packages/squarev2-integration",
