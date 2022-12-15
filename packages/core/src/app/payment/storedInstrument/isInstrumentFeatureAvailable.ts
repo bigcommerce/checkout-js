@@ -1,4 +1,4 @@
-import { Customer, PaymentMethod, StoreConfig } from '@bigcommerce/checkout-sdk';
+import { CheckoutSettings, Customer, PaymentMethod, PaymentMethodConfig, StoreConfig } from '@bigcommerce/checkout-sdk';
 
 export interface IsInstrumentFeatureAvailableState {
     config: StoreConfig;
@@ -13,14 +13,27 @@ export default function isInstrumentFeatureAvailable({
     isUsingMultiShipping,
     paymentMethod,
 }: IsInstrumentFeatureAvailableState): boolean {
+    const { checkoutSettings } = config;
+
     if (
-        !config.checkoutSettings.isCardVaultingEnabled ||
-        !paymentMethod.config.isVaultingEnabled ||
+        isVaultingNotEnabled(checkoutSettings, paymentMethod.config) ||
         customer.isGuest ||
-        isUsingMultiShipping
+        isVaultingWithMultiShippingNotEnabled(checkoutSettings, isUsingMultiShipping)
     ) {
         return false;
     }
 
     return true;
+}
+
+function isVaultingNotEnabled(checkoutSettings: CheckoutSettings, paymentMethodConfig: PaymentMethodConfig): boolean {
+    return !checkoutSettings.isCardVaultingEnabled || !paymentMethodConfig.isVaultingEnabled;
+}
+
+function isVaultingWithMultiShippingNotEnabled(checkoutSettings: CheckoutSettings, isUsingMultiShipping: boolean): boolean {
+    if(checkoutSettings.features['PAYMENTS-7667.enable_vaulting_with_multishipping']) {
+        return false;
+    }
+
+    return isUsingMultiShipping;
 }
