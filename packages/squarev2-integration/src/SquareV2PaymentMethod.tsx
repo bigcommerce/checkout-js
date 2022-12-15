@@ -46,6 +46,7 @@ const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             </div>
         );
     };
+
     const getStylesFromElement = (id: string, properties: string[]) => {
         const container = document.querySelector<HTMLDivElement>(`#${id}`);
 
@@ -57,6 +58,7 @@ const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
         return getAppliedStyles(container, properties);
     };
+
     const copyStylesFromDummyFormFields = useCallback(() => {
         const styleProps = [
             'backgroundColor',
@@ -89,6 +91,7 @@ const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             },
         };
     }, []);
+
     const mapToSquareStyles = useCallback(
         (styles: ReturnType<typeof copyStylesFromDummyFormFields>) => {
             const { borderColor, borderRadius, borderWidth, ...input } = styles.default.input;
@@ -142,6 +145,7 @@ const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     );
 
     const containerId = 'squarev2_payment_element_container';
+
     const initializePayment = useCallback(async () => {
         let style;
 
@@ -168,6 +172,7 @@ const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         method.id,
         onValidationChange,
     ]);
+
     const deinitializePayment = useCallback(async () => {
         await checkoutService.deinitializePayment({
             gatewayId: method.gateway,

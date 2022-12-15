@@ -29,13 +29,17 @@ export interface PaymentMethodProps {
 }
 
 function shouldUsePaymentMethodV1(method: PaymentMethod, checkoutState: CheckoutSelectors) {
-    const useSquareOnPaymentMethodV1 =
-        method.id === PaymentMethodId.SquareV2 &&
-        !checkoutState.data.getConfig()?.checkoutSettings.features[
+    if (method.gateway === PaymentMethodId.Mollie) {
+        return true;
+    }
+
+    if (method.id === PaymentMethodId.SquareV2) {
+        return !checkoutState.data.getConfig()?.checkoutSettings.features[
             'PROJECT-4113.squarev2_web_payments_sdk'
         ];
+    }
 
-    return method.gateway === PaymentMethodId.Mollie || useSquareOnPaymentMethodV1;
+    return false;
 }
 
 const PaymentMethodContainer: ComponentType<
