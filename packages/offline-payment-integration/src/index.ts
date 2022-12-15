@@ -1,1 +1,1 @@
-export * from './lib/offline-payment-integration';
+export { default as OfflinePaymentMethod } from './OfflinePaymentMethod';
