@@ -45,7 +45,6 @@
             "billing_address_heading": "Rechnungsadresse",
             "billing_heading": "Rechnungsstellung",
             "save_billing_address_error": "Beim Speichern der Rechnungsadresse zu Ihrem Preisangebot ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
-            "billing_address_amazon": "Entspricht der von Ihnen in Ihrem Amazon-Konto angegebenen Rechnungsadresse.",
             "billing_address_amazonpay": "Verwaltet von Amazon Pay",
             "use_shipping_address_label": "Meine Rechnungsadresse ist die gleiche wie meine Versandadresse."
         },

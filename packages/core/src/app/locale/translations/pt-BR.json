@@ -45,7 +45,6 @@
             "billing_address_heading": "Endereço de cobrança",
             "billing_heading": "Faturamento",
             "save_billing_address_error": "Ocorreu um erro ao salvar o endereço de faturamento na sua cotação. Tente novamente.",
-            "billing_address_amazon": "Igual ao endereço de faturamento definido por você em sua conta da Amazon.",
             "billing_address_amazonpay": "Gerenciado pelo Amazon Pay",
             "use_shipping_address_label": "Meu endereço de faturamento é o mesmo do meu endereço de entrega."
         },

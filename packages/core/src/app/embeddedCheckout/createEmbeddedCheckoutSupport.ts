@@ -5,7 +5,7 @@ import { CheckoutSupport, NoopCheckoutSupport } from '../checkout';
 import EmbeddedCheckoutSupport from './EmbeddedCheckoutSupport';
 import isEmbedded from './isEmbedded';
 
-const UNSUPPORTED_METHODS = ['afterpay', 'applepay', 'amazon', 'chasepay', 'googlepay', 'klarna', 'masterpass'];
+const UNSUPPORTED_METHODS = ['afterpay', 'applepay', 'amazonpay', 'chasepay', 'googlepay', 'klarna', 'masterpass'];
 
 export default function createEmbeddedCheckoutSupport(language: LanguageService): CheckoutSupport {
     return isEmbedded()

@@ -45,7 +45,6 @@
             "billing_address_heading": "Factuuradres",
             "billing_heading": "Facturering",
             "save_billing_address_error": "Er is een fout opgetreden bij het opslaan van het factuuradres in uw prijsopgave. Probeer het opnieuw.",
-            "billing_address_amazon": "Zelfde als het factuuradres dat u heeft ingesteld in uw Amazon-account.",
             "billing_address_amazonpay": "Beheerd door Amazon Pay",
             "use_shipping_address_label": "Mijn factuuradres is hetzelfde als mijn verzendadres."
         },

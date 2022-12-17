@@ -12,7 +12,6 @@ import { getCustomer } from '../customer/customers.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 
 import { getConsignment } from './consignment.mock';
-import RemoteShippingAddress from './RemoteShippingAddress';
 import { getShippingAddress } from './shipping-addresses.mock';
 import ShippingAddress, { ShippingAddressProps } from './ShippingAddress';
 import ShippingAddressForm from './ShippingAddressForm';
@@ -84,16 +83,6 @@ describe('ShippingAddress Component', () => {
             expect(defaultProps.onAddressSelect).toHaveBeenCalled();
         });
 
-        it('does not render RemoteShippingAddress', () => {
-            const component = mount(
-                <Formik initialValues={{}} onSubmit={noop}>
-                    <ShippingAddress {...defaultProps} />
-                </Formik>,
-            );
-
-            expect(component.find(RemoteShippingAddress)).toHaveLength(0);
-        });
-
         it('does not render StaticAddress if method id is not sent', () => {
             const component = mount(
                 <Formik initialValues={{}} onSubmit={noop}>
@@ -106,35 +95,10 @@ describe('ShippingAddress Component', () => {
     });
 
     describe('when method id is provided', () => {
-        it('renders RemoteShippingAddress with expected props', () => {
-            const component = mount(
-                <Formik initialValues={{}} onSubmit={noop}>
-                    <ShippingAddress {...defaultProps} methodId="amazon" />
-                </Formik>,
-            );
-
-            expect(component.find(RemoteShippingAddress).props()).toEqual(
-                expect.objectContaining({
-                    containerId: 'addressWidget',
-                    methodId: 'amazon',
-                    deinitialize: defaultProps.deinitialize,
-                    formFields: defaultProps.formFields,
-                }),
-            );
-
-            expect(defaultProps.initialize).toHaveBeenCalledWith({
-                methodId: 'amazon',
-                amazon: {
-                    container: 'addressWidget',
-                    onError: defaultProps.onUnhandledError,
-                },
-            });
-        });
-
         it('does not render ShippingAddressForm', () => {
             const component = mount(
                 <Formik initialValues={{}} onSubmit={noop}>
-                    <ShippingAddress {...defaultProps} methodId="amazon" />
+                    <ShippingAddress {...defaultProps} methodId="amazonpay" />
                 </Formik>,
             );
 

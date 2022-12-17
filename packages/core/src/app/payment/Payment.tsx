@@ -315,7 +315,7 @@ class Payment extends Component<
         const { defaultMethod, isSubmittingOrder, language } = this.props;
         const { selectedMethod = defaultMethod } = this.state;
 
-        // TODO: Perhaps there is a better way to handle `adyen`, `afterpay`, `amazon`,
+        // TODO: Perhaps there is a better way to handle `adyen`, `afterpay`, `amazonpay`,
         // `checkout.com`, `converge`, `sagepay`, `stripev3` and `sezzle`. They require
         //  a redirection to another website during the payment flow but are not
         //  categorised as hosted payment methods.
@@ -324,7 +324,6 @@ class Payment extends Component<
             !selectedMethod ||
             selectedMethod.type === PaymentMethodProviderType.Hosted ||
             selectedMethod.type === PaymentMethodProviderType.PPSDK ||
-            selectedMethod.id === PaymentMethodId.Amazon ||
             selectedMethod.id === PaymentMethodId.AmazonPay ||
             selectedMethod.id === PaymentMethodId.CBAMPGS ||
             selectedMethod.id === PaymentMethodId.Checkoutcom ||
@@ -595,7 +594,6 @@ export function mapToPaymentProps({
     if (consignments && consignments.length > 1) {
         const multiShippingIncompatibleMethodIds: string[] = [
             PaymentMethodId.AmazonPay,
-            PaymentMethodId.Amazon,
         ];
 
         filteredMethods = methods.filter((method: PaymentMethod) => {
