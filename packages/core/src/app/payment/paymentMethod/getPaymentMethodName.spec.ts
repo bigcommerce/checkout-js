@@ -32,7 +32,7 @@ describe('getPaymentMethodName()', () => {
     it('returns specific translated name for Amazon', () => {
         const method = {
             ...getPaymentMethod(),
-            id: 'amazon',
+            id: 'amazonpay',
             method: 'widget',
             config: { displayName: '' },
         };

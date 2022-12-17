@@ -17,7 +17,7 @@ import { getPaymentMethod } from '../payment/payment-methods.mock';
 import { getConsignment } from '../shipping/consignment.mock';
 import { getShippingAddress } from '../shipping/shipping-addresses.mock';
 
-import { getCheckoutWithAmazonPay, getCheckoutWithPayments } from './checkouts.mock';
+import { getCheckoutWithPayments } from './checkouts.mock';
 import CheckoutStepType from './CheckoutStepType';
 import getCheckoutStepStatuses from './getCheckoutStepStatuses';
 
@@ -129,7 +129,7 @@ describe('getCheckoutStepStatuses()', () => {
 
         describe('amazonpay', () => {
             it('is marked as complete if billing address is not provided', () => {
-                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithAmazonPay());
+                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithPayments());
 
                 const steps = getCheckoutStepStatuses(state);
 
@@ -140,7 +140,7 @@ describe('getCheckoutStepStatuses()', () => {
             });
 
             it('is marked as complete if billing address is not provided and custom fields are valid', () => {
-                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithAmazonPay());
+                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithPayments());
                 jest.spyOn(state.data, 'getBillingAddress').mockReturnValue({
                     ...getEmptyBillingAddress(),
                     customFields: [{ fieldId: 'foo', fieldValue: 'foo' }],
@@ -158,7 +158,7 @@ describe('getCheckoutStepStatuses()', () => {
             });
 
             it('is marked as incomplete if billing address is not provided but custom fields are invalid', () => {
-                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithAmazonPay());
+                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithPayments());
                 jest.spyOn(state.data, 'getBillingAddress').mockReturnValue({
                     ...getEmptyBillingAddress(),
                     customFields: [{ fieldId: 'foo', fieldValue: '' }],
@@ -176,7 +176,7 @@ describe('getCheckoutStepStatuses()', () => {
             });
 
             it('is marked as non-editable if step is complete and there are no custom fields', () => {
-                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithAmazonPay());
+                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithPayments());
                 jest.spyOn(state.data, 'getBillingAddress').mockReturnValue(getBillingAddress());
 
                 const steps = getCheckoutStepStatuses(state);
@@ -188,7 +188,7 @@ describe('getCheckoutStepStatuses()', () => {
             });
 
             it('is marked as editable if step is complete and there is custom fields', () => {
-                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithAmazonPay());
+                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithPayments());
                 jest.spyOn(state.data, 'getBillingAddress').mockReturnValue(getBillingAddress());
                 jest.spyOn(state.data, 'getBillingAddressFields').mockReturnValue(
                     getAddressFormFields(),

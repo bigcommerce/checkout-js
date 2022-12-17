@@ -77,10 +77,6 @@ function getPaymentMethodTitle(
                 logoUrl: cdnPath('/img/payment-providers/afterpay-badge-blackonmint.png'),
                 titleText: methodName,
             },
-            [PaymentMethodId.Amazon]: {
-                logoUrl: cdnPath('/img/payment-providers/amazon-header.png'),
-                titleText: '',
-            },
             [PaymentMethodId.AmazonPay]: {
                 logoUrl: cdnPath('/img/payment-providers/amazon-header.png'),
                 titleText: '',

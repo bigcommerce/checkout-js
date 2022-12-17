@@ -45,7 +45,6 @@
             "billing_address_heading": "Indirizzo di fatturazione",
             "billing_heading": "Fatturazione",
             "save_billing_address_error": "Si è verificato un errore durante il salvataggio dell'indirizzo di fatturazione nel preventivo. Riprova.",
-            "billing_address_amazon": "Lo stesso indirizzo di fatturazione impostato per il tuo account Amazon.",
             "billing_address_amazonpay": "Gestito da Amazon Pay",
             "use_shipping_address_label": "L'indirizzo di fatturazione corrisponde all'indirizzo di spedizione."
         },

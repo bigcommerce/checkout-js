@@ -47,18 +47,6 @@ export function getCheckoutWithPayments(): Checkout {
     };
 }
 
-export function getCheckoutWithAmazonPay(): Checkout {
-    return {
-        ...getCheckout(),
-        payments: [
-            {
-                ...getCheckoutPayment(),
-                providerId: 'amazonpay',
-            },
-        ],
-    };
-}
-
 export function getCheckoutWithPromotions(): Checkout {
     return {
         ...getCheckout(),
@@ -68,7 +56,7 @@ export function getCheckoutWithPromotions(): Checkout {
 
 export function getCheckoutPayment(): CheckoutPayment {
     return {
-        providerId: 'amazon',
+        providerId: 'amazonpay',
         gatewayId: undefined,
         providerType: 'PAYMENT_TYPE_HOSTED',
         detail: {

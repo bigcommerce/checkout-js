@@ -145,7 +145,7 @@ class SingleShippingForm extends PureComponent<
         const { isResettingAddress, isUpdatingShippingData, hasRequestedShippingOptions } =
             this.state;
 
-        const PAYMENT_METHOD_VALID = ['amazon', 'amazonpay'];
+        const PAYMENT_METHOD_VALID = ['amazonpay'];
         const shouldShowBillingSameAsShipping = !PAYMENT_METHOD_VALID.some(
             (method) => method === methodId,
         );

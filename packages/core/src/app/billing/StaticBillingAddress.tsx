@@ -18,14 +18,6 @@ interface WithCheckoutStaticBillingAddressProps {
 const StaticBillingAddress: FunctionComponent<
     StaticBillingAddressProps & WithCheckoutStaticBillingAddressProps
 > = ({ address, payments = EMPTY_ARRAY }) => {
-    if (payments.find((payment) => payment.providerId === 'amazon')) {
-        return (
-            <p>
-                <TranslatedString id="billing.billing_address_amazon" />
-            </p>
-        );
-    }
-
     if (payments.find((payment) => payment.providerId === 'amazonpay')) {
         return (
             <p>

@@ -21,7 +21,7 @@ describe('CheckoutButtonList', () => {
                 <CheckoutButtonList
                     deinitialize={noop}
                     initialize={noop}
-                    methodIds={['amazon', 'braintreevisacheckout']}
+                    methodIds={['amazonpay', 'braintreevisacheckout']}
                 />
             </LocaleContext.Provider>,
         );
@@ -35,7 +35,7 @@ describe('CheckoutButtonList', () => {
                 <CheckoutButtonList
                     deinitialize={noop}
                     initialize={noop}
-                    methodIds={['amazon', 'braintreevisacheckout', 'foobar']}
+                    methodIds={['amazonpay', 'braintreevisacheckout', 'foobar']}
                 />
             </LocaleContext.Provider>,
         );
@@ -70,7 +70,7 @@ describe('CheckoutButtonList', () => {
                     deinitialize={noop}
                     initialize={noop}
                     isInitializing={true}
-                    methodIds={['amazon', 'braintreevisacheckout']}
+                    methodIds={['amazonpay', 'braintreevisacheckout']}
                 />
             </LocaleContext.Provider>,
         );
@@ -86,21 +86,21 @@ describe('CheckoutButtonList', () => {
                 <CheckoutButtonList
                     deinitialize={deinitialize}
                     initialize={initialize}
-                    methodIds={['amazon', 'braintreevisacheckout']}
+                    methodIds={['amazonpay', 'braintreevisacheckout']}
                 />
             </LocaleContext.Provider>,
         );
 
         expect(component.find(CheckoutButton).at(0).props()).toEqual({
-            containerId: 'amazonCheckoutButton',
-            methodId: 'amazon',
+            containerId: 'amazonpayCheckoutButton',
+            methodId: 'amazonpay',
             deinitialize,
             initialize,
         });
     });
 
     it('notifies parent if methods are incompatible with Embedded Checkout', () => {
-        const methodIds = ['amazon', 'braintreevisacheckout'];
+        const methodIds = ['amazonpay', 'braintreevisacheckout'];
         const onError = jest.fn();
         const checkEmbeddedSupport = jest.fn(() => {
             throw new Error();

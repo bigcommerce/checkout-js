@@ -45,7 +45,6 @@
             "billing_address_heading": "Dirección de facturación",
             "billing_heading": "Facturación",
             "save_billing_address_error": "Se ha producido un error al guardar la dirección de facturación en su presupuesto. Vuelva a intentarlo.",
-            "billing_address_amazon": "La misma que la dirección de facturación que ha introducido en su cuenta de Amazon.",
             "billing_address_amazonpay": "Gestionado por Amazon Pay",
             "use_shipping_address_label": "Mi dirección de facturación es la misma que mi dirección de envío."
         },

@@ -89,7 +89,7 @@ describe('mapToShippingProps()', () => {
         it('returns false when remote shipping', () => {
             jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue({
                 ...getCheckout(),
-                payments: [{ providerId: 'amazon' }],
+                payments: [{ providerId: 'amazonpay' }],
             } as Checkout);
 
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

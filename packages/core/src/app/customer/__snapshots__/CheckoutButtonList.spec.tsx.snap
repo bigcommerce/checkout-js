@@ -9,8 +9,12 @@ Array [
     class="checkoutRemote"
   >
     <div
-      id="amazonCheckoutButton"
-    />
+      class="AmazonPayContainer"
+    >
+      <div
+        id="amazonpayCheckoutButton"
+      />
+    </div>
     <div
       id="braintreevisacheckoutCheckoutButton"
     />
