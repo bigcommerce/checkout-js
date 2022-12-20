@@ -68,7 +68,7 @@ describe('isInstrumentFeatureAvailable()', () => {
         ).toBe(false);
     });
 
-    it('returns false if shopper is checking out with multiple shipping address', () => {
+    it('returns false if shopper is checking out with multiple shipping address & the feature for vaulting with multiple shipping is not enabled', () => {
         expect(
             isInstrumentFeatureAvailable({
                 ...state,
@@ -78,6 +78,25 @@ describe('isInstrumentFeatureAvailable()', () => {
                 ),
             }),
         ).toBe(false);
+    });
+
+    it('returns true if shopper is checking out with multiple shipping address & the feature for vaulting with multiple shipping is enabled', () => {
+        expect(
+            isInstrumentFeatureAvailable({
+                ...state,
+                config: merge({}, getStoreConfig(), {
+                    checkoutSettings: {
+                        features: {
+                            'PAYMENTS-7667.enable_vaulting_with_multishipping': true,
+                        },
+                    },
+                }),
+                isUsingMultiShipping: isUsingMultiShipping(
+                    [getConsignment(), getConsignment()],
+                    getCart().lineItems,
+                ),
+            }),
+        ).toBe(true);
     });
 
     it('returns true otherwise', () => {
