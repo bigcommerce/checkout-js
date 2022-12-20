@@ -70,6 +70,7 @@ describe('AnalyticsProvider', () => {
             orderPurchased: jest.fn(),
             stepCompleted: jest.fn(),
             customerEmailEntry: jest.fn(),
+            customerSuggestionInit: jest.fn(),
             customerSuggestionExecute: jest.fn(),
             customerPaymentMethodExecuted: jest.fn(),
             showShippingMethods: jest.fn(),
@@ -132,6 +133,20 @@ describe('AnalyticsProvider', () => {
 
         expect(bodlServiceMock.customerEmailEntry).toHaveBeenCalledTimes(1);
         expect(bodlServiceMock.customerEmailEntry).toHaveBeenCalledWith('email@test.com');
+    });
+
+    it('track customer suggestion initialization', () => {
+        mount(
+            <TestComponent
+                eventName="customerSuggestionInit"
+                eventPayload={{ data: 'test data' }}
+            />,
+        );
+
+        expect(bodlServiceMock.customerSuggestionInit).toHaveBeenCalledTimes(1);
+        expect(bodlServiceMock.customerSuggestionInit).toHaveBeenCalledWith({
+            data: 'test data',
+        });
     });
 
     it('track customer suggestion execute', () => {

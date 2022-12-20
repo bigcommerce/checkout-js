@@ -2,11 +2,14 @@ import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
 
+import { AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+
 import BoltCheckoutSuggestion, { BoltCheckoutSuggestionProps } from './BoltCheckoutSuggestion';
 
 describe('BoltCheckoutSuggestion', () => {
     let defaultProps: BoltCheckoutSuggestionProps;
     let TestComponent: FunctionComponent<Partial<BoltCheckoutSuggestionProps>>;
+    let analyticsTrackerMock: Partial<AnalyticsEvents>
 
     beforeEach(() => {
         defaultProps = {
@@ -18,7 +21,14 @@ describe('BoltCheckoutSuggestion', () => {
             methodId: 'bolt',
         };
 
-        TestComponent = (props) => <BoltCheckoutSuggestion {...defaultProps} {...props} />;
+        analyticsTrackerMock = {
+            customerSuggestionInit: jest.fn()
+        };
+
+        TestComponent = (props) => 
+            <AnalyticsProviderMock analyticsTracker={ analyticsTrackerMock }>
+                <BoltCheckoutSuggestion {...defaultProps} {...props} />
+            </AnalyticsProviderMock>;
     });
 
     it('deinitializes previous Bolt customer strategy before initialisation', () => {
@@ -50,6 +60,7 @@ describe('BoltCheckoutSuggestion', () => {
         mount(<TestComponent />);
 
         expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
+        expect(analyticsTrackerMock.customerSuggestionInit).not.toHaveBeenCalled();
     });
 
     it('do not render Bolt suggestion block if the customer has not bolt account', async () => {
@@ -65,6 +76,7 @@ describe('BoltCheckoutSuggestion', () => {
         component.update();
 
         expect(component.find('[data-test="suggestion-action-button"]')).toHaveLength(0);
+        expect(analyticsTrackerMock.customerSuggestionInit).toHaveBeenCalledWith({hasBoltAccount: false});
     });
 
     it('renders Bolt suggestion block if the customer has bolt account', async () => {
@@ -80,6 +92,7 @@ describe('BoltCheckoutSuggestion', () => {
         component.update();
 
         expect(component.find('[data-test="suggestion-action-button"]')).toHaveLength(1);
+        expect(analyticsTrackerMock.customerSuggestionInit).toHaveBeenCalledWith({hasBoltAccount: true});
     });
 
     it('executes Bolt Checkout', async () => {

@@ -7,6 +7,8 @@ import {
 import { noop } from 'lodash';
 import React, { FunctionComponent, memo, useEffect, useState } from 'react';
 
+import { useAnalytics } from '@bigcommerce/checkout/analytics';
+
 import { stopPropagation } from '../../common/dom';
 import { TranslatedString } from '../../locale';
 import { Button } from '../../ui/button';
@@ -32,6 +34,7 @@ const BoltCheckoutSuggestion: FunctionComponent<BoltCheckoutSuggestionProps> = (
     onUnhandledError = noop,
 }) => {
     const [showSuggestion, setShowSuggestion] = useState<boolean>(false);
+    const { analyticsTracker } = useAnalytics();
 
     useEffect(() => {
         deinitializeCustomer({ methodId });
@@ -42,6 +45,7 @@ const BoltCheckoutSuggestion: FunctionComponent<BoltCheckoutSuggestionProps> = (
                 bolt: {
                     onInit: (hasBoltAccount) => {
                         setShowSuggestion(hasBoltAccount);
+                        analyticsTracker.customerSuggestionInit({hasBoltAccount});
                     },
                 },
             });
