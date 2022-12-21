@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.277.1](https://github.com/bigcommerce/checkout-js/compare/v1.277.0...v1.277.1) (2022-12-21)
+
+
+### Bug Fixes
+
+* **payment:** BOLT-268 Bolt payment fields with store credits ([a80e564](https://github.com/bigcommerce/checkout-js/commit/a80e56433e1b95f15ac28afb8222aebeae3fc70b))
+
 ## [1.277.0](https://github.com/bigcommerce/checkout-js/compare/v1.276.0...v1.277.0) (2022-12-21)
 
 
