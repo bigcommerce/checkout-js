@@ -146,6 +146,7 @@ class HostedWidgetPaymentComponent extends Component<
             method,
             onUnhandledError = noop,
             setValidationSchema,
+            isPaymentDataRequired,
         } = this.props;
 
         const { selectedInstrumentId } = this.state;
@@ -154,7 +155,8 @@ class HostedWidgetPaymentComponent extends Component<
 
         if (
             selectedInstrumentId !== prevState.selectedInstrumentId ||
-            (prevProps.instruments.length > 0 && instruments.length === 0)
+            (prevProps.instruments.length > 0 && instruments.length === 0) ||
+            prevProps.isPaymentDataRequired !== isPaymentDataRequired
         ) {
             try {
                 // eslint-disable-next-line @typescript-eslint/await-thenable

@@ -137,6 +137,7 @@ class HostedWidgetPaymentMethod extends Component<
             method,
             onUnhandledError = noop,
             setValidationSchema,
+            isPaymentDataRequired
         } = this.props;
 
         const { selectedInstrumentId } = this.state;
@@ -145,7 +146,8 @@ class HostedWidgetPaymentMethod extends Component<
 
         if (
             selectedInstrumentId !== prevState.selectedInstrumentId ||
-            (prevProps.instruments.length > 0 && instruments.length === 0)
+            (prevProps.instruments.length > 0 && instruments.length === 0) ||
+            prevProps.isPaymentDataRequired !== isPaymentDataRequired
         ) {
             try {
                 await deinitializePayment({
