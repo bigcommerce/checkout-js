@@ -7,6 +7,7 @@ export interface AnalyticsEvents {
     trackStepViewed(step: string): void;
     orderPurchased(): void;
     customerEmailEntry(email: string): void;
+    customerSuggestionInit(payload?: CheckoutPaymentMethodExecutedOptions): void;
     customerSuggestionExecute(): void;
     customerPaymentMethodExecuted(payload?: CheckoutPaymentMethodExecutedOptions): void;
     showShippingMethods(): void;

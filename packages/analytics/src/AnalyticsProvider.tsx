@@ -49,6 +49,10 @@ const AnalyticsProvider = ({ checkoutService, children }: AnalyticsProviderProps
         getBodlService().customerEmailEntry(email);
     };
 
+    const customerSuggestionInit = (payload: BodlEventsPayload) => {
+        getBodlService().customerSuggestionInit(payload);
+    };
+
     const customerSuggestionExecute = () => {
         getBodlService().customerSuggestionExecute();
     };
@@ -87,6 +91,7 @@ const AnalyticsProvider = ({ checkoutService, children }: AnalyticsProviderProps
         trackStepViewed,
         orderPurchased,
         customerEmailEntry,
+        customerSuggestionInit,
         customerSuggestionExecute,
         customerPaymentMethodExecuted,
         showShippingMethods,
