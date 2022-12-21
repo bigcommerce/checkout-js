@@ -148,6 +148,22 @@ describe('HostedWidgetPaymentMethod', () => {
         expect(defaultProps.initializePayment).not.toHaveBeenCalled();
     });
 
+    it('reinitialize payment method after requiring payment data is changing', async () => {
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(false);
+
+        const container = mount(
+            <HostedWidgetPaymentMethodTest {...defaultProps} isPaymentDataRequired={false} />,
+        );
+
+        expect(defaultProps.initializePayment).not.toHaveBeenCalled();
+
+        container.setProps({ isPaymentDataRequired: true });
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(defaultProps.initializePayment).toHaveBeenCalled();
+    });
+
     it('renders loading overlay while waiting for method to initialize', () => {
         let component: ReactWrapper;
 
