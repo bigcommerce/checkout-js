@@ -32,7 +32,6 @@ import KlarnaV2PaymentMethod from './KlarnaV2PaymentMethod';
 import MasterpassPaymentMethod from './MasterpassPaymentMethod';
 import MolliePaymentMethod from './MolliePaymentMethod';
 import MonerisPaymentMethod from './MonerisPaymentMethod';
-import OfflinePaymentMethod from './OfflinePaymentMethod';
 import OpyPaymentMethod from './OpyPaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
@@ -245,10 +244,6 @@ const PaymentMethodComponent: FunctionComponent<
         method.type === PaymentMethodProviderType.Hosted
     ) {
         return <HostedPaymentMethod {...props} />;
-    }
-
-    if (method.type === PaymentMethodProviderType.Offline) {
-        return <OfflinePaymentMethod {...props} />;
     }
 
     if (method.id === PaymentMethodId.Opy) {

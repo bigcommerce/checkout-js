@@ -51,6 +51,15 @@ describe('OfflinePaymentMethod', () => {
         expect(checkoutService.initializePayment).toHaveBeenCalled();
     });
 
+    it('catches error during ApplePay initialization', async () => {
+        jest.spyOn(checkoutService, 'initializePayment').mockRejectedValue(new Error('test error'));
+        mount(<OfflinePaymentMethod {...props} />);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(props.onUnhandledError).toHaveBeenCalled();
+    });
+
     it('deinitializes payment method when component unmounts', () => {
         const component = mount(<OfflinePaymentMethod {...props} />);
 
@@ -61,5 +70,21 @@ describe('OfflinePaymentMethod', () => {
         component.unmount();
 
         expect(checkoutService.deinitializePayment).toHaveBeenCalled();
+    });
+
+    it('catches error during ApplePay deinitialization', async () => {
+        jest.spyOn(checkoutService, 'deinitializePayment').mockRejectedValue(
+            new Error('test error'),
+        );
+
+        const component = mount(<OfflinePaymentMethod {...props} />);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        component.unmount();
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(props.onUnhandledError).toHaveBeenCalled();
     });
 });
