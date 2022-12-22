@@ -216,13 +216,19 @@
 
     .loading-skeleton {
         animation: grows 150ms ease-out;
-        overflow: hidden;
         will-change: max-height;
     }
 
     @keyframes grows {
-        0% { max-height: $floating-label-input-height * 4; }
-        100% { max-height: 2000px; }
+        0% {
+            max-height: $floating-label-input-height * 4;
+            overflow: hidden;
+        }
+
+        100% {
+            max-height: 2000px;
+            overflow: visible;
+        }
     }
 
     .address-form-heading-skeleton {
