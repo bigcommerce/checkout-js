@@ -1,4 +1,5 @@
 import {
+    CartConsistencyError,
     CheckoutSelectors,
     CheckoutService,
     createCheckoutService,
@@ -664,6 +665,31 @@ describe('Payment', () => {
 
         expect(checkoutService.loadCheckout).toHaveBeenCalled();
         expect(container.find(PaymentForm).prop('didExceedSpamLimit')).toBeTruthy();
+    });
+
+    it('reloads checkout object if unable to submit order due to cart consistency error', async () => {
+        jest.spyOn(checkoutService, 'loadCheckout')
+            .mockResolvedValue(checkoutState);
+
+        jest.spyOn(checkoutState.errors, 'getSubmitOrderError')
+            .mockReturnValue({
+                type: 'cart_consistency',
+            } as unknown as CartConsistencyError);
+
+        const container = mount(<PaymentTest {...defaultProps} />);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        container.update();
+
+        expect(container.find('#errorModalMessage').text())
+            .toBe('Your checkout could not be processed because some details have changed. Please review your order and try again.');
+        
+        container.find('ErrorModal Button')
+            .simulate('click');
+
+        expect(checkoutService.loadCheckout)
+            .toHaveBeenCalled();
     });
 
     it('clears error when error has no body', async () => {

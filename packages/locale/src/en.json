@@ -75,7 +75,8 @@
             "subtotal_text": "Subtotal",
             "taxes_text": "Taxes",
             "total_text": "Total",
-            "empty_cart_message": "Your cart is empty, you are being redirected. Please <a href=\"{url}\" target=\"_top\">click here</a> if your browser does not redirect you."
+            "empty_cart_message": "Your cart is empty, you are being redirected. Please <a href=\"{url}\" target=\"_top\">click here</a> if your browser does not redirect you.",
+            "consistency_error": "Your checkout could not be processed because some details have changed. Please review your order and try again."
         },
         "common": {
             "cancel_action": "Cancel",
