@@ -25,7 +25,7 @@ describe('LoadingOverlay', () => {
         );
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        expect(component.find('#content').parent().prop('style').display).toBe('none');
+        expect(component.find('#content').parent().prop('style').visibility).toBe('hidden');
 
         expect(component.find(LoadingSpinner).prop('isLoading')).toBe(true);
     });
@@ -38,7 +38,7 @@ describe('LoadingOverlay', () => {
         );
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        expect(component.find('#content').parent().prop('style').display).toBeUndefined();
+        expect(component.find('#content').parent().prop('style').visibility).toBeUndefined();
 
         expect(component.find(LoadingSpinner).prop('isLoading')).toBe(false);
     });

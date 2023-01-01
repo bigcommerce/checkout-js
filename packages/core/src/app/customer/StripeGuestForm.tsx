@@ -110,9 +110,9 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
         if (parentContainer) {
             return getAppliedStyles(parentContainer, properties);
         }
- 
+
             return undefined;
-        
+
     };
 
     const containerId = 'stripe-card-component-field';
@@ -181,7 +181,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                             </Legend>
                         }
                     >
-                        <div className="customerEmail-container">
+                        <div className="customerEmail-container" style={{paddingTop: '4px'}}>
                             <div className="customerEmail-body">
                                 <div id="stripeupeLink"/>
                                 <br/>
@@ -195,7 +195,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                                 /> }
                             </div>
 
-                            <div className="form-actions customerEmail-action">
+                            <div className="form-actions customerEmail-action" style={{marginTop: '2px'}}>
                                 { (!authentication || (authentication && !isNewAuth )) && <Button
                                     className="stripeCustomerEmail-button"
                                     disabled={ continueAsAGuestButton }

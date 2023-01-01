@@ -21,7 +21,7 @@ const LoadingOverlay: FunctionComponent<LoadingOverlayProps> = ({
                 {unmountContentWhenLoading && isLoading ? null : (
                     <div
                         style={{
-                            display: hideContentWhenLoading && isLoading ? 'none' : undefined,
+                            visibility: hideContentWhenLoading && isLoading ? 'hidden' : undefined,
                         }}
                     >
                         {children}

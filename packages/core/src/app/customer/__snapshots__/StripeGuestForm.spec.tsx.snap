@@ -14,7 +14,7 @@ Array [
       />
     </div>
     <div
-      style="display:none"
+      style="visibility:hidden"
     >
       <fieldset
         class="form-fieldset"
@@ -27,6 +27,7 @@ Array [
         >
           <div
             class="customerEmail-container"
+            style="padding-top:4px"
           >
             <div
               class="customerEmail-body"
@@ -53,6 +54,7 @@ Array [
             </div>
             <div
               class="form-actions customerEmail-action"
+              style="margin-top:2px"
             >
               <button
                 class="button stripeCustomerEmail-button button--primary optimizedCheckout-buttonPrimary"
