@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.279.3](https://github.com/bigcommerce/checkout-js/compare/v1.279.2...v1.279.3) (2023-01-02)
+
+
+### Bug Fixes
+
+* **payment:** STRIPE-175 remove extra payment call and extra code on core ([#1109](https://github.com/bigcommerce/checkout-js/issues/1109)) ([1f46f32](https://github.com/bigcommerce/checkout-js/commit/1f46f329e073226e333ba258f4dd2ba28543ff61))
+
 ### [1.279.2](https://github.com/bigcommerce/checkout-js/compare/v1.279.1...v1.279.2) (2022-12-30)
 
 ### [1.279.1](https://github.com/bigcommerce/checkout-js/compare/v1.279.0...v1.279.1) (2022-12-29)
