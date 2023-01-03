@@ -5,7 +5,7 @@ import { isApplePayWindow } from '../common/utility';
 import { TranslatedString } from '../locale';
 
 import CheckoutButton from './CheckoutButton';
-import { AmazonPayV2Button, ApplePayButton } from './customWalletButton';
+import { AmazonPayV2Button, ApplePayButton, PayPalCommerceButton } from './customWalletButton';
 
 const APPLE_PAY = 'applepay';
 
@@ -17,6 +17,7 @@ export const SUPPORTED_METHODS: string[] = [
     'braintreevisacheckout',
     'chasepay',
     'masterpass',
+    'paypalcommerce',
     'googlepayadyenv2',
     'googlepayadyenv3',
     'googlepayauthorizenet',
@@ -96,6 +97,18 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
                     if (methodId === 'amazonpay') {
                         return (
                             <AmazonPayV2Button
+                                containerId={`${methodId}CheckoutButton`}
+                                key={methodId}
+                                methodId={methodId}
+                                onError={onError}
+                                {...rest}
+                            />
+                        );
+                    }
+
+                    if (methodId === 'paypalcommerce') {
+                        return (
+                            <PayPalCommerceButton
                                 containerId={`${methodId}CheckoutButton`}
                                 key={methodId}
                                 methodId={methodId}
