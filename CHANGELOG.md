@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.281.2](https://github.com/bigcommerce/checkout-js/compare/v1.281.1...v1.281.2) (2023-01-03)
+
+
+### Bug Fixes
+
+* **payment:** STRIPE-269 exclude wallets from the custom customer step status for stripeLink ([#1116](https://github.com/bigcommerce/checkout-js/issues/1116)) ([9a49c2e](https://github.com/bigcommerce/checkout-js/commit/9a49c2e70fb6ff6b8c64ff66ca93e9e8cdebb7f5))
+
 ### [1.281.1](https://github.com/bigcommerce/checkout-js/compare/v1.281.0...v1.281.1) (2023-01-03)
 
 ## [1.281.0](https://github.com/bigcommerce/checkout-js/compare/v1.280.0...v1.281.0) (2023-01-03)
