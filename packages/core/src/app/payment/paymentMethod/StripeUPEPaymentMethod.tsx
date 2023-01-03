@@ -1,6 +1,6 @@
 import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { FunctionComponent, useCallback } from 'react';
+import React, { FunctionComponent, useCallback, useContext } from 'react';
 
 import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { getAppliedStyles } from '../../common/dom';
@@ -8,6 +8,7 @@ import {
     withHostedCreditCardFieldset,
     WithInjectedHostedCreditCardFieldsetProps,
 } from '../hostedCreditCard';
+import PaymentContext from '../PaymentContext';
 
 import HostedWidgetPaymentMethod, {
     HostedWidgetPaymentMethodProps,
@@ -26,6 +27,12 @@ const StripeUPEPaymentMethod: FunctionComponent<
 > = ({ initializePayment, method, storeUrl, onUnhandledError = noop, ...rest }) => {
     const containerId = `stripe-${method.id}-component-field`;
 
+    const paymentContext = useContext(PaymentContext);
+
+    const renderSubmitButton = () => {
+        paymentContext?.hidePaymentSubmitButton(method, false);
+    }
+
     const initializeStripePayment: HostedWidgetPaymentMethodProps['initializePayment'] =
         useCallback(
             async (options: PaymentInitializeOptions) => {
@@ -37,7 +44,7 @@ const StripeUPEPaymentMethod: FunctionComponent<
                 ]);
                 const formLabel = getStylesFromElement(`${containerId}--label`, ['color']);
                 const formError = getStylesFromElement(`${containerId}--error`, ['color']);
-
+                paymentContext?.hidePaymentSubmitButton(method, true);
                 return initializePayment({
                     ...options,
                     stripeupe: {
@@ -52,6 +59,7 @@ const StripeUPEPaymentMethod: FunctionComponent<
                             fieldBorder: formInput['border-color'],
                         },
                         onError: onUnhandledError,
+                        render: renderSubmitButton,
                     },
                 });
             },
