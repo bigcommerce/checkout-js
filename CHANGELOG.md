@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.280.0](https://github.com/bigcommerce/checkout-js/compare/v1.279.3...v1.280.0) (2023-01-03)
+
+
+### Features
+
+* **payment:** STRIPE-178 Loading Submit button after card loads ([#1143](https://github.com/bigcommerce/checkout-js/issues/1143)) ([ac2fd3f](https://github.com/bigcommerce/checkout-js/commit/ac2fd3f71d50094424e95e9e555643d56cc7da34))
+
 ### [1.279.3](https://github.com/bigcommerce/checkout-js/compare/v1.279.2...v1.279.3) (2023-01-02)
 
 
