@@ -38,6 +38,9 @@
         "packages/hosted-widget-integration/src/index.ts"
       ],
       "@bigcommerce/checkout/locale": ["packages/locale/src/index.ts"],
+      "@bigcommerce/checkout/offline-payment-integration": [
+        "packages/offline-payment-integration/src/index.ts"
+      ],
       "@bigcommerce/checkout/payment-integration-api": [
         "packages/payment-integration-api/src/index.ts"
       ],

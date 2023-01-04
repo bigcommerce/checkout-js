@@ -24,7 +24,6 @@ import CheckoutcomCustomPaymentMethod, {
 } from './CheckoutcomCustomPaymentMethod';
 import CreditCardPaymentMethod, { CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
-import OfflinePaymentMethod, { OfflinePaymentMethodProps } from './OfflinePaymentMethod';
 import OpyPaymentMethod from './OpyPaymentMethod';
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
@@ -223,48 +222,6 @@ describe('PaymentMethod', () => {
             const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
             const component: ReactWrapper<HostedPaymentMethodProps> =
                 container.find(HostedPaymentMethod);
-
-            component.prop('initializePayment')({
-                methodId: defaultProps.method.id,
-                gatewayId: defaultProps.method.gateway,
-            });
-
-            expect(checkoutService.initializePayment).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    methodId: method.id,
-                    gatewayId: method.gateway,
-                }),
-            );
-        });
-    });
-
-    describe('when using offline payment', () => {
-        let method: PaymentMethod;
-
-        beforeEach(() => {
-            method = {
-                ...getPaymentMethod(),
-                id: 'cheque',
-                type: PaymentMethodProviderType.Offline,
-            };
-        });
-
-        it('renders as offline method', () => {
-            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-
-            expect(container.find(OfflinePaymentMethod).props()).toEqual(
-                expect.objectContaining({
-                    deinitializePayment: expect.any(Function),
-                    initializePayment: expect.any(Function),
-                    method,
-                }),
-            );
-        });
-
-        it('initializes method with required config', () => {
-            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const component: ReactWrapper<OfflinePaymentMethodProps> =
-                container.find(OfflinePaymentMethod);
 
             component.prop('initializePayment')({
                 methodId: defaultProps.method.id,
