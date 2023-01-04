@@ -51,7 +51,7 @@ describe('OfflinePaymentMethod', () => {
         expect(checkoutService.initializePayment).toHaveBeenCalled();
     });
 
-    it('catches error during ApplePay initialization', async () => {
+    it('catches error during offline initialization', async () => {
         jest.spyOn(checkoutService, 'initializePayment').mockRejectedValue(new Error('test error'));
         mount(<OfflinePaymentMethod {...props} />);
 
@@ -72,7 +72,7 @@ describe('OfflinePaymentMethod', () => {
         expect(checkoutService.deinitializePayment).toHaveBeenCalled();
     });
 
-    it('catches error during ApplePay deinitialization', async () => {
+    it('catches error during offline deinitialization', async () => {
         jest.spyOn(checkoutService, 'deinitializePayment').mockRejectedValue(
             new Error('test error'),
         );
