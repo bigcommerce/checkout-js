@@ -2,6 +2,7 @@ export {
     AccountInstrumentFieldset,
     AccountInstrumentSelect,
     CardInstrumentFieldset,
+    getInstrumentValidationSchema,
     InstrumentSelect,
     InstrumentStorageField,
     InstrumentStoreAsDefaultField,

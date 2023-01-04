@@ -1,4 +1,4 @@
-import { CardInstrumentFieldsetValues } from '../storedInstrument';
+import { CardInstrumentFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
 
 export default interface CreditCardFieldsetValues {
     ccCustomerCode?: string;

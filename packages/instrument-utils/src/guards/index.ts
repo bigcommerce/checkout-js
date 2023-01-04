@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 export { isAccountInstrument } from './isAccountInstrument';
 export { assertIsBankInstrument, isBankAccountInstrument } from './isBankInstrument';
 export { assertIsCardInstrument, isCardInstrument } from './isCardInstrument';
