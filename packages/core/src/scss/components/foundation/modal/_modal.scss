@@ -40,6 +40,9 @@
         &.is-active,
         &.modal--afterOpen {
             bottom: 2%;
+            display: flex;
+            flex-direction: column;
+            justify-content: end;
             left: 2%;
             max-width: 96%;
             min-height: 96vh;
@@ -170,34 +173,12 @@
 
 // Specific styles for displaying cart summary on mobile
 body.has-activeModal {
-    overflow: auto;
-
-    #checkout-app,
-    .checkoutHeader.optimizedCheckout-header {
-        display: none;
+    .modal-body {
+        overflow: scroll;
+        padding-bottom: 20%; // This is to fill the space occupied by Safari and Chrome's navigation bar on mobile
 
         @include breakpoint("small") {
-            display: block;
-        }
-    }
-
-    .modalOverlay {
-        margin-top: spacing("base");
-        position: static;
-
-        @include breakpoint("small") {
-            margin-top: 0;
-            position: fixed;
-        }
-
-        .modal {
-            max-height: fit-content;
-            position: absolute;
-
-            @include breakpoint("small") {
-                max-height: 80%;
-                position: fixed;
-            }
+            padding-bottom: 0;
         }
     }
 }
