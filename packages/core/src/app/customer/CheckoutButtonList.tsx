@@ -16,6 +16,7 @@ export const SUPPORTED_METHODS: string[] = [
     'braintreevisacheckout',
     'braintreepaypal',
     'braintreepaypalcredit',
+    'braintreevenmo',
     'chasepay',
     'masterpass',
     'paypalcommerce',
