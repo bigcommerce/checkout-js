@@ -113,7 +113,7 @@ describe('ShippingOptions Component', () => {
                     {...defaultProps}
                     consignments={[]}
                     isLoading={() => false}
-                    methodId="amazon"
+                    methodId="amazonpay"
                 />
             </TestWrap>,
         );

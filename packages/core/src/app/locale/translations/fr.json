@@ -45,7 +45,6 @@
             "billing_address_heading": "Adresse de facturation",
             "billing_heading": "Facturation",
             "save_billing_address_error": "Une erreur s'est produite lors de l'enregistrement de l'adresse de facturation pour le devis. Veuillez réessayer.",
-            "billing_address_amazon": "Identique à l'adresse de facturation que vous avez configurée sur votre compte Amazon.",
             "billing_address_amazonpay": "Géré par Amazon Pay",
             "use_shipping_address_label": "Mon adresse de facturation est identique à mon adresse de livraison."
         },

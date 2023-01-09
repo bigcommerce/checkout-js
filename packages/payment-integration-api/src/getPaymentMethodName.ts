@@ -24,7 +24,6 @@ enum PaymentMethodId {
     AdyenV3 = 'adyenv3',
     Affirm = 'affirm',
     Afterpay = 'afterpay',
-    Amazon = 'amazon',
     AmazonPay = 'amazonpay',
     ApplePay = 'applepay',
     Barclaycard = 'barclaycard',
@@ -119,7 +118,6 @@ export function getTranslatedPaymentMethodName(
         const translations: { [key: string]: string } = {
             [PaymentMethodId.Affirm]: language.translate('payment.affirm_name_text'),
             [PaymentMethodId.Afterpay]: language.translate('payment.afterpay_name_text'),
-            [PaymentMethodId.Amazon]: language.translate('payment.amazon_name_text'),
             [PaymentMethodId.AmazonPay]: language.translate('payment.amazon_name_text'),
             [PaymentMethodId.Bolt]: language.translate('payment.bolt_name_text'),
             [PaymentMethodType.Chasepay]: language.translate('payment.chasepay_name_text'),

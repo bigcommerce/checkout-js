@@ -281,7 +281,7 @@ describe('SingleShippingForm', () => {
     it('does not render billing same as shipping checkbox for amazon pay', () => {
         component = mount(
             <LocaleContext.Provider value={localeContext}>
-                <SingleShippingForm {...defaultProps} methodId="amazon" />
+                <SingleShippingForm {...defaultProps} methodId="amazonpay" />
             </LocaleContext.Provider>,
         );
 

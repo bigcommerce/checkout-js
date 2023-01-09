@@ -50,25 +50,10 @@ describe('StaticBillingAddress', () => {
         expect(container.find(StaticAddress)).toHaveLength(1);
     });
 
-    it('renders message instead of address when using Amazon', () => {
-        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
-            ...getCheckout(),
-            payments: [{ ...getCheckoutPayment(), providerId: 'amazon' }],
-        });
-
-        const container = mount(<StaticBillingAddressTest {...defaultProps} />);
-
-        expect(container.find(StaticAddress)).toHaveLength(0);
-
-        expect(container.text()).toEqual(
-            getLanguageService().translate('billing.billing_address_amazon'),
-        );
-    });
-
     it('renders message instead of address when using Amazon Pay V2 and no full address is provided', () => {
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
             ...getCheckout(),
-            payments: [{ ...getCheckoutPayment(), providerId: 'amazonpay' }],
+            payments: [getCheckoutPayment()],
         });
 
         const addressData = {

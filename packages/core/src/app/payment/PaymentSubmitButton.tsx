@@ -31,10 +31,6 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
             return <TranslatedString data={{ methodName }} id="payment.ppsdk_continue_action" />;
         }
 
-        if (methodId === PaymentMethodId.Amazon) {
-            return <TranslatedString id="payment.amazon_continue_action" />;
-        }
-
         if (methodId === PaymentMethodId.AmazonPay) {
             return <TranslatedString id="payment.amazonpay_continue_action" />;
         }

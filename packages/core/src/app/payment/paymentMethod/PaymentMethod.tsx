@@ -13,7 +13,6 @@ import { CheckoutContextProps, withCheckout } from '../../checkout';
 import AdyenV2PaymentMethod from './AdyenV2PaymentMethod';
 import AdyenV3PaymentMethod from './AdyenV3PaymentMethod';
 import AffirmPaymentMethod from './AffirmPaymentMethod';
-import AmazonPaymentMethod from './AmazonPaymentMethod';
 import AmazonPayV2PaymentMethod from './AmazonPayV2PaymentMethod';
 import BarclaycardPaymentMethod from './BarclaycardPaymentMethod';
 import BlueSnapV2PaymentMethod from './BlueSnapV2PaymentMethod';
@@ -100,10 +99,6 @@ const PaymentMethodComponent: FunctionComponent<
 
     if (method.gateway === PaymentMethodId.StripeUPE) {
         return <StripeUPEPaymentMethod {...props} />;
-    }
-
-    if (method.id === PaymentMethodId.Amazon) {
-        return <AmazonPaymentMethod {...props} />;
     }
 
     if (method.id === PaymentMethodId.AmazonPay) {

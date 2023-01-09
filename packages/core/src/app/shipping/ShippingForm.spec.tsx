@@ -79,13 +79,13 @@ describe('ShippingForm Component', () => {
         it('renders ShippingAddress with expected props', () => {
             component = mount(
                 <LocaleContext.Provider value={localeContext}>
-                    <ShippingForm {...defaultProps} methodId="amazon" />
+                    <ShippingForm {...defaultProps} methodId="amazonpay" />
                 </LocaleContext.Provider>,
             );
 
             expect(component.find(ShippingAddress).props()).toEqual(
                 expect.objectContaining({
-                    methodId: 'amazon',
+                    methodId: 'amazonpay',
                 }),
             );
         });

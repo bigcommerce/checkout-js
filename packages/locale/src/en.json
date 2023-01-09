@@ -46,7 +46,6 @@
             "billing_address_heading": "Billing Address",
             "billing_heading": "Billing",
             "save_billing_address_error": "An error occurred while saving the billing address to your price quote. Please try again.",
-            "billing_address_amazon": "Same as the Billing address set by you in your Amazon account.",
             "billing_address_amazonpay": "Managed by Amazon Pay",
             "use_shipping_address_label": "My billing address is the same as my shipping address."
         },
