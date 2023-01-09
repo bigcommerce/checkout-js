@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.281.6](https://github.com/bigcommerce/checkout-js/compare/v1.281.5...v1.281.6) (2023-01-09)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-7148 Handle cart inconsistency error and display appropriate message to shopper ([3ca525d](https://github.com/bigcommerce/checkout-js/commit/3ca525d9a7fe3f69970dcc642eb7cfa11112bd93))
+
 ### [1.281.5](https://github.com/bigcommerce/checkout-js/compare/v1.281.4...v1.281.5) (2023-01-05)
 
 
