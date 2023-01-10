@@ -63,7 +63,7 @@ describe('BoltCheckoutSuggestion', () => {
         expect(analyticsTrackerMock.customerSuggestionInit).not.toHaveBeenCalled();
     });
 
-    it('do not render Bolt suggestion block if the customer has not bolt account', async () => {
+    it('do not track analytics event if no customer email on initialization', async () => {
         const component = mount(<TestComponent />);
         const customerHasBoltAccount = false;
         const initializeOptions = (defaultProps.initializeCustomer as jest.Mock).mock.calls[0][0];
@@ -76,16 +76,34 @@ describe('BoltCheckoutSuggestion', () => {
         component.update();
 
         expect(component.find('[data-test="suggestion-action-button"]')).toHaveLength(0);
+        expect(analyticsTrackerMock.customerSuggestionInit).not.toHaveBeenCalled();
+    });
+
+    it('do not render Bolt suggestion block if the customer has not bolt account', async () => {
+        const component = mount(<TestComponent />);
+        const customerHasBoltAccount = false;
+        const customerEmail = 'test@e.mail';
+        const initializeOptions = (defaultProps.initializeCustomer as jest.Mock).mock.calls[0][0];
+
+        act(() => {
+            initializeOptions.bolt.onInit(customerHasBoltAccount, customerEmail);
+        });
+
+        await new Promise((resolve) => process.nextTick(resolve));
+        component.update();
+
+        expect(component.find('[data-test="suggestion-action-button"]')).toHaveLength(0);
         expect(analyticsTrackerMock.customerSuggestionInit).toHaveBeenCalledWith({hasBoltAccount: false});
     });
 
     it('renders Bolt suggestion block if the customer has bolt account', async () => {
         const component = mount(<TestComponent />);
         const customerHasBoltAccount = true;
+        const customerEmail = 'test@e.mail';
         const initializeOptions = (defaultProps.initializeCustomer as jest.Mock).mock.calls[0][0];
 
         act(() => {
-            initializeOptions.bolt.onInit(customerHasBoltAccount);
+            initializeOptions.bolt.onInit(customerHasBoltAccount, customerEmail);
         });
 
         await new Promise((resolve) => process.nextTick(resolve));

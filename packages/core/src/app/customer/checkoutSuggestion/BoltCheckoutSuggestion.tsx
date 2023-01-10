@@ -43,9 +43,12 @@ const BoltCheckoutSuggestion: FunctionComponent<BoltCheckoutSuggestionProps> = (
             initializeCustomer({
                 methodId,
                 bolt: {
-                    onInit: (hasBoltAccount) => {
+                    onInit: (hasBoltAccount, email) => {
                         setShowSuggestion(hasBoltAccount);
-                        analyticsTracker.customerSuggestionInit({hasBoltAccount});
+
+                        if (email) {
+                            analyticsTracker.customerSuggestionInit({hasBoltAccount});
+                        }
                     },
                 },
             });
