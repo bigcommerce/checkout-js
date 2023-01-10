@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.281.7](https://github.com/bigcommerce/checkout-js/compare/v1.281.6...v1.281.7) (2023-01-10)
+
+
+### Code Refactoring
+
+* **payment:** INT-6964 Sunset Amazon Pay V1 ([a404b04](https://github.com/bigcommerce/checkout-js/commit/a404b040dc1e9b245f39177296f091dd822725b4))
+
 ### [1.281.6](https://github.com/bigcommerce/checkout-js/compare/v1.281.5...v1.281.6) (2023-01-09)
 
 
