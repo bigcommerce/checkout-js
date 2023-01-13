@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.282.2](https://github.com/bigcommerce/checkout-js/compare/v1.282.1...v1.282.2) (2023-01-13)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-000 upgrade reselect from 4.1.6 to 4.1.7 ([#1154](https://github.com/bigcommerce/checkout-js/issues/1154)) ([9d5da8b](https://github.com/bigcommerce/checkout-js/commit/9d5da8b957c582bb03c0d312a6aabd3789d2a221))
+
 ### [1.282.1](https://github.com/bigcommerce/checkout-js/compare/v1.282.0...v1.282.1) (2023-01-12)
 
 ## [1.282.0](https://github.com/bigcommerce/checkout-js/compare/v1.281.7...v1.282.0) (2023-01-10)
