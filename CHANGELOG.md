@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.284.0](https://github.com/bigcommerce/checkout-js/compare/v1.283.0...v1.284.0) (2023-01-17)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6480 Offline payment method e2e tests ([#1162](https://github.com/bigcommerce/checkout-js/issues/1162)) ([948dc44](https://github.com/bigcommerce/checkout-js/commit/948dc44bd2dc74da0ef11fdd1059247b6f9db6b6))
+
 ## [1.283.0](https://github.com/bigcommerce/checkout-js/compare/v1.282.2...v1.283.0) (2023-01-16)
 
 
