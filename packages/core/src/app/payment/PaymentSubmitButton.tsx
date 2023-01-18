@@ -68,7 +68,7 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
         }
 
         if (methodType === PaymentMethodType.Paypal) {
-            return <TranslatedString id="payment.paypal_continue_action" />;
+            return <TranslatedString id="payment.paypal_complete_action" />;
         }
 
         if (methodType === PaymentMethodType.PaypalCredit) {
@@ -77,8 +77,8 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
                     data={{ brandName }}
                     id={
                         brandName
-                            ? 'payment.continue_with_brand'
-                            : 'payment.paypal_pay_later_continue_action'
+                            ? 'payment.complete_with_brand'
+                            : 'payment.paypal_pay_later_complete_action'
                     }
                 />
             );

@@ -106,7 +106,7 @@ describe('PaymentSubmitButton', () => {
         const component = mount(<PaymentSubmitButtonTest methodType="paypal" />);
 
         expect(component.text()).toEqual(
-            languageService.translate('payment.paypal_continue_action'),
+            languageService.translate('payment.paypal_complete_action'),
         );
     });
 
@@ -137,7 +137,7 @@ describe('PaymentSubmitButton', () => {
         const component = mount(<PaymentSubmitButtonTest methodType="paypal-credit" />);
 
         expect(component.text()).toEqual(
-            languageService.translate('payment.paypal_pay_later_continue_action'),
+            languageService.translate('payment.paypal_pay_later_complete_action'),
         );
     });
 
