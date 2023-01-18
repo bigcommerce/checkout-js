@@ -261,7 +261,7 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
     return (
       <section className="ffl-section checkout-form">
         { ((this.state.manualFflInput === false) && (this.state.selectedDealer == null || !fflConsignment)) &&
-          <div className="alertBox alertBox--error">
+          <div className="alertBox alertBox--error alertBox--font-color-black">
             <div className="alertBox-column alertBox-icon">
               <div className="icon">
               </div>

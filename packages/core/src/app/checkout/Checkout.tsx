@@ -249,9 +249,11 @@ class Checkout extends Component<
             const consignments = data.getConsignments();
             const cart = data.getCart();
 
-            /* window.fflStorefrontToken is derived from a custom script installed upon installation of AutomaticFFL on BigCommerce  */
+            // window.fflStorefrontToken is set by a custom script that is added
+            // when the BigCommerce app is installed
+            // the storefront API token is not available within the checkout SDK
             if (cart && window.fflStorefrontToken) {
-                const fflLineItems = await getFflLineItems(cart);
+                const fflLineItems = await getFflLineItems(window.fflStorefrontToken, cart);
                 this.setState({ fflLineItems });
             } else {
                 console.warn('Could not find fflStorefrontToken');

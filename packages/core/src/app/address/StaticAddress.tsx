@@ -44,14 +44,13 @@ const StaticAddress: FunctionComponent<
         <div className="vcard checkout-address--static">
             {(address.firstName || address.lastName) && (
                 <p className="fn address-entry">
-                    <span className="first-name">{`${address.firstName} `}</span>
+                    <span className="first-name">{ `${address.firstName} | ` }</span>
                     <span className="family-name">{address.lastName}</span>
                 </p>
             )}
 
             {(address.phone || address.company) && (
                 <p className="address-entry">
-                    <span className="company-name">{`${address.company} `}</span>
                     <span className="tel">{address.phone}</span>
                 </p>
             )}

@@ -324,10 +324,10 @@ export class MapContainer extends Component<IProps, IState> {
    handleSelect = (dealer) => {
 
      this.props.selectDealer({
-         firstName: "FFL",
-         lastName: "Manager",
+         firstName: dealer.business_name,
+         lastName: dealer.license,
          phone: dealer.phone_number,
-         company: dealer.business_name,
+         company: `${dealer.business_name} - ${dealer.license}`,
          address1: dealer.premise_street,
          address2: '',
          city: dealer.premise_city,

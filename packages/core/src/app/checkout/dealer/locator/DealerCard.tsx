@@ -7,8 +7,8 @@ export default function DealerCard(props: any): any {
   const { dealer, index } = props;
 
   const handleSelect = () => props.selectDealer({
-      firstName: "FFL",
-      lastName: "Manager",
+      firstName: dealer.business_name,
+      lastName: dealer.license,
       phone: dealer.phone_number,
       company: `${dealer.business_name} - ${dealer.license}`,
       address1: dealer.premise_street,

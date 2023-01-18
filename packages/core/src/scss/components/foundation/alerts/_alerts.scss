@@ -26,4 +26,8 @@
     .alertBox--warning {
         color: color("warning");
     }
+
+    .alertBox--font-color-black {
+        color: $color-black;
+    }
 }

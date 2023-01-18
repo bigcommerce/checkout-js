@@ -17,8 +17,8 @@ interface CustomField {
   }
 }
 
-export default async function getFflLineItems(cart: Cart): Promise<LineItem[]> {
-  const { data } = await loadProductsWithCustomFields(cart)
+export default async function getFflLineItems(token: string, cart: Cart): Promise<LineItem[]> {
+  const { data } = await loadProductsWithCustomFields(token, cart)
 
   const fflProducts = data.site.products.edges.filter((product: StoreProduct) =>
     product.node.customFields.edges.some((edge: any) => {
@@ -32,7 +32,7 @@ export default async function getFflLineItems(cart: Cart): Promise<LineItem[]> {
   return cart.lineItems.physicalItems.filter((item) => fflProductIds.includes(item.productId))
 }
 
-function loadProductsWithCustomFields(cart: Cart): Promise<any> {
+function loadProductsWithCustomFields(token: string, cart: Cart): Promise<any> {
 
   const ids = cart.lineItems.physicalItems.map((x) => x.productId)
 
@@ -62,7 +62,7 @@ function loadProductsWithCustomFields(cart: Cart): Promise<any> {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${window.fflStorefrontToken}`,
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(graphqlBody),
   }).then((res) => {
