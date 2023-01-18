@@ -17,3 +17,4 @@ export {
     getCardInstrument,
     getInstruments,
 } from './instruments.mock';
+export { getDigitalItem, getPhysicalItem, getGiftCertificateItem } from './line-item.mock';

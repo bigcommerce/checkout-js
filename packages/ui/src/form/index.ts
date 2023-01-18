@@ -2,6 +2,7 @@
 export { BasicFormField } from './BasicFormField';
 export { CheckboxFormField } from './CheckboxFormField';
 export { Fieldset } from './Fieldset';
+export { FormField } from './FormField';
 export { Input } from './Input';
 export { Legend } from './Legend';
 export { TextArea } from './TextArea';

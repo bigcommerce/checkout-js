@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "../../.eslintrc.json"
+  ],
+  "rules": {
+    "no-nested-ternary": "off",
+    "@typescript-eslint/naming-convention": "off",
+    "@typescript-eslint/no-unnecessary-condition": "off",
+    "@typescript-eslint/no-unsafe-argument": "off"
+  }
+}
