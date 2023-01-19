@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.285.0](https://github.com/bigcommerce/checkout-js/compare/v1.284.2...v1.285.0) (2023-01-19)
+
+
+### Features
+
+* **checkout:** CHECKOUT-6480 Build instrument utils package ([#1166](https://github.com/bigcommerce/checkout-js/issues/1166)) ([4e6a868](https://github.com/bigcommerce/checkout-js/commit/4e6a8681f4ac007477a1008d6a182058999788e3))
+
 ### [1.284.2](https://github.com/bigcommerce/checkout-js/compare/v1.284.1...v1.284.2) (2023-01-17)
 
 ### [1.284.1](https://github.com/bigcommerce/checkout-js/compare/v1.284.0...v1.284.1) (2023-01-17)
