@@ -1,6 +1,6 @@
 {
   "name": "@bigcommerce/checkout",
-  "version": "1.282.0",
+  "version": "1.282.1-prerelease.1674135139797",
   "private": true,
   "description": "Browser-based application providing a seamless UI for BigCommerce shoppers to complete their checkout.",
   "license": "MIT",
@@ -35,7 +35,7 @@
   "prettier": "@bigcommerce/eslint-config/prettier",
   "homepage": "https://github.com/bigcommerce/checkout-js#readme",
   "dependencies": {
-    "@bigcommerce/checkout-sdk": "^1.321.0",
+    "@bigcommerce/checkout-sdk": "git@github.com:bc-nick/checkout-sdk-js.git#v1.324.2-alpha.150a7dbed9f68cc93de9c93422aa2f16137c93da",
     "@bigcommerce/citadel": "^2.15.1",
     "@bigcommerce/form-poster": "^1.2.2",
     "@bigcommerce/memoize": "^1.0.0",
