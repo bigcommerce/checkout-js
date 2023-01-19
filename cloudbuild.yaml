@@ -12,4 +12,4 @@ steps:
     - 'rsync'
     - '-r'
     - 'dist/'
-    - 'gs://${_WWW_BUCKET}/'
+    - '${_WWW_BUCKET}/'
