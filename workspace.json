@@ -10,6 +10,7 @@
     "hosted-credit-card-integration": "packages/hosted-credit-card-integration",
     "hosted-field-integration": "packages/hosted-field-integration",
     "hosted-widget-integration": "packages/hosted-widget-integration",
+    "instrument-utils": "packages/instrument-utils",
     "locale": "packages/locale",
     "offline-payment-integration": "packages/offline-payment-integration",
     "payment-integration-api": "packages/payment-integration-api",

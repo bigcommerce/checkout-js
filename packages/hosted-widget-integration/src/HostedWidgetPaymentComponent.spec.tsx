@@ -12,6 +12,13 @@ import React, { FunctionComponent, ReactElement } from 'react';
 import { Schema } from 'yup';
 
 import {
+    AccountInstrumentFieldset,
+    CardInstrumentFieldset,
+    getCreditCardValidationSchema,
+    SignOutLink,
+    SignOutLinkProps,
+} from '@bigcommerce/checkout/instrument-utils';
+import {
     createLocaleContext,
     LocaleContext,
     LocaleContextType,
@@ -40,10 +47,6 @@ import HostedWidgetPaymentComponent, {
     PaymentContextProps,
     WithCheckoutHostedWidgetPaymentMethodProps,
 } from './HostedWidgetPaymentComponent';
-import { CardInstrumentFieldset } from './utils/components';
-import { AccountInstrumentFieldset } from './utils/components/AccountInstrumentFieldset';
-import { SignOutLink, SignOutLinkProps } from './utils/components/SignOutLink';
-import getCreditCardValidationSchema from './utils/getCreditCardValidationSchema';
 
 describe('HostedWidgetPaymentMethod', () => {
     let HostedWidgetPaymentMethodTest: FunctionComponent<HostedWidgetComponentProps>;

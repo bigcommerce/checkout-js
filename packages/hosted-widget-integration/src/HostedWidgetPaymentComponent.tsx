@@ -15,14 +15,17 @@ import { find, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
+import {
+    AccountInstrumentFieldset,
+    assertIsCardInstrument,
+    CardInstrumentFieldset,
+    isBankAccountInstrument,
+    SignOutLink,
+    StoreInstrumentFieldset,
+} from '@bigcommerce/checkout/instrument-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay, preventDefault } from '@bigcommerce/checkout/ui';
-
-import { CardInstrumentFieldset, SignOutLink } from './utils/components';
-import { AccountInstrumentFieldset } from './utils/components/AccountInstrumentFieldset';
-import { StoreInstrumentFieldset } from './utils/components/StoreInstrumentFieldset';
-import { assertIsCardInstrument, isBankAccountInstrument } from './utils/guards';
 
 export interface HostedWidgetComponentState {
     isAddingNewCard: boolean;
@@ -141,7 +144,7 @@ class HostedWidgetPaymentComponent extends Component<
         prevState: Readonly<HostedWidgetPaymentMethodState>,
     ): Promise<void> {
         const {
-            deinitializePayment = noop,
+            deinitializePayment,
             instruments,
             method,
             onUnhandledError = noop,
@@ -174,7 +177,7 @@ class HostedWidgetPaymentComponent extends Component<
     async componentWillUnmount(): Promise<void> {
         const {
             deinitializeCustomer = noop,
-            deinitializePayment = noop,
+            deinitializePayment,
             method,
             onUnhandledError = noop,
             setSubmit,
@@ -500,7 +503,7 @@ class HostedWidgetPaymentComponent extends Component<
     }
 
     private handleUseNewCard: () => void = async () => {
-        const { deinitializePayment = noop, initializePayment = noop, method } = this.props;
+        const { deinitializePayment, initializePayment = noop, method } = this.props;
 
         this.setState({
             isAddingNewCard: true,
