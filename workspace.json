@@ -6,6 +6,7 @@
     "apple-pay-integration": "packages/apple-pay-integration",
     "checkout-button-integration": "packages/checkout-button-integration",
     "core": "packages/core",
+    "external-integration": "packages/external-integration",
     "google-pay-integration": "packages/google-pay-integration",
     "hosted-credit-card-integration": "packages/hosted-credit-card-integration",
     "hosted-field-integration": "packages/hosted-field-integration",
