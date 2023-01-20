@@ -5,6 +5,9 @@ steps:
 - name: 'gcr.io/$PROJECT_ID/node-bc-checkout'
   entrypoint: npm
   args: ['run', 'build']
+  env:
+  - 'GOOGLE_MAPS_KEY=${_GOOGLE_MAPS_KEY}'
+  - 'HOST=${_HOST}'
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   args:
     - 'gsutil'
