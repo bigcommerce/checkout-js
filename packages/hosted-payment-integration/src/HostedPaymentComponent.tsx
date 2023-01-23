@@ -188,6 +188,7 @@ class HostedPaymentMethodComponent extends Component<
 
     private getDefaultInstrument(): AccountInstrument | undefined {
         const { isAddingNewInstrument } = this.state;
+
         const { instruments } = getHostedPaymentMethodDerivedProps(this.props);
 
         if (isAddingNewInstrument || !instruments.length) {

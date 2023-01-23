@@ -1,1 +1,4 @@
-export * from './lib/hosted-payment-integration';
+export {
+    default as HostedPaymentComponent,
+    HostedPaymentMethodProps,
+} from './HostedPaymentComponent';
