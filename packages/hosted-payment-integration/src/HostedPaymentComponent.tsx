@@ -1,6 +1,8 @@
 import {
     AccountInstrument,
     CheckoutSelectors,
+    CheckoutService,
+    LanguageService,
     PaymentInitializeOptions,
     PaymentInstrument,
     PaymentMethod,
@@ -10,26 +12,24 @@ import { memoizeOne } from '@bigcommerce/memoize';
 import { find, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
-
-import { CheckoutContextProps, withCheckout } from '../../checkout';
-import { connectFormik, ConnectFormikProps } from '../../common/form';
-import { MapToPropsFactory } from '../../common/hoc';
-import { withLanguage, WithLanguageProps } from '../../locale';
-import { LoadingOverlay } from '../../ui/loading';
 import {
     AccountInstrumentFieldset,
     isAccountInstrument,
     isInstrumentFeatureAvailable,
-} from '../storedInstrument';
-import StoreInstrumentFieldset from '../StoreInstrumentFieldset';
-import withPayment, { WithPaymentProps } from '../withPayment';
+    StoreInstrumentFieldset,
+} from '@bigcommerce/checkout/instrument-utils';
+import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
+import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 export interface HostedPaymentMethodProps {
+    checkoutService: CheckoutService;
+    checkoutState: CheckoutSelectors;
     description?: ReactNode;
     isInitializing?: boolean;
     isUsingMultiShipping?: boolean;
+    language: LanguageService;
     method: PaymentMethod;
+    paymentForm: PaymentFormService;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
     initializePayment(options: PaymentInitializeOptions): Promise<CheckoutSelectors>;
     onUnhandledError?(error: Error): void;
@@ -40,7 +40,7 @@ interface HostedPaymentMethodState {
     selectedInstrument?: AccountInstrument;
 }
 
-interface WithCheckoutHostedPaymentMethodProps {
+interface HostedPaymentMethodDerivedProps {
     instruments: AccountInstrument[];
     isInstrumentFeatureAvailable: boolean;
     isLoadingInstruments: boolean;
@@ -49,12 +49,59 @@ interface WithCheckoutHostedPaymentMethodProps {
     loadInstruments(): Promise<CheckoutSelectors>;
 }
 
-class HostedPaymentMethod extends Component<
-    HostedPaymentMethodProps &
-        WithCheckoutHostedPaymentMethodProps &
-        WithPaymentProps &
-        WithLanguageProps &
-        ConnectFormikProps<PaymentFormValues>,
+function getHostedPaymentMethodDerivedProps(
+    props: HostedPaymentMethodProps,
+): HostedPaymentMethodDerivedProps {
+    const filterAccountInstruments = memoizeOne((instruments: PaymentInstrument[] = []) =>
+        instruments.filter(isAccountInstrument),
+    );
+    const filterTrustedInstruments = memoizeOne((instruments: AccountInstrument[] = []) =>
+        instruments.filter(({ trustedShippingAddress }) => trustedShippingAddress),
+    );
+    const { checkoutService, checkoutState, isUsingMultiShipping = false, method } = props;
+
+    const {
+        data: {
+            getCart,
+            getConfig,
+            getCustomer,
+            getInstruments,
+            isPaymentDataRequired,
+            isPaymentDataSubmitted,
+        },
+        statuses: { isLoadingInstruments },
+    } = checkoutState;
+
+    const cart = getCart();
+    const config = getConfig();
+    const customer = getCustomer();
+
+    if (!config || !cart || !customer) {
+        throw new Error('Unable to get checkout');
+    }
+
+    const currentMethodInstruments = filterAccountInstruments(getInstruments(method));
+    const trustedInstruments = filterTrustedInstruments(currentMethodInstruments);
+
+    return {
+        instruments: trustedInstruments,
+        isNewAddress: trustedInstruments.length === 0 && currentMethodInstruments.length > 0,
+        isInstrumentFeatureAvailable:
+            !isPaymentDataSubmitted(method.id, method.gateway) &&
+            isInstrumentFeatureAvailable({
+                config,
+                customer,
+                isUsingMultiShipping,
+                paymentMethod: method,
+            }),
+        isLoadingInstruments: isLoadingInstruments(),
+        isPaymentDataRequired: isPaymentDataRequired(),
+        loadInstruments: checkoutService.loadInstruments,
+    };
+}
+
+class HostedPaymentMethodComponent extends Component<
+    HostedPaymentMethodProps,
     HostedPaymentMethodState
 > {
     state: HostedPaymentMethodState = {
@@ -62,13 +109,10 @@ class HostedPaymentMethod extends Component<
     };
 
     async componentDidMount(): Promise<void> {
-        const {
-            initializePayment,
-            isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
-            loadInstruments,
-            method,
-            onUnhandledError = noop,
-        } = this.props;
+        const { initializePayment, method, onUnhandledError = noop } = this.props;
+
+        const { isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp, loadInstruments } =
+            getHostedPaymentMethodDerivedProps(this.props);
 
         try {
             await initializePayment({
@@ -98,14 +142,14 @@ class HostedPaymentMethod extends Component<
     }
 
     render(): ReactNode {
+        const { description, isInitializing = false } = this.props;
+
         const {
-            description,
-            isInitializing = false,
             isLoadingInstruments,
             instruments,
             isNewAddress,
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
-        } = this.props;
+        } = getHostedPaymentMethodDerivedProps(this.props);
 
         const { selectedInstrument = this.getDefaultInstrument() } = this.state;
 
@@ -144,7 +188,7 @@ class HostedPaymentMethod extends Component<
 
     private getDefaultInstrument(): AccountInstrument | undefined {
         const { isAddingNewInstrument } = this.state;
-        const { instruments } = this.props;
+        const { instruments } = getHostedPaymentMethodDerivedProps(this.props);
 
         if (isAddingNewInstrument || !instruments.length) {
             return;
@@ -161,7 +205,7 @@ class HostedPaymentMethod extends Component<
     };
 
     private handleSelectInstrument: (id: string) => void = (id) => {
-        const { instruments } = this.props;
+        const { instruments } = getHostedPaymentMethodDerivedProps(this.props);
 
         this.setState({
             isAddingNewInstrument: false,
@@ -170,64 +214,4 @@ class HostedPaymentMethod extends Component<
     };
 }
 
-const mapFromCheckoutProps: MapToPropsFactory<
-    CheckoutContextProps,
-    WithCheckoutHostedPaymentMethodProps,
-    HostedPaymentMethodProps & ConnectFormikProps<PaymentFormValues>
-> = () => {
-    const filterAccountInstruments = memoizeOne((instruments: PaymentInstrument[] = []) =>
-        instruments.filter(isAccountInstrument),
-    );
-    const filterTrustedInstruments = memoizeOne((instruments: AccountInstrument[] = []) =>
-        instruments.filter(({ trustedShippingAddress }) => trustedShippingAddress),
-    );
-
-    return (context, props) => {
-        const { isUsingMultiShipping = false, method } = props;
-
-        const { checkoutService, checkoutState } = context;
-
-        const {
-            data: {
-                getCart,
-                getConfig,
-                getCustomer,
-                getInstruments,
-                isPaymentDataRequired,
-                isPaymentDataSubmitted,
-            },
-            statuses: { isLoadingInstruments },
-        } = checkoutState;
-
-        const cart = getCart();
-        const config = getConfig();
-        const customer = getCustomer();
-
-        if (!config || !cart || !customer || !method) {
-            return null;
-        }
-
-        const currentMethodInstruments = filterAccountInstruments(getInstruments(method));
-        const trustedInstruments = filterTrustedInstruments(currentMethodInstruments);
-
-        return {
-            instruments: trustedInstruments,
-            isNewAddress: trustedInstruments.length === 0 && currentMethodInstruments.length > 0,
-            isInstrumentFeatureAvailable:
-                !isPaymentDataSubmitted(method.id, method.gateway) &&
-                isInstrumentFeatureAvailable({
-                    config,
-                    customer,
-                    isUsingMultiShipping,
-                    paymentMethod: method,
-                }),
-            isLoadingInstruments: isLoadingInstruments(),
-            isPaymentDataRequired: isPaymentDataRequired(),
-            loadInstruments: checkoutService.loadInstruments,
-        };
-    };
-};
-
-export default connectFormik(
-    withLanguage(withPayment(withCheckout(mapFromCheckoutProps)(HostedPaymentMethod))),
-);
+export default HostedPaymentMethodComponent;
