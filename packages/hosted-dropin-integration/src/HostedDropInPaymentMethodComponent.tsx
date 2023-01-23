@@ -60,7 +60,7 @@ interface HostedDropInPaymentMethodState {
     selectedInstrumentId?: string;
 }
 
-interface HostedDropInPaymentMethodHelperMethods {
+interface HostedDropInPaymentMethodDerivedProps {
     instruments: PaymentInstrument[];
     isInstrumentFeatureAvailable: boolean;
     isLoadingInstruments: boolean;
@@ -87,7 +87,7 @@ class HostedDropInPaymentMethodComponent extends Component<HostedDropInPaymentMe
         const { onUnhandledError = noop } = this.props;
 
         const { isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp, loadInstruments } =
-            this.getHelperMethods();
+            this.getHostedDropInPaymentMethodDerivedProps();
 
         try {
             if (isInstrumentFeatureAvailableProp) {
@@ -102,7 +102,7 @@ class HostedDropInPaymentMethodComponent extends Component<HostedDropInPaymentMe
 
     async componentDidUpdate(
         prevProps: Readonly<
-            HostedDropInPaymentMethodProps & HostedDropInPaymentMethodHelperMethods
+            HostedDropInPaymentMethodProps & HostedDropInPaymentMethodDerivedProps
         >,
         prevState: Readonly<HostedDropInPaymentMethodState>,
     ): Promise<void> {
@@ -113,7 +113,7 @@ class HostedDropInPaymentMethodComponent extends Component<HostedDropInPaymentMe
             onUnhandledError = noop,
         } = this.props;
 
-        const { instruments, isPaymentDataRequired } = this.getHelperMethods();
+        const { instruments, isPaymentDataRequired } = this.getHostedDropInPaymentMethodDerivedProps();
 
         const {
             checkoutState: {
@@ -183,7 +183,7 @@ class HostedDropInPaymentMethodComponent extends Component<HostedDropInPaymentMe
             instruments,
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
             isLoadingInstruments,
-        } = this.getHelperMethods();
+        } = this.getHostedDropInPaymentMethodDerivedProps();
 
         const { isAddingNewCard, selectedInstrumentId = this.getDefaultInstrumentId() } =
             this.state;
@@ -234,7 +234,7 @@ class HostedDropInPaymentMethodComponent extends Component<HostedDropInPaymentMe
             return;
         }
 
-        const { instruments } = this.getHelperMethods();
+        const { instruments } = this.getHostedDropInPaymentMethodDerivedProps();
         const firstInstrument = instruments[0] ? instruments[0] : undefined;
         const defaultInstrument =
             instruments.find((instrument) => instrument.defaultInstrument) || firstInstrument;
@@ -249,7 +249,7 @@ class HostedDropInPaymentMethodComponent extends Component<HostedDropInPaymentMe
             instruments,
             isInstrumentCardCodeRequired: isInstrumentCardCodeRequiredProp,
             isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredProp,
-        } = this.getHelperMethods();
+        } = this.getHostedDropInPaymentMethodDerivedProps();
 
         const { selectedInstrumentId = this.getDefaultInstrumentId() } = this.state;
         const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
@@ -286,7 +286,7 @@ class HostedDropInPaymentMethodComponent extends Component<HostedDropInPaymentMe
             signInCustomer = noop,
         } = this.props;
 
-        const { isPaymentDataRequired, isSignedIn } = this.getHelperMethods();
+        const { isPaymentDataRequired, isSignedIn } = this.getHostedDropInPaymentMethodDerivedProps();
 
         const { selectedInstrumentId = this.getDefaultInstrumentId() } = this.state;
 
@@ -320,7 +320,7 @@ class HostedDropInPaymentMethodComponent extends Component<HostedDropInPaymentMe
         const {
             paymentForm: { setFieldValue },
         } = this.props;
-        const { instruments } = this.getHelperMethods();
+        const { instruments } = this.getHostedDropInPaymentMethodDerivedProps();
         const { selectedInstrumentId } = this.state;
 
         if (instruments.length === 0) {
@@ -365,7 +365,7 @@ class HostedDropInPaymentMethodComponent extends Component<HostedDropInPaymentMe
         });
     };
 
-    private getHelperMethods(): HostedDropInPaymentMethodHelperMethods {
+    private getHostedDropInPaymentMethodDerivedProps(): HostedDropInPaymentMethodDerivedProps {
         const { checkoutService, checkoutState, isUsingMultiShipping = false, method } = this.props;
 
         const {
