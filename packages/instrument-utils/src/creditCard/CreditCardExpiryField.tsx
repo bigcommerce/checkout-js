@@ -11,10 +11,9 @@ interface CreditCardExpiryFieldProps {
     name: string;
 }
 
-const CreditCardExpiryField: FunctionComponent<CreditCardExpiryFieldProps> = ({
-    name,
-}) => {
+const CreditCardExpiryField: FunctionComponent<CreditCardExpiryFieldProps> = ({ name }) => {
     const { language } = useLocale();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const handleChange = useCallback(
         memoizeOne((field: FieldProps['field'], form: FieldProps['form']) => {
             return (event: ChangeEvent<any>) => {

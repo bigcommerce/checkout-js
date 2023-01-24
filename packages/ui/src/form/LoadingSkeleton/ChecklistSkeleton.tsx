@@ -16,7 +16,7 @@ const ChecklistSkeleton: FunctionComponent<LoadingSkeletonProps & ChecklistSkele
 }) => {
     const content = [];
 
-    for (let i = 0; i < rows; i++) {
+    for (let i = 0; i < rows; i += 1) {
         content.push(
             <div className="skeleton-container" key={`checklist-skeleton-item${i}`}>
                 <div className="checklist-skeleton-circle" />

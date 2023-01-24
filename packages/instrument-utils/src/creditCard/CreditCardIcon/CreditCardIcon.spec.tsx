@@ -100,7 +100,7 @@ describe('CreditCardIcon', () => {
 
     it('returns default card icon if nothing matches', () => {
         expect(
-          shallow(<CreditCardIcon cardType="foobar" />).hasClass('cardIcon-icon--default'),
+            shallow(<CreditCardIcon cardType="foobar" />).hasClass('cardIcon-icon--default'),
         ).toBe(true);
     });
 

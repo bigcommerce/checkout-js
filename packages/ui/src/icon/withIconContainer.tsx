@@ -15,7 +15,6 @@ export interface IconProps {
 }
 
 export default function withIconContainer<TProps>(
-     
     OriginalComponent: ComponentType<TProps>,
 ): ComponentType<TProps & IconProps> {
     return memo(({ additionalClassName, size, testId, ...rest }) => (

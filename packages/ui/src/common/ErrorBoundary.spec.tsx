@@ -50,7 +50,9 @@ describe('ErrorBoundary', () => {
                     <Child />
                 </ErrorBoundary>,
             );
-        } catch (error) {
+            // eslint-disable-next-line @typescript-eslint/no-shadow
+        } catch (error: unknown) {
+            // eslint-disable-next-line jest/no-conditional-expect
             expect(logger.log).not.toHaveBeenCalledWith(error);
         }
     });
@@ -86,6 +88,7 @@ describe('ErrorBoundary', () => {
                 </ErrorBoundary>,
             );
         } catch (thrown) {
+            // eslint-disable-next-line jest/no-conditional-expect
             expect(thrown).toEqual(error);
         }
     });

@@ -1,4 +1,4 @@
 export {
     HostedFieldPaymentMethodComponent,
     HostedFieldPaymentMethodComponentProps,
-} from './lib/hosted-field-integration';
+} from './hosted-field-integration';

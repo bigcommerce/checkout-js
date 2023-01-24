@@ -14,11 +14,10 @@ interface ErrorBoundaryState {
 }
 
 class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+    state: ErrorBoundaryState = {};
     static getDerivedStateFromError(error: Error): ErrorBoundaryState {
         return { error };
     }
-
-    state: ErrorBoundaryState = {};
 
     componentDidCatch(error: Error): void {
         const { filter = () => true, logger } = this.props;
