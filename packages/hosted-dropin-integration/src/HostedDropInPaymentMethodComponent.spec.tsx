@@ -82,7 +82,7 @@ describe('HostedDropInPaymentMethodComponent', () => {
 
         HostedDropInPaymentMethodTest = (props) => (
             <CheckoutContext.Provider value={{ checkoutService, checkoutState }}>
-                <LocaleContext.Provider value={createLocaleContext(getStoreConfig())}>
+                <LocaleContext.Provider value={localeContext}>
                     <Formik initialValues={{}} onSubmit={noop}>
                         <HostedDropInPaymentMethodComponent {...props} />
                     </Formik>
