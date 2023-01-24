@@ -103,10 +103,18 @@ describe('PaymentSubmitButton', () => {
     });
 
     it('renders button with special label for PayPal', () => {
-        const component = mount(<PaymentSubmitButtonTest methodType="paypal" />);
+        const component = mount(<PaymentSubmitButtonTest methodType="paypal" isComplete={true} />);
 
         expect(component.text()).toEqual(
             languageService.translate('payment.paypal_complete_action'),
+        );
+    });
+
+    it('renders button with special label for PayPal when the order placement starts on checkout page', () => {
+        const component = mount(<PaymentSubmitButtonTest methodType="paypal" />);
+
+        expect(component.text()).toEqual(
+            languageService.translate('payment.paypal_continue_action'),
         );
     });
 
@@ -134,10 +142,18 @@ describe('PaymentSubmitButton', () => {
     });
 
     it('renders button with special label for PayPal Credit', () => {
-        const component = mount(<PaymentSubmitButtonTest methodType="paypal-credit" />);
+        const component = mount(<PaymentSubmitButtonTest methodType="paypal-credit" isComplete={true} />);
 
         expect(component.text()).toEqual(
             languageService.translate('payment.paypal_pay_later_complete_action'),
+        );
+    });
+
+    it('renders button with special label for PayPal Credit when the order placement starts on checkout page', () => {
+        const component = mount(<PaymentSubmitButtonTest methodType="paypal-credit" />);
+
+        expect(component.text()).toEqual(
+            languageService.translate('payment.paypal_pay_later_continue_action'),
         );
     });
 

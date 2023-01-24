@@ -152,6 +152,7 @@ const PaymentForm: FunctionComponent<
                 ) : (
                     <PaymentSubmitButton
                         brandName={brandName}
+                        isComplete={!!selectedMethod?.initializationData?.isComplete}
                         initialisationStrategyType={
                             selectedMethod && selectedMethod.initializationStrategy?.type
                         }
