@@ -15,6 +15,7 @@ export const SUPPORTED_METHODS: string[] = [
     APPLE_PAY,
     'braintreevisacheckout',
     'braintreepaypal',
+    'braintreepaypalcredit',
     'chasepay',
     'masterpass',
     'paypalcommerce',
