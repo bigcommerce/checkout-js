@@ -6,73 +6,102 @@ Array [
     class="checkout-form"
   >
     <div
-      class="loadingSpinner loadingOverlay-container"
-      style="height:100px"
+      class="form-legend-container"
     >
       <div
-        class="loadingOverlay optimizedCheckout-overlay"
+        class="address-form-heading-skeleton form-legend optimizedCheckout-headingSecondary"
       />
     </div>
     <div
-      style="display:none"
+      class="address-form-skeleton"
     >
-      <fieldset
-        class="form-fieldset"
+      <div
+        class="name-fields-skeleton"
       >
-        <legend
-          class="form-legend is-srOnly"
-        />
         <div
-          class="form-body"
+          class="skeleton-container"
         >
           <div
-            class="customerEmail-container"
+            class="input-skeleton"
+          />
+        </div>
+        <div
+          class="skeleton-container"
+        >
+          <div
+            class="input-skeleton"
+          />
+        </div>
+      </div>
+      <div
+        class="skeleton-container"
+      >
+        <div
+          class="input-skeleton"
+        />
+      </div>
+    </div>
+  </div>,
+  <div
+    class="checkout-form"
+    style="display:none"
+  >
+    <fieldset
+      class="form-fieldset"
+    >
+      <legend
+        class="form-legend is-srOnly"
+      />
+      <div
+        class="form-body"
+      >
+        <div
+          class="customerEmail-container"
+        >
+          <div
+            class="customerEmail-body"
           >
             <div
-              class="customerEmail-body"
-            >
-              <div
-                id="stripeupeLink"
-              />
-              <br />
-              <div
-                class="form-field"
-              >
-                <input
-                  class="form-checkbox"
-                  id="shouldSubscribe"
-                  name="shouldSubscribe"
-                  type="checkbox"
-                  value="false"
-                />
-                <label
-                  class="form-label optimizedCheckout-form-label"
-                  for="shouldSubscribe"
-                />
-              </div>
-            </div>
+              id="stripeupeLink"
+            />
+            <br />
             <div
-              class="form-actions customerEmail-action"
+              class="form-field"
             >
-              <button
-                class="button stripeCustomerEmail-button button--primary optimizedCheckout-buttonPrimary"
-                data-test="stripe-customer-continue-as-guest-button"
-                disabled=""
-                id="stripe-checkout-customer-continue"
-                type="submit"
+              <input
+                class="form-checkbox"
+                id="shouldSubscribe"
+                name="shouldSubscribe"
+                type="checkbox"
+                value="false"
+              />
+              <label
+                class="form-label optimizedCheckout-form-label"
+                for="shouldSubscribe"
               />
             </div>
           </div>
-          <p>
-             
-            <a
-              data-test="customer-continue-button"
-              id="checkout-customer-login"
+          <div
+            class="form-actions customerEmail-action"
+          >
+            <button
+              class="button stripeCustomerEmail-button button--primary optimizedCheckout-buttonPrimary"
+              data-test="stripe-customer-continue-as-guest-button"
+              disabled=""
+              id="stripe-checkout-customer-continue"
+              type="submit"
             />
-          </p>
+          </div>
         </div>
-      </fieldset>
-    </div>
+        <p>
+           
+          <a
+            data-test="customer-continue-button"
+            id="checkout-customer-login"
+          />
+        </p>
+      </div>
+    </fieldset>
   </div>,
   <div
     class="optimizedCheckout-form-input"
