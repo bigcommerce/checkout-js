@@ -14,7 +14,8 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/packages/barclay-integration"],
       "options": {
-        "jestConfig": "packages/barclay-integration/jest.config.js"
+        "jestConfig": "packages/barclay-integration/jest.config.js",
+        "passWithNoTests": true
       }
     }
   },
