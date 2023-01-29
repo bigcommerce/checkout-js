@@ -25,7 +25,7 @@
         "packages/checkout-button-integration/src/index.ts"
       ],
       "@bigcommerce/checkout/core": ["packages/core/src/app/index.ts"],
-      "@bigcommerce/checkout/external-integration": ["packages/external-integration/src/index.ts"],
+      "@bigcommerce/checkout/sezzle-integration": ["packages/sezzle-integration/src/index.ts"],
       "@bigcommerce/checkout/google-pay-integration": [
         "packages/google-pay-integration/src/index.ts"
       ],
