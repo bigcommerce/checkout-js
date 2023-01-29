@@ -1,0 +1,23 @@
+{
+  "root": "packages/hosted-dropin-integration",
+  "sourceRoot": "packages/hosted-dropin-integration/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/hosted-dropin-integration/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/hosted-dropin-integration"],
+      "options": {
+        "jestConfig": "packages/hosted-dropin-integration/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["scope:shared"]
+}
