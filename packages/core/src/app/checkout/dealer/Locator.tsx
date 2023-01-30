@@ -31,7 +31,6 @@ export default class Locator extends React.PureComponent<LocatorProps, LocatorSt
       location: "",
       radius: 5,
       miles: [5, 10, 30, 75],
-      announcement: "",
       showToast: true
     };
 
@@ -46,20 +45,6 @@ export default class Locator extends React.PureComponent<LocatorProps, LocatorSt
     this.onChangeRadius = this.onChangeRadius.bind(this);
     this.onHandleKeypress = this.onHandleKeypress.bind(this);
     this.hideToast = this.hideToast.bind(this);
-
-    fetch(`https://${process.env.HOST}/store-front/api/stores/${this.props.storeHash}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json"
-      }
-    })
-    .then(res => res.json())
-    .then(data => {
-      this.setState({ announcement: data.announcement });
-    }).catch(console.log);
-
-    console.log('LOAD DONE!');
   }
 
   handleSearch(): void {
@@ -147,13 +132,13 @@ export default class Locator extends React.PureComponent<LocatorProps, LocatorSt
             <MapContainer dealers={ this.state.dealers } selectDealer={ selectDealer }  />
           </div>
           {
-            (this.state.announcement && this.state.showToast) &&
+            (this.props.announcement && this.state.showToast) &&
             <div className="locator-toast-box">
               <div className="locator-toast-close">
                 <a onClick={ this.hideToast } className="white-text">X</a>
               </div>
               <div className="locator-toast-text">
-               { this.state.announcement }
+               { this.props.announcement }
               </div>
             </div>
           }

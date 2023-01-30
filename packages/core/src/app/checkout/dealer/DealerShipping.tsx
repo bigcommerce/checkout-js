@@ -19,6 +19,8 @@ import { Form } from '../../ui/form';
 
 import getShippableLineItems from './getShippableLineItems';
 
+import './DealerShipping.scss';
+
 const Shipping = lazy(() => retry(() => import(
     /* webpackChunkName: "shipping" */
     '../../shipping/Shipping'
@@ -102,6 +104,8 @@ interface DealerState {
   itemAddingAddress: any;
   createCustomerAddressError: any;
   isInitializing?: boolean;
+  announcement: any;
+  multiShipment: any;
 }
 
 class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShippingProps, DealerState> {
@@ -131,17 +135,34 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
 
   constructor(props: any) {
     super(props);
-    
+
     this.state = {
       manualFflInput: false,
       showLocator: false,
       selectedDealer: null,
       isUpdatingShippingData: false,
-      isLoading: false,
+      isLoading: true,
       items: [],
       itemAddingAddress: null,
-      createCustomerAddressError: null
+      createCustomerAddressError: null,
+      announcement: '',
+      multiShipment: false
      };
+
+    fetch(`https://${process.env.HOST}/store-front/api/stores/${this.props.storeHash}`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        this.setState({
+            announcement: data.announcement,
+            multiShipment: data.multi_shipment,
+            isLoading: false
+        });
+    }).catch(console.log);
   }
 
   async componentDidMount(): Promise<void> {
@@ -183,8 +204,15 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
 
     const { assignItem, getFields, onUnhandledError } = this.props;
 
+    const allCartItems = this.state.items.map(item => {
+        let container = {};
+        container.itemId = item.id;
+        container.quantity = item.quantity;
+        return container;
+    })
+
     const consignment = {
-      lineItems: this.props.fflConsignmentItems,
+      lineItems: this.state.multiShipment ? allCartItems : this.props.fflConsignmentItems,
       shippingAddress: dealer
     }
 
@@ -308,7 +336,7 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
               </button>
         </div>
 
-        { (this.state != null) &&
+        { (!this.state.isLoading) &&
           <div>
             { <AddressFormModal
                 countries={ countries }
@@ -324,16 +352,43 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
 
             <Form>
                 <ul className="consignmentList">
-                    { itemsWithoutFFL.map(item => (
-                        <li key={ item.key }>
-                            <ItemAddressSelect
-                                addresses={ customer.addresses }
-                                item={ item }
-                                onSelectAddress={ this.handleSelectAddress }
-                                onUseNewAddress={ this.handleUseNewAddress }
-                            />
-                        </li>
-                    )) }
+                    {this.state.multiShipment ?
+                        <div className="multiShip-text">
+                            Other items in cart will also ship to FFL
+                            { itemsWithoutFFL.map(item => (
+                                <div className="consignment">
+                                    <figure className="consignment-product-figure">
+                                        {item.imageUrl && <img alt={item.name} src={item.imageUrl} />}
+                                    </figure>
+                                    <div className="consignment-product-body">
+                                        <h4 className="optimizedCheckout-contentPrimary">{`${item.quantity} x ${item.name}`}</h4>
+                                        {(item.options || []).map(({ name: optionName, value, nameId }) => (
+                                            <ul
+                                                className="product-options optimizedCheckout-contentSecondary"
+                                                data-test="consigment-item-product-options"
+                                                key={nameId}
+                                            >
+                                                <li className="product-option">{`${optionName} ${value}`}</li>
+                                            </ul>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                     :
+                        itemsWithoutFFL.map(item => (
+                            <li key={ item.key }>
+                                { (!this.state.multiShipment) &&
+                                    <ItemAddressSelect
+                                        addresses={ customer.addresses }
+                                        item={ item }
+                                        onSelectAddress={ this.handleSelectAddress }
+                                        onUseNewAddress={ this.handleUseNewAddress }
+                                    />
+                                }
+                            </li>
+                        ))
+                    }
                 </ul>
 
                 <ShippingFormFooter
@@ -369,6 +424,7 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
             showLocator={ this.state.showLocator }
             handleCancel={ this.handleCancel }
             selectDealer={ this.selectDealer }
+            announcement={ this.state.announcement }
           />
         }
 
