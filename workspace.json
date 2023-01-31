@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "afterpay-integration": "packages/afterpay-integration",
+    "barclay-integration": "packages/barclay-integration",
     "analytics": "packages/analytics",
     "apple-pay-integration": "packages/apple-pay-integration",
     "checkout-button-integration": "packages/checkout-button-integration",

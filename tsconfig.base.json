@@ -17,6 +17,7 @@
     "noUnusedParameters": true,
     "paths": {
       "@bigcommerce/checkout/afterpay-integration": ["packages/afterpay-integration/src/index.ts"],
+      "@bigcommerce/checkout/barclay-integration": ["packages/barclay-integration/src/index.ts"],
       "@bigcommerce/checkout/analytics": ["packages/analytics/src/index.ts"],
       "@bigcommerce/checkout/apple-pay-integration": [
         "packages/apple-pay-integration/src/index.ts"

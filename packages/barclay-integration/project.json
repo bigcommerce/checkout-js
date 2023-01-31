@@ -1,0 +1,23 @@
+{
+  "root": "packages/barclay-integration",
+  "sourceRoot": "packages/barclay-integration/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/barclay-integration/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/barclay-integration"],
+      "options": {
+        "jestConfig": "packages/barclay-integration/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["scope:integration"]
+}
