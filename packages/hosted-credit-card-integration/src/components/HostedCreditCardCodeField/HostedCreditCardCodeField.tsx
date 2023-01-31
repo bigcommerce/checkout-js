@@ -2,7 +2,13 @@ import React, { FunctionComponent, useCallback, useMemo } from 'react';
 
 import { CreditCardCodeTooltip } from '@bigcommerce/checkout/instrument-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { FormField, IconHelp, IconLock, TextInputIframeContainer, TooltipTrigger } from '@bigcommerce/checkout/ui';
+import {
+    FormField,
+    IconHelp,
+    IconLock,
+    TextInputIframeContainer,
+    TooltipTrigger,
+} from '@bigcommerce/checkout/ui';
 
 export interface HostedCreditCardCodeFieldProps {
     appearFocused: boolean;
