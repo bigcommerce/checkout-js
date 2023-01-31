@@ -6,7 +6,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/hosted-field-integration/**/*.ts"]
+        "lintFilePatterns": ["packages/hosted-field-integration/**/*.{ts,tsx}"]
       }
     },
     "test": {

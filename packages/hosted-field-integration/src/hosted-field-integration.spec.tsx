@@ -60,10 +60,12 @@ describe('HostedFieldPaymentMethod', () => {
     it('renders loading overlay while waiting for method to initialize', () => {
         let component: ReactWrapper;
 
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         component = mount(<HostedFieldPaymentMethodTest {...defaultProps} isInitializing />);
 
         expect(component.find(LoadingOverlay).prop('isLoading')).toBe(true);
 
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         component = mount(<HostedFieldPaymentMethodTest {...defaultProps} />);
 
         expect(component.find(LoadingOverlay).prop('isLoading')).toBe(false);

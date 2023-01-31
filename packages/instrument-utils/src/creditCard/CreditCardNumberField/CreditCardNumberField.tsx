@@ -22,29 +22,6 @@ export interface CreditCardNumberFieldProps {
     name: string;
 }
 
-const CreditCardNumberField: FunctionComponent<CreditCardNumberFieldProps> = ({ name }) => {
-    const renderInput = useCallback(
-        ({ field, form }: FieldProps<string>) => (
-            <CreditCardNumberInput field={field} form={form} />
-        ),
-        [],
-    );
-
-    const labelContent = useMemo(
-        () => <TranslatedString id="payment.credit_card_number_label" />,
-        [],
-    );
-
-    return (
-        <FormField
-            additionalClassName="form-field--ccNumber"
-            input={renderInput}
-            labelContent={labelContent}
-            name={name}
-        />
-    );
-};
-
 class CreditCardNumberInput extends PureComponent<FieldProps<string>> {
     private inputRef: RefObject<HTMLInputElement> = createRef();
     private nextSelectionEnd = 0;
@@ -103,5 +80,28 @@ class CreditCardNumberInput extends PureComponent<FieldProps<string>> {
         form.setFieldValue(name, formattedValue);
     };
 }
+
+const CreditCardNumberField: FunctionComponent<CreditCardNumberFieldProps> = ({ name }) => {
+    const renderInput = useCallback(
+        ({ field, form }: FieldProps<string>) => (
+            <CreditCardNumberInput field={field} form={form} />
+        ),
+        [],
+    );
+
+    const labelContent = useMemo(
+        () => <TranslatedString id="payment.credit_card_number_label" />,
+        [],
+    );
+
+    return (
+        <FormField
+            additionalClassName="form-field--ccNumber"
+            input={renderInput}
+            labelContent={labelContent}
+            name={name}
+        />
+    );
+};
 
 export default memo(CreditCardNumberField);
