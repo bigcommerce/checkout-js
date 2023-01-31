@@ -1,1 +1,2 @@
-export * from './lib/hosted-credit-card-integration';
+export { default as HostedCreditCardPaymentMethod } from './HostedCreditCardPaymentMethod';
+export { HostedCreditCardFieldsetValues, HostedCreditCardValidationValues } from './types';

@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 export { default as configureCardValidator } from './configureCardValidator';
 export { default as CreditCardCodeField } from './CreditCardCodeField';
 export { default as CreditCardCodeTooltip } from './CreditCardCodeTooltip';

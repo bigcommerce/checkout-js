@@ -12,7 +12,6 @@ import { act } from 'react-dom/test-utils';
 
 import {
     CardInstrumentFieldsetValues,
-    HostedCreditCardFieldsetValues,
 } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getCart } from '../../cart/carts.mock';
@@ -24,6 +23,7 @@ import { FormContext, FormContextType } from '../../ui/form';
 import { CreditCardInputStylesType, getCreditCardInputStyles } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
+import HostedCreditCardFieldsetValues from '../paymentMethod/HostedCreditCardFieldsetValues';
 import { getCardInstrument } from '../storedInstrument/instruments.mock';
 
 import HostedCreditCardFieldset from './HostedCreditCardFieldset';
@@ -280,7 +280,6 @@ describe('withHostedCreditCardFieldset', () => {
             .prop('getHostedFormOptions');
         const { onValidate } = await getHostedFormOptions();
 
-         
         onValidate({
             isValid: false,
             errors: {
@@ -299,7 +298,6 @@ describe('withHostedCreditCardFieldset', () => {
 
         container.update();
 
-         
         expect(
             (last(formikRender.mock.calls)![0].values as HostedCreditCardFieldsetValues).hostedForm
                 .errors,
@@ -328,12 +326,10 @@ describe('withHostedCreditCardFieldset', () => {
             .prop('getHostedFormOptions');
         const { onCardTypeChange } = await getHostedFormOptions();
 
-         
         onCardTypeChange({ cardType: 'mastercard' });
 
         container.update();
 
-         
         expect(
             (last(formikRender.mock.calls)![0].values as HostedCreditCardFieldsetValues).hostedForm
                 .cardType,
@@ -348,7 +344,6 @@ describe('withHostedCreditCardFieldset', () => {
         const { onFocus } = await getHostedFormOptions();
 
         act(() => {
-             
             onFocus({ fieldType: 'cardNumber' as HostedFieldType });
         });
 
@@ -366,7 +361,6 @@ describe('withHostedCreditCardFieldset', () => {
             .prop('getHostedFormOptions');
         const { onBlur } = await getHostedFormOptions();
 
-         
         onBlur({ fieldType: 'cardNumber' as HostedFieldType });
 
         container.update();
@@ -381,7 +375,6 @@ describe('withHostedCreditCardFieldset', () => {
             .prop('getHostedFormOptions');
         const { onEnter } = await getHostedFormOptions();
 
-         
         onEnter({ fieldType: 'cardNumber' as HostedFieldType });
 
         container.update();

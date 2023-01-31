@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HostedCreditCardPaymentMethod injects hosted form properties to credit card payment method component 1`] = `
+<HostedCreditCardFieldset
+  cardCodeId="authorizenet-ccCvv"
+  cardExpiryId="authorizenet-ccExpiry"
+  cardNameId="authorizenet-ccName"
+  cardNumberId="authorizenet-ccNumber"
+/>
+`;

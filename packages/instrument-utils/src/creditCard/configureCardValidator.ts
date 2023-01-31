@@ -11,8 +11,6 @@ export default function configureCardValidator(): void {
 
     // Add support for 8-BIN Discover Cards.
     creditCardType.updateCard('discover', {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore the type definition is incorrect in `card-validator` after upgrading to 8.1.1
         patterns: [...(discoverInfo.patterns || []), [810, 817]],
     });
 
