@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.286.6](https://github.com/bigcommerce/checkout-js/compare/v1.286.5...v1.286.6) (2023-01-31)
+
+
+### Bug Fixes
+
+* **common:** CHECKOUT-000 Fix lint issues ([#1180](https://github.com/bigcommerce/checkout-js/issues/1180)) ([9ad4e5c](https://github.com/bigcommerce/checkout-js/commit/9ad4e5c31a0a2be69d6d4343577980db8edae57a))
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-6434 Build hosted credit card package ([#1146](https://github.com/bigcommerce/checkout-js/issues/1146)) ([37faa66](https://github.com/bigcommerce/checkout-js/commit/37faa664baab546b9ca76d7f59b87d602086ac8b))
+
 ### [1.286.5](https://github.com/bigcommerce/checkout-js/compare/v1.286.4...v1.286.5) (2023-01-31)
 
 ### [1.286.4](https://github.com/bigcommerce/checkout-js/compare/v1.286.3...v1.286.4) (2023-01-30)
