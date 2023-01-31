@@ -7,6 +7,7 @@
     "apple-pay-integration": "packages/apple-pay-integration",
     "checkout-button-integration": "packages/checkout-button-integration",
     "core": "packages/core",
+    "sezzle-integration": "packages/sezzle-integration",
     "google-pay-integration": "packages/google-pay-integration",
     "hosted-credit-card-integration": "packages/hosted-credit-card-integration",
     "hosted-dropin-integration": "packages/hosted-dropin-integration",
