@@ -76,7 +76,7 @@ describe('HostedCreditCardFieldset', () => {
 
         expect(
             component.find('TextInputIframeContainer[id="cardNumber"]').prop('appearFocused'),
-        ).toBeTruthy();
+        ).toBe(true);
     });
 });
 /* eslint-enable react/jsx-no-bind */
