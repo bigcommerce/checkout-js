@@ -152,10 +152,16 @@ workflows:
 
   pull_request:
     jobs:
-      - test:
+      - test-packages:
+          filters:
+            <<: *pull_request_filter
+      - test-core:
           filters:
             <<: *pull_request_filter
       - build:
+          filters:
+            <<: *pull_request_filter
+      - lint:
           filters:
             <<: *pull_request_filter
       - e2e:
@@ -167,7 +173,13 @@ workflows:
 
   release:
     jobs:
-      - test:
+      - test-core:
+          filters:
+            <<: *release_filter
+      - test-packages:
+          filters:
+            <<: *release_filter
+      - lint:
           filters:
             <<: *release_filter
       - build:
@@ -181,7 +193,9 @@ workflows:
             <<: *release_filter
           type: approval
           requires:
-            - test
+            - test-core
+            - test-packages
+            - lint
             - build
             - e2e
       - release:
