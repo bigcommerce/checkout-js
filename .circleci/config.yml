@@ -29,6 +29,7 @@ jobs:
       - run:
           name: "Run unit tests for packages"
           command: npm run test:others
+  
   test-core:
     <<: *node_executor
     parallelism: 2
