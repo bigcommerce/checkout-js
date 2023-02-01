@@ -19,10 +19,15 @@
     "release": "echo 'Please do not release locally, use CircleCi'",
     "release:alpha": "npm run lint && npm run test -- --coverage && npm run build -- --env prerelease=prerelease && npm run release:version",
     "release:version": "git add dist && standard-version -a",
+    "test:core": "jest --config packages/core/jest.config.js",
+    "test:others": "npx nx run-many --all --target=test --exclude core --parallel=5 -- --runInBand",
     "generate": "npx nx run core:generate",
     "lint": "npx nx run-many --target=lint --all",
     "test": "npx nx run-many --target=test --all",
     "test:watch": "npx nx run-many --target=test --all --watch"
+  },
+  "jest-junit": {
+    "addFileAttribute": "true"
   },
   "repository": {
     "type": "git",
@@ -131,6 +136,7 @@
     "http-server": "^14.1.1",
     "image-webpack-loader": "^8.1.0",
     "jest": "^25.5.4",
+    "jest-junit": "^15.0.0",
     "mini-css-extract-plugin": "^2.6.0",
     "node-sass": "^4.14.1",
     "nx": "^13.10.3",
