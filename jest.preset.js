@@ -12,6 +12,7 @@ module.exports = {
             statements: 80,
         },
     },
+    reporters: ['default', 'jest-junit'],
     transform: {
         '^.+\\.(ts|tsx)?$': 'ts-jest',
         '\\.(gif|png|jpe?g|svg)$': '../../scripts/jest/file-transformer',
