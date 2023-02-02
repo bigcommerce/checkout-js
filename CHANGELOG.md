@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.286.9](https://github.com/bigcommerce/checkout-js/compare/v1.286.8...v1.286.9) (2023-02-02)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-1785 change button name to Complete Order on last step ([995feb2](https://github.com/bigcommerce/checkout-js/commit/995feb238c05ed6cd0f8c24595e132ac01386e58))
+* **payment:** PAYPAL-1915 add isCheckoutPaymentMethod to PaymentForm ([d9e19f2](https://github.com/bigcommerce/checkout-js/commit/d9e19f265693773261b0b2152671b5bcb76cca11))
+
 ### [1.286.8](https://github.com/bigcommerce/checkout-js/compare/v1.286.7...v1.286.8) (2023-02-02)
 
 ### [1.286.7](https://github.com/bigcommerce/checkout-js/compare/v1.286.6...v1.286.7) (2023-02-02)
