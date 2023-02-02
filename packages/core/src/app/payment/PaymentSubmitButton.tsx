@@ -14,6 +14,7 @@ interface PaymentSubmitButtonTextProps {
     methodName?: string;
     initialisationStrategyType?: string;
     brandName?: string;
+    isComplete?: boolean;
 }
 
 const providersWithCustomClasses = [PaymentMethodId.Bolt];
@@ -26,6 +27,7 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
         methodGateway,
         initialisationStrategyType,
         brandName,
+        isComplete,
     }) => {
         if (methodName && initialisationStrategyType === 'none') {
             return <TranslatedString data={{ methodName }} id="payment.ppsdk_continue_action" />;
@@ -68,17 +70,31 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
         }
 
         if (methodType === PaymentMethodType.Paypal) {
-            return <TranslatedString id="payment.paypal_continue_action" />;
+            return <TranslatedString
+                data={{ isComplete }}
+                id={
+                    isComplete
+                        ? 'payment.paypal_complete_action'
+                        : 'payment.paypal_continue_action'
+                }
+            />;
         }
 
         if (methodType === PaymentMethodType.PaypalCredit) {
+            const continueTranslationId = brandName
+                ? 'payment.continue_with_brand'
+                : 'payment.paypal_pay_later_continue_action'
+            const completeTranslationId = brandName
+                ? 'payment.complete_with_brand'
+                : 'payment.paypal_pay_later_complete_action'
+
             return (
                 <TranslatedString
-                    data={{ brandName }}
+                    data={{ brandName, isComplete, continueTranslationId, completeTranslationId }}
                     id={
-                        brandName
-                            ? 'payment.continue_with_brand'
-                            : 'payment.paypal_pay_later_continue_action'
+                        isComplete
+                            ? completeTranslationId
+                            : continueTranslationId
                     }
                 />
             );
@@ -112,6 +128,7 @@ export interface PaymentSubmitButtonProps {
     isDisabled?: boolean;
     initialisationStrategyType?: string;
     brandName?: string;
+    isComplete?: boolean
 }
 
 interface WithCheckoutPaymentSubmitButtonProps {
@@ -131,6 +148,7 @@ const PaymentSubmitButton: FunctionComponent<
     methodType,
     initialisationStrategyType,
     brandName,
+    isComplete,
 }) => (
     <Button
         className={
@@ -147,6 +165,7 @@ const PaymentSubmitButton: FunctionComponent<
         variant={ButtonVariant.Action}
     >
         <PaymentSubmitButtonText
+            isComplete={isComplete}
             brandName={brandName}
             initialisationStrategyType={initialisationStrategyType}
             methodGateway={methodGateway}
