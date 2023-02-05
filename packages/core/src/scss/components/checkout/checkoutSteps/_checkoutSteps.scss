@@ -138,6 +138,23 @@
     min-width: 9rem;
 }
 
+.remove_checkout_step_numbers {
+    li.checkout-step {
+        div.stepHeader-counter.icon {
+            display: none;
+        }
+
+        h2.stepHeader-title {
+            margin-left: 0;
+        }
+
+        .checkout-form,
+        div.checklist-skeleton {
+            margin-left: 0;
+        }
+    }
+}
+
 .stepHeader-body {
     @include textTruncateMultiline;
 

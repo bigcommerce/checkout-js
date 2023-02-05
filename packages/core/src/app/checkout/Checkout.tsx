@@ -126,6 +126,7 @@ export interface CheckoutState {
     isRedirecting: boolean;
     hasSelectedShippingOptions: boolean;
     isBuyNowCartEnabled: boolean;
+    isHidingStepNumbers: boolean;
     isSubscribed: boolean;
 }
 
@@ -162,6 +163,7 @@ class Checkout extends Component<
         isMultiShippingMode: false,
         hasSelectedShippingOptions: false,
         isBuyNowCartEnabled: false,
+        isHidingStepNumbers: true,
         isSubscribed: false,
     };
 
@@ -238,6 +240,9 @@ class Checkout extends Component<
             const buyNowCartFlag =
                 data.getConfig()?.checkoutSettings.features['CHECKOUT-3190.enable_buy_now_cart'] ??
                 false;
+            const removeStepNumbersFlag =
+              data.getConfig()?.checkoutSettings.features['CHECKOUT-7255.remove_checkout_step_numbers'] ??
+              false;
             const defaultNewsletterSignupOption =
                 data.getConfig()?.shopperConfig.defaultNewsletterSignup ??
                 false;
@@ -250,6 +255,7 @@ class Checkout extends Component<
             this.setState({
                 isBillingSameAsShipping: checkoutBillingSameAsShippingEnabled,
                 isBuyNowCartEnabled: buyNowCartFlag,
+                isHidingStepNumbers: removeStepNumbersFlag,
                 isSubscribed: defaultNewsletterSignupOption,
             });
 
@@ -268,7 +274,7 @@ class Checkout extends Component<
     }
 
     render(): ReactNode {
-        const { error } = this.state;
+        const { error, isHidingStepNumbers } = this.state;
         let errorModal = null;
 
         if (error) {
@@ -286,7 +292,7 @@ class Checkout extends Component<
         }
 
         return (
-            <div className={classNames({ 'is-embedded': isEmbedded() })}>
+            <div className={classNames({ 'is-embedded': isEmbedded(), 'remove_checkout_step_numbers': isHidingStepNumbers })}>
                 <div className="layout optimizedCheckout-contentPrimary">
                     {this.renderContent()}
                 </div>
