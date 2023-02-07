@@ -89,6 +89,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
         const hasStripeAddressAndHasShippingOptions = stripeShippingAddress.firstName && hasSelectedShippingOptions(consignments);
         const afterReload = !isFirstShippingRender && !isNewAddress && !isShippingMethodLoading;
         const isLoadingBeforeAutoStep =  isStripeLoading && isStripeAutoStep;
+
         if (hasStripeAddressAndHasShippingOptions && afterReload && isLoadingBeforeAutoStep) {
             isStripeLoading();
             isStripeAutoStep();
