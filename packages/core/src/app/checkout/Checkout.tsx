@@ -292,7 +292,7 @@ class Checkout extends Component<
         }
 
         return (
-            <div className={classNames({ 'is-embedded': isEmbedded(), 'remove_checkout_step_numbers': isHidingStepNumbers })}>
+            <div className={classNames({ 'is-embedded': isEmbedded(), 'remove-checkout-step-numbers': isHidingStepNumbers })}>
                 <div className="layout optimizedCheckout-contentPrimary">
                     {this.renderContent()}
                 </div>
