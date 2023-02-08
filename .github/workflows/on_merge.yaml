@@ -1,0 +1,136 @@
+name: On merge
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+      - stage
+      - master
+
+env:
+  NODE_VERSION: 14.18
+
+jobs:
+  setup:
+    name: Setup
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
+      environment: ${{ steps.determine-environment.outputs.environment }}
+
+    steps:
+    - name: Determine Environment
+      id: determine-environment
+      shell: bash
+      run: |
+        if [ ${{ github.ref }} == 'refs/heads/main' ]; then
+          echo "environment=Production" >> $GITHUB_OUTPUT
+        elif [ ${{ github.ref }} == 'refs/heads/stage' ]; then
+          echo "environment=Staging" >> $GITHUB_OUTPUT
+        elif [ ${{ github.ref }} == 'refs/heads/dev' ]; then
+          echo "environment=Dev" >> $GITHUB_OUTPUT
+        else
+          echo "Workflow can only be run against the main, stage or dev branches."
+          exit 1
+        fi
+
+    - name: Output Environment
+      run: |
+        echo "Environment: ${{ steps.determine-environment.outputs.environment }}"
+
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Get version from package.json
+      id: get_version
+      run: echo "version=$(cat package.json | jq -r '.version')" >> $GITHUB_OUTPUT
+
+    - name: Output version
+      id: print_version
+      run: echo ${{ steps.get_version.outputs.version }}
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          cache: 'npm'
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Test build
+        run: npm run build
+
+      - name: Persist to Workspace
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist
+
+  test:
+    name: Run unit tests
+    runs-on: ubuntu-latest
+    needs: setup
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          cache: 'npm'
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm run test -- --coverage --runInBand
+
+      - name: Run linter
+        run: npm run lint
+
+
+  deploy:
+    name: Deploy to BigCommerce
+    runs-on: ubuntu-latest
+    environment: ${{ needs.setup.outputs.environment }}
+    needs:
+      - setup
+      - build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: dist
+          path: dist
+
+      - name: Upload to WebDAV
+        run: ./.github/workflows/scripts/deploy.sh ./dist ${{ secrets.WEBDAV_URL }}/content/checkout/${{ needs.setup.outputs.version }}
+        shell: bash
+        env:
+          user_name: ${{ secrets.WEBDAV_USERNAME }}
+          password: ${{ secrets.WEBDAV_PASSWORD }}
+
+      - name: Update BigCommerce checkout settings
+        run: |
+          curl -L -s --request PUT \
+          --url https://api.bigcommerce.com/stores/${{ secrets.BIGCOMMERCE_STORE_HASH }}/v3/checkouts/settings \
+          --header 'Accept: application/json' \
+          --header 'Content-Type: application/json' \
+          --header 'X-Auth-Token: ${{ secrets.BIGCOMMERCE_AUTH_TOKEN   }}' \
+          --data '{  "custom_checkout_script_url": "webdav:checkout/${{ needs.setup.outputs.version }}/auto-loader.js", "order_confirmation_use_custom_checkout_script": true}'
+        shell: bash
+
