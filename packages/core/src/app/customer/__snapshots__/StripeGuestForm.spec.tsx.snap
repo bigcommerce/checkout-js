@@ -3,20 +3,13 @@
 exports[`StripeGuestForm matches snapshot 1`] = `
 Array [
   <div
-    class="checkout-form"
+    class="checkout-form customer-skeleton"
   >
     <div
-      class="form-legend-container"
+      class="customerEmail-container"
     >
       <div
-        class="address-form-heading-skeleton form-legend optimizedCheckout-headingSecondary"
-      />
-    </div>
-    <div
-      class="address-form-skeleton"
-    >
-      <div
-        class="name-fields-skeleton"
+        class="customerEmail-body"
       >
         <div
           class="skeleton-container"
@@ -26,18 +19,14 @@ Array [
           />
         </div>
         <div
-          class="skeleton-container"
-        >
-          <div
-            class="input-skeleton"
-          />
-        </div>
+          class="button-skeleton skeleton-container subscription-skeleton"
+        />
       </div>
       <div
-        class="skeleton-container"
+        class="customerEmail-action customerEmail-floating--enabled"
       >
         <div
-          class="input-skeleton"
+          class="button-skeleton skeleton-container"
         />
       </div>
     </div>

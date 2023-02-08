@@ -8,7 +8,7 @@ import { TranslatedString } from '../locale';
 import { PrivacyPolicyField } from '../privacyPolicy';
 import { Button, ButtonVariant } from '../ui/button';
 import { BasicFormField, Fieldset, Legend } from '../ui/form';
-import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
+import { CustomerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { GuestFormValues } from './GuestForm';
 import SubscribeField from './SubscribeField';
@@ -169,7 +169,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
 
     return (
         <>
-            <AddressFormSkeleton isLoading={isStripeLoading}/>
+            <CustomerSkeleton isLoading={isStripeLoading}/>
             <div className="checkout-form" style={ {display: isStripeLoading ? 'none' : undefined} }>
                     <Fieldset
                         legend={ !authentication &&
