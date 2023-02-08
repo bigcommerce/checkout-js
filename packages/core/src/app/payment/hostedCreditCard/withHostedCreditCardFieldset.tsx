@@ -178,6 +178,8 @@ export default function withHostedCreditCardFieldset<
                         if (focusedFieldType === fieldType) {
                             setFocusedFieldType(undefined);
                         }
+
+                        setSubmitted(true);
                     },
                     onCardTypeChange: ({ cardType }) => {
                         setFieldValue('hostedForm.cardType', cardType);
