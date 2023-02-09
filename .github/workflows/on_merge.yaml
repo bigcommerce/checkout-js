@@ -94,7 +94,7 @@ jobs:
         run: npm ci
 
       - name: Run unit tests
-        run: npm run test -- --coverage --runInBand
+        run: npx nx run-many --target=test --parallel --all
 
   lint:
     name: Run linter
