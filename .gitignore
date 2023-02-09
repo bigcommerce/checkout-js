@@ -1,5 +1,6 @@
 .idea
 .vscode
+junit.xml
 __temp__
 node_modules
 build

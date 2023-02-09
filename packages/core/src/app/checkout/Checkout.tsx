@@ -248,7 +248,7 @@ class Checkout extends Component<
               false;
             const walletButtonsOnTopFlag =
               (data.getConfig()?.checkoutSettings.features['CHECKOUT-7222.checkout_settings_styling_section'] &&
-              data.getConfig()?.checkoutSettings.CheckoutUserExperienceSettings.walletButtonsOnTop) ??
+              data.getConfig()?.checkoutSettings.checkoutUserExperienceSettings.walletButtonsOnTop) ??
               false;
             const defaultNewsletterSignupOption =
                 data.getConfig()?.shopperConfig.defaultNewsletterSignup ??

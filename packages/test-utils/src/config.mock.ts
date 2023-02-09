@@ -12,6 +12,9 @@ export function getStoreConfig(): StoreConfig {
         },
         checkoutSettings: {
             checkoutBillingSameAsShippingEnabled: true,
+            checkoutUserExperienceSettings: {
+                walletButtonsOnTop: false,
+            },
             enableOrderComments: true,
             enableTermsAndConditions: false,
             googleRecaptchaSitekey: 'sitekey',
