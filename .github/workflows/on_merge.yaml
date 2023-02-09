@@ -31,7 +31,7 @@ jobs:
         elif [ ${{ github.ref }} == 'refs/heads/dev' ]; then
           echo "environment=Dev" >> $GITHUB_OUTPUT
         else
-          echo "Workflow can only be run against the main, stage or dev branches."
+          echo "Workflow can only be run against the master, stage or dev branches."
           exit 1
         fi
 
