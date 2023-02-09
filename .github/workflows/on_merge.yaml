@@ -24,7 +24,7 @@ jobs:
       id: determine-environment
       shell: bash
       run: |
-        if [ ${{ github.ref }} == 'refs/heads/main' ]; then
+        if [ ${{ github.ref }} == 'refs/heads/master' ]; then
           echo "environment=Production" >> $GITHUB_OUTPUT
         elif [ ${{ github.ref }} == 'refs/heads/stage' ]; then
           echo "environment=Staging" >> $GITHUB_OUTPUT
