@@ -34,13 +34,13 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonsListOnTopProps &
   return (
     <div className='wallet-buttons-container'>
       <CheckoutButtonListV1
-      checkEmbeddedSupport={checkEmbeddedSupport}
-      copywritingStringId='remote.start_with_text'
-      deinitialize={checkoutService.deinitializeCustomer}
-      initialize={checkoutService.initializeCustomer}
-      isInitializing={isInitializingCustomer()}
-      methodIds={config.checkoutSettings.remoteCheckoutProviders}
-      onError={onUnhandledError}
+        checkEmbeddedSupport={checkEmbeddedSupport}
+        copywritingStringId='remote.start_with_text'
+        deinitialize={checkoutService.deinitializeCustomer}
+        initialize={checkoutService.initializeCustomer}
+        isInitializing={isInitializingCustomer()}
+        methodIds={config.checkoutSettings.remoteCheckoutProviders}
+        onError={onUnhandledError}
       />
       <div className='checkout-separator'><span><TranslatedString id='remote.or_text' /></span></div>
     </div>
