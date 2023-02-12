@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.288.0](https://github.com/bigcommerce/checkout-js/compare/v1.287.0...v1.288.0) (2023-02-12)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7231 Display wallet buttons at top of checkout ([#1192](https://github.com/bigcommerce/checkout-js/issues/1192)) ([5d709e4](https://github.com/bigcommerce/checkout-js/commit/5d709e4fce7c3ff5fb6088e409d0534f3779fe20))
+
 ## [1.287.0](https://github.com/bigcommerce/checkout-js/compare/v1.286.11...v1.287.0) (2023-02-08)
 
 
