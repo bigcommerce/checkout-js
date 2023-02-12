@@ -411,6 +411,7 @@
             "browser_unsupported": "The selected payment method requires a different web browser. Please choose another payment method.",
             "connection_error": "Connection to remote checkout refused, please try later.",
             "continue_with_text": "Or continue with",
+            "or_text": "or",
             "payment_method_error": "There was an error retrieving your remote payment method. Please try again.",
             "select_different_card_action": "Select a different card",
             "session_error": "Your remote session has expired. Please log in again.",
@@ -419,7 +420,8 @@
             "sign_out_action": "Sign out of {providerName}",
             "sign_out_after_action": "to view other payment methods",
             "sign_in_required_error": "Remote sign in required before payment",
-            "sign_out_before_action": ""
+            "sign_out_before_action": "",
+            "start_with_text": "Check out faster with:"
         },
         "shipping": {
             "cart_change_error": "An update to your shopping cart has been detected and your available shipping costs have been updated. Please re-select a shipping method to continue.",

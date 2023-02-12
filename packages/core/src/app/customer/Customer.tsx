@@ -39,6 +39,7 @@ export interface CustomerProps {
     step: CheckoutStepStatus;
     isEmbedded?: boolean;
     isSubscribed: boolean;
+    isWalletButtonsOnTop: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void;
     onChangeViewType?(viewType: CustomerViewType): void;
     onAccountCreated?(): void;
@@ -171,6 +172,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             isExecutingPaymentMethodCheckout = false,
             isInitializing = false,
             isSubscribed,
+            isWalletButtonsOnTop,
             privacyPolicyUrl,
             requiresMarketingConsent,
             providerWithCustomCheckout,
@@ -178,21 +180,22 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             step,
             useFloatingLabel,
         } = this.props;
+        const checkoutButtons = isWalletButtonsOnTop
+          ? null
+          : <CheckoutButtonList
+            checkEmbeddedSupport={checkEmbeddedSupport}
+            deinitialize={deinitializeCustomer}
+            initialize={initializeCustomer}
+            isInitializing={isInitializing}
+            methodIds={checkoutButtonIds}
+            onError={onUnhandledError}
+          />
 
         return (
             providerWithCustomCheckout === PaymentMethodId.StripeUPE ?
                 <StripeGuestForm
                     canSubscribe={canSubscribe}
-                    checkoutButtons={
-                        <CheckoutButtonList
-                            checkEmbeddedSupport={checkEmbeddedSupport}
-                            deinitialize={deinitializeCustomer}
-                            initialize={initializeCustomer}
-                            isInitializing={isInitializing}
-                            methodIds={checkoutButtonIds}
-                            onError={onUnhandledError}
-                        />
-                    }
+                    checkoutButtons={checkoutButtons}
                     continueAsGuestButtonLabelId="customer.continue"
                     defaultShouldSubscribe={isSubscribed}
                     deinitialize={deinitializeCustomer}
@@ -209,16 +212,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 :
             <GuestForm
                 canSubscribe={canSubscribe}
-                checkoutButtons={
-                    <CheckoutButtonList
-                        checkEmbeddedSupport={checkEmbeddedSupport}
-                        deinitialize={deinitializeCustomer}
-                        initialize={initializeCustomer}
-                        isInitializing={isInitializing}
-                        methodIds={checkoutButtonIds}
-                        onError={onUnhandledError}
-                    />
-                }
+                checkoutButtons={checkoutButtons}
                 continueAsGuestButtonLabelId="customer.continue"
                 defaultShouldSubscribe={isSubscribed}
                 email={this.draftEmail || email}

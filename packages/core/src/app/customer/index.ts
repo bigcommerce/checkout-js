@@ -10,3 +10,4 @@ export {
     PasswordRequirements,
 } from './getPasswordRequirements';
 export { SUPPORTED_METHODS } from './CheckoutButtonList';
+export { default as CheckoutButtonContainer } from './CheckoutButtonContainer';

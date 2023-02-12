@@ -91,3 +91,49 @@
     margin-right: spacing("single");
     width: 100%;
 }
+
+.wallet-buttons-container {
+    margin: spacing('single') 0 spacing('half');
+
+    .checkoutRemote {
+        margin: 0;
+    }
+
+    .checkout-separator {
+        align-items: center;
+        display: flex;
+        height: spacing("half");
+        justify-content: space-between;
+        margin-top: spacing('single');
+        text-align: center;
+        width: 100%;
+
+        span {
+            padding: 0 spacing("half");
+        }
+    }
+
+    .checkout-separator::before,
+    .checkout-separator::after {
+        background-color: color("greys", "light");
+        content: ' ';
+        display: inline-block;
+        flex-grow: 2;
+        height: $container-border-global-size;
+    }
+
+    #googlepayauthorizenetCheckoutButton {
+        flex-grow: 1;
+        margin-right: 0;
+
+        button {
+            border: none;
+            border-radius: $global-radius;
+            height: $wallet-button-height;
+            max-width: $wallet-button-max-width;
+            min-height: 0;
+            min-width: 0;
+            width: 100%;
+        }
+    }
+}

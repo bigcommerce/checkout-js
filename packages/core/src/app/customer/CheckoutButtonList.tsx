@@ -34,6 +34,7 @@ export const SUPPORTED_METHODS: string[] = [
 export interface CheckoutButtonListProps {
     methodIds?: string[];
     isInitializing?: boolean;
+    copywritingStringId?: string;
     checkEmbeddedSupport?(methodIds: string[]): void;
     deinitialize(options: CustomerRequestOptions): void;
     initialize(options: CustomerInitializeOptions): void;
@@ -45,6 +46,7 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
     onError,
     isInitializing = false,
     methodIds,
+    copywritingStringId='remote.continue_with_text',
     ...rest
 }) => {
     const supportedMethodIds = (methodIds ?? []).filter((methodId) => {
@@ -77,7 +79,7 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
         <>
             {!isInitializing && (
                 <p>
-                    <TranslatedString id="remote.continue_with_text" />
+                    <TranslatedString id={copywritingStringId} />
                 </p>
             )}
 
