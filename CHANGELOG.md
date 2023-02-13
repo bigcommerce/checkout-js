@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.290.0](https://github.com/bigcommerce/checkout-js/compare/v1.289.0...v1.290.0) (2023-02-13)
+
+
+### Features
+
+* **payment:** PAYPAL-1837 Create paypalcommercecredit customer button strategy ([6e37a5b](https://github.com/bigcommerce/checkout-js/commit/6e37a5b16a47379733ff54e5434ff4bb41a9604e))
+
 ## [1.289.0](https://github.com/bigcommerce/checkout-js/compare/v1.288.0...v1.289.0) (2023-02-13)
 
 
