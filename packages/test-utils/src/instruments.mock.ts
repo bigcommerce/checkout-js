@@ -5,6 +5,11 @@ import {
     PaymentInstrument,
 } from '@bigcommerce/checkout-sdk';
 
+export enum UntrustedShippingCardVerificationType {
+    CVV = 'cvv',
+    PAN = 'pan',
+}
+
 export function getInstruments(): PaymentInstrument[] {
     return [
         {
@@ -19,6 +24,7 @@ export function getInstruments(): PaymentInstrument[] {
             defaultInstrument: true,
             method: 'card',
             type: 'card',
+            untrustedShippingCardVerificationMode: UntrustedShippingCardVerificationType.PAN,
         },
         {
             bigpayToken: '111',
@@ -32,6 +38,7 @@ export function getInstruments(): PaymentInstrument[] {
             defaultInstrument: false,
             method: 'card',
             type: 'card',
+            untrustedShippingCardVerificationMode: UntrustedShippingCardVerificationType.PAN,
         },
         {
             bigpayToken: '31415',
@@ -91,6 +98,7 @@ export function getCardInstrument(): CardInstrument {
         defaultInstrument: true,
         method: 'card',
         type: 'card',
+        untrustedShippingCardVerificationMode: UntrustedShippingCardVerificationType.PAN,
     };
 }
 

@@ -1,5 +1,7 @@
 import { LineItemMap, PaymentInstrument, PaymentMethod } from '@bigcommerce/checkout-sdk';
 
+import { UntrustedShippingCardVerificationType } from './CardInstrumentFieldset';
+
 export interface IsInstrumentCardCodeRequiredState {
     instrument: PaymentInstrument;
     lineItems: LineItemMap;
@@ -19,6 +21,11 @@ export default function isInstrumentCardCodeRequired({
     // If the shipping address is trusted, show CVV field based on the merchant's configuration
     if (instrument.trustedShippingAddress) {
         return !!paymentMethod.config.isVaultingCvvEnabled;
+    }
+
+    // If the shipping address is untrusted, card verficiation mode has set with cvv, card code is required
+    if ('untrustedShippingCardVerificationMode' in instrument && instrument.untrustedShippingCardVerificationMode === UntrustedShippingCardVerificationType.CVV) {
+        return true;
     }
 
     // Otherwise, if the shipping address is untrusted, show CVV field if the
