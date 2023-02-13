@@ -19,6 +19,7 @@ export const SUPPORTED_METHODS: string[] = [
     'chasepay',
     'masterpass',
     'paypalcommerce',
+    'paypalcommercevenmo',
     'googlepayadyenv2',
     'googlepayadyenv3',
     'googlepayauthorizenet',
