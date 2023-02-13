@@ -16,6 +16,12 @@
         width: remCalc(200px);
     }
 
+    > #applepayCheckoutButton button,
+    > #braintreepaypalcreditCheckoutButton,
+    > #braintreepaypalCheckoutButton {
+        width: 160px;
+    }
+
     > #applepayCheckoutButton button {
         background-color: #000;
         background-image: -webkit-named-image(apple-pay-logo-white);
@@ -24,7 +30,6 @@
         background-size: 100% 60%;
         border-radius: $global-radius;
         height: $wallet-button-height;
-        width: 160px;
     }
 }
 
