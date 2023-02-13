@@ -20,6 +20,7 @@ export const SUPPORTED_METHODS: string[] = [
     'masterpass',
     'paypalcommerce',
     'paypalcommercevenmo',
+    'paypalcommercecredit',
     'googlepayadyenv2',
     'googlepayadyenv3',
     'googlepayauthorizenet',
@@ -110,7 +111,7 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
                         );
                     }
 
-                    if (methodId === 'paypalcommerce') {
+                    if (methodId === 'paypalcommerce' || methodId === 'paypalcommercecredit') {
                         return (
                             <PayPalCommerceButton
                                 containerId={`${methodId}CheckoutButton`}
