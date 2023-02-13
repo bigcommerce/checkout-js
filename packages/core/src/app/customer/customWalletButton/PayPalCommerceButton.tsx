@@ -6,6 +6,7 @@ import { LocaleContext } from '../../locale';
 import CheckoutButton, { CheckoutButtonProps } from '../CheckoutButton';
 
 const PayPalCommerceButton: FunctionComponent<CheckoutButtonProps> = ({
+    methodId,
     initialize,
     onError,
     ...rest
@@ -15,7 +16,7 @@ const PayPalCommerceButton: FunctionComponent<CheckoutButtonProps> = ({
         (options: CustomerInitializeOptions) =>
             initialize({
                 ...options,
-                paypalcommerce: {
+                [methodId]: {
                     container: rest.containerId,
                     onError,
                     onComplete: navigateToOrderConfirmation,
@@ -24,7 +25,7 @@ const PayPalCommerceButton: FunctionComponent<CheckoutButtonProps> = ({
         [initialize, localeContext, onError, rest.containerId],
     );
 
-    return <CheckoutButton initialize={initializeOptions} {...rest} />;
+    return <CheckoutButton initialize={initializeOptions} methodId={methodId} {...rest} />;
 };
 
 export default PayPalCommerceButton;
