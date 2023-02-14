@@ -2,7 +2,7 @@ import { Address, CheckoutSelectors, Consignment, Country, Customer, FormField, 
 import React, { Component, ReactNode } from 'react';
 
 import CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
-import { LoadingOverlay } from '../../ui/loading';
+import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 import ShippingHeader from '../ShippingHeader';
 
 import StripeShippingForm, { SingleShippingFormValues } from './StripeShippingForm';
@@ -76,41 +76,31 @@ class StripeShipping extends Component<StripeShippingProps, StripeShippingState>
             isStripeAutoStep,
         } = this.state;
 
-            return <div className="checkout-form">
-                <div style={ {display: isStripeAutoStep ? 'none' : undefined,} }>
-                    <LoadingOverlay
-                        hideContentWhenLoading
-                        isLoading={ isStripeLoading }
-                    >
-                        <ShippingHeader
-                            isGuest={ isGuest }
-                            isMultiShippingMode={ isMultiShippingMode }
-                            onMultiShippingChange={ onMultiShippingChange }
-                            shouldShowMultiShipping={ shouldShowMultiShipping }
-                        />
-
-                        <LoadingOverlay
-                            isLoading={ isLoading }
-                            unmountContentWhenLoading
-                        >
-                            <StripeShippingForm
-                                { ...shippingFormProps }
-                                deinitialize={deinitialize}
-                                initialize={initialize}
-                                isBillingSameAsShipping={isBillingSameAsShipping}
-                                isLoading={ isLoading }
-                                isMultiShippingMode={isMultiShippingMode}
-                                isStripeAutoStep={this.handleIsAutoStep}
-                                isStripeLoading={this.stripeLoadedCallback}
-                                isShippingMethodLoading={isShippingMethodLoading}
-                                onSubmit={onSubmit}
-                                step={step}
-                                updateAddress={updateAddress}
-                            />
-                        </LoadingOverlay>
-                    </LoadingOverlay>
-                </div>
+        return <>
+            <AddressFormSkeleton isLoading={isStripeAutoStep || isStripeLoading}/>
+            <div className="checkout-form" style={{display: isStripeAutoStep || isStripeLoading ? 'none' : undefined}}>
+                <ShippingHeader
+                    isGuest={isGuest}
+                    isMultiShippingMode={isMultiShippingMode}
+                    onMultiShippingChange={onMultiShippingChange}
+                    shouldShowMultiShipping={shouldShowMultiShipping}
+                />
+                <StripeShippingForm
+                    {...shippingFormProps}
+                    deinitialize={deinitialize}
+                    initialize={initialize}
+                    isBillingSameAsShipping={isBillingSameAsShipping}
+                    isLoading={isLoading}
+                    isMultiShippingMode={isMultiShippingMode}
+                    isStripeAutoStep={this.handleIsAutoStep}
+                    isStripeLoading={this.stripeLoadedCallback}
+                    isShippingMethodLoading={isShippingMethodLoading}
+                    onSubmit={onSubmit}
+                    step={step}
+                    updateAddress={updateAddress}
+                />
             </div>
+        </>;
     }
 
     private stripeLoadedCallback: () => void = () => {

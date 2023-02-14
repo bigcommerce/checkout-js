@@ -3,76 +3,94 @@
 exports[`StripeGuestForm matches snapshot 1`] = `
 Array [
   <div
-    class="checkout-form"
+    class="checkout-form customer-skeleton"
   >
     <div
-      class="loadingSpinner loadingOverlay-container"
-      style="height:100px"
+      class="customerEmail-container"
     >
       <div
-        class="loadingOverlay optimizedCheckout-overlay"
-      />
-    </div>
-    <div
-      style="display:none"
-    >
-      <fieldset
-        class="form-fieldset"
+        class="customerEmail-body"
       >
-        <legend
-          class="form-legend is-srOnly"
-        />
         <div
-          class="form-body"
+          class="skeleton-container"
         >
           <div
-            class="customerEmail-container"
+            class="input-skeleton"
+          />
+        </div>
+        <div
+          class="button-skeleton skeleton-container subscription-skeleton"
+        />
+      </div>
+      <div
+        class="customerEmail-action customerEmail-floating--enabled"
+      >
+        <div
+          class="button-skeleton skeleton-container"
+        />
+      </div>
+    </div>
+  </div>,
+  <div
+    class="checkout-form"
+    style="display:none"
+  >
+    <fieldset
+      class="form-fieldset"
+    >
+      <legend
+        class="form-legend is-srOnly"
+      />
+      <div
+        class="form-body"
+      >
+        <div
+          class="customerEmail-container"
+        >
+          <div
+            class="customerEmail-body"
           >
             <div
-              class="customerEmail-body"
-            >
-              <div
-                id="stripeupeLink"
-              />
-              <br />
-              <div
-                class="form-field"
-              >
-                <input
-                  class="form-checkbox"
-                  id="shouldSubscribe"
-                  name="shouldSubscribe"
-                  type="checkbox"
-                  value="false"
-                />
-                <label
-                  class="form-label optimizedCheckout-form-label"
-                  for="shouldSubscribe"
-                />
-              </div>
-            </div>
+              id="stripeupeLink"
+            />
+            <br />
             <div
-              class="form-actions customerEmail-action"
+              class="form-field"
             >
-              <button
-                class="button stripeCustomerEmail-button button--primary optimizedCheckout-buttonPrimary"
-                data-test="stripe-customer-continue-as-guest-button"
-                disabled=""
-                id="stripe-checkout-customer-continue"
-                type="submit"
+              <input
+                class="form-checkbox"
+                id="shouldSubscribe"
+                name="shouldSubscribe"
+                type="checkbox"
+                value="false"
+              />
+              <label
+                class="form-label optimizedCheckout-form-label"
+                for="shouldSubscribe"
               />
             </div>
           </div>
-          <p>
-             
-            <a
-              data-test="customer-continue-button"
-              id="checkout-customer-login"
+          <div
+            class="form-actions customerEmail-action"
+          >
+            <button
+              class="button stripeCustomerEmail-button button--primary optimizedCheckout-buttonPrimary"
+              data-test="stripe-customer-continue-as-guest-button"
+              disabled=""
+              id="stripe-checkout-customer-continue"
+              type="submit"
             />
-          </p>
+          </div>
         </div>
-      </fieldset>
-    </div>
+        <p>
+           
+          <a
+            data-test="customer-continue-button"
+            id="checkout-customer-login"
+          />
+        </p>
+      </div>
+    </fieldset>
   </div>,
   <div
     class="optimizedCheckout-form-input"

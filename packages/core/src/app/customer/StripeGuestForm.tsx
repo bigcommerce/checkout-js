@@ -8,7 +8,7 @@ import { TranslatedString } from '../locale';
 import { PrivacyPolicyField } from '../privacyPolicy';
 import { Button, ButtonVariant } from '../ui/button';
 import { BasicFormField, Fieldset, Legend } from '../ui/form';
-import { LoadingOverlay } from '../ui/loading';
+import { CustomerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { GuestFormValues } from './GuestForm';
 import SubscribeField from './SubscribeField';
@@ -110,9 +110,9 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
         if (parentContainer) {
             return getAppliedStyles(parentContainer, properties);
         }
- 
+
             return undefined;
-        
+
     };
 
     const containerId = 'stripe-card-component-field';
@@ -169,11 +169,8 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
 
     return (
         <>
-            <div className="checkout-form">
-                <LoadingOverlay
-                    hideContentWhenLoading
-                    isLoading={ isStripeLoading }
-                >
+            <CustomerSkeleton isLoading={isStripeLoading}/>
+            <div className="checkout-form" style={ {display: isStripeLoading ? 'none' : undefined} }>
                     <Fieldset
                         legend={ !authentication &&
                             <Legend hidden>
@@ -225,7 +222,6 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                         }
                         { !authentication && checkoutButtons }
                     </Fieldset>
-                </LoadingOverlay>
             </div>
             { renderCheckoutThemeStylesForStripeUPE() }
         </>
