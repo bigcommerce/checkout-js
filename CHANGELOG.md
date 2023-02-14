@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.291.0](https://github.com/bigcommerce/checkout-js/compare/v1.290.0...v1.291.0) (2023-02-14)
+
+
+### Features
+
+* **payment:** STRIPE-280 change type of skeleton for stripeGuestForm ([653780d](https://github.com/bigcommerce/checkout-js/commit/653780d1fc2e267e0a7c5edaef45ff50163351e4))
+* **payment:** STRIPE-280 pengs feedback ([7ef5929](https://github.com/bigcommerce/checkout-js/commit/7ef59292643b71df839389cd7714806502712814))
+* **payment:** STRIPE-280 using addressFormSkeleton instead spinner for stripeLink components ([32a2636](https://github.com/bigcommerce/checkout-js/commit/32a2636d5603e068b11cfabbaa1ac219589bdd3e))
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-7291 Add ApplePay button style ([#1196](https://github.com/bigcommerce/checkout-js/issues/1196)) ([dd1216d](https://github.com/bigcommerce/checkout-js/commit/dd1216d348d2b044c8afdb348c8c8d3b9b3cfd98))
+
 ## [1.290.0](https://github.com/bigcommerce/checkout-js/compare/v1.289.0...v1.290.0) (2023-02-13)
 
 
