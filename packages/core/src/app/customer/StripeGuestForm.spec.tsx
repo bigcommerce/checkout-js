@@ -195,4 +195,29 @@ describe('StripeGuestForm', () => {
 
         expect(component.find('[data-test="customer-continue-button"]').text()).not.toBe('Continue as guest');
     });
+
+    it('shows different className button if floating Label experiment is off', () => {
+        const component = mount(
+            <TestComponent
+                continueAsGuestButtonLabelId="customer.continue"
+            />
+        );
+
+        expect(component.find('[data-test="stripe-customer-continue-as-guest-button"]').hasClass('stripeCustomerEmail-button')).toBe(true);
+        expect(component.find('[data-test="stripe-customer-continue-as-guest-button"]').hasClass('stripeCustomerEmail-button--withFloatingLabels')).toBe(false);
+
+    });
+
+    it('shows different className button if floating Label experiment is on', () => {
+        const component = mount(
+            <TestComponent
+                continueAsGuestButtonLabelId="customer.continue"
+                useFloatingLabel={true}
+            />
+        );
+
+        expect(component.find('[data-test="stripe-customer-continue-as-guest-button"]').hasClass('stripeCustomerEmail-button--withFloatingLabels')).toBe(true);
+        expect(component.find('[data-test="stripe-customer-continue-as-guest-button"]').hasClass('stripeCustomerEmail-button')).toBe(false);
+
+    });
 });
