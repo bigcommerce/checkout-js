@@ -49,9 +49,15 @@
 }
 
 .stripeCustomerEmail-button {
+    @extend .customerEmail-button;
+
     bottom: 3px;
-    padding: $customerEmail-button-padding;
-    width: 100%;
+
+    &--withFloatingLabels {
+        @extend .customerEmail-button;
+
+        bottom: 23px;
+    }
 }
 
 // Customer header

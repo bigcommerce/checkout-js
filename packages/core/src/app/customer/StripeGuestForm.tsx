@@ -2,13 +2,14 @@ import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/
 import { FieldProps, FormikProps, withFormik } from 'formik';
 import React, { FunctionComponent, memo, ReactNode, useCallback, useEffect, useState } from 'react';
 
+import { CustomerSkeleton } from '@bigcommerce/checkout/ui';
+
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { getAppliedStyles } from '../common/dom';
 import { TranslatedString } from '../locale';
 import { PrivacyPolicyField } from '../privacyPolicy';
 import { Button, ButtonVariant } from '../ui/button';
 import { BasicFormField, Fieldset, Legend } from '../ui/form';
-import { CustomerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { GuestFormValues } from './GuestForm';
 import SubscribeField from './SubscribeField';
@@ -23,6 +24,7 @@ export interface StripeGuestFormProps {
     requiresMarketingConsent: boolean;
     defaultShouldSubscribe: boolean;
     privacyPolicyUrl?: string;
+    useFloatingLabel?: boolean;
     onChangeEmail(email: string): void;
     onContinueAsGuest(data: GuestFormValues): void;
     deinitialize(options: CustomerRequestOptions): void;
@@ -43,6 +45,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
     requiresMarketingConsent,
     privacyPolicyUrl,
     step,
+    useFloatingLabel,
 }) => {
 
     const [continueAsAGuestButton, setContinueAsAGuestButton] = useState(true);
@@ -165,6 +168,8 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
         requiresMarketingConsent,
     ]);
 
+    const continueButtonClassName = useFloatingLabel ? 'stripeCustomerEmail-button--withFloatingLabels' : 'stripeCustomerEmail-button';
+
     const buttonText = authentication && !isNewAuth? 'customer.continue_as_stripe_customer_action' : continueAsGuestButtonLabelId;
 
     return (
@@ -194,7 +199,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
 
                             <div className="form-actions customerEmail-action">
                                 { (!authentication || (authentication && !isNewAuth )) && <Button
-                                    className="stripeCustomerEmail-button"
+                                    className= { continueButtonClassName }
                                     disabled={ continueAsAGuestButton }
                                     id="stripe-checkout-customer-continue"
                                     isLoading={ isLoading }
