@@ -109,20 +109,21 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
 
     const handleStripeShippingAddress = useCallback(async (shipping: StripeShippingEvent) => {
         const {complete, phoneFieldRequired, value: { address = { country: '', state: '', line1: '', line2: '', city: '', postal_code: '' }
-            , name = '', phone = '' } } = shipping;
+            , name = '', firstName = '', lastName = '', phone = '' } } = shipping;
 
         if (complete) {
             if (shouldShowContent(shipping?.isNewAddress, phoneFieldRequired, phone)) {
                 handleLoading();
             }
 
-            const names = name.split(' ');
+            const names = name?.split(' ');
+
             // @ts-ignore
             const country = availableShippingList?.find(country => country.code === address.country).name;
             const state = StripeStateMapper(address.country, address.state);
             const shippingValue = {
-                firstName: names[0],
-                lastName: names[1] || ' ',
+                firstName: firstName || names[0],
+                lastName: lastName || names[1],
                 company: '',
                 address1: address.line1,
                 address2: address.line2 || '',

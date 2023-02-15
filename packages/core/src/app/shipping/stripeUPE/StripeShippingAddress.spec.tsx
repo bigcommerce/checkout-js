@@ -65,7 +65,7 @@ describe('StripeShippingAddress Component', () => {
                 hasPostalCodes: true,
                 subdivisions: [{code: 'bar', name: 'foo' }],
                 requiresState: true,
-                }],
+            }],
             onAddressSelect: jest.fn(),
             initialize: jest.fn(),
             deinitialize: jest.fn(),
@@ -128,8 +128,8 @@ describe('StripeShippingAddress Component', () => {
                 const { getStyles = noop, onChangeShipping = noop} = options.stripeupe || {};
 
                 onChangeShipping({
-                    ...stripeEvent,
-                    value: { ...stripeEvent.value, address: { ...stripeEvent.value.address, line2: 'string' } },
+                        ...stripeEvent,
+                        value: { ...stripeEvent.value, address: { ...stripeEvent.value.address, line2: 'string' } },
                     }
                 );
                 getStyles();
@@ -199,8 +199,8 @@ describe('StripeShippingAddress Component', () => {
                 const { getStyles = noop, onChangeShipping = noop} = options.stripeupe || {};
 
                 onChangeShipping({
-                    ...stripeEvent,
-                    value: { ...stripeEvent.value, name: 'cosme' },
+                        ...stripeEvent,
+                        value: { ...stripeEvent.value, name: 'cosme' },
                     }
                 );
                 getStyles();
@@ -234,9 +234,9 @@ describe('StripeShippingAddress Component', () => {
                 const { getStyles = noop, onChangeShipping = noop} = options.stripeupe || {};
 
                 onChangeShipping({
-                    ...stripeEvent,
-                    phoneFieldRequired: true,
-                    value: { ...stripeEvent.value, phone: '+523333333333' },
+                        ...stripeEvent,
+                        phoneFieldRequired: true,
+                        value: { ...stripeEvent.value, phone: '+523333333333' },
                     }
                 );
                 getStyles();
@@ -270,7 +270,45 @@ describe('StripeShippingAddress Component', () => {
                 const { getStyles = noop, onChangeShipping = noop} = options.stripeupe || {};
 
                 onChangeShipping({
-                    ...stripeEvent,
+                        ...stripeEvent,
+                    }
+                );
+                getStyles();
+
+                return Promise.resolve(checkoutService.getState());
+            });
+
+            const stripeProps = {...defaultProps, isStripeLinkEnabled: true, customerEmail: ''};
+            const component = mount(
+                <Formik
+                    initialValues={ {} }
+                    onSubmit={ noop }
+                >
+                    <StripeShippingAddress { ...stripeProps } />
+                </Formik>
+            );
+
+            expect(component.find(StripeShippingAddressDisplay).props()).toEqual(
+                expect.objectContaining({
+                    methodId: 'stripeupe',
+                    deinitialize: defaultProps.deinitialize,
+                })
+            );
+
+            expect(defaultProps.initialize).toHaveBeenCalled();
+            expect(defaultProps.onAddressSelect).toHaveBeenCalled();
+        });
+
+        it('renders StripeShippingAddress with initialize props with split name', async () => {
+            defaultProps.initialize = jest.fn((options) => {
+                const {getStyles = noop, onChangeShipping = noop} = options.stripeupe || {};
+
+                onChangeShipping({
+                        ...stripeEvent,
+                        value: {...stripeEvent.value, firstName: 'cosme', lastName: 'Fulanito'},
+                        display: {
+                            name: 'split',
+                        },
                     }
                 );
                 getStyles();
