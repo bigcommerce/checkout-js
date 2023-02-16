@@ -1,3 +1,4 @@
+// TODO: Remove this component after May, 2023
 import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';

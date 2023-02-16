@@ -92,11 +92,163 @@
     width: 100%;
 }
 
-.wallet-buttons-container {
-    margin: spacing('single') 0 spacing('half');
+// Button Width Function
+//
+// -----------------------------------------------------------------------------
+$buttonWidthMap: (
+    single:                     span $wallet-button-track-size,
+    half:                       span $wallet-button-track-size / 2,
+    third:                      span $wallet-button-track-size / 3,
+    quarter:                    span $wallet-button-track-size / 4
+);
+
+@function buttonWidth($key) {
+
+    @if map-has-key($buttonWidthMap, $key) {
+        @return map-get($buttonWidthMap, $key);
+    }
+
+    @warn "Unknown `#{$key}` in $buttonWidthMap.";
+    @return null;
+}
+
+// Top Wallet Buttons Container
+//
+// -----------------------------------------------------------------------------
+
+.checkout-buttons-container {
+    margin: spacing('double') 0 0;
+
+    .testingToolbox {
+        border-bottom: 1px solid color("greys", "light");
+        margin-bottom: spacing('single');
+        padding: spacing('single') 0;
+
+        .stepHeader-title {
+            margin-bottom: spacing('single');
+            margin-left: 0;
+        }
+
+        span {
+            cursor: pointer;
+        }
+    }
 
     .checkoutRemote {
+        display: grid;
+        grid-gap: 8px;
+        grid-template-columns: repeat($wallet-button-track-size, 1fr);
         margin: 0;
+
+        > div {
+            height: $wallet-button-height;
+            margin-right: 0;
+        }
+
+        .AmazonPayContainer,
+        > #applepayCheckoutButton button,
+        button.gpay-button,
+        > #braintreepaypalcreditCheckoutButton,
+        > #braintreepaypalCheckoutButton {
+            width: 100%;
+        }
+
+        button.gpay-button.black.short.new_style {
+            background-size: auto;
+            border: none;
+            border-radius: $global-radius;
+            height: $wallet-button-height;
+            min-height: 0;
+            min-width: 0;
+        }
+    }
+
+    .checkout-buttons--1 {
+        .checkoutRemote {
+            display: block;
+
+            > div {
+                max-width: $wallet-button-max-width;
+            }
+        }
+    }
+
+    .checkout-buttons--2 {
+        .checkoutRemote > div {
+            grid-column: buttonWidth('half');
+        }
+    }
+
+    .checkout-buttons--3 {
+        .checkoutRemote > div:nth-child(1) {
+            grid-column: buttonWidth('single');
+
+            @include breakpoint("small") {
+                grid-column: buttonWidth('third');
+            }
+        }
+
+        .checkoutRemote > div:nth-child(n + 2) {
+            grid-column: buttonWidth('half');
+
+            @include breakpoint("small") {
+                grid-column: buttonWidth('third');
+            }
+        }
+    }
+
+    .checkout-buttons--4 {
+        .checkoutRemote > div {
+            grid-column: buttonWidth('half');
+
+            @include breakpoint("medium") {
+                grid-column: buttonWidth('quarter');
+            }
+
+            @include breakpoint("large") {
+                grid-column: buttonWidth('half');
+            }
+
+            @include breakpoint("xlarge") {
+                grid-column: buttonWidth('quarter');
+            }
+        }
+    }
+
+    .checkout-buttons--5 {
+        .checkoutRemote > div:nth-child(1) {
+            grid-column: buttonWidth('single');
+
+            @include breakpoint("small") {
+                grid-column: buttonWidth('half');
+            }
+        }
+
+        .checkoutRemote > div:nth-child(2) {
+            grid-column: buttonWidth('half');
+
+            @include breakpoint("small") {
+                grid-column: buttonWidth('half');
+            }
+        }
+
+        .checkoutRemote > div:nth-child(n + 3) {
+            grid-column: buttonWidth('half');
+
+            @include breakpoint("small") {
+                grid-column: buttonWidth('third');
+            }
+        }
+    }
+
+    .checkout-buttons--n {
+        .checkoutRemote > div {
+            grid-column: buttonWidth('half');
+
+            @include breakpoint("small") {
+                grid-column: buttonWidth('third');
+            }
+        }
     }
 
     .checkout-separator {
@@ -104,7 +256,7 @@
         display: flex;
         height: spacing("half");
         justify-content: space-between;
-        margin-top: spacing('single');
+        margin-top: spacing('double');
         text-align: center;
         width: 100%;
 
@@ -122,18 +274,13 @@
         height: $container-border-global-size;
     }
 
-    #googlepayauthorizenetCheckoutButton {
-        flex-grow: 1;
-        margin-right: 0;
-
-        button {
+    .checkoutRemote.customer-skeleton {
+        .skeleton-container {
+            background-color: color("greys", "lightest");
             border: none;
-            border-radius: $global-radius;
             height: $wallet-button-height;
-            max-width: $wallet-button-max-width;
-            min-height: 0;
-            min-width: 0;
-            width: 100%;
+            margin-bottom: 0;
+            padding: 0;
         }
     }
 }

@@ -411,7 +411,7 @@
             "browser_unsupported": "The selected payment method requires a different web browser. Please choose another payment method.",
             "connection_error": "Connection to remote checkout refused, please try later.",
             "continue_with_text": "Or continue with",
-            "or_text": "or",
+            "or_text": "OR",
             "payment_method_error": "There was an error retrieving your remote payment method. Please try again.",
             "select_different_card_action": "Select a different card",
             "session_error": "Your remote session has expired. Please log in again.",

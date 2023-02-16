@@ -36,11 +36,21 @@ export const SUPPORTED_METHODS: string[] = [
 export interface CheckoutButtonListProps {
     methodIds?: string[];
     isInitializing?: boolean;
-    copywritingStringId?: string;
+    hideText?: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void;
     deinitialize(options: CustomerRequestOptions): void;
     initialize(options: CustomerInitializeOptions): void;
     onError?(error: Error): void;
+}
+
+export const filterUnsupportedMethodIds = (methodIds:string[]):string[] => {
+    return (methodIds).filter((methodId) => {
+        if (methodId === APPLE_PAY && !isApplePayWindow(window)) {
+            return false;
+        }
+
+        return SUPPORTED_METHODS.indexOf(methodId) !== -1;
+    });
 }
 
 const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
@@ -48,16 +58,10 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
     onError,
     isInitializing = false,
     methodIds,
-    copywritingStringId='remote.continue_with_text',
+    hideText = false,
     ...rest
 }) => {
-    const supportedMethodIds = (methodIds ?? []).filter((methodId) => {
-        if (methodId === APPLE_PAY && !isApplePayWindow(window)) {
-            return false;
-        }
-
-        return SUPPORTED_METHODS.indexOf(methodId) !== -1;
-    });
+    const supportedMethodIds = filterUnsupportedMethodIds(methodIds ?? []);
 
     if (supportedMethodIds.length === 0) {
         return null;
@@ -79,9 +83,9 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
 
     return (
         <>
-            {!isInitializing && (
+            {!isInitializing && !hideText && (
                 <p>
-                    <TranslatedString id={copywritingStringId} />
+                    <TranslatedString id={'remote.continue_with_text'} />
                 </p>
             )}
 
