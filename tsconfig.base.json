@@ -22,6 +22,9 @@
         "packages/apple-pay-integration/src/index.ts"
       ],
       "@bigcommerce/checkout/barclay-integration": ["packages/barclay-integration/src/index.ts"],
+      "@bigcommerce/checkout/bluesnap-direct-integration": [
+        "packages/bluesnap-direct-integration/src/index.ts"
+      ],
       "@bigcommerce/checkout/braintree-integration": [
         "packages/braintree-integration/src/index.ts"
       ],

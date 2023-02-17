@@ -12,6 +12,7 @@
 /packages/workspace-tools @bigcommerce/checkout
 
 # Apex integrations
+/packages/bluesnap-direct-integration @bigcommerce/apex-leads
 /packages/google-pay-integration @bigcommerce/apex-leads
 /packages/core/payment/paymentMethod/AffirmPaymentMethod.tsx @bigcommerce/apex-leads
 /packages/core/payment/paymentMethod/AmazonPaymentMethod.tsx @bigcommerce/apex-leads
