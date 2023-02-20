@@ -26,11 +26,11 @@ import { retry } from '../common/utility';
 import {
     CheckoutButtonContainer,
     CheckoutSuggestion,
+    Customer,
     CustomerInfo,
     CustomerSignOutEvent,
     CustomerViewType,
 } from '../customer';
-import Customer from '../customer/Customer';
 import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
 import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 import { PromotionBannerList } from '../promotion';
