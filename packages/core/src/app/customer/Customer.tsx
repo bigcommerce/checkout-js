@@ -117,7 +117,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
         this.draftEmail = email;
 
         try {
-            if (providerWithCustomCheckout !== PaymentMethodId.StripeUPE) {
+            if (providerWithCustomCheckout && providerWithCustomCheckout !== PaymentMethodId.StripeUPE) {
                 await initializeCustomer({methodId: providerWithCustomCheckout});
             }
         } catch (error) {
@@ -189,7 +189,11 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             isInitializing={isInitializing}
             methodIds={checkoutButtonIds}
             onError={onUnhandledError}
-          />
+          />;
+
+        const isLoadingGuestForm = isWalletButtonsOnTop ?
+            isContinuingAsGuest :
+            isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout;
 
         return (
             providerWithCustomCheckout === PaymentMethodId.StripeUPE ?
@@ -216,9 +220,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 continueAsGuestButtonLabelId="customer.continue"
                 defaultShouldSubscribe={isSubscribed}
                 email={this.draftEmail || email}
-                isLoading={
-                    isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout
-                }
+                isLoading={isLoadingGuestForm}
                 onChangeEmail={this.handleChangeEmail}
                 onContinueAsGuest={this.handleContinueAsGuest}
                 onShowLogin={this.handleShowLogin}
@@ -465,6 +467,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
     private handleChangeEmail: (email: string) => void = (email) => {
         const { analyticsTracker } = this.props;
+
         this.draftEmail = email;
         analyticsTracker.customerEmailEntry(email);
     };
@@ -495,6 +498,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
     private checkoutPaymentMethodExecuted(payload?: CheckoutPaymentMethodExecutedOptions) {
         const { analyticsTracker } = this.props;
+
         analyticsTracker.customerPaymentMethodExecuted(payload);
     }
 }

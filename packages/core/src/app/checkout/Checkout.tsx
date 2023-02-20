@@ -16,7 +16,7 @@ import { find, findIndex } from 'lodash';
 import React, { Component, lazy, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
-import { AddressFormSkeleton, ChecklistSkeleton, CustomerSkeleton } from '@bigcommerce/checkout/ui';
+import { AddressFormSkeleton, ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
 import { StaticBillingAddress } from '../billing';
@@ -30,6 +30,7 @@ import {
     CustomerSignOutEvent,
     CustomerViewType,
 } from '../customer';
+import Customer from '../customer/Customer';
 import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
 import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 import { PromotionBannerList } from '../promotion';
@@ -72,16 +73,6 @@ const CartSummaryDrawer = lazy(() =>
             import(
                 /* webpackChunkName: "cart-summary-drawer" */
                 '../cart/CartSummaryDrawer'
-            ),
-    ),
-);
-
-const Customer = lazy(() =>
-    retry(
-        () =>
-            import(
-                /* webpackChunkName: "customer" */
-                '../customer/Customer'
             ),
     ),
 );
@@ -326,8 +317,8 @@ class Checkout extends Component<
                     <PromotionBannerList promotions={promotions} />
 
                     {isWalletButtonsOnTop && <CheckoutButtonContainer
-                      checkEmbeddedSupport={this.checkEmbeddedSupport}
-                      onUnhandledError={this.handleUnhandledError}
+                        checkEmbeddedSupport={this.checkEmbeddedSupport}
+                        onUnhandledError={this.handleUnhandledError}
                     />}
 
                     <ol className="checkout-steps">
@@ -392,25 +383,23 @@ class Checkout extends Component<
                     />
                 }
             >
-                <LazyContainer loadingSkeleton={<CustomerSkeleton />}>
-                    <Customer
-                        checkEmbeddedSupport={this.checkEmbeddedSupport}
-                        isEmbedded={isEmbedded()}
-                        isSubscribed={isSubscribed}
-                        isWalletButtonsOnTop = {isWalletButtonsOnTop}
-                        onAccountCreated={this.navigateToNextIncompleteStep}
-                        onChangeViewType={this.setCustomerViewType}
-                        onContinueAsGuest={this.navigateToNextIncompleteStep}
-                        onContinueAsGuestError={this.handleError}
-                        onReady={this.handleReady}
-                        onSignIn={this.navigateToNextIncompleteStep}
-                        onSignInError={this.handleError}
-                        onSubscribeToNewsletter={this.handleNewsletterSubscription}
-                        onUnhandledError={this.handleUnhandledError}
-                        step={step}
-                        viewType={customerViewType}
-                    />
-                </LazyContainer>
+                <Customer
+                    checkEmbeddedSupport={this.checkEmbeddedSupport}
+                    isEmbedded={isEmbedded()}
+                    isSubscribed={isSubscribed}
+                    isWalletButtonsOnTop = {isWalletButtonsOnTop}
+                    onAccountCreated={this.navigateToNextIncompleteStep}
+                    onChangeViewType={this.setCustomerViewType}
+                    onContinueAsGuest={this.navigateToNextIncompleteStep}
+                    onContinueAsGuestError={this.handleError}
+                    onReady={this.handleReady}
+                    onSignIn={this.navigateToNextIncompleteStep}
+                    onSignInError={this.handleError}
+                    onSubscribeToNewsletter={this.handleNewsletterSubscription}
+                    onUnhandledError={this.handleUnhandledError}
+                    step={step}
+                    viewType={customerViewType}
+                />
             </CheckoutStep>
         );
     }
