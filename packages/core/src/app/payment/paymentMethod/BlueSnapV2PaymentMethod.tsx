@@ -62,10 +62,10 @@ const BlueSnapV2PaymentMethod: FunctionComponent<BlueSnapV2PaymentMethodProps> =
 
     const appendPaymentPageContent = useCallback(() => {
         if (ref.current.paymentPageContentRef.current && paymentPageContent) {
-            ref.current.paymentPageContentRef.current.appendChild(paymentPageContent);
             paymentPageContent.addEventListener('load', () => {
                 setisLoadingIframe(false);
             });
+            ref.current.paymentPageContentRef.current.appendChild(paymentPageContent);
         }
     }, [paymentPageContent]);
 
