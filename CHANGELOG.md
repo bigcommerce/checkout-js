@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.292.1](https://github.com/bigcommerce/checkout-js/compare/v1.292.0...v1.292.1) (2023-02-21)
+
+
+### Bug Fixes
+
+* **payment:** INT-7522 SquareV2: Disable submit only if payment data is required ([4eeabd7](https://github.com/bigcommerce/checkout-js/commit/4eeabd7d0abf312ad0754a261616f6fde90aebfe))
+
 ## [1.292.0](https://github.com/bigcommerce/checkout-js/compare/v1.291.4...v1.292.0) (2023-02-21)
 
 
