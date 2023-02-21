@@ -1,4 +1,5 @@
 import { Instrument, LineItemMap } from '@bigcommerce/checkout-sdk';
+import { UntrustedShippingCardVerificationType } from './CardInstrumentFieldset';
 
 export interface IsInstrumentCardNumberRequiredState {
     lineItems: LineItemMap;
@@ -13,5 +14,9 @@ export default function isInstrumentCardNumberRequired({
         return false;
     }
 
-    return !instrument.trustedShippingAddress;
+    if (instrument.trustedShippingAddress) {
+        return false;
+    }  
+    
+    return !(instrument.untrustedShippingCardVerificationMode === UntrustedShippingCardVerificationType.CVV);
 }

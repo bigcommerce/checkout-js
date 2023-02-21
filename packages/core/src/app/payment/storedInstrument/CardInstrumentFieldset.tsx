@@ -19,6 +19,11 @@ export interface CardInstrumentFieldsetProps {
     onUseNewInstrument(): void;
 }
 
+export enum UntrustedShippingCardVerificationType {
+    CVV = 'cvv',
+    PAN = 'pan'
+}
+
 const CardInstrumentFieldset: FunctionComponent<CardInstrumentFieldsetProps> = ({
     instruments,
     onDeleteInstrument,
