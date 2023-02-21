@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.292.0](https://github.com/bigcommerce/checkout-js/compare/v1.291.4...v1.292.0) (2023-02-21)
+
+
+### Features
+
+* **payment:** PAYMENTS-8493 check untrustedCardVerificationMode before generating card code and card number component ([a8992b2](https://github.com/bigcommerce/checkout-js/commit/a8992b21c04a7d464eb91cd1bb5187735859c20c))
+
 ### [1.291.4](https://github.com/bigcommerce/checkout-js/compare/v1.291.3...v1.291.4) (2023-02-20)
 
 ### [1.291.3](https://github.com/bigcommerce/checkout-js/compare/v1.291.2...v1.291.3) (2023-02-17)
