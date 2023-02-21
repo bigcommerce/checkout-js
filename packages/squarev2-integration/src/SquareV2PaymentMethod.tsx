@@ -16,7 +16,11 @@ const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 }) => {
     const [disabled, setDisabled] = useState(true);
 
-    useEffect(() => paymentForm.disableSubmit(method, disabled), [disabled, method, paymentForm]);
+    useEffect(() => {
+        const { isPaymentDataRequired } = checkoutState.data;
+
+        paymentForm.disableSubmit(method, isPaymentDataRequired() && disabled);
+    }, [checkoutState, disabled, method, paymentForm]);
 
     const onValidationChange = useCallback(
         (isValid: boolean) => setDisabled(!isValid),
