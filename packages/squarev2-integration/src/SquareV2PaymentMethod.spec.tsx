@@ -42,6 +42,7 @@ describe('SquareV2 payment method', () => {
             .spyOn(checkoutService, 'deinitializePayment')
             .mockResolvedValue(checkoutState);
         checkoutState = checkoutService.getState();
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
         props = {
             method: getSquareV2(),
             checkoutService,
