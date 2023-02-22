@@ -119,24 +119,9 @@ $buttonWidthMap: (
 .checkout-buttons-container {
     margin: spacing('double') 0 0;
 
-    .testingToolbox {
-        border-bottom: 1px solid color("greys", "light");
-        margin-bottom: spacing('single');
-        padding: spacing('single') 0;
-
-        .stepHeader-title {
-            margin-bottom: spacing('single');
-            margin-left: 0;
-        }
-
-        span {
-            cursor: pointer;
-        }
-    }
-
     .checkoutRemote {
         display: grid;
-        grid-gap: 8px;
+        grid-gap: $floating-form-field-spacing;
         grid-template-columns: repeat($wallet-button-track-size, 1fr);
         margin: 0;
 

@@ -378,7 +378,7 @@ class Checkout extends Component<
                     checkEmbeddedSupport={this.checkEmbeddedSupport}
                     isEmbedded={isEmbedded()}
                     isSubscribed={isSubscribed}
-                    isWalletButtonsOnTop = {isWalletButtonsOnTop}
+                    isWalletButtonsOnTop = {isShowingWalletButtonsOnTop }
                     onAccountCreated={this.navigateToNextIncompleteStep}
                     onChangeViewType={this.setCustomerViewType}
                     onContinueAsGuest={this.navigateToNextIncompleteStep}
