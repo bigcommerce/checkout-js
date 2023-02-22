@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.293.0](https://github.com/bigcommerce/checkout-js/compare/v1.292.1...v1.293.0) (2023-02-22)
+
+
+### Features
+
+* **common:** CHECKOUT-7234 Remove loading for customer guest form ([#1204](https://github.com/bigcommerce/checkout-js/issues/1204)) ([5a8f1ec](https://github.com/bigcommerce/checkout-js/commit/5a8f1ece2d4e07b807a26a0028a11d1c3fd17cdb))
+
 ### [1.292.1](https://github.com/bigcommerce/checkout-js/compare/v1.292.0...v1.292.1) (2023-02-21)
 
 
