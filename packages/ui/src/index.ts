@@ -16,6 +16,8 @@ export {
     Label,
     Legend,
     Input,
+    Select,
+    SelectInput,
     TextInput,
     TextInputIframeContainer,
 } from './form';

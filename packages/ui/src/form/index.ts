@@ -5,6 +5,8 @@ export { Fieldset } from './Fieldset';
 export { FormField } from './FormField';
 export { Input } from './Input';
 export { Legend } from './Legend';
+export { Select } from './Select';
+export { SelectInput } from './SelectInput';
 export { TextArea } from './TextArea';
 export { TextInput } from './TextInput';
 export { TextInputIframeContainer } from './TextInputIframeContainer';
