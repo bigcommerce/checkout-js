@@ -193,13 +193,12 @@ const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     }, [deinitializePayment, initializePayment]);
 
     return (
-        <LoadingOverlay
-            hideContentWhenLoading
-            isLoading={checkoutState.statuses.isInitializingPayment(method.id)}
-        >
-            {renderPlaceholderFields()}
-            <div id={containerId} />
-        </LoadingOverlay>
+        <div className="loadingSpinner">
+            <LoadingOverlay isLoading={checkoutState.statuses.isInitializingPayment(method.id)}>
+                {renderPlaceholderFields()}
+                <div id={containerId} style={{ minHeight: '100px' }} />
+            </LoadingOverlay>
+        </div>
     );
 };
 
