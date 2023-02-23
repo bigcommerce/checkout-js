@@ -85,7 +85,7 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
         <>
             {!isInitializing && !hideText && (
                 <p>
-                    <TranslatedString id={'remote.continue_with_text'} />
+                    <TranslatedString id="remote.continue_with_text" />
                 </p>
             )}
 

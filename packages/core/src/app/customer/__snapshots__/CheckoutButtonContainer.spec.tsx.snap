@@ -8,18 +8,45 @@ exports[`CheckoutButtonContainer matches snapshot 1`] = `
     Check out faster with:
   </p>
   <div
-    class="checkoutRemote"
+    class="checkout-buttons--2"
   >
     <div
-      class="AmazonPayContainer"
+      class="checkoutRemote customer-skeleton"
     >
       <div
-        id="amazonpayCheckoutButton"
-      />
+        class="skeleton-container"
+      >
+        <div
+          class="input-skeleton"
+        />
+      </div>
+      <div
+        class="skeleton-container"
+      >
+        <div
+          class="input-skeleton"
+        />
+      </div>
     </div>
     <div
-      id="braintreevisacheckoutCheckoutButton"
-    />
+      class="loading-skeleton"
+      style="position:absolute;left:100%;top:-100%"
+    >
+      <div
+        class="checkoutRemote"
+      >
+        <div
+          class="AmazonPayContainer"
+        >
+          <div
+            id="amazonpayCheckoutButton"
+          />
+        </div>
+        <div
+          id="braintreevisacheckoutCheckoutButton"
+        />
+      </div>
+    </div>
   </div>
   <div
     class="checkout-separator"
