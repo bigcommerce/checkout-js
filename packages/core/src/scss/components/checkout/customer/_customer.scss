@@ -116,7 +116,7 @@ $buttonWidthMap: (
 //
 // -----------------------------------------------------------------------------
 
-.checkout-buttons-container {
+.checkout-button-container {
     margin: spacing('double') 0 0;
 
     .checkoutRemote {
@@ -128,144 +128,146 @@ $buttonWidthMap: (
         > div {
             height: $wallet-button-height;
             margin-right: 0;
-        }
-
-        .AmazonPayContainer,
-        > #applepayCheckoutButton button,
-        button.gpay-button,
-        > #braintreepaypalcreditCheckoutButton,
-        > #braintreepaypalCheckoutButton {
             width: 100%;
         }
-
-        button.gpay-button.black.short.new_style {
-            background-size: auto;
-            border: none;
-            border-radius: $global-radius;
-            height: $wallet-button-height;
-            min-height: 0;
-            min-width: 0;
-        }
     }
 
-    .checkout-buttons--1 {
-        .checkoutRemote {
-            display: block;
-
-            > div {
-                max-width: $wallet-button-max-width;
-            }
-        }
-    }
-
-    .checkout-buttons--2 {
-        .checkoutRemote > div {
-            grid-column: buttonWidth('half');
-        }
-    }
-
-    .checkout-buttons--3 {
-        .checkoutRemote > div:nth-child(1) {
-            grid-column: buttonWidth('single');
-
-            @include breakpoint("small") {
-                grid-column: buttonWidth('third');
-            }
-        }
-
-        .checkoutRemote > div:nth-child(n + 2) {
-            grid-column: buttonWidth('half');
-
-            @include breakpoint("small") {
-                grid-column: buttonWidth('third');
-            }
-        }
-    }
-
-    .checkout-buttons--4 {
-        .checkoutRemote > div {
-            grid-column: buttonWidth('half');
-
-            @include breakpoint("medium") {
-                grid-column: buttonWidth('quarter');
-            }
-
-            @include breakpoint("large") {
-                grid-column: buttonWidth('half');
-            }
-
-            @include breakpoint("xlarge") {
-                grid-column: buttonWidth('quarter');
-            }
-        }
-    }
-
-    .checkout-buttons--5 {
-        .checkoutRemote > div:nth-child(1) {
-            grid-column: buttonWidth('single');
-
-            @include breakpoint("small") {
-                grid-column: buttonWidth('half');
-            }
-        }
-
-        .checkoutRemote > div:nth-child(2) {
-            grid-column: buttonWidth('half');
-
-            @include breakpoint("small") {
-                grid-column: buttonWidth('half');
-            }
-        }
-
-        .checkoutRemote > div:nth-child(n + 3) {
-            grid-column: buttonWidth('half');
-
-            @include breakpoint("small") {
-                grid-column: buttonWidth('third');
-            }
-        }
-    }
-
-    .checkout-buttons--n {
-        .checkoutRemote > div {
-            grid-column: buttonWidth('half');
-
-            @include breakpoint("small") {
-                grid-column: buttonWidth('third');
-            }
-        }
-    }
-
-    .checkout-separator {
-        align-items: center;
-        display: flex;
-        height: spacing("half");
-        justify-content: space-between;
-        margin-top: spacing('double');
-        text-align: center;
+    #applepayCheckoutButton button,
+    #braintreepaypalcreditCheckoutButton,
+    #braintreepaypalCheckoutButton {
         width: 100%;
+    }
 
-        span {
-            padding: 0 spacing("half");
+    .skeleton-container {
+        background-color: color("greys", "lightest");
+        border: none;
+        height: $wallet-button-height;
+        margin-bottom: 0;
+        padding: 0;
+    }
+
+    .gpay-button.black.short.new_style {
+        background-size: auto;
+        border: none;
+        border-radius: $global-radius;
+        height: $wallet-button-height;
+        min-height: 0;
+        min-width: 0;
+        width: 100%;
+    }
+
+    #applepayCheckoutButton button {
+        padding: 0;
+    }
+}
+
+.checkout-buttons--1 {
+    .checkoutRemote {
+        display: block;
+
+        > div {
+            max-width: $wallet-button-max-width;
+        }
+    }
+}
+
+.checkout-buttons--2 {
+    .checkoutRemote > div {
+        grid-column: buttonWidth('half');
+    }
+}
+
+.checkout-buttons--3 {
+    .checkoutRemote > div:nth-child(1) {
+        grid-column: buttonWidth('single');
+
+        @include breakpoint("small") {
+            grid-column: buttonWidth('third');
         }
     }
 
-    .checkout-separator::before,
-    .checkout-separator::after {
-        background-color: color("greys", "light");
-        content: ' ';
-        display: inline-block;
-        flex-grow: 2;
-        height: $container-border-global-size;
-    }
+    .checkoutRemote > div:nth-child(n + 2) {
+        grid-column: buttonWidth('half');
 
-    .checkoutRemote.customer-skeleton {
-        .skeleton-container {
-            background-color: color("greys", "lightest");
-            border: none;
-            height: $wallet-button-height;
-            margin-bottom: 0;
-            padding: 0;
+        @include breakpoint("small") {
+            grid-column: buttonWidth('third');
         }
     }
+}
+
+.checkout-buttons--4 {
+    .checkoutRemote > div {
+        grid-column: buttonWidth('half');
+
+        @include breakpoint("medium") {
+            grid-column: buttonWidth('quarter');
+        }
+
+        @include breakpoint("large") {
+            grid-column: buttonWidth('half');
+        }
+
+        @include breakpoint("xlarge") {
+            grid-column: buttonWidth('quarter');
+        }
+    }
+}
+
+.checkout-buttons--5 {
+    .checkoutRemote > div:nth-child(1) {
+        grid-column: buttonWidth('single');
+
+        @include breakpoint("small") {
+            grid-column: buttonWidth('half');
+        }
+    }
+
+    .checkoutRemote > div:nth-child(2) {
+        grid-column: buttonWidth('half');
+
+        @include breakpoint("small") {
+            grid-column: buttonWidth('half');
+        }
+    }
+
+    .checkoutRemote > div:nth-child(n + 3) {
+        grid-column: buttonWidth('half');
+
+        @include breakpoint("small") {
+            grid-column: buttonWidth('third');
+        }
+    }
+}
+
+.checkout-buttons--n {
+    .checkoutRemote > div {
+        grid-column: buttonWidth('half');
+
+        @include breakpoint("small") {
+            grid-column: buttonWidth('third');
+        }
+    }
+}
+
+.checkout-separator {
+    align-items: center;
+    display: flex;
+    height: spacing("half");
+    justify-content: space-between;
+    margin-top: spacing('double');
+    text-align: center;
+    width: 100%;
+
+    span {
+        padding: 0 spacing("half");
+    }
+}
+
+.checkout-separator::before,
+.checkout-separator::after {
+    background-color: color("greys", "light");
+    content: ' ';
+    display: inline-block;
+    flex-grow: 2;
+    height: $container-border-global-size;
 }

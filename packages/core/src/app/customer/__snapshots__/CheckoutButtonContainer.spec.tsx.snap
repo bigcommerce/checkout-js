@@ -2,7 +2,7 @@
 
 exports[`CheckoutButtonContainer matches snapshot 1`] = `
 <div
-  class="checkout-buttons-container"
+  class="checkout-button-container"
 >
   <p>
     Check out faster with:

@@ -26,70 +26,64 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonsListOnTopProps &
         checkoutService,
         onUnhandledError,
     }) => {
-    const [isLoading, setIsLoading] = useState(true);
 
     const {
         data: {
             getConfig,
         },
         statuses: {
-            isInitializingCustomer,
+            isInitializedCustomer,
         },
+        errors: {
+            getInitializeCustomerError,
+        }
     } = checkoutState;
     const config = getConfig();
-    const methodIds = config?.checkoutSettings.remoteCheckoutProviders ?? [];
+    const [methodIds, setMethodIds] = useState(filterUnsupportedMethodIds(config?.checkoutSettings.remoteCheckoutProviders ?? []));
+    const isLoading = methodIds.filter(
+        (methodId) => Boolean(getInitializeCustomerError(methodId)) || isInitializedCustomer(methodId)
+    ).length !== methodIds.length;
 
     useEffect(() => {
-        const changeState = setTimeout(()=>{
-            if(!isInitializingCustomer()) {
-                setIsLoading(false);
-            }
-        },100);
+        if(!isLoading){
+            const initializedMethodIds = methodIds.filter((methodId) => isInitializedCustomer(methodId));
 
-        return () => {
-            clearTimeout(changeState);
-            setIsLoading(true);
+            setMethodIds(initializedMethodIds);
         }
-    }, [isInitializingCustomer]);
+    }, [isLoading]);
 
     if (!config || methodIds.length === 0) {
         return null;
     }
 
-    const supportedMethodIds = sortMethodIds(filterUnsupportedMethodIds(methodIds));
-    const buttonsCount = supportedMethodIds.length;
-
-    if (buttonsCount < 1) {
-        return null;
-    }
-
     try {
-        checkEmbeddedSupport(supportedMethodIds);
+        checkEmbeddedSupport(methodIds);
     } catch (error) {
         return null;
     }
 
     return (
-        <div className='checkout-buttons-container'>
+        <div className='checkout-button-container'>
             <p>
                 <TranslatedString id="remote.start_with_text" />
             </p>
             <div className={classNames({
-                'checkout-buttons--1': buttonsCount === 1,
-                'checkout-buttons--2': buttonsCount === 2,
-                'checkout-buttons--3': buttonsCount === 3,
-                'checkout-buttons--4': buttonsCount === 4,
-                'checkout-buttons--5': buttonsCount === 5,
-                'checkout-buttons--n': buttonsCount > 5,
+                'checkout-buttons--1': methodIds.length === 1,
+                'checkout-buttons--2': methodIds.length === 2,
+                'checkout-buttons--3': methodIds.length === 3,
+                'checkout-buttons--4': methodIds.length === 4,
+                'checkout-buttons--5': methodIds.length === 5,
+                'checkout-buttons--n': methodIds.length > 5,
             })}>
-                <WalletButtonsContainerSkeleton buttonsCount={buttonsCount} isLoading={isLoading}>
+                <WalletButtonsContainerSkeleton buttonsCount={methodIds.length} isLoading={isLoading}>
                     <CheckoutButtonListV1
                         checkEmbeddedSupport={checkEmbeddedSupport}
                         deinitialize={checkoutService.deinitializeCustomer}
                         hideText={true}
                         initialize={checkoutService.initializeCustomer}
                         isInitializing={isLoading}
-                        methodIds={supportedMethodIds}
+                        isShowingWalletButtonsOnTop={true}
+                        methodIds={sortMethodIds(methodIds)}
                         onError={onUnhandledError}
                     />
                 </WalletButtonsContainerSkeleton>

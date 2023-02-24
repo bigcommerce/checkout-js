@@ -36,6 +36,7 @@ export const SUPPORTED_METHODS: string[] = [
 export interface CheckoutButtonListProps {
     methodIds?: string[];
     isInitializing?: boolean;
+    isShowingWalletButtonsOnTop?: boolean;
     hideText?: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void;
     deinitialize(options: CustomerRequestOptions): void;
@@ -43,7 +44,7 @@ export interface CheckoutButtonListProps {
     onError?(error: Error): void;
 }
 
-export const filterUnsupportedMethodIds = (methodIds:string[]):string[] => {
+export const filterUnsupportedMethodIds = (methodIds:string[]): string[] => {
     return (methodIds).filter((methodId) => {
         if (methodId === APPLE_PAY && !isApplePayWindow(window)) {
             return false;
@@ -57,6 +58,7 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
     checkEmbeddedSupport,
     onError,
     isInitializing = false,
+    isShowingWalletButtonsOnTop= false,
     methodIds,
     hideText = false,
     ...rest
@@ -130,6 +132,7 @@ const CheckoutButtonList: FunctionComponent<CheckoutButtonListProps> = ({
                     return (
                         <CheckoutButton
                             containerId={`${methodId}CheckoutButton`}
+                            isShowingWalletButtonsOnTop={isShowingWalletButtonsOnTop}
                             key={methodId}
                             methodId={methodId}
                             onError={onError}

@@ -17,7 +17,7 @@ export const LoadingSkeleton: FunctionComponent<LoadingSkeletonProps> = ({
     return (
         <>
             {isLoading && skeleton}
-            {!!children && shouldShowChildren && (
+            {Boolean(children) && shouldShowChildren && (
                 <div
                     className="loading-skeleton"
                     style={
