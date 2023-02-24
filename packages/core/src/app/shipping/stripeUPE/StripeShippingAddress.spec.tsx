@@ -21,6 +21,24 @@ describe('StripeShippingAddress Component', () => {
     let TestComponent: FunctionComponent<Partial<StripeShippingAddressProps>>;
     let defaultProps: StripeShippingAddressProps;
     const dummyElement = document.createElement('div');
+    const stripeEvent = {
+        complete: true,
+        elementType: 'shipping',
+        empty: false,
+        isNewAddress: false,
+        phoneFieldRequired: false,
+        value: {
+            address: {
+                city: 'string',
+                country: 'US',
+                line1: 'string',
+                postal_code: 'string',
+                state: 'string',
+            },
+            name: 'cosme fulanito',
+            phone: '',
+        },
+    };
 
     beforeAll(() => {
         checkoutService = createCheckoutService();
@@ -110,21 +128,8 @@ describe('StripeShippingAddress Component', () => {
                 const { getStyles = noop, onChangeShipping = noop} = options.stripeupe || {};
 
                 onChangeShipping({
-                        complete: true,
-                        elementType: 'shipping',
-                        empty: false,
-                        isNewAddress: false,
-                        value: {
-                            address: {
-                                city: 'string',
-                                country: 'US',
-                                line1: 'string',
-                                line2: 'string',
-                                postal_code: 'string',
-                                state: 'string',
-                            },
-                            name: 'cosme fulanito',
-                        },
+                    ...stripeEvent,
+                    value: { ...stripeEvent.value, address: { ...stripeEvent.value.address, line2: 'string' } },
                     }
                 );
                 getStyles();
@@ -158,21 +163,9 @@ describe('StripeShippingAddress Component', () => {
                 const { getStyles = noop, onChangeShipping = noop} = options.stripeupe || {};
 
                 onChangeShipping({
-                        complete: true,
-                        elementType: 'shipping',
-                        empty: false,
+                        ...stripeEvent,
                         isNewAddress: true,
-                        value: {
-                            address: {
-                                city: 'string',
-                                country: 'US',
-                                line1: 'string',
-                                line2: 'string',
-                                postal_code: 'string',
-                                state: 'string',
-                            },
-                            name: 'cosme fulanito',
-                        },
+                        value: { ...stripeEvent.value, address: { ...stripeEvent.value.address, line2: 'string' } },
                     }
                 );
                 getStyles();
@@ -206,20 +199,78 @@ describe('StripeShippingAddress Component', () => {
                 const { getStyles = noop, onChangeShipping = noop} = options.stripeupe || {};
 
                 onChangeShipping({
-                        complete: true,
-                        elementType: 'shipping',
-                        empty: false,
-                        isNewAddress: false,
-                        value: {
-                            address: {
-                                city: 'string',
-                                country: 'US',
-                                line1: 'string',
-                                postal_code: 'string',
-                                state: 'string',
-                            },
-                            name: 'cosme fulanito',
-                        },
+                    ...stripeEvent,
+                    value: { ...stripeEvent.value, name: 'cosme' },
+                    }
+                );
+                getStyles();
+
+                return Promise.resolve(checkoutService.getState());
+            });
+
+            const stripeProps = {...defaultProps, isStripeLinkEnabled: true, customerEmail: ''};
+            const component = mount(
+                <Formik
+                    initialValues={ {} }
+                    onSubmit={ noop }
+                >
+                    <StripeShippingAddress { ...stripeProps } />
+                </Formik>
+            );
+
+            expect(component.find(StripeShippingAddressDisplay).props()).toEqual(
+                expect.objectContaining({
+                    methodId: 'stripeupe',
+                    deinitialize: defaultProps.deinitialize,
+                })
+            );
+
+            expect(defaultProps.initialize).toHaveBeenCalled();
+            expect(defaultProps.onAddressSelect).toHaveBeenCalled();
+        });
+
+        it('renders StripeShippingAddress with initialize props when phone is required', async () => {
+            defaultProps.initialize = jest.fn((options) => {
+                const { getStyles = noop, onChangeShipping = noop} = options.stripeupe || {};
+
+                onChangeShipping({
+                    ...stripeEvent,
+                    phoneFieldRequired: true,
+                    value: { ...stripeEvent.value, phone: '+523333333333' },
+                    }
+                );
+                getStyles();
+
+                return Promise.resolve(checkoutService.getState());
+            });
+
+            const stripeProps = {...defaultProps, isStripeLinkEnabled: true, customerEmail: ''};
+            const component = mount(
+                <Formik
+                    initialValues={ {} }
+                    onSubmit={ noop }
+                >
+                    <StripeShippingAddress { ...stripeProps } />
+                </Formik>
+            );
+
+            expect(component.find(StripeShippingAddressDisplay).props()).toEqual(
+                expect.objectContaining({
+                    methodId: 'stripeupe',
+                    deinitialize: defaultProps.deinitialize,
+                })
+            );
+
+            expect(defaultProps.initialize).toHaveBeenCalled();
+            expect(defaultProps.onAddressSelect).toHaveBeenCalled();
+        });
+
+        it('renders StripeShippingAddress with initialize props when phone is not required', async () => {
+            defaultProps.initialize = jest.fn((options) => {
+                const { getStyles = noop, onChangeShipping = noop} = options.stripeupe || {};
+
+                onChangeShipping({
+                    ...stripeEvent,
                     }
                 );
                 getStyles();
