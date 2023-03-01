@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.295.1](https://github.com/bigcommerce/checkout-js/compare/v1.295.0...v1.295.1) (2023-03-01)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-2011 fixed the issue with paypal buttons z-index and added extra vertical space between buttons in customer step ([#1217](https://github.com/bigcommerce/checkout-js/issues/1217)) ([fbfcec8](https://github.com/bigcommerce/checkout-js/commit/fbfcec8840b95f5f1ba42076c298bf83450e8c35))
+* **shipping:** STRIPE-202 Split name input into First and Last name ([#1200](https://github.com/bigcommerce/checkout-js/issues/1200)) ([7f408d2](https://github.com/bigcommerce/checkout-js/commit/7f408d2d22fb28ff9956bbec69c049ea65b4181c))
+
 ## [1.295.0](https://github.com/bigcommerce/checkout-js/compare/v1.294.0...v1.295.0) (2023-02-27)
 
 
