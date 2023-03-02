@@ -56,7 +56,7 @@
     &--withFloatingLabels {
         @extend .customerEmail-button;
 
-        bottom: 23px;
+        bottom: spacing("single") + spacing("half");
     }
 }
 
