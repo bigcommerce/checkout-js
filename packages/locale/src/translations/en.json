@@ -187,6 +187,23 @@
             "amazon_name_text": "Amazon Pay",
             "barclaycard_continue_action": "Continue",
             "bluesnap_v2_continue_action": "Continue",
+            "bluesnap_direct_account_number": {
+                "label": "Account Number",
+                "is_required": "Account Number is required",
+                "only_numbers": "Account Number must contain only numbers",
+                "length": "Account Number must have at least 8 digits"
+            },
+            "bluesnap_direct_routing_number": {
+                "label": "Routing Number",
+                "is_required": "Routing Number is required",
+                "only_numbers": "Routing Number must contain only numbers",
+                "length": "Routing Number must be 9 digits long"
+            },
+            "bluesnap_direct_account_type": {
+                "label": "Account Type",
+                "is_required": "Account Type is required"
+            },
+            "bluesnap_direct_permission": "I authorize this Electronic Check (ACH/ECP) transaction and agree to this debit of my account.",
             "bolt_benefit_1": "Shop hundreds of brands with a passwordless login",
             "bolt_benefit_2": "Check out with saved payment and shipping details",
             "bolt_benefit_3": "Benefit from PCI-compliant account security",
