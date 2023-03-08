@@ -1,5 +1,6 @@
+import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 
 import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 
@@ -8,9 +9,17 @@ import { TranslatedString } from '../locale';
 
 import CheckoutButtonListV1, { filterUnsupportedMethodIds } from './CheckoutButtonList';
 
-interface CheckoutButtonsListOnTopProps {
+interface CheckoutButtonContainerProps {
     checkEmbeddedSupport(methodIds: string[]): void;
     onUnhandledError(error: Error): void;
+}
+
+interface WithCheckoutCheckoutButtonContainerProps{
+    availableMethodIds: string[];
+    isLoading: boolean;
+    initializedMethodIds: string[];
+    deinitialize(options: CustomerRequestOptions): void;
+    initialize(options: CustomerInitializeOptions): void;
 }
 
 const sortMethodIds = (methodIds:string[]):string[] => {
@@ -19,42 +28,18 @@ const sortMethodIds = (methodIds:string[]):string[] => {
     return methodIds.sort((a, b) => order.indexOf(b) - order.indexOf(a));
 }
 
-const CheckoutButtonContainer: FunctionComponent<CheckoutButtonsListOnTopProps & CheckoutContextProps> = (
+const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & WithCheckoutCheckoutButtonContainerProps> = (
     {
+        availableMethodIds,
         checkEmbeddedSupport,
-        checkoutState,
-        checkoutService,
+        deinitialize,
+        isLoading,
+        initialize,
+        initializedMethodIds,
         onUnhandledError,
     }) => {
 
-    const {
-        data: {
-            getConfig,
-        },
-        statuses: {
-            isInitializedCustomer,
-        },
-        errors: {
-            getInitializeCustomerError,
-        }
-    } = checkoutState;
-    const config = getConfig();
-    const [methodIds, setMethodIds] = useState(filterUnsupportedMethodIds(config?.checkoutSettings.remoteCheckoutProviders ?? []));
-    const isLoading = methodIds.filter(
-        (methodId) => Boolean(getInitializeCustomerError(methodId)) || isInitializedCustomer(methodId)
-    ).length !== methodIds.length;
-
-    useEffect(() => {
-        if(!isLoading){
-            const initializedMethodIds = methodIds.filter((methodId) => isInitializedCustomer(methodId));
-
-            setMethodIds(initializedMethodIds);
-        }
-    }, [isLoading]);
-
-    if (!config || methodIds.length === 0) {
-        return null;
-    }
+    const methodIds = isLoading ? availableMethodIds : initializedMethodIds;
 
     try {
         checkEmbeddedSupport(methodIds);
@@ -78,9 +63,9 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonsListOnTopProps &
                 <WalletButtonsContainerSkeleton buttonsCount={methodIds.length} isLoading={isLoading}>
                     <CheckoutButtonListV1
                         checkEmbeddedSupport={checkEmbeddedSupport}
-                        deinitialize={checkoutService.deinitializeCustomer}
+                        deinitialize={deinitialize}
                         hideText={true}
-                        initialize={checkoutService.initializeCustomer}
+                        initialize={initialize}
                         isInitializing={isLoading}
                         isShowingWalletButtonsOnTop={true}
                         methodIds={sortMethodIds(methodIds)}
@@ -93,4 +78,39 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonsListOnTopProps &
     );
 };
 
-export default withCheckout((props) => props)(CheckoutButtonContainer);
+function mapToCheckoutButtonContainerProps({
+    checkoutState: {
+       data: {
+           getConfig,
+       },
+       statuses: {
+           isInitializedCustomer,
+       },
+       errors: {
+           getInitializeCustomerError,
+       }
+    },
+    checkoutService,
+}: CheckoutContextProps): WithCheckoutCheckoutButtonContainerProps | null {
+    const config = getConfig();
+    const availableMethodIds = filterUnsupportedMethodIds(config?.checkoutSettings.remoteCheckoutProviders ?? []);
+
+    if (!config || availableMethodIds.length === 0) {
+        return null;
+    }
+
+    const isLoading = availableMethodIds.filter(
+        (methodId) => Boolean(getInitializeCustomerError(methodId)) || isInitializedCustomer(methodId)
+    ).length !== availableMethodIds.length;
+    const initializedMethodIds = availableMethodIds.filter((methodId) => isInitializedCustomer(methodId));
+
+    return {
+        availableMethodIds,
+        deinitialize: checkoutService.deinitializeCustomer,
+        initialize: checkoutService.initializeCustomer,
+        initializedMethodIds,
+        isLoading,
+    }
+}
+
+export default withCheckout(mapToCheckoutButtonContainerProps)(CheckoutButtonContainer);
