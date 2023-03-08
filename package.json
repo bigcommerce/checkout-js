@@ -12,6 +12,7 @@
     "preinstall": "npx check-node-version --package",
     "prebuild": "rm -rf dist",
     "build": "nx run core:build",
+    "publish": "nx run core:publish",
     "build:server": "http-server dist",
     "dev": "nx run core:dev",
     "dev:server": "http-server build",

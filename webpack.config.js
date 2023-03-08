@@ -45,8 +45,8 @@ function appConfig(options, argv) {
             return {
                 entry: {
                     [ENTRY_NAME]: [
-                        join(__dirname, 'packages', 'core','src', 'app', 'polyfill.ts'),
-                        join(__dirname, 'packages', 'core','src', 'app', 'index.ts'),
+                        join(__dirname, 'packages', 'core', 'src', 'app', 'polyfill.ts'),
+                        join(__dirname, 'packages', 'core', 'src', 'app', 'index.ts'),
                     ],
                 },
                 mode,
@@ -229,8 +229,8 @@ function loaderConfig(options, argv) {
         .then(appVersion => {
             return {
                 entry: {
-                    [LOADER_ENTRY_NAME]: join(__dirname,  'packages', 'core','src', 'app', 'loader.ts'),
-                    [AUTO_LOADER_ENTRY_NAME]: join(__dirname,  'packages', 'core', 'src', 'app', 'auto-loader.ts'),
+                    [LOADER_ENTRY_NAME]: join(__dirname, 'packages', 'core', 'src', 'app', 'loader.ts'),
+                    [AUTO_LOADER_ENTRY_NAME]: join(__dirname, 'packages', 'core', 'src', 'app', 'auto-loader.ts'),
                 },
                 mode,
                 devtool: isProduction ? 'source-map' : 'eval-source-map',
@@ -240,7 +240,7 @@ function loaderConfig(options, argv) {
                 },
                 output: {
                     path: isProduction ? join(__dirname, 'dist') : join(__dirname, 'build'),
-                    filename: `[name]-${appVersion}.js`,
+                    filename: `[name].js`,
                     library: LOADER_LIBRARY_NAME,
                 },
                 plugins: [
@@ -265,13 +265,6 @@ function loaderConfig(options, argv) {
                             });
                         },
                     }),
-                    new BuildHookPlugin({
-                        onSuccess() {
-                            const folder = isProduction ? 'dist' : 'build';
-                            copyFileSync(`${folder}/${LOADER_ENTRY_NAME}-${appVersion}.js`, `${folder}/${LOADER_ENTRY_NAME}.js`);
-                            copyFileSync(`${folder}/${AUTO_LOADER_ENTRY_NAME}-${appVersion}.js`, `${folder}/${AUTO_LOADER_ENTRY_NAME}.js`);
-                        },
-                    }),
                 ],
                 module: {
                     rules: [
@@ -282,7 +275,7 @@ function loaderConfig(options, argv) {
                         },
                         {
                             test: /\.tsx?$/,
-                            include: join(__dirname,  'packages', 'core', 'src'),
+                            include: join(__dirname, 'packages', 'core', 'src'),
                             use: [
                                 {
                                     loader: 'babel-loader',
