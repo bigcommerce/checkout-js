@@ -461,6 +461,9 @@
             "label": "Yes, I agree with the <a href=\"{url}\" target=\"_blank\">privacy policy</a>.",
             "heading": "Privacy Policy"
         },
+        "tax": {
+            "inclusive_label": "Tax Included in Total:"
+        },
         "terms_and_conditions": {
             "agreement_required_error": "Please agree to the terms and conditions",
             "agreement_text": "Yes, I agree with the above terms and conditions.",

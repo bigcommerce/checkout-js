@@ -1,8 +1,11 @@
 import { LineItemMap, ShopperCurrency, StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, ReactNode, useMemo } from 'react';
 
+import { TranslatedString } from '../locale';
+
 import OrderSummaryHeader from './OrderSummaryHeader';
 import OrderSummaryItems from './OrderSummaryItems';
+import OrderSummaryPrice from './OrderSummaryPrice';
 import OrderSummarySection from './OrderSummarySection';
 import OrderSummarySubtotals, { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 import OrderSummaryTotal from './OrderSummaryTotal';
@@ -18,6 +21,8 @@ export interface OrderSummaryProps {
 }
 
 const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsProps> = ({
+    isTaxIncluded,
+    taxes,
     storeCurrency,
     shopperCurrency,
     headerLink,
@@ -37,7 +42,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
             </OrderSummarySection>
 
             <OrderSummarySection>
-                <OrderSummarySubtotals {...orderSummarySubtotalsProps} />
+                <OrderSummarySubtotals isTaxIncluded taxes={taxes} {...orderSummarySubtotalsProps} />
                 {additionalLineItems}
             </OrderSummarySection>
 
@@ -47,6 +52,25 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                     shopperCurrencyCode={shopperCurrency.code}
                     storeCurrencyCode={storeCurrency.code}
                 />
+            </OrderSummarySection>
+
+            <OrderSummarySection>
+                <h5
+                    className="cart-section-heading optimizedCheckout-contentPrimary"
+                    data-test="tax-text"
+                >
+                    <TranslatedString
+                        id="tax.inclusive_label"
+                    />
+                </h5>
+                {isTaxIncluded && (taxes || []).map((tax, index) => (
+                    <OrderSummaryPrice
+                        amount={tax.amount}
+                        key={index}
+                        label={tax.name}
+                        testId="cart-taxes"
+                    />
+                ))}
             </OrderSummarySection>
         </article>
     );
