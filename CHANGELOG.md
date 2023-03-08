@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.295.2](https://github.com/bigcommerce/checkout-js/compare/v1.295.1...v1.295.2) (2023-03-08)
+
+
+### Bug Fixes
+
+* **payment:** INT-7183 SquareV2: Don't hide content when loading ([5acf69e](https://github.com/bigcommerce/checkout-js/commit/5acf69e23e7050273709325b659116ca2876519c))
+
 ### [1.295.1](https://github.com/bigcommerce/checkout-js/compare/v1.295.0...v1.295.1) (2023-03-01)
 
 
