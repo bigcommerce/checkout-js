@@ -1,0 +1,11 @@
+.stripeCustomerEmail-button {
+    bottom: 3px;
+    padding: $customerEmail-button-padding;
+    width: 100%;
+
+    &--withFloatingLabels {
+        @extend .stripeCustomerEmail-button;
+
+        bottom: spacing("single") + spacing("eighth") + ( spacing("eighth") /2 );
+    }
+}

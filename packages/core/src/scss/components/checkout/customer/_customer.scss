@@ -48,18 +48,6 @@
     width: 100%;
 }
 
-.stripeCustomerEmail-button {
-    @extend .customerEmail-button;
-
-    bottom: 3px;
-
-    &--withFloatingLabels {
-        @extend .customerEmail-button;
-
-        bottom: spacing("single") + spacing("half");
-    }
-}
-
 // Customer header
 //
 // -----------------------------------------------------------------------------
