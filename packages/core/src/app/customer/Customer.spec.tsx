@@ -4,7 +4,6 @@ import {
     CheckoutService,
     createCheckoutService,
     Customer as CustomerData,
-    RequestError,
     StoreConfig,
 } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
@@ -120,7 +119,7 @@ describe('Customer', () => {
 
             const unhandledError = jest.fn();
 
-            mount(<CustomerTest onUnhandledError={ unhandledError } viewType={ CustomerViewType.Guest } />);
+            mount(<CustomerTest onUnhandledError={ unhandledError } providerWithCustomCheckout='bolt' viewType={ CustomerViewType.Guest } />);
             await new Promise(resolve => process.nextTick(resolve));
 
             expect(unhandledError).toHaveBeenCalledWith(expect.any(Error));
