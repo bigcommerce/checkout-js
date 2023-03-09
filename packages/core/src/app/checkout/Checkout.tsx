@@ -119,7 +119,6 @@ export interface CheckoutState {
     hasSelectedShippingOptions: boolean;
     isBuyNowCartEnabled: boolean;
     isHidingStepNumbers: boolean;
-    isWalletButtonsOnTop: boolean;
     isSubscribed: boolean;
 }
 
@@ -134,6 +133,7 @@ export interface WithCheckoutProps {
     isLoadingCheckout: boolean;
     isPending: boolean;
     isPriceHiddenFromGuests: boolean;
+    isShowingWalletButtonsOnTop: boolean;
     loginUrl: string;
     cartUrl: string;
     createAccountUrl: string;
@@ -157,7 +157,6 @@ class Checkout extends Component<
         hasSelectedShippingOptions: false,
         isBuyNowCartEnabled: false,
         isHidingStepNumbers: true,
-        isWalletButtonsOnTop: false,
         isSubscribed: false,
     };
 
@@ -237,10 +236,6 @@ class Checkout extends Component<
             const removeStepNumbersFlag =
               data.getConfig()?.checkoutSettings.features['CHECKOUT-7255.remove_checkout_step_numbers'] ??
               false;
-            const walletButtonsOnTopFlag =
-              (data.getConfig()?.checkoutSettings.features['CHECKOUT-7222.checkout_settings_styling_section'] &&
-              data.getUserExperienceSettings()?.walletButtonsOnTop) ??
-              false;
             const defaultNewsletterSignupOption =
                 data.getConfig()?.shopperConfig.defaultNewsletterSignup ??
                 false;
@@ -255,7 +250,6 @@ class Checkout extends Component<
                 isBuyNowCartEnabled: buyNowCartFlag,
                 isHidingStepNumbers: removeStepNumbersFlag,
                 isSubscribed: defaultNewsletterSignupOption,
-                isWalletButtonsOnTop: walletButtonsOnTopFlag,
             });
 
             if (isMultiShippingMode) {
@@ -301,9 +295,9 @@ class Checkout extends Component<
     }
 
     private renderContent(): ReactNode {
-        const { isPending, loginUrl, promotions = [], steps } = this.props;
+        const { isPending, loginUrl, promotions = [], steps, isShowingWalletButtonsOnTop } = this.props;
 
-        const { activeStepType, defaultStepType, isCartEmpty, isRedirecting, isWalletButtonsOnTop } = this.state;
+        const { activeStepType, defaultStepType, isCartEmpty, isRedirecting } = this.state;
 
         if (isCartEmpty) {
             return <EmptyCartMessage loginUrl={loginUrl} waitInterval={3000} />;
@@ -312,13 +306,13 @@ class Checkout extends Component<
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isRedirecting}>
                 <div className="layout-main">
-                    <LoadingNotification isLoading={isPending} />
+                    <LoadingNotification isLoading={!isShowingWalletButtonsOnTop && isPending} />
 
                     <PromotionBannerList promotions={promotions} />
 
-                    {isWalletButtonsOnTop && <CheckoutButtonContainer
-                        checkEmbeddedSupport={this.checkEmbeddedSupport}
-                        onUnhandledError={this.handleUnhandledError}
+                    {isShowingWalletButtonsOnTop && <CheckoutButtonContainer
+                      checkEmbeddedSupport={this.checkEmbeddedSupport}
+                      onUnhandledError={this.handleUnhandledError}
                     />}
 
                     <ol className="checkout-steps">
@@ -361,11 +355,10 @@ class Checkout extends Component<
     }
 
     private renderCustomerStep(step: CheckoutStepStatus): ReactNode {
-        const { isGuestEnabled } = this.props;
+        const { isGuestEnabled, isShowingWalletButtonsOnTop } = this.props;
         const {
             customerViewType = isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
             isSubscribed,
-            isWalletButtonsOnTop,
         } = this.state;
 
         return (
@@ -387,7 +380,7 @@ class Checkout extends Component<
                     checkEmbeddedSupport={this.checkEmbeddedSupport}
                     isEmbedded={isEmbedded()}
                     isSubscribed={isSubscribed}
-                    isWalletButtonsOnTop = {isWalletButtonsOnTop}
+                    isWalletButtonsOnTop = {isShowingWalletButtonsOnTop }
                     onAccountCreated={this.navigateToNextIncompleteStep}
                     onChangeViewType={this.setCustomerViewType}
                     onContinueAsGuest={this.navigateToNextIncompleteStep}

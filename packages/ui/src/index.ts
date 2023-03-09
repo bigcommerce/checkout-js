@@ -18,6 +18,7 @@ export {
     Input,
     TextInput,
     TextInputIframeContainer,
+    WalletButtonsContainerSkeleton,
 } from './form';
 export {
     CreditCardIcon,
