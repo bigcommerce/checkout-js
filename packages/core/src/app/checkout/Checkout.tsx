@@ -306,7 +306,7 @@ class Checkout extends Component<
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isRedirecting}>
                 <div className="layout-main">
-                    <LoadingNotification isLoading={isPending} />
+                    <LoadingNotification isLoading={!isShowingWalletButtonsOnTop && isPending} />
 
                     <PromotionBannerList promotions={promotions} />
 
