@@ -36,7 +36,7 @@ import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 import { PromotionBannerList } from '../promotion';
 import { hasSelectedShippingOptions, isUsingMultiShipping, StaticConsignment } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
-import { LazyContainer, LoadingOverlay } from '../ui/loading';
+import { LazyContainer, LoadingNotification, LoadingOverlay } from '../ui/loading';
 import { MobileView } from '../ui/responsive';
 
 import CheckoutStep from './CheckoutStep';
@@ -306,6 +306,8 @@ class Checkout extends Component<
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isRedirecting}>
                 <div className="layout-main">
+                    <LoadingNotification isLoading={isPending} />
+
                     <PromotionBannerList promotions={promotions} />
 
                     {isShowingWalletButtonsOnTop && <CheckoutButtonContainer
