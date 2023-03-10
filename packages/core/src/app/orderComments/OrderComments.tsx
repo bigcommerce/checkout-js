@@ -2,7 +2,7 @@ import { FieldProps } from 'formik';
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '../locale';
-import { Fieldset, FormField, Label, Legend, TextInput } from '../ui/form';
+import { CheckboxFormField, Fieldset, FormField, Label, Legend, TextInput } from '../ui/form';
 
 const OrderComments: FunctionComponent = () => {
     const renderLabel = useCallback(
@@ -19,6 +19,8 @@ const OrderComments: FunctionComponent = () => {
         [],
     );
 
+    const authorityToLeaveLabel = "Do you give us Authority to Leave your order without signature?";
+
     const legend = useMemo(
         () => (
             <Legend>
@@ -30,6 +32,7 @@ const OrderComments: FunctionComponent = () => {
 
     return (
         <Fieldset legend={legend} testId="checkout-shipping-comments">
+            <CheckboxFormField labelContent={authorityToLeaveLabel} name="authorityToLeave" />
             <FormField input={renderInput} label={renderLabel} name="orderComment" />
         </Fieldset>
     );

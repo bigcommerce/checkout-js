@@ -138,18 +138,18 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
         if (providerWithCustomCheckout === PaymentMethodId.StripeUPE && !customer.email && this.props.countries.length > 0) {
             return <StripeShipping
-                { ...shippingFormProps }
-                customer={ customer }
+                {...shippingFormProps}
+                customer={customer}
                 deinitialize={deinitializeShippingMethod}
                 initialize={initializeShippingMethod}
                 isBillingSameAsShipping={isBillingSameAsShipping}
-                isGuest={ isGuest }
-                isLoading={ isInitializing }
-                isShippingMethodLoading={ this.props.isLoading }
+                isGuest={isGuest}
+                isLoading={isInitializing}
+                isShippingMethodLoading={this.props.isLoading}
                 isMultiShippingMode={isMultiShippingMode}
-                onMultiShippingChange={ this.handleMultiShippingModeSwitch }
+                onMultiShippingChange={this.handleMultiShippingModeSwitch}
                 onSubmit={this.handleSingleShippingSubmit}
-                shouldShowMultiShipping={ shouldShowMultiShipping }
+                shouldShowMultiShipping={shouldShowMultiShipping}
                 step={step}
                 updateAddress={updateShippingAddress}
             />;
@@ -213,6 +213,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         billingSameAsShipping,
         shippingAddress: addressValues,
         orderComment,
+        authorityToLeave
     }) => {
         const {
             customerMessage,
@@ -243,8 +244,14 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             promises.push(updateBillingAddress(updatedShippingAddress));
         }
 
-        if (customerMessage !== orderComment) {
-            promises.push(updateCheckout({ customerMessage: orderComment }));
+        if (authorityToLeave) {
+            orderComment + "Authority to leave"
+        }
+
+        const updatedOrderComment = authorityToLeave ? "Authority to leave\n" + orderComment : orderComment
+
+        if (customerMessage !== updatedOrderComment) {
+            promises.push(updateCheckout({ customerMessage: updatedOrderComment }));
         }
 
         try {
