@@ -17,6 +17,7 @@ import AmazonPayV2PaymentMethod from './AmazonPayV2PaymentMethod';
 import BarclaycardPaymentMethod from './BarclaycardPaymentMethod';
 import BlueSnapV2PaymentMethod from './BlueSnapV2PaymentMethod';
 import BoltPaymentMethod from './BoltPaymentMethod';
+import BraintreeAchPaymentMethod from './BraintreeAchPaymentMethod';
 import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod';
 import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
 import ChasePayPaymentMethod from './ChasePayPaymentMethod';
@@ -154,6 +155,10 @@ const PaymentMethodComponent: FunctionComponent<
 
     if (method.id === PaymentMethodId.BraintreeVisaCheckout) {
         return <VisaCheckoutPaymentMethod {...props} />;
+    }
+
+    if (method.id === PaymentMethodId.BraintreeAch) {
+        return <BraintreeAchPaymentMethod {...props} />;
     }
 
     if (

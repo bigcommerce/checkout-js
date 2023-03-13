@@ -1,0 +1,36 @@
+.checkout-ach-form {
+    display: flex;
+    flex-flow: row wrap;
+    margin: 0 -4px;
+    margin-bottom: spacing("half");
+
+    &--mandate-text {
+        padding: 0 4px;
+    }
+
+    .dynamic-form-field {
+        margin-bottom: spacing("half");
+        padding: 0 4px;
+        width: 100%;
+
+        &--firstName,
+        &--lastName,
+        &--city {
+            @include breakpoint("small") {
+                flex-basis: 50%;
+            }
+        }
+
+        &--city {
+            @include breakpoint("small") {
+                flex-basis: 30%;
+            }
+        }
+
+        &--postalCode {
+            @include breakpoint("small") {
+                flex-basis: 70%;
+            }
+        }
+    }
+}
