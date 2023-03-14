@@ -42,7 +42,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
             </OrderSummarySection>
 
             <OrderSummarySection>
-                <OrderSummarySubtotals isTaxIncluded taxes={taxes} {...orderSummarySubtotalsProps} />
+                <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
                 {additionalLineItems}
             </OrderSummarySection>
 
@@ -54,16 +54,16 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                 />
             </OrderSummarySection>
 
-            <OrderSummarySection>
+            {isTaxIncluded && <OrderSummarySection>
                 <h5
-                    className="cart-section-heading optimizedCheckout-contentPrimary"
+                    className="cart-taxItem cart-taxItem--subtotal optimizedCheckout-contentPrimary"
                     data-test="tax-text"
                 >
                     <TranslatedString
                         id="tax.inclusive_label"
                     />
                 </h5>
-                {isTaxIncluded && (taxes || []).map((tax, index) => (
+                {(taxes || []).map((tax, index) => (
                     <OrderSummaryPrice
                         amount={tax.amount}
                         key={index}
@@ -71,7 +71,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                         testId="cart-taxes"
                     />
                 ))}
-            </OrderSummarySection>
+            </OrderSummarySection>}
         </article>
     );
 };

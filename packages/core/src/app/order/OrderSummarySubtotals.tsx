@@ -10,7 +10,7 @@ export interface OrderSummarySubtotalsProps {
     coupons: Coupon[];
     giftCertificates?: GiftCertificate[];
     discountAmount?: number;
-    isTaxIncluded: boolean;
+    isTaxIncluded?: boolean;
     taxes?: Tax[];
     giftWrappingAmount?: number;
     shippingAmount?: number;
