@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.297.1](https://github.com/bigcommerce/checkout-js/compare/v1.297.0...v1.297.1) (2023-03-14)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-0000 Change Google Pay button class name ([#1224](https://github.com/bigcommerce/checkout-js/issues/1224)) ([ad7aeea](https://github.com/bigcommerce/checkout-js/commit/ad7aeeafe90bc9f3675f4a946fea866d91b7f2f6))
+
 ## [1.297.0](https://github.com/bigcommerce/checkout-js/compare/v1.296.1...v1.297.0) (2023-03-13)
 
 
