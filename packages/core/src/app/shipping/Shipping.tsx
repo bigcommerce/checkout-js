@@ -244,11 +244,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             promises.push(updateBillingAddress(updatedShippingAddress));
         }
 
-        if (authorityToLeave) {
-            orderComment + "Authority to leave"
-        }
-
-        const updatedOrderComment = authorityToLeave ? "Authority to leave\n" + orderComment : orderComment
+        const updatedOrderComment = authorityToLeave ? "Authority to leave. " + orderComment : orderComment
 
         if (customerMessage !== updatedOrderComment) {
             promises.push(updateCheckout({ customerMessage: updatedOrderComment }));
