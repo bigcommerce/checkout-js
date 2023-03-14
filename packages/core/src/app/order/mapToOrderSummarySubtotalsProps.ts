@@ -8,6 +8,7 @@ import { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 export default function mapToOrderSummarySubtotalsProps({
     baseAmount,
     discountAmount,
+    isTaxIncluded,
     shippingCostBeforeDiscount,
     payments,
     handlingCostTotal,
@@ -25,5 +26,6 @@ export default function mapToOrderSummarySubtotalsProps({
         coupons,
         giftCertificates: payments && mapFromPayments(payments),
         taxes,
+        isTaxIncluded,
     };
 }

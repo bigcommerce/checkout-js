@@ -15,6 +15,10 @@ export function getOrder(): Order {
         baseAmount: 200,
         billingAddress: getBillingAddress(),
         cartId: 'b20deef40f9699e48671bbc3fef6ca44dc80e3c7',
+        channelId: 1,
+        consignments: {
+            shipping: [],
+        },
         coupons: [getCoupon(), getShippingCoupon()],
         currency: getCurrency(),
         customerMessage: '',

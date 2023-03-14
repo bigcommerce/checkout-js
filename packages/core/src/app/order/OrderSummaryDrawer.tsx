@@ -34,6 +34,7 @@ const OrderSummaryDrawer: FunctionComponent<
     giftCertificates,
     handlingAmount,
     headerLink,
+    isTaxIncluded,
     lineItems,
     onRemovedCoupon,
     onRemovedGiftCertificate,
@@ -57,6 +58,7 @@ const OrderSummaryDrawer: FunctionComponent<
                 giftWrappingAmount={giftWrappingAmount}
                 handlingAmount={handlingAmount}
                 headerLink={headerLink}
+                isTaxIncluded={isTaxIncluded}
                 lineItems={lineItems}
                 onRemovedCoupon={onRemovedCoupon}
                 onRemovedGiftCertificate={onRemovedGiftCertificate}
@@ -76,6 +78,7 @@ const OrderSummaryDrawer: FunctionComponent<
             giftCertificates,
             handlingAmount,
             headerLink,
+            isTaxIncluded,
             lineItems,
             onRemovedCoupon,
             onRemovedGiftCertificate,
