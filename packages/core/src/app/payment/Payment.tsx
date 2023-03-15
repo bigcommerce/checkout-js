@@ -1,9 +1,7 @@
 import {
-    Address,
     CartChangedError,
     CheckoutSelectors,
     CheckoutSettings,
-    FormField,
     OrderRequestBody,
     PaymentMethod
 } from '@bigcommerce/checkout-sdk';
@@ -76,8 +74,6 @@ interface WithCheckoutPaymentProps {
     loadCheckout(): Promise<CheckoutSelectors>;
     loadPaymentMethods(): Promise<CheckoutSelectors>;
     submitOrder(values: OrderRequestBody): Promise<CheckoutSelectors>;
-    getAddressFields(countryCode?: string): FormField[];
-    billingAddress?: Address;
 }
 
 interface PaymentState {
@@ -547,8 +543,6 @@ export function mapToPaymentProps({
             getPaymentMethod,
             getPaymentMethods,
             isPaymentDataRequired,
-            getBillingAddressFields,
-            getBillingAddress,
         },
         errors: { getFinalizeOrderError, getSubmitOrderError },
         statuses: { isInitializingPayment, isSubmittingOrder },
@@ -627,11 +621,7 @@ export function mapToPaymentProps({
         filteredMethods = filteredMethods;
     }
 
-    const billingAddress = getBillingAddress();
-
     return {
-        getAddressFields: getBillingAddressFields,
-        billingAddress,
         applyStoreCredit: checkoutService.applyStoreCredit,
         availableStoreCredit: customer.storeCredit,
         cartUrl: config.links.cartLink,

@@ -24,7 +24,6 @@ import { getPaymentMethod } from './payment-methods.mock';
 import PaymentContext, { PaymentContextProps } from './PaymentContext';
 import PaymentForm, { PaymentFormProps } from './PaymentForm';
 import { PaymentMethodList, PaymentMethodListProps } from './paymentMethod';
-import { AccountTypes, OwnershipTypes } from './paymentMethod/BraintreeAchPaymentForm';
 import PaymentSubmitButton from './PaymentSubmitButton';
 import SpamProtectionField, { SpamProtectionProps } from './SpamProtectionField';
 import { StoreCreditField, StoreCreditFieldProps, StoreCreditOverlay } from './storeCredit';
@@ -219,8 +218,6 @@ describe('PaymentForm', () => {
         await new Promise((resolve) => process.nextTick(resolve));
 
         expect(handleSubmit).toHaveBeenCalledWith({
-            accountType: AccountTypes.Savings,
-            ownershipType: OwnershipTypes.Personal,
             ccNumber: '4111 1111 1111 1111',
             ccCvv: '123',
             ccName: 'Foo Bar',

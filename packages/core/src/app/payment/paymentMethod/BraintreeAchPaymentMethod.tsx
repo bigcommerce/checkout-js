@@ -7,7 +7,6 @@ type BraintreeAchPaymentMethodProps = Omit<
     'mandateText' | 'isLoadingBillingCountries' | 'usCountry' | 'initializeBillingAddressFields'
 >;
 
-
 const mandateText = 'I authorize Braintree to debit my bank account on behalf of My Online Store.';
 
 const BraintreeAchPaymentMethod: FunctionComponent<BraintreeAchPaymentMethodProps> = ({ initializePayment, method, ...rest }) => {

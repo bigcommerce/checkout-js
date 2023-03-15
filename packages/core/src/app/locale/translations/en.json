@@ -327,6 +327,7 @@
             "account_type_label": "Account Type",
             "ownership_type_label": "Ownership Type",
             "business_name_label_label": "Business Number",
+            "only_numbers_error": "{label} must contain only numbers",
             "errors": {
                 "additional_action_required": "Please continue with additional actions.",
                 "authorization_expired": "The authorization for this transaction has expired.",

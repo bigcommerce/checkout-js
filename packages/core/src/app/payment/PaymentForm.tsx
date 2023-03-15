@@ -1,4 +1,4 @@
-import { Address, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { FormikProps, withFormik, WithFormikConfig } from 'formik';
 import { isNil, noop, omitBy } from 'lodash';
 import React, { FunctionComponent, memo, useCallback, useContext, useMemo } from 'react';
@@ -17,8 +17,6 @@ import {
     PaymentMethodId,
     PaymentMethodList,
 } from './paymentMethod';
-import { AccountTypes, OwnershipTypes } from './paymentMethod/BraintreeAchPaymentForm';
-import { filterAddressToFormValues } from './paymentMethod/getBraintreeAchValidationSchema';
 import PaymentRedeemables from './PaymentRedeemables';
 import PaymentSubmitButton from './PaymentSubmitButton';
 import SpamProtectionField from './SpamProtectionField';
@@ -49,7 +47,6 @@ export interface PaymentFormProps {
     onStoreCreditChange?(useStoreCredit?: boolean): void;
     onSubmit?(values: PaymentFormValues): void;
     onUnhandledError?(error: Error): void;
-    billingAddress?: Address
 }
 
 const PaymentForm: FunctionComponent<
@@ -77,7 +74,6 @@ const PaymentForm: FunctionComponent<
     termsConditionsUrl,
     usableStoreCredit = 0,
     values,
-    billingAddress
 }) => {
     const selectedMethodId = useMemo(() => {
         if (!selectedMethod) {
@@ -130,7 +126,6 @@ const PaymentForm: FunctionComponent<
             )}
 
             <PaymentMethodListFieldset
-                billingAddress={billingAddress}
                 isEmbedded={isEmbedded}
                 isInitializingPayment={isInitializingPayment}
                 isPaymentDataRequired={isPaymentDataRequired}
@@ -189,7 +184,6 @@ interface PaymentMethodListFieldsetProps {
     onMethodSelect?(method: PaymentMethod): void;
     onUnhandledError?(error: Error): void;
     resetForm(nextValues?: PaymentFormValues): void;
-    billingAddress?: Address;
 }
 
 const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProps> = ({
@@ -201,30 +195,21 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
     onMethodSelect = noop,
     onUnhandledError,
     resetForm,
-    values,
-    billingAddress
+    values
 }) => {
     const { setSubmitted } = useContext(FormContext);
 
     const commonValues = useMemo(() => ({ terms: values.terms }), [values.terms]);
 
-    const addressFields = useMemo(() => filterAddressToFormValues(billingAddress), [billingAddress]);
-
     const handlePaymentMethodSelect = useCallback(
         (method: PaymentMethod) => {
             resetForm({
                 ...commonValues,
-                ...addressFields,
                 ccCustomerCode: '',
                 ccCvv: '',
                 ccDocument: '',
                 customerEmail: '',
                 customerMobile: '',
-                ownershipType: OwnershipTypes.Personal,
-                accountType: AccountTypes.Savings,
-                accountNumber: '',
-                routingNumber: '',
-                businessName: '',
                 ccExpiry: '',
                 ccName: '',
                 ccNumber: '',
@@ -237,7 +222,7 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
             setSubmitted(false);
             onMethodSelect(method);
         },
-        [commonValues, onMethodSelect, resetForm, addressFields, setSubmitted],
+        [commonValues, onMethodSelect, resetForm, setSubmitted],
     );
 
     return (
@@ -258,7 +243,7 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
 
 const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, PaymentFormValues> =
     {
-        mapPropsToValues: ({ defaultGatewayId, defaultMethodId, billingAddress }) => ({
+        mapPropsToValues: ({ defaultGatewayId, defaultMethodId }) => ({
             ccCustomerCode: '',
             ccCvv: '',
             ccDocument: '',
@@ -267,12 +252,9 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
             ccExpiry: '',
             ccName: '',
             ccNumber: '',
-            ownershipType: OwnershipTypes.Personal,
-            accountType: AccountTypes.Savings,
             accountNumber: '',
             routingNumber: '',
             businessName: '',
-            ...(filterAddressToFormValues(billingAddress)),
             paymentProviderRadio: getUniquePaymentMethodId(defaultMethodId, defaultGatewayId),
             instrumentId: '',
             shouldCreateAccount: true,
