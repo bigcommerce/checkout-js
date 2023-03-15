@@ -1,4 +1,5 @@
 import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import { FieldProps, FormikProps, withFormik } from 'formik';
 import React, { FunctionComponent, memo, ReactNode, useCallback, useEffect, useState } from 'react';
 
@@ -8,6 +9,7 @@ import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { getAppliedStyles } from '../common/dom';
 import { TranslatedString } from '../locale';
 import { PrivacyPolicyField } from '../privacyPolicy';
+import { getStripeCustomStyles } from '../shipping/stripeUPE/utils/stripe-upe-custom-styles';
 import { Button, ButtonVariant } from '../ui/button';
 import { BasicFormField, Fieldset, Legend } from '../ui/form';
 
@@ -94,6 +96,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                 onEmailChange: setEmailCallback,
                 isLoading: handleLoading,
                 getStyles: getStripeStyles,
+                getAppearance: getStripeCustomStyles,
                 gatewayId: 'stripeupe',
                 methodId: 'card',
             },
@@ -200,9 +203,13 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                                 /> }
                             </div>
 
-                            <div className="form-actions customerEmail-action">
+                            <div
+                                className={classNames('form-actions customerEmail-action', {
+                                    'customerEmail-floating--enabled': useFloatingLabel,
+                                })}
+                            >
                                 { (!authentication || (authentication && !isNewAuth )) && <Button
-                                    className= { continueButtonClassName }
+                                    className={ continueButtonClassName }
                                     disabled={ continueAsAGuestButton }
                                     id="stripe-checkout-customer-continue"
                                     isLoading={ isLoading }

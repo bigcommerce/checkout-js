@@ -6,6 +6,6 @@
     &--withFloatingLabels {
         @extend .stripeCustomerEmail-button;
 
-        bottom: spacing("single") + spacing("eighth") + ( spacing("eighth") /2 );
+        bottom: 0;
     }
 }
