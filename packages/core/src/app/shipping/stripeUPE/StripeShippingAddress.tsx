@@ -18,6 +18,7 @@ import { SingleShippingFormValues } from '../SingleShippingForm';
 
 import StripeShippingAddressDisplay from './StripeShippingAddressDisplay';
 import StripeStateMapper from './StripeStateMapper';
+import { getStripeCustomStyles } from './utils/stripe-upe-custom-styles';
 
 export interface StripeShippingAddressProps {
     consignments: Consignment[];
@@ -201,6 +202,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
                 availableCountries: allowedCountries,
                 getStyles: getStripeStyles,
                 getStripeState: StripeStateMapper,
+                getAppearance: getStripeCustomStyles,
                 gatewayId: 'stripeupe',
                 methodId: 'card',
             },

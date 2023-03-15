@@ -4,6 +4,7 @@ import React, { FunctionComponent, useCallback, useContext } from 'react';
 
 import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { getAppliedStyles } from '../../common/dom';
+import { getStripeCustomStyles } from '../../shipping/stripeUPE/utils/stripe-upe-custom-styles';
 import {
     withHostedCreditCardFieldset,
     WithInjectedHostedCreditCardFieldsetProps,
@@ -60,6 +61,7 @@ const StripeUPEPaymentMethod: FunctionComponent<
                             fieldInnerShadow: formInput['box-shadow'],
                             fieldBorder: formInput['border-color'],
                         },
+                        getAppearance: getStripeCustomStyles,
                         onError: onUnhandledError,
                         render: renderSubmitButton,
                     },
