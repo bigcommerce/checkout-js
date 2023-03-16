@@ -12,7 +12,7 @@
     "preinstall": "npx check-node-version --package",
     "prebuild": "rm -rf dist",
     "build": "nx run core:build",
-    "publish": "nx run core:publish",
+    "publish": "nx run core:build --skip-nx-cache; rm -r ../../next-ui/public/checkout/*; cp -a ./dist/. ../../next-ui/public/checkout/",
     "build:server": "http-server dist",
     "dev": "nx run core:dev",
     "dev:server": "http-server build",

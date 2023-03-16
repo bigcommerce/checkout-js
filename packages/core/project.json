@@ -3,22 +3,6 @@
   "sourceRoot": "packages/core/src",
   "projectType": "library",
   "targets": {
-    "publish": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "webpack --mode production --output-path ../../next-ui/public/checkout/."
-      },
-      "dependsOn": [
-        {
-          "target": "generate",
-          "projects": "self"
-        },
-        {
-          "target": "build",
-          "projects": "dependencies"
-        }
-      ]
-    },
     "build": {
       "executor": "@nrwl/workspace:run-commands",
       "options": {
