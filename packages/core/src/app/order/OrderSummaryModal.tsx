@@ -44,8 +44,10 @@ const OrderSummaryModal: FunctionComponent<
     lineItems,
     total,
     ...orderSummarySubtotalsProps
-}) => (
-    <Modal
+}) => {
+    const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
+
+    return <Modal
         additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
         additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary"
         header={renderHeader({ headerLink, onRequestClose })}
@@ -67,7 +69,7 @@ const OrderSummaryModal: FunctionComponent<
                 storeCurrencyCode={storeCurrency.code}
             />
         </OrderSummarySection>
-        {isTaxIncluded && <OrderSummarySection>
+        {displayInclusiveTax && <OrderSummarySection>
                 <h5
                     className="cart-taxItem cart-taxItem--subtotal optimizedCheckout-contentPrimary"
                     data-test="tax-text"
@@ -86,7 +88,7 @@ const OrderSummaryModal: FunctionComponent<
                 ))}
             </OrderSummarySection>}
     </Modal>
-);
+};
 
 const renderHeader: FunctionComponent<{
     headerLink: ReactNode;
