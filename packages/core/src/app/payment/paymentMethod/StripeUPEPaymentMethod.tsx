@@ -4,7 +4,8 @@ import React, { FunctionComponent, useCallback, useContext } from 'react';
 
 import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { getAppliedStyles } from '../../common/dom';
-import { getStripeCustomStyles } from '../../shipping/stripeUPE/utils/stripe-upe-custom-styles';
+import { isFloatingLabelEnabled } from '../../common/utility';
+import { getStripeCustomStyles, StripeStyles } from '../../shipping/stripeUPE/utils/stripe-upe-custom-styles';
 import {
     withHostedCreditCardFieldset,
     WithInjectedHostedCreditCardFieldsetProps,
@@ -19,19 +20,24 @@ export type StripePaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'con
 
 interface WithCheckoutStripePaymentMethodProps {
     storeUrl: string;
+    isFloatingLabelEnabled: boolean;
 }
 
 const StripeUPEPaymentMethod: FunctionComponent<
     StripePaymentMethodProps &
         WithInjectedHostedCreditCardFieldsetProps &
         WithCheckoutStripePaymentMethodProps
-> = ({ initializePayment, method, storeUrl, onUnhandledError = noop, ...rest }) => {
+> = ({ initializePayment, method, storeUrl , onUnhandledError = noop, isFloatingLabelEnabled, ...rest }) => {
     const containerId = `stripe-${method.id}-component-field`;
 
     const paymentContext = useContext(PaymentContext);
 
     const renderSubmitButton = () => {
         paymentContext?.hidePaymentSubmitButton(method, false);
+    }
+
+    const getCustomStyles = (styles: StripeStyles | undefined | boolean, step: string) => {
+        return getStripeCustomStyles(styles, isFloatingLabelEnabled, step);
     }
 
     const initializeStripePayment: HostedWidgetPaymentMethodProps['initializePayment'] =
@@ -61,7 +67,7 @@ const StripeUPEPaymentMethod: FunctionComponent<
                             fieldInnerShadow: formInput['box-shadow'],
                             fieldBorder: formInput['border-color'],
                         },
-                        getAppearance: getStripeCustomStyles,
+                        getAppearance: getCustomStyles,
                         onError: onUnhandledError,
                         render: renderSubmitButton,
                     },
@@ -123,6 +129,7 @@ function mapFromCheckoutProps({ checkoutState }: CheckoutContextProps) {
 
     return {
         storeUrl: config.links.siteLink,
+        isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
     };
 }
 

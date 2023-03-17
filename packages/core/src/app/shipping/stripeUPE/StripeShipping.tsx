@@ -26,6 +26,7 @@ export interface StripeShippingProps {
     shouldShowAddAddressInCheckout: boolean;
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
+    useFloatingLabel?: boolean;
     onReady?(): void;
     onUnhandledError(error: Error): void;
     onSubmit(values: SingleShippingFormValues): void;
@@ -68,6 +69,7 @@ class StripeShipping extends Component<StripeShippingProps, StripeShippingState>
             onMultiShippingChange,
             isLoading,
             isShippingMethodLoading,
+            useFloatingLabel,
             ...shippingFormProps
         } = this.props;
 
@@ -101,6 +103,7 @@ class StripeShipping extends Component<StripeShippingProps, StripeShippingState>
                     onSubmit={onSubmit}
                     step={step}
                     updateAddress={updateAddress}
+                    useFloatingLabel={useFloatingLabel}
                 />
             </div>
         </>;

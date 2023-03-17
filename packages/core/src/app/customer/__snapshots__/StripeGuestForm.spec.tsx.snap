@@ -33,7 +33,7 @@ Array [
   </div>,
   <div
     class="checkout-form"
-    style="display:none"
+    style="visibility:hidden;position:absolute"
   >
     <fieldset
       class="form-fieldset"

@@ -18,7 +18,7 @@ import { SingleShippingFormValues } from '../SingleShippingForm';
 
 import StripeShippingAddressDisplay from './StripeShippingAddressDisplay';
 import StripeStateMapper from './StripeStateMapper';
-import { getStripeCustomStyles } from './utils/stripe-upe-custom-styles';
+import { getStripeCustomStyles, StripeStyles } from './utils/stripe-upe-custom-styles';
 
 export interface StripeShippingAddressProps {
     consignments: Consignment[];
@@ -27,6 +27,7 @@ export interface StripeShippingAddressProps {
     step: CheckoutStepStatus;
     isShippingMethodLoading: boolean;
     shouldDisableSubmit: boolean;
+    useFloatingLabel?: boolean;
     isStripeLoading?(): void;
     isStripeAutoStep?(): void;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
@@ -49,6 +50,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
         isStripeAutoStep,
         isShippingMethodLoading,
         shippingAddress,
+        useFloatingLabel,
     } = props;
 
     const [isNewAddress, setIsNewAddress] = useState(true);
@@ -107,6 +109,11 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
 
         return stepCompleted || shippingPopulated || PhoneRequiredAndNotFilled;
     };
+
+
+    const getCustomStyles = (styles: StripeStyles | undefined | boolean, step: string) => {
+        return getStripeCustomStyles(styles, useFloatingLabel , step);
+    }
 
     const handleStripeShippingAddress = useCallback(async (shipping: StripeShippingEvent) => {
         const {complete, phoneFieldRequired, value: { address = { country: '', state: '', line1: '', line2: '', city: '', postal_code: '' }
@@ -202,7 +209,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
                 availableCountries: allowedCountries,
                 getStyles: getStripeStyles,
                 getStripeState: StripeStateMapper,
-                getAppearance: getStripeCustomStyles,
+                getAppearance: getCustomStyles,
                 gatewayId: 'stripeupe',
                 methodId: 'card',
             },

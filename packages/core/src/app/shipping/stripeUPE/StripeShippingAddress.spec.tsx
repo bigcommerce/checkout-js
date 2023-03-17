@@ -117,6 +117,7 @@ describe('StripeShippingAddress Component', () => {
                     availableCountries: 'US',
                     getStyles: expect.any(Function),
                     getStripeState: expect.any(Function),
+                    getAppearance: expect.any(Function),
                     gatewayId: 'stripeupe',
                     methodId: 'card',
                 },

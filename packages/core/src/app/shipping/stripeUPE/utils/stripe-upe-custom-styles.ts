@@ -1,9 +1,9 @@
-interface Styles {
+export interface StripeStyles {
     [key: string]: string;
 }
 
 export const getStripeCustomStyles = (
-    styles: Styles | undefined | boolean,
+    styles: StripeStyles | undefined | boolean,
     experiment = false,
     step = '',
 ) => {
