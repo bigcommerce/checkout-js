@@ -42,6 +42,7 @@ export interface SingleShippingFormProps {
     methodId?: string;
     shippingAddress?: Address;
     shouldShowOrderComments: boolean;
+    useFloatingLabel?: boolean;
     step: CheckoutStepStatus;
     isStripeLoading?(): void;
     isStripeAutoStep?(): void;
@@ -90,6 +91,7 @@ class StripeShippingForm extends PureComponent<
             onSubmit,
             isStripeAutoStep,
             step,
+            useFloatingLabel,
             isShippingMethodLoading,
         } = this.props;
 
@@ -111,6 +113,7 @@ class StripeShippingForm extends PureComponent<
                         shippingAddress={shippingAddress}
                         shouldDisableSubmit={this.shouldDisableSubmit()}
                         step={step}
+                        useFloatingLabel={useFloatingLabel}
                     />
                     <div className="form-body">
                         <BillingSameAsShippingField />

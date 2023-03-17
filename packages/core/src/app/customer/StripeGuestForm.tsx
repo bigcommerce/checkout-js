@@ -9,7 +9,7 @@ import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { getAppliedStyles } from '../common/dom';
 import { TranslatedString } from '../locale';
 import { PrivacyPolicyField } from '../privacyPolicy';
-import { getStripeCustomStyles } from '../shipping/stripeUPE/utils/stripe-upe-custom-styles';
+import { getStripeCustomStyles, StripeStyles } from '../shipping/stripeUPE/utils/stripe-upe-custom-styles';
 import { Button, ButtonVariant } from '../ui/button';
 import { BasicFormField, Fieldset, Legend } from '../ui/form';
 
@@ -88,6 +88,10 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
         });
     };
 
+    const getCustomStyles = (styles: StripeStyles | undefined | boolean, step: string) => {
+        return getStripeCustomStyles(styles, useFloatingLabel , step);
+    }
+
     const stripeInitialize = () => {
         initialize( {
             methodId: 'stripeupe',
@@ -96,7 +100,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                 onEmailChange: setEmailCallback,
                 isLoading: handleLoading,
                 getStyles: getStripeStyles,
-                getAppearance: getStripeCustomStyles,
+                getAppearance: getCustomStyles,
                 gatewayId: 'stripeupe',
                 methodId: 'card',
             },

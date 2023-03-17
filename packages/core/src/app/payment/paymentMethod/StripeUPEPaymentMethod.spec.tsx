@@ -139,7 +139,14 @@ describe('when using Stripe payment', () => {
                         containerId: 'stripe-alipay-component-field',
                         style: expect.objectContaining({
                             fieldText: '#cccccc',
+                            fieldBackground: undefined,
+                            fieldBorder: undefined,
+                            fieldErrorText: "#cccccc",
+                            fieldInnerShadow: undefined,
+                            fieldPlaceholderText: "#cccccc",
+                            labelText: "#cccccc"
                         }),
+                        getAppearance: expect.any(Function),
                         onError: expect.any(Function),
                         render: expect.any(Function),
                     },
@@ -190,8 +197,14 @@ describe('when using Stripe payment', () => {
                     stripeupe: {
                         containerId: 'stripe-card-component-field',
                         style: expect.objectContaining({
-                            fieldText: '#cccccc',
+                            fieldBackground: undefined,
+                            fieldBorder: undefined,
+                            fieldErrorText: "#cccccc",
+                            fieldInnerShadow: undefined,
+                            fieldPlaceholderText: "#cccccc",
+                            labelText: "#cccccc"
                         }),
+                        getAppearance: expect.any(Function),
                         onError: expect.any(Function),
                         render: expect.any(Function),
                     },
@@ -242,8 +255,14 @@ describe('when using Stripe payment', () => {
                     stripeupe: {
                         containerId: 'stripe-idealBank-component-field',
                         style: expect.objectContaining({
-                            fieldText: '#cccccc',
+                            fieldBackground: undefined,
+                            fieldBorder: undefined,
+                            fieldErrorText: "#cccccc",
+                            fieldInnerShadow: undefined,
+                            fieldPlaceholderText: "#cccccc",
+                            labelText: "#cccccc"
                         }),
+                        getAppearance: expect.any(Function),
                         onError: expect.any(Function),
                         render: expect.any(Function),
                     },
@@ -295,7 +314,14 @@ describe('when using Stripe payment', () => {
                         containerId: 'stripe-iban-component-field',
                         style: expect.objectContaining({
                             fieldText: '#cccccc',
+                            fieldBackground: undefined,
+                            fieldBorder: undefined,
+                            fieldErrorText: "#cccccc",
+                            fieldInnerShadow: undefined,
+                            fieldPlaceholderText: "#cccccc",
+                            labelText: "#cccccc"
                         }),
+                        getAppearance: expect.any(Function),
                         onError: expect.any(Function),
                         render: expect.any(Function),
                     },
