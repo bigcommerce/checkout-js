@@ -90,6 +90,11 @@ const GooglePayPaymentMethod: FunctionComponent<GooglePayPaymentMethodProps> = (
             onError: onUnhandledError,
             onPaymentSelect: () => reinitializePayment(mergedOptions),
           },
+          googlepayworldpayaccess: {
+            walletButton: 'walletButton',
+            onError: onUnhandledError,
+            onPaymentSelect: () => reinitializePayment(mergedOptions),
+          },
         };
 
             return initializePayment(mergedOptions);

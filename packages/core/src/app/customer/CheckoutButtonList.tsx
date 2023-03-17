@@ -31,6 +31,7 @@ export const SUPPORTED_METHODS: string[] = [
     'googlepayorbital',
     'googlepaystripe',
     'googlepaystripeupe',
+    'googlepayworldpayaccess',
 ];
 
 export interface CheckoutButtonListProps {
