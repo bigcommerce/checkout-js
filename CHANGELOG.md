@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.298.0](https://github.com/bigcommerce/checkout-js/compare/v1.297.2...v1.298.0) (2023-03-21)
+
+
+### Features
+
+* **checkout:** CHECKOUT-3430 Display inclusive tax below subtotal ([#1223](https://github.com/bigcommerce/checkout-js/issues/1223)) ([62f4738](https://github.com/bigcommerce/checkout-js/commit/62f47384f1733caa3986b777a03d7732139f4118))
+
 ### [1.297.2](https://github.com/bigcommerce/checkout-js/compare/v1.297.1...v1.297.2) (2023-03-20)
 
 ### [1.297.1](https://github.com/bigcommerce/checkout-js/compare/v1.297.0...v1.297.1) (2023-03-14)
