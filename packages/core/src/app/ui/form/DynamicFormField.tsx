@@ -25,7 +25,7 @@ export interface DynamicFormFieldProps {
     parentFieldName?: string;
     placeholder?: string;
     label?: ReactNode;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     onChange?(value: string | string[]): void;
 }
 
@@ -49,12 +49,12 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
     autocomplete,
     label,
     extraClass,
-    useFloatingLabel,
+    isFloatingLabelEnabled,
 }) => {
     const fieldInputId = inputId || name;
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
     const isFloatingLabelSupportedFieldType = Boolean(
-        useFloatingLabel &&
+        isFloatingLabelEnabled &&
             (includes(['text', 'password', 'dropdown', 'date', 'multiline'], fieldType) ||
                 !fieldType),
     );
@@ -63,7 +63,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
             <Label
                 htmlFor={fieldInputId}
                 id={`${fieldInputId}-label`}
-                useFloatingLabel={isFloatingLabelSupportedFieldType}
+                isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
             >
                 {label || fieldLabel}
                 {!required && (
@@ -109,7 +109,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 options={options && options.items}
                 placeholder={placeholder || (options && options.helperLabel)}
                 rows={options && (options as any).rows}
-                useFloatingLabel={isFloatingLabelSupportedFieldType}
+                isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
             />
         ),
         [
@@ -147,7 +147,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                     label={labelComponent}
                     name={fieldName}
                     onChange={onChange}
-                    useFloatingLabel={isFloatingLabelSupportedFieldType}
+                    isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
                 />
             )}
         </div>

@@ -20,7 +20,7 @@ export interface GoogleAutocompleteFormFieldProps {
     supportedCountries: string[];
     nextElement?: HTMLElement;
     parentFieldName?: string;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     onSelect(place: google.maps.places.PlaceResult, item: AutocompleteItem): void;
     onToggleOpen?(state: { inputValue: string; isOpen: boolean }): void;
     onChange(value: string, isOpen: boolean): void;
@@ -36,7 +36,7 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
     onSelect,
     onChange,
     onToggleOpen,
-    useFloatingLabel,
+    isFloatingLabelEnabled,
 }) => {
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
 
@@ -48,12 +48,12 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
         () => ({
             className: classNames(
                 'form-input optimizedCheckout-form-input',
-                { 'floating-input': useFloatingLabel },
+                { 'floating-input': isFloatingLabelEnabled },
             ),
             id: getAddressFormFieldInputId(name),
             'aria-labelledby': labelId,
-            placeholder: useFloatingLabel ? ' ' : placeholder,
-            labelText: useFloatingLabel ? labelContent : null,
+            placeholder: isFloatingLabelEnabled ? ' ' : placeholder,
+            labelText: isFloatingLabelEnabled ? labelContent : null,
         }),
         [name, labelId, placeholder, labelContent],
     );
@@ -86,8 +86,8 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
         ],
     );
 
-    const renderLabel = useFloatingLabel ? null : (
-        <Label htmlFor={inputProps.id} id={labelId} useFloatingLabel={useFloatingLabel}>
+    const renderLabel = isFloatingLabelEnabled ? null : (
+        <Label htmlFor={inputProps.id} id={labelId} isFloatingLabelEnabled={isFloatingLabelEnabled}>
             {labelContent}
         </Label>
     );
@@ -95,14 +95,14 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
     return (
         <div className={classNames(
                 'dynamic-form-field dynamic-form-field--addressLineAutocomplete',
-                { 'floating-form-field': useFloatingLabel },
+                { 'floating-form-field': isFloatingLabelEnabled },
             )}
         >
             <FormField
                 input={renderInput}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
                 label={renderLabel}
                 name={fieldName}
-                useFloatingLabel={useFloatingLabel}
             />
         </div>
     );

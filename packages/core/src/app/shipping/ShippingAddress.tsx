@@ -29,7 +29,7 @@ export interface ShippingAddressProps {
     shippingAddress?: Address;
     shouldShowSaveAddress?: boolean;
     hasRequestedShippingOptions: boolean;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     initialize(options: ShippingInitializeOptions): Promise<CheckoutSelectors>;
     onAddressSelect(address: Address): void;
@@ -57,7 +57,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
         addresses,
         shouldShowSaveAddress,
         isShippingStepPending,
-        useFloatingLabel,
+        isFloatingLabelEnabled,
     } = props;
 
     const { setSubmitted } = useContext(FormContext);
@@ -122,7 +122,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
             onFieldChange={handleFieldChange}
             onUseNewAddress={onUseNewAddress}
             shouldShowSaveAddress={shouldShowSaveAddress}
-            useFloatingLabel={useFloatingLabel}
+            isFloatingLabelEnabled={isFloatingLabelEnabled}
         />
     );
 };

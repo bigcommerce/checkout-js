@@ -22,7 +22,10 @@ describe('CheckoutButtonContainer', () => {
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(
             merge(getStoreConfig(), {
                 checkoutSettings: {
-                    features: { 'CHECKOUT-7222.checkout_settings_styling_section': true },
+                    checkoutUserExperienceSettings: {
+                        walletButtonsOnTop: true,
+                        floatingLabelEnabled: false,
+                    },
                     remoteCheckoutProviders: ['amazonpay','applepay', 'braintreevisacheckout'],
                 },
             }),

@@ -66,7 +66,7 @@ export interface WithCheckoutShippingProps {
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
     providerWithCustomCheckout?: string;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitializeShippingMethod(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -128,7 +128,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             onToggleMultiShipping,
             providerWithCustomCheckout,
             step,
-            useFloatingLabel,
+            isFloatingLabelEnabled,
             ...shippingFormProps
         } = this.props;
 
@@ -177,7 +177,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         onUseNewAddress={this.handleUseNewAddress}
                         shouldShowSaveAddress={!isGuest}
                         updateAddress={updateShippingAddress}
-                        useFloatingLabel={useFloatingLabel}
+                        isFloatingLabelEnabled={isFloatingLabelEnabled}
                     />
                 </div>
             </AddressFormSkeleton>
@@ -425,7 +425,7 @@ export function mapToShippingProps({
         updateBillingAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,
         updateShippingAddress: checkoutService.updateShippingAddress,
-        useFloatingLabel: isFloatingLabelEnabled(config.checkoutSettings),
+        isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
     };
 }
 

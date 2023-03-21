@@ -24,7 +24,7 @@ export interface ShippingAddressFormProps {
     isLoading: boolean;
     formFields: FormField[];
     shouldShowSaveAddress?: boolean;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     onUseNewAddress(): void;
     onFieldChange(fieldName: string, value: string): void;
     onAddressSelect(address: Address): void;
@@ -47,7 +47,7 @@ class ShippingAddressForm extends Component<
             formFields,
             isLoading,
             googleMapsApiKey,
-            useFloatingLabel,
+            isFloatingLabelEnabled,
             formik: {
                 values: { shippingAddress: formAddress },
             },
@@ -90,7 +90,7 @@ class ShippingAddressForm extends Component<
                             onChange={this.handleChange}
                             setFieldValue={this.setFieldValue}
                             shouldShowSaveAddress={shouldShowSaveAddress}
-                            useFloatingLabel={useFloatingLabel}
+                            isFloatingLabelEnabled={isFloatingLabelEnabled}
                         />
                     </LoadingOverlay>
                 )}

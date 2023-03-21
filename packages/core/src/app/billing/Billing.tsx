@@ -38,7 +38,7 @@ export interface WithCheckoutBillingProps {
     shouldShowOrderComments: boolean;
     billingAddress?: Address;
     methodId?: string;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     getFields(countryCode?: string): FormField[];
     initialize(): Promise<CheckoutSelectors>;
     updateAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
@@ -165,7 +165,7 @@ function mapToBillingProps({
         shouldShowOrderComments: enableOrderComments && getShippableItemsCount(cart) < 1,
         updateAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,
-        useFloatingLabel: isFloatingLabelEnabled(config.checkoutSettings),
+        isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
     };
 }
 

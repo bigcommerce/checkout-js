@@ -62,10 +62,12 @@ describe('mapToShippingProps()', () => {
         });
 
         it('returns false when not enabled', () => {
+            const { checkoutSettings } = getStoreConfig();
+
             jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
                 ...getStoreConfig(),
                 checkoutSettings: {
-                    features: {},
+                    ...checkoutSettings,
                     hasMultiShippingEnabled: false,
                 },
             } as StoreConfig);

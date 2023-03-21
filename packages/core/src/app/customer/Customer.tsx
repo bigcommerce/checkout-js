@@ -77,7 +77,7 @@ export interface WithCheckoutCustomerProps {
     isAccountCreationEnabled: boolean;
     createAccountError?: Error;
     signInError?: Error;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     clearError(error: Error): Promise<CheckoutSelectors>;
     continueAsGuest(credentials: GuestCredentials): Promise<CheckoutSelectors>;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
@@ -178,7 +178,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             providerWithCustomCheckout,
             onUnhandledError = noop,
             step,
-            useFloatingLabel,
+            isFloatingLabelEnabled,
         } = this.props;
         const checkoutButtons = isWalletButtonsOnTop
           ? null
@@ -226,7 +226,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 onShowLogin={this.handleShowLogin}
                 privacyPolicyUrl={privacyPolicyUrl}
                 requiresMarketingConsent={requiresMarketingConsent}
-                useFloatingLabel={useFloatingLabel}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
             />
         );
     }
@@ -234,7 +234,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
     private renderEmailLoginLinkForm(): ReactNode {
         const { isEmailLoginFormOpen, hasRequestedLoginEmail } = this.state;
 
-        const { isSendingSignInEmail, signInEmailError, signInEmail, useFloatingLabel } =
+        const { isSendingSignInEmail, signInEmailError, signInEmail, isFloatingLabelEnabled } =
             this.props;
 
         return (
@@ -247,7 +247,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 onSendLoginEmail={this.handleSendLoginEmail}
                 sentEmail={signInEmail}
                 sentEmailError={signInEmailError}
-                useFloatingLabel={useFloatingLabel}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
             />
         );
     }
@@ -265,7 +265,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             isCreatingAccount,
             createAccountError,
             requiresMarketingConsent,
-            useFloatingLabel,
+            isFloatingLabelEnabled,
         } = this.props;
 
         return (
@@ -276,7 +276,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 onCancel={this.handleCancelCreateAccount}
                 onSubmit={this.handleCreateAccount}
                 requiresMarketingConsent={requiresMarketingConsent}
-                useFloatingLabel={useFloatingLabel}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
             />
         );
     }
@@ -293,7 +293,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             isAccountCreationEnabled,
             providerWithCustomCheckout,
             signInError,
-            useFloatingLabel,
+            isFloatingLabelEnabled,
             viewType,
         } = this.props;
 
@@ -318,7 +318,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 onSignIn={this.handleSignIn}
                 shouldShowCreateAccountLink={isAccountCreationEnabled}
                 signInError={signInError}
-                useFloatingLabel={useFloatingLabel}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
                 viewType={viewType}
             />
         );
@@ -579,7 +579,7 @@ export function mapToWithCheckoutCustomerProps({
         requiresMarketingConsent,
         signIn: checkoutService.signInCustomer,
         signInError: getSignInError(),
-        useFloatingLabel: isFloatingLabelEnabled(config.checkoutSettings),
+        isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
     };
 }
 
