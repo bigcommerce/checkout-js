@@ -462,6 +462,9 @@
             "agreement_with_link_text": "Yes, I agree with the <a href=\"{url}\" target=\"_blank\">terms and conditions</a>.",
             "terms_and_conditions_heading": "Terms and Conditions"
         },
+        "tax": {
+            "inclusive_label": "Tax included in Total"
+        },
         "order_confirmation": {
             "mandate": {
                 "checkoutcom": {

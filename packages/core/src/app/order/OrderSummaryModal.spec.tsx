@@ -31,4 +31,28 @@ describe('OrderSummaryModal', () => {
     it('renders order summary', () => {
         expect(orderSummary).toMatchSnapshot();
     });
+
+    describe('when taxes are inclusive', () => {
+        it('displays tax as summary section', () => {
+            const taxIncludedOrder = {
+                ...getOrder(),
+                isTaxIncluded: true,
+            };
+
+            orderSummary = shallow(
+                <OrderSummaryModal
+                    {...mapToOrderSummarySubtotalsProps(taxIncludedOrder)}
+                    isOpen={true}
+                    lineItems={taxIncludedOrder.lineItems}
+                    shopperCurrency={getStoreConfig().shopperCurrency}
+                    storeCurrency={getStoreConfig().currency}
+                    total={taxIncludedOrder.orderAmount}
+                />,
+            );
+
+            expect(orderSummary).toMatchSnapshot();
+
+            expect(orderSummary.find('.cart-taxItem')).toHaveLength(1);
+        });
+    });
 });

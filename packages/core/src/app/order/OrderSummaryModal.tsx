@@ -11,6 +11,7 @@ import { IconClose } from '../ui/icon';
 import { Modal, ModalHeader } from '../ui/modal';
 
 import OrderSummaryItems from './OrderSummaryItems';
+import OrderSummaryPrice from './OrderSummaryPrice';
 import OrderSummarySection from './OrderSummarySection';
 import OrderSummarySubtotals, { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 import OrderSummaryTotal from './OrderSummaryTotal';
@@ -32,6 +33,8 @@ const OrderSummaryModal: FunctionComponent<
 > = ({
     additionalLineItems,
     children,
+    isTaxIncluded,
+    taxes,
     onRequestClose,
     onAfterOpen,
     storeCurrency,
@@ -41,8 +44,10 @@ const OrderSummaryModal: FunctionComponent<
     lineItems,
     total,
     ...orderSummarySubtotalsProps
-}) => (
-    <Modal
+}) => {
+    const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
+
+    return <Modal
         additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
         additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary"
         header={renderHeader({ headerLink, onRequestClose })}
@@ -54,7 +59,7 @@ const OrderSummaryModal: FunctionComponent<
             <OrderSummaryItems items={lineItems} />
         </OrderSummarySection>
         <OrderSummarySection>
-            <OrderSummarySubtotals {...orderSummarySubtotalsProps} />
+            <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
             {additionalLineItems}
         </OrderSummarySection>
         <OrderSummarySection>
@@ -64,8 +69,26 @@ const OrderSummaryModal: FunctionComponent<
                 storeCurrencyCode={storeCurrency.code}
             />
         </OrderSummarySection>
+        {displayInclusiveTax && <OrderSummarySection>
+                <h5
+                    className="cart-taxItem cart-taxItem--subtotal optimizedCheckout-contentPrimary"
+                    data-test="tax-text"
+                >
+                    <TranslatedString
+                        id="tax.inclusive_label"
+                    />
+                </h5>
+                {(taxes || []).map((tax, index) => (
+                    <OrderSummaryPrice
+                        amount={tax.amount}
+                        key={index}
+                        label={tax.name}
+                        testId="cart-taxes"
+                    />
+                ))}
+            </OrderSummarySection>}
     </Modal>
-);
+};
 
 const renderHeader: FunctionComponent<{
     headerLink: ReactNode;
