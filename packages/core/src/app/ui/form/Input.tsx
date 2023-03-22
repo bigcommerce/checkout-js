@@ -4,15 +4,15 @@ import React, { forwardRef, InputHTMLAttributes, Ref } from 'react';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     testId?: string;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
 }
 
 const Input = forwardRef(
     (
-        { className, testId, placeholder, name, useFloatingLabel, ...rest }: InputProps,
+        { className, testId, placeholder, name, isFloatingLabelEnabled, ...rest }: InputProps,
         ref: Ref<HTMLInputElement>,
     ) => {
-        const notUseFloatingLabelFieldNames = ['orderComment', 'redeemableCode'];
+        const floatingLabelDisabledFieldNames = ['orderComment', 'redeemableCode'];
 
         return (
             <input
@@ -20,12 +20,12 @@ const Input = forwardRef(
                     ...rest,
                     className: classNames(className, {
                         'floating-input':
-                            useFloatingLabel && !includes(notUseFloatingLabelFieldNames, name),
+                            isFloatingLabelEnabled && !includes(floatingLabelDisabledFieldNames, name),
                     }),
                     name,
                 }}
                 data-test={testId}
-                placeholder={useFloatingLabel ? ' ' : placeholder}
+                placeholder={isFloatingLabelEnabled ? ' ' : placeholder}
                 ref={ref}
             />
         );

@@ -41,7 +41,7 @@ export interface BillingFormProps {
     isUpdating: boolean;
     methodId?: string;
     shouldShowOrderComments: boolean;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     getFields(countryCode?: string): FormField[];
     onSubmit(values: BillingFormValues): void;
     onUnhandledError(error: Error): void;
@@ -75,7 +75,7 @@ class BillingForm extends PureComponent<
             shouldShowOrderComments,
             values,
             methodId,
-            useFloatingLabel,
+            isFloatingLabelEnabled,
         } = this.props;
 
         const shouldRenderStaticAddress = methodId === 'amazonpay';
@@ -126,9 +126,9 @@ class BillingForm extends PureComponent<
                                 countryCode={values.countryCode}
                                 formFields={editableFormFields}
                                 googleMapsApiKey={googleMapsApiKey}
+                                isFloatingLabelEnabled={isFloatingLabelEnabled}
                                 setFieldValue={setFieldValue}
                                 shouldShowSaveAddress={!isGuest}
-                                useFloatingLabel={useFloatingLabel}
                             />
                         </AddressFormSkeleton>
                     )}

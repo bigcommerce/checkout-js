@@ -21,14 +21,14 @@ export interface CreateAccountFormProps {
     createAccountError?: Error;
     isCreatingAccount?: boolean;
     requiresMarketingConsent: boolean;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     onCancel?(): void;
     onSubmit?(values: CreateAccountFormValues): void;
 }
 
 const CreateAccountForm: FunctionComponent<
     CreateAccountFormProps & WithLanguageProps & FormikProps<CreateAccountFormValues>
-> = ({ formFields, createAccountError, isCreatingAccount, onCancel, useFloatingLabel }) => {
+> = ({ formFields, createAccountError, isCreatingAccount, onCancel, isFloatingLabelEnabled }) => {
     const createAccountErrorMessage = useMemo(() => {
         if (!createAccountError) {
             return;
@@ -70,7 +70,7 @@ const CreateAccountForm: FunctionComponent<
                             field={field}
                             key={field.id}
                             parentFieldName={field.custom ? 'customFields' : undefined}
-                            useFloatingLabel={useFloatingLabel}
+                            isFloatingLabelEnabled={isFloatingLabelEnabled}
                         />
                     ))}
                 </div>

@@ -105,13 +105,24 @@ export class PollyObject {
 
     enableReplay(): void {
         if (this.polly) {
-            // bigpayBaseUrl must be the exact URL of the local environment in order for Bigpay iframes to work.
             this.polly.server
                 .get(`${this.baseUrl}/api/storefront/checkout-settings`)
                 .on('beforeResponse', (_, res) => {
                     const response = res.jsonBody();
 
+                    // bigpayBaseUrl must be the exact URL of the local environment in order for
+                    // Bigpay iframes to work.
                     response.storeConfig.paymentSettings.bigpayBaseUrl = this.baseUrl;
+
+                    // If the return of checkout settings is altered, provide the default values for
+                    // the previous HAR recordings.
+                    if (!response.storeConfig.checkoutSettings.checkoutUserExperienceSettings) {
+                        response.storeConfig.checkoutSettings.checkoutUserExperienceSettings = {
+                            walletButtonsOnTop: false,
+                            floatingLabelEnabled: false,
+                        };
+                    }
+
                     res.send(response);
                 });
 

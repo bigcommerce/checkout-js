@@ -14,6 +14,7 @@ export function getStoreConfig(): StoreConfig {
             checkoutBillingSameAsShippingEnabled: true,
             checkoutUserExperienceSettings: {
                 walletButtonsOnTop: false,
+                floatingLabelEnabled: false,
             },
             enableOrderComments: true,
             enableTermsAndConditions: false,

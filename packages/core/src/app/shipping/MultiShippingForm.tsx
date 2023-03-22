@@ -48,7 +48,7 @@ export interface MultiShippingFormProps {
     countriesWithAutocomplete: string[];
     googleMapsApiKey?: string;
     shouldShowAddAddressInCheckout: boolean;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     onCreateAccount(): void;
     createCustomerAddress(address: AddressRequestBody): void;
@@ -103,7 +103,7 @@ class MultiShippingForm extends PureComponent<
             countries,
             countriesWithAutocomplete,
             googleMapsApiKey,
-            useFloatingLabel,
+            isFloatingLabelEnabled,
         } = this.props;
 
         const { items, itemAddingAddress, createCustomerAddressError } = this.state;
@@ -150,7 +150,7 @@ class MultiShippingForm extends PureComponent<
                     isOpen={!!itemAddingAddress}
                     onRequestClose={this.handleCloseAddAddressForm}
                     onSaveAddress={this.handleSaveAddress}
-                    useFloatingLabel={useFloatingLabel}
+                    isFloatingLabelEnabled={isFloatingLabelEnabled}
                 />
 
                 <Form>

@@ -50,7 +50,7 @@ export interface SingleShippingFormProps {
     shippingAddress?: Address;
     shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
     getFields(countryCode?: string): FormField[];
@@ -139,7 +139,7 @@ class SingleShippingForm extends PureComponent<
             deinitialize,
             values: { shippingAddress: addressForm },
             isShippingStepPending,
-            useFloatingLabel,
+            isFloatingLabelEnabled,
         } = this.props;
 
         const { isResettingAddress, isUpdatingShippingData, hasRequestedShippingOptions } =
@@ -172,7 +172,7 @@ class SingleShippingForm extends PureComponent<
                         onUseNewAddress={this.onUseNewAddress}
                         shippingAddress={shippingAddress}
                         shouldShowSaveAddress={shouldShowSaveAddress}
-                        useFloatingLabel={useFloatingLabel}
+                        isFloatingLabelEnabled={isFloatingLabelEnabled}
                     />
                     {shouldShowBillingSameAsShipping && (
                         <div className="form-body">

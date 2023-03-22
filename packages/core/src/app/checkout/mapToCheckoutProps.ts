@@ -18,9 +18,10 @@ export default function mapToCheckoutProps({
         checkoutSettings: {
             guestCheckoutEnabled: isGuestEnabled = false,
             features = {},
-            checkoutUserExperienceSettings: {
-                walletButtonsOnTop = false,
-            } = {},
+            checkoutUserExperienceSettings = {
+                walletButtonsOnTop: false,
+                floatingLabelEnabled: false,
+            } ,
         } = {},
         links: {
             loginLink: loginUrl = '',
@@ -37,7 +38,7 @@ export default function mapToCheckoutProps({
         },
     );
 
-    const walletButtonsOnTopFlag = Boolean(features['CHECKOUT-7222.checkout_settings_styling_section']) && walletButtonsOnTop;
+    const walletButtonsOnTopFlag = Boolean(checkoutUserExperienceSettings.walletButtonsOnTop);
 
     return {
         billingAddress: data.getBillingAddress(),

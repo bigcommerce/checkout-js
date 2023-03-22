@@ -4,12 +4,12 @@ import React, { forwardRef, Ref, TextareaHTMLAttributes } from 'react';
 export interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
     additionalClassName?: string;
     testId?: string;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
 }
 
 const TextArea = forwardRef(
     (
-        { additionalClassName, testId, className, useFloatingLabel, ...rest }: TextAreaProps,
+        { additionalClassName, testId, className, isFloatingLabelEnabled, ...rest }: TextAreaProps,
         ref: Ref<HTMLTextAreaElement>,
     ) => {
         return (
@@ -18,7 +18,7 @@ const TextArea = forwardRef(
                 className={
                     className ||
                     classNames(
-                        { 'floating-textarea': useFloatingLabel },
+                        { 'floating-textarea': isFloatingLabelEnabled },
                         'form-input',
                         'optimizedCheckout-form-input',
                         additionalClassName,

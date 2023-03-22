@@ -20,7 +20,7 @@ export interface GuestFormProps {
     email?: string;
     isLoading: boolean;
     privacyPolicyUrl?: string;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     onChangeEmail(email: string): void;
     onContinueAsGuest(data: GuestFormValues): void;
     onShowLogin(): void;
@@ -42,7 +42,7 @@ const GuestForm: FunctionComponent<
     onShowLogin,
     privacyPolicyUrl,
     requiresMarketingConsent,
-    useFloatingLabel,
+    isFloatingLabelEnabled,
 }) => {
     const renderField = useCallback(
         (fieldProps: FieldProps<boolean>) => (
@@ -66,7 +66,7 @@ const GuestForm: FunctionComponent<
             >
                 <div className="customerEmail-container">
                     <div className="customerEmail-body">
-                        <EmailField onChange={onChangeEmail} useFloatingLabel={useFloatingLabel}/>
+                        <EmailField onChange={onChangeEmail} isFloatingLabelEnabled={isFloatingLabelEnabled}/>
 
                         {(canSubscribe || requiresMarketingConsent) && (
                             <BasicFormField name="shouldSubscribe" render={renderField} />
@@ -77,7 +77,7 @@ const GuestForm: FunctionComponent<
 
                     <div
                         className={classNames('form-actions customerEmail-action', {
-                            'customerEmail-floating--enabled': useFloatingLabel,
+                            'customerEmail-floating--enabled': isFloatingLabelEnabled,
                         })}
                     >
                         <Button

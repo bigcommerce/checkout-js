@@ -8,10 +8,10 @@ import { IconEye, IconEyeSlash } from '../ui/icon';
 import { Toggle } from '../ui/toggle';
 
 interface WithFloatingLabel {
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
 }
 
-const PasswordField: FunctionComponent<WithFloatingLabel> = ({ useFloatingLabel = false }) => {
+const PasswordField: FunctionComponent<WithFloatingLabel> = ({ isFloatingLabelEnabled = false }) => {
     const renderInput = useCallback(
         (props: FieldProps) => (
             <Toggle openByDefault={false}>
@@ -22,13 +22,13 @@ const PasswordField: FunctionComponent<WithFloatingLabel> = ({ useFloatingLabel 
                             additionalClassName="form-input--withIcon"
                             id={props.field.name}
                             type={isOpen ? 'text' : 'password'}
-                            useFloatingLabel={useFloatingLabel}
+                            isFloatingLabelEnabled={isFloatingLabelEnabled}
                         />
-                        {useFloatingLabel && (
+                        {isFloatingLabelEnabled && (
                             <Label
                                 htmlFor={props.field.name}
                                 id={`${props.field.name}-label`}
-                                useFloatingLabel={true}
+                                isFloatingLabelEnabled={true}
                             >
                                 <TranslatedString id="customer.password_label" />
                             </Label>
@@ -44,12 +44,12 @@ const PasswordField: FunctionComponent<WithFloatingLabel> = ({ useFloatingLabel 
                 )}
             </Toggle>
         ),
-        [useFloatingLabel],
+        [isFloatingLabelEnabled],
     );
 
     const labelContent = useMemo(() => <TranslatedString id="customer.password_label" />, []);
 
-    return <FormField input={renderInput} labelContent={useFloatingLabel ? null : labelContent} name="password" useFloatingLabel={useFloatingLabel} />;
+    return <FormField input={renderInput} labelContent={isFloatingLabelEnabled ? null : labelContent} name="password" isFloatingLabelEnabled={isFloatingLabelEnabled} />;
 };
 
 export default memo(PasswordField);
