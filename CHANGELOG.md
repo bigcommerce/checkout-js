@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.300.0](https://github.com/bigcommerce/checkout-js/compare/v1.299.0...v1.300.0) (2023-03-23)
+
+
+### Features
+
+* **payment:** PAYPAL-1893 updated initialize payment option from paypalcommerce to paypalcommercecreditcards in PaypalCommerceCreditCardPaymentMethod ([#1226](https://github.com/bigcommerce/checkout-js/issues/1226)) ([17371e3](https://github.com/bigcommerce/checkout-js/commit/17371e329aa3a800c9cdc0958ac39a19a028305a))
+
 ## [1.299.0](https://github.com/bigcommerce/checkout-js/compare/v1.298.1...v1.299.0) (2023-03-22)
 
 
