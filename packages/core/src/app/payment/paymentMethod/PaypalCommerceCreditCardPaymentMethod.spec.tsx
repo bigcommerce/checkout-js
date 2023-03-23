@@ -127,7 +127,7 @@ describe('when using PayPal Commerce Credit Card payment', () => {
             expect.objectContaining({
                 methodId: defaultProps.method.id,
                 gatewayId: defaultProps.method.gateway,
-                paypalcommerce: {
+                paypalcommercecreditcards: {
                     form: hostedFormOptions,
                 },
             }),
