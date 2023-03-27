@@ -354,7 +354,10 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
                 <ul className="consignmentList">
                     {this.state.multiShipment ?
                         <div className="multiShip-text">
-                            Other items in cart will also ship to FFL
+                            {
+                                (itemsWithoutFFL.length > 0) &&
+                                "Other items in cart will also ship to FFL"
+                            }
                             { itemsWithoutFFL.map(item => (
                                 <div className="consignment">
                                     <figure className="consignment-product-figure">
