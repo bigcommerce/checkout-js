@@ -152,7 +152,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                 shouldShowMultiShipping={ shouldShowMultiShipping }
                 step={step}
                 updateAddress={updateShippingAddress}
-                useFloatingLabel={useFloatingLabel}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
             />;
         }
 

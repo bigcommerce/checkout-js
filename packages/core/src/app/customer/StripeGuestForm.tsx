@@ -26,7 +26,7 @@ export interface StripeGuestFormProps {
     requiresMarketingConsent: boolean;
     defaultShouldSubscribe: boolean;
     privacyPolicyUrl?: string;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     onChangeEmail(email: string): void;
     onContinueAsGuest(data: GuestFormValues): void;
     deinitialize(options: CustomerRequestOptions): void;
@@ -47,7 +47,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
     requiresMarketingConsent,
     privacyPolicyUrl,
     step,
-    useFloatingLabel,
+    isFloatingLabelEnabled,
 }) => {
 
     const [continueAsAGuestButton, setContinueAsAGuestButton] = useState(true);
@@ -89,7 +89,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
     };
 
     const getCustomStyles = (styles: StripeStyles | undefined | boolean, step: string) => {
-        return getStripeCustomStyles(styles, useFloatingLabel , step);
+        return getStripeCustomStyles(styles, isFloatingLabelEnabled , step);
     }
 
     const stripeInitialize = () => {
@@ -175,7 +175,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
         requiresMarketingConsent,
     ]);
 
-    const continueButtonClassName = useFloatingLabel ? 'stripeCustomerEmail-button--withFloatingLabels' : 'stripeCustomerEmail-button';
+    const continueButtonClassName = isFloatingLabelEnabled ? 'stripeCustomerEmail-button--withFloatingLabels' : 'stripeCustomerEmail-button';
 
     const buttonText = authentication && !isNewAuth? 'customer.continue_as_stripe_customer_action' : continueAsGuestButtonLabelId;
 
@@ -209,7 +209,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
 
                             <div
                                 className={classNames('form-actions customerEmail-action', {
-                                    'customerEmail-floating--enabled': useFloatingLabel,
+                                    'customerEmail-floating--enabled': isFloatingLabelEnabled,
                                 })}
                             >
                                 { (!authentication || (authentication && !isNewAuth )) && <Button

@@ -1,5 +1,24 @@
+@import "../../../../../src/app/ui/base";
+
+// We use these to style floating labels into stripe iframe
+// -----------------------------------------------------------------------------
+
+$half-form-field-spacing: $floating-form-field-spacing/2;
+$stripe-padding-top: $floating-form-field-spacing;
+$stripe-padding-left: $half-form-field-spacing*3;
+$stripe-padding-right: $half-form-field-spacing*3;
+$stripe-padding-bottom: $half-form-field-spacing;
+$stripe-space-unit: 5px;
+$half-stripe-space-unit: $stripe-space-unit/2;
+$default-stripe-space-unit: 4px;
+
+// StripeButton styles when iframe is rendered
+// -----------------------------------------------------------------------------
+
+$stripe-bottom: 3px;
+
 .stripeCustomerEmail-button {
-    bottom: 3px;
+    bottom: $stripe-bottom;
     padding: $customerEmail-button-padding;
     width: 100%;
 

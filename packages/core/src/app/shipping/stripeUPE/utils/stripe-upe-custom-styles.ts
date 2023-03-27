@@ -1,3 +1,5 @@
+import '../../../../scss/components/checkout/customer/_stripeUpeCustomer.scss';
+
 export interface StripeStyles {
     [key: string]: string;
 }
@@ -10,7 +12,7 @@ export const getStripeCustomStyles = (
     let appearance: any = {
         variables: {
             spacingUnit: getStripeSpaceUnit(experiment, step),
-            borderRadius: '4px',
+            borderRadius: `$global-radius`,
         },
     };
 
@@ -43,13 +45,13 @@ export const getStripeCustomStyles = (
             labels: 'floating',
             variables: {
                 ...appearance?.variables,
-                fontSizeBase: '14px',
+                fontSizeBase: `$floating-label-font-size--default`,
             },
             rules: {
                 ...appearance?.rules,
                 '.Input': {
                     ...appearance?.rules?.['.Input'],
-                    padding: '7px 13px 5px 13px',
+                    padding: `$stripe-padding-top $stripe-padding-right $stripe-padding-bottom $stripe-padding-left`,
                 },
             },
         };
@@ -63,8 +65,8 @@ const getStripeSpaceUnit = (
     step: string,
 ) => {
     if (experiment) {
-        return step === 'linkAuthentication' ? '5px' : '2.5px';
+        return step === 'linkAuthentication' ? `$stripe-space-unit` : `$half-stripe-space-unit`;
     }
 
-    return '4px';
+    return `$default-stripe-space-unit`;
 }

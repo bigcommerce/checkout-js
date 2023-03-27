@@ -27,7 +27,7 @@ export interface StripeShippingAddressProps {
     step: CheckoutStepStatus;
     isShippingMethodLoading: boolean;
     shouldDisableSubmit: boolean;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     isStripeLoading?(): void;
     isStripeAutoStep?(): void;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
@@ -50,7 +50,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
         isStripeAutoStep,
         isShippingMethodLoading,
         shippingAddress,
-        useFloatingLabel,
+        isFloatingLabelEnabled,
     } = props;
 
     const [isNewAddress, setIsNewAddress] = useState(true);
@@ -112,7 +112,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
 
 
     const getCustomStyles = (styles: StripeStyles | undefined | boolean, step: string) => {
-        return getStripeCustomStyles(styles, useFloatingLabel , step);
+        return getStripeCustomStyles(styles, isFloatingLabelEnabled , step);
     }
 
     const handleStripeShippingAddress = useCallback(async (shipping: StripeShippingEvent) => {

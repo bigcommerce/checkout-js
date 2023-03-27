@@ -67,7 +67,7 @@ interface WithCheckoutPaymentProps {
     termsConditionsText?: string;
     termsConditionsUrl?: string;
     usableStoreCredit: number;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     applyStoreCredit(useStoreCredit: boolean): Promise<CheckoutSelectors>;
     clearError(error: Error): void;
     finalizeOrderIfNeeded(): Promise<CheckoutSelectors>;

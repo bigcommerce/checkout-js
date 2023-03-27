@@ -212,7 +212,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                     privacyPolicyUrl={privacyPolicyUrl}
                     requiresMarketingConsent={requiresMarketingConsent}
                     step={step}
-                    useFloatingLabel={useFloatingLabel}
+                    isFloatingLabelEnabled={isFloatingLabelEnabled}
                 />
                 :
             <GuestForm
