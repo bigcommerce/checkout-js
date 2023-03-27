@@ -1,4 +1,4 @@
-import '../../../../scss/components/checkout/customer/_stripeUpeCustomer.scss';
+import '../../../../scss/components/checkout/stripeLink/_stripeIframe.scss';
 
 export interface StripeStyles {
     [key: string]: string;
@@ -65,8 +65,12 @@ const getStripeSpaceUnit = (
     step: string,
 ) => {
     if (experiment) {
-        return step === 'linkAuthentication' ? `$stripe-space-unit` : `$half-stripe-space-unit`;
+        return step === 'linkAuthentication' ? getStyle('stripe-space-unit') : getStyle('half-stripe-space-unit');
     }
 
-    return `$default-stripe-space-unit`;
+    return getStyle('default-stripe-space-unit');
+}
+
+const getStyle = (style: string) => {
+    return window.getComputedStyle(document.documentElement).getPropertyValue(`--${style}`).trim();
 }
