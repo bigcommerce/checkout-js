@@ -16,23 +16,16 @@ import { CheckoutProvider } from '../../checkout';
 import { getCheckout, getCheckoutPayment } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
-import {
-    createLocaleContext,
-    LocaleContext,
-    LocaleContextType,
-    TranslatedString,
-} from '../../locale';
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '../../locale';
 import { getConsignment } from '../../shipping/consignment.mock';
 import { LoadingOverlay } from '../../ui/loading';
 import { getCreditCardValidationSchema } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
-import { AccountInstrumentFieldset, CardInstrumentFieldset } from '../storedInstrument';
+import { AccountInstrumentFieldset, CardInstrumentFieldset, UntrustedShippingCardVerificationType } from '../storedInstrument';
 import { getInstruments } from '../storedInstrument/instruments.mock';
 
-import HostedWidgetPaymentMethod, {
-    HostedWidgetPaymentMethodProps,
-} from './HostedWidgetPaymentMethod';
+import HostedWidgetPaymentMethod, { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
 import SignOutLink, { SignOutLinkProps } from './SignOutLink';
 
 describe('HostedWidgetPaymentMethod', () => {
@@ -117,9 +110,9 @@ describe('HostedWidgetPaymentMethod', () => {
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(false);
 
         const container = mount(<HostedWidgetPaymentMethodTest {...defaultProps} />);
-        
+
         expect(defaultProps.initializePayment).not.toHaveBeenCalled();
-        
+
         container.setProps({isPaymentDataRequired: true});
 
         await new Promise((resolve) => process.nextTick(resolve));
@@ -184,7 +177,7 @@ describe('HostedWidgetPaymentMethod', () => {
     it('does not render the component', () => {
         const component = mount(<HostedWidgetPaymentMethodTest {...defaultProps} />);
 
-        expect(component.isEmptyRender()).toBe(false);
+        expect(component.find(HostedWidgetPaymentMethodTest)).toHaveLength(1);
 
         component.setProps({ shouldShow: false });
 
@@ -413,6 +406,7 @@ describe('HostedWidgetPaymentMethod', () => {
                     defaultInstrument: true,
                     method: 'card',
                     type: 'card',
+                    untrustedShippingCardVerificationMode: UntrustedShippingCardVerificationType.PAN,
                 }
             ];
 
