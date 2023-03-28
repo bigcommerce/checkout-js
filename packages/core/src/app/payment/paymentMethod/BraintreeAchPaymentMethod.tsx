@@ -2,7 +2,7 @@ import React, { FunctionComponent, useCallback } from 'react';
 
 import BraintreeAchPaymentForm, { BraintreeAchPaymentFormProps } from './BraintreeAchPaymentForm';
 
-type BraintreeAchPaymentMethodProps = Omit<
+export type BraintreeAchPaymentMethodProps = Omit<
     BraintreeAchPaymentFormProps,
     'mandateText' | 'isLoadingBillingCountries' | 'usCountry' | 'initializeBillingAddressFields'
 >;
