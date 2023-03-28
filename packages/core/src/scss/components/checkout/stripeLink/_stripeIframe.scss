@@ -4,10 +4,17 @@
 // -----------------------------------------------------------------------------
 
 $half-form-field-spacing: $floating-form-field-spacing/2;
-$stripe-padding-top: $floating-form-field-spacing;
-$stripe-padding-left: $half-form-field-spacing*3;
-$stripe-padding-right: $half-form-field-spacing*3;
-$stripe-padding-bottom: $half-form-field-spacing;
-$stripe-space-unit: 5px;
-$half-stripe-space-unit: $stripe-space-unit / 2;
-$default-stripe-space-unit: 4px;
+$stripe-padding-top: $floating-form-field-spacing - $half-form-field-spacing/2;
+$stripe-padding-left-or-right: $half-form-field-spacing*3;
+$stripe-padding-bottom: $half-form-field-spacing - $half-form-field-spacing/6;
+$stripe-space-unit: 4.3px;
+$half-stripe-space-unit: $stripe-space-unit / 1.5;
+
+// stylelint-disable-next-line selector-pseudo-class-no-unknown
+:export {
+    border-radius: $global-radius;
+    font-size: $fontSize-root;
+    padding: $stripe-padding-top $stripe-padding-left-or-right $stripe-padding-bottom $stripe-padding-left-or-right;
+    padding-left: $stripe-space-unit;
+    padding-right: $half-stripe-space-unit;
+}

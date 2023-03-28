@@ -1,4 +1,4 @@
-import '../../../../scss/components/checkout/stripeLink/_stripeIframe.scss';
+import stripeIframe from '../../../../scss/components/checkout/stripeLink/_stripeIframe.scss';
 
 export interface StripeStyles {
     [key: string]: string;
@@ -9,10 +9,39 @@ export const getStripeCustomStyles = (
     experiment = false,
     step = '',
 ) => {
+
+    const getStripeSpaceUnit = (
+        experiment: boolean,
+        step: string,
+    ) => {
+        if (experiment) {
+            return step === 'linkAuthentication' ? spaceUnit : spaceUnitFloating;
+        }
+
+        return spaceUnit;
+    }
+
+    const stripeDefault = {
+        'border-radius': '4px',
+        'font-size': '16px',
+        padding: '6px 12px 3.33333px 12px',
+        'padding-left': '4.3',
+        'padding-right': '2.8'
+    }
+
+    const {
+        'border-radius': borderRadius,
+        'font-size': fontSize,
+        padding,
+        'padding-left': spaceUnit,
+        'padding-right': spaceUnitFloating
+    } = typeof stripeIframe === 'object' ? stripeIframe : stripeDefault;
+
     let appearance: any = {
         variables: {
-            spacingUnit: getStripeSpaceUnit(experiment, step),
-            borderRadius: `$global-radius`,
+            borderRadius,
+            fontSizeBase: fontSize,
+            spacingUnit: getStripeSpaceUnit(experiment, step)
         },
     };
 
@@ -43,15 +72,11 @@ export const getStripeCustomStyles = (
         appearance = {
             ...appearance,
             labels: 'floating',
-            variables: {
-                ...appearance?.variables,
-                fontSizeBase: `$floating-label-font-size--default`,
-            },
             rules: {
                 ...appearance?.rules,
                 '.Input': {
                     ...appearance?.rules?.['.Input'],
-                    padding: `$stripe-padding-top $stripe-padding-right $stripe-padding-bottom $stripe-padding-left`,
+                    padding,
                 },
             },
         };
@@ -59,18 +84,3 @@ export const getStripeCustomStyles = (
 
     return appearance;
 };
-
-const getStripeSpaceUnit = (
-    experiment: boolean,
-    step: string,
-) => {
-    if (experiment) {
-        return step === 'linkAuthentication' ? getStyle('stripe-space-unit') : getStyle('half-stripe-space-unit');
-    }
-
-    return getStyle('default-stripe-space-unit');
-}
-
-const getStyle = (style: string) => {
-    return window.getComputedStyle(document.documentElement).getPropertyValue(`--${style}`).trim();
-}
