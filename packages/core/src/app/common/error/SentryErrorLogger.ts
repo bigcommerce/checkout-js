@@ -113,7 +113,7 @@ export default class SentryErrorLogger implements ErrorLogger {
      */
     private shouldReportExceptions(
         exceptions: Exception[],
-        originalException: Error | string | null,
+        originalException: unknown,
     ): boolean {
         // Ignore exceptions that are not an instance of Error because they are most likely not thrown by our own code,
         // as we have a lint rule that prevents us from doing so. Although these exceptions don't actually have a
