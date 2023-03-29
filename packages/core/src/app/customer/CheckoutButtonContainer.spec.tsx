@@ -26,7 +26,7 @@ describe('CheckoutButtonContainer', () => {
                         walletButtonsOnTop: true,
                         floatingLabelEnabled: false,
                     },
-                    remoteCheckoutProviders: ['amazonpay','applepay', 'braintreevisacheckout'],
+                    remoteCheckoutProviders: ['amazonpay','applepay', 'paypalcommerce', 'paypalcommercecredit'],
                 },
             }),
         );

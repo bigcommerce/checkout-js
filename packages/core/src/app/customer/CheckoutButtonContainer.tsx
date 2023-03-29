@@ -23,7 +23,14 @@ interface WithCheckoutCheckoutButtonContainerProps{
 }
 
 const sortMethodIds = (methodIds:string[]):string[] => {
-    const order = ['applepay', 'braintreepaypalcredit', 'braintreepaypal'];
+    const order = [
+        'applepay',
+        'braintreepaypalcredit',
+        'braintreepaypal',
+        'paypalcommercevenmo',
+        'paypalcommercecredit',
+        'paypalcommerce',
+    ];
 
     return methodIds.sort((a, b) => order.indexOf(b) - order.indexOf(a));
 }
