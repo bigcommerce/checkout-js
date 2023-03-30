@@ -27,7 +27,7 @@ const StripeUPEPaymentMethod: FunctionComponent<
     StripePaymentMethodProps &
         WithInjectedHostedCreditCardFieldsetProps &
         WithCheckoutStripePaymentMethodProps
-> = ({ initializePayment, method, storeUrl , onUnhandledError = noop, isFloatingLabelEnabled, ...rest }) => {
+> = ({ initializePayment, method, storeUrl, onUnhandledError = noop, isFloatingLabelEnabled, ...rest }) => {
     const containerId = `stripe-${method.id}-component-field`;
 
     const paymentContext = useContext(PaymentContext);

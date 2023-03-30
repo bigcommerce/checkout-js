@@ -1,3 +1,4 @@
+import defaultIframeValues from '../../../../scss/components/checkout/stripeLink/_stripeDefaultValues.scss';
 import stripeIframe from '../../../../scss/components/checkout/stripeLink/_stripeIframe.scss';
 
 export interface StripeStyles {
@@ -21,21 +22,13 @@ export const getStripeCustomStyles = (
         return spaceUnit;
     }
 
-    const stripeDefault = {
-        'border-radius': '4px',
-        'font-size': '16px',
-        padding: '6px 12px 3.33333px 12px',
-        'padding-left': '4.3',
-        'padding-right': '2.8'
-    }
-
     const {
         'border-radius': borderRadius,
         'font-size': fontSize,
         padding,
         'padding-left': spaceUnit,
-        'padding-right': spaceUnitFloating
-    } = typeof stripeIframe === 'object' ? stripeIframe : stripeDefault;
+        'padding-right': spaceUnitFloating,
+    }: any = typeof stripeIframe === 'object' ? stripeIframe : defaultIframeValues ;
 
     let appearance: any = {
         variables: {

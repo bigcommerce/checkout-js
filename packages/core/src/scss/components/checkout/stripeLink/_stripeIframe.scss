@@ -3,10 +3,10 @@
 // We use these to style floating labels into stripe iframe
 // -----------------------------------------------------------------------------
 
-$half-form-field-spacing: $floating-form-field-spacing/2;
-$stripe-padding-top: $floating-form-field-spacing - $half-form-field-spacing/2;
-$stripe-padding-left-or-right: $half-form-field-spacing*3;
-$stripe-padding-bottom: $half-form-field-spacing - $half-form-field-spacing/6;
+$half-form-field-spacing: $floating-form-field-spacing / 2;
+$stripe-padding-top: $floating-form-field-spacing - $half-form-field-spacing / 2;
+$stripe-padding-left-or-right: $half-form-field-spacing * 3;
+$stripe-padding-bottom: $half-form-field-spacing - $half-form-field-spacing / 6;
 $stripe-space-unit: 4.3px;
 $half-stripe-space-unit: $stripe-space-unit / 1.5;
 
