@@ -6,6 +6,11 @@ const adapter = Adapter as any;
 
 configure({ adapter: new adapter.default() });
 
+// https://github.com/facebook/jest/issues/10784
+process.on('unhandledRejection', (reason) => {
+    console.log(reason);
+});
+
 // https://github.com/FezVrasta/popper.js/issues/478
 if (window.document) {
     document.createRange = () =>

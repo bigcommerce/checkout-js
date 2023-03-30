@@ -2,7 +2,7 @@ import React, { ComponentType } from 'react';
 
 import ResolvableComponent from './ResolvableComponent';
 
-export default function toResolvableComponent<TProps, TIdentifier>(
+export default function toResolvableComponent<TProps extends Record<string, any>, TIdentifier>(
     // eslint-disable-next-line @typescript-eslint/naming-convention
     Component: ComponentType<TProps>,
     resolveIds: TIdentifier[],

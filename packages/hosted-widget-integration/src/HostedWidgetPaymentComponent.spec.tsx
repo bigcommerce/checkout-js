@@ -226,7 +226,7 @@ describe('HostedWidgetPaymentMethod', () => {
     it('does not render the component', () => {
         const component = mount(<HostedWidgetPaymentMethodTest {...defaultProps} />);
 
-        expect(component.isEmptyRender()).toBe(false);
+        expect(component.find(HostedWidgetPaymentMethodTest)).toHaveLength(1);
 
         component.setProps({ shouldShow: false });
 

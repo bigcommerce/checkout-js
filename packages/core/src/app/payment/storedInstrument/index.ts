@@ -5,7 +5,7 @@ export { default as isInstrumentCardCodeRequiredSelector } from './isInstrumentC
 export { default as isInstrumentCardNumberRequired } from './isInstrumentCardNumberRequired';
 export { default as isInstrumentCardNumberRequiredSelector } from './isInstrumentCardNumberRequiredSelector';
 export { default as AccountInstrumentFieldset } from './AccountInstrumentFieldset';
-export { default as CardInstrumentFieldset } from './CardInstrumentFieldset';
+export { default as CardInstrumentFieldset, UntrustedShippingCardVerificationType } from './CardInstrumentFieldset';
 export { default as CardInstrumentFieldsetValues } from './CardInstrumentFieldsetValues';
 export { default as CreditCardValidation } from './CreditCardValidation';
 export { default as isCardInstrument } from './isCardInstrument';
