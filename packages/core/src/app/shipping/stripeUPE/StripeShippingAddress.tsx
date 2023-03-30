@@ -98,7 +98,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
     }, [isFirstShippingRender, onSubmit, stripeShippingAddress, shouldDisableSubmit, isShippingMethodLoading, isNewAddress ,consignments]);
 
     const availableShippingList = countries?.map(country => ({code: country.code, name: country.name}));
-    const allowedCountries = availableShippingList ? availableShippingList.map(country => country.code).join(', ') : '';
+    const allowedCountries = availableShippingList ? availableShippingList.map(country => country.code) : '';
     const shouldShowContent = (isNewAddress = true, phoneFieldRequired: boolean, phone: string) => {
         const stepCompleted = step.isComplete;
         const shippingPopulated = shippingAddress?.firstName && isNewAddress;
