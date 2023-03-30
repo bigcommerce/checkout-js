@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.303.0](https://github.com/bigcommerce/checkout-js/compare/v1.302.0...v1.303.0) (2023-03-30)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7278 Upgrade to node 16 ([#1234](https://github.com/bigcommerce/checkout-js/issues/1234)) ([95365e1](https://github.com/bigcommerce/checkout-js/commit/95365e1205c044fe083fd094d6513f98c7da1c17))
+
 ## [1.302.0](https://github.com/bigcommerce/checkout-js/compare/v1.301.0...v1.302.0) (2023-03-29)
 
 
