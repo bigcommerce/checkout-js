@@ -305,7 +305,7 @@ class Checkout extends Component<
 
         const isPaymentStepActive = activeStepType
             ? activeStepType === CheckoutStepType.Payment
-            : defaultStepType === CheckoutStepType.Payment || (!activeStepType && !defaultStepType);
+            : defaultStepType === CheckoutStepType.Payment;
 
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isRedirecting}>
@@ -314,10 +314,13 @@ class Checkout extends Component<
 
                     <PromotionBannerList promotions={promotions} />
 
-                    {isShowingWalletButtonsOnTop && !isPaymentStepActive && <CheckoutButtonContainer
-                      checkEmbeddedSupport={this.checkEmbeddedSupport}
-                      onUnhandledError={this.handleUnhandledError}
-                    />}
+                    {isShowingWalletButtonsOnTop && (
+                        <CheckoutButtonContainer
+                            checkEmbeddedSupport={this.checkEmbeddedSupport}
+                            isPaymentStepActive={isPaymentStepActive}
+                            onUnhandledError={this.handleUnhandledError}
+                        />
+                    )}
 
                     <ol className="checkout-steps">
                         {steps

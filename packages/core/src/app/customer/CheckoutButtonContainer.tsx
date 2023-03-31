@@ -10,6 +10,7 @@ import { TranslatedString } from '../locale';
 import CheckoutButtonListV1, { filterUnsupportedMethodIds } from './CheckoutButtonList';
 
 interface CheckoutButtonContainerProps {
+    isPaymentStepActive: boolean;
     checkEmbeddedSupport(methodIds: string[]): void;
     onUnhandledError(error: Error): void;
 }
@@ -41,6 +42,7 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         checkEmbeddedSupport,
         deinitialize,
         isLoading,
+        isPaymentStepActive,
         initialize,
         initializedMethodIds,
         onUnhandledError,
@@ -54,8 +56,16 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         return null;
     }
 
+    const isPaypalCommerce = methodIds.includes('paypalcommerce');
+
+    if (isPaypalCommerce && isPaymentStepActive) {
+        return null;
+    }
+
     return (
-        <div className='checkout-button-container'>
+        <div className='checkout-button-container'
+             style={ isPaymentStepActive ? { position: 'absolute', left: '100%', top: '-100%' } : undefined }
+        >
             <p>
                 <TranslatedString id="remote.start_with_text" />
             </p>
