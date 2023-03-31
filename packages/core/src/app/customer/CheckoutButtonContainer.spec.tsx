@@ -8,6 +8,7 @@ import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType, } from '../locale';
 
 import CheckoutButtonContainer from './CheckoutButtonContainer';
+import { getGuestCustomer } from './customers.mock';
 
 describe('CheckoutButtonContainer', () => {
     let localeContext: LocaleContextType;
@@ -19,6 +20,7 @@ describe('CheckoutButtonContainer', () => {
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
 
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getGuestCustomer());
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(
             merge(getStoreConfig(), {
                 checkoutSettings: {
@@ -38,6 +40,7 @@ describe('CheckoutButtonContainer', () => {
                 <LocaleContext.Provider value={localeContext}>
                     <CheckoutButtonContainer
                         checkEmbeddedSupport={jest.fn()}
+                        isPaymentStepActive={false}
                         onUnhandledError={jest.fn()}
                     />
                 </LocaleContext.Provider>

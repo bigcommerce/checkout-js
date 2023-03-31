@@ -99,6 +99,7 @@ function mapToCheckoutButtonContainerProps({
     checkoutState: {
        data: {
            getConfig,
+           getCustomer,
        },
        statuses: {
            isInitializedCustomer,
@@ -111,8 +112,9 @@ function mapToCheckoutButtonContainerProps({
 }: CheckoutContextProps): WithCheckoutCheckoutButtonContainerProps | null {
     const config = getConfig();
     const availableMethodIds = filterUnsupportedMethodIds(config?.checkoutSettings.remoteCheckoutProviders ?? []);
+    const customer = getCustomer();
 
-    if (!config || availableMethodIds.length === 0) {
+    if (!config || availableMethodIds.length === 0 || !customer?.isGuest) {
         return null;
     }
 
