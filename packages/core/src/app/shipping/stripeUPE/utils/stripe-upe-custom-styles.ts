@@ -28,7 +28,7 @@ export const getStripeCustomStyles = (
         padding,
         'padding-left': spaceUnit,
         'padding-right': spaceUnitFloating,
-    }: any = typeof stripeIframe === 'object' ? stripeIframe : defaultIframeValues ;
+    }: any = typeof stripeIframe === 'object' && stripeIframe || defaultIframeValues ;
 
     let appearance: any = {
         variables: {
