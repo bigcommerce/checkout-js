@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.304.0](https://github.com/bigcommerce/checkout-js/compare/v1.303.0...v1.304.0) (2023-04-03)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7278 Fix `npm ci` and `npm run dev` ([#1238](https://github.com/bigcommerce/checkout-js/issues/1238)) ([560b074](https://github.com/bigcommerce/checkout-js/commit/560b074fac95e3c36edb996b73b6c821ddb20f6b))
+
 ## [1.303.0](https://github.com/bigcommerce/checkout-js/compare/v1.302.0...v1.303.0) (2023-03-30)
 
 
