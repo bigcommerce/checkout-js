@@ -1,4 +1,3 @@
-import defaultIframeValues from '../../../../scss/components/checkout/stripeLink/_stripeDefaultValues.scss';
 import stripeIframe from '../../../../scss/components/checkout/stripeLink/_stripeIframe.scss';
 
 export interface StripeStyles {
@@ -28,7 +27,7 @@ export const getStripeCustomStyles = (
         padding,
         'padding-left': spaceUnit,
         'padding-right': spaceUnitFloating,
-    }: any = typeof stripeIframe === 'object' && stripeIframe || defaultIframeValues ;
+    }: any = typeof stripeIframe === 'object' && stripeIframe;
 
     let appearance: any = {
         variables: {
