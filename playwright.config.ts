@@ -34,7 +34,7 @@ const config: PlaywrightTestConfig = {
   fullyParallel: true,
   forbidOnly: true,
   retries: 0,
-  workers: process.env.IS_CI ? 3 : undefined,
+  workers: 1,
   reporter: [['html', { outputFolder: './packages/payment-integration-test-framework/report', open: 'never' }]],
   use: {
     baseURL: 'http://localhost:' + process.env.PORT,
