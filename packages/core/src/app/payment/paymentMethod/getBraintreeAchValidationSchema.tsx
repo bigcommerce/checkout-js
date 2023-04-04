@@ -43,9 +43,9 @@ export default memoize(function getBraintreeAchValidationSchema({
         [BraintreeAchBankAccountValues.City]: 'address.city',
         [BraintreeAchBankAccountValues.StateOrProvinceCode]: 'address.state',
         [BraintreeAchBankAccountValues.PostalCode]: 'address.postal_code',
-        [BraintreeAchBankAccountValues.AccountNumber]: 'payment.account_number',
-        [BraintreeAchBankAccountValues.RoutingNumber]: 'payment.routing_number',
-        [BraintreeAchBankAccountValues.BusinessName]: 'payment.business_name',
+        [BraintreeAchBankAccountValues.AccountNumber]: 'payment.errors.account_number',
+        [BraintreeAchBankAccountValues.RoutingNumber]: 'payment.errors.routing_number',
+        [BraintreeAchBankAccountValues.BusinessName]: 'payment.errors.business_name',
     };
 
     return object(formFieldData.reduce((schema, { id, required }) => {
@@ -55,12 +55,12 @@ export default memoize(function getBraintreeAchValidationSchema({
 
                 if (id === BraintreeAchFieldType.AccountNumber) {
                     schema[id] = schema[id]
-                        .matches(/^\d+$/, language.translate('payment.only_numbers_error', { label: language.translate('payment.account_number_label') }))
+                        .matches(/^\d+$/, language.translate('payment.errors.only_numbers_error', { label: language.translate('payment.account_number_label') }))
                 }
 
                 if (id === BraintreeAchFieldType.RoutingNumber) {
                     schema[id] = schema[id]
-                        .matches(/^\d+$/, language.translate('payment.only_numbers_error', { label: language.translate('payment.account_routing_label') }))
+                        .matches(/^\d+$/, language.translate('payment.errors.only_numbers_error', { label: language.translate('payment.account_routing_label') }))
                         .min(8, language.translate('customer.min_error', { label: language.translate('payment.account_routing_label'), min: 8 }))
                         .max(9, language.translate('customer.max_error', { label: language.translate('payment.account_routing_label'), max: 9 }))
                 }

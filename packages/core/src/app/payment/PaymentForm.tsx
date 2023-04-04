@@ -195,7 +195,7 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
     onMethodSelect = noop,
     onUnhandledError,
     resetForm,
-    values
+    values,
 }) => {
     const { setSubmitted } = useContext(FormContext);
 

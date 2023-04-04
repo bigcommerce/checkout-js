@@ -3,7 +3,7 @@ import {
     CheckoutSelectors,
     CheckoutSettings,
     OrderRequestBody,
-    PaymentMethod
+    PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import { compact, find, isEmpty, noop } from 'lodash';

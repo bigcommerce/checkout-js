@@ -110,7 +110,7 @@ const BraintreeAchPaymentForm: FunctionComponent<
                     fieldValues={fieldValues}
                     handleChange={handleChange}
                 />
-                <div className='checkout-ach-form--mandate-text'>
+                <div className='mandate-text'>
                     {mandateText}
                 </div>
             </div>
