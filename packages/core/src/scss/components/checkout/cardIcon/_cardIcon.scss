@@ -4,6 +4,10 @@
 
 .cardIcon-icon {
     position: relative;
+
+    svg {
+        fill: none;
+    }
 }
 
 .cardIcon-icon--default {
