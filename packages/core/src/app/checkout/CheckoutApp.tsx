@@ -2,7 +2,7 @@ import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcomm
 import { BrowserOptions } from '@sentry/browser';
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
-
+import RecurlyProvider from "../recurly/RecurlyProvider";
 import { AnalyticsProvider } from '@bigcommerce/checkout/analytics';
 
 import '../../scss/App.scss';
@@ -55,6 +55,7 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
             <ErrorBoundary logger={ this.errorLogger }>
                 <LocaleProvider checkoutService={ this.checkoutService }>
                     <CheckoutProvider checkoutService={ this.checkoutService }>
+                        <RecurlyProvider>
                         <AnalyticsProvider checkoutService={ this.checkoutService }>
                             <Checkout
                                 {...this.props}
@@ -64,6 +65,7 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
                                 errorLogger={this.errorLogger}
                             />
                         </AnalyticsProvider>
+                        </RecurlyProvider>
                     </CheckoutProvider>
                 </LocaleProvider>
             </ErrorBoundary>

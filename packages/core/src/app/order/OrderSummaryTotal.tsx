@@ -3,11 +3,14 @@ import React, { FunctionComponent } from 'react';
 import { TranslatedString, withCurrency, WithCurrencyProps } from '../locale';
 
 import OrderSummaryPrice from './OrderSummaryPrice';
+import {LineItemMap} from "@bigcommerce/checkout-sdk";
 
 export interface OrderSummaryTotalProps {
     orderAmount: number;
     shopperCurrencyCode: string;
     storeCurrencyCode: string;
+    shippingAmount: number | undefined;
+    lineItems: LineItemMap;
 }
 
 const OrderSummaryTotal: FunctionComponent<OrderSummaryTotalProps & WithCurrencyProps> = ({
@@ -15,6 +18,8 @@ const OrderSummaryTotal: FunctionComponent<OrderSummaryTotalProps & WithCurrency
     storeCurrencyCode,
     orderAmount,
     currency,
+    shippingAmount,
+    lineItems,
 }) => {
     const hasDifferentCurrency = shopperCurrencyCode !== storeCurrencyCode;
     const label = (
@@ -36,6 +41,8 @@ const OrderSummaryTotal: FunctionComponent<OrderSummaryTotalProps & WithCurrency
                 label={label}
                 superscript={hasDifferentCurrency ? '*' : undefined}
                 testId="cart-total"
+                lineItems={lineItems}
+                shippingAmount={shippingAmount}
             />
             {hasDifferentCurrency && currency && (
                 <p className="cart-priceItem--totalNote" data-test="cart-price-item-total-note">

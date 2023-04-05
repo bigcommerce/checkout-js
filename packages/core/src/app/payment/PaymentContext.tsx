@@ -13,7 +13,7 @@ export interface PaymentContextProps {
     // (i.e.: Amazon), we have to have this backdoor so we can preserve these
     // snowflake behaviours. In the future, if we decide to change the UX, we
     // can remove this prop.
-    setSubmit(method: PaymentMethod, fn: ((values: PaymentFormValues) => void) | null): void;
+    setSubmit(method: PaymentMethod, fn: ((values: PaymentFormValues, onSubmit?: () => void) => void) | null): void;
     setValidationSchema(
         method: PaymentMethod,
         schema: ObjectSchema<Partial<PaymentFormValues>> | null,

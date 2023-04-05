@@ -1,8 +1,8 @@
 import {
-    CheckoutSelectors,
+    CheckoutSelectors, CustomItem, DigitalItem,
     EmbeddedCheckoutMessenger,
-    EmbeddedCheckoutMessengerOptions,
-    Order,
+    EmbeddedCheckoutMessengerOptions, GiftCertificateItem,
+    Order, PhysicalItem,
     ShopperConfig,
     StoreConfig,
 } from '@bigcommerce/checkout-sdk';
@@ -40,6 +40,7 @@ import OrderConfirmationSection from './OrderConfirmationSection';
 import OrderStatus from './OrderStatus';
 import PrintLink from './PrintLink';
 import ThankYouHeader from './ThankYouHeader';
+import {CouponData, OrderData, PromotionData, trackGuest, trackPurchase, trackSignUp} from "../common/tracking";
 
 const OrderSummary = lazy(() =>
     retry(
@@ -112,6 +113,76 @@ class OrderConfirmation extends Component<
                 messenger.postFrameLoaded({ contentId: containerId });
 
                 analyticsTracker.orderPurchased();
+
+                const {config, order} = this.props;
+                const isGuest = !order?.customerId;
+
+                if (isGuest && order?.billingAddress.email) {
+                    trackGuest(order?.billingAddress.email);
+                }
+
+                const coupons: CouponData[] = [];
+                order?.coupons?.forEach(coupon => {
+                    coupons.push({
+                        coupon: coupon.code,
+                        discount: coupon.discountedAmount,
+                    });
+                });
+                const purchaseData: OrderData = {
+                    purchase: {
+                        transaction_id: orderId,
+                        affiliation: config?.storeProfile.storeName,
+                        value: order?.orderAmount,
+                        tax: order?.taxTotal,
+                        shipping: order?.shippingCostTotal,
+                        currency: order?.currency.code,
+                        coupons,
+                        items: [],
+                    },
+                };
+                const cartItemLists = [
+                    order?.lineItems.customItems,
+                    order?.lineItems.digitalItems,
+                    order?.lineItems.giftCertificates,
+                    order?.lineItems.physicalItems,
+                ];
+                cartItemLists.forEach(itemList => {
+                    itemList?.forEach((item: CustomItem | DigitalItem | GiftCertificateItem | PhysicalItem) => {
+                        const itemCoupons: CouponData[] = [];
+                        const itemPromotions: PromotionData[] = [];
+
+                        const itemQuantity = 'quantity' in item ? item.quantity : 1;
+
+                        if ( 'discounts' in item ) {
+                            let itemCouponIndex = 0;
+                            Object.keys(item.discounts).forEach((id: any) => {
+                                const discountedAmount = item.discounts[id] as unknown as number ; // item.discounts is of type {[key: string]: number} but incorrectly typed
+                                if ( id === 'coupon' ) {
+                                    itemCoupons.push({coupon: coupons[itemCouponIndex]?.coupon, discount: discountedAmount / itemQuantity});
+                                    itemCouponIndex++;
+                                } else {
+                                    itemPromotions.push({id, discount: discountedAmount / itemQuantity});
+                                }
+                            });
+                        }
+
+                        const itemFullPrice = 'listPrice' in item ? item.listPrice : item.amount;
+                        const itemDiscountedPrice = ('salePrice' in item ? item.salePrice : itemFullPrice) - (itemCoupons?.length ? itemCoupons.reduce((partialSum, coupon) => partialSum + coupon.discount, 0) : 0);
+
+                        purchaseData.purchase.items.push({
+                            item_id: 'productId' in item ? item.productId : undefined,
+                            item_name: item.name,
+                            item_variant: 'options' in item ? item.options?.[0]?.value : undefined,
+                            currency: order?.currency.code,
+                            item_brand: 'brand' in item ? item.brand ?? 'MitoQ' : undefined,
+                            price: parseFloat(itemDiscountedPrice.toFixed(2)),
+                            quantity: itemQuantity,
+                            coupons: itemCoupons,
+                            promotions: itemPromotions,
+                        });
+                    });
+                });
+                trackPurchase(purchaseData);
             })
             .catch(this.handleUnhandledError);
     }
@@ -291,11 +362,12 @@ class OrderConfirmation extends Component<
             password,
             confirmPassword,
         })
-            .then(() => {
+            .then((customer: CreatedCustomer) => {
                 this.setState({
                     hasSignedUp: true,
                     isSigningUp: false,
                 });
+                trackSignUp('Purchase confirmation', customer?.customerId, customer?.email);
             })
             .catch((error) => {
                 this.setState({

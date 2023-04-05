@@ -10,6 +10,10 @@ import {
     FlashMessage,
     Promotion,
     RequestOptions,
+    CustomItem,
+    DigitalItem,
+    GiftCertificateItem,
+    PhysicalItem
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
@@ -46,6 +50,10 @@ import CheckoutSupport from './CheckoutSupport';
 import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
 import withCheckout from './withCheckout';
+
+import { trackAddCoupon, trackAddShippingInfo, trackCheckoutProgress, CouponData, PromotionData, ShippingData } from '../common/tracking';
+import withRecurly from '../recurly/withRecurly';
+import { RecurlyContextProps } from '../recurly/RecurlyContext';
 
 const Billing = lazy(() =>
     retry(
@@ -146,7 +154,7 @@ export interface WithCheckoutProps {
 }
 
 class Checkout extends Component<
-    CheckoutProps & WithCheckoutProps & WithLanguageProps & AnalyticsContextProps,
+    CheckoutProps & WithCheckoutProps & WithLanguageProps &  AnalyticsContextProps & RecurlyContextProps,
     CheckoutState
 > {
     state: CheckoutState = {
@@ -162,15 +170,91 @@ class Checkout extends Component<
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
     private unsubscribeFromConsignments?: () => void;
+    private timeoutRef?: any;
 
     componentWillUnmount(): void {
         if (this.unsubscribeFromConsignments) {
             this.unsubscribeFromConsignments();
             this.unsubscribeFromConsignments = undefined;
         }
+        if (this.timeoutRef) {
+            window.clearTimeout(this.timeoutRef);
+
+            this.timeoutRef = undefined;
+        }
 
         window.removeEventListener('beforeunload', this.handleBeforeExit);
         this.handleBeforeExit();
+    }
+
+    componentDidUpdate(previousProps: any): void {
+        const {cart, consignments} = this.props;
+
+        // if coupon has been added
+        if ( cart?.coupons.length && previousProps.cart?.coupons.length !== cart?.coupons.length ) {
+            const addedCoupon = cart?.coupons[cart?.coupons.length - 1];
+            trackAddCoupon(addedCoupon.code, addedCoupon.discountedAmount);
+        }
+        // if shipping tier has changed
+        if ( previousProps.consignments?.[0]?.selectedShippingOption?.description !== consignments?.[0]?.selectedShippingOption?.description ) {
+            const coupons: CouponData[] = [];
+            cart?.coupons?.forEach(coupon => {
+                coupons.push({
+                    coupon: coupon.code,
+                    discount: coupon.discountedAmount,
+                });
+            });
+
+            const shippingInfo: ShippingData = {
+                currency: cart?.currency.code,
+                value: cart?.cartAmount,
+                shipping_tier: consignments?.[0]?.selectedShippingOption?.description,
+                coupons,
+                items: [],
+            };
+
+            const cartItemLists = [
+                cart?.lineItems.customItems,
+                cart?.lineItems.digitalItems,
+                cart?.lineItems.giftCertificates,
+                cart?.lineItems.physicalItems,
+            ];
+            cartItemLists.forEach(itemList => {
+                itemList?.forEach((item: CustomItem | DigitalItem | GiftCertificateItem | PhysicalItem) => {
+                    const itemCoupons: CouponData[] = [];
+                    const itemPromotions: PromotionData[] = [];
+
+                    const itemQuantity = 'quantity' in item ? item.quantity : 1;
+                    const itemFullPrice = 'listPrice' in item ? item.listPrice : item.amount;
+                    const itemDiscountedPrice = ('salePrice' in item ? item.salePrice : itemFullPrice) - ('couponAmount' in item ? (item.couponAmount / itemQuantity) : 0);
+
+                    if ( 'discounts' in item ) {
+                        let itemCouponIndex = 0;
+                        item.discounts.forEach(({id, discountedAmount}: {id?: string | number; discountedAmount: number}) => {
+                            if ( id === 'coupon' ) {
+                                itemCoupons.push({coupon: coupons[itemCouponIndex]?.coupon, discount: discountedAmount / itemQuantity});
+                                itemCouponIndex++;
+                            } else {
+                                itemPromotions.push({id, discount: discountedAmount / itemQuantity});
+                            }
+                        });
+                    }
+
+                    shippingInfo.items.push({
+                        item_id: 'productId' in item ? item.productId : undefined,
+                        item_name: item.name,
+                        item_variant: 'options' in item ? item.options?.[0]?.value : undefined,
+                        currency: cart?.currency.code,
+                        item_brand: 'brand' in item ? item.brand ?? 'MitoQ' : undefined,
+                        price: parseFloat(itemDiscountedPrice.toFixed(2)),
+                        quantity: itemQuantity,
+                        coupons: itemCoupons,
+                        promotions: itemPromotions,
+                    });
+                });
+            });
+            trackAddShippingInfo(shippingInfo);
+        }
     }
 
     async componentDidMount(): Promise<void> {
@@ -305,6 +389,30 @@ class Checkout extends Component<
 
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isRedirecting}>
+                <MobileView>
+                    { matched => {
+                        if (matched) {
+                            if (!this.timeoutRef) {
+                                this.timeoutRef = setTimeout(() => {
+                                    const checkoutHeader = document.querySelector(".checkoutHeader");
+                                    if (checkoutHeader !== null) {
+                                        checkoutHeader.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+                                    }
+                                }, 1000);
+                            }
+
+
+                            return <div className="cart-summary-wrapper-mobile layout-cart">
+                                <LazyContainer>
+                                    <CartSummary />
+                                </LazyContainer>
+                            </div>;
+                        } else {
+                            return <span></span>;
+                        }
+
+                    } }
+                </MobileView>
                 <div className="layout-main">
                     <LoadingNotification isLoading={!isShowingWalletButtonsOnTop && isPending} />
 
@@ -355,9 +463,9 @@ class Checkout extends Component<
     }
 
     private renderCustomerStep(step: CheckoutStepStatus): ReactNode {
-        const { isGuestEnabled, isShowingWalletButtonsOnTop } = this.props;
+        const { isGuestEnabled, isShowingWalletButtonsOnTop, hasSubscription } = this.props;
         const {
-            customerViewType = isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
+            customerViewType = hasSubscription ? CustomerViewType.Subscription : isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
             isSubscribed,
         } = this.state;
 
@@ -502,11 +610,7 @@ class Checkout extends Component<
             <MobileView>
                 {(matched) => {
                     if (matched) {
-                        return (
-                            <LazyContainer>
-                                <CartSummaryDrawer />
-                            </LazyContainer>
-                        );
+                        return <span></span>;
                     }
 
                     return (
@@ -627,6 +731,7 @@ class Checkout extends Component<
         const { analyticsTracker } = this.props;
 
         analyticsTracker.trackStepViewed(type);
+        trackCheckoutProgress(type);
     };
 
     private handleUnhandledError: (error: Error) => void = (error) => {
@@ -660,7 +765,7 @@ class Checkout extends Component<
     }
 
     private handleSignOut: (event: CustomerSignOutEvent) => void = ({ isCartEmpty }) => {
-        const { loginUrl, cartUrl, isPriceHiddenFromGuests, isGuestEnabled } = this.props;
+        const { loginUrl, cartUrl, isPriceHiddenFromGuests, isGuestEnabled, hasSubscription } = this.props;
 
         if (isPriceHiddenFromGuests) {
             if (window.top) {
@@ -672,7 +777,9 @@ class Checkout extends Component<
             this.embeddedMessenger.postSignedOut();
         }
 
-        if (isGuestEnabled) {
+        if (hasSubscription) {
+            this.setCustomerViewType(CustomerViewType.Subscription);
+        } else if (isGuestEnabled) {
             this.setCustomerViewType(CustomerViewType.Guest);
         }
 
@@ -734,4 +841,4 @@ class Checkout extends Component<
     }
 }
 
-export default withAnalytics(withLanguage(withCheckout(mapToCheckoutProps)(Checkout)));
+export default withRecurly(props => props)(withAnalytics(withLanguage(withCheckout(mapToCheckoutProps)(Checkout))));

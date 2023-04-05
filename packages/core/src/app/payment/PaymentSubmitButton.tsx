@@ -6,6 +6,9 @@ import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 import { IconBolt } from '../ui/icon';
 
 import { PaymentMethodId, PaymentMethodType } from './paymentMethod';
+import {RecurlyContextProps} from "../recurly/RecurlyContext";
+
+import withRecurly from '../recurly/withRecurly';
 
 interface PaymentSubmitButtonTextProps {
     methodGateway?: string;
@@ -16,10 +19,14 @@ interface PaymentSubmitButtonTextProps {
     brandName?: string;
     isComplete?: boolean;
 }
+interface WithRecurlyProps {
+    isSubmitting?: boolean;
+    isInitializing?: boolean;
+}
 
 const providersWithCustomClasses = [PaymentMethodId.Bolt];
 
-const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> = memo(
+const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps & WithRecurlyProps> = memo(
     ({
         methodId,
         methodName,
@@ -176,7 +183,14 @@ const PaymentSubmitButton: FunctionComponent<
     </Button>
 );
 
-export default withCheckout(({ checkoutState }) => {
+function recurlyMap({isLoadingRecurly, isSubmitting}: RecurlyContextProps): WithRecurlyProps {
+    return {
+        isInitializing: isLoadingRecurly,
+        isSubmitting,
+    };
+}
+
+export default withRecurly(recurlyMap)(withCheckout(({ checkoutState }) => {
     const {
         statuses: { isInitializingCustomer, isInitializingPayment, isSubmittingOrder },
     } = checkoutState;
@@ -185,4 +199,4 @@ export default withCheckout(({ checkoutState }) => {
         isInitializing: isInitializingCustomer() || isInitializingPayment(),
         isSubmitting: isSubmittingOrder(),
     };
-})(memo(PaymentSubmitButton));
+})(memo(PaymentSubmitButton)));

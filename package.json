@@ -1,6 +1,6 @@
 {
   "name": "@bigcommerce/checkout",
-  "version": "1.297.1",
+  "version": "1.298.0",
   "private": true,
   "description": "Browser-based application providing a seamless UI for BigCommerce shoppers to complete their checkout.",
   "license": "MIT",
@@ -46,6 +46,7 @@
     "@bigcommerce/memoize": "^1.0.0",
     "@bigcommerce/request-sender": "^0.5.1",
     "@bigcommerce/script-loader": "^2.2.2",
+    "@recurly/react-recurly": "^1.2.7",
     "@sentry/browser": "^7.11.1",
     "@sentry/integrations": "^7.11.1",
     "@types/card-validator": "^4.1.0",
@@ -113,6 +114,7 @@
     "@types/node": "^12.6.9",
     "@types/object-hash": "^1.2.0",
     "@types/react-test-renderer": "^16.8.3",
+    "@types/recurly__recurly-js": "^4.22.0",
     "@typescript-eslint/eslint-plugin": "^5.30.5",
     "@typescript-eslint/eslint-plugin-tslint": "^5.30.5",
     "@typescript-eslint/parser": "^5.30.5",

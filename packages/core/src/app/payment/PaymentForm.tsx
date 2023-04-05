@@ -137,8 +137,6 @@ const PaymentForm: FunctionComponent<
                 values={values}
             />
 
-            <PaymentRedeemables />
-
             {isTermsConditionsRequired && (
                 <TermsConditions
                     termsConditionsText={termsConditionsText}

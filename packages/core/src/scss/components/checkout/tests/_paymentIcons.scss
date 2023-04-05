@@ -1,0 +1,122 @@
+// Payment Icons
+
+.payments {
+    display: none;
+    margin-top: 18px;
+
+    h2 {
+        color: #fff;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 400;
+        letter-spacing: 0.36px;
+        line-height: 24px;
+        margin-bottom: 16px;
+    }
+
+    ul.benefit-list {
+        margin: 0;
+        margin-bottom: 18px;
+
+        li {
+            align-items: center;
+            background: url("../static/img/bullet.png") no-repeat left center;
+            color: #fff;
+            display: flex;
+            font-size: 15px;
+            font-style: normal;
+            font-weight: 450;
+            line-height: 21px;
+            margin-bottom: 6px;
+            padding-left: 32px;
+        }
+    }
+}
+
+.cart-summary-wrapper-mobile .cart {
+    display: block;
+}
+
+body.test_15 {
+    .payments {
+        display: block;
+    }
+
+    .cart-subscription.payments {
+        padding: 0;
+    }
+
+    .cart-subscription:not(.payments) {
+        display: none;
+    }
+
+    .cart-summary-wrapper-mobile.layout-cart {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+.free-shipping {
+    align-items: center;
+    background: #d40449;
+    border-radius: 6px;
+    color: #fff;
+    display: flex;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 450;
+    height: 30px;
+    justify-content: center;
+    line-height: 21px;
+    margin-bottom: 32px;
+    text-align: center;
+}
+
+.payments-method {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    &.full-method {
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+.payment-icon {
+    border-radius: 3px;
+    height: 20px;
+    min-width: 32px;
+}
+
+.paypal-icon {
+    background: url("../static/svg/payments/Paypal-card-dark.svg") no-repeat center center;
+}
+
+.amex-icon {
+    background: url("../static/svg/payments/AmericanExpress-dark.svg") no-repeat center center;
+}
+
+.discover-icon {
+    background: url("../static/svg/payments/Discover-card-dark.svg") no-repeat center center;
+}
+
+.diners-icon {
+    background: url("../static/svg/payments/diners.png") no-repeat center center;
+}
+
+.gpay-icon {
+    background: #fff url("../static/svg/payments/Gpay.png") no-repeat center center;
+}
+
+.jcb-icon {
+    background: url("../static/svg/payments/jcb.png") no-repeat center center;
+}
+
+.mastercard-icon {
+    background: #fff url("../static/svg/payments/mastercard.png") no-repeat center center;
+}
+
+.visacard-icon {
+    background: url("../static/svg/payments/Visa-card-dark.svg") no-repeat center center;
+}

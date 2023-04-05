@@ -40,6 +40,7 @@ import PaypalCommercePaymentMethod from './PaypalCommercePaymentMethod';
 import PaypalExpressPaymentMethod from './PaypalExpressPaymentMethod';
 import PaypalPaymentsProPaymentMethod from './PaypalPaymentsProPaymentMethod';
 import PPSDKPaymentMethod from './PPSDKPaymentMethod';
+import RecurlyPaymentMethod from './RecurlyPaymentMethod';
 import SquarePaymentMethod from './SquarePaymentMethod';
 import StripePaymentMethod from './StripePaymentMethod';
 import StripeUPEPaymentMethod from './StripeUPEPaymentMethod';
@@ -99,6 +100,10 @@ const PaymentMethodComponent: FunctionComponent<
 
     if (method.gateway === PaymentMethodId.StripeUPE) {
         return <StripeUPEPaymentMethod {...props} />;
+    }
+
+    if (method.gateway === PaymentMethodId.Recurly) {
+        return <RecurlyPaymentMethod { ...props } />;
     }
 
     if (method.id === PaymentMethodId.AmazonPay) {

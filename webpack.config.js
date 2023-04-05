@@ -191,7 +191,9 @@ function appConfig(options, argv) {
                         {
                             test: /\.scss$/,
                             use: [
-                                isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+                                isProduction ? MiniCssExtractPlugin.loader : {loader: 'style-loader', options: {
+                                        insertAt:'top'
+                                    }},
                                 'css-loader',
                                 'sass-loader',
                             ],

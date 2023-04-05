@@ -140,3 +140,151 @@
     margin-bottom: 0;
     margin-top: spacing("half");
 }
+
+// Test code
+.subscription-info {
+    background: radial-gradient(100% 1437.67% at 100% 54.17%, rgba(0, 50, 220, 0.25) 0%, rgba(255, 0, 0, 0.25) 100%);
+    border-radius: 0 0 8px 8px;
+    box-sizing: border-box;
+    font-size: 13px;
+    height: 24px;
+    padding: 5px 10px;
+
+    svg {
+        margin-right: 8px;
+    }
+}
+
+.custom-description,
+.subscription-info {
+    display: none;
+}
+
+.cart-summary-wrapper-mobile {
+    .cart {
+        display: block;
+    }
+}
+
+.test_09 {
+    .custom-description {
+        color: rgba(255, 255, 255, 0.7);
+        display: block;
+        font-size: 12px;
+    }
+
+    .subscription-info {
+        align-items: center;
+        display: flex;
+    }
+
+    .product-option:not(.custom-description) {
+        display: none;
+    }
+
+    .layout-cart {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .productList-item {
+        background: radial-gradient(100% 1437.67% at 100% 54.17%, rgba(0, 50, 220, 0.25) 0%, rgba(255, 0, 0, 0.25) 100%);
+        border-radius: 0 0 8px 8px;
+        padding: 1px;
+
+        .product {
+            background-color: #0a0c11;
+            padding: 12px 8px;
+
+            .product-title {
+                font-weight: 450;
+            }
+
+            .product-figure {
+                padding-right: 13px;
+            }
+
+            .product-body {
+                width: 75%;
+            }
+        }
+    }
+}
+
+.saving-banner {
+    display: none;
+}
+
+.test_21 {
+    .saving-banner {
+        align-items: center;
+        display: flex;
+        height: 28px;
+        margin-bottom: 24px;
+        margin-top: 0;
+
+        .banner-icon {
+            align-items: center;
+            background: #d40449;
+            border-radius: 50%;
+            display: flex;
+            height: 29px;
+            justify-content: center;
+            min-width: 29px;
+            width: 29px;
+        }
+
+        .banner-text {
+            align-items: center;
+            display: flex;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 17px;
+            padding-left: 10px;
+        }
+    }
+
+    .custom-description {
+        color: rgba(255, 255, 255, 0.7);
+        display: block;
+        font-size: 12px;
+    }
+
+    .subscription-info {
+        align-items: center;
+        display: flex;
+    }
+
+    .product-option:not(.custom-description) {
+        display: none;
+    }
+
+    .layout-cart {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .productList-item {
+        background: radial-gradient(100% 1437.67% at 100% 54.17%, rgba(0, 50, 220, 0.25) 0%, rgba(255, 0, 0, 0.25) 100%);
+        border-radius: 0 0 8px 8px;
+        padding: 1px;
+
+        .product {
+            background-color: #0a0c11;
+            padding: 12px 8px;
+
+            .product-title {
+                font-weight: 450;
+            }
+
+            .product-figure {
+                padding-right: 13px;
+            }
+
+            .product-body {
+                width: 75%;
+            }
+        }
+    }
+}

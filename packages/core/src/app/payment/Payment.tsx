@@ -37,6 +37,10 @@ import {
     PaymentMethodProviderType,
 } from './paymentMethod';
 
+import getRecurlyPaymentMethod from '../recurly/getRecurlyPaymentMethod';
+import withRecurly from '../recurly/withRecurly';
+import { RecurlyContextProps } from '../recurly/RecurlyContext';
+
 export interface PaymentProps {
     errorLogger: ErrorLogger;
     isEmbedded?: boolean;
@@ -82,12 +86,16 @@ interface PaymentState {
     selectedMethod?: PaymentMethod;
     shouldDisableSubmit: { [key: string]: boolean };
     shouldHidePaymentSubmitButton: { [key: string]: boolean };
-    submitFunctions: { [key: string]: ((values: PaymentFormValues) => void) | null };
+    submitFunctions: { [key: string]: ((values: PaymentFormValues, onSubmit?: () => void) => void) | null };
     validationSchemas: { [key: string]: ObjectSchema<Partial<PaymentFormValues>> | null };
+
+}
+interface WithRecurlyProps {
+    hasSubscription: boolean; isLoadingRecurly: boolean; methods?: PaymentMethod[]; defaultMethod?: PaymentMethod;
 }
 
 class Payment extends Component<
-    PaymentProps & WithCheckoutPaymentProps & WithLanguageProps & AnalyticsContextProps,
+    PaymentProps & WithCheckoutPaymentProps & WithLanguageProps & AnalyticsContextProps & WithRecurlyProps,
     PaymentState
 > {
     state: PaymentState = {
@@ -169,6 +177,8 @@ class Payment extends Component<
             isUsingMultiShipping,
             methods,
             applyStoreCredit,
+            isLoadingRecurly,
+            hasSubscription,
             ...rest
         } = this.props;
 
@@ -186,7 +196,7 @@ class Payment extends Component<
 
         return (
             <PaymentContext.Provider value={this.getContextValue()}>
-                <ChecklistSkeleton isLoading={!isReady}>
+                <ChecklistSkeleton isLoading={!isReady || isLoadingRecurly}>
                     {!isEmpty(methods) && defaultMethod && (
                         <PaymentForm
                             {...rest}
@@ -452,7 +462,7 @@ class Payment extends Component<
             submitFunctions[getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway)];
 
         if (customSubmit) {
-            return customSubmit(values);
+            return customSubmit(values, onSubmit);
         }
 
         try {
@@ -654,5 +664,19 @@ export function mapToPaymentProps({
             checkout.grandTotal > 0 ? Math.min(checkout.grandTotal, customer.storeCredit || 0) : 0,
     };
 }
+function mapToRecurlyProps({hasSubscription, isLoadingRecurly}: RecurlyContextProps): WithRecurlyProps {
+    const methods = hasSubscription ? [getRecurlyPaymentMethod()] : undefined;
+    const defaultMethod = methods ? methods[0] : undefined;
+    if (methods && defaultMethod) {
+        return {
+            methods,
+            defaultMethod,
+            hasSubscription,
+            isLoadingRecurly,
+        };
+    } else {
+        return {hasSubscription, isLoadingRecurly};
+    }
+}
 
-export default withAnalytics(withLanguage(withCheckout(mapToPaymentProps)(Payment)));
+export default withRecurly(mapToRecurlyProps)(withAnalytics(withLanguage(withCheckout(mapToPaymentProps)(Payment))));

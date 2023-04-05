@@ -1,4 +1,5 @@
 import {
+    Cart,
     CheckoutPaymentMethodExecutedOptions,
     CheckoutSelectors,
     CustomerAccountRequestBody,
@@ -34,12 +35,18 @@ import LoginForm from './LoginForm';
 import mapCreateAccountFromFormValues from './mapCreateAccountFromFormValues';
 import StripeGuestForm from './StripeGuestForm';
 
+import { trackLoginData, trackSignUp } from '../common/tracking';
+import withRecurly from '../recurly/withRecurly';
+import { RecurlyContextProps } from '../recurly/RecurlyContext';
+import SubscriptionForm from "./SubscriptionForm";
+
 export interface CustomerProps {
     viewType: CustomerViewType;
     step: CheckoutStepStatus;
     isEmbedded?: boolean;
     isSubscribed: boolean;
     isWalletButtonsOnTop: boolean;
+    cart?: Cart;
     checkEmbeddedSupport?(methodIds: string[]): void;
     onChangeViewType?(viewType: CustomerViewType): void;
     onAccountCreated?(): void;
@@ -78,6 +85,7 @@ export interface WithCheckoutCustomerProps {
     createAccountError?: Error;
     signInError?: Error;
     useFloatingLabel?: boolean;
+    cart?: Cart;
     clearError(error: Error): Promise<CheckoutSelectors>;
     continueAsGuest(credentials: GuestCredentials): Promise<CheckoutSelectors>;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
@@ -96,7 +104,7 @@ export interface CustomerState {
     hasRequestedLoginEmail: boolean;
 }
 
-class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & AnalyticsContextProps, CustomerState> {
+class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & AnalyticsContextProps & RecurlyContextProps, CustomerState> {
     state: CustomerState = {
         isEmailLoginFormOpen: false,
         isReady: false,
@@ -144,18 +152,20 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
     }
 
     render(): ReactNode {
-        const { viewType } = this.props;
+        const { viewType, isLoadingRecurly } = this.props;
         const { isEmailLoginFormOpen, isReady } = this.state;
         const shouldRenderGuestForm = viewType === CustomerViewType.Guest;
         const shouldRenderCreateAccountForm = viewType === CustomerViewType.CreateAccount;
-        const shouldRenderLoginForm = !shouldRenderGuestForm && !shouldRenderCreateAccountForm;
+        const shouldRenderSubscriptionForm = viewType === CustomerViewType.Subscription;
+        const shouldRenderLoginForm = !shouldRenderGuestForm && !shouldRenderCreateAccountForm && !shouldRenderSubscriptionForm;
 
         return (
-            <CustomerSkeleton isLoading={!isReady}>
+            <CustomerSkeleton isLoading={ !isReady || isLoadingRecurly }>
                 {isEmailLoginFormOpen && this.renderEmailLoginLinkForm()}
                 {shouldRenderLoginForm && this.renderLoginForm()}
                 {shouldRenderGuestForm && this.renderGuestForm()}
                 {shouldRenderCreateAccountForm && this.renderCreateAccountForm()}
+                { shouldRenderSubscriptionForm && this.renderSubscriptionForm() }
             </CustomerSkeleton>
         );
     }
@@ -419,13 +429,15 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
     private handleSignIn: (credentials: CustomerCredentials) => Promise<void> = async (
         credentials,
     ) => {
-        const { signIn, onSignIn = noop, onSignInError = noop } = this.props;
+        const { signIn, onSignIn = noop, onSignInError = noop, cart } = this.props;
 
         try {
             await signIn(credentials);
             onSignIn();
 
             this.draftEmail = undefined;
+
+            trackLoginData(cart?.customerId, cart?.email);
         } catch (error) {
             onSignInError(error);
         }
@@ -456,13 +468,13 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
     };
 
     private handleCancelSignIn: () => void = () => {
-        const { clearError, onChangeViewType = noop, signInError } = this.props;
+        const { clearError, onChangeViewType = noop, signInError, hasSubscription } = this.props;
 
         if (signInError) {
             clearError(signInError);
         }
 
-        onChangeViewType(CustomerViewType.Guest);
+        onChangeViewType(hasSubscription ? CustomerViewType.Subscription : CustomerViewType.Guest);
     };
 
     private handleChangeEmail: (email: string) => void = (email) => {
@@ -501,6 +513,51 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
         analyticsTracker.customerPaymentMethodExecuted(payload);
     }
+
+    private renderSubscriptionForm(): ReactNode {
+        const {
+            canSubscribe,
+            checkEmbeddedSupport,
+            checkoutButtonIds,
+            defaultShouldSubscribe,
+            deinitializeCustomer,
+            email,
+            initializeCustomer,
+            isContinuingAsGuest = false,
+            isExecutingPaymentMethodCheckout = false,
+            isInitializing = false,
+            privacyPolicyUrl,
+            providerWithCustomCheckout,
+            requiresMarketingConsent,
+            onUnhandledError = noop,
+        } = this.props;
+
+        return (
+            <SubscriptionForm
+                canSubscribe={ canSubscribe }
+                checkoutButtons={
+                    <CheckoutButtonList
+                        checkEmbeddedSupport={ checkEmbeddedSupport }
+                        deinitialize={ deinitializeCustomer }
+                        initialize={ initializeCustomer }
+                        isInitializing={ isInitializing }
+                        methodIds={ checkoutButtonIds }
+                        onError={ onUnhandledError }
+                    />
+                }
+                continueAsGuestButtonLabelId={ !!providerWithCustomCheckout ? 'customer.continue' : 'customer.continue_as_guest_action' }
+                defaultShouldSubscribe={ defaultShouldSubscribe }
+                email={ this.draftEmail || email }
+                isLoading={ isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout }
+                onChangeEmail={ this.handleChangeEmail }
+                onContinueAsGuest={ this.handleContinueAsGuest }
+                onCreateAccount={ this.showCreateAccount }
+                onShowLogin={ this.handleShowLogin }
+                privacyPolicyUrl={ privacyPolicyUrl }
+                requiresMarketingConsent={ requiresMarketingConsent }
+            />
+        );
+    }
 }
 
 export function mapToWithCheckoutCustomerProps({
@@ -515,6 +572,7 @@ export function mapToWithCheckoutCustomerProps({
             getCustomer,
             getSignInEmail,
             getConfig,
+            getCart,
         },
         errors: { getSignInError, getSignInEmailError, getCreateCustomerAccountError },
         statuses: {
@@ -532,6 +590,7 @@ export function mapToWithCheckoutCustomerProps({
     const customer = getCustomer();
     const signInEmail = getSignInEmail();
     const config = getConfig();
+    const cart = getCart();
 
     if (!checkout || !config) {
         return null;
@@ -580,7 +639,8 @@ export function mapToWithCheckoutCustomerProps({
         signIn: checkoutService.signInCustomer,
         signInError: getSignInError(),
         useFloatingLabel: isFloatingLabelEnabled(config.checkoutSettings),
+        cart,
     };
 }
 
-export default withAnalytics(withCheckout(mapToWithCheckoutCustomerProps)(Customer));
+export default withRecurly(props => props)(withAnalytics(withCheckout(mapToWithCheckoutCustomerProps)(Customer)));

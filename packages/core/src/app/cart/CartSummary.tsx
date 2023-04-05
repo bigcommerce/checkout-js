@@ -1,5 +1,6 @@
 import { Checkout, ShopperCurrency, StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
+import withRecurly from "../recurly/withRecurly";
 
 import { withCheckout } from '../checkout';
 import { isBuyNowCart } from '../common/utility';
@@ -16,6 +17,7 @@ export type WithCheckoutCartSummaryProps = {
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrency;
     storeCreditAmount?: number;
+    hasSubscription?: boolean;
 } & RedeemableProps;
 
 const CartSummary: FunctionComponent<WithCheckoutCartSummaryProps> = ({ cartUrl, ...props }) => {
@@ -28,4 +30,4 @@ const CartSummary: FunctionComponent<WithCheckoutCartSummaryProps> = ({ cartUrl,
     });
 };
 
-export default withCheckout(mapToCartSummaryProps)(CartSummary);
+export default withCheckout(mapToCartSummaryProps)(withRecurly(({hasSubscription}) => ({hasSubscription}) )(CartSummary));

@@ -4,7 +4,7 @@
 
 .storeCreditOverlay {
     align-items: center;
-    background-color: $overlay-fill;
+    background-color: $overlay-fill !important;
     bottom: 0;
     display: flex;
     justify-content: center;

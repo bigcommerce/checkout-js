@@ -1,9 +1,10 @@
 import classNames from 'classnames';
-import React, { Component, ReactNode } from 'react';
+import React, {Component, FunctionComponent, ReactNode, useEffect, useState} from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 import { preventDefault } from '../common/dom';
 import { ShopperCurrency } from '../currency';
+import {LineItemMap} from "@bigcommerce/checkout-sdk";
 
 export interface OrderSummaryPriceProps {
     label: ReactNode;
@@ -14,6 +15,8 @@ export interface OrderSummaryPriceProps {
     currencyCode?: string;
     superscript?: string;
     actionLabel?: ReactNode;
+    shippingAmount?: number | null;
+    lineItems?: LineItemMap;
     onActionTriggered?(): void;
 }
 
@@ -39,6 +42,62 @@ function getDisplayValue(amount?: number | null, zeroLabel?: ReactNode): ReactNo
 function isNumberValue(displayValue: number | ReactNode): displayValue is number {
     return typeof displayValue === 'number';
 }
+const ConfidenceBlock: FunctionComponent<any> = props => {
+    const { lineItems, shippingAmount } = props;
+    const [isFreeShipping, setIsFreeShipping] = useState(false);
+    const [hasSubscription, setHasSubscription] = useState(false);
+    useEffect(() => {
+        const test = lineItems?.physicalItems && lineItems.physicalItems.find((v: any) => v.options.find((o: any) => o.value === 'send every 30 days'));
+        if (test !== hasSubscription) {
+            setHasSubscription(test);
+        }
+    }, [lineItems]);
+
+    useEffect(() => {
+        setIsFreeShipping(shippingAmount === 0);
+    }, [shippingAmount]);
+    return (
+        <>
+            { hasSubscription && <section className="payments cart-subscription cart-section optimizedCheckout-orderSummary-cartSection">
+                <div data-test="cart-total">
+                    <div aria-live="polite" className="cart-priceItem optimizedCheckout-contentPrimary cart-priceItem--total">
+                    <span className="cart-priceItem-label">
+                        <span data-test="cart-price-label">
+                            Your order contains a subscription. This reoccurs every 30 days. You can cancel any time.
+                        </span>
+                    </span>
+                    </div>
+                </div>
+            </section> }
+                <div className="payments">
+                    {isFreeShipping && !hasSubscription && <div className="free-shipping">
+                        Your order qualifies for free shipping!
+                    </div>}
+                    {hasSubscription && (
+                        <><h2>Enjoy your MitoQ subscription with:</h2>
+                            <ul className="benefit-list">
+                                <li>Free shipping on all orders</li>
+                                <li>Skip or pause subscription anytime</li>
+                                <li>Cancel anytime</li>
+                                <li>Delivered monthly, direct to you</li>
+                            </ul></>)
+                    }
+                    <div className={`payments-method ${!hasSubscription ? 'full-method' : ''}`}>
+                        <div className="payment-icon visacard-icon"></div>
+                        <div className="payment-icon diners-icon"></div>
+                        <div className="payment-icon mastercard-icon"></div>
+                        <div className="payment-icon amex-icon"></div>
+                        <div className="payment-icon discover-icon"></div>
+                        <div className="payment-icon jcb-icon"></div>
+                        {   !hasSubscription &&
+                            (<><div className="payment-icon paypal-icon"></div><div className="payment-icon gpay-icon"></div></>)
+                        }
+
+                    </div>
+                </div>
+            </>
+    );
+};
 
 class OrderSummaryPrice extends Component<OrderSummaryPriceProps, OrderSummaryPriceState> {
     static getDerivedStateFromProps(props: OrderSummaryPriceProps, state: OrderSummaryPriceState) {
@@ -65,6 +124,8 @@ class OrderSummaryPrice extends Component<OrderSummaryPriceProps, OrderSummaryPr
             superscript,
             testId,
             zeroLabel,
+            shippingAmount,
+            lineItems,
         } = this.props;
 
         const { highlight } = this.state;
@@ -126,6 +187,10 @@ class OrderSummaryPrice extends Component<OrderSummaryPriceProps, OrderSummaryPr
                         {children}
                     </div>
                 </CSSTransition>
+                {
+                    testId === 'cart-total' &&
+                    <ConfidenceBlock shippingAmount={shippingAmount} amount={amount} currencyCode={currencyCode} lineItems={lineItems} />
+                }
             </div>
         );
     }
