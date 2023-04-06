@@ -115,18 +115,9 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
       state: DealerState
   ) {
       if (!state || !state.items || getShippableItemsCount(cart) !== state.items.length) {
-          const fflConsignment = consignments.filter(
-              item => fflConsignmentItems.some((fflItem: any) => item.lineItemIds.includes(fflItem.itemId))
-          )[0];
-
-          let selectedDealer = null;
-          if (fflConsignment) {
-            selectedDealer = fflConsignment.shippingAddress;
-          }
           return {
             ...state,
-            items: getShippableLineItems(cart, consignments),
-            selectedDealer: selectedDealer
+            items: getShippableLineItems(cart, consignments)
           };
       }
 
