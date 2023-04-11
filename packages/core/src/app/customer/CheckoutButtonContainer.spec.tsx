@@ -8,7 +8,7 @@ import { getStoreConfig } from '../config/config.mock';
 import { createLocaleContext, LocaleContext, LocaleContextType, } from '../locale';
 
 import CheckoutButtonContainer from './CheckoutButtonContainer';
-import { getGuestCustomer } from './customers.mock';
+import { getCustomer, getGuestCustomer } from './customers.mock';
 
 describe('CheckoutButtonContainer', () => {
     let localeContext: LocaleContextType;
@@ -28,19 +28,81 @@ describe('CheckoutButtonContainer', () => {
                         walletButtonsOnTop: true,
                         floatingLabelEnabled: false,
                     },
-                    remoteCheckoutProviders: ['amazonpay','applepay', 'paypalcommerce', 'paypalcommercecredit'],
+                    remoteCheckoutProviders: ['amazonpay','applepay', 'braintreepaypal'],
                 },
             }),
         );
     });
 
-    it('matches snapshot', () => {
+    it('displays wallet buttons for guest checkout', () => {
         const component = render(
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <CheckoutButtonContainer
                         checkEmbeddedSupport={jest.fn()}
                         isPaymentStepActive={false}
+                        onUnhandledError={jest.fn()}
+                    />
+                </LocaleContext.Provider>
+            </CheckoutProvider>
+        );
+
+        expect(component).toMatchSnapshot();
+    });
+
+    it('hides wallet buttons for signed-in shoppers', () => {
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
+
+        const component = render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <CheckoutButtonContainer
+                        checkEmbeddedSupport={jest.fn()}
+                        isPaymentStepActive={false}
+                        onUnhandledError={jest.fn()}
+                    />
+                </LocaleContext.Provider>
+            </CheckoutProvider>
+        );
+
+        expect(component).toMatchSnapshot();
+    });
+
+    it('hides wallet buttons with CSS when payment step is active', () => {
+        const component = render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <CheckoutButtonContainer
+                        checkEmbeddedSupport={jest.fn()}
+                        isPaymentStepActive={true}
+                        onUnhandledError={jest.fn()}
+                    />
+                </LocaleContext.Provider>
+            </CheckoutProvider>
+        );
+
+        expect(component).toMatchSnapshot();
+    });
+
+    it('removes Paypal commerce wallet buttons when payment step is active', () => {
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(
+            merge(getStoreConfig(), {
+                checkoutSettings: {
+                    checkoutUserExperienceSettings: {
+                        walletButtonsOnTop: true,
+                        floatingLabelEnabled: false,
+                    },
+                    remoteCheckoutProviders: ['amazonpay','applepay', 'paypalcommerce'],
+                },
+            }),
+        );
+
+        const component = render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <CheckoutButtonContainer
+                        checkEmbeddedSupport={jest.fn()}
+                        isPaymentStepActive={true}
                         onUnhandledError={jest.fn()}
                     />
                 </LocaleContext.Provider>
