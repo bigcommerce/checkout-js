@@ -1,4 +1,5 @@
-import { Address, Country, FormField } from '@bigcommerce/checkout-sdk';
+import { AccountInstrument, Address, Country, FormField, PaymentInstrument } from '@bigcommerce/checkout-sdk';
+import { memoizeOne } from '@bigcommerce/memoize';
 import React, { ComponentType, FunctionComponent, useCallback, useEffect, useMemo } from 'react';
 
 import { CheckoutContextProps, withCheckout } from '../checkout';
@@ -12,6 +13,8 @@ import getBraintreeAchValidationSchema, {
     BraintreeAchBankAccount,
     BraintreeAchBankAccountValues
 } from './paymentMethod/getBraintreeAchValidationSchema';
+// @ts-ignore
+import { isAccountInstrument, isInstrumentFeatureAvailable } from './storedInstrument';
 import withPayment, { WithPaymentProps } from './withPayment';
 
 enum OwnershipTypes {
@@ -261,17 +264,29 @@ export default function withAchBraintreeFields<T extends object>(
     ))
 }
 
-const mapFromCheckoutProps = ({ checkoutState, checkoutService }: CheckoutContextProps) => {
+const mapFromCheckoutProps = ({ checkoutState, checkoutService }: CheckoutContextProps, props: BraintreeAchPaymentFormProps) => {
     const {
         data: {
             getBillingCountries,
-            getBillingAddress
+            getBillingAddress,
+            getInstruments,
+            // isPaymentDataSubmitted
         },
         statuses: {
             isInitializingPayment,
-            isLoadingBillingCountries
+            isLoadingBillingCountries,
+            isLoadingInstruments
         },
     } = checkoutState;
+
+    const { method } = props;
+
+    const filterAccountInstruments = memoizeOne((instruments: PaymentInstrument[] = []) =>
+        instruments.filter(isAccountInstrument),
+    );
+    const filterTrustedInstruments = memoizeOne((instruments: AccountInstrument[] = []) =>
+        instruments.filter(({ trustedShippingAddress }) => trustedShippingAddress),
+    );
 
     const { loadBillingAddressFields } = checkoutService;
 
@@ -280,11 +295,27 @@ const mapFromCheckoutProps = ({ checkoutState, checkoutService }: CheckoutContex
 
     const usCountry = countries.find((state) => state.code === 'US');
 
+    const currentMethodInstruments = filterAccountInstruments(getInstruments(method));
+    const trustedInstruments = filterTrustedInstruments(currentMethodInstruments);
+
     return {
+        instruments: trustedInstruments,
+        isNewAddress: trustedInstruments.length === 0 && currentMethodInstruments.length > 0,
+        // TODO:: need to clarification about isPaymentDataSubmitted and isInstrumentFeatureAvailable
+        // isInstrumentFeatureAvailable:
+        //     !isPaymentDataSubmitted(method.id, method.gateway) &&
+        //     isInstrumentFeatureAvailable({
+        //         config,
+        //         customer,
+        //         isUsingMultiShipping,
+        //         paymentMethod: method,
+        //     }),
+        loadInstruments: checkoutService.loadInstruments,
+        isLoadingInstruments: isLoadingInstruments(),
         billingAddress,
         initializeBillingAddressFields: loadBillingAddressFields,
         usCountry,
         isInitializingPayment,
-        isLoadingBillingCountries: isLoadingBillingCountries()
+        isLoadingBillingCountries: isLoadingBillingCountries(),
     }
 }
