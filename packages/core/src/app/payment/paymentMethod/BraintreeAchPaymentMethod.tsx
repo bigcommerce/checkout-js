@@ -4,7 +4,13 @@ import BraintreeAchPaymentForm, { BraintreeAchPaymentFormProps } from './Braintr
 
 export type BraintreeAchPaymentMethodProps = Omit<
     BraintreeAchPaymentFormProps,
-    'mandateText' | 'isLoadingBillingCountries' | 'usCountry' | 'initializeBillingAddressFields'
+    'mandateText' |
+    'isLoadingBillingCountries' |
+    'usCountry' |
+    'initializeBillingAddressFields' |
+    'instruments' |
+    'isNewAddress' |
+    'loadInstruments'
 >;
 
 const mandateText = 'I authorize Braintree to debit my bank account on behalf of My Online Store.';
