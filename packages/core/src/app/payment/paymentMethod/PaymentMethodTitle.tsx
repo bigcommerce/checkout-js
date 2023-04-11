@@ -49,6 +49,10 @@ function getPaymentMethodTitle(
                 logoUrl: method.logoUrl || '',
                 titleText: method.logoUrl ? '' : methodDisplayName,
             },
+            [PaymentMethodId.BraintreeAch]: {
+                logoUrl: method.logoUrl || '',
+                titleText: methodDisplayName,
+            },
             [PaymentMethodType.PaypalCredit]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
                 titleText: methodDisplayName,

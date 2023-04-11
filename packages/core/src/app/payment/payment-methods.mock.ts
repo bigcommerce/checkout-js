@@ -40,6 +40,20 @@ export function getPaypalCreditPaymentMethod(): PaymentMethod {
     };
 }
 
+export function getBraintreeAchPaymentMethod(): PaymentMethod {
+    return {
+        id: 'braintreeach',
+        logoUrl: '',
+        gateway: undefined,
+        method: 'paypal-ach',
+        supportedCards: [],
+        config: {
+            displayName: 'Braintree ACH',
+        },
+        type: 'PAYMENT_TYPE_API',
+    };
+}
+
 export function getMobilePaymentMethod(): PaymentMethod {
     return {
         id: 'authorizenetMobile',

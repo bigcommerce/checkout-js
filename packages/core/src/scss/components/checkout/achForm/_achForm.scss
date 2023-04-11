@@ -4,7 +4,11 @@
     margin: 0 -4px;
     margin-bottom: spacing("half");
 
-    &--mandate-text {
+    .instrumentFieldset {
+        width: 100%;
+    }
+
+    .mandate-text {
         padding: 0 4px;
     }
 

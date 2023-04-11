@@ -1,17 +1,20 @@
 import {
+    AccountInstrument,
     CardInstrument,
     CheckoutSelectors,
     FormField,
     PaymentInitializeOptions,
     PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo, useEffect } from 'react';
+import { find } from 'lodash';
+import React, { FunctionComponent, memo, useCallback, useEffect, useState } from 'react';
 
 import { AddressKeyMap } from '../../address/address';
 import { ConnectFormikProps } from '../../common/form';
 import { TranslatedString, WithLanguageProps } from '../../locale';
 import { DynamicFormField } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
+import { AccountInstrumentFieldset } from '../storedInstrument';
 import withAchBraintreeFields from '../withAchBraintreeFields';
 import { WithPaymentProps } from '../withPayment';
 
@@ -63,6 +66,9 @@ export interface BraintreeAchPaymentFormProps {
     mandateText: string;
     isLoadingBillingCountries: boolean;
     initializeBillingAddressFields(): Promise<CheckoutSelectors>;
+    instruments: AccountInstrument[];
+    loadInstruments(): Promise<CheckoutSelectors>;
+    isNewAddress: boolean;
 }
 
 const BraintreeAchPaymentForm: FunctionComponent<
@@ -76,8 +82,14 @@ const BraintreeAchPaymentForm: FunctionComponent<
     isLoadingBillingCountries,
     fieldValues,
     handleChange,
+    instruments,
+    isNewAddress,
     ...props
 }) => {
+    const [currentInstrument, setCurrentInstrument] = useState<AccountInstrument | undefined>(
+        instruments.length ? instruments[0] : undefined
+    );
+
     useEffect(() => {
         const {
             method: {
@@ -85,7 +97,8 @@ const BraintreeAchPaymentForm: FunctionComponent<
                 id: methodId
             },
             initializePayment,
-            initializeBillingAddressFields
+            initializeBillingAddressFields,
+            loadInstruments,
         } = props;
 
         const initialize = async () => {
@@ -95,10 +108,22 @@ const BraintreeAchPaymentForm: FunctionComponent<
                 gatewayId,
                 methodId,
             });
+
+            await loadInstruments();
         }
 
         initialize();
     }, []);
+
+    const handleSelectInstrument = useCallback((id: string) => {
+        setCurrentInstrument(find(instruments, { bigpayToken: id }));
+    }, [instruments, setCurrentInstrument]);
+
+    const handleUseNewInstrument = useCallback(() => {
+        setCurrentInstrument(undefined);
+    }, [setCurrentInstrument]);
+
+    const shouldShowInstrumentFieldset = instruments.length > 0 || isNewAddress;
 
     return (
         <LoadingOverlay
@@ -106,11 +131,19 @@ const BraintreeAchPaymentForm: FunctionComponent<
             isLoading={isLoadingBillingCountries}
         >
             <div className='checkout-ach-form'>
+                {shouldShowInstrumentFieldset && (
+                    <AccountInstrumentFieldset
+                        instruments={instruments}
+                        onSelectInstrument={handleSelectInstrument}
+                        onUseNewInstrument={handleUseNewInstrument}
+                        selectedInstrument={currentInstrument}
+                    />
+                )}
                 <AchFormFields
                     fieldValues={fieldValues}
                     handleChange={handleChange}
                 />
-                <div className='checkout-ach-form--mandate-text'>
+                <div className='mandate-text'>
                     {mandateText}
                 </div>
             </div>
