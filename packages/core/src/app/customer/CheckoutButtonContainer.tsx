@@ -64,7 +64,7 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
 
     return (
         <div className='checkout-button-container'
-             style={ isPaymentStepActive ? { position: 'absolute', left: '100%', top: '-100%' } : undefined }
+             style={ isPaymentStepActive ? { position: 'absolute', left: '0', top: '-100%' } : undefined }
         >
             <p>
                 <TranslatedString id="remote.start_with_text" />

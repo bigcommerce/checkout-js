@@ -63,7 +63,7 @@ exports[`CheckoutButtonContainer hides wallet buttons for signed-in shoppers 1`]
 exports[`CheckoutButtonContainer hides wallet buttons with CSS when payment step is active 1`] = `
 <div
   class="checkout-button-container"
-  style="position:absolute;left:100%;top:-100%"
+  style="position:absolute;left:0;top:-100%"
 >
   <p>
     Check out faster with:
