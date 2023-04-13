@@ -1,13 +1,24 @@
-export { default as LocaleContext, LocaleContextType } from './LocaleContext';
-export { default as createLocaleContext } from './createLocaleContext';
-export { default as getDefaultTranslations } from './getDefaultTranslations';
-export { default as getLanguageService, InitializeLanguageService } from './getLanguageService';
-export { default as masterpassFormatLocale } from './masterpassFormatLocale';
-export { default as withCurrency, WithCurrencyProps } from './withCurrency';
-export { default as withLanguage, WithLanguageProps } from './withLanguage';
-export { default as withDate, WithDateProps } from './withDate';
-export { default as LanguageWindow, isLanguageWindow } from './LanguageWindow';
-export { default as LocaleProvider } from './LocaleProvider';
-export { default as TranslatedHtml, TranslatedHtmlProps } from './TranslatedHtml';
-export { default as TranslatedLink, TranslatedLinkProps } from './TranslatedLink';
-export { default as TranslatedString, TranslatedStringProps } from './TranslatedString';
+export {
+    LocaleContext,
+    LocaleContextType,
+    createLocaleContext,
+    getDefaultTranslations,
+    getLanguageService,
+    InitializeLanguageService,
+    masterpassFormatLocale,
+    withCurrency,
+    WithCurrencyProps,
+    withLanguage,
+    WithLanguageProps,
+    withDate,
+    WithDateProps,
+    LanguageWindow,
+    isLanguageWindow,
+    LocaleProvider,
+    TranslatedHtml,
+    TranslatedHtmlProps,
+    TranslatedLink,
+    TranslatedLinkProps,
+    TranslatedString,
+    TranslatedStringProps
+} from '@bigcommerce/checkout/locale';
