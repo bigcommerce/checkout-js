@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.306.0](https://github.com/bigcommerce/checkout-js/compare/v1.305.0...v1.306.0) (2023-04-13)
+
+
+### Features
+
+* **checkout:** CHECKOUT-0000 Hide wallet buttons during payment step ([#1236](https://github.com/bigcommerce/checkout-js/issues/1236)) ([546a464](https://github.com/bigcommerce/checkout-js/commit/546a464e61ce5cc6222d18a9733098914f31a1a0))
+
 ## [1.305.0](https://github.com/bigcommerce/checkout-js/compare/v1.304.1...v1.305.0) (2023-04-06)
 
 
