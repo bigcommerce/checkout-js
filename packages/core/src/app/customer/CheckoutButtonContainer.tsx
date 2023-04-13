@@ -18,6 +18,7 @@ interface CheckoutButtonContainerProps {
 interface WithCheckoutCheckoutButtonContainerProps{
     availableMethodIds: string[];
     isLoading: boolean;
+    isPaypalCommerce: boolean;
     initializedMethodIds: string[];
     deinitialize(options: CustomerRequestOptions): void;
     initialize(options: CustomerInitializeOptions): void;
@@ -42,6 +43,7 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         checkEmbeddedSupport,
         deinitialize,
         isLoading,
+        isPaypalCommerce,
         isPaymentStepActive,
         initialize,
         initializedMethodIds,
@@ -55,9 +57,6 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
     } catch (error) {
         return null;
     }
-
-    const paypalCommerceIds = ['paypalcommerce', 'paypalcommercecredit', 'paypalcommercevenmo'];
-    const isPaypalCommerce = methodIds.some(id => paypalCommerceIds.includes(id));
 
     if (isPaypalCommerce && isPaymentStepActive) {
         return null;
@@ -123,6 +122,8 @@ function mapToCheckoutButtonContainerProps({
         (methodId) => Boolean(getInitializeCustomerError(methodId)) || isInitializedCustomer(methodId)
     ).length !== availableMethodIds.length;
     const initializedMethodIds = availableMethodIds.filter((methodId) => isInitializedCustomer(methodId));
+    const paypalCommerceIds = ['paypalcommerce', 'paypalcommercecredit', 'paypalcommercevenmo'];
+    const isPaypalCommerce = availableMethodIds.some(id => paypalCommerceIds.includes(id));
 
     return {
         availableMethodIds,
@@ -130,6 +131,7 @@ function mapToCheckoutButtonContainerProps({
         initialize: checkoutService.initializeCustomer,
         initializedMethodIds,
         isLoading,
+        isPaypalCommerce,
     }
 }
 
