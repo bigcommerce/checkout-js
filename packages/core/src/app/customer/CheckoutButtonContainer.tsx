@@ -56,7 +56,8 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         return null;
     }
 
-    const isPaypalCommerce = methodIds.includes('paypalcommerce');
+    const paypalCommerceIds = ['paypalcommerce', 'paypalcommercecredit', 'paypalcommercevenmo'];
+    const isPaypalCommerce = methodIds.some(id => paypalCommerceIds.includes(id));
 
     if (isPaypalCommerce && isPaymentStepActive) {
         return null;
