@@ -10,6 +10,7 @@ import { TranslatedString } from '../locale';
 import CheckoutButtonListV1, { filterUnsupportedMethodIds } from './CheckoutButtonList';
 
 interface CheckoutButtonContainerProps {
+    isPaymentStepActive: boolean;
     checkEmbeddedSupport(methodIds: string[]): void;
     onUnhandledError(error: Error): void;
 }
@@ -17,6 +18,7 @@ interface CheckoutButtonContainerProps {
 interface WithCheckoutCheckoutButtonContainerProps{
     availableMethodIds: string[];
     isLoading: boolean;
+    isPaypalCommerce: boolean;
     initializedMethodIds: string[];
     deinitialize(options: CustomerRequestOptions): void;
     initialize(options: CustomerInitializeOptions): void;
@@ -41,6 +43,8 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         checkEmbeddedSupport,
         deinitialize,
         isLoading,
+        isPaypalCommerce,
+        isPaymentStepActive,
         initialize,
         initializedMethodIds,
         onUnhandledError,
@@ -54,8 +58,14 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         return null;
     }
 
+    if (isPaypalCommerce && isPaymentStepActive) {
+        return null;
+    }
+
     return (
-        <div className='checkout-button-container'>
+        <div className='checkout-button-container'
+             style={ isPaymentStepActive ? { position: 'absolute', left: '0', top: '-100%' } : undefined }
+        >
             <p>
                 <TranslatedString id="remote.start_with_text" />
             </p>
@@ -89,6 +99,7 @@ function mapToCheckoutButtonContainerProps({
     checkoutState: {
        data: {
            getConfig,
+           getCustomer,
        },
        statuses: {
            isInitializedCustomer,
@@ -101,8 +112,9 @@ function mapToCheckoutButtonContainerProps({
 }: CheckoutContextProps): WithCheckoutCheckoutButtonContainerProps | null {
     const config = getConfig();
     const availableMethodIds = filterUnsupportedMethodIds(config?.checkoutSettings.remoteCheckoutProviders ?? []);
+    const customer = getCustomer();
 
-    if (!config || availableMethodIds.length === 0) {
+    if (!config || availableMethodIds.length === 0 || !customer?.isGuest) {
         return null;
     }
 
@@ -110,6 +122,8 @@ function mapToCheckoutButtonContainerProps({
         (methodId) => Boolean(getInitializeCustomerError(methodId)) || isInitializedCustomer(methodId)
     ).length !== availableMethodIds.length;
     const initializedMethodIds = availableMethodIds.filter((methodId) => isInitializedCustomer(methodId));
+    const paypalCommerceIds = ['paypalcommerce', 'paypalcommercecredit', 'paypalcommercevenmo'];
+    const isPaypalCommerce = availableMethodIds.some(id => paypalCommerceIds.includes(id));
 
     return {
         availableMethodIds,
@@ -117,6 +131,7 @@ function mapToCheckoutButtonContainerProps({
         initialize: checkoutService.initializeCustomer,
         initializedMethodIds,
         isLoading,
+        isPaypalCommerce,
     }
 }
 

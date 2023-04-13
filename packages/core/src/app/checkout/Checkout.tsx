@@ -303,6 +303,10 @@ class Checkout extends Component<
             return <EmptyCartMessage loginUrl={loginUrl} waitInterval={3000} />;
         }
 
+        const isPaymentStepActive = activeStepType
+            ? activeStepType === CheckoutStepType.Payment
+            : defaultStepType === CheckoutStepType.Payment;
+
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isRedirecting}>
                 <div className="layout-main">
@@ -310,10 +314,13 @@ class Checkout extends Component<
 
                     <PromotionBannerList promotions={promotions} />
 
-                    {isShowingWalletButtonsOnTop && <CheckoutButtonContainer
-                      checkEmbeddedSupport={this.checkEmbeddedSupport}
-                      onUnhandledError={this.handleUnhandledError}
-                    />}
+                    {isShowingWalletButtonsOnTop && (
+                        <CheckoutButtonContainer
+                            checkEmbeddedSupport={this.checkEmbeddedSupport}
+                            isPaymentStepActive={isPaymentStepActive}
+                            onUnhandledError={this.handleUnhandledError}
+                        />
+                    )}
 
                     <ol className="checkout-steps">
                         {steps
