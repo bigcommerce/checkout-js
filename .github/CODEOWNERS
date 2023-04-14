@@ -10,6 +10,7 @@
 /packages/payment-integration-api @bigcommerce/checkout
 /packages/payment-integration-test-framework @bigcommerce/checkout
 /packages/workspace-tools @bigcommerce/checkout
+/packages/braintree-integration @bigcommerce/kyiv-payments-team
 
 # Apex integrations
 /packages/google-pay-integration @bigcommerce/apex-leads
