@@ -1,9 +1,7 @@
 import React, { FunctionComponent, MouseEventHandler } from 'react';
 
-import { preventDefault } from '../common/dom';
-import { parseAnchor } from '../common/utility';
-
 import { TranslatedStringProps } from './TranslatedString';
+import { parseAnchor, preventDefault } from './utils';
 import withLanguage, { WithLanguageProps } from './withLanguage';
 
 export type TranslatedLinkProps = TranslatedStringProps & {

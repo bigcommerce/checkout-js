@@ -1,6 +1,5 @@
-import { createInjectHoc, InjectHoc } from '../common/hoc';
-
 import LocaleContext from './LocaleContext';
+import { createInjectHoc, InjectHoc } from './utils';
 
 export interface WithDateProps {
     date: {

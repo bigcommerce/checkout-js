@@ -15,7 +15,7 @@ exports[`LoadingNotification renders markup that matches snapshot 1`] = `
       className="label"
       role="alert"
     >
-      <TranslatedString
+      <WithLanguage(TranslatedString)
         id="common.loading_text"
       />
     </span>

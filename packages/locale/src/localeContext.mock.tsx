@@ -1,9 +1,9 @@
 import { createCurrencyService, createLanguageService } from '@bigcommerce/checkout-sdk';
 
-import { getStoreConfig } from '../config/config.mock';
-import { FALLBACK_TRANSLATIONS } from '../locale/translations';
+import { getStoreConfig } from '@bigcommerce/checkout/test-utils';
 
 import { LocaleContextType } from './LocaleContext';
+import { FALLBACK_TRANSLATIONS } from './translations';
 
 export function getLocaleContext(): Required<LocaleContextType> {
     return {

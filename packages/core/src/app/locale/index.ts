@@ -14,6 +14,7 @@ export {
     WithDateProps,
     LanguageWindow,
     isLanguageWindow,
+    initializeLanguageService,
     LocaleProvider,
     TranslatedHtml,
     TranslatedHtmlProps,
