@@ -3,7 +3,7 @@ import {
     ShopperCurrency as ShopperCurrencyType,
     StoreCurrency,
 } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, ReactNode } from 'react';
+import React, { cloneElement, FunctionComponent, isValidElement, ReactNode } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
@@ -47,11 +47,12 @@ const OrderSummaryModal: FunctionComponent<
     ...orderSummarySubtotalsProps
 }) => {
     const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
+    const newDisplay = true;
 
     return <Modal
         additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
         additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary"
-        header={renderHeader({ headerLink, onRequestClose })}
+        header={renderHeader({ headerLink, onRequestClose, newDisplay })}
         isOpen={isOpen}
         onAfterOpen={onAfterOpen}
         onRequestClose={onRequestClose}
@@ -94,20 +95,45 @@ const OrderSummaryModal: FunctionComponent<
 const renderHeader: FunctionComponent<{
     headerLink: ReactNode;
     onRequestClose?(): void;
-}> = ({ onRequestClose, headerLink }) => (
-    <>
+    newDisplay: boolean;
+}> = ({ onRequestClose, headerLink, newDisplay }) => {
+    if (!newDisplay) {
+       return <>
+            <a className="cart-modal-close" href="#" onClick={preventDefault(onRequestClose)}>
+                <span className="is-srOnly">
+                    <TranslatedString id="common.close_action" />
+                </span>
+                <IconClose />
+            </a>
+            <ModalHeader additionalClassName="cart-modal-title">
+                <TranslatedString id="cart.cart_heading" />
+            </ModalHeader>
+
+            {headerLink}
+        </>;
+    }
+
+    let newHeaderLink;
+
+    if (isValidElement(headerLink)) {
+        newHeaderLink = cloneElement(headerLink, { className: 'modal-header-link cart-modal-link test' });
+    }
+
+    return <>
+        {newHeaderLink ?? headerLink}
+        <ModalHeader additionalClassName="cart-modal-title">
+            <div>
+                <TranslatedString id="cart.cart_heading" />
+                <div style={{fontWeight: 500, fontSize: '1rem'}}>1 Items ($500.00)</div>
+            </div>
+        </ModalHeader>
         <a className="cart-modal-close" href="#" onClick={preventDefault(onRequestClose)}>
             <span className="is-srOnly">
                 <TranslatedString id="common.close_action" />
             </span>
             <IconClose />
         </a>
-        <ModalHeader additionalClassName="cart-modal-title">
-            <TranslatedString id="cart.cart_heading" />
-        </ModalHeader>
-
-        {headerLink}
     </>
-);
+};
 
 export default OrderSummaryModal;
