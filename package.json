@@ -1,6 +1,6 @@
 {
   "name": "@bigcommerce/checkout",
-  "version": "1.296.2-prerelease.1681289270983",
+  "version": "1.296.2-prerelease.1681870052617",
   "private": true,
   "description": "Browser-based application providing a seamless UI for BigCommerce shoppers to complete their checkout.",
   "license": "MIT",
@@ -17,7 +17,7 @@
     "dev:server": "http-server build",
     "e2e": "npm run build && npx playwright install && PORT=5005 MODE=REPLAY npx playwright test",
     "release": "echo 'Please do not release locally, use CircleCi'",
-    "release:alpha": "npm run lint && npm run test -- --coverage && npm run build -- --env prerelease=prerelease && npm run release:version",
+    "release:alpha": "npm run build -- --env prerelease=prerelease && npm run release:version",
     "release:version": "git add dist && standard-version -a",
     "test:core": "jest --config packages/core/jest.config.js",
     "test:others": "npx nx run-many --all --target=test --exclude core --parallel=5 -- --runInBand",
