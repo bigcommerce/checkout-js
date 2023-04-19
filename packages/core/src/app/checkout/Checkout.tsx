@@ -117,7 +117,6 @@ export interface CheckoutState {
     isCartEmpty: boolean;
     isRedirecting: boolean;
     hasSelectedShippingOptions: boolean;
-    isBuyNowCartEnabled: boolean;
     isHidingStepNumbers: boolean;
     isSubscribed: boolean;
 }
@@ -155,7 +154,6 @@ class Checkout extends Component<
         isRedirecting: false,
         isMultiShippingMode: false,
         hasSelectedShippingOptions: false,
-        isBuyNowCartEnabled: false,
         isHidingStepNumbers: true,
         isSubscribed: false,
     };
@@ -230,9 +228,6 @@ class Checkout extends Component<
                 data.getConfig()?.checkoutSettings.hasMultiShippingEnabled;
             const checkoutBillingSameAsShippingEnabled =
                 data.getConfig()?.checkoutSettings.checkoutBillingSameAsShippingEnabled ?? true;
-            const buyNowCartFlag =
-                data.getConfig()?.checkoutSettings.features['CHECKOUT-3190.enable_buy_now_cart'] ??
-                false;
             const removeStepNumbersFlag =
               data.getConfig()?.checkoutSettings.features['CHECKOUT-7255.remove_checkout_step_numbers'] ??
               false;
@@ -247,7 +242,6 @@ class Checkout extends Component<
 
             this.setState({
                 isBillingSameAsShipping: checkoutBillingSameAsShippingEnabled,
-                isBuyNowCartEnabled: buyNowCartFlag,
                 isHidingStepNumbers: removeStepNumbersFlag,
                 isSubscribed: defaultNewsletterSignupOption,
             });
@@ -580,7 +574,6 @@ class Checkout extends Component<
 
     private navigateToOrderConfirmation: (orderId?: number) => void = (orderId) => {
         const { steps, analyticsTracker } = this.props;
-        const { isBuyNowCartEnabled } = this.state;
 
         analyticsTracker.trackStepCompleted(steps[steps.length - 1].type);
 
@@ -589,7 +582,7 @@ class Checkout extends Component<
         }
 
         this.setState({ isRedirecting: true }, () => {
-            navigateToOrderConfirmation(isBuyNowCartEnabled, orderId);
+            navigateToOrderConfirmation(orderId);
         });
     };
 
