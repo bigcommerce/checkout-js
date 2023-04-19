@@ -13,14 +13,14 @@ describe('navigateToOrderConfirmation', () => {
     });
 
     it('navigates to order confirmation page based on its current path', () => {
-        navigateToOrderConfirmation(true);
+        navigateToOrderConfirmation();
 
         expect(window.location.replace).toHaveBeenCalledWith('/checkout/order-confirmation');
     });
 
     it('navigates to order confirmation page with orderId in the URL when it is a buy now cart checkout', () => {
         window.location.pathname = '/checkout/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX';
-        navigateToOrderConfirmation(true, 100);
+        navigateToOrderConfirmation(100);
 
         expect(window.location.replace).toHaveBeenCalledWith('/checkout/order-confirmation/100');
     });
@@ -29,7 +29,7 @@ describe('navigateToOrderConfirmation', () => {
         window.location.href = 'https://store.com/embedded-checkout?setCurrencyId=1';
         window.location.pathname = '/embedded-checkout';
 
-        navigateToOrderConfirmation(true);
+        navigateToOrderConfirmation();
 
         expect(window.location.replace).toHaveBeenCalledWith(
             '/embedded-checkout/order-confirmation',
