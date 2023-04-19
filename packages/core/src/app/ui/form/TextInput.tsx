@@ -30,9 +30,9 @@ const TextInput = forwardRef(
                 { 'optimizedCheckout-form-input--focus': appearFocused },
                 additionalClassName,
             )}
+            isFloatingLabelEnabled={isFloatingLabelEnabled}
             ref={ref}
             type={type}
-            isFloatingLabelEnabled={isFloatingLabelEnabled}
         />
     ),
 );

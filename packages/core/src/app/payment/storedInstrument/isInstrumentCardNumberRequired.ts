@@ -1,4 +1,5 @@
 import { Instrument, LineItemMap } from '@bigcommerce/checkout-sdk';
+
 import { UntrustedShippingCardVerificationType } from './CardInstrumentFieldset';
 
 export interface IsInstrumentCardNumberRequiredState {

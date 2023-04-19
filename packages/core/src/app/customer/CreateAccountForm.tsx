@@ -3,9 +3,10 @@ import { FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent, useMemo } from 'react';
 
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+
 import { preventDefault } from '../common/dom';
 import { isRequestError } from '../common/error';
-import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { DynamicFormField, Fieldset, Form } from '../ui/form';
@@ -68,9 +69,9 @@ const CreateAccountForm: FunctionComponent<
                             autocomplete={field.name}
                             extraClass={`dynamic-form-field--${field.name}`}
                             field={field}
+                            isFloatingLabelEnabled={isFloatingLabelEnabled}
                             key={field.id}
                             parentFieldName={field.custom ? 'customFields' : undefined}
-                            isFloatingLabelEnabled={isFloatingLabelEnabled}
                         />
                     ))}
                 </div>

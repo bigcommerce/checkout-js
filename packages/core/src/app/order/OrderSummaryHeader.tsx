@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
-import { TranslatedString } from '../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 const OrderSummaryHeader: FunctionComponent = ({ children }) => (
     <header className="cart-header">

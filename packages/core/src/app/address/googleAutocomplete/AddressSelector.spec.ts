@@ -26,6 +26,7 @@ describe('AddressSelector', () => {
 
         it('does not return a state for a UK address', () => {
             googleAutoCompleteResponseMock = getGoogleAutocompleteUKPlaceMock();
+
             const accessor = AddressSelectorFactory.create(googleAutoCompleteResponseMock);
 
             expect(accessor.getState()).toBe('');
@@ -73,6 +74,7 @@ describe('AddressSelector', () => {
 
         it('does not return a post code for an UK address', () => {
             googleAutoCompleteResponseMock = getGoogleAutocompleteUKPlaceMock();
+
             const accessor = AddressSelectorFactory.create(googleAutoCompleteResponseMock);
 
             expect(accessor.getPostCode()).toBe('');

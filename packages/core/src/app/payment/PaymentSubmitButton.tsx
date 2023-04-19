@@ -1,7 +1,8 @@
 import React, { FunctionComponent, memo } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { withCheckout } from '../checkout';
-import { TranslatedString } from '../locale';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 import { IconBolt } from '../ui/icon';
 
@@ -165,9 +166,9 @@ const PaymentSubmitButton: FunctionComponent<
         variant={ButtonVariant.Action}
     >
         <PaymentSubmitButtonText
-            isComplete={isComplete}
             brandName={brandName}
             initialisationStrategyType={initialisationStrategyType}
+            isComplete={isComplete}
             methodGateway={methodGateway}
             methodId={methodId}
             methodName={methodName}

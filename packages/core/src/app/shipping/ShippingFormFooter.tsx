@@ -1,6 +1,7 @@
 import React, { PureComponent, ReactNode } from 'react';
 
-import { TranslatedString } from '../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { OrderComments } from '../orderComments';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';

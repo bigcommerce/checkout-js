@@ -2,10 +2,10 @@ import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/
 import classNames from 'classnames';
 import React, { FunctionComponent } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { CheckoutContextProps, withCheckout } from '../checkout';
-import { TranslatedString } from '../locale';
 
 import CheckoutButtonListV1, { filterUnsupportedMethodIds } from './CheckoutButtonList';
 

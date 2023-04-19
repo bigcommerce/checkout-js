@@ -5,9 +5,9 @@ import { noop } from 'lodash';
 import React from 'react';
 
 import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { getCart } from '../../cart/carts.mock';
-import { TranslatedString } from '../../locale';
 import { getConsignment } from '../consignment.mock';
 
 import ShippingOptionsForm, { ShippingOptionsFormProps } from './ShippingOptionsForm';

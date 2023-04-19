@@ -1,7 +1,8 @@
 import { FieldProps } from 'formik';
 import React, { FunctionComponent, memo } from 'react';
 
-import { TranslatedString } from '../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { Input, Label } from '../ui/form';
 
 export type SubscribeFieldProps = FieldProps<boolean> & {

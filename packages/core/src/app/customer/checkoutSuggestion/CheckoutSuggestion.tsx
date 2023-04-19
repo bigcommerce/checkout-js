@@ -38,6 +38,7 @@ const CheckoutSuggestion: FunctionComponent<
 
     const handleExecutePaymentMethodCheckout = (options: ExecutePaymentMethodCheckoutOptions) => {
         analyticsTracker.customerSuggestionExecute();
+
         return executePaymentMethodCheckout(options);
     }
 

@@ -1,7 +1,8 @@
 import { CardInstrument, PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, useCallback, useContext } from 'react';
 
-import { LocaleContext } from '../../locale';
+import { LocaleContext } from '@bigcommerce/checkout/locale';
+
 import {
     withHostedCreditCardFieldset,
     WithInjectedHostedCreditCardFieldsetProps,

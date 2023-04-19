@@ -3,7 +3,8 @@ import classNames from 'classnames';
 import { FieldProps } from 'formik';
 import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { AutocompleteItem } from '../../ui/autocomplete';
 import { FormField, Label } from '../../ui/form';
 import {

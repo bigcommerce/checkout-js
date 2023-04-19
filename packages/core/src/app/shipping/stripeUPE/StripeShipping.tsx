@@ -1,8 +1,9 @@
 import { Address, CheckoutSelectors, Consignment, Country, Customer, FormField, ShippingInitializeOptions, ShippingRequestOptions } from '@bigcommerce/checkout-sdk';
 import React, { Component, ReactNode } from 'react';
 
-import CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
 import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
+
+import CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
 import ShippingHeader from '../ShippingHeader';
 
 import StripeShippingForm, { SingleShippingFormValues } from './StripeShippingForm';
@@ -92,9 +93,9 @@ class StripeShipping extends Component<StripeShippingProps, StripeShippingState>
                     isBillingSameAsShipping={isBillingSameAsShipping}
                     isLoading={isLoading}
                     isMultiShippingMode={isMultiShippingMode}
+                    isShippingMethodLoading={isShippingMethodLoading}
                     isStripeAutoStep={this.handleIsAutoStep}
                     isStripeLoading={this.stripeLoadedCallback}
-                    isShippingMethodLoading={isShippingMethodLoading}
                     onSubmit={onSubmit}
                     step={step}
                     updateAddress={updateAddress}

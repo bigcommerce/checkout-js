@@ -1,10 +1,11 @@
 import { Address, CheckoutPayment, FormField } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { AddressType, StaticAddress } from '../address';
 import { CheckoutContextProps, withCheckout } from '../checkout';
 import { EMPTY_ARRAY } from '../common/utility';
-import { TranslatedString } from '../locale';
 
 export interface StaticBillingAddressProps {
     address: Address;

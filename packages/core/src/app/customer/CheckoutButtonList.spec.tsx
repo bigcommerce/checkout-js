@@ -2,8 +2,9 @@ import { mount, render } from 'enzyme';
 import { noop } from 'lodash';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '../locale';
 
 import CheckoutButton from './CheckoutButton';
 import CheckoutButtonList from './CheckoutButtonList';

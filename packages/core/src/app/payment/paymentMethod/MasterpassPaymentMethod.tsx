@@ -2,8 +2,9 @@ import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import { Omit } from 'utility-types';
 
+import { masterpassFormatLocale, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+
 import { CheckoutContextProps, withCheckout } from '../../checkout';
-import { masterpassFormatLocale, withLanguage, WithLanguageProps } from '../../locale';
 
 import WalletButtonPaymentMethod, {
     WalletButtonPaymentMethodProps,

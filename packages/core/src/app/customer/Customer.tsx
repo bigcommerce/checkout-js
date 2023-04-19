@@ -220,13 +220,13 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 continueAsGuestButtonLabelId="customer.continue"
                 defaultShouldSubscribe={isSubscribed}
                 email={this.draftEmail || email}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
                 isLoading={isLoadingGuestForm}
                 onChangeEmail={this.handleChangeEmail}
                 onContinueAsGuest={this.handleContinueAsGuest}
                 onShowLogin={this.handleShowLogin}
                 privacyPolicyUrl={privacyPolicyUrl}
                 requiresMarketingConsent={requiresMarketingConsent}
-                isFloatingLabelEnabled={isFloatingLabelEnabled}
             />
         );
     }
@@ -241,13 +241,13 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             <EmailLoginForm
                 email={this.draftEmail}
                 emailHasBeenRequested={hasRequestedLoginEmail}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
                 isOpen={isEmailLoginFormOpen}
                 isSendingEmail={isSendingSignInEmail}
                 onRequestClose={this.closeEmailLoginFormForm}
                 onSendLoginEmail={this.handleSendLoginEmail}
                 sentEmail={signInEmail}
                 sentEmailError={signInEmailError}
-                isFloatingLabelEnabled={isFloatingLabelEnabled}
             />
         );
     }
@@ -273,10 +273,10 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 createAccountError={createAccountError}
                 formFields={customerAccountFields}
                 isCreatingAccount={isCreatingAccount}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
                 onCancel={this.handleCancelCreateAccount}
                 onSubmit={this.handleCreateAccount}
                 requiresMarketingConsent={requiresMarketingConsent}
-                isFloatingLabelEnabled={isFloatingLabelEnabled}
             />
         );
     }
@@ -307,6 +307,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 }
                 email={this.draftEmail || email}
                 forgotPasswordUrl={forgotPasswordUrl}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
                 isSendingSignInEmail={isSendingSignInEmail}
                 isSignInEmailEnabled={isSignInEmailEnabled && !isEmbedded}
                 isSigningIn={isSigningIn}
@@ -318,7 +319,6 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 onSignIn={this.handleSignIn}
                 shouldShowCreateAccountLink={isAccountCreationEnabled}
                 signInError={signInError}
-                isFloatingLabelEnabled={isFloatingLabelEnabled}
                 viewType={viewType}
             />
         );

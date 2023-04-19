@@ -1,7 +1,7 @@
 import { GatewayOrderPayment, GiftCertificateOrderPayment, Order } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
-import { TranslatedHtml, TranslatedString } from '../locale';
+import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
 
 import OrderConfirmationSection from './OrderConfirmationSection';
 

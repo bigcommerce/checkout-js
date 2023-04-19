@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 const StoreCreditOverlay: FunctionComponent = () => (
     <div className="storeCreditOverlay" data-test="payment-store-credit-overlay">

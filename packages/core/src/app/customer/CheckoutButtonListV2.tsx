@@ -1,7 +1,8 @@
 import React, { FunctionComponent } from 'react';
 
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+
 import { withCheckout, WithCheckoutProps } from '../checkout';
-import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 
 import resolveCheckoutButton from './resolveCheckoutButton';
 

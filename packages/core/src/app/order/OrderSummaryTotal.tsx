@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
-import { TranslatedString, withCurrency, WithCurrencyProps } from '../locale';
+import { TranslatedString, withCurrency, WithCurrencyProps } from '@bigcommerce/checkout/locale';
 
 import OrderSummaryPrice from './OrderSummaryPrice';
 

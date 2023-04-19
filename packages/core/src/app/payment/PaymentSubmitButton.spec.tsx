@@ -2,9 +2,10 @@ import { CheckoutService, createCheckoutService, LanguageService } from '@bigcom
 import { mount, render } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+
 import { CheckoutProvider } from '../checkout';
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 import { Button } from '../ui/button';
 import { IconBolt } from '../ui/icon';
 
@@ -103,7 +104,7 @@ describe('PaymentSubmitButton', () => {
     });
 
     it('renders button with special label for PayPal', () => {
-        const component = mount(<PaymentSubmitButtonTest methodType="paypal" isComplete={true} />);
+        const component = mount(<PaymentSubmitButtonTest isComplete={true} methodType="paypal" />);
 
         expect(component.text()).toEqual(
             languageService.translate('payment.paypal_complete_action'),
@@ -142,7 +143,7 @@ describe('PaymentSubmitButton', () => {
     });
 
     it('renders button with special label for PayPal Credit', () => {
-        const component = mount(<PaymentSubmitButtonTest methodType="paypal-credit" isComplete={true} />);
+        const component = mount(<PaymentSubmitButtonTest isComplete={true} methodType="paypal-credit" />);
 
         expect(component.text()).toEqual(
             languageService.translate('payment.paypal_pay_later_complete_action'),

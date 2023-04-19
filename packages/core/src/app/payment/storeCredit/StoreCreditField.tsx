@@ -1,8 +1,9 @@
 import { noop } from 'lodash';
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 
+import { TranslatedString, withCurrency, WithCurrencyProps } from '@bigcommerce/checkout/locale';
+
 import { preventDefault } from '../../common/dom';
-import { TranslatedString, withCurrency, WithCurrencyProps } from '../../locale';
 import { CheckboxInput } from '../../ui/form';
 import { Tooltip, TooltipTrigger } from '../../ui/tooltip';
 

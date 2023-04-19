@@ -16,6 +16,7 @@ import { find, findIndex } from 'lodash';
 import React, { Component, lazy, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
@@ -32,7 +33,6 @@ import {
     CustomerViewType,
 } from '../customer';
 import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
-import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 import { PromotionBannerList } from '../promotion';
 import { hasSelectedShippingOptions, isUsingMultiShipping, StaticConsignment } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';

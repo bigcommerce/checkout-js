@@ -5,8 +5,9 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, ReactNode } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { preventDefault } from '../common/dom';
-import { TranslatedString } from '../locale';
 import { IconClose } from '../ui/icon';
 import { Modal, ModalHeader } from '../ui/modal';
 

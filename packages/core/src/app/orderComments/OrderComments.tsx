@@ -1,7 +1,8 @@
 import { FieldProps } from 'formik';
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 
-import { TranslatedString } from '../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { Fieldset, FormField, Label, Legend, TextInput } from '../ui/form';
 
 const OrderComments: FunctionComponent = () => {

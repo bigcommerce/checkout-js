@@ -29,7 +29,6 @@ describe('OrderSummarySubtotals', () => {
         expect(orderSummarySubtotals).toMatchSnapshot();
     });
 
-
     describe('Tax summary is not rendered if tax is inclusive', () => {
         it('Renders component without tax summary', () => {
             const order = { ...getOrder(), isTaxIncluded: true };

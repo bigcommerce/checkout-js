@@ -2,9 +2,10 @@ import { mount } from 'enzyme';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+
 import { navigateToOrderConfirmation } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import CheckoutButton from '../CheckoutButton';
 
 import PayPalCommerceButton from './PayPalCommerceButton';

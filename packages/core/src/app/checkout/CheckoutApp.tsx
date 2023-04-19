@@ -6,12 +6,13 @@ import ReactModal from 'react-modal';
 import { AnalyticsProvider } from '@bigcommerce/checkout/analytics';
 
 import '../../scss/App.scss';
+import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
+
 import { createErrorLogger, ErrorBoundary, ErrorLogger } from '../common/error';
 import {
     createEmbeddedCheckoutStylesheet,
     createEmbeddedCheckoutSupport,
 } from '../embeddedCheckout';
-import { getLanguageService, LocaleProvider } from '../locale';
 
 import Checkout from './Checkout';
 import CheckoutProvider from './CheckoutProvider';
