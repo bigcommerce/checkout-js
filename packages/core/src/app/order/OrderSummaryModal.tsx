@@ -35,6 +35,7 @@ const OrderSummaryModal: FunctionComponent<
     additionalLineItems,
     children,
     isTaxIncluded,
+    isUpdatedCartSummayModal = false,
     taxes,
     onRequestClose,
     onAfterOpen,
@@ -47,12 +48,16 @@ const OrderSummaryModal: FunctionComponent<
     ...orderSummarySubtotalsProps
 }) => {
     const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
-    const newDisplay = true;
 
     return <Modal
         additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
-        additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary"
-        header={renderHeader({ headerLink, onRequestClose, newDisplay })}
+        additionalHeaderClassName={`cart-modal-header optimizedCheckout-orderSummary${isUpdatedCartSummayModal ? ' with-continue-button' : ''}`}
+        additionalModalClassName={isUpdatedCartSummayModal ? 'optimizedCheckout-cart-modal' : ''}
+        header={renderHeader({
+            headerLink,
+            isUpdatedCartSummayModal,
+            onRequestClose,
+        })}
         isOpen={isOpen}
         onAfterOpen={onAfterOpen}
         onRequestClose={onRequestClose}
@@ -94,10 +99,10 @@ const OrderSummaryModal: FunctionComponent<
 
 const renderHeader: FunctionComponent<{
     headerLink: ReactNode;
+    isUpdatedCartSummayModal: boolean;
     onRequestClose?(): void;
-    newDisplay: boolean;
-}> = ({ onRequestClose, headerLink, newDisplay }) => {
-    if (!newDisplay) {
+}> = ({ onRequestClose, headerLink, isUpdatedCartSummayModal }) => {
+    if (!isUpdatedCartSummayModal) {
        return <>
             <a className="cart-modal-close" href="#" onClick={preventDefault(onRequestClose)}>
                 <span className="is-srOnly">
@@ -124,7 +129,7 @@ const renderHeader: FunctionComponent<{
         <ModalHeader additionalClassName="cart-modal-title">
             <div>
                 <TranslatedString id="cart.cart_heading" />
-                <div style={{fontWeight: 500, fontSize: '1rem'}}>1 Items ($500.00)</div>
+                <div className='cart-heading-subheader'>1 Items ($500.00)</div>
             </div>
         </ModalHeader>
         <a className="cart-modal-close" href="#" onClick={preventDefault(onRequestClose)}>

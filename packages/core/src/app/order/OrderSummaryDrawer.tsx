@@ -36,8 +36,8 @@ const OrderSummaryDrawer: FunctionComponent<
     giftCertificates,
     handlingAmount,
     headerLink,
-    isUpdatedCartSummayModal,
     isTaxIncluded,
+    isUpdatedCartSummayModal,
     lineItems,
     onRemovedCoupon,
     onRemovedGiftCertificate,
@@ -50,8 +50,6 @@ const OrderSummaryDrawer: FunctionComponent<
     taxes,
     total,
 }) => {
-    console.log('isUpdatedCartSummayModal', isUpdatedCartSummayModal);
-
     const renderModal = useCallback(
         (props) => (
             <OrderSummaryModal
@@ -64,6 +62,7 @@ const OrderSummaryDrawer: FunctionComponent<
                 handlingAmount={handlingAmount}
                 headerLink={headerLink}
                 isTaxIncluded={isTaxIncluded}
+                isUpdatedCartSummayModal={isUpdatedCartSummayModal}
                 lineItems={lineItems}
                 onRemovedCoupon={onRemovedCoupon}
                 onRemovedGiftCertificate={onRemovedGiftCertificate}

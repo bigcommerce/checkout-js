@@ -37,3 +37,22 @@
         fill: currentColor;
     }
 }
+
+.modal.modal--afterOpen.optimizedCheckout-cart-modal {
+    justify-content: start;
+}
+
+.with-continue-button {
+    .cart-modal-link {
+        text-align: left;
+    }
+
+    .cart-modal-close {
+        text-align: right;
+    }
+
+    .cart-heading-subheader {
+        font-weight: 500;
+        font-size: fontSize("base");
+    }
+}
