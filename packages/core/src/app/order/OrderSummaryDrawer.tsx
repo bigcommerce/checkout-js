@@ -21,6 +21,7 @@ export interface OrderSummaryDrawerProps {
     lineItems: LineItemMap;
     total: number;
     headerLink: ReactNode;
+    isUpdatedCartSummayModal: boolean,
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrencyType;
     additionalLineItems?: ReactNode;
@@ -35,6 +36,7 @@ const OrderSummaryDrawer: FunctionComponent<
     giftCertificates,
     handlingAmount,
     headerLink,
+    isUpdatedCartSummayModal,
     isTaxIncluded,
     lineItems,
     onRemovedCoupon,
@@ -48,6 +50,8 @@ const OrderSummaryDrawer: FunctionComponent<
     taxes,
     total,
 }) => {
+    console.log('isUpdatedCartSummayModal', isUpdatedCartSummayModal);
+
     const renderModal = useCallback(
         (props) => (
             <OrderSummaryModal

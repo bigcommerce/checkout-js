@@ -15,6 +15,7 @@ export interface OrderSummaryProps {
     lineItems: LineItemMap;
     total: number;
     headerLink: ReactNode;
+    isUpdatedCartSummayModal: boolean,
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrency;
     additionalLineItems?: ReactNode;
