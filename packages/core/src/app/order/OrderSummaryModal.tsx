@@ -6,6 +6,7 @@ import {
 import React, { cloneElement, FunctionComponent, isValidElement, ReactNode } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { Button } from '@bigcommerce/checkout/ui';
 
 import { preventDefault } from '../common/dom';
 import { IconClose } from '../ui/icon';
@@ -94,6 +95,13 @@ const OrderSummaryModal: FunctionComponent<
                     />
                 ))}
             </OrderSummarySection>}
+        {isUpdatedCartSummayModal && <Button
+            className='cart-modal-continue'
+            data-test="manage-instrument-cancel-button"
+            onClick={preventDefault(onRequestClose)}
+        >
+            Continue to checkout
+        </Button>}
     </Modal>
 };
 

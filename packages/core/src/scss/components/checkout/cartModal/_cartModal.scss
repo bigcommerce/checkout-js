@@ -40,6 +40,17 @@
 
 .modal.modal--afterOpen.optimizedCheckout-cart-modal {
     justify-content: start;
+
+    .modal-body {
+        height: 100%;
+    }
+
+    .cart-modal-continue {
+        position: absolute;
+        bottom: 3%;
+        left: 5%;
+        width: 90%;
+    }
 }
 
 .with-continue-button {
