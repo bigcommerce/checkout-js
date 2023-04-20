@@ -13,6 +13,7 @@ import { IconClose } from '../ui/icon';
 import { Modal, ModalHeader } from '../ui/modal';
 import { isSmallSCreen } from '../ui/responsive';
 
+import OrderModalSummarySubheader from './OrderModalSummarySubheader';
 import OrderSummaryItems from './OrderSummaryItems';
 import OrderSummaryPrice from './OrderSummaryPrice';
 import OrderSummarySection from './OrderSummarySection';
@@ -51,12 +52,20 @@ const OrderSummaryModal: FunctionComponent<
 }) => {
     const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
 
+    const subHeaderText = <OrderModalSummarySubheader
+        items={lineItems}
+        orderAmount={total}
+        shopperCurrencyCode={shopperCurrency.code}
+        storeCurrencyCode={storeCurrency.code}
+    />;
+
     return <Modal
         additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
         additionalHeaderClassName={`cart-modal-header optimizedCheckout-orderSummary${isUpdatedCartSummayModal ? ' with-continue-button' : ''}`}
         additionalModalClassName={isUpdatedCartSummayModal ? 'optimizedCheckout-cart-modal' : ''}
         header={renderHeader({
             headerLink,
+            subHeaderText,
             isUpdatedCartSummayModal,
             onRequestClose,
         })}
@@ -108,9 +117,10 @@ const OrderSummaryModal: FunctionComponent<
 
 const renderHeader: FunctionComponent<{
     headerLink: ReactNode;
+    subHeaderText: ReactNode;
     isUpdatedCartSummayModal: boolean;
     onRequestClose?(): void;
-}> = ({ onRequestClose, headerLink, isUpdatedCartSummayModal }) => {
+}> = ({ onRequestClose, headerLink, subHeaderText, isUpdatedCartSummayModal }) => {
     if (!isUpdatedCartSummayModal) {
        return <>
             <a className="cart-modal-close" href="#" onClick={preventDefault(onRequestClose)}>
@@ -138,7 +148,7 @@ const renderHeader: FunctionComponent<{
         <ModalHeader additionalClassName="cart-modal-title">
             <div>
                 <TranslatedString id="cart.cart_heading" />
-                <div className='cart-heading-subheader'>1 Items ($500.00)</div>
+                <div className='cart-heading-subheader'>{subHeaderText}</div>
             </div>
         </ModalHeader>
         <a className="cart-modal-close" href="#" onClick={preventDefault(onRequestClose)}>
