@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.306.3](https://github.com/bigcommerce/checkout-js/compare/v1.306.2...v1.306.3) (2023-04-20)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-7421 remove CHECKOUT-3190.enable_buy_now_cart experiment ([2359523](https://github.com/bigcommerce/checkout-js/commit/23595234d3691c300053418e28094a5e5656a8a4))
+
 ### [1.306.2](https://github.com/bigcommerce/checkout-js/compare/v1.306.1...v1.306.2) (2023-04-19)
 
 ### [1.306.1](https://github.com/bigcommerce/checkout-js/compare/v1.306.0...v1.306.1) (2023-04-18)
