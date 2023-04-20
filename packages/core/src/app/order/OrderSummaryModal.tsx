@@ -11,6 +11,7 @@ import { Button } from '@bigcommerce/checkout/ui';
 import { preventDefault } from '../common/dom';
 import { IconClose } from '../ui/icon';
 import { Modal, ModalHeader } from '../ui/modal';
+import { isSmallSCreen } from '../ui/responsive';
 
 import OrderSummaryItems from './OrderSummaryItems';
 import OrderSummaryPrice from './OrderSummaryPrice';
@@ -95,12 +96,12 @@ const OrderSummaryModal: FunctionComponent<
                     />
                 ))}
             </OrderSummarySection>}
-        {isUpdatedCartSummayModal && <Button
+        {isUpdatedCartSummayModal && isSmallSCreen() && <Button
             className='cart-modal-continue'
             data-test="manage-instrument-cancel-button"
             onClick={preventDefault(onRequestClose)}
         >
-            Continue to checkout
+            <TranslatedString id="cart.return_to_checkout" />
         </Button>}
     </Modal>
 };

@@ -65,6 +65,7 @@
             "print_action": "Print",
             "remaining_text": "Remaining",
             "remove_action": "remove",
+            "return_to_checkout": "RETURN TO CHECKOUT",
             "see_all_action": "See All",
             "see_less_action": "See Less",
             "shipping_text": "Shipping",

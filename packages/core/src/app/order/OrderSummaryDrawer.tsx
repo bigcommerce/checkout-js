@@ -21,7 +21,7 @@ export interface OrderSummaryDrawerProps {
     lineItems: LineItemMap;
     total: number;
     headerLink: ReactNode;
-    isUpdatedCartSummayModal: boolean,
+    isUpdatedCartSummayModal?: boolean,
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrencyType;
     additionalLineItems?: ReactNode;
