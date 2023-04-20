@@ -9,9 +9,10 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Button } from '@bigcommerce/checkout/ui';
 
 import { preventDefault } from '../common/dom';
+import { ShopperCurrency } from '../currency';
 import { IconClose } from '../ui/icon';
 import { Modal, ModalHeader } from '../ui/modal';
-import { isSmallSCreen } from '../ui/responsive';
+import { isSmallScreen } from '../ui/responsive';
 
 import OrderModalSummarySubheader from './OrderModalSummarySubheader';
 import OrderSummaryItems from './OrderSummaryItems';
@@ -53,8 +54,8 @@ const OrderSummaryModal: FunctionComponent<
     const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
 
     const subHeaderText = <OrderModalSummarySubheader
+        amountWithCurrency={<ShopperCurrency amount={total} />}
         items={lineItems}
-        orderAmount={total}
         shopperCurrencyCode={shopperCurrency.code}
         storeCurrencyCode={storeCurrency.code}
     />;
@@ -105,7 +106,7 @@ const OrderSummaryModal: FunctionComponent<
                     />
                 ))}
             </OrderSummarySection>}
-        {isUpdatedCartSummayModal && isSmallSCreen() && <Button
+        {isUpdatedCartSummayModal && isSmallScreen() && <Button
             className='cart-modal-continue'
             data-test="manage-instrument-cancel-button"
             onClick={preventDefault(onRequestClose)}
