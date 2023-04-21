@@ -60,10 +60,18 @@ const OrderSummaryModal: FunctionComponent<
         storeCurrencyCode={storeCurrency.code}
     />;
 
+    const continueButton = isUpdatedCartSummayModal && isSmallScreen() && <Button
+        className='cart-modal-continue'
+        data-test="manage-instrument-cancel-button"
+        onClick={preventDefault(onRequestClose)}>
+            <TranslatedString id="cart.return_to_checkout" />
+    </Button>
+
     return <Modal
         additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
         additionalHeaderClassName={`cart-modal-header optimizedCheckout-orderSummary${isUpdatedCartSummayModal ? ' with-continue-button' : ''}`}
         additionalModalClassName={isUpdatedCartSummayModal ? 'optimizedCheckout-cart-modal' : ''}
+        footer={continueButton}
         header={renderHeader({
             headerLink,
             subHeaderText,
@@ -106,13 +114,6 @@ const OrderSummaryModal: FunctionComponent<
                     />
                 ))}
             </OrderSummarySection>}
-        {isUpdatedCartSummayModal && isSmallScreen() && <Button
-            className='cart-modal-continue'
-            data-test="manage-instrument-cancel-button"
-            onClick={preventDefault(onRequestClose)}
-        >
-            <TranslatedString id="cart.return_to_checkout" />
-        </Button>}
     </Modal>
 };
 

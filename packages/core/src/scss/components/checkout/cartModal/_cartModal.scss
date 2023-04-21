@@ -44,13 +44,6 @@
     .modal-body {
         height: 100%;
     }
-
-    .cart-modal-continue {
-        position: absolute;
-        bottom: 3%;
-        left: 5%;
-        width: 90%;
-    }
 }
 
 .with-continue-button {
@@ -65,6 +58,6 @@
     .cart-heading-subheader {
         font-weight: 500;
         font-size: fontSize("base");
-        margin-top: remCalc(5px);
+        margin-top: spacing("quarter");
     }
 }
