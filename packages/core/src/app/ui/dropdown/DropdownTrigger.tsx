@@ -84,7 +84,7 @@ export default class DropdownTrigger extends Component<DropdownTriggerProps, Dro
         }
 
         this.setState({ shouldShow: true }, () => {
-            document.addEventListener('click', this.handleClose);
+            document.getElementById('checkout-app')?.addEventListener('click', this.handleClose);
         });
     };
 
@@ -96,7 +96,7 @@ export default class DropdownTrigger extends Component<DropdownTriggerProps, Dro
         }
 
         this.setState({ shouldShow: false }, () => {
-            document.removeEventListener('click', this.handleClose);
+            document.getElementById('checkout-app')?.removeEventListener('click', this.handleClose);
         });
     };
 }

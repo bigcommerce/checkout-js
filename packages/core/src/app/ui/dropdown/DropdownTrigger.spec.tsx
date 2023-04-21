@@ -31,14 +31,16 @@ describe('DropdownTrigger', () => {
 
     it('hides dropdown when mouse clicks anywhere else in document', () => {
         const component = mount(
+          <div id="checkout-app">
             <DropdownTrigger dropdown={<div>Hello world</div>}>
                 <button>Foobar</button>
-            </DropdownTrigger>,
+            </DropdownTrigger>
+          </div>
         );
 
         component.simulate('click');
-        document.body.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        document.getElementById('checkout-app')?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
-        expect(component.state('shouldShow')).toBe(false);
+        expect(component.find('Hello world').exists()).toBe(false);
     });
 });

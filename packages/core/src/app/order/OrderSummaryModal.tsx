@@ -28,7 +28,7 @@ export interface OrderSummaryDrawerProps {
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrencyType;
     isOpen: boolean;
-    headerLink?: ReactNode;
+    headerLink?: ReactNode & React.HTMLProps<HTMLDivElement>;
     onRequestClose?(): void;
     onAfterOpen?(): void;
 }
@@ -118,7 +118,7 @@ const OrderSummaryModal: FunctionComponent<
 };
 
 const renderHeader: FunctionComponent<{
-    headerLink: ReactNode;
+    headerLink?: ReactNode & React.HTMLProps<HTMLDivElement>;
     subHeaderText: ReactNode;
     isUpdatedCartSummayModal: boolean;
     onRequestClose?(): void;
