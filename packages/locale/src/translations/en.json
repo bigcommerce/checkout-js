@@ -61,6 +61,8 @@
             "free_text": "Free",
             "gift_certificate_text": "Gift Certificate",
             "handling_text": "Handling",
+            "item": "item",
+            "items": "items",
             "item_count_text": "{count, plural, one{1 Item} other{# Items} }",
             "print_action": "Print",
             "remaining_text": "Remaining",

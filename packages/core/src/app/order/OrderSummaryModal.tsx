@@ -6,7 +6,7 @@ import {
 import React, { cloneElement, FunctionComponent, isValidElement, ReactNode } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { Button } from '@bigcommerce/checkout/ui';
+import { Button, IconCloseWithBorder } from '@bigcommerce/checkout/ui';
 
 import { preventDefault } from '../common/dom';
 import { ShopperCurrency } from '../currency';
@@ -157,7 +157,7 @@ const renderHeader: FunctionComponent<{
             <span className="is-srOnly">
                 <TranslatedString id="common.close_action" />
             </span>
-            <IconClose />
+            <IconCloseWithBorder />
         </a>
     </>
 };
