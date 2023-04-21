@@ -1,29 +1,32 @@
-import { LineItem, LineItemMap } from '@bigcommerce/checkout-sdk';
-import { flatMap } from 'lodash';
+import { LineItemMap } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo, ReactNode } from 'react';
 
 import { TranslatedString } from '../locale';
 
-export interface OrderSummaryTotalProps {
+import getItemsCount from './getItemsCount';
+
+export interface OrderModalSummarySubheaderProps {
     items: LineItemMap
     amountWithCurrency: ReactNode;
     shopperCurrencyCode: string;
     storeCurrencyCode: string;
 }
 
-const OrderModalSummarySubheader: FunctionComponent<OrderSummaryTotalProps> = ({
+const OrderModalSummarySubheader: FunctionComponent<OrderModalSummarySubheaderProps> = ({
     items,
     shopperCurrencyCode,
     storeCurrencyCode,
     amountWithCurrency,
 }) => {
-    const itemsCount = flatMap(items).reduce((count: number, item: LineItem) => {
-        return count + item.quantity;
-    }, 0);
+    const itemsCount = getItemsCount(items);
     const hasDifferentCurrency = shopperCurrencyCode !== storeCurrencyCode;
     const itemsText = itemsCount === 1 ? 'cart.item' : 'cart.items';
 
-    return <>{itemsCount} <TranslatedString id={itemsText} /> | {amountWithCurrency} {`${hasDifferentCurrency ? ` ${shopperCurrencyCode  } ` : ''}`}</>;
+    return <>
+        {itemsCount} <TranslatedString id={itemsText} /> | {amountWithCurrency} {
+            hasDifferentCurrency && <span>({shopperCurrencyCode})</span>
+        }
+    </>;
 };
 
 export default memo(OrderModalSummarySubheader);
