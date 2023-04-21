@@ -65,7 +65,7 @@ const OrderSummaryModal: FunctionComponent<
         data-test="manage-instrument-cancel-button"
         onClick={preventDefault(onRequestClose)}>
             <TranslatedString id="cart.return_to_checkout" />
-    </Button>
+    </Button>;
 
     return <Modal
         additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"

@@ -23,7 +23,7 @@ const OrderModalSummarySubheader: FunctionComponent<OrderSummaryTotalProps & Wit
     const hasDifferentCurrency = shopperCurrencyCode !== storeCurrencyCode;
     const itemsText = `${itemsCount} ${itemsCount === 1 ? 'item' : 'items'}`;
 
-    return <>{`${itemsText} (${hasDifferentCurrency ? `${shopperCurrencyCode  } ` : ''}` }{amountWithCurrency})</>;
+    return <>{`${itemsText} | ` }{amountWithCurrency} {`${hasDifferentCurrency ? ` ${shopperCurrencyCode  } ` : ''}`}</>;
 };
 
 export default memo(withCurrency(OrderModalSummarySubheader));
