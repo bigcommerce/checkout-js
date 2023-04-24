@@ -229,6 +229,7 @@ class OrderConfirmation extends Component<
                                     headerLink={
                                         <PrintLink className="modal-header-link cart-modal-link" />
                                     }
+                                    isUpdatedCartSummayModal={false}
                                     lineItems={order.lineItems}
                                     shopperCurrency={shopperCurrency}
                                     storeCurrency={currency}

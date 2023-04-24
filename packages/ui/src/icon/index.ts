@@ -26,6 +26,7 @@ export { default as IconCheck } from './IconCheck';
 export { default as IconChevronUp } from './IconChevronUp';
 export { default as IconChevronDown } from './IconChevronDown';
 export { default as IconClose } from './IconClose';
+export { default as IconCloseWithBorder } from './IconCloseWithBorder';
 export { default as IconDogeCoin } from './IconDogeCoin';
 export { default as IconError } from './IconError';
 export { default as IconEthereum } from './IconEthereum';

@@ -4,6 +4,8 @@ exports[`OrderSummaryModal renders order summary 1`] = `
 <Modal
   additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
   additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary"
+  additionalModalClassName=""
+  footer={false}
   header={
     <React.Fragment>
       <a
@@ -158,6 +160,8 @@ exports[`OrderSummaryModal when taxes are inclusive displays tax as summary sect
 <Modal
   additionalBodyClassName="cart-modal-body optimizedCheckout-orderSummary"
   additionalHeaderClassName="cart-modal-header optimizedCheckout-orderSummary"
+  additionalModalClassName=""
+  footer={false}
   header={
     <React.Fragment>
       <a

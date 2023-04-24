@@ -13,6 +13,7 @@ export interface OrderSummarySubtotalsProps {
     isTaxIncluded?: boolean;
     taxes?: Tax[];
     giftWrappingAmount?: number;
+    isUpdatedCartSummayModal?: boolean,
     shippingAmount?: number;
     handlingAmount?: number;
     storeCreditAmount?: number;

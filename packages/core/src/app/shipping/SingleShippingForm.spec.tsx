@@ -31,6 +31,7 @@ describe('SingleShippingForm', () => {
             shouldShowOrderComments: true,
             consignments: [],
             cartHasChanged: false,
+            isBillingSameAsShipping: false,
             isLoading: false,
             isShippingStepPending: false,
             onSubmit: jest.fn(),
