@@ -57,7 +57,7 @@
     }
 
     .cart-heading-subheader {
-        font-weight: 500;
+        font-weight: fontWeight("medium");;
         font-size: fontSize("base");
         margin-top: spacing("quarter");
     }

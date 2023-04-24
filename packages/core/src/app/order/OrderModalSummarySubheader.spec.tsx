@@ -44,7 +44,7 @@ describe('OrderModalSummarySubheader', () => {
         expect(currencyAmount.text()).toBe('$112.00');
     });
 
-    it('when shopper has same currency as the store and 1 item, text id passed is cart.item', () => {
+    it('when shopper has same currency as the store and multiple items, text id passed is cart.items', () => {
         const multipleItems = {
             ...items,
             digitalItems: [getDigitalItem()]
