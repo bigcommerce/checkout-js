@@ -1,8 +1,9 @@
 import { Address, CustomerAddress } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo, PureComponent, ReactNode } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { preventDefault } from '../common/dom';
-import { TranslatedString } from '../locale';
 import { DropdownTrigger } from '../ui/dropdown';
 
 import isEqualAddress from './isEqualAddress';

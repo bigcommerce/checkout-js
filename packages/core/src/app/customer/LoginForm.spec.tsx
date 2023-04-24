@@ -1,14 +1,15 @@
 import { mount, render } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
-import { getStoreConfig } from '../config/config.mock';
 import {
     createLocaleContext,
     LocaleContext,
     LocaleContextType,
     TranslatedHtml,
     TranslatedLink,
-} from '../locale';
+} from '@bigcommerce/checkout/locale';
+
+import { getStoreConfig } from '../config/config.mock';
 import { Alert } from '../ui/alert';
 
 import CustomerViewType from './CustomerViewType';

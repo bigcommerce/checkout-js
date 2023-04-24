@@ -1,7 +1,8 @@
 import React, { FunctionComponent, memo } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { preventDefault } from '../common/dom';
-import { TranslatedString } from '../locale';
 import { Legend } from '../ui/form';
 
 interface ShippingHeaderProps {

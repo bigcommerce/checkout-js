@@ -7,7 +7,8 @@ import {
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { FormFieldContainer, Label } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
 

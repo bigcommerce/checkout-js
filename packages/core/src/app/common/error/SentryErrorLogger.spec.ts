@@ -168,7 +168,7 @@ describe('SentryErrorLogger', () => {
         new SentryErrorLogger(config);
 
         const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
-        /* eslint-disable @typescript-eslint/naming-convention */
+         
         const event = {
             breadcrumbs: [
                 {

@@ -4,7 +4,7 @@ import { FieldProps } from 'formik';
 import { includes } from 'lodash';
 import React, { FunctionComponent, memo, ReactNode, useCallback, useMemo } from 'react';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import CheckboxGroupFormField from './CheckboxGroupFormField';
 import DynamicFormFieldType from './DynamicFormFieldType';
@@ -103,13 +103,13 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 autoComplete={autocomplete}
                 fieldType={dynamicFormFieldType}
                 id={fieldInputId}
+                isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
                 max={max}
                 maxLength={maxLength || undefined}
                 min={min}
                 options={options && options.items}
                 placeholder={placeholder || (options && options.helperLabel)}
                 rows={options && (options as any).rows}
-                isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
             />
         ),
         [
@@ -144,10 +144,10 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 <FormField
                     id={fieldInputId}
                     input={renderInput}
+                    isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
                     label={labelComponent}
                     name={fieldName}
                     onChange={onChange}
-                    isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
                 />
             )}
         </div>

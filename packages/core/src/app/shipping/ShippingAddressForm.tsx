@@ -86,11 +86,11 @@ class ShippingAddressForm extends Component<
                             fieldName={addressFieldName}
                             formFields={formFields}
                             googleMapsApiKey={googleMapsApiKey}
+                            isFloatingLabelEnabled={isFloatingLabelEnabled}
                             onAutocompleteToggle={this.handleAutocompleteToggle}
                             onChange={this.handleChange}
                             setFieldValue={this.setFieldValue}
                             shouldShowSaveAddress={shouldShowSaveAddress}
-                            isFloatingLabelEnabled={isFloatingLabelEnabled}
                         />
                     </LoadingOverlay>
                 )}

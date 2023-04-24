@@ -2,7 +2,7 @@ import { createCurrencyService, createLanguageService } from '@bigcommerce/check
 import { mount } from 'enzyme';
 import React from 'react';
 
-import { getStoreConfig } from '../config/config.mock';
+import { getStoreConfig } from '@bigcommerce/checkout/test-utils';
 
 import LocaleContext, { LocaleContextType } from './LocaleContext';
 import TranslatedHtml from './TranslatedHtml';

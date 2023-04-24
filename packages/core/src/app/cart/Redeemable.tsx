@@ -5,8 +5,9 @@ import { noop } from 'lodash';
 import React, { FunctionComponent, KeyboardEvent, memo, useCallback } from 'react';
 import { object, string } from 'yup';
 
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+
 import { preventDefault } from '../common/dom';
-import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { FormContextType, FormField, FormProvider, Label, TextInput } from '../ui/form';

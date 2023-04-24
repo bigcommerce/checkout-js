@@ -2,8 +2,9 @@ import { FormikProps, withFormik } from 'formik';
 import React, { FunctionComponent, memo } from 'react';
 import { object, ref, string } from 'yup';
 
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+
 import { PasswordRequirements } from '../customer';
-import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form, Legend } from '../ui/form';
 

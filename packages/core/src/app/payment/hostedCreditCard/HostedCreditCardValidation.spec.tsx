@@ -3,8 +3,9 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
+import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
+
 import { getStoreConfig } from '../../config/config.mock';
-import { createLocaleContext, LocaleContext } from '../../locale';
 
 import HostedCreditCardCodeField from './HostedCreditCardCodeField';
 import HostedCreditCardNumberField from './HostedCreditCardNumberField';

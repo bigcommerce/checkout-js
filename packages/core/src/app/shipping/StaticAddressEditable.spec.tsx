@@ -3,11 +3,12 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
+
 import { StaticAddress } from '../address/';
 import { getAddress } from '../address/address.mock';
 import { getFormFields } from '../address/formField.mock';
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext } from '../locale';
 import { Button } from '../ui/button';
 import { DynamicFormField } from '../ui/form';
 import { LoadingOverlay } from '../ui/loading';

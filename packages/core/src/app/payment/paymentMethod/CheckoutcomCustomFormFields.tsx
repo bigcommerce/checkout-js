@@ -9,7 +9,8 @@ import React, {
     useState,
 } from 'react';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { DropdownTrigger } from '../../ui/dropdown';
 import { CheckboxFormField, FormField } from '../../ui/form';
 import { TextFieldForm } from '../creditCard';

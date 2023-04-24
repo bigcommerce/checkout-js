@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import HostedCreditCardCodeField from './HostedCreditCardCodeField';
 import HostedCreditCardNumberField from './HostedCreditCardNumberField';

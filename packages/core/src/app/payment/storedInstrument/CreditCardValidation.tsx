@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { CreditCardCodeField, CreditCardNumberField } from '../creditCard';
 
 interface CreditCardValidationProps {

@@ -2,9 +2,10 @@ import { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { Component, MouseEvent, ReactNode } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { CheckoutContextProps, withCheckout } from '../checkout';
 import { isErrorWithType } from '../common/error';
-import { TranslatedString } from '../locale';
 import { LoadingOverlay } from '../ui/loading';
 
 export interface SpamProtectionProps {

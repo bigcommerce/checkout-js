@@ -11,6 +11,7 @@ import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
@@ -24,7 +25,6 @@ import {
     isErrorWithType,
 } from '../common/error';
 import { EMPTY_ARRAY } from '../common/utility';
-import { withLanguage, WithLanguageProps } from '../locale';
 import { TermsConditionsType } from '../termsConditions';
 
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
@@ -563,7 +563,6 @@ export function mapToPaymentProps({
 
         methods = stripeUpePaymentMethod.length ? stripeUpePaymentMethod : methods;
     }
-
 
     if (!checkout || !config || !customer || isComplete) {
         return null;

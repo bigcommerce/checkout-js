@@ -8,9 +8,9 @@ import { noop } from 'lodash';
 import React, { FunctionComponent, memo, useEffect, useState } from 'react';
 
 import { useAnalytics } from '@bigcommerce/checkout/analytics';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { stopPropagation } from '../../common/dom';
-import { TranslatedString } from '../../locale';
 import { Button } from '../../ui/button';
 import { IconBolt } from '../../ui/icon';
 

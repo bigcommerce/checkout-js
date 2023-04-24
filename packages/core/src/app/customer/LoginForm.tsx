@@ -3,14 +3,15 @@ import { noop } from 'lodash';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 import { object, string } from 'yup';
 
-import { preventDefault } from '../common/dom';
 import {
     TranslatedHtml,
     TranslatedLink,
     TranslatedString,
     withLanguage,
     WithLanguageProps,
-} from '../locale';
+} from '@bigcommerce/checkout/locale';
+
+import { preventDefault } from '../common/dom';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form, Legend } from '../ui/form';
@@ -127,7 +128,7 @@ const LoginForm: FunctionComponent<
 
                 {(viewType === CustomerViewType.Login ||
                     viewType === CustomerViewType.EnforcedLogin) && (
-                    <EmailField onChange={onChangeEmail} isFloatingLabelEnabled={isFloatingLabelEnabled} />
+                    <EmailField isFloatingLabelEnabled={isFloatingLabelEnabled} onChange={onChangeEmail} />
                 )}
 
                 <PasswordField isFloatingLabelEnabled={isFloatingLabelEnabled} />

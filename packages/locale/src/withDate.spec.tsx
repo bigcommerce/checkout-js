@@ -1,28 +1,28 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import { getStoreConfig } from '../config/config.mock';
+import { getStoreConfig } from '@bigcommerce/checkout/test-utils';
 
 import createLocaleContext from './createLocaleContext';
 import LocaleContext, { LocaleContextType } from './LocaleContext';
-import withLanguage from './withLanguage';
+import withDate from './withDate';
 
-describe('withLanguage()', () => {
-    let contextValue: LocaleContextType;
+describe('withDate()', () => {
+    let contextValue: Required<LocaleContextType>;
 
     beforeEach(() => {
         contextValue = createLocaleContext(getStoreConfig());
     });
 
-    it('injects language service to inner component', () => {
+    it('injects date prop to inner component', () => {
         const Inner = () => <div />;
-        const Outer = withLanguage(Inner);
+        const Outer = withDate(Inner);
         const container = mount(
             <LocaleContext.Provider value={contextValue}>
                 <Outer />
             </LocaleContext.Provider>,
         );
 
-        expect(container.find(Inner).prop('language')).toEqual(contextValue.language);
+        expect(container.find(Inner).prop('date')).toEqual(contextValue.date);
     });
 });

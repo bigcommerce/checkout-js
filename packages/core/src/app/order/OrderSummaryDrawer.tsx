@@ -6,8 +6,9 @@ import {
 import classNames from 'classnames';
 import React, { FunctionComponent, memo, ReactNode, useCallback } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { ShopperCurrency } from '../currency';
-import { TranslatedString } from '../locale';
 import { IconGiftCertificate } from '../ui/icon';
 import { ModalTrigger } from '../ui/modal';
 

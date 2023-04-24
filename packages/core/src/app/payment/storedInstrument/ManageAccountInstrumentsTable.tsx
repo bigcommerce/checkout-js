@@ -1,7 +1,8 @@
 import { AccountInstrument, BankInstrument } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { IconPaypal, IconSize } from '../../ui/icon';
 import { LoadingOverlay } from '../../ui/loading';
 

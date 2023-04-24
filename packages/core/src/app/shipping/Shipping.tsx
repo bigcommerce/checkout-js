@@ -145,8 +145,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                 isBillingSameAsShipping={isBillingSameAsShipping}
                 isGuest={ isGuest }
                 isLoading={ isInitializing }
-                isShippingMethodLoading={ this.props.isLoading }
                 isMultiShippingMode={isMultiShippingMode}
+                isShippingMethodLoading={ this.props.isLoading }
                 onMultiShippingChange={ this.handleMultiShippingModeSwitch }
                 onSubmit={this.handleSingleShippingSubmit}
                 shouldShowMultiShipping={ shouldShowMultiShipping }
@@ -170,6 +170,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         deinitialize={deinitializeShippingMethod}
                         initialize={initializeShippingMethod}
                         isBillingSameAsShipping={isBillingSameAsShipping}
+                        isFloatingLabelEnabled={isFloatingLabelEnabled}
                         isGuest={isGuest}
                         isMultiShippingMode={isMultiShippingMode}
                         onMultiShippingSubmit={this.handleMultiShippingSubmit}
@@ -177,7 +178,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         onUseNewAddress={this.handleUseNewAddress}
                         shouldShowSaveAddress={!isGuest}
                         updateAddress={updateShippingAddress}
-                        isFloatingLabelEnabled={isFloatingLabelEnabled}
                     />
                 </div>
             </AddressFormSkeleton>

@@ -3,7 +3,8 @@ import { memoize } from '@bigcommerce/memoize';
 import { forIn, noop } from 'lodash';
 import React, { Component, createRef, ReactNode, RefObject } from 'react';
 
-import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+
 import { AutocompleteItem } from '../ui/autocomplete';
 import { CheckboxFormField, DynamicFormField, DynamicFormFieldType, Fieldset } from '../ui/form';
 

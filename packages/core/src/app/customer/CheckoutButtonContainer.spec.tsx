@@ -3,9 +3,10 @@ import { render } from 'enzyme';
 import { merge } from 'lodash';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType, } from '@bigcommerce/checkout/locale';
+
 import CheckoutProvider from '../checkout/CheckoutProvider';
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType, } from '../locale';
 
 import CheckoutButtonContainer from './CheckoutButtonContainer';
 import { getCustomer, getGuestCustomer } from './customers.mock';

@@ -1,10 +1,11 @@
 import { getScriptLoader, getStylesheetLoader } from '@bigcommerce/script-loader';
 
+import { getDefaultTranslations, isLanguageWindow } from '@bigcommerce/checkout/locale';
+
 import { isAppExport } from './AppExport';
 import { RenderCheckoutOptions } from './checkout';
 import { configurePublicPath } from './common/bundler';
 import { isRecordContainingKey, joinPaths } from './common/utility';
-import { getDefaultTranslations, isLanguageWindow } from './locale';
 import { RenderOrderConfirmationOptions } from './order';
 
 declare const LIBRARY_NAME: string;

@@ -1,4 +1,4 @@
-import { getStoreConfig } from '../config/config.mock';
+import { getStoreConfig } from '@bigcommerce/checkout/test-utils';
 
 import createLocaleContext from './createLocaleContext';
 import { LocaleContextType } from './LocaleContext';

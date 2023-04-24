@@ -4,6 +4,7 @@ import {
     CardInstrument,
     PaymentInstrument,
 } from '@bigcommerce/checkout-sdk';
+
 import { UntrustedShippingCardVerificationType } from './CardInstrumentFieldset';
 
 export function getInstruments(): PaymentInstrument[] {

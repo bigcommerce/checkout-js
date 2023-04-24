@@ -9,7 +9,8 @@ import {
     TranslatedString,
     withLanguage,
     WithLanguageProps,
-} from '../locale';
+} from '@bigcommerce/checkout/locale';
+
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { Form } from '../ui/form';

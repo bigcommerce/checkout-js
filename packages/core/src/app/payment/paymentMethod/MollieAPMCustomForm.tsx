@@ -2,8 +2,9 @@ import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { FieldProps } from 'formik';
 import React, { FunctionComponent, SyntheticEvent, useCallback, useEffect, useState } from 'react';
 
+import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+
 import { preventDefault } from '../../common/dom';
-import { withLanguage, WithLanguageProps } from '../../locale';
 import { DropdownTrigger } from '../../ui/dropdown';
 import { FormField } from '../../ui/form';
 

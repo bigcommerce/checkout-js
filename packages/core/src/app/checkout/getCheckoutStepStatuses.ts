@@ -40,6 +40,7 @@ const getCustomerStepStatus = createSelector(
         // In this step, we require that the customer strategy be reloaded the first time.
         const isUsingStripeLinkAndCheckoutPageIsReloaded = !isUsingWallet &&
             config?.checkoutSettings.providerWithCustomCheckout === PaymentMethodId.StripeUPE && hasEmail && isGuest;
+
         if (isUsingStripeLinkAndCheckoutPageIsReloaded) {
             return {
                 type: CheckoutStepType.Customer,

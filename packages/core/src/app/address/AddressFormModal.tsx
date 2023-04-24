@@ -3,8 +3,9 @@ import { FormikProps, withFormik } from 'formik';
 import React, { FunctionComponent } from 'react';
 import { lazy } from 'yup';
 
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+
 import { preventDefault } from '../common/dom';
-import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 import { Button, ButtonVariant } from '../ui/button';
 import { Form } from '../ui/form';
 import { LoadingOverlay } from '../ui/loading';
@@ -53,9 +54,9 @@ const SaveAddress: FunctionComponent<
                 countryCode={values.countryCode}
                 formFields={getFields(values.countryCode)}
                 googleMapsApiKey={googleMapsApiKey}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
                 setFieldValue={setFieldValue}
                 shouldShowSaveAddress={false}
-                isFloatingLabelEnabled={isFloatingLabelEnabled}
             />
             <div className="form-actions">
                 <a

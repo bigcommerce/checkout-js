@@ -4,12 +4,13 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+
 import { AddressForm, AddressSelect } from '../address';
 import { getFormFields } from '../address/formField.mock';
 import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 
 import { getConsignment } from './consignment.mock';
 import { getShippingAddress } from './shipping-addresses.mock';

@@ -1,6 +1,8 @@
 import { mount, ReactWrapper, shallow, ShallowWrapper } from 'enzyme';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '@bigcommerce/checkout/locale';
+
 import {
     getCustomItem,
     getDigitalItem,
@@ -8,7 +10,6 @@ import {
     getPhysicalItem,
 } from '../cart/lineItem.mock';
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '../locale';
 
 import OrderSummaryItems from './OrderSummaryItems';
 

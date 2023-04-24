@@ -8,9 +8,10 @@ import {
 import { noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { StaticAddress } from '../address/';
 import { preventDefault } from '../common/dom';
-import { TranslatedString } from '../locale';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 import { DynamicFormField, Fieldset } from '../ui/form';
 import { LoadingOverlay } from '../ui/loading';

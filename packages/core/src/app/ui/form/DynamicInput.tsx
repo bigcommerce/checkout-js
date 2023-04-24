@@ -4,7 +4,8 @@ import { isDate, noop } from 'lodash';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 import ReactDatePicker from 'react-datepicker';
 
-import { withDate, WithDateProps } from '../../locale';
+import { withDate, WithDateProps } from '@bigcommerce/checkout/locale';
+
 import { IconChevronDown } from '../icon';
 
 import CheckboxInput from './CheckboxInput';
@@ -158,11 +159,11 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                 <TextArea
                     {...(rest as any)}
                     id={id}
+                    isFloatingLabelEnabled={isFloatingLabelEnabled}
                     name={name}
                     onChange={onChange}
                     testId={`${id}-text`}
                     type={fieldType}
-                    isFloatingLabelEnabled={isFloatingLabelEnabled}
                     value={value}
                 />
             );
@@ -172,6 +173,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                 <TextInput
                     {...rest}
                     id={id}
+                    isFloatingLabelEnabled={isFloatingLabelEnabled}
                     name={name}
                     onChange={onChange}
                     placeholder={placeholder}
@@ -179,7 +181,6 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                         fieldType === DynamicFormFieldType.password ? 'password' : 'text'
                     }`}
                     type={fieldType}
-                    isFloatingLabelEnabled={isFloatingLabelEnabled}
                     value={value}
                 />
             );

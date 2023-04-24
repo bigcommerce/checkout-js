@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 
-import { TranslatedString } from '../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { Alert, AlertType } from '../ui/alert';
 
 const SignedUpSuccessAlert: FunctionComponent = () => (

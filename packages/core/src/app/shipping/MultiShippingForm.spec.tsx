@@ -1,13 +1,14 @@
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+
 import { AddressFormModal } from '../address';
 import { getAddressFormFields } from '../address/formField.mock';
 import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 
 import { getConsignment } from './consignment.mock';
 import ItemAddressSelect from './ItemAddressSelect';

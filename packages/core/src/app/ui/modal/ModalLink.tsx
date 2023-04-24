@@ -1,7 +1,8 @@
 import React, { FunctionComponent, ReactNode, useCallback } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { preventDefault } from '../../common/dom';
-import { TranslatedString } from '../../locale';
 import { Button, ButtonSize } from '../button';
 
 import Modal from './Modal';

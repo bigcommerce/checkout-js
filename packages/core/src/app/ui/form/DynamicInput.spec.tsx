@@ -2,8 +2,9 @@ import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 import ReactDatePicker from 'react-datepicker';
 
+import { createLocaleContext, LocaleContext, LocaleContextType, WithDateProps } from '@bigcommerce/checkout/locale';
+
 import { getStoreConfig } from '../../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType, WithDateProps } from '../../locale';
 
 import CheckboxInput from './CheckboxInput';
 import DynamicFormFieldType from './DynamicFormFieldType';
