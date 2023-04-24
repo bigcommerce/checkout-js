@@ -10,6 +10,7 @@ import { last, merge, noop } from 'lodash';
 import React, { ComponentType, FunctionComponent, ReactNode } from 'react';
 import { act } from 'react-dom/test-utils';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import {
     CardInstrumentFieldsetValues,
 } from '@bigcommerce/checkout/payment-integration-api';
@@ -18,7 +19,6 @@ import { getCart } from '../../cart/carts.mock';
 import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { FormContext, FormContextType } from '../../ui/form';
 import { CreditCardInputStylesType, getCreditCardInputStyles } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';

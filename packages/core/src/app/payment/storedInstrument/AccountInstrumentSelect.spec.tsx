@@ -4,8 +4,9 @@ import { noop } from 'lodash';
 import React from 'react';
 import { Omit } from 'utility-types';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+
 import { getStoreConfig } from '../../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 
 import AccountInstrumentSelect, { AccountInstrumentSelectProps } from './AccountInstrumentSelect';
 import { getInstruments } from './instruments.mock';

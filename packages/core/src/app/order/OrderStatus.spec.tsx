@@ -2,7 +2,7 @@ import { CheckoutService, createCheckoutService, Order } from '@bigcommerce/chec
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
-import { LocaleProvider, TranslatedHtml } from '../locale';
+import { LocaleProvider, TranslatedHtml } from '@bigcommerce/checkout/locale';
 
 import { getOrder, getOrderWithMandateId, getOrderWithMandateURL } from './orders.mock';
 import OrderStatus, { OrderStatusProps } from './OrderStatus';

@@ -1,7 +1,7 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import React from 'react';
 
-import { TranslatedString, TranslatedStringProps } from '../../locale';
+import { TranslatedString, TranslatedStringProps } from '@bigcommerce/checkout/locale';
 
 import ManageInstrumentsAlert from './ManageInstrumentsAlert';
 

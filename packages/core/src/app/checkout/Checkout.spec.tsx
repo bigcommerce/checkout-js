@@ -12,6 +12,7 @@ import React, { FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
 
 import { AnalyticsContextProps, AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
 
 import { BillingProps } from '../billing';
 import Billing from '../billing/Billing';
@@ -26,7 +27,6 @@ import {
     createEmbeddedCheckoutStylesheet,
     createEmbeddedCheckoutSupport,
 } from '../embeddedCheckout';
-import { getLanguageService, LocaleProvider } from '../locale';
 import { PaymentProps } from '../payment';
 import Payment from '../payment/Payment';
 import { PromotionBannerList } from '../promotion';

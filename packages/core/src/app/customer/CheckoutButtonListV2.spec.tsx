@@ -7,6 +7,7 @@ import { mount } from 'enzyme';
 import { merge, noop } from 'lodash';
 import React, { ComponentType } from 'react';
 
+import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import {
     CheckoutButtonProps,
     CheckoutButtonResolveId,
@@ -14,7 +15,6 @@ import {
 
 import { CheckoutProvider } from '../checkout';
 import { getStoreConfig } from '../config/config.mock';
-import { LocaleProvider } from '../locale';
 
 import CheckoutButtonList, { CheckoutButtonListProps } from './CheckoutButtonListV2';
 

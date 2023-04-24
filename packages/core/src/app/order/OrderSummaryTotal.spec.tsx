@@ -1,8 +1,9 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '../locale';
 
 import OrderSummaryPrice from './OrderSummaryPrice';
 import OrderSummaryTotal from './OrderSummaryTotal';

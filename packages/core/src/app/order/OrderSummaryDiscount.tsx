@@ -1,7 +1,8 @@
 import React, { FunctionComponent, memo } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { ShopperCurrency } from '../currency';
-import { TranslatedString } from '../locale';
 
 import OrderSummaryPrice, { OrderSummaryPriceProps } from './OrderSummaryPrice';
 

@@ -2,7 +2,8 @@ import { AccountInstrument } from '@bigcommerce/checkout-sdk';
 import { FieldProps } from 'formik';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 
-import { TranslatedHtml, TranslatedString } from '../../locale';
+import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { BasicFormField, Fieldset, Legend } from '../../ui/form';
 import { ModalTrigger, ModalTriggerModalProps } from '../../ui/modal';
 

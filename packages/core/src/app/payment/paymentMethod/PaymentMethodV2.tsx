@@ -1,6 +1,7 @@
 import { CheckoutSelectors, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import React, { ComponentType } from 'react';
 
+import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import {
     PaymentFormValues,
     PaymentMethodResolveId,
@@ -9,7 +10,6 @@ import {
 
 import { withCheckout, WithCheckoutProps } from '../../checkout';
 import { connectFormik, WithFormikProps } from '../../common/form';
-import { withLanguage, WithLanguageProps } from '../../locale';
 import { withForm, WithFormProps } from '../../ui/form';
 import createPaymentFormService from '../createPaymentFormService';
 import resolvePaymentMethod from '../resolvePaymentMethod';

@@ -7,7 +7,8 @@ import _ from 'lodash';
 import React, { FunctionComponent, useCallback, useRef, useState } from 'react';
 import { Omit } from 'utility-types';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { Modal } from '../../ui/modal';
 
 import AdyenV3CardValidation from './AdyenV3CardValidation';

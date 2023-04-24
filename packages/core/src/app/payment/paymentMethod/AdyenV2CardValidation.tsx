@@ -2,7 +2,8 @@ import { AdyenV2ValidationState, CardInstrument, PaymentMethod } from '@bigcomme
 import classNames from 'classnames';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import PaymentContext from '../PaymentContext';
 
 export type FieldsValidation = { [key in AdyenV2CardFields]?: AdyenV2ValidationState };

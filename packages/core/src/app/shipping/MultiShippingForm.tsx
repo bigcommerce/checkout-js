@@ -13,6 +13,8 @@ import {
 import { FormikProps, withFormik } from 'formik';
 import React, { PureComponent, ReactNode } from 'react';
 
+import { TranslatedLink, TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+
 import {
     AddressFormModal,
     AddressFormValues,
@@ -21,7 +23,6 @@ import {
 } from '../address';
 import { preventDefault } from '../common/dom';
 import { ErrorModal } from '../common/error';
-import { TranslatedLink, TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 import { Form } from '../ui/form';
 
 import { AssignItemFailedError, AssignItemInvalidAddressError } from './errors';
@@ -146,11 +147,11 @@ class MultiShippingForm extends PureComponent<
                     defaultCountryCode={defaultCountryCode}
                     getFields={getFields}
                     googleMapsApiKey={googleMapsApiKey}
+                    isFloatingLabelEnabled={isFloatingLabelEnabled}
                     isLoading={isLoading}
                     isOpen={!!itemAddingAddress}
                     onRequestClose={this.handleCloseAddAddressForm}
                     onSaveAddress={this.handleSaveAddress}
-                    isFloatingLabelEnabled={isFloatingLabelEnabled}
                 />
 
                 <Form>

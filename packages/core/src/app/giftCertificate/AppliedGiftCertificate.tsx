@@ -1,8 +1,9 @@
 import { GiftCertificate } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { ShopperCurrency } from '../currency';
-import { TranslatedString } from '../locale';
 
 export interface AppliedGiftCertificateProps {
     giftCertificate: GiftCertificate;

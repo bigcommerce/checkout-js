@@ -1,10 +1,11 @@
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+
 import { getAddressFormFields } from '../../address/formField.mock';
 import CheckoutStepType from '../../checkout/CheckoutStepType';
 import { getStoreConfig } from '../../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import BillingSameAsShippingField from '../BillingSameAsShippingField';
 import { getShippingAddress } from '../shipping-addresses.mock';
 import SingleShippingForm, {

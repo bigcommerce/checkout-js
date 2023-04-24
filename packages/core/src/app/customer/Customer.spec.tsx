@@ -10,13 +10,13 @@ import { mount, ReactWrapper } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
 import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 
 import { getBillingAddress } from '../billing/billingAddresses.mock';
 import { CheckoutProvider } from '../checkout';
 import { getCheckout } from '../checkout/checkouts.mock';
 import CheckoutStepType from '../checkout/CheckoutStepType';
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
 import CreateAccountForm from './CreateAccountForm';
@@ -138,7 +138,6 @@ describe('Customer', () => {
 
             expect(unhandledError).toHaveBeenCalled();
         });
-
 
         it('renders guest form if billing address is undefined', async () => {
             jest.spyOn(checkoutService.getState().data, 'getBillingAddress').mockReturnValue(

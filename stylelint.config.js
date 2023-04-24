@@ -44,6 +44,7 @@ module.exports = {
         'scss/double-slash-comment-empty-line-before': null,
         'scss/double-slash-comment-whitespace-inside': null,
         'scss/no-global-function-names': null,
+        'scss/operator-no-unspaced': null,
         'selector-attribute-quotes': null,
         'selector-class-pattern': null,
         'selector-id-pattern': null,

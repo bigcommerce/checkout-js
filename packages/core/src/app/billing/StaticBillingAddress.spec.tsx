@@ -6,12 +6,13 @@ import {
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
+import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
+
 import { StaticAddress } from '../address';
 import { getAddress } from '../address/address.mock';
 import { getAddressFormFields } from '../address/formField.mock';
 import { CheckoutProvider } from '../checkout';
 import { getCheckout, getCheckoutPayment } from '../checkout/checkouts.mock';
-import { getLanguageService, LocaleProvider } from '../locale';
 
 import StaticBillingAddress, { StaticBillingAddressProps } from './StaticBillingAddress';
 

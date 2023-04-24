@@ -10,9 +10,10 @@ import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+
 import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { Modal, ModalProps } from '../../ui/modal';
 import { getPaymentMethod } from '../payment-methods.mock';
 

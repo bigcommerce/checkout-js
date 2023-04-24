@@ -2,8 +2,9 @@ import { RequestError } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '../locale';
 import { Alert } from '../ui/alert';
 
 import Redeemable from './Redeemable';

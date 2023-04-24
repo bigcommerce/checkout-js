@@ -3,13 +3,11 @@ import { noop } from 'lodash';
 import React, { FunctionComponent, useCallback, useContext } from 'react';
 import { Omit } from 'utility-types';
 
-
 import PaymentContext from '../PaymentContext';
 
 import HostedFieldPaymentMethod, {
     HostedFieldPaymentMethodProps,
 } from './HostedFieldPaymentMethod';
-
 
 export type SquarePaymentMethodProps = Omit<
     HostedFieldPaymentMethodProps,

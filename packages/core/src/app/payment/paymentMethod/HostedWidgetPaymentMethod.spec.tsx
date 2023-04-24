@@ -11,12 +11,13 @@ import { noop } from 'lodash';
 import React, { FunctionComponent, ReactElement } from 'react';
 import { Schema } from 'yup';
 
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { getCart } from '../../cart/carts.mock';
 import { CheckoutProvider } from '../../checkout';
 import { getCheckout, getCheckoutPayment } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '../../locale';
 import { getConsignment } from '../../shipping/consignment.mock';
 import { LoadingOverlay } from '../../ui/loading';
 import { getCreditCardValidationSchema } from '../creditCard';

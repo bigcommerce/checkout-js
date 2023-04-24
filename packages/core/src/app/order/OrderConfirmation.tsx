@@ -11,6 +11,7 @@ import DOMPurify from 'dompurify';
 import React, { Component, lazy, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { withAnalytics } from '../analytics';
 import { CheckoutContextProps, withCheckout } from '../checkout';
@@ -29,7 +30,6 @@ import {
     AccountCreationFailedError,
     AccountCreationRequirementsError,
 } from '../guestSignup/errors';
-import { TranslatedString } from '../locale';
 import { Button, ButtonVariant } from '../ui/button';
 import { LazyContainer, LoadingSpinner } from '../ui/loading';
 import { MobileView } from '../ui/responsive';
@@ -229,6 +229,7 @@ class OrderConfirmation extends Component<
                                     headerLink={
                                         <PrintLink className="modal-header-link cart-modal-link" />
                                     }
+                                    isUpdatedCartSummayModal={false}
                                     lineItems={order.lineItems}
                                     shopperCurrency={shopperCurrency}
                                     storeCurrency={currency}

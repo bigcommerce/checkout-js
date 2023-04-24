@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.308.0](https://github.com/bigcommerce/checkout-js/compare/v1.307.0...v1.308.0) (2023-04-24)
+
+
+### Features
+
+* **cart:** CHECKOUT-7403 Update layout and UX for cart summary modal in mobile screens ([#1250](https://github.com/bigcommerce/checkout-js/issues/1250)) ([5c36ff4](https://github.com/bigcommerce/checkout-js/commit/5c36ff41e56ef9f0b158dea6fed069053f82f70a))
+
+## [1.307.0](https://github.com/bigcommerce/checkout-js/compare/v1.306.3...v1.307.0) (2023-04-24)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7296 Move locale folder to package ([#1245](https://github.com/bigcommerce/checkout-js/issues/1245)) ([f72c070](https://github.com/bigcommerce/checkout-js/commit/f72c070cc6fd7bc46a457fc03cabad70b9a161a7))
+
+### [1.306.3](https://github.com/bigcommerce/checkout-js/compare/v1.306.2...v1.306.3) (2023-04-20)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-7421 remove CHECKOUT-3190.enable_buy_now_cart experiment ([2359523](https://github.com/bigcommerce/checkout-js/commit/23595234d3691c300053418e28094a5e5656a8a4))
+
+### [1.306.2](https://github.com/bigcommerce/checkout-js/compare/v1.306.1...v1.306.2) (2023-04-19)
+
+### [1.306.1](https://github.com/bigcommerce/checkout-js/compare/v1.306.0...v1.306.1) (2023-04-18)
+
+## [1.306.0](https://github.com/bigcommerce/checkout-js/compare/v1.305.0...v1.306.0) (2023-04-13)
+
+
+### Features
+
+* **checkout:** CHECKOUT-0000 Hide wallet buttons during payment step ([#1236](https://github.com/bigcommerce/checkout-js/issues/1236)) ([546a464](https://github.com/bigcommerce/checkout-js/commit/546a464e61ce5cc6222d18a9733098914f31a1a0))
+
 ## [1.305.0](https://github.com/bigcommerce/checkout-js/compare/v1.304.1...v1.305.0) (2023-04-06)
 
 

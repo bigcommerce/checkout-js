@@ -117,12 +117,12 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
             countriesWithAutocomplete={countriesWithAutocomplete}
             formFields={formFields}
             googleMapsApiKey={googleMapsApiKey}
+            isFloatingLabelEnabled={isFloatingLabelEnabled}
             isLoading={isLoading}
             onAddressSelect={onAddressSelect}
             onFieldChange={handleFieldChange}
             onUseNewAddress={onUseNewAddress}
             shouldShowSaveAddress={shouldShowSaveAddress}
-            isFloatingLabelEnabled={isFloatingLabelEnabled}
         />
     );
 };

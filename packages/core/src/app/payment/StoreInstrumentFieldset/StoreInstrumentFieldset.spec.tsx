@@ -8,9 +8,10 @@ import { Formik } from 'formik';
 import { merge, noop } from 'lodash';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
+
 import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
-import { createLocaleContext, LocaleContext } from '../../locale';
 import { getPaymentMethod } from '../payment-methods.mock';
 import { getInstruments } from '../storedInstrument/instruments.mock';
 

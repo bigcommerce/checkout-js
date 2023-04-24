@@ -1,7 +1,7 @@
 import { Cart, Consignment } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
-import { TranslatedString } from '../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import findLineItems from './findLineItems';
 import getLineItemsCount from './getLineItemsCount';

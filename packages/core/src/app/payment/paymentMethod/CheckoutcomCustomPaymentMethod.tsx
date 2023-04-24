@@ -1,8 +1,9 @@
 import { BillingAddress } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
+import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+
 import { CheckoutContextProps, withCheckout } from '../../checkout';
-import { withLanguage, WithLanguageProps } from '../../locale';
 import {
     checkoutcomCustomPaymentMethods,
     checkoutcomPaymentMethods,

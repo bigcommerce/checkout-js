@@ -1,7 +1,7 @@
 import { Coupon, GiftCertificate, Tax } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
-import { TranslatedString } from '../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import OrderSummaryDiscount from './OrderSummaryDiscount';
 import OrderSummaryPrice from './OrderSummaryPrice';
@@ -13,6 +13,7 @@ export interface OrderSummarySubtotalsProps {
     isTaxIncluded?: boolean;
     taxes?: Tax[];
     giftWrappingAmount?: number;
+    isUpdatedCartSummayModal?: boolean,
     shippingAmount?: number;
     handlingAmount?: number;
     storeCreditAmount?: number;

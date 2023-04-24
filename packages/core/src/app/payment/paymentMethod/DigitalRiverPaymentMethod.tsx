@@ -2,11 +2,11 @@ import { noop } from 'lodash';
 import React, { FunctionComponent, useCallback, useContext } from 'react';
 import { Omit } from 'utility-types';
 
+import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
 import { CustomError } from '../../common/error';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
-import { withLanguage, WithLanguageProps } from '../../locale';
 import { FormContext } from '../../ui/form';
 
 import HostedDropInPaymentMethod from './HostedDropInPaymentMethod';

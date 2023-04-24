@@ -1,8 +1,9 @@
 import { FieldProps } from 'formik';
 import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 
+import { TranslatedHtml, TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+
 import { parseAnchor } from '../common/utility';
-import { TranslatedHtml, TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 import { CheckboxFormField, Fieldset, FormField, Legend, TextArea } from '../ui/form';
 import { ModalHeader, ModalLink } from '../ui/modal';
 import { MultiLineText } from '../ui/text';

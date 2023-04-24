@@ -2,9 +2,10 @@ import { CheckoutSelectors, CustomerRequestOptions, CustomError } from '@bigcomm
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { CheckoutContextProps, withCheckout } from '../checkout';
 import { isErrorWithType } from '../common/error';
-import { TranslatedString } from '../locale';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 
 import canSignOut, { isSupportedSignoutMethod } from './canSignOut';

@@ -48,6 +48,7 @@ export {
     IconCardTroy,
     IconCardUnionPay,
     IconCardVisa,
+    IconCloseWithBorder,
     IconBitCoin,
     IconBitCoinCash,
     IconDogeCoin,

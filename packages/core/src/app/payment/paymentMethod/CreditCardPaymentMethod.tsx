@@ -13,12 +13,12 @@ import { find, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
+import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
 import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { MapToPropsFactory } from '../../common/hoc';
-import { withLanguage, WithLanguageProps } from '../../locale';
 import { withForm, WithFormProps } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
 import {

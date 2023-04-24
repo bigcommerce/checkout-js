@@ -2,10 +2,11 @@ import { Order } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+
 import { getGiftCertificateItem, getPhysicalItem } from '../cart/lineItem.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { ShopperCurrency } from '../currency';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 import { IconGiftCertificate } from '../ui/icon';
 
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';

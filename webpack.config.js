@@ -157,7 +157,11 @@ function appConfig(options, argv) {
                         },
                         {
                             test: /app\/polyfill\.ts$/,
-                            include: join(__dirname, 'packages', 'core', 'src'),
+                            include: [
+                                    join(__dirname, 'packages', 'core', 'src'),
+                                    join(__dirname, 'packages', 'locale', 'src'),
+                                    join(__dirname, 'packages', 'test-utils', 'src'),
+                                ],
                             use: [
                                 {
                                     loader: 'babel-loader',
@@ -235,6 +239,7 @@ function loaderConfig(options, argv) {
                 mode,
                 devtool: isProduction ? 'source-map' : 'eval-source-map',
                 resolve: {
+                    alias,
                     extensions: ['.ts', '.tsx', '.js'],
                     mainFields: ['module', 'browser', 'main'],
                 },
@@ -282,7 +287,11 @@ function loaderConfig(options, argv) {
                         },
                         {
                             test: /\.tsx?$/,
-                            include: join(__dirname,  'packages', 'core', 'src'),
+                            include: [
+                                join(__dirname, 'packages', 'core', 'src'),
+                                join(__dirname, 'packages', 'locale', 'src'),
+                                join(__dirname, 'packages', 'test-utils', 'src'),
+                            ],
                             use: [
                                 {
                                     loader: 'babel-loader',

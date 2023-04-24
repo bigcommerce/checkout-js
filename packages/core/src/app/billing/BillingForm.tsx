@@ -9,6 +9,7 @@ import { FormikProps, withFormik } from 'formik';
 import React, { createRef, PureComponent, ReactNode, RefObject } from 'react';
 import { lazy } from 'yup';
 
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 
 import {
@@ -21,7 +22,6 @@ import {
     mapAddressToFormValues,
 } from '../address';
 import { getCustomFormFieldsValidationSchema } from '../formFields';
-import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 import { OrderComments } from '../orderComments';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form } from '../ui/form';

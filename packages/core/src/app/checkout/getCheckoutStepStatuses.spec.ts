@@ -147,7 +147,6 @@ describe('getCheckoutStepStatuses()', () => {
             expect(find(steps, { type: CheckoutStepType.Customer })!.isComplete).toBe(true);
         });
 
-
         it('is marked as non-editable if email is provided by digital wallet', () => {
             jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithPayments());
 

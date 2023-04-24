@@ -3,8 +3,9 @@ import { mount, shallow } from 'enzyme';
 import { Formik } from 'formik';
 import React from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { getFormFields } from '../../address/formField.mock';
-import { TranslatedString } from '../../locale';
 
 import CheckboxGroupFormField from './CheckboxGroupFormField';
 import DynamicFormField from './DynamicFormField';

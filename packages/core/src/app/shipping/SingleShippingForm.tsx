@@ -16,6 +16,8 @@ import { debounce, noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
 import { lazy, object } from 'yup';
 
+import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+
 import {
     AddressFormValues,
     getAddressFormFieldsValidationSchema,
@@ -25,7 +27,6 @@ import {
     mapAddressToFormValues,
 } from '../address';
 import { getCustomFormFieldsValidationSchema } from '../formFields';
-import { withLanguage, WithLanguageProps } from '../locale';
 import { Fieldset, Form, FormContext } from '../ui/form';
 
 import BillingSameAsShippingField from './BillingSameAsShippingField';
@@ -163,6 +164,7 @@ class SingleShippingForm extends PureComponent<
                         googleMapsApiKey={googleMapsApiKey}
                         hasRequestedShippingOptions={hasRequestedShippingOptions}
                         initialize={initialize}
+                        isFloatingLabelEnabled={isFloatingLabelEnabled}
                         isLoading={isResettingAddress}
                         isShippingStepPending={isShippingStepPending}
                         methodId={methodId}
@@ -172,7 +174,6 @@ class SingleShippingForm extends PureComponent<
                         onUseNewAddress={this.onUseNewAddress}
                         shippingAddress={shippingAddress}
                         shouldShowSaveAddress={shouldShowSaveAddress}
-                        isFloatingLabelEnabled={isFloatingLabelEnabled}
                     />
                     {shouldShowBillingSameAsShipping && (
                         <div className="form-body">

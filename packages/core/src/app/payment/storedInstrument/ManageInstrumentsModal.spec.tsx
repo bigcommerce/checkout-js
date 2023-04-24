@@ -8,9 +8,10 @@ import {
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+
 import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { Modal } from '../../ui/modal';
 
 import { getInstruments } from './instruments.mock';
