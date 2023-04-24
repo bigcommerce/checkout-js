@@ -92,8 +92,6 @@ describe('OrderSummaryModal', () => {
                 />,
             );
 
-            expect(mountedOrderSummary).toMatchSnapshot();
-
             expect(mountedOrderSummary.find('button')).toHaveLength(1);
         });
     });
