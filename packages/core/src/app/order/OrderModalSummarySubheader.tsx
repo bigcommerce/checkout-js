@@ -1,7 +1,6 @@
 import { LineItemMap } from '@bigcommerce/checkout-sdk';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 import React, { FunctionComponent, memo, ReactNode } from 'react';
-
-import { TranslatedString } from '../locale';
 
 import getItemsCount from './getItemsCount';
 

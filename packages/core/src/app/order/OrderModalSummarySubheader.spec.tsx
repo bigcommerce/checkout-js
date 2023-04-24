@@ -1,10 +1,11 @@
 import { mount } from "enzyme";
 import React from "react";
 
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from "@bigcommerce/checkout/locale";
+
 import { getDigitalItem, getPhysicalItem } from "../cart/lineItem.mock";
 import { getStoreConfig } from "../config/config.mock";
 import { ShopperCurrency } from "../currency";
-import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from "../locale";
 
 import OrderModalSummarySubheader from "./OrderModalSummarySubheader";
 
