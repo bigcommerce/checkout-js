@@ -61,10 +61,13 @@
             "free_text": "Kostnadsfrie",
             "gift_certificate_text": "Gavekort",
             "handling_text": "Håndtering",
+            "item": "item",
+            "items": "items",
             "item_count_text": "{count, plural, one{1 Vare } other{# Varer } }",
             "print_action": "Skriv ut",
             "remaining_text": "gjenstående",
             "remove_action": "Fjern",
+            "return_to_checkout": "RETURN TO CHECKOUT",
             "see_all_action": "Se alt",
             "see_less_action": "Se mindre",
             "shipping_text": "Frakt",
@@ -411,7 +414,7 @@
             "browser_unsupported": "Den valgte betalingsmåten krever en annen nettleser. Velg en annen betalingsmåte.",
             "connection_error": "Tilkobling til ekstern kasseløsning ble nektet. Prøv senere.",
             "continue_with_text": "Eller fortsett med",
-            "or_text": "or",
+            "or_text": "eller",
             "payment_method_error": "Det oppsto en feil under henting av den eksterne betalingsmåten din. Prøv igjen.",
             "select_different_card_action": "Velg et annet kort",
             "session_error": "Den eksterne økten din er utløpt. Logg på igjen.",
@@ -421,7 +424,7 @@
             "sign_out_after_action": "for å se andre betalingsmåter",
             "sign_in_required_error": "Fjernpålogging kreves før betaling",
             "sign_out_before_action": "",
-            "start_with_text": "Check out faster with:"
+            "start_with_text": "Betal raskere med:"
         },
         "shipping": {
             "cart_change_error": "En oppdatering av handlekurven din har blitt oppdaget, og de tilgjengelige fraktkostnadene dine er oppdatert. Velg en fraktmetode på nytt for å fortsette.",
@@ -460,6 +463,9 @@
             "required_error": "Godta personvernreglene.",
             "label": "Ja, jeg godtar <a href=\"{url}\" target=\"_blank\">personvernreglene</a>.",
             "heading": "Personvernerklæring"
+        },
+        "tax": {
+            "inclusive_label": "Avgifter inkludert i totalbeløpet:"
         },
         "terms_and_conditions": {
             "agreement_required_error": "Godta vilkårene og betingelsene",

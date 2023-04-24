@@ -61,10 +61,13 @@
             "free_text": "Gratis",
             "gift_certificate_text": "Cupón de regalo",
             "handling_text": "Manipulación",
+            "item": "item",
+            "items": "items",
             "item_count_text": "{count, plural, one{1 artículo} other{# artículos} }",
             "print_action": "Imprimir",
             "remaining_text": "resta",
             "remove_action": "eliminar",
+            "return_to_checkout": "RETURN TO CHECKOUT",
             "see_all_action": "Ver todo",
             "see_less_action": "Ver menos",
             "shipping_text": "Envío",
@@ -411,7 +414,7 @@
             "browser_unsupported": "El método de pago seleccionado requiere un navegador web diferente. Elija otro método de pago.",
             "connection_error": "Se ha rechazado la conexión con el proceso de pago a distancia. Inténtelo más tarde.",
             "continue_with_text": "O continuar con",
-            "or_text": "or",
+            "or_text": "O",
             "payment_method_error": "Se ha producido un error al recuperar su método de pago a distancia. Vuelva a intentarlo.",
             "select_different_card_action": "Seleccionar una tarjeta diferente",
             "session_error": "Su sesión a distancia ha expirado. Inicie sesión de nuevo.",
@@ -421,7 +424,7 @@
             "sign_out_after_action": "para ver otros métodos de pago",
             "sign_in_required_error": "Es necesario iniciar sesión a distancia antes de pagar",
             "sign_out_before_action": "",
-            "start_with_text": "Check out faster with:"
+            "start_with_text": "Agiliza el proceso de pago con:"
         },
         "shipping": {
             "cart_change_error": "Se ha detectado una actualización en su carrito de compras y se han actualizado sus costes de envío disponibles. Vuelva a seleccionar un método de envío para continuar.",
@@ -460,6 +463,9 @@
             "required_error": "Acepte la Política de privacidad.",
             "label": "Sí, acepto la <a href=\"{url}\" target=\"_blank\">Política de privacidad</a>.",
             "heading": "Política de privacidad"
+        },
+        "tax": {
+            "inclusive_label": "Impuestos incluidos en el total:"
         },
         "terms_and_conditions": {
             "agreement_required_error": "Acepte los Términos y condiciones",

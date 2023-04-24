@@ -61,10 +61,13 @@
             "free_text": "Kostenlos",
             "gift_certificate_text": "Geschenkgutschein",
             "handling_text": "In Bearbeitung",
+            "item": "item",
+            "items": "items",
             "item_count_text": "{count, plural, one{1 Artikel} other{# Artikel} }",
             "print_action": "Drucken",
             "remaining_text": "verbleiben",
             "remove_action": "Entfernen",
+            "return_to_checkout": "RETURN TO CHECKOUT",
             "see_all_action": "Alle anzeigen",
             "see_less_action": "Weniger anzeigen",
             "shipping_text": "Versand",
@@ -411,7 +414,7 @@
             "browser_unsupported": "Für die gewählte Zahlungsmethode ist ein anderer Webbrowser erforderlich. Bitte wählen Sie eine andere Zahlungsmethode.",
             "connection_error": "Verbindung zum Remote-Abschluss des Bezahlvorgangs verweigert. Bitte versuchen Sie es später erneut.",
             "continue_with_text": "Oder fortfahren mit",
-            "or_text": "or",
+            "or_text": "oder",
             "payment_method_error": "Beim Abrufen Ihrer Remote-Zahlungsmethode ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
             "select_different_card_action": "Eine andere Karte wählen",
             "session_error": "Ihre Remote-Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
@@ -421,7 +424,7 @@
             "sign_out_after_action": "um andere Zahlungsmethoden anzuzeigen",
             "sign_in_required_error": "Remote-Anmeldung vor der Zahlung erforderlich",
             "sign_out_before_action": "",
-            "start_with_text": "Check out faster with:"
+            "start_with_text": "Schnellerer Bezahlvorgang mit:"
         },
         "shipping": {
             "cart_change_error": "Es wurde eine Aktualisierung Ihres Warenkorbs erkannt und Ihre verfügbaren Versandkosten wurden aktualisiert. Bitte wählen Sie erneut eine Versandmethode aus, um fortzufahren.",
@@ -460,6 +463,9 @@
             "required_error": "Bitte stimmen Sie der Datenschutzerklärung zu.",
             "label": "Ja, ich stimme der <a href=\"{url}\" target=\"_blank\">Datenschutzerklärung</a> zu.",
             "heading": "Datenschutzerklärung"
+        },
+        "tax": {
+            "inclusive_label": "In der Gesamtsumme enthaltene Steuer:"
         },
         "terms_and_conditions": {
             "agreement_required_error": "Bitte stimmen Sie den Allgemeinen Geschäftsbedingungen zu",

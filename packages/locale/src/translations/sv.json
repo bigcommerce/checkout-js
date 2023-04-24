@@ -61,10 +61,13 @@
             "free_text": "Gratis",
             "gift_certificate_text": "Presentkort",
             "handling_text": "Hantering",
+            "item": "item",
+            "items": "items",
             "item_count_text": "{count, plural, one{1 Item} other{# Items} }",
             "print_action": "Skriva ut",
             "remaining_text": "återstående",
             "remove_action": "Ta bort",
+            "return_to_checkout": "RETURN TO CHECKOUT",
             "see_all_action": "Visa alla",
             "see_less_action": "Se mindre",
             "shipping_text": "Frakt",
@@ -411,7 +414,7 @@
             "browser_unsupported": "Den valda betalningsmetoden kräver en annan webbläsare. Välj en annan betalningsmetod.",
             "connection_error": "Anslutning till fjärrkassan nekades, försök senare.",
             "continue_with_text": "Eller fortsätt med",
-            "or_text": "or",
+            "or_text": "ELLER",
             "payment_method_error": "Det gick inte att hämta din fjärrbetalningsmetod. Försök igen.",
             "select_different_card_action": "Välj ett annat kort",
             "session_error": "Din fjärrsession har gått ut. Logga in igen.",
@@ -421,7 +424,7 @@
             "sign_out_after_action": "för att visa andra betalningsmetoder",
             "sign_in_required_error": "Fjärrinloggning krävs före betalning",
             "sign_out_before_action": "",
-            "start_with_text": "Check out faster with:"
+            "start_with_text": "Betala snabbare med:"
         },
         "shipping": {
             "cart_change_error": "En uppdatering av din kundvagn har upptäckts och dina tillgängliga fraktkostnader har uppdaterats. Välj en leveransmetod igen för att fortsätta.",
@@ -460,6 +463,9 @@
             "required_error": "Godkänn sekretesspolicyn.",
             "label": "Ja, jag godkänner <a href=\"{url}\" target=\"_blank\">sekretesspolicyn</a>.",
             "heading": "Sekretesspolicy"
+        },
+        "tax": {
+            "inclusive_label": "Moms inkluderad i totalen:"
         },
         "terms_and_conditions": {
             "agreement_required_error": "Godkänn villkoren",

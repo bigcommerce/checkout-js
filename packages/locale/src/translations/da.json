@@ -61,10 +61,13 @@
             "free_text": "Gratis",
             "gift_certificate_text": "Gavekort",
             "handling_text": "Håndtering",
+            "item": "item",
+            "items": "items",
             "item_count_text": "{count, plural, one{1 vare} other{# varer} }",
             "print_action": "Udskriv",
             "remaining_text": "Resterende",
             "remove_action": "Fjern",
+            "return_to_checkout": "RETURN TO CHECKOUT",
             "see_all_action": "Se alt",
             "see_less_action": "Se mindre",
             "shipping_text": "Forsendelse",
@@ -411,7 +414,7 @@
             "browser_unsupported": "Den valgte betalingsmetode kræver en anden webbrowser. Vælg en anden betalingsmetode.",
             "connection_error": "Forbindelsen til fjernbetaling blev afvist. Prøv igen senere.",
             "continue_with_text": "Eller fortsæt med",
-            "or_text": "or",
+            "or_text": "eller",
             "payment_method_error": "Der opstod en fejl under hentning af din fjernbetalingsmetode. Prøv igen.",
             "select_different_card_action": "Vælg et andet kort",
             "session_error": "Din fjernsession er udløbet. Log på igen.",
@@ -421,7 +424,7 @@
             "sign_out_after_action": "for at se andre betalingsmetoder",
             "sign_in_required_error": "Fjernlogin påkrævet før betaling",
             "sign_out_before_action": "",
-            "start_with_text": "Check out faster with:"
+            "start_with_text": "Betal hurtigere med:"
         },
         "shipping": {
             "cart_change_error": "Vi har registreret en opdatering til din indkøbskurv, og dine tilgængelige forsendelsesomkostninger er blevet opdateret. Vælg en forsendelsesmetode igen for at fortsætte.",
@@ -460,6 +463,9 @@
             "required_error": "Accepter politikken om beskyttelse af personlige oplysninger.",
             "label": "Ja, jeg accepterer <a href=\"{url}\" target=\"_blank\">politikken om beskyttelse af personlige oplysninger</a>.",
             "heading": "Politik om beskyttelse af personlige oplysninger"
+        },
+        "tax": {
+            "inclusive_label": "Skat inkluderet i samlet beløb:"
         },
         "terms_and_conditions": {
             "agreement_required_error": "Accepter vilkår og betingelser",

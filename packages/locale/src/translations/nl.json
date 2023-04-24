@@ -61,10 +61,13 @@
             "free_text": "Gratis",
             "gift_certificate_text": "Cadeaubon",
             "handling_text": "Verwerking",
+            "item": "item",
+            "items": "items",
             "item_count_text": "{count, plural, one{1 item} other{# items} }",
             "print_action": "Afdrukken",
             "remaining_text": "resterend",
             "remove_action": "verwijderen",
+            "return_to_checkout": "RETURN TO CHECKOUT",
             "see_all_action": "Alles weergeven",
             "see_less_action": "Minder weergeven",
             "shipping_text": "Verzending",
@@ -411,7 +414,7 @@
             "browser_unsupported": "Voor de geselecteerde betaalmethode is een andere webbrowser vereist. Kies een andere betaalmethode.",
             "connection_error": "Verbinding met externe betaalmethode geweigerd, probeer het later opnieuw.",
             "continue_with_text": "Of ga door met",
-            "or_text": "or",
+            "or_text": "OF",
             "payment_method_error": "Er is een fout opgetreden bij het ophalen van uw externe betaalmethode. Probeer het opnieuw.",
             "select_different_card_action": "Selecteer een andere kaart",
             "session_error": "Uw externe sessie is verlopen. Log opnieuw in.",
@@ -421,7 +424,7 @@
             "sign_out_after_action": "om andere betaalmethoden te bekijken",
             "sign_in_required_error": "Extern aanmelden vereist voor betaling",
             "sign_out_before_action": "",
-            "start_with_text": "Check out faster with:"
+            "start_with_text": "Sneller betalen met:"
         },
         "shipping": {
             "cart_change_error": "Er is een update van uw winkelmandje gedetecteerd en de voor u beschikbare verzendkosten zijn bijgewerkt. Selecteer opnieuw een verzendmethode om door te gaan.",
@@ -460,6 +463,9 @@
             "required_error": "U dient akkoord te gaan met het privacybeleid.",
             "label": "Ja, ik ga akkoord met het <a href=\"{url}\" target=\"_blank\">privacybeleid</a>.",
             "heading": "Privacybeleid"
+        },
+        "tax": {
+            "inclusive_label": "Belasting inbegrepen in totaal:"
         },
         "terms_and_conditions": {
             "agreement_required_error": "U dienst akkoord te gaan met de algemene voorwaarden",

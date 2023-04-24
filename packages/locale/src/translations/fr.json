@@ -61,10 +61,13 @@
             "free_text": "Gratuit",
             "gift_certificate_text": "Chèque-cadeau",
             "handling_text": "Traitement",
+            "item": "item",
+            "items": "items",
             "item_count_text": "{count, plural, one{1 article} other{# articles} }",
             "print_action": "Imprimer",
             "remaining_text": "restant·s",
             "remove_action": "supprimer",
+            "return_to_checkout": "RETURN TO CHECKOUT",
             "see_all_action": "Tout voir",
             "see_less_action": "Voir moins",
             "shipping_text": "Expédition",
@@ -411,7 +414,7 @@
             "browser_unsupported": "Vous devez utiliser un autre navigateur Web pour le mode de paiement sélectionné. Veuillez choisir un autre mode de paiement.",
             "connection_error": "Refus de la connexion au paiement à distance. Veuillez réessayer.",
             "continue_with_text": "Ou continuer avec",
-            "or_text": "or",
+            "or_text": "OU",
             "payment_method_error": "Une erreur s'est produite lors de la récupération de votre mode de paiement à distance. Veuillez réessayer.",
             "select_different_card_action": "Sélectionner une autre carte",
             "session_error": "Votre session à distance a expiré. Veuillez vous reconnecter.",
@@ -421,7 +424,7 @@
             "sign_out_after_action": "pour afficher d'autres modes de paiement",
             "sign_in_required_error": "Connexion à distance requise avant de procéder au paiement",
             "sign_out_before_action": "",
-            "start_with_text": "Check out faster with:"
+            "start_with_text": "Accélérer le processus de paiement avec :"
         },
         "shipping": {
             "cart_change_error": "Nous avons détecté une mise à jour de votre panier. Les frais de livraison disponibles ont également été mis à jour. Veuillez sélectionner à nouveau un mode de livraison pour continuer.",
@@ -460,6 +463,9 @@
             "required_error": "Veuillez accepter la politique de confidentialité.",
             "label": "Oui, j'accepte la <a href=\"{url}\" target=\"_blank\">politique de confidentialité</a>.",
             "heading": "Politique de confidentialité"
+        },
+        "tax": {
+            "inclusive_label": "Taxes incluses dans le total :"
         },
         "terms_and_conditions": {
             "agreement_required_error": "Veuillez accepter les conditions générales.",
