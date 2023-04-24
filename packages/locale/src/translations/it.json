@@ -61,10 +61,13 @@
             "free_text": "Gratis",
             "gift_certificate_text": "Buono regalo",
             "handling_text": "Gestione",
+            "item": "item",
+            "items": "items",
             "item_count_text": "{count, plural, one{1 articolo} other{# articoli} }",
             "print_action": "Stampa",
             "remaining_text": "rimanente",
             "remove_action": "rimuovi",
+            "return_to_checkout": "RETURN TO CHECKOUT",
             "see_all_action": "Vedi tutto",
             "see_less_action": "Mostra meno",
             "shipping_text": "Spedizioni",
@@ -411,7 +414,7 @@
             "browser_unsupported": "Il metodo di pagamento selezionato richiede un browser diverso. Scegline un altro.",
             "connection_error": "Connessione al checkout remoto rifiutata, riprova più tardi.",
             "continue_with_text": "Oppure continua con",
-            "or_text": "or",
+            "or_text": "O",
             "payment_method_error": "Si è verificato un errore nel recupero del metodo di pagamento remoto. Riprova.",
             "select_different_card_action": "Seleziona un'altra carta",
             "session_error": "La sessione remota è scaduta. Esegui nuovamente l'accesso.",
@@ -421,7 +424,7 @@
             "sign_out_after_action": "per visualizzare altri metodi di pagamento",
             "sign_in_required_error": "Prima del pagamento devi effettuare l'accesso da remoto",
             "sign_out_before_action": "",
-            "start_with_text": "Check out faster with:"
+            "start_with_text": "Paga più velocemente con:"
         },
         "shipping": {
             "cart_change_error": "È stato rilevato un aggiornamento del carrello e i costi di spedizione disponibili sono stati aggiornati. Per continuare, seleziona di nuovo un metodo di spedizione.",
@@ -460,6 +463,9 @@
             "required_error": "Accetta l'Informativa sulla privacy.",
             "label": "Sì, accetto l'<a href=\"{url}\" target=\"_blank\">Informativa sulla privacy</a>.",
             "heading": "Informativa sulla privacy"
+        },
+        "tax": {
+            "inclusive_label": "Tasse incluse nel totale:"
         },
         "terms_and_conditions": {
             "agreement_required_error": "Accetta i termini e le condizioni",
