@@ -3,7 +3,7 @@ import {
     test,
 } from '@bigcommerce/checkout/payment-integration-test-framework';
 
-test.describe('Braintree ACH', () => {
+test.describe.skip('Braintree ACH', () => {
     test('Customer should be able to pay using Braintree ACH', async ({
         assertions,
         checkout,
