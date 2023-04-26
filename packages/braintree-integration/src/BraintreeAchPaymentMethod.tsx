@@ -42,23 +42,6 @@ const BraintreeAchPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         };
 
         void initialize();
-
-        return () => {
-            const deinitialize = async () => {
-                try {
-                    await checkoutService.deinitializePayment({
-                        gatewayId: method.gateway,
-                        methodId: method.id,
-                    });
-                } catch (error) {
-                    if (error instanceof Error) {
-                        onUnhandledError(error);
-                    }
-                }
-            };
-
-            void deinitialize();
-        };
     }, [method, checkoutService, onUnhandledError]);
 
     const props = {

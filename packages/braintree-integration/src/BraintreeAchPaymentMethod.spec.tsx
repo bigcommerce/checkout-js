@@ -94,32 +94,4 @@ describe('BraintreeAchPaymentForm', () => {
 
         expect(defaultProps.onUnhandledError).toHaveBeenCalled();
     });
-
-    it('deinitializes payment method when component unmounts', () => {
-        const component = mount(<BraintreeAchPaymentMethodTest {...defaultProps} />);
-
-        mount(<BraintreeAchPaymentMethodTest {...defaultProps} />);
-
-        expect(checkoutService.deinitializePayment).not.toHaveBeenCalled();
-
-        component.unmount();
-
-        expect(checkoutService.deinitializePayment).toHaveBeenCalled();
-    });
-
-    it('catches error during offline deinitialization', async () => {
-        jest.spyOn(checkoutService, 'deinitializePayment').mockRejectedValue(
-            new Error('test error'),
-        );
-
-        const component = mount(<BraintreeAchPaymentMethodTest {...defaultProps} />);
-
-        await new Promise((resolve) => process.nextTick(resolve));
-
-        component.unmount();
-
-        await new Promise((resolve) => process.nextTick(resolve));
-
-        expect(defaultProps.onUnhandledError).toHaveBeenCalled();
-    });
 });

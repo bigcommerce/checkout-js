@@ -4,7 +4,7 @@ import { isDate, noop } from 'lodash';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 import ReactDatePicker from 'react-datepicker';
 
-// import { useLocale } from '@bigcommerce/checkout/locale';
+import { withDate } from '@bigcommerce/checkout/locale';
 
 import { IconChevronDown } from '../../icon';
 import { CheckboxInput } from '../CheckboxInput';
@@ -23,6 +23,9 @@ export interface DynamicInputProps extends InputProps {
     fieldType?: DynamicFormFieldType;
     options?: FormFieldItem[];
     isFloatingLabelEnabled?: boolean;
+    date?: {
+        inputFormat: string;
+    };
 }
 
 const DynamicInput: FunctionComponent<DynamicInputProps> = ({
@@ -34,11 +37,10 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
     placeholder,
     value,
     isFloatingLabelEnabled,
+    date,
     ...rest
 }) => {
-    // TODO:: issue with useLocal() will be resolve in next week
-    // const { date } = useLocale();
-    const { inputFormat } = { inputFormat: '' };
+    const { inputFormat } = date || { inputFormat: '' };
     const handleDateChange = useCallback(
         (dateValue: string, event) =>
             onChange({
@@ -186,4 +188,4 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
     }
 };
 
-export default memo(DynamicInput);
+export default memo(withDate(DynamicInput));
