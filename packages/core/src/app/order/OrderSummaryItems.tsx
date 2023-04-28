@@ -17,6 +17,7 @@ const COLLAPSED_ITEMS_LIMIT = 4;
 const COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN = 3;
 
 export interface OrderSummaryItemsProps {
+    displayLineItemsCount: boolean;
     items: LineItemMap;
 }
 
@@ -36,12 +37,12 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
     }
 
     render(): ReactNode {
-        const { items } = this.props;
+        const { displayLineItemsCount = true, items } = this.props;
         const { collapsedLimit, isExpanded } = this.state;
 
         return (
             <>
-                <h3
+                {displayLineItemsCount && <h3
                     className="cart-section-heading optimizedCheckout-contentPrimary"
                     data-test="cart-count-total"
                 >
@@ -49,7 +50,7 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
                         data={{ count: getItemsCount(items) }}
                         id="cart.item_count_text"
                     />
-                </h3>
+                </h3>}
 
                 <ul aria-live="polite" className="productList">
                     {[
