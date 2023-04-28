@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.308.1-prerelease.1682687823283](https://github.com/bigcommerce/checkout-js/compare/v1.308.0...v1.308.1-prerelease.1682687823283) (2023-04-28)
+
+
+### Features
+
+* **payment:** PAYPAL-1713 new package with ACH methods ([023bda1](https://github.com/bigcommerce/checkout-js/commit/023bda1841e81bca2d3acd9bec32216c786cffac))
+* **payment:** PAYPAL-1713 skip test for a while, update snapshot ([483e476](https://github.com/bigcommerce/checkout-js/commit/483e4766f11db1f6afc22fb34285f89cc47d6d4b))
+
 ## [1.308.0](https://github.com/bigcommerce/checkout-js/compare/v1.307.0...v1.308.0) (2023-04-24)
 
 
