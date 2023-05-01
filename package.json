@@ -147,7 +147,7 @@
     "semver": "^6.3.0",
     "setup-polly-jest": "^0.10.0",
     "source-map-loader": "^0.2.4",
-    "standard-version": "^8.0.1",
+    "standard-version": "^9.5.0",
     "style-loader": "^0.23.1",
     "stylelint": "^15.3.0",
     "stylelint-config-standard-scss": "^7.0.1",
