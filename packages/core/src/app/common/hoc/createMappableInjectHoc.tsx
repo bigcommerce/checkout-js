@@ -43,7 +43,7 @@ export default function createMappableInjectHoc<TContextProps>(
 
                 const mappedProps = context
                     ? mapToProps(
-                          context as NonNullable<TContextProps>,
+                          context ,
                           props as unknown as TOwnProps,
                       )
                     : context;
