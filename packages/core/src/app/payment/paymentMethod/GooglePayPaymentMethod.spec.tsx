@@ -89,6 +89,7 @@ describe('when using Google Pay payment', () => {
         [PaymentMethodId.OrbitalGooglePay],
         [PaymentMethodId.StripeGooglePay],
         [PaymentMethodId.StripeUPEGooglePay],
+        [PaymentMethodId.WorldpayAccessGooglePay],
     ]).it('initializes %s with required config', (id) => {
         method.id = id;
 
