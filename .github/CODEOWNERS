@@ -10,7 +10,6 @@
 /packages/payment-integration-api @bigcommerce/checkout
 /packages/payment-integration-test-framework @bigcommerce/checkout
 /packages/workspace-tools @bigcommerce/checkout
-/packages/braintree-integration @bigcommerce/kyiv-payments-team
 
 # Apex integrations
 /packages/google-pay-integration @bigcommerce/apex-leads
@@ -53,4 +52,5 @@
 /packages/core/payment/paymentMethod/PaypalCommercePaymentMethod.tsx @bigcommerce/kyiv-payments-team
 /packages/core/payment/paymentMethod/PaypalExpressPaymentMethod.tsx @bigcommerce/kyiv-payments-team
 /packages/core/payment/paymentMethod/PaypalPaymentsProPaymentMethod.tsx @bigcommerce/kyiv-payments-team
+/packages/braintree-integration @bigcommerce/kyiv-payments-team
 

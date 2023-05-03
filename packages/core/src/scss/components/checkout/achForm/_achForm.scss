@@ -1,16 +1,16 @@
 .checkout-ach-form {
   display: flex;
   flex-flow: row wrap;
-  margin: 0 -4px;
+  margin: 0 -0.5 * $floating-form-field-spacing;
   margin-bottom: spacing("half");
 
   .mandate-text {
-    padding: 0 4px;
+    padding: 0 0.5 * $floating-form-field-spacing;
   }
 
   .dynamic-form-field {
     margin-bottom: spacing("half");
-    padding: 0 4px;
+    padding: 0 0.5 * $floating-form-field-spacing;
     width: 100%;
 
     &--firstName,
