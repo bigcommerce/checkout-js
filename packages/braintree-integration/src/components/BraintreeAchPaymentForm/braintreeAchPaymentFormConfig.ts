@@ -25,7 +25,7 @@ const accountTypeOptions = [
     },
 ];
 
-const ownershipTypeOptions = [
+export const ownershipTypeOptions = [
     {
         value: OwnershipTypes.Personal,
         label: OwnershipTypes.Personal,

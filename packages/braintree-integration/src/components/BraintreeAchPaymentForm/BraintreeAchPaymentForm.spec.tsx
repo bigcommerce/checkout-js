@@ -2,6 +2,7 @@ import {
     CheckoutSelectors,
     CheckoutService,
     createCheckoutService,
+    FormField,
 } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import { Formik } from 'formik';
@@ -22,6 +23,7 @@ import { BraintreeAchBankAccountValues } from '../../validation-schemas';
 import { AchFormFields } from '../AchFormFields';
 
 import BraintreeAchPaymentForm, { BraintreeAchPaymentFormProps } from './BraintreeAchPaymentForm';
+import { formFieldData, OwnershipTypes } from './braintreeAchPaymentFormConfig';
 
 describe('BraintreeAchPaymentForm', () => {
     let checkoutService: CheckoutService;
@@ -31,12 +33,28 @@ describe('BraintreeAchPaymentForm', () => {
     let paymentForm: PaymentFormService;
     let initialValues: FormikValues;
 
+    let firstNameFormField: FormField | undefined;
+    let lastNameFormField: FormField | undefined;
+    let businessFormField: FormField | undefined;
+
     beforeEach(() => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         paymentForm = getPaymentFormServiceMock();
 
         const { language } = createLocaleContext(getStoreConfig());
+
+        firstNameFormField = formFieldData.find(
+            ({ name }) => name === BraintreeAchBankAccountValues.FirstName,
+        );
+
+        lastNameFormField = formFieldData.find(
+            ({ name }) => name === BraintreeAchBankAccountValues.FirstName,
+        );
+
+        businessFormField = formFieldData.find(
+            ({ name }) => name === BraintreeAchBankAccountValues.BusinessName,
+        );
 
         defaultProps = {
             method: getBraintreeAchPaymentMethod(),
@@ -46,6 +64,37 @@ describe('BraintreeAchPaymentForm', () => {
             language,
             mandateText: 'default',
         };
+
+        jest.spyOn(checkoutService.getState().data, 'getBillingAddress').mockReturnValue({
+            id: '55c96cda6f04c',
+            firstName: 'Test',
+            lastName: 'Tester',
+            email: 'test@bigcommerce.com',
+            company: 'Bigcommerce',
+            address1: '12345 Testing Way',
+            address2: '',
+            city: 'Some City',
+            stateOrProvince: 'California',
+            stateOrProvinceCode: 'CA',
+            country: 'United States',
+            countryCode: 'US',
+            postalCode: '95555',
+            phone: '555-555-5555',
+            customFields: [],
+        });
+
+        jest.spyOn(checkoutService.getState().data, 'getBillingCountries').mockReturnValue([
+            {
+                code: 'US',
+                name: 'United States',
+                hasPostalCodes: true,
+                requiresState: true,
+                subdivisions: [
+                    { code: 'CA', name: 'California' },
+                    { code: 'TX', name: 'Texas' },
+                ],
+            },
+        ]);
 
         BraintreeAchPaymentFormTest = (props: BraintreeAchPaymentFormProps) => {
             return (
@@ -64,13 +113,53 @@ describe('BraintreeAchPaymentForm', () => {
         expect(container.find(BraintreeAchPaymentForm)).toHaveLength(1);
     });
 
-    // TODO:: add test for OwnershipTypes.Business
     it('should only contain formFields for OwnershipTypes.Personal', () => {
+        const eventData = {
+            target: {
+                value: OwnershipTypes.Personal,
+                name: BraintreeAchBankAccountValues.OwnershipType,
+            },
+        };
+
+        jest.spyOn(paymentForm, 'getFieldValue').mockImplementation((field) => {
+            if (field === 'ownershipType') {
+                return eventData.target.value;
+            }
+        });
+
         const container = mount(<BraintreeAchPaymentFormTest {...defaultProps} />);
 
-        expect(container.find(AchFormFields).prop('fieldValues')).not.toContain({
-            name: BraintreeAchBankAccountValues.BusinessName,
+        expect(container.find(AchFormFields).prop('fieldValues')).toContain(firstNameFormField);
+        expect(container.find(AchFormFields).prop('fieldValues')).toContain(lastNameFormField);
+        expect(container.find(AchFormFields).prop('fieldValues')).not.toContain(businessFormField);
+    });
+
+    it('should only contain formFields for OwnershipTypes.Business', () => {
+        const eventData = {
+            target: {
+                value: OwnershipTypes.Business,
+                name: BraintreeAchBankAccountValues.OwnershipType,
+            },
+        };
+
+        jest.spyOn(paymentForm, 'getFieldValue').mockImplementation((field) => {
+            if (field === 'ownershipType') {
+                return eventData.target.value;
+            }
         });
+
+        const container = mount(<BraintreeAchPaymentFormTest {...defaultProps} />);
+
+        container.find('select[name="ownershipType"]').simulate('change', eventData);
+
+        expect(paymentForm.setFieldValue).toHaveBeenCalledWith(
+            eventData.target.name,
+            eventData.target.value,
+        );
+
+        expect(container.find(AchFormFields).prop('fieldValues')).toContain(businessFormField);
+        expect(container.find(AchFormFields).prop('fieldValues')).not.toContain(firstNameFormField);
+        expect(container.find(AchFormFields).prop('fieldValues')).not.toContain(lastNameFormField);
     });
 
     it('renders loading overlay while waiting for method to initialize', () => {

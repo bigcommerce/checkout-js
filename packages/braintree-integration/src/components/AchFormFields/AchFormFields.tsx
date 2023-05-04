@@ -32,7 +32,7 @@ const AchFormFields: FunctionComponent<AchFormFieldsProps> = memo(
         <>
             {fieldValues.map((field) => (
                 <DynamicFormField
-                    extraClass={`dynamic-form-field--${field.id ? field.id : field.name}`}
+                    extraClass={`dynamic-form-field--${field.id}`}
                     field={field}
                     key={field.id}
                     label={language.translate(LABEL[field.name])}
