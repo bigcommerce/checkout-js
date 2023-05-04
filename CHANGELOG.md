@@ -2,6 +2,49 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.313.0](https://github.com/bigcommerce/checkout-js/compare/v1.312.1...v1.313.0) (2023-05-02)
+
+
+### Features
+
+* **payment:** PAYPAL-2013 bump checkout-sdk-js version ([a48ef68](https://github.com/bigcommerce/checkout-js/commit/a48ef68ff7fcc307c582e6a40663ad6553d0df1d))
+
+### [1.312.1](https://github.com/bigcommerce/checkout-js/compare/v1.312.0...v1.312.1) (2023-05-01)
+
+## [1.312.0](https://github.com/bigcommerce/checkout-js/compare/v1.311.1...v1.312.0) (2023-05-01)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7281 Upgrade React 17 ([#1251](https://github.com/bigcommerce/checkout-js/issues/1251)) ([00644a6](https://github.com/bigcommerce/checkout-js/commit/00644a649843a8e169762af973e7f5d90c00e74d))
+
+### [1.311.1](https://github.com/bigcommerce/checkout-js/compare/v1.311.0...v1.311.1) (2023-04-27)
+
+## [1.311.0](https://github.com/bigcommerce/checkout-js/compare/v1.310.0...v1.311.0) (2023-04-26)
+
+
+### Features
+
+* **payment:** BOLT-458 Bump checkout-sdk-js version ([964d6f0](https://github.com/bigcommerce/checkout-js/commit/964d6f0460d93ac4ccc4a20d832d9e83f10c81d2))
+
+## [1.310.0](https://github.com/bigcommerce/checkout-js/compare/v1.309.1...v1.310.0) (2023-04-26)
+
+
+### Features
+
+* **cart:** CHECKOUT-7403 Fix layout for updated modal ([#1254](https://github.com/bigcommerce/checkout-js/issues/1254)) ([e35a840](https://github.com/bigcommerce/checkout-js/commit/e35a84077474139316bf2a7c08e4c57332d8e827))
+
+### [1.309.1](https://github.com/bigcommerce/checkout-js/compare/v1.309.0...v1.309.1) (2023-04-25)
+
+## [1.309.0](https://github.com/bigcommerce/checkout-js/compare/v1.308.1...v1.309.0) (2023-04-24)
+
+
+### Features
+
+* **other:** LOCAL-1444 delivery translation ([#1253](https://github.com/bigcommerce/checkout-js/issues/1253)) ([03ad4d8](https://github.com/bigcommerce/checkout-js/commit/03ad4d8b17aae1db8172a78d5d404555fbd56e54))
+
+### [1.308.1](https://github.com/bigcommerce/checkout-js/compare/v1.308.0...v1.308.1) (2023-04-24)
+
 ## [1.308.0](https://github.com/bigcommerce/checkout-js/compare/v1.307.0...v1.308.0) (2023-04-24)
 
 
