@@ -53,8 +53,8 @@ const StripeUPEPaymentMethod: FunctionComponent<
                         containerId,
                         style: {
                             labelText: formLabel.color,
-                            fieldText: formInput.color,
-                            fieldPlaceholderText: formInput.color,
+                            fieldText: '#000000',
+                            fieldPlaceholderText: '#757575',
                             fieldErrorText: formError.color,
                             fieldBackground: formInput['background-color'],
                             fieldInnerShadow: formInput['box-shadow'],
