@@ -51,6 +51,10 @@
 }
 
 .with-continue-button {
+    &.cart-modal-header {
+        box-shadow: none;
+    }
+
     .cart-modal-link {
         text-align: left;
     }
