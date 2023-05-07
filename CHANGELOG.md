@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.313.1](https://github.com/bigcommerce/checkout-js/compare/v1.313.0...v1.313.1) (2023-05-07)
+
+
+### Bug Fixes
+
+* **cart:** CHECKOUT-7403 Add tweaks to cart modal UI ([#1259](https://github.com/bigcommerce/checkout-js/issues/1259)) ([e708304](https://github.com/bigcommerce/checkout-js/commit/e708304566b2289be7ba6aeca15305277399cc1a))
+
 ## [1.313.0](https://github.com/bigcommerce/checkout-js/compare/v1.312.1...v1.313.0) (2023-05-02)
 
 
