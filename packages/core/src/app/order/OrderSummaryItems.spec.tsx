@@ -20,6 +20,7 @@ describe('OrderSummaryItems', () => {
         beforeEach(() => {
             orderSummaryItems = shallow(
                 <OrderSummaryItems
+                    displayLineItemsCount
                     items={{
                         customItems: [getCustomItem()],
                         physicalItems: [getPhysicalItem()],
@@ -56,6 +57,7 @@ describe('OrderSummaryItems', () => {
             orderSummaryItems = mount(
                 <LocaleContext.Provider value={localeContext}>
                     <OrderSummaryItems
+                        displayLineItemsCount
                         items={{
                             customItems: [getCustomItem()],
                             physicalItems: [
@@ -104,6 +106,24 @@ describe('OrderSummaryItems', () => {
 
                     expect(orderSummaryItems.find('.productList-item')).toHaveLength(4);
                 });
+            });
+        });
+
+        describe('line items count is not rendered if flag is passed as false', () => {
+            it('does not render line items count', () => {
+                const orderSummaryItemsWithoutCount = shallow(
+                    <OrderSummaryItems
+                        displayLineItemsCount={false}
+                        items={{
+                            customItems: [getCustomItem()],
+                            physicalItems: [getPhysicalItem()],
+                            digitalItems: [getDigitalItem()],
+                            giftCertificates: [getGiftCertificateItem()],
+                        }}
+                    />,
+                );
+
+                expect(orderSummaryItemsWithoutCount.find(TranslatedString)).toHaveLength(0);
             });
         });
     });

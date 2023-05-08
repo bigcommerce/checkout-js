@@ -35,6 +35,7 @@ exports[`OrderSummaryModal renders order summary 1`] = `
 >
   <OrderSummarySection>
     <OrderSummaryItems
+      displayLineItemsCount={true}
       items={
         Object {
           "customItems": Array [],
@@ -191,6 +192,7 @@ exports[`OrderSummaryModal when taxes are inclusive displays tax as summary sect
 >
   <OrderSummarySection>
     <OrderSummaryItems
+      displayLineItemsCount={true}
       items={
         Object {
           "customItems": Array [],
