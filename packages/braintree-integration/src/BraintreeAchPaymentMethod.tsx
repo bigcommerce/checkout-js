@@ -28,8 +28,6 @@ const BraintreeAchPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                 await checkoutService.initializePayment({
                     gatewayId,
                     methodId,
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
                     braintreeach: {
                         mandateText,
                     },
