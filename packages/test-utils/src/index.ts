@@ -7,6 +7,7 @@ export {
     getMobilePaymentMethod,
     getPaymentMethod,
     getPaypalCreditPaymentMethod,
+    getBraintreeAchPaymentMethod,
 } from './payment-methods.mock';
 export { getPaymentFormServiceMock } from './payment-form-service.mock';
 export {

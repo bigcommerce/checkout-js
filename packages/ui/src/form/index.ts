@@ -1,5 +1,6 @@
 /* istanbul ignore file */
 export { BasicFormField } from './BasicFormField';
+export { DynamicFormField, DynamicFormFieldType } from './DynamicFormField';
 export { CheckboxFormField } from './CheckboxFormField';
 export { Fieldset } from './Fieldset';
 export { FormField } from './FormField';
