@@ -1,5 +1,5 @@
 import { difference } from 'lodash';
-import React, { FunctionComponent, useCallback, useEffect, useState } from 'react';
+import React, { FunctionComponent, useCallback, useEffect } from 'react';
 
 import {
     PaymentMethodProps,
@@ -12,21 +12,7 @@ const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     method,
     checkoutService,
     checkoutState,
-    paymentForm,
 }) => {
-    const [disabled, setDisabled] = useState(true);
-
-    useEffect(() => {
-        const { isPaymentDataRequired } = checkoutState.data;
-
-        paymentForm.disableSubmit(method, isPaymentDataRequired() && disabled);
-    }, [checkoutState, disabled, method, paymentForm]);
-
-    const onValidationChange = useCallback(
-        (isValid: boolean) => setDisabled(!isValid),
-        [setDisabled],
-    );
-
     const renderPlaceholderFields = () => {
         return (
             <div data-test="squarev2_placeholder_form" style={{ display: 'none' }}>
@@ -165,7 +151,6 @@ const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             squarev2: {
                 containerId,
                 style,
-                onValidationChange,
             },
         });
     }, [
@@ -174,7 +159,6 @@ const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         mapToSquareStyles,
         method.gateway,
         method.id,
-        onValidationChange,
     ]);
 
     const deinitializePayment = useCallback(async () => {
