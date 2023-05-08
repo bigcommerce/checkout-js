@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.314.0](https://github.com/bigcommerce/checkout-js/compare/v1.313.1...v1.314.0) (2023-05-08)
+
+
+### Features
+
+* **payment:** BOLT-484 Bump checkout-sdk-js version ([21f85ca](https://github.com/bigcommerce/checkout-js/commit/21f85ca02b1b3a972a60c906a1392909b9e57c18))
+
 ### [1.313.1](https://github.com/bigcommerce/checkout-js/compare/v1.313.0...v1.313.1) (2023-05-07)
 
 
