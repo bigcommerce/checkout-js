@@ -8,7 +8,6 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
-import { act } from 'react-dom/test-utils';
 
 import {
     PaymentFormService,
@@ -120,7 +119,6 @@ describe('SquareV2 payment method', () => {
                         '.message-text.is-error': { color: 'rgb(5, 5, 5)' },
                         '.message-icon.is-error': { color: 'rgb(5, 5, 5)' },
                     },
-                    onValidationChange: expect.any(Function),
                 },
             }),
         );
@@ -137,31 +135,9 @@ describe('SquareV2 payment method', () => {
                 squarev2: {
                     containerId: 'squarev2_payment_element_container',
                     style: undefined,
-                    onValidationChange: expect.any(Function),
                 },
             }),
         );
-    });
-
-    it('should enable submit button', () => {
-        const {
-            paymentForm: { disableSubmit },
-            method,
-        } = props;
-
-        mount(<SquareV2PaymentMethodTest />);
-
-        const onValidationChange = initializePayment.mock.calls[0][0].squarev2?.onValidationChange;
-
-        act(() => {
-            if (onValidationChange) {
-                onValidationChange(true);
-            }
-        });
-
-        expect(disableSubmit).toHaveBeenCalledTimes(2);
-        expect(disableSubmit).toHaveBeenNthCalledWith(1, method, true);
-        expect(disableSubmit).toHaveBeenNthCalledWith(2, method, false);
     });
 
     it('should be deinitialized with the required config', () => {
