@@ -1,6 +1,8 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
+import { CHECKOUT_ROOT_NODE_ID } from '../../checkout/CheckoutRootNodeId';
+
 import DropdownTrigger from './DropdownTrigger';
 
 describe('DropdownTrigger', () => {
@@ -31,7 +33,7 @@ describe('DropdownTrigger', () => {
 
     it('hides dropdown when mouse clicks anywhere else in document', () => {
         const component = mount(
-          <div id="checkout-app">
+          <div id={CHECKOUT_ROOT_NODE_ID}>
             <DropdownTrigger dropdown={<div>Hello world</div>}>
                 <button>Foobar</button>
             </DropdownTrigger>
@@ -39,7 +41,7 @@ describe('DropdownTrigger', () => {
         );
 
         component.simulate('click');
-        document.getElementById('checkout-app')?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        document.getElementById(CHECKOUT_ROOT_NODE_ID)?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
         expect(component.find('Hello world').exists()).toBe(false);
     });
