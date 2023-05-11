@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.317.0](https://github.com/bigcommerce/checkout-js/compare/v1.316.0...v1.317.0) (2023-05-11)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7281 Upgrade React 17 and Downshift ([#1264](https://github.com/bigcommerce/checkout-js/issues/1264)) ([9d4305d](https://github.com/bigcommerce/checkout-js/commit/9d4305d5dc73c1b6e2966528756875b6261caf4f))
+
 ## [1.316.0](https://github.com/bigcommerce/checkout-js/compare/v1.315.0...v1.316.0) (2023-05-10)
 
 
