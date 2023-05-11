@@ -1,7 +1,7 @@
 import { FieldProps } from 'formik';
 import React, { FunctionComponent, memo } from 'react';
 
-import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { TranslatedHtml } from '@bigcommerce/checkout/locale';
 
 import { Input, Label } from '../ui/form';
 
@@ -23,7 +23,7 @@ const SubscribeField: FunctionComponent<SubscribeFieldProps> = ({
         />
 
         <Label htmlFor={field.name}>
-            <TranslatedString
+            <TranslatedHtml
                 id={
                     requiresMarketingConsent
                         ? 'customer.guest_marketing_consent'
