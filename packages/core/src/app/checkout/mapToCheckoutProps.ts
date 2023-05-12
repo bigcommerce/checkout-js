@@ -1,10 +1,11 @@
 import { CheckoutSelectors, CustomError } from '@bigcommerce/checkout-sdk';
 import { createSelector } from 'reselect';
 
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+
 import { EMPTY_ARRAY } from '../common/utility';
 
 import { WithCheckoutProps } from './Checkout';
-import { CheckoutContextProps } from './CheckoutContext';
 import getCheckoutStepStatuses from './getCheckoutStepStatuses';
 
 export default function mapToCheckoutProps({

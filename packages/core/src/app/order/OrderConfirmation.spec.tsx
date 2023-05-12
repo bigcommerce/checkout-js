@@ -10,8 +10,8 @@ import React, { FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
 
 import { AnalyticsContextProps, AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
-import { CheckoutProvider } from '../checkout';
 import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';

@@ -12,9 +12,10 @@ import React, { Component, lazy, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withAnalytics } from '../analytics';
-import { CheckoutContextProps, withCheckout } from '../checkout';
+import { withCheckout } from '../checkout';
 import { ErrorLogger, ErrorModal } from '../common/error';
 import { retry } from '../common/utility';
 import { getPasswordRequirementsFromConfig } from '../customer';

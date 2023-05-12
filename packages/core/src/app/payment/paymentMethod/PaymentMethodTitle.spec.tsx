@@ -5,9 +5,8 @@ import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutProvider , PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
-import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { CreditCardIconList } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';

@@ -15,10 +15,11 @@ import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { CustomerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
-import { CheckoutContextProps, withCheckout } from '../checkout';
+import { withCheckout } from '../checkout';
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { isErrorWithType } from '../common/error';
 import { isFloatingLabelEnabled } from '../common/utility';
