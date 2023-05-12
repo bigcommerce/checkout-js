@@ -327,7 +327,7 @@
             "account_routing_label": "Routing Number",
             "account_type_label": "Account Type",
             "ownership_type_label": "Ownership Type",
-            "business_name_label": "Business Number",
+            "business_name_label": "Business Name",
             "errors": {
                 "account_number_required_error": "Account Number is required",
                 "routing_number_required_error": "Routing Number is required",
