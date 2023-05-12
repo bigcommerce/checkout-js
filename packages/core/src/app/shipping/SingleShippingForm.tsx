@@ -185,6 +185,7 @@ class SingleShippingForm extends PureComponent<
                     cartHasChanged={cartHasChanged}
                     isLoading={isLoading || isUpdatingShippingData}
                     isMultiShippingMode={false}
+                    consignments={consignments}
                     shouldDisableSubmit={this.shouldDisableSubmit()}
                     shouldShowOrderComments={shouldShowOrderComments}
                     shouldShowShippingOptions={isValid}
