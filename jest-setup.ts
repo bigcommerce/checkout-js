@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom';
 import * as Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { configure } from 'enzyme';
 import { noop } from 'lodash';

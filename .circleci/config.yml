@@ -40,7 +40,7 @@ jobs:
       - run:
           name: "Run unit tests for core package"
           command: |
-            TEST=$(circleci tests glob "packages/core/**/*.spec.ts" "packages/core/**/*.spec.tsx" | circleci tests split --split-by=timings)
+            TEST=$(circleci tests glob "packages/core/**/*.spec.ts" "packages/core/**/*.spec.tsx" "packages/core/**/*.test.ts" "packages/core/**/*.test.tsx" | circleci tests split --split-by=timings)
             npx nx run core:generate
             npm run test:core $TEST -- --runInBand
       - run:
