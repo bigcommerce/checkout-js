@@ -29,7 +29,7 @@ const BraintreeAchPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                     gatewayId,
                     methodId,
                     braintreeach: {
-                        mandateText,
+                        getMandateText: () => mandateText,
                     },
                 });
             } catch (error) {
