@@ -11,9 +11,9 @@ import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import {
     CheckoutButtonProps,
     CheckoutButtonResolveId,
+    CheckoutProvider,
 } from '@bigcommerce/checkout/payment-integration-api';
 
-import { CheckoutProvider } from '../checkout';
 import { getStoreConfig } from '../config/config.mock';
 
 import CheckoutButtonList, { CheckoutButtonListProps } from './CheckoutButtonListV2';

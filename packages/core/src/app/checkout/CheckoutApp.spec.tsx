@@ -1,9 +1,10 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
 import Checkout from './Checkout';
 import CheckoutApp, { CheckoutAppProps } from './CheckoutApp';
-import CheckoutProvider from './CheckoutProvider';
 import { CHECKOUT_ROOT_NODE_ID } from './CheckoutRootNodeId';
 import { getCheckout } from './checkouts.mock';
 

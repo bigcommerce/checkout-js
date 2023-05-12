@@ -10,9 +10,9 @@ import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getCart } from '../../cart/carts.mock';
-import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
 import { LoadingOverlay } from '../../ui/loading';

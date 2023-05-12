@@ -6,7 +6,8 @@ import {
 import { mount, render } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
-import { CheckoutProvider } from '../checkout';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
 import { getCountries } from '../geography/countries.mock';
 
 import { getAddress } from './address.mock';

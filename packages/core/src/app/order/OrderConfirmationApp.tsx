@@ -4,11 +4,10 @@ import React, { Component, ReactNode } from 'react';
 import ReactModal from 'react-modal';
 
 import { AnalyticsProvider } from '@bigcommerce/checkout/analytics';
-
 import '../../scss/App.scss';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
-import { CheckoutProvider } from '../checkout';
 import { createErrorLogger, ErrorBoundary, ErrorLogger } from '../common/error';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { AccountService, CreatedCustomer, SignUpFormValues } from '../guestSignup';

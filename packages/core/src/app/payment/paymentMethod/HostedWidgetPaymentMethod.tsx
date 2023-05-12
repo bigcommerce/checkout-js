@@ -17,9 +17,9 @@ import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutContextProps, PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
-import { CheckoutContextProps, withCheckout } from '../../checkout';
+import {withCheckout} from '../../checkout';
 import { preventDefault } from '../../common/dom';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { MapToPropsFactory } from '../../common/hoc';

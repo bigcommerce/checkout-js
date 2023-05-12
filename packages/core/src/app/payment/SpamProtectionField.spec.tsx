@@ -2,7 +2,7 @@ import { CheckoutService, createCheckoutService, StandardError } from '@bigcomme
 import { mount, render } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
-import { CheckoutProvider } from '../checkout';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import SpamProtectionField, { SpamProtectionProps } from './SpamProtectionField';
 

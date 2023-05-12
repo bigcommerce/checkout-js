@@ -4,9 +4,9 @@ import { compact } from 'lodash';
 import React, { FunctionComponent, memo } from 'react';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutContextProps , PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
-import { CheckoutContextProps, withCheckout } from '../../checkout';
+import { withCheckout } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { CreditCardIconList, mapFromPaymentMethodCardType } from '../creditCard';
 
