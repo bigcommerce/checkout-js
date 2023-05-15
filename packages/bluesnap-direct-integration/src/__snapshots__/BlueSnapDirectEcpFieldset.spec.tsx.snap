@@ -1,0 +1,141 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BlueSnapDirectEcpFieldset matches snapshot 1`] = `
+<fieldset
+  class="form-fieldset"
+  style="padding-bottom:1rem"
+>
+  <legend
+    class="form-legend is-srOnly"
+  >
+    Electronic Check (ACH/ECP)
+  </legend>
+  <div
+    class="form-body"
+  >
+    <div
+      class="form-field"
+    >
+      <label
+        class="form-label optimizedCheckout-form-label"
+        for="accountNumber"
+        id="accountNumber-label"
+      >
+        optimized_checkout.payment.bluesnap_direct_account_number.label
+      </label>
+      <input
+        aria-labelledby="accountNumber-label accountNumber-field-error-message"
+        autocomplete="cc-number"
+        class="form-input optimizedCheckout-form-input"
+        data-test="accountNumber-text"
+        id="accountNumber"
+        maxlength="17"
+        name="accountNumber"
+        type="tel"
+        value=""
+      />
+    </div>
+    <div
+      class="form-field"
+    >
+      <label
+        class="form-label optimizedCheckout-form-label"
+        for="routingNumber"
+        id="routingNumber-label"
+      >
+        optimized_checkout.payment.bluesnap_direct_routing_number.label
+      </label>
+      <input
+        aria-labelledby="routingNumber-label routingNumber-field-error-message"
+        autocomplete="cc-number"
+        class="form-input optimizedCheckout-form-input"
+        data-test="routingNumber-text"
+        id="routingNumber"
+        maxlength="9"
+        name="routingNumber"
+        type="tel"
+        value=""
+      />
+    </div>
+    <div
+      class="form-field"
+    >
+      <label
+        class="form-label optimizedCheckout-form-label"
+        for="accountType"
+        id="accountType-label"
+      >
+        optimized_checkout.payment.bluesnap_direct_account_type.label
+      </label>
+      <div
+        class="dropdown-chevron"
+      >
+        <div
+          class="icon"
+        >
+          <svg
+            height="24"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+            />
+          </svg>
+        </div>
+      </div>
+      <select
+        aria-labelledby="accountType-label accountType-field-error-message"
+        class="form-select optimizedCheckout-form-select"
+        data-test="accountType-select"
+        id="accountType"
+        name="accountType"
+      >
+        <option
+          selected=""
+          value=""
+        >
+          Select an account type
+        </option>
+        <option
+          value="CONSUMER_CHECKING"
+        >
+          Consumer checking
+        </option>
+        <option
+          value="CONSUMER_SAVINGS"
+        >
+          Consumer savings
+        </option>
+        <option
+          value="CORPORATE_CHECKING"
+        >
+          Corporate checking
+        </option>
+        <option
+          value="CORPORATE_SAVINGS"
+        >
+          Corporate savings
+        </option>
+      </select>
+    </div>
+    <div
+      class="form-field"
+    >
+      <input
+        class="form-checkbox optimizedCheckout-form-checkbox"
+        id="shopperPermission"
+        name="shopperPermission"
+        type="checkbox"
+      />
+      <label
+        class="form-label optimizedCheckout-form-label"
+        for="shopperPermission"
+      >
+        optimized_checkout.payment.bluesnap_direct_permission
+      </label>
+    </div>
+  </div>
+</fieldset>
+`;

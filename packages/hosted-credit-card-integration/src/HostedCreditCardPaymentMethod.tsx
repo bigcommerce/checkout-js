@@ -276,5 +276,6 @@ export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>
             id: 'hosted-credit-card',
             // type: 'PAYMENT_TYPE_API',
         },
+        { id: 'credit_card', gateway: 'bluesnapdirect' },
     ],
 );
