@@ -15,7 +15,7 @@ export interface AutocompleteProps {
     inputProps?: any;
     listTestId?: string;
     onToggleOpen?(state: { inputValue: string; isOpen: boolean }): void;
-    onSelect?(item: AutocompleteItem): void;
+    onSelect?(item: AutocompleteItem | null): void;
     onChange?(value: string, isOpen: boolean): void;
 }
 
@@ -125,7 +125,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
         }, [] as ReactChild[]);
     }
 
-    private itemToString(item?: AutocompleteItem): string {
+    private itemToString(item?: AutocompleteItem | null): string {
         return (item && item.value) || '';
     }
 
@@ -160,7 +160,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
         }
     };
 
-    private handleStateChange = ({ isOpen, inputValue }: StateChangeOptions<string>) => {
+    private handleStateChange = ({ isOpen, inputValue }: StateChangeOptions<AutocompleteItem>) => {
         const { onToggleOpen = noop } = this.props;
 
         if (isOpen !== undefined) {
