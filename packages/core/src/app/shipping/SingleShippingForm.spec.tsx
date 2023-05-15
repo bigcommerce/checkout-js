@@ -131,6 +131,56 @@ describe('SingleShippingForm', () => {
         }, SHIPPING_AUTOSAVE_DELAY * 1.1);
     });
 
+    it('calls updateAddress including shipping options if custom form fields are updated', (done) => {
+        component = mount(
+            <LocaleContext.Provider value={localeContext}>
+                <SingleShippingForm
+                    {...defaultProps}
+                    getFields={() => [
+                        ...addressFormFields,
+                        {
+                            custom: true,
+                            default: '',
+                            fieldType: 'text',
+                            id: 'field_25',
+                            label: 'Custom message',
+                            name: 'field_25',
+                            required: true,
+                            type: 'string',
+                        },
+                    ]}
+                />
+            </LocaleContext.Provider>,
+        );
+
+        component.find('input[name="shippingAddress.customFields.field_25"]').simulate('change', {
+            target: { value: 'foo', name: 'shippingAddress.customFields.field_25' },
+        });
+
+        setTimeout(() => {
+            expect(defaultProps.updateAddress).toHaveBeenCalledWith(
+                {
+                    ...getShippingAddress(),
+                    customFields: [
+                        {
+                            fieldId: 'field_25',
+                            fieldValue: 'foo',
+                        },
+                    ],
+                },
+                {
+                    params: {
+                        include: {
+                            'consignments.availableShippingOptions': true,
+                        },
+                    },
+                },
+            );
+
+            done();
+        }, SHIPPING_AUTOSAVE_DELAY * 1.1);
+    });
+
     it('calls updateAddress without shipping options if modified field does not affect shipping and shipping options have already been requested', (done) => {
         component
             .find('input[name="shippingAddress.address2"]')

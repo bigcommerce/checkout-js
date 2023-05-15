@@ -12,7 +12,7 @@ import {
     ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { FormikProps, withFormik } from 'formik';
-import { debounce, noop } from 'lodash';
+import { debounce, isEqual, noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
 import { lazy, object } from 'yup';
 
@@ -237,6 +237,13 @@ class SingleShippingForm extends PureComponent<
         } = this.props;
 
         const updatedShippingAddress = addressForm && mapAddressFromFormValues(addressForm);
+
+        if (Array.isArray(shippingAddress?.customFields)) {
+            includeShippingOptions = !isEqual(
+                shippingAddress?.customFields,
+                updatedShippingAddress?.customFields
+            ) || includeShippingOptions;
+        }
 
         if (!updatedShippingAddress || isEqualAddress(updatedShippingAddress, shippingAddress)) {
             return;
