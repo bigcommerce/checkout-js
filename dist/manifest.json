@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "appVersion": "1.318.0",
+  "appVersion": "1.318.1",
   "dynamicChunks": {
     "js": [
       "372-1f51df47.js",
@@ -12,7 +12,7 @@
       "cart-summary-5deedf28.js",
       "order-summary-drawer-16f2ffb6.js",
       "order-summary-c4313276.js",
-      "payment-9efcd4af.js",
+      "payment-f588be73.js",
       "shipping-c11af134.js"
     ],
     "css": [
@@ -30,12 +30,12 @@
     ]
   },
   "js": [
-    "runtime-50149a01.js",
+    "runtime-a6cc4006.js",
     "390-3d5c3aa2.js",
     "608-5dfec946.js",
     "375-c2596feb.js",
     "38-22d3753f.js",
-    "checkout-9a763412.js"
+    "checkout-7f1f9e54.js"
   ],
   "css": [
     "checkout-07f54681.css"
