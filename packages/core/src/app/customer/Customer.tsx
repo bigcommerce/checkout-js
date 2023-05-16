@@ -6,6 +6,7 @@ import {
     CustomerCredentials,
     CustomerInitializeOptions,
     CustomerRequestOptions,
+    Customer as CustomerType,
     ExecutePaymentMethodCheckoutOptions,
     FormField,
     GuestCredentials,
@@ -35,7 +36,7 @@ import LoginForm from './LoginForm';
 import mapCreateAccountFromFormValues from './mapCreateAccountFromFormValues';
 import StripeGuestForm from './StripeGuestForm';
 
-import { trackLoginData, trackSignUp } from '../common/tracking';
+import { trackLogin } from '../common/tracking';
 import withRecurly from '../recurly/withRecurly';
 import { RecurlyContextProps } from '../recurly/RecurlyContext';
 import SubscriptionForm from "./SubscriptionForm";
@@ -61,6 +62,7 @@ export interface CustomerProps {
 
 export interface WithCheckoutCustomerProps {
     canSubscribe: boolean;
+    customer?: CustomerType;
     customerAccountFields: FormField[];
     checkoutButtonIds: string[];
     defaultShouldSubscribe: boolean;
@@ -429,7 +431,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
     private handleSignIn: (credentials: CustomerCredentials) => Promise<void> = async (
         credentials,
     ) => {
-        const { signIn, onSignIn = noop, onSignInError = noop, cart } = this.props;
+        const { signIn, onSignIn = noop, onSignInError = noop } = this.props;
 
         try {
             await signIn(credentials);
@@ -437,7 +439,11 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
             this.draftEmail = undefined;
 
-            trackLoginData(cart?.customerId, cart?.email);
+            const {
+              customer,
+            } = this.props;
+
+            trackLogin(customer);
         } catch (error) {
             onSignInError(error);
         }
@@ -612,6 +618,7 @@ export function mapToWithCheckoutCustomerProps({
         clearError: checkoutService.clearError,
         createAccount: checkoutService.createCustomerAccount,
         continueAsGuest: checkoutService.continueAsGuest,
+        customer,
         sendLoginEmail: checkoutService.sendSignInEmail,
         defaultShouldSubscribe: config.shopperConfig.defaultNewsletterSignup,
         deinitializeCustomer: checkoutService.deinitializeCustomer,
