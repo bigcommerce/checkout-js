@@ -20,7 +20,7 @@ export default function createPaymentFormService(
     const { disableSubmit, setSubmit, setValidationSchema, hidePaymentSubmitButton } =
         paymentContext;
 
-    const getFieldValue = <T>(key: string): T | unknown => values[key];
+    const getFieldValue = <T>(key: string): T => values[key];
 
     return {
         disableSubmit,

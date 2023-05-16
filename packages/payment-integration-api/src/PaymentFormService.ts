@@ -5,7 +5,7 @@ import PaymentFormValues from './PaymentFormValues';
 
 export default interface PaymentFormService {
     disableSubmit(method: PaymentMethod, disabled?: boolean): void;
-    getFieldValue<T>(field: string): T | unknown;
+    getFieldValue<T>(field: string): T;
     hidePaymentSubmitButton(method: PaymentMethod, hidden?: boolean): void;
     isSubmitted(): boolean;
     setFieldTouched<TField extends keyof PaymentFormValues>(field: TField, touched?: boolean): void;
