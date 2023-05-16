@@ -15,7 +15,7 @@ export interface ShippingFormFooterProps {
     shouldShowShippingOptions?: boolean;
     shouldDisableSubmit: boolean;
     isLoading: boolean;
-    consignments: any;
+    consignments?: any;
 }
 
 class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
