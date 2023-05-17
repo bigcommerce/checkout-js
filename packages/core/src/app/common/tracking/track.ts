@@ -1,5 +1,3 @@
-import stateAbbreviations from "../utility/stateAbbreviations";
-
 declare global {
   interface Window {
     dataLayer: any[];
@@ -47,7 +45,7 @@ function transformUserData(user: Customer): GTMUser {
         if (address.stateOrProvince !== '') {
           // convert state to ANSI abbreviation code if in US and abbreviation code it exists
           const stateOrProvince = address.stateOrProvince.toLowerCase()
-          const stateOrProvinceAbbreviation = isUSCountry && stateAbbreviations[stateOrProvince]
+          const stateOrProvinceAbbreviation = isUSCountry && address.stateOrProvinceCode.toLowerCase()
 
           stateRegion.add(stateOrProvinceAbbreviation || stateOrProvince.replace(" ", ""));
         }
