@@ -443,7 +443,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
               customer,
             } = this.props;
 
-            trackLogin(customer);
+            if(customer) trackLogin(customer);
         } catch (error) {
             onSignInError(error);
         }
