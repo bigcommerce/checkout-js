@@ -10,10 +10,8 @@ import { noop, some } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
-
-import { withCheckout } from '../../checkout';
+import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { preventDefault } from '../../common/dom';
 import { LoadingOverlay } from '../../ui/loading';
 import withPayment, { WithPaymentProps } from '../withPayment';

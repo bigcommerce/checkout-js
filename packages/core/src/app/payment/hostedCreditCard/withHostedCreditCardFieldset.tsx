@@ -9,9 +9,9 @@ import React, { ComponentType, FunctionComponent, ReactNode, useCallback, useSta
 import { ObjectSchema } from 'yup';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps, PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
-import { withCheckout } from '../../checkout';
+import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { MapToPropsFactory } from '../../common/hoc';
 import { withForm, WithFormProps } from '../../ui/form';

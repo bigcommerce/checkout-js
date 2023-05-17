@@ -8,9 +8,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
-
-import { withCheckout } from '../../checkout';
+import { CheckoutContextProps, withCheckout } from '../../checkout';
 
 import AdyenV2PaymentMethod from './AdyenV2PaymentMethod';
 import AdyenV3PaymentMethod from './AdyenV3PaymentMethod';

@@ -2,9 +2,7 @@ import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { FunctionComponent, useCallback, useContext } from 'react';
 
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
-
-import { withCheckout } from '../../checkout';
+import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { getAppliedStyles } from '../../common/dom';
 import {
     withHostedCreditCardFieldset,

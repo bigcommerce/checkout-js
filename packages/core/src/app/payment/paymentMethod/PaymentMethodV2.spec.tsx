@@ -4,8 +4,9 @@ import { Formik } from 'formik';
 import React, { FunctionComponent, ReactNode } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider , PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+import { PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 
+import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { FormProvider } from '../../ui/form';
 import { getPaymentMethod } from '../payment-methods.mock';

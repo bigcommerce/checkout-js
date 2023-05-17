@@ -2,9 +2,7 @@ import { Cart, CheckoutSelectors, Consignment } from '@bigcommerce/checkout-sdk'
 import { map, sortBy, uniq } from 'lodash';
 import { createSelector } from 'reselect';
 
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
-
-import { withCheckout } from '../../checkout';
+import { CheckoutContextProps, withCheckout } from '../../checkout';
 import getShippableLineItems from '../getShippableLineItems';
 import getShippingMethodId from '../getShippingMethodId';
 

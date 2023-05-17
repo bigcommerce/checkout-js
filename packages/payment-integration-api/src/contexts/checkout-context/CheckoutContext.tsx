@@ -6,7 +6,7 @@ export interface CheckoutContextProps {
     checkoutState: CheckoutSelectors;
 }
 
-const CheckoutContext = createContext<CheckoutContextProps | undefined>(undefined);
+export const CheckoutContext = createContext<CheckoutContextProps | undefined>(undefined);
 
 export function useCheckout() {
     const context = useContext(CheckoutContext);
@@ -17,5 +17,3 @@ export function useCheckout() {
 
     return context;
 }
-
-export default CheckoutContext;

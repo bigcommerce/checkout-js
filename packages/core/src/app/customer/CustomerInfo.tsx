@@ -3,9 +3,8 @@ import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
-import { withCheckout } from '../checkout';
+import { CheckoutContextProps, withCheckout } from '../checkout';
 import { isErrorWithType } from '../common/error';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 

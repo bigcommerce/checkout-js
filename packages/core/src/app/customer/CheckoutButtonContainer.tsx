@@ -3,11 +3,9 @@ import classNames from 'classnames';
 import React, { FunctionComponent } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 
-
-import { withCheckout } from '../checkout';
+import { CheckoutContextProps, withCheckout } from '../checkout';
 
 import CheckoutButtonListV1, { filterUnsupportedMethodIds } from './CheckoutButtonList';
 

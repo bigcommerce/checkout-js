@@ -3,7 +3,6 @@ import React, { ComponentType } from 'react';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import {
-    PaymentFormProvider,
     PaymentFormValues,
     PaymentMethodResolveId,
     PaymentMethodProps as ResolvedPaymentMethodProps,
@@ -96,19 +95,15 @@ const PaymentMethodContainer: ComponentType<
         );
     }
 
-    const paymentForm = createPaymentFormService(formikContext, formContext, paymentContext);
-
     return (
-        <PaymentFormProvider paymentForm={paymentForm}>
-            <ResolvedPaymentMethod
-                checkoutService={checkoutService}
-                checkoutState={checkoutState}
-                language={language}
-                method={method}
-                onUnhandledError={onUnhandledError}
-                paymentForm={paymentForm}
-            />
-        </PaymentFormProvider>
+        <ResolvedPaymentMethod
+            checkoutService={checkoutService}
+            checkoutState={checkoutState}
+            language={language}
+            method={method}
+            onUnhandledError={onUnhandledError}
+            paymentForm={createPaymentFormService(formikContext, formContext, paymentContext)}
+        />
     );
 };
 

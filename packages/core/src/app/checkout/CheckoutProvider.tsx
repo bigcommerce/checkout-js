@@ -20,14 +20,12 @@ export default class CheckoutProvider extends Component<
 
     private unsubscribe?: () => void;
 
-    private getContextValue = memoizeOne(
-        (checkoutService: CheckoutService, checkoutState: CheckoutSelectors) => {
-            return {
-                checkoutService,
-                checkoutState,
-            };
-        },
-    );
+    private getContextValue = memoizeOne((checkoutService, checkoutState) => {
+        return {
+            checkoutService,
+            checkoutState,
+        };
+    });
 
     constructor(props: Readonly<CheckoutProviderProps>) {
         super(props);

@@ -14,11 +14,9 @@ export { default as isEmbedded } from './isEmbedded';
 export { default as PaymentFormValues } from './PaymentFormValues';
 export {
     CheckoutContext,
-    CheckoutProvider,
     CheckoutContextProps,
     useCheckout,
     PaymentFormContextProps,
     PaymentFormContext,
-    PaymentFormProvider,
     usePaymentFormContext,
 } from './contexts';

@@ -3,9 +3,8 @@ import React, { FunctionComponent, useCallback, useMemo } from 'react';
 import { Omit } from 'utility-types';
 
 import { masterpassFormatLocale, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
-import { withCheckout } from '../../checkout';
+import { CheckoutContextProps, withCheckout } from '../../checkout';
 
 import WalletButtonPaymentMethod, {
     WalletButtonPaymentMethodProps,

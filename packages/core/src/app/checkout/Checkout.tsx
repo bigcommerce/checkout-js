@@ -22,7 +22,6 @@ import { AddressFormSkeleton, ChecklistSkeleton } from '@bigcommerce/checkout/ui
 import { withAnalytics } from '../analytics';
 import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
-import { withCheckout } from '../checkout';
 import { CustomError, ErrorLogger, ErrorModal, isCustomError } from '../common/error';
 import { retry } from '../common/utility';
 import {
@@ -46,6 +45,7 @@ import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
 import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
+import withCheckout from './withCheckout';
 
 const Billing = lazy(() =>
     retry(

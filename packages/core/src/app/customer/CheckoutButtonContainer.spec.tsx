@@ -4,8 +4,8 @@ import { merge } from 'lodash';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType, } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
+import CheckoutProvider from '../checkout/CheckoutProvider';
 import { getStoreConfig } from '../config/config.mock';
 
 import CheckoutButtonContainer from './CheckoutButtonContainer';

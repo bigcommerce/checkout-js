@@ -8,9 +8,7 @@ import {
 import { isEmpty } from 'lodash';
 import React, { FunctionComponent, memo } from 'react';
 
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
-
-import { withCheckout } from '../checkout';
+import { CheckoutContextProps, withCheckout } from '../checkout';
 
 import AddressType from './AddressType';
 import isValidAddress from './isValidAddress';

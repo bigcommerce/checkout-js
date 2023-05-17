@@ -7,11 +7,11 @@ import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import { StaticAddress } from '../address';
 import { getAddress } from '../address/address.mock';
 import { getAddressFormFields } from '../address/formField.mock';
+import { CheckoutProvider } from '../checkout';
 import { getCheckout, getCheckoutPayment } from '../checkout/checkouts.mock';
 
 import StaticBillingAddress, { StaticBillingAddressProps } from './StaticBillingAddress';

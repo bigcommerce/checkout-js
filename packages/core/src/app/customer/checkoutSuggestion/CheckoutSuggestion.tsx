@@ -7,11 +7,9 @@ import {
 import React, { FunctionComponent, memo } from 'react';
 
 import { useAnalytics } from '@bigcommerce/checkout/analytics';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
-import { withCheckout } from '../../checkout';
+import { CheckoutContextProps, withCheckout } from '../../checkout';
 import { PaymentMethodId } from '../../payment/paymentMethod';
-
 
 import BoltCheckoutSuggestion from './BoltCheckoutSuggestion';
 
