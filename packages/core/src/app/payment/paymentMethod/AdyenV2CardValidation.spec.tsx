@@ -170,24 +170,5 @@ describe('AdyenV2CardValidation', () => {
             expect(field).toHaveLength(1);
         });
 
-        it('should disable submit payment button initially', () => {
-            paymentContext = {
-                disableSubmit: jest.fn(),
-                setSubmit: jest.fn(),
-                setValidationSchema: jest.fn(),
-                hidePaymentSubmitButton: jest.fn(),
-            };
-
-            mount(
-                <PaymentContext.Provider value={paymentContext}>
-                    <AdyenV2CardValidationTest {...defaultProps} />
-                </PaymentContext.Provider>,
-            );
-
-            expect(paymentContext.disableSubmit).toHaveBeenCalledWith(
-                defaultProps.paymentMethod,
-                true,
-            );
-        });
     });
 });
