@@ -9,7 +9,8 @@ import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
 
-import CheckoutButtonListV1, { filterUnsupportedMethodIds } from './CheckoutButtonList';
+import { filterUnsupportedMethodIds } from './CheckoutButtonList';
+import CheckoutButtonListV2 from './CheckoutButtonListV2';
 
 interface CheckoutButtonContainerProps {
     isPaymentStepActive: boolean;
@@ -80,16 +81,7 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
                 'checkout-buttons--n': methodIds.length > 5,
             })}>
                 <WalletButtonsContainerSkeleton buttonsCount={methodIds.length} isLoading={isLoading}>
-                    <CheckoutButtonListV1
-                        checkEmbeddedSupport={checkEmbeddedSupport}
-                        deinitialize={deinitialize}
-                        hideText={true}
-                        initialize={initialize}
-                        isInitializing={isLoading}
-                        isShowingWalletButtonsOnTop={true}
-                        methodIds={sortMethodIds(methodIds)}
-                        onError={onUnhandledError}
-                    />
+                    <CheckoutButtonListV2 onUnhandledError={onUnhandledError}/>
                 </WalletButtonsContainerSkeleton>
             </div>
             <div className='checkout-separator'><span><TranslatedString id='remote.or_text' /></span></div>

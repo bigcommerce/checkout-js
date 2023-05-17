@@ -4,11 +4,13 @@ import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/
 
 import { withCheckout, WithCheckoutProps } from '../checkout';
 
+import { mapToCheckoutButtonHelperProps } from './mapToCheckoutButtonHelperProps';
 import resolveCheckoutButton from './resolveCheckoutButton';
 
 export interface CheckoutButtonListProps {
     onUnhandledError(error: Error): void;
 }
+
 
 const CheckoutButtonList: FunctionComponent<
     CheckoutButtonListProps & WithCheckoutProps & WithLanguageProps
@@ -18,7 +20,27 @@ const CheckoutButtonList: FunctionComponent<
         data: { getConfig },
     } = checkoutState;
 
-    const methodIds = getConfig()?.checkoutSettings.remoteCheckoutProviders ?? [];
+    const helperProps = mapToCheckoutButtonHelperProps({ checkoutService, checkoutState });
+
+    if (helperProps === null) {
+        return null;
+    }
+
+    const {
+        availableMethodIds,
+        deinitialize,
+        initialize,
+        initializedMethodIds,
+        isLoading,
+        isPaypalCommerce,
+    } = helperProps;
+
+    console.log(availableMethodIds,
+        deinitialize,
+        initialize,
+        initializedMethodIds,
+        isLoading,
+        isPaypalCommerce);
 
     return (
         <>
@@ -29,7 +51,7 @@ const CheckoutButtonList: FunctionComponent<
             )}
 
             <div className="checkoutRemote">
-                {methodIds.map((methodId) => {
+                {availableMethodIds.map((methodId) => {
                     const ResolvedCheckoutButton = resolveCheckoutButton({ id: methodId });
 
                     if (!ResolvedCheckoutButton) {
