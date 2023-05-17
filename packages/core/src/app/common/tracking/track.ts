@@ -200,12 +200,14 @@ export function trackPurchase(info: OrderData) {
   track(data);
 }
 
-interface DetailedUserData {
+interface UserChangeData {
+  event: string;
   user: GTMUser;
 }
 
-export function trackDetailedUserData(user: Customer) {
-  const data: DetailedUserData = {
+export function trackUserChange(user: Customer) {
+  const data: UserChangeData = {
+    event: "logged_in_user_change",
     user: transformUserData(user),
   };
 
