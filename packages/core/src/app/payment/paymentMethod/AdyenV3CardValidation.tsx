@@ -86,13 +86,6 @@ const AdyenV3CardValidation: FunctionComponent<AdyenV3CardValidationProps> = ({
     }, [cardValidationState, setFieldsValidation]);
 
     useEffect(() => {
-        paymentContext?.disableSubmit(
-            paymentMethod,
-            Object.values(fieldsValidation).some((field) => !field.valid),
-        );
-    }, [fieldsValidation, paymentContext, paymentMethod]);
-
-    useEffect(() => {
         if (selectedInstrument?.bigpayToken) {
             setFieldsValidation(
                 getInitialValidationState({ shouldShowNumberField, method: paymentMethod.method }),
