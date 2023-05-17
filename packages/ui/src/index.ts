@@ -7,7 +7,6 @@ export {
     BasicFormField,
     DynamicFormField,
     DynamicFormFieldType,
-    DynamicInput,
     CheckboxFormField,
     ChecklistSkeleton,
     CustomerSkeleton,
