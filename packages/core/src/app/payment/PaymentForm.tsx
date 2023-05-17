@@ -217,8 +217,6 @@ const PaymentMethodListFieldset: FunctionComponent<PaymentMethodListFieldsetProp
                 paymentProviderRadio: getUniquePaymentMethodId(method.id, method.gateway),
                 shouldCreateAccount: true,
                 shouldSaveInstrument: false,
-                accountNumber: '',
-                routingNumber: '',
             });
 
             setSubmitted(false);
@@ -270,8 +268,6 @@ const paymentFormConfig: WithFormikConfig<PaymentFormProps & WithLanguageProps, 
                     cardNumberVerification: '',
                 },
             },
-            accountNumber: '',
-            routingNumber: '',
         }),
 
         handleSubmit: (values, { props: { onSubmit = noop } }) => {
