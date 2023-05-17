@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.319.0](https://github.com/bigcommerce/checkout-js/compare/v1.318.3...v1.319.0) (2023-05-17)
+
+
+### Features
+
+* **payment:** INT-7573 Add config of Access Worldpay GooglePay ([2414ef8](https://github.com/bigcommerce/checkout-js/commit/2414ef88d41abde89a7c68c26c803cf5cb70ac86))
+* **payment:** INT-7573 add worldpay to googlepay specs ([481ae01](https://github.com/bigcommerce/checkout-js/commit/481ae01c90e5e27aa81b55f33babb6929e0d81f9))
+
 ### [1.318.3](https://github.com/bigcommerce/checkout-js/compare/v1.318.2...v1.318.3) (2023-05-16)
 
 
