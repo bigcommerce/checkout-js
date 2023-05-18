@@ -74,8 +74,8 @@ body.test_15 {
 
 .payments-method {
     display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
+    flex-wrap: nowrap;
+    gap: 8px;
 
     &.full-method {
         align-items: center;
@@ -85,38 +85,52 @@ body.test_15 {
 
 .payment-icon {
     border-radius: 3px;
-    height: 20px;
-    min-width: 32px;
+    width: 32px;
+
+    &::before {
+        content: "";
+        display: block;
+        padding-bottom: calc(20/32 * 100%);
+        width: 100%;
+    }
 }
 
 .paypal-icon {
     background: url("../static/svg/payments/Paypal-card-dark.svg") no-repeat center center;
+    background-size: contain;
 }
 
 .amex-icon {
     background: url("../static/svg/payments/AmericanExpress-dark.svg") no-repeat center center;
+    background-size: contain;
 }
 
 .discover-icon {
     background: url("../static/svg/payments/Discover-card-dark.svg") no-repeat center center;
+    background-size: contain;
 }
 
 .diners-icon {
     background: url("../static/svg/payments/diners.png") no-repeat center center;
+    background-size: contain;
 }
 
 .gpay-icon {
     background: #fff url("../static/svg/payments/Gpay.png") no-repeat center center;
+    background-size: contain;
 }
 
 .jcb-icon {
     background: url("../static/svg/payments/jcb.png") no-repeat center center;
+    background-size: contain;
 }
 
 .mastercard-icon {
     background: #fff url("../static/svg/payments/mastercard.png") no-repeat center center;
+    background-size: contain;
 }
 
 .visacard-icon {
     background: url("../static/svg/payments/Visa-card-dark.svg") no-repeat center center;
+    background-size: contain;
 }
