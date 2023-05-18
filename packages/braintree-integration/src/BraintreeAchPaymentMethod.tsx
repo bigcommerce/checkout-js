@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent, useEffect, useRef } from 'react';
 
 import {
     PaymentMethodProps,
@@ -8,8 +8,6 @@ import {
 
 import { BraintreeAchPaymentForm } from './components';
 
-const mandateText = 'I authorize Braintree to debit my bank account on behalf of My Online Store.';
-
 const BraintreeAchPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     method,
     checkoutService,
@@ -18,18 +16,22 @@ const BraintreeAchPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     onUnhandledError,
     paymentForm,
 }) => {
+    const currentMandateTextRef = useRef('');
+
+    const updateMandateText = (currentMandateText: string) => {
+        currentMandateTextRef.current = currentMandateText;
+    };
+
     useEffect(() => {
-        const { gateway: gatewayId, id: methodId } = method;
+        const initializePaymentMethod = async () => {
+            const { gateway: gatewayId, id: methodId } = method;
 
-        const initialize = async () => {
             try {
-                await checkoutService.loadBillingAddressFields();
-
                 await checkoutService.initializePayment({
                     gatewayId,
                     methodId,
                     braintreeach: {
-                        getMandateText: () => mandateText,
+                        getMandateText: () => currentMandateTextRef.current,
                     },
                 });
             } catch (error) {
@@ -39,16 +41,33 @@ const BraintreeAchPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             }
         };
 
-        void initialize();
-    }, [method, checkoutService, onUnhandledError]);
+        void initializePaymentMethod();
+    }, [checkoutService, method, onUnhandledError]);
+
+    useEffect(() => {
+        const initializeBillingAddressFields = async () => {
+            try {
+                await checkoutService.loadBillingAddressFields();
+            } catch (error) {
+                if (error instanceof Error) {
+                    onUnhandledError(error);
+                }
+            }
+        };
+
+        void initializeBillingAddressFields();
+    }, [checkoutService, onUnhandledError]);
 
     const props = {
         checkoutService,
         checkoutState,
         language,
-        mandateText,
         method,
         paymentForm,
+        storeName: checkoutState.data.getConfig()?.storeProfile.storeName,
+        outstandingBalance: checkoutState.data.getCheckout()?.outstandingBalance,
+        symbol: checkoutState.data.getCart()?.currency.symbol,
+        updateMandateText,
     };
 
     return <BraintreeAchPaymentForm {...props} />;

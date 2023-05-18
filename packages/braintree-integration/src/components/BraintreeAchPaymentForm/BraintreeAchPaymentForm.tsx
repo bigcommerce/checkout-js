@@ -9,6 +9,7 @@ import {
     getBraintreeAchValidationSchema,
 } from '../../validation-schemas';
 import { AchFormFields } from '../AchFormFields';
+import { MandateText } from '../MandateText';
 
 import { AccountTypes, formFieldData, OwnershipTypes } from './braintreeAchPaymentFormConfig';
 
@@ -17,18 +18,25 @@ export interface AddressKeyMap<T = string> {
 }
 
 export interface BraintreeAchPaymentFormProps extends Omit<PaymentMethodProps, 'onUnhandledError'> {
-    mandateText: string;
+    outstandingBalance?: number;
+    storeName?: string;
+    symbol?: string;
+    updateMandateText: (mandateText: string) => void;
 }
 
 const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> = ({
     paymentForm: { getFieldValue, setFieldValue, setValidationSchema, isSubmitted, setSubmitted },
-    mandateText,
+    outstandingBalance,
+    symbol,
+    storeName,
     checkoutState,
     method,
     language,
+    updateMandateText,
 }) => {
-    const ownershipType = getFieldValue('ownershipType');
-    const isBusiness = ownershipType === OwnershipTypes.Business;
+    const ownershipTypeValue = getFieldValue(BraintreeAchBankAccountValues.OwnershipType);
+
+    const isBusiness = ownershipTypeValue === OwnershipTypes.Business;
     const isLoadingBillingCountries = checkoutState.statuses.isLoadingBillingCountries();
 
     const usCountry = checkoutState.data
@@ -100,7 +108,7 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
     );
 
     const fieldDataByOwnershipType = useMemo(() => {
-        const isPersonalType = ownershipType === OwnershipTypes.Personal;
+        const isPersonalType = ownershipTypeValue === OwnershipTypes.Personal;
         const exceptionFieldTypes: BraintreeAchBankAccount[] = [];
 
         if (isPersonalType) {
@@ -115,17 +123,31 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
         return formFieldData.filter(
             ({ id }) => !exceptionFieldTypes.includes(id as BraintreeAchBankAccount),
         );
-    }, [ownershipType]);
+    }, [ownershipTypeValue]);
 
-    useEffect(() => {
-        setValidationSchema(
-            method,
+    const validationSchema = useMemo(
+        () =>
             getBraintreeAchValidationSchema({
                 formFieldData: fieldDataByOwnershipType,
                 language,
             }),
-        );
-    }, [method, language, fieldDataByOwnershipType, setValidationSchema]);
+        [fieldDataByOwnershipType, language],
+    );
+
+    useEffect(() => {
+        setValidationSchema(method, validationSchema);
+    }, [validationSchema, method, setValidationSchema]);
+
+    const mandateTextProps = {
+        getFieldValue,
+        isBusiness,
+        language,
+        outstandingBalance,
+        updateMandateText,
+        storeName,
+        symbol,
+        validationSchema,
+    };
 
     return (
         <FormContext.Provider value={{ isSubmitted: isSubmitted(), setSubmitted }}>
@@ -136,7 +158,7 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
                         handleChange={handleChange}
                         language={language}
                     />
-                    <div className="mandate-text">{mandateText}</div>
+                    <MandateText {...mandateTextProps} />
                 </div>
             </LoadingOverlay>
         </FormContext.Provider>

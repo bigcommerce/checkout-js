@@ -62,7 +62,7 @@ describe('BraintreeAchPaymentForm', () => {
             checkoutState,
             paymentForm,
             language,
-            mandateText: 'default',
+            updateMandateText: jest.fn().mockReturnValue('mandate text'),
         };
 
         jest.spyOn(checkoutService.getState().data, 'getBillingAddress').mockReturnValue({
