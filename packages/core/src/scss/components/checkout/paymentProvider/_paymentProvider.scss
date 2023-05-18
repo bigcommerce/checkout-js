@@ -10,6 +10,7 @@
 .paymentProviderHeader-nameContainer {
     display: flex;
     justify-content: space-between;
+    min-height: calc(#{$checklist-label-height} - #{$checklist-spacing} * 2);
 }
 
 .paymentProviderHeader-img {
