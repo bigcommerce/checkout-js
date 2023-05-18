@@ -193,6 +193,7 @@
             "bolt_checkbox_agreement": "Save my information, create a Bolt account, and agree to Bolt’s <a href=\"{termsUrl}\" target=\"_blank\">Terms of Use</a> and <a href=\"{privacyPolicyUrl}\" target=\"_blank\">Privacy Policy</a>.",
             "bolt_name_text": "Bolt",
             "braintreevisacheckout_continue_action": "Continue with Visa Checkout",
+            "braintreeach_mandate_text": "By clicking Place Order, I authorize Braintree, a service of PayPal, on behalf of {storeName} to verify my bank account information using bank information and consumer reports and I authorize {storeName} to initiate an ACH/electronic debit to my {accountType} account, Depository Name: {depositoryName}, Routing Number: {routingNumber} and Account Number: {accountNumber}, in the amount of {outstandingBalance} on {currentDate}. I agree the ACH transactions I authorize comply with all applicable laws.",
             "complete_with_brand": "Complete order",
             "continue_with_brand": "Continue with {brandName}",
             "ccavenuemars_description_text": "Checkout with CCAvenue",
@@ -326,7 +327,7 @@
             "account_routing_label": "Routing Number",
             "account_type_label": "Account Type",
             "ownership_type_label": "Ownership Type",
-            "business_name_label": "Business Number",
+            "business_name_label": "Business Name",
             "errors": {
                 "account_number_required_error": "Account Number is required",
                 "routing_number_required_error": "Routing Number is required",
