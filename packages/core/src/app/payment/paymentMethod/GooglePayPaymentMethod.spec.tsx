@@ -12,8 +12,8 @@ import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
-import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { getPaymentMethod } from '../payment-methods.mock';
 
@@ -89,6 +89,7 @@ describe('when using Google Pay payment', () => {
         [PaymentMethodId.OrbitalGooglePay],
         [PaymentMethodId.StripeGooglePay],
         [PaymentMethodId.StripeUPEGooglePay],
+        [PaymentMethodId.WorldpayAccessGooglePay],
     ]).it('initializes %s with required config', (id) => {
         method.id = id;
 

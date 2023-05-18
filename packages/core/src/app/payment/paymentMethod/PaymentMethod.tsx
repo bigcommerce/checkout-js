@@ -8,7 +8,9 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
-import { CheckoutContextProps, withCheckout } from '../../checkout';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+
+import { withCheckout } from '../../checkout';
 
 import AdyenV2PaymentMethod from './AdyenV2PaymentMethod';
 import AdyenV3PaymentMethod from './AdyenV3PaymentMethod';
@@ -166,7 +168,8 @@ const PaymentMethodComponent: FunctionComponent<
         method.id === PaymentMethodId.CybersourceV2GooglePay ||
         method.id === PaymentMethodId.OrbitalGooglePay ||
         method.id === PaymentMethodId.StripeGooglePay ||
-        method.id === PaymentMethodId.StripeUPEGooglePay
+        method.id === PaymentMethodId.StripeUPEGooglePay ||
+        method.id === PaymentMethodId.WorldpayAccessGooglePay
     ) {
         return <GooglePayPaymentMethod {...props} />;
     }

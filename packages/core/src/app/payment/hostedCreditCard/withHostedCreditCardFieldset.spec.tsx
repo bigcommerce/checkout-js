@@ -13,10 +13,10 @@ import { act } from 'react-dom/test-utils';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import {
     CardInstrumentFieldsetValues,
+    CheckoutProvider,
 } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getCart } from '../../cart/carts.mock';
-import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
 import { FormContext, FormContextType } from '../../ui/form';

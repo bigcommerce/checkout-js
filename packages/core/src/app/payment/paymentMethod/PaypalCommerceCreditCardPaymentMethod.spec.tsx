@@ -9,8 +9,9 @@ import { noop } from 'lodash';
 import React, { FunctionComponent, useEffect } from 'react';
 import { object } from 'yup';
 
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
 import { getCart } from '../../cart/carts.mock';
-import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
 import {
