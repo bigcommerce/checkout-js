@@ -29,12 +29,20 @@ const MandateText: FunctionComponent<MandateTextProps> = ({
 }) => {
     const [shouldShowMandateText, setShouldShowMandateText] = useState(false);
 
-    const routingNumberValue = getFieldValue(BraintreeAchBankAccountValues.RoutingNumber);
-    const accountNumberValue = getFieldValue(BraintreeAchBankAccountValues.AccountNumber);
-    const firstNameValue = getFieldValue(BraintreeAchBankAccountValues.FirstName);
-    const lastNameValue = getFieldValue(BraintreeAchBankAccountValues.LastName);
-    const businessNameValue = getFieldValue(BraintreeAchBankAccountValues.BusinessName);
-    const accountTypeValue = getFieldValue(BraintreeAchBankAccountValues.AccountType);
+    const routingNumberValue = String(
+        getFieldValue<string>(BraintreeAchBankAccountValues.RoutingNumber),
+    );
+    const accountNumberValue = String(
+        getFieldValue<string>(BraintreeAchBankAccountValues.AccountNumber),
+    );
+    const firstNameValue = String(getFieldValue<string>(BraintreeAchBankAccountValues.FirstName));
+    const lastNameValue = String(getFieldValue<string>(BraintreeAchBankAccountValues.LastName));
+    const businessNameValue = String(
+        getFieldValue<string>(BraintreeAchBankAccountValues.BusinessName),
+    );
+    const accountTypeValue = String(
+        getFieldValue<string>(BraintreeAchBankAccountValues.AccountType),
+    );
 
     useEffect(() => {
         const validate = async () => {
@@ -77,13 +85,13 @@ const MandateText: FunctionComponent<MandateTextProps> = ({
             return language.translate('payment.braintreeach_mandate_text', {
                 storeName,
                 depositoryName: isBusiness
-                    ? String(businessNameValue)
-                    : `${String(firstNameValue)} ${String(lastNameValue)}`,
-                routingNumber: String(routingNumberValue),
-                accountNumber: String(accountNumberValue),
+                    ? businessNameValue
+                    : `${firstNameValue} ${lastNameValue}`,
+                routingNumber: routingNumberValue,
+                accountNumber: accountNumberValue,
                 outstandingBalance: `${symbol || ''}${outstandingBalance}`,
                 currentDate: new Date().toJSON().slice(0, 10),
-                accountType: String(accountTypeValue).toLowerCase(),
+                accountType: accountTypeValue.toLowerCase(),
             });
         }
 
