@@ -194,6 +194,7 @@
 
         .product {
             background-color: #0a0c11;
+            flex-wrap: nowrap;
             padding: 12px 8px;
 
             .product-title {
@@ -201,11 +202,18 @@
             }
 
             .product-figure {
+                flex-shrink: 0;
                 padding-right: 13px;
             }
 
             .product-body {
+                padding-right: 0.375rem;
                 width: 75%;
+            }
+
+            .product-actions {
+                align-self: start;
+                order: 3;
             }
         }
     }
