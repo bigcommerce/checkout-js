@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.320.1](https://github.com/bigcommerce/checkout-js/compare/v1.320.0...v1.320.1) (2023-05-19)
+
+
+### Bug Fixes
+
+* **checkout:** PI-48 Place Order button is disabled when customer with stored credit card deletes and re-adds card ([2ab8a83](https://github.com/bigcommerce/checkout-js/commit/2ab8a83a77e0071da4bcfa656686575fb4e64343))
+
 ## [1.320.0](https://github.com/bigcommerce/checkout-js/compare/v1.319.1...v1.320.0) (2023-05-18)
 
 
