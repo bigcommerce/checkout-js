@@ -27,28 +27,13 @@ interface WithCheckoutCheckoutButtonContainerProps{
     initialize(options: CustomerInitializeOptions): void;
 }
 
-const sortMethodIds = (methodIds:string[]):string[] => {
-    const order = [
-        'applepay',
-        'braintreepaypalcredit',
-        'braintreepaypal',
-        'paypalcommercevenmo',
-        'paypalcommercecredit',
-        'paypalcommerce',
-    ];
-
-    return methodIds.sort((a, b) => order.indexOf(b) - order.indexOf(a));
-}
-
 const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & WithCheckoutCheckoutButtonContainerProps> = (
     {
         availableMethodIds,
         checkEmbeddedSupport,
-        deinitialize,
         isLoading,
         isPaypalCommerce,
         isPaymentStepActive,
-        initialize,
         initializedMethodIds,
         onUnhandledError,
     }) => {

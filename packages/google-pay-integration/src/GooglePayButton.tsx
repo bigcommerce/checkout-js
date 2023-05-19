@@ -29,5 +29,5 @@ const GooglePayButton: FunctionComponent<CheckoutButtonProps> = (props) => {
 
 export default toResolvableComponent<CheckoutButtonProps, CheckoutButtonResolveId>(
     GooglePayButton,
-    [{ id: 'googlepay' }],
+    [{ id: 'googlepayadyenv2' }],
 );

@@ -6,20 +6,28 @@ import { withCheckout, WithCheckoutProps } from '../checkout';
 
 import { mapToCheckoutButtonHelperProps } from './mapToCheckoutButtonHelperProps';
 import resolveCheckoutButton from './resolveCheckoutButton';
+import CheckoutButtonV1Resolver from './WalletButtonV1Resolver';
 
 export interface CheckoutButtonListProps {
     onUnhandledError(error: Error): void;
 }
 
+const sortMethodIds = (methodIds:string[]):string[] => {
+    const order = [
+        'applepay',
+        'braintreepaypalcredit',
+        'braintreepaypal',
+        'paypalcommercevenmo',
+        'paypalcommercecredit',
+        'paypalcommerce',
+    ];
+
+    return methodIds.sort((a, b) => order.indexOf(b) - order.indexOf(a));
+}
 
 const CheckoutButtonList: FunctionComponent<
     CheckoutButtonListProps & WithCheckoutProps & WithLanguageProps
 > = ({ checkoutService, checkoutState, language, onUnhandledError }) => {
-    const {
-        statuses: { isInitializingCustomer },
-        data: { getConfig },
-    } = checkoutState;
-
     const helperProps = mapToCheckoutButtonHelperProps({ checkoutService, checkoutState });
 
     if (helperProps === null) {
@@ -30,32 +38,23 @@ const CheckoutButtonList: FunctionComponent<
         availableMethodIds,
         deinitialize,
         initialize,
-        initializedMethodIds,
-        isLoading,
-        isPaypalCommerce,
     } = helperProps;
-
-    console.log(availableMethodIds,
-        deinitialize,
-        initialize,
-        initializedMethodIds,
-        isLoading,
-        isPaypalCommerce);
 
     return (
         <>
-            {!isInitializingCustomer() && (
-                <p>
-                    <TranslatedString id="remote.continue_with_text" />
-                </p>
-            )}
-
             <div className="checkoutRemote">
                 {availableMethodIds.map((methodId) => {
                     const ResolvedCheckoutButton = resolveCheckoutButton({ id: methodId });
 
                     if (!ResolvedCheckoutButton) {
-                        return null;
+                        return <CheckoutButtonV1Resolver
+                            deinitialize={deinitialize}
+                            initialize={initialize}
+                            isShowingWalletButtonsOnTop={true}
+                            key={methodId}
+                            methodId={methodId}
+                            onError={onUnhandledError}
+                        />
                     }
 
                     return (
