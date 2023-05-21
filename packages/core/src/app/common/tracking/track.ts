@@ -37,6 +37,7 @@ function transformUserData(user: Customer): GTMUser {
     if (user.addresses) {
       for (const address of user.addresses) {
         const isUSCountry = address.countryCode === 'US';
+        const isUKCountry = address.countryCode === 'GB';
 
         if (address.city !== '') {
           city.add(address.city.toLowerCase().replace(" ", ""));
@@ -54,7 +55,7 @@ function transformUserData(user: Customer): GTMUser {
           const postalCode = address.postalCode.toLowerCase().replace(" ", "").replace("-","")
           const firstFiveDigits = postalCode.substring(0, 5);
 
-          zipCode.add(isUSCountry ? firstFiveDigits : postalCode);
+          zipCode.add(isUSCountry || isUKCountry ? firstFiveDigits : postalCode);
         }
         
         if (address.countryCode !== '') {
