@@ -11,7 +11,11 @@ import {
 } from '@bigcommerce/checkout/locale';
 import { getInstruments, getStoreConfig } from '@bigcommerce/checkout/test-utils';
 
-import { isAccountInstrument, isBankAccountInstrument } from '../../guards';
+import {
+    isAccountInstrument,
+    isBankAccountInstrument,
+    isBraintreeAchInstrument,
+} from '../../guards';
 
 import AccountInstrumentSelect, { AccountInstrumentSelectProps } from './AccountInstrumentSelect';
 
@@ -237,6 +241,31 @@ describe('AccountInstrumentSelect', () => {
 
         expect(component.find('[data-test="instrument-select-option"]').at(0).text()).toContain(
             'Account number ending in: ABCIssuer: DEF',
+        );
+    });
+
+    it('shows list of instruments when clicked and is an braintree ach instrument', () => {
+        defaultProps.instruments = getInstruments().filter(isBraintreeAchInstrument);
+
+        const component = mount(
+            <LocaleContext.Provider value={localeContext}>
+                <Formik initialValues={initialValues} onSubmit={noop}>
+                    <Field
+                        name="instrumentId"
+                        render={(field: FieldProps<string>) => (
+                            <AccountInstrumentSelect {...field} {...defaultProps} />
+                        )}
+                    />
+                </Formik>
+            </LocaleContext.Provider>,
+        );
+
+        component.find('[data-test="instrument-select"]').simulate('click').update();
+
+        expect(component.exists('[data-test="instrument-select-menu"]')).toBe(true);
+
+        expect(component.find('[data-test="instrument-select-option"]').at(0).text()).toContain(
+            'Braintree ACHAccount number ending in: 0000Routing Number: 011000015',
         );
     });
 

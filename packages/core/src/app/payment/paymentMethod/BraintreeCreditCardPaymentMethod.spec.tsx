@@ -230,4 +230,25 @@ describe('when using Braintree payment', () => {
 
         expect(cancelThreeDSecureVerification).toHaveBeenCalled();
     });
+
+    it('throws an error when adding a frame is unsuccessful', async () => {
+        mount(<BraintreeCreditCardPaymentMethodTest {...defaultProps} />);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        const initializeOptions = (defaultProps.initializePayment as jest.Mock).mock.calls[0][0];
+
+        act(() => {
+            initializeOptions.braintree.threeDSecure.addFrame(
+                new Error(),
+                document.createElement('iframe'),
+                jest.fn(),
+            );
+        });
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalled();
+    });
+
 });

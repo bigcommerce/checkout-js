@@ -3,6 +3,9 @@ import { Placement } from 'popper.js';
 import React, { Component, MouseEventHandler, ReactNode } from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
+export const CHECKOUT_ROOT_NODE_ID = 'checkout-app';
+export const MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID = 'micro-app-ng-checkout';
+
 export interface DropdownTriggerProps {
     placement?: Placement;
     dropdown: ReactNode;
@@ -22,7 +25,7 @@ export default class DropdownTrigger extends Component<DropdownTriggerProps, Dro
     };
 
     componentWillUnmount(): void {
-        document.removeEventListener('click', this.handleClose);
+        this.getRootElement()?.removeEventListener('click', this.handleClose);
     }
 
     render() {
@@ -86,7 +89,7 @@ export default class DropdownTrigger extends Component<DropdownTriggerProps, Dro
         }
 
         this.setState({ shouldShow: true }, () => {
-            document.addEventListener('click', this.handleClose);
+            this.getRootElement()?.addEventListener('click', this.handleClose);
         });
     };
 
@@ -98,7 +101,14 @@ export default class DropdownTrigger extends Component<DropdownTriggerProps, Dro
         }
 
         this.setState({ shouldShow: false }, () => {
-            document.removeEventListener('click', this.handleClose);
+            this.getRootElement()?.removeEventListener('click', this.handleClose);
         });
     };
+
+    private getRootElement() {
+        return (
+            document.getElementById(CHECKOUT_ROOT_NODE_ID) ||
+            document.getElementById(MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID)
+        );
+    }
 }

@@ -43,6 +43,7 @@ export {
     assertIsBankInstrument,
     assertIsCardInstrument,
     isAccountInstrument,
+    isBraintreeAchInstrument,
     isBankAccountInstrument,
     isCardInstrument,
     isInstrumentCardCodeRequired,

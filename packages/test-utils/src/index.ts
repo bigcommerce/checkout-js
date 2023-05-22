@@ -15,5 +15,6 @@ export {
     getBankInstrument,
     getCardInstrument,
     getInstruments,
+    getBraintreeAchInstrument,
 } from './instruments.mock';
 export { getDigitalItem, getPhysicalItem, getGiftCertificateItem } from './line-item.mock';

@@ -49,6 +49,9 @@ export function getBraintreeAchPaymentMethod(): PaymentMethod {
         config: {
             displayName: 'Braintree ACH',
         },
+        initializationData: {
+            isVaultingEnabled: false,
+        },
         type: 'PAYMENT_TYPE_API',
     };
 }

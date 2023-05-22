@@ -1,13 +1,23 @@
-import { AccountInstrument, BankInstrument } from '@bigcommerce/checkout-sdk';
+import {
+    AccountInstrument,
+    BankInstrument,
+    BraintreeAchInstrument,
+} from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { FieldProps } from 'formik';
 import { find, noop } from 'lodash';
 import React, { FunctionComponent, PureComponent, ReactNode, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { DropdownTrigger, IconNewAccount, IconPaypal, IconSize } from '@bigcommerce/checkout/ui';
+import {
+    DropdownTrigger,
+    IconBraintreeAch,
+    IconNewAccount,
+    IconPaypal,
+    IconSize,
+} from '@bigcommerce/checkout/ui';
 
-import { isBankAccountInstrument } from '../../guards';
+import { isBankAccountInstrument, isBraintreeAchInstrument } from '../../guards';
 
 interface AccountInstrumentUseNewButtonProps {
     className?: string;
@@ -61,6 +71,40 @@ const AccountInstrumentMenuItem: FunctionComponent<AccountInstrumentMenuItemProp
     );
 };
 
+interface BraintreeAchInstrumentMenuItemProps {
+    className?: string;
+    instrument: BraintreeAchInstrument;
+    testId?: string;
+    onClick?(): void;
+}
+
+const BraintreeAchInstrumentMenuItem: FunctionComponent<BraintreeAchInstrumentMenuItemProps> = ({
+    className,
+    instrument,
+    testId,
+    onClick,
+}) => {
+    const issuerName = `Routing Number: ${instrument.issuer}`;
+    const accountNumber = `Account number ending in: ${instrument.accountNumber}`;
+
+    return (
+        <button className={className} data-test={testId} onClick={onClick} type="button">
+            <div className="instrumentSelect-details">
+                {
+                    // TODO: When we include new account instrument types we can
+                    // abstract these icons in a similar way we did for credit cards.
+                }
+                <IconBraintreeAch size={IconSize.Medium} />
+
+                <div className="instrumentSelect-bank">
+                    <div>{accountNumber}</div>
+                    <div>{issuerName}</div>
+                </div>
+            </div>
+        </button>
+    );
+};
+
 interface BankInstrumentMenuItemProps {
     className?: string;
     instrument: BankInstrument;
@@ -92,7 +136,7 @@ const BankInstrumentMenuItem: FunctionComponent<BankInstrumentMenuItemProps> = (
 };
 
 interface AccountInstrumentOptionProps {
-    instrument: AccountInstrument;
+    instrument: BraintreeAchInstrument | AccountInstrument;
     testId?: string;
     onClick?(token: string): void;
 }
@@ -104,6 +148,16 @@ const AccountInstrumentOption: FunctionComponent<AccountInstrumentOptionProps> =
     const handleClick = useCallback(() => {
         onClick(instrument.bigpayToken);
     }, [onClick, instrument]);
+
+    if (isBraintreeAchInstrument(instrument)) {
+        return (
+            <BraintreeAchInstrumentMenuItem
+                instrument={instrument}
+                onClick={handleClick}
+                testId="instrument-select-option"
+            />
+        );
+    }
 
     return !isBankAccountInstrument(instrument) ? (
         <AccountInstrumentMenuItem
@@ -121,7 +175,7 @@ const AccountInstrumentOption: FunctionComponent<AccountInstrumentOptionProps> =
 };
 
 interface AccountInstrumentMenuProps {
-    instruments: AccountInstrument[];
+    instruments: Array<BraintreeAchInstrument | AccountInstrument>;
     selectedInstrumentId?: string;
     onSelectInstrument(id: string): void;
     onUseNewInstrument(): void;
@@ -165,7 +219,7 @@ const AccountInstrumentMenu: FunctionComponent<AccountInstrumentMenuProps> = ({
 };
 
 interface AccountInstrumentSelectButtonProps {
-    instrument?: AccountInstrument;
+    instrument?: BraintreeAchInstrument | AccountInstrument;
     testId?: string;
     onClick?(): void;
 }
@@ -179,6 +233,17 @@ const AccountInstrumentSelectButton: FunctionComponent<AccountInstrumentSelectBu
         return (
             <AccountInstrumentUseNewButton
                 className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
+                testId={testId}
+            />
+        );
+    }
+
+    if (isBraintreeAchInstrument(instrument)) {
+        return (
+            <BraintreeAchInstrumentMenuItem
+                className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
+                instrument={instrument}
+                onClick={onClick}
                 testId={testId}
             />
         );
@@ -206,7 +271,7 @@ export interface AccountInstrumentSelectValues {
 }
 
 export interface AccountInstrumentSelectProps extends FieldProps<string> {
-    instruments: AccountInstrument[];
+    instruments: Array<BraintreeAchInstrument | AccountInstrument>;
     selectedInstrumentId?: string;
     onSelectInstrument(id: string): void;
     onUseNewInstrument(): void;
@@ -244,7 +309,7 @@ class AccountInstrumentSelect extends PureComponent<AccountInstrumentSelectProps
             this.props;
 
         const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
         const { value, ...otherFieldProps } = field;
 
         return (
@@ -264,10 +329,7 @@ class AccountInstrumentSelect extends PureComponent<AccountInstrumentSelectProps
                         testId="instrument-select"
                     />
 
-                    {
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                        <input type="hidden" value={value || ''} {...otherFieldProps} />
-                    }
+                    <input type="hidden" value={value || ''} {...otherFieldProps} />
                 </DropdownTrigger>
             </div>
         );

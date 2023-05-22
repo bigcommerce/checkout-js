@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import DropdownTrigger from './DropdownTrigger';
+import DropdownTrigger, { CHECKOUT_ROOT_NODE_ID } from './DropdownTrigger';
 
 describe('DropdownTrigger', () => {
     it('shows dropdown when mouse clicks', () => {
@@ -31,14 +31,18 @@ describe('DropdownTrigger', () => {
 
     it('hides dropdown when mouse clicks anywhere else in document', () => {
         const component = mount(
-            <DropdownTrigger dropdown={<div>Hello world</div>}>
-                <button>Foobar</button>
-            </DropdownTrigger>,
+            <div id={CHECKOUT_ROOT_NODE_ID}>
+                <DropdownTrigger dropdown={<div>Hello world</div>}>
+                    <button>Foobar</button>
+                </DropdownTrigger>
+            </div>,
         );
 
         component.simulate('click');
-        document.body.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        document
+            .getElementById(CHECKOUT_ROOT_NODE_ID)
+            ?.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
-        expect(component.state('shouldShow')).toBe(false);
+        expect(component.find('Hello world').exists()).toBe(false);
     });
 });

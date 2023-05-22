@@ -6,8 +6,14 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckoutContext } from '@bigcommerce/checkout/payment-integration-api';
 import { Button, ButtonSize, ButtonVariant, Modal, ModalHeader } from '@bigcommerce/checkout/ui';
 
-import { isAccountInstrument, isBankAccountInstrument, isCardInstrument } from '../../guards';
+import {
+    isAccountInstrument,
+    isBankAccountInstrument,
+    isBraintreeAchInstrument,
+    isCardInstrument,
+} from '../../guards';
 import { ManageAccountInstrumentsTable } from '../ManageAccountInstrumentsTable';
+import { ManageBraintreeInstrumentsTable } from '../ManageBraintreeAchInstrumentsTable';
 import { ManageCardInstrumentsTable } from '../ManageCardInstrumentsTable';
 import { ManageInstrumentsAlert } from '../ManageInstrumentsAlert';
 
@@ -64,12 +70,7 @@ class ManageInstrumentsModal extends Component<
                 onAfterOpen={this.handleAfterOpen}
                 onRequestClose={onRequestClose}
             >
-                {
-                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                    deleteInstrumentError && (
-                        <ManageInstrumentsAlert error={deleteInstrumentError} />
-                    )
-                }
+                {deleteInstrumentError && <ManageInstrumentsAlert error={deleteInstrumentError} />}
 
                 {this.renderContent()}
             </Modal>
@@ -101,6 +102,17 @@ class ManageInstrumentsModal extends Component<
         const cardInstruments = instruments.filter(isCardInstrument);
         const bankInstruments = instruments.filter(isBankAccountInstrument);
         const accountInstruments = instruments.filter(isAccountInstrument);
+        const braintreeAchInstrument = instruments.filter(isBraintreeAchInstrument);
+
+        if (braintreeAchInstrument.length) {
+            return (
+                <ManageBraintreeInstrumentsTable
+                    instruments={braintreeAchInstrument}
+                    isDeletingInstrument={isDeletingInstrument()}
+                    onDeleteInstrument={this.handleDeleteInstrument}
+                />
+            );
+        }
 
         const bankAndAccountInstruments = [...bankInstruments, ...accountInstruments];
 

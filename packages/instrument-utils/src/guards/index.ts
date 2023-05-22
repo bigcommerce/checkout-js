@@ -1,5 +1,6 @@
 /* istanbul ignore file */
 export { isAccountInstrument } from './isAccountInstrument';
+export { isBraintreeAchInstrument } from './isBraintreeAchInstrument';
 export { assertIsBankInstrument, isBankAccountInstrument } from './isBankInstrument';
 export { assertIsCardInstrument, isCardInstrument } from './isCardInstrument';
 export { isInstrumentCardCodeRequired } from './isInstrumentCardCodeRequired';

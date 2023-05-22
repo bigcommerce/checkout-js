@@ -1,6 +1,7 @@
 import {
     AccountInstrument,
     BankInstrument,
+    BraintreeAchInstrument,
     CardInstrument,
     PaymentInstrument,
 } from '@bigcommerce/checkout-sdk';
@@ -82,6 +83,16 @@ export function getInstruments(): PaymentInstrument[] {
             type: 'bank',
             iban: '12345',
         },
+        {
+            bigpayToken: '45454545',
+            provider: 'braintree',
+            accountNumber: '0000',
+            issuer: '011000015',
+            trustedShippingAddress: false,
+            defaultInstrument: false,
+            method: 'ach',
+            type: 'bank',
+        },
     ];
 }
 
@@ -126,5 +137,18 @@ export function getBankInstrument(): BankInstrument {
         accountNumber: 'GHI',
         issuer: 'JKL',
         iban: '12345',
+    };
+}
+
+export function getBraintreeAchInstrument(): BraintreeAchInstrument {
+    return {
+        bigpayToken: '45454545',
+        provider: 'braintree',
+        accountNumber: '0000',
+        issuer: '011000015',
+        trustedShippingAddress: false,
+        defaultInstrument: false,
+        method: 'ach',
+        type: 'bank',
     };
 }
