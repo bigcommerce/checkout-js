@@ -6,7 +6,7 @@ const checkoutSettings = {
         payment: {
             token: null,
         },
-        checkoutId: 'x,',
+        checkoutId: 'x',
         geoCountryCode: 'AU',
     },
     customization: {
@@ -338,7 +338,7 @@ const checkoutSettingsWithCustomErrorFlashMessage = {
 };
 
 const cart = {
-    id: 'x,',
+    id: 'x',
     cart: {
         id: 'x,',
         customerId: 0,
@@ -475,7 +475,7 @@ const cartWithShippingAddress = {
     ...cartWithBillingEmail,
     consignments: [
         {
-            id: '646469944c50d',
+            id: 'x',
             shippingCost: 0,
             handlingCost: 0,
             couponDiscounts: [],
@@ -551,7 +551,7 @@ const cartWithShippingAddress = {
 };
 
 const cartWithShippingAndBilling = {
-    ...cart,
+    ...cartWithShippingAddress,
     billingAddress: {
         id: 'x',
         firstName: 'checkout',
@@ -570,81 +570,6 @@ const cartWithShippingAndBilling = {
         phone: '',
         customFields: [],
     },
-    consignments: [
-        {
-            id: 'x',
-            shippingCost: 0,
-            handlingCost: 0,
-            couponDiscounts: [],
-            discounts: [],
-            lineItemIds: ['x'],
-            selectedShippingOption: {
-                id: 'x',
-                type: 'shipping_pickupinstore',
-                description: 'Pickup In Store',
-                imageUrl: '',
-                cost: 0,
-                transitTime: '',
-                additionalDescription: '',
-            },
-            shippingAddress: {
-                firstName: 'checkout',
-                lastName: 'test',
-                email: '',
-                company: '',
-                address1: '130 Pitt St',
-                address2: '',
-                city: 'Sydney',
-                stateOrProvince: 'New South Wales',
-                stateOrProvinceCode: 'NSW',
-                country: 'Australia',
-                countryCode: 'AU',
-                postalCode: '2000',
-                phone: '',
-                customFields: [],
-                shouldSaveAddress: true,
-            },
-            address: {
-                firstName: 'checkout',
-                lastName: 'test',
-                email: '',
-                company: '',
-                address1: '130 Pitt St',
-                address2: '',
-                city: 'Sydney',
-                stateOrProvince: 'New South Wales',
-                stateOrProvinceCode: 'NSW',
-                country: 'Australia',
-                countryCode: 'AU',
-                postalCode: '2000',
-                phone: '',
-                customFields: [],
-                shouldSaveAddress: true,
-            },
-            availableShippingOptions: [
-                {
-                    id: 'x',
-                    type: 'shipping_pickupinstore',
-                    description: 'Pickup In Store',
-                    imageUrl: '',
-                    cost: 0,
-                    transitTime: '',
-                    isRecommended: false,
-                    additionalDescription: '',
-                },
-                {
-                    id: 'xx',
-                    type: 'shipping_flatrate',
-                    description: 'Flat Rate',
-                    imageUrl: '',
-                    cost: 10,
-                    transitTime: '',
-                    isRecommended: true,
-                    additionalDescription: '',
-                },
-            ],
-        },
-    ],
 };
 
 // intentionally shortened
