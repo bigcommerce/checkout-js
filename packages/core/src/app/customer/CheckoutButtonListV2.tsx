@@ -4,52 +4,33 @@ import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 
 import { withCheckout, WithCheckoutProps } from '../checkout';
 
-import { mapToCheckoutButtonHelperProps } from './mapToCheckoutButtonHelperProps';
 import resolveCheckoutButton from './resolveCheckoutButton';
 import CheckoutButtonV1Resolver from './WalletButtonV1Resolver';
 
 export interface CheckoutButtonListProps {
+    methodIds: string[];
     onUnhandledError(error: Error): void;
 }
 
-// const sortMethodIds = (methodIds:string[]):string[] => {
-//     const order = [
-//         'applepay',
-//         'braintreepaypalcredit',
-//         'braintreepaypal',
-//         'paypalcommercevenmo',
-//         'paypalcommercecredit',
-//         'paypalcommerce',
-//     ];
-
-//     return methodIds.sort((a, b) => order.indexOf(b) - order.indexOf(a));
-// }
-
 const CheckoutButtonList: FunctionComponent<
     CheckoutButtonListProps & WithCheckoutProps & WithLanguageProps
-> = ({ checkoutService, checkoutState, language, onUnhandledError }) => {
-    const helperProps = mapToCheckoutButtonHelperProps({ checkoutService, checkoutState });
-
-    if (helperProps === null) {
-        return null;
-    }
-
-    const {
-        availableMethodIds,
-        deinitialize,
-        initialize,
-    } = helperProps;
-
+> = ({
+        checkoutService,
+        checkoutState,
+        language,
+        methodIds,
+        onUnhandledError,
+    }) => {
     return (
         <>
             <div className="checkoutRemote">
-                {availableMethodIds.map((methodId) => {
+                {methodIds.map((methodId) => {
                     const ResolvedCheckoutButton = resolveCheckoutButton({ id: methodId });
 
                     if (!ResolvedCheckoutButton) {
                         return <CheckoutButtonV1Resolver
-                            deinitialize={deinitialize}
-                            initialize={initialize}
+                            deinitialize={checkoutService.deinitializeCustomer}
+                            initialize={checkoutService.initializeCustomer}
                             isShowingWalletButtonsOnTop={true}
                             key={methodId}
                             methodId={methodId}

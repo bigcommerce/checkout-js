@@ -27,8 +27,8 @@ export const SUPPORTED_METHODS: string[] = [
     'googlepayworldpayaccess',
 ];
 
-export const filterUnsupportedMethodIds = (methodIds:string[]): string[] => {
-    return (methodIds).filter((methodId) => {
+export const getSupportedMethodIds = (methodIds: string[]): string[] => {
+    return methodIds.filter((methodId) => {
         if (methodId === APPLE_PAY && !isApplePayWindow(window)) {
             return false;
         }
