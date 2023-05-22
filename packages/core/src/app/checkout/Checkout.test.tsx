@@ -4,7 +4,7 @@ import {
     createEmbeddedCheckoutMessenger,
     EmbeddedCheckoutMessenger,
 } from '@bigcommerce/checkout-sdk';
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
@@ -181,38 +181,42 @@ describe('Checkout', () => {
     });
 
     describe('customer step', () => {
-        beforeEach(async () => {
+        it('renders guest form when customer step is active', async () => {
             render(<CheckoutTest {...defaultProps} />);
 
             await checkout.waitForCustomerStep();
-        });
 
-        it('renders guest form when customer step is active', () => {
             expect(screen.getByRole('textbox', { name: /email/i })).toBeInTheDocument();
             expect(screen.getByRole('button', { name: /continue/i })).toBeInTheDocument();
         });
 
         it('calls trackStepComplete when switching steps', async () => {
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForCustomerStep();
+
             await userEvent.type(screen.getByLabelText('Email'), 'test@example.com');
             await userEvent.click(screen.getByText('Continue'));
 
-            await waitFor(() => screen.getByText('test@example.com'));
+            await screen.findByText('test@example.com');
 
             expect(analyticsTracker.trackStepCompleted).toHaveBeenCalledWith('customer');
         });
 
         it('navigates to next step when shopper continues as guest', async () => {
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForCustomerStep();
+
             await userEvent.type(await screen.findByLabelText('Email'), 'test@example.com');
             await userEvent.click(await screen.findByText('Continue'));
 
-            await waitFor(() => screen.getByText('test@example.com'));
+            await screen.findByText('test@example.com');
 
             expect(screen.getByText('test@example.com')).toBeInTheDocument();
         });
 
         it('logs unhandled error', async () => {
-            cleanup();
-
             checkout.use('UnsupportedProvider');
 
             render(<CheckoutTest {...defaultProps} />);
