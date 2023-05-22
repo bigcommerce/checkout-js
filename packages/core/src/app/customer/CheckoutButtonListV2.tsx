@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 
-import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 
 import { withCheckout, WithCheckoutProps } from '../checkout';
 
@@ -12,18 +12,18 @@ export interface CheckoutButtonListProps {
     onUnhandledError(error: Error): void;
 }
 
-const sortMethodIds = (methodIds:string[]):string[] => {
-    const order = [
-        'applepay',
-        'braintreepaypalcredit',
-        'braintreepaypal',
-        'paypalcommercevenmo',
-        'paypalcommercecredit',
-        'paypalcommerce',
-    ];
+// const sortMethodIds = (methodIds:string[]):string[] => {
+//     const order = [
+//         'applepay',
+//         'braintreepaypalcredit',
+//         'braintreepaypal',
+//         'paypalcommercevenmo',
+//         'paypalcommercecredit',
+//         'paypalcommerce',
+//     ];
 
-    return methodIds.sort((a, b) => order.indexOf(b) - order.indexOf(a));
-}
+//     return methodIds.sort((a, b) => order.indexOf(b) - order.indexOf(a));
+// }
 
 const CheckoutButtonList: FunctionComponent<
     CheckoutButtonListProps & WithCheckoutProps & WithLanguageProps
