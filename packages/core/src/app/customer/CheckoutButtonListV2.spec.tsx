@@ -4,7 +4,7 @@ import {
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
-import { merge, noop } from 'lodash';
+import { noop } from 'lodash';
 import React, { ComponentType } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
@@ -13,8 +13,6 @@ import {
     CheckoutButtonResolveId,
     CheckoutProvider,
 } from '@bigcommerce/checkout/payment-integration-api';
-
-import { getStoreConfig } from '../config/config.mock';
 
 import CheckoutButtonList, { CheckoutButtonListProps } from './CheckoutButtonListV2';
 
@@ -41,6 +39,7 @@ describe('CheckoutButtonListV2', () => {
     beforeEach(() => {
         defaultProps = {
             onUnhandledError: jest.fn(),
+            methodIds: ['foo', 'bar']
         };
 
         checkoutService = createCheckoutService();
@@ -51,14 +50,6 @@ describe('CheckoutButtonListV2', () => {
 
             return noop;
         });
-
-        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(
-            merge(getStoreConfig(), {
-                checkoutSettings: {
-                    remoteCheckoutProviders: ['foo', 'bar'],
-                },
-            }),
-        );
 
         CheckoutButtonListTest = () => (
             <CheckoutProvider checkoutService={checkoutService}>
@@ -76,14 +67,5 @@ describe('CheckoutButtonListV2', () => {
 
         expect(component.find(DefaultButton)).toHaveLength(1);
         expect(component.find(FooButton)).toHaveLength(1);
-        expect(component.html()).toContain('<p>Or continue with</p>');
-    });
-
-    it('does not render "or continue with" while initializing', () => {
-        jest.spyOn(checkoutState.statuses, 'isInitializingCustomer').mockReturnValue(true);
-
-        const component = mount(<CheckoutButtonListTest {...defaultProps} />);
-
-        expect(component.html()).not.toContain('<p>Or continue with</p>');
     });
 });

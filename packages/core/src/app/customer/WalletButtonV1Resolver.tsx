@@ -41,7 +41,8 @@ const CheckoutButtonV1Resolver: FunctionComponent<CheckoutButtonV1ResolverProps>
                 />
             );
 
-        case 'paypalcommerce' || 'paypalcommercecredit':
+        case 'paypalcommerce':
+        case 'paypalcommercecredit':
             return (
                 <PayPalCommerceButton
                     containerId={`${methodId}CheckoutButton`}
