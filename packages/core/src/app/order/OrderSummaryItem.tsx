@@ -16,6 +16,7 @@ export interface OrderSummaryItemProps {
     image?: ReactNode;
     description?: ReactNode;
     productOptions?: OrderSummaryItemOption[];
+    checkoutDescription?: string | null;
 }
 
 export interface OrderSummaryItemOption {
@@ -72,7 +73,8 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyPr
     productOptions,
     quantity,
     description,
-    currency
+    currency,
+    checkoutDescription
 }) => {
     const isSubscription = () => {
         return productOptions && productOptions[0] && productOptions[0].content
@@ -106,7 +108,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyPr
                                 { option.content }
                             </li>
                         ) }
-                        <li className="product-option custom-description">{ getCustomDescription(name, amount, currency) }</li>
+                        <li className="product-option custom-description">{ checkoutDescription }</li>
                     </ul>
                     { description && <div
                         className="product-description optimizedCheckout-contentSecondary"

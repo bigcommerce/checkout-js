@@ -24,7 +24,7 @@ interface OrderSummaryItemsState {
     itemsWithCheckoutDescriptions: OrderSummaryItemProps[];
 }
 
-const getCheckoutDescriptions = async (items: OrderSummaryItemProps[], currencyCode: string) => {
+const getCheckoutDescriptions = async (items: OrderSummaryItemProps[], currencyCode: string, callback: (arg0: OrderSummaryItemProps[]) => void) => {
     const oneTimePurchaseItems: number[] = [];
     const subscriptionItems: number[] =[]
 
@@ -40,13 +40,11 @@ const getCheckoutDescriptions = async (items: OrderSummaryItemProps[], currencyC
 
     const productsDescriptionsForSubscriptions = await getProductsCheckoutDescriptions(subscriptionItems, currencyCode, "subscription");
     const productsDescriptionsForOneTimePurchases = await getProductsCheckoutDescriptions(oneTimePurchaseItems, currencyCode, "one-time-purchase");
-    
     const updatedItemsWithCheckoutDescriptions = items.map((item: any) => {
         const updatedItem = item;
         const {productId} = item;
-        const isSubscription = true;
 
-        if(isSubscription) {
+        if(isSubscription(item)) {
             const checkoutDescriptionSubscription = productsDescriptionsForSubscriptions.data.find(({id}) => id === productId.toString());
             
             updatedItem.checkoutDescription = checkoutDescriptionSubscription?.checkoutDescription || null;
@@ -60,9 +58,7 @@ const getCheckoutDescriptions = async (items: OrderSummaryItemProps[], currencyC
     });
 
     // update state
-
-
-    console.log("productsDescriptions", productsDescriptionsForSubscriptions, updatedItemsWithCheckoutDescriptions);
+    callback(updatedItemsWithCheckoutDescriptions);
 }
 
 class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSummaryItemsState> {
@@ -83,7 +79,7 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
             ...(items.customItems || []).map(mapFromCustom),
         ];
 
-        getCheckoutDescriptions(initialItems, currency.code)
+        getCheckoutDescriptions(initialItems, currency.code, (updatedItems) => {this.setState({itemsWithCheckoutDescriptions: updatedItems})})
 
         this.state = {
             isExpanded: false,
@@ -94,6 +90,8 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
     render(): ReactNode {
         const { items } = this.props;
         const { isExpanded, itemsWithCheckoutDescriptions } = this.state;
+
+        console.log("itemsWithCheckoutDescriptions", itemsWithCheckoutDescriptions);
 
         return (
             <>
