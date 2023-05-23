@@ -22,6 +22,7 @@ export interface OrderSummaryItemsProps {
 interface OrderSummaryItemsState {
     isExpanded: boolean;
     itemsWithCheckoutDescriptions: OrderSummaryItemProps[];
+    checkoutDescriptionsLoading: boolean;
 }
 
 const getCheckoutDescriptions = async (items: OrderSummaryItemProps[], currencyCode: string, callback: (arg0: OrderSummaryItemProps[]) => void) => {
@@ -79,11 +80,15 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
             ...(items.customItems || []).map(mapFromCustom),
         ];
 
-        getCheckoutDescriptions(initialItems, currency.code, (updatedItems) => {this.setState({itemsWithCheckoutDescriptions: updatedItems})})
+        getCheckoutDescriptions(initialItems, currency.code, (updatedItems) => {
+            this.setState({itemsWithCheckoutDescriptions: updatedItems});
+            this.setState({checkoutDescriptionsLoading: false});
+        })
 
         this.state = {
             isExpanded: false,
-            itemsWithCheckoutDescriptions: initialItems
+            itemsWithCheckoutDescriptions: initialItems,
+            checkoutDescriptionsLoading: true
         };
     }
 
@@ -110,7 +115,7 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
                         .slice(0, isExpanded ? undefined : COLLAPSED_ITEMS_LIMIT)
                         .map((summaryItemProps) => (
                             <li className="productList-item is-visible" key={summaryItemProps.id}>
-                                <OrderSummaryItem {...summaryItemProps} />
+                                <OrderSummaryItem {...summaryItemProps} checkoutDescriptionsLoading={this.state.checkoutDescriptionsLoading} />
                             </li>
                         ))}
                 </ul>

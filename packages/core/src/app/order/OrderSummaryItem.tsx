@@ -65,7 +65,7 @@ const getCustomDescription = (name: string, amount: number, currencyService: any
     }
     return '';
 };
-const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyProps> = ({
+const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyProps & {checkoutDescriptionsLoading: boolean}> = ({
     amount,
     amountAfterDiscount,
     image,
@@ -74,7 +74,8 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyPr
     quantity,
     description,
     currency,
-    checkoutDescription
+    checkoutDescription,
+    checkoutDescriptionsLoading
 }) => {
     const isSubscription = () => {
         return productOptions && productOptions[0] && productOptions[0].content
@@ -108,7 +109,9 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyPr
                                 { option.content }
                             </li>
                         ) }
-                        <li className="product-option custom-description">{ checkoutDescription }</li>
+                        <li className={`product-option custom-description ${checkoutDescriptionsLoading ? "loading" : ""}`}>
+                            { checkoutDescriptionsLoading ? (<><span></span><span></span><span></span></>) : checkoutDescription }
+                        </li>
                     </ul>
                     { description && <div
                         className="product-description optimizedCheckout-contentSecondary"
