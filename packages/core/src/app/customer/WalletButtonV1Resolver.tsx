@@ -1,67 +1,20 @@
-import { CustomerInitializeOptions, CustomerRequestOptions } from "@bigcommerce/checkout-sdk";
-import React, { FunctionComponent } from "react";
-
 import CheckoutButton from "./CheckoutButton";
 import { AmazonPayV2Button, ApplePayButton, PayPalCommerceButton } from "./customWalletButton";
 
-interface CheckoutButtonV1ResolverProps {
-    methodId: string;
-    deinitialize(options: CustomerRequestOptions): void;
-    isShowingWalletButtonsOnTop?: boolean;
-    initialize(options: CustomerInitializeOptions): void;
-    onError?(error: Error): void;
-}
-
-const CheckoutButtonV1Resolver: FunctionComponent<CheckoutButtonV1ResolverProps> = ({
-    isShowingWalletButtonsOnTop= false,
-    onError,
-    methodId,
-    ...rest
-}) => {
+const CheckoutButtonV1Resolver = (methodId: string) => {
     switch (methodId) {
         case 'applepay':
-            return (
-                <ApplePayButton
-                    containerId={`${methodId}CheckoutButton`}
-                    key={methodId}
-                    methodId={methodId}
-                    onError={onError}
-                    {...rest}
-                />
-            );
+            return ApplePayButton;
 
         case 'amazonpay':
-            return (
-                <AmazonPayV2Button
-                    containerId={`${methodId}CheckoutButton`}
-                    key={methodId}
-                    methodId={methodId}
-                    onError={onError}
-                    {...rest}
-                />
-            );
+            return AmazonPayV2Button;
 
         case 'paypalcommerce':
         case 'paypalcommercecredit':
-            return (
-                <PayPalCommerceButton
-                    containerId={`${methodId}CheckoutButton`}
-                    key={methodId}
-                    methodId={methodId}
-                    onError={onError}
-                    {...rest}
-                />
-            );
+            return PayPalCommerceButton;
     }
 
-    return <CheckoutButton
-        containerId={`${methodId}CheckoutButton`}
-        isShowingWalletButtonsOnTop={isShowingWalletButtonsOnTop}
-        key={methodId}
-        methodId={methodId}
-        onError={onError}
-        {...rest}
-    />;
+    return CheckoutButton;
 };
 
 export default CheckoutButtonV1Resolver;

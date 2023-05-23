@@ -11,6 +11,8 @@ import { withCheckout } from '../checkout';
 
 import CheckoutButtonListV2 from './CheckoutButtonListV2';
 import { getSupportedMethodIds } from './getSupportedMethods';
+import resolveCheckoutButton from './resolveCheckoutButton';
+import CheckoutButtonV1Resolver from './WalletButtonV1Resolver';
 
 interface CheckoutButtonContainerProps {
     isPaymentStepActive: boolean;
@@ -44,6 +46,8 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
     {
         availableMethodIds,
         checkEmbeddedSupport,
+        deinitialize,
+        initialize,
         isLoading,
         isPaypalCommerce,
         isPaymentStepActive,
@@ -63,6 +67,27 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         return null;
     }
 
+    const buttons = availableMethodIds.map((methodId) => {
+        const ResolvedCheckoutButton = resolveCheckoutButton({ id: methodId });
+
+        if (!ResolvedCheckoutButton) {
+            return {
+                methodId,
+                type: 'V1',
+                component: 
+                    <CheckoutButtonV1Resolver
+                        deinitialize={deinitialize}
+                        initialize={initialize}
+                        isShowingWalletButtonsOnTop={true}
+                        key={methodId}
+                        methodId={methodId}
+                        onError={onUnhandledError} />
+                }
+        }
+
+        return { methodId, type: 'V1', component: ResolvedCheckoutButton };
+    });
+
     return (
         <div className='checkout-button-container'
              style={ isPaymentStepActive ? { position: 'absolute', left: '0', top: '-100%' } : undefined }
@@ -71,16 +96,16 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
                 <TranslatedString id="remote.start_with_text" />
             </p>
             <div className={classNames({
-                'checkout-buttons--1': methodIds.length === 1,
-                'checkout-buttons--2': methodIds.length === 2,
-                'checkout-buttons--3': methodIds.length === 3,
-                'checkout-buttons--4': methodIds.length === 4,
-                'checkout-buttons--5': methodIds.length === 5,
-                'checkout-buttons--n': methodIds.length > 5,
+                'checkout-buttons--1': buttons.length === 1,
+                'checkout-buttons--2': buttons.length === 2,
+                'checkout-buttons--3': buttons.length === 3,
+                'checkout-buttons--4': buttons.length === 4,
+                'checkout-buttons--5': buttons.length === 5,
+                'checkout-buttons--n': buttons.length > 5,
             })}>
-                <WalletButtonsContainerSkeleton buttonsCount={methodIds.length} isLoading={isLoading}>
+                <WalletButtonsContainerSkeleton buttonsCount={buttons.length} isLoading={isLoading}>
                     <CheckoutButtonListV2
-                        methodIds={availableMethodIds}
+                        buttons={buttons}
                         onUnhandledError={onUnhandledError}/>
                 </WalletButtonsContainerSkeleton>
             </div>
