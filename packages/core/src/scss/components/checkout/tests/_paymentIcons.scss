@@ -90,7 +90,7 @@ body.test_15 {
     &::before {
         content: "";
         display: block;
-        padding-bottom: calc(20/32 * 100%);
+        padding-bottom: calc(20 / 32 * 100%);
         width: 100%;
     }
 }
