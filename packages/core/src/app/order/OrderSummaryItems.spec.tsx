@@ -19,6 +19,7 @@ describe('OrderSummaryItems', () => {
         beforeEach(() => {
             orderSummaryItems = shallow(
                 <OrderSummaryItems
+                    currency={getStoreConfig().currency}
                     items={{
                         customItems: [getCustomItem()],
                         physicalItems: [getPhysicalItem()],
@@ -55,6 +56,7 @@ describe('OrderSummaryItems', () => {
             orderSummaryItems = mount(
                 <LocaleContext.Provider value={localeContext}>
                     <OrderSummaryItems
+                        currency={getStoreConfig().currency}
                         items={{
                             customItems: [getCustomItem()],
                             physicalItems: [

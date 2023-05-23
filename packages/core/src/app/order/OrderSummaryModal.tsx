@@ -51,7 +51,7 @@ const OrderSummaryModal: FunctionComponent<
         onRequestClose={onRequestClose}
     >
         <OrderSummarySection>
-            <OrderSummaryItems items={lineItems} />
+            <OrderSummaryItems currency={storeCurrency} items={lineItems} />
         </OrderSummarySection>
         <OrderSummarySection>
             <OrderSummarySubtotals {...orderSummarySubtotalsProps} />
