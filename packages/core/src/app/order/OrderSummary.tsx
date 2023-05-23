@@ -75,7 +75,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
             <OrderSummaryHeader>{headerLink}</OrderSummaryHeader>
 
             <OrderSummarySection>
-                <OrderSummaryItems items={nonBundledLineItems} />
+                <OrderSummaryItems currency={storeCurrency} items={nonBundledLineItems} />
             </OrderSummarySection>
 
             <OrderSummarySection>

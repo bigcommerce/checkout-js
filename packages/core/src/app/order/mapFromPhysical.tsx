@@ -6,6 +6,7 @@ import { OrderSummaryItemProps } from './OrderSummaryItem';
 function mapFromPhysical(item: PhysicalItem): OrderSummaryItemProps {
     return {
         id: item.id,
+        productId: item.productId,
         quantity: item.quantity,
         amount: item.extendedComparisonPrice,
         amountAfterDiscount: item.extendedSalePrice,

@@ -8,6 +8,7 @@ import { withCurrency, WithCurrencyProps } from '../locale';
 
 export interface OrderSummaryItemProps {
     id: string | number;
+    productId?: number;
     amount: number;
     quantity: number;
     name: string;
