@@ -1,0 +1,23 @@
+// =============================================================================
+// CHECKLIST
+// =============================================================================
+
+body {
+    .form-checklist-checkbox ~ .form-label {
+        align-items: center;
+        display: flex;
+
+        &::before,
+        &::after {
+            margin-top: -0.1em;
+        }
+    }
+
+    .shippingOptionLabel {
+        width: 100%;
+    }
+
+    .creditCardTypes-list {
+        max-width: none;
+    }
+}
