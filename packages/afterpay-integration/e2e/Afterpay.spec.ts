@@ -1,8 +1,4 @@
-import {
-    PaymentStepAsGuestPreset,
-    test,
-    UseAUDPreset,
-} from '@bigcommerce/checkout/payment-integration-test-framework';
+import { PaymentStepAsGuestPreset, test, UseAUDPreset } from '@bigcommerce/checkout/test-framework';
 
 test.describe('Sample Test Group', () => {
     test('Can see Afterpay AU on the payment step', async ({ assertions, checkout }) => {

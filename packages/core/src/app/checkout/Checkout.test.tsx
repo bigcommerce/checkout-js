@@ -16,7 +16,7 @@ import {
 } from '@bigcommerce/checkout/analytics';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
-import { CheckoutPageNodeObject } from '@bigcommerce/checkout/payment-integration-test-framework';
+import { CheckoutPageNodeObject } from '@bigcommerce/checkout/test-framework';
 
 import { createErrorLogger } from '../common/error';
 import {

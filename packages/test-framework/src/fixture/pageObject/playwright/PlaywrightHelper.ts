@@ -14,7 +14,7 @@ export class PlaywrightHelper {
     private readonly polly: PollyObject;
     private readonly server: ServerSideRender;
     private readonly storeUrl: string;
-    private readonly srcPath = './packages/payment-integration-test-framework/src';
+    private readonly srcPath = './packages/test-framework/src';
     private isDevMode = false;
     private har = '';
 

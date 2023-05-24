@@ -1,7 +1,7 @@
 // checkout-js e2e testing documentation: [placeholder].
 // Uncomment below to start.
 
-// import { test, PaymentStepAsGuestPreset } from '@bigcommerce/checkout/payment-integration-test-framework';
+// import { test, PaymentStepAsGuestPreset } from '@bigcommerce/checkout/test-framework';
 
 // test.describe('xxxxxxxxxxxxxxxxxxxxxxx', () => {
 //     test('xxxxxxxxxxxxxxxxxxxxxxx', async ({assertions, checkout, page}) => {

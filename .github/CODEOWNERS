@@ -8,7 +8,7 @@
 /packages/google-pay-integration @bigcommerce/apex-leads
 /packages/hosted-credit-card-integration @bigcommerce/apex-leads
 /packages/payment-integration-api @bigcommerce/checkout
-/packages/payment-integration-test-framework @bigcommerce/checkout
+/packages/test-framework @bigcommerce/checkout
 /packages/workspace-tools @bigcommerce/checkout
 
 # Apex integrations
