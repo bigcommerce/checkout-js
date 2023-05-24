@@ -173,7 +173,6 @@ describe('PaymentMethodTitle', () => {
         const methodIds = [
             PaymentMethodId.Affirm,
             PaymentMethodId.Afterpay,
-            PaymentMethodId.Clearpay,
             PaymentMethodId.Klarna,
             PaymentMethodId.Quadpay,
             PaymentMethodId.Sezzle,
@@ -221,6 +220,7 @@ describe('PaymentMethodTitle', () => {
         const methodIds = [
             PaymentMethodId.AmazonPay,
             PaymentMethodId.ChasePay,
+            PaymentMethodId.Clearpay,
             PaymentMethodId.Humm,
             PaymentMethodId.Opy,
             PaymentMethodId.PaypalCommerce,
