@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.321.2](https://github.com/bigcommerce/checkout-js/compare/v1.321.1...v1.321.2) (2023-05-24)
+
+
+### Bug Fixes
+
+* **checkout:** PI-147 remove "Pay over time" text from the Clearpay ([f9ad0e0](https://github.com/bigcommerce/checkout-js/commit/f9ad0e0db84f25d16c19cc1a3a24fe55a7dedfea))
+
 ### [1.321.1](https://github.com/bigcommerce/checkout-js/compare/v1.321.0...v1.321.1) (2023-05-24)
 
 ## [1.321.0](https://github.com/bigcommerce/checkout-js/compare/v1.320.1...v1.321.0) (2023-05-22)
