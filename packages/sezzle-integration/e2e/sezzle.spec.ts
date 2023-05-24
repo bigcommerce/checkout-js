@@ -1,7 +1,4 @@
-import {
-    PaymentStepAsGuestPreset,
-    test,
-} from '@bigcommerce/checkout/payment-integration-test-framework';
+import { PaymentStepAsGuestPreset, test } from '@bigcommerce/checkout/test-framework';
 
 import { internalOrder, order, orderPayment } from './MockResponse';
 
@@ -18,7 +15,7 @@ test.describe('External payment method', () => {
         );
         await checkout.route(
             /order-confirmation.*/,
-            './packages/payment-integration-test-framework/src/support/orderConfirmation.ejs',
+            './packages/test-framework/src/support/orderConfirmation.ejs',
             { orderId: '100' },
         );
         await page.route(/.*\/api\/storefront\/orders.*/, (route) => {

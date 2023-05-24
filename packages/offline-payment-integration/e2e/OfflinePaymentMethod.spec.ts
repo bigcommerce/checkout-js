@@ -1,7 +1,4 @@
-import {
-    PaymentStepAsGuestPreset,
-    test,
-} from '@bigcommerce/checkout/payment-integration-test-framework';
+import { PaymentStepAsGuestPreset, test } from '@bigcommerce/checkout/test-framework';
 
 test.describe('Offline payment method', () => {
     test('`Pay in Store` payment method is working', async ({ assertions, checkout }) => {

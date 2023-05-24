@@ -19,9 +19,9 @@
     "locale": "packages/locale",
     "offline-payment-integration": "packages/offline-payment-integration",
     "payment-integration-api": "packages/payment-integration-api",
-    "payment-integration-test-framework": "packages/payment-integration-test-framework",
     "sezzle-integration": "packages/sezzle-integration",
     "squarev2-integration": "packages/squarev2-integration",
+    "test-framework": "packages/test-framework",
     "test-utils": "packages/test-utils",
     "ui": "packages/ui",
     "workspace-tools": "packages/workspace-tools"

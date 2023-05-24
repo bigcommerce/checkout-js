@@ -58,11 +58,9 @@
       "@bigcommerce/checkout/payment-integration-api": [
         "packages/payment-integration-api/src/index.ts"
       ],
-      "@bigcommerce/checkout/payment-integration-test-framework": [
-        "packages/payment-integration-test-framework/src/index.ts"
-      ],
       "@bigcommerce/checkout/sezzle-integration": ["packages/sezzle-integration/src/index.ts"],
       "@bigcommerce/checkout/squarev2-integration": ["packages/squarev2-integration/src/index.ts"],
+      "@bigcommerce/checkout/test-framework": ["packages/test-framework/src/index.ts"],
       "@bigcommerce/checkout/test-utils": ["packages/test-utils/src/index.ts"],
       "@bigcommerce/checkout/ui": ["packages/ui/src/index.ts"],
       "@bigcommerce/checkout/workspace-tools": ["packages/workspace-tools/src/index.ts"]

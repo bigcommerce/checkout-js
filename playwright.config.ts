@@ -13,7 +13,7 @@ if (!process.env.PORT) {
 const recordingSettings = process.env.WEBM
     ? {
           contextOptions: {
-              recordVideo: { dir: './packages/payment-integration-test-framework/videos' },
+              recordVideo: { dir: './packages/test-framework/videos' },
           },
           launchOptions: { slowMo: 800 },
           viewport: { width: 1280, height: 1080 },
@@ -33,7 +33,7 @@ const config: PlaywrightTestConfig = {
     },
     testDir: './packages',
     testMatch: /e2e\/.*\.spec\.ts/,
-    outputDir: './packages/payment-integration-test-framework/screenshots',
+    outputDir: './packages/test-framework/screenshots',
     fullyParallel: true,
     forbidOnly: true,
     retries: 0,
@@ -41,7 +41,7 @@ const config: PlaywrightTestConfig = {
     reporter: [
         [
             'html',
-            { outputFolder: './packages/payment-integration-test-framework/report', open: 'never' },
+            { outputFolder: './packages/test-framework/report', open: 'never' },
         ],
     ],
     use: {
