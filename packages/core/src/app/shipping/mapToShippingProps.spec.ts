@@ -6,9 +6,10 @@ import {
     StoreConfig,
 } from '@bigcommerce/checkout-sdk';
 
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+
 import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';;
 import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';

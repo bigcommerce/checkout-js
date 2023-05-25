@@ -57,7 +57,7 @@ export default memoize(function getInstrumentValidationSchema({
             })
             .test({
                 message: language.translate('payment.credit_card_number_mismatch_error'),
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 test: (value = '') => value.slice(-instrumentLast4.length) === instrumentLast4,
             });
     }

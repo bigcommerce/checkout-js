@@ -17,7 +17,7 @@ const SignOutLink: FunctionComponent<SignOutLinkProps> = ({ method, onSignOut })
         <div className="signout-link">
             <TranslatedString id="remote.sign_out_before_action" />{' '}
             {
-                // eslint-disable-next-line jsx-a11y/anchor-is-valid, jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+                // eslint-disable-next-line jsx-a11y/anchor-is-valid
                 <a href="#" onClick={preventDefault(onSignOut)}>
                     <TranslatedString
                         data={{ providerName: getPaymentMethodName(language)(method) }}

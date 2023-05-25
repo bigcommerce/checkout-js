@@ -42,7 +42,6 @@ export default memoize(function getCreditCardValidationSchema({
             .test({
                 message: language.translate('payment.credit_card_cvv_invalid_error'),
                 test(value) {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                     const { card } = number(this.parent.ccNumber);
 
                     return cvv(value, card && card.code ? card.code.size : undefined).isValid;

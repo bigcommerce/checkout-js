@@ -121,6 +121,7 @@ export class ApiRequestsSender {
 
         const cartWithConsignments = await cartWithConsignmentsResponse.json();
         const consignmentId = cartWithConsignments.consignments[0].id;
+
         if (!cartWithConsignments.consignments[0].availableShippingOptions[0]) {
             throw new Error(
                 `Unable to select a shipping option for the address: ${JSON.stringify(
@@ -128,6 +129,7 @@ export class ApiRequestsSender {
                 )}.\nPlease check shipping configuration.`,
             );
         }
+
         const shippingOptionId =
             cartWithConsignments.consignments[0].availableShippingOptions[0].id;
 
