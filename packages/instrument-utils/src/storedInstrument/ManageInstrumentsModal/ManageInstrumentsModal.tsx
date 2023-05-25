@@ -64,12 +64,7 @@ class ManageInstrumentsModal extends Component<
                 onAfterOpen={this.handleAfterOpen}
                 onRequestClose={onRequestClose}
             >
-                {
-                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                    deleteInstrumentError && (
-                        <ManageInstrumentsAlert error={deleteInstrumentError} />
-                    )
-                }
+                {deleteInstrumentError && <ManageInstrumentsAlert error={deleteInstrumentError} />}
 
                 {this.renderContent()}
             </Modal>

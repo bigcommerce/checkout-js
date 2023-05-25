@@ -61,7 +61,6 @@ describe('DynamicFormField Component', () => {
                 <Formik initialValues={{}} onSubmit={jest.fn()}>
                     <DynamicFormField
                         extraClass="dynamic-form-field--addressLine1"
-                        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
                         field={formFields.find(({ name }) => name === 'address1') as FormFieldType}
                     />
                 </Formik>
@@ -78,7 +77,6 @@ describe('DynamicFormField Component', () => {
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={{}} onSubmit={jest.fn()}>
                     <DynamicFormField
-                        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
                         field={formFields.find(({ name }) => name === 'address1') as FormFieldType}
                         onChange={onChange}
                     />
@@ -126,7 +124,6 @@ describe('DynamicFormField Component', () => {
                 <Formik initialValues={{}} onSubmit={jest.fn()}>
                     <DynamicFormField
                         autocomplete="address-line1"
-                        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
                         field={formFields.find(({ name }) => name === 'address1') as FormFieldType}
                         inputId="addressLine1Input"
                         onChange={onChange}
@@ -149,7 +146,6 @@ describe('DynamicFormField Component', () => {
                 <Formik initialValues={{}} onSubmit={jest.fn()}>
                     <DynamicFormField
                         field={{
-                            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
                             ...(formFields.find(
                                 ({ name }) => name === 'field_27',
                             ) as FormFieldType),
@@ -168,7 +164,6 @@ describe('DynamicFormField Component', () => {
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={{}} onSubmit={jest.fn()}>
                     <DynamicFormField
-                        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
                         field={formFields.find(({ name }) => name === 'address1') as FormFieldType}
                         label={<TranslatedString id="address.address_line_1_label" />}
                     />
@@ -186,7 +181,6 @@ describe('DynamicFormField Component', () => {
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={{}} onSubmit={jest.fn()}>
                     <DynamicFormField
-                        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
                         field={formFields.find(({ name }) => name === 'address2') as FormFieldType}
                     />
                 </Formik>

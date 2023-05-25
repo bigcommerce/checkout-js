@@ -244,7 +244,7 @@ class AccountInstrumentSelect extends PureComponent<AccountInstrumentSelectProps
             this.props;
 
         const selectedInstrument = find(instruments, { bigpayToken: selectedInstrumentId });
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
         const { value, ...otherFieldProps } = field;
 
         return (
@@ -264,10 +264,7 @@ class AccountInstrumentSelect extends PureComponent<AccountInstrumentSelectProps
                         testId="instrument-select"
                     />
 
-                    {
-                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                        <input type="hidden" value={value || ''} {...otherFieldProps} />
-                    }
+                    <input type="hidden" value={value || ''} {...otherFieldProps} />
                 </DropdownTrigger>
             </div>
         );
