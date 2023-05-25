@@ -1,15 +1,14 @@
-import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import React, { FunctionComponent } from 'react';
 
-import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 
 
 import { withCheckout } from '../checkout';
 
-import CheckoutButtonListV2 from './CheckoutButtonListV2';
 import { getSupportedMethodIds } from './getSupportedMethods';
 import resolveCheckoutButton from './resolveCheckoutButton';
 import CheckoutButtonV1Resolver from './WalletButtonV1Resolver';
@@ -20,13 +19,13 @@ interface CheckoutButtonContainerProps {
     onUnhandledError(error: Error): void;
 }
 
-interface WithCheckoutCheckoutButtonContainerProps{
+interface WithCheckoutCheckoutButtonContainerProps {
     availableMethodIds: string[];
+    checkoutState: CheckoutSelectors;
+    checkoutService: CheckoutService;
     isLoading: boolean;
     isPaypalCommerce: boolean;
     initializedMethodIds: string[];
-    deinitialize(options: CustomerRequestOptions): void;
-    initialize(options: CustomerInitializeOptions): void;
 }
 
 const sortMethodIds = (methodIds:string[]): string[] => {
@@ -45,15 +44,16 @@ const sortMethodIds = (methodIds:string[]): string[] => {
 const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & WithCheckoutCheckoutButtonContainerProps> = (
     {
         availableMethodIds,
+        checkoutService,
+        checkoutState,
         checkEmbeddedSupport,
-        deinitialize,
-        initialize,
         isLoading,
         isPaypalCommerce,
         isPaymentStepActive,
         initializedMethodIds,
         onUnhandledError,
     }) => {
+    const { language } = useLocale();
 
     const methodIds = isLoading ? availableMethodIds : initializedMethodIds;
 
@@ -67,25 +67,29 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         return null;
     }
 
-    const buttons = availableMethodIds.map((methodId) => {
+    const renderButtons = () => availableMethodIds.map((methodId) => {
         const ResolvedCheckoutButton = resolveCheckoutButton({ id: methodId });
 
         if (!ResolvedCheckoutButton) {
-            return {
-                methodId,
-                type: 'V1',
-                component: 
-                    <CheckoutButtonV1Resolver
-                        deinitialize={deinitialize}
-                        initialize={initialize}
-                        isShowingWalletButtonsOnTop={true}
-                        key={methodId}
-                        methodId={methodId}
-                        onError={onUnhandledError} />
-                }
+            return <CheckoutButtonV1Resolver
+                deinitialize={checkoutService.deinitializeCustomer}
+                initialize={checkoutService.initializeCustomer}
+                isShowingWalletButtonsOnTop={true}
+                key={methodId}
+                methodId={methodId}
+                onError={onUnhandledError}
+            />
         }
 
-        return { methodId, type: 'V1', component: ResolvedCheckoutButton };
+        return <ResolvedCheckoutButton
+                    checkoutService={checkoutService}
+                    checkoutState={checkoutState}
+                    containerId={`${methodId}CheckoutButton`}
+                    key={methodId}
+                    language={language}
+                    methodId={methodId}
+                    onUnhandledError={onUnhandledError}
+                />;
     });
 
     return (
@@ -96,17 +100,17 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
                 <TranslatedString id="remote.start_with_text" />
             </p>
             <div className={classNames({
-                'checkout-buttons--1': buttons.length === 1,
-                'checkout-buttons--2': buttons.length === 2,
-                'checkout-buttons--3': buttons.length === 3,
-                'checkout-buttons--4': buttons.length === 4,
-                'checkout-buttons--5': buttons.length === 5,
-                'checkout-buttons--n': buttons.length > 5,
+                'checkout-buttons--1': availableMethodIds.length === 1,
+                'checkout-buttons--2': availableMethodIds.length === 2,
+                'checkout-buttons--3': availableMethodIds.length === 3,
+                'checkout-buttons--4': availableMethodIds.length === 4,
+                'checkout-buttons--5': availableMethodIds.length === 5,
+                'checkout-buttons--n': availableMethodIds.length > 5,
             })}>
-                <WalletButtonsContainerSkeleton buttonsCount={buttons.length} isLoading={isLoading}>
-                    <CheckoutButtonListV2
-                        buttons={buttons}
-                        onUnhandledError={onUnhandledError}/>
+                <WalletButtonsContainerSkeleton buttonsCount={availableMethodIds.length} isLoading={isLoading}>
+                    <div className="checkoutRemote">
+                        {renderButtons()}
+                    </div>
                 </WalletButtonsContainerSkeleton>
             </div>
             <div className='checkout-separator'><span><TranslatedString id='remote.or_text' /></span></div>
@@ -115,20 +119,21 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
 };
 
 function mapToCheckoutButtonContainerProps({
-    checkoutState: {
-       data: {
-           getConfig,
-           getCustomer,
-       },
-       statuses: {
-           isInitializedCustomer,
-       },
-       errors: {
-           getInitializeCustomerError,
-       }
-    },
+    checkoutState,
     checkoutService,
 }: CheckoutContextProps): WithCheckoutCheckoutButtonContainerProps | null {
+    const {
+        data: {
+            getConfig,
+            getCustomer,
+        },
+        statuses: {
+            isInitializedCustomer,
+        },
+        errors: {
+            getInitializeCustomerError,
+        }
+     } = checkoutState;
     const config = getConfig();
     const availableMethodIds = getSupportedMethodIds(config?.checkoutSettings.remoteCheckoutProviders ?? []);
     const customer = getCustomer();
@@ -145,9 +150,9 @@ function mapToCheckoutButtonContainerProps({
     const isPaypalCommerce = availableMethodIds.some(id => paypalCommerceIds.includes(id));
 
     return {
+        checkoutService,
+        checkoutState,
         availableMethodIds: sortMethodIds(availableMethodIds),
-        deinitialize: checkoutService.deinitializeCustomer,
-        initialize: checkoutService.initializeCustomer,
         initializedMethodIds,
         isLoading,
         isPaypalCommerce,
