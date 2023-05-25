@@ -71,4 +71,30 @@ describe('resolveComponent', () => {
             Default,
         );
     });
+
+    it('returns correct component for an entry', () => {
+        const Component = toResolvableComponent(
+            ({ message }: TestingProps) => <div>Foo: {message}</div>,
+            [{ id: 'credit_card', gateway: 'bluesnap' }]
+        );
+
+        const CreditCard = resolveComponent(
+            { id: 'credit_card' },
+            { Component }
+        );
+
+        const Bluesnap = resolveComponent(
+            { id: 'credit_card' },
+            { Component }
+        );
+
+        const CheckoutCom = resolveComponent(
+            { id: 'credit_card', gateway: 'checkoutcom' },
+            { Component }
+        );
+
+        expect(CreditCard).toBeDefined();
+        expect(Bluesnap).toBeDefined();
+        expect(CheckoutCom).toBeUndefined();
+    });
 });
