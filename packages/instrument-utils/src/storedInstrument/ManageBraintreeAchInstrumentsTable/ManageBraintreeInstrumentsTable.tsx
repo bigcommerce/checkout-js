@@ -1,5 +1,5 @@
 import { BraintreeAchInstrument } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo, useCallback } from 'react';
+import React, { FunctionComponent, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { IconBraintreeAch, IconSize, LoadingOverlay } from '@bigcommerce/checkout/ui';
@@ -89,4 +89,4 @@ const ManageBraintreeInstrumentsTable: FunctionComponent<ManageBraintreeInstrume
     );
 };
 
-export default memo(ManageBraintreeInstrumentsTable);
+export default ManageBraintreeInstrumentsTable;

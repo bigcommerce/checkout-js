@@ -2,7 +2,10 @@ import { Placement } from 'popper.js';
 import React, { Component, MouseEventHandler, ReactNode } from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
-import { CHECKOUT_ROOT_NODE_ID } from '../../checkout/CheckoutRootNodeId';
+import {
+    CHECKOUT_ROOT_NODE_ID,
+    MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID,
+} from '@bigcommerce/checkout/payment-integration-api';
 
 export interface DropdownTriggerProps {
     placement?: Placement;
@@ -86,7 +89,7 @@ export default class DropdownTrigger extends Component<DropdownTriggerProps, Dro
         }
 
         this.setState({ shouldShow: true }, () => {
-            document.getElementById(CHECKOUT_ROOT_NODE_ID)?.addEventListener('click', this.handleClose);
+            this.getRootElement()?.addEventListener('click', this.handleClose);
         });
     };
 
@@ -98,7 +101,14 @@ export default class DropdownTrigger extends Component<DropdownTriggerProps, Dro
         }
 
         this.setState({ shouldShow: false }, () => {
-            document.getElementById(CHECKOUT_ROOT_NODE_ID)?.removeEventListener('click', this.handleClose);
+            this.getRootElement()?.removeEventListener('click', this.handleClose);
         });
     };
+
+    private getRootElement() {
+        return (
+            document.getElementById(CHECKOUT_ROOT_NODE_ID) ||
+            document.getElementById(MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID)
+        );
+    }
 }

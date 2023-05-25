@@ -1,4 +1,4 @@
-import { AccountInstrument, BraintreeAchInstrument } from '@bigcommerce/checkout-sdk';
+import { AccountInstrument } from '@bigcommerce/checkout-sdk';
 import { FieldProps } from 'formik';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 
@@ -15,8 +15,8 @@ import { AccountInstrumentSelect } from '../AccountInstrumentSelect';
 import { ManageInstrumentsModal } from '../ManageInstrumentsModal';
 
 export interface AccountInstrumentFieldsetProps {
-    instruments: Array<BraintreeAchInstrument | AccountInstrument>;
-    selectedInstrument?: BraintreeAchInstrument | AccountInstrument;
+    instruments: AccountInstrument[];
+    selectedInstrument?: AccountInstrument;
     onSelectInstrument(id: string): void;
     onUseNewInstrument(): void;
 }

@@ -22,3 +22,4 @@ export {
     PaymentFormProvider,
     usePaymentFormContext,
 } from './contexts';
+export * from './CheckoutRootWrapperIds';

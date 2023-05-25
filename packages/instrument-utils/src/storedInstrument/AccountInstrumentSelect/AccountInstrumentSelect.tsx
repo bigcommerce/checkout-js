@@ -2,6 +2,7 @@ import {
     AccountInstrument,
     BankInstrument,
     BraintreeAchInstrument,
+    PayPalInstrument,
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { FieldProps } from 'formik';
@@ -43,7 +44,7 @@ const AccountInstrumentUseNewButton: FunctionComponent<AccountInstrumentUseNewBu
 
 interface AccountInstrumentMenuItemProps {
     className?: string;
-    instrument: AccountInstrument;
+    instrument: PayPalInstrument;
     testId?: string;
     onClick?(): void;
 }
@@ -136,7 +137,7 @@ const BankInstrumentMenuItem: FunctionComponent<BankInstrumentMenuItemProps> = (
 };
 
 interface AccountInstrumentOptionProps {
-    instrument: BraintreeAchInstrument | AccountInstrument;
+    instrument: AccountInstrument;
     testId?: string;
     onClick?(token: string): void;
 }
@@ -175,7 +176,7 @@ const AccountInstrumentOption: FunctionComponent<AccountInstrumentOptionProps> =
 };
 
 interface AccountInstrumentMenuProps {
-    instruments: Array<BraintreeAchInstrument | AccountInstrument>;
+    instruments: AccountInstrument[];
     selectedInstrumentId?: string;
     onSelectInstrument(id: string): void;
     onUseNewInstrument(): void;
@@ -219,7 +220,7 @@ const AccountInstrumentMenu: FunctionComponent<AccountInstrumentMenuProps> = ({
 };
 
 interface AccountInstrumentSelectButtonProps {
-    instrument?: BraintreeAchInstrument | AccountInstrument;
+    instrument?: AccountInstrument;
     testId?: string;
     onClick?(): void;
 }
@@ -271,7 +272,7 @@ export interface AccountInstrumentSelectValues {
 }
 
 export interface AccountInstrumentSelectProps extends FieldProps<string> {
-    instruments: Array<BraintreeAchInstrument | AccountInstrument>;
+    instruments: AccountInstrument[];
     selectedInstrumentId?: string;
     onSelectInstrument(id: string): void;
     onUseNewInstrument(): void;

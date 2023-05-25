@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import { CHECKOUT_ROOT_NODE_ID } from '../../checkout/CheckoutRootNodeId';
+import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
 
 import DropdownTrigger from './DropdownTrigger';
 

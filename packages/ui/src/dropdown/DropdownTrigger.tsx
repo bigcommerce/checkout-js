@@ -3,8 +3,10 @@ import { Placement } from 'popper.js';
 import React, { Component, MouseEventHandler, ReactNode } from 'react';
 import { Manager, Popper, Reference } from 'react-popper';
 
-export const CHECKOUT_ROOT_NODE_ID = 'checkout-app';
-export const MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID = 'micro-app-ng-checkout';
+import {
+    CHECKOUT_ROOT_NODE_ID,
+    MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID,
+} from '@bigcommerce/checkout/payment-integration-api';
 
 export interface DropdownTriggerProps {
     placement?: Placement;

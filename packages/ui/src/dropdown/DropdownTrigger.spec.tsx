@@ -1,7 +1,9 @@
 import { mount } from 'enzyme';
 import React from 'react';
 
-import DropdownTrigger, { CHECKOUT_ROOT_NODE_ID } from './DropdownTrigger';
+import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
+
+import DropdownTrigger from './DropdownTrigger';
 
 describe('DropdownTrigger', () => {
     it('shows dropdown when mouse clicks', () => {
