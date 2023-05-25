@@ -100,14 +100,14 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
                 <TranslatedString id="remote.start_with_text" />
             </p>
             <div className={classNames({
-                'checkout-buttons--1': availableMethodIds.length === 1,
-                'checkout-buttons--2': availableMethodIds.length === 2,
-                'checkout-buttons--3': availableMethodIds.length === 3,
-                'checkout-buttons--4': availableMethodIds.length === 4,
-                'checkout-buttons--5': availableMethodIds.length === 5,
-                'checkout-buttons--n': availableMethodIds.length > 5,
+                'checkout-buttons--1': methodIds.length === 1,
+                'checkout-buttons--2': methodIds.length === 2,
+                'checkout-buttons--3': methodIds.length === 3,
+                'checkout-buttons--4': methodIds.length === 4,
+                'checkout-buttons--5': methodIds.length === 5,
+                'checkout-buttons--n': methodIds.length > 5,
             })}>
-                <WalletButtonsContainerSkeleton buttonsCount={availableMethodIds.length} isLoading={isLoading}>
+                <WalletButtonsContainerSkeleton buttonsCount={methodIds.length} isLoading={isLoading}>
                     <div className="checkoutRemote">
                         {renderButtons()}
                     </div>
