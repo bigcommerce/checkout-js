@@ -97,4 +97,30 @@ describe('resolveComponent', () => {
         expect(Bluesnap).toBeDefined();
         expect(CheckoutCom).toBeUndefined();
     });
+
+    it('returns correct component for an gateway/methodId key if registry is only done by gateway', () => {
+        const GatewayComponent = toResolvableComponent(
+            ({ message }: TestingProps) => <div>Foo: {message}</div>,
+            [{ gateway: 'somegateway' }]
+        );
+
+        const AGateway = resolveComponent(
+            { id: 'test', gateway: 'somegateway' },
+            { GatewayComponent }
+        );
+
+        const BGateway = resolveComponent(
+            { id: 'bar', gateway: 'somegateway' },
+            { GatewayComponent }
+        );
+
+        const CGateway = resolveComponent(
+            { id: 'foo', gateway: 'somegateway' },
+            { GatewayComponent }
+        );
+
+        expect(AGateway).toBeDefined();
+        expect(BGateway).toBeDefined();
+        expect(CGateway).toBeDefined();
+    });
 });
