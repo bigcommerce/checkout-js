@@ -1,4 +1,4 @@
-import { CustomerStepPreset, test } from '@bigcommerce/checkout/payment-integration-test-framework';
+import { CustomerStepPreset, test } from '@bigcommerce/checkout/test-framework';
 
 import {
     checkoutAfterSignedIn,
@@ -27,7 +27,7 @@ test.describe('Sample Test Group', () => {
         await checkout.route('**/checkout.php', `${__dirname}/support/checkout.php.ejs`);
         await checkout.route(
             /order-confirmation.*/,
-            './packages/payment-integration-test-framework/src/support/orderConfirmation.ejs',
+            './packages/test-framework/src/support/orderConfirmation.ejs',
             { orderId: '390' },
         );
         await page.route(/.*\/api\/storefront\/payments\?cartId=.*/, (route) => {

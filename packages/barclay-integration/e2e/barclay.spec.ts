@@ -1,7 +1,4 @@
-import {
-    PaymentStepAsGuestPreset,
-    test,
-} from '@bigcommerce/checkout/payment-integration-test-framework';
+import { PaymentStepAsGuestPreset, test } from '@bigcommerce/checkout/test-framework';
 
 test.describe('Offsite payment method', () => {
     test('Barclay is working', async ({ assertions, checkout }) => {

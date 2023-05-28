@@ -2,7 +2,7 @@ import {
     CustomerStepPreset,
     PaymentStepAsGuestPreset,
     test,
-} from '@bigcommerce/checkout/payment-integration-test-framework';
+} from '@bigcommerce/checkout/test-framework';
 
 import addApplePaySessionToChromeCustomerStep from './ApplePaySessionCustomerStepMockObject';
 import addApplePaySessionToChromePaymentStep from './ApplePaySessionPaymentStepMockObject';
@@ -30,7 +30,7 @@ test.describe('ApplePay', () => {
         await checkout.start('ApplePay in Payment Step');
         await checkout.route(
             /order-confirmation.*/,
-            './packages/payment-integration-test-framework/src/support/orderConfirmation.ejs',
+            './packages/test-framework/src/support/orderConfirmation.ejs',
             { orderId: '124' },
         );
         await page.route('**/api/storefront/payments/applepay?cartId=124', (route) => {
@@ -77,7 +77,7 @@ test.describe('ApplePay', () => {
         await checkout.start('ApplePay in Customer Step');
         await checkout.route(
             /order-confirmation.*/,
-            './packages/payment-integration-test-framework/src/support/orderConfirmation.ejs',
+            './packages/test-framework/src/support/orderConfirmation.ejs',
             { orderId: '124' },
         );
         await page.route('**/api/public/v1/payments/applepay/validate_merchant', (route) => {

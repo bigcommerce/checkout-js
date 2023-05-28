@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Order Confirmation</title>
+        <base href="/" target="_top"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+        <link href="https://fonts.googleapis.com/css?family=Karla:400|Montserrat:400,500,700&display=swap" rel="stylesheet" />
+    </head>
+    <body>
+    <header class="checkoutHeader optimizedCheckout-header">
+        <div class="checkoutHeader-content">
+            <h1 class="is-srOnly">Checkout</h1>
+            <h2 class="checkoutHeader-heading">
+                <a class="checkoutHeader-link" href="<%= storeUrl %>/">
+                    <span class="header-logo-text">It's done. Congratulations from Checkout Team :D</span>
+                </a>
+            </h2>
+        </div>
+    </header>
+    <div ng-jq class="ng-checkout-container" id="micro-app-ng-checkout">
+        <div class="ng-checkout-view" data-ui-view></div>
+    </div>
+    <script type="text/javascript">
+        window.checkoutConfig = {
+            orderId: '<%= orderId %>',
+            containerId: 'micro-app-ng-checkout',
+        };
+    </script>
+    <script src="<%= localhostUrl %>/auto-loader.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        (function () {
+            window.checkout.renderOrderConfirmation({
+                containerId: 'micro-app-ng-checkout',
+                orderId: '<%= orderId %>',
+                sentryConfig: null,
+            });
+        })();
+    </script>
+    </body>
+</html>

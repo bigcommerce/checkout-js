@@ -8,7 +8,6 @@ export interface ManageInstrumentsAlertProps {
 }
 
 const ManageInstrumentsAlert: FunctionComponent<ManageInstrumentsAlertProps> = ({ error }) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { status } = error;
 
     if (status === 401) {
