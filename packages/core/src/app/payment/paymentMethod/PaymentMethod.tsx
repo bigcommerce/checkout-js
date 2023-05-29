@@ -45,6 +45,7 @@ import StripePaymentMethod from './StripePaymentMethod';
 import StripeUPEPaymentMethod from './StripeUPEPaymentMethod';
 import VisaCheckoutPaymentMethod from './VisaCheckoutPaymentMethod';
 import WorldpayCreditCardPaymentMethod from './WorldpayCreditCardPaymentMethod';
+import BraintreeLocalPaymentMethod from "./BraintreeLocalPaymentMethod";
 
 export interface PaymentMethodProps {
     method: PaymentMethod;

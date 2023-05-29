@@ -15,6 +15,7 @@ enum PaymentMethodId {
     Braintree = 'braintree',
     BraintreeAch = 'braintreeach',
     BraintreeVenmo = 'braintreevenmo',
+    BraintreeLocalPaymentMethod = 'braintreelocalmethods',
     AuthorizeNetGooglePay = 'googlepayauthorizenet',
     BNZGooglePay = 'googlepaybnz',
     BraintreeGooglePay = 'googlepaybraintree',
