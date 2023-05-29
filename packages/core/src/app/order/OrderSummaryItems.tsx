@@ -39,8 +39,10 @@ const getCheckoutDescriptions = async (items: OrderSummaryItemProps[], currencyC
         }
     })
 
-    const productsDescriptionsForSubscriptions = await getProductsCheckoutDescriptions(subscriptionItems, currencyCode, "subscription");
-    const productsDescriptionsForOneTimePurchases = await getProductsCheckoutDescriptions(oneTimePurchaseItems, currencyCode, "one-time-purchase");
+    const [productsDescriptionsForSubscriptions, productsDescriptionsForOneTimePurchases] = await Promise.all([
+        getProductsCheckoutDescriptions(subscriptionItems, currencyCode, "subscription"),
+        getProductsCheckoutDescriptions(oneTimePurchaseItems, currencyCode, "one-time-purchase")
+    ]);
     const updatedItemsWithCheckoutDescriptions = items.map((item: any) => {
         const updatedItem = item;
         const {productId} = item;
@@ -81,8 +83,10 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
         ];
 
         getCheckoutDescriptions(initialItems, currency.code, (updatedItems) => {
-            this.setState({itemsWithCheckoutDescriptions: updatedItems});
-            this.setState({checkoutDescriptionsLoading: false});
+            this.setState({
+                itemsWithCheckoutDescriptions: updatedItems,
+                checkoutDescriptionsLoading: false
+            });
         })
 
         this.state = {
