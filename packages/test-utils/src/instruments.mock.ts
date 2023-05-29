@@ -82,7 +82,7 @@ export function getInstruments(): PaymentInstrument[] {
             iban: '12345',
         },
         {
-            bigpayToken: '45454545',
+            bigpayToken: '34567456',
             provider: 'braintree',
             accountNumber: '0000',
             issuer: '011000015',

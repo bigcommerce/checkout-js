@@ -13,7 +13,7 @@ import {
     isCardInstrument,
 } from '../../guards';
 import { ManageAccountInstrumentsTable } from '../ManageAccountInstrumentsTable';
-import { ManageBraintreeInstrumentsTable } from '../ManageBraintreeAchInstrumentsTable';
+import { ManageBraintreeInstrumentsTable } from '../ManageBraintreeInstrumentsTable';
 import { ManageCardInstrumentsTable } from '../ManageCardInstrumentsTable';
 import { ManageInstrumentsAlert } from '../ManageInstrumentsAlert';
 
@@ -154,6 +154,7 @@ class ManageInstrumentsModal extends Component<
                 <>
                     <Button
                         data-test="manage-instrument-cancel-button"
+                        data-testid="manage-instrument-cancel-button"
                         onClick={this.handleCancel}
                         size={ButtonSize.Small}
                     >
@@ -162,6 +163,7 @@ class ManageInstrumentsModal extends Component<
 
                     <Button
                         data-test="manage-instrument-confirm-button"
+                        data-testid="manage-instrument-confirm-button"
                         disabled={isDeletingInstrument() || isLoadingInstruments()}
                         onClick={this.handleConfirmDelete}
                         size={ButtonSize.Small}

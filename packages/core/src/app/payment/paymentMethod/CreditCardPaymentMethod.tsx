@@ -208,7 +208,7 @@ class CreditCardPaymentMethod extends Component<
 
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
-                <div className="paymentMethod paymentMethod--creditCard">
+                <div className="paymentMethod paymentMethod--creditCard" data-testid='credit-cart-payment-method'>
                     {shouldShowInstrumentFieldset && (
                         <CardInstrumentFieldset
                             instruments={instruments}

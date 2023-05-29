@@ -59,7 +59,7 @@ const ManageBraintreeInstrumentsTable: FunctionComponent<ManageBraintreeInstrume
 
     return (
         <LoadingOverlay isLoading={isDeletingInstrument}>
-            <table className="table">
+            <table className="table" data-testid="manage-braintree-instruments-table">
                 <thead className="table-thead">
                     <tr>
                         <th>

@@ -8,6 +8,7 @@ export { InstrumentStorageField } from './InstrumentStorageField';
 export { InstrumentStoreAsDefaultField } from './InstrumentStoreAsDefaultField';
 export { ManageAccountInstrumentsTable } from './ManageAccountInstrumentsTable';
 export { ManageCardInstrumentsTable } from './ManageCardInstrumentsTable';
+export { ManageBraintreeInstrumentsTable } from './ManageBraintreeInstrumentsTable';
 export { ManageInstrumentsAlert } from './ManageInstrumentsAlert';
 export { ManageInstrumentsModal } from './ManageInstrumentsModal';
 export { mapFromInstrumentCardType } from './mapFromInstrumentCardType';

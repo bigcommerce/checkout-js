@@ -22,4 +22,7 @@ export {
     PaymentFormProvider,
     usePaymentFormContext,
 } from './contexts';
-export * from './CheckoutRootWrapperIds';
+export {
+    CHECKOUT_ROOT_NODE_ID,
+    MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID,
+} from './CheckoutRootWrapperIds';

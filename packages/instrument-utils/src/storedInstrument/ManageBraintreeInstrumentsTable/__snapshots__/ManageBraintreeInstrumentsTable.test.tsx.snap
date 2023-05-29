@@ -2,13 +2,14 @@
 
 exports[`ManageBraintreeInstrumentsTable matches snapshot with rendered output 1`] = `
 <div
-  class="loadingOverlay-container"
+  className="loadingOverlay-container"
 >
   <table
-    class="table"
+    className="table"
+    data-testid="manage-braintree-instruments-table"
   >
     <thead
-      class="table-thead"
+      className="table-thead"
     >
       <tr>
         <th>
@@ -24,18 +25,18 @@ exports[`ManageBraintreeInstrumentsTable matches snapshot with rendered output 1
       </tr>
     </thead>
     <tbody
-      class="table-tbody"
+      className="table-tbody"
     >
       <tr>
         <td
           data-test="manage-instrument-bankType"
         >
           <div
-            class="icon icon--medium"
+            className="icon icon--medium"
           >
             <svg
-              space="preserve"
               viewBox="25 0 50 48"
+              xmlSpace="preserve"
               xmlns="http://www.w3.org/2000/svg"
             >
               <title
@@ -66,8 +67,9 @@ exports[`ManageBraintreeInstrumentsTable matches snapshot with rendered output 1
         </td>
         <td>
           <button
-            class="button button--tiny table-actionButton optimizedCheckout-buttonSecondary"
+            className="button button--tiny table-actionButton optimizedCheckout-buttonSecondary"
             data-test="manage-instrument-delete-button"
+            onClick={[Function]}
             type="button"
           >
             Delete
