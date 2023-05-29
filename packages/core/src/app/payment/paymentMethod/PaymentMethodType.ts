@@ -1,7 +1,6 @@
 enum PaymentMethodType {
     ApplePay = 'applepay',
     Barclaycard = 'barclaycard',
-    BraintreeLocalPaymentMethod = 'braintreelocalmethods',
     Chasepay = 'chasepay',
     CreditCard = 'credit-card',
     GooglePay = 'googlepay',
