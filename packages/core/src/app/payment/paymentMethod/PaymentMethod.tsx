@@ -47,6 +47,7 @@ import StripePaymentMethod from './StripePaymentMethod';
 import StripeUPEPaymentMethod from './StripeUPEPaymentMethod';
 import VisaCheckoutPaymentMethod from './VisaCheckoutPaymentMethod';
 import WorldpayCreditCardPaymentMethod from './WorldpayCreditCardPaymentMethod';
+import BraintreeLocalMethods from "./BraintreeLocalMethods";
 
 export interface PaymentMethodProps {
     method: PaymentMethod;
@@ -199,6 +200,13 @@ const PaymentMethodComponent: FunctionComponent<
                 uniqueId={getUniquePaymentMethodId(method.id, method.gateway)}
             />
         );
+    }
+
+    if (method.gateway === PaymentMethodId.BraintreeLocalMethods) {
+        return <BraintreeLocalMethods
+            {...props}
+            uniqueId={getUniquePaymentMethodId(method.id, method.gateway)}
+        />
     }
 
     if (method.id === PaymentMethodId.PaypalExpress) {

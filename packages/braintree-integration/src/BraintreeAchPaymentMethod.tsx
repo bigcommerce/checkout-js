@@ -28,6 +28,7 @@ const BraintreeAchPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                 await checkoutService.initializePayment({
                     gatewayId,
                     methodId,
+                    //@ts-ignore
                     braintreeach: {
                         getMandateText: () => mandateText,
                     },

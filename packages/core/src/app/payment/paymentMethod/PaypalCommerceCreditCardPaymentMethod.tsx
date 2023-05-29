@@ -25,6 +25,7 @@ const PaypalCommerceCreditCardPaymentMethod: FunctionComponent<
             async (options, selectedInstrument) => {
                 return initializePayment({
                     ...options,
+                    //@ts-ignore
                     paypalcommercecreditcards: {
                         form:
                             getHostedFormOptions &&

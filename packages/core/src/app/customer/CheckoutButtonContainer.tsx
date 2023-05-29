@@ -103,9 +103,10 @@ function mapToCheckoutButtonContainerProps({
            getConfig,
            getCustomer,
        },
-       statuses: {
-           isInitializedCustomer,
-       },
+       // statuses: {
+       //     //@ts-ignore
+       //     isInitializedCustomer,
+       // },
        errors: {
            getInitializeCustomerError,
        }
@@ -121,9 +122,8 @@ function mapToCheckoutButtonContainerProps({
     }
 
     const isLoading = availableMethodIds.filter(
-        (methodId) => Boolean(getInitializeCustomerError(methodId)) || isInitializedCustomer(methodId)
-    ).length !== availableMethodIds.length;
-    const initializedMethodIds = availableMethodIds.filter((methodId) => isInitializedCustomer(methodId));
+        (methodId) => Boolean(getInitializeCustomerError(methodId))).length !== availableMethodIds.length;
+    const initializedMethodIds = availableMethodIds.filter(() => false);
     const paypalCommerceIds = ['paypalcommerce', 'paypalcommercecredit', 'paypalcommercevenmo'];
     const isPaypalCommerce = availableMethodIds.some(id => paypalCommerceIds.includes(id));
 

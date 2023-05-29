@@ -70,6 +70,11 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
             return <TranslatedString id="payment.paypal_venmo_continue_action" />;
         }
 
+        if (methodGateway === PaymentMethodType.BraintreeLocalMethods) {
+            const brandName = methodId;
+            return <TranslatedString id="payment.continue_with_brand" data={{ brandName }} />
+        }
+
         if (methodType === PaymentMethodType.Paypal) {
             return <TranslatedString
                 data={{ isComplete }}
