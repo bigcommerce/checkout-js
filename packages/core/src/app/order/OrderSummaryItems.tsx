@@ -83,8 +83,10 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
         ];
 
         getCheckoutDescriptions(initialItems, currency.code, (updatedItems) => {
-            this.setState({itemsWithCheckoutDescriptions: updatedItems});
-            this.setState({checkoutDescriptionsLoading: false});
+            this.setState({
+                itemsWithCheckoutDescriptions: updatedItems,
+                checkoutDescriptionsLoading: false
+            });
         })
 
         this.state = {
