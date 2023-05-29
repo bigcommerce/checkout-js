@@ -39,8 +39,10 @@ const getCheckoutDescriptions = async (items: OrderSummaryItemProps[], currencyC
         }
     })
 
-    const productsDescriptionsForSubscriptions = await getProductsCheckoutDescriptions(subscriptionItems, currencyCode, "subscription");
-    const productsDescriptionsForOneTimePurchases = await getProductsCheckoutDescriptions(oneTimePurchaseItems, currencyCode, "one-time-purchase");
+    const [productsDescriptionsForSubscriptions, productsDescriptionsForOneTimePurchases] = await Promise.all([
+        getProductsCheckoutDescriptions(subscriptionItems, currencyCode, "subscription"),
+        getProductsCheckoutDescriptions(oneTimePurchaseItems, currencyCode, "one-time-purchase")
+    ]);
     const updatedItemsWithCheckoutDescriptions = items.map((item: any) => {
         const updatedItem = item;
         const {productId} = item;
