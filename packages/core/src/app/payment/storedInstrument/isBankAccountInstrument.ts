@@ -1,7 +1,7 @@
-import { BankInstrument, BraintreeAchInstrument, PaymentInstrument } from '@bigcommerce/checkout-sdk';
+import { BankInstrument, AchInstrument, PaymentInstrument } from '@bigcommerce/checkout-sdk';
 
 export default function isBankAccountInstrument(
     instrument: PaymentInstrument,
-): instrument is BankInstrument | BraintreeAchInstrument {
+): instrument is BankInstrument | AchInstrument {
     return instrument.type === 'bank';
 }

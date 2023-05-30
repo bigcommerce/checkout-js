@@ -14,7 +14,7 @@ import { getInstruments, getStoreConfig } from '@bigcommerce/checkout/test-utils
 import {
     isAccountInstrument,
     isBankAccountInstrument,
-    isBraintreeAchInstrument,
+    isAchInstrument,
 } from '../../guards';
 
 import AccountInstrumentSelect, { AccountInstrumentSelectProps } from './AccountInstrumentSelect';
@@ -245,7 +245,7 @@ describe('AccountInstrumentSelect', () => {
     });
 
     it('shows list of instruments when clicked and is an braintree ach instrument', () => {
-        defaultProps.instruments = getInstruments().filter(isBraintreeAchInstrument);
+        defaultProps.instruments = getInstruments().filter(isAchInstrument);
 
         const component = mount(
             <LocaleContext.Provider value={localeContext}>
@@ -265,7 +265,7 @@ describe('AccountInstrumentSelect', () => {
         expect(component.exists('[data-test="instrument-select-menu"]')).toBe(true);
 
         expect(component.find('[data-test="instrument-select-option"]').at(0).text()).toContain(
-            'Braintree ACHAccount number ending in: 0000Routing Number: 011000015',
+            'ACHAccount number ending in: 0000Routing Number: 011000015',
         );
     });
 

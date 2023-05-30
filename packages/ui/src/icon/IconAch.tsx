@@ -2,9 +2,9 @@ import React, { FunctionComponent } from 'react';
 
 import withIconContainer from './withIconContainer';
 
-const IconBraintreeAch: FunctionComponent = () => (
+const IconAch: FunctionComponent = () => (
     <svg viewBox="25 0 50 48" xmlSpace="preserve" xmlns="http://www.w3.org/2000/svg">
-        <title id="iconBraintreeAchTitle">Braintree ACH</title>
+        <title id="iconAchTitle">ACH</title>
         <path
             d="M30 9.5h40c1.9 0 3.5 1.6 3.5 3.5v22c0 1.9-1.6 3.5-3.5 3.5H30c-1.9 0-3.5-1.6-3.5-3.5V13c0-1.9 1.6-3.5 3.5-3.5z"
             fill="#1524d9"
@@ -16,4 +16,4 @@ const IconBraintreeAch: FunctionComponent = () => (
     </svg>
 );
 
-export default withIconContainer(IconBraintreeAch);
+export default withIconContainer(IconAch);

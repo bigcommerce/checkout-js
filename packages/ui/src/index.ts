@@ -57,7 +57,7 @@ export {
     IconProps,
     IconShibaInu,
     IconUsdCoin,
-    IconBraintreeAch,
+    IconAch,
 } from './icon';
 export { LoadingOverlay } from './loading';
 export { Modal, ModalHeader, ModalTrigger, ModalTriggerModalProps } from './modal';

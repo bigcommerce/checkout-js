@@ -1,11 +1,11 @@
-import { BraintreeAchInstrument } from '@bigcommerce/checkout-sdk';
+import { AchInstrument } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { IconBraintreeAch, IconSize, LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { IconAch, IconSize, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 interface ManageInstrumentsRowProps {
-    instrument: BraintreeAchInstrument;
+    instrument: AchInstrument;
     onDeleteInstrument(id: string): void;
 }
 
@@ -20,7 +20,7 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
     return (
         <tr>
             <td data-test="manage-instrument-bankType">
-                <IconBraintreeAch size={IconSize.Medium} />
+                <IconAch size={IconSize.Medium} />
             </td>
             <td data-test="manage-instrument-accountNumber">{instrument.accountNumber}</td>
             <td data-test="manage-instrument-issuer">{instrument.issuer}</td>
@@ -38,13 +38,13 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
     );
 };
 
-export interface ManageBraintreeInstrumentsTableProps {
-    instruments: BraintreeAchInstrument[];
+export interface ManageAchInstrumentsTableProps {
+    instruments: AchInstrument[];
     isDeletingInstrument: boolean;
     onDeleteInstrument(id: string): void;
 }
 
-const ManageBraintreeInstrumentsTable: FunctionComponent<ManageBraintreeInstrumentsTableProps> = ({
+const ManageAchInstrumentsTable: FunctionComponent<ManageAchInstrumentsTableProps> = ({
     instruments,
     isDeletingInstrument,
     onDeleteInstrument,
@@ -89,4 +89,4 @@ const ManageBraintreeInstrumentsTable: FunctionComponent<ManageBraintreeInstrume
     );
 };
 
-export default ManageBraintreeInstrumentsTable;
+export default ManageAchInstrumentsTable;

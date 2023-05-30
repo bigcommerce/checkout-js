@@ -19,7 +19,7 @@ import { Modal } from '@bigcommerce/checkout/ui';
 
 import { isAccountInstrument, isBankAccountInstrument, isCardInstrument } from '../../guards';
 import { ManageAccountInstrumentsTable } from '../ManageAccountInstrumentsTable';
-import { ManageBraintreeInstrumentsTable } from '../ManageBraintreeInstrumentsTable';
+import { ManageAchInstrumentsTable } from '../ManageAchInstrumentsTable';
 import { ManageCardInstrumentsTable } from '../ManageCardInstrumentsTable';
 import { ManageInstrumentsAlert } from '../ManageInstrumentsAlert';
 
@@ -103,7 +103,7 @@ describe('ManageInstrumentsModal', () => {
             />,
         );
 
-        expect(component.find(ManageBraintreeInstrumentsTable)).toHaveLength(1);
+        expect(component.find(ManageAchInstrumentsTable)).toHaveLength(1);
 
         expect(component.find(ManageCardInstrumentsTable)).toHaveLength(0);
     });

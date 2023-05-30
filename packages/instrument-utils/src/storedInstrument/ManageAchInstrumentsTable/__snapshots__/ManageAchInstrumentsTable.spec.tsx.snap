@@ -1,15 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ManageBraintreeInstrumentsTable matches snapshot with rendered output 1`] = `
+exports[`ManageAchInstrumentsTable matches snapshot with rendered output 1`] = `
 <div
-  className="loadingOverlay-container"
+  class="loadingOverlay-container"
 >
   <table
-    className="table"
+    class="table"
     data-testid="manage-braintree-instruments-table"
   >
     <thead
-      className="table-thead"
+      class="table-thead"
     >
       <tr>
         <th>
@@ -25,24 +25,24 @@ exports[`ManageBraintreeInstrumentsTable matches snapshot with rendered output 1
       </tr>
     </thead>
     <tbody
-      className="table-tbody"
+      class="table-tbody"
     >
       <tr>
         <td
           data-test="manage-instrument-bankType"
         >
           <div
-            className="icon icon--medium"
+            class="icon icon--medium"
           >
             <svg
+              space="preserve"
               viewBox="25 0 50 48"
-              xmlSpace="preserve"
               xmlns="http://www.w3.org/2000/svg"
             >
               <title
-                id="iconBraintreeAchTitle"
+                id="iconAchTitle"
               >
-                Braintree ACH
+                ACH
               </title>
               <path
                 d="M30 9.5h40c1.9 0 3.5 1.6 3.5 3.5v22c0 1.9-1.6 3.5-3.5 3.5H30c-1.9 0-3.5-1.6-3.5-3.5V13c0-1.9 1.6-3.5 3.5-3.5z"
@@ -67,9 +67,8 @@ exports[`ManageBraintreeInstrumentsTable matches snapshot with rendered output 1
         </td>
         <td>
           <button
-            className="button button--tiny table-actionButton optimizedCheckout-buttonSecondary"
+            class="button button--tiny table-actionButton optimizedCheckout-buttonSecondary"
             data-test="manage-instrument-delete-button"
-            onClick={[Function]}
             type="button"
           >
             Delete

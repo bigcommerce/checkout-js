@@ -1,7 +1,7 @@
 import {
     AccountInstrument,
+    AchInstrument,
     BankInstrument,
-    BraintreeAchInstrument,
     PayPalInstrument,
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
@@ -12,13 +12,13 @@ import React, { FunctionComponent, PureComponent, ReactNode, useCallback } from 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import {
     DropdownTrigger,
-    IconBraintreeAch,
+    IconAch,
     IconNewAccount,
     IconPaypal,
     IconSize,
 } from '@bigcommerce/checkout/ui';
 
-import { isBankAccountInstrument, isBraintreeAchInstrument } from '../../guards';
+import { isAchInstrument, isBankAccountInstrument } from '../../guards';
 
 interface AccountInstrumentUseNewButtonProps {
     className?: string;
@@ -88,14 +88,14 @@ const AccountInstrumentMenuItem: FunctionComponent<AccountInstrumentMenuItemProp
     );
 };
 
-interface BraintreeAchInstrumentMenuItemProps {
+interface AchInstrumentMenuItemProps {
     className?: string;
-    instrument: BraintreeAchInstrument;
+    instrument: AchInstrument;
     testId?: string;
     onClick?(): void;
 }
 
-const BraintreeAchInstrumentMenuItem: FunctionComponent<BraintreeAchInstrumentMenuItemProps> = ({
+const AchInstrumentMenuItem: FunctionComponent<AchInstrumentMenuItemProps> = ({
     className,
     instrument,
     testId,
@@ -117,7 +117,7 @@ const BraintreeAchInstrumentMenuItem: FunctionComponent<BraintreeAchInstrumentMe
                     // TODO: When we include new account instrument types we can
                     // abstract these icons in a similar way we did for credit cards.
                 }
-                <IconBraintreeAch size={IconSize.Medium} />
+                <IconAch size={IconSize.Medium} />
 
                 <div className="instrumentSelect-bank">
                     <div>{accountNumber}</div>
@@ -178,9 +178,9 @@ const AccountInstrumentOption: FunctionComponent<AccountInstrumentOptionProps> =
         onClick(instrument.bigpayToken);
     }, [onClick, instrument]);
 
-    if (isBraintreeAchInstrument(instrument)) {
+    if (isAchInstrument(instrument)) {
         return (
-            <BraintreeAchInstrumentMenuItem
+            <AchInstrumentMenuItem
                 instrument={instrument}
                 onClick={handleClick}
                 testId="instrument-select-option"
@@ -268,9 +268,9 @@ const AccountInstrumentSelectButton: FunctionComponent<AccountInstrumentSelectBu
         );
     }
 
-    if (isBraintreeAchInstrument(instrument)) {
+    if (isAchInstrument(instrument)) {
         return (
-            <BraintreeAchInstrumentMenuItem
+            <AchInstrumentMenuItem
                 className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
                 instrument={instrument}
                 onClick={onClick}

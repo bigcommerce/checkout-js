@@ -1,7 +1,7 @@
 import {
     AccountInstrument,
+    AchInstrument,
     BankInstrument,
-    BraintreeAchInstrument,
     CardInstrument,
     PaymentInstrument,
 } from '@bigcommerce/checkout-sdk';
@@ -137,7 +137,7 @@ export function getBankInstrument(): BankInstrument {
     };
 }
 
-export function getBraintreeAchInstrument(): BraintreeAchInstrument {
+export function getAchInstrument(): AchInstrument {
     return {
         bigpayToken: '45454545',
         provider: 'braintree',

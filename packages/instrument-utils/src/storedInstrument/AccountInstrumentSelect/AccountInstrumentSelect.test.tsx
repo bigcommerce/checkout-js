@@ -11,11 +11,7 @@ import {
 } from '@bigcommerce/checkout/locale';
 import { getInstruments, getStoreConfig } from '@bigcommerce/checkout/test-utils';
 
-import {
-    isAccountInstrument,
-    isBankAccountInstrument,
-    isBraintreeAchInstrument,
-} from '../../guards';
+import { isAccountInstrument, isAchInstrument, isBankAccountInstrument } from '../../guards';
 
 import AccountInstrumentSelect, { AccountInstrumentSelectProps } from './AccountInstrumentSelect';
 
@@ -241,7 +237,7 @@ describe('AccountInstrumentSelect', () => {
     });
 
     it('shows list of instruments when clicked and is an braintree ach instrument', () => {
-        defaultProps.instruments = getInstruments().filter(isBraintreeAchInstrument);
+        defaultProps.instruments = getInstruments().filter(isAchInstrument);
 
         render(
             <LocaleContext.Provider value={localeContext}>
@@ -260,7 +256,7 @@ describe('AccountInstrumentSelect', () => {
 
         expect(screen.getByTestId('instrument-select-menu')).toBeInTheDocument();
 
-        expect(screen.getByText('Braintree ACH')).toBeInTheDocument();
+        expect(screen.getByText('ACH')).toBeInTheDocument();
         expect(screen.getByText('Account number ending in: 0000')).toBeInTheDocument();
         expect(screen.getByText('Routing Number: 011000015')).toBeInTheDocument();
     });

@@ -8,12 +8,12 @@ import { Button, ButtonSize, ButtonVariant, Modal, ModalHeader } from '@bigcomme
 
 import {
     isAccountInstrument,
+    isAchInstrument,
     isBankAccountInstrument,
-    isBraintreeAchInstrument,
     isCardInstrument,
 } from '../../guards';
 import { ManageAccountInstrumentsTable } from '../ManageAccountInstrumentsTable';
-import { ManageBraintreeInstrumentsTable } from '../ManageBraintreeInstrumentsTable';
+import { ManageAchInstrumentsTable } from '../ManageAchInstrumentsTable';
 import { ManageCardInstrumentsTable } from '../ManageCardInstrumentsTable';
 import { ManageInstrumentsAlert } from '../ManageInstrumentsAlert';
 
@@ -102,12 +102,12 @@ class ManageInstrumentsModal extends Component<
         const cardInstruments = instruments.filter(isCardInstrument);
         const bankInstruments = instruments.filter(isBankAccountInstrument);
         const accountInstruments = instruments.filter(isAccountInstrument);
-        const braintreeAchInstrument = instruments.filter(isBraintreeAchInstrument);
+        const achInstrument = instruments.filter(isAchInstrument);
 
-        if (braintreeAchInstrument.length) {
+        if (achInstrument.length) {
             return (
-                <ManageBraintreeInstrumentsTable
-                    instruments={braintreeAchInstrument}
+                <ManageAchInstrumentsTable
+                    instruments={achInstrument}
                     isDeletingInstrument={isDeletingInstrument()}
                     onDeleteInstrument={this.handleDeleteInstrument}
                 />

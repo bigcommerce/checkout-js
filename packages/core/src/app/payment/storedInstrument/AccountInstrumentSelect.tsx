@@ -1,4 +1,4 @@
-import { AccountInstrument, BankInstrument, BraintreeAchInstrument, PayPalInstrument } from '@bigcommerce/checkout-sdk';
+import { AccountInstrument, BankInstrument, AchInstrument, PayPalInstrument } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { FieldProps } from 'formik';
 import { find, noop } from 'lodash';
@@ -228,7 +228,7 @@ const AccountInstrumentMenuItem: FunctionComponent<AccountInstrumentMenuItemProp
 
 interface BankInstrumentMenuItemProps {
     className?: string;
-    instrument: BankInstrument | BraintreeAchInstrument;
+    instrument: BankInstrument | AchInstrument;
     testId?: string;
     onClick?(): void;
 }
