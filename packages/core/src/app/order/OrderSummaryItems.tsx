@@ -100,7 +100,6 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
         const { items } = this.props;
         const { isExpanded, itemsWithCheckoutDescriptions } = this.state;
 
-        console.log("itemsWithCheckoutDescriptions", itemsWithCheckoutDescriptions);
 
         return (
             <>
