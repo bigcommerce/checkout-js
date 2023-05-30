@@ -39,12 +39,8 @@ exports[`CheckoutButtonContainer displays wallet buttons for guest checkout 1`] 
           id="braintreepaypalCheckoutButton"
         />
         <div
-          class="AmazonPayContainer"
-        >
-          <div
-            id="amazonpayCheckoutButton"
-          />
-        </div>
+          id="amazonpayCheckoutButton"
+        />
       </div>
     </div>
   </div>
@@ -100,12 +96,8 @@ exports[`CheckoutButtonContainer hides wallet buttons with CSS when payment step
           id="braintreepaypalCheckoutButton"
         />
         <div
-          class="AmazonPayContainer"
-        >
-          <div
-            id="amazonpayCheckoutButton"
-          />
-        </div>
+          id="amazonpayCheckoutButton"
+        />
       </div>
     </div>
   </div>
