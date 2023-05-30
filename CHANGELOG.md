@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.322.0](https://github.com/bigcommerce/checkout-js/compare/v1.309.0...v1.322.0) (2023-05-30)
+
+
+### Features
+
+* **cart:** CHECKOUT-7403 Fix layout for updated modal ([#1254](https://github.com/bigcommerce/checkout-js/issues/1254)) ([e35a840](https://github.com/bigcommerce/checkout-js/commit/e35a84077474139316bf2a7c08e4c57332d8e827))
+* **checkout:** CHECKOUT-7281 Upgrade React 17 ([#1251](https://github.com/bigcommerce/checkout-js/issues/1251)) ([00644a6](https://github.com/bigcommerce/checkout-js/commit/00644a649843a8e169762af973e7f5d90c00e74d))
+* **checkout:** CHECKOUT-7281 Upgrade React 17 and Downshift ([#1264](https://github.com/bigcommerce/checkout-js/issues/1264)) ([9d4305d](https://github.com/bigcommerce/checkout-js/commit/9d4305d5dc73c1b6e2966528756875b6261caf4f))
+* **payment:** BOLT-458 Bump checkout-sdk-js version ([964d6f0](https://github.com/bigcommerce/checkout-js/commit/964d6f0460d93ac4ccc4a20d832d9e83f10c81d2))
+* **payment:** BOLT-484 Bump checkout-sdk-js version ([21f85ca](https://github.com/bigcommerce/checkout-js/commit/21f85ca02b1b3a972a60c906a1392909b9e57c18))
+* **payment:** INT-7169 BlueSnapDirect: Add payment method component ([5e47948](https://github.com/bigcommerce/checkout-js/commit/5e479489a80677731ca6658c1c11009a4135956f))
+* **payment:** INT-7169 BlueSnapDirect: Add some e2e tests ([d1df6ab](https://github.com/bigcommerce/checkout-js/commit/d1df6abc6515e14e7df74f0b39dae5326f9a55d7))
+* **payment:** INT-7169 BlueSnapDirect: Set up monorepo package ([dc2b4a3](https://github.com/bigcommerce/checkout-js/commit/dc2b4a37ab0f87c7c96d53d1526db12943b5365c))
+* **payment:** INT-7516 SquareV2: Unsubscribe from Square form validation ([#1268](https://github.com/bigcommerce/checkout-js/issues/1268)) ([69fdae3](https://github.com/bigcommerce/checkout-js/commit/69fdae30b08bade577e70f573fbf78b724a8b71d))
+* **payment:** INT-7573 Add config of Access Worldpay GooglePay ([2414ef8](https://github.com/bigcommerce/checkout-js/commit/2414ef88d41abde89a7c68c26c803cf5cb70ac86))
+* **payment:** INT-7573 add worldpay to googlepay specs ([481ae01](https://github.com/bigcommerce/checkout-js/commit/481ae01c90e5e27aa81b55f33babb6929e0d81f9))
+* **payment:** PAYPAL-1713 bump checkout-sdk ([e0f40ad](https://github.com/bigcommerce/checkout-js/commit/e0f40ad90f3f4d85317d76cb249604a4885840b3))
+* **payment:** PAYPAL-1713 new package with Braintree ACH method ([#1246](https://github.com/bigcommerce/checkout-js/issues/1246)) ([1783347](https://github.com/bigcommerce/checkout-js/commit/17833476faf26f23ffd23cb5bbf5599a03b308a1))
+* **payment:** PAYPAL-2013 bump checkout-sdk-js version ([a48ef68](https://github.com/bigcommerce/checkout-js/commit/a48ef68ff7fcc307c582e6a40663ad6553d0df1d))
+* **payment:** PAYPAL-2370 mandateText for guest flow ([#1269](https://github.com/bigcommerce/checkout-js/issues/1269)) ([a9a4147](https://github.com/bigcommerce/checkout-js/commit/a9a414754839b9a1979b973da49461df71162d71))
+* **payment:** PAYPAL-2451 bump checkout-sdk ([cc8feda](https://github.com/bigcommerce/checkout-js/commit/cc8fedae0806671000a673337ff70e6f412a15af))
+
+
+### Bug Fixes
+
+* **cart:** CHECKOUT-7403 Add tweaks to cart modal UI ([#1259](https://github.com/bigcommerce/checkout-js/issues/1259)) ([e708304](https://github.com/bigcommerce/checkout-js/commit/e708304566b2289be7ba6aeca15305277399cc1a))
+* **checkout:** PI-101 3ds2 redirect fix for adyen v3 ([89ccbc8](https://github.com/bigcommerce/checkout-js/commit/89ccbc8d67eb893a654b7e0d75babdbaf3fd3a49))
+* **checkout:** PI-147 remove "Pay over time" text from the Clearpay ([f9ad0e0](https://github.com/bigcommerce/checkout-js/commit/f9ad0e0db84f25d16c19cc1a3a24fe55a7dedfea))
+* **checkout:** PI-42 fixed StoreInstrumentFieldset for the HostedCreditCard integration ([2eec446](https://github.com/bigcommerce/checkout-js/commit/2eec4464c2f5e0e7a066efa2e0c863404f076251))
+* **checkout:** PI-48 Place Order button is disabled when customer with stored credit card deletes and re-adds card ([2ab8a83](https://github.com/bigcommerce/checkout-js/commit/2ab8a83a77e0071da4bcfa656686575fb4e64343))
+* **payment:** BOLT-577 Bump checkout sdk version ([cf983d1](https://github.com/bigcommerce/checkout-js/commit/cf983d1a810a6f9f3feaa92b42d599fd99b544e5))
+* **payment:** BOLT-577 Bump checkout sdk version ([d034085](https://github.com/bigcommerce/checkout-js/commit/d034085d69785a3cbeb55238146e9e53c0be1771))
+* **shipping:** CHECKOUT-7338 Add available options include if custom fields change ([#1272](https://github.com/bigcommerce/checkout-js/issues/1272)) ([0584844](https://github.com/bigcommerce/checkout-js/commit/0584844b61a19b6f8e87941df1977c64dc3f6065))
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-0000 lint auto fix ([#1298](https://github.com/bigcommerce/checkout-js/issues/1298)) ([67c9ae7](https://github.com/bigcommerce/checkout-js/commit/67c9ae7e9be2726479cd4c88d078f705285b5a6f))
+
 ### [1.321.4](https://github.com/bigcommerce/checkout-js/compare/v1.321.3...v1.321.4) (2023-05-25)
 
 
