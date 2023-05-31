@@ -1,4 +1,4 @@
-import { render } from 'enzyme';
+import { render, screen } from '@testing-library/react'
 import React, { ComponentType } from 'react';
 
 import { toResolvableComponent } from '@bigcommerce/checkout/payment-integration-api';
@@ -39,22 +39,37 @@ describe('resolveComponent', () => {
     it('returns component if able to resolve to one by id', () => {
         const Foo = resolveComponent({ id: 'foo' }, components);
 
+        if (Foo) {
+            render(<Foo {...props} />);
+
+            expect(screen.getByText(/Foo: Testing 123/)).toBeInTheDocument();
+        }
+
         expect(Foo).toBeDefined();
-        expect(Foo && render(<Foo {...props} />).text()).toBe('Foo: Testing 123');
     });
 
     it('returns component if able to resolve to one by type', () => {
         const Bar = resolveComponent({ type: 'hosted' }, components);
 
+        if (Bar) {
+            render(<Bar {...props} />);
+
+            expect(screen.getByText(/Bar: Testing 123/)).toBeInTheDocument();
+        }
+
         expect(Bar).toBeDefined();
-        expect(Bar && render(<Bar {...props} />).text()).toBe('Bar: Testing 123');
     });
 
     it('returns component if able to resolve to one by id and gateway', () => {
         const Foobar = resolveComponent({ id: 'foo', gateway: 'bar' }, components);
 
+        if (Foobar) {
+            render(<Foobar {...props} />);
+
+            expect(screen.getByText(/Foobar: Testing 123/)).toBeInTheDocument();
+        }
+
         expect(Foobar).toBeDefined();
-        expect(Foobar && render(<Foobar {...props} />).text()).toBe('Foobar: Testing 123');
     });
 
     it('returns undefined if unable to resolve to one', () => {
