@@ -49,8 +49,8 @@
 /packages/core/payment/paymentMethod/BoltPaymentMethod.tsx @bigcommerce/kyiv-payments-team
 /packages/core/payment/paymentMethod/BraintreeCreditCardPaymentMethod.tsx @bigcommerce/kyiv-payments-team
 /packages/core/payment/paymentMethod/PaypalCommerceCreditCardPaymentMethod.tsx @bigcommerce/kyiv-payments-team
-/packages/core/payment/paymentMethod/PaypalCommercePaymentMethod.tsx @bigcommerce/kyiv-payments-team
 /packages/core/payment/paymentMethod/PaypalExpressPaymentMethod.tsx @bigcommerce/kyiv-payments-team
 /packages/core/payment/paymentMethod/PaypalPaymentsProPaymentMethod.tsx @bigcommerce/kyiv-payments-team
 /packages/braintree-integration @bigcommerce/kyiv-payments-team
+/packages/paypal-commerce-integration @bigcommerce/kyiv-payments-team
 
