@@ -6,7 +6,7 @@ exports[`ManageAchInstrumentsTable matches snapshot with rendered output 1`] = `
 >
   <table
     class="table"
-    data-testid="manage-braintree-instruments-table"
+    data-testid="manage-ach-instruments-table"
   >
     <thead
       class="table-thead"

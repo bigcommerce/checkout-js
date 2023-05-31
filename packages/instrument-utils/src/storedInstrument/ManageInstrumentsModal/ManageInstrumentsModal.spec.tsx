@@ -95,7 +95,7 @@ describe('ManageInstrumentsModal', () => {
         expect(component.find(ManageCardInstrumentsTable)).toHaveLength(0);
     });
 
-    it('renders list of braintree bank instruments in table format', () => {
+    it('renders list of ach instruments in table format', () => {
         const component = mount(
             <ManageInstrumentsModalTest
                 {...defaultProps}

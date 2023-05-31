@@ -91,7 +91,7 @@ describe('ManageInstrumentsModal', () => {
         expect(() => screen.getByTestId('manage-card-instruments-table')).toThrow();
     });
 
-    it('renders list of braintree bank instruments in table format', () => {
+    it('renders list of ach instruments in table format', () => {
         render(
             <ManageInstrumentsModalTest
                 {...defaultProps}
@@ -99,7 +99,7 @@ describe('ManageInstrumentsModal', () => {
             />,
         );
 
-        expect(screen.getByTestId('manage-braintree-instruments-table')).toBeInTheDocument();
+        expect(screen.getByTestId('manage-ach-instruments-table')).toBeInTheDocument();
 
         expect(() => screen.getByTestId('manage-card-instruments-table')).toThrow();
     });

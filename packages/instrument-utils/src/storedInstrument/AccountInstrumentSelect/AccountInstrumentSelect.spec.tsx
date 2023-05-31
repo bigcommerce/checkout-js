@@ -11,11 +11,7 @@ import {
 } from '@bigcommerce/checkout/locale';
 import { getInstruments, getStoreConfig } from '@bigcommerce/checkout/test-utils';
 
-import {
-    isAccountInstrument,
-    isBankAccountInstrument,
-    isAchInstrument,
-} from '../../guards';
+import { isAccountInstrument, isAchInstrument, isBankAccountInstrument } from '../../guards';
 
 import AccountInstrumentSelect, { AccountInstrumentSelectProps } from './AccountInstrumentSelect';
 
@@ -244,7 +240,7 @@ describe('AccountInstrumentSelect', () => {
         );
     });
 
-    it('shows list of instruments when clicked and is an braintree ach instrument', () => {
+    it('shows list of instruments when clicked and is an ach instrument', () => {
         defaultProps.instruments = getInstruments().filter(isAchInstrument);
 
         const component = mount(

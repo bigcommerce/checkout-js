@@ -236,7 +236,7 @@ describe('AccountInstrumentSelect', () => {
         expect(screen.getByText('Issuer: DEF')).toBeInTheDocument();
     });
 
-    it('shows list of instruments when clicked and is an braintree ach instrument', () => {
+    it('shows list of instruments when clicked and is an ach instrument', () => {
         defaultProps.instruments = getInstruments().filter(isAchInstrument);
 
         render(

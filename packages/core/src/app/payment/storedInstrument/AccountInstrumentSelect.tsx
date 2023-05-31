@@ -1,4 +1,4 @@
-import { AccountInstrument, BankInstrument, AchInstrument, PayPalInstrument } from '@bigcommerce/checkout-sdk';
+import { AccountInstrument, AchInstrument, BankInstrument, PayPalInstrument } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { FieldProps } from 'formik';
 import { find, noop } from 'lodash';
