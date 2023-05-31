@@ -24,7 +24,6 @@ import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
 import ChasePayPaymentMethod from './ChasePayPaymentMethod';
 import CheckoutCustomPaymentMethod from './CheckoutcomCustomPaymentMethod';
 import DigitalRiverPaymentMethod from './DigitalRiverPaymentMethod';
-import getUniquePaymentMethodId from './getUniquePaymentMethodId';
 import GooglePayPaymentMethod from './GooglePayPaymentMethod';
 import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';
 import HostedPaymentMethod from './HostedPaymentMethod';
@@ -38,7 +37,6 @@ import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
 import PaymentMethodType from './PaymentMethodType';
 import PaypalCommerceCreditCardPaymentMethod from './PaypalCommerceCreditCardPaymentMethod';
-import PaypalCommercePaymentMethod from './PaypalCommercePaymentMethod';
 import PaypalExpressPaymentMethod from './PaypalExpressPaymentMethod';
 import PaypalPaymentsProPaymentMethod from './PaypalPaymentsProPaymentMethod';
 import PPSDKPaymentMethod from './PPSDKPaymentMethod';
@@ -184,21 +182,6 @@ const PaymentMethodComponent: FunctionComponent<
 
     if (method.id === PaymentMethodId.PaypalCommerceCreditCards) {
         return <PaypalCommerceCreditCardPaymentMethod {...props} />;
-    }
-
-    if (
-        method.id === PaymentMethodId.PaypalCommerce ||
-        method.id === PaymentMethodId.PaypalCommerceCredit ||
-        method.id === PaymentMethodId.PaypalCommerceVenmo ||
-        method.gateway === PaymentMethodId.PaypalCommerceAlternativeMethod
-    ) {
-        return (
-            <PaypalCommercePaymentMethod
-                {...props}
-                isAPM={method.gateway === PaymentMethodId.PaypalCommerceAlternativeMethod}
-                uniqueId={getUniquePaymentMethodId(method.id, method.gateway)}
-            />
-        );
     }
 
     if (method.id === PaymentMethodId.PaypalExpress) {

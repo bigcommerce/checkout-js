@@ -1,5 +1,6 @@
 export { EmbeddedCheckoutUnsupportedError } from './errors';
 export { default as getPaymentMethodName } from './getPaymentMethodName';
+export { default as getUniquePaymentMethodId } from './getUniquePaymentMethodId';
 export { default as CardInstrumentFieldsetValues } from './CardInstrumentFieldsetValues';
 export { default as CheckoutButtonResolveId } from './CheckoutButtonResolveId';
 export { default as CheckoutButtonProps } from './CheckoutButtonProps';

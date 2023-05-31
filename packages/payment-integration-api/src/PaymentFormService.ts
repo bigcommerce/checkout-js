@@ -2,6 +2,7 @@ import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { ObjectSchema } from 'yup';
 
 import PaymentFormValues from './PaymentFormValues';
+import PaymentFormErrors from './PaymentFormErrors';
 
 export default interface PaymentFormService {
     disableSubmit(method: PaymentMethod, disabled?: boolean): void;
@@ -20,5 +21,5 @@ export default interface PaymentFormService {
         schema: ObjectSchema<Partial<PaymentFormValues>> | null,
     ): void;
     submitForm(): void;
-    validateForm(): void;
+    validateForm(values?: PaymentFormValues): Promise<PaymentFormErrors>;
 }
