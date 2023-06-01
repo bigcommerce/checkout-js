@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Field, FieldProps, Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
@@ -110,10 +111,10 @@ describe('AccountInstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        expect(() => screen.getByTestId('instrument-select-menu')).toThrow();
+        expect(screen.queryByTestId('instrument-select-menu')).not.toBeInTheDocument();
     });
 
-    it('notifies parent when instrument is selected', () => {
+    it('notifies parent when instrument is selected', async () => {
         render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
@@ -127,14 +128,14 @@ describe('AccountInstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        screen.getByTestId('instrument-select').click();
+        await userEvent.click(screen.getByTestId('instrument-select'));
 
-        screen.getAllByTestId('instrument-select-option')[1].click();
+        await userEvent.click(screen.getAllByTestId('instrument-select-option')[1]);
 
         expect(defaultProps.onSelectInstrument).toHaveBeenCalledWith('4123');
     });
 
-    it('notifies parent when user wants to use new card', () => {
+    it('notifies parent when user wants to use new card', async () => {
         render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
@@ -148,9 +149,9 @@ describe('AccountInstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        screen.getByTestId('instrument-select').click();
+        await userEvent.click(screen.getByTestId('instrument-select'));
 
-        screen.getByTestId('instrument-select-option-use-new').click();
+        await userEvent.click(screen.getByTestId('instrument-select-option-use-new'));
 
         expect(defaultProps.onUseNewInstrument).toHaveBeenCalled();
     });
@@ -201,9 +202,9 @@ describe('AccountInstrumentSelect', () => {
 
         rerender(<Component selectedInstrumentId="" show={true} />);
 
-        screen.getByTestId('instrument-select').click();
+        fireEvent.click(screen.getByTestId('instrument-select'));
 
-        screen.getByTestId('instrument-select-option-use-new').click();
+        fireEvent.click(screen.getByTestId('instrument-select-option-use-new'));
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         screen.getByRole('form').submit();
@@ -213,7 +214,7 @@ describe('AccountInstrumentSelect', () => {
         expect(submit).toHaveBeenCalledWith({ instrumentId: '' }, expect.anything());
     });
 
-    it('shows list of instruments when clicked and is an account instrument', () => {
+    it('shows list of instruments when clicked and is an account instrument', async () => {
         defaultProps.instruments = getInstruments().filter(isBankAccountInstrument);
 
         render(
@@ -229,14 +230,14 @@ describe('AccountInstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        screen.getByTestId('instrument-select').click();
+        await userEvent.click(screen.getByTestId('instrument-select'));
 
         expect(screen.getByTestId('instrument-select-menu')).toBeInTheDocument();
         expect(screen.getByText('Account number ending in: ABC')).toBeInTheDocument();
         expect(screen.getByText('Issuer: DEF')).toBeInTheDocument();
     });
 
-    it('shows list of instruments when clicked and is an ach instrument', () => {
+    it('shows list of instruments when clicked and is an ach instrument', async () => {
         defaultProps.instruments = getInstruments().filter(isAchInstrument);
 
         render(
@@ -252,7 +253,7 @@ describe('AccountInstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        screen.getByTestId('instrument-select').click();
+        await userEvent.click(screen.getByTestId('instrument-select'));
 
         expect(screen.getByTestId('instrument-select-menu')).toBeInTheDocument();
 
@@ -261,7 +262,7 @@ describe('AccountInstrumentSelect', () => {
         expect(screen.getByText('Routing Number: 011000015')).toBeInTheDocument();
     });
 
-    it('notifies parent when instrument is selected and is an account instrument', () => {
+    it('notifies parent when instrument is selected and is an account instrument', async () => {
         defaultProps.instruments = getInstruments().filter(isBankAccountInstrument);
 
         render(
@@ -277,9 +278,9 @@ describe('AccountInstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        screen.getByTestId('instrument-select').click();
+        await userEvent.click(screen.getByTestId('instrument-select'));
 
-        screen.getAllByTestId('instrument-select-option')[1].click();
+        await userEvent.click(screen.getAllByTestId('instrument-select-option')[1]);
 
         expect(defaultProps.onSelectInstrument).toHaveBeenCalledWith('45454545');
     });

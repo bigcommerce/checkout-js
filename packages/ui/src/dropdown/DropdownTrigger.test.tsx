@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
@@ -6,27 +7,27 @@ import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration
 import DropdownTrigger from './DropdownTrigger';
 
 describe('DropdownTrigger', () => {
-    it('shows dropdown when mouse clicks', () => {
+    it('shows dropdown when mouse clicks', async () => {
         render(
             <DropdownTrigger dropdown={<div>Hello world</div>}>
                 <button>Foobar</button>
             </DropdownTrigger>,
         );
 
-        fireEvent.click(screen.getByText('Foobar'));
+        await userEvent.click(screen.getByText('Foobar'));
 
         expect(screen.getByText('Hello world')).toBeInTheDocument();
     });
 
-    it('hides dropdown when mouse clicks again', () => {
+    it('hides dropdown when mouse clicks again', async () => {
         render(
             <DropdownTrigger dropdown={<div>Hello world</div>}>
                 <button>Foobar</button>
             </DropdownTrigger>,
         );
 
-        fireEvent.click(screen.getByText('Foobar'));
-        fireEvent.click(screen.getByText('Foobar'));
+        await userEvent.click(screen.getByText('Foobar'));
+        await userEvent.click(screen.getByText('Foobar'));
 
         expect(() => screen.getByText('Hello world')).toThrow();
     });
@@ -44,6 +45,6 @@ describe('DropdownTrigger', () => {
 
         fireEvent.click(screen.getByTestId('root-node-id'));
 
-        expect(() => screen.getByText('Hello world')).toThrow();
+        expect(screen.queryByText('Hello world')).not.toBeInTheDocument();
     });
 });

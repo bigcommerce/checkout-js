@@ -1,6 +1,7 @@
+import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { create } from 'react-test-renderer';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import {
     createLocaleContext,
@@ -49,14 +50,14 @@ describe('ManageAchInstrumentsTable', () => {
         expect(screen.getByText('0000')).toBeInTheDocument();
     });
 
-    it('triggers callback when delete button is clicked', () => {
+    it('triggers callback when delete button is clicked', async () => {
         render(
             <LocaleContext.Provider value={localeContext}>
                 <ManageAchInstrumentsTable {...defaultProps} />
             </LocaleContext.Provider>,
         );
 
-        fireEvent.click(screen.getByText('Delete'));
+        await userEvent.click(screen.getByText('Delete'));
 
         expect(defaultProps.onDeleteInstrument).toHaveBeenCalledWith(
             defaultProps.instruments[0].bigpayToken,

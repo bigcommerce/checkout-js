@@ -113,10 +113,6 @@ const AchInstrumentMenuItem: FunctionComponent<AchInstrumentMenuItemProps> = ({
             type="button"
         >
             <div className="instrumentSelect-details">
-                {
-                    // TODO: When we include new account instrument types we can
-                    // abstract these icons in a similar way we did for credit cards.
-                }
                 <IconAch size={IconSize.Medium} />
 
                 <div className="instrumentSelect-bank">

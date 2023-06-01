@@ -5,8 +5,8 @@ import {
     createCheckoutService,
     RequestError,
 } from '@bigcommerce/checkout-sdk';
-import { render, screen } from '@testing-library/react';
-import { mount } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React, { FunctionComponent } from 'react';
 
 import {
@@ -75,7 +75,7 @@ describe('ManageInstrumentsModal', () => {
 
         expect(screen.getByTestId('manage-card-instruments-table')).toBeInTheDocument();
 
-        expect(() => screen.getByTestId('manage-instruments-table')).toThrow();
+        expect(screen.queryByTestId('manage-instruments-table')).not.toBeInTheDocument();
     });
 
     it('renders list of account instruments in table format', () => {
@@ -88,7 +88,7 @@ describe('ManageInstrumentsModal', () => {
 
         expect(screen.getByTestId('manage-instruments-table')).toBeInTheDocument();
 
-        expect(() => screen.getByTestId('manage-card-instruments-table')).toThrow();
+        expect(screen.queryByTestId('manage-card-instruments-table')).not.toBeInTheDocument();
     });
 
     it('renders list of ach instruments in table format', () => {
@@ -101,7 +101,7 @@ describe('ManageInstrumentsModal', () => {
 
         expect(screen.getByTestId('manage-ach-instruments-table')).toBeInTheDocument();
 
-        expect(() => screen.getByTestId('manage-card-instruments-table')).toThrow();
+        expect(screen.queryByTestId('manage-card-instruments-table')).not.toBeInTheDocument();
     });
 
     it('shows confirmation message before deleting instrument', () => {
@@ -123,9 +123,9 @@ describe('ManageInstrumentsModal', () => {
 
         render(<ManageInstrumentsModalTest {...defaultProps} />);
 
-        screen.getAllByTestId('manage-instrument-delete-button')[0].click();
+        await userEvent.click(screen.getAllByTestId('manage-instrument-delete-button')[0]);
 
-        screen.getAllByTestId('manage-instrument-confirm-button')[0].click();
+        await userEvent.click(screen.getAllByTestId('manage-instrument-confirm-button')[0]);
 
         expect(checkoutService.deleteInstrument).toHaveBeenCalledWith(instruments[0].bigpayToken);
 
@@ -137,9 +137,9 @@ describe('ManageInstrumentsModal', () => {
     it('shows list of instruments if user decides to cancel their action', () => {
         render(<ManageInstrumentsModalTest {...defaultProps} />);
 
-        screen.getAllByTestId('manage-instrument-delete-button')[0].click();
+        fireEvent.click(screen.getAllByTestId('manage-instrument-delete-button')[0]);
 
-        screen.getAllByTestId('manage-instrument-cancel-button')[0].click();
+        fireEvent.click(screen.getAllByTestId('manage-instrument-cancel-button')[0]);
 
         expect(screen.getByTestId('manage-card-instruments-table')).toBeInTheDocument();
     });
@@ -149,8 +149,8 @@ describe('ManageInstrumentsModal', () => {
 
         render(<ManageInstrumentsModalTest {...defaultProps} />);
 
-        screen.getAllByTestId('manage-instrument-delete-button')[0].click();
-        screen.getByText('Cancel').click();
+        fireEvent.click(screen.getAllByTestId('manage-instrument-delete-button')[0]);
+        fireEvent.click(screen.getByText('Cancel'));
 
         expect(screen.getByTestId('manage-card-instruments-table')).toBeInTheDocument();
     });
@@ -161,7 +161,7 @@ describe('ManageInstrumentsModal', () => {
             status: 500,
         } as RequestError);
 
-        mount(<ManageInstrumentsModalTest {...defaultProps} />);
+        render(<ManageInstrumentsModalTest {...defaultProps} />);
 
         expect(
             screen.getByText(
