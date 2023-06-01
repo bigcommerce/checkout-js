@@ -2,7 +2,7 @@
   display: flex;
   flex-flow: row wrap;
   margin: 0 -0.5 * $floating-form-field-spacing;
-  padding: (spacing("base") / 1.5) 0;
+  padding: $payment-step-spacing-top 0;
 
   .mandate-text {
     padding: 0 0.5 * $floating-form-field-spacing;

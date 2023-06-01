@@ -48,7 +48,7 @@
 .paymentMethod--hosted,
 .paymentMethod--walletButton {
     clear: both;
-    padding: (spacing("base") / 1.5) 0;
+    padding: $payment-step-spacing-top 0;
 }
 
 .chasePay--container {

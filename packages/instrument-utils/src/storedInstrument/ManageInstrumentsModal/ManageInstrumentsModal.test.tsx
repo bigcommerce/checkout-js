@@ -91,7 +91,7 @@ describe('ManageInstrumentsModal', () => {
         expect(screen.queryByTestId('manage-card-instruments-table')).not.toBeInTheDocument();
     });
 
-    it('renders list of ach instruments in table format', () => {
+    it('renders list of bank instruments in table format', () => {
         render(
             <ManageInstrumentsModalTest
                 {...defaultProps}
@@ -99,7 +99,7 @@ describe('ManageInstrumentsModal', () => {
             />,
         );
 
-        expect(screen.getByTestId('manage-ach-instruments-table')).toBeInTheDocument();
+        expect(screen.getByTestId('manage-instruments-table')).toBeInTheDocument();
 
         expect(screen.queryByTestId('manage-card-instruments-table')).not.toBeInTheDocument();
     });

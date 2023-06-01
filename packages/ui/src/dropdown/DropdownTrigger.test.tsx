@@ -29,7 +29,7 @@ describe('DropdownTrigger', () => {
         await userEvent.click(screen.getByText('Foobar'));
         await userEvent.click(screen.getByText('Foobar'));
 
-        expect(() => screen.getByText('Hello world')).toThrow();
+        expect(screen.queryByText('Hello world')).not.toBeInTheDocument();
     });
 
     it('hides dropdown when mouse clicks anywhere else in document', () => {
@@ -42,7 +42,6 @@ describe('DropdownTrigger', () => {
         );
 
         fireEvent.click(screen.getByText('Foobar'));
-
         fireEvent.click(screen.getByTestId('root-node-id'));
 
         expect(screen.queryByText('Hello world')).not.toBeInTheDocument();
