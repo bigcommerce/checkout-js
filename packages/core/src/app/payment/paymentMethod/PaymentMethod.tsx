@@ -24,7 +24,6 @@ import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
 import ChasePayPaymentMethod from './ChasePayPaymentMethod';
 import CheckoutCustomPaymentMethod from './CheckoutcomCustomPaymentMethod';
 import DigitalRiverPaymentMethod from './DigitalRiverPaymentMethod';
-import getUniquePaymentMethodId from './getUniquePaymentMethodId';
 import GooglePayPaymentMethod from './GooglePayPaymentMethod';
 import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';
 import HostedPaymentMethod from './HostedPaymentMethod';
@@ -38,7 +37,6 @@ import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
 import PaymentMethodType from './PaymentMethodType';
 import PaypalCommerceCreditCardPaymentMethod from './PaypalCommerceCreditCardPaymentMethod';
-import PaypalCommercePaymentMethod from './PaypalCommercePaymentMethod';
 import PaypalExpressPaymentMethod from './PaypalExpressPaymentMethod';
 import PaypalPaymentsProPaymentMethod from './PaypalPaymentsProPaymentMethod';
 import PPSDKPaymentMethod from './PPSDKPaymentMethod';
@@ -47,8 +45,6 @@ import StripePaymentMethod from './StripePaymentMethod';
 import StripeUPEPaymentMethod from './StripeUPEPaymentMethod';
 import VisaCheckoutPaymentMethod from './VisaCheckoutPaymentMethod';
 import WorldpayCreditCardPaymentMethod from './WorldpayCreditCardPaymentMethod';
-import BraintreeLocalPaymentMethod from "./BraintreeLocalPaymentMethod";
-
 export interface PaymentMethodProps {
     method: PaymentMethod;
     isEmbedded?: boolean;

@@ -33,7 +33,7 @@ const AccountInstrumentUseNewButton: FunctionComponent<AccountInstrumentUseNewBu
 
 interface AccountInstrumentMenuItemProps {
     className?: string;
-    instrument: AccountInstrument;
+    instrument: any;
     testId?: string;
     onClick?(): void;
 }

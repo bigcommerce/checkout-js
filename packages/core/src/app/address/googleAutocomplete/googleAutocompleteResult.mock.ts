@@ -1,4 +1,5 @@
-export function getGoogleAutocompletePlaceMock(): google.maps.places.PlaceResult {
+
+export function getGoogleAutocompletePlaceMock(): any {
     return {
         name: '1-3 Smail St',
         address_components: [
@@ -53,10 +54,10 @@ export function getGoogleAutocompletePlaceMock(): google.maps.places.PlaceResult
                 types: ['postal_code'],
             },
         ],
-    } as google.maps.places.PlaceResult;
+    };
 }
 
-export function getGoogleAutocompleteNZPlaceMock(): google.maps.places.PlaceResult {
+export function getGoogleAutocompleteNZPlaceMock():any {
     return {
         name: '6d/17 Alberton Avenue',
         address_components: [
@@ -101,10 +102,10 @@ export function getGoogleAutocompleteNZPlaceMock(): google.maps.places.PlaceResu
                "types" : [ "postal_code" ]
             }
         ],
-    } as google.maps.places.PlaceResult;
+    };
 }
 
-export function getGoogleAutocompleteUKPlaceMock(): google.maps.places.PlaceResult {
+export function getGoogleAutocompleteUKPlaceMock(): any {
     return {
         "name" : "unit 1, 123 Buckingham Palace Rd",
         "address_components" : [
@@ -149,5 +150,5 @@ export function getGoogleAutocompleteUKPlaceMock(): google.maps.places.PlaceResu
                 "types" : [ "postal_code" ]
             }
         ],
-    } as google.maps.places.PlaceResult;
+    };
 }

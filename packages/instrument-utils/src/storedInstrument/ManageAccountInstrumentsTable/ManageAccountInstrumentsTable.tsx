@@ -31,7 +31,7 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
                     <>
                         <IconPaypal additionalClassName="accountIcon-icon" size={IconSize.Medium} />
                         <span className="instrumentModal-instrumentAccountExternalId">
-                            {instrument.externalId}
+                            {'externalId' in instrument ? instrument.externalId : ''}
                         </span>
                     </>
                 )}
