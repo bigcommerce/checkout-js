@@ -76,7 +76,7 @@ describe('AccountInstrumentSelect', () => {
         expect(screen.getByText('Use a different account')).toBeInTheDocument();
     });
 
-    it('shows list of instruments when clicked', () => {
+    it('shows list of instruments when clicked', async () => {
         render(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
@@ -90,7 +90,7 @@ describe('AccountInstrumentSelect', () => {
             </LocaleContext.Provider>,
         );
 
-        screen.getByTestId('instrument-select').click();
+        await userEvent.click(screen.getByTestId('instrument-select'));
 
         expect(screen.getByTestId('instrument-select-menu')).toBeInTheDocument();
 
