@@ -1,4 +1,4 @@
-import { render } from 'enzyme';
+import { render, screen } from '@testing-library/react'
 import React, { ComponentType } from 'react';
 
 import { toResolvableComponent } from '@bigcommerce/checkout/payment-integration-api';
@@ -39,22 +39,37 @@ describe('resolveComponent', () => {
     it('returns component if able to resolve to one by id', () => {
         const Foo = resolveComponent({ id: 'foo' }, components);
 
+        if (Foo) {
+            render(<Foo {...props} />);
+
+            expect(screen.getByText(/Foo: Testing 123/)).toBeInTheDocument();
+        }
+
         expect(Foo).toBeDefined();
-        expect(Foo && render(<Foo {...props} />).text()).toBe('Foo: Testing 123');
     });
 
     it('returns component if able to resolve to one by type', () => {
         const Bar = resolveComponent({ type: 'hosted' }, components);
 
+        if (Bar) {
+            render(<Bar {...props} />);
+
+            expect(screen.getByText(/Bar: Testing 123/)).toBeInTheDocument();
+        }
+
         expect(Bar).toBeDefined();
-        expect(Bar && render(<Bar {...props} />).text()).toBe('Bar: Testing 123');
     });
 
     it('returns component if able to resolve to one by id and gateway', () => {
         const Foobar = resolveComponent({ id: 'foo', gateway: 'bar' }, components);
 
+        if (Foobar) {
+            render(<Foobar {...props} />);
+
+            expect(screen.getByText(/Foobar: Testing 123/)).toBeInTheDocument();
+        }
+
         expect(Foobar).toBeDefined();
-        expect(Foobar && render(<Foobar {...props} />).text()).toBe('Foobar: Testing 123');
     });
 
     it('returns undefined if unable to resolve to one', () => {
@@ -70,5 +85,57 @@ describe('resolveComponent', () => {
         expect(resolveComponent({ id: 'hello_world' }, { ...components, Default })).toEqual(
             Default,
         );
+    });
+
+    it('returns correct component for an entry', () => {
+        const Component = toResolvableComponent(
+            ({ message }: TestingProps) => <div>Foo: {message}</div>,
+            [{ id: 'credit_card', gateway: 'bluesnap' }]
+        );
+
+        const CreditCard = resolveComponent(
+            { id: 'credit_card' },
+            { Component }
+        );
+
+        const Bluesnap = resolveComponent(
+            { id: 'credit_card' },
+            { Component }
+        );
+
+        const CheckoutCom = resolveComponent(
+            { id: 'credit_card', gateway: 'checkoutcom' },
+            { Component }
+        );
+
+        expect(CreditCard).toBeDefined();
+        expect(Bluesnap).toBeDefined();
+        expect(CheckoutCom).toBeUndefined();
+    });
+
+    it('returns correct component for an gateway/methodId key if registry is only done by gateway', () => {
+        const GatewayComponent = toResolvableComponent(
+            ({ message }: TestingProps) => <div>Foo: {message}</div>,
+            [{ gateway: 'somegateway' }]
+        );
+
+        const AGateway = resolveComponent(
+            { id: 'test', gateway: 'somegateway' },
+            { GatewayComponent }
+        );
+
+        const BGateway = resolveComponent(
+            { id: 'bar', gateway: 'somegateway' },
+            { GatewayComponent }
+        );
+
+        const CGateway = resolveComponent(
+            { id: 'foo', gateway: 'somegateway' },
+            { GatewayComponent }
+        );
+
+        expect(AGateway).toBeDefined();
+        expect(BGateway).toBeDefined();
+        expect(CGateway).toBeDefined();
     });
 });
