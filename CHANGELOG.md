@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.322.0](https://github.com/bigcommerce/checkout-js/compare/v1.321.7...v1.322.0) (2023-06-02)
+
+
+### Features
+
+* **payment:** PAYPAL-2451 Braintree ACH instrument ([#1289](https://github.com/bigcommerce/checkout-js/issues/1289)) ([07b6178](https://github.com/bigcommerce/checkout-js/commit/07b617802fc1f8ca730252a894cdac80c1600d54))
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-2575 fixed the issue with PayPalCommerceVenmoPaymentMethod component rendering ([#1307](https://github.com/bigcommerce/checkout-js/issues/1307)) ([aa41b25](https://github.com/bigcommerce/checkout-js/commit/aa41b2534170e636dddc5afa795dde8d3129b694))
+
 ### [1.321.7](https://github.com/bigcommerce/checkout-js/compare/v1.321.6...v1.321.7) (2023-06-01)
 
 
