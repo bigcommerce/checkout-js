@@ -4,7 +4,7 @@ import React, { FunctionComponent, memo, useCallback } from 'react';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { IconPaypal, IconSize, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
-import { isBankAccountInstrument } from '../../guards';
+import { isAchInstrument, isBankAccountInstrument } from '../../guards';
 
 interface ManageInstrumentsRowProps {
     instrument: AccountInstrument;
@@ -22,7 +22,7 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
     return (
         <tr>
             <td data-test="manage-instrument-accountExternalId">
-                {isBankAccountInstrument(instrument) ? (
+                {isBankAccountInstrument(instrument) || isAchInstrument(instrument) ? (
                     <span className="instrumentModal-instrumentAccountNumber">
                         <TranslatedString id="payment.instrument_manage_table_header_ending_in_text" />
                         <span>{` ${instrument.accountNumber}`}</span>
@@ -40,6 +40,7 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
                 <button
                     className="button button--tiny table-actionButton optimizedCheckout-buttonSecondary"
                     data-test="manage-instrument-delete-button"
+                    data-testid="manage-instrument-delete-button"
                     onClick={handleDelete}
                     type="button"
                 >
@@ -71,7 +72,7 @@ const ManageInstrumentsTable: FunctionComponent<ManageAccountInstrumentsTablePro
 
     return (
         <LoadingOverlay isLoading={isDeletingInstrument}>
-            <table className="table">
+            <table className="table" data-testid="manage-instruments-table">
                 <thead className="table-thead">
                     <tr>
                         <th>

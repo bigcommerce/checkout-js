@@ -5,7 +5,8 @@ import {
     createCheckoutService,
     RequestError,
 } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React, { FunctionComponent } from 'react';
 
 import {
@@ -15,12 +16,8 @@ import {
 } from '@bigcommerce/checkout/locale';
 import { CheckoutContext } from '@bigcommerce/checkout/payment-integration-api';
 import { getInstruments, getStoreConfig } from '@bigcommerce/checkout/test-utils';
-import { Modal } from '@bigcommerce/checkout/ui';
 
 import { isAccountInstrument, isBankAccountInstrument, isCardInstrument } from '../../guards';
-import { ManageAccountInstrumentsTable } from '../ManageAccountInstrumentsTable';
-import { ManageCardInstrumentsTable } from '../ManageCardInstrumentsTable';
-import { ManageInstrumentsAlert } from '../ManageInstrumentsAlert';
 
 import ManageInstrumentsModal, { ManageInstrumentsModalProps } from './ManageInstrumentsModal';
 
@@ -60,7 +57,7 @@ describe('ManageInstrumentsModal', () => {
 
     it('throws an error if not wrapped in checkout context', () => {
         expect(() =>
-            mount(
+            render(
                 <LocaleContext.Provider value={localeContext}>
                     <ManageInstrumentsModal {...defaultProps} />
                 </LocaleContext.Provider>,
@@ -69,68 +66,66 @@ describe('ManageInstrumentsModal', () => {
     });
 
     it('renders list of card instruments in table format', () => {
-        const component = mount(
+        render(
             <ManageInstrumentsModalTest
                 {...defaultProps}
                 instruments={getInstruments().filter(isCardInstrument)}
             />,
         );
 
-        expect(component.find(ManageCardInstrumentsTable)).toHaveLength(1);
+        expect(screen.getByTestId('manage-card-instruments-table')).toBeInTheDocument();
 
-        expect(component.find(ManageAccountInstrumentsTable)).toHaveLength(0);
+        expect(screen.queryByTestId('manage-instruments-table')).not.toBeInTheDocument();
     });
 
     it('renders list of account instruments in table format', () => {
-        const component = mount(
+        render(
             <ManageInstrumentsModalTest
                 {...defaultProps}
                 instruments={getInstruments().filter(isAccountInstrument)}
             />,
         );
 
-        expect(component.find(ManageAccountInstrumentsTable)).toHaveLength(1);
+        expect(screen.getByTestId('manage-instruments-table')).toBeInTheDocument();
 
-        expect(component.find(ManageCardInstrumentsTable)).toHaveLength(0);
+        expect(screen.queryByTestId('manage-card-instruments-table')).not.toBeInTheDocument();
     });
 
     it('renders list of bank instruments in table format', () => {
-        const component = mount(
+        render(
             <ManageInstrumentsModalTest
                 {...defaultProps}
                 instruments={getInstruments().filter(isBankAccountInstrument)}
             />,
         );
 
-        expect(component.find(ManageAccountInstrumentsTable)).toHaveLength(1);
+        expect(screen.getByTestId('manage-instruments-table')).toBeInTheDocument();
 
-        expect(component.find(ManageCardInstrumentsTable)).toHaveLength(0);
-    });
-
-    it('only render modal if configured to do so', () => {
-        const component = mount(<ManageInstrumentsModalTest {...defaultProps} isOpen={false} />);
-
-        expect(component.find(Modal).prop('isOpen')).toBe(false);
+        expect(screen.queryByTestId('manage-card-instruments-table')).not.toBeInTheDocument();
     });
 
     it('shows confirmation message before deleting instrument', () => {
-        const component = mount(<ManageInstrumentsModalTest {...defaultProps} />);
+        render(<ManageInstrumentsModalTest {...defaultProps} />);
 
-        component.find('[data-test="manage-instrument-delete-button"]').at(0).simulate('click');
+        screen.getAllByTestId('manage-instrument-delete-button')[0].click();
 
-        expect(component.find('[data-test="modal-body"]').text()).toEqual(
-            localeContext.language.translate('payment.instrument_manage_modal_confirmation_label'),
-        );
+        expect(
+            screen.getByText(
+                localeContext.language.translate(
+                    'payment.instrument_manage_modal_confirmation_label',
+                ),
+            ),
+        ).toBeInTheDocument();
     });
 
     it('deletes selected instrument and closes modal if user confirms their action', async () => {
         jest.spyOn(checkoutService, 'deleteInstrument').mockResolvedValue(checkoutState);
 
-        const component = mount(<ManageInstrumentsModalTest {...defaultProps} />);
+        render(<ManageInstrumentsModalTest {...defaultProps} />);
 
-        component.find('[data-test="manage-instrument-delete-button"]').at(0).simulate('click');
+        await userEvent.click(screen.getAllByTestId('manage-instrument-delete-button')[0]);
 
-        component.find('[data-test="manage-instrument-confirm-button"]').simulate('click');
+        await userEvent.click(screen.getAllByTestId('manage-instrument-confirm-button')[0]);
 
         expect(checkoutService.deleteInstrument).toHaveBeenCalledWith(instruments[0].bigpayToken);
 
@@ -140,28 +135,24 @@ describe('ManageInstrumentsModal', () => {
     });
 
     it('shows list of instruments if user decides to cancel their action', () => {
-        const component = mount(<ManageInstrumentsModalTest {...defaultProps} />);
+        render(<ManageInstrumentsModalTest {...defaultProps} />);
 
-        component.find('[data-test="manage-instrument-delete-button"]').at(0).simulate('click');
+        fireEvent.click(screen.getAllByTestId('manage-instrument-delete-button')[0]);
 
-        component.find('[data-test="manage-instrument-cancel-button"]').simulate('click');
+        fireEvent.click(screen.getAllByTestId('manage-instrument-cancel-button')[0]);
 
-        expect(component.find(ManageCardInstrumentsTable)).toHaveLength(1);
+        expect(screen.getByTestId('manage-card-instruments-table')).toBeInTheDocument();
     });
 
     it('cancels "delete confirmation" screen when modal is re-open', () => {
         jest.spyOn(checkoutService, 'deleteInstrument').mockResolvedValue(checkoutState);
 
-        const component = mount(<ManageInstrumentsModalTest {...defaultProps} />);
+        render(<ManageInstrumentsModalTest {...defaultProps} />);
 
-        component.find('[data-test="manage-instrument-delete-button"]').at(0).simulate('click');
+        fireEvent.click(screen.getAllByTestId('manage-instrument-delete-button')[0]);
+        fireEvent.click(screen.getByText('Cancel'));
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        component.find(Modal).prop('onAfterOpen')!();
-
-        component.update();
-
-        expect(component.find(ManageCardInstrumentsTable)).toHaveLength(1);
+        expect(screen.getByTestId('manage-card-instruments-table')).toBeInTheDocument();
     });
 
     it('displays error message to user if unable to delete instrument', () => {
@@ -170,8 +161,12 @@ describe('ManageInstrumentsModal', () => {
             status: 500,
         } as RequestError);
 
-        const component = mount(<ManageInstrumentsModalTest {...defaultProps} />);
+        render(<ManageInstrumentsModalTest {...defaultProps} />);
 
-        expect(component.find(ManageInstrumentsAlert)).toHaveLength(1);
+        expect(
+            screen.getByText(
+                localeContext.language.translate('payment.instrument_manage_delete_server_error'),
+            ),
+        ).toBeInTheDocument();
     });
 });

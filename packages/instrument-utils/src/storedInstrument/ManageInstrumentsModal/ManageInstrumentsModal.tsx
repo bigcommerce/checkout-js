@@ -6,8 +6,14 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckoutContext } from '@bigcommerce/checkout/payment-integration-api';
 import { Button, ButtonSize, ButtonVariant, Modal, ModalHeader } from '@bigcommerce/checkout/ui';
 
-import { isAccountInstrument, isBankAccountInstrument, isCardInstrument } from '../../guards';
+import {
+    isAccountInstrument,
+    isAchInstrument,
+    isBankAccountInstrument,
+    isCardInstrument,
+} from '../../guards';
 import { ManageAccountInstrumentsTable } from '../ManageAccountInstrumentsTable';
+import { ManageAchInstrumentsTable } from '../ManageAchInstrumentsTable';
 import { ManageCardInstrumentsTable } from '../ManageCardInstrumentsTable';
 import { ManageInstrumentsAlert } from '../ManageInstrumentsAlert';
 
@@ -96,6 +102,17 @@ class ManageInstrumentsModal extends Component<
         const cardInstruments = instruments.filter(isCardInstrument);
         const bankInstruments = instruments.filter(isBankAccountInstrument);
         const accountInstruments = instruments.filter(isAccountInstrument);
+        const achInstrument = instruments.filter(isAchInstrument);
+
+        if (achInstrument.length) {
+            return (
+                <ManageAchInstrumentsTable
+                    instruments={achInstrument}
+                    isDeletingInstrument={isDeletingInstrument()}
+                    onDeleteInstrument={this.handleDeleteInstrument}
+                />
+            );
+        }
 
         const bankAndAccountInstruments = [...bankInstruments, ...accountInstruments];
 
@@ -137,6 +154,7 @@ class ManageInstrumentsModal extends Component<
                 <>
                     <Button
                         data-test="manage-instrument-cancel-button"
+                        data-testid="manage-instrument-cancel-button"
                         onClick={this.handleCancel}
                         size={ButtonSize.Small}
                     >
@@ -145,6 +163,7 @@ class ManageInstrumentsModal extends Component<
 
                     <Button
                         data-test="manage-instrument-confirm-button"
+                        data-testid="manage-instrument-confirm-button"
                         disabled={isDeletingInstrument() || isLoadingInstruments()}
                         onClick={this.handleConfirmDelete}
                         size={ButtonSize.Small}

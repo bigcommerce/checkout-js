@@ -45,3 +45,4 @@ export { default as IconRemove } from './IconRemove';
 export { default as IconPaypal } from './IconPaypal';
 export { default as IconNewAccount } from './IconNewAccount';
 export { default as IconUsdCoin } from './IconUsdCoin';
+export { default as IconAch } from './IconAch';

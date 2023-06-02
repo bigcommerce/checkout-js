@@ -1,3 +1,4 @@
+import { CheckoutPageNodeObject } from '@bigcommerce/checkout/test-framework';
 import {
     CheckoutService,
     createCheckoutService,
@@ -15,8 +16,7 @@ import {
     AnalyticsProviderMock,
 } from '@bigcommerce/checkout/analytics';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
-import { CheckoutPageNodeObject } from '@bigcommerce/checkout/test-framework';
+import { CHECKOUT_ROOT_NODE_ID, CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import { createErrorLogger } from '../common/error';
 import {
@@ -25,7 +25,6 @@ import {
 } from '../embeddedCheckout';
 
 import Checkout, { CheckoutProps } from './Checkout';
-import { CHECKOUT_ROOT_NODE_ID } from './CheckoutRootNodeId';
 
 describe('Checkout', () => {
     let checkout: CheckoutPageNodeObject;

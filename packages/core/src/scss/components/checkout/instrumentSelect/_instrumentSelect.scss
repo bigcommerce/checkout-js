@@ -64,6 +64,14 @@
     text-align: left;
 }
 
+.instrumentSelect-bank {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-left: spacing("half");
+    margin-right: spacing("half");
+}
+
 .instrumentSelect-expiry {
     margin-right: remCalc(20px);
     text-align: right;

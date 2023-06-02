@@ -1,13 +1,24 @@
-import { AccountInstrument, BankInstrument } from '@bigcommerce/checkout-sdk';
+import {
+    AccountInstrument,
+    AchInstrument,
+    BankInstrument,
+    PayPalInstrument,
+} from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { FieldProps } from 'formik';
 import { find, noop } from 'lodash';
 import React, { FunctionComponent, PureComponent, ReactNode, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { DropdownTrigger, IconNewAccount, IconPaypal, IconSize } from '@bigcommerce/checkout/ui';
+import {
+    DropdownTrigger,
+    IconAch,
+    IconNewAccount,
+    IconPaypal,
+    IconSize,
+} from '@bigcommerce/checkout/ui';
 
-import { isBankAccountInstrument } from '../../guards';
+import { isAchInstrument, isBankAccountInstrument } from '../../guards';
 
 interface AccountInstrumentUseNewButtonProps {
     className?: string;
@@ -20,7 +31,13 @@ const AccountInstrumentUseNewButton: FunctionComponent<AccountInstrumentUseNewBu
     testId,
     onClick = noop,
 }) => (
-    <button className={className} data-test={testId} onClick={onClick} type="button">
+    <button
+        className={className}
+        data-test={testId}
+        data-testid={testId}
+        onClick={onClick}
+        type="button"
+    >
         <div className="instrumentSelect-details instrumentSelect-details--addNew">
             <IconNewAccount additionalClassName="accountIcon-icon" size={IconSize.Medium} />
 
@@ -33,7 +50,7 @@ const AccountInstrumentUseNewButton: FunctionComponent<AccountInstrumentUseNewBu
 
 interface AccountInstrumentMenuItemProps {
     className?: string;
-    instrument: AccountInstrument;
+    instrument: PayPalInstrument;
     testId?: string;
     onClick?(): void;
 }
@@ -45,7 +62,13 @@ const AccountInstrumentMenuItem: FunctionComponent<AccountInstrumentMenuItemProp
     onClick,
 }) => {
     return (
-        <button className={className} data-test={testId} onClick={onClick} type="button">
+        <button
+            className={className}
+            data-test={testId}
+            data-testid={testId}
+            onClick={onClick}
+            type="button"
+        >
             <div className="instrumentSelect-details">
                 {
                     // TODO: When we include new account instrument types we can
@@ -53,8 +76,48 @@ const AccountInstrumentMenuItem: FunctionComponent<AccountInstrumentMenuItemProp
                 }
                 <IconPaypal additionalClassName="accountIcon-icon" size={IconSize.Medium} />
 
-                <div className="instrumentSelect-account" data-test={`${testId || ''}-externalId`}>
+                <div
+                    className="instrumentSelect-account"
+                    data-test={`${testId || ''}-externalId`}
+                    data-testid={`${testId || ''}-externalId`}
+                >
                     {externalId}
+                </div>
+            </div>
+        </button>
+    );
+};
+
+interface AchInstrumentMenuItemProps {
+    className?: string;
+    instrument: AchInstrument;
+    testId?: string;
+    onClick?(): void;
+}
+
+const AchInstrumentMenuItem: FunctionComponent<AchInstrumentMenuItemProps> = ({
+    className,
+    instrument,
+    testId,
+    onClick,
+}) => {
+    const issuerName = `Routing Number: ${instrument.issuer}`;
+    const accountNumber = `Account number ending in: ${instrument.accountNumber}`;
+
+    return (
+        <button
+            className={className}
+            data-test={testId}
+            data-testid={testId}
+            onClick={onClick}
+            type="button"
+        >
+            <div className="instrumentSelect-details">
+                <IconAch size={IconSize.Medium} />
+
+                <div className="instrumentSelect-bank">
+                    <div>{accountNumber}</div>
+                    <div>{issuerName}</div>
                 </div>
             </div>
         </button>
@@ -78,7 +141,13 @@ const BankInstrumentMenuItem: FunctionComponent<BankInstrumentMenuItemProps> = (
     const accountNumber = `Account number ending in: ${instrument.accountNumber}`;
 
     return (
-        <button className={className} data-test={testId} onClick={onClick} type="button">
+        <button
+            className={className}
+            data-test={testId}
+            data-testid={testId}
+            onClick={onClick}
+            type="button"
+        >
             <div className="instrumentSelect-details">
                 {
                     // TODO: When we include new account instrument types we can
@@ -104,6 +173,16 @@ const AccountInstrumentOption: FunctionComponent<AccountInstrumentOptionProps> =
     const handleClick = useCallback(() => {
         onClick(instrument.bigpayToken);
     }, [onClick, instrument]);
+
+    if (isAchInstrument(instrument)) {
+        return (
+            <AchInstrumentMenuItem
+                instrument={instrument}
+                onClick={handleClick}
+                testId="instrument-select-option"
+            />
+        );
+    }
 
     return !isBankAccountInstrument(instrument) ? (
         <AccountInstrumentMenuItem
@@ -137,6 +216,7 @@ const AccountInstrumentMenu: FunctionComponent<AccountInstrumentMenuProps> = ({
         <ul
             className="instrumentSelect-dropdownMenu instrumentSelect-dropdownMenuNext dropdown-menu"
             data-test="instrument-select-menu"
+            data-testid="instrument-select-menu"
         >
             {instruments.map((instrument) => (
                 <li
@@ -179,6 +259,17 @@ const AccountInstrumentSelectButton: FunctionComponent<AccountInstrumentSelectBu
         return (
             <AccountInstrumentUseNewButton
                 className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
+                testId={testId}
+            />
+        );
+    }
+
+    if (isAchInstrument(instrument)) {
+        return (
+            <AchInstrumentMenuItem
+                className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
+                instrument={instrument}
+                onClick={onClick}
                 testId={testId}
             />
         );
@@ -248,7 +339,7 @@ class AccountInstrumentSelect extends PureComponent<AccountInstrumentSelectProps
         const { value, ...otherFieldProps } = field;
 
         return (
-            <div className="instrumentSelect">
+            <div className="instrumentSelect" data-testid="account-instrument-select">
                 <DropdownTrigger
                     dropdown={
                         <AccountInstrumentMenu

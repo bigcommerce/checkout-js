@@ -1,28 +1,11 @@
-import { CardInstrument } from '@bigcommerce/checkout-sdk';
-import { expirationDate } from 'card-validator';
-import classNames from 'classnames';
-import creditCardType from 'credit-card-type';
-import React, { FunctionComponent, memo, useCallback } from 'react';
+import { AchInstrument } from '@bigcommerce/checkout-sdk';
+import React, { FunctionComponent, useCallback } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { CreditCardIcon, LoadingOverlay } from '@bigcommerce/checkout/ui';
-
-function mapFromInstrumentCardType(type: string): string {
-    switch (type) {
-        case 'amex':
-        case 'american_express':
-            return 'american-express';
-
-        case 'diners':
-            return 'diners-club';
-
-        default:
-            return type;
-    }
-}
+import { IconAch, IconSize, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 interface ManageInstrumentsRowProps {
-    instrument: CardInstrument;
+    instrument: AchInstrument;
     onDeleteInstrument(id: string): void;
 }
 
@@ -30,39 +13,21 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
     instrument,
     onDeleteInstrument,
 }) => {
-    const cardType = mapFromInstrumentCardType(instrument.brand);
-    const cardInfo = creditCardType.getTypeInfo(cardType);
-    const isExpired =
-        expirationDate({
-            month: instrument.expiryMonth,
-            year: instrument.expiryYear,
-        }).isValid === false;
-
     const handleDelete = useCallback(() => {
         onDeleteInstrument(instrument.bigpayToken);
     }, [instrument, onDeleteInstrument]);
 
     return (
         <tr>
-            <td data-test="manage-instrument-cardType">
-                <CreditCardIcon cardType={cardType} />
-
-                {cardInfo && (
-                    <span className="instrumentModal-instrumentCardType">{cardInfo.niceType}</span>
-                )}
+            <td data-test="manage-instrument-bankType">
+                <IconAch size={IconSize.Medium} />
             </td>
-            <td data-test="manage-instrument-last4">{instrument.last4}</td>
-            <td
-                className={classNames({ 'instrumentModal-instrumentExpiry--expired': isExpired })}
-                data-test="manage-instrument-expiry"
-            >
-                {`${instrument.expiryMonth}/${instrument.expiryYear}`}
-            </td>
+            <td data-test="manage-instrument-accountNumber">{instrument.accountNumber}</td>
+            <td data-test="manage-instrument-issuer">{instrument.issuer}</td>
             <td>
                 <button
                     className="button button--tiny table-actionButton optimizedCheckout-buttonSecondary"
                     data-test="manage-instrument-delete-button"
-                    data-testid="manage-instrument-delete-button"
                     onClick={handleDelete}
                     type="button"
                 >
@@ -73,13 +38,13 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
     );
 };
 
-export interface ManageCardInstrumentsTableProps {
-    instruments: CardInstrument[];
+export interface ManageAchInstrumentsTableProps {
+    instruments: AchInstrument[];
     isDeletingInstrument: boolean;
     onDeleteInstrument(id: string): void;
 }
 
-const ManageCardInstrumentsTable: FunctionComponent<ManageCardInstrumentsTableProps> = ({
+const ManageAchInstrumentsTable: FunctionComponent<ManageAchInstrumentsTableProps> = ({
     instruments,
     isDeletingInstrument,
     onDeleteInstrument,
@@ -94,7 +59,7 @@ const ManageCardInstrumentsTable: FunctionComponent<ManageCardInstrumentsTablePr
 
     return (
         <LoadingOverlay isLoading={isDeletingInstrument}>
-            <table className="table" data-testid="manage-card-instruments-table">
+            <table className="table" data-testid="manage-ach-instruments-table">
                 <thead className="table-thead">
                     <tr>
                         <th>
@@ -104,7 +69,7 @@ const ManageCardInstrumentsTable: FunctionComponent<ManageCardInstrumentsTablePr
                             <TranslatedString id="payment.instrument_manage_table_header_ending_in_text" />
                         </th>
                         <th>
-                            <TranslatedString id="payment.instrument_manage_table_header_expiry_date_text" />
+                            <TranslatedString id="payment.instrument_manage_table_header_routing_number_text" />
                         </th>
                         <th />
                     </tr>
@@ -124,4 +89,4 @@ const ManageCardInstrumentsTable: FunctionComponent<ManageCardInstrumentsTablePr
     );
 };
 
-export default memo(ManageCardInstrumentsTable);
+export default ManageAchInstrumentsTable;

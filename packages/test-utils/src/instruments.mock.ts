@@ -1,5 +1,6 @@
 import {
     AccountInstrument,
+    AchInstrument,
     BankInstrument,
     CardInstrument,
     PaymentInstrument,
@@ -63,7 +64,6 @@ export function getInstruments(): PaymentInstrument[] {
             provider: 'adyen',
             accountNumber: 'ABC',
             issuer: 'DEF',
-            externalId: 'test@external-id-3.com',
             trustedShippingAddress: false,
             defaultInstrument: false,
             method: 'ideal',
@@ -75,12 +75,21 @@ export function getInstruments(): PaymentInstrument[] {
             provider: 'adyen',
             accountNumber: 'GHI',
             issuer: 'JKL',
-            externalId: 'test@external-id-4.com',
             trustedShippingAddress: false,
             defaultInstrument: false,
             method: 'ideal',
             type: 'bank',
             iban: '12345',
+        },
+        {
+            bigpayToken: '34567456',
+            provider: 'braintree',
+            accountNumber: '0000',
+            issuer: '011000015',
+            trustedShippingAddress: false,
+            defaultInstrument: false,
+            method: 'ach',
+            type: 'bank',
         },
     ];
 }
@@ -118,7 +127,6 @@ export function getBankInstrument(): BankInstrument {
     return {
         bigpayToken: '454545',
         provider: 'adyen',
-        externalId: 'test@external-id-3.com',
         trustedShippingAddress: true,
         defaultInstrument: true,
         method: 'ideal',
@@ -126,5 +134,18 @@ export function getBankInstrument(): BankInstrument {
         accountNumber: 'GHI',
         issuer: 'JKL',
         iban: '12345',
+    };
+}
+
+export function getAchInstrument(): AchInstrument {
+    return {
+        bigpayToken: '45454545',
+        provider: 'braintree',
+        accountNumber: '0000',
+        issuer: '011000015',
+        trustedShippingAddress: false,
+        defaultInstrument: false,
+        method: 'ach',
+        type: 'bank',
     };
 }

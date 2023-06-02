@@ -1,8 +1,9 @@
 import { getScriptLoader, getStylesheetLoader } from '@bigcommerce/script-loader';
 import { noop } from 'lodash';
 
+import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
+
 import AppExport from './AppExport';
-import { CHECKOUT_ROOT_NODE_ID } from './checkout/CheckoutRootNodeId';
 import { AssetManifest, loadFiles, LoadFilesOptions } from './loader';
 
 jest.mock('@bigcommerce/script-loader', () => {
