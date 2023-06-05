@@ -22,7 +22,7 @@ interface GTMUser {
   email?: string;
   first_name?: string;
   last_name?: string;
-  phone?: number | string;
+  phone?: Array<number | string>;
   city?: string[];
   state_region?: string[];
   zip_code?: string[];
@@ -59,6 +59,7 @@ function transformUserData(user: Customer): GTMUser {
     const stateRegion: Set<string> = new Set();
     const zipCode: Set<string> = new Set();
     const country: Set<string> = new Set();
+    const phone: Set<string> = new Set();
 
     if (user.addresses) {
       for (const address of user.addresses) {
@@ -88,6 +89,10 @@ function transformUserData(user: Customer): GTMUser {
         if (address.countryCode !== '') {
           country.add(address.countryCode.toLowerCase().replace(' ', ''));
         }
+
+        if (address.phone !== '' && address.countryCode !== '') {
+          phone.add(transformPhoneNumber(address.phone, address.countryCode));
+        }
       }
     }
 
@@ -95,7 +100,7 @@ function transformUserData(user: Customer): GTMUser {
       user_id: user.id ?? user.customerId,
       email: user.email,
       is_guest: false,
-      phone: transformPhoneNumber(user.addresses?.[0]?.phone, user.addresses?.[0]?.countryCode),
+      phone: Array.from(phone),
       first_name: user.firstName,
       last_name: user.lastName,
       city: Array.from(city),
