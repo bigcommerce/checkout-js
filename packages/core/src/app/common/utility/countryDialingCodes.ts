@@ -1,3 +1,5 @@
+// SOURCE: http://country.io/phone.json
+
 const countryCodesToDialingCodes: { [k: string]: string } = {
   BD: '880',
   BE: '32',
