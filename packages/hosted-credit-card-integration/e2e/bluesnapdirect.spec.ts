@@ -1,7 +1,4 @@
-import {
-    PaymentStepAsGuestPreset,
-    test,
-} from '@bigcommerce/checkout/payment-integration-test-framework';
+import { PaymentStepAsGuestPreset, test } from '@bigcommerce/checkout/test-framework';
 
 test.describe('BlueSnap Direct', () => {
     test('Customer should be able to pay using CC with BlueSnap through the payment step in checkout', async ({
