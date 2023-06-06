@@ -22,14 +22,15 @@ const BraintreeAchPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         currentMandateTextRef.current = currentMandateText;
     };
 
+    const customer = checkoutState.data.getCustomer();
+    const isInstrumentFeatureAvailable = !customer?.isGuest && method.config.isVaultingEnabled;
+
     useEffect(() => {
         const initializePaymentMethod = async () => {
-            const { gateway: gatewayId, id: methodId } = method;
-
             try {
                 await checkoutService.initializePayment({
-                    gatewayId,
-                    methodId,
+                    gatewayId: method.gateway,
+                    methodId: method.id,
                     braintreeach: {
                         getMandateText: () => currentMandateTextRef.current,
                     },
@@ -42,7 +43,24 @@ const BraintreeAchPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         };
 
         void initializePaymentMethod();
-    }, [checkoutService, method, onUnhandledError]);
+
+        return () => {
+            const deinitializePaymentMethod = async () => {
+                try {
+                    await checkoutService.deinitializePayment({
+                        gatewayId: method.gateway,
+                        methodId: method.id,
+                    });
+                } catch (error) {
+                    if (error instanceof Error) {
+                        onUnhandledError(error);
+                    }
+                }
+            };
+
+            void deinitializePaymentMethod();
+        };
+    }, [checkoutService, method.gateway, method.id, onUnhandledError]);
 
     useEffect(() => {
         const initializeBillingAddressFields = async () => {
@@ -55,8 +73,21 @@ const BraintreeAchPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             }
         };
 
+        const initializeInstruments = async () => {
+            try {
+                if (isInstrumentFeatureAvailable) {
+                    await checkoutService.loadInstruments();
+                }
+            } catch (error) {
+                if (error instanceof Error) {
+                    onUnhandledError(error);
+                }
+            }
+        };
+
         void initializeBillingAddressFields();
-    }, [checkoutService, onUnhandledError]);
+        void initializeInstruments();
+    }, [checkoutService, onUnhandledError, isInstrumentFeatureAvailable]);
 
     const props = {
         checkoutService,
@@ -68,6 +99,7 @@ const BraintreeAchPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         outstandingBalance: checkoutState.data.getCheckout()?.outstandingBalance,
         symbol: checkoutState.data.getCart()?.currency.symbol,
         updateMandateText,
+        isInstrumentFeatureAvailable,
     };
 
     return <BraintreeAchPaymentForm {...props} />;

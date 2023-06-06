@@ -1,4 +1,4 @@
-import { mount, ReactWrapper } from 'enzyme';
+import { render, screen, waitFor } from '@testing-library/react';
 import { Formik } from 'formik';
 import { FormikValues } from 'formik/dist/types';
 import { noop } from 'lodash';
@@ -60,15 +60,13 @@ describe('MandateText', () => {
             }
         });
 
-        const component = mount(<MandateTextTest {...defaultProps} />);
+        render(<MandateTextTest {...defaultProps} />);
 
         await act(async () => {
             await new Promise((resolve) => setTimeout(resolve, 0));
         });
 
-        component.update();
-
-        expect(component.text()).toBe('');
+        expect(screen.queryByTestId('mandate-text')).not.toBeInTheDocument();
     });
 
     it('mandateText should be visible', async () => {
@@ -78,16 +76,10 @@ describe('MandateText', () => {
             }
         });
 
-        const component: ReactWrapper<MandateTextProps> = mount(
-            <MandateTextTest {...defaultProps} />,
-        );
+        render(<MandateTextTest {...defaultProps} />);
 
-        await act(async () => {
-            await new Promise((resolve) => setTimeout(resolve, 0));
-        });
+        await waitFor(() => screen.findByTestId('mandate-text'));
 
-        component.update();
-
-        expect(component.text()).toContain('By clicking Place Order');
+        expect(screen.getByTestId('mandate-text')).toHaveTextContent(/By clicking Place Order/);
     });
 });

@@ -3,7 +3,7 @@ import {
     CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
@@ -60,9 +60,9 @@ describe('BraintreeAchPaymentForm', () => {
     });
 
     it('initializes payment method', async () => {
-        const component = mount(<BraintreeAchPaymentMethodTest {...defaultProps} />);
+        render(<BraintreeAchPaymentMethodTest {...defaultProps} />);
 
-        expect(component.find(BraintreeAchPaymentMethod)).toHaveLength(1);
+        expect(screen.getByTestId('checkout-ach-form')).toBeInTheDocument();
         expect(checkoutService.loadBillingAddressFields).toHaveBeenCalled();
 
         await new Promise((resolve) => process.nextTick(resolve));
@@ -78,7 +78,7 @@ describe('BraintreeAchPaymentForm', () => {
 
     it('catches an error during failed initialization of loadBillingAddressFields', async () => {
         jest.spyOn(checkoutService, 'initializePayment').mockRejectedValue(new Error('error'));
-        mount(<BraintreeAchPaymentMethodTest {...defaultProps} />);
+        render(<BraintreeAchPaymentMethodTest {...defaultProps} />);
 
         await new Promise((resolve) => process.nextTick(resolve));
 
@@ -87,7 +87,7 @@ describe('BraintreeAchPaymentForm', () => {
 
     it('catches an error during failed initialization of initializePayment', async () => {
         jest.spyOn(checkoutService, 'initializePayment').mockRejectedValue(new Error('error'));
-        mount(<BraintreeAchPaymentMethodTest {...defaultProps} />);
+        render(<BraintreeAchPaymentMethodTest {...defaultProps} />);
 
         await new Promise((resolve) => process.nextTick(resolve));
 
