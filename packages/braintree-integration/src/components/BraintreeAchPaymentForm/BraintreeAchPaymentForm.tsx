@@ -1,17 +1,13 @@
-import { AchInstrument } from '@bigcommerce/checkout-sdk';
-import { find } from 'lodash';
-import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FunctionComponent, useCallback, useEffect, useMemo } from 'react';
 import { object } from 'yup';
 
 import {
     AccountInstrumentFieldset,
-    isAchInstrument,
     StoreInstrumentFieldset,
 } from '@bigcommerce/checkout/instrument-utils';
 import {
     CheckoutContext,
     PaymentFormContext,
-    PaymentFormService,
     PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { FormContext, LoadingOverlay } from '@bigcommerce/checkout/ui';
@@ -25,95 +21,11 @@ import { AchFormFields } from '../AchFormFields';
 import { MandateText } from '../MandateText';
 
 import { AccountTypes, formFieldData, OwnershipTypes } from './braintreeAchPaymentFormConfig';
+import useInstrumentProps from './useInstrumentProps';
 
 export interface AddressKeyMap<T = string> {
     [fieldName: string]: T;
 }
-
-interface WithUseInstrumentProps {
-    handleSelectInstrument: (id: string) => void;
-    handleUseNewInstrument: () => void;
-    currentInstrument?: AchInstrument;
-    filterTrustedInstruments: AchInstrument[];
-    shouldShowInstrumentFieldset: boolean;
-}
-
-const useInstrumentProps = (
-    checkoutState: PaymentMethodProps['checkoutState'],
-    method: PaymentMethodProps['method'],
-    setFieldValue: PaymentFormService['setFieldValue'],
-    isInstrumentFeatureAvailable?: boolean,
-): WithUseInstrumentProps => {
-    const [currentInstrument, setCurrentInstrument] = useState<AchInstrument | undefined>();
-
-    const currentMethodInstruments = useMemo(
-        () => checkoutState.data.getInstruments(method) || [],
-        [checkoutState, method],
-    );
-
-    const filterAccountInstruments = useMemo(
-        (): AchInstrument[] => currentMethodInstruments.filter(isAchInstrument),
-        [currentMethodInstruments],
-    );
-
-    const filterTrustedInstruments = useMemo(
-        (): AchInstrument[] =>
-            filterAccountInstruments.filter(({ trustedShippingAddress }) => trustedShippingAddress),
-        [filterAccountInstruments],
-    );
-
-    const isNewAddress =
-        filterTrustedInstruments.length === 0 && filterAccountInstruments.length > 0;
-
-    const shouldShowInstrumentFieldset =
-        Boolean(isInstrumentFeatureAvailable) &&
-        (filterTrustedInstruments.length > 0 || isNewAddress);
-
-    const getDefaultInstrument = useCallback((): AchInstrument | undefined => {
-        if (filterTrustedInstruments.length === 1) {
-            return filterTrustedInstruments[0];
-        }
-
-        return filterTrustedInstruments.length
-            ? filterTrustedInstruments.filter(({ defaultInstrument }) => defaultInstrument)[0]
-            : undefined;
-    }, [filterTrustedInstruments]);
-
-    const handleSelectInstrument = useCallback(
-        (id: string) => {
-            setCurrentInstrument(find(filterTrustedInstruments, { bigpayToken: id }));
-            setFieldValue('instrumentId', id);
-            setFieldValue('shouldSetAsDefaultInstrument', false);
-        },
-        [filterTrustedInstruments, setFieldValue],
-    );
-
-    const handleUseNewInstrument = useCallback(() => {
-        setCurrentInstrument(undefined);
-
-        setFieldValue('instrumentId', '');
-        setFieldValue('shouldSaveInstrument', false);
-        setFieldValue('shouldSetAsDefaultInstrument', false);
-    }, [setFieldValue]);
-
-    useEffect(() => {
-        setCurrentInstrument(isInstrumentFeatureAvailable ? getDefaultInstrument() : undefined);
-    }, [getDefaultInstrument, isInstrumentFeatureAvailable]);
-
-    useEffect(() => {
-        if (!shouldShowInstrumentFieldset) {
-            setFieldValue('instrumentId', '');
-        }
-    }, [setFieldValue, shouldShowInstrumentFieldset]);
-
-    return {
-        currentInstrument,
-        filterTrustedInstruments,
-        shouldShowInstrumentFieldset,
-        handleSelectInstrument,
-        handleUseNewInstrument,
-    };
-};
 
 export interface BraintreeAchPaymentFormProps extends Omit<PaymentMethodProps, 'onUnhandledError'> {
     outstandingBalance?: number;
