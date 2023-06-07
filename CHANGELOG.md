@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.324.0](https://github.com/bigcommerce/checkout-js/compare/v1.323.0...v1.324.0) (2023-06-07)
+
+
+### Features
+
+* **checkout:** PI-00 fixes for bluesnap direct return ([5c9fbba](https://github.com/bigcommerce/checkout-js/commit/5c9fbba4e276e351eeee18173988b4a3c5678c0c))
+* **checkout:** PI-000 bluesnap direct test migrated to RTL ([f9eb81c](https://github.com/bigcommerce/checkout-js/commit/f9eb81c649ceb1fd2865209b5187ff13c1b1f42d))
+* **payment:** INT-7169 BlueSnapDirect: Add payment method component ([2233650](https://github.com/bigcommerce/checkout-js/commit/2233650fa3ee20cdcabbf4d499c4a23cc2c45967))
+* **payment:** INT-7169 BlueSnapDirect: Add some e2e tests ([de33e58](https://github.com/bigcommerce/checkout-js/commit/de33e58b974b3acc1500ed596f7195c1ebbb6625))
+* **payment:** INT-7169 BlueSnapDirect: Set up monorepo package ([6b39470](https://github.com/bigcommerce/checkout-js/commit/6b394701fceb12c38987583bec2188b9b1883268))
+
 ## [1.323.0](https://github.com/bigcommerce/checkout-js/compare/v1.322.2...v1.323.0) (2023-06-07)
 
 
