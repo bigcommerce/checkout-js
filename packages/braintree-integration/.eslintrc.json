@@ -13,7 +13,9 @@
         "@typescript-eslint/no-unsafe-member-access": "off",
         "no-nested-ternary": "off",
         "@bigcommerce/jsx-short-circuit-conditionals": "off",
-        "@typescript-eslint/default-param-last": "off"
+        "@typescript-eslint/default-param-last": "off",
+        "react/jsx-no-useless-fragment": "off",
+        "react-hooks/exhaustive-deps": "off"
       }
     }
   ]
