@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback, useEffect, useMemo } from 'react';
+import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
 import { object } from 'yup';
 
 import {
@@ -36,7 +36,14 @@ export interface BraintreeAchPaymentFormProps extends Omit<PaymentMethodProps, '
 }
 
 const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> = ({
-    paymentForm: { getFieldValue, setFieldValue, setValidationSchema, isSubmitted, setSubmitted },
+    paymentForm: {
+        getFieldValue,
+        setFieldValue,
+        setValidationSchema,
+        isSubmitted,
+        setSubmitted,
+        disableSubmit,
+    },
     paymentForm,
     outstandingBalance,
     symbol,
@@ -48,6 +55,13 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
     updateMandateText,
     isInstrumentFeatureAvailable,
 }) => {
+    const [disabled, setDisabled] = useState(false);
+
+    const onOrderConsentChange = useCallback(
+        (orderConsent: boolean) => setDisabled(!orderConsent),
+        [setDisabled],
+    );
+
     const {
         currentInstrument,
         filterTrustedInstruments,
@@ -167,6 +181,8 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
         setValidationSchema(method, validationSchema);
     }, [validationSchema, method, setValidationSchema, setSubmitted]);
 
+    useEffect(() => disableSubmit(method, disabled), [disableSubmit, disabled, method]);
+
     const mandateTextProps = {
         getFieldValue,
         isBusiness,
@@ -177,6 +193,8 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
         symbol,
         validationSchema,
         isInstrumentFeatureAvailable,
+        onOrderConsentChange,
+        setFieldValue,
     };
 
     const isLoading = isLoadingBillingCountries || isLoadingInstruments || isLoadingPaymentMethod;
