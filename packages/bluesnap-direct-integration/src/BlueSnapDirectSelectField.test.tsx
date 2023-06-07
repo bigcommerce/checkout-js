@@ -1,4 +1,4 @@
-import { mount } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
@@ -20,8 +20,8 @@ describe('BlueSnapDirectSelectField', () => {
         };
 
         options = {
-            labelContent: 'Some Option',
-            name: 'someOption',
+            labelContent: 'Some Select',
+            name: 'someSelect',
             options: {
                 helperLabel: 'Select an option',
                 items: [
@@ -34,7 +34,7 @@ describe('BlueSnapDirectSelectField', () => {
     });
 
     it('allows user to select an option', () => {
-        const component = mount(
+        render(
             <Formik initialValues={initialValues} onSubmit={noop}>
                 <LocaleContext.Provider value={createLocaleContext(getStoreConfig())}>
                     <BlueSnapDirectSelectField {...options} />
@@ -42,11 +42,14 @@ describe('BlueSnapDirectSelectField', () => {
             </Formik>,
         );
 
-        component
-            .find('select[name="someOption"]')
-            .simulate('change', { target: { value: 'bar', name: 'someOption' } })
-            .update();
+        const selectElement = screen.getByLabelText<HTMLSelectElement>('Some Select');
 
-        expect(component.find('select[name="someOption"]').prop('value')).toBe('bar');
+        fireEvent.change(selectElement, { target: { value: 'bar' } });
+
+        const selectedOption = screen.getByText<HTMLOptionElement>('Bar');
+        const unselectedOption = screen.getByText<HTMLOptionElement>('Foo');
+
+        expect(selectedOption.selected).toBe(true);
+        expect(unselectedOption.selected).toBe(false);
     });
 });

@@ -1,4 +1,4 @@
-import { mount } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
@@ -26,7 +26,7 @@ describe('BlueSnapDirectNumberField', () => {
     });
 
     it('allows user to type in a number', () => {
-        const component = mount(
+        render(
             <Formik initialValues={initialValues} onSubmit={noop}>
                 <LocaleContext.Provider value={createLocaleContext(getStoreConfig())}>
                     <BlueSnapDirectNumberField {...options} />
@@ -34,11 +34,10 @@ describe('BlueSnapDirectNumberField', () => {
             </Formik>,
         );
 
-        component
-            .find('input[name="someNumber"]')
-            .simulate('change', { target: { value: '999999999', name: 'someNumber' } })
-            .update();
+        const numberField = screen.getByLabelText<HTMLInputElement>('Some Number');
 
-        expect(component.find('input[name="someNumber"]').prop('value')).toBe('999999999');
+        fireEvent.change(numberField, { target: { value: '999999999' } });
+
+        expect(numberField.value).toBe('999999999');
     });
 });
