@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.323.0](https://github.com/bigcommerce/checkout-js/compare/v1.322.2...v1.323.0) (2023-06-07)
+
+
+### Features
+
+* **payment:** PAYPAL-2450 added BraintreeLocalPaymentMethod component ([0af6c1f](https://github.com/bigcommerce/checkout-js/commit/0af6c1f87736e604b587a37a6c31e06e1a37608d))
+
 ### [1.322.2](https://github.com/bigcommerce/checkout-js/compare/v1.322.1...v1.322.2) (2023-06-07)
 
 ### [1.322.1](https://github.com/bigcommerce/checkout-js/compare/v1.322.0...v1.322.1) (2023-06-02)
