@@ -30,6 +30,9 @@ interface GTMUser {
 }
 
 function transformPhoneNumber(phone: string | number, countryCode: string): string {
+  const removeLeadZeros = (phone: string) => {
+    return parseInt(phone, 10).toString();
+  };
   // convert to number to remove any leading 0s
   const phoneOnlyNumbers = phone.toString().replace(/\D/g, '');
   // country dialing code
@@ -47,10 +50,10 @@ function transformPhoneNumber(phone: string | number, countryCode: string): stri
   }
 
   // add prefix (if exists) to phone
-  const phoneWithCountryCode = `${prefix.replace(/\D/g, '')}${phoneOnlyNumbers}`;
+  const phoneWithCountryCode = `${prefix.replace(/\D/g, '')}${removeLeadZeros(phoneOnlyNumbers)}`;
 
   // return
-  return phoneWithCountryCode;
+  return removeLeadZeros(phoneWithCountryCode);
 }
 
 function transformUserData(user: Customer): GTMUser {
