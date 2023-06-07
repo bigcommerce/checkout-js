@@ -18,18 +18,42 @@ const BlueSnapDirectEcpFieldset: FunctionComponent<BlueSnapDirectEcpFieldsetProp
     onPermissionChange,
 }) => {
     const options = {
-        helperLabel: 'Select an account type',
+        helperLabel: language.translate('payment.bluesnap_direct_account_type_select.label'),
         items: [
-            { label: 'Consumer checking', value: 'CONSUMER_CHECKING' },
-            { label: 'Consumer savings', value: 'CONSUMER_SAVINGS' },
-            { label: 'Corporate checking', value: 'CORPORATE_CHECKING' },
-            { label: 'Corporate savings', value: 'CORPORATE_SAVINGS' },
+            {
+                label: language.translate(
+                    'payment.bluesnap_direct_account_type_select.option_consumer_checking',
+                ),
+                value: 'CONSUMER_CHECKING',
+            },
+            {
+                label: language.translate(
+                    'payment.bluesnap_direct_account_type_select.option_consumer_savings',
+                ),
+                value: 'CONSUMER_SAVINGS',
+            },
+            {
+                label: language.translate(
+                    'payment.bluesnap_direct_account_type_select.option_corporate_checking',
+                ),
+                value: 'CORPORATE_CHECKING',
+            },
+            {
+                label: language.translate(
+                    'payment.bluesnap_direct_account_type_select.option_corporate_savings',
+                ),
+                value: 'CORPORATE_SAVINGS',
+            },
         ],
     };
 
     return (
         <Fieldset
-            legend={<Legend hidden>Electronic Check (ACH/ECP)</Legend>}
+            legend={
+                <Legend hidden>
+                    {language.translate('payment.bluesnap_direct_electronic_check_label')}
+                </Legend>
+            }
             style={{ paddingBottom: '1rem' }}
         >
             <BlueSnapDirectNumberField

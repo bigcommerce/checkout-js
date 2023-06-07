@@ -1,5 +1,5 @@
 import { createLanguageService } from '@bigcommerce/checkout-sdk';
-import { mount, render } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
@@ -39,16 +39,17 @@ describe('BlueSnapDirectEcpFieldset', () => {
     });
 
     it('should call onPermissionChange callback', () => {
-        const component = mount(
+        render(
             <Formik initialValues={initialValues} onSubmit={noop}>
                 <BlueSnapDirectEcpFieldset {...options} />
             </Formik>,
         );
 
-        component
-            .find('input[name="shopperPermission"]')
-            .simulate('change', { target: { value: true, name: 'shopperPermission' } })
-            .update();
+        const permissionChangeCheckbox = screen.getByLabelText(
+            options.language.translate('payment.bluesnap_direct_permission'),
+        );
+
+        fireEvent.click(permissionChangeCheckbox);
 
         expect(options.onPermissionChange).toHaveBeenCalledWith(true);
     });

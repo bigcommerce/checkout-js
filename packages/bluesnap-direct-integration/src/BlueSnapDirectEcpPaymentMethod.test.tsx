@@ -6,11 +6,10 @@ import {
     PaymentInitializeOptions,
     PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
-import { act } from 'react-dom/test-utils';
 
 import {
     PaymentFormService,
@@ -68,7 +67,7 @@ describe('BlueSnapDirectEcp payment method', () => {
     });
 
     it('should be initialized with the required config', () => {
-        mount(<BlueSnapDirectEcpTest />);
+        render(<BlueSnapDirectEcpTest />);
 
         expect(initializePayment).toHaveBeenCalledWith({
             gatewayId: 'bluesnapdirect',
@@ -82,13 +81,13 @@ describe('BlueSnapDirectEcp payment method', () => {
             method,
         } = props;
 
-        const component = mount(<BlueSnapDirectEcpTest />);
+        render(<BlueSnapDirectEcpTest />);
 
-        act(() => {
-            component
-                .find('input[name="shopperPermission"]')
-                .simulate('change', { target: { value: true, name: 'shopperPermission' } });
-        });
+        const permissionChangeCheckbox = screen.getByLabelText(
+            props.language.translate('payment.bluesnap_direct_permission'),
+        );
+
+        fireEvent.click(permissionChangeCheckbox);
 
         expect(disableSubmit).toHaveBeenCalledTimes(2);
         expect(disableSubmit).toHaveBeenNthCalledWith(1, method, true);
@@ -96,7 +95,7 @@ describe('BlueSnapDirectEcp payment method', () => {
     });
 
     it('should be deinitialized with the required config', () => {
-        mount(<BlueSnapDirectEcpTest />).unmount();
+        render(<BlueSnapDirectEcpTest />).unmount();
 
         expect(deinitializePayment).toHaveBeenCalledWith({
             gatewayId: 'bluesnapdirect',

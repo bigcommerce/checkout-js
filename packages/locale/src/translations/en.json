@@ -187,6 +187,13 @@
             "amazon_name_text": "Amazon Pay",
             "barclaycard_continue_action": "Continue",
             "bluesnap_v2_continue_action": "Continue",
+            "bluesnap_direct_account_type_select": {
+                "label": "Select an account type",
+                "option_consumer_checking": "Consumer checking",
+                "option_consumer_savings": "Consumer savings",
+                "option_corporate_checking": "Corporate checking",
+                "option_corporate_savings": "Corporate savings"
+            },
             "bluesnap_direct_account_number": {
                 "label": "Account Number",
                 "is_required": "Account Number is required",
@@ -204,6 +211,7 @@
                 "is_required": "Account Type is required"
             },
             "bluesnap_direct_permission": "I authorize this Electronic Check (ACH/ECP) transaction and agree to this debit of my account.",
+            "bluesnap_direct_electronic_check_label": "Electronic Check (ACH/ECP)",
             "bolt_benefit_1": "Shop hundreds of brands with a passwordless login",
             "bolt_benefit_2": "Check out with saved payment and shipping details",
             "bolt_benefit_3": "Benefit from PCI-compliant account security",
