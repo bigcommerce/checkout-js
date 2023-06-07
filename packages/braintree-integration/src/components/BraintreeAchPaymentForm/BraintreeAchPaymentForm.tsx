@@ -179,17 +179,14 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
         isInstrumentFeatureAvailable,
     };
 
+    const isLoading = isLoadingBillingCountries || isLoadingInstruments || isLoadingPaymentMethod;
+
     return (
         <FormContext.Provider value={{ isSubmitted: isSubmitted(), setSubmitted }}>
-            <LoadingOverlay
-                hideContentWhenLoading
-                isLoading={
-                    isLoadingBillingCountries || isLoadingInstruments || isLoadingPaymentMethod
-                }
-            >
+            <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
                 <div className="checkout-ach-form" data-testid="checkout-ach-form">
                     <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
-                        {shouldShowInstrumentFieldset && (
+                        {shouldShowInstrumentFieldset && !isLoading && (
                             <div className="checkout-ach-form__instrument">
                                 <AccountInstrumentFieldset
                                     instruments={filterTrustedInstruments}
@@ -210,6 +207,7 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
                             <PaymentFormContext.Provider value={{ paymentForm }}>
                                 <StoreInstrumentFieldset
                                     instrumentId={currentInstrument?.bigpayToken}
+                                    isAccountInstrument
                                 />
                             </PaymentFormContext.Provider>
                         )}

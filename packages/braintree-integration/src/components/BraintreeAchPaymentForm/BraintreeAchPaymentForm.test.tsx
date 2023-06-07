@@ -282,7 +282,9 @@ describe('BraintreeAchPaymentForm', () => {
             });
 
             expect(screen.getByTestId('checkout-ach-form')).toBeInTheDocument();
-            expect(screen.getByText('Save this card for future transactions')).toBeInTheDocument();
+            expect(
+                screen.queryByText('Save this card for future transactions'),
+            ).not.toBeInTheDocument();
         });
     });
 });
