@@ -57,6 +57,10 @@ function getPaymentMethodTitle(
                 logoUrl: method.logoUrl || '',
                 titleText: methodDisplayName,
             },
+            [PaymentMethodId.BraintreeLocalPaymentMethod]: {
+                logoUrl: method.logoUrl || '',
+                titleText: methodDisplayName,
+            },
             [PaymentMethodId.PaypalCommerce]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo.svg'),
                 titleText: '',
