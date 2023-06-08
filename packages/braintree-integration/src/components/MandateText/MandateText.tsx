@@ -137,7 +137,7 @@ const MandateText: FunctionComponent<MandateTextProps> = ({
     }, [onOrderConsentChange, setFieldValue, shouldShowMandateText]);
 
     return shouldShowMandateText ? (
-        <div className="mandate-text" data-testid="mandate-text">
+        <div className="mandate-text" data-test="mandate-text">
             <CheckboxFormField
                 labelContent={mandateText}
                 name="orderConsent"

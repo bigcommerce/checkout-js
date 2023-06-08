@@ -6,7 +6,7 @@ exports[`ManageAccountInstrumentsTable matches snapshot with rendered output 1`]
 >
   <table
     class="table"
-    data-testid="manage-instruments-table"
+    data-test="manage-instruments-table"
   >
     <thead
       class="table-thead"
@@ -58,7 +58,6 @@ exports[`ManageAccountInstrumentsTable matches snapshot with rendered output 1`]
           <button
             class="button button--tiny table-actionButton optimizedCheckout-buttonSecondary"
             data-test="manage-instrument-delete-button"
-            data-testid="manage-instrument-delete-button"
             type="button"
           >
             Delete
@@ -102,7 +101,6 @@ exports[`ManageAccountInstrumentsTable matches snapshot with rendered output 1`]
           <button
             class="button button--tiny table-actionButton optimizedCheckout-buttonSecondary"
             data-test="manage-instrument-delete-button"
-            data-testid="manage-instrument-delete-button"
             type="button"
           >
             Delete

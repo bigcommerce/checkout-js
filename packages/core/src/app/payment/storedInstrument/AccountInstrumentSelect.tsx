@@ -267,7 +267,7 @@ const AccountInstrumentUseNewButton: FunctionComponent<AccountInstrumentUseNewBu
     testId,
     onClick = noop,
 }) => (
-    <button className={className} data-test={testId} data-testid={testId} onClick={onClick} type="button">
+    <button className={className} data-test={testId} onClick={onClick} type="button">
         <div className="instrumentSelect-details instrumentSelect-details--addNew">
             <IconNewAccount additionalClassName="accountIcon-icon" size={IconSize.Medium} />
 

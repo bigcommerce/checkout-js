@@ -5,12 +5,12 @@ import withIconContainer from './withIconContainer';
 const IconBolt: FunctionComponent = () => (
     <svg
         aria-labelledby="iconCardBoltTitle"
+        data-test="bolt-icon"
         height="12"
         role="img"
         viewBox="0 0 12 12"
         width="12"
         xmlns="http://www.w3.org/2000/svg"
-        data-testid="bolt-icon"
     >
         <title id="iconCardBoltTitle">Bolt</title>
         <path d="M0 7.502h7.5v4.5L12 4.502H4.5V0z" fill="#FFFFFF" id="mark" />

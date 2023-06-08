@@ -153,20 +153,18 @@ class ManageInstrumentsModal extends Component<
             return (
                 <>
                     <Button
-                        data-test="manage-instrument-cancel-button"
-                        data-testid="manage-instrument-cancel-button"
                         onClick={this.handleCancel}
                         size={ButtonSize.Small}
+                        testId="manage-instrument-cancel-button"
                     >
                         <TranslatedString id="common.cancel_action" />
                     </Button>
 
                     <Button
-                        data-test="manage-instrument-confirm-button"
-                        data-testid="manage-instrument-confirm-button"
                         disabled={isDeletingInstrument() || isLoadingInstruments()}
                         onClick={this.handleConfirmDelete}
                         size={ButtonSize.Small}
+                        testId="manage-instrument-confirm-button"
                         variant={ButtonVariant.Primary}
                     >
                         <TranslatedString id="payment.instrument_manage_modal_confirmation_action" />
@@ -177,9 +175,9 @@ class ManageInstrumentsModal extends Component<
 
         return (
             <Button
-                data-test="manage-instrument-close-button"
                 onClick={onRequestClose}
                 size={ButtonSize.Small}
+                testId="manage-instrument-close-button"
             >
                 <TranslatedString id="common.close_action" />
             </Button>

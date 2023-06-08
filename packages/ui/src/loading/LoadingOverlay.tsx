@@ -37,7 +37,7 @@ const LoadingOverlay: FunctionComponent<LoadingOverlayProps> = ({
             {isLoading && (
                 <div
                     className="loadingOverlay optimizedCheckout-overlay"
-                    data-testid="loading-overlay"
+                    data-test="loading-overlay"
                 />
             )}
         </div>

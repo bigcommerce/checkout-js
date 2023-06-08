@@ -16,7 +16,6 @@ const Fieldset = forwardRef(
             {...rest}
             className={className || classNames('form-fieldset', additionalClassName)}
             data-test={testId}
-            data-testid={testId}
             ref={ref}
         >
             {legend}

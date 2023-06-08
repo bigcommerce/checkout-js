@@ -202,7 +202,7 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
     return (
         <FormContext.Provider value={{ isSubmitted: isSubmitted(), setSubmitted }}>
             <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
-                <div className="checkout-ach-form" data-testid="checkout-ach-form">
+                <div className="checkout-ach-form" data-test="checkout-ach-form">
                     <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
                         {shouldShowInstrumentFieldset && !isLoading && (
                             <div className="checkout-ach-form__instrument">

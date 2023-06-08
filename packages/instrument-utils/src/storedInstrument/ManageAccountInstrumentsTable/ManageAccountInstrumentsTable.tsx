@@ -40,7 +40,6 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
                 <button
                     className="button button--tiny table-actionButton optimizedCheckout-buttonSecondary"
                     data-test="manage-instrument-delete-button"
-                    data-testid="manage-instrument-delete-button"
                     onClick={handleDelete}
                     type="button"
                 >
@@ -72,7 +71,7 @@ const ManageInstrumentsTable: FunctionComponent<ManageAccountInstrumentsTablePro
 
     return (
         <LoadingOverlay isLoading={isDeletingInstrument}>
-            <table className="table" data-testid="manage-instruments-table">
+            <table className="table" data-test="manage-instruments-table">
                 <thead className="table-thead">
                     <tr>
                         <th>

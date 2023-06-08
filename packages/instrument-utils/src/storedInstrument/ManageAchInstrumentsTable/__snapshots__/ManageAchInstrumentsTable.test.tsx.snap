@@ -6,7 +6,7 @@ exports[`ManageAchInstrumentsTable matches snapshot with rendered output 1`] = `
 >
   <table
     className="table"
-    data-testid="manage-ach-instruments-table"
+    data-test="manage-ach-instruments-table"
   >
     <thead
       className="table-thead"

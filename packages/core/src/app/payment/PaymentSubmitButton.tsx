@@ -165,7 +165,7 @@ const PaymentSubmitButton: FunctionComponent<
                 ? `payment-submit-button-${methodId}`
                 : undefined
         }
-        data-testid="payment-submit-button"
+        data-test="payment-submit-button"
         disabled={isInitializing || isSubmitting || isDisabled}
         id="checkout-payment-continue"
         isFullWidth
