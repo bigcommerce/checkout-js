@@ -83,7 +83,6 @@ const Modal: FunctionComponent<ModalProps> = ({
             <div
                 className={classNames('modal-body', additionalBodyClassName)}
                 data-test="modal-body"
-                data-testid="modal-body"
             >
                 {children}
             </div>

@@ -6,6 +6,7 @@ import React from 'react';
 import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getPayPalCommerceMethod } from '../mocks/paymentMethods.mock';
+
 import PayPalCommercePaymentMethodComponent from './PayPalCommercePaymentMethodComponent';
 
 describe('PayPalCommercePaymentMethodComponent', () => {
@@ -144,36 +145,34 @@ describe('PayPalCommercePaymentMethodComponent', () => {
 
         const component = (
             <PayPalCommercePaymentMethodComponent {...props}>
-                <div data-testid={testId} />
+                <div data-test={testId} />
             </PayPalCommercePaymentMethodComponent>
         );
 
-        const { getByTestId }= render(component);
+        const { getByTestId } = render(component);
 
         await new Promise((resolve) => process.nextTick(resolve));
 
-        expect(getByTestId(testId)).toBeDefined();
+        expect(getByTestId(testId)).toBeInTheDocument();
     });
 
     it('hides payment submit button by calling onRenderButton callback', async () => {
-        jest.spyOn(checkoutService, 'initializePayment')
-            .mockImplementation((options) => {
-                eventEmitter.on('onRenderButton', () => {
-                    if (options.paypalcommerce?.onRenderButton) {
-                        options.paypalcommerce.onRenderButton();
-                    }
-                });
-
-                return Promise.resolve(checkoutState);
+        jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+            eventEmitter.on('onRenderButton', () => {
+                if (options.paypalcommerce?.onRenderButton) {
+                    options.paypalcommerce.onRenderButton();
+                }
             });
 
+            return Promise.resolve(checkoutState);
+        });
 
         const hidePaymentSubmitButtonMock = jest.fn();
         const newProps = {
             ...props,
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             paymentForm: {
-                hidePaymentSubmitButton: hidePaymentSubmitButtonMock
+                hidePaymentSubmitButton: hidePaymentSubmitButtonMock,
             } as unknown as PaymentFormService,
         };
 
@@ -187,17 +186,15 @@ describe('PayPalCommercePaymentMethodComponent', () => {
     });
 
     it('submits payment form by calling submitForm callback', async () => {
-        jest.spyOn(checkoutService, 'initializePayment')
-            .mockImplementation((options) => {
-                eventEmitter.on('submitForm', () => {
-                    if (options.paypalcommerce?.submitForm) {
-                        options.paypalcommerce.submitForm();
-                    }
-                });
-
-                return Promise.resolve(checkoutState);
+        jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+            eventEmitter.on('submitForm', () => {
+                if (options.paypalcommerce?.submitForm) {
+                    options.paypalcommerce.submitForm();
+                }
             });
 
+            return Promise.resolve(checkoutState);
+        });
 
         const submitFormMock = jest.fn();
         const setSubmittedMock = jest.fn();
@@ -223,17 +220,15 @@ describe('PayPalCommercePaymentMethodComponent', () => {
     it('disables submit button and throws an error by calling onError callback', async () => {
         const errorMock = new Error();
 
-        jest.spyOn(checkoutService, 'initializePayment')
-            .mockImplementation((options) => {
-                eventEmitter.on('onError', () => {
-                    if (options.paypalcommerce?.onError) {
-                        options.paypalcommerce.onError(errorMock);
-                    }
-                });
-
-                return Promise.resolve(checkoutState);
+        jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+            eventEmitter.on('onError', () => {
+                if (options.paypalcommerce?.onError) {
+                    options.paypalcommerce.onError(errorMock);
+                }
             });
 
+            return Promise.resolve(checkoutState);
+        });
 
         const disableSubmitMock = jest.fn();
         const onUnhandledErrorMock = jest.fn();
@@ -257,17 +252,15 @@ describe('PayPalCommercePaymentMethodComponent', () => {
     });
 
     it('passed form validation by calling onValidate callback', async () => {
-        jest.spyOn(checkoutService, 'initializePayment')
-            .mockImplementation((options) => {
-                eventEmitter.on('onValidate', async (resolve, reject) => {
-                    if (options.paypalcommerce?.onError) {
-                        await options.paypalcommerce.onValidate(resolve, reject);
-                    }
-                });
-
-                return Promise.resolve(checkoutState);
+        jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+            eventEmitter.on('onValidate', async (resolve, reject) => {
+                if (options.paypalcommerce?.onError) {
+                    await options.paypalcommerce.onValidate(resolve, reject);
+                }
             });
 
+            return Promise.resolve(checkoutState);
+        });
 
         const validateFormMock = jest.fn().mockReturnValue({});
         const validationSuccess = jest.fn();
@@ -283,28 +276,22 @@ describe('PayPalCommercePaymentMethodComponent', () => {
 
         await new Promise((resolve) => process.nextTick(resolve));
 
-        eventEmitter.emit(
-            'onValidate',
-            validationSuccess,
-            () => {},
-        );
+        eventEmitter.emit('onValidate', validationSuccess, () => {});
 
         expect(await validateFormMock).toHaveBeenCalled();
         expect(validationSuccess).toHaveBeenCalled();
     });
 
     it('passed form validation by calling onValidate callback', async () => {
-        jest.spyOn(checkoutService, 'initializePayment')
-            .mockImplementation((options) => {
-                eventEmitter.on('onValidate', async (resolve, reject) => {
-                    if (options.paypalcommerce?.onError) {
-                        await options.paypalcommerce.onValidate(resolve, reject);
-                    }
-                });
-
-                return Promise.resolve(checkoutState);
+        jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+            eventEmitter.on('onValidate', async (resolve, reject) => {
+                if (options.paypalcommerce?.onError) {
+                    await options.paypalcommerce.onValidate(resolve, reject);
+                }
             });
 
+            return Promise.resolve(checkoutState);
+        });
 
         const validateFormMock = jest.fn().mockReturnValue({
             field1: 'validation error message',
@@ -327,11 +314,7 @@ describe('PayPalCommercePaymentMethodComponent', () => {
 
         await new Promise((resolve) => process.nextTick(resolve));
 
-        eventEmitter.emit(
-            'onValidate',
-            () => {},
-            validationReject,
-        );
+        eventEmitter.emit('onValidate', () => {}, validationReject);
 
         expect(await validateFormMock).toHaveBeenCalled();
         expect(setSubmittedMock).toHaveBeenCalledWith(true);

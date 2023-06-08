@@ -124,7 +124,7 @@ const MandateText: FunctionComponent<MandateTextProps> = ({
     }, [mandateText, updateMandateText]);
 
     return shouldShowMandateText ? (
-        <div className="mandate-text" data-testid="mandate-text">
+        <div className="mandate-text" data-test="mandate-text">
             {mandateText}
         </div>
     ) : null;

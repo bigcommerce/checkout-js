@@ -72,7 +72,7 @@ const AccountInstrumentFieldset: FunctionComponent<AccountInstrumentFieldsetProp
             <BasicFormField name="instrumentId" render={renderInput} />
 
             {instruments.length === 0 && (
-                <div data-testid="instrument-select-note" className="instrumentSelect-note">
+                <div className="instrumentSelect-note" data-test="instrument-select-note">
                     <TranslatedHtml id="payment.account_instrument_new_shipping_address" />
                 </div>
             )}
