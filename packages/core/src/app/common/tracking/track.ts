@@ -33,8 +33,11 @@ function transformPhoneNumber(phone: string | number, countryCode: string): stri
   const removeLeadZeros = (phone: string) => {
     return parseInt(phone, 10).toString();
   };
-  // convert to number to remove any leading 0s
+  // convert to numbers
   const phoneOnlyNumbers = phone.toString().replace(/\D/g, '');
+
+  if (phoneOnlyNumbers === '') return phone.toString();
+
   // country dialing code
   const dialingCode = countryDialingCodes[countryCode];
   // check if already has country dialing code (if phone starts with + or 00)
