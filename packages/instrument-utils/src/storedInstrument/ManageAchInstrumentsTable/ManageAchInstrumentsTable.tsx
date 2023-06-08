@@ -59,7 +59,7 @@ const ManageAchInstrumentsTable: FunctionComponent<ManageAchInstrumentsTableProp
 
     return (
         <LoadingOverlay isLoading={isDeletingInstrument}>
-            <table className="table" data-testid="manage-ach-instruments-table">
+            <table className="table" data-test="manage-ach-instruments-table">
                 <thead className="table-thead">
                     <tr>
                         <th>

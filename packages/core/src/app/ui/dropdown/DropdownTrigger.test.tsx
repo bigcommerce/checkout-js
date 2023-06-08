@@ -34,7 +34,7 @@ describe('DropdownTrigger', () => {
 
     it('hides dropdown when mouse clicks anywhere else in document', () => {
         render(
-            <div data-testid="root-node-id" id={CHECKOUT_ROOT_NODE_ID}>
+            <div data-test="root-node-id" id={CHECKOUT_ROOT_NODE_ID}>
                 <DropdownTrigger dropdown={<div>Hello world</div>}>
                     <button>Foobar</button>
                 </DropdownTrigger>

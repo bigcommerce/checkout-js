@@ -31,13 +31,7 @@ const AccountInstrumentUseNewButton: FunctionComponent<AccountInstrumentUseNewBu
     testId,
     onClick = noop,
 }) => (
-    <button
-        className={className}
-        data-test={testId}
-        data-testid={testId}
-        onClick={onClick}
-        type="button"
-    >
+    <button className={className} data-test={testId} onClick={onClick} type="button">
         <div className="instrumentSelect-details instrumentSelect-details--addNew">
             <IconNewAccount additionalClassName="accountIcon-icon" size={IconSize.Medium} />
 
@@ -62,13 +56,7 @@ const AccountInstrumentMenuItem: FunctionComponent<AccountInstrumentMenuItemProp
     onClick,
 }) => {
     return (
-        <button
-            className={className}
-            data-test={testId}
-            data-testid={testId}
-            onClick={onClick}
-            type="button"
-        >
+        <button className={className} data-test={testId} onClick={onClick} type="button">
             <div className="instrumentSelect-details">
                 {
                     // TODO: When we include new account instrument types we can
@@ -76,11 +64,7 @@ const AccountInstrumentMenuItem: FunctionComponent<AccountInstrumentMenuItemProp
                 }
                 <IconPaypal additionalClassName="accountIcon-icon" size={IconSize.Medium} />
 
-                <div
-                    className="instrumentSelect-account"
-                    data-test={`${testId || ''}-externalId`}
-                    data-testid={`${testId || ''}-externalId`}
-                >
+                <div className="instrumentSelect-account" data-test={`${testId || ''}-externalId`}>
                     {externalId}
                 </div>
             </div>
@@ -105,13 +89,7 @@ const AchInstrumentMenuItem: FunctionComponent<AchInstrumentMenuItemProps> = ({
     const accountNumber = `Account number ending in: ${instrument.accountNumber}`;
 
     return (
-        <button
-            className={className}
-            data-test={testId}
-            data-testid={testId}
-            onClick={onClick}
-            type="button"
-        >
+        <button className={className} data-test={testId} onClick={onClick} type="button">
             <div className="instrumentSelect-details">
                 <IconAch size={IconSize.Medium} />
 
@@ -141,13 +119,7 @@ const BankInstrumentMenuItem: FunctionComponent<BankInstrumentMenuItemProps> = (
     const accountNumber = `Account number ending in: ${instrument.accountNumber}`;
 
     return (
-        <button
-            className={className}
-            data-test={testId}
-            data-testid={testId}
-            onClick={onClick}
-            type="button"
-        >
+        <button className={className} data-test={testId} onClick={onClick} type="button">
             <div className="instrumentSelect-details">
                 {
                     // TODO: When we include new account instrument types we can
@@ -216,7 +188,6 @@ const AccountInstrumentMenu: FunctionComponent<AccountInstrumentMenuProps> = ({
         <ul
             className="instrumentSelect-dropdownMenu instrumentSelect-dropdownMenuNext dropdown-menu"
             data-test="instrument-select-menu"
-            data-testid="instrument-select-menu"
         >
             {instruments.map((instrument) => (
                 <li
@@ -339,7 +310,7 @@ class AccountInstrumentSelect extends PureComponent<AccountInstrumentSelectProps
         const { value, ...otherFieldProps } = field;
 
         return (
-            <div className="instrumentSelect" data-testid="account-instrument-select">
+            <div className="instrumentSelect" data-test="account-instrument-select">
                 <DropdownTrigger
                     dropdown={
                         <AccountInstrumentMenu
