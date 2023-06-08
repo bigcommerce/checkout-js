@@ -48,6 +48,7 @@ const PayPalCommerceAPMsPaymentMethod: FunctionComponent<PaymentMethodProps> = p
             providerOptionsData={extraOptions}
             {...props}
         >
+
             <div
                 className={`widget widget--${props.method.id} payment-widget`}
                 id={widgetContainerId}

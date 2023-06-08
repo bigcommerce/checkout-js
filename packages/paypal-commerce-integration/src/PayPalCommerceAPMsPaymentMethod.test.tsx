@@ -21,6 +21,10 @@ describe('PayPalCommerceAPMsPaymentMethod', () => {
         onUnhandledError: jest.fn(),
     };
 
+    beforeEach(() => {
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
+    });
+
     it('renders component with provided props', () => {
         const { container } = render(<PayPalCommerceAPMsPaymentMethod {...props} />);
 
