@@ -48,6 +48,7 @@ export function getPhysicalItem(): PhysicalItem {
             },
         ],
         categoryNames: ['Cat 1'],
+        retailPrice: 1,
     };
 }
 
@@ -85,6 +86,7 @@ export function getDigitalItem(): DigitalItem {
             },
         ],
         categoryNames: ['Ebooks', 'Audio Books'],
+        retailPrice: 1,
     };
 }
 
@@ -140,6 +142,7 @@ export function getPicklistItem(): PhysicalItem[] {
                 },
             ],
             categoryNames: ['Cat 1'],
+            retailPrice: 1,
         },
         {
             id: '777',
@@ -165,6 +168,7 @@ export function getPicklistItem(): PhysicalItem[] {
             addedByPromotion: false,
             categoryNames: ['Cat 1'],
             parentId: '666',
+            retailPrice: 1,
         },
     ];
 }
