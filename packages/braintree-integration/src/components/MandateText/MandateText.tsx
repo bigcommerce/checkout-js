@@ -15,6 +15,7 @@ export interface MandateTextProps {
     validationSchema: ObjectSchema<{ [p: string]: any }>;
     language: LanguageService;
     updateMandateText: (mandateText: string) => void;
+    isInstrumentFeatureAvailable?: boolean;
 }
 
 const MandateText: FunctionComponent<MandateTextProps> = ({
@@ -26,6 +27,7 @@ const MandateText: FunctionComponent<MandateTextProps> = ({
     validationSchema,
     language,
     updateMandateText,
+    isInstrumentFeatureAvailable,
 }) => {
     const [shouldShowMandateText, setShouldShowMandateText] = useState(false);
 
@@ -82,17 +84,22 @@ const MandateText: FunctionComponent<MandateTextProps> = ({
 
     const mandateText = useMemo(() => {
         if (shouldShowMandateText && storeName && outstandingBalance) {
-            return language.translate('payment.braintreeach_mandate_text', {
-                storeName,
-                depositoryName: isBusiness
-                    ? businessNameValue
-                    : `${firstNameValue} ${lastNameValue}`,
-                routingNumber: routingNumberValue,
-                accountNumber: accountNumberValue,
-                outstandingBalance: `${symbol || ''}${outstandingBalance}`,
-                currentDate: new Date().toJSON().slice(0, 10),
-                accountType: accountTypeValue.toLowerCase(),
-            });
+            return language.translate(
+                isInstrumentFeatureAvailable
+                    ? 'payment.braintreeach_vaulting_mandate_text'
+                    : 'payment.braintreeach_mandate_text',
+                {
+                    storeName,
+                    depositoryName: isBusiness
+                        ? businessNameValue
+                        : `${firstNameValue} ${lastNameValue}`,
+                    routingNumber: routingNumberValue,
+                    accountNumber: accountNumberValue,
+                    outstandingBalance: `${symbol || ''}${outstandingBalance}`,
+                    currentDate: new Date().toJSON().slice(0, 10),
+                    accountType: accountTypeValue.toLowerCase(),
+                },
+            );
         }
 
         return '';
@@ -109,13 +116,18 @@ const MandateText: FunctionComponent<MandateTextProps> = ({
         accountNumberValue,
         symbol,
         accountTypeValue,
+        isInstrumentFeatureAvailable,
     ]);
 
     useEffect(() => {
         updateMandateText(mandateText);
     }, [mandateText, updateMandateText]);
 
-    return shouldShowMandateText ? <div className="mandate-text">{mandateText}</div> : null;
+    return shouldShowMandateText ? (
+        <div className="mandate-text" data-testid="mandate-text">
+            {mandateText}
+        </div>
+    ) : null;
 };
 
 export default MandateText;

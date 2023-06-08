@@ -1,18 +1,14 @@
 import { createLanguageService } from '@bigcommerce/checkout-sdk';
-import { mount, ReactWrapper } from 'enzyme';
+import { render } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
-
-import { DynamicFormField } from '@bigcommerce/checkout/ui';
 
 import { formFieldData } from '../';
 
 import AchFormFields, { AchFormFieldsProps } from './AchFormFields';
 
 describe('AchFormFields Component', () => {
-    let container: ReactWrapper;
-
     it('should render with default formFieldData', () => {
         const props: AchFormFieldsProps = {
             fieldValues: formFieldData,
@@ -20,12 +16,13 @@ describe('AchFormFields Component', () => {
             language: createLanguageService(),
         };
 
-        container = mount(
+        const { container } = render(
             <Formik initialValues={{}} onSubmit={noop}>
                 <AchFormFields {...props} />
             </Formik>,
         );
 
-        expect(container.find(DynamicFormField)).toHaveLength(formFieldData.length);
+        // eslint-disable-next-line testing-library/no-node-access
+        expect(container.children).toHaveLength(formFieldData.length);
     });
 });

@@ -1,6 +1,15 @@
 import React, { FunctionComponent, useCallback, useEffect, useMemo } from 'react';
+import { object } from 'yup';
 
-import { PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+import {
+    AccountInstrumentFieldset,
+    StoreInstrumentFieldset,
+} from '@bigcommerce/checkout/instrument-utils';
+import {
+    CheckoutContext,
+    PaymentFormContext,
+    PaymentMethodProps,
+} from '@bigcommerce/checkout/payment-integration-api';
 import { FormContext, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import {
@@ -12,6 +21,7 @@ import { AchFormFields } from '../AchFormFields';
 import { MandateText } from '../MandateText';
 
 import { AccountTypes, formFieldData, OwnershipTypes } from './braintreeAchPaymentFormConfig';
+import useInstrumentProps from './useInstrumentProps';
 
 export interface AddressKeyMap<T = string> {
     [fieldName: string]: T;
@@ -22,22 +32,35 @@ export interface BraintreeAchPaymentFormProps extends Omit<PaymentMethodProps, '
     storeName?: string;
     symbol?: string;
     updateMandateText: (mandateText: string) => void;
+    isInstrumentFeatureAvailable?: boolean;
 }
 
 const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> = ({
     paymentForm: { getFieldValue, setFieldValue, setValidationSchema, isSubmitted, setSubmitted },
+    paymentForm,
     outstandingBalance,
     symbol,
     storeName,
     checkoutState,
+    checkoutService,
     method,
     language,
     updateMandateText,
+    isInstrumentFeatureAvailable,
 }) => {
-    const ownershipTypeValue = getFieldValue(BraintreeAchBankAccountValues.OwnershipType);
+    const {
+        currentInstrument,
+        filterTrustedInstruments,
+        shouldShowInstrumentFieldset,
+        handleSelectInstrument,
+        handleUseNewInstrument,
+    } = useInstrumentProps(checkoutState, method, setFieldValue, isInstrumentFeatureAvailable);
 
+    const ownershipTypeValue = getFieldValue(BraintreeAchBankAccountValues.OwnershipType);
     const isBusiness = ownershipTypeValue === OwnershipTypes.Business;
     const isLoadingBillingCountries = checkoutState.statuses.isLoadingBillingCountries();
+    const isLoadingInstruments = checkoutState.statuses.isLoadingInstruments();
+    const isLoadingPaymentMethod = checkoutState.statuses.isLoadingPaymentMethod(method.id);
 
     const usCountry = checkoutState.data
         .getBillingCountries()
@@ -74,6 +97,9 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
             countryCode: billingAddress.countryCode || '',
             city: billingAddress.city || '',
             stateOrProvinceCode: billingAddress.stateOrProvinceCode || '',
+            shouldSaveInstrument: false,
+            shouldSetAsDefaultInstrument: false,
+            instrumentId: '',
         };
 
         for (const [key, value] of Object.entries(formValues)) {
@@ -127,16 +153,19 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
 
     const validationSchema = useMemo(
         () =>
-            getBraintreeAchValidationSchema({
-                formFieldData: fieldDataByOwnershipType,
-                language,
-            }),
-        [fieldDataByOwnershipType, language],
+            !currentInstrument
+                ? getBraintreeAchValidationSchema({
+                      formFieldData: fieldDataByOwnershipType,
+                      language,
+                  })
+                : object({}),
+        [currentInstrument, fieldDataByOwnershipType, language],
     );
 
     useEffect(() => {
+        setSubmitted(false);
         setValidationSchema(method, validationSchema);
-    }, [validationSchema, method, setValidationSchema]);
+    }, [validationSchema, method, setValidationSchema, setSubmitted]);
 
     const mandateTextProps = {
         getFieldValue,
@@ -147,17 +176,42 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
         storeName,
         symbol,
         validationSchema,
+        isInstrumentFeatureAvailable,
     };
+
+    const isLoading = isLoadingBillingCountries || isLoadingInstruments || isLoadingPaymentMethod;
 
     return (
         <FormContext.Provider value={{ isSubmitted: isSubmitted(), setSubmitted }}>
-            <LoadingOverlay hideContentWhenLoading isLoading={isLoadingBillingCountries}>
-                <div className="checkout-ach-form">
-                    <AchFormFields
-                        fieldValues={formData}
-                        handleChange={handleChange}
-                        language={language}
-                    />
+            <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
+                <div className="checkout-ach-form" data-testid="checkout-ach-form">
+                    <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
+                        {shouldShowInstrumentFieldset && !isLoading && (
+                            <div className="checkout-ach-form__instrument">
+                                <AccountInstrumentFieldset
+                                    instruments={filterTrustedInstruments}
+                                    onSelectInstrument={handleSelectInstrument}
+                                    onUseNewInstrument={handleUseNewInstrument}
+                                    selectedInstrument={currentInstrument}
+                                />
+                            </div>
+                        )}
+                        {!currentInstrument && (
+                            <AchFormFields
+                                fieldValues={formData}
+                                handleChange={handleChange}
+                                language={language}
+                            />
+                        )}
+                        {isInstrumentFeatureAvailable && (
+                            <PaymentFormContext.Provider value={{ paymentForm }}>
+                                <StoreInstrumentFieldset
+                                    instrumentId={currentInstrument?.bigpayToken}
+                                    isAccountInstrument
+                                />
+                            </PaymentFormContext.Provider>
+                        )}
+                    </CheckoutContext.Provider>
                     <MandateText {...mandateTextProps} />
                 </div>
             </LoadingOverlay>
