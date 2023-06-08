@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.324.3](https://github.com/bigcommerce/checkout-js/compare/v1.324.2...v1.324.3) (2023-06-08)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-2595 fixed the issue with place order button for free product ([#1318](https://github.com/bigcommerce/checkout-js/issues/1318)) ([5e659ec](https://github.com/bigcommerce/checkout-js/commit/5e659ec163cc2d42990f9233f3176773e5fdff0e))
+
 ### [1.324.2](https://github.com/bigcommerce/checkout-js/compare/v1.324.1...v1.324.2) (2023-06-08)
 
 ### [1.324.1](https://github.com/bigcommerce/checkout-js/compare/v1.324.0...v1.324.1) (2023-06-08)
