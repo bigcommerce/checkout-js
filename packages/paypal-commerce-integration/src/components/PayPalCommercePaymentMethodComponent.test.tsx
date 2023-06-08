@@ -26,7 +26,21 @@ describe('PayPalCommercePaymentMethodComponent', () => {
     };
 
     beforeEach(() => {
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
+
         eventEmitter = new EventEmitter();
+    });
+
+    it('does not do anything if payment data is not required', () => {
+        const initializePayment = jest
+            .spyOn(checkoutService, 'initializePayment')
+            .mockResolvedValue(checkoutState);
+
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(false);
+
+        render(<PayPalCommercePaymentMethodComponent {...props} />);
+
+        expect(initializePayment).not.toHaveBeenCalled();
     });
 
     it('initializes PayPalCommerce with required props', () => {

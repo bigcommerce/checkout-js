@@ -16,6 +16,7 @@ interface PaymentSubmitButtonTextProps {
     initialisationStrategyType?: string;
     brandName?: string;
     isComplete?: boolean;
+    isPaymentDataRequired?: boolean;
 }
 
 const providersWithCustomClasses = [PaymentMethodId.Bolt];
@@ -29,7 +30,12 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
         initialisationStrategyType,
         brandName,
         isComplete,
+        isPaymentDataRequired,
     }) => {
+        if (!isPaymentDataRequired) {
+            return <TranslatedString id="payment.place_order_action" />;
+        }
+
         if (methodName && initialisationStrategyType === 'none') {
             return <TranslatedString data={{ methodName }} id="payment.ppsdk_continue_action" />;
         }
@@ -129,7 +135,8 @@ export interface PaymentSubmitButtonProps {
     isDisabled?: boolean;
     initialisationStrategyType?: string;
     brandName?: string;
-    isComplete?: boolean
+    isComplete?: boolean;
+    isPaymentDataRequired?: boolean;
 }
 
 interface WithCheckoutPaymentSubmitButtonProps {
@@ -143,6 +150,7 @@ const PaymentSubmitButton: FunctionComponent<
     isDisabled,
     isInitializing,
     isSubmitting,
+    isPaymentDataRequired,
     methodGateway,
     methodId,
     methodName,
@@ -157,6 +165,7 @@ const PaymentSubmitButton: FunctionComponent<
                 ? `payment-submit-button-${methodId}`
                 : undefined
         }
+        data-testid="payment-submit-button"
         disabled={isInitializing || isSubmitting || isDisabled}
         id="checkout-payment-continue"
         isFullWidth
@@ -169,6 +178,7 @@ const PaymentSubmitButton: FunctionComponent<
             brandName={brandName}
             initialisationStrategyType={initialisationStrategyType}
             isComplete={isComplete}
+            isPaymentDataRequired={isPaymentDataRequired}
             methodGateway={methodGateway}
             methodId={methodId}
             methodName={methodName}
@@ -179,11 +189,13 @@ const PaymentSubmitButton: FunctionComponent<
 
 export default withCheckout(({ checkoutState }) => {
     const {
+        data: { isPaymentDataRequired },
         statuses: { isInitializingCustomer, isInitializingPayment, isSubmittingOrder },
     } = checkoutState;
 
     return {
         isInitializing: isInitializingCustomer() || isInitializingPayment(),
+        isPaymentDataRequired: isPaymentDataRequired(),
         isSubmitting: isSubmittingOrder(),
     };
 })(memo(PaymentSubmitButton));
