@@ -25,6 +25,7 @@ export default function createPaymentFormService(
     return {
         disableSubmit,
         getFieldValue,
+        getFormValues: () => values,
         hidePaymentSubmitButton,
         isSubmitted: () => isSubmitted,
         setFieldTouched,
