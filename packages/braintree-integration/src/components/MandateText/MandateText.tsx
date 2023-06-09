@@ -3,11 +3,13 @@ import React, { FunctionComponent, useEffect, useMemo, useState } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckboxFormField } from '@bigcommerce/checkout/ui';
 
 import { BraintreeAchBankAccountValues } from '../../validation-schemas';
 
 export interface MandateTextProps {
     getFieldValue: PaymentFormService['getFieldValue'];
+    setFieldValue: PaymentFormService['setFieldValue'];
     storeName?: string;
     outstandingBalance?: number;
     symbol?: string;
@@ -16,6 +18,7 @@ export interface MandateTextProps {
     language: LanguageService;
     updateMandateText: (mandateText: string) => void;
     isInstrumentFeatureAvailable?: boolean;
+    onOrderConsentChange: (orderConsent: boolean) => void;
 }
 
 const MandateText: FunctionComponent<MandateTextProps> = ({
@@ -28,6 +31,8 @@ const MandateText: FunctionComponent<MandateTextProps> = ({
     language,
     updateMandateText,
     isInstrumentFeatureAvailable,
+    onOrderConsentChange,
+    setFieldValue,
 }) => {
     const [shouldShowMandateText, setShouldShowMandateText] = useState(false);
 
@@ -123,9 +128,21 @@ const MandateText: FunctionComponent<MandateTextProps> = ({
         updateMandateText(mandateText);
     }, [mandateText, updateMandateText]);
 
+    useEffect(() => {
+        onOrderConsentChange(!shouldShowMandateText);
+
+        return () => {
+            setFieldValue('orderConsent', false);
+        };
+    }, [onOrderConsentChange, setFieldValue, shouldShowMandateText]);
+
     return shouldShowMandateText ? (
         <div className="mandate-text" data-test="mandate-text">
-            {mandateText}
+            <CheckboxFormField
+                labelContent={mandateText}
+                name="orderConsent"
+                onChange={onOrderConsentChange}
+            />
         </div>
     ) : null;
 };

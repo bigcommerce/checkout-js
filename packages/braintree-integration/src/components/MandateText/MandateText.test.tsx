@@ -5,7 +5,11 @@ import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
 
-import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
+import {
+    createLocaleContext,
+    LocaleContext,
+    LocaleContextType,
+} from '@bigcommerce/checkout/locale';
 import { getStoreConfig } from '@bigcommerce/checkout/test-utils';
 
 import getBraintreeAchValidationSchema from '../../validation-schemas/getBraintreeAchValidationSchema';
@@ -19,9 +23,13 @@ describe('MandateText', () => {
     let defaultProps: MandateTextProps;
     let initialValues: FormikValues;
     let validData: { [p: string]: string };
+    let localeContext: LocaleContextType;
 
     beforeEach(() => {
-        const { language } = createLocaleContext(getStoreConfig());
+        localeContext = createLocaleContext(getStoreConfig());
+        jest.spyOn(localeContext.language, 'translate');
+
+        const { language } = localeContext;
 
         defaultProps = {
             getFieldValue: jest.fn(),
@@ -35,6 +43,9 @@ describe('MandateText', () => {
                 language,
             }),
             updateMandateText: jest.fn().mockReturnValue('mandate text'),
+            isInstrumentFeatureAvailable: false,
+            onOrderConsentChange: jest.fn(),
+            setFieldValue: jest.fn(),
         };
 
         validData = getValidData();
@@ -81,5 +92,55 @@ describe('MandateText', () => {
         await waitFor(() => screen.findByTestId('mandate-text'));
 
         expect(screen.getByTestId('mandate-text')).toHaveTextContent(/By clicking Place Order/);
+    });
+
+    it('should show the mandate text for vaulting flow', async () => {
+        defaultProps.isInstrumentFeatureAvailable = true;
+
+        jest.spyOn(defaultProps, 'getFieldValue').mockImplementation((field) => {
+            if (validData[field]) {
+                return validData[field];
+            }
+        });
+
+        render(<MandateTextTest {...defaultProps} />);
+
+        await waitFor(() => screen.findByTestId('mandate-text'));
+
+        expect(localeContext.language.translate).toHaveBeenCalledWith(
+            'payment.braintreeach_vaulting_mandate_text',
+            expect.objectContaining({
+                accountNumber: '1000000000',
+                accountType: 'savings',
+                depositoryName: 'Test Tester',
+                outstandingBalance: '$100',
+                routingNumber: '011000015',
+                storeName: 'Test Store',
+            }),
+        );
+    });
+
+    it('should show the mandate text for guest flow', async () => {
+        jest.spyOn(defaultProps, 'getFieldValue').mockImplementation((field) => {
+            if (validData[field]) {
+                return validData[field];
+            }
+        });
+
+        render(<MandateTextTest {...defaultProps} />);
+
+        await waitFor(() => screen.findByTestId('mandate-text'));
+
+        expect(localeContext.language.translate).toHaveBeenCalledWith(
+            'payment.braintreeach_mandate_text',
+            expect.objectContaining({
+                accountNumber: '1000000000',
+                accountType: 'savings',
+                depositoryName: 'Test Tester',
+                outstandingBalance: '$100',
+                routingNumber: '011000015',
+                storeName: 'Test Store',
+            }),
+        );
     });
 });
