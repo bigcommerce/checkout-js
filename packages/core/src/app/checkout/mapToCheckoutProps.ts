@@ -42,6 +42,7 @@ export default function mapToCheckoutProps({
     return {
         billingAddress: data.getBillingAddress(),
         cart: data.getCart(),
+        customer: data.getCustomer(),
         clearError: checkoutService.clearError,
         consignments: data.getConsignments(),
         hasCartChanged: submitOrderError && submitOrderError.type === 'cart_changed', // TODO: Need to clear the error once it's displayed

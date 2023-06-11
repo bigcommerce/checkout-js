@@ -5,15 +5,16 @@ import {
     CheckoutParams,
     CheckoutSelectors,
     Consignment,
+    Customer as CustomerType,
+    CustomItem,
+    DigitalItem,
     EmbeddedCheckoutMessenger,
     EmbeddedCheckoutMessengerOptions,
     FlashMessage,
-    Promotion,
-    RequestOptions,
-    CustomItem,
-    DigitalItem,
     GiftCertificateItem,
-    PhysicalItem
+    PhysicalItem,
+    Promotion,
+    RequestOptions
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
@@ -51,7 +52,7 @@ import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
 import withCheckout from './withCheckout';
 
-import { trackAddCoupon, trackAddShippingInfo, trackCheckoutProgress, CouponData, PromotionData, ShippingData } from '../common/tracking';
+import { trackAddCoupon, trackAddShippingInfo, trackCheckoutProgress, CouponData, PromotionData, ShippingData, trackUserChange } from '../common/tracking';
 import withRecurly from '../recurly/withRecurly';
 import { RecurlyContextProps } from '../recurly/RecurlyContext';
 
@@ -133,6 +134,7 @@ export interface CheckoutState {
 export interface WithCheckoutProps {
     billingAddress?: Address;
     cart?: Cart;
+    customer?: CustomerType;
     consignments?: Consignment[];
     error?: Error;
     hasCartChanged: boolean;
@@ -188,16 +190,24 @@ class Checkout extends Component<
     }
 
     componentDidUpdate(previousProps: any): void {
-        const {cart, consignments} = this.props;
+        const {cart, consignments, customer} = this.props;
+        
+        // if customer has been updated
+        if(customer && customer?.id !== previousProps.customer?.id) {
+            trackUserChange(customer);
+        }
 
         // if coupon has been added
         if ( cart?.coupons.length && previousProps.cart?.coupons.length !== cart?.coupons.length ) {
             const addedCoupon = cart?.coupons[cart?.coupons.length - 1];
+
             trackAddCoupon(addedCoupon.code, addedCoupon.discountedAmount);
         }
         // if shipping tier has changed
+
         if ( previousProps.consignments?.[0]?.selectedShippingOption?.description !== consignments?.[0]?.selectedShippingOption?.description ) {
             const coupons: CouponData[] = [];
+
             cart?.coupons?.forEach(coupon => {
                 coupons.push({
                     coupon: coupon.code,
@@ -219,6 +229,7 @@ class Checkout extends Component<
                 cart?.lineItems.giftCertificates,
                 cart?.lineItems.physicalItems,
             ];
+
             cartItemLists.forEach(itemList => {
                 itemList?.forEach((item: CustomItem | DigitalItem | GiftCertificateItem | PhysicalItem) => {
                     const itemCoupons: CouponData[] = [];
@@ -230,6 +241,7 @@ class Checkout extends Component<
 
                     if ( 'discounts' in item ) {
                         let itemCouponIndex = 0;
+
                         item.discounts.forEach(({id, discountedAmount}: {id?: string | number; discountedAmount: number}) => {
                             if ( id === 'coupon' ) {
                                 itemCoupons.push({coupon: coupons[itemCouponIndex]?.coupon, discount: discountedAmount / itemQuantity});
