@@ -289,7 +289,7 @@ class AccountInstrumentSelect extends PureComponent<AccountInstrumentSelectProps
         const { selectedInstrumentId } = this.props;
 
         if (prevSelectedInstrumentId !== selectedInstrumentId) {
-            this.updateFieldValue(selectedInstrumentId);
+            setTimeout(() => this.updateFieldValue(selectedInstrumentId));
         }
     }
 
