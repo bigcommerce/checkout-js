@@ -2,7 +2,7 @@ import { FormField } from '@bigcommerce/checkout-sdk';
 
 import { DynamicFormFieldType } from '@bigcommerce/checkout/ui';
 
-import { BraintreeAchBankAccountValues } from '../../validation-schemas';
+import { BraintreeAchFieldType } from '../../validation-schemas';
 
 export enum OwnershipTypes {
     Personal = 'Personal',
@@ -38,9 +38,9 @@ export const ownershipTypeOptions = [
 
 export const formFieldData: FormField[] = [
     {
-        name: BraintreeAchBankAccountValues.AccountType,
+        name: BraintreeAchFieldType.AccountType,
         custom: false,
-        id: BraintreeAchBankAccountValues.AccountType,
+        id: BraintreeAchFieldType.AccountType,
         label: 'Account Type',
         required: true,
         fieldType: DynamicFormFieldType.DROPDOWM,
@@ -49,25 +49,25 @@ export const formFieldData: FormField[] = [
         },
     },
     {
-        name: BraintreeAchBankAccountValues.AccountNumber,
+        name: BraintreeAchFieldType.AccountNumber,
         custom: false,
-        id: BraintreeAchBankAccountValues.AccountNumber,
+        id: BraintreeAchFieldType.AccountNumber,
         label: 'Account Number',
         required: true,
         max: 9,
         min: 8,
     },
     {
-        name: BraintreeAchBankAccountValues.RoutingNumber,
+        name: BraintreeAchFieldType.RoutingNumber,
         custom: false,
-        id: BraintreeAchBankAccountValues.RoutingNumber,
+        id: BraintreeAchFieldType.RoutingNumber,
         label: 'Routing Number',
         required: true,
     },
     {
-        name: BraintreeAchBankAccountValues.OwnershipType,
+        name: BraintreeAchFieldType.OwnershipType,
         custom: false,
-        id: BraintreeAchBankAccountValues.OwnershipType,
+        id: BraintreeAchFieldType.OwnershipType,
         label: 'Ownership Type',
         required: true,
         fieldType: DynamicFormFieldType.DROPDOWM,
@@ -76,60 +76,24 @@ export const formFieldData: FormField[] = [
         },
     },
     {
-        name: BraintreeAchBankAccountValues.FirstName,
+        name: BraintreeAchFieldType.FirstName,
         custom: false,
-        id: BraintreeAchBankAccountValues.FirstName,
+        id: BraintreeAchFieldType.FirstName,
         label: 'First Name',
         required: true,
     },
     {
-        name: BraintreeAchBankAccountValues.LastName,
+        name: BraintreeAchFieldType.LastName,
         custom: false,
-        id: BraintreeAchBankAccountValues.LastName,
+        id: BraintreeAchFieldType.LastName,
         label: 'Last Name',
         required: true,
     },
     {
-        name: BraintreeAchBankAccountValues.BusinessName,
+        name: BraintreeAchFieldType.BusinessName,
         custom: false,
-        id: BraintreeAchBankAccountValues.BusinessName,
+        id: BraintreeAchFieldType.BusinessName,
         label: 'Business Name',
-        required: true,
-    },
-    {
-        name: BraintreeAchBankAccountValues.Address1,
-        custom: false,
-        id: BraintreeAchBankAccountValues.Address1,
-        label: 'Address',
-        required: true,
-    },
-    {
-        name: BraintreeAchBankAccountValues.Address2,
-        custom: false,
-        id: BraintreeAchBankAccountValues.Address2,
-        label: 'Apartment/Suite/Building',
-        required: false,
-    },
-    {
-        name: BraintreeAchBankAccountValues.StateOrProvinceCode,
-        custom: false,
-        id: BraintreeAchBankAccountValues.StateOrProvinceCode,
-        label: 'State/Province',
-        required: true,
-        fieldType: DynamicFormFieldType.DROPDOWM,
-    },
-    {
-        name: BraintreeAchBankAccountValues.City,
-        custom: false,
-        id: BraintreeAchBankAccountValues.City,
-        label: 'City',
-        required: true,
-    },
-    {
-        name: BraintreeAchBankAccountValues.PostalCode,
-        custom: false,
-        id: BraintreeAchBankAccountValues.PostalCode,
-        label: 'Postal Code',
         required: true,
     },
 ];

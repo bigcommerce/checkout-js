@@ -6,14 +6,8 @@ import { DynamicFormField } from '@bigcommerce/checkout/ui';
 import { AddressKeyMap } from '../BraintreeAchPaymentForm/BraintreeAchPaymentForm';
 
 const LABEL: AddressKeyMap = {
-    address1: 'address.address_line_1_label',
-    address2: 'address.address_line_2_label',
-    city: 'address.city_label',
-    countryCode: 'address.country_label',
     firstName: 'address.first_name_label',
     lastName: 'address.last_name_label',
-    postalCode: 'address.postal_code_label',
-    stateOrProvinceCode: 'address.state_label',
     accountNumber: 'payment.account_number_label',
     routingNumber: 'payment.account_routing_label',
     businessName: 'payment.business_name_label',

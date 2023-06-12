@@ -37,10 +37,6 @@ describe('BraintreeAchPaymentForm', () => {
 
         jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
 
-        jest.spyOn(checkoutService, 'loadBillingAddressFields').mockResolvedValue(
-            {} as CheckoutSelectors,
-        );
-
         const { language } = createLocaleContext(getStoreConfig());
 
         defaultProps = {
@@ -63,7 +59,6 @@ describe('BraintreeAchPaymentForm', () => {
         render(<BraintreeAchPaymentMethodTest {...defaultProps} />);
 
         expect(screen.getByTestId('checkout-ach-form')).toBeInTheDocument();
-        expect(checkoutService.loadBillingAddressFields).toHaveBeenCalled();
 
         await new Promise((resolve) => process.nextTick(resolve));
 
