@@ -12,11 +12,7 @@ import {
 } from '@bigcommerce/checkout/payment-integration-api';
 import { FormContext, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
-import {
-    BraintreeAchBankAccount,
-    BraintreeAchBankAccountValues,
-    getBraintreeAchValidationSchema,
-} from '../../validation-schemas';
+import { BraintreeAchFieldType, getBraintreeAchValidationSchema } from '../../validation-schemas';
 import { AchFormFields } from '../AchFormFields';
 import { MandateText } from '../MandateText';
 
@@ -70,22 +66,12 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
         handleUseNewInstrument,
     } = useInstrumentProps(checkoutState, method, setFieldValue, isInstrumentFeatureAvailable);
 
-    const ownershipTypeValue = getFieldValue(BraintreeAchBankAccountValues.OwnershipType);
+    const ownershipTypeValue = getFieldValue(BraintreeAchFieldType.OwnershipType);
     const isBusiness = ownershipTypeValue === OwnershipTypes.Business;
-    const isLoadingBillingCountries = checkoutState.statuses.isLoadingBillingCountries();
     const isLoadingInstruments = checkoutState.statuses.isLoadingInstruments();
     const isLoadingPaymentMethod = checkoutState.statuses.isLoadingPaymentMethod(method.id);
 
-    const usCountry = checkoutState.data
-        .getBillingCountries()
-        ?.find((state) => state.code === 'US');
-
     const billingAddress = checkoutState.data.getBillingAddress();
-
-    const provinceOptions = useMemo(
-        () => usCountry?.subdivisions.map((state) => ({ value: state.code, label: state.name })),
-        [usCountry],
-    );
 
     const handleChange = useCallback(
         (fieldId: string) => (value: string) => {
@@ -105,12 +91,6 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
             businessName: '',
             firstName: billingAddress.firstName || '',
             lastName: billingAddress.lastName || '',
-            address1: billingAddress.address1 || '',
-            address2: billingAddress.address2 || '',
-            postalCode: billingAddress.postalCode || '',
-            countryCode: billingAddress.countryCode || '',
-            city: billingAddress.city || '',
-            stateOrProvinceCode: billingAddress.stateOrProvinceCode || '',
             shouldSaveInstrument: false,
             shouldSetAsDefaultInstrument: false,
             instrumentId: '',
@@ -127,41 +107,30 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
 
     const formData = useMemo(
         () =>
-            formFieldData
-                .filter(({ id }) =>
-                    isBusiness
-                        ? id !== BraintreeAchBankAccountValues.FirstName &&
-                          id !== BraintreeAchBankAccountValues.LastName
-                        : id !== BraintreeAchBankAccountValues.BusinessName,
-                )
-                .map((field) =>
-                    field.name === BraintreeAchBankAccountValues.StateOrProvinceCode
-                        ? {
-                              ...field,
-                              options: {
-                                  items: provinceOptions,
-                              },
-                          }
-                        : field,
-                ),
-        [provinceOptions, isBusiness],
+            formFieldData.filter(({ id }) =>
+                isBusiness
+                    ? id !== BraintreeAchFieldType.FirstName &&
+                      id !== BraintreeAchFieldType.LastName
+                    : id !== BraintreeAchFieldType.BusinessName,
+            ),
+        [isBusiness],
     );
 
     const fieldDataByOwnershipType = useMemo(() => {
         const isPersonalType = ownershipTypeValue === OwnershipTypes.Personal;
-        const exceptionFieldTypes: BraintreeAchBankAccount[] = [];
+        const exceptionFieldTypes: BraintreeAchFieldType[] = [];
 
         if (isPersonalType) {
-            exceptionFieldTypes.push(BraintreeAchBankAccountValues.BusinessName);
+            exceptionFieldTypes.push(BraintreeAchFieldType.BusinessName);
         } else {
             exceptionFieldTypes.push(
-                BraintreeAchBankAccountValues.FirstName,
-                BraintreeAchBankAccountValues.LastName,
+                BraintreeAchFieldType.FirstName,
+                BraintreeAchFieldType.LastName,
             );
         }
 
         return formFieldData.filter(
-            ({ id }) => !exceptionFieldTypes.includes(id as BraintreeAchBankAccount),
+            ({ id }) => !exceptionFieldTypes.includes(id as BraintreeAchFieldType),
         );
     }, [ownershipTypeValue]);
 
@@ -197,14 +166,14 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
         setFieldValue,
     };
 
-    const isLoading = isLoadingBillingCountries || isLoadingInstruments || isLoadingPaymentMethod;
+    const isLoading = isLoadingInstruments || isLoadingPaymentMethod;
 
     return (
         <FormContext.Provider value={{ isSubmitted: isSubmitted(), setSubmitted }}>
             <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
                 <div className="checkout-ach-form" data-test="checkout-ach-form">
                     <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
-                        {shouldShowInstrumentFieldset && !isLoading && (
+                        {shouldShowInstrumentFieldset && (
                             <div className="checkout-ach-form__instrument">
                                 <AccountInstrumentFieldset
                                     instruments={filterTrustedInstruments}

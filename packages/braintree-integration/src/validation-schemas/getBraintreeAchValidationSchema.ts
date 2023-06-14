@@ -8,25 +8,9 @@ export enum BraintreeAchFieldType {
     AccountNumber = 'accountNumber',
     RoutingNumber = 'routingNumber',
     OwnershipType = 'ownershipType',
-}
-
-export enum BraintreeAchAddressType {
     FirstName = 'firstName',
     LastName = 'lastName',
-    Address1 = 'address1',
-    Address2 = 'address2',
-    PostalCode = 'postalCode',
-    CountryCode = 'countryCode',
-    City = 'city',
-    StateOrProvinceCode = 'stateOrProvinceCode',
 }
-
-export const BraintreeAchBankAccountValues = {
-    ...BraintreeAchFieldType,
-    ...BraintreeAchAddressType,
-};
-
-export type BraintreeAchBankAccount = BraintreeAchFieldType | BraintreeAchAddressType;
 
 export default memoize(function getBraintreeAchValidationSchema({
     formFieldData,
@@ -36,16 +20,11 @@ export default memoize(function getBraintreeAchValidationSchema({
     language: LanguageService;
 }) {
     const requiredFieldErrorTranslationIds: { [fieldName: string]: string } = {
-        [BraintreeAchBankAccountValues.FirstName]: 'address.first_name',
-        [BraintreeAchBankAccountValues.LastName]: 'address.last_name',
-        [BraintreeAchBankAccountValues.Address1]: 'address.address_line_1',
-        [BraintreeAchBankAccountValues.Address2]: 'address.address_line_2',
-        [BraintreeAchBankAccountValues.City]: 'address.city',
-        [BraintreeAchBankAccountValues.StateOrProvinceCode]: 'address.state',
-        [BraintreeAchBankAccountValues.PostalCode]: 'address.postal_code',
-        [BraintreeAchBankAccountValues.AccountNumber]: 'payment.errors.account_number',
-        [BraintreeAchBankAccountValues.RoutingNumber]: 'payment.errors.routing_number',
-        [BraintreeAchBankAccountValues.BusinessName]: 'payment.errors.business_name',
+        [BraintreeAchFieldType.FirstName]: 'address.first_name',
+        [BraintreeAchFieldType.LastName]: 'address.last_name',
+        [BraintreeAchFieldType.AccountNumber]: 'payment.errors.account_number',
+        [BraintreeAchFieldType.RoutingNumber]: 'payment.errors.routing_number',
+        [BraintreeAchFieldType.BusinessName]: 'payment.errors.business_name',
     };
 
     return object(

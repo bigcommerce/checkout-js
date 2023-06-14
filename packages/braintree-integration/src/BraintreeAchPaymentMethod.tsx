@@ -63,16 +63,6 @@ const BraintreeAchPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     }, [checkoutService, method.gateway, method.id, onUnhandledError]);
 
     useEffect(() => {
-        const loadBillingAddressFieldsOrThrow = async () => {
-            try {
-                await checkoutService.loadBillingAddressFields();
-            } catch (error) {
-                if (error instanceof Error) {
-                    onUnhandledError(error);
-                }
-            }
-        };
-
         const loadInstrumentsOrThrow = async () => {
             try {
                 if (isInstrumentFeatureAvailable) {
@@ -85,7 +75,6 @@ const BraintreeAchPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             }
         };
 
-        void loadBillingAddressFieldsOrThrow();
         void loadInstrumentsOrThrow();
     }, [checkoutService, onUnhandledError, isInstrumentFeatureAvailable]);
 

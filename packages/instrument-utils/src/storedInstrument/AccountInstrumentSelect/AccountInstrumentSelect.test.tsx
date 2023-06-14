@@ -157,6 +157,8 @@ describe('AccountInstrumentSelect', () => {
     });
 
     it('cleans the instrumentId when the component unmounts', async () => {
+        jest.useFakeTimers();
+
         const submit = jest.fn();
 
         initialValues.instrumentId = '1234';
@@ -206,10 +208,14 @@ describe('AccountInstrumentSelect', () => {
 
         fireEvent.click(screen.getByTestId('instrument-select-option-use-new'));
 
+        jest.runOnlyPendingTimers();
+
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         screen.getByRole('form').submit();
 
         await new Promise((resolve) => process.nextTick(resolve));
+
+        jest.useRealTimers();
 
         expect(submit).toHaveBeenCalledWith({ instrumentId: '' }, expect.anything());
     });

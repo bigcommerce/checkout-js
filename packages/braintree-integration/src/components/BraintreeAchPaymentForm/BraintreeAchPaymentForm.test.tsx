@@ -17,7 +17,7 @@ import {
     getStoreConfig,
 } from '@bigcommerce/checkout/test-utils';
 
-import { BraintreeAchBankAccountValues } from '../../validation-schemas';
+import { BraintreeAchFieldType } from '../../validation-schemas';
 
 import BraintreeAchPaymentForm, { BraintreeAchPaymentFormProps } from './BraintreeAchPaymentForm';
 import { OwnershipTypes } from './braintreeAchPaymentFormConfig';
@@ -67,19 +67,6 @@ describe('BraintreeAchPaymentForm', () => {
             customFields: [],
         });
 
-        jest.spyOn(checkoutService.getState().data, 'getBillingCountries').mockReturnValue([
-            {
-                code: 'US',
-                name: 'United States',
-                hasPostalCodes: true,
-                requiresState: true,
-                subdivisions: [
-                    { code: 'CA', name: 'California' },
-                    { code: 'TX', name: 'Texas' },
-                ],
-            },
-        ]);
-
         BraintreeAchPaymentFormTest = (props: BraintreeAchPaymentFormProps) => {
             return (
                 <Formik initialValues={initialValues} onSubmit={noop}>
@@ -103,7 +90,7 @@ describe('BraintreeAchPaymentForm', () => {
         const eventData = {
             target: {
                 value: OwnershipTypes.Personal,
-                name: BraintreeAchBankAccountValues.OwnershipType,
+                name: BraintreeAchFieldType.OwnershipType,
             },
         };
 
@@ -124,7 +111,7 @@ describe('BraintreeAchPaymentForm', () => {
         const eventData = {
             target: {
                 value: OwnershipTypes.Business,
-                name: BraintreeAchBankAccountValues.OwnershipType,
+                name: BraintreeAchFieldType.OwnershipType,
             },
         };
 
@@ -151,7 +138,7 @@ describe('BraintreeAchPaymentForm', () => {
     });
 
     it('renders loading overlay while waiting for method to initialize', () => {
-        jest.spyOn(checkoutState.statuses, 'isLoadingBillingCountries').mockReturnValue(true);
+        jest.spyOn(checkoutState.statuses, 'isLoadingInstruments').mockReturnValue(true);
 
         const { rerender } = render(<BraintreeAchPaymentFormTest {...defaultProps} />);
 
@@ -160,7 +147,7 @@ describe('BraintreeAchPaymentForm', () => {
             'display: none',
         );
 
-        jest.spyOn(checkoutState.statuses, 'isLoadingBillingCountries').mockReturnValue(false);
+        jest.spyOn(checkoutState.statuses, 'isLoadingInstruments').mockReturnValue(false);
 
         rerender(<BraintreeAchPaymentFormTest {...defaultProps} />);
 
@@ -171,7 +158,7 @@ describe('BraintreeAchPaymentForm', () => {
     });
 
     it('hides content while loading', () => {
-        jest.spyOn(checkoutState.statuses, 'isLoadingBillingCountries').mockReturnValue(true);
+        jest.spyOn(checkoutState.statuses, 'isLoadingInstruments').mockReturnValue(true);
 
         render(<BraintreeAchPaymentFormTest {...defaultProps} />);
 

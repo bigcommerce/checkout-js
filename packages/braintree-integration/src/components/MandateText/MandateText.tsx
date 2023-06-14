@@ -5,7 +5,7 @@ import { ObjectSchema } from 'yup';
 import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 import { CheckboxFormField } from '@bigcommerce/checkout/ui';
 
-import { BraintreeAchBankAccountValues } from '../../validation-schemas';
+import { BraintreeAchFieldType } from '../../validation-schemas';
 
 export interface MandateTextProps {
     getFieldValue: PaymentFormService['getFieldValue'];
@@ -36,20 +36,12 @@ const MandateText: FunctionComponent<MandateTextProps> = ({
 }) => {
     const [shouldShowMandateText, setShouldShowMandateText] = useState(false);
 
-    const routingNumberValue = String(
-        getFieldValue<string>(BraintreeAchBankAccountValues.RoutingNumber),
-    );
-    const accountNumberValue = String(
-        getFieldValue<string>(BraintreeAchBankAccountValues.AccountNumber),
-    );
-    const firstNameValue = String(getFieldValue<string>(BraintreeAchBankAccountValues.FirstName));
-    const lastNameValue = String(getFieldValue<string>(BraintreeAchBankAccountValues.LastName));
-    const businessNameValue = String(
-        getFieldValue<string>(BraintreeAchBankAccountValues.BusinessName),
-    );
-    const accountTypeValue = String(
-        getFieldValue<string>(BraintreeAchBankAccountValues.AccountType),
-    );
+    const routingNumberValue = String(getFieldValue<string>(BraintreeAchFieldType.RoutingNumber));
+    const accountNumberValue = String(getFieldValue<string>(BraintreeAchFieldType.AccountNumber));
+    const firstNameValue = String(getFieldValue<string>(BraintreeAchFieldType.FirstName));
+    const lastNameValue = String(getFieldValue<string>(BraintreeAchFieldType.LastName));
+    const businessNameValue = String(getFieldValue<string>(BraintreeAchFieldType.BusinessName));
+    const accountTypeValue = String(getFieldValue<string>(BraintreeAchFieldType.AccountType));
 
     useEffect(() => {
         const validate = async () => {

@@ -1,5 +1,4 @@
 export {
     default as getBraintreeAchValidationSchema,
-    BraintreeAchBankAccountValues,
-    BraintreeAchBankAccount,
+    BraintreeAchFieldType,
 } from './getBraintreeAchValidationSchema';
