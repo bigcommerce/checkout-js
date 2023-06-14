@@ -4,6 +4,7 @@ export function getPaymentFormServiceMock(): PaymentFormService {
     return {
         disableSubmit: jest.fn(),
         getFieldValue: jest.fn(),
+        getFormValues: jest.fn(),
         hidePaymentSubmitButton: jest.fn(),
         isSubmitted: jest.fn(),
         setFieldTouched: jest.fn(),
