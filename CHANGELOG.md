@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.328.2](https://github.com/bigcommerce/checkout-js/compare/v1.328.1...v1.328.2) (2023-06-14)
+
+
+### Bug Fixes
+
+* **checkout:** PI-294 bump sdk for adyen v3 stored card fix ([be39a94](https://github.com/bigcommerce/checkout-js/commit/be39a94c99a315145337bff882d6bb1eb9b3677e))
+
 ### [1.328.1](https://github.com/bigcommerce/checkout-js/compare/v1.328.0...v1.328.1) (2023-06-14)
 
 
