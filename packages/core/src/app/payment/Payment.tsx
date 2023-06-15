@@ -117,13 +117,9 @@ class Payment extends Component<
             onReady = noop,
             onUnhandledError = noop,
             usableStoreCredit,
-            defaultMethod,
             analyticsTracker
         } = this.props;
 
-        const { selectedMethod } = this.state;
-
-        analyticsTracker.selectedPaymentMethod((selectedMethod || defaultMethod)?.config.displayName);
 
         if (usableStoreCredit) {
             this.handleStoreCreditChange(true);
@@ -131,6 +127,9 @@ class Payment extends Component<
 
         try {
             await loadPaymentMethods();
+
+            const selectedMethod = this.state.selectedMethod || this.props.defaultMethod;
+            analyticsTracker.selectedPaymentMethod(selectedMethod?.config.displayName);
         } catch (error) {
             onUnhandledError(error);
         }
