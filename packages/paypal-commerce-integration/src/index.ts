@@ -2,3 +2,4 @@ export { default as PayPalCommerceAPMsPaymentMethod } from './PayPalCommerceAPMs
 export { default as PayPalCommerceCreditPaymentMethod } from './PayPalCommerceCreditPaymentMethod';
 export { default as PayPalCommercePaymentMethod } from './PayPalCommercePaymentMethod';
 export { default as PayPalCommerceVenmoPaymentMethod } from './PayPalCommerceVenmoPaymentMethod';
+export { default as PaypalCommerceRatePayPaymentMethod } from './PaypalCommerceRatePayPaymentMethod'

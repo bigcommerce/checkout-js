@@ -1,19 +1,34 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, {FunctionComponent, useCallback, useEffect} from 'react';
 
 import {
-    getUniquePaymentMethodId,
     PaymentMethodProps,
     PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
+import { DynamicFormField, DynamicFormFieldType } from "@bigcommerce/checkout/ui";
+import { FormField } from "../../../../CHECKOUT_SDK_JS/checkout-sdk-js";
+
+
+const dateOfBirth: FormField = {
+    name: 'ratePay_dateOfBirth',
+    custom: false,
+    id: 'ratePay_dateOfBirth',
+    label: 'Date of birth',
+    required: true,
+    fieldType: DynamicFormFieldType.DATE,
+};
 
 const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
- method,
- checkoutService,
- paymentForm,
- onUnhandledError,
+    method,
+    checkoutService,
+    paymentForm,
+    onUnhandledError,
+    paymentForm: {
+        setFieldValue,
+        setValidationSchema,
+        setSubmitted,
+    },
 }) => {
-    const widgetContainerId = getUniquePaymentMethodId(method.id, method.gateway);
     const initializePayment = async () => {
         try {
             await checkoutService.initializePayment({
@@ -21,32 +36,6 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
                 methodId: method.id,
                 paypalcommerceratepay: {
                     container: '#checkout-payment-continue',
-                    apmFieldsContainer: `#${widgetContainerId}`,
-                    apmFieldsStyles: {
-                        variables: {
-                            fontFamily: 'Open Sans, Helvetica Neue, Arial, sans-serif',
-                            colorBackground: 'transparent',
-                            textColor: 'black',
-                            fontSizeBase: '16px',
-                            spacingUnit: '1rem',
-                            borderColor: '#d9d9d9',
-                            borderRadius: '4px',
-                            borderWidth: '1px',
-                        },
-                        rules: {
-                            '.Input': {
-                                backgroundColor: 'white',
-                                color: '#333',
-                                fontSize: '1rem',
-                            },
-                            '.Input:active': {
-                                color: '#4496f6',
-                            },
-                            '.Input--invalid': {
-                                color: '#ed6a6a',
-                            },
-                        },
-                    },
                     onRenderButton: () => {
                         paymentForm.hidePaymentSubmitButton(method, true);
                     },
@@ -88,10 +77,30 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
         };
     }, []);
 
-    return <><div
-        className={`widget widget--${method.id} payment-widget`}
-        id={widgetContainerId}
-    ></div></>;
+    const handleChange = useCallback(
+        (fieldId: string) => (value: string) => {
+            console.log('HANDLE CHANGE');
+            setFieldValue(fieldId, value);
+        },
+        [setFieldValue],
+    );
+
+    const validationSchema = {};
+
+    useEffect(() => {
+        setSubmitted(false);
+        setValidationSchema(method, validationSchema);
+    }, [validationSchema, method, setValidationSchema, setSubmitted]);
+
+    return <div style={{marginBottom:'20px'}}>
+        <DynamicFormField
+             extraClass={`dynamic-form-field--${dateOfBirth.id}`}
+             field={dateOfBirth}
+             key={dateOfBirth.id}
+             label={'Date of Birth'} // TODO: fix
+             onChange={handleChange(dateOfBirth.id)}
+    />
+    </div>
 };
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
