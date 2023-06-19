@@ -16,28 +16,18 @@ const AmazonPayV2Button: FunctionComponent<CheckoutButtonProps> = (props) => {
 
 export default AmazonPayV2Button;
 
-const beautifyAmazonButton = ():void => {
+const beautifyAmazonButton = (): void => {
     if (!document.querySelector('.checkout-button-container')) {
         return;
     }
 
     const container = document.querySelector('#amazonpayCheckoutButton > div') as unknown as HTMLElement;
-    const tagline = container?.shadowRoot?.querySelector('.amazonpay-button-view3');
+    const amazonButton = container?.shadowRoot?.querySelector('.amazonpay-button-view1') as unknown as HTMLElement;
 
-    if (container) {
-        container.style.visibility = 'hidden';
-        container.style.width = '100%';
-    }
-
-    if (tagline) {
-        tagline.remove();
-        (container?.shadowRoot?.querySelector('.amazonpay-button-view1') as unknown as HTMLElement).style.height = '36px'
-        container?.shadowRoot?.querySelector('.amazonpay-button-view2')?.remove();
-        container?.shadowRoot?.querySelector('.amazonpay-button-chevrons')?.remove();
-        container.style.visibility = 'visible';
-
+    if (container && amazonButton) {
+        amazonButton.style.height = '36px';
         return;
     }
 
-    setTimeout(beautifyAmazonButton, 100);
+    setTimeout(beautifyAmazonButton, 10);
 }
