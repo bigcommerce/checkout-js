@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.330.1](https://github.com/bigcommerce/checkout-js/compare/v1.330.0...v1.330.1) (2023-06-21)
+
+
+### Bug Fixes
+
+* DATA-10928 Fire analytics selectedPaymentMethod event when payment methods are loaded ([#1335](https://github.com/bigcommerce/checkout-js/issues/1335)) ([aa5f8ad](https://github.com/bigcommerce/checkout-js/commit/aa5f8adaa7dd53554dbf9561e83e96cf7c6d4c25))
+
 ## [1.330.0](https://github.com/bigcommerce/checkout-js/compare/v1.329.0...v1.330.0) (2023-06-21)
 
 
