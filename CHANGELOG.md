@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.332.0](https://github.com/bigcommerce/checkout-js/compare/v1.331.0...v1.332.0) (2023-06-23)
+
+
+### Features
+
+* **payment:** PI-99 [Sezzle] - Text is overflowing and cropped for the Sezzle Payment gateway on mobile ([#1334](https://github.com/bigcommerce/checkout-js/issues/1334)) ([5e04971](https://github.com/bigcommerce/checkout-js/commit/5e049711f1c7dd3f4df68e0e7a8c40c8ff3ba163))
+
 ## [1.331.0](https://github.com/bigcommerce/checkout-js/compare/v1.330.3...v1.331.0) (2023-06-22)
 
 
