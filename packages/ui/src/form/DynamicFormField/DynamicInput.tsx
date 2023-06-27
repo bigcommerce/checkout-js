@@ -40,6 +40,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
     date,
     ...rest
 }) => {
+    console.log('FIELD TYPE', fieldType);
     const { inputFormat } = date || { inputFormat: '' };
     const handleDateChange = useCallback(
         (dateValue: string, event) =>

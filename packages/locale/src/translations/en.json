@@ -428,6 +428,15 @@
                 "user_authorization_error": "There was an error while processing your payment. Please contact us.",
                 "vaulting_service_unavailable": "Vaulting service is currently not available.",
                 "voided_transaction": "Unable to process your payment because the transaction has already been voided. Please try again or contact us."
+            },
+            "ratepay": {
+                "phone_country_code": "Country code",
+                "phone_number": "Phone number",
+                "birth_date": "Birth date",
+                "errors": {
+                    "isRequired": "{field} is required",
+                    "isInvalid": "{field} is invalid"
+                }
             }
         },
         "redeemable": {
