@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.333.0](https://github.com/bigcommerce/checkout-js/compare/v1.332.0...v1.333.0) (2023-06-27)
+
+
+### Features
+
+* **other:** LOCAL-1444 delivery translation ([#1331](https://github.com/bigcommerce/checkout-js/issues/1331)) ([5d6a6de](https://github.com/bigcommerce/checkout-js/commit/5d6a6de8599e234933781f3145628aa1df53922a))
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-00 bump checkout-sdk-js version ([f6e5bf8](https://github.com/bigcommerce/checkout-js/commit/f6e5bf8bf2af00ce690e2faa9a281969b428b47a))
+
 ## [1.332.0](https://github.com/bigcommerce/checkout-js/compare/v1.331.0...v1.332.0) (2023-06-23)
 
 
