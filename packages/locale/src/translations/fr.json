@@ -70,8 +70,8 @@
             "return_to_checkout": "REVENIR AU PAIEMENT",
             "see_all_action": "Tout voir",
             "see_less_action": "Voir moins",
-            "shipping_text": "Expédition",
-            "gift_wrapping_text": "Emballage cadeau",
+            "shipping_text": "Livraison",
+            "gift_wrapping_text": "Emballage Cadeau",
             "show_details_action": "Afficher les détails",
             "store_credit_text": "Avoir",
             "subtotal_text": "Sous-total",
@@ -188,30 +188,30 @@
             "barclaycard_continue_action": "Continuer",
             "bluesnap_v2_continue_action": "Continuer",
             "bluesnap_direct_account_type_select": {
-                "label": "Select an account type",
-                "option_consumer_checking": "Consumer checking",
-                "option_consumer_savings": "Consumer savings",
-                "option_corporate_checking": "Corporate checking",
-                "option_corporate_savings": "Corporate savings"
+                "label": "Sélectionner un type de compte",
+                "option_consumer_checking": "Compte courant particulier",
+                "option_consumer_savings": "Compte d'épargne particulier",
+                "option_corporate_checking": "Compte courant d'entreprise",
+                "option_corporate_savings": "Compte d'épargne entreprise"
             },
             "bluesnap_direct_account_number": {
                 "label": "Numéro de compte",
                 "is_required": "Le numéro de compte est obligatoire",
-                "only_numbers": "Account Number must contain only numbers",
-                "length": "Account Number must have at least 8 digits"
+                "only_numbers": "Le numéro de compte ne doit contenir que des chiffres",
+                "length": "Le numéro de compte doit comporter au moins 8 chiffres"
             },
             "bluesnap_direct_routing_number": {
                 "label": "Numéro d'acheminement",
                 "is_required": "Le numéro d'acheminement est obligatoire",
-                "only_numbers": "Routing Number must contain only numbers",
-                "length": "Routing Number must be 9 digits long"
+                "only_numbers": "Le numéro d'acheminement ne doit contenir que des chiffres",
+                "length": "Le numéro d'acheminement doit être composé de 9 chiffres"
             },
             "bluesnap_direct_account_type": {
                 "label": "Type de compte",
-                "is_required": "Account Type is required"
+                "is_required": "Le type de compte est obligatoire"
             },
-            "bluesnap_direct_permission": "I authorize this Electronic Check (ACH/ECP) transaction and agree to this debit of my account.",
-            "bluesnap_direct_electronic_check_label": "Electronic Check (ACH/ECP)",
+            "bluesnap_direct_permission": "J'autorise cette transaction par chèque électronique (ACH/ECP) et j'accepte que mon compte soit débité.",
+            "bluesnap_direct_electronic_check_label": "Chèque électronique (ACH/ECP)",
             "bolt_benefit_1": "Faites vos achats parmi des centaines de marques avec une connexion sans mot de passe",
             "bolt_benefit_2": "Passez au paiement avec les informations de paiement et de livraison enregistrées",
             "bolt_benefit_3": "Profitez d'une sécurité de compte conforme aux normes PCI",
@@ -482,7 +482,7 @@
             "multishipping_guest_create": "ou <a href=\"{url}\" target=\"_blank\">créer un compte</a> avant de continuer.",
             "ship_to_multi": "Livrer à plusieurs adresses",
             "ship_to_single": "Livrer à une seule adresse",
-            "shipping_heading": "Expédition",
+            "shipping_heading": "Livraison",
             "shipping_method_label": "Mode de livraison",
             "shipping_option_expired_error": "Le devis de livraison que vous avez reçu n'est plus valide. Cliquez sur OK pour consulter les frais de livraison actualisés.",
             "shipping_option_expired_heading": "Les frais de port ont été mis à jour",

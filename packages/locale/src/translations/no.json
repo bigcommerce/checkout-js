@@ -188,30 +188,30 @@
             "barclaycard_continue_action": "Fortsett",
             "bluesnap_v2_continue_action": "Fortsett",
             "bluesnap_direct_account_type_select": {
-                "label": "Select an account type",
-                "option_consumer_checking": "Consumer checking",
-                "option_consumer_savings": "Consumer savings",
-                "option_corporate_checking": "Corporate checking",
-                "option_corporate_savings": "Corporate savings"
+                "label": "Velg en kontotype",
+                "option_consumer_checking": "Kundesjekkonto",
+                "option_consumer_savings": "Kundebankkonto",
+                "option_corporate_checking": "Firmasjekkonto",
+                "option_corporate_savings": "Firmabankkonto"
             },
             "bluesnap_direct_account_number": {
                 "label": "Kontonummer",
                 "is_required": "Kontonummer er påkrevd",
-                "only_numbers": "Account Number must contain only numbers",
-                "length": "Account Number must have at least 8 digits"
+                "only_numbers": "Kontonummer må kun inneholde tall",
+                "length": "Kontonummer må ha minst 8 sifre"
             },
             "bluesnap_direct_routing_number": {
                 "label": "Rutenummer",
                 "is_required": "Rutenummer er påkrevd",
-                "only_numbers": "Routing Number must contain only numbers",
-                "length": "Routing Number must be 9 digits long"
+                "only_numbers": "Routing-nummeret må inneholde kun tall",
+                "length": "Routing-nummeret må være 9 sifre langt"
             },
             "bluesnap_direct_account_type": {
                 "label": "Kontotype",
-                "is_required": "Account Type is required"
+                "is_required": "Kontotype er påkrevd"
             },
-            "bluesnap_direct_permission": "I authorize this Electronic Check (ACH/ECP) transaction and agree to this debit of my account.",
-            "bluesnap_direct_electronic_check_label": "Electronic Check (ACH/ECP)",
+            "bluesnap_direct_permission": "Jeg autoriserer denne transaksjonen med elektronisk sjekk (ACH/ECP) og godtar denne debiteringen av kontoen min.",
+            "bluesnap_direct_electronic_check_label": "Elektronisk sjekk (ACH/ECP)",
             "bolt_benefit_1": "Handle hundrevis av merker med passordløs pålogging",
             "bolt_benefit_2": "Benytt deg av lagret betalings- og leveranseinformasjon i kassen",
             "bolt_benefit_3": "Dra nytte av PCI-kompatibel kontosikkerhet",
