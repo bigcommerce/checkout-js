@@ -1,15 +1,15 @@
 # Checkout
 
-* @bigcommerce/checkout
+* @bigcommerce/team-checkout
 /packages/afterpay-integration @bigcommerce/apex-leads
-/packages/apple-pay-integration @bigcommerce/checkout
-/packages/checkout-button-integration @bigcommerce/checkout
-/packages/core @bigcommerce/checkout
+/packages/apple-pay-integration @bigcommerce/team-checkout
+/packages/checkout-button-integration @bigcommerce/team-checkout
+/packages/core @bigcommerce/team-checkout
 /packages/google-pay-integration @bigcommerce/apex-leads
 /packages/hosted-credit-card-integration @bigcommerce/apex-leads
-/packages/payment-integration-api @bigcommerce/checkout
-/packages/test-framework @bigcommerce/checkout
-/packages/workspace-tools @bigcommerce/checkout
+/packages/payment-integration-api @bigcommerce/team-checkout
+/packages/test-framework @bigcommerce/team-checkout
+/packages/workspace-tools @bigcommerce/team-checkout
 
 # Apex integrations
 /packages/bluesnap-direct-integration @bigcommerce/apex-leads @bigcommerce/kyiv-payments-team
