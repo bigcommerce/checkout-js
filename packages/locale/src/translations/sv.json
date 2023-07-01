@@ -188,30 +188,30 @@
             "barclaycard_continue_action": "Fortsätt",
             "bluesnap_v2_continue_action": "Fortsätt",
             "bluesnap_direct_account_type_select": {
-                "label": "Select an account type",
-                "option_consumer_checking": "Consumer checking",
-                "option_consumer_savings": "Consumer savings",
-                "option_corporate_checking": "Corporate checking",
-                "option_corporate_savings": "Corporate savings"
+                "label": "Välj en kontotyp",
+                "option_consumer_checking": "Transaktionskonto konsument",
+                "option_consumer_savings": "Sparkonto konsument",
+                "option_corporate_checking": "Transaktionskonto företag",
+                "option_corporate_savings": "Sparkonto företag"
             },
             "bluesnap_direct_account_number": {
                 "label": "Kontonummer",
                 "is_required": "Kontonummer krävs",
-                "only_numbers": "Account Number must contain only numbers",
-                "length": "Account Number must have at least 8 digits"
+                "only_numbers": "Kontonumret får endast innehålla siffror",
+                "length": "Kontonumret måste ha minst 8 siffror"
             },
             "bluesnap_direct_routing_number": {
                 "label": "Routing-nummer",
                 "is_required": "Routing-nummer krävs",
-                "only_numbers": "Routing Number must contain only numbers",
-                "length": "Routing Number must be 9 digits long"
+                "only_numbers": "Clearingnumret får endast innehålla siffror",
+                "length": "Clearingnumret måste vara 9 siffror långt"
             },
             "bluesnap_direct_account_type": {
                 "label": "Kontotyp",
-                "is_required": "Account Type is required"
+                "is_required": "Kontotyp är obligatoriskt"
             },
-            "bluesnap_direct_permission": "I authorize this Electronic Check (ACH/ECP) transaction and agree to this debit of my account.",
-            "bluesnap_direct_electronic_check_label": "Electronic Check (ACH/ECP)",
+            "bluesnap_direct_permission": "Jag godkänner denna transaktion med Elektronisk check (ACH/ECP) och debiteringen av kontot.",
+            "bluesnap_direct_electronic_check_label": "Elektronisk check (ACH/ECP)",
             "bolt_benefit_1": "Shoppa hundratals varumärken med inloggning utan lösenord",
             "bolt_benefit_2": "Checka ut med sparade betalnings- och fraktuppgifter",
             "bolt_benefit_3": "Dra nytta av PCI-kompatibel kontosäkerhet",
