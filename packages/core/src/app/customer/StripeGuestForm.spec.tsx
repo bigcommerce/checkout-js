@@ -5,10 +5,13 @@ import CheckoutStepType from '../checkout/CheckoutStepType';
 import { PrivacyPolicyField } from '../privacyPolicy';
 
 import StripeGuestForm, { StripeGuestFormProps } from './StripeGuestForm';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { getStoreConfig } from '../config/config.mock';
 
 describe('StripeGuestForm', () => {
     let defaultProps: StripeGuestFormProps;
     let TestComponent: FunctionComponent<Partial<StripeGuestFormProps>>;
+    let localeContext: LocaleContextType;
     const handleContinueAsGuest = jest.fn();
     const dummyElement = document.createElement('div');
 
@@ -40,11 +43,15 @@ describe('StripeGuestForm', () => {
         jest.spyOn(document, 'getElementById')
             .mockReturnValue(dummyElement);
 
+        localeContext = createLocaleContext(getStoreConfig());
+
         TestComponent = props => (
-            <StripeGuestForm
-                { ...defaultProps }
-                { ...props }
-            />
+            <LocaleContext.Provider value={localeContext}>
+                <StripeGuestForm
+                    { ...defaultProps }
+                    { ...props }
+                />
+            </LocaleContext.Provider>
         );
     });
 
@@ -66,17 +73,28 @@ describe('StripeGuestForm', () => {
         expect(button.prop('disabled')).toBeTruthy();
     });
 
-    it('executes a function when on click action is triggered', () => {
-        const component = mount(<TestComponent />);
+    it('executes a function when the button is clicked', async () => {
+        const handleContinueAsGuest = jest.fn();
 
-        const button = component.find('button');
-        const onClickEvent = button.prop('onClick');
+        const component = mount(<TestComponent onContinueAsGuest={handleContinueAsGuest} privacyPolicyUrl="www.test.com"/> );
 
-        if (onClickEvent) {
-            onClickEvent(new MouseEvent('click') as any);
-        }
+        component
+            .find('input[name="privacyPolicy"]')
+            .simulate('change', { target: { value: true, name: 'privacyPolicy' } });
+       
+        component
+            .find('input[name="shouldSubscribe"]')
+            .simulate('change', { target: { value: true, name: 'shouldSubscribe' } });
 
-        expect(handleContinueAsGuest).toHaveBeenCalled();
+        component.find('form').simulate('submit');
+
+        await new Promise((resolve) => process.nextTick(resolve));
+        
+        expect(handleContinueAsGuest).toHaveBeenCalledWith({
+            "email": "", 
+            "privacyPolicy": true, 
+            "shouldSubscribe": true
+        });
     });
 
     it('initializes stripeGuestForm when component mounts', () => {

@@ -2,14 +2,14 @@ import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/
 import { FieldProps, FormikProps, withFormik } from 'formik';
 import React, { FunctionComponent, memo, ReactNode, useCallback, useEffect, useState } from 'react';
 
-import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { CustomerSkeleton } from '@bigcommerce/checkout/ui';
 
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { getAppliedStyles } from '../common/dom';
-import { PrivacyPolicyField } from '../privacyPolicy';
+import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
 import { Button, ButtonVariant } from '../ui/button';
-import { BasicFormField, Fieldset, Legend } from '../ui/form';
+import { BasicFormField, Fieldset, Form, Legend } from '../ui/form';
 
 import { GuestFormValues } from './GuestForm';
 import SubscribeField from './SubscribeField';
@@ -171,7 +171,12 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
     return (
         <>
             <CustomerSkeleton isLoading={isStripeLoading}/>
-            <div className="checkout-form" style={ {display: isStripeLoading ? 'none' : undefined} }>
+            <Form
+                className="checkout-form"
+                id="checkout-customer-guest"
+                testId="checkout-customer-guest"
+            >
+                <div className="checkout-form" style={ {display: isStripeLoading ? 'none' : undefined} }>
                     <Fieldset
                         legend={ !authentication &&
                             <Legend hidden>
@@ -199,7 +204,6 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                                     disabled={ continueAsAGuestButton }
                                     id="stripe-checkout-customer-continue"
                                     isLoading={ isLoading }
-                                    onClick={ handleOnClickSubmitButton }
                                     testId="stripe-customer-continue-as-guest-button"
                                     type="submit"
                                     variant={ ButtonVariant.Primary }
@@ -223,23 +227,35 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                         }
                         { !authentication && checkoutButtons }
                     </Fieldset>
-            </div>
-            { renderCheckoutThemeStylesForStripeUPE() }
+                </div>
+                { renderCheckoutThemeStylesForStripeUPE() }
+            </Form>
         </>
     );
 };
 
-export default withFormik<StripeGuestFormProps, GuestFormValues>({
-    mapPropsToValues: ({
-                           email = '',
-                           defaultShouldSubscribe = false,
-                           requiresMarketingConsent,
-                       }) => ({
-        email,
-        shouldSubscribe: requiresMarketingConsent ? false : defaultShouldSubscribe,
-        privacyPolicy: false,
-    }),
-    handleSubmit: (values, { props: { onContinueAsGuest } }) => {
-        onContinueAsGuest(values);
-    },
-})(memo(StripeGuestForm));
+export default withLanguage(
+    withFormik<StripeGuestFormProps, GuestFormValues>({
+            mapPropsToValues: ({
+                email = '',
+                defaultShouldSubscribe = false,
+                requiresMarketingConsent,
+            }) => ({
+                email,
+                shouldSubscribe: requiresMarketingConsent ? false : defaultShouldSubscribe,
+                privacyPolicy: false,
+            }),
+            handleSubmit: (values, { props: { onContinueAsGuest } }) => {
+                onContinueAsGuest(values);
+            },
+            validationSchema: ({ language, privacyPolicyUrl }: StripeGuestFormProps & WithLanguageProps) => {
+                if (privacyPolicyUrl) {
+                    return getPrivacyPolicyValidationSchema({
+                            isRequired: !!privacyPolicyUrl,
+                            language,
+                        })
+                }
+            },
+        })(memo(StripeGuestForm))
+)
+
