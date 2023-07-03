@@ -188,30 +188,30 @@
             "barclaycard_continue_action": "Continuar",
             "bluesnap_v2_continue_action": "Continuar",
             "bluesnap_direct_account_type_select": {
-                "label": "Select an account type",
-                "option_consumer_checking": "Consumer checking",
-                "option_consumer_savings": "Consumer savings",
-                "option_corporate_checking": "Corporate checking",
-                "option_corporate_savings": "Corporate savings"
+                "label": "Seleccionar un tipo de cuenta",
+                "option_consumer_checking": "Comprobación del consumidor",
+                "option_consumer_savings": "Ahorros del consumidor",
+                "option_corporate_checking": "Comprobación corporativa",
+                "option_corporate_savings": "Ahorros corporativos"
             },
             "bluesnap_direct_account_number": {
                 "label": "Número de cuenta",
                 "is_required": "El número de cuenta es obligatorio",
-                "only_numbers": "Account Number must contain only numbers",
-                "length": "Account Number must have at least 8 digits"
+                "only_numbers": "El número de cuenta debe contener solo números",
+                "length": "El número de cuenta debe tener al menos 8 dígitos"
             },
             "bluesnap_direct_routing_number": {
                 "label": "Número de ruta",
                 "is_required": "El número de ruta es obligatorio",
-                "only_numbers": "Routing Number must contain only numbers",
-                "length": "Routing Number must be 9 digits long"
+                "only_numbers": "El número de ruta debe contener solo números",
+                "length": "El número de ruta debe tener 9 dígitos"
             },
             "bluesnap_direct_account_type": {
                 "label": "Tipo de cuenta",
-                "is_required": "Account Type is required"
+                "is_required": "El tipo de cuenta es obligatorio"
             },
-            "bluesnap_direct_permission": "I authorize this Electronic Check (ACH/ECP) transaction and agree to this debit of my account.",
-            "bluesnap_direct_electronic_check_label": "Electronic Check (ACH/ECP)",
+            "bluesnap_direct_permission": "Autorizo esta transacción de cheque electrónico (ACH/ECP) y estoy de acuerdo con este cargo en mi cuenta.",
+            "bluesnap_direct_electronic_check_label": "Cheque electrónico (ACH/ECP)",
             "bolt_benefit_1": "Compra cientos de marcas con un inicio de sesión sin contraseña",
             "bolt_benefit_2": "Completa el proceso de pago con los datos de pago y de envío guardados",
             "bolt_benefit_3": "Benefíciate de la seguridad de una cuenta que cumple con la norma PCI",

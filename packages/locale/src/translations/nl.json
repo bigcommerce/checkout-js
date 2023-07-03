@@ -188,30 +188,30 @@
             "barclaycard_continue_action": "Doorgaan",
             "bluesnap_v2_continue_action": "Doorgaan",
             "bluesnap_direct_account_type_select": {
-                "label": "Select an account type",
-                "option_consumer_checking": "Consumer checking",
-                "option_consumer_savings": "Consumer savings",
-                "option_corporate_checking": "Corporate checking",
-                "option_corporate_savings": "Corporate savings"
+                "label": "Selecteer een type rekening",
+                "option_consumer_checking": "Consumentenrekening",
+                "option_consumer_savings": "Spaarrekening consumenten",
+                "option_corporate_checking": "Zakelijke rekening",
+                "option_corporate_savings": "Spaarrekening zakelijk"
             },
             "bluesnap_direct_account_number": {
                 "label": "Accountnummer",
                 "is_required": "Rekeningnummer is vereist",
-                "only_numbers": "Account Number must contain only numbers",
-                "length": "Account Number must have at least 8 digits"
+                "only_numbers": "Rekeningnummer mag alleen cijfers bevatten",
+                "length": "Rekeningnummer moet minimaal 8 cijfers bevatten"
             },
             "bluesnap_direct_routing_number": {
                 "label": "Routeringsnummer",
                 "is_required": "Routeringsnummer is vereist",
-                "only_numbers": "Routing Number must contain only numbers",
-                "length": "Routing Number must be 9 digits long"
+                "only_numbers": "Routeringsnummer mag alleen cijfers bevatten",
+                "length": "Routeringsnummer moet 9 cijfers lang zijn"
             },
             "bluesnap_direct_account_type": {
                 "label": "Accounttype",
-                "is_required": "Account Type is required"
+                "is_required": "Rekeningtype is verplicht"
             },
-            "bluesnap_direct_permission": "I authorize this Electronic Check (ACH/ECP) transaction and agree to this debit of my account.",
-            "bluesnap_direct_electronic_check_label": "Electronic Check (ACH/ECP)",
+            "bluesnap_direct_permission": "Ik autoriseer deze Elektronische Check (ACH/ECP) transactie en ga akkoord met deze debitering van mijn rekening.",
+            "bluesnap_direct_electronic_check_label": "Elektronische cheque (ACH/ECP)",
             "bolt_benefit_1": "Shop honderden merken met wachtwoordloos inloggen",
             "bolt_benefit_2": "Betaal gemakkelijk met opgeslagen betaal- en verzendgegevens",
             "bolt_benefit_3": "Profiteer van PCI-compatibele accountbeveiliging",
