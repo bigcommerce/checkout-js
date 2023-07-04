@@ -2,7 +2,15 @@ import { FormField } from '@bigcommerce/checkout-sdk';
 
 import { DynamicFormFieldType } from '@bigcommerce/checkout/ui';
 
-import { BraintreeAchFieldType } from '../../validation-schemas';
+export enum BraintreeAchFieldType {
+    BusinessName = 'businessName',
+    AccountType = 'accountType',
+    AccountNumber = 'accountNumber',
+    RoutingNumber = 'routingNumber',
+    OwnershipType = 'ownershipType',
+    FirstName = 'firstName',
+    LastName = 'lastName',
+}
 
 export enum OwnershipTypes {
     Personal = 'Personal',
@@ -36,7 +44,7 @@ export const ownershipTypeOptions = [
     },
 ];
 
-export const formFieldData: FormField[] = [
+export const defaultBraintreeAchFormFields: FormField[] = [
     {
         name: BraintreeAchFieldType.AccountType,
         custom: false,
@@ -75,6 +83,10 @@ export const formFieldData: FormField[] = [
             items: ownershipTypeOptions,
         },
     },
+];
+
+export const personalBraintreeAchFormFields: FormField[] = [
+    ...defaultBraintreeAchFormFields,
     {
         name: BraintreeAchFieldType.FirstName,
         custom: false,
@@ -89,6 +101,10 @@ export const formFieldData: FormField[] = [
         label: 'Last Name',
         required: true,
     },
+];
+
+export const businessBraintreeAchFormFields: FormField[] = [
+    ...defaultBraintreeAchFormFields,
     {
         name: BraintreeAchFieldType.BusinessName,
         custom: false,
