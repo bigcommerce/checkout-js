@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.335.0](https://github.com/bigcommerce/checkout-js/compare/v1.334.1...v1.335.0) (2023-07-04)
+
+
+### Features
+
+* **checkout:** PI-168 bluesnapdirect APMs ([0ba7636](https://github.com/bigcommerce/checkout-js/commit/0ba7636495c64b4d24f1265bc229c9385bb1f4f7))
+
 ### [1.334.1](https://github.com/bigcommerce/checkout-js/compare/v1.334.0...v1.334.1) (2023-07-04)
 
 ## [1.334.0](https://github.com/bigcommerce/checkout-js/compare/v1.333.2...v1.334.0) (2023-07-03)
