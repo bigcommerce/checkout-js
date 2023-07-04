@@ -1,4 +1,4 @@
-import React, {FunctionComponent, useCallback, useEffect, useRef} from 'react';
+import React, {FunctionComponent, useCallback, useEffect, useMemo, useRef} from 'react';
 
 import {
     PaymentMethodProps,
@@ -6,40 +6,38 @@ import {
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { DynamicFormField, DynamicFormFieldType } from "@bigcommerce/checkout/ui";
-import { FormField } from "../../../../CHECKOUT_SDK_JS/checkout-sdk-js";
-// import getPaypalCommerceRatePayValidationSchema from './validation-schemas/getPaypalCommerceRatePayValidationSchema';
+import { FormField } from '../../../../CHECKOUT_SDK_JS/checkout-sdk-js';
+import getPaypalCommerceRatePayValidationSchema from './validation-schemas/getPaypalCommerceRatePayValidationSchema';
 
-const birthDate: FormField = {
-    name: 'ratepay_birth_date',
-    custom: false,
-    id: 'ratepay_birth_date',
-    label: 'payment.ratepay.birth_date',
-    required: true,
-    fieldType: DynamicFormFieldType.DATE,
-};
-
-const phoneCountryCode: FormField = {
-    name: 'ratepay_phone_country_code',
-    custom: false,
-    id: 'ratepay_phone_country_code',
-    label: 'payment.ratepay.phone_country_code',
-    required: true,
-    fieldType: DynamicFormFieldType.TEXT,
-    type: 'string',
-    maxLength: 2,
-    min: 2,
-};
-
-const phoneNumber: FormField = {
-    name: 'ratepay_phone_number',
-    custom: false,
-    id: 'ratePay_phone_number',
-    label: 'payment.ratepay.phone_number',
-    required: true,
-    fieldType: DynamicFormFieldType.TEXT,
-    maxLength: 9,
-    min: 9,
-};
+const formFieldData: FormField[] = [
+    {
+        name: 'ratepay_birth_date',
+        custom: false,
+        id: 'ratepay_birth_date',
+        label: 'payment.ratepay.birth_date',
+        required: false,
+        fieldType: DynamicFormFieldType.DATE,
+    },
+    {
+        name: 'ratepay_phone_country_code',
+        custom: false,
+        id: 'ratepay_phone_country_code',
+        label: 'payment.ratepay.phone_country_code',
+        required: true,
+        fieldType: DynamicFormFieldType.TEXT,
+        type: 'string',
+        maxLength: 2,
+    },
+    {
+        name: 'ratepay_phone_number',
+        custom: false,
+        id: 'ratepay_phone_number',
+        label: 'payment.ratepay.phone_number',
+        required: false,
+        fieldType: DynamicFormFieldType.TEXT,
+        maxLength: 9,
+    }
+];
 
 const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
     method,
@@ -61,9 +59,6 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
                 methodId: method.id,
                 paypalcommerceratepay: {
                     container: '#checkout-payment-continue',
-                    birthDateContainer: birthDate.name,
-                    phoneCountryCodeContainer: phoneCountryCode.name,
-                    phoneNumberContainer: phoneNumber.name,
                     legalTextContainer: 'legal-text-container',
                     getFieldsValues: () => fieldsValues.current,
                     onRenderButton: () => {
@@ -114,18 +109,18 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
         [setFieldValue],
     );
 
-    const updateFieldValues = (fields: any) => { // TODO: FIX
-        fieldsValues.current = {...fieldsValues.current, ...fields};
+    const updateFieldValues = (field: { [key: string]: unknown }) => {
+        fieldsValues.current = {...fieldsValues.current, ...field};
     }
 
-    // const validationSchema = useMemo(() => {
-    //     return getPaypalCommerceRatePayValidationSchema({
-    //         formFieldData: {},
-    //         language,
-    //     })
-    // }, []);
+    const validationSchema = useMemo(() =>
+        getPaypalCommerceRatePayValidationSchema({
+            formFieldData,
+            language,
+        })
+    , [language, formFieldData]);
 
-    const validationSchema = {};
+    // const validationSchema = {};
 
     useEffect(() => {
         setSubmitted(false);
@@ -133,27 +128,17 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
     }, [validationSchema, method, setValidationSchema, setSubmitted]);
 
     return <div style={{marginBottom:'20px'}}>
-        <DynamicFormField
-             extraClass={`dynamic-form-field--${birthDate.id}`}
-             field={birthDate}
-             key={birthDate.id}
-             label={language.translate(birthDate.label)}
-             onChange={handleChange(birthDate.id)}
-    />
-        <DynamicFormField
-            extraClass={`dynamic-form-field--${phoneCountryCode.id}`}
-            field={phoneCountryCode}
-            key={phoneCountryCode.id}
-            label={language.translate(phoneCountryCode.label)}
-            onChange={handleChange(phoneCountryCode.id)}
-        />
-        <DynamicFormField
-            extraClass={`dynamic-form-field--${phoneNumber.id}`}
-            field={phoneNumber}
-            key={phoneNumber.id}
-            label={language.translate(phoneNumber.label)}
-            onChange={handleChange(phoneNumber.id)}
-        />
+        { formFieldData.map((field) => {
+              return  <DynamicFormField
+                    extraClass={`dynamic-form-field--${field.id}`}
+                    field={field}
+                    key={field.id}
+                    label={language.translate(field.label)}
+                    onChange={handleChange(field.id)}
+                />
+            }
+        )
+    }
     </div>
 };
 

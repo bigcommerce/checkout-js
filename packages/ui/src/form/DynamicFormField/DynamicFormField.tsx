@@ -70,7 +70,6 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
     );
 
     const dynamicFormFieldType = useMemo((): DynamicFormFieldType => {
-        console.log('NAME', name, includes(name, 'phone'));
         if (fieldType === 'text') {
             if (type === 'integer') {
                 return DynamicFormFieldType.NUMBER;
