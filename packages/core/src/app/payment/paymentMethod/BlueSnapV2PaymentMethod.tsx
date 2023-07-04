@@ -73,7 +73,7 @@ const BlueSnapV2PaymentMethod: FunctionComponent<BlueSnapV2PaymentMethodProps> =
         <>
             <HostedPaymentMethod {...rest} initializePayment={initializeBlueSnapV2Payment} />
             <Modal
-                additionalModalClassName="modal--bluesnapv2"
+                additionalModalClassName="modal--bluesnap"
                 isOpen={!!paymentPageContent}
                 onAfterOpen={appendPaymentPageContent}
                 onRequestClose={cancelBlueSnapV2ModalFlow}
