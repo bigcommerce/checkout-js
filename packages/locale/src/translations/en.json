@@ -330,6 +330,8 @@
             "account_instrument_save_as_default_payment_method_label": "Use this account as the default payment method for future transactions",
             "account_instrument_text": "Stored accounts",
             "account_instrument_new_shipping_address": "<strong>We noticed this is a new shipping address.</strong><p>For security reasons, you will need to re-link your PayPal account when shipping to an address for the first time or if the shipping address was edited recently.</p>",
+            "bank_account_instrument_trusted_shipping_address_text": "This additional security step is applied to your account when shipping to an address for the first time or if the shipping address was edited recently.",
+            "bank_account_instrument_trusted_shipping_address_title_text": "Please re-enter your account data to authorize this transaction.",
             "instrument_trusted_shipping_address_text": "This additional security step is applied to your card when shipping to an address for the first time or if the shipping address was edited recently.",
             "instrument_trusted_shipping_address_title_text": "Please re-enter your card number to authorize this transaction.",
             "quadpay_continue_action": "Continue with Zip",

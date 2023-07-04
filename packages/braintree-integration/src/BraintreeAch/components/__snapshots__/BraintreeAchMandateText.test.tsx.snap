@@ -1,0 +1,322 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BraintreeAchMandateText renders mandate text checkbox with business data label text 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="mandate-text"
+        data-test="mandate-text"
+      >
+        <div
+          class="form-field"
+        >
+          <input
+            class="form-checkbox optimizedCheckout-form-checkbox"
+            id="orderConsent"
+            name="orderConsent"
+            type="checkbox"
+            value=""
+          />
+          <label
+            class="form-label optimizedCheckout-form-label"
+            for="orderConsent"
+          >
+            By clicking Place Order, I authorize Braintree, a service of PayPal, on behalf of s1504098821 to verify my bank account information using bank information and consumer reports and I authorize s1504098821 to initiate an ACH/electronic debit to my savings account, Depository Name: BigcommerceStore, Routing Number: 010000015 and Account Number: 100000000, in the amount of $190 on 01.01.2023. I agree the ACH transactions I authorize comply with all applicable laws.
+          </label>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="mandate-text"
+      data-test="mandate-text"
+    >
+      <div
+        class="form-field"
+      >
+        <input
+          class="form-checkbox optimizedCheckout-form-checkbox"
+          id="orderConsent"
+          name="orderConsent"
+          type="checkbox"
+          value=""
+        />
+        <label
+          class="form-label optimizedCheckout-form-label"
+          for="orderConsent"
+        >
+          By clicking Place Order, I authorize Braintree, a service of PayPal, on behalf of s1504098821 to verify my bank account information using bank information and consumer reports and I authorize s1504098821 to initiate an ACH/electronic debit to my savings account, Depository Name: BigcommerceStore, Routing Number: 010000015 and Account Number: 100000000, in the amount of $190 on 01.01.2023. I agree the ACH transactions I authorize comply with all applicable laws.
+        </label>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`BraintreeAchMandateText renders mandate text checkbox with personal data label text 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="mandate-text"
+        data-test="mandate-text"
+      >
+        <div
+          class="form-field"
+        >
+          <input
+            class="form-checkbox optimizedCheckout-form-checkbox"
+            id="orderConsent"
+            name="orderConsent"
+            type="checkbox"
+            value=""
+          />
+          <label
+            class="form-label optimizedCheckout-form-label"
+            for="orderConsent"
+          >
+            By clicking Place Order, I authorize Braintree, a service of PayPal, on behalf of s1504098821 to verify my bank account information using bank information and consumer reports and I authorize s1504098821 to initiate an ACH/electronic debit to my savings account, Depository Name: Name Surname, Routing Number: 010000015 and Account Number: 100000000, in the amount of $190 on 01.01.2023. I agree the ACH transactions I authorize comply with all applicable laws.
+          </label>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="mandate-text"
+      data-test="mandate-text"
+    >
+      <div
+        class="form-field"
+      >
+        <input
+          class="form-checkbox optimizedCheckout-form-checkbox"
+          id="orderConsent"
+          name="orderConsent"
+          type="checkbox"
+          value=""
+        />
+        <label
+          class="form-label optimizedCheckout-form-label"
+          for="orderConsent"
+        >
+          By clicking Place Order, I authorize Braintree, a service of PayPal, on behalf of s1504098821 to verify my bank account information using bank information and consumer reports and I authorize s1504098821 to initiate an ACH/electronic debit to my savings account, Depository Name: Name Surname, Routing Number: 010000015 and Account Number: 100000000, in the amount of $190 on 01.01.2023. I agree the ACH transactions I authorize comply with all applicable laws.
+        </label>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`BraintreeAchMandateText renders mandate text checkbox with text for vaulting 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="mandate-text"
+        data-test="mandate-text"
+      >
+        <div
+          class="form-field"
+        >
+          <input
+            class="form-checkbox optimizedCheckout-form-checkbox"
+            id="orderConsent"
+            name="orderConsent"
+            type="checkbox"
+            value=""
+          />
+          <label
+            class="form-label optimizedCheckout-form-label"
+            for="orderConsent"
+          >
+            By clicking Place Order, I authorize Braintree, a service of PayPal, on behalf of s1504098821 to verify my bank account information using bank information and consumer reports and I authorize s1504098821 to initiate an ACH/electronic debit to my savings account, Depository Name: Name Surname, Routing Number: 010000015 and Account Number: 100000000, in the amount of $190 on 01.01.2023. I agree the ACH transactions I authorize comply with all applicable laws.
+          </label>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="mandate-text"
+      data-test="mandate-text"
+    >
+      <div
+        class="form-field"
+      >
+        <input
+          class="form-checkbox optimizedCheckout-form-checkbox"
+          id="orderConsent"
+          name="orderConsent"
+          type="checkbox"
+          value=""
+        />
+        <label
+          class="form-label optimizedCheckout-form-label"
+          for="orderConsent"
+        >
+          By clicking Place Order, I authorize Braintree, a service of PayPal, on behalf of s1504098821 to verify my bank account information using bank information and consumer reports and I authorize s1504098821 to initiate an ACH/electronic debit to my savings account, Depository Name: Name Surname, Routing Number: 010000015 and Account Number: 100000000, in the amount of $190 on 01.01.2023. I agree the ACH transactions I authorize comply with all applicable laws.
+        </label>
+      </div>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
