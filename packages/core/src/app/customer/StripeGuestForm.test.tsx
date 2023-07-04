@@ -1,8 +1,7 @@
-import { mount, render } from 'enzyme';
+import { fireEvent, render, screen } from '@testing-library/react';
 import React, { FunctionComponent } from 'react';
 
 import CheckoutStepType from '../checkout/CheckoutStepType';
-import { PrivacyPolicyField } from '../privacyPolicy';
 
 import StripeGuestForm, { StripeGuestFormProps } from './StripeGuestForm';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
@@ -28,11 +27,13 @@ describe('StripeGuestForm', () => {
             initialize: jest.fn(),
             onShowLogin: jest.fn(),
             requiresMarketingConsent: false,
-            step: { isActive: true,
+            step: { 
+                isActive: true,
                 isComplete: false,
                 isEditable: false,
                 isRequired: true,
-                type: CheckoutStepType.Customer },
+                type: CheckoutStepType.Customer
+            },
         };
 
         jest.mock('../common/dom', () => ({
@@ -48,51 +49,50 @@ describe('StripeGuestForm', () => {
         TestComponent = props => (
             <LocaleContext.Provider value={localeContext}>
                 <StripeGuestForm
-                    { ...defaultProps }
-                    { ...props }
+                    {...defaultProps}
+                    {...props}
                 />
             </LocaleContext.Provider>
         );
     });
 
     it('matches snapshot', () => {
-        const component = render(<TestComponent />);
+        const view = render(<TestComponent />);
 
-        expect(component).toMatchSnapshot();
+        expect(view).toMatchSnapshot();
     });
 
     it('disables "continue as guest" button when isLoading is true', () => {
-        const component = mount(
+        render(
             <TestComponent
-                isLoading={ true }
-                onContinueAsGuest={ jest.fn() }
+                isLoading={true}
+                onContinueAsGuest={jest.fn()}
             />
         );
-        const button = component.find('[data-test="stripe-customer-continue-as-guest-button"]');
+        const button = screen.getByTestId('stripe-customer-continue-as-guest-button');
 
-        expect(button.prop('disabled')).toBeTruthy();
+        expect(button).toBeDisabled();
     });
 
     it('executes a function when the button is clicked', async () => {
         const handleContinueAsGuest = jest.fn();
 
-        const component = mount(<TestComponent onContinueAsGuest={handleContinueAsGuest} privacyPolicyUrl="www.test.com"/> );
+        render(<TestComponent onContinueAsGuest={handleContinueAsGuest} privacyPolicyUrl="foo"/>);
 
-        component
-            .find('input[name="privacyPolicy"]')
-            .simulate('change', { target: { value: true, name: 'privacyPolicy' } });
-       
-        component
-            .find('input[name="shouldSubscribe"]')
-            .simulate('change', { target: { value: true, name: 'shouldSubscribe' } });
+        const privacyCheckbox = screen.getByTestId('privacy-policy-checkbox');
+        fireEvent.click(privacyCheckbox);
 
-        component.find('form').simulate('submit');
+        const subscribeCheckbox = screen.getByTestId('should-subscribe-checkbox');
+        fireEvent.click(subscribeCheckbox);
+
+        const button = screen.getByTestId('stripe-customer-continue-as-guest-button');
+        fireEvent.submit(button);
 
         await new Promise((resolve) => process.nextTick(resolve));
-        
+
         expect(handleContinueAsGuest).toHaveBeenCalledWith({
-            "email": "", 
-            "privacyPolicy": true, 
+            "email": "",
+            "privacyPolicy": true,
             "shouldSubscribe": true
         });
     });
@@ -103,114 +103,104 @@ describe('StripeGuestForm', () => {
             options.stripeupe.isLoading(true);
             options.stripeupe?.getStyles();
         })
-        mount(<TestComponent { ...defaultProps } />);
+        render(<TestComponent {...defaultProps} />);
 
         expect(defaultProps.initialize).toHaveBeenCalled();
     });
 
     it('deinitializes stripeGuestForm when component mounts', () => {
-        const component = mount(<TestComponent { ...defaultProps } />);
+        const view = render(<TestComponent {...defaultProps} />);
 
-        component.unmount();
+        view.unmount();
 
         expect(defaultProps.deinitialize).toHaveBeenCalled();
     });
 
     it('renders form with initial values', () => {
-        const component = mount(
+        render(
             <TestComponent
-                defaultShouldSubscribe={ true }
+                defaultShouldSubscribe={true}
                 email="test@bigcommerce.com"
             />
         );
 
-        expect(component.find('input[name="shouldSubscribe"]').prop('value'))
-            .toBe(true);
+        expect(screen.getByTestId('should-subscribe-checkbox')).toBeChecked();
     });
 
     it('notifies when user clicks on "sign in" button', () => {
         const handleShowLogin = jest.fn();
-        const component = mount(
+        render(
             <TestComponent
-                onShowLogin={ handleShowLogin }
+                onShowLogin={handleShowLogin}
             />
         );
 
-        component.find('[data-test="customer-continue-button"]')
-            .simulate('click');
+        const customerContinueButton = screen.getByTestId('customer-continue-button');
+        fireEvent.click(customerContinueButton);
 
-        expect(handleShowLogin)
-            .toHaveBeenCalled();
+        expect(handleShowLogin).toHaveBeenCalled();
     });
 
     it('renders newsletter field if store allows newsletter subscription', () => {
-        const component = mount(
+        render(
             <TestComponent
-                canSubscribe={ true }
+                canSubscribe={true}
             />
         );
 
-        expect(component.exists('input[name="shouldSubscribe"]'))
-            .toBe(true);
+        expect(screen.getByTestId('should-subscribe-checkbox')).toBeInTheDocument();
     });
 
     it('renders marketing consent field', () => {
-        const component = mount(
+        render(
             <TestComponent
-                canSubscribe={ true }
-                requiresMarketingConsent={ true }
+                canSubscribe={true}
+                requiresMarketingConsent={true}
             />
         );
 
-        expect(component.exists('input[name="shouldSubscribe"]'))
-            .toBe(true);
+        expect(screen.getByTestId('should-subscribe-checkbox')).toBeInTheDocument();
     });
 
-    it('sets newsletter field with default value', () => {
-        const Container = ({ defaultShouldSubscribe }: { defaultShouldSubscribe: boolean }) => (
-            <TestComponent
-                canSubscribe={ true }
-                defaultShouldSubscribe={ defaultShouldSubscribe }
-            />
-        );
+    it('sets newsletter field with default value false', () => {
+        render(<TestComponent canSubscribe={true} defaultShouldSubscribe={false} />);
+        const shouldSubscribeCheckbox = screen.getByTestId('should-subscribe-checkbox');
+        expect((shouldSubscribeCheckbox as HTMLOptionElement).value).toBe('false');
+    });
 
-        const componentA = mount(<Container defaultShouldSubscribe={ true } />);
-        const componentB = mount(<Container defaultShouldSubscribe={ false } />);
-
-        expect(componentA.find('input[name="shouldSubscribe"]').prop('value'))
-            .toBe(true);
-
-        expect(componentB.find('input[name="shouldSubscribe"]').prop('value'))
-            .toBe(false);
+    it('sets newsletter field with default value true', () => {
+        render(<TestComponent canSubscribe={true} defaultShouldSubscribe={true} />);
+        const shouldSubscribeCheckbox = screen.getByTestId('should-subscribe-checkbox');
+        expect((shouldSubscribeCheckbox as HTMLOptionElement).value).toBe('true');
     });
 
     it('renders privacy policy field', () => {
-        const component = mount(
+        render(
             <TestComponent
                 privacyPolicyUrl="foo"
             />
         );
 
-        expect(component.find(PrivacyPolicyField)).toHaveLength(1);
+        expect(screen.getByTestId('privacy-policy-checkbox')).toBeInTheDocument();
     });
 
     it('does not render "sign in" button when loading', () => {
-        const component = mount(
+        render(
             <TestComponent
-                isLoading={ true }
+                isLoading={true}
             />
         );
 
-        expect(component.find('[data-test="customer-continue-button"]')).toHaveLength(0);
+        expect(screen.queryByTestId('customer-continue-button')).not.toBeInTheDocument();
     });
 
     it('shows different action button label if another label id was provided', () => {
-        const component = mount(
+        render(
             <TestComponent
                 continueAsGuestButtonLabelId="customer.continue"
             />
         );
 
-        expect(component.find('[data-test="customer-continue-button"]').text()).not.toBe('Continue as guest');
+        expect(screen.getByTestId('customer-continue-button')).not.toHaveTextContent('Continue as guest');
     });
 });

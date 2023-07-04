@@ -13,7 +13,7 @@ export interface CheckboxInputProps extends InputProps {
 
 const CheckboxInput = forwardRef(
     (
-        { additionalClassName, label, id, ...rest }: CheckboxInputProps,
+        { additionalClassName, label, id, testId, ...rest }: CheckboxInputProps,
         ref: Ref<HTMLInputElement>,
     ) => (
         <>
@@ -27,6 +27,7 @@ const CheckboxInput = forwardRef(
                 id={id}
                 ref={ref}
                 type="checkbox"
+                testId={testId}
             />
             <Label htmlFor={id}>{label}</Label>
         </>

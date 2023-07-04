@@ -49,6 +49,7 @@ exports[`GuestForm matches snapshot 1`] = `
             >
               <input
                 class="form-checkbox"
+                data-test="should-subscribe-checkbox"
                 id="shouldSubscribe"
                 name="shouldSubscribe"
                 type="checkbox"
