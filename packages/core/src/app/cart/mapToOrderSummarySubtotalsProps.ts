@@ -13,6 +13,7 @@ export default function mapToOrderSummarySubtotalsProps({
     giftWrappingCostTotal,
     coupons,
     taxes,
+    fees,
 }: Checkout): OrderSummarySubtotalsProps {
     return {
         subtotalAmount: subtotal,
@@ -25,6 +26,7 @@ export default function mapToOrderSummarySubtotalsProps({
         handlingAmount: handlingCostTotal,
         coupons,
         taxes,
+        fees,
         isTaxIncluded,
     };
 }
