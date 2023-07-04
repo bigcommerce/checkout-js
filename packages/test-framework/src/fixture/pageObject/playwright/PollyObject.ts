@@ -77,6 +77,10 @@ export class PollyObject {
                 Object.entries(req.headers).filter(([key, _]) => !includes(ignoredHeaders, key)),
             );
 
+            req.url = req.url
+                .replace('%2ClineItems.physicalItems.categories', '')
+                .replace('%2ClineItems.digitalItems.categories', '');
+
             if (req.body && req.body.length > 0) {
                 req.body = JSON.stringify(this.sortPayload(req.jsonBody()));
             }
