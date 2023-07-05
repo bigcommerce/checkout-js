@@ -1,4 +1,4 @@
-import { Coupon, GiftCertificate, Tax } from '@bigcommerce/checkout-sdk';
+import { Coupon, Fee, GiftCertificate, Tax } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -12,6 +12,7 @@ export interface OrderSummarySubtotalsProps {
     discountAmount?: number;
     isTaxIncluded?: boolean;
     taxes?: Tax[];
+    fees?: Fee[];
     giftWrappingAmount?: number;
     isUpdatedCartSummayModal?: boolean,
     shippingAmount?: number;
@@ -27,6 +28,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
     isTaxIncluded,
     giftCertificates,
     taxes,
+    fees,
     giftWrappingAmount,
     shippingAmount,
     subtotalAmount,
@@ -98,6 +100,15 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                     testId="cart-handling"
                 />
             )}
+
+            {fees?.map((fee, index) => (
+                <OrderSummaryPrice
+                    amount={fee.cost}
+                    key={index}
+                    label={fee.displayName}
+                    testId="cart-fees"
+                />
+            ))}
 
             {!isTaxIncluded && (taxes || []).map((tax, index) => (
                 <OrderSummaryPrice

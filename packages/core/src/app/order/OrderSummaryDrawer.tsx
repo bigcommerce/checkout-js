@@ -49,6 +49,7 @@ const OrderSummaryDrawer: FunctionComponent<
     subtotalAmount,
     taxes,
     total,
+    fees,
 }) => {
     const renderModal = useCallback(
         (props) => (
@@ -57,6 +58,7 @@ const OrderSummaryDrawer: FunctionComponent<
                 additionalLineItems={additionalLineItems}
                 coupons={coupons}
                 discountAmount={discountAmount}
+                fees={fees}
                 giftCertificates={giftCertificates}
                 giftWrappingAmount={giftWrappingAmount}
                 handlingAmount={handlingAmount}
@@ -94,6 +96,7 @@ const OrderSummaryDrawer: FunctionComponent<
             subtotalAmount,
             taxes,
             total,
+            fees,
         ],
     );
 
