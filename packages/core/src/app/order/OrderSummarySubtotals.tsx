@@ -101,7 +101,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                 />
             )}
 
-            {(fees || []).map((fee, index) => (
+            {fees?.map((fee, index) => (
                 <OrderSummaryPrice
                     amount={fee.cost}
                     key={index}
