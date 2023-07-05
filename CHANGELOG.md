@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.338.0](https://github.com/bigcommerce/checkout-js/compare/v1.337.0...v1.338.0) (2023-07-05)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7534 Display fees ([b833346](https://github.com/bigcommerce/checkout-js/commit/b833346167aa8b8ac28358d06b061275cb831845))
+* **checkout:** CHECKOUT-7534 update test ([00a17f2](https://github.com/bigcommerce/checkout-js/commit/00a17f2efd9f0f03c664bcb5e457ceb829d502fe))
+
 ## [1.337.0](https://github.com/bigcommerce/checkout-js/compare/v1.336.0...v1.337.0) (2023-07-05)
 
 
