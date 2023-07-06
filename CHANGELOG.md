@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.338.1](https://github.com/bigcommerce/checkout-js/compare/v1.338.0...v1.338.1) (2023-07-06)
+
+
+### Bug Fixes
+
+* **checkout:** PI-00 fix pending promise for bluesnapdirect APMs iframe ([274cde8](https://github.com/bigcommerce/checkout-js/commit/274cde8f989d364e95b1848165e2983c76766b39))
+
 ## [1.338.0](https://github.com/bigcommerce/checkout-js/compare/v1.337.0...v1.338.0) (2023-07-05)
 
 
