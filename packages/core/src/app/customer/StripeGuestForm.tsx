@@ -44,6 +44,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
     requiresMarketingConsent,
     privacyPolicyUrl,
     step,
+    status
 }) => {
 
     const [continueAsAGuestButton, setContinueAsAGuestButton] = useState(true);
@@ -54,7 +55,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
     const handleOnClickSubmitButton = () => {
         onContinueAsGuest({
             email: emailValue,
-            shouldSubscribe: false,
+            shouldSubscribe: !!status?.shouldSubscribe,
         });
     };
     const setEmailCallback = useCallback((authenticated: boolean, email: string) => {
@@ -73,6 +74,12 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
             handleOnClickSubmitButton();
         }
     }, [emailValue, authentication, isNewAuth]);
+
+    useEffect(() => {
+        if (status?.valSuccess) {
+            handleOnClickSubmitButton();
+        }
+    }, [status?.valSuccess]);
 
     const handleLoading = useCallback((mounted: boolean) => {
         setIsStripeLoading(mounted);
@@ -245,8 +252,11 @@ export default withLanguage(
                 shouldSubscribe: requiresMarketingConsent ? false : defaultShouldSubscribe,
                 privacyPolicy: false,
             }),
-            handleSubmit: (values, { props: { onContinueAsGuest } }) => {
-                onContinueAsGuest(values);
+            handleSubmit: ( values, { setStatus }) => {
+                setStatus({
+                    valSuccess: true,
+                    shouldSubscribe: values.shouldSubscribe,
+                  });
             },
             validationSchema: ({ language, privacyPolicyUrl }: StripeGuestFormProps & WithLanguageProps) => {
                 if (privacyPolicyUrl) {

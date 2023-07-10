@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React, { FunctionComponent } from 'react';
 
 import CheckoutStepType from '../checkout/CheckoutStepType';
@@ -90,11 +90,12 @@ describe('StripeGuestForm', () => {
 
         await new Promise((resolve) => process.nextTick(resolve));
 
-        expect(handleContinueAsGuest).toHaveBeenCalledWith({
-            "email": "",
-            "privacyPolicy": true,
-            "shouldSubscribe": true
-        });
+        await waitFor(() => {
+            expect(handleContinueAsGuest).toHaveBeenCalledWith({
+                "email": "",
+                "shouldSubscribe": true
+            });
+        })
     });
 
     it('initializes stripeGuestForm when component mounts', () => {
