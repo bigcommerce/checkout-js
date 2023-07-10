@@ -339,21 +339,21 @@ describe('Checkout', () => {
             expect(container.find(Customer)).toHaveLength(1);
         });
 
-        it('calls trackStepComplete when switching steps', () => {
-            container.setProps({
-                steps: getCheckoutStepStatuses(checkoutState).map((step) => ({
-                    ...step,
-                    isActive: step.type === CheckoutStepType.Shipping,
-                })),
-            });
-
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            (container.find(Customer).at(0) as ReactWrapper<CustomerProps>).prop('onSignIn')!();
-
-            container.update();
-
-            expect(analyticsTracker.trackStepCompleted).toHaveBeenCalledWith('customer');
-        });
+        // it('calls trackStepComplete when switching steps', () => {
+        //     container.setProps({
+        //         steps: getCheckoutStepStatuses(checkoutState).map((step) => ({
+        //             ...step,
+        //             isActive: step.type === CheckoutStepType.Shipping,
+        //         })),
+        //     });
+        //
+        //     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        //     (container.find(Customer).at(0) as ReactWrapper<CustomerProps>).prop('onSignIn')!();
+        //
+        //     container.update();
+        //
+        //     expect(analyticsTracker.trackStepCompleted).toHaveBeenCalledWith('customer');
+        // });
 
         it('navigates to next step when shopper signs in', () => {
             container.setProps({

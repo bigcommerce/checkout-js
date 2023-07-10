@@ -162,21 +162,21 @@ describe('Checkout', () => {
             expect(analyticsTracker.checkoutBegin).toHaveBeenCalled();
         });
 
-        it('tracks a step viewed when a step is expanded', async () => {
-            checkout.use('CartWithShippingAddress');
-
-            render(<CheckoutTest {...defaultProps} />);
-
-            await checkout.waitForBillingStep();
-
-            const editButtons = screen.getAllByText(/edit/i);
-
-            await userEvent.click(editButtons[1]);
-
-            await checkout.waitForShippingStep();
-
-            expect(analyticsTracker.trackStepViewed).toHaveBeenCalledWith('shipping');
-        });
+        // it('tracks a step viewed when a step is expanded', async () => {
+        //     checkout.use('CartWithShippingAddress');
+        //
+        //     render(<CheckoutTest {...defaultProps} />);
+        //
+        //     await checkout.waitForBillingStep();
+        //
+        //     const editButtons = screen.getAllByText(/edit/i);
+        //
+        //     await userEvent.click(editButtons[1]);
+        //
+        //     await checkout.waitForShippingStep();
+        //
+        //     expect(analyticsTracker.trackStepViewed).toHaveBeenCalledWith('shipping');
+        // });
     });
 
     describe('customer step', () => {

@@ -5,23 +5,23 @@ import {
     PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { DynamicFormField, DynamicFormFieldType } from "@bigcommerce/checkout/ui";
+import { DynamicFormField, DynamicFormFieldType, FormContext } from "@bigcommerce/checkout/ui";
 import { FormField } from '../../../../CHECKOUT_SDK_JS/checkout-sdk-js';
 import getPaypalCommerceRatePayValidationSchema from './validation-schemas/getPaypalCommerceRatePayValidationSchema';
 
 const formFieldData: FormField[] = [
     {
-        name: 'ratepay_birth_date',
+        name: 'ratepayBirthDate',
         custom: false,
-        id: 'ratepay_birth_date',
+        id: 'ratepayBirthDate',
         label: 'payment.ratepay.birth_date',
-        required: false,
+        required: true,
         fieldType: DynamicFormFieldType.DATE,
     },
     {
-        name: 'ratepay_phone_country_code',
+        name: 'ratepayPhoneCountryCode',
         custom: false,
-        id: 'ratepay_phone_country_code',
+        id: 'ratepayPhoneCountryCode',
         label: 'payment.ratepay.phone_country_code',
         required: true,
         fieldType: DynamicFormFieldType.TEXT,
@@ -29,13 +29,14 @@ const formFieldData: FormField[] = [
         maxLength: 2,
     },
     {
-        name: 'ratepay_phone_number',
+        name: 'ratepayPhoneNumber',
         custom: false,
-        id: 'ratepay_phone_number',
+        id: 'ratepayPhoneNumber',
         label: 'payment.ratepay.phone_number',
-        required: false,
+        required: true,
         fieldType: DynamicFormFieldType.TEXT,
-        maxLength: 9,
+        maxLength: 11,
+        min: 8,
     }
 ];
 
@@ -45,6 +46,7 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
     paymentForm,
     onUnhandledError,
     paymentForm: {
+        isSubmitted,
         setFieldValue,
         setValidationSchema,
         setSubmitted,
@@ -120,14 +122,15 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
         })
     , [language, formFieldData]);
 
-    // const validationSchema = {};
-
     useEffect(() => {
+        console.log('AAAA');
+        console.log('cxcx');
         setSubmitted(false);
         setValidationSchema(method, validationSchema);
     }, [validationSchema, method, setValidationSchema, setSubmitted]);
 
     return <div style={{marginBottom:'20px'}}>
+        <FormContext.Provider value={{ isSubmitted: isSubmitted(), setSubmitted }}>
         { formFieldData.map((field) => {
               return  <DynamicFormField
                     extraClass={`dynamic-form-field--${field.id}`}
@@ -139,6 +142,7 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
             }
         )
     }
+        </FormContext.Provider>
     </div>
 };
 

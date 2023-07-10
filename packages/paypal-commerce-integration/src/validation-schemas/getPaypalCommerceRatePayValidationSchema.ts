@@ -1,6 +1,6 @@
 import { FormField, LanguageService } from '@bigcommerce/checkout-sdk';
 import { memoize } from '@bigcommerce/memoize';
-import {object, string, StringSchema} from 'yup';
+import { object, string, StringSchema } from 'yup';
 
 export default memoize(function getPaypalCommerceRatePayValidationSchema({
     formFieldData,
@@ -10,7 +10,9 @@ export default memoize(function getPaypalCommerceRatePayValidationSchema({
     language: LanguageService;
 }) {
     const requiredFieldErrorTranslationIds: { [fieldName: string]: string } = {
-        ['ratepay_phone_country_code']: 'payment.ratepay.phone_country_code',
+        ratepayPhoneCountryCode: 'payment.ratepay.phone_country_code',
+        ratepayPhoneNumber: 'payment.ratepay.phone_number',
+        ratepayBirthDate: 'payment.ratepay.birth_date',
     };
 
     return object(
@@ -18,16 +20,25 @@ export default memoize(function getPaypalCommerceRatePayValidationSchema({
             if (required) {
                 if (requiredFieldErrorTranslationIds[id]) {
                     schema[id] = string().required(
-                        language.translate(
-                            `${requiredFieldErrorTranslationIds[id]}_required_error`,
-                        ),
+                        language.translate(`payment.ratepay.errors.isRequired`, {
+                            fieldName: language.translate(requiredFieldErrorTranslationIds[id]),
+                        }),
                     );
 
-                    if (id === 'ratepay_phone_country_code') {
+                    if (id === 'ratepayPhoneCountryCode') {
                         schema[id] = schema[id].matches(
-                            /^\d{2}$/,
+                            /^[0-9]{1,3}?$/,
                             language.translate('payment.ratepay.errors.isInvalid', {
-                                label: language.translate('payment.ratepay.phone_country_code'),
+                                fieldName: language.translate('payment.ratepay.phone_country_code'),
+                            }),
+                        );
+                    }
+
+                    if (id === 'ratepayPhoneNumber') {
+                        schema[id] = schema[id].matches(
+                            /^\d{8,11}$/,
+                            language.translate('payment.ratepay.errors.isInvalid', {
+                                fieldName: language.translate('payment.ratepay.phone_number'),
                             }),
                         );
                     }
@@ -35,6 +46,7 @@ export default memoize(function getPaypalCommerceRatePayValidationSchema({
             }
 
             return schema;
-        }, {} as { [key: string]: StringSchema })
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        }, {} as { [key: string]: StringSchema }),
     );
 });

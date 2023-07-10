@@ -434,8 +434,8 @@
                 "phone_number": "Phone number",
                 "birth_date": "Birth date",
                 "errors": {
-                    "isRequired": "{field} is required",
-                    "isInvalid": "{field} is invalid"
+                    "isRequired": "{fieldName} is required",
+                    "isInvalid": "{fieldName} is invalid"
                 }
             }
         },
