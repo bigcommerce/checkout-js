@@ -6,11 +6,12 @@ import React, { FunctionComponent, KeyboardEvent, memo, useCallback } from 'reac
 import { object, string } from 'yup';
 
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { FormContextType, FormProvider } from '@bigcommerce/checkout/ui';
 
 import { preventDefault } from '../common/dom';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
-import { FormContextType, FormField, FormProvider, Label, TextInput } from '../ui/form';
+import { FormField, Label, TextInput } from '../ui/form';
 import { Toggle } from '../ui/toggle';
 
 import AppliedRedeemables, { AppliedRedeemablesProps } from './AppliedRedeemables';

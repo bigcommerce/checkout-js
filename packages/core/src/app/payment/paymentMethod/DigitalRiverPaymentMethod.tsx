@@ -4,10 +4,10 @@ import { Omit } from 'utility-types';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { FormContext } from '@bigcommerce/checkout/ui';
 
 import { CustomError } from '../../common/error';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
-import { FormContext } from '../../ui/form';
 
 import HostedDropInPaymentMethod from './HostedDropInPaymentMethod';
 import { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';

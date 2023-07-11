@@ -9,7 +9,7 @@ export { Legend } from './Legend';
 export { TextArea } from './TextArea';
 export { TextInput } from './TextInput';
 export { TextInputIframeContainer } from './TextInputIframeContainer';
-export { FormContext, FormContextType } from './contexts';
+export { FormContext, FormContextType, FormProvider } from './contexts';
 export {
     AddressFormSkeleton,
     ChecklistSkeleton,
