@@ -1,7 +1,7 @@
 import { ErrorMessage } from 'formik';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 
-import { FormContext } from './FormProvider';
+import { FormContext } from '@bigcommerce/checkout/ui';
 
 export interface FormFieldErrorProps {
     name: string;

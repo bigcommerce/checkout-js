@@ -14,6 +14,7 @@ export {
     Fieldset,
     FormField,
     FormContext,
+    FormProvider,
     FormFieldContainer,
     FormContextType,
     Label,

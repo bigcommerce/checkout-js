@@ -15,6 +15,7 @@ import React, { PureComponent, ReactNode } from 'react';
 import { lazy, object } from 'yup';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { FormContext } from '@bigcommerce/checkout/ui';
 
 import {
     AddressFormValues,
@@ -24,7 +25,7 @@ import {
 } from '../../address';
 import CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
 import { getCustomFormFieldsValidationSchema } from '../../formFields';
-import { Fieldset, Form, FormContext } from '../../ui/form';
+import { Fieldset, Form } from '../../ui/form';
 import BillingSameAsShippingField from '../BillingSameAsShippingField';
 import hasSelectedShippingOptions from '../hasSelectedShippingOptions';
 import ShippingFormFooter from '../ShippingFormFooter';

@@ -3,8 +3,9 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
+import { FormProvider } from '@bigcommerce/checkout/ui';
+
 import BasicFormField from './BasicFormField';
-import FormProvider from './FormProvider';
 
 describe('BasicFormField', () => {
     it('matches snapshot', () => {

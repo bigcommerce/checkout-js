@@ -15,11 +15,11 @@ import {
     CardInstrumentFieldsetValues,
     CheckoutProvider,
 } from '@bigcommerce/checkout/payment-integration-api';
+import { FormContext, FormContextType } from '@bigcommerce/checkout/ui';
 
 import { getCart } from '../../cart/carts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
-import { FormContext, FormContextType } from '../../ui/form';
 import { CreditCardInputStylesType, getCreditCardInputStyles } from '../creditCard';
 import { getPaymentMethod } from '../payment-methods.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';

@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { FunctionComponent, memo, ReactNode } from 'react';
 
-import { FormContext } from './FormProvider';
+import { FormContext } from '@bigcommerce/checkout/ui';
 
 export interface FormFieldContainerProps {
     additionalClassName?: string;

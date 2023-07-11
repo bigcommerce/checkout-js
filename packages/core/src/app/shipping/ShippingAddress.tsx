@@ -11,7 +11,7 @@ import {
 import { memoizeOne } from '@bigcommerce/memoize';
 import React, { FunctionComponent, memo, useCallback, useContext } from 'react';
 
-import { FormContext } from '../ui/form';
+import { FormContext } from '@bigcommerce/checkout/ui';
 
 import ShippingAddressForm from './ShippingAddressForm';
 import StaticAddressEditable from './StaticAddressEditable';
