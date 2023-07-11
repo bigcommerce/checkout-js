@@ -20,6 +20,7 @@ const SubscribeField: FunctionComponent<SubscribeFieldProps> = ({
             className="form-checkbox"
             id={field.name}
             type="checkbox"
+            testId="should-subscribe-checkbox"
         />
 
         <Label htmlFor={field.name}>
