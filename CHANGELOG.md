@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.341.0](https://github.com/bigcommerce/checkout-js/compare/v1.340.0...v1.341.0) (2023-07-13)
+
+
+### Features
+
+* **checkout:** PI-287 hide cvv validation field for specific providers ([56b1195](https://github.com/bigcommerce/checkout-js/commit/56b11950b847c231da3e61a9669af6dfc1f58517))
+
 ## [1.340.0](https://github.com/bigcommerce/checkout-js/compare/v1.339.1...v1.340.0) (2023-07-13)
 
 
