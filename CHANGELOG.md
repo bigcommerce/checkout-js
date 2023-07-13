@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.340.0](https://github.com/bigcommerce/checkout-js/compare/v1.339.1...v1.340.0) (2023-07-13)
+
+
+### Features
+
+* **payment:** PI-502 Fortis package ([1072199](https://github.com/bigcommerce/checkout-js/commit/107219907885ca18e1145b6219e18ae854aab12d))
+
 ### [1.339.1](https://github.com/bigcommerce/checkout-js/compare/v1.339.0...v1.339.1) (2023-07-13)
 
 ## [1.339.0](https://github.com/bigcommerce/checkout-js/compare/v1.338.2...v1.339.0) (2023-07-11)
