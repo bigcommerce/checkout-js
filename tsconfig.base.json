@@ -35,6 +35,7 @@
       "@bigcommerce/checkout/credit-card-integration": [
         "packages/credit-card-integration/src/index.ts"
       ],
+      "@bigcommerce/checkout/fortis-integration": ["packages/fortis-integration/src/index.ts"],
       "@bigcommerce/checkout/google-pay-integration": [
         "packages/google-pay-integration/src/index.ts"
       ],
