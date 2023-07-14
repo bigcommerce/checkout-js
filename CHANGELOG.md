@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.341.1](https://github.com/bigcommerce/checkout-js/compare/v1.341.0...v1.341.1) (2023-07-14)
+
+
+### Code Refactoring
+
+* **checkout:** PI-245 moved FormContext fully to the UI package ([dcf133b](https://github.com/bigcommerce/checkout-js/commit/dcf133bd8e3742d7b81acdec0f57abd610544fd2))
+
 ## [1.341.0](https://github.com/bigcommerce/checkout-js/compare/v1.340.0...v1.341.0) (2023-07-13)
 
 
