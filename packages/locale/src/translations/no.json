@@ -330,6 +330,8 @@
             "account_instrument_save_as_default_payment_method_label": "Bruk denne kontoen som standard betalingsmåte for fremtidige transaksjoner",
             "account_instrument_text": "Lagrede kontoer",
             "account_instrument_new_shipping_address": "<strong>Vi la merke til at dette er en ny leveringsadresse.</strong><p>Av sikkerhetsmessige årsaker må du koble til PayPal-kontoen din på nytt når du sender til en adresse for første gang eller hvis leveringsadressen nylig ble redigert.</p>",
+            "bank_account_instrument_trusted_shipping_address_text": "This additional security step is applied to your account when shipping to an address for the first time or if the shipping address was edited recently.",
+            "bank_account_instrument_trusted_shipping_address_title_text": "Please re-enter your account data to authorize this transaction.",
             "instrument_trusted_shipping_address_text": "Dette ekstra sikkerhetstrinnet brukes på kortet ditt når du sender til en adresse for første gang eller hvis leveringsadressen nylig ble redigert.",
             "instrument_trusted_shipping_address_title_text": "Skriv inn kortnummeret ditt på nytt for å godkjenne denne transaksjonen.",
             "quadpay_continue_action": "Fortsett med Zip",
