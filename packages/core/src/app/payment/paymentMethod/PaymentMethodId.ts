@@ -13,6 +13,7 @@ enum PaymentMethodId {
     Boleto = 'boleto',
     Bolt = 'bolt',
     Braintree = 'braintree',
+    BraintreeAcceleratedCheckout = 'braintreeacceleratedcheckout',
     BraintreeAch = 'braintreeach',
     BraintreeVenmo = 'braintreevenmo',
     AuthorizeNetGooglePay = 'googlepayauthorizenet',

@@ -12,8 +12,8 @@ import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-
 import { withCheckout } from '../../checkout';
 import { PaymentMethodId } from '../../payment/paymentMethod';
 
-
 import BoltCheckoutSuggestion from './BoltCheckoutSuggestion';
+import PayPalConnectSuggestion from './PayPalConnectSuggestion';
 
 export interface CheckoutSuggestionProps {
     onUnhandledError?(error: Error): void;
@@ -47,6 +47,13 @@ const CheckoutSuggestion: FunctionComponent<
     if (providerWithCustomCheckout === PaymentMethodId.Bolt) {
         return <BoltCheckoutSuggestion
                     executePaymentMethodCheckout={handleExecutePaymentMethodCheckout}
+                    methodId={providerWithCustomCheckout}
+                    {...rest}
+                />;
+    }
+
+    if (providerWithCustomCheckout === PaymentMethodId.BraintreeAcceleratedCheckout) {
+        return <PayPalConnectSuggestion
                     methodId={providerWithCustomCheckout}
                     {...rest}
                 />;
