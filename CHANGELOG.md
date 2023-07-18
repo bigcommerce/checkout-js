@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.341.4-prerelease.1689664794601](https://github.com/bigcommerce/checkout-js/compare/v1.338.2...v1.341.4-prerelease.1689664794601) (2023-07-18)
+
+
+### Features
+
+* **checkout:** PI-287 hide cvv validation field for specific providers ([56b1195](https://github.com/bigcommerce/checkout-js/commit/56b11950b847c231da3e61a9669af6dfc1f58517))
+* **payment:** PI-175 [Stripe] Guest Customers able to checkout witho… ([#1350](https://github.com/bigcommerce/checkout-js/issues/1350)) ([8be3c3a](https://github.com/bigcommerce/checkout-js/commit/8be3c3ab665b07fdae833945aad23109f89220f9))
+* **payment:** PI-502 Fortis package ([1072199](https://github.com/bigcommerce/checkout-js/commit/107219907885ca18e1145b6219e18ae854aab12d))
+
+
+### Code Refactoring
+
+* **checkout:** PI-245 moved FormContext fully to the UI package ([dcf133b](https://github.com/bigcommerce/checkout-js/commit/dcf133bd8e3742d7b81acdec0f57abd610544fd2))
+
 ### [1.341.3](https://github.com/bigcommerce/checkout-js/compare/v1.341.2...v1.341.3) (2023-07-17)
 
 ### [1.341.2](https://github.com/bigcommerce/checkout-js/compare/v1.341.1...v1.341.2) (2023-07-17)
