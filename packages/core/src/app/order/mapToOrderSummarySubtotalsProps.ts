@@ -15,6 +15,7 @@ export default function mapToOrderSummarySubtotalsProps({
     giftWrappingCostTotal,
     coupons,
     taxes,
+    fees,
 }: Order): OrderSummarySubtotalsProps {
     return {
         subtotalAmount: baseAmount,
@@ -27,5 +28,6 @@ export default function mapToOrderSummarySubtotalsProps({
         giftCertificates: payments && mapFromPayments(payments),
         taxes,
         isTaxIncluded,
+        fees,
     };
 }
