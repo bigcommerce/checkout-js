@@ -119,6 +119,7 @@ exports[`OrderSummaryModal renders order summary 1`] = `
         ]
       }
       discountAmount={10}
+      fees={Array []}
       giftCertificates={
         Array [
           Object {
@@ -276,6 +277,7 @@ exports[`OrderSummaryModal when taxes are inclusive displays tax as summary sect
         ]
       }
       discountAmount={10}
+      fees={Array []}
       giftCertificates={
         Array [
           Object {
