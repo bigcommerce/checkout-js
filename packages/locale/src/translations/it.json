@@ -330,6 +330,8 @@
             "account_instrument_save_as_default_payment_method_label": "Usa questo conto come metodo di pagamento predefinito per le transazioni future",
             "account_instrument_text": "Conti memorizzati",
             "account_instrument_new_shipping_address": "<strong>Abbiamo notato che hai inserito un nuovo indirizzo di spedizione.</strong><p>Per motivi di sicurezza, quando effettui una spedizione a un nuovo indirizzo o se l'indirizzo di spedizione è stato modificato di recente, dovrai ricollegare il tuo account PayPal.</p>",
+            "bank_account_instrument_trusted_shipping_address_text": "Questo passaggio di sicurezza supplementare viene applicato al tuo account se spedisci a un nuovo indirizzo o se l'indirizzo di spedizione è stato modificato di recente.",
+            "bank_account_instrument_trusted_shipping_address_title_text": "Inserisci nuovamente i dati del tuo account per autorizzare questa transazione.",
             "instrument_trusted_shipping_address_text": "Questo passaggio di sicurezza aggiuntivo viene applicato se spedisci a un nuovo indirizzo o se l'indirizzo di spedizione è stato modificato di recente.",
             "instrument_trusted_shipping_address_title_text": "Inserisci nuovamente il numero di carta per autorizzare questa transazione.",
             "quadpay_continue_action": "Continua con Zip",

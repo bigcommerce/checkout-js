@@ -330,6 +330,8 @@
             "account_instrument_save_as_default_payment_method_label": "Gebruik dit account als de standaardbetaalmethode voor toekomstige transacties",
             "account_instrument_text": "Opgeslagen accounts",
             "account_instrument_new_shipping_address": "<strong>We hebben gemerkt dat dit een nieuw verzendadres is.</strong><p> Om veiligheidsredenen moet u uw PayPal-account opnieuw koppelen als u voor de eerste keer naar een adres verzendt of als het verzendadres onlangs gewijzigd is.</p>",
+            "bank_account_instrument_trusted_shipping_address_text": "Deze extra beveiligingsstap wordt op je account toegepast als je voor het eerst naar een adres verzendt of als het verzendadres onlangs is gewijzigd.",
+            "bank_account_instrument_trusted_shipping_address_title_text": "Voer je accountgegevens opnieuw in om deze transactie te autoriseren.",
             "instrument_trusted_shipping_address_text": "Deze extra beveiligingsstap wordt op uw kaart toegepast als u voor het eerst naar een adres verzendt of als het verzendadres onlangs gewijzigd is.",
             "instrument_trusted_shipping_address_title_text": "Voer uw kaartnummer opnieuw in om deze transactie te autoriseren.",
             "quadpay_continue_action": "Doorgaan met Zip",

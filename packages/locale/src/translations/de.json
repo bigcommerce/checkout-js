@@ -330,6 +330,8 @@
             "account_instrument_save_as_default_payment_method_label": "Dieses Konto als Standardzahlungsmethode für zukünftige Transaktionen verwenden",
             "account_instrument_text": "Gespeicherte Konten",
             "account_instrument_new_shipping_address": "<strong>Wir haben festgestellt, dass dies eine neue Versandadresse ist.</strong><p>Aus Sicherheitsgründen müssen Sie Ihr PayPal-Konto erneut verknüpfen, wenn der Versand zum ersten Mal an eine bestimmte Adresse erfolgt oder wenn die Versandadresse kürzlich bearbeitet wurde.</p>",
+            "bank_account_instrument_trusted_shipping_address_text": "Dieser zusätzliche Sicherheitsschritt wird auf Ihr Konto angewendet, wenn der Versand an eine bestimmte Adresse zum ersten Mal erfolgt oder wenn die Versandadresse kürzlich bearbeitet wurde.",
+            "bank_account_instrument_trusted_shipping_address_title_text": "Bitte geben Sie Ihre Kontodaten erneut ein, um diese Transaktion zu autorisieren.",
             "instrument_trusted_shipping_address_text": "Dieser zusätzliche Sicherheitsschritt wird auf Ihre Karte angewendet, wenn der Versand an eine bestimmte Adresse zum ersten Mal erfolgt oder wenn die Versandadresse kürzlich bearbeitet wurde.",
             "instrument_trusted_shipping_address_title_text": "Bitte geben Sie Ihre Kartennummer erneut ein, um diese Transaktion zu autorisieren.",
             "quadpay_continue_action": "Mit Zip fortfahren",
