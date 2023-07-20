@@ -1,5 +1,11 @@
+import { ExtensionRegion } from '@bigcommerce/checkout-sdk';
 import React, { PureComponent, ReactNode } from 'react';
 
+import {
+    ExtensionContextProps,
+    ExtensionRegionContainer,
+    withExtension,
+} from '@bigcommerce/checkout/checkout-extension';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { OrderComments } from '../orderComments';
@@ -18,7 +24,33 @@ export interface ShippingFormFooterProps {
     isLoading: boolean;
 }
 
-class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
+class ShippingFormFooter extends PureComponent<ShippingFormFooterProps & ExtensionContextProps> {
+    private _isRegionInUse = false;
+
+    componentWillUnmount(): void {
+        const { extensionService } = this.props;
+
+        if (this._isRegionInUse) {
+            extensionService.removeListeners(ExtensionRegion.ShippingShippingAddressFormAfter);
+        }
+    }
+
+    async componentDidMount(): Promise<void> {
+        const { extensionService, isExtensionEnabled } = this.props;
+
+        this._isRegionInUse = Boolean(
+            isExtensionEnabled &&
+                extensionService.isRegionInUse(ExtensionRegion.ShippingShippingAddressFormAfter),
+        );
+
+        if (this._isRegionInUse) {
+            await extensionService.renderExtension(
+                ExtensionRegionContainer.ShippingShippingAddressFormAfter,
+                ExtensionRegion.ShippingShippingAddressFormAfter,
+            );
+        }
+    }
+
     render(): ReactNode {
         const {
             cartHasChanged,
@@ -31,6 +63,9 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
 
         return (
             <>
+                {this._isRegionInUse && (
+                    <div id={ExtensionRegionContainer.ShippingShippingAddressFormAfter} />
+                )}
                 <Fieldset
                     id="checkout-shipping-options"
                     legend={
@@ -74,4 +109,4 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
     }
 }
 
-export default ShippingFormFooter;
+export default withExtension(ShippingFormFooter);

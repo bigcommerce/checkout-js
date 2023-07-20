@@ -1,5 +1,11 @@
-import React, { FunctionComponent, memo } from 'react';
+import { ExtensionRegion } from '@bigcommerce/checkout-sdk';
+import React, { FunctionComponent, memo, useEffect } from 'react';
 
+import {
+    ExtensionContextProps,
+    ExtensionRegionContainer,
+    withExtension,
+} from '@bigcommerce/checkout/checkout-extension';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { preventDefault } from '../common/dom';
@@ -12,37 +18,64 @@ interface ShippingHeaderProps {
     onMultiShippingChange(): void;
 }
 
-const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
+const ShippingHeader: FunctionComponent<ShippingHeaderProps & ExtensionContextProps> = ({
     isMultiShippingMode,
     isGuest,
     onMultiShippingChange,
     shouldShowMultiShipping,
-}) => (
-    <div className="form-legend-container">
-        <Legend testId="shipping-address-heading">
-            <TranslatedString
-                id={
-                    isMultiShippingMode
-                        ? isGuest
-                            ? 'shipping.multishipping_address_heading_guest'
-                            : 'shipping.multishipping_address_heading'
-                        : 'shipping.shipping_address_heading'
-                }
-            />
-        </Legend>
+    isExtensionEnabled,
+    extensionService,
+}) => {
+    const isRegionInUse = Boolean(
+        isExtensionEnabled &&
+            extensionService.isRegionInUse(ExtensionRegion.ShippingShippingAddressFormBefore),
+    );
 
-        {shouldShowMultiShipping && (
-            <a
-                data-test="shipping-mode-toggle"
-                href="#"
-                onClick={preventDefault(onMultiShippingChange)}
-            >
-                <TranslatedString
-                    id={isMultiShippingMode ? 'shipping.ship_to_single' : 'shipping.ship_to_multi'}
-                />
-            </a>
-        )}
-    </div>
-);
+    useEffect(() => {
+        if (isRegionInUse) {
+            void extensionService.renderExtension(
+                ExtensionRegionContainer.ShippingShippingAddressFormBefore,
+                ExtensionRegion.ShippingShippingAddressFormBefore,
+            );
 
-export default memo(ShippingHeader);
+            return () => {
+                extensionService.removeListeners(ExtensionRegion.ShippingShippingAddressFormBefore);
+            };
+        }
+    }, [extensionService, isExtensionEnabled, isRegionInUse]);
+
+    return (
+        <>
+            {isRegionInUse && (
+                <div id={ExtensionRegionContainer.ShippingShippingAddressFormBefore} />
+            )}
+            <div className="form-legend-container">
+                <Legend testId="shipping-address-heading">
+                    <TranslatedString
+                        id={
+                            isMultiShippingMode
+                                ? isGuest
+                                    ? 'shipping.multishipping_address_heading_guest'
+                                    : 'shipping.multishipping_address_heading'
+                                : 'shipping.shipping_address_heading'
+                        }
+                    />
+                </Legend>
+
+                {shouldShowMultiShipping && (
+                    <a
+                        data-test="shipping-mode-toggle"
+                        href="#"
+                        onClick={preventDefault(onMultiShippingChange)}
+                    >
+                        <TranslatedString
+                            id={isMultiShippingMode ? 'shipping.ship_to_single' : 'shipping.ship_to_multi'}
+                        />
+                    </a>
+                )}
+            </div>
+        </>
+    );
+}
+
+export default withExtension(memo(ShippingHeader));

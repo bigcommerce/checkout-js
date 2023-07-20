@@ -1,0 +1,7 @@
+{
+  "extends": ["../../.eslintrc.json"],
+  "rules": {
+    "@typescript-eslint/naming-convention": "off",
+    "@typescript-eslint/no-unnecessary-condition": "off"
+  }
+}

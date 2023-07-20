@@ -1,0 +1,23 @@
+{
+  "root": "packages/checkout-extension",
+  "sourceRoot": "packages/checkout-extension/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/checkout-extension/**/*.{ts,tsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/checkout-extension"],
+      "options": {
+        "jestConfig": "packages/checkout-extension/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["scope:shared"]
+}

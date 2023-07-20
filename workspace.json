@@ -8,6 +8,7 @@
     "bluesnap-direct-integration": "packages/bluesnap-direct-integration",
     "braintree-integration": "packages/braintree-integration",
     "checkout-button-integration": "packages/checkout-button-integration",
+    "checkout-extension": "packages/checkout-extension",
     "core": "packages/core",
     "credit-card-integration": "packages/credit-card-integration",
     "fortis-integration": "packages/fortis-integration",

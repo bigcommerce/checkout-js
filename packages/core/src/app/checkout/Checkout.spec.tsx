@@ -12,6 +12,7 @@ import React, { FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
 
 import { AnalyticsContextProps, AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
@@ -112,7 +113,9 @@ describe('Checkout', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleProvider checkoutService={checkoutService}>
                     <AnalyticsProviderMock>
-                        <Checkout {...props} />
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <Checkout {...props} />
+                        </ExtensionProvider>
                     </AnalyticsProviderMock>
                 </LocaleProvider>
             </CheckoutProvider>
