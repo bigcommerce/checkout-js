@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.342.0](https://github.com/bigcommerce/checkout-js/compare/v1.341.3...v1.342.0) (2023-07-20)
+
+
+### Features
+
+* **order:** ORDERS-5715 adds support for order fees on the order confirmation page ([#1385](https://github.com/bigcommerce/checkout-js/issues/1385)) ([3802c46](https://github.com/bigcommerce/checkout-js/commit/3802c46ce6b99804123d8d3fdc694ea33b7010e8))
+
 ### [1.341.3](https://github.com/bigcommerce/checkout-js/compare/v1.341.2...v1.341.3) (2023-07-17)
 
 ### [1.341.2](https://github.com/bigcommerce/checkout-js/compare/v1.341.1...v1.341.2) (2023-07-17)
