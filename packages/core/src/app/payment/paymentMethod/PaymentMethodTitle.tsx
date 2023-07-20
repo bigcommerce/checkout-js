@@ -300,7 +300,7 @@ const PaymentMethodTitle: FunctionComponent<
                 )}
 
                 {titleText && (
-                    <div className="paymentProviderHeader-name" data-test="payment-method-name">
+                    <div aria-level={6} className="paymentProviderHeader-name" data-test="payment-method-name" role="heading">
                         {titleText}
                     </div>
                 )}
