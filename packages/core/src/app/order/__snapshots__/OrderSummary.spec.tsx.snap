@@ -94,6 +94,7 @@ exports[`OrderSummary when shopper has same currency as store renders order summ
         ]
       }
       discountAmount={10}
+      fees={Array []}
       giftCertificates={
         Array [
           Object {
@@ -225,6 +226,7 @@ exports[`OrderSummary when taxes are inclusive displays tax as summary section 1
         ]
       }
       discountAmount={10}
+      fees={Array []}
       giftCertificates={
         Array [
           Object {

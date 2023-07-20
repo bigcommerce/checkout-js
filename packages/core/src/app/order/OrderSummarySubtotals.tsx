@@ -13,7 +13,7 @@ export interface OrderSummarySubtotalsProps {
     discountAmount?: number;
     isTaxIncluded?: boolean;
     taxes?: Tax[];
-    fees?: Fee[]|OrderFee[];
+    fees?: Fee[] | OrderFee[];
     giftWrappingAmount?: number;
     isUpdatedCartSummayModal?: boolean,
     shippingAmount?: number;

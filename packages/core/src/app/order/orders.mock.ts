@@ -1,7 +1,8 @@
 import {
     GatewayOrderPayment,
     GiftCertificateOrderPayment,
-    Order, OrderFee,
+    Order,
+    OrderFee,
     OrderPayment,
 } from '@bigcommerce/checkout-sdk';
 
@@ -51,6 +52,7 @@ export function getOrder(): Order {
         orderAmountAsInteger: 19000,
         orderId: 295,
         payments: [getGatewayOrderPayment(), getGiftCertificateOrderPayment()],
+        fees: [],
     };
 }
 
