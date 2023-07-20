@@ -1,4 +1,4 @@
-import { LanguageService, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { CardInstrument, LanguageService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { number } from 'card-validator';
 import { compact } from 'lodash';
 import React, { FunctionComponent, memo } from 'react';
@@ -22,7 +22,8 @@ export interface PaymentMethodTitleProps {
     isSelected?: boolean;
 }
 
-interface WithCdnPathProps {
+interface WithPaymentTitleProps {
+    instruments: CardInstrument[];
     cdnBasePath: string;
 }
 
@@ -237,12 +238,23 @@ function getPaymentMethodTitle(
     };
 }
 
+function getInstrumentForMethod(
+    instruments: CardInstrument[],
+    method: PaymentMethod,
+    values: PaymentFormValues
+): CardInstrument | undefined {
+    const instrumentsForMethod = instruments.filter(instrument => instrument.provider === method.id);
+    const selectedInstrument = instrumentsForMethod.find(instrument => instrument.bigpayToken === values.instrumentId);
+
+    return selectedInstrument;
+}
+
 const PaymentMethodTitle: FunctionComponent<
     PaymentMethodTitleProps &
         WithLanguageProps &
-        WithCdnPathProps &
+        WithPaymentTitleProps &
         ConnectFormikProps<PaymentFormValues>
-> = ({ cdnBasePath, formik: { values }, isSelected, language, method }) => {
+> = ({ cdnBasePath, formik: { values }, instruments, isSelected, language, method }) => {
     const methodName = getPaymentMethodName(language)(method);
     const { logoUrl, titleText } = getPaymentMethodTitle(language, cdnBasePath)(method);
 
@@ -250,6 +262,8 @@ const PaymentMethodTitle: FunctionComponent<
         if (!isSelected) {
             return;
         }
+
+        const instrumentSelected = getInstrumentForMethod(instruments, method, values);
 
         if (isHostedCreditCardFieldsetValues(values) && values.hostedForm.cardType) {
             return values.hostedForm.cardType;
@@ -263,6 +277,10 @@ const PaymentMethodTitle: FunctionComponent<
             }
 
             return card.type;
+        }
+
+        if (instrumentSelected) {
+            return instrumentSelected.brand;
         }
     };
 
@@ -297,21 +315,24 @@ const PaymentMethodTitle: FunctionComponent<
     );
 };
 
-function mapToCdnPathProps({ checkoutState }: CheckoutContextProps): WithCdnPathProps | null {
+function mapToCheckoutProps({ checkoutState }: CheckoutContextProps): WithPaymentTitleProps | null {
     const {
-        data: { getConfig },
+        data: { getConfig, getInstruments },
     } = checkoutState;
     const config = getConfig();
+
+    const instruments = getInstruments() || [];
 
     if (!config) {
         return null;
     }
 
     return {
+        instruments,
         cdnBasePath: config.cdnPath,
     };
 }
 
 export default connectFormik(
-    withLanguage(withCheckout(mapToCdnPathProps)(memo(PaymentMethodTitle))),
+    withLanguage(withCheckout(mapToCheckoutProps)(memo(PaymentMethodTitle))),
 );
