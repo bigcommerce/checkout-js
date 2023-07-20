@@ -11,6 +11,12 @@ import PayPalCommercePaymentMethodComponent from './components/PayPalCommercePay
 
 const PayPalCommerceAPMsPaymentMethod: FunctionComponent<PaymentMethodProps> = props => {
     const { method } = props;
+    const isPaymentDataRequired = props.checkoutState.data.isPaymentDataRequired();
+
+    if (!isPaymentDataRequired) {
+        return null;
+    }
+
 
     const widgetContainerId = getUniquePaymentMethodId(method.id, method.gateway);
     const extraOptions = {
