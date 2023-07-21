@@ -9,6 +9,7 @@ import { CheckoutProvider , PaymentFormValues } from '@bigcommerce/checkout/paym
 
 import { getStoreConfig } from '../../config/config.mock';
 import { getPaymentMethod } from '../payment-methods.mock';
+import { getInstruments } from '../storedInstrument/instruments.mock';
 
 import getPaymentMethodName from './getPaymentMethodName';
 import PaymentMethodId from './PaymentMethodId';
@@ -681,5 +682,38 @@ describe('PaymentMethodTitle', () => {
         render(<PaymentMethodTitleTest {...defaultProps} method={method} />);
 
         expect(screen.getByRole('heading', { name: getPaymentMethodName(localeContext.language)(method) })).toBeInTheDocument();
+    });
+
+    describe('instruments is selected', () => {
+        it('sets correct logo active if instrument is selected', () => {
+            jest.spyOn(checkoutService.getState().data, 'getInstruments').mockReturnValue(getInstruments());
+            defaultProps = {
+                formValues: {
+                    ccExpiry: '',
+                    ccName: '',
+                    ccNumber: '',
+                    paymentProviderRadio: getPaymentMethod().id,
+                    instrumentId: '111',
+                },
+                method: getPaymentMethod(),
+                isSelected: true,
+            };
+
+            PaymentMethodTitleTest = ({ formValues, ...props }) => (
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <Formik initialValues={formValues} onSubmit={noop}>
+                            <PaymentMethodTitle {...props} />
+                        </Formik>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>
+            );
+
+            render(<PaymentMethodTitleTest {...defaultProps} method={defaultProps.method} />);
+
+            const amex = screen.getByTestId(/american-express-icon/i);
+
+            expect(amex).toHaveClass('is-active');
+        })
     });
 });
