@@ -7,6 +7,7 @@ import { isMobile } from '../../common/utility';
 import { Checklist, ChecklistItem } from '../../ui/form';
 
 import getUniquePaymentMethodId, { parseUniquePaymentMethodId } from './getUniquePaymentMethodId';
+import PaymentMethodDescription from './PaymentMethodDescription';
 import PaymentMethodTitle from './PaymentMethodTitle';
 import PaymentMethodV2 from './PaymentMethodV2';
 
@@ -116,9 +117,15 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
         [method],
     );
 
+    const renderPaymentMethodDescription = useCallback(
+        () => <PaymentMethodDescription method={method} onUnhandledError={onUnhandledError} />,
+        [method, onUnhandledError],
+    );
+
     return (
         <ChecklistItem
             content={renderPaymentMethod}
+            description={renderPaymentMethodDescription}
             htmlId={`radio-${value}`}
             isDisabled={isDisabled}
             label={renderPaymentMethodTitle}
