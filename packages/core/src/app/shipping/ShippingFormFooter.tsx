@@ -36,12 +36,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps & Extensi
     }
 
     async componentDidMount(): Promise<void> {
-        const { extensionService, isExtensionEnabled } = this.props;
-
-        this._isRegionInUse = Boolean(
-            isExtensionEnabled &&
-                extensionService.isRegionInUse(ExtensionRegion.ShippingShippingAddressFormAfter),
-        );
+        const { extensionService } = this.props;
 
         if (this._isRegionInUse) {
             await extensionService.renderExtension(
@@ -54,12 +49,19 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps & Extensi
     render(): ReactNode {
         const {
             cartHasChanged,
+            extensionService,
             isMultiShippingMode,
+            isExtensionEnabled,
             shouldShowOrderComments,
             shouldShowShippingOptions = true,
             shouldDisableSubmit,
             isLoading,
         } = this.props;
+
+        this._isRegionInUse = Boolean(
+            isExtensionEnabled &&
+                extensionService.isRegionInUse(ExtensionRegion.ShippingShippingAddressFormAfter),
+        );
 
         return (
             <>
