@@ -1,0 +1,254 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PaypalCommerceRatePayPaymentMethod renders component with required fields 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <form
+        aria-label="form"
+      >
+        <div
+          style="margin-bottom: 20px;"
+        >
+          <div
+            class="dynamic-form-field dynamic-form-field--ratepayBirthDate"
+          >
+            <div
+              class="form-field"
+            >
+              <label
+                class="form-label optimizedCheckout-form-label"
+                for="ratepayBirthDate"
+                id="ratepayBirthDate-label"
+              >
+                payment.ratepay.birth_date
+              </label>
+              <div
+                class="react-datepicker-wrapper"
+              >
+                <div
+                  class="react-datepicker__input-container "
+                >
+                  <span
+                    aria-live="polite"
+                    class="react-datepicker__aria-live"
+                    role="alert"
+                  />
+                  <input
+                    autocomplete="off"
+                    class="form-input optimizedCheckout-form-input"
+                    name="ratepayBirthDate"
+                    placeholder="DD/MM/YYYY"
+                    type="text"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="dynamic-form-field dynamic-form-field--ratepayPhoneCountryCode"
+          >
+            <div
+              class="form-field"
+            >
+              <label
+                class="form-label optimizedCheckout-form-label"
+                for="ratepayPhoneCountryCode"
+                id="ratepayPhoneCountryCode-label"
+              >
+                payment.ratepay.phone_country_code
+              </label>
+              <input
+                aria-labelledby="ratepayPhoneCountryCode-label ratepayPhoneCountryCode-field-error-message"
+                class="form-input optimizedCheckout-form-input"
+                data-test="ratepayPhoneCountryCode-text"
+                id="ratepayPhoneCountryCode"
+                maxlength="2"
+                name="ratepayPhoneCountryCode"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+          <div
+            class="dynamic-form-field dynamic-form-field--ratepayPhoneNumber"
+          >
+            <div
+              class="form-field"
+            >
+              <label
+                class="form-label optimizedCheckout-form-label"
+                for="ratepayPhoneNumber"
+                id="ratepayPhoneNumber-label"
+              >
+                payment.ratepay.phone_number
+              </label>
+              <input
+                aria-labelledby="ratepayPhoneNumber-label ratepayPhoneNumber-field-error-message"
+                class="form-input optimizedCheckout-form-input"
+                data-test="ratepayPhoneNumber-text"
+                id="ratepayPhoneNumber"
+                maxlength="11"
+                min="8"
+                name="ratepayPhoneNumber"
+                type="text"
+                value=""
+              />
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>,
+  "container": <div>
+    <form
+      aria-label="form"
+    >
+      <div
+        style="margin-bottom: 20px;"
+      >
+        <div
+          class="dynamic-form-field dynamic-form-field--ratepayBirthDate"
+        >
+          <div
+            class="form-field"
+          >
+            <label
+              class="form-label optimizedCheckout-form-label"
+              for="ratepayBirthDate"
+              id="ratepayBirthDate-label"
+            >
+              payment.ratepay.birth_date
+            </label>
+            <div
+              class="react-datepicker-wrapper"
+            >
+              <div
+                class="react-datepicker__input-container "
+              >
+                <span
+                  aria-live="polite"
+                  class="react-datepicker__aria-live"
+                  role="alert"
+                />
+                <input
+                  autocomplete="off"
+                  class="form-input optimizedCheckout-form-input"
+                  name="ratepayBirthDate"
+                  placeholder="DD/MM/YYYY"
+                  type="text"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="dynamic-form-field dynamic-form-field--ratepayPhoneCountryCode"
+        >
+          <div
+            class="form-field"
+          >
+            <label
+              class="form-label optimizedCheckout-form-label"
+              for="ratepayPhoneCountryCode"
+              id="ratepayPhoneCountryCode-label"
+            >
+              payment.ratepay.phone_country_code
+            </label>
+            <input
+              aria-labelledby="ratepayPhoneCountryCode-label ratepayPhoneCountryCode-field-error-message"
+              class="form-input optimizedCheckout-form-input"
+              data-test="ratepayPhoneCountryCode-text"
+              id="ratepayPhoneCountryCode"
+              maxlength="2"
+              name="ratepayPhoneCountryCode"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+        <div
+          class="dynamic-form-field dynamic-form-field--ratepayPhoneNumber"
+        >
+          <div
+            class="form-field"
+          >
+            <label
+              class="form-label optimizedCheckout-form-label"
+              for="ratepayPhoneNumber"
+              id="ratepayPhoneNumber-label"
+            >
+              payment.ratepay.phone_number
+            </label>
+            <input
+              aria-labelledby="ratepayPhoneNumber-label ratepayPhoneNumber-field-error-message"
+              class="form-input optimizedCheckout-form-input"
+              data-test="ratepayPhoneNumber-text"
+              id="ratepayPhoneNumber"
+              maxlength="11"
+              min="8"
+              name="ratepayPhoneNumber"
+              type="text"
+              value=""
+            />
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
