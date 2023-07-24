@@ -1,0 +1,15 @@
+.checkout-address--static {
+    position: relative;
+
+    .address-entry {
+        margin: 0;
+    }
+
+    .icon {
+        width: 1.85rem;
+        height: 1.85rem;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+}
