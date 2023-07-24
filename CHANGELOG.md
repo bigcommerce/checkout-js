@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.342.3](https://github.com/bigcommerce/checkout-js/compare/v1.342.2...v1.342.3) (2023-07-24)
+
+
+### Bug Fixes
+
+* **payment:** CHECKOUT-6967 Fix issue with icon not highlighting for stored instruments ([#1388](https://github.com/bigcommerce/checkout-js/issues/1388)) ([40eed90](https://github.com/bigcommerce/checkout-js/commit/40eed90379d95ab7bc5d826f031577eafb47721c))
+
 ### [1.342.2](https://github.com/bigcommerce/checkout-js/compare/v1.342.1...v1.342.2) (2023-07-21)
 
 ### [1.342.1](https://github.com/bigcommerce/checkout-js/compare/v1.342.0...v1.342.1) (2023-07-20)
