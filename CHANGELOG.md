@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.343.0](https://github.com/bigcommerce/checkout-js/compare/v1.342.3...v1.343.0) (2023-07-24)
+
+
+### Features
+
+* **payment:** PAYPAL-2726 added BraintreeAcceleratedCheckout payment method ([#1386](https://github.com/bigcommerce/checkout-js/issues/1386)) ([af67fb0](https://github.com/bigcommerce/checkout-js/commit/af67fb0800eb008a1894726f4f881ad7cf545d03))
+* **payment:** PI-502 revert Fortis package ([0f9b113](https://github.com/bigcommerce/checkout-js/commit/0f9b1139b7c5125c48cd08cb572698dc7f3dd668))
+
 ### [1.342.3](https://github.com/bigcommerce/checkout-js/compare/v1.342.2...v1.342.3) (2023-07-24)
 
 
