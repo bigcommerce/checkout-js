@@ -147,12 +147,8 @@ describe('PaymentMethodTitle', () => {
                 />,
             );
     
-            const logos = screen.getByRole('img');
-            const names = screen.getByRole('heading');
-    
-            expect(logos).toBeInTheDocument();
-    
-            expect(names).toBeInTheDocument();
+            expect(screen.getByRole('img')).toBeInTheDocument();
+            expect(screen.getByRole('heading')).toBeInTheDocument();
         });
 
         it('renders both logo and name for Afterpay hosted payment methods', () => {
@@ -166,12 +162,8 @@ describe('PaymentMethodTitle', () => {
                 />,
             );
 
-            const logos = screen.getByRole('img');
-            const names = screen.getByRole('heading');
-
-            expect(logos).toBeInTheDocument();
-
-            expect(names).toBeInTheDocument();
+            expect(screen.getByRole('img')).toBeInTheDocument();
+            expect(screen.getByRole('heading')).toBeInTheDocument();
         });
 
         it('renders both logo and name for Klarna hosted payment methods', () => {
@@ -185,12 +177,8 @@ describe('PaymentMethodTitle', () => {
                 />,
             );
 
-            const logos = screen.getByRole('img');
-            const names = screen.getByRole('heading');
-
-            expect(logos).toBeInTheDocument();
-
-            expect(names).toBeInTheDocument();
+            expect(screen.getByRole('img')).toBeInTheDocument();
+            expect(screen.getByRole('heading')).toBeInTheDocument();
         });
 
         it('renders both logo and name for Quadpay hosted payment methods', () => {
@@ -204,12 +192,8 @@ describe('PaymentMethodTitle', () => {
                 />,
             );
 
-            const logos = screen.getByRole('img');
-            const names = screen.getByRole('heading');
-
-            expect(logos).toBeInTheDocument();
-
-            expect(names).toBeInTheDocument();
+            expect(screen.getByRole('img')).toBeInTheDocument();
+            expect(screen.getByRole('heading')).toBeInTheDocument();
         });
 
         it('renders both logo and name for Sezzle hosted payment methods', () => {
@@ -223,12 +207,8 @@ describe('PaymentMethodTitle', () => {
                 />,
             );
 
-            const logos = screen.getByRole('img');
-            const names = screen.getByRole('heading');
-
-            expect(logos).toBeInTheDocument();
-
-            expect(names).toBeInTheDocument();
+            expect(screen.getByRole('img')).toBeInTheDocument();
+            expect(screen.getByRole('heading')).toBeInTheDocument();
         });
 
         it('renders both logo and name for Zip hosted payment methods', () => {
@@ -242,11 +222,8 @@ describe('PaymentMethodTitle', () => {
                 />,
             );
 
-            const logos = screen.getByRole('img');
-            const names = screen.getByRole('heading');
-
-            expect(logos).toBeInTheDocument();
-            expect(names).toBeInTheDocument();
+            expect(screen.getByRole('img')).toBeInTheDocument();
+            expect(screen.getByRole('heading')).toBeInTheDocument();
         });
     });
 
@@ -378,12 +355,8 @@ describe('PaymentMethodTitle', () => {
                 />,
             );
 
-            const logos = screen.getByRole('img');
-            const names = screen.queryByRole('heading');
-
-            expect(logos).toBeInTheDocument();
-
-            expect(names).not.toBeInTheDocument();
+            expect(screen.getByRole('img')).toBeInTheDocument();
+            expect(screen.queryByRole('heading')).not.toBeInTheDocument();
         });
         it('renders only logo for Clearpay hosted payment methods', () => {
             render(
@@ -396,12 +369,8 @@ describe('PaymentMethodTitle', () => {
                 />,
             );
 
-            const logos = screen.getByRole('img');
-            const names = screen.queryByRole('heading');
-
-            expect(logos).toBeInTheDocument();
-
-            expect(names).not.toBeInTheDocument();
+            expect(screen.getByRole('img')).toBeInTheDocument();
+            expect(screen.queryByRole('heading')).not.toBeInTheDocument();
         });
         it('renders only logo for Humm hosted payment methods', () => {
             render(
@@ -414,12 +383,8 @@ describe('PaymentMethodTitle', () => {
                 />,
             );
 
-            const logos = screen.getByRole('img');
-            const names = screen.queryByRole('heading');
-
-            expect(logos).toBeInTheDocument();
-
-            expect(names).not.toBeInTheDocument();
+            expect(screen.getByRole('img')).toBeInTheDocument();
+            expect(screen.queryByRole('heading')).not.toBeInTheDocument();
         });
         it('renders only logo for y hosted payment methods', () => {
             render(
@@ -432,12 +397,8 @@ describe('PaymentMethodTitle', () => {
                 />,
             );
 
-            const logos = screen.getByRole('img');
-            const names = screen.queryByRole('heading');
-
-            expect(logos).toBeInTheDocument();
-
-            expect(names).not.toBeInTheDocument();
+            expect(screen.getByRole('img')).toBeInTheDocument();
+            expect(screen.queryByRole('heading')).not.toBeInTheDocument();
         });
         it('renders only logo for ypalCommerce hosted payment methods', () => {
             render(
@@ -450,12 +411,8 @@ describe('PaymentMethodTitle', () => {
                 />,
             );
 
-            const logos = screen.getByRole('img');
-            const names = screen.queryByRole('heading');
-
-            expect(logos).toBeInTheDocument();
-
-            expect(names).not.toBeInTheDocument();
+            expect(screen.getByRole('img')).toBeInTheDocument();
+            expect(screen.queryByRole('heading')).not.toBeInTheDocument();
         });
         it('renders only logo for Barclaycard hosted payment methods', () => {
             render(
@@ -468,12 +425,8 @@ describe('PaymentMethodTitle', () => {
                 />,
             );
 
-            const logos = screen.getByRole('img');
-            const names = screen.queryByRole('heading');
-
-            expect(logos).toBeInTheDocument();
-
-            expect(names).not.toBeInTheDocument();
+            expect(screen.getByRole('img')).toBeInTheDocument();
+            expect(screen.queryByRole('heading')).not.toBeInTheDocument();
         });
         it('renders only logo for GooglePay hosted payment methods', () => {
             render(
@@ -486,12 +439,8 @@ describe('PaymentMethodTitle', () => {
                 />,
             );
 
-            const logos = screen.getByRole('img');
-            const names = screen.queryByRole('heading');
-
-            expect(logos).toBeInTheDocument();
-
-            expect(names).not.toBeInTheDocument();
+            expect(screen.getByRole('img')).toBeInTheDocument();
+            expect(screen.queryByRole('heading')).not.toBeInTheDocument();
         });
         it('renders only logo for Masterpass hosted payment methods', () => {
             render(
@@ -504,12 +453,8 @@ describe('PaymentMethodTitle', () => {
                 />,
             );
 
-            const logos = screen.getByRole('img');
-            const names = screen.queryByRole('heading');
-
-            expect(logos).toBeInTheDocument();
-
-            expect(names).not.toBeInTheDocument();
+            expect(screen.getByRole('img')).toBeInTheDocument();
+            expect(screen.queryByRole('heading')).not.toBeInTheDocument();
         });
     });
 
