@@ -156,7 +156,7 @@
     "source-map-loader": "^0.2.4",
     "standard-version": "^9.5.0",
     "style-loader": "^0.23.1",
-    "stylelint": "^15.3.0",
+    "stylelint": "^15.10.1",
     "stylelint-config-standard-scss": "^7.0.1",
     "stylelint-order": "^6.0.3",
     "stylelint-webpack-plugin": "^4.1.0",
