@@ -22,6 +22,7 @@ describe('CheckoutButtonContainer', () => {
         localeContext = createLocaleContext(getStoreConfig());
 
         jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getGuestCustomer());
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(
             merge(getStoreConfig(), {
                 checkoutSettings: {
@@ -36,6 +37,24 @@ describe('CheckoutButtonContainer', () => {
     });
 
     it('displays wallet buttons for guest checkout', () => {
+        const component = render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <CheckoutButtonContainer
+                        checkEmbeddedSupport={jest.fn()}
+                        isPaymentStepActive={false}
+                        onUnhandledError={jest.fn()}
+                    />
+                </LocaleContext.Provider>
+            </CheckoutProvider>
+        );
+
+        expect(component).toMatchSnapshot();
+    });
+
+    it('not displays wallet buttons for guest checkout if isPaymentDataRequired = false', () => {
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(false);
+
         const component = render(
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>

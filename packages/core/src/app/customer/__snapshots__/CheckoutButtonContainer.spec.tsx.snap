@@ -119,4 +119,6 @@ exports[`CheckoutButtonContainer hides wallet buttons with CSS when payment step
 </div>
 `;
 
+exports[`CheckoutButtonContainer not displays wallet buttons for guest checkout if isPaymentDataRequired = false 1`] = `null`;
+
 exports[`CheckoutButtonContainer removes Paypal commerce wallet buttons when payment step is active 1`] = `null`;
