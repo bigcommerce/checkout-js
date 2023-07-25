@@ -207,6 +207,7 @@ class Payment extends Component<
                             }
                             shouldHidePaymentSubmitButton={
                                 (uniqueSelectedMethodId &&
+                                    rest.isPaymentDataRequired() &&
                                     shouldHidePaymentSubmitButton[uniqueSelectedMethodId]) ||
                                 undefined
                             }

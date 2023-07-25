@@ -9,6 +9,12 @@ import {
 import PayPalCommercePaymentMethodComponent from './components/PayPalCommercePaymentMethodComponent';
 
 const PayPalCommerceCreditPaymentMethod: FunctionComponent<PaymentMethodProps> = props => {
+    const isPaymentDataRequired = props.checkoutState.data.isPaymentDataRequired();
+
+    if (!isPaymentDataRequired) {
+        return null;
+    }
+
     return <PayPalCommercePaymentMethodComponent
         providerOptionsKey="paypalcommercecredit"
         {...props}

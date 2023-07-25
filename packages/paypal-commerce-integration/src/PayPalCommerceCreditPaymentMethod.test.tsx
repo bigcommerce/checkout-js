@@ -1,5 +1,6 @@
 import { createCheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
 import { render } from '@testing-library/react';
+import '@testing-library/jest-dom'
 import React from 'react';
 
 import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
@@ -26,5 +27,23 @@ describe('PayPalCommerceCreditPaymentMethod', () => {
         const { container } = render(<PayPalCommerceCreditPaymentMethod {...props} />);
 
         expect(container).toMatchSnapshot();
+    });
+
+    it('renders nothing if Payment Data is not Required', () => {
+        const mockChild = <div>test child</div>;
+        const localProps = {
+            ...props,
+            checkoutState: {
+                ...checkoutState,
+                data: {
+                    ...checkoutState.data,
+                    isPaymentDataRequired: jest.fn().mockReturnValue(false)
+                }
+            },
+            children: mockChild
+        }
+        const { container } = render(<PayPalCommerceCreditPaymentMethod {...localProps} />);
+
+        expect(container).toBeEmptyDOMElement();
     });
 });
