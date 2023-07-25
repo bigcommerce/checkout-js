@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.345.0](https://github.com/bigcommerce/checkout-js/compare/v1.344.3...v1.345.0) (2023-07-25)
+
+
+### Features
+
+* **payment:** PAYPAL-2752 show/hide wallet buttons depends on isPaymentDataRequired ([#1383](https://github.com/bigcommerce/checkout-js/issues/1383)) ([8c59574](https://github.com/bigcommerce/checkout-js/commit/8c5957418139ad7ccb7b4fcbfc0eff41a5559f24))
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-2595 PayPal button shows on store credit ([#1349](https://github.com/bigcommerce/checkout-js/issues/1349)) ([542ef9c](https://github.com/bigcommerce/checkout-js/commit/542ef9ce77a158d231870f9c5ab9cb2309bcff5a))
+
 ### [1.344.3](https://github.com/bigcommerce/checkout-js/compare/v1.344.2...v1.344.3) (2023-07-25)
 
 ### [1.344.2](https://github.com/bigcommerce/checkout-js/compare/v1.344.1...v1.344.2) (2023-07-25)
