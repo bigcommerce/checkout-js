@@ -68,6 +68,7 @@ export interface WithCheckoutShippingProps {
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
     providerWithCustomCheckout?: string;
+    providerCustomerData?: Address[];
     isFloatingLabelEnabled?: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitializeShippingMethod(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
@@ -156,6 +157,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                 updateAddress={updateShippingAddress}
             />;
         }
+
+        console.log('*** providerWithCustomCheckout', providerWithCustomCheckout, providerWithCustomCheckout === PaymentMethodId.BraintreeAcceleratedCheckout);
 
         if (providerWithCustomCheckout === PaymentMethodId.BraintreeAcceleratedCheckout) {
             return (<PayPalAxoShipping

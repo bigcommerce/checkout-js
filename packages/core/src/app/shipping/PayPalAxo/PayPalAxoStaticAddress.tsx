@@ -16,6 +16,8 @@ import localizeAddress from '../../address/localizeAddress';
 import { withCheckout } from '../../checkout';
 import IconPayPalConnectSmall from '../../ui/icon/IconPayPalConnectSmall';
 
+import usePayPalConnectAddress from './usePayPalConnectAddress';
+
 import './StaticAddress.scss';
 
 export interface PayPalAxoStaticAddressProps {
@@ -42,12 +44,12 @@ const PayPalAxoStaticAddress: FunctionComponent<
               address,
               fields.filter((field) => !field.custom),
           );
+    const { isPayPalConnectAddress } = usePayPalConnectAddress();
 
     return !isValid ? null : (
         <div className="vcard checkout-address--static">
             
-            {/* TODO: show icon if addressWithoutLocalization is PayPal connect address */}
-            <IconPayPalConnectSmall />
+            {isPayPalConnectAddress(addressWithoutLocalization) && <IconPayPalConnectSmall />}
 
             {(address.firstName || address.lastName) && (
                 <p className="fn address-entry">

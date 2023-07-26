@@ -1,5 +1,5 @@
 import { Address, CustomerAddress } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo, PureComponent, ReactNode } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
@@ -9,7 +9,8 @@ import { DropdownTrigger } from '../../ui/dropdown';
 
 import PayPalAxoAddressSelectButton from './PayPalAxoAddressSelectButton';
 import PayPalAxoStaticAddress from './PayPalAxoStaticAddress';
-import PoweredByLabel from './PoweredByLabel';
+import PoweredByPaypalConnectLabel from './PoweredByPaypalConnectLabel';
+import usePayPalConnectAddress from './usePayPalConnectAddress';
 
 import './AddressSelect.scss';
 
@@ -20,48 +21,42 @@ export interface PayPalAxoAddressSelectProps {
     onUseNewAddress(currentAddress?: Address): void;
 }
 
-class PayPalAxoAddressSelect extends PureComponent<PayPalAxoAddressSelectProps> {
-    render(): ReactNode {
-        const { addresses, selectedAddress } = this.props;
+const PayPalAxoAddressSelect = ({ addresses, selectedAddress, onSelectAddress, onUseNewAddress }: PayPalAxoAddressSelectProps) => {
+    const { shouldShowPayPalConnectLabel } = usePayPalConnectAddress();
 
-        return (
-            <div className="form-field">
-                <div className="dropdown--select">
-                    <DropdownTrigger
-                        dropdown={
-                            <PayPalAxoAddressSelectMenu
-                                addresses={addresses}
-                                onSelectAddress={this.handleSelectAddress}
-                                onUseNewAddress={this.handleUseNewAddress}
-                                selectedAddress={selectedAddress}
-                            />
-                        }
-                    >
-                        <PayPalAxoAddressSelectButton
-                            addresses={addresses}
-                            selectedAddress={selectedAddress}
-                        />
-                    </DropdownTrigger>
-                </div>
-
-                <PoweredByLabel />
-            </div>
-        );
-    }
-
-    private handleSelectAddress: (newAddress: Address) => void = (newAddress: Address) => {
-        const { onSelectAddress, selectedAddress } = this.props;
-
+    const handleSelectAddress = (newAddress: Address) => {
         if (!isEqualAddress(selectedAddress, newAddress)) {
             onSelectAddress(newAddress);
         }
     };
 
-    private handleUseNewAddress: () => void = () => {
-        const { selectedAddress, onUseNewAddress } = this.props;
-
+    const handleUseNewAddress = () => {
         onUseNewAddress(selectedAddress);
     };
+
+    return (
+        <div className="form-field">
+            <div className="dropdown--select">
+                <DropdownTrigger
+                    dropdown={
+                        <PayPalAxoAddressSelectMenu
+                            addresses={addresses}
+                            onSelectAddress={handleSelectAddress}
+                            onUseNewAddress={handleUseNewAddress}
+                            selectedAddress={selectedAddress}
+                        />
+                    }
+                >
+                    <PayPalAxoAddressSelectButton
+                        addresses={addresses}
+                        selectedAddress={selectedAddress}
+                    />
+                </DropdownTrigger>
+            </div>
+
+            {shouldShowPayPalConnectLabel() && <PoweredByPaypalConnectLabel />}
+        </div>
+    );
 }
 
 const PayPalAxoAddressSelectMenu: FunctionComponent<PayPalAxoAddressSelectProps> = ({

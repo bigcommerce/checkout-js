@@ -41,6 +41,7 @@ export interface PayPalAxoShippingFormProps {
     shouldShowOrderComments: boolean;
     shouldShowAddAddressInCheckout: boolean;
     isFloatingLabelEnabled?: boolean;
+    payPalConnectAddresses?: Address[];
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;

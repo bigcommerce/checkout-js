@@ -6,7 +6,7 @@ import { StaticShippingOption } from '../shippingOption';
 import StaticConsignmentItemList from '../StaticConsignmentItemList';
 import '../StaticConsignment.scss';
 
-import PoweredByLabel from './PoweredByLabel';
+import PoweredByPaypalConnectLabel from './PoweredByPaypalConnectLabel';
 import usePayPalConnectAddress from './usePayPalConnectAddress';
 
 interface PayPalAxoStaticConsignmentProps {
@@ -27,9 +27,7 @@ const PayPalAxoStaticConsignment: FunctionComponent<PayPalAxoStaticConsignmentPr
         <div className="staticConsignment">
             <StaticAddress address={address} type={AddressType.Shipping} />
 
-            {isPayPalConnectAddress(address) ? (
-                <PoweredByLabel />
-            ) : null}
+            {isPayPalConnectAddress(address) && <PoweredByPaypalConnectLabel />}
 
             {!compactView && <StaticConsignmentItemList cart={cart} consignment={consignment} />}
 

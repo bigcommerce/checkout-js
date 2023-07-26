@@ -21,6 +21,7 @@ import ShippingHeader from '../ShippingHeader';
 import { SingleShippingFormValues } from '../SingleShippingForm';
 
 import PayPalAxoShippingForm from './PayPalAxoShippingForm';
+import usePayPalConnectAddress from './usePayPalConnectAddress';
 
 interface PayPalAxoShippingProps {
     cart: Cart;
@@ -74,6 +75,11 @@ const PayPalAxoShipping = ({
     updateAddress,
     ...shippingFormProps
 }: PayPalAxoShippingProps) => {
+    const { mergeAddresses } = usePayPalConnectAddress();
+    const addresses = mergeAddresses(customer.addresses);
+
+    console.log('*** customer.addresses', customer.addresses);
+    console.log('*** addresses', addresses);
 
     return (
         <AddressFormSkeleton isLoading={isInitializing}>
@@ -86,7 +92,7 @@ const PayPalAxoShipping = ({
                 />
                 <PayPalAxoShippingForm
                     {...shippingFormProps}
-                    addresses={customer.addresses}
+                    addresses={addresses}
                     deinitialize={deinitialize}
                     initialize={initialize}
                     isBillingSameAsShipping={isBillingSameAsShipping}
