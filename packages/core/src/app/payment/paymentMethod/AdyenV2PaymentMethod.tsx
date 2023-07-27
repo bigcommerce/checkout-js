@@ -4,7 +4,6 @@ import {
     AdyenV2ValidationState,
     CardInstrument,
 } from '@bigcommerce/checkout-sdk';
-import _ from 'lodash';
 import React, { FunctionComponent, useCallback, useRef, useState } from 'react';
 import { Omit } from 'utility-types';
 
