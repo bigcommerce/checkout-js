@@ -17,6 +17,7 @@ import React, { Component, lazy, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import {
+    ExtensionActionType,
     ExtensionContextProps,
     isCheckoutExtensionEnabled,
     withExtension,
@@ -185,7 +186,6 @@ class Checkout extends Component<
             embeddedStylesheet,
             extensionService,
             loadCheckout,
-            setIsExtensionEnabled,
             subscribeToConsignments,
         } = this.props;
 
@@ -262,7 +262,10 @@ class Checkout extends Component<
             window.addEventListener('beforeunload', this.handleBeforeExit);
 
             if (isCheckoutExtensionEnabled(data.getConfig()?.checkoutSettings)) {
-                setIsExtensionEnabled(true);
+                extensionService.createAction({
+                    type: ExtensionActionType.SET_IS_EXTENSION_ENABLED,
+                    payload: true,
+                });
 
                 await extensionService.loadExtensions();
             }
@@ -302,7 +305,7 @@ class Checkout extends Component<
     }
 
     private renderContent(): ReactNode {
-        const { isPending, loginUrl, promotions = [], steps, isShowingWalletButtonsOnTop, isShowingLoadingIndicator } = this.props;
+        const { isPending, loginUrl, promotions = [], steps, isShowingWalletButtonsOnTop, extensionState } = this.props;
 
         const { activeStepType, defaultStepType, isCartEmpty, isRedirecting } = this.state;
 
@@ -317,7 +320,7 @@ class Checkout extends Component<
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isRedirecting}>
                 <div className="layout-main">
-                    <LoadingNotification isLoading={(!isShowingWalletButtonsOnTop && isPending) || isShowingLoadingIndicator} />
+                    <LoadingNotification isLoading={(!isShowingWalletButtonsOnTop && isPending) || extensionState.isShowingLoadingIndicator} />
 
                     <PromotionBannerList promotions={promotions} />
 

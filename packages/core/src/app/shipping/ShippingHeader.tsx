@@ -23,11 +23,11 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps & ExtensionContextPr
     isGuest,
     onMultiShippingChange,
     shouldShowMultiShipping,
-    isExtensionEnabled,
+    extensionState,
     extensionService,
 }) => {
     const isRegionInUse = Boolean(
-        isExtensionEnabled &&
+        extensionState.isExtensionEnabled &&
             extensionService.isRegionInUse(ExtensionRegion.ShippingShippingAddressFormBefore),
     );
 

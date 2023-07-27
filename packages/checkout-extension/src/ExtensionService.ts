@@ -4,14 +4,21 @@ import {
     ExtensionCommandType,
     ExtensionRegion,
 } from '@bigcommerce/checkout-sdk';
+import React from 'react';
+
+import { ExtensionAction, ExtensionActionType } from './ExtensionProvider';
 
 export class ExtensionService {
     private handlers: { [extensionId: string]: Array<() => void> } = {};
 
     constructor(
         private checkoutService: CheckoutService,
-        private setIsShowLoadingIndicator: (show: boolean) => void,
+        private dispatch: React.Dispatch<ExtensionAction>,
     ) {}
+
+    createAction(action: ExtensionAction): void {
+        this.dispatch(action);
+    }
 
     async loadExtensions(): Promise<void> {
         await this.checkoutService.loadExtensions();
@@ -70,7 +77,10 @@ export class ExtensionService {
                     if (data.type === ExtensionCommandType.ShowLoadingIndicator) {
                         const { show } = data.payload;
 
-                        this.setIsShowLoadingIndicator(show);
+                        this.createAction({
+                            type: ExtensionActionType.SET_IS_LOADING_INDICATOR,
+                            payload: show,
+                        });
                     }
                 },
             ),

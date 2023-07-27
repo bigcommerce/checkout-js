@@ -50,8 +50,8 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps & Extensi
         const {
             cartHasChanged,
             extensionService,
+            extensionState,
             isMultiShippingMode,
-            isExtensionEnabled,
             shouldShowOrderComments,
             shouldShowShippingOptions = true,
             shouldDisableSubmit,
@@ -59,7 +59,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps & Extensi
         } = this.props;
 
         this.isRegionInUse = Boolean(
-            isExtensionEnabled &&
+            extensionState.isExtensionEnabled &&
                 extensionService.isRegionInUse(ExtensionRegion.ShippingShippingAddressFormAfter),
         );
 

@@ -1,13 +1,11 @@
 import { createContext } from 'react';
 
+import { ExtensionState } from './ExtensionProvider';
 import { ExtensionService } from './ExtensionService';
 
 export interface ExtensionContextProps {
     extensionService: ExtensionService;
-    isExtensionEnabled: boolean;
-    isShowingLoadingIndicator: boolean;
-    setIsExtensionEnabled: (isExtensionEnabled: boolean) => void;
-    setIsShowingLoadingIndicator: (isShowingLoadingIndicator: boolean) => void;
+    extensionState: ExtensionState;
 }
 
 export const ExtensionContext = createContext<ExtensionContextProps | undefined>(undefined);
