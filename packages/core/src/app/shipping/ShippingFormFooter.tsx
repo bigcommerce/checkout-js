@@ -25,12 +25,12 @@ export interface ShippingFormFooterProps {
 }
 
 class ShippingFormFooter extends PureComponent<ShippingFormFooterProps & ExtensionContextProps> {
-    private _isRegionInUse = false;
+    private isRegionInUse = false;
 
     componentWillUnmount(): void {
         const { extensionService } = this.props;
 
-        if (this._isRegionInUse) {
+        if (this.isRegionInUse) {
             extensionService.removeListeners(ExtensionRegion.ShippingShippingAddressFormAfter);
         }
     }
@@ -38,7 +38,7 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps & Extensi
     async componentDidMount(): Promise<void> {
         const { extensionService } = this.props;
 
-        if (this._isRegionInUse) {
+        if (this.isRegionInUse) {
             await extensionService.renderExtension(
                 ExtensionRegionContainer.ShippingShippingAddressFormAfter,
                 ExtensionRegion.ShippingShippingAddressFormAfter,
@@ -58,14 +58,14 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps & Extensi
             isLoading,
         } = this.props;
 
-        this._isRegionInUse = Boolean(
+        this.isRegionInUse = Boolean(
             isExtensionEnabled &&
                 extensionService.isRegionInUse(ExtensionRegion.ShippingShippingAddressFormAfter),
         );
 
         return (
             <>
-                {this._isRegionInUse && (
+                {this.isRegionInUse && (
                     <div id={ExtensionRegionContainer.ShippingShippingAddressFormAfter} />
                 )}
                 <Fieldset

@@ -42,7 +42,7 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps & ExtensionContextPr
                 extensionService.removeListeners(ExtensionRegion.ShippingShippingAddressFormBefore);
             };
         }
-    }, [extensionService, isExtensionEnabled, isRegionInUse]);
+    }, [extensionService, isRegionInUse]);
 
     return (
         <>

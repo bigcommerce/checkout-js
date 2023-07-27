@@ -6,44 +6,44 @@ import {
 } from '@bigcommerce/checkout-sdk';
 
 export class ExtensionService {
-    private _handlerRemovers: { [extensionId: string]: Array<() => void> } = {};
+    private handlers: { [extensionId: string]: Array<() => void> } = {};
 
     constructor(
-        private _checkoutService: CheckoutService,
-        private _setIsShowLoadingIndicator: (show: boolean) => void,
+        private checkoutService: CheckoutService,
+        private setIsShowLoadingIndicator: (show: boolean) => void,
     ) {}
 
     async loadExtensions(): Promise<void> {
-        await this._checkoutService.loadExtensions();
+        await this.checkoutService.loadExtensions();
     }
 
     async renderExtension(container: string, region: ExtensionRegion): Promise<void> {
-        const extension = this._getExtensionByRegion(region);
+        const extension = this.getExtensionByRegion(region);
 
         if (!extension) {
             return;
         }
 
-        await this._checkoutService.renderExtension(container, region);
+        await this.checkoutService.renderExtension(container, region);
 
-        if (!this._handlerRemovers[extension.id]) {
-            this._handlerRemovers[extension.id] = [];
+        if (!this.handlers[extension.id]) {
+            this.handlers[extension.id] = [];
         }
 
-        this._handlerRemovers[extension.id].push(
-            this._checkoutService.handleExtensionCommand(
+        this.handlers[extension.id].push(
+            this.checkoutService.handleExtensionCommand(
                 extension.id,
                 ExtensionCommandType.ReloadCheckout,
                 () => {
-                    void this._checkoutService.loadCheckout(
-                        this._checkoutService.getState().data.getCheckout()?.id,
+                    void this.checkoutService.loadCheckout(
+                        this.checkoutService.getState().data.getCheckout()?.id,
                     );
                 },
             ),
         );
 
-        this._handlerRemovers[extension.id].push(
-            this._checkoutService.handleExtensionCommand(
+        this.handlers[extension.id].push(
+            this.checkoutService.handleExtensionCommand(
                 extension.id,
                 ExtensionCommandType.SetIframeStyle,
                 (data) => {
@@ -62,15 +62,15 @@ export class ExtensionService {
             ),
         );
 
-        this._handlerRemovers[extension.id].push(
-            this._checkoutService.handleExtensionCommand(
+        this.handlers[extension.id].push(
+            this.checkoutService.handleExtensionCommand(
                 extension.id,
                 ExtensionCommandType.ShowLoadingIndicator,
                 (data) => {
                     if (data.type === ExtensionCommandType.ShowLoadingIndicator) {
                         const { show } = data.payload;
 
-                        this._setIsShowLoadingIndicator(show);
+                        this.setIsShowLoadingIndicator(show);
                     }
                 },
             ),
@@ -78,13 +78,13 @@ export class ExtensionService {
     }
 
     removeListeners(region: ExtensionRegion): void {
-        const extension = this._getExtensionByRegion(region);
+        const extension = this.getExtensionByRegion(region);
 
         if (!extension) {
             return;
         }
 
-        const removers = this._handlerRemovers[extension.id];
+        const removers = this.handlers[extension.id];
 
         if (!removers) {
             return;
@@ -94,17 +94,17 @@ export class ExtensionService {
             remover();
         }
 
-        delete this._handlerRemovers[extension.id];
+        delete this.handlers[extension.id];
     }
 
     isRegionInUse(region: ExtensionRegion): boolean {
-        const extension = this._getExtensionByRegion(region);
+        const extension = this.getExtensionByRegion(region);
 
         return Boolean(extension);
     }
 
-    private _getExtensionByRegion(region: ExtensionRegion): Extension | undefined {
-        const extensions = this._checkoutService.getState().data.getExtensions();
+    private getExtensionByRegion(region: ExtensionRegion): Extension | undefined {
+        const extensions = this.checkoutService.getState().data.getExtensions();
 
         return extensions?.find((e) => e.region === region);
     }
