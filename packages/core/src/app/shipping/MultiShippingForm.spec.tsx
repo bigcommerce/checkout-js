@@ -1,6 +1,8 @@
+import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 
 import { AddressFormModal } from '../address';
@@ -15,6 +17,8 @@ import ItemAddressSelect from './ItemAddressSelect';
 import MultiShippingForm, { MultiShippingFormProps } from './MultiShippingForm';
 
 describe('MultiShippingForm Component', () => {
+    const checkoutService = createCheckoutService();
+
     let component: ReactWrapper;
     let localeContext: LocaleContextType;
     let defaultProps: MultiShippingFormProps;
@@ -58,7 +62,9 @@ describe('MultiShippingForm Component', () => {
         beforeEach(() => {
             component = mount(
                 <LocaleContext.Provider value={localeContext}>
-                    <MultiShippingForm {...defaultProps} isGuest={true} />
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <MultiShippingForm {...defaultProps} isGuest={true} />
+                    </ExtensionProvider>
                 </LocaleContext.Provider>,
             );
         });
@@ -74,7 +80,9 @@ describe('MultiShippingForm Component', () => {
         beforeEach(() => {
             component = mount(
                 <LocaleContext.Provider value={localeContext}>
-                    <MultiShippingForm {...defaultProps} />
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <MultiShippingForm {...defaultProps} />
+                    </ExtensionProvider>
                 </LocaleContext.Provider>,
             );
         });

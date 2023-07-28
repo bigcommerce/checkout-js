@@ -16,12 +16,7 @@ import { find, findIndex } from 'lodash';
 import React, { Component, lazy, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
-import {
-    ExtensionActionType,
-    ExtensionContextProps,
-    isCheckoutExtensionEnabled,
-    withExtension,
-} from '@bigcommerce/checkout/checkout-extension';
+import { ExtensionContextProps, withExtension } from '@bigcommerce/checkout/checkout-extension';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
@@ -151,7 +146,11 @@ export interface WithCheckoutProps {
 }
 
 class Checkout extends Component<
-    CheckoutProps & WithCheckoutProps & WithLanguageProps & AnalyticsContextProps & ExtensionContextProps,
+    CheckoutProps &
+        WithCheckoutProps &
+        WithLanguageProps &
+        AnalyticsContextProps &
+        ExtensionContextProps,
     CheckoutState
 > {
     state: CheckoutState = {
@@ -187,6 +186,7 @@ class Checkout extends Component<
             extensionService,
             loadCheckout,
             subscribeToConsignments,
+            isExtensionEnabled,
         } = this.props;
 
         try {
@@ -261,12 +261,7 @@ class Checkout extends Component<
 
             window.addEventListener('beforeunload', this.handleBeforeExit);
 
-            if (isCheckoutExtensionEnabled(data.getConfig()?.checkoutSettings)) {
-                extensionService.createAction({
-                    type: ExtensionActionType.SET_IS_EXTENSION_ENABLED,
-                    payload: true,
-                });
-
+            if (isExtensionEnabled()) {
                 await extensionService.loadExtensions();
             }
         } catch (error) {

@@ -1,11 +1,7 @@
 import { ExtensionRegion } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo, useEffect } from 'react';
 
-import {
-    ExtensionContextProps,
-    ExtensionRegionContainer,
-    withExtension,
-} from '@bigcommerce/checkout/checkout-extension';
+import { ExtensionRegionContainer, useExtensions } from '@bigcommerce/checkout/checkout-extension';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { preventDefault } from '../common/dom';
@@ -18,16 +14,15 @@ interface ShippingHeaderProps {
     onMultiShippingChange(): void;
 }
 
-const ShippingHeader: FunctionComponent<ShippingHeaderProps & ExtensionContextProps> = ({
+const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
     isMultiShippingMode,
     isGuest,
     onMultiShippingChange,
     shouldShowMultiShipping,
-    extensionState,
-    extensionService,
 }) => {
+    const { extensionService, isExtensionEnabled } = useExtensions();
     const isRegionInUse = Boolean(
-        extensionState.isExtensionEnabled &&
+        isExtensionEnabled() &&
             extensionService.isRegionInUse(ExtensionRegion.ShippingShippingAddressFormBefore),
     );
 
@@ -78,4 +73,4 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps & ExtensionContextPr
     );
 }
 
-export default withExtension(memo(ShippingHeader));
+export default memo(ShippingHeader);

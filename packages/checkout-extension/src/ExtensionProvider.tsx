@@ -3,9 +3,9 @@ import React, { ReactNode, useReducer } from 'react';
 
 import { ExtensionContext } from './ExtensionContext';
 import { ExtensionService } from './ExtensionService';
+import { isCheckoutExtensionEnabled } from './isCheckoutExtensionEnabled';
 
 export interface ExtensionState {
-    isExtensionEnabled: boolean;
     isShowingLoadingIndicator: boolean;
 }
 
@@ -15,7 +15,6 @@ export interface ExtensionAction {
 }
 
 export enum ExtensionActionType {
-    SET_IS_EXTENSION_ENABLED,
     SET_IS_LOADING_INDICATOR,
 }
 
@@ -25,16 +24,14 @@ export interface ExtensionProviderProps {
 }
 
 export const ExtensionProvider = ({ checkoutService, children }: ExtensionProviderProps) => {
+    const isExtensionEnabled = () =>
+        isCheckoutExtensionEnabled(checkoutService.getState().data.getConfig()?.checkoutSettings);
+
     const initialState = {
-        isExtensionEnabled: false,
         isShowingLoadingIndicator: false,
     };
-
     const extensionReducer = (state: ExtensionState, action: ExtensionAction): ExtensionState => {
         switch (action.type) {
-            case ExtensionActionType.SET_IS_EXTENSION_ENABLED:
-                return { ...state, isExtensionEnabled: action.payload };
-
             case ExtensionActionType.SET_IS_LOADING_INDICATOR:
                 return { ...state, isShowingLoadingIndicator: action.payload };
 
@@ -42,12 +39,12 @@ export const ExtensionProvider = ({ checkoutService, children }: ExtensionProvid
                 return state;
         }
     };
-
     const [extensionState, dispatch] = useReducer(extensionReducer, initialState);
 
     const extensionService = new ExtensionService(checkoutService, dispatch);
 
     const extensionValues = {
+        isExtensionEnabled,
         extensionService,
         extensionState,
     };

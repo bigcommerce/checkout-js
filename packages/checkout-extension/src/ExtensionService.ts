@@ -37,6 +37,7 @@ export class ExtensionService {
             this.handlers[extension.id] = [];
         }
 
+        // TODO: CHECKOUT-7635
         this.handlers[extension.id].push(
             this.checkoutService.handleExtensionCommand(
                 extension.id,

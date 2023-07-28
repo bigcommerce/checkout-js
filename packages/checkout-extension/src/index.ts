@@ -10,3 +10,4 @@ export {
 export { ExtensionContextProps, ExtensionContext } from './ExtensionContext';
 export { withExtension } from './withExtension';
 export { getExtensions } from './Extension.mock';
+export { useExtensions } from './useExtensions';
