@@ -39,7 +39,7 @@ describe('ExtensionService', () => {
 
     it('creates an extension action', () => {
         const action = {
-            type: ExtensionActionType.SET_IS_LOADING_INDICATOR,
+            type: ExtensionActionType.SHOW_LOADING_INDICATOR,
             payload: true,
         };
 

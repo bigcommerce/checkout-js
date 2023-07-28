@@ -79,7 +79,7 @@ export class ExtensionService {
                         const { show } = data.payload;
 
                         this.createAction({
-                            type: ExtensionActionType.SET_IS_LOADING_INDICATOR,
+                            type: ExtensionActionType.SHOW_LOADING_INDICATOR,
                             payload: show,
                         });
                     }

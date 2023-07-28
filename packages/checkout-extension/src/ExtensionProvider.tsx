@@ -15,7 +15,7 @@ export interface ExtensionAction {
 }
 
 export enum ExtensionActionType {
-    SET_IS_LOADING_INDICATOR,
+    SHOW_LOADING_INDICATOR,
 }
 
 export interface ExtensionProviderProps {
@@ -27,19 +27,18 @@ export const ExtensionProvider = ({ checkoutService, children }: ExtensionProvid
     const isExtensionEnabled = () =>
         isCheckoutExtensionEnabled(checkoutService.getState().data.getConfig()?.checkoutSettings);
 
-    const initialState = {
-        isShowingLoadingIndicator: false,
-    };
     const extensionReducer = (state: ExtensionState, action: ExtensionAction): ExtensionState => {
         switch (action.type) {
-            case ExtensionActionType.SET_IS_LOADING_INDICATOR:
+            case ExtensionActionType.SHOW_LOADING_INDICATOR:
                 return { ...state, isShowingLoadingIndicator: action.payload };
 
             default:
                 return state;
         }
     };
-    const [extensionState, dispatch] = useReducer(extensionReducer, initialState);
+    const [extensionState, dispatch] = useReducer(extensionReducer, {
+        isShowingLoadingIndicator: false,
+    });
 
     const extensionService = new ExtensionService(checkoutService, dispatch);
 
