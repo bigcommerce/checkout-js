@@ -158,8 +158,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             />;
         }
 
-        console.log('*** providerWithCustomCheckout', providerWithCustomCheckout, providerWithCustomCheckout === PaymentMethodId.BraintreeAcceleratedCheckout);
-
         if (providerWithCustomCheckout === PaymentMethodId.BraintreeAcceleratedCheckout) {
             return (<PayPalAxoShipping
                 {...shippingFormProps}

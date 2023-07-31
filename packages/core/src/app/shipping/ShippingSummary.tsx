@@ -5,7 +5,7 @@ import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
 import { PaymentMethodId } from '../payment/paymentMethod';
 
-import PayPalAxoStaticConsignment from './PayPalAxo/PayPalAxoStaticConsignment';
+import { PayPalAxoStaticConsignment } from './PayPalAxo';
 import StaticConsignment from './StaticConsignment';
 
 interface ShippingSummaryProps {

@@ -10,8 +10,9 @@ const usePayPalConnectAddress = () => {
     const getPaypalConnectAddresses = (): CustomerAddress[] => {
         const { data: { getCustomer }} = checkoutState;
         const paypalConnectAddress = getCustomer()?.addresses[1];
+        // const paypalConnectAddress = undefined;
 
-        return paypalConnectAddress ? [paypalConnectAddress] : []; // TODO: mock data, should get from checkoutState.getProviderCustomerData()
+        return paypalConnectAddress ? [paypalConnectAddress] : []; // TODO: mock data, should get from checkoutState.getPaymentProviderCustomer()
     };
 
     const isPayPalConnectAddress = (address: Address): boolean => {
@@ -25,9 +26,6 @@ const usePayPalConnectAddress = () => {
     };
 
     const shouldShowPayPalConnectLabel = (): boolean => !!getPaypalConnectAddresses().length;
-
-    // const filterAddresses = (customerAddresses: CustomerAddress[]): CustomerAddress[] => 
-    //     customerAddresses.filter((address) => !isPayPalConnectAddress(address));
 
     const mergeAddresses = (customerAddresses: CustomerAddress[]): CustomerAddress[] => [
         ...getPaypalConnectAddresses(),

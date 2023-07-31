@@ -78,9 +78,6 @@ const PayPalAxoShipping = ({
     const { mergeAddresses } = usePayPalConnectAddress();
     const addresses = mergeAddresses(customer.addresses);
 
-    console.log('*** customer.addresses', customer.addresses);
-    console.log('*** addresses', addresses);
-
     return (
         <AddressFormSkeleton isLoading={isInitializing}>
             <div className="checkout-form">
