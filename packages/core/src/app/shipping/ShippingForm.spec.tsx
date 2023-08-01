@@ -1,6 +1,8 @@
+import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 
 import { getCart } from '../cart/carts.mock';
@@ -22,6 +24,7 @@ describe('ShippingForm Component', () => {
     let component: ReactWrapper;
     let localeContext: LocaleContextType;
     let defaultProps: ShippingFormProps;
+    let checkoutService: CheckoutService;
 
     beforeEach(() => {
         localeContext = createLocaleContext(getStoreConfig());
@@ -66,13 +69,17 @@ describe('ShippingForm Component', () => {
             signOut: jest.fn(),
             shouldValidateSafeInput: true,
         };
+
+        checkoutService = createCheckoutService();
     });
 
     describe('when multishipping mode is off', () => {
         beforeEach(() => {
             component = mount(
                 <LocaleContext.Provider value={localeContext}>
-                    <ShippingForm {...defaultProps} />
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <ShippingForm {...defaultProps} />
+                    </ExtensionProvider>
                 </LocaleContext.Provider>,
             );
         });
@@ -80,7 +87,9 @@ describe('ShippingForm Component', () => {
         it('renders ShippingAddress with expected props', () => {
             component = mount(
                 <LocaleContext.Provider value={localeContext}>
-                    <ShippingForm {...defaultProps} methodId="amazonpay" />
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <ShippingForm {...defaultProps} methodId="amazonpay" />
+                    </ExtensionProvider>
                 </LocaleContext.Provider>,
             );
 
@@ -98,7 +107,9 @@ describe('ShippingForm Component', () => {
         it('renders disabled continue button when valid address and no shipping option', () => {
             component = mount(
                 <LocaleContext.Provider value={localeContext}>
-                    <ShippingForm {...defaultProps} consignments={[]} />
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <ShippingForm {...defaultProps} consignments={[]} />
+                    </ExtensionProvider>
                 </LocaleContext.Provider>,
             );
 
@@ -113,13 +124,15 @@ describe('ShippingForm Component', () => {
         it('renders enabled continue button when invalid address', () => {
             component = mount(
                 <LocaleContext.Provider value={localeContext}>
-                    <ShippingForm
-                        {...defaultProps}
-                        shippingAddress={{
-                            ...getShippingAddress(),
-                            address1: '',
-                        }}
-                    />
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <ShippingForm
+                            {...defaultProps}
+                            shippingAddress={{
+                                ...getShippingAddress(),
+                                address1: '',
+                            }}
+                        />
+                    </ExtensionProvider>
                 </LocaleContext.Provider>,
             );
 
@@ -134,7 +147,9 @@ describe('ShippingForm Component', () => {
         it('renders enabled continue button when no address', () => {
             component = mount(
                 <LocaleContext.Provider value={localeContext}>
-                    <ShippingForm {...defaultProps} shippingAddress={undefined} />
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <ShippingForm {...defaultProps} shippingAddress={undefined} />
+                    </ExtensionProvider>
                 </LocaleContext.Provider>,
             );
 
@@ -187,7 +202,9 @@ describe('ShippingForm Component', () => {
             beforeEach(() => {
                 component = mount(
                     <LocaleContext.Provider value={localeContext}>
-                        <ShippingForm {...defaultProps} isGuest={true} isMultiShippingMode={true} />
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm {...defaultProps} isGuest={true} isMultiShippingMode={true} />
+                        </ExtensionProvider>
                     </LocaleContext.Provider>,
                 );
             });
@@ -210,7 +227,9 @@ describe('ShippingForm Component', () => {
             beforeEach(() => {
                 component = mount(
                     <LocaleContext.Provider value={localeContext}>
-                        <ShippingForm {...defaultProps} isMultiShippingMode={true} />
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm {...defaultProps} isMultiShippingMode={true} />
+                        </ExtensionProvider>
                     </LocaleContext.Provider>,
                 );
             });
@@ -218,11 +237,13 @@ describe('ShippingForm Component', () => {
             it('renders disabled button when loading', () => {
                 component = mount(
                     <LocaleContext.Provider value={localeContext}>
-                        <ShippingForm
-                            {...defaultProps}
-                            isLoading={true}
-                            isMultiShippingMode={true}
-                        />
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm
+                                {...defaultProps}
+                                isLoading={true}
+                                isMultiShippingMode={true}
+                            />
+                        </ExtensionProvider>
                     </LocaleContext.Provider>,
                 );
 
@@ -237,16 +258,18 @@ describe('ShippingForm Component', () => {
             it('renders disabled button when no shipping option selected', () => {
                 component = mount(
                     <LocaleContext.Provider value={localeContext}>
-                        <ShippingForm
-                            {...defaultProps}
-                            consignments={[
-                                {
-                                    ...getConsignment(),
-                                    selectedShippingOption: undefined,
-                                },
-                            ]}
-                            isMultiShippingMode={true}
-                        />
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm
+                                {...defaultProps}
+                                consignments={[
+                                    {
+                                        ...getConsignment(),
+                                        selectedShippingOption: undefined,
+                                    },
+                                ]}
+                                isMultiShippingMode={true}
+                            />
+                        </ExtensionProvider>
                     </LocaleContext.Provider>,
                 );
 
@@ -261,11 +284,13 @@ describe('ShippingForm Component', () => {
             it('renders disabled button when unassigned items', () => {
                 component = mount(
                     <LocaleContext.Provider value={localeContext}>
-                        <ShippingForm
-                            {...defaultProps}
-                            consignments={[]}
-                            isMultiShippingMode={true}
-                        />
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm
+                                {...defaultProps}
+                                consignments={[]}
+                                isMultiShippingMode={true}
+                            />
+                        </ExtensionProvider>
                     </LocaleContext.Provider>,
                 );
 

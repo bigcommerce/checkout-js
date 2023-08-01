@@ -1,5 +1,8 @@
+import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
+
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 
 import CheckoutStepType from '../../checkout/CheckoutStepType';
 
@@ -7,6 +10,8 @@ import StripeShipping, { StripeShippingProps } from './StripeShipping';
 import StripeShippingForm from './StripeShippingForm';
 
 describe('Stripe Shipping Component', () => {
+    const checkoutService = createCheckoutService();
+
     let defaultProps: StripeShippingProps;
     let ComponentTest: FunctionComponent<StripeShippingProps>;
 
@@ -26,7 +31,9 @@ describe('Stripe Shipping Component', () => {
         };
 
         ComponentTest = (props) => (
-            <StripeShipping {...props} />
+            <ExtensionProvider checkoutService={checkoutService}>
+                <StripeShipping {...props} />
+            </ExtensionProvider>
         );
     });
 
