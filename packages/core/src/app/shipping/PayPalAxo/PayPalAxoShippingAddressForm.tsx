@@ -2,7 +2,6 @@ import {
     Address,
     Consignment,
     Country,
-    CustomerAddress,
     FormField,
 } from '@bigcommerce/checkout-sdk';
 import React, { Component, ReactNode } from 'react';
@@ -16,7 +15,7 @@ import { SingleShippingFormValues } from '../SingleShippingForm';
 import PayPalAxoAddressSelect from './PayPalAxoAddressSelect';
 
 export interface PayPalAxoShippingAddressFormProps {
-    addresses: CustomerAddress[];
+    addresses: Address[];
     address?: Address;
     consignments: Consignment[];
     countries?: Country[];

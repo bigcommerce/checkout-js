@@ -7,7 +7,6 @@ import {
     Consignment,
     ConsignmentAssignmentRequestBody,
     Country,
-    CustomerAddress,
     CustomerRequestOptions,
     FormField,
     RequestOptions,
@@ -22,7 +21,7 @@ import PayPalAxoMultiShippingForm, { MultiShippingFormValues } from './PayPalAxo
 import PayPalAxoSingleShippingForm, { PayPalAxoSingleShippingFormValues } from './PayPalAxoSingleShippingForm';
 
 export interface PayPalAxoShippingFormProps {
-    addresses: CustomerAddress[];
+    addresses: Address[];
     cart: Cart;
     cartHasChanged: boolean;
     consignments: Consignment[];

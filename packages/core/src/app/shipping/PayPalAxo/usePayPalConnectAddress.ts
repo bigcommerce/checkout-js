@@ -1,4 +1,4 @@
-import { Address, CustomerAddress } from '@bigcommerce/checkout-sdk';
+import { Address } from '@bigcommerce/checkout-sdk';
 
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
@@ -7,12 +7,20 @@ import { isEqualAddress } from '../../address';
 const usePayPalConnectAddress = () => {
     const { checkoutState } = useCheckout();
     
-    const getPaypalConnectAddresses = (): CustomerAddress[] => {
-        const { data: { getCustomer }} = checkoutState;
-        const paypalConnectAddress = getCustomer()?.addresses[1];
-        // const paypalConnectAddress = undefined;
+    const getPaypalConnectAddresses = (): Address[] => {
+        const { data: { getPaymentProviderCustomer }} = checkoutState;
+        const addresses = getPaymentProviderCustomer()?.addresses || [];
 
-        return paypalConnectAddress ? [paypalConnectAddress] : []; // TODO: mock data, should get from checkoutState.getPaymentProviderCustomer()
+        console.log('*** getPaymentProviderCustomer()', getPaymentProviderCustomer());
+
+        // TODO: if no data in getPaymentProviderCustomer => need to get from LS
+        // if data from LS need to check email from LS and email from customer step
+
+        // TODO: remove this mock after fix types on checkout-sdk-js
+        return addresses.map(address => ({
+            ...address,
+            country: address.countryCode,
+        }));
     };
 
     const isPayPalConnectAddress = (address: Address): boolean => {
@@ -27,7 +35,7 @@ const usePayPalConnectAddress = () => {
 
     const shouldShowPayPalConnectLabel = (): boolean => !!getPaypalConnectAddresses().length;
 
-    const mergeAddresses = (customerAddresses: CustomerAddress[]): CustomerAddress[] => [
+    const mergeAddresses = (customerAddresses: Address[]): Address[] => [
         ...getPaypalConnectAddresses(),
         ...customerAddresses.filter((address) => !isPayPalConnectAddress(address)),
     ];

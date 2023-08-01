@@ -3,7 +3,6 @@ import {
     CheckoutSelectors,
     Consignment,
     Country,
-    CustomerAddress,
     FormField,
     ShippingInitializeOptions,
     ShippingRequestOptions,
@@ -18,7 +17,7 @@ import StaticAddressEditable from '../StaticAddressEditable';
 import PayPalAxoShippingAddressForm from './PayPalAxoShippingAddressForm';
 
 export interface PayPalAxoShippingAddressProps {
-    addresses: CustomerAddress[];
+    addresses: Address[];
     consignments: Consignment[];
     countries?: Country[];
     countriesWithAutocomplete: string[];

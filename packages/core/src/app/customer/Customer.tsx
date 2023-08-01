@@ -395,6 +395,10 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
             this.draftEmail = undefined;
         } catch (error) {
+            if (isErrorWithType(error) && error.type === 'update_subscriptions') {
+                await this.executePaymentMethodCheckoutOrContinue();
+            }
+
             if (
                 isErrorWithType(error) &&
                 (error.type === 'update_subscriptions' ||

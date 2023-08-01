@@ -7,7 +7,6 @@ import {
     Consignment,
     ConsignmentAssignmentRequestBody,
     Country,
-    CustomerAddress,
     FormField,
 } from '@bigcommerce/checkout-sdk';
 import { FormikProps, withFormik } from 'formik';
@@ -36,7 +35,7 @@ import updateShippableItems from '../updateShippableItems';
 import PayPalAxoItemAddressSelect from './PayPalAxoItemAddressSelect';
 
 export interface PayPalAxoMultiShippingFormProps {
-    addresses: CustomerAddress[];
+    addresses: Address[];
     cart: Cart;
     cartHasChanged: boolean;
     consignments: Consignment[];

@@ -1,4 +1,4 @@
-import { Address, CustomerAddress } from '@bigcommerce/checkout-sdk';
+import { Address } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -15,7 +15,7 @@ import usePayPalConnectAddress from './usePayPalConnectAddress';
 import './AddressSelect.scss';
 
 export interface PayPalAxoAddressSelectProps {
-    addresses: CustomerAddress[];
+    addresses: Address[];
     selectedAddress?: Address;
     onSelectAddress(address: Address): void;
     onUseNewAddress(currentAddress?: Address): void;
@@ -75,8 +75,8 @@ const PayPalAxoAddressSelectMenu: FunctionComponent<PayPalAxoAddressSelectProps>
                 <TranslatedString id="address.enter_address_action" />
             </a>
         </li>
-        {addresses.map((address) => (
-            <li className="dropdown-menu-item dropdown-menu-item--select" key={address.id}>
+        {addresses.map((address, index) => (
+            <li className="dropdown-menu-item dropdown-menu-item--select" key={index}>
                 <a href="#" onClick={preventDefault(() => onSelectAddress(address))}>
                     <PayPalAxoStaticAddress address={address} />
                 </a>

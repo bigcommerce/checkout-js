@@ -4,7 +4,6 @@ import {
     CheckoutSelectors,
     Consignment,
     Country,
-    CustomerAddress,
     CustomerRequestOptions,
     FormField,
     RequestOptions,
@@ -37,7 +36,7 @@ import ShippingFormFooter from '../ShippingFormFooter';
 import PayPalAxoShippingAddress from './PayPalAxoShippingAddress';
 
 export interface PayPalAxoSingleShippingFormProps {
-    addresses: CustomerAddress[];
+    addresses: Address[];
     isBillingSameAsShipping: boolean;
     cartHasChanged: boolean;
     consignments: Consignment[];
