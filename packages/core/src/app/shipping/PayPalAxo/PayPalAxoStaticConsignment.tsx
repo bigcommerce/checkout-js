@@ -2,12 +2,11 @@ import { Cart, Consignment } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
 import { AddressType, StaticAddress } from '../../address';
+import { PoweredByPaypalConnectLabel, usePayPalConnectAddress } from '../../address/PayPalAxo';
 import { StaticShippingOption } from '../shippingOption';
 import StaticConsignmentItemList from '../StaticConsignmentItemList';
-import '../StaticConsignment.scss';
 
-import PoweredByPaypalConnectLabel from './PoweredByPaypalConnectLabel';
-import usePayPalConnectAddress from './usePayPalConnectAddress';
+import '../StaticConsignment.scss';
 
 interface PayPalAxoStaticConsignmentProps {
     consignment: Consignment;

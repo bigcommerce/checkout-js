@@ -9,16 +9,16 @@ import { isEmpty } from 'lodash';
 import React, { FunctionComponent, memo } from 'react';
 
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { IconPayPalConnectSmall } from '@bigcommerce/checkout/ui';
 
 import AddressType from '../../address/AddressType';
 import isValidAddress from '../../address/isValidAddress';
 import localizeAddress from '../../address/localizeAddress';
 import { withCheckout } from '../../checkout';
-import IconPayPalConnectSmall from '../../ui/icon/IconPayPalConnectSmall';
 
 import usePayPalConnectAddress from './usePayPalConnectAddress';
 
-import './StaticAddress.scss';
+import './PayPalAxoStaticAddress.scss';
 
 export interface PayPalAxoStaticAddressProps {
     address: Address;

@@ -16,7 +16,10 @@ import { getCountries } from '../../geography/countries.mock';
 import PayPalAxoStaticAddress, { PayPalAxoStaticAddressProps } from './PayPalAxoStaticAddress';
 import * as usePayPalConnectAddress from './usePayPalConnectAddress';
 
-jest.mock('../../ui/icon/IconPayPalConnectSmall', () => () => <div data-test="PayPalConnectIcon">PayPalConnectIcon</div>);
+// jest.mock('../../ui/icon/IconPayPalConnectSmall', () => () => <div data-test="PayPalConnectIcon">PayPalConnectIcon</div>);
+jest.mock('@bigcommerce/checkout/ui', () => ({
+    IconPayPalConnectSmall: () => <div data-test="PayPalConnectIcon">PayPalConnectIcon</div>,
+}));
 
 describe('StaticAddress Component', () => {
     let StaticAddressTest: FunctionComponent<PayPalAxoStaticAddressProps>;

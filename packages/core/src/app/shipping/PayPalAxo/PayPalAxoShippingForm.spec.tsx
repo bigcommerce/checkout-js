@@ -2,6 +2,7 @@ import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutContext } from '@bigcommerce/checkout/payment-integration-api';
 import { getCart, getCheckout, getCustomer, getPhysicalItem, getStoreConfig } from '@bigcommerce/checkout/test-utils';
@@ -34,9 +35,11 @@ describe('ShippingForm Component', () => {
 
         return mount(
             <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
-                <LocaleContext.Provider value={localeContext}>
-                    <PayPalAxoShippingForm {...shippingFormProps} />
-                </LocaleContext.Provider>
+                <ExtensionProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <PayPalAxoShippingForm {...shippingFormProps} />
+                    </LocaleContext.Provider>
+                </ExtensionProvider>
             </CheckoutContext.Provider>
         );
     };
@@ -192,9 +195,13 @@ describe('ShippingForm Component', () => {
     describe('when multishipping mode is on', () => {
         describe('when user is guest', () => {
             beforeEach(() => {
+                const checkoutService = createCheckoutService();
+
                 component = mount(
                     <LocaleContext.Provider value={localeContext}>
-                        <PayPalAxoShippingForm {...defaultProps} isGuest={true} isMultiShippingMode={true} />
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <PayPalAxoShippingForm {...defaultProps} isGuest={true} isMultiShippingMode={true} />
+                        </ExtensionProvider>
                     </LocaleContext.Provider>,
                 );
             });

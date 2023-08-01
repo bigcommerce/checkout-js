@@ -9,11 +9,11 @@ import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api'
 import { getConsignment, getCustomer, getShippingAddress, getStoreConfig } from '@bigcommerce/checkout/test-utils';
 
 import { getFormFields } from '../../address/formField.mock';
+import { PayPalAxoStaticAddress } from '../../address/PayPalAxo';
 import StaticAddressEditable from '../StaticAddressEditable';
 
 import PayPalAxoShippingAddress, { PayPalAxoShippingAddressProps } from './PayPalAxoShippingAddress';
 import PayPalAxoShippingAddressForm from './PayPalAxoShippingAddressForm';
-import PayPalAxoStaticAddress from './PayPalAxoStaticAddress';
 
 describe('PayPalAxoShippingAddress Component', () => {
     let checkoutService: CheckoutService;

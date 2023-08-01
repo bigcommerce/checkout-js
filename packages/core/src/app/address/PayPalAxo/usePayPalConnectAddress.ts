@@ -2,7 +2,7 @@ import { Address } from '@bigcommerce/checkout-sdk';
 
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
-import { isEqualAddress } from '../../address';
+import { isEqualAddress } from '..';
 
 const usePayPalConnectAddress = () => {
     const { checkoutState } = useCheckout();
@@ -11,15 +11,13 @@ const usePayPalConnectAddress = () => {
         const { data: { getPaymentProviderCustomer }} = checkoutState;
         const addresses = getPaymentProviderCustomer()?.addresses || [];
 
-        console.log('*** getPaymentProviderCustomer()', getPaymentProviderCustomer());
-
         // TODO: if no data in getPaymentProviderCustomer => need to get from LS
         // if data from LS need to check email from LS and email from customer step
 
         // TODO: remove this mock after fix types on checkout-sdk-js
         return addresses.map(address => ({
+            country: '',
             ...address,
-            country: address.countryCode,
         }));
     };
 

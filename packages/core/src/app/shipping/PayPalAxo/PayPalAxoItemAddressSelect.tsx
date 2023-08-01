@@ -1,9 +1,8 @@
 import { Address } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 
+import { PayPalAxoAddressSelect } from '../../address/PayPalAxo';
 import ShippableItem from '../ShippableItem';
-
-import PayPalAxoAddressSelect from './PayPalAxoAddressSelect';
 
 export interface PayPalAxoItemAddressSelectProps {
     item: ShippableItem;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import IconPayPalConnect from '../../ui/icon/IconPayPalConnect';
+import { IconPayPalConnect } from '@bigcommerce/checkout/ui';
 
 import './PoweredByPaypalConnectLabel.scss';
 

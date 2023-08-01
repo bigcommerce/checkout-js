@@ -7,12 +7,11 @@ import {
 import React, { Component, ReactNode } from 'react';
 
 import { AddressForm, isValidCustomerAddress } from '../../address';
+import { PayPalAxoAddressSelect } from '../../address/PayPalAxo';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { Fieldset } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
 import { SingleShippingFormValues } from '../SingleShippingForm';
-
-import PayPalAxoAddressSelect from './PayPalAxoAddressSelect';
 
 export interface PayPalAxoShippingAddressFormProps {
     addresses: Address[];

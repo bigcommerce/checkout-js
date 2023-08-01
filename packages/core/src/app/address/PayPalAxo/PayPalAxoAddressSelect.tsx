@@ -12,7 +12,7 @@ import PayPalAxoStaticAddress from './PayPalAxoStaticAddress';
 import PoweredByPaypalConnectLabel from './PoweredByPaypalConnectLabel';
 import usePayPalConnectAddress from './usePayPalConnectAddress';
 
-import './AddressSelect.scss';
+import '../AddressSelect.scss';
 
 export interface PayPalAxoAddressSelectProps {
     addresses: Address[];

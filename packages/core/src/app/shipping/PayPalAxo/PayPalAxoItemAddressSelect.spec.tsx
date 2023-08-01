@@ -3,7 +3,8 @@ import React from 'react';
 
 import { getConsignment, getCustomer, getPhysicalItem } from '@bigcommerce/checkout/test-utils';
 
-import PayPalAxoAddressSelect from './PayPalAxoAddressSelect';
+import { PayPalAxoAddressSelect } from '../../address/PayPalAxo';
+
 import PayPalAxoItemAddressSelect, { PayPalAxoItemAddressSelectProps } from './PayPalAxoItemAddressSelect';
 
 describe('PayPalAxoItemAddressSelect Component', () => {

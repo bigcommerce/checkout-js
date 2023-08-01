@@ -3,8 +3,9 @@ import React from 'react';
 
 import { getCart, getConsignment } from '@bigcommerce/checkout/test-utils';
 
+import * as usePayPalConnectAddress from '../../address/PayPalAxo/usePayPalConnectAddress';
+
 import PayPalAxoStaticConsignment from './PayPalAxoStaticConsignment';
-import * as usePayPalConnectAddress from './usePayPalConnectAddress';
 
 describe('PayPal AXO StaticConsignment Component', () => {
     const consignment = getConsignment();

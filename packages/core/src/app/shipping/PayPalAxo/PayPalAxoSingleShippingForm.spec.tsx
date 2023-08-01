@@ -1,7 +1,9 @@
+import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
-import React from 'react';
+import React, { FC } from 'react';
 
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
 import { getShippingAddress, getStoreConfig } from '@bigcommerce/checkout/test-utils';
 
 import { getAddressFormFields } from '../../address/formField.mock';
@@ -14,12 +16,23 @@ import PayPalAxoSingleShippingForm, {
 
 describe('PayPalAxoSingleShippingForm', () => {
     const addressFormFields = getAddressFormFields().filter(({ custom }) => !custom);
-    let localeContext: LocaleContextType;
     let component: ReactWrapper;
     let defaultProps: PayPalAxoSingleShippingFormProps;
 
+    const ComponentWrapper: FC = ({ children }) => {
+        const localeContext = createLocaleContext(getStoreConfig());
+        const checkoutService = createCheckoutService();
+
+        return (
+            <LocaleContext.Provider value={localeContext}>
+                <ExtensionProvider checkoutService={checkoutService}>
+                    { children }
+                </ExtensionProvider>
+            </LocaleContext.Provider>
+        )
+    };
+
     beforeEach(() => {
-        localeContext = createLocaleContext(getStoreConfig());
         defaultProps = {
             isMultiShippingMode: false,
             countries: [],
@@ -44,9 +57,9 @@ describe('PayPalAxoSingleShippingForm', () => {
         };
 
         component = mount(
-            <LocaleContext.Provider value={localeContext}>
+            <ComponentWrapper>
                 <PayPalAxoSingleShippingForm {...defaultProps} />
-            </LocaleContext.Provider>,
+            </ComponentWrapper>,
         );
     });
 
@@ -81,14 +94,14 @@ describe('PayPalAxoSingleShippingForm', () => {
 
     it('calls updateAddress if modified field does not affect shipping but makes form valid', (done) => {
         component = mount(
-            <LocaleContext.Provider value={localeContext}>
+            <ComponentWrapper>
                 <PayPalAxoSingleShippingForm
                     {...defaultProps}
                     getFields={() => [
                         ...addressFormFields.map((field) => ({ ...field, required: true })),
                     ]}
                 />
-            </LocaleContext.Provider>,
+            </ComponentWrapper>,
         );
 
         component
@@ -132,7 +145,7 @@ describe('PayPalAxoSingleShippingForm', () => {
 
     it('calls updateAddress including shipping options if custom form fields are updated', (done) => {
         component = mount(
-            <LocaleContext.Provider value={localeContext}>
+            <ComponentWrapper>
                 <PayPalAxoSingleShippingForm
                     {...defaultProps}
                     getFields={() => [
@@ -149,7 +162,7 @@ describe('PayPalAxoSingleShippingForm', () => {
                         },
                     ]}
                 />
-            </LocaleContext.Provider>,
+            </ComponentWrapper>,
         );
 
         component.find('input[name="shippingAddress.customFields.field_25"]').simulate('change', {
@@ -248,7 +261,7 @@ describe('PayPalAxoSingleShippingForm', () => {
 
     it('calls update address for amazon pay if required custom fields are filled out', (done) => {
         component = mount(
-            <LocaleContext.Provider value={localeContext}>
+            <ComponentWrapper>
                 <PayPalAxoSingleShippingForm
                     {...defaultProps}
                     getFields={() => [
@@ -265,7 +278,7 @@ describe('PayPalAxoSingleShippingForm', () => {
                         },
                     ]}
                 />
-            </LocaleContext.Provider>,
+            </ComponentWrapper>,
         );
 
         component.find('input[name="shippingAddress.customFields.field_25"]').simulate('change', {
@@ -298,7 +311,7 @@ describe('PayPalAxoSingleShippingForm', () => {
 
     it('does not update address for amazon pay if required custom fields is left empty', (done) => {
         component = mount(
-            <LocaleContext.Provider value={localeContext}>
+            <ComponentWrapper>
                 <PayPalAxoSingleShippingForm
                     {...defaultProps}
                     getFields={() => [
@@ -315,7 +328,7 @@ describe('PayPalAxoSingleShippingForm', () => {
                         },
                     ]}
                 />
-            </LocaleContext.Provider>,
+            </ComponentWrapper>,
         );
 
         component.find('input[name="shippingAddress.customFields.field_25"]').simulate('change', {
@@ -331,9 +344,9 @@ describe('PayPalAxoSingleShippingForm', () => {
 
     it('does not render billing same as shipping checkbox for amazon pay', () => {
         component = mount(
-            <LocaleContext.Provider value={localeContext}>
+            <ComponentWrapper>
                 <PayPalAxoSingleShippingForm {...defaultProps} methodId="amazonpay" />
-            </LocaleContext.Provider>,
+            </ComponentWrapper>,
         );
 
         expect(component.contains(<BillingSameAsShippingField />)).toBe(false);

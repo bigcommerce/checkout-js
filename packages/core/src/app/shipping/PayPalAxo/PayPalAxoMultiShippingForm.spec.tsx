@@ -2,6 +2,7 @@ import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sd
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { getCart, getConsignment, getCustomer, getPhysicalItem, getStoreConfig } from '@bigcommerce/checkout/test-utils';
@@ -58,9 +59,11 @@ describe('PayPalAxoMultiShippingForm Component', () => {
         beforeEach(() => {
             component = mount(
                 <LocaleContext.Provider value={localeContext}>
-                    <CheckoutProvider checkoutService={checkoutService}>
-                        <PayPalAxoMultiShippingForm {...defaultProps} isGuest={true} />
-                    </CheckoutProvider>
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <CheckoutProvider checkoutService={checkoutService}>
+                            <PayPalAxoMultiShippingForm {...defaultProps} isGuest={true} />
+                        </CheckoutProvider>
+                    </ExtensionProvider>
                 </LocaleContext.Provider>,
             );
         });
@@ -76,9 +79,11 @@ describe('PayPalAxoMultiShippingForm Component', () => {
         beforeEach(() => {
             component = mount(
                 <LocaleContext.Provider value={localeContext}>
-                    <CheckoutProvider checkoutService={checkoutService}>
-                        <PayPalAxoMultiShippingForm {...defaultProps} />
-                    </CheckoutProvider>
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <CheckoutProvider checkoutService={checkoutService}>
+                            <PayPalAxoMultiShippingForm {...defaultProps} />
+                        </CheckoutProvider>
+                    </ExtensionProvider>
                 </LocaleContext.Provider>,
             );
         });

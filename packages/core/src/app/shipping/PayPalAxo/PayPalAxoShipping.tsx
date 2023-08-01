@@ -16,12 +16,12 @@ import React from 'react';
 
 import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 
+import { usePayPalConnectAddress } from '../../address/PayPalAxo';
 import { MultiShippingFormValues } from '../MultiShippingForm';
 import ShippingHeader from '../ShippingHeader';
 import { SingleShippingFormValues } from '../SingleShippingForm';
 
 import PayPalAxoShippingForm from './PayPalAxoShippingForm';
-import usePayPalConnectAddress from './usePayPalConnectAddress';
 
 interface PayPalAxoShippingProps {
     cart: Cart;

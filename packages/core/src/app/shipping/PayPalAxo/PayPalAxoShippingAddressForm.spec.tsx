@@ -10,8 +10,8 @@ import { getCheckout, getConsignment, getCustomer, getShippingAddress, getStoreC
 
 import { AddressForm } from '../../address';
 import { getFormFields } from '../../address/formField.mock';
+import { PayPalAxoAddressSelect } from '../../address/PayPalAxo';
 
-import PayPalAxoAddressSelect from './PayPalAxoAddressSelect';
 import PayPalAxoShippingAddressForm, { PayPalAxoShippingAddressFormProps } from './PayPalAxoShippingAddressForm';
 
 describe('PayPalAxoShippingAddressForm Component', () => {

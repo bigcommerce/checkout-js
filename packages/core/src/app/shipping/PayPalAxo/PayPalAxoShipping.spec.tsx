@@ -3,11 +3,13 @@ import React from 'react';
 
 import { getAddress, getCart, getConsignment, getCustomer, getPhysicalItem, getShippingAddress } from '@bigcommerce/checkout/test-utils';
 
+import * as usePayPalConnectAddress from '../../address/PayPalAxo/usePayPalConnectAddress';
 import { getCountries } from '../../geography/countries.mock';
 
 import PayPalAxoShipping from './PayPalAxoShipping';
 import PayPalAxoShippingForm from './PayPalAxoShippingForm';
-import * as usePayPalConnectAddress from './usePayPalConnectAddress';
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 
 describe('PayPalAxoShipping', () => {
     const defaultProps = {
@@ -58,13 +60,19 @@ describe('PayPalAxoShipping', () => {
     };
 
     it('loads shipping data  when component is mounted', () => {
+        const checkoutService = createCheckoutService();
+        
         jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
             jest.fn().mockImplementation(() => ({
                 mergeAddresses: () => getAddress(),
             }))
         );
 
-        const component = mount(<PayPalAxoShipping {...defaultProps} />);
+        const component = mount(
+            <ExtensionProvider checkoutService={checkoutService}>
+                <PayPalAxoShipping {...defaultProps} />
+            </ExtensionProvider>
+        );
 
         expect(component.find(PayPalAxoShippingForm)).toHaveLength(1);
     });
