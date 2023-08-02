@@ -36,7 +36,7 @@ import {
 } from '../customer';
 import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
 import { PromotionBannerList } from '../promotion';
-import { hasSelectedShippingOptions, isUsingMultiShipping, StaticConsignment } from '../shipping';
+import { hasSelectedShippingOptions, isUsingMultiShipping, ShippingSummary } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
 import { LazyContainer, LoadingNotification, LoadingOverlay } from '../ui/loading';
 import { MobileView } from '../ui/responsive';
@@ -427,7 +427,7 @@ class Checkout extends Component<
                 onExpanded={this.handleExpanded}
                 summary={consignments.map((consignment) => (
                     <div className="staticConsignmentContainer" key={consignment.id}>
-                        <StaticConsignment
+                        <ShippingSummary
                             cart={cart}
                             compactView={consignments.length < 2}
                             consignment={consignment}
