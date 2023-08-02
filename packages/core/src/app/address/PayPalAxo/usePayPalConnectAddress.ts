@@ -9,16 +9,8 @@ const usePayPalConnectAddress = () => {
     
     const getPaypalConnectAddresses = (): Address[] => {
         const { data: { getPaymentProviderCustomer }} = checkoutState;
-        const addresses = getPaymentProviderCustomer()?.addresses || [];
 
-        // TODO: if no data in getPaymentProviderCustomer => need to get from LS
-        // if data from LS need to check email from LS and email from customer step
-
-        // TODO: remove this mock after fix types on checkout-sdk-js
-        return addresses.map(address => ({
-            country: '',
-            ...address,
-        }));
+        return getPaymentProviderCustomer()?.addresses || [];
     };
 
     const isPayPalConnectAddress = (address: Address): boolean => {
