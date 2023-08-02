@@ -4,13 +4,26 @@ import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
 import { isEqualAddress } from '..';
 
+const PAYPAL_CONNECT_CUSTOMER_KEY = 'paypal-connect-customer';
+
 const usePayPalConnectAddress = () => {
     const { checkoutState } = useCheckout();
     
     const getPaypalConnectAddresses = (): Address[] => {
-        const { data: { getPaymentProviderCustomer }} = checkoutState;
+        const { data: { getPaymentProviderCustomer, getCustomer }} = checkoutState;
+        let addresses = getPaymentProviderCustomer()?.addresses;
 
-        return getPaymentProviderCustomer()?.addresses || [];
+        if (!addresses?.length) {
+            const storesPayPalConnectCustomer = JSON.parse(
+                localStorage.getItem(PAYPAL_CONNECT_CUSTOMER_KEY) || ''
+            );
+
+            addresses = getCustomer()?.email === storesPayPalConnectCustomer?.email
+                ? storesPayPalConnectCustomer?.addresses
+                : [];
+        }
+
+        return addresses || [];
     };
 
     const isPayPalConnectAddress = (address: Address): boolean => {
