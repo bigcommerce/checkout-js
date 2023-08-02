@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.350.0](https://github.com/bigcommerce/checkout-js/compare/v1.349.0...v1.350.0) (2023-08-02)
+
+
+### Features
+
+* **payment:** PAYPAL-1545 added PaypalCommerce RatePay component ([d8053e5](https://github.com/bigcommerce/checkout-js/commit/d8053e52bb547c142a2a936c5950f35d3ce7cfde))
+
 ## [1.349.0](https://github.com/bigcommerce/checkout-js/compare/v1.348.0...v1.349.0) (2023-08-02)
 
 
