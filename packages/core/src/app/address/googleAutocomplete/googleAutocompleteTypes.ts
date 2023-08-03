@@ -51,4 +51,5 @@ export type GoogleAddressFieldType =
     | 'political'
     | 'country'
     | 'subpremise'
-    | 'sublocality';
+    | 'sublocality'
+    | 'sublocality_level_1';

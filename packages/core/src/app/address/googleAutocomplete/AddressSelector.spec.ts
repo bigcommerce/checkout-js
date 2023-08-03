@@ -116,5 +116,7 @@ describe('AddressSelector', () => {
 
             expect(accessor.getCity()).toBe('Ultimo N');
         });
+
+        it.todo('returns correct value for state for Canada address');
     });
 });
