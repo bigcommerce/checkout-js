@@ -14,6 +14,32 @@ import usePayPalConnectAddress from './usePayPalConnectAddress';
 
 import '../AddressSelect.scss';
 
+const PayPalAxoAddressSelectMenu: FunctionComponent<PayPalAxoAddressSelectProps> = ({
+    addresses,
+    onSelectAddress,
+    onUseNewAddress,
+    selectedAddress,
+}) => (
+    <ul className="dropdown-menu instrumentSelect-dropdownMenu" id="addressDropdown">
+        <li className="dropdown-menu-item dropdown-menu-item--select">
+            <a
+                data-test="add-new-address"
+                href="#"
+                onClick={preventDefault(() => onUseNewAddress(selectedAddress))}
+            >
+                <TranslatedString id="address.enter_address_action" />
+            </a>
+        </li>
+        {addresses.map((address, index) => (
+            <li className="dropdown-menu-item dropdown-menu-item--select" key={index}>
+                <a href="#" onClick={preventDefault(() => onSelectAddress(address))}>
+                    <PayPalAxoStaticAddress address={address} />
+                </a>
+            </li>
+        ))}
+    </ul>
+);
+
 export interface PayPalAxoAddressSelectProps {
     addresses: Address[];
     selectedAddress?: Address;
@@ -58,31 +84,5 @@ const PayPalAxoAddressSelect = ({ addresses, selectedAddress, onSelectAddress, o
         </div>
     );
 }
-
-const PayPalAxoAddressSelectMenu: FunctionComponent<PayPalAxoAddressSelectProps> = ({
-    addresses,
-    onSelectAddress,
-    onUseNewAddress,
-    selectedAddress,
-}) => (
-    <ul className="dropdown-menu instrumentSelect-dropdownMenu" id="addressDropdown">
-        <li className="dropdown-menu-item dropdown-menu-item--select">
-            <a
-                data-test="add-new-address"
-                href="#"
-                onClick={preventDefault(() => onUseNewAddress(selectedAddress))}
-            >
-                <TranslatedString id="address.enter_address_action" />
-            </a>
-        </li>
-        {addresses.map((address, index) => (
-            <li className="dropdown-menu-item dropdown-menu-item--select" key={index}>
-                <a href="#" onClick={preventDefault(() => onSelectAddress(address))}>
-                    <PayPalAxoStaticAddress address={address} />
-                </a>
-            </li>
-        ))}
-    </ul>
-);
 
 export default memo(PayPalAxoAddressSelect);
