@@ -4,7 +4,8 @@ import React, { FunctionComponent, memo } from 'react';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
-import { AddressType, StaticAddress } from '../../address';
+import { AddressType } from '../../address';
+import { PayPalAxoStaticAddress } from '../../address/PayPalAxo';
 import { withCheckout } from '../../checkout';
 import { EMPTY_ARRAY } from '../../common/utility';
 
@@ -28,7 +29,7 @@ const StaticBillingAddress: FunctionComponent<
         );
     }
 
-    return <StaticAddress address={address} type={AddressType.Billing} />;
+    return <PayPalAxoStaticAddress address={address} type={AddressType.Billing} />;
 };
 
 export function mapToStaticBillingAddressProps(

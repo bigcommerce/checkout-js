@@ -15,12 +15,12 @@ import { AddressFormSkeleton, Button, ButtonVariant, LoadingOverlay } from '@big
 import {
     AddressForm,
     AddressFormValues,
-    AddressSelect,
     getAddressFormFieldsValidationSchema,
     getTranslateAddressError,
     isValidCustomerAddress,
     mapAddressToFormValues,
 } from '../../address';
+import { PayPalAxoAddressSelect } from '../../address/PayPalAxo';
 import { getCustomFormFieldsValidationSchema } from '../../formFields';
 import { OrderComments } from '../../orderComments';
 import { Fieldset, Form } from '../../ui/form';
@@ -104,7 +104,7 @@ class PayPalAxoBillingForm extends PureComponent<
                     {hasAddresses && !shouldRenderStaticAddress && (
                         <Fieldset id="billingAddresses">
                             <LoadingOverlay isLoading={isResettingAddress}>
-                                <AddressSelect
+                                <PayPalAxoAddressSelect
                                     addresses={addresses}
                                     onSelectAddress={this.handleSelectAddress}
                                     onUseNewAddress={this.handleUseNewAddress}

@@ -16,11 +16,13 @@ import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
 import { withCheckout } from '../checkout';
 import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
+import { PaymentMethodId } from '../payment/paymentMethod';
 import { getShippableItemsCount } from '../shipping';
 import { Legend } from '../ui/form';
 
 import BillingForm, { BillingFormValues } from './BillingForm';
 import getBillingMethodId from './getBillingMethodId';
+import { PayPalAxoBilling } from './PayPalAxo';
 
 export interface BillingProps {
     navigateNextStep(): void;
@@ -40,6 +42,7 @@ export interface WithCheckoutBillingProps {
     billingAddress?: Address;
     methodId?: string;
     isFloatingLabelEnabled?: boolean;
+    providerWithCustomCheckout?: string;
     getFields(countryCode?: string): FormField[];
     initialize(): Promise<CheckoutSelectors>;
     updateAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
@@ -61,7 +64,23 @@ class Billing extends Component<BillingProps & WithCheckoutBillingProps> {
     }
 
     render(): ReactNode {
-        const { updateAddress, isInitializing, ...props } = this.props;
+        const {
+            updateAddress,
+            isInitializing,
+            providerWithCustomCheckout,
+            ...props
+        } = this.props;
+
+        if (providerWithCustomCheckout === PaymentMethodId.BraintreeAcceleratedCheckout) {
+            return (
+                <PayPalAxoBilling
+                    {...props}
+                    isInitializing={isInitializing}
+                    onSubmit={this.handleSubmit}
+                    updateAddress={updateAddress}
+                />
+            );
+        }
 
         return (
             <AddressFormSkeleton isLoading={isInitializing}>
@@ -143,7 +162,7 @@ function mapToBillingProps({
         return null;
     }
 
-    const { enableOrderComments, googleMapsApiKey, features } = config.checkoutSettings;
+    const { enableOrderComments, googleMapsApiKey, features, providerWithCustomCheckout } = config.checkoutSettings;
 
     const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ'];
 
@@ -167,6 +186,7 @@ function mapToBillingProps({
         updateAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,
         isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
+        providerWithCustomCheckout: providerWithCustomCheckout || undefined,
     };
 }
 
