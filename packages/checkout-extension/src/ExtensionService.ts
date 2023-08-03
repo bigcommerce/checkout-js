@@ -1,9 +1,4 @@
-import {
-    CheckoutService,
-    Extension,
-    ExtensionCommandType,
-    ExtensionRegion,
-} from '@bigcommerce/checkout-sdk';
+import { CheckoutService, ExtensionCommandType, ExtensionRegion } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
 import { ExtensionAction, ExtensionActionType } from './ExtensionProvider';
@@ -25,7 +20,7 @@ export class ExtensionService {
     }
 
     async renderExtension(container: string, region: ExtensionRegion): Promise<void> {
-        const extension = this.getExtensionByRegion(region);
+        const extension = this.checkoutService.getState().data.getExtensionByRegion(region);
 
         if (!extension) {
             return;
@@ -55,16 +50,14 @@ export class ExtensionService {
                 extension.id,
                 ExtensionCommandType.SetIframeStyle,
                 (data) => {
-                    if (data.type === ExtensionCommandType.SetIframeStyle) {
-                        const { style } = data.payload;
-                        const extensionContainer = document.querySelector(
-                            `div[data-extension-id="${extension.id}"]`,
-                        );
-                        const iframe = extensionContainer?.querySelector('iframe');
+                    const { style } = data.payload;
+                    const extensionContainer = document.querySelector(
+                        `div[data-extension-id="${extension.id}"]`,
+                    );
+                    const iframe = extensionContainer?.querySelector('iframe');
 
-                        if (iframe) {
-                            Object.assign(iframe.style, style);
-                        }
+                    if (iframe) {
+                        Object.assign(iframe.style, style);
                     }
                 },
             ),
@@ -75,21 +68,19 @@ export class ExtensionService {
                 extension.id,
                 ExtensionCommandType.ShowLoadingIndicator,
                 (data) => {
-                    if (data.type === ExtensionCommandType.ShowLoadingIndicator) {
-                        const { show } = data.payload;
+                    const { show } = data.payload;
 
-                        this.createAction({
-                            type: ExtensionActionType.SHOW_LOADING_INDICATOR,
-                            payload: show,
-                        });
-                    }
+                    this.createAction({
+                        type: ExtensionActionType.SHOW_LOADING_INDICATOR,
+                        payload: show,
+                    });
                 },
             ),
         );
     }
 
     removeListeners(region: ExtensionRegion): void {
-        const extension = this.getExtensionByRegion(region);
+        const extension = this.checkoutService.getState().data.getExtensionByRegion(region);
 
         if (!extension) {
             return;
@@ -108,15 +99,9 @@ export class ExtensionService {
         delete this.handlers[extension.id];
     }
 
-    isRegionInUse(region: ExtensionRegion): boolean {
-        const extension = this.getExtensionByRegion(region);
+    isRegionEnabled(region: ExtensionRegion): boolean {
+        const extension = this.checkoutService.getState().data.getExtensionByRegion(region);
 
         return Boolean(extension);
-    }
-
-    private getExtensionByRegion(region: ExtensionRegion): Extension | undefined {
-        const extensions = this.checkoutService.getState().data.getExtensions();
-
-        return extensions?.find((e) => e.region === region);
     }
 }
