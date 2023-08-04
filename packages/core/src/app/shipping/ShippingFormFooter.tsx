@@ -29,13 +29,13 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
     isLoading,
 }) => {
     const { extensionService, isExtensionEnabled } = useExtensions();
-    const isRegionInUse = Boolean(
+    const isExtensionRegionEnabled = Boolean(
         isExtensionEnabled() &&
-            extensionService.isRegionInUse(ExtensionRegion.ShippingShippingAddressFormAfter),
+            extensionService.isRegionEnabled(ExtensionRegion.ShippingShippingAddressFormAfter),
     );
 
     useEffect(() => {
-        if (isRegionInUse) {
+        if (isExtensionRegionEnabled) {
             void extensionService.renderExtension(
                 ExtensionRegionContainer.ShippingShippingAddressFormAfter,
                 ExtensionRegion.ShippingShippingAddressFormAfter,
@@ -45,11 +45,11 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
                 extensionService.removeListeners(ExtensionRegion.ShippingShippingAddressFormAfter);
             };
         }
-    }, [extensionService, isRegionInUse]);
+    }, [extensionService, isExtensionRegionEnabled]);
 
     return (
         <>
-            {isRegionInUse && (
+            {isExtensionRegionEnabled && (
                 <div id={ExtensionRegionContainer.ShippingShippingAddressFormAfter} />
             )}
             <Fieldset

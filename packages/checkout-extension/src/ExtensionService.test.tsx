@@ -27,6 +27,9 @@ describe('ExtensionService', () => {
         jest.spyOn(checkoutService.getState().data, 'getExtensions').mockReturnValue(
             getExtensions(),
         );
+        jest.spyOn(checkoutService.getState().data, 'getExtensionByRegion').mockReturnValue(
+            getExtensions()[0],
+        );
 
         extensionService = new ExtensionService(checkoutService, dispatch);
     });
@@ -92,17 +95,17 @@ describe('ExtensionService', () => {
     describe('isRegionInUse()', () => {
         it('returns true when checking if a region is in use', () => {
             expect(
-                extensionService.isRegionInUse(ExtensionRegion.ShippingShippingAddressFormBefore),
+                extensionService.isRegionEnabled(ExtensionRegion.ShippingShippingAddressFormBefore),
             ).toBe(true);
         });
 
         it('returns false when checking if a region is not in use', () => {
-            jest.spyOn(checkoutService.getState().data, 'getExtensions').mockReturnValue(
-                getExtensions().slice(0, 1),
+            jest.spyOn(checkoutService.getState().data, 'getExtensionByRegion').mockReturnValue(
+                undefined,
             );
 
             expect(
-                extensionService.isRegionInUse(ExtensionRegion.ShippingShippingAddressFormAfter),
+                extensionService.isRegionEnabled(ExtensionRegion.ShippingShippingAddressFormAfter),
             ).toBe(false);
         });
     });

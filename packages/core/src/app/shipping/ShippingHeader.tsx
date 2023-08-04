@@ -21,13 +21,13 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
     shouldShowMultiShipping,
 }) => {
     const { extensionService, isExtensionEnabled } = useExtensions();
-    const isRegionInUse = Boolean(
+    const isExtensionRegionEnabled = Boolean(
         isExtensionEnabled() &&
-            extensionService.isRegionInUse(ExtensionRegion.ShippingShippingAddressFormBefore),
+            extensionService.isRegionEnabled(ExtensionRegion.ShippingShippingAddressFormBefore),
     );
 
     useEffect(() => {
-        if (isRegionInUse) {
+        if (isExtensionRegionEnabled) {
             void extensionService.renderExtension(
                 ExtensionRegionContainer.ShippingShippingAddressFormBefore,
                 ExtensionRegion.ShippingShippingAddressFormBefore,
@@ -37,11 +37,11 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
                 extensionService.removeListeners(ExtensionRegion.ShippingShippingAddressFormBefore);
             };
         }
-    }, [extensionService, isRegionInUse]);
+    }, [extensionService, isExtensionRegionEnabled]);
 
     return (
         <>
-            {isRegionInUse && (
+            {isExtensionRegionEnabled && (
                 <div id={ExtensionRegionContainer.ShippingShippingAddressFormBefore} />
             )}
             <div className="form-legend-container">
