@@ -1,6 +1,6 @@
 import AddressSelector from './AddressSelector';
 import AddressSelectorFactory from "./AddressSelectorFactory";
-import { getGoogleAutocompleteNZPlaceMock, getGoogleAutocompletePlaceMock, getGoogleAutocompleteUKPlaceMock } from './googleAutocompleteResult.mock';
+import { getGoogleAutocompleteCAPlaceMockWithLocality, getGoogleAutocompleteCAPlaceMockWithSubLocality, getGoogleAutocompleteNZPlaceMock, getGoogleAutocompletePlaceMock, getGoogleAutocompleteUKPlaceMock } from './googleAutocompleteResult.mock';
 
 describe('AddressSelector', () => {
     let googleAutoCompleteResponseMock: google.maps.places.PlaceResult;
@@ -117,6 +117,20 @@ describe('AddressSelector', () => {
             expect(accessor.getCity()).toBe('Ultimo N');
         });
 
-        it.todo('returns correct value for state for Canada address');
+        it('resturns the correct city for canada when sublocality is present', () => {
+            googleAutoCompleteResponseMock = getGoogleAutocompleteCAPlaceMockWithSubLocality();
+
+            const accessor = AddressSelectorFactory.create(googleAutoCompleteResponseMock);
+
+            expect(accessor.getCity()).toBe('Gloucester');
+        });
+
+        it('resturns the correct city for canada when sublocality is not present', () => {
+            googleAutoCompleteResponseMock = getGoogleAutocompleteCAPlaceMockWithLocality();
+
+            const accessor = AddressSelectorFactory.create(googleAutoCompleteResponseMock);
+
+            expect(accessor.getCity()).toBe('Calgary');
+        });
     });
 });
