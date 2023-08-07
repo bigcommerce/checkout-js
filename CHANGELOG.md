@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.350.5](https://github.com/bigcommerce/checkout-js/compare/v1.350.4...v1.350.5) (2023-08-07)
+
+
+### Bug Fixes
+
+* **shipping:** CHECKOUT-7627 Google AddressSelector sometimes autofills the wrong city for Canada addresses ([#1419](https://github.com/bigcommerce/checkout-js/issues/1419)) ([49ea97c](https://github.com/bigcommerce/checkout-js/commit/49ea97c46cc11f4f528c2b93cce7bc7a38b10424))
+
 ### [1.350.4](https://github.com/bigcommerce/checkout-js/compare/v1.350.3...v1.350.4) (2023-08-04)
 
 
