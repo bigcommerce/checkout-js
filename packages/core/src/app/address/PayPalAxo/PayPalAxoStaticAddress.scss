@@ -1,0 +1,18 @@
+.checkout-address--static {
+    $icon-size: 1.85rem;
+
+    position: relative;
+
+    .address-entry {
+        margin: 0;
+        padding-right: $icon-size;
+    }
+
+    .icon {
+        width: $icon-size;
+        height: $icon-size;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+}

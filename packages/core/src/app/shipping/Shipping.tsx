@@ -30,6 +30,7 @@ import { UnassignItemError } from './errors';
 import getShippableItemsCount from './getShippableItemsCount';
 import getShippingMethodId from './getShippingMethodId';
 import { MultiShippingFormValues } from './MultiShippingForm';
+import { PayPalAxoShipping } from './PayPalAxo';
 import ShippingForm from './ShippingForm';
 import ShippingHeader from './ShippingHeader';
 import { SingleShippingFormValues } from './SingleShippingForm';
@@ -154,6 +155,26 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                 step={step}
                 updateAddress={updateShippingAddress}
             />;
+        }
+
+        if (providerWithCustomCheckout === PaymentMethodId.BraintreeAcceleratedCheckout) {
+            return (<PayPalAxoShipping
+                {...shippingFormProps}
+                customer={ customer }
+                deinitialize={deinitializeShippingMethod}
+                initialize={initializeShippingMethod}
+                isBillingSameAsShipping={isBillingSameAsShipping}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
+                isGuest={ isGuest }
+                isLoading={ isInitializing }
+                isMultiShippingMode={isMultiShippingMode}
+                onMultiShippingChange={this.handleMultiShippingModeSwitch}
+                onMultiShippingSubmit={this.handleMultiShippingSubmit}
+                onSingleShippingSubmit={this.handleSingleShippingSubmit}
+                onUseNewAddress={this.handleUseNewAddress}
+                shouldShowMultiShipping={ shouldShowMultiShipping }
+                updateAddress={updateShippingAddress}
+            />);
         }
 
         return (
