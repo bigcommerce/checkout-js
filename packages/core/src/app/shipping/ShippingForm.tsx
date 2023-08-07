@@ -24,7 +24,7 @@ import MultiShippingForm, { MultiShippingFormValues } from './MultiShippingForm'
 import SingleShippingForm, { SingleShippingFormValues } from './SingleShippingForm';
 
 export interface ShippingFormProps {
-    addresses: CustomerAddress[];
+    addresses: Array<CustomerAddress | Address>;
     cart: Cart;
     cartHasChanged: boolean;
     consignments: Consignment[];

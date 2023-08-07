@@ -37,7 +37,7 @@ import ShippingFormFooter from './ShippingFormFooter';
 import updateShippableItems from './updateShippableItems';
 
 export interface MultiShippingFormProps {
-    addresses: CustomerAddress[];
+    addresses: Array<CustomerAddress | Address>;
     cart: Cart;
     cartHasChanged: boolean;
     consignments: Consignment[];

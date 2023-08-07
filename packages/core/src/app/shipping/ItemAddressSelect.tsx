@@ -7,7 +7,7 @@ import ShippableItem from './ShippableItem';
 
 export interface ItemAddressSelectProps {
     item: ShippableItem;
-    addresses: CustomerAddress[];
+    addresses: Array<CustomerAddress | Address>;
     onSelectAddress(address: Address, itemId: string, itemKey: string): void;
     onUseNewAddress(address: Address | undefined, itemId: string, itemKey: string): void;
     renderAddressSelect(props: AddressSelectProps): ReactNode;

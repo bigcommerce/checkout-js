@@ -19,7 +19,7 @@ import ShippingAddressForm from './ShippingAddressForm';
 import StaticAddressEditable from './StaticAddressEditable';
 
 export interface ShippingAddressProps {
-    addresses: CustomerAddress[];
+    addresses: Array<CustomerAddress | Address>;
     consignments: Consignment[];
     countries?: Country[];
     countriesWithAutocomplete: string[];

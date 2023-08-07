@@ -16,7 +16,7 @@ import { LoadingOverlay } from '../ui/loading';
 import { SingleShippingFormValues } from './SingleShippingForm';
 
 export interface ShippingAddressFormProps {
-    addresses: CustomerAddress[];
+    addresses: Array<CustomerAddress | Address>;
     address?: Address;
     consignments: Consignment[];
     countries?: Country[];

@@ -6,13 +6,14 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { preventDefault } from '../common/dom';
 import { DropdownTrigger } from '../ui/dropdown';
 
-import isEqualAddress from './isEqualAddress';
-import './AddressSelect.scss';
 import AddressSelectButton from './AddressSelectButton';
+import isEqualAddress from './isEqualAddress';
 import StaticAddress from './StaticAddress';
 
+import './AddressSelect.scss';
+
 export interface AddressSelectProps {
-    addresses: CustomerAddress[];
+    addresses: Array<CustomerAddress | Address>;
     selectedAddress?: Address;
     onSelectAddress(address: Address): void;
     onUseNewAddress(currentAddress?: Address): void;
@@ -76,8 +77,8 @@ const AddressSelectMenu: FunctionComponent<AddressSelectProps> = ({
                 <TranslatedString id="address.enter_address_action" />
             </a>
         </li>
-        {addresses.map((address) => (
-            <li className="dropdown-menu-item dropdown-menu-item--select" key={address.id}>
+        {addresses.map((address, index) => (
+            <li className="dropdown-menu-item dropdown-menu-item--select" key={index}>
                 <a href="#" onClick={preventDefault(() => onSelectAddress(address))}>
                     <StaticAddress address={address} />
                 </a>

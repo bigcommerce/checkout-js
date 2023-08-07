@@ -38,7 +38,7 @@ import { SHIPPING_ADDRESS_FIELDS } from './ShippingAddressFields';
 import ShippingFormFooter from './ShippingFormFooter';
 
 export interface SingleShippingFormProps {
-    addresses: CustomerAddress[];
+    addresses: Array<CustomerAddress | Address>;
     isBillingSameAsShipping: boolean;
     cartHasChanged: boolean;
     consignments: Consignment[];
