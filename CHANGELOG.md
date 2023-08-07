@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.350.6](https://github.com/bigcommerce/checkout-js/compare/v1.350.5...v1.350.6) (2023-08-07)
+
+
+### Bug Fixes
+
+* **customer:** CHECKOUT-000 Replace translated string with html ([#1420](https://github.com/bigcommerce/checkout-js/issues/1420)) ([b7a8808](https://github.com/bigcommerce/checkout-js/commit/b7a8808d35361bf7d9ad8a818609c17b402efaca))
+
 ### [1.350.5](https://github.com/bigcommerce/checkout-js/compare/v1.350.4...v1.350.5) (2023-08-07)
 
 
