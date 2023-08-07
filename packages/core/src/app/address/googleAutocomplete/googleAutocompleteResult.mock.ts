@@ -151,3 +151,99 @@ export function getGoogleAutocompleteUKPlaceMock(): google.maps.places.PlaceResu
         ],
     } as google.maps.places.PlaceResult;
 }
+
+export function getGoogleAutocompleteCAPlaceMockWithSubLocality(): google.maps.places.PlaceResult {
+    return {
+        "name" : "1934 Montréal Road",
+        "address_components" : [
+            {
+                "long_name" : '1934',
+                "short_name" : '1934',
+                "types" : ['street_number']
+            },
+            {
+                "long_name" : 'Montréal Road',
+                "short_name" : 'Montréal Rd',
+                "types" : ['route']
+            },
+            {
+                "long_name" : "Gloucester",
+                "short_name" : "Gloucester",
+                "types" : ["sublocality_level_1", "sublocality", "political"]
+            },
+            {
+                "long_name" : "Ottawa",
+                "short_name" : "Ottawa",
+                "types" : [ "locality", "political" ]
+            },
+            {
+                "long_name" : "Ottawa",
+                "short_name" : "Ottawa",
+                "types" : [ "administrative_area_level_3", "political" ]
+            },
+            {
+                "long_name" : "Ottawa",
+                "short_name" : "Ottawa",
+                "types" : [ "administrative_area_level_2", "political" ]
+            },
+            {
+                "long_name" : "Ontario",
+                "short_name" : "ON",
+                "types" : [ "administrative_area_level_1", "political" ]
+            },
+            {
+                "long_name" : "Canada",
+                "short_name" : "CA",
+                "types" : [ "country", "political" ]
+            },
+            {
+                "long_name" : "K1J 8P3",
+                "short_name" : "K1J 8P3",
+                "types" : [ "postal_code" ]
+            }
+        ],
+    } as google.maps.places.PlaceResult;
+}
+
+export function getGoogleAutocompleteCAPlaceMockWithLocality(): google.maps.places.PlaceResult {
+    return {
+        "name" : "7 Avenue Southwest",
+        "address_components" : [
+            {
+                "long_name" : '900',
+                "short_name" : '900',
+                "types" : ['street_number']
+            },
+            {
+                "long_name" : '7 Avenue Southwest',
+                "short_name" : 'Avenue Southwest',
+                "types" : ['route']
+            },
+            {
+                "long_name" : "Downtown",
+                "short_name" : "Downtown",
+                "types" : ["neighborhood", "political"]
+            },
+            {
+                "long_name" : "Calgary",
+                "short_name" : "Calgary",
+                "types" : [ "locality", "political" ]
+            },
+            {
+                "long_name" : "Alberta",
+                "short_name" : "AB",
+                "types" : [ "administrative_area_level_1", "political" ]
+            },
+            {
+                "long_name" : "Canada",
+                "short_name" : "CA",
+                "types" : [ "country", "political" ]
+            },
+            {
+                "long_name" : "K1J 8P3",
+                "short_name" : "K1J 8P3",
+                "types" : [ "postal_code" ]
+            }
+        ],
+    } as google.maps.places.PlaceResult;
+}
