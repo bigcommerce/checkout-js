@@ -20,7 +20,8 @@ import { createSelector } from 'reselect';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 
-import { isEqualAddress, mapAddressFromFormValues } from '../address';
+import { AddressSelect, isEqualAddress, mapAddressFromFormValues } from '../address';
+import { AddressSelectProps } from '../address/AddressSelect';
 import { withCheckout } from '../checkout';
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
@@ -30,6 +31,7 @@ import { UnassignItemError } from './errors';
 import getShippableItemsCount from './getShippableItemsCount';
 import getShippingMethodId from './getShippingMethodId';
 import { MultiShippingFormValues } from './MultiShippingForm';
+import { PayPalAxoShipping } from './PayPalAxo';
 import ShippingForm from './ShippingForm';
 import ShippingHeader from './ShippingHeader';
 import { SingleShippingFormValues } from './SingleShippingForm';
@@ -67,6 +69,7 @@ export interface WithCheckoutShippingProps {
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
     providerWithCustomCheckout?: string;
+    providerCustomerData?: Address[];
     isFloatingLabelEnabled?: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitializeShippingMethod(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
@@ -156,6 +159,26 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             />;
         }
 
+        if (providerWithCustomCheckout === PaymentMethodId.BraintreeAcceleratedCheckout) {
+            return (<PayPalAxoShipping
+                {...shippingFormProps}
+                customer={ customer }
+                deinitialize={deinitializeShippingMethod}
+                initialize={initializeShippingMethod}
+                isBillingSameAsShipping={isBillingSameAsShipping}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
+                isGuest={ isGuest }
+                isLoading={ isInitializing }
+                isMultiShippingMode={isMultiShippingMode}
+                onMultiShippingChange={this.handleMultiShippingModeSwitch}
+                onMultiShippingSubmit={this.handleMultiShippingSubmit}
+                onSingleShippingSubmit={this.handleSingleShippingSubmit}
+                onUseNewAddress={this.handleUseNewAddress}
+                shouldShowMultiShipping={ shouldShowMultiShipping }
+                updateAddress={updateShippingAddress}
+            />);
+        }
+
         return (
             <AddressFormSkeleton isLoading={isInitializing}>
                 <div className="checkout-form">
@@ -177,6 +200,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         onMultiShippingSubmit={this.handleMultiShippingSubmit}
                         onSingleShippingSubmit={this.handleSingleShippingSubmit}
                         onUseNewAddress={this.handleUseNewAddress}
+                        renderAddressSelect={this.renderAddressSelect}
                         shouldShowSaveAddress={!isGuest}
                         updateAddress={updateShippingAddress}
                     />
@@ -184,6 +208,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             </AddressFormSkeleton>
         );
     }
+
+    private renderAddressSelect: (props: AddressSelectProps) => ReactNode = (props) => <AddressSelect {...props} />;
 
     private handleMultiShippingModeSwitch: () => void = async () => {
         const {

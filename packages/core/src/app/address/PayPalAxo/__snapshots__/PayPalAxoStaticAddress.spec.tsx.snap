@@ -1,0 +1,143 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StaticAddress Component renders component when props are missing 1`] = `
+<div
+  class="vcard checkout-address--static"
+>
+  <p
+    class="fn address-entry"
+  >
+    <span
+      class="first-name"
+    >
+      Test 
+    </span>
+    <span
+      class="family-name"
+    >
+      Tester
+    </span>
+  </p>
+  <p
+    class="address-entry"
+  >
+    <span
+      class="company-name"
+    >
+      Bigcommerce 
+    </span>
+    <span
+      class="tel"
+    />
+  </p>
+  <div
+    class="adr"
+  >
+    <p
+      class="street-address address-entry"
+    >
+      <span
+        class="address-line-1"
+      >
+        12345 Testing Way 
+      </span>
+    </p>
+    <p
+      class="address-entry"
+    >
+      <span
+        class="locality"
+      >
+        Some City, 
+      </span>
+      <span
+        class="region"
+      >
+        California, 
+      </span>
+      <span
+        class="postal-code"
+      >
+        95555 / 
+      </span>
+      <span
+        class="country-name"
+      >
+        United States 
+      </span>
+    </p>
+  </div>
+</div>
+`;
+
+exports[`StaticAddress Component renders component with supplied props 1`] = `
+<div
+  class="vcard checkout-address--static"
+>
+  <p
+    class="fn address-entry"
+  >
+    <span
+      class="first-name"
+    >
+      Test 
+    </span>
+    <span
+      class="family-name"
+    >
+      Tester
+    </span>
+  </p>
+  <p
+    class="address-entry"
+  >
+    <span
+      class="company-name"
+    >
+      Bigcommerce 
+    </span>
+    <span
+      class="tel"
+    >
+      555-555-5555
+    </span>
+  </p>
+  <div
+    class="adr"
+  >
+    <p
+      class="street-address address-entry"
+    >
+      <span
+        class="address-line-1"
+      >
+        12345 Testing Way 
+      </span>
+    </p>
+    <p
+      class="address-entry"
+    >
+      <span
+        class="locality"
+      >
+        Some City, 
+      </span>
+      <span
+        class="region"
+      >
+        California, 
+      </span>
+      <span
+        class="postal-code"
+      >
+        95555 / 
+      </span>
+      <span
+        class="country-name"
+      >
+        United States 
+      </span>
+    </p>
+  </div>
+</div>
+`;

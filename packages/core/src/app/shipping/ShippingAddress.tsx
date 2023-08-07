@@ -9,15 +9,17 @@ import {
     ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
-import React, { FunctionComponent, memo, useCallback, useContext } from 'react';
+import React, { FunctionComponent, memo, ReactNode, useCallback, useContext } from 'react';
 
 import { FormContext } from '@bigcommerce/checkout/ui';
+
+import { AddressSelectProps } from '../address/AddressSelect';
 
 import ShippingAddressForm from './ShippingAddressForm';
 import StaticAddressEditable from './StaticAddressEditable';
 
 export interface ShippingAddressProps {
-    addresses: CustomerAddress[];
+    addresses: Array<CustomerAddress | Address>;
     consignments: Consignment[];
     countries?: Country[];
     countriesWithAutocomplete: string[];
@@ -36,6 +38,7 @@ export interface ShippingAddressProps {
     onFieldChange(name: string, value: string): void;
     onUnhandledError?(error: Error): void;
     onUseNewAddress(): void;
+    renderAddressSelect(props: AddressSelectProps): ReactNode;
 }
 
 const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
@@ -58,6 +61,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
         shouldShowSaveAddress,
         isShippingStepPending,
         isFloatingLabelEnabled,
+        renderAddressSelect,
     } = props;
 
     const { setSubmitted } = useContext(FormContext);
@@ -122,6 +126,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
             onAddressSelect={onAddressSelect}
             onFieldChange={handleFieldChange}
             onUseNewAddress={onUseNewAddress}
+            renderAddressSelect={renderAddressSelect}
             shouldShowSaveAddress={shouldShowSaveAddress}
         />
     );
