@@ -26,6 +26,10 @@ import Shipping, { ShippingProps, WithCheckoutShippingProps } from './Shipping';
 import { getShippingAddress } from './shipping-addresses.mock';
 import ShippingForm from './ShippingForm';
 
+jest.mock('./PayPalAxo', () => ({
+    PayPalAxoShipping: () => (<div data-test="paypal-axo-shipping">PayPalAxoShipping</div>),
+}));
+
 describe('Shipping Component', () => {
     let component: ReactWrapper;
     let localeContext: LocaleContextType;
@@ -463,6 +467,23 @@ describe('Shipping Component', () => {
             it('does not initialize any shipping address', () => {
                 expect(component.find(ShippingForm).prop('address')).toBeFalsy();
             });
+        });
+    });
+
+    describe('PayPal Axo Shipping', () => {
+        it('loads PayPal Axo Shipping component when PayPal Axo is enabled', async () => {
+            const PayPalAxoProps = {
+                ...defaultProps,
+                providerWithCustomCheckout: PaymentMethodId.BraintreeAcceleratedCheckout
+            };
+            const component = mount(<ComponentTest {...PayPalAxoProps} />);
+            
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            expect(component.find('[data-test="paypal-axo-shipping"]').text()).toBe(
+                'PayPalAxoShipping'
+            );
         });
     });
 });
