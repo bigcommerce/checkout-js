@@ -1,4 +1,4 @@
-import { Address } from '@bigcommerce/checkout-sdk';
+import { Address, CustomerAddress } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -41,7 +41,7 @@ const PayPalAxoAddressSelectMenu: FunctionComponent<PayPalAxoAddressSelectProps>
 );
 
 export interface PayPalAxoAddressSelectProps {
-    addresses: Address[];
+    addresses: CustomerAddress[];
     selectedAddress?: Address;
     onSelectAddress(address: Address): void;
     onUseNewAddress(currentAddress?: Address): void;
