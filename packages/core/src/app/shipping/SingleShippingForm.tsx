@@ -27,6 +27,7 @@ import {
     mapAddressFromFormValues,
     mapAddressToFormValues,
 } from '../address';
+import { AddressSelectProps } from '../address/AddressSelect';
 import { getCustomFormFieldsValidationSchema } from '../formFields';
 import { Fieldset, Form } from '../ui/form';
 
@@ -64,6 +65,7 @@ export interface SingleShippingFormProps {
         address: Partial<Address>,
         options?: RequestOptions<CheckoutParams>,
     ): Promise<CheckoutSelectors>;
+    renderAddressSelect(props: AddressSelectProps): ReactNode;
 }
 
 export interface SingleShippingFormValues {
@@ -142,6 +144,7 @@ class SingleShippingForm extends PureComponent<
             values: { shippingAddress: addressForm },
             isShippingStepPending,
             isFloatingLabelEnabled,
+            renderAddressSelect,
         } = this.props;
 
         const { isResettingAddress, isUpdatingShippingData, hasRequestedShippingOptions } =
@@ -173,6 +176,7 @@ class SingleShippingForm extends PureComponent<
                         onFieldChange={this.handleFieldChange}
                         onUnhandledError={onUnhandledError}
                         onUseNewAddress={this.onUseNewAddress}
+                        renderAddressSelect={renderAddressSelect}
                         shippingAddress={shippingAddress}
                         shouldShowSaveAddress={shouldShowSaveAddress}
                     />

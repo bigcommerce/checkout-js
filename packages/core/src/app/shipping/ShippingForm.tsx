@@ -18,6 +18,8 @@ import React, { Component, ReactNode } from 'react';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 
+import { AddressSelectProps } from '../address/AddressSelect';
+
 import MultiShippingForm, { MultiShippingFormValues } from './MultiShippingForm';
 import SingleShippingForm, { SingleShippingFormValues } from './SingleShippingForm';
 
@@ -41,6 +43,7 @@ export interface ShippingFormProps {
     shouldShowOrderComments: boolean;
     shouldShowAddAddressInCheckout: boolean;
     isFloatingLabelEnabled?: boolean;
+    renderAddressSelect(props: AddressSelectProps): ReactNode;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -96,6 +99,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
             updateAddress,
             isShippingStepPending,
             isFloatingLabelEnabled,
+            renderAddressSelect,
         } = this.props;
 
         return isMultiShippingMode ? (
@@ -120,6 +124,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 onSubmit={onMultiShippingSubmit}
                 onUnhandledError={onUnhandledError}
                 onUseNewAddress={onUseNewAddress}
+                renderAddressSelect={renderAddressSelect}
                 shouldShowAddAddressInCheckout={shouldShowAddAddressInCheckout}
                 shouldShowOrderComments={shouldShowOrderComments}
             />
@@ -144,6 +149,7 @@ class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
                 methodId={methodId}
                 onSubmit={onSingleShippingSubmit}
                 onUnhandledError={onUnhandledError}
+                renderAddressSelect={renderAddressSelect}
                 shippingAddress={shippingAddress}
                 shouldShowOrderComments={shouldShowOrderComments}
                 shouldShowSaveAddress={shouldShowSaveAddress}

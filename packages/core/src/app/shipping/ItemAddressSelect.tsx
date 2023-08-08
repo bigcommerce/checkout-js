@@ -1,7 +1,7 @@
 import { Address, CustomerAddress } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo, useCallback } from 'react';
+import React, { FunctionComponent, memo, ReactNode, useCallback } from 'react';
 
-import { AddressSelect } from '../address';
+import { AddressSelectProps } from '../address/AddressSelect';
 
 import ShippableItem from './ShippableItem';
 
@@ -10,6 +10,7 @@ export interface ItemAddressSelectProps {
     addresses: CustomerAddress[];
     onSelectAddress(address: Address, itemId: string, itemKey: string): void;
     onUseNewAddress(address: Address | undefined, itemId: string, itemKey: string): void;
+    renderAddressSelect(props: AddressSelectProps): ReactNode;
 }
 
 const ItemAddressSelect: FunctionComponent<ItemAddressSelectProps> = ({
@@ -17,6 +18,7 @@ const ItemAddressSelect: FunctionComponent<ItemAddressSelectProps> = ({
     addresses,
     onSelectAddress,
     onUseNewAddress,
+    renderAddressSelect,
 }) => {
     const handleUseNewAddress = useCallback(
         (address: Address) => {
@@ -51,12 +53,12 @@ const ItemAddressSelect: FunctionComponent<ItemAddressSelectProps> = ({
                     </ul>
                 ))}
 
-                <AddressSelect
-                    addresses={addresses}
-                    onSelectAddress={handleSelectAddress}
-                    onUseNewAddress={handleUseNewAddress}
-                    selectedAddress={consignment && consignment.shippingAddress}
-                />
+                {renderAddressSelect({
+                    addresses,
+                    onSelectAddress: handleSelectAddress,
+                    onUseNewAddress: handleUseNewAddress,
+                    selectedAddress: consignment && consignment.shippingAddress,
+                })}
             </div>
         </div>
     );

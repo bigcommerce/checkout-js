@@ -18,6 +18,7 @@ describe('ItemAddressSelect Component', () => {
         addresses: getCustomer().addresses,
         onSelectAddress: jest.fn(),
         onUseNewAddress: jest.fn(),
+        renderAddressSelect: (props) => <AddressSelect {...props} />,
     };
 
     it('renders product options', () => {

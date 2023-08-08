@@ -68,6 +68,7 @@ describe('ShippingForm Component', () => {
             deinitialize: jest.fn(),
             signOut: jest.fn(),
             shouldValidateSafeInput: true,
+            renderAddressSelect: jest.fn(),
         };
 
         checkoutService = createCheckoutService();
