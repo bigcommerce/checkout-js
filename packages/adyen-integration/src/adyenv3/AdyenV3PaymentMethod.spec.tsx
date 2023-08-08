@@ -2,45 +2,60 @@ import {
     CheckoutSelectors,
     CheckoutService,
     createCheckoutService,
+    createLanguageService,
     PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
-import { mount, ReactWrapper } from 'enzyme';
+import { render } from '@testing-library/react';
+import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
 
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { HostedWidgetPaymentComponent } from '@bigcommerce/checkout/hosted-widget-integration';
+import {
+    createLocaleContext,
+    LocaleContext,
+    LocaleContextType,
+} from '@bigcommerce/checkout/locale';
+import {
+    CheckoutProvider,
+    PaymentFormService,
+    PaymentMethodProps,
+} from '@bigcommerce/checkout/payment-integration-api';
+import {
+    getPaymentFormServiceMock,
+    getPaymentMethod,
+    getStoreConfig,
+} from '@bigcommerce/checkout/test-utils';
+import { Modal } from '@bigcommerce/checkout/ui';
 
-import { getStoreConfig } from '../../config/config.mock';
-import { Modal, ModalProps } from '../../ui/modal';
-import { getPaymentMethod } from '../payment-methods.mock';
+import AdyenV3PaymentMethod from './AdyenV3PaymentMethod';
 
-import { AdyenPaymentMethodProps } from './AdyenV2PaymentMethod';
-import HostedWidgetPaymentMethod, {
-    HostedWidgetPaymentMethodProps,
-} from './HostedWidgetPaymentMethod';
-import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
-
-describe('when using Adyen V2 payment', () => {
+describe('when using Adyen V3 payment', () => {
     let method: PaymentMethod;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
     let defaultProps: PaymentMethodProps;
     let localeContext: LocaleContextType;
     let PaymentMethodTest: FunctionComponent<PaymentMethodProps>;
+    let paymentForm: PaymentFormService;
 
     beforeEach(() => {
-        defaultProps = {
-            method: getPaymentMethod(),
-            onUnhandledError: jest.fn(),
-        };
-
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
-        method = { ...getPaymentMethod(), id: 'scheme', gateway: 'adyenv2', method: 'scheme' };
+        method = { ...getPaymentMethod(), id: 'scheme', gateway: 'adyenv3', method: 'scheme' };
+        paymentForm = getPaymentFormServiceMock();
+
+        defaultProps = {
+            method: { ...getPaymentMethod(), id: 'scheme', gateway: 'adyenv3', method: 'scheme' },
+            checkoutService,
+            checkoutState,
+            paymentForm,
+            language: createLanguageService(),
+            onUnhandledError: jest.fn(),
+        };
 
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
@@ -52,7 +67,7 @@ describe('when using Adyen V2 payment', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <Formik initialValues={{}} onSubmit={noop}>
-                        <PaymentMethodComponent {...props} />
+                        <AdyenV3PaymentMethod {...props} />
                     </Formik>
                 </LocaleContext.Provider>
             </CheckoutProvider>
@@ -61,8 +76,7 @@ describe('when using Adyen V2 payment', () => {
 
     it('renders as hosted widget method', () => {
         const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-        const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
-            container.find(HostedWidgetPaymentMethod);
+        const component = container.find(HostedWidgetPaymentComponent);
 
         expect(component.props()).toEqual(
             expect.objectContaining({
@@ -76,19 +90,29 @@ describe('when using Adyen V2 payment', () => {
 
     it('initializes method with required config', () => {
         const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-        const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
-            container.find(HostedWidgetPaymentMethod);
+        const component = container.find(HostedWidgetPaymentComponent);
 
         component.prop('initializePayment')({
-            methodId: method.id,
-            gatewayId: method.gateway,
+            methodId: 'scheme',
+            gatewayId: 'adyenv3',
         });
+
+        const defaultAdyenProps: PaymentMethodProps = {
+            method: { ...getPaymentMethod(), id: 'scheme', gateway: 'adyenv3', method: 'scheme' },
+            onUnhandledError: jest.fn(),
+            checkoutService,
+            checkoutState,
+            paymentForm,
+            language: createLanguageService(),
+        };
+
+        render(<PaymentMethodTest {...defaultAdyenProps} />);
 
         expect(checkoutService.initializePayment).toHaveBeenCalled();
 
         expect(checkoutService.initializePayment).toHaveBeenCalledWith(
             expect.objectContaining({
-                adyenv2: {
+                adyenv3: {
                     cardVerificationContainerId: undefined,
                     containerId: 'adyen-scheme-component-field',
                     hasVaultedInstruments: false,
@@ -98,12 +122,11 @@ describe('when using Adyen V2 payment', () => {
                     },
                     additionalActionOptions: {
                         containerId: 'adyen-scheme-additional-action-component-field',
-                        widgetSize: '05',
                         onBeforeLoad: expect.any(Function),
                         onComplete: expect.any(Function),
                         onLoad: expect.any(Function),
+                        widgetSize: '05',
                     },
-                    threeDS2ContainerId: 'adyen-scheme-additional-action-component-field',
                     validateCardFields: expect.any(Function),
                 },
                 gatewayId: method.gateway,
@@ -114,27 +137,29 @@ describe('when using Adyen V2 payment', () => {
 
     describe('#During payment', () => {
         it('renders 3DS modal if required by selected method', async () => {
-            const defaultAdyenProps: AdyenPaymentMethodProps = {
-                deinitializePayment: jest.fn(),
-                initializePayment: jest.fn(),
-                isInitializing: false,
+            const defaultAdyenProps = {
                 method: getPaymentMethod(),
                 onUnhandledError: jest.fn(),
+                paymentForm,
+                checkoutService,
+                checkoutState,
+                language: createLanguageService(),
             };
             const container = mount(<PaymentMethodTest {...defaultAdyenProps} method={method} />);
-            const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
-                container.find(HostedWidgetPaymentMethod);
+            const component = container.find(HostedWidgetPaymentComponent);
+
+            render(<PaymentMethodTest {...defaultAdyenProps} />);
 
             component.prop('initializePayment')({
                 methodId: method.id,
                 gatewayId: method.gateway,
             });
 
-            const initializeOptions = (defaultAdyenProps.initializePayment as jest.Mock).mock
+            const initializeOptions = (checkoutService.initializePayment as jest.Mock).mock
                 .calls[0][0];
 
             act(() => {
-                initializeOptions.adyenv2.additionalActionOptions.onBeforeLoad(true);
+                initializeOptions.adyenv3.additionalActionOptions.onBeforeLoad(true);
             });
 
             await new Promise((resolve) => process.nextTick(resolve));
@@ -151,27 +176,28 @@ describe('when using Adyen V2 payment', () => {
         });
 
         it('Do not render 3DS modal if required by selected method', async () => {
-            const defaultAdyenProps: AdyenPaymentMethodProps = {
-                deinitializePayment: jest.fn(),
-                initializePayment: jest.fn(),
-                isInitializing: false,
+            const defaultAdyenProps = {
                 method: getPaymentMethod(),
                 onUnhandledError: jest.fn(),
+                paymentForm,
+                checkoutService,
+                checkoutState,
+                language: createLanguageService(),
             };
             const container = mount(<PaymentMethodTest {...defaultAdyenProps} method={method} />);
-            const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
-                container.find(HostedWidgetPaymentMethod);
+            const component = container.find(HostedWidgetPaymentComponent);
 
             component.prop('initializePayment')({
                 methodId: method.id,
                 gatewayId: method.gateway,
             });
+            render(<PaymentMethodTest {...defaultAdyenProps} />);
 
-            const initializeOptions = (defaultAdyenProps.initializePayment as jest.Mock).mock
+            const initializeOptions = (checkoutService.initializePayment as jest.Mock).mock
                 .calls[0][0];
 
             act(() => {
-                initializeOptions.adyenv2.additionalActionOptions.onBeforeLoad(false);
+                initializeOptions.adyenv3.additionalActionOptions.onBeforeLoad(false);
             });
 
             await new Promise((resolve) => process.nextTick(resolve));
@@ -189,27 +215,27 @@ describe('when using Adyen V2 payment', () => {
 
         it('cancels 3DS modal flow if user chooses to close modal', async () => {
             const cancelAdditionalActionModalFlow = jest.fn();
-            const defaultAdyenProps: AdyenPaymentMethodProps = {
-                deinitializePayment: jest.fn(),
-                initializePayment: jest.fn(),
-                isInitializing: false,
+            const defaultAdyenProps: PaymentMethodProps = {
+                paymentForm,
+                checkoutService,
+                checkoutState,
+                language: createLanguageService(),
                 method: getPaymentMethod(),
                 onUnhandledError: jest.fn(),
             };
             const container = mount(<PaymentMethodTest {...defaultAdyenProps} method={method} />);
-            const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
-                container.find(HostedWidgetPaymentMethod);
+            const component = container.find(HostedWidgetPaymentComponent);
 
             component.prop('initializePayment')({
                 methodId: method.id,
                 gatewayId: method.gateway,
             });
 
-            const initializeOptions = (defaultAdyenProps.initializePayment as jest.Mock).mock
+            const initializeOptions = (checkoutService.initializePayment as jest.Mock).mock
                 .calls[0][0];
 
             act(() => {
-                initializeOptions.adyenv2.additionalActionOptions.onLoad(
+                initializeOptions.adyenv3.additionalActionOptions.onLoad(
                     cancelAdditionalActionModalFlow,
                     true,
                 );
@@ -221,7 +247,7 @@ describe('when using Adyen V2 payment', () => {
                 container.update();
             });
 
-            const modal: ReactWrapper<ModalProps> = container.find(Modal);
+            const modal = container.find(Modal);
 
             act(() => {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
