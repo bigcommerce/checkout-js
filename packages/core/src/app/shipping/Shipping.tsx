@@ -20,7 +20,8 @@ import { createSelector } from 'reselect';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 
-import { isEqualAddress, mapAddressFromFormValues } from '../address';
+import { AddressSelect, isEqualAddress, mapAddressFromFormValues } from '../address';
+import { AddressSelectProps } from '../address/AddressSelect';
 import { withCheckout } from '../checkout';
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
@@ -198,6 +199,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         onMultiShippingSubmit={this.handleMultiShippingSubmit}
                         onSingleShippingSubmit={this.handleSingleShippingSubmit}
                         onUseNewAddress={this.handleUseNewAddress}
+                        renderAddressSelect={this.renderAddressSelect}
                         shouldShowSaveAddress={!isGuest}
                         updateAddress={updateShippingAddress}
                     />
@@ -205,6 +207,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             </AddressFormSkeleton>
         );
     }
+
+    private renderAddressSelect: (props: AddressSelectProps) => ReactNode = (props) => <AddressSelect {...props} />;
 
     private handleMultiShippingModeSwitch: () => void = async () => {
         const {

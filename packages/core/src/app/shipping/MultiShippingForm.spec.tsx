@@ -5,7 +5,7 @@ import React from 'react';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 
-import { AddressFormModal } from '../address';
+import { AddressFormModal, AddressSelect } from '../address';
 import { getAddressFormFields } from '../address/formField.mock';
 import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';
@@ -55,6 +55,7 @@ describe('MultiShippingForm Component', () => {
             shouldShowAddAddressInCheckout: true,
             onUnhandledError: jest.fn(),
             onUseNewAddress: jest.fn(),
+            renderAddressSelect: (props) => <AddressSelect {...props} />,
         };
     });
 
