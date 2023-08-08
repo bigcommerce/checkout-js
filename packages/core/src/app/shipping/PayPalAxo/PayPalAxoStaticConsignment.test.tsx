@@ -7,16 +7,11 @@ import * as usePayPalConnectAddress from '../../address/PayPalAxo/usePayPalConne
 
 import PayPalAxoStaticConsignment from './PayPalAxoStaticConsignment';
 
-jest.mock('../../address', () => ({
-    StaticAddress: () => <div>StaticAddress</div>,
-}));
+jest.mock('../../address/StaticAddress', () => () => <div>StaticAddress</div>);
 jest.mock('../shippingOption', () => ({
     StaticShippingOption: () => <div>StaticShippingOption</div>,
 }));
-jest.mock('../../address/PayPalAxo', () => ({
-    PoweredByPaypalConnectLabel: () => <div>PoweredByPaypalConnectLabel</div>,
-    usePayPalConnectAddress,
-}));
+jest.mock('../../address/PayPalAxo/PoweredByPaypalConnectLabel', () => () => <div>PoweredByPaypalConnectLabel</div>);
 jest.mock('../StaticConsignmentItemList', () => () => <div>StaticConsignmentItemList</div>);
 
 describe('PayPal AXO StaticConsignment Component', () => {
@@ -54,6 +49,6 @@ describe('PayPal AXO StaticConsignment Component', () => {
 
         render(<PayPalAxoStaticConsignment cart={cart} consignment={consignment} />);
 
-        expect(screen).toMatchSnapshot();
+        expect(screen.getByText('PoweredByPaypalConnectLabel')).toBeInTheDocument();
     });
 });
