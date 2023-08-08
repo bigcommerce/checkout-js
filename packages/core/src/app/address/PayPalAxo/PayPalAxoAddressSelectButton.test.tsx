@@ -10,10 +10,13 @@ import PayPalAxoAddressSelectButton from './PayPalAxoAddressSelectButton';
 jest.mock('./PayPalAxoStaticAddress', () => () => <div>PayPalAxoStaticAddress</div>);
 
 describe('PayPalAxoAddressSelectButton', () => {
-    // <LocaleContext.Provider value={createLocaleContext(getStoreConfig())}>
     const defaultProps = {
         language: { translate: jest.fn() } as unknown as LanguageService,
-        addresses: [getAddress()],
+        addresses: [{
+            ...getAddress(),
+            id: 123,
+            type: 'paypal-address',
+        }],
     };
 
     afterEach(() => {

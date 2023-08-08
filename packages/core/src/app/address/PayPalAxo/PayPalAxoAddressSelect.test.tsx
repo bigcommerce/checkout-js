@@ -16,7 +16,11 @@ jest.mock('./PoweredByPaypalConnectLabel', () => () => <div>PoweredByPaypalConne
 jest.mock('./PayPalAxoAddressSelectButton', () => () => <div>PayPalAxoAddressSelectButton</div>);
 
 describe('PayPalAxoAddressSelect', () => {
-    const defaultAddress = getAddress();
+    const defaultAddress = {
+        ...getAddress(),
+        id: 123,
+        type: 'paypal-address',
+    };
     const defaultProps: PayPalAxoAddressSelectProps = {
         addresses: [defaultAddress],
         onSelectAddress: jest.fn(),
