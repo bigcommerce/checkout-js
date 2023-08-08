@@ -1,31 +1,23 @@
-import { Address } from '@bigcommerce/checkout-sdk';
+import { CustomerAddress } from '@bigcommerce/checkout-sdk';
 
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
-import { isEqualAddress } from '..';
+const PAYPAL_ADDRESS_TYPE = 'paypal-address';
 
 const usePayPalConnectAddress = () => {
     const { checkoutState } = useCheckout();
     
-    const getPaypalConnectAddresses = (): Address[] => {
+    const getPaypalConnectAddresses = (): CustomerAddress[] => {
         const { data: { getPaymentProviderCustomer }} = checkoutState;
 
         return getPaymentProviderCustomer()?.addresses || [];
     };
 
-    const isPayPalConnectAddress = (address: Address): boolean => {
-        const paypalConnectAddresses = getPaypalConnectAddresses();
-
-        if (!paypalConnectAddresses.length) {
-            return false;
-        }
-
-        return paypalConnectAddresses.some((paypalConnectAddress) => isEqualAddress(address, paypalConnectAddress));
-    };
+    const isPayPalConnectAddress = (address: CustomerAddress): boolean => address.type === PAYPAL_ADDRESS_TYPE;
 
     const shouldShowPayPalConnectLabel = (): boolean => !!getPaypalConnectAddresses().length;
 
-    const mergeAddresses = (customerAddresses: Address[]): Address[] => [
+    const mergeAddresses = (customerAddresses: CustomerAddress[]): CustomerAddress[] => [
         ...getPaypalConnectAddresses(),
         ...customerAddresses.filter((address) => !isPayPalConnectAddress(address)),
     ];
