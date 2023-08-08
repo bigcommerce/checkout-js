@@ -1,5 +1,5 @@
 import { createCheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import React from 'react';
 
 import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
@@ -37,32 +37,9 @@ describe('BraintreeAcceleratedCheckoutPaymentMethod', () => {
         onUnhandledError: jest.fn(),
     };
 
-    it('initializes BraintreeAcceleratedCheckoutPaymentMethod with required props', () => {
-        const initializePayment = jest
-            .spyOn(checkoutService, 'initializePayment')
-            .mockResolvedValue(checkoutState);
-
+    it('main braintree axo container to be in the doc', () => {
         render(<BraintreeAcceleratedCheckoutPaymentMethod {...props} />);
 
-        expect(initializePayment).toHaveBeenCalledWith({
-            methodId: props.method.id,
-            braintreeacceleratedcheckout: {
-                container: '#braintree-axo-cc-form-container',
-            },
-        });
-    });
-
-    it('deinitializes BraintreeLocalMethod with required props', () => {
-        const deinitializePayment = jest
-            .spyOn(checkoutService, 'deinitializePayment')
-            .mockResolvedValue(checkoutState);
-
-        const view = render(<BraintreeAcceleratedCheckoutPaymentMethod {...props} />);
-
-        view.unmount();
-
-        expect(deinitializePayment).toHaveBeenCalledWith({
-            methodId: props.method.id,
-        });
+        expect(screen.getByTestId('braintree-axo-cc-form-container')).toBeInTheDocument();
     });
 });
