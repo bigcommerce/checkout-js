@@ -37,12 +37,10 @@
 /packages/core/payment/paymentMethod/WorldpayCreditCardPaymentMethod.tsx @bigcommerce/apex-leads
 
 # kyiv payments
+/packages/adyen-integration @bigcommerce/kyiv-payments-team
 /packages/bluesnap-direct-integration @bigcommerce/kyiv-payments-team
+/packages/braintree-integration @bigcommerce/kyiv-payments-team
 /packages/core/customer/checkoutSuggestion @bigcommerce/kyiv-payments-team
-/packages/core/payment/paymentMethod/AdyenV2CardValidation.tsx @bigcommerce/kyiv-payments-team
-/packages/core/payment/paymentMethod/AdyenV3CardValidation.tsx @bigcommerce/kyiv-payments-team
-/packages/core/payment/paymentMethod/AdyenV2PaymentMethod.tsx @bigcommerce/kyiv-payments-team
-/packages/core/payment/paymentMethod/AdyenV3PaymentMethod.tsx @bigcommerce/kyiv-payments-team
 /packages/core/payment/paymentMethod/BoltClientPaymentMethod.tsx @bigcommerce/kyiv-payments-team
 /packages/core/payment/paymentMethod/BoltCustomForm.tsx @bigcommerce/kyiv-payments-team
 /packages/core/payment/paymentMethod/BoltCustomFormValues.ts @bigcommerce/kyiv-payments-team
@@ -52,6 +50,5 @@
 /packages/core/payment/paymentMethod/PaypalCommerceCreditCardPaymentMethod.tsx @bigcommerce/kyiv-payments-team
 /packages/core/payment/paymentMethod/PaypalExpressPaymentMethod.tsx @bigcommerce/kyiv-payments-team
 /packages/core/payment/paymentMethod/PaypalPaymentsProPaymentMethod.tsx @bigcommerce/kyiv-payments-team
-/packages/braintree-integration @bigcommerce/kyiv-payments-team
 /packages/paypal-commerce-integration @bigcommerce/kyiv-payments-team
 

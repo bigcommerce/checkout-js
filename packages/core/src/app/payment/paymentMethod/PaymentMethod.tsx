@@ -12,8 +12,6 @@ import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-
 
 import { withCheckout } from '../../checkout';
 
-import AdyenV2PaymentMethod from './AdyenV2PaymentMethod';
-import AdyenV3PaymentMethod from './AdyenV3PaymentMethod';
 import AffirmPaymentMethod from './AffirmPaymentMethod';
 import AmazonPayV2PaymentMethod from './AmazonPayV2PaymentMethod';
 import BarclaycardPaymentMethod from './BarclaycardPaymentMethod';
@@ -81,13 +79,6 @@ const PaymentMethodComponent: FunctionComponent<
         return <PPSDKPaymentMethod {...props} />;
     }
 
-    if (method.gateway === PaymentMethodId.AdyenV2) {
-        return <AdyenV2PaymentMethod {...props} />;
-    }
-
-    if (method.gateway === PaymentMethodId.AdyenV3) {
-        return <AdyenV3PaymentMethod {...props} />;
-    }
 
     if (method.id === PaymentMethodId.SquareV2) {
         return <SquarePaymentMethod {...props} />;
