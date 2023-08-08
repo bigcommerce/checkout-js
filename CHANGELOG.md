@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.352.0](https://github.com/bigcommerce/checkout-js/compare/v1.351.0...v1.352.0) (2023-08-08)
+
+
+### Features
+
+* **payment:** PAYPAL-2732 PayPal AXO icons ([68594dd](https://github.com/bigcommerce/checkout-js/commit/68594ddff7b956e36d3ef72982c2094c9703dd2f))
+
 ## [1.351.0](https://github.com/bigcommerce/checkout-js/compare/v1.350.6...v1.351.0) (2023-08-07)
 
 
