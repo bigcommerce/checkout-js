@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent } from 'react';
 
 import {
     PaymentMethodProps,
@@ -6,49 +6,10 @@ import {
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 
-const BraintreeAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
-    method,
-    checkoutService,
-    onUnhandledError,
-}) => {
-    const initializePayment = async () => {
-        try {
-            await checkoutService.initializePayment({
-                methodId: method.id,
-                braintreeacceleratedcheckout: {
-                    container: '#braintree-axo-cc-form-container',
-                },
-            });
-        } catch (error) {
-            if (error instanceof Error) {
-                onUnhandledError(error);
-            }
-        }
-    };
-
-    const deinitializePayment = async () => {
-        try {
-            await checkoutService.deinitializePayment({
-                methodId: method.id,
-            });
-        } catch (error) {
-            if (error instanceof Error) {
-                onUnhandledError(error);
-            }
-        }
-    };
-
-    useEffect(() => {
-        void initializePayment();
-
-        return () => {
-            void deinitializePayment();
-        };
-    }, []);
-
+const BraintreeAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentMethodProps> = () => {
     return (
         <div>
-            <div id="braintree-axo-cc-form-container" />
+            <div id="braintree-axo-cc-form-container" data-test="braintree-axo-cc-form-container" />
         </div>
     );
 };
