@@ -21,6 +21,7 @@ import {
     isValidAddress,
     mapAddressFromFormValues,
 } from '../address';
+import { AddressSelectProps } from '../address/AddressSelect';
 import { preventDefault } from '../common/dom';
 import { ErrorModal } from '../common/error';
 import { Form } from '../ui/form';
@@ -58,6 +59,7 @@ export interface MultiShippingFormProps {
     onSubmit(values: MultiShippingFormValues): void;
     onUnhandledError(error: Error): void;
     onUseNewAddress(address: Address, itemId: string): void;
+    renderAddressSelect(props: AddressSelectProps): ReactNode;
 }
 
 interface ShippableItemId {
@@ -105,6 +107,7 @@ class MultiShippingForm extends PureComponent<
             countriesWithAutocomplete,
             googleMapsApiKey,
             isFloatingLabelEnabled,
+            renderAddressSelect,
         } = this.props;
 
         const { items, itemAddingAddress, createCustomerAddressError } = this.state;
@@ -163,6 +166,7 @@ class MultiShippingForm extends PureComponent<
                                     item={item}
                                     onSelectAddress={this.handleSelectAddress}
                                     onUseNewAddress={this.handleUseNewAddress}
+                                    renderAddressSelect={renderAddressSelect}
                                 />
                             </li>
                         ))}

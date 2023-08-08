@@ -31,6 +31,7 @@ describe('ShippingAddressForm Component', () => {
             onFieldChange: jest.fn(),
             onUseNewAddress: jest.fn(),
             isLoading: false,
+            renderAddressSelect: (props) => <AddressSelect {...props} />,
         };
     });
 

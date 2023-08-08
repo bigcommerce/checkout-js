@@ -7,7 +7,8 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, { Component, ReactNode } from 'react';
 
-import { AddressForm, AddressSelect, isValidCustomerAddress } from '../address';
+import { AddressForm, isValidCustomerAddress } from '../address';
+import { AddressSelectProps } from '../address/AddressSelect';
 import { connectFormik, ConnectFormikProps } from '../common/form';
 import { Fieldset } from '../ui/form';
 import { LoadingOverlay } from '../ui/loading';
@@ -28,6 +29,7 @@ export interface ShippingAddressFormProps {
     onUseNewAddress(): void;
     onFieldChange(fieldName: string, value: string): void;
     onAddressSelect(address: Address): void;
+    renderAddressSelect(props: AddressSelectProps): ReactNode;
 }
 
 const addressFieldName = 'shippingAddress';
@@ -51,6 +53,7 @@ class ShippingAddressForm extends Component<
             formik: {
                 values: { shippingAddress: formAddress },
             },
+            renderAddressSelect,
         } = this.props;
 
         const hasAddresses = addresses && addresses.length > 0;
@@ -65,14 +68,12 @@ class ShippingAddressForm extends Component<
                 {hasAddresses && (
                     <Fieldset id="shippingAddresses">
                         <LoadingOverlay isLoading={isLoading}>
-                            <AddressSelect
-                                addresses={addresses}
-                                onSelectAddress={onAddressSelect}
-                                onUseNewAddress={onUseNewAddress}
-                                selectedAddress={
-                                    hasValidCustomerAddress ? shippingAddress : undefined
-                                }
-                            />
+                            {renderAddressSelect({
+                                addresses,
+                                onSelectAddress: onAddressSelect,
+                                onUseNewAddress,
+                                selectedAddress: hasValidCustomerAddress ? shippingAddress : undefined,
+                            })}
                         </LoadingOverlay>
                     </Fieldset>
                 )}
