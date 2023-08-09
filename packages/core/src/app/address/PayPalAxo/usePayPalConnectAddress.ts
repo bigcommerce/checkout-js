@@ -1,19 +1,44 @@
-import { CustomerAddress } from '@bigcommerce/checkout-sdk';
+import { Address, CustomerAddress } from '@bigcommerce/checkout-sdk';
 
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
+import isEqualAddress from '../isEqualAddress';
+
 const PAYPAL_ADDRESS_TYPE = 'paypal-address';
+const PAYPAL_CONNECT_CUSTOMER_KEY = 'paypal-connect.customer';
 
 const usePayPalConnectAddress = () => {
     const { checkoutState } = useCheckout();
     
     const getPaypalConnectAddresses = (): CustomerAddress[] => {
-        const { data: { getPaymentProviderCustomer }} = checkoutState;
+        const { data: { getPaymentProviderCustomer, getCustomer, getBillingAddress }} = checkoutState;
+        let addresses = getPaymentProviderCustomer()?.addresses;
 
-        return getPaymentProviderCustomer()?.addresses || [];
+        if (!addresses?.length) {
+            const storedPayPalConnectCustomer = localStorage.getItem(PAYPAL_CONNECT_CUSTOMER_KEY);
+
+            if (!storedPayPalConnectCustomer) {
+                return [];
+            }
+
+            const { email: storedEmail, addresses: storedAddresses } = JSON.parse(storedPayPalConnectCustomer) || {};
+            const customerEmail = getCustomer()?.email || getBillingAddress()?.email;
+
+            addresses = customerEmail === storedEmail ? storedAddresses : [];
+        }
+
+        return addresses || [];
     };
 
-    const isPayPalConnectAddress = (address: CustomerAddress): boolean => address.type === PAYPAL_ADDRESS_TYPE;
+    const isPayPalConnectAddress = (address: CustomerAddress | Address): boolean => {
+        if ('type' in address) {
+            return address.type === PAYPAL_ADDRESS_TYPE;
+        }
+
+        return getPaypalConnectAddresses().some(
+            (paypalConnectAddress) => isEqualAddress(address, paypalConnectAddress)
+        );
+    };
 
     const shouldShowPayPalConnectLabel = (): boolean => !!getPaypalConnectAddresses().length;
 
