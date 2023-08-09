@@ -16,6 +16,10 @@ const BraintreePaypalCreditDescription: FunctionComponent<{ onUnhandledError?(er
                     bannerContainerId: 'braintree-banner-container',
                 },
             });
+
+            checkoutService.deinitializePayment({
+                methodId: PaymentMethodId.BraintreePaypalCredit,
+            });
         } catch (error) {
             if (error instanceof Error) {
                 onUnhandledError?.(error);
