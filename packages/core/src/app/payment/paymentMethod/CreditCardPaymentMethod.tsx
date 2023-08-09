@@ -317,6 +317,12 @@ class CreditCardPaymentMethod extends Component<
     }
 
     private handleUseNewCard: () => void = () => {
+        const {
+            formik: { setFieldValue },
+        } = this.props;
+
+        setFieldValue('hostedForm.cardType', '');
+
         this.setState({
             isAddingNewCard: true,
             selectedInstrumentId: undefined,
@@ -324,6 +330,12 @@ class CreditCardPaymentMethod extends Component<
     };
 
     private handleSelectInstrument: (id: string) => void = (id) => {
+        const {
+            formik: { setFieldValue },
+        } = this.props;
+
+        setFieldValue('hostedForm.cardType', '');
+
         this.setState({
             isAddingNewCard: false,
             selectedInstrumentId: id,

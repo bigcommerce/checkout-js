@@ -81,7 +81,9 @@ Object {
                         class="form-label optimizedCheckout-form-label"
                         for="shouldSubscribe"
                       >
-                        Subscribe to our newsletter.
+                        <span>
+                          Subscribe to our newsletter.
+                        </span>
                       </label>
                     </div>
                   </div>
@@ -211,7 +213,9 @@ Object {
                       class="form-label optimizedCheckout-form-label"
                       for="shouldSubscribe"
                     >
-                      Subscribe to our newsletter.
+                      <span>
+                        Subscribe to our newsletter.
+                      </span>
                     </label>
                   </div>
                 </div>

@@ -8,6 +8,7 @@ import {
 import { mount, ReactWrapper } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
@@ -108,7 +109,9 @@ describe('Shipping Component', () => {
         ComponentTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
-                    <Shipping {...props} />
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <Shipping {...props} />
+                    </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>
         );

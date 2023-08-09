@@ -4,9 +4,11 @@ import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 
 import { AnalyticsProvider } from '@bigcommerce/checkout/analytics';
-import '../../scss/App.scss';
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
+import '../../scss/App.scss';
 
 import { createErrorLogger, ErrorBoundary, ErrorLogger } from '../common/error';
 import {
@@ -52,17 +54,19 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
 
     render() {
         return (
-            <ErrorBoundary logger={ this.errorLogger }>
-                <LocaleProvider checkoutService={ this.checkoutService }>
-                    <CheckoutProvider checkoutService={ this.checkoutService }>
-                        <AnalyticsProvider checkoutService={ this.checkoutService }>
-                            <Checkout
-                                {...this.props}
-                                createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
-                                embeddedStylesheet={this.embeddedStylesheet}
-                                embeddedSupport={this.embeddedSupport}
-                                errorLogger={this.errorLogger}
-                            />
+            <ErrorBoundary logger={this.errorLogger}>
+                <LocaleProvider checkoutService={this.checkoutService}>
+                    <CheckoutProvider checkoutService={this.checkoutService}>
+                        <AnalyticsProvider checkoutService={this.checkoutService}>
+                            <ExtensionProvider checkoutService={this.checkoutService}>
+                                <Checkout
+                                    {...this.props}
+                                    createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
+                                    embeddedStylesheet={this.embeddedStylesheet}
+                                    embeddedSupport={this.embeddedSupport}
+                                    errorLogger={this.errorLogger}
+                                />
+                            </ExtensionProvider>
                         </AnalyticsProvider>
                     </CheckoutProvider>
                 </LocaleProvider>

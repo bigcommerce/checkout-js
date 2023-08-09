@@ -193,7 +193,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
           />;
 
         const isLoadingGuestForm = isWalletButtonsOnTop ?
-            isContinuingAsGuest :
+            isContinuingAsGuest || isExecutingPaymentMethodCheckout :
             isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout;
 
         return (

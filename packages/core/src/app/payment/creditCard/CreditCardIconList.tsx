@@ -28,6 +28,7 @@ const CreditCardIconList: FunctionComponent<CreditCardIconListProps> = ({
                         { 'is-active': selectedCardType === type },
                         { 'not-active': selectedCardType && selectedCardType !== type },
                     )}
+                    data-test={`${type}-icon`}
                     key={type}
                 >
                     <span className="cardIcon">

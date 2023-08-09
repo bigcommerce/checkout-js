@@ -16,6 +16,7 @@ import { find, findIndex } from 'lodash';
 import React, { Component, lazy, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { ExtensionContextProps, withExtension } from '@bigcommerce/checkout/checkout-extension';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
@@ -145,7 +146,11 @@ export interface WithCheckoutProps {
 }
 
 class Checkout extends Component<
-    CheckoutProps & WithCheckoutProps & WithLanguageProps & AnalyticsContextProps,
+    CheckoutProps &
+        WithCheckoutProps &
+        WithLanguageProps &
+        AnalyticsContextProps &
+        ExtensionContextProps,
     CheckoutState
 > {
     state: CheckoutState = {
@@ -173,13 +178,15 @@ class Checkout extends Component<
 
     async componentDidMount(): Promise<void> {
         const {
+            analyticsTracker,
             checkoutId,
             containerId,
             createEmbeddedMessenger,
             embeddedStylesheet,
+            extensionService,
             loadCheckout,
             subscribeToConsignments,
-            analyticsTracker
+            isExtensionEnabled,
         } = this.props;
 
         try {
@@ -253,6 +260,10 @@ class Checkout extends Component<
             }
 
             window.addEventListener('beforeunload', this.handleBeforeExit);
+
+            if (isExtensionEnabled()) {
+                await extensionService.loadExtensions();
+            }
         } catch (error) {
             if (error instanceof Error) {
                 this.handleUnhandledError(error);
@@ -289,7 +300,7 @@ class Checkout extends Component<
     }
 
     private renderContent(): ReactNode {
-        const { isPending, loginUrl, promotions = [], steps, isShowingWalletButtonsOnTop } = this.props;
+        const { isPending, loginUrl, promotions = [], steps, isShowingWalletButtonsOnTop, extensionState } = this.props;
 
         const { activeStepType, defaultStepType, isCartEmpty, isRedirecting } = this.state;
 
@@ -304,7 +315,7 @@ class Checkout extends Component<
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isRedirecting}>
                 <div className="layout-main">
-                    <LoadingNotification isLoading={!isShowingWalletButtonsOnTop && isPending} />
+                    <LoadingNotification isLoading={(!isShowingWalletButtonsOnTop && isPending) || extensionState.isShowingLoadingIndicator} />
 
                     <PromotionBannerList promotions={promotions} />
 
@@ -734,4 +745,6 @@ class Checkout extends Component<
     }
 }
 
-export default withAnalytics(withLanguage(withCheckout(mapToCheckoutProps)(Checkout)));
+export default withExtension(
+    withAnalytics(withLanguage(withCheckout(mapToCheckoutProps)(Checkout))),
+);

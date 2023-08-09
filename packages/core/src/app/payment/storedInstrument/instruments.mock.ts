@@ -30,7 +30,7 @@ export function getInstruments(): PaymentInstrument[] {
             last4: '4444',
             expiryMonth: '10',
             expiryYear: '2024',
-            brand: 'american_express',
+            brand: 'american-express',
             trustedShippingAddress: false,
             defaultInstrument: false,
             method: 'card',

@@ -53,6 +53,5 @@
 /packages/core/payment/paymentMethod/PaypalExpressPaymentMethod.tsx @bigcommerce/kyiv-payments-team
 /packages/core/payment/paymentMethod/PaypalPaymentsProPaymentMethod.tsx @bigcommerce/kyiv-payments-team
 /packages/braintree-integration @bigcommerce/kyiv-payments-team
-/packages/fortis-integration @bigcommerce/kyiv-payments-team
 /packages/paypal-commerce-integration @bigcommerce/kyiv-payments-team
 

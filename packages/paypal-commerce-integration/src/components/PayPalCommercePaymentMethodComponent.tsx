@@ -20,7 +20,6 @@ interface PayPalCommercePaymentMethodComponentProps {
 
 const PayPalCommercePaymentMethodComponent: FunctionComponent<PaymentMethodProps & PayPalCommercePaymentMethodComponentProps> = ({
     method,
-    checkoutState,
     checkoutService,
     paymentForm,
     onUnhandledError,
@@ -28,10 +27,6 @@ const PayPalCommercePaymentMethodComponent: FunctionComponent<PaymentMethodProps
     providerOptionsData,
     children,
 }) => {
-    if (!checkoutState.data.isPaymentDataRequired()) {
-        return null;
-    }
-
     const initializePayment = async () => {
         try {
             await checkoutService.initializePayment({
