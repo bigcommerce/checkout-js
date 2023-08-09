@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.353.0](https://github.com/bigcommerce/checkout-js/compare/v1.352.2...v1.353.0) (2023-08-09)
+
+
+### Features
+
+* **payment:** PAYPAL-2737 added vaulter instruments implementation to Braintree AXO payment method ([#1399](https://github.com/bigcommerce/checkout-js/issues/1399)) ([5d471d7](https://github.com/bigcommerce/checkout-js/commit/5d471d7372613ffab11cf5ec3fa4a634c0907c5d))
+
 ### [1.352.2](https://github.com/bigcommerce/checkout-js/compare/v1.352.1...v1.352.2) (2023-08-09)
 
 ### [1.352.1](https://github.com/bigcommerce/checkout-js/compare/v1.352.0...v1.352.1) (2023-08-08)
