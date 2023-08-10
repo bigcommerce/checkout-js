@@ -27,7 +27,9 @@
         color: color("warning");
     }
 
-    .alertBox--font-color-black {
-        color: $color-black;
+    .ffl-section {
+        .alertBox--font-color-black {
+            color: $color-black;
+        }
     }
 }
