@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.353.1](https://github.com/bigcommerce/checkout-js/compare/v1.353.0...v1.353.1) (2023-08-10)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-7150 aria-expanded property does not toggle based on the associated drop-down ([915bb81](https://github.com/bigcommerce/checkout-js/commit/915bb81bb066946e03f44defcbb5bed7e6fd4ebf))
+
 ## [1.353.0](https://github.com/bigcommerce/checkout-js/compare/v1.352.2...v1.353.0) (2023-08-09)
 
 
