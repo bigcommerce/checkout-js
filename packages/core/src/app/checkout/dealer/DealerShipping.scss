@@ -2,3 +2,16 @@
     color: red;
     font-weight: bold;
 }
+
+.ffl-section {
+    .info-window-content {
+        h5 {
+            margin-bottom: 10px;
+        }
+
+        a {
+            display: inherit;
+            margin-bottom: 10px;
+        }
+    }
+}

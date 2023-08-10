@@ -304,12 +304,16 @@ export class MapContainer extends Component<IProps, IState> {
     return bounds;
   };
 
-  onMarkerClick = (props: any, marker: any) =>
+  onMarkerClick = (props: any, marker: any) => {
+    const formattedDealerPhoneNumber = this.formatPhoneNumber(props.dealer.phone_number);
+
      this.setState({
        activeMarker: marker,
        activeDealer: props.dealer,
+       activeDealerPhone: formattedDealerPhoneNumber,
        showingInfoWindow: true
      });
+    }
 
    onMapClicked = () => {
      if (this.state.showingInfoWindow) {
@@ -321,12 +325,24 @@ export class MapContainer extends Component<IProps, IState> {
      }
    };
 
+   formatPhoneNumber = (phoneNumber) => {
+    const cleanedNumber = (`${  phoneNumber}`).replace(/\D/g, '');
+    const setNumber = cleanedNumber.match(/^(\d{3})(\d{3})(\d{4})$/);
+
+    if (setNumber) {
+      return `(${setNumber[1]})-${setNumber[2]}-${setNumber[3]}`;
+    }
+
+    return null;
+  };
+
    handleSelect = (dealer) => {
+    const formattedDealerPhoneNumber = this.formatPhoneNumber(dealer.phone_number);
 
      this.props.selectDealer({
          firstName: dealer.business_name,
          lastName: dealer.license,
-         phone: dealer.phone_number,
+         phone: formattedDealerPhoneNumber,
          company: `${dealer.business_name} - ${dealer.license}`,
          address1: dealer.premise_street,
          address2: '',
@@ -372,6 +388,7 @@ export class MapContainer extends Component<IProps, IState> {
                     }
                     <h4>{ this.state.activeDealer.business_name }</h4>
                     <h5>{ this.state.activeDealer.premise_street }</h5>
+                    <a href={`tel:${ this.state.activeDealerPhone }`}>{ this.state.activeDealerPhone }</a>
                     <Fees fees={this.state.activeDealer.fees} />
                     <Schedules schedules={this.state.activeDealer.schedules} />
                     <button
