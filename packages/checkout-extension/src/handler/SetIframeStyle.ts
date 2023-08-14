@@ -2,7 +2,7 @@ import { ExtensionCommandType } from '@bigcommerce/checkout-sdk';
 
 import { CommandHandler } from './CommandHandler';
 
-export const SetIframeStyle: CommandHandler = ({ checkoutService, extension }) => {
+export const setIframeStyle: CommandHandler = ({ checkoutService, extension }) => {
     return checkoutService.handleExtensionCommand(
         extension.id,
         ExtensionCommandType.SetIframeStyle,

@@ -4,7 +4,7 @@ import { ExtensionActionType } from '../ExtensionProvider';
 
 import { CommandHandler } from './CommandHandler';
 
-export const ShowLoadingIndicator: CommandHandler = ({ checkoutService, dispatch, extension }) => {
+export const showLoadingIndicator: CommandHandler = ({ checkoutService, dispatch, extension }) => {
     return checkoutService.handleExtensionCommand(
         extension.id,
         ExtensionCommandType.ShowLoadingIndicator,
