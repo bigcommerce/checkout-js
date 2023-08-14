@@ -2,6 +2,7 @@ import { CheckoutService } from '@bigcommerce/checkout-sdk';
 import React, { ReactNode, useReducer } from 'react';
 
 import { ExtensionContext } from './ExtensionContext';
+import { extensionReducer } from './ExtensionReducer';
 import { ExtensionService } from './ExtensionService';
 import { isCheckoutExtensionEnabled } from './isCheckoutExtensionEnabled';
 
@@ -26,20 +27,9 @@ export interface ExtensionProviderProps {
 export const ExtensionProvider = ({ checkoutService, children }: ExtensionProviderProps) => {
     const isExtensionEnabled = () =>
         isCheckoutExtensionEnabled(checkoutService.getState().data.getConfig()?.checkoutSettings);
-
-    const extensionReducer = (state: ExtensionState, action: ExtensionAction): ExtensionState => {
-        switch (action.type) {
-            case ExtensionActionType.SHOW_LOADING_INDICATOR:
-                return { ...state, isShowingLoadingIndicator: action.payload };
-
-            default:
-                return state;
-        }
-    };
     const [extensionState, dispatch] = useReducer(extensionReducer, {
         isShowingLoadingIndicator: false,
     });
-
     const extensionService = new ExtensionService(checkoutService, dispatch);
 
     const extensionValues = {
