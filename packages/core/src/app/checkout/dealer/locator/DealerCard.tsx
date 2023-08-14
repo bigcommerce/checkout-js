@@ -6,7 +6,7 @@ import Schedules from './Schedules';
 export default function DealerCard(props: any): any {
   const { dealer, index } = props;
 
-  const formatPhoneNumber = (phoneNumber) => {
+  const formatPhoneNumber = (phoneNumber: any) => {
     const cleanedNumber = (`${  phoneNumber}`).replace(/\D/g, '');
     const setNumber = cleanedNumber.match(/^(\d{3})(\d{3})(\d{4})$/);
 
