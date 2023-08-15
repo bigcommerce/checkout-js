@@ -9,6 +9,7 @@ import { isEmpty } from 'lodash';
 import React, { FunctionComponent, memo } from 'react';
 
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { IconPayPalConnectSmall } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
 
@@ -16,9 +17,11 @@ import AddressType from './AddressType';
 import isValidAddress from './isValidAddress';
 import localizeAddress from './localizeAddress';
 import './StaticAddress.scss';
+import { usePayPalConnectAddress } from './PayPalAxo';
 
 export interface StaticAddressProps {
     address: Address;
+    showProviderIcon?: boolean;
     type?: AddressType;
 }
 
@@ -33,7 +36,8 @@ interface WithCheckoutStaticAddressProps {
 
 const StaticAddress: FunctionComponent<
     StaticAddressEditableProps & WithCheckoutStaticAddressProps
-> = ({ countries, fields, address: addressWithoutLocalization }) => {
+> = ({ countries, fields, address: addressWithoutLocalization, showProviderIcon }) => {
+    const { isPayPalConnectAddress } = usePayPalConnectAddress();
     const address = localizeAddress(addressWithoutLocalization, countries);
     const isValid = !fields
         ? !isEmpty(address)
@@ -41,9 +45,13 @@ const StaticAddress: FunctionComponent<
               address,
               fields.filter((field) => !field.custom),
           );
+    const shouldShowProviderIcon = showProviderIcon && isPayPalConnectAddress(addressWithoutLocalization);
 
     return !isValid ? null : (
         <div className="vcard checkout-address--static">
+
+            {shouldShowProviderIcon && <IconPayPalConnectSmall />}
+
             {(address.firstName || address.lastName) && (
                 <p className="fn address-entry">
                     <span className="first-name">{`${address.firstName} `}</span>

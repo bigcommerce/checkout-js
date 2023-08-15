@@ -13,7 +13,13 @@ import { getCountries } from '../geography/countries.mock';
 import { getAddress } from './address.mock';
 import AddressType from './AddressType';
 import { getAddressFormFields } from './formField.mock';
+import * as usePayPalConnectAddress from './PayPalAxo/usePayPalConnectAddress';
 import StaticAddress, { StaticAddressProps } from './StaticAddress';
+
+jest.mock('@bigcommerce/checkout/ui', () => ({
+    ...jest.requireActual('@bigcommerce/checkout/ui'),
+    IconPayPalConnectSmall: () => (<div data-test="pp-connect-icon">IconPayPalConnectSmall</div>)
+}));
 
 describe('StaticAddress Component', () => {
     let StaticAddressTest: FunctionComponent<StaticAddressProps>;
@@ -37,6 +43,12 @@ describe('StaticAddress Component', () => {
 
         jest.spyOn(checkoutState.data, 'getShippingAddressFields').mockReturnValue(
             getAddressFormFields(),
+        );
+
+        jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
+            jest.fn().mockImplementation(() => ({
+                isPayPalConnectAddress: () => false,
+            }))
         );
 
         StaticAddressTest = (props) => (
@@ -146,5 +158,63 @@ describe('StaticAddress Component', () => {
         );
 
         expect(container.html()).not.toBe('');
+    });
+
+    describe('provider icon', () => {
+        it('should not show icon', () => {
+            const container = render(
+                <StaticAddressTest
+                    {...defaultProps}
+                    showProviderIcon={false}
+                />
+            );
+
+            expect(container.find('[data-test="pp-connect-icon"]')).toHaveLength(0);
+        });
+
+        it('should show icon, but address is not from PP Connect', () => {
+            const container = render(
+                <StaticAddressTest
+                    {...defaultProps}
+                    showProviderIcon={true}
+                />
+            );
+
+            expect(container.find('[data-test="pp-connect-icon"]')).toHaveLength(0);
+        });
+
+        it('should not show icon, but address is from PP Connect', () => {
+            jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
+                jest.fn().mockImplementation(() => ({
+                    isPayPalConnectAddress: () => true,
+                }))
+            );
+
+            const container = render(
+                <StaticAddressTest
+                    {...defaultProps}
+                    showProviderIcon={false}
+                />
+            );
+
+            expect(container.find('[data-test="pp-connect-icon"]')).toHaveLength(0);
+        });
+
+        it('should show icon for PP Connect address', () => {
+            jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
+                jest.fn().mockImplementation(() => ({
+                    isPayPalConnectAddress: () => true,
+                }))
+            );
+
+            const container = render(
+                <StaticAddressTest
+                    {...defaultProps}
+                    showProviderIcon={true}
+                />
+            );
+
+            expect(container.find('[data-test="pp-connect-icon"]')).toHaveLength(1);
+        });
     });
 });
