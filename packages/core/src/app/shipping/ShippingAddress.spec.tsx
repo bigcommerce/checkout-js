@@ -86,9 +86,11 @@ describe('ShippingAddress Component', () => {
 
         it('does not render StaticAddress if method id is not sent', () => {
             const component = mount(
-                <Formik initialValues={{}} onSubmit={noop}>
-                    <ShippingAddress {...defaultProps} />
-                </Formik>,
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <Formik initialValues={{}} onSubmit={noop}>
+                        <ShippingAddress {...defaultProps} />
+                    </Formik>
+                </CheckoutProvider>,
             );
 
             expect(component.find(StaticAddress)).toHaveLength(0);

@@ -4,6 +4,7 @@ import React from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';
@@ -76,21 +77,25 @@ describe('ShippingForm Component', () => {
     describe('when multishipping mode is off', () => {
         beforeEach(() => {
             component = mount(
-                <LocaleContext.Provider value={localeContext}>
-                    <ExtensionProvider checkoutService={checkoutService}>
-                        <ShippingForm {...defaultProps} />
-                    </ExtensionProvider>
-                </LocaleContext.Provider>,
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm {...defaultProps} />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
             );
         });
 
         it('renders ShippingAddress with expected props', () => {
             component = mount(
-                <LocaleContext.Provider value={localeContext}>
-                    <ExtensionProvider checkoutService={checkoutService}>
-                        <ShippingForm {...defaultProps} methodId="amazonpay" />
-                    </ExtensionProvider>
-                </LocaleContext.Provider>,
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm {...defaultProps} methodId="amazonpay" />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
             );
 
             expect(component.find(ShippingAddress).props()).toEqual(
@@ -106,11 +111,13 @@ describe('ShippingForm Component', () => {
 
         it('renders disabled continue button when valid address and no shipping option', () => {
             component = mount(
-                <LocaleContext.Provider value={localeContext}>
-                    <ExtensionProvider checkoutService={checkoutService}>
-                        <ShippingForm {...defaultProps} consignments={[]} />
-                    </ExtensionProvider>
-                </LocaleContext.Provider>,
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm {...defaultProps} consignments={[]} />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
             );
 
             expect(component.find('Button#checkout-shipping-continue').props()).toEqual(
@@ -123,17 +130,19 @@ describe('ShippingForm Component', () => {
 
         it('renders enabled continue button when invalid address', () => {
             component = mount(
-                <LocaleContext.Provider value={localeContext}>
-                    <ExtensionProvider checkoutService={checkoutService}>
-                        <ShippingForm
-                            {...defaultProps}
-                            shippingAddress={{
-                                ...getShippingAddress(),
-                                address1: '',
-                            }}
-                        />
-                    </ExtensionProvider>
-                </LocaleContext.Provider>,
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm
+                                {...defaultProps}
+                                shippingAddress={{
+                                    ...getShippingAddress(),
+                                    address1: '',
+                                }}
+                            />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
             );
 
             expect(component.find('Button#checkout-shipping-continue').props()).toEqual(
@@ -146,11 +155,13 @@ describe('ShippingForm Component', () => {
 
         it('renders enabled continue button when no address', () => {
             component = mount(
-                <LocaleContext.Provider value={localeContext}>
-                    <ExtensionProvider checkoutService={checkoutService}>
-                        <ShippingForm {...defaultProps} shippingAddress={undefined} />
-                    </ExtensionProvider>
-                </LocaleContext.Provider>,
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm {...defaultProps} shippingAddress={undefined} />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
             );
 
             expect(component.find('Button#checkout-shipping-continue').props()).toEqual(
@@ -201,11 +212,13 @@ describe('ShippingForm Component', () => {
         describe('when user is guest', () => {
             beforeEach(() => {
                 component = mount(
-                    <LocaleContext.Provider value={localeContext}>
-                        <ExtensionProvider checkoutService={checkoutService}>
-                            <ShippingForm {...defaultProps} isGuest={true} isMultiShippingMode={true} />
-                        </ExtensionProvider>
-                    </LocaleContext.Provider>,
+                    <CheckoutProvider checkoutService={checkoutService}>
+                        <LocaleContext.Provider value={localeContext}>
+                            <ExtensionProvider checkoutService={checkoutService}>
+                                <ShippingForm {...defaultProps} isGuest={true} isMultiShippingMode={true} />
+                            </ExtensionProvider>
+                        </LocaleContext.Provider>
+                    </CheckoutProvider>,
                 );
             });
 
@@ -226,25 +239,29 @@ describe('ShippingForm Component', () => {
         describe('when user is signed in', () => {
             beforeEach(() => {
                 component = mount(
-                    <LocaleContext.Provider value={localeContext}>
-                        <ExtensionProvider checkoutService={checkoutService}>
-                            <ShippingForm {...defaultProps} isMultiShippingMode={true} />
-                        </ExtensionProvider>
-                    </LocaleContext.Provider>,
+                    <CheckoutProvider checkoutService={checkoutService}>
+                        <LocaleContext.Provider value={localeContext}>
+                            <ExtensionProvider checkoutService={checkoutService}>
+                                <ShippingForm {...defaultProps} isMultiShippingMode={true} />
+                            </ExtensionProvider>
+                        </LocaleContext.Provider>
+                    </CheckoutProvider>,
                 );
             });
 
             it('renders disabled button when loading', () => {
                 component = mount(
-                    <LocaleContext.Provider value={localeContext}>
-                        <ExtensionProvider checkoutService={checkoutService}>
-                            <ShippingForm
-                                {...defaultProps}
-                                isLoading={true}
-                                isMultiShippingMode={true}
-                            />
-                        </ExtensionProvider>
-                    </LocaleContext.Provider>,
+                    <CheckoutProvider checkoutService={checkoutService}>
+                        <LocaleContext.Provider value={localeContext}>
+                            <ExtensionProvider checkoutService={checkoutService}>
+                                <ShippingForm
+                                    {...defaultProps}
+                                    isLoading={true}
+                                    isMultiShippingMode={true}
+                                />
+                            </ExtensionProvider>
+                        </LocaleContext.Provider>
+                    </CheckoutProvider>,
                 );
 
                 expect(component.find('Button#checkout-shipping-continue').props()).toEqual(
@@ -257,20 +274,22 @@ describe('ShippingForm Component', () => {
 
             it('renders disabled button when no shipping option selected', () => {
                 component = mount(
-                    <LocaleContext.Provider value={localeContext}>
-                        <ExtensionProvider checkoutService={checkoutService}>
-                            <ShippingForm
-                                {...defaultProps}
-                                consignments={[
-                                    {
-                                        ...getConsignment(),
-                                        selectedShippingOption: undefined,
-                                    },
-                                ]}
-                                isMultiShippingMode={true}
-                            />
-                        </ExtensionProvider>
-                    </LocaleContext.Provider>,
+                    <CheckoutProvider checkoutService={checkoutService}>
+                        <LocaleContext.Provider value={localeContext}>
+                            <ExtensionProvider checkoutService={checkoutService}>
+                                <ShippingForm
+                                    {...defaultProps}
+                                    consignments={[
+                                        {
+                                            ...getConsignment(),
+                                            selectedShippingOption: undefined,
+                                        },
+                                    ]}
+                                    isMultiShippingMode={true}
+                                />
+                            </ExtensionProvider>
+                        </LocaleContext.Provider>
+                    </CheckoutProvider>,
                 );
 
                 expect(component.find('Button#checkout-shipping-continue').props()).toEqual(
@@ -283,15 +302,17 @@ describe('ShippingForm Component', () => {
 
             it('renders disabled button when unassigned items', () => {
                 component = mount(
-                    <LocaleContext.Provider value={localeContext}>
-                        <ExtensionProvider checkoutService={checkoutService}>
-                            <ShippingForm
-                                {...defaultProps}
-                                consignments={[]}
-                                isMultiShippingMode={true}
-                            />
-                        </ExtensionProvider>
-                    </LocaleContext.Provider>,
+                    <CheckoutProvider checkoutService={checkoutService}>
+                        <LocaleContext.Provider value={localeContext}>
+                            <ExtensionProvider checkoutService={checkoutService}>
+                                <ShippingForm
+                                    {...defaultProps}
+                                    consignments={[]}
+                                    isMultiShippingMode={true}
+                                />
+                            </ExtensionProvider>
+                        </LocaleContext.Provider>
+                    </CheckoutProvider>,
                 );
 
                 expect(component.find('Button#checkout-shipping-continue').props()).toEqual(
