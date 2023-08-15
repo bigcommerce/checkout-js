@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.354.0](https://github.com/bigcommerce/checkout-js/compare/v1.353.4...v1.354.0) (2023-08-15)
+
+
+### Features
+
+* **payment:** PAYPAL-2732 migrate some components to functional ([0b172fd](https://github.com/bigcommerce/checkout-js/commit/0b172fd613857795e461c958675ed0d458fd3b20))
+* **payment:** PAYPAL-2732 PayPalAxo Powered By component ([dd55b9c](https://github.com/bigcommerce/checkout-js/commit/dd55b9c57c8e435b49407874f789a133c3feb2bb))
+
 ### [1.353.4](https://github.com/bigcommerce/checkout-js/compare/v1.353.3...v1.353.4) (2023-08-15)
 
 ### [1.353.3](https://github.com/bigcommerce/checkout-js/compare/v1.353.2...v1.353.3) (2023-08-14)
