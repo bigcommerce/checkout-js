@@ -430,6 +430,15 @@
                 "user_authorization_error": "Podczas przetwarzania Twojej płatności wystąpił błąd. Skontaktuj się z nami.",
                 "vaulting_service_unavailable": "Usługa sklepienia nie jest obecnie dostępna.",
                 "voided_transaction": "Nie można przetworzyć płatności, ponieważ transakcja została już unieważniona. Spróbuj ponownie lub skontaktuj się z nami."
+            },
+            "ratepay": {
+                "phone_country_code": "Kod kraju",
+                "phone_number": "Numer telefonu",
+                "birth_date": "Data urodzenia",
+                "errors": {
+                    "isRequired": "Wymagana jest wartość w polu {fieldName}",
+                    "isInvalid": "Wartość w polu {fieldName} jest nieprawidłowa"
+                }
             }
         },
         "redeemable": {

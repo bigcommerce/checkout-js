@@ -430,6 +430,15 @@
                 "user_authorization_error": "Der opstod en fejl under behandlingen af din betaling. Kontakt os.",
                 "vaulting_service_unavailable": "Opbevaringstjeneste er ikke tilgængelig i øjeblikket.",
                 "voided_transaction": "Din betaling kunne ikke behandles, fordi transaktionen allerede er blevet annulleret. Prøv igen, eller kontakt os."
+            },
+            "ratepay": {
+                "phone_country_code": "Landekode",
+                "phone_number": "Telefonnummer",
+                "birth_date": "Fødselsdato",
+                "errors": {
+                    "isRequired": "{fieldName} er påkrævet",
+                    "isInvalid": "{fieldName} er ugyldigt"
+                }
             }
         },
         "redeemable": {

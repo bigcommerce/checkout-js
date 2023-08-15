@@ -430,6 +430,15 @@
                 "user_authorization_error": "Ocorreu um erro no processamento do seu pagamento. Entre em contato conosco.",
                 "vaulting_service_unavailable": "O serviço de armazenamento de dados de cartões não está disponível no momento.",
                 "voided_transaction": "Não foi possível processar seu pagamento porque a transação já tinha sido anulada. Tente novamente ou entre em contato conosco."
+            },
+            "ratepay": {
+                "phone_country_code": "Código do país",
+                "phone_number": "Número de telefone",
+                "birth_date": "Data de nascimento",
+                "errors": {
+                    "isRequired": "É obrigatório informar {fieldName}",
+                    "isInvalid": "{fieldName} é inválido"
+                }
             }
         },
         "redeemable": {

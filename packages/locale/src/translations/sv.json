@@ -430,6 +430,15 @@
                 "user_authorization_error": "Det uppstod ett fel när betalningen bearbetades. Kontakta oss.",
                 "vaulting_service_unavailable": "Tjänsten för Vaulting är för närvarande inte tillgänglig.",
                 "voided_transaction": "Det gick inte att bearbeta din betalning eftersom transaktionen redan har annullerats. Försök igen eller kontakta oss."
+            },
+            "ratepay": {
+                "phone_country_code": "Landskod",
+                "phone_number": "Telefonnummer",
+                "birth_date": "Födelsedatum",
+                "errors": {
+                    "isRequired": "{fieldName} måste anges",
+                    "isInvalid": "{fieldName} är ogiltig(t)"
+                }
             }
         },
         "redeemable": {

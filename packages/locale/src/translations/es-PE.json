@@ -430,6 +430,15 @@
                 "user_authorization_error": "Hubo un error al procesar su pago. Póngase en contacto con nosotros.",
                 "vaulting_service_unavailable": "El servicio de bóveda no está disponible actualmente.",
                 "voided_transaction": "Su pago no pudo ser procesado debido a que la transacción ya se anuló. Inténtelo de nuevo o póngase en contacto con nosotros."
+            },
+            "ratepay": {
+                "phone_country_code": "Código del país",
+                "phone_number": "Número telefónico",
+                "birth_date": "Fecha de nacimiento",
+                "errors": {
+                    "isRequired": "{fieldName} es un campo obligatorio",
+                    "isInvalid": "{fieldName} no es válido"
+                }
             }
         },
         "redeemable": {
