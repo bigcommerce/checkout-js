@@ -8,6 +8,7 @@ import { DropdownTrigger } from '../ui/dropdown';
 
 import AddressSelectButton from './AddressSelectButton';
 import isEqualAddress from './isEqualAddress';
+import { PoweredByPaypalConnectLabel, usePayPalConnectAddress } from './PayPalAxo';
 import StaticAddress from './StaticAddress';
 
 import './AddressSelect.scss';
@@ -38,7 +39,7 @@ const AddressSelectMenu: FunctionComponent<AddressSelectProps> = ({
         {addresses.map((address) => (
             <li className="dropdown-menu-item dropdown-menu-item--select" key={address.id}>
                 <a href="#" onClick={preventDefault(() => onSelectAddress(address))}>
-                    <StaticAddress address={address} />
+                    <StaticAddress address={address} showProviderIcon />
                 </a>
             </li>
         ))}
@@ -51,6 +52,8 @@ const AddressSelect = ({
     onSelectAddress,
     onUseNewAddress,
 }: AddressSelectProps) => {
+    const { shouldShowPayPalConnectLabel } = usePayPalConnectAddress();
+
     const handleSelectAddress = (newAddress: Address) => {
         if (!isEqualAddress(selectedAddress, newAddress)) {
             onSelectAddress(newAddress);
@@ -80,6 +83,8 @@ const AddressSelect = ({
                     />
                 </DropdownTrigger>
             </div>
+
+            {shouldShowPayPalConnectLabel() && <PoweredByPaypalConnectLabel />}
         </div>
     );
 }

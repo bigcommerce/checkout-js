@@ -2,6 +2,7 @@ import { Cart, Consignment } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
 import { AddressType, StaticAddress } from '../address';
+import { PoweredByPaypalConnectLabel, usePayPalConnectAddress } from '../address/PayPalAxo';
 
 import { StaticShippingOption } from './shippingOption';
 import './StaticConsignment.scss';
@@ -18,11 +19,14 @@ const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
     cart,
     compactView,
 }) => {
+    const { isPayPalConnectAddress } = usePayPalConnectAddress();
     const { shippingAddress: address, selectedShippingOption } = consignment;
 
     return (
         <div className="staticConsignment">
             <StaticAddress address={address} type={AddressType.Shipping} />
+
+            {isPayPalConnectAddress(address) && <PoweredByPaypalConnectLabel />}
 
             {!compactView && <StaticConsignmentItemList cart={cart} consignment={consignment} />}
 
