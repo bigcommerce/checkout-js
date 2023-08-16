@@ -56,6 +56,9 @@
       ],
       "@bigcommerce/checkout/instrument-utils": ["packages/instrument-utils/src/index.ts"],
       "@bigcommerce/checkout/locale": ["packages/locale/src/index.ts"],
+      "@bigcommerce/checkout/legacy-hoc": [
+        "packages/legacy-hoc/src/index.ts"
+      ],
       "@bigcommerce/checkout/offline-payment-integration": [
         "packages/offline-payment-integration/src/index.ts"
       ],

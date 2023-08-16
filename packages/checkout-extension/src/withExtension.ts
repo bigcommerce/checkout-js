@@ -1,4 +1,4 @@
-import { createInjectHoc } from '@bigcommerce/checkout/locale';
+import { createInjectHoc } from '@bigcommerce/checkout/legacy-hoc';
 
 import { ExtensionContext } from './ExtensionContext';
 

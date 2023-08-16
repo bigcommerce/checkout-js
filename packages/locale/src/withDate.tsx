@@ -1,5 +1,5 @@
 import LocaleContext from './LocaleContext';
-import { createInjectHoc, InjectHoc } from './utils';
+import { createInjectHoc, InjectHoc } from '@bigcommerce/checkout/legacy-hoc';
 
 export interface WithDateProps {
     date: {
