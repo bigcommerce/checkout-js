@@ -1,10 +1,15 @@
 .checkout-address--static {
+    .address-entry {
+        margin: 0;
+    }
+}
+
+.checkout-address--with-provider-icon {
     $icon-size: 1.85rem;
 
     position: relative;
 
     .address-entry {
-        margin: 0;
         padding-right: $icon-size;
     }
 

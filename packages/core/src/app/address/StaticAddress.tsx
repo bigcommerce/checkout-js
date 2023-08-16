@@ -5,6 +5,7 @@ import {
     FormField,
     ShippingInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import { isEmpty } from 'lodash';
 import React, { FunctionComponent, memo } from 'react';
 
@@ -48,7 +49,15 @@ const StaticAddress: FunctionComponent<
     const shouldShowProviderIcon = showProviderIcon && isPayPalConnectAddress(addressWithoutLocalization);
 
     return !isValid ? null : (
-        <div className="vcard checkout-address--static">
+        <div
+            className={classNames(
+                'vcard checkout-address--static',
+                {
+                    'checkout-address--with-provider-icon': shouldShowProviderIcon,
+                }
+            )}
+        >
+
 
             {shouldShowProviderIcon && <IconPayPalConnectSmall />}
 
