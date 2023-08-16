@@ -238,6 +238,7 @@ const HostedCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                     ...options,
                     creditCard: {
                         form: await getHostedFormOptions(selectedInstrument),
+                        bigpayToken: selectedInstrument?.bigpayToken,
                     },
                 });
             },
