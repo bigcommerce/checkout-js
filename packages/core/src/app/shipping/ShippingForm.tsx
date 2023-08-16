@@ -14,7 +14,7 @@ import {
     ShippingInitializeOptions,
     ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import React, { Component, ReactNode } from 'react';
+import React from 'react';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 
@@ -60,98 +60,94 @@ export interface ShippingFormProps {
     ): Promise<CheckoutSelectors>;
 }
 
-class ShippingForm extends Component<ShippingFormProps & WithLanguageProps> {
-    render(): ReactNode {
-        const {
-            addresses,
-            assignItem,
-            cart,
-            cartHasChanged,
-            createCustomerAddress,
-            consignments,
-            countries,
-            countriesWithAutocomplete,
-            onCreateAccount,
-            customerMessage,
-            deinitialize,
-            deleteConsignments,
-            getFields,
-            googleMapsApiKey,
-            initialize,
-            isBillingSameAsShipping,
-            isGuest,
-            isLoading,
-            isMultiShippingMode,
-            methodId,
-            onMultiShippingSubmit,
-            onSignIn,
-            onSingleShippingSubmit,
-            onUnhandledError,
-            onUseNewAddress,
-            shippingAddress,
-            shouldShowOrderComments,
-            shouldShowSaveAddress,
-            shouldShowAddAddressInCheckout,
-            signOut,
-            updateAddress,
-            isShippingStepPending,
-            isFloatingLabelEnabled,
-        } = this.props;
-
-        return isMultiShippingMode ? (
-            <MultiShippingForm
-                addresses={addresses}
-                assignItem={assignItem}
-                cart={cart}
-                cartHasChanged={cartHasChanged}
-                consignments={consignments}
-                countries={countries}
-                countriesWithAutocomplete={countriesWithAutocomplete}
-                createCustomerAddress={createCustomerAddress}
-                customerMessage={customerMessage}
-                defaultCountryCode={shippingAddress?.countryCode}
-                getFields={getFields}
-                googleMapsApiKey={googleMapsApiKey}
-                isFloatingLabelEnabled={isFloatingLabelEnabled}
-                isGuest={isGuest}
-                isLoading={isLoading}
-                onCreateAccount={onCreateAccount}
-                onSignIn={onSignIn}
-                onSubmit={onMultiShippingSubmit}
-                onUnhandledError={onUnhandledError}
-                onUseNewAddress={onUseNewAddress}
-                shouldShowAddAddressInCheckout={shouldShowAddAddressInCheckout}
-                shouldShowOrderComments={shouldShowOrderComments}
-            />
-        ) : (
-            <SingleShippingForm
-                addresses={addresses}
-                cartHasChanged={cartHasChanged}
-                consignments={consignments}
-                countries={countries}
-                countriesWithAutocomplete={countriesWithAutocomplete}
-                customerMessage={customerMessage}
-                deinitialize={deinitialize}
-                deleteConsignments={deleteConsignments}
-                getFields={getFields}
-                googleMapsApiKey={googleMapsApiKey}
-                initialize={initialize}
-                isBillingSameAsShipping={isBillingSameAsShipping}
-                isFloatingLabelEnabled={isFloatingLabelEnabled}
-                isLoading={isLoading}
-                isMultiShippingMode={isMultiShippingMode}
-                isShippingStepPending={isShippingStepPending}
-                methodId={methodId}
-                onSubmit={onSingleShippingSubmit}
-                onUnhandledError={onUnhandledError}
-                shippingAddress={shippingAddress}
-                shouldShowOrderComments={shouldShowOrderComments}
-                shouldShowSaveAddress={shouldShowSaveAddress}
-                signOut={signOut}
-                updateAddress={updateAddress}
-            />
-        );
-    }
-}
+const ShippingForm = ({
+    addresses,
+    assignItem,
+    cart,
+    cartHasChanged,
+    createCustomerAddress,
+    consignments,
+    countries,
+    countriesWithAutocomplete,
+    onCreateAccount,
+    customerMessage,
+    deinitialize,
+    deleteConsignments,
+    getFields,
+    googleMapsApiKey,
+    initialize,
+    isBillingSameAsShipping,
+    isGuest,
+    isLoading,
+    isMultiShippingMode,
+    methodId,
+    onMultiShippingSubmit,
+    onSignIn,
+    onSingleShippingSubmit,
+    onUnhandledError,
+    onUseNewAddress,
+    shippingAddress,
+    shouldShowOrderComments,
+    shouldShowSaveAddress,
+    shouldShowAddAddressInCheckout,
+    signOut,
+    updateAddress,
+    isShippingStepPending,
+    isFloatingLabelEnabled,
+}: ShippingFormProps & WithLanguageProps) => {
+    return isMultiShippingMode ? (
+        <MultiShippingForm
+            addresses={addresses}
+            assignItem={assignItem}
+            cart={cart}
+            cartHasChanged={cartHasChanged}
+            consignments={consignments}
+            countries={countries}
+            countriesWithAutocomplete={countriesWithAutocomplete}
+            createCustomerAddress={createCustomerAddress}
+            customerMessage={customerMessage}
+            defaultCountryCode={shippingAddress?.countryCode}
+            getFields={getFields}
+            googleMapsApiKey={googleMapsApiKey}
+            isFloatingLabelEnabled={isFloatingLabelEnabled}
+            isGuest={isGuest}
+            isLoading={isLoading}
+            onCreateAccount={onCreateAccount}
+            onSignIn={onSignIn}
+            onSubmit={onMultiShippingSubmit}
+            onUnhandledError={onUnhandledError}
+            onUseNewAddress={onUseNewAddress}
+            shouldShowAddAddressInCheckout={shouldShowAddAddressInCheckout}
+            shouldShowOrderComments={shouldShowOrderComments}
+        />
+    ) : (
+        <SingleShippingForm
+            addresses={addresses}
+            cartHasChanged={cartHasChanged}
+            consignments={consignments}
+            countries={countries}
+            countriesWithAutocomplete={countriesWithAutocomplete}
+            customerMessage={customerMessage}
+            deinitialize={deinitialize}
+            deleteConsignments={deleteConsignments}
+            getFields={getFields}
+            googleMapsApiKey={googleMapsApiKey}
+            initialize={initialize}
+            isBillingSameAsShipping={isBillingSameAsShipping}
+            isFloatingLabelEnabled={isFloatingLabelEnabled}
+            isLoading={isLoading}
+            isMultiShippingMode={isMultiShippingMode}
+            isShippingStepPending={isShippingStepPending}
+            methodId={methodId}
+            onSubmit={onSingleShippingSubmit}
+            onUnhandledError={onUnhandledError}
+            shippingAddress={shippingAddress}
+            shouldShowOrderComments={shouldShowOrderComments}
+            shouldShowSaveAddress={shouldShowSaveAddress}
+            signOut={signOut}
+            updateAddress={updateAddress}
+        />
+    );
+};
 
 export default withLanguage(ShippingForm);

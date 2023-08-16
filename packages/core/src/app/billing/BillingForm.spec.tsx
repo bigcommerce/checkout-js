@@ -1,7 +1,9 @@
+import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import { AddressForm, AddressSelect } from '../address';
 import { getAddressFormFieldsWithCustomRequired, getFormFields } from '../address/formField.mock';
@@ -18,6 +20,7 @@ describe('BillingForm Component', () => {
     let component: ReactWrapper;
     let localeContext: LocaleContextType;
     let defaultProps: BillingFormProps;
+    const checkoutService = createCheckoutService();
     const billingAddress = {
         ...getBillingAddress(),
         firstName: 'foo',
@@ -44,9 +47,11 @@ describe('BillingForm Component', () => {
 
     beforeEach(() => {
         component = mount(
-            <LocaleContext.Provider value={localeContext}>
-                <BillingForm {...defaultProps} />
-            </LocaleContext.Provider>,
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <BillingForm {...defaultProps} />
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
         );
     });
 
@@ -61,9 +66,11 @@ describe('BillingForm Component', () => {
         };
 
         component = mount(
-            <LocaleContext.Provider value={localeContext}>
-                <BillingForm {...defaultProps} methodId="amazonpay" />
-            </LocaleContext.Provider>,
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <BillingForm {...defaultProps} methodId="amazonpay" />
+                </LocaleContext.Provider>,
+            </CheckoutProvider>
         );
 
         expect(component.find(StaticBillingAddress)).toHaveLength(1);
@@ -82,12 +89,14 @@ describe('BillingForm Component', () => {
 
     it('does not render address form when selected customer address is valid', () => {
         component = mount(
-            <LocaleContext.Provider value={localeContext}>
-                <BillingForm
-                    {...defaultProps}
-                    billingAddress={defaultProps.customer.addresses[0]}
-                />
-            </LocaleContext.Provider>,
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <BillingForm
+                        {...defaultProps}
+                        billingAddress={defaultProps.customer.addresses[0]}
+                    />
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
         );
 
         expect(component.find(AddressForm)).toHaveLength(0);
@@ -95,15 +104,17 @@ describe('BillingForm Component', () => {
 
     it('renders address form when selected customer address is not valid', () => {
         component = mount(
-            <LocaleContext.Provider value={localeContext}>
-                <BillingForm
-                    {...defaultProps}
-                    billingAddress={{
-                        ...defaultProps.customer.addresses[0],
-                        address1: '',
-                    }}
-                />
-            </LocaleContext.Provider>,
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <BillingForm
+                        {...defaultProps}
+                        billingAddress={{
+                            ...defaultProps.customer.addresses[0],
+                            address1: '',
+                        }}
+                    />
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
         );
 
         expect(component.find(AddressForm)).toHaveLength(1);

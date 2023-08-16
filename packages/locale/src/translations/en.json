@@ -472,7 +472,8 @@
             "sign_out_after_action": "to view other payment methods",
             "sign_in_required_error": "Remote sign in required before payment",
             "sign_out_before_action": "",
-            "start_with_text": "Check out faster with:"
+            "start_with_text": "Check out faster with:",
+            "powered_by": "Powered by"
         },
         "shipping": {
             "cart_change_error": "An update to your shopping cart has been detected and your available shipping costs have been updated. Please re-select a shipping method to continue.",

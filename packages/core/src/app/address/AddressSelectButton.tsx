@@ -24,6 +24,7 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLang
             href="#"
             id="addressToggle"
             onClick={preventDefault(() => setAriaExpanded(!ariaExpanded))}
+            onBlur={() => setAriaExpanded(false)}
         >
             {selectedAddress ? (
                 <StaticAddress address={selectedAddress} />

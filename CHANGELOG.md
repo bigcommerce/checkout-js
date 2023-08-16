@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.355.0](https://github.com/bigcommerce/checkout-js/compare/v1.354.0...v1.355.0) (2023-08-16)
+
+
+### Features
+
+* **checkout:** PI-286 added bigpayToken to the loadPaymentMethod params ([39820dd](https://github.com/bigcommerce/checkout-js/commit/39820dd3893c160bdd1bf18db9ea3eff88245580))
+
+## [1.354.0](https://github.com/bigcommerce/checkout-js/compare/v1.353.4...v1.354.0) (2023-08-15)
+
+
+### Features
+
+* **payment:** PAYPAL-2732 migrate some components to functional ([0b172fd](https://github.com/bigcommerce/checkout-js/commit/0b172fd613857795e461c958675ed0d458fd3b20))
+* **payment:** PAYPAL-2732 PayPalAxo Powered By component ([dd55b9c](https://github.com/bigcommerce/checkout-js/commit/dd55b9c57c8e435b49407874f789a133c3feb2bb))
+
+### [1.353.4](https://github.com/bigcommerce/checkout-js/compare/v1.353.3...v1.353.4) (2023-08-15)
+
+### [1.353.3](https://github.com/bigcommerce/checkout-js/compare/v1.353.2...v1.353.3) (2023-08-14)
+
+### [1.353.2](https://github.com/bigcommerce/checkout-js/compare/v1.353.1...v1.353.2) (2023-08-14)
+
+### [1.353.1](https://github.com/bigcommerce/checkout-js/compare/v1.353.0...v1.353.1) (2023-08-10)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-7150 aria-expanded property does not toggle based on the associated drop-down ([915bb81](https://github.com/bigcommerce/checkout-js/commit/915bb81bb066946e03f44defcbb5bed7e6fd4ebf))
+
+## [1.353.0](https://github.com/bigcommerce/checkout-js/compare/v1.352.2...v1.353.0) (2023-08-09)
+
+
+### Features
+
+* **payment:** PAYPAL-2737 added vaulter instruments implementation to Braintree AXO payment method ([#1399](https://github.com/bigcommerce/checkout-js/issues/1399)) ([5d471d7](https://github.com/bigcommerce/checkout-js/commit/5d471d7372613ffab11cf5ec3fa4a634c0907c5d))
+
+### [1.352.2](https://github.com/bigcommerce/checkout-js/compare/v1.352.1...v1.352.2) (2023-08-09)
+
+### [1.352.1](https://github.com/bigcommerce/checkout-js/compare/v1.352.0...v1.352.1) (2023-08-08)
+
 ## [1.352.0](https://github.com/bigcommerce/checkout-js/compare/v1.351.0...v1.352.0) (2023-08-08)
 
 
