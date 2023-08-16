@@ -1,3 +1,5 @@
+@import "../ui/Base";
+
 .checkout-address--static {
     .address-entry {
         margin: 0;
@@ -5,17 +7,15 @@
 }
 
 .checkout-address--with-provider-icon {
-    $icon-size: 1.85rem;
-
     position: relative;
 
     .address-entry {
-        padding-right: $icon-size;
+        padding-right: $paypal-connect-icon-size;
     }
 
     .icon {
-        width: $icon-size;
-        height: $icon-size;
+        width: $paypal-connect-icon-size;
+        height: $paypal-connect-icon-size;
         position: absolute;
         top: 0;
         right: 0;
