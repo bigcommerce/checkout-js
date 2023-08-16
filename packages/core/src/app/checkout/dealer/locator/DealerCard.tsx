@@ -1,23 +1,13 @@
 import React from 'react';
 
+import formatPhoneNumber from '../PhoneNumberFormatter';
 import Fees from './Fees';
 import Schedules from './Schedules';
 
 export default function DealerCard(props: any): any {
   const { dealer, index } = props;
 
-  const formatPhoneNumber = (phoneNumber: any) => {
-    const cleanedNumber = (`${  phoneNumber}`).replace(/\D/g, '');
-    const setNumber = cleanedNumber.match(/^(\d{3})(\d{3})(\d{4})$/);
-
-    if (setNumber) {
-      return `(${setNumber[1]})-${setNumber[2]}-${setNumber[3]}`;
-    }
-
-    return null;
-  };
-
-  const formattedDealerPhoneNumber = formatPhoneNumber(dealer.phone_number);
+  const formattedDealerPhoneNumber = formatPhoneNumber({ phoneNumber: dealer.phone_number });
 
   const handleSelect = () => props.selectDealer({
     
@@ -51,7 +41,7 @@ export default function DealerCard(props: any): any {
       {dealer.business_name}
     </div>
       <div>{`${dealer.premise_street}, ${dealer.premise_city}, ${dealer.premise_state} ${dealer.premise_zip}`}</div>
-      <a href={`tel:${ formattedDealerPhoneNumber }`}>{formattedDealerPhoneNumber}</a>
+      <a href={`tel:${dealer.phone_number}`}>{formattedDealerPhoneNumber}</a>
     </div>
     <Fees fees={dealer.fees} />
     <Schedules schedules={dealer.schedules} />
