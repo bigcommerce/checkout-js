@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.355.0](https://github.com/bigcommerce/checkout-js/compare/v1.354.0...v1.355.0) (2023-08-16)
+
+
+### Features
+
+* **checkout:** PI-286 added bigpayToken to the loadPaymentMethod params ([39820dd](https://github.com/bigcommerce/checkout-js/commit/39820dd3893c160bdd1bf18db9ea3eff88245580))
+
 ## [1.354.0](https://github.com/bigcommerce/checkout-js/compare/v1.353.4...v1.354.0) (2023-08-15)
 
 
