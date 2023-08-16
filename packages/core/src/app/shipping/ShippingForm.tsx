@@ -97,8 +97,8 @@ const ShippingForm = ({
     isShippingStepPending,
     isFloatingLabelEnabled,
 }: ShippingFormProps & WithLanguageProps) => {
-    const { isPayPalAxoEnabled, mergeWithPayPalAddresses } = usePayPalConnectAddress();
-    const shippingAddresses = isPayPalAxoEnabled ? mergeWithPayPalAddresses(addresses) : addresses;
+    const { isPayPalAxoEnabled, mergedBcAndPayPalConnectAddresses } = usePayPalConnectAddress();
+    const shippingAddresses = isPayPalAxoEnabled ? mergedBcAndPayPalConnectAddresses : addresses;
 
     return isMultiShippingMode ? (
         <MultiShippingForm

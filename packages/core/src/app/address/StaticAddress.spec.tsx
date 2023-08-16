@@ -161,39 +161,10 @@ describe('StaticAddress Component', () => {
     });
 
     describe('provider icon', () => {
-        it('should not show icon', () => {
+        it('should not show icon, address is not from PP Connect', () => {
             const container = render(
                 <StaticAddressTest
                     {...defaultProps}
-                    showProviderIcon={false}
-                />
-            );
-
-            expect(container.find('[data-test="pp-connect-icon"]')).toHaveLength(0);
-        });
-
-        it('should show icon, but address is not from PP Connect', () => {
-            const container = render(
-                <StaticAddressTest
-                    {...defaultProps}
-                    showProviderIcon={true}
-                />
-            );
-
-            expect(container.find('[data-test="pp-connect-icon"]')).toHaveLength(0);
-        });
-
-        it('should not show icon, but address is from PP Connect', () => {
-            jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
-                jest.fn().mockImplementation(() => ({
-                    isPayPalConnectAddress: () => true,
-                }))
-            );
-
-            const container = render(
-                <StaticAddressTest
-                    {...defaultProps}
-                    showProviderIcon={false}
                 />
             );
 
@@ -203,14 +174,14 @@ describe('StaticAddress Component', () => {
         it('should show icon for PP Connect address', () => {
             jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
                 jest.fn().mockImplementation(() => ({
-                    isPayPalConnectAddress: () => true,
+                    isPayPalAxoEnabled: true,
+                    paypalConnectAddresses: [defaultProps.address]
                 }))
             );
 
             const container = render(
                 <StaticAddressTest
                     {...defaultProps}
-                    showProviderIcon={true}
                 />
             );
 

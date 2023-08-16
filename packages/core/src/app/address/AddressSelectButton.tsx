@@ -27,7 +27,7 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLang
             onBlur={() => setAriaExpanded(false)}
         >
             {selectedAddress ? (
-                <StaticAddress address={selectedAddress} showProviderIcon />
+                <StaticAddress address={selectedAddress} />
             ) : (
                 <TranslatedString id="address.enter_address_action" />
             )}

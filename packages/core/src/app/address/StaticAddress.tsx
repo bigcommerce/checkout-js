@@ -17,12 +17,12 @@ import { withCheckout } from '../checkout';
 import AddressType from './AddressType';
 import isValidAddress from './isValidAddress';
 import localizeAddress from './localizeAddress';
+import { isPayPalConnectAddress, usePayPalConnectAddress } from './PayPalAxo';
+
 import './StaticAddress.scss';
-import { usePayPalConnectAddress } from './PayPalAxo';
 
 export interface StaticAddressProps {
     address: Address;
-    showProviderIcon?: boolean;
     type?: AddressType;
 }
 
@@ -37,8 +37,8 @@ interface WithCheckoutStaticAddressProps {
 
 const StaticAddress: FunctionComponent<
     StaticAddressEditableProps & WithCheckoutStaticAddressProps
-> = ({ countries, fields, address: addressWithoutLocalization, showProviderIcon }) => {
-    const { isPayPalConnectAddress } = usePayPalConnectAddress();
+> = ({ countries, fields, address: addressWithoutLocalization }) => {
+    const { isPayPalAxoEnabled, paypalConnectAddresses } = usePayPalConnectAddress();
     const address = localizeAddress(addressWithoutLocalization, countries);
     const isValid = !fields
         ? !isEmpty(address)
@@ -46,7 +46,7 @@ const StaticAddress: FunctionComponent<
               address,
               fields.filter((field) => !field.custom),
           );
-    const shouldShowProviderIcon = showProviderIcon && isPayPalConnectAddress(addressWithoutLocalization);
+    const shouldShowProviderIcon = isPayPalAxoEnabled && isPayPalConnectAddress(addressWithoutLocalization, paypalConnectAddresses);
 
     return !isValid ? null : (
         <div
@@ -57,8 +57,6 @@ const StaticAddress: FunctionComponent<
                 }
             )}
         >
-
-
             {shouldShowProviderIcon && <IconPayPalConnectSmall />}
 
             {(address.firstName || address.lastName) && (

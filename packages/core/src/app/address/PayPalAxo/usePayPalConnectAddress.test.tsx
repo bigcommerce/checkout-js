@@ -5,34 +5,36 @@ import React from 'react';
 import * as PaymentIntegrationApi from '@bigcommerce/checkout/payment-integration-api';
 import { getAddress, getCustomer, getStoreConfig } from '@bigcommerce/checkout/test-utils';
 
-import { getBillingAddress } from '../../billing/billingAddresses.mock';
 import { PaymentMethodId } from '../../payment/paymentMethod';
 
 import usePayPalConnectAddress from './usePayPalConnectAddress';
+import { isPayPalConnectAddress } from './utils';
 
 interface PayPalAxoAddressComponentProps {
     selectedAddress: Address;
-    addresses: CustomerAddress[];
 }
 
 const PayPalAxoAddressComponent = ({
     selectedAddress,
-    addresses = [],
 }: PayPalAxoAddressComponentProps) => {
     const {
-        isPayPalConnectAddress,
+        isPayPalAxoEnabled,
+        paypalConnectAddresses,
         shouldShowPayPalConnectLabel,
-        mergeWithPayPalAddresses,
+        mergedBcAndPayPalConnectAddresses,
     } = usePayPalConnectAddress();
-    const mergedAddresses = mergeWithPayPalAddresses(addresses);
+    const mergedAddresses = mergedBcAndPayPalConnectAddresses;
 
     return (
         <>
+            <div data-test="isPayPalAxoEnabled">
+                {isPayPalAxoEnabled ? 'true' : 'false'}
+            </div>
             <div data-test="isPayPalConnectAddress">
-                {isPayPalConnectAddress(selectedAddress) ? 'true' : 'false'}
+                {isPayPalConnectAddress(selectedAddress, paypalConnectAddresses) ? 'true' : 'false'}
             </div>
             <div data-test="shouldShowPayPalConnectLabel">
-                {shouldShowPayPalConnectLabel() ? 'true' : 'false'}
+                {shouldShowPayPalConnectLabel ? 'true' : 'false'}
             </div>
             <ul>
                 {mergedAddresses.map((address, index) => (
@@ -45,13 +47,11 @@ const PayPalAxoAddressComponent = ({
 
 describe('usePayPalConnectAddress', () => {
     const defaultStoreConfig = getStoreConfig();
-    const defaultBillingAddress = getBillingAddress();
     const defaultCustomer = getCustomer()
 
     const useCheckoutMock = (
         paymentProviderCustomer: PaymentProviderCustomer,
-        billingEmail?: string,
-        customerEmail?: string,
+        customerAddress?: CustomerAddress[],
         providerWithCustomCheckout = PaymentMethodId.BraintreeAcceleratedCheckout,
     ) => {
         jest.spyOn(PaymentIntegrationApi, 'useCheckout').mockImplementation(
@@ -59,10 +59,6 @@ describe('usePayPalConnectAddress', () => {
                 checkoutState: {
                     data: {
                         getPaymentProviderCustomer: () => paymentProviderCustomer,
-                        getBillingAddress: () => ({
-                            ...defaultBillingAddress,
-                            email: billingEmail,
-                        }),
                         getConfig: () => ({
                             ...defaultStoreConfig,
                             checkoutSettings: {
@@ -72,7 +68,7 @@ describe('usePayPalConnectAddress', () => {
                         }),
                         getCustomer: () => ({
                             ...defaultCustomer,
-                            email: customerEmail,
+                            addresses: customerAddress,
                         }),
                     }
                 }
@@ -109,11 +105,13 @@ describe('usePayPalConnectAddress', () => {
     });
 
     it('renders with BC addresses & no PP Connect addresses, selected BC address', () => {
-        useCheckoutMock({});
+        useCheckoutMock(
+            {},
+            [addressBC1, addressBC2],
+        );
 
         render(
             <PayPalAxoAddressComponent
-                addresses={[addressBC1, addressBC2]}
                 selectedAddress={addressBC1}
             />
         );
@@ -128,13 +126,13 @@ describe('usePayPalConnectAddress', () => {
     });
 
     it('renders with PP Connect addresses & no BC addresses, selected PP address', () => {
-        useCheckoutMock({
-            addresses: [addressPP1, addressPP2],
-        });
+        useCheckoutMock(
+            {addresses: [addressPP1, addressPP2]},
+            [],
+        );
 
         render(
             <PayPalAxoAddressComponent
-                addresses={[]}
                 selectedAddress={addressPP1}
             />
         );
@@ -149,13 +147,13 @@ describe('usePayPalConnectAddress', () => {
     });
 
     it('renders with BC addresses & PP Connect address, selected BC address', () => {
-        useCheckoutMock({
-            addresses: [addressPP2],
-        });
+        useCheckoutMock(
+            {addresses: [addressPP2]},
+            [addressBC1, addressBC2],
+        );
 
         render(
             <PayPalAxoAddressComponent
-                addresses={[addressBC1, addressBC2]}
                 selectedAddress={addressBC1}
             />
         );
@@ -171,13 +169,13 @@ describe('usePayPalConnectAddress', () => {
     });
 
     it('renders with BC addresses & PP Connect address - with address merge, selected PP address', () => {
-        useCheckoutMock({
-            addresses: [addressPP1, addressPP2],
-        });
+        useCheckoutMock(
+            {addresses: [addressPP1, addressPP2]},
+            [addressBC1, addressBC2],
+        );
 
         render(
             <PayPalAxoAddressComponent
-                addresses={[addressBC1, addressBC2]}
                 selectedAddress={addressPP1}
             />
         );

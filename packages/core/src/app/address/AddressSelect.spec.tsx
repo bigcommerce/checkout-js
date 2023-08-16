@@ -30,8 +30,7 @@ describe('AddressSelect Component', () => {
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
         jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
             jest.fn().mockImplementation(() => ({
-                isPayPalConnectAddress: () => false,
-                shouldShowPayPalConnectLabel: () => false,
+                shouldShowPayPalConnectLabel: false,
             }))
         );
     });
@@ -142,8 +141,7 @@ describe('AddressSelect Component', () => {
     it('shows Powered By PP Connect label', () => {
         jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
             jest.fn().mockImplementation(() => ({
-                isPayPalConnectAddress: () => false,
-                shouldShowPayPalConnectLabel: () => true,
+                shouldShowPayPalConnectLabel: true,
             }))
         );
 

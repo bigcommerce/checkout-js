@@ -39,7 +39,7 @@ const AddressSelectMenu: FunctionComponent<AddressSelectProps> = ({
         {addresses.map((address) => (
             <li className="dropdown-menu-item dropdown-menu-item--select" key={address.id}>
                 <a href="#" onClick={preventDefault(() => onSelectAddress(address))}>
-                    <StaticAddress address={address} showProviderIcon />
+                    <StaticAddress address={address} />
                 </a>
             </li>
         ))}
@@ -84,7 +84,7 @@ const AddressSelect = ({
                 </DropdownTrigger>
             </div>
 
-            {shouldShowPayPalConnectLabel() && <PoweredByPaypalConnectLabel />}
+            {shouldShowPayPalConnectLabel && <PoweredByPaypalConnectLabel />}
         </div>
     );
 }
