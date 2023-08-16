@@ -1,8 +1,14 @@
-import { CheckoutService, Extension, ExtensionRegion } from '@bigcommerce/checkout-sdk';
+import {
+    CheckoutService,
+    Extension,
+    ExtensionCommandMap,
+    ExtensionRegion,
+} from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
 import { ExtensionAction } from './ExtensionProvider';
-import * as commandHandlers from './handler';
+import * as handlerFactories from './handlers';
+import { CommandHandler } from './handlers/CommandHandler';
 
 export class ExtensionService {
     private handlers: { [extensionId: string]: Array<() => void> } = {};
@@ -69,9 +75,24 @@ export class ExtensionService {
             this.handlers[extension.id] = [];
         }
 
-        Object.values(commandHandlers).forEach((handler) => {
-            if (typeof handler === 'function') {
-                this.handlers[extension.id].push(handler(handlerProps));
+        const isCommandHandler = <T extends keyof ExtensionCommandMap>(
+            type: T,
+            handler: CommandHandler<any>,
+        ): handler is CommandHandler<T> => {
+            return handler.commandType === type;
+        };
+
+        Object.values(handlerFactories).forEach((createHandlerFactory) => {
+            const handlerFactory = createHandlerFactory(handlerProps);
+
+            if (isCommandHandler(handlerFactory.commandType, handlerFactory)) {
+                this.handlers[extension.id].push(
+                    this.checkoutService.handleExtensionCommand(
+                        extension.id,
+                        handlerFactory.commandType,
+                        handlerFactory.handler,
+                    ),
+                );
             }
         });
     }

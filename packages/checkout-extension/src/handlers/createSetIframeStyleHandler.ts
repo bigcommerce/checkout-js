@@ -1,12 +1,13 @@
 import { ExtensionCommandType } from '@bigcommerce/checkout-sdk';
 
-import { CommandHandler } from './CommandHandler';
+import { CommandHandler, HandlerProps } from './CommandHandler';
 
-export const setIframeStyle: CommandHandler = ({ checkoutService, extension }) => {
-    return checkoutService.handleExtensionCommand(
-        extension.id,
-        ExtensionCommandType.SetIframeStyle,
-        (data) => {
+export function createSetIframeStyleHandler({
+    extension,
+}: HandlerProps): CommandHandler<ExtensionCommandType.SetIframeStyle> {
+    return {
+        commandType: ExtensionCommandType.SetIframeStyle,
+        handler: (data) => {
             const { style } = data.payload;
             const extensionContainer = document.querySelector(
                 `div[data-extension-id="${extension.id}"]`,
@@ -17,5 +18,5 @@ export const setIframeStyle: CommandHandler = ({ checkoutService, extension }) =
                 Object.assign(iframe.style, style);
             }
         },
-    );
-};
+    };
+}
