@@ -1,12 +1,14 @@
 import { CheckoutService, createCheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import React, { FunctionComponent } from 'react';
 
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
-import PaymentMethodDescription from './PaymentMethodDescription';
+import BraintreePaypalCreditDescription from './BraintreePaypalCreditDescription';
 
-describe('PaymentMethodDescription', () => {
+import { PaymentMethodId } from './index';
+
+describe('BraintreePaypalCreditDescription', () => {
     let PaymentMethodDescriptionTest: FunctionComponent<{ method: PaymentMethod }>;
     let checkoutService: CheckoutService;
     let method: PaymentMethod;
@@ -33,19 +35,33 @@ describe('PaymentMethodDescription', () => {
 
         PaymentMethodDescriptionTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
-                    <PaymentMethodDescription
-                        {...props}
-                    />
+                <BraintreePaypalCreditDescription
+                    {...props}
+                />
             </CheckoutProvider>
         );
     });
 
-    it('render BraintreePaypalCredit description', async () => {
+    it('initialization of the braintreepaypalcredit method was successfu', async () => {
+        render(<PaymentMethodDescriptionTest method={method} />);
+
+        expect(checkoutService.initializePayment).toHaveBeenCalledWith({
+            methodId: PaymentMethodId.BraintreePaypalCredit,
+            braintree: {
+                bannerContainerId: 'braintree-banner-container',
+            },
+        });
+
+        expect(checkoutService.deinitializePayment).toHaveBeenCalled();
+    })
+
+    it('deinitialization of the braintreepaypalcredit method was successful', async () => {
         render(<PaymentMethodDescriptionTest method={method} />);
 
         expect(checkoutService.initializePayment).toHaveBeenCalled();
-        expect(checkoutService.deinitializePayment).toHaveBeenCalled();
 
-        expect(screen.getByTestId('braintree-banner-container')).not.toBeUndefined();
+        expect(checkoutService.deinitializePayment).toHaveBeenCalledWith({
+            methodId: PaymentMethodId.BraintreePaypalCredit,
+        });
     })
 })
