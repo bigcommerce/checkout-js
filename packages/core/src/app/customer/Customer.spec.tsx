@@ -604,6 +604,45 @@ describe('Customer', () => {
             });
         });
 
+        it('triggers execution method if customer is successfully signed in', async () => {
+            jest.spyOn(checkoutService, 'signInCustomer').mockReturnValue(
+                Promise.resolve(checkoutService.getState()),
+            );
+
+            jest.spyOn(checkoutService, 'executePaymentMethodCheckout').mockReturnValue(
+                Promise.resolve(checkoutService.getState()),
+            );
+
+            const handleSignedIn = jest.fn();
+            const component = mount(
+                <CustomerTest
+                    onSignIn={handleSignedIn}
+                    providerWithCustomCheckout={PaymentMethodId.BraintreeAcceleratedCheckout}
+                    viewType={CustomerViewType.Login}
+                />,
+            );
+
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            (component.find(LoginForm) as ReactWrapper<LoginFormProps>).prop('onSignIn')({
+                email: 'test@bigcommerce.com',
+                password: 'password1',
+            });
+
+            expect(checkoutService.signInCustomer).toHaveBeenCalledWith({
+                email: 'test@bigcommerce.com',
+                password: 'password1',
+            });
+
+            await new Promise((resolve) => process.nextTick(resolve));
+
+            expect(checkoutService.executePaymentMethodCheckout).toHaveBeenCalledWith({
+                methodId: PaymentMethodId.BraintreeAcceleratedCheckout,
+                continueWithCheckoutCallback: handleSignedIn,
+            });
+        });
+
         it('triggers completion callback if customer is successfully signed in', async () => {
             jest.spyOn(checkoutService, 'signInCustomer').mockReturnValue(
                 Promise.resolve(checkoutService.getState()),
