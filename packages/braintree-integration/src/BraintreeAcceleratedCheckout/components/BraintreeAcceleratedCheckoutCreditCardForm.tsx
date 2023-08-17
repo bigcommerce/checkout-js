@@ -2,6 +2,8 @@ import React, { FunctionComponent, useEffect } from 'react';
 
 import { PayPalConnectComponentRef } from '../BraintreeAcceleratedCheckoutPaymentMethod';
 
+import './BraintreeAcceleratedCheckoutCreditCardForm.scss';
+
 interface BraintreeAcceleratedCheckoutCreditCardFormProps {
     renderPayPalConnectComponent?: PayPalConnectComponentRef['render'];
 }
@@ -15,7 +17,13 @@ const BraintreeAcceleratedCheckoutCreditCardForm: FunctionComponent<
         }
     }, [renderPayPalConnectComponent]);
 
-    return <div data-test="braintree-axo-cc-form-container" id="braintree-axo-cc-form-container" />;
+    return (
+        <div
+            data-test="braintree-axo-cc-form-container"
+            id="braintree-axo-cc-form-container"
+            className="braintree-axo-cc-form-container"
+        />
+    );
 };
 
 export default BraintreeAcceleratedCheckoutCreditCardForm;
