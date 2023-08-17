@@ -168,3 +168,4 @@ $select-focus-boxShadow:             $input-focus-boxShadow;
 
 // We use it to display a PayPal Connect icon next to the static shipping address
 $paypal-connect-icon-size:           remCalc(30px);
+$paypal-connect-icon-container-size: calc($paypal-connect-icon-size + remCalc(5px));
