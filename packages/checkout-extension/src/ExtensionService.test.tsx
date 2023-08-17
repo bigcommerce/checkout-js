@@ -5,7 +5,6 @@ import {
 } from '@bigcommerce/checkout-sdk';
 
 import { getExtensions } from './Extension.mock';
-import { ExtensionActionType } from './ExtensionProvider';
 import { ExtensionRegionContainer } from './ExtensionRegionContainer';
 import { ExtensionService } from './ExtensionService';
 
@@ -38,17 +37,6 @@ describe('ExtensionService', () => {
         await extensionService.loadExtensions();
 
         expect(checkoutService.loadExtensions).toHaveBeenCalled();
-    });
-
-    it('creates an extension action', () => {
-        const action = {
-            type: ExtensionActionType.SHOW_LOADING_INDICATOR,
-            payload: true,
-        };
-
-        extensionService.createAction(action);
-
-        expect(dispatch).toHaveBeenCalledWith(action);
     });
 
     it('renders an extension', async () => {

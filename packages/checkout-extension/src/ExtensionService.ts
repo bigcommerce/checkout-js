@@ -18,10 +18,6 @@ export class ExtensionService {
         private dispatch: React.Dispatch<ExtensionAction>,
     ) {}
 
-    createAction(action: ExtensionAction): void {
-        this.dispatch(action);
-    }
-
     async loadExtensions(): Promise<void> {
         await this.checkoutService.loadExtensions();
     }
@@ -67,7 +63,7 @@ export class ExtensionService {
     private registerHandlers(extension: Extension): void {
         const handlerProps = {
             checkoutService: this.checkoutService,
-            dispatch: this.createAction,
+            dispatch: this.dispatch,
             extension,
         };
 
