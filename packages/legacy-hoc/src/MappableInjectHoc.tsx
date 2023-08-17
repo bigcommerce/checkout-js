@@ -1,4 +1,4 @@
-import { InjectHoc } from '@bigcommerce/checkout/legacy-hoc';
+import InjectHoc from './InjectHoc';
 
 export type MapToProps<TContextProps, TMappedProps, TOwnProps> = (
     context: TContextProps,

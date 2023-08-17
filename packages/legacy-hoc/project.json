@@ -5,27 +5,19 @@
   "targets": {
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "packages/legacy-hoc/**/*.{ts,tsx}"
-        ]
+        "lintFilePatterns": ["packages/legacy-hoc/**/*.{ts,tsx}"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/packages/legacy-hoc"
-      ],
+      "outputs": ["coverage/packages/legacy-hoc"],
       "options": {
         "jestConfig": "packages/legacy-hoc/jest.config.js",
         "passWithNoTests": true
       }
     }
   },
-  "tags": [
-    "scope:shared"
-  ]
+  "tags": ["scope:shared"]
 }

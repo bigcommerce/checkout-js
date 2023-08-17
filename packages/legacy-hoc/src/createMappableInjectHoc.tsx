@@ -1,7 +1,7 @@
 import React, { ComponentType, Context, FunctionComponent, memo, useContext, useMemo } from 'react';
 import { Omit } from 'utility-types';
 
-import { MatchedProps } from '@bigcommerce/checkout/legacy-hoc';
+import { MatchedProps } from './InjectHoc';
 import MappableInjectHoc, { MapToProps, MapToPropsFactory } from './MappableInjectHoc';
 
 function isMapToPropsFactory<TContextProps, TMappedProps, TOwnProps>(

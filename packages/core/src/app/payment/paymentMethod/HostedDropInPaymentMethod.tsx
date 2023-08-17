@@ -18,7 +18,7 @@ import { CheckoutContextProps, PaymentFormValues } from '@bigcommerce/checkout/p
 
 import { withCheckout } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
-import { MapToPropsFactory } from '../../common/hoc';
+import { MapToPropsFactory } from '@bigcommerce/checkout/legacy-hoc';
 import { LoadingOverlay } from '../../ui/loading';
 import {
     CardInstrumentFieldset,
