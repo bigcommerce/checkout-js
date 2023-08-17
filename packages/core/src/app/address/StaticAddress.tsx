@@ -5,16 +5,20 @@ import {
     FormField,
     ShippingInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import { isEmpty } from 'lodash';
 import React, { FunctionComponent, memo } from 'react';
 
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { IconPayPalConnectSmall } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
 
 import AddressType from './AddressType';
 import isValidAddress from './isValidAddress';
 import localizeAddress from './localizeAddress';
+import { isPayPalConnectAddress, usePayPalConnectAddress } from './PayPalAxo';
+
 import './StaticAddress.scss';
 
 export interface StaticAddressProps {
@@ -34,6 +38,7 @@ interface WithCheckoutStaticAddressProps {
 const StaticAddress: FunctionComponent<
     StaticAddressEditableProps & WithCheckoutStaticAddressProps
 > = ({ countries, fields, address: addressWithoutLocalization }) => {
+    const { isPayPalAxoEnabled, paypalConnectAddresses } = usePayPalConnectAddress();
     const address = localizeAddress(addressWithoutLocalization, countries);
     const isValid = !fields
         ? !isEmpty(address)
@@ -41,9 +46,19 @@ const StaticAddress: FunctionComponent<
               address,
               fields.filter((field) => !field.custom),
           );
+    const shouldShowProviderIcon = isPayPalAxoEnabled && isPayPalConnectAddress(addressWithoutLocalization, paypalConnectAddresses);
 
     return !isValid ? null : (
-        <div className="vcard checkout-address--static">
+        <div
+            className={classNames(
+                'vcard checkout-address--static',
+                {
+                    'checkout-address--with-provider-icon': shouldShowProviderIcon,
+                }
+            )}
+        >
+            {shouldShowProviderIcon && <IconPayPalConnectSmall />}
+
             {(address.firstName || address.lastName) && (
                 <p className="fn address-entry">
                     <span className="first-name">{`${address.firstName} `}</span>
