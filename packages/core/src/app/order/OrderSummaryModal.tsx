@@ -3,7 +3,7 @@ import {
     ShopperCurrency as ShopperCurrencyType,
     StoreCurrency,
 } from '@bigcommerce/checkout-sdk';
-import React, { cloneElement, FunctionComponent, isValidElement, ReactNode } from 'react';
+import React, { cloneElement, FunctionComponent, isValidElement, ReactNode, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Button, IconCloseWithBorder } from '@bigcommerce/checkout/ui';
@@ -20,6 +20,7 @@ import OrderSummaryPrice from './OrderSummaryPrice';
 import OrderSummarySection from './OrderSummarySection';
 import OrderSummarySubtotals, { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 import OrderSummaryTotal from './OrderSummaryTotal';
+import removeBundledItems from './removeBundledItems';
 
 export interface OrderSummaryDrawerProps {
     additionalLineItems?: ReactNode;
@@ -51,6 +52,7 @@ const OrderSummaryModal: FunctionComponent<
     total,
     ...orderSummarySubtotalsProps
 }) => {
+    const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
     const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
 
     const subHeaderText = <OrderModalSummarySubheader
@@ -83,7 +85,7 @@ const OrderSummaryModal: FunctionComponent<
         onRequestClose={onRequestClose}
     >
         <OrderSummarySection>
-            <OrderSummaryItems displayLineItemsCount={!isUpdatedCartSummayModal} items={lineItems} />
+            <OrderSummaryItems displayLineItemsCount={!isUpdatedCartSummayModal} items={nonBundledLineItems} />
         </OrderSummarySection>
         <OrderSummarySection>
             <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
