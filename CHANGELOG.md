@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.357.0](https://github.com/bigcommerce/checkout-js/compare/v1.356.0...v1.357.0) (2023-08-17)
+
+
+### Features
+
+* **payment:** PAYPAL-2856 updated braintree paypal connect form margins to place the form in right place ([#1444](https://github.com/bigcommerce/checkout-js/issues/1444)) ([89003f9](https://github.com/bigcommerce/checkout-js/commit/89003f93de120646bf49f381faad7266e58a1b93))
+
 ## [1.356.0](https://github.com/bigcommerce/checkout-js/compare/v1.355.1...v1.356.0) (2023-08-17)
 
 
