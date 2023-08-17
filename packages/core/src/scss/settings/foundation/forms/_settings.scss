@@ -166,4 +166,5 @@ $select-paddingRight:                spacing("single");
 $select-focus-borderColor:           $input-focus-border-color;
 $select-focus-boxShadow:             $input-focus-boxShadow;
 
+// We use it to display a PayPal Connect icon next to the static shipping address
 $paypal-connect-icon-size:           remCalc(30px);
