@@ -4,9 +4,11 @@ import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { getAddress } from '@bigcommerce/checkout/test-utils';
 
 import { AddressForm, AddressSelect } from '../address';
 import { getAddressFormFieldsWithCustomRequired, getFormFields } from '../address/formField.mock';
+import * as usePayPalConnectAddress from '../address/PayPalAxo/usePayPalConnectAddress';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 import { getCountries } from '../geography/countries.mock';
@@ -43,6 +45,13 @@ describe('BillingForm Component', () => {
             onSubmit: jest.fn(),
             shouldValidateSafeInput: true,
         };
+
+        jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
+            jest.fn().mockImplementation(() => ({
+                isPayPalAxoEnabled: false,
+                mergedBcAndPayPalConnectAddresses: [],
+            })),
+        );
     });
 
     beforeEach(() => {
@@ -160,5 +169,37 @@ describe('BillingForm Component', () => {
         await new Promise((resolve) => process.nextTick(resolve));
 
         expect(defaultProps.onSubmit).not.toHaveBeenCalled();
+    });
+
+    it('renders form with PP Connect addresses', () => {
+        const mergedBcAndPayPalConnectAddresses = [{
+            ...getAddress(),
+            address1: 'PP AXO address'
+        }];
+
+        jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
+            
+            jest.fn().mockImplementation(() => ({
+                isPayPalAxoEnabled: true,
+                mergedBcAndPayPalConnectAddresses,
+            })),
+        );
+
+        component = mount(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <BillingForm {...defaultProps} />
+                </LocaleContext.Provider>,
+            </CheckoutProvider>
+        );
+
+        const addressSelectComponent = component.find(AddressSelect);
+
+        expect(addressSelectComponent).toHaveLength(1);
+        expect(addressSelectComponent.props()).toEqual(
+            expect.objectContaining({
+                addresses: mergedBcAndPayPalConnectAddresses,
+            }),
+        );
     });
 });

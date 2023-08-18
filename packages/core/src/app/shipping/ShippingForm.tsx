@@ -18,6 +18,8 @@ import React from 'react';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 
+import { usePayPalConnectAddress } from '../address/PayPalAxo';
+
 import MultiShippingForm, { MultiShippingFormValues } from './MultiShippingForm';
 import SingleShippingForm, { SingleShippingFormValues } from './SingleShippingForm';
 
@@ -95,9 +97,12 @@ const ShippingForm = ({
     isShippingStepPending,
     isFloatingLabelEnabled,
 }: ShippingFormProps & WithLanguageProps) => {
+    const { isPayPalAxoEnabled, mergedBcAndPayPalConnectAddresses } = usePayPalConnectAddress();
+    const shippingAddresses = isPayPalAxoEnabled ? mergedBcAndPayPalConnectAddresses : addresses;
+
     return isMultiShippingMode ? (
         <MultiShippingForm
-            addresses={addresses}
+            addresses={shippingAddresses}
             assignItem={assignItem}
             cart={cart}
             cartHasChanged={cartHasChanged}
@@ -122,7 +127,7 @@ const ShippingForm = ({
         />
     ) : (
         <SingleShippingForm
-            addresses={addresses}
+            addresses={shippingAddresses}
             cartHasChanged={cartHasChanged}
             consignments={consignments}
             countries={countries}

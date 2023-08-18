@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.359.0](https://github.com/bigcommerce/checkout-js/compare/v1.358.0...v1.359.0) (2023-08-18)
+
+
+### Features
+
+* **payment:** PAYPAL-2733 PayPalAxo Billing step ([f11ef68](https://github.com/bigcommerce/checkout-js/commit/f11ef68bb618f093044c4d2cac0bd842aa1346ba))
+
+## [1.358.0](https://github.com/bigcommerce/checkout-js/compare/v1.357.0...v1.358.0) (2023-08-17)
+
+
+### Features
+
+* **payment:** PAYPAL-2733 PayPalAxo Billing step ([1601a24](https://github.com/bigcommerce/checkout-js/commit/1601a24dfdb5cb39087707d2514f9863cc738822))
+
+## [1.357.0](https://github.com/bigcommerce/checkout-js/compare/v1.356.0...v1.357.0) (2023-08-17)
+
+
+### Features
+
+* **payment:** PAYPAL-2856 updated braintree paypal connect form margins to place the form in right place ([#1444](https://github.com/bigcommerce/checkout-js/issues/1444)) ([89003f9](https://github.com/bigcommerce/checkout-js/commit/89003f93de120646bf49f381faad7266e58a1b93))
+
+## [1.356.0](https://github.com/bigcommerce/checkout-js/compare/v1.355.1...v1.356.0) (2023-08-17)
+
+
+### Features
+
+* **payment:** PAYPAL-2732 PayPalAxo Shipping step ([572e3e2](https://github.com/bigcommerce/checkout-js/commit/572e3e21990e2fc3ef1d4778e58252c47b93a7b7))
+* **payment:** PAYPAL-2732 PayPalAxo Shipping step ([6a0e1a1](https://github.com/bigcommerce/checkout-js/commit/6a0e1a14823d35661f2804eded2d0e06be7f959c))
+* **payment:** PAYPAL-2732 PayPalAxo Shipping step ([c77c7dc](https://github.com/bigcommerce/checkout-js/commit/c77c7dcb981df3ab1a6d01d92751a4567e271bfb))
+* **payment:** PAYPAL-2732 PayPalAxo Shipping step ([91842f5](https://github.com/bigcommerce/checkout-js/commit/91842f59955041536262bb761894804f47f57786))
+* **payment:** PAYPAL-2732 PayPalAxo Shipping step ([a40d5c3](https://github.com/bigcommerce/checkout-js/commit/a40d5c3e8a40c702e2aa729346e37065b84a66e7))
+* **payment:** PAYPAL-2732 PayPalAxo Shipping step ([bbc419e](https://github.com/bigcommerce/checkout-js/commit/bbc419eba5ed0f69a41eaae95da60cf285d43c89))
+
+### [1.355.1](https://github.com/bigcommerce/checkout-js/compare/v1.355.0...v1.355.1) (2023-08-17)
+
 ## [1.355.0](https://github.com/bigcommerce/checkout-js/compare/v1.354.0...v1.355.0) (2023-08-16)
 
 

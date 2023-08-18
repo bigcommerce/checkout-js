@@ -8,6 +8,7 @@ import { DropdownTrigger } from '../ui/dropdown';
 
 import AddressSelectButton from './AddressSelectButton';
 import isEqualAddress from './isEqualAddress';
+import { PoweredByPaypalConnectLabel, usePayPalConnectAddress } from './PayPalAxo';
 import StaticAddress from './StaticAddress';
 
 import './AddressSelect.scss';
@@ -51,6 +52,8 @@ const AddressSelect = ({
     onSelectAddress,
     onUseNewAddress,
 }: AddressSelectProps) => {
+    const { shouldShowPayPalConnectLabel } = usePayPalConnectAddress();
+
     const handleSelectAddress = (newAddress: Address) => {
         if (!isEqualAddress(selectedAddress, newAddress)) {
             onSelectAddress(newAddress);
@@ -80,6 +83,8 @@ const AddressSelect = ({
                     />
                 </DropdownTrigger>
             </div>
+
+            {shouldShowPayPalConnectLabel && <PoweredByPaypalConnectLabel />}
         </div>
     );
 }

@@ -12,7 +12,10 @@ import { getCustomer } from '../customer/customers.mock';
 
 import { getAddress } from './address.mock';
 import AddressSelect from './AddressSelect';
+import * as usePayPalConnectAddress from './PayPalAxo/usePayPalConnectAddress';
 import StaticAddress from './StaticAddress';
+
+jest.mock('./PayPalAxo/PoweredByPaypalConnectLabel', () => () => (<div data-test="powered-by-pp-connect-label">PoweredByPaypalConnectLabel</div>));
 
 describe('AddressSelect Component', () => {
     let checkoutService: CheckoutService;
@@ -25,6 +28,11 @@ describe('AddressSelect Component', () => {
 
         jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(getCheckout());
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
+        jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
+            jest.fn().mockImplementation(() => ({
+                shouldShowPayPalConnectLabel: false,
+            }))
+        );
     });
 
     it('renders `Enter Address` when there is no selected address', () => {
@@ -128,5 +136,27 @@ describe('AddressSelect Component', () => {
         component.find('#addressDropdown li:last-child a').simulate('click');
 
         expect(onSelectAddress).not.toHaveBeenCalled();
+    });
+
+    it('shows Powered By PP Connect label', () => {
+        jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
+            jest.fn().mockImplementation(() => ({
+                shouldShowPayPalConnectLabel: true,
+            }))
+        );
+
+        component = mount(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <AddressSelect
+                        addresses={getCustomer().addresses}
+                        onSelectAddress={noop}
+                        onUseNewAddress={noop}
+                    />
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
+        );
+
+        expect(component.find('[data-test="powered-by-pp-connect-label"]').text()).toBe('PoweredByPaypalConnectLabel');
     });
 });
