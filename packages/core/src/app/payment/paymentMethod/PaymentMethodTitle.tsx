@@ -1,7 +1,7 @@
 import { CardInstrument, LanguageService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { number } from 'card-validator';
 import { compact } from 'lodash';
-import React, { FunctionComponent, memo } from 'react';
+import React, { FunctionComponent, memo, ReactNode } from 'react';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps , PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
@@ -10,6 +10,7 @@ import { withCheckout } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { CreditCardIconList, mapFromPaymentMethodCardType } from '../creditCard';
 
+import BraintreePaypalCreditDescription from './BraintreePaypalCreditDescription';
 import { hasCreditCardNumber } from './CreditCardFieldsetValues';
 import getPaymentMethodDisplayName from './getPaymentMethodDisplayName';
 import getPaymentMethodName from './getPaymentMethodName';
@@ -20,6 +21,7 @@ import PaymentMethodType from './PaymentMethodType';
 export interface PaymentMethodTitleProps {
     method: PaymentMethod;
     isSelected?: boolean;
+    onUnhandledError?(error: Error): void;
 }
 
 interface WithPaymentTitleProps {
@@ -30,7 +32,11 @@ interface WithPaymentTitleProps {
 function getPaymentMethodTitle(
     language: LanguageService,
     basePath: string,
-): (method: PaymentMethod) => { logoUrl: string; titleText: string } {
+): (method: PaymentMethod) => {
+    logoUrl: string;
+    titleText: string,
+    subtitle?: ReactNode | ((subtitleProps?: { onUnhandledError?(error: Error): void }) => ReactNode)
+} {
     const cdnPath = (path: string) => `${basePath}${path}`;
 
     return (method) => {
@@ -41,7 +47,7 @@ function getPaymentMethodTitle(
         const methodDisplayName = getPaymentMethodDisplayName(language)(method);
         // TODO: API could provide the data below so UI can read simply read it.
         // However, I'm not sure how we deal with translation yet. TBC.
-        const customTitles: { [key: string]: { logoUrl: string; titleText: string } } = {
+        const customTitles: { [key: string]: { logoUrl: string; titleText: string, subtitle?: ReactNode } } = {
             [PaymentMethodType.CreditCard]: {
                 logoUrl: '',
                 titleText: methodName,
@@ -49,6 +55,11 @@ function getPaymentMethodTitle(
             [PaymentMethodId.BraintreeVenmo]: {
                 logoUrl: method.logoUrl || '',
                 titleText: method.logoUrl ? '' : methodDisplayName,
+            },
+            [PaymentMethodId.BraintreePaypalCredit]: {
+                logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
+                titleText: methodDisplayName,
+                subtitle: (props: { onUnhandledError?(error: Error): void }) => <BraintreePaypalCreditDescription {...props} />
             },
             [PaymentMethodType.PaypalCredit]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
@@ -254,9 +265,9 @@ const PaymentMethodTitle: FunctionComponent<
         WithLanguageProps &
         WithPaymentTitleProps &
         ConnectFormikProps<PaymentFormValues>
-> = ({ cdnBasePath, formik: { values }, instruments, isSelected, language, method }) => {
+> = ({ cdnBasePath, onUnhandledError, formik: { values }, instruments, isSelected, language, method }) => {
     const methodName = getPaymentMethodName(language)(method);
-    const { logoUrl, titleText } = getPaymentMethodTitle(language, cdnBasePath)(method);
+    const { logoUrl, titleText, subtitle } = getPaymentMethodTitle(language, cdnBasePath)(method);
 
     const getSelectedCardType = () => {
         if (!isSelected) {
@@ -285,33 +296,38 @@ const PaymentMethodTitle: FunctionComponent<
     };
 
     return (
-        <div className="paymentProviderHeader-container">
-            <div
-                className="paymentProviderHeader-nameContainer"
-                data-test={`payment-method-${method.id}`}
-            >
-                {logoUrl && (
-                    <img
-                        alt={methodName}
-                        className="paymentProviderHeader-img"
-                        data-test="payment-method-logo"
-                        src={logoUrl}
-                    />
-                )}
+        <>
+            <div className="paymentProviderHeader-container">
+                <div
+                    className="paymentProviderHeader-nameContainer"
+                    data-test={`payment-method-${method.id}`}
+                >
+                    {logoUrl && (
+                        <img
+                            alt={methodName}
+                            className="paymentProviderHeader-img"
+                            data-test="payment-method-logo"
+                            src={logoUrl}
+                        />
+                    )}
 
-                {titleText && (
-                    <div aria-level={6} className="paymentProviderHeader-name" data-test="payment-method-name" role="heading">
-                        {titleText}
-                    </div>
-                )}
+                    {titleText && (
+                        <div aria-level={6} className="paymentProviderHeader-name" data-test="payment-method-name" role="heading">
+                            {titleText}
+                        </div>
+                    )}
+                </div>
+                <div className="paymentProviderHeader-cc">
+                    <CreditCardIconList
+                        cardTypes={compact(method.supportedCards.map(mapFromPaymentMethodCardType))}
+                        selectedCardType={getSelectedCardType()}
+                    />
+                </div>
             </div>
-            <div className="paymentProviderHeader-cc">
-                <CreditCardIconList
-                    cardTypes={compact(method.supportedCards.map(mapFromPaymentMethodCardType))}
-                    selectedCardType={getSelectedCardType()}
-                />
+            <div className="paymentProviderHeader-subtitleContainer">
+                {subtitle instanceof Function ? subtitle({ onUnhandledError }) : subtitle}
             </div>
-        </div>
+        </>
     );
 };
 

@@ -14,7 +14,6 @@ export interface ChecklistItemProps {
     htmlId?: string;
     isDisabled?: boolean;
     label: ReactNode | ((isSelected: boolean) => ReactNode);
-    description?: ReactNode | (() => ReactNode);
     value: string;
 }
 
@@ -24,7 +23,6 @@ const ChecklistItem: FunctionComponent<ChecklistItemProps> = ({
     content,
     htmlId = kebabCase(value),
     label,
-    description,
     ...rest
 }) => {
     const { name = '' } = useContext(ChecklistContext) || {};
@@ -39,7 +37,6 @@ const ChecklistItem: FunctionComponent<ChecklistItemProps> = ({
                 value={value}
             >
                 {label instanceof Function ? label(isSelected) : label}
-                {description instanceof Function ? description() : description}
             </ChecklistItemInput>
         )),
         [htmlId, isDisabled, label, value],
