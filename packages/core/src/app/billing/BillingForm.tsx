@@ -21,6 +21,7 @@ import {
     isValidCustomerAddress,
     mapAddressToFormValues,
 } from '../address';
+import { usePayPalConnectAddress } from '../address/PayPalAxo';
 import { getCustomFormFieldsValidationSchema } from '../formFields';
 import { OrderComments } from '../orderComments';
 import { Button, ButtonVariant } from '../ui/button';
@@ -66,6 +67,7 @@ const BillingForm = ({
 }: BillingFormProps & WithLanguageProps & FormikProps<BillingFormValues>) => {
     const [isResettingAddress, setIsResettingAddress] = useState(false);
     const addressFormRef: RefObject<HTMLFieldSetElement> = useRef(null);
+    const { isPayPalAxoEnabled, mergedBcAndPayPalConnectAddresses } = usePayPalConnectAddress();
 
     const shouldRenderStaticAddress = methodId === 'amazonpay';
     const allFormFields = getFields(values.countryCode);
@@ -73,12 +75,13 @@ const BillingForm = ({
     const hasCustomFormFields = customFormFields.length > 0;
     const editableFormFields =
         shouldRenderStaticAddress && hasCustomFormFields ? customFormFields : allFormFields;
-    const hasAddresses = addresses?.length > 0;
+    const billingAddresses = isPayPalAxoEnabled ? mergedBcAndPayPalConnectAddresses : addresses;
+    const hasAddresses = billingAddresses?.length > 0;
     const hasValidCustomerAddress =
         billingAddress &&
         isValidCustomerAddress(
             billingAddress,
-            addresses,
+            billingAddresses,
             getFields(billingAddress.countryCode),
         );
 
@@ -113,7 +116,7 @@ const BillingForm = ({
                     <Fieldset id="billingAddresses">
                         <LoadingOverlay isLoading={isResettingAddress}>
                             <AddressSelect
-                                addresses={addresses}
+                                addresses={billingAddresses}
                                 onSelectAddress={handleSelectAddress}
                                 onUseNewAddress={handleUseNewAddress}
                                 selectedAddress={
