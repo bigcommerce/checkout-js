@@ -3,7 +3,6 @@
   "rules": {
     "@typescript-eslint/consistent-type-assertions": "off",
     "@typescript-eslint/naming-convention": "off",
-    "@typescript-eslint/no-unnecessary-condition": "off",
-    "prettier/prettier": "off"
+    "@typescript-eslint/no-unnecessary-condition": "off"
   }
 }

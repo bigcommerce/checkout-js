@@ -1,7 +1,8 @@
 import { LanguageService } from '@bigcommerce/checkout-sdk';
 
-import LocaleContext from './LocaleContext';
 import { createInjectHoc, InjectHoc } from '@bigcommerce/checkout/legacy-hoc';
+
+import LocaleContext from './LocaleContext';
 
 export interface WithLanguageProps {
     language: LanguageService;

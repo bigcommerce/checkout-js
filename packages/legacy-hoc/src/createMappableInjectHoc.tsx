@@ -42,10 +42,7 @@ export default function createMappableInjectHoc<TContextProps>(
                 );
 
                 const mappedProps = context
-                    ? mapToProps(
-                          context,
-                          props as unknown as TOwnProps,
-                      )
+                    ? mapToProps(context, props as unknown as TOwnProps)
                     : context;
 
                 if (!mappedProps) {
