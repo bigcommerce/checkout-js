@@ -702,7 +702,7 @@ describe('PaymentMethodTitle', () => {
                 />,
             );
 
-            expect(screen.getByTestId('braintree-banner-container')).not.toBeUndefined();
+            expect(screen.getByTestId('braintree-banner-container')).toBeInTheDocument();
         });
     })
 });

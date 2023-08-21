@@ -295,6 +295,14 @@ const PaymentMethodTitle: FunctionComponent<
         }
     };
 
+    const getSubtitle = () => {
+        const node = subtitle instanceof Function ? subtitle({ onUnhandledError }) : subtitle;
+
+        return node ? <div className="paymentProviderHeader-subtitleContainer">
+            {node}
+        </div> : null
+    }
+
     return (
         <>
             <div className="paymentProviderHeader-container">
@@ -324,7 +332,7 @@ const PaymentMethodTitle: FunctionComponent<
                     />
                 </div>
             </div>
-            {subtitle instanceof Function ? subtitle({ onUnhandledError }) : subtitle}
+            {getSubtitle()}
         </>
     );
 };
