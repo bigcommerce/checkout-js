@@ -71,17 +71,10 @@ export class ExtensionService {
             this.handlers[extension.id] = [];
         }
 
-        const isCommandHandler = <T extends keyof ExtensionCommandMap>(
-            type: T,
-            handler: CommandHandler<any>,
-        ): handler is CommandHandler<T> => {
-            return handler.commandType === type;
-        };
-
         Object.values(handlerFactories).forEach((createHandlerFactory) => {
             const handlerFactory = createHandlerFactory(handlerProps);
 
-            if (isCommandHandler(handlerFactory.commandType, handlerFactory)) {
+            if (this.isCommandHandler(handlerFactory.commandType, handlerFactory)) {
                 this.handlers[extension.id].push(
                     this.checkoutService.handleExtensionCommand(
                         extension.id,
@@ -91,5 +84,12 @@ export class ExtensionService {
                 );
             }
         });
+    }
+
+    private isCommandHandler<T extends keyof ExtensionCommandMap>(
+        type: T,
+        handler: CommandHandler<any>,
+    ): handler is CommandHandler<T> {
+        return handler.commandType === type;
     }
 }
