@@ -430,6 +430,15 @@
                 "user_authorization_error": "Det oppsto en feil under behandling av betalingen. Vennligst kontakt oss.",
                 "vaulting_service_unavailable": "Hvelvtjenesten er for øyeblikket ikke tilgjengelig.",
                 "voided_transaction": "Kunne ikke behandle betalingen din fordi transaksjonen allerede er annullert. Vennligst prøv igjen eller kontakt oss."
+            },
+            "ratepay": {
+                "phone_country_code": "Landskode",
+                "phone_number": "Telefonnummer",
+                "birth_date": "Fødselsdato",
+                "errors": {
+                    "isRequired": "{fieldName} er påkrevd",
+                    "isInvalid": "{fieldName} er ugyldig"
+                }
             }
         },
         "redeemable": {

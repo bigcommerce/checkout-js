@@ -430,6 +430,15 @@
                 "user_authorization_error": "Bei der Verarbeitung Ihrer Zahlung ist ein Fehler aufgetreten. Bitte nehmen Sie Kontakt zu uns auf.",
                 "vaulting_service_unavailable": "Der Card-Vaulting-Service ist zurzeit nicht verfügbar",
                 "voided_transaction": "Ihre Zahlung kann nicht verarbeitet werden, da die Transaktion bereits storniert wurde. Bitte versuchen Sie es erneut oder nehmen Sie Kontakt zu uns auf."
+            },
+            "ratepay": {
+                "phone_country_code": "Ländercode",
+                "phone_number": "Telefonnummer",
+                "birth_date": "Geburtsdatum",
+                "errors": {
+                    "isRequired": "{fieldName} ist erforderlich",
+                    "isInvalid": "{fieldName} ist ungültig"
+                }
             }
         },
         "redeemable": {

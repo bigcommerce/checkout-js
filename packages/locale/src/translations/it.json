@@ -430,6 +430,15 @@
                 "user_authorization_error": "Si è verificato un problema durante l'elaborazione del pagamento. Contattaci.",
                 "vaulting_service_unavailable": "Il servizio di vaulting non è attualmente disponibile.",
                 "voided_transaction": "Impossibile elaborare il pagamento in quanto la transazione è già stata annullata. Riprova o contattaci."
+            },
+            "ratepay": {
+                "phone_country_code": "Codice paese",
+                "phone_number": "Numero di telefono",
+                "birth_date": "Data di nascita",
+                "errors": {
+                    "isRequired": "{fieldName} è obbligatoria/o",
+                    "isInvalid": "{fieldName} non è valido"
+                }
             }
         },
         "redeemable": {

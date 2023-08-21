@@ -430,6 +430,15 @@
                 "user_authorization_error": "Une erreur s'est produite lors du traitement de votre paiement. Veuillez nous contacter.",
                 "vaulting_service_unavailable": "Le service de sauvegarde sécurisée est actuellement indisponible.",
                 "voided_transaction": "Impossible de traiter votre paiement car la transaction a déjà été annulée. Veuillez réessayer, ou contactez-nous."
+            },
+            "ratepay": {
+                "phone_country_code": "Code pays",
+                "phone_number": "Numéro de téléphone",
+                "birth_date": "Date de naissance",
+                "errors": {
+                    "isRequired": "{fieldName} est obligatoire",
+                    "isInvalid": "{fieldName} n'est pas valide."
+                }
             }
         },
         "redeemable": {
