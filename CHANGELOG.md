@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.359.1](https://github.com/bigcommerce/checkout-js/compare/v1.359.0...v1.359.1) (2023-08-21)
+
+
+### Bug Fixes
+
+* **order:** CHECKOUT-4355 Fix display issue of pick list items ([#1446](https://github.com/bigcommerce/checkout-js/issues/1446)) ([78d7581](https://github.com/bigcommerce/checkout-js/commit/78d7581064825b6d46e35c29e946ce3bcffcb119))
+
 ## [1.359.0](https://github.com/bigcommerce/checkout-js/compare/v1.358.0...v1.359.0) (2023-08-18)
 
 
