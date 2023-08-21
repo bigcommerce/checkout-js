@@ -52,7 +52,7 @@ describe('PaymentMethodTitle', () => {
                 ccNumber: '4111 1111 1111 1111',
                 paymentProviderRadio: getPaymentMethod().id,
             },
-            method: getPaymentMethod()
+            method: getPaymentMethod(),
         };
 
         config = getStoreConfig();

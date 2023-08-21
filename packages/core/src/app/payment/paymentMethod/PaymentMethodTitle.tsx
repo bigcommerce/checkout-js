@@ -324,9 +324,7 @@ const PaymentMethodTitle: FunctionComponent<
                     />
                 </div>
             </div>
-            <div className="paymentProviderHeader-subtitleContainer">
-                {subtitle instanceof Function ? subtitle({ onUnhandledError }) : subtitle}
-            </div>
+            {subtitle instanceof Function ? subtitle({ onUnhandledError }) : subtitle}
         </>
     );
 };
