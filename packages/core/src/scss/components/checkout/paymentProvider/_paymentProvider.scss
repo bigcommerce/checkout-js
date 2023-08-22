@@ -5,17 +5,24 @@
     align-items: start;
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.paymentProviderHeader-subtitleContainer {
+    flex-basis: 100%;
 }
 
 .paymentProviderHeader-nameContainer {
     display: flex;
     justify-content: space-between;
+    flex-basis: 50%;
 }
 
 .paymentProviderHeader-img {
     align-self: center;
     display: flex;
     height: fontSize("large");
+    object-fit: contain;
 
     + .paymentProviderHeader-name {
         margin-left: spacing("half");
@@ -28,6 +35,10 @@
 }
 
 .paymentProviderHeader-cc {
+    display: flex;
+    flex-basis: 50%;
+    justify-content: flex-end;
+
     @include breakpoint("small") {
         align-items: flex-end;
         display: flex;

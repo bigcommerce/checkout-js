@@ -331,8 +331,8 @@ const PaymentMethodTitle: FunctionComponent<
                         selectedCardType={getSelectedCardType()}
                     />
                 </div>
+                {getSubtitle()}
             </div>
-            {getSubtitle()}
         </>
     );
 };
