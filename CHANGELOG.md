@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.360.2](https://github.com/bigcommerce/checkout-js/compare/v1.360.1...v1.360.2) (2023-08-22)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-7633 Move `createInjectHoc` out of the `locale` package ([#1442](https://github.com/bigcommerce/checkout-js/issues/1442)) ([0a4a3db](https://github.com/bigcommerce/checkout-js/commit/0a4a3db0c6cf7bf48c2f7592b66171b63633934a))
+
 ### [1.360.1](https://github.com/bigcommerce/checkout-js/compare/v1.360.0...v1.360.1) (2023-08-21)
 
 ## [1.360.0](https://github.com/bigcommerce/checkout-js/compare/v1.359.1...v1.360.0) (2023-08-21)
