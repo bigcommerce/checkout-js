@@ -1,7 +1,8 @@
 import { CurrencyService } from '@bigcommerce/checkout-sdk';
 
+import { createInjectHoc, InjectHoc } from '@bigcommerce/checkout/legacy-hoc';
+
 import LocaleContext from './LocaleContext';
-import { createInjectHoc, InjectHoc } from './utils';
 
 export interface WithCurrencyProps {
     currency: CurrencyService;

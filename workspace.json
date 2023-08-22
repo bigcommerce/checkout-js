@@ -18,6 +18,7 @@
     "hosted-payment-integration": "packages/hosted-payment-integration",
     "hosted-widget-integration": "packages/hosted-widget-integration",
     "instrument-utils": "packages/instrument-utils",
+    "legacy-hoc": "packages/legacy-hoc",
     "locale": "packages/locale",
     "offline-payment-integration": "packages/offline-payment-integration",
     "payment-integration-api": "packages/payment-integration-api",

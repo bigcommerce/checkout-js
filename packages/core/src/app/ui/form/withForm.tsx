@@ -1,7 +1,5 @@
+import { createInjectHoc } from '@bigcommerce/checkout/legacy-hoc';
 import { FormContext, FormContextType } from '@bigcommerce/checkout/ui';
-
-import { createInjectHoc } from '../../common/hoc';
-
 
 export type WithFormProps = FormContextType;
 
