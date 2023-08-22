@@ -263,6 +263,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
     private renderCreateAccountForm(): ReactNode {
         const {
             customerAccountFields,
+            isExecutingPaymentMethodCheckout,
             isCreatingAccount,
             createAccountError,
             requiresMarketingConsent,
@@ -274,6 +275,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 createAccountError={createAccountError}
                 formFields={customerAccountFields}
                 isCreatingAccount={isCreatingAccount}
+                isExecutingPaymentMethodCheckout={isExecutingPaymentMethodCheckout}
                 isFloatingLabelEnabled={isFloatingLabelEnabled}
                 onCancel={this.handleCancelCreateAccount}
                 onSubmit={this.handleCreateAccount}
@@ -433,11 +435,24 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
     };
 
     private handleCreateAccount: (values: CreateAccountFormValues) => void = async (values) => {
-        const { createAccount = noop, onAccountCreated = noop } = this.props;
+        const {
+            executePaymentMethodCheckout,
+            createAccount = noop,
+            onAccountCreated = noop,
+            providerWithCustomCheckout,
+        } = this.props;
 
         await createAccount(mapCreateAccountFromFormValues(values));
 
-        onAccountCreated();
+        if (providerWithCustomCheckout === PaymentMethodId.Braintree || providerWithCustomCheckout === PaymentMethodId.BraintreeAcceleratedCheckout) {
+            await executePaymentMethodCheckout({
+                methodId: providerWithCustomCheckout,
+                continueWithCheckoutCallback: onAccountCreated,
+                email: values.email,
+            });
+        } else {
+            onAccountCreated();
+        }
     };
 
     private showCreateAccount: () => void = () => {

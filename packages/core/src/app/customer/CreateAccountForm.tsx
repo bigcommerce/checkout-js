@@ -21,15 +21,16 @@ export interface CreateAccountFormProps {
     formFields: FormField[];
     createAccountError?: Error;
     isCreatingAccount?: boolean;
+    isExecutingPaymentMethodCheckout?: boolean;
     requiresMarketingConsent: boolean;
     isFloatingLabelEnabled?: boolean;
     onCancel?(): void;
-    onSubmit?(values: CreateAccountFormValues): void;
+    onSubmit(values: CreateAccountFormValues): void;
 }
 
 const CreateAccountForm: FunctionComponent<
     CreateAccountFormProps & WithLanguageProps & FormikProps<CreateAccountFormValues>
-> = ({ formFields, createAccountError, isCreatingAccount, onCancel, isFloatingLabelEnabled }) => {
+> = ({ formFields, createAccountError, isCreatingAccount, isExecutingPaymentMethodCheckout, onCancel, isFloatingLabelEnabled }) => {
     const createAccountErrorMessage = useMemo(() => {
         if (!createAccountError) {
             return;
@@ -79,7 +80,8 @@ const CreateAccountForm: FunctionComponent<
 
             <div className="form-actions">
                 <Button
-                    disabled={isCreatingAccount}
+                    disabled={isCreatingAccount || isExecutingPaymentMethodCheckout}
+                    isLoading={isCreatingAccount || isExecutingPaymentMethodCheckout}
                     id="checkout-customer-create"
                     testId="customer-continue-create"
                     type="submit"
