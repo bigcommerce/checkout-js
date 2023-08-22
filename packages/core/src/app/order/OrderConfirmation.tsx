@@ -142,6 +142,7 @@ class OrderConfirmation extends Component<
                         <ThankYouHeader name={order.billingAddress.firstName} />
 
                         <OrderStatus
+                            config={config}
                             order={order}
                             supportEmail={orderEmail}
                             supportPhoneNumber={storePhoneNumber}

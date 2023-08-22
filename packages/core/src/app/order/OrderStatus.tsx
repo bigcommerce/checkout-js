@@ -1,4 +1,4 @@
-import { GatewayOrderPayment, GiftCertificateOrderPayment, Order } from '@bigcommerce/checkout-sdk';
+import { GatewayOrderPayment, GiftCertificateOrderPayment, Order, StoreConfig } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
@@ -6,6 +6,7 @@ import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
 import OrderConfirmationSection from './OrderConfirmationSection';
 
 export interface OrderStatusProps {
+    config: StoreConfig;
     supportEmail: string;
     supportPhoneNumber?: string;
     order: Order;
@@ -19,6 +20,7 @@ const isPaymentWithMandate = (
 ): payment is PaymentWithMandate => !!payment.methodId && 'mandate' in payment && !!payment.mandate;
 
 const OrderStatus: FunctionComponent<OrderStatusProps> = ({
+    config,
     order,
     supportEmail,
     supportPhoneNumber,
@@ -38,6 +40,7 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
 
             <p data-test="order-confirmation-order-status-text">
                 <OrderStatusMessage
+                    config={config}
                     orderNumber={order.orderId}
                     orderStatus={order.status}
                     supportEmail={supportEmail}
@@ -90,6 +93,7 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
 };
 
 interface OrderStatusMessageProps {
+    config: StoreConfig;
     orderNumber: number;
     orderStatus: string;
     supportEmail?: string;
@@ -97,6 +101,7 @@ interface OrderStatusMessageProps {
 }
 
 const OrderStatusMessage: FunctionComponent<OrderStatusMessageProps> = ({
+    config,
     orderNumber,
     orderStatus,
     supportEmail,
@@ -116,6 +121,15 @@ const OrderStatusMessage: FunctionComponent<OrderStatusMessageProps> = ({
             );
 
         case 'INCOMPLETE':
+            if (config.checkoutSettings.features['CHECKOUT-6891.update_incomplete_order_wording_on_order_confirmation_page']) {
+                return (
+                    <TranslatedHtml
+                        data={{ orderNumber, supportEmail }}
+                        id="order_confirmation.order_incomplete_status_with_unsuccessful_payment_text"
+                    />
+                );
+            }
+
             return (
                 <TranslatedHtml
                     data={{ orderNumber, supportEmail }}

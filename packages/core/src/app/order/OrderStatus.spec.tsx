@@ -1,4 +1,4 @@
-import { CheckoutService, createCheckoutService, Order } from '@bigcommerce/checkout-sdk';
+import { CheckoutService, createCheckoutService, Order, StoreConfig } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
@@ -6,18 +6,22 @@ import { LocaleProvider, TranslatedHtml } from '@bigcommerce/checkout/locale';
 
 import { getOrder, getOrderWithMandateId, getOrderWithMandateURL } from './orders.mock';
 import OrderStatus, { OrderStatusProps } from './OrderStatus';
+import { getStoreConfig } from '../config/config.mock';
 
 describe('OrderStatus', () => {
     let checkoutService: CheckoutService;
     let defaultProps: OrderStatusProps;
     let order: Order;
     let OrderStatusTest: FunctionComponent<OrderStatusProps>;
+    let config: StoreConfig;
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
         order = getOrder();
+        config = getStoreConfig();
 
         defaultProps = {
+            config,
             order,
             supportEmail: 'test@example.com',
         };
@@ -141,7 +145,7 @@ describe('OrderStatus', () => {
             };
         });
 
-        it('renders message indicating order is incomplete', () => {
+        it('renders message indicating order is incomplete when experiment is off', () => {
             const orderStatus = mount(<OrderStatusTest {...defaultProps} order={order} />);
             const translationProps = orderStatus
                 .find('[data-test="order-confirmation-order-status-text"]')
@@ -154,6 +158,24 @@ describe('OrderStatus', () => {
                     supportEmail: defaultProps.supportEmail,
                 },
                 id: 'order_confirmation.order_incomplete_status_text',
+            });
+        });
+
+        it('renders message indicating order is incomplete when experiment is on', () => {
+            config.checkoutSettings.features['CHECKOUT-6891.update_incomplete_order_wording_on_order_confirmation_page'] = true;
+
+            const orderStatus = mount(<OrderStatusTest {...defaultProps} order={order} config={config} />);
+            const translationProps = orderStatus
+                .find('[data-test="order-confirmation-order-status-text"]')
+                .find(TranslatedHtml)
+                .props();
+
+            expect(translationProps).toEqual({
+                data: {
+                    orderNumber: defaultProps.order.orderId,
+                    supportEmail: defaultProps.supportEmail,
+                },
+                id: 'order_confirmation.order_incomplete_status_with_unsuccessful_payment_text',
             });
         });
     });
