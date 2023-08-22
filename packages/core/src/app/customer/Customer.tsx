@@ -299,8 +299,6 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             viewType,
         } = this.props;
 
-        const isLoading = isSigningIn || isExecutingPaymentMethodCheckout;
-
         return (
             <LoginForm
                 canCancel={isGuestEnabled}
@@ -314,7 +312,8 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 isFloatingLabelEnabled={isFloatingLabelEnabled}
                 isSendingSignInEmail={isSendingSignInEmail}
                 isSignInEmailEnabled={isSignInEmailEnabled && !isEmbedded}
-                isLoading={isLoading}
+                isSigningIn={isSigningIn}
+                isExecutingPaymentMethodCheckout={isExecutingPaymentMethodCheckout}
                 onCancel={this.handleCancelSignIn}
                 onChangeEmail={this.handleChangeEmail}
                 onContinueAsGuest={this.executePaymentMethodCheckoutOrContinue}
