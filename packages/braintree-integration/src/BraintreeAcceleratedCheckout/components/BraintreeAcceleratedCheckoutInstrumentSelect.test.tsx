@@ -13,6 +13,10 @@ import {
 
 import BraintreeAcceleratedCheckoutInstrumentSelect from './BraintreeAcceleratedCheckoutInstrumentSelect';
 
+jest.mock('./PoweredByPaypalConnectLabel', () => () => (
+    <div data-test="powered-by-paypal-connect-label">PoweredByPaypalConnectLabel</div>
+));
+
 describe('BraintreeAcceleratedCheckoutInstrumentSelect', () => {
     it('renders instrument select', () => {
         const cardInstrument = getCardInstrument();
@@ -67,6 +71,6 @@ describe('BraintreeAcceleratedCheckoutInstrumentSelect', () => {
             </Formik>,
         );
 
-        expect(screen.queryByTestId('powered-by-connect-label')).not.toBeInTheDocument();
+        expect(screen.queryByTestId('powered-by-paypal-connect-label')).not.toBeInTheDocument();
     });
 });

@@ -7,7 +7,6 @@ Object {
     <div>
       <div
         class="powered-by-paypal-connect-label"
-        data-test="powered-by-connect-label"
       >
         Powered by
         <div
@@ -68,7 +67,6 @@ Object {
   "container": <div>
     <div
       class="powered-by-paypal-connect-label"
-      data-test="powered-by-connect-label"
     >
       Powered by
       <div
