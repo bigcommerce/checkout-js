@@ -5,7 +5,6 @@
     align-items: start;
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
 }
 
 .paymentProviderHeader-subtitleContainer {
@@ -15,7 +14,7 @@
 .paymentProviderHeader-nameContainer {
     display: flex;
     justify-content: space-between;
-    flex: 1;
+    flex-wrap: wrap;
 }
 
 .paymentProviderHeader-img {
@@ -35,9 +34,12 @@
 }
 
 .paymentProviderHeader-cc {
-    display: flex;
-    justify-content: flex-end;
-    flex: 1;
+    @include breakpoint("small") {
+        align-items: flex-end;
+        display: flex;
+        flex-grow: 0;
+        flex-shrink: 2;
+    }
 }
 
 .paymentProviderHeader-name {

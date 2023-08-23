@@ -323,6 +323,8 @@ const PaymentMethodTitle: FunctionComponent<
                         {titleText}
                     </div>
                 )}
+
+                {getSubtitle()}
             </div>
             <div className="paymentProviderHeader-cc">
                 <CreditCardIconList
@@ -330,7 +332,6 @@ const PaymentMethodTitle: FunctionComponent<
                     selectedCardType={getSelectedCardType()}
                 />
             </div>
-            {getSubtitle()}
         </div>
     );
 };
