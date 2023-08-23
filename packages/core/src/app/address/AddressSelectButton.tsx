@@ -1,8 +1,8 @@
 import React, { FunctionComponent, useState } from 'react';
 
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 
-import { preventDefault } from '../common/dom';
 
 import { AddressSelectProps } from './AddressSelect';
 import StaticAddress from './StaticAddress';

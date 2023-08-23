@@ -11,6 +11,8 @@
     "checkout-extension": "packages/checkout-extension",
     "core": "packages/core",
     "credit-card-integration": "packages/credit-card-integration",
+    "dom-utils": "packages/dom-utils",
+    "error-handling-utils": "packages/error-handling-utils",
     "google-pay-integration": "packages/google-pay-integration",
     "hosted-credit-card-integration": "packages/hosted-credit-card-integration",
     "hosted-dropin-integration": "packages/hosted-dropin-integration",

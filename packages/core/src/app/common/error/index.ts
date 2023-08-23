@@ -1,7 +1,5 @@
-export { default as ErrorLogger, ErrorLevelType } from './ErrorLogger';
 export { default as CustomError } from './CustomError';
 export { default as ErrorCode } from './ErrorCode';
-export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as ErrorModal, ErrorModalOnCloseProps, ErrorModalProps } from './ErrorModal';
 export { default as computeErrorCode } from './computeErrorCode';
 export { default as createErrorLogger } from './createErrorLogger';

@@ -2,9 +2,9 @@ import { ExtensionRegion } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo, useEffect } from 'react';
 
 import { ExtensionRegionContainer, useExtensions } from '@bigcommerce/checkout/checkout-extension';
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
-import { preventDefault } from '../common/dom';
 import { Legend } from '../ui/form';
 
 interface ShippingHeaderProps {

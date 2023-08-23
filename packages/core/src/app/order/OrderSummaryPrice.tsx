@@ -2,7 +2,8 @@ import classNames from 'classnames';
 import React, { Component, ReactNode } from 'react';
 import { CSSTransition } from 'react-transition-group';
 
-import { preventDefault } from '../common/dom';
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
+
 import { ShopperCurrency } from '../currency';
 
 export interface OrderSummaryPriceProps {

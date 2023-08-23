@@ -1,9 +1,9 @@
 import { Address, CustomerAddress } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
-import { preventDefault } from '../common/dom';
 import { DropdownTrigger } from '../ui/dropdown';
 
 import AddressSelectButton from './AddressSelectButton';

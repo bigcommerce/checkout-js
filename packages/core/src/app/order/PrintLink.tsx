@@ -1,9 +1,9 @@
 import { throttle } from 'lodash';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
-import { preventDefault } from '../common/dom';
 import { IconPrint } from '../ui/icon';
 
 export interface PrintLinkProps {

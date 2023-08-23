@@ -13,6 +13,7 @@ import {
 import { FormikProps, withFormik } from 'formik';
 import React, { PureComponent, ReactNode } from 'react';
 
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedLink, TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 
 import {
@@ -21,7 +22,6 @@ import {
     isValidAddress,
     mapAddressFromFormValues,
 } from '../address';
-import { preventDefault } from '../common/dom';
 import { ErrorModal } from '../common/error';
 import { Form } from '../ui/form';
 

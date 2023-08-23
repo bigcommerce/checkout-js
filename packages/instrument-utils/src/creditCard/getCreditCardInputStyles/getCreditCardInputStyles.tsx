@@ -2,12 +2,8 @@ import { noop } from 'lodash';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {
-    FormContext,
-    FormFieldContainer,
-    getAppliedStyles,
-    TextInput,
-} from '@bigcommerce/checkout/ui';
+import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
+import { FormContext, FormFieldContainer, TextInput } from '@bigcommerce/checkout/ui';
 
 export enum CreditCardInputStylesType {
     Default = 'default',

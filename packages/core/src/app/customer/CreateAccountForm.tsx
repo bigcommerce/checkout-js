@@ -3,9 +3,9 @@ import { FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent, useMemo } from 'react';
 
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 
-import { preventDefault } from '../common/dom';
 import { isRequestError } from '../common/error';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';

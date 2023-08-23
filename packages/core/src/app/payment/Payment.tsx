@@ -11,6 +11,7 @@ import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps, PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
@@ -18,7 +19,6 @@ import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
 import {
-    ErrorLogger,
     ErrorModal,
     ErrorModalOnCloseProps,
     isCartChangedError,

@@ -3,9 +3,9 @@ import { FormikProps, withFormik } from 'formik';
 import React, { FunctionComponent } from 'react';
 import { lazy } from 'yup';
 
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 
-import { preventDefault } from '../common/dom';
 import { Button, ButtonVariant } from '../ui/button';
 import { Form } from '../ui/form';
 import { LoadingOverlay } from '../ui/loading';

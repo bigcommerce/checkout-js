@@ -1,0 +1,6 @@
+{
+  "extends": ["../../.eslintrc.json"],
+  "rules": {
+    "@typescript-eslint/consistent-type-assertions": "off" // 1 error
+  }
+}
