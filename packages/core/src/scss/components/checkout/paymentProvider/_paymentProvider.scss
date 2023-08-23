@@ -15,7 +15,7 @@
 .paymentProviderHeader-nameContainer {
     display: flex;
     justify-content: space-between;
-    flex-basis: 50%;
+    flex: 1;
 }
 
 .paymentProviderHeader-img {
@@ -36,15 +36,8 @@
 
 .paymentProviderHeader-cc {
     display: flex;
-    flex-basis: 50%;
     justify-content: flex-end;
-
-    @include breakpoint("small") {
-        align-items: flex-end;
-        display: flex;
-        flex-grow: 0;
-        flex-shrink: 2;
-    }
+    flex: 1;
 }
 
 .paymentProviderHeader-name {
