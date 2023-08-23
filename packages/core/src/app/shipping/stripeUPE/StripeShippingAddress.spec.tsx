@@ -72,7 +72,7 @@ describe('StripeShippingAddress Component', () => {
             deinitialize: jest.fn(),
         };
 
-        jest.mock('../common/dom', () => ({
+        jest.mock('@bigcommerce/checkout/dom-utils', () => ({
             getAppliedStyles: () => {
                 return { color: '#cccccc' };
             },
