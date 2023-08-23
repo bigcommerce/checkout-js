@@ -244,6 +244,58 @@ describe('PaymentMethodTitle', () => {
             expect(screen.queryByRole('heading', { name: getPaymentMethodName(localeContext.language)(method) })).not.toBeInTheDocument();
         });
 
+
+        it('renders custom text for Bluesnap Direct credit card', () => {
+            const method = {
+                ...defaultProps.method,
+                gateway: PaymentMethodId.BlueSnapDirect,
+                id: 'credit_card'
+            };
+
+            render(
+                <PaymentMethodTitleTest
+                    {...defaultProps}
+                    method={method}
+                />,
+            );
+
+            expect(screen.getByRole('heading', { name: localeContext.language.translate('payment.credit_card_text') })).toBeInTheDocument();
+        });
+
+        it('renders custom text for Bluesnap Direct ECP', () => {
+            const method = {
+                ...defaultProps.method,
+                gateway: PaymentMethodId.BlueSnapDirect,
+                id: 'ecp'
+            };
+
+            render(
+                <PaymentMethodTitleTest
+                    {...defaultProps}
+                    method={method}
+                />,
+            );
+
+            expect(screen.getByRole('heading', { name: localeContext.language.translate('payment.bluesnap_direct_electronic_check_label') })).toBeInTheDocument();
+        });
+
+        it('renders custom text for Bluesnap Direct Bank Transfer', () => {
+            const method = {
+                ...defaultProps.method,
+                gateway: PaymentMethodId.BlueSnapDirect,
+                id: 'banktransfer'
+            };
+
+            render(
+                <PaymentMethodTitleTest
+                    {...defaultProps}
+                    method={method}
+                />,
+            );
+
+            expect(screen.getByRole('heading', { name: localeContext.language.translate('payment.bluesnap_direct_local_bank_transfer_label') })).toBeInTheDocument();
+        });
+
         it('renders custom text for Bolt hosted payment methods', () => {
             const method = {
                 ...defaultProps.method,
@@ -617,6 +669,8 @@ describe('PaymentMethodTitle', () => {
 
         expect(screen.getByRole('img')).toHaveAttribute('src',  `${config.cdnPath}/img/payment-providers/opy_default.svg`);
     });
+
+
 
     it('renders name for Visa Checkout', () => {
         const method = {

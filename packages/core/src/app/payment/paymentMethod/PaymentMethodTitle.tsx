@@ -215,6 +215,21 @@ function getPaymentMethodTitle(
             },
         };
 
+
+        if (method.gateway === PaymentMethodId.BlueSnapDirect) {
+            if (method.id === 'credit_card') {
+                return { logoUrl: '', titleText: language.translate('payment.credit_card_text') };
+            }
+
+            if (method.id === 'ecp') {
+                return { logoUrl: '', titleText: language.translate('payment.bluesnap_direct_electronic_check_label') };
+            }
+
+            if (method.id === 'banktransfer') {
+                return { logoUrl: '', titleText: language.translate('payment.bluesnap_direct_local_bank_transfer_label') };
+            }
+        }
+
         if (method.id === PaymentMethodId.PaypalCommerceVenmo) {
             return customTitles[PaymentMethodId.PaypalCommerceAlternativeMethod];
         }

@@ -212,6 +212,7 @@
             },
             "bluesnap_direct_permission": "I authorize this Electronic Check (ACH/ECP) transaction and agree to this debit of my account.",
             "bluesnap_direct_electronic_check_label": "Electronic Check (ACH/ECP)",
+            "bluesnap_direct_local_bank_transfer_label": "Local Bank Transfer",
             "bolt_benefit_1": "Shop hundreds of brands with a passwordless login",
             "bolt_benefit_2": "Check out with saved payment and shipping details",
             "bolt_benefit_3": "Benefit from PCI-compliant account security",
