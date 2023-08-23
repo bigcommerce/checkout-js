@@ -291,6 +291,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             isGuestEnabled,
             isSendingSignInEmail,
             isSigningIn,
+            isExecutingPaymentMethodCheckout,
             isAccountCreationEnabled,
             providerWithCustomCheckout,
             signInError,
@@ -312,6 +313,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 isSendingSignInEmail={isSendingSignInEmail}
                 isSignInEmailEnabled={isSignInEmailEnabled && !isEmbedded}
                 isSigningIn={isSigningIn}
+                isExecutingPaymentMethodCheckout={isExecutingPaymentMethodCheckout}
                 onCancel={this.handleCancelSignIn}
                 onChangeEmail={this.handleChangeEmail}
                 onContinueAsGuest={this.executePaymentMethodCheckoutOrContinue}
@@ -420,11 +422,25 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
     private handleSignIn: (credentials: CustomerCredentials) => Promise<void> = async (
         credentials,
     ) => {
-        const { signIn, onSignIn = noop, onSignInError = noop } = this.props;
+        const {
+            executePaymentMethodCheckout,
+            signIn,
+            onSignIn = noop,
+            onSignInError = noop,
+            providerWithCustomCheckout,
+        } = this.props;
 
         try {
             await signIn(credentials);
-            onSignIn();
+
+            if (providerWithCustomCheckout === PaymentMethodId.Braintree || providerWithCustomCheckout === PaymentMethodId.BraintreeAcceleratedCheckout) {
+                await executePaymentMethodCheckout({
+                    methodId: providerWithCustomCheckout,
+                    continueWithCheckoutCallback: onSignIn,
+                });
+            } else {
+                onSignIn();
+            }
 
             this.draftEmail = undefined;
         } catch (error) {

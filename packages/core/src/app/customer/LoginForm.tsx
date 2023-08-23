@@ -30,6 +30,7 @@ export interface LoginFormProps {
     isSignInEmailEnabled?: boolean;
     isSendingSignInEmail?: boolean;
     isSigningIn?: boolean;
+    isExecutingPaymentMethodCheckout?: boolean;
     signInError?: Error;
     signInEmailError?: Error;
     viewType?: Omit<CustomerViewType, 'guest'>;
@@ -58,6 +59,7 @@ const LoginForm: FunctionComponent<
     email,
     isSignInEmailEnabled,
     isSigningIn,
+    isExecutingPaymentMethodCheckout,
     language,
     onCancel = noop,
     onChangeEmail,
@@ -165,7 +167,8 @@ const LoginForm: FunctionComponent<
 
                 <div className="form-actions">
                     <Button
-                        disabled={isSigningIn}
+                        disabled={isSigningIn && isExecutingPaymentMethodCheckout}
+                        isLoading={isSigningIn && isExecutingPaymentMethodCheckout}
                         id="checkout-customer-continue"
                         testId="customer-continue-button"
                         type="submit"
