@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { Field, FieldProps, Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
@@ -15,7 +15,36 @@ import BraintreeAcceleratedCheckoutInstrumentSelect from './BraintreeAccelerated
 
 describe('BraintreeAcceleratedCheckoutInstrumentSelect', () => {
     it('renders instrument select', () => {
+        const cardInstrument = getCardInstrument();
+
         const view = render(
+            <Formik initialValues={{}} onSubmit={noop}>
+                <LocaleContext.Provider value={createLocaleContext(getStoreConfig())}>
+                    <PaymentFormContext.Provider
+                        value={{ paymentForm: getPaymentFormServiceMock() }}
+                    >
+                        <Field
+                            name="instrumentId"
+                            render={(field: FieldProps<string>) => (
+                                <BraintreeAcceleratedCheckoutInstrumentSelect
+                                    instruments={[cardInstrument]}
+                                    onSelectInstrument={noop}
+                                    onUseNewInstrument={noop}
+                                    selectedInstrument={cardInstrument}
+                                    {...field}
+                                />
+                            )}
+                        />
+                    </PaymentFormContext.Provider>
+                </LocaleContext.Provider>
+            </Formik>,
+        );
+
+        expect(view).toMatchSnapshot();
+    });
+
+    it('renders instrument select', () => {
+        render(
             <Formik initialValues={{}} onSubmit={noop}>
                 <LocaleContext.Provider value={createLocaleContext(getStoreConfig())}>
                     <PaymentFormContext.Provider
@@ -28,6 +57,7 @@ describe('BraintreeAcceleratedCheckoutInstrumentSelect', () => {
                                     instruments={[getCardInstrument()]}
                                     onSelectInstrument={noop}
                                     onUseNewInstrument={noop}
+                                    selectedInstrument={undefined}
                                     {...field}
                                 />
                             )}
@@ -37,6 +67,6 @@ describe('BraintreeAcceleratedCheckoutInstrumentSelect', () => {
             </Formik>,
         );
 
-        expect(view).toMatchSnapshot();
+        expect(screen.queryByTestId('powered-by-connect-label')).not.toBeInTheDocument();
     });
 });
