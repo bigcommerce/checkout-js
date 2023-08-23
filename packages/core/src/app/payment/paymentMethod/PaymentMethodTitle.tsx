@@ -304,36 +304,34 @@ const PaymentMethodTitle: FunctionComponent<
     }
 
     return (
-        <>
-            <div className="paymentProviderHeader-container">
-                <div
-                    className="paymentProviderHeader-nameContainer"
-                    data-test={`payment-method-${method.id}`}
-                >
-                    {logoUrl && (
-                        <img
-                            alt={methodName}
-                            className="paymentProviderHeader-img"
-                            data-test="payment-method-logo"
-                            src={logoUrl}
-                        />
-                    )}
-
-                    {titleText && (
-                        <div aria-level={6} className="paymentProviderHeader-name" data-test="payment-method-name" role="heading">
-                            {titleText}
-                        </div>
-                    )}
-                </div>
-                <div className="paymentProviderHeader-cc">
-                    <CreditCardIconList
-                        cardTypes={compact(method.supportedCards.map(mapFromPaymentMethodCardType))}
-                        selectedCardType={getSelectedCardType()}
+        <div className="paymentProviderHeader-container">
+            <div
+                className="paymentProviderHeader-nameContainer"
+                data-test={`payment-method-${method.id}`}
+            >
+                {logoUrl && (
+                    <img
+                        alt={methodName}
+                        className="paymentProviderHeader-img"
+                        data-test="payment-method-logo"
+                        src={logoUrl}
                     />
-                </div>
-                {getSubtitle()}
+                )}
+
+                {titleText && (
+                    <div aria-level={6} className="paymentProviderHeader-name" data-test="payment-method-name" role="heading">
+                        {titleText}
+                    </div>
+                )}
             </div>
-        </>
+            <div className="paymentProviderHeader-cc">
+                <CreditCardIconList
+                    cardTypes={compact(method.supportedCards.map(mapFromPaymentMethodCardType))}
+                    selectedCardType={getSelectedCardType()}
+                />
+            </div>
+            {getSubtitle()}
+        </div>
     );
 };
 
