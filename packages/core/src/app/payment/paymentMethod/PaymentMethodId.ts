@@ -10,6 +10,7 @@ enum PaymentMethodId {
     ApplePay = 'applepay',
     Barclaycard = 'barclaycard',
     BlueSnapV2 = 'bluesnapv2',
+    BlueSnapDirect = 'bluesnapdirect',
     Boleto = 'boleto',
     Bolt = 'bolt',
     Braintree = 'braintree',
