@@ -1,6 +1,8 @@
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
-import { ErrorBoundary, ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+
+import ErrorBoundary from './ErrorBoundary';
+import ErrorLogger from './ErrorLogger';
 
 describe('ErrorBoundary', () => {
   beforeEach(() => {
@@ -48,7 +50,9 @@ describe('ErrorBoundary', () => {
           <Child />
         </ErrorBoundary>,
       );
+      // eslint-disable-next-line @typescript-eslint/no-shadow
     } catch (error) {
+      // eslint-disable-next-line jest/no-conditional-expect
       expect(logger.log).not.toHaveBeenCalledWith(error);
     }
   });
@@ -81,6 +85,7 @@ describe('ErrorBoundary', () => {
         </ErrorBoundary>,
       );
     } catch (thrown) {
+      // eslint-disable-next-line jest/no-conditional-expect
       expect(thrown).toEqual(error);
     }
   });

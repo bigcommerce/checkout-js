@@ -18,6 +18,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
         return { error };
     }
 
+    // eslint-disable-next-line @typescript-eslint/member-ordering
     state: ErrorBoundaryState = {};
 
     componentDidCatch(error: Error): void {

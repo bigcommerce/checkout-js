@@ -1,3 +1,6 @@
 {
-  "extends": ["../../.eslintrc.json"]
+  "extends": ["../../.eslintrc.json"],
+  "rules": {
+    "prettier/prettier": "off" // 71 errors
+  }
 }
