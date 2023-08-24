@@ -35,7 +35,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
 
         return (
             <Downshift
-                defaultHighlightedIndex={defaultHighlightedIndex || 0}
+                defaultHighlightedIndex={defaultHighlightedIndex}
                 initialHighlightedIndex={initialHighlightedIndex}
                 initialInputValue={initialValue}
                 itemToString={this.itemToString}
