@@ -19,6 +19,7 @@ import { CreatedCustomer, GuestSignUpForm } from '../guestSignup';
 import { LoadingSpinner } from '../ui/loading';
 
 import OrderConfirmation, { OrderConfirmationProps } from './OrderConfirmation';
+import OrderIncompleteHeader from './OrderIncompleteHeader';
 import { getOrder } from './orders.mock';
 import OrderStatus from './OrderStatus';
 import OrderSummary from './OrderSummary';
@@ -162,5 +163,30 @@ describe('OrderConfirmation', () => {
         expect(orderConfirmation.find('.continueButtonContainer form').prop('action')).toEqual(
             getStoreConfig().links.siteLink,
         );
+    });
+
+    it('renders confirmation page with incomplete order status', async () => {
+        jest.spyOn(checkoutState.statuses, 'isLoadingOrder').mockReturnValue(false);
+
+        jest.spyOn(checkoutState.data, 'getOrder').mockReturnValue({
+            ...getOrder(),
+            status: 'INCOMPLETE',
+        });
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+            ...getStoreConfig(),
+            checkoutSettings: {
+                ...getStoreConfig().checkoutSettings,
+                features: {
+                    ...getStoreConfig().checkoutSettings.features,
+                    'CHECKOUT-6891.update_incomplete_order_wording_on_order_confirmation_page': true,
+                },
+            },
+        });
+
+        orderConfirmation = mount(<ComponentTest {...defaultProps} />);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(orderConfirmation.find(OrderIncompleteHeader)).toHaveLength(1);
     });
 });
