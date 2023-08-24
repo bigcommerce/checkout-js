@@ -41,6 +41,7 @@ import OrderConfirmationSection from './OrderConfirmationSection';
 import OrderStatus from './OrderStatus';
 import PrintLink from './PrintLink';
 import ThankYouHeader from './ThankYouHeader';
+import OrderIncompleteHeader from './OrderIncompleteHeader';
 
 const OrderSummary = lazy(() =>
     retry(
@@ -131,6 +132,10 @@ class OrderConfirmation extends Component<
             links: { siteLink },
         } = config;
 
+        const header = order.status === 'INCOMPLETE' && config.checkoutSettings.features['CHECKOUT-6891.update_incomplete_order_wording_on_order_confirmation_page']
+            ? <OrderIncompleteHeader />
+            : <ThankYouHeader name={order.billingAddress.firstName} />;
+
         return (
             <div
                 className={classNames('layout optimizedCheckout-contentPrimary', {
@@ -139,9 +144,10 @@ class OrderConfirmation extends Component<
             >
                 <div className="layout-main">
                     <div className="orderConfirmation">
-                        <ThankYouHeader name={order.billingAddress.firstName} />
+                        { header }
 
                         <OrderStatus
+                            config={config}
                             order={order}
                             supportEmail={orderEmail}
                             supportPhoneNumber={storePhoneNumber}
