@@ -45,7 +45,8 @@ class GoogleAutocomplete extends PureComponent<GoogleAutocompleteProps, GoogleAu
 
         return (
             <Autocomplete
-                initialHighlightedIndex={0}
+                defaultHighlightedIndex={-1}
+                initialHighlightedIndex={-1}
                 initialValue={initialValue}
                 inputProps={{
                     ...inputProps,

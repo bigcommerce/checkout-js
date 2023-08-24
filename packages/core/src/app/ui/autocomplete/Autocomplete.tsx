@@ -10,6 +10,7 @@ import AutocompleteItem from './autocomplete-item';
 export interface AutocompleteProps {
     initialValue?: string;
     initialHighlightedIndex?: number;
+    defaultHighlightedIndex?: number;
     children?: ReactNode;
     items: AutocompleteItem[];
     inputProps?: any;
@@ -25,6 +26,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
             inputProps,
             initialValue,
             initialHighlightedIndex,
+            defaultHighlightedIndex,
             items,
             children,
             onSelect,
@@ -33,7 +35,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
 
         return (
             <Downshift
-                defaultHighlightedIndex={0}
+                defaultHighlightedIndex={defaultHighlightedIndex || 0}
                 initialHighlightedIndex={initialHighlightedIndex}
                 initialInputValue={initialValue}
                 itemToString={this.itemToString}
