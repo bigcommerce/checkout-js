@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.363.2](https://github.com/bigcommerce/checkout-js/compare/v1.363.1...v1.363.2) (2023-08-25)
+
+
+### Bug Fixes
+
+* **checkout:** PI-657 fixed validation for stored bluesnap direct card verification fields ([d66222e](https://github.com/bigcommerce/checkout-js/commit/d66222e5ad6870cd2a18f9322f7cf0cd9699a395))
+
 ### [1.363.1](https://github.com/bigcommerce/checkout-js/compare/v1.363.0...v1.363.1) (2023-08-25)
 
 ## [1.363.0](https://github.com/bigcommerce/checkout-js/compare/v1.362.1...v1.363.0) (2023-08-25)
