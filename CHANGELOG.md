@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.363.0](https://github.com/bigcommerce/checkout-js/compare/v1.362.1...v1.363.0) (2023-08-25)
+
+
+### Features
+
+* **payment:** PAYPAL-2882 added a condition when to show PP Connect icon under vaulted instruments select in payment step ([#1456](https://github.com/bigcommerce/checkout-js/issues/1456)) ([8641038](https://github.com/bigcommerce/checkout-js/commit/8641038efafeea02104cd60500df24cd4580d1b5))
+
 ### [1.362.1](https://github.com/bigcommerce/checkout-js/compare/v1.362.0...v1.362.1) (2023-08-24)
 
 
