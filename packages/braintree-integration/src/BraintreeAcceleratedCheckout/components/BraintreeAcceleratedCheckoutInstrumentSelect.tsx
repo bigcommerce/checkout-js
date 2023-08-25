@@ -50,7 +50,7 @@ const BraintreeAcceleratedCheckoutInstrumentSelect: FunctionComponent<
                 <input type="hidden" {...field} />
             </DropdownTrigger>
 
-            <PoweredByPaypalConnectLabel />
+            {selectedInstrument && <PoweredByPaypalConnectLabel />}
         </div>
     );
 };
