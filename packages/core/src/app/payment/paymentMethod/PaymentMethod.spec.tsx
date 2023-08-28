@@ -25,6 +25,7 @@ import CheckoutcomCustomPaymentMethod, {
 } from './CheckoutcomCustomPaymentMethod';
 import CreditCardPaymentMethod, { CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
+import MolliePaymentMethod from './MolliePaymentMethod';
 import OpyPaymentMethod from './OpyPaymentMethod';
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
@@ -495,6 +496,27 @@ describe('PaymentMethod', () => {
                     method,
                 }),
             );
+        });
+    });
+
+    describe('when using Mollie payment method', () => {
+        let method: PaymentMethod;
+
+        beforeEach(() => {
+            method = {
+                id: 'klarna',
+                method: 'klarna',
+                supportedCards: [],
+                config: {},
+                type: 'PAYMENT_TYPE_API',
+                gateway: 'mollie',
+            };
+        });
+
+        it('should render MolliePaymentMethod for klarna methodId and mollie gatewayId', () => {
+            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            expect(container.find(MolliePaymentMethod)).toBeTruthy();
         });
     });
 });
