@@ -19,4 +19,16 @@ describe('GoogleAutocomplete Component', () => {
 
         expect(toJson(tree)).toMatchSnapshot();
     });
+
+    it('renders input with max length', () => {
+        const tree = render(
+            <GoogleAutocomplete
+                apiKey="bar"
+                initialValue="fo"
+                inputProps={{ maxLength: "50" }}
+            />,
+        );
+
+        expect(toJson(tree)).toMatchSnapshot();
+    });
 });

@@ -17,3 +17,21 @@ exports[`GoogleAutocomplete Component renders input with initial value 1`] = `
   />
 </div>
 `;
+
+exports[`GoogleAutocomplete Component renders input with max length 1`] = `
+<div
+  aria-expanded="false"
+  aria-haspopup="listbox"
+  aria-labelledby="downshift-1-label"
+  role="combobox"
+>
+  <input
+    aria-autocomplete="list"
+    aria-labelledby="downshift-1-label"
+    autocomplete="off"
+    id="downshift-1-input"
+    maxlength="50"
+    value="fo"
+  />
+</div>
+`;
