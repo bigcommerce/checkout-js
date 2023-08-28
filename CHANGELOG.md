@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.364.0](https://github.com/bigcommerce/checkout-js/compare/v1.363.4...v1.364.0) (2023-08-28)
+
+
+### Features
+
+* **payment:** PAYPAL-2758 banner in Paywall  ([#1395](https://github.com/bigcommerce/checkout-js/issues/1395)) ([cabaf70](https://github.com/bigcommerce/checkout-js/commit/cabaf70364fc79e188306b5f2488e2115ea99ea1))
+
 ### [1.363.4](https://github.com/bigcommerce/checkout-js/compare/v1.363.3...v1.363.4) (2023-08-28)
 
 
