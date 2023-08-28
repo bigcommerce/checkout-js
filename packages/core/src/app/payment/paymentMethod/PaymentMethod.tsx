@@ -121,7 +121,7 @@ const PaymentMethodComponent: FunctionComponent<
         return <KlarnaV2PaymentMethod {...props} />;
     }
 
-    if (method.id === PaymentMethodId.Klarna) {
+    if (method.id === PaymentMethodId.Klarna && method.gateway !== PaymentMethodId.Mollie) {
         return <KlarnaPaymentMethod {...props} />;
     }
 
