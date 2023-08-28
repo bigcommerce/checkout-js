@@ -8,7 +8,7 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcomme
 import { CheckoutProvider , PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getStoreConfig } from '../../config/config.mock';
-import { getPaymentMethod } from '../payment-methods.mock';
+import { getPaymentMethod, getPaypalCreditPaymentMethod } from '../payment-methods.mock';
 import { getInstruments } from '../storedInstrument/instruments.mock';
 
 import getPaymentMethodName from './getPaymentMethodName';
@@ -715,4 +715,48 @@ describe('PaymentMethodTitle', () => {
             expect(amex).toHaveClass('is-active');
         })
     });
+
+    describe('renders payment methods with subtitle', () => {
+        beforeEach(() => {
+            jest.spyOn(checkoutService.getState().data, 'getInstruments').mockReturnValue(getInstruments());
+            defaultProps = {
+                formValues: {
+                    ccExpiry: '',
+                    ccName: '',
+                    ccNumber: '',
+                    paymentProviderRadio: getPaypalCreditPaymentMethod().id,
+                    instrumentId: '111',
+                },
+                method: getPaypalCreditPaymentMethod(),
+                onUnhandledError: jest.fn()
+            };
+
+            PaymentMethodTitleTest = ({ formValues, ...props }) => (
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <Formik initialValues={formValues} onSubmit={noop}>
+                            <PaymentMethodTitle {...props} />
+                        </Formik>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>
+            );
+        })
+
+        it('renders Braintree Paypal Credit payment method with subtitle', () => {
+            jest.spyOn(checkoutService, 'initializePayment').mockReturnValue(Promise.resolve(checkoutService.getState()));
+            jest.spyOn(checkoutService, 'deinitializePayment').mockReturnValue(Promise.resolve(checkoutService.getState()))
+
+            render(
+                <PaymentMethodTitleTest
+                    {...defaultProps}
+                    method={{
+                        ...defaultProps.method,
+                        id: PaymentMethodId.BraintreePaypalCredit,
+                    }}
+                />,
+            );
+
+            expect(screen.getByTestId('braintree-banner-container')).toBeInTheDocument();
+        });
+    })
 });

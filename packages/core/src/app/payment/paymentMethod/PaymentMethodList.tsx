@@ -112,7 +112,7 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
     }, [isEmbedded, isUsingMultiShipping, method, onUnhandledError]);
 
     const renderPaymentMethodTitle = useCallback(
-        (isSelected: boolean) => <PaymentMethodTitle isSelected={isSelected} method={method} />,
+        (isSelected: boolean) => <PaymentMethodTitle isSelected={isSelected} method={method} onUnhandledError={onUnhandledError} />,
         [method],
     );
 
