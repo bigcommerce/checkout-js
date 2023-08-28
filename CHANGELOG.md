@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.363.4](https://github.com/bigcommerce/checkout-js/compare/v1.363.3...v1.363.4) (2023-08-28)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-7656 Rectify vanishing shipping step ([#1459](https://github.com/bigcommerce/checkout-js/issues/1459)) ([6fb6058](https://github.com/bigcommerce/checkout-js/commit/6fb6058a2693619e562cc0ce0d6658fa0a087bfc))
+
 ### [1.363.3](https://github.com/bigcommerce/checkout-js/compare/v1.363.2...v1.363.3) (2023-08-28)
 
 ### [1.363.2](https://github.com/bigcommerce/checkout-js/compare/v1.363.1...v1.363.2) (2023-08-25)
