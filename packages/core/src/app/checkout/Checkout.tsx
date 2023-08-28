@@ -608,7 +608,7 @@ class Checkout extends Component<
     };
 
     private handleConsignmentsUpdated: (state: CheckoutSelectors) => void = ({ data }) => {
-        const { hasSelectedShippingOptions: prevHasSelectedShippingOptions, activeStepType } =
+        const { hasSelectedShippingOptions: prevHasSelectedShippingOptions, activeStepType, defaultStepType } =
             this.state;
 
         const { steps } = this.props;
@@ -617,11 +617,19 @@ class Checkout extends Component<
             data.getConsignments() || [],
         );
 
+        const isDefaultStepPaymentOrBilling =
+            !activeStepType &&
+            (defaultStepType === CheckoutStepType.Payment ||
+                defaultStepType === CheckoutStepType.Billing);
+
+        const isShippingStepFinished =
+            findIndex(steps, { type: CheckoutStepType.Shipping }) <
+                findIndex(steps, { type: activeStepType }) || isDefaultStepPaymentOrBilling;
+
         if (
             prevHasSelectedShippingOptions &&
             !newHasSelectedShippingOptions &&
-            findIndex(steps, { type: CheckoutStepType.Shipping }) <
-                findIndex(steps, { type: activeStepType })
+            isShippingStepFinished
         ) {
             this.navigateToStep(CheckoutStepType.Shipping);
             this.setState({ error: new ShippingOptionExpiredError() });
