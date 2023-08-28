@@ -448,7 +448,6 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             await executePaymentMethodCheckout({
                 methodId: providerWithCustomCheckout,
                 continueWithCheckoutCallback: onAccountCreated,
-                email: values.email,
             });
         } else {
             onAccountCreated();

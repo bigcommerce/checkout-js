@@ -27,7 +27,6 @@ import EmailLoginForm from './EmailLoginForm';
 import GuestForm, { GuestFormProps } from './GuestForm';
 import LoginForm, { LoginFormProps } from './LoginForm';
 import StripeGuestForm from './StripeGuestForm';
-import { string } from 'yup';
 
 describe('Customer', () => {
     let CustomerTest: FunctionComponent<CustomerProps & Partial<WithCheckoutCustomerProps>>;
@@ -764,7 +763,6 @@ describe('Customer', () => {
             await new Promise((resolve) => process.nextTick(resolve));
 
             expect(checkoutService.executePaymentMethodCheckout).toHaveBeenCalledWith({
-                email: customerFormData.email,
                 methodId: PaymentMethodId.BraintreeAcceleratedCheckout,
                 continueWithCheckoutCallback: handleCreateAccount,
             });
