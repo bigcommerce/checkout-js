@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.365.0](https://github.com/bigcommerce/checkout-js/compare/v1.364.1...v1.365.0) (2023-08-29)
+
+
+### Features
+
+* **payment:** PAYPAL-2729 trigger customer execution method after creation account in create account form for BT AXO ([#1449](https://github.com/bigcommerce/checkout-js/issues/1449)) ([febfca6](https://github.com/bigcommerce/checkout-js/commit/febfca644fcb418fc13664e901f0eec5515b5b73))
+
 ### [1.364.1](https://github.com/bigcommerce/checkout-js/compare/v1.364.0...v1.364.1) (2023-08-28)
 
 ## [1.364.0](https://github.com/bigcommerce/checkout-js/compare/v1.363.4...v1.364.0) (2023-08-28)
