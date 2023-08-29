@@ -5,8 +5,11 @@
 /packages/apple-pay-integration @bigcommerce/team-checkout
 /packages/checkout-button-integration @bigcommerce/team-checkout
 /packages/core @bigcommerce/team-checkout
+/packages/dom-utils @bigcommerce/team-checkout
+/packages/error-handling-utils @bigcommerce/team-checkout
 /packages/google-pay-integration @bigcommerce/apex-leads
 /packages/hosted-credit-card-integration @bigcommerce/apex-leads
+/packages/legacy-hoc @bigcommerce/team-checkout
 /packages/payment-integration-api @bigcommerce/team-checkout
 /packages/test-framework @bigcommerce/team-checkout
 /packages/workspace-tools @bigcommerce/team-checkout
