@@ -3,6 +3,7 @@ import { noop } from 'lodash';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 import { object, string } from 'yup';
 
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import {
     TranslatedHtml,
     TranslatedLink,
@@ -11,7 +12,6 @@ import {
     WithLanguageProps,
 } from '@bigcommerce/checkout/locale';
 
-import { preventDefault } from '../common/dom';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { Fieldset, Form, Legend } from '../ui/form';

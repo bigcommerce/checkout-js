@@ -51,7 +51,7 @@ describe('ErrorBoundary', () => {
                 </ErrorBoundary>,
             );
             // eslint-disable-next-line @typescript-eslint/no-shadow
-        } catch (error: unknown) {
+        } catch (error) {
             // eslint-disable-next-line jest/no-conditional-expect
             expect(logger.log).not.toHaveBeenCalledWith(error);
         }

@@ -14,10 +14,12 @@ interface ErrorBoundaryState {
 }
 
 class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
-    state: ErrorBoundaryState = {};
     static getDerivedStateFromError(error: Error): ErrorBoundaryState {
         return { error };
     }
+
+    // eslint-disable-next-line @typescript-eslint/member-ordering
+    state: ErrorBoundaryState = {};
 
     componentDidCatch(error: Error): void {
         const { filter = () => true, logger } = this.props;

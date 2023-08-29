@@ -2,11 +2,11 @@ import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/
 import { FieldProps, FormikProps, withFormik } from 'formik';
 import React, { FunctionComponent, memo, ReactNode, useCallback, useEffect, useState } from 'react';
 
+import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { CustomerSkeleton } from '@bigcommerce/checkout/ui';
 
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
-import { getAppliedStyles } from '../common/dom';
 import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
 import { Button, ButtonVariant } from '../ui/button';
 import { BasicFormField, Fieldset, Form, Legend } from '../ui/form';

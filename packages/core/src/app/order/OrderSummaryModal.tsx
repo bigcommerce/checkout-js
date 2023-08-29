@@ -5,10 +5,10 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, { cloneElement, FunctionComponent, isValidElement, ReactNode, useMemo } from 'react';
 
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { Button, IconCloseWithBorder } from '@bigcommerce/checkout/ui';
 
-import { preventDefault } from '../common/dom';
 import { ShopperCurrency } from '../currency';
 import { IconClose } from '../ui/icon';
 import { Modal, ModalHeader } from '../ui/modal';

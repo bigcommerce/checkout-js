@@ -1,12 +1,13 @@
 import { difference } from 'lodash';
 import React, { FunctionComponent, useCallback, useEffect } from 'react';
 
+import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
 import {
     PaymentMethodProps,
     PaymentMethodResolveId,
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { getAppliedStyles, LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     method,

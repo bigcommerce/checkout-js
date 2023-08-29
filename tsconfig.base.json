@@ -36,6 +36,8 @@
       "@bigcommerce/checkout/credit-card-integration": [
         "packages/credit-card-integration/src/index.ts"
       ],
+      "@bigcommerce/checkout/dom-utils": ["packages/dom-utils/src/index.ts"],
+      "@bigcommerce/checkout/error-handling-utils": ["packages/error-handling-utils/src/index.ts"],
       "@bigcommerce/checkout/google-pay-integration": [
         "packages/google-pay-integration/src/index.ts"
       ],
@@ -55,10 +57,8 @@
         "packages/hosted-widget-integration/src/index.ts"
       ],
       "@bigcommerce/checkout/instrument-utils": ["packages/instrument-utils/src/index.ts"],
+      "@bigcommerce/checkout/legacy-hoc": ["packages/legacy-hoc/src/index.ts"],
       "@bigcommerce/checkout/locale": ["packages/locale/src/index.ts"],
-      "@bigcommerce/checkout/legacy-hoc": [
-        "packages/legacy-hoc/src/index.ts"
-      ],
       "@bigcommerce/checkout/offline-payment-integration": [
         "packages/offline-payment-integration/src/index.ts"
       ],

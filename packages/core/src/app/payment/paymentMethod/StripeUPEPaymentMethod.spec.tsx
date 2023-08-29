@@ -52,7 +52,7 @@ jest.mock('../hostedCreditCard', () => ({
         <Component {...props} {...injectedProps} />
     )) as jest.Mocked<typeof withHostedCreditCardFieldset>,
 }));
-jest.mock('../../common/dom', () => ({
+jest.mock('@bigcommerce/checkout/dom-utils', () => ({
     getAppliedStyles: () => {
         return { color: '#cccccc' };
     },

@@ -15,6 +15,7 @@ import { find, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import {
     AccountInstrumentFieldset,
     assertIsCardInstrument,
@@ -25,7 +26,7 @@ import {
 } from '@bigcommerce/checkout/instrument-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
-import { LoadingOverlay, preventDefault } from '@bigcommerce/checkout/ui';
+import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 export interface HostedWidgetComponentState {
     isAddingNewCard: boolean;

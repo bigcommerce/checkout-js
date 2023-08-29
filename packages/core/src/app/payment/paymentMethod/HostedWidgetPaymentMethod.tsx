@@ -16,12 +16,12 @@ import { find, noop, some } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { MapToPropsFactory } from '@bigcommerce/checkout/legacy-hoc';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps, PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
-import {withCheckout} from '../../checkout';
-import { preventDefault } from '../../common/dom';
+import { withCheckout } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { LoadingOverlay } from '../../ui/loading';
 import {

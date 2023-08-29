@@ -65,5 +65,4 @@ export {
 } from './icon';
 export { LoadingOverlay } from './loading';
 export { Modal, ModalHeader, ModalTrigger, ModalTriggerModalProps } from './modal';
-export { getAppliedStyles, preventDefault } from './utils/dom';
 export { TooltipTrigger } from './tooltip';

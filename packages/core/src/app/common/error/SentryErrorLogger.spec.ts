@@ -9,9 +9,10 @@ import {
 import { RewriteFrames } from '@sentry/integrations';
 import { Integration } from '@sentry/types';
 
+import { ErrorLevelType } from '@bigcommerce/checkout/error-handling-utils';
+
 import computeErrorCode from './computeErrorCode';
 import ConsoleErrorLogger from './ConsoleErrorLogger';
-import { ErrorLevelType } from './ErrorLogger';
 import SentryErrorLogger, { SeverityLevelEnum } from './SentryErrorLogger';
 
 jest.mock('@sentry/browser', () => {

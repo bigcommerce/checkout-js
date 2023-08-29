@@ -1,7 +1,8 @@
 import React, { FunctionComponent, MouseEventHandler } from 'react';
 
+import { parseAnchor, preventDefault } from '@bigcommerce/checkout/dom-utils';
+
 import { TranslatedStringProps } from './TranslatedString';
-import { parseAnchor, preventDefault } from './utils';
 import withLanguage, { WithLanguageProps } from './withLanguage';
 
 export type TranslatedLinkProps = TranslatedStringProps & {

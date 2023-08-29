@@ -11,9 +11,15 @@ import {
 import { RewriteFrames } from '@sentry/integrations';
 import { EventHint, Exception } from '@sentry/types';
 
+import {
+  ErrorLevelType,
+  ErrorLogger,
+  ErrorMeta,
+  ErrorTags,
+} from '@bigcommerce/checkout/error-handling-utils';
+
 import computeErrorCode from './computeErrorCode';
 import ConsoleErrorLogger from './ConsoleErrorLogger';
-import ErrorLogger, { ErrorLevelType, ErrorMeta, ErrorTags } from './ErrorLogger';
 import NoopErrorLogger from './NoopErrorLogger';
 
 const FILENAME_PREFIX = 'app://';

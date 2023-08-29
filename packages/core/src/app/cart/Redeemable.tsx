@@ -5,10 +5,10 @@ import { noop } from 'lodash';
 import React, { FunctionComponent, KeyboardEvent, memo, useCallback } from 'react';
 import { object, string } from 'yup';
 
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { FormContextType, FormProvider } from '@bigcommerce/checkout/ui';
 
-import { preventDefault } from '../common/dom';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { FormField, Label, TextInput } from '../ui/form';

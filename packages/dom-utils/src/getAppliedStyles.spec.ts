@@ -14,6 +14,7 @@ describe('getAppliedStyles', () => {
 
         document.head.appendChild(style);
 
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         const stylesheet = style.sheet as CSSStyleSheet;
         const rules = [
             `.foobar {
