@@ -23,6 +23,7 @@ import { withCheckout } from '../checkout';
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { isErrorWithType } from '../common/error';
 import { isFloatingLabelEnabled } from '../common/utility';
+import { isBraintreeConnectPaymentMethod } from '../payment';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
 import CheckoutButtonList from './CheckoutButtonList';
@@ -435,7 +436,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
         try {
             await signIn(credentials);
 
-            if (providerWithCustomCheckout === PaymentMethodId.Braintree || providerWithCustomCheckout === PaymentMethodId.BraintreeAcceleratedCheckout) {
+            if (isBraintreeConnectPaymentMethod(providerWithCustomCheckout)) {
                 await executePaymentMethodCheckout({
                     methodId: providerWithCustomCheckout,
                     continueWithCheckoutCallback: onSignIn,
@@ -460,7 +461,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
         await createAccount(mapCreateAccountFromFormValues(values));
 
-        if (providerWithCustomCheckout === PaymentMethodId.Braintree || providerWithCustomCheckout === PaymentMethodId.BraintreeAcceleratedCheckout) {
+        if (isBraintreeConnectPaymentMethod(providerWithCustomCheckout)) {
             await executePaymentMethodCheckout({
                 methodId: providerWithCustomCheckout,
                 continueWithCheckoutCallback: onAccountCreated,

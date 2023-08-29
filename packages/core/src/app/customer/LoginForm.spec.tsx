@@ -228,4 +228,24 @@ describe('LoginForm', () => {
             'Continue as guest',
         );
     });
+
+    it('disables submit button if the sign in process does not complete', async () => {
+        const component = mount(
+            <TestComponent isSigningIn={true} />,
+        );
+
+        const button = component.find('[data-test="customer-continue-button"]');
+
+        expect(button.prop('disabled')).toBeTruthy();
+    });
+
+    it('disables submit button if the execution is in progress', async () => {
+        const component = mount(
+            <TestComponent isExecutingPaymentMethodCheckout={true} />,
+        );
+
+        const button = component.find('[data-test="customer-continue-button"]');
+
+        expect(button.prop('disabled')).toBeTruthy();
+    });
 });
