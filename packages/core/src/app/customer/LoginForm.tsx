@@ -167,8 +167,8 @@ const LoginForm: FunctionComponent<
 
                 <div className="form-actions">
                     <Button
-                        disabled={isSigningIn && isExecutingPaymentMethodCheckout}
-                        isLoading={isSigningIn && isExecutingPaymentMethodCheckout}
+                        disabled={isSigningIn || isExecutingPaymentMethodCheckout}
+                        isLoading={isSigningIn || isExecutingPaymentMethodCheckout}
                         id="checkout-customer-continue"
                         testId="customer-continue-button"
                         type="submit"
