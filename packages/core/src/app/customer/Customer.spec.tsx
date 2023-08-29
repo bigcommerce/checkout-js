@@ -19,7 +19,7 @@ import CheckoutStepType from '../checkout/CheckoutStepType';
 import { getStoreConfig } from '../config/config.mock';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
-import CreateAccountForm from './CreateAccountForm';
+import CreateAccountForm, { CreateAccountFormProps } from './CreateAccountForm';
 import Customer, { CustomerProps, WithCheckoutCustomerProps } from './Customer';
 import { getCustomer, getGuestCustomer } from './customers.mock';
 import CustomerViewType from './CustomerViewType';
@@ -744,6 +744,67 @@ describe('Customer', () => {
             expect((component.find(GuestForm) as ReactWrapper<GuestFormProps>).prop('email')).toBe(
                 'test@bigcommerce.com',
             );
+        });
+    });
+
+    describe('when view type is "create_account"', () => {
+        it('triggers execution method if customer is successfully signed in', async () => {
+            jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue(undefined);
+
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
+                ...getStoreConfig(),
+                checkoutSettings: {
+                    ...getStoreConfig().checkoutSettings,
+                    features: {
+                        'CHECKOUT-4941.account_creation_in_checkout': true,
+                    },
+                },
+            });
+
+            jest.spyOn(checkoutService, 'createCustomerAccount').mockReturnValue(
+                Promise.resolve(checkoutService.getState()),
+            );
+
+            jest.spyOn(checkoutService, 'executePaymentMethodCheckout').mockReturnValue(
+                Promise.resolve(checkoutService.getState()),
+            );
+
+            const handleCreateAccount = jest.fn();
+            const component = mount(
+                <CustomerTest
+                    onAccountCreated={handleCreateAccount}
+                    providerWithCustomCheckout={PaymentMethodId.BraintreeAcceleratedCheckout}
+                    viewType={CustomerViewType.CreateAccount}
+                />,
+            );
+
+            const customerFormData = {
+                firstName: 'John',
+                lastName: 'Doe',
+                email: 'johndoe@test.com',
+                password: 'mocked_password!',
+            };
+
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            (component.find(CreateAccountForm) as ReactWrapper<CreateAccountFormProps>).prop('onSubmit')({
+                ...customerFormData,
+                customFields: {},
+            });
+
+            expect(checkoutService.createCustomerAccount).toHaveBeenCalledWith({
+                ...customerFormData,
+                acceptsMarketingEmails: undefined,
+                customFields: [],
+            });
+
+            await new Promise((resolve) => process.nextTick(resolve));
+
+            expect(checkoutService.executePaymentMethodCheckout).toHaveBeenCalledWith({
+                methodId: PaymentMethodId.BraintreeAcceleratedCheckout,
+                continueWithCheckoutCallback: handleCreateAccount,
+            });
         });
     });
 
