@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.365.1](https://github.com/bigcommerce/checkout-js/compare/v1.365.0...v1.365.1) (2023-08-29)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-0000 warnings fix ([311d0f1](https://github.com/bigcommerce/checkout-js/commit/311d0f13a624968a0196d8ce012ff3a13246bc45))
+* **payment:** PAYPAL-2729 added some tests + refactoring and changed the disable button state logic in login form ([#1470](https://github.com/bigcommerce/checkout-js/issues/1470)) ([b655830](https://github.com/bigcommerce/checkout-js/commit/b6558301fd36edc0bb4d5067b15851baff4345fe))
+
 ## [1.365.0](https://github.com/bigcommerce/checkout-js/compare/v1.364.1...v1.365.0) (2023-08-29)
 
 
