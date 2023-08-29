@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
-import { PaymentMethodId } from './index';
+import PaymentMethodId from './PaymentMethodId';
 
 const BraintreePaypalCreditDescription: FunctionComponent<{ onUnhandledError?(error: Error): void }> = ({ onUnhandledError }) => {
     const { checkoutService } = useCheckout();
