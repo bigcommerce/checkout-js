@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.365.3](https://github.com/bigcommerce/checkout-js/compare/v1.365.2...v1.365.3) (2023-08-30)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-7449 consolidate all utility tools/files in new packages ([#1455](https://github.com/bigcommerce/checkout-js/issues/1455)) ([2182dfa](https://github.com/bigcommerce/checkout-js/commit/2182dfa025e9fa93e7b2297d6e99760ca04ad452))
+
 ### [1.365.2](https://github.com/bigcommerce/checkout-js/compare/v1.365.1...v1.365.2) (2023-08-29)
 
 ### [1.365.1](https://github.com/bigcommerce/checkout-js/compare/v1.365.0...v1.365.1) (2023-08-29)
