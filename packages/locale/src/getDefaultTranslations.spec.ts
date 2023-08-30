@@ -9,6 +9,10 @@ describe('getDefaultTranslations', () => {
         expect(await getDefaultTranslations('fr')).toEqual(require('./translations/fr.json'));
     });
 
+    it('returns Polish translations when pl locale is specified', async () => {
+        expect(await getDefaultTranslations('pl')).toEqual(require('./translations/pl.json'));
+    });
+
     it('returns Canadian French translations when fr-CA locale is specified', async () => {
         expect(await getDefaultTranslations('fr-CA')).toEqual(require('./translations/fr.json'));
     });
