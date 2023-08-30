@@ -383,7 +383,7 @@ export function mapToShippingProps({
         isUpdatingCheckout() ||
         isCreatingCustomerAddress();
     const shouldShowMultiShipping =
-        hasMultiShippingEnabled && !methodId && shippableItemsCount > 1 && shippableItemsCount < 50;
+        hasMultiShippingEnabled && !methodId && shippableItemsCount > 1;
     const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ'];
 
     if (features['CHECKOUT-4183.checkout_google_address_autocomplete_uk']) {
