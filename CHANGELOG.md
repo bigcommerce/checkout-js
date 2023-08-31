@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.366.0](https://github.com/bigcommerce/checkout-js/compare/v1.365.3...v1.366.0) (2023-08-31)
+
+
+### Features
+
+* **other:** CHECKOUT-7677 Add polish language translation support ([#1475](https://github.com/bigcommerce/checkout-js/issues/1475)) ([8d20a0a](https://github.com/bigcommerce/checkout-js/commit/8d20a0aa06569108ba5975ada9eaea213fc5e68f))
+
 ### [1.365.3](https://github.com/bigcommerce/checkout-js/compare/v1.365.2...v1.365.3) (2023-08-30)
 
 
