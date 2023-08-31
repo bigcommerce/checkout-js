@@ -349,6 +349,27 @@ describe('Shipping Component', () => {
         expect(checkoutService.deleteConsignment).not.toHaveBeenCalled();
     });
 
+    it('shows multi address shipping link for more than 50 cart items', async () => {
+        jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
+            ...getCart(),
+            lineItems: {
+                physicalItems: [
+                    {
+                        ...getPhysicalItem(),
+                        quantity: 51,
+                    },
+                ],
+            },
+        } as Cart);
+        component = mount(<ComponentTest {...defaultProps} />);
+        await new Promise((resolve) => process.nextTick(resolve));
+        component.update();
+
+        expect(component.find('[data-test="shipping-mode-toggle"]').text()).toBe(
+            'Ship to multiple addresses',
+        );
+    });
+
     describe('when multishipping mode is on', () => {
         describe('when shopper is signed', () => {
             beforeEach(async () => {
