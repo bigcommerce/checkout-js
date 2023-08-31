@@ -109,6 +109,7 @@ const GooglePayPaymentMethod: FunctionComponent<GooglePayPaymentMethodProps> = (
             deinitializePayment={deinitializePayment}
             initializePayment={initializeGooglePayPayment}
             method={method}
+            onUnhandledError={onUnhandledError}
             shouldShowEditButton
         />
     );
