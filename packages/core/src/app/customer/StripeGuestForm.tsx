@@ -21,6 +21,7 @@ export interface StripeGuestFormProps {
     continueAsGuestButtonLabelId: string;
     email?: string;
     isLoading: boolean;
+    isExpressPrivacyPolicy: boolean;
     requiresMarketingConsent: boolean;
     defaultShouldSubscribe: boolean;
     privacyPolicyUrl?: string;
@@ -35,6 +36,7 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
     continueAsGuestButtonLabelId,
     isLoading,
     initialize,
+    isExpressPrivacyPolicy,
     deinitialize,
     onChangeEmail,
     onShowLogin,
@@ -199,10 +201,6 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                                     name="shouldSubscribe"
                                     render={ renderField }
                                 /> }
-
-                                { privacyPolicyUrl && <PrivacyPolicyField
-                                    url={ privacyPolicyUrl }
-                                /> }
                             </div>
 
                             <div className="form-actions customerEmail-action">
@@ -219,6 +217,11 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                                 </Button> }
                             </div>
                         </div>
+
+                        {privacyPolicyUrl && (
+                            <PrivacyPolicyField isExpressPrivacyPolicy={isExpressPrivacyPolicy} url={privacyPolicyUrl} />
+                        )}
+
                         {
                             !isLoading && <p>
                                 <TranslatedString id="customer.login_text"/>
@@ -258,8 +261,8 @@ export default withLanguage(
                     shouldSubscribe: values.shouldSubscribe,
                   });
             },
-            validationSchema: ({ language, privacyPolicyUrl }: StripeGuestFormProps & WithLanguageProps) => {
-                if (privacyPolicyUrl) {
+            validationSchema: ({ language, privacyPolicyUrl, isExpressPrivacyPolicy }: StripeGuestFormProps & WithLanguageProps) => {
+                if (privacyPolicyUrl && !isExpressPrivacyPolicy) {
                     return getPrivacyPolicyValidationSchema({
                             isRequired: !!privacyPolicyUrl,
                             language,

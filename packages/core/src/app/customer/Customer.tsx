@@ -80,6 +80,7 @@ export interface WithCheckoutCustomerProps {
     createAccountError?: Error;
     signInError?: Error;
     isFloatingLabelEnabled?: boolean;
+    isExpressPrivacyPolicy: boolean;
     clearError(error: Error): Promise<CheckoutSelectors>;
     continueAsGuest(credentials: GuestCredentials): Promise<CheckoutSelectors>;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
@@ -181,6 +182,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             onUnhandledError = noop,
             step,
             isFloatingLabelEnabled,
+            isExpressPrivacyPolicy,
         } = this.props;
         const checkoutButtons = isWalletButtonsOnTop
           ? null
@@ -207,6 +209,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                     deinitialize={deinitializeCustomer}
                     email={this.draftEmail || email}
                     initialize={initializeCustomer}
+                    isExpressPrivacyPolicy={isExpressPrivacyPolicy}
                     isLoading={isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout}
                     onChangeEmail={this.handleChangeEmail}
                     onContinueAsGuest={this.handleContinueAsGuest}
@@ -222,6 +225,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 continueAsGuestButtonLabelId="customer.continue"
                 defaultShouldSubscribe={isSubscribed}
                 email={this.draftEmail || email}
+                isExpressPrivacyPolicy={isExpressPrivacyPolicy}
                 isFloatingLabelEnabled={isFloatingLabelEnabled}
                 isLoading={isLoadingGuestForm}
                 onChangeEmail={this.handleChangeEmail}
@@ -612,6 +616,7 @@ export function mapToWithCheckoutCustomerProps({
         signIn: checkoutService.signInCustomer,
         signInError: getSignInError(),
         isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
+        isExpressPrivacyPolicy: config.checkoutSettings.isExpressPrivacyPolicy,
     };
 }
 

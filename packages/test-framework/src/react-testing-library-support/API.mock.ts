@@ -22,6 +22,7 @@ const checkoutSettings = {
             guestCheckoutEnabled: true,
             isCardVaultingEnabled: true,
             isCouponCodeCollapsed: true,
+            isExpressPrivacyPolicy: false,
             isPaymentRequestEnabled: false,
             isPaymentRequestCanMakePaymentEnabled: false,
             isSignInEmailEnabled: true,

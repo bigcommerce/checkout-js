@@ -3,7 +3,12 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedHtml } from '@bigcommerce/checkout/locale';
+import {
+    createLocaleContext,
+    LocaleContext,
+    LocaleContextType,
+    TranslatedHtml,
+} from '@bigcommerce/checkout/locale';
 
 import { getStoreConfig } from '../config/config.mock';
 import { CheckboxFormField } from '../ui/form';
@@ -23,7 +28,7 @@ describe('PrivacyPolicyField', () => {
         const component = mount(
             <LocaleContext.Provider value={localeContext}>
                 <Formik initialValues={initialValues} onSubmit={noop}>
-                    <PrivacyPolicyField url="foo" />
+                    <PrivacyPolicyField isExpressPrivacyPolicy={false} url="foo" />
                 </Formik>
             </LocaleContext.Provider>,
         );
@@ -32,6 +37,22 @@ describe('PrivacyPolicyField', () => {
         expect(component.find(TranslatedHtml).props()).toMatchObject({
             data: { url: 'foo' },
             id: 'privacy_policy.label',
+        });
+    });
+
+    it('renders text with external link if isExpressPrivacyPolicy is true', () => {
+        const component = mount(
+            <LocaleContext.Provider value={localeContext}>
+                <Formik initialValues={initialValues} onSubmit={noop}>
+                    <PrivacyPolicyField isExpressPrivacyPolicy={true} url="foo" />
+                </Formik>
+            </LocaleContext.Provider>,
+        );
+
+        expect(component.find(CheckboxFormField)).toHaveLength(0);
+        expect(component.find(TranslatedHtml).props()).toMatchObject({
+            data: { url: 'foo' },
+            id: 'privacy_policy_auto_consent.label',
         });
     });
 });

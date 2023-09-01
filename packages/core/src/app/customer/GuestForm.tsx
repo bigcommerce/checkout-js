@@ -21,6 +21,7 @@ export interface GuestFormProps {
     email?: string;
     isLoading: boolean;
     privacyPolicyUrl?: string;
+    isExpressPrivacyPolicy: boolean;
     isFloatingLabelEnabled?: boolean;
     onChangeEmail(email: string): void;
     onContinueAsGuest(data: GuestFormValues): void;
@@ -43,6 +44,7 @@ const GuestForm: FunctionComponent<
     onShowLogin,
     privacyPolicyUrl,
     requiresMarketingConsent,
+    isExpressPrivacyPolicy,
     isFloatingLabelEnabled,
 }) => {
     const renderField = useCallback(
@@ -72,8 +74,6 @@ const GuestForm: FunctionComponent<
                         {(canSubscribe || requiresMarketingConsent) && (
                             <BasicFormField name="shouldSubscribe" render={renderField} />
                         )}
-
-                        {privacyPolicyUrl && <PrivacyPolicyField url={privacyPolicyUrl} />}
                     </div>
 
                     <div
@@ -93,6 +93,10 @@ const GuestForm: FunctionComponent<
                         </Button>
                     </div>
                 </div>
+
+                {privacyPolicyUrl && (
+                    <PrivacyPolicyField isExpressPrivacyPolicy={isExpressPrivacyPolicy} url={privacyPolicyUrl} />
+                )}
 
                 {!isLoading && (
                     <p>
@@ -127,7 +131,7 @@ export default withLanguage(
         handleSubmit: (values, { props: { onContinueAsGuest } }) => {
             onContinueAsGuest(values);
         },
-        validationSchema: ({ language, privacyPolicyUrl }: GuestFormProps & WithLanguageProps) => {
+        validationSchema: ({ language, privacyPolicyUrl, isExpressPrivacyPolicy }: GuestFormProps & WithLanguageProps) => {
             const email = string()
                 .email(language.translate('customer.email_invalid_error'))
                 .max(256)
@@ -135,7 +139,7 @@ export default withLanguage(
 
             const baseSchema = object({ email });
 
-            if (privacyPolicyUrl) {
+            if (privacyPolicyUrl && !isExpressPrivacyPolicy) {
                 return baseSchema.concat(
                     getPrivacyPolicyValidationSchema({
                         isRequired: !!privacyPolicyUrl,
