@@ -1,0 +1,17 @@
+.checkout-steps {
+
+  li.checkout-step {
+    .stepHeader-counter {
+      background-color: var(--color-secondary);
+      display: block !important;
+    }
+
+    h2 {
+      margin-left: 1rem !important;
+    }
+  }
+}
+
+.remove-checkout-step-numbers li.checkout-step div.stepHeader-counter.icon {
+
+}
