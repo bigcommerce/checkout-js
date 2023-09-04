@@ -514,6 +514,9 @@
             "label": "Yes, I agree with the <a href=\"{url}\" target=\"_blank\">privacy policy</a>.",
             "heading": "Privacy Policy"
         },
+        "privacy_policy_auto_consent": {
+            "label": "*By clicking continue, you agree to our  <a href=\"{url}\" target=\"_blank\">privacy policy</a>."
+        },
         "tax": {
             "inclusive_label": "Tax Included in Total:"
         },
