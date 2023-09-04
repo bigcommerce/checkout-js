@@ -58,21 +58,21 @@ describe('mapToShippingProps()', () => {
         });
 
         it('returns true when enabled', () => {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            expect(mapToShippingProps(checkoutContextProps)!.shouldShowMultiShipping).toBe(true);
-        });
-
-        it('returns false when not enabled', () => {
             const { checkoutSettings } = getStoreConfig();
 
             jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
                 ...getStoreConfig(),
                 checkoutSettings: {
                     ...checkoutSettings,
-                    hasMultiShippingEnabled: false,
+                    hasMultiShippingEnabled: true,
                 },
             } as StoreConfig);
 
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            expect(mapToShippingProps(checkoutContextProps)!.shouldShowMultiShipping).toBe(true);
+        });
+
+        it('returns false when not enabled', () => {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(mapToShippingProps(checkoutContextProps)!.shouldShowMultiShipping).toBe(false);
         });
