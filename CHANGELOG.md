@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.367.1](https://github.com/bigcommerce/checkout-js/compare/v1.367.0...v1.367.1) (2023-09-04)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-5966 Enable multishipping for more than 50 items in cart ([#1474](https://github.com/bigcommerce/checkout-js/issues/1474)) ([be19e47](https://github.com/bigcommerce/checkout-js/commit/be19e47b31b085d1f269ca50d49b3c3086160a3f))
+
 ## [1.367.0](https://github.com/bigcommerce/checkout-js/compare/v1.366.0...v1.367.0) (2023-08-31)
 
 
