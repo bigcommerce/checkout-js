@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.368.0](https://github.com/bigcommerce/checkout-js/compare/v1.367.1...v1.368.0) (2023-09-04)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7648 Add automated consent for privacy policy ([#1479](https://github.com/bigcommerce/checkout-js/issues/1479)) ([f3de6af](https://github.com/bigcommerce/checkout-js/commit/f3de6afe3d33bde8d6447106f3ee92aa2a6a74a8))
+
 ### [1.367.1](https://github.com/bigcommerce/checkout-js/compare/v1.367.0...v1.367.1) (2023-09-04)
 
 
