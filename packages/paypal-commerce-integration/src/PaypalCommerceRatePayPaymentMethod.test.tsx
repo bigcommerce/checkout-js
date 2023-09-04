@@ -66,6 +66,7 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
             paypalcommerceratepay: {
                 container: '#checkout-payment-continue',
                 legalTextContainer: 'legal-text-container',
+                loadingContainer: 'micro-app-ng-checkout',
                 getFieldsValues: expect.any(Function),
                 onError: expect.any(Function),
             },

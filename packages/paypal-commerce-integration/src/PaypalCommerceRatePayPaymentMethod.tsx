@@ -79,6 +79,7 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
                 paypalcommerceratepay: {
                     container: '#checkout-payment-continue',
                     legalTextContainer: 'legal-text-container',
+                    loadingContainer: 'micro-app-ng-checkout',
                     getFieldsValues: () => fieldsValues.current,
                     onError: (error: Error) => {
                         paymentForm.disableSubmit(method, true);
