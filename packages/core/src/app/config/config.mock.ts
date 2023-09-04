@@ -20,7 +20,7 @@ export function getStoreConfig(): StoreConfig {
             enableTermsAndConditions: false,
             googleRecaptchaSitekey: 'sitekey',
             googleMapsApiKey: '',
-            hasMultiShippingEnabled: true,
+            hasMultiShippingEnabled: false,
             guestCheckoutEnabled: true,
             isAnalyticsEnabled: true,
             isAccountCreationEnabled: true,
