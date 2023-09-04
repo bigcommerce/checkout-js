@@ -8,6 +8,7 @@ import addApplePaySessionToChromeCustomerStep from './ApplePaySessionCustomerSte
 import addApplePaySessionToChromePaymentStep from './ApplePaySessionPaymentStepMockObject';
 import {
     applePayCart,
+    checkoutSettingsBodyMock,
     consignmentsAndBilling,
     internalOrder,
     order,
@@ -35,6 +36,9 @@ test.describe('ApplePay', () => {
         );
         await page.route('**/api/storefront/payments/applepay?cartId=124', (route) => {
             void route.fulfill({ ...responseProps, body: applePayCart });
+        });
+        await page.route('**/api/storefront/checkout-settings', (route) => {
+            void route.fulfill({ ...responseProps, body: checkoutSettingsBodyMock });
         });
         await page.route('**/api/public/v1/payments/applepay/validate_merchant', (route) => {
             void route.fulfill({ ...responseProps, body: validateMerchantResponse });
@@ -75,6 +79,9 @@ test.describe('ApplePay', () => {
 
         await checkout.use(new CustomerStepPreset());
         await checkout.start('ApplePay in Customer Step');
+        await page.route('**/api/storefront/checkout-settings', (route) => {
+            void route.fulfill({ ...responseProps, body: checkoutSettingsBodyMock });
+        });
         await checkout.route(
             /order-confirmation.*/,
             './packages/test-framework/src/support/orderConfirmation.ejs',
