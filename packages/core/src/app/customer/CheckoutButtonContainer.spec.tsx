@@ -16,6 +16,13 @@ describe('CheckoutButtonContainer', () => {
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
 
+    const paymentProviders = [
+        'amazonpay',
+        'googlepayauthorizenet',
+        'paypalcommerce',
+        'paypalcommercecredit',
+    ];
+
     beforeEach(() => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
@@ -30,7 +37,7 @@ describe('CheckoutButtonContainer', () => {
                         walletButtonsOnTop: true,
                         floatingLabelEnabled: false,
                     },
-                    remoteCheckoutProviders: ['amazonpay','applepay', 'braintreepaypal'],
+                    remoteCheckoutProviders: paymentProviders,
                 },
             }),
         );
@@ -112,7 +119,7 @@ describe('CheckoutButtonContainer', () => {
                         walletButtonsOnTop: true,
                         floatingLabelEnabled: false,
                     },
-                    remoteCheckoutProviders: ['amazonpay','applepay', 'paypalcommerce'],
+                    remoteCheckoutProviders: paymentProviders,
                 },
             }),
         );
