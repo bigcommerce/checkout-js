@@ -89,7 +89,7 @@ export function mapToShippingOptions(
     }
 
     const consignments = sortConsignments(cart, getConsignments() || []);
-    const methodId = getShippingMethodId(checkout);
+    const methodId = getShippingMethodId(checkout, config);
     const { shippingQuoteFailedMessage } = config.checkoutSettings;
 
     return {

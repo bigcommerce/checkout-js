@@ -14,11 +14,12 @@ import {
     ShippingInitializeOptions,
     ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 
 import { usePayPalConnectAddress } from '../address/PayPalAxo';
+import { isBraintreeConnectPaymentMethod } from '../payment';
 
 import MultiShippingForm, { MultiShippingFormValues } from './MultiShippingForm';
 import SingleShippingForm, { SingleShippingFormValues } from './SingleShippingForm';
@@ -99,6 +100,12 @@ const ShippingForm = ({
 }: ShippingFormProps & WithLanguageProps) => {
     const { isPayPalAxoEnabled, mergedBcAndPayPalConnectAddresses } = usePayPalConnectAddress();
     const shippingAddresses = isPayPalAxoEnabled ? mergedBcAndPayPalConnectAddresses : addresses;
+
+    useEffect(() => {
+        if (isBraintreeConnectPaymentMethod(methodId) && isPayPalAxoEnabled) {
+            initialize({ methodId });
+        }
+    });
 
     return isMultiShippingMode ? (
         <MultiShippingForm

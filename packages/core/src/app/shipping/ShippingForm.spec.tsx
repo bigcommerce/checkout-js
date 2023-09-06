@@ -1,25 +1,28 @@
-import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { CheckoutService, createCheckoutService, CustomerAddress } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { getShippingAddress } from '@bigcommerce/checkout/test-utils';
 
+import * as usePayPalConnectAddress from '../address/PayPalAxo/usePayPalConnectAddress';
 import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 import { getCountries } from '../geography/countries.mock';
 import { OrderComments } from '../orderComments';
+import { PaymentMethodId } from '../payment/paymentMethod';
 
 import BillingSameAsShippingField from './BillingSameAsShippingField';
 import { getConsignment } from './consignment.mock';
 import MultiShippingForm from './MultiShippingForm';
-import { getShippingAddress } from './shipping-addresses.mock';
 import ShippingAddress from './ShippingAddress';
 import ShippingForm, { ShippingFormProps } from './ShippingForm';
 import { ShippingOptions } from './shippingOption';
+import SingleShippingForm from './SingleShippingForm';
 
 describe('ShippingForm Component', () => {
     let component: ReactWrapper;
@@ -72,6 +75,17 @@ describe('ShippingForm Component', () => {
         };
 
         checkoutService = createCheckoutService();
+
+        jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
+            jest.fn().mockImplementation(() => ({
+                isPayPalAxoEnabled: false,
+                mergedBcAndPayPalConnectAddresses: [],
+            })),
+        );
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
     });
 
     describe('when multishipping mode is off', () => {
@@ -356,6 +370,115 @@ describe('ShippingForm Component', () => {
                     }),
                 );
             });
+        });
+    });
+
+    describe('Braintree AXO', () => {
+        it('renders SingleShippingForm with default addresses list if PayPal AXO disabled', () => {
+            const initializeMock = jest.fn();
+            const ShippingFormProps = {
+                ...defaultProps,
+                initialize: initializeMock,
+            };
+
+            component = mount(
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm {...ShippingFormProps} methodId={PaymentMethodId.BraintreeAcceleratedCheckout} />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
+            );
+
+            expect(component.find(SingleShippingForm).props()).toEqual(
+                expect.objectContaining({
+                    addresses: defaultProps.addresses,
+                }),
+            );
+            expect(initializeMock).not.toHaveBeenCalled();
+        });
+
+        it('renders SingleShippingForm with merged addresses list if PayPal AXO enabled', () => {
+            const initializeMock = jest.fn();
+            const shippingFormProps = {
+                ...defaultProps,
+                initialize: initializeMock,
+            };
+            const payPalConnectAddresses: CustomerAddress[] = [
+                {
+                    ...getShippingAddress(),
+                    id: 123,
+                    type: 'paypal-address',
+                }
+            ];
+
+            jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
+                jest.fn().mockImplementation(() => ({
+                    isPayPalAxoEnabled: true,
+                    paypalConnectAddresses: payPalConnectAddresses,
+                    mergedBcAndPayPalConnectAddresses: payPalConnectAddresses,
+                })),
+            );
+
+            component = mount(
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm {...shippingFormProps} methodId={PaymentMethodId.BraintreeAcceleratedCheckout} />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
+            );
+
+            expect(component.find(SingleShippingForm).props()).toEqual(
+                expect.objectContaining({
+                    addresses: payPalConnectAddresses,
+                }),
+            );
+            expect(initializeMock).toHaveBeenCalledWith({
+                methodId: PaymentMethodId.BraintreeAcceleratedCheckout,
+            });
+        });
+
+        it('renders shipping for with paypal connect addresses without strategy initialization if there is preselected shipping method id', () => {
+            const initializeMock = jest.fn();
+            const shippingFormProps = {
+                ...defaultProps,
+                initialize: initializeMock,
+            };
+            const payPalConnectAddresses: CustomerAddress[] = [
+                {
+                    ...getShippingAddress(),
+                    id: 123,
+                    type: 'paypal-address',
+                }
+            ];
+
+            jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
+                jest.fn().mockImplementation(() => ({
+                    isPayPalAxoEnabled: true,
+                    paypalConnectAddresses: payPalConnectAddresses,
+                    mergedBcAndPayPalConnectAddresses: payPalConnectAddresses,
+                })),
+            );
+
+            component = mount(
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm {...shippingFormProps} methodId="notPPAXOMethodID" />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
+            );
+
+            expect(component.find(SingleShippingForm).props()).toEqual(
+                expect.objectContaining({
+                    addresses: payPalConnectAddresses,
+                }),
+            );
+            expect(initializeMock).not.toHaveBeenCalled();
         });
     });
 });

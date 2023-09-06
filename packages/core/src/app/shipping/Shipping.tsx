@@ -372,7 +372,7 @@ export function mapToShippingProps({
         },
     } = config;
 
-    const methodId = getShippingMethodId(checkout);
+    const methodId = getShippingMethodId(checkout, config);
     const shippableItemsCount = getShippableItemsCount(cart);
     const isLoading =
         isLoadingShippingOptions() ||
