@@ -46,6 +46,10 @@ const sortMethodIds = (methodIds:string[]): string[] => {
     return methodIds.sort((a, b) => order.indexOf(b) - order.indexOf(a));
 }
 
+const isPayPalCommerce = (methodId: string): boolean => {
+    return paypalCommerceIds.includes(methodId);
+}
+
 const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & WithCheckoutCheckoutButtonContainerProps> = (
     {
         availableMethodIds,
@@ -68,7 +72,7 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
     }
 
     const renderButtons = () => availableMethodIds.map((methodId) => {
-        if (isPaymentStepActive && paypalCommerceIds.includes(methodId)) {
+        if (isPaymentStepActive && isPayPalCommerce(methodId)) {
             return null;
         }
 
