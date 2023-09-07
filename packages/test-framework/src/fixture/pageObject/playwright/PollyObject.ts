@@ -127,6 +127,13 @@ export class PollyObject {
                         };
                     }
 
+                    const CHECKOUT_6891 =
+                        'CHECKOUT-6891.update_incomplete_order_wording_on_order_confirmation_page';
+
+                    if (response.storeConfig.checkoutSettings.features[CHECKOUT_6891]) {
+                        response.storeConfig.checkoutSettings.features[CHECKOUT_6891] = false;
+                    }
+
                     res.send(response);
                 });
 
