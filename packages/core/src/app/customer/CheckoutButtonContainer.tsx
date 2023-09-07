@@ -24,9 +24,14 @@ interface WithCheckoutCheckoutButtonContainerProps {
     checkoutState: CheckoutSelectors;
     checkoutService: CheckoutService;
     isLoading: boolean;
-    isPaypalCommerce: boolean;
     initializedMethodIds: string[];
 }
+
+const paypalCommerceIds = [
+    'paypalcommerce',
+    'paypalcommercecredit',
+    'paypalcommercevenmo',
+];
 
 const sortMethodIds = (methodIds:string[]): string[] => {
     const order = [
@@ -41,6 +46,8 @@ const sortMethodIds = (methodIds:string[]): string[] => {
     return methodIds.sort((a, b) => order.indexOf(b) - order.indexOf(a));
 }
 
+const isPayPalCommerce = (methodId: string): boolean => paypalCommerceIds.includes(methodId);
+
 const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & WithCheckoutCheckoutButtonContainerProps> = (
     {
         availableMethodIds,
@@ -48,7 +55,6 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         checkoutState,
         checkEmbeddedSupport,
         isLoading,
-        isPaypalCommerce,
         isPaymentStepActive,
         initializedMethodIds,
         onUnhandledError,
@@ -63,11 +69,11 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         return null;
     }
 
-    if (isPaypalCommerce && isPaymentStepActive) {
-        return null;
-    }
-
     const renderButtons = () => availableMethodIds.map((methodId) => {
+        if (isPaymentStepActive && isPayPalCommerce(methodId)) {
+            return null;
+        }
+
         const ResolvedCheckoutButton = resolveCheckoutButton({ id: methodId });
 
         if (!ResolvedCheckoutButton) {
@@ -151,8 +157,6 @@ function mapToCheckoutButtonContainerProps({
         (methodId) => Boolean(getInitializeCustomerError(methodId)) || isInitializedCustomer(methodId)
     ).length !== availableMethodIds.length;
     const initializedMethodIds = availableMethodIds.filter((methodId) => isInitializedCustomer(methodId));
-    const paypalCommerceIds = ['paypalcommerce', 'paypalcommercecredit', 'paypalcommercevenmo'];
-    const isPaypalCommerce = availableMethodIds.some(id => paypalCommerceIds.includes(id));
 
     return {
         checkoutService,
@@ -160,7 +164,6 @@ function mapToCheckoutButtonContainerProps({
         availableMethodIds: sortMethodIds(availableMethodIds),
         initializedMethodIds,
         isLoading,
-        isPaypalCommerce,
     }
 }
 

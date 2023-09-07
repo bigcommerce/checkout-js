@@ -8,11 +8,25 @@ exports[`CheckoutButtonContainer displays wallet buttons for guest checkout 1`] 
     Check out faster with:
   </p>
   <div
-    class="checkout-buttons--2"
+    class="checkout-buttons--4"
   >
     <div
       class="checkoutRemote customer-skeleton"
     >
+      <div
+        class="skeleton-container"
+      >
+        <div
+          class="input-skeleton"
+        />
+      </div>
+      <div
+        class="skeleton-container"
+      >
+        <div
+          class="input-skeleton"
+        />
+      </div>
       <div
         class="skeleton-container"
       >
@@ -36,7 +50,10 @@ exports[`CheckoutButtonContainer displays wallet buttons for guest checkout 1`] 
         class="checkoutRemote"
       >
         <div
-          id="braintreepaypalCheckoutButton"
+          id="paypalcommerceCheckoutButton"
+        />
+        <div
+          id="paypalcommercecreditCheckoutButton"
         />
         <div
           class="AmazonPayContainer"
@@ -45,6 +62,9 @@ exports[`CheckoutButtonContainer displays wallet buttons for guest checkout 1`] 
             id="amazonpayCheckoutButton"
           />
         </div>
+        <div
+          id="googlepayauthorizenetCheckoutButton"
+        />
       </div>
     </div>
   </div>
@@ -69,11 +89,25 @@ exports[`CheckoutButtonContainer hides wallet buttons with CSS when payment step
     Check out faster with:
   </p>
   <div
-    class="checkout-buttons--2"
+    class="checkout-buttons--4"
   >
     <div
       class="checkoutRemote customer-skeleton"
     >
+      <div
+        class="skeleton-container"
+      >
+        <div
+          class="input-skeleton"
+        />
+      </div>
+      <div
+        class="skeleton-container"
+      >
+        <div
+          class="input-skeleton"
+        />
+      </div>
       <div
         class="skeleton-container"
       >
@@ -97,15 +131,15 @@ exports[`CheckoutButtonContainer hides wallet buttons with CSS when payment step
         class="checkoutRemote"
       >
         <div
-          id="braintreepaypalCheckoutButton"
-        />
-        <div
           class="AmazonPayContainer"
         >
           <div
             id="amazonpayCheckoutButton"
           />
         </div>
+        <div
+          id="googlepayauthorizenetCheckoutButton"
+        />
       </div>
     </div>
   </div>
@@ -121,4 +155,75 @@ exports[`CheckoutButtonContainer hides wallet buttons with CSS when payment step
 
 exports[`CheckoutButtonContainer not displays wallet buttons for guest checkout if isPaymentDataRequired = false 1`] = `null`;
 
-exports[`CheckoutButtonContainer removes Paypal commerce wallet buttons when payment step is active 1`] = `null`;
+exports[`CheckoutButtonContainer removes Paypal commerce wallet buttons when payment step is active 1`] = `
+<div
+  class="checkout-button-container"
+  style="position:absolute;left:0;top:-100%"
+>
+  <p>
+    Check out faster with:
+  </p>
+  <div
+    class="checkout-buttons--4"
+  >
+    <div
+      class="checkoutRemote customer-skeleton"
+    >
+      <div
+        class="skeleton-container"
+      >
+        <div
+          class="input-skeleton"
+        />
+      </div>
+      <div
+        class="skeleton-container"
+      >
+        <div
+          class="input-skeleton"
+        />
+      </div>
+      <div
+        class="skeleton-container"
+      >
+        <div
+          class="input-skeleton"
+        />
+      </div>
+      <div
+        class="skeleton-container"
+      >
+        <div
+          class="input-skeleton"
+        />
+      </div>
+    </div>
+    <div
+      class="loading-skeleton"
+      style="position:absolute;left:100%;top:-100%"
+    >
+      <div
+        class="checkoutRemote"
+      >
+        <div
+          class="AmazonPayContainer"
+        >
+          <div
+            id="amazonpayCheckoutButton"
+          />
+        </div>
+        <div
+          id="googlepayauthorizenetCheckoutButton"
+        />
+      </div>
+    </div>
+  </div>
+  <div
+    class="checkout-separator"
+  >
+    <span>
+      OR
+    </span>
+  </div>
+</div>
+`;
