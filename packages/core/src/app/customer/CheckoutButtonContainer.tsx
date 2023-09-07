@@ -46,9 +46,7 @@ const sortMethodIds = (methodIds:string[]): string[] => {
     return methodIds.sort((a, b) => order.indexOf(b) - order.indexOf(a));
 }
 
-const isPayPalCommerce = (methodId: string): boolean => {
-    return paypalCommerceIds.includes(methodId);
-}
+const isPayPalCommerce = (methodId: string): boolean => paypalCommerceIds.includes(methodId);
 
 const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & WithCheckoutCheckoutButtonContainerProps> = (
     {
