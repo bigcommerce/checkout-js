@@ -1,7 +1,4 @@
 .checkout-steps {
-  $mobile-breakpoint: "large";
-
-  //background: red !important;
   padding-right: 0;
 
   @include breakpoint($mobile-breakpoint) {
