@@ -86,4 +86,14 @@ export class Checkout {
     async placeOrder(): Promise<void> {
         await this.page.locator('id=checkout-payment-continue').click();
     }
+
+    async applyCoupon(couponCode: string): Promise<void> {
+        await this.page.locator('[data-test="cart"] [data-test="redeemable-label"]').click();
+        await this.page.locator('[data-test="redeemableEntry-input"]').fill(couponCode);
+        await this.page.locator('[data-test="redeemableEntry-submit"]').click();
+    }
+
+    async removeCoupon(): Promise<void> {
+        await this.page.locator('[data-test="cart-price-callback"]').click();
+    }
 }
