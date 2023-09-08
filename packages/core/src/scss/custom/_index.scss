@@ -1,2 +1,5 @@
+$mobile-breakpoint: "large";
+
+@import "checkout/checkoutHeader";
 @import "checkout/checkoutSteps";
 @import "checkout/layouts";
