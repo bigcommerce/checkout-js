@@ -1,24 +1,26 @@
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
-import { isBraintreeConnectPaymentMethod } from '../../payment';
-
-import { isPayPalConnectAddress } from './utils';
+import isPayPalConnectAddress from './is-paypal-connect-address';
+import isPaypalConnectMethod from './is-paypal-connect-method';
 
 const usePayPalConnectAddress = () => {
     const { checkoutState } = useCheckout();
     const { getConfig, getCustomer, getPaymentProviderCustomer } = checkoutState.data;
 
-    const providerWithCustomCheckout = getConfig()?.checkoutSettings?.providerWithCustomCheckout || '';
-    const isPayPalAxoEnabled = isBraintreeConnectPaymentMethod(providerWithCustomCheckout);
+    const providerWithCustomCheckout =
+        getConfig()?.checkoutSettings.providerWithCustomCheckout || '';
+    const isPayPalAxoEnabled = isPaypalConnectMethod(providerWithCustomCheckout);
 
     const paypalConnectAddresses = getPaymentProviderCustomer()?.addresses || [];
     const bcAddresses = getCustomer()?.addresses || [];
 
-    const mergedBcAndPayPalConnectAddresses = isPayPalAxoEnabled 
+    const mergedBcAndPayPalConnectAddresses = isPayPalAxoEnabled
         ? [
-            ...paypalConnectAddresses,
-            ...bcAddresses.filter((address) => !isPayPalConnectAddress(address, paypalConnectAddresses))
-        ]
+              ...paypalConnectAddresses,
+              ...bcAddresses.filter(
+                  (address) => !isPayPalConnectAddress(address, paypalConnectAddresses),
+              ),
+          ]
         : bcAddresses;
 
     const shouldShowPayPalConnectLabel = !!paypalConnectAddresses.length;

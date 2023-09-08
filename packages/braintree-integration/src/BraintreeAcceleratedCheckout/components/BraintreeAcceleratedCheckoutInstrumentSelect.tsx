@@ -3,11 +3,11 @@ import { FieldProps } from 'formik';
 import React, { FunctionComponent, useEffect } from 'react';
 
 import { usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
+import { PoweredByPaypalConnectLabel } from '@bigcommerce/checkout/paypal-connect-integration';
 import { DropdownTrigger } from '@bigcommerce/checkout/ui';
 
 import BraintreeAcceleratedCheckoutInstrumentMenu from './BraintreeAcceleratedCheckoutInstrumentMenu';
 import BraintreeAcceleratedCheckoutInstrumentSelectButton from './BraintreeAcceleratedCheckoutInstrumentSelectButton';
-import PoweredByPaypalConnectLabel from './PoweredByPaypalConnectLabel';
 
 interface BraintreeAcceleratedCheckoutInstrumentSelectProps extends FieldProps<string> {
     instruments: CardInstrument[];

@@ -1,20 +1,19 @@
 import { Address, CustomerAddress, PaymentProviderCustomer } from '@bigcommerce/checkout-sdk';
 import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import React from 'react';
 
 import * as PaymentIntegrationApi from '@bigcommerce/checkout/payment-integration-api';
 import { getAddress, getCustomer, getStoreConfig } from '@bigcommerce/checkout/test-utils';
 
-import { PaymentMethodId } from '../../payment/paymentMethod';
-
+import isPayPalConnectAddress from './is-paypal-connect-address';
 import usePayPalConnectAddress from './usePayPalConnectAddress';
-import { isPayPalConnectAddress } from './utils';
 
 interface PayPalAxoAddressComponentProps {
     selectedAddress: Address;
 }
 
-const PayPalAxoAddressComponent = ({
+const PayPalAxoAddressComponentMock = ({
     selectedAddress,
 }: PayPalAxoAddressComponentProps) => {
     const {
@@ -23,7 +22,6 @@ const PayPalAxoAddressComponent = ({
         shouldShowPayPalConnectLabel,
         mergedBcAndPayPalConnectAddresses,
     } = usePayPalConnectAddress();
-    const mergedAddresses = mergedBcAndPayPalConnectAddresses;
 
     return (
         <>
@@ -37,7 +35,7 @@ const PayPalAxoAddressComponent = ({
                 {shouldShowPayPalConnectLabel ? 'true' : 'false'}
             </div>
             <ul>
-                {mergedAddresses.map((address, index) => (
+                {mergedBcAndPayPalConnectAddresses.map((address, index) => (
                     <li key={index}>{address.address1}</li>
                 ))}
             </ul>
@@ -52,7 +50,7 @@ describe('usePayPalConnectAddress', () => {
     const useCheckoutMock = (
         paymentProviderCustomer: PaymentProviderCustomer,
         customerAddress?: CustomerAddress[],
-        providerWithCustomCheckout = PaymentMethodId.BraintreeAcceleratedCheckout,
+        providerWithCustomCheckout = PaymentIntegrationApi.PaymentMethodId.BraintreeAcceleratedCheckout,
     ) => {
         jest.spyOn(PaymentIntegrationApi, 'useCheckout').mockImplementation(
             jest.fn().mockImplementation(() => ({
@@ -76,16 +74,15 @@ describe('usePayPalConnectAddress', () => {
         );
     };
 
-
-    const defaultAdderss = getAddress();
+    const defaultAddress = getAddress();
     const addressBC1 = {
-        ...defaultAdderss,
+        ...defaultAddress,
         id: 1,
         type: 'not-paypal',
         address1: 'address-BC1',
     };
     const addressBC2 = {
-        ...defaultAdderss,
+        ...defaultAddress,
         id: 2,
         address1: 'address-BC2-PP1',
     } as CustomerAddress;
@@ -94,7 +91,7 @@ describe('usePayPalConnectAddress', () => {
         id: 3,
     };
     const addressPP2 = {
-        ...defaultAdderss,
+        ...defaultAddress,
         id: 4,
         type: 'paypal-address',
         address1: 'address-PP2',
@@ -111,7 +108,7 @@ describe('usePayPalConnectAddress', () => {
         );
 
         render(
-            <PayPalAxoAddressComponent
+            <PayPalAxoAddressComponentMock
                 selectedAddress={addressBC1}
             />
         );
@@ -132,7 +129,7 @@ describe('usePayPalConnectAddress', () => {
         );
 
         render(
-            <PayPalAxoAddressComponent
+            <PayPalAxoAddressComponentMock
                 selectedAddress={addressPP1}
             />
         );
@@ -153,7 +150,7 @@ describe('usePayPalConnectAddress', () => {
         );
 
         render(
-            <PayPalAxoAddressComponent
+            <PayPalAxoAddressComponentMock
                 selectedAddress={addressBC1}
             />
         );
@@ -175,7 +172,7 @@ describe('usePayPalConnectAddress', () => {
         );
 
         render(
-            <PayPalAxoAddressComponent
+            <PayPalAxoAddressComponentMock
                 selectedAddress={addressPP1}
             />
         );

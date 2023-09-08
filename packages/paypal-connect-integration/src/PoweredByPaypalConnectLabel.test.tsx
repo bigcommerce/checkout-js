@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import React from 'react';
 
 import PoweredByPaypalConnectLabel from './PoweredByPaypalConnectLabel';
@@ -12,7 +13,7 @@ jest.mock('@bigcommerce/checkout/ui', () => ({
 }));
 
 describe('PoweredByPaypalConnectLabel', () => {
-    it('renders povered by paypal connect label', () => {
+    it('renders powered by paypal connect label', () => {
         render(<PoweredByPaypalConnectLabel />);
 
         expect(screen.getByText('remote.powered_by')).toBeInTheDocument();
