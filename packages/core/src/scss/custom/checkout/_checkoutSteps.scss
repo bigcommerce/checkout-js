@@ -1,6 +1,28 @@
 .checkout-steps {
+  $mobile-breakpoint: "large";
+
+  //background: red !important;
+  padding-right: 0;
+
+  @include breakpoint($mobile-breakpoint) {
+    padding-right: 1rem;
+  }
 
   li.checkout-step {
+    border-bottom: 0;
+    box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.14);
+    margin-bottom: 1rem;
+    padding: 1rem;
+
+    @include breakpoint($mobile-breakpoint) {
+      padding: 1rem 2rem;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+
     .stepHeader-counter {
       background-color: var(--color-secondary);
       display: block !important;
@@ -8,6 +30,7 @@
 
     h2 {
       margin-left: 1rem !important;
+      font-size: remCalc(24px);
     }
   }
 }
