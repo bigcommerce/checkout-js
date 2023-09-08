@@ -1,0 +1,17 @@
+.layout {
+  // main container
+  &.optimizedCheckout-contentPrimary {
+    $mobile-breakpoint: "large";
+
+    padding-left: 0;
+    padding-right: 0;
+
+    @include breakpoint($mobile-breakpoint) {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  }
+}
+
+.layout-main {}
+
