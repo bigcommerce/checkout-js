@@ -22,10 +22,9 @@ const beautifyAmazonButton = (): void => {
     }
 
     const container = document.querySelector('#amazonpayCheckoutButton > div') as unknown as HTMLElement;
-    const amazonButton = container?.shadowRoot?.querySelector('.amazonpay-button-view1') as unknown as HTMLElement;
 
-    if (container && amazonButton) {
-        amazonButton.style.height = '36px';
+    if (container) {
+        container.style.width = '100%';
         return;
     }
 
