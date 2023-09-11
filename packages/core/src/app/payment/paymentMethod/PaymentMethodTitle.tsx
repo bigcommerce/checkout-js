@@ -194,7 +194,7 @@ function getPaymentMethodTitle(
                     method.method === 'credit_card'
                         ? ''
                         : cdnPath(`/img/payment-providers/mollie_${method.method}.svg`),
-                titleText: methodName,
+                titleText: methodDisplayName,
             },
             [PaymentMethodId.Checkoutcom]: {
                 logoUrl: ['credit_card', 'card', 'checkoutcom'].includes(method.id)
