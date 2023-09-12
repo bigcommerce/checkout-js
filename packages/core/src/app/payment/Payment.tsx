@@ -129,6 +129,7 @@ class Payment extends Component<
             await loadPaymentMethods();
 
             const selectedMethod = this.state.selectedMethod || this.props.defaultMethod;
+
             analyticsTracker.selectedPaymentMethod(selectedMethod?.config.displayName);
         } catch (error) {
             onUnhandledError(error);
@@ -324,6 +325,7 @@ class Payment extends Component<
             !selectedMethod ||
             selectedMethod.type === PaymentMethodProviderType.Hosted ||
             selectedMethod.type === PaymentMethodProviderType.PPSDK ||
+            selectedMethod.gateway === PaymentMethodId.BlueSnapDirect ||
             selectedMethod.id === PaymentMethodId.AmazonPay ||
             selectedMethod.id === PaymentMethodId.CBAMPGS ||
             selectedMethod.id === PaymentMethodId.Checkoutcom ||
