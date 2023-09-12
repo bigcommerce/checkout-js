@@ -27,6 +27,7 @@ describe('GoogleAutocomplete Component', () => {
         render(<ComponentTest {...defaultProps} initialValue="" inputProps={{ placeholder: 'Max length 50', maxLength: "50" }} />);
         expect(screen.getByPlaceholderText('Max length 50')).toBeInTheDocument();
         await userEvent.type(await screen.getByPlaceholderText('Max length 50'), '120 South Jean Baptiste Point du Sable Lake Shore Drive');
-        expect((screen.getByPlaceholderText('Max length 50') as HTMLInputElement).value).toBe('120 South Jean Baptiste Point du Sable Lake Shore ');
+        const inputElement: HTMLInputElement = screen.getByPlaceholderText('Max length 50');
+        expect(inputElement.value).toBe('120 South Jean Baptiste Point du Sable Lake Shore ');
     });
 });
