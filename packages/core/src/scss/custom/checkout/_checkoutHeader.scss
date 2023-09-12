@@ -1,0 +1,11 @@
+.checkoutHeader {
+    margin-bottom: 1rem;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+
+    @include breakpoint("large") {
+        position: unset;
+    }
+}
