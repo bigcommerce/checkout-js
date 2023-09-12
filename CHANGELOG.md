@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.371.1](https://github.com/bigcommerce/checkout-js/compare/v1.371.0...v1.371.1) (2023-09-12)
+
+
+### Bug Fixes
+
+* **checkout:** PI-78 fixed credit card issuer mapping for stored diners club cards ([486cc5d](https://github.com/bigcommerce/checkout-js/commit/486cc5d7cf0cd13ab910b58df4d7789260ed5a59))
+
 ## [1.371.0](https://github.com/bigcommerce/checkout-js/compare/v1.370.1...v1.371.0) (2023-09-12)
 
 
