@@ -28,13 +28,11 @@ export class Assertions {
         );
     }
 
-    async shouldSeeErrorModal(): Promise<void> {
+    async shouldSeeErrorModal(errorMessage: string): Promise<void> {
         const page = this.page;
 
         await page.locator('data-test=modal-body').waitFor({ state: 'visible' });
         await expect(page.locator('data-test=modal-body')).toBeVisible();
-        await expect(page.locator('#errorModalMessage')).toHaveText(
-            'The shipping price you were quoted is no longer valid. Click OK to see the most up-to-date shipping prices.',
-        );
+        await expect(page.locator('#errorModalMessage')).toHaveText(errorMessage);
     }
 }
