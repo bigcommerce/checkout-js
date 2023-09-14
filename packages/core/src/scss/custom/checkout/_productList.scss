@@ -1,4 +1,20 @@
 .productList {
+    > li {
+        border-bottom: 1px solid var(--color-gray-lilac, #BAABAD);
+        margin: 0;
+        padding: 1rem 0;
+
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    img {
+        border: 1px solid var(--color-gray-lilac, #BAABAD);
+        border-radius: 10px;
+        padding: 0.5rem;
+    }
+
     .product-actions {
         margin-left: unset;
         text-align: left;
@@ -9,7 +25,7 @@
         font-size: remCalc(14px);
         width: 75%;
 
-        h3 {
+        h4 {
             font-size: remCalc(14px);
         }
     }
