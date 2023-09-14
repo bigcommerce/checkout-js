@@ -37,7 +37,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                 className="product-title optimizedCheckout-contentPrimary"
                 data-test="cart-item-product-title"
             >
-                {`${quantity} x ${name}`}
+                {`${name}`}
             </h4>
             {productOptions && productOptions.length > 0 && (
                 <ul
@@ -59,24 +59,26 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                     {description}
                 </div>
             )}
-        </div>
-
-        <div className="product-column product-actions">
-            <div
-                className={classNames('product-price', 'optimizedCheckout-contentPrimary', {
-                    'product-price--beforeDiscount':
+            <div className="product-column product-actions">
+                <div
+                  className={classNames('product-price', 'optimizedCheckout-contentPrimary', {
+                      'product-price--beforeDiscount':
                         isNumber(amountAfterDiscount) && amountAfterDiscount !== amount,
-                })}
-                data-test="cart-item-product-price"
-            >
-                <ShopperCurrency amount={amount} />
-            </div>
-
-            {isNumber(amountAfterDiscount) && amountAfterDiscount !== amount && (
-                <div className="product-price" data-test="cart-item-product-price--afterDiscount">
-                    <ShopperCurrency amount={amountAfterDiscount} />
+                  })}
+                  data-test="cart-item-product-price"
+                >
+                    <ShopperCurrency amount={amount} />
                 </div>
-            )}
+
+                {isNumber(amountAfterDiscount) && amountAfterDiscount !== amount && (
+                  <div className="product-price" data-test="cart-item-product-price--afterDiscount">
+                      <ShopperCurrency amount={amountAfterDiscount} />
+                  </div>
+                )}
+            </div>
+            <div className="product-column product-quantity">
+                Qty: {`${quantity}`}
+            </div>
         </div>
     </div>
 );

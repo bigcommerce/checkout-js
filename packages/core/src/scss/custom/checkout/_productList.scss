@@ -1,0 +1,20 @@
+.productList {
+    .product-actions {
+        margin-left: unset;
+        text-align: left;
+        width: 100%;
+    }
+
+    .product-body {
+        font-size: remCalc(14px);
+        width: 75%;
+
+        h3 {
+            font-size: remCalc(14px);
+        }
+    }
+
+    .product-quantity {
+        color: #9E9B99;
+    }
+}
