@@ -14,6 +14,9 @@
 
       // move h2 after 'edit cart'
       h3 {
+        font-family: $font-family-headings;
+        font-size: remCalc(24px);
+        font-weight: 500;
         order: 2;
       }
     }

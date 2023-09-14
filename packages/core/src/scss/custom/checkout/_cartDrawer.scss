@@ -12,6 +12,7 @@
 
         &-body {
             display: flex;
+            white-space: nowrap;
 
             h3 {
                 font-size: remCalc(20px);
