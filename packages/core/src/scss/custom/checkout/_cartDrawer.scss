@@ -1,0 +1,33 @@
+.pagetype-checkout {
+    .cartDrawer {
+        $header-height: 117px; //todo: hardcoded for now..
+
+        bottom: unset;
+        margin: 0;
+        top: $header-height;
+
+        figure {
+            display: none;
+        }
+
+        &-body {
+            display: flex;
+
+            h3 {
+                font-size: remCalc(20px);
+            }
+
+            a {
+                margin-left: 1rem;
+            }
+        }
+
+
+        &-actions {
+            h3 {
+                font-size: remCalc(24px);
+            }
+        }
+
+    }
+}
