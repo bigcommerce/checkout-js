@@ -146,6 +146,7 @@ const RedeemableForm: FunctionComponent<
                                 className="form-input optimizedCheckout-form-input"
                                 onKeyDown={handleKeyDown(setSubmitted)}
                                 testId="redeemableEntry-input"
+                                placeholder={language.translate('redeemable.toggle_action')}
                             />
 
                             <Button
