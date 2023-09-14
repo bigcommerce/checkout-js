@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "adyen-integration": "packages/adyen-integration",
     "afterpay-integration": "packages/afterpay-integration",
     "analytics": "packages/analytics",
     "apple-pay-integration": "packages/apple-pay-integration",
