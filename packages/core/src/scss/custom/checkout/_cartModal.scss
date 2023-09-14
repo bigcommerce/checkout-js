@@ -1,0 +1,21 @@
+.optimizedCheckout-cart-modal {
+    min-height: 100%;
+    min-width: 100%;
+    width: 100%;
+
+    .modal-header {
+        flex-wrap: wrap;
+
+        .cart-heading-subheader {
+            flex-basis: 100%;
+        }
+
+        .cart-modal-close {
+
+        }
+    }
+
+    .modal-body {
+        height: 100%;
+    }
+}
