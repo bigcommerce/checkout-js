@@ -10,7 +10,23 @@
             flex-basis: 100%;
         }
 
+        // replace X icon with ours
         .cart-modal-close {
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+
+            &::before {
+                color: var(--color-black, #000000);
+                content: "X";
+                font-size: remCalc(20px);
+            }
+
+            .icon {
+                display: none;
+            }
 
         }
     }
