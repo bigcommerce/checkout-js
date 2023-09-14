@@ -1,4 +1,5 @@
 .checkoutHeader {
+    background-color: var(--color-white, white);
     margin-bottom: 3.75rem;
     position: sticky;
     top: 0;
@@ -7,5 +8,6 @@
 
     @include breakpoint("large") {
         position: unset;
+        margin-bottom: .5rem;
     }
 }
