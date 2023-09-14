@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.373.0](https://github.com/bigcommerce/checkout-js/compare/v1.372.0...v1.373.0) (2023-09-14)
+
+
+### Features
+
+* **payment:** PI-532 Refactor Adyenv2/v3 for new payment integration API ([3666d8c](https://github.com/bigcommerce/checkout-js/commit/3666d8cbf5517f734a1060623f78d7740c7f7a85))
+
 ## [1.372.0](https://github.com/bigcommerce/checkout-js/compare/v1.371.1...v1.372.0) (2023-09-13)
 
 
