@@ -50,21 +50,6 @@ export class ApiRequestsSender {
         });
     }
 
-    async applyCouponCodeToCart(): Promise<void> {
-        console.log(`  - Applying coupon code-FREESHIP to cart`);
-
-        const apiContext = await this.apiContextFactory.create(this.page, this.storeUrl);
-        const checkout = await this.getCheckoutOrThrow();
-
-        const response = await apiContext.post(`./checkouts/${checkout.id}/coupons`, {
-            params: {
-                include:
-                    'cart.lineItems.physicalItems.options,cart.lineItems.digitalItems.options,customer,customer.customerGroup,payments,promotions.banners,consignments.availableShippingOptions',
-            },
-            data: { couponCode: 'FREESHIP' },
-        });
-    }
-
     async completeCustomerStepAsGuest(): Promise<void> {
         console.log(`  - Setting shopper email`);
 

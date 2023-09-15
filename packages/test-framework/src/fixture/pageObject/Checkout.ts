@@ -92,8 +92,4 @@ export class Checkout {
         await this.page.locator('[data-test="redeemableEntry-input"]').fill(couponCode);
         await this.page.locator('[data-test="redeemableEntry-submit"]').click();
     }
-
-    async removeCoupon(): Promise<void> {
-        await this.page.locator('[data-test="cart-price-callback"]').click();
-    }
 }
