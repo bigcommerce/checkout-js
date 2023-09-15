@@ -1,57 +1,58 @@
-# Checkout
+## Checkout team
 
 * @bigcommerce/team-checkout
-/packages/afterpay-integration @bigcommerce/apex-leads
 /packages/apple-pay-integration @bigcommerce/team-checkout
 /packages/checkout-button-integration @bigcommerce/team-checkout
 /packages/core @bigcommerce/team-checkout
 /packages/dom-utils @bigcommerce/team-checkout
 /packages/error-handling-utils @bigcommerce/team-checkout
-/packages/google-pay-integration @bigcommerce/apex-leads
-/packages/hosted-credit-card-integration @bigcommerce/apex-leads
+/packages/hosted-credit-card-integration @bigcommerce/team-checkout
 /packages/legacy-hoc @bigcommerce/team-checkout
 /packages/payment-integration-api @bigcommerce/team-checkout
 /packages/test-framework @bigcommerce/team-checkout
 /packages/workspace-tools @bigcommerce/team-checkout
 
-# Apex integrations
-/packages/google-pay-integration @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/AffirmPaymentMethod.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/AmazonPaymentMethod.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/BarclayCardPaymentMethod.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/BlueSnapV2PaymentMethod.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/CCAvenueMarsPaymentMethod.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/ChasePayPaymentMethod.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/CheckoutcomCustomPaymentMethod.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/DigitalRiverPaymentMethod.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/GooglePayPaymentMethod.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/KlarnaPaymentMethod.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/KlarnaV2PaymentMethod.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/MasterpassPaymentMethod.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/MollieAPMCustomForm.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/MollieCustomCardForm.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/MolliePaymentMethod.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/MonerisPaymentMethod.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/OpyPaymentMethod.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/SquarePaymentMethod.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/StripePaymentMethod.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/StripeUPEPaymentMethod.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/StripeV3CustomCardForm.tsx @bigcommerce/apex-leads
-/packages/core/payment/paymentMethod/WorldpayCreditCardPaymentMethod.tsx @bigcommerce/apex-leads
 
-# kyiv payments
-/packages/adyen-integration @bigcommerce/kyiv-payments-team
-/packages/bluesnap-direct-integration @bigcommerce/kyiv-payments-team
-/packages/braintree-integration @bigcommerce/kyiv-payments-team
-/packages/core/customer/checkoutSuggestion @bigcommerce/kyiv-payments-team
-/packages/core/payment/paymentMethod/BoltClientPaymentMethod.tsx @bigcommerce/kyiv-payments-team
-/packages/core/payment/paymentMethod/BoltCustomForm.tsx @bigcommerce/kyiv-payments-team
-/packages/core/payment/paymentMethod/BoltCustomFormValues.ts @bigcommerce/kyiv-payments-team
-/packages/core/payment/paymentMethod/BoltEmbeddedPaymentMethod.tsx @bigcommerce/kyiv-payments-team
-/packages/core/payment/paymentMethod/BoltPaymentMethod.tsx @bigcommerce/kyiv-payments-team
-/packages/core/payment/paymentMethod/BraintreeCreditCardPaymentMethod.tsx @bigcommerce/kyiv-payments-team
-/packages/core/payment/paymentMethod/PaypalCommerceCreditCardPaymentMethod.tsx @bigcommerce/kyiv-payments-team
-/packages/core/payment/paymentMethod/PaypalExpressPaymentMethod.tsx @bigcommerce/kyiv-payments-team
-/packages/core/payment/paymentMethod/PaypalPaymentsProPaymentMethod.tsx @bigcommerce/kyiv-payments-team
-/packages/paypal-commerce-integration @bigcommerce/kyiv-payments-team
+## Payment integrations team
 
+# Core
+/packages/core/customer/checkoutSuggestion @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/AffirmPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/AmazonPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/BarclayCardPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/BlueSnapV2PaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/BoltClientPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/BoltCustomForm.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/BoltCustomFormValues.ts @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/BoltEmbeddedPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/BoltPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/BraintreeCreditCardPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/CCAvenueMarsPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/ChasePayPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/CheckoutcomCustomPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/DigitalRiverPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/GooglePayPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/KlarnaPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/KlarnaV2PaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/MasterpassPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/MollieAPMCustomForm.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/MollieCustomCardForm.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/MolliePaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/MonerisPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/OpyPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/PaypalCommerceCreditCardPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/PaypalExpressPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/PaypalPaymentsProPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/SquarePaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/StripePaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/StripeUPEPaymentMethod.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/StripeV3CustomCardForm.tsx @bigcommerce/payment-integrations-team
+/packages/core/payment/paymentMethod/WorldpayCreditCardPaymentMethod.tsx @bigcommerce/payment-integrations-team
+
+# Packages
+/packages/adyen-integration @bigcommerce/payment-integrations-team
+/packages/afterpay-integration @bigcommerce/payment-integrations-team
+/packages/bluesnap-direct-integration @bigcommerce/payment-integrations-team
+/packages/braintree-integration @bigcommerce/payment-integrations-team
+/packages/google-pay-integration @bigcommerce/payment-integrations-team
+/packages/paypal-commerce-integration @bigcommerce/payment-integrations-team
