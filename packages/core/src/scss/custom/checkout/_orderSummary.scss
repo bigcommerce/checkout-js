@@ -3,7 +3,7 @@
   padding-right: 0;
 
   .cart {
-    background-color: unset;
+    //background-color: unset;
     box-shadow: $checkout-box-shadow;
     margin-top: 0;
 
@@ -21,8 +21,12 @@
       }
     }
 
-    .redeemable-label {
-      display: none;
-    }
+  }
+}
+
+// a shared class between desktop and the mobile modal
+.optimizedCheckout-orderSummary {
+  .redeemable-label {
+    display: none;
   }
 }
