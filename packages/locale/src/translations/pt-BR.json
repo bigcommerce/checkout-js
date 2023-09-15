@@ -212,6 +212,7 @@
             },
             "bluesnap_direct_permission": "Autorizo esta transação com cheque eletrônico (ACH/ECP) e concordo com este débito em minha conta.",
             "bluesnap_direct_electronic_check_label": "Cheque eletrônico (ACH/ECP)",
+            "bluesnap_direct_local_bank_transfer_label": "Transferência bancária local",
             "bolt_benefit_1": "Visite lojas de centenas de marcas com login sem senha",
             "bolt_benefit_2": "Finalize a compra com informações de pagamento e de envio salvos",
             "bolt_benefit_3": "Aproveite os benefícios de contas com segurança nível PCI",
@@ -472,7 +473,8 @@
             "sign_out_after_action": "para ver outras formas de pagamento",
             "sign_in_required_error": "Acesso remoto obrigatório antes do pagamento",
             "sign_out_before_action": "",
-            "start_with_text": "Finalize as compras mais rápido com:"
+            "start_with_text": "Finalize as compras mais rápido com:",
+            "powered_by": "Com tecnologia"
         },
         "shipping": {
             "cart_change_error": "Foi detectada uma atualização do seu carrinho de compras e seus custos de envio disponíveis foram atualizados. Selecione novamente uma forma de envio para prosseguir.",
@@ -512,6 +514,9 @@
             "label": "Sim, eu concordo com a <a href=\"{url}\" target=\"_blank\">política de privacidade</a>.",
             "heading": "Política de privacidade"
         },
+        "privacy_policy_auto_consent": {
+            "label": "*Ao clicar em continuar, você concorda com a nossa <a href=\"{url}\" target=\"_blank\">Política de Privacidade</a>."
+        },
         "tax": {
             "inclusive_label": "Imposto incluído no total:"
         },
@@ -545,6 +550,8 @@
             "order_pending_review_text": "Seu pedido foi enviado para nós, mas está aguardando o pagamento no momento. Assim que recebermos o pagamento do seu pedido ele será concluído. Se você já tiver informado os detalhes de pagamento, processaremos o seu pedido manualmente e enviaremos um email quando ele for concluído.",
             "order_pending_status_text": "Recebemos o seu pedido e estamos processando o seu pagamento. Quando o pagamento for confirmado, seu pedido será concluído. Enviaremos um email para você quando ele for concluído. Lembre-se de que este processo pode demorar alguns minutos dependendo do tempo de processamento do método que você escolheu. Se tiver alguma dúvida, envie um email para <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_incomplete_status_text": "Recebemos o seu pedido e o pagamento. Seu pedido está sendo processado pelo nosso sistema. Lembre-se de que o processamento pode demorar alguns minutos. Se tiver alguma dúvida, envie um email para <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
+            "order_incomplete_status_heading": "O pagamento do pedido não foi realizado.",
+            "order_incomplete_status_with_unsuccessful_payment_text": "Seu pedido está incompleto porque o pagamento não foi realizado. Se precisar de ajuda com a compra, escreva para <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_with_downloadable_digital_items_text": "Você pode baixar suas compras digitais clicando nos links desta página ou acessando sua conta a qualquer momento. Há também um link para download no seu email de confirmação, que deve chegar em breve.",
             "order_with_support_number_text": "Enviaremos um email contendo as informações sobre a sua compra. Se tiver alguma dúvida, envie um email para <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a> ou ligue para <a href=\"tel://{supportPhoneNumber}\">{supportPhoneNumber}</a>.",
             "order_without_downloadable_digital_items_text": "Assim que recebermos o seu pagamento, enviaremos um e-mail de confirmação com um link para baixar suas compras digitais.",
