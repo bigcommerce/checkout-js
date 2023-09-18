@@ -1,16 +1,29 @@
 import React, { FunctionComponent } from 'react';
 
-import withLanguage, { WithLanguageProps } from './withLanguage';
+import getLanguageService from './getLanguageService';
+import LocaleContext, { LocaleContextType, useLocale } from './LocaleContext';
 
 export interface TranslatedStringProps {
     id: string;
     data?: any;
 }
 
-const TranslatedString: FunctionComponent<TranslatedStringProps & WithLanguageProps> = ({
-    data,
-    id,
-    language,
-}) => <>{language.translate(id, data)}</>;
+const TranslatedStringWithContext: FunctionComponent<TranslatedStringProps> = ({ data, id }) => {
+    const { language } = useLocale();
 
-export default withLanguage(TranslatedString);
+    return <>{language.translate(id, data)}</>;
+};
+
+const TranslatedString: FunctionComponent<TranslatedStringProps> = (props) => {
+    const localeContextValue: LocaleContextType = {
+        language: getLanguageService(),
+    };
+
+    return (
+        <LocaleContext.Provider value={localeContextValue}>
+            <TranslatedStringWithContext {...props} />
+        </LocaleContext.Provider>
+    );
+};
+
+export default TranslatedString;

@@ -266,7 +266,7 @@ exports[`OrderSummary when taxes are inclusive displays tax as summary section 1
       className="cart-taxItem cart-taxItem--subtotal optimizedCheckout-contentPrimary"
       data-test="tax-text"
     >
-      <WithLanguage(TranslatedString)
+      <TranslatedString
         id="tax.inclusive_label"
       />
     </h5>

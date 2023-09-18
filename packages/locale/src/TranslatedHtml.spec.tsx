@@ -4,11 +4,11 @@ import React from 'react';
 
 import { getStoreConfig } from '@bigcommerce/checkout/test-utils';
 
-import LocaleContext, { LocaleContextType } from './LocaleContext';
-import TranslatedHtml from './TranslatedHtml';
+import * as LocaleContext from './LocaleContext';
+import { TranslatedHtmlWithContext as TranslatedHtml } from './TranslatedHtml';
 
 describe('TranslatedHtml', () => {
-    let context: LocaleContextType;
+    let context: LocaleContext.LocaleContextType;
 
     beforeEach(() => {
         context = {
@@ -23,34 +23,24 @@ describe('TranslatedHtml', () => {
                 },
             }),
         };
+
+        jest.spyOn(LocaleContext, 'useLocale').mockImplementation(() => context);
     });
 
     it('renders translated Html', () => {
-        const component = mount(
-            <LocaleContext.Provider value={context}>
-                <TranslatedHtml id="abc" />
-            </LocaleContext.Provider>,
-        );
+        const component = mount(<TranslatedHtml id="abc" />);
 
         expect(component.html()).toBe('<span><strong>abc</strong></span>');
     });
 
     it('sanitizes translated Html', () => {
-        const component = mount(
-            <LocaleContext.Provider value={context}>
-                <TranslatedHtml id="dirty" />
-            </LocaleContext.Provider>,
-        );
+        const component = mount(<TranslatedHtml id="dirty" />);
 
         expect(component.html()).toBe('<span><img src="x"></span>');
     });
 
     it('allows anchor tags with target attribute', () => {
-        const component = mount(
-            <LocaleContext.Provider value={context}>
-                <TranslatedHtml id="link" />
-            </LocaleContext.Provider>,
-        );
+        const component = mount(<TranslatedHtml id="link" />);
 
         expect(component.html()).toBe(
             '<span><a target="_blank" href="https://bigcommerce.com">Link</a></span>',

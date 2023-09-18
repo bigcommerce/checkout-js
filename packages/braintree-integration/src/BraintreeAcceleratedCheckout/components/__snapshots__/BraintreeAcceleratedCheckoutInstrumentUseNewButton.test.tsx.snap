@@ -17,7 +17,9 @@ Object {
           />
           <div
             class="instrumentSelect-card"
-          />
+          >
+            Use a different card
+          </div>
         </div>
       </button>
     </div>
@@ -35,7 +37,9 @@ Object {
         />
         <div
           class="instrumentSelect-card"
-        />
+        >
+          Use a different card
+        </div>
       </div>
     </button>
   </div>,

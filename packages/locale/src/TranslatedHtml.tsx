@@ -1,23 +1,36 @@
 import DOMPurify from 'dompurify';
 import React, { FunctionComponent } from 'react';
 
-import withLanguage, { WithLanguageProps } from './withLanguage';
+import getLanguageService from './getLanguageService';
+import LocaleContext, { LocaleContextType, useLocale } from './LocaleContext';
 
 export interface TranslatedHtmlProps {
     id: string;
     data?: any;
 }
 
-const TranslatedHtml: FunctionComponent<TranslatedHtmlProps & WithLanguageProps> = ({
-    data,
-    id,
-    language,
-}) => (
-    <span
-        dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(language.translate(id, data), { ADD_ATTR: ['target'] }),
-        }}
-    />
-);
+export const TranslatedHtmlWithContext: FunctionComponent<TranslatedHtmlProps> = ({ data, id }) => {
+    const { language } = useLocale();
 
-export default withLanguage(TranslatedHtml);
+    return (
+        <span
+            dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(language.translate(id, data), { ADD_ATTR: ['target'] }),
+            }}
+        />
+    );
+};
+
+const TranslatedHtml: FunctionComponent<TranslatedHtmlProps> = (props) => {
+    const localeContextValue: LocaleContextType = {
+        language: getLanguageService(),
+    };
+
+    return (
+        <LocaleContext.Provider value={localeContextValue}>
+            <TranslatedHtmlWithContext {...props} />
+        </LocaleContext.Provider>
+    );
+};
+
+export default TranslatedHtml;
