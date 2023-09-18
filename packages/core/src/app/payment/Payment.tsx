@@ -36,11 +36,13 @@ import {
     PaymentMethodId,
     PaymentMethodProviderType,
 } from './paymentMethod';
+import filterPaymentMethods from '../common/utility/getAllowedPaymentMethodsForSubscription';
 
 export interface PaymentProps {
     errorLogger: ErrorLogger;
     isEmbedded?: boolean;
     isUsingMultiShipping?: boolean;
+    isSubsciptionSelected?: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void; // TODO: We're currently doing this check in multiple places, perhaps we should move it up so this check get be done in a single place instead.
     onCartChangedError?(error: CartChangedError): void;
     onFinalize?(): void;
@@ -117,7 +119,7 @@ class Payment extends Component<
             onReady = noop,
             onUnhandledError = noop,
             usableStoreCredit,
-            analyticsTracker
+            analyticsTracker,
         } = this.props;
 
 
@@ -168,6 +170,7 @@ class Payment extends Component<
             isUsingMultiShipping,
             methods,
             applyStoreCredit,
+            isSubsciptionSelected,
             ...rest
         } = this.props;
 
@@ -183,6 +186,8 @@ class Payment extends Component<
         const uniqueSelectedMethodId =
             selectedMethod && getUniquePaymentMethodId(selectedMethod.id, selectedMethod.gateway);
 
+        const filteredMethods = filterPaymentMethods(methods,isSubsciptionSelected )
+
         return (
             <PaymentContext.Provider value={this.getContextValue()}>
                 <ChecklistSkeleton isLoading={!isReady}>
@@ -194,7 +199,7 @@ class Payment extends Component<
                             didExceedSpamLimit={didExceedSpamLimit}
                             isInitializingPayment={isInitializingPayment}
                             isUsingMultiShipping={isUsingMultiShipping}
-                            methods={methods}
+                            methods={ filteredMethods }
                             onMethodSelect={this.setSelectedMethod}
                             onStoreCreditChange={this.handleStoreCreditChange}
                             onSubmit={this.handleSubmit}

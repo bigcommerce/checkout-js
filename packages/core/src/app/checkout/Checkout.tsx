@@ -47,6 +47,7 @@ import CheckoutStepType from './CheckoutStepType';
 import CheckoutSupport from './CheckoutSupport';
 import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
+import isSubsciptionSelected from '../common/utility/isSubscrptionSelected';
 
 const Billing = lazy(() =>
     retry(
@@ -478,6 +479,7 @@ class Checkout extends Component<
 
     private renderPaymentStep(step: CheckoutStepStatus): ReactNode {
         const { consignments, cart, errorLogger } = this.props;
+        const isProductWithSubscriptionSelected = isSubsciptionSelected(cart)
 
         return (
             <CheckoutStep
@@ -503,6 +505,7 @@ class Checkout extends Component<
                         onSubmit={this.navigateToOrderConfirmation}
                         onSubmitError={this.handleError}
                         onUnhandledError={this.handleUnhandledError}
+                        isSubsciptionSelected = {isProductWithSubscriptionSelected}
                     />
                 </LazyContainer>
             </CheckoutStep>
