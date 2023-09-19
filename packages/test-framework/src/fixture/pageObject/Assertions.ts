@@ -27,4 +27,12 @@ export class Assertions {
             /Your order number is \d*/,
         );
     }
+
+    async shouldSeeErrorModal(errorMessage: string): Promise<void> {
+        const page = this.page;
+
+        await page.locator('data-test=modal-body').waitFor({ state: 'visible' });
+        await expect(page.locator('data-test=modal-body')).toBeVisible();
+        await expect(page.locator('#errorModalMessage')).toHaveText(errorMessage);
+    }
 }
