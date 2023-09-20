@@ -7,7 +7,7 @@ import { GoogleAutocompleteOptionTypes } from './googleAutocompleteTypes';
 import './GoogleAutocomplete.scss';
 import GoogleAutocompleteService from './GoogleAutocompleteService';
 
-interface GoogleAutocompleteProps {
+export interface GoogleAutocompleteProps {
     initialValue?: string;
     componentRestrictions?: google.maps.places.ComponentRestrictions;
     fields?: string[];
