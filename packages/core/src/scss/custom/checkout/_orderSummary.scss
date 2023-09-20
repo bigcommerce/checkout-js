@@ -1,0 +1,32 @@
+.layout-cart {
+  padding-left: 1rem;
+  padding-right: 0;
+
+  .cart {
+    //background-color: unset;
+    box-shadow: $checkout-box-shadow;
+    margin-top: 0;
+
+    header {
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+
+      // move h2 after 'edit cart'
+      h3 {
+        font-family: $font-family-headings;
+        font-size: remCalc(24px);
+        font-weight: 500;
+        order: 2;
+      }
+    }
+
+  }
+}
+
+// a shared class between desktop and the mobile modal
+.optimizedCheckout-orderSummary {
+  .redeemable-label {
+    display: none;
+  }
+}

@@ -1,0 +1,37 @@
+.checkout-steps {
+  padding-right: 0;
+
+  @include breakpoint($mobile-breakpoint) {
+    padding-right: 1rem;
+  }
+
+  li.checkout-step {
+    border-bottom: 0;
+    box-shadow: $checkout-box-shadow;
+    margin-bottom: 1rem;
+    padding: 1rem;
+
+    @include breakpoint($mobile-breakpoint) {
+      padding: 1rem 2rem;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+
+    .stepHeader-counter {
+      background-color: var(--color-secondary);
+      display: block !important;
+    }
+
+    h2 {
+      margin-left: 1rem !important;
+      font-size: remCalc(24px);
+    }
+  }
+}
+
+.remove-checkout-step-numbers li.checkout-step div.stepHeader-counter.icon {
+
+}

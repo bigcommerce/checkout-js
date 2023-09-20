@@ -1,0 +1,76 @@
+.modal.modal--afterOpen.optimizedCheckout-cart-modal, //the longer selector, can override stuff
+.optimizedCheckout-cart-modal {
+    display: flex;
+    flex-direction: column;
+    left: 0;
+    min-height: 100%;
+    min-width: 100%;
+    top: 0;
+    transform: none;
+    width: 100%;
+
+    .modal-header {
+        background-color: unset;
+        flex-wrap: wrap;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 1rem;
+
+        h2 {
+            font-family: $font-family-headings;
+            font-size: remCalc(24px);
+            font-weight: 500;
+        }
+
+        .cart-heading-subheader {
+            //border-top: 1px solid var(--color-gray-lilac, #BAABAD);
+            color: #918F8C;
+            font-size: remCalc(14px);
+            flex-basis: 100%;
+            //margin-top: 1rem;
+            padding-top: .5rem;
+        }
+
+        // replace X icon with ours
+        .cart-modal-close {
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+
+            &::before {
+                color: var(--color-black, #000000);
+                content: "X";
+                font-size: remCalc(20px);
+            }
+
+            .icon {
+                display: none;
+            }
+
+        }
+    }
+
+    .modal-body {
+        background-color: unset;
+        display: flex;
+        flex-basis: 100%;
+        flex-direction: column;
+        height: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 0;
+        padding-right: 0;
+
+        .cart-section {
+            &:first-child {
+                flex-basis: 100%;
+            }
+        }
+    }
+
+    .modal-footer {
+        display: none;
+    }
+}

@@ -457,7 +457,7 @@
             "gift_certificate_text": "Gift Certificate",
             "remove_action": "Remove",
             "store_credit_available_text": "Your account currently has {storeCredit} total store credit available",
-            "toggle_action": "Coupon/Gift Certificate"
+            "toggle_action": "Coupon Code"
         },
         "remote": {
             "browser_unsupported": "The selected payment method requires a different web browser. Please choose another payment method.",
