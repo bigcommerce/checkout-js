@@ -19,13 +19,11 @@ const COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN = 3;
 export interface OrderSummaryItemsProps {
     displayLineItemsCount: boolean;
     items: LineItemMap;
-    showSeeAll: boolean;
 }
 
 interface OrderSummaryItemsState {
     isExpanded: boolean;
     collapsedLimit: number;
-    showSeeAll: boolean;
 }
 
 class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSummaryItemsState> {
@@ -35,12 +33,11 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
         this.state = {
             isExpanded: false,
             collapsedLimit: this.getCollapsedLimit(),
-            showSeeAll: true,
         };
     }
 
     render(): ReactNode {
-        const { showSeeAll = true, displayLineItemsCount = true, items } = this.props;
+        const { displayLineItemsCount = true, items } = this.props;
         const { collapsedLimit, isExpanded } = this.state;
 
         return (
@@ -68,7 +65,7 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
                             .map(mapFromDigital),
                         ...(items.customItems || []).map(mapFromCustom),
                     ]
-                        .slice(0, isExpanded || !showSeeAll ? undefined : collapsedLimit)
+                        .slice(0, isExpanded ? undefined : collapsedLimit)
                         .map((summaryItemProps) => (
                             <li className="productList-item is-visible" key={summaryItemProps.id}>
                                 <OrderSummaryItem {...summaryItemProps} />
@@ -76,7 +73,7 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
                         ))}
                 </ul>
 
-                {showSeeAll && this.renderActions()}
+                {this.renderActions()}
             </>
         );
     }

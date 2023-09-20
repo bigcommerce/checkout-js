@@ -39,7 +39,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
             <OrderSummaryHeader>{headerLink}</OrderSummaryHeader>
 
             <OrderSummarySection>
-                <OrderSummaryItems displayLineItemsCount items={nonBundledLineItems} showSeeAll={true} />
+                <OrderSummaryItems displayLineItemsCount items={nonBundledLineItems} />
             </OrderSummarySection>
 
             <OrderSummarySection>

@@ -85,7 +85,7 @@ const OrderSummaryModal: FunctionComponent<
         onRequestClose={onRequestClose}
     >
         <OrderSummarySection>
-            <OrderSummaryItems displayLineItemsCount={!isUpdatedCartSummayModal} items={nonBundledLineItems} showSeeAll={false} />
+            <OrderSummaryItems displayLineItemsCount={!isUpdatedCartSummayModal} items={nonBundledLineItems} />
         </OrderSummarySection>
         <OrderSummarySection>
             <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
