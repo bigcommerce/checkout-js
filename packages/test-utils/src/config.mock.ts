@@ -25,6 +25,7 @@ export function getStoreConfig(): StoreConfig {
             isAnalyticsEnabled: true,
             isAccountCreationEnabled: true,
             isCardVaultingEnabled: true,
+            //@ts-ignore
             isExpressPrivacyPolicy: false,
             isPaymentRequestEnabled: false,
             isPaymentRequestCanMakePaymentEnabled: false,

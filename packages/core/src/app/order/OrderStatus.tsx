@@ -4,6 +4,7 @@ import React, { FunctionComponent, memo } from 'react';
 import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
 
 import OrderConfirmationSection from './OrderConfirmationSection';
+import { MandateTextComponent } from './MandateTextComponent';
 
 export interface OrderStatusProps {
     config: StoreConfig;
@@ -74,6 +75,14 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
                             />
                         </p>
                     );
+                    //@ts-ignore
+                } else if (payment.mandate.mandateText) {
+                   return <MandateTextComponent
+                       //@ts-ignore
+                       mandateText={payment.mandate.mandateText}
+                       methodId={payment.methodId}
+                       providerId={payment.providerId}
+                   />
                 }
             })}
 

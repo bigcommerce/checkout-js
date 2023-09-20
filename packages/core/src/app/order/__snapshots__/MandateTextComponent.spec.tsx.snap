@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MandateTextComponent renders component with provided props 1`] = `
+<div>
+  <ul>
+    <li>
+       :
+      <b>
+        Test
+      </b>
+    </li>
+    <li>
+       :
+      <b>
+        1343442323
+      </b>
+    </li>
+    <li>
+       :
+      <b>
+        GDU856858
+      </b>
+    </li>
+  </ul>
+</div>
+`;

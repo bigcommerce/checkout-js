@@ -579,7 +579,7 @@ export function mapToWithCheckoutCustomerProps({
             requiresMarketingConsent,
             isSignInEmailEnabled,
             isAccountCreationEnabled,
-            isExpressPrivacyPolicy,
+            // isExpressPrivacyPolicy,
         },
     } = config as StoreConfig & { checkoutSettings: { isAccountCreationEnabled: boolean } };
 
@@ -617,7 +617,7 @@ export function mapToWithCheckoutCustomerProps({
         signIn: checkoutService.signInCustomer,
         signInError: getSignInError(),
         isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
-        isExpressPrivacyPolicy,
+        isExpressPrivacyPolicy: false,
     };
 }
 
