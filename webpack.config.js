@@ -251,17 +251,23 @@ function loaderConfig(options, argv) {
                 plugins: [
                     new AsyncHookPlugin({
                         onRun({ compiler, done }) {
-                            eventEmitter.on('app:done', () => {
-                                const definePlugin = new DefinePlugin({
-                                    LIBRARY_NAME: JSON.stringify(LIBRARY_NAME),
-                                    MANIFEST_JSON: JSON.stringify(require(
-                                        join(__dirname, isProduction ? 'dist' : 'build', 'manifest.json')
-                                    )),
-                                });
+                            let wasTriggeredBefore = false;
 
-                                definePlugin.apply(compiler);
-                                eventEmitter.emit('loader:done');
-                                done();
+                            eventEmitter.on('app:done', () => {
+                                if (!wasTriggeredBefore) {
+                                    const definePlugin = new DefinePlugin({
+                                        LIBRARY_NAME: JSON.stringify(LIBRARY_NAME),
+                                        MANIFEST_JSON: JSON.stringify(require(
+                                          join(__dirname, isProduction ? 'dist' : 'build', 'manifest.json')
+                                        )),
+                                    });
+
+                                    definePlugin.apply(compiler);
+                                    eventEmitter.emit('loader:done');
+                                    done();
+
+                                    wasTriggeredBefore = true;
+                                }
                             });
 
                             eventEmitter.on('app:error', () => {
