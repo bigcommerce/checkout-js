@@ -77,6 +77,7 @@ export interface WithCheckoutCustomerProps {
     signInEmail?: SignInEmail;
     signInEmailError?: Error;
     isAccountCreationEnabled: boolean;
+    isPaymentDataRequired: boolean;
     createAccountError?: Error;
     signInError?: Error;
     isFloatingLabelEnabled?: boolean;
@@ -183,8 +184,9 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             step,
             isFloatingLabelEnabled,
             isExpressPrivacyPolicy,
+            isPaymentDataRequired,
         } = this.props;
-        const checkoutButtons = isWalletButtonsOnTop
+        const checkoutButtons = isWalletButtonsOnTop || !isPaymentDataRequired
           ? null
           : <CheckoutButtonList
             checkEmbeddedSupport={checkEmbeddedSupport}
@@ -316,11 +318,11 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 }
                 email={this.draftEmail || email}
                 forgotPasswordUrl={forgotPasswordUrl}
+                isExecutingPaymentMethodCheckout={isExecutingPaymentMethodCheckout}
                 isFloatingLabelEnabled={isFloatingLabelEnabled}
                 isSendingSignInEmail={isSendingSignInEmail}
                 isSignInEmailEnabled={isSignInEmailEnabled && !isEmbedded}
                 isSigningIn={isSigningIn}
-                isExecutingPaymentMethodCheckout={isExecutingPaymentMethodCheckout}
                 onCancel={this.handleCancelSignIn}
                 onChangeEmail={this.handleChangeEmail}
                 onContinueAsGuest={this.executePaymentMethodCheckoutOrContinue}
@@ -551,6 +553,7 @@ export function mapToWithCheckoutCustomerProps({
             getCustomer,
             getSignInEmail,
             getConfig,
+            isPaymentDataRequired,
         },
         errors: { getSignInError, getSignInEmailError, getCreateCustomerAccountError },
         statuses: {
@@ -618,6 +621,7 @@ export function mapToWithCheckoutCustomerProps({
         signInError: getSignInError(),
         isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
         isExpressPrivacyPolicy,
+        isPaymentDataRequired: isPaymentDataRequired(),
     };
 }
 
