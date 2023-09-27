@@ -18,6 +18,6 @@ export function isAppExport(appExport: unknown): appExport is AppExport {
         'renderOrderConfirmation' in appExport &&
         typeof appExport.renderOrderConfirmation === 'function' &&
         'initializeLanguageService' in appExport &&
-        typeof appExport.initializeLanguageService === 'function' 
+        typeof appExport.initializeLanguageService === 'function'
     );
 }
