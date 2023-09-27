@@ -7,10 +7,10 @@ import { LocaleProvider } from '@bigcommerce/checkout/locale';
 
 import { getAddressFormFields } from '../../address/formField.mock';
 import CheckoutStepType from '../../checkout/CheckoutStepType';
+import { getConsignment } from '../consignment.mock';
 
 import StripeShipping, { StripeShippingProps } from './StripeShipping';
 import StripeShippingForm from './StripeShippingForm';
-import { getConsignment } from '../consignment.mock';
 
 describe('Stripe Shipping Component', () => {
     const checkoutService = createCheckoutService();

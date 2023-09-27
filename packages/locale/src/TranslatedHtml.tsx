@@ -1,8 +1,7 @@
 import DOMPurify from 'dompurify';
 import React, { FunctionComponent } from 'react';
 
-import getLanguageService from './getLanguageService';
-import LocaleContext, { LocaleContextType, useLocale } from './LocaleContext';
+import { useLocale } from './LocaleContext';
 
 export interface TranslatedHtmlProps {
     id: string;
@@ -20,17 +19,5 @@ export const TranslatedHtml: FunctionComponent<TranslatedHtmlProps> = ({ data, i
         />
     );
 };
-
-// const TranslatedHtml: FunctionComponent<TranslatedHtmlProps> = (props) => {
-//     const localeContextValue: LocaleContextType = {
-//         language: getLanguageService(),
-//     };
-
-//     return (
-//         <LocaleContext.Provider value={localeContextValue}>
-//             <TranslatedHtmlWithContext {...props} />
-//         </LocaleContext.Provider>
-//     );
-// };
 
 export default TranslatedHtml;

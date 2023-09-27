@@ -2,8 +2,7 @@ import React, { FunctionComponent, MouseEventHandler } from 'react';
 
 import { parseAnchor, preventDefault } from '@bigcommerce/checkout/dom-utils';
 
-import getLanguageService from './getLanguageService';
-import LocaleContext, { LocaleContextType, useLocale } from './LocaleContext';
+import { useLocale } from './LocaleContext';
 import { TranslatedStringProps } from './TranslatedString';
 
 export type TranslatedLinkProps = TranslatedStringProps & {
@@ -28,17 +27,5 @@ const TranslatedLink: FunctionComponent<TranslatedLinkProps> = ({ data, id, onCl
         <>{translatedString}</>
     );
 };
-
-// const TranslatedLink: FunctionComponent<TranslatedLinkProps> = (props) => {
-//     const localeContextValue: LocaleContextType = {
-//         language: getLanguageService(),
-//     };
-
-//     return (
-//         <LocaleContext.Provider value={localeContextValue}>
-//             <TranslatedLinkWithContext {...props} />
-//         </LocaleContext.Provider>
-//     );
-// };
 
 export default TranslatedLink;
