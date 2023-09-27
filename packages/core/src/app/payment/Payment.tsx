@@ -36,6 +36,7 @@ import {
     PaymentMethodId,
     PaymentMethodProviderType,
 } from './paymentMethod';
+import LoadingSpinnerOverlay from "../../../../ui/src/loading/LoadingSpinnerOverlay";
 
 export interface PaymentProps {
     errorLogger: ErrorLogger;
@@ -79,6 +80,7 @@ interface WithCheckoutPaymentProps {
 interface PaymentState {
     didExceedSpamLimit: boolean;
     isReady: boolean;
+    showLoadingOverlay: boolean;
     selectedMethod?: PaymentMethod;
     shouldDisableSubmit: { [key: string]: boolean };
     shouldHidePaymentSubmitButton: { [key: string]: boolean };
@@ -93,6 +95,7 @@ class Payment extends Component<
     state: PaymentState = {
         didExceedSpamLimit: false,
         isReady: false,
+        showLoadingOverlay: false,
         shouldDisableSubmit: {},
         shouldHidePaymentSubmitButton: {},
         validationSchemas: {},
@@ -105,6 +108,7 @@ class Payment extends Component<
             setSubmit: this.setSubmit,
             setValidationSchema: this.setValidationSchema,
             hidePaymentSubmitButton: this.hidePaymentSubmitButton,
+            onPending: this.showLoadingOverlay,
         };
     });
 
@@ -179,6 +183,7 @@ class Payment extends Component<
             shouldDisableSubmit,
             validationSchemas,
             shouldHidePaymentSubmitButton,
+            showLoadingOverlay,
         } = this.state;
 
         const uniqueSelectedMethodId =
@@ -188,36 +193,39 @@ class Payment extends Component<
             <PaymentContext.Provider value={this.getContextValue()}>
                 <ChecklistSkeleton isLoading={!isReady}>
                     {!isEmpty(methods) && defaultMethod && (
-                        <PaymentForm
-                            {...rest}
-                            defaultGatewayId={defaultMethod.gateway}
-                            defaultMethodId={defaultMethod.id}
-                            didExceedSpamLimit={didExceedSpamLimit}
-                            isInitializingPayment={isInitializingPayment}
-                            isUsingMultiShipping={isUsingMultiShipping}
-                            methods={methods}
-                            onMethodSelect={this.setSelectedMethod}
-                            onStoreCreditChange={this.handleStoreCreditChange}
-                            onSubmit={this.handleSubmit}
-                            onUnhandledError={this.handleError}
-                            selectedMethod={selectedMethod}
-                            shouldDisableSubmit={
-                                (uniqueSelectedMethodId &&
-                                    shouldDisableSubmit[uniqueSelectedMethodId]) ||
-                                undefined
-                            }
-                            shouldHidePaymentSubmitButton={
-                                (uniqueSelectedMethodId &&
-                                    rest.isPaymentDataRequired() &&
-                                    shouldHidePaymentSubmitButton[uniqueSelectedMethodId]) ||
-                                undefined
-                            }
-                            validationSchema={
-                                (uniqueSelectedMethodId &&
-                                    validationSchemas[uniqueSelectedMethodId]) ||
-                                undefined
-                            }
-                        />
+                        <>
+                            <LoadingSpinnerOverlay isLoading={showLoadingOverlay}/>
+                            <PaymentForm
+                                {...rest}
+                                defaultGatewayId={defaultMethod.gateway}
+                                defaultMethodId={defaultMethod.id}
+                                didExceedSpamLimit={didExceedSpamLimit}
+                                isInitializingPayment={isInitializingPayment}
+                                isUsingMultiShipping={isUsingMultiShipping}
+                                methods={methods}
+                                onMethodSelect={this.setSelectedMethod}
+                                onStoreCreditChange={this.handleStoreCreditChange}
+                                onSubmit={this.handleSubmit}
+                                onUnhandledError={this.handleError}
+                                selectedMethod={selectedMethod}
+                                shouldDisableSubmit={
+                                    (uniqueSelectedMethodId &&
+                                        shouldDisableSubmit[uniqueSelectedMethodId]) ||
+                                    undefined
+                                }
+                                shouldHidePaymentSubmitButton={
+                                    (uniqueSelectedMethodId &&
+                                        rest.isPaymentDataRequired() &&
+                                        shouldHidePaymentSubmitButton[uniqueSelectedMethodId]) ||
+                                    undefined
+                                }
+                                validationSchema={
+                                    (uniqueSelectedMethodId &&
+                                        validationSchemas[uniqueSelectedMethodId]) ||
+                                    undefined
+                                }
+                            />
+                        </>
                     )}
                 </ChecklistSkeleton>
 
@@ -419,6 +427,11 @@ class Payment extends Component<
         }
     };
 
+    private showLoadingOverlay = (isLoading: boolean): void => {
+        this.setState({
+            showLoadingOverlay: isLoading,
+        });
+    }
     private handleError: (error: Error) => void = (error: Error) => {
         const { onUnhandledError = noop, errorLogger } = this.props;
 
@@ -532,8 +545,8 @@ class Payment extends Component<
 }
 
 export function mapToPaymentProps({
-        checkoutService,
-        checkoutState,
+  checkoutService,
+  checkoutState,
 }: CheckoutContextProps): WithCheckoutPaymentProps | null {
     const {
         data: {

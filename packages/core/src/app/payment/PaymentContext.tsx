@@ -19,6 +19,7 @@ export interface PaymentContextProps {
         schema: ObjectSchema<Partial<PaymentFormValues>> | null,
     ): void;
     hidePaymentSubmitButton(method: PaymentMethod, hidden?: boolean): void;
+    onPending?(isLoading: boolean): void;
 }
 
 const PaymentContext = createContext<PaymentContextProps | undefined>(undefined);

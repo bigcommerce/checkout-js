@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback, useEffect, useMemo, useRef } from 'react';
+import React, {FunctionComponent, useCallback, useContext, useEffect, useMemo, useRef} from 'react';
 
 import {
     PaymentMethodProps,
@@ -8,6 +8,7 @@ import {
 import { DynamicFormField, DynamicFormFieldType, FormContext } from '@bigcommerce/checkout/ui';
 import { FormField } from '@bigcommerce/checkout-sdk';
 import getPaypalCommerceRatePayValidationSchema from './validation-schemas/getPaypalCommerceRatePayValidationSchema';
+import PaymentContext from "../../core/src/app/payment/PaymentContext";
 
 interface RatePayFieldValues {
     ratepayBirthDate: {
@@ -66,6 +67,8 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
 }) => {
     const fieldsValues = useRef<Partial<RatePayFieldValues>>({});
     const isPaymentDataRequired = checkoutState.data.isPaymentDataRequired();
+    //@ts-ignore
+    const { onPending } = useContext(PaymentContext);
 
     if (!isPaymentDataRequired) {
         return null;
@@ -79,6 +82,7 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
                 paypalcommerceratepay: {
                     container: '#checkout-payment-continue',
                     legalTextContainer: 'legal-text-container',
+                    onPending: (isLoading: boolean) => onPending(isLoading),
                     getFieldsValues: () => fieldsValues.current,
                     onError: (error: Error) => {
                         paymentForm.disableSubmit(method, true);
