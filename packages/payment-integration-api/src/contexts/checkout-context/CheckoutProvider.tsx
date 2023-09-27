@@ -43,6 +43,10 @@ export default class CheckoutProvider extends Component<
         this.unsubscribe = checkoutService.subscribe((checkoutState) =>
             this.setState({ checkoutState }),
         );
+
+        (window as any).reloadCheckout = () => {
+            return checkoutService.loadCheckout()
+        }
     }
 
     componentWillUnmount(): void {
