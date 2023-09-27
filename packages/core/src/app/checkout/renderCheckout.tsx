@@ -15,7 +15,6 @@ export default function renderCheckout({
 }: RenderCheckoutOptions): void {
     const configuredPublicPath = configurePublicPath(publicPath);
 
-    console.log('rendered 2')
     // We want to use `require` here because we want to set up the public path
     // first before importing the app component and its dependencies.
     const { default: CheckoutApp } = require('./CheckoutApp');
