@@ -24,7 +24,6 @@ export interface CheckoutAppProps {
     containerId: string;
     publicPath?: string;
     sentryConfig?: BrowserOptions;
-    reloadSummary?: boolean;
 }
 
 export default class CheckoutApp extends Component<CheckoutAppProps> {
