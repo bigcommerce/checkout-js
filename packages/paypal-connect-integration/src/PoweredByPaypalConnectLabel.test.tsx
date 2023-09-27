@@ -5,7 +5,7 @@ import React from 'react';
 import PoweredByPaypalConnectLabel from './PoweredByPaypalConnectLabel';
 
 jest.mock('@bigcommerce/checkout/locale', () => ({
-    TranslatedString: ({id}: {id: string}) => (<div>{id}</div>),
+    TranslatedString: ({ id }: { id: string }) => (<div>{id}</div>),
 }));
 
 jest.mock('@bigcommerce/checkout/ui', () => ({

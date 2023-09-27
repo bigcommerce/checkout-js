@@ -11,12 +11,7 @@ export type TranslatedLinkProps = TranslatedStringProps & {
     onClick: MouseEventHandler;
 };
 
-const TranslatedLinkWithContext: FunctionComponent<TranslatedLinkProps> = ({
-    data,
-    id,
-    onClick,
-    testId,
-}) => {
+const TranslatedLink: FunctionComponent<TranslatedLinkProps> = ({ data, id, onClick, testId }) => {
     const { language } = useLocale();
     const translatedString = language.translate(id, data);
     const parsedString = parseAnchor(translatedString);
@@ -34,16 +29,16 @@ const TranslatedLinkWithContext: FunctionComponent<TranslatedLinkProps> = ({
     );
 };
 
-const TranslatedLink: FunctionComponent<TranslatedLinkProps> = (props) => {
-    const localeContextValue: LocaleContextType = {
-        language: getLanguageService(),
-    };
+// const TranslatedLink: FunctionComponent<TranslatedLinkProps> = (props) => {
+//     const localeContextValue: LocaleContextType = {
+//         language: getLanguageService(),
+//     };
 
-    return (
-        <LocaleContext.Provider value={localeContextValue}>
-            <TranslatedLinkWithContext {...props} />
-        </LocaleContext.Provider>
-    );
-};
+//     return (
+//         <LocaleContext.Provider value={localeContextValue}>
+//             <TranslatedLinkWithContext {...props} />
+//         </LocaleContext.Provider>
+//     );
+// };
 
 export default TranslatedLink;

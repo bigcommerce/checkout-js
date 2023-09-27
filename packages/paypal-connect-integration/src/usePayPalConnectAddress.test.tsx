@@ -124,7 +124,7 @@ describe('usePayPalConnectAddress', () => {
 
     it('renders with PP Connect addresses & no BC addresses, selected PP address', () => {
         useCheckoutMock(
-            {addresses: [addressPP1, addressPP2]},
+            { addresses: [addressPP1, addressPP2] },
             [],
         );
 
@@ -145,7 +145,7 @@ describe('usePayPalConnectAddress', () => {
 
     it('renders with BC addresses & PP Connect address, selected BC address', () => {
         useCheckoutMock(
-            {addresses: [addressPP2]},
+            { addresses: [addressPP2] },
             [addressBC1, addressBC2],
         );
 
@@ -167,7 +167,7 @@ describe('usePayPalConnectAddress', () => {
 
     it('renders with BC addresses & PP Connect address - with address merge, selected PP address', () => {
         useCheckoutMock(
-            {addresses: [addressPP1, addressPP2]},
+            { addresses: [addressPP1, addressPP2] },
             [addressBC1, addressBC2],
         );
 

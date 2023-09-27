@@ -68,10 +68,13 @@ describe('StaticAddressEditable Component', () => {
     });
 
     it('renders correct number of custom form fields', () => {
+        const localeContext = createLocaleContext(getStoreConfig());
         const component = mount(
-            <Formik initialValues={initialFormikValues} onSubmit={noop}>
-                <StaticAddressEditable {...defaultProps} />
-            </Formik>,
+            <LocaleContext.Provider value={localeContext}>
+                <Formik initialValues={initialFormikValues} onSubmit={noop}>
+                    <StaticAddressEditable {...defaultProps} />
+                </Formik>
+            </LocaleContext.Provider>,
         );
 
         expect(component.find(DynamicFormField)).toHaveLength(3);
@@ -113,7 +116,7 @@ describe('StaticAddressEditable Component', () => {
     it('calls onUnhandledError if initialize was failed', () => {
         defaultProps.initialize = jest.fn(() => { throw new Error(); });
 
-        shallow(<StaticAddressEditable { ...defaultProps } />);
+        shallow(<StaticAddressEditable {...defaultProps} />);
 
         expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
     });
@@ -123,7 +126,7 @@ describe('StaticAddressEditable Component', () => {
             throw new Error();
         });
 
-        shallow(<StaticAddressEditable { ...defaultProps } />).unmount();
+        shallow(<StaticAddressEditable {...defaultProps} />).unmount();
 
         expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
     });

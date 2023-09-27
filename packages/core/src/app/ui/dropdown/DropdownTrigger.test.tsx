@@ -1,7 +1,7 @@
-import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 
+import { fireEvent, render, screen } from '@bigcommerce/checkout/locale';
 import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
 
 import DropdownTrigger from './DropdownTrigger';

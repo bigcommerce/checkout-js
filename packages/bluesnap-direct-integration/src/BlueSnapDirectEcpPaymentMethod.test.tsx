@@ -6,11 +6,11 @@ import {
     PaymentInitializeOptions,
     PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import { fireEvent, render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
+import { fireEvent, render, screen } from '@bigcommerce/checkout/locale';
 import {
     PaymentFormService,
     PaymentMethodProps,

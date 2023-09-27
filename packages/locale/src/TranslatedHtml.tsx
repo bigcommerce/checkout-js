@@ -9,7 +9,7 @@ export interface TranslatedHtmlProps {
     data?: any;
 }
 
-export const TranslatedHtmlWithContext: FunctionComponent<TranslatedHtmlProps> = ({ data, id }) => {
+export const TranslatedHtml: FunctionComponent<TranslatedHtmlProps> = ({ data, id }) => {
     const { language } = useLocale();
 
     return (
@@ -21,16 +21,16 @@ export const TranslatedHtmlWithContext: FunctionComponent<TranslatedHtmlProps> =
     );
 };
 
-const TranslatedHtml: FunctionComponent<TranslatedHtmlProps> = (props) => {
-    const localeContextValue: LocaleContextType = {
-        language: getLanguageService(),
-    };
+// const TranslatedHtml: FunctionComponent<TranslatedHtmlProps> = (props) => {
+//     const localeContextValue: LocaleContextType = {
+//         language: getLanguageService(),
+//     };
 
-    return (
-        <LocaleContext.Provider value={localeContextValue}>
-            <TranslatedHtmlWithContext {...props} />
-        </LocaleContext.Provider>
-    );
-};
+//     return (
+//         <LocaleContext.Provider value={localeContextValue}>
+//             <TranslatedHtmlWithContext {...props} />
+//         </LocaleContext.Provider>
+//     );
+// };
 
 export default TranslatedHtml;

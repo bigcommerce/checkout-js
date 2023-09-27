@@ -1,11 +1,12 @@
 import { createCheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
-import { render } from '@testing-library/react';
 import { EventEmitter } from 'events';
 import React from 'react';
 
+import { render } from '@bigcommerce/checkout/locale';
 import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getBraintreeLocalMethodMock } from './mocks/braintreeLocalMethodsMocks';
+
 import { BraintreeLocalPaymentMethod } from './index';
 
 describe('BraintreeLocalMethod', () => {
@@ -16,11 +17,11 @@ describe('BraintreeLocalMethod', () => {
     const props = {
         checkoutService,
         checkoutState,
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+
         language: { translate: jest.fn() } as unknown as LanguageService,
         method: getBraintreeLocalMethodMock(),
         onUnhandledError: jest.fn(),
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+
         paymentForm: jest.fn() as unknown as PaymentFormService,
     };
 
@@ -103,7 +104,7 @@ describe('BraintreeLocalMethod', () => {
         const hidePaymentSubmitButtonMock = jest.fn();
         const newProps = {
             ...props,
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+
             paymentForm: {
                 hidePaymentSubmitButton: hidePaymentSubmitButtonMock,
             } as unknown as PaymentFormService,
@@ -133,7 +134,7 @@ describe('BraintreeLocalMethod', () => {
         const setSubmittedMock = jest.fn();
         const newProps = {
             ...props,
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+
             paymentForm: {
                 submitForm: submitFormMock,
                 setSubmitted: setSubmittedMock,
@@ -167,7 +168,7 @@ describe('BraintreeLocalMethod', () => {
         const onUnhandledErrorMock = jest.fn();
         const newProps = {
             ...props,
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+
             paymentForm: {
                 disableSubmit: disableSubmitMock,
             } as unknown as PaymentFormService,

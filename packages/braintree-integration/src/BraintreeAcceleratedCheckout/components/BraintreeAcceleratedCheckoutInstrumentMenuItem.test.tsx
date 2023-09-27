@@ -1,8 +1,7 @@
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
 import React from 'react';
 
-import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, render, screen } from '@bigcommerce/checkout/locale';
 import { getCardInstrument, getStoreConfig } from '@bigcommerce/checkout/test-utils';
 
 import BraintreeAcceleratedCheckoutInstrumentMenuItem, {
@@ -15,11 +14,7 @@ describe('BraintreeAcceleratedCheckoutInstrumentMenuItem', () => {
     const testId = 'menu-item-test-id';
 
     const renderInstrumentMenuItem = (props: BraintreeAcceleratedCheckoutInstrumentMenuItemProps) =>
-        render(
-            <LocaleContext.Provider value={localeContext}>
-                <BraintreeAcceleratedCheckoutInstrumentMenuItem {...props} />
-            </LocaleContext.Provider>,
-        );
+        render(<BraintreeAcceleratedCheckoutInstrumentMenuItem {...props} />);
 
     it('shows instrument menu item button', () => {
         const view = renderInstrumentMenuItem({ instrument, testId });

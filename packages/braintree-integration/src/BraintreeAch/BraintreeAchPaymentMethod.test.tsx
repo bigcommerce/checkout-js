@@ -4,12 +4,11 @@ import {
     CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
-import { render } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { createLocaleContext } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, render } from '@bigcommerce/checkout/locale';
 import {
     PaymentFormService,
     PaymentMethodProps,
