@@ -106,7 +106,6 @@ export interface CheckoutProps {
     embeddedSupport: CheckoutSupport;
     errorLogger: ErrorLogger;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
-    reloadSummary?: boolean;
 }
 
 export interface CheckoutState {
