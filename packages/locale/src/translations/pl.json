@@ -212,6 +212,7 @@
             },
             "bluesnap_direct_permission": "Autoryzuję tę transakcję z użyciem czeku elektronicznego (ACH/ECP) i wyrażam zgodę na obciążenie mojego rachunku.",
             "bluesnap_direct_electronic_check_label": "Czek elektroniczny (ACH/ECP)",
+            "bluesnap_direct_local_bank_transfer_label": "Lokalny przelew bankowy",
             "bolt_benefit_1": "Kupuj setki marek z logowaniem bez hasła",
             "bolt_benefit_2": "Wypełnij formularz z zapisanymi danymi dotyczącymi płatności i wysyłki",
             "bolt_benefit_3": "Korzystaj z zabezpieczeń kont zgodnych z PCI",
@@ -472,7 +473,8 @@
             "sign_out_after_action": "aby zobaczyć inne metody płatności",
             "sign_in_required_error": "Zdalne logowanie wymagane przed dokonaniem płatności",
             "sign_out_before_action": "",
-            "start_with_text": "Szybsza realizacja transakcji z"
+            "start_with_text": "Szybsza realizacja transakcji z",
+            "powered_by": "Powered by"
         },
         "shipping": {
             "cart_change_error": "Wykryto aktualizację koszyka i uaktualniono dostępne koszty wysyłki. Aby kontynuować, wybierz ponownie metodę wysyłki.",
@@ -512,6 +514,9 @@
             "label": "Tak, zgadzam się z polityką prywatności <a href=\"{url}\" target=\"_blank\"></a>.",
             "heading": "Polityka prywatności"
         },
+        "privacy_policy_auto_consent": {
+            "label": "*Klikając pozycję Kontynuuj, wyrażasz zgodę na naszą <a href=\"{url}\" target=\"_blank\">politykę prywatności</a>."
+        },
         "tax": {
             "inclusive_label": "Podatek wliczony w kwotę całkowitą:"
         },
@@ -545,6 +550,8 @@
             "order_pending_review_text": "Twoje zamówienie zostało do nas wysłane, ale obecnie oczekuje na zapłatę. Gdy otrzymamy zapłatę za Twoje zamówienie, zostanie ono zrealizowane. Jeśli podałeś już szczegóły dotyczące płatności, przetworzymy Twoje zamówienie ręcznie i wyślemy Ci wiadomość e-mail o jego zakończeniu.",
             "order_pending_status_text": "Otrzymaliśmy Twoje zamówienie i właśnie przetwarzamy Twoją płatność. Gdy płatność zostanie zweryfikowana, zamówienie zostanie zrealizowane. Wyślemy Ci wiadomość e-mail o jego zakończeniu. Pamiętaj, że ten proces może zająć kilka minut, w zależności od czasu przetwarzania wybranej przez Ciebie metody płatności. Jeśli masz jakiekolwiek pytania dotyczące zakupu, napisz do nas na adres <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_incomplete_status_text": "Otrzymaliśmy Twoje zamówienie i płatność. Twoje zamówienie jest teraz przetwarzane przez nasz system. Pamiętaj, że przetwarzanie może potrwać kilka minut. Jeśli masz jakiekolwiek pytania dotyczące zakupu, napisz do nas na adres <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
+            "order_incomplete_status_heading": "Niestety płatność za to zamówienie nie powiodła się.",
+            "order_incomplete_status_with_unsuccessful_payment_text": "Zamówienie jest niekompletne, ponieważ płatność nie powiodła się. Aby uzyskać pomoc przy zakupie, wyślij wiadomość e-mail na adres <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_with_downloadable_digital_items_text": "Zakupione materiały cyfrowe możesz pobrać, klikając linki na tej stronie lub logując się na swoje konto w dowolnym momencie. Link do pobrania znajduje się również w twoim mailu potwierdzającym, który powinien wkrótce nadejść.",
             "order_with_support_number_text": "Zostanie wysłana wiadomość e-mail zawierająca informacje o dokonanym zakupie. Jeśli masz jakiekolwiek pytania dotyczące zakupu, napisz do nas na adres <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a> lub zadzwoń na adres <a href=\"tel://{supportPhoneNumber}\">{supportPhoneNumber}</a>.",
             "order_without_downloadable_digital_items_text": "Po otrzymaniu płatności wyślemy ci e-mail z potwierdzeniem i linkiem do pobrania twoich cyfrowych zakupów.",

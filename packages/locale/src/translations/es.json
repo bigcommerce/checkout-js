@@ -212,6 +212,7 @@
             },
             "bluesnap_direct_permission": "Autorizo esta transacción de cheque electrónico (ACH/ECP) y estoy de acuerdo con este cargo en mi cuenta.",
             "bluesnap_direct_electronic_check_label": "Cheque electrónico (ACH/ECP)",
+            "bluesnap_direct_local_bank_transfer_label": "Transferencia bancaria local",
             "bolt_benefit_1": "Compra cientos de marcas con un inicio de sesión sin contraseña",
             "bolt_benefit_2": "Completa el proceso de pago con los datos de pago y de envío guardados",
             "bolt_benefit_3": "Benefíciate de la seguridad de una cuenta que cumple con la norma PCI",
@@ -472,7 +473,8 @@
             "sign_out_after_action": "para ver otros métodos de pago",
             "sign_in_required_error": "Es necesario iniciar sesión a distancia antes de pagar",
             "sign_out_before_action": "",
-            "start_with_text": "Agiliza el proceso de pago con:"
+            "start_with_text": "Agiliza el proceso de pago con:",
+            "powered_by": "Con la tecnología de"
         },
         "shipping": {
             "cart_change_error": "Se ha detectado una actualización en su carrito de compras y se han actualizado sus costes de envío disponibles. Vuelva a seleccionar un método de envío para continuar.",
@@ -512,6 +514,9 @@
             "label": "Sí, acepto la <a href=\"{url}\" target=\"_blank\">Política de privacidad</a>.",
             "heading": "Política de privacidad"
         },
+        "privacy_policy_auto_consent": {
+            "label": "*Al hacer clic en Continuar, aceptas nuestra <a href=\"{url}\" target=\"_blank\">política de privacidad</a>."
+        },
         "tax": {
             "inclusive_label": "Impuestos incluidos en el total:"
         },
@@ -545,6 +550,8 @@
             "order_pending_review_text": "Su pedido ha sido enviado pero está en espera del pago. Una vez que recibamos el pago de su pedido, este se completará. Si ya ha proporcionado los datos de pago, procesaremos su pedido manualmente y le enviaremos un correo electrónico cuando se haya completado.",
             "order_pending_status_text": "Hemos recibido tu pedido y estamos procesando tu pago. Una vez verificado el pago, se completará tu pedido. Te enviaremos un correo electrónico cuando se haya completado. Ten en cuenta que este proceso puede tardar unos minutos en función de los tiempos de procesamiento del método elegido. Si tienes alguna pregunta sobre tu compra, envíanos un correo electrónico a <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_incomplete_status_text": "Hemos recibido tu pedido y el pago. Nuestro sistema está procesando tu pedido. Ten en cuenta que el procesamiento puede tardar unos minutos. Si tienes alguna pregunta sobre tu compra, envíanos un correo electrónico a <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
+            "order_incomplete_status_heading": "Lo sentimos, pero el pago de este pedido ha fallado.",
+            "order_incomplete_status_with_unsuccessful_payment_text": "Tu pedido no se ha completado porque el pago no se ha realizado correctamente. Si necesitas ayuda con tu compra, envíanos un correo electrónico a <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_with_downloadable_digital_items_text": "Puede descargar sus compras digitales haciendo clic en los enlaces de esta página o accediendo a su cuenta en cualquier momento. También hay un enlace de descarga en el correo electrónico de confirmación, que debería llegar en breve.",
             "order_with_support_number_text": "Se enviará un correo electrónico con información sobre tu compra. Si tienes alguna pregunta sobre tu compra, envíanos un correo electrónico a <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a> o llámanos al <a href=\"tel://{supportPhoneNumber}\">{supportPhoneNumber}</a>.",
             "order_without_downloadable_digital_items_text": "Una vez que recibamos su pago, le enviaremos un correo electrónico de confirmación con un enlace para descargar sus compras digitales.",

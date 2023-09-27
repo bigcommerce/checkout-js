@@ -212,6 +212,7 @@
             },
             "bluesnap_direct_permission": "Jeg godkender denne transaktion med elektronisk check (ACH/ECP) og accepterer denne debitering af min konto.",
             "bluesnap_direct_electronic_check_label": "Elektronisk check (ACH/ECP)",
+            "bluesnap_direct_local_bank_transfer_label": "Lokal bankoverførsel",
             "bolt_benefit_1": "Køb hundredvis af mærker med et login uden adgangskode",
             "bolt_benefit_2": "Gennemfør betalingen med gemte betalings- og forsendelsesoplysninger",
             "bolt_benefit_3": "Drag fordel af PCI-kompatibel kontosikkerhed",
@@ -472,7 +473,8 @@
             "sign_out_after_action": "for at se andre betalingsmetoder",
             "sign_in_required_error": "Fjernlogin påkrævet før betaling",
             "sign_out_before_action": "",
-            "start_with_text": "Betal hurtigere med:"
+            "start_with_text": "Betal hurtigere med:",
+            "powered_by": "Drevet af"
         },
         "shipping": {
             "cart_change_error": "Vi har registreret en opdatering til din indkøbskurv, og dine tilgængelige forsendelsesomkostninger er blevet opdateret. Vælg en forsendelsesmetode igen for at fortsætte.",
@@ -512,6 +514,9 @@
             "label": "Ja, jeg accepterer <a href=\"{url}\" target=\"_blank\">politikken om beskyttelse af personlige oplysninger</a>.",
             "heading": "Politik om beskyttelse af personlige oplysninger"
         },
+        "privacy_policy_auto_consent": {
+            "label": "*Ved at klikke videre accepterer du vores  <a href=\"{url}\" target=\"_blank\">privatlivspolitik</a>."
+        },
         "tax": {
             "inclusive_label": "Skat inkluderet i samlet beløb:"
         },
@@ -545,6 +550,8 @@
             "order_pending_review_text": "Din ordre blev sendt til os, men afventer i øjeblikket betaling. Når vi modtager betalingen for din ordre, gennemføres den. Hvis du allerede har tilvejebragt betalingsoplysninger, behandler vi din ordre manuelt og sender dig en e-mail, når den er gennemført.",
             "order_pending_status_text": "Vi har modtaget din ordre og behandler din betaling. Når betalingen er bekræftet, vil din ordre blive gennemført. Vi sender dig en e-mail, når den er færdig. Bemærk, at denne proces kan tage et par minutter afhængigt af behandlingstiden for din valgte metode. Hvis du har spørgsmål om dit køb, kan du sende os en e-mail på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_incomplete_status_text": "Vi har modtaget din ordre og betaling. Din ordre behandles nu af vores system. Bemærk, at behandlingen kan tage et par minutter. Hvis du har spørgsmål om dit køb, kan du sende os en e-mail på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
+            "order_incomplete_status_heading": "Betalingen for denne ordre er desværre mislykkedes.",
+            "order_incomplete_status_with_unsuccessful_payment_text": "Din ordre er blev ikke gennemført, fordi betalingen ikke lykkedes. Hvis du vil have hjælp til dit køb, så send os en e-mail på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_with_downloadable_digital_items_text": "Du kan til enhver tid downloade dine digitale køb ved at klikke på linkene på denne side eller ved at logge ind på din konto. Der er også et link til download i din bekræftelsesmail, som ankommer inden længe.",
             "order_with_support_number_text": "Der sendes en e-mail med oplysninger om dit køb. Hvis du har spørgsmål om dit køb, kan du sende en e-mail til os på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a> eller ringe til os på <a href=\"tel://{supportPhoneNumber}\">{supportPhoneNumber}</a>.",
             "order_without_downloadable_digital_items_text": "Når vi har modtaget din betaling, sender vi en bekræftelsesmail med et link til at downloade dine digitale køb.",

@@ -212,6 +212,7 @@
             },
             "bluesnap_direct_permission": "Ich autorisiere diese Transaktion mittels elektronischem Scheck (ACH/ECP) und stimme dieser Belastung meines Kontos zu.",
             "bluesnap_direct_electronic_check_label": "Elektronischer Scheck (ACH/ECP)",
+            "bluesnap_direct_local_bank_transfer_label": "Lokale Banküberweisung",
             "bolt_benefit_1": "Kaufen Sie Hunderte von Marken mit passwortfreier Anmeldung",
             "bolt_benefit_2": "Bezahlen Sie mit gespeicherten Zahlungs- und Lieferdaten",
             "bolt_benefit_3": "Profitieren Sie von PCI-konformer Kontosicherheit",
@@ -472,7 +473,8 @@
             "sign_out_after_action": "um andere Zahlungsmethoden anzuzeigen",
             "sign_in_required_error": "Remote-Anmeldung vor der Zahlung erforderlich",
             "sign_out_before_action": "",
-            "start_with_text": "Schnellerer Bezahlvorgang mit:"
+            "start_with_text": "Schnellerer Bezahlvorgang mit:",
+            "powered_by": "Bereitgestellt von"
         },
         "shipping": {
             "cart_change_error": "Es wurde eine Aktualisierung Ihres Warenkorbs erkannt und Ihre verfügbaren Versandkosten wurden aktualisiert. Bitte wählen Sie erneut eine Versandmethode aus, um fortzufahren.",
@@ -512,6 +514,9 @@
             "label": "Ja, ich stimme der <a href=\"{url}\" target=\"_blank\">Datenschutzerklärung</a> zu.",
             "heading": "Datenschutzerklärung"
         },
+        "privacy_policy_auto_consent": {
+            "label": "*Wenn Sie auf Weiter klicken, stimmen Sie unseren <a href=\"{url}\" target=\"_blank\">Datenschutzbestimmungen</a> zu."
+        },
         "tax": {
             "inclusive_label": "In der Gesamtsumme enthaltene Steuer:"
         },
@@ -545,6 +550,8 @@
             "order_pending_review_text": "Ihre Bestellung wurde an uns gesendet, wartet aber derzeit auf den Eingang der Zahlung. Sobald wir die Zahlung für Ihre Bestellung erhalten haben, wird diese abgeschlossen. Wenn Sie bereits Zahlungsdaten angegeben haben, werden wir Ihre Bestellung manuell bearbeiten und Ihnen eine E-Mail senden, sobald sie abgeschlossen ist.",
             "order_pending_status_text": "Wir haben Ihre Bestellung erhalten und sind dabei, Ihre Zahlung zu verarbeiten. Sobald die Zahlung verifiziert wurde, wird Ihre Bestellung abgeschlossen. Wir senden Ihnen eine E-Mail, wenn dies der Fall ist. Bitte beachten Sie, dass dieser Vorgang einige Minuten dauern kann, abhängig von den Verarbeitungszeiten der von Ihnen gewählten Methode. Wenn Sie Fragen zu Ihrem Kauf haben, senden Sie uns eine E-Mail an <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_incomplete_status_text": "Wir haben Ihre Bestellung und Ihre Zahlung erhalten. Ihre Bestellung wird nun von unserem System bearbeitet. Bitte beachten Sie, dass dies einige Minuten dauern kann. Wenn Sie Fragen zu Ihrem Kauf haben, senden Sie uns eine E-Mail an <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
+            "order_incomplete_status_heading": "Es tut uns leid, die Zahlung für diese Bestellung ist fehlgeschlagen.",
+            "order_incomplete_status_with_unsuccessful_payment_text": "Ihre Bestellung ist unvollständig, weil die Zahlung nicht erfolgreich war. Wenn Sie Hilfe bei Ihrem Kaufvorgang benötigen, schicken Sie uns eine E-Mail an <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_with_downloadable_digital_items_text": "Sie können Ihre digitalen Käufe jederzeit herunterladen, indem Sie auf die Links auf dieser Seite klicken, oder indem Sie sich in Ihrem Konto anmelden. Außerdem befindet sich ein Download-Link in Ihrer Bestätigungs-E-Mail, die Sie in Kürze erhalten sollten.",
             "order_with_support_number_text": "Sie erhalten eine E-Mail mit Informationen zu Ihrem Kauf. Wenn Sie Fragen zu Ihrem Kauf haben, senden Sie uns eine E-Mail an <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a> oder rufen Sie uns an unter <a href=\"tel://{supportPhoneNumber}\">{supportPhoneNumber}</a>.",
             "order_without_downloadable_digital_items_text": "Sobald wir Ihre Zahlung erhalten haben, senden wir Ihnen eine Bestätigungs-E-Mail mit einem Link zum Herunterladen Ihrer digitalen Einkäufe.",
