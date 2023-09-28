@@ -51,7 +51,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                 testId="cart-subtotal"
             />
 
-            {autoshipDiscount && (
+            {!!autoshipDiscount && (
               <AutoshipDiscount discountAmount={autoshipDiscount}/>)}
 
             {(coupons || []).map((coupon, index) => (
