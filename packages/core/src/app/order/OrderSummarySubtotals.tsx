@@ -1,11 +1,12 @@
-import { Coupon, Fee, GiftCertificate, OrderFee, Tax } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo } from 'react';
+import {Coupon, Fee, GiftCertificate, OrderFee, Tax} from '@bigcommerce/checkout-sdk';
+import React, {FunctionComponent, memo} from 'react';
 
-import { TranslatedString } from '@bigcommerce/checkout/locale';
+import {TranslatedString} from '@bigcommerce/checkout/locale';
 
+import {AutoshipDiscount} from "./AutoshipDiscount";
+import isOrderFee from "./isOrderFee";
 import OrderSummaryDiscount from './OrderSummaryDiscount';
 import OrderSummaryPrice from './OrderSummaryPrice';
-import isOrderFee from "./isOrderFee";
 
 export interface OrderSummarySubtotalsProps {
     coupons: Coupon[];
@@ -22,6 +23,7 @@ export interface OrderSummarySubtotalsProps {
     subtotalAmount: number;
     onRemovedGiftCertificate?(code: string): void;
     onRemovedCoupon?(code: string): void;
+    autoshipDiscount?: number;
 }
 
 const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
@@ -38,6 +40,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
     coupons,
     onRemovedGiftCertificate,
     onRemovedCoupon,
+    autoshipDiscount
 }) => {
     return (
         <>
@@ -47,6 +50,9 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                 label={<TranslatedString id="cart.subtotal_text" />}
                 testId="cart-subtotal"
             />
+
+            {autoshipDiscount && (
+              <AutoshipDiscount discountAmount={autoshipDiscount}/>)}
 
             {(coupons || []).map((coupon, index) => (
                 <OrderSummaryDiscount
