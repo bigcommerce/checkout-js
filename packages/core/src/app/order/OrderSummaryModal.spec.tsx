@@ -3,7 +3,7 @@ import { mount, shallow, ShallowWrapper } from 'enzyme';
 import React from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
-import { getPhysicalItem } from '@bigcommerce/checkout/test-utils';
+import { getPhysicalItem } from '@bigcommerce/checkout/test-mocks';
 
 import { getStoreConfig } from '../config/config.mock';
 import { SMALL_SCREEN_MAX_WIDTH } from '../ui/responsive';

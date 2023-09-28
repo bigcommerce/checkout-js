@@ -10,11 +10,11 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { fireEvent, render, screen } from '@bigcommerce/checkout/locale';
 import {
     PaymentFormService,
     PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
+import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import BlueSnapDirectEcpPaymentMethod from './BlueSnapDirectEcpPaymentMethod';
 import { getBlueSnapDirect } from './mocks/bluesnapdirect-method.mock';

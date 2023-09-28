@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from 'react';
 
+import { fireEvent, render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
+
 import CheckoutStepType from '../checkout/CheckoutStepType';
 
 import StripeGuestForm, { StripeGuestFormProps } from './StripeGuestForm';
-import { fireEvent, render, screen, waitFor } from '@bigcommerce/checkout/locale';
-import { getStoreConfig } from '../config/config.mock';
 
 describe('StripeGuestForm', () => {
     let defaultProps: StripeGuestFormProps;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { render } from '@bigcommerce/checkout/locale';
+import { render } from '@bigcommerce/checkout/test-utils';
 
 import BraintreeAcceleratedCheckoutInstrumentUseNewButton from './BraintreeAcceleratedCheckoutInstrumentUseNewButton';
 

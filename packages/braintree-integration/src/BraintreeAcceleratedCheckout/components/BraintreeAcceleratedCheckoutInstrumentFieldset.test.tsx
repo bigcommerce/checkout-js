@@ -8,13 +8,13 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { render } from '@bigcommerce/checkout/locale';
 import {
     CheckoutContext,
     PaymentFormContext,
     PaymentFormService,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { getCardInstrument, getPaymentFormServiceMock } from '@bigcommerce/checkout/test-utils';
+import { getCardInstrument, getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
+import { render } from '@bigcommerce/checkout/test-utils';
 
 import BraintreeAcceleratedCheckoutInstrumentFieldset from './BraintreeAcceleratedCheckoutInstrumentFieldset';
 

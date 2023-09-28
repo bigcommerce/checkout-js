@@ -1,8 +1,9 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 
-import { createLocaleContext, render, screen } from '@bigcommerce/checkout/locale';
-import { getCardInstrument, getStoreConfig } from '@bigcommerce/checkout/test-utils';
+import { createLocaleContext } from '@bigcommerce/checkout/locale';
+import { getCardInstrument, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import BraintreeAcceleratedCheckoutInstrumentMenuItem, {
     BraintreeAcceleratedCheckoutInstrumentMenuItemProps,

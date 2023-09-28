@@ -4,7 +4,7 @@ import { noop } from 'lodash';
 import React from 'react';
 
 import { LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
-import { getPaymentMethod } from '@bigcommerce/checkout/test-utils';
+import { getPaymentMethod } from '@bigcommerce/checkout/test-mocks';
 
 import SignOutLink from './SignOutLink';
 

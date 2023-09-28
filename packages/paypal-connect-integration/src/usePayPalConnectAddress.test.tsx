@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import React from 'react';
 
 import * as PaymentIntegrationApi from '@bigcommerce/checkout/payment-integration-api';
-import { getAddress, getCustomer, getStoreConfig } from '@bigcommerce/checkout/test-utils';
+import { getAddress, getCustomer, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import isPayPalConnectAddress from './is-paypal-connect-address';
 import usePayPalConnectAddress from './usePayPalConnectAddress';

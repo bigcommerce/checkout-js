@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { fireEvent, render, screen } from '@bigcommerce/checkout/locale';
+import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import BlueSnapDirectSelectField, {
     BlueSnapDirectSelectFieldProps,

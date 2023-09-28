@@ -1,7 +1,7 @@
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
-import { render, screen } from '@bigcommerce/checkout/locale';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { ExtensionProvider } from './ExtensionProvider';
 

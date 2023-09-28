@@ -1,10 +1,8 @@
 import { render, RenderOptions } from '@testing-library/react';
 import React, { ReactElement } from 'react';
 
-import { getStoreConfig } from '@bigcommerce/checkout/test-utils';
-
-import createLocaleContext from './createLocaleContext';
-import LocaleContext from './LocaleContext';
+import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
+import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
     return (

@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
-import { getStoreConfig } from '@bigcommerce/checkout/test-utils';
+import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import { mapFromPayments } from '../giftCertificate';
 

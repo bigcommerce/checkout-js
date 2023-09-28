@@ -3,9 +3,9 @@ import { Field, FieldProps, Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { render, screen } from '@bigcommerce/checkout/locale';
 import { PaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
-import { getCardInstrument, getPaymentFormServiceMock } from '@bigcommerce/checkout/test-utils';
+import { getCardInstrument, getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import BraintreeAcceleratedCheckoutInstrumentSelect from './BraintreeAcceleratedCheckoutInstrumentSelect';
 

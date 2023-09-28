@@ -8,7 +8,6 @@ import { FormikValues } from 'formik/dist/types';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { act, render, screen } from '@bigcommerce/checkout/locale';
 import {
     CheckoutContext,
     PaymentFormContext,
@@ -22,7 +21,8 @@ import {
     getInstruments,
     getPaymentFormServiceMock,
     getStoreConfig,
-} from '@bigcommerce/checkout/test-utils';
+} from '@bigcommerce/checkout/test-mocks';
+import { act, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { AccountTypes, OwnershipTypes } from '../constants';
 

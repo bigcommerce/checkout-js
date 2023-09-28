@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom';
 import React from 'react';
 
-import { render, screen } from '@bigcommerce/checkout/locale';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import BraintreeAcceleratedCheckoutCreditCardForm from './BraintreeAcceleratedCheckoutCreditCardForm';
 

@@ -2,8 +2,8 @@ import { createCheckoutService, LanguageService } from '@bigcommerce/checkout-sd
 import { EventEmitter } from 'events';
 import React from 'react';
 
-import { render } from '@bigcommerce/checkout/locale';
 import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
+import { render } from '@bigcommerce/checkout/test-utils';
 
 import { getBraintreeLocalMethodMock } from './mocks/braintreeLocalMethodsMocks';
 

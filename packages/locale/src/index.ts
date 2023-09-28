@@ -17,4 +17,3 @@ export { default as TranslatedLink, TranslatedLinkProps } from './TranslatedLink
 export { default as TranslatedString, TranslatedStringProps } from './TranslatedString';
 export { getLocaleContext } from './localeContext.mock';
 export { FALLBACK_TRANSLATIONS } from './translations';
-export * from './TestWrapper';

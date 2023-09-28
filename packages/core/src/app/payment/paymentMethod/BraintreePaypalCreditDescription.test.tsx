@@ -1,8 +1,8 @@
 import { CheckoutService, createCheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
-import { render } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { render } from '@bigcommerce/checkout/test-utils';
 
 import BraintreePaypalCreditDescription from './BraintreePaypalCreditDescription';
 

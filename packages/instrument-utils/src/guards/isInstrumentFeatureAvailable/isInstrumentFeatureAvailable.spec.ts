@@ -5,7 +5,7 @@ import {
     getGuestCustomer,
     getPaymentMethod,
     getStoreConfig,
-} from '@bigcommerce/checkout/test-utils';
+} from '@bigcommerce/checkout/test-mocks';
 
 import { isInstrumentFeatureAvailable, IsInstrumentFeatureAvailableState } from '.';
 

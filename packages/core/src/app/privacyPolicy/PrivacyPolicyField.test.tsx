@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { render, screen } from '@bigcommerce/checkout/locale';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import PrivacyPolicyField from './PrivacyPolicyField';
 

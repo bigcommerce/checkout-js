@@ -2,12 +2,12 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { render } from '@bigcommerce/checkout/locale';
 import {
     PaymentFormContext,
     PaymentFormService,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-utils';
+import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
+import { render } from '@bigcommerce/checkout/test-utils';
 
 import { OwnershipTypes } from '../constants';
 

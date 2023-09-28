@@ -1,8 +1,9 @@
 import { CheckoutService, createCheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
-import { createLocaleContext, LocaleContextType, render, screen } from '@bigcommerce/checkout/locale';
+import { createLocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getStoreConfig } from '../config/config.mock';
 

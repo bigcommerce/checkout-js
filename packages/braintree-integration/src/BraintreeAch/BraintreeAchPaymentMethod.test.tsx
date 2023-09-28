@@ -8,7 +8,7 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { createLocaleContext, render } from '@bigcommerce/checkout/locale';
+import { createLocaleContext } from '@bigcommerce/checkout/locale';
 import {
     PaymentFormService,
     PaymentMethodProps,
@@ -19,7 +19,8 @@ import {
     getGuestCustomer,
     getPaymentFormServiceMock,
     getStoreConfig,
-} from '@bigcommerce/checkout/test-utils';
+} from '@bigcommerce/checkout/test-mocks';
+import { render } from '@bigcommerce/checkout/test-utils';
 
 import BraintreeAchPaymentMethod from './BraintreeAchPaymentMethod';
 
@@ -33,7 +34,7 @@ describe('BraintreeAchPaymentForm', () => {
     let defaultPropsWithVaulting: PaymentMethodProps;
     let paymentForm: PaymentFormService;
 
-    // TODO: add getAddress mock to @bigcommerce/checkout/test-utils package
+    // TODO: add getAddress mock to @bigcommerce/checkout/test-mocks package
     const billingAddress: BillingAddress = {
         id: '1',
         firstName: 'Test',

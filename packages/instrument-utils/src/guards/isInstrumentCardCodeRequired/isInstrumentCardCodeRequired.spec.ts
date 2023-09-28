@@ -7,7 +7,7 @@ import {
     getDigitalItem,
     getGiftCertificateItem,
     getPaymentMethod,
-} from '@bigcommerce/checkout/test-utils';
+} from '@bigcommerce/checkout/test-mocks';
 
 import {
     isInstrumentCardCodeRequired,

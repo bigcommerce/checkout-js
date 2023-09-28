@@ -7,9 +7,9 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { render, screen } from '@bigcommerce/checkout/locale';
 import { CheckoutContext } from '@bigcommerce/checkout/payment-integration-api';
-import { getInstruments } from '@bigcommerce/checkout/test-utils';
+import { getInstruments } from '@bigcommerce/checkout/test-mocks';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { isAccountInstrument } from '../../guards';
 
