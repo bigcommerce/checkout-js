@@ -160,7 +160,7 @@ function appConfig(options, argv) {
                             include: [
                                     join(__dirname, 'packages', 'core', 'src'),
                                     join(__dirname, 'packages', 'locale', 'src'),
-                                    join(__dirname, 'packages', 'test-utils', 'src'),
+                                    join(__dirname, 'packages', 'test-mocks', 'src'),
                                 ],
                             use: [
                                 {
@@ -298,7 +298,7 @@ function loaderConfig(options, argv) {
                                 join(__dirname, 'packages', 'dom-utils', 'src'),
                                 join(__dirname, 'packages', 'legacy-hoc', 'src'),
                                 join(__dirname, 'packages', 'locale', 'src'),
-                                join(__dirname, 'packages', 'test-utils', 'src'),
+                                join(__dirname, 'packages', 'test-mocks', 'src'),
                             ],
                             use: [
                                 {
