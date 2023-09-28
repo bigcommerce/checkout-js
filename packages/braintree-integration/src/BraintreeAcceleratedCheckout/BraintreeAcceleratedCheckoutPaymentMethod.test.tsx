@@ -35,10 +35,6 @@ describe('BraintreeAcceleratedCheckoutPaymentMethod', () => {
         onUnhandledError: jest.fn(),
     };
 
-    beforeEach(() => {
-        jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockImplementation(() => true);
-    });
-
     it('initializes BraintreeAcceleratedCheckoutPaymentMethod with required props', () => {
         const initializePayment = jest
             .spyOn(checkoutService, 'initializePayment')
