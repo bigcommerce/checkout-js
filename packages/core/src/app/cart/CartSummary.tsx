@@ -19,12 +19,13 @@ export type WithCheckoutCartSummaryProps = {
     storeCreditAmount?: number;
 } & RedeemableProps;
 
-const CartSummary: FunctionComponent<WithCheckoutCartSummaryProps> = ({ cartUrl, ...props }) => {
+const CartSummary: FunctionComponent<WithCheckoutCartSummaryProps> = ({ cartUrl, checkout, ...props }) => {
     const headerLink = isBuyNowCart() ? null : <EditLink url={cartUrl} />;
 
     return withRedeemable(OrderSummary)({
         ...props,
         cartUrl,
+        checkout,
         headerLink,
     });
 };
