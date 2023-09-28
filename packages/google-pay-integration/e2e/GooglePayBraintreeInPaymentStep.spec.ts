@@ -11,7 +11,7 @@ import {
     payment,
 } from './GooglePayBraintreeMockingResponses';
 
-test.describe('Sample Test Group', () => {
+test.describe('Google Pay Braintree', () => {
     test('Google Pay Braintree in Payment Step', async ({ assertions, checkout, page }) => {
         const responseProps = { status: 200, contentType: 'application/json' };
 
