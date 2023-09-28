@@ -366,7 +366,7 @@ describe('OrderStatus', () => {
         const orderStatus = mount(<OrderStatusTest {...defaultProps} order={order} />);
 
         expect(
-            orderStatus.find('[data-test="order-confirmation-mandate-mandateText-list"]'),
+            orderStatus.find('[data-test="order-confirmation-mandate-text-list"]'),
         ).toHaveLength(1);
     });
 });
