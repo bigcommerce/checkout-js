@@ -50,12 +50,14 @@ const OrderSummaryDrawer: FunctionComponent<
     taxes,
     total,
     fees,
+    autoshipDiscount,
 }) => {
     const renderModal = useCallback(
         (props) => (
             <OrderSummaryModal
                 {...props}
                 additionalLineItems={additionalLineItems}
+                autoshipDiscount={autoshipDiscount}
                 coupons={coupons}
                 discountAmount={discountAmount}
                 fees={fees}
