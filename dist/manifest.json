@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "appVersion": "1.374.1-prerelease.1695977192363",
+  "appVersion": "1.374.1-prerelease.1695983532853",
   "dynamicChunks": {
     "js": [
       "134-a23b6603.js",
@@ -14,7 +14,7 @@
       "cart-summary-0e88168c.js",
       "order-summary-drawer-6d750537.js",
       "order-summary-8e3d2059.js",
-      "payment-f0298695.js",
+      "payment-260a4f24.js",
       "shipping-a59b84ac.js"
     ],
     "css": [
@@ -32,12 +32,12 @@
     ]
   },
   "js": [
-    "runtime-ffbfeda4.js",
+    "runtime-59cfe353.js",
     "390-3d5c3aa2.js",
     "608-c7da5fd7.js",
     "418-d48c8904.js",
     "146-ed307ddd.js",
-    "checkout-2d04c9df.js"
+    "checkout-4fa016fc.js"
   ],
   "css": [
     "checkout-83682f27.css"
