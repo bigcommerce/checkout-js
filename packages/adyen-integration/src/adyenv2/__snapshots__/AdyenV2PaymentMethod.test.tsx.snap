@@ -15,19 +15,6 @@ Object {
               id="adyen-scheme-component-field"
               tabindex="-1"
             />
-            <div
-              class="signout-link"
-            >
-              
-               
-              <a
-                href="#"
-              >
-                Sign out of Authorizenet
-              </a>
-               
-              to view other payment methods
-            </div>
           </div>
         </div>
         <div
@@ -50,19 +37,6 @@ Object {
               id="adyen-scheme-component-field"
               tabindex="-1"
             />
-            <div
-              class="signout-link"
-            >
-              
-               
-              <a
-                href="#"
-              >
-                Sign out of Authorizenet
-              </a>
-               
-              to view other payment methods
-            </div>
           </div>
         </div>
         <div
@@ -86,19 +60,6 @@ Object {
             id="adyen-scheme-component-field"
             tabindex="-1"
           />
-          <div
-            class="signout-link"
-          >
-            
-             
-            <a
-              href="#"
-            >
-              Sign out of Authorizenet
-            </a>
-             
-            to view other payment methods
-          </div>
         </div>
       </div>
       <div

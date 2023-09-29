@@ -16,7 +16,6 @@ import {
     CardInstrumentFieldset,
     getCreditCardValidationSchema,
     SignOutLink,
-    SignOutLinkProps,
 } from '@bigcommerce/checkout/instrument-utils';
 import {
     createLocaleContext,
@@ -296,65 +295,6 @@ describe('HostedWidgetPaymentMethod', () => {
                 ...getCheckout(),
                 payments: [{ ...getCheckoutPayment(), providerId: defaultProps.method.id }],
             });
-        });
-
-        it('renders sign out link if user is signed into their payment method account', () => {
-            const component = mount(
-                <HostedWidgetPaymentMethodTest {...defaultProps} isSignedIn={true} />,
-            );
-
-            expect(component.find(SignOutLink)).toHaveLength(1);
-        });
-
-        it('signs out from payment method account of user when clicking on sign out link', async () => {
-            const handleSignOutError = jest.fn();
-
-            const signOut = jest.fn();
-
-            const component = mount(
-                <HostedWidgetPaymentMethodTest
-                    {...defaultProps}
-                    isSignedIn={true}
-                    onSignOutError={handleSignOutError}
-                    signOut={signOut}
-                />,
-            );
-
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            (component.find(SignOutLink) as ReactWrapper<SignOutLinkProps>).prop('onSignOut')();
-
-            await new Promise((resolve) => process.nextTick(resolve));
-
-            expect(signOut).toHaveBeenCalledWith({
-                methodId: defaultProps.method.id,
-            });
-
-            expect(handleSignOutError).not.toHaveBeenCalled();
-        });
-
-        it('notifies parent component if unable to sign out', async () => {
-            const handleSignOutError = jest.fn();
-            const signOut = jest.fn().mockRejectedValue(new Error('Unknown error'));
-
-            jest.spyOn(checkoutService, 'signOutCustomer').mockRejectedValue(
-                new Error('Unknown error'),
-            );
-
-            const component = mount(
-                <HostedWidgetPaymentMethodTest
-                    {...defaultProps}
-                    isSignedIn={true}
-                    onSignOutError={handleSignOutError}
-                    signOut={signOut}
-                />,
-            );
-
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            (component.find(SignOutLink) as ReactWrapper<SignOutLinkProps>).prop('onSignOut')();
-
-            await new Promise((resolve) => process.nextTick(resolve));
-
-            expect(handleSignOutError).toHaveBeenCalledWith(expect.any(Error));
         });
 
         it('renders link for user to edit their selected credit card', () => {
