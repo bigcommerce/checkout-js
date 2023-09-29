@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.377.0](https://github.com/bigcommerce/checkout-js/compare/v1.376.4...v1.377.0) (2023-09-29)
+
+
+### Features
+
+* **payment:** PAYPAL-2947 added MandateTextComponent ([e6bd471](https://github.com/bigcommerce/checkout-js/commit/e6bd471094601e386a6af711a9a9a9ebf9e7a509))
+* **payment:** PAYPAL-2947 added MandateTextComponent ([c574bf3](https://github.com/bigcommerce/checkout-js/commit/c574bf300b0be4fea7bd0e8ee1c51cfeba105aad))
+
 ### [1.376.4](https://github.com/bigcommerce/checkout-js/compare/v1.376.3...v1.376.4) (2023-09-28)
 
 ### [1.376.3](https://github.com/bigcommerce/checkout-js/compare/v1.376.2...v1.376.3) (2023-09-28)
