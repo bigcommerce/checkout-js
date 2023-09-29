@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.374.1-prerelease.1695977192363](https://github.com/bigcommerce/checkout-js/compare/v1.374.1-prerelease.1695910620826...v1.374.1-prerelease.1695977192363) (2023-09-29)
+
+
+### Features
+
+* **payment:** show sign out link only for Google Pay ([49b96e2](https://github.com/bigcommerce/checkout-js/commit/49b96e20b22dc8046afd20516a2fc7bf6a357795))
+
 ### 1.374.1-prerelease.1695910620826 (2023-09-28)
 
 
