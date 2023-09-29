@@ -239,6 +239,11 @@ class HostedWidgetPaymentComponent extends Component<
         const shouldShowAccountInstrument =
             instruments[0] && isBankAccountInstrument(instruments[0]);
 
+        const shouldShowSignOut = isSignedIn && method.id === 'googlepay';
+
+        console.log(isSignedIn);
+        console.log(method.id);
+
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
                 <div className="paymentMethod--hosted">
@@ -278,7 +283,9 @@ class HostedWidgetPaymentComponent extends Component<
 
                     {this.renderEditButtonIfAvailable()}
 
-                    {isSignedIn && <SignOutLink method={method} onSignOut={this.handleSignOut} />}
+                    {shouldShowSignOut && (
+                        <SignOutLink method={method} onSignOut={this.handleSignOut} />
+                    )}
                 </div>
             </LoadingOverlay>
         );
