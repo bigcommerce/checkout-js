@@ -342,4 +342,31 @@ describe('OrderStatus', () => {
             ).toHaveLength(0);
         });
     });
+
+    it('render mandateText list',  () => {
+        const order = getOrder();
+        order.payments = [{
+            detail: {
+                step: '1',
+                instructions: '1',
+            },
+            description: 'test',
+            amount: 1,
+            providerId: 'paypalcommercealternativemethod',
+            methodId: 'ratepay',
+            mandate: {
+                id: '',
+                url: '',
+                mandateText: {
+                    account_holder_name: 'Name',
+                },
+            }
+        }];
+
+        const orderStatus = mount(<OrderStatusTest {...defaultProps} order={order} />);
+
+        expect(
+            orderStatus.find('[data-test="order-confirmation-mandate-text-list"]'),
+        ).toHaveLength(1);
+    });
 });
