@@ -543,7 +543,12 @@
                     "sepa_debit": "SEPA-fuldmagt til direkte debitering"
                 },
                 "paypalcommercealternativemethods": {
-                    "oxxo": "OXXO-kvittering"
+                    "oxxo": "OXXO-kvittering",
+                    "ratepay": {
+                        "account_holder_name": "Account Holder",
+                        "iban": "Iban",
+                        "payment_reference": "Payment Reference"
+                    }
                 }
             },
             "order_number_text": "Dit ordrenummer er <strong>{orderNumber}</strong>",

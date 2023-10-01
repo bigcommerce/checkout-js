@@ -543,7 +543,12 @@
                     "sepa_debit": "Orden de débito directo SEPA"
                 },
                 "paypalcommercealternativemethods": {
-                    "oxxo": "Ticket de OXXO"
+                    "oxxo": "Ticket de OXXO",
+                    "ratepay": {
+                        "account_holder_name": "Account Holder",
+                        "iban": "Iban",
+                        "payment_reference": "Payment Reference"
+                    }
                 }
             },
             "order_number_text": "Tu número de pedido es <strong>{orderNumber}</strong>",

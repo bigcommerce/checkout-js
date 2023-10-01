@@ -543,7 +543,12 @@
                     "sepa_debit": "Upoważnienie do Polecenia Zapłaty SEPA"
                 },
                 "paypalcommercealternativemethods": {
-                    "oxxo": "Bilet do OXXO"
+                    "oxxo": "Bilet do OXXO",
+                    "ratepay": {
+                        "account_holder_name": "Account Holder",
+                        "iban": "Iban",
+                        "payment_reference": "Payment Reference"
+                    }
                 }
             },
             "order_number_text": "Twój numer zamówienia to <strong>{orderNumber}</strong>.",

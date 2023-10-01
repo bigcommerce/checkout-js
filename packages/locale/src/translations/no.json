@@ -543,7 +543,12 @@
                     "sepa_debit": "SEPA-autorisasjon"
                 },
                 "paypalcommercealternativemethods": {
-                    "oxxo": "OXXO-billett"
+                    "oxxo": "OXXO-billett",
+                    "ratepay": {
+                        "account_holder_name": "Account Holder",
+                        "iban": "Iban",
+                        "payment_reference": "Payment Reference"
+                    }
                 }
             },
             "order_number_text": "Bestillingsnummeret ditt er <strong>{orderNumber}</strong>",
