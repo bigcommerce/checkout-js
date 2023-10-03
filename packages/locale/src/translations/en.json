@@ -528,6 +528,9 @@
         },
         "order_confirmation": {
             "mandate": {
+                "adyenv3": {
+                    "boletobancario": "Boleto Bancário Ticket"
+                },
                 "checkoutcom": {
                     "boleto": "Boleto Bancário Ticket",
                     "oxxo": "OXXO Ticket",
