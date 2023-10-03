@@ -1,3 +1,4 @@
+import { Address } from '@bigcommerce/checkout-sdk';
 import { Page } from '@playwright/test';
 
 import { CheckoutPagePreset } from '../../';
@@ -93,9 +94,7 @@ export class Checkout {
         await this.page.locator('[data-test="redeemableEntry-submit"]').click();
     }
 
-    async completeCustomerStepAsGuest(): Promise<void> {
-        const email = `test@example.com`;
-
+    async completeCustomerStepAsGuest(email = `test@example.com`): Promise<void> {
         await this.page
             .locator('[data-test="checkout-customer-guest"]')
             .waitFor({ state: 'visible' });
@@ -121,39 +120,25 @@ export class Checkout {
 
     async fillAddressForm({
         formId,
+        address,
         addressAppendText = '',
     }: {
         formId: string;
+        address: Address;
         addressAppendText: string;
     }): Promise<void> {
-        const address = {
-            firstName: `testFirstName ${addressAppendText}`,
-            lastName: `testLastName ${addressAppendText}`,
-            company: '',
-            phone: '',
-            address1: `123 test ${addressAppendText}`,
-            address2: '',
-            city: 'New York',
-            countryCode: 'US',
-            stateOrProvince: '',
-            postalCode: '12333',
-            shouldSaveAddress: false,
-            stateOrProvinceCode: 'NY',
-            customFields: [],
-        };
-
         await this.page.locator(`${formId}`).waitFor({ state: 'visible' });
         await this.page
             .locator(`${formId} [data-test="firstNameInput-text"]`)
-            .fill(address.firstName);
+            .fill(`${address.firstName} ${addressAppendText}`);
         await this.page
             .locator(`${formId} [data-test="lastNameInput-text"]`)
-            .fill(address.lastName);
+            .fill(`${address.lastName} ${addressAppendText}`);
         await this.page.locator(`${formId} [data-test="companyInput-text"]`).fill(address.company);
         await this.page.locator(`${formId} [data-test="phoneInput-text"]`).fill(address.phone);
         await this.page
             .locator(`${formId} [data-test="addressLine1Input-text"]`)
-            .fill(address.address1);
+            .fill(`${address.address1} ${addressAppendText}`);
         await this.page
             .locator(`${formId} [data-test="addressLine2Input-text"]`)
             .fill(address.address2);
@@ -170,6 +155,7 @@ export class Checkout {
     }
 
     async completeShippingAddressForm(
+        address: Address,
         isBillingAddressSame = true,
         shouldSaveAddress = true,
         addressAppendText?: string,
@@ -178,7 +164,11 @@ export class Checkout {
             .locator('[data-test="shipping-address-heading"]')
             .waitFor({ state: 'visible' });
 
-        await this.fillAddressForm({ formId: '#checkoutShippingAddress', addressAppendText });
+        await this.fillAddressForm({
+            formId: '#checkoutShippingAddress',
+            address,
+            addressAppendText,
+        });
 
         if (!isBillingAddressSame) await this.page.locator('label[for="sameAsBilling"]').click();
         if (!shouldSaveAddress)
@@ -194,17 +184,17 @@ export class Checkout {
         await this.page.locator('#checkout-shipping-continue').click();
     }
 
-    async completeBillingAddressForm(): Promise<void> {
+    async completeBillingAddressForm(address: Address): Promise<void> {
         await this.page
             .locator('[data-test="billing-address-heading"]')
             .waitFor({ state: 'visible' });
 
-        await this.fillAddressForm({ formId: '#checkoutBillingAddress' });
+        await this.fillAddressForm({ formId: '#checkoutBillingAddress', address });
 
         await this.page.locator('#checkout-billing-continue').click();
     }
 
-    async fillNewAddressPopup(addressAppendText: string): Promise<void> {
+    async fillNewAddressPopup(address: Address, addressAppendText: string): Promise<void> {
         await this.page.locator('.dropdownMenu').waitFor({ state: 'visible' });
         await this.page.locator('.dropdownMenu li').nth(0).click();
         await this.page
@@ -212,12 +202,13 @@ export class Checkout {
             .waitFor({ state: 'visible' });
         await this.fillAddressForm({
             formId: '[data-test="modal-body"] .checkout-address',
+            address,
             addressAppendText,
         });
         await this.page.locator('#checkout-save-address').click();
     }
 
-    async completeMultiShippingAddressForm(): Promise<void> {
+    async completeMultiShippingAddressForm(address: Address): Promise<void> {
         await this.page.locator('[data-test="shipping-mode-toggle"]').waitFor({ state: 'visible' });
         await this.page.locator('[data-test="shipping-mode-toggle"]').click();
         await this.page.locator('.consignmentList').waitFor({ state: 'visible' });
@@ -225,12 +216,13 @@ export class Checkout {
         const firstItem = this.page.locator('.consignmentList li').nth(0);
 
         await firstItem.locator('.consignment-product-body .dropdown--select').click();
-        await this.fillNewAddressPopup('1');
+        await this.fillNewAddressPopup(address, '1');
 
         const secondItem = this.page.locator('.consignmentList li').nth(1);
 
         await secondItem.locator('.consignment-product-body .dropdown--select').click();
-        await this.fillNewAddressPopup('2');
+        await this.page.locator('.dropdownMenu').waitFor({ state: 'visible' });
+        await this.page.locator('.dropdownMenu li').nth(1).click();
 
         await this.page.locator('#checkout-shipping-continue').click();
 
