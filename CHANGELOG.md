@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.379.0](https://github.com/bigcommerce/checkout-js/compare/v1.378.1...v1.379.0) (2023-10-03)
+
+
+### Features
+
+* **payment:** PI-833 remove sign out link from hosted widget payment component ([2b0b0c7](https://github.com/bigcommerce/checkout-js/commit/2b0b0c7629c70a66bac8dfdf8a04bf00586bba58))
+
 ### [1.378.1](https://github.com/bigcommerce/checkout-js/compare/v1.378.0...v1.378.1) (2023-10-03)
 
 
