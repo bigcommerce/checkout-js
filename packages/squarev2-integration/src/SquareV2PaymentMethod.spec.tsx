@@ -6,14 +6,15 @@ import {
     PaymentInitializeOptions,
     PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import React, { FunctionComponent } from 'react';
 
 import {
+    PaymentFormContext,
     PaymentFormService,
     PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-utils';
 
 import { getSquareV2 } from './mocks/squarev2-method.mock';
 import SquareV2PaymentMethod from './SquareV2PaymentMethod';
@@ -29,6 +30,7 @@ describe('SquareV2 payment method', () => {
         [options: PaymentRequestOptions]
     >;
     let checkoutState: CheckoutSelectors;
+    let paymentForm: PaymentFormService;
     let props: PaymentMethodProps;
     let SquareV2PaymentMethodTest: FunctionComponent;
 
@@ -42,15 +44,20 @@ describe('SquareV2 payment method', () => {
             .mockResolvedValue(checkoutState);
         checkoutState = checkoutService.getState();
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
+        paymentForm = getPaymentFormServiceMock();
         props = {
             method: getSquareV2(),
             checkoutService,
             checkoutState,
-            paymentForm: { disableSubmit: jest.fn() } as unknown as PaymentFormService,
+            paymentForm,
             language: jest.fn() as unknown as LanguageService,
             onUnhandledError: jest.fn(),
         };
-        SquareV2PaymentMethodTest = () => <SquareV2PaymentMethod {...props} />;
+        SquareV2PaymentMethodTest = () => (
+            <PaymentFormContext.Provider value={{ paymentForm }}>
+                <SquareV2PaymentMethod {...props} />
+            </PaymentFormContext.Provider>
+        );
 
         const placeholderElement = document.createElement('div');
 
@@ -66,21 +73,23 @@ describe('SquareV2 payment method', () => {
     });
 
     it('should render a loading overlay', () => {
-        const loadingOverlay = mount(<SquareV2PaymentMethodTest />).find(LoadingOverlay);
+        jest.spyOn(checkoutState.statuses, 'isLoadingInstruments').mockReturnValue(true);
 
-        expect(loadingOverlay).toHaveLength(1);
+        const { container } = render(<SquareV2PaymentMethodTest />);
+
+        expect(container.getElementsByClassName('loadingOverlay')).toHaveLength(1);
     });
 
     it('should render placeholder form fields', () => {
-        const placeholderForm = mount(<SquareV2PaymentMethodTest />).find(
-            '[data-test="squarev2_placeholder_form"]',
+        const placeholderForm = render(<SquareV2PaymentMethodTest />).getByTestId(
+            'squarev2_placeholder_form',
         );
 
         expect(placeholderForm).toMatchSnapshot();
     });
 
     it('should be initialized with the required config', () => {
-        mount(<SquareV2PaymentMethodTest />);
+        render(<SquareV2PaymentMethodTest />);
 
         expect(initializePayment).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -127,7 +136,7 @@ describe('SquareV2 payment method', () => {
     it('should be initialized without style', () => {
         jest.spyOn(document, 'querySelector').mockReturnValue(null);
 
-        mount(<SquareV2PaymentMethodTest />);
+        render(<SquareV2PaymentMethodTest />);
 
         expect(initializePayment).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -141,7 +150,7 @@ describe('SquareV2 payment method', () => {
     });
 
     it('should be deinitialized with the required config', () => {
-        mount(<SquareV2PaymentMethodTest />).unmount();
+        render(<SquareV2PaymentMethodTest />).unmount();
 
         expect(deinitializePayment).toHaveBeenCalledWith(
             expect.objectContaining({

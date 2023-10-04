@@ -3,41 +3,37 @@
 exports[`SquareV2 payment method should render placeholder form fields 1`] = `
 <div
   data-test="squarev2_placeholder_form"
-  style={
-    Object {
-      "display": "none",
-    }
-  }
+  style="display: none;"
 >
   <div
-    className="form-field"
+    class="form-field"
   >
     <div
-      className="form-label optimizedCheckout-form-label"
+      class="form-label optimizedCheckout-form-label"
       id="messageIsDefault"
     />
     <div
-      className="form-input optimizedCheckout-form-input"
+      class="form-input optimizedCheckout-form-input"
       id="inputIsDefault"
     />
   </div>
   <div
-    className="form-field"
+    class="form-field"
   >
     <div
-      className="form-input optimizedCheckout-form-input form-input--focus optimizedCheckout-form-input--focus"
+      class="form-input optimizedCheckout-form-input form-input--focus optimizedCheckout-form-input--focus"
       id="inputIsFocus"
     />
   </div>
   <div
-    className="form-field form-field--error"
+    class="form-field form-field--error"
   >
     <div
-      className="form-inlineMessage"
+      class="form-inlineMessage"
       id="messageIsError"
     />
     <div
-      className="form-input optimizedCheckout-form-input"
+      class="form-input optimizedCheckout-form-input"
       id="inputIsError"
     />
   </div>

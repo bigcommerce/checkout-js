@@ -1,11 +1,18 @@
+import { CardInstrument } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import { difference } from 'lodash';
-import React, { FunctionComponent, useCallback, useEffect } from 'react';
+import React, { FunctionComponent, useCallback, useEffect, useState } from 'react';
 
 import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
+import {
+    CardInstrumentFieldset,
+    StoreInstrumentFieldset,
+} from '@bigcommerce/checkout/instrument-utils';
 import {
     PaymentMethodProps,
     PaymentMethodResolveId,
     toResolvableComponent,
+    usePaymentFormContext,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
@@ -177,13 +184,92 @@ const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         };
     }, [deinitializePayment, initializePayment]);
 
+    const { getCustomer, getInstruments } = checkoutState.data;
+    const instruments = getInstruments(method) || [];
+    const isSignedIn = getCustomer()?.isGuest;
+    const { isLoadingInstruments } = checkoutState.statuses;
+    const { setFieldValue } = usePaymentFormContext().paymentForm;
+
+    const isInstrumentFeatureAvailable = !isSignedIn && Boolean(method.config.isVaultingEnabled);
+    const shouldShowInstrumentFieldset = isInstrumentFeatureAvailable && instruments.length > 0;
+
+    const [isAddingNewCard, setIsAddingNewCard] = useState(false);
+    const [selectedInstrumentId, setSelectedInstrumentId] = useState<string | undefined>(undefined);
+
+    const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
+
+    const getDefaultInstrumentId: () => string | undefined = () => {
+        if (isAddingNewCard) {
+            return;
+        }
+
+        const defaultInstrument =
+            instruments.find((instrument) => instrument.defaultInstrument) || instruments[0];
+
+        return defaultInstrument.bigpayToken;
+    };
+
+    const handleDeleteInstrument: (id: string) => void = (id) => {
+        if (instruments.length === 0) {
+            setIsAddingNewCard(true);
+            setSelectedInstrumentId(undefined);
+
+            setFieldValue('instrumentId', '');
+        } else if (selectedInstrumentId === id) {
+            setSelectedInstrumentId(getDefaultInstrumentId());
+
+            setFieldValue('instrumentId', getDefaultInstrumentId());
+        }
+    };
+
+    const handleSelectInstrument: (id: string) => void = (id) => {
+        setIsAddingNewCard(false);
+        setSelectedInstrumentId(id);
+    };
+
+    const handleUseNewCard: () => void = () => {
+        setIsAddingNewCard(true);
+        setSelectedInstrumentId(undefined);
+
+        void deinitializePayment();
+
+        void initializePayment();
+    };
+
     return (
-        <div className="loadingSpinner">
-            <LoadingOverlay isLoading={checkoutState.statuses.isInitializingPayment(method.id)}>
-                {renderPlaceholderFields()}
-                <div id={containerId} style={{ minHeight: '100px' }} />
-            </LoadingOverlay>
-        </div>
+        <LoadingOverlay
+            data-test="squarev2_loading_overlay"
+            hideContentWhenLoading
+            isLoading={isLoadingInstruments()}
+        >
+            <div className="paymentMethod--hosted">
+                {shouldShowInstrumentFieldset && (
+                    <CardInstrumentFieldset
+                        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+                        instruments={instruments as CardInstrument[]}
+                        onDeleteInstrument={handleDeleteInstrument}
+                        onSelectInstrument={handleSelectInstrument}
+                        onUseNewInstrument={handleUseNewCard}
+                        selectedInstrumentId={selectedInstrumentId}
+                    />
+                )}
+                <div
+                    className={classNames('widget', `widget--${method.id}`, 'payment-widget')}
+                    id={containerId}
+                    style={{
+                        display: !shouldShowCreditCardFieldset ? 'none' : undefined,
+                    }}
+                    tabIndex={-1}
+                >
+                    {renderPlaceholderFields()}
+                    <div id={containerId} />
+                </div>
+
+                {isInstrumentFeatureAvailable && (
+                    <StoreInstrumentFieldset instrumentId={selectedInstrumentId} />
+                )}
+            </div>
+        </LoadingOverlay>
     );
 };
 
