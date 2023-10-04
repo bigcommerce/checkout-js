@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import { Field, FieldProps, Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
@@ -13,9 +14,12 @@ import {
 
 import BraintreeAcceleratedCheckoutInstrumentSelect from './BraintreeAcceleratedCheckoutInstrumentSelect';
 
-jest.mock('./PoweredByPaypalConnectLabel', () => () => (
-    <div data-test="powered-by-paypal-connect-label">PoweredByPaypalConnectLabel</div>
-));
+jest.mock('@bigcommerce/checkout/paypal-connect-integration', () => ({
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    PoweredByPaypalConnectLabel: jest.fn(() => (
+        <div data-test="powered-by-paypal-connect-label">PoweredByPaypalConnectLabel</div>
+    )),
+}));
 
 describe('BraintreeAcceleratedCheckoutInstrumentSelect', () => {
     it('renders instrument select', () => {
@@ -47,7 +51,9 @@ describe('BraintreeAcceleratedCheckoutInstrumentSelect', () => {
         expect(view).toMatchSnapshot();
     });
 
-    it('renders instrument select', () => {
+    it('renders form to create new instrument and does not render paypal connect label under instruments select', () => {
+        const cardInstrument = getCardInstrument();
+
         render(
             <Formik initialValues={{}} onSubmit={noop}>
                 <LocaleContext.Provider value={createLocaleContext(getStoreConfig())}>
@@ -58,7 +64,7 @@ describe('BraintreeAcceleratedCheckoutInstrumentSelect', () => {
                             name="instrumentId"
                             render={(field: FieldProps<string>) => (
                                 <BraintreeAcceleratedCheckoutInstrumentSelect
-                                    instruments={[getCardInstrument()]}
+                                    instruments={[cardInstrument]}
                                     onSelectInstrument={noop}
                                     onUseNewInstrument={noop}
                                     selectedInstrument={undefined}

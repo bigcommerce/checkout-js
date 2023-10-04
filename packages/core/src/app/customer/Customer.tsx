@@ -16,6 +16,7 @@ import React, { Component, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { isPaypalConnectMethod } from '@bigcommerce/checkout/paypal-connect-integration';
 import { CustomerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
@@ -23,7 +24,6 @@ import { withCheckout } from '../checkout';
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { isErrorWithType } from '../common/error';
 import { isFloatingLabelEnabled } from '../common/utility';
-import { isBraintreeConnectPaymentMethod } from '../payment';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
 import CheckoutButtonList from './CheckoutButtonList';
@@ -442,7 +442,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
         try {
             await signIn(credentials);
 
-            if (isBraintreeConnectPaymentMethod(providerWithCustomCheckout)) {
+            if (isPaypalConnectMethod(providerWithCustomCheckout)) {
                 await executePaymentMethodCheckout({
                     methodId: providerWithCustomCheckout,
                     continueWithCheckoutCallback: onSignIn,
@@ -467,7 +467,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
         await createAccount(mapCreateAccountFromFormValues(values));
 
-        if (isBraintreeConnectPaymentMethod(providerWithCustomCheckout)) {
+        if (isPaypalConnectMethod(providerWithCustomCheckout)) {
             await executePaymentMethodCheckout({
                 methodId: providerWithCustomCheckout,
                 continueWithCheckoutCallback: onAccountCreated,

@@ -1,8 +1,9 @@
 import { Cart, Consignment } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
+import { isPayPalConnectAddress, PoweredByPaypalConnectLabel, usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-connect-integration';
+
 import { AddressType, StaticAddress } from '../address';
-import { isPayPalConnectAddress, PoweredByPaypalConnectLabel, usePayPalConnectAddress } from '../address/PayPalAxo';
 
 import { StaticShippingOption } from './shippingOption';
 import './StaticConsignment.scss';

@@ -3,12 +3,12 @@ import React, { FunctionComponent, memo } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { PoweredByPaypalConnectLabel, usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-connect-integration';
 
 import { DropdownTrigger } from '../ui/dropdown';
 
 import AddressSelectButton from './AddressSelectButton';
 import isEqualAddress from './isEqualAddress';
-import { PoweredByPaypalConnectLabel, usePayPalConnectAddress } from './PayPalAxo';
 import StaticAddress from './StaticAddress';
 
 import './AddressSelect.scss';
