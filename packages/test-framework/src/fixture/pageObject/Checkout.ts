@@ -207,29 +207,4 @@ export class Checkout {
         });
         await this.page.locator('#checkout-save-address').click();
     }
-
-    async completeMultiShippingAddressForm(address: Address): Promise<void> {
-        await this.page.locator('[data-test="shipping-mode-toggle"]').waitFor({ state: 'visible' });
-        await this.page.locator('[data-test="shipping-mode-toggle"]').click();
-        await this.page.locator('.consignmentList').waitFor({ state: 'visible' });
-
-        const firstItem = this.page.locator('.consignmentList li').nth(0);
-
-        await firstItem.locator('.consignment-product-body .dropdown--select').click();
-        await this.fillNewAddressPopup(address, '1');
-
-        const secondItem = this.page.locator('.consignmentList li').nth(1);
-
-        await secondItem.locator('.consignment-product-body .dropdown--select').click();
-        await this.page.locator('.dropdownMenu').waitFor({ state: 'visible' });
-        await this.page.locator('.dropdownMenu li').nth(1).click();
-
-        await this.page.locator('#checkout-shipping-continue').click();
-
-        await this.page.locator(`#billingAddresses .dropdown--select`).click();
-        await this.page.locator(`#billingAddresses .dropdownMenu`).waitFor({ state: 'visible' });
-        await this.page.locator(`#billingAddresses .dropdownMenu li`).nth(1).click();
-
-        await this.page.locator('#checkout-billing-continue').click();
-    }
 }
