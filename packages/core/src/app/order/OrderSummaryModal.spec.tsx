@@ -53,7 +53,6 @@ describe('OrderSummaryModal', () => {
             const order = { ...getOrder(), lineItems };
 
             orderSummary = shallow(
-                // <LocaleProvider checkoutService={checkoutService}>
                 <OrderSummaryModal
                     isOpen={true}
                     {...mapToOrderSummarySubtotalsProps(order)}
@@ -63,7 +62,6 @@ describe('OrderSummaryModal', () => {
                     storeCurrency={getStoreConfig().currency}
                     total={order.orderAmount}
                 />,
-                // </LocaleProvider>,
             );
 
             const itemsComponent = orderSummary.find(OrderSummaryItems);
