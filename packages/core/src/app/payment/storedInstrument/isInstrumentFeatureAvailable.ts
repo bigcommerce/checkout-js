@@ -18,7 +18,8 @@ export default function isInstrumentFeatureAvailable({
     if (
         isVaultingNotEnabled(checkoutSettings, paymentMethod.config) ||
         customer.isGuest ||
-        isVaultingWithMultiShippingNotEnabled(checkoutSettings, isUsingMultiShipping)
+        isVaultingWithMultiShippingNotEnabled(checkoutSettings, isUsingMultiShipping) ||
+        paymentMethod.initializationData.enableLink
     ) {
         return false;
     }
