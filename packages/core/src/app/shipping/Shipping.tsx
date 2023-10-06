@@ -44,11 +44,9 @@ export type FitmentCentre = {
     longitude: number
     fax?: string
     phone: string
-    url?: string
     street: string
     suburb: string
     state: string
-    country: string
     postcode: string
     email?: string
     distance?: number
@@ -240,7 +238,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
     }
 
     private renderFitmentCentreSelection = (fitmentCentre: FitmentCentre) => {
-        const { company, street, suburb, state, postcode, phone, url } = fitmentCentre;
+        const { company, street, suburb, state, postcode, phone } = fitmentCentre;
 
         return (
             <label htmlFor={company} className="fitment-item-wrapper">
@@ -249,9 +247,6 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                     <div>{street}</div>
                     <div>{suburb}, {state} {postcode}</div>
                     <div>Phone: {phone}</div>
-                    {url && (
-                        <a href={url} target='blank' className='url'>See Website</a>
-                    )}
                 </div>
                 <div className='estimate'>
                     Estimated Fitment Time from Dispatch: 1-2 weeks
@@ -279,7 +274,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             city: fitmentCentre.suburb,
             stateOrProvinceCode: fitmentCentre.state,
             postalCode: fitmentCentre.postcode,
-            countryCode: fitmentCentre.country,
+            countryCode: "AU",
             phone: fitmentCentre.phone,
             firstName: "Fitment",
             lastName: "Centre"
