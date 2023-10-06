@@ -169,7 +169,7 @@ class Checkout extends Component<
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
     private unsubscribeFromConsignments?: () => void;
-    private errorLogger: ErrorLogger;
+    private readonly errorLogger: ErrorLogger;
 
     constructor(
         props: Readonly<

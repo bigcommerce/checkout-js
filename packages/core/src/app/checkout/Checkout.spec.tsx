@@ -20,7 +20,7 @@ import { BillingProps } from '../billing';
 import Billing from '../billing/Billing';
 import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';
-import { createErrorLogger, CustomError, ErrorModal } from '../common/error';
+import { CustomError, ErrorModal } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { CustomerInfo, CustomerInfoProps, CustomerProps, CustomerViewType } from '../customer';
 import Customer from '../customer/Customer';
@@ -42,6 +42,17 @@ import { getCheckout, getCheckoutWithPromotions } from './checkouts.mock';
 import CheckoutStep, { CheckoutStepProps } from './CheckoutStep';
 import CheckoutStepType from './CheckoutStepType';
 import getCheckoutStepStatuses from './getCheckoutStepStatuses';
+
+const errorLoggerMock = {
+    log: jest.fn(),
+};
+
+jest.mock('../common/error', () => {
+    return {
+        ...jest.requireActual('../common/error'),
+        createErrorLogger: jest.fn(() => errorLoggerMock),
+    };
+});
 
 describe('Checkout', () => {
     let CheckoutTest: FunctionComponent<CheckoutProps>;
@@ -71,7 +82,6 @@ describe('Checkout', () => {
             createEmbeddedMessenger: () => embeddedMessengerMock,
             embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
             embeddedSupport: createEmbeddedCheckoutSupport(getLanguageService()),
-            errorLogger: createErrorLogger(),
             analyticsTracker
         };
 
@@ -100,8 +110,6 @@ describe('Checkout', () => {
 
             return noop;
         });
-
-        jest.spyOn(defaultProps.errorLogger, 'log').mockImplementation(noop);
 
         jest.spyOn(checkoutState.data, 'getCart').mockReturnValue(getCart());
 
@@ -515,7 +523,7 @@ describe('Checkout', () => {
                 'onUnhandledError',
             )!(error);
 
-            expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
+            expect(errorLoggerMock.log).toHaveBeenCalledWith(error);
         });
 
         it('logs error if shopper is unable to sign in', () => {
@@ -526,7 +534,7 @@ describe('Checkout', () => {
                 error,
             );
 
-            expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
+            expect(errorLoggerMock.log).toHaveBeenCalledWith(error);
         });
 
         it('logs error if shopper is unable to continue as guest', () => {
@@ -537,7 +545,7 @@ describe('Checkout', () => {
                 'onContinueAsGuestError',
             )!(error);
 
-            expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
+            expect(errorLoggerMock.log).toHaveBeenCalledWith(error);
         });
     });
 
@@ -672,7 +680,7 @@ describe('Checkout', () => {
                 'onUnhandledError',
             )(error);
 
-            expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
+            expect(errorLoggerMock.log).toHaveBeenCalledWith(error);
         });
     });
 
@@ -723,7 +731,7 @@ describe('Checkout', () => {
                 error,
             );
 
-            expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
+            expect(errorLoggerMock.log).toHaveBeenCalledWith(error);
         });
     });
 
@@ -803,7 +811,7 @@ describe('Checkout', () => {
                 error,
             );
 
-            expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
+            expect(errorLoggerMock.log).toHaveBeenCalledWith(error);
         });
 
         it('posts message to parent of embedded checkout when there is order submission error', () => {
@@ -827,7 +835,7 @@ describe('Checkout', () => {
                 error,
             );
 
-            expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
+            expect(errorLoggerMock.log).toHaveBeenCalledWith(error);
         });
     });
 });
