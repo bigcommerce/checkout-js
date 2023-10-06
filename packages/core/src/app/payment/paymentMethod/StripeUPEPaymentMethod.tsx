@@ -20,13 +20,15 @@ export type StripePaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'con
 
 interface WithCheckoutStripePaymentMethodProps {
     storeUrl: string;
+    isGuest: boolean;
+    isLinkEnabled: boolean;
 }
 
 const StripeUPEPaymentMethod: FunctionComponent<
     StripePaymentMethodProps &
         WithInjectedHostedCreditCardFieldsetProps &
         WithCheckoutStripePaymentMethodProps
-> = ({ initializePayment, method, storeUrl, onUnhandledError = noop, ...rest }) => {
+> = ({ initializePayment, method, storeUrl, isGuest, isLinkEnabled, onUnhandledError = noop, ...rest }) => {
     const containerId = `stripe-${method.id}-component-field`;
 
     const paymentContext = useContext(PaymentContext);
@@ -97,6 +99,14 @@ const StripeUPEPaymentMethod: FunctionComponent<
         );
     };
 
+    const shouldSavingCardsBeEnabled = (): boolean => {
+        if (!isGuest && isLinkEnabled) {
+            return false;
+        } 
+
+        return true;
+    }
+
     return (
         <>
             <HostedWidgetPaymentMethod
@@ -105,13 +115,14 @@ const StripeUPEPaymentMethod: FunctionComponent<
                 hideContentWhenSignedOut
                 initializePayment={initializeStripePayment}
                 method={method}
+                shouldSavingCardsBeEnabled={shouldSavingCardsBeEnabled()}
             />
             {renderCheckoutThemeStylesForStripeUPE()}
         </>
     );
 };
 
-function mapFromCheckoutProps({ checkoutState }: CheckoutContextProps) {
+function mapFromCheckoutProps({ checkoutState }: CheckoutContextProps, props:any) {
     const {
         data: { getConfig },
     } = checkoutState;
@@ -123,6 +134,8 @@ function mapFromCheckoutProps({ checkoutState }: CheckoutContextProps) {
 
     return {
         storeUrl: config.links.siteLink,
+        isGuest: checkoutState.data.getCustomer()?.isGuest,
+        isLinkEnabled: props.method.initializationData.enableLink,
     };
 }
 
