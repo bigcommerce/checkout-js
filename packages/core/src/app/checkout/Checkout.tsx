@@ -235,12 +235,12 @@ class Checkout extends Component<
                 data.getConfig()?.checkoutSettings.features['CHECKOUT-3190.enable_buy_now_cart'] ??
                 false;
             const removeStepNumbersFlag =
-              data.getConfig()?.checkoutSettings.features['CHECKOUT-7255.remove_checkout_step_numbers'] ??
-              false;
+                data.getConfig()?.checkoutSettings.features['CHECKOUT-7255.remove_checkout_step_numbers'] ??
+                false;
             const walletButtonsOnTopFlag =
-              (data.getConfig()?.checkoutSettings.features['CHECKOUT-7222.checkout_settings_styling_section'] &&
-              data.getUserExperienceSettings()?.walletButtonsOnTop) ??
-              false;
+                (data.getConfig()?.checkoutSettings.features['CHECKOUT-7222.checkout_settings_styling_section'] &&
+                    data.getUserExperienceSettings()?.walletButtonsOnTop) ??
+                false;
             const defaultNewsletterSignupOption =
                 data.getConfig()?.shopperConfig.defaultNewsletterSignup ??
                 false;
@@ -387,7 +387,7 @@ class Checkout extends Component<
                     checkEmbeddedSupport={this.checkEmbeddedSupport}
                     isEmbedded={isEmbedded()}
                     isSubscribed={isSubscribed}
-                    isWalletButtonsOnTop = {isWalletButtonsOnTop}
+                    isWalletButtonsOnTop={isWalletButtonsOnTop}
                     onAccountCreated={this.navigateToNextIncompleteStep}
                     onChangeViewType={this.setCustomerViewType}
                     onContinueAsGuest={this.navigateToNextIncompleteStep}
@@ -617,7 +617,7 @@ class Checkout extends Component<
             prevHasSelectedShippingOptions &&
             !newHasSelectedShippingOptions &&
             findIndex(steps, { type: CheckoutStepType.Shipping }) <
-                findIndex(steps, { type: activeStepType })
+            findIndex(steps, { type: activeStepType })
         ) {
             this.navigateToStep(CheckoutStepType.Shipping);
             this.setState({ error: new ShippingOptionExpiredError() });

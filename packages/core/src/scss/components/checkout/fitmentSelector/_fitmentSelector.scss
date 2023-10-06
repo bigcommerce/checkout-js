@@ -1,0 +1,59 @@
+.fitment-message {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.fitment-wrapper {
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    max-height: 600px;
+    overflow-y: scroll;
+}
+
+.fitment-item-wrapper {
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    padding-bottom: 10px;
+    padding-top: 10px;
+
+    .details {
+        flex-basis: 50%;
+
+        div {
+            display: block;
+            margin-top: 5px;
+        }
+
+        div:first-child {
+            margin-top: 0;
+        }
+
+        .url {
+            display: block;
+            margin-top: 15px;
+        }
+    }
+
+    .estimate {
+        align-items: center;
+        display: flex;
+        flex-basis: 40%;
+        justify-content: center;
+    }
+
+    .radio {
+        align-items: center;
+        display: flex;
+        flex-basis: 10%;
+        justify-content: center;
+    }
+}
+
+.fitment-item-wrapper:last-child {
+    border-bottom: none;
+}
+
+// .fitment-item-wrapper:hover {
+//     background-color: #eee;
+// }

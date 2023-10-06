@@ -33,6 +33,26 @@ import ShippingForm from './ShippingForm';
 import ShippingHeader from './ShippingHeader';
 import { SingleShippingFormValues } from './SingleShippingForm';
 import StripeShipping from './stripeUPE/StripeShipping';
+import fitmentCentres from '../../static/fitment-centres.json';
+import { Button, ButtonVariant } from '../ui/button';
+import { TranslatedString } from '../locale';
+// import IconChevronRight from '../ui/icon/IconChevronRight';
+
+export type FitmentCentre = {
+    company: string
+    latitude: number
+    longitude: number
+    fax?: string
+    phone: string
+    url?: string
+    street: string
+    suburb: string
+    state: string
+    country: string
+    postcode: string
+    email?: string
+    distance?: number
+}
 
 export interface ShippingProps {
     isBillingSameAsShipping: boolean;
@@ -80,10 +100,13 @@ export interface WithCheckoutShippingProps {
     updateBillingAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
     updateCheckout(payload: CheckoutRequestBody): Promise<CheckoutSelectors>;
     updateShippingAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
+    selectConsignmentShippingOption(consignmentId: string, optionId: string): Promise<CheckoutSelectors>;
 }
 
 interface ShippingState {
     isInitializing: boolean;
+    fitmentCentre?: FitmentCentre;
+    isLoading: boolean;
 }
 
 class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, ShippingState> {
@@ -92,6 +115,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
         this.state = {
             isInitializing: true,
+            isLoading: false
         };
     }
 
@@ -134,6 +158,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
         const {
             isInitializing,
+            isLoading
         } = this.state;
 
         if (providerWithCustomCheckout === PaymentMethodId.StripeUPE && !customer.email && this.props.countries.length > 0) {
@@ -153,6 +178,36 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                 step={step}
                 updateAddress={updateShippingAddress}
             />;
+        }
+
+        const includesFitmentCentreItem = this.props.cart.lineItems.physicalItems
+            .flatMap(item => item.options)
+            .some(option => option?.name.includes("Fitment") && option?.value == "EGR Fitment Centre")
+
+        if (includesFitmentCentreItem) {
+
+            return (
+                <>
+                    <div className="fitment-message">
+                        Please select your preferred fitment centre location. Your items will be shipped to your nominated fitment provider.
+                    </div>
+                    <div className="fitment-wrapper">
+                        {fitmentCentres.map(this.renderFitmentCentreSelection)}
+                    </div>
+                    <div className="form-actions">
+                        <Button
+                            disabled={this.state.fitmentCentre == undefined}
+                            id="checkout-shipping-continue"
+                            isLoading={isLoading}
+                            type="button"
+                            variant={ButtonVariant.Primary}
+                            onClick={() => this.props.navigateNextStep(false)}
+                        >
+                            <TranslatedString id="common.continue_action" />
+                        </Button>
+                    </div>
+                </>
+            );
         }
 
         return (
@@ -182,6 +237,72 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                 </div>
             </AddressFormSkeleton>
         );
+    }
+
+    private renderFitmentCentreSelection = (fitmentCentre: FitmentCentre) => {
+        const { company, street, suburb, state, postcode, phone, url } = fitmentCentre;
+
+        return (
+            <label htmlFor={company} className="fitment-item-wrapper">
+                <div className='details'>
+                    <div style={{ fontWeight: "bold" }}>{company}</div>
+                    <div>{street}</div>
+                    <div>{suburb}, {state} {postcode}</div>
+                    <div>Phone: {phone}</div>
+                    {url && (
+                        <a href={url} target='blank' className='url'>See Website</a>
+                    )}
+                </div>
+                <div className='estimate'>
+                    Estimated Fitment Time from Dispatch: 1-2 weeks
+                </div>
+                <div className='radio'>
+                    <input
+                        type="radio"
+                        name="fitment-centre"
+                        id={company}
+                        value={company}
+                        disabled={this.state.isLoading}
+                        onClick={() => this.handleFitmentCentreChange(fitmentCentre)}
+                    />
+                </div>
+            </label>
+        )
+    }
+
+
+    private handleFitmentCentreChange = async (fitmentCentre: FitmentCentre) => {
+        const address: Partial<Address> = {
+            company: fitmentCentre.company,
+            address1: fitmentCentre.street,
+            address2: "",
+            city: fitmentCentre.suburb,
+            stateOrProvinceCode: fitmentCentre.state,
+            postalCode: fitmentCentre.postcode,
+            countryCode: fitmentCentre.country,
+            phone: fitmentCentre.phone,
+            firstName: "Fitment",
+            lastName: "Centre"
+        }
+
+
+        try {
+            this.setState({ isLoading: true });
+            await this.props.updateShippingAddress(address);
+
+            // If we've got a consignment here, just apply the default shipping option to it
+            if (this.props.consignments && this.props.consignments[0].availableShippingOptions) {
+                const consignmentId = this.props.consignments[0].id ?? "";
+                const shippingOptionId = this.props.consignments[0].availableShippingOptions[0]?.id ?? "";
+
+                this.props.selectConsignmentShippingOption(consignmentId, shippingOptionId)
+            }
+            // Just select the default shipping option
+
+        } finally {
+            this.setState({ isLoading: false });
+            this.setState({ fitmentCentre: fitmentCentre })
+        }
     }
 
     private handleMultiShippingModeSwitch: () => void = async () => {
@@ -428,6 +549,7 @@ export function mapToShippingProps({
         updateBillingAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,
         updateShippingAddress: checkoutService.updateShippingAddress,
+        selectConsignmentShippingOption: checkoutService.selectConsignmentShippingOption,
         useFloatingLabel: isFloatingLabelEnabled(config.checkoutSettings),
     };
 }

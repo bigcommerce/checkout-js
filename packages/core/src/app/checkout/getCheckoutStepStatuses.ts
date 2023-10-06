@@ -27,8 +27,8 @@ const getCustomerStepStatus = createSelector(
         const isUsingWallet =
             checkout && checkout.payments
                 ? checkout.payments.some(
-                      (payment) => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0,
-                  )
+                    (payment) => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0,
+                )
                 : false;
         const isGuest = !!(customer && customer.isGuest);
         const isComplete = hasEmail || isUsingWallet;
@@ -77,8 +77,8 @@ const getBillingStepStatus = createSelector(
         const isUsingWallet =
             checkout && checkout.payments
                 ? checkout.payments.some(
-                      (payment) => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0,
-                  )
+                    (payment) => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0,
+                )
                 : false;
         const isComplete = hasAddress || isUsingWallet;
         const isUsingAmazonPay =
@@ -136,6 +136,8 @@ const getShippingStepStatus = createSelector(
             cart && consignments ? hasUnassignedLineItems(consignments, cart.lineItems) : true;
         const isComplete = hasAddress && hasOptions && !hasUnassignedItems;
         const isRequired = itemsRequireShipping(cart, config);
+
+        console.log("checking shipping status", { hasAddress, hasOptions, hasUnassignedItems, shippingAddress, consignments })
 
         return {
             type: CheckoutStepType.Shipping,

@@ -1,0 +1,272 @@
+[
+    {
+        "company": "Bobs Tyre Centre Hervey Bay",
+        "street": "93 Main St",
+        "suburb": "Pialba",
+        "state": "QLD",
+        "postcode": "4655",
+        "phone": "07 4124 1855",
+        "longitude": -25.28868,
+        "latitude": 125.83754
+    },
+    {
+        "company": "Bobs Tyre Centre Maryborough",
+        "street": "14 Rocky St",
+        "suburb": "Maryborough",
+        "state": "QLD",
+        "postcode": "4650",
+        "phone": "07 4121 228",
+        "longitude": -25.53114,
+        "latitude": 152.68898
+    },
+    {
+        "company": "4WD Obsession",
+        "street": "14 Venture Drive",
+        "suburb": "Noosaville",
+        "state": "QLD",
+        "postcode": "4566",
+        "phone": "07 5474 1977",
+        "longitude": -26.40762,
+        "latitude": 153.04427
+    },
+    {
+        "company": "Adventure Offroad",
+        "street": "3343 Pacific Hwy",
+        "suburb": "Slacks Creek",
+        "state": "QLD",
+        "postcode": "4127",
+        "phone": "07 3133 1443",
+        "longitude": -27.61693,
+        "latitude": 153.12389
+    },
+    {
+        "company": "Tyrant 4x4",
+        "street": "3B/6 Boundary Rd",
+        "suburb": "Northmead",
+        "state": "NSW",
+        "postcode": "2152",
+        "phone": "1800 860 680",
+        "longitude": -33.79442,
+        "latitude": 150.99795
+    },
+    {
+        "company": "Adrenalin Offrad Centre",
+        "street": "Unit 1, 13 Exchange Parade",
+        "suburb": "Narellan",
+        "state": "NSW",
+        "postcode": "2567",
+        "phone": "02 4648 2085",
+        "longitude": -34.04018,
+        "latitude": 150.74836
+    },
+    {
+        "company": "Riverina 4WD & Offroad",
+        "street": "1A Dobney Ave",
+        "suburb": "Wagga Wagga",
+        "state": "NSW",
+        "postcode": "2650",
+        "phone": "02 6925 4770",
+        "longitude": -35.11655,
+        "latitude": 147.34886
+    },
+    {
+        "company": "Altapac Maitland",
+        "street": "3/175 High Street",
+        "suburb": "Maitland",
+        "state": "NSW",
+        "postcode": "2320",
+        "phone": "02 4941 4444",
+        "longitude": -32.74113,
+        "latitude": 151.56362
+    },
+    {
+        "company": "Altapac",
+        "street": "94 Park Ave",
+        "suburb": "Kotara",
+        "state": "NSW",
+        "postcode": "2289",
+        "phone": "02 4941 4444",
+        "longitude": -32.94044,
+        "latitude": 151.70924
+    },
+    {
+        "company": "Sydney Ute Accessories",
+        "street": "6/64 Oak Rd",
+        "suburb": "Kirrawee",
+        "state": "NSW",
+        "postcode": "2232",
+        "phone": "02 9542 5608",
+        "longitude": -34.02623,
+        "latitude": 151.07338
+    },
+    {
+        "company": "Solar Shade/All Barred up",
+        "street": "1/48 Shandan Cct",
+        "suburb": "Albion Park Rail",
+        "state": "NSW",
+        "postcode": "2527",
+        "phone": "02 4256 4806",
+        "longitude": -34.57343,
+        "latitude": 150.81442
+    },
+    {
+        "company": "Van & Ute Extras Blacktown",
+        "street": "1/12 Garling Rd",
+        "suburb": "Kings Park",
+        "state": "NSW",
+        "postcode": "2148",
+        "phone": "02 9671 2330",
+        "longitude": -33.74509,
+        "latitude": 150.91163
+    },
+    {
+        "company": "Oz Canopies & 4x4",
+        "street": "126 Hamilton St",
+        "suburb": "Riverstone",
+        "state": "NSW",
+        "postcode": "2765",
+        "phone": "02 9627 8666",
+        "longitude": -33.66588,
+        "latitude": 150.86362
+    },
+    {
+        "company": "Trailbait Offroad",
+        "street": "212 Barney St",
+        "suburb": "Armidale",
+        "state": "NSW",
+        "postcode": "2350",
+        "phone": "1300 770 966",
+        "longitude": -30.53552,
+        "latitude": 151.61555
+    },
+    {
+        "company": "Action 4x4 Canberra",
+        "street": "96 Maryborough St",
+        "suburb": "Fyshwick",
+        "state": "ACT",
+        "postcode": "2609",
+        "phone": "02 6109 5048",
+        "longitude": -35.32353,
+        "latitude": 149.17545
+    },
+    {
+        "company": "Opposite Lock/Autobarn Sunbury",
+        "street": "106-108 Horne St",
+        "suburb": "Sunbury",
+        "state": "VIC",
+        "postcode": "3429",
+        "phone": "03 9740 8999",
+        "longitude": -37.5853,
+        "latitude": 144.72115
+    },
+    {
+        "company": "Barossa Offroad",
+        "street": "3/27 Theen Ave",
+        "suburb": "Willaston",
+        "state": "SA",
+        "postcode": "5118",
+        "phone": "08 8522 1141",
+        "longitude": -34.59278,
+        "latitude": 138.73195
+    },
+    {
+        "company": "Opposite Lock Rockhampton",
+        "street": "178 Denison St",
+        "suburb": "Rockhampton City",
+        "state": "QLD",
+        "postcode": "4700",
+        "phone": "07 4921 4940",
+        "longitude": -23.38006,
+        "latitude": 150.50964
+    },
+    {
+        "company": "Autokit - Opposite Lock Bundaberg",
+        "street": "106 Enterprise St",
+        "suburb": "Svensson Heights",
+        "state": "QLD",
+        "postcode": "4670",
+        "phone": "07 4151 6211",
+        "longitude": -24.89168,
+        "latitude": 152.33457
+    },
+    {
+        "company": "TJM Lismore",
+        "street": "10 Thee Chain Rd",
+        "suburb": "South Lismore",
+        "state": "NSW",
+        "postcode": "2480",
+        "phone": "02 6621 7000",
+        "longitude": -28.82118,
+        "latitude": 153.26247
+    },
+    {
+        "company": "TJM Ballina",
+        "street": "6 Southern Cross Drive",
+        "suburb": "Ballina",
+        "state": "NSW",
+        "postcode": "2478",
+        "phone": "02 6681 5300",
+        "longitude": -28.85155,
+        "latitude": 153.55646
+    },
+    {
+        "company": "Central Coast 4x4 & Outdoor",
+        "street": "12 Central Coast Hwy",
+        "suburb": "West Gosford",
+        "state": "NSW",
+        "postcode": "2250",
+        "phone": "02 4346 5060",
+        "longitude": -33.42755,
+        "latitude": 151.32679
+    },
+    {
+        "company": "AMA Group Gemini Pinkenba",
+        "street": "48 Randle Rd",
+        "suburb": "Pinkenba",
+        "state": "QLD",
+        "postcode": "4008",
+        "phone": "07 3557 5594",
+        "longitude": -27.42761,
+        "latitude": 153.1086
+    },
+    {
+        "company": "AMA Group Gemini Wangara",
+        "street": "87 Innovation Circuit",
+        "suburb": "Wangara",
+        "state": "WA",
+        "postcode": "6065",
+        "phone": "08 9302 1805",
+        "longitude": -31.79918,
+        "latitude": 115.83191
+    },
+    {
+        "company": "AMA Group Mackay",
+        "street": "13-15 Corporate Dr",
+        "suburb": "Paget",
+        "state": "QLD",
+        "postcode": "4740",
+        "phone": "07 4952 3244",
+        "longitude": -21.18459,
+        "latitude": 149.15547
+    },
+    {
+        "company": "AMA Group Mackay",
+        "street": "9 Vesuvius St",
+        "suburb": "Garbutt",
+        "state": "QLD",
+        "postcode": "4814",
+        "phone": "07 4779 9422",
+        "longitude": -19.27308,
+        "latitude": 146.76805
+    },
+    {
+        "company": "EGR Fitment Centre Salisbury",
+        "street": "4 Standish St",
+        "suburb": "Salisbury",
+        "state": "QLD",
+        "postcode": "4107",
+        "phone": "1300 320 338",
+        "longitude": -27.54323,
+        "latitude": 153.02627
+    }
+]
