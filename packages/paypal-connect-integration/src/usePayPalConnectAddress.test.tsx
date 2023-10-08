@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import React from 'react';
 
 import * as PaymentIntegrationApi from '@bigcommerce/checkout/payment-integration-api';
-import { getAddress, getCustomer, getStoreConfig } from '@bigcommerce/checkout/test-utils';
+import { getAddress, getCustomer, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import isPayPalConnectAddress from './is-paypal-connect-address';
 import usePayPalConnectAddress from './usePayPalConnectAddress';
@@ -124,7 +124,7 @@ describe('usePayPalConnectAddress', () => {
 
     it('renders with PP Connect addresses & no BC addresses, selected PP address', () => {
         useCheckoutMock(
-            {addresses: [addressPP1, addressPP2]},
+            { addresses: [addressPP1, addressPP2] },
             [],
         );
 
@@ -145,7 +145,7 @@ describe('usePayPalConnectAddress', () => {
 
     it('renders with BC addresses & PP Connect address, selected BC address', () => {
         useCheckoutMock(
-            {addresses: [addressPP2]},
+            { addresses: [addressPP2] },
             [addressBC1, addressBC2],
         );
 
@@ -167,7 +167,7 @@ describe('usePayPalConnectAddress', () => {
 
     it('renders with BC addresses & PP Connect address - with address merge, selected PP address', () => {
         useCheckoutMock(
-            {addresses: [addressPP1, addressPP2]},
+            { addresses: [addressPP1, addressPP2] },
             [addressBC1, addressBC2],
         );
 

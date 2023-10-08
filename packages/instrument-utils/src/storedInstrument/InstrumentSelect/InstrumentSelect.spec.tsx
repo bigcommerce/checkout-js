@@ -13,7 +13,7 @@ import {
     getCardInstrument,
     getInstruments,
     getStoreConfig,
-} from '@bigcommerce/checkout/test-utils';
+} from '@bigcommerce/checkout/test-mocks';
 
 import { isCardInstrument } from '../../guards';
 

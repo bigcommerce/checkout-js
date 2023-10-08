@@ -15,7 +15,7 @@ exports[`AppliedCoupon renders markup that matches snapshot 1`] = `
       20% off each item
     </span>
      
-    <WithLanguage(TranslatedString)
+    <TranslatedString
       id="redeemable.coupon_text"
     />
   </span>

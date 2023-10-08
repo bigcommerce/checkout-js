@@ -1,4 +1,4 @@
-import { getAchInstrument } from '@bigcommerce/checkout/test-utils';
+import { getAchInstrument } from '@bigcommerce/checkout/test-mocks';
 
 import { isAchInstrument } from '.';
 

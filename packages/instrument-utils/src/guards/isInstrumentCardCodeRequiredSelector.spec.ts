@@ -6,7 +6,7 @@ import {
     PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 
-import { getCardInstrument, getCart, getPaymentMethod } from '@bigcommerce/checkout/test-utils';
+import { getCardInstrument, getCart, getPaymentMethod } from '@bigcommerce/checkout/test-mocks';
 
 import isInstrumentCardCodeRequiredSelector from './isInstrumentCardCodeRequiredSelector';
 

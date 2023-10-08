@@ -1,14 +1,13 @@
-import { render } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
 import {
     PaymentFormContext,
     PaymentFormService,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { getPaymentFormServiceMock, getStoreConfig } from '@bigcommerce/checkout/test-utils';
+import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
+import { render } from '@bigcommerce/checkout/test-utils';
 
 import { OwnershipTypes } from '../constants';
 
@@ -26,11 +25,9 @@ describe('BraintreeAchFormFields Component', () => {
 
         const view = render(
             <Formik initialValues={{}} onSubmit={noop}>
-                <LocaleContext.Provider value={createLocaleContext(getStoreConfig())}>
-                    <PaymentFormContext.Provider value={{ paymentForm }}>
-                        <BraintreeAchFormFields />
-                    </PaymentFormContext.Provider>
-                </LocaleContext.Provider>
+                <PaymentFormContext.Provider value={{ paymentForm }}>
+                    <BraintreeAchFormFields />
+                </PaymentFormContext.Provider>
             </Formik>,
         );
 
@@ -42,11 +39,9 @@ describe('BraintreeAchFormFields Component', () => {
 
         const view = render(
             <Formik initialValues={{}} onSubmit={noop}>
-                <LocaleContext.Provider value={createLocaleContext(getStoreConfig())}>
-                    <PaymentFormContext.Provider value={{ paymentForm }}>
-                        <BraintreeAchFormFields />
-                    </PaymentFormContext.Provider>
-                </LocaleContext.Provider>
+                <PaymentFormContext.Provider value={{ paymentForm }}>
+                    <BraintreeAchFormFields />
+                </PaymentFormContext.Provider>
             </Formik>,
         );
 

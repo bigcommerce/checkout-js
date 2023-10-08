@@ -10,7 +10,7 @@ import {
     LocaleContext,
     LocaleContextType,
 } from '@bigcommerce/checkout/locale';
-import { getInstruments, getStoreConfig } from '@bigcommerce/checkout/test-utils';
+import { getInstruments, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import { isAccountInstrument, isAchInstrument, isBankAccountInstrument } from '../../guards';
 

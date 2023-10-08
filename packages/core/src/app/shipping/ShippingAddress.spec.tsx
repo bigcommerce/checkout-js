@@ -53,7 +53,7 @@ describe('ShippingAddress Component', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <Formik initialValues={{}} onSubmit={noop}>
-                        <ShippingAddress {...props} {...defaultProps} />
+                        <ShippingAddress {...defaultProps} {...props} />
                     </Formik>
                 </LocaleContext.Provider>
             </CheckoutProvider>
@@ -85,12 +85,7 @@ describe('ShippingAddress Component', () => {
         });
 
         it('does not render StaticAddress if method id is not sent', () => {
-            const component = mount(
-                <CheckoutProvider checkoutService={checkoutService}>
-                    <Formik initialValues={{}} onSubmit={noop}>
-                        <ShippingAddress {...defaultProps} />
-                    </Formik>
-                </CheckoutProvider>,
+            const component = mount(<TestComponent {...defaultProps} />,
             );
 
             expect(component.find(StaticAddress)).toHaveLength(0);
@@ -100,9 +95,7 @@ describe('ShippingAddress Component', () => {
     describe('when method id is provided', () => {
         it('does not render ShippingAddressForm', () => {
             const component = mount(
-                <Formik initialValues={{}} onSubmit={noop}>
-                    <ShippingAddress {...defaultProps} methodId="amazonpay" />
-                </Formik>,
+                <TestComponent {...defaultProps} methodId="amazonpay" />,
             );
 
             expect(component.find(ShippingAddressForm)).toHaveLength(0);
@@ -110,9 +103,7 @@ describe('ShippingAddress Component', () => {
 
         it('renders a StaticAddressEditable if methodId is amazon pay', () => {
             const component = mount(
-                <Formik initialValues={{}} onSubmit={noop}>
-                    <ShippingAddress {...defaultProps} methodId="amazonpay" />
-                </Formik>,
+                <TestComponent {...defaultProps} methodId="amazonpay" />,
             );
 
             expect(component.find(StaticAddressEditable)).toHaveLength(1);

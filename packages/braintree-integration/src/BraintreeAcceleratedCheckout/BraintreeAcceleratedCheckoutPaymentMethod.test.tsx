@@ -1,8 +1,8 @@
 import { createCheckoutService, createLanguageService } from '@bigcommerce/checkout-sdk';
-import { render } from '@testing-library/react';
 import React from 'react';
 
-import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-utils';
+import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
+import { render } from '@bigcommerce/checkout/test-utils';
 
 import BraintreeAcceleratedCheckoutPaymentMethod from './BraintreeAcceleratedCheckoutPaymentMethod';
 

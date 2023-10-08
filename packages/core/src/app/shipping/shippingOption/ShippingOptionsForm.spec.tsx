@@ -1,11 +1,11 @@
-import { CheckoutSelectors, Consignment } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, Consignment, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
 import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
-import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { LocaleProvider, TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { getCart } from '../../cart/carts.mock';
 import { getConsignment } from '../consignment.mock';
@@ -39,11 +39,15 @@ describe('ShippingOptions Component', () => {
         isLoading: jest.fn(() => false),
     };
 
-    const TestWrap: React.FC = ({ children}) => (
+    const checkoutService = createCheckoutService();
+
+    const TestWrap: React.FC = ({ children }) => (
         <AnalyticsProviderMock>
-            <Formik initialValues={{}} onSubmit={noop}>
-                { children }
-            </Formik>
+            <LocaleProvider checkoutService={checkoutService}>
+                <Formik initialValues={{}} onSubmit={noop}>
+                    {children}
+                </Formik>
+            </LocaleProvider>
         </AnalyticsProviderMock>
     );
 

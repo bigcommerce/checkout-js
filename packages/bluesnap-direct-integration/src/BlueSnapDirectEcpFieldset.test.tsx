@@ -1,11 +1,9 @@
 import { createLanguageService } from '@bigcommerce/checkout-sdk';
-import { fireEvent, render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
-import { getStoreConfig } from '@bigcommerce/checkout/test-utils';
+import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import BlueSnapDirectEcpFieldset, {
     BlueSnapDirectEcpFieldsetProps,
@@ -30,9 +28,7 @@ describe('BlueSnapDirectEcpFieldset', () => {
         expect(
             render(
                 <Formik initialValues={initialValues} onSubmit={noop}>
-                    <LocaleContext.Provider value={createLocaleContext(getStoreConfig())}>
-                        <BlueSnapDirectEcpFieldset {...options} />
-                    </LocaleContext.Provider>
+                    <BlueSnapDirectEcpFieldset {...options} />
                 </Formik>,
             ),
         ).toMatchSnapshot();

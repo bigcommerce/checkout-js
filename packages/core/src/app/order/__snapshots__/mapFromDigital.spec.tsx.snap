@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`mapFromDigital() returns digital related properties when it has no download URL 1`] = `
-<WithLanguage(TranslatedString)
+<TranslatedString
   id="cart.digital_item_text"
 />
 `;
@@ -12,7 +12,7 @@ exports[`mapFromDigital() returns downloadable related properties when it has a 
   rel="noopener noreferrer"
   target="_blank"
 >
-  <WithLanguage(TranslatedString)
+  <TranslatedString
     id="cart.downloads_action"
   />
 </a>

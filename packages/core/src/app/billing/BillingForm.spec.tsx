@@ -1,11 +1,11 @@
+import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-connect-integration';
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
-import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-connect-integration';
-import { getAddress } from '@bigcommerce/checkout/test-utils';
+import { getAddress } from '@bigcommerce/checkout/test-mocks';
 
 import { AddressForm, AddressSelect } from '../address';
 import { getAddressFormFieldsWithCustomRequired, getFormFields } from '../address/formField.mock';
