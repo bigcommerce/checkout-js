@@ -63,6 +63,6 @@ export {
     IconUsdCoin,
     IconAch,
 } from './icon';
-export { LoadingOverlay } from './loading';
+export { LoadingOverlay, LoadingSpinner } from './loading';
 export { Modal, ModalHeader, ModalTrigger, ModalTriggerModalProps } from './modal';
 export { TooltipTrigger } from './tooltip';
