@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import {
     PaymentMethodProps,
@@ -8,6 +8,7 @@ import {
 import { DynamicFormField, DynamicFormFieldType, FormContext } from '@bigcommerce/checkout/ui';
 import { FormField } from '@bigcommerce/checkout-sdk';
 import getPaypalCommerceRatePayValidationSchema from './validation-schemas/getPaypalCommerceRatePayValidationSchema';
+import { LoadingSpinner } from '@bigcommerce/checkout/ui';
 
 interface RatePayFieldValues {
     ratepayBirthDate: {
@@ -66,6 +67,7 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
 }) => {
     const fieldsValues = useRef<Partial<RatePayFieldValues>>({});
     const isPaymentDataRequired = checkoutState.data.isPaymentDataRequired();
+    const [isPaymentSubmitting, setIsPaymentSubmitting] = useState(false);
 
     if (!isPaymentDataRequired) {
         return null;
@@ -80,6 +82,7 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
                     container: '#checkout-payment-continue',
                     legalTextContainer: 'legal-text-container',
                     getFieldsValues: () => fieldsValues.current,
+                    onPaymentSubmission: (isSubmitting: boolean) => setIsPaymentSubmitting(isSubmitting),
                     onError: (error: Error) => {
                         paymentForm.disableSubmit(method, true);
                         onUnhandledError(error);
@@ -140,6 +143,11 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
 
     return (
         <div style={{marginBottom:'20px'}}>
+            { isPaymentSubmitting &&
+                <div className='embedded-checkout-loading-spinner-overlay'>
+                    <LoadingSpinner isLoading={true}/>
+                </div>
+            }
             <FormContext.Provider value={{ isSubmitted, setSubmitted }}>
                 { formFieldData.map((field) => {
                         return  <DynamicFormField
