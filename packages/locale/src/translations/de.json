@@ -543,7 +543,12 @@
                     "sepa_debit": "SEPA-Lastschriftmandat"
                 },
                 "paypalcommercealternativemethods": {
-                    "oxxo": "OXXO-Ticket"
+                    "oxxo": "OXXO-Ticket",
+                    "ratepay": {
+                        "account_holder_name": "Account Holder",
+                        "iban": "Iban",
+                        "payment_reference": "Payment Reference"
+                    }
                 }
             },
             "order_number_text": "Ihre Bestellnummer lautet <strong>{orderNumber}</strong>",

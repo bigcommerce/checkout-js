@@ -543,7 +543,12 @@
                     "sepa_debit": "SEPA-direktdebiteringsmandat"
                 },
                 "paypalcommercealternativemethods": {
-                    "oxxo": "OXXO-ticket"
+                    "oxxo": "OXXO-ticket",
+                    "ratepay": {
+                        "account_holder_name": "Account Holder",
+                        "iban": "Iban",
+                        "payment_reference": "Payment Reference"
+                    }
                 }
             },
             "order_number_text": "Ditt beställningsnummer är <strong>{orderNumber}</strong>",
