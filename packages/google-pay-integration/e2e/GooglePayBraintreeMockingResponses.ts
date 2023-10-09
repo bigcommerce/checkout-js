@@ -1,49 +1,5 @@
-/*
-INFO: clientToken generated from the following object without any security data for correct initialization of the braintree client
+// INFO: clientToken mock information clientToken https://bigcommercecloud.atlassian.net/wiki/spaces/KP/pages/605193315/Google+Pay+Braintree+Client+token+generation+for+e2e+tests
 
-const clientConfig = {
-    version: 2,
-    authorizationFingerprint: 'authorizationFingerprint',
-    configUrl:
-        'https://api.sandbox.braintreegateway.com:443/merchants/merchant_numeric_id/client_api/v1/configuration',
-    merchantAccountId: 'bigcommerce',
-    graphQL: {
-        url: 'https://payments.sandbox.braintree-api.com/graphql',
-        date: '2018-05-08',
-        features: ['tokenize_credit_cards'],
-    },
-    clientApiUrl:
-        'https://api.sandbox.braintreegateway.com:443/merchants/merchant_numeric_id/client_api',
-    environment: 'sandbox',
-    merchantId: 'merchant_numeric_id',
-    assetsUrl: 'https://assets.braintreegateway.com',
-    authUrl: 'https://auth.venmo.sandbox.braintreegateway.com',
-    venmo: 'off',
-    challenges: ['cvv', 'postal_code'],
-    threeDSecureEnabled: true,
-    analytics: {
-        url: 'https://origin-analytics-sand.sandbox.braintree-api.com/merchant_numeric_id',
-    },
-    paypalEnabled: true,
-    paypal: {
-        billingAgreementsEnabled: true,
-        environmentNoNetwork: false,
-        unvettedMerchant: false,
-        allowHttp: true,
-        displayName: 'Bigcommerce',
-        clientId: 'clientId',
-        baseUrl: 'https://assets.braintreegateway.com',
-        assetsUrl: 'https://checkout.paypal.com',
-        directBaseUrl: null,
-        environment: 'offline',
-        braintreeClientId: 'braintreeClientId',
-        merchantAccountId: 'bigcommerce',
-        currencyIsoCode: 'USD',
-    },
-};
-
-const clientToken = btoa(unescape(encodeURIComponent(clientConfig)))
- */
 export const order222 =
     '{"orderId":222,"cartId":"2ed45a0b-6100-4721-9098-e055ff07bd87","currency":{"name":"US Dollar","code":"USD","symbol":"$","decimalPlaces":2},"isTaxIncluded":false,"baseAmount":225,"discountAmount":0,"orderAmount":225,"orderAmountAsInteger":22500,"shippingCostTotal":0,"shippingCostBeforeDiscount":0,"handlingCostTotal":0,"giftWrappingCostTotal":0,"coupons":[],"lineItems":{"physicalItems":[{"id":288,"productId":86,"name":"[Sample] Able Brewing System","url":"https:\\/\\/my-dev-store-745516528.store.bcdev\\/able-brewing-system\\/","sku":"ABS","quantity":1,"isTaxable":true,"giftWrapping":null,"imageUrl":"https:\\/\\/corypractised-cloud-dev-vm.store.bcdev\\/store\\/m1krj3d4yv\\/products\\/86\\/images\\/286\\/ablebrewingsystem4.1647253530.190.285.jpg?c=1","discounts":[],"discountAmount":0,"listPrice":225,"salePrice":225,"extendedListPrice":225,"extendedSalePrice":225,"extendedComparisonPrice":225,"categories":[],"type":"physical","variantId":66,"socialMedia":[{"channel":"Facebook","code":"fb","text":"I just bought [Sample] Able Brewing System on My Dev Store 745516528","link":"http:\\/\\/www.facebook.com\\/sharer\\/sharer.php?p%5Burl%5D=https%3A%2F%2Fmy-dev-store-745516528.store.bcdev%2Fable-brewing-system%2F"},{"channel":"Twitter","code":"tw","text":"I just bought [Sample] Able Brewing System on My Dev Store 745516528","link":"https:\\/\\/twitter.com\\/intent\\/tweet?url=https%3A%2F%2Fmy-dev-store-745516528.store.bcdev%2Fable-brewing-system%2F&text=I+just+bought+%27%5BSample%5D+Able+Brewing+System%27+on+My+Dev+Store+745516528"}],"options":[]}],"digitalItems":[],"giftCertificates":[]},"customerId":0,"billingAddress":{"firstName":"TEST","lastName":"ROBOT","email":"test@robot.com","company":"","address1":"1000 5th Ave","address2":"","city":"NEW YORK","stateOrProvince":"New York","stateOrProvinceCode":"NY","country":"United States","countryCode":"US","postalCode":"10028","phone":"","customFields":[]},"status":"COMPLETE","customerCanBeCreated":true,"hasDigitalItems":false,"isDownloadable":false,"isComplete":false,"customerMessage":"","taxes":[{"name":"Tax","amount":0}],"taxTotal":0,"channelId":1,"consignments":{"shipping":[{"lineItems":[{"id":288}],"shippingAddressId":291,"firstName":"TEST","lastName":"ROBOT","company":"","address1":"1000 5th Ave","address2":"","city":"NEW YORK","stateOrProvince":"New York","postalCode":"10028","country":"United States","countryCode":"US","email":"test@robot.com","phone":"","itemsTotal":1,"itemsShipped":0,"shippingMethod":"Pickup In Store","baseCost":0,"costExTax":0,"costIncTax":0,"costTax":0,"costTaxClassId":2,"baseHandlingCost":0,"handlingCostExTax":0,"handlingCostIncTax":0,"handlingCostTax":0,"handlingCostTaxClassId":2,"shippingZoneId":1,"shippingZoneName":"United States","customFields":[]}]},"payments":[]}';
 
