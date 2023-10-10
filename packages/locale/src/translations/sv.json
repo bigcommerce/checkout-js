@@ -212,6 +212,7 @@
             },
             "bluesnap_direct_permission": "Jag godkänner denna transaktion med Elektronisk check (ACH/ECP) och debiteringen av kontot.",
             "bluesnap_direct_electronic_check_label": "Elektronisk check (ACH/ECP)",
+            "bluesnap_direct_local_bank_transfer_label": "Lokal banköverföring",
             "bolt_benefit_1": "Shoppa hundratals varumärken med inloggning utan lösenord",
             "bolt_benefit_2": "Checka ut med sparade betalnings- och fraktuppgifter",
             "bolt_benefit_3": "Dra nytta av PCI-kompatibel kontosäkerhet",
@@ -472,7 +473,8 @@
             "sign_out_after_action": "för att visa andra betalningsmetoder",
             "sign_in_required_error": "Fjärrinloggning krävs före betalning",
             "sign_out_before_action": "",
-            "start_with_text": "Betala snabbare med:"
+            "start_with_text": "Betala snabbare med:",
+            "powered_by": "Drivs av"
         },
         "shipping": {
             "cart_change_error": "En uppdatering av din kundvagn har upptäckts och dina tillgängliga fraktkostnader har uppdaterats. Välj en leveransmetod igen för att fortsätta.",
@@ -512,6 +514,9 @@
             "label": "Ja, jag godkänner <a href=\"{url}\" target=\"_blank\">sekretesspolicyn</a>.",
             "heading": "Sekretesspolicy"
         },
+        "privacy_policy_auto_consent": {
+            "label": "*När du klickar på Fortsätt godkänner du vår <a href=\"{url}\" target=\"_blank\">integritetspolicy</a>."
+        },
         "tax": {
             "inclusive_label": "Moms inkluderad i totalen:"
         },
@@ -538,13 +543,20 @@
                     "sepa_debit": "SEPA-direktdebiteringsmandat"
                 },
                 "paypalcommercealternativemethods": {
-                    "oxxo": "OXXO-ticket"
+                    "oxxo": "OXXO-ticket",
+                    "ratepay": {
+                        "account_holder_name": "Account Holder",
+                        "iban": "Iban",
+                        "payment_reference": "Payment Reference"
+                    }
                 }
             },
             "order_number_text": "Ditt beställningsnummer är <strong>{orderNumber}</strong>",
             "order_pending_review_text": "Din beställning har skickats till oss, men du har inte betalat än. Din beställning slutförs när vi tar emot betalningen. Om du redan har angett betalningsuppgifter kommer vi att behandla din beställning manuellt och skicka ett e-postmeddelande till dig när den är slutförd.",
             "order_pending_status_text": "Vi har fått din beställning och behandlar din betalning. Din beställning slutförs när betalningen har verifierats. Vi skickar ett e-postmeddelande till dig när det är klart. Observera att den här processen kan ta några minuter beroende på behandlingstiderna för din valda metod. Om du har några frågor om ditt köp kan du skicka ett meddelande till oss på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_incomplete_status_text": "Vi har fått din beställning och betalning. Din beställning behandlas nu av vårt system. Observera att behandlingen kan ta några minuter. Om du har några frågor om ditt köp kan du skicka ett meddelande till oss på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
+            "order_incomplete_status_heading": "Tyvärr misslyckades betalningen för denna beställning.",
+            "order_incomplete_status_with_unsuccessful_payment_text": "Din beställning är ofullständig eftersom betalningen misslyckades. Om du behöver hjälp med ditt köp kan du mejla oss på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_with_downloadable_digital_items_text": "Du kan ladda ner dina digitala köp genom att klicka på länkarna på den här sidan, eller genom att logga in på ditt konto när som helst. Det finns också en nedladdningslänk i din e-postbekräftelse, som du bör få inom kort.",
             "order_with_support_number_text": "Ett e-postmeddelande kommer att skickas med information om ditt köp. Om du har några frågor om ditt köp kan du skicka ett meddelande till oss på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a> eller ringa oss på <a href=\"tel://{supportPhoneNumber}\">{supportPhoneNumber}</a>.",
             "order_without_downloadable_digital_items_text": "När vi har fått din betalning skickar vi ett bekräftelsemeddelande med en länk för att ladda ner dina digitala köp.",

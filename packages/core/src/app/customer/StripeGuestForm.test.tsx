@@ -1,16 +1,14 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import React, { FunctionComponent } from 'react';
+
+import { fireEvent, render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import CheckoutStepType from '../checkout/CheckoutStepType';
 
 import StripeGuestForm, { StripeGuestFormProps } from './StripeGuestForm';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
-import { getStoreConfig } from '../config/config.mock';
 
 describe('StripeGuestForm', () => {
     let defaultProps: StripeGuestFormProps;
     let TestComponent: FunctionComponent<Partial<StripeGuestFormProps>>;
-    let localeContext: LocaleContextType;
     const handleContinueAsGuest = jest.fn();
     const dummyElement = document.createElement('div');
 
@@ -27,7 +25,7 @@ describe('StripeGuestForm', () => {
             initialize: jest.fn(),
             onShowLogin: jest.fn(),
             requiresMarketingConsent: false,
-            step: { 
+            step: {
                 isActive: true,
                 isComplete: false,
                 isEditable: false,
@@ -44,15 +42,11 @@ describe('StripeGuestForm', () => {
         jest.spyOn(document, 'getElementById')
             .mockReturnValue(dummyElement);
 
-        localeContext = createLocaleContext(getStoreConfig());
-
         TestComponent = props => (
-            <LocaleContext.Provider value={localeContext}>
-                <StripeGuestForm
-                    {...defaultProps}
-                    {...props}
-                />
-            </LocaleContext.Provider>
+            <StripeGuestForm
+                {...defaultProps}
+                {...props}
+            />
         );
     });
 
@@ -77,7 +71,7 @@ describe('StripeGuestForm', () => {
     it('executes a function when the button is clicked', async () => {
         const handleContinueAsGuest = jest.fn();
 
-        render(<TestComponent onContinueAsGuest={handleContinueAsGuest} privacyPolicyUrl="foo"/>);
+        render(<TestComponent onContinueAsGuest={handleContinueAsGuest} privacyPolicyUrl="foo" />);
 
         const privacyCheckbox = screen.getByTestId('privacy-policy-checkbox');
         fireEvent.click(privacyCheckbox);
@@ -99,7 +93,7 @@ describe('StripeGuestForm', () => {
     });
 
     it('initializes stripeGuestForm when component mounts', () => {
-        defaultProps.initialize = jest.fn((options:any) => {
+        defaultProps.initialize = jest.fn((options: any) => {
             options.stripeupe.onEmailChange('cosmefulanito@cosme.mx', true);
             options.stripeupe.isLoading(true);
             options.stripeupe?.getStyles();

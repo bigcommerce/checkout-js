@@ -5,6 +5,7 @@ import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-connect-integration';
 
 import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
@@ -12,10 +13,16 @@ import { getCustomer } from '../customer/customers.mock';
 
 import { getAddress } from './address.mock';
 import AddressSelect from './AddressSelect';
-import * as usePayPalConnectAddress from './PayPalAxo/usePayPalConnectAddress';
 import StaticAddress from './StaticAddress';
 
-jest.mock('./PayPalAxo/PoweredByPaypalConnectLabel', () => () => (<div data-test="powered-by-pp-connect-label">PoweredByPaypalConnectLabel</div>));
+jest.mock('@bigcommerce/checkout/paypal-connect-integration', () => ({
+    usePayPalConnectAddress: jest.fn(() => ({
+        shouldShowPayPalConnectLabel: false,
+    })),
+    PoweredByPaypalConnectLabel: jest.fn(() => (
+        <div data-test="powered-by-pp-connect-label">PoweredByPaypalConnectLabel</div>
+    )),
+}));
 
 describe('AddressSelect Component', () => {
     let checkoutService: CheckoutService;
@@ -28,11 +35,6 @@ describe('AddressSelect Component', () => {
 
         jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(getCheckout());
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
-        jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
-            jest.fn().mockImplementation(() => ({
-                shouldShowPayPalConnectLabel: false,
-            }))
-        );
     });
 
     it('renders `Enter Address` when there is no selected address', () => {
@@ -139,11 +141,10 @@ describe('AddressSelect Component', () => {
     });
 
     it('shows Powered By PP Connect label', () => {
-        jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
-            jest.fn().mockImplementation(() => ({
-                shouldShowPayPalConnectLabel: true,
-            }))
-        );
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        (usePayPalConnectAddress as jest.Mock).mockReturnValue({
+            shouldShowPayPalConnectLabel: true,
+        });
 
         component = mount(
             <CheckoutProvider checkoutService={checkoutService}>

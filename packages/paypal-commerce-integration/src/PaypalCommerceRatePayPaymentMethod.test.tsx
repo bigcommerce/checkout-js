@@ -1,15 +1,21 @@
 import { createCheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
-import { render, fireEvent } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
+import { Formik } from 'formik';
 import React, { FunctionComponent } from 'react';
 
-import { PaymentFormService, PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+import {
+    createLocaleContext,
+    LocaleContext,
+    LocaleContextType,
+} from '@bigcommerce/checkout/locale';
+import {
+    PaymentFormService,
+    PaymentMethodProps,
+} from '@bigcommerce/checkout/payment-integration-api';
+import { getCheckout as getCheckoutMock, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
+import { FormContext } from '@bigcommerce/checkout/ui';
 
 import { getPaypalCommerceRatePayMethodMock } from './mocks/paypalCommerceRatePayMocks';
-import { getCheckout as getCheckoutMock } from '../../test-utils/src/checkout.mock'
-import { Formik } from 'formik';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
-import { getStoreConfig } from '@bigcommerce/checkout/test-utils';
-import { FormContext } from '@bigcommerce/checkout/ui';
 import PaypalCommerceRatePayPaymentMethod from './PaypalCommerceRatePayPaymentMethod';
 
 describe('PaypalCommerceRatePayPaymentMethod', () => {
@@ -36,15 +42,16 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckoutMock());
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
         localeContext = createLocaleContext(getStoreConfig());
+
         const submit = jest.fn();
 
         PaypalCommerceRatePayPaymentMethodTest = (props: PaymentMethodProps) => (
             <LocaleContext.Provider value={localeContext}>
-                <FormContext.Provider value={{isSubmitted: true, setSubmitted: jest.fn()}}>
+                <FormContext.Provider value={{ isSubmitted: true, setSubmitted: jest.fn() }}>
                     <Formik initialValues={{}} onSubmit={submit}>
                         {({ handleSubmit }) => (
                             <form aria-label="form" onSubmit={handleSubmit}>
-                                <PaypalCommerceRatePayPaymentMethod {...props}/>
+                                <PaypalCommerceRatePayPaymentMethod {...props} />
                             </form>
                         )}
                     </Formik>
@@ -64,6 +71,7 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
             gatewayId: props.method.gateway,
             methodId: props.method.id,
             paypalcommerceratepay: {
+                onPaymentSubmission: expect.any(Function),
                 container: '#checkout-payment-continue',
                 legalTextContainer: 'legal-text-container',
                 getFieldsValues: expect.any(Function),
@@ -72,16 +80,18 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
         });
     });
 
-    it('renders component with required fields', async  () => {
+    it('renders component with required fields', async () => {
         const view = render(<PaypalCommerceRatePayPaymentMethodTest {...props} />);
 
         expect(view).toMatchSnapshot();
     });
 
-    it('submits form', async  () => {
+    it('submits form', async () => {
         render(<PaypalCommerceRatePayPaymentMethodTest {...props} />);
+
         const submitForm = jest.fn();
         const form = document.querySelectorAll('form')[0];
+
         form.onsubmit = submitForm;
 
         fireEvent.submit(form);

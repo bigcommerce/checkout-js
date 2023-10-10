@@ -1,4 +1,4 @@
-import { getCardInstrument, getCart } from '@bigcommerce/checkout/test-utils';
+import { getCardInstrument, getCart } from '@bigcommerce/checkout/test-mocks';
 
 import { isInstrumentCardNumberRequired, IsInstrumentCardNumberRequiredState } from '.';
 

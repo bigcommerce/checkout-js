@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
-import { getStoreConfig } from '@bigcommerce/checkout/test-utils';
+import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import { mapFromPayments } from '../giftCertificate';
 
@@ -38,10 +38,10 @@ describe('OrderSummarySubtotals', () => {
 
         expect(screen.getByTestId('cart-taxes')).toHaveTextContent('Tax');
         expect(screen.getByTestId('cart-taxes')).toHaveTextContent('$3.00');
-        
+
         expect(screen.getByTestId('cart-subtotal')).toHaveTextContent('Subtotal');
         expect(screen.getByTestId('cart-subtotal')).toHaveTextContent('$190.00');
-        
+
         expect(screen.getByTestId('cart-shipping')).toHaveTextContent('Shipping');
         expect(screen.getByTestId('cart-shipping')).toHaveTextContent('$15.00');
 
@@ -50,7 +50,7 @@ describe('OrderSummarySubtotals', () => {
 
         expect(screen.getByTestId('cart-discount')).toHaveTextContent('Discount');
         expect(screen.getByTestId('cart-discount')).toHaveTextContent('-$10.00');
-        
+
         expect(screen.getByTestId('cart-gift-certificate')).toHaveTextContent('Gift Certificate');
         expect(screen.getByTestId('cart-gift-certificate')).toHaveTextContent('-$7.00');
 
@@ -71,12 +71,14 @@ describe('OrderSummarySubtotals', () => {
             const order = { ...getOrder(), isTaxIncluded: true };
 
             render(
-                <OrderSummarySubtotals
-                    coupons={order.coupons}
-                    isTaxIncluded={order.isTaxIncluded}
-                    subtotalAmount={order.orderAmount}
-                    taxes={order.taxes}
-                />,
+                <LocaleContext.Provider value={contextValue}>
+                    <OrderSummarySubtotals
+                        coupons={order.coupons}
+                        isTaxIncluded={order.isTaxIncluded}
+                        subtotalAmount={order.orderAmount}
+                        taxes={order.taxes}
+                    />
+                </LocaleContext.Provider>,
             );
 
             expect(screen.queryByTestId('cart-taxes')).not.toBeInTheDocument();
@@ -88,11 +90,13 @@ describe('OrderSummarySubtotals', () => {
             const order = { ...getOrder(), fees: [] };
 
             render(
-                <OrderSummarySubtotals
-                    coupons={order.coupons}
-                    fees={order.fees}
-                    subtotalAmount={order.orderAmount}
-                />,
+                <LocaleContext.Provider value={contextValue}>
+                    <OrderSummarySubtotals
+                        coupons={order.coupons}
+                        fees={order.fees}
+                        subtotalAmount={order.orderAmount}
+                    />
+                </LocaleContext.Provider>,
             );
 
             expect(screen.queryByTestId('cart-fees')).not.toBeInTheDocument();

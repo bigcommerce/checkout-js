@@ -1,9 +1,10 @@
 import { GatewayOrderPayment, GiftCertificateOrderPayment, Order, StoreConfig } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
-import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
+import { TranslatedHtml } from '@bigcommerce/checkout/locale';
 
 import OrderConfirmationSection from './OrderConfirmationSection';
+import { PaymentsWithMandates } from './PaymentsWithMandates';
 
 export interface OrderStatusProps {
     config: StoreConfig;
@@ -47,36 +48,9 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
                     supportPhoneNumber={supportPhoneNumber}
                 />
             </p>
-            {paymentsWithMandates.map((payment) => {
-                if (payment.mandate.url) {
-                    return (
-                        <a
-                            data-test="order-confirmation-mandate-link-text"
-                            href={payment.mandate.url}
-                            key={`${payment.providerId}-${payment.methodId}-mandate`}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                        >
-                            <TranslatedString
-                                id={`order_confirmation.mandate.${payment.providerId}.${payment.methodId}`}
-                            />
-                        </a>
-                    );
-                } else if (payment.mandate.id) {
-                    return (
-                        <p
-                            data-test="order-confirmation-mandate-id-text"
-                            key={`${payment.providerId}-${payment.methodId}-mandate`}
-                        >
-                            <TranslatedString
-                                data={{ mandate: payment.mandate.id }}
-                                id={`order_confirmation.mandate.${payment.providerId}.${payment.methodId}`}
-                            />
-                        </p>
-                    );
-                }
-            })}
-
+            <PaymentsWithMandates
+                paymentsWithMandates={paymentsWithMandates}
+            />
             {order.hasDigitalItems && (
                 <p data-test="order-confirmation-digital-items-text">
                     <TranslatedHtml

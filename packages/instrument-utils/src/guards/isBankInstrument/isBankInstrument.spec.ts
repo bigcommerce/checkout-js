@@ -1,4 +1,4 @@
-import { getBankInstrument, getCardInstrument } from '@bigcommerce/checkout/test-utils';
+import { getBankInstrument, getCardInstrument } from '@bigcommerce/checkout/test-mocks';
 
 import { assertIsBankInstrument, isBankAccountInstrument } from '.';
 

@@ -6,7 +6,7 @@ import {
     LocaleContext,
     LocaleContextType,
 } from '@bigcommerce/checkout/locale';
-import { getInstruments, getStoreConfig } from '@bigcommerce/checkout/test-utils';
+import { getInstruments, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import { isCardInstrument } from '../../guards';

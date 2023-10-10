@@ -1,6 +1,6 @@
 import { Checkout, StoreConfig } from '@bigcommerce/checkout-sdk';
 
-import { getCheckout, getCheckoutPayment, getStoreConfig } from '@bigcommerce/checkout/test-utils';
+import { getCheckout, getCheckoutPayment, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import * as getPreselectedPayment from '../payment/getPreselectedPayment';
 import { PaymentMethodId } from '../payment/paymentMethod';

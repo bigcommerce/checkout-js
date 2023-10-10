@@ -212,6 +212,7 @@
             },
             "bluesnap_direct_permission": "Ik autoriseer deze Elektronische Check (ACH/ECP) transactie en ga akkoord met deze debitering van mijn rekening.",
             "bluesnap_direct_electronic_check_label": "Elektronische cheque (ACH/ECP)",
+            "bluesnap_direct_local_bank_transfer_label": "Lokale bankoverschrijving",
             "bolt_benefit_1": "Shop honderden merken met wachtwoordloos inloggen",
             "bolt_benefit_2": "Betaal gemakkelijk met opgeslagen betaal- en verzendgegevens",
             "bolt_benefit_3": "Profiteer van PCI-compatibele accountbeveiliging",
@@ -472,7 +473,8 @@
             "sign_out_after_action": "om andere betaalmethoden te bekijken",
             "sign_in_required_error": "Extern aanmelden vereist voor betaling",
             "sign_out_before_action": "",
-            "start_with_text": "Sneller betalen met:"
+            "start_with_text": "Sneller betalen met:",
+            "powered_by": "Mogelijk gemaakt door"
         },
         "shipping": {
             "cart_change_error": "Er is een update van uw winkelmandje gedetecteerd en de voor u beschikbare verzendkosten zijn bijgewerkt. Selecteer opnieuw een verzendmethode om door te gaan.",
@@ -512,6 +514,9 @@
             "label": "Ja, ik ga akkoord met het <a href=\"{url}\" target=\"_blank\">privacybeleid</a>.",
             "heading": "Privacybeleid"
         },
+        "privacy_policy_auto_consent": {
+            "label": "*Door op Doorgaan te klikken, ga je akkoord met ons <a href=\"{url}\" target=\"_blank\">privacybeleid</a>."
+        },
         "tax": {
             "inclusive_label": "Belasting inbegrepen in totaal:"
         },
@@ -538,13 +543,20 @@
                     "sepa_debit": "Machtiging voor SEPA-incasso"
                 },
                 "paypalcommercealternativemethods": {
-                    "oxxo": "OXXO-ticket"
+                    "oxxo": "OXXO-ticket",
+                    "ratepay": {
+                        "account_holder_name": "Account Holder",
+                        "iban": "Iban",
+                        "payment_reference": "Payment Reference"
+                    }
                 }
             },
             "order_number_text": "Je bestelnummer is <strong>{orderNumber}</strong>",
             "order_pending_review_text": "Uw bestelling is naar ons verzonden, maar moet nog betaald worden. Zodra we de betaling voor uw bestelling hebben ontvangen, wordt deze voltooid. Als u al betalingsgegevens heeft opgegeven, verwerken we uw bestelling handmatig en sturen we u een e-mail wanneer deze is voltooid.",
             "order_pending_status_text": "We hebben je bestelling ontvangen en verwerken je betaling. Zodra de betaling is geverifieerd, wordt je bestelling voltooid. We sturen je een e-mail als deze voltooid is. Dit proces kan enkele minuten duren, afhankelijk van de verwerkingstijden van de door jou gekozen methode. Als je vragen hebt over je aankoop, kun je ons een e-mail sturen via <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_incomplete_status_text": "We hebben je bestelling en betaling ontvangen. Je bestelling wordt nu verwerkt door ons systeem. De verwerking kan enkele minuten duren. Als je vragen hebt over je aankoop, kun je ons een e-mail sturen via <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
+            "order_incomplete_status_heading": "Het spijt ons, de betaling voor deze bestelling is mislukt.",
+            "order_incomplete_status_with_unsuccessful_payment_text": "Je bestelling is onvolledig omdat de betaling niet is gelukt. Voor hulp bij je aankoop kun je ons een e-mail sturen op <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_with_downloadable_digital_items_text": "U kunt uw digitale aankopen downloaden door op de links op deze pagina te klikken of door op elk gewenst moment in te loggen op uw account. Er staat ook een downloadlink in uw bevestigingsmail, die u binnenkort ontvangt.",
             "order_with_support_number_text": "Er wordt een e-mail verzonden met informatie over je aankoop. Als je vragen hebt over je aankoop, kun je ons een e-mail sturen via <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a> of ons bellen op <a href=\"tel://{supportPhoneNumber}\">{supportPhoneNumber}</a>.",
             "order_without_downloadable_digital_items_text": "Zodra we uw betaling hebben ontvangen, sturen we u een bevestigingsmail met een link waarmee u uw digitale aankopen kunt downloaden.",

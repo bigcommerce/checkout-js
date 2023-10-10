@@ -1,6 +1,8 @@
-import { AdyenV3ValidationState } from '@bigcommerce/checkout-sdk';
+import { AdyenV3ValidationState, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
+
+import { LocaleProvider } from '@bigcommerce/checkout/locale';
 
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
@@ -12,7 +14,9 @@ describe('AdyenV3CardValidation', () => {
     let AdyenV3CardValidationTest: FunctionComponent<AdyenV3CardValidationProps>;
 
     beforeEach(() => {
-        AdyenV3CardValidationTest = (props) => <AdyenV3CardValidation {...props} />;
+        const checkoutService = createCheckoutService();
+
+        AdyenV3CardValidationTest = (props) => <LocaleProvider checkoutService={checkoutService}><AdyenV3CardValidation {...props} /></LocaleProvider>;
     });
 
     it('renders Adyen V3 Card Number and CVV fields', () => {

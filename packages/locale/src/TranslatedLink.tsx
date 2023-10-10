@@ -2,21 +2,16 @@ import React, { FunctionComponent, MouseEventHandler } from 'react';
 
 import { parseAnchor, preventDefault } from '@bigcommerce/checkout/dom-utils';
 
+import { useLocale } from './LocaleContext';
 import { TranslatedStringProps } from './TranslatedString';
-import withLanguage, { WithLanguageProps } from './withLanguage';
 
 export type TranslatedLinkProps = TranslatedStringProps & {
     testId?: string;
     onClick: MouseEventHandler;
 };
 
-const TranslatedLink: FunctionComponent<TranslatedLinkProps & WithLanguageProps> = ({
-    data,
-    id,
-    language,
-    onClick,
-    testId,
-}) => {
+const TranslatedLink: FunctionComponent<TranslatedLinkProps> = ({ data, id, onClick, testId }) => {
+    const { language } = useLocale();
     const translatedString = language.translate(id, data);
     const parsedString = parseAnchor(translatedString);
 
@@ -33,4 +28,4 @@ const TranslatedLink: FunctionComponent<TranslatedLinkProps & WithLanguageProps>
     );
 };
 
-export default withLanguage(TranslatedLink);
+export default TranslatedLink;

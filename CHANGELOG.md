@@ -2,6 +2,145 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.382.1](https://github.com/bigcommerce/checkout-js/compare/v1.382.0...v1.382.1) (2023-10-10)
+
+## [1.382.0](https://github.com/bigcommerce/checkout-js/compare/v1.381.1...v1.382.0) (2023-10-09)
+
+
+### Features
+
+* **other:** LOCAL-1444 delivery translation ([#1532](https://github.com/bigcommerce/checkout-js/issues/1532)) ([df810ad](https://github.com/bigcommerce/checkout-js/commit/df810adb3812e2ce14266960b8999979d5fc5d9c))
+
+### [1.381.1](https://github.com/bigcommerce/checkout-js/compare/v1.381.0...v1.381.1) (2023-10-09)
+
+## [1.381.0](https://github.com/bigcommerce/checkout-js/compare/v1.380.0...v1.381.0) (2023-10-09)
+
+
+### Features
+
+* **payment:** PAYPAL-2946 added loading indicator to ratepay component ([8b6a037](https://github.com/bigcommerce/checkout-js/commit/8b6a037ff06bf9dc4c29822d249a15a01f417194))
+
+## [1.380.0](https://github.com/bigcommerce/checkout-js/compare/v1.379.5...v1.380.0) (2023-10-09)
+
+
+### Features
+
+* **payment:** PAYPAL-2946 bump checkout-sdk-js version ([1e85496](https://github.com/bigcommerce/checkout-js/commit/1e854963b6eb2ec6651db06c4a7e36682d210433))
+
+### [1.379.5](https://github.com/bigcommerce/checkout-js/compare/v1.379.4...v1.379.5) (2023-10-08)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-7450 remove language HOC from locale package ([#1506](https://github.com/bigcommerce/checkout-js/issues/1506)) ([e93ec46](https://github.com/bigcommerce/checkout-js/commit/e93ec46b3094f21cc07c5611066333092de8672f))
+
+### [1.379.4](https://github.com/bigcommerce/checkout-js/compare/v1.379.3...v1.379.4) (2023-10-05)
+
+### [1.379.3](https://github.com/bigcommerce/checkout-js/compare/v1.379.2...v1.379.3) (2023-10-05)
+
+### [1.379.2](https://github.com/bigcommerce/checkout-js/compare/v1.379.1...v1.379.2) (2023-10-04)
+
+### [1.379.1](https://github.com/bigcommerce/checkout-js/compare/v1.379.0...v1.379.1) (2023-10-04)
+
+
+### Code Refactoring
+
+* **payment:** PAYPAL-2859 moved PayPalAxo component to a separate package ([#1484](https://github.com/bigcommerce/checkout-js/issues/1484)) ([c21d809](https://github.com/bigcommerce/checkout-js/commit/c21d8092d88d133bba5363f99a6437350c334229))
+
+## [1.379.0](https://github.com/bigcommerce/checkout-js/compare/v1.378.1...v1.379.0) (2023-10-03)
+
+
+### Features
+
+* **payment:** PI-833 remove sign out link from hosted widget payment component ([2b0b0c7](https://github.com/bigcommerce/checkout-js/commit/2b0b0c7629c70a66bac8dfdf8a04bf00586bba58))
+
+### [1.378.1](https://github.com/bigcommerce/checkout-js/compare/v1.378.0...v1.378.1) (2023-10-03)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-2984 updated BT AXO CC component styling ([#1534](https://github.com/bigcommerce/checkout-js/issues/1534)) ([29254ff](https://github.com/bigcommerce/checkout-js/commit/29254fffaf10d1fd077583d680fd275e20c08b24))
+
+## [1.378.0](https://github.com/bigcommerce/checkout-js/compare/v1.377.1...v1.378.0) (2023-10-03)
+
+
+### Features
+
+* **checkout:** PI-741 added texts for the adyen boleto ticket ([35a3082](https://github.com/bigcommerce/checkout-js/commit/35a3082fe04f6111e134501c374c44bc5961accb))
+
+### [1.377.1](https://github.com/bigcommerce/checkout-js/compare/v1.377.0...v1.377.1) (2023-10-03)
+
+## [1.377.0](https://github.com/bigcommerce/checkout-js/compare/v1.376.4...v1.377.0) (2023-09-29)
+
+
+### Features
+
+* **payment:** PAYPAL-2947 added MandateTextComponent ([e6bd471](https://github.com/bigcommerce/checkout-js/commit/e6bd471094601e386a6af711a9a9a9ebf9e7a509))
+* **payment:** PAYPAL-2947 added MandateTextComponent ([c574bf3](https://github.com/bigcommerce/checkout-js/commit/c574bf300b0be4fea7bd0e8ee1c51cfeba105aad))
+
+### [1.376.4](https://github.com/bigcommerce/checkout-js/compare/v1.376.3...v1.376.4) (2023-09-28)
+
+### [1.376.3](https://github.com/bigcommerce/checkout-js/compare/v1.376.2...v1.376.3) (2023-09-28)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-3060 fixed the issue with BT AXO payment strategy initializing in the flow with storecredits ([#1526](https://github.com/bigcommerce/checkout-js/issues/1526)) ([81c9c56](https://github.com/bigcommerce/checkout-js/commit/81c9c568513259fabaa053cdeef548728b370f94))
+
+### [1.376.2](https://github.com/bigcommerce/checkout-js/compare/v1.376.1...v1.376.2) (2023-09-28)
+
+### [1.376.1](https://github.com/bigcommerce/checkout-js/compare/v1.376.0...v1.376.1) (2023-09-28)
+
+## [1.376.0](https://github.com/bigcommerce/checkout-js/compare/v1.375.1...v1.376.0) (2023-09-28)
+
+
+### Features
+
+* **other:** LOCAL-1444 delivery translation ([#1503](https://github.com/bigcommerce/checkout-js/issues/1503)) ([7ff8e68](https://github.com/bigcommerce/checkout-js/commit/7ff8e68dad6584d79fa48d33a58695e3276efbf1))
+
+### [1.375.1](https://github.com/bigcommerce/checkout-js/compare/v1.375.0...v1.375.1) (2023-09-26)
+
+
+### Bug Fixes
+
+* **payment:** CHECKOUT-7761 Remove wallet buttons if no payment is required ([#1522](https://github.com/bigcommerce/checkout-js/issues/1522)) ([a8e2e60](https://github.com/bigcommerce/checkout-js/commit/a8e2e60249531e06dd8abce18e97118532999b0b))
+
+## [1.375.0](https://github.com/bigcommerce/checkout-js/compare/v1.374.1...v1.375.0) (2023-09-25)
+
+
+### Features
+
+* **payment:** PI-567 bump checkout-sdk version ([7d6811c](https://github.com/bigcommerce/checkout-js/commit/7d6811c4dd71dc3dad2eda3ab493994e8ade1144))
+
+### [1.374.1](https://github.com/bigcommerce/checkout-js/compare/v1.374.0...v1.374.1) (2023-09-25)
+
+
+### Bug Fixes
+
+* **other:** PAYPAL-2891 fixed the issue with webpack watch failed on linked checkout sdk watch recompilation ([#1498](https://github.com/bigcommerce/checkout-js/issues/1498)) ([8443f54](https://github.com/bigcommerce/checkout-js/commit/8443f549a99c12d806a0cc1c5327357c77794f5d))
+
+## [1.374.0](https://github.com/bigcommerce/checkout-js/compare/v1.373.6...v1.374.0) (2023-09-22)
+
+
+### Features
+
+* **payment:** PAYPAL-2947 bump checkout-sdk-js ([638beb4](https://github.com/bigcommerce/checkout-js/commit/638beb4f9e19a2e9d88021d6bc21cf090b72fcae))
+
+### [1.373.6](https://github.com/bigcommerce/checkout-js/compare/v1.373.5...v1.373.6) (2023-09-21)
+
+### [1.373.5](https://github.com/bigcommerce/checkout-js/compare/v1.373.4...v1.373.5) (2023-09-20)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-7606 Fix GoogleAutocomplete max length ([#1469](https://github.com/bigcommerce/checkout-js/issues/1469)) ([9bf7584](https://github.com/bigcommerce/checkout-js/commit/9bf7584ee869718cfbb5dc2b86c55da8bce360b5))
+
+### [1.373.4](https://github.com/bigcommerce/checkout-js/compare/v1.373.3...v1.373.4) (2023-09-19)
+
+### [1.373.3](https://github.com/bigcommerce/checkout-js/compare/v1.373.2...v1.373.3) (2023-09-19)
+
+### [1.373.2](https://github.com/bigcommerce/checkout-js/compare/v1.373.1...v1.373.2) (2023-09-19)
+
 ### [1.373.1](https://github.com/bigcommerce/checkout-js/compare/v1.373.0...v1.373.1) (2023-09-18)
 
 ## [1.373.0](https://github.com/bigcommerce/checkout-js/compare/v1.372.0...v1.373.0) (2023-09-14)

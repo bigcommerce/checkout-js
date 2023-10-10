@@ -7,18 +7,26 @@ import { mount, render } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-connect-integration';
 
 import { getCountries } from '../geography/countries.mock';
 
 import { getAddress } from './address.mock';
 import AddressType from './AddressType';
 import { getAddressFormFields } from './formField.mock';
-import * as usePayPalConnectAddress from './PayPalAxo/usePayPalConnectAddress';
 import StaticAddress, { StaticAddressProps } from './StaticAddress';
 
 jest.mock('@bigcommerce/checkout/ui', () => ({
     ...jest.requireActual('@bigcommerce/checkout/ui'),
     IconPayPalConnectSmall: () => (<div data-test="pp-connect-icon">IconPayPalConnectSmall</div>)
+}));
+
+jest.mock('@bigcommerce/checkout/paypal-connect-integration', () => ({
+    ...jest.requireActual('@bigcommerce/checkout/paypal-connect-integration'),
+    usePayPalConnectAddress: jest.fn(() => ({
+        isPayPalAxoEnabled: true,
+        paypalConnectAddresses: [],
+    })),
 }));
 
 describe('StaticAddress Component', () => {
@@ -43,12 +51,6 @@ describe('StaticAddress Component', () => {
 
         jest.spyOn(checkoutState.data, 'getShippingAddressFields').mockReturnValue(
             getAddressFormFields(),
-        );
-
-        jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
-            jest.fn().mockImplementation(() => ({
-                isPayPalConnectAddress: () => false,
-            }))
         );
 
         StaticAddressTest = (props) => (
@@ -172,12 +174,11 @@ describe('StaticAddress Component', () => {
         });
 
         it('should show icon for PP Connect address', () => {
-            jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
-                jest.fn().mockImplementation(() => ({
-                    isPayPalAxoEnabled: true,
-                    paypalConnectAddresses: [defaultProps.address]
-                }))
-            );
+            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+            (usePayPalConnectAddress as jest.Mock).mockReturnValue({
+                isPayPalAxoEnabled: true,
+                paypalConnectAddresses: [defaultProps.address],
+            });
 
             const container = render(
                 <StaticAddressTest

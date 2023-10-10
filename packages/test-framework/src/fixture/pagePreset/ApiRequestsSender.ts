@@ -40,13 +40,13 @@ export class ApiRequestsSender {
         });
     }
 
-    async addPhysicalItemToCart(): Promise<void> {
+    async addPhysicalItemToCart(quantity = 1): Promise<void> {
         console.log(`  - Adding productId=86 to cart`);
 
         const apiContext = await this.apiContextFactory.create(this.page, this.storeUrl);
 
         await apiContext.post('./carts', {
-            data: { locale: 'en', lineItems: [{ quantity: 1, productId: 86 }] },
+            data: { locale: 'en', lineItems: [{ quantity, productId: 86 }] },
         });
     }
 

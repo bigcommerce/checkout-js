@@ -16,7 +16,7 @@ exports[`OrderSummaryModal renders order summary 1`] = `
         <span
           className="is-srOnly"
         >
-          <WithLanguage(TranslatedString)
+          <TranslatedString
             id="common.close_action"
           />
         </span>
@@ -25,7 +25,7 @@ exports[`OrderSummaryModal renders order summary 1`] = `
       <ModalHeader
         additionalClassName="cart-modal-title"
       >
-        <WithLanguage(TranslatedString)
+        <TranslatedString
           id="cart.cart_heading"
         />
       </ModalHeader>
@@ -174,7 +174,7 @@ exports[`OrderSummaryModal when taxes are inclusive displays tax as summary sect
         <span
           className="is-srOnly"
         >
-          <WithLanguage(TranslatedString)
+          <TranslatedString
             id="common.close_action"
           />
         </span>
@@ -183,7 +183,7 @@ exports[`OrderSummaryModal when taxes are inclusive displays tax as summary sect
       <ModalHeader
         additionalClassName="cart-modal-title"
       >
-        <WithLanguage(TranslatedString)
+        <TranslatedString
           id="cart.cart_heading"
         />
       </ModalHeader>
@@ -317,7 +317,7 @@ exports[`OrderSummaryModal when taxes are inclusive displays tax as summary sect
       className="cart-taxItem cart-taxItem--subtotal optimizedCheckout-contentPrimary"
       data-test="tax-text"
     >
-      <WithLanguage(TranslatedString)
+      <TranslatedString
         id="tax.inclusive_label"
       />
     </h5>

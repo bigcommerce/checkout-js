@@ -3,13 +3,11 @@ import {
     CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
-import { act, render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
 import { FormikValues } from 'formik/dist/types';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
 import {
     CheckoutContext,
     PaymentFormContext,
@@ -23,7 +21,8 @@ import {
     getInstruments,
     getPaymentFormServiceMock,
     getStoreConfig,
-} from '@bigcommerce/checkout/test-utils';
+} from '@bigcommerce/checkout/test-mocks';
+import { act, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { AccountTypes, OwnershipTypes } from '../constants';
 
@@ -116,11 +115,9 @@ describe('BraintreeAchPaymentForm', () => {
             return (
                 <Formik initialValues={initialValues} onSubmit={noop}>
                     <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
-                        <LocaleContext.Provider value={createLocaleContext(getStoreConfig())}>
-                            <PaymentFormContext.Provider value={{ paymentForm }}>
-                                <BraintreeAchPaymentForm {...props} />
-                            </PaymentFormContext.Provider>
-                        </LocaleContext.Provider>
+                        <PaymentFormContext.Provider value={{ paymentForm }}>
+                            <BraintreeAchPaymentForm {...props} />
+                        </PaymentFormContext.Provider>
                     </CheckoutContext.Provider>
                 </Formik>
             );

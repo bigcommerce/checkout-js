@@ -28,7 +28,7 @@ export interface GoogleAutocompleteFormFieldProps {
 }
 
 const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormFieldProps> = ({
-    field: { default: placeholder, name },
+    field: { default: placeholder, name, maxLength },
     countryCode,
     supportedCountries,
     parentFieldName,
@@ -55,8 +55,9 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
             'aria-labelledby': labelId,
             placeholder: isFloatingLabelEnabled ? ' ' : placeholder,
             labelText: isFloatingLabelEnabled ? labelContent : null,
+            maxLength: maxLength || undefined,
         }),
-        [name, labelId, placeholder, labelContent],
+        [name, labelId, placeholder, labelContent, maxLength],
     );
 
     const renderInput = useCallback(

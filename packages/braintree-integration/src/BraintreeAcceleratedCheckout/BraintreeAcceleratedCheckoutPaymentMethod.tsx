@@ -26,7 +26,6 @@ const BraintreeAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentMethod
     const paypalConnectComponentRef = useRef<PayPalConnectComponentRef>({});
 
     const { isLoadingPaymentMethod, isInitializingPayment } = checkoutState.statuses;
-    const { isPaymentDataRequired } = checkoutState.data;
 
     const initializePaymentOrThrow = async () => {
         try {
@@ -59,20 +58,12 @@ const BraintreeAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentMethod
     };
 
     useEffect(() => {
-        if (isPaymentDataRequired()) {
-            void initializePaymentOrThrow();
-        }
+        void initializePaymentOrThrow();
 
         return () => {
-            if (isPaymentDataRequired()) {
-                void deinitializePaymentOrThrow();
-            }
+            void deinitializePaymentOrThrow();
         };
     }, []);
-
-    if (!isPaymentDataRequired()) {
-        return null;
-    }
 
     const isLoading = isInitializingPayment() || isLoadingPaymentMethod(method.id);
 

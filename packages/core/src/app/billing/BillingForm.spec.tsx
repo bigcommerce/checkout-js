@@ -1,14 +1,14 @@
+import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-connect-integration';
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
-import { getAddress } from '@bigcommerce/checkout/test-utils';
+import { getAddress } from '@bigcommerce/checkout/test-mocks';
 
 import { AddressForm, AddressSelect } from '../address';
 import { getAddressFormFieldsWithCustomRequired, getFormFields } from '../address/formField.mock';
-import * as usePayPalConnectAddress from '../address/PayPalAxo/usePayPalConnectAddress';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 import { getCountries } from '../geography/countries.mock';
@@ -17,6 +17,13 @@ import { DynamicFormField } from '../ui/form';
 import { getBillingAddress } from './billingAddresses.mock';
 import BillingForm, { BillingFormProps } from './BillingForm';
 import StaticBillingAddress from './StaticBillingAddress';
+
+jest.mock('@bigcommerce/checkout/paypal-connect-integration', () => ({
+    usePayPalConnectAddress: jest.fn(() => ({
+        isPayPalAxoEnabled: false,
+        mergedBcAndPayPalConnectAddresses: [],
+    })),
+}));
 
 describe('BillingForm Component', () => {
     let component: ReactWrapper;
@@ -45,13 +52,6 @@ describe('BillingForm Component', () => {
             onSubmit: jest.fn(),
             shouldValidateSafeInput: true,
         };
-
-        jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
-            jest.fn().mockImplementation(() => ({
-                isPayPalAxoEnabled: false,
-                mergedBcAndPayPalConnectAddresses: [],
-            })),
-        );
     });
 
     beforeEach(() => {
@@ -177,13 +177,11 @@ describe('BillingForm Component', () => {
             address1: 'PP AXO address'
         }];
 
-        jest.spyOn(usePayPalConnectAddress, 'default').mockImplementation(
-            
-            jest.fn().mockImplementation(() => ({
-                isPayPalAxoEnabled: true,
-                mergedBcAndPayPalConnectAddresses,
-            })),
-        );
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        (usePayPalConnectAddress as jest.Mock).mockReturnValue({
+            isPayPalAxoEnabled: true,
+            mergedBcAndPayPalConnectAddresses,
+        });
 
         component = mount(
             <CheckoutProvider checkoutService={checkoutService}>

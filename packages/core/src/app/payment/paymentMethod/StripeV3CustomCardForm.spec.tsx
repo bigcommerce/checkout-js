@@ -1,5 +1,8 @@
+import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
+
+import { LocaleProvider } from '@bigcommerce/checkout/locale';
 
 import StripeV3CustomCardForm, { StripeV3CustomCardFormProps } from './StripeV3CustomCardForm';
 
@@ -22,7 +25,9 @@ describe('StripeV3CustomCardForm', () => {
             },
         };
 
-        StripeV3CustomCardFormTest = (props) => <StripeV3CustomCardForm {...props} />;
+        const checkoutService = createCheckoutService();
+
+        StripeV3CustomCardFormTest = (props) => <LocaleProvider checkoutService={checkoutService}><StripeV3CustomCardForm {...props} /></LocaleProvider>;
     });
 
     it('renders stripeV3 card number field', () => {

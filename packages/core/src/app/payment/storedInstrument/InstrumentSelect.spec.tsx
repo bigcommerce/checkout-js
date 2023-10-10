@@ -219,23 +219,25 @@ describe('InstrumentSelect', () => {
             show: boolean;
             selectedInstrumentId?: string;
         }) => (
-            <Formik initialValues={initialValues} onSubmit={submit}>
-                {({ handleSubmit }) => (
-                    <form onSubmit={handleSubmit}>
-                        {show && (
-                            <Field name="instrumentId">
-                                {(field: FieldProps<string>) => (
-                                    <InstrumentSelect
-                                        {...field}
-                                        {...defaultProps}
-                                        selectedInstrumentId={selectedInstrumentId}
-                                    />
-                                )}
-                            </Field>
-                        )}
-                    </form>
-                )}
-            </Formik>
+            <LocaleContext.Provider value={localeContext}>
+                <Formik initialValues={initialValues} onSubmit={submit}>
+                    {({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            {show && (
+                                <Field name="instrumentId">
+                                    {(field: FieldProps<string>) => (
+                                        <InstrumentSelect
+                                            {...field}
+                                            {...defaultProps}
+                                            selectedInstrumentId={selectedInstrumentId}
+                                        />
+                                    )}
+                                </Field>
+                            )}
+                        </form>
+                    )}
+                </Formik>
+            </LocaleContext.Provider>
         );
 
         const component = mount(

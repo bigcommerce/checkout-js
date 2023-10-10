@@ -212,6 +212,7 @@
             },
             "bluesnap_direct_permission": "Jeg autoriserer denne transaksjonen med elektronisk sjekk (ACH/ECP) og godtar denne debiteringen av kontoen min.",
             "bluesnap_direct_electronic_check_label": "Elektronisk sjekk (ACH/ECP)",
+            "bluesnap_direct_local_bank_transfer_label": "Lokal bankoverføring",
             "bolt_benefit_1": "Handle hundrevis av merker med passordløs pålogging",
             "bolt_benefit_2": "Benytt deg av lagret betalings- og leveranseinformasjon i kassen",
             "bolt_benefit_3": "Dra nytte av PCI-kompatibel kontosikkerhet",
@@ -472,7 +473,8 @@
             "sign_out_after_action": "for å se andre betalingsmåter",
             "sign_in_required_error": "Fjernpålogging kreves før betaling",
             "sign_out_before_action": "",
-            "start_with_text": "Betal raskere med:"
+            "start_with_text": "Betal raskere med:",
+            "powered_by": "Levert av"
         },
         "shipping": {
             "cart_change_error": "En oppdatering av handlekurven din har blitt oppdaget, og de tilgjengelige fraktkostnadene dine er oppdatert. Velg en fraktmetode på nytt for å fortsette.",
@@ -512,6 +514,9 @@
             "label": "Ja, jeg godtar <a href=\"{url}\" target=\"_blank\">personvernreglene</a>.",
             "heading": "Personvernerklæring"
         },
+        "privacy_policy_auto_consent": {
+            "label": "*Ved å klikke på fortsett godtar du <a href=\"{url}\" target=\"_blank\">personvernerklæringen</a> vår."
+        },
         "tax": {
             "inclusive_label": "Avgifter inkludert i totalbeløpet:"
         },
@@ -538,13 +543,20 @@
                     "sepa_debit": "SEPA-autorisasjon"
                 },
                 "paypalcommercealternativemethods": {
-                    "oxxo": "OXXO-billett"
+                    "oxxo": "OXXO-billett",
+                    "ratepay": {
+                        "account_holder_name": "Account Holder",
+                        "iban": "Iban",
+                        "payment_reference": "Payment Reference"
+                    }
                 }
             },
             "order_number_text": "Bestillingsnummeret ditt er <strong>{orderNumber}</strong>",
             "order_pending_review_text": "Bestillingen din ble sendt til oss, men venter på betaling. Når vi mottar betalingen for bestillingen din, vil den bli fullført. Hvis du allerede har oppgitt betalingsinformasjon, vil vi behandle bestillingen din manuelt og sende deg en e-post når den er fullført.",
             "order_pending_status_text": "Vi har mottatt bestillingen din og behandler betalingen din. Når betalingen er bekreftet, vil bestillingen bli fullført. Vi sender deg en e-post når den er fullført. Vær oppmerksom på at denne prosessen kan ta noen minutter avhengig av behandlingstiden for den valgte metoden. Hvis du har spørsmål om kjøpet, kan du sende oss en e-post på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_incomplete_status_text": "Vi har mottatt din bestilling og betaling. Bestillingen din behandles nå av systemet vårt. Vær oppmerksom på at behandlingen kan ta noen minutter. Hvis du har spørsmål om kjøpet, kan du sende oss en e-post på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
+            "order_incomplete_status_heading": "Vi beklager, men betalingen for denne bestillingen mislyktes.",
+            "order_incomplete_status_with_unsuccessful_payment_text": "Bestillingen din er ufullstendig fordi betalingen mislyktes. Hvis du trenger hjelp med kjøpet, kan du sende oss en e-post på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_with_downloadable_digital_items_text": "Du kan laste ned dine digitale kjøp ved å klikke på lenkene på denne siden, eller ved å logge på kontoen din når som helst. Det er også en nedlastingslenke i bekreftelses-e-posten din, som skal komme innen kort tid.",
             "order_with_support_number_text": "En e-post sendes ut med informasjon om kjøpet ditt. Hvis du har spørsmål om kjøpet, kan du sende oss en e-post på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a> eller ringe oss på <a href=\"tel://{supportPhoneNumber}\">{supportPhoneNumber}</a>.",
             "order_without_downloadable_digital_items_text": "Når vi mottar betalingen din, sender vi en e-postbekreftelse med en lenke for å laste ned dine digitale kjøp.",

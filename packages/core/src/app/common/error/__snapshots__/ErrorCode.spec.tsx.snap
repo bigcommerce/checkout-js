@@ -7,7 +7,7 @@ exports[`ErrorCode Component renders error code component with provided code 1`]
   <span
     className="errorCode-label"
   >
-    <WithLanguage(TranslatedString)
+    <TranslatedString
       id="common.error_code"
     />
   </span>
