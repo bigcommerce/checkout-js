@@ -6,6 +6,7 @@ import {
     ShopperConfig,
     StoreConfig,
 } from '@bigcommerce/checkout-sdk';
+import { BrowserOptions } from '@sentry/browser';
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';
 import React, { Component, lazy, ReactNode } from 'react';
@@ -43,7 +44,6 @@ import OrderIncompleteHeader from './OrderIncompleteHeader';
 import OrderStatus from './OrderStatus';
 import PrintLink from './PrintLink';
 import ThankYouHeader from './ThankYouHeader';
-import { BrowserOptions } from '@sentry/browser';
 
 const OrderSummary = lazy(() =>
     retry(
