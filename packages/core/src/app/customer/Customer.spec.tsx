@@ -179,9 +179,6 @@ describe('Customer', () => {
                 ...getStoreConfig(),
                 checkoutSettings: {
                     ...getStoreConfig().checkoutSettings,
-                    features: {
-                        'CHECKOUT-4941.account_creation_in_checkout': true,
-                    },
                 },
             });
 
@@ -774,9 +771,6 @@ describe('Customer', () => {
                 ...getStoreConfig(),
                 checkoutSettings: {
                     ...getStoreConfig().checkoutSettings,
-                    features: {
-                        'CHECKOUT-4941.account_creation_in_checkout': true,
-                    },
                 },
             });
 
