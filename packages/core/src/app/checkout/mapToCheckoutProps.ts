@@ -60,7 +60,6 @@ export default function mapToCheckoutProps({
         loginUrl,
         cartUrl,
         createAccountUrl,
-        canCreateAccountInCheckout: features['CHECKOUT-4941.account_creation_in_checkout'],
         promotions,
         subscribeToConsignments: subscribeToConsignmentsSelector({
             checkoutService,

@@ -141,7 +141,6 @@ export interface WithCheckoutProps {
     loginUrl: string;
     cartUrl: string;
     createAccountUrl: string;
-    canCreateAccountInCheckout: boolean;
     promotions?: Promotion[];
     steps: CheckoutStepStatus[];
     clearError(error?: Error): void;
@@ -762,12 +761,9 @@ class Checkout extends Component<
     };
 
     private setCustomerViewType: (viewType: CustomerViewType) => void = (customerViewType) => {
-        const { canCreateAccountInCheckout, createAccountUrl } = this.props;
+        const { createAccountUrl } = this.props;
 
-        if (
-            customerViewType === CustomerViewType.CreateAccount &&
-            (!canCreateAccountInCheckout || isEmbedded())
-        ) {
+        if (customerViewType === CustomerViewType.CreateAccount && isEmbedded()) {
             if (window.top) {
                 window.top.location.replace(createAccountUrl);
             }
