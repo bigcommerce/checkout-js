@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.383.2](https://github.com/bigcommerce/checkout-js/compare/v1.383.1...v1.383.2) (2023-10-12)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-7772 Remove fully roled out feature account_creation_in_checkout ([540fc25](https://github.com/bigcommerce/checkout-js/commit/540fc2524f8fa58e1f70656205269b280b45f3b4))
+
 ### [1.383.1](https://github.com/bigcommerce/checkout-js/compare/v1.383.0...v1.383.1) (2023-10-11)
 
 ## [1.383.0](https://github.com/bigcommerce/checkout-js/compare/v1.382.1...v1.383.0) (2023-10-10)
