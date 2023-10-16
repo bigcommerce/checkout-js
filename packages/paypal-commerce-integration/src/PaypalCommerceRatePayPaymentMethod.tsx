@@ -9,6 +9,11 @@ import { DynamicFormField, DynamicFormFieldType, FormContext } from '@bigcommerc
 import { FormField } from '@bigcommerce/checkout-sdk';
 import getPaypalCommerceRatePayValidationSchema from './validation-schemas/getPaypalCommerceRatePayValidationSchema';
 import { LoadingSpinner } from '@bigcommerce/checkout/ui';
+import { CustomError } from '../../payment-integration-api/src/errors';
+import { SpecificError } from '../../payment-integration-api/src/errors/custom-error-types';
+
+const PAYMENT_SOURCE_INFO_CANNOT_BE_VERIFIED = 'PAYMENT_SOURCE_INFO_CANNOT_BE_VERIFIED';
+const PAYMENT_SOURCE_DECLINED_BY_PROCESSOR = 'PAYMENT_SOURCE_DECLINED_BY_PROCESSOR';
 
 interface RatePayFieldValues {
     ratepayBirthDate: {
@@ -83,8 +88,33 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
                     legalTextContainer: 'legal-text-container',
                     getFieldsValues: () => fieldsValues.current,
                     onPaymentSubmission: (isSubmitting: boolean) => setIsPaymentSubmitting(isSubmitting),
-                    onError: (error: Error) => {
+                    onError: (error: SpecificError) => {
                         paymentForm.disableSubmit(method, true);
+                        const ratepaySpecificError = error?.errors?.filter(e => e.provider_error);
+
+                        if (ratepaySpecificError?.length) {
+                            let translationCode;
+                            switch (ratepaySpecificError[0].provider_error?.code) {
+                                case PAYMENT_SOURCE_DECLINED_BY_PROCESSOR:
+                                    translationCode = 'payment.ratepay.errors.paymentSourceDeclinedByProcessor';
+                                    break;
+                                case PAYMENT_SOURCE_INFO_CANNOT_BE_VERIFIED:
+                                    translationCode = 'payment.ratepay.errors.paymentSourceInfoCannotBeVerified';
+                                    break;
+                                default:
+                                    translationCode = 'common.error_heading';
+                            }
+
+                            const ratepayError = new CustomError({
+                                data: {
+                                    shouldBeTranslatedAsHtml: true,
+                                    translationKey: translationCode,
+                                },
+                            });
+
+                            return onUnhandledError(ratepayError);
+                        }
+
                         onUnhandledError(error);
                     },
                 },
