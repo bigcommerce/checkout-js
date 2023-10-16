@@ -7,14 +7,21 @@ import {
     PaymentRequestOptions,
 } from '@bigcommerce/checkout-sdk';
 import { render } from '@testing-library/react';
+import { Formik } from 'formik';
+import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import {
+    CheckoutProvider,
     PaymentFormContext,
     PaymentFormService,
     PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-utils';
+import {
+    getCustomer,
+    getInstruments,
+    getPaymentFormServiceMock,
+} from '@bigcommerce/checkout/test-utils';
 
 import { getSquareV2 } from './mocks/squarev2-method.mock';
 import SquareV2PaymentMethod from './SquareV2PaymentMethod';
@@ -157,5 +164,63 @@ describe('SquareV2 payment method', () => {
                 methodId: 'squarev2',
             }),
         );
+    });
+
+    it('should not render store instrument fieldset when storing cards is disabled', () => {
+        const { container } = render(<SquareV2PaymentMethodTest />);
+
+        expect(container.getElementsByClassName('form-field--saveInstrument')).toHaveLength(0);
+    });
+
+    describe('when stored credit cards is enabled', () => {
+        let SquareV2PaymentMethodTestWithVaulted: FunctionComponent;
+
+        beforeEach(() => {
+            props = {
+                method: {
+                    ...getSquareV2(),
+                    config: { ...getSquareV2().config, isVaultingEnabled: true },
+                },
+                checkoutService,
+                checkoutState,
+                paymentForm,
+                language: jest.fn() as unknown as LanguageService,
+                onUnhandledError: jest.fn(),
+            };
+
+            SquareV2PaymentMethodTestWithVaulted = () => (
+                <PaymentFormContext.Provider value={{ paymentForm }}>
+                    <CheckoutProvider checkoutService={checkoutService}>
+                        <Formik initialValues={{}} onSubmit={noop}>
+                            <SquareV2PaymentMethod {...props} />
+                        </Formik>
+                    </CheckoutProvider>
+                </PaymentFormContext.Provider>
+            );
+
+            jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
+        });
+
+        it('should render store instrument fieldset', () => {
+            const { container } = render(<SquareV2PaymentMethodTestWithVaulted />);
+
+            expect(container.getElementsByClassName('form-field--saveInstrument')).toHaveLength(1);
+        });
+
+        it('should not show instruments fieldset when there are no stored cards', () => {
+            jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([]);
+
+            const { container } = render(<SquareV2PaymentMethodTestWithVaulted />);
+
+            expect(container.getElementsByClassName('instrumentFieldset')).toHaveLength(0);
+        });
+
+        it('should show instruments fieldset when there is at least one stored card', () => {
+            jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(getInstruments());
+
+            const { container } = render(<SquareV2PaymentMethodTestWithVaulted />);
+
+            expect(container.getElementsByClassName('instrumentFieldset')).toHaveLength(1);
+        });
     });
 });
