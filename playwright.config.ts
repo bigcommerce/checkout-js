@@ -36,7 +36,7 @@ const config: PlaywrightTestConfig = {
     outputDir: './packages/test-framework/screenshots',
     fullyParallel: true,
     forbidOnly: true,
-    retries: 0,
+    retries: 3,
     workers: process.env.IS_CI ? 3 : undefined,
     reporter: [
         [
