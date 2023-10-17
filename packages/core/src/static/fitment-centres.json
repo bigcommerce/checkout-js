@@ -250,7 +250,7 @@
         "latitude": 149.15547
     },
     {
-        "company": "AMA Group Mackay",
+        "company": "AMA Group Townsville",
         "street": "9 Vesuvius St",
         "suburb": "Garbutt",
         "state": "QLD",
@@ -268,5 +268,95 @@
         "phone": "1300 320 338",
         "longitude": -27.54323,
         "latitude": 153.02627
+    },
+    {
+        "company": "Opposite Lock Epping",
+        "street": "1/26-38 Miller St",
+        "suburb": "Epping",
+        "state": "VIC",
+        "postcode": "3076",
+        "phone": "03 9408 7077",
+        "longitude": -37.64821,
+        "latitude": 145.02013
+    },
+    {
+        "company": "Opposite Lock Mornington",
+        "street": "841 Nepean Hwy",
+        "suburb": "Mornington",
+        "state": "VIC",
+        "postcode": "3931",
+        "phone": "03 5976 7308",
+        "longitude": -38.23314,
+        "latitude": 145.03954
+    },
+    {
+        "company": "Opposite Lock Wodonga",
+        "street": "87 Thomas Mitchell Dr",
+        "suburb": "Wodonga",
+        "state": "VIC",
+        "postcode": "3690",
+        "phone": "03 6056 4414",
+        "longitude": -36.13442,
+        "latitude": 146.90329
+    },
+    {
+        "company": "Australian Ute Gear",
+        "street": "4/437 Old Geelong Rd",
+        "suburb": "Hoppers Crossing",
+        "state": "VIC",
+        "postcode": "3029",
+        "phone": "03 8360 8222",
+        "longitude": -37.86821,
+        "latitude": 146.90329
+    },
+    {
+        "company": "TJM Shepparton",
+        "street": "8005 Melbourne Rd",
+        "suburb": "Shepparton",
+        "state": "VIC",
+        "postcode": "3630",
+        "phone": "03 5823 5285",
+        "longitude": -36.40993,
+        "latitude": 145.39239
+    },
+    {
+        "company": "TJM Geelong",
+        "street": "27 Baldwin Ave",
+        "suburb": "Geelong",
+        "state": "VIC",
+        "postcode": "3215",
+        "phone": "03 5277 1444",
+        "longitude": -38.0994,
+        "latitude": 144.35375
+    },
+    {
+        "company": "Peel 4WD Centre",
+        "street": "292 Pinjarra Rd",
+        "suburb": "Mandurah",
+        "state": "WA",
+        "postcode": "6210",
+        "phone": "08 9581 6184",
+        "longitude": -32.53567,
+        "latitude": 115.73636
+    },
+    {
+        "company": "Power Tune 4x4",
+        "street": "450 Warwick Rd",
+        "suburb": "Yamanto",
+        "state": "QLD",
+        "postcode": "4305",
+        "phone": "07 3281 1050",
+        "longitude": -27.65816,
+        "latitude": 152.74489
+    },
+    {
+        "company": "Tropical Accessories Mackay",
+        "street": "2 McLennan St",
+        "suburb": "Ooralea",
+        "state": "QLD",
+        "postcode": "4740",
+        "phone": "07 4952 4122",
+        "longitude": -21.16534,
+        "latitude": 149.15358
     }
 ]
