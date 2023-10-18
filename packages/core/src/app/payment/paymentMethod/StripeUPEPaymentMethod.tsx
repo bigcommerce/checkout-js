@@ -3,7 +3,7 @@ import { noop } from 'lodash';
 import React, { FunctionComponent, useCallback, useContext } from 'react';
 
 import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutContextProps, MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withCheckout } from '../../checkout';
 import {
@@ -53,6 +53,7 @@ const StripeUPEPaymentMethod: FunctionComponent<
                     ...options,
                     stripeupe: {
                         containerId,
+                        loaderContainerId: MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID,
                         style: {
                             labelText: formLabel.color,
                             fieldText: formInput.color,
