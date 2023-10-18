@@ -59,7 +59,6 @@ export default class SentryErrorLogger implements ErrorLogger {
                 ...(config.denyUrls || []),
                 'polyfill~checkout',
                 'sentry~checkout',
-                'convertcart',
             ],
             integrations: [
                 new Integrations.GlobalHandlers({
@@ -147,16 +146,6 @@ export default class SentryErrorLogger implements ErrorLogger {
     }
 
     private handleBeforeSend: (event: Event, hint?: EventHint) => Event | null = (event, hint) => {
-        const isConvertcart = Boolean(
-            event.breadcrumbs?.filter((breadcrumb) =>
-                breadcrumb.data?.url?.includes('convertcart'),
-            ).length,
-        );
-
-        if (isConvertcart) {
-            return null;
-        }
-
         if (event.exception) {
             if (
                 !this.shouldReportExceptions(

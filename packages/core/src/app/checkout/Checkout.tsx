@@ -137,7 +137,6 @@ export interface WithCheckoutProps {
     isPending: boolean;
     isPriceHiddenFromGuests: boolean;
     isShowingWalletButtonsOnTop: boolean;
-    isSentryLoggingAll: boolean;
     loginUrl: string;
     cartUrl: string;
     createAccountUrl: string;
@@ -168,7 +167,7 @@ class Checkout extends Component<
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
     private unsubscribeFromConsignments?: () => void;
-    private readonly errorLogger: ErrorLogger;
+    private errorLogger: ErrorLogger;
 
     constructor(
         props: Readonly<
@@ -181,14 +180,14 @@ class Checkout extends Component<
     ) {
         super(props);
 
-        const { sentryConfig, isSentryLoggingAll, publicPath } = props;
+        const { sentryConfig, publicPath } = props;
 
         this.errorLogger = createErrorLogger(
             { sentry: sentryConfig },
             {
                 errorTypes: ['UnrecoverableError'],
                 publicPath,
-                sampleRate: isSentryLoggingAll ? 1 : 0.1,
+                sampleRate: 0.1,
             },
         );
     }
@@ -287,6 +286,24 @@ class Checkout extends Component<
             }
 
             window.addEventListener('beforeunload', this.handleBeforeExit);
+
+            const isSentryLoggingAll =
+                data.getConfig()?.checkoutSettings.features[
+                    'CHECKOUT-7764.Increase_sentry_logging_to_100_percent'
+                ] ?? false;
+
+            if (isSentryLoggingAll) {
+                const { sentryConfig, publicPath } = this.props;
+
+                this.errorLogger = createErrorLogger(
+                    { sentry: sentryConfig },
+                    {
+                        errorTypes: ['UnrecoverableError'],
+                        publicPath,
+                        sampleRate: 1,
+                    },
+                );
+            }
 
             if (isExtensionEnabled()) {
                 await extensionService.loadExtensions();

@@ -84,7 +84,6 @@ export interface OrderConfirmationProps {
 interface WithCheckoutOrderConfirmationProps {
     order?: Order;
     config?: StoreConfig;
-    isSentryLoggingAll: boolean;
     loadOrder(orderId: number): Promise<CheckoutSelectors>;
     isLoadingOrder(): boolean;
 }
@@ -103,14 +102,14 @@ class OrderConfirmation extends Component<
     ) {
         super(props);
 
-        const { sentryConfig, isSentryLoggingAll, publicPath } = props;
+        const { sentryConfig, publicPath } = props;
 
         this.errorLogger = createErrorLogger(
             { sentry: sentryConfig },
             {
                 errorTypes: ['UnrecoverableError'],
                 publicPath,
-                sampleRate: isSentryLoggingAll ? 1 : 0.1,
+                sampleRate: 0.1,
             },
         );
     }
@@ -136,6 +135,24 @@ class OrderConfirmation extends Component<
                 messenger.postFrameLoaded({ contentId: containerId });
 
                 analyticsTracker.orderPurchased();
+
+                const isSentryLoggingAll =
+                    data.getConfig()?.checkoutSettings.features[
+                        'CHECKOUT-7764.Increase_sentry_logging_to_100_percent'
+                    ] ?? false;
+
+                if (isSentryLoggingAll) {
+                    const { sentryConfig, publicPath } = this.props;
+
+                    this.errorLogger = createErrorLogger(
+                        { sentry: sentryConfig },
+                        {
+                            errorTypes: ['UnrecoverableError'],
+                            publicPath,
+                            sampleRate: 1,
+                        },
+                    );
+                }
             })
             .catch(this.handleUnhandledError);
     }
@@ -365,14 +382,9 @@ export function mapToOrderConfirmationProps(
     const config = getConfig();
     const order = getOrder();
 
-    const isSentryLoggingAll =
-        config?.checkoutSettings.features['CHECKOUT-7764.Increase_sentry_logging_to_100_percent'] ||
-        false;
-
     return {
         config,
         isLoadingOrder,
-        isSentryLoggingAll,
         loadOrder: checkoutService.loadOrder,
         order,
     };
