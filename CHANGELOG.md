@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.386.0](https://github.com/bigcommerce/checkout-js/compare/v1.385.2...v1.386.0) (2023-10-18)
+
+
+### Features
+
+* **payment:** PAYPAL-2930 PPCP GooglePay payment strategy ([61c8de5](https://github.com/bigcommerce/checkout-js/commit/61c8de541ff1980bf05e54d8678e805f7daa3890))
+
 ### [1.385.2](https://github.com/bigcommerce/checkout-js/compare/v1.385.1...v1.385.2) (2023-10-18)
 
 
