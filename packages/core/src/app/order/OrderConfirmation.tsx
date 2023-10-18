@@ -115,24 +115,6 @@ class OrderConfirmation extends Component<
                 messenger.postFrameLoaded({ contentId: containerId });
 
                 analyticsTracker.orderPurchased();
-
-                const isSentryLoggingAll =
-                    data.getConfig()?.checkoutSettings.features[
-                        'CHECKOUT-7764.Increase_sentry_logging_to_100_percent'
-                    ] ?? false;
-
-                if (isSentryLoggingAll) {
-                    const { sentryConfig, publicPath } = this.props;
-
-                    this.errorLogger = createErrorLogger(
-                        { sentry: sentryConfig },
-                        {
-                            errorTypes: ['UnrecoverableError'],
-                            publicPath,
-                            sampleRate: 1,
-                        },
-                    );
-                }
             })
             .catch(this.handleUnhandledError);
     }
