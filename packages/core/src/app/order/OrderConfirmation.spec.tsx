@@ -12,6 +12,7 @@ import { act } from 'react-dom/test-utils';
 import { AnalyticsContextProps, AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
+import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { CreatedCustomer, GuestSignUpForm } from '../guestSignup';
@@ -57,6 +58,7 @@ describe('OrderConfirmation', () => {
             createAccount: jest.fn(() => Promise.resolve({} as CreatedCustomer)),
             createEmbeddedMessenger: () => embeddedMessengerMock,
             embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
+            errorLogger: createErrorLogger(),
             orderId: 105,
             analyticsTracker
         };

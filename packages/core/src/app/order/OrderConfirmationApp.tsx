@@ -5,9 +5,11 @@ import ReactModal from 'react-modal';
 
 import { AnalyticsProvider } from '@bigcommerce/checkout/analytics';
 import '../../scss/App.scss';
+import { ErrorBoundary, ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
+import { createErrorLogger } from '../common/error';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
 import { AccountService, CreatedCustomer, SignUpFormValues } from '../guestSignup';
 
@@ -18,6 +20,7 @@ export interface OrderConfirmationAppProps {
     orderId: number;
     publicPath?: string;
     sentryConfig?: BrowserOptions;
+    sentrySampleRate?: number;
 }
 
 class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
@@ -27,6 +30,20 @@ class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
         shouldWarnMutation: process.env.NODE_ENV === 'development',
     });
     private embeddedStylesheet = createEmbeddedCheckoutStylesheet();
+    private errorLogger: ErrorLogger;
+
+    constructor(props: Readonly<OrderConfirmationAppProps>) {
+        super(props);
+
+        this.errorLogger = createErrorLogger(
+            { sentry: props.sentryConfig },
+            {
+                errorTypes: ['UnrecoverableError'],
+                publicPath: props.publicPath,
+                sampleRate: props.sentrySampleRate ? props.sentrySampleRate : 0.1,
+            },
+        );
+    }
 
     componentDidMount(): void {
         const { containerId } = this.props;
@@ -36,18 +53,21 @@ class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
 
     render(): ReactNode {
         return (
-            <LocaleProvider checkoutService={this.checkoutService}>
-                <CheckoutProvider checkoutService={this.checkoutService}>
-                    <AnalyticsProvider checkoutService={this.checkoutService}>
-                        <OrderConfirmation
-                            {...this.props}
-                            createAccount={this.createAccount}
-                            createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
-                            embeddedStylesheet={this.embeddedStylesheet}
-                        />
-                    </AnalyticsProvider>
-                </CheckoutProvider>
-            </LocaleProvider>
+            <ErrorBoundary logger={this.errorLogger}>
+                <LocaleProvider checkoutService={this.checkoutService}>
+                    <CheckoutProvider checkoutService={this.checkoutService}>
+                        <AnalyticsProvider checkoutService={ this.checkoutService }>
+                            <OrderConfirmation
+                                {...this.props}
+                                createAccount={this.createAccount}
+                                createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
+                                embeddedStylesheet={this.embeddedStylesheet}
+                                errorLogger={this.errorLogger}
+                            />
+                        </AnalyticsProvider>
+                    </CheckoutProvider>
+                </LocaleProvider>
+            </ErrorBoundary>
         );
     }
 

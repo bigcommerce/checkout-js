@@ -18,7 +18,6 @@ export default function mapToCheckoutProps({
     const {
         checkoutSettings: {
             guestCheckoutEnabled: isGuestEnabled = false,
-            features = {},
             checkoutUserExperienceSettings = {
                 walletButtonsOnTop: false,
                 floatingLabelEnabled: false,
@@ -41,9 +40,6 @@ export default function mapToCheckoutProps({
 
     const walletButtonsOnTopFlag = Boolean(checkoutUserExperienceSettings.walletButtonsOnTop);
 
-    const isSentryLoggingAll =
-        features['CHECKOUT-7764.Increase_sentry_logging_to_100_percent'] || false;
-
     return {
         billingAddress: data.getBillingAddress(),
         cart: data.getCart(),
@@ -55,7 +51,6 @@ export default function mapToCheckoutProps({
         isPending: statuses.isPending(),
         isPriceHiddenFromGuests,
         isShowingWalletButtonsOnTop: walletButtonsOnTopFlag,
-        isSentryLoggingAll,
         loadCheckout: checkoutService.loadCheckout,
         loginUrl,
         cartUrl,
