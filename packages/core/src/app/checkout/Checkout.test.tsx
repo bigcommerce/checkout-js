@@ -27,17 +27,6 @@ import {
 
 import Checkout, { CheckoutProps } from './Checkout';
 
-const errorLoggerMock = {
-    log: jest.fn(),
-};
-
-jest.mock('../common/error', () => {
-    return {
-        ...jest.requireActual('../common/error'),
-        createErrorLogger: jest.fn(() => errorLoggerMock),
-    };
-});
-
 describe('Checkout', () => {
     let checkout: CheckoutPageNodeObject;
     let CheckoutTest: FunctionComponent<CheckoutProps>;
@@ -78,8 +67,11 @@ describe('Checkout', () => {
             createEmbeddedMessenger: () => embeddedMessengerMock,
             embeddedStylesheet: createEmbeddedCheckoutStylesheet(),
             embeddedSupport: createEmbeddedCheckoutSupport(getLanguageService()),
+            errorLogger: createErrorLogger(),
             analyticsTracker,
         };
+
+        jest.spyOn(defaultProps.errorLogger, 'log').mockImplementation(noop);
 
         CheckoutTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
@@ -235,7 +227,7 @@ describe('Checkout', () => {
 
             const error = new Error('Apple pay is not supported');
 
-            expect(errorLoggerMock.log).toHaveBeenCalledWith(error);
+            expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
         });
     });
 
@@ -268,7 +260,7 @@ describe('Checkout', () => {
 
             await checkout.waitForShippingStep();
 
-            expect(errorLoggerMock.log).toHaveBeenCalledWith(error);
+            expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
         });
     });
 
@@ -312,7 +304,7 @@ describe('Checkout', () => {
 
             await checkout.waitForBillingStep();
 
-            expect(errorLoggerMock.log).toHaveBeenCalledWith(error);
+            expect(defaultProps.errorLogger.log).toHaveBeenCalledWith(error);
         });
     });
 
@@ -336,7 +328,7 @@ describe('Checkout', () => {
 
             await checkout.waitForPaymentStep();
 
-            expect(errorLoggerMock.log).toHaveBeenCalled();
+            expect(defaultProps.errorLogger.log).toHaveBeenCalled();
         });
     });
 });

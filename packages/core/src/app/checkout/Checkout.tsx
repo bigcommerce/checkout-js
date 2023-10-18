@@ -11,14 +11,13 @@ import {
     Promotion,
     RequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import { BrowserOptions } from '@sentry/browser';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { Component, lazy, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { ExtensionContextProps, withExtension } from '@bigcommerce/checkout/checkout-extension';
-import { ErrorBoundary, ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
@@ -26,7 +25,7 @@ import { withAnalytics } from '../analytics';
 import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
 import { withCheckout } from '../checkout';
-import { createErrorLogger, CustomError, ErrorModal, isCustomError } from '../common/error';
+import { CustomError, ErrorModal, isCustomError } from '../common/error';
 import { retry } from '../common/utility';
 import {
     CheckoutButtonContainer,
@@ -103,10 +102,9 @@ const Shipping = lazy(() =>
 export interface CheckoutProps {
     checkoutId: string;
     containerId: string;
-    publicPath?: string;
-    sentryConfig?: BrowserOptions;
     embeddedStylesheet: EmbeddedCheckoutStylesheet;
     embeddedSupport: CheckoutSupport;
+    errorLogger: ErrorLogger;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
 }
 
@@ -167,30 +165,6 @@ class Checkout extends Component<
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
     private unsubscribeFromConsignments?: () => void;
-    private errorLogger: ErrorLogger;
-
-    constructor(
-        props: Readonly<
-            CheckoutProps &
-                WithCheckoutProps &
-                WithLanguageProps &
-                AnalyticsContextProps &
-                ExtensionContextProps
-        >,
-    ) {
-        super(props);
-
-        const { sentryConfig, publicPath } = props;
-
-        this.errorLogger = createErrorLogger(
-            { sentry: sentryConfig },
-            {
-                errorTypes: ['UnrecoverableError'],
-                publicPath,
-                sampleRate: 0.1,
-            },
-        );
-    }
 
     componentWillUnmount(): void {
         if (this.unsubscribeFromConsignments) {
@@ -334,19 +308,12 @@ class Checkout extends Component<
         }
 
         return (
-            <ErrorBoundary logger={this.errorLogger}>
-                <div
-                    className={classNames({
-                        'is-embedded': isEmbedded(),
-                        'remove-checkout-step-numbers': isHidingStepNumbers,
-                    })}
-                >
-                    <div className="layout optimizedCheckout-contentPrimary">
-                        {this.renderContent()}
-                    </div>
-                    {errorModal}
+            <div className={classNames({ 'is-embedded': isEmbedded(), 'remove-checkout-step-numbers': isHidingStepNumbers })}>
+                <div className="layout optimizedCheckout-contentPrimary">
+                    {this.renderContent()}
                 </div>
-            </ErrorBoundary>
+                {errorModal}
+            </div>
         );
     }
 
@@ -528,7 +495,7 @@ class Checkout extends Component<
     }
 
     private renderPaymentStep(step: CheckoutStepStatus): ReactNode {
-        const { consignments, cart } = this.props;
+        const { consignments, cart, errorLogger } = this.props;
 
         return (
             <CheckoutStep
@@ -541,7 +508,7 @@ class Checkout extends Component<
                 <LazyContainer loadingSkeleton={<ChecklistSkeleton />}>
                     <Payment
                         checkEmbeddedSupport={this.checkEmbeddedSupport}
-                        errorLogger={this.errorLogger}
+                        errorLogger={errorLogger}
                         isEmbedded={isEmbedded()}
                         isUsingMultiShipping={
                             cart && consignments
@@ -708,7 +675,9 @@ class Checkout extends Component<
     };
 
     private handleError: (error: Error) => void = (error) => {
-        this.errorLogger.log(error);
+        const { errorLogger } = this.props;
+
+        errorLogger.log(error);
 
         if (this.embeddedMessenger) {
             this.embeddedMessenger.postError(error);

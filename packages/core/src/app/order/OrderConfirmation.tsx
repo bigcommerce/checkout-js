@@ -6,19 +6,18 @@ import {
     ShopperConfig,
     StoreConfig,
 } from '@bigcommerce/checkout-sdk';
-import { BrowserOptions } from '@sentry/browser';
 import classNames from 'classnames';
 import DOMPurify from 'dompurify';
 import React, { Component, lazy, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
-import { ErrorBoundary, ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
-import { createErrorLogger, ErrorModal } from '../common/error';
+import { ErrorModal } from '../common/error';
 import { retry } from '../common/utility';
 import { getPasswordRequirementsFromConfig } from '../customer';
 import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
@@ -40,10 +39,10 @@ import { MobileView } from '../ui/responsive';
 import getPaymentInstructions from './getPaymentInstructions';
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
 import OrderConfirmationSection from './OrderConfirmationSection';
-import OrderIncompleteHeader from './OrderIncompleteHeader';
 import OrderStatus from './OrderStatus';
 import PrintLink from './PrintLink';
 import ThankYouHeader from './ThankYouHeader';
+import OrderIncompleteHeader from './OrderIncompleteHeader';
 
 const OrderSummary = lazy(() =>
     retry(
@@ -73,9 +72,8 @@ export interface OrderConfirmationState {
 
 export interface OrderConfirmationProps {
     containerId: string;
-    publicPath?: string;
-    sentryConfig?: BrowserOptions;
     embeddedStylesheet: EmbeddedCheckoutStylesheet;
+    errorLogger: ErrorLogger;
     orderId: number;
     createAccount(values: SignUpFormValues): Promise<CreatedCustomer>;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
@@ -95,24 +93,6 @@ class OrderConfirmation extends Component<
     state: OrderConfirmationState = {};
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
-    private errorLogger: ErrorLogger;
-
-    constructor(
-        props: OrderConfirmationProps & WithCheckoutOrderConfirmationProps & AnalyticsContextProps,
-    ) {
-        super(props);
-
-        const { sentryConfig, publicPath } = props;
-
-        this.errorLogger = createErrorLogger(
-            { sentry: sentryConfig },
-            {
-                errorTypes: ['UnrecoverableError'],
-                publicPath,
-                sampleRate: 0.1,
-            },
-        );
-    }
 
     componentDidMount(): void {
         const {
@@ -176,54 +156,52 @@ class OrderConfirmation extends Component<
             : <ThankYouHeader name={order.billingAddress.firstName} />;
 
         return (
-            <ErrorBoundary logger={this.errorLogger}>
-                <div
-                    className={classNames('layout optimizedCheckout-contentPrimary', {
-                        'is-embedded': isEmbedded(),
-                    })}
-                >
-                    <div className="layout-main">
-                        <div className="orderConfirmation">
-                            {header}
+            <div
+                className={classNames('layout optimizedCheckout-contentPrimary', {
+                    'is-embedded': isEmbedded(),
+                })}
+            >
+                <div className="layout-main">
+                    <div className="orderConfirmation">
+                        { header }
 
-                            <OrderStatus
-                                config={config}
-                                order={order}
-                                supportEmail={orderEmail}
-                                supportPhoneNumber={storePhoneNumber}
-                            />
+                        <OrderStatus
+                            config={config}
+                            order={order}
+                            supportEmail={orderEmail}
+                            supportPhoneNumber={storePhoneNumber}
+                        />
 
-                            {paymentInstructions && (
-                                <OrderConfirmationSection>
-                                    <div
-                                        dangerouslySetInnerHTML={{
-                                            __html: DOMPurify.sanitize(paymentInstructions),
-                                        }}
-                                        data-test="payment-instructions"
-                                    />
-                                </OrderConfirmationSection>
-                            )}
+                        {paymentInstructions && (
+                            <OrderConfirmationSection>
+                                <div
+                                    dangerouslySetInnerHTML={{
+                                        __html: DOMPurify.sanitize(paymentInstructions),
+                                    }}
+                                    data-test="payment-instructions"
+                                />
+                            </OrderConfirmationSection>
+                        )}
 
-                            {this.renderGuestSignUp({
-                                shouldShowPasswordForm: order.customerCanBeCreated,
-                                customerCanBeCreated: !order.customerId,
-                                shopperConfig,
-                            })}
+                        {this.renderGuestSignUp({
+                            shouldShowPasswordForm: order.customerCanBeCreated,
+                            customerCanBeCreated: !order.customerId,
+                            shopperConfig,
+                        })}
 
-                            <div className="continueButtonContainer">
-                                <form action={siteLink} method="get" target="_top">
-                                    <Button type="submit" variant={ButtonVariant.Secondary}>
-                                        <TranslatedString id="order_confirmation.continue_shopping" />
-                                    </Button>
-                                </form>
-                            </div>
+                        <div className="continueButtonContainer">
+                            <form action={siteLink} method="get" target="_top">
+                                <Button type="submit" variant={ButtonVariant.Secondary}>
+                                    <TranslatedString id="order_confirmation.continue_shopping" />
+                                </Button>
+                            </form>
                         </div>
                     </div>
-
-                    {this.renderOrderSummary()}
-                    {this.renderErrorModal()}
                 </div>
-            </ErrorBoundary>
+
+                {this.renderOrderSummary()}
+                {this.renderErrorModal()}
+            </div>
         );
     }
 
@@ -359,8 +337,10 @@ class OrderConfirmation extends Component<
     };
 
     private handleUnhandledError: (error: Error) => void = (error) => {
+        const { errorLogger } = this.props;
+
         this.setState({ error });
-        this.errorLogger.log(error);
+        errorLogger.log(error);
 
         if (this.embeddedMessenger) {
             this.embeddedMessenger.postError(error);
