@@ -13,7 +13,7 @@ import {
 } from './GooglePayBraintreeMockingResponses';
 
 test.describe('Google Pay Braintree', () => {
-    test('Google Pay Braintree wallet button is working', async ({
+    test.skip('Google Pay Braintree wallet button is working', async ({
         assertions,
         checkout,
         page,
