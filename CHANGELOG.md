@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.385.2](https://github.com/bigcommerce/checkout-js/compare/v1.385.1...v1.385.2) (2023-10-18)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-3090 updated wallet buttons height to remove differences in styling ([#1543](https://github.com/bigcommerce/checkout-js/issues/1543)) ([81bbbb1](https://github.com/bigcommerce/checkout-js/commit/81bbbb1672a708dd57221cbea04c3e3174582dbb))
+
 ### [1.385.1](https://github.com/bigcommerce/checkout-js/compare/v1.385.0...v1.385.1) (2023-10-18)
 
 ## [1.385.0](https://github.com/bigcommerce/checkout-js/compare/v1.384.2...v1.385.0) (2023-10-18)
