@@ -5,15 +5,17 @@ import {
     authResponse,
     beforeSignIn,
     braintreePayPalCredit,
+    checkoutSettings,
     googlePay,
     internalOrder,
+    mockCartId,
     order222,
     orderPayment,
     payment,
 } from './GooglePayBraintreeMockingResponses';
 
 test.describe('Google Pay Braintree', () => {
-    test.skip('Google Pay Braintree wallet button is working', async ({
+    test('Google Pay Braintree wallet button is working', async ({
         assertions,
         checkout,
         page,
@@ -52,6 +54,20 @@ test.describe('Google Pay Braintree', () => {
         });
 
         await page.route(
+            /.*\/api\/storefront\/checkout-settings\?checkoutId=.*/,
+            async (route, request) => {
+                if (request.url().includes(`checkoutId=${mockCartId}`)) {
+                    return route.fulfill({
+                        ...responseProps,
+                        body: JSON.stringify(checkoutSettings),
+                    });
+                }
+
+                await route.fallback();
+            },
+        );
+
+        await page.route(
             /.*\/api\/storefront\/payments\/googlepaybraintree\?cartId=.*/,
             (route) => {
                 void route.fulfill({ ...responseProps, body: googlePay });
@@ -87,7 +103,7 @@ test.describe('Google Pay Braintree', () => {
                 void route.fulfill({ ...responseProps, body: beforeSignIn });
             }
         });
-        await page.route(/.*\/api\/storefront\/checkouts\/.*\/billing-address\?/, (route) => {
+        await page.route(/.*\/api\/storefront\/checkouts\/.*\/billing-address\/.*/, (route) => {
             void route.fulfill({ ...responseProps, body: '{}' });
         });
 
