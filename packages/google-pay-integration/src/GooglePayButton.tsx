@@ -35,6 +35,7 @@ export default toResolvableComponent<CheckoutButtonProps, CheckoutButtonResolveI
         { id: 'googlepayauthorizenet' },
         { id: 'googlepaybnz' },
         { id: 'googlepaybraintree' },
+        { id: 'googlepaypaypalcommerce' },
         { id: 'googlepaycheckoutcom' },
         { id: 'googlepaycybersourcev2' },
         { id: 'googlepayorbital' },
