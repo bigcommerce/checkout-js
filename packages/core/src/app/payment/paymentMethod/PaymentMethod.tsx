@@ -153,6 +153,7 @@ const PaymentMethodComponent: FunctionComponent<
         method.id === PaymentMethodId.AuthorizeNetGooglePay ||
         method.id === PaymentMethodId.BNZGooglePay ||
         method.id === PaymentMethodId.BraintreeGooglePay ||
+        method.id === PaymentMethodId.PayPalCommerceGooglePay ||
         method.id === PaymentMethodId.CheckoutcomGooglePay ||
         method.id === PaymentMethodId.CybersourceV2GooglePay ||
         method.id === PaymentMethodId.OrbitalGooglePay ||
