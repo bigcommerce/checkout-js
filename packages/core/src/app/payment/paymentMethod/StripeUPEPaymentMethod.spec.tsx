@@ -11,7 +11,7 @@ import React, { FunctionComponent } from 'react';
 import { object } from 'yup';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutProvider, MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getStoreConfig } from '../../config/config.mock';
 import {
@@ -138,6 +138,7 @@ describe('when using Stripe payment', () => {
                     methodId: method.id,
                     stripeupe: {
                         containerId: 'stripe-alipay-component-field',
+                        loaderContainerId: MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID,
                         style: expect.objectContaining({
                             fieldText: '#cccccc',
                         }),
@@ -190,6 +191,7 @@ describe('when using Stripe payment', () => {
                     methodId: method.id,
                     stripeupe: {
                         containerId: 'stripe-card-component-field',
+                        loaderContainerId: MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID,
                         style: expect.objectContaining({
                             fieldText: '#cccccc',
                         }),
@@ -242,6 +244,7 @@ describe('when using Stripe payment', () => {
                     methodId: method.id,
                     stripeupe: {
                         containerId: 'stripe-idealBank-component-field',
+                        loaderContainerId: MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID,
                         style: expect.objectContaining({
                             fieldText: '#cccccc',
                         }),
@@ -294,6 +297,7 @@ describe('when using Stripe payment', () => {
                     methodId: method.id,
                     stripeupe: {
                         containerId: 'stripe-iban-component-field',
+                        loaderContainerId: MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID,
                         style: expect.objectContaining({
                             fieldText: '#cccccc',
                         }),
