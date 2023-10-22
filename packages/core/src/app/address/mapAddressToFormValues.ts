@@ -69,7 +69,11 @@ function getValue(
     }
 
     if (fieldType === DynamicFormFieldType.date && typeof fieldValue === 'string') {
-        return fieldValue ? new Date(fieldValue) : undefined;
+        if (fieldValue) {
+            const [year, month, day] = fieldValue.split('-');
+            return new Date(Number(year), Number(month)-1, Number(day));
+        }
+        return undefined;
     }
 
     return fieldValue;
