@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.386.2](https://github.com/bigcommerce/checkout-js/compare/v1.386.1...v1.386.2) (2023-10-22)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-5833 fix date issue in different timezones ([#1559](https://github.com/bigcommerce/checkout-js/issues/1559)) ([2a2e0bf](https://github.com/bigcommerce/checkout-js/commit/2a2e0bf0384a94cbdee44a9f1cfcf58cd9bd0bb2))
+
 ### [1.386.1](https://github.com/bigcommerce/checkout-js/compare/v1.386.0...v1.386.1) (2023-10-20)
 
 ## [1.386.0](https://github.com/bigcommerce/checkout-js/compare/v1.385.2...v1.386.0) (2023-10-18)
