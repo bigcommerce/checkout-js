@@ -13,7 +13,7 @@
       "order-summary-drawer-e0dc67e4.js",
       "order-summary-264c6947.js",
       "payment-7bf664c9.js",
-      "shipping-6cb2b99b.js"
+      "shipping-10fda962.js"
     ],
     "css": [
       "billing-9aaadfd4.css",
@@ -26,11 +26,12 @@
       "static/card-abef8595.svg"
     ],
     "png": [
+      "static/fitment-partner-156df0df.png",
       "static/powered_by_google_on_white-f127e368.png"
     ]
   },
   "js": [
-    "runtime-e954e623.js",
+    "runtime-001ad949.js",
     "327-96cee277.js",
     "375-33863941.js",
     "608-4026a4c6.js",
@@ -38,6 +39,6 @@
     "checkout-0568e3d5.js"
   ],
   "css": [
-    "checkout-698b5f24.css"
+    "checkout-56113299.css"
   ]
 }

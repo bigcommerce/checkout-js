@@ -39,7 +39,14 @@
         align-items: center;
         display: flex;
         flex-basis: 40%;
+        flex-direction: column;
         justify-content: center;
+        text-align: center;
+
+        .partner-logo {
+            margin-top: 1rem;
+            width: 8rem;
+        }
     }
 
     .radio {

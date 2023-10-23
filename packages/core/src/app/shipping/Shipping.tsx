@@ -34,6 +34,7 @@ import ShippingHeader from './ShippingHeader';
 import { SingleShippingFormValues } from './SingleShippingForm';
 import StripeShipping from './stripeUPE/StripeShipping';
 import fitmentCentres from '../../static/fitment-centres.json';
+import fitmentPartner from '../../static/img/fitment-partner.png';
 import { Button, ButtonVariant } from '../ui/button';
 import { TranslatedString } from '../locale';
 // import IconChevronRight from '../ui/icon/IconChevronRight';
@@ -250,6 +251,9 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                 </div>
                 <div className='estimate'>
                     Estimated Fitment Time from Dispatch: 1-2 weeks
+                    <div className="partner-logo">
+                        <img src={fitmentPartner} />
+                    </div>
                 </div>
                 <div className='radio'>
                     <input
