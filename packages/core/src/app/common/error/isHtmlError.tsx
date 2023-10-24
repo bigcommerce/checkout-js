@@ -1,8 +1,8 @@
-import { CustomError } from './index';
+import { CustomError, isCustomError } from './index';
 
-export default function isHtmlError(error: CustomError): error is CustomError {
+export default function isHtmlError(error: Error): error is CustomError {
 
-    return (
+    return isCustomError(error) && (
         error &&
         error.data &&
         typeof error.data.shouldBeTranslatedAsHtml === 'boolean' &&
