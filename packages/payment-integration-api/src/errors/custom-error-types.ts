@@ -1,4 +1,4 @@
-export interface SpecificError extends Error {
+export default interface SpecificError extends Error {
     errors?: ErrorElement[];
     status?: string;
 }

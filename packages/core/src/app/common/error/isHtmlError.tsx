@@ -1,11 +1,16 @@
-import { CustomError, isCustomError } from './index';
+import { CustomError } from './index';
 
 export default function isHtmlError(error: Error): error is CustomError {
+    const customErrorData = getErrorData(error);
 
-    return isCustomError(error) ? (
-        error &&
-        error.data &&
-        typeof error.data.shouldBeTranslatedAsHtml === 'boolean' &&
-        typeof error.data.translationKey === 'string'
-    ): false;
+    return (
+        customErrorData &&
+        typeof customErrorData.shouldBeTranslatedAsHtml === 'boolean' &&
+        typeof customErrorData.translationKey === 'string'
+    )
 }
+
+const getErrorData = (error: any) => {
+   return  error?.data !== undefined && error.data;
+}
+

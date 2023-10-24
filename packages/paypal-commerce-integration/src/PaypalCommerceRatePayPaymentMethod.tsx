@@ -9,8 +9,8 @@ import { DynamicFormField, DynamicFormFieldType, FormContext } from '@bigcommerc
 import { FormField } from '@bigcommerce/checkout-sdk';
 import getPaypalCommerceRatePayValidationSchema from './validation-schemas/getPaypalCommerceRatePayValidationSchema';
 import { LoadingSpinner } from '@bigcommerce/checkout/ui';
-import { CustomError } from '../../payment-integration-api/src/errors';
-import { SpecificError } from '../../payment-integration-api/src/errors/custom-error-types';
+import { CustomError } from '@bigcommerce/checkout/payment-integration-api';
+import { SpecificError } from '@bigcommerce/checkout/payment-integration-api';
 
 const PAYMENT_SOURCE_INFO_CANNOT_BE_VERIFIED = 'PAYMENT_SOURCE_INFO_CANNOT_BE_VERIFIED';
 const PAYMENT_SOURCE_DECLINED_BY_PROCESSOR = 'PAYMENT_SOURCE_DECLINED_BY_PROCESSOR';
