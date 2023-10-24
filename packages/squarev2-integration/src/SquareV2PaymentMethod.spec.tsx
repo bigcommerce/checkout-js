@@ -172,23 +172,17 @@ describe('SquareV2 payment method', () => {
         expect(container.getElementsByClassName('form-field--saveInstrument')).toHaveLength(0);
     });
 
-    describe('when stored credit cards is enabled', () => {
-        let SquareV2PaymentMethodTestWithVaulted: FunctionComponent;
-
+    describe('when storing credit cards is enabled', () => {
         beforeEach(() => {
             props = {
+                ...props,
                 method: {
                     ...getSquareV2(),
                     config: { ...getSquareV2().config, isVaultingEnabled: true },
                 },
-                checkoutService,
-                checkoutState,
-                paymentForm,
-                language: jest.fn() as unknown as LanguageService,
-                onUnhandledError: jest.fn(),
             };
 
-            SquareV2PaymentMethodTestWithVaulted = () => (
+            SquareV2PaymentMethodTest = () => (
                 <PaymentFormContext.Provider value={{ paymentForm }}>
                     <CheckoutProvider checkoutService={checkoutService}>
                         <Formik initialValues={{}} onSubmit={noop}>
@@ -202,7 +196,7 @@ describe('SquareV2 payment method', () => {
         });
 
         it('should render store instrument fieldset', () => {
-            const { container } = render(<SquareV2PaymentMethodTestWithVaulted />);
+            const { container } = render(<SquareV2PaymentMethodTest />);
 
             expect(container.getElementsByClassName('form-field--saveInstrument')).toHaveLength(1);
         });
@@ -210,7 +204,7 @@ describe('SquareV2 payment method', () => {
         it('should not show instruments fieldset when there are no stored cards', () => {
             jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([]);
 
-            const { container } = render(<SquareV2PaymentMethodTestWithVaulted />);
+            const { container } = render(<SquareV2PaymentMethodTest />);
 
             expect(container.getElementsByClassName('instrumentFieldset')).toHaveLength(0);
         });
@@ -218,7 +212,7 @@ describe('SquareV2 payment method', () => {
         it('should show instruments fieldset when there is at least one stored card', () => {
             jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(getInstruments());
 
-            const { container } = render(<SquareV2PaymentMethodTestWithVaulted />);
+            const { container } = render(<SquareV2PaymentMethodTest />);
 
             expect(container.getElementsByClassName('instrumentFieldset')).toHaveLength(1);
         });
