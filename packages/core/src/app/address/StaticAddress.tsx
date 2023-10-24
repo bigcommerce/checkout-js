@@ -7,7 +7,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { isEmpty } from 'lodash';
-import React, { FunctionComponent, memo } from 'react';
+import React, { FunctionComponent, memo, useEffect } from 'react';
 
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { isPayPalConnectAddress, usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-connect-integration';
@@ -33,12 +33,21 @@ export interface StaticAddressEditableProps extends StaticAddressProps {
 interface WithCheckoutStaticAddressProps {
     countries?: Country[];
     fields?: FormField[];
+    loadAddressFields: () => Promise<CheckoutSelectors>
 }
 
 const StaticAddress: FunctionComponent<
     StaticAddressEditableProps & WithCheckoutStaticAddressProps
-> = ({ countries, fields, address: addressWithoutLocalization }) => {
+> = ({ countries, fields, loadAddressFields, address: addressWithoutLocalization }) => {
     const { isPayPalAxoEnabled, paypalConnectAddresses } = usePayPalConnectAddress();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await loadAddressFields();
+        }
+        if (!countries) fetchData();
+    }, []);
+
     const address = localizeAddress(addressWithoutLocalization, countries);
     const isValid = !fields
         ? !isEmpty(address)
@@ -104,18 +113,26 @@ export function mapToStaticAddressProps(
 ): WithCheckoutStaticAddressProps | null {
     const {
         checkoutState: {
-            data: { getBillingCountries, getBillingAddressFields, getShippingAddressFields },
+            data: { getBillingCountries, getShippingCountries, getBillingAddressFields, getShippingAddressFields },
         },
+        checkoutService: {
+            loadBillingAddressFields, loadShippingAddressFields
+        }
     } = context;
 
     return {
-        countries: getBillingCountries(),
+        countries: type === AddressType.Billing
+            ? getBillingCountries()
+            : getShippingCountries(),
         fields:
             type === AddressType.Billing
                 ? getBillingAddressFields(address.countryCode)
                 : type === AddressType.Shipping
                 ? getShippingAddressFields(address.countryCode)
                 : undefined,
+        loadAddressFields: type === AddressType.Billing
+            ? loadBillingAddressFields
+            : loadShippingAddressFields
     };
 }
 
