@@ -73,6 +73,7 @@ export interface WithCheckoutShippingProps {
     deleteConsignments(): Promise<Address | undefined>;
     getFields(countryCode?: string): FormField[];
     initializeShippingMethod(options: ShippingInitializeOptions): Promise<CheckoutSelectors>;
+    loadBillingAddressFields(): Promise<CheckoutSelectors>;
     loadShippingAddressFields(): Promise<CheckoutSelectors>;
     loadShippingOptions(): Promise<CheckoutSelectors>;
     signOut(options?: CustomerRequestOptions): void;
@@ -99,13 +100,14 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
     async componentDidMount(): Promise<void> {
         const {
             loadShippingAddressFields,
+            loadBillingAddressFields,
             loadShippingOptions,
             onReady = noop,
             onUnhandledError = noop,
         } = this.props;
 
         try {
-            await Promise.all([loadShippingAddressFields(), loadShippingOptions()]);
+            await Promise.all([loadShippingAddressFields(), loadShippingOptions(), loadBillingAddressFields()]);
 
             onReady();
         } catch (error) {
@@ -386,6 +388,9 @@ export function mapToShippingProps({
         hasMultiShippingEnabled && !methodId && shippableItemsCount > 1;
     const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ'];
 
+    console.log('get billing address');
+    // checkoutService.loadBillingAddressFields();
+
     if (features['CHECKOUT-4183.checkout_google_address_autocomplete_uk']) {
         countriesWithAutocomplete.push('GB');
     }
@@ -412,6 +417,7 @@ export function mapToShippingProps({
         isInitializing: isLoadingShippingCountries() || isLoadingShippingOptions(),
         isLoading,
         isShippingStepPending: isShippingStepPending(),
+        loadBillingAddressFields: checkoutService.loadBillingAddressFields,
         loadShippingAddressFields: checkoutService.loadShippingAddressFields,
         loadShippingOptions: checkoutService.loadShippingOptions,
         methodId,
