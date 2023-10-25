@@ -65,6 +65,10 @@ describe('Shipping Component', () => {
             {} as CheckoutSelectors,
         );
 
+        jest.spyOn(checkoutService, 'loadBillingAddressFields').mockResolvedValue(
+            {} as CheckoutSelectors,
+        );
+
         jest.spyOn(checkoutService, 'deleteConsignment').mockResolvedValue({} as CheckoutSelectors);
 
         jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
@@ -121,6 +125,7 @@ describe('Shipping Component', () => {
         mount(<ComponentTest {...defaultProps} />);
 
         expect(checkoutService.loadShippingAddressFields).toHaveBeenCalled();
+        expect(checkoutService.loadBillingAddressFields).toHaveBeenCalled();
 
         expect(checkoutService.loadShippingOptions).toHaveBeenCalled();
     });
