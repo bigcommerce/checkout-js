@@ -59,7 +59,7 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
             })(window,document,'script','dataLayer','GTM-98LH');
         }
 
-        initGTM();
+        setTimeout(initGTM, 5);
     }
 
     render() {
