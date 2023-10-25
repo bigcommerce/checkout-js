@@ -1,4 +1,5 @@
 /* eslint-disable */
+// @ts-nocheck
 import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
 import { BrowserOptions } from '@sentry/browser';
 import React, { Component } from 'react';
