@@ -48,6 +48,16 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
         const { containerId } = this.props;
 
         ReactModal.setAppElement(`#${containerId}`);
+
+        const initGTM = () => {
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://gtmss.mitoq.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-98LH');
+        }
+
+        initGTM();
     }
 
     render() {
