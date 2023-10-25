@@ -1,7 +1,8 @@
 import React, { FunctionComponent, useState } from 'react';
 
-import { preventDefault } from '../common/dom';
-import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+
 
 import { AddressSelectProps } from './AddressSelect';
 import StaticAddress from './StaticAddress';
@@ -23,6 +24,7 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLang
             href="#"
             id="addressToggle"
             onClick={preventDefault(() => setAriaExpanded(!ariaExpanded))}
+            onBlur={() => setAriaExpanded(false)}
         >
             {selectedAddress ? (
                 <StaticAddress address={selectedAddress} />

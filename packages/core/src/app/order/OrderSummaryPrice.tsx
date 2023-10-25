@@ -2,7 +2,8 @@ import classNames from 'classnames';
 import React, {Component, FunctionComponent, ReactNode, useEffect, useState} from 'react';
 import { CSSTransition } from 'react-transition-group';
 
-import { preventDefault } from '../common/dom';
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
+
 import { ShopperCurrency } from '../currency';
 import {LineItemMap} from "@bigcommerce/checkout-sdk";
 

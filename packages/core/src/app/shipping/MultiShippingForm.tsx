@@ -13,15 +13,16 @@ import {
 import { FormikProps, withFormik } from 'formik';
 import React, { PureComponent, ReactNode } from 'react';
 
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
+import { TranslatedLink, TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+
 import {
     AddressFormModal,
     AddressFormValues,
     isValidAddress,
     mapAddressFromFormValues,
 } from '../address';
-import { preventDefault } from '../common/dom';
 import { ErrorModal } from '../common/error';
-import { TranslatedLink, TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 import { Form } from '../ui/form';
 
 import { AssignItemFailedError, AssignItemInvalidAddressError } from './errors';
@@ -48,7 +49,7 @@ export interface MultiShippingFormProps {
     countriesWithAutocomplete: string[];
     googleMapsApiKey?: string;
     shouldShowAddAddressInCheckout: boolean;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     onCreateAccount(): void;
     createCustomerAddress(address: AddressRequestBody): void;
@@ -103,7 +104,7 @@ class MultiShippingForm extends PureComponent<
             countries,
             countriesWithAutocomplete,
             googleMapsApiKey,
-            useFloatingLabel,
+            isFloatingLabelEnabled,
         } = this.props;
 
         const { items, itemAddingAddress, createCustomerAddressError } = this.state;
@@ -146,11 +147,11 @@ class MultiShippingForm extends PureComponent<
                     defaultCountryCode={defaultCountryCode}
                     getFields={getFields}
                     googleMapsApiKey={googleMapsApiKey}
+                    isFloatingLabelEnabled={isFloatingLabelEnabled}
                     isLoading={isLoading}
                     isOpen={!!itemAddingAddress}
                     onRequestClose={this.handleCloseAddAddressForm}
                     onSaveAddress={this.handleSaveAddress}
-                    useFloatingLabel={useFloatingLabel}
                 />
 
                 <Form>

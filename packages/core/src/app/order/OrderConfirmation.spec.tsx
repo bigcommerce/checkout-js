@@ -10,8 +10,8 @@ import React, { FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
 
 import { AnalyticsContextProps, AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
-import { CheckoutProvider } from '../checkout';
 import { createErrorLogger } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { createEmbeddedCheckoutStylesheet } from '../embeddedCheckout';
@@ -19,10 +19,12 @@ import { CreatedCustomer, GuestSignUpForm } from '../guestSignup';
 import { LoadingSpinner } from '../ui/loading';
 
 import OrderConfirmation, { OrderConfirmationProps } from './OrderConfirmation';
+import OrderIncompleteHeader from './OrderIncompleteHeader';
 import { getOrder } from './orders.mock';
 import OrderStatus from './OrderStatus';
 import OrderSummary from './OrderSummary';
 import ThankYouHeader from './ThankYouHeader';
+import { LocaleProvider } from '@bigcommerce/checkout/locale';
 
 describe('OrderConfirmation', () => {
     let checkoutService: CheckoutService;
@@ -63,9 +65,11 @@ describe('OrderConfirmation', () => {
 
         ComponentTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
-                <AnalyticsProviderMock>
-                    <OrderConfirmation {...props} />
-                </AnalyticsProviderMock>
+                <LocaleProvider checkoutService={checkoutService}>
+                    <AnalyticsProviderMock>
+                        <OrderConfirmation {...props} />
+                    </AnalyticsProviderMock>
+                </LocaleProvider>
             </CheckoutProvider>
         );
     });
@@ -162,5 +166,30 @@ describe('OrderConfirmation', () => {
         expect(orderConfirmation.find('.continueButtonContainer form').prop('action')).toEqual(
             getStoreConfig().links.siteLink,
         );
+    });
+
+    it('renders confirmation page with incomplete order status', async () => {
+        jest.spyOn(checkoutState.statuses, 'isLoadingOrder').mockReturnValue(false);
+
+        jest.spyOn(checkoutState.data, 'getOrder').mockReturnValue({
+            ...getOrder(),
+            status: 'INCOMPLETE',
+        });
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+            ...getStoreConfig(),
+            checkoutSettings: {
+                ...getStoreConfig().checkoutSettings,
+                features: {
+                    ...getStoreConfig().checkoutSettings.features,
+                    'CHECKOUT-6891.update_incomplete_order_wording_on_order_confirmation_page': true,
+                },
+            },
+        });
+
+        orderConfirmation = mount(<ComponentTest {...defaultProps} />);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(orderConfirmation.find(OrderIncompleteHeader)).toHaveLength(1);
     });
 });

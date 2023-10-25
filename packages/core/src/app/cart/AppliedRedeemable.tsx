@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import React, { FunctionComponent } from 'react';
 
-import { TranslatedString } from '../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { IconRemove } from '../ui/icon';
 
 import './AppliedRedeemable.scss';

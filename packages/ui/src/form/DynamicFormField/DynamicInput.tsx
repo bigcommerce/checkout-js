@@ -1,10 +1,12 @@
 import { FormFieldItem } from '@bigcommerce/checkout-sdk';
+import classNames from 'classnames';
 import { isDate, noop } from 'lodash';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 import ReactDatePicker from 'react-datepicker';
 
-import { useLocale } from '@bigcommerce/checkout/locale';
+import { withDate } from '@bigcommerce/checkout/locale';
 
+import { IconChevronDown } from '../../icon';
 import { CheckboxInput } from '../CheckboxInput';
 import { InputProps } from '../Input';
 import { RadioInput } from '../RadioInput';
@@ -20,6 +22,10 @@ export interface DynamicInputProps extends InputProps {
     rows?: number;
     fieldType?: DynamicFormFieldType;
     options?: FormFieldItem[];
+    isFloatingLabelEnabled?: boolean;
+    date?: {
+        inputFormat: string;
+    };
 }
 
 const DynamicInput: FunctionComponent<DynamicInputProps> = ({
@@ -30,9 +36,10 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
     options,
     placeholder,
     value,
+    isFloatingLabelEnabled,
+    date,
     ...rest
 }) => {
-    const { date } = useLocale();
     const { inputFormat } = date || { inputFormat: '' };
     const handleDateChange = useCallback(
         (dateValue: string, event) =>
@@ -49,24 +56,36 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
     switch (fieldType) {
         case DynamicFormFieldType.DROPDOWM:
             return (
-                <select
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/consistent-type-assertions
-                    {...(rest as any)}
-                    className="form-select optimizedCheckout-form-select"
-                    data-test={`${id}-select`}
-                    id={id}
-                    name={name}
-                    onChange={onChange}
-                    value={!value ? '' : value}
-                >
-                    {Boolean(placeholder) && <option value="">{placeholder}</option>}
-                    {options &&
-                        options.map(({ label, value: optionValue }) => (
-                            <option key={optionValue} value={optionValue}>
-                                {label}
-                            </option>
-                        ))}
-                </select>
+                <>
+                    <div
+                        className={classNames(
+                            { 'dropdown-chevron': !isFloatingLabelEnabled },
+                            { 'floating-select-chevron': isFloatingLabelEnabled },
+                        )}
+                    >
+                        <IconChevronDown />
+                    </div>
+                    <select
+                        {...(rest as any)}
+                        className={classNames(
+                            { 'floating-select': isFloatingLabelEnabled },
+                            'form-select optimizedCheckout-form-select',
+                        )}
+                        data-test={`${id}-select`}
+                        id={id}
+                        name={name}
+                        onChange={onChange}
+                        value={value ?? ''}
+                    >
+                        {!!placeholder && <option value="">{placeholder}</option>}
+                        {options &&
+                            options.map(({ label, value: optionValue }) => (
+                                <option key={optionValue} value={optionValue}>
+                                    {label}
+                                </option>
+                            ))}
+                    </select>
+                </>
             );
 
         case DynamicFormFieldType.RADIO:
@@ -118,7 +137,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
         case DynamicFormFieldType.DATE:
             return (
                 <ReactDatePicker
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/consistent-type-assertions
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     {...(rest as any)}
                     autoComplete="off"
                     // FIXME: we can avoid this by simply using onChangeRaw, but it's not being triggered properly
@@ -140,7 +159,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
         case DynamicFormFieldType.MULTILINE:
             return (
                 <TextArea
-                    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/consistent-type-assertions
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     {...(rest as any)}
                     id={id}
                     name={name}
@@ -169,4 +188,4 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
     }
 };
 
-export default memo(DynamicInput);
+export default memo(withDate(DynamicInput));

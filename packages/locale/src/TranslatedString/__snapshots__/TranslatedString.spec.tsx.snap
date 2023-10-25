@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`TranslatedString Component calls language.translate 1`] = `"optimized_checkout.address.address_line_1_label"`;
-
-exports[`TranslatedString Component calls language.translate with data when passed 1`] = `"optimized_checkout.address.address_line_1_label"`;
-
-exports[`TranslatedString Component renders translated string 1`] = `"optimized_checkout.address.address_line_1_label"`;

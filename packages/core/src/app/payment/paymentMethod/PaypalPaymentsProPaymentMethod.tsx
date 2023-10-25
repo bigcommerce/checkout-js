@@ -1,7 +1,10 @@
 import React, { FunctionComponent } from 'react';
 
-import { CheckoutContextProps, withCheckout } from '../../checkout';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+
+import { withCheckout } from '../../checkout';
 import { EMPTY_ARRAY } from '../../common/utility';
+
 
 import HostedCreditCardPaymentMethod, {
     HostedCreditCardPaymentMethodProps,

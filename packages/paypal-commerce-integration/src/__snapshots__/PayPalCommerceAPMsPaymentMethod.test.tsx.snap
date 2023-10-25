@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PayPalCommerceAPMsPaymentMethod renders component with provided props 1`] = `
+<div>
+  <div
+    class="widget widget--sepa payment-widget"
+    id="paypalcommercealternativemethods-sepa"
+  />
+</div>
+`;

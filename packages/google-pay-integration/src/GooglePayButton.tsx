@@ -29,5 +29,18 @@ const GooglePayButton: FunctionComponent<CheckoutButtonProps> = (props) => {
 
 export default toResolvableComponent<CheckoutButtonProps, CheckoutButtonResolveId>(
     GooglePayButton,
-    [{ id: 'googlepay' }],
+    [
+        { id: 'googlepayadyenv2' },
+        { id: 'googlepayadyenv3' },
+        { id: 'googlepayauthorizenet' },
+        { id: 'googlepaybnz' },
+        { id: 'googlepaybraintree' },
+        { id: 'googlepaypaypalcommerce' },
+        { id: 'googlepaycheckoutcom' },
+        { id: 'googlepaycybersourcev2' },
+        { id: 'googlepayorbital' },
+        { id: 'googlepaystripe' },
+        { id: 'googlepaystripeupe' },
+        { id: 'googlepayworldpayaccess' },
+    ],
 );

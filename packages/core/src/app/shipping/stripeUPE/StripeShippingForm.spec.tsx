@@ -1,10 +1,13 @@
+import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
+
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 
 import { getAddressFormFields } from '../../address/formField.mock';
 import CheckoutStepType from '../../checkout/CheckoutStepType';
 import { getStoreConfig } from '../../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import BillingSameAsShippingField from '../BillingSameAsShippingField';
 import { getShippingAddress } from '../shipping-addresses.mock';
 import SingleShippingForm, {
@@ -13,6 +16,7 @@ import SingleShippingForm, {
 } from '../SingleShippingForm';
 
 describe('SingleShippingForm', () => {
+    const checkoutService = createCheckoutService();
     const addressFormFields = getAddressFormFields().filter(({ custom }) => !custom);
     let localeContext: LocaleContextType;
     let component: ReactWrapper;
@@ -52,7 +56,9 @@ describe('SingleShippingForm', () => {
 
         component = mount(
             <LocaleContext.Provider value={localeContext}>
-                <SingleShippingForm {...defaultProps} />
+                <ExtensionProvider checkoutService={checkoutService}>
+                    <SingleShippingForm {...defaultProps} />
+                </ExtensionProvider>
             </LocaleContext.Provider>,
         );
     });
@@ -89,12 +95,14 @@ describe('SingleShippingForm', () => {
     it('calls updateAddress if modified field does not affect shipping but makes form valid', (done) => {
         component = mount(
             <LocaleContext.Provider value={localeContext}>
-                <SingleShippingForm
-                    {...defaultProps}
-                    getFields={() => [
-                        ...addressFormFields.map((field) => ({ ...field, required: true })),
-                    ]}
-                />
+                <ExtensionProvider checkoutService={checkoutService}>
+                    <SingleShippingForm
+                        {...defaultProps}
+                        getFields={() => [
+                            ...addressFormFields.map((field) => ({ ...field, required: true })),
+                        ]}
+                    />
+                </ExtensionProvider>
             </LocaleContext.Provider>,
         );
 
@@ -206,22 +214,24 @@ describe('SingleShippingForm', () => {
     it('calls update address for amazon pay if required custom fields are filled out', (done) => {
         component = mount(
             <LocaleContext.Provider value={localeContext}>
-                <SingleShippingForm
-                    {...defaultProps}
-                    getFields={() => [
-                        ...addressFormFields,
-                        {
-                            custom: true,
-                            default: '',
-                            fieldType: 'text',
-                            id: 'field_25',
-                            label: 'Custom message',
-                            name: 'field_25',
-                            required: true,
-                            type: 'string',
-                        },
-                    ]}
-                />
+                <ExtensionProvider checkoutService={checkoutService}>
+                    <SingleShippingForm
+                        {...defaultProps}
+                        getFields={() => [
+                            ...addressFormFields,
+                            {
+                                custom: true,
+                                default: '',
+                                fieldType: 'text',
+                                id: 'field_25',
+                                label: 'Custom message',
+                                name: 'field_25',
+                                required: true,
+                                type: 'string',
+                            },
+                        ]}
+                    />
+                </ExtensionProvider>
             </LocaleContext.Provider>,
         );
 
@@ -256,22 +266,24 @@ describe('SingleShippingForm', () => {
     it('does not update address for amazon pay if required custom fields is left empty', (done) => {
         component = mount(
             <LocaleContext.Provider value={localeContext}>
-                <SingleShippingForm
-                    {...defaultProps}
-                    getFields={() => [
-                        ...addressFormFields,
-                        {
-                            custom: true,
-                            default: '',
-                            fieldType: 'text',
-                            id: 'field_25',
-                            label: 'Custom message',
-                            name: 'field_25',
-                            required: true,
-                            type: 'string',
-                        },
-                    ]}
-                />
+                <ExtensionProvider checkoutService={checkoutService}>
+                    <SingleShippingForm
+                        {...defaultProps}
+                        getFields={() => [
+                            ...addressFormFields,
+                            {
+                                custom: true,
+                                default: '',
+                                fieldType: 'text',
+                                id: 'field_25',
+                                label: 'Custom message',
+                                name: 'field_25',
+                                required: true,
+                                type: 'string',
+                            },
+                        ]}
+                    />
+                </ExtensionProvider>
             </LocaleContext.Provider>,
         );
 
@@ -289,7 +301,9 @@ describe('SingleShippingForm', () => {
     it('does not render billing same as shipping checkbox for amazon pay', () => {
         component = mount(
             <LocaleContext.Provider value={localeContext}>
-                <SingleShippingForm {...defaultProps} methodId="amazonpay" />
+                <ExtensionProvider checkoutService={checkoutService}>
+                    <SingleShippingForm {...defaultProps} methodId="amazonpay" />
+                </ExtensionProvider>
             </LocaleContext.Provider>,
         );
 

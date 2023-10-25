@@ -1,4 +1,9 @@
-import ErrorLogger, { ErrorLevelType, ErrorMeta, ErrorTags } from './ErrorLogger';
+import {
+  ErrorLevelType,
+  ErrorLogger,
+  ErrorMeta,
+  ErrorTags,
+} from '@bigcommerce/checkout/error-handling-utils';
 
 export interface ConsoleErrorLoggerOptions {
     console?: Console;

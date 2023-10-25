@@ -12,6 +12,9 @@ import React, { FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
 
 import { AnalyticsContextProps, AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import { BillingProps } from '../billing';
 import Billing from '../billing/Billing';
@@ -26,7 +29,6 @@ import {
     createEmbeddedCheckoutStylesheet,
     createEmbeddedCheckoutSupport,
 } from '../embeddedCheckout';
-import { getLanguageService, LocaleProvider } from '../locale';
 import { PaymentProps } from '../payment';
 import Payment from '../payment/Payment';
 import { PromotionBannerList } from '../promotion';
@@ -36,7 +38,6 @@ import Shipping from '../shipping/Shipping';
 import { getShippingAddress } from '../shipping/shipping-addresses.mock';
 
 import Checkout, { CheckoutProps, WithCheckoutProps } from './Checkout';
-import CheckoutProvider from './CheckoutProvider';
 import { getCheckout, getCheckoutWithPromotions } from './checkouts.mock';
 import CheckoutStep, { CheckoutStepProps } from './CheckoutStep';
 import CheckoutStepType from './CheckoutStepType';
@@ -112,7 +113,9 @@ describe('Checkout', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleProvider checkoutService={checkoutService}>
                     <AnalyticsProviderMock>
-                        <Checkout {...props} />
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <Checkout {...props} />
+                        </ExtensionProvider>
                     </AnalyticsProviderMock>
                 </LocaleProvider>
             </CheckoutProvider>

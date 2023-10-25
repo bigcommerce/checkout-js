@@ -1,6 +1,9 @@
 import React, { FunctionComponent } from 'react';
 
-import { CheckoutContextProps, withCheckout } from '../../checkout';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+
+
+import { withCheckout } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { Fieldset } from '../../ui/form';
 

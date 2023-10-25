@@ -2,10 +2,11 @@ import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sd
 import { mount, ReactWrapper } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
-import { CheckoutProvider } from '../checkout';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
 import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 import { Modal } from '../ui/modal';
 
 import AddressForm from './AddressForm';

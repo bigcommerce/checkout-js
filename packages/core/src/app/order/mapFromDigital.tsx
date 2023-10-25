@@ -1,7 +1,7 @@
 import { DigitalItem } from '@bigcommerce/checkout-sdk';
 import React from 'react';
 
-import { TranslatedString } from '../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import getOrderSummaryItemImage from './getOrderSummaryItemImage';
 import { OrderSummaryItemOption, OrderSummaryItemProps } from './OrderSummaryItem';

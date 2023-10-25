@@ -16,19 +16,29 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "paths": {
+      "@bigcommerce/checkout/adyen-integration": ["packages/adyen-integration/src/index.ts"],
       "@bigcommerce/checkout/afterpay-integration": ["packages/afterpay-integration/src/index.ts"],
-      "@bigcommerce/checkout/barclay-integration": ["packages/barclay-integration/src/index.ts"],
       "@bigcommerce/checkout/analytics": ["packages/analytics/src/index.ts"],
       "@bigcommerce/checkout/apple-pay-integration": [
         "packages/apple-pay-integration/src/index.ts"
       ],
+      "@bigcommerce/checkout/barclay-integration": ["packages/barclay-integration/src/index.ts"],
+      "@bigcommerce/checkout/bluesnap-direct-integration": [
+        "packages/bluesnap-direct-integration/src/index.ts"
+      ],
+      "@bigcommerce/checkout/braintree-integration": [
+        "packages/braintree-integration/src/index.ts"
+      ],
       "@bigcommerce/checkout/checkout-button-integration": [
         "packages/checkout-button-integration/src/index.ts"
       ],
+      "@bigcommerce/checkout/checkout-extension": ["packages/checkout-extension/src/index.ts"],
       "@bigcommerce/checkout/core": ["packages/core/src/app/index.ts"],
       "@bigcommerce/checkout/credit-card-integration": [
         "packages/credit-card-integration/src/index.ts"
       ],
+      "@bigcommerce/checkout/dom-utils": ["packages/dom-utils/src/index.ts"],
+      "@bigcommerce/checkout/error-handling-utils": ["packages/error-handling-utils/src/index.ts"],
       "@bigcommerce/checkout/google-pay-integration": [
         "packages/google-pay-integration/src/index.ts"
       ],
@@ -48,6 +58,7 @@
         "packages/hosted-widget-integration/src/index.ts"
       ],
       "@bigcommerce/checkout/instrument-utils": ["packages/instrument-utils/src/index.ts"],
+      "@bigcommerce/checkout/legacy-hoc": ["packages/legacy-hoc/src/index.ts"],
       "@bigcommerce/checkout/locale": ["packages/locale/src/index.ts"],
       "@bigcommerce/checkout/offline-payment-integration": [
         "packages/offline-payment-integration/src/index.ts"
@@ -55,11 +66,16 @@
       "@bigcommerce/checkout/payment-integration-api": [
         "packages/payment-integration-api/src/index.ts"
       ],
-      "@bigcommerce/checkout/payment-integration-test-framework": [
-        "packages/payment-integration-test-framework/src/index.ts"
+      "@bigcommerce/checkout/paypal-commerce-integration": [
+        "packages/paypal-commerce-integration/src/index.ts"
+      ],
+      "@bigcommerce/checkout/paypal-connect-integration": [
+        "packages/paypal-connect-integration/src/index.ts"
       ],
       "@bigcommerce/checkout/sezzle-integration": ["packages/sezzle-integration/src/index.ts"],
       "@bigcommerce/checkout/squarev2-integration": ["packages/squarev2-integration/src/index.ts"],
+      "@bigcommerce/checkout/test-framework": ["packages/test-framework/src/index.ts"],
+      "@bigcommerce/checkout/test-mocks": ["packages/test-mocks/src/index.ts"],
       "@bigcommerce/checkout/test-utils": ["packages/test-utils/src/index.ts"],
       "@bigcommerce/checkout/ui": ["packages/ui/src/index.ts"],
       "@bigcommerce/checkout/workspace-tools": ["packages/workspace-tools/src/index.ts"]

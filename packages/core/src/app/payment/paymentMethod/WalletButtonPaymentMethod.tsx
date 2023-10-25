@@ -9,9 +9,12 @@ import { number } from 'card-validator';
 import { noop, some } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
-import { CheckoutContextProps, withCheckout } from '../../checkout';
-import { preventDefault } from '../../common/dom';
-import { TranslatedString, withLanguage, WithLanguageProps } from '../../locale';
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+
+
+import { withCheckout } from '../../checkout';
 import { LoadingOverlay } from '../../ui/loading';
 import withPayment, { WithPaymentProps } from '../withPayment';
 

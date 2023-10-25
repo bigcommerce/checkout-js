@@ -4,10 +4,11 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { CheckoutProvider } from '../../checkout';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
 import CheckoutStepType from '../../checkout/CheckoutStepType';
 import { getStoreConfig } from '../../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { getConsignment } from '../consignment.mock';
 import { getShippingAddress } from '../shipping-addresses.mock';
 
@@ -71,7 +72,7 @@ describe('StripeShippingAddress Component', () => {
             deinitialize: jest.fn(),
         };
 
-        jest.mock('../common/dom', () => ({
+        jest.mock('@bigcommerce/checkout/dom-utils', () => ({
             getAppliedStyles: () => {
                 return { color: '#cccccc' };
             },

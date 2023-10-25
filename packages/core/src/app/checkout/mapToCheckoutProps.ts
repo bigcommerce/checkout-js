@@ -1,10 +1,11 @@
 import { CheckoutSelectors, CustomError } from '@bigcommerce/checkout-sdk';
 import { createSelector } from 'reselect';
 
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+
 import { EMPTY_ARRAY } from '../common/utility';
 
 import { WithCheckoutProps } from './Checkout';
-import { CheckoutContextProps } from './CheckoutContext';
 import getCheckoutStepStatuses from './getCheckoutStepStatuses';
 
 export default function mapToCheckoutProps({
@@ -17,10 +18,10 @@ export default function mapToCheckoutProps({
     const {
         checkoutSettings: {
             guestCheckoutEnabled: isGuestEnabled = false,
-            features = {},
-            checkoutUserExperienceSettings: {
-                walletButtonsOnTop = false,
-            } = {},
+            checkoutUserExperienceSettings = {
+                walletButtonsOnTop: false,
+                floatingLabelEnabled: false,
+            } ,
         } = {},
         links: {
             loginLink: loginUrl = '',
@@ -37,7 +38,7 @@ export default function mapToCheckoutProps({
         },
     );
 
-    const walletButtonsOnTopFlag = Boolean(features['CHECKOUT-7222.checkout_settings_styling_section']) && walletButtonsOnTop;
+    const walletButtonsOnTopFlag = Boolean(checkoutUserExperienceSettings.walletButtonsOnTop);
 
     return {
         billingAddress: data.getBillingAddress(),
@@ -55,7 +56,6 @@ export default function mapToCheckoutProps({
         loginUrl,
         cartUrl,
         createAccountUrl,
-        canCreateAccountInCheckout: features['CHECKOUT-4941.account_creation_in_checkout'],
         promotions,
         subscribeToConsignments: subscribeToConsignmentsSelector({
             checkoutService,

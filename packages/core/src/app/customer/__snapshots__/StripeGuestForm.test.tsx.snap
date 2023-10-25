@@ -1,0 +1,322 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StripeGuestForm matches snapshot 1`] = `
+Object {
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <div
+        class="checkout-form customer-skeleton"
+      >
+        <div
+          class="customerEmail-container"
+        >
+          <div
+            class="customerEmail-body"
+          >
+            <div
+              class="skeleton-container"
+            >
+              <div
+                class="input-skeleton"
+              />
+            </div>
+            <div
+              class="button-skeleton skeleton-container subscription-skeleton"
+            />
+          </div>
+          <div
+            class="customerEmail-action customerEmail-floating--enabled"
+          >
+            <div
+              class="button-skeleton skeleton-container"
+            />
+          </div>
+        </div>
+      </div>
+      <div>
+        <form
+          class="checkout-form"
+          data-test="checkout-customer-guest"
+          id="checkout-customer-guest"
+          novalidate=""
+        >
+          <div
+            class="checkout-form"
+            style="display: none;"
+          >
+            <fieldset
+              class="form-fieldset"
+            >
+              <legend
+                class="form-legend is-srOnly"
+              >
+                Guest Customer
+              </legend>
+              <div
+                class="form-body"
+              >
+                <div
+                  class="customerEmail-container"
+                >
+                  <div
+                    class="customerEmail-body"
+                  >
+                    <div
+                      id="stripeupeLink"
+                    />
+                    <br />
+                    <div
+                      class="form-field"
+                    >
+                      <input
+                        class="form-checkbox"
+                        data-test="should-subscribe-checkbox"
+                        id="shouldSubscribe"
+                        name="shouldSubscribe"
+                        type="checkbox"
+                        value="false"
+                      />
+                      <label
+                        class="form-label optimizedCheckout-form-label"
+                        for="shouldSubscribe"
+                      >
+                        <span>
+                          Subscribe to our newsletter.
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                  <div
+                    class="form-actions customerEmail-action"
+                  >
+                    <button
+                      class="button stripeCustomerEmail-button button--primary optimizedCheckout-buttonPrimary"
+                      data-test="stripe-customer-continue-as-guest-button"
+                      disabled=""
+                      id="stripe-checkout-customer-continue"
+                      type="submit"
+                    >
+                      Continue as guest
+                    </button>
+                  </div>
+                </div>
+                <p>
+                  Already have an account?
+                   
+                  <a
+                    data-test="customer-continue-button"
+                    id="checkout-customer-login"
+                  >
+                    Sign in now
+                  </a>
+                </p>
+              </div>
+            </fieldset>
+          </div>
+          <div
+            class="optimizedCheckout-form-input"
+            id="stripe-card-component-field--input"
+            placeholder="1111"
+          >
+            <div
+              class="form-field--error"
+            >
+              <div
+                class="optimizedCheckout-form-label"
+                id="stripe-card-component-field--error"
+              />
+            </div>
+            <div
+              class="optimizedCheckout-form-label"
+              id="stripe-card-component-field--label"
+            />
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="checkout-form customer-skeleton"
+    >
+      <div
+        class="customerEmail-container"
+      >
+        <div
+          class="customerEmail-body"
+        >
+          <div
+            class="skeleton-container"
+          >
+            <div
+              class="input-skeleton"
+            />
+          </div>
+          <div
+            class="button-skeleton skeleton-container subscription-skeleton"
+          />
+        </div>
+        <div
+          class="customerEmail-action customerEmail-floating--enabled"
+        >
+          <div
+            class="button-skeleton skeleton-container"
+          />
+        </div>
+      </div>
+    </div>
+    <div>
+      <form
+        class="checkout-form"
+        data-test="checkout-customer-guest"
+        id="checkout-customer-guest"
+        novalidate=""
+      >
+        <div
+          class="checkout-form"
+          style="display: none;"
+        >
+          <fieldset
+            class="form-fieldset"
+          >
+            <legend
+              class="form-legend is-srOnly"
+            >
+              Guest Customer
+            </legend>
+            <div
+              class="form-body"
+            >
+              <div
+                class="customerEmail-container"
+              >
+                <div
+                  class="customerEmail-body"
+                >
+                  <div
+                    id="stripeupeLink"
+                  />
+                  <br />
+                  <div
+                    class="form-field"
+                  >
+                    <input
+                      class="form-checkbox"
+                      data-test="should-subscribe-checkbox"
+                      id="shouldSubscribe"
+                      name="shouldSubscribe"
+                      type="checkbox"
+                      value="false"
+                    />
+                    <label
+                      class="form-label optimizedCheckout-form-label"
+                      for="shouldSubscribe"
+                    >
+                      <span>
+                        Subscribe to our newsletter.
+                      </span>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="form-actions customerEmail-action"
+                >
+                  <button
+                    class="button stripeCustomerEmail-button button--primary optimizedCheckout-buttonPrimary"
+                    data-test="stripe-customer-continue-as-guest-button"
+                    disabled=""
+                    id="stripe-checkout-customer-continue"
+                    type="submit"
+                  >
+                    Continue as guest
+                  </button>
+                </div>
+              </div>
+              <p>
+                Already have an account?
+                 
+                <a
+                  data-test="customer-continue-button"
+                  id="checkout-customer-login"
+                >
+                  Sign in now
+                </a>
+              </p>
+            </div>
+          </fieldset>
+        </div>
+        <div
+          class="optimizedCheckout-form-input"
+          id="stripe-card-component-field--input"
+          placeholder="1111"
+        >
+          <div
+            class="form-field--error"
+          >
+            <div
+              class="optimizedCheckout-form-label"
+              id="stripe-card-component-field--error"
+            />
+          </div>
+          <div
+            class="optimizedCheckout-form-label"
+            id="stripe-card-component-field--label"
+          />
+        </div>
+      </form>
+    </div>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

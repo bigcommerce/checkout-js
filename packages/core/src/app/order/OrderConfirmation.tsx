@@ -11,10 +11,13 @@ import DOMPurify from 'dompurify';
 import React, { Component, lazy, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withAnalytics } from '../analytics';
-import { CheckoutContextProps, withCheckout } from '../checkout';
-import { ErrorLogger, ErrorModal } from '../common/error';
+import { withCheckout } from '../checkout';
+import { ErrorModal } from '../common/error';
 import { retry } from '../common/utility';
 import { getPasswordRequirementsFromConfig } from '../customer';
 import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
@@ -29,7 +32,6 @@ import {
     AccountCreationFailedError,
     AccountCreationRequirementsError,
 } from '../guestSignup/errors';
-import { TranslatedString } from '../locale';
 import { Button, ButtonVariant } from '../ui/button';
 import { LazyContainer, LoadingSpinner } from '../ui/loading';
 import { MobileView } from '../ui/responsive';
@@ -41,6 +43,7 @@ import OrderStatus from './OrderStatus';
 import PrintLink from './PrintLink';
 import ThankYouHeader from './ThankYouHeader';
 import {CouponData, OrderData, PromotionData, trackGuest, trackPurchase, trackSignUp} from "../common/tracking";
+import OrderIncompleteHeader from './OrderIncompleteHeader';
 
 const OrderSummary = lazy(() =>
     retry(
@@ -201,6 +204,10 @@ class OrderConfirmation extends Component<
             links: { siteLink },
         } = config;
 
+        const header = order.status === 'INCOMPLETE' && config.checkoutSettings.features['CHECKOUT-6891.update_incomplete_order_wording_on_order_confirmation_page']
+            ? <OrderIncompleteHeader />
+            : <ThankYouHeader name={order.billingAddress.firstName} />;
+
         return (
             <div
                 className={classNames('layout optimizedCheckout-contentPrimary', {
@@ -209,9 +216,10 @@ class OrderConfirmation extends Component<
             >
                 <div className="layout-main">
                     <div className="orderConfirmation">
-                        <ThankYouHeader name={order.billingAddress.firstName} />
+                        { header }
 
                         <OrderStatus
+                            config={config}
                             order={order}
                             supportEmail={orderEmail}
                             supportPhoneNumber={storePhoneNumber}
@@ -300,6 +308,7 @@ class OrderConfirmation extends Component<
                                     headerLink={
                                         <PrintLink className="modal-header-link cart-modal-link" />
                                     }
+                                    isUpdatedCartSummayModal={false}
                                     lineItems={order.lineItems}
                                     shopperCurrency={shopperCurrency}
                                     storeCurrency={currency}

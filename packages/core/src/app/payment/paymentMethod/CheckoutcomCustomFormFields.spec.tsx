@@ -9,15 +9,16 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { FormContext, FormContextType } from '@bigcommerce/checkout/ui';
+
 import { getBillingAddress } from '../../billing/billingAddresses.mock';
 import { getCart } from '../../cart/carts.mock';
-import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { getConsignment } from '../../shipping/consignment.mock';
 import { DropdownTrigger } from '../../ui/dropdown';
-import { FormContext, FormContextType } from '../../ui/form';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
 import checkoutcomCustomFormFields, {

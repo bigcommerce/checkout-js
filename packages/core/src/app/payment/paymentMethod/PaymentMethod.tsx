@@ -8,10 +8,10 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
-import { CheckoutContextProps, withCheckout } from '../../checkout';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
-import AdyenV2PaymentMethod from './AdyenV2PaymentMethod';
-import AdyenV3PaymentMethod from './AdyenV3PaymentMethod';
+import { withCheckout } from '../../checkout';
+
 import AffirmPaymentMethod from './AffirmPaymentMethod';
 import AmazonPayV2PaymentMethod from './AmazonPayV2PaymentMethod';
 import BarclaycardPaymentMethod from './BarclaycardPaymentMethod';
@@ -22,7 +22,6 @@ import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
 import ChasePayPaymentMethod from './ChasePayPaymentMethod';
 import CheckoutCustomPaymentMethod from './CheckoutcomCustomPaymentMethod';
 import DigitalRiverPaymentMethod from './DigitalRiverPaymentMethod';
-import getUniquePaymentMethodId from './getUniquePaymentMethodId';
 import GooglePayPaymentMethod from './GooglePayPaymentMethod';
 import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';
 import HostedPaymentMethod from './HostedPaymentMethod';
@@ -36,7 +35,6 @@ import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodProviderType from './PaymentMethodProviderType';
 import PaymentMethodType from './PaymentMethodType';
 import PaypalCommerceCreditCardPaymentMethod from './PaypalCommerceCreditCardPaymentMethod';
-import PaypalCommercePaymentMethod from './PaypalCommercePaymentMethod';
 import PaypalExpressPaymentMethod from './PaypalExpressPaymentMethod';
 import PaypalPaymentsProPaymentMethod from './PaypalPaymentsProPaymentMethod';
 import PPSDKPaymentMethod from './PPSDKPaymentMethod';
@@ -82,13 +80,6 @@ const PaymentMethodComponent: FunctionComponent<
         return <PPSDKPaymentMethod {...props} />;
     }
 
-    if (method.gateway === PaymentMethodId.AdyenV2) {
-        return <AdyenV2PaymentMethod {...props} />;
-    }
-
-    if (method.gateway === PaymentMethodId.AdyenV3) {
-        return <AdyenV3PaymentMethod {...props} />;
-    }
 
     if (method.id === PaymentMethodId.SquareV2) {
         return <SquarePaymentMethod {...props} />;
@@ -126,7 +117,7 @@ const PaymentMethodComponent: FunctionComponent<
         return <KlarnaV2PaymentMethod {...props} />;
     }
 
-    if (method.id === PaymentMethodId.Klarna) {
+    if (method.id === PaymentMethodId.Klarna && method.gateway !== PaymentMethodId.Mollie) {
         return <KlarnaPaymentMethod {...props} />;
     }
 
@@ -167,11 +158,13 @@ const PaymentMethodComponent: FunctionComponent<
         method.id === PaymentMethodId.AuthorizeNetGooglePay ||
         method.id === PaymentMethodId.BNZGooglePay ||
         method.id === PaymentMethodId.BraintreeGooglePay ||
+        method.id === PaymentMethodId.PayPalCommerceGooglePay ||
         method.id === PaymentMethodId.CheckoutcomGooglePay ||
         method.id === PaymentMethodId.CybersourceV2GooglePay ||
         method.id === PaymentMethodId.OrbitalGooglePay ||
         method.id === PaymentMethodId.StripeGooglePay ||
-        method.id === PaymentMethodId.StripeUPEGooglePay
+        method.id === PaymentMethodId.StripeUPEGooglePay ||
+        method.id === PaymentMethodId.WorldpayAccessGooglePay
     ) {
         return <GooglePayPaymentMethod {...props} />;
     }
@@ -186,21 +179,6 @@ const PaymentMethodComponent: FunctionComponent<
 
     if (method.id === PaymentMethodId.PaypalCommerceCreditCards) {
         return <PaypalCommerceCreditCardPaymentMethod {...props} />;
-    }
-
-    if (
-        method.id === PaymentMethodId.PaypalCommerce ||
-        method.id === PaymentMethodId.PaypalCommerceCredit ||
-        method.id === PaymentMethodId.PaypalCommerceVenmo ||
-        method.gateway === PaymentMethodId.PaypalCommerceAlternativeMethod
-    ) {
-        return (
-            <PaypalCommercePaymentMethod
-                {...props}
-                isAPM={method.gateway === PaymentMethodId.PaypalCommerceAlternativeMethod}
-                uniqueId={getUniquePaymentMethodId(method.id, method.gateway)}
-            />
-        );
     }
 
     if (method.id === PaymentMethodId.PaypalExpress) {

@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 
-import { TranslatedHtml, TranslatedString } from '../../locale';
+import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { CheckboxFormField } from '../../ui/form';
 
 export interface BoltCustomFormProps {

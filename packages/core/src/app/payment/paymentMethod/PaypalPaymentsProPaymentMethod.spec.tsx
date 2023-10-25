@@ -9,10 +9,11 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { CheckoutProvider } from '../../checkout';
+import { LocaleProvider } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
 import { getCheckout, getCheckoutPayment } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
-import { LocaleProvider } from '../../locale';
 import { getPaymentMethod } from '../payment-methods.mock';
 
 import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';

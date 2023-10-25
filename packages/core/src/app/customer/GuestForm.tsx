@@ -3,7 +3,8 @@ import { FieldProps, FormikProps, withFormik } from 'formik';
 import React, { FunctionComponent, memo, ReactNode, useCallback } from 'react';
 import { object, string } from 'yup';
 
-import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+
 import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
 import { Button, ButtonVariant } from '../ui/button';
 import { BasicFormField, Fieldset, Form, Legend } from '../ui/form';
@@ -20,7 +21,8 @@ export interface GuestFormProps {
     email?: string;
     isLoading: boolean;
     privacyPolicyUrl?: string;
-    useFloatingLabel?: boolean;
+    isExpressPrivacyPolicy: boolean;
+    isFloatingLabelEnabled?: boolean;
     onChangeEmail(email: string): void;
     onContinueAsGuest(data: GuestFormValues): void;
     onShowLogin(): void;
@@ -42,7 +44,8 @@ const GuestForm: FunctionComponent<
     onShowLogin,
     privacyPolicyUrl,
     requiresMarketingConsent,
-    useFloatingLabel,
+    isExpressPrivacyPolicy,
+    isFloatingLabelEnabled,
 }) => {
     const renderField = useCallback(
         (fieldProps: FieldProps<boolean>) => (
@@ -66,18 +69,16 @@ const GuestForm: FunctionComponent<
             >
                 <div className="customerEmail-container">
                     <div className="customerEmail-body">
-                        <EmailField onChange={onChangeEmail} useFloatingLabel={useFloatingLabel}/>
+                        <EmailField isFloatingLabelEnabled={isFloatingLabelEnabled} onChange={onChangeEmail}/>
 
                         {(canSubscribe || requiresMarketingConsent) && (
                             <BasicFormField name="shouldSubscribe" render={renderField} />
                         )}
-
-                        {privacyPolicyUrl && <PrivacyPolicyField url={privacyPolicyUrl} />}
                     </div>
 
                     <div
                         className={classNames('form-actions customerEmail-action', {
-                            'customerEmail-floating--enabled': useFloatingLabel,
+                            'customerEmail-floating--enabled': isFloatingLabelEnabled,
                         })}
                     >
                         <Button
@@ -92,6 +93,10 @@ const GuestForm: FunctionComponent<
                         </Button>
                     </div>
                 </div>
+
+                {privacyPolicyUrl && (
+                    <PrivacyPolicyField isExpressPrivacyPolicy={isExpressPrivacyPolicy} url={privacyPolicyUrl} />
+                )}
 
                 {!isLoading && (
                     <p>
@@ -126,7 +131,7 @@ export default withLanguage(
         handleSubmit: (values, { props: { onContinueAsGuest } }) => {
             onContinueAsGuest(values);
         },
-        validationSchema: ({ language, privacyPolicyUrl }: GuestFormProps & WithLanguageProps) => {
+        validationSchema: ({ language, privacyPolicyUrl, isExpressPrivacyPolicy }: GuestFormProps & WithLanguageProps) => {
             const email = string()
                 .email(language.translate('customer.email_invalid_error'))
                 .max(256)
@@ -134,7 +139,7 @@ export default withLanguage(
 
             const baseSchema = object({ email });
 
-            if (privacyPolicyUrl) {
+            if (privacyPolicyUrl && !isExpressPrivacyPolicy) {
                 return baseSchema.concat(
                     getPrivacyPolicyValidationSchema({
                         isRequired: !!privacyPolicyUrl,

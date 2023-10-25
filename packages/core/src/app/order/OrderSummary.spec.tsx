@@ -37,4 +37,28 @@ describe('OrderSummary', () => {
             expect(orderSummary.find('.cart-note')).toHaveLength(0);
         });
     });
+
+    describe('when taxes are inclusive', () => {
+        it('displays tax as summary section', () => {
+            const taxIncludedOrder = {
+                ...getOrder(),
+                isTaxIncluded: true,
+            };
+
+            orderSummary = shallow(
+                <OrderSummary
+                    {...mapToOrderSummarySubtotalsProps(taxIncludedOrder)}
+                    headerLink={<PrintLink />}
+                    lineItems={taxIncludedOrder.lineItems}
+                    shopperCurrency={getStoreConfig().shopperCurrency}
+                    storeCurrency={getStoreConfig().currency}
+                    total={taxIncludedOrder.orderAmount}
+                />,
+            );
+
+            expect(orderSummary).toMatchSnapshot();
+
+            expect(orderSummary.find('.cart-taxItem')).toHaveLength(1);
+        });
+    });
 });

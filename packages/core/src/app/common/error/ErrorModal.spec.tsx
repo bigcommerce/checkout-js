@@ -2,9 +2,10 @@ import { RequestError } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+
 import { getStoreConfig } from '../../config/config.mock';
 import { AccountCreationFailedError } from '../../guestSignup/errors';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { Button } from '../../ui/button';
 import { Modal } from '../../ui/modal';
 

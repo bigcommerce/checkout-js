@@ -52,6 +52,7 @@ exports[`Customer when view type is "guest" matches snapshot 1`] = `
               >
                 <input
                   class="form-checkbox"
+                  data-test="should-subscribe-checkbox"
                   id="shouldSubscribe"
                   name="shouldSubscribe"
                   type="checkbox"
@@ -61,7 +62,9 @@ exports[`Customer when view type is "guest" matches snapshot 1`] = `
                   class="form-label optimizedCheckout-form-label"
                   for="shouldSubscribe"
                 >
-                  Subscribe to our newsletter.
+                  <span>
+                    Subscribe to our newsletter.
+                  </span>
                 </label>
               </div>
             </div>

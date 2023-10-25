@@ -4,12 +4,13 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
 import { StaticAddress } from '../address/';
 import { getFormFields } from '../address/formField.mock';
-import { CheckoutProvider } from '../checkout';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 
 import { getConsignment } from './consignment.mock';
 import { getShippingAddress } from './shipping-addresses.mock';
@@ -52,7 +53,7 @@ describe('ShippingAddress Component', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <Formik initialValues={{}} onSubmit={noop}>
-                        <ShippingAddress {...props} {...defaultProps} />
+                        <ShippingAddress {...defaultProps} {...props} />
                     </Formik>
                 </LocaleContext.Provider>
             </CheckoutProvider>
@@ -84,10 +85,7 @@ describe('ShippingAddress Component', () => {
         });
 
         it('does not render StaticAddress if method id is not sent', () => {
-            const component = mount(
-                <Formik initialValues={{}} onSubmit={noop}>
-                    <ShippingAddress {...defaultProps} />
-                </Formik>,
+            const component = mount(<TestComponent {...defaultProps} />,
             );
 
             expect(component.find(StaticAddress)).toHaveLength(0);
@@ -97,9 +95,7 @@ describe('ShippingAddress Component', () => {
     describe('when method id is provided', () => {
         it('does not render ShippingAddressForm', () => {
             const component = mount(
-                <Formik initialValues={{}} onSubmit={noop}>
-                    <ShippingAddress {...defaultProps} methodId="amazonpay" />
-                </Formik>,
+                <TestComponent {...defaultProps} methodId="amazonpay" />,
             );
 
             expect(component.find(ShippingAddressForm)).toHaveLength(0);
@@ -107,9 +103,7 @@ describe('ShippingAddress Component', () => {
 
         it('renders a StaticAddressEditable if methodId is amazon pay', () => {
             const component = mount(
-                <Formik initialValues={{}} onSubmit={noop}>
-                    <ShippingAddress {...defaultProps} methodId="amazonpay" />
-                </Formik>,
+                <TestComponent {...defaultProps} methodId="amazonpay" />,
             );
 
             expect(component.find(StaticAddressEditable)).toHaveLength(1);

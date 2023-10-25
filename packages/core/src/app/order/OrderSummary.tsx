@@ -1,8 +1,11 @@
 import { LineItemMap, ShopperCurrency, StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, {FunctionComponent, ReactNode, useEffect, useMemo, useState} from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import OrderSummaryHeader from './OrderSummaryHeader';
 import OrderSummaryItems from './OrderSummaryItems';
+import OrderSummaryPrice from './OrderSummaryPrice';
 import OrderSummarySection from './OrderSummarySection';
 import OrderSummarySubtotals, { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 import OrderSummaryTotal from './OrderSummaryTotal';
@@ -59,6 +62,8 @@ const SavingBanner: FunctionComponent<any> = props => {
 };
 
 const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsProps> = ({
+    isTaxIncluded,
+    taxes,
     storeCurrency,
     shopperCurrency,
     headerLink,
@@ -69,19 +74,20 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     ...orderSummarySubtotalsProps
 }) => {
     const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
+    const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
 
     return (
         <article className="cart optimizedCheckout-orderSummary" data-test="cart">
             <OrderSummaryHeader>{headerLink}</OrderSummaryHeader>
 
             <OrderSummarySection>
-                <OrderSummaryItems currency={storeCurrency} items={nonBundledLineItems} />
+                <OrderSummaryItems displayLineItemsCount currency={storeCurrency} items={nonBundledLineItems} />
             </OrderSummarySection>
 
             <OrderSummarySection>
                 { orderSummarySubtotalsProps.coupons.length === 0
                     && <SavingBanner amount={total} currencyCode={shopperCurrency.code} lineItems={lineItems} />}
-                <OrderSummarySubtotals {...orderSummarySubtotalsProps} />
+                <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
                 {additionalLineItems}
             </OrderSummarySection>
 
@@ -94,6 +100,26 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                     storeCurrencyCode={storeCurrency.code}
                 />
             </OrderSummarySection>
+
+            {displayInclusiveTax && <OrderSummarySection>
+                <h5
+                    className="cart-taxItem cart-taxItem--subtotal optimizedCheckout-contentPrimary"
+                    data-test="tax-text"
+                >
+                    <TranslatedString
+                        id="tax.inclusive_label"
+                    />
+                </h5>
+                {(taxes || []).map((tax, index) => (
+                    <OrderSummaryPrice
+                        amount={tax.amount}
+                        key={index}
+                        label={tax.name}
+                        testId="cart-taxes"
+                    />
+                ))}
+            </OrderSummarySection>}
+            
             { hasSubscription && <section className="cart-section cart-subscription optimizedCheckout-orderSummary-cartSection">
                 <div data-test="cart-total">
                     <div aria-live="polite" className="cart-priceItem optimizedCheckout-contentPrimary cart-priceItem--total">

@@ -238,6 +238,7 @@ const HostedCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                     ...options,
                     creditCard: {
                         form: await getHostedFormOptions(selectedInstrument),
+                        bigpayToken: selectedInstrument?.bigpayToken,
                     },
                 });
             },
@@ -274,7 +275,7 @@ export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>
     [
         {
             id: 'hosted-credit-card',
-            // type: 'PAYMENT_TYPE_API',
         },
+        { id: 'credit_card', gateway: 'bluesnapdirect' },
     ],
 );

@@ -1,6 +1,9 @@
-import React, { PureComponent, ReactNode } from 'react';
+import { ExtensionRegion } from '@bigcommerce/checkout-sdk';
+import React, { FunctionComponent, useEffect } from 'react';
 
-import { TranslatedString } from '../locale';
+import { ExtensionRegionContainer, useExtensions } from '@bigcommerce/checkout/checkout-extension';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { OrderComments } from '../orderComments';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
@@ -18,48 +21,67 @@ export interface ShippingFormFooterProps {
     consignments?: any;
 }
 
-class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
-    render(): ReactNode {
-        const {
-            cartHasChanged,
-            isMultiShippingMode,
-            shouldShowOrderComments,
-            shouldShowShippingOptions = true,
-            shouldDisableSubmit,
-            isLoading,
-            consignments
-        } = this.props;
+const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
+    cartHasChanged,
+    isMultiShippingMode,
+    shouldShowOrderComments,
+    shouldShowShippingOptions = true,
+    shouldDisableSubmit,
+    isLoading,
+    consignments,
+}) => {
+    const { extensionService, isExtensionEnabled } = useExtensions();
+    const isExtensionRegionEnabled = Boolean(
+        isExtensionEnabled() &&
+            extensionService.isRegionEnabled(ExtensionRegion.ShippingShippingAddressFormAfter),
+    );
 
-        const hasFreeShipping = consignments?.find((v: any) => v.selectedShippingOption?.cost === 0);
+    useEffect(() => {
+        if (isExtensionRegionEnabled) {
+            void extensionService.renderExtension(
+                ExtensionRegionContainer.ShippingShippingAddressFormAfter,
+                ExtensionRegion.ShippingShippingAddressFormAfter,
+            );
 
-        return (
-            <>
-                <Fieldset
-                    id="checkout-shipping-options"
-                    legend={
-                        <>
-                            <Legend>
-                                <TranslatedString id="shipping.shipping_method_label" />
-                            </Legend>
+            return () => {
+                extensionService.removeListeners(ExtensionRegion.ShippingShippingAddressFormAfter);
+            };
+        }
+    }, [extensionService, isExtensionRegionEnabled]);
 
-                            {cartHasChanged && (
-                                <Alert type={AlertType.Error}>
-                                    <strong>
-                                        <TranslatedString id="shipping.cart_change_error" />
-                                    </strong>
-                                </Alert>
-                            )}
-                        </>
-                    }
-                >
-                    <ShippingOptions
-                        isMultiShippingMode={isMultiShippingMode}
-                        isUpdatingAddress={isLoading}
-                        shouldShowShippingOptions={shouldShowShippingOptions}
-                    />
-                </Fieldset>
+    const hasFreeShipping = consignments?.find((v: any) => v.selectedShippingOption?.cost === 0);
 
-                {hasFreeShipping &&
+    return (
+        <>
+            {isExtensionRegionEnabled && (
+                <div id={ExtensionRegionContainer.ShippingShippingAddressFormAfter} />
+            )}
+            <Fieldset
+                id="checkout-shipping-options"
+                legend={
+                    <>
+                        <Legend>
+                            <TranslatedString id="shipping.shipping_method_label" />
+                        </Legend>
+
+                        {cartHasChanged && (
+                            <Alert type={AlertType.Error}>
+                                <strong>
+                                    <TranslatedString id="shipping.cart_change_error" />
+                                </strong>
+                            </Alert>
+                        )}
+                    </>
+                }
+            >
+                <ShippingOptions
+                    isMultiShippingMode={isMultiShippingMode}
+                    isUpdatingAddress={isLoading}
+                    shouldShowShippingOptions={shouldShowShippingOptions}
+                />
+            </Fieldset>
+
+            {hasFreeShipping &&
                 (<div className="free-shipping-wrapper">
                     <h6 className="free-shipping-label">Congratulations, your shipping is free!</h6>
                     <h5 className="free-shipping-heading">You’re just a step away from better health.</h5>
@@ -140,24 +162,23 @@ class ShippingFormFooter extends PureComponent<ShippingFormFooterProps> {
                             </ul>
                     </div>
                 </div>)
-                }
+            }
 
-                {shouldShowOrderComments && <OrderComments />}
+            {shouldShowOrderComments && <OrderComments />}
 
-                <div className="form-actions">
-                    <Button
-                        disabled={shouldDisableSubmit}
-                        id="checkout-shipping-continue"
-                        isLoading={isLoading}
-                        type="submit"
-                        variant={ButtonVariant.Primary}
-                    >
-                        <TranslatedString id="common.continue_action" />
-                    </Button>
-                </div>
-            </>
-        );
-    }
-}
+            <div className="form-actions">
+                <Button
+                    disabled={shouldDisableSubmit}
+                    id="checkout-shipping-continue"
+                    isLoading={isLoading}
+                    type="submit"
+                    variant={ButtonVariant.Primary}
+                >
+                    <TranslatedString id="common.continue_action" />
+                </Button>
+            </div>
+        </>
+    );
+};
 
 export default ShippingFormFooter;

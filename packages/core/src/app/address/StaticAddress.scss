@@ -1,5 +1,23 @@
+@import "../ui/Base";
+
 .checkout-address--static {
     .address-entry {
         margin: 0;
+    }
+}
+
+.checkout-address--with-provider-icon {
+    position: relative;
+
+    .address-entry {
+        padding-right: $paypal-connect-icon-container-size;
+    }
+
+    .icon {
+        width: $paypal-connect-icon-size;
+        height: $paypal-connect-icon-size;
+        position: absolute;
+        top: 0;
+        right: 0;
     }
 }

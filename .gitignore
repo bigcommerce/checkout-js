@@ -1,5 +1,6 @@
 .idea
 .vscode
+.DS_Store
 junit.xml
 __temp__
 node_modules
@@ -7,6 +8,6 @@ build
 coverage
 /dist-tools
 /packages/**/generated
-/packages/payment-integration-test-framework/report
-/packages/payment-integration-test-framework/screenshots
-/packages/payment-integration-test-framework/videos
+/packages/test-framework/report
+/packages/test-framework/screenshots
+/packages/test-framework/videos

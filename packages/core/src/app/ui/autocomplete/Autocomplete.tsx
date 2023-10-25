@@ -10,12 +10,13 @@ import AutocompleteItem from './autocomplete-item';
 export interface AutocompleteProps {
     initialValue?: string;
     initialHighlightedIndex?: number;
+    defaultHighlightedIndex?: number;
     children?: ReactNode;
     items: AutocompleteItem[];
     inputProps?: any;
     listTestId?: string;
     onToggleOpen?(state: { inputValue: string; isOpen: boolean }): void;
-    onSelect?(item: AutocompleteItem): void;
+    onSelect?(item: AutocompleteItem | null): void;
     onChange?(value: string, isOpen: boolean): void;
 }
 
@@ -25,6 +26,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
             inputProps,
             initialValue,
             initialHighlightedIndex,
+            defaultHighlightedIndex,
             items,
             children,
             onSelect,
@@ -33,7 +35,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
 
         return (
             <Downshift
-                defaultHighlightedIndex={0}
+                defaultHighlightedIndex={defaultHighlightedIndex}
                 initialHighlightedIndex={initialHighlightedIndex}
                 initialInputValue={initialValue}
                 itemToString={this.itemToString}
@@ -58,7 +60,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
                                 <Label
                                     htmlFor={inputProps.id}
                                     id={inputProps['aria-labelledby']}
-                                    useFloatingLabel={true}
+                                    isFloatingLabelEnabled={true}
                                 >
                                     {inputProps.labelText}
                                 </Label>
@@ -125,7 +127,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
         }, [] as ReactChild[]);
     }
 
-    private itemToString(item?: AutocompleteItem): string {
+    private itemToString(item?: AutocompleteItem | null): string {
         return (item && item.value) || '';
     }
 
@@ -160,7 +162,7 @@ class Autocomplete extends PureComponent<AutocompleteProps> {
         }
     };
 
-    private handleStateChange = ({ isOpen, inputValue }: StateChangeOptions<string>) => {
+    private handleStateChange = ({ isOpen, inputValue }: StateChangeOptions<AutocompleteItem>) => {
         const { onToggleOpen = noop } = this.props;
 
         if (isOpen !== undefined) {

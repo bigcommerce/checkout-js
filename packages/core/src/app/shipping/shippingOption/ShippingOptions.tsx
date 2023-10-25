@@ -2,7 +2,9 @@ import { Cart, CheckoutSelectors, Consignment } from '@bigcommerce/checkout-sdk'
 import { map, sortBy, uniq } from 'lodash';
 import { createSelector } from 'reselect';
 
-import { CheckoutContextProps, withCheckout } from '../../checkout';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+
+import { withCheckout } from '../../checkout';
 import getShippableLineItems from '../getShippableLineItems';
 import getShippingMethodId from '../getShippingMethodId';
 
@@ -87,7 +89,7 @@ export function mapToShippingOptions(
     }
 
     const consignments = sortConsignments(cart, getConsignments() || []);
-    const methodId = getShippingMethodId(checkout);
+    const methodId = getShippingMethodId(checkout, config);
     const { shippingQuoteFailedMessage } = config.checkoutSettings;
 
     return {

@@ -19,7 +19,8 @@ export default function withRedeemable(
             onRemovedGiftCertificate,
             storeCreditAmount,
             hasSubscription,
-            ...redeemableProps
+            isUpdatedCartSummayModal = false,
+            ...redeemableProps  
         } = props;
 
         return (
@@ -36,6 +37,7 @@ export default function withRedeemable(
                 }
                 hasSubscription={hasSubscription}
                 headerLink={headerLink}
+                isUpdatedCartSummayModal={isUpdatedCartSummayModal}
                 lineItems={checkout.cart.lineItems}
                 onRemovedCoupon={onRemovedCoupon}
                 onRemovedGiftCertificate={onRemovedGiftCertificate}

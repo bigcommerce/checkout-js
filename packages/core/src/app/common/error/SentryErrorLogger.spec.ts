@@ -9,9 +9,10 @@ import {
 import { RewriteFrames } from '@sentry/integrations';
 import { Integration } from '@sentry/types';
 
+import { ErrorLevelType } from '@bigcommerce/checkout/error-handling-utils';
+
 import computeErrorCode from './computeErrorCode';
 import ConsoleErrorLogger from './ConsoleErrorLogger';
-import { ErrorLevelType } from './ErrorLogger';
 import SentryErrorLogger, { SeverityLevelEnum } from './SentryErrorLogger';
 
 jest.mock('@sentry/browser', () => {
@@ -164,88 +165,12 @@ describe('SentryErrorLogger', () => {
         });
     });
 
-    it('does not log exception event if it relates to convertcart', () => {
-        new SentryErrorLogger(config);
-
-        const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
-        /* eslint-disable @typescript-eslint/naming-convention */
-        const event = {
-            breadcrumbs: [
-                {
-                    timestamp: 1667952544.208,
-                    category: 'fetch',
-                    data: {
-                        method: 'POST',
-                        url: 'https://dc4.convertcart.com/event/v3/94892041/123.123',
-                        status_code: 200,
-                    },
-                    type: 'http',
-                },
-                {
-                    timestamp: 1667952544.549,
-                    category: 'fetch',
-                    data: {
-                        method: 'GET',
-                        url: '/api/storefront/checkouts/abcdefg',
-                        status_code: 200,
-                    },
-                    type: 'http',
-                },
-                {
-                    timestamp: 1667952544.549,
-                    category: 'fetch',
-                    type: 'http',
-                },
-                {
-                    timestamp: 1667952544.549,
-                    category: 'fetch',
-                    data: {
-                        method: 'GET',
-                        status_code: 200,
-                    },
-                    type: 'http',
-                },
-            ],
-            exception: {
-                values: [
-                    {
-                        type: 'TypeError',
-                        value: "Cannot read properties of null (reading 'setAttribute')",
-                        stacktrace: {
-                            frames: [
-                                {
-                                    filename: 'app:///608-12345.js',
-                                    function: 'u',
-                                    in_app: true,
-                                    lineno: 1,
-                                    colno: 10602,
-                                },
-                            ],
-                        },
-                        mechanism: {
-                            type: 'instrument',
-                            handled: true,
-                            data: {
-                                function: 'setInterval',
-                            },
-                        },
-                    },
-                ],
-            },
-        };
-        /* eslint-enable @typescript-eslint/naming-convention */
-        const hint = { originalException: new Error('Unexpected error') };
-
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        expect(clientOptions.beforeSend!(event, hint)).toBeNull();
-    });
-
     it('configures client to ignore errors from polyfill and Sentry client', () => {
         new SentryErrorLogger(config);
 
         expect(init).toHaveBeenCalledWith(
             expect.objectContaining({
-                denyUrls: ['polyfill~checkout', 'sentry~checkout', 'convertcart'],
+                denyUrls: ['polyfill~checkout', 'sentry~checkout'],
             }),
         );
     });

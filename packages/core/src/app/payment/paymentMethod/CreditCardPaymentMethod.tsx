@@ -13,12 +13,12 @@ import { find, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { MapToPropsFactory } from '@bigcommerce/checkout/legacy-hoc';
+import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { CheckoutContextProps, PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
-import { CheckoutContextProps, withCheckout } from '../../checkout';
+import { withCheckout } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
-import { MapToPropsFactory } from '../../common/hoc';
-import { withLanguage, WithLanguageProps } from '../../locale';
 import { withForm, WithFormProps } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
 import {
@@ -208,7 +208,7 @@ class CreditCardPaymentMethod extends Component<
 
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
-                <div className="paymentMethod paymentMethod--creditCard">
+                <div className="paymentMethod paymentMethod--creditCard" data-test='credit-cart-payment-method'>
                     {shouldShowInstrumentFieldset && (
                         <CardInstrumentFieldset
                             instruments={instruments}
@@ -317,6 +317,12 @@ class CreditCardPaymentMethod extends Component<
     }
 
     private handleUseNewCard: () => void = () => {
+        const {
+            formik: { setFieldValue },
+        } = this.props;
+
+        setFieldValue('hostedForm.cardType', '');
+
         this.setState({
             isAddingNewCard: true,
             selectedInstrumentId: undefined,
@@ -324,6 +330,12 @@ class CreditCardPaymentMethod extends Component<
     };
 
     private handleSelectInstrument: (id: string) => void = (id) => {
+        const {
+            formik: { setFieldValue },
+        } = this.props;
+
+        setFieldValue('hostedForm.cardType', '');
+
         this.setState({
             isAddingNewCard: false,
             selectedInstrumentId: id,

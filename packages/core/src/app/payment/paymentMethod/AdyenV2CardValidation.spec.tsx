@@ -1,6 +1,8 @@
-import { AdyenV2ValidationState } from '@bigcommerce/checkout-sdk';
+import { AdyenV2ValidationState, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
+
+import { LocaleProvider } from '@bigcommerce/checkout/locale';
 
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
@@ -11,8 +13,10 @@ describe('AdyenV2CardValidation', () => {
     let paymentContext: PaymentContextProps;
     let AdyenV2CardValidationTest: FunctionComponent<AdyenV2CardValidationProps>;
 
+    const checkoutService = createCheckoutService();
+
     beforeEach(() => {
-        AdyenV2CardValidationTest = (props) => <AdyenV2CardValidation {...props} />;
+        AdyenV2CardValidationTest = (props) => <LocaleProvider checkoutService={checkoutService}><AdyenV2CardValidation {...props} /></LocaleProvider>;
     });
 
     it('renders Adyen V2 Card Number and CVV fields', () => {
@@ -170,24 +174,5 @@ describe('AdyenV2CardValidation', () => {
             expect(field).toHaveLength(1);
         });
 
-        it('should disable submit payment button initially', () => {
-            paymentContext = {
-                disableSubmit: jest.fn(),
-                setSubmit: jest.fn(),
-                setValidationSchema: jest.fn(),
-                hidePaymentSubmitButton: jest.fn(),
-            };
-
-            mount(
-                <PaymentContext.Provider value={paymentContext}>
-                    <AdyenV2CardValidationTest {...defaultProps} />
-                </PaymentContext.Provider>,
-            );
-
-            expect(paymentContext.disableSubmit).toHaveBeenCalledWith(
-                defaultProps.paymentMethod,
-                true,
-            );
-        });
     });
 });

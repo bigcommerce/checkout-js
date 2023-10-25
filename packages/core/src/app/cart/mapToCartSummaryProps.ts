@@ -1,4 +1,4 @@
-import { CheckoutContextProps } from '../checkout';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { WithCheckoutCartSummaryProps } from './CartSummary';
 import mapToRedeemableProps from './mapToRedeemableProps';
@@ -23,6 +23,7 @@ export default function mapToCartSummaryProps(
 
     const { isStoreCreditApplied, grandTotal } = checkout;
     const { storeCredit } = customer;
+    const updatedCartModal = config?.checkoutSettings.features['CHECKOUT-7403.updated_cart_summary_modal'] ?? false;
 
     return {
         checkout,
@@ -30,6 +31,7 @@ export default function mapToCartSummaryProps(
         cartUrl: config.links.cartLink,
         storeCurrency: config.currency,
         storeCreditAmount: isStoreCreditApplied ? Math.min(grandTotal, storeCredit) : undefined,
+        isUpdatedCartSummayModal: updatedCartModal,
         ...redeemableProps,
     };
 }

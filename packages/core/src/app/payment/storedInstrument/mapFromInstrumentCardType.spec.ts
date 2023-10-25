@@ -8,6 +8,8 @@ describe('mapFromInstrumentCardType()', () => {
     });
 
     it('maps diners club card type', () => {
+        expect(mapFromInstrumentCardType('diners_club')).toBe('diners-club');
+
         expect(mapFromInstrumentCardType('diners')).toBe('diners-club');
     });
 

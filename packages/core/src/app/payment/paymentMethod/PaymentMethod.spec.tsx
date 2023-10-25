@@ -9,12 +9,13 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
 import { getBillingAddress } from '../../billing/billingAddresses.mock';
 import { getCart } from '../../cart/carts.mock';
-import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig as getDefaultStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { getPaymentMethod } from '../payment-methods.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
@@ -24,6 +25,7 @@ import CheckoutcomCustomPaymentMethod, {
 } from './CheckoutcomCustomPaymentMethod';
 import CreditCardPaymentMethod, { CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
+import MolliePaymentMethod from './MolliePaymentMethod';
 import OpyPaymentMethod from './OpyPaymentMethod';
 import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
@@ -494,6 +496,27 @@ describe('PaymentMethod', () => {
                     method,
                 }),
             );
+        });
+    });
+
+    describe('when using Mollie payment method', () => {
+        let method: PaymentMethod;
+
+        beforeEach(() => {
+            method = {
+                id: 'klarna',
+                method: 'klarna',
+                supportedCards: [],
+                config: {},
+                type: 'PAYMENT_TYPE_API',
+                gateway: 'mollie',
+            };
+        });
+
+        it('should render MolliePaymentMethod for One Klarna', () => {
+            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
+
+            expect(container.find(MolliePaymentMethod)).toBeTruthy();
         });
     });
 });

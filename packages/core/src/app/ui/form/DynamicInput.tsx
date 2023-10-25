@@ -4,7 +4,8 @@ import { isDate, noop } from 'lodash';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 import ReactDatePicker from 'react-datepicker';
 
-import { withDate, WithDateProps } from '../../locale';
+import { withDate, WithDateProps } from '@bigcommerce/checkout/locale';
+
 import { IconChevronDown } from '../icon';
 
 import CheckboxInput from './CheckboxInput';
@@ -21,7 +22,7 @@ export interface DynamicInputProps extends InputProps {
     rows?: number;
     fieldType?: DynamicFormFieldType;
     options?: FormFieldItem[];
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
 }
 
 const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
@@ -33,7 +34,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
     onChange = noop,
     options,
     placeholder,
-    useFloatingLabel,
+    isFloatingLabelEnabled,
     value,
     ...rest
 }) => {
@@ -56,15 +57,15 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                 <>
                     <div
                         className={classNames(
-                            { 'dropdown-chevron': !useFloatingLabel },
-                            { 'floating-select-chevron': useFloatingLabel },
+                            { 'dropdown-chevron': !isFloatingLabelEnabled },
+                            { 'floating-select-chevron': isFloatingLabelEnabled },
                         )}>
                         <IconChevronDown />
                     </div>
                     <select
                         {...(rest as any)}
                         className={classNames(
-                            { 'floating-select': useFloatingLabel },
+                            { 'floating-select': isFloatingLabelEnabled },
                             'form-select optimizedCheckout-form-select',
                         )}
                         data-test={`${id}-select`}
@@ -140,7 +141,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                     // onChangeRaw={ rest.onChange }
                     calendarClassName="optimizedCheckout-contentPrimary"
                     className={classNames('form-input optimizedCheckout-form-input', {
-                        'floating-input': useFloatingLabel,
+                        'floating-input': isFloatingLabelEnabled,
                     })}
                     dateFormat={inputFormat}
                     maxDate={rest.max ? new Date(`${rest.max}T00:00:00Z`) : undefined}
@@ -158,11 +159,11 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                 <TextArea
                     {...(rest as any)}
                     id={id}
+                    isFloatingLabelEnabled={isFloatingLabelEnabled}
                     name={name}
                     onChange={onChange}
                     testId={`${id}-text`}
                     type={fieldType}
-                    useFloatingLabel={useFloatingLabel}
                     value={value}
                 />
             );
@@ -172,6 +173,7 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                 <TextInput
                     {...rest}
                     id={id}
+                    isFloatingLabelEnabled={isFloatingLabelEnabled}
                     name={name}
                     onChange={onChange}
                     placeholder={placeholder}
@@ -179,7 +181,6 @@ const DynamicInput: FunctionComponent<DynamicInputProps & WithDateProps> = ({
                         fieldType === DynamicFormFieldType.password ? 'password' : 'text'
                     }`}
                     type={fieldType}
-                    useFloatingLabel={useFloatingLabel}
                     value={value}
                 />
             );

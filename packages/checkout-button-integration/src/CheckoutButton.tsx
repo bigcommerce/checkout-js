@@ -29,6 +29,7 @@ const CheckoutButton: FunctionComponent<CheckoutButtonProps> = ({
     return <div id={containerId} />;
 };
 
-export default toResolvableComponent<CheckoutButtonProps, CheckoutButtonResolveId>(CheckoutButton, [
-    { default: true },
-]);
+export default toResolvableComponent<CheckoutButtonProps, CheckoutButtonResolveId>(
+    CheckoutButton,
+    [],
+);

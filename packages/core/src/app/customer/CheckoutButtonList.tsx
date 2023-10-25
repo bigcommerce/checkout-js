@@ -1,8 +1,9 @@
 import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { isApplePayWindow } from '../common/utility';
-import { TranslatedString } from '../locale';
 
 import CheckoutButton from './CheckoutButton';
 import { AmazonPayV2Button, ApplePayButton, PayPalCommerceButton } from './customWalletButton';
@@ -26,11 +27,13 @@ export const SUPPORTED_METHODS: string[] = [
     'googlepayauthorizenet',
     'googlepaybnz',
     'googlepaybraintree',
+    'googlepaypaypalcommerce',
     'googlepaycheckoutcom',
     'googlepaycybersourcev2',
     'googlepayorbital',
     'googlepaystripe',
     'googlepaystripeupe',
+    'googlepayworldpayaccess',
 ];
 
 export interface CheckoutButtonListProps {

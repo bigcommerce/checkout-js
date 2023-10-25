@@ -3,12 +3,11 @@ import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import React, { FunctionComponent, ReactNode } from 'react';
 
-import { PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+import { LocaleProvider } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider , PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
+import { FormProvider } from '@bigcommerce/checkout/ui';
 
-import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
-import { LocaleProvider } from '../../locale';
-import { FormProvider } from '../../ui/form';
 import { getPaymentMethod } from '../payment-methods.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 

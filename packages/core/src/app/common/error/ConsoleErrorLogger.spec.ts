@@ -1,5 +1,6 @@
+import { ErrorLevelType } from '@bigcommerce/checkout/error-handling-utils';
+
 import ConsoleErrorLogger from './ConsoleErrorLogger';
-import { ErrorLevelType } from './ErrorLogger';
 
 describe('ConsoleErrorLogger', () => {
     let mockConsole: Console;

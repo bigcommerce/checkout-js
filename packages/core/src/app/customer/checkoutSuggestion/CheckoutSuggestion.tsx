@@ -7,9 +7,11 @@ import {
 import React, { FunctionComponent, memo } from 'react';
 
 import { useAnalytics } from '@bigcommerce/checkout/analytics';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
-import { CheckoutContextProps, withCheckout } from '../../checkout';
+import { withCheckout } from '../../checkout';
 import { PaymentMethodId } from '../../payment/paymentMethod';
+
 
 import BoltCheckoutSuggestion from './BoltCheckoutSuggestion';
 
@@ -38,6 +40,7 @@ const CheckoutSuggestion: FunctionComponent<
 
     const handleExecutePaymentMethodCheckout = (options: ExecutePaymentMethodCheckoutOptions) => {
         analyticsTracker.customerSuggestionExecute();
+
         return executePaymentMethodCheckout(options);
     }
 

@@ -59,6 +59,7 @@ const AccountInstrumentFieldset: FunctionComponent<AccountInstrumentFieldsetProp
                     <TranslatedString id="payment.account_instrument_text" />
                 </Legend>
             }
+            testId="account-instrument-fieldset"
         >
             <ModalTrigger modal={renderModal}>
                 {({ onClick }) => (
@@ -71,7 +72,7 @@ const AccountInstrumentFieldset: FunctionComponent<AccountInstrumentFieldsetProp
             <BasicFormField name="instrumentId" render={renderInput} />
 
             {instruments.length === 0 && (
-                <div className="instrumentSelect-note">
+                <div className="instrumentSelect-note" data-test="instrument-select-note">
                     <TranslatedHtml id="payment.account_instrument_new_shipping_address" />
                 </div>
             )}

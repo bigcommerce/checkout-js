@@ -1,7 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { IconHelp, IconLock } from '../../ui/icon';
 import { TooltipTrigger } from '../../ui/tooltip';
 import { CreditCardCodeTooltip } from '../creditCard';

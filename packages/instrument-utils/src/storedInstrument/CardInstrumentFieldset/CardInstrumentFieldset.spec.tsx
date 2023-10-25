@@ -17,7 +17,7 @@ import {
     CardInstrumentFieldsetValues,
     CheckoutContext,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { getInstruments, getStoreConfig } from '@bigcommerce/checkout/test-utils';
+import { getInstruments, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import { isCardInstrument } from '../../guards';
 import { InstrumentSelect } from '../InstrumentSelect';

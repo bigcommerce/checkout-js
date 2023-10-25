@@ -1,6 +1,8 @@
 import { getScriptLoader, getStylesheetLoader } from '@bigcommerce/script-loader';
 import { noop } from 'lodash';
 
+import { CHECKOUT_ROOT_NODE_ID } from '@bigcommerce/checkout/payment-integration-api';
+
 import AppExport from './AppExport';
 import { AssetManifest, loadFiles, LoadFilesOptions } from './loader';
 
@@ -99,12 +101,12 @@ describe('loadFiles', () => {
 
         result.renderCheckout({
             checkoutId: 'abc',
-            containerId: 'checkout-app',
+            containerId: CHECKOUT_ROOT_NODE_ID,
         });
 
         expect((global as any).checkout.renderCheckout).toHaveBeenCalledWith({
             checkoutId: 'abc',
-            containerId: 'checkout-app',
+            containerId: CHECKOUT_ROOT_NODE_ID,
             publicPath: options.publicPath,
         });
     });
@@ -114,12 +116,12 @@ describe('loadFiles', () => {
 
         result.renderOrderConfirmation({
             orderId: 123,
-            containerId: 'checkout-app',
+            containerId: CHECKOUT_ROOT_NODE_ID,
         });
 
         expect((global as any).checkout.renderOrderConfirmation).toHaveBeenCalledWith({
             orderId: 123,
-            containerId: 'checkout-app',
+            containerId: CHECKOUT_ROOT_NODE_ID,
             publicPath: options.publicPath,
         });
     });

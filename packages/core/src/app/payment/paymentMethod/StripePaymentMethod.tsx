@@ -7,8 +7,10 @@ import {
 import { noop } from 'lodash';
 import React, { FunctionComponent, useCallback } from 'react';
 
-import { CheckoutContextProps, withCheckout } from '../../checkout';
-import { TranslatedString, withLanguage, WithLanguageProps } from '../../locale';
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+
+import { withCheckout } from '../../checkout';
 import {
     withHostedCreditCardFieldset,
     WithInjectedHostedCreditCardFieldsetProps,

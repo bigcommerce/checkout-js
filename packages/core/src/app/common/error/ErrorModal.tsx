@@ -2,7 +2,8 @@ import { RequestError } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { PureComponent, ReactNode, SyntheticEvent } from 'react';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { Button, ButtonSize } from '../../ui/button';
 import { IconError, IconSize } from '../../ui/icon';
 import { Modal, ModalHeader } from '../../ui/modal';
@@ -92,7 +93,7 @@ export default class ErrorModal extends PureComponent<ErrorModalProps> {
         if (!error || !shouldShowErrorCode) {
             return;
         }
-        
+
         if (isRequestError(error) && error.headers?.['x-request-id']) {
             return (
                 <ErrorCode

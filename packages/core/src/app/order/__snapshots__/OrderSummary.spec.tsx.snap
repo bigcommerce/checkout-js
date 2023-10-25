@@ -10,6 +10,7 @@ exports[`OrderSummary when shopper has same currency as store renders order summ
   </OrderSummaryHeader>
   <OrderSummarySection>
     <OrderSummaryItems
+      displayLineItemsCount={true}
       items={
         Object {
           "customItems": Array [],
@@ -93,6 +94,7 @@ exports[`OrderSummary when shopper has same currency as store renders order summ
         ]
       }
       discountAmount={10}
+      fees={Array []}
       giftCertificates={
         Array [
           Object {
@@ -106,6 +108,7 @@ exports[`OrderSummary when shopper has same currency as store renders order summ
       }
       giftWrappingAmount={0}
       handlingAmount={8}
+      isTaxIncluded={false}
       shippingAmount={20}
       storeCreditAmount={0}
       subtotalAmount={200}
@@ -124,6 +127,154 @@ exports[`OrderSummary when shopper has same currency as store renders order summ
       orderAmount={190}
       shopperCurrencyCode="USD"
       storeCurrencyCode="USD"
+    />
+  </OrderSummarySection>
+</article>
+`;
+
+exports[`OrderSummary when taxes are inclusive displays tax as summary section 1`] = `
+<article
+  className="cart optimizedCheckout-orderSummary"
+  data-test="cart"
+>
+  <OrderSummaryHeader>
+    <Memo(PrintLink) />
+  </OrderSummaryHeader>
+  <OrderSummarySection>
+    <OrderSummaryItems
+      displayLineItemsCount={true}
+      items={
+        Object {
+          "customItems": Array [],
+          "digitalItems": Array [],
+          "giftCertificates": Array [
+            Object {
+              "amount": 100,
+              "id": "bd391ead-8c58-4105-b00e-d75d233b429a",
+              "message": "message",
+              "name": "$100 Gift Certificate",
+              "recipient": Object {
+                "email": "lu@is.com",
+                "name": "luis",
+              },
+              "sender": Object {
+                "email": "pa@blo.com",
+                "name": "pablo",
+              },
+              "taxable": false,
+              "theme": "General",
+            },
+          ],
+          "physicalItems": Array [
+            Object {
+              "addedByPromotion": false,
+              "brand": "OFS",
+              "categoryNames": Array [
+                "Cat 1",
+              ],
+              "comparisonPrice": 200,
+              "couponAmount": 0,
+              "discountAmount": 0,
+              "discounts": Array [],
+              "extendedComparisonPrice": 250,
+              "extendedListPrice": 200,
+              "extendedSalePrice": 200,
+              "id": "666",
+              "imageUrl": "/images/canvas-laundry-cart.jpg",
+              "isShippingRequired": true,
+              "isTaxable": true,
+              "listPrice": 200,
+              "name": "Canvas Laundry Cart",
+              "options": Array [
+                Object {
+                  "name": "n",
+                  "nameId": 1,
+                  "value": "v",
+                  "valueId": 3,
+                },
+              ],
+              "productId": 103,
+              "quantity": 1,
+              "salePrice": 200,
+              "sku": "CLC",
+              "url": "/canvas-laundry-cart/",
+              "variantId": 71,
+            },
+          ],
+        }
+      }
+    />
+  </OrderSummarySection>
+  <OrderSummarySection>
+    <Memo(OrderSummarySubtotals)
+      coupons={
+        Array [
+          Object {
+            "code": "savebig2015",
+            "couponType": "percentage_discount",
+            "discountedAmount": 5,
+            "displayName": "20% off each item",
+            "id": "1",
+          },
+          Object {
+            "code": "279F507D817E3E7",
+            "couponType": "shipping_discount",
+            "discountedAmount": 5,
+            "displayName": "$5.00 off the shipping total",
+            "id": "4",
+          },
+        ]
+      }
+      discountAmount={10}
+      fees={Array []}
+      giftCertificates={
+        Array [
+          Object {
+            "balance": 10,
+            "code": "gc",
+            "purchaseDate": "",
+            "remaining": 3,
+            "used": 7,
+          },
+        ]
+      }
+      giftWrappingAmount={0}
+      handlingAmount={8}
+      isTaxIncluded={true}
+      shippingAmount={20}
+      storeCreditAmount={0}
+      subtotalAmount={200}
+      taxes={
+        Array [
+          Object {
+            "amount": 3,
+            "name": "Tax",
+          },
+        ]
+      }
+    />
+  </OrderSummarySection>
+  <OrderSummarySection>
+    <WithCurrency(OrderSummaryTotal)
+      orderAmount={190}
+      shopperCurrencyCode="USD"
+      storeCurrencyCode="USD"
+    />
+  </OrderSummarySection>
+  <OrderSummarySection>
+    <h5
+      className="cart-taxItem cart-taxItem--subtotal optimizedCheckout-contentPrimary"
+      data-test="tax-text"
+    >
+      <TranslatedString
+        id="tax.inclusive_label"
+      />
+    </h5>
+    <OrderSummaryPrice
+      amount={3}
+      key="0"
+      label="Tax"
+      testId="cart-taxes"
     />
   </OrderSummarySection>
 </article>

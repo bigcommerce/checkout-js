@@ -100,6 +100,7 @@ describe('Autocomplete Component', () => {
             tree.find('input')
                 .simulate('change', { target: { value: 'zo' } })
                 .simulate('keyDown', { key: 'ArrowDown', keyCode: 40, which: 40 })
+                .simulate('keyDown', { key: 'ArrowDown', keyCode: 40, which: 40 })
                 .simulate('keyDown', { key: 'Enter', keyCode: 13, which: 13 });
         });
 

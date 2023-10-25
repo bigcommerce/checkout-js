@@ -1,10 +1,13 @@
 import { Address, CheckoutPayment, FormField } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { isPayPalConnectAddress, PoweredByPaypalConnectLabel, usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-connect-integration';
+
 import { AddressType, StaticAddress } from '../address';
-import { CheckoutContextProps, withCheckout } from '../checkout';
+import { withCheckout } from '../checkout';
 import { EMPTY_ARRAY } from '../common/utility';
-import { TranslatedString } from '../locale';
 
 export interface StaticBillingAddressProps {
     address: Address;
@@ -18,6 +21,9 @@ interface WithCheckoutStaticBillingAddressProps {
 const StaticBillingAddress: FunctionComponent<
     StaticBillingAddressProps & WithCheckoutStaticBillingAddressProps
 > = ({ address, payments = EMPTY_ARRAY }) => {
+    const { isPayPalAxoEnabled, paypalConnectAddresses } = usePayPalConnectAddress();
+    const showPayPalConnectAddressLabel = isPayPalAxoEnabled && isPayPalConnectAddress(address, paypalConnectAddresses);
+
     if (payments.find((payment) => payment.providerId === 'amazonpay')) {
         return (
             <p>
@@ -26,7 +32,13 @@ const StaticBillingAddress: FunctionComponent<
         );
     }
 
-    return <StaticAddress address={address} type={AddressType.Billing} />;
+    return (
+        <>
+            <StaticAddress address={address} type={AddressType.Billing} />
+
+            {showPayPalConnectAddressLabel && <PoweredByPaypalConnectLabel />}
+        </>
+    );
 };
 
 export function mapToStaticBillingAddressProps(

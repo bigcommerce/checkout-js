@@ -1,6 +1,5 @@
 import { AnalyticsContext } from '@bigcommerce/checkout/analytics';
-
-import { createInjectHoc } from '../common/hoc';
+import { createInjectHoc } from '@bigcommerce/checkout/legacy-hoc';
 
 const withAnalytics = createInjectHoc(AnalyticsContext, { displayNamePrefix: 'WithAnalytics' });
 

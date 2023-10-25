@@ -10,11 +10,12 @@ import React, { FunctionComponent, useEffect } from 'react';
 import { act } from 'react-dom/test-utils';
 import { object } from 'yup';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
 import { getCart } from '../../cart/carts.mock';
-import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { Modal, ModalProps } from '../../ui/modal';
 import {
     withHostedCreditCardFieldset,
@@ -229,4 +230,25 @@ describe('when using Braintree payment', () => {
 
         expect(cancelThreeDSecureVerification).toHaveBeenCalled();
     });
+
+    it('throws an error when adding a frame is unsuccessful', async () => {
+        mount(<BraintreeCreditCardPaymentMethodTest {...defaultProps} />);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        const initializeOptions = (defaultProps.initializePayment as jest.Mock).mock.calls[0][0];
+
+        act(() => {
+            initializeOptions.braintree.threeDSecure.addFrame(
+                new Error(),
+                document.createElement('iframe'),
+                jest.fn(),
+            );
+        });
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(defaultProps.onUnhandledError).toHaveBeenCalled();
+    });
+
 });

@@ -1,19 +1,31 @@
-import { FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, FormField as FormFieldType } from '@bigcommerce/checkout-sdk';
 import { mount, shallow } from 'enzyme';
 import { Formik } from 'formik';
 import React from 'react';
 
+import { LocaleProvider, TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { getFormFields } from '../../address/formField.mock';
-import { TranslatedString } from '../../locale';
 
 import CheckboxGroupFormField from './CheckboxGroupFormField';
-import DynamicFormField from './DynamicFormField';
+import DynamicFormField, { DynamicFormFieldProps } from './DynamicFormField';
 import DynamicInput from './DynamicInput';
 import FormField from './FormField';
 
 describe('DynamicFormField Component', () => {
     const formFields = getFormFields();
     const onChange = jest.fn();
+    let DynamicFormFieldTest: FunctionComponent<DynamicFormFieldProps>;
+
+    beforeEach(() => {
+        const checkoutService = createCheckoutService();
+
+        DynamicFormFieldTest = (props) => <LocaleProvider checkoutService={checkoutService}>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+                <DynamicFormField {...props} />
+            </Formik>
+        </LocaleProvider>
+    })
 
     it('renders legacy class name', () => {
         const component = shallow(
@@ -30,12 +42,10 @@ describe('DynamicFormField Component', () => {
 
     it('renders FormField with expected props', () => {
         const component = mount(
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-                <DynamicFormField
-                    field={formFields.find(({ name }) => name === 'address1') as FormFieldType}
-                    onChange={onChange}
-                />
-            </Formik>,
+            <DynamicFormFieldTest
+                field={formFields.find(({ name }) => name === 'address1') as FormFieldType}
+                onChange={onChange}
+            />,
         );
 
         expect(component.find(FormField).props()).toEqual(
@@ -57,9 +67,7 @@ describe('DynamicFormField Component', () => {
             type: 'string',
         };
         const component = mount(
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-                <DynamicFormField field={telField as FormFieldType} />
-            </Formik>,
+            <DynamicFormFieldTest field={telField as FormFieldType} />,
         );
 
         expect(component.find(DynamicInput).props()).toEqual(
@@ -72,14 +80,12 @@ describe('DynamicFormField Component', () => {
 
     it('renders DynamicInput with expected props', () => {
         const component = mount(
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-                <DynamicFormField
-                    autocomplete="address-line1"
-                    field={formFields.find(({ name }) => name === 'address1') as FormFieldType}
-                    inputId="addressLine1Input"
-                    onChange={onChange}
-                />
-            </Formik>,
+            <DynamicFormFieldTest
+                autocomplete="address-line1"
+                field={formFields.find(({ name }) => name === 'address1') as FormFieldType}
+                inputId="addressLine1Input"
+                onChange={onChange}
+            />,
         );
 
         expect(component.find(DynamicInput).props()).toEqual(
@@ -92,14 +98,12 @@ describe('DynamicFormField Component', () => {
 
     it('renders CheckboxGroupFormField if fieldType is checkbox', () => {
         const component = mount(
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-                <DynamicFormField
-                    field={{
-                        ...(formFields.find(({ name }) => name === 'field_27') as FormFieldType),
-                        fieldType: 'checkbox',
-                    }}
-                />
-            </Formik>,
+            <DynamicFormFieldTest
+                field={{
+                    ...(formFields.find(({ name }) => name === 'field_27') as FormFieldType),
+                    fieldType: 'checkbox',
+                }}
+            />,
         );
 
         expect(component.find(CheckboxGroupFormField)).toHaveLength(1);
@@ -107,12 +111,10 @@ describe('DynamicFormField Component', () => {
 
     it('renders label', () => {
         const component = mount(
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-                <DynamicFormField
-                    field={formFields.find(({ name }) => name === 'address1') as FormFieldType}
-                    label={<TranslatedString id="address.address_line_1_label" />}
-                />
-            </Formik>,
+            <DynamicFormFieldTest
+                field={formFields.find(({ name }) => name === 'address1') as FormFieldType}
+                label={<TranslatedString id="address.address_line_1_label" />}
+            />,
         );
 
         expect(component.find(TranslatedString).prop('id')).toBe('address.address_line_1_label');
@@ -122,11 +124,9 @@ describe('DynamicFormField Component', () => {
 
     it('renders `optional` label when field is not required', () => {
         const component = mount(
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-                <DynamicFormField
-                    field={formFields.find(({ name }) => name === 'address2') as FormFieldType}
-                />
-            </Formik>,
+            <DynamicFormFieldTest
+                field={formFields.find(({ name }) => name === 'address2') as FormFieldType}
+            />,
         );
 
         expect(

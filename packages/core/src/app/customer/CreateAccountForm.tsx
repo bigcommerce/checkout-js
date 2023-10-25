@@ -3,9 +3,10 @@ import { FormikProps, withFormik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent, useMemo } from 'react';
 
-import { preventDefault } from '../common/dom';
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+
 import { isRequestError } from '../common/error';
-import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 import { Alert, AlertType } from '../ui/alert';
 import { Button, ButtonVariant } from '../ui/button';
 import { DynamicFormField, Fieldset, Form } from '../ui/form';
@@ -20,15 +21,16 @@ export interface CreateAccountFormProps {
     formFields: FormField[];
     createAccountError?: Error;
     isCreatingAccount?: boolean;
+    isExecutingPaymentMethodCheckout?: boolean;
     requiresMarketingConsent: boolean;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     onCancel?(): void;
-    onSubmit?(values: CreateAccountFormValues): void;
+    onSubmit(values: CreateAccountFormValues): void;
 }
 
 const CreateAccountForm: FunctionComponent<
     CreateAccountFormProps & WithLanguageProps & FormikProps<CreateAccountFormValues>
-> = ({ formFields, createAccountError, isCreatingAccount, onCancel, useFloatingLabel }) => {
+> = ({ formFields, createAccountError, isCreatingAccount, isExecutingPaymentMethodCheckout, onCancel, isFloatingLabelEnabled }) => {
     const createAccountErrorMessage = useMemo(() => {
         if (!createAccountError) {
             return;
@@ -68,9 +70,9 @@ const CreateAccountForm: FunctionComponent<
                             autocomplete={field.name}
                             extraClass={`dynamic-form-field--${field.name}`}
                             field={field}
+                            isFloatingLabelEnabled={isFloatingLabelEnabled}
                             key={field.id}
                             parentFieldName={field.custom ? 'customFields' : undefined}
-                            useFloatingLabel={useFloatingLabel}
                         />
                     ))}
                 </div>
@@ -78,7 +80,8 @@ const CreateAccountForm: FunctionComponent<
 
             <div className="form-actions">
                 <Button
-                    disabled={isCreatingAccount}
+                    disabled={isCreatingAccount || isExecutingPaymentMethodCheckout}
+                    isLoading={isCreatingAccount || isExecutingPaymentMethodCheckout}
                     id="checkout-customer-create"
                     testId="customer-continue-create"
                     type="submit"

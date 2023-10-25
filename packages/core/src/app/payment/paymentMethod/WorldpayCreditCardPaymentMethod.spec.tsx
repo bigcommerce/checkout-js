@@ -11,13 +11,14 @@ import React, { FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
 import { object } from 'yup';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { FormContext, FormContextType } from '@bigcommerce/checkout/ui';
+
 import { getCart } from '../../cart/carts.mock';
-import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { getConsignment } from '../../shipping/consignment.mock';
-import { FormContext, FormContextType } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
 import { Modal, ModalProps } from '../../ui/modal';
 import {

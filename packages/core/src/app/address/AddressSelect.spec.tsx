@@ -3,15 +3,26 @@ import { mount, ReactWrapper } from 'enzyme';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { CheckoutProvider } from '../checkout';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-connect-integration';
+
 import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 
 import { getAddress } from './address.mock';
 import AddressSelect from './AddressSelect';
 import StaticAddress from './StaticAddress';
+
+jest.mock('@bigcommerce/checkout/paypal-connect-integration', () => ({
+    usePayPalConnectAddress: jest.fn(() => ({
+        shouldShowPayPalConnectLabel: false,
+    })),
+    PoweredByPaypalConnectLabel: jest.fn(() => (
+        <div data-test="powered-by-pp-connect-label">PoweredByPaypalConnectLabel</div>
+    )),
+}));
 
 describe('AddressSelect Component', () => {
     let checkoutService: CheckoutService;
@@ -127,5 +138,26 @@ describe('AddressSelect Component', () => {
         component.find('#addressDropdown li:last-child a').simulate('click');
 
         expect(onSelectAddress).not.toHaveBeenCalled();
+    });
+
+    it('shows Powered By PP Connect label', () => {
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+        (usePayPalConnectAddress as jest.Mock).mockReturnValue({
+            shouldShowPayPalConnectLabel: true,
+        });
+
+        component = mount(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <AddressSelect
+                        addresses={getCustomer().addresses}
+                        onSelectAddress={noop}
+                        onUseNewAddress={noop}
+                    />
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
+        );
+
+        expect(component.find('[data-test="powered-by-pp-connect-label"]').text()).toBe('PoweredByPaypalConnectLabel');
     });
 });

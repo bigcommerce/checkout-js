@@ -1,8 +1,9 @@
 import { mount, render } from 'enzyme';
 import React from 'react';
 
+import { FormProvider } from '@bigcommerce/checkout/ui';
+
 import FormFieldContainer from './FormFieldContainer';
-import FormProvider from './FormProvider';
 
 describe('FormFieldContainer', () => {
     it('matches snapshot with rendered markup', () => {

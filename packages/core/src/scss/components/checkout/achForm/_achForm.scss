@@ -1,0 +1,46 @@
+.checkout-ach-form {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 0 -0.5 * $floating-form-field-spacing;
+  padding: $payment-step-spacing-top 0;
+
+  .mandate-text {
+    padding: 0 0.5 * $floating-form-field-spacing;
+    margin-top: spacing("half");
+  }
+
+  .form-fieldset {
+    margin: 0 0.5 * $floating-form-field-spacing;
+  }
+
+  .dynamic-form-field {
+    margin-bottom: spacing("half");
+    padding: 0 0.5 * $floating-form-field-spacing;
+    width: 100%;
+
+    &--firstName,
+    &--lastName,
+    &--city {
+      @include breakpoint("small") {
+        flex-basis: 50%;
+      }
+    }
+
+    &--city {
+      @include breakpoint("small") {
+        flex-basis: 30%;
+      }
+    }
+
+    &--postalCode {
+      @include breakpoint("small") {
+        flex-basis: 70%;
+      }
+    }
+  }
+
+  &__instrument {
+    width: 100%;
+    margin-bottom: spacing("half");
+  }
+}

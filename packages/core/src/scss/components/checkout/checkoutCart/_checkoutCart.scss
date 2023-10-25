@@ -141,6 +141,23 @@
     margin-top: spacing("half");
 }
 
+// Cart Tax Item
+// -----------------------------------------------------------------------------
+//
+// Purpose: Styling of the tax section if tax is exclusive
+//
+// -----------------------------------------------------------------------------
+
+.cart-taxItem {
+    display: table;
+    margin-bottom: spacing("half");
+    width: 100%;
+}
+
+.cart-taxItem--subtotal {
+    font-weight: fontWeight("semibold");
+}
+
 // Test code
 .subscription-info {
     background: radial-gradient(100% 1437.67% at 100% 54.17%, rgba(0, 50, 220, 0.25) 0%, rgba(255, 0, 0, 0.25) 100%);

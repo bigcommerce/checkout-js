@@ -37,6 +37,8 @@ export function getCheckout(): Checkout {
         createdTime: '2018-03-06T04:41:49+00:00',
         updatedTime: '2018-03-07T03:44:51+00:00',
         promotions: [],
+        channelId: 123456,
+        fees: [],
     };
 }
 

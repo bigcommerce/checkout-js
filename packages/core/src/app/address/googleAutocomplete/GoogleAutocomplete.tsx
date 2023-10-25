@@ -7,7 +7,7 @@ import { GoogleAutocompleteOptionTypes } from './googleAutocompleteTypes';
 import './GoogleAutocomplete.scss';
 import GoogleAutocompleteService from './GoogleAutocompleteService';
 
-interface GoogleAutocompleteProps {
+export interface GoogleAutocompleteProps {
     initialValue?: string;
     componentRestrictions?: google.maps.places.ComponentRestrictions;
     fields?: string[];
@@ -45,7 +45,8 @@ class GoogleAutocomplete extends PureComponent<GoogleAutocompleteProps, GoogleAu
 
         return (
             <Autocomplete
-                initialHighlightedIndex={0}
+                defaultHighlightedIndex={-1}
+                initialHighlightedIndex={-1}
                 initialValue={initialValue}
                 inputProps={{
                     ...inputProps,

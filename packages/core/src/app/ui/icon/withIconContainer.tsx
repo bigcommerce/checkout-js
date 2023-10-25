@@ -14,8 +14,7 @@ export interface IconProps {
     testId?: string;
 }
 
-export default function withIconContainer<TProps>(
-     
+export default function withIconContainer<TProps extends Record<string, any>>(
     OriginalComponent: ComponentType<TProps>,
 ): ComponentType<TProps & IconProps> {
     return memo(({ additionalClassName, size, testId, ...rest }) => (

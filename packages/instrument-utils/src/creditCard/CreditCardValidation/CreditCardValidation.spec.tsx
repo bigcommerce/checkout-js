@@ -8,7 +8,7 @@ import {
     LocaleContext,
     LocaleContextType,
 } from '@bigcommerce/checkout/locale';
-import { getStoreConfig } from '@bigcommerce/checkout/test-utils';
+import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import { CreditCardCodeField, CreditCardNumberField } from '../index';
 

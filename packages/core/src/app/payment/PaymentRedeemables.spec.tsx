@@ -2,8 +2,9 @@ import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sd
 import { mount } from 'enzyme';
 import React from 'react';
 
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
 import { Redeemable } from '../cart';
-import { CheckoutProvider } from '../checkout';
 import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
 

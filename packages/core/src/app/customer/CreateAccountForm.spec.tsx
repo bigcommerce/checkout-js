@@ -4,8 +4,9 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '../locale';
 import { Alert } from '../ui/alert';
 import { DynamicFormField } from '../ui/form';
 
@@ -211,5 +212,43 @@ describe('CreateAccountForm Component', () => {
                 acceptsMarketingEmails: [],
             }),
         );
+    });
+
+    it('disables submit button if the creation account is in progress', async () => {
+        const onSubmit = jest.fn();
+
+        component = mount(
+            <LocaleContext.Provider value={localeContext}>
+                <CreateAccountForm
+                    formFields={formFields}
+                    onSubmit={onSubmit}
+                    requiresMarketingConsent={true}
+                    isCreatingAccount={true}
+                />
+            </LocaleContext.Provider>,
+        );
+
+        const button = component.find('[data-test="customer-continue-create"]');
+
+        expect(button.prop('disabled')).toBeTruthy();
+    });
+
+    it('disables submit button if the execution is in progress', async () => {
+        const onSubmit = jest.fn();
+
+        component = mount(
+            <LocaleContext.Provider value={localeContext}>
+                <CreateAccountForm
+                    formFields={formFields}
+                    onSubmit={onSubmit}
+                    requiresMarketingConsent={true}
+                    isExecutingPaymentMethodCheckout={true}
+                />
+            </LocaleContext.Provider>,
+        );
+
+        const button = component.find('[data-test="customer-continue-create"]');
+
+        expect(button.prop('disabled')).toBeTruthy();
     });
 });

@@ -5,12 +5,16 @@ export { DropdownTrigger } from './dropdown';
 export {
     AddressFormSkeleton,
     BasicFormField,
+    DynamicFormField,
+    DynamicFormFieldType,
+    DynamicInput,
     CheckboxFormField,
     ChecklistSkeleton,
     CustomerSkeleton,
     Fieldset,
     FormField,
     FormContext,
+    FormProvider,
     FormFieldContainer,
     FormContextType,
     Label,
@@ -24,17 +28,21 @@ export {
     CreditCardIcon,
     IconNewAccount,
     IconPaypal,
+    IconPayPalConnect,
+    IconPayPalConnectSmall,
     IconSize,
     IconHelp,
     IconLock,
     IconCardCodeAmex,
     IconCardCodeVisa,
     IconCardAmex,
+    IconCardBancontact,
     IconCardCarnet,
     IconCardCB,
     IconCardDankort,
     IconCardDinersClub,
     IconCardDiscover,
+    IconCardElectron,
     IconCardElo,
     IconCardHipercard,
     IconCardJCB,
@@ -44,6 +52,7 @@ export {
     IconCardTroy,
     IconCardUnionPay,
     IconCardVisa,
+    IconCloseWithBorder,
     IconBitCoin,
     IconBitCoinCash,
     IconDogeCoin,
@@ -52,8 +61,8 @@ export {
     IconProps,
     IconShibaInu,
     IconUsdCoin,
+    IconAch,
 } from './icon';
-export { LoadingOverlay } from './loading';
+export { LoadingOverlay, LoadingSpinner } from './loading';
 export { Modal, ModalHeader, ModalTrigger, ModalTriggerModalProps } from './modal';
-export { getAppliedStyles, preventDefault } from './utils/dom';
 export { TooltipTrigger } from './tooltip';

@@ -5,7 +5,7 @@ import { hasSelectedShippingOptions } from '../shipping';
 
 export default function mapToOrderSummarySubtotalsProps({
     subtotal,
-    cart: { discountAmount },
+    cart: { discountAmount, isTaxIncluded },
     giftCertificates,
     consignments,
     handlingCostTotal,
@@ -13,6 +13,7 @@ export default function mapToOrderSummarySubtotalsProps({
     giftWrappingCostTotal,
     coupons,
     taxes,
+    fees,
 }: Checkout): OrderSummarySubtotalsProps {
     return {
         subtotalAmount: subtotal,
@@ -25,5 +26,7 @@ export default function mapToOrderSummarySubtotalsProps({
         handlingAmount: handlingCostTotal,
         coupons,
         taxes,
+        fees,
+        isTaxIncluded,
     };
 }

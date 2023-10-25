@@ -6,6 +6,7 @@ exports[`ManageAccountInstrumentsTable matches snapshot with rendered output 1`]
 >
   <table
     class="table"
+    data-test="manage-instruments-table"
   >
     <thead
       class="table-thead"

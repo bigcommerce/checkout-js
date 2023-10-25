@@ -47,14 +47,9 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
             <td data-test="manage-instrument-cardType">
                 <CreditCardIcon cardType={cardType} />
 
-                {
-                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                    cardInfo && (
-                        <span className="instrumentModal-instrumentCardType">
-                            {cardInfo.niceType}
-                        </span>
-                    )
-                }
+                {cardInfo && (
+                    <span className="instrumentModal-instrumentCardType">{cardInfo.niceType}</span>
+                )}
             </td>
             <td data-test="manage-instrument-last4">{instrument.last4}</td>
             <td
@@ -98,7 +93,7 @@ const ManageCardInstrumentsTable: FunctionComponent<ManageCardInstrumentsTablePr
 
     return (
         <LoadingOverlay isLoading={isDeletingInstrument}>
-            <table className="table">
+            <table className="table" data-test="manage-card-instruments-table">
                 <thead className="table-thead">
                     <tr>
                         <th>

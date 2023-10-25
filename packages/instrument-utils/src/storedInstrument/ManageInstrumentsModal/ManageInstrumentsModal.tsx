@@ -6,8 +6,14 @@ import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckoutContext } from '@bigcommerce/checkout/payment-integration-api';
 import { Button, ButtonSize, ButtonVariant, Modal, ModalHeader } from '@bigcommerce/checkout/ui';
 
-import { isAccountInstrument, isBankAccountInstrument, isCardInstrument } from '../../guards';
+import {
+    isAccountInstrument,
+    isAchInstrument,
+    isBankAccountInstrument,
+    isCardInstrument,
+} from '../../guards';
 import { ManageAccountInstrumentsTable } from '../ManageAccountInstrumentsTable';
+import { ManageAchInstrumentsTable } from '../ManageAchInstrumentsTable';
 import { ManageCardInstrumentsTable } from '../ManageCardInstrumentsTable';
 import { ManageInstrumentsAlert } from '../ManageInstrumentsAlert';
 
@@ -64,12 +70,7 @@ class ManageInstrumentsModal extends Component<
                 onAfterOpen={this.handleAfterOpen}
                 onRequestClose={onRequestClose}
             >
-                {
-                    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                    deleteInstrumentError && (
-                        <ManageInstrumentsAlert error={deleteInstrumentError} />
-                    )
-                }
+                {deleteInstrumentError && <ManageInstrumentsAlert error={deleteInstrumentError} />}
 
                 {this.renderContent()}
             </Modal>
@@ -101,6 +102,17 @@ class ManageInstrumentsModal extends Component<
         const cardInstruments = instruments.filter(isCardInstrument);
         const bankInstruments = instruments.filter(isBankAccountInstrument);
         const accountInstruments = instruments.filter(isAccountInstrument);
+        const achInstrument = instruments.filter(isAchInstrument);
+
+        if (achInstrument.length) {
+            return (
+                <ManageAchInstrumentsTable
+                    instruments={achInstrument}
+                    isDeletingInstrument={isDeletingInstrument()}
+                    onDeleteInstrument={this.handleDeleteInstrument}
+                />
+            );
+        }
 
         const bankAndAccountInstruments = [...bankInstruments, ...accountInstruments];
 
@@ -141,18 +153,18 @@ class ManageInstrumentsModal extends Component<
             return (
                 <>
                     <Button
-                        data-test="manage-instrument-cancel-button"
                         onClick={this.handleCancel}
                         size={ButtonSize.Small}
+                        testId="manage-instrument-cancel-button"
                     >
                         <TranslatedString id="common.cancel_action" />
                     </Button>
 
                     <Button
-                        data-test="manage-instrument-confirm-button"
                         disabled={isDeletingInstrument() || isLoadingInstruments()}
                         onClick={this.handleConfirmDelete}
                         size={ButtonSize.Small}
+                        testId="manage-instrument-confirm-button"
                         variant={ButtonVariant.Primary}
                     >
                         <TranslatedString id="payment.instrument_manage_modal_confirmation_action" />
@@ -163,9 +175,9 @@ class ManageInstrumentsModal extends Component<
 
         return (
             <Button
-                data-test="manage-instrument-close-button"
                 onClick={onRequestClose}
                 size={ButtonSize.Small}
+                testId="manage-instrument-close-button"
             >
                 <TranslatedString id="common.close_action" />
             </Button>

@@ -82,7 +82,6 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
             return secret ? DynamicFormFieldType.PASSWORD : DynamicFormFieldType.TEXT;
         }
 
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         return fieldType as DynamicFormFieldType;
     }, [fieldType, type, name, secret]);
 
@@ -104,13 +103,13 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
         ),
         [
             fieldInputId,
+            autocomplete,
+            dynamicFormFieldType,
             max,
             maxLength,
             min,
             options,
             placeholder,
-            dynamicFormFieldType,
-            autocomplete,
         ],
     );
 

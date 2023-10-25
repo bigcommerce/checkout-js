@@ -2,7 +2,7 @@ aliases:
   - &node_executor
       executor:
         name: node/node
-        node-version: "14.18"
+        node-version: "18.17"
 
   - &release_filter
       branches:
@@ -29,7 +29,7 @@ jobs:
       - run:
           name: "Run unit tests for packages"
           command: npm run test:others
-  
+
   test-core:
     <<: *node_executor
     parallelism: 2
@@ -40,7 +40,7 @@ jobs:
       - run:
           name: "Run unit tests for core package"
           command: |
-            TEST=$(circleci tests glob "packages/core/**/*.spec.ts" "packages/core/**/*.spec.tsx" | circleci tests split --split-by=timings)
+            TEST=$(circleci tests glob "packages/core/**/*.spec.ts" "packages/core/**/*.spec.tsx" "packages/core/**/*.test.ts" "packages/core/**/*.test.tsx" | circleci tests split --split-by=timings)
             npx nx run core:generate
             npm run test:core $TEST -- --runInBand
       - run:
@@ -76,6 +76,7 @@ jobs:
 
   e2e:
     <<: *node_executor
+    resource_class: medium+
     steps:
       - ci/pre-setup
       - node/npm-install
@@ -89,10 +90,18 @@ jobs:
           name: "Run e2e tests"
           command: npx playwright test
       - store_artifacts:
-          path: packages/payment-integration-test-framework/report
+          path: packages/test-framework/report
           destination: artifact-file
       - store_artifacts:
-          path: packages/payment-integration-test-framework/screenshots
+          path: packages/test-framework/screenshots
+
+  sdk-on-cdn:
+    <<: *node_executor
+    steps:
+      - ci/pre-setup
+      - run:
+          name: "Check SDK version on CDN"
+          command: ./scripts/sdk-live-checker.sh
 
   release:
     <<: *node_executor
@@ -165,6 +174,9 @@ workflows:
           filters:
             <<: *pull_request_filter
       - e2e:
+          filters:
+            <<: *pull_request_filter
+      - sdk-on-cdn:
           filters:
             <<: *pull_request_filter
       - ci/validate-commits:

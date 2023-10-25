@@ -1,9 +1,10 @@
 import { shallow } from 'enzyme';
 import React from 'react';
 
+import { CHECKOUT_ROOT_NODE_ID, CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
 import Checkout from './Checkout';
 import CheckoutApp, { CheckoutAppProps } from './CheckoutApp';
-import CheckoutProvider from './CheckoutProvider';
 import { getCheckout } from './checkouts.mock';
 
 describe('CheckoutApp', () => {
@@ -13,11 +14,11 @@ describe('CheckoutApp', () => {
     beforeEach(() => {
         defaultProps = {
             checkoutId: getCheckout().id,
-            containerId: 'checkout-app',
+            containerId: CHECKOUT_ROOT_NODE_ID,
         };
 
         container = document.createElement('div');
-        container.id = 'checkout-app';
+        container.id = CHECKOUT_ROOT_NODE_ID;
         document.body.appendChild(container);
     });
 

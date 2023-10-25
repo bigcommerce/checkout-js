@@ -14,6 +14,7 @@ import withRedeemable from './withRedeemable';
 export type WithCheckoutCartSummaryProps = {
     checkout: Checkout;
     cartUrl: string;
+    isUpdatedCartSummayModal: boolean;
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrency;
     storeCreditAmount?: number;

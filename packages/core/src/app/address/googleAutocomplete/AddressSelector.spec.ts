@@ -1,6 +1,6 @@
 import AddressSelector from './AddressSelector';
 import AddressSelectorFactory from "./AddressSelectorFactory";
-import { getGoogleAutocompleteNZPlaceMock, getGoogleAutocompletePlaceMock, getGoogleAutocompleteUKPlaceMock } from './googleAutocompleteResult.mock';
+import { getGoogleAutocompleteCAPlaceMockWithLocality, getGoogleAutocompleteCAPlaceMockWithSubLocality, getGoogleAutocompleteNZPlaceMock, getGoogleAutocompletePlaceMock, getGoogleAutocompleteUKPlaceMock } from './googleAutocompleteResult.mock';
 
 describe('AddressSelector', () => {
     let googleAutoCompleteResponseMock: google.maps.places.PlaceResult;
@@ -26,6 +26,7 @@ describe('AddressSelector', () => {
 
         it('does not return a state for a UK address', () => {
             googleAutoCompleteResponseMock = getGoogleAutocompleteUKPlaceMock();
+
             const accessor = AddressSelectorFactory.create(googleAutoCompleteResponseMock);
 
             expect(accessor.getState()).toBe('');
@@ -73,6 +74,7 @@ describe('AddressSelector', () => {
 
         it('does not return a post code for an UK address', () => {
             googleAutoCompleteResponseMock = getGoogleAutocompleteUKPlaceMock();
+
             const accessor = AddressSelectorFactory.create(googleAutoCompleteResponseMock);
 
             expect(accessor.getPostCode()).toBe('');
@@ -113,6 +115,22 @@ describe('AddressSelector', () => {
             });
 
             expect(accessor.getCity()).toBe('Ultimo N');
+        });
+
+        it('resturns the correct city for canada when sublocality is present', () => {
+            googleAutoCompleteResponseMock = getGoogleAutocompleteCAPlaceMockWithSubLocality();
+
+            const accessor = AddressSelectorFactory.create(googleAutoCompleteResponseMock);
+
+            expect(accessor.getCity()).toBe('Gloucester');
+        });
+
+        it('resturns the correct city for canada when sublocality is not present', () => {
+            googleAutoCompleteResponseMock = getGoogleAutocompleteCAPlaceMockWithLocality();
+
+            const accessor = AddressSelectorFactory.create(googleAutoCompleteResponseMock);
+
+            expect(accessor.getCity()).toBe('Calgary');
         });
     });
 });

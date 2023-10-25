@@ -7,16 +7,22 @@
     justify-content: space-between;
 }
 
+.paymentProviderHeader-subtitleContainer {
+    flex-basis: 100%;
+}
+
 .paymentProviderHeader-nameContainer {
     display: flex;
     justify-content: space-between;
     min-height: calc(#{$checklist-label-height} - #{$checklist-spacing} * 2);
+    flex-wrap: wrap;
 }
 
 .paymentProviderHeader-img {
     align-self: center;
     display: flex;
     height: fontSize("large");
+    object-fit: contain;
 
     + .paymentProviderHeader-name {
         margin-left: spacing("half");
@@ -45,11 +51,19 @@
     flex-shrink: 1;
 }
 
+@media (max-width: $screen-xsmall) {
+    div[data-test="payment-method-sezzle"] {
+        .paymentProviderHeader-name {
+            visibility: hidden;
+        }
+    }
+}
+
 .paymentMethod--creditCard,
 .paymentMethod--hosted,
 .paymentMethod--walletButton {
     clear: both;
-    padding: (spacing("base") / 1.5) 0;
+    padding: $payment-step-spacing-top 0;
 }
 
 .chasePay--container {

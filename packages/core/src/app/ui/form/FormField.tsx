@@ -13,7 +13,7 @@ export interface FormFieldProps {
     labelContent?: ReactNode;
     footer?: ReactNode;
     id?: string;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     input(field: FieldProps<string>): ReactNode;
     onChange?(value: string): void;
 }
@@ -27,25 +27,25 @@ const FormField: FunctionComponent<FormFieldProps> = ({
     input,
     name,
     id,
-    useFloatingLabel,
+    isFloatingLabelEnabled,
 }) => {
     const renderField = useCallback(
         (props) => (
             <>
-                {useFloatingLabel && input(props)}
+                {isFloatingLabelEnabled && input(props)}
 
                 {label && (typeof label === 'function' ? label(name) : label)}
                 {labelContent && !label && (
                     <Label
                         htmlFor={name}
                         id={`${id ?? name}-label`}
-                        useFloatingLabel={useFloatingLabel}
+                        isFloatingLabelEnabled={isFloatingLabelEnabled}
                     >
                         {labelContent}
                     </Label>
                 )}
 
-                {!useFloatingLabel && input(props)}
+                {!isFloatingLabelEnabled && input(props)}
 
                 <FormFieldError
                     errorId={`${id ?? name}-field-error-message`}
@@ -56,7 +56,7 @@ const FormField: FunctionComponent<FormFieldProps> = ({
                 {footer}
             </>
         ),
-        [label, labelContent, id, input, name, footer, useFloatingLabel],
+        [label, labelContent, id, input, name, footer, isFloatingLabelEnabled],
     );
 
     return (

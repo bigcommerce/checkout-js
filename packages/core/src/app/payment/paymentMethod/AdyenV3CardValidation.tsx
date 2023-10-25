@@ -2,7 +2,8 @@ import { AdyenV3ValidationState, CardInstrument, PaymentMethod } from '@bigcomme
 import classNames from 'classnames';
 import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import PaymentContext from '../PaymentContext';
 
 export type FieldsValidation = { [key in AdyenV3CardFields]?: AdyenV3ValidationState };
@@ -83,13 +84,6 @@ const AdyenV3CardValidation: FunctionComponent<AdyenV3CardValidationProps> = ({
             }
         }
     }, [cardValidationState, setFieldsValidation]);
-
-    useEffect(() => {
-        paymentContext?.disableSubmit(
-            paymentMethod,
-            Object.values(fieldsValidation).some((field) => !field.valid),
-        );
-    }, [fieldsValidation, paymentContext, paymentMethod]);
 
     useEffect(() => {
         if (selectedInstrument?.bigpayToken) {

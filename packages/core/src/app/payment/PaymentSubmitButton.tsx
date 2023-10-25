@@ -1,7 +1,8 @@
 import React, { FunctionComponent, memo } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { withCheckout } from '../checkout';
-import { TranslatedString } from '../locale';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 import { IconBolt } from '../ui/icon';
 
@@ -18,6 +19,7 @@ interface PaymentSubmitButtonTextProps {
     initialisationStrategyType?: string;
     brandName?: string;
     isComplete?: boolean;
+    isPaymentDataRequired?: boolean;
 }
 interface WithRecurlyProps {
     isSubmitting?: boolean;
@@ -35,7 +37,12 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps & 
         initialisationStrategyType,
         brandName,
         isComplete,
+        isPaymentDataRequired,
     }) => {
+        if (!isPaymentDataRequired) {
+            return <TranslatedString id="payment.place_order_action" />;
+        }
+
         if (methodName && initialisationStrategyType === 'none') {
             return <TranslatedString data={{ methodName }} id="payment.ppsdk_continue_action" />;
         }
@@ -135,7 +142,8 @@ export interface PaymentSubmitButtonProps {
     isDisabled?: boolean;
     initialisationStrategyType?: string;
     brandName?: string;
-    isComplete?: boolean
+    isComplete?: boolean;
+    isPaymentDataRequired?: boolean;
 }
 
 interface WithCheckoutPaymentSubmitButtonProps {
@@ -149,6 +157,7 @@ const PaymentSubmitButton: FunctionComponent<
     isDisabled,
     isInitializing,
     isSubmitting,
+    isPaymentDataRequired,
     methodGateway,
     methodId,
     methodName,
@@ -163,6 +172,7 @@ const PaymentSubmitButton: FunctionComponent<
                 ? `payment-submit-button-${methodId}`
                 : undefined
         }
+        data-test="payment-submit-button"
         disabled={isInitializing || isSubmitting || isDisabled}
         id="checkout-payment-continue"
         isFullWidth
@@ -172,9 +182,10 @@ const PaymentSubmitButton: FunctionComponent<
         variant={ButtonVariant.Action}
     >
         <PaymentSubmitButtonText
-            isComplete={isComplete}
             brandName={brandName}
             initialisationStrategyType={initialisationStrategyType}
+            isComplete={isComplete}
+            isPaymentDataRequired={isPaymentDataRequired}
             methodGateway={methodGateway}
             methodId={methodId}
             methodName={methodName}
@@ -192,11 +203,13 @@ function recurlyMap({isLoadingRecurly, isSubmitting}: RecurlyContextProps): With
 
 export default withRecurly(recurlyMap)(withCheckout(({ checkoutState }) => {
     const {
+        data: { isPaymentDataRequired },
         statuses: { isInitializingCustomer, isInitializingPayment, isSubmittingOrder },
     } = checkoutState;
 
     return {
         isInitializing: isInitializingCustomer() || isInitializingPayment(),
+        isPaymentDataRequired: isPaymentDataRequired(),
         isSubmitting: isSubmittingOrder(),
     };
 })(memo(PaymentSubmitButton)));

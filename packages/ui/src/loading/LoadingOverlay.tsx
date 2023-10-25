@@ -34,7 +34,12 @@ const LoadingOverlay: FunctionComponent<LoadingOverlayProps> = ({
     return (
         <div className="loadingOverlay-container">
             {children}
-            {isLoading && <div className="loadingOverlay optimizedCheckout-overlay" />}
+            {isLoading && (
+                <div
+                    className="loadingOverlay optimizedCheckout-overlay"
+                    data-test="loading-overlay"
+                />
+            )}
         </div>
     );
 };

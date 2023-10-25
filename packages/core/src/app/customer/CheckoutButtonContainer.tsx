@@ -1,43 +1,65 @@
-import { CustomerInitializeOptions, CustomerRequestOptions } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import React, { FunctionComponent } from 'react';
 
+import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { WalletButtonsContainerSkeleton } from '@bigcommerce/checkout/ui';
 
-import { CheckoutContextProps, withCheckout } from '../checkout';
-import { TranslatedString } from '../locale';
 
-import CheckoutButtonListV1, { filterUnsupportedMethodIds } from './CheckoutButtonList';
+import { withCheckout } from '../checkout';
+
+import { getSupportedMethodIds } from './getSupportedMethods';
+import resolveCheckoutButton from './resolveCheckoutButton';
+import CheckoutButtonV1Resolver from './WalletButtonV1Resolver';
 
 interface CheckoutButtonContainerProps {
+    isPaymentStepActive: boolean;
     checkEmbeddedSupport(methodIds: string[]): void;
     onUnhandledError(error: Error): void;
 }
 
-interface WithCheckoutCheckoutButtonContainerProps{
+interface WithCheckoutCheckoutButtonContainerProps {
     availableMethodIds: string[];
+    checkoutState: CheckoutSelectors;
+    checkoutService: CheckoutService;
     isLoading: boolean;
     initializedMethodIds: string[];
-    deinitialize(options: CustomerRequestOptions): void;
-    initialize(options: CustomerInitializeOptions): void;
 }
 
-const sortMethodIds = (methodIds:string[]):string[] => {
-    const order = ['applepay', 'braintreepaypalcredit', 'braintreepaypal'];
+const paypalCommerceIds = [
+    'paypalcommerce',
+    'paypalcommercecredit',
+    'paypalcommercevenmo',
+];
+
+const sortMethodIds = (methodIds:string[]): string[] => {
+    const order = [
+        'applepay',
+        'braintreepaypalcredit',
+        'braintreepaypal',
+        'paypalcommercevenmo',
+        'paypalcommercecredit',
+        'paypalcommerce',
+    ];
 
     return methodIds.sort((a, b) => order.indexOf(b) - order.indexOf(a));
 }
 
+const isPayPalCommerce = (methodId: string): boolean => paypalCommerceIds.includes(methodId);
+
 const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & WithCheckoutCheckoutButtonContainerProps> = (
     {
         availableMethodIds,
+        checkoutService,
+        checkoutState,
         checkEmbeddedSupport,
-        deinitialize,
         isLoading,
-        initialize,
+        isPaymentStepActive,
         initializedMethodIds,
         onUnhandledError,
     }) => {
+    const { language } = useLocale();
 
     const methodIds = isLoading ? availableMethodIds : initializedMethodIds;
 
@@ -47,8 +69,39 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         return null;
     }
 
+    const renderButtons = () => availableMethodIds.map((methodId) => {
+        if (isPaymentStepActive && isPayPalCommerce(methodId)) {
+            return null;
+        }
+
+        const ResolvedCheckoutButton = resolveCheckoutButton({ id: methodId });
+
+        if (!ResolvedCheckoutButton) {
+            return <CheckoutButtonV1Resolver
+                deinitialize={checkoutService.deinitializeCustomer}
+                initialize={checkoutService.initializeCustomer}
+                isShowingWalletButtonsOnTop={true}
+                key={methodId}
+                methodId={methodId}
+                onError={onUnhandledError}
+            />
+        }
+
+        return <ResolvedCheckoutButton
+                    checkoutService={checkoutService}
+                    checkoutState={checkoutState}
+                    containerId={`${methodId}CheckoutButton`}
+                    key={methodId}
+                    language={language}
+                    methodId={methodId}
+                    onUnhandledError={onUnhandledError}
+                />;
+    });
+
     return (
-        <div className='checkout-button-container'>
+        <div className='checkout-button-container'
+             style={ isPaymentStepActive ? { position: 'absolute', left: '0', top: '-100%' } : undefined }
+        >
             <p>
                 <TranslatedString id="remote.start_with_text" />
             </p>
@@ -61,16 +114,9 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
                 'checkout-buttons--n': methodIds.length > 5,
             })}>
                 <WalletButtonsContainerSkeleton buttonsCount={methodIds.length} isLoading={isLoading}>
-                    <CheckoutButtonListV1
-                        checkEmbeddedSupport={checkEmbeddedSupport}
-                        deinitialize={deinitialize}
-                        hideText={true}
-                        initialize={initialize}
-                        isInitializing={isLoading}
-                        isShowingWalletButtonsOnTop={true}
-                        methodIds={sortMethodIds(methodIds)}
-                        onError={onUnhandledError}
-                    />
+                    <div className="checkoutRemote">
+                        {renderButtons()}
+                    </div>
                 </WalletButtonsContainerSkeleton>
             </div>
             <div className='checkout-separator'><span><TranslatedString id='remote.or_text' /></span></div>
@@ -79,23 +125,31 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
 };
 
 function mapToCheckoutButtonContainerProps({
-    checkoutState: {
-       data: {
-           getConfig,
-       },
-       statuses: {
-           isInitializedCustomer,
-       },
-       errors: {
-           getInitializeCustomerError,
-       }
-    },
+    checkoutState,
     checkoutService,
 }: CheckoutContextProps): WithCheckoutCheckoutButtonContainerProps | null {
+    const {
+        data: {
+            getConfig,
+            getCustomer,
+            isPaymentDataRequired,
+        },
+        statuses: {
+            isInitializedCustomer,
+        },
+        errors: {
+            getInitializeCustomerError,
+        }
+     } = checkoutState;
     const config = getConfig();
-    const availableMethodIds = filterUnsupportedMethodIds(config?.checkoutSettings.remoteCheckoutProviders ?? []);
+    const availableMethodIds = getSupportedMethodIds(config?.checkoutSettings.remoteCheckoutProviders ?? []);
+    const customer = getCustomer();
 
-    if (!config || availableMethodIds.length === 0) {
+    if (!isPaymentDataRequired()) {
+        return null;
+    }
+
+    if (!config || availableMethodIds.length === 0 || !customer?.isGuest) {
         return null;
     }
 
@@ -105,9 +159,9 @@ function mapToCheckoutButtonContainerProps({
     const initializedMethodIds = availableMethodIds.filter((methodId) => isInitializedCustomer(methodId));
 
     return {
-        availableMethodIds,
-        deinitialize: checkoutService.deinitializeCustomer,
-        initialize: checkoutService.initializeCustomer,
+        checkoutService,
+        checkoutState,
+        availableMethodIds: sortMethodIds(availableMethodIds),
         initializedMethodIds,
         isLoading,
     }
