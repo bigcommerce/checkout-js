@@ -25,6 +25,7 @@ import { getConsignment } from './consignment.mock';
 import Shipping, { ShippingProps, WithCheckoutShippingProps } from './Shipping';
 import { getShippingAddress } from './shipping-addresses.mock';
 import ShippingForm from './ShippingForm';
+import { getCountries } from '../geography/countries.mock';
 
 describe('Shipping Component', () => {
     let component: ReactWrapper;
@@ -58,6 +59,10 @@ describe('Shipping Component', () => {
         };
 
         jest.spyOn(checkoutService, 'loadShippingAddressFields').mockResolvedValue(
+            {} as CheckoutSelectors,
+        );
+
+        jest.spyOn(checkoutService, 'loadBillingAddressFields').mockResolvedValue(
             {} as CheckoutSelectors,
         );
 
@@ -121,6 +126,7 @@ describe('Shipping Component', () => {
         mount(<ComponentTest {...defaultProps} />);
 
         expect(checkoutService.loadShippingAddressFields).toHaveBeenCalled();
+        expect(checkoutService.loadBillingAddressFields).toHaveBeenCalled();
 
         expect(checkoutService.loadShippingOptions).toHaveBeenCalled();
     });
@@ -136,9 +142,12 @@ describe('Shipping Component', () => {
             subdivisions: [{code: 'bar', name: 'foo' }],
             requiresState: true,
         }])
-        mount(<ComponentTest { ...defaultProps }/>);
+        jest.spyOn(checkoutState.data, 'getBillingCountries').mockReturnValue(getCountries());
+        mount(<ComponentTest {...defaultProps} />);
 
         expect(checkoutService.loadShippingAddressFields)
+            .toHaveBeenCalled();
+        expect(checkoutService.loadBillingAddressFields)
             .toHaveBeenCalled();
 
         expect(checkoutService.loadShippingOptions)
