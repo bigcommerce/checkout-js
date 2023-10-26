@@ -6,7 +6,7 @@ import { ScriptLoader } from '@bigcommerce/script-loader';
 import { CardElement, CustomerData, Elements } from '@recurly/recurly-js';
 import React, { useCallback, useEffect, useRef, useState, FunctionComponent } from 'react';
 
-import { withCheckout, CheckoutContextProps } from '../../checkout';
+import { withCheckout, WithCheckoutProps } from '../../checkout';
 import { ErrorModal } from '../../common/error';
 import { recurlyId } from '../../recurly/config';
 import withRecurly from '../../recurly/withRecurly';
@@ -240,7 +240,7 @@ const RecurlyPaymentMethod: FunctionComponent<WithCheckoutRecurlyCheckoutProps &
 };
 
 function mapFromCheckoutProps(
-    {checkoutState}: CheckoutContextProps): WithCheckoutRecurlyCheckoutProps | null {
+    {checkoutState}: WithCheckoutProps): WithCheckoutRecurlyCheckoutProps | null {
     const {
         data: {
             getConfig,

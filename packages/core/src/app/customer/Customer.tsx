@@ -694,4 +694,4 @@ export function mapToWithCheckoutCustomerProps({
     };
 }
 
-export default withRecurly((props: any) => props)(withAnalytics(withCheckout(mapToWithCheckoutCustomerProps)(Customer)));
+export default withRecurly(props => props)(withAnalytics(withCheckout(mapToWithCheckoutCustomerProps)(Customer)));

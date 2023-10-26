@@ -4,6 +4,11 @@ enum PaymentMethodIdExtended {
     Recurly = 'recurly',
 }
 
-type PaymentMethodId = PaymentMethodIdOriginal | PaymentMethodIdExtended;
+type PaymentMethodId = PaymentMethodIdOriginal & PaymentMethodIdExtended;
+
+const PaymentMethodId = {
+    ...PaymentMethodIdOriginal,
+    ...PaymentMethodIdExtended
+}
 
 export default PaymentMethodId;

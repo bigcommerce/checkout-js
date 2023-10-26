@@ -870,4 +870,4 @@ class Checkout extends Component<
     }
 }
 
-export default withExtension(withRecurly((props: any) => props)(withAnalytics(withLanguage(withCheckout(mapToCheckoutProps)(Checkout)))));
+export default withExtension(withRecurly(props => props)(withAnalytics(withLanguage(withCheckout(mapToCheckoutProps)(Checkout)))));

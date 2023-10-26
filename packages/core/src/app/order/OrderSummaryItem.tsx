@@ -4,7 +4,7 @@ import React, { FunctionComponent, memo, ReactNode } from 'react';
 
 import { ShopperCurrency } from '../currency';
 
-import { withCurrency, WithCurrencyProps } from '../locale';
+import { withCurrency, WithCurrencyProps } from '@bigcommerce/checkout/locale';
 
 export interface OrderSummaryItemProps {
     id: string | number;
@@ -82,6 +82,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyPr
             && (productOptions[0].content.toString().indexOf('sends every') !== -1
                 || productOptions[0].content.toString().indexOf('send every') !== -1);
     };
+
     return (
         <>
             <div className="product" data-test="cart-item">
@@ -100,7 +101,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyPr
                         className="product-options optimizedCheckout-contentSecondary"
                         data-test="cart-item-product-options"
                     >
-                        { (productOptions || []).map((option, index) =>
+                        { (productOptions || []).map((option: any, index: number) =>
                             <li
                                 className="product-option"
                                 data-test={ option.testId }
@@ -110,7 +111,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyPr
                             </li>
                         ) }
                         <li className={`product-option custom-description ${checkoutDescriptionsLoading ? "loading" : ""}`}>
-                            { checkoutDescriptionsLoading ? (<><span></span><span></span><span></span></>) : checkoutDescription }
+                            { checkoutDescriptionsLoading ? (<><span /><span /><span /></>) : checkoutDescription }
                         </li>
                     </ul>
                     { description && <div

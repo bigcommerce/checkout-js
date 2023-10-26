@@ -31,4 +31,4 @@ const CartSummary: FunctionComponent<WithCheckoutCartSummaryProps> = ({ cartUrl,
     });
 };
 
-export default withCheckout(mapToCartSummaryProps)(withRecurly(({hasSubscription}) => ({hasSubscription}) )(CartSummary));
+export default withCheckout(mapToCartSummaryProps)(withRecurly(({hasSubscription}: {hasSubscription: any}) => ({hasSubscription}) )(CartSummary));

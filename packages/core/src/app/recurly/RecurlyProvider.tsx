@@ -3,7 +3,7 @@ import { CustomerData, Elements, TokenPayload } from '@recurly/recurly-js';
 import { noop } from 'lodash';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 
-import { withCheckout, CheckoutContextProps } from '../checkout';
+import { withCheckout, WithCheckoutProps } from '../checkout';
 
 import cartHasSubscription from './cartHasSubscription';
 import getUser from './getUser';
@@ -108,7 +108,7 @@ function RecurlyProvider({cart, checkout, config, ...rest}: RecurlyProviderProps
     return <RecurlyContext.Provider value={ {...recurlyState, submitOrder: submitRecurlyOrder, resubmitRecurlyOrder} } { ...rest } />;
 }
 
-export default withCheckout(({ checkoutService, checkoutState }: CheckoutContextProps) => {
+export default withCheckout(({ checkoutService, checkoutState }: WithCheckoutProps) => {
     const { data, errors, statuses } = checkoutState;
 
     return {cart: data.getCart(), checkout: data.getCheckout(), config: data.getConfig()};

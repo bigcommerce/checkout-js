@@ -1,4 +1,4 @@
-import { createInjectHoc, createMappableInjectHoc, InjectHoc } from '../common/hoc';
+import { createInjectHoc, createMappableInjectHoc, InjectHoc } from '@bigcommerce/checkout/legacy-hoc';
 
 import RecurlyContext, { RecurlyContextProps } from './RecurlyContext';
 
