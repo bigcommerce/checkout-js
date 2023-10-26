@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.387.2](https://github.com/bigcommerce/checkout-js/compare/v1.387.1...v1.387.2) (2023-10-26)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-3143 fixed the issue with PayPal Connect instrument autoselect after page reload ([#1572](https://github.com/bigcommerce/checkout-js/issues/1572)) ([2689b1b](https://github.com/bigcommerce/checkout-js/commit/2689b1b17f511a57018249946e32e950a74e7b5b))
+
 ### [1.387.1](https://github.com/bigcommerce/checkout-js/compare/v1.387.0...v1.387.1) (2023-10-25)
 
 ## [1.387.0](https://github.com/bigcommerce/checkout-js/compare/v1.386.3...v1.387.0) (2023-10-24)
