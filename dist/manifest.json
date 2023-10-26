@@ -1,93 +1,52 @@
 {
   "version": 2,
-<<<<<<< HEAD
   "appVersion": "1.308.0",
   "dynamicChunks": {
     "js": [
-      "372-6f739f70.js",
-      "40-7421368e.js",
-      "904-20a39b97.js",
-      "billing-87fd53dd.js",
-      "cart-summary-drawer-3685c821.js",
-      "cart-summary-528218d8.js",
-      "order-summary-drawer-d9cf35e2.js",
-      "order-summary-4a1a9bbc.js",
-      "payment-785fda0e.js",
-      "shipping-84579669.js"
-    ],
-    "css": [
-      "billing-9aaadfd4.css",
-      "cart-summary-drawer-6e3e5baa.css",
-      "cart-summary-6e3e5baa.css",
-      "payment-c6fdf87d.css",
-      "shipping-772f5d24.css"
-    ],
-    "svg": [
-      "static/AmericanExpress-dark-eb1f4fc2.svg",
-      "static/Discover-card-dark-e11646ff.svg",
-      "static/Paypal-card-dark-af0a55f6.svg",
-      "static/Visa-card-dark-2aca8dbc.svg",
-      "static/card-abef8595.svg"
-    ],
-    "png": [
-      "static/Gpay-c0ee97c6.png",
-      "static/bullet-9cc6c9fb.png",
-      "static/diners-7bdd7aa5.png",
-      "static/jcb-095e5bb1.png",
-      "static/mastercard-af5d6f41.png",
-      "static/powered_by_google_on_white-f127e368.png"
-    ]
-  },
-  "js": [
-    "runtime-4d9c6346.js",
-    "365-e1f6ad1c.js",
-    "375-0be5990c.js",
-    "608-4026a4c6.js",
-    "86-54292e27.js",
-    "checkout-39cf00c3.js"
-  ],
-  "css": [
-    "checkout-2bfd477a.css"
-=======
-  "appVersion": "1.387.1",
-  "dynamicChunks": {
-    "js": [
       "134-00e7edd8.js",
-      "51-8039e02c.js",
       "850-c09cdbef.js",
       "904-d3d24e12.js",
-      "billing-9cc8af59.js",
-      "cart-summary-drawer-d9d2d5cb.js",
-      "cart-summary-1bc920a0.js",
-      "order-summary-drawer-6d750537.js",
-      "order-summary-8e3d2059.js",
-      "payment-1715e731.js",
-      "shipping-0c9dec2d.js"
+      "996-78f7792f.js",
+      "billing-b4089bd8.js",
+      "cart-summary-drawer-a0a026be.js",
+      "cart-summary-39da0272.js",
+      "order-summary-drawer-668b458e.js",
+      "order-summary-33714a10.js",
+      "payment-b2e89dc4.js",
+      "shipping-fabd57fc.js"
     ],
     "css": [
       "billing-5cb3e9e6.css",
       "cart-summary-drawer-5084b1db.css",
       "cart-summary-5084b1db.css",
-      "payment-91dc1fb6.css",
+      "payment-413ba619.css",
       "shipping-58a96450.css"
     ],
     "svg": [
+      "static/AmericanExpress-dark-0b4b7158.svg",
+      "static/Discover-card-dark-aabbf28a.svg",
+      "static/Paypal-card-dark-6fc4a611.svg",
+      "static/Visa-card-dark-abb80d63.svg",
       "static/card-9f708a7a.svg"
     ],
     "png": [
+      "static/Gpay-5afb334c.png",
+      "static/bullet-aa42eb74.png",
+      "static/diners-86f5bff0.png",
+      "static/jcb-f8684da2.png",
+      "static/mastercard-9c4d97cc.png",
       "static/powered_by_google_on_white-46afd78d.png"
     ]
   },
   "js": [
-    "runtime-d1a835c8.js",
+    "runtime-bf161dfe.js",
     "390-3d5c3aa2.js",
     "608-49dc4616.js",
     "375-ff29db85.js",
     "38-5f3b7ec7.js",
-    "checkout-5e12ac38.js"
+    "checkout-a52d7e0c.js"
   ],
   "css": [
-    "checkout-47ce7ce7.css"
->>>>>>> source/master
+    "checkout-f87db9ce.css"
   ]
 }
