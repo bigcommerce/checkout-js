@@ -45,7 +45,9 @@ const StaticAddress: FunctionComponent<
         const fetchData = async () => {
             await loadAddressFields();
         }
-        if (!countries) fetchData();
+        if (!countries) {
+            fetchData();
+        }
     }, []);
 
     const address = localizeAddress(addressWithoutLocalization, countries);
