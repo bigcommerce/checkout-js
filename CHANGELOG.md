@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.387.3](https://github.com/bigcommerce/checkout-js/compare/v1.387.2...v1.387.3) (2023-10-26)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-3144 fixed the issue with PayPal Connect logo style glitch ([#1570](https://github.com/bigcommerce/checkout-js/issues/1570)) ([abb1a1b](https://github.com/bigcommerce/checkout-js/commit/abb1a1b8c0309fb696d6504a845094c324fb7382))
+
 ### [1.387.2](https://github.com/bigcommerce/checkout-js/compare/v1.387.1...v1.387.2) (2023-10-26)
 
 
