@@ -28,7 +28,7 @@ const BraintreeAcceleratedCheckoutForm: FunctionComponent<
         if (!isAddingNewInstrument && !selectedInstrument && instruments.length > 0) {
             handleSelectInstrument(instruments[0].bigpayToken);
         }
-    }, []);
+    }, [instruments, selectedInstrument, isAddingNewInstrument]);
 
     return (
         <div className="paymentMethod paymentMethod--creditCard">
