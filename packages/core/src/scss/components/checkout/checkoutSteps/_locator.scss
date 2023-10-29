@@ -112,7 +112,7 @@ input:focus {
         width: 100%;
         z-index: 100000000;
 
-        &.show {
+        &.show-locator {
             transform: translateX(0%);
             transition: transform 0.25s;
             visibility: visible;

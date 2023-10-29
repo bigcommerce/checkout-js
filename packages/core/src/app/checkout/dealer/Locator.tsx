@@ -88,7 +88,7 @@ export default class Locator extends React.PureComponent<LocatorProps, LocatorSt
   render() {
     const { handleCancel, selectDealer } = this.props;
     return (
-      <div className={`ffl-checkout-locator-container locator-modal ${this.props.showLocator?'show':''}`}>
+      <div className={`ffl-checkout-locator-container locator-modal ${this.props.showLocator?'show-locator':''}`}>
         <div className="locator-modal-header">
           <div className="locator-modal-header-intro">
             Find your dealer
