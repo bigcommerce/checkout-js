@@ -20,6 +20,7 @@ export interface OrderConfirmationAppProps {
     orderId: number;
     publicPath?: string;
     sentryConfig?: BrowserOptions;
+    sentrySampleRate?: number;
 }
 
 class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
@@ -39,6 +40,7 @@ class OrderConfirmationApp extends Component<OrderConfirmationAppProps> {
             {
                 errorTypes: ['UnrecoverableError'],
                 publicPath: props.publicPath,
+                sampleRate: props.sentrySampleRate ? props.sentrySampleRate : 0.1,
             },
         );
     }

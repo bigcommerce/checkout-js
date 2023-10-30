@@ -15,6 +15,7 @@ export default interface ErrorLogger {
 export interface ErrorLoggerOptions {
     errorTypes?: string[];
     publicPath?: string;
+    sampleRate?: number;
 }
 
 export interface ErrorLoggerServiceConfig {

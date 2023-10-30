@@ -1,8 +1,9 @@
-import { LineItemMap, Order } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, LineItemMap, Order } from '@bigcommerce/checkout-sdk';
 import { mount, shallow, ShallowWrapper } from 'enzyme';
 import React from 'react';
 
-import { getPhysicalItem } from '@bigcommerce/checkout/test-utils';
+import { LocaleProvider } from '@bigcommerce/checkout/locale';
+import { getPhysicalItem } from '@bigcommerce/checkout/test-mocks';
 
 import { getStoreConfig } from '../config/config.mock';
 import { SMALL_SCREEN_MAX_WIDTH } from '../ui/responsive';
@@ -16,6 +17,8 @@ let order: Order;
 let orderSummary: ShallowWrapper;
 
 describe('OrderSummaryModal', () => {
+    const checkoutService = createCheckoutService();
+
     beforeEach(() => {
         order = getOrder();
 
@@ -45,7 +48,7 @@ describe('OrderSummaryModal', () => {
                 customItems: [],
             };
 
-            lineItems.physicalItems.push(getPhysicalItem(), {...getPhysicalItem(), id: '888', parentId: 'test'})
+            lineItems.physicalItems.push(getPhysicalItem(), { ...getPhysicalItem(), id: '888', parentId: 'test' })
 
             const order = { ...getOrder(), lineItems };
 
@@ -62,7 +65,7 @@ describe('OrderSummaryModal', () => {
             );
 
             const itemsComponent = orderSummary.find(OrderSummaryItems);
-            
+
             expect(itemsComponent.props().items.physicalItems).toHaveLength(1);
         });
     })
@@ -115,15 +118,17 @@ describe('OrderSummaryModal', () => {
             });
 
             const mountedOrderSummary = mount(
-                <OrderSummaryModal
-                    {...mapToOrderSummarySubtotalsProps(getOrder())}
-                    isOpen={true}
-                    isUpdatedCartSummayModal={true}
-                    lineItems={getOrder().lineItems}
-                    shopperCurrency={getStoreConfig().shopperCurrency}
-                    storeCurrency={getStoreConfig().currency}
-                    total={getOrder().orderAmount}
-                />,
+                <LocaleProvider checkoutService={checkoutService}>
+                    <OrderSummaryModal
+                        {...mapToOrderSummarySubtotalsProps(getOrder())}
+                        isOpen={true}
+                        isUpdatedCartSummayModal={true}
+                        lineItems={getOrder().lineItems}
+                        shopperCurrency={getStoreConfig().shopperCurrency}
+                        storeCurrency={getStoreConfig().currency}
+                        total={getOrder().orderAmount}
+                    />
+                </LocaleProvider>,
             );
 
             expect(mountedOrderSummary.find('button')).toHaveLength(1);

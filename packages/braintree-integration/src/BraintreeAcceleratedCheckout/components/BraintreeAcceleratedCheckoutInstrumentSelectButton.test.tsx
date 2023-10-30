@@ -1,8 +1,8 @@
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
 import React from 'react';
 
-import { getCardInstrument } from '@bigcommerce/checkout/test-utils';
+import { getCardInstrument } from '@bigcommerce/checkout/test-mocks';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import BraintreeAcceleratedCheckoutInstrumentSelectButton from './BraintreeAcceleratedCheckoutInstrumentSelectButton';
 

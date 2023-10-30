@@ -1,3 +1,5 @@
+import { createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import { mount } from 'enzyme';
 import { Field, Formik } from 'formik';
 import { noop } from 'lodash';
@@ -21,12 +23,16 @@ describe('HostedCreditCardFieldset', () => {
             cardNumberId: 'cardNumber',
         };
 
+        const checkoutService = createCheckoutService();
+
         HostedCreditCardFieldsetTest = (props) => (
-            <Formik
-                initialValues={{ hostedForm: {} }}
-                onSubmit={noop}
-                render={() => <HostedCreditCardFieldset {...props} />}
-            />
+            <LocaleProvider checkoutService={checkoutService}>
+                <Formik
+                    initialValues={{ hostedForm: {} }}
+                    onSubmit={noop}
+                    render={() => <HostedCreditCardFieldset {...props} />}
+                />
+            </LocaleProvider>
         );
     });
 

@@ -21,7 +21,6 @@ import {
     assertIsCardInstrument,
     CardInstrumentFieldset,
     isBankAccountInstrument,
-    SignOutLink,
     StoreInstrumentFieldset,
 } from '@bigcommerce/checkout/instrument-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -207,8 +206,6 @@ class HostedWidgetPaymentComponent extends Component<
             instruments,
             hideWidget = false,
             isInitializing = false,
-            isSignedIn = false,
-            method,
             isAccountInstrument,
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
             isLoadingInstruments,
@@ -277,8 +274,6 @@ class HostedWidgetPaymentComponent extends Component<
                     )}
 
                     {this.renderEditButtonIfAvailable()}
-
-                    {isSignedIn && <SignOutLink method={method} onSignOut={this.handleSignOut} />}
                 </div>
             </LoadingOverlay>
         );
@@ -525,18 +520,6 @@ class HostedWidgetPaymentComponent extends Component<
             isAddingNewCard: false,
             selectedInstrumentId: id,
         });
-    };
-
-    private handleSignOut: () => void = async () => {
-        const { method, onSignOut = noop, onSignOutError = noop, signOut } = this.props;
-
-        try {
-            // eslint-disable-next-line @typescript-eslint/await-thenable
-            await signOut({ methodId: method.id });
-            onSignOut();
-        } catch (error) {
-            onSignOutError(error);
-        }
     };
 }
 

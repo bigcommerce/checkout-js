@@ -1,6 +1,6 @@
 import { createCurrencyService, createLanguageService } from '@bigcommerce/checkout-sdk';
 
-import { getStoreConfig } from '@bigcommerce/checkout/test-utils';
+import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import { LocaleContextType } from './LocaleContext';
 import { FALLBACK_TRANSLATIONS } from './translations';

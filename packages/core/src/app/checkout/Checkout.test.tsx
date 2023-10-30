@@ -1,4 +1,3 @@
-import { CheckoutPageNodeObject } from '@bigcommerce/checkout/test-framework';
 import {
     CheckoutService,
     createCheckoutService,
@@ -18,6 +17,7 @@ import {
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CHECKOUT_ROOT_NODE_ID, CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutPageNodeObject } from '@bigcommerce/checkout/test-framework';
 
 import { createErrorLogger } from '../common/error';
 import {

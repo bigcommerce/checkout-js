@@ -28,7 +28,7 @@ import {
     getPaymentFormServiceMock,
     getPaymentMethod,
     getStoreConfig,
-} from '@bigcommerce/checkout/test-utils';
+} from '@bigcommerce/checkout/test-mocks';
 
 import { HostedCreditCardFieldset } from './components';
 

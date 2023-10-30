@@ -1,8 +1,10 @@
+import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
 
 import { AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+import { LocaleProvider } from '@bigcommerce/checkout/locale';
 
 import BoltCheckoutSuggestion, { BoltCheckoutSuggestionProps } from './BoltCheckoutSuggestion';
 
@@ -25,10 +27,14 @@ describe('BoltCheckoutSuggestion', () => {
             customerSuggestionInit: jest.fn()
         };
 
-        TestComponent = (props) => 
-            <AnalyticsProviderMock analyticsTracker={ analyticsTrackerMock }>
-                <BoltCheckoutSuggestion {...defaultProps} {...props} />
-            </AnalyticsProviderMock>;
+        const checkoutService = createCheckoutService();
+
+        TestComponent = (props) =>
+            <LocaleProvider checkoutService={checkoutService}>
+                <AnalyticsProviderMock analyticsTracker={analyticsTrackerMock}>
+                    <BoltCheckoutSuggestion {...defaultProps} {...props} />
+                </AnalyticsProviderMock>
+            </LocaleProvider>;
     });
 
     it('deinitializes previous Bolt customer strategy before initialisation', () => {
@@ -93,7 +99,7 @@ describe('BoltCheckoutSuggestion', () => {
         component.update();
 
         expect(component.find('[data-test="suggestion-action-button"]')).toHaveLength(0);
-        expect(analyticsTrackerMock.customerSuggestionInit).toHaveBeenCalledWith({hasBoltAccount: false});
+        expect(analyticsTrackerMock.customerSuggestionInit).toHaveBeenCalledWith({ hasBoltAccount: false });
     });
 
     it('renders Bolt suggestion block if the customer has bolt account', async () => {
@@ -110,7 +116,7 @@ describe('BoltCheckoutSuggestion', () => {
         component.update();
 
         expect(component.find('[data-test="suggestion-action-button"]')).toHaveLength(1);
-        expect(analyticsTrackerMock.customerSuggestionInit).toHaveBeenCalledWith({hasBoltAccount: true});
+        expect(analyticsTrackerMock.customerSuggestionInit).toHaveBeenCalledWith({ hasBoltAccount: true });
     });
 
     it('executes Bolt Checkout', async () => {

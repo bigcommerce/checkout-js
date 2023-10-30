@@ -2,7 +2,7 @@ import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sd
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
-import { getStoreConfig } from '@bigcommerce/checkout/test-utils';
+import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
 import LocaleContext, { LocaleContextType } from './LocaleContext';
 import LocaleProvider from './LocaleProvider';

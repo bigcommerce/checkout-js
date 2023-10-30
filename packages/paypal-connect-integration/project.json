@@ -1,0 +1,23 @@
+{
+  "root": "packages/paypal-connect-integration",
+  "sourceRoot": "packages/paypal-connect-integration/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/paypal-connect-integration/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/paypal-connect-integration"],
+      "options": {
+        "jestConfig": "packages/paypal-connect-integration/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["scope:shared"]
+}

@@ -1,10 +1,8 @@
-import { fireEvent, render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
-import { getStoreConfig } from '@bigcommerce/checkout/test-utils';
+import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import BlueSnapDirectSelectField, {
     BlueSnapDirectSelectFieldProps,
@@ -36,9 +34,7 @@ describe('BlueSnapDirectSelectField', () => {
     it('allows user to select an option', () => {
         render(
             <Formik initialValues={initialValues} onSubmit={noop}>
-                <LocaleContext.Provider value={createLocaleContext(getStoreConfig())}>
-                    <BlueSnapDirectSelectField {...options} />
-                </LocaleContext.Provider>
+                <BlueSnapDirectSelectField {...options} />
             </Formik>,
         );
 

@@ -24,6 +24,7 @@ export interface CheckoutAppProps {
     containerId: string;
     publicPath?: string;
     sentryConfig?: BrowserOptions;
+    sentrySampleRate?: number;
 }
 
 export default class CheckoutApp extends Component<CheckoutAppProps> {
@@ -43,6 +44,7 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
             {
                 errorTypes: ['UnrecoverableError'],
                 publicPath: props.publicPath,
+                sampleRate: props.sentrySampleRate ? props.sentrySampleRate : 0.1,
             },
         );
     }

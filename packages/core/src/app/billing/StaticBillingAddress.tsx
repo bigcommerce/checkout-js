@@ -3,9 +3,9 @@ import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { isPayPalConnectAddress, PoweredByPaypalConnectLabel, usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-connect-integration';
 
 import { AddressType, StaticAddress } from '../address';
-import { isPayPalConnectAddress, PoweredByPaypalConnectLabel, usePayPalConnectAddress } from '../address/PayPalAxo';
 import { withCheckout } from '../checkout';
 import { EMPTY_ARRAY } from '../common/utility';
 

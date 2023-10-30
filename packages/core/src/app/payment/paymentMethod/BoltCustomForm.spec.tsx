@@ -1,7 +1,10 @@
+import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
+
+import { LocaleProvider } from '@bigcommerce/checkout/locale';
 
 import BoltCustomForm, { BoltCustomFormProps } from './BoltCustomForm';
 
@@ -15,7 +18,9 @@ describe('BoltCustomForm', () => {
             showCreateAccountCheckbox: false,
         };
 
-        BoltCustomFormTest = (props) => <BoltCustomForm {...props} />;
+        const checkoutService = createCheckoutService();
+
+        BoltCustomFormTest = (props) => <LocaleProvider checkoutService={checkoutService}><BoltCustomForm {...props} /></LocaleProvider>;
     });
 
     it('renders bolt embedded field', () => {
