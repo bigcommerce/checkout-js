@@ -12,6 +12,11 @@ import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import {
+    createLocaleContext,
+    LocaleContext,
+    LocaleContextType,
+} from '@bigcommerce/checkout/locale';
+import {
     CheckoutProvider,
     PaymentFormContext,
     PaymentFormService,
@@ -21,7 +26,8 @@ import {
     getCustomer,
     getInstruments,
     getPaymentFormServiceMock,
-} from '@bigcommerce/checkout/test-utils';
+    getStoreConfig,
+} from '@bigcommerce/checkout/test-mocks';
 
 import { getSquareV2 } from './mocks/squarev2-method.mock';
 import SquareV2PaymentMethod from './SquareV2PaymentMethod';
@@ -173,7 +179,10 @@ describe('SquareV2 payment method', () => {
     });
 
     describe('when storing credit cards is enabled', () => {
+        let localeContext: LocaleContextType;
+
         beforeEach(() => {
+            localeContext = createLocaleContext(getStoreConfig());
             props = {
                 ...props,
                 method: {
@@ -185,9 +194,11 @@ describe('SquareV2 payment method', () => {
             SquareV2PaymentMethodTest = () => (
                 <PaymentFormContext.Provider value={{ paymentForm }}>
                     <CheckoutProvider checkoutService={checkoutService}>
-                        <Formik initialValues={{}} onSubmit={noop}>
-                            <SquareV2PaymentMethod {...props} />
-                        </Formik>
+                        <LocaleContext.Provider value={localeContext}>
+                            <Formik initialValues={{}} onSubmit={noop}>
+                                <SquareV2PaymentMethod {...props} />
+                            </Formik>
+                        </LocaleContext.Provider>
                     </CheckoutProvider>
                 </PaymentFormContext.Provider>
             );
