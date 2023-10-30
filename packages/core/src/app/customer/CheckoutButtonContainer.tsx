@@ -33,19 +33,6 @@ const paypalCommerceIds = [
     'paypalcommercevenmo',
 ];
 
-const sortMethodIds = (methodIds:string[]): string[] => {
-    const order = [
-        'applepay',
-        'braintreepaypalcredit',
-        'braintreepaypal',
-        'paypalcommercevenmo',
-        'paypalcommercecredit',
-        'paypalcommerce',
-    ];
-
-    return methodIds.sort((a, b) => order.indexOf(b) - order.indexOf(a));
-}
-
 const isPayPalCommerce = (methodId: string): boolean => paypalCommerceIds.includes(methodId);
 
 const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & WithCheckoutCheckoutButtonContainerProps> = (
@@ -161,7 +148,7 @@ function mapToCheckoutButtonContainerProps({
     return {
         checkoutService,
         checkoutState,
-        availableMethodIds: sortMethodIds(availableMethodIds),
+        availableMethodIds,
         initializedMethodIds,
         isLoading,
     }
