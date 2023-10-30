@@ -15,30 +15,6 @@ const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     checkoutService,
     checkoutState,
 }) => {
-    const renderPlaceholderFields = () => {
-        return (
-            <div data-test="squarev2_placeholder_form" style={{ display: 'none' }}>
-                <div className="form-field">
-                    <div
-                        className="form-label optimizedCheckout-form-label"
-                        id="messageIsDefault"
-                    />
-                    <div className="form-input optimizedCheckout-form-input" id="inputIsDefault" />
-                </div>
-                <div className="form-field">
-                    <div
-                        className="form-input optimizedCheckout-form-input form-input--focus optimizedCheckout-form-input--focus"
-                        id="inputIsFocus"
-                    />
-                </div>
-                <div className="form-field form-field--error">
-                    <div className="form-inlineMessage" id="messageIsError" />
-                    <div className="form-input optimizedCheckout-form-input" id="inputIsError" />
-                </div>
-            </div>
-        );
-    };
-
     const getStylesFromElement = (id: string, properties: string[]) => {
         const container = document.querySelector<HTMLDivElement>(`#${id}`);
 
@@ -185,7 +161,6 @@ const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             deinitializePayment={deinitializePayment}
             initializePayment={initializePayment}
             method={method}
-            renderPlaceholderFields={renderPlaceholderFields}
         />
     );
 };

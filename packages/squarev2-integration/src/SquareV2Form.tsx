@@ -15,7 +15,6 @@ export interface SquareV2FormProps {
     deinitializePayment: () => Promise<void>;
     initializePayment: () => Promise<void>;
     method: PaymentMethod;
-    renderPlaceholderFields: () => React.JSX.Element;
 }
 
 const SquareV2Form: FunctionComponent<SquareV2FormProps> = ({
@@ -24,7 +23,6 @@ const SquareV2Form: FunctionComponent<SquareV2FormProps> = ({
     deinitializePayment,
     initializePayment,
     method,
-    renderPlaceholderFields,
 }) => {
     const { getCustomer, getInstruments } = checkoutState.data;
     const instruments = getInstruments(method) || [];
@@ -78,6 +76,30 @@ const SquareV2Form: FunctionComponent<SquareV2FormProps> = ({
         void initializePayment();
     };
 
+    const renderPlaceholderFields = () => {
+        return (
+            <div data-test="squarev2_placeholder_form" style={{ display: 'none' }}>
+                <div className="form-field">
+                    <div
+                        className="form-label optimizedCheckout-form-label"
+                        id="messageIsDefault"
+                    />
+                    <div className="form-input optimizedCheckout-form-input" id="inputIsDefault" />
+                </div>
+                <div className="form-field">
+                    <div
+                        className="form-input optimizedCheckout-form-input form-input--focus optimizedCheckout-form-input--focus"
+                        id="inputIsFocus"
+                    />
+                </div>
+                <div className="form-field form-field--error">
+                    <div className="form-inlineMessage" id="messageIsError" />
+                    <div className="form-input optimizedCheckout-form-input" id="inputIsError" />
+                </div>
+            </div>
+        );
+    };
+
     return (
         <LoadingOverlay
             data-test="squarev2_loading_overlay"
@@ -98,7 +120,6 @@ const SquareV2Form: FunctionComponent<SquareV2FormProps> = ({
                 <div
                     className={classNames('widget', `widget--${method.id}`, 'payment-widget')}
                     data-test={containerId}
-                    id={containerId}
                     style={{
                         display: !shouldShowCreditCardFieldset ? 'none' : undefined,
                     }}
