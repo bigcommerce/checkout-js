@@ -1,4 +1,4 @@
-export {  CustomError, EmbeddedCheckoutUnsupportedError } from './errors';
+export { CustomError, EmbeddedCheckoutUnsupportedError } from './errors';
 export { default as getPaymentMethodName } from './getPaymentMethodName';
 export { default as getUniquePaymentMethodId } from './getUniquePaymentMethodId';
 export { default as CardInstrumentFieldsetValues } from './CardInstrumentFieldsetValues';
