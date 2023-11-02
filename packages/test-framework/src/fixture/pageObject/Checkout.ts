@@ -59,6 +59,42 @@ export class Checkout {
         this.harFileName = har;
         await this.playwright.useHAR(har, this.harFolderPath);
     }
+    
+    async mockRoute(): Promise<void> {
+        console.log("is mocking out?");
+
+        await this.page.route('**/internalapi/v1/store/countries', route => {
+            const json = {
+                data: [{
+                    code: 'AU',
+                    name: 'Australia',
+                    subdivisions: [
+                        { code: 'NSW', name: 'New South Wales' },
+                        { code: 'VIC', name: 'Victoria' },
+                    ],
+                    hasPostalCodes: true,
+                    requiresState: true,
+                },
+                {
+                    code: 'US',
+                    name: 'United States',
+                    hasPostalCodes: true,
+                    requiresState: true,
+                    subdivisions: [
+                        { code: 'CA', name: 'California' },
+                        { code: 'TX', name: 'Texas' },
+                        { code: 'NY', name: 'New York' },
+                    ],
+                }]
+            };
+            console.log("is mocking in?");
+            void route.fulfill({ 
+                status: 200,
+                contentType: 'application/json',
+                json 
+            });
+        }); 
+    }
 
     async route(
         url: string | RegExp | ((url: URL) => boolean),

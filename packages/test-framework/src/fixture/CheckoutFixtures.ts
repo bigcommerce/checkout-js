@@ -17,6 +17,7 @@ export const test = base.extend<CheckoutFixtures>({
         const checkout = new Checkout(page);
 
         checkout.setHarFolderPath(testInfo.file);
+        await checkout.mockRoute();
         await use(checkout);
         await checkout.close();
     },
