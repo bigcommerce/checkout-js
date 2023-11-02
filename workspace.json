@@ -26,7 +26,6 @@
     "payment-integration-api": "packages/payment-integration-api",
     "paypal-commerce-integration": "packages/paypal-commerce-integration",
     "paypal-connect-integration": "packages/paypal-connect-integration",
-    "sezzle-integration": "packages/sezzle-integration",
     "squarev2-integration": "packages/squarev2-integration",
     "test-framework": "packages/test-framework",
     "test-mocks": "packages/test-mocks",
