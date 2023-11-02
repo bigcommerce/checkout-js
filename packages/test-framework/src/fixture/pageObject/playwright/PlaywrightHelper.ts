@@ -54,37 +54,38 @@ export class PlaywrightHelper {
             void route.fulfill({ status: 200, path: `${this.srcPath}/support/product.png` });
         });
         if (this.isReplay) {
-            await this.page.route('**/internalapi/v1/store/countries', route => {
+            await this.page.route('**/internalapi/v1/store/countries', (route) => {
                 const json = {
-                    data: [{
-                        code: 'AU',
-                        name: 'Australia',
-                        subdivisions: [
-                            { code: 'NSW', name: 'New South Wales' },
-                            { code: 'VIC', name: 'Victoria' },
-                        ],
-                        hasPostalCodes: true,
-                        requiresState: true,
-                    },
-                    {
-                        code: 'US',
-                        name: 'United States',
-                        hasPostalCodes: true,
-                        requiresState: true,
-                        subdivisions: [
-                            { code: 'CA', name: 'California' },
-                            { code: 'TX', name: 'Texas' },
-                            { code: 'NY', name: 'New York' }
-                        ],
-                    }]
+                    data: [
+                        {
+                            code: 'AU',
+                            name: 'Australia',
+                            subdivisions: [
+                                { code: 'NSW', name: 'New South Wales' },
+                                { code: 'VIC', name: 'Victoria' },
+                            ],
+                            hasPostalCodes: true,
+                            requiresState: true,
+                        },
+                        {
+                            code: 'US',
+                            name: 'United States',
+                            hasPostalCodes: true,
+                            requiresState: true,
+                            subdivisions: [
+                                { code: 'CA', name: 'California' },
+                                { code: 'TX', name: 'Texas' },
+                                { code: 'NY', name: 'New York' },
+                            ],
+                        },
+                    ],
                 };
-                console.log("is mocking?");
-                void route.fulfill({ 
+                void route.fulfill({
                     status: 200,
                     contentType: 'application/json',
-                    json 
+                    json,
                 });
-              });
+            });
 
             // creating local checkout environment during replay
             this.polly.enableReplay();
