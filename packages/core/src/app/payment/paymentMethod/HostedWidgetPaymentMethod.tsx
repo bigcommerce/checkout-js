@@ -120,7 +120,13 @@ class HostedWidgetPaymentMethod extends Component<
         setValidationSchema(method, this.getValidationSchema());
 
         try {
-            if (this.isInstrumentFeatureAvailable()) {
+            if (isInstrumentFeatureAvailable({
+                config: this.props.config,
+                customer: this.props.customer,
+                isUsingMultiShipping: this.props.isUsingMultiShipping,
+                paymentMethod: this.props.paymentMethod, 
+                shouldSavingCardsBeEnabled: this.props.shouldSavingCardsBeEnabled,
+        })) {
                 await loadInstruments();
             }
 
@@ -206,8 +212,13 @@ class HostedWidgetPaymentMethod extends Component<
             shouldShow = true,
         } = this.props;
 
-        const isInstrumentFeatureAvailable = this.isInstrumentFeatureAvailable()
-
+        const isInstrumentFeature = isInstrumentFeatureAvailable({
+            config: this.props.config,
+            customer: this.props.customer,
+            isUsingMultiShipping: this.props.isUsingMultiShipping,
+            paymentMethod: this.props.paymentMethod, 
+            shouldSavingCardsBeEnabled: this.props.shouldSavingCardsBeEnabled,
+        })
         const { isAddingNewCard, selectedInstrumentId = this.getDefaultInstrumentId() } =
             this.state;
 
@@ -220,7 +231,7 @@ class HostedWidgetPaymentMethod extends Component<
             instruments[0];
 
         const shouldShowInstrumentFieldset =
-            isInstrumentFeatureAvailable && instruments.length > 0;
+            isInstrumentFeature && instruments.length > 0;
         const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
         const isLoading = (isInitializing || isLoadingInstruments) && !hideWidget;
 
@@ -259,7 +270,7 @@ class HostedWidgetPaymentMethod extends Component<
 
                     {this.renderContainer(shouldShowCreditCardFieldset)}
 
-                    {isInstrumentFeatureAvailable && (
+                    {isInstrumentFeature && (
                         <StoreInstrumentFieldset
                             instrumentId={selectedInstrumentId}
                             isAccountInstrument={isAccountInstrument || shouldShowAccountInstrument}
@@ -338,28 +349,6 @@ class HostedWidgetPaymentMethod extends Component<
         );
     }
 
-
-    private isInstrumentFeatureAvailable() {
-        const { 
-            config,
-            customer,
-            isUsingMultiShipping,
-            paymentMethod, 
-            shouldSavingCardsBeEnabled,
-        } = this.props;
-
-        const instrumentFeatureAvailable = isInstrumentFeatureAvailable({
-            config,
-            customer,
-            isUsingMultiShipping,
-            paymentMethod,
-            shouldSavingCardsBeEnabled,
-        })
-
-        return instrumentFeatureAvailable;
-
-    }
-
     private getValidationSchema(): ObjectSchema | null {
         const {
             isPaymentDataRequired,
@@ -372,7 +361,13 @@ class HostedWidgetPaymentMethod extends Component<
 
         const selectedInstrument = this.getSelectedInstrument();
 
-        if (this.isInstrumentFeatureAvailable() && selectedInstrument) {
+        if (isInstrumentFeatureAvailable({
+                config: this.props.config,
+                customer: this.props.customer,
+                isUsingMultiShipping: this.props.isUsingMultiShipping,
+                paymentMethod: this.props.paymentMethod, 
+                shouldSavingCardsBeEnabled: this.props.shouldSavingCardsBeEnabled,
+        }) && selectedInstrument) {
             return storedCardValidationSchema || null;
         }
 
