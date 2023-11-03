@@ -263,6 +263,7 @@ class Checkout extends Component<
 
             if (isExtensionEnabled()) {
                 await extensionService.loadExtensions();
+                extensionService.preloadExtensions();
             }
         } catch (error) {
             if (error instanceof Error) {
