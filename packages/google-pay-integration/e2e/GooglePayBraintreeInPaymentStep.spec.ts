@@ -5,10 +5,8 @@ import {
     authResponse,
     beforeSignIn,
     braintreePayPalCredit,
-    checkoutSettings,
     googlePay,
     internalOrder,
-    mockCartId,
     order222,
     orderPayment,
     payment,
@@ -49,23 +47,32 @@ test.describe('Google Pay Braintree', () => {
             },
         );
 
+        await page.route(/.*\/api\/storefront\/checkout\/.+\?.*/, (route) => {
+            const url = route.request().url();
+            const checkoutId = url.match(/\w+-\w+-\w+-\w+-\w+/g)?.[0];
+
+            const mockAfterSignInBody = JSON.parse(afterSignIn);
+
+            mockAfterSignInBody.id = checkoutId;
+
+            const mockBeforeSighInBody = JSON.parse(beforeSignIn);
+
+            mockBeforeSighInBody.id = checkoutId;
+
+            if (isSignedIn) {
+                void route.fulfill({ ...responseProps, body: JSON.stringify(mockAfterSignInBody) });
+            } else {
+                isSignedIn = true;
+                void route.fulfill({
+                    ...responseProps,
+                    body: JSON.stringify(mockBeforeSighInBody),
+                });
+            }
+        });
+
         await page.route(/.*\/api\/storefront\/payments\?cartId=.*/, (route) => {
             void route.fulfill({ ...responseProps, body: payment });
         });
-
-        await page.route(
-            /.*\/api\/storefront\/checkout-settings\?checkoutId=.*/,
-            async (route, request) => {
-                if (request.url().includes(`checkoutId=${mockCartId}`)) {
-                    return route.fulfill({
-                        ...responseProps,
-                        body: JSON.stringify(checkoutSettings),
-                    });
-                }
-
-                await route.fallback();
-            },
-        );
 
         await page.route(
             /.*\/api\/storefront\/payments\/googlepaybraintree\?cartId=.*/,
@@ -94,14 +101,6 @@ test.describe('Google Pay Braintree', () => {
         });
         await page.route('**/api/public/v1/orders/payments', (route) => {
             void route.fulfill({ ...responseProps, body: orderPayment });
-        });
-        await page.route(/.*\/api\/storefront\/checkout\/.+\?.*/, (route) => {
-            if (isSignedIn) {
-                void route.fulfill({ ...responseProps, body: afterSignIn });
-            } else {
-                isSignedIn = true;
-                void route.fulfill({ ...responseProps, body: beforeSignIn });
-            }
         });
         await page.route(/.*\/api\/storefront\/checkouts\/.*\/billing-address\/.*/, (route) => {
             void route.fulfill({ ...responseProps, body: '{}' });
