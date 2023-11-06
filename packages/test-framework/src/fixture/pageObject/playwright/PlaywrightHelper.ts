@@ -91,6 +91,7 @@ export class PlaywrightHelper {
 
         // TODO: Remove these mocks when updating HAR files
         await this.mockRoutes();
+
         if (this.isReplay) {
             // creating local checkout environment during replay
             this.polly.enableReplay();
