@@ -7,7 +7,7 @@ import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
-import { StaticAddress } from '../../address';
+import { AddressType, StaticAddress } from '../../address';
 import { withAnalytics } from '../../analytics';
 import getRecommendedShippingOption from '../getRecommendedShippingOption';
 import StaticConsignmentItemList from '../StaticConsignmentItemList';
@@ -162,7 +162,7 @@ class ShippingOptionsForm extends PureComponent<
                     <TranslatedString id="shipping.shipping_address_heading" />
                 </strong>
 
-                <StaticAddress address={consignment.shippingAddress} />
+                <StaticAddress address={consignment.shippingAddress} type={AddressType.Shipping} />
 
                 <StaticConsignmentItemList cart={cart} consignment={consignment} />
             </div>

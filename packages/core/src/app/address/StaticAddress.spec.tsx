@@ -44,6 +44,7 @@ describe('StaticAddress Component', () => {
         };
 
         jest.spyOn(checkoutState.data, 'getBillingCountries').mockReturnValue(getCountries());
+        jest.spyOn(checkoutState.data, 'getShippingCountries').mockReturnValue(getCountries());
 
         jest.spyOn(checkoutState.data, 'getBillingAddressFields').mockReturnValue(
             getAddressFormFields(),
