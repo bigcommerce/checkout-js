@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.390.0](https://github.com/bigcommerce/checkout-js/compare/v1.389.0...v1.390.0) (2023-11-06)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7846 Update the Message for INCOMPLETE Orders on the Order Confirmation Page ([8f37d43](https://github.com/bigcommerce/checkout-js/commit/8f37d434407a2fd04f0a7236928e6ad57657aa85))
+
 ## [1.389.0](https://github.com/bigcommerce/checkout-js/compare/v1.388.3...v1.389.0) (2023-11-02)
 
 
