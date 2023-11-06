@@ -28,7 +28,10 @@ export class ExtensionService {
         const cartId = state.data.getCart()?.id;
         const parentOrigin = state.data.getConfig()?.links.siteLink;
 
-        if (!cartId || !parentOrigin) return;
+        if (!cartId || !parentOrigin) {
+            return;
+        }
+
         extensions?.forEach((extension) => {
             const url = new URL(extension.url);
 
@@ -38,15 +41,12 @@ export class ExtensionService {
 
             const link = document.createElement('link');
 
-            // Set the attributes for the link element
             link.rel = 'preload';
             link.as = 'document';
             link.href = url.toString();
 
-            // Get the head element of the document
             const head = document.head;
 
-            // Append the link element to the head
             head.appendChild(link);
         });
     }
