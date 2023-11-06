@@ -36,6 +36,7 @@ import StripeShipping from './stripeUPE/StripeShipping';
 import fitmentCentres from '../../static/fitment-centres.json';
 import fitmentPartner from '../../static/img/fitment-partner.png';
 import { Button, ButtonVariant } from '../ui/button';
+
 import { TranslatedString } from '../locale';
 // import IconChevronRight from '../ui/icon/IconChevronRight';
 
@@ -106,6 +107,7 @@ interface ShippingState {
     isInitializing: boolean;
     fitmentCentre?: FitmentCentre;
     isLoading: boolean;
+    postcodeFilter?: string;
 }
 
 class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, ShippingState> {
@@ -183,6 +185,8 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             .flatMap(item => item.options)
             .some(option => option?.name.includes("Fitment") && option?.value == "EGR Fitment Centre")
 
+        const postcodeFilter = this.state.postcodeFilter;
+
         if (includesFitmentCentreItem) {
 
             return (
@@ -190,8 +194,14 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                     <div className="fitment-message">
                         Please select your preferred fitment centre location. Your items will be shipped to your nominated fitment provider.
                     </div>
+                    <div>
+                        <div className='form-field'>
+                            <label className="form-label">Search by postcode</label>
+                            <input className='form-input' type='text' value={postcodeFilter} onChange={(event) => this.setState({ postcodeFilter: event.target.value })} />
+                        </div>
+                    </div>
                     <div className="fitment-wrapper">
-                        {fitmentCentres.map(this.renderFitmentCentreSelection)}
+                        {fitmentCentres.filter((fitmentCentre) => fitmentCentre.postcode.includes(this.state.postcodeFilter ?? "")).map(this.renderFitmentCentreSelection)}
                     </div>
                     <div className="form-actions">
                         <Button
@@ -250,7 +260,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                     <div>Phone: {phone}</div>
                 </div>
                 <div className='estimate'>
-                    Estimated Fitment Time from Dispatch: 1-2 weeks
+                    Estimated Fitment Time from Delivery: 7-14 Days
                     <div className="partner-logo">
                         <img src={fitmentPartner} />
                     </div>
@@ -261,6 +271,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         name="fitment-centre"
                         id={company}
                         value={company}
+                        checked={fitmentCentre === this.state.fitmentCentre}
                         disabled={this.state.isLoading}
                         onClick={() => this.handleFitmentCentreChange(fitmentCentre)}
                     />

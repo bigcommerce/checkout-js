@@ -413,10 +413,14 @@ class Checkout extends Component<
             return;
         }
 
+        const includesFitmentCentreItem = cart.lineItems.physicalItems
+            .flatMap(item => item.options)
+            .some(option => option?.name.includes("Fitment") && option?.value == "EGR Fitment Centre")
+
         return (
             <CheckoutStep
                 {...step}
-                heading={<TranslatedString id="shipping.shipping_heading" />}
+                heading={includesFitmentCentreItem ? "Fitment" : <TranslatedString id="shipping.shipping_heading" />}
                 key={step.type}
                 onEdit={this.handleEditStep}
                 onExpanded={this.handleExpanded}
