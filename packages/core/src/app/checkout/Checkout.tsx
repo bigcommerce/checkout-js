@@ -186,10 +186,10 @@ class Checkout extends Component<
             extensionService,
             loadCheckout,
             subscribeToConsignments,
-            isExtensionEnabled,
         } = this.props;
 
         try {
+            await extensionService.loadExtensions();
             const { data } = await loadCheckout(checkoutId, {
                 params: {
                     include: [
@@ -198,6 +198,7 @@ class Checkout extends Component<
                     ] as any, // FIXME: Currently the enum is not exported so it can't be used here.
                 },
             });
+            extensionService.preloadExtensions();
             const { links: { siteLink = '' } = {} } = data.getConfig() || {};
             const errorFlashMessages = data.getFlashMessages('error') || [];
 
@@ -261,10 +262,6 @@ class Checkout extends Component<
 
             window.addEventListener('beforeunload', this.handleBeforeExit);
 
-            if (isExtensionEnabled()) {
-                await extensionService.loadExtensions();
-                extensionService.preloadExtensions();
-            }
         } catch (error) {
             if (error instanceof Error) {
                 this.handleUnhandledError(error);
