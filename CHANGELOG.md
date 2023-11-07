@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.393.0](https://github.com/bigcommerce/checkout-js/compare/v1.392.0...v1.393.0) (2023-11-07)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7838 preload extension with link tag ([#1584](https://github.com/bigcommerce/checkout-js/issues/1584)) ([c002053](https://github.com/bigcommerce/checkout-js/commit/c0020538ea1703b3787d50ca027f0c41a90ccceb))
+
+
+### Bug Fixes
+
+* **other:** CHECKOUT-000 upgrade @sentry/integrations from 7.52.1 to 7.54.0 ([#1353](https://github.com/bigcommerce/checkout-js/issues/1353)) ([afe9e9a](https://github.com/bigcommerce/checkout-js/commit/afe9e9a0d7efcfa029e337002100254ad292370d))
+* **other:** CHECKOUT-000 upgrade @types/react from 17.0.59 to 17.0.61 ([#1355](https://github.com/bigcommerce/checkout-js/issues/1355)) ([7e23e40](https://github.com/bigcommerce/checkout-js/commit/7e23e40cee07b98c2dbc5def1a7d2f2a0a035c46))
+* **other:** CHECKOUT-000 upgrade react-datepicker from 4.11.0 to 4.13.0 ([#1356](https://github.com/bigcommerce/checkout-js/issues/1356)) ([e225156](https://github.com/bigcommerce/checkout-js/commit/e225156dcc76ca35d4c188ad71428fa30ff945e9))
+* **other:** CHECKOUT-000 upgrade tslib from 2.5.1 to 2.5.3 ([#1354](https://github.com/bigcommerce/checkout-js/issues/1354)) ([6ebc5e8](https://github.com/bigcommerce/checkout-js/commit/6ebc5e8ed264b7c0b11c1346f08c4f7d35647a07))
+
 ## [1.392.0](https://github.com/bigcommerce/checkout-js/compare/v1.391.1...v1.392.0) (2023-11-07)
 
 
