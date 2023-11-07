@@ -62,3 +62,6 @@
 
 /packages/apple-pay-integration @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
 /packages/google-pay-integration @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
+
+## Localization team
+/packages/locale/src/translations @bigcommerce/team-checkout @bigcommerce/team-localization
