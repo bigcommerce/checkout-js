@@ -528,6 +528,9 @@
         },
         "order_confirmation": {
             "mandate": {
+                "adyenv3": {
+                    "boletobancario": "Ticket del Boleto Bancário"
+                },
                 "checkoutcom": {
                     "boleto": "Ticket del Boleto Bancário",
                     "oxxo": "Ticket de OXXO",
@@ -545,9 +548,9 @@
                 "paypalcommercealternativemethods": {
                     "oxxo": "Ticket de OXXO",
                     "ratepay": {
-                        "account_holder_name": "Account Holder",
-                        "iban": "Iban",
-                        "payment_reference": "Payment Reference"
+                        "account_holder_name": "Titular de la cuenta",
+                        "iban": "IBAN",
+                        "payment_reference": "Referencia de pago"
                     }
                 }
             },
