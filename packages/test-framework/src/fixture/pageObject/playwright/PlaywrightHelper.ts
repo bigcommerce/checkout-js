@@ -73,6 +73,13 @@ export class PlaywrightHelper {
                 json,
             });
         });
+        await this.page.route('**/api/storefront/checkout-extensions', (route) => {
+            void route.fulfill({
+                status: 200,
+                contentType: 'application/json',
+                json: [],
+            });
+        });
     }
 
     async useHAR(har: string, folder: string): Promise<void> {

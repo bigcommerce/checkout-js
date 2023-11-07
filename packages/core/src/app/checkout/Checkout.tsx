@@ -189,16 +189,16 @@ class Checkout extends Component<
         } = this.props;
 
         try {
-            await extensionService.loadExtensions();
-            const { data } = await loadCheckout(checkoutId, {
+            const [{ data }] = await Promise.all([loadCheckout(checkoutId, {
                 params: {
                     include: [
                         'cart.lineItems.physicalItems.categoryNames',
                         'cart.lineItems.digitalItems.categoryNames',
                     ] as any, // FIXME: Currently the enum is not exported so it can't be used here.
                 },
-            });
+            }), extensionService.loadExtensions()]);
             extensionService.preloadExtensions();
+
             const { links: { siteLink = '' } = {} } = data.getConfig() || {};
             const errorFlashMessages = data.getFlashMessages('error') || [];
 
