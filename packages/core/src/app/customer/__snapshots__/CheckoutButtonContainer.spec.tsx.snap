@@ -50,6 +50,12 @@ exports[`CheckoutButtonContainer displays wallet buttons for guest checkout 1`] 
         class="checkoutRemote"
       >
         <div
+          id="paypalcommerceCheckoutButton"
+        />
+        <div
+          id="paypalcommercecreditCheckoutButton"
+        />
+        <div
           class="AmazonPayContainer"
         >
           <div
@@ -58,12 +64,6 @@ exports[`CheckoutButtonContainer displays wallet buttons for guest checkout 1`] 
         </div>
         <div
           id="googlepayauthorizenetCheckoutButton"
-        />
-        <div
-          id="paypalcommerceCheckoutButton"
-        />
-        <div
-          id="paypalcommercecreditCheckoutButton"
         />
       </div>
     </div>

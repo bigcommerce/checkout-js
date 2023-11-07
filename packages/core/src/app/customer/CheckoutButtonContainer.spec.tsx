@@ -17,10 +17,10 @@ describe('CheckoutButtonContainer', () => {
     let checkoutState: CheckoutSelectors;
 
     const paymentProviders = [
-        'amazonpay',
-        'googlepayauthorizenet',
         'paypalcommerce',
         'paypalcommercecredit',
+        'amazonpay',
+        'googlepayauthorizenet',
     ];
 
     beforeEach(() => {
