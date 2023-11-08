@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.394.0](https://github.com/bigcommerce/checkout-js/compare/v1.393.0...v1.394.0) (2023-11-08)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7837 Optimize `loadCheckout` and `loadExtensions` for Parallel Execution ([#1589](https://github.com/bigcommerce/checkout-js/issues/1589)) ([6f9f9a1](https://github.com/bigcommerce/checkout-js/commit/6f9f9a172daf259194bd690f953077cab951ec53))
+
 ## [1.393.0](https://github.com/bigcommerce/checkout-js/compare/v1.392.0...v1.393.0) (2023-11-07)
 
 
