@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.394.1](https://github.com/bigcommerce/checkout-js/compare/v1.394.0...v1.394.1) (2023-11-08)
+
+
+### Bug Fixes
+
+* **payment:** PI-617 prevent certificates applying while order submitting ([0122e95](https://github.com/bigcommerce/checkout-js/commit/0122e951e60e3a4e90776d56f6ca794d30586382))
+
 ## [1.394.0](https://github.com/bigcommerce/checkout-js/compare/v1.393.0...v1.394.0) (2023-11-08)
 
 
