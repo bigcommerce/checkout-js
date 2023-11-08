@@ -7,6 +7,7 @@ import { object, string } from 'yup';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 import { FormContextType, FormProvider } from '@bigcommerce/checkout/ui';
 
 import { Alert, AlertType } from '../ui/alert';
@@ -79,6 +80,21 @@ const Redeemable: FunctionComponent<
 const RedeemableForm: FunctionComponent<
     Partial<RedeemableProps> & FormikProps<RedeemableFormValues> & WithLanguageProps
 > = ({ appliedRedeemableError, isApplyingRedeemable, clearError = noop, submitForm, language }) => {
+    const {
+        checkoutState: {
+            statuses: { isSubmittingOrder }
+        }
+    } = useCheckout();
+
+    const handleSubmitForm = (setSubmitted: FormContextType['setSubmitted']) => {
+        if (isSubmittingOrder()) {
+            return;
+        }
+
+        setSubmitted(true);
+        submitForm();
+    }
+
     const handleKeyDown = useCallback(
         memoizeOne((setSubmitted: FormContextType['setSubmitted']) => (event: KeyboardEvent) => {
             if (appliedRedeemableError) {
@@ -88,8 +104,7 @@ const RedeemableForm: FunctionComponent<
             // note: to prevent submitting main form, we manually intercept
             // the enter key event and submit the "subform".
             if (event.keyCode === 13) {
-                setSubmitted(true);
-                submitForm();
+                handleSubmitForm(setSubmitted);
                 event.preventDefault();
             }
         }),
@@ -98,8 +113,7 @@ const RedeemableForm: FunctionComponent<
 
     const handleSubmit = useCallback(
         memoizeOne((setSubmitted: FormContextType['setSubmitted']) => () => {
-            setSubmitted(true);
-            submitForm();
+            handleSubmitForm(setSubmitted);
         }),
         [],
     );
@@ -150,6 +164,7 @@ const RedeemableForm: FunctionComponent<
 
                             <Button
                                 className="form-prefixPostfix-button--postfix"
+                                disabled={isSubmittingOrder()}
                                 id="applyRedeemableButton"
                                 isLoading={isApplyingRedeemable}
                                 onClick={handleSubmit(setSubmitted)}
@@ -167,6 +182,7 @@ const RedeemableForm: FunctionComponent<
             handleSubmit,
             isApplyingRedeemable,
             language,
+            isSubmittingOrder,
             renderErrorMessage,
         ],
     );
