@@ -14,6 +14,7 @@ import { SpecificError } from '@bigcommerce/checkout/payment-integration-api';
 
 const PAYMENT_SOURCE_INFO_CANNOT_BE_VERIFIED = 'PAYMENT_SOURCE_INFO_CANNOT_BE_VERIFIED';
 const PAYMENT_SOURCE_DECLINED_BY_PROCESSOR = 'PAYMENT_SOURCE_DECLINED_BY_PROCESSOR';
+const ITEM_CATEGORY_NOT_SUPPORTED_BY_PAYMENT_SOURCE = 'ITEM_CATEGORY_NOT_SUPPORTED_BY_PAYMENT_SOURCE';
 
 interface RatePayFieldValues {
     ratepayBirthDate: {
@@ -101,6 +102,8 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
                                 case PAYMENT_SOURCE_INFO_CANNOT_BE_VERIFIED:
                                     translationCode = 'payment.ratepay.errors.paymentSourceInfoCannotBeVerified';
                                     break;
+                                case ITEM_CATEGORY_NOT_SUPPORTED_BY_PAYMENT_SOURCE:
+                                    translationCode = 'payment.ratepay.errors.itemCategoryNotSupportedByPaymentSource';
                                 default:
                                     translationCode = 'common.error_heading';
                             }
