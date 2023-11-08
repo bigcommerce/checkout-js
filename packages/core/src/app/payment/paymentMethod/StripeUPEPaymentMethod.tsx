@@ -21,13 +21,14 @@ export type StripePaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'con
 interface WithCheckoutStripePaymentMethodProps {
     storeUrl: string;
     isGuest: boolean;
+    isStripeLinkAuthenticated: boolean | undefined;
 }
 
 const StripeUPEPaymentMethod: FunctionComponent<
     StripePaymentMethodProps &
         WithInjectedHostedCreditCardFieldsetProps &
         WithCheckoutStripePaymentMethodProps
-> = ({ initializePayment, method, storeUrl, isGuest, onUnhandledError = noop, ...rest }) => {
+> = ({ initializePayment, method, storeUrl, isGuest, isStripeLinkAuthenticated,  onUnhandledError = noop, ...rest }) => {
     const containerId = `stripe-${method.id}-component-field`;
 
     const paymentContext = useContext(PaymentContext);
@@ -99,7 +100,7 @@ const StripeUPEPaymentMethod: FunctionComponent<
     };
 
     const shouldSavingCardsBeEnabled = (): boolean => {
-        if (!isGuest && method.initializationData.enableLink) {
+        if (!isGuest && isStripeLinkAuthenticated) {
             return false;
         } 
 
@@ -135,6 +136,7 @@ function mapFromCheckoutProps({ checkoutState }: CheckoutContextProps ) {
     return {
         storeUrl: config.links.siteLink,
         isGuest: customer.isGuest,
+        isStripeLinkAuthenticated: customer.isStripeLinkAuthenticated,
     };
 }
 
