@@ -72,6 +72,7 @@
         "packages/paypal-connect-integration/src/index.ts"
       ],
       "@bigcommerce/checkout/squarev2-integration": ["packages/squarev2-integration/src/index.ts"],
+      "@bigcommerce/checkout/td-bank-integration": ["packages/td-bank-integration/src/index.ts"],
       "@bigcommerce/checkout/test-framework": ["packages/test-framework/src/index.ts"],
       "@bigcommerce/checkout/test-mocks": ["packages/test-mocks/src/index.ts"],
       "@bigcommerce/checkout/test-utils": ["packages/test-utils/src/index.ts"],
