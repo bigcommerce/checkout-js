@@ -7,7 +7,7 @@ export default class AddressSelector {
     constructor(googlePlace: google.maps.places.PlaceResult) {
         const { address_components, name } = googlePlace;
 
-        this._name = name;
+        this._name = name ?? "";
         this._address = address_components;
     }
 

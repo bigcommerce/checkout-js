@@ -111,7 +111,7 @@ class GoogleAutocomplete extends PureComponent<GoogleAutocompleteProps, GoogleAu
                     types: types || ['geocode'],
                     componentRestrictions,
                 },
-                (results) => this.setState({ items: this.toAutocompleteItems(results) }),
+                (results) => this.setState({ items: this.toAutocompleteItems(results ?? undefined) }),
             );
         });
     }

@@ -65,3 +65,74 @@
 // .fitment-item-wrapper:hover {
 //     background-color: #eee;
 // }
+
+.fitment-places-wrapper {
+    position: relative;
+
+    .places-label {
+        margin-top: 0.5rem;
+    }
+
+    .places-input-wrapper {
+        button:hover {
+            background-color: #fee;
+        }
+
+        display: flex;
+        width: 100%;
+
+        input {
+            border: 1px solid #000;
+            padding: 0.5rem;
+            width: 100%;
+        }
+
+        button {
+            border: 1px solid #000;
+            border-left: none;
+            color: #c00;
+            cursor: pointer;
+        }
+    }
+
+    .places-suggestions {
+        background: #fff;
+        border: 1px solid #ccc;
+        border-bottom: 0;
+        border-top: 0;
+        position: absolute;
+        width: 100%;
+
+        div {
+            border: 1px solid #000;
+            border-top: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        div:hover {
+            background: #eee;
+        }
+    }
+}
+
+.fitment-view-selector {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.5rem;
+
+    div {
+        border: 2px solid #ec1c29;
+        cursor: pointer;
+        flex-basis: 50%;
+        font-weight: bold;
+        padding: 0.5rem;
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    .selected {
+        background-color: #ec1c29;
+        color: #fff;
+    }
+}

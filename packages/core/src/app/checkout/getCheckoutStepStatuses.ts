@@ -137,8 +137,6 @@ const getShippingStepStatus = createSelector(
         const isComplete = hasAddress && hasOptions && !hasUnassignedItems;
         const isRequired = itemsRequireShipping(cart, config);
 
-        console.log("checking shipping status", { hasAddress, hasOptions, hasUnassignedItems, shippingAddress, consignments })
-
         return {
             type: CheckoutStepType.Shipping,
             isActive: false,

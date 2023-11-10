@@ -16,6 +16,8 @@ import {
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { createSelector } from 'reselect';
+import haversine from 'haversine-distance'
+import { reduce, sortBy } from 'lodash'
 
 import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 
@@ -38,7 +40,9 @@ import fitmentPartner from '../../static/img/fitment-partner.png';
 import { Button, ButtonVariant } from '../ui/button';
 
 import { TranslatedString } from '../locale';
-// import IconChevronRight from '../ui/icon/IconChevronRight';
+import { FitmentPlacesPlaceholder, FitmentPlacesSearch } from './FitmentPlacesSearch';
+import { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
+import { FitmentCentreMap } from './FitmentMap';
 
 export type FitmentCentre = {
     company: string
@@ -65,6 +69,14 @@ export interface ShippingProps {
     onUnhandledError(error: Error): void;
     onSignIn(): void;
     navigateNextStep(isBillingSameAsShipping: boolean): void;
+}
+
+type State = {
+    lat: number
+    lng: number
+    code: string
+    country: string
+    zoom?: number
 }
 
 export interface WithCheckoutShippingProps {
@@ -107,7 +119,12 @@ interface ShippingState {
     isInitializing: boolean;
     fitmentCentre?: FitmentCentre;
     isLoading: boolean;
-    postcodeFilter?: string;
+    mapLoaded: boolean;
+    searchValue: string;
+    mapZoom: number;
+    mapCentre: { lat: number, lng: number };
+    sortedFitmentCentres: FitmentCentre[];
+    showMap: boolean
 }
 
 class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, ShippingState> {
@@ -116,9 +133,79 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
 
         this.state = {
             isInitializing: true,
-            isLoading: false
+            isLoading: false,
+            mapLoaded: false,
+            searchValue: '',
+            mapZoom: 0,
+            mapCentre: this.defaultMapCentre,
+            sortedFitmentCentres: fitmentCentres,
+            showMap: false
         };
     }
+
+    defaultMapCentre = {
+        lat: -25.790324,
+        lng: 134.748572
+    }
+
+    statesConfig = [
+        {
+            lat: -22.575197,
+            lng: 144.0847926,
+            code: "QLD",
+            country: "AU",
+            zoom: 6
+        },
+        {
+            lat: -31.2532183,
+            lng: 146.921099,
+            code: "NSW",
+            country: "AU",
+            zoom: 6
+        },
+        {
+            lat: -36.9847807,
+            lng: 143.3906074,
+            code: "VIC",
+            country: "AU",
+            zoom: 7
+        },
+        {
+            lat: -35.4734679,
+            lng: 149.0123679,
+            code: "ACT",
+            country: "AU",
+            zoom: 9
+        },
+        {
+            lat: -27.6728168,
+            lng: 121.6283098,
+            code: "WA",
+            country: "AU",
+            zoom: 5
+        },
+        {
+            lat: -30.0002315,
+            lng: 136.2091547,
+            code: "SA",
+            country: "AU",
+            zoom: 6
+        },
+        {
+            lat: -19.4914108,
+            lng: 132.5509603,
+            code: "NT",
+            country: "AU",
+            zoom: 5
+        },
+        {
+            lat: -42.0409059,
+            lng: 146.8087322,
+            code: "TAS",
+            country: "AU",
+            zoom: 8
+        }
+    ]
 
     async componentDidMount(): Promise<void> {
         const {
@@ -128,15 +215,137 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             onUnhandledError = noop,
         } = this.props;
 
+        let mapsApiScript = document.createElement('script');
+
+        mapsApiScript.src = "https://maps.googleapis.com/maps/api/js?key=AIzaSyD_DJqzi5tcNvhZ2o-q-MsYLy0Lcw8VHn4&libraries=places"
+
+        mapsApiScript.addEventListener('load', () => {
+            this.setState({ mapLoaded: true });
+        })
+
+        document.body.appendChild(mapsApiScript);
+
         try {
             await Promise.all([loadShippingAddressFields(), loadShippingOptions()]);
-
             onReady();
         } catch (error) {
             onUnhandledError(error);
         } finally {
             this.setState({ isInitializing: false });
         }
+    }
+
+    findStateByLatLng = (
+        latLng: google.maps.LatLngLiteral
+    ): State | undefined => {
+        const state = this.statesConfig.find((state) => {
+            return state.lat === latLng.lat && state.lng === latLng.lng
+        })
+        return state
+    }
+
+    filterSortFitmentCentresByDistance = (
+        latLng: google.maps.LatLngLiteral
+    ): FitmentCentre[] => {
+        const filteredFitmentCentres = reduce(
+            fitmentCentres as FitmentCentre[],
+            (
+                acc: FitmentCentre[],
+                fitmentCentre: FitmentCentre,
+            ): FitmentCentre[] => {
+                const distance = haversine(latLng, {
+                    lat: fitmentCentre.latitude,
+                    lng: fitmentCentre.longitude,
+                })
+
+                if (distance > 100000) {
+                    return acc
+                } else {
+                    fitmentCentre.distance = distance
+                    acc.push(fitmentCentre)
+
+                    return acc
+                }
+            },
+            []
+        )
+
+        if (filteredFitmentCentres.length > 0) {
+            this.setState({
+                mapZoom: 9,
+                mapCentre: latLng,
+            })
+        }
+
+        return sortBy(filteredFitmentCentres, (fitmentCentre) => fitmentCentre.distance)
+    }
+
+    filterSortFitmentCentresByState = (state: State): FitmentCentre[] => {
+        const latLng: google.maps.LatLngLiteral = {
+            lat: state.lat,
+            lng: state.lng,
+        }
+        const filteredFitmentCentres = fitmentCentres.filter(
+            (fitmentCenter) => fitmentCenter.state === state.code
+        )
+
+        const reducedFitmentCentres = reduce(
+            filteredFitmentCentres as FitmentCentre[],
+            (
+                acc: FitmentCentre[],
+                fitmentCentre: FitmentCentre,
+                _
+            ): FitmentCentre[] => {
+                const distance = haversine(latLng, {
+                    lat: fitmentCentre.latitude,
+                    lng: fitmentCentre.longitude,
+                })
+
+                fitmentCentre.distance = distance
+                acc.push(fitmentCentre)
+
+                return acc
+            },
+            []
+        )
+        if (reducedFitmentCentres.length) {
+            this.setState({
+                mapZoom: this.state.mapZoom || 6,
+                mapCentre: latLng
+            })
+        }
+        return sortBy(reducedFitmentCentres, (fitmentCentre) => fitmentCentre.distance)
+    }
+
+    handleSelect = (address: string) => {
+        geocodeByAddress(address)
+            .then((results) => getLatLng(results[0]))
+            .then((latLng) => {
+                const state = this.findStateByLatLng(latLng)
+                const sortedFitmentCentres = state
+                    ? this.filterSortFitmentCentresByState(state)
+                    : this.filterSortFitmentCentresByDistance(latLng)
+
+                this.setState({
+                    sortedFitmentCentres: sortedFitmentCentres,
+                    searchValue: address
+                })
+            })
+
+        return
+    }
+
+    handleSearchChange = (value: string) => {
+        if (value == '') {
+            this.setState({
+                fitmentCentre: undefined,
+                mapZoom: 0,
+                mapCentre: this.defaultMapCentre,
+                sortedFitmentCentres: fitmentCentres
+            });
+        }
+
+        this.setState({ searchValue: value })
     }
 
     render(): ReactNode {
@@ -185,24 +394,48 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             .flatMap(item => item.options)
             .some(option => option?.name.includes("Fitment") && option?.value == "EGR Fitment Centre")
 
-        const postcodeFilter = this.state.postcodeFilter;
-
         if (includesFitmentCentreItem) {
-
             return (
                 <>
                     <div className="fitment-message">
                         Please select your preferred fitment centre location. Your items will be shipped to your nominated fitment provider.
                     </div>
                     <div>
-                        <div className='form-field'>
-                            <label className="form-label">Search by postcode</label>
-                            <input className='form-input' type='text' value={postcodeFilter} onChange={(event) => this.setState({ postcodeFilter: event.target.value })} />
+                        {this.state.mapLoaded ? (
+                            <FitmentPlacesSearch
+                                searchValue={this.state.searchValue}
+                                handleSearchChange={this.handleSearchChange}
+                                handleSelect={this.handleSelect}
+                            />
+                        ) : (
+                            <FitmentPlacesPlaceholder />
+                        )}
+                    </div>
+                    {/* <div className='fitment-view-selector'>
+                        <div className={`${this.state.showMap ? '' : 'selected'}`} onClick={() => this.setState({ showMap: false })}>List View</div>
+                        <div className={`${this.state.showMap ? 'selected' : ''}`} onClick={() => this.setState({ showMap: true })}>Map View</div>
+                    </div> */}
+                    {this.state.showMap ? (
+                        <div className='fitment-map-wrapper'>
+                            {this.state.mapLoaded && (
+                                <div style={{ width: "500px", height: "500px" }}>
+                                    <FitmentCentreMap
+                                        fitmentCentres={this.state.sortedFitmentCentres}
+                                        selectedFitmentCentre={this.state.fitmentCentre}
+                                        zoom={this.state.mapZoom}
+                                        centre={this.state.mapCentre}
+                                        defaultCentre={this.defaultMapCentre}
+                                        setZoom={(zoom: number) => this.setState({ mapZoom: zoom })}
+                                        handleFitmentCentreSelect={this.handleFitmentCentreChange}
+                                    />
+                                </div>
+                            )}
                         </div>
-                    </div>
-                    <div className="fitment-wrapper">
-                        {fitmentCentres.filter((fitmentCentre) => fitmentCentre.postcode.includes(this.state.postcodeFilter ?? "")).map(this.renderFitmentCentreSelection)}
-                    </div>
+                    ) : (
+                        <div className="fitment-wrapper">
+                            {this.state.sortedFitmentCentres.map(this.renderFitmentCentreSelection)}
+                        </div>
+                    )}
                     <div className="form-actions">
                         <Button
                             disabled={this.state.fitmentCentre == undefined}
