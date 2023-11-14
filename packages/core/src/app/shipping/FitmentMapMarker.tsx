@@ -26,24 +26,25 @@ export const FitmentCentreMarker = ({
                 }}
                 className="image-wrapper"
             >
-                <img src={fitmentPartner} />
+                <img width={30} height={30} src={fitmentPartner} />
             </div>
 
             {isSelected && showInfo && (
-                <div className="bg-white p-3 w-80 bottom-10 -left-36 absolute text-sm rounded-lg shadow-xl info-box">
-                    <div className="flex flex-row text-lg font-bold justify-between info-name">
+                <div className="info-box">
+                    <div className="info-name">
                         <h4>{fitmentCentre.company}</h4>
                         <span className="close-button" onClick={() => setShowInfo(false)}>
-                            X
+                            ⨉
                         </span>
                     </div>
-                    <div className="flex flex-row mt-3 items-center info-address">
-                        <p>
+                    <div className="info-address">
+                        <span>
                             {fitmentCentre.street}, {fitmentCentre.suburb}, {fitmentCentre.state}{' '}
                             {fitmentCentre.postcode}
-                        </p>
+                        </span>
                     </div>
                     <div className="flex flex-row mt-3 items-center info-phone">
+                        <span>ph: </span>
                         <a
                             href={fitmentCentre.phone ? `tel:${fitmentCentre.phone}` : '#'}
                             target="_blank"

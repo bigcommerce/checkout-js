@@ -411,24 +411,22 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                             <FitmentPlacesPlaceholder />
                         )}
                     </div>
-                    {/* <div className='fitment-view-selector'>
+                    <div className='fitment-view-selector'>
                         <div className={`${this.state.showMap ? '' : 'selected'}`} onClick={() => this.setState({ showMap: false })}>List View</div>
                         <div className={`${this.state.showMap ? 'selected' : ''}`} onClick={() => this.setState({ showMap: true })}>Map View</div>
-                    </div> */}
+                    </div>
                     {this.state.showMap ? (
                         <div className='fitment-map-wrapper'>
                             {this.state.mapLoaded && (
-                                <div style={{ width: "500px", height: "500px" }}>
-                                    <FitmentCentreMap
-                                        fitmentCentres={this.state.sortedFitmentCentres}
-                                        selectedFitmentCentre={this.state.fitmentCentre}
-                                        zoom={this.state.mapZoom}
-                                        centre={this.state.mapCentre}
-                                        defaultCentre={this.defaultMapCentre}
-                                        setZoom={(zoom: number) => this.setState({ mapZoom: zoom })}
-                                        handleFitmentCentreSelect={this.handleFitmentCentreChange}
-                                    />
-                                </div>
+                                <FitmentCentreMap
+                                    fitmentCentres={this.state.sortedFitmentCentres}
+                                    selectedFitmentCentre={this.state.fitmentCentre}
+                                    zoom={this.state.mapZoom}
+                                    centre={this.state.mapCentre}
+                                    defaultCentre={this.defaultMapCentre}
+                                    setZoom={(zoom: number) => this.setState({ mapZoom: zoom })}
+                                    handleFitmentCentreSelect={this.handleFitmentCentreChange}
+                                />
                             )}
                         </div>
                     ) : (
@@ -481,11 +479,11 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         );
     }
 
-    private renderFitmentCentreSelection = (fitmentCentre: FitmentCentre) => {
+    private renderFitmentCentreSelection = (fitmentCentre: FitmentCentre, index: number) => {
         const { company, street, suburb, state, postcode, phone } = fitmentCentre;
 
         return (
-            <label htmlFor={company} className="fitment-item-wrapper">
+            <label key={`fitment-centre-${index}`} htmlFor={company} className="fitment-item-wrapper">
                 <div className='details'>
                     <div style={{ fontWeight: "bold" }}>{company}</div>
                     <div>{street}</div>
@@ -506,7 +504,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         value={company}
                         checked={fitmentCentre === this.state.fitmentCentre}
                         disabled={this.state.isLoading}
-                        onClick={() => this.handleFitmentCentreChange(fitmentCentre)}
+                        onChange={() => this.handleFitmentCentreChange(fitmentCentre)}
                     />
                 </div>
             </label>

@@ -22,7 +22,6 @@ export const FitmentCentreMap = ({
     setZoom,
     handleFitmentCentreSelect,
 }: FitmentCentreMapProps) => {
-
     return (
         <GoogleMapReact
             bootstrapURLKeys={{
@@ -30,8 +29,10 @@ export const FitmentCentreMap = ({
             }}
             defaultCenter={defaultCentre}
             center={centre}
+            defaultZoom={4}
             zoom={zoom}
             onChange={({ zoom }) => setZoom(zoom)}
+            yesIWantToUseGoogleMapApiInternals={true}
         >
             {fitmentCentres.map((fitmentCentre, index) => (
                 <FitmentCentreMarker
