@@ -358,5 +358,115 @@
         "phone": "07 4952 4122",
         "latitude": -21.16534,
         "longitude": 149.15358
+    },
+    {
+        "company": "Equipt 4x4 Caboolture",
+        "street": "73 Beerburrum Rd",
+        "suburb": "Caboolture",
+        "state": "QLD",
+        "postcode": "4510",
+        "phone": "07 3539 7597",
+        "latitude": -27.07675,
+        "longitude": 152.95059
+    },
+    {
+        "company": "Opposite Lock Traralgon",
+        "street": "319 Princes Hwy",
+        "suburb": "Traralgon East",
+        "state": "VIC",
+        "postcode": "3844",
+        "phone": "03 5175 0442",
+        "latitude": -38.18962,
+        "longitude": 146.56510
+    },
+    {
+        "company": "Offroad Animal Carrum Downs",
+        "street": "Unit 2/1 Brett Dr",
+        "suburb": "Carrum Downs",
+        "state": "VIC",
+        "postcode": "3201",
+        "phone": "03 9017 5574",
+        "latitude": -38.09786,
+        "longitude": 145.16254
+    },
+    {
+        "company": "Opposite Lock Wangara",
+        "street": "8/9 Inspiration Dr",
+        "suburb": "Wangara",
+        "state": "WA",
+        "postcode": "6065",
+        "phone": "08 9302 3950",
+        "latitude": -31.79892,
+        "longitude": 115.83458
+    },
+    {
+        "company": "Southern Car Care",
+        "street": "8 Zaknic Pl",
+        "suburb": "Bunbury",
+        "state": "WA",
+        "postcode": "6230",
+        "phone": "08 9791 4440",
+        "latitude": -33.33422,
+        "longitude": 115.64973
+    },
+    {
+        "company": "Barossa 4x4 and Outdoors",
+        "street": "Unit 5, 25-35 Tanunda Rd",
+        "suburb": "Nuriootpa",
+        "state": "SA",
+        "postcode": "5355",
+        "phone": "08 8562 2772",
+        "latitude": -34.47896,
+        "longitude": 138.99338
+    },
+    {
+        "company": "Barossa 4x4 and Outdoors",
+        "street": "Unit 5, 25-35 Tanunda Rd",
+        "suburb": "Nuriootpa",
+        "state": "SA",
+        "postcode": "5355",
+        "phone": "08 8562 2772",
+        "latitude": -34.47896,
+        "longitude": 138.99338
+    },
+    {
+        "company": "Southern Towbars",
+        "street": "28 Furness Ave",
+        "suburb": "Edwardstown",
+        "state": "SA",
+        "postcode": "5039",
+        "phone": "08 8276 8244",
+        "latitude": -34.98342,
+        "longitude": 138.57137
+    },
+    {
+        "company": "Austrek Adventure/TJM Mildura",
+        "street": "322 Ediwanda St",
+        "suburb": "Mildura",
+        "state": "VIC",
+        "postcode": "3500",
+        "phone": "03 5022 9540",
+        "latitude": -34.19694,
+        "longitude": 142.16856
+    },
+    {
+        "company": "Star Tyrepower Kingaroy",
+        "street": "190 Haly St",
+        "suburb": "Kingaroy",
+        "state": "QLD",
+        "postcode": "4610",
+        "phone": "07 4162 1177",
+        "latitude": -26.53869,
+        "longitude": 151.83758
+    },
+    {
+        "company": "Opposite Lock Townsville",
+        "street": "16 Civil Rd",
+        "suburb": "Garbutt",
+        "state": "QLD",
+        "postcode": "4814",
+        "phone": "07 4755 2245",
+        "latitude": -19.26994,
+        "longitude": 146.76218
     }
 ]
