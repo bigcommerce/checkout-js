@@ -438,7 +438,9 @@
                 "birth_date": "Fødselsdato",
                 "errors": {
                     "isRequired": "{fieldName} er påkrævet",
-                    "isInvalid": "{fieldName} er ugyldigt"
+                    "isInvalid": "{fieldName} er ugyldigt",
+                    "paymentSourceInfoCannotBeVerified": "Kombinationen af dit navn og din adresse kunne ikke valideres. Ret dine data, og prøv igen. Du kan finde yderligere oplysninger i <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Ratepay Data Privacy Statement</a>, eller du kan kontakte Ratepay ved hjælp af denne <a href='https://www.ratepay.com/en/contact/' target='blank'>kontaktformular</a>.",
+                    "paymentSourceDeclinedByProcessor": "Det er ikke muligt at bruge den valgte betalingsmetode. Denne beslutning er baseret på automatiseret databehandling. Du kan finde yderligere oplysninger i <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Ratepay Data Privacy Statement</a>, eller du kan kontakte Ratepay ved hjælp af denne <a href='https://www.ratepay.com/en/contact/' target='blank'>kontaktformular</a>."
                 }
             }
         },
@@ -558,8 +560,6 @@
             "order_pending_review_text": "Din ordre blev sendt til os, men afventer i øjeblikket betaling. Når vi modtager betalingen for din ordre, gennemføres den. Hvis du allerede har tilvejebragt betalingsoplysninger, behandler vi din ordre manuelt og sender dig en e-mail, når den er gennemført.",
             "order_pending_status_text": "Vi har modtaget din ordre og behandler din betaling. Når betalingen er bekræftet, vil din ordre blive gennemført. Vi sender dig en e-mail, når den er færdig. Bemærk, at denne proces kan tage et par minutter afhængigt af behandlingstiden for din valgte metode. Hvis du har spørgsmål om dit køb, kan du sende os en e-mail på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_incomplete_status_text": "Vi har modtaget din ordre og betaling. Din ordre behandles nu af vores system. Bemærk, at behandlingen kan tage et par minutter. Hvis du har spørgsmål om dit køb, kan du sende os en e-mail på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
-            "order_incomplete_status_heading": "Betalingen for denne ordre er desværre mislykkedes.",
-            "order_incomplete_status_with_unsuccessful_payment_text": "Din ordre er blev ikke gennemført, fordi betalingen ikke lykkedes. Hvis du vil have hjælp til dit køb, så send os en e-mail på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_with_downloadable_digital_items_text": "Du kan til enhver tid downloade dine digitale køb ved at klikke på linkene på denne side eller ved at logge ind på din konto. Der er også et link til download i din bekræftelsesmail, som ankommer inden længe.",
             "order_with_support_number_text": "Der sendes en e-mail med oplysninger om dit køb. Hvis du har spørgsmål om dit køb, kan du sende en e-mail til os på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a> eller ringe til os på <a href=\"tel://{supportPhoneNumber}\">{supportPhoneNumber}</a>.",
             "order_without_downloadable_digital_items_text": "Når vi har modtaget din betaling, sender vi en bekræftelsesmail med et link til at downloade dine digitale køb.",
