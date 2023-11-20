@@ -283,18 +283,19 @@ class Checkout extends Component<
             extensionService,
             loadCheckout,
             subscribeToConsignments,
-            isExtensionEnabled,
         } = this.props;
 
         try {
-            const { data } = await loadCheckout(checkoutId, {
+            const [{ data }] = await Promise.all([loadCheckout(checkoutId, {
                 params: {
                     include: [
                         'cart.lineItems.physicalItems.categoryNames',
                         'cart.lineItems.digitalItems.categoryNames',
                     ] as any, // FIXME: Currently the enum is not exported so it can't be used here.
                 },
-            });
+            }), extensionService.loadExtensions()]);
+            extensionService.preloadExtensions();
+
             const { links: { siteLink = '' } = {} } = data.getConfig() || {};
             const errorFlashMessages = data.getFlashMessages('error') || [];
 
@@ -358,9 +359,6 @@ class Checkout extends Component<
 
             window.addEventListener('beforeunload', this.handleBeforeExit);
 
-            if (isExtensionEnabled()) {
-                await extensionService.loadExtensions();
-            }
         } catch (error) {
             if (error instanceof Error) {
                 this.handleUnhandledError(error);

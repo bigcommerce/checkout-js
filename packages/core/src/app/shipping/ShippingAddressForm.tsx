@@ -7,7 +7,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, { Component, ReactNode } from 'react';
 
-import { AddressForm, AddressSelect, isValidCustomerAddress } from '../address';
+import { AddressForm, AddressSelect, AddressType, isValidCustomerAddress } from '../address';
 import { connectFormik, ConnectFormikProps } from '../common/form';
 import { Fieldset } from '../ui/form';
 import { LoadingOverlay } from '../ui/loading';
@@ -72,6 +72,7 @@ class ShippingAddressForm extends Component<
                                 selectedAddress={
                                     hasValidCustomerAddress ? shippingAddress : undefined
                                 }
+                                type={AddressType.Shipping}
                             />
                         </LoadingOverlay>
                     </Fieldset>

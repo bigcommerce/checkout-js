@@ -2,7 +2,7 @@ import { RequestError } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
 import React, { PureComponent, ReactNode, SyntheticEvent } from 'react';
 
-import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { TranslatedHtml, TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { Button, ButtonSize } from '../../ui/button';
 import { IconError, IconSize } from '../../ui/icon';
@@ -12,9 +12,11 @@ import computeErrorCode from './computeErrorCode';
 import ErrorCode from './ErrorCode';
 import isCustomError from './isCustomError';
 import isRequestError from './isRequestError';
+import isHtmlError from './isHtmlError';
+import { CustomError } from './index';
 
 export interface ErrorModalProps {
-    error?: Error | RequestError;
+    error?: Error | RequestError | CustomError;
     message?: ReactNode;
     title?: ReactNode;
     shouldShowErrorCode?: boolean;
@@ -68,6 +70,9 @@ export default class ErrorModal extends PureComponent<ErrorModalProps> {
 
         return (
             <>
+                {error && isHtmlError(error) &&
+                    <TranslatedHtml id={error.data.translationKey} />
+                }
                 {message && (
                     <p aria-live="assertive" id="errorModalMessage" role="alert">
                         {message}

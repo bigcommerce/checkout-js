@@ -6,9 +6,11 @@ import { IconPayPalConnect } from '@bigcommerce/checkout/ui';
 import './PoweredByPaypalConnectLabel.scss';
 
 const PoweredByPaypalConnectLabel = () => (
-    <div className="powered-by-paypal-connect-label">
-        <TranslatedString id="remote.powered_by" />
-        <IconPayPalConnect />
+    <div className="powered-by-paypal-connect">
+        <div className="powered-by-paypal-connect-label">
+            <TranslatedString id="remote.powered_by" />
+            <IconPayPalConnect />
+        </div>
     </div>
 );
 

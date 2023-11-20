@@ -22,6 +22,35 @@ export class ExtensionService {
         await this.checkoutService.loadExtensions();
     }
 
+    preloadExtensions(): void {
+        const state = this.checkoutService.getState();
+        const extensions = state.data.getExtensions();
+        const cartId = state.data.getCart()?.id;
+        const parentOrigin = state.data.getConfig()?.links.siteLink;
+
+        if (!cartId || !parentOrigin) {
+            return;
+        }
+
+        extensions?.forEach((extension) => {
+            const url = new URL(extension.url);
+
+            url.searchParams.set('extensionId', extension.id);
+            url.searchParams.set('cartId', cartId);
+            url.searchParams.set('parentOrigin', parentOrigin);
+
+            const link = document.createElement('link');
+
+            link.rel = 'preload';
+            link.as = 'document';
+            link.href = url.toString();
+
+            const head = document.head;
+
+            head.appendChild(link);
+        });
+    }
+
     async renderExtension(container: string, region: ExtensionRegion): Promise<void> {
         const extension = this.checkoutService.getState().data.getExtensionByRegion(region);
 
