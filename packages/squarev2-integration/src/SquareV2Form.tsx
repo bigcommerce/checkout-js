@@ -1,6 +1,11 @@
-import { CardInstrument, CheckoutSelectors, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import {
+    CardInstrument,
+    CheckoutSelectors,
+    CheckoutService,
+    PaymentMethod,
+} from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 
 import {
     CardInstrumentFieldset,
@@ -10,6 +15,7 @@ import { usePaymentFormContext } from '@bigcommerce/checkout/payment-integration
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 export interface SquareV2FormProps {
+    checkoutService: CheckoutService;
     checkoutState: CheckoutSelectors;
     containerId: string;
     deinitializePayment: () => Promise<void>;
@@ -18,6 +24,7 @@ export interface SquareV2FormProps {
 }
 
 const SquareV2Form: FunctionComponent<SquareV2FormProps> = ({
+    checkoutService,
     checkoutState,
     containerId,
     deinitializePayment,
@@ -25,12 +32,19 @@ const SquareV2Form: FunctionComponent<SquareV2FormProps> = ({
     method,
 }) => {
     const { getCustomer, getInstruments } = checkoutState.data;
-    const instruments = getInstruments(method) || [];
     const isSignedIn = getCustomer()?.isGuest;
+    const isInstrumentFeatureAvailable = !isSignedIn && Boolean(method.config.isVaultingEnabled);
+
+    useEffect(() => {
+        if (isInstrumentFeatureAvailable) {
+            void checkoutService.loadInstruments();
+        }
+    }, [checkoutService, isInstrumentFeatureAvailable]);
+
+    const instruments = getInstruments(method) || [];
     const { isLoadingInstruments } = checkoutState.statuses;
     const { setFieldValue } = usePaymentFormContext().paymentForm;
 
-    const isInstrumentFeatureAvailable = !isSignedIn && Boolean(method.config.isVaultingEnabled);
     const shouldShowInstrumentFieldset = isInstrumentFeatureAvailable && instruments.length > 0;
 
     const [isAddingNewCard, setIsAddingNewCard] = useState(false);

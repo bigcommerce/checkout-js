@@ -156,6 +156,7 @@ const SquareV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
     return (
         <SquareV2Form
+            checkoutService={checkoutService}
             checkoutState={checkoutState}
             containerId={containerId}
             deinitializePayment={deinitializePayment}
