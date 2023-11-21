@@ -14,6 +14,7 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcomme
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getStoreConfig } from '../../config/config.mock';
+import { getCustomer } from '../../customer/customers.mock';
 import {
     withHostedCreditCardFieldset,
     WithInjectedHostedCreditCardFieldsetProps,
@@ -79,6 +80,8 @@ describe('when using Stripe payment', () => {
         localeContext = createLocaleContext(getStoreConfig());
 
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
+
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
 
         jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
 

@@ -74,6 +74,7 @@ export interface WithCheckoutShippingProps {
     getFields(countryCode?: string): FormField[];
     initializeShippingMethod(options: ShippingInitializeOptions): Promise<CheckoutSelectors>;
     loadShippingAddressFields(): Promise<CheckoutSelectors>;
+    loadBillingAddressFields(): Promise<CheckoutSelectors>;
     loadShippingOptions(): Promise<CheckoutSelectors>;
     signOut(options?: CustomerRequestOptions): void;
     createCustomerAddress(address: AddressRequestBody): Promise<CheckoutSelectors>;
@@ -99,13 +100,14 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
     async componentDidMount(): Promise<void> {
         const {
             loadShippingAddressFields,
+            loadBillingAddressFields,
             loadShippingOptions,
             onReady = noop,
             onUnhandledError = noop,
         } = this.props;
 
         try {
-            await Promise.all([loadShippingAddressFields(), loadShippingOptions()]);
+            await Promise.all([loadShippingAddressFields(), loadShippingOptions(), loadBillingAddressFields()]);
 
             onReady();
         } catch (error) {
@@ -413,6 +415,7 @@ export function mapToShippingProps({
         isLoading,
         isShippingStepPending: isShippingStepPending(),
         loadShippingAddressFields: checkoutService.loadShippingAddressFields,
+        loadBillingAddressFields: checkoutService.loadBillingAddressFields,
         loadShippingOptions: checkoutService.loadShippingOptions,
         methodId,
         providerWithCustomCheckout: config.checkoutSettings.providerWithCustomCheckout || undefined,

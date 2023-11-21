@@ -99,7 +99,7 @@ const OrderStatusMessage: FunctionComponent<OrderStatusMessageProps> = ({
                 return (
                     <TranslatedHtml
                         data={{ orderNumber, supportEmail }}
-                        id="order_confirmation.order_incomplete_status_with_unsuccessful_payment_text"
+                        id="order_confirmation.order_pending_status_text"
                     />
                 );
             }

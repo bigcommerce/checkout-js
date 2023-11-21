@@ -7,11 +7,12 @@ import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/
 import { AddressSelectProps } from './AddressSelect';
 import StaticAddress from './StaticAddress';
 
-type AddressSelectButtonProps = Pick<AddressSelectProps, 'selectedAddress' | 'addresses'>;
+type AddressSelectButtonProps = Pick<AddressSelectProps, 'selectedAddress' | 'addresses' | 'type'>;
 
 const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLanguageProps> = ({
     selectedAddress,
     language,
+    type
 }) => {
     const [ariaExpanded, setAriaExpanded] = useState(false);
 
@@ -27,7 +28,7 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLang
             onBlur={() => setAriaExpanded(false)}
         >
             {selectedAddress ? (
-                <StaticAddress address={selectedAddress} />
+                <StaticAddress address={selectedAddress} type={type} />
             ) : (
                 <TranslatedString id="address.enter_address_action" />
             )}

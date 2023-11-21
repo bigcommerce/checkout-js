@@ -28,6 +28,7 @@ describe('isInstrumentFeatureAvailable()', () => {
                     isVaultingEnabled: true,
                 },
             }),
+            shouldSavingCardsBeEnabled: true,
         };
     });
 
@@ -97,6 +98,15 @@ describe('isInstrumentFeatureAvailable()', () => {
                 ),
             }),
         ).toBe(true);
+    });
+
+    it('returns false if shouldSavingCardsBeEnabled argument is false', () => {
+        expect(
+            isInstrumentFeatureAvailable({
+                ...state,
+                shouldSavingCardsBeEnabled: false,
+            }),
+        ).toBe(false);
     });
 
     it('returns true otherwise', () => {
