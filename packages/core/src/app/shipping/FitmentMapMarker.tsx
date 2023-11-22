@@ -31,27 +31,32 @@ export const FitmentCentreMarker = ({
 
             {isSelected && showInfo && (
                 <div className="info-box">
-                    <div className="info-name">
-                        <h4>{fitmentCentre.company}</h4>
-                        <span className="close-button" onClick={() => setShowInfo(false)}>
-                            ⨉
-                        </span>
+                    <div className="selector">
+                        <input type='radio' checked={isSelected} />
                     </div>
-                    <div className="info-address">
-                        <span>
-                            {fitmentCentre.street}, {fitmentCentre.suburb}, {fitmentCentre.state}{' '}
-                            {fitmentCentre.postcode}
-                        </span>
-                    </div>
-                    <div className="flex flex-row mt-3 items-center info-phone">
-                        <span>ph: </span>
-                        <a
-                            href={fitmentCentre.phone ? `tel:${fitmentCentre.phone}` : '#'}
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            {fitmentCentre.phone}
-                        </a>
+                    <div className="info">
+                        <div className="info-name">
+                            <h4>{fitmentCentre.company}</h4>
+                            <span className="close-button" onClick={() => setShowInfo(false)}>
+                                ⨉
+                            </span>
+                        </div>
+                        <div className="info-address">
+                            <span>
+                                {fitmentCentre.street}, {fitmentCentre.suburb}, {fitmentCentre.state}{' '}
+                                {fitmentCentre.postcode}
+                            </span>
+                        </div>
+                        <div className="flex flex-row mt-3 items-center info-phone">
+                            <span>ph: </span>
+                            <a
+                                href={fitmentCentre.phone ? `tel:${fitmentCentre.phone}` : '#'}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {fitmentCentre.phone}
+                            </a>
+                        </div>
                     </div>
                 </div>
             )}
