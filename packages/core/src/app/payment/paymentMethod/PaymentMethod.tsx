@@ -41,6 +41,7 @@ import PPSDKPaymentMethod from './PPSDKPaymentMethod';
 import SquarePaymentMethod from './SquarePaymentMethod';
 import StripePaymentMethod from './StripePaymentMethod';
 import StripeUPEPaymentMethod from './StripeUPEPaymentMethod';
+// import TDOnlineMartPaymentMethod from './TDOnlineMartPaymentMethod';
 import VisaCheckoutPaymentMethod from './VisaCheckoutPaymentMethod';
 import WorldpayCreditCardPaymentMethod from './WorldpayCreditCardPaymentMethod';
 
@@ -226,6 +227,10 @@ const PaymentMethodComponent: FunctionComponent<
     if (method.gateway === PaymentMethodId.Mollie) {
         return <MolliePaymentMethod {...props} />;
     }
+
+    // if (method.id === PaymentMethodId.TDOnlineMart) {
+    //     return <TDOnlineMartPaymentMethod {...props}/>
+    // }
 
     // NOTE: Some payment methods have `method` as `credit-card` but they are
     // actually not. Therefore, as a workaround, we are doing the following

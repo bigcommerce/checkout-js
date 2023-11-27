@@ -223,6 +223,7 @@ class CreditCardPaymentMethodComponent extends Component<
                 <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
                     <div className="paymentMethod paymentMethod--creditCard">
                         {shouldShowInstrumentFieldset && (
+                            //render of vaulted cards dropdown
                             <CardInstrumentFieldset
                                 instruments={instruments}
                                 onDeleteInstrument={this.handleDeleteInstrument}
