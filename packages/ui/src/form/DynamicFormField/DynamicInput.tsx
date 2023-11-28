@@ -23,6 +23,7 @@ export interface DynamicInputProps extends InputProps {
     fieldType?: DynamicFormFieldType;
     options?: FormFieldItem[];
     isFloatingLabelEnabled?: boolean;
+    inputDateFormat?: string;
     date?: {
         inputFormat: string;
     };
@@ -38,9 +39,11 @@ const DynamicInput: FunctionComponent<DynamicInputProps> = ({
     value,
     isFloatingLabelEnabled,
     date,
+    inputDateFormat,
     ...rest
 }) => {
-    const { inputFormat } = date || { inputFormat: '' };
+    const inputFormat = inputDateFormat || date?.inputFormat || '';
+
     const handleDateChange = useCallback(
         (dateValue: string, event) =>
             onChange({

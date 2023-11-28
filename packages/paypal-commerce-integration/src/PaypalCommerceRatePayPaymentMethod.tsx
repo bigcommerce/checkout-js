@@ -33,6 +33,7 @@ const formFieldData: FormField[] = [
         label: 'payment.ratepay.birth_date',
         required: true,
         fieldType: DynamicFormFieldType.DATE,
+        inputDateFormat: 'dd.MM.yyyy',
     },
     {
         name: 'ratepayPhoneCountryCode',
