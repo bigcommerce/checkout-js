@@ -1,5 +1,6 @@
 import {
     BillingAddress,
+    Cart,
     Checkout,
     CheckoutService,
     createCheckoutService,
@@ -14,6 +15,7 @@ import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcomme
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getBillingAddress } from '../billing/billingAddresses.mock';
+import { getCart } from '../cart/carts.mock';
 import { getCheckout } from '../checkout/checkouts.mock';
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import CheckoutStepType from '../checkout/CheckoutStepType';
@@ -33,8 +35,10 @@ describe('Customer', () => {
     let CustomerTest: FunctionComponent<CustomerProps & Partial<WithCheckoutCustomerProps>>;
     let billingAddress: BillingAddress;
     let checkout: Checkout;
+    let cart: Cart;
     let checkoutService: CheckoutService;
     let config: StoreConfig;
+    let configStripeUpe: StoreConfig;
     let customer: CustomerData;
     let localeContext: LocaleContextType;
     const defaultProps = {
@@ -47,8 +51,16 @@ describe('Customer', () => {
     beforeEach(() => {
         billingAddress = getBillingAddress();
         checkout = getCheckout();
+        cart = getCart();
         customer = getGuestCustomer();
         config = getStoreConfig();
+        configStripeUpe = {
+            ...config,
+            checkoutSettings: {
+                ...config.checkoutSettings,
+                providerWithCustomCheckout: PaymentMethodId.StripeUPE,
+            }
+        }
 
         checkoutService = createCheckoutService();
 
@@ -57,6 +69,8 @@ describe('Customer', () => {
         );
 
         jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(checkout);
+
+        jest.spyOn(checkoutService.getState().data, 'getCart').mockReturnValue(cart);
 
         jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue(customer);
 
@@ -113,14 +127,41 @@ describe('Customer', () => {
                 isBusy: false,
                 type: CheckoutStepType.Customer };
 
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(configStripeUpe);
+
             const component = mount(
-                <CustomerTest {...defaultProps}  providerWithCustomCheckout={ PaymentMethodId.StripeUPE } step={ steps } viewType={ CustomerViewType.Guest } />
+                <CustomerTest {...defaultProps} step={ steps } viewType={ CustomerViewType.Guest } />
             );
 
             await new Promise(resolve => process.nextTick(resolve));
             component.update();
 
             expect(component.find(StripeGuestForm).exists()).toBe(true);
+        });
+
+        it("doesn't render Stripe guest form if it enabled but cart amount is smaller then Stripe requires", async () => {
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(configStripeUpe);
+            jest.spyOn(checkoutService.getState().data, 'getCart').mockReturnValue({
+                ...cart,
+                cartAmount: 0.4,
+            });
+
+            const steps = { isActive: true,
+                isComplete: true,
+                isEditable: true,
+                isRequired: true,
+                isBusy: false,
+                type: CheckoutStepType.Customer };
+
+            const component = mount(
+                <CustomerTest {...defaultProps}  step={ steps } viewType={ CustomerViewType.Guest } />
+            );
+
+            await new Promise(resolve => process.nextTick(resolve));
+            component.update();
+
+            expect(component.find(StripeGuestForm).exists()).toBe(false);
+            expect(component.find(GuestForm).exists()).toBe(true);
         });
 
         it('calls onUnhandledError if initialize was failed', async () => {
