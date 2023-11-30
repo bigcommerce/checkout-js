@@ -56,6 +56,7 @@
 /packages/braintree-integration @bigcommerce/team-paypal
 /packages/paypal-commerce-integration @bigcommerce/team-paypal
 /packages/paypal-connect-integration @bigcommerce/team-paypal
+/packages/paypal-express-integration @bigcommerce/team-integrations
 
 ## Shared
 /packages/core/customer/checkoutSuggestion @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
