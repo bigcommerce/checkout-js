@@ -5,7 +5,7 @@ import {
     PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
     CardInstrumentFieldset,
@@ -31,6 +31,9 @@ const SquareV2Form: FunctionComponent<SquareV2FormProps> = ({
     initializePayment,
     method,
 }) => {
+    const [isAddingNewCard, setIsAddingNewCard] = useState(false);
+    const [selectedInstrumentId, setSelectedInstrumentId] = useState<string | undefined>(undefined);
+
     const { getCustomer, getInstruments } = checkoutState.data;
     const isSignedIn = getCustomer()?.isGuest;
     const isInstrumentFeatureAvailable = !isSignedIn && Boolean(method.config.isVaultingEnabled);
@@ -41,26 +44,34 @@ const SquareV2Form: FunctionComponent<SquareV2FormProps> = ({
         }
     }, [checkoutService, isInstrumentFeatureAvailable]);
 
-    const instruments = getInstruments(method) || [];
-    const { isLoadingInstruments } = checkoutState.statuses;
-    const { setFieldValue } = usePaymentFormContext().paymentForm;
-
+    const instruments = useMemo(() => getInstruments(method) || [], [getInstruments, method]);
     const shouldShowInstrumentFieldset = isInstrumentFeatureAvailable && instruments.length > 0;
-
-    const [isAddingNewCard, setIsAddingNewCard] = useState(false);
-    const [selectedInstrumentId, setSelectedInstrumentId] = useState<string | undefined>(undefined);
-
     const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
 
-    const getDefaultInstrumentId: () => string | undefined = () => {
+    const getDefaultInstrumentId = useCallback(() => {
         if (isAddingNewCard) {
             return;
         }
 
-        const defaultInstrument =
-            instruments.find((instrument) => instrument.defaultInstrument) || instruments[0];
+        if (instruments.length > 0) {
+            const defaultInstrument =
+                instruments.find((instrument) => instrument.defaultInstrument) || instruments[0];
 
-        return defaultInstrument.bigpayToken;
+            return defaultInstrument.bigpayToken;
+        }
+    }, [instruments, isAddingNewCard]);
+
+    useEffect(() => {
+        const defaultInstrumentId = getDefaultInstrumentId() || undefined;
+
+        setSelectedInstrumentId(defaultInstrumentId);
+    }, [getDefaultInstrumentId, instruments]);
+
+    const { setFieldValue } = usePaymentFormContext().paymentForm;
+
+    const handleSelectInstrument: (id: string) => void = (id) => {
+        setIsAddingNewCard(false);
+        setSelectedInstrumentId(id);
     };
 
     const handleDeleteInstrument: (id: string) => void = (id) => {
@@ -74,11 +85,6 @@ const SquareV2Form: FunctionComponent<SquareV2FormProps> = ({
 
             setFieldValue('instrumentId', getDefaultInstrumentId());
         }
-    };
-
-    const handleSelectInstrument: (id: string) => void = (id) => {
-        setIsAddingNewCard(false);
-        setSelectedInstrumentId(id);
     };
 
     const handleUseNewCard: () => void = () => {
@@ -113,6 +119,8 @@ const SquareV2Form: FunctionComponent<SquareV2FormProps> = ({
             </div>
         );
     };
+
+    const { isLoadingInstruments } = checkoutState.statuses;
 
     return (
         <LoadingOverlay
