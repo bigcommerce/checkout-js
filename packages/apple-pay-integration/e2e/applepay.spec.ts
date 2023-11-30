@@ -33,7 +33,7 @@ test.describe('ApplePay', () => {
             './packages/test-framework/src/support/orderConfirmation.ejs',
             { orderId: '124' },
         );
-        await page.route('**/api/storefront/payments/applepay?cartId=124', (route) => {
+        await page.route('**/api/storefront/payments/applepay?cartId=*', (route) => {
             void route.fulfill({ ...responseProps, body: applePayCart });
         });
         await page.route('**/api/public/v1/payments/applepay/validate_merchant', (route) => {
