@@ -202,13 +202,13 @@ class Checkout extends Component<
                 },
             }), extensionService.loadExtensions()]);
 
-            const providers = data.getConfig().checkoutSettings.remoteCheckoutProviders;
+            const providers = data.getConfig()?.checkoutSettings?.remoteCheckoutProviders || [];
 
             if (providers.length > 0) {
                 const configs = await loadPaymentMethodByIds(providers);
 
                 this.setState({
-                    buttonConfigs: configs.data.getPaymentMethods(),
+                    buttonConfigs: configs.data.getPaymentMethods() || [],
                 });
             }
 
