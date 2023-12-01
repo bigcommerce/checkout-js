@@ -438,7 +438,9 @@
                 "birth_date": "Fecha de nacimiento",
                 "errors": {
                     "isRequired": "{fieldName} es un campo obligatorio",
-                    "isInvalid": "{fieldName} no es válido"
+                    "isInvalid": "{fieldName} no es válido",
+                    "paymentSourceInfoCannotBeVerified": "No se pudo validar la combinación de tu nombre y dirección. Corrige tus datos e inténtalo de nuevo. Puedes encontrar más información en la <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Declaración de privacidad de los datos de Ratepay</a> o ponerte en contacto con Ratepay a través de este <a href='https://www.ratepay.com/en/contact/' target='blank'>formulario de contacto.</a>",
+                    "paymentSourceDeclinedByProcessor": "No es posible utilizar el método de pago seleccionado. Esta decisión se basa en el procesamiento automatizado de datos. Puedes encontrar más información en la <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Declaración de privacidad de los datos de Ratepay</a> o ponerte en contacto con Ratepay a través de este <a href='https://www.ratepay.com/en/contact/' target='blank'>formulario de contacto.</a>"
                 }
             }
         },
@@ -558,8 +560,6 @@
             "order_pending_review_text": "Ya se nos envió tu pedido, pero actualmente estamos en espera del pago. Una vez que lo recibamos, se completará tu pedido. Si ya proporcionaste los detalles del pago, procesaremos tu pedido manualmente y te enviaremos un correo electrónico cuando esté completo.",
             "order_pending_status_text": "Hemos recibido tu pedido y estamos procesando tu pago. Una vez que se haya verificado el pago, se completará tu pedido. Te enviaremos un correo electrónico cuando se haya completado. Ten en cuenta que este proceso puede tardar unos minutos, dependiendo de los tiempos de procesamiento del método elegido. Si tienes alguna pregunta sobre tu compra, envíanos un correo electrónico a <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_incomplete_status_text": "Hemos recibido tu pedido y tu pago. Nuestro sistema está procesando tu pedido. Ten en cuenta que el procesamiento puede tardar unos minutos. Si tienes alguna pregunta sobre tu compra, envíanos un correo electrónico a <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
-            "order_incomplete_status_heading": "Lo sentimos, ocurrió un error con el pago de este pedido.",
-            "order_incomplete_status_with_unsuccessful_payment_text": "Tu pedido está incompleto porque el pago no se realizó correctamente. Para obtener ayuda con tu compra, envíanos un correo electrónico a <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_with_downloadable_digital_items_text": "Puedes descargar tus compras digitales haciendo clic en los enlaces de esta página o iniciando sesión en tu cuenta en cualquier momento. También hay un enlace de descarga en tu correo electrónico de confirmación, que debería llegarte en breve.",
             "order_with_support_number_text": "Se enviará un correo electrónico con información sobre tu compra. Si tienes alguna pregunta sobre tu compra, envíanos un correo electrónico a <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a> o llámanos al <a href=\"tel://{supportPhoneNumber}\">{supportPhoneNumber}</a>.",
             "order_without_downloadable_digital_items_text": "Una vez que recibamos tu pago, te enviaremos un correo electrónico de confirmación con un enlace para descargar tus compras digitales.",
