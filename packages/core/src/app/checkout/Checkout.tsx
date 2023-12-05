@@ -2,6 +2,7 @@ import {
     Address,
     Cart,
     CartChangedError,
+    CheckoutInitialState,
     CheckoutParams,
     CheckoutSelectors,
     Consignment,
@@ -107,6 +108,7 @@ export interface CheckoutProps {
     embeddedStylesheet: EmbeddedCheckoutStylesheet;
     embeddedSupport: CheckoutSupport;
     errorLogger: ErrorLogger;
+    initialState?: CheckoutInitialState;
     createEmbeddedMessenger(options: EmbeddedCheckoutMessengerOptions): EmbeddedCheckoutMessenger;
 }
 
@@ -147,6 +149,7 @@ export interface WithCheckoutProps {
     loadCheckout(id: string, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
     loadPaymentMethodByIds(methodIds: string[]): Promise<CheckoutSelectors>;
     subscribeToConsignments(subscriber: (state: CheckoutSelectors) => void): () => void;
+    hydrateInitialState(initialState: CheckoutInitialState): Promise<CheckoutSelectors>;
 }
 
 class Checkout extends Component<
@@ -197,10 +200,14 @@ class Checkout extends Component<
             loadCheckout,
             loadPaymentMethodByIds,
             subscribeToConsignments,
+            hydrateInitialState,
+            initialState,
         } = this.props;
 
         try {
-            const [{ data }] = await Promise.all([loadCheckout(checkoutId, {
+            const [{ data }] = initialState ?
+                await Promise.all([hydrateInitialState(initialState)]) :
+                await Promise.all([loadCheckout(checkoutId, {
                 params: {
                     include: [
                         'cart.lineItems.physicalItems.categoryNames',

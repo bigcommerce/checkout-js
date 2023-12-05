@@ -1,4 +1,4 @@
-import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
+import { CheckoutInitialState, createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
 import { BrowserOptions } from '@sentry/browser';
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
@@ -22,6 +22,7 @@ import Checkout from './Checkout';
 export interface CheckoutAppProps {
     checkoutId: string;
     containerId: string;
+    initialState?: CheckoutInitialState;
     publicPath?: string;
     sentryConfig?: BrowserOptions;
     sentrySampleRate?: number;
