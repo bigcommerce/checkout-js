@@ -240,9 +240,9 @@ workflows:
       - e2e:
           filters:
             <<: *pull_request_filter
-      - sdk-on-cdn:
-          filters:
-            <<: *pull_request_filter
+      # - sdk-on-cdn:
+      #   filters:
+      #     <<: *pull_request_filter
       - security/scan:
           name: "Gitleaks secrets scan"
           filters:

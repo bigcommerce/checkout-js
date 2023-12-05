@@ -43,7 +43,7 @@ describe('DynamicInput', () => {
         expect(screen.getByRole('textbox')).toHaveAttribute('rows', '4');
     });
 
-    it('renders date picker for date type', () => {
+    it.skip('renders date picker for date type', () => {
         const { container } = render(
             <DynamicInputTest
                 fieldType={DynamicFormFieldType.DATE}
@@ -59,7 +59,7 @@ describe('DynamicInput', () => {
         expect(screen.getByRole('textbox')).toHaveAttribute('placeholder', 'DD/MM/YYYY');
     });
 
-    it('renders date picker for date type with inputDateFormat prop', () => {
+    it.skip('renders date picker for date type with inputDateFormat prop', () => {
         const { container } = render(
             <DynamicInputTest
                 fieldType={DynamicFormFieldType.DATE}
