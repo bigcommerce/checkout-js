@@ -1,4 +1,4 @@
-import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
+import { CheckoutInitialState, CheckoutService, createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
 import { BrowserOptions } from '@sentry/browser';
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
@@ -22,22 +22,26 @@ import Checkout from './Checkout';
 export interface CheckoutAppProps {
     checkoutId: string;
     containerId: string;
+    initialState?: CheckoutInitialState;
     publicPath?: string;
     sentryConfig?: BrowserOptions;
     sentrySampleRate?: number;
 }
 
 export default class CheckoutApp extends Component<CheckoutAppProps> {
-    private checkoutService = createCheckoutService({
-        locale: getLanguageService().getLocale(),
-        shouldWarnMutation: process.env.NODE_ENV === 'development',
-    });
+    private checkoutService: CheckoutService;
     private embeddedStylesheet = createEmbeddedCheckoutStylesheet();
     private embeddedSupport = createEmbeddedCheckoutSupport(getLanguageService());
     private errorLogger: ErrorLogger;
 
     constructor(props: Readonly<CheckoutAppProps>) {
         super(props);
+
+        this.checkoutService = createCheckoutService({
+            locale: getLanguageService().getLocale(),
+            shouldWarnMutation: process.env.NODE_ENV === 'development',
+            initialState: props.initialState,
+        });
 
         this.errorLogger = createErrorLogger(
             { sentry: props.sentryConfig },
@@ -49,7 +53,7 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
         );
     }
 
-    componentDidMount(): void {
+    componentDidMount(): void { 
         const { containerId } = this.props;
 
         ReactModal.setAppElement(`#${containerId}`);

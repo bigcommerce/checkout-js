@@ -2,6 +2,7 @@ import {
     Address,
     Cart,
     CartChangedError,
+    Checkout as CheckoutData,
     CheckoutParams,
     CheckoutSelectors,
     Consignment,
@@ -11,7 +12,9 @@ import {
     FlashMessage,
     PaymentMethod,
     Promotion,
- RequestOptions } from '@bigcommerce/checkout-sdk';
+    RequestOptions,
+    StoreConfig
+} from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { Component, lazy, ReactNode } from 'react';
@@ -128,8 +131,11 @@ export interface CheckoutState {
 export interface WithCheckoutProps {
     billingAddress?: Address;
     cart?: Cart;
+    checkout?: CheckoutData;
+    config?: StoreConfig;
     consignments?: Consignment[];
     error?: Error;
+    errorFlashMessages?: FlashMessage[];
     hasCartChanged: boolean;
     flashMessages?: FlashMessage[];
     isGuestEnabled: boolean;
@@ -146,6 +152,8 @@ export interface WithCheckoutProps {
     clearError(error?: Error): void;
     loadCheckout(id: string, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
     loadPaymentMethodByIds(methodIds: string[]): Promise<CheckoutSelectors>;
+    loadExtensions(): Promise<CheckoutSelectors>;
+    loadFormFields(): Promise<CheckoutSelectors>;
     subscribeToConsignments(subscriber: (state: CheckoutSelectors) => void): () => void;
 }
 
@@ -196,22 +204,44 @@ class Checkout extends Component<
             extensionService,
             loadCheckout,
             loadPaymentMethodByIds,
+            loadExtensions,
+            loadFormFields,
             subscribeToConsignments,
+            steps,
         } = this.props;
 
+        let { cart, checkout, config, consignments, errorFlashMessages = [] } = this.props;
+
         try {
-            const [{ data }] = await Promise.all([loadCheckout(checkoutId, {
-                params: {
-                    include: [
-                        'cart.lineItems.physicalItems.categoryNames',
-                        'cart.lineItems.digitalItems.categoryNames',
-                    ] as any, // FIXME: Currently the enum is not exported so it can't be used here.
-                },
-            }), extensionService.loadExtensions()]);
+            if (!checkout || !config) {
+                // If the initial data has not been preloaded from the server, we need to make API calls to fetch it.
+                const [{ data }] = await Promise.all([
+                    loadCheckout(checkoutId, {
+                        params: {
+                            include: [
+                                'cart.lineItems.physicalItems.categoryNames',
+                                'cart.lineItems.digitalItems.categoryNames',
+                            ] as any, // FIXME: Currently the enum is not exported so it can't be used here.
+                        },
+                    }),
+                    extensionService.loadExtensions(),
+                ]);
 
-            const providers = data.getConfig()?.checkoutSettings?.remoteCheckoutProviders || [];
-            const checkoutSettings = data.getConfig()?.checkoutSettings;
+                cart = data.getCart();
+                checkout = data.getCheckout();
+                config = data.getConfig();
+                consignments = data.getConsignments();
+                errorFlashMessages = data.getFlashMessages('error') || [];
 
+                extensionService.preloadExtensions();
+            } else {
+                // Otherwise, we only need to fetch non-essential data after the initial render
+                void loadFormFields();
+                loadExtensions().then(() => extensionService.preloadExtensions());
+            }
+
+            const providers = config?.checkoutSettings?.remoteCheckoutProviders || [];
+            const checkoutSettings = config?.checkoutSettings;
             const supportedProviders = getSupportedMethodIds(providers, checkoutSettings);
 
             if (providers.length > 0) {
@@ -222,10 +252,7 @@ class Checkout extends Component<
                 });
             }
 
-            extensionService.preloadExtensions();
-
-            const { links: { siteLink = '' } = {} } = data.getConfig() || {};
-            const errorFlashMessages = data.getFlashMessages('error') || [];
+            const { links: { siteLink = '' } = {} } = config || {};
 
             if (errorFlashMessages.length) {
                 const { language } = this.props;
@@ -254,15 +281,12 @@ class Checkout extends Component<
 
             analyticsTracker.checkoutBegin();
 
-            const consignments = data.getConsignments();
-            const cart = data.getCart();
-
             const hasMultiShippingEnabled =
-                data.getConfig()?.checkoutSettings.hasMultiShippingEnabled;
+                config?.checkoutSettings.hasMultiShippingEnabled;
             const checkoutBillingSameAsShippingEnabled =
-                data.getConfig()?.checkoutSettings.checkoutBillingSameAsShippingEnabled ?? true;
+                config?.checkoutSettings.checkoutBillingSameAsShippingEnabled ?? true;
             const defaultNewsletterSignupOption =
-                data.getConfig()?.shopperConfig.defaultNewsletterSignup ??
+                config?.shopperConfig.defaultNewsletterSignup ??
                 false;
             const isMultiShippingMode =
                 !!cart &&
@@ -280,6 +304,10 @@ class Checkout extends Component<
             }
 
             window.addEventListener('beforeunload', this.handleBeforeExit);
+
+            if (steps.length > 0) {
+                this.navigateToNextIncompleteStep({ isDefault: true });
+            }
 
         } catch (error) {
             if (error instanceof Error) {

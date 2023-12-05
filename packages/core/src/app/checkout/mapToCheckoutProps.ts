@@ -47,8 +47,11 @@ export default function mapToCheckoutProps({
     return {
         billingAddress: data.getBillingAddress(),
         cart: data.getCart(),
+        checkout: data.getCheckout(),
+        config: data.getConfig(),
         clearError: checkoutService.clearError,
         consignments: data.getConsignments(),
+        errorFlashMessages: data.getFlashMessages('error') || [],
         hasCartChanged: submitOrderError && submitOrderError.type === 'cart_changed', // TODO: Need to clear the error once it's displayed
         isGuestEnabled,
         isLoadingCheckout: statuses.isLoadingCheckout(),
@@ -58,6 +61,8 @@ export default function mapToCheckoutProps({
         isShowingWalletButtonsOnTop: walletButtonsOnTopFlag,
         loadCheckout: checkoutService.loadCheckout,
         loadPaymentMethodByIds: checkoutService.loadPaymentMethodByIds,
+        loadExtensions: checkoutService.loadExtensions,
+        loadFormFields: checkoutService.loadFormFields,
         loginUrl,
         cartUrl,
         createAccountUrl,
