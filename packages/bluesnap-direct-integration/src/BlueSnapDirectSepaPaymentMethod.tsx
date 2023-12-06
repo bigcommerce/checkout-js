@@ -7,7 +7,7 @@ import {
 } from '@bigcommerce/checkout/payment-integration-api';
 import { CheckboxFormField, Fieldset, Legend } from '@bigcommerce/checkout/ui';
 
-import BlueSnapDirectTextField from './BlueSnapDirectTextField';
+import BlueSnapDirectTextField from './fields/BlueSnapDirectTextField';
 import getSepaValidationSchema from './validation-schemas/getSepaValidationSchema';
 
 interface BlueSnapDirectInitializationData {
