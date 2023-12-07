@@ -1,6 +1,6 @@
 import { CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
@@ -167,4 +167,4 @@ function mapToCheckoutButtonContainerProps({
     }
 }
 
-export default withCheckout(mapToCheckoutButtonContainerProps)(CheckoutButtonContainer);
+export default memo(withCheckout(mapToCheckoutButtonContainerProps)(CheckoutButtonContainer));
