@@ -19,6 +19,7 @@ describe('CheckoutButton', () => {
             language: createLanguageService(),
             methodId: 'foobar',
             onUnhandledError: jest.fn(),
+            onWalletButtonClick: jest.fn(),
         };
     });
 
@@ -35,6 +36,7 @@ describe('CheckoutButton', () => {
             methodId: 'foobar',
             foobar: {
                 container: 'button-container',
+                onClick: expect.any(Function),
                 onUnhandledError,
             },
         });

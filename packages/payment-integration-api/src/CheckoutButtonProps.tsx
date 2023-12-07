@@ -7,4 +7,5 @@ export default interface CheckoutButtonProps {
     checkoutState: CheckoutSelectors;
     language: LanguageService;
     onUnhandledError(error: Error): void;
+    onWalletButtonClick(methodName: string): void;
 }

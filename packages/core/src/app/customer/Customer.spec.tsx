@@ -697,6 +697,7 @@ describe('Customer', () => {
             expect(checkoutService.executePaymentMethodCheckout).toHaveBeenCalledWith({
                 methodId: PaymentMethodId.BraintreeAcceleratedCheckout,
                 continueWithCheckoutCallback: handleSignedIn,
+                checkoutPaymentMethodExecuted: expect.any(Function),
             });
         });
 
@@ -858,6 +859,7 @@ describe('Customer', () => {
             expect(checkoutService.executePaymentMethodCheckout).toHaveBeenCalledWith({
                 methodId: PaymentMethodId.BraintreeAcceleratedCheckout,
                 continueWithCheckoutCallback: handleCreateAccount,
+                checkoutPaymentMethodExecuted: expect.any(Function),
             });
         });
     });
