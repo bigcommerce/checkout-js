@@ -10,7 +10,7 @@
   },
   "scripts": {
     "preinstall": "npx check-node-version --package",
-    "prebuild": "rm -rf dist",
+    "prebuild": "rm -rf dist && rm -rf packages/test-framework/report",
     "build": "nx run core:build",
     "build:server": "http-server dist",
     "dev": "nx run core:dev",
