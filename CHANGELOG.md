@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.401.0](https://github.com/bigcommerce/checkout-js/compare/v1.400.0...v1.401.0) (2023-12-07)
+
+
+### Features
+
+* **payment:** CHECKOUT-7901 Fetch button config when checkout loads ([#1602](https://github.com/bigcommerce/checkout-js/issues/1602)) ([9d4c1bb](https://github.com/bigcommerce/checkout-js/commit/9d4c1bb1ccb2c8b5ac6c2c8905b87c84798e0746))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-0000 Avoid linting e2e test report ([#1611](https://github.com/bigcommerce/checkout-js/issues/1611)) ([96f65dd](https://github.com/bigcommerce/checkout-js/commit/96f65dd588c1f25921e555de123fd6a45b1b3ecb))
+
 ## [1.400.0](https://github.com/bigcommerce/checkout-js/compare/v1.399.0...v1.400.0) (2023-12-07)
 
 
