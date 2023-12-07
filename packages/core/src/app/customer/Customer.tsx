@@ -53,6 +53,7 @@ export interface CustomerProps {
     onSignIn?(): void;
     onSignInError?(error: Error): void;
     onUnhandledError?(error: Error): void;
+    onWalletButtonClick?(methodName: string): void;
 }
 
 export interface WithCheckoutCustomerProps {
@@ -182,12 +183,14 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             privacyPolicyUrl,
             requiresMarketingConsent,
             onUnhandledError = noop,
+            onWalletButtonClick = noop,
             step,
             isFloatingLabelEnabled,
             isExpressPrivacyPolicy,
             isPaymentDataRequired,
             shouldRenderStripeForm,
         } = this.props;
+
         const checkoutButtons = isWalletButtonsOnTop || !isPaymentDataRequired
           ? null
           : <CheckoutButtonList
@@ -197,6 +200,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             isInitializing={isInitializing}
             methodIds={checkoutButtonIds}
             onError={onUnhandledError}
+            onClick={onWalletButtonClick}
           />;
 
         const isLoadingGuestForm = isWalletButtonsOnTop ?
@@ -448,6 +452,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 await executePaymentMethodCheckout({
                     methodId: providerWithCustomCheckout,
                     continueWithCheckoutCallback: onSignIn,
+                    checkoutPaymentMethodExecuted: (payload) => this.checkoutPaymentMethodExecuted(payload)
                 });
             } else {
                 onSignIn();
@@ -473,6 +478,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             await executePaymentMethodCheckout({
                 methodId: providerWithCustomCheckout,
                 continueWithCheckoutCallback: onAccountCreated,
+                checkoutPaymentMethodExecuted: (payload) => this.checkoutPaymentMethodExecuted(payload)
             });
         } else {
             onAccountCreated();

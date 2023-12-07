@@ -337,6 +337,7 @@ class Checkout extends Component<
                             checkEmbeddedSupport={this.checkEmbeddedSupport}
                             isPaymentStepActive={isPaymentStepActive}
                             onUnhandledError={this.handleUnhandledError}
+                            onWalletButtonClick={this.handleWalletButtonClick}
                         />
                     )}
 
@@ -415,6 +416,7 @@ class Checkout extends Component<
                     onSignInError={this.handleError}
                     onSubscribeToNewsletter={this.handleNewsletterSubscription}
                     onUnhandledError={this.handleUnhandledError}
+                    onWalletButtonClick={this.handleWalletButtonClick}
                     step={step}
                     viewType={customerViewType}
                 />
@@ -760,6 +762,12 @@ class Checkout extends Component<
         const { analyticsTracker } = this.props;
 
         analyticsTracker.exitCheckout();
+    }
+
+    private handleWalletButtonClick: (methodName: string) => void = (methodName) => {
+        const { analyticsTracker } = this.props;
+
+        analyticsTracker.walletButtonClick(methodName);
     }
 }
 
