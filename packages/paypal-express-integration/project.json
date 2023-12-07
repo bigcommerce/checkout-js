@@ -7,7 +7,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/paypal-express-integration/**/*.ts"]
+        "lintFilePatterns": ["packages/paypal-express-integration/**/*.{ts,tsx}"]
       }
     },
     "test": {
@@ -19,5 +19,7 @@
       }
     }
   },
-  "tags": []
+  "tags": [
+    "scope:integration"
+  ]
 }
