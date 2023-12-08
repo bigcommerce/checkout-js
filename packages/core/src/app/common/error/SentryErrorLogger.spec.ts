@@ -107,7 +107,7 @@ describe('SentryErrorLogger', () => {
         expect(clientOptions.beforeSend!(event, hint)).toBeNull();
     });
 
-    it('logs exception event if all frames in stacktrace reference app file', () => {
+    it('logs exception event if some frames in stacktrace reference app file', () => {
         new SentryErrorLogger(config, options);
 
         const clientOptions: BrowserOptions = createClient.mock.calls[0][0];
@@ -117,8 +117,9 @@ describe('SentryErrorLogger', () => {
                     {
                         stacktrace: {
                             frames: [
-                                { filename: 'app:///js/app-123.js' },
-                                { filename: 'app:///js/app-456.js' },
+                                { filename: 'app:///js/app-123.js', in_app: true },
+                                { filename: '<anonymous>', in_app: true },
+                                { filename: 'app:///js/app-456.js', in_app: true },
                             ],
                         },
                         type: 'Error',

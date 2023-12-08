@@ -157,8 +157,8 @@ export default class SentryErrorLogger implements ErrorLogger {
                 return false;
             }
 
-            return exception.stacktrace.frames.every((frame) =>
-                frame.filename?.startsWith(FILENAME_PREFIX),
+            return exception.stacktrace.frames.some((frame) =>
+                frame.filename?.startsWith(FILENAME_PREFIX) && frame.in_app,
             );
         });
     }
