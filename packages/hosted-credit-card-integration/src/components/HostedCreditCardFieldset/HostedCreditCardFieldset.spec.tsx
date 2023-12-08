@@ -38,10 +38,12 @@ describe('HostedCreditCardFieldset', () => {
 
     it('renders required field containers', () => {
         const component = mount(<HostedCreditCardFieldsetTest {...defaultProps} />);
+        const formContainerClasses = component.find('.form-ccFields').prop('className');
 
         expect(component.find(HostedCreditCardNumberField)).toHaveLength(1);
-
         expect(component.find(HostedCreditCardExpiryField)).toHaveLength(1);
+        expect(formContainerClasses).toContain('form-ccFields--without-card-name');
+        expect(formContainerClasses).toContain('form-ccFields--without-card-code');
     });
 
     it('renders optional field containers', () => {
@@ -52,10 +54,12 @@ describe('HostedCreditCardFieldset', () => {
                 cardNameId="cardName"
             />,
         );
+        const formContainerClasses = component.find('.form-ccFields').prop('className');
 
         expect(component.find(HostedCreditCardCodeField)).toHaveLength(1);
-
         expect(component.find(HostedCreditCardNameField)).toHaveLength(1);
+        expect(formContainerClasses).not.toContain('form-ccFields--without-card-name');
+        expect(formContainerClasses).not.toContain('form-ccFields--without-card-code');
     });
 
     it('renders additional fields if provided', () => {
