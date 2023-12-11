@@ -1,0 +1,14 @@
+.dynamic-form-field--ratepayPhoneCountryCode {
+  display: inline-flex;
+  width: 20%;
+}
+
+.dynamic-form-field--ratepayPhoneNumber {
+  display: inline-flex;
+  width: calc(80% - 0.5em);
+  margin-left: 0.5em;
+}
+
+.dynamic-form-field--ratepayPhoneNumber > div {
+  width:100%;
+}
