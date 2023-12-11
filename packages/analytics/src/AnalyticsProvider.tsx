@@ -77,8 +77,6 @@ const AnalyticsProvider = ({ checkoutService, children }: AnalyticsProviderProps
     };
 
     const selectedPaymentMethod = (methodName: string, methodId: string) => {
-        console.log(methodName, methodId);
-
         getBodlService().selectedPaymentMethod(methodName);
         getBraintreeConnectTracker().selectedPaymentMethod(methodId);
     };
