@@ -10,6 +10,7 @@ interface CheckoutButtonV1ResolverProps {
     isShowingWalletButtonsOnTop?: boolean;
     initialize(options: CustomerInitializeOptions): void;
     onError?(error: Error): void;
+    onClick?(methodName: string): void;
 }
 
 const CheckoutButtonV1Resolver: FunctionComponent<CheckoutButtonV1ResolverProps> = ({

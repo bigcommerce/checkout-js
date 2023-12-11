@@ -8,9 +8,9 @@ import {
     EmbeddedCheckoutMessenger,
     EmbeddedCheckoutMessengerOptions,
     FlashMessage,
+    PaymentMethod,
     Promotion,
-    RequestOptions,
-} from '@bigcommerce/checkout-sdk';
+ RequestOptions } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { Component, lazy, ReactNode } from 'react';
@@ -35,6 +35,7 @@ import {
     CustomerSignOutEvent,
     CustomerViewType,
 } from '../customer';
+import { getSupportedMethodIds } from '../customer/getSupportedMethods';
 import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
 import { PromotionBannerList } from '../promotion';
 import { hasSelectedShippingOptions, isUsingMultiShipping, StaticConsignment } from '../shipping';
@@ -121,6 +122,7 @@ export interface CheckoutState {
     hasSelectedShippingOptions: boolean;
     isHidingStepNumbers: boolean;
     isSubscribed: boolean;
+    buttonConfigs: PaymentMethod[];
 }
 
 export interface WithCheckoutProps {
@@ -142,6 +144,7 @@ export interface WithCheckoutProps {
     steps: CheckoutStepStatus[];
     clearError(error?: Error): void;
     loadCheckout(id: string, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
+    loadPaymentMethodByIds(methodIds: string[]): Promise<CheckoutSelectors>;
     subscribeToConsignments(subscriber: (state: CheckoutSelectors) => void): () => void;
 }
 
@@ -161,6 +164,7 @@ class Checkout extends Component<
         hasSelectedShippingOptions: false,
         isHidingStepNumbers: true,
         isSubscribed: false,
+        buttonConfigs: [],
     };
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
@@ -185,6 +189,7 @@ class Checkout extends Component<
             embeddedStylesheet,
             extensionService,
             loadCheckout,
+            loadPaymentMethodByIds,
             subscribeToConsignments,
         } = this.props;
 
@@ -197,6 +202,18 @@ class Checkout extends Component<
                     ] as any, // FIXME: Currently the enum is not exported so it can't be used here.
                 },
             }), extensionService.loadExtensions()]);
+
+            const providers = data.getConfig()?.checkoutSettings?.remoteCheckoutProviders || [];
+            const supportedProviders = getSupportedMethodIds(providers);
+
+            if (providers.length > 0) {
+                const configs = await loadPaymentMethodByIds(supportedProviders);
+
+                this.setState({
+                    buttonConfigs: configs.data.getPaymentMethods() || [],
+                });
+            }
+
             extensionService.preloadExtensions();
 
             const { links: { siteLink = '' } = {} } = data.getConfig() || {};
@@ -317,11 +334,12 @@ class Checkout extends Component<
 
                     <PromotionBannerList promotions={promotions} />
 
-                    {isShowingWalletButtonsOnTop && (
+                    {isShowingWalletButtonsOnTop && this.state.buttonConfigs?.length > 0 && (
                         <CheckoutButtonContainer
                             checkEmbeddedSupport={this.checkEmbeddedSupport}
                             isPaymentStepActive={isPaymentStepActive}
                             onUnhandledError={this.handleUnhandledError}
+                            onWalletButtonClick={this.handleWalletButtonClick}
                         />
                     )}
 
@@ -400,6 +418,7 @@ class Checkout extends Component<
                     onSignInError={this.handleError}
                     onSubscribeToNewsletter={this.handleNewsletterSubscription}
                     onUnhandledError={this.handleUnhandledError}
+                    onWalletButtonClick={this.handleWalletButtonClick}
                     step={step}
                     viewType={customerViewType}
                 />
@@ -745,6 +764,12 @@ class Checkout extends Component<
         const { analyticsTracker } = this.props;
 
         analyticsTracker.exitCheckout();
+    }
+
+    private handleWalletButtonClick: (methodName: string) => void = (methodName) => {
+        const { analyticsTracker } = this.props;
+
+        analyticsTracker.walletButtonClick(methodName);
     }
 }
 

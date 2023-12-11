@@ -17,8 +17,10 @@ import { FormContext } from '@bigcommerce/checkout/ui';
 
 import { getPaypalCommerceRatePayMethodMock } from './mocks/paypalCommerceRatePayMocks';
 import PaypalCommerceRatePayPaymentMethod from './PaypalCommerceRatePayPaymentMethod';
+import {EventEmitter} from "events";
 
 describe('PaypalCommerceRatePayPaymentMethod', () => {
+    let eventEmitter: EventEmitter;
     let PaypalCommerceRatePayPaymentMethodTest: FunctionComponent<PaymentMethodProps>;
     let localeContext: LocaleContextType;
     const checkoutService = createCheckoutService();
@@ -42,6 +44,7 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckoutMock());
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
         localeContext = createLocaleContext(getStoreConfig());
+        eventEmitter = new EventEmitter();
 
         const submit = jest.fn();
 
@@ -138,5 +141,60 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
         await new Promise((resolve) => process.nextTick(resolve));
 
         expect(props.onUnhandledError).toHaveBeenCalled();
+    });
+
+    it('calls ratepay digital error', async () => {
+        const onUnhandledErrorMock = jest.fn();
+        const disableSubmitMock = jest.fn();
+        const setSubmittedMock = jest.fn();
+        const setValidationSchema = jest.fn();
+        const digitalErrorMock = {
+            status: 'error',
+            three_ds_result: {
+                acs_url: null,
+                payer_auth_request: null,
+                merchant_data: null,
+                callback_url: null,
+            },
+            errors: [
+                {
+                    code: 'invalid_request_error',
+                    message: 'We are experiencing difficulty processing your transaction'
+                },
+                {
+                    code: 'transaction_declined',
+                    message: 'Your transaction was declined. Please try again',
+                    provider_error: {
+                        code: 'ITEM_CATEGORY_NOT_SUPPORTED_BY_PAYMENT_SOURCE'
+                    }
+                },
+            ],
+        };
+
+        jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+            eventEmitter.on('onError', () => {
+                if (options.paypalcommerceratepay?.onError) {
+                    options.paypalcommerceratepay.onError(digitalErrorMock);
+                }
+            });
+
+            return Promise.resolve(checkoutState);
+        });
+        const newProps = {
+            ...props,
+            paymentForm: {
+                disableSubmit: disableSubmitMock,
+                setSubmitted: setSubmittedMock,
+                setValidationSchema: setValidationSchema,
+            } as unknown as PaymentFormService,
+            onUnhandledError: onUnhandledErrorMock,
+        };
+
+        render(<PaypalCommerceRatePayPaymentMethodTest {...newProps} />);
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        eventEmitter.emit('onError');
+
+        expect(onUnhandledErrorMock).toHaveBeenCalledWith(new Error(props.language.translate('payment.ratepay.errors.itemCategoryNotSupportedByPaymentSource')));
     });
 });

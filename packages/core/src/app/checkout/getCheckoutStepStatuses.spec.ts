@@ -108,6 +108,7 @@ describe('getCheckoutStepStatuses()', () => {
                         ...getStoreConfig().checkoutSettings, providerWithCustomCheckout: PaymentMethodId.StripeUPE,
                     },
                 });
+                jest.spyOn(service.getState().data, 'getCart').mockReturnValue(getCart());
 
                 const steps = getCheckoutStepStatuses(state);
 

@@ -2,6 +2,8 @@ import { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
 import { compact } from 'lodash';
 import { createSelector } from 'reselect';
 
+import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
+
 import { isValidAddress } from '../address';
 import { EMPTY_ARRAY } from '../common/utility';
 import { SUPPORTED_METHODS } from '../customer';
@@ -14,12 +16,27 @@ import {
 
 import CheckoutStepType from './CheckoutStepType';
 
+// StripeLink is a UX that is only available with StripeUpe and will only be displayed for BC guest users,
+// it uses its own components in the customer and shipping steps, unfortunately in order to preserve the UX
+// when reloading the checkout page it's necessary to refill the stripe components with the information saved.
+// In this step, we require that the customer strategy be reloaded the first time.
+const getStripeLinkAndCheckoutPageIsReloaded = (
+    isUsingWallet: boolean,
+    hasEmail: boolean,
+    isGuest: boolean,
+    shouldUseStripeLinkByMinimumAmount: boolean,
+    providerWithCustomCheckout?: string | null,
+) => {
+    return !isUsingWallet && providerWithCustomCheckout === PaymentMethodId.StripeUPE && hasEmail && isGuest && shouldUseStripeLinkByMinimumAmount;
+}
+
 const getCustomerStepStatus = createSelector(
     ({ data }: CheckoutSelectors) => data.getCheckout(),
     ({ data }: CheckoutSelectors) => data.getCustomer(),
     ({ data }: CheckoutSelectors) => data.getBillingAddress(),
     ({ data }: CheckoutSelectors) => data.getConfig(),
-    (checkout, customer, billingAddress, config) => {
+    ({ data }: CheckoutSelectors) => data.getCart(),
+    (checkout, customer, billingAddress, config, cart) => {
         const hasEmail = !!(
             (customer && customer.email) ||
             (billingAddress && billingAddress.email)
@@ -33,13 +50,13 @@ const getCustomerStepStatus = createSelector(
         const isGuest = !!(customer && customer.isGuest);
         const isComplete = hasEmail || isUsingWallet;
         const isEditable = isComplete && !isUsingWallet && isGuest;
-
-        // StripeLink is a UX that is only available with StripeUpe and will only be displayed for BC guest users,
-        // it uses its own components in the customer and shipping steps, unfortunately in order to preserve the UX
-        // when reloading the checkout page it's necessary to refill the stripe components with the information saved.
-        // In this step, we require that the customer strategy be reloaded the first time.
-        const isUsingStripeLinkAndCheckoutPageIsReloaded = !isUsingWallet &&
-            config?.checkoutSettings.providerWithCustomCheckout === PaymentMethodId.StripeUPE && hasEmail && isGuest;
+        const isUsingStripeLinkAndCheckoutPageIsReloaded = getStripeLinkAndCheckoutPageIsReloaded(
+            isUsingWallet,
+            hasEmail,
+            isGuest,
+            cart ? shouldUseStripeLinkByMinimumAmount(cart) : false,
+            config?.checkoutSettings.providerWithCustomCheckout,
+        );
 
         if (isUsingStripeLinkAndCheckoutPageIsReloaded) {
             return {

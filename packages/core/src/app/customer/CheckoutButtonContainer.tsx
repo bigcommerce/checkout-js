@@ -1,6 +1,6 @@
 import { CheckoutSelectors, CheckoutService } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString, useLocale } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
@@ -17,6 +17,7 @@ interface CheckoutButtonContainerProps {
     isPaymentStepActive: boolean;
     checkEmbeddedSupport(methodIds: string[]): void;
     onUnhandledError(error: Error): void;
+    onWalletButtonClick(methodId: string): void;
 }
 
 interface WithCheckoutCheckoutButtonContainerProps {
@@ -58,6 +59,7 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
         isPaymentStepActive,
         initializedMethodIds,
         onUnhandledError,
+        onWalletButtonClick,
     }) => {
     const { language } = useLocale();
 
@@ -84,6 +86,7 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
                 key={methodId}
                 methodId={methodId}
                 onError={onUnhandledError}
+                onClick={onWalletButtonClick}
             />
         }
 
@@ -95,6 +98,7 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
                     language={language}
                     methodId={methodId}
                     onUnhandledError={onUnhandledError}
+                    onWalletButtonClick={onWalletButtonClick}
                 />;
     });
 
@@ -167,4 +171,4 @@ function mapToCheckoutButtonContainerProps({
     }
 }
 
-export default withCheckout(mapToCheckoutButtonContainerProps)(CheckoutButtonContainer);
+export default memo(withCheckout(mapToCheckoutButtonContainerProps)(CheckoutButtonContainer));

@@ -433,6 +433,7 @@
                 "voided_transaction": "Ihre Zahlung kann nicht verarbeitet werden, da die Transaktion bereits storniert wurde. Bitte versuchen Sie es erneut oder nehmen Sie Kontakt zu uns auf."
             },
             "ratepay": {
+                "payment_method_title": "Kauf auf Rechnung",
                 "phone_country_code": "Ländercode",
                 "phone_number": "Telefonnummer",
                 "birth_date": "Geburtsdatum",
