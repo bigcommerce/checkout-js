@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.403.0](https://github.com/bigcommerce/checkout-js/compare/v1.402.0...v1.403.0) (2023-12-11)
+
+
+### Features
+
+* **payment:** PAYPAL-3279 added text label for ratepay ([56ea515](https://github.com/bigcommerce/checkout-js/commit/56ea515cc82c8a1943581c69a7800005ca4fe631))
+* **payment:** PAYPAL-3279 added text label for ratepay ([0a0b595](https://github.com/bigcommerce/checkout-js/commit/0a0b5956f7c8a650f3c7a21e09b4a5bf9dbe164b))
+
 ## [1.402.0](https://github.com/bigcommerce/checkout-js/compare/v1.401.0...v1.402.0) (2023-12-11)
 
 
