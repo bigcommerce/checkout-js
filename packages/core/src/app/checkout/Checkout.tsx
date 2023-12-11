@@ -35,6 +35,7 @@ import {
     CustomerSignOutEvent,
     CustomerViewType,
 } from '../customer';
+import { getSupportedMethodIds } from '../customer/getSupportedMethods';
 import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
 import { PromotionBannerList } from '../promotion';
 import { hasSelectedShippingOptions, isUsingMultiShipping, StaticConsignment } from '../shipping';
@@ -203,9 +204,10 @@ class Checkout extends Component<
             }), extensionService.loadExtensions()]);
 
             const providers = data.getConfig()?.checkoutSettings?.remoteCheckoutProviders || [];
+            const supportedProviders = getSupportedMethodIds(providers);
 
             if (providers.length > 0) {
-                const configs = await loadPaymentMethodByIds(providers);
+                const configs = await loadPaymentMethodByIds(supportedProviders);
 
                 this.setState({
                     buttonConfigs: configs.data.getPaymentMethods() || [],
