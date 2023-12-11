@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.407.0](https://github.com/bigcommerce/checkout-js/compare/v1.406.0...v1.407.0) (2023-12-11)
+
+
+### Features
+
+* **payment:** PI-853 BluesnapDirect added Sepa fieldset ([02050a1](https://github.com/bigcommerce/checkout-js/commit/02050a14f71c6fb65e0fd76358e57e14d7b68263))
+
 ## [1.406.0](https://github.com/bigcommerce/checkout-js/compare/v1.405.1...v1.406.0) (2023-12-11)
 
 
