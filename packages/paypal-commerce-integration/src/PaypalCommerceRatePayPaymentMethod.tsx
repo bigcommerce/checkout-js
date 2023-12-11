@@ -14,6 +14,7 @@ import { SpecificError } from '@bigcommerce/checkout/payment-integration-api';
 
 const PAYMENT_SOURCE_INFO_CANNOT_BE_VERIFIED = 'PAYMENT_SOURCE_INFO_CANNOT_BE_VERIFIED';
 const PAYMENT_SOURCE_DECLINED_BY_PROCESSOR = 'PAYMENT_SOURCE_DECLINED_BY_PROCESSOR';
+const ITEM_CATEGORY_NOT_SUPPORTED_BY_PAYMENT_SOURCE = 'ITEM_CATEGORY_NOT_SUPPORTED_BY_PAYMENT_SOURCE';
 
 interface RatePayFieldValues {
     ratepayBirthDate: {
@@ -94,23 +95,32 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
 
                         if (ratepaySpecificError?.length) {
                             let translationCode;
-                            switch (ratepaySpecificError[0].provider_error?.code) {
+                            let ratepayError;
+                            const ratepaySpecificErrorCode = ratepaySpecificError[0].provider_error?.code;
+                            switch (ratepaySpecificErrorCode) {
                                 case PAYMENT_SOURCE_DECLINED_BY_PROCESSOR:
                                     translationCode = 'payment.ratepay.errors.paymentSourceDeclinedByProcessor';
                                     break;
                                 case PAYMENT_SOURCE_INFO_CANNOT_BE_VERIFIED:
                                     translationCode = 'payment.ratepay.errors.paymentSourceInfoCannotBeVerified';
                                     break;
+                                case ITEM_CATEGORY_NOT_SUPPORTED_BY_PAYMENT_SOURCE:
+                                    translationCode = 'payment.ratepay.errors.itemCategoryNotSupportedByPaymentSource';
+                                    break;
                                 default:
                                     translationCode = 'common.error_heading';
                             }
 
-                            const ratepayError = new CustomError({
-                                data: {
-                                    shouldBeTranslatedAsHtml: true,
-                                    translationKey: translationCode,
-                                },
-                            });
+                            if (ratepaySpecificErrorCode !== ITEM_CATEGORY_NOT_SUPPORTED_BY_PAYMENT_SOURCE) {
+                                ratepayError = new CustomError({
+                                    data: {
+                                        shouldBeTranslatedAsHtml: true,
+                                        translationKey: translationCode,
+                                    },
+                                });
+                            } else {
+                                ratepayError = new Error(language.translate(translationCode));
+                            }
 
                             return onUnhandledError(ratepayError);
                         }
