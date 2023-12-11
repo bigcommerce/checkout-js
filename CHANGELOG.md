@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.402.0](https://github.com/bigcommerce/checkout-js/compare/v1.401.0...v1.402.0) (2023-12-11)
+
+
+### Features
+
+* **payment:** PAYPAL-3178 added digital item error ([5b6123d](https://github.com/bigcommerce/checkout-js/commit/5b6123d24833cd7fdde627c86461f783675d73ad))
+* **payment:** PAYPAL-3178 added digital item error ([fcf8120](https://github.com/bigcommerce/checkout-js/commit/fcf812082a885dc904dc869ae705c08373c436c2))
+
+## [1.401.0](https://github.com/bigcommerce/checkout-js/compare/v1.400.0...v1.401.0) (2023-12-07)
+
+
+### Features
+
+* **payment:** CHECKOUT-7901 Fetch button config when checkout loads ([#1602](https://github.com/bigcommerce/checkout-js/issues/1602)) ([9d4c1bb](https://github.com/bigcommerce/checkout-js/commit/9d4c1bb1ccb2c8b5ac6c2c8905b87c84798e0746))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-0000 Avoid linting e2e test report ([#1611](https://github.com/bigcommerce/checkout-js/issues/1611)) ([96f65dd](https://github.com/bigcommerce/checkout-js/commit/96f65dd588c1f25921e555de123fd6a45b1b3ecb))
+
+## [1.400.0](https://github.com/bigcommerce/checkout-js/compare/v1.399.0...v1.400.0) (2023-12-07)
+
+
+### Features
+
+* **payment:** PI-1036 removed  Stripe link inititializations for not supported cart amounts ([63686d0](https://github.com/bigcommerce/checkout-js/commit/63686d07313ade59758038fc29ff6dbfced5b88b))
+
 ## [1.399.0](https://github.com/bigcommerce/checkout-js/compare/v1.398.0...v1.399.0) (2023-11-09)
 
 

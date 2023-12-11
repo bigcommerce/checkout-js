@@ -433,6 +433,7 @@
                 "voided_transaction": "Unable to process your payment because the transaction has already been voided. Please try again or contact us."
             },
             "ratepay": {
+                "payment_method_title": "Pay upon Invoice",
                 "phone_country_code": "Country code",
                 "phone_number": "Phone number",
                 "birth_date": "Date of birth",
@@ -440,7 +441,8 @@
                     "isRequired": "{fieldName} is required",
                     "isInvalid": "{fieldName} is invalid",
                     "paymentSourceInfoCannotBeVerified": "The combination of your name and address could not be validated. Please correct your data and try again. You can find further information in the <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Ratepay Data Privacy Statement</a> or you can contact Ratepay using this <a href='https://www.ratepay.com/en/contact/' target='blank'>contact form.</a>",
-                    "paymentSourceDeclinedByProcessor": "It is not possible to use the selected payment method. This decision is based on automated data processing. You can find further information in the <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Ratepay Data Privacy Statement</a> or you can contact Ratepay using this <a href='https://www.ratepay.com/en/contact/' target='blank'>contact form.</a>"
+                    "paymentSourceDeclinedByProcessor": "It is not possible to use the selected payment method. This decision is based on automated data processing. You can find further information in the <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Ratepay Data Privacy Statement</a> or you can contact Ratepay using this <a href='https://www.ratepay.com/en/contact/' target='blank'>contact form.</a>",
+                    "itemCategoryNotSupportedByPaymentSource": "Digital items are not supported for given method"
                 }
             }
         },
