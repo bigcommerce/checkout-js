@@ -200,6 +200,11 @@
                 "only_numbers": "Account Number must contain only numbers",
                 "length": "Account Number must have at least 8 digits"
             },
+            "bluesnap_direct_iban": {
+                "label": "IBAN",
+                "is_required": "IBAN is required",
+                "length": "IBAN must have at least 8 digits"
+            },
             "bluesnap_direct_routing_number": {
                 "label": "Routing Number",
                 "is_required": "Routing Number is required",
@@ -211,7 +216,9 @@
                 "is_required": "Account Type is required"
             },
             "bluesnap_direct_permission": "I authorize this Electronic Check (ACH/ECP) transaction and agree to this debit of my account.",
+            "bluesnap_direct_sepa_mandate_disclaimer": "By signing this mandate form, you authorise (A) {creditorName} to send instructions to your bank to debit your account and (B) your bank to debit your account in accordance with the instructions from {creditorName}. As part of your rights, you are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited.",
             "bluesnap_direct_electronic_check_label": "Electronic Check (ACH/ECP)",
+            "bluesnap_direct_sepa_direct_debit": "Sepa Direct Debit",
             "bluesnap_direct_local_bank_transfer_label": "Local Bank Transfer",
             "bolt_benefit_1": "Shop hundreds of brands with a passwordless login",
             "bolt_benefit_2": "Check out with saved payment and shipping details",
@@ -535,6 +542,9 @@
                 "adyenv3": {
                     "boletobancario": "Boleto Bancário Ticket"
                 },
+                "bluesnapdirect": {
+                    "sepa_direct_debit":  "SEPA Direct Debit Mandate Reference: {mandate}"
+                },
                 "checkoutcom": {
                     "boleto": "Boleto Bancário Ticket",
                     "oxxo": "OXXO Ticket",
@@ -551,7 +561,7 @@
                 },
                 "paypalcommercealternativemethods": {
                     "oxxo": "OXXO Ticket",
-                    "ratepay":{
+                    "ratepay": {
                         "account_holder_name": "Account Holder",
                         "iban": "Iban",
                         "payment_reference": "Payment Reference"
