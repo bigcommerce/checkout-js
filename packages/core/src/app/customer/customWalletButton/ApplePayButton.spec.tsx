@@ -26,6 +26,7 @@ describe('ApplePayButton', () => {
                     initialize={initialize}
                     methodId="applepay"
                     onError={error}
+                    onClick={jest.fn()}
                 />
             </LocaleContext.Provider>
         );
@@ -46,6 +47,7 @@ describe('ApplePayButton', () => {
                 container: 'test',
                 shippingLabel: 'Shipping',
                 subtotalLabel: 'Subtotal',
+                onClick: expect.any(Function),
                 onError: error,
                 onPaymentAuthorize: navigateToOrderConfirmation,
             },

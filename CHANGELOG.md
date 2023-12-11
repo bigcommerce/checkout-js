@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.404.0](https://github.com/bigcommerce/checkout-js/compare/v1.403.0...v1.404.0) (2023-12-11)
+
+
+### Features
+
+* **payment:** PAYPAL-3229 added BraintreeConnectTracker implementation ([6330fc8](https://github.com/bigcommerce/checkout-js/commit/6330fc8e7cf1e3fda3503603da56eef67c0081b4))
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-3229 fixed lint issues ([8435397](https://github.com/bigcommerce/checkout-js/commit/84353971430f05a8a8141b9da69ce3d88312698f))
+* **payment:** PAYPAL-3229 fixed lint issues ([11be761](https://github.com/bigcommerce/checkout-js/commit/11be761f803e1b69c32817716c9e7db9340259ac))
+
+## [1.403.0](https://github.com/bigcommerce/checkout-js/compare/v1.402.0...v1.403.0) (2023-12-11)
+
+
+### Features
+
+* **payment:** PAYPAL-3279 added text label for ratepay ([56ea515](https://github.com/bigcommerce/checkout-js/commit/56ea515cc82c8a1943581c69a7800005ca4fe631))
+* **payment:** PAYPAL-3279 added text label for ratepay ([0a0b595](https://github.com/bigcommerce/checkout-js/commit/0a0b5956f7c8a650f3c7a21e09b4a5bf9dbe164b))
+
 ## [1.402.0](https://github.com/bigcommerce/checkout-js/compare/v1.401.0...v1.402.0) (2023-12-11)
 
 

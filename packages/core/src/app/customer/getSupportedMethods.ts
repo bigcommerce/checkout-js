@@ -25,6 +25,7 @@ export const SUPPORTED_METHODS: string[] = [
     'googlepaystripe',
     'googlepaystripeupe',
     'googlepayworldpayaccess',
+    'googlepaypaypalcommerce',
 ];
 
 export const getSupportedMethodIds = (methodIds: string[]): string[] => {
