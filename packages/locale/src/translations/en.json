@@ -433,6 +433,7 @@
                 "voided_transaction": "Unable to process your payment because the transaction has already been voided. Please try again or contact us."
             },
             "ratepay": {
+                "payment_method_title": "Pay upon Invoice",
                 "phone_country_code": "Country code",
                 "phone_number": "Phone number",
                 "birth_date": "Date of birth",
