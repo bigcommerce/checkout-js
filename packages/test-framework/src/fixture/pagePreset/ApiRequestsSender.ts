@@ -75,7 +75,7 @@ export class ApiRequestsSender {
         });
     }
 
-    async completeSingleShippingAndSkipToPaymentStep(): Promise<void> {
+    async completeSingleShippingAndSkipToPaymentStep(countryCode = 'US'): Promise<void> {
         const apiContext = await this.apiContextFactory.create(this.page, this.storeUrl);
         const checkout = await this.getCheckoutOrThrow();
 
@@ -91,7 +91,7 @@ export class ApiRequestsSender {
             address1: faker.address.streetName(),
             address2: faker.address.secondaryAddress(),
             city: faker.address.cityName(),
-            countryCode: 'US',
+            countryCode,
             stateOrProvince: '',
             postalCode: faker.address.zipCodeByState(stateCode),
             shouldSaveAddress: true,
@@ -156,7 +156,7 @@ export class ApiRequestsSender {
                     phone: faker.phone.phoneNumber('##########'),
                     city: faker.address.cityName(),
                     stateOrProvinceCode: stateCode,
-                    countryCode: 'US',
+                    countryCode,
                     postalCode: faker.address.zipCodeByState(stateCode),
                 },
             },
