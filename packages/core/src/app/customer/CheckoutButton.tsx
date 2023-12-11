@@ -22,7 +22,7 @@ export default class CheckoutButton extends PureComponent<CheckoutButtonProps> {
             isShowingWalletButtonsOnTop,
             methodId,
             onError,
-            onClick  = noop,
+            onClick = noop,
         } = this.props;
 
         const heightOption = isShowingWalletButtonsOnTop && (methodId === 'braintreepaypal' || methodId === 'braintreepaypalcredit' )

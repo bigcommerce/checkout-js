@@ -26,7 +26,14 @@ const CheckoutButton: FunctionComponent<CheckoutButtonProps> = ({
         return () => {
             deinitializeCustomer({ methodId }).catch(onUnhandledError);
         };
-    }, [containerId, deinitializeCustomer, initializeCustomer, methodId, onUnhandledError]);
+    }, [
+        containerId,
+        deinitializeCustomer,
+        initializeCustomer,
+        methodId,
+        onUnhandledError,
+        onWalletButtonClick,
+    ]);
 
     return <div id={containerId} />;
 };
