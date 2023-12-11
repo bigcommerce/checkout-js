@@ -5,5 +5,6 @@ export {
     ErrorLoggerServiceConfig,
     ErrorMeta,
     ErrorTags,
+    SentryConfig,
 } from './ErrorLogger';
 export { default as ErrorBoundary } from './ErrorBoundary';
