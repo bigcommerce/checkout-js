@@ -68,6 +68,25 @@ describe('DynamicInput', () => {
         );
     });
 
+    it('renders date picker for date type with inputDateFormat prop', () => {
+        const datePicker = mount(
+            <DynamicInputTest
+                fieldType={DynamicFormFieldType.DATE}
+                id="field_33"
+                inputDateFormat="dd.MM.yyyy"
+                max="2019-02-01"
+                min="2019-01-01"
+            />,
+        );
+
+        expect(datePicker.find(ReactDatePicker).props()).toMatchObject(
+            expect.objectContaining({
+                dateFormat: 'dd.MM.yyyy',
+                placeholderText: 'DD.MM.YYYY',
+            }),
+        );
+    });
+
     it('renders checkbox input for checkbox type', () => {
         const component = mount(
             <DynamicInputTest
