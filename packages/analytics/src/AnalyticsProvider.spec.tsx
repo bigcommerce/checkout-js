@@ -56,9 +56,7 @@ describe('AnalyticsProvider', () => {
     let braintreeConnectTracker: CheckoutSdk.BraintreeConnectTrackerService;
 
     beforeEach(() => {
-        jest.spyOn(createAnalyticsService, 'default').mockImplementation(
-            (createFn, _args) => createFn,
-        );
+        jest.spyOn(createAnalyticsService, 'default').mockImplementation((createFn) => createFn);
 
         stepTrackerMock = {
             trackOrderComplete: jest.fn(),
@@ -66,7 +64,7 @@ describe('AnalyticsProvider', () => {
             trackStepViewed: jest.fn(),
             trackStepCompleted: jest.fn(),
         };
-        jest.spyOn(CheckoutSdk, 'createStepTracker').mockImplementation((_args) => stepTrackerMock);
+        jest.spyOn(CheckoutSdk, 'createStepTracker').mockImplementation(() => stepTrackerMock);
 
         bodlServiceMock = {
             checkoutBegin: jest.fn(),
@@ -92,7 +90,9 @@ describe('AnalyticsProvider', () => {
             trackStepViewed: jest.fn(),
             walletButtonClick: jest.fn(),
         };
-        jest.spyOn(CheckoutSdk, 'createBraintreeConnectTracker').mockImplementation(() => braintreeConnectTracker);
+        jest.spyOn(CheckoutSdk, 'createBraintreeConnectTracker').mockImplementation(
+            () => braintreeConnectTracker,
+        );
     });
 
     it('throws an error when useAnalytics hook used without AnalyticsContext', () => {
@@ -145,7 +145,6 @@ describe('AnalyticsProvider', () => {
     it('track customer email entry', () => {
         mount(<TestComponent eventName="customerEmailEntry" eventProps={['email@test.com']} />);
 
-
         expect(bodlServiceMock.customerEmailEntry).toHaveBeenCalledTimes(1);
         expect(bodlServiceMock.customerEmailEntry).toHaveBeenCalledWith('email@test.com');
     });
@@ -197,20 +196,24 @@ describe('AnalyticsProvider', () => {
             <TestComponent
                 eventName="selectedPaymentMethod"
                 eventProps={['Credit card', 'braintreecreditcard']}
-            />
+            />,
         );
 
         expect(bodlServiceMock.selectedPaymentMethod).toHaveBeenCalledTimes(1);
         expect(bodlServiceMock.selectedPaymentMethod).toHaveBeenCalledWith('Credit card');
         expect(braintreeConnectTracker.selectedPaymentMethod).toHaveBeenCalledTimes(1);
-        expect(braintreeConnectTracker.selectedPaymentMethod).toHaveBeenCalledWith('braintreecreditcard');
+        expect(braintreeConnectTracker.selectedPaymentMethod).toHaveBeenCalledWith(
+            'braintreecreditcard',
+        );
     });
 
     it('track wallet button click', () => {
         mount(<TestComponent eventName="walletButtonClick" eventProps={['braintreecreditcard']} />);
 
         expect(braintreeConnectTracker.walletButtonClick).toHaveBeenCalledTimes(1);
-        expect(braintreeConnectTracker.walletButtonClick).toHaveBeenCalledWith('braintreecreditcard');
+        expect(braintreeConnectTracker.walletButtonClick).toHaveBeenCalledWith(
+            'braintreecreditcard',
+        );
     });
 
     it('track click Pay button', () => {
