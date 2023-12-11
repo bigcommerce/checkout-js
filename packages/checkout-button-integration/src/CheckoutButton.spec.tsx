@@ -36,6 +36,7 @@ describe('CheckoutButton', () => {
             methodId: 'foobar',
             foobar: {
                 container: 'button-container',
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 onClick: expect.any(Function),
                 onUnhandledError,
             },
