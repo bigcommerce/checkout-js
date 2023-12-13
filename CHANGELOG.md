@@ -2,6 +2,214 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.408.2](https://github.com/bigcommerce/checkout-js/compare/v1.408.1...v1.408.2) (2023-12-12)
+
+### [1.408.1](https://github.com/bigcommerce/checkout-js/compare/v1.408.0...v1.408.1) (2023-12-12)
+
+## [1.408.0](https://github.com/bigcommerce/checkout-js/compare/v1.407.1...v1.408.0) (2023-12-12)
+
+
+### Features
+
+* **payment:** PAYPAL-2616 bump checkout-sdk version ([6c72cae](https://github.com/bigcommerce/checkout-js/commit/6c72cae10c8ac95414c4d0e79ec8e886f68c85db))
+
+### [1.407.1](https://github.com/bigcommerce/checkout-js/compare/v1.407.0...v1.407.1) (2023-12-12)
+
+
+### Bug Fixes
+
+* **other:** CHECKOUT-6524 Fix Sentry client initialization to avoid conflict ([5e490e7](https://github.com/bigcommerce/checkout-js/commit/5e490e77df55ec7329a1fe6f4194945e157c16e2))
+* **other:** CHECKOUT-6524 Relax the error filtering rule to report errors if some of the frames in the stack trace are thrown from the app code ([3aa8749](https://github.com/bigcommerce/checkout-js/commit/3aa874905f6928eecf26f7737d7153157dedb127))
+
+## [1.407.0](https://github.com/bigcommerce/checkout-js/compare/v1.406.0...v1.407.0) (2023-12-11)
+
+
+### Features
+
+* **payment:** PI-853 BluesnapDirect added Sepa fieldset ([02050a1](https://github.com/bigcommerce/checkout-js/commit/02050a14f71c6fb65e0fd76358e57e14d7b68263))
+
+## [1.406.0](https://github.com/bigcommerce/checkout-js/compare/v1.405.1...v1.406.0) (2023-12-11)
+
+
+### Features
+
+* **payment:** PAYPAL-3280 added inputDateFormat ([08b2ffb](https://github.com/bigcommerce/checkout-js/commit/08b2ffb98b5960ca08875d8ab447967024bcfe86))
+* **payment:** PAYPAL-3280 bump checkout-sdk version ([1d3d1bd](https://github.com/bigcommerce/checkout-js/commit/1d3d1bd6b7080f87f7938975ad9152cfb373af0c))
+* **payment:** PAYPAL-3280 fix error message for birth_date ([9ede615](https://github.com/bigcommerce/checkout-js/commit/9ede615cce8f5f52b2fd0a13327a57b122aa91d7))
+* **payment:** PAYPAL-3280 tests ([3e4d92d](https://github.com/bigcommerce/checkout-js/commit/3e4d92de43c7c2f80450577457c26179980bf39b))
+* **payment:** PAYPAL-3280 updated snapshot ([bfcd0e5](https://github.com/bigcommerce/checkout-js/commit/bfcd0e57e56649f842f9a49b54e9d7f7f2520325))
+
+### [1.405.1](https://github.com/bigcommerce/checkout-js/compare/v1.405.0...v1.405.1) (2023-12-11)
+
+
+### Bug Fixes
+
+* **payment:** CHECKOUT-7901 Filter button providers ([#1614](https://github.com/bigcommerce/checkout-js/issues/1614)) ([68860e7](https://github.com/bigcommerce/checkout-js/commit/68860e7aea04b6dbab400f82beb362240d2625ba))
+
+## [1.405.0](https://github.com/bigcommerce/checkout-js/compare/v1.404.0...v1.405.0) (2023-12-11)
+
+
+### Features
+
+* **payment:** PAYPAL-2954 PPCP Google Pay top of checkout support ([24049dc](https://github.com/bigcommerce/checkout-js/commit/24049dc7fc4981f9dd3b0f81520859a1165e12bc))
+
+## [1.404.0](https://github.com/bigcommerce/checkout-js/compare/v1.403.0...v1.404.0) (2023-12-11)
+
+
+### Features
+
+* **payment:** PAYPAL-3229 added BraintreeConnectTracker implementation ([6330fc8](https://github.com/bigcommerce/checkout-js/commit/6330fc8e7cf1e3fda3503603da56eef67c0081b4))
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-3229 fixed lint issues ([8435397](https://github.com/bigcommerce/checkout-js/commit/84353971430f05a8a8141b9da69ce3d88312698f))
+* **payment:** PAYPAL-3229 fixed lint issues ([11be761](https://github.com/bigcommerce/checkout-js/commit/11be761f803e1b69c32817716c9e7db9340259ac))
+
+## [1.403.0](https://github.com/bigcommerce/checkout-js/compare/v1.402.0...v1.403.0) (2023-12-11)
+
+
+### Features
+
+* **payment:** PAYPAL-3279 added text label for ratepay ([56ea515](https://github.com/bigcommerce/checkout-js/commit/56ea515cc82c8a1943581c69a7800005ca4fe631))
+* **payment:** PAYPAL-3279 added text label for ratepay ([0a0b595](https://github.com/bigcommerce/checkout-js/commit/0a0b5956f7c8a650f3c7a21e09b4a5bf9dbe164b))
+
+## [1.402.0](https://github.com/bigcommerce/checkout-js/compare/v1.401.0...v1.402.0) (2023-12-11)
+
+
+### Features
+
+* **payment:** PAYPAL-3178 added digital item error ([5b6123d](https://github.com/bigcommerce/checkout-js/commit/5b6123d24833cd7fdde627c86461f783675d73ad))
+* **payment:** PAYPAL-3178 added digital item error ([fcf8120](https://github.com/bigcommerce/checkout-js/commit/fcf812082a885dc904dc869ae705c08373c436c2))
+
+## [1.401.0](https://github.com/bigcommerce/checkout-js/compare/v1.400.0...v1.401.0) (2023-12-07)
+
+
+### Features
+
+* **payment:** CHECKOUT-7901 Fetch button config when checkout loads ([#1602](https://github.com/bigcommerce/checkout-js/issues/1602)) ([9d4c1bb](https://github.com/bigcommerce/checkout-js/commit/9d4c1bb1ccb2c8b5ac6c2c8905b87c84798e0746))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-0000 Avoid linting e2e test report ([#1611](https://github.com/bigcommerce/checkout-js/issues/1611)) ([96f65dd](https://github.com/bigcommerce/checkout-js/commit/96f65dd588c1f25921e555de123fd6a45b1b3ecb))
+
+## [1.400.0](https://github.com/bigcommerce/checkout-js/compare/v1.399.0...v1.400.0) (2023-12-07)
+
+
+### Features
+
+* **payment:** PI-1036 removed  Stripe link inititializations for not supported cart amounts ([63686d0](https://github.com/bigcommerce/checkout-js/commit/63686d07313ade59758038fc29ff6dbfced5b88b))
+
+## [1.399.0](https://github.com/bigcommerce/checkout-js/compare/v1.398.0...v1.399.0) (2023-11-09)
+
+
+### Features
+
+* **payment:** PI-921 Amazon Pay Button needs to be changed to one with WITHOUT microtext ([#1563](https://github.com/bigcommerce/checkout-js/issues/1563)) ([7ba10d7](https://github.com/bigcommerce/checkout-js/commit/7ba10d7321a39095ef7a6066dc6b9b7b5d9196de))
+
+## [1.398.0](https://github.com/bigcommerce/checkout-js/compare/v1.397.0...v1.398.0) (2023-11-09)
+
+
+### Features
+
+* **payment:** PI-875 [Stripe] Error while try to save Stripe Link stored card as BC vaulted instrument ([#1542](https://github.com/bigcommerce/checkout-js/issues/1542)) ([8d3c486](https://github.com/bigcommerce/checkout-js/commit/8d3c4860d86b29c2e6cb4869d345d9d8415871e7))
+
+## [1.397.0](https://github.com/bigcommerce/checkout-js/compare/v1.396.0...v1.397.0) (2023-11-09)
+
+
+### Features
+
+* **payment:** PAYPAL-3175 bump checkout-sdk ([e6284ea](https://github.com/bigcommerce/checkout-js/commit/e6284eaa3fa960d7dfcc5bed7bd6542191bacde6))
+
+## [1.396.0](https://github.com/bigcommerce/checkout-js/compare/v1.395.0...v1.396.0) (2023-11-09)
+
+
+### Features
+
+* **payment:** PI-1004 Create a new package for TD Bank integration ([a9141cd](https://github.com/bigcommerce/checkout-js/commit/a9141cd34d8c7ca5325bbdf90b3447babab7feeb))
+
+## [1.395.0](https://github.com/bigcommerce/checkout-js/compare/v1.394.1...v1.395.0) (2023-11-08)
+
+
+### Features
+
+* **payment:** PAYPAL-2953 bump checkout-sdk version ([7596464](https://github.com/bigcommerce/checkout-js/commit/7596464c1df2a3ac288cdc0dcae25d5a7fc62de9))
+
+### [1.394.1](https://github.com/bigcommerce/checkout-js/compare/v1.394.0...v1.394.1) (2023-11-08)
+
+
+### Bug Fixes
+
+* **payment:** PI-617 prevent certificates applying while order submitting ([0122e95](https://github.com/bigcommerce/checkout-js/commit/0122e951e60e3a4e90776d56f6ca794d30586382))
+
+## [1.394.0](https://github.com/bigcommerce/checkout-js/compare/v1.393.0...v1.394.0) (2023-11-08)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7837 Optimize `loadCheckout` and `loadExtensions` for Parallel Execution ([#1589](https://github.com/bigcommerce/checkout-js/issues/1589)) ([6f9f9a1](https://github.com/bigcommerce/checkout-js/commit/6f9f9a172daf259194bd690f953077cab951ec53))
+
+## [1.393.0](https://github.com/bigcommerce/checkout-js/compare/v1.392.0...v1.393.0) (2023-11-07)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7838 preload extension with link tag ([#1584](https://github.com/bigcommerce/checkout-js/issues/1584)) ([c002053](https://github.com/bigcommerce/checkout-js/commit/c0020538ea1703b3787d50ca027f0c41a90ccceb))
+
+
+### Bug Fixes
+
+* **other:** CHECKOUT-000 upgrade @sentry/integrations from 7.52.1 to 7.54.0 ([#1353](https://github.com/bigcommerce/checkout-js/issues/1353)) ([afe9e9a](https://github.com/bigcommerce/checkout-js/commit/afe9e9a0d7efcfa029e337002100254ad292370d))
+* **other:** CHECKOUT-000 upgrade @types/react from 17.0.59 to 17.0.61 ([#1355](https://github.com/bigcommerce/checkout-js/issues/1355)) ([7e23e40](https://github.com/bigcommerce/checkout-js/commit/7e23e40cee07b98c2dbc5def1a7d2f2a0a035c46))
+* **other:** CHECKOUT-000 upgrade react-datepicker from 4.11.0 to 4.13.0 ([#1356](https://github.com/bigcommerce/checkout-js/issues/1356)) ([e225156](https://github.com/bigcommerce/checkout-js/commit/e225156dcc76ca35d4c188ad71428fa30ff945e9))
+* **other:** CHECKOUT-000 upgrade tslib from 2.5.1 to 2.5.3 ([#1354](https://github.com/bigcommerce/checkout-js/issues/1354)) ([6ebc5e8](https://github.com/bigcommerce/checkout-js/commit/6ebc5e8ed264b7c0b11c1346f08c4f7d35647a07))
+
+## [1.392.0](https://github.com/bigcommerce/checkout-js/compare/v1.391.1...v1.392.0) (2023-11-07)
+
+
+### Features
+
+* **other:** LOCAL-1444 delivery translation ([#1580](https://github.com/bigcommerce/checkout-js/issues/1580)) ([ef28d13](https://github.com/bigcommerce/checkout-js/commit/ef28d137beafb26013a7ebaa2b1ff0824ba0eccb))
+
+### [1.391.1](https://github.com/bigcommerce/checkout-js/compare/v1.391.0...v1.391.1) (2023-11-06)
+
+## [1.391.0](https://github.com/bigcommerce/checkout-js/compare/v1.390.1...v1.391.0) (2023-11-06)
+
+
+### Features
+
+* **payment:** PAYPAL-2975 added ability to show ratepay specific errors ([28d0c97](https://github.com/bigcommerce/checkout-js/commit/28d0c97b725f997ce3faf51364c4570ed44c47d3))
+* **payment:** PAYPAL-2975 added ability to show ratepay specific errors ([b5aeb9c](https://github.com/bigcommerce/checkout-js/commit/b5aeb9cad45522567efa1e10d17cd25d67778585))
+* **payment:** PAYPAL-2975 added ability to show ratepay specific errors ([d07b729](https://github.com/bigcommerce/checkout-js/commit/d07b729820ac1a0e6283bf5538247fe240db0940))
+* **payment:** PAYPAL-2975 added ability to show ratepay specific errors ([652d9f9](https://github.com/bigcommerce/checkout-js/commit/652d9f9cffa144d307f781bed649452fa013ee91))
+* **payment:** PAYPAL-2975 added ability to show ratepay specific errors ([8d31f28](https://github.com/bigcommerce/checkout-js/commit/8d31f28803f9ed3de3c15bed1d49847cca1a9ff7))
+
+### [1.390.1](https://github.com/bigcommerce/checkout-js/compare/v1.390.0...v1.390.1) (2023-11-06)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-7422 fix address localization on Checkout ([#1568](https://github.com/bigcommerce/checkout-js/issues/1568)) ([f77f89a](https://github.com/bigcommerce/checkout-js/commit/f77f89aec848c3557f788492aa9f625f83589159))
+
+## [1.390.0](https://github.com/bigcommerce/checkout-js/compare/v1.389.0...v1.390.0) (2023-11-06)
+
+
+### Features
+
+* **checkout:** CHECKOUT-7846 Update the Message for INCOMPLETE Orders on the Order Confirmation Page ([8f37d43](https://github.com/bigcommerce/checkout-js/commit/8f37d434407a2fd04f0a7236928e6ad57657aa85))
+
+## [1.389.0](https://github.com/bigcommerce/checkout-js/compare/v1.388.3...v1.389.0) (2023-11-02)
+
+
+### Features
+
+* **checkout:** CHECKOUT-0000 Remove sample e2e tests ([#1581](https://github.com/bigcommerce/checkout-js/issues/1581)) ([9cd9c9f](https://github.com/bigcommerce/checkout-js/commit/9cd9c9f3d474d27551bbab536f5f5365d248035d))
+
+### [1.388.3](https://github.com/bigcommerce/checkout-js/compare/v1.388.2...v1.388.3) (2023-11-01)
+
+### [1.388.2](https://github.com/bigcommerce/checkout-js/compare/v1.388.1...v1.388.2) (2023-11-01)
+
 ### [1.388.1](https://github.com/bigcommerce/checkout-js/compare/v1.388.0...v1.388.1) (2023-10-30)
 
 ## [1.388.0](https://github.com/bigcommerce/checkout-js/compare/v1.387.3...v1.388.0) (2023-10-30)

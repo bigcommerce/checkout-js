@@ -15,6 +15,7 @@ import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { isPaypalConnectMethod } from '@bigcommerce/checkout/paypal-connect-integration';
 import { CustomerSkeleton } from '@bigcommerce/checkout/ui';
@@ -52,6 +53,7 @@ export interface CustomerProps {
     onSignIn?(): void;
     onSignInError?(error: Error): void;
     onUnhandledError?(error: Error): void;
+    onWalletButtonClick?(methodName: string): void;
 }
 
 export interface WithCheckoutCustomerProps {
@@ -92,6 +94,7 @@ export interface WithCheckoutCustomerProps {
     sendLoginEmail(params: { email: string }): Promise<CheckoutSelectors>;
     signIn(credentials: CustomerCredentials): Promise<CheckoutSelectors>;
     createAccount(values: CustomerAccountRequestBody): Promise<CheckoutSelectors>;
+    shouldRenderStripeForm: boolean;
 }
 
 export interface CustomerState {
@@ -179,13 +182,15 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             isWalletButtonsOnTop,
             privacyPolicyUrl,
             requiresMarketingConsent,
-            providerWithCustomCheckout,
             onUnhandledError = noop,
+            onWalletButtonClick = noop,
             step,
             isFloatingLabelEnabled,
             isExpressPrivacyPolicy,
             isPaymentDataRequired,
+            shouldRenderStripeForm,
         } = this.props;
+
         const checkoutButtons = isWalletButtonsOnTop || !isPaymentDataRequired
           ? null
           : <CheckoutButtonList
@@ -195,6 +200,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             isInitializing={isInitializing}
             methodIds={checkoutButtonIds}
             onError={onUnhandledError}
+            onClick={onWalletButtonClick}
           />;
 
         const isLoadingGuestForm = isWalletButtonsOnTop ?
@@ -202,7 +208,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout;
 
         return (
-            providerWithCustomCheckout === PaymentMethodId.StripeUPE ?
+            shouldRenderStripeForm ?
                 <StripeGuestForm
                     canSubscribe={canSubscribe}
                     checkoutButtons={checkoutButtons}
@@ -446,6 +452,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 await executePaymentMethodCheckout({
                     methodId: providerWithCustomCheckout,
                     continueWithCheckoutCallback: onSignIn,
+                    checkoutPaymentMethodExecuted: (payload) => this.checkoutPaymentMethodExecuted(payload)
                 });
             } else {
                 onSignIn();
@@ -471,6 +478,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             await executePaymentMethodCheckout({
                 methodId: providerWithCustomCheckout,
                 continueWithCheckoutCallback: onAccountCreated,
+                checkoutPaymentMethodExecuted: (payload) => this.checkoutPaymentMethodExecuted(payload)
             });
         } else {
             onAccountCreated();
@@ -551,6 +559,7 @@ export function mapToWithCheckoutCustomerProps({
             getCustomerAccountFields,
             getCheckout,
             getCustomer,
+            getCart,
             getSignInEmail,
             getConfig,
             isPaymentDataRequired,
@@ -569,10 +578,11 @@ export function mapToWithCheckoutCustomerProps({
     const billingAddress = getBillingAddress();
     const checkout = getCheckout();
     const customer = getCustomer();
+    const cart = getCart();
     const signInEmail = getSignInEmail();
     const config = getConfig();
 
-    if (!checkout || !config) {
+    if (!checkout || !config || !cart) {
         return null;
     }
 
@@ -622,6 +632,7 @@ export function mapToWithCheckoutCustomerProps({
         isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
         isExpressPrivacyPolicy,
         isPaymentDataRequired: isPaymentDataRequired(),
+        shouldRenderStripeForm: !!(config.checkoutSettings.providerWithCustomCheckout === PaymentMethodId.StripeUPE && shouldUseStripeLinkByMinimumAmount(cart)),
     };
 }
 

@@ -17,6 +17,7 @@ import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { createSelector } from 'reselect';
 
+import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 
@@ -74,6 +75,7 @@ export interface WithCheckoutShippingProps {
     getFields(countryCode?: string): FormField[];
     initializeShippingMethod(options: ShippingInitializeOptions): Promise<CheckoutSelectors>;
     loadShippingAddressFields(): Promise<CheckoutSelectors>;
+    loadBillingAddressFields(): Promise<CheckoutSelectors>;
     loadShippingOptions(): Promise<CheckoutSelectors>;
     signOut(options?: CustomerRequestOptions): void;
     createCustomerAddress(address: AddressRequestBody): Promise<CheckoutSelectors>;
@@ -81,6 +83,7 @@ export interface WithCheckoutShippingProps {
     updateBillingAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
     updateCheckout(payload: CheckoutRequestBody): Promise<CheckoutSelectors>;
     updateShippingAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
+    shouldRenderStripeForm: boolean;
 }
 
 interface ShippingState {
@@ -99,13 +102,14 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
     async componentDidMount(): Promise<void> {
         const {
             loadShippingAddressFields,
+            loadBillingAddressFields,
             loadShippingOptions,
             onReady = noop,
             onUnhandledError = noop,
         } = this.props;
 
         try {
-            await Promise.all([loadShippingAddressFields(), loadShippingOptions()]);
+            await Promise.all([loadShippingAddressFields(), loadShippingOptions(), loadBillingAddressFields()]);
 
             onReady();
         } catch (error) {
@@ -121,15 +125,13 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             isGuest,
             shouldShowMultiShipping,
             customer,
-            unassignItem,
             updateShippingAddress,
             initializeShippingMethod,
             deinitializeShippingMethod,
             isMultiShippingMode,
-            onToggleMultiShipping,
-            providerWithCustomCheckout,
             step,
             isFloatingLabelEnabled,
+            shouldRenderStripeForm,
             ...shippingFormProps
         } = this.props;
 
@@ -137,7 +139,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             isInitializing,
         } = this.state;
 
-        if (providerWithCustomCheckout === PaymentMethodId.StripeUPE && !customer.email && this.props.countries.length > 0) {
+        if (shouldRenderStripeForm && !customer.email && this.props.countries.length > 0) {
             return <StripeShipping
                 { ...shippingFormProps }
                 customer={ customer }
@@ -413,6 +415,7 @@ export function mapToShippingProps({
         isLoading,
         isShippingStepPending: isShippingStepPending(),
         loadShippingAddressFields: checkoutService.loadShippingAddressFields,
+        loadBillingAddressFields: checkoutService.loadBillingAddressFields,
         loadShippingOptions: checkoutService.loadShippingOptions,
         methodId,
         providerWithCustomCheckout: config.checkoutSettings.providerWithCustomCheckout || undefined,
@@ -427,6 +430,7 @@ export function mapToShippingProps({
         updateCheckout: checkoutService.updateCheckout,
         updateShippingAddress: checkoutService.updateShippingAddress,
         isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
+        shouldRenderStripeForm: !!(config.checkoutSettings.providerWithCustomCheckout === PaymentMethodId.StripeUPE && shouldUseStripeLinkByMinimumAmount(cart)),
     };
 }
 

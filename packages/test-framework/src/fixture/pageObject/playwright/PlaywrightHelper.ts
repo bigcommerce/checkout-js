@@ -40,6 +40,48 @@ export class PlaywrightHelper {
         }
     }
 
+    async mockRoutes(): Promise<void> {
+        await this.page.route('**/internalapi/v1/store/countries', (route) => {
+            const json = {
+                data: [
+                    {
+                        code: 'AU',
+                        name: 'Australia',
+                        subdivisions: [
+                            { code: 'NSW', name: 'New South Wales' },
+                            { code: 'VIC', name: 'Victoria' },
+                        ],
+                        hasPostalCodes: true,
+                        requiresState: true,
+                    },
+                    {
+                        code: 'US',
+                        name: 'United States',
+                        hasPostalCodes: true,
+                        requiresState: true,
+                        subdivisions: [
+                            { code: 'CA', name: 'California' },
+                            { code: 'TX', name: 'Texas' },
+                            { code: 'NY', name: 'New York' },
+                        ],
+                    },
+                ],
+            };
+            void route.fulfill({
+                status: 200,
+                contentType: 'application/json',
+                json,
+            });
+        });
+        await this.page.route('**/api/storefront/checkout-extensions', (route) => {
+            void route.fulfill({
+                status: 200,
+                contentType: 'application/json',
+                json: [],
+            });
+        });
+    }
+
     async useHAR(har: string, folder: string): Promise<void> {
         this.har = har;
 
@@ -53,6 +95,9 @@ export class PlaywrightHelper {
         await this.page.route(/.*\/products\/.*\/images\/.*/, (route) => {
             void route.fulfill({ status: 200, path: `${this.srcPath}/support/product.png` });
         });
+
+        // TODO: Remove these mocks when updating HAR files
+        await this.mockRoutes();
 
         if (this.isReplay) {
             // creating local checkout environment during replay

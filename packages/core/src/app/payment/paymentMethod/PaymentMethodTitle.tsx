@@ -255,6 +255,10 @@ function getPaymentMethodTitle(
             return customTitles[PaymentMethodType.CreditCard];
         }
 
+        if (method.id === PaymentMethodId.Ratepay) {
+            return { logoUrl: method.logoUrl || '', titleText: language.translate('payment.ratepay.payment_method_title')};
+        }
+
         return (
             customTitles[method.gateway || ''] ||
             customTitles[method.id] ||

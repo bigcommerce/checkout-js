@@ -4,6 +4,8 @@ import {
     ExtensionRegion,
 } from '@bigcommerce/checkout-sdk';
 
+import { getCart, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
+
 import { getExtensions } from './Extension.mock';
 import { ExtensionRegionContainer } from './ExtensionRegionContainer';
 import { ExtensionService } from './ExtensionService';
@@ -37,6 +39,33 @@ describe('ExtensionService', () => {
         await extensionService.loadExtensions();
 
         expect(checkoutService.loadExtensions).toHaveBeenCalled();
+    });
+
+    it('preloads extensions', () => {
+        jest.spyOn(checkoutService.getState().data, 'getCart').mockReturnValue(getCart());
+        jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
+        jest.spyOn(document, 'createElement');
+        jest.spyOn(document.head, 'appendChild');
+
+        extensionService.preloadExtensions();
+
+        expect(document.createElement).toHaveBeenCalledWith('link');
+        expect(document.head.appendChild).toHaveBeenCalledTimes(2);
+
+        const linkItems = [
+            'https://widget.foo.com/?extensionId=123&cartId=b20deef40f9699e48671bbc3fef6ca44dc80e3c7&parentOrigin=https%3A%2F%2Fstore-k1drp8k8.bcapp.dev',
+            'https://widget.bar.com/?extensionId=456&cartId=b20deef40f9699e48671bbc3fef6ca44dc80e3c7&parentOrigin=https%3A%2F%2Fstore-k1drp8k8.bcapp.dev',
+        ];
+
+        linkItems.forEach((linkItem, index) => {
+            expect(document.head.appendChild).toHaveBeenNthCalledWith(
+                index + 1,
+                expect.objectContaining({
+                    href: linkItem,
+                    rel: 'preload',
+                }),
+            );
+        });
     });
 
     it('renders an extension', async () => {

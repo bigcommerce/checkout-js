@@ -2,6 +2,7 @@ import {
     AccountInstrument,
     CardInstrument,
     CheckoutSelectors,
+    Customer,
     CustomerInitializeOptions,
     CustomerRequestOptions,
     Instrument,
@@ -9,6 +10,7 @@ import {
     PaymentInstrument,
     PaymentMethod,
     PaymentRequestOptions,
+    StoreConfig,
 } from '@bigcommerce/checkout-sdk';
 import { memoizeOne } from '@bigcommerce/memoize';
 import classNames from 'classnames';
@@ -39,6 +41,7 @@ import withPayment, { WithPaymentProps } from '../withPayment';
 import SignOutLink from './SignOutLink';
 
 export interface HostedWidgetPaymentMethodProps {
+    shouldSavingCardsBeEnabled?: boolean | undefined;
     additionalContainerClassName?: string;
     buttonId?: string;
     containerId: string;
@@ -77,14 +80,17 @@ export interface HostedWidgetPaymentMethodProps {
 }
 
 interface WithCheckoutHostedWidgetPaymentMethodProps {
+    customer: Customer,
+    config: StoreConfig,
     instruments: PaymentInstrument[];
-    isInstrumentFeatureAvailable: boolean;
     isLoadingInstruments: boolean;
     isPaymentDataRequired: boolean;
     isSignedIn: boolean;
     isInstrumentCardCodeRequired(instrument: Instrument, method: PaymentMethod): boolean;
     isInstrumentCardNumberRequired(instrument: Instrument): boolean;
+    isUsingMultiShipping: boolean,
     loadInstruments(): Promise<CheckoutSelectors>;
+    paymentMethod: PaymentMethod,
     signOut(options: CustomerRequestOptions): void;
 }
 
@@ -105,7 +111,6 @@ class HostedWidgetPaymentMethod extends Component<
 
     async componentDidMount(): Promise<void> {
         const {
-            isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
             loadInstruments,
             method,
             onUnhandledError = noop,
@@ -115,7 +120,13 @@ class HostedWidgetPaymentMethod extends Component<
         setValidationSchema(method, this.getValidationSchema());
 
         try {
-            if (isInstrumentFeatureAvailableProp) {
+            if (isInstrumentFeatureAvailable({
+                config: this.props.config,
+                customer: this.props.customer,
+                isUsingMultiShipping: this.props.isUsingMultiShipping,
+                paymentMethod: this.props.paymentMethod, 
+                shouldSavingCardsBeEnabled: this.props.shouldSavingCardsBeEnabled,
+        })) {
                 await loadInstruments();
             }
 
@@ -196,12 +207,18 @@ class HostedWidgetPaymentMethod extends Component<
             isSignedIn = false,
             method,
             isAccountInstrument,
-            isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
             isLoadingInstruments,
             shouldHideInstrumentExpiryDate = false,
             shouldShow = true,
         } = this.props;
 
+        const isInstrumentFeature = isInstrumentFeatureAvailable({
+            config: this.props.config,
+            customer: this.props.customer,
+            isUsingMultiShipping: this.props.isUsingMultiShipping,
+            paymentMethod: this.props.paymentMethod, 
+            shouldSavingCardsBeEnabled: this.props.shouldSavingCardsBeEnabled,
+        })
         const { isAddingNewCard, selectedInstrumentId = this.getDefaultInstrumentId() } =
             this.state;
 
@@ -214,7 +231,7 @@ class HostedWidgetPaymentMethod extends Component<
             instruments[0];
 
         const shouldShowInstrumentFieldset =
-            isInstrumentFeatureAvailableProp && instruments.length > 0;
+            isInstrumentFeature && instruments.length > 0;
         const shouldShowCreditCardFieldset = !shouldShowInstrumentFieldset || isAddingNewCard;
         const isLoading = (isInitializing || isLoadingInstruments) && !hideWidget;
 
@@ -253,7 +270,7 @@ class HostedWidgetPaymentMethod extends Component<
 
                     {this.renderContainer(shouldShowCreditCardFieldset)}
 
-                    {isInstrumentFeatureAvailableProp && (
+                    {isInstrumentFeature && (
                         <StoreInstrumentFieldset
                             instrumentId={selectedInstrumentId}
                             isAccountInstrument={isAccountInstrument || shouldShowAccountInstrument}
@@ -334,7 +351,6 @@ class HostedWidgetPaymentMethod extends Component<
 
     private getValidationSchema(): ObjectSchema | null {
         const {
-            isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
             isPaymentDataRequired,
             storedCardValidationSchema,
         } = this.props;
@@ -345,7 +361,13 @@ class HostedWidgetPaymentMethod extends Component<
 
         const selectedInstrument = this.getSelectedInstrument();
 
-        if (isInstrumentFeatureAvailableProp && selectedInstrument) {
+        if (isInstrumentFeatureAvailable({
+                config: this.props.config,
+                customer: this.props.customer,
+                isUsingMultiShipping: this.props.isUsingMultiShipping,
+                paymentMethod: this.props.paymentMethod, 
+                shouldSavingCardsBeEnabled: this.props.shouldSavingCardsBeEnabled,
+        }) && selectedInstrument) {
             return storedCardValidationSchema || null;
         }
 
@@ -554,12 +576,10 @@ const mapFromCheckoutProps: MapToPropsFactory<
             isSignedIn: some(checkout.payments, { providerId: method.id }),
             isInstrumentCardCodeRequired: isInstrumentCardCodeRequiredSelector(checkoutState),
             isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredSelector(checkoutState),
-            isInstrumentFeatureAvailable: isInstrumentFeatureAvailable({
-                config,
-                customer,
-                isUsingMultiShipping,
-                paymentMethod: method,
-            }),
+            config,
+            customer,
+            isUsingMultiShipping,
+            paymentMethod: method,
             loadInstruments: checkoutService.loadInstruments,
             signOut: checkoutService.signOutCustomer,
         };

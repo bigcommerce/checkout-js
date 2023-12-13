@@ -17,6 +17,9 @@
 
     > .AmazonPayContainer {
         width: remCalc(200px);
+        #amazonpayCheckoutButton > div{
+            width: 100% !important;
+        }
     }
 
     .gpay-button {

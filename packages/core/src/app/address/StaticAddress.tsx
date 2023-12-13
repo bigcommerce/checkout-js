@@ -104,12 +104,14 @@ export function mapToStaticAddressProps(
 ): WithCheckoutStaticAddressProps | null {
     const {
         checkoutState: {
-            data: { getBillingCountries, getBillingAddressFields, getShippingAddressFields },
+            data: { getBillingCountries, getShippingCountries, getBillingAddressFields, getShippingAddressFields },
         },
     } = context;
 
     return {
-        countries: getBillingCountries(),
+        countries: type === AddressType.Billing
+            ? getBillingCountries()
+            : getShippingCountries(),
         fields:
             type === AddressType.Billing
                 ? getBillingAddressFields(address.countryCode)

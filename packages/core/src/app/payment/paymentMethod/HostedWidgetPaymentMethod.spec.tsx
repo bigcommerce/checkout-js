@@ -498,5 +498,17 @@ describe('HostedWidgetPaymentMethod', () => {
                 Object.keys(expectedSchema.describe().fields),
             );
         });
+
+        it('does not shows "Save this card for future transactions" checkbox when shouldSavingCardsBeEnabled prop is false', () => {
+            defaultProps.shouldSavingCardsBeEnabled = false;
+
+            jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([]);
+
+            const container = mount(<HostedWidgetPaymentMethodTest {...defaultProps} />);
+            const hostedWidgetComponent = container.find('#widget-container');
+
+            expect(hostedWidgetComponent).toHaveLength(1);
+            expect(container.find('input[name="shouldSaveInstrument"]').exists()).toBe(false);
+        });
     });
 });

@@ -51,6 +51,7 @@ describe('CheckoutButtonContainer', () => {
                         checkEmbeddedSupport={jest.fn()}
                         isPaymentStepActive={false}
                         onUnhandledError={jest.fn()}
+                        onWalletButtonClick={jest.fn()}
                     />
                 </LocaleContext.Provider>
             </CheckoutProvider>
@@ -69,6 +70,7 @@ describe('CheckoutButtonContainer', () => {
                         checkEmbeddedSupport={jest.fn()}
                         isPaymentStepActive={false}
                         onUnhandledError={jest.fn()}
+                        onWalletButtonClick={jest.fn()}
                     />
                 </LocaleContext.Provider>
             </CheckoutProvider>
@@ -87,6 +89,7 @@ describe('CheckoutButtonContainer', () => {
                         checkEmbeddedSupport={jest.fn()}
                         isPaymentStepActive={false}
                         onUnhandledError={jest.fn()}
+                        onWalletButtonClick={jest.fn()}
                     />
                 </LocaleContext.Provider>
             </CheckoutProvider>
@@ -103,6 +106,7 @@ describe('CheckoutButtonContainer', () => {
                         checkEmbeddedSupport={jest.fn()}
                         isPaymentStepActive={true}
                         onUnhandledError={jest.fn()}
+                        onWalletButtonClick={jest.fn()}
                     />
                 </LocaleContext.Provider>
             </CheckoutProvider>
@@ -131,6 +135,7 @@ describe('CheckoutButtonContainer', () => {
                         checkEmbeddedSupport={jest.fn()}
                         isPaymentStepActive={true}
                         onUnhandledError={jest.fn()}
+                        onWalletButtonClick={jest.fn()}
                     />
                 </LocaleContext.Provider>
             </CheckoutProvider>

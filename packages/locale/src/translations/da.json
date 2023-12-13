@@ -528,6 +528,9 @@
         },
         "order_confirmation": {
             "mandate": {
+                "adyenv3": {
+                    "boletobancario": "Boleto Bancário-kvittering"
+                },
                 "checkoutcom": {
                     "boleto": "Boleto Bancário-kvittering",
                     "oxxo": "OXXO-kvittering",
@@ -545,9 +548,9 @@
                 "paypalcommercealternativemethods": {
                     "oxxo": "OXXO-kvittering",
                     "ratepay": {
-                        "account_holder_name": "Account Holder",
+                        "account_holder_name": "Kontohaver",
                         "iban": "Iban",
-                        "payment_reference": "Payment Reference"
+                        "payment_reference": "Betalingsreference"
                     }
                 }
             },

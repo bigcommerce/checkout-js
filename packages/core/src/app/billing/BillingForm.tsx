@@ -17,6 +17,7 @@ import {
     AddressForm,
     AddressFormValues,
     AddressSelect,
+    AddressType,
     getAddressFormFieldsValidationSchema,
     getTranslateAddressError,
     isValidCustomerAddress,
@@ -122,6 +123,7 @@ const BillingForm = ({
                                 selectedAddress={
                                     hasValidCustomerAddress ? billingAddress : undefined
                                 }
+                                type={AddressType.Billing}
                             />
                         </LoadingOverlay>
                     </Fieldset>

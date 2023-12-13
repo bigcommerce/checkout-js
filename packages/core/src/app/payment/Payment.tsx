@@ -117,7 +117,6 @@ class Payment extends Component<
             onReady = noop,
             onUnhandledError = noop,
             usableStoreCredit,
-            analyticsTracker
         } = this.props;
 
 
@@ -130,7 +129,9 @@ class Payment extends Component<
 
             const selectedMethod = this.state.selectedMethod || this.props.defaultMethod;
 
-            analyticsTracker.selectedPaymentMethod(selectedMethod?.config.displayName);
+            if (selectedMethod) {
+                this.trackSelectedPaymentMethod(selectedMethod);
+            }
         } catch (error) {
             onUnhandledError(error);
         }
@@ -480,14 +481,15 @@ class Payment extends Component<
     };
 
     private setSelectedMethod: (method?: PaymentMethod) => void = (method) => {
-        const { analyticsTracker } = this.props;
         const { selectedMethod } = this.state;
 
         if (selectedMethod === method) {
             return;
         }
 
-        analyticsTracker.selectedPaymentMethod(method?.config.displayName);
+        if (method) {
+            this.trackSelectedPaymentMethod(method);
+        }
 
         this.setState({ selectedMethod: method });
     };
@@ -529,6 +531,15 @@ class Payment extends Component<
             },
         });
     };
+
+    private trackSelectedPaymentMethod(method: PaymentMethod) {
+        const { analyticsTracker } = this.props;
+
+        const methodName = method.config.displayName || method.id;
+        const methodId = method.id;
+
+        analyticsTracker.selectedPaymentMethod(methodName, methodId);
+    }
 }
 
 export function mapToPaymentProps({

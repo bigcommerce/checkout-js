@@ -3,6 +3,7 @@ import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 const DISPLAY_NAME_MAP = {
     credit_card: 'Credit Card',
     ecp: 'Electronic Check Presentment',
+    sepa_direct_debit: 'SEPA',
 };
 
 export function getBlueSnapDirect(
@@ -24,5 +25,8 @@ export function getBlueSnapDirect(
                 ? ['AMEX', 'CUP', 'DINERS', 'DISCOVER', 'JCB', 'MC', 'VISA']
                 : [],
         type: 'PAYMENT_TYPE_API',
+        initializationData: {
+            sepaCreditorCompanyName: 'Sepa Creditor Company Name',
+        },
     };
 }

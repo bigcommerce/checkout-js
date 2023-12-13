@@ -39,7 +39,7 @@ Object {
                     autocomplete="off"
                     class="form-input optimizedCheckout-form-input"
                     name="ratepayBirthDate"
-                    placeholder="DD/MM/YYYY"
+                    placeholder="DD.MM.YYYY"
                     type="text"
                     value=""
                   />
@@ -137,7 +137,7 @@ Object {
                   autocomplete="off"
                   class="form-input optimizedCheckout-form-input"
                   name="ratepayBirthDate"
-                  placeholder="DD/MM/YYYY"
+                  placeholder="DD.MM.YYYY"
                   type="text"
                   value=""
                 />

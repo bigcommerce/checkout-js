@@ -12,10 +12,12 @@ import isEqualAddress from './isEqualAddress';
 import StaticAddress from './StaticAddress';
 
 import './AddressSelect.scss';
+import AddressType from './AddressType';
 
 export interface AddressSelectProps {
     addresses: CustomerAddress[];
     selectedAddress?: Address;
+    type: AddressType;
     onSelectAddress(address: Address): void;
     onUseNewAddress(currentAddress?: Address): void;
 }
@@ -25,6 +27,7 @@ const AddressSelectMenu: FunctionComponent<AddressSelectProps> = ({
     onSelectAddress,
     onUseNewAddress,
     selectedAddress,
+    type,
 }) => (
     <ul className="dropdown-menu instrumentSelect-dropdownMenu" id="addressDropdown">
         <li className="dropdown-menu-item dropdown-menu-item--select">
@@ -39,7 +42,7 @@ const AddressSelectMenu: FunctionComponent<AddressSelectProps> = ({
         {addresses.map((address) => (
             <li className="dropdown-menu-item dropdown-menu-item--select" key={address.id}>
                 <a href="#" onClick={preventDefault(() => onSelectAddress(address))}>
-                    <StaticAddress address={address} />
+                    <StaticAddress address={address} type={type} />
                 </a>
             </li>
         ))}
@@ -49,6 +52,7 @@ const AddressSelectMenu: FunctionComponent<AddressSelectProps> = ({
 const AddressSelect = ({
     addresses,
     selectedAddress,
+    type,
     onSelectAddress,
     onUseNewAddress,
 }: AddressSelectProps) => {
@@ -74,12 +78,14 @@ const AddressSelect = ({
                             onSelectAddress={handleSelectAddress}
                             onUseNewAddress={handleUseNewAddress}
                             selectedAddress={selectedAddress}
+                            type={type}
                         />
                     }
                 >
                     <AddressSelectButton
                         addresses={addresses}
                         selectedAddress={selectedAddress}
+                        type={type}
                     />
                 </DropdownTrigger>
             </div>

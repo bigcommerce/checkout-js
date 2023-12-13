@@ -17,7 +17,6 @@
     "noUnusedParameters": true,
     "paths": {
       "@bigcommerce/checkout/adyen-integration": ["packages/adyen-integration/src/index.ts"],
-      "@bigcommerce/checkout/afterpay-integration": ["packages/afterpay-integration/src/index.ts"],
       "@bigcommerce/checkout/analytics": ["packages/analytics/src/index.ts"],
       "@bigcommerce/checkout/apple-pay-integration": [
         "packages/apple-pay-integration/src/index.ts"
@@ -72,8 +71,8 @@
       "@bigcommerce/checkout/paypal-connect-integration": [
         "packages/paypal-connect-integration/src/index.ts"
       ],
-      "@bigcommerce/checkout/sezzle-integration": ["packages/sezzle-integration/src/index.ts"],
       "@bigcommerce/checkout/squarev2-integration": ["packages/squarev2-integration/src/index.ts"],
+      "@bigcommerce/checkout/td-bank-integration": ["packages/td-bank-integration/src/index.ts"],
       "@bigcommerce/checkout/test-framework": ["packages/test-framework/src/index.ts"],
       "@bigcommerce/checkout/test-mocks": ["packages/test-mocks/src/index.ts"],
       "@bigcommerce/checkout/test-utils": ["packages/test-utils/src/index.ts"],
