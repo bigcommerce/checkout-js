@@ -53,6 +53,7 @@ enum PaymentMethodId {
     PaypalCommerceVenmo = 'paypalcommercevenmo',
     Qpay = 'qpay',
     Quadpay = 'quadpay',
+    Ratepay = 'ratepay',
     SagePay = 'sagepay',
     Sepa = 'sepa',
     Sezzle = 'sezzle',

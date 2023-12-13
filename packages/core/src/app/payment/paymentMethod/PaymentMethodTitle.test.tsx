@@ -146,7 +146,7 @@ describe('PaymentMethodTitle', () => {
                     }}
                 />,
             );
-    
+
             expect(screen.getByRole('img')).toBeInTheDocument();
             expect(screen.getByRole('heading')).toBeInTheDocument();
         });
@@ -260,6 +260,23 @@ describe('PaymentMethodTitle', () => {
             );
 
             expect(screen.getByRole('heading', { name: localeContext.language.translate('payment.credit_card_text') })).toBeInTheDocument();
+        });
+
+        it('renders custom text for Ratepay payment method', () => {
+            const method = {
+                ...defaultProps.method,
+                gateway: PaymentMethodId.PaypalCommerceAlternativeMethod,
+                id: 'ratepay'
+            };
+
+            render(
+                <PaymentMethodTitleTest
+                    {...defaultProps}
+                    method={method}
+                />,
+            );
+
+            expect(screen.getByRole('heading', { name: localeContext.language.translate('payment.ratepay.payment_method_title') })).toBeInTheDocument();
         });
 
         it('renders custom text for Bluesnap Direct ECP', () => {
@@ -577,7 +594,7 @@ describe('PaymentMethodTitle', () => {
 
         expect(screen.getByTestId('credit-card-icon-visa')).toBeInTheDocument();
     });
-    
+
     describe('renders only Checkout.com APMs logos based on their gateway id', () => {
         const renderCheckoutcomTitleComponent = (id: string) => {
             render(

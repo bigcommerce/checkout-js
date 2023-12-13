@@ -1,11 +1,10 @@
 import {
     BrowserOptions,
-    captureException,
-    init,
+    Hub,
     Integrations,
     Scope,
-    withScope,
 } from '@sentry/browser';
+import { BrowserClientOptions } from '@sentry/browser/types/client';
 import { RewriteFrames } from '@sentry/integrations';
 import { Integration } from '@sentry/types';
 
@@ -13,25 +12,22 @@ import { ErrorLevelType } from '@bigcommerce/checkout/error-handling-utils';
 
 import computeErrorCode from './computeErrorCode';
 import ConsoleErrorLogger from './ConsoleErrorLogger';
-import SentryErrorLogger, { SeverityLevelEnum } from './SentryErrorLogger';
+import SentryErrorLogger, { SentryErrorLoggerOptions, SeverityLevelEnum } from './SentryErrorLogger';
 
 jest.mock('@sentry/browser', () => {
     return {
-        captureException: jest.fn(),
-        init: jest.fn(),
-        withScope: jest.fn(),
+        ...jest.requireActual('@sentry/browser'),
         Integrations: {
             GlobalHandlers: jest.fn(),
-        },
-        Severity: {
-            Error: 'Error',
-            Warning: 'Warning',
         },
     };
 });
 
 describe('SentryErrorLogger', () => {
     let config: BrowserOptions;
+    let options: SentryErrorLoggerOptions;
+    let hubMock: Pick<Hub, 'captureException' | 'withScope'>;
+    let createClient: jest.Mock;
 
     beforeEach(() => {
         config = {
@@ -39,15 +35,26 @@ describe('SentryErrorLogger', () => {
             dsn: 'https://abc@sentry.io/123',
         };
 
-        (captureException as jest.Mock).mockClear();
-        (init as jest.Mock).mockClear();
-        (withScope as jest.Mock).mockClear();
+        hubMock = {
+            captureException: jest.fn(),
+            withScope: jest.fn(),
+        };
+
+        createClient = jest.fn();
+
+        options = {
+            createHub(clientOptions: BrowserClientOptions) {
+                createClient(clientOptions);
+
+                return hubMock as Hub;
+            }
+        };
     });
 
     it('does not log exception event if it is not raised by error', () => {
-        new SentryErrorLogger(config);
+        new SentryErrorLogger(config, options);
 
-        const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
+        const clientOptions: BrowserOptions = createClient.mock.calls[0][0];
         const event = {
             exception: {
                 values: [
@@ -67,9 +74,9 @@ describe('SentryErrorLogger', () => {
     });
 
     it('does not log exception event if it does not contain stacktrace', () => {
-        new SentryErrorLogger(config);
+        new SentryErrorLogger(config, options);
 
-        const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
+        const clientOptions: BrowserOptions = createClient.mock.calls[0][0];
         const event = {
             exception: { values: [{ type: 'Error', value: 'Unexpected error' }] },
         };
@@ -80,9 +87,9 @@ describe('SentryErrorLogger', () => {
     });
 
     it('does not log exception event if all frames in stacktrace are missing filename', () => {
-        new SentryErrorLogger(config);
+        new SentryErrorLogger(config, options);
 
-        const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
+        const clientOptions: BrowserOptions = createClient.mock.calls[0][0];
         const event = {
             exception: {
                 values: [
@@ -100,18 +107,19 @@ describe('SentryErrorLogger', () => {
         expect(clientOptions.beforeSend!(event, hint)).toBeNull();
     });
 
-    it('logs exception event if all frames in stacktrace reference app file', () => {
-        new SentryErrorLogger(config);
+    it('logs exception event if some frames in stacktrace reference app file', () => {
+        new SentryErrorLogger(config, options);
 
-        const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
+        const clientOptions: BrowserOptions = createClient.mock.calls[0][0];
         const event = {
             exception: {
                 values: [
                     {
                         stacktrace: {
                             frames: [
-                                { filename: 'app:///js/app-123.js' },
-                                { filename: 'app:///js/app-456.js' },
+                                { filename: 'app:///js/app-123.js', in_app: true },
+                                { filename: '<anonymous>', in_app: true },
+                                { filename: 'app:///js/app-456.js', in_app: true },
                             ],
                         },
                         type: 'Error',
@@ -127,9 +135,9 @@ describe('SentryErrorLogger', () => {
     });
 
     it('configures client to rewrite filename of error frames', () => {
-        new SentryErrorLogger(config, { publicPath: 'https://cdn.foo.bar' });
+        new SentryErrorLogger(config, { publicPath: 'https://cdn.foo.bar', ...options });
 
-        const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
+        const clientOptions: BrowserOptions = createClient.mock.calls[0][0];
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const rewriteFrames = (clientOptions.integrations! as Integration[]).find(
@@ -166,9 +174,9 @@ describe('SentryErrorLogger', () => {
     });
 
     it('configures client to ignore errors from polyfill and Sentry client', () => {
-        new SentryErrorLogger(config);
+        new SentryErrorLogger(config, options);
 
-        expect(init).toHaveBeenCalledWith(
+        expect(createClient).toHaveBeenCalledWith(
             expect.objectContaining({
                 denyUrls: ['polyfill~checkout', 'sentry~checkout'],
             }),
@@ -176,9 +184,9 @@ describe('SentryErrorLogger', () => {
     });
 
     it('does not rewrite filename of error frames if it does not match with public path', () => {
-        new SentryErrorLogger(config, { publicPath: 'https://cdn.foo.bar' });
+        new SentryErrorLogger(config, { publicPath: 'https://cdn.foo.bar', ...options });
 
-        const clientOptions: BrowserOptions = (init as jest.Mock).mock.calls[0][0];
+        const clientOptions: BrowserOptions = createClient.mock.calls[0][0];
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const rewriteFrames = (clientOptions.integrations! as Integration[]).find(
@@ -215,7 +223,7 @@ describe('SentryErrorLogger', () => {
     });
 
     it('disables global error handler', () => {
-        new SentryErrorLogger(config);
+        new SentryErrorLogger(config, options);
 
         expect(Integrations.GlobalHandlers).toHaveBeenCalledWith({
             onerror: false,
@@ -233,11 +241,11 @@ describe('SentryErrorLogger', () => {
                 setFingerprint: jest.fn(),
             };
 
-            (withScope as jest.Mock).mockImplementation((fn) => fn(scope));
+            hubMock.withScope = jest.fn((fn) => fn(scope as Scope));
         });
 
         it('logs error with provided error code, level and default fingerprint', () => {
-            const logger = new SentryErrorLogger(config, { errorTypes: ['Foo', 'Bar'] });
+            const logger = new SentryErrorLogger(config, { errorTypes: ['Foo', 'Bar'], ...options });
             const error = new Error();
             const tags = { errorCode: 'foo' };
 
@@ -249,11 +257,11 @@ describe('SentryErrorLogger', () => {
 
             expect(scope.setFingerprint).toHaveBeenCalledWith(['{{ default }}']);
 
-            expect(captureException).toHaveBeenCalledWith(error);
+            expect(hubMock.captureException).toHaveBeenCalledWith(error);
         });
 
         it('logs error with default error code, level and specific fingerprint if level / code is not provided', () => {
-            const logger = new SentryErrorLogger(config);
+            const logger = new SentryErrorLogger(config, options);
             const error = new Error();
 
             logger.log(error);
@@ -264,11 +272,11 @@ describe('SentryErrorLogger', () => {
 
             expect(scope.setFingerprint).toHaveBeenCalledWith(['{{ default }}']);
 
-            expect(captureException).toHaveBeenCalledWith(error);
+            expect(hubMock.captureException).toHaveBeenCalledWith(error);
         });
 
         it('maps to error level enum recognized by Sentry', () => {
-            const logger = new SentryErrorLogger(config);
+            const logger = new SentryErrorLogger(config, options);
             const error = new Error();
 
             logger.log(error, undefined, ErrorLevelType.Error);
@@ -287,7 +295,7 @@ describe('SentryErrorLogger', () => {
 
             jest.spyOn(consoleLogger, 'log').mockImplementation();
 
-            const logger = new SentryErrorLogger(config, { consoleLogger });
+            const logger = new SentryErrorLogger(config, { consoleLogger, ...options });
             const error = new Error('Testing 123');
             const tags = { errorCode: 'abc' };
             const level = ErrorLevelType.Error;

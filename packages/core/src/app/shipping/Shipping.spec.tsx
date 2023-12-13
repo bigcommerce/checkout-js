@@ -19,15 +19,25 @@ import { getCheckout } from '../checkout/checkouts.mock';
 import CheckoutStepType from '../checkout/CheckoutStepType';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
+import { getCountries } from '../geography/countries.mock';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
 import { getConsignment } from './consignment.mock';
 import Shipping, { ShippingProps, WithCheckoutShippingProps } from './Shipping';
 import { getShippingAddress } from './shipping-addresses.mock';
 import ShippingForm from './ShippingForm';
-import { getCountries } from '../geography/countries.mock';
+
+jest.mock('./stripeUPE/StripeShipping', () => {
+    const StripeShipping = () => {
+        return <div />;
+    }
+
+    return StripeShipping;
+  });
 
 describe('Shipping Component', () => {
+    
+
     let component: ReactWrapper;
     let localeContext: LocaleContextType;
     let checkoutService: CheckoutService;
@@ -120,6 +130,63 @@ describe('Shipping Component', () => {
                 </LocaleContext.Provider>
             </CheckoutProvider>
         );
+    });
+
+    it('renders StripeShipping if enabled', async () => {
+        const config = getStoreConfig();
+
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+            ...config,
+            checkoutSettings: {
+                ...config.checkoutSettings,
+                providerWithCustomCheckout: PaymentMethodId.StripeUPE,
+            }
+        });
+        jest.spyOn(checkoutState.data, 'getCustomer')
+            .mockReturnValue({ ...getCustomer(), email: '' ,addresses: [] });
+
+        jest.spyOn(checkoutState.data, 'getShippingCountries')
+            .mockReturnValue(getCountries())
+        jest.spyOn(checkoutState.data, 'getBillingCountries').mockReturnValue(getCountries());
+
+        component = mount(<ComponentTest {...defaultProps} />);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+        component.update();
+
+        expect(component.find('StripeShipping')).toHaveLength(1);
+        expect(component.find(ShippingForm)).toHaveLength(0);
+    });
+
+    it("doesn't render StripeShipping if it enabled but cart amount is smaller then Stripe requires", async () => {
+        const config = getStoreConfig();
+
+        jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
+            ...getCart(),
+            cartAmount: 0.4,
+        } as Cart);
+
+        jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue({
+            ...config,
+            checkoutSettings: {
+                ...config.checkoutSettings,
+                providerWithCustomCheckout: PaymentMethodId.StripeUPE,
+            }
+        });
+        jest.spyOn(checkoutState.data, 'getCustomer')
+            .mockReturnValue({ ...getCustomer(), email: '' ,addresses: [] });
+
+        jest.spyOn(checkoutState.data, 'getShippingCountries')
+            .mockReturnValue(getCountries())
+        jest.spyOn(checkoutState.data, 'getBillingCountries').mockReturnValue(getCountries());
+
+        component = mount(<ComponentTest {...defaultProps} />);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+        component.update();
+
+        expect(component.find('StripeShipping')).toHaveLength(0);
+        expect(component.find(ShippingForm)).toHaveLength(1);
     });
 
     it('loads shipping data  when component is mounted', () => {

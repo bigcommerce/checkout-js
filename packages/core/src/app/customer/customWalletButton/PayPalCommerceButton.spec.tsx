@@ -26,6 +26,7 @@ describe('PayPalCommerceButton', () => {
                     initialize={initialize}
                     methodId="paypalcommerce"
                     onError={error}
+                    onClick={jest.fn()}
                 />
             </LocaleContext.Provider>
         );
@@ -44,8 +45,9 @@ describe('PayPalCommerceButton', () => {
             methodId: 'paypalcommerce',
             paypalcommerce: {
                 container: 'paypalcommerceId',
-                onError: error,
                 onComplete: navigateToOrderConfirmation,
+                onClick: expect.any(Function),
+                onError: error,
             },
         });
     });

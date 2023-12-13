@@ -11,9 +11,10 @@ describe('CheckoutButtonV1Resolver', () => {
                 initialize={jest.fn()}
                 methodId="applepay"
                 onError={jest.fn()}
+                onClick={jest.fn()}
             />
         );
-        
+
         expect(component).toMatchSnapshot();
     });
 
@@ -25,9 +26,10 @@ describe('CheckoutButtonV1Resolver', () => {
                 isShowingWalletButtonsOnTop={true}
                 methodId="applepay"
                 onError={jest.fn()}
+                onClick={jest.fn()}
             />
         );
-        
+
         expect(component).toMatchSnapshot();
     });
 
@@ -39,9 +41,10 @@ describe('CheckoutButtonV1Resolver', () => {
                 isShowingWalletButtonsOnTop={true}
                 methodId="amazonpay"
                 onError={jest.fn()}
+                onClick={jest.fn()}
             />
         );
-        
+
         expect(component).toMatchSnapshot();
     });
 
@@ -53,9 +56,10 @@ describe('CheckoutButtonV1Resolver', () => {
                 isShowingWalletButtonsOnTop={true}
                 methodId="paypalcommerce"
                 onError={jest.fn()}
+                onClick={jest.fn()}
             />
         );
-        
+
         expect(component).toMatchSnapshot();
     });
 
@@ -67,9 +71,10 @@ describe('CheckoutButtonV1Resolver', () => {
                 isShowingWalletButtonsOnTop={true}
                 methodId="paypalcommercecredit"
                 onError={jest.fn()}
+                onClick={jest.fn()}
             />
         );
-        
+
         expect(component).toMatchSnapshot();
     });
 
@@ -81,9 +86,10 @@ describe('CheckoutButtonV1Resolver', () => {
                 isShowingWalletButtonsOnTop={true}
                 methodId="googlepay"
                 onError={jest.fn()}
+                onClick={jest.fn()}
             />
         );
-        
+
         expect(component).toMatchSnapshot();
     });
 });
