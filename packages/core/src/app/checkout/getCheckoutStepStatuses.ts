@@ -63,7 +63,7 @@ const getCustomerStepStatus = createSelector(
             return {
                 type: CheckoutStepType.Customer,
                 isActive: false,
-                isComplete: paymentProviderCustomer?.authenticationState !== undefined ?? isComplete,
+                isComplete: paymentProviderCustomer?.authenticationState !== undefined,
                 isEditable,
                 isRequired: true,
             };
