@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.409.0](https://github.com/bigcommerce/checkout-js/compare/v1.408.2...v1.409.0) (2023-12-13)
+
+
+### Features
+
+* **payment:** PAYPAL-2887 removed unnecessary sort order ([#1577](https://github.com/bigcommerce/checkout-js/issues/1577)) ([534bea0](https://github.com/bigcommerce/checkout-js/commit/534bea0bee111dd6c2148ed5f4a01e339873d9df))
+
 ### [1.408.2](https://github.com/bigcommerce/checkout-js/compare/v1.408.1...v1.408.2) (2023-12-12)
 
 ### [1.408.1](https://github.com/bigcommerce/checkout-js/compare/v1.408.0...v1.408.1) (2023-12-12)
