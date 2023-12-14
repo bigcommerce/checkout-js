@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.410.0](https://github.com/bigcommerce/checkout-js/compare/v1.409.0...v1.410.0) (2023-12-14)
+
+
+### Features
+
+* **payment:** PAYPAL-2612 bump checkout-sdk version ([1d7a995](https://github.com/bigcommerce/checkout-js/commit/1d7a995ed2646d8b10e5e0e8a83cbb68991bb6d7))
+* **payment:** PI-1142 Add payment strategy for credit card ([#1603](https://github.com/bigcommerce/checkout-js/issues/1603)) ([c9c3141](https://github.com/bigcommerce/checkout-js/commit/c9c3141acc6e134bbd1de2c9462ec1129a401990))
+
 ## [1.409.0](https://github.com/bigcommerce/checkout-js/compare/v1.408.2...v1.409.0) (2023-12-13)
 
 
