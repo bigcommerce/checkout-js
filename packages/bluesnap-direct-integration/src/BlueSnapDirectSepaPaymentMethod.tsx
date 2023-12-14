@@ -7,29 +7,9 @@ import {
 } from '@bigcommerce/checkout/payment-integration-api';
 import { CheckboxFormField, Fieldset, Legend } from '@bigcommerce/checkout/ui';
 
+import { isBlueSnapDirectInitializationData } from './BlueSnapDirectInitializationData';
 import BlueSnapDirectTextField from './fields/BlueSnapDirectTextField';
 import getSepaValidationSchema from './validation-schemas/getSepaValidationSchema';
-
-interface BlueSnapDirectInitializationData {
-    sepaCreditorCompanyName: string;
-}
-
-const isBlueSnapDirectInitializationData = (
-    object: unknown,
-): object is BlueSnapDirectInitializationData => {
-    if (
-        !(
-            typeof object === 'object' &&
-            object !== null &&
-            'sepaCreditorCompanyName' in object &&
-            typeof object.sepaCreditorCompanyName === 'string'
-        )
-    ) {
-        return false;
-    }
-
-    return true;
-};
 
 const BlueSnapDirectSepaPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     method,
