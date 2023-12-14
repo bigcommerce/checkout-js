@@ -121,6 +121,63 @@ function transformUserData(user: Customer): GTMUser {
   return returnData;
 }
 
+const transformPropsToGTMUserData = (props: any): GTMUser => {
+  const city: Set<string> = new Set();
+  const stateRegion: Set<string> = new Set();
+  const zipCode: Set<string> = new Set();
+  const country: Set<string> = new Set();
+  const phone: Set<string> = new Set();
+
+  const { billingAddress: address, customer } = props;
+
+  if (address) {
+    // for (const address of user.addresses) {
+    const isUSCountry = address.countryCode === 'US';
+    const isUKCountry = address.countryCode === 'GB';
+
+    if (address.city !== '') {
+      city.add(address.city.toLowerCase().replace(' ', ''));
+    }
+
+    if (address.stateOrProvince !== '') {
+      // convert state to ANSI abbreviation code if in US and abbreviation code it exists
+      const stateOrProvince = address.stateOrProvince.toLowerCase();
+      const stateOrProvinceAbbreviation = isUSCountry && address.stateOrProvinceCode.toLowerCase();
+
+      stateRegion.add(stateOrProvinceAbbreviation || stateOrProvince.replace(' ', ''));
+    }
+
+    if (address.postalCode !== '') {
+      const postalCode = address.postalCode.toLowerCase().replace(' ', '').replace('-', '');
+      const firstFiveDigits = postalCode.substring(0, 5);
+
+      zipCode.add(isUSCountry || isUKCountry ? firstFiveDigits : postalCode);
+    }
+
+    if (address.countryCode !== '') {
+      country.add(address.countryCode.toLowerCase().replace(' ', ''));
+    }
+
+    if (address.phone !== '' && address.countryCode !== '') {
+      phone.add(transformPhoneNumber(address.phone, address.countryCode));
+    }
+    // }
+  }
+
+  return {
+    user_id: customer.isGuest ? undefined : customer.id, // exists if logged in, otherwise undefined if guest
+    email: address.email,
+    is_guest: customer.isGuest,
+    phone: Array.from(phone),
+    first_name: address.firstName,
+    last_name: address.lastName,
+    city: Array.from(city),
+    state_region: Array.from(stateRegion),
+    zip_code: Array.from(zipCode),
+    country: Array.from(country),
+  };
+};
+
 export function track(data: any) {
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push(data);
