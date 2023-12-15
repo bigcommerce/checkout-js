@@ -167,12 +167,12 @@ const transformAddressToGTMUserData = (
   }
 
   return {
-    user_id: customer && !customer.isGuest ? customer.id : '', // exists if logged in, otherwise undefined if guest
-    email: cart?.email || '',
+    user_id: customer && !customer.isGuest ? customer.id : undefined, // exists if logged in, otherwise undefined if guest
+    email: cart?.email,
     is_guest: customer?.isGuest || true,
     phone: Array.from(phone),
-    first_name: address?.firstName || '',
-    last_name: address?.lastName || '',
+    first_name: address?.firstName,
+    last_name: address?.lastName,
     city: Array.from(city),
     state_region: Array.from(stateRegion),
     zip_code: Array.from(zipCode),
