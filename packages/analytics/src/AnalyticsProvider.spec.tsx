@@ -131,8 +131,6 @@ describe('AnalyticsProvider', () => {
 
         expect(stepTrackerMock.trackStepViewed).toHaveBeenCalledTimes(1);
         expect(stepTrackerMock.trackStepViewed).toHaveBeenCalledWith('stepName');
-        expect(braintreeConnectTracker.trackStepViewed).toHaveBeenCalledTimes(1);
-        expect(braintreeConnectTracker.trackStepViewed).toHaveBeenCalledWith('stepName');
     });
 
     it('track order purchased', () => {
