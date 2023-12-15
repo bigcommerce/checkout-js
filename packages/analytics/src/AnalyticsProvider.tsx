@@ -47,7 +47,6 @@ const AnalyticsProvider = ({ checkoutService, children }: AnalyticsProviderProps
 
     const trackStepViewed = (step: string) => {
         getStepTracker().trackStepViewed(step);
-        getBraintreeConnectTracker().trackStepViewed(step);
     };
 
     const orderPurchased = () => {
