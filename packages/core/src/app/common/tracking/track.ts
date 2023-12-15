@@ -1,3 +1,5 @@
+import { Address, Cart, Customer as CheckoutCustomer } from '@bigcommerce/checkout-sdk';
+
 import countryDialingCodes from '../utility/countryDialingCodes';
 
 declare global {
@@ -121,17 +123,18 @@ function transformUserData(user: Customer): GTMUser {
   return returnData;
 }
 
-const transformPropsToGTMUserData = (props: any): GTMUser => {
+const transformAddressToGTMUserData = (
+  address?: Address,
+  cart?: Cart,
+  customer?: CheckoutCustomer,
+): GTMUser => {
   const city: Set<string> = new Set();
   const stateRegion: Set<string> = new Set();
   const zipCode: Set<string> = new Set();
   const country: Set<string> = new Set();
   const phone: Set<string> = new Set();
 
-  const { billingAddress: address, customer } = props;
-
   if (address) {
-    // for (const address of user.addresses) {
     const isUSCountry = address.countryCode === 'US';
     const isUKCountry = address.countryCode === 'GB';
 
@@ -161,16 +164,15 @@ const transformPropsToGTMUserData = (props: any): GTMUser => {
     if (address.phone !== '' && address.countryCode !== '') {
       phone.add(transformPhoneNumber(address.phone, address.countryCode));
     }
-    // }
   }
 
   return {
-    user_id: customer.isGuest ? undefined : customer.id, // exists if logged in, otherwise undefined if guest
-    email: address.email,
-    is_guest: customer.isGuest,
+    user_id: customer && !customer.isGuest ? customer.id : undefined, // exists if logged in, otherwise undefined if guest
+    email: cart?.email,
+    is_guest: customer?.isGuest || true,
     phone: Array.from(phone),
-    first_name: address.firstName,
-    last_name: address.lastName,
+    first_name: address?.firstName,
+    last_name: address?.lastName,
     city: Array.from(city),
     state_region: Array.from(stateRegion),
     zip_code: Array.from(zipCode),
@@ -234,12 +236,21 @@ export interface ShippingData {
 interface AddShippingInfoData {
   event: string;
   ecommerce: ShippingData;
+  user: GTMUser;
 }
 
-export function trackAddShippingInfo(info: ShippingData) {
+export function trackAddShippingInfo(
+  info: ShippingData,
+  address?: Address,
+  cart?: Cart,
+  customer?: CheckoutCustomer,
+) {
+  const userData = transformAddressToGTMUserData(address, cart, customer);
+
   const data: AddShippingInfoData = {
     event: 'add_shipping_info',
     ecommerce: info,
+    user: userData,
   };
 
   track({ ecommerce: null });

@@ -269,7 +269,7 @@ class Checkout extends Component<
                     });
                 });
             });
-            trackAddShippingInfo(shippingInfo);
+            trackAddShippingInfo(shippingInfo, consignments?.[0]?.address, cart, customer);
         }
     }
 
