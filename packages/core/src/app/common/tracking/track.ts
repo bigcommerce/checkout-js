@@ -1,4 +1,8 @@
-import { Address, Cart, Customer as CheckoutCustomer } from '@bigcommerce/checkout-sdk';
+import {
+  Address,
+  Customer as CheckoutCustomer,
+  OrderBillingAddress,
+} from '@bigcommerce/checkout-sdk';
 
 import countryDialingCodes from '../utility/countryDialingCodes';
 
@@ -125,8 +129,8 @@ function transformUserData(user: Customer): GTMUser {
 
 const transformAddressToGTMUserData = (
   address?: Address,
-  cart?: Cart,
-  customer?: CheckoutCustomer,
+  email?: string,
+  customerId?: number | string,
 ): GTMUser => {
   const city: Set<string> = new Set();
   const stateRegion: Set<string> = new Set();
@@ -167,9 +171,9 @@ const transformAddressToGTMUserData = (
   }
 
   return {
-    user_id: customer && !customer.isGuest ? customer.id : undefined, // exists if logged in, otherwise undefined if guest
-    email: cart?.email,
-    is_guest: customer?.isGuest || true,
+    user_id: customerId || undefined, // exists if logged in, otherwise undefined if guest
+    email,
+    is_guest: !customerId,
     phone: Array.from(phone),
     first_name: address?.firstName,
     last_name: address?.lastName,
@@ -242,10 +246,10 @@ interface AddShippingInfoData {
 export function trackAddShippingInfo(
   info: ShippingData,
   address?: Address,
-  cart?: Cart,
+  email?: string,
   customer?: CheckoutCustomer,
 ) {
-  const userData = transformAddressToGTMUserData(address, cart, customer);
+  const userData = transformAddressToGTMUserData(address, email, customer?.id);
 
   const data: AddShippingInfoData = {
     event: 'add_shipping_info',
@@ -293,12 +297,20 @@ export interface OrderData {
 interface PurchaseData {
   event: string;
   ecommerce: OrderData;
+  user: GTMUser;
 }
 
-export function trackPurchase(info: OrderData) {
+export function trackPurchase(
+  info: OrderData,
+  address?: Address | OrderBillingAddress,
+  customerId?: string | number,
+) {
+  const userData = transformAddressToGTMUserData(address, (address as any)?.email, customerId);
+
   const data: PurchaseData = {
     event: 'purchase',
     ecommerce: info,
+    user: userData,
   };
 
   track({ ecommerce: null });

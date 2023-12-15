@@ -102,11 +102,15 @@ class OrderConfirmation extends Component<
             embeddedStylesheet,
             loadOrder,
             orderId,
-            analyticsTracker
+            analyticsTracker,
         } = this.props;
+
+        console.log("this.props", this.props)
 
         loadOrder(orderId)
             .then(({ data }) => {
+                console.log("order", data)
+
                 const { links: { siteLink = '' } = {} } = data.getConfig() || {};
                 const messenger = createEmbeddedMessenger({ parentOrigin: siteLink });
 
@@ -119,6 +123,9 @@ class OrderConfirmation extends Component<
 
                 const {config, order} = this.props;
                 const isGuest = !order?.customerId;
+                const billingAddress = order?.billingAddress
+
+                console.log("order order", order, config, this.props)
 
                 if (isGuest && order?.billingAddress.email) {
                     trackGuest(order?.billingAddress.email);
@@ -185,7 +192,8 @@ class OrderConfirmation extends Component<
                         });
                     });
                 });
-                trackPurchase(purchaseData);
+
+                trackPurchase(purchaseData, billingAddress, order?.customerId);
             })
             .catch(this.handleUnhandledError);
     }
