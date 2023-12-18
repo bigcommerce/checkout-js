@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.412.1](https://github.com/bigcommerce/checkout-js/compare/v1.412.0...v1.412.1) (2023-12-18)
+
+
+### Code Refactoring
+
+* **payment:** PAYPAL-3660 removed unnecessary Braintree tracking event (trackStepViewed) ([50b7746](https://github.com/bigcommerce/checkout-js/commit/50b7746b0cb6271c0b60fb951267be03995e4b99))
+
 ## [1.412.0](https://github.com/bigcommerce/checkout-js/compare/v1.411.1...v1.412.0) (2023-12-18)
 
 
