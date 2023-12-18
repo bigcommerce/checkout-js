@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.413.0](https://github.com/bigcommerce/checkout-js/compare/v1.412.2...v1.413.0) (2023-12-18)
+
+
+### Features
+
+* **payment:** PAYPAL-2620 paypal-express-integration package ([#1605](https://github.com/bigcommerce/checkout-js/issues/1605)) ([a508703](https://github.com/bigcommerce/checkout-js/commit/a50870357d7fce20f6eb7c10eff34be70d85442b))
+
 ### [1.412.2](https://github.com/bigcommerce/checkout-js/compare/v1.412.1...v1.412.2) (2023-12-18)
 
 ### [1.412.1](https://github.com/bigcommerce/checkout-js/compare/v1.412.0...v1.412.1) (2023-12-18)
