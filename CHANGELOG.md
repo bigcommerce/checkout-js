@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.412.0](https://github.com/bigcommerce/checkout-js/compare/v1.411.1...v1.412.0) (2023-12-18)
+
+
+### Features
+
+* **payment:** PI-1148 Hide card holder name from hosted fields form ([871f142](https://github.com/bigcommerce/checkout-js/commit/871f142040090db4f4ea35f0fde99fabc9287ed8))
+* **payment:** PI-1148 Hide card holder name from hosted fields form ([5fa3c1e](https://github.com/bigcommerce/checkout-js/commit/5fa3c1ebd436dfc037ef35bdf4f635b7eb85fcb0))
+
 ### [1.411.1](https://github.com/bigcommerce/checkout-js/compare/v1.411.0...v1.411.1) (2023-12-14)
 
 ## [1.411.0](https://github.com/bigcommerce/checkout-js/compare/v1.410.0...v1.411.0) (2023-12-14)
