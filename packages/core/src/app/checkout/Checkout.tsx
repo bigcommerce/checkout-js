@@ -54,7 +54,7 @@ import CheckoutSupport from './CheckoutSupport';
 import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
 
-import { trackAddCoupon, trackAddShippingInfo, trackCheckoutProgress, CouponData, PromotionData, ShippingData, trackUserChange } from '../common/tracking';
+import { trackAddCoupon, trackAddShippingInfo, trackCheckoutProgress, CouponData, PromotionData, ShippingData } from '../common/tracking';
 import withRecurly from '../recurly/withRecurly';
 import { RecurlyContextProps } from '../recurly/RecurlyContext';
 
@@ -196,10 +196,10 @@ class Checkout extends Component<
     componentDidUpdate(previousProps: any): void {
         const {cart, consignments, customer} = this.props;
         
-        // if customer has been updated
-        if(customer && customer?.id !== previousProps.customer?.id) {
-            trackUserChange(customer);
-        }
+        // // if customer has been updated
+        // if(customer && customer?.id !== previousProps.customer?.id) {
+        //     trackUserChange(customer);
+        // }
 
         // if coupon has been added
         if ( cart?.coupons.length && previousProps.cart?.coupons.length !== cart?.coupons.length ) {
@@ -269,7 +269,7 @@ class Checkout extends Component<
                     });
                 });
             });
-            trackAddShippingInfo(shippingInfo);
+            trackAddShippingInfo(shippingInfo, consignments?.[0]?.address, cart?.email, customer);
         }
     }
 

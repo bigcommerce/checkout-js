@@ -1,3 +1,9 @@
+import {
+  Address,
+  Customer as CheckoutCustomer,
+  OrderBillingAddress,
+} from '@bigcommerce/checkout-sdk';
+
 import countryDialingCodes from '../utility/countryDialingCodes';
 
 declare global {
@@ -121,6 +127,63 @@ function transformUserData(user: Customer): GTMUser {
   return returnData;
 }
 
+const transformAddressToGTMUserData = (
+  address?: Address,
+  email?: string,
+  customerId?: number | string,
+): GTMUser => {
+  const city: Set<string> = new Set();
+  const stateRegion: Set<string> = new Set();
+  const zipCode: Set<string> = new Set();
+  const country: Set<string> = new Set();
+  const phone: Set<string> = new Set();
+
+  if (address) {
+    const isUSCountry = address.countryCode === 'US';
+    const isUKCountry = address.countryCode === 'GB';
+
+    if (address.city !== '') {
+      city.add(address.city.toLowerCase().replace(' ', ''));
+    }
+
+    if (address.stateOrProvince !== '') {
+      // convert state to ANSI abbreviation code if in US and abbreviation code it exists
+      const stateOrProvince = address.stateOrProvince.toLowerCase();
+      const stateOrProvinceAbbreviation = isUSCountry && address.stateOrProvinceCode.toLowerCase();
+
+      stateRegion.add(stateOrProvinceAbbreviation || stateOrProvince.replace(' ', ''));
+    }
+
+    if (address.postalCode !== '') {
+      const postalCode = address.postalCode.toLowerCase().replace(' ', '').replace('-', '');
+      const firstFiveDigits = postalCode.substring(0, 5);
+
+      zipCode.add(isUSCountry || isUKCountry ? firstFiveDigits : postalCode);
+    }
+
+    if (address.countryCode !== '') {
+      country.add(address.countryCode.toLowerCase().replace(' ', ''));
+    }
+
+    if (address.phone !== '' && address.countryCode !== '') {
+      phone.add(transformPhoneNumber(address.phone, address.countryCode));
+    }
+  }
+
+  return {
+    user_id: customerId || undefined, // exists if logged in, otherwise undefined if guest
+    email,
+    is_guest: !customerId,
+    phone: Array.from(phone),
+    first_name: address?.firstName,
+    last_name: address?.lastName,
+    city: Array.from(city),
+    state_region: Array.from(stateRegion),
+    zip_code: Array.from(zipCode),
+    country: Array.from(country),
+  };
+};
+
 export function track(data: any) {
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push(data);
@@ -177,12 +240,21 @@ export interface ShippingData {
 interface AddShippingInfoData {
   event: string;
   ecommerce: ShippingData;
+  user: GTMUser;
 }
 
-export function trackAddShippingInfo(info: ShippingData) {
+export function trackAddShippingInfo(
+  info: ShippingData,
+  address?: Address,
+  email?: string,
+  customer?: CheckoutCustomer,
+) {
+  const userData = transformAddressToGTMUserData(address, email, customer?.id);
+
   const data: AddShippingInfoData = {
     event: 'add_shipping_info',
     ecommerce: info,
+    user: userData,
   };
 
   track({ ecommerce: null });
@@ -225,12 +297,20 @@ export interface OrderData {
 interface PurchaseData {
   event: string;
   ecommerce: OrderData;
+  user: GTMUser;
 }
 
-export function trackPurchase(info: OrderData) {
+export function trackPurchase(
+  info: OrderData,
+  address?: Address | OrderBillingAddress,
+  customerId?: string | number,
+) {
+  const userData = transformAddressToGTMUserData(address, (address as any)?.email, customerId);
+
   const data: PurchaseData = {
     event: 'purchase',
     ecommerce: info,
+    user: userData,
   };
 
   track({ ecommerce: null });
