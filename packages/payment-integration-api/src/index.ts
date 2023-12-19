@@ -29,3 +29,4 @@ export {
     MICRO_APP_NG_CHECKOUT_ROOT_NODE_ID,
 } from './CheckoutRootWrapperIds';
 export { SpecificError } from './errors';
+export { CountryData, getCountryData } from './CountryData';

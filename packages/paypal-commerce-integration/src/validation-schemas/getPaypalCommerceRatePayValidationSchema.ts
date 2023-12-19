@@ -29,7 +29,7 @@ export default memoize(function getPaypalCommerceRatePayValidationSchema({
 
                     if (id === 'ratepayPhoneCountryCode') {
                         schema[id] = schema[id].matches(
-                            /\d{2}/,
+                            /^\+\d{2,}$/,
                             language.translate('payment.ratepay.errors.isInvalid', {
                                 fieldName: language.translate('payment.ratepay.phone_country_code'),
                             }),
@@ -38,7 +38,7 @@ export default memoize(function getPaypalCommerceRatePayValidationSchema({
 
                     if (id === 'ratepayPhoneNumber') {
                         schema[id] = schema[id].matches(
-                            /^\d{8,11}$/,
+                            /^\d{7,11}$/,
                             language.translate('payment.ratepay.errors.isInvalid', {
                                 fieldName: language.translate('payment.ratepay.phone_number'),
                             }),

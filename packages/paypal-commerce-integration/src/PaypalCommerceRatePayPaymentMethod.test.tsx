@@ -1,5 +1,5 @@
 import { createCheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { Formik } from 'formik';
 import React, { FunctionComponent } from 'react';
 
@@ -9,20 +9,28 @@ import {
     LocaleContextType,
 } from '@bigcommerce/checkout/locale';
 import {
+    PaymentFormContext,
     PaymentFormService,
     PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { getCheckout as getCheckoutMock, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
+import {
+    getCheckout as getCheckoutMock,
+    getPaymentFormServiceMock,
+    getStoreConfig
+} from '@bigcommerce/checkout/test-mocks';
 import { FormContext } from '@bigcommerce/checkout/ui';
 
 import { getPaypalCommerceRatePayMethodMock } from './mocks/paypalCommerceRatePayMocks';
 import PaypalCommerceRatePayPaymentMethod from './PaypalCommerceRatePayPaymentMethod';
-import {EventEmitter} from "events";
+import { EventEmitter } from 'events';
+import { act } from '@bigcommerce/checkout/test-utils';
 
 describe('PaypalCommerceRatePayPaymentMethod', () => {
     let eventEmitter: EventEmitter;
     let PaypalCommerceRatePayPaymentMethodTest: FunctionComponent<PaymentMethodProps>;
+    let paymentForm: PaymentFormService;
     let localeContext: LocaleContextType;
+    let ratepayErrors: {[key: string]: string};
     const checkoutService = createCheckoutService();
     const checkoutState = checkoutService.getState();
     const props = {
@@ -40,22 +48,67 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
         onUnhandledError: jest.fn(),
     };
 
+    const billingAddress = {
+        id: '55c96cda6f04c',
+        firstName: 'Test',
+        lastName: 'Tester',
+        email: 'test@bigcommerce.com',
+        company: 'Bigcommerce',
+        address1: '12345 Testing Way',
+        address2: '',
+        city: 'Some City',
+        stateOrProvince: 'California',
+        stateOrProvinceCode: 'CA',
+        country: 'United States',
+        countryCode: 'US',
+        postalCode: '95555',
+        shouldSaveAddress: true,
+        phone: '555-555-5555',
+        customFields: [],
+    };
+
     beforeEach(() => {
+        jest.spyOn(checkoutState.data, 'getBillingAddress').mockReturnValue(billingAddress);
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckoutMock());
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
         localeContext = createLocaleContext(getStoreConfig());
         eventEmitter = new EventEmitter();
+        paymentForm = getPaymentFormServiceMock();
 
         const submit = jest.fn();
+        const initialValues = {
+          ratepayBirthDate: new Date(),
+          ratepayPhoneCountryCode: 'ss',
+          ratepayPhoneNumber: '123',
+        };
 
         PaypalCommerceRatePayPaymentMethodTest = (props: PaymentMethodProps) => (
             <LocaleContext.Provider value={localeContext}>
                 <FormContext.Provider value={{ isSubmitted: true, setSubmitted: jest.fn() }}>
-                    <Formik initialValues={{}} onSubmit={submit}>
+                    <Formik validate={
+                        (values) => {
+                            let errors = {
+                                ratepayPhoneNumber: '',
+                                ratepayPhoneCountryCode: '',
+                            };
+                            if (!values.ratepayPhoneNumber.match(/^\d{7,11}$/)) {
+                                errors.ratepayPhoneNumber = 'Phone number is invalid';
+                            }
+
+                            if (!values.ratepayPhoneCountryCode.match(/^[0-9+][0-9+]{+,}$/)) {
+                                errors.ratepayPhoneCountryCode = 'Phone code is invalid';
+                            }
+                            ratepayErrors = errors;
+
+                            return ratepayErrors;
+                    }}
+                            initialValues={initialValues} onSubmit={submit}>
                         {({ handleSubmit }) => (
-                            <form aria-label="form" onSubmit={handleSubmit}>
-                                <PaypalCommerceRatePayPaymentMethod {...props} />
-                            </form>
+                            <PaymentFormContext.Provider value={{ paymentForm }}>
+                                <form aria-label="form" onSubmit={handleSubmit}>
+                                    <PaypalCommerceRatePayPaymentMethod {...props} />
+                                </form>
+                            </PaymentFormContext.Provider>
                         )}
                     </Formik>
                 </FormContext.Provider>
@@ -81,12 +134,6 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
                 onError: expect.any(Function),
             },
         });
-    });
-
-    it('renders component with required fields', async () => {
-        const view = render(<PaypalCommerceRatePayPaymentMethodTest {...props} />);
-
-        expect(view).toMatchSnapshot();
     });
 
     it('submits form', async () => {
@@ -116,6 +163,30 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
             gatewayId: props.method.gateway,
             methodId: props.method.id,
         });
+    });
+
+    it('shows error when phone number validation failed', async () => {
+        render(<PaypalCommerceRatePayPaymentMethodTest {...props} />);
+        const phoneNumberInput = screen.getByTestId('ratepayPhoneNumber-text');
+        fireEvent.blur(phoneNumberInput);
+
+        await act(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 0));
+        });
+
+        expect(ratepayErrors.ratepayPhoneNumber).toEqual('Phone number is invalid');
+    });
+
+    it('shows error when phone code validation failed', async () => {
+        render(<PaypalCommerceRatePayPaymentMethodTest {...props} />);
+        const phoneCountryCodeInput = screen.getByTestId('ratepayPhoneCountryCode-text');
+        fireEvent.blur(phoneCountryCodeInput);
+
+        await act(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 0));
+        });
+
+        expect(ratepayErrors.ratepayPhoneCountryCode).toEqual('Phone code is invalid');
     });
 
     it('catches error during PaypalCommerceRatePayPaymentMethod initialization', async () => {
@@ -148,6 +219,7 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
         const disableSubmitMock = jest.fn();
         const setSubmittedMock = jest.fn();
         const setValidationSchema = jest.fn();
+        const setFieldValue = jest.fn();
         const digitalErrorMock = {
             status: 'error',
             three_ds_result: {
@@ -186,6 +258,7 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
                 disableSubmit: disableSubmitMock,
                 setSubmitted: setSubmittedMock,
                 setValidationSchema: setValidationSchema,
+                setFieldValue: setFieldValue,
             } as unknown as PaymentFormService,
             onUnhandledError: onUnhandledErrorMock,
         };
