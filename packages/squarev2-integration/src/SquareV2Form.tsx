@@ -136,7 +136,7 @@ const SquareV2Form: FunctionComponent<SquareV2FormProps> = ({
                         onDeleteInstrument={handleDeleteInstrument}
                         onSelectInstrument={handleSelectInstrument}
                         onUseNewInstrument={handleUseNewCard}
-                        selectedInstrumentId={selectedInstrumentId}
+                        selectedInstrumentId={getDefaultInstrumentId()}
                     />
                 )}
                 <div
