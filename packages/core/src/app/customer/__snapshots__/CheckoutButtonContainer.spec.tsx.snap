@@ -8,7 +8,7 @@ exports[`CheckoutButtonContainer displays wallet buttons for guest checkout 1`] 
     Check out faster with:
   </p>
   <div
-    class="checkout-buttons--4"
+    class="checkout-buttons-auto-layout"
   >
     <div
       class="checkoutRemote customer-skeleton"
@@ -89,7 +89,7 @@ exports[`CheckoutButtonContainer hides wallet buttons with CSS when payment step
     Check out faster with:
   </p>
   <div
-    class="checkout-buttons--4"
+    class="checkout-buttons-auto-layout"
   >
     <div
       class="checkoutRemote customer-skeleton"
@@ -164,7 +164,7 @@ exports[`CheckoutButtonContainer removes Paypal commerce wallet buttons when pay
     Check out faster with:
   </p>
   <div
-    class="checkout-buttons--4"
+    class="checkout-buttons-auto-layout"
   >
     <div
       class="checkoutRemote customer-skeleton"
