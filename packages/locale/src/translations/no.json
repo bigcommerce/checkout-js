@@ -200,6 +200,11 @@
                 "only_numbers": "Kontonummer må kun inneholde tall",
                 "length": "Kontonummer må ha minst 8 sifre"
             },
+            "bluesnap_direct_iban": {
+                "label": "IBAN",
+                "is_required": "IBAN is required",
+                "length": "IBAN must have at least 8 digits"
+            },
             "bluesnap_direct_routing_number": {
                 "label": "Rutenummer",
                 "is_required": "Rutenummer er påkrevd",
@@ -211,7 +216,9 @@
                 "is_required": "Kontotype er påkrevd"
             },
             "bluesnap_direct_permission": "Jeg autoriserer denne transaksjonen med elektronisk sjekk (ACH/ECP) og godtar denne debiteringen av kontoen min.",
+            "bluesnap_direct_sepa_mandate_disclaimer": "By signing this mandate form, you authorise (A) {creditorName} to send instructions to your bank to debit your account and (B) your bank to debit your account in accordance with the instructions from {creditorName}. As part of your rights, you are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited.",
             "bluesnap_direct_electronic_check_label": "Elektronisk sjekk (ACH/ECP)",
+            "bluesnap_direct_sepa_direct_debit": "Sepa Direct Debit",
             "bluesnap_direct_local_bank_transfer_label": "Lokal bankoverføring",
             "bolt_benefit_1": "Handle hundrevis av merker med passordløs pålogging",
             "bolt_benefit_2": "Benytt deg av lagret betalings- og leveranseinformasjon i kassen",
@@ -433,12 +440,16 @@
                 "voided_transaction": "Kunne ikke behandle betalingen din fordi transaksjonen allerede er annullert. Vennligst prøv igjen eller kontakt oss."
             },
             "ratepay": {
+                "payment_method_title": "Pay upon Invoice",
                 "phone_country_code": "Landskode",
                 "phone_number": "Telefonnummer",
                 "birth_date": "Fødselsdato",
                 "errors": {
                     "isRequired": "{fieldName} er påkrevd",
-                    "isInvalid": "{fieldName} er ugyldig"
+                    "isInvalid": "{fieldName} er ugyldig",
+                    "paymentSourceInfoCannotBeVerified": "Kombinasjonen av navn og adresse kunne ikke valideres. Rett opp dataene dine, og prøv på nytt. Du finner mer informasjon i <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Ratepays personvernerklæring</a>, eller du kan kontakte Ratepay ved hjelp av dette <a href='https://www.ratepay.com/en/contact/' target='blank'>kontaktskjemaet</a>.",
+                    "paymentSourceDeclinedByProcessor": "Det er ikke mulig å bruke den valgte betalingsmåten. Denne avgjørelsen er basert på automatisert databehandling. Du finner mer informasjon i <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Ratepays personvernerklæring</a>, eller du kan kontakte Ratepay ved hjelp av dette <a href='https://www.ratepay.com/en/contact/' target='blank'>kontaktskjemaet</a>.",
+                    "itemCategoryNotSupportedByPaymentSource": "Digital items are not supported for given method"
                 }
             }
         },
@@ -531,6 +542,9 @@
                 "adyenv3": {
                     "boletobancario": "Boleto Bancário-billett"
                 },
+                "bluesnapdirect": {
+                    "sepa_direct_debit": "SEPA Direct Debit Mandate Reference: {mandate}"
+                },
                 "checkoutcom": {
                     "boleto": "Boleto Bancário-billett",
                     "oxxo": "OXXO-billett",
@@ -558,8 +572,6 @@
             "order_pending_review_text": "Bestillingen din ble sendt til oss, men venter på betaling. Når vi mottar betalingen for bestillingen din, vil den bli fullført. Hvis du allerede har oppgitt betalingsinformasjon, vil vi behandle bestillingen din manuelt og sende deg en e-post når den er fullført.",
             "order_pending_status_text": "Vi har mottatt bestillingen din og behandler betalingen din. Når betalingen er bekreftet, vil bestillingen bli fullført. Vi sender deg en e-post når den er fullført. Vær oppmerksom på at denne prosessen kan ta noen minutter avhengig av behandlingstiden for den valgte metoden. Hvis du har spørsmål om kjøpet, kan du sende oss en e-post på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_incomplete_status_text": "Vi har mottatt din bestilling og betaling. Bestillingen din behandles nå av systemet vårt. Vær oppmerksom på at behandlingen kan ta noen minutter. Hvis du har spørsmål om kjøpet, kan du sende oss en e-post på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
-            "order_incomplete_status_heading": "Vi beklager, men betalingen for denne bestillingen mislyktes.",
-            "order_incomplete_status_with_unsuccessful_payment_text": "Bestillingen din er ufullstendig fordi betalingen mislyktes. Hvis du trenger hjelp med kjøpet, kan du sende oss en e-post på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_with_downloadable_digital_items_text": "Du kan laste ned dine digitale kjøp ved å klikke på lenkene på denne siden, eller ved å logge på kontoen din når som helst. Det er også en nedlastingslenke i bekreftelses-e-posten din, som skal komme innen kort tid.",
             "order_with_support_number_text": "En e-post sendes ut med informasjon om kjøpet ditt. Hvis du har spørsmål om kjøpet, kan du sende oss en e-post på <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a> eller ringe oss på <a href=\"tel://{supportPhoneNumber}\">{supportPhoneNumber}</a>.",
             "order_without_downloadable_digital_items_text": "Når vi mottar betalingen din, sender vi en e-postbekreftelse med en lenke for å laste ned dine digitale kjøp.",

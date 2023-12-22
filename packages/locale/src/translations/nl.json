@@ -200,6 +200,11 @@
                 "only_numbers": "Rekeningnummer mag alleen cijfers bevatten",
                 "length": "Rekeningnummer moet minimaal 8 cijfers bevatten"
             },
+            "bluesnap_direct_iban": {
+                "label": "IBAN",
+                "is_required": "IBAN is required",
+                "length": "IBAN must have at least 8 digits"
+            },
             "bluesnap_direct_routing_number": {
                 "label": "Routeringsnummer",
                 "is_required": "Routeringsnummer is vereist",
@@ -211,7 +216,9 @@
                 "is_required": "Rekeningtype is verplicht"
             },
             "bluesnap_direct_permission": "Ik autoriseer deze Elektronische Check (ACH/ECP) transactie en ga akkoord met deze debitering van mijn rekening.",
+            "bluesnap_direct_sepa_mandate_disclaimer": "By signing this mandate form, you authorise (A) {creditorName} to send instructions to your bank to debit your account and (B) your bank to debit your account in accordance with the instructions from {creditorName}. As part of your rights, you are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited.",
             "bluesnap_direct_electronic_check_label": "Elektronische cheque (ACH/ECP)",
+            "bluesnap_direct_sepa_direct_debit": "Sepa Direct Debit",
             "bluesnap_direct_local_bank_transfer_label": "Lokale bankoverschrijving",
             "bolt_benefit_1": "Shop honderden merken met wachtwoordloos inloggen",
             "bolt_benefit_2": "Betaal gemakkelijk met opgeslagen betaal- en verzendgegevens",
@@ -433,12 +440,16 @@
                 "voided_transaction": "Uw betaling kan niet worden verwerkt, omdat de transactie al is geannuleerd. Probeer het opnieuw of neem contact met ons op."
             },
             "ratepay": {
+                "payment_method_title": "Pay upon Invoice",
                 "phone_country_code": "Landcode",
                 "phone_number": "Telefoonnummer",
                 "birth_date": "Geboortedatum",
                 "errors": {
                     "isRequired": "{fieldName} is vereist",
-                    "isInvalid": "{fieldName} is ongeldig"
+                    "isInvalid": "{fieldName} is ongeldig",
+                    "paymentSourceInfoCannotBeVerified": "De combinatie van je naam en adres kan niet worden gevalideerd. Corrigeer je gegevens en probeer het opnieuw. Meer informatie vind je in het <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Ratepay Data Privacy Statement</a> of je kunt contact opnemen met Ratepay via dit <a href='https://www.ratepay.com/en/contact/' target='blank'>contactformulier.</a>",
+                    "paymentSourceDeclinedByProcessor": "Het is niet mogelijk om de geselecteerde betaalmethode te gebruiken. Deze beslissing is gebaseerd op geautomatiseerde gegevensverwerking. Meer informatie vind je in het <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Ratepay Data Privacy Statement</a> of je kunt contact opnemen met Ratepay via dit <a href='https://www.ratepay.com/en/contact/' target='blank'>contactformulier.</a>",
+                    "itemCategoryNotSupportedByPaymentSource": "Digital items are not supported for given method"
                 }
             }
         },
@@ -531,6 +542,9 @@
                 "adyenv3": {
                     "boletobancario": "Boleto Bancário-ticket"
                 },
+                "bluesnapdirect": {
+                    "sepa_direct_debit": "SEPA Direct Debit Mandate Reference: {mandate}"
+                },
                 "checkoutcom": {
                     "boleto": "Boleto Bancário-ticket",
                     "oxxo": "OXXO-ticket",
@@ -558,8 +572,6 @@
             "order_pending_review_text": "Uw bestelling is naar ons verzonden, maar moet nog betaald worden. Zodra we de betaling voor uw bestelling hebben ontvangen, wordt deze voltooid. Als u al betalingsgegevens heeft opgegeven, verwerken we uw bestelling handmatig en sturen we u een e-mail wanneer deze is voltooid.",
             "order_pending_status_text": "We hebben je bestelling ontvangen en verwerken je betaling. Zodra de betaling is geverifieerd, wordt je bestelling voltooid. We sturen je een e-mail als deze voltooid is. Dit proces kan enkele minuten duren, afhankelijk van de verwerkingstijden van de door jou gekozen methode. Als je vragen hebt over je aankoop, kun je ons een e-mail sturen via <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_incomplete_status_text": "We hebben je bestelling en betaling ontvangen. Je bestelling wordt nu verwerkt door ons systeem. De verwerking kan enkele minuten duren. Als je vragen hebt over je aankoop, kun je ons een e-mail sturen via <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
-            "order_incomplete_status_heading": "Het spijt ons, de betaling voor deze bestelling is mislukt.",
-            "order_incomplete_status_with_unsuccessful_payment_text": "Je bestelling is onvolledig omdat de betaling niet is gelukt. Voor hulp bij je aankoop kun je ons een e-mail sturen op <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_with_downloadable_digital_items_text": "U kunt uw digitale aankopen downloaden door op de links op deze pagina te klikken of door op elk gewenst moment in te loggen op uw account. Er staat ook een downloadlink in uw bevestigingsmail, die u binnenkort ontvangt.",
             "order_with_support_number_text": "Er wordt een e-mail verzonden met informatie over je aankoop. Als je vragen hebt over je aankoop, kun je ons een e-mail sturen via <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a> of ons bellen op <a href=\"tel://{supportPhoneNumber}\">{supportPhoneNumber}</a>.",
             "order_without_downloadable_digital_items_text": "Zodra we uw betaling hebben ontvangen, sturen we u een bevestigingsmail met een link waarmee u uw digitale aankopen kunt downloaden.",

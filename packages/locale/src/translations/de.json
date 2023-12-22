@@ -200,6 +200,11 @@
                 "only_numbers": "Die Kontonummer darf nur Zahlen enthalten.",
                 "length": "Die Kontonummer muss mindestens 8 Ziffern umfassen."
             },
+            "bluesnap_direct_iban": {
+                "label": "IBAN",
+                "is_required": "IBAN is required",
+                "length": "IBAN must have at least 8 digits"
+            },
             "bluesnap_direct_routing_number": {
                 "label": "Routing-Nummer",
                 "is_required": "Routing-Nummer ist erforderlich",
@@ -211,7 +216,9 @@
                 "is_required": "Es muss ein Konto-Typ angegeben werden."
             },
             "bluesnap_direct_permission": "Ich autorisiere diese Transaktion mittels elektronischem Scheck (ACH/ECP) und stimme dieser Belastung meines Kontos zu.",
+            "bluesnap_direct_sepa_mandate_disclaimer": "By signing this mandate form, you authorise (A) {creditorName} to send instructions to your bank to debit your account and (B) your bank to debit your account in accordance with the instructions from {creditorName}. As part of your rights, you are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited.",
             "bluesnap_direct_electronic_check_label": "Elektronischer Scheck (ACH/ECP)",
+            "bluesnap_direct_sepa_direct_debit": "Sepa Direct Debit",
             "bluesnap_direct_local_bank_transfer_label": "Lokale Banküberweisung",
             "bolt_benefit_1": "Kaufen Sie Hunderte von Marken mit passwortfreier Anmeldung",
             "bolt_benefit_2": "Bezahlen Sie mit gespeicherten Zahlungs- und Lieferdaten",
@@ -433,13 +440,16 @@
                 "voided_transaction": "Ihre Zahlung kann nicht verarbeitet werden, da die Transaktion bereits storniert wurde. Bitte versuchen Sie es erneut oder nehmen Sie Kontakt zu uns auf."
             },
             "ratepay": {
-                "payment_method_title": "Kauf auf Rechnung",
+                "payment_method_title": "Pay upon Invoice",
                 "phone_country_code": "Ländercode",
                 "phone_number": "Telefonnummer",
                 "birth_date": "Geburtsdatum",
                 "errors": {
                     "isRequired": "{fieldName} ist erforderlich",
-                    "isInvalid": "{fieldName} ist ungültig"
+                    "isInvalid": "{fieldName} ist ungültig",
+                    "paymentSourceInfoCannotBeVerified": "Die Kombination aus Ihrem Namen und Ihrer Adresse konnte nicht überprüft werden. Bitte korrigieren Sie Ihre Daten und versuchen Sie es erneut. Weitere Informationen finden Sie in der <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Datenschutzerklärung von Ratepay</a> oder Sie können Ratepay über dieses <a href='https://www.ratepay.com/en/contact/' target='blank'>Kontaktformular</a> kontaktieren.",
+                    "paymentSourceDeclinedByProcessor": "Es ist nicht möglich, die ausgewählte Zahlungsmethode zu verwenden. Diese Entscheidung basiert auf der automatisierten Datenverarbeitung. Weitere Informationen finden Sie in der <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Datenschutzerklärung von Ratepay</a> oder Sie können Ratepay über dieses <a href='https://www.ratepay.com/en/contact/' target='blank'>Kontaktformular</a> kontaktieren.",
+                    "itemCategoryNotSupportedByPaymentSource": "Digital items are not supported for given method"
                 }
             }
         },
@@ -532,6 +542,9 @@
                 "adyenv3": {
                     "boletobancario": "Boleto Bancário-Ticket"
                 },
+                "bluesnapdirect": {
+                    "sepa_direct_debit": "SEPA Direct Debit Mandate Reference: {mandate}"
+                },
                 "checkoutcom": {
                     "boleto": "Boleto Bancário-Ticket",
                     "oxxo": "OXXO-Ticket",
@@ -559,8 +572,6 @@
             "order_pending_review_text": "Ihre Bestellung wurde an uns gesendet, wartet aber derzeit auf den Eingang der Zahlung. Sobald wir die Zahlung für Ihre Bestellung erhalten haben, wird diese abgeschlossen. Wenn Sie bereits Zahlungsdaten angegeben haben, werden wir Ihre Bestellung manuell bearbeiten und Ihnen eine E-Mail senden, sobald sie abgeschlossen ist.",
             "order_pending_status_text": "Wir haben Ihre Bestellung erhalten und sind dabei, Ihre Zahlung zu verarbeiten. Sobald die Zahlung verifiziert wurde, wird Ihre Bestellung abgeschlossen. Wir senden Ihnen eine E-Mail, wenn dies der Fall ist. Bitte beachten Sie, dass dieser Vorgang einige Minuten dauern kann, abhängig von den Verarbeitungszeiten der von Ihnen gewählten Methode. Wenn Sie Fragen zu Ihrem Kauf haben, senden Sie uns eine E-Mail an <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_incomplete_status_text": "Wir haben Ihre Bestellung und Ihre Zahlung erhalten. Ihre Bestellung wird nun von unserem System bearbeitet. Bitte beachten Sie, dass dies einige Minuten dauern kann. Wenn Sie Fragen zu Ihrem Kauf haben, senden Sie uns eine E-Mail an <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
-            "order_incomplete_status_heading": "Es tut uns leid, die Zahlung für diese Bestellung ist fehlgeschlagen.",
-            "order_incomplete_status_with_unsuccessful_payment_text": "Ihre Bestellung ist unvollständig, weil die Zahlung nicht erfolgreich war. Wenn Sie Hilfe bei Ihrem Kaufvorgang benötigen, schicken Sie uns eine E-Mail an <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a>.",
             "order_with_downloadable_digital_items_text": "Sie können Ihre digitalen Käufe jederzeit herunterladen, indem Sie auf die Links auf dieser Seite klicken, oder indem Sie sich in Ihrem Konto anmelden. Außerdem befindet sich ein Download-Link in Ihrer Bestätigungs-E-Mail, die Sie in Kürze erhalten sollten.",
             "order_with_support_number_text": "Sie erhalten eine E-Mail mit Informationen zu Ihrem Kauf. Wenn Sie Fragen zu Ihrem Kauf haben, senden Sie uns eine E-Mail an <a href=\"mailto:{supportEmail}?Subject=Order {orderNumber}\" target=\"_top\">{supportEmail}</a> oder rufen Sie uns an unter <a href=\"tel://{supportPhoneNumber}\">{supportPhoneNumber}</a>.",
             "order_without_downloadable_digital_items_text": "Sobald wir Ihre Zahlung erhalten haben, senden wir Ihnen eine Bestätigungs-E-Mail mit einem Link zum Herunterladen Ihrer digitalen Einkäufe.",
