@@ -160,42 +160,33 @@ $buttonWidthMap: (
     }
 }
 
-.checkout-buttons--1 {
-    .checkoutRemote {
-        display: block;
-
-        > div {
-            max-width: $wallet-button-max-width;
-        }
+// wallet buttons auto layout based on the number of button divs
+.checkout-buttons-auto-layout {
+    .checkoutRemote > div:first-child:nth-last-child(1) {
+        grid-column: buttonWidth('single');
+        max-width: $wallet-button-max-width;
     }
-}
 
-.checkout-buttons--2 {
-    .checkoutRemote > div {
+    .checkoutRemote > div:first-child:nth-last-child(2),div:first-child:nth-last-child(2) ~ div {
         grid-column: buttonWidth('half');
     }
-}
 
-.checkout-buttons--3 {
-    .checkoutRemote > div:nth-child(1) {
+    .checkoutRemote > div:first-child:nth-last-child(3) {
         grid-column: buttonWidth('single');
 
         @include breakpoint("small") {
             grid-column: buttonWidth('third');
         }
     }
-
-    .checkoutRemote > div:nth-child(n + 2) {
+    .checkoutRemote > div:first-child:nth-last-child(3) ~ div:nth-child(n + 2){
         grid-column: buttonWidth('half');
 
         @include breakpoint("small") {
             grid-column: buttonWidth('third');
         }
     }
-}
 
-.checkout-buttons--4 {
-    .checkoutRemote > div {
+    .checkoutRemote > div:first-child:nth-last-child(4),div:first-child:nth-last-child(4) ~ div {
         grid-column: buttonWidth('half');
 
         @include breakpoint("medium") {
@@ -210,35 +201,25 @@ $buttonWidthMap: (
             grid-column: buttonWidth('quarter');
         }
     }
-}
 
-.checkout-buttons--5 {
-    .checkoutRemote > div:nth-child(1) {
+    .checkoutRemote > div:first-child:nth-last-child(5) {
         grid-column: buttonWidth('single');
 
         @include breakpoint("small") {
             grid-column: buttonWidth('half');
         }
     }
-
-    .checkoutRemote > div:nth-child(2) {
+    .checkoutRemote > div:first-child:nth-last-child(5) ~ div:nth-child(2){
         grid-column: buttonWidth('half');
-
-        @include breakpoint("small") {
-            grid-column: buttonWidth('half');
-        }
     }
-
-    .checkoutRemote > div:nth-child(n + 3) {
+    .checkoutRemote > div:first-child:nth-last-child(5) ~ div:nth-child(n+3){
         grid-column: buttonWidth('half');
 
         @include breakpoint("small") {
             grid-column: buttonWidth('third');
         }
     }
-}
 
-.checkout-buttons--n {
     .checkoutRemote > div {
         grid-column: buttonWidth('half');
 
