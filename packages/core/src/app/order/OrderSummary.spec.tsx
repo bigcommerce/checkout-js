@@ -12,6 +12,10 @@ import PrintLink from './PrintLink';
 let order: Order;
 let orderSummary: ShallowWrapper;
 
+jest.mock('./OrderSummaryPrice', () => (props: any) => (
+    <span {...props} />
+));
+
 describe('OrderSummary', () => {
     describe('when shopper has same currency as store', () => {
         beforeEach(() => {

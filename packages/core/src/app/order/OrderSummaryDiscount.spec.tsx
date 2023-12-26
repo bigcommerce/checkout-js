@@ -8,6 +8,17 @@ import { getStoreConfig } from '../config/config.mock';
 import OrderSummaryDiscount from './OrderSummaryDiscount';
 import OrderSummaryPrice from './OrderSummaryPrice';
 
+jest.mock('./OrderSummaryPrice', () => ({label, amount, testId, children, ...props}: any) => (
+    <span
+        data-test={testId}
+        {...props}
+    >
+        {label}
+        {amount}
+        {children}
+    </span>
+));
+
 describe('OrderSummaryDiscount', () => {
     let discount: ReactWrapper;
     let localeContext: LocaleContextType;

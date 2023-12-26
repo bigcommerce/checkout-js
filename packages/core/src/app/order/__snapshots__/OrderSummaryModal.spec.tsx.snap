@@ -321,7 +321,7 @@ exports[`OrderSummaryModal when taxes are inclusive displays tax as summary sect
         id="tax.inclusive_label"
       />
     </h5>
-    <OrderSummaryPrice
+    <Component
       amount={3}
       key="0"
       label="Tax"

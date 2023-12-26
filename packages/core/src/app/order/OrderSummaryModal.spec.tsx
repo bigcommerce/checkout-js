@@ -16,6 +16,10 @@ import OrderSummaryModal from './OrderSummaryModal';
 let order: Order;
 let orderSummary: ShallowWrapper;
 
+jest.mock('./OrderSummaryPrice', () => (props: any) => (
+    <span {...props} />
+));
+
 describe('OrderSummaryModal', () => {
     const checkoutService = createCheckoutService();
 

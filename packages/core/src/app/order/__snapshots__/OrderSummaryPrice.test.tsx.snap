@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OrderSummaryPrice when has non-zero amount and has only required props renders additional elements/props 1`] = `
+<body>
+  <div>
+    <div
+      data-test="test-id"
+    >
+      <div
+        aria-live="polite"
+        class="cart-priceItem optimizedCheckout-contentPrimary extra-class"
+      >
+        <span
+          class="cart-priceItem-label"
+        >
+          <span
+            data-test="cart-price-label"
+          >
+            Label
+              
+          </span>
+          <span
+            class="cart-priceItem-currencyCode"
+          >
+            (EUR) 
+          </span>
+        </span>
+        <span
+          class="cart-priceItem-value"
+        >
+          <span
+            data-test="cart-price-value"
+          >
+            <div
+              data-test="ShopperCurrency"
+            >
+              10
+            </div>
+          </span>
+          <sup
+            data-test="cart-price-value-superscript"
+          >
+            superscript
+          </sup>
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`OrderSummaryPrice when has non-zero amount and has only required props renders component 1`] = `
+<body>
+  <div>
+    <div>
+      <div
+        aria-live="polite"
+        class="cart-priceItem optimizedCheckout-contentPrimary"
+      >
+        <span
+          class="cart-priceItem-label"
+        >
+          <span
+            data-test="cart-price-label"
+          >
+            Label
+              
+          </span>
+        </span>
+        <span
+          class="cart-priceItem-value"
+        >
+          <span
+            data-test="cart-price-value"
+          >
+            <div
+              data-test="ShopperCurrency"
+            >
+              10
+            </div>
+          </span>
+        </span>
+        Foo Children
+      </div>
+    </div>
+  </div>
+</body>
+`;

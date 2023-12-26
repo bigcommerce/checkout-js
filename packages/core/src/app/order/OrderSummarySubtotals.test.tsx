@@ -1,8 +1,8 @@
-import { render, screen } from '@testing-library/react';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
 import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { mapFromPayments } from '../giftCertificate';
 
@@ -33,7 +33,7 @@ describe('OrderSummarySubtotals', () => {
                     subtotalAmount={order.orderAmount}
                     taxes={order.taxes}
                 />
-            </LocaleContext.Provider>
+            </LocaleContext.Provider>,
         );
 
         expect(screen.getByTestId('cart-taxes')).toHaveTextContent('Tax');

@@ -1,7 +1,9 @@
+import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getStoreConfig } from '../config/config.mock';
 
@@ -19,13 +21,15 @@ describe('OrderSummaryTotal', () => {
     describe('when shopper has same currency as store', () => {
         beforeEach(() => {
             orderSummaryTotal = mount(
-                <LocaleContext.Provider value={localeContext}>
-                    <OrderSummaryTotal
-                        orderAmount={100}
-                        shopperCurrencyCode="USD"
-                        storeCurrencyCode="USD"
-                    />
-                </LocaleContext.Provider>,
+                <CheckoutProvider checkoutService={createCheckoutService()}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <OrderSummaryTotal
+                            orderAmount={100}
+                            shopperCurrencyCode="USD"
+                            storeCurrencyCode="USD"
+                        />
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
             );
         });
 
@@ -46,13 +50,15 @@ describe('OrderSummaryTotal', () => {
     describe('when shopper has different currency as store', () => {
         beforeEach(() => {
             orderSummaryTotal = mount(
-                <LocaleContext.Provider value={localeContext}>
-                    <OrderSummaryTotal
-                        orderAmount={100}
-                        shopperCurrencyCode="USD"
-                        storeCurrencyCode="EUR"
-                    />
-                </LocaleContext.Provider>,
+                <CheckoutProvider checkoutService={createCheckoutService()}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <OrderSummaryTotal
+                            orderAmount={100}
+                            shopperCurrencyCode="USD"
+                            storeCurrencyCode="EUR"
+                        />
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
             );
         });
 
