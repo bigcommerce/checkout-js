@@ -1,10 +1,11 @@
 import { createCheckoutService, createEmbeddedCheckoutMessenger } from '@bigcommerce/checkout-sdk';
+import { BrowserOptions } from '@sentry/browser';
 import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 
 import { AnalyticsProvider } from '@bigcommerce/checkout/analytics';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
-import { ErrorBoundary, ErrorLogger, SentryConfig } from '@bigcommerce/checkout/error-handling-utils';
+import { ErrorBoundary, ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
@@ -22,7 +23,7 @@ export interface CheckoutAppProps {
     checkoutId: string;
     containerId: string;
     publicPath?: string;
-    sentryConfig?: SentryConfig;
+    sentryConfig?: BrowserOptions;
     sentrySampleRate?: number;
 }
 

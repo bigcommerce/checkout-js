@@ -19,13 +19,8 @@ export interface ErrorLoggerOptions {
 }
 
 export interface ErrorLoggerServiceConfig {
-    sentry?: SentryConfig;
+    sentry?: BrowserOptions;
 }
-
-export type SentryConfig = Omit<
-    BrowserOptions,
-    'beforeSend' | 'integrations' | 'transport' | 'stackParser'
->;
 
 export interface ErrorTags {
     /**
