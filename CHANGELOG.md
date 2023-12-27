@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.417.1](https://github.com/bigcommerce/checkout-js/compare/v1.417.0...v1.417.1) (2023-12-27)
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-7948 Wallet Buttons Auto Layout ([#1633](https://github.com/bigcommerce/checkout-js/issues/1633)) ([0deec45](https://github.com/bigcommerce/checkout-js/commit/0deec456b3504f061841c456db6379b6bf63d9b7))
+
 ## [1.417.0](https://github.com/bigcommerce/checkout-js/compare/v1.416.0...v1.417.0) (2023-12-27)
 
 
