@@ -1,10 +1,8 @@
-import { PaymentMethodId } from '@bigcommerce/checkout/payment-integration-api';
+import isBraintreeConnectMethod from './is-braintree-connect-method';
+import isPayPalCommerceConnectMethod from './is-paypal-commerce-connect-method';
 
 const isPaypalConnectMethod = (methodId?: string): boolean => {
-    return (
-        methodId === PaymentMethodId.Braintree ||
-        methodId === PaymentMethodId.BraintreeAcceleratedCheckout
-    );
+    return isBraintreeConnectMethod(methodId) || isPayPalCommerceConnectMethod(methodId);
 };
 
 export default isPaypalConnectMethod;

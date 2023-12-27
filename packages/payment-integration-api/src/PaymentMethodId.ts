@@ -47,6 +47,7 @@ enum PaymentMethodId {
     PaypalExpress = 'paypalexpress',
     PaypalPaymentsPro = 'paypal',
     PaypalCommerce = 'paypalcommerce',
+    PaypalCommerceAcceleratedCheckout = 'paypalcommerceacceleratedcheckout',
     PaypalCommerceCredit = 'paypalcommercecredit',
     PaypalCommerceCreditCards = 'paypalcommercecreditcards',
     PaypalCommerceAlternativeMethod = 'paypalcommercealternativemethods',
