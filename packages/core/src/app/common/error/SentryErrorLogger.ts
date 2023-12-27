@@ -1,16 +1,13 @@
 import {
-    BrowserClient,
-    defaultIntegrations,
-    defaultStackParser,
+    BrowserOptions,
+    captureException,
     Event,
-    Hub,
+    init,
     Integrations,
-    makeFetchTransport,
-    makeXHRTransport,
     SeverityLevel,
     StackFrame,
+    withScope,
 } from '@sentry/browser';
-import { BrowserClientOptions } from '@sentry/browser/types/client';
 import { RewriteFrames } from '@sentry/integrations';
 import { EventHint, Exception } from '@sentry/types';
 
@@ -19,7 +16,6 @@ import {
     ErrorLogger,
     ErrorMeta,
     ErrorTags,
-    SentryConfig,
 } from '@bigcommerce/checkout/error-handling-utils';
 
 import computeErrorCode from './computeErrorCode';
@@ -33,7 +29,6 @@ export interface SentryErrorLoggerOptions {
     errorTypes?: string[];
     publicPath?: string;
     sampleRate?: number;
-    createHub?: (options: BrowserClientOptions) => Hub;
 }
 
 export enum SeverityLevelEnum {
@@ -46,12 +41,10 @@ export enum SeverityLevelEnum {
 export default class SentryErrorLogger implements ErrorLogger {
     private consoleLogger: ErrorLogger;
     private publicPath: string;
-    private hub: Hub;
 
-    constructor(config: SentryConfig, options?: SentryErrorLoggerOptions) {
+    constructor(config: BrowserOptions, options?: SentryErrorLoggerOptions) {
         const {
             consoleLogger = new NoopErrorLogger(),
-            createHub = (options: BrowserClientOptions) => new Hub(new BrowserClient(options)),
             publicPath = '',
             sampleRate = 0.1,
         } = options || {};
@@ -59,18 +52,13 @@ export default class SentryErrorLogger implements ErrorLogger {
         this.consoleLogger = consoleLogger;
         this.publicPath = publicPath;
 
-        const clientOptions: BrowserClientOptions = {
+        init({
             sampleRate,
-            ...config,
             beforeSend: this.handleBeforeSend,
             denyUrls: [
                 ...(config.denyUrls || []),
                 'polyfill~checkout',
                 'sentry~checkout',
-            ],
-            allowUrls: [
-                ...(config.allowUrls || []),
-                publicPath,
             ],
             integrations: [
                 new Integrations.GlobalHandlers({
@@ -80,15 +68,9 @@ export default class SentryErrorLogger implements ErrorLogger {
                 new RewriteFrames({
                     iteratee: this.handleRewriteFrame,
                 }),
-                ...defaultIntegrations.filter(integration =>
-                    !['GlobalHandlers', 'RewriteFrames'].includes(integration.name)
-                ),
             ],
-            transport: 'fetch' in window ? makeFetchTransport : makeXHRTransport,
-            stackParser: defaultStackParser,
-        };
-
-        this.hub = createHub(clientOptions);
+            ...config,
+        });
     }
 
     log(
@@ -99,7 +81,7 @@ export default class SentryErrorLogger implements ErrorLogger {
     ): void {
         this.consoleLogger.log(error, tags, level);
 
-        this.hub.withScope((scope) => {
+        withScope((scope) => {
             const { errorCode = computeErrorCode(error) } = tags || {};
 
             if (errorCode) {
@@ -114,7 +96,7 @@ export default class SentryErrorLogger implements ErrorLogger {
 
             scope.setFingerprint(['{{ default }}']);
 
-            this.hub.captureException(error);
+            captureException(error);
         });
     }
 
@@ -157,8 +139,8 @@ export default class SentryErrorLogger implements ErrorLogger {
                 return false;
             }
 
-            return exception.stacktrace.frames.some((frame) =>
-                frame.filename?.startsWith(FILENAME_PREFIX) && frame.in_app,
+            return exception.stacktrace.frames.every((frame) =>
+                frame.filename?.startsWith(FILENAME_PREFIX),
             );
         });
     }
