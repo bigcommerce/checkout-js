@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useEffect, useRef } from 'react';
+import { CardInstrument } from '@bigcommerce/checkout-sdk';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import {
@@ -14,7 +15,7 @@ import PayPalCommerceAcceleratedCheckoutForm from './components/PayPalCommerceAc
 
 export interface PayPalConnectCardComponentRef {
     render?: (container: string) => void;
-    // showInstrumentsPopup?: () => void; // TODO:
+    showPayPalConnectCardSelector?: () => Promise<CardInstrument | undefined>;
 }
 
 const PayPalCommerceAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
@@ -37,9 +38,10 @@ const PayPalCommerceAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentM
                         paypalConnectCardComponentRef.current.render =
                             renderPayPalConnectCardComponent;
                     },
-                    // onChange: () => {
-                    // // TODO:
-                    // }
+                    onChange: (showPayPalConnectCardSelector) => {
+                        paypalConnectCardComponentRef.current.showPayPalConnectCardSelector =
+                            showPayPalConnectCardSelector;
+                    },
                 },
             });
         } catch (error) {
@@ -85,6 +87,9 @@ const PayPalCommerceAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentM
                             <PayPalCommerceAcceleratedCheckoutForm
                                 renderPayPalConnectCardComponent={
                                     paypalConnectCardComponentRef?.current?.render
+                                }
+                                showPayPalConnectCardSelector={
+                                    paypalConnectCardComponentRef?.current?.showPayPalConnectCardSelector
                                 }
                             />
                         </LoadingOverlay>

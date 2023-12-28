@@ -1,25 +1,50 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 
+import {
+    usePayPalCommerceAcceleratedCheckoutInstruments
+} from '../hooks/usePayPalCommerceAcceleratedCheckoutInstruments';
 import { PayPalConnectCardComponentRef } from '../PayPalCommerceAcceleratedCheckoutPaymentMethod';
 
 import PayPalCommerceAcceleratedCheckoutCreditCardForm from './PayPalCommerceAcceleratedCheckoutCreditCardForm';
+import PayPalCommerceAcceleratedCheckoutInstrumentsForm from './PayPalCommerceAcceleratedCheckoutInstrumentsForm';
 
 interface PayPalCommerceAcceleratedCheckoutFormProps {
     renderPayPalConnectCardComponent?: PayPalConnectCardComponentRef['render'];
+    showPayPalConnectCardSelector?: PayPalConnectCardComponentRef['showPayPalConnectCardSelector'];
 }
 
 const PayPalCommerceAcceleratedCheckoutForm: FunctionComponent<
     PayPalCommerceAcceleratedCheckoutFormProps
-> = ({ renderPayPalConnectCardComponent }) => {
-    // Hook might be here
+> = ({ renderPayPalConnectCardComponent, showPayPalConnectCardSelector }) => {
+    const {
+        instruments,
+        handleSelectInstrument,
+        selectedInstrument,
+    } = usePayPalCommerceAcceleratedCheckoutInstruments();
+
+    const shouldShowInstrumentsForm = instruments.length > 0;
+
+    useEffect(() => {
+        if (!selectedInstrument && instruments.length > 0) {
+            handleSelectInstrument(instruments[0].bigpayToken);
+        }
+    }, [instruments, selectedInstrument]);
 
     return (
         <div className="paymentMethod paymentMethod--creditCard">
             {/* Add vaulted element here */}
+            {shouldShowInstrumentsForm && (
+                <PayPalCommerceAcceleratedCheckoutInstrumentsForm
+                    onChange={showPayPalConnectCardSelector}
+                    selectedInstrument={selectedInstrument || instruments[0]}
+                />
+            )}
 
-            <PayPalCommerceAcceleratedCheckoutCreditCardForm
-                renderPayPalConnectCardComponent={renderPayPalConnectCardComponent}
-            />
+            {!shouldShowInstrumentsForm && (
+                <PayPalCommerceAcceleratedCheckoutCreditCardForm
+                    renderPayPalConnectCardComponent={renderPayPalConnectCardComponent}
+                />
+            )}
         </div>
     );
 };

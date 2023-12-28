@@ -1,4 +1,16 @@
-.paypal-commerce-axo-cc-form-container {
-    font-weight: initial;
+.paypal-commerce-axo-instrument {
+    display: flex;
+    justify-content: space-between;
     padding-bottom: 1rem;
+
+    &-details {
+        display: flex;
+        align-items: center;
+    }
+
+    &-branding {
+        margin-top: -8px;
+    }
 }
+
+
