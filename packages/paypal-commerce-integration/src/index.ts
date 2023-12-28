@@ -1,3 +1,4 @@
+export { PayPalCommerceAcceleratedCheckoutPaymentMethod } from './PayPalCommerceAcceleratedCheckout';
 export { default as PayPalCommerceAPMsPaymentMethod } from './PayPalCommerceAPMsPaymentMethod';
 export { default as PayPalCommerceCreditPaymentMethod } from './PayPalCommerceCreditPaymentMethod';
 export { default as PayPalCommercePaymentMethod } from './PayPalCommercePaymentMethod';
