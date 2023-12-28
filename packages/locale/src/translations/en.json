@@ -84,6 +84,7 @@
             "cancel_action": "Cancel",
             "close_action": "Close",
             "continue_action": "Continue",
+            "change_action": "Change",
             "edit_action": "Edit",
             "delete_action": "Delete",
             "error_heading": "Something's gone wrong",
