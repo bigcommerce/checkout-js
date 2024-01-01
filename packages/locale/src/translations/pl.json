@@ -201,9 +201,9 @@
                 "length": "Numer rachunku musi składać się z co najmniej 8 cyfr"
             },
             "bluesnap_direct_iban": {
-                "label": "IBAN",
-                "is_required": "IBAN is required",
-                "length": "IBAN must have at least 8 digits"
+                "label": "Iban",
+                "is_required": "Numer IBAN jest wymagany",
+                "length": "Numer IBAN musi zawierać co najmniej 8 cyfr"
             },
             "bluesnap_direct_routing_number": {
                 "label": "Numer rozliczeniowy",
@@ -216,9 +216,9 @@
                 "is_required": "Typ rachunku jest wymagany"
             },
             "bluesnap_direct_permission": "Autoryzuję tę transakcję z użyciem czeku elektronicznego (ACH/ECP) i wyrażam zgodę na obciążenie mojego rachunku.",
-            "bluesnap_direct_sepa_mandate_disclaimer": "By signing this mandate form, you authorise (A) {creditorName} to send instructions to your bank to debit your account and (B) your bank to debit your account in accordance with the instructions from {creditorName}. As part of your rights, you are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited.",
+            "bluesnap_direct_sepa_mandate_disclaimer": "Podpisując niniejszy formularz upoważnienia, autoryzujesz (A) {creditorName} do wysyłania instrukcji do banku w celu obciążenia Twojego konta oraz (B) Twój bank do obciążania konta zgodnie z instrukcjami otrzymanymi od {creditorName}. W ramach swoich praw użytkownik jest uprawniony do otrzymania zwrotu środków od banku zgodnie z warunkami umowy zawartej z bankiem. W celu uzyskania zwrotu należy złożyć wniosek w ciągu 8 dni od dnia obciążenia konta.",
             "bluesnap_direct_electronic_check_label": "Czek elektroniczny (ACH/ECP)",
-            "bluesnap_direct_sepa_direct_debit": "Sepa Direct Debit",
+            "bluesnap_direct_sepa_direct_debit": "Polecenie zapłaty SEPA",
             "bluesnap_direct_local_bank_transfer_label": "Lokalny przelew bankowy",
             "bolt_benefit_1": "Kupuj setki marek z logowaniem bez hasła",
             "bolt_benefit_2": "Wypełnij formularz z zapisanymi danymi dotyczącymi płatności i wysyłki",
@@ -440,7 +440,7 @@
                 "voided_transaction": "Nie można przetworzyć płatności, ponieważ transakcja została już unieważniona. Spróbuj ponownie lub skontaktuj się z nami."
             },
             "ratepay": {
-                "payment_method_title": "Pay upon Invoice",
+                "payment_method_title": "Płatność na podstawie faktury",
                 "phone_country_code": "Kod kraju",
                 "phone_number": "Numer telefonu",
                 "birth_date": "Data urodzenia",
@@ -449,7 +449,7 @@
                     "isInvalid": "Wartość w polu {fieldName} jest nieprawidłowa",
                     "paymentSourceInfoCannotBeVerified": "Nie można zweryfikować kombinacji Twojego imienia i nazwiska oraz adresu. Popraw dane i spróbuj ponownie. Więcej informacji można znaleźć w <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Oświadczeniu o ochronie danych osobowych Ratepay</a>. Można też skontaktować się z Ratepay za pomocą niniejszego <a href='https://www.ratepay.com/en/contact/' target='blank'>formularza kontaktowego</a>.",
                     "paymentSourceDeclinedByProcessor": "Użycie wybranej metody płatności nie jest możliwe. Wynika to ze zautomatyzowanego przetwarzania danych. Więcej informacji można znaleźć w <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Oświadczeniu o ochronie danych osobowych Ratepay</a>. Można też skontaktować się z Ratepay za pomocą niniejszego <a href='https://www.ratepay.com/en/contact/' target='blank'>formularza kontaktowego</a>.",
-                    "itemCategoryNotSupportedByPaymentSource": "Digital items are not supported for given method"
+                    "itemCategoryNotSupportedByPaymentSource": "Elementy cyfrowe nie są obsługiwane w przypadku danej metody"
                 }
             }
         },
@@ -543,7 +543,7 @@
                     "boletobancario": "Bilet bankowy"
                 },
                 "bluesnapdirect": {
-                    "sepa_direct_debit": "SEPA Direct Debit Mandate Reference: {mandate}"
+                    "sepa_direct_debit": "Numer referencyjny upoważnienia do polecenia zapłaty SEPA: {mandate}"
                 },
                 "checkoutcom": {
                     "boleto": "Bilet bankowy",

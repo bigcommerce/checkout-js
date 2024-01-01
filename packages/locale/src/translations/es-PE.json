@@ -202,8 +202,8 @@
             },
             "bluesnap_direct_iban": {
                 "label": "IBAN",
-                "is_required": "IBAN is required",
-                "length": "IBAN must have at least 8 digits"
+                "is_required": "El IBAN es obligatorio",
+                "length": "El IBAN debe tener al menos 8 dígitos"
             },
             "bluesnap_direct_routing_number": {
                 "label": "Número de ruteo",
@@ -216,9 +216,9 @@
                 "is_required": "El tipo de cuenta es obligatorio"
             },
             "bluesnap_direct_permission": "Autorizo esta transacción con cheque electrónico (ACH/ECP) y acepto este débito en mi cuenta.",
-            "bluesnap_direct_sepa_mandate_disclaimer": "By signing this mandate form, you authorise (A) {creditorName} to send instructions to your bank to debit your account and (B) your bank to debit your account in accordance with the instructions from {creditorName}. As part of your rights, you are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited.",
+            "bluesnap_direct_sepa_mandate_disclaimer": "Al firmar este formulario de mandato, autorizas a (A) {creditorName} a enviar instrucciones a tu banco para que haga el cargo en tu cuenta y (B) a tu banco para que haga el cargo en tu cuenta de acuerdo con las instrucciones de {creditorName}. Como parte de tus derechos, tienes derecho a recibir un reembolso de tu banco según los términos y condiciones de tu contrato celebrado con tu banco. El reembolso deberá solicitarse dentro de un plazo de 8 semanas contadas a partir de la fecha en que se hizo el cargo a tu cuenta.",
             "bluesnap_direct_electronic_check_label": "Cheque electrónico (ACH/ECP)",
-            "bluesnap_direct_sepa_direct_debit": "Sepa Direct Debit",
+            "bluesnap_direct_sepa_direct_debit": "SEPA Direct Debit",
             "bluesnap_direct_local_bank_transfer_label": "Transferencia bancaria local",
             "bolt_benefit_1": "Compra cientos de marcas con un inicio de sesión sin requerir una contraseña",
             "bolt_benefit_2": "Procesar el pago utilizando los detalles de pago y envío guardados",
@@ -440,7 +440,7 @@
                 "voided_transaction": "Su pago no pudo ser procesado debido a que la transacción ya se anuló. Inténtelo de nuevo o póngase en contacto con nosotros."
             },
             "ratepay": {
-                "payment_method_title": "Pay upon Invoice",
+                "payment_method_title": "Pagar por factura",
                 "phone_country_code": "Código del país",
                 "phone_number": "Número telefónico",
                 "birth_date": "Fecha de nacimiento",
@@ -449,7 +449,7 @@
                     "isInvalid": "{fieldName} no es válido",
                     "paymentSourceInfoCannotBeVerified": "No se pudo validar la combinación de tu nombre y dirección. Corrige tus datos e inténtalo de nuevo. Puedes encontrar más información en la <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Declaración de privacidad de los datos de Ratepay</a> o ponerte en contacto con Ratepay a través de este <a href='https://www.ratepay.com/en/contact/' target='blank'>formulario de contacto.</a>",
                     "paymentSourceDeclinedByProcessor": "No es posible utilizar el método de pago seleccionado. Esta decisión se basa en el procesamiento automatizado de datos. Puedes encontrar más información en la <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Declaración de privacidad de los datos de Ratepay</a> o ponerte en contacto con Ratepay a través de este <a href='https://www.ratepay.com/en/contact/' target='blank'>formulario de contacto.</a>",
-                    "itemCategoryNotSupportedByPaymentSource": "Digital items are not supported for given method"
+                    "itemCategoryNotSupportedByPaymentSource": "Los artículos digitales no son compatibles con un método determinado"
                 }
             }
         },
@@ -543,7 +543,7 @@
                     "boletobancario": "Ticket del Boleto Bancário"
                 },
                 "bluesnapdirect": {
-                    "sepa_direct_debit": "SEPA Direct Debit Mandate Reference: {mandate}"
+                    "sepa_direct_debit": "Referencia de mandato de débito directo SEPA: {mandate}"
                 },
                 "checkoutcom": {
                     "boleto": "Ticket del Boleto Bancário",
