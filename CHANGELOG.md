@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.420.0](https://github.com/bigcommerce/checkout-js/compare/v1.419.0...v1.420.0) (2024-01-02)
+
+
+### Features
+
+* **payment:** PAYPAL-3404 added isPayPalCommerceConnect method to paypal-connect-integration package ([b430613](https://github.com/bigcommerce/checkout-js/commit/b430613f1e5d303a2c1b490010e2aa2d45221c31))
+
 ## [1.419.0](https://github.com/bigcommerce/checkout-js/compare/v1.418.0...v1.419.0) (2024-01-02)
 
 
