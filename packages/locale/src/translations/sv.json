@@ -202,8 +202,8 @@
             },
             "bluesnap_direct_iban": {
                 "label": "IBAN",
-                "is_required": "IBAN is required",
-                "length": "IBAN must have at least 8 digits"
+                "is_required": "IBAN krävs",
+                "length": "IBAN måste ha minst 8 siffror"
             },
             "bluesnap_direct_routing_number": {
                 "label": "Routing-nummer",
@@ -216,9 +216,9 @@
                 "is_required": "Kontotyp är obligatoriskt"
             },
             "bluesnap_direct_permission": "Jag godkänner denna transaktion med Elektronisk check (ACH/ECP) och debiteringen av kontot.",
-            "bluesnap_direct_sepa_mandate_disclaimer": "By signing this mandate form, you authorise (A) {creditorName} to send instructions to your bank to debit your account and (B) your bank to debit your account in accordance with the instructions from {creditorName}. As part of your rights, you are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited.",
+            "bluesnap_direct_sepa_mandate_disclaimer": "Genom att underteckna denna fullmakt ger du (A) {creditorName} rätt att skicka instruktioner till din bank om att debitera ditt konto och (B) din bank rätt att debitera ditt konto i enlighet med instruktionerna från {creditorName}. Som en del av dina rättigheter har du rätt till återbetalning från din bank enligt villkoren i ditt avtal med din bank. Återbetalning måste krävas inom åtta veckor från det datum då ditt konto debiterades.",
             "bluesnap_direct_electronic_check_label": "Elektronisk check (ACH/ECP)",
-            "bluesnap_direct_sepa_direct_debit": "Sepa Direct Debit",
+            "bluesnap_direct_sepa_direct_debit": "SEPA direktdebitering",
             "bluesnap_direct_local_bank_transfer_label": "Lokal banköverföring",
             "bolt_benefit_1": "Shoppa hundratals varumärken med inloggning utan lösenord",
             "bolt_benefit_2": "Checka ut med sparade betalnings- och fraktuppgifter",
@@ -440,7 +440,7 @@
                 "voided_transaction": "Det gick inte att bearbeta din betalning eftersom transaktionen redan har annullerats. Försök igen eller kontakta oss."
             },
             "ratepay": {
-                "payment_method_title": "Pay upon Invoice",
+                "payment_method_title": "Betala vid fakturering",
                 "phone_country_code": "Landskod",
                 "phone_number": "Telefonnummer",
                 "birth_date": "Födelsedatum",
@@ -449,7 +449,7 @@
                     "isInvalid": "{fieldName} är ogiltig(t)",
                     "paymentSourceInfoCannotBeVerified": "Kombinationen av ditt namn och din adress kunde inte valideras. Korrigera dina uppgifter och försök igen. Du hittar mer information i <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Ratepays integritetspolicy</a>. Du kan också kontakta Ratepay via det här <a href='https://www.ratepay.com/en/contact/' target='blank'>kontaktformuläret</a>.",
                     "paymentSourceDeclinedByProcessor": "Det är inte möjligt att använda den valda betalningsmetoden. Det här beslutet är baserat på automatiserad databehandling. Du hittar mer information i <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Ratepays integritetspolicy</a>. Du kan också kontakta Ratepay via det här <a href='https://www.ratepay.com/en/contact/' target='blank'>kontaktformuläret</a>.",
-                    "itemCategoryNotSupportedByPaymentSource": "Digital items are not supported for given method"
+                    "itemCategoryNotSupportedByPaymentSource": "Digitala artiklar stöds inte för en angiven metod"
                 }
             }
         },
@@ -543,7 +543,7 @@
                     "boletobancario": "Boleto Bancário-ticket"
                 },
                 "bluesnapdirect": {
-                    "sepa_direct_debit": "SEPA Direct Debit Mandate Reference: {mandate}"
+                    "sepa_direct_debit": "Referens för SEPA-direktdebiteringsfullmakt: {mandate}"
                 },
                 "checkoutcom": {
                     "boleto": "Boleto Bancário-ticket",

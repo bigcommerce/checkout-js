@@ -201,9 +201,9 @@
                 "length": "Rekeningnummer moet minimaal 8 cijfers bevatten"
             },
             "bluesnap_direct_iban": {
-                "label": "IBAN",
-                "is_required": "IBAN is required",
-                "length": "IBAN must have at least 8 digits"
+                "label": "Iban",
+                "is_required": "IBAN is vereist",
+                "length": "IBAN moet minimaal 8 cijfers bevatten"
             },
             "bluesnap_direct_routing_number": {
                 "label": "Routeringsnummer",
@@ -216,9 +216,9 @@
                 "is_required": "Rekeningtype is verplicht"
             },
             "bluesnap_direct_permission": "Ik autoriseer deze Elektronische Check (ACH/ECP) transactie en ga akkoord met deze debitering van mijn rekening.",
-            "bluesnap_direct_sepa_mandate_disclaimer": "By signing this mandate form, you authorise (A) {creditorName} to send instructions to your bank to debit your account and (B) your bank to debit your account in accordance with the instructions from {creditorName}. As part of your rights, you are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited.",
+            "bluesnap_direct_sepa_mandate_disclaimer": "Door dit machtigingsformulier te ondertekenen, geef je (A) {creditorName} toestemming om instructies naar je bank te sturen om het bedrag van je rekening af te schrijven en (B) machtig je je bank om het bedrag volgens de instructies van {creditorName} van je rekening af te schrijven. Als onderdeel van je rechten heb je recht op terugbetaling door je bank volgens de voorwaarden van je overeenkomst met je bank. Een stornering moet worden aangevraagd binnen 8 weken vanaf de datum waarop je rekening is gedebiteerd.",
             "bluesnap_direct_electronic_check_label": "Elektronische cheque (ACH/ECP)",
-            "bluesnap_direct_sepa_direct_debit": "Sepa Direct Debit",
+            "bluesnap_direct_sepa_direct_debit": "SEPA-incasso",
             "bluesnap_direct_local_bank_transfer_label": "Lokale bankoverschrijving",
             "bolt_benefit_1": "Shop honderden merken met wachtwoordloos inloggen",
             "bolt_benefit_2": "Betaal gemakkelijk met opgeslagen betaal- en verzendgegevens",
@@ -440,7 +440,7 @@
                 "voided_transaction": "Uw betaling kan niet worden verwerkt, omdat de transactie al is geannuleerd. Probeer het opnieuw of neem contact met ons op."
             },
             "ratepay": {
-                "payment_method_title": "Pay upon Invoice",
+                "payment_method_title": "Betalen op rekening",
                 "phone_country_code": "Landcode",
                 "phone_number": "Telefoonnummer",
                 "birth_date": "Geboortedatum",
@@ -449,7 +449,7 @@
                     "isInvalid": "{fieldName} is ongeldig",
                     "paymentSourceInfoCannotBeVerified": "De combinatie van je naam en adres kan niet worden gevalideerd. Corrigeer je gegevens en probeer het opnieuw. Meer informatie vind je in het <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Ratepay Data Privacy Statement</a> of je kunt contact opnemen met Ratepay via dit <a href='https://www.ratepay.com/en/contact/' target='blank'>contactformulier.</a>",
                     "paymentSourceDeclinedByProcessor": "Het is niet mogelijk om de geselecteerde betaalmethode te gebruiken. Deze beslissing is gebaseerd op geautomatiseerde gegevensverwerking. Meer informatie vind je in het <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Ratepay Data Privacy Statement</a> of je kunt contact opnemen met Ratepay via dit <a href='https://www.ratepay.com/en/contact/' target='blank'>contactformulier.</a>",
-                    "itemCategoryNotSupportedByPaymentSource": "Digital items are not supported for given method"
+                    "itemCategoryNotSupportedByPaymentSource": "Digitale items worden niet ondersteund voor de opgegeven methode"
                 }
             }
         },
@@ -543,7 +543,7 @@
                     "boletobancario": "Boleto Bancário-ticket"
                 },
                 "bluesnapdirect": {
-                    "sepa_direct_debit": "SEPA Direct Debit Mandate Reference: {mandate}"
+                    "sepa_direct_debit": "Referentie SEPA-machtiging tot automatische incasso: {mandate}"
                 },
                 "checkoutcom": {
                     "boleto": "Boleto Bancário-ticket",

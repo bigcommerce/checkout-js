@@ -201,9 +201,9 @@
                 "length": "Die Kontonummer muss mindestens 8 Ziffern umfassen."
             },
             "bluesnap_direct_iban": {
-                "label": "IBAN",
-                "is_required": "IBAN is required",
-                "length": "IBAN must have at least 8 digits"
+                "label": "Iban",
+                "is_required": "IBAN ist erforderlich",
+                "length": "IBAN muss mindestens 8 Ziffern haben"
             },
             "bluesnap_direct_routing_number": {
                 "label": "Routing-Nummer",
@@ -216,9 +216,9 @@
                 "is_required": "Es muss ein Konto-Typ angegeben werden."
             },
             "bluesnap_direct_permission": "Ich autorisiere diese Transaktion mittels elektronischem Scheck (ACH/ECP) und stimme dieser Belastung meines Kontos zu.",
-            "bluesnap_direct_sepa_mandate_disclaimer": "By signing this mandate form, you authorise (A) {creditorName} to send instructions to your bank to debit your account and (B) your bank to debit your account in accordance with the instructions from {creditorName}. As part of your rights, you are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited.",
+            "bluesnap_direct_sepa_mandate_disclaimer": "Mit der Unterzeichnung dieses Mandatsformulars ermächtigen Sie (A) {creditorName}, Anweisungen an Ihre Bank zu senden, Ihr Konto zu belasten, und (B) Ihre Bank, Ihr Konto gemäß den Anweisungen von {creditorName} zu belasten. Im Rahmen Ihrer Rechte haben Sie Anspruch auf eine Erstattung durch Ihre Bank gemäß den Bedingungen Ihres Vertrags mit Ihrer Bank. Eine Rückerstattung muss innerhalb von acht Wochen, beginnend mit dem Datum der Belastung Ihres Kontos, angefordert werden.",
             "bluesnap_direct_electronic_check_label": "Elektronischer Scheck (ACH/ECP)",
-            "bluesnap_direct_sepa_direct_debit": "Sepa Direct Debit",
+            "bluesnap_direct_sepa_direct_debit": "SEPA-Lastschriftverfahren",
             "bluesnap_direct_local_bank_transfer_label": "Lokale Banküberweisung",
             "bolt_benefit_1": "Kaufen Sie Hunderte von Marken mit passwortfreier Anmeldung",
             "bolt_benefit_2": "Bezahlen Sie mit gespeicherten Zahlungs- und Lieferdaten",
@@ -440,7 +440,7 @@
                 "voided_transaction": "Ihre Zahlung kann nicht verarbeitet werden, da die Transaktion bereits storniert wurde. Bitte versuchen Sie es erneut oder nehmen Sie Kontakt zu uns auf."
             },
             "ratepay": {
-                "payment_method_title": "Pay upon Invoice",
+                "payment_method_title": "Zahlung auf Rechnung",
                 "phone_country_code": "Ländercode",
                 "phone_number": "Telefonnummer",
                 "birth_date": "Geburtsdatum",
@@ -449,7 +449,7 @@
                     "isInvalid": "{fieldName} ist ungültig",
                     "paymentSourceInfoCannotBeVerified": "Die Kombination aus Ihrem Namen und Ihrer Adresse konnte nicht überprüft werden. Bitte korrigieren Sie Ihre Daten und versuchen Sie es erneut. Weitere Informationen finden Sie in der <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Datenschutzerklärung von Ratepay</a> oder Sie können Ratepay über dieses <a href='https://www.ratepay.com/en/contact/' target='blank'>Kontaktformular</a> kontaktieren.",
                     "paymentSourceDeclinedByProcessor": "Es ist nicht möglich, die ausgewählte Zahlungsmethode zu verwenden. Diese Entscheidung basiert auf der automatisierten Datenverarbeitung. Weitere Informationen finden Sie in der <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Datenschutzerklärung von Ratepay</a> oder Sie können Ratepay über dieses <a href='https://www.ratepay.com/en/contact/' target='blank'>Kontaktformular</a> kontaktieren.",
-                    "itemCategoryNotSupportedByPaymentSource": "Digital items are not supported for given method"
+                    "itemCategoryNotSupportedByPaymentSource": "Digitale Artikel werden für die angegebene Methode nicht unterstützt"
                 }
             }
         },
@@ -543,7 +543,7 @@
                     "boletobancario": "Boleto Bancário-Ticket"
                 },
                 "bluesnapdirect": {
-                    "sepa_direct_debit": "SEPA Direct Debit Mandate Reference: {mandate}"
+                    "sepa_direct_debit": "SEPA-Lastschriftmandatsreferenz: {mandate}"
                 },
                 "checkoutcom": {
                     "boleto": "Boleto Bancário-Ticket",

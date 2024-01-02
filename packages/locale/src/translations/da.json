@@ -201,9 +201,9 @@
                 "length": "Kontonummeret skal have mindst 8 cifre"
             },
             "bluesnap_direct_iban": {
-                "label": "IBAN",
-                "is_required": "IBAN is required",
-                "length": "IBAN must have at least 8 digits"
+                "label": "Iban",
+                "is_required": "IBAN er påkrævet",
+                "length": "IBAN skal have mindst 8 cifre"
             },
             "bluesnap_direct_routing_number": {
                 "label": "Routingnummer",
@@ -216,9 +216,9 @@
                 "is_required": "Kontotypen er påkrævet"
             },
             "bluesnap_direct_permission": "Jeg godkender denne transaktion med elektronisk check (ACH/ECP) og accepterer denne debitering af min konto.",
-            "bluesnap_direct_sepa_mandate_disclaimer": "By signing this mandate form, you authorise (A) {creditorName} to send instructions to your bank to debit your account and (B) your bank to debit your account in accordance with the instructions from {creditorName}. As part of your rights, you are entitled to a refund from your bank under the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks starting from the date on which your account was debited.",
+            "bluesnap_direct_sepa_mandate_disclaimer": "Ved at underskrive denne betalingsaftale giver du (A) {creditorName} tilladelse til at sende instruktioner til din bank om at debitere din konto, og (B) din bank til at debitere din konto i overensstemmelse med instruktionerne fra {creditorName}. Som en del af dine rettigheder har du ret til en tilbagebetaling fra din bank i henhold til vilkårene og betingelserne i din aftale med din bank. En refusion skal opkræves inden for 8 uger fra den dato, hvor din konto blev debiteret.",
             "bluesnap_direct_electronic_check_label": "Elektronisk check (ACH/ECP)",
-            "bluesnap_direct_sepa_direct_debit": "Sepa Direct Debit",
+            "bluesnap_direct_sepa_direct_debit": "SEPA Direct Debit",
             "bluesnap_direct_local_bank_transfer_label": "Lokal bankoverførsel",
             "bolt_benefit_1": "Køb hundredvis af mærker med et login uden adgangskode",
             "bolt_benefit_2": "Gennemfør betalingen med gemte betalings- og forsendelsesoplysninger",
@@ -440,7 +440,7 @@
                 "voided_transaction": "Din betaling kunne ikke behandles, fordi transaktionen allerede er blevet annulleret. Prøv igen, eller kontakt os."
             },
             "ratepay": {
-                "payment_method_title": "Pay upon Invoice",
+                "payment_method_title": "Betal ved fakturering",
                 "phone_country_code": "Landekode",
                 "phone_number": "Telefonnummer",
                 "birth_date": "Fødselsdato",
@@ -449,7 +449,7 @@
                     "isInvalid": "{fieldName} er ugyldigt",
                     "paymentSourceInfoCannotBeVerified": "Kombinationen af dit navn og din adresse kunne ikke valideres. Ret dine data, og prøv igen. Du kan finde yderligere oplysninger i <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Ratepay Data Privacy Statement</a>, eller du kan kontakte Ratepay ved hjælp af denne <a href='https://www.ratepay.com/en/contact/' target='blank'>kontaktformular</a>.",
                     "paymentSourceDeclinedByProcessor": "Det er ikke muligt at bruge den valgte betalingsmetode. Denne beslutning er baseret på automatiseret databehandling. Du kan finde yderligere oplysninger i <a href='https://www.ratepay.com/en/ratepay-data-privacy-statement/' target='blank'>Ratepay Data Privacy Statement</a>, eller du kan kontakte Ratepay ved hjælp af denne <a href='https://www.ratepay.com/en/contact/' target='blank'>kontaktformular</a>.",
-                    "itemCategoryNotSupportedByPaymentSource": "Digital items are not supported for given method"
+                    "itemCategoryNotSupportedByPaymentSource": "Digitale elementer understøttes ikke for den givne metode"
                 }
             }
         },
@@ -543,7 +543,7 @@
                     "boletobancario": "Boleto Bancário-kvittering"
                 },
                 "bluesnapdirect": {
-                    "sepa_direct_debit": "SEPA Direct Debit Mandate Reference: {mandate}"
+                    "sepa_direct_debit": "SEPA Direct Debit fuldmagtsreference: {mandate}"
                 },
                 "checkoutcom": {
                     "boleto": "Boleto Bancário-kvittering",
