@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FunctionComponent, useCallback, useEffect, useMemo, useRef } from 'react';
 
 import {
     PaymentMethodProps,
@@ -8,7 +8,6 @@ import {
 import { DynamicFormField, DynamicFormFieldType, FormContext } from '@bigcommerce/checkout/ui';
 import { FormField } from '@bigcommerce/checkout-sdk';
 import getPaypalCommerceRatePayValidationSchema from './validation-schemas/getPaypalCommerceRatePayValidationSchema';
-import { LoadingSpinner } from '@bigcommerce/checkout/ui';
 import { CustomError } from '@bigcommerce/checkout/payment-integration-api';
 import { SpecificError } from '@bigcommerce/checkout/payment-integration-api';
 import { CountryData, getCountryData } from '@bigcommerce/checkout/payment-integration-api';
@@ -72,7 +71,6 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
 }) => {
     const fieldsValues = useRef<Partial<RatePayFieldValues>>({});
     const isPaymentDataRequired = checkoutState.data.isPaymentDataRequired();
-    const [isPaymentSubmitting, setIsPaymentSubmitting] = useState(false);
     const getCountryInfo = (): CountryData => {
         const billing = checkoutState.data.getBillingAddress();
 
@@ -91,8 +89,8 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
                 paypalcommerceratepay: {
                     container: '#checkout-payment-continue',
                     legalTextContainer: 'legal-text-container',
+                    loadingContainerId: 'checkout-page-container',
                     getFieldsValues: () => fieldsValues.current,
-                    onPaymentSubmission: (isSubmitting: boolean) => setIsPaymentSubmitting(isSubmitting),
                     onError: (error: SpecificError) => {
                         paymentForm.disableSubmit(method, true);
                         const ratepaySpecificError = error?.errors?.filter(e => e.provider_error);
@@ -191,11 +189,6 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
 
     return (
         <div style={{marginBottom:'20px'}}>
-            { isPaymentSubmitting &&
-                <div className='embedded-checkout-loading-spinner-overlay'>
-                    <LoadingSpinner isLoading={true}/>
-                </div>
-            }
             <FormContext.Provider value={{ isSubmitted, setSubmitted }}>
                 { formFieldData.map((field) => {
                         return  <DynamicFormField

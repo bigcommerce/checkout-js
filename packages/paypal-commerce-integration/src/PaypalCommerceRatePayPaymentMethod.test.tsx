@@ -127,9 +127,9 @@ describe('PaypalCommerceRatePayPaymentMethod', () => {
             gatewayId: props.method.gateway,
             methodId: props.method.id,
             paypalcommerceratepay: {
-                onPaymentSubmission: expect.any(Function),
                 container: '#checkout-payment-continue',
                 legalTextContainer: 'legal-text-container',
+                loadingContainerId: 'checkout-page-container',
                 getFieldsValues: expect.any(Function),
                 onError: expect.any(Function),
             },
