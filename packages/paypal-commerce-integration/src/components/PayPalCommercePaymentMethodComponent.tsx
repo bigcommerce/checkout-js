@@ -1,24 +1,32 @@
-import React, { FunctionComponent, useEffect } from 'react';
-
 import {
     PayPalCommerceAlternativeMethodsPaymentOptions,
-    PayPalCommercePaymentInitializeOptions,
     PayPalCommerceCreditPaymentInitializeOptions,
+    PayPalCommercePaymentInitializeOptions,
     PayPalCommerceVenmoPaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
+import React, { FunctionComponent, useEffect, useRef } from 'react';
+
 import { PaymentMethodProps } from '@bigcommerce/checkout/payment-integration-api';
 
-type PayPalCommerceProvidersPaymentInitializeOptions = PayPalCommerceAlternativeMethodsPaymentOptions
-    & PayPalCommerceCreditPaymentInitializeOptions
-    & PayPalCommercePaymentInitializeOptions
-    & PayPalCommerceVenmoPaymentInitializeOptions;
+type PayPalCommerceProvidersPaymentInitializeOptions =
+    PayPalCommerceAlternativeMethodsPaymentOptions &
+        PayPalCommerceCreditPaymentInitializeOptions &
+        PayPalCommercePaymentInitializeOptions &
+        PayPalCommerceVenmoPaymentInitializeOptions;
 
 interface PayPalCommercePaymentMethodComponentProps {
     providerOptionsKey: string;
     providerOptionsData?: Partial<PayPalCommerceProvidersPaymentInitializeOptions>;
 }
 
-const PayPalCommercePaymentMethodComponent: FunctionComponent<PaymentMethodProps & PayPalCommercePaymentMethodComponentProps> = ({
+interface ButtonActions {
+    disable: () => void;
+    enable: () => void;
+}
+
+const PayPalCommercePaymentMethodComponent: FunctionComponent<
+    PaymentMethodProps & PayPalCommercePaymentMethodComponentProps
+> = ({
     method,
     checkoutService,
     paymentForm,
@@ -27,6 +35,31 @@ const PayPalCommercePaymentMethodComponent: FunctionComponent<PaymentMethodProps
     providerOptionsData,
     children,
 }) => {
+    const buttonActionsRef = useRef<ButtonActions | null>(null);
+    const termsValue = paymentForm.getFieldValue('terms');
+
+    const validateForm = async () => {
+        const validationErrors = await paymentForm.validateForm();
+
+        return Object.keys(validationErrors);
+    };
+
+    const validateButton = async () => {
+        if (!buttonActionsRef.current) return;
+
+        const keysValidation = await validateForm();
+
+        if (keysValidation.length) {
+            buttonActionsRef.current.disable();
+        } else {
+            buttonActionsRef.current.enable();
+        }
+    };
+
+    useEffect(() => {
+        void validateButton();
+    }, [termsValue]);
+
     const initializePayment = async () => {
         try {
             await checkoutService.initializePayment({
@@ -46,8 +79,7 @@ const PayPalCommercePaymentMethodComponent: FunctionComponent<PaymentMethodProps
                         onUnhandledError(error);
                     },
                     onValidate: async (resolve: () => void, reject: () => void): Promise<void> => {
-                        const validationErrors = await paymentForm.validateForm();
-                        const keysValidation = Object.keys(validationErrors);
+                        const keysValidation = await validateForm();
 
                         if (keysValidation.length) {
                             paymentForm.setSubmitted(true);
@@ -57,6 +89,10 @@ const PayPalCommercePaymentMethodComponent: FunctionComponent<PaymentMethodProps
                         }
 
                         return resolve();
+                    },
+                    onInitButton: async (actions: ButtonActions) => {
+                        buttonActionsRef.current = actions;
+                        await validateButton();
                     },
                     ...(providerOptionsData || {}),
                 },
@@ -90,6 +126,6 @@ const PayPalCommercePaymentMethodComponent: FunctionComponent<PaymentMethodProps
     }, []);
 
     return children ? <>{children}</> : <></>;
-}
+};
 
 export default PayPalCommercePaymentMethodComponent;
