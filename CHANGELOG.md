@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.422.0](https://github.com/bigcommerce/checkout-js/compare/v1.421.1...v1.422.0) (2024-01-08)
+
+
+### Features
+
+* **payment:** PAYPAL-3391 fixed ratepay fields layout ([76a4280](https://github.com/bigcommerce/checkout-js/commit/76a42800e7dd221bb9974adc5b9959b005a3a08a))
+
 ### [1.421.1](https://github.com/bigcommerce/checkout-js/compare/v1.421.0...v1.421.1) (2024-01-04)
 
 ## [1.421.0](https://github.com/bigcommerce/checkout-js/compare/v1.420.1...v1.421.0) (2024-01-03)
