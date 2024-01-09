@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.423.0](https://github.com/bigcommerce/checkout-js/compare/v1.422.0...v1.423.0) (2024-01-09)
+
+
+### Features
+
+* **payment:** PI-851 blusnap direct ideal component creation ([ad9c4e5](https://github.com/bigcommerce/checkout-js/commit/ad9c4e584277a2fb2b7c28535858d31ee1d760e6))
+* **payment:** PI-851 moved fields to separate folder ([c67fe4b](https://github.com/bigcommerce/checkout-js/commit/c67fe4ba919b0b6707e0a716842a299c9a183c68))
+
 ## [1.422.0](https://github.com/bigcommerce/checkout-js/compare/v1.421.1...v1.422.0) (2024-01-08)
 
 
