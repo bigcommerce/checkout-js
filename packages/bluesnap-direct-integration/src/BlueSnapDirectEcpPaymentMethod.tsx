@@ -6,7 +6,7 @@ import {
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 
-import BlueSnapDirectEcpFieldset from './BlueSnapDirectEcpFieldset';
+import BlueSnapDirectEcpFieldset from './fields/BlueSnapDirectEcpFieldset';
 import getEcpValidationSchema from './validation-schemas/getEcpValidationSchema';
 
 const BlueSnapDirectEcpPaymentMethod: FunctionComponent<PaymentMethodProps> = ({

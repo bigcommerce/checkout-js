@@ -2,6 +2,38 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.423.3](https://github.com/bigcommerce/checkout-js/compare/v1.423.2...v1.423.3) (2024-01-10)
+
+### [1.423.2](https://github.com/bigcommerce/checkout-js/compare/v1.423.1...v1.423.2) (2024-01-10)
+
+### [1.423.1](https://github.com/bigcommerce/checkout-js/compare/v1.423.0...v1.423.1) (2024-01-09)
+
+## [1.423.0](https://github.com/bigcommerce/checkout-js/compare/v1.422.0...v1.423.0) (2024-01-09)
+
+
+### Features
+
+* **payment:** PI-851 blusnap direct ideal component creation ([ad9c4e5](https://github.com/bigcommerce/checkout-js/commit/ad9c4e584277a2fb2b7c28535858d31ee1d760e6))
+* **payment:** PI-851 moved fields to separate folder ([c67fe4b](https://github.com/bigcommerce/checkout-js/commit/c67fe4ba919b0b6707e0a716842a299c9a183c68))
+
+## [1.422.0](https://github.com/bigcommerce/checkout-js/compare/v1.421.1...v1.422.0) (2024-01-08)
+
+
+### Features
+
+* **payment:** PAYPAL-3391 fixed ratepay fields layout ([76a4280](https://github.com/bigcommerce/checkout-js/commit/76a42800e7dd221bb9974adc5b9959b005a3a08a))
+
+### [1.421.1](https://github.com/bigcommerce/checkout-js/compare/v1.421.0...v1.421.1) (2024-01-04)
+
+## [1.421.0](https://github.com/bigcommerce/checkout-js/compare/v1.420.1...v1.421.0) (2024-01-03)
+
+
+### Features
+
+* **payment:** PAYPAL-3404 updated some conditions to call customer execute method after sign in/up only for Braintree AXO in Customer component ([646a1c9](https://github.com/bigcommerce/checkout-js/commit/646a1c98b642009b34c6b8260d409d14ee2d4be0))
+
+### [1.420.1](https://github.com/bigcommerce/checkout-js/compare/v1.420.0...v1.420.1) (2024-01-03)
+
 ## [1.420.0](https://github.com/bigcommerce/checkout-js/compare/v1.419.0...v1.420.0) (2024-01-02)
 
 

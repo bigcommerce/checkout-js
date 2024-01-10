@@ -27,6 +27,10 @@ export function getBlueSnapDirect(
         type: 'PAYMENT_TYPE_API',
         initializationData: {
             sepaCreditorCompanyName: 'Sepa Creditor Company Name',
+            idealIssuers: [
+                { issuerId: 'test-bank', issuerName: 'Test Bank' },
+                { issuerId: 'test-bank-1', issuerName: 'Test Bank1' },
+            ],
         },
     };
 }
