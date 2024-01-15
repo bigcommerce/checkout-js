@@ -84,6 +84,7 @@
             "cancel_action": "Annuleren",
             "close_action": "Sluiten",
             "continue_action": "Doorgaan",
+            "change_action": "Wijzigen",
             "edit_action": "Bewerken",
             "delete_action": "Verwijderen",
             "error_heading": "Er is iets misgegaan",
@@ -214,6 +215,9 @@
             "bluesnap_direct_account_type": {
                 "label": "Accounttype",
                 "is_required": "Rekeningtype is verplicht"
+            },
+            "ideal": {
+                "label": "Je bank"
             },
             "bluesnap_direct_permission": "Ik autoriseer deze Elektronische Check (ACH/ECP) transactie en ga akkoord met deze debitering van mijn rekening.",
             "bluesnap_direct_sepa_mandate_disclaimer": "Door dit machtigingsformulier te ondertekenen, geef je (A) {creditorName} toestemming om instructies naar je bank te sturen om het bedrag van je rekening af te schrijven en (B) machtig je je bank om het bedrag volgens de instructies van {creditorName} van je rekening af te schrijven. Als onderdeel van je rechten heb je recht op terugbetaling door je bank volgens de voorwaarden van je overeenkomst met je bank. Een stornering moet worden aangevraagd binnen 8 weken vanaf de datum waarop je rekening is gedebiteerd.",

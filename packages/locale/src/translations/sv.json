@@ -84,6 +84,7 @@
             "cancel_action": "Annullera",
             "close_action": "Stäng",
             "continue_action": "Fortsätt",
+            "change_action": "Ändra",
             "edit_action": "Redigera",
             "delete_action": "Radera",
             "error_heading": "Något gick fel",
@@ -214,6 +215,9 @@
             "bluesnap_direct_account_type": {
                 "label": "Kontotyp",
                 "is_required": "Kontotyp är obligatoriskt"
+            },
+            "ideal": {
+                "label": "Din bank"
             },
             "bluesnap_direct_permission": "Jag godkänner denna transaktion med Elektronisk check (ACH/ECP) och debiteringen av kontot.",
             "bluesnap_direct_sepa_mandate_disclaimer": "Genom att underteckna denna fullmakt ger du (A) {creditorName} rätt att skicka instruktioner till din bank om att debitera ditt konto och (B) din bank rätt att debitera ditt konto i enlighet med instruktionerna från {creditorName}. Som en del av dina rättigheter har du rätt till återbetalning från din bank enligt villkoren i ditt avtal med din bank. Återbetalning måste krävas inom åtta veckor från det datum då ditt konto debiterades.",

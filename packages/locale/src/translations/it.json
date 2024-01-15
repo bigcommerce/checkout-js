@@ -84,6 +84,7 @@
             "cancel_action": "Annulla",
             "close_action": "Chiudi",
             "continue_action": "Continua",
+            "change_action": "Cambia",
             "edit_action": "Modifica",
             "delete_action": "Elimina",
             "error_heading": "Si è verificato un errore",
@@ -214,6 +215,9 @@
             "bluesnap_direct_account_type": {
                 "label": "Tipo di account",
                 "is_required": "È necessario selezionare il tipo di conto"
+            },
+            "ideal": {
+                "label": "La tua banca"
             },
             "bluesnap_direct_permission": "Autorizzo la presente transazione tramite assegno elettronico (ACH/ECP) e acconsento all'addebito sul mio conto.",
             "bluesnap_direct_sepa_mandate_disclaimer": "Sottoscrivendo questo modulo, autorizzi (A) {creditorName} a inviare istruzioni alla tua banca affinché addebiti l'importo sul tuo conto e (B) autorizzi la tua banca ad addebitarti l'importo secondo le istruzioni ricevute da {creditorName}. Nell'ambito dei tuoi diritti, hai diritto a un rimborso da parte della tua banca secondo i termini e le condizioni dell'accordo in vigore con l'istituto di credito. Il rimborso va richiesto entro 8 settimane a partire dalla data in cui l'importo viene addebitato sul conto.",

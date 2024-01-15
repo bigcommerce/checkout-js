@@ -84,6 +84,7 @@
             "cancel_action": "Abbrechen",
             "close_action": "Schließen",
             "continue_action": "Fortfahren",
+            "change_action": "Ändern",
             "edit_action": "Bearbeiten",
             "delete_action": "Löschen",
             "error_heading": "Es ist etwas schiefgegangen",
@@ -214,6 +215,9 @@
             "bluesnap_direct_account_type": {
                 "label": "Konto-Typ",
                 "is_required": "Es muss ein Konto-Typ angegeben werden."
+            },
+            "ideal": {
+                "label": "Ihre Bank"
             },
             "bluesnap_direct_permission": "Ich autorisiere diese Transaktion mittels elektronischem Scheck (ACH/ECP) und stimme dieser Belastung meines Kontos zu.",
             "bluesnap_direct_sepa_mandate_disclaimer": "Mit der Unterzeichnung dieses Mandatsformulars ermächtigen Sie (A) {creditorName}, Anweisungen an Ihre Bank zu senden, Ihr Konto zu belasten, und (B) Ihre Bank, Ihr Konto gemäß den Anweisungen von {creditorName} zu belasten. Im Rahmen Ihrer Rechte haben Sie Anspruch auf eine Erstattung durch Ihre Bank gemäß den Bedingungen Ihres Vertrags mit Ihrer Bank. Eine Rückerstattung muss innerhalb von acht Wochen, beginnend mit dem Datum der Belastung Ihres Kontos, angefordert werden.",

@@ -84,6 +84,7 @@
             "cancel_action": "Cancelar",
             "close_action": "Cerrar",
             "continue_action": "Continuar",
+            "change_action": "Cambiar",
             "edit_action": "Editar",
             "delete_action": "Eliminar",
             "error_heading": "Algo ha salido mal",
@@ -214,6 +215,9 @@
             "bluesnap_direct_account_type": {
                 "label": "Tipo de cuenta",
                 "is_required": "El tipo de cuenta es obligatorio"
+            },
+            "ideal": {
+                "label": "Tu banco"
             },
             "bluesnap_direct_permission": "Autorizo esta transacción de cheque electrónico (ACH/ECP) y estoy de acuerdo con este cargo en mi cuenta.",
             "bluesnap_direct_sepa_mandate_disclaimer": "Al firmar este formulario de mandato, autorizas (A) a {creditorName} a enviar instrucciones a tu banco para que realice el cargo en tu cuenta y (B) a tu banco a que cargue el importe en tu cuenta de acuerdo con las instrucciones de {creditorName}. Tienes derecho a que tu banco te devuelva el dinero según las condiciones de tu contrato con el mismo. El reembolso se debe solicitar en un plazo de 8 semanas a partir de la fecha en que se haya efectuado el cargo en tu cuenta.",
