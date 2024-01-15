@@ -1,0 +1,3 @@
+import PayPalCommerceAcceleratedCheckoutPaymentMethod from './PayPalCommerceAcceleratedCheckoutPaymentMethod';
+
+export default PayPalCommerceAcceleratedCheckoutPaymentMethod;
