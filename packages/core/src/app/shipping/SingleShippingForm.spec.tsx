@@ -1,3 +1,4 @@
+import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
@@ -13,7 +14,6 @@ import SingleShippingForm, {
     SHIPPING_AUTOSAVE_DELAY,
     SingleShippingFormProps,
 } from './SingleShippingForm';
-import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 
 describe('SingleShippingForm', () => {
     const checkoutService = createCheckoutService();
@@ -354,4 +354,68 @@ describe('SingleShippingForm', () => {
 
         expect(component.contains(<BillingSameAsShippingField />)).toBe(false);
     });
+
+    describe('validation works as expected by methodId', () => {
+        let component: ReactWrapper;
+
+        const WrapperShippingForm = (methodId: string) => (
+            mount(<LocaleContext.Provider value={localeContext}>
+                <ExtensionProvider checkoutService={checkoutService}>
+                    <SingleShippingForm
+                        {...defaultProps}
+                        getFields={() => [...getAddressFormFields()]}
+                        methodId={methodId}
+                    />
+                </ExtensionProvider>
+            </LocaleContext.Provider>)
+        );
+
+        it('braintreeacceleratedcheckout', async (done) => {
+            component = WrapperShippingForm('braintreeacceleratedcheckout');
+
+            component.find('input[name="shippingAddress.firstName"]').simulate('change', {
+                target: { value: '', name: 'shippingAddress.firstName' },
+            });
+
+            component.find('form').simulate('submit');
+
+            await new Promise((resolve) => process.nextTick(resolve));
+
+            component.update();
+
+            setTimeout(() => {
+                expect(defaultProps.updateAddress).not.toHaveBeenCalled();
+
+                expect(component.find('[data-test="shipping-address-first-name-field-error-message"]').text()).toBe(
+                    'First Name is required',
+                );
+
+                done();
+            }, SHIPPING_AUTOSAVE_DELAY * 1.1);
+        });
+
+        it('paypalcommerceacceleratedcheckout', async (done) => {
+            component = WrapperShippingForm('paypalcommerceacceleratedcheckout');
+
+            component.find('input[name="shippingAddress.firstName"]').simulate('change', {
+                target: { value: '', name: 'shippingAddress.firstName' },
+            });
+
+            component.find('form').simulate('submit');
+
+            await new Promise((resolve) => process.nextTick(resolve));
+
+            component.update();
+
+            setTimeout(() => {
+                expect(defaultProps.updateAddress).not.toHaveBeenCalled();
+
+                expect(component.find('[data-test="shipping-address-first-name-field-error-message"]').text()).toBe(
+                    'First Name is required',
+                );
+
+                done();
+            }, SHIPPING_AUTOSAVE_DELAY * 1.1);
+        });
+    })
 });
