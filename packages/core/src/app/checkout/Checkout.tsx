@@ -305,7 +305,7 @@ class Checkout extends Component<
         }
 
         return (
-            <div className={classNames({ 'is-embedded': isEmbedded(), 'remove-checkout-step-numbers': isHidingStepNumbers })}>
+            <div id="checkout-page-container" data-test="checkout-page-container" className={classNames({ 'is-embedded': isEmbedded(), 'remove-checkout-step-numbers': isHidingStepNumbers })}>
                 <div className="layout optimizedCheckout-contentPrimary">
                     {this.renderContent()}
                 </div>

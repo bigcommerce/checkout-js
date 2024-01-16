@@ -114,6 +114,14 @@ describe('Checkout', () => {
             expect(defaultProps.embeddedStylesheet.append).toHaveBeenCalledWith(styles);
         });
 
+        it('render component with proper id', async () => {
+            render(<CheckoutTest {...defaultProps} />);
+            await checkout.waitForCustomerStep();
+            const wrapper = screen.getByTestId('checkout-page-container');
+
+            expect(wrapper).toBeInTheDocument();
+        });
+
         it('renders list of promotion banners', async () => {
             checkout.use('CartWithPromotions');
 
