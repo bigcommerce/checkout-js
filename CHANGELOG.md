@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.427.0](https://github.com/bigcommerce/checkout-js/compare/v1.426.0...v1.427.0) (2024-01-16)
+
+
+### Features
+
+* **payment:** PAYPAL-3390 fixed ratepay loading indicator ([f3174ae](https://github.com/bigcommerce/checkout-js/commit/f3174aec19109b6796bf06dc735b8f903abb4c3f))
+* **payment:** PAYPAL-3390 fixed ratepay loading indicator ([a45555d](https://github.com/bigcommerce/checkout-js/commit/a45555d69fa34c6a7cd3b28003cacd66a7b9cae8))
+
 ## [1.426.0](https://github.com/bigcommerce/checkout-js/compare/v1.425.3...v1.426.0) (2024-01-16)
 
 
