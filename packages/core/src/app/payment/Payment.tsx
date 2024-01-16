@@ -1,6 +1,7 @@
 import {
     CartChangedError,
     CheckoutSelectors,
+    CheckoutService,
     CheckoutSettings,
     OrderRequestBody,
     PaymentMethod,
@@ -74,6 +75,7 @@ interface WithCheckoutPaymentProps {
     loadCheckout(): Promise<CheckoutSelectors>;
     loadPaymentMethods(): Promise<CheckoutSelectors>;
     submitOrder(values: OrderRequestBody): Promise<CheckoutSelectors>;
+    checkoutServiceSubscribe: CheckoutService['subscribe'];
 }
 
 interface PaymentState {
@@ -99,6 +101,8 @@ class Payment extends Component<
         submitFunctions: {},
     };
 
+    private grandTotalChangeUnsubscribe?: () => void;
+
     private getContextValue = memoizeOne(() => {
         return {
             disableSubmit: this.disableSubmit,
@@ -111,30 +115,18 @@ class Payment extends Component<
     async componentDidMount(): Promise<void> {
         const {
             finalizeOrderIfNeeded,
-            loadPaymentMethods,
             onFinalize = noop,
             onFinalizeError = noop,
             onReady = noop,
-            onUnhandledError = noop,
             usableStoreCredit,
+            checkoutServiceSubscribe,
         } = this.props;
-
 
         if (usableStoreCredit) {
             this.handleStoreCreditChange(true);
         }
 
-        try {
-            await loadPaymentMethods();
-
-            const selectedMethod = this.state.selectedMethod || this.props.defaultMethod;
-
-            if (selectedMethod) {
-                this.trackSelectedPaymentMethod(selectedMethod);
-            }
-        } catch (error) {
-            onUnhandledError(error);
-        }
+        await this.loadPaymentMethodsOrThrow();
 
         try {
             const state = await finalizeOrderIfNeeded();
@@ -146,6 +138,12 @@ class Payment extends Component<
                 onFinalizeError(error);
             }
         }
+
+        this.grandTotalChangeUnsubscribe = checkoutServiceSubscribe(
+            () => this.handleGrandtotalChange(),
+            ({ data }) => data.getCheckout()?.grandTotal,
+            ({ data }) => data.getCheckout()?.outstandingBalance,
+        );
 
         window.addEventListener('beforeunload', this.handleBeforeUnload);
         this.setState({ isReady: true });
@@ -159,6 +157,11 @@ class Payment extends Component<
     }
 
     componentWillUnmount(): void {
+        if (this.grandTotalChangeUnsubscribe) {
+            this.grandTotalChangeUnsubscribe();
+            this.grandTotalChangeUnsubscribe = undefined;
+        }
+
         window.removeEventListener('beforeunload', this.handleBeforeUnload);
     }
 
@@ -540,6 +543,39 @@ class Payment extends Component<
 
         analyticsTracker.selectedPaymentMethod(methodName, methodId);
     }
+
+    private async loadPaymentMethodsOrThrow(): Promise<void> {
+        const {
+            defaultMethod,
+            loadPaymentMethods,
+            onUnhandledError = noop,
+        } = this.props;
+        const { selectedMethod = defaultMethod } = this.state;
+
+        try {
+            await loadPaymentMethods();
+
+            if (selectedMethod) {
+                this.trackSelectedPaymentMethod(selectedMethod);
+            }
+        } catch (error) {
+            onUnhandledError(error);
+        }
+    }
+
+    private async handleGrandtotalChange(): Promise<void> {
+        const { isReady } = this.state;
+
+        if (!isReady) {
+            return;
+        }
+        
+        this.setState({ isReady: false });
+
+        await this.loadPaymentMethodsOrThrow();
+
+        this.setState({ isReady: true });
+    }
 }
 
 export function mapToPaymentProps({
@@ -654,6 +690,7 @@ export function mapToPaymentProps({
             features['PAYMENTS-6799.localise_checkout_payment_error_messages'],
         submitOrder: checkoutService.submitOrder,
         submitOrderError: getSubmitOrderError(),
+        checkoutServiceSubscribe: checkoutService.subscribe,
         termsConditionsText:
             isTermsConditionsRequired && termsConditionsType === TermsConditionsType.TextArea
                 ? termsCondtitionsText
