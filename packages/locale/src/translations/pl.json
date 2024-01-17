@@ -84,6 +84,7 @@
             "cancel_action": "Anuluj",
             "close_action": "Zamknij",
             "continue_action": "Kontynuuj",
+            "change_action": "Zmiana",
             "edit_action": "Edytuj",
             "delete_action": "Usuń",
             "error_heading": "Coś poszło nie tak",
@@ -214,6 +215,9 @@
             "bluesnap_direct_account_type": {
                 "label": "Typ konta",
                 "is_required": "Typ rachunku jest wymagany"
+            },
+            "ideal": {
+                "label": "Twój bank"
             },
             "bluesnap_direct_permission": "Autoryzuję tę transakcję z użyciem czeku elektronicznego (ACH/ECP) i wyrażam zgodę na obciążenie mojego rachunku.",
             "bluesnap_direct_sepa_mandate_disclaimer": "Podpisując niniejszy formularz upoważnienia, autoryzujesz (A) {creditorName} do wysyłania instrukcji do banku w celu obciążenia Twojego konta oraz (B) Twój bank do obciążania konta zgodnie z instrukcjami otrzymanymi od {creditorName}. W ramach swoich praw użytkownik jest uprawniony do otrzymania zwrotu środków od banku zgodnie z warunkami umowy zawartej z bankiem. W celu uzyskania zwrotu należy złożyć wniosek w ciągu 8 dni od dnia obciążenia konta.",

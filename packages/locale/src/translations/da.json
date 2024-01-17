@@ -84,6 +84,7 @@
             "cancel_action": "Annuller",
             "close_action": "Luk",
             "continue_action": "Fortsæt",
+            "change_action": "Ændr",
             "edit_action": "Rediger",
             "delete_action": "Slet",
             "error_heading": "Noget gik galt",
@@ -214,6 +215,9 @@
             "bluesnap_direct_account_type": {
                 "label": "Kontotype",
                 "is_required": "Kontotypen er påkrævet"
+            },
+            "ideal": {
+                "label": "Din bank"
             },
             "bluesnap_direct_permission": "Jeg godkender denne transaktion med elektronisk check (ACH/ECP) og accepterer denne debitering af min konto.",
             "bluesnap_direct_sepa_mandate_disclaimer": "Ved at underskrive denne betalingsaftale giver du (A) {creditorName} tilladelse til at sende instruktioner til din bank om at debitere din konto, og (B) din bank til at debitere din konto i overensstemmelse med instruktionerne fra {creditorName}. Som en del af dine rettigheder har du ret til en tilbagebetaling fra din bank i henhold til vilkårene og betingelserne i din aftale med din bank. En refusion skal opkræves inden for 8 uger fra den dato, hvor din konto blev debiteret.",

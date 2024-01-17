@@ -84,6 +84,7 @@
             "cancel_action": "Cancelar",
             "close_action": "Fechar",
             "continue_action": "Continuar",
+            "change_action": "Alterar",
             "edit_action": "Editar",
             "delete_action": "Excluir",
             "error_heading": "Ocorreu um erro",
@@ -214,6 +215,9 @@
             "bluesnap_direct_account_type": {
                 "label": "Tipo de conta",
                 "is_required": "O tipo de conta é obrigatório"
+            },
+            "ideal": {
+                "label": "Seu banco"
             },
             "bluesnap_direct_permission": "Autorizo esta transação com cheque eletrônico (ACH/ECP) e concordo com este débito em minha conta.",
             "bluesnap_direct_sepa_mandate_disclaimer": "Ao assinar este formulário de mandato, você autoriza (A) {creditorName} a enviar instruções ao seu banco para debitar sua conta e (B) o seu banco a debitar sua conta de acordo com as instruções de {creditorName}. Você tem direito ao reembolso do seu banco de acordo com os termos e condições do seu contrato com tal banco. O reembolso deve ser solicitado dentro de oito semanas a partir da data em que a sua conta foi debitada.",

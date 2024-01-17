@@ -84,6 +84,7 @@
             "cancel_action": "Annuler",
             "close_action": "Fermer",
             "continue_action": "Continuer",
+            "change_action": "Modifier",
             "edit_action": "Modifier",
             "delete_action": "Supprimer",
             "error_heading": "Une erreur s'est produite",
@@ -214,6 +215,9 @@
             "bluesnap_direct_account_type": {
                 "label": "Type de compte",
                 "is_required": "Le type de compte est obligatoire"
+            },
+            "ideal": {
+                "label": "Votre banque"
             },
             "bluesnap_direct_permission": "J'autorise cette transaction par chèque électronique (ACH/ECP) et j'accepte que mon compte soit débité.",
             "bluesnap_direct_sepa_mandate_disclaimer": "En signant ce mandat, vous autorisez (A) {creditorName} à indiquer à votre banque de débiter votre compte. Vous autorisez également votre banque à débiter votre compte conformément aux instructions de {creditorName}. Dans le cadre de vos droits, vous pouvez percevoir un remboursement de la part de votre banque selon les conditions générales liées à l'accord que vous avez passé avec cette dernière. Un tel remboursement doit être demandé dans un délai de 8 semaines à compter de la date à laquelle votre compte a été débité.",

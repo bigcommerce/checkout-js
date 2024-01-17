@@ -84,6 +84,7 @@
             "cancel_action": "Avbryt",
             "close_action": "Lukk",
             "continue_action": "Fortsett",
+            "change_action": "Endre",
             "edit_action": "Rediger",
             "delete_action": "Slett",
             "error_heading": "Noe gikk galt",
@@ -214,6 +215,9 @@
             "bluesnap_direct_account_type": {
                 "label": "Kontotype",
                 "is_required": "Kontotype er påkrevd"
+            },
+            "ideal": {
+                "label": "Din bank"
             },
             "bluesnap_direct_permission": "Jeg autoriserer denne transaksjonen med elektronisk sjekk (ACH/ECP) og godtar denne debiteringen av kontoen min.",
             "bluesnap_direct_sepa_mandate_disclaimer": "Ved å signere dette fullmaktsskjemaet gir du (A) {creditorName} fullmakt til å sende instruksjoner til banken din om å belaste kontoen din og (B) banken din fullmakt til å belaste kontoen din i samsvar med instruksjonene fra {creditorName}. Som en del av dine rettigheter har du rett til tilbakebetaling fra banken din i henhold til vilkårene i avtalen du har med banken. En tilbakebetaling må kreves innen åtte uker fra datoen da kontoen din ble debitert.",
