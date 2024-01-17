@@ -2,6 +2,7 @@ import { CardInstrument } from '@bigcommerce/checkout-sdk';
 import { useState } from 'react';
 
 import { useCheckout, usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
+import { isPayPalConnectAcceleratedCheckoutCustomer } from '@bigcommerce/checkout/paypal-connect-integration';
 
 export const useBraintreeAcceleratedCheckoutInstruments = () => {
     const [isAddingNewInstrument, setIsAddingNewInstrument] = useState<boolean>(false);
@@ -12,7 +13,13 @@ export const useBraintreeAcceleratedCheckoutInstruments = () => {
     const paymentProviderCustomer = getPaymentProviderCustomer();
     const { paymentForm } = usePaymentFormContext();
 
-    const paypalConnectInstruments = paymentProviderCustomer?.instruments || [];
+    const paypalConnectPaymentProviderCustomer = isPayPalConnectAcceleratedCheckoutCustomer(
+        paymentProviderCustomer,
+    )
+        ? paymentProviderCustomer
+        : {};
+
+    const paypalConnectInstruments = paypalConnectPaymentProviderCustomer.instruments || [];
     const selectedInstrument = paypalConnectInstruments.find(
         (instrument: CardInstrument) => instrument.bigpayToken === selectedInstrumentId,
     );
