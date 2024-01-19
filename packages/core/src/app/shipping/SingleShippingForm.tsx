@@ -80,11 +80,12 @@ interface SingleShippingFormState {
 }
 
 function shouldHaveCustomValidation(methodId?: string): boolean {
-    return !(
-        methodId === PaymentMethodId.BraintreeAcceleratedCheckout ||
-        methodId === PaymentMethodId.PayPalCommerceAcceleratedCheckout ||
-        !methodId
-    );
+    const methodIdsWithoutCustomValidation: string[] = [
+        PaymentMethodId.BraintreeAcceleratedCheckout,
+        PaymentMethodId.PayPalCommerceAcceleratedCheckout
+    ];
+
+    return Boolean(methodId && !methodIdsWithoutCustomValidation.includes(methodId));
 }
 
 export const SHIPPING_AUTOSAVE_DELAY = 1700;
