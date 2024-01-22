@@ -609,7 +609,7 @@ export function mapToPaymentProps({
     let methods = getPaymentMethods() || EMPTY_ARRAY;
 
     // TODO: In accordance with the checkout team, this functionality is temporary and will be implemented in the backend instead.
-    if (paymentProviderCustomer?.authenticationState) {
+    if (paymentProviderCustomer?.stripeLinkAuthenticationState) {
         const stripeUpePaymentMethod = methods.filter(method =>
             method.id === 'card' && method.gateway === PaymentMethodId.StripeUPE
         );

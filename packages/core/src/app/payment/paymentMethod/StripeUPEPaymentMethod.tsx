@@ -21,7 +21,7 @@ export type StripePaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'con
 interface WithCheckoutStripePaymentMethodProps {
     storeUrl: string;
     isGuest: boolean;
-    isStripeLinkAuthenticated: boolean | undefined;
+    isStripeLinkAuthenticated: boolean;
 }
 
 const StripeUPEPaymentMethod: FunctionComponent<
@@ -124,19 +124,22 @@ const StripeUPEPaymentMethod: FunctionComponent<
 
 function mapFromCheckoutProps({ checkoutState }: CheckoutContextProps ) {
     const {
-        data: { getConfig, getCustomer },
+        data: { getConfig, getCustomer, getPaymentProviderCustomer },
     } = checkoutState;
     const config = getConfig();
     const customer = getCustomer();
+    const paymentProviderCustomer = getPaymentProviderCustomer();
 
     if (!config || !customer) {
         return null;
     }
 
+    const isStripeLinkAuthenticated = paymentProviderCustomer?.stripeLinkAuthenticationState;
+
     return {
         storeUrl: config.links.siteLink,
         isGuest: customer.isGuest,
-        isStripeLinkAuthenticated: customer.isStripeLinkAuthenticated,
+        isStripeLinkAuthenticated,
     };
 }
 
