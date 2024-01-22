@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.430.2](https://github.com/bigcommerce/checkout-js/compare/v1.430.1...v1.430.2) (2024-01-22)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-3466 fixed the issue with updated checkout sdk types by adding typeguards in different places ([bb87724](https://github.com/bigcommerce/checkout-js/commit/bb87724a16cd0ef429bc7d5defdb392200889093))
+
 ### [1.430.1](https://github.com/bigcommerce/checkout-js/compare/v1.430.0...v1.430.1) (2024-01-19)
 
 ## [1.430.0](https://github.com/bigcommerce/checkout-js/compare/v1.429.1...v1.430.0) (2024-01-18)
