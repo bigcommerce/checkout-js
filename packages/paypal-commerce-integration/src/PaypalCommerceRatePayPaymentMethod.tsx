@@ -58,7 +58,6 @@ const formFieldData: FormField[] = [
 const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
     method,
     checkoutService,
-    paymentForm,
     onUnhandledError,
     paymentForm: {
         isSubmitted,
@@ -92,7 +91,6 @@ const PaypalCommerceRatePayPaymentMethod: FunctionComponent<any> = ({
                     loadingContainerId: 'checkout-page-container',
                     getFieldsValues: () => fieldsValues.current,
                     onError: (error: SpecificError) => {
-                        paymentForm.disableSubmit(method, true);
                         const ratepaySpecificError = error?.errors?.filter(e => e.provider_error);
 
                         if (ratepaySpecificError?.length) {
