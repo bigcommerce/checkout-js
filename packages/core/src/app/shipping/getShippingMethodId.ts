@@ -5,7 +5,11 @@ import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheck
 import { PaymentMethodId } from '../payment/paymentMethod';
 
 export default function getShippingMethodId(checkout: Checkout, config: StoreConfig): string | undefined {
-    const SHIPPING_METHOD_IDS: string[] = [PaymentMethodId.AmazonPay, PaymentMethodId.BraintreeAcceleratedCheckout];
+    const SHIPPING_METHOD_IDS: string[] = [
+        PaymentMethodId.AmazonPay,
+        PaymentMethodId.BraintreeAcceleratedCheckout,
+        PaymentMethodId.PayPalCommerceAcceleratedCheckout,
+    ];
     const providerWithCustomCheckout = getProviderWithCustomCheckout(
         config.checkoutSettings?.providerWithCustomCheckout,
     );
