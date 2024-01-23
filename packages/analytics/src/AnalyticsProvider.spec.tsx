@@ -54,6 +54,7 @@ describe('AnalyticsProvider', () => {
     let stepTrackerMock: CheckoutSdk.StepTracker;
     let bodlServiceMock: CheckoutSdk.BodlService;
     let braintreeConnectTracker: CheckoutSdk.BraintreeConnectTrackerService;
+    let paypalCommerceConnectTracker: CheckoutSdk.PayPalCommerceConnectTrackerService;
 
     beforeEach(() => {
         jest.spyOn(createAnalyticsService, 'default').mockImplementation((createFn) => createFn);
@@ -92,6 +93,16 @@ describe('AnalyticsProvider', () => {
         };
         jest.spyOn(CheckoutSdk, 'createBraintreeConnectTracker').mockImplementation(
             () => braintreeConnectTracker,
+        );
+
+        paypalCommerceConnectTracker = {
+            customerPaymentMethodExecuted: jest.fn(),
+            selectedPaymentMethod: jest.fn(),
+            paymentComplete: jest.fn(),
+            walletButtonClick: jest.fn(),
+        };
+        jest.spyOn(CheckoutSdk, 'createPayPalCommerceConnectTracker').mockImplementation(
+            () => paypalCommerceConnectTracker,
         );
     });
 
@@ -181,6 +192,8 @@ describe('AnalyticsProvider', () => {
         });
         expect(braintreeConnectTracker.customerPaymentMethodExecuted).toHaveBeenCalledTimes(1);
         expect(braintreeConnectTracker.customerPaymentMethodExecuted).toHaveBeenCalled();
+        expect(paypalCommerceConnectTracker.customerPaymentMethodExecuted).toHaveBeenCalledTimes(1);
+        expect(paypalCommerceConnectTracker.customerPaymentMethodExecuted).toHaveBeenCalled();
     });
 
     it('track show shipping methods', () => {
@@ -193,7 +206,7 @@ describe('AnalyticsProvider', () => {
         mount(
             <TestComponent
                 eventName="selectedPaymentMethod"
-                eventProps={['Credit card', 'braintreecreditcard']}
+                eventProps={['Credit card', 'paypalcreditcard']}
             />,
         );
 
@@ -201,16 +214,24 @@ describe('AnalyticsProvider', () => {
         expect(bodlServiceMock.selectedPaymentMethod).toHaveBeenCalledWith('Credit card');
         expect(braintreeConnectTracker.selectedPaymentMethod).toHaveBeenCalledTimes(1);
         expect(braintreeConnectTracker.selectedPaymentMethod).toHaveBeenCalledWith(
-            'braintreecreditcard',
+            'paypalcreditcard',
+        );
+        expect(paypalCommerceConnectTracker.selectedPaymentMethod).toHaveBeenCalledTimes(1);
+        expect(paypalCommerceConnectTracker.selectedPaymentMethod).toHaveBeenCalledWith(
+            'paypalcreditcard',
         );
     });
 
     it('track wallet button click', () => {
-        mount(<TestComponent eventName="walletButtonClick" eventProps={['braintreecreditcard']} />);
+        mount(<TestComponent eventName="walletButtonClick" eventProps={['paypalwalletbutton']} />);
 
         expect(braintreeConnectTracker.walletButtonClick).toHaveBeenCalledTimes(1);
         expect(braintreeConnectTracker.walletButtonClick).toHaveBeenCalledWith(
-            'braintreecreditcard',
+            'paypalwalletbutton',
+        );
+        expect(paypalCommerceConnectTracker.walletButtonClick).toHaveBeenCalledTimes(1);
+        expect(paypalCommerceConnectTracker.walletButtonClick).toHaveBeenCalledWith(
+            'paypalwalletbutton',
         );
     });
 
