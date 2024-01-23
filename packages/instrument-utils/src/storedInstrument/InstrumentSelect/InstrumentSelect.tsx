@@ -9,19 +9,7 @@ import React, { FunctionComponent, PureComponent, ReactNode, useCallback } from 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CreditCardIcon, DropdownTrigger } from '@bigcommerce/checkout/ui';
 
-function mapFromInstrumentCardType(type: string): string {
-    switch (type) {
-        case 'amex':
-        case 'american_express':
-            return 'american-express';
-
-        case 'diners':
-            return 'diners-club';
-
-        default:
-            return type;
-    }
-}
+import { mapFromInstrumentCardType } from '../mapFromInstrumentCardType';
 
 export interface InstrumentSelectProps extends FieldProps<string> {
     instruments: CardInstrument[];
