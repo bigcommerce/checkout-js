@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.432.0](https://github.com/bigcommerce/checkout-js/compare/v1.431.0...v1.432.0) (2024-01-24)
+
+
+### Features
+
+* **payment:** PAYPAL-3446 added shouldHaveCustomValidation function to define the validation flow ([d9d8ab5](https://github.com/bigcommerce/checkout-js/commit/d9d8ab5d26c899f198ec0e36a95b1881528c904b))
+* **payment:** PAYPAL-3446 tests ([760e8f3](https://github.com/bigcommerce/checkout-js/commit/760e8f399006283471d01698eb0878785219fcf4))
+* **payment:** PAYPAL-3446 updates after review ([650a3df](https://github.com/bigcommerce/checkout-js/commit/650a3df6387ed682b94fc3b5564f8f7c46c784bb))
+
 ## [1.431.0](https://github.com/bigcommerce/checkout-js/compare/v1.430.5...v1.431.0) (2024-01-24)
 
 
