@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.433.0](https://github.com/bigcommerce/checkout-js/compare/v1.432.0...v1.433.0) (2024-01-24)
+
+
+### Features
+
+* **payment:** PAYPAL-3419 added PPCP AXO method id to shipping strategy method id mapper ([9853246](https://github.com/bigcommerce/checkout-js/commit/98532465ae162f7c77313710cb8f50e8d466957b))
+
 ## [1.432.0](https://github.com/bigcommerce/checkout-js/compare/v1.431.0...v1.432.0) (2024-01-24)
 
 
