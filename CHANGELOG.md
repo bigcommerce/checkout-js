@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.435.0](https://github.com/bigcommerce/checkout-js/compare/v1.434.0...v1.435.0) (2024-01-25)
+
+
+### Features
+
+* **payment:** PAYPAL-3373 created a specific form for PPCP Credit card strategy ([f62451a](https://github.com/bigcommerce/checkout-js/commit/f62451afd486d41ca847658c2695e27c7b304c9d))
+
 ## [1.434.0](https://github.com/bigcommerce/checkout-js/compare/v1.433.0...v1.434.0) (2024-01-24)
 
 
