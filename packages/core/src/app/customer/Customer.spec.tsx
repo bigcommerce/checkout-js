@@ -431,7 +431,7 @@ describe('Customer', () => {
             jest.spyOn(
                 checkoutService.getState().data,
                 'getPaymentProviderCustomer',
-            ).mockReturnValue({ authenticationState: true });
+            ).mockReturnValue({ stripeLinkAuthenticationState: true });
 
             const handleChangeViewType = jest.fn();
             const component = mount(

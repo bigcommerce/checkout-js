@@ -407,7 +407,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
             const paymentProviderCustomer = data.getPaymentProviderCustomer();
 
-            if (customer && customer.shouldEncourageSignIn && customer.isGuest && !paymentProviderCustomer?.authenticationState) {
+            if (customer && customer.shouldEncourageSignIn && customer.isGuest && !paymentProviderCustomer?.stripeLinkAuthenticationState) {
                 return onChangeViewType(CustomerViewType.SuggestedLogin);
             }
 
