@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
-import getProductsCheckoutDescriptions, { getVariantCraftDetails, isSubscription } from '../common/utility/getProductsCheckoutDescriptions';
+import getProductsCheckoutDescriptions, { getVariantCraftDetails, getVariantsDataFromItems, isSubscription } from '../common/utility/getProductsCheckoutDescriptions';
 import { IconChevronDown, IconChevronUp } from '../ui/icon';
 import { isSmallScreen } from '../ui/responsive';
 
@@ -31,19 +31,8 @@ interface OrderSummaryItemsState {
 }
 
 const getCheckoutDescriptions = async (items: OrderSummaryItemProps[], currencyCode: string, callback: (arg0: OrderSummaryItemProps[]) => void) => {
-    const productIds: number[] = [];
-    const variantSkus: Array<number | string> = [];
+    const variants = await getVariantsDataFromItems(items, currencyCode);
 
-    items.forEach((item) => {
-        if(item.productId && item.sku) {
-            productIds.push(item.productId);
-            variantSkus.push(item.sku);
-        }
-    })
-
-    const [variants] = await Promise.all([
-        getVariantCraftDetails(productIds, variantSkus, currencyCode),
-    ]);
     const updatedItemsWithCheckoutDescriptions = items.map((item: any) => {
         const updatedItem = item;
         const {sku} = item;
