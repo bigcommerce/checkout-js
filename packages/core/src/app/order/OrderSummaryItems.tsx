@@ -34,8 +34,6 @@ const getCheckoutDescriptions = async (items: OrderSummaryItemProps[], currencyC
     const productIds: number[] = [];
     const variantSkus: Array<number | string> = [];
 
-    console.log("items", items)
-
     items.forEach((item) => {
         if(item.productId && item.sku) {
             productIds.push(item.productId);
