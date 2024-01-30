@@ -45,15 +45,11 @@ export default async function getProductsCheckoutDescriptions(ids: number[], cur
 }
 
 export async function getVariantCraftDetails(productIds: number[], variantSkus: Array<number | string>, currency: string): Promise<VariantAttributesData> {
-    console.log(`/api/get-products-variants-craft-details?ids=${productIds.toString()}&skus=${variantSkus.toString()}&currency=${currency}`)
-    
     const response = await fetch(`${apiEndpoint}/api/get-products-variants-craft-details?ids=${productIds.toString()}&skus=${variantSkus.toString()}&currency=${currency}`, {
         headers: {'Content-Type': 'application/json'},
         method: 'GET',
     });
     const result = await response.json();
-
-    console.log("result", result)
 
     if (response.status !== 200) {
         throw new Error(result.message);
