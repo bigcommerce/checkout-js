@@ -17,6 +17,7 @@ export interface OrderSummaryItemProps {
     description?: ReactNode;
     productOptions?: OrderSummaryItemOption[];
     checkoutDescription?: string | null;
+    sku?: string;
 }
 
 export interface OrderSummaryItemOption {
@@ -81,7 +82,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyPr
         return productOptions && productOptions[0] && productOptions[0].content
             && (productOptions[0].content.toString().indexOf('sends every') !== -1
                 || productOptions[0].content.toString().indexOf('send every') !== -1);
-    };
+    }; // @TODO - update isSubscription test
 
     return (
         <>

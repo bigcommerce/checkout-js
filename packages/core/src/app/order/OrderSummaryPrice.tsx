@@ -56,7 +56,7 @@ const ConfidenceBlock: FunctionComponent<any> = props => {
         if (test !== hasSubscription) {
             setHasSubscription(test);
         }
-    }, [lineItems]);
+    }, [lineItems]); // @TODO - update hasSubscription test
 
     useEffect(() => {
         setIsFreeShipping(shippingAmount === 0);

@@ -1,9 +1,9 @@
 import { LineItemMap, StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { ReactNode } from 'react';
 
-import getProductsCheckoutDescriptions, { isSubscription } from '../common/utility/getProductsCheckoutDescriptions';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
+import getProductsCheckoutDescriptions, { getVariantCraftDetails, isSubscription } from '../common/utility/getProductsCheckoutDescriptions';
 import { IconChevronDown, IconChevronUp } from '../ui/icon';
 import { isSmallScreen } from '../ui/responsive';
 
@@ -31,36 +31,34 @@ interface OrderSummaryItemsState {
 }
 
 const getCheckoutDescriptions = async (items: OrderSummaryItemProps[], currencyCode: string, callback: (arg0: OrderSummaryItemProps[]) => void) => {
-    const oneTimePurchaseItems: number[] = [];
-    const subscriptionItems: number[] =[]
+    const productIds: number[] = [];
+    const variantSkus: Array<number | string> = [];
+
+    console.log("items", items)
 
     items.forEach((item) => {
-        if(item.productId) {
-            if(isSubscription(item)) {
-                subscriptionItems.push(item.productId);
-            } else {
-                oneTimePurchaseItems.push(item.productId);
-            }
+        if(item.productId && item.sku) {
+            productIds.push(item.productId);
+            variantSkus.push(item.sku);
         }
     })
 
-    const [productsDescriptionsForSubscriptions, productsDescriptionsForOneTimePurchases] = await Promise.all([
-        getProductsCheckoutDescriptions(subscriptionItems, currencyCode, "subscription"),
-        getProductsCheckoutDescriptions(oneTimePurchaseItems, currencyCode, "one-time-purchase")
+    const [variants] = await Promise.all([
+        getVariantCraftDetails(productIds, variantSkus, currencyCode),
     ]);
     const updatedItemsWithCheckoutDescriptions = items.map((item: any) => {
         const updatedItem = item;
-        const {productId} = item;
+        const {sku} = item;
 
-        if(isSubscription(item)) {
-            const checkoutDescriptionSubscription = productsDescriptionsForSubscriptions.data.find(({id}) => id === productId.toString());
-            
-            updatedItem.checkoutDescription = checkoutDescriptionSubscription?.checkoutDescription || null;
-        } else {
-            const checkoutDescriptionOneTimePurchase = productsDescriptionsForOneTimePurchases.data.find(({id}) => id === productId.toString());
-            
-            updatedItem.checkoutDescription = checkoutDescriptionOneTimePurchase?.checkoutDescription || null;
-        }
+        const store = currencyCode === "USD" ? "usa" : "global";
+
+        updatedItem.checkoutDescription = variants.data.find((variantData) => {
+            if(!variantData) return false;
+
+            const {globalVariantSku, usaVariantSku} = variantData.variant;
+
+            return (store === "global" && globalVariantSku === sku) || (store === "usa" && usaVariantSku === sku);
+        })?.variant.supplyAmount; // @TODO - return actual checkout description field (needs to be added to CMS)
 
         return updatedItem;
     });

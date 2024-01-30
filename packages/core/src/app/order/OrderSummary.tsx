@@ -34,7 +34,7 @@ const SavingBanner: FunctionComponent<any> = props => {
         if (test !== hasSubscription) {
             setHasSubscription(test);
         }
-    }, [props]);
+    }, [props]); // @TODO - update hasSubscription test
 
     const saving = useMemo(() => {
         return parseFloat((amount / 0.9 - amount).toFixed(2));
