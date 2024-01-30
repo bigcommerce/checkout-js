@@ -43,12 +43,16 @@ function getDisplayValue(amount?: number | null, zeroLabel?: ReactNode): ReactNo
 function isNumberValue(displayValue: number | ReactNode): displayValue is number {
     return typeof displayValue === 'number';
 }
+
 const ConfidenceBlock: FunctionComponent<any> = props => {
+
     const { lineItems, shippingAmount } = props;
     const [isFreeShipping, setIsFreeShipping] = useState(false);
     const [hasSubscription, setHasSubscription] = useState(false);
+
     useEffect(() => {
         const test = lineItems?.physicalItems && lineItems.physicalItems.find((v: any) => v.options.find((o: any) => o.value === 'send every 30 days'));
+        
         if (test !== hasSubscription) {
             setHasSubscription(test);
         }
@@ -57,6 +61,7 @@ const ConfidenceBlock: FunctionComponent<any> = props => {
     useEffect(() => {
         setIsFreeShipping(shippingAmount === 0);
     }, [shippingAmount]);
+
     return (
         <>
             { hasSubscription && <section className="payments cart-subscription cart-section optimizedCheckout-orderSummary-cartSection">
