@@ -3,6 +3,9 @@ import React, {FunctionComponent, ReactNode, useEffect, useMemo, useState} from 
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
+import { ShopperCurrency as ShopperCurrency2 } from '../currency';
+
+import getItemsCount from './getItemsCount';
 import OrderSummaryHeader from './OrderSummaryHeader';
 import OrderSummaryItems from './OrderSummaryItems';
 import OrderSummaryPrice from './OrderSummaryPrice';
@@ -10,9 +13,6 @@ import OrderSummarySection from './OrderSummarySection';
 import OrderSummarySubtotals, { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 import OrderSummaryTotal from './OrderSummaryTotal';
 import removeBundledItems from './removeBundledItems';
-
-import { ShopperCurrency as ShopperCurrency2 } from '../currency';
-import getItemsCount from './getItemsCount';
 
 export interface OrderSummaryProps {
     lineItems: LineItemMap;
@@ -27,18 +27,22 @@ export interface OrderSummaryProps {
 const SavingBanner: FunctionComponent<any> = props => {
     const { lineItems, amount } = props;
     const [hasSubscription, setHasSubscription] = useState(false);
+
     useEffect(() => {
         const test = lineItems?.physicalItems && lineItems.physicalItems.find((v: any) => v.options.find((o: any) => o.value.indexOf('every 30 days') !== -1));
+        
         if (test !== hasSubscription) {
             setHasSubscription(test);
         }
     }, [props]);
+
     const saving = useMemo(() => {
         return parseFloat((amount / 0.9 - amount).toFixed(2));
     }, [amount]);
     const savingSubscription = useMemo(() => {
         return parseFloat((amount / 0.85 - amount).toFixed(2));
     }, [amount]);
+
     return (
         <>{
             (hasSubscription || getItemsCount(lineItems) > 2)  && (
