@@ -5,7 +5,7 @@ import React, { FunctionComponent, memo, ReactNode, useEffect, useState } from '
 
 import { withCurrency, WithCurrencyProps } from '@bigcommerce/checkout/locale';
 
-import { checkIsSubscription } from '../common/utility/getCraftData';
+import { checkIsSubscription, VARIANT_TYPES, VariantAttributes } from '../common/utility/getCraftData';
 import { ShopperCurrency } from '../currency';
 
 export interface OrderSummaryItemProps {
@@ -18,7 +18,7 @@ export interface OrderSummaryItemProps {
     image?: ReactNode;
     description?: ReactNode;
     productOptions?: OrderSummaryItemOption[];
-    checkoutDescription?: string | null;
+    craftData?: VariantAttributes & {type: VARIANT_TYPES} | null;
     sku?: string;
 }
 
@@ -159,7 +159,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyPr
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M0.666748 11.3334V6.66667H5.33341L3.18875 8.81333C3.92872 9.57001 4.94172 9.9976 6.00008 10C7.69305 9.9975 9.20109 8.92948 9.76541 7.33333H9.77741C9.85378 7.11641 9.91154 6.89338 9.95008 6.66667H11.2914C10.9555 9.33327 8.68776 11.3332 6.00008 11.3334H5.99341C4.57926 11.3376 3.22219 10.7758 2.22475 9.77333L0.666748 11.3334ZM2.04941 5.33333H0.708081C1.04391 2.66774 3.31008 0.668094 5.99675 0.666638H6.00008C7.4145 0.662112 8.77189 1.22389 9.76941 2.22667L11.3334 0.666638V5.33333H6.66675L8.81475 3.18667C8.07401 2.4291 7.05961 2.00143 6.00008 2C4.30712 2.0025 2.79907 3.07052 2.23475 4.66667H2.22275C2.14579 4.8834 2.08801 5.10648 2.05008 5.33333H2.04941Z" fill="white"/>
                 </svg>
-                Subscription option (sends every 30 days)*
+                Subscription option.{!craftDataLoading && <>{craftData?.sendFrequency}*</>}
             </div>
             }
             { isSubscriptionLoaded && !isSubscription &&

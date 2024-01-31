@@ -13,7 +13,7 @@ export enum VARIANT_TYPES {
     'oneOff' = 'oneOff',
 }
 
-interface VariantAttributes {
+export interface VariantAttributes {
   id: number | string;
   globalVariantSku: string;
   usaVariantSku: string;
