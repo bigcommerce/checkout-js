@@ -593,6 +593,7 @@ export function mapToPaymentProps({
             getPaymentMethod,
             getPaymentMethods,
             isPaymentDataRequired,
+            getPaymentProviderCustomer,
         },
         errors: { getFinalizeOrderError, getSubmitOrderError },
         statuses: { isInitializingPayment, isSubmittingOrder },
@@ -602,11 +603,13 @@ export function mapToPaymentProps({
     const config = getConfig();
     const customer = getCustomer();
     const consignments = getConsignments();
+    const paymentProviderCustomer = getPaymentProviderCustomer();
+
     const { isComplete = false } = getOrder() || {};
     let methods = getPaymentMethods() || EMPTY_ARRAY;
 
     // TODO: In accordance with the checkout team, this functionality is temporary and will be implemented in the backend instead.
-    if (customer?.isStripeLinkAuthenticated) {
+    if (paymentProviderCustomer?.stripeLinkAuthenticationState) {
         const stripeUpePaymentMethod = methods.filter(method =>
             method.id === 'card' && method.gateway === PaymentMethodId.StripeUPE
         );

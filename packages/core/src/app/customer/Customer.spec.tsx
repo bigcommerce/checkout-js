@@ -423,12 +423,15 @@ describe('Customer', () => {
                 ...getCustomer(),
                 isGuest: true,
                 shouldEncourageSignIn: true,
-                isStripeLinkAuthenticated: true,
             } as CustomerData);
 
             jest.spyOn(checkoutService, 'continueAsGuest').mockReturnValue(
                 Promise.resolve(checkoutService.getState()),
             );
+            jest.spyOn(
+                checkoutService.getState().data,
+                'getPaymentProviderCustomer',
+            ).mockReturnValue({ stripeLinkAuthenticationState: true });
 
             const handleChangeViewType = jest.fn();
             const component = mount(

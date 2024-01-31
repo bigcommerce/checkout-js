@@ -36,7 +36,8 @@ const getCustomerStepStatus = createSelector(
     ({ data }: CheckoutSelectors) => data.getBillingAddress(),
     ({ data }: CheckoutSelectors) => data.getConfig(),
     ({ data }: CheckoutSelectors) => data.getCart(),
-    (checkout, customer, billingAddress, config, cart) => {
+    ({ data }: CheckoutSelectors) => data.getPaymentProviderCustomer(),
+    (checkout, customer, billingAddress, config, cart, paymentProviderCustomer) => {
         const hasEmail = !!(
             (customer && customer.email) ||
             (billingAddress && billingAddress.email)
@@ -62,7 +63,7 @@ const getCustomerStepStatus = createSelector(
             return {
                 type: CheckoutStepType.Customer,
                 isActive: false,
-                isComplete: customer?.isStripeLinkAuthenticated !== undefined ?? isComplete,
+                isComplete: paymentProviderCustomer?.stripeLinkAuthenticationState !== undefined,
                 isEditable,
                 isRequired: true,
             };
