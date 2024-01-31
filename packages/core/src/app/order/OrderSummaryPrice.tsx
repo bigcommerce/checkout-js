@@ -5,7 +5,7 @@ import { CSSTransition } from 'react-transition-group';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 
-import { getVariantsDataFromItems, VARIANT_TYPES } from '../common/utility/getCraftData';
+import { checkHasSubscription } from '../common/utility/getCraftData';
 import { ShopperCurrency } from '../currency';
 
 import mapFromCustom from './mapFromCustom';
@@ -72,21 +72,9 @@ const ConfidenceBlock: FunctionComponent<any> = props => {
 
     useEffect(() => {
         const calculateHasSubscription = async () => {
-            const variants = await getVariantsDataFromItems(initialItems, currencyCode);
+            const hasSubscriptionVariant = await checkHasSubscription(initialItems, currencyCode);
 
-            const subscriptionVariant = variants.data.find((variantData) => {
-                if(!variantData) return false;
-
-                const {type} = variantData.variant;
-
-                return type === VARIANT_TYPES.subscription;
-            });
-
-            if (subscriptionVariant) {
-                setHasSubscription(true);
-            } else {
-                setHasSubscription(false);
-            }
+            setHasSubscription(hasSubscriptionVariant);
         }
 
         calculateHasSubscription()

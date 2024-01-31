@@ -88,7 +88,7 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
     }
 
     render(): ReactNode {
-        const { displayLineItemsCount = true, items } = this.props;
+        const { displayLineItemsCount = true, items, currency } = this.props;
         const { collapsedLimit, isExpanded, itemsWithCheckoutDescriptions } = this.state;
 
         return (
@@ -108,7 +108,7 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
                         .slice(0, isExpanded ? undefined : collapsedLimit)
                         .map((summaryItemProps) => (
                             <li className="productList-item is-visible" key={summaryItemProps.id}>
-                                <OrderSummaryItem {...summaryItemProps} checkoutDescriptionsLoading={this.state.checkoutDescriptionsLoading} />
+                                <OrderSummaryItem {...summaryItemProps} checkoutDescriptionsLoading={this.state.checkoutDescriptionsLoading} currency={currency} />
                             </li>
                         ))}
                 </ul>

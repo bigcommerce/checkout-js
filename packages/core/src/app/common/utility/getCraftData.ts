@@ -77,17 +77,23 @@ export async function getVariantCraftDetails(
   return result;
 }
 
-export const isSubscription = (item: OrderSummaryItemProps) => {
-  const { productOptions } = item;
+export const checkHasSubscription = async (items: OrderSummaryItemProps[], currency: string) => {
+  const variants = await getVariantsDataFromItems(items, currency);
 
-  return (
-    productOptions &&
-    productOptions[0] &&
-    productOptions[0].content &&
-    (productOptions[0].content.toString().indexOf('sends every') !== -1 ||
-      productOptions[0].content.toString().indexOf('send every') !== -1)
-  );
-}; // @TODO - update isSubscription test
+  const subscriptionVariant = variants.data.find((variantData) => {
+      if(!variantData) return false;
+
+      const {type} = variantData.variant;
+
+      return type === VARIANT_TYPES.subscription;
+  });
+
+  return !!subscriptionVariant
+}
+
+export const checkIsSubscription = (item: OrderSummaryItemProps, currency: string) => {
+  return checkHasSubscription([item], currency);
+};
 
 export async function getVariantsDataFromItems(
   items: OrderSummaryItemProps[],
