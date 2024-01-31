@@ -82,7 +82,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
             <OrderSummarySection>
                 { orderSummarySubtotalsProps.coupons.length === 0
                     && <SavingBanner amount={total} currencyCode={shopperCurrency.code} hasSubscription={hasSubscription} lineItems={lineItems} />}
-                <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
+                <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} storeCurrency={storeCurrency} />
                 {additionalLineItems}
             </OrderSummarySection>
 
@@ -108,6 +108,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                 {(taxes || []).map((tax, index) => (
                     <OrderSummaryPrice
                         amount={tax.amount}
+                        currencyCode={storeCurrency.code}
                         key={index}
                         label={tax.name}
                         testId="cart-taxes"

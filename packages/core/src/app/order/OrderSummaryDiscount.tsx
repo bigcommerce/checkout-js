@@ -1,3 +1,4 @@
+import { StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -9,6 +10,7 @@ import OrderSummaryPrice, { OrderSummaryPriceProps } from './OrderSummaryPrice';
 export interface OrderSummaryDiscountProps extends OrderSummaryPriceProps {
     remaining?: number;
     code?: string;
+    storeCurrency: StoreCurrency;
     onRemoved?(code: string): void;
 }
 
@@ -16,10 +18,12 @@ const OrderSummaryDiscount: FunctionComponent<OrderSummaryDiscountProps> = ({
     code,
     remaining,
     amount,
+    storeCurrency,
     onRemoved,
     ...rest
 }) => (
     <OrderSummaryPrice
+        currencyCode={storeCurrency.code}
         {...rest}
         {...(onRemoved && {
             onActionTriggered: () => code && onRemoved(code),

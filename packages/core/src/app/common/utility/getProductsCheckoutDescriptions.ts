@@ -8,6 +8,11 @@ interface ProductsCheckoutDescriptionsType {
   }>;
 }
 
+export enum VARIANT_TYPES {
+    'subscription' = 'subscription',
+    'oneOff' = 'oneOff',
+}
+
 interface VariantAttributes {
   id: number | string;
   globalVariantSku: string;
@@ -26,7 +31,7 @@ interface VariantAttributes {
 
 interface VariantAttributesData {
   data: Array<null | {
-    variant: VariantAttributes;
+    variant: VariantAttributes & {type: VARIANT_TYPES};
   }>;
 }
 

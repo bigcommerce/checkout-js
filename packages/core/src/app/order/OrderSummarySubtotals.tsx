@@ -1,4 +1,4 @@
-import { Coupon, Fee, GiftCertificate, OrderFee, Tax } from '@bigcommerce/checkout-sdk';
+import { Coupon, Fee, GiftCertificate, OrderFee, StoreCurrency, Tax } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -20,6 +20,7 @@ export interface OrderSummarySubtotalsProps {
     handlingAmount?: number;
     storeCreditAmount?: number;
     subtotalAmount: number;
+    storeCurrency: StoreCurrency; // @TODO
     onRemovedGiftCertificate?(code: string): void;
     onRemovedCoupon?(code: string): void;
 }
@@ -36,6 +37,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
     handlingAmount,
     storeCreditAmount,
     coupons,
+    storeCurrency,
     onRemovedGiftCertificate,
     onRemovedCoupon,
 }) => {
@@ -44,6 +46,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
             <OrderSummaryPrice
                 amount={subtotalAmount}
                 className="cart-priceItem--subtotal"
+                currencyCode={storeCurrency.code}
                 label={<TranslatedString id="cart.subtotal_text" />}
                 testId="cart-subtotal"
             />
@@ -55,6 +58,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                     key={index}
                     label={coupon.displayName}
                     onRemoved={onRemovedCoupon}
+                    storeCurrency={storeCurrency}
                     testId="cart-coupon"
                 />
             ))}
@@ -63,6 +67,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                 <OrderSummaryDiscount
                     amount={discountAmount}
                     label={<TranslatedString id="cart.discount_text" />}
+                    storeCurrency={storeCurrency}
                     testId="cart-discount"
                 />
             )}
@@ -75,6 +80,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                     label={<TranslatedString id="cart.gift_certificate_text" />}
                     onRemoved={onRemovedGiftCertificate}
                     remaining={giftCertificate.remaining}
+                    storeCurrency={storeCurrency}
                     testId="cart-gift-certificate"
                 />
             ))}
@@ -124,6 +130,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                 <OrderSummaryDiscount
                     amount={storeCreditAmount}
                     label={<TranslatedString id="cart.store_credit_text" />}
+                    storeCurrency={storeCurrency}
                     testId="cart-store-credit"
                 />
             )}

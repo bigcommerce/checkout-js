@@ -1,11 +1,18 @@
+import {DigitalItem, LineItemMap, PhysicalItem} from "@bigcommerce/checkout-sdk";
 import classNames from 'classnames';
 import React, {Component, FunctionComponent, ReactNode, useEffect, useState} from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 
+import { getVariantsDataFromItems, VARIANT_TYPES } from '../common/utility/getProductsCheckoutDescriptions';
 import { ShopperCurrency } from '../currency';
-import {LineItemMap} from "@bigcommerce/checkout-sdk";
+
+import mapFromCustom from './mapFromCustom';
+import mapFromDigital from './mapFromDigital';
+import mapFromGiftCertificate from './mapFromGiftCertificate';
+import mapFromPhysical from './mapFromPhysical';
+import { OrderSummaryItemProps } from './OrderSummaryItem';
 
 export interface OrderSummaryPriceProps {
     label: ReactNode;
@@ -46,17 +53,44 @@ function isNumberValue(displayValue: number | ReactNode): displayValue is number
 
 const ConfidenceBlock: FunctionComponent<any> = props => {
 
-    const { lineItems, shippingAmount } = props;
+    const { lineItems, shippingAmount, currencyCode } = props;
     const [isFreeShipping, setIsFreeShipping] = useState(false);
     const [hasSubscription, setHasSubscription] = useState(false);
 
+    const initialItems: OrderSummaryItemProps[] = [
+        ...lineItems.physicalItems
+            .slice()
+            .sort((item: PhysicalItem) => item.variantId)
+            .map(mapFromPhysical),
+        ...lineItems.giftCertificates.slice().map(mapFromGiftCertificate),
+        ...lineItems.digitalItems
+            .slice()
+            .sort((item: DigitalItem) => item.variantId)
+            .map(mapFromDigital),
+        ...(lineItems.customItems || []).map(mapFromCustom),
+    ];
+
     useEffect(() => {
-        const test = lineItems?.physicalItems && lineItems.physicalItems.find((v: any) => v.options.find((o: any) => o.value === 'send every 30 days'));
-        
-        if (test !== hasSubscription) {
-            setHasSubscription(test);
+        const calculateHasSubscription = async () => {
+            const variants = await getVariantsDataFromItems(initialItems, currencyCode);
+
+            const subscriptionVariant = variants.data.find((variantData) => {
+                if(!variantData) return false;
+
+                const {type} = variantData.variant;
+
+                return type === VARIANT_TYPES.subscription;
+            });
+
+            if (subscriptionVariant) {
+                setHasSubscription(true);
+            } else {
+                setHasSubscription(false);
+            }
         }
-    }, [lineItems]); // @TODO - update hasSubscription test
+
+        calculateHasSubscription()
+    }, [initialItems]); // @TODO - update hasSubscription test
 
     useEffect(() => {
         setIsFreeShipping(shippingAmount === 0);
@@ -69,7 +103,7 @@ const ConfidenceBlock: FunctionComponent<any> = props => {
                     <div aria-live="polite" className="cart-priceItem optimizedCheckout-contentPrimary cart-priceItem--total">
                     <span className="cart-priceItem-label">
                         <span data-test="cart-price-label">
-                            Your order contains a subscription. This reoccurs every 30 days. You can cancel any time.
+                            Your order contains a recurring subscription. You can cancel any time.
                         </span>
                     </span>
                     </div>
