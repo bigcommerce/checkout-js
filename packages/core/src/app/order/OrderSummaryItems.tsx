@@ -25,33 +25,33 @@ export interface OrderSummaryItemsProps {
 
 interface OrderSummaryItemsState {
     isExpanded: boolean;
-    itemsWithCheckoutDescriptions: OrderSummaryItemProps[];
-    checkoutDescriptionsLoading: boolean;
+    itemsWithCraftData: OrderSummaryItemProps[];
+    craftDataLoading: boolean;
     collapsedLimit: number;
 }
 
-const getCheckoutDescriptions = async (items: OrderSummaryItemProps[], currencyCode: string, callback: (arg0: OrderSummaryItemProps[]) => void) => {
+const getCraftData = async (items: OrderSummaryItemProps[], currencyCode: string, callback: (arg0: OrderSummaryItemProps[]) => void) => {
     const variants = await getVariantsDataFromItems(items, currencyCode);
 
-    const updatedItemsWithCheckoutDescriptions = items.map((item: any) => {
+    const updatedItemsWithCraftData = items.map((item: any) => {
         const updatedItem = item;
         const {sku} = item;
 
         const store = currencyCode === "USD" ? "usa" : "global";
 
-        updatedItem.checkoutDescription = variants.data.find((variantData) => {
+        updatedItem.craftData = variants.data.find((variantData) => {
             if(!variantData) return false;
 
             const {globalVariantSku, usaVariantSku} = variantData.variant;
 
             return (store === "global" && globalVariantSku === sku) || (store === "usa" && usaVariantSku === sku);
-        })?.variant.supplyAmount; // @TODO - return actual checkout description field (needs to be added to CMS)
+        })?.variant; // @TODO - return actual checkout description field (needs to be added to CMS)
 
         return updatedItem;
     });
 
     // update state
-    callback(updatedItemsWithCheckoutDescriptions);
+    callback(updatedItemsWithCraftData);
 }
 
 class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSummaryItemsState> {
@@ -72,24 +72,24 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
             ...(items.customItems || []).map(mapFromCustom),
         ];
 
-        getCheckoutDescriptions(initialItems, currency.code, (updatedItems) => {
+        getCraftData(initialItems, currency.code, (updatedItems) => {
             this.setState({
-                itemsWithCheckoutDescriptions: updatedItems,
-                checkoutDescriptionsLoading: false
+                itemsWithCraftData: updatedItems,
+                craftDataLoading: false
             });
         })
 
         this.state = {
             isExpanded: false,
-            itemsWithCheckoutDescriptions: initialItems,
-            checkoutDescriptionsLoading: true,
+            itemsWithCraftData: initialItems,
+            craftDataLoading: true,
             collapsedLimit: this.getCollapsedLimit(),
         };
     }
 
     render(): ReactNode {
         const { displayLineItemsCount = true, items, currency } = this.props;
-        const { collapsedLimit, isExpanded, itemsWithCheckoutDescriptions } = this.state;
+        const { collapsedLimit, isExpanded, itemsWithCraftData } = this.state;
 
         return (
             <>
@@ -104,11 +104,11 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
                 </h3>}
 
                 <ul aria-live="polite" className="productList">
-                    {itemsWithCheckoutDescriptions
+                    {itemsWithCraftData
                         .slice(0, isExpanded ? undefined : collapsedLimit)
                         .map((summaryItemProps) => (
                             <li className="productList-item is-visible" key={summaryItemProps.id}>
-                                <OrderSummaryItem {...summaryItemProps} checkoutDescriptionsLoading={this.state.checkoutDescriptionsLoading} currency={currency} />
+                                <OrderSummaryItem {...summaryItemProps} craftDataLoading={this.state.craftDataLoading} currency={currency} />
                             </li>
                         ))}
                 </ul>

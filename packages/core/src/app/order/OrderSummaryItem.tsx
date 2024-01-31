@@ -68,7 +68,7 @@ const getCustomDescription = (name: string, amount: number, currencyService: any
     }
     return '';
 };
-const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyProps & {checkoutDescriptionsLoading: boolean; currency: StoreCurrency}> = (item) => {
+const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyProps & {craftDataLoading: boolean; currency: StoreCurrency}> = (item) => {
     const {
         amount,
         amountAfterDiscount,
@@ -77,8 +77,8 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyPr
         productOptions,
         quantity,
         description,
-        checkoutDescription,
-        checkoutDescriptionsLoading,
+        craftData,
+        craftDataLoading,
         currency
     } = item;
 
@@ -123,8 +123,8 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyPr
                                 { option.content }
                             </li>
                         ) }
-                        <li className={`product-option custom-description ${checkoutDescriptionsLoading ? "loading" : ""}`}>
-                            { checkoutDescriptionsLoading ? (<><span /><span /><span /></>) : checkoutDescription }
+                        <li className={`product-option custom-description ${craftDataLoading ? "loading" : ""}`}>
+                            { craftDataLoading ? (<><span /><span /><span /></>) : craftData?.supplyAmount }
                         </li>
                     </ul>
                     { description && <div
