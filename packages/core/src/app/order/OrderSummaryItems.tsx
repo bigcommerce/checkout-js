@@ -44,7 +44,7 @@ const getCraftData = async (items: OrderSummaryItemProps[], currencyCode: string
 
             const {globalVariantSku, usaVariantSku} = variantData.variant;
 
-            return (store === "global" && globalVariantSku === sku) || (store === "usa" && usaVariantSku === sku);
+            return (store === "global" && globalVariantSku?.toLowerCase() === sku?.toLowerCase()) || (store === "usa" && usaVariantSku?.toLowerCase() === sku?.toLowerCase());
         })?.variant;
 
         return updatedItem;
