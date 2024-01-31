@@ -56,6 +56,7 @@ const ConfidenceBlock: FunctionComponent<any> = props => {
     const { lineItems, shippingAmount, currencyCode } = props;
     const [isFreeShipping, setIsFreeShipping] = useState(false);
     const [hasSubscription, setHasSubscription] = useState(false);
+    const [hasSubscriptionLoaded, setHasSubscriptionLoaded] = useState(false);
 
     const initialItems: OrderSummaryItemProps[] = [
         ...lineItems.physicalItems
@@ -75,6 +76,7 @@ const ConfidenceBlock: FunctionComponent<any> = props => {
             const hasSubscriptionVariant = await checkHasSubscription(initialItems, currencyCode);
 
             setHasSubscription(hasSubscriptionVariant);
+            setHasSubscriptionLoaded(true);
         }
 
         calculateHasSubscription()
@@ -83,6 +85,8 @@ const ConfidenceBlock: FunctionComponent<any> = props => {
     useEffect(() => {
         setIsFreeShipping(shippingAmount === 0);
     }, [shippingAmount]);
+
+    if(!hasSubscriptionLoaded) return null;
 
     return (
         <>
