@@ -5,7 +5,7 @@ import { CSSTransition } from 'react-transition-group';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 
-import { getVariantsDataFromItems, VARIANT_TYPES } from '../common/utility/getProductsCheckoutDescriptions';
+import { getVariantsDataFromItems, VARIANT_TYPES } from '../common/utility/getCraftData';
 import { ShopperCurrency } from '../currency';
 
 import mapFromCustom from './mapFromCustom';

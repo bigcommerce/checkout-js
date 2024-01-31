@@ -3,7 +3,7 @@ import React, { ReactNode } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
-import getProductsCheckoutDescriptions, { getVariantCraftDetails, getVariantsDataFromItems, isSubscription } from '../common/utility/getProductsCheckoutDescriptions';
+import { getVariantsDataFromItems } from '../common/utility/getCraftData';
 import { IconChevronDown, IconChevronUp } from '../ui/icon';
 import { isSmallScreen } from '../ui/responsive';
 

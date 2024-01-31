@@ -35,7 +35,7 @@ interface VariantAttributesData {
   }>;
 }
 
-export default async function getProductsCheckoutDescriptions(
+export async function getProductsCheckoutDescriptions(
   ids: number[],
   currency: string,
   variant: 'subscription' | 'one-time-purchase',

@@ -4,7 +4,7 @@ import React, { FunctionComponent, memo, ReactNode } from 'react';
 
 import { withCurrency, WithCurrencyProps } from '@bigcommerce/checkout/locale';
 
-import { isSubscription } from '../common/utility/getProductsCheckoutDescriptions';
+import { isSubscription } from '../common/utility/getCraftData';
 import { ShopperCurrency } from '../currency';
 
 
