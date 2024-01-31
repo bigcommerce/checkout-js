@@ -90,7 +90,7 @@ const ConfidenceBlock: FunctionComponent<any> = props => {
         }
 
         calculateHasSubscription()
-    }, [initialItems]); // @TODO - update hasSubscription test
+    }, [initialItems]);
 
     useEffect(() => {
         setIsFreeShipping(shippingAmount === 0);
