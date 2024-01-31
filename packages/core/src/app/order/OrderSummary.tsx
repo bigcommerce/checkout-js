@@ -82,7 +82,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
             <OrderSummarySection>
                 { orderSummarySubtotalsProps.coupons.length === 0
                     && <SavingBanner amount={total} currencyCode={shopperCurrency.code} hasSubscription={hasSubscription} lineItems={lineItems} />}
-                <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} storeCurrency={storeCurrency} />
+                <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} currencyCode={storeCurrency.code} />
                 {additionalLineItems}
             </OrderSummarySection>
 
