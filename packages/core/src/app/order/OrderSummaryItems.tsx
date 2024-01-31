@@ -45,7 +45,7 @@ const getCraftData = async (items: OrderSummaryItemProps[], currencyCode: string
             const {globalVariantSku, usaVariantSku} = variantData.variant;
 
             return (store === "global" && globalVariantSku === sku) || (store === "usa" && usaVariantSku === sku);
-        })?.variant; // @TODO - return actual checkout description field (needs to be added to CMS)
+        })?.variant;
 
         return updatedItem;
     });

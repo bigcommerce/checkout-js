@@ -27,6 +27,7 @@ export interface VariantAttributes {
   billingPeriod?: number;
   manualPricing?: any[];
   variantDiscounts?: any[];
+  checkoutDescription?: string;
 }
 
 interface VariantAttributesData {

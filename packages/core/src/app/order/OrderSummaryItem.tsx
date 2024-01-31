@@ -124,7 +124,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyPr
                             </li>
                         ) }
                         <li className={`product-option custom-description ${craftDataLoading ? "loading" : ""}`}>
-                            { craftDataLoading ? (<><span /><span /><span /></>) : craftData?.supplyAmount }
+                            { craftDataLoading ? (<><span /><span /><span /></>) : craftData?.checkoutDescription }
                         </li>
                     </ul>
                     { description && <div
