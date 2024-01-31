@@ -1,4 +1,3 @@
-import { StoreCurrency } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { isNumber } from 'lodash';
 import React, { FunctionComponent, memo, ReactNode, useEffect, useState } from 'react';
@@ -68,7 +67,7 @@ const getCustomDescription = (name: string, amount: number, currencyService: any
     }
     return '';
 };
-const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyProps & {craftDataLoading: boolean; currency: StoreCurrency}> = (item) => {
+const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyProps & {craftDataLoading: boolean; currencyCode: string}> = (item) => {
     const {
         amount,
         amountAfterDiscount,
@@ -79,7 +78,7 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyPr
         description,
         craftData,
         craftDataLoading,
-        currency
+        currencyCode
     } = item;
 
     const [isSubscription, setIsSubscription] = useState(false);
@@ -87,14 +86,14 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps & WithCurrencyPr
 
     useEffect(() => {
         const calculateCheckIsSubscription = async () => {
-            const returnedCheck = await checkIsSubscription(item, currency.code);
+            const returnedCheck = await checkIsSubscription(item, currencyCode);
 
             setIsSubscription(returnedCheck);
             setIsSubscriptionLoaded(true);
         };
         
         calculateCheckIsSubscription();
-    }, [item, currency.code]);
+    }, [item, currencyCode]);
 
     return (
         <>

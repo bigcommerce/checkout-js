@@ -108,7 +108,7 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
                         .slice(0, isExpanded ? undefined : collapsedLimit)
                         .map((summaryItemProps) => (
                             <li className="productList-item is-visible" key={summaryItemProps.id}>
-                                <OrderSummaryItem {...summaryItemProps} craftDataLoading={this.state.craftDataLoading} currency={currency} />
+                                <OrderSummaryItem {...summaryItemProps} craftDataLoading={this.state.craftDataLoading} currencyCode={currency.code} />
                             </li>
                         ))}
                 </ul>
