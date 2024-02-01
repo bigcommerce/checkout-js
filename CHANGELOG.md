@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.438.0](https://github.com/bigcommerce/checkout-js/compare/v1.437.1...v1.438.0) (2024-02-01)
+
+
+### Features
+
+* **payment:** PAYPAL-3499 authenticate user with PayPal Connect after sing in/up ([9fdf609](https://github.com/bigcommerce/checkout-js/commit/9fdf609c698733681c7d7a0ed830431a7e62268a))
+
 ### [1.437.1](https://github.com/bigcommerce/checkout-js/compare/v1.437.0...v1.437.1) (2024-01-31)
 
 ## [1.437.0](https://github.com/bigcommerce/checkout-js/compare/v1.436.2...v1.437.0) (2024-01-31)
