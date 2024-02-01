@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.439.0](https://github.com/bigcommerce/checkout-js/compare/v1.438.0...v1.439.0) (2024-02-01)
+
+
+### Features
+
+* **other:** LOCAL-1444 delivery translation ([#1684](https://github.com/bigcommerce/checkout-js/issues/1684)) ([e8822f7](https://github.com/bigcommerce/checkout-js/commit/e8822f7ff11d41216ad63ed80327e4f5451dda6d))
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-3519 fixed the issue with analytic tracking of selected payment method on payment step load ([f6eeff4](https://github.com/bigcommerce/checkout-js/commit/f6eeff4365190044b4c6690c59b56b258ff17e62))
+
 ## [1.438.0](https://github.com/bigcommerce/checkout-js/compare/v1.437.1...v1.438.0) (2024-02-01)
 
 
