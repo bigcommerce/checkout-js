@@ -184,11 +184,11 @@ class OrderSummaryPrice extends Component<OrderSummaryPriceProps, OrderSummaryPr
                                 {label}
                                 {'  '}
                             </span>
-                            {currencyCode && (
+                            {/* {currencyCode && (
                                 <span className="cart-priceItem-currencyCode">
                                     {`(${currencyCode}) `}
                                 </span>
-                            )}
+                            )} */}
                             {onActionTriggered && actionLabel && (
                                 <span className="cart-priceItem-link">
                                     <a
