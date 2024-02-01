@@ -547,14 +547,14 @@ class Payment extends Component<
 
     private async loadPaymentMethodsOrThrow(): Promise<void> {
         const {
-            defaultMethod,
             loadPaymentMethods,
             onUnhandledError = noop,
         } = this.props;
-        const { selectedMethod = defaultMethod } = this.state;
 
         try {
             await loadPaymentMethods();
+
+            const selectedMethod = this.state.selectedMethod || this.props.defaultMethod;
 
             if (selectedMethod) {
                 this.trackSelectedPaymentMethod(selectedMethod);
