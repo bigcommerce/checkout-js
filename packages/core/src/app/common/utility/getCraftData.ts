@@ -1,13 +1,6 @@
 import { OrderSummaryItemProps } from '../../order/OrderSummaryItem';
 import { apiEndpoint } from '../../recurly/config';
 
-interface ProductsCheckoutDescriptionsType {
-  data: Array<{
-    id: string;
-    checkoutDescription: null | string;
-  }>;
-}
-
 export enum VARIANT_TYPES {
     'subscription' = 'subscription',
     'oneOff' = 'oneOff',
@@ -34,27 +27,6 @@ interface VariantAttributesData {
   data: Array<null | {
     variant: VariantAttributes & {type: VARIANT_TYPES};
   }>;
-}
-
-export async function getProductsCheckoutDescriptions(
-  ids: number[],
-  currency: string,
-  variant: 'subscription' | 'one-time-purchase',
-): Promise<ProductsCheckoutDescriptionsType> {
-  const response = await fetch(
-    `${apiEndpoint}/api/products-checkout-descriptions?ids=${ids.toString()}&currency=${currency}&variant=${variant}`,
-    {
-      headers: { 'Content-Type': 'application/json' },
-      method: 'GET',
-    },
-  );
-  const result = await response.json();
-
-  if (response.status !== 200) {
-    throw new Error(result.message);
-  }
-
-  return result;
 }
 
 export async function getVariantCraftDetails(
