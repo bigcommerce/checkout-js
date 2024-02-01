@@ -213,6 +213,32 @@ describe('PayPalCommercePaymentMethodComponent', () => {
         expect(props.onUnhandledError).toHaveBeenCalledWith(errorMock);
     });
 
+    it('throws specific error text when receive INSTRUMENT_DECLINED error message', async () => {
+        const providerError = new Error('INSTRUMENT_DECLINED');
+        const onUnhandledErrorMock = jest.fn();
+        const newProps = {
+            ...props,
+            onUnhandledError: onUnhandledErrorMock,
+        };
+
+        jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+            eventEmitter.on('onError', () => {
+                if (options.paypalcommerce?.onError) {
+                    options.paypalcommerce.onError(providerError);
+                }
+            });
+
+            return Promise.resolve(checkoutState);
+        });
+
+        render(<PayPalCommercePaymentMethodComponent {...newProps} />);
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        eventEmitter.emit('onError');
+
+        expect(onUnhandledErrorMock).toHaveBeenCalledWith(new Error(props.language.translate('payment.errors.instrument_declined')));
+    });
+
     it('passed form validation by calling onValidate callback', async () => {
         jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
             eventEmitter.on('onValidate', async (resolve, reject) => {
