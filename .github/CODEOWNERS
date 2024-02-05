@@ -11,6 +11,9 @@
 /packages/test-framework @bigcommerce/team-checkout
 /packages/workspace-tools @bigcommerce/team-checkout
 
+## Shared
+package.json @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
+package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
 
 ## Payment integrations team
 
