@@ -395,6 +395,7 @@
                 "incorrect_zip": "Your billing address couldn't be verified. Please check your billing address details and try again.",
                 "insufficient_funds": "Payment was declined. Please contact your bank.",
                 "invalid_address": "Your billing address couldn't be verified. Please check your billing address details and try again.",
+                "instrument_declined": "We would like to inform you that the total amount for your order has been adjusted from the initially confirmed sum with PayPal. This modification is in adherence to the regulations and safeguards set forth by the Second Payment Services Directive (PSD2). To proceed with the completion of your order, we kindly request your confirmation of the new total by clicking on the 'PayPal Checkout' button situated at the bottom of the page.",
                 "invalid_amount": "There was an error while processing your payment. Please try again or contact us.",
                 "invalid_authorization_code": "There was an error while processing your payment. Please try again or contact us.",
                 "invalid_create_instrument_request": "Unable to process the payment because invalid data was supplied with the transaction.",

@@ -34,6 +34,7 @@ const PayPalCommercePaymentMethodComponent: FunctionComponent<
     providerOptionsKey,
     providerOptionsData,
     children,
+    language,
 }) => {
     const buttonActionsRef = useRef<ButtonActions | null>(null);
     const termsValue = paymentForm.getFieldValue('terms');
@@ -76,7 +77,12 @@ const PayPalCommercePaymentMethodComponent: FunctionComponent<
                     },
                     onError: (error: Error) => {
                         paymentForm.disableSubmit(method, true);
-                        onUnhandledError(error);
+
+                        if (error.message === 'INSTRUMENT_DECLINED') {
+                            onUnhandledError(new Error(language.translate('payment.errors.instrument_declined')));
+                        } else {
+                            onUnhandledError(error);
+                        }
                     },
                     onValidate: async (resolve: () => void, reject: () => void): Promise<void> => {
                         const keysValidation = await validateForm();
