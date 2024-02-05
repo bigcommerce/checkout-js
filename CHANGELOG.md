@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.440.0](https://github.com/bigcommerce/checkout-js/compare/v1.439.0...v1.440.0) (2024-02-05)
+
+
+### Features
+
+* **payment:** PAYPAL-3439 added error translation ([c9cf62a](https://github.com/bigcommerce/checkout-js/commit/c9cf62aa3c4657bb73528f38834f40dbb1edefc1))
+
 ## [1.439.0](https://github.com/bigcommerce/checkout-js/compare/v1.438.0...v1.439.0) (2024-02-01)
 
 
