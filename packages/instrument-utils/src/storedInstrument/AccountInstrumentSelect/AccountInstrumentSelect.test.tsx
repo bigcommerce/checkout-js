@@ -263,7 +263,7 @@ describe('AccountInstrumentSelect', () => {
 
         expect(screen.getByTestId('instrument-select-menu')).toBeInTheDocument();
 
-        expect(screen.getByText('ACH')).toBeInTheDocument();
+        expect(screen.getAllByText('ACH')[0]).toBeInTheDocument();
         expect(screen.getByText('Account number ending in: 0000')).toBeInTheDocument();
         expect(screen.getByText('Routing Number: 011000015')).toBeInTheDocument();
     });

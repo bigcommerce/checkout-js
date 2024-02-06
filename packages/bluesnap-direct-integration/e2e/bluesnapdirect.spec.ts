@@ -5,6 +5,43 @@ import {
 } from '@bigcommerce/checkout/test-framework';
 
 test.describe('BlueSnap Direct', () => {
+    test('Customer should be able to pay using Credit card with BlueSnap through the payment step in checkout', async ({
+        assertions,
+        checkout,
+        page,
+    }) => {
+        // 1. Testing environment setup
+        await checkout.use(new PaymentStepAsGuestEUPreset());
+        await checkout.start('Credit Card with BlueSnap in Payment Step');
+        // Optional: Add mockups.
+        await checkout.route(
+            /https:\/\/bigpay.service.bcdev\/pay\/hosted_forms\/.+\/field?.+|http:\/\/localhost:.+\/checkout\/payment\/hosted-field?.+/,
+            `${__dirname}/support/hostedField.ejs`,
+        );
+
+        // 2. Playwright actions
+        await checkout.goto();
+        await checkout.selectPaymentMethod('credit_card');
+        await page
+            .frameLocator('#bluesnap-hosted-iframe-ccn')
+            .getByRole('textbox', { name: 'Card number input' })
+            .fill('4111 1111 1111 1111');
+        await page
+            .frameLocator('#bluesnap-hosted-iframe-cvv')
+            .getByRole('textbox', { name: 'Card CVC/CVV input' })
+            .fill('737');
+        await page
+            .frameLocator('#bluesnap-hosted-iframe-exp')
+            .getByPlaceholder('MM / YY')
+            .fill('03 / 30');
+        await page.getByRole('textbox', { name: 'Name on Card' }).fill('John Smith');
+
+        await checkout.placeOrder();
+
+        // 3. Assertions
+        await assertions.shouldSeeOrderConfirmation();
+    });
+
     test('Customer should be able to pay using ECP/ACH with BlueSnap through the payment step in checkout', async ({
         assertions,
         checkout,

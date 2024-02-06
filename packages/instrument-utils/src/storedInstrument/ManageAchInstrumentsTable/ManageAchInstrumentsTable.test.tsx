@@ -57,7 +57,7 @@ describe('ManageAchInstrumentsTable', () => {
             </LocaleContext.Provider>,
         );
 
-        await userEvent.click(screen.getByText('Delete'));
+        await userEvent.click(screen.getAllByText('Delete')[0]);
 
         expect(defaultProps.onDeleteInstrument).toHaveBeenCalledWith(
             defaultProps.instruments[0].bigpayToken,
