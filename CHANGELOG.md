@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.441.2](https://github.com/bigcommerce/checkout-js/compare/v1.441.1...v1.441.2) (2024-02-06)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-3560 updated paypal commerce connect method mapping ([ac0332a](https://github.com/bigcommerce/checkout-js/commit/ac0332a9185079fb2c270247443a284e9ee8554e))
+
 ### [1.441.1](https://github.com/bigcommerce/checkout-js/compare/v1.441.0...v1.441.1) (2024-02-06)
 
 ## [1.441.0](https://github.com/bigcommerce/checkout-js/compare/v1.440.0...v1.441.0) (2024-02-06)
