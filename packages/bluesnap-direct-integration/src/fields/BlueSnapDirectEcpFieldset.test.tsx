@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
+import { render } from '@bigcommerce/checkout/test-utils';
 
 import BlueSnapDirectEcpFieldset, {
     BlueSnapDirectEcpFieldsetProps,
@@ -20,7 +20,6 @@ describe('BlueSnapDirectEcpFieldset', () => {
         };
         options = {
             language: createLanguageService(),
-            onPermissionChange: jest.fn(),
         };
     });
 
@@ -32,21 +31,5 @@ describe('BlueSnapDirectEcpFieldset', () => {
                 </Formik>,
             ),
         ).toMatchSnapshot();
-    });
-
-    it('should call onPermissionChange callback', () => {
-        render(
-            <Formik initialValues={initialValues} onSubmit={noop}>
-                <BlueSnapDirectEcpFieldset {...options} />
-            </Formik>,
-        );
-
-        const permissionChangeCheckbox = screen.getByLabelText(
-            options.language.translate('payment.bluesnap_direct_permission'),
-        );
-
-        fireEvent.click(permissionChangeCheckbox);
-
-        expect(options.onPermissionChange).toHaveBeenCalledWith(true);
     });
 });

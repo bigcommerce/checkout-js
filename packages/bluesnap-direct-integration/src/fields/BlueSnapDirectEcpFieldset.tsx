@@ -1,21 +1,17 @@
 import { LanguageService } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
-import { CheckboxFormField, Fieldset, Legend } from '@bigcommerce/checkout/ui';
-
 import BlueSnapDirectNumberField from './BlueSnapDirectNumberField';
 import BlueSnapDirectSelectField from './BlueSnapDirectSelectField';
 
 export interface BlueSnapDirectEcpFieldsetProps {
     language: LanguageService;
     useFloatingLabel?: boolean;
-    onPermissionChange: (shopperPermission: boolean) => void;
 }
 
 const BlueSnapDirectEcpFieldset: FunctionComponent<BlueSnapDirectEcpFieldsetProps> = ({
     language,
     useFloatingLabel,
-    onPermissionChange,
 }) => {
     const options = {
         helperLabel: language.translate('payment.bluesnap_direct_account_type_select.label'),
@@ -48,14 +44,7 @@ const BlueSnapDirectEcpFieldset: FunctionComponent<BlueSnapDirectEcpFieldsetProp
     };
 
     return (
-        <Fieldset
-            legend={
-                <Legend hidden>
-                    {language.translate('payment.bluesnap_direct_electronic_check_label')}
-                </Legend>
-            }
-            style={{ paddingBottom: '1rem' }}
-        >
+        <>
             <BlueSnapDirectNumberField
                 labelContent={language.translate('payment.bluesnap_direct_account_number.label')}
                 maxLength={17}
@@ -76,13 +65,7 @@ const BlueSnapDirectEcpFieldset: FunctionComponent<BlueSnapDirectEcpFieldsetProp
                 options={options}
                 useFloatingLabel={useFloatingLabel}
             />
-
-            <CheckboxFormField
-                labelContent={language.translate('payment.bluesnap_direct_permission')}
-                name="shopperPermission"
-                onChange={onPermissionChange}
-            />
-        </Fieldset>
+        </>
     );
 };
 

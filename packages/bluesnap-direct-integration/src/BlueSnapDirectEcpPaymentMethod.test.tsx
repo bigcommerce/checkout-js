@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom';
 import {
     CheckoutSelectors,
     CheckoutService,
@@ -11,10 +12,18 @@ import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import {
+    CheckoutContext,
+    PaymentFormContext,
     PaymentFormService,
     PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
+import {
+    getCustomer,
+    getGuestCustomer,
+    getInstruments,
+    getPaymentFormServiceMock,
+} from '@bigcommerce/checkout/test-mocks';
+import { act, fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import BlueSnapDirectEcpPaymentMethod from './BlueSnapDirectEcpPaymentMethod';
 import { getBlueSnapDirect } from './mocks/bluesnapdirect-method.mock';
@@ -33,9 +42,19 @@ describe('BlueSnapDirectEcp payment method', () => {
     let props: PaymentMethodProps;
     let initialValues: { [key: string]: unknown };
     let BlueSnapDirectEcpTest: FunctionComponent;
+    let paymentForm: PaymentFormService;
+    const method = getBlueSnapDirect('ecp');
+    const methodWithVaulting = {
+        ...method,
+        config: {
+            ...method.config,
+            isVaultingEnabled: true,
+        },
+    };
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
+        paymentForm = getPaymentFormServiceMock();
         initializePayment = jest
             .spyOn(checkoutService, 'initializePayment')
             .mockResolvedValue(checkoutState);
@@ -43,25 +62,29 @@ describe('BlueSnapDirectEcp payment method', () => {
             .spyOn(checkoutService, 'deinitializePayment')
             .mockResolvedValue(checkoutState);
         checkoutState = checkoutService.getState();
+        jest.spyOn(checkoutService, 'loadInstruments').mockResolvedValue(checkoutState);
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
         props = {
-            method: getBlueSnapDirect('ecp'),
+            method: methodWithVaulting,
             checkoutService,
             checkoutState,
-            paymentForm: {
-                disableSubmit: jest.fn(),
-                setValidationSchema: jest.fn(),
-            } as unknown as PaymentFormService,
+            paymentForm,
             language: createLanguageService(),
             onUnhandledError: jest.fn(),
         };
         initialValues = {
             accountNumber: '',
             routingNumber: '',
+            accountType: '',
         };
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
         BlueSnapDirectEcpTest = () => (
             <Formik initialValues={initialValues} onSubmit={noop}>
-                <BlueSnapDirectEcpPaymentMethod {...props} />
+                <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
+                    <PaymentFormContext.Provider value={{ paymentForm }}>
+                        <BlueSnapDirectEcpPaymentMethod {...props} />
+                    </PaymentFormContext.Provider>
+                </CheckoutContext.Provider>
             </Formik>
         );
     });
@@ -73,6 +96,20 @@ describe('BlueSnapDirectEcp payment method', () => {
             gatewayId: 'bluesnapdirect',
             methodId: 'ecp',
         });
+    });
+
+    it('loads instruments for signed in customer', () => {
+        render(<BlueSnapDirectEcpTest />);
+
+        expect(checkoutService.loadInstruments).toHaveBeenCalled();
+    });
+
+    it('should not load instruments for guest customers', () => {
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getGuestCustomer());
+
+        render(<BlueSnapDirectEcpTest />);
+
+        expect(checkoutService.loadInstruments).not.toHaveBeenCalled();
     });
 
     it('should enable submit button if user grants permission', () => {
@@ -101,5 +138,28 @@ describe('BlueSnapDirectEcp payment method', () => {
             gatewayId: 'bluesnapdirect',
             methodId: 'ecp',
         });
+    });
+
+    it('shows save instrument checkbox for registered customers', () => {
+        render(<BlueSnapDirectEcpTest />);
+
+        expect(screen.getByText('Save this account for future transactions')).toBeInTheDocument();
+    });
+
+    it('renders vaulting instruments select', async () => {
+        const allInstruments = getInstruments();
+        const achInstruments = allInstruments.filter((instrument) => instrument.method === 'ach');
+
+        jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(achInstruments);
+
+        render(<BlueSnapDirectEcpTest />);
+
+        await act(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 0));
+        });
+
+        expect(screen.getByTestId('account-instrument-fieldset')).toBeInTheDocument();
+        expect(screen.getByText('Account number ending in: 0000')).toBeInTheDocument();
+        expect(screen.getByText('Routing Number: 011000015')).toBeInTheDocument();
     });
 });
