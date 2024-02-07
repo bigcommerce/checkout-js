@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom';
 import {
     CheckoutSelectors,
     CheckoutService,
@@ -11,10 +12,18 @@ import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import {
+    CheckoutContext,
+    PaymentFormContext,
     PaymentFormService,
     PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
-import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
+import {
+    getCustomer,
+    getGuestCustomer,
+    getInstruments,
+    getPaymentFormServiceMock,
+} from '@bigcommerce/checkout/test-mocks';
+import { act, fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
 import BlueSnapDirectSepaPaymentMethod from './BlueSnapDirectSepaPaymentMethod';
 import { getBlueSnapDirect } from './mocks/bluesnapdirect-method.mock';
@@ -33,9 +42,19 @@ describe('BlueSnapDirectSepa payment method', () => {
     let props: PaymentMethodProps;
     let initialValues: { [key: string]: unknown };
     let BlueSnapDirectSepaTest: FunctionComponent;
+    let paymentForm: PaymentFormService;
+    const method = getBlueSnapDirect('sepa_direct_debit');
+    const methodWithVaulting = {
+        ...method,
+        config: {
+            ...method.config,
+            isVaultingEnabled: true,
+        },
+    };
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
+        paymentForm = getPaymentFormServiceMock();
         initializePayment = jest
             .spyOn(checkoutService, 'initializePayment')
             .mockResolvedValue(checkoutState);
@@ -43,15 +62,13 @@ describe('BlueSnapDirectSepa payment method', () => {
             .spyOn(checkoutService, 'deinitializePayment')
             .mockResolvedValue(checkoutState);
         checkoutState = checkoutService.getState();
+        jest.spyOn(checkoutService, 'loadInstruments').mockResolvedValue(checkoutState);
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
         props = {
-            method: getBlueSnapDirect('sepa_direct_debit'),
+            method: methodWithVaulting,
             checkoutService,
             checkoutState,
-            paymentForm: {
-                disableSubmit: jest.fn(),
-                setValidationSchema: jest.fn(),
-            } as unknown as PaymentFormService,
+            paymentForm,
             language: createLanguageService(),
             onUnhandledError: jest.fn(),
         };
@@ -61,9 +78,14 @@ describe('BlueSnapDirectSepa payment method', () => {
             lastName: '',
             routingNumber: '',
         };
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
         BlueSnapDirectSepaTest = () => (
             <Formik initialValues={initialValues} onSubmit={noop}>
-                <BlueSnapDirectSepaPaymentMethod {...props} />
+                <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
+                    <PaymentFormContext.Provider value={{ paymentForm }}>
+                        <BlueSnapDirectSepaPaymentMethod {...props} />
+                    </PaymentFormContext.Provider>
+                </CheckoutContext.Provider>
             </Formik>
         );
     });
@@ -75,6 +97,20 @@ describe('BlueSnapDirectSepa payment method', () => {
             gatewayId: 'bluesnapdirect',
             methodId: 'sepa_direct_debit',
         });
+    });
+
+    it('loads instruments for signed in customer', () => {
+        render(<BlueSnapDirectSepaTest />);
+
+        expect(checkoutService.loadInstruments).toHaveBeenCalled();
+    });
+
+    it('should not load instruments for guest customers', () => {
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getGuestCustomer());
+
+        render(<BlueSnapDirectSepaTest />);
+
+        expect(checkoutService.loadInstruments).not.toHaveBeenCalled();
     });
 
     it('should enable submit button if user grants permission', () => {
@@ -105,5 +141,29 @@ describe('BlueSnapDirectSepa payment method', () => {
             gatewayId: 'bluesnapdirect',
             methodId: 'sepa_direct_debit',
         });
+    });
+
+    it('shows save instrument checkbox for registered customers', () => {
+        render(<BlueSnapDirectSepaTest />);
+
+        expect(screen.getByText('Save this account for future transactions')).toBeInTheDocument();
+    });
+
+    it('renders vaulting instruments select', async () => {
+        const allInstruments = getInstruments();
+        const sepaInstruments = allInstruments.filter(
+            (instrument) => instrument.method === 'sepa_direct_debit',
+        );
+
+        jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(sepaInstruments);
+
+        render(<BlueSnapDirectSepaTest />);
+
+        await act(async () => {
+            await new Promise((resolve) => setTimeout(resolve, 0));
+        });
+
+        expect(screen.getByTestId('account-instrument-fieldset')).toBeInTheDocument();
+        expect(screen.getByText('Account number ending in: 0001')).toBeInTheDocument();
     });
 });

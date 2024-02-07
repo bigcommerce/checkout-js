@@ -4,7 +4,7 @@ import { object, ObjectSchema, string } from 'yup';
 
 export default memoize(function getEcpValidationSchema(
     language: LanguageService,
-    shouldRenderFields,
+    shouldRenderFields: boolean,
 ): ObjectSchema {
     const schema = {
         ...(!shouldRenderFields ? { instrumentId: string().required() } : {}),

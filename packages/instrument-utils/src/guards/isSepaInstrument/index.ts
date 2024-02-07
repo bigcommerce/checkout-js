@@ -1,0 +1,1 @@
+export { isSepaInstrument } from './isSepaInstrument';
