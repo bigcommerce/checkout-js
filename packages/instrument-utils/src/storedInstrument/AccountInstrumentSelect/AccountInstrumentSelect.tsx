@@ -18,7 +18,7 @@ import {
     IconSize,
 } from '@bigcommerce/checkout/ui';
 
-import { isAchInstrument, isBankAccountInstrument } from '../../guards';
+import { isAchInstrument, isBankAccountInstrument, isSepaInstrument } from '../../guards';
 
 interface AccountInstrumentUseNewButtonProps {
     className?: string;
@@ -117,6 +117,7 @@ const BankInstrumentMenuItem: FunctionComponent<BankInstrumentMenuItemProps> = (
 }) => {
     const issuerName = `Issuer: ${instrument.issuer}`;
     const accountNumber = `Account number ending in: ${instrument.accountNumber}`;
+    const shouldRenderIssuer = !isSepaInstrument(instrument);
 
     return (
         <button className={className} data-test={testId} onClick={onClick} type="button">
@@ -126,7 +127,7 @@ const BankInstrumentMenuItem: FunctionComponent<BankInstrumentMenuItemProps> = (
                     // abstract these icons in a similar way we did for credit cards.
                 }
                 <div className="instrumentSelect-card">{accountNumber}</div>
-                <div className="instrumentSelect-issuer">{issuerName}</div>
+                {shouldRenderIssuer && <div className="instrumentSelect-issuer">{issuerName}</div>}
             </div>
         </button>
     );

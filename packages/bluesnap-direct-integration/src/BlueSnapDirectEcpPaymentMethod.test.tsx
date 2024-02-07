@@ -148,7 +148,7 @@ describe('BlueSnapDirectEcp payment method', () => {
 
     it('renders vaulting instruments select', async () => {
         const allInstruments = getInstruments();
-        const achInstruments = allInstruments.filter((instrument) => instrument.method === 'ach');
+        const achInstruments = allInstruments.filter((instrument) => instrument.method === 'ecp');
 
         jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(achInstruments);
 
@@ -159,7 +159,7 @@ describe('BlueSnapDirectEcp payment method', () => {
         });
 
         expect(screen.getByTestId('account-instrument-fieldset')).toBeInTheDocument();
-        expect(screen.getByText('Account number ending in: 0000')).toBeInTheDocument();
-        expect(screen.getByText('Routing Number: 011000015')).toBeInTheDocument();
+        expect(screen.getByText('Account number ending in: 0001')).toBeInTheDocument();
+        expect(screen.getByText('Routing Number: 011000016')).toBeInTheDocument();
     });
 });
