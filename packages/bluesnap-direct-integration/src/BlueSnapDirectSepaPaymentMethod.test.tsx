@@ -164,6 +164,6 @@ describe('BlueSnapDirectSepa payment method', () => {
         });
 
         expect(screen.getByTestId('account-instrument-fieldset')).toBeInTheDocument();
-        expect(screen.getByText('Account number ending in: 0001')).toBeInTheDocument();
+        expect(screen.getByText('IBAN number: DE133123xx111')).toBeInTheDocument();
     });
 });
