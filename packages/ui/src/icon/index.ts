@@ -40,6 +40,7 @@ export { default as IconLock } from './IconLock';
 export { default as IconPrint } from './IconPrint';
 export { default as IconShibaInu } from './IconShibaInu';
 export { default as IconSuccess } from './IconSuccess';
+export { default as IconSepa } from './IconSepa';
 export { default as IconTag } from './IconTag';
 export { default as IconRemove } from './IconRemove';
 export { default as IconPaypal } from './IconPaypal';

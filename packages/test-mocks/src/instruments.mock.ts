@@ -105,7 +105,7 @@ export function getInstruments(): PaymentInstrument[] {
             iban: 'undefined',
             bigpayToken: '12341414',
             provider: 'bluesnap',
-            accountNumber: '0001',
+            accountNumber: 'DE133123xx111',
             issuer: '011000017',
             trustedShippingAddress: false,
             defaultInstrument: false,
