@@ -37,23 +37,21 @@
     display: block;
 }
 
-body.test_15 {
-    .payments {
-        display: block;
-    }
+.payments {
+    display: block;
+}
 
-    .cart-subscription.payments {
-        padding: 0;
-    }
+.cart-subscription.payments {
+    padding: 0;
+}
 
-    .cart-subscription:not(.payments) {
-        display: none;
-    }
+.cart-subscription:not(.payments) {
+    display: none;
+}
 
-    .cart-summary-wrapper-mobile.layout-cart {
-        padding-left: 0;
-        padding-right: 0;
-    }
+.cart-summary-wrapper-mobile.layout-cart {
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .free-shipping {
