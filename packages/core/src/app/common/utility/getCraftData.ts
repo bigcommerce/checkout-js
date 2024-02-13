@@ -28,6 +28,7 @@ interface VariantAttributesData {
     variant: VariantAttributes & { type: VARIANT_TYPES };
     defaultVariant: VariantAttributes & { type: VARIANT_TYPES };
     bigCommerceProduct: any;
+    bigCommercePricing: any;
   }>;
 }
 

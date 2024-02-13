@@ -38,9 +38,13 @@ const getBasePrice = async (items: any[], currencyCode: string, callback: (arg0:
     for(const variant of variants.data) {
         if(!variant) return;
         
-        const {variant: {globalVariantSku, usaVariantSku, supplyValue}, defaultVariant: {supplyValue: productDefaultSupplyValue}, bigCommerceProduct: {price: productDefaultPricing}} = variant;
+        const {
+            variant: {globalVariantSku, usaVariantSku, supplyValue},
+            defaultVariant: {supplyValue: productDefaultSupplyValue},
+            bigCommercePricing: {price: {as_entered: productDefaultPricing}}
+        } = variant;
         const variantSku = store === "global" ? globalVariantSku : usaVariantSku;
-        const quantity = items.find((item) => item.sku === variantSku)?.quantity;
+        const quantity = items.find((item) => item.sku.toLowerCase() === variantSku.toLowerCase())?.quantity;
 
         const markedUpPriceAmount = ((productDefaultPricing || 0) * (supplyValue || 1)) /
             (productDefaultSupplyValue || 1)
