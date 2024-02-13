@@ -2,8 +2,8 @@ import { OrderSummaryItemProps } from '../../order/OrderSummaryItem';
 import { apiEndpoint } from '../../recurly/config';
 
 export enum VARIANT_TYPES {
-    'subscription' = 'subscription',
-    'oneOff' = 'oneOff',
+  'subscription' = 'subscription',
+  'oneOff' = 'oneOff',
 }
 
 export interface VariantAttributes {
@@ -25,7 +25,9 @@ export interface VariantAttributes {
 
 interface VariantAttributesData {
   data: Array<null | {
-    variant: VariantAttributes & {type: VARIANT_TYPES};
+    variant: VariantAttributes & { type: VARIANT_TYPES };
+    defaultVariant: VariantAttributes & { type: VARIANT_TYPES };
+    bigCommerceProduct: any;
   }>;
 }
 
@@ -54,15 +56,15 @@ export const checkHasSubscription = async (items: OrderSummaryItemProps[], curre
   const variants = await getVariantsDataFromItems(items, currency);
 
   const subscriptionVariant = variants.data.find((variantData) => {
-      if(!variantData) return false;
+    if (!variantData) return false;
 
-      const {type} = variantData.variant;
+    const { type } = variantData.variant;
 
-      return type === VARIANT_TYPES.subscription;
+    return type === VARIANT_TYPES.subscription;
   });
 
-  return !!subscriptionVariant
-}
+  return !!subscriptionVariant;
+};
 
 export const checkIsSubscription = (item: OrderSummaryItemProps, currency: string) => {
   return checkHasSubscription([item], currency);

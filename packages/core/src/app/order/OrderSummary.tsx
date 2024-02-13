@@ -1,12 +1,17 @@
-import { LineItemMap, ShopperCurrency, StoreCurrency } from '@bigcommerce/checkout-sdk';
-import React, {FunctionComponent, ReactNode, useEffect, useMemo, useState} from 'react';
+import { DigitalItem, LineItemMap, PhysicalItem, ShopperCurrency, StoreCurrency } from '@bigcommerce/checkout-sdk';
+import React, {FunctionComponent, ReactNode, useMemo, useState} from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
+import { getVariantsDataFromItems } from '../common/utility/getCraftData';
 import { ShopperCurrency as ShopperCurrency2 } from '../currency';
 
-import getItemsCount from './getItemsCount';
+import mapFromCustom from './mapFromCustom';
+import mapFromDigital from './mapFromDigital';
+import mapFromGiftCertificate from './mapFromGiftCertificate';
+import mapFromPhysical from './mapFromPhysical';
 import OrderSummaryHeader from './OrderSummaryHeader';
+import { OrderSummaryItemProps } from './OrderSummaryItem';
 import OrderSummaryItems from './OrderSummaryItems';
 import OrderSummaryPrice from './OrderSummaryPrice';
 import OrderSummarySection from './OrderSummarySection';
@@ -24,19 +29,61 @@ export interface OrderSummaryProps {
     hasSubscription?: boolean;
 }
 
-const SavingBanner: FunctionComponent<any> = props => {
-    const { lineItems, amount, hasSubscription } = props;
+const getBasePrice = async (items: any[], currencyCode: string, callback: (arg0: number) => void) => {
+    const variants = await getVariantsDataFromItems(items, currencyCode);
+    const store = currencyCode === "USD" ? "usa" : "global";
 
-    const saving = useMemo(() => {
-        return parseFloat((amount / 0.9 - amount).toFixed(2));
-    }, [amount]);
-    const savingSubscription = useMemo(() => {
-        return parseFloat((amount / 0.85 - amount).toFixed(2));
-    }, [amount]);
+    let totalBasePrice = 0;
+
+    for(const variant of variants.data) {
+        if(!variant) return;
+        
+        const {variant: {globalVariantSku, usaVariantSku, supplyValue}, defaultVariant: {supplyValue: productDefaultSupplyValue}, bigCommerceProduct: {price: productDefaultPricing}} = variant;
+        const variantSku = store === "global" ? globalVariantSku : usaVariantSku;
+        const quantity = items.find((item) => item.sku === variantSku)?.quantity;
+
+        const markedUpPriceAmount = ((productDefaultPricing || 0) * (supplyValue || 1)) /
+            (productDefaultSupplyValue || 1)
+
+        totalBasePrice += markedUpPriceAmount * quantity;
+    }
+
+    // update state
+    callback(totalBasePrice);
+}
+
+const SavingBanner: FunctionComponent<any> = props => {
+    const { lineItems, amount, hasSubscription, currencyCode } = props;
+    const [basePrice, setBasePrice] = useState<number>(amount);
+
+    const items: OrderSummaryItemProps[] = [
+        ...lineItems.physicalItems
+            .slice()
+            .sort((item: PhysicalItem) => item.variantId)
+            .map(mapFromPhysical),
+        ...lineItems.giftCertificates.slice().map(mapFromGiftCertificate),
+        ...lineItems.digitalItems
+            .slice()
+            .sort((item: DigitalItem) => item.variantId)
+            .map(mapFromDigital),
+        ...(lineItems.customItems || []).map(mapFromCustom),
+    ];
+
+    getBasePrice(items, currencyCode, (calculatedBasePrice) => {
+        setBasePrice(calculatedBasePrice)
+    });
+
+    const savingAmount = useMemo(() => {
+        return parseFloat((basePrice - amount).toFixed(2));
+    }, [basePrice, amount]);
+
+    const savingPercent = useMemo(() => {
+        return parseFloat((100-(100*amount/basePrice)).toFixed(1));
+    }, [basePrice, amount]);
 
     return (
         <>{
-            (hasSubscription || getItemsCount(lineItems) > 2)  && (
+            (savingAmount > 0)  && (
                 <div className='saving-banner'>
                     <div className='banner-icon'>
                         <svg width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -45,8 +92,7 @@ const SavingBanner: FunctionComponent<any> = props => {
                             <path d="M14.539 9.54749L14.4035 9.41182L15.0809 8.73447L14.2678 7.92138L13.5904 8.59806L13.4557 8.4633C12.7068 7.71467 11.4926 7.71467 10.7446 8.4633C9.99572 9.21193 9.99572 10.4248 10.7446 11.1737L11.8285 12.2576C12.1282 12.558 12.1282 13.0424 11.8285 13.3426C11.5291 13.6423 11.044 13.6423 10.7446 13.3426L9.65963 12.2576C9.35992 11.9581 9.35992 11.4731 9.65963 11.1737L8.84654 10.3606C8.0977 11.1092 8.0977 12.3227 8.84654 13.0717L8.98198 13.2071L8.3044 13.8847L9.11749 14.6978L9.79574 14.0202L9.93051 14.1557C10.6793 14.9045 11.8936 14.9045 12.6416 14.1557C13.3905 13.407 13.3905 12.1936 12.6416 11.4445L11.5577 10.3606C11.258 10.0609 11.258 9.57579 11.5577 9.27638C11.8571 8.9769 12.3429 8.9769 12.6416 9.27638L13.7266 10.3606C14.0263 10.66 14.0263 11.1451 13.7266 11.4445L14.5389 12.2576C15.2877 11.5097 15.2877 10.2961 14.539 9.54765L14.539 9.54749Z" fill="white"/>
                         </svg>
                     </div>
-                    { !hasSubscription && (<div className='banner-text'>You’re saving <ShopperCurrency2 amount={ saving } />, that’s 10% off!</div>) }
-                    { hasSubscription && <div className='banner-text'>You’re saving <ShopperCurrency2 amount={ savingSubscription } /> every month, that’s 15% off!</div> }
+                    <div className='banner-text'>You’re saving <ShopperCurrency2 amount={ savingAmount } />{hasSubscription && " every month"}, that’s {savingPercent}% off!</div>
                 </div>)
         }
 
