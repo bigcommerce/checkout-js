@@ -47,7 +47,7 @@ const getBasePrice = async (items: any[], currencyCode: string, callback: (arg0:
         const quantity = items.find((item) => item.sku.toLowerCase() === variantSku.toLowerCase())?.quantity;
 
         const markedUpPriceAmount = ((productDefaultPricing || 0) * (supplyValue || 1)) /
-            (productDefaultSupplyValue || 1)
+            (productDefaultSupplyValue || 1);
 
         totalBasePrice += markedUpPriceAmount * quantity;
     }
