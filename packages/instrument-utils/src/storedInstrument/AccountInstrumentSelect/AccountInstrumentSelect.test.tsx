@@ -292,7 +292,7 @@ describe('AccountInstrumentSelect', () => {
         await userEvent.click(screen.getByTestId('instrument-select'));
 
         expect(screen.getByTestId('instrument-select-menu')).toBeInTheDocument();
-        expect(screen.getByText('IBAN number: DE133123xx111')).toBeInTheDocument();
+        expect(screen.getByText('Account Number (IBAN): DE133123xx111')).toBeInTheDocument();
     });
 
     it('notifies parent when instrument is selected and is an account instrument', async () => {

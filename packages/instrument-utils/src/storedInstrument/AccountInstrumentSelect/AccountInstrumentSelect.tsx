@@ -116,14 +116,15 @@ const SepaInstrumentMenuItem: FunctionComponent<BankInstrumentMenuItemProps> = (
     testId,
     onClick,
 }) => {
-    const accountNumber = `IBAN number: ${instrument.accountNumber}`;
-
     return (
         <button className={className} data-test={testId} onClick={onClick} type="button">
             <div className="instrumentSelect-details">
                 <IconSepa size={IconSize.Medium} />
                 <div className="instrumentSelect-bank">
-                    <div className="instrumentSelect-card">{accountNumber}</div>
+                    <div className="instrumentSelect-card">
+                        <TranslatedString id="payment.sepa_account_number" />:{' '}
+                        {instrument.accountNumber}
+                    </div>
                 </div>
             </div>
         </button>
