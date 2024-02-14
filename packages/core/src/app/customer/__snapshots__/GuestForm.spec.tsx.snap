@@ -81,8 +81,7 @@ exports[`GuestForm matches snapshot 1`] = `
         <p>
           Already have an account? 
           <a
-            href="#"
-            tabIndex="0"
+            tabIndex={0}
             role="button"
             data-test="customer-continue-button"
             id="checkout-customer-login"

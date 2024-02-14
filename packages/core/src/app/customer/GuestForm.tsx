@@ -102,8 +102,7 @@ const GuestForm: FunctionComponent<
                     <p>
                         <TranslatedString id="customer.login_text" />{' '}
                         <a
-                            href="#"
-                            tabIndex="0"
+                            tabIndex={0}
                             role="button"
                             data-test="customer-continue-button"
                             id="checkout-customer-login"
