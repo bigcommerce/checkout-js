@@ -4,7 +4,7 @@ import React, { FunctionComponent, memo, useCallback } from 'react';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { IconPaypal, IconSize, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
-import { isAchInstrument, isBankAccountInstrument } from '../../guards';
+import { isAchInstrument, isBankAccountInstrument, isSepaInstrument } from '../../guards';
 
 interface ManageInstrumentsRowProps {
     instrument: AccountInstrument;
@@ -24,8 +24,12 @@ const ManageInstrumentsRow: FunctionComponent<ManageInstrumentsRowProps> = ({
             <td data-test="manage-instrument-accountExternalId">
                 {isBankAccountInstrument(instrument) || isAchInstrument(instrument) ? (
                     <span className="instrumentModal-instrumentAccountNumber">
-                        <TranslatedString id="payment.instrument_manage_table_header_ending_in_text" />
-                        <span>{` ${instrument.accountNumber}`}</span>
+                        {isSepaInstrument(instrument) ? (
+                            <TranslatedString id="payment.sepa_account_number" />
+                        ) : (
+                            <TranslatedString id="payment.instrument_manage_table_header_ending_in_text" />
+                        )}
+                        {` ${instrument.accountNumber}`}
                     </span>
                 ) : (
                     <>
