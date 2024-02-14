@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.442.2](https://github.com/bigcommerce/checkout-js/compare/v1.442.1...v1.442.2) (2024-02-14)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-000 Add missing Order Comments input id ([#1697](https://github.com/bigcommerce/checkout-js/issues/1697)) ([30bd955](https://github.com/bigcommerce/checkout-js/commit/30bd9554954403298b16ca85e29bfa4b4ae3bb42))
+
 ### [1.442.1](https://github.com/bigcommerce/checkout-js/compare/v1.442.0...v1.442.1) (2024-02-12)
 
 ## [1.442.0](https://github.com/bigcommerce/checkout-js/compare/v1.441.3...v1.442.0) (2024-02-12)
