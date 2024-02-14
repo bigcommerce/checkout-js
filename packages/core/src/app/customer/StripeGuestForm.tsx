@@ -227,6 +227,9 @@ const StripeGuestForm: FunctionComponent<StripeGuestFormProps & FormikProps<Gues
                                 <TranslatedString id="customer.login_text"/>
                                 { ' ' }
                                 <a
+                                    href="#"
+                                    tabIndex="0"
+                                    role="button"
                                     data-test="customer-continue-button"
                                     id="checkout-customer-login"
                                     onClick={ onShowLogin }
