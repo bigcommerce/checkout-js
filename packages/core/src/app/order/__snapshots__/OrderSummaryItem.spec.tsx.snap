@@ -17,7 +17,16 @@ exports[`OrderSummaryItems when amount and amountAfterDiscount are different ren
       className="product-title optimizedCheckout-contentPrimary"
       data-test="cart-item-product-title"
     >
-      2 x Product
+      <span
+        className="product-item-quantity"
+      >
+        2
+      </span>
+      <span
+        className="product-item-name"
+      >
+        Product
+      </span>
     </h4>
     <ul
       className="product-options optimizedCheckout-contentSecondary"
@@ -28,7 +37,16 @@ exports[`OrderSummaryItems when amount and amountAfterDiscount are different ren
         data-test="test-id"
         key="0"
       >
-        <span />
+        <span
+          className="product-option-label"
+        >
+          Color
+        </span>
+        <span
+          className="product-option-value"
+        >
+          Red
+        </span>
       </li>
     </ul>
   </div>
