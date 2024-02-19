@@ -395,6 +395,7 @@
                 "incorrect_zip": "Twój adres rozliczeniowy nie został zweryfikowany. Sprawdź dane adresu rozliczeniowego i spróbuj ponownie.",
                 "insufficient_funds": "Płatność została odrzucona. Skontaktuj się z bankiem.",
                 "invalid_address": "Twój adres rozliczeniowy nie został zweryfikowany. Sprawdź dane adresu rozliczeniowego i spróbuj ponownie.",
+                "instrument_declined": "Informujemy, że całkowita kwota zamówienia została skorygowana w stosunku do pierwotnie potwierdzonej kwoty w systemie PayPal. Ta zmiana jest zgodna z przepisami i zabezpieczeniami określonymi w drugiej dyrektywie w sprawie usług płatniczych (PSD2). Aby kontynuować realizację zamówienia, potwierdź nową kwotę poprzez kliknięcie przycisku „Płatność PayPal” na dole strony.",
                 "invalid_amount": "Podczas przetwarzania Twojej płatności wystąpił błąd. Spróbuj ponownie lub skontaktuj się z nami.",
                 "invalid_authorization_code": "Podczas przetwarzania Twojej płatności wystąpił błąd. Spróbuj ponownie lub skontaktuj się z nami.",
                 "invalid_create_instrument_request": "Nie można przetworzyć płatności, ponieważ w transakcji podano nieprawidłowe dane.",

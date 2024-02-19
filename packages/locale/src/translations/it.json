@@ -395,6 +395,7 @@
                 "incorrect_zip": "Impossibile verificare l'indirizzo di fatturazione. Controlla i dettagli e riprova.",
                 "insufficient_funds": "Pagamento rifiutato. Contatta la tua banca.",
                 "invalid_address": "Impossibile verificare l'indirizzo di fatturazione. Controlla i dettagli e riprova.",
+                "instrument_declined": "Desideriamo informarti che l'importo totale del tuo ordine è stato rettificato rispetto alla somma inizialmente confermata con PayPal. Questa modifica è in conformità con le normative e le garanzie stabilite dalla Seconda Direttiva sui Servizi di Pagamento (PSD2). Per procedere con il completamento dell'ordine, ti preghiamo di confermare il nuovo totale facendo clic sul pulsante \"PayPal Checkout\" in fondo alla pagina.",
                 "invalid_amount": "Si è verificato un problema durante l'elaborazione del pagamento. Riprova o contattaci.",
                 "invalid_authorization_code": "Si è verificato un problema durante l'elaborazione del pagamento. Riprova o contattaci.",
                 "invalid_create_instrument_request": "Non è stato possibile elaborare il pagamento perché i dati forniti per la transazione non sono validi.",

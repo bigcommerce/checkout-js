@@ -395,6 +395,7 @@
                 "incorrect_zip": "Din faktureringsadress kunde inte verifieras. Kontrollera din faktureringsadress och försök igen.",
                 "insufficient_funds": "Betalningen nekades. Kontakta din bank.",
                 "invalid_address": "Din faktureringsadress kunde inte verifieras. Kontrollera din faktureringsadress och försök igen.",
+                "instrument_declined": "Vi vill informera dig om att det totala beloppet för din beställning har justerats från det ursprungligen bekräftade beloppet med PayPal. Denna ändring är i enlighet med de regler och skyddsåtgärder som anges i det andra betaltjänstdirektivet (PSD2). För att kunna slutföra din beställning ber vi dig bekräfta den nya totalsumman genom att klicka på knappen \"PayPal Checkout\" längst ned på sidan.",
                 "invalid_amount": "Det uppstod ett fel när betalningen bearbetades. Försök igen eller kontakta oss.",
                 "invalid_authorization_code": "Det uppstod ett fel när betalningen bearbetades. Försök igen eller kontakta oss.",
                 "invalid_create_instrument_request": "Det gick inte att bearbeta betalningen eftersom att ogiltigt e-postmeddelande levererades med transaktionen.",
