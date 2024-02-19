@@ -9,10 +9,10 @@ export default function Fees(props: any): any {
 
   return (
     <div className="dealer-fee-list">
-      <p>Transfer Fees:</p>
+      <p>Dealer Fees:</p>
       <ul>
         {
-          fees.map(function(fee: any) {
+          fees.map(function (fee: any) {
             return (<li>{`${fee.name}: ${fee.amount}`}</li>)
           })
         }

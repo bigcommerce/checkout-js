@@ -182,7 +182,8 @@ input:focus {
             color: #000;
             flex-direction: column;
             justify-content: space-evenly;
-            margin-bottom: 0 !important; /* stylelint-disable-line declaration-no-important */
+            margin-bottom: 0 !important;
+            /* stylelint-disable-line declaration-no-important */
             padding: 2rem 1rem 1rem 1rem;
             position: relative;
             text-align: center;
@@ -198,7 +199,8 @@ input:focus {
             }
 
             &-star {
-                background: url(../static/img/star.svg) !important; /* stylelint-disable-line declaration-no-important */
+                background: url(../static/img/star.svg) !important;
+                /* stylelint-disable-line declaration-no-important */
                 display: inline-block;
                 height: 1.5rem;
                 margin-right: 1rem;
@@ -531,8 +533,16 @@ input:focus {
 
 .dealer-schedule-list,
 .dealer-fee-list {
+    margin-bottom: 0.5rem;
+
     & ul {
-        list-style-type: none;
+        display: inline-block;
+        list-style-type: disc;
+    }
+
+    & p {
+        font-weight: bold;
+        margin-bottom: 0;
     }
 }
 
