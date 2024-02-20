@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.444.1](https://github.com/bigcommerce/checkout-js/compare/v1.444.0...v1.444.1) (2024-02-20)
+
+
+### Bug Fixes
+
+* **customer:** CHECKOUT-8033 Fix issue with subscription checkbox not selected ([#1706](https://github.com/bigcommerce/checkout-js/issues/1706)) ([4fd42df](https://github.com/bigcommerce/checkout-js/commit/4fd42dfb816516e123db8ca1fe252feeff42aefc))
+
 ## [1.444.0](https://github.com/bigcommerce/checkout-js/compare/v1.443.2...v1.444.0) (2024-02-20)
 
 
