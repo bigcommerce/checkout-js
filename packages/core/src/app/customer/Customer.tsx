@@ -64,6 +64,7 @@ export interface WithCheckoutCustomerProps {
     defaultShouldSubscribe: boolean;
     email?: string;
     firstName?: string;
+    fixNewsletterCheckboxExperimentEnabled: boolean;
     forgotPasswordUrl: string;
     isContinuingAsGuest: boolean;
     isCreatingAccount: boolean;
@@ -200,8 +201,8 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             initialize={initializeCustomer}
             isInitializing={isInitializing}
             methodIds={checkoutButtonIds}
-            onError={onUnhandledError}
             onClick={onWalletButtonClick}
+            onError={onUnhandledError}
           />;
 
         const isLoadingGuestForm = isWalletButtonsOnTop ?
@@ -282,11 +283,15 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             createAccountError,
             requiresMarketingConsent,
             isFloatingLabelEnabled,
+            defaultShouldSubscribe,
+            fixNewsletterCheckboxExperimentEnabled,
         } = this.props;
 
         return (
             <CreateAccountForm
                 createAccountError={createAccountError}
+                defaultShouldSubscribe={defaultShouldSubscribe}
+                fixNewsletterCheckboxExperimentEnabled={fixNewsletterCheckboxExperimentEnabled}
                 formFields={customerAccountFields}
                 isCreatingAccount={isCreatingAccount}
                 isExecutingPaymentMethodCheckout={isExecutingPaymentMethodCheckout}
@@ -596,12 +601,15 @@ export function mapToWithCheckoutCustomerProps({
             isSignInEmailEnabled,
             isAccountCreationEnabled,
             isExpressPrivacyPolicy,
+            features,
         },
     } = config as StoreConfig & { checkoutSettings: { isAccountCreationEnabled: boolean } };
 
     const providerWithCustomCheckout = getProviderWithCustomCheckout(
         config.checkoutSettings.providerWithCustomCheckout,
     );
+
+    const fixNewsletterCheckboxExperimentEnabled = features['CHECKOUT-8033.fix_newletter_checkbox'];
 
     return {
         customerAccountFields: getCustomerAccountFields(),
@@ -616,6 +624,7 @@ export function mapToWithCheckoutCustomerProps({
         executePaymentMethodCheckout: checkoutService.executePaymentMethodCheckout,
         email: billingAddress?.email || customer?.email,
         firstName: customer?.firstName,
+        fixNewsletterCheckboxExperimentEnabled,
         forgotPasswordUrl: config.links.forgotPasswordLink,
         initializeCustomer: checkoutService.initializeCustomer,
         isCreatingAccount: isCreatingCustomerAccount(),
