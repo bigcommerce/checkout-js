@@ -395,6 +395,7 @@
                 "incorrect_zip": "Uw factuuradres kan niet worden geverifieerd. Controleer uw factuuradresgegevens en probeer het opnieuw.",
                 "insufficient_funds": "Betaling is geweigerd. Neem contact op met uw bank.",
                 "invalid_address": "Uw factuuradres kan niet worden geverifieerd. Controleer uw factuuradresgegevens en probeer het opnieuw.",
+                "instrument_declined": "We willen je erop wijzen dat het totaalbedrag voor je bestelling is aangepast ten opzichte van het oorspronkelijk bevestigde bedrag met PayPal. Deze wijziging is in overeenstemming met de voorschriften en waarborgen die zijn vastgelegd in de Tweede Payment Services Directive (PSD2). Om verder te gaan met het voltooien van je bestelling, moet je het nieuwe totaal bevestigen door op de knop 'PayPal Checkout' onderaan de pagina te klikken.",
                 "invalid_amount": "Er is een fout opgetreden bij het verwerken van uw betaling. Probeer het opnieuw of neem contact met ons op.",
                 "invalid_authorization_code": "Er is een fout opgetreden bij het verwerken van uw betaling. Probeer het opnieuw of neem contact met ons op.",
                 "invalid_create_instrument_request": "Kan de betaling niet verwerken omdat er ongeldige gegevens zijn opgegeven bij de transactie.",
