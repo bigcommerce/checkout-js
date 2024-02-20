@@ -200,8 +200,8 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             initialize={initializeCustomer}
             isInitializing={isInitializing}
             methodIds={checkoutButtonIds}
-            onError={onUnhandledError}
             onClick={onWalletButtonClick}
+            onError={onUnhandledError}
           />;
 
         const isLoadingGuestForm = isWalletButtonsOnTop ?
@@ -282,11 +282,13 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             createAccountError,
             requiresMarketingConsent,
             isFloatingLabelEnabled,
+            defaultShouldSubscribe
         } = this.props;
 
         return (
             <CreateAccountForm
                 createAccountError={createAccountError}
+                defaultShouldSubscribe={defaultShouldSubscribe}
                 formFields={customerAccountFields}
                 isCreatingAccount={isCreatingAccount}
                 isExecutingPaymentMethodCheckout={isExecutingPaymentMethodCheckout}

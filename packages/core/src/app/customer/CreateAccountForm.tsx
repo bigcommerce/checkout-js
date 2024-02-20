@@ -23,14 +23,48 @@ export interface CreateAccountFormProps {
     isCreatingAccount?: boolean;
     isExecutingPaymentMethodCheckout?: boolean;
     requiresMarketingConsent: boolean;
+    defaultShouldSubscribe: boolean;
     isFloatingLabelEnabled?: boolean;
     onCancel?(): void;
     onSubmit(values: CreateAccountFormValues): void;
 }
 
+function getacceptsMarketingEmailsDefault(defaultShouldSubscribe: boolean, requiresMarketingConsent: boolean): string[] {
+    if (defaultShouldSubscribe) {
+        return ['1'];
+    }
+
+    return requiresMarketingConsent ? [] : ['0'];
+}
+
+function transformFormFieldsData(formFields: FormField[], defaultShouldSubscribe: boolean): FormField[] {
+    return formFields.map(field => {
+        if (field.name === 'acceptsMarketingEmails') {
+            const { options } = field;
+            const items = options?.items || [];
+            
+            const updatedItems = items.map(item => {
+                return {
+                    value: defaultShouldSubscribe ? '1' : item.value,
+                    label: item.label,
+                }
+            });
+
+            return {
+                ...field,
+                options: {
+                    items: updatedItems,
+                }
+            }
+        }
+
+        return field;
+    });
+}
+
 const CreateAccountForm: FunctionComponent<
     CreateAccountFormProps & WithLanguageProps & FormikProps<CreateAccountFormValues>
-> = ({ formFields, createAccountError, isCreatingAccount, isExecutingPaymentMethodCheckout, onCancel, isFloatingLabelEnabled }) => {
+> = ({ formFields, createAccountError, isCreatingAccount, isExecutingPaymentMethodCheckout, onCancel, isFloatingLabelEnabled, defaultShouldSubscribe }) => {
     const createAccountErrorMessage = useMemo(() => {
         if (!createAccountError) {
             return;
@@ -65,7 +99,7 @@ const CreateAccountForm: FunctionComponent<
                     <Alert type={AlertType.Error}>{createAccountErrorMessage}</Alert>
                 )}
                 <div className="create-account-form">
-                    {formFields.map((field) => (
+                    {transformFormFieldsData(formFields, defaultShouldSubscribe).map((field) => (
                         <DynamicFormField
                             autocomplete={field.name}
                             extraClass={`dynamic-form-field--${field.name}`}
@@ -81,8 +115,8 @@ const CreateAccountForm: FunctionComponent<
             <div className="form-actions">
                 <Button
                     disabled={isCreatingAccount || isExecutingPaymentMethodCheckout}
-                    isLoading={isCreatingAccount || isExecutingPaymentMethodCheckout}
                     id="checkout-customer-create"
+                    isLoading={isCreatingAccount || isExecutingPaymentMethodCheckout}
                     testId="customer-continue-create"
                     type="submit"
                     variant={ButtonVariant.Primary}
@@ -109,13 +143,13 @@ export default withLanguage(
         handleSubmit: (values, { props: { onSubmit = noop } }) => {
             onSubmit(values);
         },
-        mapPropsToValues: ({ requiresMarketingConsent }) => ({
+        mapPropsToValues: ({ defaultShouldSubscribe, requiresMarketingConsent }) => ({
             firstName: '',
             lastName: '',
             email: '',
             password: '',
             customFields: {},
-            acceptsMarketingEmails: requiresMarketingConsent ? [] : ['0'],
+            acceptsMarketingEmails: getacceptsMarketingEmailsDefault(defaultShouldSubscribe, requiresMarketingConsent),
         }),
         validationSchema: ({
             language,
