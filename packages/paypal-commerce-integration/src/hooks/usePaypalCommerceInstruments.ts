@@ -19,31 +19,40 @@ const usePaypalCommerceInstrument = (method: PaymentMethod) => {
         () => instruments.filter(isAccountInstrument),
         [instruments],
     );
+
+    const trustedAccountInstruments = useMemo(
+        () => accountInstruments.filter((instrument) => instrument.trustedShippingAddress),
+        [accountInstruments],
+    );
+
+    const hasAccountInstruments = accountInstruments.length > 0;
+
     const isInstrumentFeatureAvailable =
         !customer?.isGuest && Boolean(method.config.isVaultingEnabled);
     const shouldShowInstrumentFieldset =
-        isInstrumentFeatureAvailable && accountInstruments.length > 0;
+        isInstrumentFeatureAvailable &&
+        hasAccountInstruments &&
+        !method.initializationData.isComplete;
+
     const shouldCreateNewInstrument = shouldShowInstrumentFieldset && !currentInstrument;
     const shouldConfirmInstrument =
-        shouldShowInstrumentFieldset &&
-        !!currentInstrument &&
-        !currentInstrument.trustedShippingAddress;
+        shouldShowInstrumentFieldset && !!currentInstrument && !trustedAccountInstruments.length;
 
     const getDefaultInstrument = (): AccountInstrument | undefined => {
-        if (!accountInstruments.length) {
+        if (!trustedAccountInstruments.length) {
             return;
         }
 
-        const defaultAccountInstrument = accountInstruments.filter(
+        const defaultAccountInstrument = trustedAccountInstruments.filter(
             ({ defaultInstrument }) => defaultInstrument,
         );
 
-        return defaultAccountInstrument[0] || accountInstruments[0];
+        return defaultAccountInstrument[0] || trustedAccountInstruments[0];
     };
 
     useEffect(() => {
         setCurrentInstrument(isInstrumentFeatureAvailable ? getDefaultInstrument() : undefined);
-    }, [isInstrumentFeatureAvailable, accountInstruments]);
+    }, [isInstrumentFeatureAvailable, trustedAccountInstruments]);
 
     useEffect(() => {
         if (!shouldShowInstrumentFieldset) {
@@ -53,11 +62,11 @@ const usePaypalCommerceInstrument = (method: PaymentMethod) => {
 
     const handleSelectInstrument = useCallback(
         (id: string) => {
-            setCurrentInstrument(find(accountInstruments, { bigpayToken: id }));
+            setCurrentInstrument(find(trustedAccountInstruments, { bigpayToken: id }));
             setFieldValue('instrumentId', id);
             setFieldValue('shouldSetAsDefaultInstrument', false);
         },
-        [accountInstruments, setFieldValue],
+        [trustedAccountInstruments, setFieldValue],
     );
 
     const handleUseNewInstrument = useCallback(() => {
@@ -68,7 +77,7 @@ const usePaypalCommerceInstrument = (method: PaymentMethod) => {
     }, [setFieldValue]);
 
     return {
-        accountInstruments,
+        trustedAccountInstruments,
         currentInstrument,
         handleSelectInstrument,
         handleUseNewInstrument,

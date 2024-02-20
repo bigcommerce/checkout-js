@@ -4,7 +4,7 @@ import {
     AccountInstrumentFieldset,
     StoreInstrumentFieldset,
 } from '@bigcommerce/checkout/instrument-utils';
-import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { TranslatedHtml } from '@bigcommerce/checkout/locale';
 import {
     PaymentMethodProps,
     PaymentMethodResolveId,
@@ -30,7 +30,7 @@ const PayPalCommercePaymentMethod: FunctionComponent<PaymentMethodProps> = (prop
     } = props;
 
     const {
-        accountInstruments,
+        trustedAccountInstruments,
         currentInstrument,
         handleSelectInstrument,
         handleUseNewInstrument,
@@ -75,7 +75,7 @@ const PayPalCommercePaymentMethod: FunctionComponent<PaymentMethodProps> = (prop
             >
                 {shouldShowInstrumentFieldset && (
                     <AccountInstrumentFieldset
-                        instruments={accountInstruments}
+                        instruments={trustedAccountInstruments}
                         onSelectInstrument={handleSelectInstrument}
                         onUseNewInstrument={handleUseNewInstrument}
                         selectedInstrument={currentInstrument}
@@ -84,7 +84,7 @@ const PayPalCommercePaymentMethod: FunctionComponent<PaymentMethodProps> = (prop
 
                 {shouldConfirmInstrument && (
                     <div>
-                        <TranslatedString id="payment.bank_account_instrument_trusted_shipping_address_text" />
+                        <TranslatedHtml id="payment.account_instrument_new_shipping_address" />
                     </div>
                 )}
 

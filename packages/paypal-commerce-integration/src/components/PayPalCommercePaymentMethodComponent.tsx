@@ -173,11 +173,7 @@ const PayPalCommercePaymentMethodComponent: FunctionComponent<
         };
     }, []);
 
-    return children ? (
-        <div className="paypalCommercePaymentMethodComponent">{children}</div>
-    ) : (
-        <></>
-    );
+    return children ? <>{children}</> : <></>;
 };
 
 export default PayPalCommercePaymentMethodComponent;
