@@ -20,6 +20,7 @@ import './CreateAccountForm.scss';
 export interface CreateAccountFormProps {
     formFields: FormField[];
     createAccountError?: Error;
+    fixNewsletterCheckboxExperimentEnabled: boolean;
     isCreatingAccount?: boolean;
     isExecutingPaymentMethodCheckout?: boolean;
     requiresMarketingConsent: boolean;
@@ -29,7 +30,7 @@ export interface CreateAccountFormProps {
     onSubmit(values: CreateAccountFormValues): void;
 }
 
-function getacceptsMarketingEmailsDefault(defaultShouldSubscribe: boolean, requiresMarketingConsent: boolean): string[] {
+function getAcceptsMarketingEmailsDefault(defaultShouldSubscribe: boolean, requiresMarketingConsent: boolean): string[] {
     if (defaultShouldSubscribe) {
         return ['1'];
     }
@@ -64,7 +65,7 @@ function transformFormFieldsData(formFields: FormField[], defaultShouldSubscribe
 
 const CreateAccountForm: FunctionComponent<
     CreateAccountFormProps & WithLanguageProps & FormikProps<CreateAccountFormValues>
-> = ({ formFields, createAccountError, isCreatingAccount, isExecutingPaymentMethodCheckout, onCancel, isFloatingLabelEnabled, defaultShouldSubscribe }) => {
+> = ({ fixNewsletterCheckboxExperimentEnabled, formFields, createAccountError, isCreatingAccount, isExecutingPaymentMethodCheckout, onCancel, isFloatingLabelEnabled, defaultShouldSubscribe }) => {
     const createAccountErrorMessage = useMemo(() => {
         if (!createAccountError) {
             return;
@@ -88,6 +89,9 @@ const CreateAccountForm: FunctionComponent<
         return createAccountError.message;
     }, [createAccountError]);
 
+    const fields = fixNewsletterCheckboxExperimentEnabled ?
+        transformFormFieldsData(formFields, defaultShouldSubscribe): formFields;
+
     return (
         <Form
             className="checkout-form"
@@ -99,7 +103,7 @@ const CreateAccountForm: FunctionComponent<
                     <Alert type={AlertType.Error}>{createAccountErrorMessage}</Alert>
                 )}
                 <div className="create-account-form">
-                    {transformFormFieldsData(formFields, defaultShouldSubscribe).map((field) => (
+                    {fields.map((field) => (
                         <DynamicFormField
                             autocomplete={field.name}
                             extraClass={`dynamic-form-field--${field.name}`}
@@ -149,7 +153,7 @@ export default withLanguage(
             email: '',
             password: '',
             customFields: {},
-            acceptsMarketingEmails: getacceptsMarketingEmailsDefault(defaultShouldSubscribe, requiresMarketingConsent),
+            acceptsMarketingEmails: getAcceptsMarketingEmailsDefault(defaultShouldSubscribe, requiresMarketingConsent),
         }),
         validationSchema: ({
             language,
