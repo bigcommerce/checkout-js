@@ -18,7 +18,11 @@ export default memoize(function getEcpValidationSchema(
                           /^\d+$/,
                           language.translate('payment.bluesnap_direct_account_number.only_numbers'),
                       )
-                      .min(8, language.translate('payment.bluesnap_direct_account_number.length')),
+                      .min(4, language.translate('payment.bluesnap_direct_account_number.length'))
+                      .max(
+                          17,
+                          language.translate('payment.bluesnap_direct_account_number.length_max'),
+                      ),
                   routingNumber: string()
                       .required(
                           language.translate('payment.bluesnap_direct_routing_number.is_required'),

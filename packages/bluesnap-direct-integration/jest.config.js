@@ -9,4 +9,5 @@ module.exports = {
     },
     setupFilesAfterEnv: ['../../jest-setup.ts'],
     coverageDirectory: '../../coverage/packages/bluesnap-direct-integration',
+    coveragePathIgnorePatterns: ['./e2e', './src/mocks'],
 };
