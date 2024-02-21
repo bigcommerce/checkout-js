@@ -199,7 +199,8 @@
                 "label": "Account Number",
                 "is_required": "Account Number is required",
                 "only_numbers": "Account Number must contain only numbers",
-                "length": "Account Number must have at least 8 digits"
+                "length": "Account Number must have at least 4 digits",
+                "length_max": "Account Number must have at least 17 digits"
             },
             "bluesnap_direct_iban": {
                 "label": "IBAN",
