@@ -36,58 +36,6 @@ test.describe('Adyenv2', () => {
         await assertions.shouldSeeOrderConfirmation();
     });
 
-    test('Customer should be able to pay using 3d secure Credit Card with Adyenv2 in payment step in checkout', async ({
-        assertions,
-        checkout,
-        page,
-    }) => {
-        // 1. Testing environment setup
-        await checkout.use(new PaymentStepAsGuestPreset());
-        await checkout.start('3d secure Credit Card in Payment Step');
-
-        // 2. Playwright actions
-        await checkout.goto();
-        await checkout.route(
-            /https:\/\/bigpay.service.bcdev\/pay\/hosted_forms\/.+\/field?.+|http:\/\/localhost:.+\/checkout\/payment\/hosted-field?.+/,
-            `${__dirname}/support/hostedField.ejs`,
-        );
-        await checkout.selectPaymentMethod('scheme');
-        await page
-            .frameLocator(
-                'label >> internal:has-text="Card number"i >> iframe[title="Iframe for secured card data input field"]',
-            )
-            .getByPlaceholder('1234 5678 9012 3456')
-            .fill('4871 0499 9999 9910');
-        await page
-            .frameLocator(
-                'label >> internal:has-text="Expiry date"i >> iframe[title="Iframe for secured card data input field"]',
-            )
-            .getByPlaceholder('MM/YY')
-            .fill('03/30');
-        await page
-            .frameLocator(
-                'label >> internal:has-text="CVC / CVV"i >> iframe[title="Iframe for secured card data input field"]',
-            )
-            .getByPlaceholder('123')
-            .fill('737');
-        await checkout.placeOrder();
-        await page
-            .frameLocator('iframe[name="threeDSIframe"]')
-            .getByPlaceholder("enter the word 'password'")
-            .click();
-        await page
-            .frameLocator('iframe[name="threeDSIframe"]')
-            .getByPlaceholder("enter the word 'password'")
-            .fill('password');
-        await page
-            .frameLocator('iframe[name="threeDSIframe"]')
-            .getByRole('button', { name: 'Continue' })
-            .click();
-
-        // 3. Assertions
-        await assertions.shouldSeeOrderConfirmation();
-    });
-
     test('Customer should be able to pay using Credit Card with Adyenv2 in payment step in checkout', async ({
         assertions,
         checkout,
