@@ -159,7 +159,6 @@ const EmailLoginForm: FunctionComponent<
                 <p>
                     <TranslatedHtml
                         data={{
-                            email: formEmail,
                             minutes: Math.round(expiry / 60),
                         }}
                         id={
