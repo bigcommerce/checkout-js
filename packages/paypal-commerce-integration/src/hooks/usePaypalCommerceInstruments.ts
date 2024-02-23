@@ -28,11 +28,10 @@ const usePaypalCommerceInstrument = (method: PaymentMethod) => {
     const hasAccountInstruments = accountInstruments.length > 0;
 
     const isInstrumentFeatureAvailable =
-        !customer?.isGuest && Boolean(method.config.isVaultingEnabled);
+        !customer?.isGuest && Boolean(method.config.isVaultingEnabled) && !method.initializationData.isComplete;
     const shouldShowInstrumentFieldset =
         isInstrumentFeatureAvailable &&
-        hasAccountInstruments &&
-        !method.initializationData.isComplete;
+        hasAccountInstruments;
 
     const shouldCreateNewInstrument = shouldShowInstrumentFieldset && !currentInstrument;
     const shouldConfirmInstrument =

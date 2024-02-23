@@ -74,11 +74,12 @@ describe('PayPalCommercePaymentMethodComponent', () => {
                 container: '#checkout-payment-continue',
                 onInit: expect.any(Function),
                 submitForm: expect.any(Function),
+                onRenderButton: expect.any(Function),
                 onError: expect.any(Function),
                 onValidate: expect.any(Function),
                 onInitButton: expect.any(Function),
                 getFieldsValues: expect.any(Function),
-                shouldNotRenderOnInitialization: true,
+                shouldRenderPayPalButtonOnInitialization: false,
             },
         });
     });
@@ -110,9 +111,10 @@ describe('PayPalCommercePaymentMethodComponent', () => {
                 onError: expect.any(Function),
                 onValidate: expect.any(Function),
                 submitForm: expect.any(Function),
+                onRenderButton: expect.any(Function),
                 onInitButton: expect.any(Function),
                 getFieldsValues: expect.any(Function),
-                shouldNotRenderOnInitialization: true,
+                shouldRenderPayPalButtonOnInitialization: false,
                 onInit: expect.any(Function),
                 apmFieldsStyles: {
                     variables: {
@@ -176,6 +178,26 @@ describe('PayPalCommercePaymentMethodComponent', () => {
         await new Promise((resolve) => process.nextTick(resolve));
 
         expect(getByTestId(testId)).toBeInTheDocument();
+    });
+
+    it('hides payment submit button by calling onRenderButton callback', async () => {
+        jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+            eventEmitter.on('onRenderButton', () => {
+                if (options.paypalcommerce?.onRenderButton) {
+                    options.paypalcommerce.onRenderButton();
+                }
+            });
+
+            return Promise.resolve(checkoutState);
+        });
+
+        render(<PayPalCommercePaymentMethodComponent {...props} />);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        eventEmitter.emit('onRenderButton');
+
+        expect(paymentForm.hidePaymentSubmitButton).toHaveBeenCalledWith(props.method, true);
     });
 
     it('shows payment submit button if we have selected vaulted instrument', async () => {
