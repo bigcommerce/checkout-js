@@ -170,7 +170,6 @@ describe('EmailLoginForm', () => {
         expect(component.find('p').find(TranslatedHtml).props()).toEqual({
             id: 'login_email.sent_text',
             data: {
-                email: 'foo@bar.com',
                 minutes: 15,
             },
         });
