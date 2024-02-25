@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.444.3](https://github.com/bigcommerce/checkout-js/compare/v1.444.2...v1.444.3) (2024-02-25)
+
+
+### Bug Fixes
+
+* **customer:** CHECKOUT-8073 Remove email address from message on sign in link ([#1711](https://github.com/bigcommerce/checkout-js/issues/1711)) ([d8a98d6](https://github.com/bigcommerce/checkout-js/commit/d8a98d6c6637310f434f14448a171bbad29cb2e8))
+
 ### [1.444.2](https://github.com/bigcommerce/checkout-js/compare/v1.444.1...v1.444.2) (2024-02-21)
 
 ### [1.444.1](https://github.com/bigcommerce/checkout-js/compare/v1.444.0...v1.444.1) (2024-02-20)
