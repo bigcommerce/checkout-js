@@ -163,7 +163,7 @@
             "error_server": "No hemos podido enviarle un enlace de inicio de sesión. Vuelva a intentarlo.",
             "error_not_found": "El correo electrónico introducido no está asociado a una cuenta. Pruebe con otro correo electrónico.",
             "sent_header": "Compruebe su bandeja de entrada",
-            "sent_text": "Hemos enviado tu enlace para iniciar sesión a <strong>{email}</strong>. Este enlace caduca en 15 minutos. Si no lo encuentras, revisa la carpeta de correo no deseado.",
+            "sent_text": "If the entered email address is associated with this store, you will receive a sign-in link shortly. This link expires in 15 minutes. If you don't see it, check your junk folder.",
             "text": "Introduzca la dirección de correo electrónico asociada a su cuenta. Le enviaremos un enlace de inicio de sesión.",
             "header": "Enlace para iniciar sesión en la cuenta",
             "header_with_email": "Confirme su dirección de correo electrónico",
