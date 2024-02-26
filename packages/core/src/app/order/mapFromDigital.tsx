@@ -17,7 +17,8 @@ function mapFromDigital(item: DigitalItem): OrderSummaryItemProps {
         productOptions: [
             ...(item.options || []).map((option) => ({
                 testId: 'cart-item-product-option',
-                content: `${option.name} ${option.value}`,
+                optionLabel: `${option.name}`,
+                optionValue: `${option.value}`,
             })),
             getDigitalItemDescription(item),
         ],

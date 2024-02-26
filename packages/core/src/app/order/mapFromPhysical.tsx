@@ -14,7 +14,8 @@ function mapFromPhysical(item: PhysicalItem): OrderSummaryItemProps {
         description: item.giftWrapping ? item.giftWrapping.name : undefined,
         productOptions: (item.options || []).map((option) => ({
             testId: 'cart-item-product-option',
-            content: `${option.name} ${option.value}`,
+            optionLabel: `${option.name}`,
+            optionValue: `${option.value}`,
         })),
     };
 }
