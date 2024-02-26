@@ -163,7 +163,7 @@
             "error_server": "Vi kunne ikke sende deg en påloggingslenke. Prøv igjen.",
             "error_not_found": "Den angitte e-posten er ikke knyttet til en konto. Prøv med en annen e-post.",
             "sent_header": "Sjekk innboksen din",
-            "sent_text": "Påloggingskoblingen din er på vei til <strong>{email}</strong> . Denne lenken utløper om 15 minutter. Hvis du ikke ser den, se søppelpostmappen.",
+            "sent_text": "If the entered email address is associated with this store, you will receive a sign-in link shortly. This link expires in 15 minutes. If you don't see it, check your junk folder.",
             "text": "Skriv inn e-postadressen knyttet til kontoen din. Vi sender deg en påloggingslenke.",
             "header": "Link for kontopålogging",
             "header_with_email": "Bekreft e-postadressen din",

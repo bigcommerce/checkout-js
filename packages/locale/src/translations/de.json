@@ -163,7 +163,7 @@
             "error_server": "Wir konnten Ihnen keinen Anmeldelink senden. Bitte versuchen Sie es erneut.",
             "error_not_found": "Die eingegebene E-Mail-Adresse ist nicht mit einem Konto verknüpft. Bitte versuchen Sie es mit einer anderen E-Mail-Adresse.",
             "sent_header": "Überprüfen Sie Ihren Posteingang",
-            "sent_text": "Ihr Anmeldelink ist auf dem Weg zu <strong>{email}</strong>. Dieser Link läuft in 15 Minuten ab. Wenn Sie die E-Mail nicht sehen, überprüfen Sie Ihren Spam-Ordner.",
+            "sent_text": "If the entered email address is associated with this store, you will receive a sign-in link shortly. This link expires in 15 minutes. If you don't see it, check your junk folder.",
             "text": "Geben Sie die mit Ihrem Konto verknüpfte E-Mail-Adresse ein. Wir senden Ihnen einen Anmeldelink.",
             "header": "Anmeldelink für das Konto",
             "header_with_email": "Bitte bestätigen Sie Ihre E-Mail-Adresse",

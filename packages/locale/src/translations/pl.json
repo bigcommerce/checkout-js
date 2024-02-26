@@ -163,7 +163,7 @@
             "error_server": "Nie mogliśmy wysłać Ci linku do logowania. Spróbuj ponownie.",
             "error_not_found": "Wprowadzony adres e-mail nie jest powiązany z kontem. Spróbuj podać inny adres e-mail.",
             "sent_header": "Sprawdź swoją skrzynkę odbiorczą",
-            "sent_text": "Twoje łącze logowania jest w drodze na <strong>{email}</strong>. Łącze to wygasa za 15 minut. Jeśli go nie widzisz, sprawdź folder śmieci.",
+            "sent_text": "If the entered email address is associated with this store, you will receive a sign-in link shortly. This link expires in 15 minutes. If you don't see it, check your junk folder.",
             "text": "Wpisz adres e-mail przypisany do twojego konta. Wyślemy ci link do logowania.",
             "header": "Łącze logowania do konta",
             "header_with_email": "Potwierdź swój adres e-mail",

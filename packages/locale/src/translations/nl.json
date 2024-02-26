@@ -163,7 +163,7 @@
             "error_server": "We konden u geen inloglink sturen. Probeer het opnieuw.",
             "error_not_found": "Het ingevoerde e-mailadres is niet gekoppeld aan een account. Probeer het met een ander e-mailadres.",
             "sent_header": "Controleer uw inbox",
-            "sent_text": "Je inloglink wordt verstuurd naar <strong>{email}</strong>. Deze link verloopt binnen 15 minuten. Als je hem niet ziet, controleer dan je map met ongewenste e-mail.",
+            "sent_text": "If the entered email address is associated with this store, you will receive a sign-in link shortly. This link expires in 15 minutes. If you don't see it, check your junk folder.",
             "text": "Voer het e-mailadres in dat aan uw account is gekoppeld. We sturen u een inloglink.",
             "header": "Inloglink van account",
             "header_with_email": "Bevestig uw e-mailadres",

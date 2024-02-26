@@ -163,7 +163,7 @@
             "error_server": "Non è stato possibile inviarti un link per l'accesso. Riprova.",
             "error_not_found": "L'e-mail inserita non è associata a nessun account. Prova con un indirizzo diverso.",
             "sent_header": "Controlla la casella di posta",
-            "sent_text": "Il tuo link di accesso sta per arrivare a <strong>{email}</strong>. Il link scadrà tra 15 minuti. Se non lo vedi, controlla la cartella della posta indesiderata.",
+            "sent_text": "If the entered email address is associated with this store, you will receive a sign-in link shortly. This link expires in 15 minutes. If you don't see it, check your junk folder.",
             "text": "Inserisci l'indirizzo e-mail associato al tuo account. Ti invieremo un link per l'accesso.",
             "header": "Link di accesso all'account",
             "header_with_email": "Conferma il tuo indirizzo e-mail",

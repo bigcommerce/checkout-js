@@ -163,7 +163,7 @@
             "error_server": "Envoi du lien de connexion impossible. Veuillez réessayer.",
             "error_not_found": "L'adresse e-mail saisie n'est associée à aucun compte. Veuillez saisir une autre adresse e-mail.",
             "sent_header": "Vérifiez votre boîte de réception",
-            "sent_text": "Nous avons envoyé un e-mail contenant un lien de connexion à l'adresse <strong>{email}</strong>. Ce lien expirera dans 15 minutes. Si vous ne le voyez pas apparaître dans votre boîte de réception, vérifiez vos courriers indésirables.",
+            "sent_text": "If the entered email address is associated with this store, you will receive a sign-in link shortly. This link expires in 15 minutes. If you don't see it, check your junk folder.",
             "text": "Veuillez saisir l'adresse e-mail associée à votre compte. Nous vous enverrons un lien de connexion.",
             "header": "Lien de connexion au compte",
             "header_with_email": "Confirmez votre adresse e-mail",

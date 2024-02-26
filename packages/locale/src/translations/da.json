@@ -163,7 +163,7 @@
             "error_server": "Vi kunne ikke sende dig et link til logon. Prøv igen.",
             "error_not_found": "Den indtastede e-mail er ikke knyttet til en konto. Prøv med en anden e-mail.",
             "sent_header": "Tjek din indbakke",
-            "sent_text": "Dit link til login er på vej til <strong>{email}</strong>. Linket udløber om 15 minutter. Hvis du ikke kan se det, skal du tjekke spam-mappen.",
+            "sent_text": "If the entered email address is associated with this store, you will receive a sign-in link shortly. This link expires in 15 minutes. If you don't see it, check your junk folder.",
             "text": "Indtast den e-mailadresse, der er knyttet til din konto. Vi sender dig et link til logon.",
             "header": "Link til login for konto",
             "header_with_email": "Bekræft din e-mailadresse",
