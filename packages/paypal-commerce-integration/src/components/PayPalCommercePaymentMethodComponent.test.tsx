@@ -1,4 +1,9 @@
-import { createCheckoutService, LanguageService } from '@bigcommerce/checkout-sdk';
+import {
+    AccountInstrument,
+    createCheckoutService,
+    HostedInstrument,
+    LanguageService,
+} from '@bigcommerce/checkout-sdk';
 import { render } from '@testing-library/react';
 import { EventEmitter } from 'events';
 import React from 'react';
@@ -28,6 +33,26 @@ describe('PayPalCommercePaymentMethodComponent', () => {
         providerOptionsKey: 'paypalcommerce',
     };
 
+    const untrustedAccountInstrument: AccountInstrument = {
+        bigpayToken: '31415',
+        provider: 'paypalcommerce',
+        externalId: 'untrusted@external-id.com',
+        trustedShippingAddress: false,
+        defaultInstrument: false,
+        method: 'paypal',
+        type: 'account',
+    };
+
+    const trustedAccountInstrument: AccountInstrument = {
+        bigpayToken: '31415',
+        provider: 'paypalcommerce',
+        externalId: 'trusted@external-id.com',
+        trustedShippingAddress: true,
+        defaultInstrument: true,
+        method: 'paypal',
+        type: 'account',
+    };
+
     beforeEach(() => {
         jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
         jest.spyOn(paymentForm, 'validateForm').mockResolvedValue({});
@@ -47,11 +72,14 @@ describe('PayPalCommercePaymentMethodComponent', () => {
             methodId: props.method.id,
             paypalcommerce: {
                 container: '#checkout-payment-continue',
-                onRenderButton: expect.any(Function),
+                onInit: expect.any(Function),
                 submitForm: expect.any(Function),
+                onRenderButton: expect.any(Function),
                 onError: expect.any(Function),
                 onValidate: expect.any(Function),
                 onInitButton: expect.any(Function),
+                getFieldsValues: expect.any(Function),
+                shouldRenderPayPalButtonOnInitialization: false,
             },
         });
     });
@@ -80,11 +108,14 @@ describe('PayPalCommercePaymentMethodComponent', () => {
             methodId: props.method.id,
             paypalcommercealternativemethods: {
                 container: '#checkout-payment-continue',
-                onRenderButton: expect.any(Function),
                 onError: expect.any(Function),
                 onValidate: expect.any(Function),
                 submitForm: expect.any(Function),
+                onRenderButton: expect.any(Function),
                 onInitButton: expect.any(Function),
+                getFieldsValues: expect.any(Function),
+                shouldRenderPayPalButtonOnInitialization: false,
+                onInit: expect.any(Function),
                 apmFieldsStyles: {
                     variables: {
                         borderRadius: '4px',
@@ -169,6 +200,60 @@ describe('PayPalCommercePaymentMethodComponent', () => {
         expect(paymentForm.hidePaymentSubmitButton).toHaveBeenCalledWith(props.method, true);
     });
 
+    it('shows payment submit button if we have selected vaulted instrument', async () => {
+        render(
+            <PayPalCommercePaymentMethodComponent
+                {...props}
+                currentInstrument={trustedAccountInstrument}
+                shouldConfirmInstrument={false}
+            />,
+        );
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(paymentForm.hidePaymentSubmitButton).toHaveBeenCalledWith(props.method, false);
+    });
+
+    it('hides payment submit button if we have selected untrusted vaulted instrument', async () => {
+        render(
+            <PayPalCommercePaymentMethodComponent
+                {...props}
+                currentInstrument={untrustedAccountInstrument}
+                shouldConfirmInstrument
+            />,
+        );
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(paymentForm.hidePaymentSubmitButton).toHaveBeenCalledWith(props.method, true);
+    });
+
+    it('calls the getFieldsValues method with shouldSaveInstrument true if we need to confirm the selected instrument', async () => {
+        let shouldSaveInstrument: boolean | undefined;
+
+        jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
+            if (options.paypalcommerce?.getFieldsValues) {
+                const formFields: HostedInstrument = options.paypalcommerce.getFieldsValues();
+
+                shouldSaveInstrument = formFields.shouldSaveInstrument;
+            }
+
+            return Promise.resolve(checkoutState);
+        });
+
+        render(
+            <PayPalCommercePaymentMethodComponent
+                {...props}
+                currentInstrument={untrustedAccountInstrument}
+                shouldConfirmInstrument
+            />,
+        );
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(shouldSaveInstrument).toBeTruthy();
+    });
+
     it('submits payment form by calling submitForm callback', async () => {
         jest.spyOn(checkoutService, 'initializePayment').mockImplementation((options) => {
             eventEmitter.on('submitForm', () => {
@@ -236,7 +321,9 @@ describe('PayPalCommercePaymentMethodComponent', () => {
 
         eventEmitter.emit('onError');
 
-        expect(onUnhandledErrorMock).toHaveBeenCalledWith(new Error(props.language.translate('payment.errors.instrument_declined')));
+        expect(onUnhandledErrorMock).toHaveBeenCalledWith(
+            new Error(props.language.translate('payment.errors.instrument_declined')),
+        );
     });
 
     it('passed form validation by calling onValidate callback', async () => {
