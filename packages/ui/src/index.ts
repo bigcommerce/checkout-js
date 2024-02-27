@@ -60,6 +60,7 @@ export {
     IconLiteCoin,
     IconProps,
     IconShibaInu,
+    IconSepa,
     IconUsdCoin,
     IconAch,
 } from './icon';

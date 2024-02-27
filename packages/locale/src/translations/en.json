@@ -163,7 +163,7 @@
             "error_server": "We couldn't send you a sign-in link. Please try again.",
             "error_not_found": "The entered email is not associated to an account. Please try with a different email.",
             "sent_header": "Check your inbox",
-            "sent_text": "Your sign-in link is on its way to <strong>{email}</strong>. This link expires in 15 minutes. If you don’t see it, check your junk folder.",
+            "sent_text": "If the entered email address is associated with this store, you will receive a sign-in link shortly. This link expires in 15 minutes. If you don't see it, check your junk folder.",
             "text": "Enter the email address associated to your account. We will send you a sign-in link.",
             "header": "Account sign-in link",
             "header_with_email": "Confirm your email address",

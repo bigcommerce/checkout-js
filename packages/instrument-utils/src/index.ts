@@ -44,6 +44,7 @@ export {
     assertIsCardInstrument,
     isAccountInstrument,
     isAchInstrument,
+    isSepaInstrument,
     isBankAccountInstrument,
     isCardInstrument,
     isInstrumentCardCodeRequired,

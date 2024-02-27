@@ -2,6 +2,80 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.445.0](https://github.com/bigcommerce/checkout-js/compare/v1.444.5...v1.445.0) (2024-02-26)
+
+
+### Features
+
+* **other:** LOCAL-1444 delivery translation ([#1715](https://github.com/bigcommerce/checkout-js/issues/1715)) ([96ede68](https://github.com/bigcommerce/checkout-js/commit/96ede6891f55a451f03dfaf5ec5912e86258352b))
+* **payment:** PAYPAL-3371 bump ([85dfc04](https://github.com/bigcommerce/checkout-js/commit/85dfc04d871c171088a8eab7451eaf7d2a568331))
+
+### [1.444.5](https://github.com/bigcommerce/checkout-js/compare/v1.444.4...v1.444.5) (2024-02-26)
+
+### [1.444.4](https://github.com/bigcommerce/checkout-js/compare/v1.444.3...v1.444.4) (2024-02-26)
+
+### [1.444.3](https://github.com/bigcommerce/checkout-js/compare/v1.444.2...v1.444.3) (2024-02-25)
+
+
+### Bug Fixes
+
+* **customer:** CHECKOUT-8073 Remove email address from message on sign in link ([#1711](https://github.com/bigcommerce/checkout-js/issues/1711)) ([d8a98d6](https://github.com/bigcommerce/checkout-js/commit/d8a98d6c6637310f434f14448a171bbad29cb2e8))
+
+### [1.444.2](https://github.com/bigcommerce/checkout-js/compare/v1.444.1...v1.444.2) (2024-02-21)
+
+### [1.444.1](https://github.com/bigcommerce/checkout-js/compare/v1.444.0...v1.444.1) (2024-02-20)
+
+
+### Bug Fixes
+
+* **customer:** CHECKOUT-8033 Fix issue with subscription checkbox not selected ([#1706](https://github.com/bigcommerce/checkout-js/issues/1706)) ([4fd42df](https://github.com/bigcommerce/checkout-js/commit/4fd42dfb816516e123db8ca1fe252feeff42aefc))
+
+## [1.444.0](https://github.com/bigcommerce/checkout-js/compare/v1.443.2...v1.444.0) (2024-02-20)
+
+
+### Features
+
+* **other:** LOCAL-1444 delivery translation ([#1704](https://github.com/bigcommerce/checkout-js/issues/1704)) ([b7de939](https://github.com/bigcommerce/checkout-js/commit/b7de939f742cfbdf27ab8bed35ddb6063df8c437))
+
+### [1.443.2](https://github.com/bigcommerce/checkout-js/compare/v1.443.1...v1.443.2) (2024-02-19)
+
+### [1.443.1](https://github.com/bigcommerce/checkout-js/compare/v1.443.0...v1.443.1) (2024-02-15)
+
+## [1.443.0](https://github.com/bigcommerce/checkout-js/compare/v1.442.2...v1.443.0) (2024-02-14)
+
+
+### Features
+
+* **payment:** PI-1355 added specific list item for stored sepa ([1512ee5](https://github.com/bigcommerce/checkout-js/commit/1512ee52837f01019a104032da450c5054fb46c1))
+* **payment:** PI-1355 added specific list item for stored sepa on delete table ([9568c04](https://github.com/bigcommerce/checkout-js/commit/9568c04a91fde665c36b0bb0d35e4ba6a1624c04))
+* **payment:** PI-1355 bump sdk version ([c48e71b](https://github.com/bigcommerce/checkout-js/commit/c48e71b052dc32eb300c0c979e67da378f93252c))
+* **payment:** PI-1355 stored sepa for bluesnap ([b1d0519](https://github.com/bigcommerce/checkout-js/commit/b1d0519aae1774f50e55fe54d61cf50b3db7c084))
+
+### [1.442.2](https://github.com/bigcommerce/checkout-js/compare/v1.442.1...v1.442.2) (2024-02-14)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-000 Add missing Order Comments input id ([#1697](https://github.com/bigcommerce/checkout-js/issues/1697)) ([30bd955](https://github.com/bigcommerce/checkout-js/commit/30bd9554954403298b16ca85e29bfa4b4ae3bb42))
+
+### [1.442.1](https://github.com/bigcommerce/checkout-js/compare/v1.442.0...v1.442.1) (2024-02-12)
+
+## [1.442.0](https://github.com/bigcommerce/checkout-js/compare/v1.441.3...v1.442.0) (2024-02-12)
+
+
+### Features
+
+* **payment:** PAYPAL-3405 bump checkout-sdk ([2ee06d1](https://github.com/bigcommerce/checkout-js/commit/2ee06d14fe51c8ae74bb44845b3a3acc3a27a6f9))
+
+### [1.441.3](https://github.com/bigcommerce/checkout-js/compare/v1.441.2...v1.441.3) (2024-02-08)
+
+### [1.441.2](https://github.com/bigcommerce/checkout-js/compare/v1.441.1...v1.441.2) (2024-02-06)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-3560 updated paypal commerce connect method mapping ([ac0332a](https://github.com/bigcommerce/checkout-js/commit/ac0332a9185079fb2c270247443a284e9ee8554e))
+
 ### [1.441.1](https://github.com/bigcommerce/checkout-js/compare/v1.441.0...v1.441.1) (2024-02-06)
 
 ## [1.441.0](https://github.com/bigcommerce/checkout-js/compare/v1.440.0...v1.441.0) (2024-02-06)

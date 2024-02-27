@@ -15,10 +15,11 @@ import {
     IconAch,
     IconNewAccount,
     IconPaypal,
+    IconSepa,
     IconSize,
 } from '@bigcommerce/checkout/ui';
 
-import { isAchInstrument, isBankAccountInstrument } from '../../guards';
+import { isAchInstrument, isBankAccountInstrument, isSepaInstrument } from '../../guards';
 
 interface AccountInstrumentUseNewButtonProps {
     className?: string;
@@ -109,6 +110,27 @@ interface BankInstrumentMenuItemProps {
     onClick?(): void;
 }
 
+const SepaInstrumentMenuItem: FunctionComponent<BankInstrumentMenuItemProps> = ({
+    className,
+    instrument,
+    testId,
+    onClick,
+}) => {
+    return (
+        <button className={className} data-test={testId} onClick={onClick} type="button">
+            <div className="instrumentSelect-details">
+                <IconSepa size={IconSize.Medium} />
+                <div className="instrumentSelect-bank">
+                    <div className="instrumentSelect-card">
+                        <TranslatedString id="payment.sepa_account_number" />:{' '}
+                        {instrument.accountNumber}
+                    </div>
+                </div>
+            </div>
+        </button>
+    );
+};
+
 const BankInstrumentMenuItem: FunctionComponent<BankInstrumentMenuItemProps> = ({
     className,
     instrument,
@@ -149,6 +171,16 @@ const AccountInstrumentOption: FunctionComponent<AccountInstrumentOptionProps> =
     if (isAchInstrument(instrument)) {
         return (
             <AchInstrumentMenuItem
+                instrument={instrument}
+                onClick={handleClick}
+                testId="instrument-select-option"
+            />
+        );
+    }
+
+    if (isSepaInstrument(instrument)) {
+        return (
+            <SepaInstrumentMenuItem
                 instrument={instrument}
                 onClick={handleClick}
                 testId="instrument-select-option"
@@ -230,6 +262,17 @@ const AccountInstrumentSelectButton: FunctionComponent<AccountInstrumentSelectBu
         return (
             <AccountInstrumentUseNewButton
                 className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
+                testId={testId}
+            />
+        );
+    }
+
+    if (isSepaInstrument(instrument)) {
+        return (
+            <SepaInstrumentMenuItem
+                className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
+                instrument={instrument}
+                onClick={onClick}
                 testId={testId}
             />
         );

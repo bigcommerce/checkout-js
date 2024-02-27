@@ -1,6 +1,7 @@
 /* istanbul ignore file */
 export { isAccountInstrument } from './isAccountInstrument';
 export { isAchInstrument } from './isAchInstrument';
+export { isSepaInstrument } from './isSepaInstrument';
 export { assertIsBankInstrument, isBankAccountInstrument } from './isBankInstrument';
 export { assertIsCardInstrument, isCardInstrument } from './isCardInstrument';
 export { isInstrumentCardCodeRequired } from './isInstrumentCardCodeRequired';

@@ -31,7 +31,7 @@ const OrderComments: FunctionComponent = () => {
 
     return (
         <Fieldset legend={legend} testId="checkout-shipping-comments">
-            <FormField input={renderInput} label={renderLabel} name="orderComment" />
+            <FormField input={renderInput} label={renderLabel} name="orderComment" id="orderComment" />
         </Fieldset>
     );
 };
