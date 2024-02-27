@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.446.1](https://github.com/bigcommerce/checkout-js/compare/v1.446.0...v1.446.1) (2024-02-27)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-3566 fixed vaulting checkboxes ([4120db5](https://github.com/bigcommerce/checkout-js/commit/4120db59ab8734d4caa459648450a073a2e969aa))
+
 ## [1.446.0](https://github.com/bigcommerce/checkout-js/compare/v1.445.0...v1.446.0) (2024-02-27)
 
 
