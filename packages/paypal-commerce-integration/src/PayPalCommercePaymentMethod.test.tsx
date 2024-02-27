@@ -1,4 +1,4 @@
-import { createCheckoutService } from '@bigcommerce/checkout-sdk';
+import { AccountInstrument, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Formik } from 'formik';
@@ -11,11 +11,7 @@ import {
     PaymentFormContext,
     PaymentMethodProps,
 } from '@bigcommerce/checkout/payment-integration-api';
-import {
-    getInstruments,
-    getPaymentFormServiceMock,
-    getStoreConfig,
-} from '@bigcommerce/checkout/test-mocks';
+import { getPaymentFormServiceMock, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 import { act } from '@bigcommerce/checkout/test-utils';
 
 import { getPayPalCommerceMethod } from './mocks/paymentMethods.mock';
@@ -35,6 +31,16 @@ describe('PayPalCommercePaymentMethod', () => {
         paymentForm,
         language: localeContext.language,
         onUnhandledError: jest.fn(),
+    };
+
+    const accountInstrument: AccountInstrument = {
+        bigpayToken: '31415',
+        provider: 'paypalcommerce',
+        externalId: 'test@external-id.com',
+        trustedShippingAddress: false,
+        defaultInstrument: false,
+        method: 'paypal',
+        type: 'account',
     };
 
     const PayPalCommercePaymentMethodMock: FunctionComponent<PaymentMethodProps> = (
@@ -81,7 +87,7 @@ describe('PayPalCommercePaymentMethod', () => {
         beforeEach(() => {
             props.method.config.isVaultingEnabled = true;
 
-            jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(getInstruments());
+            jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([accountInstrument]);
 
             jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);
 
@@ -101,20 +107,11 @@ describe('PayPalCommercePaymentMethod', () => {
         });
 
         it('shows instruments fieldset when there is at least one stored instrument with trusted shipping address', async () => {
-            const accountInstruments = getInstruments().find(
-                (instrument) =>
-                    instrument.type === 'account' && instrument.provider === 'paypalcommerce',
-            );
-
             jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue([
-                ...(accountInstruments
-                    ? [
-                          {
-                              ...accountInstruments,
-                              trustedShippingAddress: true,
-                          },
-                      ]
-                    : []),
+                {
+                    ...accountInstrument,
+                    trustedShippingAddress: true,
+                },
             ]);
 
             render(<PayPalCommercePaymentMethodMock {...props} />);

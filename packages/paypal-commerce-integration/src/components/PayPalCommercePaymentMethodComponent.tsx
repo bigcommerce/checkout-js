@@ -68,7 +68,7 @@ const PayPalCommercePaymentMethodComponent: FunctionComponent<
         }
     };
 
-    const renderButton = useCallback(() => {
+    const togglePaypalButton = useCallback(() => {
         if (currentInstrument && !shouldConfirmInstrument) {
             paymentForm.hidePaymentSubmitButton(method, false);
             hasPayPalButton.current = false;
@@ -84,8 +84,8 @@ const PayPalCommercePaymentMethodComponent: FunctionComponent<
     }, [currentInstrument]);
 
     useEffect(() => {
-        renderButton();
-    }, [renderButton, renderButtonRef.current]);
+        togglePaypalButton();
+    }, [togglePaypalButton, renderButtonRef.current]);
 
     useEffect(() => {
         void validateButton();
