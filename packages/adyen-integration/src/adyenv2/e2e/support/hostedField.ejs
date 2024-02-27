@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div id="hosted-field"></div>
+<script src="https://checkout-sdk.bigcommerce.com/v1/loader.js"></script>
+<script>
+    checkoutKitLoader
+        .load('hosted-form')
+        .then(function(module) {
+            module.initializeHostedInput({
+                "containerId":"hosted-field",
+                "parentOrigin":"<%= storeUrl %>",
+            });
+        });
+</script>
+</body>
+</html>
