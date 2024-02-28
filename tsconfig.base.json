@@ -17,6 +17,7 @@
     "noUnusedParameters": true,
     "paths": {
       "@bigcommerce/checkout/adyen-integration": ["packages/adyen-integration/src/index.ts"],
+      "@bigcommerce/checkout/affirm-integration": ["packages/affirm-integration/src/index.ts"],
       "@bigcommerce/checkout/analytics": ["packages/analytics/src/index.ts"],
       "@bigcommerce/checkout/apple-pay-integration": [
         "packages/apple-pay-integration/src/index.ts"
