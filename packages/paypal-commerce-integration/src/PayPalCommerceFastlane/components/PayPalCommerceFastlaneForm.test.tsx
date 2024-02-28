@@ -16,10 +16,10 @@ import {
 import { getCardInstrument, getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import PayPalCommerceAcceleratedCheckoutForm from './PayPalCommerceAcceleratedCheckoutForm';
+import PayPalCommerceFastlaneForm from './PayPalCommerceFastlaneForm';
 
-describe('PayPalCommerceAcceleratedCheckoutForm', () => {
-    let PayPalCommerceAcceleratedCheckoutFormMock: FunctionComponent;
+describe('PayPalCommerceFastlaneForm', () => {
+    let PayPalCommerceFastlaneFormMock: FunctionComponent;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
     let paymentForm: PaymentFormService;
@@ -31,11 +31,11 @@ describe('PayPalCommerceAcceleratedCheckoutForm', () => {
 
         jest.spyOn(checkoutState.data, 'getPaymentProviderCustomer').mockReturnValue({});
 
-        PayPalCommerceAcceleratedCheckoutFormMock = () => (
+        PayPalCommerceFastlaneFormMock = () => (
             <CheckoutContext.Provider value={{ checkoutService, checkoutState }}>
                 <PaymentFormContext.Provider value={{ paymentForm }}>
                     <Formik initialValues={{}} onSubmit={noop}>
-                        <PayPalCommerceAcceleratedCheckoutForm />
+                        <PayPalCommerceFastlaneForm />
                     </Formik>
                 </PaymentFormContext.Provider>
             </CheckoutContext.Provider>
@@ -51,14 +51,14 @@ describe('PayPalCommerceAcceleratedCheckoutForm', () => {
             instruments: [getCardInstrument()],
         });
 
-        render(<PayPalCommerceAcceleratedCheckoutFormMock />);
+        render(<PayPalCommerceFastlaneFormMock />);
 
-        expect(screen.getByTestId('paypal-commerce-axo-instrument-form')).toBeInTheDocument();
+        expect(screen.getByTestId('paypal-commerce-fastlane-instrument-form')).toBeInTheDocument();
     });
 
-    it('shows paypal connect credit card form if customer does not have any instrument', () => {
-        render(<PayPalCommerceAcceleratedCheckoutFormMock />);
+    it('shows paypal fastlane credit card form if customer does not have any instrument', () => {
+        render(<PayPalCommerceFastlaneFormMock />);
 
-        expect(screen.getByTestId('paypal-commerce-axo-cc-form-container')).toBeInTheDocument();
+        expect(screen.getByTestId('paypal-commerce-fastlane-cc-form-container')).toBeInTheDocument();
     });
 });
