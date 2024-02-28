@@ -3,19 +3,19 @@
 exports[`PayPalCommerceAcceleratedCheckoutInstrumentsForm renders instruments form with provided props 1`] = `
 <div>
   <div
-    class="paypal-commerce-axo-instrument"
-    data-test="paypal-commerce-axo-instrument-form"
+    class="paypal-commerce-fastlane-instrument"
+    data-test="paypal-commerce-fastlane-instrument-form"
   >
     <div>
       <div
-        class="paypal-commerce-axo-instrument-details"
+        class="paypal-commerce-fastlane-instrument-details"
       >
         <div
           class="cardIcon-icon cardIcon-icon--default icon icon--medium"
         />
         <div
           class="instrumentSelect-card"
-          data-test="paypal-connect-instrument-last4"
+          data-test="paypal-fastlane-instrument-last4"
         >
           <span>
             ●●●● 
@@ -24,7 +24,7 @@ exports[`PayPalCommerceAcceleratedCheckoutInstrumentsForm renders instruments fo
         </div>
       </div>
       <div
-        class="paypal-commerce-axo-instrument-branding"
+        class="paypal-commerce-fastlane-instrument-branding"
       >
         <div
           class="powered-by-paypal-connect"
@@ -90,11 +90,11 @@ exports[`PayPalCommerceAcceleratedCheckoutInstrumentsForm renders instruments fo
       </div>
     </div>
     <div
-      class="paypal-commerce-axo-instrument-change-action"
+      class="paypal-commerce-fastlane-instrument-change-action"
     >
       <button
         class="button button--tertiary button--tiny optimizedCheckout-buttonSecondary"
-        data-test="paypal-commerce-connect-instrument-change"
+        data-test="paypal-commerce-fastlane-instrument-change"
         type="button"
       >
         Change

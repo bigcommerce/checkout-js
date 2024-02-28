@@ -11,21 +11,21 @@ import {
 } from '@bigcommerce/checkout/payment-integration-api';
 import { FormContext, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
-import PayPalCommerceAcceleratedCheckoutForm from './components/PayPalCommerceAcceleratedCheckoutForm';
+import PayPalCommerceFastlaneForm from './components/PayPalCommerceFastlaneForm';
 
-export interface PayPalConnectCardComponentRef {
-    render?: (container: string) => void;
-    showPayPalConnectCardSelector?: () => Promise<CardInstrument | undefined>;
+export interface PayPalFastlaneCardComponentRef {
+    renderPayPalCardComponent?: (container: string) => void;
+    showPayPalCardSelector?: () => Promise<CardInstrument | undefined>;
 }
 
-const PayPalCommerceAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
+const PayPalCommerceFastlanePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     method,
     checkoutService,
     checkoutState,
     onUnhandledError,
     paymentForm,
 }) => {
-    const paypalConnectCardComponentRef = useRef<PayPalConnectCardComponentRef>({});
+    const paypalCardComponentRef = useRef<PayPalFastlaneCardComponentRef>({});
 
     const { isLoadingPaymentMethod, isInitializingPayment } = checkoutState.statuses;
 
@@ -34,13 +34,13 @@ const PayPalCommerceAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentM
             await checkoutService.initializePayment({
                 methodId: method.id,
                 paypalcommerceacceleratedcheckout: {
-                    onInit: (renderPayPalConnectCardComponent) => {
-                        paypalConnectCardComponentRef.current.render =
-                            renderPayPalConnectCardComponent;
+                    onInit: (renderPayPalCardComponent) => {
+                        paypalCardComponentRef.current.renderPayPalCardComponent =
+                            renderPayPalCardComponent;
                     },
-                    onChange: (showPayPalConnectCardSelector) => {
-                        paypalConnectCardComponentRef.current.showPayPalConnectCardSelector =
-                            showPayPalConnectCardSelector;
+                    onChange: (showPayPalCardSelector) => {
+                        paypalCardComponentRef.current.showPayPalCardSelector =
+                            showPayPalCardSelector;
                     },
                 },
             });
@@ -84,12 +84,12 @@ const PayPalCommerceAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentM
                 <LocaleProvider checkoutService={checkoutService}>
                     <PaymentFormContext.Provider value={{ paymentForm }}>
                         <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
-                            <PayPalCommerceAcceleratedCheckoutForm
-                                renderPayPalConnectCardComponent={
-                                    paypalConnectCardComponentRef?.current?.render
+                            <PayPalCommerceFastlaneForm
+                                renderPayPalCardComponent={
+                                    paypalCardComponentRef.current.renderPayPalCardComponent
                                 }
-                                showPayPalConnectCardSelector={
-                                    paypalConnectCardComponentRef?.current?.showPayPalConnectCardSelector
+                                showPayPalCardSelector={
+                                    paypalCardComponentRef.current.showPayPalCardSelector
                                 }
                             />
                         </LoadingOverlay>
@@ -101,6 +101,6 @@ const PayPalCommerceAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentM
 };
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
-    PayPalCommerceAcceleratedCheckoutPaymentMethod,
+    PayPalCommerceFastlanePaymentMethod,
     [{ id: 'paypalcommerceacceleratedcheckout' }],
 );

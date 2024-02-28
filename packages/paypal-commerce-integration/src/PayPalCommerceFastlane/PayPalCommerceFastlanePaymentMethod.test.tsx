@@ -4,9 +4,9 @@ import React from 'react';
 import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
 import { render } from '@bigcommerce/checkout/test-utils';
 
-import PayPalCommerceAcceleratedCheckoutPaymentMethod from './PayPalCommerceAcceleratedCheckoutPaymentMethod';
+import PayPalCommerceFastlanePaymentMethod from './PayPalCommerceFastlanePaymentMethod';
 
-describe('PayPalCommerceAcceleratedCheckoutPaymentMethod', () => {
+describe('PayPalCommerceFastlanePaymentMethod', () => {
     const checkoutService = createCheckoutService();
     const checkoutState = checkoutService.getState();
 
@@ -35,12 +35,12 @@ describe('PayPalCommerceAcceleratedCheckoutPaymentMethod', () => {
         onUnhandledError: jest.fn(),
     };
 
-    it('initializes PayPalCommerceAcceleratedCheckoutPaymentMethod with required props', () => {
+    it('initializes PayPalCommerceFastlanePaymentMethod with required props', () => {
         const initializePayment = jest
             .spyOn(checkoutService, 'initializePayment')
             .mockResolvedValue(checkoutState);
 
-        render(<PayPalCommerceAcceleratedCheckoutPaymentMethod {...props} />);
+        render(<PayPalCommerceFastlanePaymentMethod {...props} />);
 
         expect(initializePayment).toHaveBeenCalledWith({
             methodId: props.method.id,
@@ -51,12 +51,12 @@ describe('PayPalCommerceAcceleratedCheckoutPaymentMethod', () => {
         });
     });
 
-    it('deinitializes PayPalCommerceAcceleratedCheckoutPaymentMethod with required props', () => {
+    it('deinitializes PayPalCommerceFastlanePaymentMethod with required props', () => {
         const deinitializePayment = jest
             .spyOn(checkoutService, 'deinitializePayment')
             .mockResolvedValue(checkoutState);
 
-        const view = render(<PayPalCommerceAcceleratedCheckoutPaymentMethod {...props} />);
+        const view = render(<PayPalCommerceFastlanePaymentMethod {...props} />);
 
         view.unmount();
 

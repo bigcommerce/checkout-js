@@ -6,9 +6,9 @@ import { CreditCardIcon, Button, ButtonSize, ButtonVariant } from '@bigcommerce/
 import { PoweredByPaypalConnectLabel } from '@bigcommerce/checkout/paypal-connect-integration';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
-import { PayPalConnectCardComponentRef } from '../PayPalCommerceAcceleratedCheckoutPaymentMethod';
+import { PayPalFastlaneCardComponentRef } from '../PayPalCommerceFastlanePaymentMethod';
 
-import './PayPalCommerceAcceleratedCheckoutInstrumentsForm.scss';
+import './PayPalCommerceFastlaneInstrumentsForm.scss';
 
 function mapFromInstrumentCardType(type: string): string {
     switch (type) {
@@ -24,14 +24,14 @@ function mapFromInstrumentCardType(type: string): string {
     }
 }
 
-interface PayPalCommerceAcceleratedCheckoutInstrumentsFormProps {
-    onChange: PayPalConnectCardComponentRef['showPayPalConnectCardSelector'];
+interface PayPalCommerceFastlaneInstrumentsFormProps {
+    onChange: PayPalFastlaneCardComponentRef['showPayPalCardSelector'];
     handleSelectInstrument(instrument: CardInstrument): void;
     selectedInstrument: CardInstrument;
 }
 
-const PayPalCommerceAcceleratedCheckoutInstrumentsForm: FunctionComponent<
-    PayPalCommerceAcceleratedCheckoutInstrumentsFormProps
+const PayPalCommerceFastlaneInstrumentsForm: FunctionComponent<
+    PayPalCommerceFastlaneInstrumentsFormProps
 > = ({
     onChange,
     handleSelectInstrument,
@@ -51,27 +51,28 @@ const PayPalCommerceAcceleratedCheckoutInstrumentsForm: FunctionComponent<
 
     return (
         <div
-            className="paypal-commerce-axo-instrument"
-            data-test="paypal-commerce-axo-instrument-form"
+            className="paypal-commerce-fastlane-instrument"
+            data-test="paypal-commerce-fastlane-instrument-form"
         >
             <div>
-                <div className="paypal-commerce-axo-instrument-details">
+                <div className="paypal-commerce-fastlane-instrument-details">
                     <CreditCardIcon cardType={cardType} />
 
-                    <div className="instrumentSelect-card" data-test="paypal-connect-instrument-last4">
+                    <div className="instrumentSelect-card" data-test="paypal-fastlane-instrument-last4">
                         {/* &#9679; is a ● */}
                         <span>&#9679;&#9679;&#9679;&#9679; {selectedInstrument.last4}</span>
                     </div>
                 </div>
-                <div className="paypal-commerce-axo-instrument-branding">
+                <div className="paypal-commerce-fastlane-instrument-branding">
+                    {/* TODO: update this component with Fastlane label */}
                     <PoweredByPaypalConnectLabel />
                 </div>
             </div>
 
-            <div className="paypal-commerce-axo-instrument-change-action">
+            <div className="paypal-commerce-fastlane-instrument-change-action">
                 <Button
                     size={ButtonSize.Tiny}
-                    testId="paypal-commerce-connect-instrument-change"
+                    testId="paypal-commerce-fastlane-instrument-change"
                     variant={ButtonVariant.Secondary}
                     onClick={handleChange}
                 >
@@ -82,4 +83,4 @@ const PayPalCommerceAcceleratedCheckoutInstrumentsForm: FunctionComponent<
     );
 };
 
-export default PayPalCommerceAcceleratedCheckoutInstrumentsForm;
+export default PayPalCommerceFastlaneInstrumentsForm;
