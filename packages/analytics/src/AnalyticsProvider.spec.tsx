@@ -54,7 +54,7 @@ describe('AnalyticsProvider', () => {
     let stepTrackerMock: CheckoutSdk.StepTracker;
     let bodlServiceMock: CheckoutSdk.BodlService;
     let braintreeConnectTracker: CheckoutSdk.BraintreeConnectTrackerService;
-    let paypalCommerceConnectTracker: CheckoutSdk.PayPalCommerceConnectTrackerService;
+    let paypalCommerceAnalyticTracker: CheckoutSdk.PayPalCommerceAnalyticTrackerService;
 
     beforeEach(() => {
         jest.spyOn(createAnalyticsService, 'default').mockImplementation((createFn) => createFn);
@@ -95,14 +95,14 @@ describe('AnalyticsProvider', () => {
             () => braintreeConnectTracker,
         );
 
-        paypalCommerceConnectTracker = {
+        paypalCommerceAnalyticTracker = {
             customerPaymentMethodExecuted: jest.fn(),
             selectedPaymentMethod: jest.fn(),
             paymentComplete: jest.fn(),
             walletButtonClick: jest.fn(),
         };
-        jest.spyOn(CheckoutSdk, 'createPayPalCommerceConnectTracker').mockImplementation(
-            () => paypalCommerceConnectTracker,
+        jest.spyOn(CheckoutSdk, 'createPayPalCommerceAnalyticTracker').mockImplementation(
+            () => paypalCommerceAnalyticTracker,
         );
     });
 
@@ -192,8 +192,10 @@ describe('AnalyticsProvider', () => {
         });
         expect(braintreeConnectTracker.customerPaymentMethodExecuted).toHaveBeenCalledTimes(1);
         expect(braintreeConnectTracker.customerPaymentMethodExecuted).toHaveBeenCalled();
-        expect(paypalCommerceConnectTracker.customerPaymentMethodExecuted).toHaveBeenCalledTimes(1);
-        expect(paypalCommerceConnectTracker.customerPaymentMethodExecuted).toHaveBeenCalled();
+        expect(paypalCommerceAnalyticTracker.customerPaymentMethodExecuted).toHaveBeenCalledTimes(
+            1,
+        );
+        expect(paypalCommerceAnalyticTracker.customerPaymentMethodExecuted).toHaveBeenCalled();
     });
 
     it('track show shipping methods', () => {
@@ -216,8 +218,8 @@ describe('AnalyticsProvider', () => {
         expect(braintreeConnectTracker.selectedPaymentMethod).toHaveBeenCalledWith(
             'paypalcreditcard',
         );
-        expect(paypalCommerceConnectTracker.selectedPaymentMethod).toHaveBeenCalledTimes(1);
-        expect(paypalCommerceConnectTracker.selectedPaymentMethod).toHaveBeenCalledWith(
+        expect(paypalCommerceAnalyticTracker.selectedPaymentMethod).toHaveBeenCalledTimes(1);
+        expect(paypalCommerceAnalyticTracker.selectedPaymentMethod).toHaveBeenCalledWith(
             'paypalcreditcard',
         );
     });
@@ -229,8 +231,8 @@ describe('AnalyticsProvider', () => {
         expect(braintreeConnectTracker.walletButtonClick).toHaveBeenCalledWith(
             'paypalwalletbutton',
         );
-        expect(paypalCommerceConnectTracker.walletButtonClick).toHaveBeenCalledTimes(1);
-        expect(paypalCommerceConnectTracker.walletButtonClick).toHaveBeenCalledWith(
+        expect(paypalCommerceAnalyticTracker.walletButtonClick).toHaveBeenCalledTimes(1);
+        expect(paypalCommerceAnalyticTracker.walletButtonClick).toHaveBeenCalledWith(
             'paypalwalletbutton',
         );
     });
