@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.447.0](https://github.com/bigcommerce/checkout-js/compare/v1.446.2...v1.447.0) (2024-02-29)
+
+
+### Features
+
+* **payment:** PI-1366 e2e tests for Adyen integration on Checkout JS ([43a1ab5](https://github.com/bigcommerce/checkout-js/commit/43a1ab51849643e31c0115378fde4ec72294dd08))
+
+
+### Bug Fixes
+
+* **payment:** PI-1656 fixed bluesnap direct ecp validation, fixed package test coverage ([01f359c](https://github.com/bigcommerce/checkout-js/commit/01f359c37af016797f09b53fcc5b2d3fb639c973))
+
 ### [1.446.2](https://github.com/bigcommerce/checkout-js/compare/v1.446.1...v1.446.2) (2024-02-28)
 
 
