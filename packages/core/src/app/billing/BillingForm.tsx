@@ -10,7 +10,7 @@ import React, { RefObject, useRef, useState } from 'react';
 import { lazy } from 'yup';
 
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-connect-integration';
+import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 
 import {

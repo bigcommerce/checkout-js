@@ -8,7 +8,7 @@ import React, { FunctionComponent } from 'react';
 
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
-import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-connect-integration';
+import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import { StaticAddress } from '../address';
 import { getAddress } from '../address/address.mock';
@@ -17,8 +17,8 @@ import { getCheckout, getCheckoutPayment } from '../checkout/checkouts.mock';
 
 import StaticBillingAddress, { StaticBillingAddressProps } from './StaticBillingAddress';
 
-jest.mock('@bigcommerce/checkout/paypal-connect-integration', () => ({
-    ...jest.requireActual('@bigcommerce/checkout/paypal-connect-integration'),
+jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
+    ...jest.requireActual('@bigcommerce/checkout/paypal-fastlane-integration'),
     usePayPalConnectAddress: jest.fn(() => ({
         isPayPalAxoEnabled: false,
         paypalConnectAddresses: [],

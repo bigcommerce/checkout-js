@@ -9,7 +9,7 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import BraintreeAcceleratedCheckoutInstrumentSelect from './BraintreeAcceleratedCheckoutInstrumentSelect';
 
-jest.mock('@bigcommerce/checkout/paypal-connect-integration', () => ({
+jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
     // eslint-disable-next-line @typescript-eslint/naming-convention
     PoweredByPaypalConnectLabel: jest.fn(() => (
         <div data-test="powered-by-paypal-connect-label">PoweredByPaypalConnectLabel</div>

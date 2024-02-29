@@ -3,7 +3,7 @@ import { CardInstrument } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
 import { CreditCardIcon, Button, ButtonSize, ButtonVariant } from '@bigcommerce/checkout/ui';
-import { PoweredByPaypalConnectLabel } from '@bigcommerce/checkout/paypal-connect-integration';
+import { PoweredByPaypalConnectLabel } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { PayPalFastlaneCardComponentRef } from '../PayPalCommerceFastlanePaymentMethod';

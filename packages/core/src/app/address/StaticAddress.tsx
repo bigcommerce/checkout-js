@@ -10,7 +10,7 @@ import { isEmpty } from 'lodash';
 import React, { FunctionComponent, memo } from 'react';
 
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
-import { isPayPalConnectAddress, usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-connect-integration';
+import { isPayPalConnectAddress, usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { IconPayPalConnectSmall } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';

@@ -1,4 +1,4 @@
-import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-connect-integration';
+import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { CheckoutService, createCheckoutService, CustomerAddress } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
@@ -24,8 +24,8 @@ import ShippingForm, { ShippingFormProps } from './ShippingForm';
 import { ShippingOptions } from './shippingOption';
 import SingleShippingForm from './SingleShippingForm';
 
-jest.mock('@bigcommerce/checkout/paypal-connect-integration', () => ({
-    ...jest.requireActual('@bigcommerce/checkout/paypal-connect-integration'),
+jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
+    ...jest.requireActual('@bigcommerce/checkout/paypal-fastlane-integration'),
     usePayPalConnectAddress: jest.fn(() => ({
         isPayPalAxoEnabled: false,
         mergedBcAndPayPalConnectAddresses: []
