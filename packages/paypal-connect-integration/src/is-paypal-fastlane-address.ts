@@ -23,14 +23,14 @@ const normalizeAddress = (address: Partial<ComparableAddress>) => {
     return omit(address, ignoredFields);
 };
 
-const isEqualToPayPalConnectAddress = (
+const isEqualToPayPalFastlaneAddress = (
     bcAddress: Partial<ComparableAddress>,
-    paypalConnectAddress: Partial<ComparableAddress>,
-): boolean => isEqual(normalizeAddress(bcAddress), normalizeAddress(paypalConnectAddress));
+    paypalFastlaneAddress: Partial<ComparableAddress>,
+): boolean => isEqual(normalizeAddress(bcAddress), normalizeAddress(paypalFastlaneAddress));
 
-const isPayPalConnectAddress = (address: Address, addresses: Address[]): boolean =>
-    addresses.some((paypalConnectAddress) =>
-        isEqualToPayPalConnectAddress(address, paypalConnectAddress),
+const isPayPalFastlaneAddress = (address: Address, addresses: Address[]): boolean =>
+    addresses.some((paypalFastlaneAddress) =>
+        isEqualToPayPalFastlaneAddress(address, paypalFastlaneAddress),
     );
 
-export default isPayPalConnectAddress;
+export default isPayPalFastlaneAddress;
