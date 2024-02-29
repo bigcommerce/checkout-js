@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.449.0](https://github.com/bigcommerce/checkout-js/compare/v1.448.0...v1.449.0) (2024-02-29)
+
+
+### Features
+
+* **payment:** PAYPAL-3585 bumped checkout-sdk-js version ([0c77961](https://github.com/bigcommerce/checkout-js/commit/0c77961b88880d26dffdd578e4c127ba7c85212e))
+
+
+### Code Refactoring
+
+* **payment:** PAYPAL-3579 renamed paypal connect integration files and method with Fastlane naming ([99ef56d](https://github.com/bigcommerce/checkout-js/commit/99ef56d75fdffe05815d6ed2a17eaf4657015e94))
+
 ## [1.448.0](https://github.com/bigcommerce/checkout-js/compare/v1.447.1...v1.448.0) (2024-02-29)
 
 
