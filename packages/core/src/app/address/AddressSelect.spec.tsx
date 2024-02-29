@@ -5,7 +5,7 @@ import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
-import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-connect-integration';
+import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
@@ -15,7 +15,7 @@ import { getAddress } from './address.mock';
 import AddressSelect from './AddressSelect';
 import StaticAddress from './StaticAddress';
 
-jest.mock('@bigcommerce/checkout/paypal-connect-integration', () => ({
+jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
     usePayPalConnectAddress: jest.fn(() => ({
         shouldShowPayPalConnectLabel: false,
     })),

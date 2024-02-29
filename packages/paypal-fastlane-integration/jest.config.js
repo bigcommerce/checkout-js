@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'paypal-connect-integration',
+  displayName: 'paypal-fastlane-integration',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -8,5 +8,5 @@ module.exports = {
     },
   },
   setupFilesAfterEnv: ['../../jest-setup.ts'],
-  coverageDirectory: '../../coverage/packages/paypal-connect-integration',
+  coverageDirectory: '../../coverage/packages/paypal-fastlane-integration',
 };

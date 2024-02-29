@@ -17,7 +17,7 @@ import React, { Component, ReactNode } from 'react';
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
-import { isPaypalConnectMethod } from '@bigcommerce/checkout/paypal-connect-integration';
+import { isPaypalConnectMethod } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { CustomerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';

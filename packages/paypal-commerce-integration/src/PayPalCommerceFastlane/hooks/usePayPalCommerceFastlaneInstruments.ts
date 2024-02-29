@@ -2,7 +2,7 @@ import { CardInstrument } from '@bigcommerce/checkout-sdk';
 import { useState } from 'react';
 
 import { useCheckout, usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
-import { isPayPalConnectAcceleratedCheckoutCustomer } from '@bigcommerce/checkout/paypal-connect-integration';
+import { isPayPalConnectAcceleratedCheckoutCustomer } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 export const usePayPalCommerceFastlaneInstruments = () => {
     const [selectedInstrument, setSelectedInstrument] = useState<CardInstrument>();

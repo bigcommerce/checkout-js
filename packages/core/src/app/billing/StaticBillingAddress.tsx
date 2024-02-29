@@ -3,7 +3,7 @@ import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
-import { isPayPalConnectAddress, PoweredByPaypalConnectLabel, usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-connect-integration';
+import { isPayPalConnectAddress, PoweredByPaypalConnectLabel, usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import { AddressType, StaticAddress } from '../address';
 import { withCheckout } from '../checkout';

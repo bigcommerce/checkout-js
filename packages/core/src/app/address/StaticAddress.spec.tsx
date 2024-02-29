@@ -7,7 +7,7 @@ import { mount, render } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
-import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-connect-integration';
+import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import { getCountries } from '../geography/countries.mock';
 
@@ -21,8 +21,8 @@ jest.mock('@bigcommerce/checkout/ui', () => ({
     IconPayPalConnectSmall: () => (<div data-test="pp-connect-icon">IconPayPalConnectSmall</div>)
 }));
 
-jest.mock('@bigcommerce/checkout/paypal-connect-integration', () => ({
-    ...jest.requireActual('@bigcommerce/checkout/paypal-connect-integration'),
+jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
+    ...jest.requireActual('@bigcommerce/checkout/paypal-fastlane-integration'),
     usePayPalConnectAddress: jest.fn(() => ({
         isPayPalAxoEnabled: true,
         paypalConnectAddresses: [],
