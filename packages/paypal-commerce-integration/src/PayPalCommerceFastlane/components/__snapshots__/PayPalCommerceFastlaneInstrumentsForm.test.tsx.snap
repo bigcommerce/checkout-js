@@ -27,10 +27,10 @@ exports[`PayPalCommerceAcceleratedCheckoutInstrumentsForm renders instruments fo
         class="paypal-commerce-fastlane-instrument-branding"
       >
         <div
-          class="powered-by-paypal-connect"
+          class="powered-by-paypal-fastlane"
         >
           <div
-            class="powered-by-paypal-connect-label"
+            class="powered-by-paypal-fastlane-label"
           >
             Powered by
             <div

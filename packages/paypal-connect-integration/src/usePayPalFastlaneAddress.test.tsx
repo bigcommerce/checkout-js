@@ -6,36 +6,36 @@ import React from 'react';
 import * as PaymentIntegrationApi from '@bigcommerce/checkout/payment-integration-api';
 import { getAddress, getCustomer, getStoreConfig } from '@bigcommerce/checkout/test-mocks';
 
-import isPayPalConnectAddress from './is-paypal-connect-address';
-import usePayPalConnectAddress from './usePayPalConnectAddress';
+import isPayPalFastlaneAddress from './is-paypal-fastlane-address';
+import usePayPalFastlaneAddress from './usePayPalFastlaneAddress';
 
-interface PayPalAxoAddressComponentProps {
+interface PayPalFastlaneAddressComponentProps {
     selectedAddress: Address;
 }
 
-const PayPalAxoAddressComponentMock = ({
+const PayPalFastlaneAddressComponentMock = ({
     selectedAddress,
-}: PayPalAxoAddressComponentProps) => {
+}: PayPalFastlaneAddressComponentProps) => {
     const {
-        isPayPalAxoEnabled,
-        paypalConnectAddresses,
-        shouldShowPayPalConnectLabel,
-        mergedBcAndPayPalConnectAddresses,
-    } = usePayPalConnectAddress();
+        isPayPalFastlaneEnabled,
+        paypalFastlaneAddresses,
+        shouldShowPayPalFastlaneLabel,
+        mergedBcAndPayPalFastlaneAddresses,
+    } = usePayPalFastlaneAddress();
 
     return (
         <>
-            <div data-test="isPayPalAxoEnabled">
-                {isPayPalAxoEnabled ? 'true' : 'false'}
+            <div data-test="isPayPalFastlaneEnabled">
+                {isPayPalFastlaneEnabled ? 'true' : 'false'}
             </div>
-            <div data-test="isPayPalConnectAddress">
-                {isPayPalConnectAddress(selectedAddress, paypalConnectAddresses) ? 'true' : 'false'}
+            <div data-test="isPayPalFastlaneAddress">
+                {isPayPalFastlaneAddress(selectedAddress, paypalFastlaneAddresses) ? 'true' : 'false'}
             </div>
-            <div data-test="shouldShowPayPalConnectLabel">
-                {shouldShowPayPalConnectLabel ? 'true' : 'false'}
+            <div data-test="shouldShowPayPalFastlaneLabel">
+                {shouldShowPayPalFastlaneLabel ? 'true' : 'false'}
             </div>
             <ul>
-                {mergedBcAndPayPalConnectAddresses.map((address, index) => (
+                {mergedBcAndPayPalFastlaneAddresses.map((address, index) => (
                     <li key={index}>{address.address1}</li>
                 ))}
             </ul>
@@ -43,7 +43,7 @@ const PayPalAxoAddressComponentMock = ({
     );
 };
 
-describe('usePayPalConnectAddress', () => {
+describe('usePayPalFastlaneAddress', () => {
     const defaultStoreConfig = getStoreConfig();
     const defaultCustomer = getCustomer()
 
@@ -101,86 +101,86 @@ describe('usePayPalConnectAddress', () => {
         jest.clearAllMocks();
     });
 
-    it('renders with BC addresses & no PP Connect addresses, selected BC address', () => {
+    it('renders with BC addresses & no PP Fastlane addresses, selected BC address', () => {
         useCheckoutMock(
             {},
             [addressBC1, addressBC2],
         );
 
         render(
-            <PayPalAxoAddressComponentMock
+            <PayPalFastlaneAddressComponentMock
                 selectedAddress={addressBC1}
             />
         );
 
         const addressItems = screen.getAllByRole('listitem');
 
-        expect(screen.getByTestId('isPayPalConnectAddress')).toHaveTextContent('false');
-        expect(screen.getByTestId('shouldShowPayPalConnectLabel')).toHaveTextContent('false');
+        expect(screen.getByTestId('isPayPalFastlaneAddress')).toHaveTextContent('false');
+        expect(screen.getByTestId('shouldShowPayPalFastlaneLabel')).toHaveTextContent('false');
         expect(addressItems).toHaveLength(2);
         expect(addressItems[0]).toHaveTextContent('address-BC1');
         expect(addressItems[1]).toHaveTextContent('address-BC2-PP1');
     });
 
-    it('renders with PP Connect addresses & no BC addresses, selected PP address', () => {
+    it('renders with PP Fastlane addresses & no BC addresses, selected PP address', () => {
         useCheckoutMock(
             { addresses: [addressPP1, addressPP2] },
             [],
         );
 
         render(
-            <PayPalAxoAddressComponentMock
+            <PayPalFastlaneAddressComponentMock
                 selectedAddress={addressPP1}
             />
         );
 
         const addressItems = screen.getAllByRole('listitem');
 
-        expect(screen.getByTestId('isPayPalConnectAddress')).toHaveTextContent('true');
-        expect(screen.getByTestId('shouldShowPayPalConnectLabel')).toHaveTextContent('true');
+        expect(screen.getByTestId('isPayPalFastlaneAddress')).toHaveTextContent('true');
+        expect(screen.getByTestId('shouldShowPayPalFastlaneLabel')).toHaveTextContent('true');
         expect(addressItems).toHaveLength(2);
         expect(addressItems[0]).toHaveTextContent('address-BC2-PP1');
         expect(addressItems[1]).toHaveTextContent('address-PP2');
     });
 
-    it('renders with BC addresses & PP Connect address, selected BC address', () => {
+    it('renders with BC addresses & PP Fastlane address, selected BC address', () => {
         useCheckoutMock(
             { addresses: [addressPP2] },
             [addressBC1, addressBC2],
         );
 
         render(
-            <PayPalAxoAddressComponentMock
+            <PayPalFastlaneAddressComponentMock
                 selectedAddress={addressBC1}
             />
         );
 
         const addressItems = screen.getAllByRole('listitem');
 
-        expect(screen.getByTestId('isPayPalConnectAddress')).toHaveTextContent('false');
-        expect(screen.getByTestId('shouldShowPayPalConnectLabel')).toHaveTextContent('true');
+        expect(screen.getByTestId('isPayPalFastlaneAddress')).toHaveTextContent('false');
+        expect(screen.getByTestId('shouldShowPayPalFastlaneLabel')).toHaveTextContent('true');
         expect(addressItems).toHaveLength(3);
         expect(addressItems[0]).toHaveTextContent('address-PP2');
         expect(addressItems[1]).toHaveTextContent('address-BC1');
         expect(addressItems[2]).toHaveTextContent('address-BC2-PP1');
     });
 
-    it('renders with BC addresses & PP Connect address - with address merge, selected PP address', () => {
+    it('renders with BC addresses & PP Fastlane address - with address merge, selected PP address', () => {
         useCheckoutMock(
             { addresses: [addressPP1, addressPP2] },
             [addressBC1, addressBC2],
         );
 
         render(
-            <PayPalAxoAddressComponentMock
+            <PayPalFastlaneAddressComponentMock
                 selectedAddress={addressPP1}
             />
         );
 
         const addressItems = screen.getAllByRole('listitem');
 
-        expect(screen.getByTestId('isPayPalConnectAddress')).toHaveTextContent('true');
-        expect(screen.getByTestId('shouldShowPayPalConnectLabel')).toHaveTextContent('true');
+        expect(screen.getByTestId('isPayPalFastlaneAddress')).toHaveTextContent('true');
+        expect(screen.getByTestId('shouldShowPayPalFastlaneLabel')).toHaveTextContent('true');
         expect(addressItems).toHaveLength(3);
         expect(addressItems[0]).toHaveTextContent('address-BC2-PP1');
         expect(addressItems[1]).toHaveTextContent('address-PP2');

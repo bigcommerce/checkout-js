@@ -4,15 +4,15 @@ import {
     PaymentProviderCustomer,
 } from '@bigcommerce/checkout-sdk';
 
-interface PayPalConnectPaymentProviderCustomer {
+interface PayPalFastlaneCustomer {
     authenticationState?: string;
     addresses?: CustomerAddress[];
     instruments?: CardInstrument[];
 }
 
-export default function isPayPalConnectAcceleratedCheckoutCustomer(
+export default function isPayPalFastlaneCustomer(
     customer?: PaymentProviderCustomer,
-): customer is PayPalConnectPaymentProviderCustomer {
+): customer is PayPalFastlaneCustomer {
     if (!customer) {
         return false;
     }

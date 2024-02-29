@@ -1,4 +1,4 @@
-import isPayPalConnectAddress from './is-paypal-connect-address';
+import isPayPalFastlaneAddress from './is-paypal-fastlane-address';
 
 const bigcommerceAddressMock = {
     address1: 'BC_Address',
@@ -18,7 +18,7 @@ const bigcommerceAddressMock = {
     type: 'residential',
 };
 
-const paypalConnectAddressMock = {
+const paypalFastlaneAddressMock = {
     address1: 'BC_Address',
     address2: '',
     city: 'NY',
@@ -36,20 +36,20 @@ const paypalConnectAddressMock = {
     type: 'paypal-address',
 };
 
-describe('isPayPalConnectAddress', () => {
-    it('recognizes provided address as the same as in PayPal Connect', () => {
-        expect(isPayPalConnectAddress(bigcommerceAddressMock, [paypalConnectAddressMock])).toBe(
+describe('isPayPalFastlaneAddress', () => {
+    it('recognizes provided address as the same as in PayPal Fastlane', () => {
+        expect(isPayPalFastlaneAddress(bigcommerceAddressMock, [paypalFastlaneAddressMock])).toBe(
             true,
         );
     });
 
-    it('recognizes provided address does not match any address from PayPal Connect', () => {
+    it('recognizes provided address does not match any address from PayPal Fastlane', () => {
         const anotherBCAddressMock = {
             ...bigcommerceAddressMock,
             address1: 'Fun land 1',
         };
 
-        expect(isPayPalConnectAddress(anotherBCAddressMock, [paypalConnectAddressMock])).toBe(
+        expect(isPayPalFastlaneAddress(anotherBCAddressMock, [paypalFastlaneAddressMock])).toBe(
             false,
         );
     });
