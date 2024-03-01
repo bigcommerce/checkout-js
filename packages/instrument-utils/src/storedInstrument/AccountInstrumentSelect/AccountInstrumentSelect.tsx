@@ -86,17 +86,22 @@ const AchInstrumentMenuItem: FunctionComponent<AchInstrumentMenuItemProps> = ({
     testId,
     onClick,
 }) => {
-    const issuerName = `Routing Number: ${instrument.issuer}`;
-    const accountNumber = `Account number ending in: ${instrument.accountNumber}`;
-
     return (
         <button className={className} data-test={testId} onClick={onClick} type="button">
             <div className="instrumentSelect-details">
                 <IconAch size={IconSize.Medium} />
 
                 <div className="instrumentSelect-bank">
-                    <div>{accountNumber}</div>
-                    <div>{issuerName}</div>
+                    <div>
+                        <TranslatedString
+                            data={{ accountNumber: instrument.accountNumber }}
+                            id="payment.instrument_account_number_ending"
+                        />
+                    </div>
+                    <div>
+                        <TranslatedString id="payment.instrument_manage_table_header_routing_number_text" />
+                        : {instrument.issuer}
+                    </div>
                 </div>
             </div>
         </button>
@@ -137,9 +142,6 @@ const BankInstrumentMenuItem: FunctionComponent<BankInstrumentMenuItemProps> = (
     testId,
     onClick,
 }) => {
-    const issuerName = `Issuer: ${instrument.issuer}`;
-    const accountNumber = `Account number ending in: ${instrument.accountNumber}`;
-
     return (
         <button className={className} data-test={testId} onClick={onClick} type="button">
             <div className="instrumentSelect-details">
@@ -147,8 +149,15 @@ const BankInstrumentMenuItem: FunctionComponent<BankInstrumentMenuItemProps> = (
                     // TODO: When we include new account instrument types we can
                     // abstract these icons in a similar way we did for credit cards.
                 }
-                <div className="instrumentSelect-card">{accountNumber}</div>
-                <div className="instrumentSelect-issuer">{issuerName}</div>
+                <div className="instrumentSelect-card">
+                    <TranslatedString
+                        data={{ accountNumber: instrument.accountNumber }}
+                        id="payment.instrument_account_number_ending"
+                    />
+                </div>
+                <div className="instrumentSelect-issuer">
+                    <TranslatedString id="payment.instrument_issuer" />: {instrument.issuer}
+                </div>
             </div>
         </button>
     );

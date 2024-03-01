@@ -239,9 +239,6 @@ const BankInstrumentMenuItem: FunctionComponent<BankInstrumentMenuItemProps> = (
     testId,
     onClick,
 }) => {
-    const issuerName = `Issuer: ${instrument.issuer}`;
-    const accountNumber = `Account number ending in: ${instrument.accountNumber}`;
-
     return (
         <button className={className} data-test={testId} onClick={onClick} type="button">
             <div className="instrumentSelect-details">
@@ -249,8 +246,15 @@ const BankInstrumentMenuItem: FunctionComponent<BankInstrumentMenuItemProps> = (
                     // TODO: When we include new account instrument types we can
                     // abstract these icons in a similar way we did for credit cards.
                 }
-                <div className="instrumentSelect-card">{accountNumber}</div>
-                <div className="instrumentSelect-issuer">{issuerName}</div>
+                <div className="instrumentSelect-card">
+                    <TranslatedString
+                        data={{ accountNumber: instrument.accountNumber }}
+                        id="payment.instrument_account_number_ending"
+                    />
+                </div>
+                <div className="instrumentSelect-issuer">
+                    <TranslatedString id="payment.instrument_issuer" />: {instrument.issuer}
+                </div>
             </div>
         </button>
     );
