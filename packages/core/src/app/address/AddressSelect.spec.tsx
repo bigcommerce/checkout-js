@@ -5,7 +5,7 @@ import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
-import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
@@ -16,11 +16,11 @@ import AddressSelect from './AddressSelect';
 import StaticAddress from './StaticAddress';
 
 jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
-    usePayPalConnectAddress: jest.fn(() => ({
-        shouldShowPayPalConnectLabel: false,
+    usePayPalFastlaneAddress: jest.fn(() => ({
+        shouldShowPayPalFastlaneLabel: false,
     })),
-    PoweredByPaypalConnectLabel: jest.fn(() => (
-        <div data-test="powered-by-pp-connect-label">PoweredByPaypalConnectLabel</div>
+    PoweredByPayPalFastlaneLabel: jest.fn(() => (
+        <div data-test="powered-by-pp-fastlane-label">PoweredByPayPalFastlaneLabel</div>
     )),
 }));
 
@@ -140,10 +140,10 @@ describe('AddressSelect Component', () => {
         expect(onSelectAddress).not.toHaveBeenCalled();
     });
 
-    it('shows Powered By PP Connect label', () => {
+    it('shows Powered By PP Fastlane label', () => {
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        (usePayPalConnectAddress as jest.Mock).mockReturnValue({
-            shouldShowPayPalConnectLabel: true,
+        (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
+            shouldShowPayPalFastlaneLabel: true,
         });
 
         component = mount(
@@ -158,6 +158,6 @@ describe('AddressSelect Component', () => {
             </CheckoutProvider>,
         );
 
-        expect(component.find('[data-test="powered-by-pp-connect-label"]').text()).toBe('PoweredByPaypalConnectLabel');
+        expect(component.find('[data-test="powered-by-pp-fastlane-label"]').text()).toBe('PoweredByPayPalFastlaneLabel');
     });
 });

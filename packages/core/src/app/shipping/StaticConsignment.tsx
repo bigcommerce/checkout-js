@@ -1,7 +1,7 @@
 import { Cart, Consignment } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, memo } from 'react';
 
-import { isPayPalConnectAddress, PoweredByPaypalConnectLabel, usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { isPayPalFastlaneAddress, PoweredByPayPalFastlaneLabel, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import { AddressType, StaticAddress } from '../address';
 
@@ -20,16 +20,16 @@ const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
     cart,
     compactView,
 }) => {
-    const { isPayPalAxoEnabled, paypalConnectAddresses } = usePayPalConnectAddress();
+    const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
     const { shippingAddress: address, selectedShippingOption } = consignment;
 
-    const showPayPalConnectAddressLabel = isPayPalAxoEnabled && isPayPalConnectAddress(address, paypalConnectAddresses);
+    const showPayPalFastlaneAddressLabel = isPayPalFastlaneEnabled && isPayPalFastlaneAddress(address, paypalFastlaneAddresses);
 
     return (
         <div className="staticConsignment">
             <StaticAddress address={address} type={AddressType.Shipping} />
 
-            {showPayPalConnectAddressLabel && <PoweredByPaypalConnectLabel />}
+            {showPayPalFastlaneAddressLabel && <PoweredByPayPalFastlaneLabel />}
 
             {!compactView && <StaticConsignmentItemList cart={cart} consignment={consignment} />}
 

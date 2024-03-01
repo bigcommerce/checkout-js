@@ -2,16 +2,14 @@ import { CardInstrument } from '@bigcommerce/checkout-sdk';
 import { useState } from 'react';
 
 import { useCheckout, usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
-import { isPayPalConnectAcceleratedCheckoutCustomer } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { isPayPalFastlaneCustomer } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 export const usePayPalCommerceFastlaneInstruments = () => {
     const [selectedInstrument, setSelectedInstrument] = useState<CardInstrument>();
 
     const { getPaymentProviderCustomer } = useCheckout().checkoutState.data;
     const paymentProviderCustomer = getPaymentProviderCustomer();
-    const paypalConnectPaymentProviderCustomer = isPayPalConnectAcceleratedCheckoutCustomer(
-        paymentProviderCustomer,
-    )
+    const paypalFastlaneCustomer = isPayPalFastlaneCustomer(paymentProviderCustomer)
         ? paymentProviderCustomer
         : {};
 
@@ -23,7 +21,7 @@ export const usePayPalCommerceFastlaneInstruments = () => {
     };
 
     return {
-        instruments: paypalConnectPaymentProviderCustomer.instruments || [],
+        instruments: paypalFastlaneCustomer.instruments || [],
         handleSelectInstrument,
         selectedInstrument,
     };

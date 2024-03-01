@@ -1,4 +1,4 @@
-import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { CheckoutService, createCheckoutService, CustomerAddress } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
@@ -26,9 +26,9 @@ import SingleShippingForm from './SingleShippingForm';
 
 jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
     ...jest.requireActual('@bigcommerce/checkout/paypal-fastlane-integration'),
-    usePayPalConnectAddress: jest.fn(() => ({
-        isPayPalAxoEnabled: false,
-        mergedBcAndPayPalConnectAddresses: []
+    usePayPalFastlaneAddress: jest.fn(() => ({
+        isPayPalFastlaneEnabled: false,
+        mergedBcAndPayPalFastlaneAddresses: []
     })),
 }));
 
@@ -374,8 +374,8 @@ describe('ShippingForm Component', () => {
         });
     });
 
-    describe('Braintree AXO', () => {
-        it('renders SingleShippingForm with default addresses list if PayPal AXO disabled', () => {
+    describe('Braintree Fastlane', () => {
+        it('renders SingleShippingForm with default addresses list if PayPal Fastlane disabled', () => {
             const initializeMock = jest.fn();
             const ShippingFormProps = {
                 ...defaultProps,
@@ -400,13 +400,13 @@ describe('ShippingForm Component', () => {
             expect(initializeMock).not.toHaveBeenCalled();
         });
 
-        it('renders SingleShippingForm with merged addresses list if PayPal AXO enabled', () => {
+        it('renders SingleShippingForm with merged addresses list if PayPal Fastlane enabled', () => {
             const initializeMock = jest.fn();
             const shippingFormProps = {
                 ...defaultProps,
                 initialize: initializeMock,
             };
-            const payPalConnectAddresses: CustomerAddress[] = [
+            const paypalFastlaneAddresses: CustomerAddress[] = [
                 {
                     ...getShippingAddress(),
                     id: 123,
@@ -415,10 +415,10 @@ describe('ShippingForm Component', () => {
             ];
 
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            (usePayPalConnectAddress as jest.Mock).mockReturnValue({
-                isPayPalAxoEnabled: true,
-                paypalConnectAddresses: payPalConnectAddresses,
-                mergedBcAndPayPalConnectAddresses: payPalConnectAddresses,
+            (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
+                isPayPalFastlaneEnabled: true,
+                paypalFastlaneAddresses,
+                mergedBcAndPayPalFastlaneAddresses: paypalFastlaneAddresses,
             });
 
             component = mount(
@@ -433,7 +433,7 @@ describe('ShippingForm Component', () => {
 
             expect(component.find(SingleShippingForm).props()).toEqual(
                 expect.objectContaining({
-                    addresses: payPalConnectAddresses,
+                    addresses: paypalFastlaneAddresses,
                 }),
             );
             expect(initializeMock).toHaveBeenCalledWith({
@@ -441,13 +441,13 @@ describe('ShippingForm Component', () => {
             });
         });
 
-        it('renders shipping for with paypal connect addresses without strategy initialization if there is preselected shipping method id', () => {
+        it('renders shipping for with paypal fastlane addresses without strategy initialization if there is preselected shipping method id', () => {
             const initializeMock = jest.fn();
             const shippingFormProps = {
                 ...defaultProps,
                 initialize: initializeMock,
             };
-            const payPalConnectAddresses: CustomerAddress[] = [
+            const paypalFastlaneAddresses: CustomerAddress[] = [
                 {
                     ...getShippingAddress(),
                     id: 123,
@@ -456,17 +456,17 @@ describe('ShippingForm Component', () => {
             ];
 
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            (usePayPalConnectAddress as jest.Mock).mockReturnValue({
-                isPayPalAxoEnabled: true,
-                paypalConnectAddresses: payPalConnectAddresses,
-                mergedBcAndPayPalConnectAddresses: payPalConnectAddresses,
+            (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
+                isPayPalFastlaneEnabled: true,
+                paypalFastlaneAddresses,
+                mergedBcAndPayPalFastlaneAddresses: paypalFastlaneAddresses,
             });
 
             component = mount(
                 <CheckoutProvider checkoutService={checkoutService}>
                     <LocaleContext.Provider value={localeContext}>
                         <ExtensionProvider checkoutService={checkoutService}>
-                            <ShippingForm {...shippingFormProps} methodId="notPPAXOMethodID" />
+                            <ShippingForm {...shippingFormProps} methodId="notPPFastlaneMethodID" />
                         </ExtensionProvider>
                     </LocaleContext.Provider>
                 </CheckoutProvider>,
@@ -474,7 +474,7 @@ describe('ShippingForm Component', () => {
 
             expect(component.find(SingleShippingForm).props()).toEqual(
                 expect.objectContaining({
-                    addresses: payPalConnectAddresses,
+                    addresses: paypalFastlaneAddresses,
                 }),
             );
             expect(initializeMock).not.toHaveBeenCalled();

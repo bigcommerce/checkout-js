@@ -83,9 +83,9 @@ Object {
           />
         </div>
         <div
-          data-test="powered-by-paypal-connect-label"
+          data-test="powered-by-paypal-fastlane-label"
         >
-          PoweredByPaypalConnectLabel
+          PoweredByPayPalFastlaneLabel
         </div>
       </div>
     </div>
@@ -169,9 +169,9 @@ Object {
         />
       </div>
       <div
-        data-test="powered-by-paypal-connect-label"
+        data-test="powered-by-paypal-fastlane-label"
       >
-        PoweredByPaypalConnectLabel
+        PoweredByPayPalFastlaneLabel
       </div>
     </div>
   </div>,

@@ -8,7 +8,7 @@ import React, { FunctionComponent } from 'react';
 
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
-import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import { StaticAddress } from '../address';
 import { getAddress } from '../address/address.mock';
@@ -19,12 +19,12 @@ import StaticBillingAddress, { StaticBillingAddressProps } from './StaticBilling
 
 jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
     ...jest.requireActual('@bigcommerce/checkout/paypal-fastlane-integration'),
-    usePayPalConnectAddress: jest.fn(() => ({
-        isPayPalAxoEnabled: false,
-        paypalConnectAddresses: [],
+    usePayPalFastlaneAddress: jest.fn(() => ({
+        isPayPalFastlaneEnabled: false,
+        paypalFastlaneAddresses: [],
     })),
-    PoweredByPaypalConnectLabel: jest.fn(() => (
-        <div data-test="powered-by-paypal-connect-label">PoweredByPaypalConnectLabel</div>
+    PoweredByPayPalFastlaneLabel: jest.fn(() => (
+        <div data-test="powered-by-paypal-fastlane-label">PoweredByPayPalFastlaneLabel</div>
     )),
 }));
 
@@ -82,36 +82,36 @@ describe('StaticBillingAddress', () => {
         );
     });
 
-    describe('with PayPal Connect flow', () => {
-        it('should not show label if PayPal Axo is disabled', () => {
+    describe('with PayPal Fastlane flow', () => {
+        it('should not show label if PayPal Fastlane is disabled', () => {
             const container = mount(<StaticBillingAddressTest {...defaultProps} />);
 
-            expect(container.find('[data-test="powered-by-paypal-connect-label"]')).toHaveLength(0);
+            expect(container.find('[data-test="powered-by-paypal-fastlane-label"]')).toHaveLength(0);
         });
 
-        it('should not show label if PayPal Axo is enabled but no PP addresses available', () => {
+        it('should not show label if PayPal Fastlane is enabled but no PP addresses available', () => {
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            (usePayPalConnectAddress as jest.Mock).mockReturnValue({
-                isPayPalAxoEnabled: true,
-                paypalConnectAddresses: [],
+            (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
+                isPayPalFastlaneEnabled: true,
+                paypalFastlaneAddresses: [],
             });
 
             const container = mount(<StaticBillingAddressTest {...defaultProps} />);
 
-            expect(container.find('[data-test="powered-by-paypal-connect-label"]')).toHaveLength(0);
+            expect(container.find('[data-test="powered-by-paypal-fastlane-label"]')).toHaveLength(0);
         });
 
         it('should show label if PayPal Axo is enabled and address match to PP address', () => {
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            (usePayPalConnectAddress as jest.Mock).mockReturnValue({
-                isPayPalAxoEnabled: true,
-                paypalConnectAddresses: [getAddress()],
-                shouldShowPayPalConnectLabel: true,
+            (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
+                isPayPalFastlaneEnabled: true,
+                paypalFastlaneAddresses: [getAddress()],
+                shouldShowPayPalFastlaneLabel: true,
             });
 
             const container = mount(<StaticBillingAddressTest {...defaultProps} />);
 
-            expect(container.find('[data-test="powered-by-paypal-connect-label"]')).toHaveLength(1);
+            expect(container.find('[data-test="powered-by-paypal-fastlane-label"]')).toHaveLength(1);
         });
     });
 });
