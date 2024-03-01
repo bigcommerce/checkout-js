@@ -17,7 +17,7 @@ import React, { Component, ReactNode } from 'react';
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
-import { isPaypalConnectMethod } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { isPayPalFastlaneMethod } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { CustomerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
@@ -456,7 +456,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
         try {
             await signIn(credentials);
 
-            if (isPaypalConnectMethod(providerWithCustomCheckout)) {
+            if (isPayPalFastlaneMethod(providerWithCustomCheckout)) {
                 await executePaymentMethodCheckout({
                     methodId: providerWithCustomCheckout,
                     continueWithCheckoutCallback: onSignIn,
@@ -482,7 +482,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
         await createAccount(mapCreateAccountFromFormValues(values));
 
-        if (isPaypalConnectMethod(providerWithCustomCheckout)) {
+        if (isPayPalFastlaneMethod(providerWithCustomCheckout)) {
             await executePaymentMethodCheckout({
                 methodId: providerWithCustomCheckout,
                 continueWithCheckoutCallback: onAccountCreated,

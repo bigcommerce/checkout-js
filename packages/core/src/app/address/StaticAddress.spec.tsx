@@ -7,7 +7,7 @@ import { mount, render } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
-import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import { getCountries } from '../geography/countries.mock';
 
@@ -18,14 +18,14 @@ import StaticAddress, { StaticAddressProps } from './StaticAddress';
 
 jest.mock('@bigcommerce/checkout/ui', () => ({
     ...jest.requireActual('@bigcommerce/checkout/ui'),
-    IconPayPalConnectSmall: () => (<div data-test="pp-connect-icon">IconPayPalConnectSmall</div>)
+    IconPayPalConnectSmall: () => (<div data-test="pp-fastlane-icon">IconPayPalFastlaneSmall</div>)
 }));
 
 jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
     ...jest.requireActual('@bigcommerce/checkout/paypal-fastlane-integration'),
-    usePayPalConnectAddress: jest.fn(() => ({
-        isPayPalAxoEnabled: true,
-        paypalConnectAddresses: [],
+    usePayPalFastlaneAddress: jest.fn(() => ({
+        isPayPalFastlaneEnabled: true,
+        paypalFastlaneAddresses: [],
     })),
 }));
 
@@ -164,21 +164,21 @@ describe('StaticAddress Component', () => {
     });
 
     describe('provider icon', () => {
-        it('should not show icon, address is not from PP Connect', () => {
+        it('should not show icon, address is not from PP Fastlane', () => {
             const container = render(
                 <StaticAddressTest
                     {...defaultProps}
                 />
             );
 
-            expect(container.find('[data-test="pp-connect-icon"]')).toHaveLength(0);
+            expect(container.find('[data-test="pp-fastlane-icon"]')).toHaveLength(0);
         });
 
-        it('should show icon for PP Connect address', () => {
+        it('should show icon for PP Fastlane address', () => {
             // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            (usePayPalConnectAddress as jest.Mock).mockReturnValue({
-                isPayPalAxoEnabled: true,
-                paypalConnectAddresses: [defaultProps.address],
+            (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
+                isPayPalFastlaneEnabled: true,
+                paypalFastlaneAddresses: [defaultProps.address],
             });
 
             const container = render(
@@ -187,7 +187,7 @@ describe('StaticAddress Component', () => {
                 />
             );
 
-            expect(container.find('[data-test="pp-connect-icon"]')).toHaveLength(1);
+            expect(container.find('[data-test="pp-fastlane-icon"]')).toHaveLength(1);
         });
     });
 });

@@ -1,4 +1,4 @@
-import { usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
@@ -19,9 +19,9 @@ import BillingForm, { BillingFormProps } from './BillingForm';
 import StaticBillingAddress from './StaticBillingAddress';
 
 jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
-    usePayPalConnectAddress: jest.fn(() => ({
-        isPayPalAxoEnabled: false,
-        mergedBcAndPayPalConnectAddresses: [],
+    usePayPalFastlaneAddress: jest.fn(() => ({
+        isPayPalFastlaneEnabled: false,
+        mergedBcAndPayPalFastlaneAddresses: [],
     })),
 }));
 
@@ -171,16 +171,16 @@ describe('BillingForm Component', () => {
         expect(defaultProps.onSubmit).not.toHaveBeenCalled();
     });
 
-    it('renders form with PP Connect addresses', () => {
-        const mergedBcAndPayPalConnectAddresses = [{
+    it('renders form with PP Fastlane addresses', () => {
+        const mergedBcAndPayPalFastlaneAddresses = [{
             ...getAddress(),
-            address1: 'PP AXO address'
+            address1: 'PP Fastlane address'
         }];
 
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-        (usePayPalConnectAddress as jest.Mock).mockReturnValue({
-            isPayPalAxoEnabled: true,
-            mergedBcAndPayPalConnectAddresses,
+        (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
+            isPayPalFastlaneEnabled: true,
+            mergedBcAndPayPalFastlaneAddresses,
         });
 
         component = mount(
@@ -196,7 +196,7 @@ describe('BillingForm Component', () => {
         expect(addressSelectComponent).toHaveLength(1);
         expect(addressSelectComponent.props()).toEqual(
             expect.objectContaining({
-                addresses: mergedBcAndPayPalConnectAddresses,
+                addresses: mergedBcAndPayPalFastlaneAddresses,
             }),
         );
     });

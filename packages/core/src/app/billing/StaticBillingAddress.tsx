@@ -3,7 +3,7 @@ import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
-import { isPayPalConnectAddress, PoweredByPaypalConnectLabel, usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { isPayPalFastlaneAddress, PoweredByPayPalFastlaneLabel, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import { AddressType, StaticAddress } from '../address';
 import { withCheckout } from '../checkout';
@@ -21,8 +21,8 @@ interface WithCheckoutStaticBillingAddressProps {
 const StaticBillingAddress: FunctionComponent<
     StaticBillingAddressProps & WithCheckoutStaticBillingAddressProps
 > = ({ address, payments = EMPTY_ARRAY }) => {
-    const { isPayPalAxoEnabled, paypalConnectAddresses } = usePayPalConnectAddress();
-    const showPayPalConnectAddressLabel = isPayPalAxoEnabled && isPayPalConnectAddress(address, paypalConnectAddresses);
+    const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
+    const showPayPalFastlaneLabel = isPayPalFastlaneEnabled && isPayPalFastlaneAddress(address, paypalFastlaneAddresses);
 
     if (payments.find((payment) => payment.providerId === 'amazonpay')) {
         return (
@@ -36,7 +36,7 @@ const StaticBillingAddress: FunctionComponent<
         <>
             <StaticAddress address={address} type={AddressType.Billing} />
 
-            {showPayPalConnectAddressLabel && <PoweredByPaypalConnectLabel />}
+            {showPayPalFastlaneLabel && <PoweredByPayPalFastlaneLabel />}
         </>
     );
 };

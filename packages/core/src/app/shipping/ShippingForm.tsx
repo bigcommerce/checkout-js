@@ -17,7 +17,7 @@ import {
 import React, { useEffect } from 'react';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { isPaypalConnectMethod, usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { isPayPalFastlaneMethod, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import MultiShippingForm, { MultiShippingFormValues } from './MultiShippingForm';
 import SingleShippingForm, { SingleShippingFormValues } from './SingleShippingForm';
@@ -96,11 +96,11 @@ const ShippingForm = ({
     isShippingStepPending,
     isFloatingLabelEnabled,
 }: ShippingFormProps & WithLanguageProps) => {
-    const { isPayPalAxoEnabled, mergedBcAndPayPalConnectAddresses } = usePayPalConnectAddress();
-    const shippingAddresses = isPayPalAxoEnabled ? mergedBcAndPayPalConnectAddresses : addresses;
+    const { isPayPalFastlaneEnabled, mergedBcAndPayPalFastlaneAddresses } = usePayPalFastlaneAddress();
+    const shippingAddresses = isPayPalFastlaneEnabled ? mergedBcAndPayPalFastlaneAddresses : addresses;
 
     useEffect(() => {
-        if (isPaypalConnectMethod(methodId) && isPayPalAxoEnabled) {
+        if (isPayPalFastlaneMethod(methodId) && isPayPalFastlaneEnabled) {
             initialize({ methodId });
         }
     });

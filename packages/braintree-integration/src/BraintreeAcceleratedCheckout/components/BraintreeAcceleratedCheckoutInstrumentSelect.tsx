@@ -3,7 +3,7 @@ import { FieldProps } from 'formik';
 import React, { FunctionComponent, useEffect } from 'react';
 
 import { usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
-import { PoweredByPaypalConnectLabel } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { PoweredByPayPalFastlaneLabel } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { DropdownTrigger } from '@bigcommerce/checkout/ui';
 
 import BraintreeAcceleratedCheckoutInstrumentMenu from './BraintreeAcceleratedCheckoutInstrumentMenu';
@@ -50,7 +50,7 @@ const BraintreeAcceleratedCheckoutInstrumentSelect: FunctionComponent<
                 <input type="hidden" {...field} />
             </DropdownTrigger>
 
-            {selectedInstrument && <PoweredByPaypalConnectLabel />}
+            {selectedInstrument && <PoweredByPayPalFastlaneLabel />}
         </div>
     );
 };

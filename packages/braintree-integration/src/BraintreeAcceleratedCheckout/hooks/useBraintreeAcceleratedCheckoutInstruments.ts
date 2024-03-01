@@ -2,7 +2,7 @@ import { CardInstrument } from '@bigcommerce/checkout-sdk';
 import { useState } from 'react';
 
 import { useCheckout, usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
-import { isPayPalConnectAcceleratedCheckoutCustomer } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { isPayPalFastlaneCustomer } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 export const useBraintreeAcceleratedCheckoutInstruments = () => {
     const [isAddingNewInstrument, setIsAddingNewInstrument] = useState<boolean>(false);
@@ -13,14 +13,12 @@ export const useBraintreeAcceleratedCheckoutInstruments = () => {
     const paymentProviderCustomer = getPaymentProviderCustomer();
     const { paymentForm } = usePaymentFormContext();
 
-    const paypalConnectPaymentProviderCustomer = isPayPalConnectAcceleratedCheckoutCustomer(
-        paymentProviderCustomer,
-    )
+    const paypalFastlaneCustomer = isPayPalFastlaneCustomer(paymentProviderCustomer)
         ? paymentProviderCustomer
         : {};
 
-    const paypalConnectInstruments = paypalConnectPaymentProviderCustomer.instruments || [];
-    const selectedInstrument = paypalConnectInstruments.find(
+    const paypalFastlaneInstruments = paypalFastlaneCustomer.instruments || [];
+    const selectedInstrument = paypalFastlaneInstruments.find(
         (instrument: CardInstrument) => instrument.bigpayToken === selectedInstrumentId,
     );
 
@@ -37,7 +35,7 @@ export const useBraintreeAcceleratedCheckoutInstruments = () => {
     };
 
     return {
-        instruments: paypalConnectInstruments,
+        instruments: paypalFastlaneInstruments,
         isAddingNewInstrument,
         handleUseNewInstrument,
         handleSelectInstrument,

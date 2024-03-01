@@ -10,7 +10,7 @@ import { isEmpty } from 'lodash';
 import React, { FunctionComponent, memo } from 'react';
 
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
-import { isPayPalConnectAddress, usePayPalConnectAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { isPayPalFastlaneAddress, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { IconPayPalConnectSmall } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
@@ -38,7 +38,7 @@ interface WithCheckoutStaticAddressProps {
 const StaticAddress: FunctionComponent<
     StaticAddressEditableProps & WithCheckoutStaticAddressProps
 > = ({ countries, fields, address: addressWithoutLocalization }) => {
-    const { isPayPalAxoEnabled, paypalConnectAddresses } = usePayPalConnectAddress();
+    const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
     const address = localizeAddress(addressWithoutLocalization, countries);
     const isValid = !fields
         ? !isEmpty(address)
@@ -46,7 +46,7 @@ const StaticAddress: FunctionComponent<
               address,
               fields.filter((field) => !field.custom),
           );
-    const shouldShowProviderIcon = isPayPalAxoEnabled && isPayPalConnectAddress(addressWithoutLocalization, paypalConnectAddresses);
+    const shouldShowProviderIcon = isPayPalFastlaneEnabled && isPayPalFastlaneAddress(addressWithoutLocalization, paypalFastlaneAddresses);
 
     return !isValid ? null : (
         <div

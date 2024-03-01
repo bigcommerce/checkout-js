@@ -32,13 +32,9 @@ const usePayPalFastlaneAddress = () => {
     const shouldShowPayPalFastlaneLabel = !!paypalFastlaneAddresses.length;
 
     return {
-        isPayPalAxoEnabled: isPayPalFastlaneEnabled, // TODO: remove this option when it when we remove all it usage in checkout project
         isPayPalFastlaneEnabled,
-        paypalConnectAddresses: paypalFastlaneAddresses, // TODO: remove this option when it when we remove all it usage in checkout project
         paypalFastlaneAddresses,
-        shouldShowPayPalConnectLabel: shouldShowPayPalFastlaneLabel, // TODO: remove this option when it when we remove all it usage in checkout project
         shouldShowPayPalFastlaneLabel,
-        mergedBcAndPayPalConnectAddresses: mergedBcAndPayPalFastlaneAddresses, // TODO: remove this option when it when we remove all it usage in checkout project
         mergedBcAndPayPalFastlaneAddresses,
     };
 };

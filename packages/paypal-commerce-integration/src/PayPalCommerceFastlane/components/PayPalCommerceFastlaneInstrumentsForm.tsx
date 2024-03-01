@@ -3,7 +3,7 @@ import { CardInstrument } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
 import { CreditCardIcon, Button, ButtonSize, ButtonVariant } from '@bigcommerce/checkout/ui';
-import { PoweredByPaypalConnectLabel } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { PoweredByPayPalFastlaneLabel } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { PayPalFastlaneCardComponentRef } from '../PayPalCommerceFastlanePaymentMethod';
@@ -64,8 +64,7 @@ const PayPalCommerceFastlaneInstrumentsForm: FunctionComponent<
                     </div>
                 </div>
                 <div className="paypal-commerce-fastlane-instrument-branding">
-                    {/* TODO: update this component with Fastlane label */}
-                    <PoweredByPaypalConnectLabel />
+                    <PoweredByPayPalFastlaneLabel />
                 </div>
             </div>
 
