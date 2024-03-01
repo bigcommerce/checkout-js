@@ -1,11 +1,12 @@
 import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
 import { noop } from 'lodash';
-import React, { FunctionComponent, useCallback, useContext } from 'react';
+import React, { FunctionComponent, useCallback, useContext, useEffect, useRef } from 'react';
 
 import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
-import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutContextProps, PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withCheckout } from '../../checkout';
+import { connectFormik, ConnectFormikProps } from '../../common/form';
 import {
     withHostedCreditCardFieldset,
     WithInjectedHostedCreditCardFieldsetProps,
@@ -27,9 +28,27 @@ interface WithCheckoutStripePaymentMethodProps {
 const StripeUPEPaymentMethod: FunctionComponent<
     StripePaymentMethodProps &
         WithInjectedHostedCreditCardFieldsetProps &
-        WithCheckoutStripePaymentMethodProps
-> = ({ initializePayment, method, storeUrl, isGuest, isStripeLinkAuthenticated,  onUnhandledError = noop, ...rest }) => {
+        WithCheckoutStripePaymentMethodProps &
+        ConnectFormikProps<PaymentFormValues>
+> = ({
+    initializePayment,
+    method,
+    storeUrl,
+    isGuest,
+    isStripeLinkAuthenticated,
+    formik,
+    onUnhandledError = noop,
+    ...rest
+}) => {
     const containerId = `stripe-${method.id}-component-field`;
+    const updateStripeElement = useRef(noop);
+    const { values } = formik;
+
+    useEffect(() => {
+        updateStripeElement.current({
+            shouldSaveInstrument: values?.shouldSaveInstrument,
+        });
+    }, [values?.shouldSaveInstrument]);
 
     const paymentContext = useContext(PaymentContext);
 
@@ -66,6 +85,9 @@ const StripeUPEPaymentMethod: FunctionComponent<
                         },
                         onError: onUnhandledError,
                         render: renderSubmitButton,
+                        initStripeElementUpdateTrigger: (updateTrigger) => {
+                            updateStripeElement.current = updateTrigger;
+                        },
                     },
                 });
             },
@@ -144,5 +166,5 @@ function mapFromCheckoutProps({ checkoutState }: CheckoutContextProps ) {
 }
 
 export default withHostedCreditCardFieldset(
-    withCheckout(mapFromCheckoutProps)(StripeUPEPaymentMethod),
+    withCheckout(mapFromCheckoutProps)(connectFormik(StripeUPEPaymentMethod)),
 );
