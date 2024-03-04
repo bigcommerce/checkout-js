@@ -1,0 +1,10 @@
+// =============================================================================
+// CHECKOUT CUSTOMER REMOTE (Component)
+// =============================================================================
+
+body {
+    #applepayCheckoutButton button {
+        background-color: #fff;
+        background-image: -webkit-named-image(apple-pay-logo-black);
+    }
+}

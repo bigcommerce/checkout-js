@@ -24,6 +24,7 @@ export default class CheckoutButton extends PureComponent<CheckoutButtonProps> {
             methodId,
             [methodId]: {
                 ...heightOption,
+                buttonColor: "white",
                 container: containerId,
                 onError,
             },
