@@ -163,7 +163,7 @@
             "error_server": "Vi kunde inte skicka en inloggningslänk till dig. Försök igen.",
             "error_not_found": "Den angivna e-postadressen är inte kopplad till något konto. Försök med en annan e-postadress.",
             "sent_header": "Kolla din inkorg",
-            "sent_text": "If the entered email address is associated with this store, you will receive a sign-in link shortly. This link expires in 15 minutes. If you don't see it, check your junk folder.",
+            "sent_text": "Om den angivna e-postadressen är kopplad till den här butiken kommer du att få en inloggningslänk inom kort. Denna länk upphör att gälla om 15 minuter. Kontrollera skräppostmappen om du inte hittar den.",
             "text": "Ange e-postadressen som är kopplad till ditt konto. Vi skickar en inloggningslänk till dig.",
             "header": "Inloggningslänk för konto",
             "header_with_email": "Bekräfta din e-postadress",
@@ -199,7 +199,8 @@
                 "label": "Kontonummer",
                 "is_required": "Kontonummer krävs",
                 "only_numbers": "Kontonumret får endast innehålla siffror",
-                "length": "Kontonumret måste ha minst 8 siffror"
+                "length": "Account Number must have at least 4 digits",
+                "length_max": "Account Number must have at least 17 digits"
             },
             "bluesnap_direct_iban": {
                 "label": "IBAN",

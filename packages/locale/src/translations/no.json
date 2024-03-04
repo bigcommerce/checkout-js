@@ -163,7 +163,7 @@
             "error_server": "Vi kunne ikke sende deg en påloggingslenke. Prøv igjen.",
             "error_not_found": "Den angitte e-posten er ikke knyttet til en konto. Prøv med en annen e-post.",
             "sent_header": "Sjekk innboksen din",
-            "sent_text": "If the entered email address is associated with this store, you will receive a sign-in link shortly. This link expires in 15 minutes. If you don't see it, check your junk folder.",
+            "sent_text": "Hvis den oppgitte e-postadressen er knyttet til denne butikken, mottar du snart en påloggingslenke. Denne lenken utløper om 15 minutter. Hvis du ikke ser den, sjekker du søppelpostmappen din.",
             "text": "Skriv inn e-postadressen knyttet til kontoen din. Vi sender deg en påloggingslenke.",
             "header": "Link for kontopålogging",
             "header_with_email": "Bekreft e-postadressen din",
@@ -199,7 +199,8 @@
                 "label": "Kontonummer",
                 "is_required": "Kontonummer er påkrevd",
                 "only_numbers": "Kontonummer må kun inneholde tall",
-                "length": "Kontonummer må ha minst 8 sifre"
+                "length": "Account Number must have at least 4 digits",
+                "length_max": "Account Number must have at least 17 digits"
             },
             "bluesnap_direct_iban": {
                 "label": "IBAN",

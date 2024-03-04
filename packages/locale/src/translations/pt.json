@@ -163,7 +163,7 @@
             "error_server": "Não conseguimos enviar om link de acesso para você. Tente novamente.",
             "error_not_found": "O email inserido não está associado a nenhuma conta. Experimente outro email.",
             "sent_header": "Verifique sua caixa de entrada",
-            "sent_text": "If the entered email address is associated with this store, you will receive a sign-in link shortly. This link expires in 15 minutes. If you don't see it, check your junk folder.",
+            "sent_text": "Se o endereço de e-mail inserido estiver associado a esta loja, você receberá em breve um link de login que expira em 15 minutos. Se não encontrá-lo, confira a pasta de lixo eletrônico.",
             "text": "Insira o endereço de email associado à sua conta. Enviaremos um link de acesso para você.",
             "header": "Link de acesso à conta",
             "header_with_email": "Confirme seu endereço de email.",
@@ -199,7 +199,8 @@
                 "label": "Número da conta",
                 "is_required": "O número da conta é obrigatório",
                 "only_numbers": "O número da conta deve conter apenas números",
-                "length": "O número da conta deve ter pelo menos 8 dígitos"
+                "length": "O número da conta deve ter pelo menos 4 dígitos",
+                "length_max": "O número da conta deve ter pelo menos 17 dígitos"
             },
             "bluesnap_direct_iban": {
                 "label": "Iban",
