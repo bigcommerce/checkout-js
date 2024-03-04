@@ -16,6 +16,7 @@ const CheckoutButton: FunctionComponent<CheckoutButtonProps> = ({
         initializeCustomer({
             methodId,
             [methodId]: {
+                buttonColor: 'white',
                 container: containerId,
                 onUnhandledError,
             },
