@@ -156,6 +156,7 @@ const BlueSnapDirectSepaPaymentMethod: FunctionComponent<PaymentMethodProps> = (
                 {isInstrumentFeatureAvailable && (
                     <StoreInstrumentFieldset
                         instrumentId={currentInstrument?.bigpayToken}
+                        instruments={accountInstruments}
                         isAccountInstrument
                     />
                 )}

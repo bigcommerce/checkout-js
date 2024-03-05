@@ -178,6 +178,7 @@ class HostedPaymentMethodComponent extends Component<
                     {isInstrumentFeatureAvailableProp && (
                         <StoreInstrumentFieldset
                             instrumentId={selectedInstrument && selectedInstrument.bigpayToken}
+                            instruments={instruments}
                             isAccountInstrument={true}
                         />
                     )}

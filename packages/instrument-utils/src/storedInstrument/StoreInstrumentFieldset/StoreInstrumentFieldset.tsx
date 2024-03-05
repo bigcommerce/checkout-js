@@ -1,9 +1,8 @@
+import { PaymentInstrument } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent } from 'react';
 
 import {
-    CheckoutContextProps,
     PaymentFormService,
-    useCheckout,
     usePaymentFormContext,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { Fieldset } from '@bigcommerce/checkout/ui';
@@ -14,6 +13,7 @@ import { InstrumentStoreAsDefaultField } from '../InstrumentStoreAsDefaultField'
 interface StoreInstrumentFieldsetProps {
     isAccountInstrument?: boolean;
     instrumentId?: string;
+    instruments: PaymentInstrument[];
 }
 
 interface WithStorageSettings {
@@ -23,26 +23,17 @@ interface WithStorageSettings {
 }
 
 const useProps = (
-    context: CheckoutContextProps,
     props: StoreInstrumentFieldsetProps,
     paymentForm: PaymentFormService,
 ): WithStorageSettings => {
-    const {
-        checkoutState: {
-            data: { getInstruments },
-        },
-    } = context;
-
-    const allInstruments = getInstruments();
-
     const saveIsChecked = Boolean(paymentForm.getFieldValue<boolean>('shouldSaveInstrument'));
 
-    const { instrumentId } = props;
+    const { instrumentId, instruments } = props;
 
     const addingNewInstrument = !instrumentId;
-    const hasAnyOtherInstruments = !!allInstruments && allInstruments.length > 0;
+    const hasAnyOtherInstruments = !!instruments && instruments.length > 0;
     const instrument =
-        allInstruments && allInstruments.find(({ bigpayToken }) => bigpayToken === instrumentId);
+        instruments && instruments.find(({ bigpayToken }) => bigpayToken === instrumentId);
 
     return {
         ...props,
@@ -60,13 +51,7 @@ const StoreInstrumentFieldset: FunctionComponent<StoreInstrumentFieldsetProps> =
 }) => {
     const { paymentForm } = usePaymentFormContext();
 
-    const { checkoutService, checkoutState } = useCheckout();
-
-    const { showSave, showSetAsDefault, setAsDefaultEnabled } = useProps(
-        { checkoutService, checkoutState },
-        props,
-        paymentForm,
-    );
+    const { showSave, showSetAsDefault, setAsDefaultEnabled } = useProps(props, paymentForm);
 
     return (
         <Fieldset>
