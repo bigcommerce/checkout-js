@@ -91,6 +91,7 @@ const PayPalCommercePaymentMethod: FunctionComponent<PaymentMethodProps> = (prop
                 {isInstrumentFeatureAvailable && (
                     <StoreInstrumentFieldset
                         instrumentId={currentInstrument?.bigpayToken}
+                        instruments={trustedAccountInstruments}
                         isAccountInstrument
                     />
                 )}

@@ -269,6 +269,7 @@ class HostedWidgetPaymentComponent extends Component<
                     {isInstrumentFeatureAvailableProp && (
                         <StoreInstrumentFieldset
                             instrumentId={selectedInstrumentId}
+                            instruments={instruments}
                             isAccountInstrument={isAccountInstrument || shouldShowAccountInstrument}
                         />
                     )}

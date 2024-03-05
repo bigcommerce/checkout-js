@@ -131,6 +131,7 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
             {isInstrumentFeatureAvailable && (
                 <StoreInstrumentFieldset
                     instrumentId={currentInstrument?.bigpayToken}
+                    instruments={accountInstruments}
                     isAccountInstrument
                 />
             )}

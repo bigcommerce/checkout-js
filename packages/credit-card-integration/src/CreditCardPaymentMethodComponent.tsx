@@ -258,6 +258,7 @@ class CreditCardPaymentMethodComponent extends Component<
                         {isInstrumentFeatureAvailableProp && (
                             <StoreInstrumentFieldset
                                 instrumentId={selectedInstrument && selectedInstrument.bigpayToken}
+                                instruments={instruments}
                             />
                         )}
                     </div>

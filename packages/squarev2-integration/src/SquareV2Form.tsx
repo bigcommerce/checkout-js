@@ -152,7 +152,10 @@ const SquareV2Form: FunctionComponent<SquareV2FormProps> = ({
                 </div>
 
                 {isInstrumentFeatureAvailable && (
-                    <StoreInstrumentFieldset instrumentId={selectedInstrumentId} />
+                    <StoreInstrumentFieldset
+                        instrumentId={selectedInstrumentId}
+                        instruments={instruments}
+                    />
                 )}
             </div>
         </LoadingOverlay>
