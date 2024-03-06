@@ -46,7 +46,7 @@ const StripeUPEPaymentMethod: FunctionComponent<
 
     useEffect(() => {
         updateStripeElement.current({
-            shouldSaveInstrument: values?.shouldSaveInstrument,
+            shouldShowTerms: values?.shouldSaveInstrument,
         });
     }, [values?.shouldSaveInstrument]);
 
@@ -85,8 +85,8 @@ const StripeUPEPaymentMethod: FunctionComponent<
                         },
                         onError: onUnhandledError,
                         render: renderSubmitButton,
-                        initStripeElementUpdateTrigger: (updateTrigger) => {
-                            updateStripeElement.current = updateTrigger;
+                        initStripeElementUpdateTrigger: (stripeElementUpdateFn) => {
+                            updateStripeElement.current = stripeElementUpdateFn;
                         },
                     },
                 });
