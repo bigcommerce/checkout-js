@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.452.0](https://github.com/bigcommerce/checkout-js/compare/v1.451.0...v1.452.0) (2024-03-06)
+
+
+### Features
+
+* **payment:** PI-1625 Refactor the existing `Af… ([#1714](https://github.com/bigcommerce/checkout-js/issues/1714)) ([0b5615e](https://github.com/bigcommerce/checkout-js/commit/0b5615edd948b4969ea6229285f15a27d946027a))
+
 ## [1.451.0](https://github.com/bigcommerce/checkout-js/compare/v1.450.3...v1.451.0) (2024-03-06)
 
 
