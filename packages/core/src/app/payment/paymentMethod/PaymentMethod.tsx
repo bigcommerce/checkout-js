@@ -12,7 +12,6 @@ import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-
 
 import { withCheckout } from '../../checkout';
 
-import AffirmPaymentMethod from './AffirmPaymentMethod';
 import AmazonPayV2PaymentMethod from './AmazonPayV2PaymentMethod';
 import BarclaycardPaymentMethod from './BarclaycardPaymentMethod';
 import BlueSnapV2PaymentMethod from './BlueSnapV2PaymentMethod';
@@ -94,10 +93,6 @@ const PaymentMethodComponent: FunctionComponent<
 
     if (method.id === PaymentMethodId.AmazonPay) {
         return <AmazonPayV2PaymentMethod {...props} />;
-    }
-
-    if (method.id === PaymentMethodId.Affirm) {
-        return <AffirmPaymentMethod {...props} />;
     }
 
     if (method.gateway === PaymentMethodId.BlueSnapV2) {
