@@ -163,7 +163,7 @@
             "error_server": "Envoi du lien de connexion impossible. Veuillez réessayer.",
             "error_not_found": "L'adresse e-mail saisie n'est associée à aucun compte. Veuillez saisir une autre adresse e-mail.",
             "sent_header": "Vérifiez votre boîte de réception",
-            "sent_text": "If the entered email address is associated with this store, you will receive a sign-in link shortly. This link expires in 15 minutes. If you don't see it, check your junk folder.",
+            "sent_text": "Si l'adresse e-mail saisie est associée à cette boutique, vous recevrez un lien de connexion sous peu. Ce lien expirera dans 15 minutes. Si vous ne le voyez pas apparaître dans votre boîte de réception, vérifiez vos courriers indésirables.",
             "text": "Veuillez saisir l'adresse e-mail associée à votre compte. Nous vous enverrons un lien de connexion.",
             "header": "Lien de connexion au compte",
             "header_with_email": "Confirmez votre adresse e-mail",
@@ -199,7 +199,8 @@
                 "label": "Numéro de compte",
                 "is_required": "Le numéro de compte est obligatoire",
                 "only_numbers": "Le numéro de compte ne doit contenir que des chiffres",
-                "length": "Le numéro de compte doit comporter au moins 8 chiffres"
+                "length": "Le numéro de compte doit comporter au moins 4 chiffres",
+                "length_max": "Le numéro de compte doit comporter au moins 17 chiffres"
             },
             "bluesnap_direct_iban": {
                 "label": "IBAN",

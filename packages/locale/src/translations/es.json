@@ -163,7 +163,7 @@
             "error_server": "No hemos podido enviarle un enlace de inicio de sesión. Vuelva a intentarlo.",
             "error_not_found": "El correo electrónico introducido no está asociado a una cuenta. Pruebe con otro correo electrónico.",
             "sent_header": "Compruebe su bandeja de entrada",
-            "sent_text": "If the entered email address is associated with this store, you will receive a sign-in link shortly. This link expires in 15 minutes. If you don't see it, check your junk folder.",
+            "sent_text": "Si la dirección de correo electrónico introducida está asociada a esta tienda, recibirás un enlace de inicio de sesión en breve. Este enlace caduca en 15 minutos. Si no lo encuentras, revisa la carpeta de correo no deseado.",
             "text": "Introduzca la dirección de correo electrónico asociada a su cuenta. Le enviaremos un enlace de inicio de sesión.",
             "header": "Enlace para iniciar sesión en la cuenta",
             "header_with_email": "Confirme su dirección de correo electrónico",
@@ -199,7 +199,8 @@
                 "label": "Número de cuenta",
                 "is_required": "El número de cuenta es obligatorio",
                 "only_numbers": "El número de cuenta debe contener solo números",
-                "length": "El número de cuenta debe tener al menos 8 dígitos"
+                "length": "Account Number must have at least 4 digits",
+                "length_max": "Account Number must have at least 17 digits"
             },
             "bluesnap_direct_iban": {
                 "label": "Iban",

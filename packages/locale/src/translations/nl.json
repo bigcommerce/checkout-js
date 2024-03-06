@@ -163,7 +163,7 @@
             "error_server": "We konden u geen inloglink sturen. Probeer het opnieuw.",
             "error_not_found": "Het ingevoerde e-mailadres is niet gekoppeld aan een account. Probeer het met een ander e-mailadres.",
             "sent_header": "Controleer uw inbox",
-            "sent_text": "If the entered email address is associated with this store, you will receive a sign-in link shortly. This link expires in 15 minutes. If you don't see it, check your junk folder.",
+            "sent_text": "Als het ingevoerde e-mailadres aan deze winkel is gekoppeld, ontvang je binnenkort een aanmeldingslink. Deze link verloopt binnen 15 minuten. Zie je de link niet, controleer dan je map met ongewenste e-mail.",
             "text": "Voer het e-mailadres in dat aan uw account is gekoppeld. We sturen u een inloglink.",
             "header": "Inloglink van account",
             "header_with_email": "Bevestig uw e-mailadres",
@@ -199,7 +199,8 @@
                 "label": "Accountnummer",
                 "is_required": "Rekeningnummer is vereist",
                 "only_numbers": "Rekeningnummer mag alleen cijfers bevatten",
-                "length": "Rekeningnummer moet minimaal 8 cijfers bevatten"
+                "length": "Rekeningnummer moet minimaal 4 cijfers bevatten",
+                "length_max": "Rekeningnummer moet minimaal 17 cijfers bevatten"
             },
             "bluesnap_direct_iban": {
                 "label": "Iban",

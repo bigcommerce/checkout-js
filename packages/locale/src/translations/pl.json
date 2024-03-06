@@ -163,7 +163,7 @@
             "error_server": "Nie mogliśmy wysłać Ci linku do logowania. Spróbuj ponownie.",
             "error_not_found": "Wprowadzony adres e-mail nie jest powiązany z kontem. Spróbuj podać inny adres e-mail.",
             "sent_header": "Sprawdź swoją skrzynkę odbiorczą",
-            "sent_text": "If the entered email address is associated with this store, you will receive a sign-in link shortly. This link expires in 15 minutes. If you don't see it, check your junk folder.",
+            "sent_text": "Jeśli wprowadzony adres e-mail jest powiązany z tym sklepem, wkrótce otrzymasz łącze logowania. To łącze wygasa za 15 minut. Jeśli nie widzisz tej wiadomości e-mail, sprawdź folder wiadomości-śmieci.",
             "text": "Wpisz adres e-mail przypisany do twojego konta. Wyślemy ci link do logowania.",
             "header": "Łącze logowania do konta",
             "header_with_email": "Potwierdź swój adres e-mail",
@@ -199,7 +199,8 @@
                 "label": "Numer Konta",
                 "is_required": "Numer rachunku jest wymagany",
                 "only_numbers": "Numer rachunku musi zawierać wyłącznie cyfry",
-                "length": "Numer rachunku musi składać się z co najmniej 8 cyfr"
+                "length": "Account Number must have at least 4 digits",
+                "length_max": "Account Number must have at least 17 digits"
             },
             "bluesnap_direct_iban": {
                 "label": "Iban",
