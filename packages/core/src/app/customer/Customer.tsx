@@ -37,6 +37,7 @@ import GuestForm, { GuestFormValues } from './GuestForm';
 import LoginForm from './LoginForm';
 import mapCreateAccountFromFormValues from './mapCreateAccountFromFormValues';
 import StripeGuestForm from './StripeGuestForm';
+import { SubscribeSessionStorage } from './SubscribeSessionStorage';
 
 export interface CustomerProps {
     viewType: CustomerViewType;
@@ -406,7 +407,10 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                     : updateSubscriptionWhenUnchecked,
             });
 
+
             onSubscribeToNewsletter(formValues.shouldSubscribe);
+
+            SubscribeSessionStorage.setSubscribeStatus(formValues.shouldSubscribe);
 
             const customer = data.getCustomer();
 
