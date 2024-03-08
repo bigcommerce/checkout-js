@@ -1,4 +1,5 @@
-import { useCallback } from 'react';
+import { PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { useCallback, useEffect } from 'react';
 import { object, string, StringSchema } from 'yup';
 
 import { useLocale } from '@bigcommerce/checkout/locale';
@@ -14,7 +15,7 @@ import {
     personalBraintreeAchFormFields,
 } from '../constants';
 
-const useBraintreeAchValidation = () => {
+const useBraintreeAchValidation = (method: PaymentMethod) => {
     const { paymentForm } = usePaymentFormContext();
     const { language } = useLocale();
 
@@ -119,6 +120,10 @@ const useBraintreeAchValidation = () => {
         },
         [getValidationSchema],
     );
+
+    useEffect(() => {
+        paymentForm.setValidationSchema(method, getValidationSchema());
+    }, [method, paymentForm, getValidationSchema]);
 
     return {
         validateBraintreeAchForm,
