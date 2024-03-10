@@ -11,6 +11,15 @@ import { BasicFormField, Fieldset, Form, Legend } from '../ui/form';
 
 import EmailField from './EmailField';
 import SubscribeField from './SubscribeField';
+import { SubscribeSessionStorage } from './SubscribeSessionStorage';
+
+function getShouldSubscribeValue(requiresMarketingConsent: boolean, defaultShouldSubscribe: boolean) {
+    if (SubscribeSessionStorage.getSubscribeStatus()) {
+        return true;
+    }
+
+    return requiresMarketingConsent ? false : defaultShouldSubscribe
+}
 
 export interface GuestFormProps {
     canSubscribe: boolean;
@@ -125,7 +134,7 @@ export default withLanguage(
             requiresMarketingConsent,
         }) => ({
             email,
-            shouldSubscribe: requiresMarketingConsent ? false : defaultShouldSubscribe,
+            shouldSubscribe: getShouldSubscribeValue(requiresMarketingConsent, defaultShouldSubscribe),
             privacyPolicy: false,
         }),
         handleSubmit: (values, { props: { onContinueAsGuest } }) => {

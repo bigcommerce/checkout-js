@@ -36,6 +36,7 @@ import {
     CustomerViewType,
 } from '../customer';
 import { getSupportedMethodIds } from '../customer/getSupportedMethods';
+import { SubscribeSessionStorage } from '../customer/SubscribeSessionStorage';
 import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
 import { PromotionBannerList } from '../promotion';
 import { hasSelectedShippingOptions, isUsingMultiShipping, StaticConsignment } from '../shipping';
@@ -305,7 +306,7 @@ class Checkout extends Component<
         }
 
         return (
-            <div id="checkout-page-container" data-test="checkout-page-container" className={classNames({ 'is-embedded': isEmbedded(), 'remove-checkout-step-numbers': isHidingStepNumbers })}>
+            <div className={classNames({ 'is-embedded': isEmbedded(), 'remove-checkout-step-numbers': isHidingStepNumbers })} data-test="checkout-page-container" id="checkout-page-container">
                 <div className="layout optimizedCheckout-contentPrimary">
                     {this.renderContent()}
                 </div>
@@ -608,6 +609,8 @@ class Checkout extends Component<
         if (this.embeddedMessenger) {
             this.embeddedMessenger.postComplete();
         }
+
+        SubscribeSessionStorage.removeSubscribeStatus();
 
         this.setState({ isRedirecting: true }, () => {
             navigateToOrderConfirmation(orderId);
