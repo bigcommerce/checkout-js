@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.452.2](https://github.com/bigcommerce/checkout-js/compare/v1.452.1...v1.452.2) (2024-03-10)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-8049 Use session storage to save subscription status in frontend ([#1744](https://github.com/bigcommerce/checkout-js/issues/1744)) ([4d1fccb](https://github.com/bigcommerce/checkout-js/commit/4d1fccb00f2c93055c725405326f5363d3e76ce2))
+
 ### [1.452.1](https://github.com/bigcommerce/checkout-js/compare/v1.452.0...v1.452.1) (2024-03-06)
 
 ## [1.452.0](https://github.com/bigcommerce/checkout-js/compare/v1.451.0...v1.452.0) (2024-03-06)
