@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.453.0](https://github.com/bigcommerce/checkout-js/compare/v1.452.4...v1.453.0) (2024-03-11)
+
+
+### Features
+
+* **payment:** PAYPAL-3447 fix ([#1730](https://github.com/bigcommerce/checkout-js/issues/1730)) ([f4ea9c1](https://github.com/bigcommerce/checkout-js/commit/f4ea9c116c29f06fd736faa65620057a544819bd))
+
+
+### Code Refactoring
+
+* **payment:** PI-1736 move getShippableItemsCount to package ([9a9e72d](https://github.com/bigcommerce/checkout-js/commit/9a9e72d0635c953006768930b61e8fd760b4873d))
+
 ### [1.452.4](https://github.com/bigcommerce/checkout-js/compare/v1.452.3...v1.452.4) (2024-03-11)
 
 ### [1.452.3](https://github.com/bigcommerce/checkout-js/compare/v1.452.2...v1.452.3) (2024-03-11)
