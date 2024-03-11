@@ -124,6 +124,31 @@ const getBillingStepStatus = createSelector(
             };
         }
 
+        const isUsingPaypal =
+            checkout && checkout.payments
+                ? checkout.payments.some(
+                    (payment) =>
+                        [
+                            'braintreepaypal',
+                            'braintreepaypalcredit',
+                            'braintreevenmo',
+                            'paypalcommerce',
+                            'paypalcommercecredit',
+                            'paypalcommercevenmo'
+                        ]
+                            .includes(payment.providerId))
+                : false;
+
+        if (isUsingPaypal) {
+            return {
+                type: CheckoutStepType.Billing,
+                isActive: false,
+                isComplete: hasAddress,
+                isEditable: hasAddress,
+                isRequired: true,
+            };
+        }
+
         return {
             type: CheckoutStepType.Billing,
             isActive: false,
