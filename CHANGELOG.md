@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.452.3](https://github.com/bigcommerce/checkout-js/compare/v1.452.2...v1.452.3) (2024-03-11)
+
+
+### Bug Fixes
+
+* **payment:** PI-1670 fixed default payment method checkbox for the payment methods ouside the core package ([3267b01](https://github.com/bigcommerce/checkout-js/commit/3267b012942cf872cd1d0b2ffe0b073d447f1828))
+
 ### [1.452.2](https://github.com/bigcommerce/checkout-js/compare/v1.452.1...v1.452.2) (2024-03-10)
 
 
