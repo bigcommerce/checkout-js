@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.452.5](https://github.com/bigcommerce/checkout-js/compare/v1.452.4...v1.452.5) (2024-03-11)
+
+
+### Code Refactoring
+
+* **payment:** PI-1736 move getShippableItemsCount to package ([9a9e72d](https://github.com/bigcommerce/checkout-js/commit/9a9e72d0635c953006768930b61e8fd760b4873d))
+
 ### [1.452.4](https://github.com/bigcommerce/checkout-js/compare/v1.452.3...v1.452.4) (2024-03-11)
 
 ### [1.452.3](https://github.com/bigcommerce/checkout-js/compare/v1.452.2...v1.452.3) (2024-03-11)
