@@ -199,8 +199,8 @@
                 "label": "Kontonummer",
                 "is_required": "Kontonummer krävs",
                 "only_numbers": "Kontonumret får endast innehålla siffror",
-                "length": "Account Number must have at least 4 digits",
-                "length_max": "Account Number must have at least 17 digits"
+                "length": "Kontonumret måste ha minst 4 siffror",
+                "length_max": "Kontonumret måste ha minst 17 siffror"
             },
             "bluesnap_direct_iban": {
                 "label": "IBAN",
@@ -320,10 +320,12 @@
             "ideal_bic_required": "Du måste välja en utfärdare för att genomföra beställningen",
             "instrument_text": "Lagrade kreditkort",
             "instrument_add_card_action": "Använd ett annat kort",
+            "instrument_account_number_ending": "Kontonummer som slutar på: {accountNumber}",
             "instrument_default_ending_in_text": "Kort som slutar med {endingIn}",
             "instrument_ending_in_text": "{cardTitle} som slutar med {endingIn}",
             "instrument_expired_text": "Upphörde att gälla {expiryDate}",
             "instrument_expires_text": "Upphör att gälla {expiryDate}",
+            "instrument_issuer": "Utfärdare",
             "instrument_manage_button": "hantera",
             "instrument_manage_modal_confirmation_action": "Ja, radera",
             "instrument_manage_modal_confirmation_label": "Är du säker på att du vill radera den här lagrade betalningsmetoden?",

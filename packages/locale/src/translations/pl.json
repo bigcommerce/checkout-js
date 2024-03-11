@@ -199,8 +199,8 @@
                 "label": "Numer Konta",
                 "is_required": "Numer rachunku jest wymagany",
                 "only_numbers": "Numer rachunku musi zawierać wyłącznie cyfry",
-                "length": "Account Number must have at least 4 digits",
-                "length_max": "Account Number must have at least 17 digits"
+                "length": "Numer rachunku musi składać się z co najmniej 4 cyfr",
+                "length_max": "Numer rachunku musi składać się z co najmniej 17 cyfr"
             },
             "bluesnap_direct_iban": {
                 "label": "Iban",
@@ -320,10 +320,12 @@
             "ideal_bic_required": "Aby złożyć zamówienie, musisz wybrać emitenta",
             "instrument_text": "Przechowywane karty kredytowe",
             "instrument_add_card_action": "Użyj innej karty",
+            "instrument_account_number_ending": "Numer konta kończący się na: {accountNumber}",
             "instrument_default_ending_in_text": "Karta kończąca się na {endingIn}",
             "instrument_ending_in_text": "{cardTitle} kończące się na {endingIn}",
             "instrument_expired_text": "Wygasła {expiryDate}",
             "instrument_expires_text": "Wygasa {expiryDate}.",
+            "instrument_issuer": "Wystawca",
             "instrument_manage_button": "Zarządzaj",
             "instrument_manage_modal_confirmation_action": "Tak, usuń",
             "instrument_manage_modal_confirmation_label": "Czy na pewno chcesz usunąć tę zapisaną metodę płatności?",
