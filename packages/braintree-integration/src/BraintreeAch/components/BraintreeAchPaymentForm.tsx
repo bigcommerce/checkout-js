@@ -38,7 +38,7 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
         shouldCreateNewInstrument,
         shouldConfirmInstrument,
     } = useBraintreeAchInstruments(method);
-    const { validateBraintreeAchForm } = useBraintreeAchValidation();
+    const { validateBraintreeAchForm } = useBraintreeAchValidation(method);
 
     const resetFormValues = () => {
         const { firstName, lastName } = checkoutState.data.getBillingAddress() || {};
