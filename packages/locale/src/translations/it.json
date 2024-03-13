@@ -199,8 +199,8 @@
                 "label": "Numero account",
                 "is_required": "È obbligatorio specificare il numero di conto",
                 "only_numbers": "Il numero di conto deve contenere solo numeri",
-                "length": "Account Number must have at least 4 digits",
-                "length_max": "Account Number must have at least 17 digits"
+                "length": "Il numero di conto deve contenere almeno 4 cifre",
+                "length_max": "Il numero di conto deve contenere almeno 17 cifre"
             },
             "bluesnap_direct_iban": {
                 "label": "IBAN",
@@ -320,10 +320,12 @@
             "ideal_bic_required": "Devi selezionare un emittente per effettuare l'ordine",
             "instrument_text": "Carte di credito memorizzate",
             "instrument_add_card_action": "Usa un'altra carta",
+            "instrument_account_number_ending": "Numero di conto che termina con: {accountNumber}",
             "instrument_default_ending_in_text": "Carta che termina con {endingIn}",
             "instrument_ending_in_text": "{cardTitle} che termina con {endingIn}",
             "instrument_expired_text": "Scaduta il {expiryDate}",
             "instrument_expires_text": "Scade il {expiryDate}",
+            "instrument_issuer": "Emittente",
             "instrument_manage_button": "Gestisci",
             "instrument_manage_modal_confirmation_action": "Sì, elimina",
             "instrument_manage_modal_confirmation_label": "Vuoi davvero eliminare questo metodo di pagamento salvato?",

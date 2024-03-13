@@ -199,8 +199,8 @@
                 "label": "Kontonummer",
                 "is_required": "Kontonummer er påkrevd",
                 "only_numbers": "Kontonummer må kun inneholde tall",
-                "length": "Account Number must have at least 4 digits",
-                "length_max": "Account Number must have at least 17 digits"
+                "length": "Kontonummer må ha minst 4 sifre",
+                "length_max": "Kontonummer må ha minst 17 sifre"
             },
             "bluesnap_direct_iban": {
                 "label": "IBAN",
@@ -320,10 +320,12 @@
             "ideal_bic_required": "Du må velge en utsteder for å legge inn bestillingen",
             "instrument_text": "Lagrede kredittkort",
             "instrument_add_card_action": "Bruk et annet kort",
+            "instrument_account_number_ending": "Kontonummer som slutter på: {accountNumber}",
             "instrument_default_ending_in_text": "Kort som slutter på {endingIn}",
             "instrument_ending_in_text": "{cardTitle} som slutter på {endingIn}",
             "instrument_expired_text": "Utløpt {expiryDate}",
             "instrument_expires_text": "Utløper {expiryDate}",
+            "instrument_issuer": "Utsteder",
             "instrument_manage_button": "Administrer",
             "instrument_manage_modal_confirmation_action": "Ja, slett",
             "instrument_manage_modal_confirmation_label": "Er du sikker på at du vil slette denne lagrede betalingsmåten?",

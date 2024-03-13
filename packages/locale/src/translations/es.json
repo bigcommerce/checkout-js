@@ -199,8 +199,8 @@
                 "label": "Número de cuenta",
                 "is_required": "El número de cuenta es obligatorio",
                 "only_numbers": "El número de cuenta debe contener solo números",
-                "length": "Account Number must have at least 4 digits",
-                "length_max": "Account Number must have at least 17 digits"
+                "length": "El número de cuenta debe tener al menos 4 dígitos",
+                "length_max": "El número de cuenta debe tener al menos 17 dígitos"
             },
             "bluesnap_direct_iban": {
                 "label": "Iban",
@@ -320,10 +320,12 @@
             "ideal_bic_required": "Debe seleccionar un emisor para realizar el pedido",
             "instrument_text": "Tarjetas de crédito guardadas",
             "instrument_add_card_action": "Utilizar una tarjeta diferente",
+            "instrument_account_number_ending": "Número de cuenta que termina en: {accountNumber}",
             "instrument_default_ending_in_text": "Tarjeta que termina en {endingIn}",
             "instrument_ending_in_text": "{cardTitle} que termina en {endingIn}",
             "instrument_expired_text": "Caducado {expiryDate}",
             "instrument_expires_text": "Caduca {expiryDate}",
+            "instrument_issuer": "Emisor",
             "instrument_manage_button": "Gestionar",
             "instrument_manage_modal_confirmation_action": "Sí, eliminar",
             "instrument_manage_modal_confirmation_label": "¿Está seguro de que desea eliminar este método de pago guardado?",

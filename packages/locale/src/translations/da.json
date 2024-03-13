@@ -199,8 +199,8 @@
                 "label": "Kontonummer",
                 "is_required": "Kontonummer er påkrævet",
                 "only_numbers": "Kontonummeret må kun indeholde tal",
-                "length": "Account Number must have at least 4 digits",
-                "length_max": "Account Number must have at least 17 digits"
+                "length": "Kontonummeret skal have mindst 4 cifre",
+                "length_max": "Kontonummeret skal have mindst 17 cifre"
             },
             "bluesnap_direct_iban": {
                 "label": "Iban",
@@ -320,10 +320,12 @@
             "ideal_bic_required": "Du skal vælge en udsteder for at afgive ordren",
             "instrument_text": "Gemte kreditkort",
             "instrument_add_card_action": "Brug et andet kort",
+            "instrument_account_number_ending": "Kontonummer, der ender på: {accountNumber}",
             "instrument_default_ending_in_text": "Kort, der ender på {endingIn}",
             "instrument_ending_in_text": "{cardTitle}, der ender på {endingIn}",
             "instrument_expired_text": "Udløbet {expiryDate}",
             "instrument_expires_text": "Udløber {expiryDate}",
+            "instrument_issuer": "Udsteder",
             "instrument_manage_button": "Administrer",
             "instrument_manage_modal_confirmation_action": "Ja, slet",
             "instrument_manage_modal_confirmation_label": "Er du sikker på, at du vil slette denne gemte betalingsmetode?",
