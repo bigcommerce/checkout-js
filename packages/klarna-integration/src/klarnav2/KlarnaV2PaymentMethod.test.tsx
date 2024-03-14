@@ -87,9 +87,7 @@ describe('when using Klarna payment', () => {
         expect(component.props()).toEqual(
             expect.objectContaining({
                 containerId: `${method.id}Widget`,
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 deinitializePayment: expect.any(Function),
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 initializePayment: expect.any(Function),
                 method,
             }),
@@ -105,9 +103,7 @@ describe('when using Klarna payment', () => {
         expect(component.props()).toEqual(
             expect.objectContaining({
                 containerId: `${method.id}Widget`,
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 deinitializePayment: expect.any(Function),
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 initializePayment: expect.any(Function),
                 method,
             }),
@@ -123,9 +119,7 @@ describe('when using Klarna payment', () => {
         expect(component.props()).toEqual(
             expect.objectContaining({
                 containerId: `${method.id}Widget`,
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 deinitializePayment: expect.any(Function),
-                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 initializePayment: expect.any(Function),
                 method,
             }),

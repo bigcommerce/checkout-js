@@ -49,8 +49,9 @@ const KlarnaV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
     const checkout = getCheckout();
     const customer = checkoutState.data.getCustomer();
-    const isSignedIn = customer?.isGuest;
-    const isInstrumentFeatureAvailable = !isSignedIn && Boolean(method.config.isVaultingEnabled);
+    const isGuestCustomer = customer?.isGuest;
+    const isInstrumentFeatureAvailable =
+        !isGuestCustomer && Boolean(method.config.isVaultingEnabled);
 
     return (
         <HostedWidgetPaymentComponent
