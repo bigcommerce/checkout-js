@@ -21,6 +21,7 @@
         li {
             align-items: center;
             background: url("../static/img/bullet.png") no-repeat left center;
+            background-size: contain;
             color: #fff;
             display: flex;
             font-size: 15px;
