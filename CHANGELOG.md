@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.457.2](https://github.com/bigcommerce/checkout-js/compare/v1.457.1...v1.457.2) (2024-03-18)
+
+
+### Code Refactoring
+
+* **payment:** PAYPAL-3603 updated braintreeConnectTracker with braintreeAnalyticTracker ([ec82761](https://github.com/bigcommerce/checkout-js/commit/ec82761c496938368ee0c84f6a0cfc98f6d68bd6))
+
 ### [1.457.1](https://github.com/bigcommerce/checkout-js/compare/v1.457.0...v1.457.1) (2024-03-14)
 
 
