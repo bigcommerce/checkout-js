@@ -7,3 +7,4 @@ export {
     ErrorTags,
 } from './ErrorLogger';
 export { default as ErrorBoundary } from './ErrorBoundary';
+export { default as isErrorWithMessage } from './isErrorWithMessage';

@@ -1,6 +1,8 @@
 import * as CheckoutSdk from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import React, { useEffect } from 'react';
+
+import { isErrorWithMessage } from '@bigcommerce/checkout/error-handling-utils';
 
 import AnalyticsProvider from './AnalyticsProvider';
 import * as createAnalyticsService from './createAnalyticsService';
@@ -109,10 +111,11 @@ describe('AnalyticsProvider', () => {
         let errorMessage = '';
 
         try {
-            mount(<AnalyticsProviderChildrenMock eventName="checkoutBegin" />);
-        } catch (error) {
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-            errorMessage = error.message;
+            render(<AnalyticsProviderChildrenMock eventName="checkoutBegin" />);
+        } catch (error: unknown) {
+            if (isErrorWithMessage(error)) {
+                errorMessage = error.message;
+            }
         }
 
         expect(errorMessage).toBe('useAnalytics must be used within an <AnalyticsProvider>');
@@ -121,14 +124,14 @@ describe('AnalyticsProvider', () => {
     });
 
     it('track checkout begin', () => {
-        mount(<TestComponent eventName="checkoutBegin" />);
+        render(<TestComponent eventName="checkoutBegin" />);
 
         expect(stepTrackerMock.trackCheckoutStarted).toHaveBeenCalledTimes(1);
         expect(bodlServiceMock.checkoutBegin).toHaveBeenCalledTimes(1);
     });
 
     it('track step completed', () => {
-        mount(<TestComponent eventName="trackStepCompleted" eventProps={['stepName']} />);
+        render(<TestComponent eventName="trackStepCompleted" eventProps={['stepName']} />);
 
         expect(stepTrackerMock.trackStepCompleted).toHaveBeenCalledTimes(1);
         expect(stepTrackerMock.trackStepCompleted).toHaveBeenCalledWith('stepName');
@@ -137,28 +140,28 @@ describe('AnalyticsProvider', () => {
     });
 
     it('track step viewed', () => {
-        mount(<TestComponent eventName="trackStepViewed" eventProps={['stepName']} />);
+        render(<TestComponent eventName="trackStepViewed" eventProps={['stepName']} />);
 
         expect(stepTrackerMock.trackStepViewed).toHaveBeenCalledTimes(1);
         expect(stepTrackerMock.trackStepViewed).toHaveBeenCalledWith('stepName');
     });
 
     it('track order purchased', () => {
-        mount(<TestComponent eventName="orderPurchased" />);
+        render(<TestComponent eventName="orderPurchased" />);
 
         expect(stepTrackerMock.trackOrderComplete).toHaveBeenCalledTimes(1);
         expect(bodlServiceMock.orderPurchased).toHaveBeenCalledTimes(1);
     });
 
     it('track customer email entry', () => {
-        mount(<TestComponent eventName="customerEmailEntry" eventProps={['email@test.com']} />);
+        render(<TestComponent eventName="customerEmailEntry" eventProps={['email@test.com']} />);
 
         expect(bodlServiceMock.customerEmailEntry).toHaveBeenCalledTimes(1);
         expect(bodlServiceMock.customerEmailEntry).toHaveBeenCalledWith('email@test.com');
     });
 
     it('track customer suggestion initialization', () => {
-        mount(
+        render(
             <TestComponent
                 eventName="customerSuggestionInit"
                 eventProps={[{ data: 'test data' }]}
@@ -172,13 +175,13 @@ describe('AnalyticsProvider', () => {
     });
 
     it('track customer suggestion execute', () => {
-        mount(<TestComponent eventName="customerSuggestionExecute" />);
+        render(<TestComponent eventName="customerSuggestionExecute" />);
 
         expect(bodlServiceMock.customerSuggestionExecute).toHaveBeenCalledTimes(1);
     });
 
     it('track customer payment method executed', () => {
-        mount(
+        render(
             <TestComponent
                 eventName="customerPaymentMethodExecuted"
                 eventProps={[{ data: 'test data' }]}
@@ -198,13 +201,13 @@ describe('AnalyticsProvider', () => {
     });
 
     it('track show shipping methods', () => {
-        mount(<TestComponent eventName="showShippingMethods" />);
+        render(<TestComponent eventName="showShippingMethods" />);
 
         expect(bodlServiceMock.showShippingMethods).toHaveBeenCalledTimes(1);
     });
 
     it('track selected payment method', () => {
-        mount(
+        render(
             <TestComponent
                 eventName="selectedPaymentMethod"
                 eventProps={['Credit card', 'paypalcreditcard']}
@@ -224,7 +227,7 @@ describe('AnalyticsProvider', () => {
     });
 
     it('track wallet button click', () => {
-        mount(<TestComponent eventName="walletButtonClick" eventProps={['paypalwalletbutton']} />);
+        render(<TestComponent eventName="walletButtonClick" eventProps={['paypalwalletbutton']} />);
 
         expect(braintreeAnalyticTracker.walletButtonClick).toHaveBeenCalledTimes(1);
         expect(braintreeAnalyticTracker.walletButtonClick).toHaveBeenCalledWith(
@@ -237,26 +240,26 @@ describe('AnalyticsProvider', () => {
     });
 
     it('track click Pay button', () => {
-        mount(<TestComponent eventName="clickPayButton" eventProps={[{ data: 'test data' }]} />);
+        render(<TestComponent eventName="clickPayButton" eventProps={[{ data: 'test data' }]} />);
 
         expect(bodlServiceMock.clickPayButton).toHaveBeenCalledTimes(1);
         expect(bodlServiceMock.clickPayButton).toHaveBeenCalledWith({ data: 'test data' });
     });
 
     it('track payment rejected', () => {
-        mount(<TestComponent eventName="paymentRejected" />);
+        render(<TestComponent eventName="paymentRejected" />);
 
         expect(bodlServiceMock.paymentRejected).toHaveBeenCalledTimes(1);
     });
 
     it('track payment complete', () => {
-        mount(<TestComponent eventName="paymentComplete" />);
+        render(<TestComponent eventName="paymentComplete" />);
 
         expect(bodlServiceMock.paymentComplete).toHaveBeenCalledTimes(1);
     });
 
     it('track exit checkout', () => {
-        mount(<TestComponent eventName="exitCheckout" />);
+        render(<TestComponent eventName="exitCheckout" />);
 
         expect(bodlServiceMock.exitCheckout).toHaveBeenCalledTimes(1);
     });
