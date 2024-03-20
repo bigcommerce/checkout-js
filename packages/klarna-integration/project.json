@@ -14,8 +14,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/packages/klarna-integration"],
       "options": {
-        "jestConfig": "packages/klarna-integration/jest.config.js",
-        "passWithNoTests": true
+        "jestConfig": "packages/klarna-integration/jest.config.js"
       }
     }
   },
