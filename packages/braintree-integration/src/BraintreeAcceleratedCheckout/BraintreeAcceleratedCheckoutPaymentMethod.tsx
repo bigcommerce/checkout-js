@@ -31,7 +31,7 @@ const BraintreeAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentMethod
         try {
             await checkoutService.initializePayment({
                 methodId: method.id,
-                braintreeacceleratedcheckout: {
+                braintreefastlane: {
                     onInit: (renderPayPalConnectComponentMethod) => {
                         paypalConnectComponentRef.current.render =
                             renderPayPalConnectComponentMethod;

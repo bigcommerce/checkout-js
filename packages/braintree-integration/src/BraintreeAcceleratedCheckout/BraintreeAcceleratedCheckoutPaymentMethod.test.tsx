@@ -44,7 +44,7 @@ describe('BraintreeAcceleratedCheckoutPaymentMethod', () => {
 
         expect(initializePayment).toHaveBeenCalledWith({
             methodId: props.method.id,
-            braintreeacceleratedcheckout: {
+            braintreefastlane: {
                 onInit: expect.any(Function),
             },
         });
