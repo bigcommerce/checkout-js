@@ -185,6 +185,9 @@ workflows:
             <<: *pull_request_filter
       - security/scan:
           name: "Gitleaks secrets scan"
+          filters:
+            branches:
+              ignore: /pull\/[0-9]+/
           context: org-global
           GITLEAKS_BLOCK: "false"
 
