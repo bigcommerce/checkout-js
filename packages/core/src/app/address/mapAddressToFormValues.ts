@@ -35,7 +35,12 @@ export default function mapAddressToFormValues(
                 }
 
                 if (isSystemAddressFieldName(name)) {
-                    addressFormValues[name] = (address && address[name]) || '';
+                    const fieldValue = address && address[name];
+                    addressFormValues[name] = getValue(
+                        fieldType,
+                        fieldValue,
+                        defaultValue,
+                    )?.toString() || '';
                 }
 
                 return addressFormValues;
