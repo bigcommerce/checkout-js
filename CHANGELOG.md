@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.459.0](https://github.com/bigcommerce/checkout-js/compare/v1.458.1...v1.459.0) (2024-03-25)
+
+
+### Features
+
+* **payment:** PI-1723 [KlarnaV2] Refactor the existing `KlarnaV2` co… ([#1742](https://github.com/bigcommerce/checkout-js/issues/1742)) ([bfb19f3](https://github.com/bigcommerce/checkout-js/commit/bfb19f316398a4c06b2132e05d195ef2988401c8))
+
 ### [1.458.1](https://github.com/bigcommerce/checkout-js/compare/v1.458.0...v1.458.1) (2024-03-25)
 
 ## [1.458.0](https://github.com/bigcommerce/checkout-js/compare/v1.457.5...v1.458.0) (2024-03-21)
