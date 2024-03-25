@@ -1,11 +1,11 @@
 import React, { FunctionComponent, useEffect } from 'react';
 
-import { PayPalConnectComponentRef } from '../BraintreeAcceleratedCheckoutPaymentMethod';
+import { BraintreeFastlaneComponentRef } from '../BraintreeAcceleratedCheckoutPaymentMethod';
 
 import './BraintreeAcceleratedCheckoutCreditCardForm.scss';
 
 interface BraintreeAcceleratedCheckoutCreditCardFormProps {
-    renderPayPalConnectComponent?: PayPalConnectComponentRef['render'];
+    renderPayPalConnectComponent?: BraintreeFastlaneComponentRef['render'];
 }
 
 const BraintreeAcceleratedCheckoutCreditCardForm: FunctionComponent<

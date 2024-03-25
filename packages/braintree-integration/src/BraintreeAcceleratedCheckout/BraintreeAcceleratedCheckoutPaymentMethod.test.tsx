@@ -46,6 +46,7 @@ describe('BraintreeAcceleratedCheckoutPaymentMethod', () => {
             methodId: props.method.id,
             braintreefastlane: {
                 onInit: expect.any(Function),
+                onChange: expect.any(Function),
             },
         });
     });
