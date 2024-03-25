@@ -25,7 +25,6 @@ import GooglePayPaymentMethod from './GooglePayPaymentMethod';
 import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';
 import HostedPaymentMethod from './HostedPaymentMethod';
 import KlarnaPaymentMethod from './KlarnaPaymentMethod';
-import KlarnaV2PaymentMethod from './KlarnaV2PaymentMethod';
 import MasterpassPaymentMethod from './MasterpassPaymentMethod';
 import MolliePaymentMethod from './MolliePaymentMethod';
 import MonerisPaymentMethod from './MonerisPaymentMethod';
@@ -101,10 +100,6 @@ const PaymentMethodComponent: FunctionComponent<
 
     if (method.id === PaymentMethodId.DigitalRiver) {
         return <DigitalRiverPaymentMethod {...props} />;
-    }
-
-    if (method.gateway === PaymentMethodId.Klarna) {
-        return <KlarnaV2PaymentMethod {...props} />;
     }
 
     if (method.id === PaymentMethodId.Klarna && method.gateway !== PaymentMethodId.Mollie) {
