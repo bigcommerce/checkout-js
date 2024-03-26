@@ -8,10 +8,16 @@ import React, {
     useState,
 } from 'react';
 
-import { LoadingOverlay } from '../../ui/loading';
-import { Modal } from '../../ui/modal';
-
-import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
+import {
+    HostedPaymentComponent,
+    HostedPaymentMethodProps,
+} from '@bigcommerce/checkout/hosted-payment-integration';
+import {
+    PaymentMethodProps,
+    PaymentMethodResolveId,
+    toResolvableComponent,
+} from '@bigcommerce/checkout/payment-integration-api';
+import { LoadingOverlay, Modal } from '@bigcommerce/checkout/ui';
 
 export type BlueSnapV2PaymentMethodProps = HostedPaymentMethodProps;
 
@@ -20,8 +26,11 @@ interface BlueSnapV2PaymentMethodRef {
     cancelBlueSnapV2Payment?(): void;
 }
 
-const BlueSnapV2PaymentMethod: FunctionComponent<BlueSnapV2PaymentMethodProps> = ({
-    initializePayment,
+const BlueSnapV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
+    checkoutService,
+    checkoutState,
+    method,
+    paymentForm,
     ...rest
 }) => {
     const [isLoadingIframe, setisLoadingIframe] = useState<boolean>(false);
@@ -41,7 +50,8 @@ const BlueSnapV2PaymentMethod: FunctionComponent<BlueSnapV2PaymentMethodProps> =
 
     const initializeBlueSnapV2Payment = useCallback(
         (options: PaymentInitializeOptions) => {
-            return initializePayment({
+
+            return checkoutService.initializePayment({
                 ...options,
                 bluesnapv2: {
                     onLoad(content: HTMLIFrameElement, cancel: () => void) {
@@ -57,7 +67,7 @@ const BlueSnapV2PaymentMethod: FunctionComponent<BlueSnapV2PaymentMethodProps> =
                 },
             });
         },
-        [initializePayment],
+        [checkoutService],
     );
 
     const appendPaymentPageContent = useCallback(() => {
@@ -71,7 +81,15 @@ const BlueSnapV2PaymentMethod: FunctionComponent<BlueSnapV2PaymentMethodProps> =
 
     return (
         <>
-            <HostedPaymentMethod {...rest} initializePayment={initializeBlueSnapV2Payment} />
+            <HostedPaymentComponent
+                {...rest}
+                checkoutService={checkoutService}
+                checkoutState={checkoutState}
+                deinitializePayment={checkoutService.deinitializePayment}
+                initializePayment={initializeBlueSnapV2Payment}
+                method={method}
+                paymentForm={paymentForm}
+            />
             <Modal
                 additionalModalClassName="modal--bluesnap"
                 isOpen={!!paymentPageContent}
@@ -87,4 +105,7 @@ const BlueSnapV2PaymentMethod: FunctionComponent<BlueSnapV2PaymentMethodProps> =
     );
 };
 
-export default BlueSnapV2PaymentMethod;
+export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
+    BlueSnapV2PaymentMethod,
+    [{ gateway: 'bluesnapv2' }],
+);
