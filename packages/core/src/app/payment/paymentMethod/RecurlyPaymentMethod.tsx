@@ -88,7 +88,8 @@ const RecurlyPaymentMethod: FunctionComponent<WithCheckoutRecurlyCheckoutProps &
         const {
             address1,
             address2,
-            country,
+            stateOrProvinceCode,
+            countryCode,
             stateOrProvince,
             postalCode,
             city,
@@ -100,8 +101,8 @@ const RecurlyPaymentMethod: FunctionComponent<WithCheckoutRecurlyCheckoutProps &
                 const customerInformation = {
                     address1,
                     address2,
-                    country,
-                    state: stateOrProvince,
+                    country:countryCode,
+                    state: stateOrProvinceCode ? stateOrProvinceCode : stateOrProvince,
                     postal_code: postalCode,
                     first_name: firstName,
                     last_name: lastName,
