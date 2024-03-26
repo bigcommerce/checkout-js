@@ -6,6 +6,7 @@ import { isPayPalFastlaneCustomer } from '@bigcommerce/checkout/paypal-fastlane-
 
 export const useBraintreeAcceleratedCheckoutInstruments = () => {
     const [isAddingNewInstrument, setIsAddingNewInstrument] = useState<boolean>(false);
+    const [fastlaneSelectedInstrument, setFastlaneSelectedInstrument] = useState<CardInstrument>();
     const [selectedInstrumentId, setSelectedInstrumentId] = useState<string | undefined>();
     const state = useCheckout().checkoutState.data;
 
@@ -34,11 +35,18 @@ export const useBraintreeAcceleratedCheckoutInstruments = () => {
         paymentForm.setFieldValue('instrumentId', id);
     };
 
+    const handlePaypalFastlaneSelectInstrument = (instrument: CardInstrument): void => {
+        setFastlaneSelectedInstrument(instrument);
+        paymentForm.setFieldValue('instrumentId', instrument.bigpayToken);
+    };
+
     return {
+        fastlaneSelectedInstrument,
         instruments: paypalFastlaneInstruments,
         isAddingNewInstrument,
         handleUseNewInstrument,
         handleSelectInstrument,
+        handlePaypalFastlaneSelectInstrument,
         selectedInstrument,
     };
 };
