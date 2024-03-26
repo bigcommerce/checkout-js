@@ -14,7 +14,6 @@ import { withCheckout } from '../../checkout';
 
 import AmazonPayV2PaymentMethod from './AmazonPayV2PaymentMethod';
 import BarclaycardPaymentMethod from './BarclaycardPaymentMethod';
-import BlueSnapV2PaymentMethod from './BlueSnapV2PaymentMethod';
 import BoltPaymentMethod from './BoltPaymentMethod';
 import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod';
 import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
@@ -92,10 +91,6 @@ const PaymentMethodComponent: FunctionComponent<
 
     if (method.id === PaymentMethodId.AmazonPay) {
         return <AmazonPayV2PaymentMethod {...props} />;
-    }
-
-    if (method.gateway === PaymentMethodId.BlueSnapV2) {
-        return <BlueSnapV2PaymentMethod {...props} />;
     }
 
     if (method.id === PaymentMethodId.DigitalRiver) {

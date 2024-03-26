@@ -10,7 +10,8 @@
     {
       "files": ["*.mock.ts"],
       "rules": {
-        "@typescript-eslint/naming-convention": "off"
+        "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/no-unsafe-assignment" : "off"
       }
     }
   ]

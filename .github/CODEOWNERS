@@ -21,7 +21,6 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/core/payment/paymentMethod/AffirmPaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/AmazonPaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/BarclayCardPaymentMethod.tsx @bigcommerce/team-integrations
-/packages/core/payment/paymentMethod/BlueSnapV2PaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/BoltClientPaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/BoltCustomForm.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/BoltCustomFormValues.ts @bigcommerce/team-integrations
