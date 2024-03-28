@@ -18,6 +18,7 @@ import StaticAddress from './StaticAddress';
 jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
     usePayPalFastlaneAddress: jest.fn(() => ({
         shouldShowPayPalFastlaneLabel: false,
+        shouldShowPayPalConnectLabel: false,
     })),
     PoweredByPayPalFastlaneLabel: jest.fn(() => (
         <div data-test="powered-by-pp-fastlane-label">PoweredByPayPalFastlaneLabel</div>

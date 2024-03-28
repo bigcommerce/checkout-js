@@ -38,7 +38,7 @@ interface WithCheckoutStaticAddressProps {
 const StaticAddress: FunctionComponent<
     StaticAddressEditableProps & WithCheckoutStaticAddressProps
 > = ({ countries, fields, address: addressWithoutLocalization }) => {
-    const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
+    const { isPayPalFastlaneEnabled, shouldShowPayPalConnectLabel, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
     const address = localizeAddress(addressWithoutLocalization, countries);
     const isValid = !fields
         ? !isEmpty(address)
@@ -46,7 +46,7 @@ const StaticAddress: FunctionComponent<
               address,
               fields.filter((field) => !field.custom),
           );
-    const shouldShowProviderIcon = isPayPalFastlaneEnabled && isPayPalFastlaneAddress(addressWithoutLocalization, paypalFastlaneAddresses);
+    const shouldShowProviderIcon = isPayPalFastlaneEnabled && shouldShowPayPalConnectLabel && isPayPalFastlaneAddress(addressWithoutLocalization, paypalFastlaneAddresses);
 
     return !isValid ? null : (
         <div

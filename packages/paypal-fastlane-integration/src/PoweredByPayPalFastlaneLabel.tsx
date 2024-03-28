@@ -1,18 +1,33 @@
 import React from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { IconPayPalConnect } from '@bigcommerce/checkout/ui';
+import { IconPayPalConnect, IconPayPalFastlane } from '@bigcommerce/checkout/ui';
 
 import './PoweredByPayPalFastlaneLabel.scss';
+import usePayPalFastlaneAddress from './usePayPalFastlaneAddress';
 
-const PoweredByPayPalFastlaneLabel = () => (
-    <div className="powered-by-paypal-fastlane">
-        <div className="powered-by-paypal-fastlane-label">
-            <TranslatedString id="remote.powered_by" />
-            {/* TODO: update Icon with PayPal Fastlane */}
-            <IconPayPalConnect />
+const PoweredByPayPalFastlaneLabel = () => {
+    const { isPayPalFastlaneEnabled, shouldShowPayPalConnectLabel } = usePayPalFastlaneAddress();
+
+    if (!isPayPalFastlaneEnabled) {
+        return <></>;
+    }
+
+    if (shouldShowPayPalConnectLabel) {
+        return (
+            <div className="powered-by-paypal-fastlane">
+                <div className="powered-by-paypal-fastlane-label">
+                    <TranslatedString id="remote.powered_by" />
+                    <IconPayPalConnect />
+                </div>
+            </div>
+        );
+    }
+    return (
+        <div className="powered-by-paypal-fastlane">
+            <IconPayPalFastlane />
         </div>
-    </div>
-);
+    );
+};
 
 export default PoweredByPayPalFastlaneLabel;

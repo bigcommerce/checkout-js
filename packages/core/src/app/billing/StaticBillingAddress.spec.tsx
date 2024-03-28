@@ -20,7 +20,6 @@ import StaticBillingAddress, { StaticBillingAddressProps } from './StaticBilling
 jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
     ...jest.requireActual('@bigcommerce/checkout/paypal-fastlane-integration'),
     usePayPalFastlaneAddress: jest.fn(() => ({
-        isPayPalFastlaneEnabled: false,
         paypalFastlaneAddresses: [],
     })),
     PoweredByPayPalFastlaneLabel: jest.fn(() => (
