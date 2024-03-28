@@ -1,4 +1,4 @@
-import { getCardInstrument, getCart } from '@bigcommerce/checkout/test-mocks';
+import { getCardInstrument, getCart, getPaymentMethod } from '@bigcommerce/checkout/test-mocks';
 
 import { isInstrumentCardNumberRequired, IsInstrumentCardNumberRequiredState } from '.';
 
@@ -16,6 +16,12 @@ describe('is instrument card number required', () => {
                 ...getCardInstrument(),
                 trustedShippingAddress: false,
             },
+            paymentMethod: {
+                ...getPaymentMethod(),
+                config: {
+                    cardCode: false,
+                },
+            },
         };
     });
 
@@ -27,5 +33,16 @@ describe('is instrument card number required', () => {
 
     it('returns value based on instrument', () => {
         expect(isInstrumentCardNumberRequired(state)).toBe(true);
+    });
+
+    it('returns false if card number validation unavailable for payment method', () => {
+        state.paymentMethod = {
+            ...getPaymentMethod(),
+            initializationData: {
+                isVaultingCardNumberValidationAvailable: false,
+            },
+        };
+
+        expect(isInstrumentCardNumberRequired(state)).toBe(false);
     });
 });

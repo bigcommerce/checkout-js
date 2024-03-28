@@ -13,7 +13,16 @@ export default function isInstrumentCardCodeRequired({
     lineItems,
     paymentMethod,
 }: IsInstrumentCardCodeRequiredState): boolean {
-    if (PROVIDERS_WITHOUT_CARD_CODE.includes(instrument.provider)) {
+    const {
+        config: { isVaultingCvvEnabled, cardCode },
+        initializationData,
+    } = paymentMethod;
+    const { isVaultingCardCodeValidationAvailable = true } = initializationData || {};
+
+    if (
+        PROVIDERS_WITHOUT_CARD_CODE.includes(instrument.provider) ||
+        !isVaultingCardCodeValidationAvailable
+    ) {
         return false;
     }
 
@@ -24,10 +33,10 @@ export default function isInstrumentCardCodeRequired({
 
     // If the shipping address is trusted, show CVV field based on the merchant's configuration
     if (instrument.trustedShippingAddress) {
-        return !!paymentMethod.config.isVaultingCvvEnabled;
+        return !!isVaultingCvvEnabled;
     }
 
     // Otherwise, if the shipping address is untrusted, show CVV field if the
     // merchant either requires it for regular card or stored card payments.
-    return !!(paymentMethod.config.isVaultingCvvEnabled || paymentMethod.config.cardCode);
+    return !!(isVaultingCvvEnabled || cardCode);
 }

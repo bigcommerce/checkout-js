@@ -50,6 +50,20 @@ describe('isInstrumentCardCodeRequired()', () => {
         ).toBe(false);
     });
 
+    it('returns false if CVV validation unavailable for payment method', () => {
+        expect(
+            isInstrumentCardCodeRequired(
+                merge({}, state, {
+                    paymentMethod: merge({}, getPaymentMethod(), {
+                        initializationData: {
+                            isVaultingCardCodeValidationAvailable: false,
+                        },
+                    }),
+                }),
+            ),
+        ).toBe(false);
+    });
+
     it('returns true if there is digital item in cart', () => {
         expect(
             isInstrumentCardCodeRequired(
