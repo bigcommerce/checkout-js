@@ -20,19 +20,23 @@ const PayPalFastlaneAddressComponentMock = ({
         isPayPalFastlaneEnabled,
         paypalFastlaneAddresses,
         shouldShowPayPalFastlaneLabel,
+        shouldShowPayPalConnectLabel,
         mergedBcAndPayPalFastlaneAddresses,
     } = usePayPalFastlaneAddress();
 
     return (
         <>
-            <div data-test="isPayPalFastlaneEnabled">
+            <div data-test='isPayPalFastlaneEnabled'>
                 {isPayPalFastlaneEnabled ? 'true' : 'false'}
             </div>
-            <div data-test="isPayPalFastlaneAddress">
+            <div data-test='isPayPalFastlaneAddress'>
                 {isPayPalFastlaneAddress(selectedAddress, paypalFastlaneAddresses) ? 'true' : 'false'}
             </div>
-            <div data-test="shouldShowPayPalFastlaneLabel">
+            <div data-test='shouldShowPayPalFastlaneLabel'>
                 {shouldShowPayPalFastlaneLabel ? 'true' : 'false'}
+            </div>
+            <div data-test='shouldShowPayPalConnectLabel'>
+                {shouldShowPayPalConnectLabel ? 'true' : 'false'}
             </div>
             <ul>
                 {mergedBcAndPayPalFastlaneAddresses.map((address, index) => (
@@ -51,6 +55,7 @@ describe('usePayPalFastlaneAddress', () => {
         paymentProviderCustomer: PaymentProviderCustomer,
         customerAddress?: CustomerAddress[],
         providerWithCustomCheckout = PaymentIntegrationApi.PaymentMethodId.BraintreeAcceleratedCheckout,
+        isFastlaneFlow = false,
     ) => {
         jest.spyOn(PaymentIntegrationApi, 'useCheckout').mockImplementation(
             jest.fn().mockImplementation(() => ({
@@ -61,7 +66,14 @@ describe('usePayPalFastlaneAddress', () => {
                             ...defaultStoreConfig,
                             checkoutSettings: {
                                 ...defaultStoreConfig.checkoutSettings,
-                                providerWithCustomCheckout
+                                providerWithCustomCheckout,
+                                features: {
+                                    ...defaultStoreConfig.checkoutSettings.features,
+                                    ...isFastlaneFlow ? {
+                                        'PAYPAL-3926.braintree_fastlane_icon_switch': true,
+                                        'PAYPAL-3926.paypal_commerce_fastlane_icon_switch': true,
+                                    } : {},
+                                },
                             },
                         }),
                         getCustomer: () => ({
@@ -101,89 +113,195 @@ describe('usePayPalFastlaneAddress', () => {
         jest.clearAllMocks();
     });
 
-    it('renders with BC addresses & no PP Fastlane addresses, selected BC address', () => {
-        useCheckoutMock(
-            {},
-            [addressBC1, addressBC2],
-        );
+    describe('Connect', () => {
+        it('renders with BC addresses & no PP addresses, selected BC address', () => {
+            useCheckoutMock(
+                {},
+                [addressBC1, addressBC2],
+            );
 
-        render(
-            <PayPalFastlaneAddressComponentMock
-                selectedAddress={addressBC1}
-            />
-        );
+            render(
+                <PayPalFastlaneAddressComponentMock
+                    selectedAddress={addressBC1}
+                />
+            );
 
-        const addressItems = screen.getAllByRole('listitem');
+            const addressItems = screen.getAllByRole('listitem');
 
-        expect(screen.getByTestId('isPayPalFastlaneAddress')).toHaveTextContent('false');
-        expect(screen.getByTestId('shouldShowPayPalFastlaneLabel')).toHaveTextContent('false');
-        expect(addressItems).toHaveLength(2);
-        expect(addressItems[0]).toHaveTextContent('address-BC1');
-        expect(addressItems[1]).toHaveTextContent('address-BC2-PP1');
+            expect(screen.getByTestId('isPayPalFastlaneAddress')).toHaveTextContent('false');
+            expect(screen.getByTestId('shouldShowPayPalFastlaneLabel')).toHaveTextContent('false');
+            expect(screen.getByTestId('shouldShowPayPalFastlaneLabel')).toHaveTextContent('false');
+            expect(addressItems).toHaveLength(2);
+            expect(addressItems[0]).toHaveTextContent('address-BC1');
+            expect(addressItems[1]).toHaveTextContent('address-BC2-PP1');
+        });
+
+        it('renders with PP addresses & no BC addresses, selected PP address', () => {
+            useCheckoutMock(
+                { addresses: [addressPP1, addressPP2] },
+                [],
+            );
+
+            render(
+                <PayPalFastlaneAddressComponentMock
+                    selectedAddress={addressPP1}
+                />
+            );
+
+            const addressItems = screen.getAllByRole('listitem');
+
+            expect(screen.getByTestId('isPayPalFastlaneAddress')).toHaveTextContent('true');
+            expect(screen.getByTestId('shouldShowPayPalConnectLabel')).toHaveTextContent('true');
+            expect(screen.getByTestId('shouldShowPayPalFastlaneLabel')).toHaveTextContent('false');
+            expect(addressItems).toHaveLength(2);
+            expect(addressItems[0]).toHaveTextContent('address-BC2-PP1');
+            expect(addressItems[1]).toHaveTextContent('address-PP2');
+        });
+
+        it('renders with BC addresses & PP address, selected BC address', () => {
+            useCheckoutMock(
+                { addresses: [addressPP2] },
+                [addressBC1, addressBC2],
+            );
+
+            render(
+                <PayPalFastlaneAddressComponentMock
+                    selectedAddress={addressBC1}
+                />
+            );
+
+            const addressItems = screen.getAllByRole('listitem');
+
+            expect(screen.getByTestId('isPayPalFastlaneAddress')).toHaveTextContent('false');
+            expect(screen.getByTestId('shouldShowPayPalConnectLabel')).toHaveTextContent('true');
+            expect(screen.getByTestId('shouldShowPayPalFastlaneLabel')).toHaveTextContent('false');
+            expect(addressItems).toHaveLength(3);
+            expect(addressItems[0]).toHaveTextContent('address-PP2');
+            expect(addressItems[1]).toHaveTextContent('address-BC1');
+            expect(addressItems[2]).toHaveTextContent('address-BC2-PP1');
+        });
+
+        it('renders with BC addresses & PP address - with address merge, selected PP address', () => {
+            useCheckoutMock(
+                { addresses: [addressPP1, addressPP2] },
+                [addressBC1, addressBC2],
+            );
+
+            render(
+                <PayPalFastlaneAddressComponentMock
+                    selectedAddress={addressPP1}
+                />
+            );
+
+            const addressItems = screen.getAllByRole('listitem');
+
+            expect(screen.getByTestId('isPayPalFastlaneAddress')).toHaveTextContent('true');
+            expect(screen.getByTestId('shouldShowPayPalConnectLabel')).toHaveTextContent('true');
+            expect(screen.getByTestId('shouldShowPayPalFastlaneLabel')).toHaveTextContent('false');
+            expect(addressItems).toHaveLength(3);
+            expect(addressItems[0]).toHaveTextContent('address-BC2-PP1');
+            expect(addressItems[1]).toHaveTextContent('address-PP2');
+            expect(addressItems[2]).toHaveTextContent('address-BC1');
+        });
     });
 
-    it('renders with PP Fastlane addresses & no BC addresses, selected PP address', () => {
-        useCheckoutMock(
-            { addresses: [addressPP1, addressPP2] },
-            [],
-        );
+    describe('Fastlane', () => {
+        it('renders with BC addresses & no PP addresses, selected BC address', () => {
+            useCheckoutMock(
+                {},
+                [addressBC1, addressBC2],
+                PaymentIntegrationApi.PaymentMethodId.BraintreeAcceleratedCheckout,
+                true,
+            );
 
-        render(
-            <PayPalFastlaneAddressComponentMock
-                selectedAddress={addressPP1}
-            />
-        );
+            render(
+                <PayPalFastlaneAddressComponentMock
+                    selectedAddress={addressBC1}
+                />
+            );
 
-        const addressItems = screen.getAllByRole('listitem');
+            const addressItems = screen.getAllByRole('listitem');
 
-        expect(screen.getByTestId('isPayPalFastlaneAddress')).toHaveTextContent('true');
-        expect(screen.getByTestId('shouldShowPayPalFastlaneLabel')).toHaveTextContent('true');
-        expect(addressItems).toHaveLength(2);
-        expect(addressItems[0]).toHaveTextContent('address-BC2-PP1');
-        expect(addressItems[1]).toHaveTextContent('address-PP2');
-    });
+            expect(screen.getByTestId('isPayPalFastlaneAddress')).toHaveTextContent('false');
+            expect(screen.getByTestId('shouldShowPayPalConnectLabel')).toHaveTextContent('false');
+            expect(screen.getByTestId('shouldShowPayPalFastlaneLabel')).toHaveTextContent('false');
+            expect(addressItems).toHaveLength(2);
+            expect(addressItems[0]).toHaveTextContent('address-BC1');
+            expect(addressItems[1]).toHaveTextContent('address-BC2-PP1');
+        });
 
-    it('renders with BC addresses & PP Fastlane address, selected BC address', () => {
-        useCheckoutMock(
-            { addresses: [addressPP2] },
-            [addressBC1, addressBC2],
-        );
+        it('renders with PP addresses & no BC addresses, selected PP address', () => {
+            useCheckoutMock(
+                { addresses: [addressPP1, addressPP2] },
+                [],
+                PaymentIntegrationApi.PaymentMethodId.BraintreeAcceleratedCheckout,
+                true,
+            );
 
-        render(
-            <PayPalFastlaneAddressComponentMock
-                selectedAddress={addressBC1}
-            />
-        );
+            render(
+                <PayPalFastlaneAddressComponentMock
+                    selectedAddress={addressPP1}
+                />
+            );
 
-        const addressItems = screen.getAllByRole('listitem');
+            const addressItems = screen.getAllByRole('listitem');
 
-        expect(screen.getByTestId('isPayPalFastlaneAddress')).toHaveTextContent('false');
-        expect(screen.getByTestId('shouldShowPayPalFastlaneLabel')).toHaveTextContent('true');
-        expect(addressItems).toHaveLength(3);
-        expect(addressItems[0]).toHaveTextContent('address-PP2');
-        expect(addressItems[1]).toHaveTextContent('address-BC1');
-        expect(addressItems[2]).toHaveTextContent('address-BC2-PP1');
-    });
+            expect(screen.getByTestId('isPayPalFastlaneAddress')).toHaveTextContent('true');
+            expect(screen.getByTestId('shouldShowPayPalConnectLabel')).toHaveTextContent('false');
+            expect(screen.getByTestId('shouldShowPayPalFastlaneLabel')).toHaveTextContent('true');
+            expect(addressItems).toHaveLength(2);
+            expect(addressItems[0]).toHaveTextContent('address-BC2-PP1');
+            expect(addressItems[1]).toHaveTextContent('address-PP2');
+        });
 
-    it('renders with BC addresses & PP Fastlane address - with address merge, selected PP address', () => {
-        useCheckoutMock(
-            { addresses: [addressPP1, addressPP2] },
-            [addressBC1, addressBC2],
-        );
+        it('renders with BC addresses & PP address, selected BC address', () => {
+            useCheckoutMock(
+                { addresses: [addressPP2] },
+                [addressBC1, addressBC2],
+                PaymentIntegrationApi.PaymentMethodId.BraintreeAcceleratedCheckout,
+                true,
+            );
 
-        render(
-            <PayPalFastlaneAddressComponentMock
-                selectedAddress={addressPP1}
-            />
-        );
+            render(
+                <PayPalFastlaneAddressComponentMock
+                    selectedAddress={addressBC1}
+                />
+            );
 
-        const addressItems = screen.getAllByRole('listitem');
+            const addressItems = screen.getAllByRole('listitem');
 
-        expect(screen.getByTestId('isPayPalFastlaneAddress')).toHaveTextContent('true');
-        expect(screen.getByTestId('shouldShowPayPalFastlaneLabel')).toHaveTextContent('true');
-        expect(addressItems).toHaveLength(3);
-        expect(addressItems[0]).toHaveTextContent('address-BC2-PP1');
-        expect(addressItems[1]).toHaveTextContent('address-PP2');
-        expect(addressItems[2]).toHaveTextContent('address-BC1');
+            expect(screen.getByTestId('isPayPalFastlaneAddress')).toHaveTextContent('false');
+            expect(screen.getByTestId('shouldShowPayPalConnectLabel')).toHaveTextContent('false');
+            expect(screen.getByTestId('shouldShowPayPalFastlaneLabel')).toHaveTextContent('true');
+            expect(addressItems).toHaveLength(3);
+            expect(addressItems[0]).toHaveTextContent('address-PP2');
+            expect(addressItems[1]).toHaveTextContent('address-BC1');
+            expect(addressItems[2]).toHaveTextContent('address-BC2-PP1');
+        });
+
+        it('renders with BC addresses & PP address - with address merge, selected PP address', () => {
+            useCheckoutMock(
+                { addresses: [addressPP1, addressPP2] },
+                [addressBC1, addressBC2],
+                PaymentIntegrationApi.PaymentMethodId.BraintreeAcceleratedCheckout,
+                true,
+            );
+
+            render(
+                <PayPalFastlaneAddressComponentMock
+                    selectedAddress={addressPP1}
+                />
+            );
+
+            const addressItems = screen.getAllByRole('listitem');
+
+            expect(screen.getByTestId('isPayPalFastlaneAddress')).toHaveTextContent('true');
+            expect(screen.getByTestId('shouldShowPayPalConnectLabel')).toHaveTextContent('false');
+            expect(screen.getByTestId('shouldShowPayPalFastlaneLabel')).toHaveTextContent('true');
+            expect(addressItems).toHaveLength(3);
+            expect(addressItems[0]).toHaveTextContent('address-BC2-PP1');
+            expect(addressItems[1]).toHaveTextContent('address-PP2');
+            expect(addressItems[2]).toHaveTextContent('address-BC1');
+        });
     });
 });

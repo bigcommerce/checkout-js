@@ -56,7 +56,8 @@ const AddressSelect = ({
     onSelectAddress,
     onUseNewAddress,
 }: AddressSelectProps) => {
-    const { shouldShowPayPalFastlaneLabel } = usePayPalFastlaneAddress();
+    const { shouldShowPayPalConnectLabel, shouldShowPayPalFastlaneLabel } = usePayPalFastlaneAddress();
+    const shouldShowPayPalIcon = shouldShowPayPalConnectLabel || shouldShowPayPalFastlaneLabel;
 
     const handleSelectAddress = (newAddress: Address) => {
         if (!isEqualAddress(selectedAddress, newAddress)) {
@@ -90,7 +91,7 @@ const AddressSelect = ({
                 </DropdownTrigger>
             </div>
 
-            {shouldShowPayPalFastlaneLabel && <PoweredByPayPalFastlaneLabel />}
+            {shouldShowPayPalIcon && <PoweredByPayPalFastlaneLabel />}
         </div>
     );
 }

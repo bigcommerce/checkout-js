@@ -14,6 +14,12 @@ jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
     PoweredByPayPalFastlaneLabel: jest.fn(() => (
         <div data-test="powered-by-paypal-fastlane-label">PoweredByPayPalFastlaneLabel</div>
     )),
+    usePayPalFastlaneAddress: jest.fn(() => ({
+        isPayPalFastlaneEnabled: true,
+        shouldShowPayPalFastlaneLabel: false,
+        shouldShowPayPalConnectLabel: true,
+        paypalFastlaneAddresses: [],
+    })),
 }));
 
 describe('BraintreeAcceleratedCheckoutInstrumentSelect', () => {

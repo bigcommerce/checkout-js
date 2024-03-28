@@ -28,9 +28,14 @@ const isEqualToPayPalFastlaneAddress = (
     paypalFastlaneAddress: Partial<ComparableAddress>,
 ): boolean => isEqual(normalizeAddress(bcAddress), normalizeAddress(paypalFastlaneAddress));
 
-const isPayPalFastlaneAddress = (address: Address, addresses: Address[]): boolean =>
-    addresses.some((paypalFastlaneAddress) =>
+const isPayPalFastlaneAddress = (address: Address, addresses?: Address[]): boolean => {
+    if (!addresses || addresses.length === 0) {
+        return false;
+    }
+
+    return addresses.some((paypalFastlaneAddress) =>
         isEqualToPayPalFastlaneAddress(address, paypalFastlaneAddress),
     );
+};
 
 export default isPayPalFastlaneAddress;

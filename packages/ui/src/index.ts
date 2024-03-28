@@ -30,6 +30,7 @@ export {
     IconPaypal,
     IconPayPalConnect,
     IconPayPalConnectSmall,
+    IconPayPalFastlane,
     IconSize,
     IconHelp,
     IconLock,
