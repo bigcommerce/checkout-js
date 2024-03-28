@@ -41,7 +41,7 @@ describe('renderOrderConfirmation()', () => {
 
         options = {
             containerId: 'app',
-            orderId: 295,
+            orderId: 0o0,
             publicPath: 'https://foobar.com/assets/',
         };
     });
