@@ -11,6 +11,7 @@ import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { CreditCardIconList, mapFromPaymentMethodCardType } from '../creditCard';
 
 import BraintreePaypalCreditDescription from './BraintreePaypalCreditDescription';
+import PaypalCommerceCreditDescription from './PaypalCommerceCreditDescription';
 import { hasCreditCardNumber } from './CreditCardFieldsetValues';
 import getPaymentMethodDisplayName from './getPaymentMethodDisplayName';
 import getPaymentMethodName from './getPaymentMethodName';
@@ -80,6 +81,7 @@ function getPaymentMethodTitle(
             [PaymentMethodId.PaypalCommerceCredit]: {
                 logoUrl: cdnPath('/img/payment-providers/paypal_commerce_logo_letter.svg'),
                 titleText: methodDisplayName,
+                subtitle: (props: { onUnhandledError?(error: Error): void }) => <PaypalCommerceCreditDescription {...props} />
             },
             [PaymentMethodId.PaypalCommerceAlternativeMethod]: {
                 logoUrl: method.logoUrl || '',
