@@ -5,7 +5,7 @@
   "description": "Browser-based application providing a seamless UI for BigCommerce shoppers to complete their checkout.",
   "license": "MIT",
   "engines": {
-    "node": "18",
+    "node": "18.17.1",
     "npm": "9"
   },
   "scripts": {
