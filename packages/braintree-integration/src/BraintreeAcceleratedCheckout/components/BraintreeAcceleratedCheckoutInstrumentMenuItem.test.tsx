@@ -9,6 +9,14 @@ import BraintreeAcceleratedCheckoutInstrumentMenuItem, {
     BraintreeAcceleratedCheckoutInstrumentMenuItemProps,
 } from './BraintreeAcceleratedCheckoutInstrumentMenuItem';
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
+    ...jest.requireActual('@bigcommerce/checkout/paypal-fastlane-integration'),
+    usePayPalFastlaneAddress: jest.fn(() => ({
+        shouldShowPayPalConnectLabel: true,
+    })),
+}));
+
 describe('BraintreeAcceleratedCheckoutInstrumentMenuItem', () => {
     const localeContext = createLocaleContext(getStoreConfig());
     const instrument = getCardInstrument();
