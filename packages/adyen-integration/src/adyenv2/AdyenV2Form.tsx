@@ -73,6 +73,9 @@ const AdyenV2Form: FunctionComponent<AdyenV2FormProps & PaymentMethodProps> = ({
         },
     } = useCheckout();
     const isSignedIn = customer?.isGuest;
+
+    console.log({ isSignedIn });
+
     const isInstrumentFeatureAvailable = !isSignedIn && Boolean(method.config.isVaultingEnabled);
     const isInstrumentCardCodeRequired = isInstrumentCardCodeRequiredSelector(checkoutState);
     const isInstrumentCardNumberRequired = isInstrumentCardNumberRequiredSelector(checkoutState);
