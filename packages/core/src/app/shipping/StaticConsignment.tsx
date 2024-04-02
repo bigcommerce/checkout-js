@@ -20,10 +20,9 @@ const StaticConsignment: FunctionComponent<StaticConsignmentProps> = ({
     cart,
     compactView,
 }) => {
-    const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
+    const { paypalFastlaneAddresses } = usePayPalFastlaneAddress();
     const { shippingAddress: address, selectedShippingOption } = consignment;
-
-    const showPayPalFastlaneAddressLabel = isPayPalFastlaneEnabled && isPayPalFastlaneAddress(address, paypalFastlaneAddresses);
+    const showPayPalFastlaneAddressLabel = isPayPalFastlaneAddress(address, paypalFastlaneAddresses);
 
     return (
         <div className="staticConsignment">

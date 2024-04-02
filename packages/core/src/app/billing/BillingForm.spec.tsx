@@ -19,6 +19,7 @@ import BillingForm, { BillingFormProps } from './BillingForm';
 import StaticBillingAddress from './StaticBillingAddress';
 
 jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
+    ...jest.requireActual('@bigcommerce/checkout/paypal-fastlane-integration'),
     usePayPalFastlaneAddress: jest.fn(() => ({
         isPayPalFastlaneEnabled: false,
         mergedBcAndPayPalFastlaneAddresses: [],
