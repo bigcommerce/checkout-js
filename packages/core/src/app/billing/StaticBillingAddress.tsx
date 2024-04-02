@@ -21,8 +21,8 @@ interface WithCheckoutStaticBillingAddressProps {
 const StaticBillingAddress: FunctionComponent<
     StaticBillingAddressProps & WithCheckoutStaticBillingAddressProps
 > = ({ address, payments = EMPTY_ARRAY }) => {
-    const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
-    const showPayPalFastlaneLabel = isPayPalFastlaneEnabled && isPayPalFastlaneAddress(address, paypalFastlaneAddresses);
+    const { paypalFastlaneAddresses } = usePayPalFastlaneAddress();
+    const showPayPalFastlaneLabel = isPayPalFastlaneAddress(address, paypalFastlaneAddresses);
 
     if (payments.find((payment) => payment.providerId === 'amazonpay')) {
         return (

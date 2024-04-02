@@ -5,6 +5,7 @@ import creditCardType from 'credit-card-type';
 import React, { FunctionComponent } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { CreditCardIcon, IconPayPalConnectSmall } from '@bigcommerce/checkout/ui';
 
 import './BraintreeAcceleratedCheckoutInstrumentMenuItem.scss';
@@ -33,6 +34,7 @@ export interface BraintreeAcceleratedCheckoutInstrumentMenuItemProps {
 const BraintreeAcceleratedCheckoutInstrumentMenuItem: FunctionComponent<
     BraintreeAcceleratedCheckoutInstrumentMenuItemProps
 > = ({ className, instrument, testId, onClick }) => {
+    const { shouldShowPayPalConnectLabel } = usePayPalFastlaneAddress();
     const cardType = mapFromInstrumentCardType(instrument.brand);
     const cardInfo = creditCardType.getTypeInfo(cardType);
     const isExpired = !expirationDate({
@@ -89,9 +91,11 @@ const BraintreeAcceleratedCheckoutInstrumentMenuItem: FunctionComponent<
                     )}
                 </div>
 
-                <div className="instrument-powered-by-icon">
-                    <IconPayPalConnectSmall />
-                </div>
+                {shouldShowPayPalConnectLabel && (
+                    <div className="instrument-powered-by-icon">
+                        <IconPayPalConnectSmall />
+                    </div>
+                )}
             </div>
         </button>
     );
