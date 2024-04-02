@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.465.0](https://github.com/bigcommerce/checkout-js/compare/v1.464.2...v1.465.0) (2024-04-02)
+
+
+### Features
+
+* **payment:** PAYPAL-3463 Added Pay Later messaging to Paywall Section ([#1763](https://github.com/bigcommerce/checkout-js/issues/1763)) ([f3f5be9](https://github.com/bigcommerce/checkout-js/commit/f3f5be94990a6af9c3c5be8bb59519442025c814))
+* **payment:** PAYPAL-3580 added PayPal Fastlane Icon implementation ([001edb6](https://github.com/bigcommerce/checkout-js/commit/001edb6688994af7acefc786e22872fc2fd1f709))
+
 ### [1.464.2](https://github.com/bigcommerce/checkout-js/compare/v1.464.1...v1.464.2) (2024-04-02)
 
 ### [1.464.1](https://github.com/bigcommerce/checkout-js/compare/v1.464.0...v1.464.1) (2024-04-01)
