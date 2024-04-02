@@ -79,6 +79,8 @@ class AddressForm extends Component<AddressFormProps & WithLanguageProps> {
     componentDidMount(): void {
         const { current } = this.containerRef;
 
+        console.log('test');
+
         if (current) {
             this.nextElement = current.querySelector<HTMLElement>('[autocomplete="address-line2"]');
         }
