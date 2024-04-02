@@ -19,6 +19,7 @@ version: 2.1
 orbs:
   ci: bigcommerce/internal@volatile
   node: bigcommerce/internal-node@volatile
+  security: bigcommerce/internal-security@volatile
 
 jobs:
   test-packages:
@@ -182,6 +183,13 @@ workflows:
       - ci/validate-commits:
           filters:
             <<: *pull_request_filter
+      - security/scan:
+          name: "Gitleaks secrets scan"
+          filters:
+            branches:
+              ignore: /pull\/[0-9]+/
+          context: org-global
+          GITLEAKS_BLOCK: "false"
 
   release:
     jobs:

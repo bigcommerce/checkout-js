@@ -59,7 +59,7 @@ const HostedCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         async (selectedInstrument) => {
             const styleProps = ['color', 'fontFamily', 'fontSize', 'fontWeight'];
             const isInstrumentCardNumberRequired = selectedInstrument
-                ? isInstrumentCardNumberRequiredProp(selectedInstrument)
+                ? isInstrumentCardNumberRequiredProp(selectedInstrument, method)
                 : false;
             const isInstrumentCardCodeRequired = selectedInstrument
                 ? isInstrumentCardCodeRequiredProp(selectedInstrument, method)
@@ -207,7 +207,7 @@ const HostedCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         useCallback(
             (selectedInstrument) => {
                 const isInstrumentCardNumberRequired = selectedInstrument
-                    ? isInstrumentCardNumberRequiredProp(selectedInstrument)
+                    ? isInstrumentCardNumberRequiredProp(selectedInstrument, method)
                     : false;
                 const isInstrumentCardCodeRequired = selectedInstrument
                     ? isInstrumentCardCodeRequiredProp(selectedInstrument, method)

@@ -331,6 +331,7 @@ class Payment extends Component<
             selectedMethod.type === PaymentMethodProviderType.Hosted ||
             selectedMethod.type === PaymentMethodProviderType.PPSDK ||
             selectedMethod.gateway === PaymentMethodId.BlueSnapDirect ||
+            selectedMethod.gateway === PaymentMethodId.BlueSnapV2 ||
             selectedMethod.id === PaymentMethodId.AmazonPay ||
             selectedMethod.id === PaymentMethodId.CBAMPGS ||
             selectedMethod.id === PaymentMethodId.Checkoutcom ||

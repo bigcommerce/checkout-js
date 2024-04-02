@@ -1,24 +1,27 @@
 import React, { FunctionComponent, useEffect } from 'react';
 
-import { PayPalConnectComponentRef } from '../BraintreeAcceleratedCheckoutPaymentMethod';
+import { BraintreeFastlaneComponentRef } from '../BraintreeAcceleratedCheckoutPaymentMethod';
 import { useBraintreeAcceleratedCheckoutInstruments } from '../hooks/useBraintreeAcceleratedCheckoutInstruments';
 
 import BraintreeAcceleratedCheckoutCreditCardForm from './BraintreeAcceleratedCheckoutCreditCardForm';
 import BraintreeAcceleratedCheckoutInstrumentFieldset from './BraintreeAcceleratedCheckoutInstrumentFieldset';
+import BraintreeFastlaneInstrumentsForm from './BraintreeFastlaneInstrumentsForm';
 
 interface BraintreeAcceleratedCheckoutFormProps {
-    renderPayPalConnectComponent?: PayPalConnectComponentRef['render'];
+    renderPayPalConnectComponent?: BraintreeFastlaneComponentRef['render'];
+    showPayPalCardSelector?: BraintreeFastlaneComponentRef['showPayPalCardSelector'];
 }
 
 const BraintreeAcceleratedCheckoutForm: FunctionComponent<
     BraintreeAcceleratedCheckoutFormProps
-> = ({ renderPayPalConnectComponent }) => {
+> = ({ renderPayPalConnectComponent, showPayPalCardSelector }) => {
     const {
         instruments,
         isAddingNewInstrument,
         selectedInstrument,
         handleUseNewInstrument,
         handleSelectInstrument,
+        handlePaypalFastlaneSelectInstrument,
     } = useBraintreeAcceleratedCheckoutInstruments();
 
     const shouldShowInstrumentFieldset = instruments.length > 0;
@@ -33,12 +36,23 @@ const BraintreeAcceleratedCheckoutForm: FunctionComponent<
     return (
         <div className="paymentMethod paymentMethod--creditCard">
             {shouldShowInstrumentFieldset && (
-                <BraintreeAcceleratedCheckoutInstrumentFieldset
-                    instruments={instruments}
-                    onSelectInstrument={handleSelectInstrument}
-                    onUseNewInstrument={handleUseNewInstrument}
-                    selectedInstrument={selectedInstrument}
-                />
+                <>
+                    {!showPayPalCardSelector && (
+                        <BraintreeAcceleratedCheckoutInstrumentFieldset
+                            instruments={instruments}
+                            onSelectInstrument={handleSelectInstrument}
+                            onUseNewInstrument={handleUseNewInstrument}
+                            selectedInstrument={selectedInstrument}
+                        />
+                    )}
+                    {showPayPalCardSelector && (
+                        <BraintreeFastlaneInstrumentsForm
+                            onChange={showPayPalCardSelector}
+                            handleSelectInstrument={handlePaypalFastlaneSelectInstrument}
+                            selectedInstrument={selectedInstrument || instruments[0]}
+                        />
+                    )}
+                </>
             )}
 
             {shouldShowForm && (

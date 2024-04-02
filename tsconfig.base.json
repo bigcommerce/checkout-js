@@ -58,6 +58,7 @@
         "packages/hosted-widget-integration/src/index.ts"
       ],
       "@bigcommerce/checkout/instrument-utils": ["packages/instrument-utils/src/index.ts"],
+      "@bigcommerce/checkout/klarna-integration": ["packages/klarna-integration/src/index.ts"],
       "@bigcommerce/checkout/legacy-hoc": ["packages/legacy-hoc/src/index.ts"],
       "@bigcommerce/checkout/locale": ["packages/locale/src/index.ts"],
       "@bigcommerce/checkout/offline-payment-integration": [

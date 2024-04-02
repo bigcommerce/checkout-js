@@ -9,11 +9,13 @@ import {
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { FormContext, LoadingOverlay } from '@bigcommerce/checkout/ui';
+import { CardInstrument } from '@bigcommerce/checkout-sdk';
 
 import BraintreeAcceleratedCheckoutForm from './components/BraintreeAcceleratedCheckoutForm';
 
-export interface PayPalConnectComponentRef {
+export interface BraintreeFastlaneComponentRef {
     render?: (container: string) => void;
+    showPayPalCardSelector?: () => Promise<CardInstrument | undefined>;
 }
 
 const BraintreeAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
@@ -23,7 +25,7 @@ const BraintreeAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentMethod
     onUnhandledError,
     paymentForm,
 }) => {
-    const paypalConnectComponentRef = useRef<PayPalConnectComponentRef>({});
+    const paypalFastlaneComponentRef = useRef<BraintreeFastlaneComponentRef>({});
 
     const { isLoadingPaymentMethod, isInitializingPayment } = checkoutState.statuses;
 
@@ -31,10 +33,14 @@ const BraintreeAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentMethod
         try {
             await checkoutService.initializePayment({
                 methodId: method.id,
-                braintreeacceleratedcheckout: {
+                braintreefastlane: {
                     onInit: (renderPayPalConnectComponentMethod) => {
-                        paypalConnectComponentRef.current.render =
+                        paypalFastlaneComponentRef.current.render =
                             renderPayPalConnectComponentMethod;
+                    },
+                    onChange: (showPayPalCardSelector) => {
+                        paypalFastlaneComponentRef.current.showPayPalCardSelector =
+                            showPayPalCardSelector;
                     },
                 },
             });
@@ -80,7 +86,10 @@ const BraintreeAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentMethod
                         <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
                             <BraintreeAcceleratedCheckoutForm
                                 renderPayPalConnectComponent={
-                                    paypalConnectComponentRef?.current?.render
+                                    paypalFastlaneComponentRef?.current?.render
+                                }
+                                showPayPalCardSelector={
+                                    paypalFastlaneComponentRef.current?.showPayPalCardSelector
                                 }
                             />
                         </LoadingOverlay>

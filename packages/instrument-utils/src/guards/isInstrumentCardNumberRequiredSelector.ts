@@ -1,4 +1,4 @@
-import { CheckoutSelectors, Instrument } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, Instrument, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { createSelector } from 'reselect';
 
 import isInstrumentCardNumberRequired from './isInstrumentCardNumberRequired/isInstrumentCardNumberRequired';
@@ -9,7 +9,7 @@ const isInstrumentCardNumberRequiredSelector = createSelector(
 
         return cart && cart.lineItems;
     },
-    (lineItems) => (instrument: Instrument) => {
+    (lineItems) => (instrument: Instrument, paymentMethod?: PaymentMethod) => {
         if (!lineItems) {
             return false;
         }
@@ -17,6 +17,7 @@ const isInstrumentCardNumberRequiredSelector = createSelector(
         return isInstrumentCardNumberRequired({
             lineItems,
             instrument,
+            paymentMethod,
         });
     },
 );
