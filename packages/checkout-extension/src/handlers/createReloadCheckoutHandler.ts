@@ -8,7 +8,12 @@ export function createReloadCheckoutHandler({
     return {
         commandType: ExtensionCommandType.ReloadCheckout,
         handler: () => {
-            void checkoutService.loadCheckout(checkoutService.getState().data.getCheckout()?.id);
+            void checkoutService.loadCheckout(checkoutService.getState().data.getCheckout()?.id, {
+                params: {
+                    // eslint-disable-next-line
+                    include: ['consignments.availableShippingOptions'] as any,
+                },
+            });
         },
     };
 }
