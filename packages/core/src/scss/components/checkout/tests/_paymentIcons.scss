@@ -38,39 +38,38 @@
     display: block;
 }
 
-body.test_15 {
-    .payments {
-        display: block;
-    }
+.payments {
+    display: block;
+}
 
-    .cart-subscription.payments {
-        padding: 0;
-    }
+.cart-subscription.payments {
+    padding: 0;
+}
 
-    .cart-subscription:not(.payments) {
-        display: none;
-    }
+.cart-subscription:not(.payments) {
+    display: none;
+}
 
-    .cart-summary-wrapper-mobile.layout-cart {
-        padding-left: 0;
-        padding-right: 0;
-    }
+.cart-summary-wrapper-mobile.layout-cart {
+    padding-left: 0;
+    padding-right: 0;
 }
 
 .free-shipping {
     align-items: center;
-    background: #d40449;
+    background: radial-gradient(100% 1437.67% at 100% 54.17%, rgba(0, 50, 220, 1) 0%, rgba(255, 0, 0, 1) 100%);
     border-radius: 6px;
     color: #fff;
     display: flex;
     font-size: 15px;
     font-style: normal;
     font-weight: 450;
-    height: 30px;
     justify-content: center;
     line-height: 21px;
     margin-bottom: 32px;
     text-align: center;
+    position: relative;
+    padding: 0.5em;
 }
 
 .payments-method {
