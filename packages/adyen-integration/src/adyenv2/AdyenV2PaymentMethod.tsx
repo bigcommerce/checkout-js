@@ -1,7 +1,7 @@
 import {
     AdyenCreditCardComponentOptions,
     AdyenIdealComponentOptions,
-    AdyenV2ValidationState,
+    AdyenValidationState,
     CardInstrument,
     PaymentInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
@@ -54,7 +54,7 @@ const AdyenV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         shouldShowModal: true,
     });
     const [showAdditionalActionContent, setShowAdditionalActionContent] = useState<boolean>(false);
-    const [cardValidationState, setCardValidationState] = useState<AdyenV2ValidationState>();
+    const [cardValidationState, setCardValidationState] = useState<AdyenValidationState>();
     const containerId = `adyen-${method.id}-component-field`;
     const additionalActionContainerId = `adyen-${method.id}-additional-action-component-field`;
     const cardVerificationContainerId = `adyen-${method.id}-tsv-component-field`;
@@ -122,7 +122,7 @@ const AdyenV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                         onLoad,
                     },
                     shouldShowNumberField: ref.current.shouldShowNumberField,
-                    validateCardFields: (state: AdyenV2ValidationState) => {
+                    validateCardFields: (state: AdyenValidationState) => {
                         setCardValidationState(state);
                     },
                 },
