@@ -1,13 +1,12 @@
-import { AdyenV3ValidationState, CardInstrument, PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { AdyenValidationState, CardInstrument, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { FunctionComponent, useContext, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-import { PaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
 
-export type FieldsValidation = { [key in AdyenV3CardFields]?: AdyenV3ValidationState };
+export type FieldsValidation = { [key in AdyenCardFields]?: AdyenValidationState };
 
-enum AdyenV3CardFields {
+enum AdyenCardFields {
     CardNumber = 'encryptedCardNumber',
     SecurityCode = 'encryptedSecurityCode',
     ExpiryDate = 'encryptedExpiryDate',
@@ -17,7 +16,7 @@ export interface AdyenV3CardValidationProps {
     verificationFieldsContainerId?: string;
     shouldShowNumberField: boolean;
     paymentMethod: PaymentMethod;
-    cardValidationState?: AdyenV3ValidationState;
+    cardValidationState?: AdyenValidationState;
     selectedInstrument?: CardInstrument;
 }
 
@@ -31,21 +30,21 @@ const getInitialValidationState = ({
     const validationState: FieldsValidation = {};
 
     if (shouldShowNumberField) {
-        validationState[AdyenV3CardFields.CardNumber] = { valid: false };
+        validationState[AdyenCardFields.CardNumber] = { valid: false };
     }
 
     if (method === 'scheme') {
-        validationState[AdyenV3CardFields.SecurityCode] = { valid: false };
+        validationState[AdyenCardFields.SecurityCode] = { valid: false };
     }
 
     if (method === 'bcmc') {
-        validationState[AdyenV3CardFields.ExpiryDate] = { valid: false };
+        validationState[AdyenCardFields.ExpiryDate] = { valid: false };
     }
 
     return validationState;
 };
 
-const isFieldInvalid = (fieldKey: AdyenV3CardFields, fieldsValidation: FieldsValidation): boolean =>
+const isFieldInvalid = (fieldKey: AdyenCardFields, fieldsValidation: FieldsValidation): boolean =>
     !!fieldsValidation[fieldKey] && !fieldsValidation[fieldKey]?.valid;
 
 const AdyenV3CardValidation: FunctionComponent<AdyenV3CardValidationProps> = ({
@@ -55,8 +54,6 @@ const AdyenV3CardValidation: FunctionComponent<AdyenV3CardValidationProps> = ({
     paymentMethod,
     cardValidationState,
 }) => {
-    const paymentContext = useContext(PaymentFormContext);
-
     const [fieldsValidation, setFieldsValidation] = useState<FieldsValidation>(
         getInitialValidationState({ shouldShowNumberField, method: paymentMethod.method }),
     );
@@ -66,11 +63,16 @@ const AdyenV3CardValidation: FunctionComponent<AdyenV3CardValidationProps> = ({
             return;
         }
 
-        if (cardValidationState.fieldType) {
-            if (cardValidationState.fieldType === AdyenV3CardFields.CardNumber) {
+        if (
+            cardValidationState.fieldType &&
+            (!fieldsValidation[cardValidationState.fieldType] ||
+                fieldsValidation[cardValidationState.fieldType]?.valid !==
+                    cardValidationState.valid)
+        ) {
+            if (cardValidationState.fieldType === AdyenCardFields.CardNumber) {
                 setFieldsValidation({
                     ...fieldsValidation,
-                    [AdyenV3CardFields.CardNumber]:
+                    [AdyenCardFields.CardNumber]:
                         cardValidationState.endDigits !== selectedInstrument?.last4
                             ? { ...cardValidationState, valid: false }
                             : { ...cardValidationState },
@@ -82,19 +84,18 @@ const AdyenV3CardValidation: FunctionComponent<AdyenV3CardValidationProps> = ({
                 });
             }
         }
-    }, [cardValidationState, setFieldsValidation, fieldsValidation, selectedInstrument?.last4]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [cardValidationState, setFieldsValidation, selectedInstrument?.last4]);
 
     useEffect(() => {
         if (selectedInstrument?.bigpayToken) {
             setFieldsValidation(
                 getInitialValidationState({ shouldShowNumberField, method: paymentMethod.method }),
             );
-        } else {
-            paymentContext?.paymentForm.disableSubmit(paymentMethod, false);
         }
-    }, [selectedInstrument, paymentContext, paymentMethod, shouldShowNumberField]);
+    }, [selectedInstrument?.bigpayToken, paymentMethod.method, shouldShowNumberField]);
 
-    const showValidationIcon = (key: AdyenV3CardFields) =>
+    const showValidationIcon = (key: AdyenCardFields) =>
         isFieldInvalid(key, fieldsValidation) && (
             <span
                 className="adyen-checkout-input__inline-validation adyen-checkout-input__inline-validation--invalid"
@@ -137,7 +138,7 @@ const AdyenV3CardValidation: FunctionComponent<AdyenV3CardValidationProps> = ({
                             { 'form-field-ccNumber--hide': !shouldShowNumberField },
                         )}
                     >
-                        <label htmlFor={AdyenV3CardFields.CardNumber}>
+                        <label htmlFor={AdyenCardFields.CardNumber}>
                             <TranslatedString id="payment.credit_card_number_label" />
                         </label>
                         <div
@@ -148,20 +149,20 @@ const AdyenV3CardValidation: FunctionComponent<AdyenV3CardValidationProps> = ({
                                 'adyen-checkout__input-wrapper',
                                 {
                                     'adyen-checkout__input--error': isFieldInvalid(
-                                        AdyenV3CardFields.CardNumber,
+                                        AdyenCardFields.CardNumber,
                                         fieldsValidation,
                                     ),
                                 },
                             )}
-                            data-cse={AdyenV3CardFields.CardNumber}
-                            id={AdyenV3CardFields.CardNumber}
+                            data-cse={AdyenCardFields.CardNumber}
+                            id={AdyenCardFields.CardNumber}
                         />
-                        {showValidationIcon(AdyenV3CardFields.CardNumber)}
+                        {showValidationIcon(AdyenCardFields.CardNumber)}
                     </div>
                 )}
                 {paymentMethod.method === 'scheme' && (
                     <div className="form-field form-ccFields-field--ccCvv">
-                        <label htmlFor={AdyenV3CardFields.SecurityCode}>
+                        <label htmlFor={AdyenCardFields.SecurityCode}>
                             <TranslatedString id="payment.credit_card_cvv_label" />
                         </label>
                         <div
@@ -172,20 +173,20 @@ const AdyenV3CardValidation: FunctionComponent<AdyenV3CardValidationProps> = ({
                                 'adyen-checkout__input-wrapper',
                                 {
                                     'adyen-checkout__input--error': isFieldInvalid(
-                                        AdyenV3CardFields.SecurityCode,
+                                        AdyenCardFields.SecurityCode,
                                         fieldsValidation,
                                     ),
                                 },
                             )}
-                            data-cse={AdyenV3CardFields.SecurityCode}
-                            id={AdyenV3CardFields.SecurityCode}
+                            data-cse={AdyenCardFields.SecurityCode}
+                            id={AdyenCardFields.SecurityCode}
                         />
-                        {showValidationIcon(AdyenV3CardFields.SecurityCode)}
+                        {showValidationIcon(AdyenCardFields.SecurityCode)}
                     </div>
                 )}
                 {paymentMethod.method === 'bcmc' && (
                     <div className="form-field form-field--ccExpiry">
-                        <label htmlFor={AdyenV3CardFields.ExpiryDate}>
+                        <label htmlFor={AdyenCardFields.ExpiryDate}>
                             <TranslatedString id="payment.credit_card_expiration_label" />
                         </label>
                         <div
@@ -196,15 +197,15 @@ const AdyenV3CardValidation: FunctionComponent<AdyenV3CardValidationProps> = ({
                                 'adyen-checkout__input-wrapper',
                                 {
                                     'adyen-checkout__input--error': isFieldInvalid(
-                                        AdyenV3CardFields.ExpiryDate,
+                                        AdyenCardFields.ExpiryDate,
                                         fieldsValidation,
                                     ),
                                 },
                             )}
-                            data-cse={AdyenV3CardFields.ExpiryDate}
-                            id={AdyenV3CardFields.ExpiryDate}
+                            data-cse={AdyenCardFields.ExpiryDate}
+                            id={AdyenCardFields.ExpiryDate}
                         />
-                        {showValidationIcon(AdyenV3CardFields.ExpiryDate)}
+                        {showValidationIcon(AdyenCardFields.ExpiryDate)}
                     </div>
                 )}
             </div>
