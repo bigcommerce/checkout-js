@@ -10,6 +10,7 @@
     "braintree-integration": "packages/braintree-integration",
     "checkout-button-integration": "packages/checkout-button-integration",
     "checkout-extension": "packages/checkout-extension",
+    "checkoutcom-integration": "packages/checkoutcom-integration",
     "core": "packages/core",
     "credit-card-integration": "packages/credit-card-integration",
     "dom-utils": "packages/dom-utils",

@@ -12,6 +12,7 @@ import {
 export type checkoutcomCustomPaymentMethods = 'fawry' | 'sepa';
 export type documentPaymentMethods = 'oxxo' | 'qpay' | 'boleto' | 'ideal';
 export type checkoutcomPaymentMethods = documentPaymentMethods | checkoutcomCustomPaymentMethods;
+export const checkoutcomPaymentMethodsArray = ['fawry', 'sepa', 'oxxo', 'qpay', 'boleto', 'ideal'];
 export interface CustomValidationSchemaOptions {
     paymentMethod: checkoutcomPaymentMethods;
     language: LanguageService;

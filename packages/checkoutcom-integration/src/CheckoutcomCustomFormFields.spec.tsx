@@ -9,27 +9,37 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
-import { FormContext, FormContextType } from '@bigcommerce/checkout/ui';
-
-import { getBillingAddress } from '../../billing/billingAddresses.mock';
-import { getCart } from '../../cart/carts.mock';
-import { getStoreConfig } from '../../config/config.mock';
-import { getCustomer } from '../../customer/customers.mock';
-import { getConsignment } from '../../shipping/consignment.mock';
-import { DropdownTrigger } from '../../ui/dropdown';
-import PaymentContext, { PaymentContextProps } from '../PaymentContext';
+import {
+    CreditCardPaymentMethodComponent,
+    CreditCardPaymentMethodProps,
+    CreditCardPaymentMethodValues,
+} from '@bigcommerce/checkout/credit-card-integration';
+import {
+    createLocaleContext,
+    LocaleContext,
+    LocaleContextType,
+} from '@bigcommerce/checkout/locale';
+import {
+    CheckoutContext,
+    PaymentFormContext,
+    PaymentFormService,
+    PaymentMethodProps,
+} from '@bigcommerce/checkout/payment-integration-api';
+import {
+    getCart,
+    getConsignment,
+    getCustomer,
+    getPaymentFormServiceMock,
+    getPaymentMethod,
+    getStoreConfig,
+} from '@bigcommerce/checkout/test-mocks';
+import { DropdownTrigger } from '@bigcommerce/checkout/ui';
 
 import checkoutcomCustomFormFields, {
     ccDocumentField,
     HiddenInput,
     OptionButton,
 } from './CheckoutcomCustomFormFields';
-import CreditCardPaymentMethod, {
-    CreditCardPaymentMethodProps,
-    CreditCardPaymentMethodValues,
-} from './CreditCardPaymentMethod';
 
 const getAPMProps = {
     ideal: () => ({
@@ -125,13 +135,10 @@ const getAPMProps = {
 describe('CheckoutCustomFormFields', () => {
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
-    let defaultProps: jest.Mocked<
-        Omit<CreditCardPaymentMethodProps, 'cardFieldset' | 'cardValidationSchema' | 'method'>
-    >;
-    let formContext: FormContextType;
+    let defaultProps: jest.Mocked<CreditCardPaymentMethodProps & PaymentMethodProps>;
     let initialValues: CreditCardPaymentMethodValues;
     let localeContext: LocaleContextType;
-    let paymentContext: PaymentContextProps;
+    let paymentForm: PaymentFormService;
     let subscribeEventEmitter: EventEmitter;
     let CheckoutcomAPMsTest: FunctionComponent<
         Omit<
@@ -141,11 +148,6 @@ describe('CheckoutCustomFormFields', () => {
     >;
 
     beforeEach(() => {
-        defaultProps = {
-            deinitializePayment: jest.fn(),
-            initializePayment: jest.fn(),
-        };
-
         initialValues = {
             ccCustomerCode: '',
             ccCvv: '',
@@ -158,18 +160,19 @@ describe('CheckoutCustomFormFields', () => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
-        paymentContext = {
-            disableSubmit: jest.fn(),
-            setSubmit: jest.fn(),
-            setValidationSchema: jest.fn(),
-            hidePaymentSubmitButton: jest.fn(),
-        };
-        formContext = {
-            isSubmitted: false,
-            setSubmitted: jest.fn(),
-        };
+        paymentForm = getPaymentFormServiceMock();
         subscribeEventEmitter = new EventEmitter();
 
+        defaultProps = {
+            checkoutService,
+            checkoutState,
+            language: localeContext.language,
+            onUnhandledError: jest.fn(),
+            paymentForm,
+            method: getPaymentMethod(),
+            deinitializePayment: jest.fn(),
+            initializePayment: jest.fn(),
+        };
         jest.spyOn(checkoutService, 'getState').mockReturnValue(checkoutState);
 
         jest.spyOn(checkoutService, 'subscribe').mockImplementation((subscriber) => {
@@ -195,20 +198,36 @@ describe('CheckoutCustomFormFields', () => {
 
         CheckoutcomAPMsTest = (props) => {
             return (
-                <CheckoutProvider checkoutService={checkoutService}>
-                    <PaymentContext.Provider value={paymentContext}>
-                        <LocaleContext.Provider value={localeContext}>
-                            <FormContext.Provider value={formContext}>
-                                <Formik initialValues={initialValues} onSubmit={noop}>
-                                    <CreditCardPaymentMethod {...defaultProps} {...props} />
-                                </Formik>
-                            </FormContext.Provider>
-                        </LocaleContext.Provider>
-                    </PaymentContext.Provider>
-                </CheckoutProvider>
+                <LocaleContext.Provider value={createLocaleContext(getStoreConfig())}>
+                    <CheckoutContext.Provider value={{ checkoutService, checkoutState }}>
+                        <PaymentFormContext.Provider value={{ paymentForm }}>
+                            <Formik initialValues={initialValues} onSubmit={noop}>
+                                <CreditCardPaymentMethodComponent {...defaultProps} {...props} />
+                            </Formik>
+                        </PaymentFormContext.Provider>
+                    </CheckoutContext.Provider>
+                </LocaleContext.Provider>
             );
         };
     });
+
+    const billingAddress = {
+        id: '55c96cda6f04c',
+        firstName: 'Test',
+        lastName: 'Tester',
+        email: 'test@bigcommerce.com',
+        company: 'Bigcommerce',
+        address1: '12345 Testing Way',
+        address2: '',
+        city: 'Some City',
+        stateOrProvince: 'California',
+        stateOrProvinceCode: 'CA',
+        country: 'United States',
+        countryCode: 'US',
+        postalCode: '95555',
+        phone: '555-555-5555',
+        customFields: [],
+    };
 
     describe('Sepa form fieldset', () => {
         const SepaFormFieldset = checkoutcomCustomFormFields.sepa;
@@ -220,7 +239,7 @@ describe('CheckoutCustomFormFields', () => {
                 <CheckoutcomAPMsTest
                     {...sepaProps}
                     cardFieldset={
-                        <SepaFormFieldset debtor={getBillingAddress()} method={sepaProps.method} />
+                        <SepaFormFieldset debtor={billingAddress} method={sepaProps.method} />
                     }
                 />,
             );
@@ -236,13 +255,13 @@ describe('CheckoutCustomFormFields', () => {
 
             checkbox.simulate('change', { target: { name: 'sepaMandate', value: true } });
 
-            expect(paymentContext.disableSubmit).toHaveBeenLastCalledWith(sepaProps.method, false);
+            expect(paymentForm.disableSubmit).toHaveBeenLastCalledWith(sepaProps.method, false);
         });
 
         it('should call disableSubmit on useEffect cleanup function', () => {
             component.unmount();
 
-            expect(paymentContext.disableSubmit).toHaveBeenLastCalledWith(sepaProps.method, false);
+            expect(paymentForm.disableSubmit).toHaveBeenLastCalledWith(sepaProps.method, false);
         });
 
         afterEach(() => {
