@@ -7,7 +7,6 @@ import { mount, render } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
-import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import { getCountries } from '../geography/countries.mock';
 
@@ -15,19 +14,6 @@ import { getAddress } from './address.mock';
 import AddressType from './AddressType';
 import { getAddressFormFields } from './formField.mock';
 import StaticAddress, { StaticAddressProps } from './StaticAddress';
-
-jest.mock('@bigcommerce/checkout/ui', () => ({
-    ...jest.requireActual('@bigcommerce/checkout/ui'),
-    IconPayPalConnectSmall: () => (<div data-test="pp-connect-icon">IconPayPalFastlaneSmall</div>)
-}));
-
-jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
-    ...jest.requireActual('@bigcommerce/checkout/paypal-fastlane-integration'),
-    usePayPalFastlaneAddress: jest.fn(() => ({
-        isPayPalFastlaneEnabled: true,
-        paypalFastlaneAddresses: [],
-    })),
-}));
 
 describe('StaticAddress Component', () => {
     let StaticAddressTest: FunctionComponent<StaticAddressProps>;
@@ -161,52 +147,5 @@ describe('StaticAddress Component', () => {
         );
 
         expect(view.html()).not.toBe('');
-    });
-
-    describe('provider icon', () => {
-        it('should not show icon, address is not from PP Fastlane', () => {
-            const view = render(
-                <StaticAddressTest
-                    {...defaultProps}
-                />
-            );
-
-            expect(view.find('[data-test="pp-fastlane-icon"]')).toHaveLength(0);
-        });
-
-        it('should show icon for PP Fastlane address', () => {
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
-                isPayPalFastlaneEnabled: true,
-                shouldShowPayPalConnectLabel: true,
-                paypalFastlaneAddresses: [defaultProps.address],
-            });
-
-            const view = render(
-                <StaticAddressTest
-                    {...defaultProps}
-                />
-            );
-
-            expect(view.find('[data-test="pp-connect-icon"]')).toHaveLength(1);
-        });
-
-        it('does not show PP icon for PP Fastlane address', () => {
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
-                isPayPalFastlaneEnabled: true,
-                shouldShowPayPalConnectLabel: false,
-                shouldShowPayPalFastlaneLabel: true,
-                paypalFastlaneAddresses: [defaultProps.address],
-            });
-
-            const view = render(
-                <StaticAddressTest
-                    {...defaultProps}
-                />
-            );
-
-            expect(view.find('[data-test="pp-connect-icon"]')).toHaveLength(0);
-        });
     });
 });

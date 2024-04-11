@@ -8,11 +8,11 @@ import { PoweredByPayPalFastlaneLabel, usePayPalFastlaneAddress } from '@bigcomm
 import { DropdownTrigger } from '../ui/dropdown';
 
 import AddressSelectButton from './AddressSelectButton';
+import AddressType from './AddressType';
 import isEqualAddress from './isEqualAddress';
 import StaticAddress from './StaticAddress';
 
 import './AddressSelect.scss';
-import AddressType from './AddressType';
 
 export interface AddressSelectProps {
     addresses: CustomerAddress[];
@@ -56,8 +56,7 @@ const AddressSelect = ({
     onSelectAddress,
     onUseNewAddress,
 }: AddressSelectProps) => {
-    const { shouldShowPayPalConnectLabel, shouldShowPayPalFastlaneLabel } = usePayPalFastlaneAddress();
-    const shouldShowPayPalIcon = shouldShowPayPalConnectLabel || shouldShowPayPalFastlaneLabel;
+    const { shouldShowPayPalFastlaneLabel } = usePayPalFastlaneAddress();
 
     const handleSelectAddress = (newAddress: Address) => {
         if (!isEqualAddress(selectedAddress, newAddress)) {
@@ -91,7 +90,7 @@ const AddressSelect = ({
                 </DropdownTrigger>
             </div>
 
-            {shouldShowPayPalIcon && <PoweredByPayPalFastlaneLabel />}
+            {shouldShowPayPalFastlaneLabel && <PoweredByPayPalFastlaneLabel />}
         </div>
     );
 }

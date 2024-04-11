@@ -28,8 +28,6 @@ export {
     CreditCardIcon,
     IconNewAccount,
     IconPaypal,
-    IconPayPalConnect,
-    IconPayPalConnectSmall,
     IconPayPalFastlane,
     IconSize,
     IconHelp,
