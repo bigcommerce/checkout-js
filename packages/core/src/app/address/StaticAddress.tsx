@@ -5,13 +5,10 @@ import {
     FormField,
     ShippingInitializeOptions,
 } from '@bigcommerce/checkout-sdk';
-import classNames from 'classnames';
 import { isEmpty } from 'lodash';
 import React, { FunctionComponent, memo } from 'react';
 
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
-import { isPayPalFastlaneAddress, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
-import { IconPayPalConnectSmall } from '@bigcommerce/checkout/ui';
 
 import { withCheckout } from '../checkout';
 
@@ -38,7 +35,6 @@ interface WithCheckoutStaticAddressProps {
 const StaticAddress: FunctionComponent<
     StaticAddressEditableProps & WithCheckoutStaticAddressProps
 > = ({ countries, fields, address: addressWithoutLocalization }) => {
-    const { isPayPalFastlaneEnabled, shouldShowPayPalConnectLabel, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
     const address = localizeAddress(addressWithoutLocalization, countries);
     const isValid = !fields
         ? !isEmpty(address)
@@ -46,19 +42,9 @@ const StaticAddress: FunctionComponent<
               address,
               fields.filter((field) => !field.custom),
           );
-    const shouldShowProviderIcon = isPayPalFastlaneEnabled && shouldShowPayPalConnectLabel && isPayPalFastlaneAddress(addressWithoutLocalization, paypalFastlaneAddresses);
 
     return !isValid ? null : (
-        <div
-            className={classNames(
-                'vcard checkout-address--static',
-                {
-                    'checkout-address--with-provider-icon': shouldShowProviderIcon,
-                }
-            )}
-        >
-            {shouldShowProviderIcon && <IconPayPalConnectSmall />}
-
+        <div className="vcard checkout-address--static">
             {(address.firstName || address.lastName) && (
                 <p className="fn address-entry">
                     <span className="first-name">{`${address.firstName} `}</span>
