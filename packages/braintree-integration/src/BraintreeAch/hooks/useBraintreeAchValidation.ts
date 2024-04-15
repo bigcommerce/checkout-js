@@ -1,5 +1,5 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { object, string, StringSchema } from 'yup';
 
 import { useLocale } from '@bigcommerce/checkout/locale';
@@ -97,6 +97,8 @@ const useBraintreeAchValidation = (method: PaymentMethod) => {
 
             const validationSchema = getValidationSchema();
 
+            paymentForm.setValidationSchema(method, validationSchema);
+
             const [
                 isValidAccountNumber,
                 isValidRoutingNumber,
@@ -121,12 +123,13 @@ const useBraintreeAchValidation = (method: PaymentMethod) => {
         [getValidationSchema],
     );
 
-    useEffect(() => {
-        paymentForm.setValidationSchema(method, getValidationSchema());
-    }, [method, paymentForm, getValidationSchema]);
+    const resetFormValidation = useCallback(() => {
+        paymentForm.setValidationSchema(method, null);
+    }, [paymentForm, method]);
 
     return {
         validateBraintreeAchForm,
+        resetFormValidation,
     };
 };
 
