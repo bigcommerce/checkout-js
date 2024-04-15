@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.470.2](https://github.com/bigcommerce/checkout-js/compare/v1.470.1...v1.470.2) (2024-04-15)
+
+
+### Code Refactoring
+
+* **payment:** PAYPAL-4027 removed PayPal Connect related icons and styling ([9198ac4](https://github.com/bigcommerce/checkout-js/commit/9198ac410ff70f1bd6ecb69588b639a1e9c2c260))
+
 ### [1.470.1](https://github.com/bigcommerce/checkout-js/compare/v1.470.0...v1.470.1) (2024-04-11)
 
 ## [1.470.0](https://github.com/bigcommerce/checkout-js/compare/v1.469.0...v1.470.0) (2024-04-11)
