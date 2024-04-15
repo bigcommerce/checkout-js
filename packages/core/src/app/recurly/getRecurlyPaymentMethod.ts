@@ -16,7 +16,7 @@ export default function getRecurlyPaymentMethod() {
             'DINERS',
         ],
         config: {
-            displayName: 'Credit Card',
+            displayName: 'Credit card',
             cardCode: true,
             helpText: '',
             testMode: true,
