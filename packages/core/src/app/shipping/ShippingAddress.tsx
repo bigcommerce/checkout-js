@@ -15,6 +15,10 @@ import { FormContext } from '@bigcommerce/checkout/ui';
 
 import ShippingAddressForm from './ShippingAddressForm';
 import StaticAddressEditable from './StaticAddressEditable';
+import {
+    isPayPalFastlaneMethod,
+    PayPalFastlaneShippingAddressForm,
+} from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 export interface ShippingAddressProps {
     addresses: CustomerAddress[];
@@ -49,6 +53,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
         onAddressSelect,
         onFieldChange,
         onUseNewAddress,
+        onUnhandledError,
         initialize,
         deinitialize,
         isLoading,
@@ -61,6 +66,7 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
     } = props;
 
     const { setSubmitted } = useContext(FormContext);
+
 
     const initializeShipping = useCallback(
         memoizeOne(
@@ -81,31 +87,43 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
         onFieldChange(fieldName, value);
     };
 
-    if (methodId) {
-        let options: ShippingInitializeOptions = {};
+    if (methodId === 'amazonpay' && shippingAddress) {
+        const editAddressButtonId = 'edit-ship-button';
 
-        if (methodId === 'amazonpay' && shippingAddress) {
-            const editAddressButtonId = 'edit-ship-button';
+        const options: ShippingInitializeOptions = {
+            amazonpay: {
+                editAddressButtonId,
+            },
+        };
 
-            options = {
-                amazonpay: {
-                    editAddressButtonId,
-                },
-            };
+        return (
+            <StaticAddressEditable
+                address={shippingAddress}
+                buttonId={editAddressButtonId}
+                deinitialize={deinitialize}
+                formFields={formFields}
+                initialize={initializeShipping(options)}
+                isLoading={isShippingStepPending}
+                methodId={methodId}
+                onFieldChange={onFieldChange}
+            />
+        );
+    }
 
-            return (
-                <StaticAddressEditable
-                    address={shippingAddress}
-                    buttonId={editAddressButtonId}
-                    deinitialize={deinitialize}
-                    formFields={formFields}
-                    initialize={initializeShipping(options)}
-                    isLoading={isShippingStepPending}
-                    methodId={methodId}
-                    onFieldChange={onFieldChange}
-                />
-            );
-        }
+    if (methodId && isPayPalFastlaneMethod(methodId) && shippingAddress) {
+        return (
+            <PayPalFastlaneShippingAddressForm
+                address={shippingAddress}
+                initialize={initialize}
+                deinitialize={deinitialize}
+                methodId={methodId}
+                formFields={formFields}
+                isLoading={isShippingStepPending}
+                onAddressSelect={onAddressSelect}
+                onFieldChange={onFieldChange}
+                onUnhandledError={onUnhandledError}
+            />
+        )
     }
 
     return (
