@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.472.0](https://github.com/bigcommerce/checkout-js/compare/v1.471.0...v1.472.0) (2024-04-17)
+
+
+### Features
+
+* **payment:** PAYPAL-3735 Braintree ACH instrument pre-selected ([1f81807](https://github.com/bigcommerce/checkout-js/commit/1f81807530db80ebf97eb36e8dc464afc27b0fec))
+
 ## [1.471.0](https://github.com/bigcommerce/checkout-js/compare/v1.470.3...v1.471.0) (2024-04-17)
 
 
