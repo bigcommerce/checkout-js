@@ -38,7 +38,7 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
         shouldCreateNewInstrument,
         shouldConfirmInstrument,
     } = useBraintreeAchInstruments(method);
-    const { validateBraintreeAchForm } = useBraintreeAchValidation(method);
+    const { validateBraintreeAchForm, resetFormValidation } = useBraintreeAchValidation(method);
 
     const resetFormValues = () => {
         const { firstName, lastName } = checkoutState.data.getBillingAddress() || {};
@@ -84,8 +84,17 @@ const BraintreeAchPaymentForm: FunctionComponent<BraintreeAchPaymentFormProps> =
             };
 
             void validate();
+        } else {
+            resetFormValidation();
         }
-    }, [getFormValues, setFieldValue, setIsValidForm, shouldShowForm, validateBraintreeAchForm]);
+    }, [
+        getFormValues,
+        setFieldValue,
+        setIsValidForm,
+        shouldShowForm,
+        validateBraintreeAchForm,
+        resetFormValidation,
+    ]);
 
     useEffect(() => {
         const mandateTextConfirmationCheckboxValue = getFieldValue('orderConsent');
