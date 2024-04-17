@@ -10,7 +10,7 @@ export function getShippingAddress(): Address {
         city: 'Some City',
         stateOrProvince: 'California',
         stateOrProvinceCode: 'CA',
-        shouldSaveAddress: true,
+        shouldSaveAddress: false,
         country: 'United States',
         countryCode: 'US',
         postalCode: '95555',
