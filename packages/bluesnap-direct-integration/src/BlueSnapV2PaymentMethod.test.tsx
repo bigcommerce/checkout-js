@@ -154,7 +154,7 @@ describe('when using BlueSnapV2 payment', () => {
     it('renders modal but does not append bluesnap payment page because is empty', async () => {
         const component = mount(<BlueSnapV2PaymentMethodTest />);
         const initializeOptions = initializePayment.mock.calls[0][0];
-        
+
         act(() => {
             initializeOptions.bluesnapv2?.onLoad(undefined, jest.fn());
         });
