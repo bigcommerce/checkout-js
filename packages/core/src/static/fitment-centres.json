@@ -316,7 +316,7 @@
         "state": "VIC",
         "postcode": "3029",
         "phone": "03 8360 8222",
-        "latitude": -37.86821, 
+        "latitude": -37.86821,
         "longitude": 144.73086
     },
     {
@@ -618,7 +618,5 @@
         "phone": "07 3281 1050",
         "latitude": -27.65800,
         "longitude": 152.7449
-    },
-    
-    
+    }
 ]
