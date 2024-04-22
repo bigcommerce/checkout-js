@@ -216,8 +216,8 @@ describe('SingleShippingForm', () => {
                 );
 
                 done();
-            }, 4000);
-        }, 4000);
+            }, 2000);
+        }, 2000);
     });
 
     it('does not call updateAddress if modified field produces invalid address', (done) => {
@@ -229,7 +229,7 @@ describe('SingleShippingForm', () => {
             expect(defaultProps.updateAddress).not.toHaveBeenCalled();
 
             done();
-        }, 4000);
+        }, 2000);
     });
 
     it('does not call updateAddress if not valid address', (done) => {
