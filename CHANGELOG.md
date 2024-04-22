@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.474.1](https://github.com/bigcommerce/checkout-js/compare/v1.474.0...v1.474.1) (2024-04-22)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-0000 fix a mock of getShippingAddress ([#1820](https://github.com/bigcommerce/checkout-js/issues/1820)) ([642b8ad](https://github.com/bigcommerce/checkout-js/commit/642b8adb1e0fd550347f68bbe3969df58bf969ad))
+* **checkout:** CHECKOUT-0000 Increase timeout ([#1831](https://github.com/bigcommerce/checkout-js/issues/1831)) ([7d5fd76](https://github.com/bigcommerce/checkout-js/commit/7d5fd76218313413f2d94162e7006894abcc61bd))
+* **checkout:** CHECKOUT-0000 Revert SDK to 1.582.2 ([#1829](https://github.com/bigcommerce/checkout-js/issues/1829)) ([c4e57b3](https://github.com/bigcommerce/checkout-js/commit/c4e57b378f3ec91dd897d203d45abfeeafb586aa))
+
 ## [1.474.0](https://github.com/bigcommerce/checkout-js/compare/v1.473.0...v1.474.0) (2024-04-17)
 
 
