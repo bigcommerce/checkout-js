@@ -82,7 +82,7 @@ describe('SingleShippingForm', () => {
             );
 
             done();
-        }, SHIPPING_AUTOSAVE_DELAY * 11);
+        }, 4000);
     });
 
     it('calls updateAddress if modified field does not affect shipping but makes form valid', (done) => {
@@ -111,7 +111,7 @@ describe('SingleShippingForm', () => {
             expect(defaultProps.updateAddress).toHaveBeenCalledTimes(1);
 
             done();
-        }, SHIPPING_AUTOSAVE_DELAY * 11);
+        }, 4000);
     });
 
     it('calls updateAddress including shipping options if modified field does not affect shipping but has never requested shipping options', (done) => {
@@ -135,7 +135,7 @@ describe('SingleShippingForm', () => {
             );
 
             done();
-        }, SHIPPING_AUTOSAVE_DELAY * 11);
+        }, 4000);
     });
 
     it('calls updateAddress including shipping options if custom form fields are updated', (done) => {
@@ -187,7 +187,7 @@ describe('SingleShippingForm', () => {
             );
 
             done();
-        }, SHIPPING_AUTOSAVE_DELAY * 11);
+        }, 4000);
     });
 
     it('calls updateAddress without shipping options if modified field does not affect shipping and shipping options have already been requested', (done) => {
@@ -216,8 +216,8 @@ describe('SingleShippingForm', () => {
                 );
 
                 done();
-            }, SHIPPING_AUTOSAVE_DELAY * 11);
-        }, SHIPPING_AUTOSAVE_DELAY * 11);
+            }, 4000);
+        }, 4000);
     });
 
     it('does not call updateAddress if modified field produces invalid address', (done) => {
@@ -229,7 +229,7 @@ describe('SingleShippingForm', () => {
             expect(defaultProps.updateAddress).not.toHaveBeenCalled();
 
             done();
-        }, SHIPPING_AUTOSAVE_DELAY * 11);
+        }, 4000);
     });
 
     it('does not call updateAddress if not valid address', (done) => {
@@ -241,7 +241,7 @@ describe('SingleShippingForm', () => {
             expect(defaultProps.updateAddress).not.toHaveBeenCalled();
 
             done();
-        }, SHIPPING_AUTOSAVE_DELAY * 11);
+        }, 4000);
     });
 
     it('does not call updateAddress if same address', (done) => {
@@ -253,7 +253,7 @@ describe('SingleShippingForm', () => {
             expect(defaultProps.updateAddress).not.toHaveBeenCalled();
 
             done();
-        }, SHIPPING_AUTOSAVE_DELAY * 11);
+        }, 4000);
     });
 
     it('calls update address for amazon pay if required custom fields are filled out', (done) => {
@@ -305,7 +305,7 @@ describe('SingleShippingForm', () => {
             );
 
             done();
-        }, SHIPPING_AUTOSAVE_DELAY * 11);
+        }, 4000);
     });
 
     it('does not update address for amazon pay if required custom fields is left empty', (done) => {
@@ -340,7 +340,7 @@ describe('SingleShippingForm', () => {
             expect(defaultProps.updateAddress).not.toHaveBeenCalled();
 
             done();
-        }, SHIPPING_AUTOSAVE_DELAY * 11);
+        }, 4000);
     });
 
     it('does not render billing same as shipping checkbox for amazon pay', () => {
@@ -391,7 +391,7 @@ describe('SingleShippingForm', () => {
                 );
 
                 done();
-            }, SHIPPING_AUTOSAVE_DELAY * 11);
+            }, 4000);
         });
 
         it('paypalcommerceacceleratedcheckout', async (done) => {
@@ -415,7 +415,7 @@ describe('SingleShippingForm', () => {
                 );
 
                 done();
-            }, SHIPPING_AUTOSAVE_DELAY * 11);
+            }, 4000);
         });
     })
 });
