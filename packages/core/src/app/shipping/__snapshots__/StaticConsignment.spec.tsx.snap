@@ -6,6 +6,7 @@ exports[`StaticConsignment Component renders compact view of static consignment 
 >
   <div
     class="vcard checkout-address--static"
+    data-test="static-address"
   >
     <p
       class="fn address-entry"
@@ -100,6 +101,7 @@ exports[`StaticConsignment Component renders static consignment with shipping me
 >
   <div
     class="vcard checkout-address--static"
+    data-test="static-address"
   >
     <p
       class="fn address-entry"

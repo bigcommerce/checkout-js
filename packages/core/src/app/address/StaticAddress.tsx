@@ -44,7 +44,7 @@ const StaticAddress: FunctionComponent<
           );
 
     return !isValid ? null : (
-        <div className="vcard checkout-address--static">
+        <div className="vcard checkout-address--static" data-test="static-address">
             {(address.firstName || address.lastName) && (
                 <p className="fn address-entry">
                     <span className="first-name">{`${address.firstName} `}</span>

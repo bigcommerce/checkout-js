@@ -95,10 +95,12 @@ const GoogleAutocompleteFormField: FunctionComponent<GoogleAutocompleteFormField
     );
 
     return (
-        <div className={classNames(
+        <div
+            className={classNames(
                 'dynamic-form-field dynamic-form-field--addressLineAutocomplete',
                 { 'floating-form-field': isFloatingLabelEnabled },
             )}
+            data-test="google-autocomplete-form-field"
         >
             <FormField
                 input={renderInput}

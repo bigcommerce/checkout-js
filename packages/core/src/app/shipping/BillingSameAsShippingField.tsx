@@ -21,6 +21,7 @@ const BillingSameAsShippingField: FunctionComponent<BillingSameAsShippingFieldPr
             id="sameAsBilling"
             labelContent={labelContent}
             name="billingSameAsShipping"
+            testId="billingSameAsShipping"
             onChange={onChange}
         />
     );
