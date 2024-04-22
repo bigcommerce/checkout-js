@@ -1,12 +1,13 @@
+import '@testing-library/jest-dom';
 import {
     CheckoutSelectors,
     CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
-import { mount, render } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getCountries } from '../geography/countries.mock';
 
@@ -48,38 +49,38 @@ describe('StaticAddress Component', () => {
     });
 
     it('renders component with supplied props', () => {
-        const view = render(<StaticAddressTest {...defaultProps} />);
+        const { address } = defaultProps;
 
-        expect(view).toMatchSnapshot();
+        render(<StaticAddressTest {...defaultProps} />);
+
+        expect(screen.getByText(address.firstName)).toBeInTheDocument();
+        expect(screen.getByText(address.lastName)).toBeInTheDocument();
+        expect(screen.getByText(address.company)).toBeInTheDocument();
+        expect(screen.getByText(address.address1)).toBeInTheDocument();
+        expect(screen.getByText(`${address.city},`)).toBeInTheDocument();
+        expect(screen.getByText(`${address.stateOrProvince},`)).toBeInTheDocument();
+        expect(screen.getByText(address.country)).toBeInTheDocument();
+        expect(screen.getByText(`${address.postalCode} /`)).toBeInTheDocument();
+        expect(screen.getByText(address.phone)).toBeInTheDocument();
     });
 
-    it('renders component when props are missing', () => {
-        const view = render(
-            <StaticAddressTest
-                {...defaultProps}
-                address={{
-                    ...defaultProps.address,
-                    phone: '',
-                    address2: '',
-                }}
-            />,
-        );
+    it('does not render phone field if it is empty', () => {
+        render(<StaticAddressTest address={{ ...defaultProps.address, phone: '' }} />);
 
-        expect(view).toMatchSnapshot();
+        expect(screen.queryByText(defaultProps.address.phone)).not.toBeInTheDocument();
     });
 
     it('renders component if required fields for billing address are not missing', () => {
-        const view = mount(<StaticAddressTest {...defaultProps} type={AddressType.Billing} />);
+        render(<StaticAddressTest {...defaultProps} type={AddressType.Billing} />);
 
         expect(checkoutState.data.getBillingAddressFields).toHaveBeenCalled();
 
-        expect(view.find('.address-line-1').text()).toContain(defaultProps.address.address1);
+        expect(screen.getByText(defaultProps.address.address1)).toBeInTheDocument();
     });
 
-    it('does not render component if required fields for billing address are missing', () => {
-        const view = mount(
+    it('does not render component if its not valid (due to missing required billing props)', () => {
+        render(
             <StaticAddressTest
-                {...defaultProps}
                 address={{
                     ...defaultProps.address,
                     address1: '',
@@ -89,24 +90,19 @@ describe('StaticAddress Component', () => {
         );
 
         expect(checkoutState.data.getBillingAddressFields).toHaveBeenCalled();
-
-        expect(view.html()).toBe('');
+        expect(screen.queryByTestId('static-address')).not.toBeInTheDocument();
     });
 
     it('renders component if required fields for shipping address are not missing', () => {
-        const view = mount(
-            <StaticAddressTest {...defaultProps} type={AddressType.Shipping} />,
-        );
+        render(<StaticAddressTest {...defaultProps} type={AddressType.Shipping} />,);
 
         expect(checkoutState.data.getShippingAddressFields).toHaveBeenCalled();
-
-        expect(view.find('.address-line-1').text()).toContain(defaultProps.address.address1);
+        expect(screen.getByText(defaultProps.address.address1)).toBeInTheDocument();
     });
 
-    it('does not render component if required fields for shipping address are missing', () => {
-        const view = mount(
+    it('does not render component if its not valid (due to missing required shipping props)', () => {
+        render(
             <StaticAddressTest
-                {...defaultProps}
                 address={{
                     ...defaultProps.address,
                     address1: '',
@@ -116,8 +112,7 @@ describe('StaticAddress Component', () => {
         );
 
         expect(checkoutState.data.getShippingAddressFields).toHaveBeenCalled();
-
-        expect(view.html()).toBe('');
+        expect(screen.queryByTestId('static-address')).not.toBeInTheDocument();
     });
 
     it('renders component if only custom fields are missing', () => {
@@ -135,9 +130,8 @@ describe('StaticAddress Component', () => {
             },
         ]);
 
-        const view = mount(
+        render(
             <StaticAddressTest
-                {...defaultProps}
                 address={{
                     ...defaultProps.address,
                     customFields: [{ fieldId: 'foobar', fieldValue: '' }],
@@ -146,6 +140,6 @@ describe('StaticAddress Component', () => {
             />,
         );
 
-        expect(view.html()).not.toBe('');
+        expect(screen.getByTestId('static-address')).toBeInTheDocument();
     });
 });

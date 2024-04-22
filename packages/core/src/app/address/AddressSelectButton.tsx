@@ -22,10 +22,11 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLang
             aria-description={language.translate('address.enter_or_select_address_action')}
             aria-expanded={ariaExpanded}
             className="button dropdown-button dropdown-toggle--select"
+            data-test="address-select-button"
             href="#"
             id="addressToggle"
-            onClick={preventDefault(() => setAriaExpanded(!ariaExpanded))}
             onBlur={() => setAriaExpanded(false)}
+            onClick={preventDefault(() => setAriaExpanded(!ariaExpanded))}
         >
             {selectedAddress ? (
                 <StaticAddress address={selectedAddress} type={type} />

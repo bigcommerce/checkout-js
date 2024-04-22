@@ -40,8 +40,16 @@ const AddressSelectMenu: FunctionComponent<AddressSelectProps> = ({
             </a>
         </li>
         {addresses.map((address) => (
-            <li className="dropdown-menu-item dropdown-menu-item--select" key={address.id}>
-                <a href="#" onClick={preventDefault(() => onSelectAddress(address))}>
+            <li
+                className="dropdown-menu-item dropdown-menu-item--select"
+                data-test="address-select-option"
+                key={address.id}
+            >
+                <a
+                    href="#"
+                    data-test="address-select-option-action"
+                    onClick={preventDefault(() => onSelectAddress(address))}
+                >
                     <StaticAddress address={address} type={type} />
                 </a>
             </li>

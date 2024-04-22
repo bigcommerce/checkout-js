@@ -45,6 +45,7 @@ Object {
         </div>
         <div
           class="powered-by-paypal-fastlane"
+          data-test="paypal-fastlane-icon"
         >
           <div
             class="icon"
@@ -104,6 +105,7 @@ Object {
       </div>
       <div
         class="powered-by-paypal-fastlane"
+        data-test="paypal-fastlane-icon"
       >
         <div
           class="icon"

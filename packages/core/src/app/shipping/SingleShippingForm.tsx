@@ -51,6 +51,7 @@ export interface SingleShippingFormProps {
     isMultiShippingMode: boolean;
     methodId?: string;
     shippingAddress?: Address;
+    shippingAutosaveDelay?: number;
     shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
     isFloatingLabelEnabled?: boolean;
@@ -128,7 +129,7 @@ class SingleShippingForm extends PureComponent<
                     this.setState({ isUpdatingShippingData: false });
                 }
             },
-            SHIPPING_AUTOSAVE_DELAY,
+            props.shippingAutosaveDelay ?? SHIPPING_AUTOSAVE_DELAY,
         );
     }
 
