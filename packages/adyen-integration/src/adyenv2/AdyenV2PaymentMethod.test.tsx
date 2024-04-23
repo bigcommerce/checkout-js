@@ -157,7 +157,7 @@ describe('when using Adyen V2 payment', () => {
             expect(screen.getByRole('dialog')).toBeInTheDocument();
         });
 
-        it('Do not render 3DS modal if required by selected method', async () => {
+        it('do not render 3DS modal if required by selected method', async () => {
             const defaultAdyenProps: PaymentMethodProps = {
                 method: {
                     ...getPaymentMethod(),

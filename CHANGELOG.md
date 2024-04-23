@@ -2,6 +2,56 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.474.4](https://github.com/bigcommerce/checkout-js/compare/v1.474.3...v1.474.4) (2024-04-23)
+
+### [1.474.3](https://github.com/bigcommerce/checkout-js/compare/v1.474.2...v1.474.3) (2024-04-23)
+
+### [1.474.2](https://github.com/bigcommerce/checkout-js/compare/v1.474.1...v1.474.2) (2024-04-22)
+
+### [1.474.1](https://github.com/bigcommerce/checkout-js/compare/v1.474.0...v1.474.1) (2024-04-22)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-0000 fix a mock of getShippingAddress ([#1820](https://github.com/bigcommerce/checkout-js/issues/1820)) ([642b8ad](https://github.com/bigcommerce/checkout-js/commit/642b8adb1e0fd550347f68bbe3969df58bf969ad))
+* **checkout:** CHECKOUT-0000 Increase timeout ([#1831](https://github.com/bigcommerce/checkout-js/issues/1831)) ([7d5fd76](https://github.com/bigcommerce/checkout-js/commit/7d5fd76218313413f2d94162e7006894abcc61bd))
+* **checkout:** CHECKOUT-0000 Revert SDK to 1.582.2 ([#1829](https://github.com/bigcommerce/checkout-js/issues/1829)) ([c4e57b3](https://github.com/bigcommerce/checkout-js/commit/c4e57b378f3ec91dd897d203d45abfeeafb586aa))
+
+## [1.474.0](https://github.com/bigcommerce/checkout-js/compare/v1.473.0...v1.474.0) (2024-04-17)
+
+
+### Features
+
+* **payment:** PAYPAL-4032 bump sdk version ([a37399a](https://github.com/bigcommerce/checkout-js/commit/a37399a804316730f3cc0565e1c739f9a1f75909))
+
+## [1.473.0](https://github.com/bigcommerce/checkout-js/compare/v1.472.0...v1.473.0) (2024-04-17)
+
+
+### Features
+
+* **payment:** PAYPAL-3998 fix of ACH validation ([be8cc9b](https://github.com/bigcommerce/checkout-js/commit/be8cc9bf7c34c0c240c73ab177e53f337ace8692))
+
+## [1.472.0](https://github.com/bigcommerce/checkout-js/compare/v1.471.0...v1.472.0) (2024-04-17)
+
+
+### Features
+
+* **payment:** PAYPAL-3735 Braintree ACH instrument pre-selected ([1f81807](https://github.com/bigcommerce/checkout-js/commit/1f81807530db80ebf97eb36e8dc464afc27b0fec))
+
+## [1.471.0](https://github.com/bigcommerce/checkout-js/compare/v1.470.3...v1.471.0) (2024-04-17)
+
+
+### Features
+
+* **payment:** PAYPAL-4048 bumped checkout-sdk-js version ([cc741f9](https://github.com/bigcommerce/checkout-js/commit/cc741f9f41e51db5faafd215106a0e58655427bc))
+
+### [1.470.3](https://github.com/bigcommerce/checkout-js/compare/v1.470.2...v1.470.3) (2024-04-17)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-8183 set shouldSaveAddress flag to false if it's from selected address ([#1800](https://github.com/bigcommerce/checkout-js/issues/1800)) ([aa63fd6](https://github.com/bigcommerce/checkout-js/commit/aa63fd6f09c71d06ee36151f12bbe9ffdde114ec))
+
 ### [1.470.2](https://github.com/bigcommerce/checkout-js/compare/v1.470.1...v1.470.2) (2024-04-15)
 
 

@@ -1,6 +1,6 @@
 import { AchInstrument, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { find } from 'lodash';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { isAchInstrument } from '@bigcommerce/checkout/instrument-utils';
 import { useCheckout, usePaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
@@ -15,7 +15,7 @@ const useBraintreeAchInstruments = (method: PaymentMethod) => {
     const { paymentForm } = usePaymentFormContext();
     const { setFieldValue } = paymentForm;
 
-    const accountInstruments = instruments.filter(isAchInstrument);
+    const accountInstruments = useMemo(() => instruments.filter(isAchInstrument), [instruments]);
     const isInstrumentFeatureAvailable =
         !customer?.isGuest && Boolean(method.config.isVaultingEnabled);
     const shouldShowInstrumentFieldset =
@@ -26,7 +26,7 @@ const useBraintreeAchInstruments = (method: PaymentMethod) => {
         !!currentInstrument &&
         !currentInstrument.trustedShippingAddress;
 
-    const getDefaultInstrument = (): AchInstrument | undefined => {
+    const getDefaultInstrument = useCallback((): AchInstrument | undefined => {
         if (!accountInstruments.length) {
             return;
         }
@@ -36,11 +36,11 @@ const useBraintreeAchInstruments = (method: PaymentMethod) => {
         );
 
         return defaultAccountInstrument[0] || accountInstruments[0];
-    };
+    }, [accountInstruments]);
 
     useEffect(() => {
         setCurrentInstrument(isInstrumentFeatureAvailable ? getDefaultInstrument() : undefined);
-    }, [isInstrumentFeatureAvailable]);
+    }, [isInstrumentFeatureAvailable, getDefaultInstrument]);
 
     useEffect(() => {
         if (!shouldShowInstrumentFieldset) {
