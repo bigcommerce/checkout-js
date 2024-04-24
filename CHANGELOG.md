@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.477.0](https://github.com/bigcommerce/checkout-js/compare/v1.476.0...v1.477.0) (2024-04-24)
+
+
+### Features
+
+* **payment:** PI-1961 E2E tests for checkoutcom integration ([cd25fb6](https://github.com/bigcommerce/checkout-js/commit/cd25fb6af3e662561d72a19664bbe109bfc522a9))
+
 ## [1.476.0](https://github.com/bigcommerce/checkout-js/compare/v1.475.0...v1.476.0) (2024-04-24)
 
 
