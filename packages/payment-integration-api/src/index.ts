@@ -14,6 +14,7 @@ export { default as toResolvableComponent } from './toResolvableComponent';
 export { default as isResolvableComponent } from './isResolvableComponent';
 export { default as isEmbedded } from './isEmbedded';
 export { default as PaymentFormValues } from './PaymentFormValues';
+export { TranslateValidationErrorFunction } from './TranslateValidationErrorFunction';
 export {
     CheckoutContext,
     CheckoutProvider,

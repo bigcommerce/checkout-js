@@ -10,11 +10,10 @@ import React, {
 } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { PaymentFormContext } from '@bigcommerce/checkout/payment-integration-api';
+import { CheckboxFormField, DropdownTrigger, FormField } from '@bigcommerce/checkout/ui';
 
-import { DropdownTrigger } from '../../ui/dropdown';
-import { CheckboxFormField, FormField } from '../../ui/form';
-import { TextFieldForm } from '../creditCard';
-import PaymentContext from '../PaymentContext';
+import TextFieldForm from './checkoutcomFieldsets/TextFieldForm';
 
 interface CheckoutcomAPMFormProps {
     method: PaymentMethod;
@@ -50,17 +49,17 @@ interface SepaCreditor {
 }
 
 const Sepa: FunctionComponent<CheckoutcomAPMFormProps> = ({ method, debtor }) => {
-    const paymentContext = useContext(PaymentContext);
+    const paymentContext = useContext(PaymentFormContext);
     const creditor: SepaCreditor = method.initializationData.sepaCreditor;
 
     useEffect(() => {
-        paymentContext?.disableSubmit(method, true);
+        paymentContext?.paymentForm.disableSubmit(method, true);
 
-        return () => paymentContext?.disableSubmit(method, false);
+        return () => paymentContext?.paymentForm.disableSubmit(method, false);
     }, [paymentContext, method]);
 
     function toggleSubmitButton(isChecked: boolean) {
-        paymentContext?.disableSubmit(method, !isChecked);
+        paymentContext?.paymentForm.disableSubmit(method, !isChecked);
     }
 
     return (
@@ -114,6 +113,56 @@ const Sepa: FunctionComponent<CheckoutcomAPMFormProps> = ({ method, debtor }) =>
                 onChange={toggleSubmitButton}
             />
         </>
+    );
+};
+
+export const HiddenInput: FunctionComponent<HiddenInputProps> = ({
+    field: { value, ...restField },
+    form,
+    selectedIssuer,
+}) => {
+    const Input = useCallback(() => <input {...restField} type="hidden" />, [restField]);
+
+    useEffect(() => {
+        if (value === selectedIssuer) {
+            return;
+        }
+
+        form.setFieldValue(restField.name, selectedIssuer);
+    }, [value, form, selectedIssuer, restField.name]);
+
+    return <Input />;
+};
+
+export const OptionButton: FunctionComponent<OptionButtonProps> = ({ issuer, ...restProps }) => {
+    const { bic, name } = issuer;
+
+    return (
+        <button data-bic={bic} type="button" {...restProps}>
+            <div className="instrumentSelect-details">{`${bic} / ${name}`}</div>
+        </button>
+    );
+};
+
+const DropdownButton: FunctionComponent<DropdownButtonProps> = ({ selectedIssuer }) => {
+    if (!selectedIssuer) {
+        return (
+            <button
+                className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
+                type="button"
+            >
+                <div className="instrumentSelect-details instrumentSelect-details--addNew">
+                    <div className="instrumentSelect-card">Your bank</div>
+                </div>
+            </button>
+        );
+    }
+
+    return (
+        <OptionButton
+            className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
+            issuer={selectedIssuer}
+        />
     );
 };
 
@@ -177,61 +226,15 @@ const Ideal: FunctionComponent<CheckoutcomAPMFormProps> = ({ method }) => {
     );
 };
 
-export const HiddenInput: FunctionComponent<HiddenInputProps> = ({
-    field: { value, ...restField },
-    form,
-    selectedIssuer,
-}) => {
-    const Input = useCallback(() => <input {...restField} type="hidden" />, [restField]);
-
-    useEffect(() => {
-        if (value === selectedIssuer) {
-            return;
-        }
-
-        form.setFieldValue(restField.name, selectedIssuer);
-    }, [value, form, selectedIssuer, restField.name]);
-
-    return <Input />;
-};
-
-const DropdownButton: FunctionComponent<DropdownButtonProps> = ({ selectedIssuer }) => {
-    if (!selectedIssuer) {
-        return (
-            <button
-                className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
-                type="button"
-            >
-                <div className="instrumentSelect-details instrumentSelect-details--addNew">
-                    <div className="instrumentSelect-card">Your bank</div>
-                </div>
-            </button>
-        );
-    }
-
-    return (
-        <OptionButton
-            className="instrumentSelect-button optimizedCheckout-form-select dropdown-button form-input"
-            issuer={selectedIssuer}
-        />
-    );
-};
-
-export const OptionButton: FunctionComponent<OptionButtonProps> = ({ issuer, ...restProps }) => {
-    const { bic, name } = issuer;
-
-    return (
-        <button data-bic={bic} type="button" {...restProps}>
-            <div className="instrumentSelect-details">{`${bic} / ${name}`}</div>
-        </button>
-    );
-};
-
-const checkoutcomCustomFormFields = {
+const checkoutcomCustomFormFields: CheckoutcomCustomFormFields = {
     fawry: Fawry,
     sepa: Sepa,
     ideal: Ideal,
 };
+
+interface CheckoutcomCustomFormFields {
+    [key: string]: React.FunctionComponent<CheckoutcomAPMFormProps>;
+}
 
 export const ccDocumentField = ({ method }: CheckoutcomAPMFormProps) => (
     <TextFieldForm
