@@ -9,7 +9,7 @@ import getShippableItemsCount from '../../shipping/getShippableItemsCount';
 import hasUnassignedLineItems from '../../shipping/hasUnassignedLineItems';
 import hasSelectedShippingOptions from '../../shipping/hasSelectedShippingOptions';
 import updateShippableItems from '../../shipping/updateShippableItems';
-import ItemAddressSelect from '../../shipping/ItemAddressSelect';
+import AddressSelect from '../../address/AddressSelect';
 import { AddressType, StaticAddress } from '../../address';
 import { TranslatedString } from '../../locale';
 import { AssignItemFailedError, AssignItemInvalidAddressError, UnassignItemError } from '../../shipping/errors';
@@ -267,9 +267,17 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
         item => !fflConsignmentItems.some((fflItem: any) => item.id === fflItem.itemId)
     );
 
+    const groupedItemsWithoutFFL = _.groupBy(itemsWithoutFFL, item => item.productId);
+
+    const groupedItemsWithoutFFLEntries = Object.entries(groupedItemsWithoutFFL);
+
     const itemsWithFFL = items.filter(
         item => fflConsignmentItems.some((fflItem: any) => item.id === fflItem.itemId)
     );
+
+    const groupeditemsWithFFL = _.groupBy(itemsWithFFL, item => item.productId);
+
+    const groupedItemsWithFFLEntries = Object.entries(groupeditemsWithFFL);
 
     const fflConsignment = consignments.filter(
         item => fflConsignmentItems.some((fflItem: any) => item.lineItemIds.includes(fflItem.itemId))
@@ -285,10 +293,11 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
               <div className="icon">
               </div>
             </div>
-            { itemsWithFFL.map(item => (
-                <li key={ item.key }>
+            { groupedItemsWithFFLEntries.map(([key, items]) => (
+                <li key={ items[0].key }>
                     <ItemFFL
-                        item={ item }
+                        item={ items[0] }
+                        quantity={ items.length }
                     />
                 </li>
             )) }
@@ -300,10 +309,11 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
         }
        { ((this.state.selectedDealer != null) && (fflConsignment) ) &&
           <div className="consignment-product-body alertBox--success shipping">
-            { itemsWithFFL.map(item => (
-                <li key={ item.key }>
+            { groupedItemsWithFFLEntries.map(([key, items]) => (
+                <li key={ items[0].key }>
                     <ItemFFL
-                        item={ item }
+                        item={ items[0] }
+                        quantity={ items.length }
                     />
                 </li>
             )) }
@@ -370,17 +380,29 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
                             ))}
                         </div>
                      :
-                        itemsWithoutFFL.map(item => (
-                            <li key={ item.key }>
-                                { (!this.state.multiShipment) &&
-                                    <ItemAddressSelect
+                        groupedItemsWithoutFFLEntries.map(([key, items], index) => (
+                            <div>
+                                <div className="consignment">
+                                    <figure className="consignment-product-figure">
+                                        { items[0].imageUrl &&
+                                            <img alt={ items[0].imageUrl } src={ items[0].imageUrl } /> }
+                                    </figure>
+                                    <div className="consignment-product-body">
+                                        <h5 className="optimizedCheckout-contentPrimary">
+                                            { `${items.length} x ${items[0].name}` }
+                                        </h5>
+                                    </div>
+                                </div>
+                                {
+                                    (index + 1 == groupedItemsWithoutFFLEntries.length) &&
+                                    <AddressSelect
                                         addresses={ customer.addresses }
-                                        item={ item }
                                         onSelectAddress={ this.handleSelectAddress }
                                         onUseNewAddress={ this.handleUseNewAddress }
+                                        selectedAddress={ items[0].consignment && items[0].consignment.shippingAddress}
                                     />
                                 }
-                            </li>
+                            </div>
                         ))
                     }
                 </ul>
@@ -466,59 +488,34 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
   };
 
   private handleSelectAddress: (address: Address, itemId: string, itemKey: string) => Promise<void> = async (address, itemId, itemKey) => {
-      const {
-          consignments,
-          assignItem,
-          updateConsignment,
-          onUnhandledError,
-          getFields,
-      } = this.props;
+    const { assignItem, onUnhandledError, getFields } = this.props;
+    
+    const FFLItemIds = this.props.fflConsignmentItems.map(item => { return item.itemId });
 
-      if (!isValidAddress(address, getFields(address.countryCode))) {
-          return onUnhandledError(new AssignItemInvalidAddressError());
-      }
+    const nonFFLItems = this.props.cart.lineItems.physicalItems.filter(item => !(FFLItemIds.includes(item.id)));
 
-      try {
-          let response = null;
-          const consignment = consignments.filter(
-              item => {
-                // Right now isEqualAddress(item.shippingAddress, address) doesn't work for our case
-                // We may check if the isEqualAddress function changes on the future
-                return (item.shippingAddress.address1 === address.address1)
-                  && (item.shippingAddress.address2 === address.address2)
-                  && (item.shippingAddress.postalCode === address.postalCode);
-          })[0];
+    const nonFFLItemsMap = nonFFLItems.map(item => {
+        let container = {};
+        container.itemId = item.id;
+        container.quantity = item.quantity;
+        return container;
+    });
 
-          if(!!consignment) {
-            const lineItems = consignment.lineItemIds.map(itemId => {
-              return {
-               itemId,
-               quantity: 1
-              };
-            });
-            lineItems.push({
-              itemId,
-              quantity: 1
-            });
-              response = await updateConsignment({
-              id: consignment.id,
-              lineItems,
-              shippingAddress: address,
-            });
-          } else {
-              response = await assignItem({
-                shippingAddress: address,
-                lineItems: [{
-                    itemId,
-                    quantity: 1,
-                }],
-            });
-          }
+    if (!isValidAddress(address, getFields(address.countryCode))) {
+        return onUnhandledError(new AssignItemInvalidAddressError());
+    }
 
-          this.syncItems(itemKey, address, response.data);
-      } catch (e) {
-          onUnhandledError(new AssignItemFailedError(e as any));
-      }
+    try {
+        const { data } = await assignItem({
+            address,
+            lineItems: nonFFLItemsMap
+        });
+
+    } catch (error) {
+        if (error instanceof Error) {
+            onUnhandledError(new AssignItemFailedError(error));
+        }
+    }
   };
 
   private handleSaveAddress: (address: AddressFormValues) => void = async address => {
