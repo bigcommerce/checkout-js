@@ -77,13 +77,13 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
         }
 
         if (methodType === PaymentMethodType.Paypal) {
+            const continueActionId = methodId === PaymentMethodId.PaypalCommerce
+                ? 'payment.place_order_action'
+                : 'payment.paypal_continue_action';
+
             return <TranslatedString
                 data={{ isComplete }}
-                id={
-                    isComplete
-                        ? 'payment.paypal_complete_action'
-                        : 'payment.paypal_continue_action'
-                }
+                id={isComplete ? 'payment.paypal_complete_action' : continueActionId}
             />;
         }
 

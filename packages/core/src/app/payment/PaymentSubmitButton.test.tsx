@@ -93,6 +93,17 @@ describe('PaymentSubmitButton', () => {
         expect(screen.getByText(languageService.translate('payment.paypal_continue_action'))).toBeInTheDocument();
     });
 
+    it('renders button with "place order" label for PayPal when the order placement starts on checkout page', () => {
+        render(
+            <PaymentSubmitButtonTest
+                methodId={PaymentMethodId.PaypalCommerce}
+                methodType="paypal"
+            />,
+        );
+
+        expect(screen.getByText(languageService.translate('payment.place_order_action'))).toBeInTheDocument();
+    });
+
     it('renders button with special label for Braintree Venmo', () => {
         render(
             <PaymentSubmitButtonTest
