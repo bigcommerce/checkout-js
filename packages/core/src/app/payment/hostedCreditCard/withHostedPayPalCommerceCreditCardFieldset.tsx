@@ -99,12 +99,11 @@ export default function withHostedPayPalCommerceCreditCardFieldset<
                 const isInstrumentCardCodeRequired = selectedInstrument
                     ? isInstrumentCardCodeRequiredProp(selectedInstrument, method)
                     : false;
-                const isInstrumentCardExpiryRequired = selectedInstrument
-                    ? !selectedInstrument.trustedShippingAddress
-                    : false;
+
+                const shouldRenderHostedFieldsWithInstrument = isInstrumentCardNumberRequired || isInstrumentCardCodeRequired;
 
                 const styleContainerId = selectedInstrument
-                    ? isInstrumentCardCodeRequired
+                    ? shouldRenderHostedFieldsWithInstrument
                         ? getHostedFieldId('ccCvv')
                         : undefined
                     : getHostedFieldId('ccNumber');
@@ -113,7 +112,7 @@ export default function withHostedPayPalCommerceCreditCardFieldset<
                     fields: selectedInstrument
                         ? {
                             cardCodeVerification:
-                                isInstrumentCardCodeRequired && selectedInstrument
+                                shouldRenderHostedFieldsWithInstrument && selectedInstrument
                                     ? {
                                         accessibilityLabel: language.translate(
                                             'payment.credit_card_cvv_label',
@@ -123,7 +122,7 @@ export default function withHostedPayPalCommerceCreditCardFieldset<
                                     }
                                     : undefined,
                             cardNumberVerification:
-                                isInstrumentCardNumberRequired && selectedInstrument
+                                shouldRenderHostedFieldsWithInstrument && selectedInstrument
                                     ? {
                                         accessibilityLabel: language.translate(
                                             'payment.credit_card_number_label',
@@ -133,7 +132,7 @@ export default function withHostedPayPalCommerceCreditCardFieldset<
                                     }
                                     : undefined,
                             cardExpiryVerification:
-                                isInstrumentCardExpiryRequired && selectedInstrument
+                                shouldRenderHostedFieldsWithInstrument && selectedInstrument
                                     ? {
                                           accessibilityLabel: language.translate(
                                               'payment.credit_card_expiry_label',
@@ -243,22 +242,21 @@ export default function withHostedPayPalCommerceCreditCardFieldset<
                 const isInstrumentCardCodeRequired = selectedInstrument
                     ? isInstrumentCardCodeRequiredProp(selectedInstrument, method)
                     : false;
-                const isInstrumentCardExpiryRequired = selectedInstrument
-                    ? !selectedInstrument.trustedShippingAddress
-                    : false;
+
+                const shouldRenderHostedFieldsWithInstrument = isInstrumentCardNumberRequired || isInstrumentCardCodeRequired;
 
                 return (
                     <HostedCreditCardValidation
                         cardCodeId={
-                            isInstrumentCardCodeRequired ? getHostedFieldId('ccCvv') : undefined
+                            shouldRenderHostedFieldsWithInstrument ? getHostedFieldId('ccCvv') : undefined
                         }
                         cardNumberId={
-                            isInstrumentCardNumberRequired
+                            shouldRenderHostedFieldsWithInstrument
                                 ? getHostedFieldId('ccNumber')
                                 : undefined
                         }
                         cardExpiryId={
-                            isInstrumentCardExpiryRequired
+                            shouldRenderHostedFieldsWithInstrument
                                 ? getHostedFieldId('ccExpiry')
                                 : undefined
                         }
