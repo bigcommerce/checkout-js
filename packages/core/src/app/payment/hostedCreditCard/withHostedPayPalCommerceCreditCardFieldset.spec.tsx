@@ -245,6 +245,53 @@ describe('withHostedPayPalCommerceCreditCardFieldset', () => {
         });
     });
 
+    it('passes verification form with three required fields even if there is one is required', async () => {
+        const localProps = {
+            ...defaultProps,
+            isInstrumentCardCodeRequired: jest.fn().mockReturnValue(true),
+            isInstrumentCardNumberRequired: jest.fn().mockReturnValue(false)
+        }
+        const container = mount(<DecoratedPaymentMethodTest {...localProps} />);
+        const getHostedFormOptions = container
+            .find(InnerPaymentMethod)
+            .prop('getHostedFormOptions');
+
+        expect(
+            await getHostedFormOptions({
+                ...getCardInstrument(),
+                trustedShippingAddress: false,
+            }),
+        ).toEqual({
+            fields: {
+                cardCodeVerification: {
+                    accessibilityLabel: 'CVV',
+                    containerId: 'authorizenet-ccCvv',
+                    instrumentId: getCardInstrument().bigpayToken,
+                },
+                cardNumberVerification: {
+                    accessibilityLabel: 'Credit Card Number',
+                    containerId: 'authorizenet-ccNumber',
+                    instrumentId: getCardInstrument().bigpayToken,
+                },
+                cardExpiryVerification: {
+                    accessibilityLabel: 'optimized_checkout.payment.credit_card_expiry_label',
+                    containerId: 'authorizenet-ccExpiry',
+                    instrumentId: '123'
+                }
+            },
+            styles: {
+                default: expect.any(Object),
+                error: expect.any(Object),
+                focus: expect.any(Object),
+            },
+            onBlur: expect.any(Function),
+            onCardTypeChange: expect.any(Function),
+            onEnter: expect.any(Function),
+            onFocus: expect.any(Function),
+            onValidate: expect.any(Function),
+        });
+    });
+
     it('passes styling properties to hosted form', async () => {
         const container = mount(<DecoratedPaymentMethodTest {...defaultProps} />);
         const getHostedFormOptions = container
