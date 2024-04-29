@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.479.0](https://github.com/bigcommerce/checkout-js/compare/v1.478.1...v1.479.0) (2024-04-29)
+
+
+### Features
+
+* **payment:** PAYPAL-4081 PPCP Credit Card verification fields fix ([2b19967](https://github.com/bigcommerce/checkout-js/commit/2b19967349e54a3e12f1df13203684da7f414729))
+
 ### [1.478.1](https://github.com/bigcommerce/checkout-js/compare/v1.478.0...v1.478.1) (2024-04-25)
 
 ## [1.478.0](https://github.com/bigcommerce/checkout-js/compare/v1.477.0...v1.478.0) (2024-04-24)
