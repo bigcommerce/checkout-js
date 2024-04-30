@@ -13,7 +13,6 @@ import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-
 import { withCheckout } from '../../checkout';
 
 import AmazonPayV2PaymentMethod from './AmazonPayV2PaymentMethod';
-import BarclaycardPaymentMethod from './BarclaycardPaymentMethod';
 import BoltPaymentMethod from './BoltPaymentMethod';
 import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod';
 import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
@@ -154,10 +153,6 @@ const PaymentMethodComponent: FunctionComponent<
         method.id === PaymentMethodId.PaypalPaymentsPro
     ) {
         return <PaypalPaymentsProPaymentMethod {...props} />;
-    }
-
-    if (method.gateway === PaymentMethodId.Barclaycard) {
-        return <BarclaycardPaymentMethod {...props} />;
     }
 
     if (method.id === PaymentMethodId.Bolt) {

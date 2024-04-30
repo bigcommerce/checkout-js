@@ -1,6 +1,6 @@
 # barclay-integration
 
-This library was generated with [Nx](https://nx.dev).
+This package contains the integration layer for the [Barclays](https://www.barclays.com/) provider.
 
 
 ## Running unit tests

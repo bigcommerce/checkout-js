@@ -20,7 +20,6 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 # Core
 /packages/core/payment/paymentMethod/AffirmPaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/AmazonPaymentMethod.tsx @bigcommerce/team-integrations
-/packages/core/payment/paymentMethod/BarclayCardPaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/BoltClientPaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/BoltCustomForm.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/BoltCustomFormValues.ts @bigcommerce/team-integrations
@@ -45,6 +44,7 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/core/payment/paymentMethod/WorldpayCreditCardPaymentMethod.tsx @bigcommerce/team-integrations
 
 /packages/adyen-integration @bigcommerce/team-integrations
+/packages/barclay-integration @bigcommerce/team-integrations
 /packages/bluesnap-direct-integration @bigcommerce/team-integrations
 /packages/squarev2-integration @bigcommerce/team-integrations
 /packages/td-bank-integration @bigcommerce/team-integrations
