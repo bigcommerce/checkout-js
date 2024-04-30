@@ -78,3 +78,18 @@ export function getMobilePaymentMethod(): PaymentMethod {
         type: 'PAYMENT_TYPE_API',
     };
 }
+
+export function getBraintreePaypalPaymentMethod(): PaymentMethod {
+    return {
+        id: 'braintreepaypal',
+        gateway: undefined,
+        method: 'paypal',
+        supportedCards: [],
+        config: {},
+        type: 'PAYMENT_TYPE_API',
+        nonce: undefined,
+        initializationData: {},
+        clientToken: 'token',
+        returnUrl: undefined,
+    };
+}

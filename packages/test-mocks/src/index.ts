@@ -30,6 +30,7 @@ export {
     getPaymentMethod,
     getPaypalCreditPaymentMethod,
     getBraintreeAchPaymentMethod,
+    getBraintreePaypalPaymentMethod,
 } from './payment-methods.mock';
 export { getPromotion } from './promotion.mock';
 export { getShippingAddress } from './shipping-address.mock';
