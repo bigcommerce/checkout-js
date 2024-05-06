@@ -270,6 +270,7 @@
             "credit_card_expiration_placeholder_text": "MM/ÅÅ",
             "credit_card_name_label": "Navn på kort",
             "credit_card_name_required_error": "Fullt navn er påkrevd",
+            "credit_card_name_invalid_error": "Kredittkortnavnet må være gyldig",
             "credit_card_number_invalid_error": "Kredittkortnummeret må være gyldig",
             "credit_card_number_label": "Kredittkortnummer",
             "credit_card_number_last_four": "Skriv inn kortnummeret for {cardType} som slutter på {lastFour}",
