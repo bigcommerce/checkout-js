@@ -270,6 +270,7 @@
             "credit_card_expiration_placeholder_text": "MM / YY",
             "credit_card_name_label": "Imię i nazwisko na karcie",
             "credit_card_name_required_error": "Wymagane jest podanie pełnego imienia i nazwiska",
+            "credit_card_name_invalid_error": "Nazwa karty kredytowej musi być prawidłowa",
             "credit_card_number_invalid_error": "Numer karty kredytowej musi być ważny",
             "credit_card_number_label": "Numer karty kredytowej",
             "credit_card_number_last_four": "Wprowadź numer karty dla {cardType} kończący się na {lastFour}",
