@@ -19,7 +19,6 @@ import { getCustomer } from '../../customer/customers.mock';
 import { getPaymentMethod } from '../payment-methods.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
-import BarclaycardPaymentMethod from './BarclaycardPaymentMethod';
 import CreditCardPaymentMethod, { CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
 import MolliePaymentMethod from './MolliePaymentMethod';
@@ -409,27 +408,6 @@ describe('PaymentMethod', () => {
                     gatewayId: method.gateway,
                 }),
             );
-        });
-    });
-
-    describe('when using barclaycard payment method', () => {
-        let method: PaymentMethod;
-
-        beforeEach(() => {
-            method = {
-                id: 'barclaycard',
-                method: 'barclaycard',
-                supportedCards: [],
-                config: {},
-                type: 'card',
-                gateway: 'barclaycard',
-            };
-        });
-
-        it('should render barclay PaymentMethod', () => {
-            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-
-            expect(container.find(BarclaycardPaymentMethod)).toBeTruthy();
         });
     });
 
