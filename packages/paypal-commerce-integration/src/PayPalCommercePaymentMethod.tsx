@@ -23,6 +23,7 @@ const PayPalCommercePaymentMethod: FunctionComponent<PaymentMethodProps> = (prop
         },
         method: {
             config: { isVaultingEnabled },
+            initializationData: { isComplete },
         },
         method,
         checkoutService,
@@ -52,7 +53,7 @@ const PayPalCommercePaymentMethod: FunctionComponent<PaymentMethodProps> = (prop
 
         const { isGuest } = getCustomer() || {};
 
-        const shouldLoadInstruments = !isGuest && isVaultingEnabled;
+        const shouldLoadInstruments = !isGuest && isVaultingEnabled && !isComplete;
 
         if (shouldLoadInstruments) {
             void loadInstrumentsOrThrow();

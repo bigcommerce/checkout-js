@@ -98,6 +98,10 @@ describe('PayPalCommercePaymentMethod', () => {
             );
         });
 
+        afterEach(() => {
+            jest.clearAllMocks();
+        });
+
         it('loads instruments', async () => {
             render(<PayPalCommercePaymentMethodMock {...props} />);
 
@@ -147,6 +151,14 @@ describe('PayPalCommercePaymentMethod', () => {
             render(<PayPalCommercePaymentMethodMock {...props} />);
 
             expect(screen.queryByText('test@external-id.com')).not.toBeInTheDocument();
+        });
+
+        it('should not load instruments if isComplete is true', () => {
+            props.method.initializationData.isComplete = true;
+
+            render(<PayPalCommercePaymentMethodMock {...props} />);
+
+            expect(checkoutService.loadInstruments).not.toHaveBeenCalled();
         });
     });
 });
