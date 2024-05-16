@@ -99,12 +99,7 @@ describe('StoreInstrumentFieldset', () => {
     describe('when there are some previously stored instruments', () => {
         describe('when using a new card', () => {
             it('shows the both the "save card" and "make default" inputs', () => {
-                render(
-                    <StoreInstrumentFieldsetTest
-                        instruments={getInstruments()}
-                        allInstruments={getInstruments()}
-                    />
-                );
+                render(<StoreInstrumentFieldsetTest instruments={getInstruments()} />);
 
                 expect(
                     screen.getByText('Save this card for future transactions'),
@@ -123,7 +118,6 @@ describe('StoreInstrumentFieldset', () => {
                     <StoreInstrumentFieldsetTest
                         instruments={getInstruments()}
                         isAccountInstrument={true}
-                        allInstruments={getInstruments()}
                     />,
                 );
 
@@ -208,7 +202,6 @@ describe('StoreInstrumentFieldset', () => {
                     <StoreInstrumentFieldsetTest
                         instrumentId={getInstruments()[1].bigpayToken}
                         instruments={getInstruments()}
-                        allInstruments={getInstruments()}
                     />,
                 );
 
@@ -248,7 +241,6 @@ describe('StoreInstrumentFieldset', () => {
             it('shows the "make default" input', () => {
                 render(
                     <StoreInstrumentFieldsetTest
-                        allInstruments={getInstruments()}
                         instrumentId="4123"
                         instruments={[
                             {

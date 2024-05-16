@@ -14,7 +14,6 @@ interface StoreInstrumentFieldsetProps {
     isAccountInstrument?: boolean;
     instrumentId?: string;
     instruments: PaymentInstrument[];
-    allInstruments?: PaymentInstrument[]
 }
 
 interface WithStorageSettings {
@@ -29,12 +28,12 @@ const useProps = (
 ): WithStorageSettings => {
     const saveIsChecked = Boolean(paymentForm.getFieldValue<boolean>('shouldSaveInstrument'));
 
-    const { instrumentId, allInstruments } = props;
+    const { instrumentId, instruments } = props;
 
     const addingNewInstrument = !instrumentId;
-    const hasAnyOtherInstruments = !!allInstruments && allInstruments.length > 0;
+    const hasAnyOtherInstruments = !!instruments && instruments.length > 0;
     const instrument =
-        allInstruments && allInstruments.find(({ bigpayToken }) => bigpayToken === instrumentId);
+        instruments && instruments.find(({ bigpayToken }) => bigpayToken === instrumentId);
 
     return {
         ...props,

@@ -64,6 +64,7 @@ const PayPalCommercePaymentMethod: FunctionComponent<PaymentMethodProps> = (prop
     }
 
     const isLoading = isLoadingInstruments() || isLoadingPaymentMethod(method.id);
+    const allInstruments = getInstruments() || [];
 
     return (
         <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
@@ -90,9 +91,8 @@ const PayPalCommercePaymentMethod: FunctionComponent<PaymentMethodProps> = (prop
 
                 {isInstrumentFeatureAvailable && (
                     <StoreInstrumentFieldset
-                        allInstruments={getInstruments()}
                         instrumentId={currentInstrument?.bigpayToken}
-                        instruments={trustedAccountInstruments}
+                        instruments={allInstruments}
                         isAccountInstrument
                     />
                 )}
