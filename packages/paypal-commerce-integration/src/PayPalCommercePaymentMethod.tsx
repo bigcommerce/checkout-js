@@ -18,7 +18,7 @@ import usePaypalCommerceInstrument from './hooks/usePaypalCommerceInstruments';
 const PayPalCommercePaymentMethod: FunctionComponent<PaymentMethodProps> = (props) => {
     const {
         checkoutState: {
-            data: { isPaymentDataRequired, getCustomer },
+            data: { isPaymentDataRequired, getCustomer, getInstruments },
             statuses: { isLoadingInstruments, isLoadingPaymentMethod },
         },
         method: {
@@ -90,6 +90,7 @@ const PayPalCommercePaymentMethod: FunctionComponent<PaymentMethodProps> = (prop
 
                 {isInstrumentFeatureAvailable && (
                     <StoreInstrumentFieldset
+                        allInstruments={getInstruments()}
                         instrumentId={currentInstrument?.bigpayToken}
                         instruments={trustedAccountInstruments}
                         isAccountInstrument
