@@ -618,5 +618,15 @@
         "phone": "07 3281 1050",
         "latitude": -27.65800,
         "longitude": 152.7449
+    },
+    {
+        "company": "Opposite Lock Hobart",
+        "street": "273B Kennedy Dr",
+        "suburb": "Cambridge",
+        "state": "TAS",
+        "postcode": "7170",
+        "phone": "03 6128 1012",
+        "latitude": -42.8314,
+        "longitude": 147.4869
     }
 ]
