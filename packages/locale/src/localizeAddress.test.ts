@@ -1,6 +1,6 @@
 import { Address } from '@bigcommerce/checkout-sdk';
 
-import { getCountries } from '../geography/countries.mock';
+import { getCountries } from './countries.mock';
 
 import { getAddress } from './address.mock';
 import localizeAddress from './localizeAddress';
