@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.489.0](https://github.com/bigcommerce/checkout-js/compare/v1.488.0...v1.489.0) (2024-05-20)
+
+
+### Features
+
+* **payment:** PAYPAL-4068 bumped checkout-js version ([cb88445](https://github.com/bigcommerce/checkout-js/commit/cb884450a7815a6aa6a0d5c8925ecd85ed506834))
+* **payment:** PI-2061 Added Amazon Pay button hidden microtext feature flag ([e35c6f8](https://github.com/bigcommerce/checkout-js/commit/e35c6f8d1882f0b233bff9faf1c062bc01043bf7))
+
 ## [1.488.0](https://github.com/bigcommerce/checkout-js/compare/v1.487.0...v1.488.0) (2024-05-20)
 
 
