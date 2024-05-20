@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.488.0](https://github.com/bigcommerce/checkout-js/compare/v1.487.0...v1.488.0) (2024-05-20)
+
+
+### Features
+
+* **payment:** PAYPAL-4066 PayPal Fastlane shipping component ([a28f94f](https://github.com/bigcommerce/checkout-js/commit/a28f94f64aef877bcf87c03086cbec6ebc4a2653))
+
 ## [1.487.0](https://github.com/bigcommerce/checkout-js/compare/v1.486.0...v1.487.0) (2024-05-20)
 
 
