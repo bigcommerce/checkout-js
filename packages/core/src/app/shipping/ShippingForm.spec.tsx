@@ -1,4 +1,3 @@
-import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { CheckoutService, createCheckoutService, CustomerAddress } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
@@ -6,6 +5,7 @@ import React from 'react';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { getShippingAddress } from '@bigcommerce/checkout/test-mocks';
 
 import { getCart } from '../cart/carts.mock';
@@ -414,7 +414,6 @@ describe('ShippingForm Component', () => {
                 }
             ];
 
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
                 isPayPalFastlaneEnabled: true,
                 paypalFastlaneAddresses,
@@ -455,11 +454,11 @@ describe('ShippingForm Component', () => {
                 }
             ];
 
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
             (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
                 isPayPalFastlaneEnabled: true,
                 paypalFastlaneAddresses,
                 mergedBcAndPayPalFastlaneAddresses: paypalFastlaneAddresses,
+                shouldShowPayPalFastlaneShippingForm: true,
             });
 
             component = mount(

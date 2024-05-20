@@ -62,7 +62,15 @@ describe('ShippingAddress Component', () => {
 
     describe('when no method id is provided', () => {
         it('renders ShippingAddressForm with expected props', () => {
-            const component = shallow(<ShippingAddress {...defaultProps} />);
+            const component = mount(
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <Formik initialValues={{}} onSubmit={noop}>
+                            <ShippingAddress {...defaultProps} />
+                        </Formik>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>
+            );
 
             expect(component.find(ShippingAddressForm).props()).toEqual(
                 expect.objectContaining({

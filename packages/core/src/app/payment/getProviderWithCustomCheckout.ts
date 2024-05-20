@@ -9,5 +9,9 @@ export default function getProviderWithCustomCheckout(methodId?: string | null):
         return PaymentMethodId.PayPalCommerceAcceleratedCheckout;
     }
 
+    if (methodId === PaymentMethodId.Braintree) {
+        return PaymentMethodId.BraintreeAcceleratedCheckout;
+    }
+
     return methodId;
 }
