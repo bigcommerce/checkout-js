@@ -4,4 +4,5 @@ export { default as isPayPalFastlaneMethod } from './is-paypal-fastlane-method';
 export { default as isBraintreeFastlaneMethod } from './is-braintree-fastlane-method';
 export { default as isPayPalCommerceFastlaneMethod } from './is-paypal-fastlane-method';
 export { default as PoweredByPayPalFastlaneLabel } from './PoweredByPayPalFastlaneLabel';
+export { default as PayPalFastlaneShippingAddressForm } from '././PayPalFastlaneShippingAddressForm';
 export { default as usePayPalFastlaneAddress } from './usePayPalFastlaneAddress';
