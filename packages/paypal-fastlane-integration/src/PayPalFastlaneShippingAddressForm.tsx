@@ -64,11 +64,11 @@ const PayPalFastlaneShippingAddressForm = (props: PayPalFastlaneStaticAddressPro
     };
 
     const braintreeFastlaneOptions = {
-        // braintreefastlane: {
-        //     onPayPalFastlaneAddressChange: (showPayPalFastlaneAddressSelector: any) => {
-        //         paypalFastlaneShippingComponent.current.showAddressSelector = showPayPalFastlaneAddressSelector;
-        //     },
-        // },
+        braintreefastlane: {
+            onPayPalFastlaneAddressChange: (showPayPalFastlaneAddressSelector: PayPalFastlaneAddressComponentRef['showAddressSelector']) => {
+                paypalFastlaneShippingComponent.current.showAddressSelector = showPayPalFastlaneAddressSelector;
+            },
+        },
     }
 
     const initializationOptions: ShippingInitializeOptions = isPayPalCommerceFastlaneMethod(methodId)
