@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.486.0](https://github.com/bigcommerce/checkout-js/compare/v1.485.0...v1.486.0) (2024-05-20)
+
+
+### Features
+
+* **payment:** PAYPAL-4066 localizeAddress moved to shared package ([4003cb5](https://github.com/bigcommerce/checkout-js/commit/4003cb55d448a5646abedf470ff01d5722f2e191))
+
 ## [1.485.0](https://github.com/bigcommerce/checkout-js/compare/v1.484.0...v1.485.0) (2024-05-20)
 
 
