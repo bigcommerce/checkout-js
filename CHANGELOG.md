@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.491.0](https://github.com/bigcommerce/checkout-js/compare/v1.490.0...v1.491.0) (2024-05-21)
+
+
+### Features
+
+* **payment:** PI-2090 Zip (Quadpay) - Change Checkout Button Language ([d1dcb60](https://github.com/bigcommerce/checkout-js/commit/d1dcb60ffe17e246aacad3257a08f032fefa64aa))
+
 ## [1.490.0](https://github.com/bigcommerce/checkout-js/compare/v1.489.0...v1.490.0) (2024-05-21)
 
 
