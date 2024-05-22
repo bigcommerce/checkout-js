@@ -5,7 +5,7 @@ export default function getProviderWithCustomCheckout(methodId?: string | null):
         return undefined;
     }
 
-    if (methodId === PaymentMethodId.PaypalCommerce) {
+    if (methodId === PaymentMethodId.PaypalCommerce || methodId === PaymentMethodId.PaypalCommerceCreditCards) {
         return PaymentMethodId.PayPalCommerceAcceleratedCheckout;
     }
 
