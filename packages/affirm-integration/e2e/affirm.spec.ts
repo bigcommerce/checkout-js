@@ -14,10 +14,7 @@ test.describe('Affirm', () => {
         await checkout.use(new PaymentStepAsGuestPreset());
         await checkout.start('Affirm in Payment Step');
 
-        await checkout.route(
-            'https://cdn1-sandbox.affirm.com/js/v2/affirm.js',
-            `${__dirname}/support/affirmMock.js`,
-        );
+        await checkout.route('**/js/v2/affirm.js', `${__dirname}/support/affirmMock.js`);
 
         await checkout.route(
             /order-confirmation.*/,
