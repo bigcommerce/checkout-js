@@ -351,7 +351,7 @@
             "instrument_trusted_shipping_address_text": "この追加のセキュリティステップは、新しい住所に配送する場合と配送先住所が更新された場合にカードに適用されます。",
             "instrument_trusted_shipping_address_title_text": "この取引を承認するためにカード番号を再入力してください。",
             "quadpay_continue_action": "Zipで続ける",
-            "quadpay_display_name_text": "4回払い",
+            "quadpay_display_name_text": "Pay in installments",
             "ppsdk_continue_action": "{methodName}で続ける",
             "select_your_bank": "銀行を選択",
             "sepa_account_number": "口座番号 (IBAN)",
