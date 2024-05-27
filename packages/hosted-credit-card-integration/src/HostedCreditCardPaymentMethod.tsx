@@ -140,6 +140,11 @@ const HostedCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                               styleProps,
                               CreditCardInputStylesType.Focus,
                           ),
+                          placeholder: await getCreditCardInputStyles(
+                              styleContainerId,
+                              styleProps,
+                              CreditCardInputStylesType.Placeholder,
+                          ),
                       }
                     : {},
                 onBlur: ({ fieldType }) => {

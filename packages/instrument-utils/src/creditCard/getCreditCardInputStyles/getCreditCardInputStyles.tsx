@@ -9,6 +9,7 @@ export enum CreditCardInputStylesType {
     Default = 'default',
     Error = 'error',
     Focus = 'focus',
+    Placeholder = 'placeholder',
 }
 
 export default function getCreditCardInputStyles(
@@ -33,7 +34,13 @@ export default function getCreditCardInputStyles(
                 return;
             }
 
-            resolve(getAppliedStyles(element, properties));
+            resolve(
+                getAppliedStyles(
+                    element,
+                    properties,
+                    type === CreditCardInputStylesType.Placeholder,
+                ),
+            );
 
             ReactDOM.unmountComponentAtNode(container);
 
@@ -47,6 +54,11 @@ export default function getCreditCardInputStyles(
                 <FormFieldContainer hasError={type === CreditCardInputStylesType.Error}>
                     <TextInput
                         appearFocused={type === CreditCardInputStylesType.Focus}
+                        placeholder={
+                            type === CreditCardInputStylesType.Placeholder
+                                ? 'placeholder'
+                                : undefined
+                        }
                         ref={callbackRef}
                     />
                 </FormFieldContainer>
