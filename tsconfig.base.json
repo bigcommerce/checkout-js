@@ -33,6 +33,9 @@
         "packages/checkout-button-integration/src/index.ts"
       ],
       "@bigcommerce/checkout/checkout-extension": ["packages/checkout-extension/src/index.ts"],
+      "@bigcommerce/checkout/checkoutcom-integration": [
+        "packages/checkoutcom-integration/src/index.ts"
+      ],
       "@bigcommerce/checkout/core": ["packages/core/src/app/index.ts"],
       "@bigcommerce/checkout/credit-card-integration": [
         "packages/credit-card-integration/src/index.ts"

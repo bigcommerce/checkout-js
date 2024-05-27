@@ -2,6 +2,172 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.492.0](https://github.com/bigcommerce/checkout-js/compare/v1.491.1...v1.492.0) (2024-05-24)
+
+
+### Features
+
+* **payment:** PAYPAL-4173 bumped checkout-sdk-js version ([89dbb38](https://github.com/bigcommerce/checkout-js/commit/89dbb380ca747b58b6830ced64f77384ffa49f1d))
+
+### [1.491.1](https://github.com/bigcommerce/checkout-js/compare/v1.491.0...v1.491.1) (2024-05-22)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-4208 added extra mapping for paypalcommercecreditcards methodId ([5149da3](https://github.com/bigcommerce/checkout-js/commit/5149da39f53c0dc0f8b7f8820cd97e6eabbd36d3))
+
+## [1.491.0](https://github.com/bigcommerce/checkout-js/compare/v1.490.0...v1.491.0) (2024-05-21)
+
+
+### Features
+
+* **payment:** PI-2090 Zip (Quadpay) - Change Checkout Button Language ([d1dcb60](https://github.com/bigcommerce/checkout-js/commit/d1dcb60ffe17e246aacad3257a08f032fefa64aa))
+
+## [1.490.0](https://github.com/bigcommerce/checkout-js/compare/v1.489.0...v1.490.0) (2024-05-21)
+
+
+### Features
+
+* **payment:** PAYPAL-4066 shipping address component mapper created ([9e6743e](https://github.com/bigcommerce/checkout-js/commit/9e6743e95f84304de5d7ff834fa9bacfa2927a5d))
+
+## [1.489.0](https://github.com/bigcommerce/checkout-js/compare/v1.488.0...v1.489.0) (2024-05-20)
+
+
+### Features
+
+* **payment:** PAYPAL-4068 bumped checkout-js version ([cb88445](https://github.com/bigcommerce/checkout-js/commit/cb884450a7815a6aa6a0d5c8925ecd85ed506834))
+* **payment:** PI-2061 Added Amazon Pay button hidden microtext feature flag ([e35c6f8](https://github.com/bigcommerce/checkout-js/commit/e35c6f8d1882f0b233bff9faf1c062bc01043bf7))
+
+## [1.488.0](https://github.com/bigcommerce/checkout-js/compare/v1.487.0...v1.488.0) (2024-05-20)
+
+
+### Features
+
+* **payment:** PAYPAL-4066 PayPal Fastlane shipping component ([a28f94f](https://github.com/bigcommerce/checkout-js/commit/a28f94f64aef877bcf87c03086cbec6ebc4a2653))
+
+## [1.487.0](https://github.com/bigcommerce/checkout-js/compare/v1.486.0...v1.487.0) (2024-05-20)
+
+
+### Features
+
+* **payment:** PAYPAL-2624 bump sdk ([ce5af5c](https://github.com/bigcommerce/checkout-js/commit/ce5af5ce3460d65fbd37aa5a09b8fa7ee0890455))
+
+## [1.486.0](https://github.com/bigcommerce/checkout-js/compare/v1.485.0...v1.486.0) (2024-05-20)
+
+
+### Features
+
+* **payment:** PAYPAL-4066 localizeAddress moved to shared package ([4003cb5](https://github.com/bigcommerce/checkout-js/commit/4003cb55d448a5646abedf470ff01d5722f2e191))
+
+## [1.485.0](https://github.com/bigcommerce/checkout-js/compare/v1.484.0...v1.485.0) (2024-05-20)
+
+
+### Features
+
+* **payment:** PAYPAL-4165 fix redundant calling of loadInstruments ([84165bb](https://github.com/bigcommerce/checkout-js/commit/84165bb967844f94d1c3cd45f6b8f2d374eb3ee8))
+
+## [1.484.0](https://github.com/bigcommerce/checkout-js/compare/v1.483.0...v1.484.0) (2024-05-17)
+
+
+### Features
+
+* **payment:** PAYPAL-4093 fixed vaulted instruments checkboxes ([6d35cf9](https://github.com/bigcommerce/checkout-js/commit/6d35cf93ee6178023b78f3a51126c2dd9fb697a6))
+* **payment:** PAYPAL-4093 fixed vaulted instruments checkboxes ([19887ef](https://github.com/bigcommerce/checkout-js/commit/19887efe0c79a7348a3a25af42becb3c9b04a112))
+
+## [1.483.0](https://github.com/bigcommerce/checkout-js/compare/v1.482.1...v1.483.0) (2024-05-15)
+
+
+### Features
+
+* **payment:** PAYPAL-4123 bump sdk ([4003d3a](https://github.com/bigcommerce/checkout-js/commit/4003d3a3dd2e5e2e9d248c9d6e960a706176145e))
+
+### [1.482.1](https://github.com/bigcommerce/checkout-js/compare/v1.482.0...v1.482.1) (2024-05-13)
+
+
+### Code Refactoring
+
+* **payment:** PI-1558 release checkout-sdk ([6687c02](https://github.com/bigcommerce/checkout-js/commit/6687c0237f4f51abde7764bf2f74c13a4fc6b2a5))
+
+## [1.482.0](https://github.com/bigcommerce/checkout-js/compare/v1.481.1...v1.482.0) (2024-05-09)
+
+
+### Features
+
+* **other:** LOCAL-1444 delivery translation ([#1856](https://github.com/bigcommerce/checkout-js/issues/1856)) ([8f2ba91](https://github.com/bigcommerce/checkout-js/commit/8f2ba91285721ec30857a19eadfcad704ede950b))
+* **payment:** PI-1561 Refactor the existing barclaycard payment strategy ([d9c71f9](https://github.com/bigcommerce/checkout-js/commit/d9c71f97cf0bb06827a9dca879fc05f5431775ec))
+
+### [1.481.1](https://github.com/bigcommerce/checkout-js/compare/v1.481.0...v1.481.1) (2024-05-08)
+
+## [1.481.0](https://github.com/bigcommerce/checkout-js/compare/v1.480.0...v1.481.0) (2024-05-07)
+
+
+### Features
+
+* **payment:** PAYPAL-4111 bump sdk ([a563d81](https://github.com/bigcommerce/checkout-js/commit/a563d8182a543d715199561f2aa7a3885631d0e8))
+
+## [1.480.0](https://github.com/bigcommerce/checkout-js/compare/v1.479.4...v1.480.0) (2024-05-07)
+
+
+### Features
+
+* **payment:** PAYPAL-4108 bumped checkout-sdk-js version ([689902b](https://github.com/bigcommerce/checkout-js/commit/689902b4fa8b2727227ceb49e1451e20b9df315a))
+
+### [1.479.4](https://github.com/bigcommerce/checkout-js/compare/v1.479.3...v1.479.4) (2024-05-02)
+
+### [1.479.3](https://github.com/bigcommerce/checkout-js/compare/v1.479.2...v1.479.3) (2024-05-02)
+
+
+### Code Refactoring
+
+* **payment:** PI-1901 release of checkout-sdk ([92c6f04](https://github.com/bigcommerce/checkout-js/commit/92c6f049527ca96affbbd49c3dddc8ccb30e0583))
+
+### [1.479.2](https://github.com/bigcommerce/checkout-js/compare/v1.479.1...v1.479.2) (2024-04-30)
+
+### [1.479.1](https://github.com/bigcommerce/checkout-js/compare/v1.479.0...v1.479.1) (2024-04-30)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-4090 updated submit button text with Place order while customer pays with PPCP account vaulted instrument ([6a937ef](https://github.com/bigcommerce/checkout-js/commit/6a937ef7bdc814e436175ffdecc0f5adc753be27))
+
+## [1.479.0](https://github.com/bigcommerce/checkout-js/compare/v1.478.1...v1.479.0) (2024-04-29)
+
+
+### Features
+
+* **payment:** PAYPAL-4081 PPCP Credit Card verification fields fix ([2b19967](https://github.com/bigcommerce/checkout-js/commit/2b19967349e54a3e12f1df13203684da7f414729))
+
+### [1.478.1](https://github.com/bigcommerce/checkout-js/compare/v1.478.0...v1.478.1) (2024-04-25)
+
+## [1.478.0](https://github.com/bigcommerce/checkout-js/compare/v1.477.0...v1.478.0) (2024-04-24)
+
+
+### Features
+
+* **payment:** PI-1581 bump checkout-sdk version ([d051d6a](https://github.com/bigcommerce/checkout-js/commit/d051d6a80b4c856ee98a440ceba6fc4df07977d9))
+
+## [1.477.0](https://github.com/bigcommerce/checkout-js/compare/v1.476.0...v1.477.0) (2024-04-24)
+
+
+### Features
+
+* **payment:** PI-1961 E2E tests for checkoutcom integration ([cd25fb6](https://github.com/bigcommerce/checkout-js/commit/cd25fb6af3e662561d72a19664bbe109bfc522a9))
+
+## [1.476.0](https://github.com/bigcommerce/checkout-js/compare/v1.475.0...v1.476.0) (2024-04-24)
+
+
+### Features
+
+* **payment:** PI-1576 Refactor the existing checkoutcom components ([70c12d8](https://github.com/bigcommerce/checkout-js/commit/70c12d840a4e53a9283cb657b71bd9555a9f347a))
+
+## [1.475.0](https://github.com/bigcommerce/checkout-js/compare/v1.474.5...v1.475.0) (2024-04-23)
+
+
+### Features
+
+* **payment:** PAYPAL-3976 added validation for invalid card name field ([837cd8e](https://github.com/bigcommerce/checkout-js/commit/837cd8eabe0507170dd757d6a9463835c944157f))
+* **payment:** PAYPAL-3976 bump sdk version ([36d78b6](https://github.com/bigcommerce/checkout-js/commit/36d78b6b7043009521122a07722f3c219bb518fe))
+
 ### [1.474.5](https://github.com/bigcommerce/checkout-js/compare/v1.474.4...v1.474.5) (2024-04-23)
 
 ### [1.474.4](https://github.com/bigcommerce/checkout-js/compare/v1.474.3...v1.474.4) (2024-04-23)

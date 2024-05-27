@@ -18,11 +18,12 @@ import usePaypalCommerceInstrument from './hooks/usePaypalCommerceInstruments';
 const PayPalCommercePaymentMethod: FunctionComponent<PaymentMethodProps> = (props) => {
     const {
         checkoutState: {
-            data: { isPaymentDataRequired, getCustomer },
+            data: { isPaymentDataRequired, getCustomer, getInstruments },
             statuses: { isLoadingInstruments, isLoadingPaymentMethod },
         },
         method: {
             config: { isVaultingEnabled },
+            initializationData: { isComplete },
         },
         method,
         checkoutService,
@@ -52,7 +53,7 @@ const PayPalCommercePaymentMethod: FunctionComponent<PaymentMethodProps> = (prop
 
         const { isGuest } = getCustomer() || {};
 
-        const shouldLoadInstruments = !isGuest && isVaultingEnabled;
+        const shouldLoadInstruments = !isGuest && isVaultingEnabled && !isComplete;
 
         if (shouldLoadInstruments) {
             void loadInstrumentsOrThrow();
@@ -64,6 +65,7 @@ const PayPalCommercePaymentMethod: FunctionComponent<PaymentMethodProps> = (prop
     }
 
     const isLoading = isLoadingInstruments() || isLoadingPaymentMethod(method.id);
+    const allInstruments = getInstruments() || [];
 
     return (
         <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
@@ -91,7 +93,7 @@ const PayPalCommercePaymentMethod: FunctionComponent<PaymentMethodProps> = (prop
                 {isInstrumentFeatureAvailable && (
                     <StoreInstrumentFieldset
                         instrumentId={currentInstrument?.bigpayToken}
-                        instruments={trustedAccountInstruments}
+                        instruments={allInstruments}
                         isAccountInstrument
                     />
                 )}

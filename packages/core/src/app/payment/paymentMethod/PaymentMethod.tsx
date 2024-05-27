@@ -13,12 +13,10 @@ import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-
 import { withCheckout } from '../../checkout';
 
 import AmazonPayV2PaymentMethod from './AmazonPayV2PaymentMethod';
-import BarclaycardPaymentMethod from './BarclaycardPaymentMethod';
 import BoltPaymentMethod from './BoltPaymentMethod';
 import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod';
 import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
 import ChasePayPaymentMethod from './ChasePayPaymentMethod';
-import CheckoutCustomPaymentMethod from './CheckoutcomCustomPaymentMethod';
 import DigitalRiverPaymentMethod from './DigitalRiverPaymentMethod';
 import GooglePayPaymentMethod from './GooglePayPaymentMethod';
 import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';
@@ -109,16 +107,6 @@ const PaymentMethodComponent: FunctionComponent<
             return <HostedCreditCardPaymentMethod {...props} />;
         }
 
-        if (
-            method.id === PaymentMethodId.Boleto ||
-            method.id === PaymentMethodId.Ideal ||
-            method.id === PaymentMethodId.Fawry ||
-            method.id === PaymentMethodId.Oxxo ||
-            method.id === PaymentMethodId.Qpay ||
-            method.id === PaymentMethodId.Sepa
-        ) {
-            return <CheckoutCustomPaymentMethod checkoutCustomMethod={method.id} {...props} />;
-        }
 
         return <HostedPaymentMethod {...props} />;
     }
@@ -165,10 +153,6 @@ const PaymentMethodComponent: FunctionComponent<
         method.id === PaymentMethodId.PaypalPaymentsPro
     ) {
         return <PaypalPaymentsProPaymentMethod {...props} />;
-    }
-
-    if (method.gateway === PaymentMethodId.Barclaycard) {
-        return <BarclaycardPaymentMethod {...props} />;
     }
 
     if (method.id === PaymentMethodId.Bolt) {

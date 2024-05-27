@@ -17,7 +17,7 @@ import {
 import React, { useEffect } from 'react';
 
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { isPayPalFastlaneMethod, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import MultiShippingForm, { MultiShippingFormValues } from './MultiShippingForm';
 import SingleShippingForm, { SingleShippingFormValues } from './SingleShippingForm';
@@ -96,14 +96,22 @@ const ShippingForm = ({
     isShippingStepPending,
     isFloatingLabelEnabled,
 }: ShippingFormProps & WithLanguageProps) => {
-    const { isPayPalFastlaneEnabled, mergedBcAndPayPalFastlaneAddresses } = usePayPalFastlaneAddress();
-    const shippingAddresses = isPayPalFastlaneEnabled ? mergedBcAndPayPalFastlaneAddresses : addresses;
+    // TODO: remove PayPal Fastlane related code and useEffect when PayPal Fastlane will not be available for Store members
+    const {
+        isPayPalFastlaneEnabled,
+        mergedBcAndPayPalFastlaneAddresses,
+        shouldShowPayPalFastlaneShippingForm,
+    } = usePayPalFastlaneAddress();
+
+    const shippingAddresses = isPayPalFastlaneEnabled
+        ? mergedBcAndPayPalFastlaneAddresses
+        : addresses;
 
     useEffect(() => {
-        if (isPayPalFastlaneMethod(methodId) && isPayPalFastlaneEnabled) {
+        if (isPayPalFastlaneEnabled && !shouldShowPayPalFastlaneShippingForm) {
             initialize({ methodId });
         }
-    });
+    }, [isPayPalFastlaneEnabled, shouldShowPayPalFastlaneShippingForm, methodId, initialize]);
 
     return isMultiShippingMode ? (
         <MultiShippingForm

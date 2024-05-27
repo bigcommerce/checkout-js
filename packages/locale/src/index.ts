@@ -15,5 +15,6 @@ export { default as LocaleProvider } from './LocaleProvider';
 export { default as TranslatedHtml, TranslatedHtmlProps } from './TranslatedHtml';
 export { default as TranslatedLink, TranslatedLinkProps } from './TranslatedLink';
 export { default as TranslatedString, TranslatedStringProps } from './TranslatedString';
+export { default as localizeAddress } from './localizeAddress';
 export { getLocaleContext } from './localeContext.mock';
 export { FALLBACK_TRANSLATIONS } from './translations';

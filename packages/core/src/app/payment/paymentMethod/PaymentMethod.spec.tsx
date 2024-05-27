@@ -19,10 +19,6 @@ import { getCustomer } from '../../customer/customers.mock';
 import { getPaymentMethod } from '../payment-methods.mock';
 import PaymentContext, { PaymentContextProps } from '../PaymentContext';
 
-import BarclaycardPaymentMethod from './BarclaycardPaymentMethod';
-import CheckoutcomCustomPaymentMethod, {
-    CheckoutcomCustomPaymentMethodProps,
-} from './CheckoutcomCustomPaymentMethod';
 import CreditCardPaymentMethod, { CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
 import MolliePaymentMethod from './MolliePaymentMethod';
@@ -336,40 +332,6 @@ describe('PaymentMethod', () => {
             );
         });
 
-        it('renders oxxo as custom payment method', () => {
-            const container = mount(
-                <PaymentMethodTest {...defaultProps} method={alternateMethodA} />,
-            );
-
-            expect(container.find(CheckoutcomCustomPaymentMethod).props()).toEqual(
-                expect.objectContaining({
-                    deinitializePayment: expect.any(Function),
-                    initializePayment: expect.any(Function),
-                    method: alternateMethodA,
-                }),
-            );
-        });
-
-        it('initializes method with required config', () => {
-            const container = mount(
-                <PaymentMethodTest {...defaultProps} method={alternateMethodA} />,
-            );
-            const component: ReactWrapper<CheckoutcomCustomPaymentMethodProps> = container.find(
-                CheckoutcomCustomPaymentMethod,
-            );
-
-            component.prop('initializePayment')({
-                methodId: alternateMethodA.id,
-                gatewayId: alternateMethodA.gateway,
-            });
-
-            expect(checkoutService.initializePayment).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    methodId: alternateMethodA.id,
-                    gatewayId: alternateMethodA.gateway,
-                }),
-            );
-        });
 
         it('renders paypal as hosted payment method', () => {
             const container = mount(
@@ -446,27 +408,6 @@ describe('PaymentMethod', () => {
                     gatewayId: method.gateway,
                 }),
             );
-        });
-    });
-
-    describe('when using barclaycard payment method', () => {
-        let method: PaymentMethod;
-
-        beforeEach(() => {
-            method = {
-                id: 'barclaycard',
-                method: 'barclaycard',
-                supportedCards: [],
-                config: {},
-                type: 'card',
-                gateway: 'barclaycard',
-            };
-        });
-
-        it('should render barclay PaymentMethod', () => {
-            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-
-            expect(container.find(BarclaycardPaymentMethod)).toBeTruthy();
         });
     });
 
