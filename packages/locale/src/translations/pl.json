@@ -351,7 +351,7 @@
             "instrument_trusted_shipping_address_text": "Ten dodatkowy krok bezpieczeństwa jest stosowany do karty przy wysyłce na dany adres po raz pierwszy lub jeśli adres wysyłki był niedawno edytowany.",
             "instrument_trusted_shipping_address_title_text": "Wprowadź ponownie numer swojej karty, aby autoryzować tę transakcję.",
             "quadpay_continue_action": "Kontynuuj pracę z zamkiem błyskawicznym",
-            "quadpay_display_name_text": "Płatność w czterech ratach",
+            "quadpay_display_name_text": "Płatność w ratach",
             "ppsdk_continue_action": "Kontynuuj z {methodName}.",
             "select_your_bank": "Wybierz swój bank",
             "sepa_account_number": "Numer konta (IBAN)",

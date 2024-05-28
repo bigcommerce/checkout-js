@@ -17,6 +17,8 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 
 ## Payment integrations team
 
+/packages/affirm-integration @bigcommerce/team-integrations
+
 # Core
 /packages/core/payment/paymentMethod/AffirmPaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/AmazonPaymentMethod.tsx @bigcommerce/team-integrations
