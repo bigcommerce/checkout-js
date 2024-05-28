@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.494.0](https://github.com/bigcommerce/checkout-js/compare/v1.493.1...v1.494.0) (2024-05-28)
+
+
+### Features
+
+* **payment:** PI-1542 Write integration tests to verify all `affirm`… ([#1789](https://github.com/bigcommerce/checkout-js/issues/1789)) ([52a9b36](https://github.com/bigcommerce/checkout-js/commit/52a9b3628839f3c0049b189a1472fe0a5e728b1e))
+
 ### [1.493.1](https://github.com/bigcommerce/checkout-js/compare/v1.493.0...v1.493.1) (2024-05-28)
 
 ## [1.493.0](https://github.com/bigcommerce/checkout-js/compare/v1.492.0...v1.493.0) (2024-05-27)
