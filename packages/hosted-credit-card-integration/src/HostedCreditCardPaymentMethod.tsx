@@ -64,11 +64,17 @@ const HostedCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             const isInstrumentCardCodeRequired = selectedInstrument
                 ? isInstrumentCardCodeRequiredProp(selectedInstrument, method)
                 : false;
-            const styleContainerId = selectedInstrument
-                ? isInstrumentCardCodeRequired
-                    ? getHostedFieldId('ccCvv')
-                    : undefined
-                : getHostedFieldId('ccNumber');
+            let styleContainerId;
+
+            if (selectedInstrument) {
+                if (isInstrumentCardCodeRequired) {
+                    styleContainerId = getHostedFieldId('ccCvv');
+                } else if (isInstrumentCardNumberRequired) {
+                    styleContainerId = getHostedFieldId('ccNumber');
+                }
+            } else {
+                styleContainerId = getHostedFieldId('ccNumber');
+            }
 
             return {
                 fields: selectedInstrument
