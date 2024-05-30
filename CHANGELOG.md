@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.494.4](https://github.com/bigcommerce/checkout-js/compare/v1.494.3...v1.494.4) (2024-05-30)
+
+
+### Bug Fixes
+
+* **payment:** PI-2103 fixed hosted input styles for providers that doesn't need cvv verification ([d7a2f0f](https://github.com/bigcommerce/checkout-js/commit/d7a2f0f4bc1d98b3a2bfbc9e4a002dff12a4c724))
+
 ### [1.494.3](https://github.com/bigcommerce/checkout-js/compare/v1.494.2...v1.494.3) (2024-05-30)
 
 
