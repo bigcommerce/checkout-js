@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.494.3](https://github.com/bigcommerce/checkout-js/compare/v1.494.2...v1.494.3) (2024-05-30)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-000 Add focus to checkout-customer-login ([#1698](https://github.com/bigcommerce/checkout-js/issues/1698)) ([a9abf3c](https://github.com/bigcommerce/checkout-js/commit/a9abf3ca44bd9dfb7364a2f4c3ade73579fd8ed1))
+* **other:** CHECKOUT-000 upgrade react-datepicker from 4.13.0 to 4.25.0 ([#1828](https://github.com/bigcommerce/checkout-js/issues/1828)) ([918be18](https://github.com/bigcommerce/checkout-js/commit/918be1808209440f53b3053a8464abfbbe553260))
+
 ### [1.494.2](https://github.com/bigcommerce/checkout-js/compare/v1.494.1...v1.494.2) (2024-05-29)
 
 ### [1.494.1](https://github.com/bigcommerce/checkout-js/compare/v1.494.0...v1.494.1) (2024-05-28)
