@@ -14,11 +14,16 @@ const BraintreePaypalPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 }) => {
     const initializeBraintreePaypalPaymentMethod = useCallback(
         (defaultOptions: PaymentInitializeOptions) => {
-            const { onUnhandledError, language } = rest;
+            const { onUnhandledError, language, method, paymentForm } = rest;
 
             return checkoutService.initializePayment({
                 ...defaultOptions,
                 braintree: {
+                    containerId: '#checkout-payment-continue',
+                    submitForm: () => {
+                        paymentForm.setSubmitted(true);
+                        paymentForm.submitForm();
+                    },
                     onError: (error: Error) => {
                         if (error.message === 'INSTRUMENT_DECLINED') {
                             onUnhandledError?.(
@@ -27,6 +32,9 @@ const BraintreePaypalPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                         } else {
                             onUnhandledError?.(error);
                         }
+                    },
+                    onRenderButton: () => {
+                        paymentForm.hidePaymentSubmitButton(method, true);
                     },
                 },
             });
