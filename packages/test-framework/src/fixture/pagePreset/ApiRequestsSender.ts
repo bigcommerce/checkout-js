@@ -15,13 +15,13 @@ export class ApiRequestsSender {
     private readonly storeUrl: string;
     private readonly startTime: number;
 
-    constructor(page: Page, countryCode = 'US') {
+    constructor(page: Page, fakerLocale = 'US') {
         this.startTime = Date.now();
         this.page = page;
         this.storeUrl = getStoreUrl();
         this.apiContextFactory = new ApiContextFactory();
 
-        faker.setLocale(countryCode);
+        faker.setLocale(fakerLocale);
 
         // hack for BC dev store's root certificate issue during recording HAR
         // https://stackoverflow.com/questions/31673587/error-unable-to-verify-the-first-certificate-in-nodejs
