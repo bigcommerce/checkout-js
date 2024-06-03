@@ -5,6 +5,7 @@ import { Page } from '@playwright/test';
 import { getStoreUrl } from '../';
 
 import { ApiContextFactory } from './ApiContextFactory';
+import { Locales } from './types';
 
 /**
  * @internal
@@ -15,7 +16,7 @@ export class ApiRequestsSender {
     private readonly storeUrl: string;
     private readonly startTime: number;
 
-    constructor(page: Page, fakerLocale = 'US') {
+    constructor(page: Page, fakerLocale = Locales.US) {
         this.startTime = Date.now();
         this.page = page;
         this.storeUrl = getStoreUrl();

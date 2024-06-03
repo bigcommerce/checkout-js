@@ -1,4 +1,4 @@
-import { PaymentStepAsGuestAUPreset, test } from '@bigcommerce/checkout/test-framework';
+import { Locales, PaymentStepAsGuestPreset, test } from '@bigcommerce/checkout/test-framework';
 
 import { orderPayment } from './HummResponsesMock';
 
@@ -9,7 +9,7 @@ test.describe('Humm', () => {
         page,
     }) => {
         // 1. Testing environment setup
-        await checkout.use(new PaymentStepAsGuestAUPreset());
+        await checkout.use(new PaymentStepAsGuestPreset('AUD', 'AU', Locales.AU));
         await checkout.start('Humm in Payment Step');
 
         await page.route('**/api/public/v1/orders/payments', (route) => {
