@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.497.0](https://github.com/bigcommerce/checkout-js/compare/v1.496.0...v1.497.0) (2024-06-04)
+
+
+### Features
+
+* **payment:** PAYPAL-3520 Max capture amount failure ([#1844](https://github.com/bigcommerce/checkout-js/issues/1844)) ([03d4f52](https://github.com/bigcommerce/checkout-js/commit/03d4f52774cfd0e65f08826f8c0281185cd22612))
+
 ## [1.496.0](https://github.com/bigcommerce/checkout-js/compare/v1.495.0...v1.496.0) (2024-06-04)
 
 
