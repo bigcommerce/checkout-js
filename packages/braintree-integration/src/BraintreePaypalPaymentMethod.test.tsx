@@ -83,6 +83,9 @@ describe('BraintreePaypalPaymentMethod', () => {
             methodId: defaultProps.method.id,
             braintree: {
                 onError: expect.any(Function),
+                onRenderButton: expect.any(Function),
+                submitForm: expect.any(Function),
+                containerId: "#checkout-payment-continue",
             }
         });
     });

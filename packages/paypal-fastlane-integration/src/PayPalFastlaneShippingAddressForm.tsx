@@ -1,4 +1,3 @@
-import React, { memo, useEffect, useRef } from 'react';
 import {
     Address,
     CheckoutSelectors,
@@ -8,8 +7,9 @@ import {
     ShippingInitializeOptions,
     ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
+import React, { memo, useEffect, useRef } from 'react';
 
-import { TranslatedString, localizeAddress } from '@bigcommerce/checkout/locale';
+import { localizeAddress, TranslatedString } from '@bigcommerce/checkout/locale';
 import {
     Button,
     ButtonSize,
@@ -57,21 +57,29 @@ const PayPalFastlaneShippingAddressForm = (props: PayPalFastlaneStaticAddressPro
 
     const paypalCommerceFastlaneOptions = {
         paypalcommercefastlane: {
-            onPayPalFastlaneAddressChange: (showPayPalFastlaneAddressSelector: PayPalFastlaneAddressComponentRef['showAddressSelector']) => {
-                paypalFastlaneShippingComponent.current.showAddressSelector = showPayPalFastlaneAddressSelector;
+            onPayPalFastlaneAddressChange: (
+                showPayPalFastlaneAddressSelector: PayPalFastlaneAddressComponentRef['showAddressSelector'],
+            ) => {
+                paypalFastlaneShippingComponent.current.showAddressSelector =
+                    showPayPalFastlaneAddressSelector;
             },
         },
     };
 
     const braintreeFastlaneOptions = {
         braintreefastlane: {
-            onPayPalFastlaneAddressChange: (showPayPalFastlaneAddressSelector: PayPalFastlaneAddressComponentRef['showAddressSelector']) => {
-                paypalFastlaneShippingComponent.current.showAddressSelector = showPayPalFastlaneAddressSelector;
+            onPayPalFastlaneAddressChange: (
+                showPayPalFastlaneAddressSelector: PayPalFastlaneAddressComponentRef['showAddressSelector'],
+            ) => {
+                paypalFastlaneShippingComponent.current.showAddressSelector =
+                    showPayPalFastlaneAddressSelector;
             },
         },
-    }
+    };
 
-    const initializationOptions: ShippingInitializeOptions = isPayPalCommerceFastlaneMethod(methodId)
+    const initializationOptions: ShippingInitializeOptions = isPayPalCommerceFastlaneMethod(
+        methodId,
+    )
         ? paypalCommerceFastlaneOptions
         : braintreeFastlaneOptions;
 
@@ -96,7 +104,7 @@ const PayPalFastlaneShippingAddressForm = (props: PayPalFastlaneStaticAddressPro
                 onUnhandledError(error);
             }
         }
-    }
+    };
 
     useEffect(() => {
         void initializeShippingStrategyOrThrow();
@@ -106,16 +114,16 @@ const PayPalFastlaneShippingAddressForm = (props: PayPalFastlaneStaticAddressPro
         };
     }, []);
 
-
     const customFormFields = formFields.filter(({ custom }) => custom);
     const shouldShowCustomFormFields = customFormFields.length > 0;
 
-    const handleFieldValueChange: (name: string) => (value: string) => void =
-        (name) => (value) => onFieldChange(name, value);
+    const handleFieldValueChange: (name: string) => (value: string) => void = (name) => (value) =>
+        onFieldChange(name, value);
 
     const handleEditButtonClick = async () => {
         if (typeof paypalFastlaneShippingComponent.current.showAddressSelector === 'function') {
-            const selectedAddress = await paypalFastlaneShippingComponent.current.showAddressSelector();
+            const selectedAddress =
+                await paypalFastlaneShippingComponent.current.showAddressSelector();
 
             if (selectedAddress) {
                 props.onAddressSelect({
@@ -124,7 +132,7 @@ const PayPalFastlaneShippingAddressForm = (props: PayPalFastlaneStaticAddressPro
                 });
             }
         }
-    }
+    };
 
     return (
         <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
@@ -154,7 +162,9 @@ const PayPalFastlaneShippingAddressForm = (props: PayPalFastlaneStaticAddressPro
                             </p>
 
                             <p className="address-entry">
-                                {address.city && <span className="locality">{`${address.city}, `}</span>}
+                                {address.city && (
+                                    <span className="locality">{`${address.city}, `}</span>
+                                )}
                                 {address.localizedProvince && (
                                     <span className="region">{`${address.localizedProvince}, `}</span>
                                 )}
@@ -197,6 +207,6 @@ const PayPalFastlaneShippingAddressForm = (props: PayPalFastlaneStaticAddressPro
             )}
         </LoadingOverlay>
     );
-}
+};
 
 export default memo(PayPalFastlaneShippingAddressForm);
