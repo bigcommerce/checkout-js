@@ -2,11 +2,16 @@ import { Page } from '@playwright/test';
 
 import { ApiRequestsSender } from './ApiRequestsSender';
 import { CheckoutPagePreset } from './CheckoutPagePreset';
+import { Locales } from './types';
 
 export class PaymentStepAsGuest implements CheckoutPagePreset {
-    constructor(private currency: string = 'USD', private countryCode?: string) {}
+    constructor(
+        private currency: string = 'USD',
+        private countryCode?: string,
+        private locale: string = Locales.US,
+    ) {}
     async apply(page: Page): Promise<void> {
-        const api = new ApiRequestsSender(page);
+        const api = new ApiRequestsSender(page, this.locale);
 
         await api.addPhysicalItemToCart();
         await api.setCurrency(this.currency);
