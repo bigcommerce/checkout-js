@@ -526,4 +526,82 @@ describe('HostedCreditCardPaymentMethod', () => {
             },
         });
     });
+
+    it('should pass correct styles when cvv is required for the card validation', async () => {
+        jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
+            ...getCart(),
+            lineItems: {
+                ...getCart().lineItems,
+            },
+        });
+
+        const component = mount(<HostedCreditCardPaymentMethodTest {...defaultProps} />);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        const getHostedFormOptions = component
+            .find(CreditCardPaymentMethodComponent)
+            .prop('getHostedFormOptions');
+        const instrument = {
+            ...getCardInstrument(),
+            trustedShippingAddress: false,
+        };
+
+        if (!getHostedFormOptions) throw new Error('getHostedFormOptions undefined');
+
+        const { styles } = await getHostedFormOptions(instrument);
+
+        expect(styles).toEqual({
+            default: { color: 'rgb(0, 0, 0)' },
+            error: { color: 'rgb(255, 0, 0)' },
+            focus: { color: 'rgb(0, 0, 255)' },
+        });
+    });
+
+    it('should pass correct styles when cvv is not required for the card validation', async () => {
+        const { language } = createLocaleContext(getStoreConfig());
+        const config = {
+            ...getPaymentMethod().config,
+            id: 'bluesnapdirect',
+        };
+
+        defaultProps = {
+            method: { ...getPaymentMethod(), config },
+            checkoutService,
+            checkoutState,
+            paymentForm,
+            language,
+            onUnhandledError: jest.fn(),
+        };
+
+        jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
+            ...getCart(),
+            lineItems: {
+                ...getCart().lineItems,
+            },
+        });
+
+        const component = mount(<HostedCreditCardPaymentMethodTest {...defaultProps} />);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        const getHostedFormOptions = component
+            .find(CreditCardPaymentMethodComponent)
+            .prop('getHostedFormOptions');
+        const instrument = {
+            ...getCardInstrument(),
+            trustedShippingAddress: false,
+            provider: 'bluesnapdirect',
+        };
+
+        if (!getHostedFormOptions) throw new Error('getHostedFormOptions undefined');
+
+        const { styles } = await getHostedFormOptions(instrument);
+
+        expect(styles).toEqual({
+            default: { color: 'rgb(0, 0, 0)' },
+            error: { color: 'rgb(255, 0, 0)' },
+            focus: { color: 'rgb(0, 0, 255)' },
+        });
+    });
 });

@@ -107,6 +107,8 @@ Object {
                   <a
                     data-test="customer-continue-button"
                     id="checkout-customer-login"
+                    role="button"
+                    tabindex="0"
                   >
                     Sign in now
                   </a>
@@ -239,6 +241,8 @@ Object {
                 <a
                   data-test="customer-continue-button"
                   id="checkout-customer-login"
+                  role="button"
+                  tabindex="0"
                 >
                   Sign in now
                 </a>

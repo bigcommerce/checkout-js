@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.496.0](https://github.com/bigcommerce/checkout-js/compare/v1.495.0...v1.496.0) (2024-06-04)
+
+
+### Features
+
+* **payment:** PI-1583 Write integration tests to verify all humm components of Checkout SDK/JS are working together ([#1878](https://github.com/bigcommerce/checkout-js/issues/1878)) ([d7e8cdc](https://github.com/bigcommerce/checkout-js/commit/d7e8cdcbc8ea79f853ba760edc7bc70039b0ed60))
+
+## [1.495.0](https://github.com/bigcommerce/checkout-js/compare/v1.494.4...v1.495.0) (2024-06-03)
+
+
+### Features
+
+* **other:** LOCAL-1444 delivery translation ([e686802](https://github.com/bigcommerce/checkout-js/commit/e6868027e51b3ed27ee3e2ffb714c4ccf261d31e))
+
+### [1.494.4](https://github.com/bigcommerce/checkout-js/compare/v1.494.3...v1.494.4) (2024-05-30)
+
+
+### Bug Fixes
+
+* **payment:** PI-2103 fixed hosted input styles for providers that doesn't need cvv verification ([d7a2f0f](https://github.com/bigcommerce/checkout-js/commit/d7a2f0f4bc1d98b3a2bfbc9e4a002dff12a4c724))
+
+### [1.494.3](https://github.com/bigcommerce/checkout-js/compare/v1.494.2...v1.494.3) (2024-05-30)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-000 Add focus to checkout-customer-login ([#1698](https://github.com/bigcommerce/checkout-js/issues/1698)) ([a9abf3c](https://github.com/bigcommerce/checkout-js/commit/a9abf3ca44bd9dfb7364a2f4c3ade73579fd8ed1))
+* **other:** CHECKOUT-000 upgrade react-datepicker from 4.13.0 to 4.25.0 ([#1828](https://github.com/bigcommerce/checkout-js/issues/1828)) ([918be18](https://github.com/bigcommerce/checkout-js/commit/918be1808209440f53b3053a8464abfbbe553260))
+
+### [1.494.2](https://github.com/bigcommerce/checkout-js/compare/v1.494.1...v1.494.2) (2024-05-29)
+
 ### [1.494.1](https://github.com/bigcommerce/checkout-js/compare/v1.494.0...v1.494.1) (2024-05-28)
 
 ## [1.494.0](https://github.com/bigcommerce/checkout-js/compare/v1.493.1...v1.494.0) (2024-05-28)
