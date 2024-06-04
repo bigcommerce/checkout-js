@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.496.0](https://github.com/bigcommerce/checkout-js/compare/v1.495.0...v1.496.0) (2024-06-04)
+
+
+### Features
+
+* **payment:** PI-1583 Write integration tests to verify all humm components of Checkout SDK/JS are working together ([#1878](https://github.com/bigcommerce/checkout-js/issues/1878)) ([d7e8cdc](https://github.com/bigcommerce/checkout-js/commit/d7e8cdcbc8ea79f853ba760edc7bc70039b0ed60))
+
 ## [1.495.0](https://github.com/bigcommerce/checkout-js/compare/v1.494.4...v1.495.0) (2024-06-03)
 
 
