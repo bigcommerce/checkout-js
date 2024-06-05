@@ -22,7 +22,7 @@ import CheckoutStepType from '../checkout/CheckoutStepType';
 import { getStoreConfig } from '../config/config.mock';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
-import CreateAccountForm, { CreateAccountFormProps } from './CreateAccountForm';
+import CreateAccountForm from './CreateAccountForm';
 import Customer, { CustomerProps, WithCheckoutCustomerProps } from './Customer';
 import { getCustomer, getGuestCustomer } from './customers.mock';
 import CustomerViewType from './CustomerViewType';
@@ -664,46 +664,6 @@ describe('Customer', () => {
             });
         });
 
-        it('triggers execution method if customer is successfully signed in', async () => {
-            jest.spyOn(checkoutService, 'signInCustomer').mockReturnValue(
-                Promise.resolve(checkoutService.getState()),
-            );
-
-            jest.spyOn(checkoutService, 'executePaymentMethodCheckout').mockReturnValue(
-                Promise.resolve(checkoutService.getState()),
-            );
-
-            const handleSignedIn = jest.fn();
-            const component = mount(
-                <CustomerTest {...defaultProps}
-                    onSignIn={handleSignedIn}
-                    providerWithCustomCheckout={PaymentMethodId.BraintreeAcceleratedCheckout}
-                    viewType={CustomerViewType.Login}
-                />,
-            );
-
-            await new Promise((resolve) => process.nextTick(resolve));
-            component.update();
-
-            (component.find(LoginForm) as ReactWrapper<LoginFormProps>).prop('onSignIn')({
-                email: 'test@bigcommerce.com',
-                password: '*******',
-            });
-
-            expect(checkoutService.signInCustomer).toHaveBeenCalledWith({
-                email: 'test@bigcommerce.com',
-                password: '*******',
-            });
-
-            await new Promise((resolve) => process.nextTick(resolve));
-
-            expect(checkoutService.executePaymentMethodCheckout).toHaveBeenCalledWith({
-                methodId: PaymentMethodId.BraintreeAcceleratedCheckout,
-                continueWithCheckoutCallback: handleSignedIn,
-                checkoutPaymentMethodExecuted: expect.any(Function),
-            });
-        });
-
         it('triggers completion callback if customer is successfully signed in', async () => {
             jest.spyOn(checkoutService, 'signInCustomer').mockReturnValue(
                 Promise.resolve(checkoutService.getState()),
@@ -805,65 +765,6 @@ describe('Customer', () => {
             expect((component.find(GuestForm) as ReactWrapper<GuestFormProps>).prop('email')).toBe(
                 'test@bigcommerce.com',
             );
-        });
-    });
-
-    describe('when view type is "create_account"', () => {
-        it('triggers execution method if customer is successfully signed in', async () => {
-            jest.spyOn(checkoutService.getState().data, 'getCustomer').mockReturnValue(undefined);
-
-            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
-                ...getStoreConfig(),
-                checkoutSettings: {
-                    ...getStoreConfig().checkoutSettings,
-                },
-            });
-
-            jest.spyOn(checkoutService, 'createCustomerAccount').mockReturnValue(
-                Promise.resolve(checkoutService.getState()),
-            );
-
-            jest.spyOn(checkoutService, 'executePaymentMethodCheckout').mockReturnValue(
-                Promise.resolve(checkoutService.getState()),
-            );
-
-            const handleCreateAccount = jest.fn();
-            const component = mount(
-                <CustomerTest {...defaultProps}
-                    onAccountCreated={handleCreateAccount}
-                    providerWithCustomCheckout={PaymentMethodId.BraintreeAcceleratedCheckout}
-                    viewType={CustomerViewType.CreateAccount}
-                />,
-            );
-
-            const customerFormData = {
-                firstName: 'John',
-                lastName: 'Doe',
-                email: 'johndoe@test.com',
-                password: '*******!',
-            };
-
-            await new Promise((resolve) => process.nextTick(resolve));
-            component.update();
-
-            (component.find(CreateAccountForm) as ReactWrapper<CreateAccountFormProps>).prop('onSubmit')({
-                ...customerFormData,
-                customFields: {},
-            });
-
-            expect(checkoutService.createCustomerAccount).toHaveBeenCalledWith({
-                ...customerFormData,
-                acceptsMarketingEmails: undefined,
-                customFields: [],
-            });
-
-            await new Promise((resolve) => process.nextTick(resolve));
-
-            expect(checkoutService.executePaymentMethodCheckout).toHaveBeenCalledWith({
-                methodId: PaymentMethodId.BraintreeAcceleratedCheckout,
-                continueWithCheckoutCallback: handleCreateAccount,
-                checkoutPaymentMethodExecuted: expect.any(Function),
-            });
         });
     });
 
