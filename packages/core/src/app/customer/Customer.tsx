@@ -17,7 +17,6 @@ import React, { Component, ReactNode } from 'react';
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
-import { isPayPalFastlaneMethod } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { CustomerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
@@ -449,25 +448,15 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
         credentials,
     ) => {
         const {
-            executePaymentMethodCheckout,
             signIn,
             onSignIn = noop,
             onSignInError = noop,
-            providerWithCustomCheckout,
         } = this.props;
 
         try {
             await signIn(credentials);
 
-            if (isPayPalFastlaneMethod(providerWithCustomCheckout)) {
-                await executePaymentMethodCheckout({
-                    methodId: providerWithCustomCheckout,
-                    continueWithCheckoutCallback: onSignIn,
-                    checkoutPaymentMethodExecuted: (payload) => this.checkoutPaymentMethodExecuted(payload)
-                });
-            } else {
-                onSignIn();
-            }
+            onSignIn();
 
             this.draftEmail = undefined;
         } catch (error) {
@@ -477,23 +466,13 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
     private handleCreateAccount: (values: CreateAccountFormValues) => void = async (values) => {
         const {
-            executePaymentMethodCheckout,
             createAccount = noop,
             onAccountCreated = noop,
-            providerWithCustomCheckout,
         } = this.props;
 
         await createAccount(mapCreateAccountFromFormValues(values));
 
-        if (isPayPalFastlaneMethod(providerWithCustomCheckout)) {
-            await executePaymentMethodCheckout({
-                methodId: providerWithCustomCheckout,
-                continueWithCheckoutCallback: onAccountCreated,
-                checkoutPaymentMethodExecuted: (payload) => this.checkoutPaymentMethodExecuted(payload)
-            });
-        } else {
-            onAccountCreated();
-        }
+        onAccountCreated();
     };
 
     private showCreateAccount: () => void = () => {
