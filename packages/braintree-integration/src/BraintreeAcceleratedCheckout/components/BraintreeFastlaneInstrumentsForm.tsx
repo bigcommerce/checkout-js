@@ -11,13 +11,16 @@ import { BraintreeFastlaneComponentRef } from '../BraintreeAcceleratedCheckoutPa
 import './BraintreeFastlaneInstrumentsForm.scss';
 
 function mapFromInstrumentCardType(type: string): string {
-    switch (type) {
+    switch (type.toLowerCase()) {
         case 'amex':
         case 'american_express':
             return 'american-express';
 
         case 'diners':
             return 'diners-club';
+
+        case 'master_card':
+            return 'mastercard';
 
         default:
             return type;
