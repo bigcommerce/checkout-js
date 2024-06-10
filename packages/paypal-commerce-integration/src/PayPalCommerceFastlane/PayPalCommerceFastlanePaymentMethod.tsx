@@ -33,7 +33,7 @@ const PayPalCommerceFastlanePaymentMethod: FunctionComponent<PaymentMethodProps>
         try {
             await checkoutService.initializePayment({
                 methodId: method.id,
-                paypalcommerceacceleratedcheckout: {
+                paypalcommercefastlane: {
                     onInit: (renderPayPalCardComponent) => {
                         paypalCardComponentRef.current.renderPayPalCardComponent =
                             renderPayPalCardComponent;

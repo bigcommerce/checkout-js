@@ -44,7 +44,7 @@ describe('PayPalCommerceFastlanePaymentMethod', () => {
 
         expect(initializePayment).toHaveBeenCalledWith({
             methodId: props.method.id,
-            paypalcommerceacceleratedcheckout: {
+            paypalcommercefastlane: {
                 onInit: expect.any(Function),
                 onChange: expect.any(Function),
             },

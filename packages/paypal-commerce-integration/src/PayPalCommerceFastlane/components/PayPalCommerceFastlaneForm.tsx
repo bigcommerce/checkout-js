@@ -31,10 +31,7 @@ const PayPalCommerceFastlaneForm: FunctionComponent<
     }, [instruments, selectedInstrument]);
 
     return (
-        <div
-            className="paymentMethod paymentMethod--creditCard"
-        >
-            {/* Add vaulted element here */}
+        <div className="paymentMethod paymentMethod--creditCard">
             {shouldShowInstrumentsForm && (
                 <PayPalCommerceFastlaneInstrumentsForm
                     handleSelectInstrument={handleSelectInstrument}
