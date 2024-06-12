@@ -119,6 +119,41 @@ describe('Customer', () => {
             expect(component.find(GuestForm).exists()).toBe(true);
         });
 
+        it('renders guest form in loading state if the payment method is executing', async () => {
+            const component = mount(
+                <CustomerTest
+                    {...defaultProps}
+                    viewType={CustomerViewType.Guest}
+                    isExecutingPaymentMethodCheckout={true}
+                />
+            );
+
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            expect(component.find(GuestForm).props()).toMatchObject({
+                isLoading: true,
+            });
+        });
+
+        it('renders guest form in loading state if there is a process running before switching to the next step', async () => {
+            const component = mount(
+                <CustomerTest
+                    {...defaultProps}
+                    viewType={CustomerViewType.Guest}
+                    isExecutingPaymentMethodCheckout={false}
+                    isContinuingAsGuest={true}
+                />
+            );
+
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            expect(component.find(GuestForm).props()).toMatchObject({
+                isLoading: true,
+            });
+        });
+
         it('renders stripe guest form if enabled', async () => {
             const steps = { isActive: true,
                 isComplete: true,
