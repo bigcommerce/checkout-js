@@ -206,9 +206,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             onError={onUnhandledError}
           />;
 
-        const isLoadingGuestForm = isWalletButtonsOnTop ?
-            isContinuingAsGuest || isExecutingPaymentMethodCheckout :
-            isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout;
+        const isLoadingGuestForm = isContinuingAsGuest || isExecutingPaymentMethodCheckout;
 
         return (
             shouldRenderStripeForm ?
