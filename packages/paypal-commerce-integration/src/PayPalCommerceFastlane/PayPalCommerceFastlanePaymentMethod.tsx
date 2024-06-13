@@ -13,6 +13,8 @@ import { FormContext, LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import PayPalCommerceFastlaneForm from './components/PayPalCommerceFastlaneForm';
 
+import './PayPalCommerceFastlanePaymentMethod.scss';
+
 export interface PayPalFastlaneCardComponentRef {
     renderPayPalCardComponent?: (container: string) => void;
     showPayPalCardSelector?: () => Promise<CardInstrument | undefined>;
