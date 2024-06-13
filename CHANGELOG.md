@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.498.8](https://github.com/bigcommerce/checkout-js/compare/v1.498.7...v1.498.8) (2024-06-13)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-4307 updated PayPal Fastlane form styling for guest card form ([67df4ea](https://github.com/bigcommerce/checkout-js/commit/67df4eae64cea3b35b875e7aa8408c2f09871de8))
+
 ### [1.498.7](https://github.com/bigcommerce/checkout-js/compare/v1.498.6...v1.498.7) (2024-06-12)
 
 
