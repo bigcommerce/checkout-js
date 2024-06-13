@@ -13,6 +13,8 @@ import { CardInstrument } from '@bigcommerce/checkout-sdk';
 
 import BraintreeAcceleratedCheckoutForm from './components/BraintreeAcceleratedCheckoutForm';
 
+import './BraintreeAcceleratedCheckoutPaymentMethod.scss';
+
 export interface BraintreeFastlaneComponentRef {
     render?: (container: string) => void;
     showPayPalCardSelector?: () => Promise<CardInstrument | undefined>;
