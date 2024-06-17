@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.498.10](https://github.com/bigcommerce/checkout-js/compare/v1.498.9...v1.498.10) (2024-06-17)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-4248 updated customer step loading state to be able to continue with checkout even if wallet button is in loading state ([ec1e7bc](https://github.com/bigcommerce/checkout-js/commit/ec1e7bc9aaaf379e2119635a8462e26cf0e668f1))
+
 ### [1.498.9](https://github.com/bigcommerce/checkout-js/compare/v1.498.8...v1.498.9) (2024-06-13)
 
 ### [1.498.8](https://github.com/bigcommerce/checkout-js/compare/v1.498.7...v1.498.8) (2024-06-13)
