@@ -17,6 +17,7 @@
 
     > .AmazonPayContainer {
         width: remCalc(200px);
+        height: 51px !important;
         #amazonpayCheckoutButton > div{
             width: 100% !important;
             height: 51px !important;
