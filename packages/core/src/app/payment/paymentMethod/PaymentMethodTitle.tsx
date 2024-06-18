@@ -18,6 +18,7 @@ import getPaymentMethodName from './getPaymentMethodName';
 import { isHostedCreditCardFieldsetValues } from './HostedCreditCardFieldsetValues';
 import PaymentMethodId from './PaymentMethodId';
 import PaymentMethodType from './PaymentMethodType';
+import StripeUPEDescription from './StripeUPEDescription';
 
 export interface PaymentMethodTitleProps {
     method: PaymentMethod;
@@ -221,6 +222,7 @@ function getPaymentMethodTitle(
                     method.method === 'iban'
                         ? language.translate('payment.stripe_sepa_display_name_text')
                         : methodName,
+                subtitle: (props: { onUnhandledError?(error: Error): void }) => <StripeUPEDescription {...props} />
             },
             [PaymentMethodId.WorldpayAccess]: {
                 logoUrl: '',
