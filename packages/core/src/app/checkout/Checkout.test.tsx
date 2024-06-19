@@ -16,7 +16,10 @@ import {
 } from '@bigcommerce/checkout/analytics';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
-import { CHECKOUT_ROOT_NODE_ID, CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import {
+    CHECKOUT_ROOT_NODE_ID,
+    CheckoutProvider,
+} from '@bigcommerce/checkout/payment-integration-api';
 import { CheckoutPageNodeObject } from '@bigcommerce/checkout/test-framework';
 
 import { createErrorLogger } from '../common/error';
@@ -253,6 +256,20 @@ describe('Checkout', () => {
                 }),
             ).toBeInTheDocument();
             expect(screen.getByText(/shipping method/i)).toBeInTheDocument();
+        });
+
+        it('renders custom shipping method and locks shipping component', async () => {
+            checkout.use('CartWithCustomShippingAndBilling');
+
+            render(<CheckoutTest {...defaultProps} />);
+
+            await checkout.waitForPaymentStep();
+
+            expect(screen.getByText('Manual Order Custom Shipping Method')).toBeInTheDocument();
+            expect(screen.getAllByRole('button', { name: 'Edit' })).toHaveLength(2);
+            expect(screen.getByText(/test payment provider/i)).toBeInTheDocument();
+            expect(screen.getByText(/pay in store/i)).toBeInTheDocument();
+            expect(screen.getByText(/place order/i)).toBeInTheDocument();
         });
 
         it('logs unhandled error', async () => {

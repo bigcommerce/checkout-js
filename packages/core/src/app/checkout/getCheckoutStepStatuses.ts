@@ -5,7 +5,7 @@ import { createSelector } from 'reselect';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 
 import { isValidAddress } from '../address';
-import { EMPTY_ARRAY } from '../common/utility';
+import { EMPTY_ARRAY, isCustomShippingEnabled } from '../common/utility';
 import { SUPPORTED_METHODS } from '../customer';
 import { PaymentMethodId } from '../payment/paymentMethod';
 import {
@@ -180,12 +180,18 @@ const getShippingStepStatus = createSelector(
             cart && consignments ? hasUnassignedLineItems(consignments, cart.lineItems) : true;
         const isComplete = hasAddress && hasOptions && !hasUnassignedItems;
         const isRequired = itemsRequireShipping(cart, config);
+        const isCompleteWithCustomShipping =
+            isCustomShippingEnabled(config?.checkoutSettings) &&
+            hasOptions &&
+            consignments?.some(
+                ({ selectedShippingOption }) => selectedShippingOption?.type === 'custom',
+            );
 
         return {
             type: CheckoutStepType.Shipping,
             isActive: false,
             isComplete,
-            isEditable: isComplete && isRequired,
+            isEditable: isComplete && isRequired && !isCompleteWithCustomShipping,
             isRequired,
         };
     },

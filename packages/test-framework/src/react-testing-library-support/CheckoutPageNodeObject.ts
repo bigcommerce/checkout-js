@@ -5,6 +5,7 @@ import { SetupServer, setupServer } from 'msw/node';
 import {
     cart,
     cartWithBillingEmail,
+    cartWithCustomShippingAndBilling,
     cartWithoutPhysicalItem,
     cartWithPromotions,
     cartWithShippingAddress,
@@ -35,6 +36,7 @@ export class CheckoutPageNodeObject {
             rest.post('/api/storefront/checkouts/*/billing-address', (_, res, ctx) =>
                 res(ctx.json(cartWithBillingEmail)),
             ),
+            rest.get('/api/storefront/checkout-extensions', (_, res, ctx) => res(ctx.json([]))),
         ];
 
         this.server = setupServer(...defaultHandlers);
@@ -84,6 +86,14 @@ export class CheckoutPageNodeObject {
                 this.server.use(
                     rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
                         res(ctx.json(cartWithShippingAndBilling)),
+                    ),
+                );
+                break;
+
+            case 'CartWithCustomShippingAndBilling':
+                this.server.use(
+                    rest.get('/api/storefront/checkout/*', (_, res, ctx) =>
+                        res(ctx.json(cartWithCustomShippingAndBilling)),
                     ),
                 );
                 break;
