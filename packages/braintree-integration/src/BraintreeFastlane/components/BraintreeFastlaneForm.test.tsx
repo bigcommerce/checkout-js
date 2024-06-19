@@ -14,12 +14,12 @@ import {
     PaymentFormService,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { getCardInstrument, getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
-import { render } from '@bigcommerce/checkout/test-utils';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import BraintreeAcceleratedCheckoutInstrumentFieldset from './BraintreeAcceleratedCheckoutInstrumentFieldset';
+import BraintreeFastlaneForm from './BraintreeFastlaneForm';
 
-describe('BraintreeAcceleratedCheckoutInstrumentFieldset', () => {
-    let BraintreeAcceleratedCheckoutInstrumentFieldsetMock: FunctionComponent;
+describe('BraintreeFastlaneForm', () => {
+    let BraintreeFastlaneFormMock: FunctionComponent;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
     let paymentForm: PaymentFormService;
@@ -31,15 +31,11 @@ describe('BraintreeAcceleratedCheckoutInstrumentFieldset', () => {
 
         jest.spyOn(checkoutState.data, 'getPaymentProviderCustomer').mockReturnValue({});
 
-        BraintreeAcceleratedCheckoutInstrumentFieldsetMock = () => (
+        BraintreeFastlaneFormMock = () => (
             <CheckoutContext.Provider value={{ checkoutService, checkoutState }}>
                 <PaymentFormContext.Provider value={{ paymentForm }}>
                     <Formik initialValues={{}} onSubmit={noop}>
-                        <BraintreeAcceleratedCheckoutInstrumentFieldset
-                            instruments={[getCardInstrument()]}
-                            onSelectInstrument={noop}
-                            onUseNewInstrument={noop}
-                        />
+                        <BraintreeFastlaneForm />
                     </Formik>
                 </PaymentFormContext.Provider>
             </CheckoutContext.Provider>
@@ -50,9 +46,19 @@ describe('BraintreeAcceleratedCheckoutInstrumentFieldset', () => {
         jest.clearAllMocks();
     });
 
-    it('shows select with vaulted instruments', () => {
-        const view = render(<BraintreeAcceleratedCheckoutInstrumentFieldsetMock />);
+    it('shows braintree fastlane instruments form', () => {
+        jest.spyOn(checkoutState.data, 'getPaymentProviderCustomer').mockReturnValue({
+            instruments: [getCardInstrument()],
+        });
 
-        expect(view).toMatchSnapshot();
+        render(<BraintreeFastlaneFormMock />);
+
+        expect(screen.getByTestId('braintree-fastlane-instrument-form')).toBeInTheDocument();
+    });
+
+    it('shows braintree fastlane credit card form if customer does not have any instrument', () => {
+        render(<BraintreeFastlaneFormMock />);
+
+        expect(screen.getByTestId('braintree-fastlane-cc-form-container')).toBeInTheDocument();
     });
 });

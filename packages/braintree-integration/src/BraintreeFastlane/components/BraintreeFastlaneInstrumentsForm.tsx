@@ -1,12 +1,11 @@
 import { CardInstrument } from '@bigcommerce/checkout-sdk';
-
 import React, { FunctionComponent } from 'react';
 
-import { Button, ButtonSize, ButtonVariant, CreditCardIcon } from '@bigcommerce/checkout/ui';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { PoweredByPayPalFastlaneLabel } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { Button, ButtonSize, ButtonVariant, CreditCardIcon } from '@bigcommerce/checkout/ui';
 
-import { BraintreeFastlaneComponentRef } from '../BraintreeAcceleratedCheckoutPaymentMethod';
+import { BraintreeFastlaneComponentRef } from '../BraintreeFastlanePaymentMethod';
 
 import './BraintreeFastlaneInstrumentsForm.scss';
 
@@ -28,8 +27,8 @@ function mapFromInstrumentCardType(type: string): string {
 }
 
 interface BraintreeFastlaneInstrumentsFormProps {
-    selectedInstrument: CardInstrument;
     onChange: BraintreeFastlaneComponentRef['showPayPalCardSelector'];
+    selectedInstrument: CardInstrument;
     handleSelectInstrument(instrument: CardInstrument): void;
 }
 
@@ -72,10 +71,10 @@ const BraintreeFastlaneInstrumentsForm: FunctionComponent<
 
             <div className="braintree-fastlane-instrument-change-action">
                 <Button
+                    onClick={handleChange}
                     size={ButtonSize.Tiny}
                     testId="braintree-fastlane-instrument-change"
                     variant={ButtonVariant.Secondary}
-                    onClick={handleChange}
                 >
                     <TranslatedString id="common.change_action" />
                 </Button>

@@ -4,9 +4,9 @@ import React from 'react';
 import { getPaymentFormServiceMock } from '@bigcommerce/checkout/test-mocks';
 import { render } from '@bigcommerce/checkout/test-utils';
 
-import BraintreeAcceleratedCheckoutPaymentMethod from './BraintreeAcceleratedCheckoutPaymentMethod';
+import BraintreeFastlanePaymentMethod from './BraintreeFastlanePaymentMethod';
 
-describe('BraintreeAcceleratedCheckoutPaymentMethod', () => {
+describe('BraintreeFastlanePaymentMethod', () => {
     const checkoutService = createCheckoutService();
     const checkoutState = checkoutService.getState();
 
@@ -35,12 +35,12 @@ describe('BraintreeAcceleratedCheckoutPaymentMethod', () => {
         onUnhandledError: jest.fn(),
     };
 
-    it('initializes BraintreeAcceleratedCheckoutPaymentMethod with required props', () => {
+    it('initializes BraintreeFastlanePaymentMethod with required props', () => {
         const initializePayment = jest
             .spyOn(checkoutService, 'initializePayment')
             .mockResolvedValue(checkoutState);
 
-        render(<BraintreeAcceleratedCheckoutPaymentMethod {...props} />);
+        render(<BraintreeFastlanePaymentMethod {...props} />);
 
         expect(initializePayment).toHaveBeenCalledWith({
             methodId: props.method.id,
@@ -51,12 +51,12 @@ describe('BraintreeAcceleratedCheckoutPaymentMethod', () => {
         });
     });
 
-    it('deinitializes BraintreeLocalMethod with required props', () => {
+    it('deinitializes BraintreeFastlanePaymentMethod with required props', () => {
         const deinitializePayment = jest
             .spyOn(checkoutService, 'deinitializePayment')
             .mockResolvedValue(checkoutState);
 
-        const view = render(<BraintreeAcceleratedCheckoutPaymentMethod {...props} />);
+        const view = render(<BraintreeFastlanePaymentMethod {...props} />);
 
         view.unmount();
 

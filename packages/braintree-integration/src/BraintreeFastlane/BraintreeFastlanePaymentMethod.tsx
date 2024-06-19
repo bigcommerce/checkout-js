@@ -1,3 +1,4 @@
+import { CardInstrument } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, useEffect, useRef } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
@@ -9,18 +10,17 @@ import {
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 import { FormContext, LoadingOverlay } from '@bigcommerce/checkout/ui';
-import { CardInstrument } from '@bigcommerce/checkout-sdk';
 
-import BraintreeAcceleratedCheckoutForm from './components/BraintreeAcceleratedCheckoutForm';
+import BraintreeFastlaneForm from './components/BraintreeFastlaneForm';
 
-import './BraintreeAcceleratedCheckoutPaymentMethod.scss';
+import './BraintreeFastlanePaymentMethod.scss';
 
 export interface BraintreeFastlaneComponentRef {
-    render?: (container: string) => void;
+    renderPayPalCardComponent?: (container: string) => void;
     showPayPalCardSelector?: () => Promise<CardInstrument | undefined>;
 }
 
-const BraintreeAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
+const BraintreeFastlanePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     method,
     checkoutService,
     checkoutState,
@@ -36,9 +36,9 @@ const BraintreeAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentMethod
             await checkoutService.initializePayment({
                 methodId: method.id,
                 braintreefastlane: {
-                    onInit: (renderPayPalConnectComponentMethod) => {
-                        paypalFastlaneComponentRef.current.render =
-                            renderPayPalConnectComponentMethod;
+                    onInit: (renderPayPalCardComponent) => {
+                        paypalFastlaneComponentRef.current.renderPayPalCardComponent =
+                            renderPayPalCardComponent;
                     },
                     onChange: (showPayPalCardSelector) => {
                         paypalFastlaneComponentRef.current.showPayPalCardSelector =
@@ -86,9 +86,9 @@ const BraintreeAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentMethod
                 <LocaleProvider checkoutService={checkoutService}>
                     <PaymentFormContext.Provider value={{ paymentForm }}>
                         <LoadingOverlay hideContentWhenLoading isLoading={isLoading}>
-                            <BraintreeAcceleratedCheckoutForm
-                                renderPayPalConnectComponent={
-                                    paypalFastlaneComponentRef?.current?.render
+                            <BraintreeFastlaneForm
+                                renderPayPalCardComponent={
+                                    paypalFastlaneComponentRef?.current?.renderPayPalCardComponent
                                 }
                                 showPayPalCardSelector={
                                     paypalFastlaneComponentRef.current?.showPayPalCardSelector
@@ -103,6 +103,6 @@ const BraintreeAcceleratedCheckoutPaymentMethod: FunctionComponent<PaymentMethod
 };
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
-    BraintreeAcceleratedCheckoutPaymentMethod,
+    BraintreeFastlanePaymentMethod,
     [{ id: 'braintreeacceleratedcheckout' }],
 );
