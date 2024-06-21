@@ -63,7 +63,8 @@
 
     &::before,
     &::after {
-        @include square(26px);
+        // @include square(26px);
+        @include square(16px);
 
         background-color: $input-bg-color;
         border-radius: 100%;
@@ -79,11 +80,13 @@
     }
 
     &::after {
-        transform: scale(0.66);
+        // transform: scale(0.66);
+        transform: scale(0.5);
     }
 
     &::before {
-        border: $input-border-width $input-border-style $input-border-color;
+        // border: $input-border-width $input-border-style $input-border-color;
+        border: 2px $input-border-style rgb(109, 110, 120);
     }
 }
 
@@ -99,7 +102,8 @@
     }
 
     &:checked ~ .form-label::after {
-        background-color: color("highlight");
+        // background-color: color("highlight");
+        background-color: rgb(5, 112, 222);
     }
 }
 
