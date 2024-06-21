@@ -16,7 +16,6 @@ export default function hasSelectedShippingOptions(consignments: Consignment[]):
                 consignment.availableShippingOptions.filter(
                     ({ id }) => id === consignment.selectedShippingOption?.id,
                 ).length) ||
-            (consignment.selectedShippingOption?.type === 'custom' &&
-                consignment.selectedShippingOption.cost >= 0),
+            consignment.selectedShippingOption?.type === 'custom',
     );
 }
