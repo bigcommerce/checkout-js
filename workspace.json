@@ -36,6 +36,7 @@
     "test-mocks": "packages/test-mocks",
     "test-utils": "packages/test-utils",
     "ui": "packages/ui",
+    "wallet-button-integration": "packages/wallet-button-integration",
     "workspace-tools": "packages/workspace-tools"
   }
 }

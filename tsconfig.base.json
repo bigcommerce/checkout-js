@@ -85,6 +85,9 @@
       "@bigcommerce/checkout/test-mocks": ["packages/test-mocks/src/index.ts"],
       "@bigcommerce/checkout/test-utils": ["packages/test-utils/src/index.ts"],
       "@bigcommerce/checkout/ui": ["packages/ui/src/index.ts"],
+      "@bigcommerce/checkout/wallet-button-integration": [
+        "packages/wallet-button-integration/src/index.ts"
+      ],
       "@bigcommerce/checkout/workspace-tools": ["packages/workspace-tools/src/index.ts"]
     },
     "resolveJsonModule": true,
