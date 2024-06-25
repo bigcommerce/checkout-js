@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.501.0](https://github.com/bigcommerce/checkout-js/compare/v1.500.3...v1.501.0) (2024-06-25)
+
+
+### Features
+
+* **checkout:** CHECKOUT-2368 Display Custom Shipping Method ([#1900](https://github.com/bigcommerce/checkout-js/issues/1900)) ([aa11648](https://github.com/bigcommerce/checkout-js/commit/aa11648c403f4025d78dc84ceb7e84feb8f94c51))
+
 ### [1.500.3](https://github.com/bigcommerce/checkout-js/compare/v1.500.2...v1.500.3) (2024-06-25)
 
 ### [1.500.2](https://github.com/bigcommerce/checkout-js/compare/v1.500.1...v1.500.2) (2024-06-25)
