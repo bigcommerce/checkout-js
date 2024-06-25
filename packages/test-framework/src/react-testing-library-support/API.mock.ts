@@ -573,6 +573,24 @@ const cartWithShippingAndBilling = {
     },
 };
 
+const cartWithCustomShippingAndBilling = {
+    ...cartWithShippingAndBilling,
+    consignments: [
+        {
+            ...cartWithShippingAndBilling.consignments[0],
+            selectedShippingOption: {
+                id: '',
+                type: 'custom',
+                description: 'Manual Order Custom Shipping Method',
+                imageUrl: '',
+                cost: 256,
+                transitTime: '',
+                additionalDescription: '',
+            },
+        },
+    ],
+};
+
 // intentionally shortened
 const countries = {
     data: [
@@ -954,6 +972,7 @@ export {
     cartWithPromotions,
     cartWithShippingAddress,
     cartWithShippingAndBilling,
+    cartWithCustomShippingAndBilling,
     cartWithoutPhysicalItem,
     checkoutSettings,
     checkoutSettingsWithCustomErrorFlashMessage,
