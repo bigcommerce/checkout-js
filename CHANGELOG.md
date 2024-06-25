@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.500.2](https://github.com/bigcommerce/checkout-js/compare/v1.500.1...v1.500.2) (2024-06-25)
+
+
+### Code Refactoring
+
+* **payment:** PAYPAL-3601 removed braintree connect implementation ([dfd582a](https://github.com/bigcommerce/checkout-js/commit/dfd582acab473f6bc10f7ba69733c40cb8e34c54))
+
 ### [1.500.1](https://github.com/bigcommerce/checkout-js/compare/v1.500.0...v1.500.1) (2024-06-20)
 
 
