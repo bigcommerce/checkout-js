@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.501.1](https://github.com/bigcommerce/checkout-js/compare/v1.501.0...v1.501.1) (2024-06-26)
+
+
+### Code Refactoring
+
+* **checkout:** PI-2297 moved WalletButton component to separate package ([3771de5](https://github.com/bigcommerce/checkout-js/commit/3771de557d88d395ec06ec9c22823c522a4bb2a8))
+
 ## [1.501.0](https://github.com/bigcommerce/checkout-js/compare/v1.500.3...v1.501.0) (2024-06-25)
 
 
