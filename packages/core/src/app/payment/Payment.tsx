@@ -37,6 +37,8 @@ import {
     PaymentMethodProviderType,
 } from './paymentMethod';
 
+import updateOrderStaffNotes from '../order/updateOrderStaffNotes';
+
 export interface PaymentProps {
     errorLogger: ErrorLogger;
     isEmbedded?: boolean;
@@ -49,6 +51,8 @@ export interface PaymentProps {
     onSubmit?(): void;
     onSubmitError?(error: Error): void;
     onUnhandledError?(error: Error): void;
+    storeHash: string;
+    selectedFFL: string;
 }
 
 interface WithCheckoutPaymentProps {
@@ -457,6 +461,10 @@ class Payment extends Component<
             const order = state.data.getOrder();
 
             analyticsTracker.paymentComplete();
+            
+            if (this.props.selectedFFL) {
+                await updateOrderStaffNotes(order?.orderId, this.props.storeHash, this.props.selectedFFL);
+            }
 
             onSubmit(order?.orderId);
         } catch (error) {

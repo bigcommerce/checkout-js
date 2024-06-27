@@ -47,6 +47,7 @@ import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
 import withCheckout from './withCheckout';
 import DealerShipping from './dealer/DealerShipping';
+import updateOrderStaffNotes from '../order/updateOrderStaffNotes';
 
 const Billing = lazy(() =>
     retry(
@@ -132,6 +133,7 @@ export interface CheckoutState {
     isSubscribed: boolean;
     fflLineItems: LineItem[];
     storeHash: string;
+    fflLicense: string;
 }
 
 export interface WithCheckoutProps {
@@ -172,7 +174,8 @@ class Checkout extends Component<
         isBuyNowCartEnabled: false,
         isSubscribed: false,
         fflLineItems: [],
-        storeHash: ''
+        storeHash: '',
+        fflLicense: ''
     };
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
@@ -514,6 +517,7 @@ class Checkout extends Component<
                         onToggleMultiShipping={ this.handleToggleMultiShipping }
                         onUnhandledError={ this.handleUnhandledError }
                         storeHash={ this.state.storeHash }
+                        setSelectedFFL={ this.setSelectedFFL }
                     />
                   </LazyContainer>
               </CheckoutStep>
@@ -570,6 +574,8 @@ class Checkout extends Component<
                         onSubmit={this.navigateToOrderConfirmation}
                         onSubmitError={this.handleError}
                         onUnhandledError={this.handleUnhandledError}
+                        storeHash={this.state.storeHash}
+                        selectedFFL={this.state.fflLicense}
                     />
                 </LazyContainer>
             </CheckoutStep>
@@ -824,6 +830,10 @@ class Checkout extends Component<
         const { analyticsTracker } = this.props;
 
         analyticsTracker.exitCheckout();
+    }
+
+    private setSelectedFFL: () => void = (value) => {
+        this.setState({ fflLicense: value });
     }
 }
 

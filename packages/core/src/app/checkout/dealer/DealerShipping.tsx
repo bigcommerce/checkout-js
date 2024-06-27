@@ -212,6 +212,7 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
     }
 
     try {
+        this.props.setSelectedFFL(dealer.fflID);
         await assignItem(consignment);
 
     } catch (e) {
