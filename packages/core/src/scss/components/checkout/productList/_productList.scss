@@ -61,12 +61,24 @@
 
 .product-title {
     margin-bottom: spacing("eighth");
+
+    .product-item-quantity::after {
+        content: ' x ';
+    }
 }
 
 .product-options {
     color: color("greys");
     font-size: fontSize("tiny");
     margin: 0;
+
+    .product-option-label {
+        font-weight: fontWeight("bold");
+
+        &::after {
+            content: ' ';
+        }
+    }
 }
 
 .product-description {

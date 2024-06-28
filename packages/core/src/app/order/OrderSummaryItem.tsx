@@ -17,7 +17,9 @@ export interface OrderSummaryItemProps {
 
 export interface OrderSummaryItemOption {
     testId: string;
-    content: ReactNode;
+    content?: ReactNode;
+    optionLabel?: ReactNode;
+    optionValue?: ReactNode;
 }
 
 const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
@@ -37,7 +39,8 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                 className="product-title optimizedCheckout-contentPrimary"
                 data-test="cart-item-product-title"
             >
-                {`${quantity} x ${name}`}
+                <span className="product-item-quantity">{quantity}</span>
+                <span className="product-item-name">{name}</span>
             </h4>
             {productOptions && productOptions.length > 0 && (
                 <ul
@@ -46,7 +49,8 @@ const OrderSummaryItem: FunctionComponent<OrderSummaryItemProps> = ({
                 >
                     {productOptions.map((option, index) => (
                         <li className="product-option" data-test={option.testId} key={index}>
-                            {option.content}
+                            <span className="product-option-label">{option.optionLabel}</span>
+                            <span className="product-option-value">{option.optionValue}</span>
                         </li>
                     ))}
                 </ul>
