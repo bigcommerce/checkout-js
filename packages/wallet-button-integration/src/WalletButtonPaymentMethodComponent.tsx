@@ -1,6 +1,5 @@
 import {
     CheckoutSelectors,
-    CheckoutService,
     CustomerRequestOptions,
     LanguageService,
     PaymentInitializeOptions,
@@ -22,7 +21,6 @@ import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 import normalizeWalletPaymentData from './normalizeWalletPaymentData';
 
 export interface WalletButtonPaymentMethodProps {
-    checkoutService: CheckoutService;
     checkoutState: CheckoutSelectors;
     language: LanguageService;
     paymentForm: PaymentFormService;
@@ -34,6 +32,7 @@ export interface WalletButtonPaymentMethodProps {
     shouldShowEditButton?: boolean;
     signInButtonClassName?: string;
     signInButtonLabel?: ReactNode;
+    signOutCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
     deinitializePayment(options: PaymentRequestOptions): Promise<CheckoutSelectors>;
     initializePayment(options: PaymentInitializeOptions): Promise<CheckoutSelectors>;
     onSignOut?(): void;
@@ -49,7 +48,6 @@ interface WalletButtonPaymentMethodDerivedProps {
     expiryYear?: string;
     isPaymentDataRequired: boolean;
     isPaymentSelected: boolean;
-    signOut(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
 }
 
 class WalletButtonPaymentMethodComponent extends Component<WalletButtonPaymentMethodProps> {
@@ -202,11 +200,10 @@ class WalletButtonPaymentMethodComponent extends Component<WalletButtonPaymentMe
     }
 
     private handleSignOut: () => void = async () => {
-        const { method, onSignOut = noop, onSignOutError = noop } = this.props;
-        const { signOut } = this.getWalletButtonPaymentMethodDerivedProps();
+        const { signOutCustomer, method, onSignOut = noop, onSignOutError = noop } = this.props;
 
         try {
-            await signOut({ methodId: method.id });
+            await signOutCustomer({ methodId: method.id });
             onSignOut();
             window.location.reload();
         } catch (error) {
@@ -215,7 +212,7 @@ class WalletButtonPaymentMethodComponent extends Component<WalletButtonPaymentMe
     };
 
     private getWalletButtonPaymentMethodDerivedProps(): WalletButtonPaymentMethodDerivedProps {
-        const { checkoutService, checkoutState, method } = this.props;
+        const { checkoutState, method } = this.props;
         const {
             data: { getBillingAddress, getCheckout, isPaymentDataRequired },
         } = checkoutState;
@@ -235,7 +232,6 @@ class WalletButtonPaymentMethodComponent extends Component<WalletButtonPaymentMe
                 walletPaymentData && [billingAddress.firstName, billingAddress.lastName].join(' '),
             isPaymentDataRequired: isPaymentDataRequired(),
             isPaymentSelected: some(checkout.payments, { providerId: method.id }),
-            signOut: checkoutService.signOutCustomer,
         };
     }
 }

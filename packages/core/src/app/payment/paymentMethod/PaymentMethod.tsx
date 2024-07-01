@@ -35,7 +35,6 @@ import PPSDKPaymentMethod from './PPSDKPaymentMethod';
 import SquarePaymentMethod from './SquarePaymentMethod';
 import StripePaymentMethod from './StripePaymentMethod';
 import StripeUPEPaymentMethod from './StripeUPEPaymentMethod';
-import VisaCheckoutPaymentMethod from './VisaCheckoutPaymentMethod';
 import WorldpayCreditCardPaymentMethod from './WorldpayCreditCardPaymentMethod';
 
 export interface PaymentMethodProps {
@@ -109,10 +108,6 @@ const PaymentMethodComponent: FunctionComponent<
 
 
         return <HostedPaymentMethod {...props} />;
-    }
-
-    if (method.id === PaymentMethodId.BraintreeVisaCheckout) {
-        return <VisaCheckoutPaymentMethod {...props} />;
     }
 
     if (
