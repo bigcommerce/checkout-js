@@ -52,7 +52,7 @@ describe('WalletButtonPaymentMethod', () => {
             id: '1113412341',
         };
         defaultProps = {
-            checkoutService,
+            signOutCustomer: checkoutService.signOutCustomer,
             checkoutState,
             language: localeContext.language,
             paymentForm,
@@ -331,7 +331,7 @@ describe('WalletButtonPaymentMethod', () => {
         it('signs out from payment method account of user when clicking on sign out link', async () => {
             const handleSignOutError = jest.fn();
 
-            jest.spyOn(checkoutService, 'signOutCustomer').mockResolvedValue(checkoutState);
+            jest.spyOn(defaultProps, 'signOutCustomer').mockResolvedValue(checkoutState);
 
             render(
                 <WalletButtonPaymentMethodTest
@@ -350,7 +350,7 @@ describe('WalletButtonPaymentMethod', () => {
 
             await new Promise((resolve) => process.nextTick(resolve));
 
-            expect(checkoutService.signOutCustomer).toHaveBeenCalledWith({
+            expect(defaultProps.signOutCustomer).toHaveBeenCalledWith({
                 methodId: defaultProps.method.id,
             });
 
@@ -360,7 +360,7 @@ describe('WalletButtonPaymentMethod', () => {
         it('notifies parent component if unable to sign out', async () => {
             const handleSignOutError = jest.fn();
 
-            jest.spyOn(checkoutService, 'signOutCustomer').mockRejectedValue(
+            jest.spyOn(defaultProps, 'signOutCustomer').mockRejectedValue(
                 new Error('Unknown error'),
             );
 

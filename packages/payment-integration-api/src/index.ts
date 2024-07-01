@@ -7,6 +7,7 @@ export { default as CheckoutButtonProps } from './CheckoutButtonProps';
 export { default as CreditCardFieldsetValues } from './CreditCardFieldsetValues';
 export { default as PaymentFormService } from './PaymentFormService';
 export { default as PaymentMethodId } from './PaymentMethodId';
+export { default as PaymentMethodType } from './PaymentMethodType';
 export { default as PaymentMethodProps } from './PaymentMethodProps';
 export { default as PaymentMethodResolveId } from './PaymentMethodResolveId';
 export { default as ResolvableComponent } from './ResolvableComponent';

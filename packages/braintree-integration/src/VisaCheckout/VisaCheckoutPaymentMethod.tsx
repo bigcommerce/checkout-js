@@ -1,40 +1,38 @@
 import { PaymentInitializeOptions } from '@bigcommerce/checkout-sdk';
-import { noop } from 'lodash';
 import React, { FunctionComponent, useCallback } from 'react';
-import { Omit } from 'utility-types';
 
-import WalletButtonPaymentMethod, {
-    WalletButtonPaymentMethodProps,
-} from './WalletButtonPaymentMethod';
+import {
+    CheckoutButtonResolveId,
+    PaymentMethodId,
+    PaymentMethodProps,
+    toResolvableComponent,
+} from '@bigcommerce/checkout/payment-integration-api';
+import { WalletButtonPaymentMethodComponent } from '@bigcommerce/checkout/wallet-button-integration';
 
-export type VisaCheckoutPaymentMethodProps = Omit<
-    WalletButtonPaymentMethodProps,
-    'buttonId' | 'editButtonClassName' | 'shouldShowEditButton' | 'signInButtonClassName'
->;
-
-const VisaCheckoutPaymentMethod: FunctionComponent<VisaCheckoutPaymentMethodProps> = ({
-    deinitializePayment,
-    initializePayment,
+const VisaCheckoutPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
+    checkoutService,
     method,
-    onUnhandledError = noop,
+    onUnhandledError,
     ...rest
 }) => {
     const initializeVisaCheckoutPayment = useCallback(
         (defaultOptions: PaymentInitializeOptions) => {
             const reinitializePayment = async (options: PaymentInitializeOptions) => {
                 try {
-                    await deinitializePayment({
+                    await checkoutService.deinitializePayment({
                         gatewayId: method.gateway,
                         methodId: method.id,
                     });
 
-                    await initializePayment({
+                    await checkoutService.initializePayment({
                         ...options,
                         gatewayId: method.gateway,
                         methodId: method.id,
                     });
                 } catch (error) {
-                    onUnhandledError(error);
+                    if (error instanceof Error) {
+                        onUnhandledError(error);
+                    }
                 }
             };
 
@@ -46,23 +44,27 @@ const VisaCheckoutPaymentMethod: FunctionComponent<VisaCheckoutPaymentMethodProp
                 },
             };
 
-            return initializePayment(mergedOptions);
+            return checkoutService.initializePayment(mergedOptions);
         },
-        [deinitializePayment, initializePayment, method, onUnhandledError],
+        [checkoutService, method, onUnhandledError],
     );
 
     return (
-        <WalletButtonPaymentMethod
+        <WalletButtonPaymentMethodComponent
             {...rest}
-            buttonId="walletButton"
-            deinitializePayment={deinitializePayment}
+            buttonId="visaCheckoutWalletButton"
+            deinitializePayment={checkoutService.deinitializePayment}
             editButtonClassName="v-button"
             initializePayment={initializeVisaCheckoutPayment}
             method={method}
             shouldShowEditButton
             signInButtonClassName="v-button"
+            signOutCustomer={checkoutService.signOutCustomer}
         />
     );
 };
 
-export default VisaCheckoutPaymentMethod;
+export default toResolvableComponent<PaymentMethodProps, CheckoutButtonResolveId>(
+    VisaCheckoutPaymentMethod,
+    [{ id: PaymentMethodId.BraintreeVisaCheckout }],
+);
