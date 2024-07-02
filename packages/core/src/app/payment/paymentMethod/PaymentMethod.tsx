@@ -18,7 +18,6 @@ import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod
 import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
 import ChasePayPaymentMethod from './ChasePayPaymentMethod';
 import DigitalRiverPaymentMethod from './DigitalRiverPaymentMethod';
-import GooglePayPaymentMethod from './GooglePayPaymentMethod';
 import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';
 import HostedPaymentMethod from './HostedPaymentMethod';
 import MasterpassPaymentMethod from './MasterpassPaymentMethod';
@@ -108,24 +107,6 @@ const PaymentMethodComponent: FunctionComponent<
 
 
         return <HostedPaymentMethod {...props} />;
-    }
-
-    if (
-        method.id === PaymentMethodId.AdyenV2GooglePay ||
-        method.id === PaymentMethodId.AdyenV3GooglePay ||
-        method.id === PaymentMethodId.AuthorizeNetGooglePay ||
-        method.id === PaymentMethodId.BNZGooglePay ||
-        method.id === PaymentMethodId.BraintreeGooglePay ||
-        method.id === PaymentMethodId.PayPalCommerceGooglePay ||
-        method.id === PaymentMethodId.CheckoutcomGooglePay ||
-        method.id === PaymentMethodId.CybersourceV2GooglePay ||
-        method.id === PaymentMethodId.OrbitalGooglePay ||
-        method.id === PaymentMethodId.StripeGooglePay ||
-        method.id === PaymentMethodId.StripeUPEGooglePay ||
-        method.id === PaymentMethodId.WorldpayAccessGooglePay ||
-        method.id === PaymentMethodId.TdOnlineMartGooglePay
-    ) {
-        return <GooglePayPaymentMethod {...props} />;
     }
 
     if (method.id === PaymentMethodId.Masterpass) {

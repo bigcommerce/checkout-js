@@ -64,7 +64,6 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 
 ## Shared
 /packages/core/customer/checkoutSuggestion @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
-/packages/core/payment/paymentMethod/GooglePayPaymentMethod.tsx @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
 
 /packages/apple-pay-integration @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
 /packages/google-pay-integration @bigcommerce/team-checkout @bigcommerce/team-integrations @bigcommerce/team-paypal
