@@ -20,6 +20,7 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/affirm-integration @bigcommerce/team-integrations
 /packages/adyen-integration @bigcommerce/team-integrations
 /packages/barclay-integration @bigcommerce/team-integrations
+/packages/bolt-integration @bigcommerce/team-integrations
 /packages/bluesnap-direct-integration @bigcommerce/team-integrations
 /packages/mollie-integration @bigcommerce/team-integrations
 /packages/squarev2-integration @bigcommerce/team-integrations
@@ -47,14 +48,6 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/core/payment/paymentMethod/StripeUPEPaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/StripeV3CustomCardForm.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/WorldpayCreditCardPaymentMethod.tsx @bigcommerce/team-integrations
-
-/packages/adyen-integration @bigcommerce/team-integrations
-/packages/barclay-integration @bigcommerce/team-integrations
-/packages/bluesnap-direct-integration @bigcommerce/team-integrations
-/packages/bolt-integration @bigcommerce/team-integrations
-/packages/squarev2-integration @bigcommerce/team-integrations
-/packages/td-bank-integration @bigcommerce/team-integrations
-
 
 ## PayPal team
 /packages/core/payment/paymentMethod/BraintreeCreditCardPaymentMethod.tsx @bigcommerce/team-paypal
