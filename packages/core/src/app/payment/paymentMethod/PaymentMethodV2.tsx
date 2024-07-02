@@ -30,9 +30,6 @@ export interface PaymentMethodProps {
 }
 
 function shouldUsePaymentMethodV1(method: PaymentMethod, checkoutState: CheckoutSelectors) {
-    if (method.gateway === PaymentMethodId.Mollie) {
-        return true;
-    }
 
     if (method.id === PaymentMethodId.SquareV2) {
         return !checkoutState.data.getConfig()?.checkoutSettings.features[

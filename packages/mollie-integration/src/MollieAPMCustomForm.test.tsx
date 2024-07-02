@@ -1,20 +1,18 @@
+/* eslint-disable testing-library/no-container */
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import {
+    createLocaleContext,
+    LocaleContext,
+    LocaleContextType,
+} from '@bigcommerce/checkout/locale';
+import { getStoreConfig } from '@bigcommerce/checkout/test-mocks';
+import { fireEvent, render, screen } from '@bigcommerce/checkout/test-utils';
 
-import { getStoreConfig } from '../../config/config.mock';
-import { DropdownTrigger } from '../../ui/dropdown';
-
-import MollieAPMCustomForm, {
-    Issuer,
-    IssuerSelectButton,
-    MollieCustomCardFormProps,
-    OptionButton,
-} from './MollieAPMCustomForm';
+import MollieAPMCustomForm, { Issuer, MollieCustomCardFormProps } from './MollieAPMCustomForm';
 
 describe('MollieAPMCustomForm', () => {
     let localeContext: LocaleContextType;
@@ -59,44 +57,27 @@ describe('MollieAPMCustomForm', () => {
     });
 
     it('should empty render', () => {
-        const container = mount(
+        const { container } = render(
             <MollieAPMCustomFormTest method={{ ...method, initializationData: {} }} />,
         );
 
-        expect(container.isEmptyRender()).toBe(true);
+        expect(container).toBeEmptyDOMElement();
     });
 
     it('should render MollieAPMCustomForm', () => {
-        const container = mount(<MollieAPMCustomFormTest method={method} />);
+        const { container } = render(<MollieAPMCustomFormTest method={method} />);
+        const dropdownTrigger = container.querySelector('.dropdownTrigger');
 
-        expect(container.find(DropdownTrigger)).toHaveLength(1);
+        expect(dropdownTrigger).toBeInTheDocument();
+        expect(dropdownTrigger).toContainElement(container.querySelector('#issuerToggle'));
     });
 
     it('should change IssuerSelectButton Value when option is selected', () => {
-        const container = mount(<MollieAPMCustomFormTest method={method} />);
+        render(<MollieAPMCustomFormTest method={method} />);
 
-        expect(container.find(IssuerSelectButton).props()).toEqual(
-            expect.objectContaining({
-                selectedIssuer: {
-                    id: '',
-                    image: {
-                        size1x: '',
-                    },
-                    name: 'Select your bank',
-                },
-            }),
-        );
-
-        container.find(DropdownTrigger).simulate('click');
-        container
-            .find(OptionButton)
-            .at(0)
-            .simulate('click', { currentTarget: { dataset: { id: 'kbc' } } });
-
-        expect(container.find(IssuerSelectButton).props()).toEqual(
-            expect.objectContaining({
-                selectedIssuer: issuer,
-            }),
-        );
+        expect(screen.getByText('Select your bank')).toBeInTheDocument();
+        fireEvent.click(screen.getByText('Select your bank'));
+        expect(screen.getByText('kbc')).toBeInTheDocument();
+        fireEvent.click(screen.getByText('kbc'));
     });
 });

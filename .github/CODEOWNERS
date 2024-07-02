@@ -39,9 +39,6 @@ package-lock.json @bigcommerce/team-checkout @bigcommerce/team-integrations @big
 /packages/core/payment/paymentMethod/KlarnaPaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/KlarnaV2PaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/MasterpassPaymentMethod.tsx @bigcommerce/team-integrations
-/packages/core/payment/paymentMethod/MollieAPMCustomForm.tsx @bigcommerce/team-integrations
-/packages/core/payment/paymentMethod/MollieCustomCardForm.tsx @bigcommerce/team-integrations
-/packages/core/payment/paymentMethod/MolliePaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/MonerisPaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/OpyPaymentMethod.tsx @bigcommerce/team-integrations
 /packages/core/payment/paymentMethod/SquarePaymentMethod.tsx @bigcommerce/team-integrations

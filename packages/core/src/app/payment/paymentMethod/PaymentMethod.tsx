@@ -22,7 +22,6 @@ import GooglePayPaymentMethod from './GooglePayPaymentMethod';
 import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';
 import HostedPaymentMethod from './HostedPaymentMethod';
 import MasterpassPaymentMethod from './MasterpassPaymentMethod';
-import MolliePaymentMethod from './MolliePaymentMethod';
 import MonerisPaymentMethod from './MonerisPaymentMethod';
 import OpyPaymentMethod from './OpyPaymentMethod';
 import PaymentMethodId from './PaymentMethodId';
@@ -182,9 +181,6 @@ const PaymentMethodComponent: FunctionComponent<
         return <OpyPaymentMethod {...props} />;
     }
 
-    if (method.gateway === PaymentMethodId.Mollie) {
-        return <MolliePaymentMethod {...props} />;
-    }
 
     // NOTE: Some payment methods have `method` as `credit-card` but they are
     // actually not. Therefore, as a workaround, we are doing the following

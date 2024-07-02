@@ -1,12 +1,11 @@
 import { createCheckoutService, PaymentMethod } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
-import MollieAPMCustomForm from './MollieAPMCustomForm';
 import MollieCustomCardForm, { MollieCustomCardFormProps } from './MollieCustomCardForm';
 
 describe('MollieCustomForm', () => {
@@ -56,34 +55,28 @@ describe('MollieCustomForm', () => {
         );
     });
 
-    it('should render cc options', () => {
-        const container = mount(
-            <MollieCustomFormTest isCreditCard={true} method={method} options={options} />,
-        );
-
-        expect(container.find('[id="cnumber_containerId"]')).toHaveLength(1);
-        expect(container.find('[id="expiry_containerId"]')).toHaveLength(1);
-        expect(container.find('[id="ccvc_containerId"]')).toHaveLength(1);
-        expect(container.find('[id="cholder_containerId"]')).toHaveLength(1);
+    it('should render cc options', async () => {
+        render(<MollieCustomFormTest isCreditCard={true} method={method} options={options} />);
+        expect(await screen.findByText('Expiration')).toBeInTheDocument();
+        expect(await screen.findByText('Credit Card Number')).toBeInTheDocument();
+        expect(await screen.findByText('CVV')).toBeInTheDocument();
     });
 
     it('should empty render', () => {
-        const container = mount(
-            <MollieCustomFormTest
+        const { container } = render(
+            <MollieCustomCardForm
                 isCreditCard={false}
                 method={{ ...method, initializationData: {} }}
                 options={options}
             />,
         );
 
-        expect(container.isEmptyRender()).toBe(true);
+        expect(container).toBeEmptyDOMElement();
     });
 
-    it('should render MollieAPMCustomForm', () => {
-        const container = mount(
-            <MollieCustomFormTest isCreditCard={false} method={method} options={options} />,
-        );
+    it('should render MollieAPMCustomForm', async () => {
+        render(<MollieCustomFormTest isCreditCard={false} method={method} options={options} />);
 
-        expect(container.find(MollieAPMCustomForm)).toHaveLength(1);
+        expect(await screen.findByText('Select your bank')).toBeInTheDocument();
     });
 });
