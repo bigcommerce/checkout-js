@@ -4,9 +4,7 @@ import React, { FunctionComponent, SyntheticEvent, useCallback, useEffect, useSt
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-
-import { DropdownTrigger } from '../../ui/dropdown';
-import { FormField } from '../../ui/form';
+import { DropdownTrigger, FormField } from '@bigcommerce/checkout/ui';
 
 export interface MollieCustomCardFormProps {
     method: PaymentMethod;

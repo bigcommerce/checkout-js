@@ -2,11 +2,9 @@ import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import React from 'react';
 
+import { CreditCardCodeTooltip } from '@bigcommerce/checkout/instrument-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-
-import { IconHelp } from '../../ui/icon';
-import { TooltipTrigger } from '../../ui/tooltip';
-import { CreditCardCodeTooltip } from '../creditCard';
+import { IconHelp, TooltipTrigger } from '@bigcommerce/checkout/ui';
 
 import MollieAPMCustomForm from './MollieAPMCustomForm';
 

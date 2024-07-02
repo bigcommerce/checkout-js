@@ -1,0 +1,28 @@
+{
+  "extends": ["../../.eslintrc.json"],
+  "overrides": [
+    {
+      "files": ["*.test.tsx"],
+      "rules": {
+        "@typescript-eslint/consistent-type-assertions": "off",        "@typescript-eslint/padding-line-between-statements": "off",
+        "react/destructuring-assignment": "off"
+      }
+    },
+    {
+      "files": ["*.tsx"],
+      "rules": {
+        "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/no-unnecessary-condition" : "off",
+        "no-nested-ternary": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-use-before-define": "off",
+        "react/jsx-no-useless-fragment": "off",
+        "no-underscore-dangle": "off",
+        "jsx-a11y/anchor-is-valid": "off",
+        "@typescript-eslint/default-param-last": "off",
+        "react/jsx-no-bind": "off"
+      }
+    }
+  ]
+}
