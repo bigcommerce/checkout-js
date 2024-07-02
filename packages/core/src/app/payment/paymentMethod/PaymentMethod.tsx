@@ -13,7 +13,6 @@ import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-
 import { withCheckout } from '../../checkout';
 
 import AmazonPayV2PaymentMethod from './AmazonPayV2PaymentMethod';
-import BoltPaymentMethod from './BoltPaymentMethod';
 import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod';
 import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
 import ChasePayPaymentMethod from './ChasePayPaymentMethod';
@@ -130,11 +129,7 @@ const PaymentMethodComponent: FunctionComponent<
     ) {
         return <PaypalPaymentsProPaymentMethod {...props} />;
     }
-
-    if (method.id === PaymentMethodId.Bolt) {
-        return <BoltPaymentMethod {...props} />;
-    }
-
+    
     if (method.id === PaymentMethodId.Moneris) {
         return <MonerisPaymentMethod {...props} />;
     }

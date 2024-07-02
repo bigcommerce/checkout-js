@@ -1,5 +1,5 @@
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
@@ -20,11 +20,15 @@ describe('BoltCustomForm', () => {
 
         const checkoutService = createCheckoutService();
 
-        BoltCustomFormTest = (props) => <LocaleProvider checkoutService={checkoutService}><BoltCustomForm {...props} /></LocaleProvider>;
+        BoltCustomFormTest = (props) => (
+            <LocaleProvider checkoutService={checkoutService}>
+                <BoltCustomForm {...props} />
+            </LocaleProvider>
+        );
     });
 
     it('renders bolt embedded field', () => {
-        const container = mount(
+        const { container } = render(
             <Formik
                 initialValues={{ shouldCreateAccount: true }}
                 onSubmit={noop}
@@ -32,11 +36,11 @@ describe('BoltCustomForm', () => {
             />,
         );
 
-        expect(container.find('[id="boltEmbeddedOneClick"]').exists()).toBe(true);
+        expect(container.getElementsByClassName('form-field--bolt-embed')).toHaveLength(1);
     });
 
     it('renders bolt embedded field and shows create account checkbox', () => {
-        const container = mount(
+        const { container } = render(
             <Formik
                 initialValues={{ shouldCreateAccount: true }}
                 onSubmit={noop}
@@ -44,12 +48,12 @@ describe('BoltCustomForm', () => {
             />,
         );
 
-        expect(container.find('[id="boltEmbeddedOneClick"]').exists()).toBe(true);
-        expect(container.find('[id="shouldCreateAccount"]').exists()).toBe(true);
+        expect(container.getElementsByClassName('form-field--bolt-embed')).toHaveLength(1);
+        expect(container.getElementsByClassName('optimizedCheckout-form-checkbox')).toHaveLength(1);
     });
 
     it('renders bolt embedded field without showing create account checkbox', () => {
-        const container = mount(
+        const { container } = render(
             <Formik
                 initialValues={{ shouldCreateAccount: false }}
                 onSubmit={noop}
@@ -57,12 +61,12 @@ describe('BoltCustomForm', () => {
             />,
         );
 
-        expect(container.find('[id="boltEmbeddedOneClick"]').exists()).toBe(true);
-        expect(container.find('[id="shouldCreateAccount"]').exists()).toBe(false);
+        expect(container.getElementsByClassName('form-field--bolt-embed')).toHaveLength(1);
+        expect(container.getElementsByClassName('optimizedCheckout-form-checkbox')).toHaveLength(0);
     });
 
     it('renders bolt embedded field with checked account creation checkbox by default', () => {
-        const container = mount(
+        const { container } = render(
             <Formik
                 initialValues={{ shouldCreateAccount: true }}
                 onSubmit={noop}
@@ -70,6 +74,8 @@ describe('BoltCustomForm', () => {
             />,
         );
 
-        expect(container.find('[id="shouldCreateAccount"]').hostNodes().props().checked).toBe(true);
+        const checkbox = container.getElementsByClassName('optimizedCheckout-form-checkbox')[0];
+
+        expect(checkbox.checked).toBe(true);
     });
 });

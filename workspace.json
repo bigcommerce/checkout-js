@@ -7,6 +7,7 @@
     "apple-pay-integration": "packages/apple-pay-integration",
     "barclay-integration": "packages/barclay-integration",
     "bluesnap-direct-integration": "packages/bluesnap-direct-integration",
+    "bolt-integration": "packages/bolt-integration",
     "braintree-integration": "packages/braintree-integration",
     "checkout-button-integration": "packages/checkout-button-integration",
     "checkout-extension": "packages/checkout-extension",
