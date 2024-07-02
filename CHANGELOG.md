@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.504.0](https://github.com/bigcommerce/checkout-js/compare/v1.503.1...v1.504.0) (2024-07-02)
+
+
+### Features
+
+* **payment:** PI-1559 fixes ([129bb12](https://github.com/bigcommerce/checkout-js/commit/129bb12aa16bc2647d7130f372021bb2ef053606))
+* **payment:** PI-1559 refactor Mollie in checkout-js ([8acb1ff](https://github.com/bigcommerce/checkout-js/commit/8acb1ffb47e699a419127b5cf5752e3211d712dd))
+
 ### [1.503.1](https://github.com/bigcommerce/checkout-js/compare/v1.503.0...v1.503.1) (2024-07-02)
 
 
