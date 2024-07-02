@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.505.0](https://github.com/bigcommerce/checkout-js/compare/v1.504.0...v1.505.0) (2024-07-02)
+
+
+### Features
+
+* **payment:** PI-1535 move `bolt` components to a separate package ([#1898](https://github.com/bigcommerce/checkout-js/issues/1898)) ([0cf188c](https://github.com/bigcommerce/checkout-js/commit/0cf188ce8705a234fce00c0fae34836f1d333455))
+
 ## [1.504.0](https://github.com/bigcommerce/checkout-js/compare/v1.503.1...v1.504.0) (2024-07-02)
 
 
