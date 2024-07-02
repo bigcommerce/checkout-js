@@ -1,0 +1,20 @@
+{
+  "extends": ["../../.eslintrc.json"],
+  "overrides": [
+    {
+      "files": ["*.tsx"],
+      "rules": {
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "@typescript-eslint/no-unsafe-member-access": "off"
+      }
+    },
+    {
+      "files": ["*.test.tsx"],
+      "rules": {
+        "testing-library/no-container": "off",
+        "testing-library/no-node-access": "off"
+      }
+    }
+  ]
+}

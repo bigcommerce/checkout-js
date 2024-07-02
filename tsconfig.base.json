@@ -26,6 +26,7 @@
       "@bigcommerce/checkout/bluesnap-direct-integration": [
         "packages/bluesnap-direct-integration/src/index.ts"
       ],
+      "@bigcommerce/checkout/bolt-integration": ["packages/bolt-integration/src/index.ts"],
       "@bigcommerce/checkout/braintree-integration": [
         "packages/braintree-integration/src/index.ts"
       ],
