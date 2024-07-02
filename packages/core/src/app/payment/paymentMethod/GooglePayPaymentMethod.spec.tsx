@@ -90,6 +90,7 @@ describe('when using Google Pay payment', () => {
         [PaymentMethodId.StripeGooglePay],
         [PaymentMethodId.StripeUPEGooglePay],
         [PaymentMethodId.WorldpayAccessGooglePay],
+        [PaymentMethodId.TdOnlineMartGooglePay],
     ]).it('initializes %s with required config', (id) => {
         method.id = id;
 

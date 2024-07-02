@@ -122,7 +122,8 @@ const PaymentMethodComponent: FunctionComponent<
         method.id === PaymentMethodId.OrbitalGooglePay ||
         method.id === PaymentMethodId.StripeGooglePay ||
         method.id === PaymentMethodId.StripeUPEGooglePay ||
-        method.id === PaymentMethodId.WorldpayAccessGooglePay
+        method.id === PaymentMethodId.WorldpayAccessGooglePay ||
+        method.id === PaymentMethodId.TdOnlineMartGooglePay
     ) {
         return <GooglePayPaymentMethod {...props} />;
     }
