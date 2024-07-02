@@ -265,7 +265,7 @@ const MolliePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                     ),
                     disableButton: (disabled: boolean) => {
                         if (paymentContext) {
-                            paymentContext.paymentForm.disableSubmit(method, disabled);
+                            disableSubmit(method, disabled);
                         }
                     },
                     ...(selectedInstrument && {
@@ -277,6 +277,7 @@ const MolliePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         [
             checkoutService,
             containerId,
+            disableSubmit,
             localeContext?.language,
             getHostedFormOptions,
             paymentContext,
@@ -320,12 +321,12 @@ const MolliePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
     const instruments = checkoutState.data.getInstruments(method) || [];
 
     const {
-        data: { getCheckout, isPaymentDataRequired },
+        data: { getCheckout, isPaymentDataRequired, getCustomer },
         statuses: { isLoadingInstruments },
     } = checkoutState;
 
     const checkout = getCheckout();
-    const customer = checkoutState.data.getCustomer();
+    const customer = getCustomer();
     const isGuestCustomer = customer?.isGuest;
     const isInstrumentFeatureAvailable =
         !isGuestCustomer && Boolean(method.config.isVaultingEnabled);
@@ -360,6 +361,7 @@ const MolliePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         />
     );
 };
+
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
     MolliePaymentMethod,
     [{ gateway: 'mollie' }],
