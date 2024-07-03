@@ -6,7 +6,7 @@ Checkout JS is a browser-based application providing a seamless UI for BigCommer
 
 In order to build from the source code, you must have the following set up in your development environment.
 
-* Node >= v18.
+* Node >= v20.
 * NPM >= v9.
 * Unix-based operating system. (WSL on Windows)
 
