@@ -99,12 +99,12 @@ const ShippingForm = ({
     // TODO: remove PayPal Fastlane related code and useEffect when PayPal Fastlane will not be available for Store members
     const {
         isPayPalFastlaneEnabled,
-        mergedBcAndPayPalFastlaneAddresses,
+        paypalFastlaneAddresses,
         shouldShowPayPalFastlaneShippingForm,
     } = usePayPalFastlaneAddress();
 
     const shippingAddresses = isPayPalFastlaneEnabled
-        ? mergedBcAndPayPalFastlaneAddresses
+        ? paypalFastlaneAddresses
         : addresses;
 
     useEffect(() => {
