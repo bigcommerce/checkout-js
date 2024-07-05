@@ -68,7 +68,7 @@ const BillingForm = ({
 }: BillingFormProps & WithLanguageProps & FormikProps<BillingFormValues>) => {
     const [isResettingAddress, setIsResettingAddress] = useState(false);
     const addressFormRef: RefObject<HTMLFieldSetElement> = useRef(null);
-    const { isPayPalFastlaneEnabled, mergedBcAndPayPalFastlaneAddresses } = usePayPalFastlaneAddress();
+    const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
 
     const shouldRenderStaticAddress = methodId === 'amazonpay';
     const allFormFields = getFields(values.countryCode);
@@ -76,7 +76,7 @@ const BillingForm = ({
     const hasCustomFormFields = customFormFields.length > 0;
     const editableFormFields =
         shouldRenderStaticAddress && hasCustomFormFields ? customFormFields : allFormFields;
-    const billingAddresses = isPayPalFastlaneEnabled ? mergedBcAndPayPalFastlaneAddresses : addresses;
+    const billingAddresses = isPayPalFastlaneEnabled ? paypalFastlaneAddresses : addresses;
     const hasAddresses = billingAddresses?.length > 0;
     const hasValidCustomerAddress =
         billingAddress &&

@@ -22,7 +22,7 @@ jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
     ...jest.requireActual('@bigcommerce/checkout/paypal-fastlane-integration'),
     usePayPalFastlaneAddress: jest.fn(() => ({
         isPayPalFastlaneEnabled: false,
-        mergedBcAndPayPalFastlaneAddresses: [],
+        paypalFastlaneAddresses: [],
     })),
 }));
 
@@ -173,7 +173,7 @@ describe('BillingForm Component', () => {
     });
 
     it('renders form with PP Fastlane addresses', () => {
-        const mergedBcAndPayPalFastlaneAddresses = [{
+        const paypalFastlaneAddresses = [{
             ...getAddress(),
             address1: 'PP Fastlane address'
         }];
@@ -181,7 +181,7 @@ describe('BillingForm Component', () => {
         // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
             isPayPalFastlaneEnabled: true,
-            mergedBcAndPayPalFastlaneAddresses,
+            paypalFastlaneAddresses,
         });
 
         component = mount(
@@ -197,7 +197,7 @@ describe('BillingForm Component', () => {
         expect(addressSelectComponent).toHaveLength(1);
         expect(addressSelectComponent.props()).toEqual(
             expect.objectContaining({
-                addresses: mergedBcAndPayPalFastlaneAddresses,
+                addresses: paypalFastlaneAddresses,
             }),
         );
     });

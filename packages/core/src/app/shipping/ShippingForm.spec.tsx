@@ -28,7 +28,7 @@ jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
     ...jest.requireActual('@bigcommerce/checkout/paypal-fastlane-integration'),
     usePayPalFastlaneAddress: jest.fn(() => ({
         isPayPalFastlaneEnabled: false,
-        mergedBcAndPayPalFastlaneAddresses: []
+        paypalFastlaneAddresses: []
     })),
 }));
 
@@ -417,7 +417,6 @@ describe('ShippingForm Component', () => {
             (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
                 isPayPalFastlaneEnabled: true,
                 paypalFastlaneAddresses,
-                mergedBcAndPayPalFastlaneAddresses: paypalFastlaneAddresses,
             });
 
             component = mount(
@@ -457,7 +456,6 @@ describe('ShippingForm Component', () => {
             (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
                 isPayPalFastlaneEnabled: true,
                 paypalFastlaneAddresses,
-                mergedBcAndPayPalFastlaneAddresses: paypalFastlaneAddresses,
                 shouldShowPayPalFastlaneShippingForm: true,
             });
 
