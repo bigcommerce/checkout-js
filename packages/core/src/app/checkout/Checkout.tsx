@@ -361,12 +361,20 @@ class Checkout extends Component<
     }
 
     private renderCustomerStep(step: CheckoutStepStatus): ReactNode {
-        const { isGuestEnabled } = this.props;
+        const { isGuestEnabled, cart } = this.props;
         const {
             customerViewType = isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
             isSubscribed,
             isWalletButtonsOnTop,
         } = this.state;
+
+        if (!cart) {
+            return;
+        }
+
+        const includesFitmentCentreItem = cart.lineItems.physicalItems
+            .flatMap(item => item.options)
+            .some(option => option?.name.includes("Fitment") && option?.value == "EGR Fitment Centre")
 
         return (
             <CheckoutStep
@@ -399,6 +407,7 @@ class Checkout extends Component<
                     onUnhandledError={this.handleUnhandledError}
                     step={step}
                     viewType={customerViewType}
+                    includesFitmentCentreItem={includesFitmentCentreItem}
                 />
             </CheckoutStep>
         );
