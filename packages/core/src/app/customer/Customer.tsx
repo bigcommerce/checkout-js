@@ -40,6 +40,7 @@ export interface CustomerProps {
     isEmbedded?: boolean;
     isSubscribed: boolean;
     isWalletButtonsOnTop: boolean;
+    includesFitmentCentreItem: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void;
     onChangeViewType?(viewType: CustomerViewType): void;
     onAccountCreated?(): void;
@@ -179,8 +180,9 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             onUnhandledError = noop,
             step,
             useFloatingLabel,
+            includesFitmentCentreItem
         } = this.props;
-        const checkoutButtons = isWalletButtonsOnTop
+        const checkoutButtons = includesFitmentCentreItem || isWalletButtonsOnTop
           ? null
           : <CheckoutButtonList
             checkEmbeddedSupport={checkEmbeddedSupport}
