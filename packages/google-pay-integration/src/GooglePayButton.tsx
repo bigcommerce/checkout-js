@@ -42,5 +42,6 @@ export default toResolvableComponent<CheckoutButtonProps, CheckoutButtonResolveI
         { id: 'googlepaystripe' },
         { id: 'googlepaystripeupe' },
         { id: 'googlepayworldpayaccess' },
+        { id: 'googlepaytdonlinemart' },
     ],
 );
