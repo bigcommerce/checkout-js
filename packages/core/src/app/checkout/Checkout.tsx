@@ -47,7 +47,6 @@ import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
 import withCheckout from './withCheckout';
 import DealerShipping from './dealer/DealerShipping';
-import updateOrderStaffNotes from '../order/updateOrderStaffNotes';
 
 const Billing = lazy(() =>
     retry(

@@ -1,6 +1,7 @@
 import {
     CartChangedError,
     CheckoutSelectors,
+    CheckoutRequestBody,
     CheckoutSettings,
     OrderRequestBody,
     PaymentMethod,
@@ -37,7 +38,7 @@ import {
     PaymentMethodProviderType,
 } from './paymentMethod';
 
-import updateOrderStaffNotes from '../order/updateOrderStaffNotes';
+import appendFFLtoCheckoutNotes from '../order/appendFFLtoCheckoutNotes';
 
 export interface PaymentProps {
     errorLogger: ErrorLogger;
@@ -78,6 +79,7 @@ interface WithCheckoutPaymentProps {
     loadCheckout(): Promise<CheckoutSelectors>;
     loadPaymentMethods(): Promise<CheckoutSelectors>;
     submitOrder(values: OrderRequestBody): Promise<CheckoutSelectors>;
+    updateCheckout(payload: CheckoutRequestBody): Promise<CheckoutSelectors>;
 }
 
 interface PaymentState {
@@ -441,9 +443,13 @@ class Payment extends Component<
             onSubmit = noop,
             onSubmitError = noop,
             submitOrder,
-            analyticsTracker
+            analyticsTracker,
+            updateCheckout,
+            loadCheckout
         } = this.props;
 
+        const checkoutState = await loadCheckout();
+        const checkout = checkoutState.data.getCheckout();
         const { selectedMethod = defaultMethod, submitFunctions } = this.state;
 
         analyticsTracker.clickPayButton({shouldCreateAccount: values.shouldCreateAccount});
@@ -457,14 +463,14 @@ class Payment extends Component<
         }
 
         try {
+            if (this.props.selectedFFL) {
+                await appendFFLtoCheckoutNotes(checkout, updateCheckout, this.props.selectedFFL);
+            }
+
             const state = await submitOrder(mapToOrderRequestBody(values, isPaymentDataRequired()));
             const order = state.data.getOrder();
 
             analyticsTracker.paymentComplete();
-            
-            if (this.props.selectedFFL) {
-                await updateOrderStaffNotes(order?.orderId, this.props.storeHash, this.props.selectedFFL);
-            }
 
             onSubmit(order?.orderId);
         } catch (error) {
@@ -636,6 +642,7 @@ export function mapToPaymentProps({
         finalizeOrderError: getFinalizeOrderError(),
         finalizeOrderIfNeeded: checkoutService.finalizeOrderIfNeeded,
         loadCheckout: checkoutService.loadCheckout,
+        updateCheckout: checkoutService.updateCheckout,
         isInitializingPayment: isInitializingPayment(),
         isPaymentDataRequired,
         isStoreCreditApplied,
