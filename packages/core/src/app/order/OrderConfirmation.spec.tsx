@@ -10,6 +10,7 @@ import React, { FunctionComponent } from 'react';
 import { act } from 'react-dom/test-utils';
 
 import { AnalyticsContextProps, AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import { createErrorLogger } from '../common/error';
@@ -66,7 +67,9 @@ describe('OrderConfirmation', () => {
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleProvider checkoutService={checkoutService}>
                     <AnalyticsProviderMock>
-                        <OrderConfirmation {...props} />
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <OrderConfirmation {...props} />
+                        </ExtensionProvider>
                     </AnalyticsProviderMock>
                 </LocaleProvider>
             </CheckoutProvider>

@@ -2,6 +2,7 @@ import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sd
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
@@ -36,7 +37,9 @@ describe('CartSummary Component', () => {
         component = mount(
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
-                    <CartSummary />
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <CartSummary />
+                    </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,
         );
@@ -54,7 +57,9 @@ describe('CartSummary Component', () => {
         component = mount(
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
-                    <CartSummary />
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <CartSummary />
+                    </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,
         );
