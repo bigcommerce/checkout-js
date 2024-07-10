@@ -133,6 +133,7 @@ export interface CheckoutState {
     fflLineItems: LineItem[];
     storeHash: string;
     fflLicense: string;
+    fflToOrderComments: boolean;
 }
 
 export interface WithCheckoutProps {
@@ -517,6 +518,7 @@ class Checkout extends Component<
                         onUnhandledError={ this.handleUnhandledError }
                         storeHash={ this.state.storeHash }
                         setSelectedFFL={ this.setSelectedFFL }
+                        setFFLtoOrderComments={ this.setFFLtoOrderComments }
                     />
                   </LazyContainer>
               </CheckoutStep>
@@ -575,6 +577,7 @@ class Checkout extends Component<
                         onUnhandledError={this.handleUnhandledError}
                         storeHash={this.state.storeHash}
                         selectedFFL={this.state.fflLicense}
+                        fflToOrderComments={this.state.fflToOrderComments}
                     />
                 </LazyContainer>
             </CheckoutStep>
@@ -833,6 +836,10 @@ class Checkout extends Component<
 
     private setSelectedFFL: () => void = (value) => {
         this.setState({ fflLicense: value });
+    }
+
+    private setFFLtoOrderComments: () => void = (value) => {
+        this.setState({ fflToOrderComments: value });
     }
 }
 

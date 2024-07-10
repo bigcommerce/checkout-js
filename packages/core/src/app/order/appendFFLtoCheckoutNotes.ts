@@ -11,10 +11,10 @@ export default async function appendFFLtoCheckoutNotes(checkout, updateCheckout,
         "F": "06",
         "G": "07",
         "H": "08",
-        "I": "09",
-        "J": "10",
-        "K": "11",
-        "L": "12"    
+        "J": "09",
+        "K": "10",
+        "L": "11",
+        "M": "12"
     }
     const expiryMonth = months[selectedFFL.slice(13,14)];
     const expiryYear = `202${selectedFFL.slice(12,13)}`

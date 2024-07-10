@@ -148,6 +148,7 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
     })
     .then(res => res.json())
     .then(data => {
+        this.props.setFFLtoOrderComments(data.ffl_to_order_comments);
         this.setState({
             announcement: data.announcement,
             multiShipment: data.multi_shipment,

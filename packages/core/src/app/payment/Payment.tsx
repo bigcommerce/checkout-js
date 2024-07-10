@@ -54,6 +54,7 @@ export interface PaymentProps {
     onUnhandledError?(error: Error): void;
     storeHash: string;
     selectedFFL: string;
+    fflToOrderComments: boolean;
 }
 
 interface WithCheckoutPaymentProps {
@@ -463,7 +464,7 @@ class Payment extends Component<
         }
 
         try {
-            if (this.props.selectedFFL) {
+            if (this.props.selectedFFL && this.props.fflToOrderComments) {
                 await appendFFLtoCheckoutNotes(checkout, updateCheckout, this.props.selectedFFL);
             }
 
