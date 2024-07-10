@@ -29,7 +29,12 @@ const StripeUPEPaymentMethod: FunctionComponent<
         WithInjectedHostedCreditCardFieldsetProps &
         WithCheckoutStripePaymentMethodProps
 > = ({ initializePayment, method, storeUrl, isGuest, isStripeLinkAuthenticated,  onUnhandledError = noop, ...rest }) => {
-    return null;
+    return (
+        <>
+            <div id="stripe-new-upe-component-field-inner" />
+        </>
+    );
+
     const containerId = `stripe-${method.id}-component-field`;
 
     const paymentContext = useContext(PaymentContext);
@@ -49,6 +54,8 @@ const StripeUPEPaymentMethod: FunctionComponent<
                 ]);
                 const formLabel = getStylesFromElement(`${containerId}--label`, ['color']);
                 const formError = getStylesFromElement(`${containerId}--error`, ['color']);
+
+                console.log('initializePayment StripeUPE Inner');
 
                 paymentContext?.hidePaymentSubmitButton(method, true);
 
