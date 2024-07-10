@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.506.3](https://github.com/bigcommerce/checkout-js/compare/v1.506.2...v1.506.3) (2024-07-10)
+
+
+### Code Refactoring
+
+* **payment:** PAYPAL-4382 removed unnecessary code related to Fastlane Store member flow (which is deprecated) ([0c79c26](https://github.com/bigcommerce/checkout-js/commit/0c79c26e9dd95b4728d5869ce0210d7a3cedbaf1))
+
 ### [1.506.2](https://github.com/bigcommerce/checkout-js/compare/v1.506.1...v1.506.2) (2024-07-09)
 
 ### [1.506.1](https://github.com/bigcommerce/checkout-js/compare/v1.506.0...v1.506.1) (2024-07-09)
