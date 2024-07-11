@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.507.0](https://github.com/bigcommerce/checkout-js/compare/v1.506.3...v1.507.0) (2024-07-11)
+
+
+### Features
+
+* **payment:** PI-1540 Mollie integration tests ([37d7896](https://github.com/bigcommerce/checkout-js/commit/37d789674453f3a4092c40fa77ba7de24aa8884d))
+
 ### [1.506.3](https://github.com/bigcommerce/checkout-js/compare/v1.506.2...v1.506.3) (2024-07-10)
 
 
