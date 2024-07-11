@@ -29,12 +29,6 @@ const StripeUPEPaymentMethod: FunctionComponent<
         WithInjectedHostedCreditCardFieldsetProps &
         WithCheckoutStripePaymentMethodProps
 > = ({ initializePayment, method, storeUrl, isGuest, isStripeLinkAuthenticated,  onUnhandledError = noop, ...rest }) => {
-    return (
-        <>
-            <div id="stripe-new-upe-component-field-inner" />
-        </>
-    );
-
     const containerId = `stripe-${method.id}-component-field`;
 
     const paymentContext = useContext(PaymentContext);
@@ -114,6 +108,8 @@ const StripeUPEPaymentMethod: FunctionComponent<
 
         return true;
     }
+
+    return null;
 
     return (
         <>

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext, useEffect, useRef, useState } from 'react';
+import React, { FunctionComponent, useContext, useEffect, useRef } from 'react';
 
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
@@ -7,14 +7,11 @@ import AccordionContext from '../../ui/accordion/AccordionContext';
 import PaymentMethodId from './PaymentMethodId';
 
 const StripeUPEDescription: FunctionComponent<{ onUnhandledError?(error: Error): void }> = ({ onUnhandledError }) => {
-    const [isAccordionView, setIsAccordionView] = useState(false);
+    // return null;
     const { checkoutService } = useCheckout();
     const { onToggle, selectedItemId } = useContext(AccordionContext);
     const containerId = `stripe-new-upe-component-field`;
-    const render = (newIsAccordionView?: boolean) => {
-        console.log('*** render newIsAccordionView - ', newIsAccordionView);
-        setIsAccordionView(!!newIsAccordionView);
-    };
+    const render = () => {};
     const collapseStripeElement = useRef<() => void>();
 
     const collapseListener = (collapseElement: () => void) => {
@@ -30,7 +27,6 @@ const StripeUPEDescription: FunctionComponent<{ onUnhandledError?(error: Error):
                 methodId: 'card',
                 stripeupe: {
                     containerId,
-                    isAccordionView: true,
                     render,
                     toggleSelectedMethod,
                     collapseListener,
@@ -59,8 +55,14 @@ const StripeUPEDescription: FunctionComponent<{ onUnhandledError?(error: Error):
         <>
             <style>
                 {`
+                    .form-checklist-item:has(#${containerId}) .form-checklist-body {
+                        margin: 0 !important;
+                    }
+
+                    .form-checklist-item:has(#${containerId}) .payment-widget,
+                    .form-checklist-item:has(#${containerId}) .paymentMethod--hosted,
                     .form-checklist-item:has(#${containerId}) .form-label {
-                        padding: 0;
+                        padding: 0 !important;
                     }
                     
                     .form-checklist-item:has(#${containerId})  .paymentProviderHeader-container {
@@ -83,7 +85,7 @@ const StripeUPEDescription: FunctionComponent<{ onUnhandledError?(error: Error):
         <>
             <div data-test={containerId} id={containerId} />
 
-            {!!isAccordionView && addStyles()}
+            {addStyles()}
         </>
     )
 }
