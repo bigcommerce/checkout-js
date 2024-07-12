@@ -8,8 +8,8 @@ import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale
 import { getStoreConfig } from '../../config/config.mock';
 
 import HostedCreditCardCodeField from './HostedCreditCardCodeField';
-import HostedCreditCardNumberField from './HostedCreditCardNumberField';
 import HostedCreditCardExpiryField from './HostedCreditCardExpiryField';
+import HostedCreditCardNumberField from './HostedCreditCardNumberField';
 import HostedCreditCardValidation, {
     HostedCreditCardValidationProps,
 } from './HostedCreditCardValidation';

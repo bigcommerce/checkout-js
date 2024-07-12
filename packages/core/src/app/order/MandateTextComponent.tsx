@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from 'react';
+
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 export interface MandateTextComponentProps {
@@ -22,7 +23,7 @@ export const MandateTextComponent: FunctionComponent<MandateTextComponentProps> 
         <ul data-test='order-confirmation-mandate-text-list'>
             {Object.entries(mandateText).map((field, index) => {
                 return (
-                    <li key={index} data-test={`order-confirmation-mandate-text-list-item-${index}`}>
+                    <li data-test={`order-confirmation-mandate-text-list-item-${index}`} key={index}>
                         <TranslatedString
                             id={`order_confirmation.mandate.${providerId}.${methodId}.${field[0]}`}
                         />:

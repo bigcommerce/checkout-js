@@ -250,14 +250,14 @@ export default function withHostedPayPalCommerceCreditCardFieldset<
                         cardCodeId={
                             shouldRenderHostedFieldsWithInstrument ? getHostedFieldId('ccCvv') : undefined
                         }
-                        cardNumberId={
-                            shouldRenderHostedFieldsWithInstrument
-                                ? getHostedFieldId('ccNumber')
-                                : undefined
-                        }
                         cardExpiryId={
                             shouldRenderHostedFieldsWithInstrument
                                 ? getHostedFieldId('ccExpiry')
+                                : undefined
+                        }
+                        cardNumberId={
+                            shouldRenderHostedFieldsWithInstrument
+                                ? getHostedFieldId('ccNumber')
                                 : undefined
                         }
                         focusedFieldType={focusedFieldType}

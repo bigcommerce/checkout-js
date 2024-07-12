@@ -8,7 +8,6 @@ import { CheckoutButtonProps, isEmbedded } from '@bigcommerce/checkout/payment-i
 import GooglePayButton from './GooglePayButton';
 
 jest.mock('@bigcommerce/checkout/payment-integration-api', () => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return {
         ...jest.requireActual('@bigcommerce/checkout/payment-integration-api'),
         isEmbedded: jest.fn(() => false),
@@ -38,7 +37,6 @@ describe('GooglePayButton', () => {
     });
 
     it('calls error callback if checkout is embedded', () => {
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         (isEmbedded as jest.Mock).mockReturnValue(true);
 
         mount(<GooglePayButton {...defaultProps} />);

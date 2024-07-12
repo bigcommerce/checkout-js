@@ -1,8 +1,8 @@
 import { PaymentMethod } from '@bigcommerce/checkout-sdk';
 import { ObjectSchema } from 'yup';
 
-import PaymentFormValues from './PaymentFormValues';
 import PaymentFormErrors from './PaymentFormErrors';
+import PaymentFormValues from './PaymentFormValues';
 
 export default interface PaymentFormService {
     disableSubmit(method: PaymentMethod, disabled?: boolean): void;

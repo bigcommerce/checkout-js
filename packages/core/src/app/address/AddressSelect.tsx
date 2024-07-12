@@ -46,8 +46,8 @@ const AddressSelectMenu: FunctionComponent<AddressSelectProps> = ({
                 key={address.id}
             >
                 <a
-                    href="#"
                     data-test="address-select-option-action"
+                    href="#"
                     onClick={preventDefault(() => onSelectAddress(address))}
                 >
                     <StaticAddress address={address} type={type} />

@@ -1,6 +1,6 @@
 import { CustomerInitializeOptions } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, useCallback, useContext } from 'react';
 import { noop } from 'lodash';
+import React, { FunctionComponent, useCallback, useContext } from 'react';
 
 import { LocaleContext } from '@bigcommerce/checkout/locale';
 

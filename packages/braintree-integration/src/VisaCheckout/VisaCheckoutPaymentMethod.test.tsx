@@ -118,7 +118,7 @@ describe('when using Visa Checkout payment', () => {
                 gatewayId: method.gateway,
                 [method.id]: {
                     onError: defaultProps.onUnhandledError,
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
                     onPaymentSelect: expect.any(Function),
                 },
             }),
@@ -128,11 +128,9 @@ describe('when using Visa Checkout payment', () => {
     it('reinitializes method once payment option is selected', async () => {
         render(<VisaCheckoutPaymentMethodTest {...defaultProps} method={method} />);
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/consistent-type-assertions
         const options: PaymentInitializeOptions = (checkoutService.initializePayment as jest.Mock)
             .mock.calls[0][0];
 
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         (checkoutService.initializePayment as jest.Mock).mockReset();
 
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -143,7 +141,7 @@ describe('when using Visa Checkout payment', () => {
         expect(checkoutService.deinitializePayment).toHaveBeenCalledWith({ methodId: method.id });
         expect(checkoutService.initializePayment).toHaveBeenCalledWith({
             methodId: method.id,
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
             [method.id]: expect.any(Object),
         });
     });
@@ -154,7 +152,6 @@ describe('when using Visa Checkout payment', () => {
             Promise.reject(new Error('test error')),
         );
 
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/consistent-type-assertions
         const options: PaymentInitializeOptions = (checkoutService.initializePayment as jest.Mock)
             .mock.calls[0][0];
 
@@ -166,7 +163,7 @@ describe('when using Visa Checkout payment', () => {
         expect(checkoutService.deinitializePayment).toHaveBeenCalledWith({ methodId: method.id });
         expect(checkoutService.initializePayment).toHaveBeenCalledWith({
             methodId: method.id,
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
             [method.id]: expect.any(Object),
         });
 

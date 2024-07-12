@@ -67,8 +67,8 @@ const CheckoutButtonContainer: FunctionComponent<CheckoutButtonContainerProps & 
                 isShowingWalletButtonsOnTop={true}
                 key={methodId}
                 methodId={methodId}
-                onError={onUnhandledError}
                 onClick={onWalletButtonClick}
+                onError={onUnhandledError}
             />
         }
 

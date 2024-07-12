@@ -120,6 +120,7 @@ describe('Checkout', () => {
         it('render component with proper id', async () => {
             render(<CheckoutTest {...defaultProps} />);
             await checkout.waitForCustomerStep();
+
             const wrapper = screen.getByTestId('checkout-page-container');
 
             expect(wrapper).toBeInTheDocument();

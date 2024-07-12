@@ -133,7 +133,7 @@ describe('when using Klarna payment', () => {
             expect.objectContaining({
                 methodId: method.id,
                 gatewayId: method.gateway,
-                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+
                 [`${method.id}`]: {
                     container: `#${method.id}Widget`,
                 },

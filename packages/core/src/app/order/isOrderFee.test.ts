@@ -1,6 +1,7 @@
-import { getOrderFee } from "./orders.mock";
-import isOrderFee from "./isOrderFee";
 import { Fee } from "@bigcommerce/checkout-sdk";
+
+import isOrderFee from "./isOrderFee";
+import { getOrderFee } from "./orders.mock";
 
 describe('isOrderFee()', () => {
   describe('when the fee is an order fee', () => {

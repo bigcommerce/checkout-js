@@ -11,8 +11,9 @@ import { Modal, ModalHeader } from '../../ui/modal';
 import computeErrorCode from './computeErrorCode';
 import ErrorCode from './ErrorCode';
 import isCustomError from './isCustomError';
-import isRequestError from './isRequestError';
 import isHtmlError from './isHtmlError';
+import isRequestError from './isRequestError';
+
 import { CustomError } from './index';
 
 export interface ErrorModalProps {

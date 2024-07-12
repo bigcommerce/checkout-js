@@ -11,6 +11,7 @@ import { act } from 'react-dom/test-utils';
 
 import { AnalyticsContextProps, AnalyticsEvents, AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import { createErrorLogger } from '../common/error';
@@ -24,7 +25,6 @@ import { getOrder } from './orders.mock';
 import OrderStatus from './OrderStatus';
 import OrderSummary from './OrderSummary';
 import ThankYouHeader from './ThankYouHeader';
-import { LocaleProvider } from '@bigcommerce/checkout/locale';
 
 describe('OrderConfirmation', () => {
     let checkoutService: CheckoutService;

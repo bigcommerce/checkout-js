@@ -25,8 +25,8 @@ describe('PayPalCommerceButton', () => {
                     deinitialize={noop}
                     initialize={initialize}
                     methodId="paypalcommerce"
-                    onError={error}
                     onClick={jest.fn()}
+                    onError={error}
                 />
             </LocaleContext.Provider>
         );

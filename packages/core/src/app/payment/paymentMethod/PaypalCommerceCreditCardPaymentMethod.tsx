@@ -1,9 +1,9 @@
 import React, { FunctionComponent, useCallback } from 'react';
 
 import { WithInjectedHostedCreditCardFieldsetProps } from '../hostedCreditCard';
+import withHostedPayPalCommerceCreditCardFieldset from '../hostedCreditCard/withHostedPayPalCommerceCreditCardFieldset';
 
 import CreditCardPaymentMethod, { CreditCardPaymentMethodProps } from './CreditCardPaymentMethod';
-import withHostedPayPalCommerceCreditCardFieldset from '../hostedCreditCard/withHostedPayPalCommerceCreditCardFieldset';
 
 export type PaypalCommerceCreditCardPaymentMethodProps = CreditCardPaymentMethodProps;
 

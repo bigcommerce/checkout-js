@@ -1,7 +1,7 @@
 import { RequestError } from '@bigcommerce/checkout-sdk';
+import { screen } from '@testing-library/react';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
-import { screen } from '@testing-library/react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 
@@ -12,6 +12,7 @@ import { Modal } from '../../ui/modal';
 
 import ErrorCode from './ErrorCode';
 import ErrorModal, { ErrorModalProps } from './ErrorModal';
+
 import { CustomError } from './index';
 
 describe('ErrorModal', () => {
@@ -126,6 +127,7 @@ describe('ErrorModal', () => {
             it('display links with correct href',  () => {
                 const link1 = screen.getByRole('link', { name: 'Ratepay Data Privacy Statement' });
                 const link2 = screen.getByRole('link', { name: 'contact form.' });
+
                 expect(link1).toHaveAttribute('href', 'https://www.ratepay.com/en/ratepay-data-privacy-statement/');
                 expect(link2).toHaveAttribute('href', 'https://www.ratepay.com/en/contact/');
             });

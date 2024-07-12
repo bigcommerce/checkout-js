@@ -89,7 +89,7 @@ describe('StaticBillingAddress', () => {
         });
 
         it('should not show label if PayPal Fastlane is enabled but no PP addresses available', () => {
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+             
             (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
                 isPayPalFastlaneEnabled: true,
                 paypalFastlaneAddresses: [],
@@ -101,7 +101,7 @@ describe('StaticBillingAddress', () => {
         });
 
         it('should show label if PayPal Axo is enabled and address match to PP address', () => {
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+             
             (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
                 isPayPalFastlaneEnabled: true,
                 paypalFastlaneAddresses: [getAddress()],

@@ -13,9 +13,9 @@ import React, { FunctionComponent, memo, useContext } from 'react';
 import { isPayPalFastlaneMethod, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { FormContext } from '@bigcommerce/checkout/ui';
 
-import ShippingAddressForm from './ShippingAddressForm';
 import { AmazonPayShippingAddress } from './AmazonPayShippingAddress';
 import { PayPalFastlaneShippingAddress } from './PayPalFastlaneShippingAddress';
+import ShippingAddressForm from './ShippingAddressForm';
 
 export interface ShippingAddressProps {
     addresses: CustomerAddress[];
@@ -82,8 +82,8 @@ const ShippingAddress: FunctionComponent<ShippingAddressProps> = (props) => {
         return (
             <PayPalFastlaneShippingAddress
                 { ...props }
-                shippingAddress={shippingAddress}
                 methodId={methodId}
+                shippingAddress={shippingAddress}
             />
         )
     }

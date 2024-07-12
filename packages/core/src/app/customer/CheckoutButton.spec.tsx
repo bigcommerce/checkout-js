@@ -16,8 +16,8 @@ describe('CheckoutButton', () => {
                 deinitialize={noop}
                 initialize={initialize}
                 methodId="foobar"
-                onError={onError}
                 onClick={onClick}
+                onError={onError}
             />,
         );
 
@@ -42,8 +42,8 @@ describe('CheckoutButton', () => {
                 deinitialize={deinitialize}
                 initialize={noop}
                 methodId="foobar"
-                onError={onError}
                 onClick={onClick}
+                onError={onError}
             />,
         );
 

@@ -221,9 +221,9 @@ describe('CreateAccountForm Component', () => {
             <LocaleContext.Provider value={localeContext}>
                 <CreateAccountForm
                     formFields={formFields}
+                    isCreatingAccount={true}
                     onSubmit={onSubmit}
                     requiresMarketingConsent={true}
-                    isCreatingAccount={true}
                 />
             </LocaleContext.Provider>,
         );
@@ -240,9 +240,9 @@ describe('CreateAccountForm Component', () => {
             <LocaleContext.Provider value={localeContext}>
                 <CreateAccountForm
                     formFields={formFields}
+                    isExecutingPaymentMethodCheckout={true}
                     onSubmit={onSubmit}
                     requiresMarketingConsent={true}
-                    isExecutingPaymentMethodCheckout={true}
                 />
             </LocaleContext.Provider>,
         );

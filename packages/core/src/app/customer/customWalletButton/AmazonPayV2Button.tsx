@@ -26,6 +26,7 @@ const beautifyAmazonButton = (): void => {
 
     if (container && amazonButton) {
         amazonButton.style.height = '36px';
+
         return;
     }
 
