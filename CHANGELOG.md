@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.508.0](https://github.com/bigcommerce/checkout-js/compare/v1.507.0...v1.508.0) (2024-07-12)
+
+
+### Features
+
+* **checkout:** CHECKOUT-8281 Add 3 New Checkout Extension Regions ([#1922](https://github.com/bigcommerce/checkout-js/issues/1922)) ([fe4a899](https://github.com/bigcommerce/checkout-js/commit/fe4a8993795787177ce3207bd2c2754fc72d3971))
+
 ## [1.507.0](https://github.com/bigcommerce/checkout-js/compare/v1.506.3...v1.507.0) (2024-07-11)
 
 
