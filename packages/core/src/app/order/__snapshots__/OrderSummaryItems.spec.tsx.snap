@@ -24,7 +24,8 @@ exports[`OrderSummaryItems when it has 4 line items or less renders product list
       productOptions={
         Array [
           Object {
-            "content": "n v",
+            "optionLabel": "n",
+            "optionValue": "v",
             "testId": "cart-item-product-option",
           },
         ]
@@ -70,7 +71,8 @@ exports[`OrderSummaryItems when it has 4 line items or less renders product list
       productOptions={
         Array [
           Object {
-            "content": "m l",
+            "optionLabel": "m",
+            "optionValue": "l",
             "testId": "cart-item-product-option",
           },
           Object {

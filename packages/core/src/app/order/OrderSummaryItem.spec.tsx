@@ -18,7 +18,8 @@ describe('OrderSummaryItems', () => {
                     productOptions={[
                         {
                             testId: 'test-id',
-                            content: <span />,
+                            optionLabel: 'Color',
+                            optionValue: 'Red',
                         },
                     ]}
                     quantity={2}
