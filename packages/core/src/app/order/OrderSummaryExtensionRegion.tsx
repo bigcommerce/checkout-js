@@ -21,6 +21,7 @@ export const ExtensionRegionSummaryAfter = () => {
         isExtensionEnabled() &&
         extensionService.isRegionEnabled(ExtensionRegion.SummaryAfter);
 
+    // TODO: Replace below with custom hook
     useEffect(() => {
         if (isSummaryAfterExtensionRegionEnabled) {
             void extensionService.renderExtension(
