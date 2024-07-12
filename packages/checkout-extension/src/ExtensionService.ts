@@ -32,22 +32,36 @@ export class ExtensionService {
             return;
         }
 
+        const disabledPreloadRegions = [
+            ExtensionRegion.SummaryAfter,
+            ExtensionRegion.SummaryLastItemAfter,
+        ];
+
         extensions?.forEach((extension) => {
+            if (disabledPreloadRegions.includes(extension.region)) {
+                return;
+            }
+
             const url = new URL(extension.url);
 
             url.searchParams.set('extensionId', extension.id);
             url.searchParams.set('cartId', cartId);
             url.searchParams.set('parentOrigin', parentOrigin);
 
-            const link = document.createElement('link');
+            const iframe = document.createElement('iframe');
 
-            link.rel = 'preload';
-            link.as = 'document';
-            link.href = url.toString();
+            iframe.src = url.toString();
+            iframe.style.display = 'none';
 
-            const head = document.head;
+            const removeIframe = () => {
+                if (iframe.parentNode) {
+                    iframe.parentNode.removeChild(iframe);
+                }
+            };
 
-            head.appendChild(link);
+            iframe.addEventListener('load', removeIframe);
+
+            document.body.appendChild(iframe);
         });
     }
 
