@@ -364,5 +364,5 @@ const MolliePaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
     MolliePaymentMethod,
-    [{ gateway: 'mollie' }],
+    [{ gateway: 'mollie' }, { gateway: 'mollie', id: 'applepay' }],
 );
