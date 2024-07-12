@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.508.1](https://github.com/bigcommerce/checkout-js/compare/v1.508.0...v1.508.1) (2024-07-12)
+
+
+### Bug Fixes
+
+* **checkout:** PI-000 Fixed Mollie ApplePay resolver, bumped checkout sdk ([0571cd4](https://github.com/bigcommerce/checkout-js/commit/0571cd419c2dd201078df7312ab7bee08ca0c945))
+
 ## [1.508.0](https://github.com/bigcommerce/checkout-js/compare/v1.507.0...v1.508.0) (2024-07-12)
 
 
