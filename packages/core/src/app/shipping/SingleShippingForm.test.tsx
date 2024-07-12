@@ -4,6 +4,7 @@ import React from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getAddressFormFields } from '../address/formField.mock';
@@ -46,15 +47,17 @@ describe('SingleShippingForm', () => {
         const localeContext: LocaleContextType = createLocaleContext(getStoreConfig());
 
         render(
-            <LocaleContext.Provider value={localeContext}>
-                <ExtensionProvider checkoutService={checkoutService}>
-                    <SingleShippingForm
-                        {...defaultProps}
-                        {...props}
-                        shippingAutosaveDelay={shippingAutosaveDelay}
-                    />
-                </ExtensionProvider>
-            </LocaleContext.Provider>
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <SingleShippingForm
+                            {...defaultProps}
+                            {...props}
+                            shippingAutosaveDelay={shippingAutosaveDelay}
+                        />
+                    </ExtensionProvider>
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
         );
     };
 

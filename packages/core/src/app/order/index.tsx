@@ -3,3 +3,4 @@ export { OrderSummaryProps } from './OrderSummary';
 export { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 export { default as OrderStatus } from './OrderStatus';
 export { default as getPaymentInstructions } from './getPaymentInstructions';
+export { ExtensionRegionSummaryAfter } from './OrderSummaryExtensionRegion';

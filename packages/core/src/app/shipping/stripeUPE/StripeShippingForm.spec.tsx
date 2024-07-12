@@ -4,9 +4,7 @@ import React from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
-import {
-    CheckoutProvider,
-} from '@bigcommerce/checkout/payment-integration-api';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getAddressFormFields } from '../../address/formField.mock';
 import CheckoutStepType from '../../checkout/CheckoutStepType';

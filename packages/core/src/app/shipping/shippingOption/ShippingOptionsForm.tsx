@@ -89,6 +89,7 @@ class ShippingOptionsForm extends PureComponent<
                             consignmentId={consignment.id}
                             inputName={getRadioInputName(consignment.id)}
                             isLoading={isLoading(consignment.id)}
+                            isMultiShippingMode = {isMultiShippingMode}
                             onSelectedOption={selectShippingOption}
                             selectedShippingOptionId={
                                 consignment.selectedShippingOption &&

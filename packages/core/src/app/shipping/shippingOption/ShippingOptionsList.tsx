@@ -1,5 +1,7 @@
-import { ShippingOption } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo, useCallback } from 'react';
+import { ExtensionRegion, ShippingOption } from '@bigcommerce/checkout-sdk';
+import React, { FunctionComponent, memo, useCallback, useEffect } from 'react';
+
+import { ExtensionRegionContainer, useExtensions } from '@bigcommerce/checkout/checkout-extension';
 
 import { EMPTY_ARRAY } from '../../common/utility';
 import { Checklist, ChecklistItem } from '../../ui/form';
@@ -9,21 +11,49 @@ import StaticShippingOption from './StaticShippingOption';
 
 interface ShippingOptionListItemProps {
     consignmentId: string;
+    isMultiShippingMode: boolean;
+    selectedShippingOptionId?: string;
     shippingOption: ShippingOption;
 }
 
 const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = ({
     consignmentId,
+    isMultiShippingMode,
+    selectedShippingOptionId,
     shippingOption,
 }) => {
+    const isSelected = selectedShippingOptionId === shippingOption.id;
+    const { extensionService, isExtensionEnabled } = useExtensions();
+    const isExtensionRegionEnabled = Boolean(
+        isExtensionEnabled() &&
+            !isMultiShippingMode &&
+            extensionService.isRegionEnabled(ExtensionRegion.ShippingSelectedShippingMethod),
+    );
+
     const renderLabel = useCallback(
         () => (
             <div className="shippingOptionLabel">
                 <StaticShippingOption displayAdditionalInformation={true} method={shippingOption} />
+                {isSelected && isExtensionRegionEnabled && (
+                    <div id={ExtensionRegionContainer.ShippingSelectedShippingMethod} />
+                )}
             </div>
         ),
-        [shippingOption],
+        [isExtensionRegionEnabled, isSelected, shippingOption],
     );
+
+    useEffect(() => {
+        if (isSelected && isExtensionRegionEnabled) {
+            void extensionService.renderExtension(
+                ExtensionRegionContainer.ShippingSelectedShippingMethod,
+                ExtensionRegion.ShippingSelectedShippingMethod,
+            );
+
+            return () => {
+                extensionService.removeListeners(ExtensionRegion.ShippingSelectedShippingMethod);
+            };
+        }
+    }, [extensionService, isExtensionRegionEnabled, isSelected]);
 
     return (
         <ChecklistItem
@@ -38,6 +68,7 @@ export interface ShippingOptionListProps {
     consignmentId: string;
     inputName: string;
     isLoading: boolean;
+    isMultiShippingMode: boolean;
     selectedShippingOptionId?: string;
     shippingOptions?: ShippingOption[];
     onSelectedOption(consignmentId: string, shippingOptionId: string): void;
@@ -47,6 +78,7 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
     consignmentId,
     inputName,
     isLoading,
+    isMultiShippingMode,
     shippingOptions = EMPTY_ARRAY,
     selectedShippingOptionId,
     onSelectedOption,
@@ -73,7 +105,9 @@ const ShippingOptionsList: FunctionComponent<ShippingOptionListProps> = ({
                 {shippingOptions.map((shippingOption) => (
                     <ShippingOptionListItem
                         consignmentId={consignmentId}
+                        isMultiShippingMode={isMultiShippingMode}
                         key={shippingOption.id}
+                        selectedShippingOptionId={selectedShippingOptionId}
                         shippingOption={shippingOption}
                     />
                 ))}

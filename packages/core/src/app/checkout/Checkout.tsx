@@ -38,6 +38,7 @@ import {
 import { getSupportedMethodIds } from '../customer/getSupportedMethods';
 import { SubscribeSessionStorage } from '../customer/SubscribeSessionStorage';
 import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
+import { ExtensionRegionSummaryAfter } from '../order';
 import { PromotionBannerList } from '../promotion';
 import { hasSelectedShippingOptions, isUsingMultiShipping, StaticConsignment } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
@@ -534,6 +535,7 @@ class Checkout extends Component<
                     if (matched) {
                         return (
                             <LazyContainer>
+                                <ExtensionRegionSummaryAfter />
                                 <CartSummaryDrawer />
                             </LazyContainer>
                         );
@@ -543,6 +545,7 @@ class Checkout extends Component<
                         <aside className="layout-cart">
                             <LazyContainer>
                                 <CartSummary />
+                                <ExtensionRegionSummaryAfter />
                             </LazyContainer>
                         </aside>
                     );
