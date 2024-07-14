@@ -111,11 +111,11 @@ const GuestForm: FunctionComponent<
                     <p>
                         <TranslatedString id="customer.login_text" />{' '}
                         <a
-                            tabIndex={0}
-                            role="button"
                             data-test="customer-continue-button"
                             id="checkout-customer-login"
                             onClick={onShowLogin}
+                            role="button"
+                            tabIndex={0}
                         >
                             <TranslatedString id="customer.login_action" />
                         </a>

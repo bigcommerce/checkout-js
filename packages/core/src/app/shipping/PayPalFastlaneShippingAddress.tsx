@@ -1,7 +1,9 @@
-import React, { FC } from 'react';
-import { PayPalFastlaneShippingAddressForm } from '@bigcommerce/checkout/paypal-fastlane-integration';
-import { ShippingAddressProps } from './ShippingAddress';
 import { Address } from '@bigcommerce/checkout-sdk';
+import React, { FC } from 'react';
+
+import { PayPalFastlaneShippingAddressForm } from '@bigcommerce/checkout/paypal-fastlane-integration';
+
+import { ShippingAddressProps } from './ShippingAddress';
 
 interface PayPalFastlaneShippingAddressProps extends ShippingAddressProps {
     methodId: string,

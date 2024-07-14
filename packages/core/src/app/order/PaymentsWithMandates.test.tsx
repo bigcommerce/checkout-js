@@ -1,10 +1,11 @@
 import '@testing-library/jest-dom';
+import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { render, screen } from '@testing-library/react';
 import React, { FunctionComponent } from 'react';
+
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
 
 import { PaymentsWithMandates, PaymentsWithMandatesProps } from './PaymentsWithMandates';
-import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 
 describe('PaymentsWithMandates', () => {
     let PaymentsWithMandatesTest: FunctionComponent<PaymentsWithMandatesProps>;
@@ -37,6 +38,7 @@ describe('PaymentsWithMandates', () => {
                 }
             }],
         }
+
         render(<PaymentsWithMandatesTest {...props} />);
 
         const url = await screen.findByTestId('order-confirmation-mandate-link-text');
@@ -62,6 +64,7 @@ describe('PaymentsWithMandates', () => {
                 }
             }],
         }
+
         render(<PaymentsWithMandatesTest {...props} />);
 
         const id = await screen.findByTestId('order-confirmation-mandate-id-text');
@@ -89,6 +92,7 @@ describe('PaymentsWithMandates', () => {
                 }
             }],
         }
+
         render(<PaymentsWithMandatesTest {...props} />);
 
         const mandateTextList = await screen.findByTestId('order-confirmation-mandate-text-list');

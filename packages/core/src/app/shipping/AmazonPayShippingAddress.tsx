@@ -1,6 +1,7 @@
-import React, { FC, useCallback } from 'react';
-import { memoizeOne } from '@bigcommerce/memoize';
 import { Address, ShippingInitializeOptions } from '@bigcommerce/checkout-sdk';
+import { memoizeOne } from '@bigcommerce/memoize';
+import React, { FC, useCallback } from 'react';
+
 import { ShippingAddressProps } from './ShippingAddress';
 import StaticAddressEditable from './StaticAddressEditable';
 

@@ -25,8 +25,8 @@ describe('ApplePayButton', () => {
                     deinitialize={noop}
                     initialize={initialize}
                     methodId="applepay"
-                    onError={error}
                     onClick={jest.fn()}
+                    onError={error}
                 />
             </LocaleContext.Provider>
         );

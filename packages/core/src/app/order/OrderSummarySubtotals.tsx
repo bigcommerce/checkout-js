@@ -3,9 +3,9 @@ import React, { FunctionComponent, memo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
+import isOrderFee from "./isOrderFee";
 import OrderSummaryDiscount from './OrderSummaryDiscount';
 import OrderSummaryPrice from './OrderSummaryPrice';
-import isOrderFee from "./isOrderFee";
 
 export interface OrderSummarySubtotalsProps {
     coupons: Coupon[];

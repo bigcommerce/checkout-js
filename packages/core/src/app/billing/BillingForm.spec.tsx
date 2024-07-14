@@ -1,10 +1,10 @@
-import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { getAddress } from '@bigcommerce/checkout/test-mocks';
 
 import { AddressForm, AddressSelect } from '../address';
@@ -178,7 +178,7 @@ describe('BillingForm Component', () => {
             address1: 'PP Fastlane address'
         }];
 
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+         
         (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
             isPayPalFastlaneEnabled: true,
             paypalFastlaneAddresses,

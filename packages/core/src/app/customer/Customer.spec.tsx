@@ -123,8 +123,8 @@ describe('Customer', () => {
             const component = mount(
                 <CustomerTest
                     {...defaultProps}
-                    viewType={CustomerViewType.Guest}
                     isExecutingPaymentMethodCheckout={true}
+                    viewType={CustomerViewType.Guest}
                 />
             );
 
@@ -140,9 +140,9 @@ describe('Customer', () => {
             const component = mount(
                 <CustomerTest
                     {...defaultProps}
-                    viewType={CustomerViewType.Guest}
-                    isExecutingPaymentMethodCheckout={false}
                     isContinuingAsGuest={true}
+                    isExecutingPaymentMethodCheckout={false}
+                    viewType={CustomerViewType.Guest}
                 />
             );
 

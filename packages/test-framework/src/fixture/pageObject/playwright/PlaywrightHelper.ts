@@ -67,6 +67,7 @@ export class PlaywrightHelper {
                     },
                 ],
             };
+
             void route.fulfill({
                 status: 200,
                 contentType: 'application/json',

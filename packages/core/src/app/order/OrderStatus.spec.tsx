@@ -4,9 +4,10 @@ import React, { FunctionComponent } from 'react';
 
 import { LocaleProvider, TranslatedHtml } from '@bigcommerce/checkout/locale';
 
+import { getStoreConfig } from '../config/config.mock';
+
 import { getOrder, getOrderWithMandateId, getOrderWithMandateURL } from './orders.mock';
 import OrderStatus, { OrderStatusProps } from './OrderStatus';
-import { getStoreConfig } from '../config/config.mock';
 
 describe('OrderStatus', () => {
     let checkoutService: CheckoutService;
@@ -164,7 +165,7 @@ describe('OrderStatus', () => {
         it('renders message indicating order is incomplete when experiment is on', () => {
             config.checkoutSettings.features['CHECKOUT-6891.update_incomplete_order_wording_on_order_confirmation_page'] = true;
 
-            const orderStatus = mount(<OrderStatusTest {...defaultProps} order={order} config={config} />);
+            const orderStatus = mount(<OrderStatusTest {...defaultProps} config={config} order={order} />);
             const translationProps = orderStatus
                 .find('[data-test="order-confirmation-order-status-text"]')
                 .find(TranslatedHtml)
@@ -345,6 +346,7 @@ describe('OrderStatus', () => {
 
     it('render mandateText list',  () => {
         const order = getOrder();
+
         order.payments = [{
             detail: {
                 step: '1',

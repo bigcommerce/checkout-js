@@ -1,10 +1,11 @@
 import '@testing-library/jest-dom';
+import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { render, screen } from '@testing-library/react';
 import React, { FunctionComponent } from 'react';
+
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
 
 import { MandateTextComponent, MandateTextComponentProps } from './MandateTextComponent';
-import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sdk';
 
 describe('MandateTextComponent',  () => {
     let MandateTextComponentTest: FunctionComponent<MandateTextComponentProps>;
@@ -46,6 +47,7 @@ describe('MandateTextComponent',  () => {
 
     it('renders proper count of li', async () => {
         render(<MandateTextComponentTest {...props}/>);
+
         const items = await screen.findAllByRole('listitem');
 
         expect(items.length).toEqual(3);
@@ -55,6 +57,7 @@ describe('MandateTextComponent',  () => {
         const expectedFirstListItemKey = 'optimized_checkout.order_confirmation.mandate.paypalcommercealternativemethod.ratepay.account_holder_name';
         const expectedSecondListItemKey = 'optimized_checkout.order_confirmation.mandate.paypalcommercealternativemethod.ratepay.iban';
         const expectedThirdListItemKey = 'optimized_checkout.order_confirmation.mandate.paypalcommercealternativemethod.ratepay.payment_reference';
+
         render(<MandateTextComponentTest {...props}/>);
 
         // First li

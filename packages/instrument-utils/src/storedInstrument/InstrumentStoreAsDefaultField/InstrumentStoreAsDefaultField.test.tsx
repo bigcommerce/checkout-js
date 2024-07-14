@@ -1,26 +1,24 @@
-import { Formik } from 'formik';
-import { merge, noop } from 'lodash';
 import {
     CheckoutSelectors,
     CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
-
 import { fireEvent, render, screen } from '@testing-library/react';
+import { Formik } from 'formik';
+import { merge, noop } from 'lodash';
 import React from 'react';
 
 import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
-
-import {
-    getPaymentFormServiceMock,
-    getPaymentMethod,
-    getStoreConfig,
-} from '@bigcommerce/checkout/test-mocks';
 import {
     CheckoutProvider,
     PaymentFormContext,
     PaymentFormService,
 } from '@bigcommerce/checkout/payment-integration-api';
+import {
+    getPaymentFormServiceMock,
+    getPaymentMethod,
+    getStoreConfig,
+} from '@bigcommerce/checkout/test-mocks';
 
 import InstrumentStoreAsDefaultField from './InstrumentStoreAsDefaultField';
 
