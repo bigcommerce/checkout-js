@@ -28,11 +28,8 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
     shouldDisableSubmit,
     isLoading,
 }) => {
-    const { extensionService, isExtensionEnabled } = useExtensions();
-    const isExtensionRegionEnabled = Boolean(
-        isExtensionEnabled() &&
-            extensionService.isRegionEnabled(ExtensionRegion.ShippingShippingAddressFormAfter),
-    );
+    const { extensionService } = useExtensions();
+    const isExtensionRegionEnabled = extensionService.isRegionEnabled(ExtensionRegion.ShippingShippingAddressFormAfter);
 
     useEffect(() => {
         if (isExtensionRegionEnabled) {

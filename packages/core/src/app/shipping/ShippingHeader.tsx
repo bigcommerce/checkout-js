@@ -20,11 +20,8 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
     onMultiShippingChange,
     shouldShowMultiShipping,
 }) => {
-    const { extensionService, isExtensionEnabled } = useExtensions();
-    const isExtensionRegionEnabled = Boolean(
-        isExtensionEnabled() &&
-            extensionService.isRegionEnabled(ExtensionRegion.ShippingShippingAddressFormBefore),
-    );
+    const { extensionService } = useExtensions();
+    const isExtensionRegionEnabled = extensionService.isRegionEnabled(ExtensionRegion.ShippingShippingAddressFormBefore);
 
     useEffect(() => {
         if (isExtensionRegionEnabled) {

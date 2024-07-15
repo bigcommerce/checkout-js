@@ -37,11 +37,8 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     total,
     ...orderSummarySubtotalsProps
 }) => {
-    const { extensionService, isExtensionEnabled } = useExtensions();
-    const isSummaryLastItemAfterExtensionRegionEnabled = Boolean(
-        isExtensionEnabled() &&
-            extensionService.isRegionEnabled(ExtensionRegion.SummaryLastItemAfter),
-    );
+    const { extensionService } = useExtensions();
+    const isSummaryLastItemAfterExtensionRegionEnabled = extensionService.isRegionEnabled(ExtensionRegion.SummaryLastItemAfter);
     const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
     const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
 

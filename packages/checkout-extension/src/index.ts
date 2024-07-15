@@ -1,4 +1,3 @@
-export { isCheckoutExtensionEnabled } from './isCheckoutExtensionEnabled';
 export { ExtensionRegionContainer } from './ExtensionRegionContainer';
 export { ExtensionService } from './ExtensionService';
 export {

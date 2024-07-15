@@ -23,9 +23,8 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
     shippingOption,
 }) => {
     const isSelected = selectedShippingOptionId === shippingOption.id;
-    const { extensionService, isExtensionEnabled } = useExtensions();
+    const { extensionService } = useExtensions();
     const isExtensionRegionEnabled = Boolean(
-        isExtensionEnabled() &&
             !isMultiShippingMode &&
             extensionService.isRegionEnabled(ExtensionRegion.ShippingSelectedShippingMethod),
     );

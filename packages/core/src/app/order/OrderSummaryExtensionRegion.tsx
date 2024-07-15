@@ -13,12 +13,11 @@ export const ExtensionRegionSummaryAfter = () => {
     const extensions = getExtensions();
     const config = getConfig();
     const checkout = getCheckout();
-    const { extensionService, isExtensionEnabled } = useExtensions();
+    const { extensionService } = useExtensions();
     const isSummaryAfterExtensionRegionEnabled =
         extensions &&
         config &&
         checkout &&
-        isExtensionEnabled() &&
         extensionService.isRegionEnabled(ExtensionRegion.SummaryAfter);
 
     // TODO: Replace below with custom hook

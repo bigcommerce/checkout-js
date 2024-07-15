@@ -4,7 +4,6 @@ import React, { ReactNode, useReducer } from 'react';
 import { ExtensionContext } from './ExtensionContext';
 import { extensionReducer } from './ExtensionReducer';
 import { ExtensionService } from './ExtensionService';
-import { isCheckoutExtensionEnabled } from './isCheckoutExtensionEnabled';
 
 export interface ExtensionState {
     isShowingLoadingIndicator: boolean;
@@ -25,15 +24,12 @@ export interface ExtensionProviderProps {
 }
 
 export const ExtensionProvider = ({ checkoutService, children }: ExtensionProviderProps) => {
-    const isExtensionEnabled = () =>
-        isCheckoutExtensionEnabled(checkoutService.getState().data.getConfig()?.checkoutSettings);
     const [extensionState, dispatch] = useReducer(extensionReducer, {
         isShowingLoadingIndicator: false,
     });
     const extensionService = new ExtensionService(checkoutService, dispatch);
 
     const extensionValues = {
-        isExtensionEnabled,
         extensionService,
         extensionState,
     };
