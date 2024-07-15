@@ -45,24 +45,23 @@ describe('ExtensionService', () => {
         jest.spyOn(checkoutService.getState().data, 'getCart').mockReturnValue(getCart());
         jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(getStoreConfig());
         jest.spyOn(document, 'createElement');
-        jest.spyOn(document.head, 'appendChild');
+        jest.spyOn(document.body, 'appendChild');
 
         extensionService.preloadExtensions();
 
-        expect(document.createElement).toHaveBeenCalledWith('link');
-        expect(document.head.appendChild).toHaveBeenCalledTimes(2);
+        expect(document.createElement).toHaveBeenCalledWith('iframe');
+        expect(document.body.appendChild).toHaveBeenCalledTimes(2);
 
-        const linkItems = [
+        const iframeURLs = [
             'https://widget.foo.com/?extensionId=123&cartId=b20deef40f9699e48671bbc3fef6ca44dc80e3c7&parentOrigin=https%3A%2F%2Fstore-k1drp8k8.bcapp.dev',
             'https://widget.bar.com/?extensionId=456&cartId=b20deef40f9699e48671bbc3fef6ca44dc80e3c7&parentOrigin=https%3A%2F%2Fstore-k1drp8k8.bcapp.dev',
         ];
 
-        linkItems.forEach((linkItem, index) => {
-            expect(document.head.appendChild).toHaveBeenNthCalledWith(
+        iframeURLs.forEach((iframeURL, index) => {
+            expect(document.body.appendChild).toHaveBeenNthCalledWith(
                 index + 1,
                 expect.objectContaining({
-                    href: linkItem,
-                    rel: 'preload',
+                    src: iframeURL,
                 }),
             );
         });
