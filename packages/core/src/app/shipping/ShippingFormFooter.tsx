@@ -1,7 +1,7 @@
 import { ExtensionRegion } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent } from 'react';
 
-import { ExtensionRegionContainer, useExtensions } from '@bigcommerce/checkout/checkout-extension';
+import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import { OrderComments } from '../orderComments';
@@ -28,27 +28,9 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
     shouldDisableSubmit,
     isLoading,
 }) => {
-    const { extensionService } = useExtensions();
-    const isExtensionRegionEnabled = extensionService.isRegionEnabled(ExtensionRegion.ShippingShippingAddressFormAfter);
-
-    useEffect(() => {
-        if (isExtensionRegionEnabled) {
-            void extensionService.renderExtension(
-                ExtensionRegionContainer.ShippingShippingAddressFormAfter,
-                ExtensionRegion.ShippingShippingAddressFormAfter,
-            );
-
-            return () => {
-                extensionService.removeListeners(ExtensionRegion.ShippingShippingAddressFormAfter);
-            };
-        }
-    }, [extensionService, isExtensionRegionEnabled]);
-
     return (
         <>
-            {isExtensionRegionEnabled && (
-                <div id={ExtensionRegionContainer.ShippingShippingAddressFormAfter} />
-            )}
+            <Extension region={ExtensionRegion.ShippingShippingAddressFormAfter} />
             <Fieldset
                 id="checkout-shipping-options"
                 legend={

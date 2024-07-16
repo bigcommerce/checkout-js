@@ -7,6 +7,7 @@ import {
     Consignment,
     EmbeddedCheckoutMessenger,
     EmbeddedCheckoutMessengerOptions,
+    ExtensionRegion,
     FlashMessage,
     PaymentMethod,
     Promotion,
@@ -16,7 +17,7 @@ import { find, findIndex } from 'lodash';
 import React, { Component, lazy, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
-import { ExtensionContextProps, withExtension } from '@bigcommerce/checkout/checkout-extension';
+import { Extension, ExtensionContextProps, withExtension } from '@bigcommerce/checkout/checkout-extension';
 import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { AddressFormSkeleton, ChecklistSkeleton } from '@bigcommerce/checkout/ui';
@@ -38,7 +39,6 @@ import {
 import { getSupportedMethodIds } from '../customer/getSupportedMethods';
 import { SubscribeSessionStorage } from '../customer/SubscribeSessionStorage';
 import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
-import { ExtensionRegionSummaryAfter } from '../order';
 import { PromotionBannerList } from '../promotion';
 import { hasSelectedShippingOptions, isUsingMultiShipping, StaticConsignment } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
@@ -535,7 +535,7 @@ class Checkout extends Component<
                     if (matched) {
                         return (
                             <LazyContainer>
-                                <ExtensionRegionSummaryAfter />
+                                <Extension region={ExtensionRegion.SummaryAfter} />
                                 <CartSummaryDrawer />
                             </LazyContainer>
                         );
@@ -545,7 +545,7 @@ class Checkout extends Component<
                         <aside className="layout-cart">
                             <LazyContainer>
                                 <CartSummary />
-                                <ExtensionRegionSummaryAfter />
+                                <Extension region={ExtensionRegion.SummaryAfter} />
                             </LazyContainer>
                         </aside>
                     );

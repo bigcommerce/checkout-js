@@ -1,7 +1,7 @@
 import { ExtensionRegion } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo, useEffect } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
-import { ExtensionRegionContainer, useExtensions } from '@bigcommerce/checkout/checkout-extension';
+import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
@@ -20,27 +20,9 @@ const ShippingHeader: FunctionComponent<ShippingHeaderProps> = ({
     onMultiShippingChange,
     shouldShowMultiShipping,
 }) => {
-    const { extensionService } = useExtensions();
-    const isExtensionRegionEnabled = extensionService.isRegionEnabled(ExtensionRegion.ShippingShippingAddressFormBefore);
-
-    useEffect(() => {
-        if (isExtensionRegionEnabled) {
-            void extensionService.renderExtension(
-                ExtensionRegionContainer.ShippingShippingAddressFormBefore,
-                ExtensionRegion.ShippingShippingAddressFormBefore,
-            );
-
-            return () => {
-                extensionService.removeListeners(ExtensionRegion.ShippingShippingAddressFormBefore);
-            };
-        }
-    }, [extensionService, isExtensionRegionEnabled]);
-
     return (
         <>
-            {isExtensionRegionEnabled && (
-                <div id={ExtensionRegionContainer.ShippingShippingAddressFormBefore} />
-            )}
+            <Extension region={ExtensionRegion.ShippingShippingAddressFormBefore} />
             <div className="form-legend-container">
                 <Legend testId="shipping-address-heading">
                     <TranslatedString
