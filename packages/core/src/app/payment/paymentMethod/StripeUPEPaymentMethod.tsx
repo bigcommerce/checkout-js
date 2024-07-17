@@ -109,7 +109,9 @@ const StripeUPEPaymentMethod: FunctionComponent<
         return true;
     }
 
-    return null;
+    if (method.initializationData?.accordion) {
+        return null;
+    }
 
     return (
         <>

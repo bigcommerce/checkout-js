@@ -18,25 +18,40 @@ const StripeUPEDescription: FunctionComponent<{ onUnhandledError?(error: Error):
         collapseStripeElement.current = collapseElement;
     };
 
+    const toggleSelectedMethod = (id: string) => {
+        onToggle(id);
+    };
+
     useEffect(() => {
         console.log('initializePayment StripeUPEDescription');
 
-        try {
-            checkoutService.initializePayment({
+        const initMEthod = async () => {
+            try {
+                await checkoutService.initializePayment({
+                    gatewayId: PaymentMethodId.StripeUPE,
+                    methodId: 'card',
+                    stripeupe: {
+                        containerId,
+                        render,
+                        toggleSelectedMethod,
+                        collapseListener,
+                    },
+                });
+            } catch (error) {
+                if (error instanceof Error) {
+                    onUnhandledError?.(error);
+                }
+            }
+        };
+
+        initMEthod();
+
+        return () => {
+            checkoutService.deinitializePayment({
                 gatewayId: PaymentMethodId.StripeUPE,
                 methodId: 'card',
-                stripeupe: {
-                    containerId,
-                    render,
-                    toggleSelectedMethod,
-                    collapseListener,
-                },
             });
-        } catch (error) {
-            if (error instanceof Error) {
-                onUnhandledError?.(error);
-            }
-        }
+        };
     }, []);
 
     useEffect(() => {
@@ -46,10 +61,6 @@ const StripeUPEDescription: FunctionComponent<{ onUnhandledError?(error: Error):
 
         collapseStripeElement.current?.();
     }, [selectedItemId]);
-
-    const toggleSelectedMethod = (id: string) => {
-        onToggle(id);
-    };
 
     const addStyles = () => (
         <>
@@ -67,6 +78,7 @@ const StripeUPEDescription: FunctionComponent<{ onUnhandledError?(error: Error):
                     
                     .form-checklist-item:has(#${containerId})  .paymentProviderHeader-container {
                         display: block;
+                        padding: 20px;
                     }
 
                     .form-checklist-item:has(#${containerId}) .form-label::before,

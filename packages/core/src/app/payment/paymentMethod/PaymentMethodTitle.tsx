@@ -222,7 +222,13 @@ function getPaymentMethodTitle(
                     method.method === 'iban'
                         ? language.translate('payment.stripe_sepa_display_name_text')
                         : methodName,
-                subtitle: (props: { onUnhandledError?(error: Error): void }) => <StripeUPEDescription {...props} />
+                subtitle: (props: { onUnhandledError?(error: Error): void }) => {
+                    if (!method.initializationData?.accordion) {
+                        return null;
+                    }
+
+                    return <StripeUPEDescription {...props} />;
+                }
             },
             [PaymentMethodId.WorldpayAccess]: {
                 logoUrl: '',
