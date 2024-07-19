@@ -95,7 +95,7 @@ describe('OrderSummaryDrawer', () => {
 
             expect(orderSummary.find(OrderSummaryModal).props()).toMatchObject({
                 ...mapToOrderSummarySubtotalsProps(getOrder()),
-                lineItems: getOrder().lineItems,
+                items: getOrder().lineItems,
                 total: getOrder().orderAmount,
                 storeCurrency: getStoreConfig().currency,
                 shopperCurrency: getStoreConfig().shopperCurrency,
@@ -116,7 +116,7 @@ describe('OrderSummaryDrawer', () => {
 
             expect(orderSummary.find(OrderSummaryModal).props()).toMatchObject({
                 ...mapToOrderSummarySubtotalsProps(getOrder()),
-                lineItems: getOrder().lineItems,
+                items: getOrder().lineItems,
                 total: getOrder().orderAmount,
                 storeCurrency: getStoreConfig().currency,
                 shopperCurrency: getStoreConfig().shopperCurrency,

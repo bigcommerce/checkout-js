@@ -31,7 +31,7 @@ describe('OrderSummaryModal', () => {
                 isOpen={true}
                 {...mapToOrderSummarySubtotalsProps(order)}
                 additionalLineItems="foo"
-                lineItems={order.lineItems}
+                items={order.lineItems}
                 shopperCurrency={getStoreConfig().shopperCurrency}
                 storeCurrency={getStoreConfig().currency}
                 total={order.orderAmount}
@@ -85,7 +85,7 @@ describe('OrderSummaryModal', () => {
                 <OrderSummaryModal
                     {...mapToOrderSummarySubtotalsProps(taxIncludedOrder)}
                     isOpen={true}
-                    lineItems={taxIncludedOrder.lineItems}
+                    items={taxIncludedOrder.lineItems}
                     shopperCurrency={getStoreConfig().shopperCurrency}
                     storeCurrency={getStoreConfig().currency}
                     total={taxIncludedOrder.orderAmount}
@@ -127,7 +127,7 @@ describe('OrderSummaryModal', () => {
                         {...mapToOrderSummarySubtotalsProps(getOrder())}
                         isOpen={true}
                         isUpdatedCartSummayModal={true}
-                        lineItems={getOrder().lineItems}
+                        items={getOrder().lineItems}
                         shopperCurrency={getStoreConfig().shopperCurrency}
                         storeCurrency={getStoreConfig().currency}
                         total={getOrder().orderAmount}

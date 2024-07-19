@@ -3,7 +3,7 @@ import {
     ShopperCurrency as ShopperCurrencyType,
     StoreCurrency,
 } from '@bigcommerce/checkout-sdk';
-import React, { cloneElement, FunctionComponent, isValidElement, ReactNode, useMemo } from 'react';
+import React, { cloneElement, FunctionComponent, isValidElement, ReactNode } from 'react';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
@@ -20,11 +20,10 @@ import OrderSummaryPrice from './OrderSummaryPrice';
 import OrderSummarySection from './OrderSummarySection';
 import OrderSummarySubtotals, { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 import OrderSummaryTotal from './OrderSummaryTotal';
-import removeBundledItems from './removeBundledItems';
 
 export interface OrderSummaryDrawerProps {
     additionalLineItems?: ReactNode;
-    lineItems: LineItemMap;
+    items: LineItemMap;
     total: number;
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrencyType;
@@ -48,16 +47,15 @@ const OrderSummaryModal: FunctionComponent<
     shopperCurrency,
     isOpen,
     headerLink,
-    lineItems,
+    items,
     total,
     ...orderSummarySubtotalsProps
 }) => {
-    const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
     const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
 
     const subHeaderText = <OrderModalSummarySubheader
         amountWithCurrency={<ShopperCurrency amount={total} />}
-        items={lineItems}
+        items={items}
         shopperCurrencyCode={shopperCurrency.code}
         storeCurrencyCode={storeCurrency.code}
     />;
