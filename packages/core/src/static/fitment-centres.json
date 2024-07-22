@@ -668,5 +668,75 @@
         "phone": "02 9597 5702",
         "latitude": -33.9597111,
         "longitude": 151.1449401
+    },
+    {
+        "company": "Custom Outfitters",
+        "street": "3/3 Holbeche Road",
+        "suburb": "Arndell Park",
+        "state": "NSW",
+        "postcode": "2148",
+        "phone": "0439 205 292",
+        "latitude": -33.787131,
+        "longitude": 150.872849
+    },
+    {
+        "company": "TJM Campbelltown",
+        "street": "29 Blaxland Rd",
+        "suburb": "Campbelltown",
+        "state": "NSW",
+        "postcode": "2560",
+        "phone": "02 4631 8855",
+        "latitude": -34.05791,
+        "longitude": 150.81530
+    },
+    {
+        "company": "Taree Offroad",
+        "street": "Unit 26/28 Oxley St",
+        "suburb": "Taree",
+        "state": "NSW",
+        "postcode": "2430",
+        "phone": "02 6551 2479",
+        "latitude": -31.90326,
+        "longitude": 152.4767
+    },
+    {
+        "company": "West Sydney 4x4",
+        "street": "125 Bombay St",
+        "suburb": "Lidcombe",
+        "state": "NSW",
+        "postcode": "2141",
+        "phone": "02 9735 8433",
+        "latitude": -33.85174,
+        "longitude": 151.05303
+    },
+    {
+        "company": "Coffs harbour 4x4 & Outdoor",
+        "street": "1 Halls Rd",
+        "suburb": "Coffs Harbour",
+        "state": "NSW",
+        "postcode": "2450",
+        "phone": "02 6656 8760",
+        "latitude": -30.30537,
+        "longitude": 153.100730
+    },
+    {
+        "company": "Rural 4x4 Cowra",
+        "street": "13/15 Young Rd",
+        "suburb": "Cowra",
+        "state": "NSW",
+        "postcode": "2794",
+        "phone": "02 6326 2047",
+        "latitude": -33.83658,
+        "longitude": 148.67807
+    },
+    {
+        "company": "Rural 4x4 Tumut",
+        "street": "48 Adelong Rd",
+        "suburb": "Tumut",
+        "state": "NSW",
+        "postcode": "2720",
+        "phone": "02 6947 1959",
+        "latitude": -35.29590,
+        "longitude": 148.2122
     }
 ]
