@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.509.0](https://github.com/bigcommerce/checkout-js/compare/v1.508.5...v1.509.0) (2024-07-22)
+
+
+### Features
+
+* **payment:** STRIPE-383 japanese states added ([d35e029](https://github.com/bigcommerce/checkout-js/commit/d35e029398b061b44e0c58ec78ca559d690a7038))
+
 ### [1.508.5](https://github.com/bigcommerce/checkout-js/compare/v1.508.4...v1.508.5) (2024-07-22)
 
 ### [1.508.4](https://github.com/bigcommerce/checkout-js/compare/v1.508.3...v1.508.4) (2024-07-16)
