@@ -31,7 +31,7 @@ describe('OrderSummaryModal', () => {
                 isOpen={true}
                 {...mapToOrderSummarySubtotalsProps(order)}
                 additionalLineItems="foo"
-                lineItems={order.lineItems}
+                items={order.lineItems}
                 shopperCurrency={getStoreConfig().shopperCurrency}
                 storeCurrency={getStoreConfig().currency}
                 total={order.orderAmount}
@@ -42,37 +42,6 @@ describe('OrderSummaryModal', () => {
     it('renders order summary', () => {
         expect(orderSummary).toMatchSnapshot();
     });
-
-    describe('it renders order summary modal for bundled items', () => {
-        it('filters bundled items from line items', () => {
-            const lineItems: LineItemMap = {
-                physicalItems: [],
-                digitalItems: [],
-                giftCertificates: [],
-                customItems: [],
-            };
-
-            lineItems.physicalItems.push(getPhysicalItem(), { ...getPhysicalItem(), id: '888', parentId: 'test' })
-
-            const order = { ...getOrder(), lineItems };
-
-            orderSummary = shallow(
-                <OrderSummaryModal
-                    isOpen={true}
-                    {...mapToOrderSummarySubtotalsProps(order)}
-                    additionalLineItems="foo"
-                    lineItems={order.lineItems}
-                    shopperCurrency={getStoreConfig().shopperCurrency}
-                    storeCurrency={getStoreConfig().currency}
-                    total={order.orderAmount}
-                />,
-            );
-
-            const itemsComponent = orderSummary.find(OrderSummaryItems);
-
-            expect(itemsComponent.props().items.physicalItems).toHaveLength(1);
-        });
-    })
 
     describe('when taxes are inclusive', () => {
         it('displays tax as summary section', () => {
@@ -85,7 +54,7 @@ describe('OrderSummaryModal', () => {
                 <OrderSummaryModal
                     {...mapToOrderSummarySubtotalsProps(taxIncludedOrder)}
                     isOpen={true}
-                    lineItems={taxIncludedOrder.lineItems}
+                    items={taxIncludedOrder.lineItems}
                     shopperCurrency={getStoreConfig().shopperCurrency}
                     storeCurrency={getStoreConfig().currency}
                     total={taxIncludedOrder.orderAmount}
@@ -126,8 +95,7 @@ describe('OrderSummaryModal', () => {
                     <OrderSummaryModal
                         {...mapToOrderSummarySubtotalsProps(getOrder())}
                         isOpen={true}
-                        isUpdatedCartSummayModal={true}
-                        lineItems={getOrder().lineItems}
+                        items={getOrder().lineItems}
                         shopperCurrency={getStoreConfig().shopperCurrency}
                         storeCurrency={getStoreConfig().currency}
                         total={getOrder().orderAmount}

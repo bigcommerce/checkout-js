@@ -95,7 +95,7 @@ describe('OrderSummaryDrawer', () => {
 
             expect(orderSummary.find(OrderSummaryModal).props()).toMatchObject({
                 ...mapToOrderSummarySubtotalsProps(getOrder()),
-                lineItems: getOrder().lineItems,
+                items: getOrder().lineItems,
                 total: getOrder().orderAmount,
                 storeCurrency: getStoreConfig().currency,
                 shopperCurrency: getStoreConfig().shopperCurrency,
@@ -116,12 +116,36 @@ describe('OrderSummaryDrawer', () => {
 
             expect(orderSummary.find(OrderSummaryModal).props()).toMatchObject({
                 ...mapToOrderSummarySubtotalsProps(getOrder()),
-                lineItems: getOrder().lineItems,
+                items: getOrder().lineItems,
                 total: getOrder().orderAmount,
                 storeCurrency: getStoreConfig().currency,
                 shopperCurrency: getStoreConfig().shopperCurrency,
                 additionalLineItems: 'foo',
             });
         });
+    });
+
+    it('renders correct summary for line items for bundled products', () => {
+        order.lineItems.physicalItems.push({ ...getPhysicalItem(), id: '888', parentId: 'test' });
+
+        orderSummary = mount(
+            <CheckoutProvider checkoutService={createCheckoutService()}>
+                <LocaleContext.Provider value={localeContext}>
+                    <OrderSummaryDrawer
+                        {...mapToOrderSummarySubtotalsProps(order)}
+                        additionalLineItems="foo"
+                        headerLink={<PrintLink />}
+                        lineItems={order.lineItems}
+                        shopperCurrency={getStoreConfig().shopperCurrency}
+                        storeCurrency={getStoreConfig().currency}
+                        total={order.orderAmount}
+                    />
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
+        );
+
+        const summaryModal = orderSummary.find(OrderSummaryModal);
+
+        expect(summaryModal.props().items.physicalItems).toHaveLength(1);
     });
 });

@@ -4,7 +4,7 @@ import {
     StoreCurrency,
 } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
-import React, { FunctionComponent, memo, ReactNode, useCallback } from 'react';
+import React, { FunctionComponent, memo, ReactNode, useCallback, useMemo } from 'react';
 
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
@@ -16,12 +16,12 @@ import getItemsCount from './getItemsCount';
 import getLineItemsCount from './getLineItemsCount';
 import OrderSummaryModal from './OrderSummaryModal';
 import { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
+import removeBundledItems from './removeBundledItems';
 
 export interface OrderSummaryDrawerProps {
     lineItems: LineItemMap;
     total: number;
     headerLink: ReactNode;
-    isUpdatedCartSummayModal?: boolean,
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrencyType;
     additionalLineItems?: ReactNode;
@@ -37,7 +37,6 @@ const OrderSummaryDrawer: FunctionComponent<
     handlingAmount,
     headerLink,
     isTaxIncluded,
-    isUpdatedCartSummayModal,
     lineItems,
     onRemovedCoupon,
     onRemovedGiftCertificate,
@@ -51,6 +50,8 @@ const OrderSummaryDrawer: FunctionComponent<
     total,
     fees,
 }) => {
+    const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
+
     const renderModal = useCallback(
         (props) => (
             <OrderSummaryModal
@@ -64,8 +65,7 @@ const OrderSummaryDrawer: FunctionComponent<
                 handlingAmount={handlingAmount}
                 headerLink={headerLink}
                 isTaxIncluded={isTaxIncluded}
-                isUpdatedCartSummayModal={isUpdatedCartSummayModal}
-                lineItems={lineItems}
+                items={nonBundledLineItems}
                 onRemovedCoupon={onRemovedCoupon}
                 onRemovedGiftCertificate={onRemovedGiftCertificate}
                 shippingAmount={shippingAmount}
@@ -85,7 +85,7 @@ const OrderSummaryDrawer: FunctionComponent<
             handlingAmount,
             headerLink,
             isTaxIncluded,
-            lineItems,
+            nonBundledLineItems,
             onRemovedCoupon,
             onRemovedGiftCertificate,
             giftWrappingAmount,
@@ -111,15 +111,15 @@ const OrderSummaryDrawer: FunctionComponent<
                 >
                     <figure
                         className={classNames('cartDrawer-figure', {
-                            'cartDrawer-figure--stack': getLineItemsCount(lineItems) > 1,
+                            'cartDrawer-figure--stack': getLineItemsCount(nonBundledLineItems) > 1,
                         })}
                     >
-                        <div className="cartDrawer-imageWrapper">{getImage(lineItems)}</div>
+                        <div className="cartDrawer-imageWrapper">{getImage(nonBundledLineItems)}</div>
                     </figure>
                     <div className="cartDrawer-body">
                         <h3 className="cartDrawer-items optimizedCheckout-headingPrimary">
                             <TranslatedString
-                                data={{ count: getItemsCount(lineItems) }}
+                                data={{ count: getItemsCount(nonBundledLineItems) }}
                                 id="cart.item_count_text"
                             />
                         </h3>
