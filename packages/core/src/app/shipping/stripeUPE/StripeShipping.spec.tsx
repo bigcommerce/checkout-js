@@ -4,6 +4,7 @@ import React, { FunctionComponent } from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { LocaleProvider } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getAddressFormFields } from '../../address/formField.mock';
 import CheckoutStepType from '../../checkout/CheckoutStepType';
@@ -41,11 +42,13 @@ describe('Stripe Shipping Component', () => {
         };
 
         ComponentTest = (props) => (
-            <LocaleProvider checkoutService={checkoutService}>
-                <ExtensionProvider checkoutService={checkoutService}>
-                    <StripeShipping {...defaultProps} {...props} />
-                </ExtensionProvider>
-            </LocaleProvider>
+            <CheckoutProvider checkoutService={checkoutService} >
+                <LocaleProvider checkoutService={checkoutService}>
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <StripeShipping {...defaultProps} {...props} />
+                    </ExtensionProvider>
+                </LocaleProvider>
+            </CheckoutProvider>
         );
     });
 

@@ -1,5 +1,7 @@
-export { isCheckoutExtensionEnabled } from './isCheckoutExtensionEnabled';
-export { ExtensionRegionContainer } from './ExtensionRegionContainer';
+export {
+    ExtensionRegionContainer,
+    extensionRegionToContainerMap,
+} from './ExtensionRegionContainer';
 export { ExtensionService } from './ExtensionService';
 export {
     ExtensionState,
@@ -11,3 +13,4 @@ export { ExtensionContextProps, ExtensionContext } from './ExtensionContext';
 export { withExtension } from './withExtension';
 export { getExtensions } from './Extension.mock';
 export { useExtensions } from './useExtensions';
+export { Extension } from './Extension';
