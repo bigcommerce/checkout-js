@@ -12,6 +12,7 @@ import { BasicFormField, Fieldset, Form, Legend } from '../ui/form';
 import EmailField from './EmailField';
 import SubscribeField from './SubscribeField';
 import { SubscribeSessionStorage } from './SubscribeSessionStorage';
+import FastlanePrivacySettings from "./FastlanePrivacySettings";
 
 function getShouldSubscribeValue(requiresMarketingConsent: boolean, defaultShouldSubscribe: boolean) {
     if (SubscribeSessionStorage.getSubscribeStatus()) {
@@ -84,7 +85,6 @@ const GuestForm: FunctionComponent<
                             <BasicFormField name="shouldSubscribe" render={renderField} />
                         )}
                     </div>
-
                     <div
                         className={classNames('form-actions customerEmail-action', {
                             'customerEmail-floating--enabled': isFloatingLabelEnabled,
@@ -100,6 +100,7 @@ const GuestForm: FunctionComponent<
                         >
                             <TranslatedString id={continueAsGuestButtonLabelId} />
                         </Button>
+                        <FastlanePrivacySettings />
                     </div>
                 </div>
 

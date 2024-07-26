@@ -25,6 +25,32 @@ export function getPaymentMethod(): PaymentMethod {
     };
 }
 
+export function getBraintreeAcceleratedCheckoutPaymentMethod(): PaymentMethod {
+    return {
+        id: 'braintreeacceleratedcheckout',
+        gateway: undefined,
+        logoUrl: '',
+        method: 'credit-card',
+        supportedCards: ['VISA', 'AMEX', 'MC'],
+        initializationData: {
+            payPalCreditProductBrandName: { credit: '' },
+            isFastlanePrivacySettingEnabled: true,
+        },
+        config: {
+            displayName: 'braintree',
+            cardCode: true,
+            enablePaypal: undefined,
+            hasDefaultStoredInstrument: false,
+            helpText: '',
+            is3dsEnabled: undefined,
+            isVisaCheckoutEnabled: undefined,
+            merchantId: undefined,
+            testMode: false,
+        },
+        type: 'PAYMENT_TYPE_API',
+    };
+}
+
 export function getPaypalCreditPaymentMethod(): PaymentMethod {
     return {
         config: {},
