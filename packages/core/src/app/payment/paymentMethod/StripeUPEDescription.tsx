@@ -78,7 +78,7 @@ const StripeUPEDescription: FunctionComponent<{ onUnhandledError?(error: Error):
                     
                     .form-checklist-item:has(#${containerId})  .paymentProviderHeader-container {
                         display: block;
-                        padding: 20px;
+                        // padding: 20px;
                     }
 
                     .form-checklist-item:has(#${containerId}) .form-label::before,

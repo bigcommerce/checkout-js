@@ -9,6 +9,7 @@ import { Checklist, ChecklistItem } from '../../ui/form';
 import getUniquePaymentMethodId, { parseUniquePaymentMethodId } from './getUniquePaymentMethodId';
 import PaymentMethodTitle from './PaymentMethodTitle';
 import PaymentMethodV2 from './PaymentMethodV2';
+import StripeUPEDescription from './StripeUPEDescription';
 
 export interface PaymentMethodListProps {
     isEmbedded?: boolean;
@@ -49,37 +50,55 @@ const PaymentMethodList: FunctionComponent<
     );
 
     return (
-        <Checklist
-            defaultSelectedItemId={values.paymentProviderRadio}
-            isDisabled={isInitializingPayment}
-            name="paymentProviderRadio"
-            onSelect={handleSelect}
-        >
-            {methods.map((method) => {
-                const value = getUniquePaymentMethodId(method.id, method.gateway);
-                const showOnlyOnMobileDevices = get(
-                    method,
-                    'initializationData.showOnlyOnMobileDevices',
-                    false,
-                );
+        <>
+            <StripeUPEDescription />
 
-                if (showOnlyOnMobileDevices && !isMobile()) {
-                    return;
-                }
+            {/* <div className="payments-separator" >
+                <span>or</span>
+            </div> */}
 
-                return (
-                    <PaymentMethodListItem
-                        isDisabled={isInitializingPayment}
-                        isEmbedded={isEmbedded}
-                        isUsingMultiShipping={isUsingMultiShipping}
-                        key={value}
-                        method={method}
-                        onUnhandledError={onUnhandledError}
-                        value={value}
-                    />
-                );
-            })}
-        </Checklist>
+            <Checklist
+                defaultSelectedItemId={values.paymentProviderRadio}
+                isDisabled={isInitializingPayment}
+                name="paymentProviderRadio"
+                onSelect={handleSelect}
+            >
+                {methods.map((method) => {
+                    if (method.gateway === 'stripeupe') {
+                        return;
+                    }
+
+                    const value = getUniquePaymentMethodId(method.id, method.gateway);
+                    const showOnlyOnMobileDevices = get(
+                        method,
+                        'initializationData.showOnlyOnMobileDevices',
+                        false,
+                    );
+
+                    if (showOnlyOnMobileDevices && !isMobile()) {
+                        return;
+                    }
+
+                    return (
+                        <PaymentMethodListItem
+                            isDisabled={isInitializingPayment}
+                            isEmbedded={isEmbedded}
+                            isUsingMultiShipping={isUsingMultiShipping}
+                            key={value}
+                            method={method}
+                            onUnhandledError={onUnhandledError}
+                            value={value}
+                        />
+                    );
+                })}
+            </Checklist>
+
+            {/* <div className="payments-separator" >
+                <span>or</span>
+            </div>
+
+            <StripeUPEDescription /> */}
+        </>
     );
 };
 

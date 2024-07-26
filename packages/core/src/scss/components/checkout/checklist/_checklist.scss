@@ -258,3 +258,29 @@
 //         }
 //     }
 // }
+
+// TODO: demo only
+.payments-separator {
+    $separator-color: rgba(0,0,0, .4);
+
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: stretch;
+    align-items: center;
+    margin: 2rem 0;
+    color: $separator-color;
+    font-size: 1rem;
+
+    & > span {
+        flex: 0 0 auto;
+        padding: 0 1rem;
+    }
+
+    &:before,
+    &:after {
+        content: "";
+        height: 1px;
+        flex: 1 1 auto;
+        border-bottom: 1px solid $separator-color;
+    }
+}
