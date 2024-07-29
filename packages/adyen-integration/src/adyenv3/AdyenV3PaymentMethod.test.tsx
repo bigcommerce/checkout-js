@@ -213,7 +213,6 @@ describe('when using AdyenV3 payment', () => {
                 screen.getByText(defaultAdyenProps.language.translate('common.close_action')),
                 'onRequestClose',
             );
-
             expect(cancelAdditionalActionModalFlow).toHaveBeenCalledTimes(1);
         });
     });
