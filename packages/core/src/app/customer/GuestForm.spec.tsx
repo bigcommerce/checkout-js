@@ -7,11 +7,19 @@ import { getStoreConfig } from '../config/config.mock';
 import { PrivacyPolicyField } from '../privacyPolicy';
 
 import GuestForm, { GuestFormProps } from './GuestForm';
+import { CheckoutContext } from '@bigcommerce/checkout/payment-integration-api';
+import {
+    CheckoutSelectors,
+    CheckoutService,
+    createCheckoutService
+} from '@bigcommerce/checkout-sdk/';
 
 describe('GuestForm', () => {
     let defaultProps: GuestFormProps;
     let localeContext: LocaleContextType;
     let TestComponent: FunctionComponent<Partial<GuestFormProps>>;
+    let checkoutService: CheckoutService;
+    let checkoutState: CheckoutSelectors;
 
     beforeEach(() => {
         defaultProps = {
@@ -24,13 +32,16 @@ describe('GuestForm', () => {
             onShowLogin: jest.fn(),
             requiresMarketingConsent: false,
         };
-
+        checkoutService = createCheckoutService();
+        checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
 
         TestComponent = (props) => (
-            <LocaleContext.Provider value={localeContext}>
-                <GuestForm {...defaultProps} {...props} />
-            </LocaleContext.Provider>
+            <CheckoutContext.Provider value={{ checkoutService, checkoutState }}>
+                <LocaleContext.Provider value={localeContext}>
+                    <GuestForm {...defaultProps} {...props} />
+                </LocaleContext.Provider>
+            </CheckoutContext.Provider>
         );
     });
 

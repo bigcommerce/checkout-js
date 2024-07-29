@@ -12,6 +12,7 @@ import { BasicFormField, Fieldset, Form, Legend } from '../ui/form';
 import EmailField from './EmailField';
 import SubscribeField from './SubscribeField';
 import { SubscribeSessionStorage } from './SubscribeSessionStorage';
+import { EmailWatermark } from './index';
 
 function getShouldSubscribeValue(requiresMarketingConsent: boolean, defaultShouldSubscribe: boolean) {
     if (SubscribeSessionStorage.getSubscribeStatus()) {
@@ -79,7 +80,7 @@ const GuestForm: FunctionComponent<
                 <div className="customerEmail-container">
                     <div className="customerEmail-body">
                         <EmailField isFloatingLabelEnabled={isFloatingLabelEnabled} onChange={onChangeEmail}/>
-
+                        <EmailWatermark />
                         {(canSubscribe || requiresMarketingConsent) && (
                             <BasicFormField name="shouldSubscribe" render={renderField} />
                         )}

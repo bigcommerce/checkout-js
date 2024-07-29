@@ -24,6 +24,11 @@
     }
 }
 
+.emailWatermark-container {
+    display: flex;
+    justify-content: end;
+}
+
 .customerEmail-action {
     @include grid-column($collapse: true, $columns: $total-columns);
 

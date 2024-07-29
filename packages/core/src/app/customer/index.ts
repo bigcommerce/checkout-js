@@ -11,3 +11,4 @@ export {
 } from './getPasswordRequirements';
 export { SUPPORTED_METHODS } from './CheckoutButtonList';
 export { default as CheckoutButtonContainer } from './CheckoutButtonContainer';
+export { default as EmailWatermark } from './EmailWatermark';
