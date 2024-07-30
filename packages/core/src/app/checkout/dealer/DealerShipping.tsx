@@ -493,8 +493,7 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
     const { assignItem, onUnhandledError, getFields } = this.props;
     
     const FFLItemIds = this.props.fflConsignmentItems.map(item => { return item.itemId });
-
-    const nonFFLItems = this.props.cart.lineItems.physicalItems.filter(item => !(FFLItemIds.includes(item.id)));
+    const nonFFLItems = this.props.cart.lineItems.physicalItems.filter(item => !(FFLItemIds.includes(item.id)) && item.parentId == null);
 
     const nonFFLItemsMap = nonFFLItems.map(item => {
         let container = {};
