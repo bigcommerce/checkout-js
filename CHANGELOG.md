@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.513.0](https://github.com/bigcommerce/checkout-js/compare/v1.512.1...v1.513.0) (2024-07-31)
+
+
+### Features
+
+* **payment:** PI-2428 Google Pay on TD Online Mart - check if FE is working correctly, adjust communication FE -> BE ([#1942](https://github.com/bigcommerce/checkout-js/issues/1942)) ([8afa57a](https://github.com/bigcommerce/checkout-js/commit/8afa57a49b30f90e7de0f034259df8aa1c28a79e))
+
 ### [1.512.1](https://github.com/bigcommerce/checkout-js/compare/v1.512.0...v1.512.1) (2024-07-29)
 
 ## [1.512.0](https://github.com/bigcommerce/checkout-js/compare/v1.511.0...v1.512.0) (2024-07-29)
