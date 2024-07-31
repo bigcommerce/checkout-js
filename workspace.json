@@ -24,6 +24,7 @@
     "hosted-widget-integration": "packages/hosted-widget-integration",
     "instrument-utils": "packages/instrument-utils",
     "klarna-integration": "packages/klarna-integration",
+    "stripe-integration": "packages/stripe-integration",
     "legacy-hoc": "packages/legacy-hoc",
     "locale": "packages/locale",
     "mollie-integration": "packages/mollie-integration",
