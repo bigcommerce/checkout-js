@@ -14,6 +14,7 @@
     "checkoutcom-integration": "packages/checkoutcom-integration",
     "core": "packages/core",
     "credit-card-integration": "packages/credit-card-integration",
+    "digitalriver-integration": "packages/digitalriver-integration",
     "dom-utils": "packages/dom-utils",
     "error-handling-utils": "packages/error-handling-utils",
     "google-pay-integration": "packages/google-pay-integration",
