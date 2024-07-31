@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.514.0](https://github.com/bigcommerce/checkout-js/compare/v1.513.0...v1.514.0) (2024-07-31)
+
+
+### Features
+
+* **checkout:** PI-1540 Refactor Digital River payment strategy ([16f2d63](https://github.com/bigcommerce/checkout-js/commit/16f2d63f01d612bc6920b32ea8f86c3d2a71fe4a))
+
 ## [1.513.0](https://github.com/bigcommerce/checkout-js/compare/v1.512.1...v1.513.0) (2024-07-31)
 
 
