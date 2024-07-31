@@ -1,34 +1,35 @@
 import { noop } from 'lodash';
 import React, { FunctionComponent, useCallback, useContext } from 'react';
-import { Omit } from 'utility-types';
 
-import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { HostedDropInPaymentMethodComponent } from '@bigcommerce/checkout/hosted-dropin-integration';
+import {
+    CustomError,
+    PaymentMethodProps,
+    PaymentMethodResolveId,
+    toResolvableComponent,
+} from '@bigcommerce/checkout/payment-integration-api';
 import { FormContext } from '@bigcommerce/checkout/ui';
-
-import { CustomError } from '../../common/error';
-import { connectFormik, ConnectFormikProps } from '../../common/form';
-
-import HostedDropInPaymentMethod from './HostedDropInPaymentMethod';
-import { HostedWidgetPaymentMethodProps } from './HostedWidgetPaymentMethod';
-
-export type DigitalRiverPaymentMethodProps = Omit<HostedWidgetPaymentMethodProps, 'containerId'> &
-    ConnectFormikProps<PaymentFormValues>;
 
 export enum DigitalRiverClasses {
     base = 'form-input optimizedCheckout-form-input',
 }
 
-const DigitalRiverPaymentMethod: FunctionComponent<
-    DigitalRiverPaymentMethodProps & WithLanguageProps
-> = ({ initializePayment, language, onUnhandledError = noop, formik: { submitForm }, ...rest }) => {
+const DigitalRiverPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
+    language,
+    checkoutService,
+    checkoutState,
+    paymentForm,
+    method,
+    onUnhandledError = noop,
+    ...rest
+}) => {
     const { setSubmitted } = useContext(FormContext);
-    const containerId = `${rest.method.id}-component-field`;
-    const isVaultingEnabled = rest.method.config.isVaultingEnabled;
+    const containerId = `${method.id}-component-field`;
+    const isVaultingEnabled = method.config.isVaultingEnabled;
 
     const initializeDigitalRiverPayment = useCallback(
         (options) =>
-            initializePayment({
+            checkoutService.initializePayment({
                 ...options,
                 digitalriver: {
                     containerId,
@@ -47,7 +48,7 @@ const DigitalRiverPaymentMethod: FunctionComponent<
                     },
                     onSubmitForm: () => {
                         setSubmitted(true);
-                        submitForm();
+                        paymentForm.submitForm();
                     },
                     onError: () => {
                         onUnhandledError(
@@ -57,11 +58,11 @@ const DigitalRiverPaymentMethod: FunctionComponent<
                 },
             }),
         [
-            initializePayment,
+            checkoutService,
             containerId,
             isVaultingEnabled,
             setSubmitted,
-            submitForm,
+            paymentForm,
             onUnhandledError,
             language,
         ],
@@ -81,14 +82,23 @@ const DigitalRiverPaymentMethod: FunctionComponent<
     };
 
     return (
-        <HostedDropInPaymentMethod
+        <HostedDropInPaymentMethodComponent
             {...rest}
+            checkoutService={checkoutService}
+            checkoutState={checkoutState}
             containerId={containerId}
+            deinitializePayment={checkoutService.deinitializePayment}
             hideVerificationFields
             initializePayment={initializeDigitalRiverPayment}
+            language={language}
+            method={method}
             onUnhandledError={onError}
+            paymentForm={paymentForm}
         />
     );
 };
 
-export default connectFormik(withLanguage(DigitalRiverPaymentMethod));
+export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
+    DigitalRiverPaymentMethod,
+    [{ id: 'digitalriver' }],
+);
