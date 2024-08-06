@@ -48,7 +48,6 @@ export interface MultiShippingFormProps {
     countries?: Country[];
     countriesWithAutocomplete: string[];
     googleMapsApiKey?: string;
-    shouldShowAddAddressInCheckout: boolean;
     isFloatingLabelEnabled?: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     onCreateAccount(): void;
@@ -216,19 +215,10 @@ class MultiShippingForm extends PureComponent<
         });
     };
 
-    private handleUseNewAddress: (address: Address, itemId: string, itemKey: string) => void = (
-        address,
+    private handleUseNewAddress: (itemId: string, itemKey: string) => void = (
         itemId,
         itemKey,
     ) => {
-        const { onUseNewAddress, shouldShowAddAddressInCheckout } = this.props;
-
-        if (!shouldShowAddAddressInCheckout) {
-            onUseNewAddress(address, itemId);
-
-            return;
-        }
-
         this.setState({
             itemAddingAddress: {
                 key: itemKey,

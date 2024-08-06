@@ -40,7 +40,6 @@ export interface ShippingFormProps {
     shippingAddress?: Address;
     shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
-    shouldShowAddAddressInCheckout: boolean;
     isFloatingLabelEnabled?: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
@@ -90,7 +89,6 @@ const ShippingForm = ({
     shippingAddress,
     shouldShowOrderComments,
     shouldShowSaveAddress,
-    shouldShowAddAddressInCheckout,
     signOut,
     updateAddress,
     isShippingStepPending,
@@ -135,7 +133,6 @@ const ShippingForm = ({
             onSubmit={onMultiShippingSubmit}
             onUnhandledError={onUnhandledError}
             onUseNewAddress={onUseNewAddress}
-            shouldShowAddAddressInCheckout={shouldShowAddAddressInCheckout}
             shouldShowOrderComments={shouldShowOrderComments}
         />
     ) : (
