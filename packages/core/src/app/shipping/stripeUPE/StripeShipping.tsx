@@ -24,7 +24,6 @@ export interface StripeShippingProps {
     isShippingStepPending: boolean;
     methodId?: string;
     shippingAddress?: Address;
-    shouldShowAddAddressInCheckout: boolean;
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
     onReady?(): void;

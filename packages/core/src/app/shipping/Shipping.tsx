@@ -65,7 +65,6 @@ export interface WithCheckoutShippingProps {
     isShippingStepPending: boolean;
     methodId?: string;
     shippingAddress?: Address;
-    shouldShowAddAddressInCheckout: boolean;
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
     providerWithCustomCheckout?: string;
@@ -369,7 +368,6 @@ export function mapToShippingProps({
     const {
         checkoutSettings: {
             enableOrderComments,
-            features,
             hasMultiShippingEnabled,
             googleMapsApiKey,
         },
@@ -422,8 +420,6 @@ export function mapToShippingProps({
         providerWithCustomCheckout,
         shippingAddress,
         shouldShowMultiShipping,
-        shouldShowAddAddressInCheckout:
-            features['CHECKOUT-4726.add_address_in_multishipping_checkout'],
         shouldShowOrderComments: enableOrderComments,
         signOut: checkoutService.signOutCustomer,
         unassignItem: checkoutService.unassignItemsToAddress,
