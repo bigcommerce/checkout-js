@@ -100,6 +100,7 @@
 
     &:checked ~ .form-label::after {
         background-color: color("highlight");
+        // background-color: rgb(5, 112, 222);
     }
 }
 
@@ -212,3 +213,74 @@
         will-change: $loading-skeleton-will-change;
     }
 }
+
+
+// TODO: demo only similar to stripe
+// .form-checklist-checkbox ~ .form-label {
+//     &::before,
+//     &::after {
+//         // @include square(26px);
+//         @include square(16px);
+//     }
+
+//     &::after {
+//         // transform: scale(0.66);
+//         transform: scale(0.5);
+//     }
+
+//     &::before {
+//         // border: $input-border-width $input-border-style $input-border-color;
+//         border: 1.5px $input-border-style rgb(109, 110, 120);
+//     }
+// }
+
+// .form-checklist-checkbox {
+//     &:checked ~ .form-label::after {
+//         // background-color: color("highlight");
+//         background-color: rgb(5, 112, 222);
+//     }
+// }
+
+// TODO: for demo only
+// .checkout-step:not(.checkout-step--payment) {
+//     .form-checklist-checkbox ~ .form-label {
+//         &::before,
+//         &::after {
+//             border-left-width: 20px;
+//             border-top-width: 10px;
+//             border-top-color: transparent !important;
+//             border-bottom-width: 10px;
+//             border-bottom-color: transparent !important;
+//             border-right-width: 0;
+//             border-radius: 0;
+//             width: 0;
+//             height: 0;
+//         }
+//     }
+// }
+
+// TODO: demo only
+// .payments-separator {
+//     $separator-color: rgba(0,0,0, .4);
+
+//     display: flex;
+//     flex-wrap: nowrap;
+//     justify-content: stretch;
+//     align-items: center;
+//     margin: 2rem 0;
+//     color: $separator-color;
+//     font-size: 1rem;
+
+//     & > span {
+//         flex: 0 0 auto;
+//         padding: 0 1rem;
+//     }
+
+//     &:before,
+//     &:after {
+//         content: "";
+//         height: 1px;
+//         flex: 1 1 auto;
+//         border-bottom: 1px solid $separator-color;
+//     }
+// }

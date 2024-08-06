@@ -49,6 +49,8 @@ const StripeUPEPaymentMethod: FunctionComponent<
                 const formLabel = getStylesFromElement(`${containerId}--label`, ['color']);
                 const formError = getStylesFromElement(`${containerId}--error`, ['color']);
 
+                console.log('initializePayment StripeUPE Inner');
+
                 paymentContext?.hidePaymentSubmitButton(method, true);
 
                 return initializePayment({
@@ -105,6 +107,10 @@ const StripeUPEPaymentMethod: FunctionComponent<
         } 
 
         return true;
+    }
+
+    if (method.initializationData?.accordion) {
+        return null;
     }
 
     return (
