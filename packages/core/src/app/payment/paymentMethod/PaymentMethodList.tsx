@@ -9,7 +9,7 @@ import { Checklist, ChecklistItem } from '../../ui/form';
 import getUniquePaymentMethodId, { parseUniquePaymentMethodId } from './getUniquePaymentMethodId';
 import PaymentMethodTitle from './PaymentMethodTitle';
 import PaymentMethodV2 from './PaymentMethodV2';
-import StripeUPEDescription from './StripeUPEDescription';
+// import StripeUPEDescription from './StripeUPEDescription';
 
 export interface PaymentMethodListProps {
     isEmbedded?: boolean;
@@ -51,7 +51,7 @@ const PaymentMethodList: FunctionComponent<
 
     return (
         <>
-            <StripeUPEDescription />
+            {/* <StripeUPEDescription /> */}
 
             {/* <div className="payments-separator" >
                 <span>or</span>
@@ -64,9 +64,9 @@ const PaymentMethodList: FunctionComponent<
                 onSelect={handleSelect}
             >
                 {methods.map((method) => {
-                    if (method.gateway === 'stripeupe') {
-                        return;
-                    }
+                    // if (method.gateway === 'stripeupe') {
+                    //     return;
+                    // }
 
                     const value = getUniquePaymentMethodId(method.id, method.gateway);
                     const showOnlyOnMobileDevices = get(
