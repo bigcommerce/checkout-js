@@ -67,6 +67,7 @@ export interface WithCheckoutShippingProps {
     shippingAddress?: Address;
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
+    shouldRenderWhileLoading: boolean;
     providerWithCustomCheckout?: string;
     isFloatingLabelEnabled?: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
@@ -132,6 +133,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             step,
             isFloatingLabelEnabled,
             shouldRenderStripeForm,
+            shouldRenderWhileLoading,
             ...shippingFormProps
         } = this.props;
 
@@ -159,7 +161,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         }
 
         return (
-            <AddressFormSkeleton isLoading={isInitializing}>
+            <AddressFormSkeleton isLoading={isInitializing} renderWhileLoading={shouldRenderWhileLoading}>
                 <div className="checkout-form">
                     <ShippingHeader
                         isGuest={isGuest}
@@ -368,6 +370,7 @@ export function mapToShippingProps({
     const {
         checkoutSettings: {
             enableOrderComments,
+            features,
             hasMultiShippingEnabled,
             googleMapsApiKey,
         },
@@ -419,6 +422,7 @@ export function mapToShippingProps({
         methodId,
         providerWithCustomCheckout,
         shippingAddress,
+        shouldRenderWhileLoading: features['CHECKOUT-8300.improve_extension_performance'] ?? true,
         shouldShowMultiShipping,
         shouldShowOrderComments: enableOrderComments,
         signOut: checkoutService.signOutCustomer,

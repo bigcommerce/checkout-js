@@ -8,7 +8,7 @@ import {
 import { mount, ReactWrapper } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
-import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { Extension, ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
@@ -33,6 +33,13 @@ jest.mock('./stripeUPE/StripeShipping', () => {
     }
 
     return StripeShipping;
+  });
+
+jest.mock('@bigcommerce/checkout/checkout-extension', () => {
+    return {
+        ...jest.requireActual('@bigcommerce/checkout/checkout-extension'),
+        Extension: jest.fn(() => <></>),
+    };
   });
 
 describe('Shipping Component', () => {
@@ -231,7 +238,7 @@ describe('Shipping Component', () => {
         expect(handleReady).toHaveBeenCalled();
     });
 
-    it('does not render ShippingForm while initializing', () => {
+    it('does render ShippingForm while initializing', () => {
         jest.spyOn(
             checkoutService.getState().statuses,
             'isLoadingShippingCountries',
@@ -239,7 +246,7 @@ describe('Shipping Component', () => {
 
         component = mount(<ComponentTest {...defaultProps} />);
 
-        expect(component.find(ShippingForm)).toHaveLength(0);
+        expect(component.find(ShippingForm)).toHaveLength(1);
     });
 
     it('updates shipping and billing if shipping address is changed and billingSameAsShipping', async () => {
@@ -573,5 +580,11 @@ describe('Shipping Component', () => {
                 });
             });
         });
+    });
+
+    it('loads extension', () => {
+        mount(<ComponentTest {...defaultProps} />);
+
+        expect(Extension).toHaveBeenCalled();
     });
 });
