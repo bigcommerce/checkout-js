@@ -456,13 +456,6 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
   };
 
   private handleUseNewAddress: (address: Address, itemId: string, itemKey: string) => void = (address, itemId, itemKey) => {
-      const { shouldShowAddAddressInCheckout } = this.props;
-
-      if (!shouldShowAddAddressInCheckout) {
-          this.onUseNewAddress(address, itemId);
-          return;
-      }
-
       this.setState({
           itemAddingAddress: {
               key: itemKey,
