@@ -20,13 +20,8 @@ test.describe('Bolt Embedded', () => {
                 body: orderPayment,
             });
         });
-        // Optional: Add mockups.
-        // await checkout.route('https://pay.google.com/gp/p/js/pay.js', './packages/e2e/src/sampleTests/support/googlePay.mock.js');
-        // await page.route(/.*\/api\/storefront\/orders\/390.*/, route => route.fulfill({...responseProps, body: order390 }));
-
         // Playwright actions
         await checkout.goto();
-        // await page.pause();
 
         await page
             .frameLocator('#credit-card-input')
@@ -37,8 +32,6 @@ test.describe('Bolt Embedded', () => {
             .getByPlaceholder('Expiration (MM/YY)')
             .fill('08 / 29');
         await page.frameLocator('#credit-card-input').getByPlaceholder('CVV').fill('111');
-        // await page.getByRole('button', { name: 'Bolt Place Order' }).click();
-        // await page.getByRole('button', { name: 'Ok' }).click();
 
         await checkout.placeOrder();
 
