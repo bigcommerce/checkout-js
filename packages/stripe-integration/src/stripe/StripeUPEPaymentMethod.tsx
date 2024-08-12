@@ -158,5 +158,5 @@ const StripeUPEPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
 
 export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
     StripeUPEPaymentMethod,
-    [{ gateway: 'stripeupe' }],
+    [{ gateway: 'stripeupe' }, { gateway: 'stripeupe', id: 'klarna' }],
 );
