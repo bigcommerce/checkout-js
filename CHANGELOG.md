@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.518.0](https://github.com/bigcommerce/checkout-js/compare/v1.517.9...v1.518.0) (2024-08-13)
+
+
+### Features
+
+* **payment:** STRIPE-418 StripeUPE E2E tests added ([cc4076f](https://github.com/bigcommerce/checkout-js/commit/cc4076f1f4aa6c86796ccb12e0e9829fa8fbf208))
+
 ### [1.517.9](https://github.com/bigcommerce/checkout-js/compare/v1.517.8...v1.517.9) (2024-08-13)
 
 ### [1.517.8](https://github.com/bigcommerce/checkout-js/compare/v1.517.7...v1.517.8) (2024-08-12)
