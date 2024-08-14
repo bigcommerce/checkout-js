@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.519.0](https://github.com/bigcommerce/checkout-js/compare/v1.518.0...v1.519.0) (2024-08-14)
+
+
+### Features
+
+* **checkout:** PI-1555 Integration tests for Digital River ([0ba5ee1](https://github.com/bigcommerce/checkout-js/commit/0ba5ee1cf46457fb40d8cfd4eb94aee8361faf51))
+
 ## [1.518.0](https://github.com/bigcommerce/checkout-js/compare/v1.517.9...v1.518.0) (2024-08-13)
 
 
