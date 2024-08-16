@@ -101,7 +101,7 @@ const ShippingForm = ({
         shouldShowPayPalFastlaneShippingForm,
     } = usePayPalFastlaneAddress();
 
-    const shippingAddresses = isPayPalFastlaneEnabled
+    const shippingAddresses = isPayPalFastlaneEnabled && isGuest
         ? paypalFastlaneAddresses
         : addresses;
 
