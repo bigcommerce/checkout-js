@@ -17,6 +17,7 @@ import React, { Component, ReactNode } from 'react';
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
 import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { isPayPalFastlaneMethod } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { CustomerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
@@ -191,6 +192,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             isExpressPrivacyPolicy,
             isPaymentDataRequired,
             shouldRenderStripeForm,
+            providerWithCustomCheckout,
         } = this.props;
 
         const checkoutButtons = isWalletButtonsOnTop || !isPaymentDataRequired
@@ -240,6 +242,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 onContinueAsGuest={this.handleContinueAsGuest}
                 onShowLogin={this.handleShowLogin}
                 privacyPolicyUrl={privacyPolicyUrl}
+                shouldShowEmailWatermark={isPayPalFastlaneMethod(providerWithCustomCheckout)}
                 requiresMarketingConsent={requiresMarketingConsent}
             />
         );

@@ -23,6 +23,7 @@ describe('GuestForm', () => {
 
     beforeEach(() => {
         defaultProps = {
+            shouldShowEmailWatermark: false,
             canSubscribe: true,
             continueAsGuestButtonLabelId: 'customer.continue',
             defaultShouldSubscribe: false,
