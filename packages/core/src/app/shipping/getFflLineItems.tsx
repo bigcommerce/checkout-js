@@ -27,9 +27,20 @@ export default async function getFflLineItems(token: string, cart: Cart): Promis
     })
   )
 
-  const fflProductIds = fflProducts.map((product: StoreProduct) => product.node.entityId)
+  const ammoProducts = data.site.products.edges.filter((product: StoreProduct) =>
+    product.node.customFields.edges.some((edge: any) => {
+      return edge.node.name.toLowerCase() == 'ammo'
+          && edge.node.value.toLowerCase() == 'yes';
+    })
+  )
 
-  return cart.lineItems.physicalItems.filter((item) => fflProductIds.includes(item.productId))
+  const fflProductIds = fflProducts.map((product: StoreProduct) => product.node.entityId)
+  const ammoProductIds = ammoProducts.map((product: StoreProduct) => product.node.entityId)
+
+  return [
+    cart.lineItems.physicalItems.filter((item) => fflProductIds.includes(item.productId)),
+    cart.lineItems.physicalItems.filter((item) => ammoProductIds.includes(item.productId))
+  ]
 }
 
 function loadProductsWithCustomFields(token: string, cart: Cart): Promise<any> {
