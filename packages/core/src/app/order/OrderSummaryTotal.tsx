@@ -37,6 +37,7 @@ const OrderSummaryTotal: FunctionComponent<OrderSummaryTotalProps & WithCurrency
         <>
             <OrderSummaryPrice
                 amount={orderAmount}
+                currencyCode={storeCurrencyCode}
                 className="cart-priceItem--total"
                 label={label}
                 superscript={hasDifferentCurrency ? '*' : undefined}

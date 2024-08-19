@@ -17,6 +17,7 @@ function mapFromPhysical(item: PhysicalItem): OrderSummaryItemProps {
             testId: 'cart-item-product-option',
             content: `${option.name} ${option.value}`,
         })),
+        sku: item.sku,
     };
 }
 
