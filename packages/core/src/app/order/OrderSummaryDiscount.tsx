@@ -9,6 +9,7 @@ import OrderSummaryPrice, { OrderSummaryPriceProps } from './OrderSummaryPrice';
 export interface OrderSummaryDiscountProps extends OrderSummaryPriceProps {
     remaining?: number;
     code?: string;
+    currencyCode?: string;
     onRemoved?(code: string): void;
 }
 
@@ -16,10 +17,12 @@ const OrderSummaryDiscount: FunctionComponent<OrderSummaryDiscountProps> = ({
     code,
     remaining,
     amount,
+    currencyCode,
     onRemoved,
     ...rest
 }) => (
     <OrderSummaryPrice
+        currencyCode={currencyCode}
         {...rest}
         {...(onRemoved && {
             onActionTriggered: () => code && onRemoved(code),

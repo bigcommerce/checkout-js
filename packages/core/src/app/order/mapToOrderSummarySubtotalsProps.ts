@@ -16,6 +16,7 @@ export default function mapToOrderSummarySubtotalsProps({
     coupons,
     taxes,
     fees,
+    currency,
 }: Order): OrderSummarySubtotalsProps {
     return {
         subtotalAmount: baseAmount,
@@ -29,5 +30,6 @@ export default function mapToOrderSummarySubtotalsProps({
         taxes,
         isTaxIncluded,
         fees,
+        currencyCode: currency?.code,
     };
 }

@@ -1,9 +1,9 @@
 import { LineItemMap, StoreCurrency } from '@bigcommerce/checkout-sdk';
 import React, { ReactNode } from 'react';
 
-import getProductsCheckoutDescriptions, { isSubscription } from '../common/utility/getProductsCheckoutDescriptions';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
+import { getVariantsDataFromItems } from '../common/utility/getCraftData';
 import { IconChevronDown, IconChevronUp } from '../ui/icon';
 import { isSmallScreen } from '../ui/responsive';
 
@@ -25,48 +25,33 @@ export interface OrderSummaryItemsProps {
 
 interface OrderSummaryItemsState {
     isExpanded: boolean;
-    itemsWithCheckoutDescriptions: OrderSummaryItemProps[];
-    checkoutDescriptionsLoading: boolean;
+    itemsWithCraftData: OrderSummaryItemProps[];
+    craftDataLoading: boolean;
     collapsedLimit: number;
 }
 
-const getCheckoutDescriptions = async (items: OrderSummaryItemProps[], currencyCode: string, callback: (arg0: OrderSummaryItemProps[]) => void) => {
-    const oneTimePurchaseItems: number[] = [];
-    const subscriptionItems: number[] =[]
+const getCraftData = async (items: OrderSummaryItemProps[], currencyCode: string, callback: (arg0: OrderSummaryItemProps[]) => void) => {
+    const variants = await getVariantsDataFromItems(items, currencyCode);
 
-    items.forEach((item) => {
-        if(item.productId) {
-            if(isSubscription(item)) {
-                subscriptionItems.push(item.productId);
-            } else {
-                oneTimePurchaseItems.push(item.productId);
-            }
-        }
-    })
-
-    const [productsDescriptionsForSubscriptions, productsDescriptionsForOneTimePurchases] = await Promise.all([
-        getProductsCheckoutDescriptions(subscriptionItems, currencyCode, "subscription"),
-        getProductsCheckoutDescriptions(oneTimePurchaseItems, currencyCode, "one-time-purchase")
-    ]);
-    const updatedItemsWithCheckoutDescriptions = items.map((item: any) => {
+    const updatedItemsWithCraftData = items.map((item: any) => {
         const updatedItem = item;
-        const {productId} = item;
+        const {sku} = item;
 
-        if(isSubscription(item)) {
-            const checkoutDescriptionSubscription = productsDescriptionsForSubscriptions.data.find(({id}) => id === productId.toString());
-            
-            updatedItem.checkoutDescription = checkoutDescriptionSubscription?.checkoutDescription || null;
-        } else {
-            const checkoutDescriptionOneTimePurchase = productsDescriptionsForOneTimePurchases.data.find(({id}) => id === productId.toString());
-            
-            updatedItem.checkoutDescription = checkoutDescriptionOneTimePurchase?.checkoutDescription || null;
-        }
+        const store = currencyCode === "USD" ? "usa" : "global";
+
+        updatedItem.craftData = variants.data.find((variantData) => {
+            if(!variantData) return false;
+
+            const {globalVariantSku, usaVariantSku} = variantData.variant;
+
+            return (store === "global" && globalVariantSku?.toLowerCase() === sku?.toLowerCase()) || (store === "usa" && usaVariantSku?.toLowerCase() === sku?.toLowerCase());
+        });
 
         return updatedItem;
     });
 
     // update state
-    callback(updatedItemsWithCheckoutDescriptions);
+    callback(updatedItemsWithCraftData);
 }
 
 class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSummaryItemsState> {
@@ -87,24 +72,24 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
             ...(items.customItems || []).map(mapFromCustom),
         ];
 
-        getCheckoutDescriptions(initialItems, currency.code, (updatedItems) => {
+        getCraftData(initialItems, currency.code, (updatedItems) => {
             this.setState({
-                itemsWithCheckoutDescriptions: updatedItems,
-                checkoutDescriptionsLoading: false
+                itemsWithCraftData: updatedItems,
+                craftDataLoading: false
             });
         })
 
         this.state = {
             isExpanded: false,
-            itemsWithCheckoutDescriptions: initialItems,
-            checkoutDescriptionsLoading: true,
+            itemsWithCraftData: initialItems,
+            craftDataLoading: true,
             collapsedLimit: this.getCollapsedLimit(),
         };
     }
 
     render(): ReactNode {
-        const { displayLineItemsCount = true, items } = this.props;
-        const { collapsedLimit, isExpanded, itemsWithCheckoutDescriptions } = this.state;
+        const { displayLineItemsCount = true, items, currency } = this.props;
+        const { collapsedLimit, isExpanded, itemsWithCraftData } = this.state;
 
         return (
             <>
@@ -119,11 +104,11 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
                 </h3>}
 
                 <ul aria-live="polite" className="productList">
-                    {itemsWithCheckoutDescriptions
+                    {itemsWithCraftData
                         .slice(0, isExpanded ? undefined : collapsedLimit)
                         .map((summaryItemProps) => (
                             <li className="productList-item is-visible" key={summaryItemProps.id}>
-                                <OrderSummaryItem {...summaryItemProps} checkoutDescriptionsLoading={this.state.checkoutDescriptionsLoading} />
+                                <OrderSummaryItem {...summaryItemProps} craftDataLoading={this.state.craftDataLoading} currencyCode={currency.code} />
                             </li>
                         ))}
                 </ul>

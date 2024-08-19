@@ -20,6 +20,7 @@ export interface OrderSummarySubtotalsProps {
     handlingAmount?: number;
     storeCreditAmount?: number;
     subtotalAmount: number;
+    currencyCode?: string;
     onRemovedGiftCertificate?(code: string): void;
     onRemovedCoupon?(code: string): void;
 }
@@ -36,6 +37,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
     handlingAmount,
     storeCreditAmount,
     coupons,
+    currencyCode,
     onRemovedGiftCertificate,
     onRemovedCoupon,
 }) => {
@@ -44,6 +46,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
             <OrderSummaryPrice
                 amount={subtotalAmount}
                 className="cart-priceItem--subtotal"
+                currencyCode={currencyCode}
                 label={<TranslatedString id="cart.subtotal_text" />}
                 testId="cart-subtotal"
             />
@@ -55,6 +58,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                     key={index}
                     label={coupon.displayName === "Coupon Discount" ? "Coupon discount" : coupon.displayName}
                     onRemoved={onRemovedCoupon}
+                    currencyCode={currencyCode}
                     testId="cart-coupon"
                 />
             ))}
@@ -63,6 +67,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                 <OrderSummaryDiscount
                     amount={discountAmount}
                     label={<TranslatedString id="cart.discount_text" />}
+                    currencyCode={currencyCode}
                     testId="cart-discount"
                 />
             )}
@@ -75,6 +80,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                     label={<TranslatedString id="cart.gift_certificate_text" />}
                     onRemoved={onRemovedGiftCertificate}
                     remaining={giftCertificate.remaining}
+                    currencyCode={currencyCode}
                     testId="cart-gift-certificate"
                 />
             ))}
@@ -124,6 +130,7 @@ const OrderSummarySubtotals: FunctionComponent<OrderSummarySubtotalsProps> = ({
                 <OrderSummaryDiscount
                     amount={storeCreditAmount}
                     label={<TranslatedString id="cart.store_credit_text" />}
+                    currencyCode={currencyCode}
                     testId="cart-store-credit"
                 />
             )}

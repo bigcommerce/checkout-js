@@ -88,7 +88,7 @@ const OrderSummaryModal: FunctionComponent<
             <OrderSummaryItems currency={storeCurrency} displayLineItemsCount={!isUpdatedCartSummayModal} items={nonBundledLineItems} />
         </OrderSummarySection>
         <OrderSummarySection>
-            <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
+            <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} currencyCode={storeCurrency.code} taxes={taxes} {...orderSummarySubtotalsProps} />
             {additionalLineItems}
         </OrderSummarySection>
         <OrderSummarySection>
@@ -112,6 +112,7 @@ const OrderSummaryModal: FunctionComponent<
                 {(taxes || []).map((tax, index) => (
                     <OrderSummaryPrice
                         amount={tax.amount}
+                        currencyCode={storeCurrency.code}
                         key={index}
                         label={tax.name}
                         testId="cart-taxes"

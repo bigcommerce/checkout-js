@@ -1,11 +1,18 @@
+import {DigitalItem, LineItemMap, PhysicalItem} from "@bigcommerce/checkout-sdk";
 import classNames from 'classnames';
 import React, {Component, FunctionComponent, ReactNode, useEffect, useState} from 'react';
 import { CSSTransition } from 'react-transition-group';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 
+import { checkHasSubscription } from '../common/utility/getCraftData';
 import { ShopperCurrency } from '../currency';
-import {LineItemMap} from "@bigcommerce/checkout-sdk";
+
+import mapFromCustom from './mapFromCustom';
+import mapFromDigital from './mapFromDigital';
+import mapFromGiftCertificate from './mapFromGiftCertificate';
+import mapFromPhysical from './mapFromPhysical';
+import { OrderSummaryItemProps } from './OrderSummaryItem';
 
 export interface OrderSummaryPriceProps {
     label: ReactNode;
@@ -43,20 +50,44 @@ function getDisplayValue(amount?: number | null, zeroLabel?: ReactNode): ReactNo
 function isNumberValue(displayValue: number | ReactNode): displayValue is number {
     return typeof displayValue === 'number';
 }
+
 const ConfidenceBlock: FunctionComponent<any> = props => {
-    const { lineItems, shippingAmount } = props;
+
+    const { lineItems, shippingAmount, currencyCode } = props;
     const [isFreeShipping, setIsFreeShipping] = useState(false);
     const [hasSubscription, setHasSubscription] = useState(false);
+    const [hasSubscriptionLoaded, setHasSubscriptionLoaded] = useState(false);
+
+    const initialItems: OrderSummaryItemProps[] = [
+        ...lineItems.physicalItems
+            .slice()
+            .sort((item: PhysicalItem) => item.variantId)
+            .map(mapFromPhysical),
+        ...lineItems.giftCertificates.slice().map(mapFromGiftCertificate),
+        ...lineItems.digitalItems
+            .slice()
+            .sort((item: DigitalItem) => item.variantId)
+            .map(mapFromDigital),
+        ...(lineItems.customItems || []).map(mapFromCustom),
+    ];
+
     useEffect(() => {
-        const test = lineItems?.physicalItems && lineItems.physicalItems.find((v: any) => v.options.find((o: any) => o.value === 'send every 30 days'));
-        if (test !== hasSubscription) {
-            setHasSubscription(test);
+        const calculateHasSubscription = async () => {
+            const hasSubscriptionVariant = await checkHasSubscription(initialItems, currencyCode);
+
+            setHasSubscription(hasSubscriptionVariant);
+            setHasSubscriptionLoaded(true);
         }
-    }, [lineItems]);
+
+        calculateHasSubscription()
+    }, [initialItems]);
 
     useEffect(() => {
         setIsFreeShipping(shippingAmount === 0);
     }, [shippingAmount]);
+
+    if(!hasSubscriptionLoaded) return null;
+
     return (
         <>
             { hasSubscription && <section className="payments cart-subscription cart-section optimizedCheckout-orderSummary-cartSection">
@@ -64,7 +95,7 @@ const ConfidenceBlock: FunctionComponent<any> = props => {
                     <div aria-live="polite" className="cart-priceItem optimizedCheckout-contentPrimary cart-priceItem--total">
                     <span className="cart-priceItem-label">
                         <span data-test="cart-price-label">
-                            Your order contains a subscription. This reoccurs every 30 days. You can cancel any time.
+                            Your order contains a recurring subscription. You can cancel any time.
                         </span>
                     </span>
                     </div>
@@ -80,7 +111,7 @@ const ConfidenceBlock: FunctionComponent<any> = props => {
                                 <li>Free shipping on all orders</li>
                                 <li>Skip or pause subscription anytime</li>
                                 <li>Cancel anytime</li>
-                                <li>Delivered monthly, direct to you</li>
+                                <li>Scheduled shipping, direct to you</li>
                             </ul></>)
                     }
                     <div className={`payments-method ${!hasSubscription ? 'full-method' : ''}`}>
@@ -153,11 +184,11 @@ class OrderSummaryPrice extends Component<OrderSummaryPriceProps, OrderSummaryPr
                                 {label}
                                 {'  '}
                             </span>
-                            {currencyCode && (
+                            {/* {currencyCode && (
                                 <span className="cart-priceItem-currencyCode">
                                     {`(${currencyCode}) `}
                                 </span>
-                            )}
+                            )} */}
                             {onActionTriggered && actionLabel && (
                                 <span className="cart-priceItem-link">
                                     <a
