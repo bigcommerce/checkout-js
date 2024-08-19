@@ -166,16 +166,17 @@ class Checkout extends Component<
     CheckoutState
 > {
     state: CheckoutState = {
-        isBillingSameAsShipping: true,
-        isCartEmpty: false,
-        isRedirecting: false,
-        isMultiShippingMode: false,
-        hasSelectedShippingOptions: false,
-        isBuyNowCartEnabled: false,
-        isSubscribed: false,
+        ammoLineItems: [],
+        fflLicense: "",
         fflLineItems: [],
-        storeHash: '',
-        fflLicense: ''
+        hasSelectedShippingOptions: false,
+        isBillingSameAsShipping: true,
+        isBuyNowCartEnabled: false,
+        isCartEmpty: false,
+        isMultiShippingMode: false,
+        isRedirecting: false,
+        isSubscribed: false,
+        storeHash: ""
     };
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
@@ -217,9 +218,9 @@ class Checkout extends Component<
                     ] as any, // FIXME: Currently the enum is not exported so it can't be used here.
                 },
             });
-            const { links: { siteLink = '' } = {} } = data.getConfig() || {};
+            const { links: { siteLink = "" } = {} } = data.getConfig() || {};
             const errorFlashMessages = data.getFlashMessages('error') || [];
-            this.setState({storeHash: data.getConfig()?.storeProfile.storeHash || ''});
+            this.setState({ storeHash: data.getConfig()?.storeProfile.storeHash || "" });
 
             if (errorFlashMessages.length) {
                 const { language } = this.props;
@@ -256,8 +257,8 @@ class Checkout extends Component<
             // when the BigCommerce app is installed
             // the storefront API token is not available within the checkout SDK
             if (cart && window.fflStorefrontToken) {
-                const fflLineItems = await getFflLineItems(window.fflStorefrontToken, cart);
-                this.setState({ fflLineItems });
+                const [fflLineItems, ammoLineItems] = await getFflLineItems(window.fflStorefrontToken, cart);
+                this.setState({ fflLineItems, ammoLineItems });
             } else {
                 console.warn('Could not find fflStorefrontToken');
             }
@@ -368,7 +369,8 @@ class Checkout extends Component<
                 return this.renderCustomerStep(step);
 
             case CheckoutStepType.Shipping:
-                return this.state.fflLineItems &&  this.state.fflLineItems.length > 0 ?
+                return (this.state.fflLineItems || this.state.ammoLineItems) &&
+                (this.state.fflLineItems.length > 0 || this.state.ammoLineItems.length > 0) ?
                 this.renderDealerShippingStep(step) :
                 this.renderShippingStep(step);
 
@@ -483,6 +485,7 @@ class Checkout extends Component<
           } = this.props;
 
           const fflConsignmentItems = this.state.fflLineItems.map(fflItem => ({ itemId: fflItem.id, quantity: fflItem.quantity }));
+          const ammoConsignmentItems = this.state.ammoLineItems.map(fflItem => ({ itemId: fflItem.id, quantity: fflItem.quantity }));
 
           if (!cart) {
               return;
@@ -506,6 +509,7 @@ class Checkout extends Component<
               >
                   <LazyContainer>
                     <DealerShipping
+                        ammoConsignmentItems={ ammoConsignmentItems }
                         cartHasChanged={ hasCartChanged }
                         handleConsignmentsAdresses={ this.handleConsignmentsAdresses }
                         fflConsignmentItems={ fflConsignmentItems }
