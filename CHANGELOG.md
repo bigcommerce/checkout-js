@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.520.2](https://github.com/bigcommerce/checkout-js/compare/v1.520.1...v1.520.2) (2024-08-19)
+
+
+### Bug Fixes
+
+* **payment:** PAYPAL-4582 fixed the issue with using addresses from address book for logged in shoppers when Fastlane is enabled ([f413d37](https://github.com/bigcommerce/checkout-js/commit/f413d375ff47640a09b932e83f5d2d7b45c3e77f))
+
 ### [1.520.1](https://github.com/bigcommerce/checkout-js/compare/v1.520.0...v1.520.1) (2024-08-16)
 
 ## [1.520.0](https://github.com/bigcommerce/checkout-js/compare/v1.519.1...v1.520.0) (2024-08-15)
