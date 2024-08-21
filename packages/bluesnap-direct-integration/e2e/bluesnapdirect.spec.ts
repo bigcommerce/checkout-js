@@ -112,4 +112,33 @@ test.describe('BlueSnap Direct', () => {
         // 3. Assertions
         await assertions.shouldSeeOrderConfirmation();
     });
+
+    test('Customer should be able to pay using BlueSnap Pay by Bank through the payment step in checkout', async ({
+        assertions,
+        checkout,
+        page,
+    }) => {
+        // 1. Testing environment setup
+        await checkout.use(new PaymentStepAsGuestEUPreset());
+        await checkout.start('Pay by Bank with BlueSnap in Payment Step');
+        await page.route('**/api/public/v1/orders/payments', (route) => {
+            void route.fulfill({
+                status: 200,
+                contentType: 'application/json',
+                body: '{"status": "ok","three_ds_result":{"acs_url":null,"payer_auth_request":null,"merchant_data": null,"callback_url": null},"provider_data": null,"errors": []}',
+            });
+        });
+        await checkout.route(
+            /https:\/\/bigpay.service.bcdev\/pay\/hosted_forms\/.+\/field?.+|http:\/\/localhost:.+\/checkout\/payment\/hosted-field?.+/,
+            `${__dirname}/support/hostedField.ejs`,
+        );
+        // 2. Playwright actions
+        await checkout.goto();
+        await checkout.selectPaymentMethod('pay_by_bank');
+        await page.locator('[data-test="iban-text"]').fill('DE12345678901234567890');
+        await checkout.placeOrder();
+
+        // 3. Assertions
+        await assertions.shouldSeeOrderConfirmation();
+    });
 });
