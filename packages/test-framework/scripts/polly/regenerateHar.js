@@ -10,7 +10,6 @@ const { EOL } = require('os');
 const { matchRequestsBy } = require('../../pollyConfig');
 
 const NormalizeRequest = require('./NormalizeRequest');
-// const { NormalizeRequest } = require('./NormalizeRequest-bak');
 
 const isDryRun = process.argv.includes('--dry-run');
 const filePattern = 'packages/**/e2e/**/recording.har';
