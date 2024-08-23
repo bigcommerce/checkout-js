@@ -6,6 +6,7 @@ import { includes, isObject } from 'lodash';
 import { PlaywrightAdapter } from 'polly-adapter-playwright';
 
 import { getStoreUrl } from '../../';
+import { matchRequestsBy } from '../../../../pollyConfig';
 
 import { CustomFSPersister } from './CustomFSPersister';
 import { ignoredHeaders, ignoredPayloads } from './senstiveDataConfig';
@@ -61,13 +62,7 @@ export class PollyObject {
                     recordingsDir: harFolder,
                 },
             },
-            matchRequestsBy: {
-                method: true,
-                url: true,
-                order: true,
-                headers: false,
-                body: true,
-            },
+            matchRequestsBy,
         });
 
         this.polly.server.any().on('request', (req) => {
