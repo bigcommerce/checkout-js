@@ -2,7 +2,11 @@ import React, { FunctionComponent } from 'react';
 
 import { LoadingSkeleton, LoadingSkeletonProps } from './LoadingSkeleton';
 
-const AddressFormSkeleton: FunctionComponent<LoadingSkeletonProps> = ({ children, isLoading }) => {
+const AddressFormSkeleton: FunctionComponent<LoadingSkeletonProps> = ({
+    children,
+    isLoading,
+    renderWhileLoading,
+}) => {
     const skeleton = (
         <div className="checkout-form">
             <div className="form-legend-container">
@@ -24,7 +28,7 @@ const AddressFormSkeleton: FunctionComponent<LoadingSkeletonProps> = ({ children
         </div>
     );
 
-    return <LoadingSkeleton {...{ children, isLoading, skeleton }} />;
+    return <LoadingSkeleton {...{ children, isLoading, renderWhileLoading, skeleton }} />;
 };
 
 export default AddressFormSkeleton;
