@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.520.3](https://github.com/bigcommerce/checkout-js/compare/v1.520.2...v1.520.3) (2024-08-26)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-8300 Bump checkout-sdk version ([463be97](https://github.com/bigcommerce/checkout-js/commit/463be97bb3c7a947879379ba2b8123e7c36c2f0d))
+
+
+### Code Refactoring
+
+* **checkout:** CHECKOUT-8300 Improve the performance of checkout extensions in the shipping step by initialising the step and extensions concurrently ([41c4a21](https://github.com/bigcommerce/checkout-js/commit/41c4a218c6e182bc6f552c392a3ed5e6181ab045))
+
 ### [1.520.2](https://github.com/bigcommerce/checkout-js/compare/v1.520.1...v1.520.2) (2024-08-19)
 
 
