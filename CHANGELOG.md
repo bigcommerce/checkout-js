@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.520.6](https://github.com/bigcommerce/checkout-js/compare/v1.520.5...v1.520.6) (2024-08-27)
+
+
+### Code Refactoring
+
+* **payment:** PAYPAL-4499 moved EmailWatermark to paypal fastlane integration package ([97d0b2d](https://github.com/bigcommerce/checkout-js/commit/97d0b2de0f4a10468d8ada5e500ab2aa61b01c74))
+
 ### [1.520.5](https://github.com/bigcommerce/checkout-js/compare/v1.520.4...v1.520.5) (2024-08-27)
 
 
