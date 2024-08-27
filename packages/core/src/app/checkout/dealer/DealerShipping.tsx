@@ -133,6 +133,7 @@ interface DealerState {
   customShippingCityError: boolean;
   customShippingPostal: string;
   customShippingPostalError: boolean;
+  withAmmoSubscription: boolean;
 }
 
 class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShippingProps, DealerState> {
@@ -182,7 +183,8 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
         manualFflInput: false,
         multiShipment: false,
         selectedDealer: null,
-        showLocator: false
+        showLocator: false,
+        withAmmoSubscription: false
     };
 
     this.debouncedAssignCustomShippingAddress = debounce(
@@ -229,11 +231,13 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
         );
 
         this.props.setFFLtoOrderComments(data.ffl_to_order_comments);
+        this.props.setWithAmmoSubscription(data.with_ammo_subscription);
         this.setState({
             announcement: data.announcement,
             multiShipment: data.multi_shipment,
             isLoading: false,
-            ammoFFLRequiredStates: merchantStates.map(ms => ms.state.code)
+            ammoFFLRequiredStates: merchantStates.map(ms => ms.state.code),
+            withAmmoSubscription: data.with_ammo_subscription
         });
     }).catch(console.log);
   }
@@ -419,7 +423,7 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
 
     return (
       <section className="ffl-section checkout-form">
-        { (fflConsignmentItems.length == 0 && ammoConsignmentItems.length > 0 ) &&  
+        { ((fflConsignmentItems.length == 0 && ammoConsignmentItems.length > 0) && (this.state.withAmmoSubscription)) &&
             <StatesDropdown validateSelectedState={ this.validateSelectedState } />
         }
 
