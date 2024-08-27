@@ -17,6 +17,7 @@ export interface ShippingFormFooterProps {
     shouldShowOrderComments: boolean;
     shouldShowShippingOptions?: boolean;
     shouldDisableSubmit: boolean;
+    isInitialValueLoaded: boolean;
     isLoading: boolean;
 }
 
@@ -26,6 +27,7 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
     shouldShowOrderComments,
     shouldShowShippingOptions = true,
     shouldDisableSubmit,
+    isInitialValueLoaded,
     isLoading,
 }) => {
     return (
@@ -50,6 +52,7 @@ const ShippingFormFooter: FunctionComponent<ShippingFormFooterProps> = ({
                 }
             >
                 <ShippingOptions
+                    isInitialValueLoaded={isInitialValueLoaded}
                     isMultiShippingMode={isMultiShippingMode}
                     isUpdatingAddress={isLoading}
                     shouldShowShippingOptions={shouldShowShippingOptions}
