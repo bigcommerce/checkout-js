@@ -134,6 +134,7 @@ export interface CheckoutState {
     storeHash: string;
     fflLicense: string;
     fflToOrderComments: boolean;
+    withAmmoSubscription: boolean;
 }
 
 export interface WithCheckoutProps {
@@ -176,7 +177,8 @@ class Checkout extends Component<
         isMultiShippingMode: false,
         isRedirecting: false,
         isSubscribed: false,
-        storeHash: ""
+        storeHash: "",
+        withAmmoSubscription: true
     };
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
@@ -370,7 +372,7 @@ class Checkout extends Component<
 
             case CheckoutStepType.Shipping:
                 return (this.state.fflLineItems || this.state.ammoLineItems) &&
-                (this.state.fflLineItems.length > 0 || this.state.ammoLineItems.length > 0) ?
+                (this.state.fflLineItems.length > 0 || (this.state.ammoLineItems.length > 0 && this.state.withAmmoSubscription)) ?
                 this.renderDealerShippingStep(step) :
                 this.renderShippingStep(step);
 
@@ -523,6 +525,7 @@ class Checkout extends Component<
                         storeHash={ this.state.storeHash }
                         setSelectedFFL={ this.setSelectedFFL }
                         setFFLtoOrderComments={ this.setFFLtoOrderComments }
+                        setWithAmmoSubscription={ this.setWithAmmoSubscription }
                     />
                   </LazyContainer>
               </CheckoutStep>
@@ -844,6 +847,10 @@ class Checkout extends Component<
 
     private setFFLtoOrderComments: () => void = (value) => {
         this.setState({ fflToOrderComments: value });
+    }
+
+    private setWithAmmoSubscription: () => void = (value) => {
+        this.setState({ withAmmoSubscription: value });
     }
 }
 
