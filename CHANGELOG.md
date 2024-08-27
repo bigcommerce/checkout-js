@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.520.5](https://github.com/bigcommerce/checkout-js/compare/v1.520.4...v1.520.5) (2024-08-27)
+
+
+### Bug Fixes
+
+* **customer:** CHECKOUT-8559 Remove string override for regex validation ([#1978](https://github.com/bigcommerce/checkout-js/issues/1978)) ([1aa7a30](https://github.com/bigcommerce/checkout-js/commit/1aa7a3018c698dc336874bb69fdffea428da1a5e))
+
 ### [1.520.4](https://github.com/bigcommerce/checkout-js/compare/v1.520.3...v1.520.4) (2024-08-26)
 
 ### [1.520.3](https://github.com/bigcommerce/checkout-js/compare/v1.520.2...v1.520.3) (2024-08-26)
