@@ -142,7 +142,7 @@
             "password_confirmation_label": "Confirm Password",
             "password_confirmation_required_error": "This field is required",
             "password_label": "Password",
-            "password_letter_required_error": "Password needs to contain a letter",
+            "password_letter_required_error": "",
             "password_minimum_character_label": "character minimum, case sensitive",
             "password_number_required_error": "Password needs to contain a number",
             "password_over_maximum_length_error": "Password is too long",
