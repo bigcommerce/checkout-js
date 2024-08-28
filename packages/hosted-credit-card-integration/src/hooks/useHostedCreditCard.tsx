@@ -1,50 +1,44 @@
-import { CardInstrument, HostedFormOptions } from '@bigcommerce/checkout-sdk';
+import {
+    CardInstrument,
+    CheckoutSelectors,
+    HostedFormOptions,
+    LanguageService,
+    PaymentMethod,
+} from '@bigcommerce/checkout-sdk';
 import { compact, forIn } from 'lodash';
-import React, { FunctionComponent, ReactNode, useCallback, useState } from 'react';
+import React, { ReactNode, useCallback, useState } from 'react';
 
 import {
-    CreditCardPaymentMethodComponent,
-    CreditCardPaymentMethodProps,
-} from '@bigcommerce/checkout/credit-card-integration';
-import {
-    CreditCardCustomerCodeField,
     CreditCardInputStylesType,
     getCreditCardInputStyles,
     isInstrumentCardCodeRequiredSelector,
     isInstrumentCardNumberRequiredSelector,
 } from '@bigcommerce/checkout/instrument-utils';
-import {
-    PaymentMethodProps,
-    PaymentMethodResolveId,
-    toResolvableComponent,
-} from '@bigcommerce/checkout/payment-integration-api';
+import { PaymentFormService } from '@bigcommerce/checkout/payment-integration-api';
 
-import {
-    getHostedCreditCardValidationSchema,
-    getHostedInstrumentValidationSchema,
-    HostedCreditCardFieldset,
-    HostedCreditCardValidation,
-} from './components';
+import { HostedCreditCardValidation } from '../components';
 
-const HostedCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
-    method,
-    checkoutService,
+export interface UseHostedFormOptions {
+    checkoutState: CheckoutSelectors;
+    language: LanguageService;
+    method: PaymentMethod;
+    paymentForm: PaymentFormService;
+}
+
+export const useHostedCreditCard = ({
     checkoutState,
-    paymentForm,
+    method,
     language,
-    onUnhandledError,
-}) => {
-    const [focusedFieldType, setFocusedFieldType] = useState<string>();
-
+    paymentForm,
+}: UseHostedFormOptions) => {
     const { setFieldTouched, setFieldValue, setSubmitted, submitForm } = paymentForm;
+    const { config } = method;
+    const { cardCode: requireCardCode } = config;
+
+    const isCardCodeRequired = requireCardCode || requireCardCode === null;
     const isInstrumentCardCodeRequiredProp = isInstrumentCardCodeRequiredSelector(checkoutState);
     const isInstrumentCardNumberRequiredProp =
         isInstrumentCardNumberRequiredSelector(checkoutState);
-    const {
-        config: { cardCode, showCardHolderName },
-    } = method;
-    const isCardCodeRequired = cardCode || cardCode === null;
-    const isCardHolderNameRequired = showCardHolderName ?? true;
 
     const getHostedFieldId: (name: string) => string = useCallback(
         (name) => {
@@ -53,10 +47,43 @@ const HostedCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
         [method],
     );
 
-    const getHostedFormOptions: (
-        selectedInstrument?: CardInstrument,
-    ) => Promise<HostedFormOptions> = useCallback(
-        async (selectedInstrument) => {
+    const [focusedFieldType, setFocusedFieldType] = useState<string>();
+
+    const getHostedStoredCardValidationFieldset: (selectedInstrument: CardInstrument) => ReactNode =
+        useCallback(
+            (selectedInstrument) => {
+                const isInstrumentCardNumberRequired = selectedInstrument
+                    ? isInstrumentCardNumberRequiredProp(selectedInstrument, method)
+                    : false;
+                const isInstrumentCardCodeRequired = selectedInstrument
+                    ? isInstrumentCardCodeRequiredProp(selectedInstrument, method)
+                    : false;
+
+                return (
+                    <HostedCreditCardValidation
+                        cardCodeId={
+                            isInstrumentCardCodeRequired ? getHostedFieldId('ccCvv') : undefined
+                        }
+                        cardNumberId={
+                            isInstrumentCardNumberRequired
+                                ? getHostedFieldId('ccNumber')
+                                : undefined
+                        }
+                        focusedFieldType={focusedFieldType}
+                    />
+                );
+            },
+            [
+                focusedFieldType,
+                getHostedFieldId,
+                isInstrumentCardCodeRequiredProp,
+                isInstrumentCardNumberRequiredProp,
+                method,
+            ],
+        );
+
+    const getHostedFormOptions = useCallback(
+        async (selectedInstrument: CardInstrument): Promise<HostedFormOptions> => {
             const styleProps = ['color', 'fontFamily', 'fontSize', 'fontWeight'];
             const isInstrumentCardNumberRequired = selectedInstrument
                 ? isInstrumentCardNumberRequiredProp(selectedInstrument, method)
@@ -64,7 +91,7 @@ const HostedCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             const isInstrumentCardCodeRequired = selectedInstrument
                 ? isInstrumentCardCodeRequiredProp(selectedInstrument, method)
                 : false;
-            let styleContainerId = '';
+            let styleContainerId;
 
             if (selectedInstrument) {
                 if (isInstrumentCardCodeRequired) {
@@ -118,14 +145,12 @@ const HostedCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
                                   'payment.credit_card_expiration_placeholder_text',
                               ),
                           },
-                          cardName: isCardHolderNameRequired
-                              ? {
-                                    accessibilityLabel: language.translate(
-                                        'payment.credit_card_name_label',
-                                    ),
-                                    containerId: getHostedFieldId('ccName'),
-                                }
-                              : undefined,
+                          cardName: {
+                              accessibilityLabel: language.translate(
+                                  'payment.credit_card_name_label',
+                              ),
+                              containerId: getHostedFieldId('ccName'),
+                          },
                           cardNumber: {
                               accessibilityLabel: language.translate(
                                   'payment.credit_card_number_label',
@@ -180,116 +205,16 @@ const HostedCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             focusedFieldType,
             getHostedFieldId,
             isCardCodeRequired,
-            isCardHolderNameRequired,
             isInstrumentCardCodeRequiredProp,
             isInstrumentCardNumberRequiredProp,
             language,
             method,
-            setFieldValue,
             setFieldTouched,
-            setFocusedFieldType,
+            setFieldValue,
             setSubmitted,
             submitForm,
         ],
     );
 
-    const hostedFieldset = (
-        <HostedCreditCardFieldset
-            additionalFields={
-                method.config.requireCustomerCode && (
-                    <CreditCardCustomerCodeField name="ccCustomerCode" />
-                )
-            }
-            cardCodeId={isCardCodeRequired ? getHostedFieldId('ccCvv') : undefined}
-            cardExpiryId={getHostedFieldId('ccExpiry')}
-            cardNameId={isCardHolderNameRequired ? getHostedFieldId('ccName') : undefined}
-            cardNumberId={getHostedFieldId('ccNumber')}
-            focusedFieldType={focusedFieldType}
-        />
-    );
-    const hostedValidationSchema = getHostedCreditCardValidationSchema({ language });
-
-    const getHostedStoredCardValidationFieldset: (selectedInstrument: CardInstrument) => ReactNode =
-        useCallback(
-            (selectedInstrument) => {
-                const isInstrumentCardNumberRequired = selectedInstrument
-                    ? isInstrumentCardNumberRequiredProp(selectedInstrument, method)
-                    : false;
-                const isInstrumentCardCodeRequired = selectedInstrument
-                    ? isInstrumentCardCodeRequiredProp(selectedInstrument, method)
-                    : false;
-
-                return (
-                    <HostedCreditCardValidation
-                        cardCodeId={
-                            isInstrumentCardCodeRequired ? getHostedFieldId('ccCvv') : undefined
-                        }
-                        cardNumberId={
-                            isInstrumentCardNumberRequired
-                                ? getHostedFieldId('ccNumber')
-                                : undefined
-                        }
-                        focusedFieldType={focusedFieldType}
-                    />
-                );
-            },
-            [
-                focusedFieldType,
-                getHostedFieldId,
-                isInstrumentCardCodeRequiredProp,
-                isInstrumentCardNumberRequiredProp,
-                method,
-            ],
-        );
-
-    const initializePayment = checkoutService.initializePayment;
-
-    const initializeHostedCreditCardPayment: CreditCardPaymentMethodProps['initializePayment'] =
-        useCallback(
-            async (options, selectedInstrument) => {
-                return initializePayment({
-                    ...options,
-                    creditCard: {
-                        form: await getHostedFormOptions(selectedInstrument),
-                        bigpayToken: selectedInstrument?.bigpayToken,
-                    },
-                });
-            },
-            [getHostedFormOptions, initializePayment],
-        );
-
-    const hostedStoredCardValidationSchema = getHostedInstrumentValidationSchema({ language });
-
-    const props = {
-        checkoutService,
-        checkoutState,
-        paymentForm,
-        language,
-        method,
-        onUnhandledError,
-    };
-
-    return (
-        <CreditCardPaymentMethodComponent
-            {...props}
-            cardFieldset={hostedFieldset}
-            cardValidationSchema={hostedValidationSchema}
-            deinitializePayment={checkoutService.deinitializePayment}
-            getHostedFormOptions={getHostedFormOptions}
-            getStoredCardValidationFieldset={getHostedStoredCardValidationFieldset}
-            initializePayment={initializeHostedCreditCardPayment}
-            storedCardValidationSchema={hostedStoredCardValidationSchema}
-        />
-    );
+    return { getHostedStoredCardValidationFieldset, getHostedFormOptions };
 };
-
-export default toResolvableComponent<PaymentMethodProps, PaymentMethodResolveId>(
-    HostedCreditCardPaymentMethod,
-    [
-        {
-            id: 'hosted-credit-card',
-        },
-        { id: 'credit_card', gateway: 'bluesnapdirect' },
-        { id: 'tdonlinemart' },
-    ],
-);
