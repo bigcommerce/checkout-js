@@ -27,7 +27,11 @@ describe('StripeV3CustomCardForm', () => {
 
         const checkoutService = createCheckoutService();
 
-        StripeV3CustomCardFormTest = (props) => <LocaleProvider checkoutService={checkoutService}><StripeV3CustomCardForm {...props} /></LocaleProvider>;
+        StripeV3CustomCardFormTest = (props) => (
+            <LocaleProvider checkoutService={checkoutService}>
+                <StripeV3CustomCardForm {...props} />
+            </LocaleProvider>
+        );
     });
 
     it('renders stripeV3 card number field', () => {
