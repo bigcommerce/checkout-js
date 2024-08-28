@@ -356,6 +356,7 @@
             "select_your_bank": "Select your bank",
             "sepa_account_number": "Account Number (IBAN)",
             "sepa_account_number_required": "You must enter your account number (IBAN)",
+            "pay_by_bank_iban_required": "You must enter your account number (IBAN)",
             "sepa_bic": "BIC",
             "sepa_bic_length": "BIC must be 8 or 11 characters",
             "sepa_mandate_required": "You must accept the mandate form",
