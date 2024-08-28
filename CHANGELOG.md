@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.521.0](https://github.com/bigcommerce/checkout-js/compare/v1.520.6...v1.521.0) (2024-08-28)
+
+
+### Features
+
+* **payment:** PI-2403 Pay by Bank integration ([05db635](https://github.com/bigcommerce/checkout-js/commit/05db635fc0288fac24abb8494cf5f103ec0f5267))
+
 ### [1.520.6](https://github.com/bigcommerce/checkout-js/compare/v1.520.5...v1.520.6) (2024-08-27)
 
 
