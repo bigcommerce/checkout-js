@@ -66,6 +66,10 @@ const StripeUPEDescription: FunctionComponent<{ onUnhandledError?(error: Error):
         <>
             <style>
                 {`
+                    .form-checklist-item:has(#${containerId}) .{
+                        border-bottom: none !important;
+                    }
+
                     .form-checklist-item:has(#${containerId}) .form-checklist-body {
                         margin: 0 !important;
                     }
