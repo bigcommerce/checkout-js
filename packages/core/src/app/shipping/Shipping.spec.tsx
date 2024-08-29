@@ -256,6 +256,7 @@ describe('Shipping Component', () => {
 
         component
             .find('input[name="shippingAddress.firstName"]')
+            .simulate('click')
             .simulate('change', { target: { value: 'bar', name: 'shippingAddress.firstName' } });
 
         component.find('form').simulate('submit');
@@ -281,10 +282,12 @@ describe('Shipping Component', () => {
 
         component
             .find('input[name="shippingAddress.firstName"]')
+            .simulate('click')
             .simulate('change', { target: { value: 'bar', name: 'shippingAddress.firstName' } });
 
         component
             .find('input[name="billingSameAsShipping"]')
+            .simulate('click')
             .simulate('change', { target: { checked: false, name: 'billingSameAsShipping' } });
 
         component.find('form').simulate('submit');
@@ -308,7 +311,7 @@ describe('Shipping Component', () => {
         const currentValue = saveAddressField.get(0).props.value;
         const changedValue = currentValue === 'true' ? 'false' : 'true';
 
-        saveAddressField.simulate('change', {
+        saveAddressField.simulate('click').simulate('change', {
             target: { value: changedValue, name: 'shippingAddress.shouldSaveAddress' },
         });
 
@@ -328,6 +331,7 @@ describe('Shipping Component', () => {
 
         component
             .find('input[name="orderComment"]')
+            .simulate('click')
             .simulate('change', { target: { value: 'foo', name: 'orderComment' } });
 
         component.find('form').simulate('submit');
@@ -346,6 +350,7 @@ describe('Shipping Component', () => {
 
         component
             .find('input[name="shippingAddress.firstName"]')
+            .simulate('click')
             .simulate('change', { target: { value: 'bar', name: 'shippingAddress.firstName' } });
 
         component.find('form').simulate('submit');
@@ -475,6 +480,7 @@ describe('Shipping Component', () => {
                 it('calls updateCheckout and navigateNextStep', async () => {
                     component
                         .find('input[name="orderComment"]')
+                        .simulate('click')
                         .simulate('change', { target: { value: 'foo', name: 'orderComment' } });
 
                     component.find('form').simulate('submit');

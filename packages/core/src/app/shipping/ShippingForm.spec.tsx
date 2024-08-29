@@ -69,6 +69,7 @@ describe('ShippingForm Component', () => {
             shouldShowOrderComments: true,
             onMultiShippingSubmit: jest.fn(),
             onSingleShippingSubmit: jest.fn(),
+            isInitialValueLoaded: true,
             isLoading: false,
             isShippingStepPending: false,
             deleteConsignments: jest.fn(),

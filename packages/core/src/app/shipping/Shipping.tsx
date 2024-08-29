@@ -149,6 +149,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                 initialize={initializeShippingMethod}
                 isBillingSameAsShipping={isBillingSameAsShipping}
                 isGuest={ isGuest }
+                isInitialValueLoaded={shouldRenderWhileLoading ? !isInitializing : true}
                 isLoading={ isInitializing }
                 isMultiShippingMode={isMultiShippingMode}
                 isShippingMethodLoading={ this.props.isLoading }
@@ -177,6 +178,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         isBillingSameAsShipping={isBillingSameAsShipping}
                         isFloatingLabelEnabled={isFloatingLabelEnabled}
                         isGuest={isGuest}
+                        isInitialValueLoaded={shouldRenderWhileLoading ? !isInitializing : true}
                         isMultiShippingMode={isMultiShippingMode}
                         onMultiShippingSubmit={this.handleMultiShippingSubmit}
                         onSingleShippingSubmit={this.handleSingleShippingSubmit}

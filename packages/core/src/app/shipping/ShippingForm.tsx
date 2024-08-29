@@ -41,6 +41,7 @@ export interface ShippingFormProps {
     shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
     isFloatingLabelEnabled?: boolean;
+    isInitialValueLoaded: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -93,6 +94,7 @@ const ShippingForm = ({
     updateAddress,
     isShippingStepPending,
     isFloatingLabelEnabled,
+    isInitialValueLoaded,
 }: ShippingFormProps & WithLanguageProps) => {
     // TODO: remove PayPal Fastlane related code and useEffect when PayPal Fastlane will not be available for Store members
     const {
@@ -127,6 +129,7 @@ const ShippingForm = ({
             googleMapsApiKey={googleMapsApiKey}
             isFloatingLabelEnabled={isFloatingLabelEnabled}
             isGuest={isGuest}
+            isInitialValueLoaded={isInitialValueLoaded}
             isLoading={isLoading}
             onCreateAccount={onCreateAccount}
             onSignIn={onSignIn}
@@ -150,6 +153,7 @@ const ShippingForm = ({
             initialize={initialize}
             isBillingSameAsShipping={isBillingSameAsShipping}
             isFloatingLabelEnabled={isFloatingLabelEnabled}
+            isInitialValueLoaded={isInitialValueLoaded}
             isLoading={isLoading}
             isMultiShippingMode={isMultiShippingMode}
             isShippingStepPending={isShippingStepPending}

@@ -19,6 +19,7 @@ export interface StripeShippingProps {
     customerMessage: string;
     isGuest: boolean;
     isInitializing: boolean;
+    isInitialValueLoaded: boolean;
     isLoading: boolean;
     isShippingMethodLoading: boolean;
     isShippingStepPending: boolean;
