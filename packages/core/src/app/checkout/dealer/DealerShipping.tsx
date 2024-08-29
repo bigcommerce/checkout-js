@@ -288,8 +288,9 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
         return container;
     })
 
+    const fflItems = this.getFFLItems();
     const consignment = {
-      lineItems: this.state.multiShipment ? allCartItems : this.props.fflConsignmentItems.concat(this.props.ammoConsignmentItems),
+      lineItems: this.state.multiShipment ? allCartItems : fflItems,
       shippingAddress: dealer
     }
 
@@ -378,6 +379,14 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
       return isLoading || isUpdatingShippingData || !hasSelectedShippingOptions(consignments);
   };
 
+    // group ffl items with ammo items only if the customer has ammo subscription
+    private getFFLItems() {
+        const { ammoConsignmentItems, fflConsignmentItems } = this.props;
+        const { withAmmoSubscription } = this.state;
+
+        return withAmmoSubscription ? fflConsignmentItems.concat(ammoConsignmentItems) : fflConsignmentItems;
+    };
+
   render() {
     const {
       ammoConsignmentItems,
@@ -397,8 +406,7 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
     } = this.props;
 
     const items = getShippableLineItems(cart, consignments);
-    const fflItems = fflConsignmentItems.concat(ammoConsignmentItems)
-
+    const fflItems = this.getFFLItems();
     const itemsWithoutFFL = items.filter(
         item => !fflItems.some((fflItem: any) => item.id === fflItem.itemId)
     );
@@ -638,11 +646,12 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
 
   private handleSelectAddress: (address: Address, itemId: string, itemKey: string) => Promise<void> = async (address, itemId, itemKey) => {
     const { assignItem, onUnhandledError, getFields } = this.props;
-    const FFLItems = this.props.fflConsignmentItems.concat(this.props.ammoConsignmentItems)
-    const FFLItemIds = FFLItems.map(item => { return item.itemId });
-    const cartLineItems = this.props.cart.lineItems.physicalItems
+    const fflItems = this.getFFLItems();
+    const fflItemsIds = fflItems.map(item => { return item.itemId });
+    const cartLineItems = this.props.cart.lineItems.physicalItems;
+
     // do not include line items with parentID, BigCommerce will automatically assign the address selected from the parent item
-    const nonFFLItems = cartLineItems.filter(item => !(FFLItemIds.includes(item.id)) && item.parentId == null);
+    const nonFFLItems = cartLineItems.filter(item => !(fflItemsIds.includes(item.id)) && item.parentId == null);
 
     const nonFFLItemsMap = nonFFLItems.map(item => {
         let container = {};
