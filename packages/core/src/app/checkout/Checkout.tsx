@@ -329,7 +329,6 @@ class Checkout extends Component<
                     <LoadingNotification isLoading={(!isShowingWalletButtonsOnTop && isPending) || extensionState.isShowingLoadingIndicator} />
 
                     <PromotionBannerList promotions={promotions} />
-
                     {isShowingWalletButtonsOnTop && this.state.buttonConfigs?.length > 0 && (
                         <CheckoutButtonContainer
                             checkEmbeddedSupport={this.checkEmbeddedSupport}
@@ -338,7 +337,6 @@ class Checkout extends Component<
                             onWalletButtonClick={this.handleWalletButtonClick}
                         />
                     )}
-
                     <ol className="checkout-steps">
                         {steps
                             .filter((step) => step.isRequired)

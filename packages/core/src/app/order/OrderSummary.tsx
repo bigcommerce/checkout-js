@@ -8,7 +8,6 @@ import React, { FunctionComponent, ReactNode, useEffect, useMemo } from 'react';
 
 import { ExtensionRegionContainer, useExtensions } from '@bigcommerce/checkout/checkout-extension';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
-
 import OrderSummaryHeader from './OrderSummaryHeader';
 import OrderSummaryItems from './OrderSummaryItems';
 import OrderSummaryPrice from './OrderSummaryPrice';
@@ -16,6 +15,7 @@ import OrderSummarySection from './OrderSummarySection';
 import OrderSummarySubtotals, { OrderSummarySubtotalsProps } from './OrderSummarySubtotals';
 import OrderSummaryTotal from './OrderSummaryTotal';
 import removeBundledItems from './removeBundledItems';
+import { CreateCertificate } from '../avalara-certificates';
 
 export interface OrderSummaryProps {
     lineItems: LineItemMap;
@@ -73,6 +73,9 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
             <OrderSummarySection>
                 <OrderSummarySubtotals isTaxIncluded={isTaxIncluded} taxes={taxes} {...orderSummarySubtotalsProps} />
                 {additionalLineItems}
+            </OrderSummarySection>
+            <OrderSummarySection>
+                <CreateCertificate/>
             </OrderSummarySection>
 
             <OrderSummarySection>
