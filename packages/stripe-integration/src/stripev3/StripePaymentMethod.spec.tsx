@@ -1,59 +1,37 @@
+/* eslint @typescript-eslint/no-floating-promises: 0 */
 import {
     CheckoutSelectors,
     CheckoutService,
     createCheckoutService,
+    createLanguageService,
     PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
-import { mount, ReactWrapper } from 'enzyme';
+import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
-import { object } from 'yup';
 
-import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
-import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
-
-import { getStoreConfig } from '../../config/config.mock';
+import { HostedWidgetPaymentComponent } from '@bigcommerce/checkout/hosted-widget-integration';
 import {
-    withHostedCreditCardFieldset,
-    WithInjectedHostedCreditCardFieldsetProps,
-} from '../hostedCreditCard';
-import { getPaymentMethod } from '../payment-methods.mock';
+    createLocaleContext,
+    LocaleContext,
+    LocaleContextType,
+} from '@bigcommerce/checkout/locale';
+import {
+    CheckoutProvider,
+    PaymentMethodId,
+    PaymentMethodProps,
+} from '@bigcommerce/checkout/payment-integration-api';
+import {
+    getCheckout,
+    getPaymentFormServiceMock,
+    getPaymentMethod,
+    getStoreConfig,
+} from '@bigcommerce/checkout/test-mocks';
 
-import HostedWidgetPaymentMethod, {
-    HostedWidgetPaymentMethodProps,
-} from './HostedWidgetPaymentMethod';
-import { default as PaymentMethodComponent, PaymentMethodProps } from './PaymentMethod';
+import StripeV3PaymentMethod from './StripeV3PaymentMethod';
 
-const hostedFormOptions = {
-    fields: {
-        cardCodeVerification: {
-            containerId: 'card-code-verification',
-            instrumentId: 'instrument-id',
-        },
-        cardNumberVerification: {
-            containerId: 'card-number-verification',
-            instrumentId: 'instrument-id',
-        },
-    },
-};
-
-const injectedProps: WithInjectedHostedCreditCardFieldsetProps = {
-    getHostedFormOptions: () => Promise.resolve(hostedFormOptions),
-    getHostedStoredCardValidationFieldset: () => <div />,
-    hostedFieldset: <div />,
-    hostedStoredCardValidationSchema: object(),
-    hostedValidationSchema: object(),
-};
-
-jest.mock('../hostedCreditCard', () => ({
-    ...jest.requireActual('../hostedCreditCard'),
-    withHostedCreditCardFieldset: jest.fn((Component) => (props: any) => (
-        <Component {...props} {...injectedProps} />
-    )) as jest.Mocked<typeof withHostedCreditCardFieldset>,
-}));
-
-describe('when using Stripe payment', () => {
+describe('when using StripeV3 payment', () => {
     let method: PaymentMethod;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
@@ -62,14 +40,10 @@ describe('when using Stripe payment', () => {
     let PaymentMethodTest: FunctionComponent<PaymentMethodProps>;
 
     beforeEach(() => {
-        defaultProps = {
-            method: getPaymentMethod(),
-            onUnhandledError: jest.fn(),
-        };
-
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
+        method = { ...getPaymentMethod(), id: 'pay_now', gateway: PaymentMethodId.StripeUPE };
 
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
@@ -77,11 +51,30 @@ describe('when using Stripe payment', () => {
 
         jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);
 
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
+
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(true);
+
+        jest.mock('@bigcommerce/checkout/dom-utils', () => ({
+            getAppliedStyles: () => {
+                return { color: '#cccccc' };
+            },
+        }));
+
+        defaultProps = {
+            method,
+            checkoutService,
+            checkoutState,
+            paymentForm: getPaymentFormServiceMock(),
+            language: createLanguageService(),
+            onUnhandledError: jest.fn(),
+        };
+
         PaymentMethodTest = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <Formik initialValues={{}} onSubmit={noop}>
-                        <PaymentMethodComponent {...props} />
+                        <StripeV3PaymentMethod {...props} />
                     </Formik>
                 </LocaleContext.Provider>
             </CheckoutProvider>
@@ -101,8 +94,7 @@ describe('when using Stripe payment', () => {
 
         it('renders as hosted widget method', () => {
             const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
-                container.find(HostedWidgetPaymentMethod);
+            const component = container.find(HostedWidgetPaymentComponent);
 
             expect(component.props()).toEqual(
                 expect.objectContaining({
@@ -115,26 +107,25 @@ describe('when using Stripe payment', () => {
         });
 
         it('return stripe v3 3ds auth failure', () => {
-            const authFail3ds = Object.create(new Error('Something went wrong.'));
+            const authFail3ds = Object.create(new Error('payment.stripev3_auth_3ds_fail'));
 
             authFail3ds.name = 'StripeV3Error';
             authFail3ds.type = 'stripev3_error';
             authFail3ds.subtype = 'auth_failure';
 
-            mount(<PaymentMethodTest {...defaultProps} method={method} />)
-                .find(HostedWidgetPaymentMethod)
-                .props()
-                .onUnhandledError(authFail3ds);
+            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
+            const hostedWidgetContainer =
+                HostedWidgetPaymentComponent as unknown as React.Component;
 
-            expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(
-                new Error(localeContext.language.translate('payment.stripev3_auth_3ds_fail')),
-            );
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+            container.find(hostedWidgetContainer).props().onUnhandledError(authFail3ds);
+
+            expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(authFail3ds);
         });
 
         it('initializes method with required config', () => {
             const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
-                container.find(HostedWidgetPaymentMethod);
+            const component = container.find(HostedWidgetPaymentComponent);
 
             component.prop('initializePayment')({
                 methodId: method.id,
@@ -167,8 +158,7 @@ describe('when using Stripe payment', () => {
 
         it('renders as hosted widget method', () => {
             const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
-                container.find(HostedWidgetPaymentMethod);
+            const component = container.find(HostedWidgetPaymentComponent);
 
             expect(component.props()).toEqual(
                 expect.objectContaining({
@@ -183,8 +173,7 @@ describe('when using Stripe payment', () => {
 
         it('initializes method with required config', () => {
             const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
-                container.find(HostedWidgetPaymentMethod);
+            const component = container.find(HostedWidgetPaymentComponent);
 
             component.prop('initializePayment')({
                 methodId: method.id,
@@ -210,8 +199,7 @@ describe('when using Stripe payment', () => {
             method.initializationData.useIndividualCardFields = true;
 
             const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
-                container.find(HostedWidgetPaymentMethod);
+            const component = container.find(HostedWidgetPaymentComponent);
 
             component.prop('initializePayment')({
                 methodId: method.id,
@@ -264,8 +252,7 @@ describe('when using Stripe payment', () => {
 
         it('renders as hosted widget method', () => {
             const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
-                container.find(HostedWidgetPaymentMethod);
+            const component = container.find(HostedWidgetPaymentComponent);
 
             expect(component.props()).toEqual(
                 expect.objectContaining({
@@ -280,8 +267,7 @@ describe('when using Stripe payment', () => {
 
         it('initializes method with required config', () => {
             const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
-                container.find(HostedWidgetPaymentMethod);
+            const component = container.find(HostedWidgetPaymentComponent);
 
             component.prop('initializePayment')({
                 methodId: method.id,
@@ -317,8 +303,7 @@ describe('when using Stripe payment', () => {
 
         it('renders as hosted widget method', () => {
             const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
-                container.find(HostedWidgetPaymentMethod);
+            const component = container.find(HostedWidgetPaymentComponent);
 
             expect(component.props()).toEqual(
                 expect.objectContaining({
@@ -333,8 +318,7 @@ describe('when using Stripe payment', () => {
 
         it('initializes method with required config', () => {
             const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const component: ReactWrapper<HostedWidgetPaymentMethodProps> =
-                container.find(HostedWidgetPaymentMethod);
+            const component = container.find(HostedWidgetPaymentComponent);
 
             component.prop('initializePayment')({
                 methodId: method.id,

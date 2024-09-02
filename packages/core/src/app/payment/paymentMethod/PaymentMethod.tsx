@@ -29,7 +29,6 @@ import PaypalExpressPaymentMethod from './PaypalExpressPaymentMethod';
 import PaypalPaymentsProPaymentMethod from './PaypalPaymentsProPaymentMethod';
 import PPSDKPaymentMethod from './PPSDKPaymentMethod';
 import SquarePaymentMethod from './SquarePaymentMethod';
-import StripePaymentMethod from './StripePaymentMethod';
 import WorldpayCreditCardPaymentMethod from './WorldpayCreditCardPaymentMethod';
 
 export interface PaymentMethodProps {
@@ -70,10 +69,6 @@ const PaymentMethodComponent: FunctionComponent<
 
     if (method.id === PaymentMethodId.SquareV2) {
         return <SquarePaymentMethod {...props} />;
-    }
-
-    if (method.gateway === PaymentMethodId.StripeV3) {
-        return <StripePaymentMethod {...props} />;
     }
 
     if (method.id === PaymentMethodId.AmazonPay) {

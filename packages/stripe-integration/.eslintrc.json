@@ -12,7 +12,8 @@
   {
       "files": ["*.spec.tsx"],
         "rules": {
-          "@eslint-disable-next-line": "off"
+          "@eslint-disable-next-line": "off",
+          "@typescript-eslint/consistent-type-assertions": "off"
         }
     }
 ]
