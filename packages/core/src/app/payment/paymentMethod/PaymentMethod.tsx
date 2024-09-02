@@ -15,7 +15,6 @@ import { withCheckout } from '../../checkout';
 import AmazonPayV2PaymentMethod from './AmazonPayV2PaymentMethod';
 import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod';
 import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
-import ChasePayPaymentMethod from './ChasePayPaymentMethod';
 import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';
 import HostedPaymentMethod from './HostedPaymentMethod';
 import MasterpassPaymentMethod from './MasterpassPaymentMethod';
@@ -77,10 +76,6 @@ const PaymentMethodComponent: FunctionComponent<
 
     if (method.id === PaymentMethodId.CCAvenueMars) {
         return <CCAvenueMarsPaymentMethod {...props} />;
-    }
-
-    if (method.id === PaymentMethodId.ChasePay) {
-        return <ChasePayPaymentMethod {...props} />;
     }
 
     if (method.gateway === PaymentMethodId.Checkoutcom) {
