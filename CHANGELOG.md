@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.522.0](https://github.com/bigcommerce/checkout-js/compare/v1.521.5...v1.522.0) (2024-09-03)
+
+
+### Features
+
+* **other:** LOCAL-1444 delivery translation ([da15e64](https://github.com/bigcommerce/checkout-js/commit/da15e64917fe327dabd8616d3b8ff09264752fea))
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-8503 Disable steps when order is being submitted ([#1988](https://github.com/bigcommerce/checkout-js/issues/1988)) ([2b6b51f](https://github.com/bigcommerce/checkout-js/commit/2b6b51fd25fc82aa004ea25255f2080a9f9eba80))
+
 ### [1.521.5](https://github.com/bigcommerce/checkout-js/compare/v1.521.4...v1.521.5) (2024-09-02)
 
 
