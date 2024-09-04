@@ -22,15 +22,18 @@ export default async function getFflLineItems(token: string, cart: Cart): Promis
 
   const fflProducts = data.site.products.edges.filter((product: StoreProduct) =>
     product.node.customFields.edges.some((edge: any) => {
-      return edge.node.name.toLowerCase() == 'ffl'
-          && edge.node.value.toLowerCase() == 'yes';
+      // FRM-241 - introduced new custom field identifier but we are temporarily supporting the old values
+      return (edge.node.name.toLowerCase() == 'ffl_type'
+          && edge.node.value.toLowerCase() == 'firearm')
+          || (edge.node.name.toLowerCase() == 'ffl'
+          && edge.node.value.toLowerCase() == 'yes');
     })
   )
 
   const ammoProducts = data.site.products.edges.filter((product: StoreProduct) =>
     product.node.customFields.edges.some((edge: any) => {
-      return edge.node.name.toLowerCase() == 'ammo'
-          && edge.node.value.toLowerCase() == 'yes';
+      return edge.node.name.toLowerCase() == 'ffl_type'
+          && edge.node.value.toLowerCase() == 'ammo';
     })
   )
 
