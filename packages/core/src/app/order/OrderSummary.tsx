@@ -119,7 +119,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     ...orderSummarySubtotalsProps
 }) => {
     const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
-    const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
+    const displayInclusiveTax = false; // isTaxIncluded && taxes && taxes.length > 0;
 
     return (
         <article className="cart optimizedCheckout-orderSummary" data-test="cart">
