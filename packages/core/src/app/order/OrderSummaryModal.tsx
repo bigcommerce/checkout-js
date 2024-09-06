@@ -53,7 +53,7 @@ const OrderSummaryModal: FunctionComponent<
     ...orderSummarySubtotalsProps
 }) => {
     const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
-    const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
+    const displayInclusiveTax = false; // isTaxIncluded && taxes && taxes.length > 0;
 
     const subHeaderText = <OrderModalSummarySubheader
         amountWithCurrency={<ShopperCurrency amount={total} />}
