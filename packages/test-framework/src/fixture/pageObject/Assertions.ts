@@ -22,8 +22,8 @@ export class Assertions {
         await expect(page.locator(element)).toBeVisible();
     }
 
-    async shouldMadeRequest(request: boolean): Promise<void> {
-        await expect(request).toBeTruthy();
+    shouldMadeRequest(request: boolean) {
+        expect(request).toBeTruthy();
     }
 
     async shouldSeeOrderConfirmation(): Promise<void> {

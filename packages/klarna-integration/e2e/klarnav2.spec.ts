@@ -22,10 +22,10 @@ test.describe('KlarnaV2', () => {
         // 2. Playwright actions
         await checkout.goto();
         await checkout.placeOrder();
-        
+
         // 3. Assertions
         await assertions.shouldSeePaymentStep();
         await assertions.shouldSeeElement(klarnaV2WidgetSelector);
-        await assertions.shouldMadeRequest(klarnaRequestMade);
+        assertions.shouldMadeRequest(klarnaRequestMade);
     });
 });

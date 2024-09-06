@@ -32,6 +32,6 @@ test.describe('Klarna', () => {
         // 3. Assertions
         await assertions.shouldSeePaymentStep();
         await assertions.shouldSeeElement(klarnaWidgetSelector);
-        await assertions.shouldMadeRequest(klarnaRequestMade);
+        assertions.shouldMadeRequest(klarnaRequestMade);
     });
 });
