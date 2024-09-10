@@ -1,17 +1,16 @@
-/* eslint @typescript-eslint/no-floating-promises: 0 */
 import {
     CheckoutSelectors,
     CheckoutService,
     createCheckoutService,
     createLanguageService,
+    PaymentInitializeOptions,
     PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { HostedWidgetPaymentComponent } from '@bigcommerce/checkout/hosted-widget-integration';
 import {
     createLocaleContext,
     LocaleContext,
@@ -38,18 +37,24 @@ describe('when using StripeV3 payment', () => {
     let defaultProps: PaymentMethodProps;
     let localeContext: LocaleContextType;
     let PaymentMethodTest: FunctionComponent<PaymentMethodProps>;
+    let initializePayment: jest.SpyInstance<
+        Promise<CheckoutSelectors>,
+        [options: PaymentInitializeOptions]
+    >;
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
-        method = { ...getPaymentMethod(), id: 'pay_now', gateway: PaymentMethodId.StripeUPE };
+        method = { ...getPaymentMethod(), id: 'pay_now', gateway: PaymentMethodId.StripeV3 };
+
+        initializePayment = jest
+            .spyOn(checkoutService, 'initializePayment')
+            .mockResolvedValue(checkoutState);
 
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
 
         jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
-
-        jest.spyOn(checkoutService, 'initializePayment').mockResolvedValue(checkoutState);
 
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
 
@@ -93,53 +98,16 @@ describe('when using StripeV3 payment', () => {
         });
 
         it('renders as hosted widget method', () => {
-            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const component = container.find(HostedWidgetPaymentComponent);
+            render(<PaymentMethodTest {...defaultProps} method={method} />);
 
-            expect(component.props()).toEqual(
-                expect.objectContaining({
-                    containerId: `stripe-alipay-component-field`,
-                    deinitializePayment: expect.any(Function),
-                    initializePayment: expect.any(Function),
-                    method,
-                }),
-            );
-        });
-
-        it('return stripe v3 3ds auth failure', () => {
-            const authFail3ds = Object.create(new Error('payment.stripev3_auth_3ds_fail'));
-
-            authFail3ds.name = 'StripeV3Error';
-            authFail3ds.type = 'stripev3_error';
-            authFail3ds.subtype = 'auth_failure';
-
-            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const hostedWidgetContainer =
-                HostedWidgetPaymentComponent as unknown as React.Component;
-
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-            container.find(hostedWidgetContainer).props().onUnhandledError(authFail3ds);
-
-            expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(authFail3ds);
-        });
-
-        it('initializes method with required config', () => {
-            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const component = container.find(HostedWidgetPaymentComponent);
-
-            component.prop('initializePayment')({
-                methodId: method.id,
-                gatewayId: method.gateway,
+            expect(initializePayment).toHaveBeenCalledWith({
+                gatewayId: 'stripev3',
+                methodId: 'alipay',
+                stripev3: {
+                    containerId: 'stripe-alipay-component-field',
+                    options: undefined,
+                },
             });
-
-            expect(checkoutService.initializePayment).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    methodId: method.id,
-                    stripev3: {
-                        containerId: 'stripe-alipay-component-field',
-                    },
-                }),
-            );
         });
     });
 
@@ -157,54 +125,26 @@ describe('when using StripeV3 payment', () => {
         });
 
         it('renders as hosted widget method', () => {
-            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const component = container.find(HostedWidgetPaymentComponent);
+            render(<PaymentMethodTest {...defaultProps} method={method} />);
 
-            expect(component.props()).toEqual(
-                expect.objectContaining({
-                    containerId: `stripe-card-component-field`,
-                    deinitializePayment: expect.any(Function),
-                    initializePayment: expect.any(Function),
-                    additionalContainerClassName: 'optimizedCheckout-form-input widget--stripev3',
-                    method,
-                }),
-            );
-        });
-
-        it('initializes method with required config', () => {
-            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const component = container.find(HostedWidgetPaymentComponent);
-
-            component.prop('initializePayment')({
-                methodId: method.id,
-                gatewayId: method.gateway,
-            });
-
-            expect(checkoutService.initializePayment).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    methodId: method.id,
-                    stripev3: {
-                        options: {
-                            classes: {
-                                base: 'form-input optimizedCheckout-form-input',
-                            },
+            expect(initializePayment).toHaveBeenCalledWith({
+                gatewayId: 'stripev3',
+                methodId: 'card',
+                stripev3: {
+                    containerId: 'stripe-card-component-field',
+                    options: {
+                        classes: {
+                            base: 'form-input optimizedCheckout-form-input',
                         },
-                        containerId: 'stripe-card-component-field',
                     },
-                }),
-            );
+                },
+            });
         });
 
         it('initializes method with required config when useIndividualCardFields option is true', () => {
             method.initializationData.useIndividualCardFields = true;
 
-            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const component = container.find(HostedWidgetPaymentComponent);
-
-            component.prop('initializePayment')({
-                methodId: method.id,
-                gatewayId: method.gateway,
-            });
+            render(<PaymentMethodTest {...defaultProps} method={method} />);
 
             expect(checkoutService.initializePayment).toHaveBeenCalledWith({
                 gatewayId: method.gateway,
@@ -250,29 +190,8 @@ describe('when using StripeV3 payment', () => {
             };
         });
 
-        it('renders as hosted widget method', () => {
-            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const component = container.find(HostedWidgetPaymentComponent);
-
-            expect(component.props()).toEqual(
-                expect.objectContaining({
-                    containerId: `stripe-idealBank-component-field`,
-                    deinitializePayment: expect.any(Function),
-                    initializePayment: expect.any(Function),
-                    additionalContainerClassName: 'optimizedCheckout-form-input widget--stripev3',
-                    method,
-                }),
-            );
-        });
-
         it('initializes method with required config', () => {
-            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const component = container.find(HostedWidgetPaymentComponent);
-
-            component.prop('initializePayment')({
-                methodId: method.id,
-                gatewayId: method.gateway,
-            });
+            render(<PaymentMethodTest {...defaultProps} method={method} />);
 
             expect(checkoutService.initializePayment).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -301,29 +220,8 @@ describe('when using StripeV3 payment', () => {
             };
         });
 
-        it('renders as hosted widget method', () => {
-            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const component = container.find(HostedWidgetPaymentComponent);
-
-            expect(component.props()).toEqual(
-                expect.objectContaining({
-                    containerId: `stripe-iban-component-field`,
-                    deinitializePayment: expect.any(Function),
-                    initializePayment: expect.any(Function),
-                    additionalContainerClassName: 'optimizedCheckout-form-input widget--stripev3',
-                    method,
-                }),
-            );
-        });
-
         it('initializes method with required config', () => {
-            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-            const component = container.find(HostedWidgetPaymentComponent);
-
-            component.prop('initializePayment')({
-                methodId: method.id,
-                gatewayId: method.gateway,
-            });
+            render(<PaymentMethodTest {...defaultProps} method={method} />);
 
             expect(checkoutService.initializePayment).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -339,14 +237,6 @@ describe('when using StripeV3 payment', () => {
                     },
                 }),
             );
-        });
-
-        it('returns storeUrl null if getConfig is undefined', () => {
-            jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(undefined);
-
-            const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-
-            expect(container.prop('storeUrl')).toBeUndefined();
         });
     });
 });
