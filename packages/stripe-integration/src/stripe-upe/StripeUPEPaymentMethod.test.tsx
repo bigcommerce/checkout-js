@@ -3,14 +3,14 @@ import {
     CheckoutService,
     createCheckoutService,
     createLanguageService,
+    PaymentInitializeOptions,
     PaymentMethod,
 } from '@bigcommerce/checkout-sdk';
-import { mount } from 'enzyme';
+import { render } from '@testing-library/react';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { HostedWidgetPaymentComponent } from '@bigcommerce/checkout/hosted-widget-integration';
 import {
     createLocaleContext,
     LocaleContext,
@@ -24,6 +24,7 @@ import {
 import {
     getCheckout,
     getCustomer,
+    getInstruments,
     getPaymentFormServiceMock,
     getPaymentMethod,
     getStoreConfig,
@@ -39,14 +40,23 @@ describe('when using StripeUPE payment', () => {
     let localeContext: LocaleContextType;
 
     let PaymentMethodTest: FunctionComponent<PaymentMethodProps>;
+    let initializePayment: jest.SpyInstance<
+        Promise<CheckoutSelectors>,
+        [options: PaymentInitializeOptions]
+    >;
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
         localeContext = createLocaleContext(getStoreConfig());
         method = { ...getPaymentMethod(), id: 'pay_now', gateway: PaymentMethodId.StripeUPE };
+        initializePayment = jest
+            .spyOn(checkoutService, 'initializePayment')
+            .mockResolvedValue(checkoutState);
 
         jest.spyOn(checkoutState.data, 'getConfig').mockReturnValue(getStoreConfig());
+
+        jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(getInstruments());
 
         jest.spyOn(checkoutService, 'deinitializePayment').mockResolvedValue(checkoutState);
 
@@ -86,50 +96,60 @@ describe('when using StripeUPE payment', () => {
         jest.clearAllMocks();
     });
 
-    it('renders as hosted widget component', () => {
-        const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-        const component = container.find(HostedWidgetPaymentComponent);
-
-        expect(component.props()).toEqual(
-            expect.objectContaining({
-                containerId: `stripe-${method.id}-component-field`,
-                deinitializePayment: expect.any(Function),
-                initializePayment: expect.any(Function),
-                method,
-            }),
-        );
-    });
-
     it('initializes method with required config when no instruments', () => {
         jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(undefined);
 
-        const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-        const component = container.find(HostedWidgetPaymentComponent);
+        render(<PaymentMethodTest {...defaultProps} method={method} />);
 
-        expect(component.props()).toEqual(
-            expect.objectContaining({
-                containerId: `stripe-${method.id}-component-field`,
-                deinitializePayment: expect.any(Function),
-                initializePayment: expect.any(Function),
-                method,
-            }),
-        );
+        expect(initializePayment).toHaveBeenCalledWith({
+            gatewayId: 'stripeupe',
+            methodId: 'pay_now',
+            stripeupe: {
+                containerId: 'stripe-pay_now-component-field',
+                onError: expect.any(Function),
+                render: expect.any(Function),
+                style: {
+                    fieldBackground: '',
+                    fieldBorder: '',
+                    fieldErrorText: '',
+                    fieldInnerShadow: '',
+                    fieldPlaceholderText: '',
+                    fieldText: '',
+                    labelText: '',
+                },
+            },
+        });
     });
 
     it('initializes method with required config when customer is defined', () => {
-        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue(getCustomer());
+        jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue({
+            ...getCustomer(),
+            isGuest: false,
+        });
+        jest.spyOn(checkoutState.data, 'getPaymentProviderCustomer').mockReturnValue({
+            stripeLinkAuthenticationState: true,
+        });
 
-        const container = mount(<PaymentMethodTest {...defaultProps} method={method} />);
-        const component = container.find(HostedWidgetPaymentComponent);
+        render(<PaymentMethodTest {...defaultProps} method={method} />);
 
-        expect(component.props()).toEqual(
-            expect.objectContaining({
-                containerId: `stripe-${method.id}-component-field`,
-                deinitializePayment: expect.any(Function),
-                initializePayment: expect.any(Function),
-                method,
-            }),
-        );
+        expect(initializePayment).toHaveBeenCalledWith({
+            gatewayId: 'stripeupe',
+            methodId: 'pay_now',
+            stripeupe: {
+                containerId: 'stripe-pay_now-component-field',
+                onError: expect.any(Function),
+                render: expect.any(Function),
+                style: {
+                    fieldBackground: '',
+                    fieldBorder: '',
+                    fieldErrorText: '',
+                    fieldInnerShadow: '',
+                    fieldPlaceholderText: '',
+                    fieldText: '',
+                    labelText: '',
+                },
+            },
+        });
     });
 
     it('initializes method with required config', () => {
@@ -140,7 +160,7 @@ describe('when using StripeUPE payment', () => {
         element.style.borderColor = 'blue';
 
         jest.spyOn(document, 'getElementById').mockReturnValue(element);
-        mount(<PaymentMethodTest {...defaultProps} method={method} />);
+        render(<PaymentMethodTest {...defaultProps} method={method} />);
 
         expect(checkoutService.initializePayment).toHaveBeenCalledWith(
             expect.objectContaining({
