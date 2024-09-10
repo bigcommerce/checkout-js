@@ -9272,7 +9272,6 @@
                             case "A256KW":
                                 return {
                                     publicKey: "wrapKey",
-                                    privateKey: "unwrapKey"
                                 };
                             default:
                                 throw Error("unsupported algorithm: " + e)
