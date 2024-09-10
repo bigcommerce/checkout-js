@@ -315,22 +315,21 @@ class DealerShipping extends React.PureComponent<DealerProps & WithCheckoutShipp
   }
 
     onChangeCustomShippingField: () => void = (value, stateKey) => {
-        const { assignItem } = this.props;
         const stateKeyError = `${stateKey}Error`;
 
-        this.setState({ 
+        this.setState({
             [stateKey]: value,
             [stateKeyError]: false
+        }, () => {
+            if (this.state.customShippingFirstName != "" &&
+                this.state.customShippingLastName != "" &&
+                this.state.customShippingAddress != "" &&
+                this.state.customShippingCity != "" &&
+                this.state.customShippingPostal != ""
+            ){
+                this.debouncedAssignCustomShippingAddress();
+            }
         });
-
-        if (this.state.customShippingFirstName != "" &&
-            this.state.customShippingLastName != "" &&
-            this.state.customShippingAddress != "" &&
-            this.state.customShippingCity != "" &&
-            this.state.customShippingPostal != ""
-        ){
-            this.debouncedAssignCustomShippingAddress();
-        }
     }
 
     validateSelectedState: (event: any) => void = () => {
