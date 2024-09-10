@@ -1,27 +1,27 @@
 {
   "version": 2,
-  "appVersion": "1.522.2",
+  "appVersion": "1.522.3",
   "dynamicChunks": {
     "js": [
-      "134-d365e539.js",
-      "51-cf457229.js",
-      "568-451dcb6c.js",
-      "850-83a0e1bc.js",
-      "904-08425d6b.js",
-      "billing-b6771b36.js",
-      "cart-summary-drawer-9b6fbb46.js",
-      "cart-summary-4231e961.js",
-      "order-summary-drawer-1c084426.js",
-      "order-summary-0737cb58.js",
-      "payment-99d7332f.js",
-      "shipping-eaeab028.js"
+      "175-44550edc.js",
+      "554-e4bff11d.js",
+      "645-d86bc5b0.js",
+      "673-d6a84714.js",
+      "755-60062fdd.js",
+      "billing-34a154c2.js",
+      "cart-summary-drawer-e765a82e.js",
+      "cart-summary-08975d81.js",
+      "order-summary-drawer-601887ba.js",
+      "order-summary-6603e5f4.js",
+      "payment-7482e155.js",
+      "shipping-5e35d304.js"
     ],
     "css": [
       "billing-5cb3e9e6.css",
       "cart-summary-drawer-5084b1db.css",
       "cart-summary-5084b1db.css",
-      "payment-0037a6b1.css",
-      "shipping-cf90d815.css"
+      "payment-fb001f32.css",
+      "shipping-c24d51b3.css"
     ],
     "svg": [
       "static/card-9f708a7a.svg"
@@ -31,14 +31,14 @@
     ]
   },
   "js": [
-    "runtime-129c9cc1.js",
-    "700-d575b870.js",
-    "608-6573dede.js",
-    "375-dd5e60e7.js",
-    "985-bb857b71.js",
-    "checkout-3525e444.js"
+    "runtime-a8725471.js",
+    "859-a3e9b81c.js",
+    "310-b48861fc.js",
+    "177-d35ecc5c.js",
+    "573-7c9e2e8b.js",
+    "checkout-9c52f4cd.js"
   ],
   "css": [
-    "checkout-3fb8e02d.css"
+    "checkout-5fb4d2d7.css"
   ]
 }
