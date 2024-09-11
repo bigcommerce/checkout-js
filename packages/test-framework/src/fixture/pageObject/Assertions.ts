@@ -16,6 +16,12 @@ export class Assertions {
         await expect(page.locator('.checkout-step--payment')).toContainText('Payment');
     }
 
+    async shouldSeeElement(element: string): Promise<void> {
+        const page = this.page;
+
+        await expect(page.locator(element)).toBeVisible();
+    }
+
     async shouldSeeOrderConfirmation(): Promise<void> {
         const page = this.page;
 
