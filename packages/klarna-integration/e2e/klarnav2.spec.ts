@@ -1,3 +1,5 @@
+import { expect } from '@playwright/test';
+
 import { PaymentStepAsGuestPreset, test } from '@bigcommerce/checkout/test-framework';
 
 test.describe('KlarnaV2', () => {
@@ -26,6 +28,7 @@ test.describe('KlarnaV2', () => {
         // 3. Assertions
         await assertions.shouldSeePaymentStep();
         await assertions.shouldSeeElement(klarnaV2WidgetSelector);
-        assertions.shouldMadeRequest(klarnaRequestMade);
+
+        expect(klarnaRequestMade).toBe(true);
     });
 });
