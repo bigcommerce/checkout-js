@@ -23,11 +23,11 @@ const CreateCertificate: React.FC<CreateCertificateProps> = ({ customer }) => {
 
     return !customer.isGuest ? (
         <>
-            <>
-                <button>Use Tax/ Exempt Certificate</button>
-                <CertificateSelect onSelect={handleSelect} />
-                {selectedCertificate && <p>Selected Certificate ID: {selectedCertificate}</p>}
-            </>
+            <a href={`/certificates`} target="_blank" rel="noopener noreferrer">
+                Use Tax/ Exempt Certificate
+            </a>
+            <CertificateSelect onSelect={handleSelect} />
+            {selectedCertificate && <p>Selected Certificate ID: {selectedCertificate}</p>}
         </>
     ) : null;
 };

@@ -50,7 +50,7 @@ const CertificateSelect: React.FC<CertificateSelectProps> = ({onSelect }) => {
                     <option value="">Select a certificate</option>
                         {certificates.map(certificate => (
                             <option key={certificate.id} value={certificate.id}>
-                                {certificate.companyId}
+                                {certificate.id} - {certificate.validatedExemptionReason.name} - {certificate.ecmStatus}
                             </option>
                         ))}
                 </select>

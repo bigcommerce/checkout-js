@@ -5,6 +5,8 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { join } = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const { DefinePlugin } = require('webpack');
+const dotenv = require('dotenv');
+dotenv.config();
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 
 const { AsyncHookPlugin,
