@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.524.6](https://github.com/bigcommerce/checkout-js/compare/v1.524.5...v1.524.6) (2024-09-16)
+
+
+### Bug Fixes
+
+* **checkout:** PI-2623 fixed submit payment for the Digital River ([213c1e9](https://github.com/bigcommerce/checkout-js/commit/213c1e989d25925a228a6a927d42d8b4988e51e9))
+
 ### [1.524.5](https://github.com/bigcommerce/checkout-js/compare/v1.524.4...v1.524.5) (2024-09-16)
 
 ### [1.524.4](https://github.com/bigcommerce/checkout-js/compare/v1.524.3...v1.524.4) (2024-09-13)
