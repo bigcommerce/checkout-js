@@ -5,52 +5,51 @@ import withIconContainer from './withIconContainer';
 const IconEthereum: FunctionComponent = () => (
     <svg
         aria-labelledby="iconEthereumTitle"
-        clipRule="evenodd"
-        fillRule="evenodd"
-        height="100"
-        role="img"
-        viewBox="0 0 784.37 1277.39"
-        width="100"
+        fill="none"
+        height="48"
+        viewBox="0 0 70 48"
+        width="70"
         xmlns="http://www.w3.org/2000/svg"
     >
         <title id="iconEthereumTitle">Ethereum</title>
-        <g id="Layer_x0020_1">
-            <metadata id="CorelCorpID_0Corel-Layer" />
-            <g id="_1421394342400">
-                <g>
-                    <polygon
-                        fill="#343434"
-                        fillRule="nonzero"
-                        points="392.07,0 383.5,29.11 383.5,873.74 392.07,882.29 784.13,650.54 "
-                    />
-                    <polygon
-                        fill="#8C8C8C"
-                        fillRule="nonzero"
-                        points="392.07,0 -0,650.54 392.07,882.29 392.07,472.33 "
-                    />
-                    <polygon
-                        fill="#3C3C3B"
-                        fillRule="nonzero"
-                        points="392.07,956.52 387.24,962.41 387.24,1263.28 392.07,1277.38 784.37,724.89 "
-                    />
-                    <polygon
-                        fill="#8C8C8C"
-                        fillRule="nonzero"
-                        points="392.07,1277.38 392.07,956.52 -0,724.89 "
-                    />
-                    <polygon
-                        fill="#141414"
-                        fillRule="nonzero"
-                        points="392.07,882.29 784.13,650.54 392.07,472.33 "
-                    />
-                    <polygon
-                        fill="#393939"
-                        fillRule="nonzero"
-                        points="0,650.54 392.07,882.29 392.07,472.33 "
-                    />
-                </g>
-            </g>
-        </g>
+        <rect fill="white" height="47" rx="5.5" stroke="#D9D9D9" width="69" x="0.5" y="0.5" />
+        <circle cx="34.87" cy="23.87" fill="#6481E7" r="15.87" />
+        <path
+            clipRule="evenodd"
+            d="M35.0561 12.7036V28.724L42.1748 24.5157L35.0561 12.7036Z"
+            fill="#C1CCF5"
+            fillRule="evenodd"
+        />
+        <path
+            clipRule="evenodd"
+            d="M27.9368 24.5157L35.0555 28.724V12.7036L27.9368 24.5157Z"
+            fill="white"
+            fillRule="evenodd"
+        />
+        <path
+            clipRule="evenodd"
+            d="M35.056 21.2802L27.9369 24.5155L35.0556 28.7238L42.1747 24.516L35.056 21.2802Z"
+            fill="#8299EC"
+            fillRule="evenodd"
+        />
+        <path
+            clipRule="evenodd"
+            d="M35.0561 30.0718V35.8982L42.1795 25.8658L35.0561 30.0718Z"
+            fill="#C1CCF5"
+            fillRule="evenodd"
+        />
+        <path
+            clipRule="evenodd"
+            d="M35.056 21.2802L27.9369 24.5155L35.0556 28.7238L35.056 21.2802Z"
+            fill="#C1CCF5"
+            fillRule="evenodd"
+        />
+        <path
+            clipRule="evenodd"
+            d="M27.9369 25.8658L35.0556 35.8978V30.0718L27.9369 25.8658Z"
+            fill="white"
+            fillRule="evenodd"
+        />
     </svg>
 );
 

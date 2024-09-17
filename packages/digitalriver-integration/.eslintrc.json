@@ -1,0 +1,14 @@
+{
+  "extends": ["../../.eslintrc.json"],
+  "overrides": [
+    {
+      "files": ["*.tsx"],
+      "rules": {
+        "@typescript-eslint/naming-convention": "off",
+        "@typescript-eslint/no-unsafe-assignment" : "off",
+        "@typescript-eslint/no-unsafe-argument": "off",
+        "no-param-reassign": "off"
+      }
+    }
+  ]
+}

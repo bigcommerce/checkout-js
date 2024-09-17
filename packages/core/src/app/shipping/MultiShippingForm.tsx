@@ -10,8 +10,11 @@ import {
     CustomerAddress,
     FormField,
 } from '@bigcommerce/checkout-sdk';
-import { FormikProps, withFormik } from 'formik';
+import { FormikProps } from 'formik';
 import React, { PureComponent, ReactNode } from 'react';
+
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
+import { TranslatedLink, TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 
 import {
     AddressFormModal,
@@ -19,9 +22,7 @@ import {
     isValidAddress,
     mapAddressFromFormValues,
 } from '../address';
-import { preventDefault } from '../common/dom';
 import { ErrorModal } from '../common/error';
-import { TranslatedLink, TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 import { Form } from '../ui/form';
 
 import { AssignItemFailedError, AssignItemInvalidAddressError } from './errors';
@@ -33,6 +34,7 @@ import ItemAddressSelect from './ItemAddressSelect';
 import ShippableItem from './ShippableItem';
 import ShippingFormFooter from './ShippingFormFooter';
 import updateShippableItems from './updateShippableItems';
+import { withFormikExtended } from '../common/form';
 
 export interface MultiShippingFormProps {
     addresses: CustomerAddress[];
@@ -47,8 +49,8 @@ export interface MultiShippingFormProps {
     countries?: Country[];
     countriesWithAutocomplete: string[];
     googleMapsApiKey?: string;
-    shouldShowAddAddressInCheckout: boolean;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
+    isInitialValueLoaded: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     onCreateAccount(): void;
     createCustomerAddress(address: AddressRequestBody): void;
@@ -97,13 +99,14 @@ class MultiShippingForm extends PureComponent<
             onCreateAccount,
             cartHasChanged,
             shouldShowOrderComments,
+            isInitialValueLoaded,
             isLoading,
             getFields,
             defaultCountryCode,
             countries,
             countriesWithAutocomplete,
             googleMapsApiKey,
-            useFloatingLabel,
+            isFloatingLabelEnabled,
         } = this.props;
 
         const { items, itemAddingAddress, createCustomerAddressError } = this.state;
@@ -146,11 +149,11 @@ class MultiShippingForm extends PureComponent<
                     defaultCountryCode={defaultCountryCode}
                     getFields={getFields}
                     googleMapsApiKey={googleMapsApiKey}
+                    isFloatingLabelEnabled={isFloatingLabelEnabled}
                     isLoading={isLoading}
                     isOpen={!!itemAddingAddress}
                     onRequestClose={this.handleCloseAddAddressForm}
                     onSaveAddress={this.handleSaveAddress}
-                    useFloatingLabel={useFloatingLabel}
                 />
 
                 <Form>
@@ -169,6 +172,7 @@ class MultiShippingForm extends PureComponent<
 
                     <ShippingFormFooter
                         cartHasChanged={cartHasChanged}
+                        isInitialValueLoaded={isInitialValueLoaded}
                         isLoading={isLoading}
                         isMultiShippingMode={true}
                         shouldDisableSubmit={this.shouldDisableSubmit()}
@@ -215,19 +219,10 @@ class MultiShippingForm extends PureComponent<
         });
     };
 
-    private handleUseNewAddress: (address: Address, itemId: string, itemKey: string) => void = (
-        address,
+    private handleUseNewAddress: (itemId: string, itemKey: string) => void = (
         itemId,
         itemKey,
     ) => {
-        const { onUseNewAddress, shouldShowAddAddressInCheckout } = this.props;
-
-        if (!shouldShowAddAddressInCheckout) {
-            onUseNewAddress(address, itemId);
-
-            return;
-        }
-
         this.setState({
             itemAddingAddress: {
                 key: itemKey,
@@ -307,7 +302,7 @@ export interface MultiShippingFormValues {
 }
 
 export default withLanguage(
-    withFormik<MultiShippingFormProps & WithLanguageProps, MultiShippingFormValues>({
+    withFormikExtended<MultiShippingFormProps & WithLanguageProps, MultiShippingFormValues>({
         handleSubmit: (values, { props: { onSubmit } }) => {
             onSubmit(values);
         },

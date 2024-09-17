@@ -11,7 +11,7 @@ import hasSelectedShippingOptions from '../../shipping/hasSelectedShippingOption
 import updateShippableItems from '../../shipping/updateShippableItems';
 import AddressSelect from '../../address/AddressSelect';
 import { AddressType, StaticAddress } from '../../address';
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { AssignItemFailedError, AssignItemInvalidAddressError, UnassignItemError } from '../../shipping/errors';
 import { isValidAddress, mapAddressFromFormValues, AddressFormModal, AddressFormValues } from '../../address';
 import { retry, EMPTY_ARRAY } from '../../common/utility';
@@ -817,7 +817,7 @@ export function mapToDealerShippingProps({
       },
     } = config;
 
-    const methodId = getShippingMethodId(checkout);
+    const methodId = getShippingMethodId(checkout, config);
     const shippableItemsCount = getShippableItemsCount(cart);
     const isLoading = (
         isLoadingShippingOptions() ||

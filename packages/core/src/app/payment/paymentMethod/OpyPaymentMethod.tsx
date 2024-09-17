@@ -3,7 +3,8 @@ import { noop } from 'lodash';
 import React, { FunctionComponent, useCallback } from 'react';
 import { Omit } from 'utility-types';
 
-import { TranslatedString, withLanguage, WithLanguageProps } from '../../locale';
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+
 import { LoadingOverlay } from '../../ui/loading';
 
 import getPaymentMethodName from './getPaymentMethodName';

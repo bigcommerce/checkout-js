@@ -1,7 +1,8 @@
 import React, { memo } from 'react';
 
-import { preventDefault } from '../../common/dom';
-import { TranslatedString } from '../../locale';
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { Toggle } from '../../ui/toggle';
 
 interface ShippingOptionAdditionalDescriptionProps {

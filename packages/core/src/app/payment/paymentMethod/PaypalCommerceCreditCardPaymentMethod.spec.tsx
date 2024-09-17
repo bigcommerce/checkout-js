@@ -9,14 +9,13 @@ import { noop } from 'lodash';
 import React, { FunctionComponent, useEffect } from 'react';
 import { object } from 'yup';
 
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
 import { getCart } from '../../cart/carts.mock';
-import { CheckoutProvider } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
-import {
-    withHostedCreditCardFieldset,
-    WithInjectedHostedCreditCardFieldsetProps,
-} from '../hostedCreditCard';
+import { WithInjectedHostedCreditCardFieldsetProps } from '../hostedCreditCard';
+import withHostedPayPalCommerceCreditCardFieldset from '../hostedCreditCard/withHostedPayPalCommerceCreditCardFieldset';
 import { getPaymentMethod } from '../payment-methods.mock';
 
 import CreditCardPaymentMethod from './CreditCardPaymentMethod';
@@ -42,11 +41,11 @@ const injectedProps: WithInjectedHostedCreditCardFieldsetProps = {
     hostedValidationSchema: object(),
 };
 
-jest.mock('../hostedCreditCard', () => ({
-    ...jest.requireActual('../hostedCreditCard'),
-    withHostedCreditCardFieldset: jest.fn((Component) => (props: any) => (
+jest.mock('../hostedCreditCard/withHostedPayPalCommerceCreditCardFieldset', () => ({
+    __esModule: true,
+    default: jest.fn((Component) => (props: any) => (
         <Component {...props} {...injectedProps} />
-    )) as jest.Mocked<typeof withHostedCreditCardFieldset>,
+    )) as jest.Mocked<typeof withHostedPayPalCommerceCreditCardFieldset>,
 }));
 
 jest.mock(
@@ -127,7 +126,7 @@ describe('when using PayPal Commerce Credit Card payment', () => {
             expect.objectContaining({
                 methodId: defaultProps.method.id,
                 gatewayId: defaultProps.method.gateway,
-                paypalcommerce: {
+                paypalcommercecreditcards: {
                     form: hostedFormOptions,
                 },
             }),

@@ -1,26 +1,42 @@
+import { CheckoutService, createCheckoutService, CustomerAddress } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
+
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+import { getShippingAddress } from '@bigcommerce/checkout/test-mocks';
 
 import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
 import { getCountries } from '../geography/countries.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 import { OrderComments } from '../orderComments';
+import { PaymentMethodId } from '../payment/paymentMethod';
 
 import BillingSameAsShippingField from './BillingSameAsShippingField';
 import { getConsignment } from './consignment.mock';
 import MultiShippingForm from './MultiShippingForm';
-import { getShippingAddress } from './shipping-addresses.mock';
 import ShippingAddress from './ShippingAddress';
 import ShippingForm, { ShippingFormProps } from './ShippingForm';
 import { ShippingOptions } from './shippingOption';
+import SingleShippingForm from './SingleShippingForm';
+
+jest.mock('@bigcommerce/checkout/paypal-fastlane-integration', () => ({
+    ...jest.requireActual('@bigcommerce/checkout/paypal-fastlane-integration'),
+    usePayPalFastlaneAddress: jest.fn(() => ({
+        isPayPalFastlaneEnabled: false,
+        paypalFastlaneAddresses: []
+    })),
+}));
 
 describe('ShippingForm Component', () => {
     let component: ReactWrapper;
     let localeContext: LocaleContextType;
     let defaultProps: ShippingFormProps;
+    let checkoutService: CheckoutService;
 
     beforeEach(() => {
         localeContext = createLocaleContext(getStoreConfig());
@@ -53,6 +69,7 @@ describe('ShippingForm Component', () => {
             shouldShowOrderComments: true,
             onMultiShippingSubmit: jest.fn(),
             onSingleShippingSubmit: jest.fn(),
+            isInitialValueLoaded: true,
             isLoading: false,
             isShippingStepPending: false,
             deleteConsignments: jest.fn(),
@@ -65,27 +82,41 @@ describe('ShippingForm Component', () => {
             signOut: jest.fn(),
             shouldValidateSafeInput: true,
         };
+
+        checkoutService = createCheckoutService();
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
     });
 
     describe('when multishipping mode is off', () => {
         beforeEach(() => {
             component = mount(
-                <LocaleContext.Provider value={localeContext}>
-                    <ShippingForm {...defaultProps} />
-                </LocaleContext.Provider>,
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm {...defaultProps} />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
             );
         });
 
         it('renders ShippingAddress with expected props', () => {
             component = mount(
-                <LocaleContext.Provider value={localeContext}>
-                    <ShippingForm {...defaultProps} methodId="amazon" />
-                </LocaleContext.Provider>,
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm {...defaultProps} methodId="amazonpay" />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
             );
 
             expect(component.find(ShippingAddress).props()).toEqual(
                 expect.objectContaining({
-                    methodId: 'amazon',
+                    methodId: 'amazonpay',
                 }),
             );
         });
@@ -96,9 +127,13 @@ describe('ShippingForm Component', () => {
 
         it('renders disabled continue button when valid address and no shipping option', () => {
             component = mount(
-                <LocaleContext.Provider value={localeContext}>
-                    <ShippingForm {...defaultProps} consignments={[]} />
-                </LocaleContext.Provider>,
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm {...defaultProps} consignments={[]} />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
             );
 
             expect(component.find('Button#checkout-shipping-continue').props()).toEqual(
@@ -111,15 +146,19 @@ describe('ShippingForm Component', () => {
 
         it('renders enabled continue button when invalid address', () => {
             component = mount(
-                <LocaleContext.Provider value={localeContext}>
-                    <ShippingForm
-                        {...defaultProps}
-                        shippingAddress={{
-                            ...getShippingAddress(),
-                            address1: '',
-                        }}
-                    />
-                </LocaleContext.Provider>,
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm
+                                {...defaultProps}
+                                shippingAddress={{
+                                    ...getShippingAddress(),
+                                    address1: '',
+                                }}
+                            />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
             );
 
             expect(component.find('Button#checkout-shipping-continue').props()).toEqual(
@@ -132,9 +171,13 @@ describe('ShippingForm Component', () => {
 
         it('renders enabled continue button when no address', () => {
             component = mount(
-                <LocaleContext.Provider value={localeContext}>
-                    <ShippingForm {...defaultProps} shippingAddress={undefined} />
-                </LocaleContext.Provider>,
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm {...defaultProps} shippingAddress={undefined} />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
             );
 
             expect(component.find('Button#checkout-shipping-continue').props()).toEqual(
@@ -185,9 +228,13 @@ describe('ShippingForm Component', () => {
         describe('when user is guest', () => {
             beforeEach(() => {
                 component = mount(
-                    <LocaleContext.Provider value={localeContext}>
-                        <ShippingForm {...defaultProps} isGuest={true} isMultiShippingMode={true} />
-                    </LocaleContext.Provider>,
+                    <CheckoutProvider checkoutService={checkoutService}>
+                        <LocaleContext.Provider value={localeContext}>
+                            <ExtensionProvider checkoutService={checkoutService}>
+                                <ShippingForm {...defaultProps} isGuest={true} isMultiShippingMode={true} />
+                            </ExtensionProvider>
+                        </LocaleContext.Provider>
+                    </CheckoutProvider>,
                 );
             });
 
@@ -208,21 +255,29 @@ describe('ShippingForm Component', () => {
         describe('when user is signed in', () => {
             beforeEach(() => {
                 component = mount(
-                    <LocaleContext.Provider value={localeContext}>
-                        <ShippingForm {...defaultProps} isMultiShippingMode={true} />
-                    </LocaleContext.Provider>,
+                    <CheckoutProvider checkoutService={checkoutService}>
+                        <LocaleContext.Provider value={localeContext}>
+                            <ExtensionProvider checkoutService={checkoutService}>
+                                <ShippingForm {...defaultProps} isMultiShippingMode={true} />
+                            </ExtensionProvider>
+                        </LocaleContext.Provider>
+                    </CheckoutProvider>,
                 );
             });
 
             it('renders disabled button when loading', () => {
                 component = mount(
-                    <LocaleContext.Provider value={localeContext}>
-                        <ShippingForm
-                            {...defaultProps}
-                            isLoading={true}
-                            isMultiShippingMode={true}
-                        />
-                    </LocaleContext.Provider>,
+                    <CheckoutProvider checkoutService={checkoutService}>
+                        <LocaleContext.Provider value={localeContext}>
+                            <ExtensionProvider checkoutService={checkoutService}>
+                                <ShippingForm
+                                    {...defaultProps}
+                                    isLoading={true}
+                                    isMultiShippingMode={true}
+                                />
+                            </ExtensionProvider>
+                        </LocaleContext.Provider>
+                    </CheckoutProvider>,
                 );
 
                 expect(component.find('Button#checkout-shipping-continue').props()).toEqual(
@@ -235,18 +290,22 @@ describe('ShippingForm Component', () => {
 
             it('renders disabled button when no shipping option selected', () => {
                 component = mount(
-                    <LocaleContext.Provider value={localeContext}>
-                        <ShippingForm
-                            {...defaultProps}
-                            consignments={[
-                                {
-                                    ...getConsignment(),
-                                    selectedShippingOption: undefined,
-                                },
-                            ]}
-                            isMultiShippingMode={true}
-                        />
-                    </LocaleContext.Provider>,
+                    <CheckoutProvider checkoutService={checkoutService}>
+                        <LocaleContext.Provider value={localeContext}>
+                            <ExtensionProvider checkoutService={checkoutService}>
+                                <ShippingForm
+                                    {...defaultProps}
+                                    consignments={[
+                                        {
+                                            ...getConsignment(),
+                                            selectedShippingOption: undefined,
+                                        },
+                                    ]}
+                                    isMultiShippingMode={true}
+                                />
+                            </ExtensionProvider>
+                        </LocaleContext.Provider>
+                    </CheckoutProvider>,
                 );
 
                 expect(component.find('Button#checkout-shipping-continue').props()).toEqual(
@@ -259,13 +318,17 @@ describe('ShippingForm Component', () => {
 
             it('renders disabled button when unassigned items', () => {
                 component = mount(
-                    <LocaleContext.Provider value={localeContext}>
-                        <ShippingForm
-                            {...defaultProps}
-                            consignments={[]}
-                            isMultiShippingMode={true}
-                        />
-                    </LocaleContext.Provider>,
+                    <CheckoutProvider checkoutService={checkoutService}>
+                        <LocaleContext.Provider value={localeContext}>
+                            <ExtensionProvider checkoutService={checkoutService}>
+                                <ShippingForm
+                                    {...defaultProps}
+                                    consignments={[]}
+                                    isMultiShippingMode={true}
+                                />
+                            </ExtensionProvider>
+                        </LocaleContext.Provider>
+                    </CheckoutProvider>,
                 );
 
                 expect(component.find('Button#checkout-shipping-continue').props()).toEqual(
@@ -309,6 +372,112 @@ describe('ShippingForm Component', () => {
                     }),
                 );
             });
+        });
+    });
+
+    describe('Braintree Fastlane', () => {
+        it('renders SingleShippingForm with default addresses list if PayPal Fastlane disabled', () => {
+            const initializeMock = jest.fn();
+            const ShippingFormProps = {
+                ...defaultProps,
+                initialize: initializeMock,
+            };
+
+            component = mount(
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm {...ShippingFormProps} methodId={PaymentMethodId.BraintreeAcceleratedCheckout} />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
+            );
+
+            expect(component.find(SingleShippingForm).props()).toEqual(
+                expect.objectContaining({
+                    addresses: defaultProps.addresses,
+                }),
+            );
+            expect(initializeMock).not.toHaveBeenCalled();
+        });
+
+        it('renders SingleShippingForm with paypal addresses list for guests when PayPal Fastlane enabled', () => {
+            const initializeMock = jest.fn();
+            const shippingFormProps = {
+                ...defaultProps,
+                initialize: initializeMock,
+                isGuest: true,
+            };
+            const paypalFastlaneAddresses: CustomerAddress[] = [
+                {
+                    ...getShippingAddress(),
+                    id: 123,
+                    type: 'paypal-address',
+                }
+            ];
+
+            (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
+                isPayPalFastlaneEnabled: true,
+                paypalFastlaneAddresses,
+            });
+
+            component = mount(
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm {...shippingFormProps} methodId={PaymentMethodId.BraintreeAcceleratedCheckout} />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
+            );
+
+            expect(component.find(SingleShippingForm).props()).toEqual(
+                expect.objectContaining({
+                    addresses: paypalFastlaneAddresses,
+                }),
+            );
+            expect(initializeMock).toHaveBeenCalledWith({
+                methodId: PaymentMethodId.BraintreeAcceleratedCheckout,
+            });
+        });
+
+        it('renders shipping for with paypal fastlane addresses without strategy initialization if there is preselected shipping method id', () => {
+            const initializeMock = jest.fn();
+            const shippingFormProps = {
+                ...defaultProps,
+                initialize: initializeMock,
+                isGuest: true,
+            };
+            const paypalFastlaneAddresses: CustomerAddress[] = [
+                {
+                    ...getShippingAddress(),
+                    id: 123,
+                    type: 'paypal-address',
+                }
+            ];
+
+            (usePayPalFastlaneAddress as jest.Mock).mockReturnValue({
+                isPayPalFastlaneEnabled: true,
+                paypalFastlaneAddresses,
+                shouldShowPayPalFastlaneShippingForm: true,
+            });
+
+            component = mount(
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <ExtensionProvider checkoutService={checkoutService}>
+                            <ShippingForm {...shippingFormProps} methodId="notPPFastlaneMethodID" />
+                        </ExtensionProvider>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
+            );
+
+            expect(component.find(SingleShippingForm).props()).toEqual(
+                expect.objectContaining({
+                    addresses: paypalFastlaneAddresses,
+                }),
+            );
+            expect(initializeMock).not.toHaveBeenCalled();
         });
     });
 });

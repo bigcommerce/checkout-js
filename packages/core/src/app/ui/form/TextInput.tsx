@@ -7,14 +7,14 @@ export interface TextInputProps extends InputProps {
     additionalClassName?: string;
     appearFocused?: boolean;
     type?: 'text' | 'password' | 'tel' | 'email' | 'number';
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
 }
 
 const TextInput = forwardRef(
     (
         {
             additionalClassName,
-            useFloatingLabel,
+            isFloatingLabelEnabled,
             appearFocused,
             type = 'text',
             ...rest
@@ -30,9 +30,9 @@ const TextInput = forwardRef(
                 { 'optimizedCheckout-form-input--focus': appearFocused },
                 additionalClassName,
             )}
+            isFloatingLabelEnabled={isFloatingLabelEnabled}
             ref={ref}
             type={type}
-            useFloatingLabel={useFloatingLabel}
         />
     ),
 );

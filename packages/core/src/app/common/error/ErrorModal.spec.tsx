@@ -1,15 +1,19 @@
 import { RequestError } from '@bigcommerce/checkout-sdk';
+import { screen } from '@testing-library/react';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+
 import { getStoreConfig } from '../../config/config.mock';
 import { AccountCreationFailedError } from '../../guestSignup/errors';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { Button } from '../../ui/button';
 import { Modal } from '../../ui/modal';
 
 import ErrorCode from './ErrorCode';
 import ErrorModal, { ErrorModalProps } from './ErrorModal';
+
+import { CustomError } from './index';
 
 describe('ErrorModal', () => {
     let errorModal: ReactWrapper;
@@ -103,6 +107,29 @@ describe('ErrorModal', () => {
 
             it('does not render error code', () => {
                 expect(errorModal.find(ErrorCode)).toHaveLength(0);
+            });
+        });
+
+        describe('when receive custom error where html should be translated', () => {
+            beforeEach(() => {
+                errorModal.setProps({
+                    error: new CustomError({
+                        data: {
+                            shouldBeTranslatedAsHtml: true,
+                            translationKey: 'payment.ratepay.errors.paymentSourceInfoCannotBeVerified',
+                        }
+                    }),
+                    shouldShowErrorCode: false,
+                });
+                errorModal.update();
+            });
+
+            it('display links with correct href',  () => {
+                const link1 = screen.getByRole('link', { name: 'Ratepay Data Privacy Statement' });
+                const link2 = screen.getByRole('link', { name: 'contact form.' });
+
+                expect(link1).toHaveAttribute('href', 'https://www.ratepay.com/en/ratepay-data-privacy-statement/');
+                expect(link2).toHaveAttribute('href', 'https://www.ratepay.com/en/contact/');
             });
         });
     });

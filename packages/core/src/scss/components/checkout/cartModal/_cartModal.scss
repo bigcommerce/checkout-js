@@ -37,3 +37,35 @@
         fill: currentColor;
     }
 }
+
+.modal.modal--afterOpen.optimizedCheckout-cart-modal {
+    display: block;
+    bottom: 0;
+    min-height: 90vh;
+
+    .modal-body {
+        box-shadow: none;
+        height: 70%;
+        padding-bottom: 0;
+    }
+}
+
+.with-continue-button {
+    &.cart-modal-header {
+        box-shadow: none;
+    }
+
+    .cart-modal-link {
+        text-align: left;
+    }
+
+    .cart-modal-close {
+        text-align: right;
+    }
+
+    .cart-heading-subheader {
+        font-weight: fontWeight("medium");;
+        font-size: fontSize("base");
+        margin-top: spacing("quarter");
+    }
+}

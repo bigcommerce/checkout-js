@@ -1,16 +1,20 @@
-import { RequestError } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, CheckoutService, createCheckoutService, RequestError } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '@bigcommerce/checkout/locale';
+import { CheckoutContext } from '@bigcommerce/checkout/payment-integration-api';
+
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '../locale';
 import { Alert } from '../ui/alert';
 
-import Redeemable from './Redeemable';
+import Redeemable, { RedeemableProps } from './Redeemable';
 
 describe('CartSummary Component', () => {
     let localeContext: LocaleContextType;
     let component: ReactWrapper;
+    let checkoutService: CheckoutService;
+    let checkoutState: CheckoutSelectors;
     const applyCoupon = jest.fn();
     const applyGiftCertificate = jest.fn();
     const clearError = jest.fn();
@@ -23,23 +27,33 @@ describe('CartSummary Component', () => {
         errors: [{}],
     } as RequestError;
 
+    const RedeemableTestComponent = (props: RedeemableProps) => (
+        <LocaleContext.Provider value={localeContext}>
+            <CheckoutContext.Provider value={{ checkoutState, checkoutService }}>
+                <Redeemable {...props} />
+            </CheckoutContext.Provider>
+        </LocaleContext.Provider>
+    );
+
+    beforeEach(() => {
+        localeContext = createLocaleContext(getStoreConfig());
+        checkoutService = createCheckoutService();
+        checkoutState = checkoutService.getState();
+    });
+
     describe('when coupon code is not collapsed', () => {
         beforeEach(() => {
-            localeContext = createLocaleContext(getStoreConfig());
-
             component = mount(
-                <LocaleContext.Provider value={localeContext}>
-                    <Redeemable
-                        appliedRedeemableError={minPurchaseError}
-                        applyCoupon={applyCoupon}
-                        applyGiftCertificate={applyGiftCertificate}
-                        clearError={clearError}
-                        isApplyingRedeemable={true}
-                        onRemovedCoupon={onRemovedCoupon}
-                        onRemovedGiftCertificate={onRemovedGiftCertificate}
-                        shouldCollapseCouponCode={false}
-                    />
-                </LocaleContext.Provider>,
+                <RedeemableTestComponent
+                    appliedRedeemableError={minPurchaseError}
+                    applyCoupon={applyCoupon}
+                    applyGiftCertificate={applyGiftCertificate}
+                    clearError={clearError}
+                    isApplyingRedeemable={true}
+                    onRemovedCoupon={onRemovedCoupon}
+                    onRemovedGiftCertificate={onRemovedGiftCertificate}
+                    shouldCollapseCouponCode={false}
+                />,
             );
         });
 
@@ -74,20 +88,16 @@ describe('CartSummary Component', () => {
 
     describe('when coupon code is collapsed', () => {
         beforeEach(() => {
-            localeContext = createLocaleContext(getStoreConfig());
-
             component = mount(
-                <LocaleContext.Provider value={localeContext}>
-                    <Redeemable
-                        appliedRedeemableError={appliedError}
-                        applyCoupon={applyCoupon}
-                        applyGiftCertificate={applyGiftCertificate}
-                        clearError={clearError}
-                        onRemovedCoupon={onRemovedCoupon}
-                        onRemovedGiftCertificate={onRemovedGiftCertificate}
-                        shouldCollapseCouponCode={true}
-                    />
-                </LocaleContext.Provider>,
+                <RedeemableTestComponent
+                    appliedRedeemableError={appliedError}
+                    applyCoupon={applyCoupon}
+                    applyGiftCertificate={applyGiftCertificate}
+                    clearError={clearError}
+                    onRemovedCoupon={onRemovedCoupon}
+                    onRemovedGiftCertificate={onRemovedGiftCertificate}
+                    shouldCollapseCouponCode={true}
+                />,
             );
         });
 
@@ -173,6 +183,61 @@ describe('CartSummary Component', () => {
                     expect(applyGiftCertificate).toHaveBeenCalledWith('foo');
                 });
             });
+        });
+    });
+
+    describe('when payment is submitting', () => {
+        let applyGiftCertificate: (code: string) => Promise<CheckoutSelectors>;
+        let applyCoupon: (code: string) => Promise<CheckoutSelectors>;
+        
+        beforeEach(() => {
+            applyGiftCertificate = jest.fn();
+            applyCoupon = jest.fn();
+            
+            checkoutState = checkoutService.getState();
+
+            jest.spyOn(checkoutState.statuses, 'isSubmittingOrder').mockReturnValue(true);
+
+            component = mount(
+                <RedeemableTestComponent
+                    appliedRedeemableError={minPurchaseError}
+                    applyCoupon={applyCoupon}
+                    applyGiftCertificate={applyGiftCertificate}
+                    clearError={clearError}
+                    isApplyingRedeemable={false}
+                    onRemovedCoupon={onRemovedCoupon}
+                    onRemovedGiftCertificate={onRemovedGiftCertificate}
+                    shouldCollapseCouponCode={false}
+                />,
+            );
+        });
+
+        it('apply button should be disabled when payment is submitting', () => {
+            const submitButton = component.find('[data-test="redeemableEntry-submit"]');
+
+            expect(submitButton.prop('disabled')).toBe(true);
+            expect(submitButton.hasClass('is-loading')).toBe(false);
+        });
+
+        it('calls applyCoupon when payment is submitting', async () => {
+            const submitButton = component.find('[data-test="redeemableEntry-submit"]');
+
+            submitButton.simulate('click');
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            expect(applyGiftCertificate).not.toHaveBeenCalled();
+        });
+
+        it('does not call applyCoupon when enter is hit inside input', async () => {
+            component
+                .find('[data-test="redeemableEntry-input"]')
+                .simulate('keyDown', { key: 'Enter', keyCode: 13, which: 13 });
+
+            await new Promise((resolve) => process.nextTick(resolve));
+            component.update();
+
+            expect(applyCoupon).not.toHaveBeenCalled();
         });
     });
 });

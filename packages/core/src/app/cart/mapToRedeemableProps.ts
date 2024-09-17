@@ -1,4 +1,5 @@
-import { CheckoutContextProps } from '../checkout';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+
 import { EMPTY_ARRAY } from '../common/utility';
 
 import { RedeemableProps } from './Redeemable';

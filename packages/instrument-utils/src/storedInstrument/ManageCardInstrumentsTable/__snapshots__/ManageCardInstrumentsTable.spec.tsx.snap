@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ManageCardInstrumentsTable matches snapshot with rendered output 1`] = `
+<div
+  class="loadingOverlay-container"
+>
+  <table
+    class="table"
+    data-test="manage-card-instruments-table"
+  >
+    <thead
+      class="table-thead"
+    >
+      <tr>
+        <th>
+          Payment method
+        </th>
+        <th>
+          Ending in
+        </th>
+        <th>
+          Expiry date
+        </th>
+        <th />
+      </tr>
+    </thead>
+    <tbody
+      class="table-tbody"
+    >
+      <tr>
+        <td
+          data-test="manage-instrument-cardType"
+        >
+          <div
+            class="cardIcon-icon cardIcon-icon--default icon icon--medium"
+          />
+          <span
+            class="instrumentModal-instrumentCardType"
+          >
+            Visa
+          </span>
+        </td>
+        <td
+          data-test="manage-instrument-last4"
+        >
+          4321
+        </td>
+        <td
+          class=""
+          data-test="manage-instrument-expiry"
+        >
+          02/2025
+        </td>
+        <td>
+          <button
+            class="button button--tiny table-actionButton optimizedCheckout-buttonSecondary"
+            data-test="manage-instrument-delete-button"
+            type="button"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td
+          data-test="manage-instrument-cardType"
+        >
+          <div
+            class="cardIcon-icon cardIcon-icon--default icon icon--medium"
+          />
+          <span
+            class="instrumentModal-instrumentCardType"
+          >
+            American Express
+          </span>
+        </td>
+        <td
+          data-test="manage-instrument-last4"
+        >
+          4444
+        </td>
+        <td
+          class=""
+          data-test="manage-instrument-expiry"
+        >
+          10/2024
+        </td>
+        <td>
+          <button
+            class="button button--tiny table-actionButton optimizedCheckout-buttonSecondary"
+            data-test="manage-instrument-delete-button"
+            type="button"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;

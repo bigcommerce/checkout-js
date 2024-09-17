@@ -79,7 +79,7 @@ exports[`OrderSummaryItems when it has 4 line items or less renders product list
               rel="noopener noreferrer"
               target="_blank"
             >
-              <WithLanguage(TranslatedString)
+              <TranslatedString
                 id="cart.downloads_action"
               />
             </a>,

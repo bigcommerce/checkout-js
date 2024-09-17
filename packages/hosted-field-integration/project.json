@@ -1,0 +1,22 @@
+{
+  "root": "packages/hosted-field-integration",
+  "sourceRoot": "packages/hosted-field-integration/src",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/hosted-field-integration/**/*.{ts,tsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/hosted-field-integration"],
+      "options": {
+        "jestConfig": "packages/hosted-field-integration/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["scope:shared"]
+}

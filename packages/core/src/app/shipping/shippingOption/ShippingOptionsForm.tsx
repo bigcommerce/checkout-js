@@ -1,14 +1,15 @@
 import { CheckoutSelectors, Consignment } from '@bigcommerce/checkout-sdk';
-import { FormikProps, withFormik } from 'formik';
+import { FormikProps } from 'formik';
 import { noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
-import { StaticAddress } from '../../address';
+import { AddressType, StaticAddress } from '../../address';
 import { withAnalytics } from '../../analytics';
-import { TranslatedString } from '../../locale';
+import { withFormikExtended } from '../../common/form';
 import getRecommendedShippingOption from '../getRecommendedShippingOption';
 import StaticConsignmentItemList from '../StaticConsignmentItemList';
 
@@ -35,7 +36,7 @@ class ShippingOptionsForm extends PureComponent<
             consignments,
             shouldShowShippingOptions
         } = this.props;
-        
+
         if (consignments?.length && shouldShowShippingOptions) {
             analyticsTracker.showShippingMethods();
         }
@@ -89,6 +90,7 @@ class ShippingOptionsForm extends PureComponent<
                             consignmentId={consignment.id}
                             inputName={getRadioInputName(consignment.id)}
                             isLoading={isLoading(consignment.id)}
+                            isMultiShippingMode = {isMultiShippingMode}
                             onSelectedOption={selectShippingOption}
                             selectedShippingOptionId={
                                 consignment.selectedShippingOption &&
@@ -162,7 +164,7 @@ class ShippingOptionsForm extends PureComponent<
                     <TranslatedString id="shipping.shipping_address_heading" />
                 </strong>
 
-                <StaticAddress address={consignment.shippingAddress} />
+                <StaticAddress address={consignment.shippingAddress} type={AddressType.Shipping} />
 
                 <StaticConsignmentItemList cart={cart} consignment={consignment} />
             </div>
@@ -180,7 +182,7 @@ export interface ShippingOptionsFormValues {
     };
 }
 
-export default withAnalytics(withFormik<ShippingOptionsFormProps, ShippingOptionsFormValues>({
+export default withAnalytics(withFormikExtended<ShippingOptionsFormProps, ShippingOptionsFormValues>({
     handleSubmit: noop,
     mapPropsToValues({ consignments }) {
         const shippingOptionIds: { [id: string]: string } = {};

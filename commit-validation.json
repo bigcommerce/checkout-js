@@ -3,10 +3,11 @@
         "billing",
         "cart",
         "checkout",
-        "common",
         "customer",
         "embedded-checkout",
+        "extension",
         "order",
+        "other",
         "payment",
         "shipping"
     ]

@@ -1,14 +1,15 @@
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
-import { getStoreConfig } from '../config/config.mock';
 import {
     createLocaleContext,
     LocaleContext,
     LocaleContextType,
     TranslatedHtml,
     TranslatedString,
-} from '../locale';
+} from '@bigcommerce/checkout/locale';
+
+import { getStoreConfig } from '../config/config.mock';
 import { Alert, AlertType } from '../ui/alert';
 import { Form } from '../ui/form';
 import { LoadingSpinner } from '../ui/loading';
@@ -169,7 +170,6 @@ describe('EmailLoginForm', () => {
         expect(component.find('p').find(TranslatedHtml).props()).toEqual({
             id: 'login_email.sent_text',
             data: {
-                email: 'foo@bar.com',
                 minutes: 15,
             },
         });

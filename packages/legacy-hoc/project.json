@@ -1,0 +1,23 @@
+{
+  "root": "packages/legacy-hoc",
+  "sourceRoot": "packages/legacy-hoc/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/legacy-hoc/**/*.{ts,tsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/legacy-hoc"],
+      "options": {
+        "jestConfig": "packages/legacy-hoc/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": ["scope:shared"]
+}

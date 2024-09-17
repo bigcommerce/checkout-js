@@ -1,8 +1,10 @@
-import { CheckoutService, createCheckoutService, Order } from '@bigcommerce/checkout-sdk';
+import { CheckoutService, createCheckoutService, Order, StoreConfig } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
-import { LocaleProvider, TranslatedHtml } from '../locale';
+import { LocaleProvider, TranslatedHtml } from '@bigcommerce/checkout/locale';
+
+import { getStoreConfig } from '../config/config.mock';
 
 import { getOrder, getOrderWithMandateId, getOrderWithMandateURL } from './orders.mock';
 import OrderStatus, { OrderStatusProps } from './OrderStatus';
@@ -12,12 +14,15 @@ describe('OrderStatus', () => {
     let defaultProps: OrderStatusProps;
     let order: Order;
     let OrderStatusTest: FunctionComponent<OrderStatusProps>;
+    let config: StoreConfig;
 
     beforeEach(() => {
         checkoutService = createCheckoutService();
         order = getOrder();
+        config = getStoreConfig();
 
         defaultProps = {
+            config,
             order,
             supportEmail: 'test@example.com',
         };
@@ -141,7 +146,7 @@ describe('OrderStatus', () => {
             };
         });
 
-        it('renders message indicating order is incomplete', () => {
+        it('renders message indicating order is incomplete when experiment is off', () => {
             const orderStatus = mount(<OrderStatusTest {...defaultProps} order={order} />);
             const translationProps = orderStatus
                 .find('[data-test="order-confirmation-order-status-text"]')
@@ -154,6 +159,24 @@ describe('OrderStatus', () => {
                     supportEmail: defaultProps.supportEmail,
                 },
                 id: 'order_confirmation.order_incomplete_status_text',
+            });
+        });
+
+        it('renders message indicating order is incomplete when experiment is on', () => {
+            config.checkoutSettings.features['CHECKOUT-6891.update_incomplete_order_wording_on_order_confirmation_page'] = true;
+
+            const orderStatus = mount(<OrderStatusTest {...defaultProps} config={config} order={order} />);
+            const translationProps = orderStatus
+                .find('[data-test="order-confirmation-order-status-text"]')
+                .find(TranslatedHtml)
+                .props();
+
+            expect(translationProps).toEqual({
+                data: {
+                    orderNumber: defaultProps.order.orderId,
+                    supportEmail: defaultProps.supportEmail,
+                },
+                id: 'order_confirmation.order_pending_status_text',
             });
         });
     });
@@ -319,5 +342,33 @@ describe('OrderStatus', () => {
                 orderStatus.find('[data-test="order-confirmation-mandate-id-text"]'),
             ).toHaveLength(0);
         });
+    });
+
+    it('render mandateText list',  () => {
+        const order = getOrder();
+
+        order.payments = [{
+            detail: {
+                step: '1',
+                instructions: '1',
+            },
+            description: 'test',
+            amount: 1,
+            providerId: 'paypalcommercealternativemethod',
+            methodId: 'ratepay',
+            mandate: {
+                id: '',
+                url: '',
+                mandateText: {
+                    account_holder_name: 'Name',
+                },
+            }
+        }];
+
+        const orderStatus = mount(<OrderStatusTest {...defaultProps} order={order} />);
+
+        expect(
+            orderStatus.find('[data-test="order-confirmation-mandate-text-list"]'),
+        ).toHaveLength(1);
     });
 });

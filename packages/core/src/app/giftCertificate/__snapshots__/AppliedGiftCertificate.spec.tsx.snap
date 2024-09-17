@@ -17,7 +17,7 @@ exports[`AppliedGiftCertificate renders markup that matches snapshot 1`] = `
       />
     </span>
      
-    <WithLanguage(TranslatedString)
+    <TranslatedString
       id="redeemable.gift_certificate_text"
     />
   </span>
@@ -27,7 +27,7 @@ exports[`AppliedGiftCertificate renders markup that matches snapshot 1`] = `
     <span
       className="redeemable-info-subHeader--remaining"
     >
-      <WithLanguage(TranslatedString)
+      <TranslatedString
         id="redeemable.gift_certificate_remaining_text"
       />
        

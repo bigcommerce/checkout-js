@@ -3,11 +3,12 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
+
 import { StaticAddress } from '../address/';
 import { getAddress } from '../address/address.mock';
 import { getFormFields } from '../address/formField.mock';
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext } from '../locale';
 import { Button } from '../ui/button';
 import { DynamicFormField } from '../ui/form';
 import { LoadingOverlay } from '../ui/loading';
@@ -67,10 +68,13 @@ describe('StaticAddressEditable Component', () => {
     });
 
     it('renders correct number of custom form fields', () => {
+        const localeContext = createLocaleContext(getStoreConfig());
         const component = mount(
-            <Formik initialValues={initialFormikValues} onSubmit={noop}>
-                <StaticAddressEditable {...defaultProps} />
-            </Formik>,
+            <LocaleContext.Provider value={localeContext}>
+                <Formik initialValues={initialFormikValues} onSubmit={noop}>
+                    <StaticAddressEditable {...defaultProps} />
+                </Formik>
+            </LocaleContext.Provider>,
         );
 
         expect(component.find(DynamicFormField)).toHaveLength(3);
@@ -112,7 +116,7 @@ describe('StaticAddressEditable Component', () => {
     it('calls onUnhandledError if initialize was failed', () => {
         defaultProps.initialize = jest.fn(() => { throw new Error(); });
 
-        shallow(<StaticAddressEditable { ...defaultProps } />);
+        shallow(<StaticAddressEditable {...defaultProps} />);
 
         expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
     });
@@ -122,7 +126,7 @@ describe('StaticAddressEditable Component', () => {
             throw new Error();
         });
 
-        shallow(<StaticAddressEditable { ...defaultProps } />).unmount();
+        shallow(<StaticAddressEditable {...defaultProps} />).unmount();
 
         expect(defaultProps.onUnhandledError).toHaveBeenCalledWith(expect.any(Error));
     });

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
-import { InfoWindow } from "google-maps-react";
+import { InfoWindow } from "@peacechen/google-maps-react";
 
 export default function InfoWindowEx(props: any) {
   const infoWindowRef: any = React.createRef();

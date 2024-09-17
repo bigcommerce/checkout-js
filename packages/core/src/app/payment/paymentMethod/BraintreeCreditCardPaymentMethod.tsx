@@ -8,7 +8,8 @@ import React, {
     useState,
 } from 'react';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { Modal } from '../../ui/modal';
 import {
     withHostedCreditCardFieldset,

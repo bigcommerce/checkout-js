@@ -2,7 +2,7 @@
 import React, { PureComponent, ReactNode } from 'react';
 import { withFormik } from 'formik';
 
-import { withLanguage, TranslatedString, WithLanguageProps } from '../../locale';
+import { withLanguage, TranslatedString, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { OrderComments } from '../../orderComments';
 import { Alert, AlertType } from '../../ui/alert';
 import { Button, ButtonVariant } from '../../ui/button';

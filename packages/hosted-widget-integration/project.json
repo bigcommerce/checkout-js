@@ -15,7 +15,8 @@
       "outputs": ["coverage/packages/hosted-widget-integration"],
       "options": {
         "jestConfig": "packages/hosted-widget-integration/jest.config.js",
-        "passWithNoTests": true
+        "passWithNoTests": true,
+        "runInBand": true
       }
     }
   },

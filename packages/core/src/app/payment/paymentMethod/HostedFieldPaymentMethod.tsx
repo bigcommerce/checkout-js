@@ -7,7 +7,8 @@ import {
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { FormFieldContainer, Label } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
 
@@ -65,7 +66,7 @@ export default class HostedFieldPaymentMethod extends Component<HostedFieldPayme
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isInitializing}>
                 <div className="form-ccFields">
-                    {walletButtons && <FormFieldContainer>{walletButtons}</FormFieldContainer>}
+                    {!!walletButtons && <FormFieldContainer>{walletButtons}</FormFieldContainer>}
 
                     <FormFieldContainer additionalClassName="form-field--ccNumber">
                         <Label>
@@ -83,7 +84,7 @@ export default class HostedFieldPaymentMethod extends Component<HostedFieldPayme
                         <div id={cardExpiryId} />
                     </FormFieldContainer>
 
-                    {cardCodeId && (
+                    {!!cardCodeId && (
                         <FormFieldContainer additionalClassName="form-field--ccCvv">
                             <Label>
                                 <TranslatedString id="payment.credit_card_cvv_label" />
@@ -93,7 +94,7 @@ export default class HostedFieldPaymentMethod extends Component<HostedFieldPayme
                         </FormFieldContainer>
                     )}
 
-                    {postalCodeId && (
+                    {!!postalCodeId && (
                         <FormFieldContainer additionalClassName="form-field--postCode">
                             <Label>
                                 <TranslatedString id="payment.postal_code_label" />

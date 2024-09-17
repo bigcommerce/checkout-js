@@ -1,0 +1,12 @@
+{
+  "extends": ["../../.eslintrc.json"],
+  "overrides": [
+  {
+      "files": ["*.test.tsx"],
+        "rules": {
+          "@typescript-eslint/no-unsafe-assignment": "off",
+          "@eslint-disable-next-line": "off"
+        }
+    }
+]
+}

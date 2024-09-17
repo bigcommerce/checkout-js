@@ -1,3 +1,7 @@
 {
-  "extends": ["../../.eslintrc.json"]
+  "extends": ["../../.eslintrc.json"],
+  "rules": {
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unnecessary-condition": "off"
+  }
 }

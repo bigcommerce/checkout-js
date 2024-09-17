@@ -8,30 +8,38 @@ import {
     Consignment,
     EmbeddedCheckoutMessenger,
     EmbeddedCheckoutMessengerOptions,
+    ExtensionRegion,
     FlashMessage,
+    PaymentMethod,
     Promotion,
-    RequestOptions,
-} from '@bigcommerce/checkout-sdk';
+ RequestOptions } from '@bigcommerce/checkout-sdk';
 import classNames from 'classnames';
 import { find, findIndex } from 'lodash';
 import React, { Component, lazy, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
-import { AddressFormSkeleton, ChecklistSkeleton, CustomerSkeleton } from '@bigcommerce/checkout/ui';
+import { Extension, ExtensionContextProps, withExtension } from '@bigcommerce/checkout/checkout-extension';
+import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { AddressFormSkeleton, ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
 import { StaticBillingAddress } from '../billing';
 import { EmptyCartMessage } from '../cart';
-import { CustomError, ErrorLogger, ErrorModal, isCustomError } from '../common/error';
+import { withCheckout } from '../checkout';
+import { CustomError, ErrorModal, isCustomError } from '../common/error';
 import { retry } from '../common/utility';
 import {
+    CheckoutButtonContainer,
     CheckoutSuggestion,
+    Customer,
     CustomerInfo,
     CustomerSignOutEvent,
     CustomerViewType,
 } from '../customer';
+import { getSupportedMethodIds } from '../customer/getSupportedMethods';
+import { SubscribeSessionStorage } from '../customer/SubscribeSessionStorage';
 import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
-import { TranslatedString, withLanguage, WithLanguageProps } from '../locale';
 import { PromotionBannerList } from '../promotion';
 import { hasSelectedShippingOptions, isUsingMultiShipping, StaticConsignment } from '../shipping';
 import { ShippingOptionExpiredError } from '../shipping/shippingOption';
@@ -78,16 +86,6 @@ const CartSummaryDrawer = lazy(() =>
     ),
 );
 
-const Customer = lazy(() =>
-    retry(
-        () =>
-            import(
-                /* webpackChunkName: "customer" */
-                '../customer/Customer'
-            ),
-    ),
-);
-
 const Payment = lazy(() =>
     retry(
         () =>
@@ -128,13 +126,13 @@ export interface CheckoutState {
     isCartEmpty: boolean;
     isRedirecting: boolean;
     hasSelectedShippingOptions: boolean;
-    isBuyNowCartEnabled: boolean;
     isSubscribed: boolean;
     fflLineItems: LineItem[];
     storeHash: string;
     fflLicense: string;
     fflToOrderComments: boolean;
     withAmmoSubscription: boolean;
+    buttonConfigs: PaymentMethod[];
 }
 
 export interface WithCheckoutProps {
@@ -148,14 +146,15 @@ export interface WithCheckoutProps {
     isLoadingCheckout: boolean;
     isPending: boolean;
     isPriceHiddenFromGuests: boolean;
+    isShowingWalletButtonsOnTop: boolean;
     loginUrl: string;
     cartUrl: string;
     createAccountUrl: string;
-    canCreateAccountInCheckout: boolean;
     promotions?: Promotion[];
     steps: CheckoutStepStatus[];
     clearError(error?: Error): void;
     loadCheckout(id: string, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
+    loadPaymentMethodByIds(methodIds: string[]): Promise<CheckoutSelectors>;
     subscribeToConsignments(subscriber: (state: CheckoutSelectors) => void): () => void;
     subscribeToLogin(subscriber: (state: CheckoutSelectors) => void): () => void;
     loadShippingAddressFields(): Promise<CheckoutSelectors>;
@@ -163,7 +162,11 @@ export interface WithCheckoutProps {
 }
 
 class Checkout extends Component<
-    CheckoutProps & WithCheckoutProps & WithLanguageProps & AnalyticsContextProps,
+    CheckoutProps &
+        WithCheckoutProps &
+        WithLanguageProps &
+        AnalyticsContextProps &
+        ExtensionContextProps,
     CheckoutState
 > {
     state: CheckoutState = {
@@ -178,7 +181,10 @@ class Checkout extends Component<
         isRedirecting: false,
         isSubscribed: false,
         storeHash: "",
-        withAmmoSubscription: true
+        withAmmoSubscription: true,
+        hasSelectedShippingOptions: false,
+        isSubscribed: false,
+        buttonConfigs: [],
     };
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
@@ -201,26 +207,43 @@ class Checkout extends Component<
 
     async componentDidMount(): Promise<void> {
         const {
+            analyticsTracker,
             checkoutId,
             containerId,
             createEmbeddedMessenger,
             embeddedStylesheet,
+            extensionService,
             loadCheckout,
+            loadPaymentMethodByIds,
             subscribeToConsignments,
             analyticsTracker,
             subscribeToLogin
         } = this.props;
 
         try {
-            const { data } = await loadCheckout(checkoutId, {
+            const [{ data }] = await Promise.all([loadCheckout(checkoutId, {
                 params: {
                     include: [
                         'cart.lineItems.physicalItems.categoryNames',
                         'cart.lineItems.digitalItems.categoryNames',
                     ] as any, // FIXME: Currently the enum is not exported so it can't be used here.
                 },
-            });
-            const { links: { siteLink = "" } = {} } = data.getConfig() || {};
+            }), extensionService.loadExtensions()]);
+
+            const providers = data.getConfig()?.checkoutSettings?.remoteCheckoutProviders || [];
+            const supportedProviders = getSupportedMethodIds(providers);
+
+            if (providers.length > 0) {
+                const configs = await loadPaymentMethodByIds(supportedProviders);
+
+                this.setState({
+                    buttonConfigs: configs.data.getPaymentMethods() || [],
+                });
+            }
+
+            extensionService.preloadExtensions();
+
+            const { links: { siteLink = '' } = {} } = data.getConfig() || {};
             const errorFlashMessages = data.getFlashMessages('error') || [];
             this.setState({ storeHash: data.getConfig()?.storeProfile.storeHash || "" });
 
@@ -269,9 +292,6 @@ class Checkout extends Component<
                 data.getConfig()?.checkoutSettings.hasMultiShippingEnabled;
             const checkoutBillingSameAsShippingEnabled =
                 data.getConfig()?.checkoutSettings.checkoutBillingSameAsShippingEnabled ?? true;
-            const buyNowCartFlag =
-                data.getConfig()?.checkoutSettings.features['CHECKOUT-3190.enable_buy_now_cart'] ??
-                false;
             const defaultNewsletterSignupOption =
                 data.getConfig()?.shopperConfig.defaultNewsletterSignup ??
                 false;
@@ -283,7 +303,6 @@ class Checkout extends Component<
 
             this.setState({
                 isBillingSameAsShipping: checkoutBillingSameAsShippingEnabled,
-                isBuyNowCartEnabled: buyNowCartFlag,
                 isSubscribed: defaultNewsletterSignupOption,
             });
 
@@ -294,6 +313,7 @@ class Checkout extends Component<
             }
 
             window.addEventListener('beforeunload', this.handleBeforeExit);
+
         } catch (error) {
             if (error instanceof Error) {
                 this.handleUnhandledError(error);
@@ -320,7 +340,7 @@ class Checkout extends Component<
         }
 
         return (
-            <div className={classNames({ 'is-embedded': isEmbedded() })}>
+            <div className={classNames('remove-checkout-step-numbers', { 'is-embedded': isEmbedded() })} data-test="checkout-page-container" id="checkout-page-container">
                 <div className="layout optimizedCheckout-contentPrimary">
                     {this.renderContent()}
                 </div>
@@ -330,7 +350,7 @@ class Checkout extends Component<
     }
 
     private renderContent(): ReactNode {
-        const { isPending, loginUrl, promotions = [], steps } = this.props;
+        const { isPending, loginUrl, promotions = [], steps, isShowingWalletButtonsOnTop, extensionState } = this.props;
 
         const { activeStepType, defaultStepType, isCartEmpty, isRedirecting } = this.state;
 
@@ -338,12 +358,25 @@ class Checkout extends Component<
             return <EmptyCartMessage loginUrl={loginUrl} waitInterval={3000} />;
         }
 
+        const isPaymentStepActive = activeStepType
+            ? activeStepType === CheckoutStepType.Payment
+            : defaultStepType === CheckoutStepType.Payment;
+
         return (
             <LoadingOverlay hideContentWhenLoading isLoading={isRedirecting}>
                 <div className="layout-main">
-                    <LoadingNotification isLoading={isPending} />
+                    <LoadingNotification isLoading={(!isShowingWalletButtonsOnTop && isPending) || extensionState.isShowingLoadingIndicator} />
 
                     <PromotionBannerList promotions={promotions} />
+
+                    {isShowingWalletButtonsOnTop && this.state.buttonConfigs?.length > 0 && (
+                        <CheckoutButtonContainer
+                            checkEmbeddedSupport={this.checkEmbeddedSupport}
+                            isPaymentStepActive={isPaymentStepActive}
+                            onUnhandledError={this.handleUnhandledError}
+                            onWalletButtonClick={this.handleWalletButtonClick}
+                        />
+                    )}
 
                     <ol className="checkout-steps">
                         {steps
@@ -388,7 +421,7 @@ class Checkout extends Component<
     }
 
     private renderCustomerStep(step: CheckoutStepStatus): ReactNode {
-        const { isGuestEnabled } = this.props;
+        const { isGuestEnabled, isShowingWalletButtonsOnTop } = this.props;
         const {
             customerViewType = isGuestEnabled ? CustomerViewType.Guest : CustomerViewType.Login,
             isSubscribed,
@@ -409,24 +442,24 @@ class Checkout extends Component<
                     />
                 }
             >
-                <LazyContainer loadingSkeleton={<CustomerSkeleton />}>
-                    <Customer
-                        checkEmbeddedSupport={this.checkEmbeddedSupport}
-                        isEmbedded={isEmbedded()}
-                        isSubscribed={isSubscribed}
-                        onAccountCreated={this.navigateToNextIncompleteStep}
-                        onChangeViewType={this.setCustomerViewType}
-                        onContinueAsGuest={this.navigateToNextIncompleteStep}
-                        onContinueAsGuestError={this.handleError}
-                        onReady={this.handleReady}
-                        onSignIn={this.navigateToNextIncompleteStep}
-                        onSignInError={this.handleError}
-                        onSubscribeToNewsletter={this.handleNewsletterSubscription}
-                        onUnhandledError={this.handleUnhandledError}
-                        step={step}
-                        viewType={customerViewType}
-                    />
-                </LazyContainer>
+                <Customer
+                    checkEmbeddedSupport={this.checkEmbeddedSupport}
+                    isEmbedded={isEmbedded()}
+                    isSubscribed={isSubscribed}
+                    isWalletButtonsOnTop = {isShowingWalletButtonsOnTop }
+                    onAccountCreated={this.navigateToNextIncompleteStep}
+                    onChangeViewType={this.setCustomerViewType}
+                    onContinueAsGuest={this.navigateToNextIncompleteStep}
+                    onContinueAsGuestError={this.handleError}
+                    onReady={this.handleReady}
+                    onSignIn={this.navigateToNextIncompleteStep}
+                    onSignInError={this.handleError}
+                    onSubscribeToNewsletter={this.handleNewsletterSubscription}
+                    onUnhandledError={this.handleUnhandledError}
+                    onWalletButtonClick={this.handleWalletButtonClick}
+                    step={step}
+                    viewType={customerViewType}
+                />
             </CheckoutStep>
         );
     }
@@ -598,6 +631,7 @@ class Checkout extends Component<
                     if (matched) {
                         return (
                             <LazyContainer>
+                                <Extension region={ExtensionRegion.SummaryAfter} />
                                 <CartSummaryDrawer />
                             </LazyContainer>
                         );
@@ -607,6 +641,7 @@ class Checkout extends Component<
                         <aside className="layout-cart">
                             <LazyContainer>
                                 <CartSummary />
+                                <Extension region={ExtensionRegion.SummaryAfter} />
                             </LazyContainer>
                         </aside>
                     );
@@ -667,7 +702,6 @@ class Checkout extends Component<
 
     private navigateToOrderConfirmation: (orderId?: number) => void = (orderId) => {
         const { steps, analyticsTracker } = this.props;
-        const { isBuyNowCartEnabled } = this.state;
 
         analyticsTracker.trackStepCompleted(steps[steps.length - 1].type);
 
@@ -675,8 +709,10 @@ class Checkout extends Component<
             this.embeddedMessenger.postComplete();
         }
 
+        SubscribeSessionStorage.removeSubscribeStatus();
+
         this.setState({ isRedirecting: true }, () => {
-            navigateToOrderConfirmation(isBuyNowCartEnabled, orderId);
+            navigateToOrderConfirmation(orderId);
         });
     };
 
@@ -691,7 +727,7 @@ class Checkout extends Component<
     };
 
     private handleConsignmentsUpdated: (state: CheckoutSelectors) => void = ({ data }) => {
-        const { hasSelectedShippingOptions: prevHasSelectedShippingOptions, activeStepType } =
+        const { hasSelectedShippingOptions: prevHasSelectedShippingOptions, activeStepType, defaultStepType } =
             this.state;
 
         const { steps } = this.props;
@@ -700,11 +736,19 @@ class Checkout extends Component<
             data.getConsignments() || [],
         );
 
+        const isDefaultStepPaymentOrBilling =
+            !activeStepType &&
+            (defaultStepType === CheckoutStepType.Payment ||
+                defaultStepType === CheckoutStepType.Billing);
+
+        const isShippingStepFinished =
+            findIndex(steps, { type: CheckoutStepType.Shipping }) <
+                findIndex(steps, { type: activeStepType }) || isDefaultStepPaymentOrBilling;
+
         if (
             prevHasSelectedShippingOptions &&
             !newHasSelectedShippingOptions &&
-            findIndex(steps, { type: CheckoutStepType.Shipping }) <
-                findIndex(steps, { type: activeStepType })
+            isShippingStepFinished
         ) {
             this.navigateToStep(CheckoutStepType.Shipping);
             this.setState({ error: new ShippingOptionExpiredError() });
@@ -734,6 +778,7 @@ class Checkout extends Component<
 
     private handleExpanded: (type: CheckoutStepType) => void = (type) => {
         const { analyticsTracker } = this.props;
+
         analyticsTracker.trackStepViewed(type);
     };
 
@@ -818,12 +863,9 @@ class Checkout extends Component<
     };
 
     private setCustomerViewType: (viewType: CustomerViewType) => void = (customerViewType) => {
-        const { canCreateAccountInCheckout, createAccountUrl } = this.props;
+        const { createAccountUrl } = this.props;
 
-        if (
-            customerViewType === CustomerViewType.CreateAccount &&
-            (!canCreateAccountInCheckout || isEmbedded())
-        ) {
+        if (customerViewType === CustomerViewType.CreateAccount && isEmbedded()) {
             if (window.top) {
                 window.top.location.replace(createAccountUrl);
             }
@@ -852,6 +894,14 @@ class Checkout extends Component<
     private setWithAmmoSubscription: () => void = (value) => {
         this.setState({ withAmmoSubscription: value });
     }
+
+    private handleWalletButtonClick: (methodName: string) => void = (methodName) => {
+        const { analyticsTracker } = this.props;
+
+        analyticsTracker.walletButtonClick(methodName);
+    }
 }
 
-export default withAnalytics(withLanguage(withCheckout(mapToCheckoutProps)(Checkout)));
+export default withExtension(
+    withAnalytics(withLanguage(withCheckout(mapToCheckoutProps)(Checkout))),
+);

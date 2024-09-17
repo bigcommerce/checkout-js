@@ -40,6 +40,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
         max,
         min,
         maxLength,
+        inputDateFormat,
     },
     parentFieldName,
     onChange,
@@ -82,7 +83,6 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
             return secret ? DynamicFormFieldType.PASSWORD : DynamicFormFieldType.TEXT;
         }
 
-        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         return fieldType as DynamicFormFieldType;
     }, [fieldType, type, name, secret]);
 
@@ -94,6 +94,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 autoComplete={autocomplete}
                 fieldType={dynamicFormFieldType}
                 id={fieldInputId}
+                inputDateFormat={inputDateFormat}
                 max={max}
                 maxLength={maxLength || undefined}
                 min={min}
@@ -103,14 +104,15 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
             />
         ),
         [
+            inputDateFormat,
             fieldInputId,
+            autocomplete,
+            dynamicFormFieldType,
             max,
             maxLength,
             min,
             options,
             placeholder,
-            dynamicFormFieldType,
-            autocomplete,
         ],
     );
 

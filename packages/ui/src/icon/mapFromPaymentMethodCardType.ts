@@ -1,15 +1,16 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import { ComponentType } from 'react';
 
 import {
     IconBitCoin,
     IconBitCoinCash,
     IconCardAmex,
+    IconCardBancontact,
     IconCardCarnet,
     IconCardCB,
     IconCardDankort,
     IconCardDinersClub,
     IconCardDiscover,
+    IconCardElectron,
     IconCardElo,
     IconCardHipercard,
     IconCardJCB,
@@ -45,6 +46,10 @@ const instrumentTypeMap: Record<string, InstrumentComponent> = {
         instrument: 'bitcoin-cash',
         component: IconBitCoinCash,
     },
+    BANCONTACT: {
+        instrument: 'bancontact',
+        component: IconCardBancontact,
+    },
     CARNET: {
         instrument: 'carnet',
         component: IconCardCarnet,
@@ -68,6 +73,10 @@ const instrumentTypeMap: Record<string, InstrumentComponent> = {
     DOGECOIN: {
         instrument: 'dogecoin',
         component: IconDogeCoin,
+    },
+    ELECTRON: {
+        instrument: 'electron',
+        component: IconCardElectron,
     },
     ELO: {
         instrument: 'elo',

@@ -1,8 +1,9 @@
 import { Checkout, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
-import React, { Fragment } from 'react';
+import React from 'react';
 
-import CheckoutProvider from './CheckoutProvider';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
 import { getCheckout as getCheckoutMock } from './checkouts.mock';
 import withCheckout from './withCheckout';
 

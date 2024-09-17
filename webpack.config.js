@@ -161,7 +161,11 @@ function appConfig(options, argv) {
                         },
                         {
                             test: /app\/polyfill\.ts$/,
-                            include: join(__dirname, 'packages', 'core', 'src'),
+                            include: [
+                                    join(__dirname, 'packages', 'core', 'src'),
+                                    join(__dirname, 'packages', 'locale', 'src'),
+                                    join(__dirname, 'packages', 'test-mocks', 'src'),
+                                ],
                             use: [
                                 {
                                     loader: 'babel-loader',
@@ -239,6 +243,7 @@ function loaderConfig(options, argv) {
                 mode,
                 devtool: isProduction ? 'source-map' : 'eval-source-map',
                 resolve: {
+                    alias,
                     extensions: ['.ts', '.tsx', '.js'],
                     mainFields: ['module', 'browser', 'main'],
                 },
@@ -250,17 +255,23 @@ function loaderConfig(options, argv) {
                 plugins: [
                     new AsyncHookPlugin({
                         onRun({ compiler, done }) {
-                            eventEmitter.on('app:done', () => {
-                                const definePlugin = new DefinePlugin({
-                                    LIBRARY_NAME: JSON.stringify(LIBRARY_NAME),
-                                    MANIFEST_JSON: JSON.stringify(require(
-                                        join(__dirname, isProduction ? 'dist' : 'build', 'manifest.json')
-                                    )),
-                                });
+                            let wasTriggeredBefore = false;
 
-                                definePlugin.apply(compiler);
-                                eventEmitter.emit('loader:done');
-                                done();
+                            eventEmitter.on('app:done', () => {
+                                if (!wasTriggeredBefore) {
+                                    const definePlugin = new DefinePlugin({
+                                        LIBRARY_NAME: JSON.stringify(LIBRARY_NAME),
+                                        MANIFEST_JSON: JSON.stringify(require(
+                                          join(__dirname, isProduction ? 'dist' : 'build', 'manifest.json')
+                                        )),
+                                    });
+
+                                    definePlugin.apply(compiler);
+                                    eventEmitter.emit('loader:done');
+                                    done();
+
+                                    wasTriggeredBefore = true;
+                                }
                             });
 
                             eventEmitter.on('app:error', () => {
@@ -286,7 +297,13 @@ function loaderConfig(options, argv) {
                         },
                         {
                             test: /\.tsx?$/,
-                            include: join(__dirname,  'packages', 'core', 'src'),
+                            include: [
+                                join(__dirname, 'packages', 'core', 'src'),
+                                join(__dirname, 'packages', 'dom-utils', 'src'),
+                                join(__dirname, 'packages', 'legacy-hoc', 'src'),
+                                join(__dirname, 'packages', 'locale', 'src'),
+                                join(__dirname, 'packages', 'test-mocks', 'src'),
+                            ],
                             use: [
                                 {
                                     loader: 'babel-loader',

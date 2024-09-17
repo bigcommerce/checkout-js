@@ -4,8 +4,9 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType, TranslatedString } from '../locale';
 import { Alert } from '../ui/alert';
 import { DynamicFormField } from '../ui/form';
 
@@ -66,7 +67,7 @@ describe('CreateAccountForm Component', () => {
     });
 
     it.each([
-        ['Password needs to contain a letter', '1234567'],
+        ['password must match the following: "/[a-zA-Z]/"', '1234567'],
         ['Password needs to contain a number', 'abcdefg'],
         ['Password is too short', '1a'],
     ])('renders correct error when %s', async (expected, passwordCase) => {
@@ -211,5 +212,43 @@ describe('CreateAccountForm Component', () => {
                 acceptsMarketingEmails: [],
             }),
         );
+    });
+
+    it('disables submit button if the creation account is in progress', async () => {
+        const onSubmit = jest.fn();
+
+        component = mount(
+            <LocaleContext.Provider value={localeContext}>
+                <CreateAccountForm
+                    formFields={formFields}
+                    isCreatingAccount={true}
+                    onSubmit={onSubmit}
+                    requiresMarketingConsent={true}
+                />
+            </LocaleContext.Provider>,
+        );
+
+        const button = component.find('[data-test="customer-continue-create"]');
+
+        expect(button.prop('disabled')).toBeTruthy();
+    });
+
+    it('disables submit button if the execution is in progress', async () => {
+        const onSubmit = jest.fn();
+
+        component = mount(
+            <LocaleContext.Provider value={localeContext}>
+                <CreateAccountForm
+                    formFields={formFields}
+                    isExecutingPaymentMethodCheckout={true}
+                    onSubmit={onSubmit}
+                    requiresMarketingConsent={true}
+                />
+            </LocaleContext.Provider>,
+        );
+
+        const button = component.find('[data-test="customer-continue-create"]');
+
+        expect(button.prop('disabled')).toBeTruthy();
     });
 });

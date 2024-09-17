@@ -1,8 +1,9 @@
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
+
 import { getStoreConfig } from '../config/config.mock';
-import { createLocaleContext, LocaleContext } from '../locale';
 
 import AppliedRedeemable from './AppliedRedeemable';
 

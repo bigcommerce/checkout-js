@@ -7,7 +7,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/ui/**/*.ts"]
+        "lintFilePatterns": ["packages/ui/**/*.{ts,tsx}"]
       }
     },
     "test": {

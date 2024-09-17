@@ -53,19 +53,19 @@ const SquarePaymentMethod: FunctionComponent<SquarePaymentMethodProps> = ({
     );
 
     return (
-        <HostedFieldPaymentMethod
-            {...rest}
-            cardCodeId="sq-cvv"
-            cardExpiryId="sq-expiration-date"
-            cardNumberId="sq-card-number"
-            initializePayment={initializeSquarePayment}
-            method={method}
-            onUnhandledError={(e) => {
-                onUnhandledError(e);
-                paymentContext?.disableSubmit(method, true);
-            }}
-            postalCodeId="sq-postal-code"
-        />
+            <HostedFieldPaymentMethod
+                {...rest}
+                cardCodeId="sq-cvv"
+                cardExpiryId="sq-expiration-date"
+                cardNumberId="sq-card-number"
+                initializePayment={initializeSquarePayment}
+                method={method}
+                onUnhandledError={(e) => {
+                    onUnhandledError(e);
+                    paymentContext?.disableSubmit(method, true);
+                }}
+                postalCodeId="sq-postal-code"
+            />
     );
 };
 

@@ -1,4 +1,4 @@
-import { CheckoutContextProps } from '../checkout';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 
 import { WithCheckoutCartSummaryProps } from './CartSummary';
 import mapToRedeemableProps from './mapToRedeemableProps';

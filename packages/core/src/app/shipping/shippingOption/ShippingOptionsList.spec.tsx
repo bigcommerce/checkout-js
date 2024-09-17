@@ -1,10 +1,18 @@
+import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount, shallow } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import {
+    createLocaleContext,
+    LocaleContext,
+    LocaleContextType,
+} from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
 import { getStoreConfig } from '../../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import { ChecklistItem } from '../../ui/form';
 import { LoadingOverlay } from '../../ui/loading';
 
@@ -13,6 +21,8 @@ import ShippingOptionsList from './ShippingOptionsList';
 import StaticShippingOption from './StaticShippingOption';
 
 describe('ShippingOptionsList Component', () => {
+    const checkoutService = createCheckoutService();
+
     let localeContext: LocaleContextType;
     const shippingOptions = [
         {
@@ -33,18 +43,23 @@ describe('ShippingOptionsList Component', () => {
 
     it('renders shipping option list with expected props', () => {
         const component = mount(
-            <LocaleContext.Provider value={localeContext}>
-                <Formik initialValues={{}} onSubmit={noop}>
-                    <ShippingOptionsList
-                        consignmentId="c_id"
-                        inputName="c_id"
-                        isLoading={true}
-                        onSelectedOption={onSelected}
-                        selectedShippingOptionId="bar"
-                        shippingOptions={shippingOptions}
-                    />
-                </Formik>
-            </LocaleContext.Provider>,
+            <CheckoutProvider checkoutService={checkoutService}>
+                <ExtensionProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <Formik initialValues={{}} onSubmit={noop}>
+                            <ShippingOptionsList
+                                consignmentId="c_id"
+                                inputName="c_id"
+                                isLoading={true}
+                                isMultiShippingMode={true}
+                                onSelectedOption={onSelected}
+                                selectedShippingOptionId="bar"
+                                shippingOptions={shippingOptions}
+                            />
+                        </Formik>
+                    </LocaleContext.Provider>
+                </ExtensionProvider>
+            </CheckoutProvider>,
         );
 
         expect(component.find(LoadingOverlay).prop('isLoading')).toBeTruthy();
@@ -61,12 +76,13 @@ describe('ShippingOptionsList Component', () => {
         ).toMatchObject(shippingOptions[1]);
     });
 
-    it('does not render if there are no shipping optionss', () => {
+    it('does not render if there are no shipping options', () => {
         let component = shallow(
             <ShippingOptionsList
                 consignmentId="c_id"
                 inputName="c_id"
                 isLoading={false}
+                isMultiShippingMode={true}
                 onSelectedOption={onSelected}
             />,
         );
@@ -78,6 +94,7 @@ describe('ShippingOptionsList Component', () => {
                 consignmentId="c_id"
                 inputName="c_id"
                 isLoading={false}
+                isMultiShippingMode={true}
                 onSelectedOption={onSelected}
                 shippingOptions={[]}
             />,

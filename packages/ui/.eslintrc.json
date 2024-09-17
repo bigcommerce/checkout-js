@@ -1,6 +1,9 @@
 {
   "extends": ["../../.eslintrc.json"],
   "rules": {
-    "jsx-a11y/anchor-is-valid": "off"
+    "jsx-a11y/anchor-is-valid": "off",
+    "@typescript-eslint/naming-convention": "off",
+    "@typescript-eslint/consistent-type-assertions": "off",
+    "@typescript-eslint/no-unsafe-call": "off"
   }
 }

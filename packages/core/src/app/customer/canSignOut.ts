@@ -3,7 +3,7 @@ import { every } from 'lodash';
 
 import { SUPPORTED_METHODS } from './CheckoutButtonList';
 
-const SUPPORTED_SIGNOUT_METHODS = ['amazon', 'amazonpay'];
+const SUPPORTED_SIGNOUT_METHODS = ['amazonpay'];
 
 export const isSupportedSignoutMethod = (methodId: string): boolean => {
     return SUPPORTED_SIGNOUT_METHODS.indexOf(methodId) > -1;

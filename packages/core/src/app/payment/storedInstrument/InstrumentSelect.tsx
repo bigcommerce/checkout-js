@@ -6,7 +6,8 @@ import { FieldProps } from 'formik';
 import { find, noop } from 'lodash';
 import React, { FunctionComponent, PureComponent, ReactNode, useCallback } from 'react';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { DropdownTrigger } from '../../ui/dropdown';
 import { CreditCardIcon } from '../creditCard';
 

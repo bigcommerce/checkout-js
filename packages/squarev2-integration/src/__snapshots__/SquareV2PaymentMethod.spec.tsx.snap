@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SquareV2 payment method should render placeholder form fields 1`] = `
+<div
+  data-test="squarev2_placeholder_form"
+  style="display: none;"
+>
+  <div
+    class="form-field"
+  >
+    <div
+      class="form-label optimizedCheckout-form-label"
+      id="messageIsDefault"
+    />
+    <div
+      class="form-input optimizedCheckout-form-input"
+      id="inputIsDefault"
+    />
+  </div>
+  <div
+    class="form-field"
+  >
+    <div
+      class="form-input optimizedCheckout-form-input form-input--focus optimizedCheckout-form-input--focus"
+      id="inputIsFocus"
+    />
+  </div>
+  <div
+    class="form-field form-field--error"
+  >
+    <div
+      class="form-inlineMessage"
+      id="messageIsError"
+    />
+    <div
+      class="form-input optimizedCheckout-form-input"
+      id="inputIsError"
+    />
+  </div>
+</div>
+`;

@@ -5,7 +5,7 @@ import PromotionBanner from './PromotionBanner';
 import './PromotionBannerList.scss';
 
 export interface PromotionBannerListProps {
-    promotions: Promotion[];
+    promotions?: Promotion[];
 }
 
 const PromotionBannerList: FunctionComponent<PromotionBannerListProps> = ({ promotions }) => {

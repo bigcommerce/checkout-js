@@ -4,12 +4,14 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
 import { AddressForm, AddressSelect } from '../address';
 import { getFormFields } from '../address/formField.mock';
 import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 
 import { getConsignment } from './consignment.mock';
 import { getShippingAddress } from './shipping-addresses.mock';
@@ -18,6 +20,7 @@ import ShippingAddressForm, { ShippingAddressFormProps } from './ShippingAddress
 describe('ShippingAddressForm Component', () => {
     let component: ReactWrapper;
     let defaultProps: ShippingAddressFormProps;
+    const checkoutService = createCheckoutService();
 
     beforeEach(() => {
         defaultProps = {
@@ -36,9 +39,11 @@ describe('ShippingAddressForm Component', () => {
     describe('when there are addresses (signed-in user)', () => {
         beforeEach(() => {
             component = mount(
-                <Formik initialValues={{}} onSubmit={noop}>
-                    <ShippingAddressForm {...defaultProps} />
-                </Formik>,
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <Formik initialValues={{}} onSubmit={noop}>
+                        <ShippingAddressForm {...defaultProps} />
+                    </Formik>,
+                </CheckoutProvider>
             );
         });
 
@@ -55,15 +60,17 @@ describe('ShippingAddressForm Component', () => {
 
         it('renders address form when selected address is not in the address list', () => {
             component = mount(
-                <Formik initialValues={{}} onSubmit={noop}>
-                    <ShippingAddressForm
-                        {...defaultProps}
-                        address={{
-                            ...getShippingAddress(),
-                            firstName: 'foo',
-                        }}
-                    />
-                </Formik>,
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <Formik initialValues={{}} onSubmit={noop}>
+                        <ShippingAddressForm
+                            {...defaultProps}
+                            address={{
+                                ...getShippingAddress(),
+                                firstName: 'foo',
+                            }}
+                        />
+                    </Formik>
+                </CheckoutProvider>,
             );
 
             expect(component.find(AddressForm).props()).toMatchObject({
@@ -73,19 +80,21 @@ describe('ShippingAddressForm Component', () => {
 
         it('renders address form when selected address is not valid even when in the list', () => {
             component = mount(
-                <Formik initialValues={{}} onSubmit={noop}>
-                    <ShippingAddressForm
-                        {...defaultProps}
-                        formFields={[
-                            ...defaultProps.formFields,
-                            {
-                                ...defaultProps.formFields[1],
-                                name: 'newRequiredField',
-                                required: true,
-                            },
-                        ]}
-                    />
-                </Formik>,
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <Formik initialValues={{}} onSubmit={noop}>
+                        <ShippingAddressForm
+                            {...defaultProps}
+                            formFields={[
+                                ...defaultProps.formFields,
+                                {
+                                    ...defaultProps.formFields[1],
+                                    name: 'newRequiredField',
+                                    required: true,
+                                },
+                            ]}
+                        />
+                    </Formik>
+                </CheckoutProvider>,
             );
 
             expect(component.find(AddressSelect).prop('selectedAddress')).toBeFalsy();
@@ -95,9 +104,11 @@ describe('ShippingAddressForm Component', () => {
 
         it('renders address form when there is no selected address', () => {
             component = mount(
-                <Formik initialValues={{}} onSubmit={noop}>
-                    <ShippingAddressForm {...defaultProps} address={undefined} />
-                </Formik>,
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <Formik initialValues={{}} onSubmit={noop}>
+                        <ShippingAddressForm {...defaultProps} address={undefined} />
+                    </Formik>
+                </CheckoutProvider>,
             );
 
             expect(component.find(AddressForm).props()).toMatchObject({
@@ -109,9 +120,11 @@ describe('ShippingAddressForm Component', () => {
     describe('when there are no addresses (guest user)', () => {
         beforeEach(() => {
             component = mount(
-                <Formik initialValues={{}} onSubmit={noop}>
-                    <ShippingAddressForm {...defaultProps} addresses={[]} />
-                </Formik>,
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <Formik initialValues={{}} onSubmit={noop}>
+                        <ShippingAddressForm {...defaultProps} addresses={[]} />
+                    </Formik>
+                </CheckoutProvider>,
             );
         });
 
@@ -138,20 +151,22 @@ describe('ShippingAddressForm Component', () => {
             );
 
             component = mount(
-                <LocaleContext.Provider value={localeContext}>
-                    <Formik
-                        initialValues={{
-                            shippingAddress: getShippingAddress(),
-                        }}
-                        onSubmit={noop}
-                    >
-                        <ShippingAddressForm
-                            {...defaultProps}
-                            address={getShippingAddress()}
-                            addresses={[]}
-                        />
-                    </Formik>
-                </LocaleContext.Provider>,
+                <CheckoutProvider checkoutService={checkoutService}>
+                    <LocaleContext.Provider value={localeContext}>
+                        <Formik
+                            initialValues={{
+                                shippingAddress: getShippingAddress(),
+                            }}
+                            onSubmit={noop}
+                        >
+                            <ShippingAddressForm
+                                {...defaultProps}
+                                address={getShippingAddress()}
+                                addresses={[]}
+                            />
+                        </Formik>
+                    </LocaleContext.Provider>
+                </CheckoutProvider>,
             );
         });
     });

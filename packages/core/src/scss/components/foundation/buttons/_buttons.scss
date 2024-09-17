@@ -60,4 +60,10 @@
     .button--slab {
         width: 100%;
     }
+
+    .link--disabled {
+        color: color("greys", "light");
+        cursor: default;
+        pointer-events: none;
+    }
 }

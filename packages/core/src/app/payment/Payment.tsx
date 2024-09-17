@@ -2,6 +2,7 @@ import {
     CartChangedError,
     CheckoutSelectors,
     CheckoutRequestBody,
+    CheckoutService,
     CheckoutSettings,
     OrderRequestBody,
     PaymentMethod,
@@ -12,20 +13,20 @@ import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { CheckoutContextProps, PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 import { ChecklistSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
-import { CheckoutContextProps, withCheckout } from '../checkout';
+import { withCheckout } from '../checkout';
 import {
-    ErrorLogger,
     ErrorModal,
     ErrorModalOnCloseProps,
     isCartChangedError,
     isErrorWithType,
 } from '../common/error';
 import { EMPTY_ARRAY } from '../common/utility';
-import { withLanguage, WithLanguageProps } from '../locale';
 import { TermsConditionsType } from '../termsConditions';
 
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
@@ -81,6 +82,7 @@ interface WithCheckoutPaymentProps {
     loadPaymentMethods(): Promise<CheckoutSelectors>;
     submitOrder(values: OrderRequestBody): Promise<CheckoutSelectors>;
     updateCheckout(payload: CheckoutRequestBody): Promise<CheckoutSelectors>;
+    checkoutServiceSubscribe: CheckoutService['subscribe'];
 }
 
 interface PaymentState {
@@ -106,6 +108,8 @@ class Payment extends Component<
         submitFunctions: {},
     };
 
+    private grandTotalChangeUnsubscribe?: () => void;
+
     private getContextValue = memoizeOne(() => {
         return {
             disableSubmit: this.disableSubmit,
@@ -118,29 +122,19 @@ class Payment extends Component<
     async componentDidMount(): Promise<void> {
         const {
             finalizeOrderIfNeeded,
-            loadPaymentMethods,
             onFinalize = noop,
             onFinalizeError = noop,
             onReady = noop,
-            onUnhandledError = noop,
             usableStoreCredit,
-            defaultMethod,
-            analyticsTracker
+            checkoutServiceSubscribe,
         } = this.props;
 
-        const { selectedMethod } = this.state;
-
-        analyticsTracker.selectedPaymentMethod((selectedMethod || defaultMethod)?.config.displayName);
 
         if (usableStoreCredit) {
             this.handleStoreCreditChange(true);
         }
 
-        try {
-            await loadPaymentMethods();
-        } catch (error) {
-            onUnhandledError(error);
-        }
+        await this.loadPaymentMethodsOrThrow();
 
         try {
             const state = await finalizeOrderIfNeeded();
@@ -152,6 +146,12 @@ class Payment extends Component<
                 onFinalizeError(error);
             }
         }
+
+        this.grandTotalChangeUnsubscribe = checkoutServiceSubscribe(
+            () => this.handleCartTotalChange(),
+            ({ data }) => data.getCheckout()?.grandTotal,
+            ({ data }) => data.getCheckout()?.outstandingBalance,
+        );
 
         window.addEventListener('beforeunload', this.handleBeforeUnload);
         this.setState({ isReady: true });
@@ -165,6 +165,11 @@ class Payment extends Component<
     }
 
     componentWillUnmount(): void {
+        if (this.grandTotalChangeUnsubscribe) {
+            this.grandTotalChangeUnsubscribe();
+            this.grandTotalChangeUnsubscribe = undefined;
+        }
+
         window.removeEventListener('beforeunload', this.handleBeforeUnload);
     }
 
@@ -215,6 +220,7 @@ class Payment extends Component<
                             }
                             shouldHidePaymentSubmitButton={
                                 (uniqueSelectedMethodId &&
+                                    rest.isPaymentDataRequired() &&
                                     shouldHidePaymentSubmitButton[uniqueSelectedMethodId]) ||
                                 undefined
                             }
@@ -322,7 +328,7 @@ class Payment extends Component<
         const { defaultMethod, isSubmittingOrder, language } = this.props;
         const { selectedMethod = defaultMethod } = this.state;
 
-        // TODO: Perhaps there is a better way to handle `adyen`, `afterpay`, `amazon`,
+        // TODO: Perhaps there is a better way to handle `adyen`, `afterpay`, `amazonpay`,
         // `checkout.com`, `converge`, `sagepay`, `stripev3` and `sezzle`. They require
         //  a redirection to another website during the payment flow but are not
         //  categorised as hosted payment methods.
@@ -331,7 +337,8 @@ class Payment extends Component<
             !selectedMethod ||
             selectedMethod.type === PaymentMethodProviderType.Hosted ||
             selectedMethod.type === PaymentMethodProviderType.PPSDK ||
-            selectedMethod.id === PaymentMethodId.Amazon ||
+            selectedMethod.gateway === PaymentMethodId.BlueSnapDirect ||
+            selectedMethod.gateway === PaymentMethodId.BlueSnapV2 ||
             selectedMethod.id === PaymentMethodId.AmazonPay ||
             selectedMethod.id === PaymentMethodId.CBAMPGS ||
             selectedMethod.id === PaymentMethodId.Checkoutcom ||
@@ -383,6 +390,10 @@ class Payment extends Component<
 
             if (errorType === 'tax_provider_unavailable') {
                 window.location.reload();
+            }
+
+            if (errorType === 'cart_consistency') {
+                await loadCheckout();
             }
 
             if (isErrorWithType(error) && error.body) {
@@ -490,14 +501,15 @@ class Payment extends Component<
     };
 
     private setSelectedMethod: (method?: PaymentMethod) => void = (method) => {
-        const { analyticsTracker } = this.props;
         const { selectedMethod } = this.state;
 
         if (selectedMethod === method) {
             return;
         }
 
-        analyticsTracker.selectedPaymentMethod(method?.config.displayName);
+        if (method) {
+            this.trackSelectedPaymentMethod(method);
+        }
 
         this.setState({ selectedMethod: method });
     };
@@ -539,6 +551,48 @@ class Payment extends Component<
             },
         });
     };
+
+    private trackSelectedPaymentMethod(method: PaymentMethod) {
+        const { analyticsTracker } = this.props;
+
+        const methodName = method.config.displayName || method.id;
+        const methodId = method.id;
+
+        analyticsTracker.selectedPaymentMethod(methodName, methodId);
+    }
+
+    private async loadPaymentMethodsOrThrow(): Promise<void> {
+        const {
+            loadPaymentMethods,
+            onUnhandledError = noop,
+        } = this.props;
+
+        try {
+            await loadPaymentMethods();
+
+            const selectedMethod = this.state.selectedMethod || this.props.defaultMethod;
+
+            if (selectedMethod) {
+                this.trackSelectedPaymentMethod(selectedMethod);
+            }
+        } catch (error) {
+            onUnhandledError(error);
+        }
+    }
+
+    private async handleCartTotalChange(): Promise<void> {
+        const { isReady } = this.state;
+
+        if (!isReady) {
+            return;
+        }
+
+        this.setState({ isReady: false });
+
+        await this.loadPaymentMethodsOrThrow();
+
+        this.setState({ isReady: true });
+    }
 }
 
 export function mapToPaymentProps({
@@ -555,6 +609,7 @@ export function mapToPaymentProps({
             getPaymentMethod,
             getPaymentMethods,
             isPaymentDataRequired,
+            getPaymentProviderCustomer,
         },
         errors: { getFinalizeOrderError, getSubmitOrderError },
         statuses: { isInitializingPayment, isSubmittingOrder },
@@ -564,18 +619,19 @@ export function mapToPaymentProps({
     const config = getConfig();
     const customer = getCustomer();
     const consignments = getConsignments();
+    const paymentProviderCustomer = getPaymentProviderCustomer();
+
     const { isComplete = false } = getOrder() || {};
     let methods = getPaymentMethods() || EMPTY_ARRAY;
 
     // TODO: In accordance with the checkout team, this functionality is temporary and will be implemented in the backend instead.
-    if (customer?.isStripeLinkAuthenticated) {
+    if (paymentProviderCustomer?.stripeLinkAuthenticationState) {
         const stripeUpePaymentMethod = methods.filter(method =>
             method.id === 'card' && method.gateway === PaymentMethodId.StripeUPE
         );
 
         methods = stripeUpePaymentMethod.length ? stripeUpePaymentMethod : methods;
     }
-
 
     if (!checkout || !config || !customer || isComplete) {
         return null;
@@ -610,7 +666,6 @@ export function mapToPaymentProps({
     if (consignments && consignments.length > 1) {
         const multiShippingIncompatibleMethodIds: string[] = [
             PaymentMethodId.AmazonPay,
-            PaymentMethodId.Amazon,
         ];
 
         filteredMethods = methods.filter((method: PaymentMethod) => {
@@ -656,6 +711,7 @@ export function mapToPaymentProps({
             features['PAYMENTS-6799.localise_checkout_payment_error_messages'],
         submitOrder: checkoutService.submitOrder,
         submitOrderError: getSubmitOrderError(),
+        checkoutServiceSubscribe: checkoutService.subscribe,
         termsConditionsText:
             isTermsConditionsRequired && termsConditionsType === TermsConditionsType.TextArea
                 ? termsCondtitionsText

@@ -10,8 +10,9 @@ import {
 import { memoizeOne } from '@bigcommerce/memoize';
 import React, { FunctionComponent, memo, useCallback, useEffect, useState } from 'react';
 
+import { getAppliedStyles } from '@bigcommerce/checkout/dom-utils';
+
 import CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
-import { getAppliedStyles } from '../../common/dom';
 import getRecommendedShippingOption from '../getRecommendedShippingOption';
 import hasSelectedShippingOptions from '../hasSelectedShippingOptions';
 import { SingleShippingFormValues } from '../SingleShippingForm';
@@ -89,6 +90,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
         const hasStripeAddressAndHasShippingOptions = stripeShippingAddress.firstName && hasSelectedShippingOptions(consignments);
         const afterReload = !isFirstShippingRender && !isNewAddress && !isShippingMethodLoading;
         const isLoadingBeforeAutoStep =  isStripeLoading && isStripeAutoStep;
+
         if (hasStripeAddressAndHasShippingOptions && afterReload && isLoadingBeforeAutoStep) {
             isStripeLoading();
             isStripeAutoStep();
@@ -98,23 +100,31 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
 
     const availableShippingList = countries?.map(country => ({code: country.code, name: country.name}));
     const allowedCountries = availableShippingList ? availableShippingList.map(country => country.code).join(', ') : '';
+    const shouldShowContent = (isNewAddress = true, phoneFieldRequired: boolean, phone: string) => {
+        const stepCompleted = step.isComplete;
+        const shippingPopulated = shippingAddress?.firstName && isNewAddress;
+        const PhoneRequiredAndNotFilled = phoneFieldRequired && !phone;
+
+        return stepCompleted || shippingPopulated || PhoneRequiredAndNotFilled;
+    };
 
     const handleStripeShippingAddress = useCallback(async (shipping: StripeShippingEvent) => {
-        const {complete, value: { address = { country: '', state: '', line1: '', line2: '', city: '', postal_code: '' }
-            , name = '' } } = shipping;
+        const {complete, phoneFieldRequired, value: { address = { country: '', state: '', line1: '', line2: '', city: '', postal_code: '' }
+            , name = '', firstName = '', lastName = '', phone = '' } } = shipping;
 
-        if(complete) {
-            if (step.isComplete || (shippingAddress?.firstName && shipping.isNewAddress)) {
+        if (complete) {
+            if (shouldShowContent(shipping?.isNewAddress, phoneFieldRequired, phone)) {
                 handleLoading();
             }
 
-            const names = name.split(' ');
+            const names = name?.split(' ');
+
             // @ts-ignore
             const country = availableShippingList?.find(country => country.code === address.country).name;
             const state = StripeStateMapper(address.country, address.state);
             const shippingValue = {
-                firstName: names[0],
-                lastName: names[1] || ' ',
+                firstName: firstName || names[0],
+                lastName: lastName || names[1],
                 company: '',
                 address1: address.line1,
                 address2: address.line2 || '',
@@ -125,7 +135,7 @@ const StripeShippingAddress: FunctionComponent<StripeShippingAddressProps> = (pr
                 country: country || address.country,
                 countryCode: address.country,
                 postalCode: address.postal_code,
-                phone: '',
+                phone: phone || '',
                 customFields: [],
             };
 

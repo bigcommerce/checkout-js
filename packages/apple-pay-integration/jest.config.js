@@ -5,11 +5,11 @@ module.exports = {
         'ts-jest': {
             tsconfig: '<rootDir>/tsconfig.spec.json',
             diagnostics: false,
-        }
+        },
     },
     transform: {
-        '^.+\\.[tj]sx?$': 'ts-jest'
+        '^.+\\.[tj]sx?$': 'ts-jest',
     },
     setupFilesAfterEnv: ['../../jest-setup.ts'],
-    coverageDirectory: '../../coverage/packages/apple-pay-integration'
+    coverageDirectory: '../../coverage/packages/apple-pay-integration',
 };

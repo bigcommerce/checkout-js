@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SignOutLink renders output that matches snapshot 1`] = `
+<div
+  class="signout-link"
+>
+  optimized_checkout.remote.sign_out_before_action 
+  <a
+    href="#"
+  >
+    optimized_checkout.remote.sign_out_action
+  </a>
+   optimized_checkout.remote.sign_out_after_action
+</div>
+`;

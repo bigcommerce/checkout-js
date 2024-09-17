@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 
 export interface ModalTriggerProps {
-    children(props: { onClick: MouseEventHandler; onKeyPress: KeyboardEventHandler }): ReactNode;
+    children(props: { onClick: MouseEventHandler; onKeyPress: KeyboardEventHandler<HTMLDivElement> }): ReactNode;
     modal(props: ModalTriggerModalProps): ReactNode;
 }
 

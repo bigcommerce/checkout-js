@@ -14,11 +14,11 @@ import classNames from 'classnames';
 import { find, noop, some } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { MapToPropsFactory } from '@bigcommerce/checkout/legacy-hoc';
+import { CheckoutContextProps, PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
-import { CheckoutContextProps, withCheckout } from '../../checkout';
+import { withCheckout } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
-import { MapToPropsFactory } from '../../common/hoc';
 import { LoadingOverlay } from '../../ui/loading';
 import {
     CardInstrumentFieldset,

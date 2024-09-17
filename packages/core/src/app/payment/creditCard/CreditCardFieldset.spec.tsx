@@ -3,10 +3,10 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CreditCardFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getStoreConfig } from '../../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 
 import CreditCardFieldset from './CreditCardFieldset';
 

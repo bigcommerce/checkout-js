@@ -1,7 +1,8 @@
 import { FieldProps } from 'formik';
 import React, { FunctionComponent, memo } from 'react';
 
-import { TranslatedString } from '../locale';
+import { TranslatedHtml } from '@bigcommerce/checkout/locale';
+
 import { Input, Label } from '../ui/form';
 
 export type SubscribeFieldProps = FieldProps<boolean> & {
@@ -18,11 +19,12 @@ const SubscribeField: FunctionComponent<SubscribeFieldProps> = ({
             checked={field.value}
             className="form-checkbox"
             id={field.name}
+            testId="should-subscribe-checkbox"
             type="checkbox"
         />
 
         <Label htmlFor={field.name}>
-            <TranslatedString
+            <TranslatedHtml
                 id={
                     requiresMarketingConsent
                         ? 'customer.guest_marketing_consent'

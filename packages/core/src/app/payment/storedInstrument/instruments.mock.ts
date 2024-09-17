@@ -5,6 +5,8 @@ import {
     PaymentInstrument,
 } from '@bigcommerce/checkout-sdk';
 
+import { UntrustedShippingCardVerificationType } from './CardInstrumentFieldset';
+
 export function getInstruments(): PaymentInstrument[] {
     return [
         {
@@ -19,6 +21,7 @@ export function getInstruments(): PaymentInstrument[] {
             defaultInstrument: true,
             method: 'card',
             type: 'card',
+            untrustedShippingCardVerificationMode: UntrustedShippingCardVerificationType.PAN,
         },
         {
             bigpayToken: '111',
@@ -27,11 +30,12 @@ export function getInstruments(): PaymentInstrument[] {
             last4: '4444',
             expiryMonth: '10',
             expiryYear: '2024',
-            brand: 'american_express',
+            brand: 'american-express',
             trustedShippingAddress: false,
             defaultInstrument: false,
             method: 'card',
             type: 'card',
+            untrustedShippingCardVerificationMode: UntrustedShippingCardVerificationType.PAN,
         },
         {
             bigpayToken: '31415',
@@ -91,6 +95,7 @@ export function getCardInstrument(): CardInstrument {
         defaultInstrument: true,
         method: 'card',
         type: 'card',
+        untrustedShippingCardVerificationMode: UntrustedShippingCardVerificationType.PAN,
     };
 }
 

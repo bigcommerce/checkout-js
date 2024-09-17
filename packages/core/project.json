@@ -40,7 +40,8 @@
       "outputs": ["coverage/packages/core"],
       "options": {
         "jestConfig": "packages/core/jest.config.js",
-        "passWithNoTests": false
+        "passWithNoTests": false,
+        "runInBand": true
       },
       "dependsOn": [
         {

@@ -13,7 +13,6 @@ describe('itemsRequireShipping()', () => {
     beforeEach(() => {
         cart = getCart();
         config = getStoreConfig();
-        config.checkoutSettings.features['CHECKOUT-4936.enable_custom_item_shipping'] = true;
     });
 
     it('returns false if there are no physical items or custom items', () => {

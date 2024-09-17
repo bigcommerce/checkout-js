@@ -2,7 +2,8 @@ import { CardInstrument } from '@bigcommerce/checkout-sdk';
 import { FieldProps } from 'formik';
 import React, { FunctionComponent, memo, useCallback } from 'react';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { BasicFormField, Fieldset, Legend } from '../../ui/form';
 import { ModalTrigger, ModalTriggerModalProps } from '../../ui/modal';
 
@@ -17,6 +18,11 @@ export interface CardInstrumentFieldsetProps {
     onDeleteInstrument?(instrumentId: string): void;
     onSelectInstrument(id: string): void;
     onUseNewInstrument(): void;
+}
+
+export enum UntrustedShippingCardVerificationType {
+    CVV = 'cvv',
+    PAN = 'pan'
 }
 
 const CardInstrumentFieldset: FunctionComponent<CardInstrumentFieldsetProps> = ({

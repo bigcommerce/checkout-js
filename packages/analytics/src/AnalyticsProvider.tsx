@@ -1,9 +1,13 @@
 import {
     BodlEventsPayload,
     BodlService,
+    BraintreeAnalyticTrackerService,
     CheckoutService,
     createBodlService,
+    createBraintreeAnalyticTracker,
+    createPayPalCommerceAnalyticTracker,
     createStepTracker,
+    PayPalCommerceAnalyticTrackerService,
     StepTracker,
 } from '@bigcommerce/checkout-sdk';
 import React, { ReactNode, useMemo } from 'react';
@@ -23,6 +27,22 @@ const AnalyticsProvider = ({ checkoutService, children }: AnalyticsProviderProps
     );
     const getBodlService = useMemo(
         () => createAnalyticsService<BodlService>(createBodlService, [checkoutService.subscribe]),
+        [checkoutService],
+    );
+    const getBraintreeAnalyticTracker = useMemo(
+        () =>
+            createAnalyticsService<BraintreeAnalyticTrackerService>(
+                createBraintreeAnalyticTracker,
+                [checkoutService],
+            ),
+        [checkoutService],
+    );
+    const getPayPalCommerceAnalyticTracker = useMemo(
+        () =>
+            createAnalyticsService<PayPalCommerceAnalyticTrackerService>(
+                createPayPalCommerceAnalyticTracker,
+                [checkoutService],
+            ),
         [checkoutService],
     );
 
@@ -49,20 +69,28 @@ const AnalyticsProvider = ({ checkoutService, children }: AnalyticsProviderProps
         getBodlService().customerEmailEntry(email);
     };
 
+    const customerSuggestionInit = (payload: BodlEventsPayload) => {
+        getBodlService().customerSuggestionInit(payload);
+    };
+
     const customerSuggestionExecute = () => {
         getBodlService().customerSuggestionExecute();
     };
 
     const customerPaymentMethodExecuted = (payload: BodlEventsPayload) => {
         getBodlService().customerPaymentMethodExecuted(payload);
+        getBraintreeAnalyticTracker().customerPaymentMethodExecuted();
+        getPayPalCommerceAnalyticTracker().customerPaymentMethodExecuted();
     };
 
     const showShippingMethods = () => {
         getBodlService().showShippingMethods();
     };
 
-    const selectedPaymentMethod = (methodName?: string) => {
+    const selectedPaymentMethod = (methodName: string, methodId: string) => {
         getBodlService().selectedPaymentMethod(methodName);
+        getBraintreeAnalyticTracker().selectedPaymentMethod(methodId);
+        getPayPalCommerceAnalyticTracker().selectedPaymentMethod(methodId);
     };
 
     const clickPayButton = (payload: BodlEventsPayload) => {
@@ -75,10 +103,17 @@ const AnalyticsProvider = ({ checkoutService, children }: AnalyticsProviderProps
 
     const paymentComplete = () => {
         getBodlService().paymentComplete();
+        getBraintreeAnalyticTracker().paymentComplete();
+        getPayPalCommerceAnalyticTracker().paymentComplete();
     };
 
     const exitCheckout = () => {
         getBodlService().exitCheckout();
+    };
+
+    const walletButtonClick = (methodId: string) => {
+        getBraintreeAnalyticTracker().walletButtonClick(methodId);
+        getPayPalCommerceAnalyticTracker().walletButtonClick(methodId);
     };
 
     const analyticsTracker: AnalyticsEvents = {
@@ -87,6 +122,7 @@ const AnalyticsProvider = ({ checkoutService, children }: AnalyticsProviderProps
         trackStepViewed,
         orderPurchased,
         customerEmailEntry,
+        customerSuggestionInit,
         customerSuggestionExecute,
         customerPaymentMethodExecuted,
         showShippingMethods,
@@ -95,6 +131,7 @@ const AnalyticsProvider = ({ checkoutService, children }: AnalyticsProviderProps
         paymentRejected,
         paymentComplete,
         exitCheckout,
+        walletButtonClick,
     };
 
     return (

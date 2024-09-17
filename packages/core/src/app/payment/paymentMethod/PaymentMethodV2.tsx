@@ -1,7 +1,9 @@
-import { PaymentMethod } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, PaymentMethod } from '@bigcommerce/checkout-sdk';
 import React, { ComponentType } from 'react';
 
+import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import {
+    PaymentFormProvider,
     PaymentFormValues,
     PaymentMethodResolveId,
     PaymentMethodProps as ResolvedPaymentMethodProps,
@@ -9,7 +11,6 @@ import {
 
 import { withCheckout, WithCheckoutProps } from '../../checkout';
 import { connectFormik, WithFormikProps } from '../../common/form';
-import { withLanguage, WithLanguageProps } from '../../locale';
 import { withForm, WithFormProps } from '../../ui/form';
 import createPaymentFormService from '../createPaymentFormService';
 import resolvePaymentMethod from '../resolvePaymentMethod';
@@ -26,6 +27,17 @@ export interface PaymentMethodProps {
         query: PaymentMethodResolveId,
     ): ComponentType<ResolvedPaymentMethodProps> | undefined;
     onUnhandledError(error: Error): void;
+}
+
+function shouldUsePaymentMethodV1(method: PaymentMethod, checkoutState: CheckoutSelectors) {
+
+    if (method.id === PaymentMethodId.SquareV2) {
+        return !checkoutState.data.getConfig()?.checkoutSettings.features[
+            'PROJECT-4113.squarev2_web_payments_sdk'
+        ];
+    }
+
+    return false;
 }
 
 const PaymentMethodContainer: ComponentType<
@@ -70,7 +82,7 @@ const PaymentMethodContainer: ComponentType<
         type: method.type,
     });
 
-    if (!ResolvedPaymentMethod || method.gateway === PaymentMethodId.Mollie) {
+    if (!ResolvedPaymentMethod || shouldUsePaymentMethodV1(method, checkoutState)) {
         return (
             <PaymentMethodV1
                 isEmbedded={isEmbedded}
@@ -81,15 +93,19 @@ const PaymentMethodContainer: ComponentType<
         );
     }
 
+    const paymentForm = createPaymentFormService(formikContext, formContext, paymentContext);
+
     return (
-        <ResolvedPaymentMethod
-            checkoutService={checkoutService}
-            checkoutState={checkoutState}
-            language={language}
-            method={method}
-            onUnhandledError={onUnhandledError}
-            paymentForm={createPaymentFormService(formikContext, formContext, paymentContext)}
-        />
+        <PaymentFormProvider paymentForm={paymentForm}>
+            <ResolvedPaymentMethod
+                checkoutService={checkoutService}
+                checkoutState={checkoutState}
+                language={language}
+                method={method}
+                onUnhandledError={onUnhandledError}
+                paymentForm={paymentForm}
+            />
+        </PaymentFormProvider>
     );
 };
 

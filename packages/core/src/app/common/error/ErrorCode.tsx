@@ -1,6 +1,6 @@
 import React, { FunctionComponent, memo, ReactNode } from 'react';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import './ErrorCode.scss';
 

@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useMemo } from 'react';
 import { Omit } from 'utility-types';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import HostedPaymentMethod, { HostedPaymentMethodProps } from './HostedPaymentMethod';
 

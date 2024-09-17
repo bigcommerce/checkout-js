@@ -207,3 +207,8 @@ $button-border-width:                   1px;
 $button-border-style:                   solid;
 
 $button-radius:                         3px;
+
+// We use these to control the look of the wallet buttons on the top of the checkout
+$wallet-button-max-width:               320px;
+$wallet-button-height:                  36px;
+$wallet-button-track-size:              12;
