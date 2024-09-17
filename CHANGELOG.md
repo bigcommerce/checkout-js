@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.524.8](https://github.com/bigcommerce/checkout-js/compare/v1.524.7...v1.524.8) (2024-09-17)
+
+
+### Code Refactoring
+
+* **payment:** PAYPAL-4157 removed unnecessary Fastlane shipping strategy initialization ([393fda9](https://github.com/bigcommerce/checkout-js/commit/393fda942e2fa3ab521fdc8a5ade6b124437dcf9))
+
 ### [1.524.7](https://github.com/bigcommerce/checkout-js/compare/v1.524.6...v1.524.7) (2024-09-17)
 
 ### [1.524.6](https://github.com/bigcommerce/checkout-js/compare/v1.524.5...v1.524.6) (2024-09-16)
