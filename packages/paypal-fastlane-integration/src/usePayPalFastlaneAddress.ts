@@ -29,8 +29,7 @@ const usePayPalFastlaneAddress = () => {
         paypalFastlaneAddresses.length > 0 &&
         customerAuthenticationState &&
         customerAuthenticationState !== 'CANCELED' &&
-        customerAuthenticationState !== 'unrecognized' &&
-        getConfig()?.checkoutSettings.features['PAYPAL-3996.paypal_fastlane_shipping_update'];
+        customerAuthenticationState !== 'unrecognized';
 
     return {
         isPayPalFastlaneEnabled,
