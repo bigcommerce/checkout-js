@@ -436,9 +436,6 @@ describe('ShippingForm Component', () => {
                     addresses: paypalFastlaneAddresses,
                 }),
             );
-            expect(initializeMock).toHaveBeenCalledWith({
-                methodId: PaymentMethodId.BraintreeAcceleratedCheckout,
-            });
         });
 
         it('renders shipping for with paypal fastlane addresses without strategy initialization if there is preselected shipping method id', () => {
