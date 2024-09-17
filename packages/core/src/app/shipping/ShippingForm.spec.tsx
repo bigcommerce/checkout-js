@@ -69,6 +69,7 @@ describe('ShippingForm Component', () => {
             shouldShowOrderComments: true,
             onMultiShippingSubmit: jest.fn(),
             onSingleShippingSubmit: jest.fn(),
+            isInitialValueLoaded: true,
             isLoading: false,
             isShippingStepPending: false,
             deleteConsignments: jest.fn(),
@@ -400,11 +401,12 @@ describe('ShippingForm Component', () => {
             expect(initializeMock).not.toHaveBeenCalled();
         });
 
-        it('renders SingleShippingForm with merged addresses list if PayPal Fastlane enabled', () => {
+        it('renders SingleShippingForm with paypal addresses list for guests when PayPal Fastlane enabled', () => {
             const initializeMock = jest.fn();
             const shippingFormProps = {
                 ...defaultProps,
                 initialize: initializeMock,
+                isGuest: true,
             };
             const paypalFastlaneAddresses: CustomerAddress[] = [
                 {
@@ -444,6 +446,7 @@ describe('ShippingForm Component', () => {
             const shippingFormProps = {
                 ...defaultProps,
                 initialize: initializeMock,
+                isGuest: true,
             };
             const paypalFastlaneAddresses: CustomerAddress[] = [
                 {

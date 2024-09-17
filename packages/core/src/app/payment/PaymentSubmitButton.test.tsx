@@ -69,12 +69,6 @@ describe('PaymentSubmitButton', () => {
         expect(screen.getByText(languageService.translate('payment.visa_checkout_continue_action'))).toBeInTheDocument();
     });
 
-    it('renders button with special label for ChasePay', () => {
-        render(<PaymentSubmitButtonTest methodType="chasepay" />);
-
-        expect(screen.getByText(languageService.translate('payment.chasepay_continue_action'))).toBeInTheDocument();
-    });
-
     it('renders button with special label for Opy', () => {
         render(<PaymentSubmitButtonTest methodId="opy" methodName="Opy" />);
 

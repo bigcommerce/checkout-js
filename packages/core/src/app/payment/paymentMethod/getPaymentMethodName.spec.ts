@@ -92,19 +92,6 @@ describe('getPaymentMethodName()', () => {
         );
     });
 
-    it('returns specific translated name for ChasePay', () => {
-        const method = {
-            ...getPaymentMethod(),
-            id: 'chasepay',
-            method: 'chasepay',
-            config: { displayName: '' },
-        };
-
-        expect(getPaymentMethodName(language)(method)).toEqual(
-            language.translate('payment.chasepay_name_text'),
-        );
-    });
-
     it('returns specific translated name for Visa Checkout', () => {
         const method = {
             ...getPaymentMethod(),

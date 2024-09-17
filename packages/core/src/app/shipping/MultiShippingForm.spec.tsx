@@ -45,6 +45,7 @@ describe('MultiShippingForm Component', () => {
             cartHasChanged: false,
             customerMessage: 'x',
             countriesWithAutocomplete: [],
+            isInitialValueLoaded: true,
             isLoading: false,
             consignments: [
                 { ...getConsignment(), id: 'foo' },

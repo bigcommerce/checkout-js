@@ -8,7 +8,7 @@ import {
 import { mount, ReactWrapper } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
-import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { Extension, ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
@@ -33,6 +33,13 @@ jest.mock('./stripeUPE/StripeShipping', () => {
     }
 
     return StripeShipping;
+  });
+
+jest.mock('@bigcommerce/checkout/checkout-extension', () => {
+    return {
+        ...jest.requireActual('@bigcommerce/checkout/checkout-extension'),
+        Extension: jest.fn(() => <></>),
+    };
   });
 
 describe('Shipping Component', () => {
@@ -231,7 +238,7 @@ describe('Shipping Component', () => {
         expect(handleReady).toHaveBeenCalled();
     });
 
-    it('does not render ShippingForm while initializing', () => {
+    it('does render ShippingForm while initializing', () => {
         jest.spyOn(
             checkoutService.getState().statuses,
             'isLoadingShippingCountries',
@@ -239,7 +246,7 @@ describe('Shipping Component', () => {
 
         component = mount(<ComponentTest {...defaultProps} />);
 
-        expect(component.find(ShippingForm)).toHaveLength(0);
+        expect(component.find(ShippingForm)).toHaveLength(1);
     });
 
     it('updates shipping and billing if shipping address is changed and billingSameAsShipping', async () => {
@@ -249,6 +256,7 @@ describe('Shipping Component', () => {
 
         component
             .find('input[name="shippingAddress.firstName"]')
+            .simulate('click')
             .simulate('change', { target: { value: 'bar', name: 'shippingAddress.firstName' } });
 
         component.find('form').simulate('submit');
@@ -274,10 +282,12 @@ describe('Shipping Component', () => {
 
         component
             .find('input[name="shippingAddress.firstName"]')
+            .simulate('click')
             .simulate('change', { target: { value: 'bar', name: 'shippingAddress.firstName' } });
 
         component
             .find('input[name="billingSameAsShipping"]')
+            .simulate('click')
             .simulate('change', { target: { checked: false, name: 'billingSameAsShipping' } });
 
         component.find('form').simulate('submit');
@@ -301,7 +311,7 @@ describe('Shipping Component', () => {
         const currentValue = saveAddressField.get(0).props.value;
         const changedValue = currentValue === 'true' ? 'false' : 'true';
 
-        saveAddressField.simulate('change', {
+        saveAddressField.simulate('click').simulate('change', {
             target: { value: changedValue, name: 'shippingAddress.shouldSaveAddress' },
         });
 
@@ -321,6 +331,7 @@ describe('Shipping Component', () => {
 
         component
             .find('input[name="orderComment"]')
+            .simulate('click')
             .simulate('change', { target: { value: 'foo', name: 'orderComment' } });
 
         component.find('form').simulate('submit');
@@ -339,6 +350,7 @@ describe('Shipping Component', () => {
 
         component
             .find('input[name="shippingAddress.firstName"]')
+            .simulate('click')
             .simulate('change', { target: { value: 'bar', name: 'shippingAddress.firstName' } });
 
         component.find('form').simulate('submit');
@@ -468,6 +480,7 @@ describe('Shipping Component', () => {
                 it('calls updateCheckout and navigateNextStep', async () => {
                     component
                         .find('input[name="orderComment"]')
+                        .simulate('click')
                         .simulate('change', { target: { value: 'foo', name: 'orderComment' } });
 
                     component.find('form').simulate('submit');
@@ -573,5 +586,11 @@ describe('Shipping Component', () => {
                 });
             });
         });
+    });
+
+    it('loads extension', () => {
+        mount(<ComponentTest {...defaultProps} />);
+
+        expect(Extension).toHaveBeenCalled();
     });
 });

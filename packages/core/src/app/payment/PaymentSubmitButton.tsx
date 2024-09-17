@@ -65,10 +65,6 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
             return <TranslatedString id="payment.visa_checkout_continue_action" />;
         }
 
-        if (methodType === PaymentMethodType.Chasepay) {
-            return <TranslatedString id="payment.chasepay_continue_action" />;
-        }
-
         if (
             methodType === PaymentMethodType.PaypalVenmo ||
             methodId === PaymentMethodId.BraintreeVenmo

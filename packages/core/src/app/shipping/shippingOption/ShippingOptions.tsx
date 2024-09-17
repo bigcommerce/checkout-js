@@ -11,6 +11,7 @@ import getShippingMethodId from '../getShippingMethodId';
 import ShippingOptionsForm from './ShippingOptionsForm';
 
 export interface ShippingOptionsProps {
+    isInitialValueLoaded: boolean;
     isMultiShippingMode: boolean;
     isUpdatingAddress?: boolean;
     shouldShowShippingOptions: boolean;

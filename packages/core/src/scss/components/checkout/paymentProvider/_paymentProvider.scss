@@ -65,10 +65,6 @@
     padding: $payment-step-spacing-top 0;
 }
 
-.chasePay--container {
-    margin-top: remCalc(5px);
-}
-
 %button-masterpass-base {
     background-color: color("greys", "lightest");
     background-image: url(https://masterpass.com/dyn/img/btn/global/mp_chk_btn_180x042px.svg);

@@ -11,7 +11,7 @@ import {
     ShippingInitializeOptions,
     ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import { FormikProps, withFormik } from 'formik';
+import { FormikProps } from 'formik';
 import { debounce, isEqual, noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
 import { lazy, object } from 'yup';
@@ -27,6 +27,7 @@ import {
     mapAddressFromFormValues,
     mapAddressToFormValues,
 } from '../address';
+import { withFormikExtended } from '../common/form';
 import { getCustomFormFieldsValidationSchema } from '../formFields';
 import { PaymentMethodId } from '../payment/paymentMethod';
 import { Fieldset, Form } from '../ui/form';
@@ -55,6 +56,7 @@ export interface SingleShippingFormProps {
     shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
     isFloatingLabelEnabled?: boolean;
+    isInitialValueLoaded: boolean;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
     getFields(countryCode?: string): FormField[];
@@ -137,6 +139,7 @@ class SingleShippingForm extends PureComponent<
         const {
             addresses,
             cartHasChanged,
+            isInitialValueLoaded,
             isLoading,
             onUnhandledError,
             methodId,
@@ -196,6 +199,7 @@ class SingleShippingForm extends PureComponent<
 
                 <ShippingFormFooter
                     cartHasChanged={cartHasChanged}
+                    isInitialValueLoaded={isInitialValueLoaded}
                     isLoading={isLoading || isUpdatingShippingData}
                     isMultiShippingMode={false}
                     shouldDisableSubmit={this.shouldDisableSubmit()}
@@ -317,7 +321,7 @@ class SingleShippingForm extends PureComponent<
 }
 
 export default withLanguage(
-    withFormik<SingleShippingFormProps & WithLanguageProps, SingleShippingFormValues>({
+    withFormikExtended<SingleShippingFormProps & WithLanguageProps, SingleShippingFormValues>({
         handleSubmit: (values, { props: { onSubmit } }) => {
             onSubmit(values);
         },

@@ -19,12 +19,12 @@ export interface StripeShippingProps {
     customerMessage: string;
     isGuest: boolean;
     isInitializing: boolean;
+    isInitialValueLoaded: boolean;
     isLoading: boolean;
     isShippingMethodLoading: boolean;
     isShippingStepPending: boolean;
     methodId?: string;
     shippingAddress?: Address;
-    shouldShowAddAddressInCheckout: boolean;
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
     onReady?(): void;

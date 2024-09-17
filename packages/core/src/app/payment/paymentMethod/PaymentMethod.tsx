@@ -15,8 +15,6 @@ import { withCheckout } from '../../checkout';
 import AmazonPayV2PaymentMethod from './AmazonPayV2PaymentMethod';
 import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod';
 import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
-import ChasePayPaymentMethod from './ChasePayPaymentMethod';
-import DigitalRiverPaymentMethod from './DigitalRiverPaymentMethod';
 import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';
 import HostedPaymentMethod from './HostedPaymentMethod';
 import MasterpassPaymentMethod from './MasterpassPaymentMethod';
@@ -30,8 +28,6 @@ import PaypalExpressPaymentMethod from './PaypalExpressPaymentMethod';
 import PaypalPaymentsProPaymentMethod from './PaypalPaymentsProPaymentMethod';
 import PPSDKPaymentMethod from './PPSDKPaymentMethod';
 import SquarePaymentMethod from './SquarePaymentMethod';
-import StripePaymentMethod from './StripePaymentMethod';
-import StripeUPEPaymentMethod from './StripeUPEPaymentMethod';
 import WorldpayCreditCardPaymentMethod from './WorldpayCreditCardPaymentMethod';
 
 export interface PaymentMethodProps {
@@ -74,28 +70,12 @@ const PaymentMethodComponent: FunctionComponent<
         return <SquarePaymentMethod {...props} />;
     }
 
-    if (method.gateway === PaymentMethodId.StripeV3) {
-        return <StripePaymentMethod {...props} />;
-    }
-
-    if (method.gateway === PaymentMethodId.StripeUPE) {
-        return <StripeUPEPaymentMethod {...props} />;
-    }
-
     if (method.id === PaymentMethodId.AmazonPay) {
         return <AmazonPayV2PaymentMethod {...props} />;
     }
 
-    if (method.id === PaymentMethodId.DigitalRiver) {
-        return <DigitalRiverPaymentMethod {...props} />;
-    }
-
     if (method.id === PaymentMethodId.CCAvenueMars) {
         return <CCAvenueMarsPaymentMethod {...props} />;
-    }
-
-    if (method.id === PaymentMethodId.ChasePay) {
-        return <ChasePayPaymentMethod {...props} />;
     }
 
     if (method.gateway === PaymentMethodId.Checkoutcom) {

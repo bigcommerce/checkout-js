@@ -111,10 +111,6 @@ function getPaymentMethodTitle(
                 logoUrl: '',
                 titleText: methodDisplayName,
             },
-            [PaymentMethodId.ChasePay]: {
-                logoUrl: cdnPath('/img/payment-providers/chase-pay.png'),
-                titleText: '',
-            },
             [PaymentMethodId.Clearpay]: {
                 logoUrl: cdnPath('/img/payment-providers/clearpay-header.png'),
                 titleText: '',

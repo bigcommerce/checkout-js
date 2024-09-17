@@ -1,7 +1,7 @@
 import { ExtensionRegion, ShippingOption } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo, useCallback, useEffect } from 'react';
+import React, { FunctionComponent, memo, useCallback } from 'react';
 
-import { ExtensionRegionContainer, useExtensions } from '@bigcommerce/checkout/checkout-extension';
+import { Extension } from '@bigcommerce/checkout/checkout-extension';
 
 import { EMPTY_ARRAY } from '../../common/utility';
 import { Checklist, ChecklistItem } from '../../ui/form';
@@ -23,37 +23,19 @@ const ShippingOptionListItem: FunctionComponent<ShippingOptionListItemProps> = (
     shippingOption,
 }) => {
     const isSelected = selectedShippingOptionId === shippingOption.id;
-    const { extensionService, isExtensionEnabled } = useExtensions();
-    const isExtensionRegionEnabled = Boolean(
-        isExtensionEnabled() &&
-            !isMultiShippingMode &&
-            extensionService.isRegionEnabled(ExtensionRegion.ShippingSelectedShippingMethod),
-    );
 
     const renderLabel = useCallback(
         () => (
             <div className="shippingOptionLabel">
                 <StaticShippingOption displayAdditionalInformation={true} method={shippingOption} />
-                {isSelected && isExtensionRegionEnabled && (
-                    <div id={ExtensionRegionContainer.ShippingSelectedShippingMethod} />
+                {(isSelected && !isMultiShippingMode) && (
+                    <Extension region={ExtensionRegion.ShippingSelectedShippingMethod} />
                 )}
             </div>
         ),
-        [isExtensionRegionEnabled, isSelected, shippingOption],
+        [isSelected, isMultiShippingMode, shippingOption],
     );
 
-    useEffect(() => {
-        if (isSelected && isExtensionRegionEnabled) {
-            void extensionService.renderExtension(
-                ExtensionRegionContainer.ShippingSelectedShippingMethod,
-                ExtensionRegion.ShippingSelectedShippingMethod,
-            );
-
-            return () => {
-                extensionService.removeListeners(ExtensionRegion.ShippingSelectedShippingMethod);
-            };
-        }
-    }, [extensionService, isExtensionRegionEnabled, isSelected]);
 
     return (
         <ChecklistItem

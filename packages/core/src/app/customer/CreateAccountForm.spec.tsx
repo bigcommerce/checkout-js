@@ -67,7 +67,7 @@ describe('CreateAccountForm Component', () => {
     });
 
     it.each([
-        ['Password needs to contain a letter', '1234567'],
+        ['password must match the following: "/[a-zA-Z]/"', '1234567'],
         ['Password needs to contain a number', 'abcdefg'],
         ['Password is too short', '1a'],
     ])('renders correct error when %s', async (expected, passwordCase) => {

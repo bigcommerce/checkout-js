@@ -40,8 +40,8 @@ export interface ShippingFormProps {
     shippingAddress?: Address;
     shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
-    shouldShowAddAddressInCheckout: boolean;
     isFloatingLabelEnabled?: boolean;
+    isInitialValueLoaded: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -90,11 +90,11 @@ const ShippingForm = ({
     shippingAddress,
     shouldShowOrderComments,
     shouldShowSaveAddress,
-    shouldShowAddAddressInCheckout,
     signOut,
     updateAddress,
     isShippingStepPending,
     isFloatingLabelEnabled,
+    isInitialValueLoaded,
 }: ShippingFormProps & WithLanguageProps) => {
     // TODO: remove PayPal Fastlane related code and useEffect when PayPal Fastlane will not be available for Store members
     const {
@@ -103,7 +103,7 @@ const ShippingForm = ({
         shouldShowPayPalFastlaneShippingForm,
     } = usePayPalFastlaneAddress();
 
-    const shippingAddresses = isPayPalFastlaneEnabled
+    const shippingAddresses = isPayPalFastlaneEnabled && isGuest
         ? paypalFastlaneAddresses
         : addresses;
 
@@ -129,13 +129,13 @@ const ShippingForm = ({
             googleMapsApiKey={googleMapsApiKey}
             isFloatingLabelEnabled={isFloatingLabelEnabled}
             isGuest={isGuest}
+            isInitialValueLoaded={isInitialValueLoaded}
             isLoading={isLoading}
             onCreateAccount={onCreateAccount}
             onSignIn={onSignIn}
             onSubmit={onMultiShippingSubmit}
             onUnhandledError={onUnhandledError}
             onUseNewAddress={onUseNewAddress}
-            shouldShowAddAddressInCheckout={shouldShowAddAddressInCheckout}
             shouldShowOrderComments={shouldShowOrderComments}
         />
     ) : (
@@ -153,6 +153,7 @@ const ShippingForm = ({
             initialize={initialize}
             isBillingSameAsShipping={isBillingSameAsShipping}
             isFloatingLabelEnabled={isFloatingLabelEnabled}
+            isInitialValueLoaded={isInitialValueLoaded}
             isLoading={isLoading}
             isMultiShippingMode={isMultiShippingMode}
             isShippingStepPending={isShippingStepPending}

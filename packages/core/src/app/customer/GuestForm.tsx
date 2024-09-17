@@ -4,6 +4,7 @@ import React, { FunctionComponent, memo, ReactNode, useCallback } from 'react';
 import { object, string } from 'yup';
 
 import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { PayPalFastlaneWatermark } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import { getPrivacyPolicyValidationSchema, PrivacyPolicyField } from '../privacyPolicy';
 import { Button, ButtonVariant } from '../ui/button';
@@ -32,6 +33,7 @@ export interface GuestFormProps {
     privacyPolicyUrl?: string;
     isExpressPrivacyPolicy: boolean;
     isFloatingLabelEnabled?: boolean;
+    shouldShowEmailWatermark: boolean;
     onChangeEmail(email: string): void;
     onContinueAsGuest(data: GuestFormValues): void;
     onShowLogin(): void;
@@ -55,6 +57,7 @@ const GuestForm: FunctionComponent<
     requiresMarketingConsent,
     isExpressPrivacyPolicy,
     isFloatingLabelEnabled,
+    shouldShowEmailWatermark,
 }) => {
     const renderField = useCallback(
         (fieldProps: FieldProps<boolean>) => (
@@ -79,6 +82,8 @@ const GuestForm: FunctionComponent<
                 <div className="customerEmail-container">
                     <div className="customerEmail-body">
                         <EmailField isFloatingLabelEnabled={isFloatingLabelEnabled} onChange={onChangeEmail}/>
+
+                        {shouldShowEmailWatermark && <PayPalFastlaneWatermark />}
 
                         {(canSubscribe || requiresMarketingConsent) && (
                             <BasicFormField name="shouldSubscribe" render={renderField} />

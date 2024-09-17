@@ -28,6 +28,7 @@ describe('ShippingOptions Component', () => {
     ];
     let triggerConsignmentsUpdated: (state: CheckoutSelectors) => void;
     const defaultProps: ShippingOptionsFormProps = {
+        isInitialValueLoaded: true,
         isMultiShippingMode: true,
         consignments,
         invalidShippingMessage: 'foo',

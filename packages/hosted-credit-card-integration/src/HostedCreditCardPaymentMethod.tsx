@@ -64,7 +64,7 @@ const HostedCreditCardPaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             const isInstrumentCardCodeRequired = selectedInstrument
                 ? isInstrumentCardCodeRequiredProp(selectedInstrument, method)
                 : false;
-            let styleContainerId;
+            let styleContainerId = '';
 
             if (selectedInstrument) {
                 if (isInstrumentCardCodeRequired) {

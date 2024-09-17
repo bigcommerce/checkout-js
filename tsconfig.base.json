@@ -41,6 +41,9 @@
       "@bigcommerce/checkout/credit-card-integration": [
         "packages/credit-card-integration/src/index.ts"
       ],
+      "@bigcommerce/checkout/digitalriver-integration": [
+        "packages/digitalriver-integration/src/index.ts"
+      ],
       "@bigcommerce/checkout/dom-utils": ["packages/dom-utils/src/index.ts"],
       "@bigcommerce/checkout/error-handling-utils": ["packages/error-handling-utils/src/index.ts"],
       "@bigcommerce/checkout/google-pay-integration": [
@@ -63,6 +66,7 @@
       ],
       "@bigcommerce/checkout/instrument-utils": ["packages/instrument-utils/src/index.ts"],
       "@bigcommerce/checkout/klarna-integration": ["packages/klarna-integration/src/index.ts"],
+      "@bigcommerce/checkout/stripe-integration": ["packages/stripe-integration/src/index.ts"],
       "@bigcommerce/checkout/legacy-hoc": ["packages/legacy-hoc/src/index.ts"],
       "@bigcommerce/checkout/locale": ["packages/locale/src/index.ts"],
       "@bigcommerce/checkout/mollie-integration": ["packages/mollie-integration/src/index.ts"],

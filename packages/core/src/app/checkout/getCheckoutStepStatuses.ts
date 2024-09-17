@@ -215,12 +215,20 @@ const getPaymentStepStatus = createSelector(
     },
 );
 
+const getOrderSubmitStatus = createSelector(
+    ({ statuses }: CheckoutSelectors) => statuses.isSubmittingOrder(),
+    (status) => status,
+);
+
 const getCheckoutStepStatuses = createSelector(
     getCustomerStepStatus,
     getShippingStepStatus,
     getBillingStepStatus,
     getPaymentStepStatus,
-    (customerStep, shippingStep, billingStep, paymentStep) => {
+    getOrderSubmitStatus,
+    (customerStep, shippingStep, billingStep, paymentStep, orderStatus) => {
+        const isSubmittingOrder = orderStatus;
+
         const steps = compact([customerStep, shippingStep, billingStep, paymentStep]);
 
         const defaultActiveStep =
@@ -236,7 +244,7 @@ const getCheckoutStepStatuses = createSelector(
                 isActive: defaultActiveStep.type === step.type,
                 isBusy: false,
                 // A step is only editable if its previous step is complete or not required
-                isEditable: isPrevStepComplete && step.isEditable,
+                isEditable: isPrevStepComplete && step.isEditable && !isSubmittingOrder,
             };
         });
     },

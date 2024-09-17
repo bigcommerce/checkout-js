@@ -31,7 +31,6 @@ describe('PaymentMethodTitle', () => {
         afterpay: '/img/payment-providers/afterpay-badge-blackonmint.png',
         amazonpay: '/img/payment-providers/amazon-header.png',
         applepay: '/modules/checkout/applepay/images/applepay-header@2x.png',
-        chasepay: '/img/payment-providers/chase-pay.png',
         googlepay: '/img/payment-providers/google-pay.png',
         humm: '/img/payment-providers/humm-checkout-header.png',
         klarna: '/img/payment-providers/klarna-header.png',
@@ -412,20 +411,6 @@ describe('PaymentMethodTitle', () => {
             expect(logos).toBeInTheDocument();
 
             expect(names).not.toBeInTheDocument();
-        });
-        it('renders only logo for ChasePay hosted payment methods', () => {
-            render(
-                <PaymentMethodTitleTest
-                    {...defaultProps}
-                    method={{
-                        ...defaultProps.method,
-                        id: PaymentMethodId.ChasePay,
-                    }}
-                />,
-            );
-
-            expect(screen.getByRole('img')).toBeInTheDocument();
-            expect(screen.queryByRole('heading')).not.toBeInTheDocument();
         });
         it('renders only logo for Clearpay hosted payment methods', () => {
             render(

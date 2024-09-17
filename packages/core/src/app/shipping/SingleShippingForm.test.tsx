@@ -28,6 +28,7 @@ describe('SingleShippingForm', () => {
         consignments: [],
         cartHasChanged: false,
         isBillingSameAsShipping: false,
+        isInitialValueLoaded: true,
         isLoading: false,
         isShippingStepPending: false,
         onSubmit: jest.fn(),
@@ -43,10 +44,10 @@ describe('SingleShippingForm', () => {
     const shippingAutosaveDelay = 100;
     const waitingDelay = shippingAutosaveDelay * 1.1;
 
-    const renderSingleShippingFormComponent = (props?: Partial<SingleShippingFormProps>) => {
+    const createSingleShippingFormComponent = (props?: Partial<SingleShippingFormProps>) => {
         const localeContext: LocaleContextType = createLocaleContext(getStoreConfig());
 
-        render(
+        return (
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
                     <ExtensionProvider checkoutService={checkoutService}>
@@ -57,8 +58,12 @@ describe('SingleShippingForm', () => {
                         />
                     </ExtensionProvider>
                 </LocaleContext.Provider>
-            </CheckoutProvider>,
+            </CheckoutProvider>
         );
+    };
+
+    const renderSingleShippingFormComponent = (props?: Partial<SingleShippingFormProps>) => {
+        return render(createSingleShippingFormComponent(props));
     };
 
     it('calls updateAddress with last event during a given timeframe', async () => {
@@ -221,6 +226,31 @@ describe('SingleShippingForm', () => {
                 },
             },
         );
+    });
+
+    it('calls updateAddress when address is updated but form is rendered before its initial value is loaded', async () => {
+        const updateAddress = jest.fn();
+        const { rerender } = renderSingleShippingFormComponent({
+            updateAddress,
+            isInitialValueLoaded: false,
+            countries: [],
+            getFields: jest.fn(() => []),
+        });
+        
+        rerender(createSingleShippingFormComponent({
+            updateAddress,
+            isInitialValueLoaded: true,
+        }));
+
+        await userEvent.clear(screen.getByTestId('addressLine1Input-text'));
+        await userEvent.keyboard('foo 1');
+
+        await userEvent.clear(screen.getByTestId('addressLine1Input-text'));
+        await userEvent.keyboard('foo 2');
+
+        await new Promise((resolve) => setTimeout(resolve, waitingDelay));
+
+        expect(updateAddress).toHaveBeenCalled();
     });
 
     it('does not call updateAddress if modified field produces invalid address', async () => {

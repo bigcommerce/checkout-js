@@ -9,7 +9,6 @@ export const SUPPORTED_METHODS: string[] = [
     'braintreevisacheckout',
     'braintreepaypal',
     'braintreepaypalcredit',
-    'chasepay',
     'masterpass',
     'paypalcommerce',
     'paypalcommercevenmo',
@@ -26,6 +25,7 @@ export const SUPPORTED_METHODS: string[] = [
     'googlepaystripeupe',
     'googlepayworldpayaccess',
     'googlepaypaypalcommerce',
+    'googlepaytdonlinemart',
 ];
 
 export const getSupportedMethodIds = (methodIds: string[]): string[] => {

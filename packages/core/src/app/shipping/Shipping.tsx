@@ -65,9 +65,9 @@ export interface WithCheckoutShippingProps {
     isShippingStepPending: boolean;
     methodId?: string;
     shippingAddress?: Address;
-    shouldShowAddAddressInCheckout: boolean;
     shouldShowMultiShipping: boolean;
     shouldShowOrderComments: boolean;
+    shouldRenderWhileLoading: boolean;
     providerWithCustomCheckout?: string;
     isFloatingLabelEnabled?: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
@@ -133,6 +133,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             step,
             isFloatingLabelEnabled,
             shouldRenderStripeForm,
+            shouldRenderWhileLoading,
             ...shippingFormProps
         } = this.props;
 
@@ -148,6 +149,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                 initialize={initializeShippingMethod}
                 isBillingSameAsShipping={isBillingSameAsShipping}
                 isGuest={ isGuest }
+                isInitialValueLoaded={shouldRenderWhileLoading ? !isInitializing : true}
                 isLoading={ isInitializing }
                 isMultiShippingMode={isMultiShippingMode}
                 isShippingMethodLoading={ this.props.isLoading }
@@ -160,7 +162,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
         }
 
         return (
-            <AddressFormSkeleton isLoading={isInitializing}>
+            <AddressFormSkeleton isLoading={isInitializing} renderWhileLoading={shouldRenderWhileLoading}>
                 <div className="checkout-form">
                     <ShippingHeader
                         isGuest={isGuest}
@@ -176,6 +178,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         isBillingSameAsShipping={isBillingSameAsShipping}
                         isFloatingLabelEnabled={isFloatingLabelEnabled}
                         isGuest={isGuest}
+                        isInitialValueLoaded={shouldRenderWhileLoading ? !isInitializing : true}
                         isMultiShippingMode={isMultiShippingMode}
                         onMultiShippingSubmit={this.handleMultiShippingSubmit}
                         onSingleShippingSubmit={this.handleSingleShippingSubmit}
@@ -387,11 +390,7 @@ export function mapToShippingProps({
         isCreatingCustomerAddress();
     const shouldShowMultiShipping =
         hasMultiShippingEnabled && !methodId && shippableItemsCount > 1;
-    const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ'];
-
-    if (features['CHECKOUT-4183.checkout_google_address_autocomplete_uk']) {
-        countriesWithAutocomplete.push('GB');
-    }
+    const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ', 'GB'];
 
     const shippingAddress =
         !shouldShowMultiShipping && consignments.length > 1 ? undefined : getShippingAddress();
@@ -425,9 +424,8 @@ export function mapToShippingProps({
         methodId,
         providerWithCustomCheckout,
         shippingAddress,
+        shouldRenderWhileLoading: features['CHECKOUT-8300.improve_extension_performance'] ?? true,
         shouldShowMultiShipping,
-        shouldShowAddAddressInCheckout:
-            features['CHECKOUT-4726.add_address_in_multishipping_checkout'],
         shouldShowOrderComments: enableOrderComments,
         signOut: checkoutService.signOutCustomer,
         unassignItem: checkoutService.unassignItemsToAddress,

@@ -42,6 +42,20 @@ npm run release:alpha
 
 After that, you need to push the prerelease tag to your fork so it can be referenced remotely.
 
+### Testing
+
+To run E2E tests, use the following command:
+
+```sh
+npm run e2e
+```
+
+The E2E tests in this project use HAR files to stub network calls. If you need to manually update the HAR files to make minor changes to the requests, you must run the command below to regenerate the ID for each updated request. Otherwise, the stubs will not function properly.
+
+```sh
+npm run regenerate-har
+```
+
 ## Custom Checkout installation
 
 Follow [this guide](https://developer.bigcommerce.com/stencil-docs/customizing-checkout/installing-custom-checkouts) for instructions on how to fork and install this app as a Custom Checkout in your store.
