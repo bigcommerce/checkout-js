@@ -3,9 +3,10 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { Fragment } from 'react';
 
+import { FormProvider } from '@bigcommerce/checkout/ui';
+
 import BasicFormField from './BasicFormField';
 import FormFieldError from './FormFieldError';
-import FormProvider from './FormProvider';
 
 describe('FormFieldError', () => {
     it('renders component with test ID', async () => {

@@ -9,10 +9,13 @@ import {
     ShippingInitializeOptions,
     ShippingRequestOptions,
 } from '@bigcommerce/checkout-sdk';
-import { FormikProps, withFormik } from 'formik';
+import { FormikProps } from 'formik';
 import { noop } from 'lodash';
 import React, { PureComponent, ReactNode } from 'react';
 import { lazy, object } from 'yup';
+
+import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { FormContext } from '@bigcommerce/checkout/ui';
 
 import {
     AddressFormValues,
@@ -22,13 +25,13 @@ import {
 } from '../../address';
 import CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
 import { getCustomFormFieldsValidationSchema } from '../../formFields';
-import { withLanguage, WithLanguageProps } from '../../locale';
-import { Fieldset, Form, FormContext } from '../../ui/form';
+import { Fieldset, Form } from '../../ui/form';
 import BillingSameAsShippingField from '../BillingSameAsShippingField';
 import hasSelectedShippingOptions from '../hasSelectedShippingOptions';
 import ShippingFormFooter from '../ShippingFormFooter';
 
 import StripeShippingAddress from './StripeShippingAddress';
+import { withFormikExtended } from '../../common/form';
 
 export interface SingleShippingFormProps {
     isBillingSameAsShipping: boolean;
@@ -43,6 +46,7 @@ export interface SingleShippingFormProps {
     shippingAddress?: Address;
     shouldShowOrderComments: boolean;
     step: CheckoutStepStatus;
+    isInitialValueLoaded: boolean;
     isStripeLoading?(): void;
     isStripeAutoStep?(): void;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
@@ -78,6 +82,7 @@ class StripeShippingForm extends PureComponent<
     render(): ReactNode {
         const {
             cartHasChanged,
+            isInitialValueLoaded,
             isLoading,
             countries,
             isStripeLoading,
@@ -119,6 +124,7 @@ class StripeShippingForm extends PureComponent<
 
                 <ShippingFormFooter
                     cartHasChanged={cartHasChanged}
+                    isInitialValueLoaded={isInitialValueLoaded}
                     isLoading={isLoading || isUpdatingShippingData}
                     isMultiShippingMode={false}
                     shouldDisableSubmit={this.shouldDisableSubmit()}
@@ -167,7 +173,7 @@ class StripeShippingForm extends PureComponent<
 }
 
 export default withLanguage(
-    withFormik<SingleShippingFormProps & WithLanguageProps, SingleShippingFormValues>({
+    withFormikExtended<SingleShippingFormProps & WithLanguageProps, SingleShippingFormValues>({
         handleSubmit: (values, { props: { onSubmit } }) => {
             onSubmit(values);
         },

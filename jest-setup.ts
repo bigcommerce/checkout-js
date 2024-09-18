@@ -1,10 +1,19 @@
+import '@testing-library/jest-dom';
+import '@testing-library/jest-dom/extend-expect';
+import { configure as configureRTL } from '@testing-library/react';
+import * as Adapter from '@wojtekmaj/enzyme-adapter-react-17';
 import { configure } from 'enzyme';
-import * as Adapter from 'enzyme-adapter-react-16';
 import { noop } from 'lodash';
 
 const adapter = Adapter as any;
 
 configure({ adapter: new adapter.default() });
+configureRTL({ testIdAttribute: 'data-test' });
+
+// https://github.com/facebook/jest/issues/10784
+process.on('unhandledRejection', (reason) => {
+    console.log(reason);
+});
 
 // https://github.com/FezVrasta/popper.js/issues/478
 if (window.document) {

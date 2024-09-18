@@ -11,6 +11,7 @@ const CheckoutButton: FunctionComponent<CheckoutButtonProps> = ({
     containerId,
     methodId,
     onUnhandledError,
+    onWalletButtonClick,
 }) => {
     useEffect(() => {
         initializeCustomer({
@@ -18,17 +19,26 @@ const CheckoutButton: FunctionComponent<CheckoutButtonProps> = ({
             [methodId]: {
                 container: containerId,
                 onUnhandledError,
+                onClick: () => onWalletButtonClick(methodId),
             },
         }).catch(onUnhandledError);
 
         return () => {
             deinitializeCustomer({ methodId }).catch(onUnhandledError);
         };
-    }, [containerId, deinitializeCustomer, initializeCustomer, methodId, onUnhandledError]);
+    }, [
+        containerId,
+        deinitializeCustomer,
+        initializeCustomer,
+        methodId,
+        onUnhandledError,
+        onWalletButtonClick,
+    ]);
 
     return <div id={containerId} />;
 };
 
-export default toResolvableComponent<CheckoutButtonProps, CheckoutButtonResolveId>(CheckoutButton, [
-    { default: true },
-]);
+export default toResolvableComponent<CheckoutButtonProps, CheckoutButtonResolveId>(
+    CheckoutButton,
+    [],
+);

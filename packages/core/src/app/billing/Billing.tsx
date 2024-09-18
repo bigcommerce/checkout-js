@@ -9,12 +9,13 @@ import {
 import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
-import { CheckoutContextProps, withCheckout } from '../checkout';
+import { withCheckout } from '../checkout';
 import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
-import { TranslatedString } from '../locale';
 import { getShippableItemsCount } from '../shipping';
 import { Legend } from '../ui/form';
 
@@ -38,7 +39,7 @@ export interface WithCheckoutBillingProps {
     shouldShowOrderComments: boolean;
     billingAddress?: Address;
     methodId?: string;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     getFields(countryCode?: string): FormField[];
     initialize(): Promise<CheckoutSelectors>;
     updateAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
@@ -142,13 +143,9 @@ function mapToBillingProps({
         return null;
     }
 
-    const { enableOrderComments, googleMapsApiKey, features } = config.checkoutSettings;
+    const { enableOrderComments, googleMapsApiKey } = config.checkoutSettings;
 
-    const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ'];
-
-    if (features['CHECKOUT-4183.checkout_google_address_autocomplete_uk']) {
-        countriesWithAutocomplete.push('GB');
-    }
+    const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ', 'GB'];
 
     return {
         billingAddress: getBillingAddress(),
@@ -165,7 +162,7 @@ function mapToBillingProps({
         shouldShowOrderComments: enableOrderComments && getShippableItemsCount(cart) < 1,
         updateAddress: checkoutService.updateBillingAddress,
         updateCheckout: checkoutService.updateCheckout,
-        useFloatingLabel: isFloatingLabelEnabled(config.checkoutSettings),
+        isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
     };
 }
 

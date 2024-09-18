@@ -1,11 +1,13 @@
-import { Order } from '@bigcommerce/checkout-sdk';
+import { createCheckoutService, Order } from '@bigcommerce/checkout-sdk';
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
+
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getGiftCertificateItem, getPhysicalItem } from '../cart/lineItem.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { ShopperCurrency } from '../currency';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 import { IconGiftCertificate } from '../ui/icon';
 
 import mapToOrderSummarySubtotalsProps from './mapToOrderSummarySubtotalsProps';
@@ -25,37 +27,41 @@ describe('OrderSummaryDrawer', () => {
         order = getOrder();
 
         orderSummary = mount(
-            <LocaleContext.Provider value={localeContext}>
-                <OrderSummaryDrawer
-                    {...mapToOrderSummarySubtotalsProps(order)}
-                    additionalLineItems="foo"
-                    headerLink={<PrintLink />}
-                    lineItems={order.lineItems}
-                    shopperCurrency={getStoreConfig().shopperCurrency}
-                    storeCurrency={getStoreConfig().currency}
-                    total={order.orderAmount}
-                />
-            </LocaleContext.Provider>,
+            <CheckoutProvider checkoutService={createCheckoutService()}>
+                <LocaleContext.Provider value={localeContext}>
+                    <OrderSummaryDrawer
+                        {...mapToOrderSummarySubtotalsProps(order)}
+                        additionalLineItems="foo"
+                        headerLink={<PrintLink />}
+                        lineItems={order.lineItems}
+                        shopperCurrency={getStoreConfig().shopperCurrency}
+                        storeCurrency={getStoreConfig().currency}
+                        total={order.orderAmount}
+                    />
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
         );
     });
 
     it('renders gift certificate icon when buying only GC', () => {
         orderSummary = mount(
-            <LocaleContext.Provider value={localeContext}>
-                <OrderSummaryDrawer
-                    {...mapToOrderSummarySubtotalsProps(order)}
-                    additionalLineItems="foo"
-                    headerLink={<PrintLink />}
-                    lineItems={{
-                        giftCertificates: [getGiftCertificateItem()],
-                        physicalItems: [],
-                        digitalItems: [],
-                    }}
-                    shopperCurrency={getStoreConfig().shopperCurrency}
-                    storeCurrency={getStoreConfig().currency}
-                    total={order.orderAmount}
-                />
-            </LocaleContext.Provider>,
+            <CheckoutProvider checkoutService={createCheckoutService()}>
+                <LocaleContext.Provider value={localeContext}>
+                    <OrderSummaryDrawer
+                        {...mapToOrderSummarySubtotalsProps(order)}
+                        additionalLineItems="foo"
+                        headerLink={<PrintLink />}
+                        lineItems={{
+                            giftCertificates: [getGiftCertificateItem()],
+                            physicalItems: [],
+                            digitalItems: [],
+                        }}
+                        shopperCurrency={getStoreConfig().shopperCurrency}
+                        storeCurrency={getStoreConfig().currency}
+                        total={order.orderAmount}
+                    />
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
         );
 
         expect(orderSummary.find(IconGiftCertificate)).toHaveLength(1);
@@ -89,7 +95,7 @@ describe('OrderSummaryDrawer', () => {
 
             expect(orderSummary.find(OrderSummaryModal).props()).toMatchObject({
                 ...mapToOrderSummarySubtotalsProps(getOrder()),
-                lineItems: getOrder().lineItems,
+                items: getOrder().lineItems,
                 total: getOrder().orderAmount,
                 storeCurrency: getStoreConfig().currency,
                 shopperCurrency: getStoreConfig().shopperCurrency,
@@ -110,12 +116,36 @@ describe('OrderSummaryDrawer', () => {
 
             expect(orderSummary.find(OrderSummaryModal).props()).toMatchObject({
                 ...mapToOrderSummarySubtotalsProps(getOrder()),
-                lineItems: getOrder().lineItems,
+                items: getOrder().lineItems,
                 total: getOrder().orderAmount,
                 storeCurrency: getStoreConfig().currency,
                 shopperCurrency: getStoreConfig().shopperCurrency,
                 additionalLineItems: 'foo',
             });
         });
+    });
+
+    it('renders correct summary for line items for bundled products', () => {
+        order.lineItems.physicalItems.push({ ...getPhysicalItem(), id: '888', parentId: 'test' });
+
+        orderSummary = mount(
+            <CheckoutProvider checkoutService={createCheckoutService()}>
+                <LocaleContext.Provider value={localeContext}>
+                    <OrderSummaryDrawer
+                        {...mapToOrderSummarySubtotalsProps(order)}
+                        additionalLineItems="foo"
+                        headerLink={<PrintLink />}
+                        lineItems={order.lineItems}
+                        shopperCurrency={getStoreConfig().shopperCurrency}
+                        storeCurrency={getStoreConfig().currency}
+                        total={order.orderAmount}
+                    />
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
+        );
+
+        const summaryModal = orderSummary.find(OrderSummaryModal);
+
+        expect(summaryModal.props().items.physicalItems).toHaveLength(1);
     });
 });

@@ -9,6 +9,6 @@ module.exports = {
     transform: {
         '^.+\\.[tj]sx?$': 'ts-jest',
     },
-    moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
+    setupFilesAfterEnv: ['../../jest-setup.ts'],
     coverageDirectory: '../../coverage/packages/hosted-credit-card-integration',
 };

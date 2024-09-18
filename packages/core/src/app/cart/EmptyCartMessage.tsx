@@ -1,6 +1,7 @@
 import React, { PureComponent, ReactNode } from 'react';
 
-import { TranslatedHtml } from '../locale';
+import { TranslatedHtml } from '@bigcommerce/checkout/locale';
+
 import { LoadingOverlay } from '../ui/loading';
 
 export interface EmptyCartMessageProps {

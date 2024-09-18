@@ -2,9 +2,15 @@
     "entries": [
         {
             "inputPath": "packages/**/src/index.ts",
-            "ignorePackages": ["test-utils"],
+            "ignorePackages": ["test-mocks"],
             "outputPath": "packages/core/src/app/generated/paymentIntegrations/index.ts",
             "memberPattern": ".+PaymentMethod$"
+        },
+        {
+            "inputPath": "packages/**/src/index.ts",
+            "ignorePackages": ["analytics", "core", "instrument-utils", "locale", "payment-integration-api", "payment-integration-test-framework", "ui", "workspace-tools", "test-utils"],
+            "outputPath": "packages/core/src/app/generated/checkoutButtons/index.ts",
+            "memberPattern": ".+Button$"
         }
     ],
     "tsConfigPath": "tsconfig.base.json"

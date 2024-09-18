@@ -15,6 +15,17 @@
     padding: 0 spacing("half");
 }
 
+.form-ccFields--without-card-name:not(.form-ccFields--without-card-code) {
+    .form-field--ccNumber {
+        flex-basis: 100%;
+    }
+
+    .form-field--ccExpiry,
+    .form-ccFields-field--ccCvv {
+        flex-basis: 50%;
+    }
+}
+
 .form-field--ccNumber,
 .form-field--ccName {
     flex-basis: 65%;

@@ -25,13 +25,6 @@ describe('canSignOut()', () => {
         expect(canSignOut(customer, checkout, '')).toBe(false);
     });
 
-    it('returns true if customer uses amazon as checkout method', () => {
-        const customer = getCustomer();
-        const checkout = getCheckoutWithPayments();
-
-        expect(canSignOut(customer, checkout, 'amazon')).toBe(true);
-    });
-
     it('returns true if customer uses amazonpay as checkout method', () => {
         const customer = getCustomer();
         const checkout = getCheckoutWithPayments();

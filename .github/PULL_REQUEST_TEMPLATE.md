@@ -7,4 +7,4 @@
 ## Testing / Proof
 ...
 
-@bigcommerce/checkout
+@bigcommerce/team-checkout

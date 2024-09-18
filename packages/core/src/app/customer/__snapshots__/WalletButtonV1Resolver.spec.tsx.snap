@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CheckoutButtonV1Resolver matches snapshot for amazonpay 1`] = `
+<div
+  class="AmazonPayContainer"
+>
+  <div
+    id="amazonpayCheckoutButton"
+  />
+</div>
+`;
+
+exports[`CheckoutButtonV1Resolver matches snapshot for applepay 1`] = `
+<div
+  id="applepayCheckoutButton"
+/>
+`;
+
+exports[`CheckoutButtonV1Resolver matches snapshot for applepay 2`] = `
+<div
+  id="applepayCheckoutButton"
+/>
+`;
+
+exports[`CheckoutButtonV1Resolver matches snapshot for googlepay 1`] = `
+<div
+  id="googlepayCheckoutButton"
+/>
+`;
+
+exports[`CheckoutButtonV1Resolver matches snapshot for paypalcommerce 1`] = `
+<div
+  id="paypalcommerceCheckoutButton"
+/>
+`;
+
+exports[`CheckoutButtonV1Resolver matches snapshot for paypalcommercecredit 1`] = `
+<div
+  id="paypalcommercecreditCheckoutButton"
+/>
+`;

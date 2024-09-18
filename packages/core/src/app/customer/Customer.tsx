@@ -15,13 +15,17 @@ import { noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 
 import { AnalyticsContextProps } from '@bigcommerce/checkout/analytics';
+import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+import { isPayPalFastlaneMethod } from '@bigcommerce/checkout/paypal-fastlane-integration';
 import { CustomerSkeleton } from '@bigcommerce/checkout/ui';
 
 import { withAnalytics } from '../analytics';
-import { CheckoutContextProps, withCheckout } from '../checkout';
+import { withCheckout } from '../checkout';
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
 import { isErrorWithType } from '../common/error';
 import { isFloatingLabelEnabled } from '../common/utility';
+import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
 import CheckoutButtonList from './CheckoutButtonList';
@@ -33,12 +37,14 @@ import GuestForm, { GuestFormValues } from './GuestForm';
 import LoginForm from './LoginForm';
 import mapCreateAccountFromFormValues from './mapCreateAccountFromFormValues';
 import StripeGuestForm from './StripeGuestForm';
+import { SubscribeSessionStorage } from './SubscribeSessionStorage';
 
 export interface CustomerProps {
     viewType: CustomerViewType;
     step: CheckoutStepStatus;
     isEmbedded?: boolean;
     isSubscribed: boolean;
+    isWalletButtonsOnTop: boolean;
     checkEmbeddedSupport?(methodIds: string[]): void;
     onChangeViewType?(viewType: CustomerViewType): void;
     onAccountCreated?(): void;
@@ -49,6 +55,7 @@ export interface CustomerProps {
     onSignIn?(): void;
     onSignInError?(error: Error): void;
     onUnhandledError?(error: Error): void;
+    onWalletButtonClick?(methodName: string): void;
 }
 
 export interface WithCheckoutCustomerProps {
@@ -58,6 +65,7 @@ export interface WithCheckoutCustomerProps {
     defaultShouldSubscribe: boolean;
     email?: string;
     firstName?: string;
+    fixNewsletterCheckboxExperimentEnabled: boolean;
     forgotPasswordUrl: string;
     isContinuingAsGuest: boolean;
     isCreatingAccount: boolean;
@@ -74,10 +82,11 @@ export interface WithCheckoutCustomerProps {
     signInEmail?: SignInEmail;
     signInEmailError?: Error;
     isAccountCreationEnabled: boolean;
+    isPaymentDataRequired: boolean;
     createAccountError?: Error;
     signInError?: Error;
-    isStripeLinkEnabled?: boolean;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
+    isExpressPrivacyPolicy: boolean;
     clearError(error: Error): Promise<CheckoutSelectors>;
     continueAsGuest(credentials: GuestCredentials): Promise<CheckoutSelectors>;
     deinitializeCustomer(options: CustomerRequestOptions): Promise<CheckoutSelectors>;
@@ -88,7 +97,7 @@ export interface WithCheckoutCustomerProps {
     sendLoginEmail(params: { email: string }): Promise<CheckoutSelectors>;
     signIn(credentials: CustomerCredentials): Promise<CheckoutSelectors>;
     createAccount(values: CustomerAccountRequestBody): Promise<CheckoutSelectors>;
-    loadPaymentMethods(): Promise<CheckoutSelectors>;
+    shouldRenderStripeForm: boolean;
 }
 
 export interface CustomerState {
@@ -109,7 +118,6 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
     async componentDidMount(): Promise<void> {
         const {
             initializeCustomer,
-            loadPaymentMethods,
             email,
             onReady = noop,
             onUnhandledError = noop,
@@ -119,8 +127,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
         this.draftEmail = email;
 
         try {
-            await loadPaymentMethods();
-            if (providerWithCustomCheckout !== PaymentMethodId.StripeUPE) {
+            if (providerWithCustomCheckout && providerWithCustomCheckout !== PaymentMethodId.StripeUPE) {
                 await initializeCustomer({methodId: providerWithCustomCheckout});
             }
         } catch (error) {
@@ -175,66 +182,68 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             isExecutingPaymentMethodCheckout = false,
             isInitializing = false,
             isSubscribed,
+            isWalletButtonsOnTop,
             privacyPolicyUrl,
             requiresMarketingConsent,
-            isStripeLinkEnabled,
             onUnhandledError = noop,
+            onWalletButtonClick = noop,
             step,
-            useFloatingLabel,
+            isFloatingLabelEnabled,
+            isExpressPrivacyPolicy,
+            isPaymentDataRequired,
+            shouldRenderStripeForm,
+            providerWithCustomCheckout,
         } = this.props;
 
+        const checkoutButtons = isWalletButtonsOnTop || !isPaymentDataRequired
+          ? null
+          : <CheckoutButtonList
+            checkEmbeddedSupport={checkEmbeddedSupport}
+            deinitialize={deinitializeCustomer}
+            initialize={initializeCustomer}
+            isInitializing={isInitializing}
+            methodIds={checkoutButtonIds}
+            onClick={onWalletButtonClick}
+            onError={onUnhandledError}
+          />;
+
+        const isLoadingGuestForm = isContinuingAsGuest || isExecutingPaymentMethodCheckout;
+
         return (
-            isStripeLinkEnabled ?
+            shouldRenderStripeForm ?
                 <StripeGuestForm
-                    canSubscribe={ canSubscribe }
-                    checkoutButtons={
-                        <CheckoutButtonList
-                            checkEmbeddedSupport={checkEmbeddedSupport}
-                            deinitialize={deinitializeCustomer}
-                            initialize={initializeCustomer}
-                            isInitializing={isInitializing}
-                            methodIds={checkoutButtonIds}
-                            onError={onUnhandledError}
-                        />
-                    }
+                    canSubscribe={canSubscribe}
+                    checkoutButtons={checkoutButtons}
                     continueAsGuestButtonLabelId="customer.continue"
-                    defaultShouldSubscribe={ isSubscribed }
-                    deinitialize={ deinitializeCustomer }
-                    email={ this.draftEmail || email }
-                    initialize={ initializeCustomer }
-                    isLoading={ isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout }
-                    onChangeEmail={ this.handleChangeEmail }
-                    onContinueAsGuest={ this.handleContinueAsGuest }
-                    onShowLogin={ this.handleShowLogin }
-                    privacyPolicyUrl={ privacyPolicyUrl }
-                    requiresMarketingConsent={ requiresMarketingConsent }
-                    step={ step }
+                    defaultShouldSubscribe={isSubscribed}
+                    deinitialize={deinitializeCustomer}
+                    email={this.draftEmail || email}
+                    initialize={initializeCustomer}
+                    isExpressPrivacyPolicy={isExpressPrivacyPolicy}
+                    isLoading={isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout}
+                    onChangeEmail={this.handleChangeEmail}
+                    onContinueAsGuest={this.handleContinueAsGuest}
+                    onShowLogin={this.handleShowLogin}
+                    privacyPolicyUrl={privacyPolicyUrl}
+                    requiresMarketingConsent={requiresMarketingConsent}
+                    step={step}
                 />
                 :
             <GuestForm
                 canSubscribe={canSubscribe}
-                checkoutButtons={
-                    <CheckoutButtonList
-                        checkEmbeddedSupport={checkEmbeddedSupport}
-                        deinitialize={deinitializeCustomer}
-                        initialize={initializeCustomer}
-                        isInitializing={isInitializing}
-                        methodIds={checkoutButtonIds}
-                        onError={onUnhandledError}
-                    />
-                }
+                checkoutButtons={checkoutButtons}
                 continueAsGuestButtonLabelId="customer.continue"
                 defaultShouldSubscribe={isSubscribed}
                 email={this.draftEmail || email}
-                isLoading={
-                    isContinuingAsGuest || isInitializing || isExecutingPaymentMethodCheckout
-                }
+                isExpressPrivacyPolicy={isExpressPrivacyPolicy}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
+                isLoading={isLoadingGuestForm}
                 onChangeEmail={this.handleChangeEmail}
                 onContinueAsGuest={this.handleContinueAsGuest}
                 onShowLogin={this.handleShowLogin}
                 privacyPolicyUrl={privacyPolicyUrl}
+                shouldShowEmailWatermark={isPayPalFastlaneMethod(providerWithCustomCheckout)}
                 requiresMarketingConsent={requiresMarketingConsent}
-                useFloatingLabel={useFloatingLabel}
             />
         );
     }
@@ -242,20 +251,20 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
     private renderEmailLoginLinkForm(): ReactNode {
         const { isEmailLoginFormOpen, hasRequestedLoginEmail } = this.state;
 
-        const { isSendingSignInEmail, signInEmailError, signInEmail, useFloatingLabel } =
+        const { isSendingSignInEmail, signInEmailError, signInEmail, isFloatingLabelEnabled } =
             this.props;
 
         return (
             <EmailLoginForm
                 email={this.draftEmail}
                 emailHasBeenRequested={hasRequestedLoginEmail}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
                 isOpen={isEmailLoginFormOpen}
                 isSendingEmail={isSendingSignInEmail}
                 onRequestClose={this.closeEmailLoginFormForm}
                 onSendLoginEmail={this.handleSendLoginEmail}
                 sentEmail={signInEmail}
                 sentEmailError={signInEmailError}
-                useFloatingLabel={useFloatingLabel}
             />
         );
     }
@@ -270,21 +279,27 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
     private renderCreateAccountForm(): ReactNode {
         const {
             customerAccountFields,
+            isExecutingPaymentMethodCheckout,
             isCreatingAccount,
             createAccountError,
             requiresMarketingConsent,
-            useFloatingLabel,
+            isFloatingLabelEnabled,
+            defaultShouldSubscribe,
+            fixNewsletterCheckboxExperimentEnabled,
         } = this.props;
 
         return (
             <CreateAccountForm
                 createAccountError={createAccountError}
+                defaultShouldSubscribe={defaultShouldSubscribe}
+                fixNewsletterCheckboxExperimentEnabled={fixNewsletterCheckboxExperimentEnabled}
                 formFields={customerAccountFields}
                 isCreatingAccount={isCreatingAccount}
+                isExecutingPaymentMethodCheckout={isExecutingPaymentMethodCheckout}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
                 onCancel={this.handleCancelCreateAccount}
                 onSubmit={this.handleCreateAccount}
                 requiresMarketingConsent={requiresMarketingConsent}
-                useFloatingLabel={useFloatingLabel}
             />
         );
     }
@@ -298,10 +313,11 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
             isGuestEnabled,
             isSendingSignInEmail,
             isSigningIn,
+            isExecutingPaymentMethodCheckout,
             isAccountCreationEnabled,
             providerWithCustomCheckout,
             signInError,
-            useFloatingLabel,
+            isFloatingLabelEnabled,
             viewType,
         } = this.props;
 
@@ -315,6 +331,8 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 }
                 email={this.draftEmail || email}
                 forgotPasswordUrl={forgotPasswordUrl}
+                isExecutingPaymentMethodCheckout={isExecutingPaymentMethodCheckout}
+                isFloatingLabelEnabled={isFloatingLabelEnabled}
                 isSendingSignInEmail={isSendingSignInEmail}
                 isSignInEmailEnabled={isSignInEmailEnabled && !isEmbedded}
                 isSigningIn={isSigningIn}
@@ -326,7 +344,6 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
                 onSignIn={this.handleSignIn}
                 shouldShowCreateAccountLink={isAccountCreationEnabled}
                 signInError={signInError}
-                useFloatingLabel={useFloatingLabel}
                 viewType={viewType}
             />
         );
@@ -392,9 +409,13 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
             onSubscribeToNewsletter(formValues.shouldSubscribe);
 
+            SubscribeSessionStorage.setSubscribeStatus(formValues.shouldSubscribe);
+
             const customer = data.getCustomer();
 
-            if (customer && customer.shouldEncourageSignIn && customer.isGuest && !customer.isStripeLinkAuthenticated) {
+            const paymentProviderCustomer = data.getPaymentProviderCustomer();
+
+            if (customer && customer.shouldEncourageSignIn && customer.isGuest && !paymentProviderCustomer?.stripeLinkAuthenticationState) {
                 return onChangeViewType(CustomerViewType.SuggestedLogin);
             }
 
@@ -427,10 +448,15 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
     private handleSignIn: (credentials: CustomerCredentials) => Promise<void> = async (
         credentials,
     ) => {
-        const { signIn, onSignIn = noop, onSignInError = noop } = this.props;
+        const {
+            signIn,
+            onSignIn = noop,
+            onSignInError = noop,
+        } = this.props;
 
         try {
             await signIn(credentials);
+
             onSignIn();
 
             this.draftEmail = undefined;
@@ -440,7 +466,10 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
     };
 
     private handleCreateAccount: (values: CreateAccountFormValues) => void = async (values) => {
-        const { createAccount = noop, onAccountCreated = noop } = this.props;
+        const {
+            createAccount = noop,
+            onAccountCreated = noop,
+        } = this.props;
 
         await createAccount(mapCreateAccountFromFormValues(values));
 
@@ -475,6 +504,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
     private handleChangeEmail: (email: string) => void = (email) => {
         const { analyticsTracker } = this.props;
+
         this.draftEmail = email;
         analyticsTracker.customerEmailEntry(email);
     };
@@ -505,6 +535,7 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
     private checkoutPaymentMethodExecuted(payload?: CheckoutPaymentMethodExecutedOptions) {
         const { analyticsTracker } = this.props;
+
         analyticsTracker.customerPaymentMethodExecuted(payload);
     }
 }
@@ -519,10 +550,10 @@ export function mapToWithCheckoutCustomerProps({
             getCustomerAccountFields,
             getCheckout,
             getCustomer,
+            getCart,
             getSignInEmail,
             getConfig,
-            getPaymentMethod,
-            getCart,
+            isPaymentDataRequired,
         },
         errors: { getSignInError, getSignInEmailError, getCreateCustomerAccountError },
         statuses: {
@@ -535,24 +566,14 @@ export function mapToWithCheckoutCustomerProps({
         },
     } = checkoutState;
 
-    const cart = getCart();
     const billingAddress = getBillingAddress();
     const checkout = getCheckout();
     const customer = getCustomer();
+    const cart = getCart();
     const signInEmail = getSignInEmail();
     const config = getConfig();
-    let stripeUpeLinkEnabled = false;
 
-    // TODO: This should be driven by backend, same as other wallet buttons.
-    if (cart) {
-        const stripeUpe = getPaymentMethod('card', PaymentMethodId.StripeUPE);
-        const linkEnabled = stripeUpe?.initializationData.enableLink || false;
-        const stripeUpeSupportedCurrency = cart.currency.code === 'USD' || false;
-
-        stripeUpeLinkEnabled = linkEnabled && stripeUpeSupportedCurrency;
-    }
-
-    if (!checkout || !config) {
+    if (!checkout || !config || !cart) {
         return null;
     }
 
@@ -562,8 +583,16 @@ export function mapToWithCheckoutCustomerProps({
             requiresMarketingConsent,
             isSignInEmailEnabled,
             isAccountCreationEnabled,
+            isExpressPrivacyPolicy,
+            features,
         },
     } = config as StoreConfig & { checkoutSettings: { isAccountCreationEnabled: boolean } };
+
+    const providerWithCustomCheckout = getProviderWithCustomCheckout(
+        config.checkoutSettings.providerWithCustomCheckout,
+    );
+
+    const fixNewsletterCheckboxExperimentEnabled = features['CHECKOUT-8033.fix_newletter_checkbox'];
 
     return {
         customerAccountFields: getCustomerAccountFields(),
@@ -578,6 +607,7 @@ export function mapToWithCheckoutCustomerProps({
         executePaymentMethodCheckout: checkoutService.executePaymentMethodCheckout,
         email: billingAddress?.email || customer?.email,
         firstName: customer?.firstName,
+        fixNewsletterCheckboxExperimentEnabled,
         forgotPasswordUrl: config.links.forgotPasswordLink,
         initializeCustomer: checkoutService.initializeCustomer,
         isCreatingAccount: isCreatingCustomerAccount(),
@@ -594,13 +624,14 @@ export function mapToWithCheckoutCustomerProps({
         signInEmail,
         signInEmailError: getSignInEmailError(),
         privacyPolicyUrl,
-        providerWithCustomCheckout: config.checkoutSettings.providerWithCustomCheckout || undefined,
+        providerWithCustomCheckout,
         requiresMarketingConsent,
         signIn: checkoutService.signInCustomer,
         signInError: getSignInError(),
-        isStripeLinkEnabled: stripeUpeLinkEnabled,
-        loadPaymentMethods: checkoutService.loadPaymentMethods,
-        useFloatingLabel: isFloatingLabelEnabled(config.checkoutSettings),
+        isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
+        isExpressPrivacyPolicy,
+        isPaymentDataRequired: isPaymentDataRequired(),
+        shouldRenderStripeForm: providerWithCustomCheckout === PaymentMethodId.StripeUPE && shouldUseStripeLinkByMinimumAmount(cart),
     };
 }
 

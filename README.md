@@ -6,9 +6,9 @@ Checkout JS is a browser-based application providing a seamless UI for BigCommer
 
 In order to build from the source code, you must have the following set up in your development environment.
 
-* Node >= v14.
-* NPM >= v6.
-* Unix-based operating system.
+* Node >= v20.
+* NPM >= v9.
+* Unix-based operating system. (WSL on Windows)
 
 One of the simplest ways to install Node is using [NVM](https://github.com/nvm-sh/nvm#installation-and-update). You can follow their instructions to set up your environment if it is not already set up.
 
@@ -41,6 +41,20 @@ npm run release:alpha
 ```
 
 After that, you need to push the prerelease tag to your fork so it can be referenced remotely.
+
+### Testing
+
+To run E2E tests, use the following command:
+
+```sh
+npm run e2e
+```
+
+The E2E tests in this project use HAR files to stub network calls. If you need to manually update the HAR files to make minor changes to the requests, you must run the command below to regenerate the ID for each updated request. Otherwise, the stubs will not function properly.
+
+```sh
+npm run regenerate-har
+```
 
 ## Custom Checkout installation
 

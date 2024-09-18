@@ -1,0 +1,3 @@
+import PayPalCommerceFastlanePaymentMethod from './PayPalCommerceFastlanePaymentMethod';
+
+export default PayPalCommerceFastlanePaymentMethod;

@@ -1,0 +1,10 @@
+.powered-by-paypal-fastlane {
+    padding: 0.5rem 0 0.5rem 0;
+    height: 2rem;
+    width: 7.4rem;
+
+    & > .icon {
+        height: 100%;
+        width: 100%;
+    }
+}

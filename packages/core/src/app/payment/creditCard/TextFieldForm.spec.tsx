@@ -1,8 +1,10 @@
+import { createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
+import { LocaleProvider } from '@bigcommerce/checkout/locale';
 import { DocumentOnlyCustomFormFieldsetValues } from '@bigcommerce/checkout/payment-integration-api';
 
 import TextFieldForm, { TextFieldFormProps } from './TextFieldForm';
@@ -22,10 +24,14 @@ describe('TextFieldForm', () => {
 
         initialValues = { ccDocument: '' };
 
+        const checkoutService = createCheckoutService();
+
         TextFieldFormTest = (props) => (
-            <Formik initialValues={initialValues} onSubmit={noop}>
-                <TextFieldForm {...props} />
-            </Formik>
+            <LocaleProvider checkoutService={checkoutService}>
+                <Formik initialValues={initialValues} onSubmit={noop}>
+                    <TextFieldForm {...props} />
+                </Formik>
+            </LocaleProvider>
         );
     });
 

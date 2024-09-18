@@ -1,0 +1,23 @@
+{
+  "root": "packages/test-framework",
+  "sourceRoot": "packages/test-framework/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/test-framework/**/*.{ts,tsx,js}"]
+      }
+    },
+    "regenerate-har": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "node packages/test-framework/scripts/polly/regenerateHar.js"
+        ]
+      }
+    }
+  },
+  "tags": ["scope:shared"]
+}

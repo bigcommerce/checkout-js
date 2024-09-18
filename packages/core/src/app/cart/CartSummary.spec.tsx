@@ -2,11 +2,13 @@ import { CheckoutService, createCheckoutService } from '@bigcommerce/checkout-sd
 import { mount, ReactWrapper } from 'enzyme';
 import React from 'react';
 
-import { CheckoutProvider } from '../checkout';
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
 import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 import OrderSummary from '../order/OrderSummary';
 
 import CartSummary from './CartSummary';
@@ -35,7 +37,9 @@ describe('CartSummary Component', () => {
         component = mount(
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
-                    <CartSummary />
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <CartSummary />
+                    </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,
         );
@@ -53,7 +57,9 @@ describe('CartSummary Component', () => {
         component = mount(
             <CheckoutProvider checkoutService={checkoutService}>
                 <LocaleContext.Provider value={localeContext}>
-                    <CartSummary />
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <CartSummary />
+                    </ExtensionProvider>
                 </LocaleContext.Provider>
             </CheckoutProvider>,
         );

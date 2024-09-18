@@ -1,7 +1,8 @@
 import React, { FunctionComponent, memo } from 'react';
 
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { withCheckout } from '../checkout';
-import { TranslatedString } from '../locale';
 import { Button, ButtonSize, ButtonVariant } from '../ui/button';
 import { IconBolt } from '../ui/icon';
 
@@ -14,6 +15,8 @@ interface PaymentSubmitButtonTextProps {
     methodName?: string;
     initialisationStrategyType?: string;
     brandName?: string;
+    isComplete?: boolean;
+    isPaymentDataRequired?: boolean;
 }
 
 const providersWithCustomClasses = [PaymentMethodId.Bolt];
@@ -26,13 +29,15 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
         methodGateway,
         initialisationStrategyType,
         brandName,
+        isComplete,
+        isPaymentDataRequired,
     }) => {
-        if (methodName && initialisationStrategyType === 'none') {
-            return <TranslatedString data={{ methodName }} id="payment.ppsdk_continue_action" />;
+        if (!isPaymentDataRequired) {
+            return <TranslatedString id="payment.place_order_action" />;
         }
 
-        if (methodId === PaymentMethodId.Amazon) {
-            return <TranslatedString id="payment.amazon_continue_action" />;
+        if (methodName && initialisationStrategyType === 'none') {
+            return <TranslatedString data={{ methodName }} id="payment.ppsdk_continue_action" />;
         }
 
         if (methodId === PaymentMethodId.AmazonPay) {
@@ -60,10 +65,6 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
             return <TranslatedString id="payment.visa_checkout_continue_action" />;
         }
 
-        if (methodType === PaymentMethodType.Chasepay) {
-            return <TranslatedString id="payment.chasepay_continue_action" />;
-        }
-
         if (
             methodType === PaymentMethodType.PaypalVenmo ||
             methodId === PaymentMethodId.BraintreeVenmo
@@ -72,17 +73,31 @@ const PaymentSubmitButtonText: FunctionComponent<PaymentSubmitButtonTextProps> =
         }
 
         if (methodType === PaymentMethodType.Paypal) {
-            return <TranslatedString id="payment.paypal_continue_action" />;
+            const continueActionId = methodId === PaymentMethodId.PaypalCommerce
+                ? 'payment.place_order_action'
+                : 'payment.paypal_continue_action';
+
+            return <TranslatedString
+                data={{ isComplete }}
+                id={isComplete ? 'payment.paypal_complete_action' : continueActionId}
+            />;
         }
 
         if (methodType === PaymentMethodType.PaypalCredit) {
+            const continueTranslationId = brandName
+                ? 'payment.continue_with_brand'
+                : 'payment.paypal_pay_later_continue_action'
+            const completeTranslationId = brandName
+                ? 'payment.complete_with_brand'
+                : 'payment.paypal_pay_later_complete_action'
+
             return (
                 <TranslatedString
-                    data={{ brandName }}
+                    data={{ brandName, isComplete, continueTranslationId, completeTranslationId }}
                     id={
-                        brandName
-                            ? 'payment.continue_with_brand'
-                            : 'payment.paypal_pay_later_continue_action'
+                        isComplete
+                            ? completeTranslationId
+                            : continueTranslationId
                     }
                 />
             );
@@ -116,6 +131,8 @@ export interface PaymentSubmitButtonProps {
     isDisabled?: boolean;
     initialisationStrategyType?: string;
     brandName?: string;
+    isComplete?: boolean;
+    isPaymentDataRequired?: boolean;
 }
 
 interface WithCheckoutPaymentSubmitButtonProps {
@@ -129,12 +146,14 @@ const PaymentSubmitButton: FunctionComponent<
     isDisabled,
     isInitializing,
     isSubmitting,
+    isPaymentDataRequired,
     methodGateway,
     methodId,
     methodName,
     methodType,
     initialisationStrategyType,
     brandName,
+    isComplete,
 }) => (
     <Button
         className={
@@ -142,6 +161,7 @@ const PaymentSubmitButton: FunctionComponent<
                 ? `payment-submit-button-${methodId}`
                 : undefined
         }
+        data-test="payment-submit-button"
         disabled={isInitializing || isSubmitting || isDisabled}
         id="checkout-payment-continue"
         isFullWidth
@@ -153,6 +173,8 @@ const PaymentSubmitButton: FunctionComponent<
         <PaymentSubmitButtonText
             brandName={brandName}
             initialisationStrategyType={initialisationStrategyType}
+            isComplete={isComplete}
+            isPaymentDataRequired={isPaymentDataRequired}
             methodGateway={methodGateway}
             methodId={methodId}
             methodName={methodName}
@@ -163,11 +185,13 @@ const PaymentSubmitButton: FunctionComponent<
 
 export default withCheckout(({ checkoutState }) => {
     const {
+        data: { isPaymentDataRequired },
         statuses: { isInitializingCustomer, isInitializingPayment, isSubmittingOrder },
     } = checkoutState;
 
     return {
         isInitializing: isInitializingCustomer() || isInitializingPayment(),
+        isPaymentDataRequired: isPaymentDataRequired(),
         isSubmitting: isSubmittingOrder(),
     };
 })(memo(PaymentSubmitButton));

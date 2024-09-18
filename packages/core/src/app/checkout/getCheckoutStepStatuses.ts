@@ -2,8 +2,10 @@ import { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
 import { compact } from 'lodash';
 import { createSelector } from 'reselect';
 
+import { shouldUseStripeLinkByMinimumAmount } from '@bigcommerce/checkout/instrument-utils';
+
 import { isValidAddress } from '../address';
-import { EMPTY_ARRAY } from '../common/utility';
+import { EMPTY_ARRAY, isExperimentEnabled } from '../common/utility';
 import { SUPPORTED_METHODS } from '../customer';
 import { PaymentMethodId } from '../payment/paymentMethod';
 import {
@@ -14,12 +16,28 @@ import {
 
 import CheckoutStepType from './CheckoutStepType';
 
+// StripeLink is a UX that is only available with StripeUpe and will only be displayed for BC guest users,
+// it uses its own components in the customer and shipping steps, unfortunately in order to preserve the UX
+// when reloading the checkout page it's necessary to refill the stripe components with the information saved.
+// In this step, we require that the customer strategy be reloaded the first time.
+const getStripeLinkAndCheckoutPageIsReloaded = (
+    isUsingWallet: boolean,
+    hasEmail: boolean,
+    isGuest: boolean,
+    shouldUseStripeLinkByMinimumAmount: boolean,
+    providerWithCustomCheckout?: string | null,
+) => {
+    return !isUsingWallet && providerWithCustomCheckout === PaymentMethodId.StripeUPE && hasEmail && isGuest && shouldUseStripeLinkByMinimumAmount;
+}
+
 const getCustomerStepStatus = createSelector(
     ({ data }: CheckoutSelectors) => data.getCheckout(),
     ({ data }: CheckoutSelectors) => data.getCustomer(),
     ({ data }: CheckoutSelectors) => data.getBillingAddress(),
     ({ data }: CheckoutSelectors) => data.getConfig(),
-    (checkout, customer, billingAddress, config) => {
+    ({ data }: CheckoutSelectors) => data.getCart(),
+    ({ data }: CheckoutSelectors) => data.getPaymentProviderCustomer(),
+    (checkout, customer, billingAddress, config, cart, paymentProviderCustomer) => {
         const hasEmail = !!(
             (customer && customer.email) ||
             (billingAddress && billingAddress.email)
@@ -32,13 +50,20 @@ const getCustomerStepStatus = createSelector(
                 : false;
         const isGuest = !!(customer && customer.isGuest);
         const isComplete = hasEmail || isUsingWallet;
-        const isEditable = isComplete && !isUsingWallet && isGuest
+        const isEditable = isComplete && !isUsingWallet && isGuest;
+        const isUsingStripeLinkAndCheckoutPageIsReloaded = getStripeLinkAndCheckoutPageIsReloaded(
+            isUsingWallet,
+            hasEmail,
+            isGuest,
+            cart ? shouldUseStripeLinkByMinimumAmount(cart) : false,
+            config?.checkoutSettings.providerWithCustomCheckout,
+        );
 
-        if (config?.checkoutSettings.providerWithCustomCheckout === PaymentMethodId.StripeUPE && hasEmail && isGuest) {
+        if (isUsingStripeLinkAndCheckoutPageIsReloaded) {
             return {
                 type: CheckoutStepType.Customer,
                 isActive: false,
-                isComplete: customer?.isStripeLinkAuthenticated !== undefined ?? isComplete,
+                isComplete: paymentProviderCustomer?.stripeLinkAuthenticationState !== undefined,
                 isEditable,
                 isRequired: true,
             };
@@ -99,6 +124,31 @@ const getBillingStepStatus = createSelector(
             };
         }
 
+        const isUsingPaypal =
+            checkout && checkout.payments
+                ? checkout.payments.some(
+                    (payment) =>
+                        [
+                            'braintreepaypal',
+                            'braintreepaypalcredit',
+                            'braintreevenmo',
+                            'paypalcommerce',
+                            'paypalcommercecredit',
+                            'paypalcommercevenmo'
+                        ]
+                            .includes(payment.providerId))
+                : false;
+
+        if (isUsingPaypal) {
+            return {
+                type: CheckoutStepType.Billing,
+                isActive: false,
+                isComplete: hasAddress,
+                isEditable: hasAddress,
+                isRequired: true,
+            };
+        }
+
         return {
             type: CheckoutStepType.Billing,
             isActive: false,
@@ -113,7 +163,6 @@ const getShippingStepStatus = createSelector(
     ({ data }: CheckoutSelectors) => data.getShippingAddress(),
     ({ data }: CheckoutSelectors) => data.getConsignments(),
     ({ data }: CheckoutSelectors) => data.getCart(),
-    ({ data }: CheckoutSelectors) => data.getSelectedPaymentMethod(),
     ({ data }: CheckoutSelectors) => {
         const shippingAddress = data.getShippingAddress();
 
@@ -122,23 +171,30 @@ const getShippingStepStatus = createSelector(
             : EMPTY_ARRAY;
     },
     ({ data }: CheckoutSelectors) => data.getConfig(),
-    (shippingAddress, consignments, cart, payment, shippingAddressFields, config) => {
+    (shippingAddress, consignments, cart, shippingAddressFields, config) => {
         const hasAddress = shippingAddress
             ? isValidAddress(shippingAddress, shippingAddressFields)
             : false;
-        // @todo: interim solution, ideally we should render custom form fields below amazon shipping widget
-        const hasRemoteAddress = !!shippingAddress && !!payment && payment.id === 'amazon';
         const hasOptions = consignments ? hasSelectedShippingOptions(consignments) : false;
         const hasUnassignedItems =
             cart && consignments ? hasUnassignedLineItems(consignments, cart.lineItems) : true;
-        const isComplete = (hasAddress || hasRemoteAddress) && hasOptions && !hasUnassignedItems;
+        const isComplete = hasAddress && hasOptions && !hasUnassignedItems;
         const isRequired = itemsRequireShipping(cart, config);
+        const isCustomShippingSelected =
+            isExperimentEnabled(
+                config?.checkoutSettings,
+                'PROJECT-5015.manual_order.display_custom_shipping',
+            ) &&
+            hasOptions &&
+            consignments?.some(
+                ({ selectedShippingOption }) => selectedShippingOption?.type === 'custom',
+            );
 
         return {
             type: CheckoutStepType.Shipping,
             isActive: false,
             isComplete,
-            isEditable: isComplete && isRequired,
+            isEditable: isComplete && isRequired && !isCustomShippingSelected,
             isRequired,
         };
     },
@@ -159,12 +215,20 @@ const getPaymentStepStatus = createSelector(
     },
 );
 
+const getOrderSubmitStatus = createSelector(
+    ({ statuses }: CheckoutSelectors) => statuses.isSubmittingOrder(),
+    (status) => status,
+);
+
 const getCheckoutStepStatuses = createSelector(
     getCustomerStepStatus,
     getShippingStepStatus,
     getBillingStepStatus,
     getPaymentStepStatus,
-    (customerStep, shippingStep, billingStep, paymentStep) => {
+    getOrderSubmitStatus,
+    (customerStep, shippingStep, billingStep, paymentStep, orderStatus) => {
+        const isSubmittingOrder = orderStatus;
+
         const steps = compact([customerStep, shippingStep, billingStep, paymentStep]);
 
         const defaultActiveStep =
@@ -180,7 +244,7 @@ const getCheckoutStepStatuses = createSelector(
                 isActive: defaultActiveStep.type === step.type,
                 isBusy: false,
                 // A step is only editable if its previous step is complete or not required
-                isEditable: isPrevStepComplete && step.isEditable,
+                isEditable: isPrevStepComplete && step.isEditable && !isSubmittingOrder,
             };
         });
     },

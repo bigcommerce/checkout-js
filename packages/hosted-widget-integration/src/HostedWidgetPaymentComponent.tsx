@@ -15,14 +15,17 @@ import { find, noop } from 'lodash';
 import React, { Component, ReactNode } from 'react';
 import { ObjectSchema } from 'yup';
 
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
+import {
+    AccountInstrumentFieldset,
+    assertIsCardInstrument,
+    CardInstrumentFieldset,
+    isBankAccountInstrument,
+    StoreInstrumentFieldset,
+} from '@bigcommerce/checkout/instrument-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
-import { LoadingOverlay, preventDefault } from '@bigcommerce/checkout/ui';
-
-import { CardInstrumentFieldset, SignOutLink } from './utils/components';
-import { AccountInstrumentFieldset } from './utils/components/AccountInstrumentFieldset';
-import { StoreInstrumentFieldset } from './utils/components/StoreInstrumentFieldset';
-import { assertIsCardInstrument, isBankAccountInstrument } from './utils/guards';
+import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 export interface HostedWidgetComponentState {
     isAddingNewCard: boolean;
@@ -57,7 +60,7 @@ export interface WithCheckoutHostedWidgetPaymentMethodProps {
     isPaymentDataRequired: boolean;
     isSignedIn: boolean;
     isInstrumentCardCodeRequired(instrument: Instrument, method: PaymentMethod): boolean;
-    isInstrumentCardNumberRequired(instrument: Instrument): boolean;
+    isInstrumentCardNumberRequired(instrument: Instrument, method: PaymentMethod): boolean;
     loadInstruments(): Promise<CheckoutSelectors>;
     signOut(options: CustomerRequestOptions): void;
 }
@@ -141,11 +144,12 @@ class HostedWidgetPaymentComponent extends Component<
         prevState: Readonly<HostedWidgetPaymentMethodState>,
     ): Promise<void> {
         const {
-            deinitializePayment = noop,
+            deinitializePayment,
             instruments,
             method,
             onUnhandledError = noop,
             setValidationSchema,
+            isPaymentDataRequired,
         } = this.props;
 
         const { selectedInstrumentId } = this.state;
@@ -154,10 +158,10 @@ class HostedWidgetPaymentComponent extends Component<
 
         if (
             selectedInstrumentId !== prevState.selectedInstrumentId ||
-            (prevProps.instruments.length > 0 && instruments.length === 0)
+            (prevProps.instruments.length > 0 && instruments.length === 0) ||
+            prevProps.isPaymentDataRequired !== isPaymentDataRequired
         ) {
             try {
-                // eslint-disable-next-line @typescript-eslint/await-thenable
                 await deinitializePayment({
                     gatewayId: method.gateway,
                     methodId: method.id,
@@ -172,7 +176,7 @@ class HostedWidgetPaymentComponent extends Component<
     async componentWillUnmount(): Promise<void> {
         const {
             deinitializeCustomer = noop,
-            deinitializePayment = noop,
+            deinitializePayment,
             method,
             onUnhandledError = noop,
             setSubmit,
@@ -183,7 +187,6 @@ class HostedWidgetPaymentComponent extends Component<
         setSubmit(method, null);
 
         try {
-            // eslint-disable-next-line @typescript-eslint/await-thenable
             await deinitializePayment({
                 gatewayId: method.gateway,
                 methodId: method.id,
@@ -203,8 +206,6 @@ class HostedWidgetPaymentComponent extends Component<
             instruments,
             hideWidget = false,
             isInitializing = false,
-            isSignedIn = false,
-            method,
             isAccountInstrument,
             isInstrumentFeatureAvailable: isInstrumentFeatureAvailableProp,
             isLoadingInstruments,
@@ -268,13 +269,12 @@ class HostedWidgetPaymentComponent extends Component<
                     {isInstrumentFeatureAvailableProp && (
                         <StoreInstrumentFieldset
                             instrumentId={selectedInstrumentId}
+                            instruments={instruments}
                             isAccountInstrument={isAccountInstrument || shouldShowAccountInstrument}
                         />
                     )}
 
                     {this.renderEditButtonIfAvailable()}
-
-                    {isSignedIn && <SignOutLink method={method} onSignOut={this.handleSignOut} />}
                 </div>
             </LoadingOverlay>
         );
@@ -284,6 +284,7 @@ class HostedWidgetPaymentComponent extends Component<
         const {
             hideVerificationFields,
             instruments,
+            method,
             isInstrumentCardNumberRequired: isInstrumentCardNumberRequiredProp,
             validateInstrument,
         } = this.props;
@@ -293,16 +294,21 @@ class HostedWidgetPaymentComponent extends Component<
             bigpayToken: selectedInstrumentId,
         });
 
-        assertIsCardInstrument(selectedInstrument);
+        if (selectedInstrument) {
+            assertIsCardInstrument(selectedInstrument);
 
-        const shouldShowNumberField = isInstrumentCardNumberRequiredProp(selectedInstrument);
+            const shouldShowNumberField = isInstrumentCardNumberRequiredProp(
+                selectedInstrument,
+                method,
+            );
 
-        if (hideVerificationFields) {
-            return;
-        }
+            if (hideVerificationFields) {
+                return;
+            }
 
-        if (validateInstrument) {
-            return validateInstrument(shouldShowNumberField, selectedInstrument);
+            if (validateInstrument) {
+                return validateInstrument(shouldShowNumberField, selectedInstrument);
+            }
         }
     }
 
@@ -444,7 +450,10 @@ class HostedWidgetPaymentComponent extends Component<
             signInCustomer = noop,
         } = this.props;
 
-        const { selectedInstrumentId = this.getDefaultInstrumentId() } = this.state;
+        const { selectedInstrumentId = this.getDefaultInstrumentId(), isAddingNewCard } =
+            this.state;
+
+        let selectedInstrument;
 
         if (!isPaymentDataRequired) {
             setSubmit(method, null);
@@ -462,9 +471,11 @@ class HostedWidgetPaymentComponent extends Component<
 
         setSubmit(method, null);
 
-        const selectedInstrument =
-            instruments.find((instrument) => instrument.bigpayToken === selectedInstrumentId) ||
-            instruments[0];
+        if (!isAddingNewCard) {
+            selectedInstrument =
+                instruments.find((instrument) => instrument.bigpayToken === selectedInstrumentId) ||
+                instruments[0];
+        }
 
         return initializePayment(
             {
@@ -486,19 +497,17 @@ class HostedWidgetPaymentComponent extends Component<
         const defaultInstrument =
             instruments.find((instrument) => instrument.defaultInstrument) || instruments[0];
 
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         return defaultInstrument && defaultInstrument.bigpayToken;
     }
 
     private handleUseNewCard: () => void = async () => {
-        const { deinitializePayment = noop, initializePayment = noop, method } = this.props;
+        const { deinitializePayment, initializePayment = noop, method } = this.props;
 
         this.setState({
             isAddingNewCard: true,
             selectedInstrumentId: undefined,
         });
 
-        // eslint-disable-next-line @typescript-eslint/await-thenable
         await deinitializePayment({
             gatewayId: method.gateway,
             methodId: method.id,
@@ -516,18 +525,6 @@ class HostedWidgetPaymentComponent extends Component<
             isAddingNewCard: false,
             selectedInstrumentId: id,
         });
-    };
-
-    private handleSignOut: () => void = async () => {
-        const { method, onSignOut = noop, onSignOutError = noop, signOut } = this.props;
-
-        try {
-            // eslint-disable-next-line @typescript-eslint/await-thenable
-            await signOut({ methodId: method.id });
-            onSignOut();
-        } catch (error) {
-            onSignOutError(error);
-        }
     };
 }
 

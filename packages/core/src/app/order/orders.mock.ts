@@ -2,6 +2,7 @@ import {
     GatewayOrderPayment,
     GiftCertificateOrderPayment,
     Order,
+    OrderFee,
     OrderPayment,
 } from '@bigcommerce/checkout-sdk';
 
@@ -15,6 +16,10 @@ export function getOrder(): Order {
         baseAmount: 200,
         billingAddress: getBillingAddress(),
         cartId: 'b20deef40f9699e48671bbc3fef6ca44dc80e3c7',
+        channelId: 1,
+        consignments: {
+            shipping: [],
+        },
         coupons: [getCoupon(), getShippingCoupon()],
         currency: getCurrency(),
         customerMessage: '',
@@ -47,6 +52,7 @@ export function getOrder(): Order {
         orderAmountAsInteger: 19000,
         orderId: 295,
         payments: [getGatewayOrderPayment(), getGiftCertificateOrderPayment()],
+        fees: [],
     };
 }
 
@@ -129,4 +135,14 @@ export function getGiftCertificateOrderPayment(): GiftCertificateOrderPayment {
             remaining: 3,
         },
     };
+}
+
+export function getOrderFee(): OrderFee {
+    return {
+        id: 1,
+        cost: 2.0,
+        type: 'custom_fee',
+        source: 'somewhere',
+        customerDisplayName: 'display name for customer',
+    }
 }

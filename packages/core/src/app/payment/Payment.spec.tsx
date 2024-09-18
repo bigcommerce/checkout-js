@@ -1,4 +1,5 @@
 import {
+    CartConsistencyError,
     CheckoutSelectors,
     CheckoutService,
     createCheckoutService,
@@ -12,14 +13,14 @@ import { find, merge, noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
 import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getCart } from '../cart/carts.mock';
-import { CheckoutProvider } from '../checkout';
 import { getCheckout, getCheckoutPayment } from '../checkout/checkouts.mock';
 import { createErrorLogger, ErrorModal } from '../common/error';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../locale';
 import { getOrder } from '../order/orders.mock';
 import { getConsignment } from '../shipping/consignment.mock';
 import { Button } from '../ui/button';
@@ -39,6 +40,51 @@ describe('Payment', () => {
     let selectedPaymentMethod: PaymentMethod;
     let subscribeEventEmitter: EventEmitter;
 
+    const checkoutServiceSubscribeMock = (
+        checkoutService: CheckoutService,
+    ) => {
+        const subscribeEventEmitter = new EventEmitter();
+        let previousFilterValue: any;
+
+        jest.spyOn(checkoutService, 'subscribe').mockImplementation(
+            (subscriber, filter = noop) => {
+                subscribeEventEmitter.on('change', () => {
+                    const filterValue = filter(checkoutService.getState());
+
+                    if (!filterValue || previousFilterValue === filterValue) {
+                        return noop;
+                    } else if (!previousFilterValue) {
+                        previousFilterValue = filterValue;
+
+                        return noop;
+                    }
+
+                    previousFilterValue = filterValue;
+
+                    return subscriber(checkoutService.getState());
+                });
+                subscribeEventEmitter.emit('change');
+
+                return noop;
+            });
+
+        return subscribeEventEmitter;
+    }
+
+    const changeTotalAmount = async (
+        container: ReactWrapper<PaymentFormProps>,
+        newAmount: number,
+    ) => {
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+            ...getCheckout(),
+            grandTotal: newAmount,
+        });
+
+        subscribeEventEmitter.emit('change');
+        await new Promise((resolve) => process.nextTick(resolve));
+        container.setProps({});
+    };
+
     beforeEach(() => {
         checkoutService = createCheckoutService();
         checkoutState = checkoutService.getState();
@@ -48,16 +94,9 @@ describe('Payment', () => {
             { ...getPaymentMethod(), id: 'bolt', initializationData: { showInCheckout: true } },
         ];
         selectedPaymentMethod = paymentMethods[0];
-        subscribeEventEmitter = new EventEmitter();
+        subscribeEventEmitter = checkoutServiceSubscribeMock(checkoutService);
 
         jest.spyOn(checkoutService, 'getState').mockImplementation(() => checkoutState);
-
-        jest.spyOn(checkoutService, 'subscribe').mockImplementation((subscriber) => {
-            subscribeEventEmitter.on('change', () => subscriber(checkoutService.getState()));
-            subscribeEventEmitter.emit('change');
-
-            return noop;
-        });
 
         jest.spyOn(checkoutService, 'loadPaymentMethods').mockResolvedValue(checkoutState);
 
@@ -103,6 +142,10 @@ describe('Payment', () => {
                 </LocaleContext.Provider>
             </CheckoutProvider>
         );
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
     });
 
     it('renders payment form with expected props', async () => {
@@ -183,7 +226,7 @@ describe('Payment', () => {
         container.update();
 
         expect(container.find(PaymentForm)).toHaveLength(1);
-        expect(checkoutService.loadPaymentMethods).toHaveBeenCalled();
+        expect(checkoutService.loadPaymentMethods).toHaveBeenCalledTimes(1);
         expect(checkoutService.finalizeOrderIfNeeded).toHaveBeenCalled();
     });
 
@@ -208,7 +251,33 @@ describe('Payment', () => {
 
         await new Promise((resolve) => process.nextTick(resolve));
 
-        expect(checkoutService.loadPaymentMethods).toHaveBeenCalled();
+        expect(checkoutService.loadPaymentMethods).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not update payment methods if total amount does not change', async () => {
+        const container = mount(<PaymentTest {...defaultProps} />);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+        container.update();
+
+        expect(checkoutService.loadPaymentMethods).toHaveBeenCalledTimes(1);
+
+        await changeTotalAmount(container, getCheckout().grandTotal);
+
+        expect(checkoutService.loadPaymentMethods).toHaveBeenCalledTimes(1);
+    });
+
+    it('updates payment methods after total amount changes', async () => {
+        const container = mount(<PaymentTest {...defaultProps} />);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+        container.update();
+
+        expect(checkoutService.loadPaymentMethods).toHaveBeenCalledTimes(1);
+
+        await changeTotalAmount(container, 10);
+
+        expect(checkoutService.loadPaymentMethods).toHaveBeenCalledTimes(2);
     });
 
     it('triggers callback when payment methods are loaded', async () => {
@@ -346,19 +415,13 @@ describe('Payment', () => {
         const container = mount(<PaymentTest {...defaultProps} />);
 
         await new Promise((resolve) => process.nextTick(resolve));
-        container.update();
+        await container.update();
 
         expect(container.find(PaymentForm).prop('selectedMethod')).toEqual(paymentMethods[0]);
 
-        // Update the list of payment methods so that its order is reversed
-        checkoutState = merge({}, checkoutState, {
-            data: {
-                getPaymentMethods: jest.fn(() => [paymentMethods[1], paymentMethods[0]]),
-            },
-        });
+        jest.spyOn(checkoutState.data, 'getPaymentMethods').mockReturnValue([paymentMethods[1], paymentMethods[0]]);
 
-        subscribeEventEmitter.emit('change');
-        container.update();
+        await changeTotalAmount(container, 10);
 
         expect(container.find(PaymentForm).prop('selectedMethod')).toEqual(paymentMethods[1]);
     });
@@ -664,6 +727,31 @@ describe('Payment', () => {
 
         expect(checkoutService.loadCheckout).toHaveBeenCalled();
         expect(container.find(PaymentForm).prop('didExceedSpamLimit')).toBeTruthy();
+    });
+
+    it('reloads checkout object if unable to submit order due to cart consistency error', async () => {
+        jest.spyOn(checkoutService, 'loadCheckout')
+            .mockResolvedValue(checkoutState);
+
+        jest.spyOn(checkoutState.errors, 'getSubmitOrderError')
+            .mockReturnValue({
+                type: 'cart_consistency',
+            } as unknown as CartConsistencyError);
+
+        const container = mount(<PaymentTest {...defaultProps} />);
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        container.update();
+
+        expect(container.find('#errorModalMessage').text())
+            .toBe('Your checkout could not be processed because some details have changed. Please review your order and try again.');
+
+        container.find('ErrorModal Button')
+            .simulate('click');
+
+        expect(checkoutService.loadCheckout)
+            .toHaveBeenCalled();
     });
 
     it('clears error when error has no body', async () => {

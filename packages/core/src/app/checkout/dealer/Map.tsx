@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React, { Component } from 'react';
-import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
+import { Map, GoogleApiWrapper, Marker } from '@peacechen/google-maps-react';
 
 import formatPhoneNumber from './PhoneNumberFormatter';
 import InfoWindowEx from './locator/InfoWindowEx';

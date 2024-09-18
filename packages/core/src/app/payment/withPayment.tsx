@@ -1,4 +1,4 @@
-import { createInjectHoc } from '../common/hoc';
+import { createInjectHoc } from '@bigcommerce/checkout/legacy-hoc';
 
 import PaymentContext, { PaymentContextProps } from './PaymentContext';
 

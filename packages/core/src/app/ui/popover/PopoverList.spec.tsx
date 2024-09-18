@@ -30,6 +30,12 @@ describe('Popover Component', () => {
         expect(tree.find('.popoverList-item').at(2).hasClass('is-active')).toBe(false);
     });
 
+    it('renders list with passed testId', () => {
+        const tree = mount(<PopoverList items={items} testId='testId' />);
+
+        expect(tree.prop('testId')).toBeDefined();
+    });
+
     it('renders list with highlighted text', () => {
         const highlightedContent = [
             <strong key="1">Ips</strong>,

@@ -7,7 +7,7 @@ import {
 } from '@bigcommerce/checkout-sdk';
 import React, { Component, ReactNode } from 'react';
 
-import { AddressForm, AddressSelect, isValidCustomerAddress } from '../address';
+import { AddressForm, AddressSelect, AddressType, isValidCustomerAddress } from '../address';
 import { connectFormik, ConnectFormikProps } from '../common/form';
 import { Fieldset } from '../ui/form';
 import { LoadingOverlay } from '../ui/loading';
@@ -24,7 +24,7 @@ export interface ShippingAddressFormProps {
     isLoading: boolean;
     formFields: FormField[];
     shouldShowSaveAddress?: boolean;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     onUseNewAddress(): void;
     onFieldChange(fieldName: string, value: string): void;
     onAddressSelect(address: Address): void;
@@ -47,7 +47,7 @@ class ShippingAddressForm extends Component<
             formFields,
             isLoading,
             googleMapsApiKey,
-            useFloatingLabel,
+            isFloatingLabelEnabled,
             formik: {
                 values: { shippingAddress: formAddress },
             },
@@ -72,6 +72,7 @@ class ShippingAddressForm extends Component<
                                 selectedAddress={
                                     hasValidCustomerAddress ? shippingAddress : undefined
                                 }
+                                type={AddressType.Shipping}
                             />
                         </LoadingOverlay>
                     </Fieldset>
@@ -86,11 +87,11 @@ class ShippingAddressForm extends Component<
                             fieldName={addressFieldName}
                             formFields={formFields}
                             googleMapsApiKey={googleMapsApiKey}
+                            isFloatingLabelEnabled={isFloatingLabelEnabled}
                             onAutocompleteToggle={this.handleAutocompleteToggle}
                             onChange={this.handleChange}
                             setFieldValue={this.setFieldValue}
                             shouldShowSaveAddress={shouldShowSaveAddress}
-                            useFloatingLabel={useFloatingLabel}
                         />
                     </LoadingOverlay>
                 )}

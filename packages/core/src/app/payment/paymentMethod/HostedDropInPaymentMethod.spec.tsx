@@ -9,12 +9,13 @@ import { Formik } from 'formik';
 import { merge, noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
+import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
+
 import { getCart } from '../../cart/carts.mock';
-import { CheckoutProvider } from '../../checkout';
 import { getCheckout } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
 import { getCustomer } from '../../customer/customers.mock';
-import { createLocaleContext, LocaleContext } from '../../locale';
 import { getConsignment } from '../../shipping/consignment.mock';
 import { LoadingOverlay } from '../../ui/loading';
 import { getPaymentMethod } from '../payment-methods.mock';

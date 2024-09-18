@@ -1,4 +1,4 @@
-import { getLanguageService } from '../locale';
+import { getLanguageService } from '@bigcommerce/checkout/locale';
 
 import mapSubmitOrderErrorMessage, { mapSubmitOrderErrorTitle } from './mapSubmitOrderErrorMessage';
 

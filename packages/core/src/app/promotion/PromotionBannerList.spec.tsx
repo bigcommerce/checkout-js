@@ -49,4 +49,10 @@ describe('PromotionBannerList', () => {
 
         expect(component.html()).toBeNull();
     });
+
+    it('renders nothing if there are no promotions', () => {
+        const component = shallow(<PromotionBannerList />);
+
+        expect(component.html()).toBeNull();
+    });
 });

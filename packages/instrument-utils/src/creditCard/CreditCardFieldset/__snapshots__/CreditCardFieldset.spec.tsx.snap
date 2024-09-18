@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreditCardFieldset matches snapshot 1`] = `
+<fieldset
+  class="form-fieldset creditCardFieldset"
+>
+  <legend
+    class="form-legend is-srOnly"
+  >
+    Credit card
+  </legend>
+  <div
+    class="form-body"
+  >
+    <div
+      class="form-ccFields"
+    >
+      <div
+        class="form-field form-field--ccNumber"
+      >
+        <label
+          class="form-label optimizedCheckout-form-label"
+          for="ccNumber"
+          id="ccNumber-label"
+        >
+          Credit Card Number
+        </label>
+        <input
+          autocomplete="cc-number"
+          class="form-input optimizedCheckout-form-input has-icon"
+          id="ccNumber"
+          name="ccNumber"
+          type="tel"
+          value=""
+        />
+        <div
+          class="icon"
+        >
+          <svg
+            height="24"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        class="form-field form-field--ccExpiry"
+      >
+        <label
+          class="form-label optimizedCheckout-form-label"
+          for="ccExpiry"
+          id="ccExpiry-label"
+        >
+          Expiration
+        </label>
+        <input
+          autocomplete="cc-exp"
+          class="form-input optimizedCheckout-form-input"
+          id="ccExpiry"
+          name="ccExpiry"
+          placeholder="MM / YY"
+          type="tel"
+          value=""
+        />
+      </div>
+      <div
+        class="form-field form-field--ccName"
+      >
+        <label
+          class="form-label optimizedCheckout-form-label"
+          for="ccName"
+          id="ccName-label"
+        >
+          Name on Card
+        </label>
+        <input
+          autocomplete="cc-name"
+          class="form-input optimizedCheckout-form-input"
+          id="ccName"
+          name="ccName"
+          type="text"
+          value=""
+        />
+      </div>
+    </div>
+  </div>
+</fieldset>
+`;

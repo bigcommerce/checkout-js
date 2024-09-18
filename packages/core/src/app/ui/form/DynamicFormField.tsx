@@ -4,7 +4,7 @@ import { FieldProps } from 'formik';
 import { includes } from 'lodash';
 import React, { FunctionComponent, memo, ReactNode, useCallback, useMemo } from 'react';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import CheckboxGroupFormField from './CheckboxGroupFormField';
 import DynamicFormFieldType from './DynamicFormFieldType';
@@ -25,7 +25,7 @@ export interface DynamicFormFieldProps {
     parentFieldName?: string;
     placeholder?: string;
     label?: ReactNode;
-    useFloatingLabel?: boolean;
+    isFloatingLabelEnabled?: boolean;
     onChange?(value: string | string[]): void;
 }
 
@@ -49,12 +49,12 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
     autocomplete,
     label,
     extraClass,
-    useFloatingLabel,
+    isFloatingLabelEnabled,
 }) => {
     const fieldInputId = inputId || name;
     const fieldName = parentFieldName ? `${parentFieldName}.${name}` : name;
     const isFloatingLabelSupportedFieldType = Boolean(
-        useFloatingLabel &&
+        isFloatingLabelEnabled &&
             (includes(['text', 'password', 'dropdown', 'date', 'multiline'], fieldType) ||
                 !fieldType),
     );
@@ -63,7 +63,7 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
             <Label
                 htmlFor={fieldInputId}
                 id={`${fieldInputId}-label`}
-                useFloatingLabel={isFloatingLabelSupportedFieldType}
+                isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
             >
                 {label || fieldLabel}
                 {!required && (
@@ -103,13 +103,13 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 autoComplete={autocomplete}
                 fieldType={dynamicFormFieldType}
                 id={fieldInputId}
+                isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
                 max={max}
                 maxLength={maxLength || undefined}
                 min={min}
                 options={options && options.items}
                 placeholder={placeholder || (options && options.helperLabel)}
                 rows={options && (options as any).rows}
-                useFloatingLabel={isFloatingLabelSupportedFieldType}
             />
         ),
         [
@@ -144,10 +144,10 @@ const DynamicFormField: FunctionComponent<DynamicFormFieldProps> = ({
                 <FormField
                     id={fieldInputId}
                     input={renderInput}
+                    isFloatingLabelEnabled={isFloatingLabelSupportedFieldType}
                     label={labelComponent}
                     name={fieldName}
                     onChange={onChange}
-                    useFloatingLabel={isFloatingLabelSupportedFieldType}
                 />
             )}
         </div>

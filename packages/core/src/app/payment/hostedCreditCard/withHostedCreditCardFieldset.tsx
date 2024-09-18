@@ -8,12 +8,12 @@ import { compact, forIn } from 'lodash';
 import React, { ComponentType, FunctionComponent, ReactNode, useCallback, useState } from 'react';
 import { ObjectSchema } from 'yup';
 
-import { PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
+import { MapToPropsFactory } from '@bigcommerce/checkout/legacy-hoc';
+import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { CheckoutContextProps, PaymentFormValues } from '@bigcommerce/checkout/payment-integration-api';
 
-import { CheckoutContextProps, withCheckout } from '../../checkout';
+import { withCheckout } from '../../checkout';
 import { connectFormik, ConnectFormikProps } from '../../common/form';
-import { MapToPropsFactory } from '../../common/hoc';
-import { withLanguage, WithLanguageProps } from '../../locale';
 import { withForm, WithFormProps } from '../../ui/form';
 import {
     CreditCardCustomerCodeField,

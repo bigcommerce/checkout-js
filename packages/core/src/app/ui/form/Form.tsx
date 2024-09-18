@@ -3,7 +3,7 @@ import { Form as FormikForm, FormikFormProps } from 'formik';
 import { values } from 'lodash';
 import React, { createRef, FunctionComponent, memo, useCallback, useRef } from 'react';
 
-import FormProvider, { FormContextType } from './FormProvider';
+import { FormContextType, FormProvider } from '@bigcommerce/checkout/ui';
 
 export interface FormProps extends FormikFormProps {
     testId?: string;

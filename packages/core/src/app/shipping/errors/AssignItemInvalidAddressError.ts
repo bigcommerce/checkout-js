@@ -1,5 +1,6 @@
+import { getLanguageService } from '@bigcommerce/checkout/locale';
+
 import { CustomError, setPrototypeOf } from '../../common/error';
-import { getLanguageService } from '../../locale';
 
 export default class AssignItemInvalidAddressError extends CustomError {
     constructor(data?: Error) {

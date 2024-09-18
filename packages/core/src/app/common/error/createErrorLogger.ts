@@ -1,5 +1,10 @@
+import {
+  ErrorLogger,
+  ErrorLoggerOptions,
+  ErrorLoggerServiceConfig,
+} from '@bigcommerce/checkout/error-handling-utils';
+
 import ConsoleErrorLogger from './ConsoleErrorLogger';
-import ErrorLogger, { ErrorLoggerOptions, ErrorLoggerServiceConfig } from './ErrorLogger';
 import NoopErrorLogger from './NoopErrorLogger';
 import SentryErrorLogger from './SentryErrorLogger';
 

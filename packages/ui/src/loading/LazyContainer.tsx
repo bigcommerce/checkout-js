@@ -1,9 +1,9 @@
 import React, { FunctionComponent, ReactNode, Suspense } from 'react';
 
+import { ErrorBoundary } from '@bigcommerce/checkout/error-handling-utils';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 
 import './LazyContainer.scss';
-import { ErrorBoundary } from '../common';
 
 import LoadingSpinner from './LoadingSpinner';
 

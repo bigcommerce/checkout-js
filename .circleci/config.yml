@@ -2,7 +2,7 @@ aliases:
   - &node_executor
       executor:
         name: node/node
-        node-version: "14.18"
+        node-version: "20.6.0"
 
   - &release_filter
       branches:
@@ -19,28 +19,54 @@ version: 2.1
 orbs:
   ci: bigcommerce/internal@volatile
   node: bigcommerce/internal-node@volatile
+  security: bigcommerce/internal-security@volatile
 
 jobs:
-  test:
+  test-packages:
     <<: *node_executor
     steps:
       - ci/pre-setup
       - node/npm-install
       - run:
-          name: "Run unit tests"
-          command: npm run test -- --coverage --runInBand
+          name: "Run unit tests for packages"
+          command: npm run test:others
+
+  test-core:
+    <<: *node_executor
+    parallelism: 2
+    steps:
+      - ci/pre-setup
+      - node/npm-install
+      - run: mkdir ~/junit
+      - run:
+          name: "Run unit tests for core package"
+          command: |
+            TEST=$(circleci tests glob "packages/core/**/*.spec.ts" "packages/core/**/*.spec.tsx" "packages/core/**/*.test.ts" "packages/core/**/*.test.tsx" | circleci tests split --split-by=timings)
+            npx nx run core:generate
+            npm run test:core $TEST -- --runInBand
+      - run:
+          command: cp junit.xml ~/junit/
+          when: always
+      - store_test_results:
+          path: ~/junit
       - store_artifacts:
-          path: coverage
-          destination: coverage
+          path: ~/junit
+
+  lint:
+    <<: *node_executor
+    resource_class: medium+
+    steps:
+      - ci/pre-setup
+      - node/npm-install
+      - run:
+          name: "Run lint"
+          command: npm run lint
 
   build:
     <<: *node_executor
     steps:
       - ci/pre-setup
       - node/npm-install
-      - run:
-          name: "Run linter"
-          command: npm run lint
       - run:
           name: "Test build"
           command: npm run build
@@ -51,6 +77,7 @@ jobs:
 
   e2e:
     <<: *node_executor
+    resource_class: medium+
     steps:
       - ci/pre-setup
       - node/npm-install
@@ -64,10 +91,18 @@ jobs:
           name: "Run e2e tests"
           command: npx playwright test
       - store_artifacts:
-          path: packages/payment-integration-test-framework/report
+          path: packages/test-framework/report
           destination: artifact-file
       - store_artifacts:
-          path: packages/payment-integration-test-framework/screenshots
+          path: packages/test-framework/screenshots
+
+  sdk-on-cdn:
+    <<: *node_executor
+    steps:
+      - ci/pre-setup
+      - run:
+          name: "Check SDK version on CDN"
+          command: ./scripts/sdk-live-checker.sh
 
   release:
     <<: *node_executor
@@ -127,22 +162,44 @@ workflows:
 
   pull_request:
     jobs:
-      - test:
+      - test-packages:
+          filters:
+            <<: *pull_request_filter
+      - test-core:
           filters:
             <<: *pull_request_filter
       - build:
           filters:
             <<: *pull_request_filter
+      - lint:
+          filters:
+            <<: *pull_request_filter
       - e2e:
+          filters:
+            <<: *pull_request_filter
+      - sdk-on-cdn:
           filters:
             <<: *pull_request_filter
       - ci/validate-commits:
           filters:
             <<: *pull_request_filter
+      - security/scan:
+          name: "Gitleaks secrets scan"
+          filters:
+            branches:
+              ignore: /pull\/[0-9]+/
+          context: org-global
+          GITLEAKS_BLOCK: "false"
 
   release:
     jobs:
-      - test:
+      - test-core:
+          filters:
+            <<: *release_filter
+      - test-packages:
+          filters:
+            <<: *release_filter
+      - lint:
           filters:
             <<: *release_filter
       - build:
@@ -156,7 +213,9 @@ workflows:
             <<: *release_filter
           type: approval
           requires:
-            - test
+            - test-core
+            - test-packages
+            - lint
             - build
             - e2e
       - release:

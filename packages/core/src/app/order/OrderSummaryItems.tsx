@@ -1,8 +1,10 @@
 import { LineItemMap } from '@bigcommerce/checkout-sdk';
 import React, { ReactNode } from 'react';
 
-import { TranslatedString } from '../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { IconChevronDown, IconChevronUp } from '../ui/icon';
+import { isSmallScreen } from '../ui/responsive';
 
 import getItemsCount from './getItemsCount';
 import mapFromCustom from './mapFromCustom';
@@ -12,13 +14,16 @@ import mapFromPhysical from './mapFromPhysical';
 import OrderSummaryItem from './OrderSummaryItem';
 
 const COLLAPSED_ITEMS_LIMIT = 4;
+const COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN = 3;
 
 export interface OrderSummaryItemsProps {
+    displayLineItemsCount: boolean;
     items: LineItemMap;
 }
 
 interface OrderSummaryItemsState {
     isExpanded: boolean;
+    collapsedLimit: number;
 }
 
 class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSummaryItemsState> {
@@ -27,16 +32,17 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
 
         this.state = {
             isExpanded: false,
+            collapsedLimit: this.getCollapsedLimit(),
         };
     }
 
     render(): ReactNode {
-        const { items } = this.props;
-        const { isExpanded } = this.state;
+        const { displayLineItemsCount = true, items } = this.props;
+        const { collapsedLimit, isExpanded } = this.state;
 
         return (
             <>
-                <h3
+                {displayLineItemsCount && <h3
                     className="cart-section-heading optimizedCheckout-contentPrimary"
                     data-test="cart-count-total"
                 >
@@ -44,7 +50,7 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
                         data={{ count: getItemsCount(items) }}
                         id="cart.item_count_text"
                     />
-                </h3>
+                </h3>}
 
                 <ul aria-live="polite" className="productList">
                     {[
@@ -59,7 +65,7 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
                             .map(mapFromDigital),
                         ...(items.customItems || []).map(mapFromCustom),
                     ]
-                        .slice(0, isExpanded ? undefined : COLLAPSED_ITEMS_LIMIT)
+                        .slice(0, isExpanded ? undefined : collapsedLimit)
                         .map((summaryItemProps) => (
                             <li className="productList-item is-visible" key={summaryItemProps.id}>
                                 <OrderSummaryItem {...summaryItemProps} />
@@ -72,10 +78,14 @@ class OrderSummaryItems extends React.Component<OrderSummaryItemsProps, OrderSum
         );
     }
 
+    private getCollapsedLimit(): number {
+        return isSmallScreen() ? COLLAPSED_ITEMS_LIMIT_SMALL_SCREEN : COLLAPSED_ITEMS_LIMIT;
+    }
+
     private renderActions(): ReactNode {
         const { isExpanded } = this.state;
 
-        if (this.getLineItemCount() < 5) {
+        if (this.getLineItemCount() <= this.getCollapsedLimit()) {
             return;
         }
 

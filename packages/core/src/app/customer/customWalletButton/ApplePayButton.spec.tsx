@@ -2,9 +2,10 @@ import { mount } from 'enzyme';
 import { noop } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+
 import { navigateToOrderConfirmation } from '../../checkout';
 import { getStoreConfig } from '../../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 import CheckoutButton from '../CheckoutButton';
 
 import ApplePayButton from './ApplePayButton';
@@ -24,6 +25,7 @@ describe('ApplePayButton', () => {
                     deinitialize={noop}
                     initialize={initialize}
                     methodId="applepay"
+                    onClick={jest.fn()}
                     onError={error}
                 />
             </LocaleContext.Provider>
@@ -45,6 +47,7 @@ describe('ApplePayButton', () => {
                 container: 'test',
                 shippingLabel: 'Shipping',
                 subtotalLabel: 'Subtotal',
+                onClick: expect.any(Function),
                 onError: error,
                 onPaymentAuthorize: navigateToOrderConfirmation,
             },

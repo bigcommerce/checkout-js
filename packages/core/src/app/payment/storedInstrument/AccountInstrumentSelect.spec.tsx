@@ -4,8 +4,9 @@ import { noop } from 'lodash';
 import React from 'react';
 import { Omit } from 'utility-types';
 
+import { createLocaleContext, LocaleContext, LocaleContextType } from '@bigcommerce/checkout/locale';
+
 import { getStoreConfig } from '../../config/config.mock';
-import { createLocaleContext, LocaleContext, LocaleContextType } from '../../locale';
 
 import AccountInstrumentSelect, { AccountInstrumentSelectProps } from './AccountInstrumentSelect';
 import { getInstruments } from './instruments.mock';
@@ -171,23 +172,25 @@ describe('AccountInstrumentSelect', () => {
             show: boolean;
             selectedInstrumentId?: string;
         }) => (
-            <Formik initialValues={initialValues} onSubmit={submit}>
-                {({ handleSubmit }) => (
-                    <form onSubmit={handleSubmit}>
-                        {show && (
-                            <Field name="instrumentId">
-                                {(field: FieldProps<string>) => (
-                                    <AccountInstrumentSelect
-                                        {...field}
-                                        {...defaultProps}
-                                        selectedInstrumentId={selectedInstrumentId}
-                                    />
-                                )}
-                            </Field>
-                        )}
-                    </form>
-                )}
-            </Formik>
+            <LocaleContext.Provider value={localeContext}>
+                <Formik initialValues={initialValues} onSubmit={submit}>
+                    {({ handleSubmit }) => (
+                        <form onSubmit={handleSubmit}>
+                            {show && (
+                                <Field name="instrumentId">
+                                    {(field: FieldProps<string>) => (
+                                        <AccountInstrumentSelect
+                                            {...field}
+                                            {...defaultProps}
+                                            selectedInstrumentId={selectedInstrumentId}
+                                        />
+                                    )}
+                                </Field>
+                            )}
+                        </form>
+                    )}
+                </Formik>
+            </LocaleContext.Provider>
         );
 
         const component = mount(

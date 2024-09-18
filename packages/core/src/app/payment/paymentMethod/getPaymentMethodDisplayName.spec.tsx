@@ -1,6 +1,7 @@
 import { createLanguageService, LanguageService } from '@bigcommerce/checkout-sdk';
 
-import { FALLBACK_TRANSLATIONS } from '../../locale/translations';
+import { FALLBACK_TRANSLATIONS } from '@bigcommerce/checkout/locale';
+
 import { getPaymentMethod, getPaypalCreditPaymentMethod } from '../payment-methods.mock';
 
 import getPaymentMethodDisplayName from './getPaymentMethodDisplayName';

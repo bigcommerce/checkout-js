@@ -1,5 +1,6 @@
 import {
     BankInstrument,
+    CardInstrument,
     CheckoutSelectors,
     CheckoutService,
     createCheckoutService,
@@ -10,6 +11,12 @@ import { noop } from 'lodash';
 import React, { FunctionComponent, ReactElement } from 'react';
 import { Schema } from 'yup';
 
+import {
+    AccountInstrumentFieldset,
+    CardInstrumentFieldset,
+    getCreditCardValidationSchema,
+    SignOutLink,
+} from '@bigcommerce/checkout/instrument-utils';
 import {
     createLocaleContext,
     LocaleContext,
@@ -31,7 +38,7 @@ import {
     getPaymentFormServiceMock,
     getPaymentMethod,
     getStoreConfig,
-} from '@bigcommerce/checkout/test-utils';
+} from '@bigcommerce/checkout/test-mocks';
 import { LoadingOverlay } from '@bigcommerce/checkout/ui';
 
 import HostedWidgetPaymentComponent, {
@@ -39,10 +46,6 @@ import HostedWidgetPaymentComponent, {
     PaymentContextProps,
     WithCheckoutHostedWidgetPaymentMethodProps,
 } from './HostedWidgetPaymentComponent';
-import { CardInstrumentFieldset } from './utils/components';
-import { AccountInstrumentFieldset } from './utils/components/AccountInstrumentFieldset';
-import { SignOutLink, SignOutLinkProps } from './utils/components/SignOutLink';
-import getCreditCardValidationSchema from './utils/getCreditCardValidationSchema';
 
 describe('HostedWidgetPaymentMethod', () => {
     let HostedWidgetPaymentMethodTest: FunctionComponent<HostedWidgetComponentProps>;
@@ -147,6 +150,22 @@ describe('HostedWidgetPaymentMethod', () => {
         expect(defaultProps.initializePayment).not.toHaveBeenCalled();
     });
 
+    it('reinitialize payment method after requiring payment data is changing', async () => {
+        jest.spyOn(checkoutState.data, 'isPaymentDataRequired').mockReturnValue(false);
+
+        const container = mount(
+            <HostedWidgetPaymentMethodTest {...defaultProps} isPaymentDataRequired={false} />,
+        );
+
+        expect(defaultProps.initializePayment).not.toHaveBeenCalled();
+
+        container.setProps({ isPaymentDataRequired: true });
+
+        await new Promise((resolve) => process.nextTick(resolve));
+
+        expect(defaultProps.initializePayment).toHaveBeenCalled();
+    });
+
     it('renders loading overlay while waiting for method to initialize', () => {
         let component: ReactWrapper;
 
@@ -206,7 +225,7 @@ describe('HostedWidgetPaymentMethod', () => {
     it('does not render the component', () => {
         const component = mount(<HostedWidgetPaymentMethodTest {...defaultProps} />);
 
-        expect(component.isEmptyRender()).toBe(false);
+        expect(component.find(HostedWidgetPaymentMethodTest)).toHaveLength(1);
 
         component.setProps({ shouldShow: false });
 
@@ -276,65 +295,6 @@ describe('HostedWidgetPaymentMethod', () => {
                 ...getCheckout(),
                 payments: [{ ...getCheckoutPayment(), providerId: defaultProps.method.id }],
             });
-        });
-
-        it('renders sign out link if user is signed into their payment method account', () => {
-            const component = mount(
-                <HostedWidgetPaymentMethodTest {...defaultProps} isSignedIn={true} />,
-            );
-
-            expect(component.find(SignOutLink)).toHaveLength(1);
-        });
-
-        it('signs out from payment method account of user when clicking on sign out link', async () => {
-            const handleSignOutError = jest.fn();
-
-            const signOut = jest.fn();
-
-            const component = mount(
-                <HostedWidgetPaymentMethodTest
-                    {...defaultProps}
-                    isSignedIn={true}
-                    onSignOutError={handleSignOutError}
-                    signOut={signOut}
-                />,
-            );
-
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            (component.find(SignOutLink) as ReactWrapper<SignOutLinkProps>).prop('onSignOut')();
-
-            await new Promise((resolve) => process.nextTick(resolve));
-
-            expect(signOut).toHaveBeenCalledWith({
-                methodId: defaultProps.method.id,
-            });
-
-            expect(handleSignOutError).not.toHaveBeenCalled();
-        });
-
-        it('notifies parent component if unable to sign out', async () => {
-            const handleSignOutError = jest.fn();
-            const signOut = jest.fn().mockRejectedValue(new Error('Unknown error'));
-
-            jest.spyOn(checkoutService, 'signOutCustomer').mockRejectedValue(
-                new Error('Unknown error'),
-            );
-
-            const component = mount(
-                <HostedWidgetPaymentMethodTest
-                    {...defaultProps}
-                    isSignedIn={true}
-                    onSignOutError={handleSignOutError}
-                    signOut={signOut}
-                />,
-            );
-
-            // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-            (component.find(SignOutLink) as ReactWrapper<SignOutLinkProps>).prop('onSignOut')();
-
-            await new Promise((resolve) => process.nextTick(resolve));
-
-            expect(handleSignOutError).toHaveBeenCalledWith(expect.any(Error));
         });
 
         it('renders link for user to edit their selected credit card', () => {
@@ -425,6 +385,47 @@ describe('HostedWidgetPaymentMethod', () => {
             );
 
             expect(component.find(CardInstrumentFieldset)).toHaveLength(1);
+        });
+
+        it('shows fields on the Widget when you click Use another payment form on the vaulted card instruments dropdown', () => {
+            const mockCardInstrument: CardInstrument[] = [
+                {
+                    bigpayToken: '123',
+                    provider: 'braintree',
+                    iin: '11111111',
+                    last4: '4321',
+                    expiryMonth: '02',
+                    expiryYear: '2025',
+                    brand: 'visa',
+                    trustedShippingAddress: true,
+                    defaultInstrument: true,
+                    method: 'card',
+                    type: 'card',
+                },
+            ];
+
+            jest.spyOn(checkoutState.data, 'getInstruments').mockReturnValue(mockCardInstrument);
+
+            const component = mount(
+                <HostedWidgetPaymentMethodTest
+                    {...defaultProps}
+                    instruments={mockCardInstrument}
+                    isInstrumentFeatureAvailable={true}
+                />,
+            );
+
+            component.find(CardInstrumentFieldset).prop('onUseNewInstrument')();
+            component.update();
+
+            const hostedWidgetComponent = component.find('#widget-container');
+
+            expect(hostedWidgetComponent).toHaveLength(1);
+
+            expect(component.text()).toMatch(/save/i);
+            expect(component.text()).not.toMatch(/account/i);
+            expect(component.text()).toMatch(/card/i);
+
+            expect(component.find('input[name="shouldSaveInstrument"]').exists()).toBe(true);
         });
 
         it('shows hosted widget and save credit card form when there are no stored instruments', () => {

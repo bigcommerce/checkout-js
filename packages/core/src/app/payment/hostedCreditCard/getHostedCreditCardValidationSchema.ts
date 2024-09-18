@@ -45,10 +45,15 @@ export default memoize(function getHostedCreditCardValidationSchema({
                         test: (value) => value !== 'invalid_card_expiry',
                     }),
 
-                cardName: string().test({
-                    message: language.translate('payment.credit_card_name_required_error'),
-                    test: (value) => value !== 'required',
-                }),
+                cardName: string()
+                    .test({
+                        message: language.translate('payment.credit_card_name_required_error'),
+                        test: (value) => value !== 'required',
+                    })
+                    .test({
+                        message: language.translate('payment.credit_card_name_invalid_error'),
+                        test: (value) => value !== 'invalid_card_name',
+                    }),
 
                 cardNumber: string()
                     .test({

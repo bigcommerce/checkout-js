@@ -6,9 +6,10 @@ import {
     StoreConfig,
 } from '@bigcommerce/checkout-sdk';
 
+import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
+
 import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';
-import { CheckoutContextProps } from '../checkout';
 import { getCheckout } from '../checkout/checkouts.mock';
 import { getStoreConfig } from '../config/config.mock';
 import { getCustomer } from '../customer/customers.mock';
@@ -57,19 +58,21 @@ describe('mapToShippingProps()', () => {
         });
 
         it('returns true when enabled', () => {
+            const { checkoutSettings } = getStoreConfig();
+
+            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
+                ...getStoreConfig(),
+                checkoutSettings: {
+                    ...checkoutSettings,
+                    hasMultiShippingEnabled: true,
+                },
+            } as StoreConfig);
+
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(mapToShippingProps(checkoutContextProps)!.shouldShowMultiShipping).toBe(true);
         });
 
         it('returns false when not enabled', () => {
-            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue({
-                ...getStoreConfig(),
-                checkoutSettings: {
-                    features: {},
-                    hasMultiShippingEnabled: false,
-                },
-            } as StoreConfig);
-
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             expect(mapToShippingProps(checkoutContextProps)!.shouldShowMultiShipping).toBe(false);
         });
@@ -89,7 +92,7 @@ describe('mapToShippingProps()', () => {
         it('returns false when remote shipping', () => {
             jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue({
                 ...getCheckout(),
-                payments: [{ providerId: 'amazon' }],
+                payments: [{ providerId: 'amazonpay' }],
             } as Checkout);
 
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

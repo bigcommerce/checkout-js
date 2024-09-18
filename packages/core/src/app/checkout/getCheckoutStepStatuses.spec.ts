@@ -11,13 +11,15 @@ import {
 } from '../address/formField.mock';
 import { getBillingAddress, getEmptyBillingAddress } from '../billing/billingAddresses.mock';
 import { getCart } from '../cart/carts.mock';
+import { getStoreConfig } from '../config/config.mock';
 import { getCustomer, getGuestCustomer } from '../customer/customers.mock';
 import { getOrder } from '../order/orders.mock';
 import { getPaymentMethod } from '../payment/payment-methods.mock';
+import { PaymentMethodId } from '../payment/paymentMethod';
 import { getConsignment } from '../shipping/consignment.mock';
 import { getShippingAddress } from '../shipping/shipping-addresses.mock';
 
-import { getCheckoutWithAmazonPay, getCheckoutWithPayments } from './checkouts.mock';
+import { getCheckoutWithPayments } from './checkouts.mock';
 import CheckoutStepType from './CheckoutStepType';
 import getCheckoutStepStatuses from './getCheckoutStepStatuses';
 
@@ -77,6 +79,78 @@ describe('getCheckoutStepStatuses()', () => {
             expect(find(steps, { type: CheckoutStepType.Customer })!.isEditable).toBe(true);
         });
 
+        describe('StripeLink', () => {
+            it('is marked as complete if email and isStripeLinkAuthenticated is provided', () => {
+                jest.spyOn(state.data, 'getBillingAddress').mockReturnValue(getBillingAddress());
+                jest.spyOn(state.data, 'getCustomer').mockReturnValue({
+                    ...getGuestCustomer(),
+                });
+                jest.spyOn(service.getState().data, 'getConfig').mockReturnValue({
+                    ...getStoreConfig(),
+                    checkoutSettings: {
+                        ...getStoreConfig().checkoutSettings, providerWithCustomCheckout: PaymentMethodId.StripeUPE,
+                    },
+                });
+                jest.spyOn(
+                    service.getState().data,
+                    'getPaymentProviderCustomer',
+                ).mockReturnValue({ authenticationState: true });
+
+                const steps = getCheckoutStepStatuses(state);
+
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                expect(find(steps, {type: CheckoutStepType.Customer})!.isComplete).toBe(true);
+            });
+
+            it('is marked as incomplete if email is provided and isStripeLinkAuthenticated is not provided', () => {
+                jest.spyOn(state.data, 'getBillingAddress').mockReturnValue(getBillingAddress());
+                jest.spyOn(state.data, 'getCustomer').mockReturnValue(getGuestCustomer());
+                jest.spyOn(service.getState().data, 'getConfig').mockReturnValue({
+                    ...getStoreConfig(),
+                    checkoutSettings: {
+                        ...getStoreConfig().checkoutSettings, providerWithCustomCheckout: PaymentMethodId.StripeUPE,
+                    },
+                });
+                jest.spyOn(service.getState().data, 'getCart').mockReturnValue(getCart());
+
+                const steps = getCheckoutStepStatuses(state);
+
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                expect(find(steps, {type: CheckoutStepType.Customer})!.isComplete).toBe(false);
+            });
+
+            it('is marked as complete when it is a wallet', () => {
+                jest.spyOn(state.data, 'getCustomer').mockReturnValue(getGuestCustomer());
+                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithPayments());
+                jest.spyOn(service.getState().data, 'getConfig').mockReturnValue({
+                    ...getStoreConfig(),
+                    checkoutSettings: {
+                        ...getStoreConfig().checkoutSettings, providerWithCustomCheckout: PaymentMethodId.StripeUPE,
+                    },
+                });
+
+                const steps = getCheckoutStepStatuses(state);
+
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                expect(find(steps, {type: CheckoutStepType.Customer})!.isComplete).toBe(true);
+            });
+        });
+
+        it('is marked as complete if email is provided by returning shopper', () => {
+            jest.spyOn(state.data, 'getCustomer').mockReturnValue(getCustomer());
+            jest.spyOn(service.getState().data, 'getConfig').mockReturnValue({
+                ...getStoreConfig(),
+                checkoutSettings: {
+                    ...getStoreConfig().checkoutSettings, providerWithCustomCheckout: PaymentMethodId.StripeUPE,
+                },
+            });
+
+            const steps = getCheckoutStepStatuses(state);
+
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            expect(find(steps, { type: CheckoutStepType.Customer })!.isComplete).toBe(true);
+        });
+
         it('is marked as non-editable if email is provided by digital wallet', () => {
             jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithPayments());
 
@@ -129,7 +203,7 @@ describe('getCheckoutStepStatuses()', () => {
 
         describe('amazonpay', () => {
             it('is marked as complete if billing address is not provided', () => {
-                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithAmazonPay());
+                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithPayments());
 
                 const steps = getCheckoutStepStatuses(state);
 
@@ -140,7 +214,7 @@ describe('getCheckoutStepStatuses()', () => {
             });
 
             it('is marked as complete if billing address is not provided and custom fields are valid', () => {
-                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithAmazonPay());
+                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithPayments());
                 jest.spyOn(state.data, 'getBillingAddress').mockReturnValue({
                     ...getEmptyBillingAddress(),
                     customFields: [{ fieldId: 'foo', fieldValue: 'foo' }],
@@ -158,7 +232,7 @@ describe('getCheckoutStepStatuses()', () => {
             });
 
             it('is marked as incomplete if billing address is not provided but custom fields are invalid', () => {
-                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithAmazonPay());
+                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithPayments());
                 jest.spyOn(state.data, 'getBillingAddress').mockReturnValue({
                     ...getEmptyBillingAddress(),
                     customFields: [{ fieldId: 'foo', fieldValue: '' }],
@@ -176,7 +250,7 @@ describe('getCheckoutStepStatuses()', () => {
             });
 
             it('is marked as non-editable if step is complete and there are no custom fields', () => {
-                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithAmazonPay());
+                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithPayments());
                 jest.spyOn(state.data, 'getBillingAddress').mockReturnValue(getBillingAddress());
 
                 const steps = getCheckoutStepStatuses(state);
@@ -188,7 +262,7 @@ describe('getCheckoutStepStatuses()', () => {
             });
 
             it('is marked as editable if step is complete and there is custom fields', () => {
-                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithAmazonPay());
+                jest.spyOn(state.data, 'getCheckout').mockReturnValue(getCheckoutWithPayments());
                 jest.spyOn(state.data, 'getBillingAddress').mockReturnValue(getBillingAddress());
                 jest.spyOn(state.data, 'getBillingAddressFields').mockReturnValue(
                     getAddressFormFields(),

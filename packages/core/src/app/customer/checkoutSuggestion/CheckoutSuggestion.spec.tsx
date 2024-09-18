@@ -7,11 +7,11 @@ import { mount, render } from 'enzyme';
 import React, { FunctionComponent } from 'react';
 
 import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+import { LocaleProvider } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
-import { CheckoutProvider } from '../../checkout';
 import { getCheckout } from '../../checkout/checkouts.mock';
 import { getStoreConfig } from '../../config/config.mock';
-import { LocaleProvider } from '../../locale';
 
 import BoltCheckoutSuggestion from './BoltCheckoutSuggestion';
 import CheckoutSuggestion, {

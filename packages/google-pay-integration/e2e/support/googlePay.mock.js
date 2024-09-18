@@ -30,8 +30,6 @@ const mockingPaymentData = {
     shippingAddress: null,
 };
 
-
-
 window['denylistedDomainsHashedValueListForGpayButtonWithCardInfo'] = [-718583466,-651407173,1501053020,1270931793];window['whitelistedDomainsHashedValueListForGpayButtonWithCardInfo'] = [1432838318];window['denylistedMerchentIdsHashedValueListForGpayButtonWithCardInfo'] = [1260893,211376492];/*
 
  Copyright The Closure Library Authors.

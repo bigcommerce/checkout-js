@@ -35,7 +35,13 @@ export default function mapAddressToFormValues(
                 }
 
                 if (isSystemAddressFieldName(name)) {
-                    addressFormValues[name] = (address && address[name]) || '';
+                    const fieldValue = address && address[name];
+
+                    addressFormValues[name] = getValue(
+                        fieldType,
+                        fieldValue,
+                        defaultValue,
+                    )?.toString() || '';
                 }
 
                 return addressFormValues;
@@ -69,7 +75,13 @@ function getValue(
     }
 
     if (fieldType === DynamicFormFieldType.date && typeof fieldValue === 'string') {
-        return fieldValue ? new Date(fieldValue) : undefined;
+        if (fieldValue) {
+            const [year, month, day] = fieldValue.split('-');
+
+            return new Date(Number(year), Number(month)-1, Number(day));
+        }
+
+        return undefined;
     }
 
     return fieldValue;

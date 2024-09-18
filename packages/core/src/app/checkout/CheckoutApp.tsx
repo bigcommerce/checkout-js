@@ -4,23 +4,27 @@ import React, { Component } from 'react';
 import ReactModal from 'react-modal';
 
 import { AnalyticsProvider } from '@bigcommerce/checkout/analytics';
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { ErrorBoundary, ErrorLogger } from '@bigcommerce/checkout/error-handling-utils';
+import { getLanguageService, LocaleProvider } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import '../../scss/App.scss';
-import { createErrorLogger, ErrorBoundary, ErrorLogger } from '../common/error';
+
+import { createErrorLogger } from '../common/error';
 import {
     createEmbeddedCheckoutStylesheet,
     createEmbeddedCheckoutSupport,
 } from '../embeddedCheckout';
-import { getLanguageService, LocaleProvider } from '../locale';
 
 import Checkout from './Checkout';
-import CheckoutProvider from './CheckoutProvider';
 
 export interface CheckoutAppProps {
     checkoutId: string;
     containerId: string;
     publicPath?: string;
     sentryConfig?: BrowserOptions;
+    sentrySampleRate?: number;
 }
 
 export default class CheckoutApp extends Component<CheckoutAppProps> {
@@ -40,6 +44,7 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
             {
                 errorTypes: ['UnrecoverableError'],
                 publicPath: props.publicPath,
+                sampleRate: props.sentrySampleRate ? props.sentrySampleRate : 0.1,
             },
         );
     }
@@ -52,17 +57,19 @@ export default class CheckoutApp extends Component<CheckoutAppProps> {
 
     render() {
         return (
-            <ErrorBoundary logger={ this.errorLogger }>
-                <LocaleProvider checkoutService={ this.checkoutService }>
-                    <CheckoutProvider checkoutService={ this.checkoutService }>
-                        <AnalyticsProvider checkoutService={ this.checkoutService }>
-                            <Checkout
-                                {...this.props}
-                                createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
-                                embeddedStylesheet={this.embeddedStylesheet}
-                                embeddedSupport={this.embeddedSupport}
-                                errorLogger={this.errorLogger}
-                            />
+            <ErrorBoundary logger={this.errorLogger}>
+                <LocaleProvider checkoutService={this.checkoutService}>
+                    <CheckoutProvider checkoutService={this.checkoutService}>
+                        <AnalyticsProvider checkoutService={this.checkoutService}>
+                            <ExtensionProvider checkoutService={this.checkoutService}>
+                                <Checkout
+                                    {...this.props}
+                                    createEmbeddedMessenger={createEmbeddedCheckoutMessenger}
+                                    embeddedStylesheet={this.embeddedStylesheet}
+                                    embeddedSupport={this.embeddedSupport}
+                                    errorLogger={this.errorLogger}
+                                />
+                            </ExtensionProvider>
                         </AnalyticsProvider>
                     </CheckoutProvider>
                 </LocaleProvider>

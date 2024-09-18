@@ -1,7 +1,8 @@
 import { FieldProps } from 'formik';
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 
-import { TranslatedString } from '../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { Fieldset, FormField, Label, Legend, TextInput } from '../ui/form';
 
 const OrderComments: FunctionComponent = () => {
@@ -30,7 +31,7 @@ const OrderComments: FunctionComponent = () => {
 
     return (
         <Fieldset legend={legend} testId="checkout-shipping-comments">
-            <FormField input={renderInput} label={renderLabel} name="orderComment" />
+            <FormField id="orderComment" input={renderInput} label={renderLabel} name="orderComment" />
         </Fieldset>
     );
 };

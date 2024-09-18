@@ -1,62 +1,25 @@
 import { Address, CustomerAddress } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo, PureComponent, ReactNode } from 'react';
+import React, { FunctionComponent, memo } from 'react';
 
-import { preventDefault } from '../common/dom';
-import { TranslatedString } from '../locale';
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+import { PoweredByPayPalFastlaneLabel, usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
+
 import { DropdownTrigger } from '../ui/dropdown';
 
-import isEqualAddress from './isEqualAddress';
-import './AddressSelect.scss';
 import AddressSelectButton from './AddressSelectButton';
+import AddressType from './AddressType';
+import isEqualAddress from './isEqualAddress';
 import StaticAddress from './StaticAddress';
+
+import './AddressSelect.scss';
 
 export interface AddressSelectProps {
     addresses: CustomerAddress[];
     selectedAddress?: Address;
+    type: AddressType;
     onSelectAddress(address: Address): void;
     onUseNewAddress(currentAddress?: Address): void;
-}
-
-class AddressSelect extends PureComponent<AddressSelectProps> {
-    render(): ReactNode {
-        const { addresses, selectedAddress } = this.props;
-
-        return (
-            <div className="form-field">
-                <div className="dropdown--select">
-                    <DropdownTrigger
-                        dropdown={
-                            <AddressSelectMenu
-                                addresses={addresses}
-                                onSelectAddress={this.handleSelectAddress}
-                                onUseNewAddress={this.handleUseNewAddress}
-                                selectedAddress={selectedAddress}
-                            />
-                        }
-                    >
-                        <AddressSelectButton
-                            addresses={addresses}
-                            selectedAddress={selectedAddress}
-                        />
-                    </DropdownTrigger>
-                </div>
-            </div>
-        );
-    }
-
-    private handleSelectAddress: (newAddress: Address) => void = (newAddress: Address) => {
-        const { onSelectAddress, selectedAddress } = this.props;
-
-        if (!isEqualAddress(selectedAddress, newAddress)) {
-            onSelectAddress(newAddress);
-        }
-    };
-
-    private handleUseNewAddress: () => void = () => {
-        const { selectedAddress, onUseNewAddress } = this.props;
-
-        onUseNewAddress(selectedAddress);
-    };
 }
 
 const AddressSelectMenu: FunctionComponent<AddressSelectProps> = ({
@@ -64,6 +27,7 @@ const AddressSelectMenu: FunctionComponent<AddressSelectProps> = ({
     onSelectAddress,
     onUseNewAddress,
     selectedAddress,
+    type,
 }) => (
     <ul className="dropdown-menu instrumentSelect-dropdownMenu" id="addressDropdown">
         <li className="dropdown-menu-item dropdown-menu-item--select">
@@ -76,13 +40,67 @@ const AddressSelectMenu: FunctionComponent<AddressSelectProps> = ({
             </a>
         </li>
         {addresses.map((address) => (
-            <li className="dropdown-menu-item dropdown-menu-item--select" key={address.id}>
-                <a href="#" onClick={preventDefault(() => onSelectAddress(address))}>
-                    <StaticAddress address={address} />
+            <li
+                className="dropdown-menu-item dropdown-menu-item--select"
+                data-test="address-select-option"
+                key={address.id}
+            >
+                <a
+                    data-test="address-select-option-action"
+                    href="#"
+                    onClick={preventDefault(() => onSelectAddress(address))}
+                >
+                    <StaticAddress address={address} type={type} />
                 </a>
             </li>
         ))}
     </ul>
 );
+
+const AddressSelect = ({
+    addresses,
+    selectedAddress,
+    type,
+    onSelectAddress,
+    onUseNewAddress,
+}: AddressSelectProps) => {
+    const { shouldShowPayPalFastlaneLabel } = usePayPalFastlaneAddress();
+
+    const handleSelectAddress = (newAddress: Address) => {
+        if (!isEqualAddress(selectedAddress, newAddress)) {
+            onSelectAddress(newAddress);
+        }
+    };
+
+    const handleUseNewAddress = () => {
+        onUseNewAddress(selectedAddress);
+    };
+
+    return (
+        <div className="form-field">
+            <div className="dropdown--select">
+                <DropdownTrigger
+                    dropdown={
+                        <AddressSelectMenu
+                            addresses={addresses}
+                            onSelectAddress={handleSelectAddress}
+                            onUseNewAddress={handleUseNewAddress}
+                            selectedAddress={selectedAddress}
+                            type={type}
+                        />
+                    }
+                >
+                    <AddressSelectButton
+                        addresses={addresses}
+                        selectedAddress={selectedAddress}
+                        type={type}
+                    />
+                </DropdownTrigger>
+            </div>
+
+            {shouldShowPayPalFastlaneLabel && <PoweredByPayPalFastlaneLabel />}
+        </div>
+    );
+}
 
 export default memo(AddressSelect);

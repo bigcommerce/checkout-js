@@ -23,6 +23,11 @@ export default function resolveComponent<TResolveId extends Record<string, unkno
             const result = { component: Component, matches: 0, default: false };
 
             for (const [key, value] of Object.entries(resolverId)) {
+                if (key in query && query[key] !== value) {
+                    result.matches = 0;
+                    break;
+                }
+
                 if (query[key] === value) {
                     result.matches++;
                 }

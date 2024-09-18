@@ -1,5 +1,7 @@
 .idea
 .vscode
+.DS_Store
+junit.xml
 __temp__
 node_modules
 build
@@ -13,3 +15,6 @@ dist
 .env
 *.swp
 *.swo
+/packages/test-framework/report
+/packages/test-framework/screenshots
+/packages/test-framework/videos

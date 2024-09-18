@@ -1,13 +1,15 @@
-import { CheckoutSelectors, Consignment } from '@bigcommerce/checkout-sdk';
+import { CheckoutSelectors, Consignment, createCheckoutService } from '@bigcommerce/checkout-sdk';
 import { mount } from 'enzyme';
 import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
 import { AnalyticsProviderMock } from '@bigcommerce/checkout/analytics';
+import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
+import { LocaleProvider, TranslatedString } from '@bigcommerce/checkout/locale';
+import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
 
 import { getCart } from '../../cart/carts.mock';
-import { TranslatedString } from '../../locale';
 import { getConsignment } from '../consignment.mock';
 
 import ShippingOptionsForm, { ShippingOptionsFormProps } from './ShippingOptionsForm';
@@ -26,6 +28,7 @@ describe('ShippingOptions Component', () => {
     ];
     let triggerConsignmentsUpdated: (state: CheckoutSelectors) => void;
     const defaultProps: ShippingOptionsFormProps = {
+        isInitialValueLoaded: true,
         isMultiShippingMode: true,
         consignments,
         invalidShippingMessage: 'foo',
@@ -39,12 +42,20 @@ describe('ShippingOptions Component', () => {
         isLoading: jest.fn(() => false),
     };
 
-    const TestWrap: React.FC = ({ children}) => (
-        <AnalyticsProviderMock>
-            <Formik initialValues={{}} onSubmit={noop}>
-                { children }
-            </Formik>
-        </AnalyticsProviderMock>
+    const checkoutService = createCheckoutService();
+
+    const TestWrap: React.FC = ({ children }) => (
+        <CheckoutProvider checkoutService={checkoutService}>
+            <ExtensionProvider checkoutService={checkoutService}>
+                <AnalyticsProviderMock>
+                    <LocaleProvider checkoutService={checkoutService}>
+                        <Formik initialValues={{}} onSubmit={noop}>
+                            {children}
+                        </Formik>
+                    </LocaleProvider>
+                </AnalyticsProviderMock>
+            </ExtensionProvider>
+        </CheckoutProvider>
     );
 
     it('renders sorted options for all consignments when multi-shipping', () => {
@@ -113,7 +124,7 @@ describe('ShippingOptions Component', () => {
                     {...defaultProps}
                     consignments={[]}
                     isLoading={() => false}
-                    methodId="amazon"
+                    methodId="amazonpay"
                 />
             </TestWrap>,
         );

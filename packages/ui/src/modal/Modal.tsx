@@ -4,8 +4,9 @@ import React, { FunctionComponent, KeyboardEvent, MouseEvent, ReactNode, useCall
 import ReactModal from 'react-modal';
 import { Omit } from 'utility-types';
 
+import { preventDefault } from '@bigcommerce/checkout/dom-utils';
+
 import { IconClose } from '../icon';
-import { preventDefault } from '../utils/dom';
 
 export type ModalProps = Omit<
     ReactModal.Props,

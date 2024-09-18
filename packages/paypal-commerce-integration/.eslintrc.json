@@ -1,0 +1,15 @@
+{
+  "extends": [
+    "../../.eslintrc.json"
+  ],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "@typescript-eslint/no-unsafe-assignment": "off",
+        "react/jsx-no-useless-fragment": "off",
+        "react-hooks/exhaustive-deps": "off"
+      }
+    }
+  ]
+}

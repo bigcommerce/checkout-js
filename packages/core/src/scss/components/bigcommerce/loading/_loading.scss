@@ -64,3 +64,16 @@
         width: 0;
     }
 }
+
+.embedded-checkout-loading-spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: $loading-spinner-overlay;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+}

@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useCallback, useMemo } from 'react';
 
-import { TranslatedString } from '../../locale';
+import { TranslatedString } from '@bigcommerce/checkout/locale';
+
 import { FormField, TextInputIframeContainer } from '../../ui/form';
 import { IconHelp, IconLock } from '../../ui/icon';
 import { TooltipTrigger } from '../../ui/tooltip';

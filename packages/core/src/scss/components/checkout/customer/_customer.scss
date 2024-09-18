@@ -8,7 +8,9 @@
 .customerEmail-container {
     @include grid-row;
 
-    margin-bottom: spacing("single");
+    @include breakpoint("small") {
+        margin-bottom: spacing("single");
+    }
 
     .customerEmail-floating--enabled {
         @include breakpoint("small") {
@@ -25,7 +27,7 @@
 .customerEmail-action {
     @include grid-column($collapse: true, $columns: $total-columns);
 
-    margin-bottom: spacing("single");
+    margin-bottom: spacing("half");
     padding: 0;
 
     @include breakpoint("small") {
@@ -90,4 +92,162 @@
 
     margin-right: spacing("single");
     width: 100%;
+}
+
+// Button Width Function
+//
+// -----------------------------------------------------------------------------
+$buttonWidthMap: (
+    single:                     span $wallet-button-track-size,
+    half:                       span $wallet-button-track-size / 2,
+    third:                      span $wallet-button-track-size / 3,
+    quarter:                    span $wallet-button-track-size / 4
+);
+
+@function buttonWidth($key) {
+
+    @if map-has-key($buttonWidthMap, $key) {
+        @return map-get($buttonWidthMap, $key);
+    }
+
+    @warn "Unknown `#{$key}` in $buttonWidthMap.";
+    @return null;
+}
+
+// Top Wallet Buttons Container
+//
+// -----------------------------------------------------------------------------
+
+.checkout-button-container {
+    margin: spacing('double') 0 0;
+
+    .checkoutRemote {
+        display: grid;
+        grid-gap: $floating-form-field-spacing;
+        grid-template-columns: repeat($wallet-button-track-size, 1fr);
+        margin: 0;
+
+        > div {
+            height: $wallet-button-height;
+            margin-right: 0;
+            margin-top: 0;
+            width: 100%;
+        }
+    }
+
+    #applepayCheckoutButton button,
+    #braintreepaypalcreditCheckoutButton,
+    #braintreepaypalCheckoutButton {
+        width: 100%;
+    }
+
+    .skeleton-container {
+        background-color: color("greys", "lightest");
+        border: none;
+        height: $wallet-button-height;
+        margin-bottom: 0;
+        padding: 0;
+    }
+
+    .gpay-button.short {
+        background-size: auto;
+        border: none;
+        border-radius: $global-radius;
+        height: $wallet-button-height;
+        min-height: 0;
+        min-width: 0;
+        width: 100%;
+    }
+}
+
+// wallet buttons auto layout based on the number of button divs
+.checkout-buttons-auto-layout {
+    .checkoutRemote > div:first-child:nth-last-child(1) {
+        grid-column: buttonWidth('single');
+        max-width: $wallet-button-max-width;
+    }
+
+    .checkoutRemote > div:first-child:nth-last-child(2),div:first-child:nth-last-child(2) ~ div {
+        grid-column: buttonWidth('half');
+    }
+
+    .checkoutRemote > div:first-child:nth-last-child(3) {
+        grid-column: buttonWidth('single');
+
+        @include breakpoint("small") {
+            grid-column: buttonWidth('third');
+        }
+    }
+    .checkoutRemote > div:first-child:nth-last-child(3) ~ div:nth-child(n + 2){
+        grid-column: buttonWidth('half');
+
+        @include breakpoint("small") {
+            grid-column: buttonWidth('third');
+        }
+    }
+
+    .checkoutRemote > div:first-child:nth-last-child(4),div:first-child:nth-last-child(4) ~ div {
+        grid-column: buttonWidth('half');
+
+        @include breakpoint("medium") {
+            grid-column: buttonWidth('quarter');
+        }
+
+        @include breakpoint("large") {
+            grid-column: buttonWidth('half');
+        }
+
+        @include breakpoint("xlarge") {
+            grid-column: buttonWidth('quarter');
+        }
+    }
+
+    .checkoutRemote > div:first-child:nth-last-child(5) {
+        grid-column: buttonWidth('single');
+
+        @include breakpoint("small") {
+            grid-column: buttonWidth('half');
+        }
+    }
+    .checkoutRemote > div:first-child:nth-last-child(5) ~ div:nth-child(2){
+        grid-column: buttonWidth('half');
+    }
+    .checkoutRemote > div:first-child:nth-last-child(5) ~ div:nth-child(n+3){
+        grid-column: buttonWidth('half');
+
+        @include breakpoint("small") {
+            grid-column: buttonWidth('third');
+        }
+    }
+
+    .checkoutRemote > div {
+        grid-column: buttonWidth('half');
+
+        @include breakpoint("small") {
+            grid-column: buttonWidth('third');
+        }
+    }
+}
+
+.checkout-separator {
+    align-items: center;
+    display: flex;
+    height: spacing("half");
+    justify-content: space-between;
+    margin-top: spacing('double');
+    text-align: center;
+    width: 100%;
+
+    span {
+        padding: 0 spacing("half");
+    }
+}
+
+.checkout-separator::before,
+.checkout-separator::after {
+    background-color: color("greys", "light");
+    content: ' ';
+    display: inline-block;
+    flex-grow: 2;
+    height: $container-border-global-size;
 }

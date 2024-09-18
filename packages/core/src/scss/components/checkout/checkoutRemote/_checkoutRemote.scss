@@ -7,14 +7,44 @@
     flex-wrap: wrap;
     margin-left: -(spacing("third"));
     margin-right: -(spacing("third"));
+    margin-top: -(spacing("single"));
 
     > div {
         margin-right: spacing("single");
+        margin-top: spacing("single");
+        z-index: zIndex("low");
     }
 
     > .AmazonPayContainer {
         width: remCalc(200px);
+        height: 51px !important;
+        #amazonpayCheckoutButton > div{
+            width: 100% !important;
+            height: 51px !important;
+        }
     }
+
+    .gpay-button {
+        border-radius: $global-radius;
+        height: $wallet-button-height;
+        min-height: $wallet-button-height;
+    }
+}
+
+#applepayCheckoutButton button,
+#braintreepaypalcreditCheckoutButton,
+#braintreepaypalCheckoutButton {
+    width: 160px;
+}
+
+#applepayCheckoutButton button {
+    background-color: #000;
+    background-image: -webkit-named-image(apple-pay-logo-white);
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: 100% 60%;
+    border-radius: $global-radius;
+    height: $wallet-button-height;
 }
 
 .checkoutRemote-button {
