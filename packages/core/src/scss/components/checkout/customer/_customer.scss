@@ -168,26 +168,26 @@ $buttonWidthMap: (
     }
 
     .checkoutRemote > div:first-child:nth-last-child(2),div:first-child:nth-last-child(2) ~ div {
-        grid-column: buttonWidth('half');
+        @include breakpoint("small") {
+            grid-column: buttonWidth('half');
+        }
     }
 
     .checkoutRemote > div:first-child:nth-last-child(3) {
-        grid-column: buttonWidth('single');
-
         @include breakpoint("small") {
             grid-column: buttonWidth('third');
         }
     }
     .checkoutRemote > div:first-child:nth-last-child(3) ~ div:nth-child(n + 2){
-        grid-column: buttonWidth('half');
-
         @include breakpoint("small") {
             grid-column: buttonWidth('third');
         }
     }
 
     .checkoutRemote > div:first-child:nth-last-child(4),div:first-child:nth-last-child(4) ~ div {
-        grid-column: buttonWidth('half');
+        @include breakpoint("small") {
+            grid-column: buttonWidth('half');
+        }
 
         @include breakpoint("medium") {
             grid-column: buttonWidth('quarter');
@@ -203,25 +203,23 @@ $buttonWidthMap: (
     }
 
     .checkoutRemote > div:first-child:nth-last-child(5) {
-        grid-column: buttonWidth('single');
-
         @include breakpoint("small") {
             grid-column: buttonWidth('half');
         }
     }
     .checkoutRemote > div:first-child:nth-last-child(5) ~ div:nth-child(2){
-        grid-column: buttonWidth('half');
+        @include breakpoint("small") {
+            grid-column: buttonWidth('half');
+        }
     }
     .checkoutRemote > div:first-child:nth-last-child(5) ~ div:nth-child(n+3){
-        grid-column: buttonWidth('half');
-
         @include breakpoint("small") {
             grid-column: buttonWidth('third');
         }
     }
 
     .checkoutRemote > div {
-        grid-column: buttonWidth('half');
+        grid-column: buttonWidth('single');
 
         @include breakpoint("small") {
             grid-column: buttonWidth('third');

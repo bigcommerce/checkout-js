@@ -1,0 +1,23 @@
+.google-pay-top-button {
+    & > div {
+        height: 100%;
+        width: 100%;
+    }
+
+    & .gpay-card-info-container {
+        height: 100%;
+        width: 100%;
+        min-width: 100%;
+        min-height: unset;
+    }
+
+    & .gpay-card-info-animation-container {
+        height: 100%;
+    }
+
+    & .gpay-card-info-container,
+    & .gpay-button {
+        outline: none;
+    }
+}
+

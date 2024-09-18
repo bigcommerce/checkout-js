@@ -9,6 +9,8 @@ import {
     toResolvableComponent,
 } from '@bigcommerce/checkout/payment-integration-api';
 
+import './GooglePayButton.scss';
+
 const GooglePayButton: FunctionComponent<CheckoutButtonProps> = (props) => {
     const { language, onUnhandledError } = props;
 
@@ -24,7 +26,7 @@ const GooglePayButton: FunctionComponent<CheckoutButtonProps> = (props) => {
         return null;
     }
 
-    return <CheckoutButton {...props} />;
+    return <CheckoutButton checkoutButtonContainerClass="google-pay-top-button" {...props} />;
 };
 
 export default toResolvableComponent<CheckoutButtonProps, CheckoutButtonResolveId>(
