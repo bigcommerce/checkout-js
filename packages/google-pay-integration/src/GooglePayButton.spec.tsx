@@ -27,6 +27,7 @@ describe('GooglePayButton', () => {
             language: createLanguageService(),
             methodId: 'googlepay',
             onUnhandledError: jest.fn(),
+            onWalletButtonClick: jest.fn(),
         };
     });
 

@@ -8,6 +8,7 @@ import {
 
 const CheckoutButton: FunctionComponent<CheckoutButtonProps> = ({
     checkoutService: { deinitializeCustomer, initializeCustomer },
+    checkoutButtonContainerClass,
     containerId,
     methodId,
     onUnhandledError,
@@ -35,7 +36,7 @@ const CheckoutButton: FunctionComponent<CheckoutButtonProps> = ({
         onWalletButtonClick,
     ]);
 
-    return <div id={containerId} />;
+    return <div className={checkoutButtonContainerClass} id={containerId} />;
 };
 
 export default toResolvableComponent<CheckoutButtonProps, CheckoutButtonResolveId>(

@@ -24,10 +24,11 @@
         }
     }
 
-    .gpay-button {
+    .gpay-button, .gpay-card-info-container {
         border-radius: $global-radius;
         height: $wallet-button-height;
         min-height: $wallet-button-height;
+        max-width: $wallet-button-max-width;
     }
 }
 

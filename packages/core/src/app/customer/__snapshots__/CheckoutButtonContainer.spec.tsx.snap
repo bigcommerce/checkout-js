@@ -63,6 +63,7 @@ exports[`CheckoutButtonContainer displays wallet buttons for guest checkout 1`] 
           />
         </div>
         <div
+          class="google-pay-top-button"
           id="googlepayauthorizenetCheckoutButton"
         />
       </div>
@@ -138,6 +139,7 @@ exports[`CheckoutButtonContainer hides wallet buttons with CSS when payment step
           />
         </div>
         <div
+          class="google-pay-top-button"
           id="googlepayauthorizenetCheckoutButton"
         />
       </div>
@@ -213,6 +215,7 @@ exports[`CheckoutButtonContainer removes Paypal commerce wallet buttons when pay
           />
         </div>
         <div
+          class="google-pay-top-button"
           id="googlepayauthorizenetCheckoutButton"
         />
       </div>
