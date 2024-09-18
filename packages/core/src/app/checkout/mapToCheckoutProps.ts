@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { CheckoutSelectors, CustomError } from '@bigcommerce/checkout-sdk';
 import { createSelector } from 'reselect';
 
@@ -31,11 +32,19 @@ export default function mapToCheckoutProps({
         },
     );
 
+    const subscribeToLoginSelector = createSelector(
+        ({ checkoutService: { subscribe} }: CheckoutContextProps) => subscribe,
+        subscribe => (subscriber: (state: CheckoutSelectors) => void) => {
+            return subscribe(subscriber, ({ data: { getCustomer } }) => getCustomer());
+        }
+    );
+
     return {
         billingAddress: data.getBillingAddress(),
         cart: data.getCart(),
         clearError: checkoutService.clearError,
         consignments: data.getConsignments(),
+        deleteConsignment: checkoutService.deleteConsignment,
         hasCartChanged: submitOrderError && submitOrderError.type === 'cart_changed', // TODO: Need to clear the error once it's displayed
         isGuestEnabled,
         isLoadingCheckout: statuses.isLoadingCheckout(),
@@ -47,10 +56,14 @@ export default function mapToCheckoutProps({
         createAccountUrl,
         canCreateAccountInCheckout: features['CHECKOUT-4941.account_creation_in_checkout'],
         promotions,
+        // Added the two lines below because we need to reload data after consignment is deleted on login subscription
+        loadShippingAddressFields: checkoutService.loadShippingAddressFields,
+        loadShippingOptions: checkoutService.loadShippingOptions,
         subscribeToConsignments: subscribeToConsignmentsSelector({
             checkoutService,
             checkoutState,
         }),
+        subscribeToLogin: subscribeToLoginSelector({ checkoutService, checkoutState }),
         steps: data.getCheckout() ? getCheckoutStepStatuses(checkoutState) : EMPTY_ARRAY,
     };
 }

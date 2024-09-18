@@ -26,4 +26,10 @@
     .alertBox--warning {
         color: color("warning");
     }
+
+    .ffl-section {
+        .alertBox--font-color-black {
+            color: $color-black;
+        }
+    }
 }

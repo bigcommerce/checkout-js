@@ -118,6 +118,7 @@ const AddressFormModal: FunctionComponent<AddressFormModalProps> = ({
 }) => (
     <Modal
         additionalModalClassName="modal--medium"
+        additionalBodyClassName="modal--overflow"
         header={
             <ModalHeader>
                 <TranslatedString id="address.add_address_heading" />

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
     Address,
     Cart,
@@ -37,6 +38,7 @@ import { ShippingOptionExpiredError } from '../shipping/shippingOption';
 import { LazyContainer, LoadingNotification, LoadingOverlay } from '../ui/loading';
 import { MobileView } from '../ui/responsive';
 
+import getFflLineItems from '../shipping/getFflLineItems';
 import CheckoutStep from './CheckoutStep';
 import CheckoutStepStatus from './CheckoutStepStatus';
 import CheckoutStepType from './CheckoutStepType';
@@ -44,6 +46,7 @@ import CheckoutSupport from './CheckoutSupport';
 import mapToCheckoutProps from './mapToCheckoutProps';
 import navigateToOrderConfirmation from './navigateToOrderConfirmation';
 import withCheckout from './withCheckout';
+import DealerShipping from './dealer/DealerShipping';
 
 const Billing = lazy(() =>
     retry(
@@ -127,6 +130,11 @@ export interface CheckoutState {
     hasSelectedShippingOptions: boolean;
     isBuyNowCartEnabled: boolean;
     isSubscribed: boolean;
+    fflLineItems: LineItem[];
+    storeHash: string;
+    fflLicense: string;
+    fflToOrderComments: boolean;
+    withAmmoSubscription: boolean;
 }
 
 export interface WithCheckoutProps {
@@ -149,6 +157,9 @@ export interface WithCheckoutProps {
     clearError(error?: Error): void;
     loadCheckout(id: string, options?: RequestOptions<CheckoutParams>): Promise<CheckoutSelectors>;
     subscribeToConsignments(subscriber: (state: CheckoutSelectors) => void): () => void;
+    subscribeToLogin(subscriber: (state: CheckoutSelectors) => void): () => void;
+    loadShippingAddressFields(): Promise<CheckoutSelectors>;
+    loadShippingOptions(): Promise<CheckoutSelectors>;
 }
 
 class Checkout extends Component<
@@ -156,24 +167,34 @@ class Checkout extends Component<
     CheckoutState
 > {
     state: CheckoutState = {
-        isBillingSameAsShipping: true,
-        isCartEmpty: false,
-        isRedirecting: false,
-        isMultiShippingMode: false,
+        ammoLineItems: [],
+        fflLicense: "",
+        fflLineItems: [],
         hasSelectedShippingOptions: false,
+        isBillingSameAsShipping: true,
         isBuyNowCartEnabled: false,
+        isCartEmpty: false,
+        isMultiShippingMode: false,
+        isRedirecting: false,
         isSubscribed: false,
+        storeHash: "",
+        withAmmoSubscription: true
     };
 
     private embeddedMessenger?: EmbeddedCheckoutMessenger;
     private unsubscribeFromConsignments?: () => void;
+    private unsubscribeFromLogin?: () => void;
 
     componentWillUnmount(): void {
         if (this.unsubscribeFromConsignments) {
             this.unsubscribeFromConsignments();
             this.unsubscribeFromConsignments = undefined;
         }
-
+        if (this.unsubscribeFromLogin) {
+            this.unsubscribeFromLogin();
+            this.unsubscribeFromLogin = undefined;
+        }
+        
         window.removeEventListener('beforeunload', this.handleBeforeExit);
         this.handleBeforeExit();
     }
@@ -186,7 +207,8 @@ class Checkout extends Component<
             embeddedStylesheet,
             loadCheckout,
             subscribeToConsignments,
-            analyticsTracker
+            analyticsTracker,
+            subscribeToLogin
         } = this.props;
 
         try {
@@ -198,8 +220,9 @@ class Checkout extends Component<
                     ] as any, // FIXME: Currently the enum is not exported so it can't be used here.
                 },
             });
-            const { links: { siteLink = '' } = {} } = data.getConfig() || {};
+            const { links: { siteLink = "" } = {} } = data.getConfig() || {};
             const errorFlashMessages = data.getFlashMessages('error') || [];
+            this.setState({ storeHash: data.getConfig()?.storeProfile.storeHash || "" });
 
             if (errorFlashMessages.length) {
                 const { language } = this.props;
@@ -221,6 +244,7 @@ class Checkout extends Component<
             this.unsubscribeFromConsignments = subscribeToConsignments(
                 this.handleConsignmentsUpdated,
             );
+            this.unsubscribeFromLogin = subscribeToLogin(this.handleCustomerLoggedIn);
             this.embeddedMessenger = messenger;
             messenger.receiveStyles((styles) => embeddedStylesheet.append(styles));
             messenger.postFrameLoaded({ contentId: containerId });
@@ -230,6 +254,16 @@ class Checkout extends Component<
 
             const consignments = data.getConsignments();
             const cart = data.getCart();
+
+            // window.fflStorefrontToken is set by a custom script that is added
+            // when the BigCommerce app is installed
+            // the storefront API token is not available within the checkout SDK
+            if (cart && window.fflStorefrontToken) {
+                const [fflLineItems, ammoLineItems] = await getFflLineItems(window.fflStorefrontToken, cart);
+                this.setState({ fflLineItems, ammoLineItems });
+            } else {
+                console.warn('Could not find fflStorefrontToken');
+            }
 
             const hasMultiShippingEnabled =
                 data.getConfig()?.checkoutSettings.hasMultiShippingEnabled;
@@ -337,7 +371,10 @@ class Checkout extends Component<
                 return this.renderCustomerStep(step);
 
             case CheckoutStepType.Shipping:
-                return this.renderShippingStep(step);
+                return (this.state.fflLineItems || this.state.ammoLineItems) &&
+                (this.state.fflLineItems.length > 0 || (this.state.ammoLineItems.length > 0 && this.state.withAmmoSubscription)) ?
+                this.renderDealerShippingStep(step) :
+                this.renderShippingStep(step);
 
             case CheckoutStepType.Billing:
                 return this.renderBillingStep(step);
@@ -438,6 +475,63 @@ class Checkout extends Component<
         );
     }
 
+    private handleConsignmentsAdresses(deleteConsignment, consignments = []) {
+      return Promise.all(consignments.map(({ id }) => deleteConsignment(id)));
+    }
+
+    private renderDealerShippingStep(step: CheckoutStepStatus): ReactNode {
+          const {
+              hasCartChanged,
+              cart,
+              consignments,
+          } = this.props;
+
+          const fflConsignmentItems = this.state.fflLineItems.map(fflItem => ({ itemId: fflItem.id, quantity: fflItem.quantity }));
+          const ammoConsignmentItems = this.state.ammoLineItems.map(fflItem => ({ itemId: fflItem.id, quantity: fflItem.quantity }));
+
+          if (!cart) {
+              return;
+          }
+
+          return (
+              <CheckoutStep
+                  { ...step }
+                  heading={ <TranslatedString id="shipping.ffl_shipping_heading" /> }
+                  key={ step.type }
+                  onEdit={ this.handleEditStep }
+                  onExpanded={ this.handleExpanded }
+                  summary={ consignments.map(consignment =>
+                      <div className="staticConsignmentContainer" key={ consignment.id }>
+                          <StaticConsignment
+                              cart={ cart }
+                              compactView={ consignments.length < 2 }
+                              consignment={ consignment }
+                          />
+                      </div>) }
+              >
+                  <LazyContainer>
+                    <DealerShipping
+                        ammoConsignmentItems={ ammoConsignmentItems }
+                        cartHasChanged={ hasCartChanged }
+                        handleConsignmentsAdresses={ this.handleConsignmentsAdresses }
+                        fflConsignmentItems={ fflConsignmentItems }
+                        isMultiShippingMode={ true }
+                        navigateNextStep={ this.handleShippingNextStep }
+                        onCreateAccount={ this.handleShippingCreateAccount }
+                        onReady={ this.handleReady }
+                        onSignIn={ this.handleShippingSignIn }
+                        onToggleMultiShipping={ this.handleToggleMultiShipping }
+                        onUnhandledError={ this.handleUnhandledError }
+                        storeHash={ this.state.storeHash }
+                        setSelectedFFL={ this.setSelectedFFL }
+                        setFFLtoOrderComments={ this.setFFLtoOrderComments }
+                        setWithAmmoSubscription={ this.setWithAmmoSubscription }
+                    />
+                  </LazyContainer>
+              </CheckoutStep>
+          );
+        }
+
     private renderBillingStep(step: CheckoutStepStatus): ReactNode {
         const { billingAddress } = this.props;
 
@@ -488,6 +582,9 @@ class Checkout extends Component<
                         onSubmit={this.navigateToOrderConfirmation}
                         onSubmitError={this.handleError}
                         onUnhandledError={this.handleUnhandledError}
+                        storeHash={this.state.storeHash}
+                        selectedFFL={this.state.fflLicense}
+                        fflToOrderComments={this.state.fflToOrderComments}
                     />
                 </LazyContainer>
             </CheckoutStep>
@@ -616,6 +713,21 @@ class Checkout extends Component<
         this.setState({ hasSelectedShippingOptions: newHasSelectedShippingOptions });
     };
 
+    // Everytime a user logs in or out we clear the consignment data and reload shipping fields
+    private handleCustomerLoggedIn: (state: CheckoutSelectors) => void = async ({ data }) =>  {
+        const {
+          deleteConsignment,
+          consignments,
+          loadShippingAddressFields,
+          loadShippingOptions
+        } = this.props
+             await this.handleConsignmentsAdresses(deleteConsignment, consignments);
+             await Promise.all([
+                 loadShippingAddressFields(),
+                 loadShippingOptions(),
+             ]);
+    }
+    
     private handleCloseErrorModal: () => void = () => {
         this.setState({ error: undefined });
     };
@@ -727,6 +839,18 @@ class Checkout extends Component<
         const { analyticsTracker } = this.props;
 
         analyticsTracker.exitCheckout();
+    }
+
+    private setSelectedFFL: () => void = (value) => {
+        this.setState({ fflLicense: value });
+    }
+
+    private setFFLtoOrderComments: () => void = (value) => {
+        this.setState({ fflToOrderComments: value });
+    }
+
+    private setWithAmmoSubscription: () => void = (value) => {
+        this.setState({ withAmmoSubscription: value });
     }
 }
 

@@ -9,3 +9,7 @@ coverage
 /packages/payment-integration-test-framework/report
 /packages/payment-integration-test-framework/screenshots
 /packages/payment-integration-test-framework/videos
+dist
+.env
+*.swp
+*.swo
