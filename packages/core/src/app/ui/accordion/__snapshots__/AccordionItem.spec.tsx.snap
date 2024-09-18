@@ -18,7 +18,7 @@ exports[`AccordionItem renders component that matches snapshot 1`] = `
       classNames="accordion-item-body"
       in={false}
       mountOnEnter={true}
-      timeout={Object {}}
+      timeout={{}}
       unmountOnExit={true}
     >
       <Transition
@@ -34,7 +34,7 @@ exports[`AccordionItem renders component that matches snapshot 1`] = `
         onExit={[Function]}
         onExited={[Function]}
         onExiting={[Function]}
-        timeout={Object {}}
+        timeout={{}}
         unmountOnExit={true}
       />
     </CSSTransition>

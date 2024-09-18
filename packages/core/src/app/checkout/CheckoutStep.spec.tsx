@@ -9,7 +9,7 @@ import CheckoutStep, { CheckoutStepProps } from './CheckoutStep';
 import CheckoutStepHeader from './CheckoutStepHeader';
 import CheckoutStepType from './CheckoutStepType';
 
-jest.useFakeTimers();
+jest.useFakeTimers({ legacyFakeTimers: true });
 jest.mock('../ui/responsive', () => {
     const original = jest.requireActual('../ui/responsive');
 

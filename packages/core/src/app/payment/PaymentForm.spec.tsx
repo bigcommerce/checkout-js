@@ -29,7 +29,7 @@ import PaymentSubmitButton from './PaymentSubmitButton';
 import SpamProtectionField, { SpamProtectionProps } from './SpamProtectionField';
 import { StoreCreditField, StoreCreditFieldProps, StoreCreditOverlay } from './storeCredit';
 
-jest.useFakeTimers();
+jest.useFakeTimers({ legacyFakeTimers: true });
 
 describe('PaymentForm', () => {
     let checkoutService: CheckoutService;

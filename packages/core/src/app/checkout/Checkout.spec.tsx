@@ -273,7 +273,7 @@ describe('Checkout', () => {
     });
 
     it('calls trackStepViewed when a step is expanded', async () => {
-        jest.useFakeTimers();
+        jest.useFakeTimers({ legacyFakeTimers: true });
         // JSDOM does not support `scrollTo`
         window.scrollTo = jest.fn();
 

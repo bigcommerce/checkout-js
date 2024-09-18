@@ -134,40 +134,4 @@ describe('ShippingAddressForm Component', () => {
             });
         });
     });
-
-    describe('when address is updated', () => {
-        let checkoutService: CheckoutService;
-        let localeContext: LocaleContextType;
-
-        beforeEach(() => {
-            checkoutService = createCheckoutService();
-            localeContext = createLocaleContext(getStoreConfig());
-
-            jest.spyOn(checkoutService.getState().data, 'getCheckout').mockReturnValue(
-                getCheckout(),
-            );
-            jest.spyOn(checkoutService.getState().data, 'getConfig').mockReturnValue(
-                getStoreConfig(),
-            );
-
-            component = mount(
-                <CheckoutProvider checkoutService={checkoutService}>
-                    <LocaleContext.Provider value={localeContext}>
-                        <Formik
-                            initialValues={{
-                                shippingAddress: getShippingAddress(),
-                            }}
-                            onSubmit={noop}
-                        >
-                            <ShippingAddressForm
-                                {...defaultProps}
-                                address={getShippingAddress()}
-                                addresses={[]}
-                            />
-                        </Formik>
-                    </LocaleContext.Provider>
-                </CheckoutProvider>,
-            );
-        });
-    });
 });

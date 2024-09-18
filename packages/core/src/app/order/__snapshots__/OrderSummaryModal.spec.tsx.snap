@@ -25,20 +25,20 @@ exports[`OrderSummaryModal renders order summary 1`] = `
                 />
               }
               items={
-                Object {
-                  "customItems": Array [],
-                  "digitalItems": Array [],
-                  "giftCertificates": Array [
-                    Object {
+                {
+                  "customItems": [],
+                  "digitalItems": [],
+                  "giftCertificates": [
+                    {
                       "amount": 100,
                       "id": "bd391ead-8c58-4105-b00e-d75d233b429a",
                       "message": "message",
                       "name": "$100 Gift Certificate",
-                      "recipient": Object {
+                      "recipient": {
                         "email": "lu@is.com",
                         "name": "luis",
                       },
-                      "sender": Object {
+                      "sender": {
                         "email": "pa@blo.com",
                         "name": "pablo",
                       },
@@ -46,17 +46,17 @@ exports[`OrderSummaryModal renders order summary 1`] = `
                       "theme": "General",
                     },
                   ],
-                  "physicalItems": Array [
-                    Object {
+                  "physicalItems": [
+                    {
                       "addedByPromotion": false,
                       "brand": "OFS",
-                      "categoryNames": Array [
+                      "categoryNames": [
                         "Cat 1",
                       ],
                       "comparisonPrice": 200,
                       "couponAmount": 0,
                       "discountAmount": 0,
-                      "discounts": Array [],
+                      "discounts": [],
                       "extendedComparisonPrice": 250,
                       "extendedListPrice": 200,
                       "extendedSalePrice": 200,
@@ -66,8 +66,8 @@ exports[`OrderSummaryModal renders order summary 1`] = `
                       "isTaxable": true,
                       "listPrice": 200,
                       "name": "Canvas Laundry Cart",
-                      "options": Array [
-                        Object {
+                      "options": [
+                        {
                           "name": "n",
                           "nameId": 1,
                           "value": "v",
@@ -112,20 +112,20 @@ exports[`OrderSummaryModal renders order summary 1`] = `
     <OrderSummaryItems
       displayLineItemsCount={false}
       items={
-        Object {
-          "customItems": Array [],
-          "digitalItems": Array [],
-          "giftCertificates": Array [
-            Object {
+        {
+          "customItems": [],
+          "digitalItems": [],
+          "giftCertificates": [
+            {
               "amount": 100,
               "id": "bd391ead-8c58-4105-b00e-d75d233b429a",
               "message": "message",
               "name": "$100 Gift Certificate",
-              "recipient": Object {
+              "recipient": {
                 "email": "lu@is.com",
                 "name": "luis",
               },
-              "sender": Object {
+              "sender": {
                 "email": "pa@blo.com",
                 "name": "pablo",
               },
@@ -133,17 +133,17 @@ exports[`OrderSummaryModal renders order summary 1`] = `
               "theme": "General",
             },
           ],
-          "physicalItems": Array [
-            Object {
+          "physicalItems": [
+            {
               "addedByPromotion": false,
               "brand": "OFS",
-              "categoryNames": Array [
+              "categoryNames": [
                 "Cat 1",
               ],
               "comparisonPrice": 200,
               "couponAmount": 0,
               "discountAmount": 0,
-              "discounts": Array [],
+              "discounts": [],
               "extendedComparisonPrice": 250,
               "extendedListPrice": 200,
               "extendedSalePrice": 200,
@@ -153,8 +153,8 @@ exports[`OrderSummaryModal renders order summary 1`] = `
               "isTaxable": true,
               "listPrice": 200,
               "name": "Canvas Laundry Cart",
-              "options": Array [
-                Object {
+              "options": [
+                {
                   "name": "n",
                   "nameId": 1,
                   "value": "v",
@@ -176,15 +176,15 @@ exports[`OrderSummaryModal renders order summary 1`] = `
   <OrderSummarySection>
     <Memo(OrderSummarySubtotals)
       coupons={
-        Array [
-          Object {
+        [
+          {
             "code": "savebig2015",
             "couponType": "percentage_discount",
             "discountedAmount": 5,
             "displayName": "20% off each item",
             "id": "1",
           },
-          Object {
+          {
             "code": "279F507D817E3E7",
             "couponType": "shipping_discount",
             "discountedAmount": 5,
@@ -194,10 +194,10 @@ exports[`OrderSummaryModal renders order summary 1`] = `
         ]
       }
       discountAmount={10}
-      fees={Array []}
+      fees={[]}
       giftCertificates={
-        Array [
-          Object {
+        [
+          {
             "balance": 10,
             "code": "gc",
             "purchaseDate": "",
@@ -213,8 +213,8 @@ exports[`OrderSummaryModal renders order summary 1`] = `
       storeCreditAmount={0}
       subtotalAmount={200}
       taxes={
-        Array [
-          Object {
+        [
+          {
             "amount": 3,
             "name": "Tax",
           },
@@ -258,20 +258,20 @@ exports[`OrderSummaryModal when taxes are inclusive displays tax as summary sect
                 />
               }
               items={
-                Object {
-                  "customItems": Array [],
-                  "digitalItems": Array [],
-                  "giftCertificates": Array [
-                    Object {
+                {
+                  "customItems": [],
+                  "digitalItems": [],
+                  "giftCertificates": [
+                    {
                       "amount": 100,
                       "id": "bd391ead-8c58-4105-b00e-d75d233b429a",
                       "message": "message",
                       "name": "$100 Gift Certificate",
-                      "recipient": Object {
+                      "recipient": {
                         "email": "lu@is.com",
                         "name": "luis",
                       },
-                      "sender": Object {
+                      "sender": {
                         "email": "pa@blo.com",
                         "name": "pablo",
                       },
@@ -279,17 +279,17 @@ exports[`OrderSummaryModal when taxes are inclusive displays tax as summary sect
                       "theme": "General",
                     },
                   ],
-                  "physicalItems": Array [
-                    Object {
+                  "physicalItems": [
+                    {
                       "addedByPromotion": false,
                       "brand": "OFS",
-                      "categoryNames": Array [
+                      "categoryNames": [
                         "Cat 1",
                       ],
                       "comparisonPrice": 200,
                       "couponAmount": 0,
                       "discountAmount": 0,
-                      "discounts": Array [],
+                      "discounts": [],
                       "extendedComparisonPrice": 250,
                       "extendedListPrice": 200,
                       "extendedSalePrice": 200,
@@ -299,8 +299,8 @@ exports[`OrderSummaryModal when taxes are inclusive displays tax as summary sect
                       "isTaxable": true,
                       "listPrice": 200,
                       "name": "Canvas Laundry Cart",
-                      "options": Array [
-                        Object {
+                      "options": [
+                        {
                           "name": "n",
                           "nameId": 1,
                           "value": "v",
@@ -345,20 +345,20 @@ exports[`OrderSummaryModal when taxes are inclusive displays tax as summary sect
     <OrderSummaryItems
       displayLineItemsCount={false}
       items={
-        Object {
-          "customItems": Array [],
-          "digitalItems": Array [],
-          "giftCertificates": Array [
-            Object {
+        {
+          "customItems": [],
+          "digitalItems": [],
+          "giftCertificates": [
+            {
               "amount": 100,
               "id": "bd391ead-8c58-4105-b00e-d75d233b429a",
               "message": "message",
               "name": "$100 Gift Certificate",
-              "recipient": Object {
+              "recipient": {
                 "email": "lu@is.com",
                 "name": "luis",
               },
-              "sender": Object {
+              "sender": {
                 "email": "pa@blo.com",
                 "name": "pablo",
               },
@@ -366,17 +366,17 @@ exports[`OrderSummaryModal when taxes are inclusive displays tax as summary sect
               "theme": "General",
             },
           ],
-          "physicalItems": Array [
-            Object {
+          "physicalItems": [
+            {
               "addedByPromotion": false,
               "brand": "OFS",
-              "categoryNames": Array [
+              "categoryNames": [
                 "Cat 1",
               ],
               "comparisonPrice": 200,
               "couponAmount": 0,
               "discountAmount": 0,
-              "discounts": Array [],
+              "discounts": [],
               "extendedComparisonPrice": 250,
               "extendedListPrice": 200,
               "extendedSalePrice": 200,
@@ -386,8 +386,8 @@ exports[`OrderSummaryModal when taxes are inclusive displays tax as summary sect
               "isTaxable": true,
               "listPrice": 200,
               "name": "Canvas Laundry Cart",
-              "options": Array [
-                Object {
+              "options": [
+                {
                   "name": "n",
                   "nameId": 1,
                   "value": "v",
@@ -409,15 +409,15 @@ exports[`OrderSummaryModal when taxes are inclusive displays tax as summary sect
   <OrderSummarySection>
     <Memo(OrderSummarySubtotals)
       coupons={
-        Array [
-          Object {
+        [
+          {
             "code": "savebig2015",
             "couponType": "percentage_discount",
             "discountedAmount": 5,
             "displayName": "20% off each item",
             "id": "1",
           },
-          Object {
+          {
             "code": "279F507D817E3E7",
             "couponType": "shipping_discount",
             "discountedAmount": 5,
@@ -427,10 +427,10 @@ exports[`OrderSummaryModal when taxes are inclusive displays tax as summary sect
         ]
       }
       discountAmount={10}
-      fees={Array []}
+      fees={[]}
       giftCertificates={
-        Array [
-          Object {
+        [
+          {
             "balance": 10,
             "code": "gc",
             "purchaseDate": "",
@@ -446,8 +446,8 @@ exports[`OrderSummaryModal when taxes are inclusive displays tax as summary sect
       storeCreditAmount={0}
       subtotalAmount={200}
       taxes={
-        Array [
-          Object {
+        [
+          {
             "amount": 3,
             "name": "Tax",
           },
