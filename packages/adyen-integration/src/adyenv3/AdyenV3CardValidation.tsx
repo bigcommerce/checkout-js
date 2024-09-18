@@ -45,7 +45,7 @@ const getInitialValidationState = ({
 };
 
 const isFieldInvalid = (fieldKey: AdyenCardFields, fieldsValidation: FieldsValidation): boolean =>
-    !!fieldsValidation[fieldKey] && !fieldsValidation[fieldKey]?.valid;
+    !!fieldsValidation[fieldKey] && !fieldsValidation[fieldKey].valid;
 
 const AdyenV3CardValidation: FunctionComponent<AdyenV3CardValidationProps> = ({
     verificationFieldsContainerId,

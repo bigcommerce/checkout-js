@@ -21,11 +21,11 @@ export default memoize(function getHostedInstrumentValidationSchema({
     language,
     isCardExpiryRequired,
 }: HostedInstrumentValidationSchemaOptions): ObjectSchema<HostedInstrumentValidationSchemaShape> {
-    return object({
+    return object().shape<HostedInstrumentValidationSchemaShape>({
         instrumentId: string().required(),
 
-        hostedForm: object({
-            errors: object({
+        hostedForm: object().required().shape<HostedInstrumentValidationSchemaShape["hostedForm"]>({
+            errors: object().required().shape<HostedInstrumentValidationSchemaShape["hostedForm"]["errors"]>({
                 cardCodeVerification: string()
                     .test({
                         message: language.translate('payment.credit_card_cvv_required_error'),

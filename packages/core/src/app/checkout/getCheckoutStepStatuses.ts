@@ -1,4 +1,4 @@
-import { CheckoutSelectors } from '@bigcommerce/checkout-sdk';
+import { CheckoutPayment, CheckoutSelectors } from '@bigcommerce/checkout-sdk';
 import { compact } from 'lodash';
 import { createSelector } from 'reselect';
 
@@ -45,7 +45,7 @@ const getCustomerStepStatus = createSelector(
         const isUsingWallet =
             checkout && checkout.payments
                 ? checkout.payments.some(
-                      (payment) => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0,
+                    (payment: CheckoutPayment) => SUPPORTED_METHODS.indexOf(payment.providerId) >= 0,
                   )
                 : false;
         const isGuest = !!(customer && customer.isGuest);
