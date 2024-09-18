@@ -3,7 +3,7 @@ import { FieldProps } from 'formik';
 import { kebabCase } from 'lodash';
 import React, { FunctionComponent, memo, ReactNode, useCallback, useContext } from 'react';
 
-import { AccordionItem, AccordionItemHeaderProps } from '../accordion';
+import { AccordionItem, AccordionItemHeaderProps } from '@bigcommerce/checkout/ui';
 
 import BasicFormField from './BasicFormField';
 import { ChecklistContext } from './Checklist';
@@ -12,12 +12,14 @@ import ChecklistItemInput from './ChecklistItemInput';
 export interface ChecklistItemProps {
     content?: ReactNode;
     htmlId?: string;
+    isCustomItem?: boolean;
     isDisabled?: boolean;
     label: ReactNode | ((isSelected: boolean) => ReactNode);
     value: string;
 }
 
 const ChecklistItem: FunctionComponent<ChecklistItemProps> = ({
+    isCustomItem,
     isDisabled,
     value,
     content,
@@ -72,6 +74,7 @@ const ChecklistItem: FunctionComponent<ChecklistItemProps> = ({
             headerClassName="form-checklist-header"
             headerClassNameSelected="form-checklist-header--selected"
             headerContent={renderHeaderContent}
+            isCustomItem={isCustomItem}
             itemId={value}
         >
             {content}

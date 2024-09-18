@@ -120,6 +120,7 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
         <ChecklistItem
             content={renderPaymentMethod}
             htmlId={`radio-${value}`}
+            isCustomItem={method.initializationData?.accordion} // TODO: accordion key will be changed to more relevant after changes on BCapp side
             isDisabled={isDisabled}
             label={renderPaymentMethodTitle}
             value={value}

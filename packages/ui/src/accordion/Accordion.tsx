@@ -19,7 +19,7 @@ export interface AccordionState {
 export default class Accordion extends Component<AccordionProps, AccordionState> {
     state: AccordionState = {};
 
-    private getContextValue = memoizeOne((selectedItemId) => {
+    private getContextValue = memoizeOne((selectedItemId?: string) => {
         return {
             onToggle: this.handleToggleItem,
             selectedItemId,

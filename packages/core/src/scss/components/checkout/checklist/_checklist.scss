@@ -212,3 +212,13 @@
         will-change: $loading-skeleton-will-change;
     }
 }
+
+.accordion-item-body-full-size {
+    margin: 0;
+    overflow: hidden;
+
+    .paymentMethod--hosted,
+    .widget {
+        padding: 0;
+    }
+}
