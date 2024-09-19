@@ -6,12 +6,16 @@ const { join } = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
+const { isArray, mergeWith } = require('lodash');
 
-const { AsyncHookPlugin,
+const {
+    AsyncHookPlugin,
     BuildHookPlugin,
     getLoaderPackages: { aliasMap: alias, tsLoaderIncludes },
     getNextVersion,
-    transformManifest } = require('./scripts/webpack');
+    mergeManifests,
+    transformManifest,
+} = require('./scripts/webpack');
 
 const ENTRY_NAME = 'checkout';
 const LIBRARY_NAME = 'checkout';
@@ -32,6 +36,7 @@ const BABEL_PRESET_ENV_CONFIG = {
     useBuiltIns: 'usage',
     modules: false,
 };
+const PRELOAD_ASSETS = ['billing', 'shipping', 'payment'];
 
 const eventEmitter = new EventEmitter();
 
@@ -81,21 +86,25 @@ function appConfig(options, argv) {
                                 reuseExistingChunk: true,
                                 enforce: true,
                                 priority: -10,
+                                name: 'vendors',
                             },
                             polyfill: {
                                 test: /\/node_modules\/core-js/,
                                 reuseExistingChunk: true,
                                 enforce: true,
+                                name: 'polyfill',
                             },
                             transients: {
                                 test: /\/node_modules\/@bigcommerce/,
                                 reuseExistingChunk: true,
                                 enforce: true,
+                                name: 'transients',
                             },
                             sentry: {
                                 test: /\/node_modules\/@sentry/,
                                 reuseExistingChunk: true,
                                 enforce: true,
+                                name: 'sentry',
                             },
                         },
                     },
@@ -125,7 +134,8 @@ function appConfig(options, argv) {
                     new WebpackAssetsManifest({
                         entrypoints: true,
                         transform: assets => transformManifest(assets, appVersion),
-                        output: 'manifest.json'
+                        output: 'manifest-app.json',
+                        integrity: true,
                     }),
                     new BuildHookPlugin({
                         onSuccess() {
@@ -257,8 +267,9 @@ function loaderConfig(options, argv) {
                                 if (!wasTriggeredBefore) {
                                     const definePlugin = new DefinePlugin({
                                         LIBRARY_NAME: JSON.stringify(LIBRARY_NAME),
+                                        PRELOAD_ASSETS: JSON.stringify(PRELOAD_ASSETS),
                                         MANIFEST_JSON: JSON.stringify(require(
-                                          join(__dirname, isProduction ? 'dist' : 'build', 'manifest.json')
+                                          join(__dirname, isProduction ? 'dist' : 'build', 'manifest-app.json')
                                         )),
                                     });
 
@@ -282,6 +293,21 @@ function loaderConfig(options, argv) {
                             copyFileSync(`${folder}/${LOADER_ENTRY_NAME}-${appVersion}.js`, `${folder}/${LOADER_ENTRY_NAME}.js`);
                             copyFileSync(`${folder}/${AUTO_LOADER_ENTRY_NAME}-${appVersion}.js`, `${folder}/${AUTO_LOADER_ENTRY_NAME}.js`);
                         },
+                    }),
+                    new WebpackAssetsManifest({
+                        entrypoints: true,
+                        transform: assets => transformManifest(assets, appVersion),
+                        output: 'manifest-loader.json',
+                        integrity: true,
+                        done() {
+                            const folder = isProduction ? 'dist' : 'build';
+
+                            mergeManifests(
+                                join(__dirname, folder, 'manifest.json'),
+                                join(__dirname, folder, 'manifest-app.json'),
+                                join(__dirname, folder, 'manifest-loader.json'),
+                            );
+                        }
                     }),
                 ],
                 module: {
