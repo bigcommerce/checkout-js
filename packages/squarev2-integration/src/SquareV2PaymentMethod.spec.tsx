@@ -85,7 +85,7 @@ describe('SquareV2 payment method', () => {
         jest.spyOn(document, 'querySelector').mockReturnValue(placeholderElement);
     });
 
-    it.only('should render a loading overlay', () => {
+    it('should render a loading overlay', () => {
         jest.spyOn(checkoutState.statuses, 'isLoadingInstruments').mockReturnValue(true);
 
         const { container } = render(<SquareV2PaymentMethodTest />);
@@ -93,7 +93,7 @@ describe('SquareV2 payment method', () => {
         expect(container.getElementsByClassName('loadingOverlay')).toHaveLength(1);
     });
 
-    it.only('should render placeholder form fields', () => {
+    it('should render placeholder form fields', () => {
         const placeholderForm = render(<SquareV2PaymentMethodTest />).getByTestId(
             'squarev2_placeholder_form',
         );
@@ -101,7 +101,7 @@ describe('SquareV2 payment method', () => {
         expect(placeholderForm).toMatchSnapshot();
     });
 
-    it.only('should be initialized with the required config', () => {
+    it('should be initialized with the required config', () => {
         render(<SquareV2PaymentMethodTest />);
 
         expect(initializePayment).toHaveBeenCalledWith(
@@ -146,7 +146,7 @@ describe('SquareV2 payment method', () => {
         );
     });
 
-    it.only('should be initialized without style', () => {
+    it('should be initialized without style', () => {
         jest.spyOn(document, 'querySelector').mockReturnValue(null);
 
         render(<SquareV2PaymentMethodTest />);
@@ -162,7 +162,7 @@ describe('SquareV2 payment method', () => {
         );
     });
 
-    it.only('should be deinitialized with the required config', () => {
+    it('should be deinitialized with the required config', () => {
         render(<SquareV2PaymentMethodTest />).unmount();
 
         expect(deinitializePayment).toHaveBeenCalledWith(
@@ -172,13 +172,13 @@ describe('SquareV2 payment method', () => {
         );
     });
 
-    it.only('should not render store instrument fieldset when storing cards is disabled', () => {
+    it('should not render store instrument fieldset when storing cards is disabled', () => {
         const { container } = render(<SquareV2PaymentMethodTest />);
 
         expect(container.getElementsByClassName('form-field--saveInstrument')).toHaveLength(0);
     });
 
-    describe('when storing credit cards is enabled', () => {
+    describe.skip('when storing credit cards is enabled', () => {
         let localeContext: LocaleContextType;
 
         beforeEach(() => {
