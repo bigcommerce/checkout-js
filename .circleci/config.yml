@@ -24,12 +24,22 @@ orbs:
 jobs:
   test-packages:
     <<: *node_executor
+    resource_class: medium+
     steps:
       - ci/pre-setup
       - node/npm-install
       - run:
           name: "Run unit tests for packages"
           command: npm run test:others
+
+  test-extension:
+    <<: *node_executor
+    steps:
+      - ci/pre-setup
+      - node/npm-install
+      - run:
+          name: "Run unit tests for checkout extension"
+          command: npm run test:extension
 
   test-core:
     <<: *node_executor
@@ -165,6 +175,9 @@ workflows:
       - test-packages:
           filters:
             <<: *pull_request_filter
+      - test-extension:
+          filters:
+            <<: *pull_request_filter
       - test-core:
           filters:
             <<: *pull_request_filter
@@ -199,6 +212,9 @@ workflows:
       - test-packages:
           filters:
             <<: *release_filter
+      - test-extension:
+          filters:
+            <<: *release_filter
       - lint:
           filters:
             <<: *release_filter
@@ -215,6 +231,7 @@ workflows:
           requires:
             - test-core
             - test-packages
+            - test-extension
             - lint
             - build
             - e2e

@@ -61,18 +61,18 @@ describe('CheckoutStep', () => {
         }
     });
 
-    it.skip('focuses on first form input when step is active', () => {
+    it('focuses on first form input when step is active', () => {
         const component = mount(
             <CheckoutStep {...defaultProps}>
                 <input type="text" />
                 <input type="number" />
-            </CheckoutStep>,
-        );
+            </CheckoutStep>, 
+            { attachTo: document.body });
 
         jest.runAllTimers();
 
-        expect(component.getDOMNode().querySelector('input')).toMatchObject(
-            document.activeElement as HTMLElement,
+        expect(component.getDOMNode().querySelector('input')).toEqual(
+            document.activeElement,
         );
     });
 
