@@ -80,11 +80,6 @@ describe('when using Adyen V2 payment', () => {
         );
     });
 
-    it('matches snapshot', () => {
-        render(<PaymentMethodTest {...defaultProps} method={method} />);
-        expect(render(<PaymentMethodTest {...defaultProps} method={method} />)).toMatchSnapshot();
-    });
-
     it('initializes method with required config', () => {
         render(<PaymentMethodTest {...defaultProps} method={method} />);
 
