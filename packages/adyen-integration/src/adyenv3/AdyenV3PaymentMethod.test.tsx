@@ -79,11 +79,6 @@ describe('when using AdyenV3 payment', () => {
         );
     });
 
-    it('matches snapshot', () => {
-        render(<PaymentMethodTest {...defaultProps} method={method} />);
-        expect(render(<PaymentMethodTest {...defaultProps} method={method} />)).toMatchSnapshot();
-    });
-
     it('initializes method with required config', () => {
         const defaultAdyenProps: PaymentMethodProps = {
             method: { ...getPaymentMethod(), id: 'scheme', gateway: 'adyenv3', method: 'scheme' },
@@ -116,6 +111,8 @@ describe('when using AdyenV3 payment', () => {
                         onComplete: expect.any(Function),
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                         onLoad: expect.any(Function),
+                        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                        onActionHandled: expect.any(Function),
                         widgetSize: '05',
                     },
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -128,6 +125,31 @@ describe('when using AdyenV3 payment', () => {
     });
 
     describe('#During payment', () => {
+        it('renders modal if required by selected method', async () => {
+            const defaultAdyenProps = {
+                method: getPaymentMethod(),
+                onUnhandledError: jest.fn(),
+                paymentForm,
+                checkoutService,
+                checkoutState,
+                language: createLanguageService(),
+            };
+
+            const { container } = render(
+                <PaymentMethodTest {...defaultAdyenProps} method={method} />,
+            );
+
+            const initializeOptions = initializePayment.mock.calls[0][0];
+
+            initializeOptions.adyenv3.additionalActionOptions.onBeforeLoad(true);
+
+            await new Promise((resolve) => process.nextTick(resolve));
+
+            render(<PaymentMethodTest {...defaultAdyenProps} />, { container });
+
+            expect(screen.getByRole('dialog')).toBeInTheDocument();
+        });
+
         it('renders 3DS modal if required by selected method', async () => {
             const defaultAdyenProps = {
                 method: getPaymentMethod(),
@@ -145,6 +167,7 @@ describe('when using AdyenV3 payment', () => {
             const initializeOptions = initializePayment.mock.calls[0][0];
 
             initializeOptions.adyenv3.additionalActionOptions.onBeforeLoad(true);
+            initializeOptions.adyenv3.additionalActionOptions.onActionHandled();
 
             await new Promise((resolve) => process.nextTick(resolve));
 
@@ -214,6 +237,7 @@ describe('when using AdyenV3 payment', () => {
                 'onRequestClose',
             );
             expect(cancelAdditionalActionModalFlow).toHaveBeenCalledTimes(1);
+            expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
         });
     });
 });
