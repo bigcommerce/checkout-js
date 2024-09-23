@@ -511,6 +511,26 @@
     "longitude": 144.262711
   },
   {
+    "company": "Bridge Campers and 4x4 Services",
+    "street": "131 Adelaide Road",
+    "suburb": "Murray Bridge",
+    "state": "SA",
+    "postcode": "5253"
+    "phone": "08 8531 1550",
+    "latitude": -35.1267046,
+    "longitude": 139.2563259,
+  },
+  {
+    "company": "Roof Racks Galore Adelaide",
+    "street": "37 Gilbert St",
+    "suburb": "Adelaide",
+    "state": "SA",
+    "postcode": "5000",
+    "phone": "08 8211 7600",
+    "latitude": -34.9347535,
+    "longitude": 138.5989839,
+  },
+  {
     "company": "TJM Hobart",
     "street": "219 Main Rd",
     "suburb": "Hobart",
