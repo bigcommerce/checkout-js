@@ -18,7 +18,7 @@ export default memoize(function getBraintreeTrustlyValidationSchema({
 
                 if (id === 'phoneNumber') {
                     schema[id] = schema[id].matches(
-                        /^\d{7,11}$/,
+                        /^[+]?\d{7,12}$/,
                         language.translate('payment.errors.invalid_phone_number'),
                     );
                 }
