@@ -19,7 +19,7 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLang
     return (
         <a
             aria-controls="addressDropdown"
-            aria-description={language.translate('address.enter_or_select_address_action')}
+            aria-label={language.translate('address.enter_or_select_address_action')}
             aria-expanded={ariaExpanded}
             className="button dropdown-button dropdown-toggle--select"
             data-test="address-select-button"
