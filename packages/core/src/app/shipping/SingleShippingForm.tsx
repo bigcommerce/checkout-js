@@ -106,58 +106,61 @@ class SingleShippingForm extends PureComponent<
     };
 
     private debouncedUpdateAddress: any;
+    private debouncedUpdateAddressExperimentOn: any;
 
     constructor(
         props: SingleShippingFormProps & WithLanguageProps & FormikProps<SingleShippingFormValues>,
     ) {
         super(props);
 
+        const { updateAddress } = this.props;
+
         this.debouncedUpdateAddress = debounce(
             async (address: Address, includeShippingOptions: boolean) => {
+                try {
+                    await updateAddress(address, {
+                        params: {
+                            include: {
+                                'consignments.availableShippingOptions': includeShippingOptions,
+                            },
+                        },
+                    });
+
+                    if (includeShippingOptions) {
+                        this.setState({ hasRequestedShippingOptions: true });
+                    }
+                } finally {
+                    this.setState({ isUpdatingShippingData: false });
+                }
+            },
+            props.shippingAutosaveDelay ?? SHIPPING_AUTOSAVE_DELAY,
+        );
+
+        this.debouncedUpdateAddressExperimentOn = debounce(
+            async (includeShippingOptions: boolean) => {
                 const { 
                     updateAddress,
                     shippingAddress,
                     values: { shippingAddress: addressForm },
-                    moveCheckUpdatedAddressValueWithinDebouncedExperiment
                 } = this.props;
 
-                if (moveCheckUpdatedAddressValueWithinDebouncedExperiment) {
-                    const updatedShippingAddress = addressForm && mapAddressFromFormValues(addressForm);
+                const updatedShippingAddress = addressForm && mapAddressFromFormValues(addressForm);
             
-                    if (Array.isArray(shippingAddress?.customFields)) {
-                        includeShippingOptions = !isEqual(
-                            shippingAddress?.customFields,
-                            updatedShippingAddress?.customFields
-                        ) || includeShippingOptions;
-                    }
-            
-                    if (!updatedShippingAddress || isEqualAddress(updatedShippingAddress, shippingAddress)) {
-                        return;
-                    }
-                    
-                    this.setState({ isUpdatingShippingData: true });
-
-                    try {
-                        await updateAddress(updatedShippingAddress, {
-                            params: {
-                                include: {
-                                    'consignments.availableShippingOptions': includeShippingOptions,
-                                },
-                            },
-                        });
-    
-                        if (includeShippingOptions) {
-                            this.setState({ hasRequestedShippingOptions: true });
-                        }
-                    } finally {
-                        this.setState({ isUpdatingShippingData: false });
-                    }
-
+                if (Array.isArray(shippingAddress?.customFields)) {
+                    includeShippingOptions = !isEqual(
+                        shippingAddress?.customFields,
+                        updatedShippingAddress?.customFields
+                    ) || includeShippingOptions;
+                }
+        
+                if (!updatedShippingAddress || isEqualAddress(updatedShippingAddress, shippingAddress)) {
                     return;
                 }
+                
+                this.setState({ isUpdatingShippingData: true });
 
                 try {
-                    await updateAddress(address, {
+                    await updateAddress(updatedShippingAddress, {
                         params: {
                             include: {
                                 'consignments.availableShippingOptions': includeShippingOptions,
@@ -265,7 +268,7 @@ class SingleShippingForm extends PureComponent<
     };
 
     private handleFieldChange: (name: string) => void = async (name) => {
-        const { setFieldValue } = this.props;
+        const { setFieldValue, moveCheckUpdatedAddressValueWithinDebouncedExperiment } = this.props;
 
         if (name === 'countryCode') {
             setFieldValue('shippingAddress.stateOrProvince', '');
@@ -285,6 +288,12 @@ class SingleShippingForm extends PureComponent<
             return;
         }
 
+        if (moveCheckUpdatedAddressValueWithinDebouncedExperiment) {
+            this.debouncedUpdateAddressExperimentOn(isShippingField || !hasRequestedShippingOptions);
+
+            return;
+        }
+
         this.updateAddressWithFormData(isShippingField || !hasRequestedShippingOptions);
     };
 
@@ -292,14 +301,7 @@ class SingleShippingForm extends PureComponent<
         const {
             shippingAddress,
             values: { shippingAddress: addressForm },
-            moveCheckUpdatedAddressValueWithinDebouncedExperiment,
         } = this.props;
-
-        if (moveCheckUpdatedAddressValueWithinDebouncedExperiment) {
-            this.debouncedUpdateAddress(shippingAddress, includeShippingOptions);
-
-            return;
-        }
 
         const updatedShippingAddress = addressForm && mapAddressFromFormValues(addressForm);
 
@@ -315,7 +317,6 @@ class SingleShippingForm extends PureComponent<
         }
 
         this.setState({ isUpdatingShippingData: true });
-        
         this.debouncedUpdateAddress(updatedShippingAddress, includeShippingOptions);
     }
 
