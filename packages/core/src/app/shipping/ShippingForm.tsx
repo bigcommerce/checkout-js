@@ -38,6 +38,7 @@ export interface ShippingFormProps {
     isMultiShippingMode: boolean;
     methodId?: string;
     shippingAddress?: Address;
+    moveCheckUpdatedAddressValueWithinDebouncedExperiment: boolean;
     shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
     isFloatingLabelEnabled?: boolean;
@@ -90,6 +91,7 @@ const ShippingForm = ({
     shippingAddress,
     shouldShowOrderComments,
     shouldShowSaveAddress,
+    moveCheckUpdatedAddressValueWithinDebouncedExperiment,
     signOut,
     updateAddress,
     isShippingStepPending,
@@ -147,6 +149,7 @@ const ShippingForm = ({
             isMultiShippingMode={isMultiShippingMode}
             isShippingStepPending={isShippingStepPending}
             methodId={methodId}
+            moveCheckUpdatedAddressValueWithinDebouncedExperiment={moveCheckUpdatedAddressValueWithinDebouncedExperiment}
             onSubmit={onSingleShippingSubmit}
             onUnhandledError={onUnhandledError}
             shippingAddress={shippingAddress}

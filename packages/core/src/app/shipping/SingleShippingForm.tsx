@@ -53,6 +53,7 @@ export interface SingleShippingFormProps {
     methodId?: string;
     shippingAddress?: Address;
     shippingAutosaveDelay?: number;
+    moveCheckUpdatedAddressValueWithinDebouncedExperiment: boolean;
     shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
     isFloatingLabelEnabled?: boolean;
@@ -111,10 +112,50 @@ class SingleShippingForm extends PureComponent<
     ) {
         super(props);
 
-        const { updateAddress } = this.props;
-
         this.debouncedUpdateAddress = debounce(
             async (address: Address, includeShippingOptions: boolean) => {
+                const { 
+                    updateAddress,
+                    shippingAddress,
+                    values: { shippingAddress: addressForm },
+                    moveCheckUpdatedAddressValueWithinDebouncedExperiment
+                } = this.props;
+
+                if (moveCheckUpdatedAddressValueWithinDebouncedExperiment) {
+                    const updatedShippingAddress = addressForm && mapAddressFromFormValues(addressForm);
+            
+                    if (Array.isArray(shippingAddress?.customFields)) {
+                        includeShippingOptions = !isEqual(
+                            shippingAddress?.customFields,
+                            updatedShippingAddress?.customFields
+                        ) || includeShippingOptions;
+                    }
+            
+                    if (!updatedShippingAddress || isEqualAddress(updatedShippingAddress, shippingAddress)) {
+                        return;
+                    }
+                    
+                    this.setState({ isUpdatingShippingData: true });
+
+                    try {
+                        await updateAddress(updatedShippingAddress, {
+                            params: {
+                                include: {
+                                    'consignments.availableShippingOptions': includeShippingOptions,
+                                },
+                            },
+                        });
+    
+                        if (includeShippingOptions) {
+                            this.setState({ hasRequestedShippingOptions: true });
+                        }
+                    } finally {
+                        this.setState({ isUpdatingShippingData: false });
+                    }
+
+                    return;
+                }
+
                 try {
                     await updateAddress(address, {
                         params: {
@@ -156,6 +197,7 @@ class SingleShippingForm extends PureComponent<
             values: { shippingAddress: addressForm },
             isShippingStepPending,
             isFloatingLabelEnabled,
+            moveCheckUpdatedAddressValueWithinDebouncedExperiment
         } = this.props;
 
         const { isResettingAddress, isUpdatingShippingData, hasRequestedShippingOptions } =
@@ -180,7 +222,7 @@ class SingleShippingForm extends PureComponent<
                         hasRequestedShippingOptions={hasRequestedShippingOptions}
                         initialize={initialize}
                         isFloatingLabelEnabled={isFloatingLabelEnabled}
-                        isLoading={isResettingAddress}
+                        isLoading={isResettingAddress || (moveCheckUpdatedAddressValueWithinDebouncedExperiment && isUpdatingShippingData)}
                         isShippingStepPending={isShippingStepPending}
                         methodId={methodId}
                         onAddressSelect={this.handleAddressSelect}
@@ -250,7 +292,14 @@ class SingleShippingForm extends PureComponent<
         const {
             shippingAddress,
             values: { shippingAddress: addressForm },
+            moveCheckUpdatedAddressValueWithinDebouncedExperiment,
         } = this.props;
+
+        if (moveCheckUpdatedAddressValueWithinDebouncedExperiment) {
+            this.debouncedUpdateAddress(shippingAddress, includeShippingOptions);
+
+            return;
+        }
 
         const updatedShippingAddress = addressForm && mapAddressFromFormValues(addressForm);
 
@@ -266,6 +315,7 @@ class SingleShippingForm extends PureComponent<
         }
 
         this.setState({ isUpdatingShippingData: true });
+        
         this.debouncedUpdateAddress(updatedShippingAddress, includeShippingOptions);
     }
 
