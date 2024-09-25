@@ -24,7 +24,7 @@ import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
 import { withCheckout } from '../checkout';
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
-import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
+import { EMPTY_ARRAY, isExperimentEnabled, isFloatingLabelEnabled } from '../common/utility';
 import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
@@ -437,7 +437,7 @@ export function mapToShippingProps({
         updateShippingAddress: checkoutService.updateShippingAddress,
         isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
         shouldRenderStripeForm: providerWithCustomCheckout === PaymentMethodId.StripeUPE && shouldUseStripeLinkByMinimumAmount(cart),
-        isDebouncedCheckAndUpdateAddressExperiment: features['CHECKOUT-8006.move_check_updated_address_value_within_debounced'] ?? false,
+        isDebouncedCheckAndUpdateAddressExperiment: isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-8006.move_check_updated_address_value_within_debounced'),
     };
 }
 
