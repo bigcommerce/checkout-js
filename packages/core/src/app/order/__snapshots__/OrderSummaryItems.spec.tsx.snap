@@ -22,8 +22,8 @@ exports[`OrderSummaryItems when it has 4 line items or less renders product list
       }
       name="Canvas Laundry Cart"
       productOptions={
-        Array [
-          Object {
+        [
+          {
             "content": "n v",
             "testId": "cart-item-product-option",
           },
@@ -68,12 +68,12 @@ exports[`OrderSummaryItems when it has 4 line items or less renders product list
       }
       name="Digital Book"
       productOptions={
-        Array [
-          Object {
+        [
+          {
             "content": "m l",
             "testId": "cart-item-product-option",
           },
-          Object {
+          {
             "content": <a
               href="url.php"
               rel="noopener noreferrer"

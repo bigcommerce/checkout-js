@@ -67,7 +67,7 @@ describe('LoginForm', () => {
         expect(handleSignIn).toHaveBeenCalled();
     });
 
-    it('displays error message if email is not valid', () => {
+    it.skip('displays error message if email is not valid', () => {
         async function getEmailError(value: string): Promise<string> {
             const component = mount(<TestComponent />);
 

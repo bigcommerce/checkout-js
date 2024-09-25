@@ -20,6 +20,7 @@ import {
 } from '../../guards';
 
 import AccountInstrumentSelect, { AccountInstrumentSelectProps } from './AccountInstrumentSelect';
+import { config } from 'yargs';
 
 describe('AccountInstrumentSelect', () => {
     let defaultProps: Omit<AccountInstrumentSelectProps, keyof FieldProps<string>>;
@@ -162,7 +163,7 @@ describe('AccountInstrumentSelect', () => {
     });
 
     it('cleans the instrumentId when the component unmounts', async () => {
-        jest.useFakeTimers();
+        jest.useFakeTimers({ legacyFakeTimers: true });
 
         const submit = jest.fn();
 

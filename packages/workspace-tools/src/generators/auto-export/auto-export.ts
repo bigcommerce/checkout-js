@@ -39,7 +39,7 @@ export default async function autoExport({
         .createPrinter()
         .printList(
             ts.ListFormat.MultiLine,
-            ts.createNodeArray(exportDeclarations.filter(exists)),
+            ts.factory.createNodeArray(exportDeclarations.filter(exists)),
             ts.createSourceFile(outputPath, '', ts.ScriptTarget.ESNext),
         );
 }
@@ -65,15 +65,19 @@ async function createExportDeclaration(
 
             return statement.exportClause.elements.filter(ts.isExportSpecifier);
         })
-        .map((element) => element.name.escapedText.toString())
-        .filter((memberName) => memberName.match(new RegExp(memberPattern)));
+
+        .map((element) =>
+            'escapedText' in element.name
+                ? element.name.escapedText.toString()
+                : element.name.toString(),
+        )
+        .filter((memberName: string) => memberName.match(new RegExp(memberPattern)));
 
     if (memberNames.length === 0) {
         return;
     }
 
     return ts.factory.createExportDeclaration(
-        undefined,
         undefined,
         false,
         ts.factory.createNamedExports(

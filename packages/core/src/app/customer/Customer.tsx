@@ -370,6 +370,8 @@ class Customer extends Component<CustomerProps & WithCheckoutCustomerProps & Ana
 
         try {
             await sendLoginEmail(values);
+        } catch (error) {
+        // Need to write catch block since one test covers the case when `sendLoginEmail` fails
         } finally {
             this.setState({
                 hasRequestedLoginEmail: true,

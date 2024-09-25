@@ -72,7 +72,7 @@ export default memoize(function getCreateCustomerValidationSchema({
             )
             .min(
                 minLength,
-                language.translate('customer.password_under_minimum_length_error' || description),
+                language.translate('customer.password_under_minimum_length_error') || description,
             )
             .max(100, language.translate('customer.password_over_maximum_length_error')),
     })

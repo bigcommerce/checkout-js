@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`BoltEmbeddedPaymentMethod matches a snapshot 1`] = `
+<div>
+  <div>
+    <div
+      class="paymentMethod--hosted"
+    >
+      <div
+        class="widget widget--bolt payment-widget"
+        id="boltEmbeddedOneClick"
+        tabindex="-1"
+      >
+        <div
+          class="form-ccFields"
+        >
+          <div
+            class="form-field form-field--bolt-embed"
+            id="bolt-embedded"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

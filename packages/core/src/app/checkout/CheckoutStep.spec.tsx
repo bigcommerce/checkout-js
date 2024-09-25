@@ -9,7 +9,7 @@ import CheckoutStep, { CheckoutStepProps } from './CheckoutStep';
 import CheckoutStepHeader from './CheckoutStepHeader';
 import CheckoutStepType from './CheckoutStepType';
 
-jest.useFakeTimers();
+jest.useFakeTimers({ legacyFakeTimers: true });
 jest.mock('../ui/responsive', () => {
     const original = jest.requireActual('../ui/responsive');
 
@@ -66,13 +66,13 @@ describe('CheckoutStep', () => {
             <CheckoutStep {...defaultProps}>
                 <input type="text" />
                 <input type="number" />
-            </CheckoutStep>,
-        );
+            </CheckoutStep>, 
+            { attachTo: document.body });
 
         jest.runAllTimers();
 
-        expect(component.getDOMNode().querySelector('input')).toMatchObject(
-            document.activeElement as HTMLElement,
+        expect(component.getDOMNode().querySelector('input')).toEqual(
+            document.activeElement,
         );
     });
 

@@ -20,9 +20,9 @@ export interface HostedCreditCardValidationSchemaShape {
 export default memoize(function getHostedCreditCardValidationSchema({
     language,
 }: HostedCreditCardValidationSchemaOptions): ObjectSchema<HostedCreditCardValidationSchemaShape> {
-    return object({
-        hostedForm: object({
-            errors: object({
+    return object().shape<HostedCreditCardValidationSchemaShape>({
+        hostedForm: object().required().shape<HostedCreditCardValidationSchemaShape["hostedForm"]>({
+            errors: object().required().shape<HostedCreditCardValidationSchemaShape["hostedForm"]["errors"]>({
                 cardCode: string()
                     .test({
                         message: language.translate('payment.credit_card_cvv_required_error'),

@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`EmbeddedCheckoutStyleParser converts config to CSS rules 1`] = `
-Array [
+[
   "body {background-color: #444444;}",
   ".optimizedCheckout-overlay {background-color: #444444;}",
   ".optimizedCheckout-contentPrimary {color: #ffffff;}",

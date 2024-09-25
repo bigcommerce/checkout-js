@@ -2,7 +2,7 @@
 
 exports[`Popover Component renders empty list when empty array is passed 1`] = `
 <Memo(PopoverList)
-  items={Array []}
+  items={[]}
 />
 `;
 
@@ -11,8 +11,8 @@ exports[`Popover Component renders list with highlighted text 1`] = `
   className="popoverList-item"
   index={1}
   item={
-    Object {
-      "content": Array [
+    {
+      "content": [
         <strong>
           Ips
         </strong>,
@@ -37,16 +37,16 @@ exports[`Popover Component renders list with highlighted text 1`] = `
 exports[`Popover Component renders list with passed items 1`] = `
 <Memo(PopoverList)
   items={
-    Array [
-      Object {
+    [
+      {
         "content": "Lorem",
         "id": "x",
       },
-      Object {
+      {
         "content": "Ipsum",
         "id": "y",
       },
-      Object {
+      {
         "content": "Foo",
         "id": "z",
       },
@@ -60,7 +60,7 @@ exports[`Popover Component renders list with passed items 1`] = `
       className="popoverList-item"
       index={0}
       item={
-        Object {
+        {
           "content": "Lorem",
           "id": "x",
         }
@@ -73,7 +73,7 @@ exports[`Popover Component renders list with passed items 1`] = `
       className="popoverList-item"
       index={1}
       item={
-        Object {
+        {
           "content": "Ipsum",
           "id": "y",
         }
@@ -86,7 +86,7 @@ exports[`Popover Component renders list with passed items 1`] = `
       className="popoverList-item"
       index={2}
       item={
-        Object {
+        {
           "content": "Foo",
           "id": "z",
         }

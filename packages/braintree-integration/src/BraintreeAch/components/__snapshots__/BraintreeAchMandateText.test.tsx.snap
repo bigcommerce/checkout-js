@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`BraintreeAchMandateText renders mandate text checkbox with business data label text 1`] = `
-Object {
+{
   "asFragment": [Function],
   "baseElement": <body>
     <div>
@@ -108,7 +108,7 @@ Object {
 `;
 
 exports[`BraintreeAchMandateText renders mandate text checkbox with personal data label text 1`] = `
-Object {
+{
   "asFragment": [Function],
   "baseElement": <body>
     <div>
@@ -215,7 +215,7 @@ Object {
 `;
 
 exports[`BraintreeAchMandateText renders mandate text checkbox with text for vaulting 1`] = `
-Object {
+{
   "asFragment": [Function],
   "baseElement": <body>
     <div>
