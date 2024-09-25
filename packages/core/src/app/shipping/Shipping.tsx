@@ -85,7 +85,7 @@ export interface WithCheckoutShippingProps {
     updateCheckout(payload: CheckoutRequestBody): Promise<CheckoutSelectors>;
     updateShippingAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
     shouldRenderStripeForm: boolean;
-    moveCheckUpdatedAddressValueWithinDebouncedExperiment: boolean;
+    isDebouncedCheckAndUpdateAddressExperiment: boolean;
 }
 
 interface ShippingState {
@@ -135,7 +135,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             isFloatingLabelEnabled,
             shouldRenderStripeForm,
             shouldRenderWhileLoading,
-            moveCheckUpdatedAddressValueWithinDebouncedExperiment,
+            isDebouncedCheckAndUpdateAddressExperiment,
             ...shippingFormProps
         } = this.props;
 
@@ -178,11 +178,11 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         deinitialize={deinitializeShippingMethod}
                         initialize={initializeShippingMethod}
                         isBillingSameAsShipping={isBillingSameAsShipping}
+                        isDebouncedCheckAndUpdateAddressExperiment={isDebouncedCheckAndUpdateAddressExperiment}
                         isFloatingLabelEnabled={isFloatingLabelEnabled}
                         isGuest={isGuest}
                         isInitialValueLoaded={shouldRenderWhileLoading ? !isInitializing : true}
                         isMultiShippingMode={isMultiShippingMode}
-                        moveCheckUpdatedAddressValueWithinDebouncedExperiment={moveCheckUpdatedAddressValueWithinDebouncedExperiment}
                         onMultiShippingSubmit={this.handleMultiShippingSubmit}
                         onSingleShippingSubmit={this.handleSingleShippingSubmit}
                         onUseNewAddress={this.handleUseNewAddress}
@@ -437,7 +437,7 @@ export function mapToShippingProps({
         updateShippingAddress: checkoutService.updateShippingAddress,
         isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
         shouldRenderStripeForm: providerWithCustomCheckout === PaymentMethodId.StripeUPE && shouldUseStripeLinkByMinimumAmount(cart),
-        moveCheckUpdatedAddressValueWithinDebouncedExperiment: features['CHECKOUT-8006.move_check_updated_address_value_within_debounced'] ?? false,
+        isDebouncedCheckAndUpdateAddressExperiment: features['CHECKOUT-8006.move_check_updated_address_value_within_debounced'] ?? false,
     };
 }
 

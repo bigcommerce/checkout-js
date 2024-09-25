@@ -39,7 +39,7 @@ describe('SingleShippingForm', () => {
         initialize: jest.fn(),
         updateAddress: jest.fn(),
         deleteConsignments: jest.fn(),
-        moveCheckUpdatedAddressValueWithinDebouncedExperiment: true,
+        isDebouncedCheckAndUpdateAddressExperiment: true,
     };
 
     const shippingAutosaveDelay = 100;

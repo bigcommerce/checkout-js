@@ -53,7 +53,7 @@ export interface SingleShippingFormProps {
     methodId?: string;
     shippingAddress?: Address;
     shippingAutosaveDelay?: number;
-    moveCheckUpdatedAddressValueWithinDebouncedExperiment: boolean;
+    isDebouncedCheckAndUpdateAddressExperiment: boolean;
     shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
     isFloatingLabelEnabled?: boolean;
@@ -200,7 +200,7 @@ class SingleShippingForm extends PureComponent<
             values: { shippingAddress: addressForm },
             isShippingStepPending,
             isFloatingLabelEnabled,
-            moveCheckUpdatedAddressValueWithinDebouncedExperiment
+            isDebouncedCheckAndUpdateAddressExperiment
         } = this.props;
 
         const { isResettingAddress, isUpdatingShippingData, hasRequestedShippingOptions } =
@@ -225,7 +225,7 @@ class SingleShippingForm extends PureComponent<
                         hasRequestedShippingOptions={hasRequestedShippingOptions}
                         initialize={initialize}
                         isFloatingLabelEnabled={isFloatingLabelEnabled}
-                        isLoading={isResettingAddress || (moveCheckUpdatedAddressValueWithinDebouncedExperiment && isUpdatingShippingData)}
+                        isLoading={isResettingAddress || (isDebouncedCheckAndUpdateAddressExperiment && isUpdatingShippingData)}
                         isShippingStepPending={isShippingStepPending}
                         methodId={methodId}
                         onAddressSelect={this.handleAddressSelect}
@@ -268,7 +268,7 @@ class SingleShippingForm extends PureComponent<
     };
 
     private handleFieldChange: (name: string) => void = async (name) => {
-        const { setFieldValue, moveCheckUpdatedAddressValueWithinDebouncedExperiment } = this.props;
+        const { setFieldValue, isDebouncedCheckAndUpdateAddressExperiment } = this.props;
 
         if (name === 'countryCode') {
             setFieldValue('shippingAddress.stateOrProvince', '');
@@ -288,7 +288,7 @@ class SingleShippingForm extends PureComponent<
             return;
         }
 
-        if (moveCheckUpdatedAddressValueWithinDebouncedExperiment) {
+        if (isDebouncedCheckAndUpdateAddressExperiment) {
             this.debouncedUpdateAddressExperimentOn(isShippingField || !hasRequestedShippingOptions);
 
             return;
