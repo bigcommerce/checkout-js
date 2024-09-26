@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 import { noop } from 'lodash';
 import React from 'react';
 
-import { AccordionItem } from '../accordion';
+import { AccordionItem } from '@bigcommerce/checkout/ui';
 
 import Checklist from './Checklist';
 import ChecklistItem from './ChecklistItem';

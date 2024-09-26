@@ -1,5 +1,14 @@
 /* istanbul ignore file */
 export { Alert, AlertType } from './alert';
+export {
+    Accordion,
+    AccordionProps,
+    AccordionItem,
+    AccordionItemHeaderProps,
+    AccordionItemProps,
+    AccordionContext,
+    AccordionContextProps,
+} from './accordion';
 export { Button, ButtonSize, ButtonVariant } from './button';
 export { DropdownTrigger } from './dropdown';
 export {
