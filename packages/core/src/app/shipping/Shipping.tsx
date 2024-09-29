@@ -24,7 +24,7 @@ import { AddressFormSkeleton } from '@bigcommerce/checkout/ui';
 import { isEqualAddress, mapAddressFromFormValues } from '../address';
 import { withCheckout } from '../checkout';
 import CheckoutStepStatus from '../checkout/CheckoutStepStatus';
-import { EMPTY_ARRAY, isFloatingLabelEnabled } from '../common/utility';
+import { EMPTY_ARRAY, isExperimentEnabled, isFloatingLabelEnabled } from '../common/utility';
 import getProviderWithCustomCheckout from '../payment/getProviderWithCustomCheckout';
 import { PaymentMethodId } from '../payment/paymentMethod';
 
@@ -85,6 +85,7 @@ export interface WithCheckoutShippingProps {
     updateCheckout(payload: CheckoutRequestBody): Promise<CheckoutSelectors>;
     updateShippingAddress(address: Partial<Address>): Promise<CheckoutSelectors>;
     shouldRenderStripeForm: boolean;
+    isDebouncedCheckAndUpdateAddressExperiment: boolean;
 }
 
 interface ShippingState {
@@ -134,6 +135,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             isFloatingLabelEnabled,
             shouldRenderStripeForm,
             shouldRenderWhileLoading,
+            isDebouncedCheckAndUpdateAddressExperiment,
             ...shippingFormProps
         } = this.props;
 
@@ -176,6 +178,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         deinitialize={deinitializeShippingMethod}
                         initialize={initializeShippingMethod}
                         isBillingSameAsShipping={isBillingSameAsShipping}
+                        isDebouncedCheckAndUpdateAddressExperiment={isDebouncedCheckAndUpdateAddressExperiment}
                         isFloatingLabelEnabled={isFloatingLabelEnabled}
                         isGuest={isGuest}
                         isInitialValueLoaded={shouldRenderWhileLoading ? !isInitializing : true}
@@ -434,6 +437,7 @@ export function mapToShippingProps({
         updateShippingAddress: checkoutService.updateShippingAddress,
         isFloatingLabelEnabled: isFloatingLabelEnabled(config.checkoutSettings),
         shouldRenderStripeForm: providerWithCustomCheckout === PaymentMethodId.StripeUPE && shouldUseStripeLinkByMinimumAmount(cart),
+        isDebouncedCheckAndUpdateAddressExperiment: isExperimentEnabled(config.checkoutSettings, 'CHECKOUT-8006.move_check_updated_address_value_within_debounced'),
     };
 }
 

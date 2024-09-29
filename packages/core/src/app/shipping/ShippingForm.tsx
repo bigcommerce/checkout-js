@@ -38,6 +38,7 @@ export interface ShippingFormProps {
     isMultiShippingMode: boolean;
     methodId?: string;
     shippingAddress?: Address;
+    isDebouncedCheckAndUpdateAddressExperiment: boolean;
     shouldShowSaveAddress?: boolean;
     shouldShowOrderComments: boolean;
     isFloatingLabelEnabled?: boolean;
@@ -90,6 +91,7 @@ const ShippingForm = ({
     shippingAddress,
     shouldShowOrderComments,
     shouldShowSaveAddress,
+    isDebouncedCheckAndUpdateAddressExperiment,
     signOut,
     updateAddress,
     isShippingStepPending,
@@ -141,6 +143,7 @@ const ShippingForm = ({
             googleMapsApiKey={googleMapsApiKey}
             initialize={initialize}
             isBillingSameAsShipping={isBillingSameAsShipping}
+            isDebouncedCheckAndUpdateAddressExperiment={isDebouncedCheckAndUpdateAddressExperiment}
             isFloatingLabelEnabled={isFloatingLabelEnabled}
             isInitialValueLoaded={isInitialValueLoaded}
             isLoading={isLoading}

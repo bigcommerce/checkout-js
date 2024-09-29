@@ -39,6 +39,7 @@ describe('SingleShippingForm', () => {
         initialize: jest.fn(),
         updateAddress: jest.fn(),
         deleteConsignments: jest.fn(),
+        isDebouncedCheckAndUpdateAddressExperiment: true,
     };
 
     const shippingAutosaveDelay = 100;
@@ -93,6 +94,22 @@ describe('SingleShippingForm', () => {
                 },
             },
         );
+    });
+
+    it('does not call updateAddress if the shipping form values do not change', async () => {
+        const updateAddress = jest.fn();
+
+        renderSingleShippingFormComponent({ updateAddress });
+
+        await userEvent.clear(screen.getByTestId('addressLine1Input-text'));
+        await userEvent.keyboard('foo 1');
+
+        await userEvent.clear(screen.getByTestId('addressLine1Input-text'));
+        await userEvent.keyboard(getShippingAddress().address1);
+
+        await new Promise((resolve) => setTimeout(resolve, waitingDelay));
+
+        expect(updateAddress).toHaveBeenCalledTimes(0);
     });
 
     it('calls updateAddress if modified field does not affect shipping but makes form valid', async () => {
