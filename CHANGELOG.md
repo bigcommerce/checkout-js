@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.526.5](https://github.com/bigcommerce/checkout-js/compare/v1.526.4...v1.526.5) (2024-09-29)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-8006 feedback create a separated debounced when experiment is on ([42be1f3](https://github.com/bigcommerce/checkout-js/commit/42be1f3289d4e64b32fc61721e4988c5e368163b))
+* **checkout:** CHECKOUT-8006 feedback use isExperimentEnabled ([8cac8de](https://github.com/bigcommerce/checkout-js/commit/8cac8de4137c1e379ab9e34145d08351e015e5a4))
+* **checkout:** CHECKOUT-8006 Fix Editting Shipping Address ([99886fa](https://github.com/bigcommerce/checkout-js/commit/99886fa5ca2ce05a3e363efbc3ca3f060d75d69e))
+* **checkout:** CHECKOUT-8006 improve naming ([ca6dca7](https://github.com/bigcommerce/checkout-js/commit/ca6dca760cf1d0924fc7019a6d6662047532aa1b))
+
 ### [1.526.4](https://github.com/bigcommerce/checkout-js/compare/v1.526.3...v1.526.4) (2024-09-25)
 
 ### [1.526.3](https://github.com/bigcommerce/checkout-js/compare/v1.526.2...v1.526.3) (2024-09-24)
