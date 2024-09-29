@@ -3,9 +3,11 @@ import {
     LineItemMap,
     ShopperCurrency,
     StoreCurrency,
+    createCheckoutService,
+    CheckoutSelectors
 } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, ReactNode, useMemo } from 'react';
-
+import React, { FunctionComponent, ReactNode, useMemo,useEffect,useState} from 'react';
+import { Tax as CheckoutSdkTax } from '@bigcommerce/checkout-sdk';
 import { Extension } from '@bigcommerce/checkout/checkout-extension';
 import { TranslatedString } from '@bigcommerce/checkout/locale';
 import OrderSummaryHeader from './OrderSummaryHeader';
@@ -16,6 +18,7 @@ import OrderSummarySubtotals, { OrderSummarySubtotalsProps } from './OrderSummar
 import OrderSummaryTotal from './OrderSummaryTotal';
 import removeBundledItems from './removeBundledItems';
 import { CreateCertificate } from '../avalara-certificates';
+import { calculateTaxes } from '../avalara-certificates/taxCalculation';
 
 export interface OrderSummaryProps {
     lineItems: LineItemMap;
@@ -24,6 +27,10 @@ export interface OrderSummaryProps {
     storeCurrency: StoreCurrency;
     shopperCurrency: ShopperCurrency;
     additionalLineItems?: ReactNode;
+}
+export interface Tax extends CheckoutSdkTax {
+    name: string;
+    amount: number;
 }
 
 const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsProps> = ({
@@ -37,9 +44,39 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
     total,
     ...orderSummarySubtotalsProps
 }) => {
+    const [certIds, setCertIds] = useState<number[]>([]);
+    useEffect(() => {
+        const checkoutService = createCheckoutService();
+        checkoutService.loadCheckout()
+            .then((state: CheckoutSelectors) => {
+                const shippingAddress = state.data.getShippingAddress();
+                const cart = state.data.getCart();
+                const customerId = state.data.getCustomer()?.id || '';
+                const shippingCost = state.data.getConsignments()?.reduce((total, consignment) => {
+                    return total + (consignment.selectedShippingOption?.cost || 0);
+                }, 0);
+                if (shippingAddress && cart && customerId) {
+                    calculateTaxes(cart, shippingAddress, lineItems, customerId, shippingCost)
+                        .then(taxCalculated => {
+                            console.log(taxCalculated);
+                            const { certificateIds } = taxCalculated;
+                            setCertIds(certificateIds);
+                        })
+                        .catch(error => {
+                            console.error('Error al calcular impuestos:', error);
+                        });
+                }
+            })
+            .catch((error: unknown) => {
+                if (error instanceof Error) {
+                    console.error('Error al cargar el checkout:', error.message);
+                } else {
+                    console.error('Error desconocido al cargar el checkout');
+                }
+            });
+    }, [lineItems]);
     const nonBundledLineItems = useMemo(() => removeBundledItems(lineItems), [lineItems]);
     const displayInclusiveTax = isTaxIncluded && taxes && taxes.length > 0;
-
     return (
         <article className="cart optimizedCheckout-orderSummary" data-test="cart">
             <OrderSummaryHeader>{headerLink}</OrderSummaryHeader>
@@ -55,7 +92,7 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                 {additionalLineItems}
             </OrderSummarySection>
             <OrderSummarySection>
-                <CreateCertificate/>
+                <CreateCertificate certIds={certIds}  />
             </OrderSummarySection>
 
             <OrderSummarySection>

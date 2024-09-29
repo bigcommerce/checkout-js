@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { Certificate } from './interfaces/Certificate';
 import { fetchCertificates } from './services/LambdaService';
 interface CertificateSelectProps {
@@ -7,14 +7,14 @@ interface CertificateSelectProps {
 
 
 const CertificateSelect: React.FC<CertificateSelectProps> = ({onSelect }) => {
-    const [certificates, setCertificates] = useState<Certificate[]>([]);
-    const [selectedCertificate, setSelectedCertificate] = useState<string>('');
+   // const [certificates, setCertificates] = useState<Certificate[]>([]);
+    //const [selectedCertificate, setSelectedCertificate] = useState<string>('');
 
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCertificate(e.target.value);
         onSelect(e.target.value);
     };
-    useEffect(() => {
+    /* useEffect(() => {
         const getCertificates = async () => {
             try {
                 const data = await fetchCertificates();
@@ -26,7 +26,7 @@ const CertificateSelect: React.FC<CertificateSelectProps> = ({onSelect }) => {
         };
 
         getCertificates();
-    }, []);
+    }, []); */
 
     return (
         <div className="dynamic-form-field floating-form-field dynamic-form-field--countryCode">

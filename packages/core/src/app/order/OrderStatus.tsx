@@ -1,5 +1,5 @@
 import { GatewayOrderPayment, GiftCertificateOrderPayment, Order, StoreConfig } from '@bigcommerce/checkout-sdk';
-import React, { FunctionComponent, memo } from 'react';
+import React, { FunctionComponent, memo, useEffect } from 'react';
 
 import { TranslatedHtml } from '@bigcommerce/checkout/locale';
 
@@ -27,7 +27,13 @@ const OrderStatus: FunctionComponent<OrderStatusProps> = ({
     supportPhoneNumber,
 }) => {
     const paymentsWithMandates = order.payments?.filter(isPaymentWithMandate) || [];
-
+    useEffect(() => {
+        console.log("Detalles de la orden:", order);
+        console.log("Configuración de la tienda:", config);
+        console.log("Email de soporte:", supportEmail);
+        console.log("Número de teléfono de soporte:", supportPhoneNumber);
+        console.log("Pagos con mandato:", paymentsWithMandates);
+    }, [order, config, supportEmail, supportPhoneNumber, paymentsWithMandates]);
     return (
         <OrderConfirmationSection>
             {order.orderId && (

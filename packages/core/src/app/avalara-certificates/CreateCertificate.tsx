@@ -1,36 +1,86 @@
-import React, { useState } from 'react';
+import React, { useEffect,useState } from 'react';
 import { withCheckout } from '../checkout';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
-import CertificateSelect from './CertificateSelect';
+//import CertificateSelect from './CertificateSelect';
+import { fetchCertificateDetails } from './services/LambdaService';
 
 interface Customer {
     id: number;
     email: string;
     isGuest: boolean;
 }
+interface CertificateDetail {
+    id: number;
+    exemptPercentage: number;
+    customers: { name: string }[];
+    exemptionReason: { name: string };
+}
 
 interface CreateCertificateProps {
     customer: Customer;
+    certIds: number[];
 }
+const CreateCertificate: React.FC<CreateCertificateProps> = ({ customer, certIds }) => {
+    const [certificateDetails, setCertificateDetails] = useState<CertificateDetail[]>([]);
+    const [loading, setLoading] = useState(true); 
+    const [error, setError] = useState<string | null>(null); 
 
-const CreateCertificate: React.FC<CreateCertificateProps> = ({ customer }) => {
-    const [selectedCertificate, setSelectedCertificate] = useState<string>('');
+    useEffect(() => {
+        const fetchDetails = async () => {
+            try {
+                if (certIds.length > 0) {
+                    const details = await Promise.all(certIds.map(certId => fetchCertificateDetails(certId)));
+                    setCertificateDetails(details);
+                }
+                setLoading(false); 
+            } catch (error) {
+                console.error('Error :', error);
+                setError('Failed to load certificate details');
+                setLoading(false); 
+            }
+        };
 
-    const handleSelect = (certificate: string) => {
-        setSelectedCertificate(certificate);
-        console.log('Selected Certificate:', certificate);
-    };
+        fetchDetails();
+    }, [certIds]);
+    if (loading) {
+        return <p>Loading certificates...</p>;
+    }
+    if (error) {
+        return <p>{error}</p>;
+    }
 
     return !customer.isGuest ? (
         <>
             <a href={`/certificates`} target="_blank" rel="noopener noreferrer">
                 Use Tax/ Exempt Certificate
-            </a>
-            <CertificateSelect onSelect={handleSelect} />
-            {selectedCertificate && <p>Selected Certificate ID: {selectedCertificate}</p>}
+            </a> 
+            <p></p>
+            <div>
+                <span>Certificate Applied:</span>
+                {certificateDetails.length > 0 ? (
+                    certificateDetails.map((details, index) => {
+                        const detail = Array.isArray(details) ? details[0] : details;
+                        return detail ? (
+                            <div key={detail.id}>
+                                <p>
+                                    <span>Cert ID:</span> {detail?.id} |
+                                    <span>Exemption Percentage:</span> {detail?.exemptPercentage}% |
+                                   {/*  <span>Customer Name:</span> {detail?.customers?.[0]?.name || 'Unknown'} | */}
+                                    <span>Exemption Reason:</span> {detail?.exemptionReason?.name || 'Unknown'}
+                                </p>
+                            </div>
+                        ) : (
+                            <p key={index}>No details available</p>
+                        );
+                    })
+                ) : (
+                    <p>No exemption certificates found.</p>
+                )}
+            </div>
         </>
     ) : null;
 };
+
 
 interface WithCheckoutCustomerInfoProps {
     email: string;

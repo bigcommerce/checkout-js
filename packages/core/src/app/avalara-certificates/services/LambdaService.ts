@@ -1,5 +1,5 @@
 import axios from 'axios';
-const API_URL = 'https://yx1041xohb.execute-api.us-east-2.amazonaws.com/Prod/query';
+const API_URL = 'https://yx1041xohb.execute-api.us-east-2.amazonaws.com/Prod/';
 
 export const fetchToken = async (): Promise<string | null> => {
     try {
@@ -23,17 +23,46 @@ export const getHeaders = (token: string) => {
     };
 };
 
-export const fetchCertificates = async () => {
+// export const fetchCertificates = async () => {
+//     try {
+//         const token = await fetchToken();
+//         if (!token) {
+//             throw new Error('Token not available');
+//         }
+//         const headers = getHeaders(token);
+//         const response = await axios.get(`${API_URL}query`, { headers });
+//         return response.data;
+//     } catch (error) {
+//         console.error('Error fetching certificates:', error);
+//         return [];
+//     }
+// };
+export const fetchCertificateDetails = async (certId: number) => {
+    try {
+        const token = await fetchToken();
+        if (!token) {
+            throw new Error('Token not available');
+        }
+
+        const headers = getHeaders(token);
+        const response = await axios.get(`${API_URL}query/${certId}`, { headers });
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching certificate details:', error);
+        throw error;
+    }
+};
+export const validateTaxesWithAvalara = async (taxRequest: any) => {
     try {
         const token = await fetchToken();
         if (!token) {
             throw new Error('Token not available');
         }
         const headers = getHeaders(token);
-        const response = await axios.get(API_URL, { headers });
+        const response = await axios.post(`${API_URL}createTransaction`, taxRequest, { headers });
         return response.data;
     } catch (error) {
-        console.error('Error fetching certificates:', error);
-        return [];
+        console.error('Error validating with avalara:', error);
+        throw error;
     }
 };
