@@ -63,15 +63,15 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                             setCertIds(certificateIds);
                         })
                         .catch(error => {
-                            console.error('Error al calcular impuestos:', error);
+                            console.error('Error:', error);
                         });
                 }
             })
             .catch((error: unknown) => {
                 if (error instanceof Error) {
-                    console.error('Error al cargar el checkout:', error.message);
+                    console.error('Error:', error.message);
                 } else {
-                    console.error('Error desconocido al cargar el checkout');
+                    console.error('Error');
                 }
             });
     }, [lineItems]);

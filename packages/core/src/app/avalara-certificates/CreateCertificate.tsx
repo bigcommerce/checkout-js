@@ -51,7 +51,7 @@ const CreateCertificate: React.FC<CreateCertificateProps> = ({ customer, certIds
 
     return !customer.isGuest ? (
         <>
-            <a href={`/certificates`} target="_blank" rel="noopener noreferrer">
+            <a href={`/certificates`}  rel="noopener noreferrer">
                 Use Tax/ Exempt Certificate
             </a> 
             <p></p>
