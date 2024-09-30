@@ -8,8 +8,9 @@ import React, {
     useMemo,
 } from 'react';
 
+import { Accordion } from '@bigcommerce/checkout/ui';
+
 import { connectFormik, ConnectFormikProps } from '../../common/form';
-import { Accordion } from '../accordion';
 
 export interface ChecklistProps {
     children: ReactNode;

@@ -4,3 +4,4 @@ export {
     AccordionItemHeaderProps,
     AccordionItemProps,
 } from './AccordionItem';
+export { default as AccordionContext, AccordionContextProps } from './AccordionContext';

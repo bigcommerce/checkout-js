@@ -33,7 +33,7 @@ const AccordionItem: FunctionComponent<AccordionItemProps> = ({
     const { onToggle, selectedItemId } = useContext(AccordionContext);
     const isSelected = selectedItemId === itemId;
 
-    const transitionEndListener = useCallback((node, done) => {
+    const transitionEndListener = useCallback((node: Node, done) => {
         node.addEventListener('transitionend', ({ target }: Event) => {
             if (target === node) {
                 done();
@@ -42,14 +42,12 @@ const AccordionItem: FunctionComponent<AccordionItemProps> = ({
     }, []);
 
     return (
-        <li
-            className={classNames(className, { [classNameSelected]: isSelected })}
-        >
+        <li className={classNames(className, { [classNameSelected]: isSelected })}>
             <div className={classNames(headerClassName, { [headerClassNameSelected]: isSelected })}>
                 {headerContent({ isSelected, onToggle })}
             </div>
 
-            {children && (
+            {children ? (
                 <CSSTransition
                     addEndListener={transitionEndListener}
                     classNames={bodyClassName}
@@ -60,7 +58,7 @@ const AccordionItem: FunctionComponent<AccordionItemProps> = ({
                 >
                     <div className={bodyClassName}>{children}</div>
                 </CSSTransition>
-            )}
+            ) : null}
         </li>
     );
 };
