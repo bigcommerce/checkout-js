@@ -367,6 +367,8 @@ class Payment extends Component<
 
     private handleCloseModal: (event: Event, props: ErrorModalOnCloseProps) => Promise<void> =
         async (_, { error }) => {
+            console.log('test');
+
             if (!error) {
                 return;
             }
