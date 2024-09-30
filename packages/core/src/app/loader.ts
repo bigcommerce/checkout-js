@@ -10,12 +10,14 @@ import { RenderOrderConfirmationOptions } from './order';
 
 declare const LIBRARY_NAME: string;
 declare const MANIFEST_JSON: AssetManifest;
+declare const PRELOAD_ASSETS: string[];
 
 export interface AssetManifest {
     appVersion: string;
     css: string[];
     dynamicChunks: { [key: string]: string[] };
     js: string[];
+    integrity: { [key: string]: string };
 }
 
 export interface LoadFilesOptions {
@@ -35,22 +37,40 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
         css = [],
         dynamicChunks: { css: cssDynamicChunks = [], js: jsDynamicChunks = [] },
         js = [],
+        integrity = {},
     } = MANIFEST_JSON;
 
-    const scripts = getScriptLoader().loadScripts(js.map((path) => joinPaths(publicPath, path)));
+    const scripts = Promise.all(js.filter(path => !path.startsWith('loader')).map((path) =>
+        getScriptLoader().loadScript(joinPaths(publicPath, path), {
+            async: false,
+            attributes: {
+                crossorigin: 'anonymous',
+                integrity: integrity[path],
+            }
+        })
+    ));
 
-    const stylesheets = getStylesheetLoader().loadStylesheets(
-        css.map((path) => joinPaths(publicPath, path)),
-        { prepend: true },
-    );
+    const stylesheets = Promise.all(css.map((path) =>
+        getStylesheetLoader().loadStylesheet(joinPaths(publicPath, path), {
+            prepend: true,
+            attributes: {
+                crossorigin: 'anonymous',
+                integrity: integrity[path],
+            }
+        })
+    ));
 
     getScriptLoader().preloadScripts(
-        jsDynamicChunks.map((path) => joinPaths(publicPath, path)),
+        jsDynamicChunks
+            .filter((path) => PRELOAD_ASSETS.some((preloadPath) => path.startsWith(preloadPath)))
+            .map((path) => joinPaths(publicPath, path)),
         { prefetch: true },
     );
 
     getStylesheetLoader().preloadStylesheets(
-        cssDynamicChunks.map((path) => joinPaths(publicPath, path)),
+        cssDynamicChunks
+            .filter((path) => PRELOAD_ASSETS.some((preloadPath) => path.startsWith(preloadPath)))
+            .map((path) => joinPaths(publicPath, path)),
         { prefetch: true },
     );
 
