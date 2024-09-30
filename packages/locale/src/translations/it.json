@@ -415,7 +415,7 @@
                 "invalid_request_error": "Si è verificato un problema durante l'elaborazione della transazione. Contattaci o riprova più tardi.",
                 "invalid_user_authentication": "Si è verificato un problema durante l'elaborazione del pagamento. Contattaci.",
                 "invalid_zip": "Non è stato possibile elaborare il pagamento perché i dati forniti per la transazione non sono validi.",
-                "invalid_phone_number": "Phone Number is invalid.",
+                "invalid_phone_number": "Il numero di telefono non è valido.",
                 "journal_error": "Si è verificato un errore sul server. Riprova in un secondo momento.",
                 "lost_or_stolen_card": "Non è stato possibile elaborare il pagamento perché i dati forniti per la transazione non sono validi.",
                 "missing_test_mode": "Non è stato possibile elaborare la richiesta perché i dati forniti per la transazione non sono validi.",
