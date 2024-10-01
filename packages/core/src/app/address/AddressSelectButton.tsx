@@ -6,20 +6,32 @@ import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/
 
 import { AddressSelectProps } from './AddressSelect';
 import StaticAddress from './StaticAddress';
+import StaticAddressV2 from './StaticAddressV2';
 
-type AddressSelectButtonProps = Pick<AddressSelectProps, 'selectedAddress' | 'addresses' | 'type'>;
+type AddressSelectButtonProps = Pick<AddressSelectProps, 'selectedAddress' | 'addresses' | 'type' | 'showSingleLineAddress'>;
 
 const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLanguageProps> = ({
     selectedAddress,
     language,
-    type
+    type,
+    showSingleLineAddress,
 }) => {
     const [ariaExpanded, setAriaExpanded] = useState(false);
+
+    const SelectedAddress = () => {
+        if (!selectedAddress) {
+            return <TranslatedString id="address.enter_address_action" />;
+        }
+
+        return showSingleLineAddress
+            ? <StaticAddressV2 address={selectedAddress} type={type} />
+            : <StaticAddress address={selectedAddress} type={type} />;
+    }
 
     return (
         <a
             aria-controls="addressDropdown"
-            aria-description={language.translate('address.enter_or_select_address_action')}
+            aria-describedby={language.translate('address.enter_or_select_address_action')}
             aria-expanded={ariaExpanded}
             className="button dropdown-button dropdown-toggle--select"
             data-test="address-select-button"
@@ -28,11 +40,7 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLang
             onBlur={() => setAriaExpanded(false)}
             onClick={preventDefault(() => setAriaExpanded(!ariaExpanded))}
         >
-            {selectedAddress ? (
-                <StaticAddress address={selectedAddress} type={type} />
-            ) : (
-                <TranslatedString id="address.enter_address_action" />
-            )}
+            <SelectedAddress />
         </a>
     );
 };

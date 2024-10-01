@@ -20,6 +20,7 @@ import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-integration';
 
 import MultiShippingForm, { MultiShippingFormValues } from './MultiShippingForm';
+import MultiShippingFormV2 from './MultiShippingFormV2';
 import SingleShippingForm, { SingleShippingFormValues } from './SingleShippingForm';
 
 export interface ShippingFormProps {
@@ -43,6 +44,7 @@ export interface ShippingFormProps {
     shouldShowOrderComments: boolean;
     isFloatingLabelEnabled?: boolean;
     isInitialValueLoaded: boolean;
+    isNewMultiShippingUIEnabled: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
     deinitialize(options: ShippingRequestOptions): Promise<CheckoutSelectors>;
     deleteConsignments(): Promise<Address | undefined>;
@@ -97,6 +99,7 @@ const ShippingForm = ({
     isShippingStepPending,
     isFloatingLabelEnabled,
     isInitialValueLoaded,
+    isNewMultiShippingUIEnabled,
 }: ShippingFormProps & WithLanguageProps) => {
     const { isPayPalFastlaneEnabled, paypalFastlaneAddresses } = usePayPalFastlaneAddress();
 
@@ -104,8 +107,21 @@ const ShippingForm = ({
         ? paypalFastlaneAddresses
         : addresses;
 
-    return isMultiShippingMode ? (
-        <MultiShippingForm
+    const getMultiShippingForm = () => {
+        if (isNewMultiShippingUIEnabled) {
+            return <MultiShippingFormV2
+                countriesWithAutocomplete={countriesWithAutocomplete}
+                customerMessage={customerMessage}
+                defaultCountryCode={shippingAddress?.countryCode}
+                isLoading={isLoading}
+                onCreateAccount={onCreateAccount}
+                onSignIn={onSignIn}
+                onSubmit={onMultiShippingSubmit}
+                onUnhandledError={onUnhandledError}
+            />;
+        }
+
+        return <MultiShippingForm
             addresses={shippingAddresses}
             assignItem={assignItem}
             cart={cart}
@@ -128,7 +144,11 @@ const ShippingForm = ({
             onUnhandledError={onUnhandledError}
             onUseNewAddress={onUseNewAddress}
             shouldShowOrderComments={shouldShowOrderComments}
-        />
+        />;
+    };
+
+    return isMultiShippingMode ? (
+        getMultiShippingForm()
     ) : (
         <SingleShippingForm
             addresses={shippingAddresses}

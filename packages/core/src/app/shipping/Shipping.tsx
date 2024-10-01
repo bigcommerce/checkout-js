@@ -66,6 +66,7 @@ export interface WithCheckoutShippingProps {
     methodId?: string;
     shippingAddress?: Address;
     shouldShowMultiShipping: boolean;
+    isNewMultiShippingUIEnabled: boolean;
     shouldShowOrderComments: boolean;
     shouldRenderWhileLoading: boolean;
     providerWithCustomCheckout?: string;
@@ -126,6 +127,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
             isBillingSameAsShipping,
             isGuest,
             shouldShowMultiShipping,
+            isNewMultiShippingUIEnabled,
             customer,
             updateShippingAddress,
             initializeShippingMethod,
@@ -183,6 +185,7 @@ class Shipping extends Component<ShippingProps & WithCheckoutShippingProps, Ship
                         isGuest={isGuest}
                         isInitialValueLoaded={shouldRenderWhileLoading ? !isInitializing : true}
                         isMultiShippingMode={isMultiShippingMode}
+                        isNewMultiShippingUIEnabled={isNewMultiShippingUIEnabled}
                         onMultiShippingSubmit={this.handleMultiShippingSubmit}
                         onSingleShippingSubmit={this.handleSingleShippingSubmit}
                         onUseNewAddress={this.handleUseNewAddress}
@@ -393,6 +396,11 @@ export function mapToShippingProps({
         isCreatingCustomerAddress();
     const shouldShowMultiShipping =
         hasMultiShippingEnabled && !methodId && shippableItemsCount > 1;
+    const isNewMultiShippingUIEnabled =
+        isExperimentEnabled(
+            config.checkoutSettings,
+            'PROJECT-4159.improve_multi_address_shipping_ui',
+        ) 
     const countriesWithAutocomplete = ['US', 'CA', 'AU', 'NZ', 'GB'];
 
     const shippingAddress =
@@ -429,6 +437,7 @@ export function mapToShippingProps({
         shippingAddress,
         shouldRenderWhileLoading: features['CHECKOUT-8300.improve_extension_performance'] ?? true,
         shouldShowMultiShipping,
+        isNewMultiShippingUIEnabled,
         shouldShowOrderComments: enableOrderComments,
         signOut: checkoutService.signOutCustomer,
         unassignItem: checkoutService.unassignItemsToAddress,

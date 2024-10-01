@@ -23,6 +23,7 @@ import {
     mapAddressFromFormValues,
 } from '../address';
 import { ErrorModal } from '../common/error';
+import { withFormikExtended } from '../common/form';
 import { Form } from '../ui/form';
 
 import { AssignItemFailedError, AssignItemInvalidAddressError } from './errors';
@@ -34,7 +35,6 @@ import ItemAddressSelect from './ItemAddressSelect';
 import ShippableItem from './ShippableItem';
 import ShippingFormFooter from './ShippingFormFooter';
 import updateShippableItems from './updateShippableItems';
-import { withFormikExtended } from '../common/form';
 
 export interface MultiShippingFormProps {
     addresses: CustomerAddress[];
