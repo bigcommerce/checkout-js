@@ -89,6 +89,22 @@ describe('loadFiles', () => {
         });
     });
 
+    it('loads required JS files listed in manifest when experiment is off', async () => {
+        await loadFiles({
+            ...options,
+            isIntegrityHashExperimentEnabled: false,
+        });
+
+        expect(getScriptLoader().loadScript).toHaveBeenCalledWith('https://cdn.foo.bar/vendor.js', {
+            async: false,
+            attributes: {},
+        });
+        expect(getScriptLoader().loadScript).toHaveBeenCalledWith('https://cdn.foo.bar/main.js', {
+            async: false,
+            attributes: {},
+        });
+    });
+
     it('loads required CSS files listed in manifest', async () => {
         await loadFiles(options);
 
@@ -105,6 +121,19 @@ describe('loadFiles', () => {
                 crossorigin: 'anonymous',
                 integrity: 'hash-main-css',
             },
+        });
+    });
+
+    it('loads required CSS files listed in manifest when experiment is off', async () => {
+        await loadFiles(options);
+
+        expect(getStylesheetLoader().loadStylesheet).toHaveBeenCalledWith('https://cdn.foo.bar/vendor.css', {
+            prepend: true,
+            attributes: {},
+        });
+        expect(getStylesheetLoader().loadStylesheet).toHaveBeenCalledWith('https://cdn.foo.bar/main.css', {
+            prepend: true,
+            attributes: {},
         });
     });
 
