@@ -9,6 +9,7 @@ import countryDialingCodes from '../utility/countryDialingCodes';
 declare global {
   interface Window {
     dataLayer: any[];
+    _exp: any[];
   }
 }
 
@@ -300,6 +301,27 @@ interface PurchaseData {
   user: GTMUser;
 }
 
+export interface ExpertVoiceData {
+  pixelId?: string; // Pixel ID provided by EV
+  orderId: string;
+  orderDiscountCode: string; // Discount code used on order, or discount group name. Used to identify commissionable orders.
+  orderDiscount?: string;
+  orderShipping?: string;
+  orderSubtotal: string; // Order subtotal. After discount is applied, before tax & shipping. Commission calculated from this.
+  orderTax?: string;
+  orderCurrency: string;
+  orderTotal: string;
+  products: Array<{
+    id: string; // parent SKU - Should match product code in EV store file
+    name: string;
+    sku: string;
+    upc?: string;
+    msrp?: string;
+    price: string;
+    quantity: string;
+  }>;
+}
+
 export function trackPurchase(
   info: OrderData,
   address?: Address | OrderBillingAddress,
@@ -371,4 +393,14 @@ export function trackSignUp(location: string, user: Customer) {
   };
 
   track(data);
+}
+
+// EXPERT VOICE TRACKING
+export function trackExpertVoice(data: ExpertVoiceData) {
+  const _exp = window._exp || [];
+
+  _exp.push({
+    ...data,
+    pixelId: data.pixelId || 'exp-831-567466', //Pixel ID provided by EV
+  });
 }

@@ -18,6 +18,7 @@ import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-
 import { withAnalytics } from '../analytics';
 import { withCheckout } from '../checkout';
 import { ErrorModal } from '../common/error';
+import {CouponData, ExpertVoiceData, OrderData, PromotionData, trackExpertVoice, trackGuest, trackPurchase, trackSignUp} from "../common/tracking";
 import { retry } from '../common/utility';
 import { getPasswordRequirementsFromConfig } from '../customer';
 import { EmbeddedCheckoutStylesheet, isEmbedded } from '../embeddedCheckout';
@@ -42,7 +43,6 @@ import OrderConfirmationSection from './OrderConfirmationSection';
 import OrderStatus from './OrderStatus';
 import PrintLink from './PrintLink';
 import ThankYouHeader from './ThankYouHeader';
-import {CouponData, OrderData, PromotionData, trackGuest, trackPurchase, trackSignUp} from "../common/tracking";
 
 
 const OrderSummary = lazy(() =>
@@ -105,11 +105,8 @@ class OrderConfirmation extends Component<
             analyticsTracker,
         } = this.props;
 
-        console.log("this.props", this.props)
-
         loadOrder(orderId)
             .then(({ data }) => {
-                console.log("order", data)
 
                 const { links: { siteLink = '' } = {} } = data.getConfig() || {};
                 const messenger = createEmbeddedMessenger({ parentOrigin: siteLink });
@@ -125,19 +122,19 @@ class OrderConfirmation extends Component<
                 const isGuest = !order?.customerId;
                 const billingAddress = order?.billingAddress
 
-                console.log("order order", order, config, this.props)
-
                 if (isGuest && order?.billingAddress.email) {
                     trackGuest(order?.billingAddress.email);
                 }
 
                 const coupons: CouponData[] = [];
+
                 order?.coupons?.forEach(coupon => {
                     coupons.push({
                         coupon: coupon.code,
                         discount: coupon.discountedAmount,
                     });
                 });
+
                 const purchaseData: OrderData = {
                     purchase: {
                         transaction_id: orderId,
@@ -150,12 +147,26 @@ class OrderConfirmation extends Component<
                         items: [],
                     },
                 };
+
+                const expertVoiceData: ExpertVoiceData = {
+                    orderId: orderId.toString(),
+                    orderDiscountCode: order?.coupons?.toString() || '',
+                    orderDiscount: order?.discountAmount?.toFixed(2) || '',
+                    orderShipping: order?.shippingCostTotal?.toFixed(2) || '', // info.shippingCostBeforeDiscount also exists, but I assume we want after discount
+                    orderSubtotal: order?.baseAmount?.toFixed(2) || '',
+                    orderTax: order?.taxTotal?.toFixed(2) || '',
+                    orderCurrency: order?.currency?.code || 'USD', // currency code
+                    orderTotal: order?.orderAmount?.toFixed(2) || '',
+                    products: [],
+
+                };
                 const cartItemLists = [
                     order?.lineItems.customItems,
                     order?.lineItems.digitalItems,
                     order?.lineItems.giftCertificates,
                     order?.lineItems.physicalItems,
                 ];
+
                 cartItemLists.forEach(itemList => {
                     itemList?.forEach((item: CustomItem | DigitalItem | GiftCertificateItem | PhysicalItem) => {
                         const itemCoupons: CouponData[] = [];
@@ -165,8 +176,10 @@ class OrderConfirmation extends Component<
 
                         if ( 'discounts' in item ) {
                             let itemCouponIndex = 0;
+
                             Object.keys(item.discounts).forEach((id: any) => {
                                 const discountedAmount = item.discounts[id] as unknown as number ; // item.discounts is of type {[key: string]: number} but incorrectly typed
+                                
                                 if ( id === 'coupon' ) {
                                     itemCoupons.push({coupon: coupons[itemCouponIndex]?.coupon, discount: discountedAmount / itemQuantity});
                                     itemCouponIndex++;
@@ -190,10 +203,21 @@ class OrderConfirmation extends Component<
                             coupons: itemCoupons,
                             promotions: itemPromotions,
                         });
+
+                        expertVoiceData.products.push({
+                            id: 'productId' in item ? item.productId.toString() : '', // parent SKU / product-level identifier in EV - this is wrong I think
+                            name: item.name,
+                            sku: 'sku' in item ? item.sku : '',
+                            // upc: undefined, // UPC code (e.g. barcode code) - not required
+                            // msrp: undefined, // recommended retail price - this needs input from the frontend API so leaving undefined as not required
+                            price: itemDiscountedPrice.toFixed(2), // price paid for item after discount
+                            quantity: itemQuantity?.toFixed(2) || '',
+                        })
                     });
                 });
 
                 trackPurchase(purchaseData, billingAddress, order?.customerId);
+                trackExpertVoice(expertVoiceData);
             })
             .catch(this.handleUnhandledError);
     }

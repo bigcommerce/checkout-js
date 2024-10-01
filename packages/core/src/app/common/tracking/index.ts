@@ -1,1 +1,16 @@
-export { trackAddCoupon, trackAddShippingInfo, trackCheckoutProgress, trackLogin, trackPurchase, trackSignUp, trackUserChange, CouponData, PromotionData, OrderData, ShippingData, trackGuest } from './track';
+export {
+  trackAddCoupon,
+  trackAddShippingInfo,
+  trackCheckoutProgress,
+  trackExpertVoice,
+  trackLogin,
+  trackPurchase,
+  trackSignUp,
+  trackUserChange,
+  CouponData,
+  ExpertVoiceData,
+  PromotionData,
+  OrderData,
+  ShippingData,
+  trackGuest,
+} from './track';
