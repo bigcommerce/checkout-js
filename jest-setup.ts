@@ -15,19 +15,6 @@ process.on('unhandledRejection', (reason) => {
     console.log(reason);
 });
 
-// https://github.com/FezVrasta/popper.js/issues/478
-if (window.document) {
-    document.createRange = () =>
-        ({
-            setStart: noop,
-            setEnd: noop,
-            commonAncestorContainer: {
-                nodeName: 'BODY',
-                ownerDocument: document,
-            },
-        } as Range);
-}
-
 window.matchMedia = jest.fn(
     () =>
         ({

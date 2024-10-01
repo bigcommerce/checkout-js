@@ -24,16 +24,21 @@ const StyledConsignment = styled.div`
     padding: 1rem;
     margin-bottom: 1rem;
 `;
+
 const StyledConsignmentHeader = styled.h3`
     font-size: 1.25rem;
     margin: 0 0 1rem;
+`;
+
+const StyledButton = styled(Button)`
+    color: #5f5f5f;
 `;
 
 interface MultiShippingFormV2Values {
     orderComment: string;
 }
 
-interface MultiShippingFormV2Props {
+export interface MultiShippingFormV2Props {
     customerMessage: string;
     defaultCountryCode?: string;
     countriesWithAutocomplete: string[];
@@ -225,7 +230,9 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
                 )
             }
         </div>
-        <Button onClick={handleAddShippingDestination} variant={ButtonVariant.Secondary}>Add shipping destination</Button>
+        <StyledButton onClick={handleAddShippingDestination} variant={ButtonVariant.Secondary}>
+            Add shipping destination
+        </StyledButton>
         <Form>
             <MultiShippingFormV2Footer
                 isLoading={isLoading}
