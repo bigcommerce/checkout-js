@@ -205,13 +205,13 @@ class OrderConfirmation extends Component<
                         });
 
                         expertVoiceData.products.push({
-                            id: 'productId' in item ? item.productId.toString() : '', // parent SKU / product-level identifier in EV - this is wrong I think
+                            id: 'sku' in item ? item.sku : '', // product-level identifier in EV - product SKU in this case
                             name: item.name,
                             sku: 'sku' in item ? item.sku : '',
                             // upc: undefined, // UPC code (e.g. barcode code) - not required
                             // msrp: undefined, // recommended retail price - this needs input from the frontend API so leaving undefined as not required
                             price: itemDiscountedPrice.toFixed(2), // price paid for item after discount
-                            quantity: itemQuantity?.toFixed(2) || '',
+                            quantity: itemQuantity.toString() || '',
                         })
                     });
                 });
