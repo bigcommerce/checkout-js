@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.528.2](https://github.com/bigcommerce/checkout-js/compare/v1.528.1...v1.528.2) (2024-10-02)
+
+
+### Bug Fixes
+
+* **checkout:** CHECKOUT-8519 Enable integrity hashes when experiment is on ([8bfadf1](https://github.com/bigcommerce/checkout-js/commit/8bfadf192d48c529e92b76607168e9a95ecbe060))
+
 ### [1.528.1](https://github.com/bigcommerce/checkout-js/compare/v1.528.0...v1.528.1) (2024-10-01)
 
 ## [1.528.0](https://github.com/bigcommerce/checkout-js/compare/v1.527.0...v1.528.0) (2024-09-30)
