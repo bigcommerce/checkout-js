@@ -14,7 +14,7 @@
     "build": "nx run core:build",
     "build:server": "http-server dist",
     "dev": "nx run core:dev",
-    "dev:server": "http-server build",
+    "dev:server": "http-server build --cors",
     "e2e": "npm run build && npx playwright install && PORT=5005 MODE=REPLAY npx playwright test",
     "release": "echo 'Please do not release locally, use CircleCi'",
     "release:alpha": "npm run lint && npm run test -- --coverage && npm run build -- --env prerelease=prerelease && npm run release:version",

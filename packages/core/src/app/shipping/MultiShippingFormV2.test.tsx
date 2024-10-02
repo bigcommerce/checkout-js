@@ -128,5 +128,4 @@ describe('MultiShippingFormV2 Component', () => {
             expect(screen.getByRole('button', { name: 'Add shipping destination' })).toBeInTheDocument();
         });
     });
-
 });
