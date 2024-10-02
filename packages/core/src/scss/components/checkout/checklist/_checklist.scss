@@ -212,3 +212,14 @@
         will-change: $loading-skeleton-will-change;
     }
 }
+
+.custom-checklist-item {
+    margin: 0;
+    overflow: hidden;
+    border-bottom: 0;
+
+    .paymentMethod--hosted,
+    .widget {
+        padding: 0;
+    }
+}
