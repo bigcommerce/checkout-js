@@ -54,4 +54,5 @@ export {
     IsInstrumentCardNumberRequiredState,
     isInstrumentFeatureAvailable,
     shouldUseStripeLinkByMinimumAmount,
+    isHTMLElement,
 } from './guards';
