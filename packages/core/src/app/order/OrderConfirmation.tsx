@@ -147,10 +147,10 @@ class OrderConfirmation extends Component<
                         items: [],
                     },
                 };
-
+                
                 const expertVoiceData: ExpertVoiceData = {
                     orderId: orderId.toString(),
-                    orderDiscountCode: order?.coupons?.toString() || '',
+                    orderDiscountCode: order?.coupons?.map(({code}) => code).join(',') || '',
                     orderDiscount: order?.discountAmount?.toFixed(2) || '',
                     orderShipping: order?.shippingCostTotal?.toFixed(2) || '', // info.shippingCostBeforeDiscount also exists, but I assume we want after discount
                     orderSubtotal: order?.baseAmount?.toFixed(2) || '',
