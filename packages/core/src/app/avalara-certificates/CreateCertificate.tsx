@@ -63,10 +63,13 @@ const CreateCertificate: React.FC<CreateCertificateProps> = ({ customer, certIds
                         return detail ? (
                             <div key={detail.id}>
                                 <p>
-                                    <span>Cert ID:</span> {detail?.id} |
-                                    <span>Exemption Percentage:</span> {detail?.exemptPercentage}% |
-                                   {/*  <span>Customer Name:</span> {detail?.customers?.[0]?.name || 'Unknown'} | */}
-                                    <span>Exemption Reason:</span> {detail?.exemptionReason?.name || 'Unknown'}
+                                    {/* <span>Cert ID:</span> {detail?.id} |&nbsp;
+                                    <span>Exemption Percentage:</span> {detail?.exemptPercentage}% |&nbsp;
+                                    <span>Exempt Reason:</span> {detail?.exemptionReason?.name || 'Unknown'} */}
+
+                                    <span>Exempt Reason:</span> {detail?.exemptionReason?.name || 'Unknown'}&nbsp;|&nbsp;
+                                    <span>State:</span> {detail?.exposureZone.region} |&nbsp;
+                                    <span>Percent:</span> {detail?.exemptPercentage}%
                                 </p>
                             </div>
                         ) : (
