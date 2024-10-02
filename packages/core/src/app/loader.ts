@@ -22,6 +22,7 @@ export interface AssetManifest {
 
 export interface LoadFilesOptions {
     publicPath?: string;
+    isIntegrityHashExperimentEnabled?: boolean;
 }
 
 export interface LoadFilesResult {
@@ -32,6 +33,7 @@ export interface LoadFilesResult {
 
 export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> {
     const publicPath = configurePublicPath(options && options.publicPath);
+    const isIntegrityHashExperimentEnabled = options?.isIntegrityHashExperimentEnabled ?? true;
     const {
         appVersion,
         css = [],
@@ -43,20 +45,20 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
     const scripts = Promise.all(js.filter(path => !path.startsWith('loader')).map((path) =>
         getScriptLoader().loadScript(joinPaths(publicPath, path), {
             async: false,
-            attributes: {
+            attributes: isIntegrityHashExperimentEnabled ? {
                 crossorigin: 'anonymous',
                 integrity: integrity[path],
-            }
+            } : {},
         })
     ));
 
     const stylesheets = Promise.all(css.map((path) =>
         getStylesheetLoader().loadStylesheet(joinPaths(publicPath, path), {
             prepend: true,
-            attributes: {
+            attributes: isIntegrityHashExperimentEnabled ? {
                 crossorigin: 'anonymous',
                 integrity: integrity[path],
-            }
+            } : {},
         })
     ));
 
