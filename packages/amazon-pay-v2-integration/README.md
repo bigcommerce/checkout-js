@@ -1,5 +1,6 @@
 # amazon-pay-v2-integration
 
+This package contains the integration layer for the [AmazonPayV2](https://pay.amazon.com/) provider.
 This library was generated with [Nx](https://nx.dev).
 
 ## Running unit tests
