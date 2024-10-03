@@ -1,7 +1,6 @@
 import { Address } from '@bigcommerce/checkout-sdk';
 
 import React, { FunctionComponent, useMemo, useState } from 'react';
-import styled from 'styled-components';
 
 import { preventDefault } from '@bigcommerce/checkout/dom-utils';
 import { TranslatedLink, TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
@@ -17,22 +16,7 @@ import { Form } from '../ui/form';
 import { AssignItemFailedError, AssignItemInvalidAddressError } from './errors';
 import hasSelectedShippingOptions from './hasSelectedShippingOptions';
 import MultiShippingFormV2Footer from './MultiShippingFormV2Footer';
-
-const StyledConsignment = styled.div`
-    border: 1px solid #D0D0D0;
-    border-radius: 4px;
-    padding: 1rem;
-    margin-bottom: 1rem;
-`;
-
-const StyledConsignmentHeader = styled.h3`
-    font-size: 1.25rem;
-    margin: 0 0 1rem;
-`;
-
-const StyledButton = styled(Button)`
-    color: #5f5f5f;
-`;
+import './MultiShippingFormV2.scss';
 
 interface MultiShippingFormV2Values {
     orderComment: string;
@@ -202,8 +186,8 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
                 onSaveAddress={handleSaveAddress}
             />
             {consignments.map((consignment, index) => (
-                <StyledConsignment key={consignment.id}>
-                    <StyledConsignmentHeader>Shipping destination {index + 1}</StyledConsignmentHeader>
+                <div className='consignment-container' key={consignment.id}>
+                    <h3 className='consignment-header'>Shipping destination {index + 1}</h3>
                     <AddressSelect
                         addresses={addresses}
                         onSelectAddress={(address) => handleSelectAddress(address, consignment.lineItemIds)}
@@ -212,12 +196,12 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
                         showSingleLineAddress
                         type={AddressType.Shipping}
                     />
-                </StyledConsignment>
+                </div>
             ))
             }
             {(consignments.length === 0 || addShippingDestination) &&
-                (<StyledConsignment>
-                    <StyledConsignmentHeader>Shipping destination {consignments.length === 0 ? 1 : (consignments.length + 1)}</StyledConsignmentHeader>
+                (<div className='consignment-container'>
+                    <h3 className='consignment-header'>Shipping destination {consignments.length === 0 ? 1 : (consignments.length + 1)}</h3>
                     <AddressSelect
                         addresses={addresses}
                         onSelectAddress={(address) => handleSelectAddress(address, [])}
@@ -226,13 +210,13 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
                         showSingleLineAddress
                         type={AddressType.Shipping}
                     />
-                </StyledConsignment>
+            </div>
                 )
             }
         </div>
-        <StyledButton onClick={handleAddShippingDestination} variant={ButtonVariant.Secondary}>
+        <Button className='add-consignment-button' onClick={handleAddShippingDestination} variant={ButtonVariant.Secondary}>
             Add shipping destination
-        </StyledButton>
+        </Button>
         <Form>
             <MultiShippingFormV2Footer
                 isLoading={isLoading}
