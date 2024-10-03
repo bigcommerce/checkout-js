@@ -4,7 +4,7 @@ import React, { FunctionComponent, memo, useCallback, useMemo } from 'react';
 
 import { connectFormik, ConnectFormikProps } from '../../common/form';
 import { isMobile } from '../../common/utility';
-import { Checklist, ChecklistItem } from '../../ui/form';
+import { Checklist, ChecklistItem, CustomChecklistItem } from '../../ui/form';
 
 import getUniquePaymentMethodId, { parseUniquePaymentMethodId } from './getUniquePaymentMethodId';
 import PaymentMethodTitle from './PaymentMethodTitle';
@@ -115,6 +115,15 @@ const PaymentMethodListItem: FunctionComponent<PaymentMethodListItemProps> = ({
         (isSelected: boolean) => <PaymentMethodTitle isSelected={isSelected} method={method} onUnhandledError={onUnhandledError} />,
         [method],
     );
+
+    if (method.initializationData?.isCustomChecklistItem) {
+        return (
+            <CustomChecklistItem
+                content={renderPaymentMethod}
+                htmlId={`radio-${value}`}
+            />
+        );
+    }
 
     return (
         <ChecklistItem
