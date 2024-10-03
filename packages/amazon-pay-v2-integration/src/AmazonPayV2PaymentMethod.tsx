@@ -62,12 +62,10 @@ const AmazonPayV2PaymentMethod: FunctionComponent<PaymentMethodProps> = ({
             {...rest}
             buttonId="editButtonId"
             containerId="paymentWidget"
-            deinitializeCustomer={undefined}
             deinitializePayment={checkoutService.deinitializePayment}
             disableSubmit={disableSubmit}
             hidePaymentSubmitButton={hidePaymentSubmitButton}
             hideWidget
-            initializeCustomer={undefined}
             initializePayment={initializeAmazonPayV2Payment}
             instruments={instruments}
             isInstrumentCardCodeRequired={isInstrumentCardCodeRequiredSelector(checkoutState)}
