@@ -6,7 +6,6 @@ const { join } = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
-const { isArray, mergeWith } = require('lodash');
 
 const {
     AsyncHookPlugin,
@@ -299,7 +298,11 @@ function loaderConfig(options, argv) {
                         transform: assets => transformManifest(assets, appVersion),
                         output: 'manifest-loader.json',
                         integrity: true,
-                        done() {
+                        done(_, { compilation: { errors = [] } }) {
+                            if (errors.length) {
+                                return;
+                            }
+
                             const folder = isProduction ? 'dist' : 'build';
 
                             mergeManifests(
