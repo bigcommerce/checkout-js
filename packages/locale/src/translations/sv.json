@@ -415,7 +415,7 @@
                 "invalid_request_error": "Vi kan inte bearbeta din transaktion. Kontakta oss eller försök igen senare.",
                 "invalid_user_authentication": "Det uppstod ett fel när betalningen bearbetades. Kontakta oss.",
                 "invalid_zip": "Det gick inte att bearbeta betalningen eftersom att ogiltigt e-postmeddelande levererades med transaktionen.",
-                "invalid_phone_number": "Phone Number is invalid.",
+                "invalid_phone_number": "Telefonnumret är ogiltigt.",
                 "journal_error": "Någonting gick fel på servern. Vänligen försök igen vid ett senare tillfälle.",
                 "lost_or_stolen_card": "Det gick inte att bearbeta betalningen eftersom att ogiltigt e-postmeddelande levererades med transaktionen.",
                 "missing_test_mode": "Det gick inte att bearbeta förfrågan eftersom ogiltiga uppgifter levererades med transaktionen.",

@@ -415,7 +415,7 @@
                 "invalid_request_error": "Wir haben Schwierigkeiten bei der Verarbeitung Ihrer Transaktion. Bitte nehmen Sie Kontakt zu uns auf oder versuchen Sie es später erneut.",
                 "invalid_user_authentication": "Bei der Verarbeitung Ihrer Zahlung ist ein Fehler aufgetreten. Bitte nehmen Sie Kontakt zu uns auf.",
                 "invalid_zip": "Die Zahlung konnte nicht verarbeitet werden, weil bei der Transaktion ungültige Daten angegeben wurden.",
-                "invalid_phone_number": "Phone Number is invalid.",
+                "invalid_phone_number": "Die Telefonnummer ist ungültig.",
                 "journal_error": "Es gab ein Problem mit dem Server. Bitte versuchen Sie es später noch einmal.",
                 "lost_or_stolen_card": "Die Zahlung konnte nicht verarbeitet werden, weil bei der Transaktion ungültige Daten angegeben wurden.",
                 "missing_test_mode": "Die Anfrage konnte nicht verarbeitet werden, weil bei der Transaktion ungültige Daten eingegeben wurden.",
