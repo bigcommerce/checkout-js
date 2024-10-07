@@ -13,3 +13,4 @@ export {
 export { default as isInstrumentCardCodeRequiredSelector } from './isInstrumentCardCodeRequiredSelector';
 export { default as isInstrumentCardNumberRequiredSelector } from './isInstrumentCardNumberRequiredSelector';
 export { default as shouldUseStripeLinkByMinimumAmount } from './shouldUseStripeLinkByMinimumAmount';
+export { isHTMLElement } from './isHTMLElement';

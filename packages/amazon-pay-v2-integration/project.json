@@ -1,0 +1,25 @@
+{
+  "root": "packages/amazon-pay-v2-integration",
+  "sourceRoot": "packages/amazon-pay-v2-integration/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/amazon-pay-v2-integration/**/*.{ts,tsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/amazon-pay-v2-integration"],
+      "options": {
+        "jestConfig": "packages/amazon-pay-v2-integration/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": [
+    "scope:integration"
+    ]
+}

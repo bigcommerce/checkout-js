@@ -33,21 +33,6 @@ describe('CheckoutButtonV1Resolver', () => {
         expect(component).toMatchSnapshot();
     });
 
-    it('matches snapshot for amazonpay', () => {
-        const component = render(
-            <CheckoutButtonV1Resolver
-                deinitialize={jest.fn()}
-                initialize={jest.fn()}
-                isShowingWalletButtonsOnTop={true}
-                methodId="amazonpay"
-                onClick={jest.fn()}
-                onError={jest.fn()}
-            />
-        );
-
-        expect(component).toMatchSnapshot();
-    });
-
     it('matches snapshot for paypalcommerce', () => {
         const component = render(
             <CheckoutButtonV1Resolver

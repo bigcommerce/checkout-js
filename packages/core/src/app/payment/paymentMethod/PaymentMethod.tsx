@@ -12,7 +12,6 @@ import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-
 
 import { withCheckout } from '../../checkout';
 
-import AmazonPayV2PaymentMethod from './AmazonPayV2PaymentMethod';
 import BraintreeCreditCardPaymentMethod from './BraintreeCreditCardPaymentMethod';
 import CCAvenueMarsPaymentMethod from './CCAvenueMarsPaymentMethod';
 import HostedCreditCardPaymentMethod from './HostedCreditCardPaymentMethod';
@@ -68,10 +67,6 @@ const PaymentMethodComponent: FunctionComponent<
 
     if (method.id === PaymentMethodId.SquareV2) {
         return <SquarePaymentMethod {...props} />;
-    }
-
-    if (method.id === PaymentMethodId.AmazonPay) {
-        return <AmazonPayV2PaymentMethod {...props} />;
     }
 
     if (method.id === PaymentMethodId.CCAvenueMars) {
