@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.529.0](https://github.com/bigcommerce/checkout-js/compare/v1.528.3...v1.529.0) (2024-10-07)
+
+
+### Features
+
+* **payment:** STRIPE-460 Add custom checklist Item ([5adaa53](https://github.com/bigcommerce/checkout-js/commit/5adaa537bd56d3b351122ab21a810f0395b11a1b))
+
+
+### Bug Fixes
+
+* **other:** CHECKOUT-8519 Skip merging manifests if the build is unsuccessful ([99c1d71](https://github.com/bigcommerce/checkout-js/commit/99c1d719c15af14b701b3f9e5e47160381927ac0))
+
 ### [1.528.3](https://github.com/bigcommerce/checkout-js/compare/v1.528.2...v1.528.3) (2024-10-03)
 
 ### [1.528.2](https://github.com/bigcommerce/checkout-js/compare/v1.528.1...v1.528.2) (2024-10-02)
