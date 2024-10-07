@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import { noop, range } from 'lodash';
 import React, { FunctionComponent } from 'react';
 
-import { Checklist, ChecklistItem } from '../../ui/form';
+import { Checklist, ChecklistItem, CustomChecklistItem } from '../../ui/form';
 import { getMobilePaymentMethod, getPaymentMethod } from '../payment-methods.mock';
 
 import PaymentMethodList, { PaymentMethodListProps } from './PaymentMethodList';
@@ -30,6 +30,7 @@ describe('PaymentMethodList', () => {
         const component = mount(<PaymentMethodListTest methods={methods} />);
 
         expect(component.find(ChecklistItem)).toHaveLength(methods.length);
+        expect(component.find(CustomChecklistItem)).toHaveLength(0);
     });
 
     it('renders mobile payment methods as checklist on mobile device', () => {
@@ -94,5 +95,14 @@ describe('PaymentMethodList', () => {
         const component = mount(<PaymentMethodListTest methods={methods} />);
 
         expect(component.find(Checklist).prop('defaultSelectedItemId')).toEqual(methods[0].id);
+    });
+
+    it('renders custom list item for provider with custom item', () => {
+        methods[0].initializationData.isCustomChecklistItem = true;
+        
+        const component = mount(<PaymentMethodListTest methods={methods} />);
+
+        expect(component.find(ChecklistItem)).toHaveLength(methods.length - 1);
+        expect(component.find(CustomChecklistItem)).toHaveLength(1);
     });
 });
