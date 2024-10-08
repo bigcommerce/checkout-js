@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "appVersion": "1.530.0",
+  "appVersion": "1.531.0",
   "dynamicChunks": {
     "js": [
       "197-f36476ec.js",
@@ -26,8 +26,8 @@
     "runtime-a851142d.js",
     "polyfill-ce2969f5.js",
     "sentry-d353dd52.js",
-    "transients-a9195743.js",
-    "vendors-90a3071b.js",
+    "transients-39b61e72.js",
+    "vendors-0dea424f.js",
     "checkout-d6888c91.js"
   ],
   "css": [
@@ -54,7 +54,7 @@
     "sentry-d353dd52.js": "sha256-TgQOUsOuhMkW8zq0np0/DfkfsFX93NBSRzfEAkhyDck= sha384-yRse4vsXBubCuYyplC5WGqEL+oLFzfb+g+lCorE5WsbpEHEiEHhUBJmOGWPhK3O/ sha512-IrLYHoWcqL0qwMvZ8Bq8xd9JoKj3IN/zSz+Va54CyD2jC3bZzKcoOLpaSWDkLQFyXYjb7VEvXceShMnFkDjfug==",
     "shipping-c24d51b3.css": "sha256-8um3psw6TRg0Zz47IoPn8OLXVI77YZ31IBim42IwYE0= sha384-yrOsR1mH5vDYk2IR7ERBTpDclLfX+cMhNouBVniCPHU3OZhDtEJ+1g5PLalNCD8b sha512-rm2uBF7P1/+Q3uuzvbIpYPHkAeXwaKA34DV4WCydPvAeiyQAsuChjs2TtuKUJPuojsMq6jjQ0V4amvoVz1SePQ==",
     "shipping-35e65852.js": "sha256-Zqpbszm1j5jXq7EHrwo21lvcoBpQ37m63d5Bl3pJT78= sha384-ZsPHiffr0XGRvnpp49/osn34Td5CIM8LcTO3F2gLk+REwCys/kd51UCFgZEJEgZH sha512-6vz2BEenRaz/nopAijmlkraRgv1mBIlEACd5WO1Z5xumpUTcmn0dOHzNd/2ZjQ9wu0T12liTRMnGGGigYAgWSQ==",
-    "transients-a9195743.js": "sha256-/7+5h3CKqI1eYzcWTPM0/ukclQTpNhqFcfmvnUZfAX0= sha384-t3DKWDdmjK4LFm3Zjd/RScSIByVqTAL8JFgc/GTuldLPjWov+5+2uFnJjJdGT46Y sha512-lLkHRXi/mIO8sGbfFuv+6sSOfl4VB0VVE39qOFcXy5VMK8CfUfvwHXmsC53kPkxWO8Q9t2Oo84UaUl4YVtwjMw==",
-    "vendors-90a3071b.js": "sha256-cQYDti7WmDl+Wjqr3mmWjCgxelXnYiZiy98GMu9AvKU= sha384-6Wk4QNlAgl3/Etf9Kxgo+YtUGSnCPKf1w/V3ADdKY0t+3dQaftRfnmecEy+tvRS8 sha512-zuR2OkUwAy6DXAbOx98j/4GN97bvKWlvbpPh+WNVZtdel0vF5oZMV0lBuouV+ptWrxQxYPMmOaO73XbypbsU7A=="
+    "transients-39b61e72.js": "sha256-XeQPyUfbAw6rRMEpfw37o/KWXDZMkY6QzjoQs0fYYmM= sha384-7ZK179HatKK/Qjdy5udR6a3shfbljXNG4Qz73q06ObuS8/9YmePCP2i8g2cI5dDW sha512-xLprHRUwZHzx54SejoSfpyDdx6ND9BOr0nf0cRY3TfMaX8Uhz60lE1r+bs7RMao8PeUuNrRtS0vMd8+duLCQCQ==",
+    "vendors-0dea424f.js": "sha256-du03UsaqpdhG6+ZRDJK8JIX7SqYExcvXAFrmi1Q+L00= sha384-tDuZbtm80MkDP4L2BXIAuc5kPWaWHR+tuHDGZ1DR5Yu/Ah1ruQcwgwkJaGId9T7X sha512-XMc8nKOQMxEegd3GxLAXnmE6uMznAmKCASVShjphAjhVwiqYsLV9WB+tjKlmtTIT/z7YULycT5z3GJ10UVkGNw=="
   }
 }
