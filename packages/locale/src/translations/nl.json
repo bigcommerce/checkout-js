@@ -415,7 +415,7 @@
                 "invalid_request_error": "Er is een probleem opgetreden bij het verwerken van uw transactie. Neem contact met ons op of probeer het later opnieuw.",
                 "invalid_user_authentication": "Er is een fout opgetreden bij het verwerken van uw betaling. Neem contact met ons op.",
                 "invalid_zip": "Kan de betaling niet verwerken omdat er ongeldige gegevens zijn opgegeven bij de transactie.",
-                "invalid_phone_number": "Phone Number is invalid.",
+                "invalid_phone_number": "Het telefoonnummer is ongeldig.",
                 "journal_error": "Er is iets misgegaan op de server. Probeer het later opnieuw.",
                 "lost_or_stolen_card": "Kan de betaling niet verwerken omdat er ongeldige gegevens zijn opgegeven bij de transactie.",
                 "missing_test_mode": "Kan het verzoek niet verwerken omdat er ongeldige gegevens zijn opgegeven bij de transactie.",

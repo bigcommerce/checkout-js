@@ -415,7 +415,7 @@
                 "invalid_request_error": "Vi oplever problemer med at behandle din transaktion. Kontakt os, eller prøv igen senere.",
                 "invalid_user_authentication": "Der opstod en fejl under behandlingen af din betaling. Kontakt os.",
                 "invalid_zip": "Betalingen kunne ikke behandles, fordi der blev leveret ugyldige data med transaktionen.",
-                "invalid_phone_number": "Phone Number is invalid.",
+                "invalid_phone_number": "Telefonnummeret er ugyldigt.",
                 "journal_error": "Noget gik galt på serveren. Prøv igen på et senere tidspunkt.",
                 "lost_or_stolen_card": "Betalingen kunne ikke behandles, fordi der blev leveret ugyldige data med transaktionen.",
                 "missing_test_mode": "Anmodningen kunne ikke behandles, fordi der blev leveret ugyldige data med transaktionen.",

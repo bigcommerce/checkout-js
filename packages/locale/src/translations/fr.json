@@ -415,7 +415,7 @@
                 "invalid_request_error": "Nous avons des difficultés à traiter votre transaction. Veuillez nous contacter ou réessayer plus tard.",
                 "invalid_user_authentication": "Une erreur s'est produite lors du traitement de votre paiement. Veuillez nous contacter.",
                 "invalid_zip": "Impossible de traiter le paiement car des données invalides ont été indiquées lors de la transaction.",
-                "invalid_phone_number": "Phone Number is invalid.",
+                "invalid_phone_number": "Le numéro de téléphone n’est pas valide.",
                 "journal_error": "Une erreur s'est produite sur le serveur. Veuillez réessayer ultérieurement.",
                 "lost_or_stolen_card": "Impossible de traiter le paiement car des données invalides ont été indiquées lors de la transaction.",
                 "missing_test_mode": "Impossible de traiter la demande car des données non valides ont été indiquées lors de la transaction.",

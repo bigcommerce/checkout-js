@@ -415,7 +415,7 @@
                 "invalid_request_error": "En este momento tenemos dificultades para procesar tu transacción. Ponte en contacto con nosotros o inténtalo de nuevo más tarde.",
                 "invalid_user_authentication": "Hubo un error al procesar su pago. Póngase en contacto con nosotros.",
                 "invalid_zip": "No se puede procesar el pago porque se proporcionaron datos no válidos con la transacción.",
-                "invalid_phone_number": "Phone Number is invalid.",
+                "invalid_phone_number": "El número de teléfono no es válido.",
                 "journal_error": "Algo salió mal en el servidor. Vuelve a intentarlo más tarde.",
                 "lost_or_stolen_card": "No se puede procesar el pago porque se proporcionaron datos no válidos con la transacción.",
                 "missing_test_mode": "No se puede procesar la solicitud porque se proporcionaron datos no válidos con la transacción.",

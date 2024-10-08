@@ -415,7 +415,7 @@
                 "invalid_request_error": "Mamy problem z przetworzeniem Twojej transakcji. Skontaktuj się z nami lub spróbuj ponownie później.",
                 "invalid_user_authentication": "Podczas przetwarzania Twojej płatności wystąpił błąd. Skontaktuj się z nami.",
                 "invalid_zip": "Nie można przetworzyć płatności, ponieważ w transakcji podano nieprawidłowe dane.",
-                "invalid_phone_number": "Phone Number is invalid.",
+                "invalid_phone_number": "Numer telefonu jest nieprawidłowy.",
                 "journal_error": "Coś poszło nie tak na serwerze. Spróbuj ponownie w późniejszym terminie.",
                 "lost_or_stolen_card": "Nie można przetworzyć płatności, ponieważ w transakcji podano nieprawidłowe dane.",
                 "missing_test_mode": "Nie można przetworzyć żądania, ponieważ w transakcji podano nieprawidłowe dane.",
