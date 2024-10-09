@@ -7,7 +7,7 @@ import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
 import AddressType from "./AddressType";
 import isValidAddress from "./isValidAddress";
 
-export interface StaticAddressV2Props {
+export interface SingleLineStaticAddressProps {
     address: Address;
     type?: AddressType;
 }
@@ -33,7 +33,7 @@ export const getAddressContent: (value: Address) => string = ({
     return `${firstName} ${lastName}, ${address}`;
 };
 
-const SingleLineStaticAddress = ({ address, type }: StaticAddressV2Props) => {
+const SingleLineStaticAddress = ({ address, type }: SingleLineStaticAddressProps) => {
     const {
         checkoutState: {
             data: { getBillingAddressFields, getShippingAddressFields },
