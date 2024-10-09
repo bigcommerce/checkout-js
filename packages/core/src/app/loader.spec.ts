@@ -202,13 +202,17 @@ describe('loadFiles', () => {
     });
 
     it('initializes language service with default translations', async () => {
-        await loadFiles(options);
+        await loadFiles({
+            ...options,
+            isCspNonceExperimentEnabled: true,
+        });
 
         expect(appExports.initializeLanguageService).toHaveBeenCalledWith({
             defaultTranslations: expect.any(Object),
             locale: expect.any(String),
             locales: expect.any(Object),
             translations: expect.any(Object),
+            isCspNonceExperimentEnabled: true,
         });
     });
 });
