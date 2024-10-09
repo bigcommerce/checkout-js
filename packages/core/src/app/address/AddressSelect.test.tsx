@@ -14,7 +14,7 @@ import { getCustomer } from '../customer/customers.mock';
 import { getAddress } from './address.mock';
 import AddressSelect, { AddressSelectProps } from './AddressSelect';
 import AddressType from './AddressType';
-import { getAddressContent } from './StaticAddressV2';
+import { getAddressContent } from './SingleLineStaticAddress';
 
 describe('AddressSelect component', () => {
     let checkoutService: CheckoutService;

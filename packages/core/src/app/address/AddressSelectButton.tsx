@@ -6,7 +6,7 @@ import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/
 
 import { AddressSelectProps } from './AddressSelect';
 import StaticAddress from './StaticAddress';
-import StaticAddressV2 from './StaticAddressV2';
+import SingleLineStaticAddress from './SingleLineStaticAddress';
 
 type AddressSelectButtonProps = Pick<AddressSelectProps, 'selectedAddress' | 'addresses' | 'type' | 'showSingleLineAddress'>;
 
@@ -24,7 +24,7 @@ const AddressSelectButton: FunctionComponent<AddressSelectButtonProps & WithLang
         }
 
         return showSingleLineAddress
-            ? <StaticAddressV2 address={selectedAddress} type={type} />
+            ? <SingleLineStaticAddress address={selectedAddress} type={type} />
             : <StaticAddress address={selectedAddress} type={type} />;
     }
 

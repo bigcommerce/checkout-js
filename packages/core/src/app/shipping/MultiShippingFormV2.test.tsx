@@ -13,7 +13,7 @@ import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api'
 import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
 
 import { getAddressFormFields } from '../address/formField.mock';
-import { getAddressContent } from '../address/StaticAddressV2';
+import { getAddressContent } from '../address/SingleLineStaticAddress';
 import { getCart } from '../cart/carts.mock';
 import { getPhysicalItem } from '../cart/lineItem.mock';
 import { getCheckout } from '../checkout/checkouts.mock';

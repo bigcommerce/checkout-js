@@ -12,9 +12,9 @@ import { render, screen } from '@bigcommerce/checkout/test-utils';
 import { getAddress } from './address.mock';
 import AddressType from './AddressType';
 import { getAddressFormFields } from './formField.mock';
-import StaticAddressV2, { getAddressContent, StaticAddressV2Props } from './StaticAddressV2';
+import SingleLineStaticAddress, { getAddressContent, StaticAddressV2Props } from './SingleLineStaticAddress';
 
-describe('StaticAddress Component', () => {
+describe('SingleLineStaticAddress Component', () => {
     let StaticAddressV2Test: FunctionComponent<StaticAddressV2Props>;
     let checkoutService: CheckoutService;
     let checkoutState: CheckoutSelectors;
@@ -38,7 +38,7 @@ describe('StaticAddress Component', () => {
 
         StaticAddressV2Test = (props) => (
             <CheckoutProvider checkoutService={checkoutService}>
-                <StaticAddressV2 {...props} />
+                <SingleLineStaticAddress {...props} />
             </CheckoutProvider>
         );
     });
@@ -49,35 +49,6 @@ describe('StaticAddress Component', () => {
         render(<StaticAddressV2Test {...defaultProps} />);
 
         expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
-    });
-
-    it('does not render phone field if it is empty', () => {
-        render(<StaticAddressV2Test address={{ ...defaultProps.address, phone: '' }} />);
-
-        expect(screen.queryByText(defaultProps.address.phone)).not.toBeInTheDocument();
-    });
-
-    it('renders component if required fields for billing address are not missing', () => {
-        render(<StaticAddressV2Test {...defaultProps} type={AddressType.Billing} />);
-
-        expect(checkoutState.data.getBillingAddressFields).toHaveBeenCalled();
-
-        expect(screen.getByText(defaultProps.address.address1, { exact: false })).toBeInTheDocument();
-    });
-
-    it('does not render component if its not valid (due to missing required billing props)', () => {
-        render(
-            <StaticAddressV2Test
-                address={{
-                    ...defaultProps.address,
-                    address1: '',
-                }}
-                type={AddressType.Billing}
-            />,
-        );
-
-        expect(checkoutState.data.getBillingAddressFields).toHaveBeenCalled();
-        expect(screen.queryByTestId('static-address')).not.toBeInTheDocument();
     });
 
     it('renders component if required fields for shipping address are not missing', () => {

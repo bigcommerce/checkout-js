@@ -1,6 +1,5 @@
 import { Address } from '@bigcommerce/checkout-sdk';
 import { isEmpty } from 'lodash';
-
 import React from "react";
 
 import { useCheckout } from "@bigcommerce/checkout/payment-integration-api";
@@ -34,7 +33,7 @@ export const getAddressContent: (value: Address) => string = ({
     return `${firstName} ${lastName}, ${address}`;
 };
 
-const StaticAddressV2 = ({ address, type }: StaticAddressV2Props) => {
+const SingleLineStaticAddress = ({ address, type }: StaticAddressV2Props) => {
     const {
         checkoutState: {
             data: { getBillingAddressFields, getShippingAddressFields },
@@ -64,4 +63,4 @@ const StaticAddressV2 = ({ address, type }: StaticAddressV2Props) => {
     );
 }
 
-export default StaticAddressV2;
+export default SingleLineStaticAddress;
