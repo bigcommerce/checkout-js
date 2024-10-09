@@ -4,13 +4,12 @@ import {
     CheckoutService,
     createCheckoutService,
 } from '@bigcommerce/checkout-sdk';
-import userEvent from '@testing-library/user-event';
 import React from 'react';
 
 import { ExtensionProvider } from '@bigcommerce/checkout/checkout-extension';
 import { createLocaleContext, LocaleContext } from '@bigcommerce/checkout/locale';
 import { CheckoutProvider } from '@bigcommerce/checkout/payment-integration-api';
-import { render, screen, waitFor } from '@bigcommerce/checkout/test-utils';
+import { render, screen } from '@bigcommerce/checkout/test-utils';
 
 import { getAddressFormFields } from '../address/formField.mock';
 import { getAddressContent } from '../address/SingleLineStaticAddress';
@@ -80,52 +79,21 @@ describe('MultiShippingFormV2 Component', () => {
         jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
     });
 
-    describe('when user is guest', () => {
-        beforeEach(() => {
-            jest.spyOn(checkoutState.data, 'getCustomer').mockReturnValue({
-                ...getCustomer(),
-                isGuest: true,
-                addresses: [],
-            });
-        });
+    it('renders shipping destination 1', () => {
+        const address = getShippingAddress();
 
-        it('renders sign in message', async () => {
-            render(
-                <CheckoutProvider checkoutService={checkoutService}>
-                    <LocaleContext.Provider value={localeContext}>
-                        <ExtensionProvider checkoutService={checkoutService}>
-                            <MultiShippingFormV2 {...defaultProps} />
-                        </ExtensionProvider>
-                    </LocaleContext.Provider>
-                </CheckoutProvider>,
-            );
+        render(
+            <CheckoutProvider checkoutService={checkoutService}>
+                <LocaleContext.Provider value={localeContext}>
+                    <ExtensionProvider checkoutService={checkoutService}>
+                        <MultiShippingFormV2 {...defaultProps} />
+                    </ExtensionProvider>
+                </LocaleContext.Provider>
+            </CheckoutProvider>,
+        );
 
-            expect(screen.getByTestId('shipping-sign-in-link')).toBeInTheDocument();
-            await userEvent.click(screen.getByTestId('shipping-sign-in-link'));
-            await waitFor(() => {
-                expect(defaultProps.onSignIn).toHaveBeenCalled();
-            });
-        });
-    });
-
-    describe('when user is signed in', () => {
-
-        it('renders shipping destination 1', () => {
-            const address = getShippingAddress();
-
-            render(
-                <CheckoutProvider checkoutService={checkoutService}>
-                    <LocaleContext.Provider value={localeContext}>
-                        <ExtensionProvider checkoutService={checkoutService}>
-                            <MultiShippingFormV2 {...defaultProps} />
-                        </ExtensionProvider>
-                    </LocaleContext.Provider>
-                </CheckoutProvider>,
-            );
-
-            expect(screen.getByText('Shipping destination 1')).toBeInTheDocument();
-            expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
-            expect(screen.getByRole('button', { name: 'Add shipping destination' })).toBeInTheDocument();
-        });
+        expect(screen.getByText('Shipping destination 1')).toBeInTheDocument();
+        expect(screen.getByText(getAddressContent(address))).toBeInTheDocument();
+        expect(screen.getByRole('button', { name: 'Add shipping destination' })).toBeInTheDocument();
     });
 });

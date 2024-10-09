@@ -13,8 +13,7 @@ import {
 import { FormikProps } from 'formik';
 import React, { PureComponent, ReactNode } from 'react';
 
-import { preventDefault } from '@bigcommerce/checkout/dom-utils';
-import { TranslatedLink, TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 
 import {
     AddressFormModal,
@@ -42,7 +41,6 @@ export interface MultiShippingFormProps {
     cartHasChanged: boolean;
     consignments: Consignment[];
     customerMessage: string;
-    isGuest: boolean;
     isLoading: boolean;
     shouldShowOrderComments: boolean;
     defaultCountryCode?: string;
@@ -52,9 +50,7 @@ export interface MultiShippingFormProps {
     isFloatingLabelEnabled?: boolean;
     isInitialValueLoaded: boolean;
     assignItem(consignment: ConsignmentAssignmentRequestBody): Promise<CheckoutSelectors>;
-    onCreateAccount(): void;
     createCustomerAddress(address: AddressRequestBody): void;
-    onSignIn(): void;
     getFields(countryCode?: string): FormField[];
     onSubmit(values: MultiShippingFormValues): void;
     onUnhandledError(error: Error): void;
@@ -94,9 +90,6 @@ class MultiShippingForm extends PureComponent<
             addresses,
             consignments,
             cart,
-            isGuest,
-            onSignIn,
-            onCreateAccount,
             cartHasChanged,
             shouldShowOrderComments,
             isInitialValueLoaded,
@@ -110,25 +103,6 @@ class MultiShippingForm extends PureComponent<
         } = this.props;
 
         const { items, itemAddingAddress, createCustomerAddressError } = this.state;
-
-        if (isGuest) {
-            return (
-                <div className="checkout-step-info">
-                    <TranslatedString id="shipping.multishipping_guest_intro" />{' '}
-                    <a
-                        data-test="shipping-sign-in-link"
-                        href="#"
-                        onClick={preventDefault(onSignIn)}
-                    >
-                        <TranslatedString id="shipping.multishipping_guest_sign_in" />
-                    </a>{' '}
-                    <TranslatedLink
-                        id="shipping.multishipping_guest_create"
-                        onClick={onCreateAccount}
-                    />
-                </div>
-            );
-        }
 
         return (
             <>

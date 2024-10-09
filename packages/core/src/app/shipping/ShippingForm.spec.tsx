@@ -19,6 +19,7 @@ import { PaymentMethodId } from '../payment/paymentMethod';
 import BillingSameAsShippingField from './BillingSameAsShippingField';
 import { getConsignment } from './consignment.mock';
 import MultiShippingForm from './MultiShippingForm';
+import MultiShippingGuestForm from './MultiShippingGuestForm';
 import ShippingAddress from './ShippingAddress';
 import ShippingForm, { ShippingFormProps } from './ShippingForm';
 import { ShippingOptions } from './shippingOption';
@@ -246,9 +247,14 @@ describe('ShippingForm Component', () => {
                 expect(component.find(OrderComments)).toHaveLength(0);
             });
 
-            it('renders MultiShippingForm', () => {
+            it('renders sign in message', () => {
                 expect(component.find(ShippingAddress)).toHaveLength(0);
-                expect(component.find(MultiShippingForm)).toHaveLength(1);
+                expect(component.find(MultiShippingForm)).toHaveLength(0);
+                expect(component.find(MultiShippingGuestForm)).toHaveLength(1);
+
+                component.find('[data-test="shipping-sign-in-link"]').simulate('click');
+
+                expect(defaultProps.onSignIn).toHaveBeenCalled();
             });
         });
 

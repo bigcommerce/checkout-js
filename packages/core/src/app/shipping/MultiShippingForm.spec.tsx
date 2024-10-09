@@ -60,26 +60,6 @@ describe('MultiShippingForm Component', () => {
         };
     });
 
-    describe('when user is guest', () => {
-        beforeEach(() => {
-            component = mount(
-                <CheckoutProvider checkoutService={checkoutService}>
-                    <LocaleContext.Provider value={localeContext}>
-                        <ExtensionProvider checkoutService={checkoutService}>
-                            <MultiShippingForm {...defaultProps} isGuest={true} />
-                        </ExtensionProvider>
-                    </LocaleContext.Provider>
-                </CheckoutProvider>,
-            );
-        });
-
-        it('renders sign in message', () => {
-            component.find('[data-test="shipping-sign-in-link"]').simulate('click');
-
-            expect(defaultProps.onSignIn).toHaveBeenCalled();
-        });
-    });
-
     describe('when user is signed in', () => {
         beforeEach(() => {
             component = mount(

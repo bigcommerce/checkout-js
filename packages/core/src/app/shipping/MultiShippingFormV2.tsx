@@ -1,8 +1,7 @@
 import { Consignment } from '@bigcommerce/checkout-sdk';
 import React, { FunctionComponent, useMemo, useState } from 'react';
 
-import { preventDefault } from '@bigcommerce/checkout/dom-utils';
-import { TranslatedLink, TranslatedString, withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
+import { withLanguage, WithLanguageProps } from '@bigcommerce/checkout/locale';
 import { useCheckout } from '@bigcommerce/checkout/payment-integration-api';
 
 import { withFormikExtended } from '../common/form';
@@ -24,8 +23,6 @@ export interface MultiShippingFormV2Props {
     defaultCountryCode?: string;
     countriesWithAutocomplete: string[];
     isLoading: boolean;
-    onCreateAccount(): void;
-    onSignIn(): void;
     onUnhandledError(error: Error): void;
     onSubmit(values: MultiShippingFormV2Values): void;
 }
@@ -34,31 +31,27 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
     countriesWithAutocomplete,
     defaultCountryCode,
     isLoading,
-    onCreateAccount,
-    onSignIn,
     onUnhandledError,
 }: MultiShippingFormV2Props) => {
     const [addShippingDestination, setAddShippingDestination] = useState(false);
 
     const {
         checkoutState: {
-            data: { getConsignments, getCustomer, getConfig },
+            data: { getConsignments, getConfig },
         },
     } = useCheckout();
 
     const consignments = getConsignments() || EMPTY_ARRAY;
-    const customer = getCustomer();
     const config = getConfig();
 
     const shouldDisableSubmit = useMemo(() => {
         return isLoading || !hasSelectedShippingOptions(consignments);
     }, [isLoading, consignments]);
 
-    if (!config || !customer) {
+    if (!config) {
         return null;
     }
 
-    const isGuest = customer.isGuest;
     const {
         checkoutSettings: {
             enableOrderComments: shouldShowOrderComments,
@@ -67,25 +60,6 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
 
     const handleAddShippingDestination = () => {
         setAddShippingDestination(true);
-    }
-
-    if (isGuest) {
-        return (
-            <div className="checkout-step-info">
-                <TranslatedString id="shipping.multishipping_guest_intro" />{' '}
-                <a
-                    data-test="shipping-sign-in-link"
-                    href="#"
-                    onClick={preventDefault(onSignIn)}
-                >
-                    <TranslatedString id="shipping.multishipping_guest_sign_in" />
-                </a>{' '}
-                <TranslatedLink
-                    id="shipping.multishipping_guest_create"
-                    onClick={onCreateAccount}
-                />
-            </div>
-        );
     }
 
     return (

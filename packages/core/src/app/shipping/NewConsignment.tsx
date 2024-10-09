@@ -8,7 +8,6 @@ import { EMPTY_ARRAY } from "../common/utility";
 
 import ConsignmentAddressSelector from './ConsignmentAddressSelector';
 
-
 interface NewConsignmentProps {
     consignmentNumber: number;
     defaultCountryCode?: string;

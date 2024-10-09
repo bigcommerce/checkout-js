@@ -21,6 +21,7 @@ import { usePayPalFastlaneAddress } from '@bigcommerce/checkout/paypal-fastlane-
 
 import MultiShippingForm, { MultiShippingFormValues } from './MultiShippingForm';
 import MultiShippingFormV2 from './MultiShippingFormV2';
+import MultiShippingGuestForm from './MultiShippingGuestForm';
 import SingleShippingForm, { SingleShippingFormValues } from './SingleShippingForm';
 
 export interface ShippingFormProps {
@@ -108,14 +109,18 @@ const ShippingForm = ({
         : addresses;
 
     const getMultiShippingForm = () => {
+        if (isGuest) {
+            return (
+                <MultiShippingGuestForm onCreateAccount={onCreateAccount} onSignIn={onSignIn} />
+            );
+        }
+
         if (isNewMultiShippingUIEnabled) {
             return <MultiShippingFormV2
                 countriesWithAutocomplete={countriesWithAutocomplete}
                 customerMessage={customerMessage}
                 defaultCountryCode={shippingAddress?.countryCode}
                 isLoading={isLoading}
-                onCreateAccount={onCreateAccount}
-                onSignIn={onSignIn}
                 onSubmit={onMultiShippingSubmit}
                 onUnhandledError={onUnhandledError}
             />;
@@ -135,11 +140,8 @@ const ShippingForm = ({
             getFields={getFields}
             googleMapsApiKey={googleMapsApiKey}
             isFloatingLabelEnabled={isFloatingLabelEnabled}
-            isGuest={isGuest}
             isInitialValueLoaded={isInitialValueLoaded}
             isLoading={isLoading}
-            onCreateAccount={onCreateAccount}
-            onSignIn={onSignIn}
             onSubmit={onMultiShippingSubmit}
             onUnhandledError={onUnhandledError}
             onUseNewAddress={onUseNewAddress}
