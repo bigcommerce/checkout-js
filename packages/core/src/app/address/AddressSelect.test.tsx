@@ -60,7 +60,7 @@ describe('AddressSelect component', () => {
         expect(screen.getByText(selectedAddress.lastName)).toBeInTheDocument();
     });
 
-    it('renders static address V2 when there is a selected address and showSingleLineAddress is true', () => {
+    it('renders single line static address when there is a selected address and showSingleLineAddress is true', () => {
         const selectedAddress = getAddress();
 
         renderAddressSelect({ selectedAddress, showSingleLineAddress: true });

@@ -33,7 +33,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
     isLoading,
     onUnhandledError,
 }: MultiShippingFormV2Props) => {
-    const [addShippingDestination, setAddShippingDestination] = useState(false);
+    const [isAddShippingDestination, setIsAddShippingDestination] = useState(false);
 
     const {
         checkoutState: {
@@ -59,7 +59,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
     } = config;
 
     const handleAddShippingDestination = () => {
-        setAddShippingDestination(true);
+        setIsAddShippingDestination(true);
     }
 
     return (
@@ -75,7 +75,7 @@ const MultiShippingFormV2: FunctionComponent<MultiShippingFormV2Props> = ({
                     onUnhandledError={onUnhandledError}
                 />
             ))}
-            {(consignments.length === 0 || addShippingDestination) && (
+            {(consignments.length === 0 || isAddShippingDestination) && (
                 <NewConsignment
                     consignmentNumber={consignments.length === 0 ? 1 : (consignments.length + 1)}
                     countriesWithAutocomplete={countriesWithAutocomplete}
