@@ -24,6 +24,7 @@ import {
     mapAddressToFormValues,
 } from '../../address';
 import CheckoutStepStatus from '../../checkout/CheckoutStepStatus';
+import { withFormikExtended } from '../../common/form';
 import { getCustomFormFieldsValidationSchema } from '../../formFields';
 import { Fieldset, Form } from '../../ui/form';
 import BillingSameAsShippingField from '../BillingSameAsShippingField';
@@ -31,7 +32,6 @@ import hasSelectedShippingOptions from '../hasSelectedShippingOptions';
 import ShippingFormFooter from '../ShippingFormFooter';
 
 import StripeShippingAddress from './StripeShippingAddress';
-import { withFormikExtended } from '../../common/form';
 
 export interface SingleShippingFormProps {
     isBillingSameAsShipping: boolean;

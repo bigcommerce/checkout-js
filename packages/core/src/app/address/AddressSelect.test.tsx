@@ -14,6 +14,7 @@ import { getCustomer } from '../customer/customers.mock';
 import { getAddress } from './address.mock';
 import AddressSelect, { AddressSelectProps } from './AddressSelect';
 import AddressType from './AddressType';
+import { getAddressContent } from './SingleLineStaticAddress';
 
 describe('AddressSelect component', () => {
     let checkoutService: CheckoutService;
@@ -57,6 +58,15 @@ describe('AddressSelect component', () => {
         expect(screen.getByTestId('static-address')).toBeInTheDocument();
         expect(screen.getByText(selectedAddress.firstName)).toBeInTheDocument();
         expect(screen.getByText(selectedAddress.lastName)).toBeInTheDocument();
+    });
+
+    it('renders single line static address when there is a selected address and showSingleLineAddress is true', () => {
+        const selectedAddress = getAddress();
+
+        renderAddressSelect({ selectedAddress, showSingleLineAddress: true });
+
+        expect(screen.getByTestId('static-address')).toBeInTheDocument();
+        expect(screen.getByText(getAddressContent(selectedAddress))).toBeInTheDocument();
     });
 
     it('renders addresses menu when select component is clicked', () => {

@@ -18,6 +18,7 @@ export interface AddressSelectProps {
     addresses: CustomerAddress[];
     selectedAddress?: Address;
     type: AddressType;
+    showSingleLineAddress?: boolean;
     onSelectAddress(address: Address): void;
     onUseNewAddress(currentAddress?: Address): void;
 }
@@ -61,6 +62,7 @@ const AddressSelect = ({
     addresses,
     selectedAddress,
     type,
+    showSingleLineAddress,
     onSelectAddress,
     onUseNewAddress,
 }: AddressSelectProps) => {
@@ -93,6 +95,7 @@ const AddressSelect = ({
                     <AddressSelectButton
                         addresses={addresses}
                         selectedAddress={selectedAddress}
+                        showSingleLineAddress={showSingleLineAddress}
                         type={type}
                     />
                 </DropdownTrigger>

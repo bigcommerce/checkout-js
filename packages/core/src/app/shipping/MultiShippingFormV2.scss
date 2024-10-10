@@ -1,0 +1,17 @@
+@import '../ui/Base';
+
+.consignment-container {
+    border: 1px solid color("greys", "light");
+    border-radius: $global-radius;
+    padding: spacing("base");
+    margin-bottom: spacing("base");
+}
+
+.consignment-header {
+    font-size: fontSize("large");
+    margin: 0 0 spacing("single");
+}
+
+.add-consignment-button {
+    color: color("greys", "dark");
+}
