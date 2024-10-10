@@ -4,5 +4,6 @@
 .co-googleAutocomplete-footer{background-color:#f7f8f9;background-image:url(static/powered_by_google_on_white-46afd78d.png);background-position-x:.75rem;background-position-y:center;background-repeat:no-repeat;border-top:1px solid #e1e6eb;box-sizing:content-box;color:#556273;height:18px;padding:.75rem}
 .popover{background:#fff;border:1px solid #e1e6eb;border-radius:4px;box-shadow:0 2px 0 rgba(225,230,235,.6);left:0;position:absolute;right:0;z-index:20}
 .popoverList{list-style:none;margin:.5rem 0}.popoverList-item{cursor:pointer;padding:.5rem .75rem}.popoverList-item.is-active:hover,.popoverList-item.is-active{background-color:#e1e6eb}.popoverList-item:hover{background-color:#f7f8f9}.popoverList-item strong,.popoverList-item span{display:inline-block}.popoverList-item .highlight{font-weight:bold}
+.consignment-container{border:1px solid #e1e6eb;border-radius:4px;padding:1rem;margin-bottom:1rem}.consignment-header{font-size:1.5rem;margin:0 0 1.5rem}.add-consignment-button{color:#556273}
 .stepHeader-body.subheader{margin-left:0;order:inherit}.stepHeader-actions.subheader{margin-bottom:0;margin-left:0}#customFieldset{margin-top:1rem}
 .multiCheckbox--controls{list-style:none;margin:0 0 .75rem;padding:0}.multiCheckbox--control{display:inline-block;margin-right:.375rem}
