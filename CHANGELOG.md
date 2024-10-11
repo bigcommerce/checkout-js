@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.533.0](https://github.com/bigcommerce/checkout-js/compare/v1.532.1...v1.533.0) (2024-10-11)
+
+
+### Features
+
+* **payment:** STRIPE-473 bump checkout-sdk to 1.668.0 ([12db8c3](https://github.com/bigcommerce/checkout-js/commit/12db8c36329cd51a3f4b891d813a7f72d67c9898))
+
 ### [1.532.1](https://github.com/bigcommerce/checkout-js/compare/v1.532.0...v1.532.1) (2024-10-10)
 
 ## [1.532.0](https://github.com/bigcommerce/checkout-js/compare/v1.531.0...v1.532.0) (2024-10-09)
