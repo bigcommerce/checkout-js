@@ -23,6 +23,7 @@ export interface AssetManifest {
 export interface LoadFilesOptions {
     publicPath?: string;
     isIntegrityHashExperimentEnabled?: boolean;
+    isCspNonceExperimentEnabled?: boolean;
 }
 
 export interface LoadFilesResult {
@@ -34,6 +35,7 @@ export interface LoadFilesResult {
 export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> {
     const publicPath = configurePublicPath(options && options.publicPath);
     const isIntegrityHashExperimentEnabled = options?.isIntegrityHashExperimentEnabled ?? true;
+    const isCspNonceExperimentEnabled = options?.isCspNonceExperimentEnabled ?? true;
     const {
         appVersion,
         css = [],
@@ -100,6 +102,7 @@ export function loadFiles(options?: LoadFilesOptions): Promise<LoadFilesResult> 
             initializeLanguageService({
                 ...languageConfig,
                 defaultTranslations,
+                isCspNonceExperimentEnabled,
             });
 
             return {
