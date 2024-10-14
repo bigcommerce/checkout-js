@@ -1,115 +1,166 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect,useState } from 'react';
+import { Modal, ModalHeader } from '../ui/modal';
 import { withCheckout } from '../checkout';
 import { CheckoutContextProps } from '@bigcommerce/checkout/payment-integration-api';
 //import CertificateSelect from './CertificateSelect';
-import { fetchCertificateDetails } from './services/LambdaService';
+import { fetchCertificateDetails, createCertificate, getFormData } from './services/LambdaService';
+import CertificateForm from './CertificateForm';
+import { Address} from '@bigcommerce/checkout-sdk';
+import { CertificateDetail, CreateCertificateProps, CertificateFormValues,Customer} from './types'
 
-interface Customer {
-  id: number;
-  email: string;
-  isGuest: boolean;
-}
-interface CertificateDetail {
-  id: number;
-  exemptPercentage: number;
-  customers: { name: string }[];
-  exemptionReason: { name: string };
-}
+const CreateCertificate: React.FC<CreateCertificateProps> = ({ customer, certIds, shippingAddress }) => {
+    const [certificateDetails, setCertificateDetails] = useState<CertificateDetail[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [isOpen, setIsOpen] = React.useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+    useEffect(() => {
+        if (certIds.length === 0) return;
+        const fetchDetails = async () => {
+            try {
+                if (certIds.length > 0) {
+                    const details = await Promise.all(certIds.map(certId => fetchCertificateDetails(certId)));
+                    setCertificateDetails(details);
+                } else {
+                    setCertificateDetails([]);
+                }
+            } catch (error) {
+                console.error('Error :', error);
+                setError('Failed to load certificate details');
+            } finally {
+                setLoading(false);
+            }
+        };
 
-interface CreateCertificateProps {
-  customer: Customer;
-  certIds: number[];
-}
-const CreateCertificate: React.FC<CreateCertificateProps> = ({ customer, certIds }) => {
-  const [certificateDetails, setCertificateDetails] = useState<CertificateDetail[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchDetails = async () => {
-      try {
-        if (certIds.length > 0) {
-          const details = await Promise.all(
-            certIds.map((certId) => fetchCertificateDetails(certId)),
-          );
-          setCertificateDetails(details);
-        }
-        setLoading(false);
-      } catch (error) {
-        console.error('Error :', error);
-        setError('Failed to load certificate details');
-        setLoading(false);
-      }
+        fetchDetails();
+    }, [certIds, shippingAddress]);
+     const onAfterOpen = () => {
+        console.log('after open');
+    };
+    const onRequestClose = () => {
+        setIsOpen(false);
     };
 
-    fetchDetails();
-  }, [certIds]);
-  if (loading) {
-    return <p>Loading certificates...</p>;
-  }
-  if (error) {
-    return <p>{error}</p>;
-  }
-
-  return !customer.isGuest ? (
-    <>
-      <a href={`/certificates`} rel="noopener noreferrer">
-        Use Tax/ Exempt Certificate
-      </a>
-      <p></p>
-      <div>
-        <span>Certificate Applied:</span>
-        {certificateDetails.length > 0 ? (
-          certificateDetails.map((details, index) => {
-            const detail = Array.isArray(details) ? details[0] : details;
-            return detail ? (
-              <div key={detail.id}>
-                <p>
-                  {/* <span>Cert ID:</span> {detail?.id} |&nbsp;
-                                    <span>Exemption Percentage:</span> {detail?.exemptPercentage}% |&nbsp;
-                                    <span>Exempt Reason:</span> {detail?.exemptionReason?.name || 'Unknown'} */}
-                  <span>Exempt Reason:</span> {detail?.exemptionReason?.name || 'Unknown'}
-                  <br />
-                  <span>State:</span> {detail?.exposureZone.region} |&nbsp;
-                  <span>Percent:</span> {detail?.exemptPercentage}%
-                </p>
-              </div>
-            ) : (
-              <p key={index}>No details available</p>
+    const showModal = () => {
+       setIsOpen(true);
+    };
+    const handleSubmit = async (values: CertificateFormValues) => {
+        try {
+            const formData = getFormData(
+                values.region,
+                values.exemptionReason,
+                values.effectiveDate,
+                values.entityUseCode,
+                values.exemptionDescription,
+                customer,
+                shippingAddress
             );
-          })
-        ) : (
-          <p>No exemption certificates found.</p>
-        )}
-      </div>
-    </>
-  ) : null;
+
+            const result = await createCertificate(formData);
+            if (result) {
+                setShowSuccess(true);
+                setTimeout(() => {
+                    window.location.reload();
+                }, 3000);
+            }
+        } catch (error) {
+            console.error('Error creating certificate:', error);
+        }
+    };
+    if (customer.isGuest) {
+        return (
+            <p>
+                Please <a href="{`/login.php`}" rel="noopener noreferrer">sign in</a> to apply tax exemption certificates to this transaction.
+            </p>
+        );
+    }
+    if (loading) {
+        return <p>Checking if any certificates apply to this transaction...</p>;
+    } else if (error) {
+        return <p>{error}</p>;
+    } else if (!certificateDetails.length) {
+        return <p>No exemption certificates found.</p>;
+    } else {
+        return (
+            <>
+                <div>
+                    <span>Certificate Applied:</span>
+                    {certificateDetails.length > 0 ? (
+                        certificateDetails.map((details, index) => {
+                            const detail = Array.isArray(details) ? details[0] : details;
+                            return detail ? (
+                                <div key={detail.id}>
+                                    <p>
+                                        <span>Exempt Reason:</span> {detail?.exemptionReason?.name || 'Unknown'}
+                                        <br />
+                                        <span>State:</span> {detail?.exposureZone.region} |&nbsp;
+                                        <span>Percent:</span> {detail?.exemptPercentage}%
+                                    </p>
+                                </div>
+                            ) : (
+                                <p key={index}>No details available</p>
+                            );
+                        })
+                    ) : (
+                        <p>No exemption certificates found.</p>
+                    )}
+                </div>
+                <a onClick={() => showModal()} > Use Tax/ Exempt Certificate  </a>
+                <Modal
+                    additionalModalClassName="modal--big"
+                    header={
+                        <ModalHeader>
+                            Add New Certificate
+                        </ModalHeader>
+                    }
+                    isOpen={isOpen}
+                    onAfterOpen={onAfterOpen}
+                    onRequestClose={onRequestClose}
+                    shouldShowCloseButton={true}
+                >
+                    <CertificateForm  onSubmit={handleSubmit} />
+                    {showSuccess && (
+                        <div className="success-message">
+                            Certificate Created Sucessfully!
+                        </div>
+                    )}
+                </Modal>
+            </>
+        );
+    }
 };
 
+
 interface WithCheckoutCustomerInfoProps {
-  email: string;
-  customer: Customer;
+    email: string;
+    customer: Customer;
+    shippingAddress: Address;
 }
 
 function mapToWithCheckoutCustomerInfoProps({
   checkoutState,
 }: CheckoutContextProps): WithCheckoutCustomerInfoProps | null {
-  const {
-    data: { getBillingAddress, getCheckout, getCustomer },
-  } = checkoutState;
+    const {
+        data: { getBillingAddress, getCheckout, getCustomer, getShippingAddress },
+    } = checkoutState;
 
-  const billingAddress = getBillingAddress();
-  const checkout = getCheckout();
-  const customer = getCustomer();
+    const billingAddress = getBillingAddress();
+    const checkout = getCheckout();
+    const customer = getCustomer();
+    const shippingAddress = getShippingAddress();
 
+    if (!billingAddress || !checkout || !customer || !shippingAddress) {
+        return null;
+    }
   if (!billingAddress || !checkout || !customer) {
     return null;
   }
 
-  return {
-    email: billingAddress.email || customer.email,
-    customer,
-  };
+    return {
+        email: billingAddress.email || customer.email,
+        customer,
+        shippingAddress,
+    };
 }
 
 export default withCheckout(mapToWithCheckoutCustomerInfoProps)(CreateCertificate);

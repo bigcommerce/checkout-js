@@ -58,7 +58,6 @@ const OrderSummary: FunctionComponent<OrderSummaryProps & OrderSummarySubtotalsP
                 if (shippingAddress && cart && customerId) {
                     calculateTaxes(cart, shippingAddress, lineItems, customerId, shippingCost)
                         .then(taxCalculated => {
-                            console.log(taxCalculated);
                             const { certificateIds } = taxCalculated;
                             setCertIds(certificateIds);
                         })
