@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.534.0](https://github.com/bigcommerce/checkout-js/compare/v1.533.0...v1.534.0) (2024-10-14)
+
+
+### Features
+
+* **checkout:** CHECKOUT-8519 Switch messageformat library when experiment is enabled ([e063e74](https://github.com/bigcommerce/checkout-js/commit/e063e740fa481a36408499276b3d2f428dece0eb))
+
 ## [1.533.0](https://github.com/bigcommerce/checkout-js/compare/v1.532.1...v1.533.0) (2024-10-11)
 
 
