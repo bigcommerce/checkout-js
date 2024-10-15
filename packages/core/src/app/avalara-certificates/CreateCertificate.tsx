@@ -105,7 +105,7 @@ const CreateCertificate: React.FC<CreateCertificateProps> = ({ customer, certIds
                         <p>No exemption certificates found.</p>
                     )}
                 </div>
-                <a onClick={() => showModal()} > Use Tax/ Exempt Certificate  </a>
+                <a onClick={() => showModal()} > Add Tax Exempt Certificate  </a>
                 <Modal
                     additionalModalClassName="modal--big"
                     header={
