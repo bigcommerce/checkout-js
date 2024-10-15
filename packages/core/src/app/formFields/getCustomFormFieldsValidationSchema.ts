@@ -53,7 +53,6 @@ export default memoize(function getCustomFormFieldsValidationSchema({
                         schema[name] = date()
                             // Transform NaN values to undefined to avoid empty string (empty input) to fail date
                             // validation when it's optional
-                            .strict(true)
                             .nullable(true)
                             .transform((value, originalValue) =>
                                 originalValue === '' ? null : value,
@@ -62,7 +61,6 @@ export default memoize(function getCustomFormFieldsValidationSchema({
                         schema[name] = number()
                             // Transform NaN values to undefined to avoid empty string (empty input) to fail number
                             // validation when it's optional
-                            .strict(true)
                             .transform((value) => (isNaN(value) ? undefined : value));
 
                         maxValue = typeof max === 'number' ? max : undefined;
