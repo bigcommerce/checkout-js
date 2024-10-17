@@ -51,17 +51,6 @@ describe('MultiShippingFormV2 Component', () => {
         jest.spyOn(checkoutState.data, 'getShippingAddressFields').mockReturnValue(
             getAddressFormFields(),
         );
-        jest.spyOn(checkoutState.data, 'getCart').mockReturnValue({
-            ...getCart(),
-            lineItems: {
-                physicalItems: [
-                    {
-                        ...getPhysicalItem(),
-                        quantity: 3,
-                    },
-                ],
-            },
-        } as Cart);
 
         jest.spyOn(checkoutState.data, 'getShippingAddress').mockReturnValue(getShippingAddress());
 
@@ -76,7 +65,10 @@ describe('MultiShippingFormV2 Component', () => {
 
         jest.spyOn(checkoutState.data, 'getConsignments').mockReturnValue([getConsignment()]);
 
-        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue(getCheckout());
+        jest.spyOn(checkoutState.data, 'getCheckout').mockReturnValue({
+            ...getCheckout(),
+            consignments: [getConsignment()],
+        });
     });
 
     it('renders shipping destination 1', () => {
